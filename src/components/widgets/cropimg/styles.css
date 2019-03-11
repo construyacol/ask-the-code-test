@@ -1,0 +1,39 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.Apps {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.App{
+  height: 100%
+
+}
+
+.crop-container {
+  width: 100%;
+      height: calc(100% - 100px);
+  position: relative;
+}
+
+.ImgCropcontrols {
+  margin: auto;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to bottom, transparent, black);
+  justify-content: center;
+
+}
+
+.slider {
+  width: 200px;
+  height: 10px;
+}

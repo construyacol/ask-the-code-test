@@ -1,0 +1,154 @@
+import {
+  MENU_ITEM_ACTIVE,
+  HEAD_ROOM,
+  ITEM_QUOTE_ACTIVE,
+  MODAL_CONFIRMATION_TOGGLE,
+  CONFIRMATION_MODAL_PAYLOAD,
+  SECTION_VIEW_TO,
+  CURRENT_SECTION_PARAMS,
+  PAIRS_FOR_ACCOUNT,
+  OTHER_MODAL,
+  CURRENT_SECTION_CLEAN,
+  FLOW_ANIMATION_LAYOUT,
+  FLOW_ANIMATION_OFF,
+  ADD_NOTIFICATION,
+  CLEAN_NOTIFICATIONS
+} from './action_types'
+
+
+export const AddNotification = (payload, extra, amount) =>{
+  return{
+    type:ADD_NOTIFICATION,
+    payload,
+    amount:amount,
+    extra:extra,
+    meta: {
+      sound: {
+        play:'notification'
+      }
+    }
+  }
+}
+
+export const CleanNotifications = (payload) =>{
+  return{
+    type:CLEAN_NOTIFICATIONS,
+    payload
+  }
+}
+
+// export const new_fiat_deposit = (wallet_id, data) =>{
+//   // Recibe como parametro un objeto
+//   // ej this.props.action.current_section_params({current_wallet:this.state.current_wallet})
+//   return{
+//     type:NEW_FIAT_DEPOSIT,
+//     payload:{
+//       wallet_id,
+//       data
+//     }
+//   }
+// }
+
+
+export const FlowAnimationOff = () =>{
+  return{
+    type:FLOW_ANIMATION_OFF
+  }
+}
+
+export const FlowAnimationUi = payload =>{
+  // @params
+  // nextV    //Avance de sección de forma Vertical
+  // backV    //Retroceder sección de forma Vertical
+  // nextH    //Avance de sección de forma Horizontal
+  // backH    //Retroceder sección de forma Horizontal
+  return{
+    type:FLOW_ANIMATION_LAYOUT,
+    payload
+  }
+}
+
+
+export const other_modal_toggle = () =>{
+  return{
+    type:OTHER_MODAL
+  }
+}
+
+
+export const pairs_for_account = (wallet_id, data) =>{
+  // Recibe como parametro un objeto
+  // ej this.props.action.current_section_params({current_wallet:this.state.current_wallet})
+  return{
+    type:PAIRS_FOR_ACCOUNT,
+    payload:{
+      wallet_id,
+      data
+    }
+  }
+}
+
+
+
+export const current_section_params = payload =>{
+  // Recibe como parametro un objeto
+  // ej this.props.action.current_section_params({current_wallet:this.state.current_wallet})
+  return{
+    type:CURRENT_SECTION_PARAMS,
+    payload
+  }
+}
+
+export const current_section_clean = () =>{
+  return{
+    type:CURRENT_SECTION_CLEAN
+  }
+}
+
+
+
+export const section_view_to = payload =>{
+  return{
+    type:SECTION_VIEW_TO,
+    payload
+  }
+}
+
+export const MenuItemActive = payload =>{
+  return{
+    type:MENU_ITEM_ACTIVE,
+    payload
+  }
+}
+
+export const HeadRoom = payload => {
+  return{
+    type:HEAD_ROOM,
+    payload
+  }
+}
+
+export const ItemQuoteActive = payload =>{
+  return{
+    type:ITEM_QUOTE_ACTIVE,
+    payload
+  }
+}
+
+export const ConfirmationModalToggle = payload =>{
+  return{
+    type:MODAL_CONFIRMATION_TOGGLE,
+    payload
+  }
+}
+
+export const ConfirmationModalPayload = payload =>{
+  return{
+    type:CONFIRMATION_MODAL_PAYLOAD,
+    payload
+  }
+}
+
+
+
+export default MenuItemActive

@@ -1,0 +1,98 @@
+.dashBoardLayout{
+  min-height: 100vh;
+  /*padding-top: 6vh;*/
+  /*margin-top: 15px;*/
+  margin-left: 19vw;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 45vh 1fr;
+  height: 100vh;
+  /*height: 300vh;*/
+  position: relative;
+  /*overflow: hidden;*/
+  overflow-y: scroll;
+}
+
+.sectionFixedPrice{
+  height: 38vh;
+  padding-top: 7vh;
+  background: linear-gradient(to bottom right, #0198FF, #0066AA);
+}
+
+.element{
+  position: relative;
+top: 200px;
+height: 200px;
+overflow: scroll;
+/* margin-bottom: 100px; */
+margin-left: 19vw;
+padding: 20px;
+}
+
+.epale{
+  margin-top: 100px;
+    position: absolute;
+    z-index: 30;
+}
+
+
+.notification-awesome {
+  background-color: #685dc3;
+  border-left: 8px solid darken(#685dc3, 15%);
+}
+.notification-custom-icon {
+  flex-basis: 20%;
+  position: relative;
+  display: inline-block;
+  padding: 8px 8px 8px 12px;
+
+  .fa {
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    font-size: 28px;
+    position: relative;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.notification-custom-success {
+  width: 100%;
+  display: flex;
+  background-color: #28a745;
+
+  .notification-custom-icon {
+    border-left: 8px solid darken(#28a745, 15%);
+  }
+}
+
+
+
+.TouchMe{
+ width: 50px;
+ height: 50px;
+ border-radius: 50%;
+ background: black;
+ cursor: pointer;
+     margin: 100px 0 0 900px;
+}
+
+.containerSection{
+  /*padding-top: 8vh;*/
+  /*padding-left: 20px;*/
+  /*padding-right: 20px;*/
+  /*min-height: calc(100vh - 8vh);*/
+  /*min-height: 100vh;*/
+  height: auto !important;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 7vh 1fr;
+  z-index: 1;
+}
+/*.dashBoardLayout::-webkit-scrollbar {
+  width: 7px !important;
+}
+.dashBoardLayout::-webkit-scrollbar-thumb {
+  background: #475A68 !important;
+}*/

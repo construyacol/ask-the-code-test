@@ -1,0 +1,66 @@
+[
+  {
+    "primary_currency": {
+      "currency": "bitcoin",
+      "is_token": false
+    },
+    "secondary_currency": {
+      "currency": "cop",
+      "is_token": false
+    },
+    "buy_price": "12000000",
+    "sell_price": "10800000",
+    "buy_pair": "BTC/COP",
+    "sell_pair": "COP/BTC",
+    "country": "colombia",
+    "id": "5c01c434f108fc4c9a3a57e8"
+  },
+  {
+    "primary_currency": {
+      "currency": "litecoin",
+      "is_token": false
+    },
+    "secondary_currency": {
+      "currency": "cop",
+      "is_token": false
+    },
+    "buy_price": "120000",
+    "sell_price": "90000",
+    "buy_pair": "LTC/COP",
+    "sell_pair": "COP/LTC",
+    "country": "colombia",
+    "id": "5c01c434f108fc4c9a3a57e8"
+  },
+  {
+    "primary_currency": {
+      "currency": "dash",
+      "is_token": false
+    },
+    "secondary_currency": {
+      "currency": "cop",
+      "is_token": false
+    },
+    "buy_price": "260000",
+    "sell_price": "230000",
+    "buy_pair": "DASH/COP",
+    "sell_pair": "COP/DASH",
+    "country": "colombia",
+    "id": "5c01c434f108fc4c9a3a57e8"
+  },
+  {
+    "primary_currency": {
+      "currency": "ethereum",
+      "is_token": false
+    },
+    "secondary_currency": {
+      "currency": "bitcoin",
+      "is_token": false
+    },
+    "buy_price": "35",
+    "sell_price": "30",
+    "buy_pair": "ETH/BTC",
+    "sell_pair": "BTC/ETH",
+    "country": "colombia",
+    "id": "8c02c434f108fc88sa4c9a3a57e8"
+  }
+]

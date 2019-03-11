@@ -1,0 +1,34 @@
+{
+  "countries":[
+    {
+      "name":"Colombia",
+      "code":"colombia",
+      "id":"1"
+    },
+    {
+      "name":"Argentina",
+      "code":"argentina",
+      "id":"2"
+    },
+    {
+      "name":"Chile",
+      "code":"chile",
+      "id":"3"
+    },
+    {
+      "name":"Brasil",
+      "name":"brasil",
+      "id":"4"
+    },
+    {
+      "name":"Republica Dominicana",
+      "code":"republica_dominicana",
+      "id":"5"
+    },
+    {
+      "name":"Ecuador",
+      "code":"ecuador",
+      "id":"6"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+    "id": "5bea1f01ba84493018b7528c",
+    "username": "andres",
+    "name": "andres erminzon",
+    "surname": "gomez trujillo",
+    "id_number":"1116552233",
+    "balances":[],
+    "email": "andres@gmail.com",
+    "cover": "https://randomuser.me/api/portraits/men/46.jpg",
+    "role": "user",
+    "country": "colombia",
+    "settings":{
+      "current_country":"colombia",
+      "languaje":"spanish",
+      "currency":"cop",
+      "phone":"3156669999"
+    },
+    "security_center":{
+      "email":false,
+      "kyc":{
+        "basic":false,
+        "advanced":false
+      },
+      "authenticator":{
+        "auth":true,
+        "transactional":false,
+        "withdraw":true
+      }
+    },
+    "deposit_providers":[],
+    "wallets": [],
+    "withdraw_accounts":[],
+    "deposits": [],
+    "withdrawals": [],
+    "swaps": [],
+    "activity": [],
+    "available_pairs":[]
+}

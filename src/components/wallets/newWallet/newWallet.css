@@ -1,0 +1,90 @@
+.containerFormWallet{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items:center;
+}
+
+
+.containerFormWallet form{
+  display: grid;
+  justify-items: center;
+}
+.step1{
+  width: 100%;
+  justify-items: center;
+}
+.step2{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+.stepFinish{
+  position: relative;
+  width: 450px;
+  max-height: 700px;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 125px 1fr 15%;
+}
+
+.nWbody{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+.nWbody p{
+  justify-items: center;
+    align-items: center;
+    display: grid;
+    color: white;
+}
+
+.nWbody p{
+  margin: 0 !important;
+}
+
+.nWCabeza{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  border-bottom: 2px solid white;
+  justify-items:center;
+  align-items: center;
+  width: 100%;
+}
+
+.nWname{
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+.nWname img{
+  margin-right: 10px;
+}
+.nWadress p{
+  /*margin: 15px 0 !important;*/
+}
+
+.nWadress{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 0;
+}
+
+.nWcta{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  font-size: 22px !important;
+}

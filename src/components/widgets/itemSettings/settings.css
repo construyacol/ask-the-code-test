@@ -1,0 +1,151 @@
+.itemSecurityCenter{
+  width: 100%;
+  height: auto;
+  border: 1px solid transparent;
+  border-top-color: #d5d5d6;
+  border-bottom-color: #d5d5d6;
+}
+
+.subItemSecurityCenter{
+  height: 150px;
+  display: grid;
+  grid-template-columns: 12vw 1fr;
+  margin: 15px 0;
+  /*align-items: center;*/
+  /*justify-items:center; */
+}
+
+.subItemSecurityCenter div, .subItemSecurityCenter p{
+  /*border: 1px solid red;*/
+  margin: 0 !important;
+}
+
+.contentSubItem{
+  display: grid;
+  grid-template-columns: 1fr 250px;
+  border: 1px solid transparent;
+  border-bottom-color: #d5d5d6;
+  /*border-top-color: #d5d5d6;*/
+}
+
+
+.contentSubItem.last{
+  border-bottom-color: transparent;
+
+}
+
+.SCdesc{
+  font-size: 15px;
+}
+
+
+
+
+
+.contentSubItem p{
+  /*margin: 15px 10px !important;*/
+  margin: 0 10px !important;
+}
+
+.SCverification{
+  align-self: flex-start;
+  /*color: #59B200;*/
+  font-size: 15px;
+}
+
+.SCverification i{
+  margin-right: 10px;
+}
+
+
+.SCtitle{
+  display: flex;
+  align-items: center;
+  color: gray;
+  font-size: 25px;
+}
+
+.SCcta{
+    align-self: center;
+  }
+
+.SCcta #subItemSC, .SCcta #ClassicView{
+  transform: scale(0.9);
+}
+
+.contentSubText{
+  color: gray;
+  display: grid;
+  align-items: center;
+  padding-left: 20px;
+}
+
+.SCimgItem{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+}
+
+.ScimgClassicView{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ScimgClassicView.classic_view svg{
+    margin-right: 10px;
+    transform: scale(0.7);
+}
+
+.SCimgItemCont{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  background: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 1px solid #d5d5d6;
+  z-index: 1;
+  box-shadow: 1px 1px 1px 1px grey;
+}
+
+.SCimgItemCont.first{
+  transform: scale(1.2);
+}
+
+.SCimgItemCont.active{
+  border: 2px solid #1babec;
+      box-shadow: none;
+}
+
+.SCconector{
+  position: absolute;
+  width: 7px;
+  background: #d5d5d6;
+  height: 100px;
+  bottom: -40%;
+}
+
+.SCconector.active{
+  background: linear-gradient(to bottom, #00D2FF, #3A7BD5);
+}
+
+.SCconector.last{
+  display: none;
+}
+
+.SCUnverify{
+  /*color:red !important;*/
+}
+
+
+
+
+
+
+.SecurityCenter{
+  width: 100%;
+  height: 100%;
+}

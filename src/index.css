@@ -1,0 +1,682 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  background: black;
+}
+
+
+
+
+.der{
+text-align: right !important;
+}
+.title{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.titleWhite{
+  font-size: 22px;
+  color: white;
+  margin: 0 !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.fuentePrin{
+  font-family: fa5-proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.fuente{
+  font-family: 'Raleway', sans-serif;
+}
+
+.fuente2{
+  font-family: 'Inconsolata', monospace;
+}
+
+@font-face {
+  font-family: Museo;
+  src: url('./assets/fonts/MuseoSans_500.otf');
+}
+
+.fuenteMuseo {
+  font-family: Museo;
+}
+
+
+.number{
+  font-family: 'Lato', sans-serif;
+}
+
+.WA::-webkit-scrollbar {
+  width: 2px !important;
+  background: transparent;
+}
+
+.WA::-webkit-scrollbar-thumb {
+  background: transparent !important;
+}
+
+.WA::-moz-scrollbar {
+  width: 7px !important;
+  background: transparent;
+}
+.WA::-moz-scrollbar-thumb {
+  background: transparent !important;
+}
+
+
+body::-webkit-scrollbar {
+  width: 7px !important;
+  background: #2b3742;
+}
+
+body::-webkit-scrollbar-thumb {
+  background: #101418 !important;
+}
+
+body::-moz-scrollbar {
+  width: 7px !important;
+  background: #2b3742;
+}
+body::-moz-scrollbar-thumb {
+  background: #101418 !important;
+}
+
+
+.dashBoardLayout::-webkit-scrollbar {
+  width: 7px !important;
+  background: #2b3742 !important;
+}
+
+.dashBoardLayout::-webkit-scrollbar-thumb {
+  background: #101418 !important;
+}
+
+.dashBoardLayout::-moz-scrollbar {
+  width: 7px !important;
+  background: #2b3742 !important;
+}
+.dashBoardLayout::-moz-scrollbar-thumb {
+  background: #101418 !important;
+}
+
+
+
+
+
+@-webkit-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 50px
+    }
+
+    100% {
+        stroke-dashoffset: 0
+    }
+}
+
+@-ms-keyframes checkmark {
+    0% {
+        stroke-dashoffset: 50px
+    }
+
+    100% {
+        stroke-dashoffset: 0
+    }
+}
+
+@keyframes checkmark {
+    0% {
+        stroke-dashoffset: 50px
+    }
+
+    100% {
+        stroke-dashoffset: 0
+    }
+}
+
+@-webkit-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 240px
+    }
+
+    100% {
+        stroke-dashoffset: 480px
+    }
+}
+
+@-ms-keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 240px
+    }
+
+    100% {
+        stroke-dashoffset: 480px
+    }
+}
+
+@keyframes checkmark-circle {
+    0% {
+        stroke-dashoffset: 240px
+    }
+
+    100% {
+        stroke-dashoffset: 480px
+    }
+}
+
+.inlinesvg .svg svg {
+    display: inline
+}
+
+.icon--order-success svg path {
+    -webkit-animation: checkmark 0.15s ease-in-out 0.4s backwards;
+    animation: checkmark 0.15s ease-in-out 0.4s backwards
+}
+
+.icon--order-success svg circle {
+    -webkit-animation: checkmark-circle 0.3s ease-in-out backwards;
+    animation: checkmark-circle 0.3s ease-in-out backwards
+}
+
+circle{
+  stroke-dasharray:240px, 240px;
+  stroke-dashoffset: 480px;
+}
+
+.check{
+  stroke-dasharray:50px, 50px; stroke-dashoffset: 0px;
+}
+
+
+.ItemSelectionContainerMovil{
+  overflow-y: scroll !important;
+  width: 100% !important;
+}
+
+
+.DLtitle2{
+  text-align: center !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 1100px) {
+    .menuPrincipal{
+      width: 24vw !important;
+    }
+
+    .dashBoardLayout{
+      margin-left: 24vw !important;
+    }
+}
+
+
+@media only screen and (max-width: 900px) {
+
+  .menuPrincipal{
+      transition: .3s;
+      left: -70% !important;
+  }
+
+    .menuPrincipal{
+      width: 24vw !important;
+    }
+
+    .containerMenuSuperior{
+      width: calc(100% - 24vw) !important;
+      right: 0 !important;
+    }
+
+    .dashBoardLayout{
+      margin-left:0 !important;
+    }
+
+    .containerMenuSuperior {
+      width: 100% !important;
+    }
+
+    .buy, .sell{
+      font-size: 14px !important;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .capsuleMenu2 img{
+      padding-right: 5px !important;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+
+  .Mconfirmar {
+    width: calc(97% - 20px) !important;
+    height: 500px !important;
+    background: white !important;
+  }
+
+
+  .AddNewItemContainer{
+    /*width: 100% !important;*/
+  }
+
+
+ .DLcontain{
+   grid-template-rows: auto !important;
+ }
+
+
+.nWbody2 {
+  padding: 0 15px !important;
+}
+  .closeModalButtonCont, .closeModalButtonBack {
+    height: 30px !important;
+    width: 30px !important;
+}
+
+
+  .containerInputComponent, .containerInputComponent2 {
+      align-self: center !important;
+  }
+
+
+.nBtextInit{
+  width: 100% !important;
+}
+
+.stepFinish{
+  width: 100% !important;
+}
+
+
+ .tocatoca{
+    width: 60% !important;
+ }
+
+ .FolowTexts{
+   width: 350px !important;
+ }
+
+
+
+  .ItemSelectionContainers{
+    width: 100% !important;
+  }
+
+
+  .crop-container{
+    height: calc(100vh - 100px);
+
+  }
+
+  .ItemSelectedButton{
+    width: calc(100% - 20px) !important;
+  }
+
+  .inputElement2{
+    font-size: 70px !important;
+  }
+
+  .DLtitle2 {
+    font-size: 20px !important;
+  }
+
+  .DLstep {
+    height: 100vh !important;
+    grid-template-rows: 100px 1fr 100px !important;
+    width: 100% !important;
+  }
+
+  .DLstep2 {
+    grid-template-rows: 170px 1fr 100px !important;
+  }
+
+  .DLcontainerItems{
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+
+  .DLItemSelectionContainer{
+    width: 100% !important;
+    overflow-y: scroll !important;
+    /*height: auto !important; */
+  }
+
+  .containerInputComponent, .containerInputComponent2{
+    width: 100% !important;
+  }
+
+    .DLstep{
+      text-align: center !important;
+    }
+
+  .ItemSelectionContainer{
+    width: 100% !important;
+  }
+
+
+  .ItemSelectionContainer2{
+    width: 100% !important;
+  }
+
+
+  .containerItems{
+        grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .ImgCropcontrols{
+    justify-content: space-around !important;
+  }
+
+  .contButton{
+    margin: 0 !important;
+  }
+
+
+    .KycLayoutBasicWin>img{
+        width: 100% !important;
+    }
+
+  .TitleSlider{
+      margin-top: 10vh !important;
+  }
+
+
+  .KycDashboard{
+    width: 100% !important;
+  }
+
+  .containerInputComponent2{
+    width: 98% !important;
+  }
+
+  .modalCont{
+    padding: 7px !important;
+    width: calc(100% - 14px);
+    height: calc(100% - 14px) !important;
+  }
+
+  .globalStep1{
+    top: calc(-100vh + 14px) !important;
+  }
+
+  .globalStep2{
+    top: calc(-200vh + 28px) !important;
+  }
+
+
+  .KycLayoutCarousel{
+    width: calc(100vw - 14px) !important;
+    grid-template-rows: repeat(3, calc(100vh - 14px)) !important;
+  }
+
+  .labelText2{
+    font-size: 20px !important;
+  }
+
+  .KycTitle {
+      font-size: 22px !important;
+      font-weight: bold;
+      top: 3vh !important;
+  }
+
+    .KycAvancedLayout {
+      width: calc(100vw - 14px) !important;
+      height: calc(100vh - 14px) !important;
+      margin-top: 0px !important;
+  }
+
+.imgDashContainer>p{
+      align-items: flex-end !important;
+      margin: 0 !important;
+}
+
+#putita{
+  align-items: center !important;
+}
+
+  .containerKycAvanced{
+    grid-template-columns: calc(100vw - 14px) !important;
+    grid-template-rows: repeat(2, calc(100vh)) !important;
+  }
+
+.KycDashContainer{
+  height: 100% !important;
+}
+
+
+
+.imgDashContainer{
+  width: 100% !important;
+}
+
+.KycDashboard{
+  border: none !important;
+}
+
+
+.holi{
+  position: absolute;
+  width: 100%;
+}
+
+}
+
+@media only screen and (max-width: 450px) {
+
+  .DLstitle{
+    font-size: 16px !important;
+  }
+
+  .nWaddress{
+    display: block !important;
+    margin-left: 2px !important;
+    max-width: 250px !important;
+    overflow: hidden !important;
+    padding-left: 0 !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .capsuleMenu2 img{
+    padding-right: 20px !important;
+  }
+  .cotization{
+      column-gap: 10px !important;
+  }
+  .containerItems{
+    grid-template-columns: repeat(1, 1fr) !important;
+    justify-items: center !important;
+  }
+
+  .FolowTexts {
+    width: 300px !important;
+  }
+
+}
+
+@media only screen and (max-width: 358px) {
+
+
+    .tocatoca {
+      width: 50% !important;
+    }
+
+    .KycTitle{
+      font-size: 17px !important;
+    }
+
+
+
+  .KycTitles{
+    font-size: 25px !important;
+  }
+
+  .containerMenuSuperior{
+    /*height: 15vh !important;*/
+  }
+
+  .KycParra1{
+    font-size: 18px !important;
+  }
+
+  .cotization{
+      column-gap: 5px !important;
+  }
+
+  .cotization p{
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+
+
+  /*.sell{
+    text-align: left !important;
+  }
+  .buy{
+    text-align: right !important;
+  }*/
+
+
+  .monto{
+    margin: 0 !important;
+    font-size: 20px !important;
+  }
+
+}
+
+
+
+
+
+
+
+
+
+/*IPHONE X*/
+@media screen and (max-height: 850px) and (max-width: 768px) {
+
+  .AddNewItemContainer{
+    position: fixed !important;
+    bottom: 0 !important;
+  }
+
+  .BbackgroundAddNew{
+    display: initial !important;
+  }
+
+
+  .ItemSelectionContainerMovil{
+    height: auto !important;
+  }
+  .holi{
+    bottom: -100px !important;
+  }
+
+  .ItemSelectionContainerMovil{
+    height: 600px !important;
+  }
+
+
+  .imgDashContainer{
+    height: 100% !important;
+  }
+
+  .DLItemSelectionContainer{
+    height: 600px !important;
+  }
+
+}
+
+
+/*IPHONE 6*/
+
+@media screen and (max-height: 750px) and (max-width: 768px){
+  .ItemSelectionContainerMovil{
+    height: 530px !important;
+  }
+  .DLItemSelectionContainer{
+    height: 500px !important;
+  }
+
+  .ItemSelectionContainer{
+    height: 421px !important;
+  }
+
+  .DLstep2{
+
+  }
+}
+
+
+/*IPHONE 6 S*/
+
+@media screen and (max-height: 670px){
+  .ItemSelectionContainerMovil{
+    height: 440px !important;
+  }
+
+  .DLItemSelectionContainer{
+    height: 420px !important;
+  }
+
+  .ItemSelectionContainer{
+    height: 328px !important;
+  }
+
+
+}
+
+/*IPHONE 5*/
+
+@media screen and (max-height: 570px){
+  .ItemSelectionContainerMovil, .DLItemSelectionContainer{
+    height: 360px !important;
+  }
+
+  .ItemSelectionContainer{
+    height: 250px !important;
+  }
+
+  .DLstep2 {
+    grid-template-rows: 150px 1fr 80px !important;
+}
+
+
+}

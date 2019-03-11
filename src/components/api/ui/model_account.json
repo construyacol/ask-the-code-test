@@ -1,0 +1,180 @@
+[
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Mi Billetera senda",
+"country": "colombia",
+"currency": {
+"currency": "bitcoin",
+"is_token": false
+},
+"currency_type": "crypto",
+"deposit_provider":null,
+"txs": [],
+"available": "1",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [
+"5c04f873eb9c94511fd2edfe"
+],
+"id": "5c04f873eb9c94511fd2edfa",
+"active": false,
+"balance": {
+"s": 1,
+"e": 0,
+"c": [
+1
+],
+"_isBigNumber": true
+}
+},
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Mi Billetera senda",
+"country": "colombia",
+"currency": {
+"currency": "bitcoin_testnet",
+"is_token": false
+},
+"currency_type": "crypto",
+"deposit_provider":null,
+"txs": [],
+"available": "0",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [
+"5c04f873eb9c94511fd2edff"
+],
+"id": "5c04f873eb9c94511fd2edfb",
+"active": false,
+"balance": {
+"s": 1,
+"e": 0,
+"c": [
+0
+],
+"_isBigNumber": true
+}
+},
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Mi Billetera senda",
+"country": "colombia",
+"currency": {
+"currency": "cop",
+"is_token": false
+},
+"currency_type": "fiat",
+"deposit_provider":null,
+"txs": [],
+"available": "64",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [],
+"id": "5c04f873eb9c94511fd2edfc",
+"active": true,
+"balance": {
+"s": 1,
+"e": 6,
+"c": [
+1000000
+],
+"_isBigNumber": true
+}
+},
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Mi Billetera senda usd",
+"country": "colombia",
+"currency": {
+"currency": "usd",
+"is_token": false
+},
+"currency_type": "fiat",
+"deposit_provider":null,
+"txs": [],
+"available": "2000",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [],
+"id": "5c04f873eb9c9322d2edfc",
+"active": true,
+"balance": {
+"s": 1,
+"e": 6,
+"c": [
+1000000
+],
+"_isBigNumber": true
+}
+},
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Senda Dash",
+"country": "colombia",
+"currency": {
+"currency": "dash",
+"is_token": false
+},
+"currency_type": "crypto",
+"deposit_provider":null,
+"txs": [],
+"available": "26",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [],
+"id": "5cs04f873eb9ca8sd9511f33d2edf5",
+"active": false,
+"balance": {
+"s": 1,
+"e": 0,
+"c": [
+1
+],
+"_isBigNumber": true
+}
+},
+{
+"userId": "5bf1c8d9ff5b671145bc1e85",
+"name":"Senda Ether",
+"country": "colombia",
+"currency": {
+"currency": "ethereum",
+"is_token": false
+},
+"currency_type": "crypto",
+"deposit_provider":null,
+"txs": [],
+"available": "12",
+"reserved": "0",
+"app": "Coinsenda",
+"type": "phi",
+"internal": true,
+"enabled": false,
+"dep_prov": [],
+"id": "5cs04f873eb9ca8ssd9511f33d2edf5",
+"active": false,
+"balance": {
+"s": 1,
+"e": 0,
+"c": [
+1
+],
+"_isBigNumber": true
+}
+}
+]

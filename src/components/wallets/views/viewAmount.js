@@ -1,0 +1,148 @@
+import React, { Component, Fragment } from 'react'
+import { ButtonForms } from '../../widgets/buttons/buttons'
+import ItemLayout from '../../widgets/items/itemLayout'
+import { SimpleLoader } from '../../widgets/loaders'
+import IconSwitch from '../../widgets/icons/iconSwitch'
+import { InputDepositForm } from '../../widgets/inputs'
+import { handleKeyPress, number_format, get_ui_name_currency } from '../../../services'
+
+
+import '../deposit/deposit.css'
+
+class ViewAmountComponent extends Component {
+
+
+  state = {
+    statusInput:"",
+    ui_currency_name:"",
+    minAmount:20000
+  }
+
+  handleKeyPress = async(e) => {
+    let message = await handleKeyPress(e)
+    return this.setState({statusInput:message})
+  }
+
+  componentDidMount(){
+    this.init_config()
+  }
+
+  init_config = async() => {
+    const {
+      currency
+    } = this.props
+
+    let ui_currency_name = await get_ui_name_currency(currency)
+
+    this.setState({
+      ui_currency_name
+    })
+  }
+
+  actualizarAmount = ({target}) =>{
+    const amount = target.value
+    this.props.updateAmountOnState(amount)
+  }
+
+  load_amount = () => {
+
+    const {
+      operation_type,
+      available
+    } = this.props
+
+
+    this.props.updateAmountOnState(operation_type === 'deposit' ? 20000 : available)
+
+  }
+
+
+  render(){
+
+    const{
+      operation_type,
+      currency,
+      available,
+      amount,
+      handleSubmit
+    } = this.props
+
+    const {
+      statusInput,
+      ui_currency_name,
+      minAmount
+    } = this.state
+
+    // let moneda =
+
+// console.log('|||||||||Currency y short', currency)
+
+    const atributos ={
+      icon:currency,
+      size:80,
+      // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
+    }
+
+    // operation_type="withdraw"
+
+    // console.log('||||||||||| VIEW  AMOUNT  ||||||||||', this.props)
+    return(
+      <div className="viewAmount DLstep">
+        {
+          currency &&
+          <Fragment>
+
+          <div className="DLcontain">
+            <p className="fuente DLtitle2" >Quiero {operation_type === 'deposit' ? 'depositar' : 'retirar' }</p>
+            <p className="fuente DLstitle" >La cantidad de</p>
+          </div>
+
+          <div className="DLcontain2">
+
+              <IconSwitch {...atributos}/>
+
+              <InputDepositForm
+                value={amount}
+                actualizar={this.actualizarAmount}
+                name="amount"
+                handleKeyPress={this.handleKeyPress}
+                service={number_format}
+              />
+
+              <div className="DLstatus">
+                <p className="fuente2 DLstitle DLcop DLcop2" onClick={this.load_amount} >
+                  {
+                    operation_type === 'deposit' ?
+                    `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`
+                    :
+                    `Cantidad disponible: $ ${available} ${currency.toUpperCase()}`
+                  }
+                </p>
+                <p className="fuente DLstitle DLcop" >{ui_currency_name}</p>
+                <p className="textStatus">{statusInput}</p>
+              </div>
+          </div>
+
+          <ButtonForms
+            type="primary"
+            active={
+              operation_type === 'deposit' ?
+                  parseFloat(amount)>=parseFloat(minAmount) ? true : false
+                  :
+                  (parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0) ? true : false
+            }
+            siguiente={handleSubmit}>
+            Continuar
+          </ButtonForms>
+        </Fragment>
+        }
+
+
+      </div>
+    )
+  }
+
+
+}
+
+export default ViewAmountComponent

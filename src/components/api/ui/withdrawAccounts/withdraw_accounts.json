@@ -1,0 +1,88 @@
+[
+
+  {
+        "id": "5c5bd1526d3f5d2ab12s282dde2e0f",
+        "info":{
+          "account_number": "3232242311424234332",
+          "account_type": "cuenta_ahorro",
+          "bank_name": "banco_de_bogota",
+          "city": "santiago_de_cali",
+          "email": "andres@gmail.com",
+          "id_number": "1116552233",
+          "name": "andres erminzon",
+          "surname": "gomez trujillo"
+        },
+        "inscribed": false,
+        "provider_type": "bank",
+        "userId": "5bea1f01ba84493018b7528c",
+        "visible": true
+      },
+      {
+            "id": "5c5bd1526d3f5d2ab12s282dde2e330f",
+            "info":{
+              "account_number": "32322423244211424234332",
+              "account_type": "cuenta_ahorro",
+              "bank_name": "bancolombia",
+              "city": "santiago_de_cali",
+              "email": "andres@gmail.com",
+              "id_number": "1116552233",
+              "name": "andres erminzon",
+              "surname": "gomez trujillo"
+            },
+            "inscribed": false,
+            "provider_type": "bank",
+            "userId": "5bea1f01ba84493018bwd7528c",
+            "visible": true
+          },
+      {
+            "id": "5c5bd1526d3f5d2ab12s282d21",
+            "info":{
+              "account_number": "323224231341424234332",
+              "account_type": "cuenta_ahorro",
+              "bank_name": "gane",
+              "city": "santiago_de_cali",
+              "email": "andres@gmail.com",
+              "id_number": "1116552233",
+              "name": "andres erminzon",
+              "surname": "gomez trujillo"
+            },
+            "inscribed": false,
+            "provider_type": "gane",
+            "userId": "5bea1f01ba84493018b7528c",
+            "visible": true
+          },
+  {
+        "id": "1526d3f5d2ab12dd282dde2e0f",
+        "info":{
+          "account_number": "323224231222222332",
+          "account_type": "cuenta_ahorro",
+          "bank_name": "bbva",
+          "city": "santiago_de_cali",
+          "email": "andres@gmail.com",
+          "id_number": "1116552233",
+          "name": "andres erminzon",
+          "surname": "gomez trujillo"
+        },
+        "inscribed": false,
+        "provider_type": "bank",
+        "userId": "5bea1f01ba84493018b7528c",
+        "visible": true
+      },
+  {
+        "id": "5c5bd1526d3f5d2ab1228e2e0f",
+        "info":{
+          "account_number": "3232242424234332",
+          "account_type": "cuenta_ahorro",
+          "bank_name": "bancolombia",
+          "city": "santiago_de_cali",
+          "email": "andres@gmail.com",
+          "id_number": "1116552233",
+          "name": "andres erminzon",
+          "surname": "gomez trujillo"
+        },
+        "inscribed": true,
+        "provider_type": "bank",
+        "userId": "5bea1f01ba84493018b7528c",
+        "visible": true
+      }
+]

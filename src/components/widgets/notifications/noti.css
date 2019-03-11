@@ -1,0 +1,56 @@
+
+.PopNotification p{
+  margin: 0 !important;
+  color: white !important;
+  font-size: 14px;
+}
+
+.PopNotification.Invi{
+  display: none;
+}
+
+.PopNotification.Visible{
+  display: grid;
+}
+
+
+.PopNotification.Visible{
+  animation-name: notifier;
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+
+.PopNotification.newPop{
+  height: 22px;
+  width: auto !important;
+  border-radius: 10% !important;
+  padding: 0 3px !important;
+}
+
+
+.PopNotification{
+  margin: 0 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: red;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  transform: scale(0);
+}
+
+
+@keyframes notifier{
+  0%{
+    transform: scale(0);
+  }
+  70%{
+    transform: scale(1);
+  }
+  100%{
+    transform: scale(.85);
+  }
+}

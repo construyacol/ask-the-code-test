@@ -1,0 +1,93 @@
+.imgDashFramework{
+  /*border: 1px solid black;*/
+  position: relative;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+
+.corner{
+  width: 30px;
+  height: 30px;
+  position: absolute;
+}
+
+.top_left{
+  border-top: 2px solid;
+  border-left: 2px solid;
+  top: 0;
+  left: 0;
+}
+
+.top_right{
+  border-top: 2px solid;
+  border-right: 2px solid;
+  top: 0;
+  right: 0;
+}
+
+.imgDashFramework2{
+  width: 230px;
+  height: 150px;
+  position: relative;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  /*opacity: 0.75;*/
+}
+
+
+
+.corner2{
+  width: 15px;
+height: 15px;
+position: absolute;
+}
+
+.reds{
+  border-color: red !important;
+  color: red !important;
+}
+
+.bottom_right{
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  bottom: 0;
+  right: 0;
+}
+
+.bottom_left{
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  bottom: 0;
+  left: 0;
+}
+
+.green{
+  border-color: #129A8E;
+  color: green !important;
+}
+.MarcoPolo{
+  opacity: 0.5
+}
+
+.textMarc{
+  position: absolute;
+  justify-self: center;
+  bottom: -17px;
+  margin: 0 !important;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+
+
+
+.IconMarco{
+  position: absolute;
+  font-size: 25px;
+  right: 17px;
+  top: 17px;
+  z-index: 2;
+}

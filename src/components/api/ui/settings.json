@@ -1,0 +1,244 @@
+{
+  "security_center":[
+    {
+      "id":2,
+      "email":[
+        {
+          "id":1,
+          "name":"email",
+          "label":"Correo electrónico",
+          "description":"Confirma tu correo electrónico como respaldo en caso de perdida de tus contraseñas, solo desde el correo o desde tu celular podrán ser recuperadas.",
+          "verify":false,
+          "cta_primary":"Verificar",
+          "cta_secondary":"Cambiar",
+          "tree":false,
+          "available":true
+        }
+      ]
+    },
+  {
+    "id":1,
+    "identity":[
+      {
+        "id":1,
+        "name":"identity",
+        "label":"Verificación de identidad",
+        "description":"La verificación de identidad es obligatoria para cumplir con las leyes de prevención del blanqueo de capitales reguladas por el gobierno. El cumplimiento de esta normativa sirve para proporcionarle una experiencia segura, sencilla y personalizada.",
+        "verify":true,
+        "cta_primary":"Verificar",
+        "cta_secondary":"Verificado",
+        "tree":true,
+        "available":true
+      },
+      {
+        "id":2,
+        "name":"kyc_basic",
+        "label":"Basica",
+        "description":"Completa los datos basicos de tu perfil (nombres, apellidos, pais, ciudad etc...)",
+        "verify":false,
+        "cta_primary":"Verificar",
+        "cta_secondary":"Verificado",
+        "tree":false,
+        "available":true
+      },
+      {
+        "id":3,
+        "name":"kyc_advance",
+        "label":"Avanzada",
+        "description":"Adjunta foto tipo selfie con documento y papel en mano donde se vea la fecha actual",
+        "verify":false,
+        "cta_primary":"Verificar",
+        "cta_secondary":"Verificado",
+        "tree":false,
+        "available":false
+      }
+    ]
+  },
+  {
+    "id":3,
+    "2auth":[
+      {
+        "id":1,
+        "name":"2auth",
+        "label":"Factor de doble verificación 2AUTH",
+        "description":"Agrega una segunda capa de seguridad al inicio de sesión de tu cuenta con una contraseña dinamica que cambiara cada 30 segundos y que solo estará accesible desde tu dispositivo movil   |   (RECOMENDADO).",
+        "verify":true,
+        "cta_primary":"Habilitar",
+        "cta_secondary":"Deshabilitar",
+        "tree":false,
+        "available":true
+      },
+      {
+        "id":2,
+        "name":"transaction",
+        "label":"Transacciones",
+        "description":"Activa el segundo factor para realizar intercambios dentro de coinsenda",
+        "verify":false,
+        "cta_primary":"Habilitar",
+        "cta_secondary":"Deshabilitar",
+        "tree":false,
+        "available":true
+      },
+      {
+        "id":3,
+        "name":"withdraw",
+        "label":"Retiros de saldo",
+        "description":"Activa el segundo factor para realizar retiros de saldos en coinsenda.",
+        "verify":true,
+        "cta_primary":"Habilitar",
+        "cta_secondary":"Deshabilitar",
+        "tree":false,
+        "available":true
+      }
+    ]
+  }
+],
+"global_settings":[
+    {
+      "id":1,
+      "country":[
+        {
+          "id":1,
+          "name":"country",
+          "label":"País actual",
+          "description":"Selecciona el país desde el que estas operando actualmente.",
+          "verify":true,
+          "cta_primary":"Colombia",
+          "cta_secondary":"Cambiar",
+          "tree":true,
+          "available":true,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":2,
+      "languaje":[
+        {
+          "id":2,
+          "name":"languaje",
+          "label":"Idioma",
+          "description":"Selecciona el idioma con el que deseas comunicarte en coinsenda.",
+          "verify":true,
+          "cta_primary":"Español",
+          "cta_secondary":"Cambiar",
+          "tree":true,
+          "available":false,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":3,
+      "currency":[
+        {
+          "id":3,
+          "name":"currency",
+          "label":"Moneda de cotización",
+          "description":"Selecciona en cual divisa ver las cotizaciones en coinsenda (Moneda local / USD / BTC)",
+          "verify":true,
+          "cta_primary":"COP",
+          "cta_secondary":"Cambiar",
+          "tree":true,
+          "available":true,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":4,
+      "phone":[
+        {
+          "id":4,
+          "name":"phone",
+          "label":"Numero Móvil",
+          "description":"Agregalo como metodo de respaldo adicional y monitoréa tu cuenta por medio de SMS desde tu telefono movil.",
+          "verify":true,
+          "cta_primary":"+57 315 608 44 66",
+          "cta_secondary":"Cambiar",
+          "tree":true,
+          "available":true,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":5,
+      "pass":[
+        {
+          "id":5,
+          "name":"pass",
+          "label":"Contraseña",
+          "description":"Cambia y administra tu constraseña de acceso",
+          "verify":true,
+          "cta_primary":"Cambiar",
+          "cta_secondary":"Nuevo",
+          "tree":true,
+          "available":true,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":6,
+      "payment":[
+        {
+          "id":6,
+          "name":"payment",
+          "label":"Metodos de pago",
+          "description":"Gestiona multiples medios de pago",
+          "verify":true,
+          "cta_primary":"Inhabilitado",
+          "cta_secondary":"Inhabilitado",
+          "tree":true,
+          "available":false,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":7,
+      "address_book":[
+        {
+          "id":7,
+          "name":"address_book",
+          "label":"Agenda de direcciones",
+          "description":"Gestiona y administra tu agenda de direcciones para hacer depositos y retiros crypto.",
+          "verify":true,
+          "cta_primary":"Inhabilitado",
+          "cta_secondary":"Inhabilitado",
+          "tree":true,
+          "available":false,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    },
+    {
+      "id":8,
+      "theme":[
+        {
+          "id":8,
+          "name":"theme",
+          "label":"Tema Gráfico",
+          "description":"Selecciona el tema visual para tu interfaz coinsenda.",
+          "verify":true,
+          "cta_primary":"Inhabilitado",
+          "cta_secondary":"Cambiar",
+          "tree":true,
+          "available":false,
+          "treeButton":true,
+          "classic_view":true
+        }
+      ]
+    }
+
+
+  ]
+}

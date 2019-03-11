@@ -1,0 +1,447 @@
+.DepositLayout{
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items:center;
+}
+
+.sentateAqui{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.DLwallet_list_container{
+  display: grid;
+  grid-template-rows: 140px 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.containerItems .LoaderIt{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-items: center;
+    justify-items:center;
+}
+
+.DLwallet_list{
+  width: 100%;
+    /*height: 100%;*/
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(255px, 1fr ));
+    justify-items: center;
+    grid-template-rows: repeat(auto-fill, 200px);
+    grid-row-gap: 20px;
+    row-gap: 20px;
+    grid-column-gap: 20px;
+    -webkit-column-gap: 20px;
+    column-gap: 20px;
+    align-items: center;
+}
+
+.DLwallet_list_container{
+
+}
+
+
+.DLtitle{
+  color: #50667a;
+  font-size: 19px;
+}
+
+.DLtitle2{
+  color: #00bfff;
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.DLstitle{
+    font-size: 20px;
+    color: #50667a;
+    font-weight: 400;
+    text-align: center;
+}
+.DLimg{
+  width: 55px;
+  height: 55px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.DLcop{
+  align-self: center;
+}
+
+.DLorderSub{
+ margin: 0 !important;
+ font-size: 14px !important;
+ color: white !important;
+}
+
+.DLsave{
+  color: white;
+  background: #129a8d;
+  padding: 7px 10px;
+  border-radius: 50%;
+  margin-right: 7px;
+  transition:.15s;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 0px 21px 0px rgba(0,0,0,0);
+-moz-box-shadow: 0px 0px 21px 0px rgba(0,0,0,0);
+box-shadow: 0px 0px 21px 0px rgba(0,0,0,0);
+transform: scale(1);
+
+
+padding: 8px 13px;
+position: absolute;
+top: 0;
+right: 0;
+font-size: 22px;
+}
+.tipaa{
+  display: flex;
+  align-items: center;
+}
+
+.tipaa img{
+    border-radius: 50%;
+    margin-right: 7px;
+}
+
+.DLbody2{
+  display: grid !important;
+grid-template-rows:  45px 1fr !important;
+}
+
+.DLimg3{
+  border-radius: 50%;
+  margin-left: 7px;
+}
+
+.nBitemSuccesss, .nBitemSuccesss2{
+    display: flex;
+    height: 45px;
+    justify-content: space-between;
+    color: white;
+    align-items: center;
+    font-size: 15px;
+}
+
+.DLto{
+    border: 1px solid white;
+    border-radius: 6px;
+    margin-top: 10px;
+    display: grid;
+    align-items: center;
+    grid-template-rows: 60px;
+    /*grid-gap: 10px;*/
+}
+
+.DLto>div{
+  height: 100%;
+display: grid;
+align-items: center;
+}
+
+.nBitemSuccesss2{
+  padding: 0 15px !important;
+  font-size: 16px !important;
+  height: 40px !important;
+}
+
+
+.nBitemSuccesss p{
+    margin: 0 !important;
+}
+
+.nBitemSuccesss2 p{
+    margin: 0 !important;
+}
+
+.tuvieja{
+  grid-gap: 20px;
+    align-self: self-start;
+}
+
+.depoTo{
+  color: white;
+  padding-bottom: 12px;
+  padding-left: 5px;
+  margin: 15px 15px 5px;
+  border-bottom: 1px solid #ffffff8c;
+  display: flex;
+  align-items: center;
+}
+.bankeins img{
+  margin-right: 7px;
+}
+
+.bankeins{
+  display: flex;
+  align-items: center;
+}
+
+.DLimg2{
+    /*border-radius: 50%;*/
+    margin-right: 7px;
+}
+
+.DLicontainer{
+    display: flex;
+    align-items: center;
+}
+
+.DLsave:hover{
+  color: yellow;
+  transform: scale(1.1);
+  -webkit-box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.15);
+-moz-box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.15);
+box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.15);
+}
+
+
+.tooltip .tooltiptexts {
+    visibility: hidden;
+    width: 150px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    font-size: 12px !important;
+    position: absolute;
+    z-index: 1;
+    top: 170%;
+    left: 50%;
+    margin-left: -75px;
+}
+
+.DlstepFinish {
+    grid-template-rows: 150px 1fr 15% !important;
+}
+
+.DLCabeza{
+  grid-template-rows: repeat(3, 1fr) !important;
+}
+
+.DLcontainerItems{
+    display: grid;
+    height: auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2 1fr);
+    padding: 15px;
+    grid-gap: 30px;
+    align-items: center;
+    justify-items: center;
+}
+.DLcontainerItems.chooseMethod{
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-gap: 100px !important;
+}
+
+.DLcontainerItems>.ILtuvieja>.item{
+  height: 160px !important;
+  width: 200px !important;
+}
+
+.DLcontainerItems>div>.item{
+  height: 160px !important;
+  width: 200px !important;
+}
+
+.DLcontainerItems>.item>div>img{
+    width: 65px !important
+}
+
+
+.DLItemSelectionContainer{
+    height: 340px;
+    width: 700px;
+    /*overflow-y: scroll;*/
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+}
+
+.ItemSelectionContainer2{
+      height: 348px;
+      width: 610px;
+      overflow-y: scroll;
+      display: grid;
+      grid-template-rows: 1fr;
+      grid-template-columns: 1fr;
+}
+
+.ItemSelectionContainer2::-webkit-scrollbar {
+  width: 7px;
+}
+
+.ItemSelectionContainer2::-webkit-scrollbar-thumb {
+  background: #475a681f;
+}
+
+.DLcontain, .DLcontain2, .DLcontain3{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  align-items: center;
+  justify-items: center;
+}
+
+.textStatus{
+ color:red;
+}
+
+.DLcontain2{
+  grid-template-rows: 30% 1fr 1fr !important;
+  min-height: 300px;
+  height: 100%;
+}
+
+.DLstatus{
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-row-gap: 15px;
+  height: 100%;
+  width: 100%;
+}
+
+.DLcop2{
+  transition: .3s;
+  text-align: right !important;
+  font-size: 16px;
+  align-self: flex-start;
+  cursor: pointer;
+  transform-origin: center;
+}
+
+.DLcop2:hover{
+  color: #b48728 !important;
+  font-size: 16.1px;
+}
+
+.ui_currency_name{
+  font-size: 17px !important;
+}
+
+.contCOPs{
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.DLstatus p{
+  text-align: center;
+  margin: 0 !important;
+}
+
+.DLcontain3{
+  grid-template-rows: 1fr !important;
+  min-height: 300px;
+}
+
+.DLcontain>p{
+    margin-bottom: 0 !important;
+}
+
+
+.DLstep.modality{
+  grid-template-rows: 25vh 1fr 25vh !important;
+}
+
+.DLsteps.method{
+  grid-template-rows: 25vh 1fr 25vh !important;
+}
+
+.DLstep{
+    display: grid;
+    height: 100%;
+    justify-items:center;
+    align-items: center;
+    perspective: 900px;
+    transform-style: preserve-3d;
+}
+
+.viewAmount.DLstep{
+  grid-template-rows: 15vh 1fr 15vh !important;
+  grid-row-gap: 10px;
+}
+
+.succ.nWCabeza{
+  height: 100% !important;
+}
+
+.finalGrid{
+  display: grid !important;
+  animation-name: finalGrid;
+  animation-duration: .6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes finalGrid{
+  0%{
+  }
+  50%{
+    grid-template-rows: 10px 1fr 100px;
+  }
+  100%{
+    grid-template-rows: 10px 1fr 100px;
+  }
+
+}
+
+.NormalGridSucc{
+}
+
+
+.DLstep2{
+  display: grid;
+  /*width: 100%;*/
+  /*max-width: 500px;*/
+  /*height: 100%;*/
+  justify-items: center;
+  align-items: center;
+
+  /*position: relative;*/
+  grid-template-rows: 200px 1fr 100px;
+  width: 100%;
+  max-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
+  max-width: 650px;
+  /*border-radius: 6px;*/
+  /*overflow: hidden;*/
+  border: 1px solid transparent;
+  /*transition: .25s;*/
+  /*align-self: baseline;*/
+}
+
+.DCfondo{
+  /*background: linear-gradient(to bottom right, #2B3742, #101418) !important;*/
+  background: linear-gradient(to bottom right, #129A8E, #37ED7D);
+  border-radius: 6px !important;
+  height: 2px !important;
+}
+
+.DCTtext{
+  color: white !important;
+  /*color:#13b5f1 !important;*/
+  font-size: 17px !important;
+  text-align: center !important;
+}
+
+.DCProgress{
+  /*background: hsla(0,0%,100%,.7) !important;*/
+  /*background: linear-gradient(to right, #377fd7, #13b5f1) !important;*/
+  background: #00ff7d !important;
+  opacity: 0.85 !important;
+
+}

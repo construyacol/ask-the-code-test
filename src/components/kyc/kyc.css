@@ -1,0 +1,438 @@
+.KycLayout{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  position: relative;
+}
+
+.KycTitle{
+    position: absolute;
+    top: 0;
+    font-size: 35px;
+    color:#0066AA;
+    margin: 0 !important;
+}
+
+.KycLayoutBasicWin h1{
+  text-align: center;
+}
+
+
+.KycLayoutBasicWin{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  /*grid-template-rows: 200px 80px 100px 1fr;*/
+}
+
+.KycParra1{
+  font-size: 25px;
+  color: #424242;
+  text-align: center;
+}
+
+.KycTitles{
+  margin-bottom: 0 !important;
+  color: #0198ff;
+  font-size: 35px !important;
+}
+
+.Kcontrols{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.KycLayoutMom{
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.Kyccontrols{
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+}
+
+.Kyccontrols p{
+  text-align: center;
+  color: gray;
+  font-size: 18px;
+}
+
+.globalStep0{
+  top: 0;
+}
+
+.globalStep1{
+  top: calc(-100vh + 80px);
+}
+
+.globalStep2{
+  top: calc(-200vh + 160px);
+}
+
+.KycLayoutCarousel{
+  width: 100%;
+  height: 300vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(3, calc(100vh - 80px));
+  /*grid-template-rows: repeat(3, 100vh);*/
+  align-items: center;
+  justify-items: center;
+
+  position: relative;
+  /*top: 0;*/
+  transition: .3s;
+  /* top: calc(-100vh + 80px); */
+
+}
+
+.ssoa{
+  position: relative;
+  background: black;
+}
+
+.KYCAstep2{
+  background: yellow;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.puto1{
+
+}
+
+.containerKycAvanced{
+display: grid;
+width: 100%;
+min-height: 100%;
+position: relative;
+transition: .3s;
+top: 0;
+grid-template-columns: calc(100vw - 80px);
+grid-template-rows: repeat(2, calc(100vh - 160px));
+/*grid-auto-rows: 100% 100%;*/
+/*top: -100%;*/
+}
+
+.containerKycAvanced.desktop{
+  /*grid-template-areas: "KycOnboarding KycDashboard ";*/
+  grid-template-columns: 26vw 1fr;
+  grid-template-rows: 1fr !important;
+}
+
+
+.KycOnboarding{
+  /*background: red;*/
+  transition: .3s;
+  /*opacity: 0;*/
+}
+.KycDashboard{
+  border-radius: 5px;
+  overflow: hidden;
+  /*height: calc(100% - 2px);*/
+  border: 1px solid #0066AA;
+  transition: .3s;
+  position: relative;
+}
+
+
+
+.KycDashContainer{
+  width: 100%;
+  /*height: 100%;*/
+  height: calc(100vh - 162px);
+  display: grid;
+  grid-template-rows: 100% 100%;
+  transition: .35s;
+  top: 0;
+  /*top: -100%;*/
+  position: relative;
+}
+
+.KycDashContainer.fileloader{
+  top: -100% !important;
+  background: #ffffffd1;
+  z-index: 3;
+}
+
+
+.KycAvancedLayout{
+  width: calc(100vw - 80px);
+  height: calc(100vh - 160px);
+  margin-top: 80px;
+  overflow: hidden;
+}
+
+.auxDesma{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffffffd4;
+  z-index: 10;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+
+
+
+
+
+
+/*kycDashboardLayout.js*/
+
+
+
+
+
+.contButtonUpload{
+  max-width: 200px;
+  position: relative;
+  cursor: pointer;
+}
+
+.contButtonUpload input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.controlContainers{
+  width: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+
+.KycDashBoard{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  position: relative !important;
+}
+
+
+.imgDashContainer{
+  width: 400px;
+  height: 90% !important;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr 120px 60px;
+  row-gap: 7px;
+}
+
+
+.imgDashContainer>p{
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #636363;
+  margin: 0 0 30px 0;
+}
+
+
+
+
+.imgDashCarousel{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  /*column-gap: 10px;*/
+}
+
+.imgDashStep i{
+    position: absolute;
+    color: green;
+    font-size: 25px;
+    right: 3px;
+    top: 3px;
+}
+
+.kycPropgressed{
+  height: 100%;
+  width: 20%;
+  transition: .3s;
+  background: linear-gradient(to right, #129A8E , #37ED7D);
+
+}
+
+.tuVieja{
+  margin: 0 !important;
+  font-size: 30px !important;
+}
+
+.parrafeins{
+  font-weight: normal !important;
+}
+
+.KycprogressBar{
+  height: 7px;
+  background: #80808026;
+  width: 100%;
+  position: absolute;
+  top: 0;
+
+}
+
+.imgDashStep{
+  -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0);
+  -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0);
+  box-shadow: 0px 0px 39px 0px rgba(0,0,0,0);
+  height: 90px;
+  transition: .25s;
+  cursor: pointer;
+  border: 1px solid #808080a1;
+  transform: scale(.9);
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  border-bottom: 2px solid transparent;
+  opacity: .3;
+  position: relative;
+  /*border: 1px solid gray;*/
+}
+
+.imgDashStep:hover{
+  -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  transform: scale(1);
+  border: 1px solid #8080804a;
+  opacity: 1;
+  /*border-bottom: 2px solid #129A8E;*/
+}
+
+
+.imgDashStep.active{
+  -webkit-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  -moz-box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 0px 39px 0px rgba(0,0,0,0.2);
+  transform: scale(1);
+  border: 1px solid #8080804a;
+  opacity: 1;
+  border-bottom: 2px solid #129A8E;
+}
+
+
+.imgDashContainerD{
+  width: 100%;
+  height: 100%;
+  /*background: black;*/
+  transition: .45s;
+  transform: scale(1);
+  cursor: pointer;
+  z-index: 1;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  perspective: 350px;
+}
+
+.imgDashSon:hover{
+  transform: scale(1.1);
+  z-index: 2;
+}
+
+.imgDashSon{
+  width: 70% !important;
+  height: 80% !important;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  transform: scale(1);
+  transition: .45s;
+  position: relative;
+}
+
+.imgDashSon img{
+    position: absolute;
+    transition: .01s;
+}
+
+.imgDCAnim{
+  animation-name: imgDCAnim;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes imgDCAnim{
+  0%{
+    transform: scale(1);
+  }
+
+  30%{
+    transform: scale(0.8);
+  }
+
+  60%{
+    transform: scale(0.8);
+  }
+
+  100%{
+    transform: scale(1);
+  }
+}
+
+.imgDAnimSon{
+  animation-name: imgDAnimSon;
+  animation-duration: .4s;
+  animation-delay: .3s;
+
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes imgDAnimSon{
+  0%{
+    transform: rotateY(0deg);
+  }
+
+  47%{
+    transform: rotateY(90deg);
+    opacity: 1;
+  }
+  48%{
+    opacity: 0;
+  }
+
+  54%{
+    opacity: 0;
+    transform: rotateY(-90deg);
+  }
+
+  55%{
+    opacity: 1;
+  }
+
+
+  100%{
+    transform: rotateY(0deg);
+  }
+}
+
+
+
+
+
+.trasElUltimoNoHayNadiePuto{
+
+}

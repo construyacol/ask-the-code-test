@@ -1,0 +1,51 @@
+.finalTicket.TicketDetail{
+      display: grid;
+      grid-template-rows: 20vh 1fr 70px;
+      width: 100%;
+      max-height: calc(100vh - 80px);
+      height: calc(100vh - 80px);
+      max-width: 650px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid transparent;
+      transition: .25s;
+      align-self: baseline;
+      justify-self:center;
+}
+
+.nWcta2{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  font-size: 22px !important;
+  /*grid-template-columns: repeat(2, 1fr);*/
+  /*width: 400px;*/
+  justify-self: center;
+}
+
+
+.finalTicket.ticketHeader {
+    display: grid;
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid white;
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
+}
+
+.finalTicket.TicketTitle {
+    color: white;
+    margin: 0 !important;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+}
+
+
+.fuenteTicket .iconSty{
+ margin-left: 10px;
+}
+
+.fuenteTicket{
+  color: white;
+  display: flex;
+}

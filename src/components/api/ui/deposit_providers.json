@@ -1,0 +1,202 @@
+[
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "bitcoin",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1KXwuNFd11Hv59mpnPKgAgsBx6uhUMBUo ",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "bitcoin",
+        "is_token": false
+      },
+      "ui_name": "Bitcoin",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5bf1c94921402f11c4efdd07"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "bitcoin_testnet",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1LcNWRTC2WPHxUHTVxxezDyvavUCsxWPXK ",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "bitcoin_testnet",
+        "is_token": false
+      },
+      "ui_name": "Bitcoin_testnet",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5bf1c94921402f11c4efdd08"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "ethereum",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1MzWDpVBVmcf8eLUEagYzchFbLW6QGvWnH",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "ethereum",
+        "is_token": false
+      },
+      "ui_name": "Ethereum",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5bf1c94921402f11c4efdd0a"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "bitcoin",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1MzWDpVBVmcf8eLUEagYzchFbLW6QGvWnH",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "bitcoin",
+        "is_token": false
+      },
+      "ui_name": "Bitcoin",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5c04f873eb9c94511fd2edfe"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "bitcoin_testnet",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1MzWDpVBVmcf8eLUEagYzchFbLW6QGvWnH",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "bitcoin_testnet",
+        "is_token": false
+      },
+      "ui_name": "Bitcoin_testnet",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5c04f873eb9c94511fd2edff"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "ethereum",
+      "is_token": false
+    },
+    "currency_type": "crypto",
+    "country": "international",
+    "provider": {
+      "payment_method": "tx",
+      "min_amount": "0",
+      "max_amount": "1000000000",
+      "cost_type": "none",
+      "account": {
+        "account_id": "1MzWDpVBVmcf8eLUEagYzchFbLW6QGvWnH",
+        "type": "crypto-address"
+      },
+      "name": {
+        "currency": "ethereum",
+        "is_token": false
+      },
+      "ui_name": "Ethereum",
+      "costs": {},
+      "info": {}
+    },
+    "id": "5c04f873eb9c94511fd2ee00"
+  },
+  {
+    "userId": "5bf1c8d9ff5b671145bc1e85",
+    "enabled": true,
+    "currency": {
+      "currency": "cop",
+      "is_token": false
+    },
+    "currency_type": "fiat",
+    "country": "colombia",
+    "provider": {
+      "name": "bancolombia",
+      "ui_name": "Bancolombia",
+      "payment_method": "bank",
+      "min_amount": "20000",
+      "max_amount": "1000000000",
+      "cost_type": "switch",
+      "costs": {
+        "En efectivo": "12138",
+        "Otros medios": "0"
+      },
+      "info": {
+        "iva": "19"
+      },
+      "account": {
+        "account_id": "01234",
+        "type": "Cuenta Corriente",
+        "nit": "901130547",
+        "bussines_name": "Phi Colombia S.A.S."
+      }
+    },
+    "id": "5c0d57120fcccc1c74575e50"
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+  "currency": {
+    "currency": "cop",
+    "is_token": false
+  },
+  "currency_type": "fiat",
+  "provider_type": "bank",
+  "country": "colombia",
+  "enabled": true,
+  "provider": {
+    "name": "bancolombia",
+    "ui_name": "Cuenta bancaria",
+    "min_amount": "1",
+    "max_amount": "7",
+    "cost_type": "switch",
+    "costs": {
+      "same_bank": {
+        "fixed": "3570",
+        "percent": "",
+        "description": "mismo banco"
+      },
+      "pp": {
+        "fixed": "6664",
+        "percent": "",
+        "description": "plaza principal"
+      },
+      "op": {
+        "fixed": "20000",
+        "percent": "",
+        "description": "otra plaza"
+      }
+    }
+  },
+  "info_needed": {
+    "name": {
+      "ui_name": "Nombres"
+    },
+    "surname": {
+      "ui_name": "Apellidos"
+    },
+    "id_number": {
+      "ui_name": "Cedula o NIT"
+    },
+    "bank_name": {
+        "ui_name": "Banco",
+        "banco_de_bogota": {
+          "ui_name": "Banco de Bogotá"
+        },
+    "bancolombia": {
+      "ui_name": "Bancolombia"
+    },
+    "davivienda": {
+      "ui_name": "Davivienda"
+    },
+    "bbva": {
+      "ui_name": "BBVA"
+    },
+    "banco_andres": {
+      "ui_name": "Banco Andrés"
+    }
+    },
+    "account_number": {
+      "ui_name": "Número de cuenta"
+    },
+    "account_type": {
+      "ui_name": "Tipo de cuenta",
+      "cuenta_corriente": {
+        "ui_name": "Cuenta corriente"
+      },
+      "cuenta_ahorro": {
+        "ui_name": "Cuenta de ahorros"
+      }
+    },
+    "city": {
+        "ui_name": "Ciudad",
+      "santiago_de_cali": {
+        "ui_name": "Cali",
+        "plaza_type": "pp"
+      },
+      "bogota": {
+        "ui_name": "Bogotá",
+        "plaza_type": "pp"
+      },
+      "medellin": {
+        "ui_name": "Medellin",
+        "plaza_type": "op"
+      },
+      "cartagena": {
+        "ui_name": "Cartagena",
+        "plaza_type": "op"
+      }
+    },
+    "email": {
+      "ui_name": "Correo"
+    }
+  },
+    "id": "5c569462f11e05173f64772d"
+  },
+
+  {
+  "currency": {
+    "currency": "cop",
+    "is_token": false
+  },
+  "currency_type": "fiat",
+  "provider_type": "gane",
+  "country": "colombia",
+  "enabled": true,
+  "provider": {
+    "name": "gane",
+    "ui_name": "Remesas",
+    "min_amount": "20000",
+    "max_amount": "1000000000",
+    "cost_type": "switch",
+    "costs": {
+      "same_bank": {
+        "fixed": "3570",
+        "percent": "",
+        "description": "mismo banco"
+      },
+      "pp": {
+        "fixed": "6664",
+        "percent": "",
+        "description": "plaza principal"
+      },
+      "op": {
+        "fixed": "20000",
+        "percent": "",
+        "description": "otra plaza"
+      }
+    }
+  },
+  "info_needed": {
+    "name": {
+      "ui_name": "Nombres"
+    },
+    "surname": {
+      "ui_name": "Apellidos"
+    },
+    "id_number": {
+      "ui_name": "Cedula o NIT"
+    },
+    "bank_name": {
+        "ui_name": "Banco",
+        "banco_de_bogota": {
+          "ui_name": "Banco de Bogotá"
+        },
+    "bancolombia": {
+      "ui_name": "Bancolombia"
+    },
+    "gane": {
+      "ui_name": "Gane"
+    },
+    "davivienda": {
+      "ui_name": "Davivienda"
+    },
+    "bbva": {
+      "ui_name": "BBVA"
+    },
+    "banco_andres": {
+      "ui_name": "Banco Andrés"
+    }
+    },
+    "account_number": {
+      "ui_name": "Número de cuenta"
+    },
+    "account_type": {
+      "ui_name": "Tipo de cuenta",
+      "cuenta_corriente": {
+        "ui_name": "Cuenta corriente"
+      },
+      "cuenta_ahorro": {
+        "ui_name": "Cuenta de ahorros"
+      }
+    },
+    "city": {
+        "ui_name": "Ciudad",
+      "santiago_de_cali": {
+        "ui_name": "Cali",
+        "plaza_type": "pp"
+      },
+      "bogota": {
+        "ui_name": "Bogotá",
+        "plaza_type": "pp"
+      },
+      "medellin": {
+        "ui_name": "Medellin",
+        "plaza_type": "op"
+      },
+      "cartagena": {
+        "ui_name": "Cartagena",
+        "plaza_type": "op"
+      }
+    },
+    "email": {
+      "ui_name": "Correo"
+    }
+  },
+    "id": "5c569462f11e05173f64774d"
+  }
+]

@@ -1,0 +1,137 @@
+
+.menuPrincipal{
+   background: #171d23;
+  display: grid;
+  /* grid-template-columns: 1fr; */
+  grid-template-rows: auto 1fr;
+  align-items: center;
+  justify-items: center;
+  height: 100vh;
+  position: fixed;
+  width: 19vw;
+  top: 0;
+  z-index: 3;
+  left: 0;
+}
+
+.putito{
+  background: aliceblue !important;
+  border-radius: 7px !important;
+}
+.putitoText{
+  color: #129A8E !important;
+  font-weight: bold !important;
+  text-align: center !important;
+}
+.putitoProgress{
+  background: #2ed781 !important;
+}
+
+.userInfo{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 7vh auto;
+  width: 100%;
+  justify-items:center;
+  grid-gap: 7px;
+  background: linear-gradient(to bottom right, #2B3742, #151B20);
+  padding-bottom: 15px;
+}
+
+.progresado{
+  border-radius: 6px;
+  width: 45%;
+  background: linear-gradient(to bottom right, #B3FFAB, #0191F4);
+  height: 100%;
+}
+
+.userName{
+  color:#14B3F0;
+}
+
+.logo{
+  width: calc(100% - 22px);
+  padding-left: 22px;
+  display: grid;
+  align-items: center;
+}
+.userInfo p{
+  margin: 0 !important;
+  font-size: 16px;
+  color: white;
+}
+
+.userBalance{
+  font-size: 13px !important;
+}
+
+.perfilPic{
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.menuItems{
+  width: 100%;
+  height: calc(100% - 30px);
+  background: linear-gradient(to bottom right, #2B3742, #101418);
+  padding: 15px 0;
+  -webkit-box-shadow: 0px 1px 14px -2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 1px 14px -2px rgba(0,0,0,0.75);
+  box-shadow: 0px 1px 14px -2px rgba(0,0,0,0.75);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.mPverify{
+    color: #05ff05;
+    margin-left: 7px;
+}
+
+.scores{
+  width: 100%;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.barra{
+  height: 7px;
+  background: white;
+  border-radius:6px;
+  width: 87%;
+  position: relative;
+  background: #3A4B5A;
+}
+
+.score, .level{
+  position: absolute;
+  font-size: 12px;
+  right: 0;
+  margin: 0 !important;
+  color: #14B3F0;
+}
+
+.score{
+  top: -25px;
+}
+.level{
+  bottom: -25px;
+  color: #14B3F0;
+}
+
+.barra img{
+  position: absolute;
+  left: 10px;
+  top: -35px;
+}
+
+.section2{
+  display: grid;
+  grid-template-rows: 80px 1fr;
+  grid-gap: 14px;
+}

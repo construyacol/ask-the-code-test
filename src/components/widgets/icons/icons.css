@@ -1,0 +1,41 @@
+.marginLef{
+  margin-left: 10px !important;
+}
+
+
+.world{
+  margin: 5px 0 0 5px;
+}
+
+
+.iconSty{
+  display: grid;
+  align-items: center;
+  justify-content: right;
+}
+
+.animOn{
+  animation-name: auth;
+  animation-duration: .4s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes auth{
+  0%{
+    transform: translateX(0px);
+    opacity: 1;
+  }
+  50%{
+    transform: translateX(10px);
+    opacity: 0;
+  }
+  51%{
+    transform: translateX(-15px);
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}

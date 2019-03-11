@@ -1,0 +1,660 @@
+.itemMenu{
+  width: calc(100% - 28px);
+  height: 48px;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #acacac;
+  text-decoration: none;
+  font-size: 16px !important;
+}
+
+.iconButtCont{
+  position: relative;
+}
+
+.iconButtCont .PopNotification {
+  position: absolute;
+  top: -10px;
+  left: 5px;
+}
+
+.itemText{
+  margin-left: 10px;
+}
+
+.indicatorCont{
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+}
+
+
+
+
+.indicator{
+  background: #224F65;
+  transform: scale(0);
+  transition:    .3s;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.indicatorSon{
+  transition: .5s;
+  height: 10px;
+  width: 10px;
+  background: linear-gradient(to bottom, #377FD7, #00D2FF);
+  border-radius: 50%;
+  transform: scale(0);
+}
+
+.itemMenu:hover .indicatorSon{
+  transform: scale(1);
+}
+
+.itemMenu:hover .indicator{
+  transform: scale(1);
+}
+
+.itemMenu{
+  cursor:pointer;
+  transition: .3s;
+  border-left: 2px solid transparent;
+}
+
+.itemMenu:hover{
+  color: #14B3F0;
+  border-left: 2px solid #14B3F0;
+}
+
+.text{
+  display: flex;
+  align-items: center;
+}
+
+.closeModalButtonCont, .closeModalButtonBack{
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  grid-template-rows:repeat(2, 1fr);
+  width: 60px;
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  cursor:pointer;
+  /*color: gray;*/
+  transition: .1s;
+}
+.closeModalButtonBack{
+  left: 5px !important;
+  right: inherit !important;
+}
+
+
+.closeModalButtonCont:hover{
+transform: scale(1.1);
+}
+
+.closeModalButtonBack:hover{
+transform: scale(1.1);
+}
+
+.closeModalButtonBack p{
+    margin: 0 !important;
+}
+
+.closeModalButtonCont p{
+    margin: 0 !important;
+}
+
+
+.activo{
+  background: #192026;
+  color: #14B3F0 !important;
+  border-left: 2px solid #14B3F0 !important;
+}
+
+
+.itemMenu.activate {
+    color: #14B3F0 !important;
+    border-left: 2px solid #14B3F0 !important;
+}
+
+
+.indicatorSon.activate{
+  transform: scale(0.8);
+}
+
+.indicator.activate{
+  transform: scale(0.8);
+}
+
+.CMControls{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.primary{
+  background: linear-gradient(to bottom right, #00D2FF, #3A7BD5);
+}
+
+.secundary{
+  background: white;
+  border:2px solid #3A7BD5;
+  color: #3A7BD5 !important;
+  font-weight: bold;
+  /*width: calc(170px - 2px);*/
+  /*height: calc(50px - 2px);*/
+}
+
+.desactivado{
+  background: #8080807d;
+  color: white;
+  opacity: 0.4;
+}
+
+.filtrear{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  /*background: linear-gradient(to right, #32d0c2, #00ff62);*/
+  background: #9a9a9a;
+  transition: .3s;
+  animation-name: llenarhuevos;
+  animation-duration: 7s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  transform-origin: left !important;
+}
+
+/*.apareces1{
+  animation-name: apareces;
+  animation-duration: .6s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}*/
+
+@keyframes llenarhuevos{
+  50%{
+  }
+
+  100%{
+    width: 100%;
+  }
+}
+
+.sucky{
+  position: relative;
+  background: #d2d2d2;
+  color: #909090 !important;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+
+.suck{
+  position: relative;
+  background: #FFFFFF;
+  color: #129A8E !important;
+  font-weight: bold;
+  font-size: 20px;
+  -webkit-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
+-moz-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
+box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
+}
+
+#secondary{
+  border: 2px solid white !important;
+}
+
+.botonForm.secondary{
+  background: transparent;
+  color: white !important;
+  transform: scale(0.95);
+}
+
+.cenVert .botonForm{
+  width: 200px !important;
+}
+
+.contButton{
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  margin: 0 30px;
+  height: 55px;
+  align-self: center;
+  align-self: flex-end;
+}
+
+.botonForm{
+  max-width: 300px;
+  width: auto;
+  /*height: 30px !important;*/
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  border-style: none !important;
+  font-size: 17px !important;
+  padding: 18px 25px;
+  transition: .2s;
+  /*box-sizing: initial !important;*/
+}
+
+
+.botonForm2 p{
+    margin: 0 !important;
+}
+
+
+.botonForm p{
+    margin: 0 !important;
+}
+
+.step1{
+  display: grid;
+  height: 100%;
+}
+
+
+.InputButton{
+  align-self: flex-end;
+  justify-self: center;
+}
+
+.ItemSelected{
+  height: 100px;
+  width: 450px;
+}
+
+.large{
+  width: 200px !important;
+  align-self:center !important;
+}
+
+.ItemSelectedButton{
+  width: 430px;
+  height: 45px;
+  position: relative;
+  border-radius:6px;
+  transition: .3s;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  color: #3A7BD5;
+  border:1px solid #50667a61;
+
+}
+
+.itemClose{
+  position: absolute;
+  font-size: 20px;
+  color: #3A7BD5;
+  right: 20px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: .1s;
+  transform: scale(1);
+}
+
+.itemClose:hover{
+  transform: scale(1.1);
+}
+
+
+.buttonsP{
+  margin: 15px 0;
+  text-align: center;
+  transition: .3s;
+  color: #50667a;
+}
+
+.buttonActivated{
+ border:1px solid #00D2FF !important;
+}
+
+.AddNewItem p{
+ margin: 0 !important;
+ text-align: center;
+ font-size: 17px;
+}
+
+.AddNewItem i{
+  margin-right: 7px !important;
+}
+
+
+.AddNewItem{
+  position: relative;
+  z-index: 3;
+  font-size: 20px;
+  min-width: 280px;
+  width: auto;
+  height: 35px;
+  padding: 12px 20px;
+  background: red;
+  display: flex;
+  align-items: center;
+  border-radius: 6px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.BbackgroundAddNew{
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent, #f9f9fb9e, #f9f9fb9e);
+}
+
+
+.AddNewItem.primary{
+  background: linear-gradient(to bottom right, #00D2FF, #3A7BD5);
+}
+
+
+
+.AddNewItemContainer{
+  width: calc(100% - (19vw - 30px));
+  height: 80px;
+  /*position: fixed;*/
+  /*bottom: 0;*/
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  bottom: 10px;
+
+}
+
+
+
+
+
+
+/*Payment Confirmation Button  - - - -- - -- - - - - -- - - - -*/
+
+
+
+#ALconfirmButton:hover .ALbuttonTextSpan{
+  transform: translateX(0px);
+  font-weight: bold;
+  color: #1cb179 !important;
+}
+#ALconfirmButton:hover .confirmIcon{
+  transform: translateY(0px);
+  opacity: 1 !important;
+}
+
+#ALconfirmButton:hover .botonForm {
+    border: 2px solid #1cb179 !important;
+}
+/*
+#ALconfirmButton .botonForm {
+    border: 2px;
+}*/
+
+.TicketDetail .botonForm{
+  border: 2px solid #1cb179 !important;
+  font-weight: bold;
+}
+
+.TicketDetail .ALbuttonTextSpan{
+  font-size: 16px !important;
+  color: #1cb179 !important;
+}
+
+.TicketDetail #confirmIcon{
+  font-size: 16px !important;
+}
+.TicketDetail .laReputas>div{
+  height: 55px !important;
+}
+
+.TicketDetail .laReputas{
+  height: 60px !important;
+}
+
+
+
+
+.laReputas>div{
+  /*width: 100px;*/
+  padding: 0 15px !important;
+  font-size: 14px !important;
+  height: 45px;
+  background: linear-gradient(to bottom right, #fbfbfb, #c7c7c7) !important;
+  color: gray;
+}
+
+.ItemList:hover .laReputas>div{
+  border: 2px solid #1cb179 !important;
+}
+
+
+.ItemList:hover .laReputas{
+  animation-name: rotaloPerro2;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+
+.laReputas{
+  margin: 0 !important;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  /*border: 2px solid #ff764b;*/
+  border-radius: 6px;
+  transform-origin: center;
+}
+
+
+
+.ALbuttonActive .ALbuttonTextSpan{
+  font-weight: bold;
+  color: #1cb179 !important;
+}
+
+
+.ALbuttonActive>div{
+  padding: 0 15px !important;
+  font-size: 14px !important;
+  height: 45px;
+  background: linear-gradient(to bottom right, #fbfbfb, #c7c7c7) !important;
+  color: gray;
+  border: 2px solid #1cb179 !important;
+}
+
+
+
+.ALbuttonActive{
+  animation-name: rotaloPerro;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  margin: 0 !important;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  /*border: 2px solid #ff764b;*/
+  border-radius: 6px;
+  transform-origin: center;
+}
+
+@keyframes rotaloPerro{
+  0%{
+    transform: rotate(0deg);
+  }
+  79%{
+    transform: rotate(0deg);
+  }
+  80%{
+    transform: rotate(3deg);
+  }
+  85%{
+    transform: rotate(-3deg);
+  }
+  90%{
+    transform: rotate(3deg);
+  }
+  95%{
+    transform: rotate(-3deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
+}
+
+
+
+@keyframes rotaloPerro2{
+  0%{
+    transform: rotate(0deg);
+  }
+  18%{
+    transform: rotate(1deg);
+  }
+  36%{
+    transform: rotate(-1deg);
+  }
+  52%{
+    transform: rotate(1deg);
+  }
+  70%{
+    transform: rotate(-1deg);
+  }
+  100%{
+    transform: rotate(0deg);
+  }
+}
+
+
+
+.ALbuttonText{
+  position: relative;
+  display: flex;
+}
+
+#ALbuttonText{
+  color: gray !important;
+      width: 100%;
+}
+
+#confirmIcon{
+  color: #1cb179 !important;
+  margin-left: 7px;
+  display: flex;
+  align-items: center;
+
+}
+
+.ALbuttonTextSpan{
+  transition: .3s;
+  transform: translateX(15%);
+  display: flex;
+  align-items: center;
+}
+
+
+
+.confirmIcon{
+  transition: .3s;
+  transform: translateY(12px);
+  opacity: 0 !important;
+}
+
+
+
+
+
+.ItemList:hover .ALbuttonTextSpan{
+  color: #1cb179 !important;
+  font-weight: bold;
+}
+
+
+#subItemSC .secundary{
+  border: 1px solid #19aced !important;
+  color:#249ce5 !important;
+}
+
+
+
+#ClassicView .secundary{
+  border: 1px solid #19aced !important;
+  color: #249ce5 !important;
+}
+
+#ClassicView .botonForm{
+  min-width: 126px !important;
+  padding: 0 !important;
+  overflow: hidden;
+  position: relative;
+}
+
+#ClassicView .ClassicViewText, #subItemSC .botonForm {
+  display: block;
+  min-width: 100px !important;
+  max-width: 126px !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+#ClassicView:hover .ClassicTextCont{
+  top: -100% !important;
+}
+
+
+
+.ClassicTextCont{
+  display: grid;
+  top: 0;
+  grid-template-rows: repeat(2, 1fr);
+  height: 200%;
+  position: absolute;
+  transition: .15s;
+  width: 100%;
+}
+
+.ClassicViewText i{
+  margin-left: 7px;
+}
+
+
+.ClassicViewText{
+  /*height: 100%;*/
+  align-self: center;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+/**/

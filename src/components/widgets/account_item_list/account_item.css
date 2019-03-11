@@ -1,0 +1,384 @@
+.AccountItemList{
+  display: grid;
+  border: 1px solid #8080806e;
+  width: 100%;
+  max-width: 800px;
+  height: 100px;
+  border-radius: 6px;
+  justify-items: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  grid-template-columns: 170px 1fr 30%;
+  transition: .2s;
+  transform: scale(1);
+  /*grid-template-columns: */
+}
+
+
+.AccountItemList.noAddElement:hover{
+  transform: scale(1.02);
+}
+
+.optionsALI{
+  display: grid;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: right;
+  color: gray;
+}
+
+.AccountItemList:hover .bigEgg{
+  animation-name: bigEgg;
+}
+
+.AccountItemList:hover .egg{
+  animation-name: egg2;
+}
+
+.optionsALI .active_account{
+  opacity: 0.3;
+  transition: .1s;
+}
+
+.AccountItemList:hover .active_account{
+  opacity: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.poisonEve{
+  justify-self: right;
+  margin-right: 30px;
+}
+
+.AccountItemList:active{
+  transform: scale(0.97);
+}
+
+.AccountItemList{
+  /*transition: .1s;*/
+  transform: scale(1);
+}
+
+.addElement svg, .addElement p{
+  transition: .1s;
+}
+
+.addElement:hover p{
+  color:#00bfff !important;
+}
+
+
+.addElement:hover svg{
+  fill:#00bfff !important;
+}
+/*noAddElement*/
+
+.AccountItemList p {
+  font-family: 'Raleway', sans-serif;
+}
+
+
+.AILadd{
+  width: 100%;
+  margin: 0;
+  color: gray;
+  font-size: 18px;
+}
+
+.optionsALI p{
+  margin: 0 !important
+}
+
+.logoAIL{
+  position: absolute;
+  width: 10vw;
+  max-width: 120px;
+  max-height: 100px;
+  height: 15vh;
+  border: 1px solid #8080806e;
+  border-radius: 6px;
+  left: 20px;
+  top: -20px;
+  background: white;
+  display:grid;
+  align-items: center;
+  justify-items:center;
+}
+
+.AccountItemList.noAddElement:hover .logoAIL{
+  border: 1px solid #38ef7d;
+}
+
+.infoAILItem{
+  font-size: 16px;
+}
+
+.AccountItemList:hover .infoAILItem.name{
+  /*color: #00bfff !important;*/
+  color: #38ef7d !important;
+}
+
+.infoAILItem.name.preferential{
+  margin-left: 7px !important;
+}
+
+
+.AccountItemList.noAddElement:hover p{
+  color: white;
+}
+
+.AccountItemList.noAddElement:hover span{
+  color: #b5b4b4;
+}
+
+
+
+
+.AccountItemList.noAddElement:hover .backgroundAccount{
+    opacity: 1;
+}
+
+.backgroundAccount{
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, #2B3742, #101418);
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  transition: .15s;
+  border-radius: 5px;
+  border: 1px solid #38ef7d;
+}
+
+
+
+
+
+
+
+
+.logoAIL .iconSty{
+  opacity: 0.4;
+  transition: .3s;
+  position: absolute;
+}
+
+
+
+.contLogoAIL {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.infoAIL{
+  width: 100%;
+  height: calc(100% - 20px);
+  display: grid;
+  /*grid-row-gap: 5px;*/
+  padding: 10px 0;
+}
+
+.infoAIL p{
+  margin: 0px !important;
+}
+
+.infoAILItem{
+  color: gray;
+}
+
+
+.account_number, .account_type{
+  font-size: 14px !important;
+}
+
+.AILAnumber{
+  position: relative;
+  display: flex;
+}
+
+.AILAnumber .iconSty{
+  margin: 0 5px;
+  transform: translateY(-6px);
+}
+
+
+
+
+.AccountItemList:hover .forroDesp{
+  width: 50px;
+}
+
+
+
+.controlDespegable{
+  max-width: 150px;
+  height: auto;
+  position: relative;
+  display: grid;
+  right: 10px;
+  transition: .3s;
+  width: auto;
+  margin-right: 25px;
+}
+
+.contActiveItem{
+  position: absolute;
+  left: -10px;
+  align-self: center;
+}
+
+.contDesp{
+  width: auto;
+  height: 30px;
+  transition: .3s;
+  display: grid;
+  align-items: center;
+}
+
+.forroDesp{
+  overflow: hidden;
+  width: 0;
+  transition: .3s;
+  /*width: 50px;*/
+  position: relative;
+  align-self: center;
+  right: 0;
+}
+
+
+
+.limitComp{
+  position: absolute;
+  right: 0px;
+  width: auto;
+  height: 100%;
+}
+
+.limitComp .LimitTermometer{
+  opacity: 0.1;
+  filter: grayscale(100%);
+  /*background: #33404c3b;*/
+  transition: .3s;
+}
+
+
+.AccountItemList:hover .LimitTermometer{
+  filter: grayscale(0%);
+  opacity: 1;
+  /*background: #33404c3b;*/
+}
+
+
+.backLogoAil{
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #11998e, #38ef7d) !important;
+  opacity: 0;
+  transition: .15s;
+  border-radius: 6px;
+}
+
+
+.AccountItemList:hover .backLogoAil.fiat{
+  opacity: 1;
+}
+
+/*.AccountItemList:hover .backLogoAil{
+  transform: scale(1.05);
+}*/
+
+/*.AccountItemList:hover .logoAIL.addElement>.iconSty{
+  opacity: 1;
+  animation-name: iconLogo;
+  transform: scale(1);
+  animation-duration: .3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}*/
+
+.AccountItemList:hover .logoAIL>.iconSty{
+  opacity: 1;
+  /*animation-name: iconLogo;*/
+  /*animation-duration: .3s;*/
+  /*animation-fill-mode: forwards;*/
+  /*animation-timing-function: ease-in-out;*/
+}
+
+
+
+/*---------------Articulo preseleccionado -------------------*/
+
+/*.AccountItemList.thisPreselectAccount .backgroundAccount{
+  opacity: 1;
+}
+
+.AccountItemList.thisPreselectAccount .infoAILItem.name {
+    color: #38ef7d !important;
+}
+
+.AccountItemList.thisPreselectAccount p {
+    color: white;
+}
+
+.AccountItemList.thisPreselectAccount span {
+    color: #b5b4b4;
+}
+
+.AccountItemList.thisPreselectAccount .backLogoAil.fiat {
+    opacity: 1;
+}
+
+*/
+
+/*infoAILItem name preferential*/
+.infoAILItem.preferential{
+  display: flex;
+  align-items: center;
+  color: #11998e;
+}
+
+.infoAILItem.preferential svg{
+  /*color: #11998e;*/
+  fill: #11998e;
+}
+
+.AccountItemList:hover .infoAILItem.preferential svg{
+  /*color: #11998e;*/
+  fill: #38ef7d ;
+}
+
+.infoAILItem p{
+  margin: 0 !important;
+}
+/**/
+
+.AccountItemList.preferential .logoAIL>.iconSty {
+    opacity: 1;
+}
+
+.optionsALI.preferential .active_account{
+opacity: 1;
+}
+
+
+
+
+
+/**/

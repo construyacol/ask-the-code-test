@@ -1,0 +1,80 @@
+.toastContainer{
+  position: relative;
+  z-index: 999999999999999999999999999999;
+}
+
+.SavePayment{
+  display: flex;
+  font-size: 14px;
+  justify-content: center;
+  height: 64px;
+}
+
+
+.SavePayment p{
+  display: flex;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.Msuccess{
+  color: #149e8c;
+display: flex;
+align-items: center;
+margin-left: 6px;
+font-size: 21px;
+}
+
+.putito {
+    box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.41) !important;
+}
+.toastError {
+    background: #e93b28 !important;
+    border-radius: 7px !important;
+}
+
+.toastErrorText {
+    color: white !important;
+    font-weight: bold !important;
+    text-align: center !important;
+}
+
+.ErroProgressBar {
+    background: #9a281c !important;
+}
+
+
+.DCfondo{
+  background: linear-gradient(to bottom right, #129A8E, #37ED7D);
+  border-radius: 6px !important;
+  height: 2px !important;
+}
+
+.DCfondoDefault{
+  /*background: linear-gradient(to bottom right, #129A8E, #37ED7D);*/
+  border-radius: 6px !important;
+  height: 2px !important;
+}
+
+.DCTtext{
+  color: white !important;
+  /*color:#13b5f1 !important;*/
+  font-size: 17px !important;
+  text-align: center !important;
+}
+
+.DCTtextDefault{
+  color: gray !important;
+  /*color:#13b5f1 !important;*/
+  font-size: 17px !important;
+  text-align: center !important;
+}
+
+
+.DCProgress{
+  /*background: hsla(0,0%,100%,.7) !important;*/
+  /*background: linear-gradient(to right, #377fd7, #13b5f1) !important;*/
+  background: #00ff7d !important;
+  opacity: 0.85 !important;
+
+}

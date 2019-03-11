@@ -1,0 +1,376 @@
+.inputContainer, .inputContainer3{
+      width: 100%;
+      height: 45px;
+      border: 1px solid #50667a61;
+      border-radius: 6px;
+      overflow: hidden;
+      display: -ms-grid;
+      display: grid;
+      position: relative;
+      transition: .5s;
+      background: white;
+
+}
+
+.AuthLoader{
+  transform: scale(.8);
+}
+
+.inputElement.Verify{
+  color:#4caf50 !important;
+}
+
+.inputElement.NoVerify{
+  color:#f44336 ;
+}
+
+.contIconAddress{
+  position: absolute;
+  align-self: center;
+  right: 13px;
+}
+
+
+.inputAuths .lds-ellipsis{
+  top: -10px !important;
+}
+.coinBalance2{
+  right: 10px !important;
+}
+
+.ReadReceiveCoinLoader{
+  position: absolute;
+  align-self: center;
+  justify-self: center;
+}
+
+.ReadReceiveCoin{
+  position: relative;
+}
+.coinB2 p{
+  margin: 0 10px !important;
+}
+
+.coinB2 i{
+font-size: 20px;
+}
+
+.coinB2{
+  display: flex;
+  align-items: center;
+  width: auto;
+  min-width: 100px;
+  position: relative;
+  height: 60%;
+  border-left: 1px solid gray;
+  padding-left: 14px;
+  justify-content: space-between;
+}
+
+.coinBalance, .coinBalance2 {
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  right: 5px;
+  color: gray;
+  height: 100%;
+  /*display: grid;*/
+  display: flex;
+  align-items: center;
+  transition: .15s;
+  transform: scale(1);
+  /*grid-template-columns: 1fr;*/
+}
+.coinBalance:hover, .coinBalance2:hover{
+  transform: scale(1);
+  color: #b48728 !important;
+}
+
+.coinBalance p{
+    margin: 0 10px 0 0 !important;
+}
+
+.inputContainer3{
+  display: grid;
+  align-items: center;
+  padding-bottom: 7px;
+  height: calc(100% - 7px)
+}
+
+.inputContainer3>form{
+  height: 100% !important;
+}
+.read_only{
+  margin: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    color: gray;
+}
+
+.statusInput2{
+  color: gray;
+  margin: 0 !important;
+  position: absolute;
+}
+
+.statusInputs{
+    color: red;
+    text-align: center;
+    margin: 50px 0 0 0;
+}
+.InputProgressBar{
+  height: 7px;
+  width: 100%;
+  background: #8080802e;
+  position: absolute;
+  bottom: 0;
+}
+.InputProgressed{
+  transition: .3s;
+  height: 100%;
+      background: linear-gradient(to right, #00D2FF, #3A7BD5);
+}
+
+.arrowcito{
+  color: #0066AA;
+  font-size: 33px;
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+}
+.InputCarous{
+  height: auto;
+  width: 100%;
+  position: absolute;
+  transition: .3s;
+  top: 0;
+  /* top: -40px; */
+}
+
+.inputLabelsCont{
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.inputContainer2{
+      width: 100%;
+      height: 45px;
+      border: 1px solid #50667a61;
+      border-radius: 6px;
+      display: grid;
+      position: relative;
+      transition: .5s;
+}
+
+.inputElement, .inputElement3{
+  color: #50667a;
+  width: calc(100% - 20px);
+  height: 100%;
+  background: 0 0;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  outline: 0;
+  font-size: 16px;
+  transition: .5s;
+}
+
+
+
+
+.inputElement3{
+  padding: 0 15px;
+  font-size: 20px !important;
+  width: calc(100% - 30px);
+}
+
+
+.inputElement3::placeholder { color: #50667a4d !important; }
+.inputElement3::-webkit-input-placeholder { color: #50667a4d !important; } /* WebKit */
+.inputElement3::-moz-placeholder { color: #50667a4d !important; } /* Firefox 19+ */
+
+
+.inputElement2{
+  color: #3A7BD5;
+  width: calc(100% - 70px);
+  /*height: 100%;*/
+      height: 90px;
+  background: 0 0;
+  padding: 0 10px 0 60px;
+  border: 1px solid transparent;
+  outline: 0;
+  font-size: 90px;
+  transition: .5s;
+  text-align: center;
+  border-bottom: 2px solid #3a7bd5;
+}
+
+.signoPesos{
+  color: #3A7BD5;
+  /*font-size: 90px;*/
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  max-width: 650px;
+  overflow:hidden;
+}
+
+.statusInput{
+  margin: 0 !important;
+  color: red;
+}
+
+.statusInput i{
+  color: #59b200;
+  margin: 0 10px;
+}
+
+.putitass{
+  border-bottom: 1px solid #3A7BD5;
+  max-width: 650px !important;
+
+}
+
+  .inputDeposit{
+    opacity: 0;
+  }
+
+.containerInputComponent, .containerInputComponent2{
+  height: 100px;
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  display: grid;
+  align-items: center;
+}
+
+.containerInputComponent2{
+   grid-template-rows: 40px 1fr 20px !important;
+   grid-gap: 10px !important;
+   height: 150px !important;
+}
+
+#kycPrime.containerInputComponent2{
+  width: 650px ;
+  max-width: 650px !important;
+  min-width: 450px;
+
+}
+
+
+.InputContainerT{
+    position: relative;
+    display: grid;
+    align-items: center;
+}
+
+.InputContainerT p{
+  margin: 0 !important;
+}
+
+.Inputmsg{
+  font-size: 15px;
+}
+
+.InputStep{
+  position: absolute;
+  right: 0;
+  color: #0066AA;
+}
+
+
+.labelText, .labelText2{
+  text-align: center;
+  color: #50667a;
+  margin: 15px 0;
+}
+
+.labelText2{
+  text-align: left !important;
+  font-size: 24px ;
+  margin: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.inputContainer.inputActivado{
+  border: 1px solid #00D2FF;
+}
+
+.inputContainer3.inputActivado{
+  border: 1px solid #00D2FF;
+}
+
+.inputElement.inputActivado{
+  color: #3A7BD5;
+}
+
+.inputContainer2.inputActivado{
+  border: 1px solid #00D2FF;
+}
+
+.inputElement2.inputActivado{
+  color: #3A7BD5;
+}
+
+
+.InputDropDown{
+  width: calc(100% - 20px);
+  height: 100%;
+  padding: 0 10px;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 45px;
+  align-items: center;
+  cursor: pointer;
+  color: #50667a;
+}
+.InputDesplegable{
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 45px;
+  background: white;
+  position: absolute;
+  top: 47px;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  /*border: 1px solid #50667a61;*/
+  transition: .2s;
+  height: 0px;
+  cursor: pointer;
+}
+
+.Idesplegado{
+  border: 1px solid #50667a61 !important;
+  /*height: auto !important;*/
+}
+
+
+
+.InputDesplegable p:hover{
+    background: #50667a61;
+}
+
+
+
+
+
+
+
+.InputDesplegable p{
+  cursor: pointer;
+  transition: .2s;
+  margin: 0;
+  height: 45px;
+  border-bottom: 1px solid #50667a61;
+  display: flex;
+    align-items: center;
+    padding-left: 10px;
+}

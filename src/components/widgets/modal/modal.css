@@ -1,0 +1,251 @@
+.Modal{
+  /*width: calc(100vw - 40px);*/
+  margin: 0 auto;
+  position: fixed;
+  /*position: relative;*/
+  left: 0;
+  right: 0;
+  top: 0;
+  /*background: white;*/
+  /*padding: 20px;*/
+  /*height: calc(100vh - 40px);*/
+  height: 100vh;
+  width: 100vw;
+  opacity: 0;
+  z-index: 4;
+}
+
+
+
+.ConfirmationModal{
+  background: black;
+  background: linear-gradient(to bottom right, #00000099, #000000f0);
+}
+
+.local_loader{
+  position: absolute;
+  align-self: center;
+  justify-self: center;
+}
+
+.local_loader_container{
+  width:100%;
+  height: 100%;
+  background: #ffffffc2;
+  position: absolute;
+  display: grid;
+}
+
+
+
+.aparecer{
+  animation-name: aparece;
+  animation-duration: .4s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+@keyframes aparece{
+  0%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+.Modal-close {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  right: -25px;
+  top: -25px;
+  border-radius: 50%;
+  border: none;
+  background: #171c30;
+  color: white;
+  cursor: pointer;
+}
+
+.Modal-close:after {
+  content: "X";
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.modalView{
+  background: white;
+  opacity: 0.95;
+}
+
+.modalSuccess{
+  background: linear-gradient(to bottom right, #129A8E, #37ED7D);
+}
+
+.badView{
+  background: linear-gradient(to bottom right, #e93b28, #ff5441);
+}
+
+.pendingView{
+  background: linear-gradient(to bottom right, #FDC830, #F37335);
+}
+
+.rejectedView{
+  background: linear-gradient(to bottom right, #FDC830, #ff2e2e);
+}
+
+.confirmedView{
+  background: linear-gradient(to bottom right, #FDC830, #1cb179);
+}
+
+
+.modalCont, .modalCont2{
+  position: relative;
+  height: calc(100% - 80px);
+  padding: 40px;
+
+}
+
+
+.modalCont2{
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+
+.Mconfirmar{
+  position: relative;
+  justify-items: center;
+  align-items: center;
+  max-width: 600px;
+  width: calc(97% - 60px);
+  min-height: 350px;
+  height: 350px;
+  background: white;
+  border-radius: 7px;
+  padding: 30px;
+  display: grid;
+  /* grid-template-rows: minmax(25px, 130px) 1fr 100px; */
+  /*grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));*/
+ }
+
+
+.modalCont2 h1{
+  text-align: center;
+  color: #495054;
+  font-size: 22px;
+  display: flex;
+  align-items: end;
+  margin: 0;
+  justify-content: center;
+}
+
+.modalCont2 p{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: end;
+  font-size: 15px;
+  margin: 15px 0 0 0 !important;
+  padding: 0 5%;
+  align-self: start;
+}
+
+
+.PairListtitle{
+  background: #0080d7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: -webkit-linear-gradient(top left, #0175c3, #039aff);
+  background: linear-gradient(to bottom right, #0175c3, #039aff);
+}
+
+
+
+
+.otherModal{
+  overflow: hidden;
+  border-radius: 7px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 700px;
+  /* height: 90%; */
+  height: 75%;
+  background: white;
+  position: absolute;
+  z-index: 99;
+  display: grid;
+  grid-template-rows: 65px 60px 1fr;
+  position: relative;
+}
+
+
+
+
+
+.Mconfirmar img{
+  justify-self: center;
+}
+
+
+.textSwaPcON{
+  justify-items: center;
+  height: auto;
+  text-align: center;
+  min-width: 90px;
+  justify-self: center;
+  bottom: 0px;
+  display: block;
+  max-width: 90px;
+  overflow: hidden;
+  padding-left: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border: 1px solid green;
+  border-radius: 6px;
+  padding: 5px;
+}
+
+.confirSwap div{
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+
+.confirSwap{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  max-width: 400px;
+  /*transform: scale(0.95);*/
+}
+
+.textRed{
+  color:red;
+  border: 1px solid red;
+ }
+
+.textGreen{
+color:green;
+border: 1px solid green;
+ }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

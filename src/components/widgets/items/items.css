@@ -1,0 +1,274 @@
+
+.ItemSelectionContainer{
+  /*height: calc(100% - 55px);*/
+      /*align-items: center;*/
+  height: 348px ;
+  width: 610px;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
+}
+
+.ItemSelectionContainer::-webkit-scrollbar {
+  width: 7px;
+}
+
+.dimeloPuti{
+  margin-top: 25px;
+}
+
+.ILtuvieja{
+  height: 210px !important;
+}
+
+.ILplaceholder{
+  margin: 6px 0 !important;
+  font-size: 12px;
+  color: #808080a8;
+}
+
+.ItemSelectionContainer::-webkit-scrollbar-thumb {
+  background: #475a681f;
+}
+
+.ItemSelectionContainers{
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 110px 1fr;
+}
+
+.containerItems{
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2 1fr);
+  padding: 15px;
+  grid-gap:20px;
+  justify-items:center;
+  /*align-items: center;*/
+}
+
+.item:hover{
+  transform: scale(1.1) !important;
+  -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  background: linear-gradient(to bottom left, #2B3742, #060809);
+  color: #1CA8EB;
+  border: 1px solid #455869;
+}
+
+.itemSelection{
+  transform: scale(1.1) !important;
+  -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
+  background: linear-gradient(to bottom left, #2B3742, #060809);
+  color: #1CA8EB;
+  border: 1px solid #455869;
+}
+
+.item{
+  transform: scale(1);
+    border: 1px solid #22293333;
+    border-radius: 7px;
+    transition:.4s;
+    height: 140px;
+    cursor:pointer;
+    display: grid;
+    align-items: center;
+    justify-items:center;
+    -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
+    -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
+    box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
+    grid-template-rows: 1fr 36px;
+    width: 170px;
+    margin-bottom: 7px;
+}
+
+.item:hover .banquis{
+  opacity: 1;
+}
+.banquis{
+  transition: .2s;
+  opacity: 0.3;
+}
+
+.itemVisible{
+  opacity: 1 !important;
+}
+
+.banquis:hover{
+  opacity: 1;
+}
+
+.itemSobre{
+  display: none !important;
+}
+
+.itemSobre.activaos{
+  display: initial !important;
+
+}
+
+.itemFuera{
+  display: initial;
+}
+
+.fuerActive{
+  display: none;
+}
+
+.item:hover .itemSobre{
+display: initial !important;
+}
+
+.item:hover .itemFuera{
+display: none;
+}
+
+
+.item p{
+  margin: 0 0 14px 0 !important;
+}
+
+
+
+
+/*.AccountItemList:hover .bigEgg{
+  animation-name: bigEgg;
+}*/
+
+.bigEgg{
+  animation-duration: .2s;
+  /*animation-delay: .17s;*/
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+
+@keyframes bigEgg{
+  0%{
+    transform: scale(0);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+
+.egg{
+  animation-duration: .3s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+}
+
+
+@keyframes egg{
+  0%{
+    transform: scale(0);
+  }
+  60%{
+    transform: scale(1.5);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+@keyframes egg2{
+  0%{
+    transform: scale(1);
+  }
+  60%{
+    transform: scale(1.5);
+  }
+  100%{
+    transform: scale(1);
+  }
+}
+
+
+
+
+
+.active_account{
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  width: 25px;
+  height: 25px;
+  position: relative;
+  align-self: center;
+  justify-self: center;
+  transform: scale(0.8);
+}
+
+.bigEgg{
+  position: absolute;
+  justify-self: center;
+  align-self: center;
+  width: 100%;
+  height: 100%;
+  /*background: #3be18545;*/
+  border-radius: 50%;
+  transform: scale(0);
+}
+
+.egg{
+  width: 60%;
+  height: 60%;
+  /*background: linear-gradient(to right, #11998e, #38ef7d) !important;*/
+  border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Vista item wallet*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

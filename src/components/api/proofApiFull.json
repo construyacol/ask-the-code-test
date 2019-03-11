@@ -1,0 +1,469 @@
+{
+    "id": "1",
+    "createdAt": "new Date()",
+    "username": "andres",
+    "email": "andres@gmail.com",
+    "cover": "https://randomuser.me/api/portraits/men/46.jpg",
+    "role": "user",
+    "balance": "2000",
+    "level": {
+      "score": "1200",
+      "level": "medusa"
+    },
+    "settings": {
+      "theme": "original",
+      "languaje": "spanish",
+      "local_currency": "cop",
+      "current_country": "colombia",
+      "visits": "18"
+    },
+    "kyc": {
+      "basic": {
+        "id_user": "asd8989d9e",
+        "createdAt": "new Date()",
+        "status": true,
+        "names": "Stivens Felipe",
+        "lastNames": "Laferreire Ospina",
+        "country": "Colombia",
+        "city": "Tuluá",
+        "address": "cra 20 # 44-40",
+        "birthday": "new Date()",
+        "gender": "male"
+      },
+      "avanced": {
+        "id_user": "asd8989d9e",
+        "createdAt": "new Date()",
+        "status": true,
+        "dni_type": "identification",
+        "dni": "111289923892",
+        "expiry_date": "expiry",
+        "expeditionDate": "expedition",
+        "attachments": {
+          "front_document": "https://goo.gl/R33BtR",
+          "back_document": "https://goo.gl/R33BtR",
+          "selfie_document": "https://goo.gl/R33BtR"
+        }
+      }
+    },
+    "referrals":{
+      "link":"www.coinsenda.com/referrals/link/totito_cachondo66623",
+      "balance_referrals":"0.03",
+      "referrals_list":[
+        {
+          "createdAt":"date",
+          "id":"1",
+          "cover":"https://goo.gl/M1JVgZ",
+          "username":"nombre referido1",
+          "score":"350"
+        },
+        {
+          "createdAt":"date",
+          "id":"2",
+          "cover":"https://goo.gl/t5WDba",
+          "username":"nombre referido2",
+          "score":"1900"
+        }
+      ]
+    },
+    "address_book":[
+      {
+        "id":"1",
+        "network":"bitcoin",
+        "short_network_name":"BTC",
+        "address":"fg1qjl8uwezzlech723lpnyuza0h2cdkvxvh54v3dn33",
+        "name":"Mi wallet btc fria"
+      },
+      {
+        "id":"2",
+        "network":"ethereum",
+        "short_network_name":"ETH",
+        "address":"0xD4383232c8d1dbE0E03bdFAB849871Fa17E61807",
+        "name":"Mi wallet de ether"
+      }
+    ],
+    "secondFactor": {
+      "session": true,
+      "trade": false,
+      "withdraw": false
+    },
+    "paymentMethods": [
+      {
+        "id": "1",
+        "createdat": "date",
+        "method": "transfer",
+        "service": "bancolombia",
+        "modality": "atm"
+      },
+      {
+        "id": "2",
+        "createdat": "date",
+        "method": "remittance",
+        "service": "banco_de_bogota",
+        "modality": "cash"
+      },
+      {
+        "id": "3",
+        "createdat": "date",
+        "method": "debit_card",
+        "service": "pse",
+        "modality": "pse"
+      }
+    ],
+    "bankAccounts": [
+      {
+        "id": "1",
+        "owner_full_name": "Stivens Felipe Laferreire Ospina",
+        "bank_name": "bancolombia",
+        "account_name": "cuenta de retiros senda",
+        "account_number": "2139182938912",
+        "account_type": "ahorros",
+        "nit": "1123123123",
+        "social_reason": "",
+        "certificate_date": "date",
+        "certificate_photo": "date",
+        "state": "verify",
+        "creation_date": "date",
+        "update_date": "date"
+      }
+    ],
+    "wallets": [
+      {
+        "currency":"pesos colombianos",
+        "short_currency_name":"COP",
+        "address":"123512312355",
+        "type":"auto_sale",
+        "name":"Mis lucas",
+        "balance":"1000000",
+        "balance_usd":"3300",
+        "id":"3"
+      },
+      {
+        "currency":"bitcoin",
+        "short_currency_name":"BTC",
+        "address":"bc1qjl8uwezzlech723lpnyuza0h2cdkvxvh54v3dnsa",
+        "type":"auto_sale",
+        "name":"Mi billetera bitcoin",
+        "balance":"1",
+        "balance_usd":"7000",
+        "id":"4"
+      },
+      {
+        "currency":"pesos colombianos",
+        "short_currency_name":"COP",
+        "address":"2332342",
+        "type":"trade",
+        "name":"Mis lucas",
+        "balance":"1000000",
+        "balance_usd":"3300",
+        "id":"5"
+      },
+      {
+        "currency":"bitcoin",
+        "short_currency_name":"BTC",
+        "address":"bc1qjl8uwezzlech723lpnyusd98za0h2cdkvxvh54v3d3n ",
+        "type":"trade",
+        "name":"Mi billetera bitcoin2",
+        "balance":"1",
+        "balance_usd":"7000",
+        "id":"6"
+      }
+    ],
+    "transaction_history": [
+    {
+      "id":"1",
+      "user_id":"",
+      "type":"deposit",
+      "pair":"cop_cop",
+      "currency":"pesos colombianos",
+      "short_currency_name":"cop",
+      "state":"pending",
+      "from":{
+        "wallet":{},
+        "payment_method":{
+          "id": "1",
+          "createdat": "date",
+          "method": "transfer",
+          "service": "bancolombia",
+          "modality": "atm"
+        }
+      },
+      "to":{
+        "wallet":{
+          "currency":"pesos colombianos",
+          "short_currency_name":"COP",
+          "address":"123512312355",
+          "type":"trade",
+          "name":"Mis lucas",
+          "balance":"1000000",
+          "balance_usd":"3300",
+          "id":"3"
+        },
+        "bank_account":{}
+      },
+      "payment_proof":[{"proof":"https://goo.gl/Vy9E8r"}],
+      "fee_currency":"10000",
+      "fee_usd":"3",
+      "amount_currency":"1000000",
+      "amount_usd":"300",
+      "received_amount_currency":"990000",
+      "received_amount_usd":"297",
+      "signature":"firma",
+      "comment":"Deposito de pesos colombianos",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    },
+    {
+      "id":"2",
+      "user_id":"",
+      "type":"deposit",
+      "pair":"btc_btc",
+      "currency":"bitcoin",
+      "short_currency_name":"btc",
+      "state":"success",
+      "from":{
+        "wallet":{
+          "id":"1",
+          "network":"bitcoin",
+          "short_network_name":"BTC",
+          "address":"fg1qjl8uwezzlech723lpnyuza0h2cdkvxvh54v3dn33",
+          "name":"Mi wallet btc fria"
+        },
+        "payment_method":{}
+      },
+      "to":{
+          "wallet":{
+            "currency":"bitcoin",
+            "short_currency_name":"BTC",
+            "address":"bc1qjl8uwezzlech723lpnyusd98za0h2cdkvxvh54v3d3n ",
+            "type":"trade",
+            "name":"Mi billetera bitcoin",
+            "balance":"1",
+            "balance_usd":"7000",
+            "id":"6"
+          },
+          "bank_account":{}
+      },
+      "payment_proof":[
+        {"proof":"0x3ca5d50c53837bdb6fa4ea40fed885cf714207129640157cf9a318f5cf5220a5"
+        }
+        ],
+      "fee_currency":"0.0001",
+      "fee_usd":"3",
+      "amount_currency":"0.5",
+      "amount_usd":"3300",
+      "received_amount_currency":"0.499",
+      "received_amount_usd":"3297",
+      "signature":"firma",
+      "comment":"Deposito de bitcoin",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    },
+    {
+      "id":"3",
+      "user_id":"",
+      "type":"withdraw",
+      "pair":"btc_btc",
+      "currency":"bitcoin",
+      "short_currency_name":"btc",
+      "state":"pending",
+      "from":{
+        "wallet":{
+          "currency":"bitcoin",
+          "short_currency_name":"BTC",
+          "address":"bc1qjl8uwezzlech723lpnyusd98za0h2cdkvxvh54v3d3n ",
+          "type":"trade",
+          "name":"Mi billetera bitcoin2",
+          "balance":"1",
+          "balance_usd":"7000",
+          "id":"6"
+        },
+        "payment_method":{}
+      },
+      "to":{
+          "wallet":{
+            "id":"1",
+            "network":"bitcoin",
+            "short_network_name":"BTC",
+            "address":"fg1qjl8uwezzlech723lpnyuza0h2cdkvxvh54v3dn33",
+            "name":"Mi wallet btc fria"
+          },
+          "bank_account":{}
+      },
+      "payment_proof":[
+        {"proof":"0x3ca5d50c53837bdb6fa4ea40fed885cf714207129640157cf9a318f5cf5220a5"
+        }
+        ],
+      "fee_currency":"0.0001",
+      "fee_usd":"3",
+      "amount_currency":"0.5",
+      "amount_usd":"3300",
+      "received_amount_currency":"0.499",
+      "received_amount_usd":"3297",
+      "signature":"firma",
+      "comment":"retiro de bitcoin",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    },
+    {
+      "id":"4",
+      "user_id":"",
+      "type":"withdraw",
+      "pair":"cop_cop",
+      "currency":"pesos colombianos",
+      "short_currency_name":"cop",
+      "state":"success",
+      "from":{
+        "wallet":{
+          "currency":"pesos colombianos",
+          "short_currency_name":"COP",
+          "address":"2332342",
+          "type":"trade",
+          "name":"Mis lucas",
+          "balance":"1000000",
+          "balance_usd":"3300",
+          "id":"5"
+        },
+        "payment_method":{}
+      },
+      "to":{
+          "wallet":{},
+          "bank_account":{
+            "id": "1",
+            "owner_full_name": "Stivens Felipe Laferreire Ospina",
+            "bank_name": "bancolombia",
+            "account_name": "cuenta de retiros senda",
+            "account_number": "2139182938912",
+            "account_type": "ahorros",
+            "nit": "1123123123",
+            "social_reason": "",
+            "certificate_date": "date",
+            "certificate_photo": "date",
+            "state": "verify",
+            "creation_date": "date",
+            "update_date": "date"
+          }
+      },
+      "payment_proof":[
+        {"proof":"0x3ca5d50c53837bdb6fa4ea40fed885cf714207129640157cf9a318f5cf5220a5"
+        }
+        ],
+      "fee_currency":"0.0001",
+      "fee_usd":"3",
+      "amount_currency":"1000000",
+      "amount_usd":"300",
+      "received_amount_currency":"900000",
+      "received_amount_usd":"270",
+      "signature":"firma",
+      "comment":"retiro de pesos colombianos a cuenta bancaria",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    },
+    {
+      "id":"5",
+      "user_id":"",
+      "type":"trade",
+      "pair":"cop_btc",
+      "currency":"pesos colombianos",
+      "short_currency_name":"cop",
+      "state":"success",
+      "from":{
+        "wallet":{
+          "currency":"pesos colombianos",
+          "short_currency_name":"COP",
+          "address":"2332342",
+          "type":"trade",
+          "name":"Mis lucas",
+          "balance":"1000000",
+          "balance_usd":"3300",
+          "id":"5"
+        },
+        "payment_method":{}
+      },
+      "to":{
+          "wallet":{
+            "currency":"bitcoin",
+            "short_currency_name":"BTC",
+            "address":"bc1qjl8uwezzlech723lpnyusd98za0h2cdkvxvh54v3d3n ",
+            "type":"trade",
+            "name":"Mi billetera bitcoin",
+            "balance":"1",
+            "balance_usd":"7000",
+            "id":"6"
+          },
+          "bank_account":{}
+      },
+      "payment_proof":[{}],
+      "fee_currency":"0.0001",
+      "fee_usd":"3",
+      "amount_currency":"1000000",
+      "amount_usd":"300",
+      "received_amount_currency":"0.03",
+      "received_amount_usd":"270",
+      "signature":"firma",
+      "comment":"intercambio de pesos colombianos por bitcoin",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    },
+    {
+      "id":"6",
+      "user_id":"",
+      "type":"trade",
+      "pair":"btc_cop",
+      "currency":"bitcoin",
+      "short_currency_name":"btc",
+      "state":"dropped",
+      "from":{
+        "wallet":{
+          "currency":"bitcoin",
+          "short_currency_name":"BTC",
+          "address":"bc1qjl8uwezzlech723lpnyusd98za0h2cdkvxvh54v3d3n ",
+          "type":"trade",
+          "name":"Mi billetera bitcoin",
+          "balance":"1",
+          "balance_usd":"7000",
+          "id":"6"
+        },
+        "payment_method":{}
+      },
+      "to":{
+          "wallet":{
+            "currency":"pesos colombianos",
+            "short_currency_name":"COP",
+            "address":"2332342",
+            "type":"trade",
+            "name":"Mis lucas",
+            "balance":"1000000",
+            "balance_usd":"3300",
+            "id":"5"
+          },
+          "bank_account":{}
+      },
+      "payment_proof":[
+        {"proof":"d29d14a84493493c1b57d32523f10e0efff4b4133c1be965d453240142b9cd55"}
+        ],
+      "fee_currency":"0.0001",
+      "fee_usd":"3",
+      "amount_currency":"0.03",
+      "amount_usd":"300",
+      "received_amount_currency":"900000",
+      "received_amount_usd":"270",
+      "signature":"firma",
+      "comment":"intercambio de bitcoin por pesos colombianos",
+      "timestamp":"date",
+      "creation_date":"date",
+      "update_date":"date",
+      "matching_orders":[{}]
+    }
+    ]
+
+}

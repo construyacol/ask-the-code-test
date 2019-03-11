@@ -1,0 +1,838 @@
+.ActivityView{
+  height: 100%;
+  max-height: auto;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  /*display: grid;*/
+}
+
+
+.ALnoActivity{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+.pentoni{
+  display: grid;
+  grid-template-columns: auto 25px;
+  text-align: right;
+}
+.pentoni p, .pentoni span{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.pentoni span{
+  color: red;
+  font-size: 12px;
+}
+
+.jopolo p{
+  margin: 0 !important;
+}
+
+.jopolo{
+  display: grid;
+  /*grid-template-rows: repeat(2, 1fr);*/
+  grid-row-gap: 5px;
+}
+
+.ALamount2{
+  font-size: 14px !important;
+  text-align: right;
+}
+
+.loaderActivityList{
+  position: absolute;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.ALpendingCont{
+  overflow: hidden;
+  /*height: 100%;*/
+  /*height: 100px;*/
+  transition: .3s;
+  position:relative;
+}
+
+.ALpendingCont:hover{
+  /*height: 200px;*/
+  height: 800px;
+}
+
+.ALverTodo{
+  position: absolute;
+  bottom: -25px;
+  margin: 0;
+  right: 0;
+  color: gray;
+  cursor: pointer;
+}
+
+.ALverTodo:hover{
+
+   color: #b48728 !important
+  /*color: #14b3f0 !important*/
+}
+
+.ALverTodo i{
+  margin-left: 7px;
+}
+
+.ALpendingMom{
+  position: relative;
+}
+
+.ALactivityPending{
+  border-top: 1px solid #8080808f;
+  margin-top: 35px;
+}
+
+.ALactivity{
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.ItemLeft{
+  justify-self: left;
+}
+
+.ItemRight{
+  justify-self: right;
+}
+
+
+.ItemRight, .ItemLeft{
+  display: flex;
+  align-items: center;
+}
+
+.canceled:hover{
+  opacity: 0.8;
+}
+
+
+
+
+#Aldelete i{
+    font-size: 22px;
+    /*color: red !important;*/
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    /*justify-content: center;*/
+}
+
+.ItemList:hover #Aldelete{
+  width: 40px !important;
+}
+
+
+#Aldelete{
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  padding: 2px 0;
+  transition: .3s;
+  width: 0;
+  /*height: 50px;*/
+}
+
+.tooltipDelete{
+  /*bottom: -85% !important;*/
+  left: 25% !important;
+  visibility: hidden;
+  width: 60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 12px !important;
+  position: absolute;
+  z-index: 1;
+  margin-left: -30px;
+}
+
+.tooltip:hover .tooltipDelete{
+  visibility: visible !important;
+}
+
+.IdeleteButton.tooltip{
+  position: absolute;
+}
+
+
+
+.canceled{
+  border: 1px solid #f44336 !important;
+  opacity: 0.3;
+  transition: .3s;
+}
+
+.rejected p, .rejected i, .canceled p, .canceled i{
+  color: #f44336 !important;
+  /*opacity: .7;*/
+}
+
+.rejected:hover, .rejected p, .rejected i{
+  opacity: 1;
+}
+
+ .rejected{
+   border: 1px solid #f44336 !important;
+   opacity: 0.7;
+    transition: .3s;
+ }
+
+/*.current_swap_done{
+  transition: .6s !important;
+  transform: scale(0.86) !important;
+}*/
+
+.current_swap_done_out{
+  animation-name: swapDone1;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+}
+
+@keyframes swapDone1{
+  0%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1);
+  }
+  70%{
+    transform:scale(0.8);
+  }
+  100%{
+    transform:scale(0.8);
+  }
+}
+
+
+
+.current_swap_done_item_out{
+  animation-name: swapDone;
+  animation-delay: 1.3s;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+}
+
+@keyframes swapDone{
+  0%{
+    transform:translateY(0px);
+  }
+  60%{
+    transform:translateY(0px);
+    opacity: 1;
+  }
+  80%{
+    opacity: 0;
+  }
+  100%{
+    transform:translateY(100px);
+    opacity: 0;
+  }
+}
+
+.current_swap_done_in{
+  animation-name: swapDoneIn;
+  /*animation-delay: 1.3s;*/
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  transform:scale(0.8);
+}
+
+@keyframes swapDoneIn{
+  100%{
+    transform:scale(1);
+  }
+  80%{
+    transform:scale(0.8);
+    opacity: 1;
+  }
+  20%{
+    opacity: 0;
+  }
+  0%{
+    transform:scale(0.8);
+    opacity: 0;
+  }
+}
+
+
+
+
+/*current_swap_done_item_out*/
+
+
+.current_swap_done_item_in{
+  animation-name: swapDoneItemIn;
+  /*animation-delay: 1.3s;*/
+  animation-duration: .5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  transform:scale(0.8);
+}
+
+@keyframes swapDoneItemIn{
+  100%{
+    transform:translateY(0px);
+  }
+  80%{
+    transform:translateY(0px);
+    /*opacity: 1;*/
+  }
+  20%{
+    /*opacity: 0;*/
+  }
+  0%{
+    transform:translateY(-100px);
+    /*opacity: 0;*/
+  }
+}
+
+
+.pending, .confirmed{
+  border: 1px solid #ff8660 !important;
+}
+
+.pending p, .pending i, .confirmed p, .confirmed i{
+    color: #ff8660;
+}
+
+#doneState{
+  color: #1cb179 !important;
+}
+
+#ALrevised, #ALrevised i{
+  color: #1cb179 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+#ALfar{
+  color: white !important;
+}
+
+.ALstatus p{
+  margin: 0 ;
+  color: white !important;
+  text-align: center;
+  font-size: 12px;
+}
+
+.ALstatus{
+  transition: .4s;
+  min-width: 100px;
+  padding: 2px 10px;
+  max-width: 150px;
+  height: 25px;
+  border-radius: 6px;
+  position: absolute;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 120px;
+}
+
+.confirmedNumber{
+  font-size: 15px;
+  margin-left: 4px;
+}
+
+.successIcon{
+  transform: scale(0.4);
+  position: absolute;
+  margin-top: 10%;
+  margin-right: 40%;
+}
+
+.loaderViewItem{
+  width: 40px;
+  display: grid;
+  position: relative;
+  align-items: center;
+  justify-items: center;
+}
+
+
+.ALstatus i{
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.ItemLeft p{
+  margin-right: 10px;
+}
+
+.fecha{
+  margin-right: 20px;
+  justify-items: center;
+  display: grid;
+}
+
+
+.ALdayDate{
+font-size: 30px;
+}
+
+.ALmonthDate{
+  font-size: 14px;
+}
+
+
+.fecha p{
+  margin: 0 !important;
+}
+
+.ItemLeft i{
+  margin-right: 10px;
+  font-size: 22px;
+}
+
+.ItemRight i{
+  margin-left: 10px;
+  font-size: 20px;
+  color: gray;
+}
+
+.ALDetail{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: .2s;
+}
+
+.ALDetail.InProcess{
+  background: #ffffffdb;
+  z-index: 1;
+  display: grid;
+  opacity: .35;
+}
+
+
+
+.ItemList p{
+  color:gray;
+}
+
+.ALverTodo span{
+  color: #ff8660;
+}
+
+#ALgoto{
+  position: relative;
+}
+
+.ALamount{
+  font-size: 18px;
+}
+
+.ItemList:hover #ALgoto{
+  /*background: black !important;*/
+  /*position: relative;*/
+  animation-name: goTing;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+}
+
+@keyframes goTing{
+  0%{
+    transform:translateX(0px);
+  }
+  50%{
+    transform:translateX(5px);
+  }
+
+  100%{
+    transform:translateX(0px);
+  }
+}
+
+.newDepositContainern{
+  display: grid;
+}
+
+.ALlistAll{
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 80px);
+  height: auto;
+  grid-auto-flow: row dense;
+  min-height: 100%;
+  grid-row-gap: 20px;
+  transform-style: preserve-3d;
+}
+
+.ALlist{
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 80px);
+  height: auto;
+  grid-auto-flow: row dense;
+  min-height: 100%;
+  grid-row-gap: 20px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  perspective-origin: center top;
+  transition: .3s;
+
+
+}
+
+
+
+
+.deletedDepositStyle{
+  animation-name: deletedItem;
+  animation-duration: .25s;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-fill-mode: forwards;
+  animation-direction: reverse;
+}
+
+.relleno.swaProcessing{
+  width: 66% !important;
+  background:#67867a !important;
+}
+
+
+
+
+.relleno.swapDone{
+  width: 100% !important;
+  background: #1cb179 !important;
+}
+
+.ItemList.swapDone{
+  border: 1px solid #1cb179 !important;
+}
+
+.ItemList.swaProcessing{
+ transition:1.3s !important;
+ /*border: 1px solid #1cb179 !important;*/
+ border: 1px solid #67867a !important;
+}
+
+#ALstatus{
+  color: white !important;
+}
+
+.barraSwap .relleno{
+  height: 100%;
+  width: 0%;
+  transition: 1s;
+  background: orange;
+}
+
+.barraSwap{
+  width: 110%;
+  height: 1px;
+  background: #00000012;
+  position: absolute;
+  top: 1px;
+  right: 0;
+  opacity: 0.6;
+}
+
+
+.ItemList{
+  border: 1px solid #8080808f;
+  border-radius: 6px;
+  height: 73px;
+  cursor: pointer;
+  display: grid;
+  align-items: center;
+  padding: 0 25px;
+  position: relative;
+  grid-template-columns: repeat(2, 1fr);
+  overflow: hidden;
+  transition: .3s;
+  transform-origin: top;
+}
+
+/*.relleno.swaPending{*/
+  /*transition: .3s;*/
+/*}*/
+
+.relleno.swaPending{
+  background: #ff8660 !important;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+  width: 0%;
+}
+
+
+.newDepositStyle{
+  /*border: 2px solid #ff8660 !important;*/
+  animation-name: activeItem;
+  animation-duration: .7s;
+  /*animation-iteration-count: infinite;*/
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes activeItem{
+  0%{
+    /*transform: scale(0)*/
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+  40%{
+    opacity: 1;
+  }
+  60%{
+    transform: rotateX(30deg);
+  }
+  80%{
+    transform: rotateX(-30deg);
+  }
+  100%{
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes deletedItem{
+  0%{
+    /*transform: scale(0)*/
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+  10%{
+    opacity: 1;
+  }
+  100%{
+    transform: rotateX(0deg);
+  }
+}
+
+.NDCont{
+  transition: .3s;
+  transform: scale(1);
+  opacity: 1 !important;
+  perspective: 2000px;
+  /*perspective-origin: center top;*/
+}
+
+
+.NDCont.errorSwap p, .NDCont.errorSwap i{
+  color: #f44336 !important;
+}
+
+.NDCont.errorSwap{
+  opacity: 0.5 !important;
+}
+
+
+.NDCont.errorSwap p, .NDCont.errorSwap i{
+  color: #f44336 !important;
+}
+
+.deletingWallet{
+  transform: scale(0.96);
+  opacity: 0.6;
+}
+
+.walletDeleted{
+  transition: 1.4s;
+  opacity: 0;
+  transform: scale(0.2);
+
+}
+
+.newDepositContainer{
+  animation-name: containerDeposit;
+  perspective: 1000px;
+  perspective-origin: center top;
+  position: relative;
+  animation-duration: .4s;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-fill-mode: forwards;
+}
+
+@keyframes containerDeposit{
+  0%{
+    /*transform: scale(0)*/
+    transform: scale(0.9) ;
+  }
+
+  100%{
+    transform: scale(1) ;
+    /*transform: scale(1)*/
+  }
+}
+
+/*.newDepositContainerNone{
+  display: none;
+}*/
+
+
+.ALfiltros{
+  width: calc(100% - 24px);
+  height: 45px;
+  /*background: #8080801a;*/
+  transition: .3s;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  /*padding: 0 12px;*/
+  overflow: hidden;
+  background: linear-gradient(to right, #8080801a, #8080801a, white);
+}
+
+.ALfiltrosView{
+  margin-right: 10px;
+}
+
+.ALFilterSect{
+  display: flex;
+  position: relative;
+}
+
+.ALitemFill{
+  padding: 5px 15px;
+  border: 1px solid #80808000;
+  border-radius: 6px;
+  margin: 0 5px !important;
+  cursor: pointer;
+  -webkit-transition: .3s;
+  transition: .3s;
+  font-size: 14px;
+  -webkit-transform-origin: center;
+  transform-origin: center;
+  height: 70%;
+  align-items: center;
+  display: flex;
+  border-radius: 20px;
+}
+
+.ALif2{
+  border-style: none;
+  width: auto;
+  min-width: 120px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 35px !important;
+  position: absolute;
+  right: 0;
+  margin: 0 !important;
+  color: gray !important;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ALitemFill.ALactive{
+  background: #80808038;
+  border: 1px solid #8080804a;
+}
+
+.ALif2.ALactive{
+  background: #80808038;
+  border-style: none !important;
+}
+
+.ALif2Item{
+  display: flex;
+  align-items: center;
+  width: 100px;
+  justify-items: center;
+  justify-content: center;
+}
+
+.ALif2ItemAll{
+  display: grid;
+  height: 200%;
+  top: 0;
+  position: absolute;
+  grid-template-rows: repeat(2, 1fr);
+  transition: .3s;
+  /*top: -50%;*/
+}
+
+.ALif2:hover .ALif2ItemAll{
+    top: -100% !important;
+}
+
+.ALif2:hover .currentFill{
+  transition: .2s;
+    opacity: 0 !important;
+}
+
+
+.ALif2Item p{
+  margin: 0 ;
+}
+
+.ALitemFill:hover{
+  background: #80808038;
+}
+
+.ALitemFill i{
+  /*font-size: 20px;*/
+  margin-right: 7px;
+}
+
+
+.ALfiltros P{
+  color:gray;
+}
+
+
+.ConfirmedTxT{}
+
+.confirmedCrypto{
+  border: 1px solid #1cb179!important;
+}
+.ConfirmedTxT span{
+    font-size: 15px;
+}
+
+.ConfirmedTxT p{
+  margin: 0 20px 0 0;
+  color: #1cb179;
+  font-size: 25px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 35px;
+}
+
+.sound{
+  position: absolute;
+  /*display: none;*/
+}
+
+.swap_bought{
+  opacity: 0.8 !important;
+}
+
+
+
+
+.ALtext{
+  /*transition: .3s;*/
+  color: gray;
+  /*margin: 15px 0 !important;*/
+}
