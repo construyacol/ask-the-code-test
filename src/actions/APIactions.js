@@ -995,7 +995,6 @@ export const get_deposit_list = (user) =>{
       ]
     }
 
-    // console.log('|||||||||||| ACTUALIZANDO DEPOSITOS::: ', user_update)
 
     let normalizeUser = await normalize_user(user_update)
     // console.log('|||||||||||| NORMALIZANDO DEPOSITOS::: ', normalizeUser)
