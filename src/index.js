@@ -42,13 +42,12 @@ const store = createStore(
 const home = document.getElementById('home-container')
 
 render(
-   // <Provider store={store}>
-   //   <Fragment>
-   //     <HomeContainer/>
-   //   </Fragment>
-   // </Provider>
-
- <AuthComponentContainer/>
+   <Provider store={store}>
+     <Fragment>
+       <HomeContainer/>
+     </Fragment>
+   </Provider>
+ // <AuthComponentContainer/>
   , home
 );
 

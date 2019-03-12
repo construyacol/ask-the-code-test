@@ -459,7 +459,7 @@ export const get_list_user_wallets = (user) =>{
 
 
 
-// Agregar deposit provider a cuenta crypto 
+// Agregar deposit provider a cuenta crypto
 // /api/accounts/add-deposit-provider
 
 // {
@@ -974,7 +974,7 @@ export const get_deposit_list = (user) =>{
     const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
     const deposits = await ApiGetRequest(url_deposit)
 
-    if(!deposits){return false}
+    if(!deposits || deposits === 465){return false}
     // console.log('deposits', deposits)
     // alert('deposits')
 
@@ -1407,9 +1407,7 @@ export const add_new_withdraw_account = (payload, type) =>{
 export const FlowAnimationLayoutAction = (animation, action, current_section, explicitStep) =>{
 
   return async(dispatch) => {
-
     // dispatch(FlowAnimationUi(animation))
-
     switch (action) {
       case 'next':
           // setTimeout(()=>{
@@ -1423,7 +1421,6 @@ export const FlowAnimationLayoutAction = (animation, action, current_section, ex
         break;
       default:
       return false
-
     }
 
   }

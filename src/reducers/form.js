@@ -112,7 +112,6 @@ const forms = (state = initialState, action) =>{
                 }
           case REDUCE_STEP:
             switch (action.payload) {
-
                   case 'ticket':
                       return {
                         ...state,
@@ -166,7 +165,6 @@ const forms = (state = initialState, action) =>{
             }
           case INCREASE_STEP:
             switch (action.payload) {
-
                   case 'ticket':
                       return {
                         ...state,

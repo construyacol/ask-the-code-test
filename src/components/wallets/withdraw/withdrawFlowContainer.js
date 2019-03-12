@@ -42,7 +42,6 @@ class WithdrawFlow extends Component {
       this.setState({step})
 
       // console.log('||||||| - - - componentWillReceiveProps', lastStep, step)
-
       // const {
       //   have_withdraw_accounts
       // } = this.props
@@ -71,9 +70,6 @@ class WithdrawFlow extends Component {
         } = this.props
 
         if(!have_withdraw_accounts){await this.setState({need_new_acount:true})}
-
-        // console.log('||||||| ---- - MUY HIJO DE PUTA - - ',have_withdraw_accounts, this.state.need_new_acount)
-
         let available_providers = []
 
         await withdraw_providers.map(provider => {
@@ -84,23 +80,17 @@ class WithdrawFlow extends Component {
             ){return available_providers.push(provider)}
         })
 
-
         this.setState({
           withdraw_providers:available_providers.length>0 && available_providers
         })
-
-
     }
 
 
-
     new_acount= async() =>{
-
       await this.setState({
         need_new_acount:true,
         finish_step:false
       })
-
       this.siguiente()
     }
 
@@ -117,8 +107,7 @@ class WithdrawFlow extends Component {
 
     new_withdraw_order = async (state_data, limit, limit_supered) =>{
       // validar que el limite maximo es permitido por el provider
-
-      // si es así continue por aca doña puta
+      // si es así continue por aca
       // alert('epa')
       this.props.action.Loader(true)
       await this.setState({
@@ -143,7 +132,6 @@ class WithdrawFlow extends Component {
         user
       } = this.props
 
-
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       let res = await this.props.action.add_new_withdraw_order(amount, account_from, withdraw_provider, withdraw_account)
 
@@ -153,7 +141,6 @@ class WithdrawFlow extends Component {
           limit_supered_component:false,
           need_new_acount:true
         })
-        // await this.props.action.ModalView('modalView')
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
         this.props.action.Loader(false)
         return this.handleError('La orden no ha podido ser creada')
@@ -265,16 +252,6 @@ class WithdrawFlow extends Component {
       } = this.state.new_order
 
       let res = await this.props.action.add_update_withdraw(unique_id, 'confirmed', withdraw_info.account_from)
-
-      // if(!res){
-      //   this.setState({
-      //     finish_step:false,
-      //     ticket:null,
-      //     show_list_accounts:true
-      //   })
-      //   this.volver()
-      //   return this.handleError('La orden no ha podido ser confirmada')
-      // }
 
       if(!res){
         this.setState({
@@ -562,7 +539,6 @@ function mapStateToProps(state, props){
   } = state.form.form_withdraw
 
   // console.log('Antes de reeeeeeenderizar : : : : ', user[user_id].withdraw_accounts.length>0)
-
   let withdraw_providers_list = user[user_id].withdraw_providers.map((id_prov)=>{
     return withdraw_providers[id_prov]
   })

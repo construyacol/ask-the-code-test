@@ -1,7 +1,7 @@
 export const Environtment = {
   ApiUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:5900/api/' : 'https://archa.serveo.net/api/',
   SocketUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:5900/' : 'https://archa.serveo.net/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJOTzNrMTVtZ2NteFhiSFdPYTFQZkk1UXZ6TURLNXJtQ0N3QWEzY0NIWXp1eUxheWIyVzIwblBXaW9FbDFBcldEIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjViZWEwOWYzYjVmOTA3MWY2OWM0OWUwNVwifSIsImlhdCI6MTU1MTM2MDY0NiwiZXhwIjoxNTUxMzcxNDQ2fQ.aEts9bt-nadyRLaBOnt44m6Q1uDy88ZYXHunIzw_jUOjMlqg85kkbkMM0T1XjfhB_InlppoPTqp53a2eMdq05g"
+  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJia0dHdjc0QkpNTFYyb1dUWWdnNmxJQ3MxTDI3RG9SMElzQ2JKZ2ZsYjRQdTNWT25lTk9VVTlPemFaelhOT1pDIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjViZWEwOWYzYjVmOTA3MWY2OWM0OWUwNVwifSIsImlhdCI6MTU1MjM1MTIzNywiZXhwIjoxNTUyMzYyMDM3fQ.4cJ3-C6rKAhYnszL9diwCCvmo6XkGUFqE-MhT_mcVkii94yWKmL2APdr4Ul3b_o0R9YtqXAxAHNFyAnd3LRVcA"
 }
 
 export default Environtment
@@ -12,6 +12,7 @@ export default Environtment
 
 //AUTH
 // https://mensis.serveo.net/public/signin?clientId=5bea09f3b5f9071f69c49e05
+// http://andres.indophi.com:3000/public/signin?clientId=5bea09f3b5f9071f69c49e05
 
   // user: zeky.laf+local@gmail.com
   // pw: starnet1
