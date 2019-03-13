@@ -18,7 +18,6 @@ import walletsJSON from '../components/api/ui/model_account.json'
 
 import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
 import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
-
 import * as normalizr_services from '../schemas'
 
 import {
@@ -130,6 +129,10 @@ const ApiPostRequest = async(url, body) => {
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   })
+
+  body.data.country = 'colombia'
+
+  console.log('||||||||ApiPostRequest', body)
 
   let parametros = {
                method: 'POST',
@@ -1021,10 +1024,10 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
     const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
     let withdraw_accounts = await ApiGetRequest(get_wAccounts_url)
     // if(!withdraw_accounts){return false}
+    // console.log('|||||||||| withdraw_accounts::::', withdraw_accounts)
     if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
 
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
-    // console.log('|||||||||| WITHDRAW PROVIDERS::::', providers_served)
 
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
       // console.log('|||||||||| WITHDRAW ACCOUNTS::::', wa)
@@ -1084,7 +1087,6 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
         }
       }
 
-
       // console.log('||||||||||waccount ', waccount)
       // return {
       //   ...wa,
@@ -1092,7 +1094,6 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
       // }
     })
 
-    // console.log('||||||||||||| WITHDRAW ACCOUNTS SERVICE', new_withdraw_accounts)
 
     new_withdraw_accounts.reverse()
 
@@ -1105,7 +1106,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
         let normalizeUser = await normalize_user(user_update)
         await dispatch(Update_normalized_state(normalizeUser))
-
+        console.log('||||||||||||| normalizeUser', normalizeUser)
   }
 
 }
@@ -1377,7 +1378,7 @@ export const add_new_withdraw_account = (payload, type) =>{
         "city": city,
         "email": email,
         "label": short_name,
-        currency_type:'fiat'
+        "currency_type":'fiat'
       }
     }
   }

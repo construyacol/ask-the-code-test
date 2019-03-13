@@ -16,7 +16,8 @@ class TicketContainer extends Component {
     current_ticket:null,
     handleError:false,
     confirmations:0,
-    total_confirmations:this.props.currencies[this.props.ticket.currency.currency].confirmations,
+    total_confirmations:null,
+    total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency].confirmations,
     current_ticket_state:this.props.ticket && this.props.ticket.state,
     type_order:this.props.ticket && this.props.ticket.type_order,
     currency_type:this.props.ticket && this.props.ticket.currency_type
@@ -470,6 +471,8 @@ function mapStateToProps(state, props){
       }
     })
   }
+
+  // console.log(this.props.currencies && this.props.currencies[this.props.ticket.currency.currency].confirmations)
 
   return{
     ticket:state.form.form_ticket,

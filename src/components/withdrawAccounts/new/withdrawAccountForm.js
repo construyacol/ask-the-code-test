@@ -44,7 +44,7 @@ class WithdrawAccountForm extends Component{
             }
             break
         default:
-          console.log('auxilio, me desmayo, callese viejo lesbiano')
+          console.log('')
       }
     }
 

@@ -345,7 +345,6 @@ class WithdrawFlow extends Component {
         finish_step
       } = this.state
 
-      // console.log('||||||||||||||  need_new_acount',need_new_acount)
       if(step === 1 && !need_new_acount){return this.setState({show_list_accounts:true})}
       return this.props.action.FlowAnimationLayoutAction('nextV', 'next', "withdraw")
     }
@@ -496,7 +495,6 @@ class WithdrawFlow extends Component {
                         color={color_loader}
                       />
                       :
-                      // <p>Fin, transacción exitosa</p>
                     <FinalTicket
                         finishAction={this.confirmar}
                         ticket={ticket}
