@@ -100,7 +100,7 @@ class WalletList extends Component{
             {
               this.props.item_list.map(wallet=>{
                 return <ItemWallet
-                  key={wallet.id}
+                  key={wallet && wallet.id}
                   deposit_providers={this.props.deposit_providers}
                   delete_account={this.delete_account_confirmation}
                   wallet={wallet}

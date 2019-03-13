@@ -136,7 +136,7 @@
   color: #495054;
   font-size: 22px;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   margin: 0;
   justify-content: center;
 }
@@ -145,7 +145,7 @@
   display: flex;
   justify-content: center;
   text-align: center;
-  align-items: end;
+  align-items: flex-end;
   font-size: 15px;
   margin: 15px 0 0 0 !important;
   padding: 0 5%;
