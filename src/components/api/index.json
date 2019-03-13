@@ -29,7 +29,7 @@
     },
     "deposit_providers":[],
     "wallets": [],
-    "withdraw_accounts":[],
+    "withdraw_accounts":null,
     "deposits": [],
     "withdrawals": [],
     "swaps": [],

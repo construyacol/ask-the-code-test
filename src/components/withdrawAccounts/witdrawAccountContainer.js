@@ -22,7 +22,6 @@ class witdrawAccountContainer extends Component{
 
   state = {
     title:"Mis Cuentas de retiro",
-    userWallets:true, //solo lo uso para validar si se estan haciendo consultas al API
   }
 
 
@@ -116,7 +115,8 @@ class witdrawAccountContainer extends Component{
       const { items_menu } = navigation_components.wallet
       const url = this.state.currentUrl
       const { title }  = this.state
-      const { ready } = this.props
+      const {withdraw_accounts, app_loaded } = this.props
+
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
 
@@ -132,19 +132,13 @@ class witdrawAccountContainer extends Component{
                         {...this.state}
                       >
                           {/* <Route exact path="/withdraw/:path/:id" component={this.wallet_detail} /> */}
+                          {/* <Route exact path="/withdraw" render={this.AccounList}  /> */}
                         {
-                          (!this.state.userWallets) ?
-                          <p className="fuente">Ooops!, ha ocurrido algo inesperado posiblemente con la conexión, vuelve a intentarlo</p>
-                           :
-                           <Fragment>{
-                                      ready ?
-                                        <Route exact path="/withdraw" render={this.AccounList}  />
-                                      :
-                                        <SimpleLoader/>
-                                     }
-
-                                   {/* <Route exact path="/wallets/:path/:id" component={this.render_view} /> */}
-                           </Fragment>
+                          !app_loaded ?
+                            <SimpleLoader/>
+                          :
+                          (app_loaded && withdraw_accounts) &&
+                          <Route exact path="/withdraw" render={this.AccounList}  />
                         }
                     </DetailContainerLayout>
                   </Switch>
@@ -165,12 +159,20 @@ function mapStateToProps(state, props){
     withdraw_providers
   } = state.model_data
 
+  const {
+    app_loaded
+  } = state.ui
+
+  // console.log('|||||||| withdraw_accounts', user[user_id].withdraw_accounts)
+
   return{
     redux_route:state.ui.menu_item_active,
+    withdraw_accounts:user[user_id].withdraw_accounts,
     user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,
     currencies:state.model_data.currencies || null,
-    ready:user && withdraw_accounts && withdraw_providers
+    app_loaded
+    // ready:user && withdraw_accounts && withdraw_providers
   }
 }
 

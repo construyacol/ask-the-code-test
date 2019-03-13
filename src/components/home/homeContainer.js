@@ -190,6 +190,7 @@ class HomeContainer extends Component{
     await action.get_deposit_list(this.props.user)
     await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
     await action.get_withdraw_list(this.props.user)
+    await action.ready_to_play(true)
 
 
     // get_pairs_for(param1, param2)

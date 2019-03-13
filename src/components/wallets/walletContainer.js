@@ -15,6 +15,8 @@ import SwapView from './views/swap'
 import WalletList from '../widgets/accountList/item_account_list'
 import list_wallets_data from '../api/ui/model_account.json'
 import ItemWallet from '../widgets/accountList/items'
+import SimpleLoader from '../widgets/loaders'
+
 
 import { matchItem } from '../../services'
 
@@ -29,21 +31,8 @@ class WalletContainer extends Component{
 
 
   componentDidMount(){
-    if(this.props.user.wallets.length<1) {this.props.action.Loader(true)}
     this.props.action.CurrentForm('wallets')
-    // this.props.user.wallets<1 && this.props.action.Loader(true)}
-
-    // this.props.action.MenuItemActive(this.props.location.pathname)
-     this.props.action.MenuItemActive('wallets')
-     setTimeout(async()=>{
-       // Manejamos la respuesta en el estado, por si ocurre un error, evitamos
-       this.setState({
-         userWallets: await this.props.action.get_list_user_wallets(this.props.user)
-       })
-       this.props.action.Loader(false)
-      // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
-    }, 0)
-     // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props)
+    this.props.action.MenuItemActive('wallets')
   }
 
   componentWillUnmount(){
@@ -116,8 +105,6 @@ class WalletContainer extends Component{
   }
 
   wallet_detail = props => {
-    // console.log('this is america___', props)
-    // console.log('this is AMERICAAA!!!', this.props)
 
     const {
       current_wallet
@@ -148,6 +135,7 @@ class WalletContainer extends Component{
       const { items_menu } = navigation_components.wallet
       const url = this.state.currentUrl
       const { title }  = this.state
+      const { app_loaded } = this.props
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
 
@@ -165,8 +153,8 @@ class WalletContainer extends Component{
                 >
                     <Route exact path="/wallets/:path/:id" component={this.wallet_detail} />
                   {
-                    (!this.state.userWallets) ?
-                    <p className="fuente">Ooops!, ha ocurrido algo inesperado posiblemente con la conexión, vuelve a intentarlo</p>
+                    !app_loaded ?
+                      <SimpleLoader/>
                      :
                      <Fragment>
                              <Route exact path="/wallets" render={this.listaWallets}  />
@@ -199,6 +187,10 @@ function mapStateToProps(state, props){
     current_wallet
   } = state.ui.current_section.params
 
+  const{
+    app_loaded
+  } = state.ui
+
   // console.log('||||||||| - -  Wallet CONTAINER', state)
 
   return{
@@ -206,7 +198,8 @@ function mapStateToProps(state, props){
     all_pairs,
     user:user[user_id],
     current_wallet:current_wallet,
-    currencies:state.model_data.currencies || null
+    currencies:state.model_data.currencies || null,
+    app_loaded
   }
 }
 

@@ -9,7 +9,6 @@ import { toast } from 'react-toastify'
 import PropTypes from "prop-types"
 import { withRouter } from "react-router"
 
-
 import '../../wallets/views/wallet_views.css'
 
 class WalletList extends Component{
@@ -89,13 +88,14 @@ class WalletList extends Component{
     // console.log('|||||||   WALLET LIST   ||||',  this.props)
 
     const{
-      have_items
+      have_items,
+      lista
     } = this.props
 
     return(
       <Fragment>
         {
-          (this.props.item_list.length>0)?
+          (this.props.item_list && this.props.item_list.length>0)?
           <section id="WalletList">
             {
               this.props.item_list.map(wallet=>{
@@ -118,14 +118,20 @@ class WalletList extends Component{
           />
           :
           (this.props.item_list.length<1 && !this.props.loader) &&
-          <p id="WalletList2" >Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos</p>
-
+              lista === 'withdraw_accounts' ?
+              <p id="WalletList2" >
+                Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local.
+              </p>
+              :
+              <p id="WalletList2" >
+                Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos
+              </p>
         }
 
         {
           !this.props.loader &&
           <AddNewItem
-            label="Añadir nueva billetera"
+            label={`${lista === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
             type="primary"
             handleClick={this.new_wallet}
           />
@@ -149,17 +155,25 @@ function mapStateToProps(state, props){
     withdraw_providers
   } = state.model_data
 
-  let withdraw_provider_list = lista !== 'wallets' && user[user_id].withdraw_providers.map(w_id=>{
+  let ready = user && withdraw_providers
+
+
+  let withdraw_provider_list = (lista !== 'wallets' && user && withdraw_providers) && user[user_id].withdraw_providers.map(w_id=>{
     return withdraw_providers[w_id]
   })
+
+
+
+  console.log(ready)
 
   let item_list = []
 
   // console.log('ITEM LIST - - - - - -- - 1 1 1 | | | | | | |- - - - - :::', state.model_data[lista])
 
-if(lista !== 'wallets'){
+if(lista === 'withdraw_accounts' && ready){
    user[user_id][lista].map((item_id)=>{
      if(state.model_data[lista][item_id].currency_type === 'crypto'){return false}
+
          return item_list.push({
           active: true,
           app: "Coinsenda",
@@ -180,18 +194,20 @@ if(lista !== 'wallets'){
           used_counter:state.model_data[lista][item_id].used_counter
          })
    })
- }else{
+ }
+ if(lista === 'wallets' && ready){
    item_list = user[user_id][lista].map((item_id)=>{
    return state.model_data[lista][item_id]
    })
  }
 
- // console.log('|||||||||||||||||||||||||WalletList|||||||||||||||||||||||||||||||------------||||', state.model_data.user[state.model_data.user_id])
+ // console.log('|||||||||||||||||||||||||ITE_LIST', state.model_data.user[state.model_data.user_id])
+ console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
 
   return{
     item_list:item_list,
     type_list:lista,
-    have_items:user[user_id][lista].length,
+    have_items:user[user_id][lista] && user[user_id][lista].length,
     deposit_providers:lista !== 'wallets' ? null : state.model_data.deposit_providers,
     withdraw_providers:withdraw_provider_list,
     user:state.model_data.user[state.model_data.user_id],
