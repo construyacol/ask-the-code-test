@@ -13,17 +13,7 @@ import {
   FLOW_ANIMATION_OFF,
   ADD_NOTIFICATION,
   CLEAN_NOTIFICATIONS,
-  APP_LOADED
 } from './action_types'
-
-
-
-export const ready_to_play = (payload) =>{
-  return{
-    type:APP_LOADED,
-    payload
-  }
-}
 
 
 export const AddNotification = (payload, extra, amount) =>{

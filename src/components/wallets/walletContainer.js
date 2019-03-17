@@ -189,7 +189,7 @@ function mapStateToProps(state, props){
 
   const{
     app_loaded
-  } = state.ui
+  } = state.isLoading
 
   // console.log('||||||||| - -  Wallet CONTAINER', state)
 

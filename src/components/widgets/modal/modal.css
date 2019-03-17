@@ -36,6 +36,9 @@
   display: grid;
 }
 
+.show_loader_app{
+  opacity: 1;
+}
 
 
 .aparecer{

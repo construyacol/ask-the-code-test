@@ -31,10 +31,11 @@ class WalletList extends Component{
     } = this.props
 
     let path = match.path.replace('/', '')
-    // console.log('|||||||||| ACCOUNT LIST FIND HISTORY', path)
 
     this.props.action.current_section_clean()
     this.props.action.CurrentForm(path)
+
+
   }
 
 

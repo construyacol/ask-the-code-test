@@ -13,13 +13,11 @@ import {
   FLOW_ANIMATION_LAYOUT,
   FLOW_ANIMATION_OFF,
   ADD_NOTIFICATION,
-  CLEAN_NOTIFICATIONS,
-  APP_LOADED
+  CLEAN_NOTIFICATIONS
 } from '../actions/action_types'
 
 const initialState = {
   headroom:"",
-  app_loaded:false,
   menu_item_active:"",
   item_quote:{
     buy:true,
@@ -75,11 +73,6 @@ const ui = (state = initialState, action)=>{
 
   switch (action.type) {
 
-    case APP_LOADED:
-      return{
-        ...state,
-        app_loaded:action.payload
-      }
   // payload,
   // amount
     case ADD_NOTIFICATION:

@@ -26,6 +26,8 @@ import ModalSettingsView from '../widgets/itemSettings/modal_views'
 import ErrorView from '../widgets/errorView'
 import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
+import LoaderAplication from '../widgets/loaders/loader_app'
+
 
 const history = createBrowserHistory();
 
@@ -47,6 +49,7 @@ class HomeContainer extends Component{
 
   componentDidMount(){
     this.init_component()
+    this.startSocket()
 // Listening WAPS
 // /swaps/5bea1f01ba84493018b7528c
   }
@@ -57,6 +60,7 @@ class HomeContainer extends Component{
     console.log('INFORMACIÓN SOKET',this.socket)
 
     this.socket.on("connect", ()=>{
+      this.props.action.load_label('Autenticando canales bilaterales')
       // alert('connect')
 
       const body = {
@@ -100,7 +104,7 @@ class HomeContainer extends Component{
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
             await this.props.action.get_deposit_list(this.props.user)
             console.log(deposit)
-            alert('Cambio deposito detected by socket')
+            // alert('Cambio deposito detected by socket')
 
             if(deposit.status === 'done' || deposit.status === 'accepted'){
               this.props.action.get_account_balances(this.props.user)
@@ -176,11 +180,12 @@ class HomeContainer extends Component{
       action
     } = this.props
 
+    action.ToggleModal()
     let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
     await action.get_user('user_id')
     await action.get_all_pairs(this.props.user)
     await action.get_pairs_for('colombia', user_collection)
-    this.startSocket()
+
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
     await action.get_account_balances(this.props.user)
@@ -191,7 +196,6 @@ class HomeContainer extends Component{
     await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
     await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
-
 
     // get_pairs_for(param1, param2)
     // recibe 2 parametros, país y colección de monedas de usuario(array)
@@ -204,7 +208,6 @@ class HomeContainer extends Component{
     // lastUpdate(fecha de la ultima actualización de las cotizaciones(collections))
     // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
   }
-
 
 
   componentDidCatch(error, info){
@@ -223,7 +226,8 @@ class HomeContainer extends Component{
     const {
       other_modal,
       modalVisible,
-      modalConfirmation
+      modalConfirmation,
+      app_loaded
     } = this.props
 
 
@@ -255,14 +259,19 @@ class HomeContainer extends Component{
 
                 <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} history={history}>
                   {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
-
-                  <Route exact strict path="/wallets" component={NewWallet} />
-                  <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
-                  <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
-                  <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
-                  <Route exact path="/withdraw" component={WithdrawAccountForm} />
-                  <Route exact path="/security" component={Kyc} />
-
+                     {
+                      !app_loaded ?
+                      <LoaderAplication/>
+                      :
+                      <Fragment>
+                        <Route exact strict path="/wallets" component={NewWallet} />
+                        <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
+                        <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
+                        <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
+                        <Route exact path="/withdraw" component={WithdrawAccountForm} />
+                        <Route exact path="/security" component={Kyc} />
+                      </Fragment>
+                    }
                 </ModalLayout>
               </ModalContainer>
             }
@@ -288,7 +297,6 @@ class HomeContainer extends Component{
               </ModalContainer>
             }
 
-
           </HomeLayout>
 
         </Fragment>
@@ -303,7 +311,11 @@ function mapStateToProps(state, props){
   // console.log('E S T A D O   I N I C I A L', process.env.NODE_ENV === 'development' ? Environment.development : Environment.production)
   // console.log('E S T A D O   I N I C cI A L', state.model_data.user && state.model_data.user[state.model_data.user_id])
   const { wallets, all_pairs, swaps } = state.model_data
+  const { app_loaded } = state.isLoading
+  // console.log('|||||||||| E S T A D O   I N I C cI A L', app_loaded)
+
   return {
+      app_loaded,
       modalView:state.form.modalView,
       modalVisible:state.form.modal_visible,
       loader:state.isLoading.loader,
