@@ -7,7 +7,7 @@ import {
 const initialState = {
   loader:false,
   app_loaded:false,
-  app_load_label:"epale"
+  app_load_label:"Iniciando"
 }
 
 const isLoading = (state = initialState, action) => {

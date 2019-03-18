@@ -60,7 +60,7 @@ desNormalizedList,
 withdraw_provider_by_type
 } = services
 
-const { ApiUrl, TokenUser } = Environment
+const { ApiUrl, TokenUser, IdentityApIUrl } = Environment
 let local_currency
 
 
@@ -1309,7 +1309,7 @@ export const delete_withdraw_order = order_id =>{
 export const ready_to_play = payload =>{
 
   return async(dispatch) => {
-    await dispatch(ToggleModal())
+    // await dispatch(ToggleModal())
     dispatch(app_loaded(payload))
   }
 
@@ -1507,6 +1507,55 @@ export const update_user = new_user =>{
     dispatch(Update_normalized_state(normalizeUser))
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// IDENTITY ENDPOINTS ------------------------------------------------------------------------------------
+
+
+
+
+export const countryvalidators = order_id =>{
+
+  return async(dispatch) => {
+    const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
+    let res = await ApiGetRequest(url_countryvalidators)
+    if(!res || res === 465){return false}
+    return res
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,0 +1,56 @@
+
+.mapLoader{
+  position: absolute;
+  justify-self:center;
+  align-self:center;
+}
+
+.available_country:hover{
+    fill: orange;
+    cursor: pointer;
+}
+
+path:hover{
+  fill:#e2e2e2;
+}
+
+        path.active{
+          fill: orange;
+        }
+        .background {
+          fill: none;
+          pointer-events: all;
+        }
+        .feature {
+          fill: #ccc;
+          cursor: pointer;
+        }
+
+        /*.feature.active {
+          fill: orange;
+        }*/
+
+        .mesh {
+          fill: none;
+          stroke: #fff;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        .map{
+        position: relative;
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        display: grid;
+        align-items: center;
+        justify-items: center;
+        }
+
+        .map svg{
+          /*position: absolute;*/
+          align-self: center;
+          justify-self:center;
+          /*width: 100%;*/
+          /*height: 100%;*/
+        }

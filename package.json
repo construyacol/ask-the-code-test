@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bignumber.js": "^8.0.2",
+    "d3": "^4.9.1",
     "headroom.js": "0.9.4",
     "immutable": "^4.0.0-rc.12",
     "normalizr": "^3.3.0",

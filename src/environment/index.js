@@ -1,11 +1,8 @@
 export const Environtment = {
-  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:5900/api/' : 'https://archa.serveo.net/api/',
-  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:5900/' : 'https://archa.serveo.net/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJNajhPVHRRNjd2dHVIMmpRbnNKZENCckN1SFpWMmJxb0VLdVZOTk1tVHk0SHZ1UFlYRVFtNUtUc2JiVk4zRlFnIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTI1MzE5NDEsImV4cCI6MTU1MjU0Mjc0MX0.uPSXBud1E9zMRA8976FtAt-FVGA82E77pvxnen_tOzfO906PrYy8tq4pbH38uPulGMh8crI8CK1EFz8JsQZ4GA",
-  IdentityService:{
-    country:'colombia',
-    ApiUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:3002/api/' : 'http://andres.indophi.com:3002/api/',
-  }
+  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://201.213.89.177:5900/api/' : 'http://andres.indophi.com:5900/api/',
+  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://201.213.89.177:5900/' : 'http://andres.indophi.com:5900/',
+  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJKemNEZDlxdlR0VDRyeDZOdURHR1ZZdUhRRHc1RWthUEI3SFVIQnRyYjRuMmljU1F6bnJlZUxFRTJ6QlNnSmNHIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTI4ODA3ODMsImV4cCI6MTU1Mjg5MTU4M30.CBssQHBboLU7KQLS45fxbWvhAkVWKe3GpXrZe97C5cgW9hZcPAElDxZNqPXcDGTjosWm2BD6Vzh1zsJSvgf6ag",
+  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://andres.indophi.com:3002/api/' : 'http://andres.indophi.com:3002/api/',
 
 }
 

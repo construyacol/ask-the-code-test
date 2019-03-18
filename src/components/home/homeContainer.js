@@ -48,10 +48,7 @@ class HomeContainer extends Component{
   }
 
   componentDidMount(){
-    this.init_component()
-    this.startSocket()
-// Listening WAPS
-// /swaps/5bea1f01ba84493018b7528c
+
   }
 
 
@@ -174,40 +171,7 @@ class HomeContainer extends Component{
 
 
 
-  init_component = async() =>{
 
-    const {
-      action
-    } = this.props
-
-    action.ToggleModal()
-    let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
-    await action.get_user('user_id')
-    await action.get_all_pairs(this.props.user)
-    await action.get_pairs_for('colombia', user_collection)
-
-    let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
-    await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-    await action.get_account_balances(this.props.user)
-    await action.get_deposit_providers(this.props.user)
-    await action.get_list_user_wallets(this.props.user)
-    await action.get_all_currencies()
-    await action.get_deposit_list(this.props.user)
-    await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
-    await action.get_withdraw_list(this.props.user)
-    await action.ready_to_play(true)
-
-    // get_pairs_for(param1, param2)
-    // recibe 2 parametros, país y colección de monedas de usuario(array)
-    //
-    // Esta función define el estado de "model_data.pairs" donde contenemos:
-    //
-    // localCurrency(Moneda local definida en función al país(param1))
-    // collections(lista de todos los pares disponibles que cotizan en contra(secondary_currency) de la moneda local)
-    // current_pair(define por defecto el par BTC/(moneda_local), en caso de no existir el par define el que haya disponible)
-    // lastUpdate(fecha de la ultima actualización de las cotizaciones(collections))
-    // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
-  }
 
 
   componentDidCatch(error, info){
@@ -239,67 +203,68 @@ class HomeContainer extends Component{
       <Router
         history={history}
         >
-          <Fragment>
-            <ToastContainers/>
+          {
+            !app_loaded ?
+            <LoaderAplication init_sockets={this.startSocket}/>
+            :
+            <Fragment>
+                <ToastContainers/>
 
-          <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
+                <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-              <MenuPrincipalContainer  />
+                    <MenuPrincipalContainer  />
 
-              <MenuSuperiorContainer Headroom={Headroom}/>
-              {/* En el componente dashboard se cargan todas las vistas */}
+                    <MenuSuperiorContainer Headroom={Headroom}/>
+                    {/* En el componente dashboard se cargan todas las vistas */}
 
-              {/* <DashBoardContainer history={history} {...this.props} /> */}
-              <Route path="/" render={() => <DashBoardContainer history={history} {...this.props} />} />
-
-
-            {
-              modalVisible &&
-              <ModalContainer>
-
-                <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} history={history}>
-                  {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
-                     {
-                      !app_loaded ?
-                      <LoaderAplication/>
-                      :
-                      <Fragment>
-                        <Route exact strict path="/wallets" component={NewWallet} />
-                        <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
-                        <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
-                        <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
-                        <Route exact path="/withdraw" component={WithdrawAccountForm} />
-                        <Route exact path="/security" component={Kyc} />
-                      </Fragment>
-                    }
-                </ModalLayout>
-              </ModalContainer>
-            }
-
-            {
-              other_modal &&
-              <ModalContainer>
-                <Route exact strict path="/wallets/swap/:id" component={PairList} />
-                <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
-              </ModalContainer>
-            }
+                    {/* <DashBoardContainer history={history} {...this.props} /> */}
+                    <Route path="/" render={() => <DashBoardContainer history={history} {...this.props} />} />
 
 
-            {
-              modalConfirmation &&
-              <ModalContainer>
-                <Route
-                  exact
-                  path={["/wallets", "/", "/withdraw", "/wallets/withdraw/:id", "/wallets/swap/:id", "/wallets/activity/:id"]}
-                  component={ConfirmationModal}
-                />
-                  {/* <Route exact path="/wallets" component={ConfirmationModal} /> */}
-              </ModalContainer>
-            }
+                  {
+                    modalVisible &&
+                    <ModalContainer>
 
-          </HomeLayout>
+                      <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} history={history}>
+                        {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
+                            <Fragment>
+                              <Route exact strict path="/wallets" component={NewWallet} />
+                              <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
+                              <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
+                              <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
+                              <Route exact path="/withdraw" component={WithdrawAccountForm} />
+                              <Route exact path="/security" component={Kyc} />
+                            </Fragment>
+                      </ModalLayout>
+                    </ModalContainer>
+                  }
 
-        </Fragment>
+                  {
+                    other_modal &&
+                    <ModalContainer>
+                      <Route exact strict path="/wallets/swap/:id" component={PairList} />
+                      <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
+                    </ModalContainer>
+                  }
+
+
+                  {
+                    modalConfirmation &&
+                    <ModalContainer>
+                      <Route
+                        exact
+                        path={["/wallets", "/", "/withdraw", "/wallets/withdraw/:id", "/wallets/swap/:id", "/wallets/activity/:id"]}
+                        component={ConfirmationModal}
+                      />
+                        {/* <Route exact path="/wallets" component={ConfirmationModal} /> */}
+                    </ModalContainer>
+                  }
+
+                </HomeLayout>
+
+            </Fragment>
+      }
+
       </Router>
 
     )
