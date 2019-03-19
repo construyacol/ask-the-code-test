@@ -29,6 +29,10 @@ path:hover{
         /*.feature.active {
           fill: orange;
         }*/
+        #map-holder {
+          width: 100vw;
+          height: 100vh;
+        }
 
         .mesh {
           fill: none;
@@ -37,20 +41,14 @@ path:hover{
           stroke-linejoin: round;
         }
 
-        .map{
+        #map-holder{
         position: relative;
         height: 100%;
-        width: 100%;
+        /*width: 100%;*/
+        width: 100vw;
+        max-width: 700px;
         overflow: hidden;
         display: grid;
         align-items: center;
         justify-items: center;
-        }
-
-        .map svg{
-          /*position: absolute;*/
-          align-self: center;
-          justify-self:center;
-          /*width: 100%;*/
-          /*height: 100%;*/
         }

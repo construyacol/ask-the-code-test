@@ -91,7 +91,7 @@ class LoaderAplication extends Component {
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
 
-    console.log('load_countries', res[0].levels.level_1.personal.natural.country)
+    // console.log('load_countries', res[0].levels.level_1.personal.natural.country)
     return this.setState({
       available_countries:res[0].levels.level_1.personal.natural.country
     })
@@ -122,12 +122,13 @@ class LoaderAplication extends Component {
     return(
       <div className="LoaderAplication" >
         {
-          !country && available_countries ?
+          // !country && available_countries ?
+          !country ?
           <div className="selectCountry">
             <p>title</p>
             <SAmerica
-              width={700}
-              height={600}
+              width={900}
+              height={768}
               loader={loader}
               action_loader={this.action_loader}
               available_countries={available_countries}
