@@ -1,4 +1,6 @@
 // import nomalizedApp from '../schemas'
+import user_source from '../components/api'
+
 import {
   ALL_PAIRS,
   CURRENT_PAIR,
@@ -22,7 +24,7 @@ const initialState = {
     currentPair:null,
     localCurrency:""
   },
-  user:null,
+  user:user_source,
   wallets:null,
   currencies:null,
   balances:{}

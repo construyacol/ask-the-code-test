@@ -7,12 +7,12 @@ import convertCurrencies from '../services/convert_currency'
 import store from '../'
 
 import { coins } from '../components/api/ui/api.json'
+import user_source from '../components/api'
 
 // MODELOS DE PARA HACER PRUEBAS EN CASO DE QUE EL API ESTE INACCESIBLE
 
 // import pairs from '../components/api/ui/modelo_pairs.json'
 // import deposit_providers from '../components/api/ui/deposit_providers.json'
-import user_source from '../components/api'
 import walletsJSON from '../components/api/ui/model_account.json'
 // import deposits from '../components/api/ui/deposits.json'
 
@@ -1491,12 +1491,12 @@ export const get_all_currencies = () => {
 
 
 
-export const get_user = user_id =>{
+export const get_user = user =>{
   return async(dispatch) => {
     // hacemos la consulta al api para traer el modelo del usuario....
     // en este ejemplo utilizaremos un modelo de un json llamado user_source
     await dispatch(load_label('mi información'))
-    let normalizeUser = await normalize_user(user_source)
+    let normalizeUser = await normalize_user(user)
     // console.log('||||||||||||||°°°°--------GET_USER--------°°°°|||||||||||||', normalizeUser)
     dispatch(Update_normalized_state(normalizeUser))
   }

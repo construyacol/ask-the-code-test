@@ -1,11 +1,10 @@
 {
     "id": "5bea1f01ba84493018b7528c",
-    "username": "andres",
-    "name": "andres erminzon",
-    "surname": "gomez trujillo",
-    "id_number":"1116552233",
-    "balances":[],
-    "email": "andres@gmail.com",
+    "username":"",
+    "name": "",
+    "surname": "",
+    "id_number":"",
+    "email": "",
     "cover": "https://randomuser.me/api/portraits/men/46.jpg",
     "role": "user",
     "country": "colombia",
@@ -27,6 +26,7 @@
         "withdraw":true
       }
     },
+    "balances":[],
     "deposit_providers":[],
     "wallets": [],
     "withdraw_accounts":null,

@@ -13,7 +13,9 @@ import './loader_app.css'
 class SelectCountry extends Component {
 
   state = {
-    available_countries:null
+    available_countries:null,
+    disabled:true,
+    country_match:null
   }
 
   componentDidMount(){
@@ -22,6 +24,7 @@ class SelectCountry extends Component {
 
   action_loader = (payload) =>{
     this.props.action.Loader(payload)
+    this.setState({disabled:false})
   }
 
   load_countries = async() =>{
@@ -38,7 +41,6 @@ class SelectCountry extends Component {
 
   update_country = async(e, without_click) =>{
     const { value } = e.target
-    console.log('||||| update_country', value)
     const { available_country_list } = this.state
     let match = await matchItem(available_country_list, {primary:value}, 'value')
     if(match && match.length === 1){
@@ -66,6 +68,11 @@ class SelectCountry extends Component {
     this.setState({country_match:null})
   }
 
+  new_country_selected = () =>{
+    const { value } = this.state.country_match
+    this.props.select_country(value)
+  }
+
 
   render(){
 
@@ -77,8 +84,10 @@ class SelectCountry extends Component {
 
     const{
       available_countries,
-      country_match
+      country_match,
+      disabled
     } = this.state
+
 
     return(
       <Fragment>
@@ -90,9 +99,11 @@ class SelectCountry extends Component {
                 country_match={country_match}
                 update_country={this.update_country}
                 reset_data={this.reset_data}
+                disabled={disabled}
+                handleSubmit={this.new_country_selected}
               />
             </div>
-            <div className="SamericaContainer">
+            <div className={`SamericaContainer ${!disabled ? 'enableMap' : ''}`}>
               <div className="blocker" style={{display:country_match ? 'initial' : 'none'}}></div>
             <SAmerica
               width={900}

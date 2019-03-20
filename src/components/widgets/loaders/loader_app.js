@@ -18,48 +18,67 @@ class LoaderAplication extends Component {
 
 // 'Actualizar el país del usuario'
 
-  init_component = async() =>{
+  init_component = async(new_country) =>{
 
     const{
-      country,
+      user,
+      country, //el country debe llegar desde el auth service, si no llega es la primera vez del usuario
       // TokenUser
     } = this.props
+
+
+
+
+
 
     const { TokenUser } = Environtment
   //1.recibo token y country del usuario
   // 1.1. si el usuario no tiene country es por que es la primera vez que inicia sesión asi que le pedimos el country.
-  // 1.2. con el country ya podemos comenzar a validar los demas enpoints, en ese momento automaticamente se crea el profile en el transaction service
-  // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator
-  // 3.luego le pegamos a "profiles/get-profile" & "status/get-status" para traer el status y el profile del usuario
-  // 4.continúa la carga de la aplicación
+  // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en el transaction service
+  // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
+  // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id)
+
+  // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
+  // 5.continúa la carga de la aplicación
     // si el usuario no tiene country es porque es la primera vez que entra, así que detenemos este flujo y
     // le pedimos su país de operaciones => select_country()
-    if(!country){return false}
+    if(!country && !new_country ){return false}
+
+    console.log('||||||||| LOADEER STATE', this.props)
 
     const {
       action,
       init_sockets
     } = this.props
 
-
     // action.ToggleModal()
-    await action.get_user('user_id')
-    await action.get_all_pairs(this.props.user)
-    await init_sockets()
 
-    let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
-    await action.get_pairs_for('colombia', user_collection)
+    // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
+    // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
+    await action.get_all_pairs()
 
-    let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
-    await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-    await action.get_account_balances(this.props.user)
-    await action.get_deposit_providers(this.props.user)
-    await action.get_list_user_wallets(this.props.user)
-    await action.get_all_currencies()
-    await action.get_deposit_list(this.props.user)
-    await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
-    await action.get_withdraw_list(this.props.user)
-    await action.ready_to_play(true)
+    // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
+    // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
+    // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
+    // console.log('LoaderAplication', user)
+    // await action.get_user(user)
+
+
+    // await init_sockets()
+    //
+    // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
+    // await action.get_pairs_for('colombia', user_collection)
+    //
+    // let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
+    // await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+    // await action.get_account_balances(this.props.user)
+    // await action.get_deposit_providers(this.props.user)
+    // await action.get_list_user_wallets(this.props.user)
+    // await action.get_all_currencies()
+    // await action.get_deposit_list(this.props.user)
+    // await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
+    // await action.get_withdraw_list(this.props.user)
+    // await action.ready_to_play(true)
 
     // get_pairs_for(param1, param2)
     // recibe 2 parametros, país y colección de monedas de usuario(array)
@@ -77,7 +96,9 @@ class LoaderAplication extends Component {
 
 
 
-  select_country = () =>{}
+  select_country = (new_country) =>{
+    this.init_component(new_country)
+  }
 
 
   render(){
@@ -88,13 +109,16 @@ class LoaderAplication extends Component {
       loader
     } = this.props
 
+    console.log('LoaderAplication RENDER((((()))))', country)
 
     return(
       <div className="LoaderAplication" >
         {
           // !country && available_countries ?
           !country ?
-          <SelectCountry/>
+          <SelectCountry
+            select_country={this.select_country}
+          />
           :
            <SimpleLoader label={`${app_load_label}`} />
         }
@@ -107,8 +131,8 @@ class LoaderAplication extends Component {
 
 function mapStateToProps(state, props){
 
-  // console.log('||||||||| LOADEER STATE', state)
-  const { user, user_id, wallets, all_pairs } = state.model_data
+  // console.log('||||||||| LOADEER STATE', state.model_data)
+  const { user, user_id,  wallets, all_pairs } = state.model_data
   const { loader } = state.isLoading
 
   return{
@@ -116,7 +140,7 @@ function mapStateToProps(state, props){
     user:user && user[user_id],
     wallets,
     all_pairs,
-    country:null,
+    country:user && user[user_id] && user[user_id].country,
     // country:'colombia',
     loader
   }

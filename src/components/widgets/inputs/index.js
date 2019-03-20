@@ -393,17 +393,17 @@ export const InputCountry = (props) =>{
     colorMessage,
     update_country,
     country_match,
-    reset_data
+    reset_data,
+    disabled
   } = props
 
-  console.log('|||| InputCountry  -  country_match', country_match)
 
   return(
     <div id="kycPrime" className="containerInputComponent3">
 
       <div className="inputLabelsCont">
         <div className="InputCarous">
-           <p  className="labelText3 fuente " >Elige el país desde el que operas</p>
+           <p  className="labelText3 fuente " >Elige el país desde el que operarás</p>
         </div>
       </div>
 
@@ -427,12 +427,11 @@ export const InputCountry = (props) =>{
              placeholder="Ej: Colombia"
              onChange={update_country}
              name="country"
+             disabled={disabled}
              // defaultValue=""
            />
           </form>
         }
-
-
 
         <div className="InputProgressBar countryppp" >
           {/* <div className="InputProgressed" style={{ width: step<2 ? 0 : `${(((step*100))/kyc.length)}%` }} ></div> */}
