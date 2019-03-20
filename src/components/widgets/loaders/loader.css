@@ -7,6 +7,16 @@
   /*justify-self: center;*/
 }
 
+.LoaderAplication{
+  width:100vw;
+  height:100vh;
+  background: white;
+  display:grid;
+  justify-items:center;
+  align-items:center;
+}
+
+
 .grillaComun{
   height: 64px;
 }

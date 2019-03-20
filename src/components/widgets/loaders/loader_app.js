@@ -4,16 +4,13 @@ import { connect } from 'react-redux'
 import Environtment from '../../../environment'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import SAmerica from '../maps/sAmerica'
+import { InputCountry } from '../inputs'
+import SelectCountry from '../maps/select_country/select_country'
+import './loader.css'
 
-import './loader_app.css'
 
 class LoaderAplication extends Component {
 
-
-  state = {
-    available_countries:null
-  }
 
   componentDidMount(){
     this.init_component()
@@ -28,20 +25,15 @@ class LoaderAplication extends Component {
       // TokenUser
     } = this.props
 
-    this.load_countries()
-
     const { TokenUser } = Environtment
-
   //1.recibo token y country del usuario
   // 1.1. si el usuario no tiene country es por que es la primera vez que inicia sesión asi que le pedimos el country.
   // 1.2. con el country ya podemos comenzar a validar los demas enpoints, en ese momento automaticamente se crea el profile en el transaction service
   // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator
   // 3.luego le pegamos a "profiles/get-profile" & "status/get-status" para traer el status y el profile del usuario
   // 4.continúa la carga de la aplicación
-
     // si el usuario no tiene country es porque es la primera vez que entra, así que detenemos este flujo y
     // le pedimos su país de operaciones => select_country()
-
     if(!country){return false}
 
     const {
@@ -81,21 +73,8 @@ class LoaderAplication extends Component {
     // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
   }
 
-  action_loader = (payload) =>{
-    this.props.action.Loader(payload)
-  }
 
 
-  load_countries = async() =>{
-    this.props.action.Loader(true)
-    let res = await this.props.action.countryvalidators()
-    if(!res){return false}
-
-    // console.log('load_countries', res[0].levels.level_1.personal.natural.country)
-    return this.setState({
-      available_countries:res[0].levels.level_1.personal.natural.country
-    })
-  }
 
 
   select_country = () =>{}
@@ -109,32 +88,13 @@ class LoaderAplication extends Component {
       loader
     } = this.props
 
-    const{
-      available_countries
-    } = this.state
-
-    // const{
-    //   country
-    // } = IdentityService
-
-    // console.log('|||||||  - - LoaderAplication', this.props)
 
     return(
       <div className="LoaderAplication" >
         {
           // !country && available_countries ?
           !country ?
-          <div className="selectCountry">
-            <p>title</p>
-            <SAmerica
-              width={900}
-              height={768}
-              loader={loader}
-              action_loader={this.action_loader}
-              available_countries={available_countries}
-            />
-            <p>title</p>
-          </div>
+          <SelectCountry/>
           :
            <SimpleLoader label={`${app_load_label}`} />
         }
@@ -157,8 +117,8 @@ function mapStateToProps(state, props){
     wallets,
     all_pairs,
     country:null,
+    // country:'colombia',
     loader
-    // country:'colombia'
   }
 }
 

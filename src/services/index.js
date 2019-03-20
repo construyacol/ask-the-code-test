@@ -55,18 +55,56 @@ export const desNormalizedList = async(normalizedList, indices) =>{
 // indices
 
 export const matchNormalizeWallet = (list, itemReview) => {
-
     return new Promise(async(resolve, reject)=>{
-
     let result = []
-
     await Object.keys(list).forEach((wallet_id) => {
       if(list[wallet_id].currency.currency === itemReview ){
         result.push(list[wallet_id])
       }
     })
-
     return resolve(result)
+  })
+}
+
+
+
+
+export const objectToArray = (list) => {
+
+    return new Promise(async(resolve, reject)=>{
+
+    let new_list = []
+
+    await Object.keys(list).forEach((indice) => {
+        if(indice === 'ui_name'){return false}
+        new_list.push(list[indice])
+    })
+
+    return resolve(new_list)
+  })
+
+}
+
+
+
+export const add_index_to_root_object = (list) => {
+
+    return new Promise(async(resolve, reject)=>{
+
+    let new_object
+    await Object.keys(list).forEach((index_id) => {
+      if(index_id === 'ui_name'){return false}
+        list[index_id]={
+          ...list[index_id],
+          value:index_id
+        }
+        new_object = {
+          ...new_object,
+          [index_id]:list[index_id]
+        }
+    })
+
+    return resolve(new_object)
   })
 
 }
@@ -116,13 +154,9 @@ export const withdraw_provider_by_type = async(withdraw_providers) => {
 }
 
 
-
-
-
 export const matchItem = (list, itemReview, type, all_results) => {
 
   const { primary } = itemReview
-
 
   let result = []
   // let all_results = false

@@ -383,4 +383,72 @@ export const InputKycBasic = (props) =>{
 
 }
 
+
+
+export const InputCountry = (props) =>{
+
+  const {
+    message,
+    handleSubmit,
+    colorMessage,
+    update_country,
+    country_match,
+    reset_data
+  } = props
+
+  console.log('|||| InputCountry  -  country_match', country_match)
+
+  return(
+    <div id="kycPrime" className="containerInputComponent3">
+
+      <div className="inputLabelsCont">
+        <div className="InputCarous">
+           <p  className="labelText3 fuente " >Elige el país desde el que operas</p>
+        </div>
+      </div>
+
+      <div className={`inputContainer3 ${props.active ? 'inputActivado' : '' }`}>
+
+        {
+          country_match ?
+
+          <div className="country_selected">
+            <IconSwitch icon={country_match.value}  size={25}/>
+            <p className="fuente">{country_match.ui_name}</p>
+            <i className="fas fa-times cerratelo" onClick={reset_data}></i>
+          </div>
+
+          :
+
+          <form onSubmit={handleSubmit} >
+            <input
+             className={`inputElement3 ${props.active ? 'inputActivado' : '' }`}
+             type="text"
+             placeholder="Ej: Colombia"
+             onChange={update_country}
+             name="country"
+             // defaultValue=""
+           />
+          </form>
+        }
+
+
+
+        <div className="InputProgressBar countryppp" >
+          {/* <div className="InputProgressed" style={{ width: step<2 ? 0 : `${(((step*100))/kyc.length)}%` }} ></div> */}
+          <div className="InputProgressed" style={{ width:country_match?'100%':'0'}} ></div>
+        </div>
+
+        <i className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
+
+      </div>
+      <div className="InputContainerT" >
+        {/* <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{message}</p> */}
+        {/* <p className="fuente2 InputStep" >{step}/{kyc.length}</p> */}
+      </div>
+    </div>
+  )
+
+}
+
 export default InputForm

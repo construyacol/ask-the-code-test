@@ -126,19 +126,72 @@ font-size: 20px;
   position: absolute;
   bottom: 0;
 }
+
+.InputProgressBar.countryppp{
+  height: 4px;
+  width: 100%;
+  background: #8080802e;
+  position: absolute;
+  bottom: 0;
+}
 .InputProgressed{
   transition: .3s;
   height: 100%;
       background: linear-gradient(to right, #00D2FF, #3A7BD5);
 }
 
-.arrowcito{
+.blocker{
+  position: absolute;
+  z-index: 2;
+  background: transparent;
+  width: 100%;
+  height: 100%;
+}
+
+.cerratelo{
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.SamericaContainer{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.cerratelo:hover{
+  transform: scale(1.25);
+}
+
+.cerratelo:active{
+  transform: scale(.7);
+}
+
+.arrowcito, .arrowcito2{
   color: #0066AA;
   font-size: 33px;
   position: absolute;
   right: 15px;
   cursor: pointer;
 }
+
+.arrowcito2{
+  opacity: 0;
+  margin-bottom: 5px;
+  font-size: 26px;
+  transition: .3s;
+}
+
+.arrowcito2:hover{
+  transform: scale(1.15);
+}
+
+.arrowcito2:active{
+  transform: scale(.8);
+}
+
 .InputCarous{
   height: auto;
   width: 100%;
@@ -237,13 +290,18 @@ font-size: 20px;
     opacity: 0;
   }
 
-.containerInputComponent, .containerInputComponent2{
+.containerInputComponent, .containerInputComponent2, .containerInputComponent3{
   height: 100px;
   width: 100%;
   max-width: 450px;
   position: relative;
   display: grid;
   align-items: center;
+}
+
+.containerInputComponent3{
+  width: calc(100% - 20px) !important;
+  padding: 0 10px !important;
 }
 
 .containerInputComponent2{
@@ -256,8 +314,19 @@ font-size: 20px;
   width: 650px ;
   max-width: 650px !important;
   min-width: 450px;
-
 }
+
+#kycPrime.containerInputComponent3{
+  max-width: 600px !important;
+}
+
+.containerInputComponent3{
+  grid-template-rows: 40px 1fr 20px !important;
+  grid-gap: 15px !important;
+  height: 150px !important;
+}
+
+
 
 
 .InputContainerT{
@@ -281,10 +350,19 @@ font-size: 20px;
 }
 
 
-.labelText, .labelText2{
+.labelText, .labelText2, .labelText3{
   text-align: center;
   color: #50667a;
   margin: 15px 0;
+}
+
+.labelText3{
+  font-size: 24px ;
+  margin: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .labelText2{
@@ -294,6 +372,27 @@ font-size: 20px;
   height: 40px;
   display: flex;
   align-items: center;
+}
+
+.country_selected p{
+  margin: 0;
+}
+
+.country_selected svg{
+  margin-right: 15px;
+}
+
+.country_selected{
+  background: #f3f3f3;
+  height: 76%;
+  display: flex;
+  align-items: center;
+  max-width: 200px;
+  margin: 0 15px;
+  padding: 0 15px;
+  color: gray;
+  position: relative;
+  border-radius: 6px;
 }
 
 .inputContainer.inputActivado{

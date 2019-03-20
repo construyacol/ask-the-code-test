@@ -57,7 +57,9 @@ UpdatePendingSwap
 const {
 matchItem,
 desNormalizedList,
-withdraw_provider_by_type
+withdraw_provider_by_type,
+add_index_to_root_object,
+objectToArray
 } = services
 
 const { ApiUrl, TokenUser, IdentityApIUrl } = Environment
@@ -1536,7 +1538,14 @@ export const countryvalidators = order_id =>{
     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
     let res = await ApiGetRequest(url_countryvalidators)
     if(!res || res === 465){return false}
-    return res
+    let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+    let new_array = await objectToArray(countries)
+    let construct_res = {
+      res:res[0],
+      countries,
+      country_list:new_array
+    }
+    return construct_res
   }
 
 }

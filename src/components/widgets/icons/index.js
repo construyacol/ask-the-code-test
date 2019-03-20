@@ -480,7 +480,7 @@ export function Percentage(props){
 
 export function Cop(props){
   return(
-    <Icon {...props} viewBox="0 0 400 400" clases="marginLef">
+    <Icon {...props} viewBox="0 0 400 400" >
       <image overflow="visible" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYIAAAGHCAMAAACK6aUIAAAAmVBMVEUAAADzyxveuybJrTDIFirB
       pzSynDzSsyu6ojjrxR+4IjLkwCK1njqxKDebOUTOsC6rLTulMT63oDkMPY69HjAUQYqgNUGeNkKr
       KjohR4PFqjInSYGdOEPCGi0rS3++pTaoLzwxTXzYtymjMz8vTX0bRIYfRYUkSIItTH780RYAOJPO

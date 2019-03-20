@@ -31,11 +31,14 @@ class SAmerica extends Component {
 
   // zoom to show a bounding box, with optional additional padding as percentage of box size
   boxZoom = (box, centroid, paddingPerc, d, this_index, paths) => {
+
     const { properties } = d
     let country = properties.admin.toLowerCase()
-    const { available_countries } = this.props
+
+    const { available_countries, select_country_component } = this.props
     let available_country = available_countries[country]
     if(!available_country){return false}
+
     active.classed("active", false);
 
     const { current_data } = this.state
@@ -88,11 +91,20 @@ class SAmerica extends Component {
         country:country
       }
     })
+
+    if(select_country_component){
+      let data={
+        target:{
+          value:country
+        }
+      }
+      select_country_component(data, true)
+    }
+
   }
 
 
   reset = () =>{
-    console.log('||||- - - RESET - - ')
     // svg.classed("active", false);
     active = d3.select(null);
     this.setState({
@@ -127,8 +139,8 @@ class SAmerica extends Component {
 
           projection = d3
             .geoEquirectangular()
-            .center([-60, -15])
-            .scale(600)
+            .center([-60, -25])
+            .scale(700)
             .translate([w / 2, h / 2])
           ;
           // Define map path
@@ -197,11 +209,11 @@ class SAmerica extends Component {
                 .attr("d", path)
                 .attr("stroke", "white")
                 .attr("id", function(d, i) {
-                  return "country" + d.properties.admin.toLowerCase();
+                  return d.properties.admin.toLowerCase();
                 })
                 .attr("fill", (data) => {
                   let filled = available_countries && available_countries[data.properties.admin.toLowerCase()]
-                  if(!filled){return "#f1f1f1"}
+                  if(!filled){return "#e8e8e8"}
                   return "#dadada"
                 })
                 .attr("class", (data) => {

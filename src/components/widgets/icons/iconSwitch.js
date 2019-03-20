@@ -91,6 +91,8 @@ class IconSwitch extends Component {
       case 'cop':
       case 'colombia':
         return <Cop {...props} />
+      case 'peru':
+        return <Cop {...props} />
       case 'deposit':
         return <Deposit {...props} />
       case 'deposit_crypto':
