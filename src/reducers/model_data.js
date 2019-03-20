@@ -24,7 +24,7 @@ const initialState = {
     currentPair:null,
     localCurrency:""
   },
-  user:user_source,
+  user:null,
   wallets:null,
   currencies:null,
   balances:{}

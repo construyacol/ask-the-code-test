@@ -1,18 +1,18 @@
 {
-    "id": "5bea1f01ba84493018b7528c",
-    "username":"",
-    "name": "",
-    "surname": "",
-    "id_number":"",
-    "email": "",
+    "id": null,
+    "username":null,
+    "name": null,
+    "surname": null,
+    "id_number":null,
+    "email": null,
     "cover": "https://randomuser.me/api/portraits/men/46.jpg",
-    "role": "user",
-    "country": "colombia",
+    "role": null,
+    "country": null,
     "settings":{
-      "current_country":"colombia",
-      "languaje":"spanish",
-      "currency":"cop",
-      "phone":"3156669999"
+      "current_country":null,
+      "languaje":null,
+      "currency":null,
+      "phone":null
     },
     "security_center":{
       "email":false,

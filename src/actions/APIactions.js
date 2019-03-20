@@ -130,14 +130,16 @@ const ApiGetRequest = async(url, params) => {
 }
 
 
-const ApiPostRequest = async(url, body) => {
+const ApiPostRequest = async(url, body, cancel_country) => {
 
   let myHeaders = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   })
 
+if(!cancel_country){
   body.data.country = 'colombia'
+}
 
   // console.log('||||||||ApiPostRequest', body)
 
@@ -189,22 +191,33 @@ const ApiDelete = async(url) => {
 
 
 
-export const get_all_pairs = (user) =>{
+export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
-    await dispatch(load_label('Importando pares'))
-    const url_pairs = `${ApiUrl}pairs`
-    const pairs = await ApiGetRequest(url_pairs)
 
-    if(!pairs){return false}
-    dispatch(AllPairs(pairs))
 
-    let user_update = {
-      ...user,
-      available_pairs:[
-        ...pairs
-      ]
+    let body = {
+      "access_token":token,
+      "data": {
+        "country":country
+      }
     }
 
+    await dispatch(load_label('Importando pares'))
+
+    // const url_pairs = `${ApiUrl}pairs`
+    const url_pairs = `${ApiUrl}pairs/get-all-pairs`
+    const pairs = await ApiPostRequest(url_pairs, body)
+    if(!pairs){return false}
+    const { data } = pairs
+
+    dispatch(AllPairs(data))
+
+    let user_update = {
+      ...user_source,
+      available_pairs:[
+        ...data
+      ]
+    }
     let normalize_pairs = await normalize_user(user_update)
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
@@ -1491,14 +1504,54 @@ export const get_all_currencies = () => {
 
 
 
-export const get_user = user =>{
+export const get_user = (token, country) =>{
   return async(dispatch) => {
-    // hacemos la consulta al api para traer el modelo del usuario....
-    // en este ejemplo utilizaremos un modelo de un json llamado user_source
-    await dispatch(load_label('mi información'))
-    let normalizeUser = await normalize_user(user)
-    // console.log('||||||||||||||°°°°--------GET_USER--------°°°°|||||||||||||', normalizeUser)
-    dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(load_label('Cargando tu información'))
+
+    let body = {
+      "access_token":token,
+      "data": {
+        "country":country
+      }
+    }
+
+    // 1. inicializamos el estado con el token y el country del usuario
+    const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
+    const init_state = await ApiPostRequest(init_state_url, body)
+    if(init_state && !init_state.data){return false}
+
+    // 2. Obtenemos el status del usuario del cual extraemos el id y el country
+    const get_status_url = `${IdentityApIUrl}status/get-status`
+
+    body = {
+      "access_token":token,
+      "data": {}
+    }
+
+    const status = await ApiPostRequest(get_status_url, body, true)
+    if(!status || status === 465){return false}
+    const { data } = status
+    let country_object = await add_index_to_root_object(data.countries)
+    let country = await objectToArray(country_object)
+
+    let user_update = {
+      ...user_source,
+      id:data.userId,
+      country:country[0].value
+    }
+
+    //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
+    const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
+    const profile_data = await ApiPostRequest(get_profile_url, body, true)
+    if(profile_data){
+      // Agregamos la información al modelo usuario (user_update)
+    }
+
+    let normalizeUser = await normalize_user(user_update)
+    await dispatch(Update_normalized_state(normalizeUser))
+
+    return normalizeUser
+    // dispatch(Update_normalized_state(normalizeUser))
   }
 }
 
