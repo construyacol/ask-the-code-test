@@ -10,7 +10,14 @@ body {
   background: black;
 }
 
+@font-face {
+  font-family: Museos;
+  src: url('./assets/fonts/MuseoSans_500.otf');
+}
 
+.fuenteMuseo {
+  font-family: Museos;
+}
 
 
 .der{

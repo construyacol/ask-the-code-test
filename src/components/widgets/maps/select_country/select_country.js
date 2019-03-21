@@ -101,6 +101,7 @@ class SelectCountry extends Component {
                 reset_data={this.reset_data}
                 disabled={disabled}
                 handleSubmit={this.new_country_selected}
+                active={country_match ? true : null}
               />
             </div>
             <div className={`SamericaContainer ${!disabled ? 'enableMap' : ''}`}>

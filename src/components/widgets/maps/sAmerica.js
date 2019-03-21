@@ -213,7 +213,7 @@ class SAmerica extends Component {
                 })
                 .attr("fill", (data) => {
                   let filled = available_countries && available_countries[data.properties.admin.toLowerCase()]
-                  if(!filled){return "#e0e0e0d6"}
+                  if(!filled){return "#e5e5e5"}
                   return "#cecdcd"
                 })
                 .attr("class", (data) => {

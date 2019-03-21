@@ -6,16 +6,18 @@
 }
 
 .available_country:hover{
-    fill: orange;
+  /*fill: orange;*/
+    fill: orange !important;
     cursor: pointer;
 }
 
-path:hover{
+#map path:hover{
   fill:#dadada;
 }
 
         path.active{
           fill: orange;
+          /*fill: #1babec;*/
         }
         .background {
           fill: none;

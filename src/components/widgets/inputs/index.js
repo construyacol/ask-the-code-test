@@ -394,7 +394,8 @@ export const InputCountry = (props) =>{
     update_country,
     country_match,
     reset_data,
-    disabled
+    disabled,
+    active
   } = props
 
 
@@ -407,7 +408,7 @@ export const InputCountry = (props) =>{
         </div>
       </div>
 
-      <div className={`inputContainer3 ${props.active ? 'inputActivado' : '' }`}>
+      <div className={`inputContainer3 ${active ? 'inputActivado' : '' }`}>
 
         {
           country_match ?
@@ -422,7 +423,7 @@ export const InputCountry = (props) =>{
 
           <form onSubmit={handleSubmit} >
             <input
-             className={`inputElement3 ${props.active ? 'inputActivado' : '' }`}
+             className={`inputElement3 ${active ? 'inputActivado' : '' }`}
              type="text"
              placeholder="Ej: Colombia"
              onChange={update_country}

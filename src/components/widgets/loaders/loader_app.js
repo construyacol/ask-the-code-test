@@ -6,13 +6,16 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { InputCountry } from '../inputs'
 import SelectCountry from '../maps/select_country/select_country'
-import './loader.css'
+import Coinsenda from '../icons/logos/coinsenda.js'
 
+import './loader.css'
 
 class LoaderAplication extends Component {
 
   state = {
-    country:this.props.country
+    country:this.props.country,
+    progressBarWidth:0,
+    anim:'in'
   }
 
   componentDidMount(){
@@ -22,12 +25,10 @@ class LoaderAplication extends Component {
 // 'Actualizar el país del usuario'
 
   init_component = async(new_country) =>{
-
     const{
       country,
       token
     } = this.props //el country y el token deben llegar desde el auth service, si no llega el country es la primera vez del usuario
-
 
   //1.recibo token y country del usuario
   // 1.1. si el usuario no tiene country es por que es la primera vez que inicia sesión asi que le pedimos el country.
@@ -42,7 +43,10 @@ class LoaderAplication extends Component {
 
     if(!country && !new_country ){return false}
     let user_country = country ? country : new_country
-    this.setState({country:user_country})
+    await this.animation('out')
+    await this.setState({country:user_country})
+    await this.animation('in')
+
     const {
       action,
       init_sockets
@@ -93,9 +97,26 @@ class LoaderAplication extends Component {
 
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.app_load_label !== this.props.app_load_label){
+      this.setState({
+        progressBarWidth: this.state.progressBarWidth += 8
+      })
+    }
+  }
+
 
   select_country = (new_country) =>{
     this.init_component(new_country)
+  }
+
+  animation = async(anim) =>{
+    return new Promise(async(resolve, reject)=>{
+      await this.setState({anim})
+      setTimeout(()=>{
+        return resolve(true)
+      }, 150)
+    })
   }
 
 
@@ -108,22 +129,38 @@ class LoaderAplication extends Component {
     } = this.props
 
     const{
-      country
+      country,
+      progressBarWidth,
+      anim
     } = this.state
 
-    console.log('LoaderAplication RENDER((((()))))', user)
+
+    // console.log('LoaderAplication RENDER((((()))))', user)
 
     return(
-      <div className="LoaderAplication" >
+      <div className="LoaderAplication">
         {
           // !country && available_countries ?
           !country ?
-          <SelectCountry
-            select_country={this.select_country}
-          />
+          <div className={`LoaderAplication loaderLayout ${anim}`}>
+            <SelectCountry
+              select_country={this.select_country}
+            />
+          </div>
           :
-           <SimpleLoader label={`${app_load_label}`} />
+          <div className={`LoaderContainer loaderLayout ${anim}`}>
+            <div className="logotypes">
+              <Coinsenda size={50} color="#0198FF"/>
+              <h1 className="fuenteMuseo">Coinsenda</h1>
+            </div>
+            {/* <Coinsenda color="#0198FF" size={70}/> */}
+            {/* <SimpleLoader label={`${app_load_label}`} /> */}
+            <p className="fuente">{app_load_label}</p>
+          </div>
         }
+        <div className="KycprogressBar loader">
+          <div className="kycPropgressed" style={{width:`${progressBarWidth}%`}}></div>
+        </div>
       </div>
 
     )
