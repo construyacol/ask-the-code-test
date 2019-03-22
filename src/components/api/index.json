@@ -8,6 +8,7 @@
     "cover": "https://randomuser.me/api/portraits/men/46.jpg",
     "role": null,
     "country": null,
+    "person_type":"natural",
     "settings":{
       "current_country":null,
       "languaje":null,

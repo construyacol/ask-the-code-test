@@ -8,11 +8,17 @@ import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, nextKyc, loader, siguiente, exit } = props
+ const { globalStep, nextKyc, loader, siguiente, exit, user } = props
+
+ // console.log('||||||||||||| KycBasicContainer U S E R - - - ', user)
+ let level = user.verification_level
+  // let level = 'level_1'
+  // console.log('||||||||||||| KycBasicContainer L E V E L - - - ', level)
+
 
   return(
     <section className="KycLayoutMom">
-      <div className={`KycLayoutCarousel ${globalStep === 0 ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} >
+      <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} >
 
         {
           loader  ?
@@ -22,6 +28,7 @@ const KycLayout = (props) =>{
             <p className="fuente KycTitle" >Verificación Basica</p>
               <KycBasicContainer
                 nextKyc={nextKyc}
+                {...props}
               />
           </div>
         }
@@ -57,14 +64,13 @@ const KycLayout = (props) =>{
           <div className="KycLayout" >
             <p className="fuente KycTitle" >Verificación Avanzada</p>
             {
-              globalStep > 1 &&
+              (globalStep > 1 || level === 'level_1') &&
               <KycAvancedContainer/>
             }
           </div>
 
       </div>
     </section>
-
   )
 }
 

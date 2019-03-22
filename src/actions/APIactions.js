@@ -22,7 +22,8 @@ import * as normalizr_services from '../schemas'
 
 import {
   toast_sound,
-  show_sound
+  show_sound,
+  success_sound
 } from './soundActions'
 
 import {
@@ -194,7 +195,6 @@ const ApiDelete = async(url) => {
 export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
 
-
     let body = {
       "access_token":token,
       "data": {
@@ -206,8 +206,10 @@ export const get_all_pairs = (token, country) =>{
 
     // const url_pairs = `${ApiUrl}pairs`
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
-    const pairs = await ApiPostRequest(url_pairs, body)
-    if(!pairs){return false}
+    const pairs = await ApiPostRequest(url_pairs, body, true)
+
+    // console.log('|||||| get_all_pairs', pairs)
+    if(!pairs || pairs === 465){return false}
     const { data } = pairs
 
     dispatch(AllPairs(data))
@@ -221,6 +223,7 @@ export const get_all_pairs = (token, country) =>{
     let normalize_pairs = await normalize_user(user_update)
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
+    return normalize_pairs
 
   }
 }
@@ -1324,7 +1327,7 @@ export const delete_withdraw_order = order_id =>{
 export const ready_to_play = payload =>{
 
   return async(dispatch) => {
-    // await dispatch(ToggleModal())
+    // dispatch(success_sound())
     dispatch(app_loaded(payload))
   }
 
@@ -1504,21 +1507,28 @@ export const get_all_currencies = () => {
 
 
 
-export const get_user = (token, country) =>{
+
+
+
+// IDENTITY ENDPOINTS ------------------------------------------------------------------------------------
+
+
+export const get_user = (token, user_country) =>{
   return async(dispatch) => {
     await dispatch(load_label('Cargando tu información'))
 
     let body = {
       "access_token":token,
       "data": {
-        "country":country
+        "country":user_country
       }
     }
 
     // 1. inicializamos el estado con el token y el country del usuario
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
-    const init_state = await ApiPostRequest(init_state_url, body)
+    const init_state = await ApiPostRequest(init_state_url, body, true)
     if(init_state && !init_state.data){return false}
+    console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
     const get_status_url = `${IdentityApIUrl}status/get-status`
@@ -1533,25 +1543,30 @@ export const get_user = (token, country) =>{
     const { data } = status
     let country_object = await add_index_to_root_object(data.countries)
     let country = await objectToArray(country_object)
-
     let user_update = {
       ...user_source,
       id:data.userId,
-      country:country[0].value
+      country:country[0].value,
+      verification_level:country[0].verification_level,
+      levels:country[0].levels
     }
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
     const profile_data = await ApiPostRequest(get_profile_url, body, true)
-    if(profile_data){
+    if(profile_data && profile_data.data){
       // Agregamos la información al modelo usuario (user_update)
+      user_update = {
+        ...user_update,
+        ...profile_data.data.personal,
+        person_type:profile_data.data.person_type
+      }
     }
 
     let normalizeUser = await normalize_user(user_update)
     await dispatch(Update_normalized_state(normalizeUser))
-
+    // console.log('||||||  - - -.  --  normalizeUser', normalizeUser)
     return normalizeUser
-    // dispatch(Update_normalized_state(normalizeUser))
   }
 }
 
@@ -1580,12 +1595,11 @@ export const update_user = new_user =>{
 
 
 
-// IDENTITY ENDPOINTS ------------------------------------------------------------------------------------
 
 
 
 
-export const countryvalidators = order_id =>{
+export const countryvalidators = () =>{
 
   return async(dispatch) => {
     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
@@ -1602,6 +1616,28 @@ export const countryvalidators = order_id =>{
   }
 
 }
+
+
+// export const get_countryvalidators = order_id =>{
+//
+//   return async(dispatch) => {
+//     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
+//     let res = await ApiGetRequest(url_countryvalidators)
+//     if(!res || res === 465){return false}
+//     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+//     let new_array = await objectToArray(countries)
+//     let construct_res = {
+//       res:res[0],
+//       countries,
+//       country_list:new_array
+//     }
+//     return construct_res
+//   }
+//
+// }
+
+
+
 
 
 

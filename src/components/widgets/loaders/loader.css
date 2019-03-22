@@ -1,7 +1,13 @@
 
 
+.LoaderContainer .iconSty{
+  justify-content: center !important;
+}
 
-
+.LoaderContainer .iconSty>svg{
+  box-shadow: 2px 2px 3px #888888;
+    border-radius: 50%;
+}
 
 
 .loaderLayout.in{
@@ -70,11 +76,12 @@
 }
 
 .LoaderContainer{
-  height: 150px;
+  height: 200px;
   display: grid;
   position: relative;
-  justify-self:center;
+  justify-self: center;
   align-self: center;
+  /*grid-row-gap: 10px;*/
 }
 
 .KycprogressBar.loader{

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import KycBasicLayout from './kycBasicLayout'
-import { kyc  } from '../../api/ui/api.json'
+import { kyc } from '../../api/ui/api.json'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -21,6 +21,20 @@ class KycBasicContainer extends Component {
     colorMessage:"#50667a"
   }
 
+
+  componentDidMount(){
+    this.props.action.CurrentForm('kyc_basic')
+    // this.init_component()
+  }
+
+  // init_component = async() =>{
+  //
+  //
+  // }
+
+
+
+
   update = async(event) => {
     // console.log(kyc.kyc_basic[0].errmessage)
 
@@ -31,9 +45,6 @@ class KycBasicContainer extends Component {
     this.props.action.UpdateForm('kyc_basic', this.state)
     this.validateActive()
   }
-
-
-
 
 
 
@@ -167,9 +178,7 @@ class KycBasicContainer extends Component {
       this.updateMessage()
   }
 
-  componentWillMount(){
-    this.props.action.CurrentForm('kyc_basic')
-  }
+
 // nextKyc
   render(){
 

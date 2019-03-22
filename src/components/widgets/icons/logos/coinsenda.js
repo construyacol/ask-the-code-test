@@ -6,7 +6,7 @@ export const Coinsenda = props => {
 
   const{ color } = props
 
-  console.log('|||||| - - - Coinsenda ', color)
+  // console.log('|||||| - - - Coinsenda ', color)
 
   return(
     <Icon {...props} viewBox="0 0 197.015 311.94">

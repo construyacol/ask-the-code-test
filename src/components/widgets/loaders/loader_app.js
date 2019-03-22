@@ -7,6 +7,7 @@ import actions from '../../../actions'
 import { InputCountry } from '../inputs'
 import SelectCountry from '../maps/select_country/select_country'
 import Coinsenda from '../icons/logos/coinsenda.js'
+import IconSwitch from '../icons/iconSwitch'
 
 import './loader.css'
 
@@ -41,8 +42,22 @@ class LoaderAplication extends Component {
     // si el usuario no tiene country es porque es la primera vez que entra, así que detenemos este flujo y
     // le pedimos su país de operaciones => select_country()
 
+
+
     if(!country && !new_country ){return false}
-    let user_country = country ? country : new_country
+    let user_country = new_country ? new_country : country
+
+
+
+
+    let res = await this.props.action.countryvalidators()
+    if(!res){return false}
+    // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
+    if(!res.countries[user_country]){
+      this.go_to_select_country()
+      return false
+    }
+
     await this.animation('out')
     await this.setState({country:user_country})
     await this.animation('in')
@@ -55,13 +70,17 @@ class LoaderAplication extends Component {
     // action.ToggleModal()
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
-    await action.get_all_pairs(token, user_country)
-
+    let pairs = await action.get_all_pairs(token, user_country)
+    if(!pairs){
+      this.go_to_select_country()
+      return false
+    }
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
     let user = await action.get_user(token, user_country)
+    // return false
     if(!user){return false}
 
     await init_sockets()
@@ -105,6 +124,11 @@ class LoaderAplication extends Component {
     }
   }
 
+  go_to_select_country = async() =>{
+    await this.animation('out')
+    await this.setState({country:null, progressBarWidth:0})
+    await this.animation('in')
+  }
 
   select_country = (new_country) =>{
     this.init_component(new_country)
@@ -115,7 +139,7 @@ class LoaderAplication extends Component {
       await this.setState({anim})
       setTimeout(()=>{
         return resolve(true)
-      }, 150)
+      }, 300)
     })
   }
 
@@ -149,9 +173,11 @@ class LoaderAplication extends Component {
           </div>
           :
           <div className={`LoaderContainer loaderLayout ${anim}`}>
+            <IconSwitch icon={country}  size={60}/>
+
             <div className="logotypes">
               <Coinsenda size={50} color="#0198FF"/>
-              <h1 className="fuenteMuseo">Coinsenda</h1>
+              <h1 className="fuente">Coinsenda</h1>
             </div>
             {/* <Coinsenda color="#0198FF" size={70}/> */}
             {/* <SimpleLoader label={`${app_load_label}`} /> */}
@@ -180,8 +206,8 @@ function mapStateToProps(state, props){
     user:user && user[user_id],
     wallets,
     all_pairs,
-    country:null,
-    // country:'colombia',
+    // country:null,
+    country:'colombia',
     token:TokenUser,
     loader
   }

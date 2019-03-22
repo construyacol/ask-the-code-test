@@ -109,10 +109,11 @@
   border: 1px solid #d5d5d6;
   z-index: 1;
   box-shadow: 1px 1px 1px 1px grey;
+  transform: scale(.94);
 }
 
 .SCimgItemCont.first{
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .SCimgItemCont.active{

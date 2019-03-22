@@ -3,11 +3,39 @@ import KycLayout from './kycLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
+import { kyc } from '../api/ui/api.json'
+import { objectToArray, add_index_to_root_object } from '../../services'
 
 
 class Kyc extends Component {
 
 
+
+
+  componentDidMount(){
+    this.init_component()
+  }
+
+
+  init_component = async() =>{
+
+    // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
+    // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
+    // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
+
+    const { user } = this.props
+
+    console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
+    let countryvalidators = await this.props.action.countryvalidators()
+    console.log('||||||||||||| KycContainer R E S - - - ', countryvalidators)
+    if(user.verification_level === 'level_0'){
+      let new_obj = await add_index_to_root_object(countryvalidators.res.levels.level_1.personal[user.person_type])
+      let new_arra = await objectToArray(new_obj)
+      console.log('||||||||||||| nivel1 data match - - - ', new_arra)
+      console.log('||||||||||||| nivel1 data harcode - - - ', kyc)
+    }
+    // console.log('||||||||||||| Construct model - - - ', res)
+  }
 
   nextKyc = () => {
 

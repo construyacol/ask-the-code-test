@@ -32,7 +32,6 @@ class SelectCountry extends Component {
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
 
-    // console.log('load_countries', res[0].levels.level_1.personal.natural.country)
     return this.setState({
       available_countries:res.countries,
       available_country_list:res.country_list,

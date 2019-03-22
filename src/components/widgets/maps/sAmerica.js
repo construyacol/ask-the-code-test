@@ -20,11 +20,16 @@ class SAmerica extends Component {
   state = {
     current_data:{
       country:null
-    }
+    },
+    navigator:null
   }
 
 
   componentDidMount(){
+    var es_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+    if(es_firefox){
+      this.setState({navigator:'firefox'})
+    }
     this.geoProd()
     //console.log('componentDidMount', document.getElementById('map').clientWidth)
   }
@@ -47,6 +52,25 @@ class SAmerica extends Component {
     // console.log('||||||| Find PATH', paths[this_index])
     let _this = paths[this_index]
     active = d3.select(_this).classed("active", true);
+
+
+    this.setState({
+      current_data:{
+        country:country
+      }
+    })
+
+    if(select_country_component){
+      let data={
+        target:{
+          value:country
+        }
+      }
+      select_country_component(data, true)
+    }
+
+    if(this.state.navigator === 'firefox'){return false}
+
 
     let minXY = box[0];
     let maxXY = box[1];
@@ -86,20 +110,7 @@ class SAmerica extends Component {
         d3.zoomIdentity.translate(dleft, dtop).scale(zoomScale)
       );
 
-    this.setState({
-      current_data:{
-        country:country
-      }
-    })
 
-    if(select_country_component){
-      let data={
-        target:{
-          value:country
-        }
-      }
-      select_country_component(data, true)
-    }
 
   }
 

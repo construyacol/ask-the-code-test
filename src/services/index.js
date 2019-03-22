@@ -69,15 +69,15 @@ export const matchNormalizeWallet = (list, itemReview) => {
 
 
 
-export const objectToArray = (list) => {
+export const objectToArray = (object_list) => {
 
     return new Promise(async(resolve, reject)=>{
 
     let new_list = []
 
-    await Object.keys(list).forEach((indice) => {
+    await Object.keys(object_list).forEach((indice) => {
         if(indice === 'ui_name'){return false}
-        new_list.push(list[indice])
+        new_list.push(object_list[indice])
     })
 
     return resolve(new_list)
