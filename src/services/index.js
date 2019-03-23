@@ -1,4 +1,6 @@
 import { toast } from 'react-toastify';
+import { kyc } from '../components/api/ui/api.json'
+import store from '../'
 
 
 export const mensaje = async(msg, type, position) =>{
@@ -69,14 +71,14 @@ export const matchNormalizeWallet = (list, itemReview) => {
 
 
 
+
 export const objectToArray = (object_list) => {
 
     return new Promise(async(resolve, reject)=>{
-
     let new_list = []
 
     await Object.keys(object_list).forEach((indice) => {
-        if(indice === 'ui_name'){return false}
+        if(indice === 'ui_name' || indice === 'ui_type'){return false}
         new_list.push(object_list[indice])
     })
 
@@ -94,10 +96,13 @@ export const add_index_to_root_object = (list) => {
     let new_object
     await Object.keys(list).forEach((index_id) => {
       if(index_id === 'ui_name'){return false}
+
+      if(index_id !== 'ui_type'){
         list[index_id]={
           ...list[index_id],
           value:index_id
         }
+      }
         new_object = {
           ...new_object,
           [index_id]:list[index_id]
@@ -135,6 +140,61 @@ export const serveBankOrCityList = (list, type) => {
   })
 
 }
+
+
+export const converToState = (obj) => {
+  // recibe un objeto como parametro y devuelve ese objeto con todos los parametros vacíos, como un estado inicializado desde 0
+    return new Promise(async(resolve, reject)=>{
+    let new_state
+    await Object.keys(obj).forEach((index_state) => {
+        new_state ={
+          ...new_state,
+          [index_state]:""
+        }
+    })
+    return resolve(new_state)
+  })
+}
+
+
+
+
+
+export const serveKycData = (list) => {
+
+    return new Promise(async(resolve, reject)=>{
+      const { kyc_basic } = kyc
+      const { user, user_id } = store.getState().model_data
+      let kyc_model = kyc_basic[user[user_id].person_type]
+
+      // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user[user_id].person_type])
+      // console.log('|||||| LISTA RECIBIDA BACKENND', list)
+
+      let new_list = []
+      let indices = 0
+      await Object.keys(list).forEach((indice) => {
+          // console.log(`recorriendo objetito: - - FRONT ${indice} - -`, kyc_model[indice])
+          // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])
+          // if(indice === 'ui_name'){return false}
+          let new_item = {
+            ...kyc_model[indice],
+            label:list[indice].ui_name,
+            name:indice,
+            id:indices,
+            ui_type:list[indice].ui_type ? list[indice].ui_type : 'text'
+          }
+          indices++
+          new_list.push(new_item)
+      })
+      // console.log('RESULTADO CONVERSIÓN DATA:', new_list)
+      return resolve(new_list)
+  })
+
+}
+
+
+
+
 
 
 

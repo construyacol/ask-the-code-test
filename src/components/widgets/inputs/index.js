@@ -311,17 +311,10 @@ export const InputKycBasic = (props) =>{
     message,
     handleSubmit,
     colorMessage,
-    names,
-    lastnames,
-    birthDate,
-    id,
-    phone,
-    city,
-    address,
-    activity
+    state
   } = props
 
-  // console.log('BUTTONSS:::', names)
+  console.log('InputKycBasic P R O P S:::', props)
 
   return(
     <div id="kycPrime" className="containerInputComponent2">
@@ -340,6 +333,7 @@ export const InputKycBasic = (props) =>{
 
         {
           kyc.map(item=>{
+            // console.log(`CADA ITEM ${item.id}`, item)
                 return  step === item.id &&
                         <form onSubmit={handleSubmit} key={item.id}>
 
@@ -347,20 +341,21 @@ export const InputKycBasic = (props) =>{
                            key={item.id}
                            className={`inputElement3 ${props.active ? 'inputActivado' : '' }`}
                            // type={props.type}
-                           placeholder={item.placeholder}
+                           placeholder={item.name}
+                           // placeholder={item.placeholder}
                            onChange={update}
                            name={item.name}
-                           defaultValue={
-                             step === 1 ? names :
-                             step === 2 ? lastnames :
-                             step === 3 ? birthDate :
-                             step === 4 ? id :
-                             step === 5 ? phone :
-                             step === 6 ? city :
-                             step === 7 ? address :
-                             ''
-                             }
-                           // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+                           // defaultValue={
+                           //   step === 1 ? names :
+                           //   step === 2 ? lastnames :
+                           //   step === 3 ? birthDate :
+                           //   step === 4 ? id :
+                           //   step === 5 ? phone :
+                           //   step === 6 ? city :
+                           //   step === 7 ? address :
+                           //   ''
+                           //   }
+                           // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                          />
 
                         </form>
@@ -375,7 +370,7 @@ export const InputKycBasic = (props) =>{
 
       </div>
       <div className="InputContainerT" >
-        <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{message}</p>
+        <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{state.message}</p>
         <p className="fuente2 InputStep" >{step}/{kyc.length}</p>
       </div>
     </div>

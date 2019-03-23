@@ -8,9 +8,9 @@ import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, nextKyc, loader, siguiente, exit, user } = props
+ const { globalStep, nextKyc, loader, siguiente, exit, user, kyc_data_basic, init_state } = props
 
- // console.log('||||||||||||| KycBasicContainer U S E R - - - ', user)
+ // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  let level = user.verification_level
   // let level = 'level_1'
   // console.log('||||||||||||| KycBasicContainer L E V E L - - - ', level)
@@ -21,7 +21,7 @@ const KycLayout = (props) =>{
       <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} >
 
         {
-          loader  ?
+          (loader || !kyc_data_basic)  ?
               <SimpleLoader/>
           :
           <div className="KycLayout" >

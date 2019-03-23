@@ -49,7 +49,6 @@ class LoaderAplication extends Component {
 
 
 
-
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
     // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
@@ -83,10 +82,12 @@ class LoaderAplication extends Component {
     // return false
     if(!user){return false}
 
+
     await init_sockets()
 
-    let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
-    await action.get_pairs_for('colombia', user_collection)
+    // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
+    // await action.get_pairs_for('colombia', user_collection)
+    await action.get_pairs_for('colombia')
 
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
@@ -115,6 +116,10 @@ class LoaderAplication extends Component {
     // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
 
   }
+
+
+
+
 
   componentWillReceiveProps(nextProps){
     if(nextProps.app_load_label !== this.props.app_load_label){

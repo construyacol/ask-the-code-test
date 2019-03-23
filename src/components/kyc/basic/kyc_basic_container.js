@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import KycBasicLayout from './kycBasicLayout'
-import { kyc } from '../../api/ui/api.json'
+// import { kyc } from '../../api/ui/api.json'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -8,15 +8,16 @@ import actions from '../../../actions'
 class KycBasicContainer extends Component {
 
   state = {
-    names:this.props.names,
-    lastnames:this.props.lastnames,
-    birthDate:this.props.birthDate,
-    id:this.props.id,
-    phone:this.props.phone,
-    city:this.props.city,
-    address:this.props.address,
-    activity:this.props.activity,
-    message:kyc.kyc_basic[(this.props.step-1)].message,
+    // names:this.props.names,
+    // lastnames:this.props.lastnames,
+    // birthDate:this.props.birthDate,
+    // id:this.props.id,
+    // phone:this.props.phone,
+    // city:this.props.city,
+    // address:this.props.address,
+    // activity:this.props.activity,
+    ...this.props.init_state,
+    message:this.props.kyc_data_basic[(this.props.step-1)].message,
     active:false,
     colorMessage:"#50667a"
   }
@@ -24,24 +25,26 @@ class KycBasicContainer extends Component {
 
   componentDidMount(){
     this.props.action.CurrentForm('kyc_basic')
-    // this.init_component()
+
+    this.init_component()
   }
 
-  // init_component = async() =>{
-  //
-  //
-  // }
-
+  init_component = async() =>{
+    await this.props.action.UpdateForm('kyc_basic', this.state)
+    // console.log('KycBasicContainer -- init_component -- state', this.state)
+  }
 
 
 
   update = async(event) => {
-    // console.log(kyc.kyc_basic[0].errmessage)
 
     const { name, value } = event.target
+    console.log('update', event.target)
+    
     await this.setState({
             [name]:value
           })
+
     this.props.action.UpdateForm('kyc_basic', this.state)
     this.validateActive()
   }
@@ -159,13 +162,13 @@ class KycBasicContainer extends Component {
   }
 
   errMessage = (step) => {
-    return kyc.kyc_basic[(step-1)].errmessage
+    return this.props.kyc_data_basic[(step-1)].errmessage
   }
 
   updateMessage = () =>{
     setTimeout(async()=>{
       await this.setState({
-        message:kyc.kyc_basic[(this.props.step-1)].message,
+        message:this.props.kyc_data_basic[(this.props.step-1)].message,
         colorMessage:"#50667a"
       })
       this.validateActive()
@@ -186,16 +189,14 @@ class KycBasicContainer extends Component {
     // console.log('E S T A D O   K Y C', this.props )
 
     const { step } = this.props
-    const { active } = this.state
 
     return(
       <KycBasicLayout
         update={this.update}
         handleSubmit={this.handleSubmit}
         step={step}
-        active={active}
-        {...this.state}
-        kyc={kyc.kyc_basic}
+        kyc={this.props.kyc_data_basic}
+        state={this.state}
       />
     )
 
@@ -206,29 +207,17 @@ class KycBasicContainer extends Component {
 
 function mapStateToProps(state, props){
 
-    const {
-      names,
-      lastnames,
-      birthDate,
-      id,
-      phone,
-      city,
-      address,
-      activity,
-      step,
-    } = state.form.form_kyc_basic
+  // console.log('||||||  mapStateToProps - - ', props)
+  const { step } = state.form.form_kyc_basic
 
   return{
-      names:names,
-      lastnames:lastnames,
-      birthDate:birthDate,
-      id:id,
-      phone:phone,
-      city:city,
-      address:address,
-      activity:activity,
-      step:step
+      step
   }
+
+  // return{
+  //     ...state.form.form_kyc_basic
+  // }
+
 }
 
 function mapDispatchToProps(dispatch){

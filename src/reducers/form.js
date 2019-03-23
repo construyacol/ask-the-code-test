@@ -18,14 +18,6 @@ import {
 
 const initialState = {
   form_kyc_basic:{
-        names:"",
-        lastnames:"",
-        birthDate:"",
-        id:"",
-        phone:"",
-        city:"",
-        address:"",
-        activity:"",
         step:1
       },
   form_kyc_avanced:{
@@ -358,15 +350,15 @@ const forms = (state = initialState, action) =>{
                       }
                     }
                 }
-                if(action.form === "kyc_basic"){
-                    return {
-                      ...state,
-                      form_kyc_basic: {
-                        ...action.payload,
-                        step:state.form_kyc_basic.step
-                      }
-                    }
-                }
+                // if(action.form === "kyc_basic"){
+                //     return {
+                //       ...state,
+                //       form_kyc_basic: {
+                //         ...action.payload,
+                //         step:state.form_kyc_basic.step
+                //       }
+                //     }
+                // }
                 if(action.form === "ticket"){
                     return {
                       ...state,

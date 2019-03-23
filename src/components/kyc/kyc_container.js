@@ -5,12 +5,15 @@ import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { kyc } from '../api/ui/api.json'
 import { objectToArray, add_index_to_root_object } from '../../services'
+import { serveKycData, converToState } from '../../services'
 
 
 class Kyc extends Component {
 
-
-
+  state = {
+    kyc_data_basic:null,
+    init_state:null
+  }
 
   componentDidMount(){
     this.init_component()
@@ -18,23 +21,23 @@ class Kyc extends Component {
 
 
   init_component = async() =>{
-
     // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
-
+    this.props.action.Loader(true)
     const { user } = this.props
-
-    console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
+    // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
     let countryvalidators = await this.props.action.countryvalidators()
-    console.log('||||||||||||| KycContainer R E S - - - ', countryvalidators)
     if(user.verification_level === 'level_0'){
-      let new_obj = await add_index_to_root_object(countryvalidators.res.levels.level_1.personal[user.person_type])
-      let new_arra = await objectToArray(new_obj)
-      console.log('||||||||||||| nivel1 data match - - - ', new_arra)
-      console.log('||||||||||||| nivel1 data harcode - - - ', kyc)
+        this.props.action.Loader(true)
+        const { user } = this.props
+        let countryvalidators = await this.props.action.countryvalidators()
+        let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
+        let init_state = await converToState(countryvalidators.res.levels.level_1.personal[user.person_type])
+        await this.setState({kyc_data_basic, init_state})
+        this.props.action.Loader(false)
+        // console.log('||||||||||||| KycContainer R E S - - - ', init_state)
     }
-    // console.log('||||||||||||| Construct model - - - ', res)
   }
 
   nextKyc = () => {
@@ -90,6 +93,7 @@ class Kyc extends Component {
         siguiente={this.siguiente}
         exit={this.exit}
         {...this.props}
+        {...this.state}
       />
     )
   }
