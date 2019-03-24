@@ -211,8 +211,8 @@ function mapStateToProps(state, props){
     user:user && user[user_id],
     wallets,
     all_pairs,
-    // country:null,
-    country:'colombia',
+    country:null,
+    // country:'colombia',
     token:TokenUser,
     loader
   }

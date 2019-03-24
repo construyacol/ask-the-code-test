@@ -4,34 +4,28 @@ import KycBasicLayout from './kycBasicLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
+import { objectToArray } from '../../../services'
 
 class KycBasicContainer extends Component {
 
   state = {
-    // names:this.props.names,
-    // lastnames:this.props.lastnames,
-    // birthDate:this.props.birthDate,
-    // id:this.props.id,
-    // phone:this.props.phone,
-    // city:this.props.city,
-    // address:this.props.address,
-    // activity:this.props.activity,
-    ...this.props.init_state,
-    message:this.props.kyc_data_basic[(this.props.step-1)].message,
+    data_state:{
+      ...this.props.data_state
+    },
+    message:this.props.kyc_data_basic[0].message,
     active:false,
     colorMessage:"#50667a"
   }
 
 
   componentDidMount(){
-    this.props.action.CurrentForm('kyc_basic')
-
     this.init_component()
   }
 
   init_component = async() =>{
-    await this.props.action.UpdateForm('kyc_basic', this.state)
-    // console.log('KycBasicContainer -- init_component -- state', this.state)
+    await this.props.action.CurrentForm('kyc_basic')
+    // await this.props.action.UpdateForm('kyc_basic', this.state)
+    // console.log('KycBasicContainer -- init_component -- state', this.state === this.props.init_state)
   }
 
 
@@ -39,11 +33,15 @@ class KycBasicContainer extends Component {
   update = async(event) => {
 
     const { name, value } = event.target
-    console.log('update', event.target)
-    
+
     await this.setState({
-            [name]:value
+            data_state:{
+              ...this.state.data_state,
+              [name]:value
+            }
           })
+          // console.log('update', event.target)
+          console.log('update', this.state)
 
     this.props.action.UpdateForm('kyc_basic', this.state)
     this.validateActive()
@@ -52,48 +50,17 @@ class KycBasicContainer extends Component {
 
 
 
-  validateActive = () =>{
-
-    const {
-      names,
-      lastnames,
-      birthDate,
-      id,
-      phone,
-      city,
-      address,
-      activity
-    } = this.state
-
-    const arre = [
-      names,
-      lastnames,
-      birthDate,
-      id,
-      phone,
-      city,
-      address,
-      activity
-    ]
-
+  validateActive = async() =>{
+    let arre = await objectToArray(this.state.data_state)
     const { step } = this.props
+    // console.log('validateActive', arre, arre[(step-1)])
 
-    switch (this.props.step) {
-// validamos si el estado de cada input tiene información
-// si el input actual tiene info, coloreamos el contorno del input de color azul para dar feedback success al usuario de que puede continuar
-
-      case (step):
-        if(arre[(step-1)]){
-            return this.setState({
-              active:true
-            })
-        }
-        return this.unAvailableActive()
-
-      default:
-        return this.unAvailableActive()
-
+    if(arre[(step-1)]){
+        return this.setState({
+          active:true
+        })
     }
+    return this.unAvailableActive()
   }
 
 
@@ -106,7 +73,7 @@ class KycBasicContainer extends Component {
   }
 
   siguiente = async() =>{
-    if(this.props.step<7){
+    if(this.props.step<=this.props.kyc_data_basic.length){
       await this.props.action.IncreaseStep('kyc_basic')
       return this.validateActive()
     }
@@ -116,49 +83,18 @@ class KycBasicContainer extends Component {
 
 
 
-  handleSubmit = (event) =>{
+  handleSubmit = async(event) =>{
     event.preventDefault()
-
-    const {
-      names,
-      lastnames,
-      birthDate,
-      id,
-      phone,
-      city,
-      address,
-      activity
-    } = this.state
-
-    const arre = [
-      names,
-      lastnames,
-      birthDate,
-      id,
-      phone,
-      city,
-      address,
-      activity
-    ]
-
+    let arre = await objectToArray(this.state.data_state)
     const { step } = this.props
-
-    switch (this.props.step) {
-// validamos si el estado de cada input tiene información y así decidir si dejarlo continuar o devolverle un mensaje de error jeje
-      case (step):
-        if(arre[(step-1)]){
-            return this.siguiente()
-        }
-        return this.setState({
-                    message:this.errMessage(step),
-                    colorMessage:"#ff1100"
-                  })
-
-      default:
-        return this.unAvailableActive()
-
+    // console.log('handleSubmit', arre, arre[(step-1)])
+    if(arre[(step-1)]){
+        return this.siguiente()
     }
-
+    return this.setState({
+                message:this.errMessage(step),
+                colorMessage:"#ff1100"
+              })
   }
 
   errMessage = (step) => {
@@ -177,8 +113,11 @@ class KycBasicContainer extends Component {
 
   }
 
-  componentWillReceiveProps(){
+  componentWillReceiveProps(nextProps){
+    // console.log('componentWillReceiveProps', nextProps, this.props)
+    if(nextProps !== this.props){
       this.updateMessage()
+    }
   }
 
 
@@ -186,16 +125,15 @@ class KycBasicContainer extends Component {
   render(){
 
     // console.log('E S T A D O   K Y C', kyc.kyc_basic[(this.props.step-1)].message )
-    // console.log('E S T A D O   K Y C', this.props )
+    // console.log('P R O P S - -   K Y C', this.state )
 
-    const { step } = this.props
 
     return(
       <KycBasicLayout
         update={this.update}
         handleSubmit={this.handleSubmit}
-        step={step}
         kyc={this.props.kyc_data_basic}
+        step={this.props.step}
         state={this.state}
       />
     )
@@ -207,16 +145,9 @@ class KycBasicContainer extends Component {
 
 function mapStateToProps(state, props){
 
-  // console.log('||||||  mapStateToProps - - ', props)
-  const { step } = state.form.form_kyc_basic
-
   return{
-      step
+      ...state.form.form_kyc_basic
   }
-
-  // return{
-  //     ...state.form.form_kyc_basic
-  // }
 
 }
 

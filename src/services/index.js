@@ -171,7 +171,7 @@ export const serveKycData = (list) => {
       // console.log('|||||| LISTA RECIBIDA BACKENND', list)
 
       let new_list = []
-      let indices = 0
+      let indices = 1
       await Object.keys(list).forEach((indice) => {
           // console.log(`recorriendo objetito: - - FRONT ${indice} - -`, kyc_model[indice])
           // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])

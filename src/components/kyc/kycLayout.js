@@ -22,7 +22,7 @@ const KycLayout = (props) =>{
 
         {
           (loader || !kyc_data_basic)  ?
-              <SimpleLoader/>
+              <SimpleLoader label="Cargando..."/>
           :
           <div className="KycLayout" >
             <p className="fuente KycTitle" >Verificación Basica</p>

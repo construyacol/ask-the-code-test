@@ -306,15 +306,15 @@ export const InputKycBasic = (props) =>{
 
   const {
     kyc,
-    step,
     update,
     message,
     handleSubmit,
     colorMessage,
-    state
+    state,
+    step
   } = props
 
-  console.log('InputKycBasic P R O P S:::', props)
+  // console.log('InputKycBasic  S T A T E:::', props)
 
   return(
     <div id="kycPrime" className="containerInputComponent2">
@@ -329,32 +329,20 @@ export const InputKycBasic = (props) =>{
         </div>
       </div>
 
-      <div className={`inputContainer3 ${props.active ? 'inputActivado' : '' }`}>
+      <div className={`inputContainer3 ${state.active ? 'inputActivado' : '' }`}>
 
         {
           kyc.map(item=>{
-            // console.log(`CADA ITEM ${item.id}`, item)
                 return  step === item.id &&
                         <form onSubmit={handleSubmit} key={item.id}>
-
                           <input
                            key={item.id}
-                           className={`inputElement3 ${props.active ? 'inputActivado' : '' }`}
-                           // type={props.type}
-                           placeholder={item.name}
-                           // placeholder={item.placeholder}
+                           className={`inputElement3 ${state.active ? 'inputActivado' : '' }`}
+                           type={state.type}
+                           placeholder={item.placeholder}
                            onChange={update}
                            name={item.name}
-                           // defaultValue={
-                           //   step === 1 ? names :
-                           //   step === 2 ? lastnames :
-                           //   step === 3 ? birthDate :
-                           //   step === 4 ? id :
-                           //   step === 5 ? phone :
-                           //   step === 6 ? city :
-                           //   step === 7 ? address :
-                           //   ''
-                           //   }
+                           defaultValue={state.data_state[item.name]}
                            // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                          />
 
