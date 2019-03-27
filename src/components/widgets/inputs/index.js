@@ -302,6 +302,12 @@ render(){
 
 
 
+
+
+
+
+
+
 export const InputKycBasic = (props) =>{
 
   const {
@@ -309,15 +315,18 @@ export const InputKycBasic = (props) =>{
     update,
     message,
     handleSubmit,
-    colorMessage,
     state,
-    step
+    step,
+    toggleSection,
+    _onFocus,
   } = props
 
+
   // console.log('InputKycBasic  S T A T E:::', props)
+  // console.log('InputKycBasic  P R O P S:::', props)
 
   return(
-    <div id="kycPrime" className="containerInputComponent2">
+    <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
 
       <div className="inputLabelsCont">
         <div className="InputCarous" style={{ top: `-${(step-1)*40}px` }}>
@@ -334,18 +343,34 @@ export const InputKycBasic = (props) =>{
         {
           kyc.map(item=>{
                 return  step === item.id &&
-                        <form onSubmit={handleSubmit} key={item.id}>
+                        <form onSubmit={handleSubmit} key={item.id} id={`${state.ui_type === 'phone' ? 'phone' : ''}`}>
+                          {
+                            state.ui_type === 'phone' &&
+                            <div className={`PhoneamEsta ${state.open_sect ? 'openS' : '' }`} onClick={state.open_sect ? null : toggleSection}>
+                              <div className="inputPhone">
+                                <img src="https://restcountries.eu/data/col.svg" alt="" className="PhoneamEsta_img" width={20} height={20}/>
+                                <p className="fuentePrin PhoneamEsta_p">+ 57</p>
+                                <div className={`inputComponentPhone ${state.open_sect ? 'openS' : '' }`} >
+                                  <input type="text" className="inputElement3" placeholder="Escribe el país del indicativo." onChange={update} name="findbar"/>
+                                </div>
+                              </div>
+                              <i className={`fas fa-chevron-down PhoneamEsta_icon ${state.open_sect ? 'anim' : '' }`}  onClick={toggleSection}></i>
+                              <span className="linePhone"></span>
+                            </div>
+                          }
+
                           <input
                            key={item.id}
-                           className={`inputElement3 ${state.active ? 'inputActivado' : '' }`}
-                           type={state.type}
-                           placeholder={item.placeholder}
+                           className={`inputElement3 ${state.active ? 'inputActivado' : '' } ${state.ui_type === 'phone' ?'phone' :'' }`}
+                           type={state.ui_type === 'phone' ? 'number' :
+                                 state.ui_type === 'select' ? 'text' : state.ui_type }
+                           placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
                            onChange={update}
                            name={item.name}
                            defaultValue={state.data_state[item.name]}
+                           onFocus={_onFocus}
                            // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                          />
-
                         </form>
           })
         }
@@ -354,17 +379,31 @@ export const InputKycBasic = (props) =>{
           <div className="InputProgressed" style={{ width: step<2 ? 0 : `${(((step*100))/kyc.length)}%` }} ></div>
         </div>
 
-        <i className="fas fa-arrow-right arrowcito" onClick={handleSubmit} ></i>
+        <div className={`ctaInputKyc ${state.open_sect ? 'openPhone' : '' }`} onClick={state.open_sect ? toggleSection : handleSubmit}>
+          <div className="contCtaKyc">
+            <i className="fas fa-arrow-right arrowcito backInputKyc" ></i>
+            <i className="fas fa-mobile-alt frontInputKyc" ></i>
+          </div>
+        </div>
 
       </div>
       <div className="InputContainerT" >
-        <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{state.message}</p>
+        <p className="fuente Inputmsg" style={{color:`${state.colorMessage}`}} >{state.message}</p>
         <p className="fuente2 InputStep" >{step}/{kyc.length}</p>
       </div>
     </div>
   )
 
 }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -12,7 +12,9 @@ import './viewSettings.css'
 // noIcon => Define si se mostrarán iconos en la lista
 // type => Recibe como parametro "country" || "currencies" que son las listas precargadas en el componente
 // noFindbar => true/false define si el componente trae buscador o no
-// theme => Tema visual del componente (classic)
+// theme => Tema visual del componente (classic) || (ultimate)
+// external_findbar => define si el componente adapta un buscador externo
+// external_findbar_data => Datos que recibe el componente, de la fuente externa (componente padre)
 
 class MVList extends Component {
 
@@ -24,48 +26,53 @@ class MVList extends Component {
     search:[]
   }
 
-
-    componentDidMount(){
-      this.findCurrentItem(this.props.current_item)
+  componentWillReceiveProps(nextProps){
+    const { external_findbar_data, external_findbar } = nextProps
+    if(external_findbar && this.props.external_findbar_data !== nextProps.external_findbar_data){
+      // console.log('componentWillReceiveProps', external_findbar_data)
+      let body = {
+        target:{
+          name:"",
+          value:external_findbar_data
+        }
+      }
+      if(!external_findbar_data){
+        return this.setState({
+          search:[],
+          select_id:null,
+          current_item:null})
+      }
+      if(this.props.current_item){
+        this.findCurrentItem(this.props.current_item)
+      }
+      return this.update(body)
     }
 
-
-
-
-
-
-
-  findCurrentItem = async itemReview =>{
-
-    let result = await matchItem(this.state.current_list, {primary:itemReview}, 'code')
-
-    if(!result){return false}
-
-    let item = result[0]
-
-    this.setState({
-      select_id:item.id,
-      current_item:item
-    })
-    // console.log(item)
-    const {
-      actualizarEstado
-    } = this.props
-
-    actualizarEstado(item)
   }
 
 
 
 
+    componentDidMount(){
+      if(this.props.current_item){
+        this.findCurrentItem(this.props.current_item)
+      }
+    }
 
-
-
-
-
+  findCurrentItem = async itemReview =>{
+    let result = await matchItem(this.state.current_list, {primary:itemReview}, 'code')
+    if(!result){return false}
+    let item = result[0]
+    this.setState({
+      select_id:item.id,
+      current_item:item
+    })
+    this.props.actualizarEstado(item)
+  }
 
 
   item_selection = (item) =>{
+    // console.log('||||item_selection', item)
     const{
       id
     } = item
@@ -73,37 +80,19 @@ class MVList extends Component {
       select_id:id,
       current_item:item
     })
-    const {
-      actualizarEstado
-    } = this.props
-    actualizarEstado(item)
+
+    this.props.actualizarEstado(item)
   }
 
 
-
-
-
-
-
-
-
-
-
   update = async({target}) =>{
-    const {
-      value
-    } = target
-
-    const {
-      current_list
-    } = this.state
+    const {value} = target
+    const {current_list} = this.state
 
     let result = await matchItem(current_list, {primary:value.toLowerCase()}, 'name', true)
-
     if(!result || result && result.length>1 || result.length === 0){
       this.unSelection()
     }
-
     if(result && result.length>0){
         if(result.length === 1){
           this.visiblePosition(result[0], current_list)
@@ -113,69 +102,37 @@ class MVList extends Component {
           search:result
         })
     }
-
   }
 
 
-
-
-
-
-
-
   unSelection = () => {
-
     let body = {
       target:{
         name:this.props.name_item,
         value:""
       }
     }
-
     this.setState({
       select_id:null,
       current_item:null
     })
-
-    const {
-      actualizarEstado
-    } = this.props
-
-    actualizarEstado(body)
+    this.props.actualizarEstado(body)
   }
 
 
-
-
-
-
-
-
-
-
   visiblePosition = (result, current_list) =>{
-
     let new_array = []
     new_array.push(result)
-
     current_list.map((item)=>{
       if(item.id === result.id){return false}
       new_array.push(item)
     })
-
     this.setState({
       current_list:new_array,
       current_item:result
     })
-
     this.item_selection(result)
-
   }
-
-
-
-
-
 
 
   render(){
@@ -195,12 +152,12 @@ class MVList extends Component {
       current_item
     } = this.state
 
-    // console.log('||||||||| - -- - - ', this.props)
+    // console.log('||||||||| - -- - - ', current_list)
 
     // let current_list = list ? list : type === 'country' ? countries : currencies
 
     return(
-      <section className="contListItemMV" style={{paddingTop:noFindbar ? '10px' : '60px'}}>
+      <section className={`contListItemMV ${theme}`} style={{paddingTop:noFindbar ? '10px' : '60px'}}>
         <div className={`findbar ${theme}`} style={{display:noFindbar ? 'none' : 'grid' }}>
           <InputForm
             type="text"
@@ -210,7 +167,6 @@ class MVList extends Component {
             placeholder={current_item ? current_item.name : "Ej. Cali, Medellin, Bogotá" }
           />
         </div>
-        {/* <div className="findbar" ></div> */}
         {
           search.length>0 ?
 

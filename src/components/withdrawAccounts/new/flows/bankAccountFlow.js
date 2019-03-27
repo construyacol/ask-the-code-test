@@ -110,6 +110,7 @@ class BankAccountFlow extends Component{
       loader
     } = this.state
 
+    console.log('|||||| Modelito cities::', cities)
 
       return(
         <Fragment>

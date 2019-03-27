@@ -208,7 +208,7 @@ export const get_all_pairs = (token, country) =>{
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
 
-    // console.log('|||||| get_all_pairs', pairs)
+    console.log('|||||| get_all_pairs', pairs)
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
 

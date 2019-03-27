@@ -177,11 +177,12 @@ export const serveKycData = (list) => {
           // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])
           // if(indice === 'ui_name'){return false}
           let new_item = {
-            ...kyc_model[indice],
             label:list[indice].ui_name,
             name:indice,
             id:indices,
-            ui_type:list[indice].ui_type ? list[indice].ui_type : 'text'
+            ui_type:list[indice].ui_type ? list[indice].ui_type : 'text',
+            placeholder:list[indice].ui_name,
+            ...kyc_model[indice],
           }
           indices++
           new_list.push(new_item)

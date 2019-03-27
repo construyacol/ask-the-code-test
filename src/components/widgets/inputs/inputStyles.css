@@ -9,8 +9,11 @@
       position: relative;
       transition: .5s;
       background: white;
-
 }
+
+
+
+
 
 .AuthLoader{
   transform: scale(.8);
@@ -97,9 +100,100 @@ font-size: 20px;
   height: calc(100% - 7px)
 }
 
+.PhoneamEsta_icon.anim{
+  animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+
+}
+
+
 .inputContainer3>form{
   height: 100% !important;
 }
+
+.inputPhone{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.inputComponentPhone.openS{
+  /*padding: 0 15px;*/
+  width: calc(100% - 30px);
+}
+
+.inputComponentPhone{
+  height: 50%;
+  width: 0%;
+  transition: .3s;
+}
+
+
+
+form#phone{
+  height: 100% !important;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: auto 1fr;
+  transition: .3s;
+  position: relative;
+}
+.PhoneamEsta.openS{
+  width: calc(100% - 90px);
+}
+
+.PhoneamEsta_img{
+  border-radius: 50%;
+}
+
+.PhoneamEsta_icon{
+  color: #50667a;
+  transition: .2s;
+}
+
+.PhoneamEsta:hover .PhoneamEsta_icon, .PhoneamEsta:hover .PhoneamEsta_p{
+  color: #e8b342!important
+}
+
+.PhoneamEsta{
+  transition: .3s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px 0 15px;
+  position: relative;
+  cursor: pointer;
+  position: absolute;
+  height: 100%;
+  width: calc(20% - 30px);
+  min-width: 94px;
+  z-index: 2;
+  background: white;
+}
+
+.PhoneamEsta::before{
+  width: 10px;
+  height: 100%;
+  background: black;
+}
+
+.linePhone{
+  position: absolute;
+  right: 0;
+  width: 1px;
+  height: 60%;
+  background: #50667ad1;
+}
+
+.PhoneamEsta_p{
+  transition: .2s;
+  margin: 0 0 0 12px;
+  font-size: 20px;
+  color: #50667a;
+  min-width: 40px;
+}
+
 .read_only{
   margin: 0;
     display: flex;
@@ -164,6 +258,69 @@ font-size: 20px;
   transform: scale(.7);
 }
 
+
+
+.ctaInputKyc{
+  transition: .3s;
+  position: absolute;
+  height: calc(100% - 7px);
+  right: 0;
+  width: 50px;
+  padding-right: 5px;
+  align-items: center;
+  display: grid;
+  background: white;
+  top: 0;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  cursor: pointer;
+}
+
+.contCtaKyc{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+}
+
+.backInputKyc{
+  align-self: center;
+  justify-self:center;
+  position: absolute;
+  backface-visibility: hidden;
+  right: initial !important;
+}
+.frontInputKyc{
+  align-self: center;
+  justify-self:center;
+  position: absolute;
+  transform: rotateX(180deg);
+  backface-visibility: hidden;
+  font-size: 35px;
+  color: #0066AA;
+}
+
+.ctaInputKyc.openPhone{
+  animation: flip-horizontal-bck 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+}
+
+
+
+@keyframes flip-horizontal-bck {
+  0%{}
+  50% {
+    transform: translateZ(0) rotateX(0);
+  }
+  100% {
+    transform: translateZ(-260px) rotateX(180deg);
+  }
+}
+
+
+
+
 .arrowcito, .arrowcito2{
   color: #0066AA;
   font-size: 33px;
@@ -225,13 +382,26 @@ font-size: 20px;
   transition: .5s;
 }
 
+.inputElement3.phone.openS{
+  width: calc(20% - 30px);
+  opacity: 0;
+}
 
 
+.inputElement3.phone{
+  padding: 0 15px;
+  font-size: 20px !important;
+  width: calc(80% - 30px);
+  max-width: calc(100% - 154px);
+  position: absolute;
+  right: 0;
+}
 
 .inputElement3{
   padding: 0 15px;
   font-size: 20px !important;
   width: calc(100% - 30px);
+
 }
 
 
@@ -239,6 +409,18 @@ font-size: 20px;
 .inputElement3::-webkit-input-placeholder { color: #50667a4d !important; } /* WebKit */
 .inputElement3::-moz-placeholder { color: #50667a4d !important; } /* Firefox 19+ */
 
+.inputElement3[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+.inputElement3[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+.inputElement3[type="date"]::-webkit-clear-button {
+    display: none;
+}
+.inputElement3[type="number"]::-webkit-inner-spin-button {
+  display: none;
+}
 
 .inputElement2{
   color: #3A7BD5;
@@ -285,6 +467,11 @@ font-size: 20px;
     opacity: 0;
   }
 
+  .containerInputComponent2.openS{
+    transition: .6s;
+    transform: scale(.9);
+  }
+
 .containerInputComponent, .containerInputComponent2, .containerInputComponent3{
   height: 100px;
   width: 100%;
@@ -300,6 +487,7 @@ font-size: 20px;
 }
 
 .containerInputComponent2{
+  transition: .4s;
    grid-template-rows: 40px 1fr 20px !important;
    grid-gap: 10px !important;
    height: 150px !important;

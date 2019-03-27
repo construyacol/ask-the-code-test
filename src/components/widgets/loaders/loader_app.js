@@ -70,6 +70,7 @@ class LoaderAplication extends Component {
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
     let pairs = await action.get_all_pairs(token, user_country)
+    // console.log('IMPORTANDO PARES', pairs)
     if(!pairs){
       this.go_to_select_country()
       return false
@@ -79,25 +80,23 @@ class LoaderAplication extends Component {
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
     let user = await action.get_user(token, user_country)
-    // return false
     if(!user){return false}
 
 
-    await init_sockets()
-
-    // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
-    // await action.get_pairs_for('colombia', user_collection)
+    // await init_sockets()
+    // // // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
+    // // // await action.get_pairs_for('colombia', user_collection)
     await action.get_pairs_for('colombia')
-
-    let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
-    await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-    await action.get_account_balances(this.props.user)
-    await action.get_deposit_providers(this.props.user)
-    await action.get_list_user_wallets(this.props.user)
-    await action.get_all_currencies()
-    await action.get_deposit_list(this.props.user)
-    await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
-    await action.get_withdraw_list(this.props.user)
+    // //
+    // let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
+    // await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+    // await action.get_account_balances(this.props.user)
+    // await action.get_deposit_providers(this.props.user)
+    // await action.get_list_user_wallets(this.props.user)
+    // await action.get_all_currencies()
+    // await action.get_deposit_list(this.props.user)
+    // await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
+    // await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
 
 
@@ -211,8 +210,8 @@ function mapStateToProps(state, props){
     user:user && user[user_id],
     wallets,
     all_pairs,
-    country:null,
-    // country:'colombia',
+    // country:null,
+    country:'colombia',
     token:TokenUser,
     loader
   }
