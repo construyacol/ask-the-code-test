@@ -319,11 +319,13 @@ export const InputKycBasic = (props) =>{
     step,
     toggleSection,
     _onFocus,
+    search_result,
+    clean_search_result
   } = props
 
 
-  // console.log('InputKycBasic  S T A T E:::', props)
-  // console.log('InputKycBasic  P R O P S:::', props)
+  // console.log('InputKycBasic  S T A T E:::', state.ui_type)
+  console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', search_result)
 
   return(
     <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
@@ -350,8 +352,22 @@ export const InputKycBasic = (props) =>{
                               <div className="inputPhone">
                                 <img src="https://restcountries.eu/data/col.svg" alt="" className="PhoneamEsta_img" width={20} height={20}/>
                                 <p className="fuentePrin PhoneamEsta_p">+ 57</p>
-                                <div className={`inputComponentPhone ${state.open_sect ? 'openS' : '' }`} >
-                                  <input type="text" className="inputElement3" placeholder="Escribe el país del indicativo." onChange={update} name="findbar"/>
+                                <div className={`inputComponentPhone ${state.open_sect ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
+                                  {
+                                    search_result ?
+                                    <p className={`search_result_kyc ${state.open_sect ? 'openS' : ''}`}>{search_result.name}
+                                      {/* <i className="fas fa-times cerratelo" onClick={reset_data}></i> */}
+                                      <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
+                                    </p>
+                                    :
+                                    <input
+                                      type="text"
+                                      // defaultValue={search_result}
+                                      className="inputElement3"
+                                      placeholder="Escribe el país del indicativo."
+                                      onChange={update}
+                                      name="findbar_name"/>
+                                  }
                                 </div>
                               </div>
                               <i className={`fas fa-chevron-down PhoneamEsta_icon ${state.open_sect ? 'anim' : '' }`}  onClick={toggleSection}></i>

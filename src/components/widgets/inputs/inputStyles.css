@@ -123,10 +123,41 @@ font-size: 20px;
   width: calc(100% - 30px);
 }
 
+.inputComponentPhone.search_result{
+  height: calc(100% - 7px);
+  display: grid;
+  align-items: center;
+}
+
 .inputComponentPhone{
   height: 50%;
   width: 0%;
   transition: .3s;
+}
+
+.inputComponentPhone p{
+  margin: 0;
+}
+
+.search_result_kyc.openS{
+  opacity: 1;
+}
+
+.search_result_kyc{
+  height: 32px;
+  width: auto;
+  max-width: 240px;
+  position: relative;
+  font-size: 20px;
+  color: #50667a;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  background: #f4f4f4;
+  border-radius: 6px;
+  margin: 0 10px !important;
+  transition: .15s;
+  opacity: 0;
 }
 
 

@@ -1,8 +1,8 @@
 export const Environtment = {
-  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.145.95:5900/api/' : 'http://andres.indophi.com:5900/api/',
-  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.145.95:5900/' : 'http://andres.indophi.com:5900/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiI2eElsRjhpT2Q2SlBIU1lkd2J3RjUyVkxRRkJWaDVvWGRnM2d4UUc2UERyQ0pVV3lIREIwazdaUTZIOUZEbk9SIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTM2NTg3MjIsImV4cCI6MTU1MzY2OTUyMn0.dmZwxnOxpjELODZAdaTCMXwB14fDrl1URxRL8e03EptfE-FkVWzHyKnl2HEue3_5t_xFz95fleTs3LhHm3Xu9g",
-  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.145.95:3002/api/' : 'http://andres.indophi.com:3002/api/',
+  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/api/' : 'http://andres.indophi.com:5900/api/',
+  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/' : 'http://andres.indophi.com:5900/',
+  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiIxeUZpYWR4SlRIWHpnTTlzQ0dnNjFERmpzZ0F4eHQwN29ZTHdxWjRqc3lMbjBMZzFYRkVsVDZmV2tCMVZZMlpUIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTM3ODUxNTcsImV4cCI6MTU1Mzc5NTk1N30.RLLbsfqN2ywHfpcaZKc9qQl5gB3sQ36fNOl9kqU7gqmt0XwbyKr_3jt1RAjTkLfsV_f-_M02P43zak4xmq6vtQ",
+  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:3002/api/' : 'http://andres.indophi.com:3002/api/',
 }
 
 
@@ -26,4 +26,4 @@ export default Environtment
 // https://archa.serveo.net/
 
 
-// http://190.192.145.95:3000/public/signin?clientId=5bea09f3b5f9071f69c49e05
+// http://190.192.134.201:3000/public/signin?clientId=5bea09f3b5f9071f69c49e05

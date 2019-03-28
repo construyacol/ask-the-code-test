@@ -15,6 +15,7 @@ import './viewSettings.css'
 // theme => Tema visual del componente (classic) || (ultimate)
 // external_findbar => define si el componente adapta un buscador externo
 // external_findbar_data => Datos que recibe el componente, de la fuente externa (componente padre)
+// export_result => función para exportar el resultado de una busqueda al componente padre, utilizado solo cuando hay un external_findbar
 
 class MVList extends Component {
 
@@ -27,25 +28,28 @@ class MVList extends Component {
   }
 
   componentWillReceiveProps(nextProps){
+    this.init_external_data(nextProps)
+  }
+
+  init_external_data = async(nextProps)=>{
+
     const { external_findbar_data, external_findbar } = nextProps
-    if(external_findbar && this.props.external_findbar_data !== nextProps.external_findbar_data){
-      // console.log('componentWillReceiveProps', external_findbar_data)
+    if(external_findbar && external_findbar_data && this.props.external_findbar_data !== nextProps.external_findbar_data){
+      // console.log('componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
       let body = {
         target:{
           name:"",
           value:external_findbar_data
         }
       }
-      if(!external_findbar_data){
-        return this.setState({
+      await this.update(body)
+      // await this.findCurrentItem(external_findbar_data)
+      // if(external_findbar_data === this.props.current_item){
+        this.setState({
           search:[],
-          select_id:null,
-          current_item:null})
-      }
-      if(this.props.current_item){
-        this.findCurrentItem(this.props.current_item)
-      }
-      return this.update(body)
+          current_item:null
+        })
+      // }
     }
 
   }
@@ -55,7 +59,7 @@ class MVList extends Component {
 
     componentDidMount(){
       if(this.props.current_item){
-        this.findCurrentItem(this.props.current_item)
+        // this.findCurrentItem(this.props.current_item)
       }
     }
 
@@ -67,25 +71,33 @@ class MVList extends Component {
       select_id:item.id,
       current_item:item
     })
-    this.props.actualizarEstado(item)
+    // this.props.actualizarEstado(item)
   }
 
 
-  item_selection = (item) =>{
+  item_selection = async(item) =>{
     // console.log('||||item_selection', item)
     const{
-      id
+      id,
+      code
     } = item
     this.setState({
       select_id:id,
       current_item:item
     })
 
-    this.props.actualizarEstado(item)
+    // this.props.actualizarEstado(item)
+
+    if(this.props.external_findbar){
+      let body = {target:{name:"", value:code}}
+      await this.update(body)
+    }
+
   }
 
 
   update = async({target}) =>{
+
     const {value} = target
     const {current_list} = this.state
 
@@ -96,6 +108,9 @@ class MVList extends Component {
     if(result && result.length>0){
         if(result.length === 1){
           this.visiblePosition(result[0], current_list)
+          if(this.props.external_findbar){
+            this.props.export_result(result[0])
+          }
         }
         return this.setState({
           select_id:result.length === 1 ? result[0].id : this.state.select_id,
@@ -116,7 +131,7 @@ class MVList extends Component {
       select_id:null,
       current_item:null
     })
-    this.props.actualizarEstado(body)
+    // this.props.actualizarEstado(body)
   }
 
 
@@ -131,7 +146,10 @@ class MVList extends Component {
       current_list:new_array,
       current_item:result
     })
-    this.item_selection(result)
+
+    if(!this.props.external_findbar){
+      this.item_selection(result)
+    }
   }
 
 

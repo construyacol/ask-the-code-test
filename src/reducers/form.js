@@ -18,7 +18,7 @@ import {
 
 const initialState = {
   form_kyc_basic:{
-        step:1
+        step:3
       },
   form_kyc_avanced:{
         newback:"./docs/back.png",

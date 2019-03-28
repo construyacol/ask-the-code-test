@@ -26,7 +26,7 @@ class Kyc extends Component {
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
     this.props.action.Loader(true)
-    const { user, kyc_basic_data } = this.props
+    const { user, form_kyc_basic_state } = this.props
     // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
     let countryvalidators = await this.props.action.countryvalidators()
     if(user.verification_level === 'level_0'){
@@ -40,16 +40,16 @@ class Kyc extends Component {
         init_state = {
             data_state:{
               ...init_state,
-              ...kyc_basic_data.data_state
+              ...form_kyc_basic_state.data_state
             }
         }
 
         init_state.data_state.country = user.country
+        // console.log('||||||||||||| KycContainer R E S - - - ', init_state, form_kyc_basic_state)
 
         await this.props.action.UpdateForm('kyc_basic', init_state)
         await this.setState({kyc_data_basic, country_list})
         this.props.action.Loader(false)
-        console.log('||||||||||||| KycContainer R E S - - - ', country_list)
     }
   }
 
@@ -120,7 +120,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
     user:user[user_id],
-    kyc_basic_data:state.form.form_kyc_basic
+    form_kyc_basic_state:state.form.form_kyc_basic
   }
 }
 
