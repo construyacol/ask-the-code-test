@@ -302,6 +302,53 @@ render(){
 
 
 
+export const InputCountryPrefix = (props) =>{
+
+  const {
+    toggleSection,
+    search_result,
+    open,
+    update,
+    clean_search_result
+  } = props
+
+  // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
+  // code: "colombia"
+  // flag: "https://restcountries.eu/data/col.svg"
+  // id: 1
+  // name: "Colombia"
+  // prefix: "57"
+
+  // @Param open:boolean => Define si esta desplegado el componente o contraido
+
+  return(
+    <div className={`PhoneamEsta ${open ? 'openS' : '' }`} onClick={open ? null : toggleSection}>
+      <div className="inputPhone">
+        { search_result &&
+          <img src={search_result.flag} alt="" className="PhoneamEsta_img" width={20} height={20}/>
+        }
+        <p className="fuentePrin PhoneamEsta_p">+ {search_result ? search_result.prefix : '--'}</p>
+        <div className={`inputComponentPhone ${open ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
+          {
+            search_result ?
+            <p className={`search_result_kyc ${open ? 'openS' : ''}`}>{search_result.name}
+              <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
+            </p>
+            :
+            <input
+              type="text"
+              className="inputElement3"
+              placeholder="Escribe el país del indicativo."
+              onChange={update}
+              name="findbar_name"/>
+          }
+        </div>
+      </div>
+      <i className={`fas fa-chevron-down PhoneamEsta_icon ${open ? 'anim' : '' }`}  onClick={toggleSection}></i>
+      <span className="linePhone"></span>
+    </div>
+  )
+}
 
 
 
@@ -325,8 +372,8 @@ export const InputKycBasic = (props) =>{
 
 
   // console.log('InputKycBasic  S T A T E:::', state.ui_type)
-  console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', search_result)
-
+  const { ui_type } = kyc[step-1]
+  // console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', ui_type)
   return(
     <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
 
@@ -348,31 +395,10 @@ export const InputKycBasic = (props) =>{
                         <form onSubmit={handleSubmit} key={item.id} id={`${state.ui_type === 'phone' ? 'phone' : ''}`}>
                           {
                             state.ui_type === 'phone' &&
-                            <div className={`PhoneamEsta ${state.open_sect ? 'openS' : '' }`} onClick={state.open_sect ? null : toggleSection}>
-                              <div className="inputPhone">
-                                <img src="https://restcountries.eu/data/col.svg" alt="" className="PhoneamEsta_img" width={20} height={20}/>
-                                <p className="fuentePrin PhoneamEsta_p">+ 57</p>
-                                <div className={`inputComponentPhone ${state.open_sect ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
-                                  {
-                                    search_result ?
-                                    <p className={`search_result_kyc ${state.open_sect ? 'openS' : ''}`}>{search_result.name}
-                                      {/* <i className="fas fa-times cerratelo" onClick={reset_data}></i> */}
-                                      <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
-                                    </p>
-                                    :
-                                    <input
-                                      type="text"
-                                      // defaultValue={search_result}
-                                      className="inputElement3"
-                                      placeholder="Escribe el país del indicativo."
-                                      onChange={update}
-                                      name="findbar_name"/>
-                                  }
-                                </div>
-                              </div>
-                              <i className={`fas fa-chevron-down PhoneamEsta_icon ${state.open_sect ? 'anim' : '' }`}  onClick={toggleSection}></i>
-                              <span className="linePhone"></span>
-                            </div>
+                            <InputCountryPrefix
+                              open={state.open_sect}
+                              {...props}
+                            />
                           }
 
                           <input
@@ -398,7 +424,7 @@ export const InputKycBasic = (props) =>{
         <div className={`ctaInputKyc ${state.open_sect ? 'openPhone' : '' }`} onClick={state.open_sect ? toggleSection : handleSubmit}>
           <div className="contCtaKyc">
             <i className="fas fa-arrow-right arrowcito backInputKyc" ></i>
-            <i className="fas fa-mobile-alt frontInputKyc" ></i>
+            <i className={` ${ ui_type === 'phone' ? 'fas fa-mobile-alt' : 'fas fa-check'} frontInputKyc`} ></i>
           </div>
         </div>
 

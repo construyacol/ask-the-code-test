@@ -29,7 +29,8 @@ class Kyc extends Component {
     const { user, form_kyc_basic_state } = this.props
     // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
     let countryvalidators = await this.props.action.countryvalidators()
-    if(user.verification_level === 'level_0'){
+    // if(user.verification_level === 'level_0'){
+    if(user.verification_level !== 'level_0'){
         this.props.action.Loader(true)
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
@@ -45,7 +46,7 @@ class Kyc extends Component {
         }
 
         init_state.data_state.country = user.country
-        // console.log('||||||||||||| KycContainer R E S - - - ', init_state, form_kyc_basic_state)
+        console.log('||||||||||||| KycContainer R E S - - - ', init_state, form_kyc_basic_state)
 
         await this.props.action.UpdateForm('kyc_basic', init_state)
         await this.setState({kyc_data_basic, country_list})

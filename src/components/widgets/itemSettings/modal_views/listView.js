@@ -4,15 +4,17 @@ import { currencies } from '../../../api/ui/settingList/currencies.json'
 import ItemListView from './listItemView'
 import { InputForm } from '../../inputs'
 import { matchItem } from '../../../../services'
+import './listView.css'
 
 import './viewSettings.css'
 
 // @Params
 // list => Lista de items que alimenta el componente Obj={name, code}
 // noIcon => Define si se mostrarán iconos en la lista
+// iconType => Definimos el formato de la imagen que vendrá en el modelo => img || svg
 // type => Recibe como parametro "country" || "currencies" que son las listas precargadas en el componente
 // noFindbar => true/false define si el componente trae buscador o no
-// theme => Tema visual del componente (classic) || (ultimate)
+// theme => Tema visual del componente (classic) || (ultimate) || (ultimate_classic)
 // external_findbar => define si el componente adapta un buscador externo
 // external_findbar_data => Datos que recibe el componente, de la fuente externa (componente padre)
 // export_result => función para exportar el resultado de una busqueda al componente padre, utilizado solo cuando hay un external_findbar
@@ -34,8 +36,9 @@ class MVList extends Component {
   init_external_data = async(nextProps)=>{
 
     const { external_findbar_data, external_findbar } = nextProps
+    console.log('BEFORE componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
     if(external_findbar && external_findbar_data && this.props.external_findbar_data !== nextProps.external_findbar_data){
-      // console.log('componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
+      console.log('AFTER componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
       let body = {
         target:{
           name:"",
@@ -43,15 +46,11 @@ class MVList extends Component {
         }
       }
       await this.update(body)
-      // await this.findCurrentItem(external_findbar_data)
-      // if(external_findbar_data === this.props.current_item){
         this.setState({
           search:[],
           current_item:null
         })
-      // }
     }
-
   }
 
 
@@ -89,6 +88,7 @@ class MVList extends Component {
     // this.props.actualizarEstado(item)
 
     if(this.props.external_findbar){
+      // console.log('item selection with external findbar')
       let body = {target:{name:"", value:code}}
       await this.update(body)
     }
@@ -160,7 +160,8 @@ class MVList extends Component {
       list,
       noIcon,
       noFindbar,
-      theme
+      theme,
+      iconType
     } = this.props
 
     const {
@@ -171,7 +172,6 @@ class MVList extends Component {
     } = this.state
 
     // console.log('||||||||| - -- - - ', current_list)
-
     // let current_list = list ? list : type === 'country' ? countries : currencies
 
     return(
@@ -196,6 +196,8 @@ class MVList extends Component {
                 item_selection={this.item_selection}
                 item_active={select_id}
                 item={item}
+                theme={theme}
+                iconType={iconType}
               />
             )
           })
@@ -210,6 +212,8 @@ class MVList extends Component {
                 item_selection={this.item_selection}
                 item_active={select_id}
                 item={item}
+                theme={theme}
+                iconType={iconType}
               />
             )
           })

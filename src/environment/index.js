@@ -1,7 +1,7 @@
 export const Environtment = {
   ApiUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/api/' : 'http://andres.indophi.com:5900/api/',
   SocketUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/' : 'http://andres.indophi.com:5900/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiIxeUZpYWR4SlRIWHpnTTlzQ0dnNjFERmpzZ0F4eHQwN29ZTHdxWjRqc3lMbjBMZzFYRkVsVDZmV2tCMVZZMlpUIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTM3ODUxNTcsImV4cCI6MTU1Mzc5NTk1N30.RLLbsfqN2ywHfpcaZKc9qQl5gB3sQ36fNOl9kqU7gqmt0XwbyKr_3jt1RAjTkLfsV_f-_M02P43zak4xmq6vtQ",
+  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJQdEM2Z1kycHlJSE01dG1ld0lkTWRkUmlLNjdZazNwMUU3YTdNcDNENkhoaE9laGFrWmc4UUJKMjN5b3BTTnRNIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTM4NTUwOTksImV4cCI6MTU1Mzg2NTg5OX0.tyuLimoyabIebBTCloj4QmEqIa0WxngzmVdHxA_COEy2BaHSEz_Q9jbKiLCQ3imORyo6cQQs31PbWTT6iapqMA",
   IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:3002/api/' : 'http://andres.indophi.com:3002/api/',
 }
 

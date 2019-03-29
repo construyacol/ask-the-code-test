@@ -18,7 +18,8 @@ const KycLayout = (props) =>{
 
   return(
     <section className="KycLayoutMom">
-      <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} >
+      <div className={`KycLayoutCarousel globalStep0`} >
+      {/* <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} > */}
 
         {
           (loader || !kyc_data_basic)  ?

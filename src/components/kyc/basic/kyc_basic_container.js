@@ -50,6 +50,7 @@ class KycBasicContainer extends Component {
     colorMessage:"#50667a",
     ui_type:this.props.kyc_data_basic[(this.props.step-1)].ui_type,
     open_sect:false,
+    // findbar:null,
     findbar:this.props.kyc_data_basic[(this.props.step-1)].name === 'phone' ? this.props.findbar_phone : null,
     findbar_phone:this.props.findbar_phone,
     search_result:this.props.search_result
@@ -72,16 +73,11 @@ class KycBasicContainer extends Component {
     // console.log('TYPING', name, value)
 
     switch (name) {
-      case 'findbar':
-        await this.setState({
-                findbar:value
-              })
-        break;
       case 'findbar_name':
       // instanciamos un estado especifico para almacenar el ultimo dato buscado en cualquier lista ej: findbar_phone => servira como referencia buscada en esta sección especifica...
         let findbartype = `findbar_${kyc_data_basic[(step-1)].name}`
         await this.setState({
-                // findbar:value,
+                findbar:value,
                 [findbartype]:value ? value : null
               })
         break;
@@ -90,12 +86,12 @@ class KycBasicContainer extends Component {
               data_state:{
                 ...this.state.data_state,
                 [name]:value
-              }
+              },
+              findbar:value
             })
     }
-    await this.props.action.UpdateForm('kyc_basic', this.state)
     await this.validateActive()
-    console.log('update STATE', this.state)
+    // console.log('update STATE', this.state)
 
   }
 
@@ -118,6 +114,7 @@ class KycBasicContainer extends Component {
 
   siguiente = async() =>{
     if(this.props.step<=this.props.kyc_data_basic.length){
+      await this.props.action.UpdateForm('kyc_basic', this.state)
       await this.props.action.IncreaseStep('kyc_basic')
       return this.validateActive()
     }
@@ -155,7 +152,7 @@ class KycBasicContainer extends Component {
         message:`${this.state.open_sect ? "" : nextProps.kyc_data_basic[(nextProps.step-1)].message}`,
         colorMessage:"#50667a",
         ui_type:nextProps.kyc_data_basic[(nextProps.step-1)].ui_type,
-        findbar:name_section === 'phone' ? !this.state.findbar_phone ? null :this.state.findbar_phone :
+        findbar:name_section === 'phone' ? !this.state.findbar_phone ? this.state.data_state.country :this.state.findbar_phone :
                !this.state.data_state[name_section] ? null : this.state.data_state[name_section]
         // findbar:`${name_section !== 'phone' ? this.state.data_state[name_section] : !nextProps[findbar_content] ? this.state.data_state.country : nextProps[findbar_content] }`,
         // findbar:`${name_section !== 'phone' ? this.state.data_state[name_section] : !nextProps[findbar_content] ? null : nextProps[findbar_content] }`,
@@ -188,19 +185,25 @@ class KycBasicContainer extends Component {
   _onFocus = () =>{
     // Cerramos la sección de la listas al enfocarnos en el input phone
     const { open_sect, ui_type } = this.state
-    if(open_sect && ui_type === 'phone'){
-      this.setState({
-        open_sect:false,
+    // if(open_sect && (ui_type === 'phone')){
+    //   return this.setState({
+    //     open_sect:false,
+    //     message:`${!open_sect ? "" : this.props.kyc_data_basic[(this.props.step-1)].message}`
+    //   })
+    // }
+
+    if(ui_type === 'select'){
+      return this.setState({
+        open_sect:true,
         message:`${!open_sect ? "" : this.props.kyc_data_basic[(this.props.step-1)].message}`
       })
     }
   }
 
 
-
   update_list = async(item) =>{
     const { code } = item
-    console.log('RESULTADO --  BUSQUEDA  --', code)
+    // console.log('RESULTADO --  BUSQUEDA  --', code)
 
     let body = {
       target:{
@@ -232,11 +235,11 @@ class KycBasicContainer extends Component {
   }
 
   render(){
-
     // console.log('P R O P S - -   K Y C', this.props)
-    console.log('|||E S T A D O - -   K Y C', this.state)
+    // console.log('|||E S T A D O - -   K Y C', this.state)
     const { open_sect, findbar, search_result } = this.state
-    // console.log('F I N D B A R     K Y C', findbar, typeof(findbar))
+    const { ui_type } = this.props.kyc_data_basic[this.props.step-1]
+    // console.log('F I N D B A R     K Y C', findbar, typeof(findbar), ui_type)
     return(
       <div className="KycLayout">
         <p className="fuente KycTitle KycTitless" >Verificación Basica</p>
@@ -256,10 +259,11 @@ class KycBasicContainer extends Component {
             <MVList
               list={this.props.country_list}
               noIcon={true}
+              iconType="img"
               theme="ultimate"
               noFindbar={true}
               external_findbar={true}
-              external_findbar_data={open_sect ? findbar : false}
+              external_findbar_data={(ui_type === 'phone' || ui_type === 'select') ? findbar : null}
               actualizarEstado={this.update_list}
               current_item={this.state.data_state.country}
               export_result={this.handle_search_result}
