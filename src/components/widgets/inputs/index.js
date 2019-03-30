@@ -321,13 +321,15 @@ export const InputCountryPrefix = (props) =>{
 
   // @Param open:boolean => Define si esta desplegado el componente o contraido
 
+  // console.log('||||InputCountryPrefix', search_result && search_result.prefix)
+
   return(
     <div className={`PhoneamEsta ${open ? 'openS' : '' }`} onClick={open ? null : toggleSection}>
       <div className="inputPhone">
         { search_result &&
           <img src={search_result.flag} alt="" className="PhoneamEsta_img" width={20} height={20}/>
         }
-        <p className="fuentePrin PhoneamEsta_p">+ {search_result ? search_result.prefix : '--'}</p>
+        <p className="fuentePrin PhoneamEsta_p">+ {search_result ? search_result.prefix[0] : '--'}</p>
         <div className={`inputComponentPhone ${open ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
           {
             search_result ?
@@ -340,8 +342,12 @@ export const InputCountryPrefix = (props) =>{
               className="inputElement3"
               placeholder="Escribe el país del indicativo."
               onChange={update}
-              name="findbar_name"/>
+              // name="findbar_name"
+              name="country_prefix"
+            />
+
           }
+
         </div>
       </div>
       <i className={`fas fa-chevron-down PhoneamEsta_icon ${open ? 'anim' : '' }`}  onClick={toggleSection}></i>
@@ -367,15 +373,16 @@ export const InputKycBasic = (props) =>{
     toggleSection,
     _onFocus,
     search_result,
-    clean_search_result
+    clean_search_result,
   } = props
 
 
-  // console.log('InputKycBasic  S T A T E:::', state.ui_type)
-  const { ui_type } = kyc[step-1]
-  // console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', ui_type)
+  // console.log('InputKycBasic  S T A T E:::',kyc)
+  // const { ui_type } = kyc[step-1]
+  // console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', ui_type, search_result)
   return(
     <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
+    {/* <div id="kycPrime" className={`containerInputComponent2`}> */}
 
       <div className="inputLabelsCont">
         <div className="InputCarous" style={{ top: `-${(step-1)*40}px` }}>
@@ -401,18 +408,25 @@ export const InputKycBasic = (props) =>{
                             />
                           }
 
-                          <input
-                           key={item.id}
-                           className={`inputElement3 ${state.active ? 'inputActivado' : '' } ${state.ui_type === 'phone' ?'phone' :'' }`}
-                           type={state.ui_type === 'phone' ? 'number' :
-                                 state.ui_type === 'select' ? 'text' : state.ui_type }
-                           placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
-                           onChange={update}
-                           name={item.name}
-                           defaultValue={state.data_state[item.name]}
-                           onFocus={_onFocus}
-                           // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
-                         />
+                          {
+                            (search_result && state.ui_type === 'select') ?
+                            <p className={`search_result_kyc openS`}>{search_result.name}
+                              <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
+                            </p>
+                            :
+                            <input
+                             key={item.id}
+                             className={`inputElement3 ${state.active ? 'inputActivado' : '' } ${state.ui_type === 'phone' ?'phone' :'' }`}
+                             type={state.ui_type === 'phone' ? 'number' :
+                                   state.ui_type === 'select' ? 'text' : state.ui_type }
+                             placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
+                             onChange={update}
+                             name={item.name}
+                             defaultValue={state.ui_type !== 'select' ? state.data_state[item.name] : null}
+                             onFocus={_onFocus}
+                             // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+                            />
+                          }
                         </form>
           })
         }
@@ -424,7 +438,7 @@ export const InputKycBasic = (props) =>{
         <div className={`ctaInputKyc ${state.open_sect ? 'openPhone' : '' }`} onClick={state.open_sect ? toggleSection : handleSubmit}>
           <div className="contCtaKyc">
             <i className="fas fa-arrow-right arrowcito backInputKyc" ></i>
-            <i className={` ${ ui_type === 'phone' ? 'fas fa-mobile-alt' : 'fas fa-check'} frontInputKyc`} ></i>
+            <i className={` ${state.ui_type === 'phone' ? 'fas fa-mobile-alt' : 'fas fa-check'} frontInputKyc`} ></i>
           </div>
         </div>
 

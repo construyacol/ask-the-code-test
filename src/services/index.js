@@ -142,7 +142,7 @@ export const serveBankOrCityList = (list, type) => {
 }
 
 
-export const converToState = (obj) => {
+export const converToInitState = (obj) => {
   // recibe un objeto como parametro y devuelve ese objeto con todos los parametros vacíos, como un estado inicializado desde 0
     return new Promise(async(resolve, reject)=>{
     let new_state
@@ -154,6 +154,33 @@ export const converToState = (obj) => {
     })
     return resolve(new_state)
   })
+}
+
+
+export const extractSelectList = async(kyc_array, kyc_object) => {
+    let object_list
+    await kyc_array.map(async(item) =>{
+      if(item.ui_type === 'select' && item.name !== "nationality"){
+        let _this_array=[]
+        let items_object
+        let id = 1
+          await Object.keys(kyc_object[item.name]).forEach((indx) => {
+            if(indx === 'ui_name' || indx === 'ui_type'){return false}
+            let new_item = {
+              ...kyc_object[item.name][indx],
+              code:indx,
+              name:kyc_object[item.name][indx].ui_name,
+              id:id++
+            }
+              _this_array.push(new_item)
+            })
+        object_list = {
+          ...object_list,
+          [item.name]:_this_array
+        }
+      }
+    })
+    return object_list
 }
 
 

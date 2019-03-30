@@ -21,7 +21,7 @@ const KycLayout = (props) =>{
       <div className={`KycLayoutCarousel globalStep0`} >
       {/* <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} > */}
 
-        {
+        {/* {
           (loader || !kyc_data_basic)  ?
               <SimpleLoader label="Cargando..."/>
           :
@@ -29,7 +29,13 @@ const KycLayout = (props) =>{
                 nextKyc={nextKyc}
                 {...props}
               />
-        }
+        } */}
+
+
+              <KycBasicContainer
+                nextKyc={nextKyc}
+                {...props}
+              />
 
           <div className="KycLayoutBasicWin">
             <img src={finish} alt="" height="200"/>

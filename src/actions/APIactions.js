@@ -63,7 +63,7 @@ add_index_to_root_object,
 objectToArray
 } = services
 
-const { ApiUrl, TokenUser, IdentityApIUrl } = Environment
+const { ApiUrl, TokenUser, IdentityApIUrl, CountryApIUrl } = Environment
 let local_currency
 
 
@@ -1619,23 +1619,29 @@ export const countryvalidators = () =>{
 }
 
 
-// export const get_countryvalidators = order_id =>{
-//
-//   return async(dispatch) => {
-//     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
-//     let res = await ApiGetRequest(url_countryvalidators)
-//     if(!res || res === 465){return false}
-//     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
-//     let new_array = await objectToArray(countries)
-//     let construct_res = {
-//       res:res[0],
-//       countries,
-//       country_list:new_array
-//     }
-//     return construct_res
-//   }
-//
-// }
+
+
+
+
+export const get_country_list = order_id =>{
+
+  return async(dispatch) => {
+    const url_country_list = `${CountryApIUrl}countrys`
+
+    let res = await ApiGetRequest(url_country_list)
+    if(!res || res === 465){return false}
+    // let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+    // let new_array = await objectToArray(countries)
+    // let construct_res = {
+    //   res:res[0],
+    //   countries,
+    //   country_list:new_array
+    // }
+    return res
+    // console.log('get_country_list', res)
+  }
+
+}
 
 
 

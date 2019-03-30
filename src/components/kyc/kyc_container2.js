@@ -30,33 +30,33 @@ class Kyc extends Component {
     // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
     let countryvalidators = await this.props.action.countryvalidators()
     // if(user.verification_level === 'level_0'){
-    // if(user.verification_level !== 'level_0'){
-        // this.props.action.Loader(true)
-    //     const { user } = this.props
-    //     let countryvalidators = await this.props.action.countryvalidators()
-    //     let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     let get_country_list = await this.props.action.get_country_list()
-    //     let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     select_list.countries = get_country_list
-    //
-    //     init_state = {
-    //         data_state:{
-    //           ...init_state,
-    //           ...form_kyc_basic_state.data_state,
-    //           country_prefix:""
-    //         }
-    //     }
-    //
-    //     init_state.data_state.country = user.country
-    //
-    //     // console.log('||||||||||||| countryvalidators R E S - - - ', countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     // console.log('||||||||||||| select_list R E S - - - ', select_list)
-    //
-    //     await this.props.action.UpdateForm('kyc_basic', init_state)
-    //     await this.setState({kyc_data_basic, select_list})
-    //     this.props.action.Loader(false)
-    // }
+    if(user.verification_level !== 'level_0'){
+        this.props.action.Loader(true)
+        const { user } = this.props
+        let countryvalidators = await this.props.action.countryvalidators()
+        let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
+        let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
+        let get_country_list = await this.props.action.get_country_list()
+        let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
+        select_list.countries = get_country_list
+
+        init_state = {
+            data_state:{
+              ...init_state,
+              ...form_kyc_basic_state.data_state,
+              country_prefix:""
+            }
+        }
+
+        init_state.data_state.country = user.country
+
+        // console.log('||||||||||||| countryvalidators R E S - - - ', countryvalidators.res.levels.level_1.personal[user.person_type])
+        // console.log('||||||||||||| select_list R E S - - - ', select_list)
+
+        await this.props.action.UpdateForm('kyc_basic', init_state)
+        await this.setState({kyc_data_basic, select_list})
+        this.props.action.Loader(false)
+    }
   }
 
   nextKyc = () => {
