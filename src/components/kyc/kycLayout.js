@@ -18,19 +18,8 @@ const KycLayout = (props) =>{
 
   return(
     <section className="KycLayoutMom">
-      <div className={`KycLayoutCarousel globalStep0`} >
-      {/* <div className={`KycLayoutCarousel ${(level === 'level_0') ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} > */}
-
-        {/* {
-          (loader || !kyc_data_basic)  ?
-              <SimpleLoader label="Cargando..."/>
-          :
-              <KycBasicContainer
-                nextKyc={nextKyc}
-                {...props}
-              />
-        } */}
-
+      {/* <div className={`KycLayoutCarousel globalStep0`} > */}
+      <div className={`KycLayoutCarousel ${(level === 'level_0' && globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} >
 
               <KycBasicContainer
                 nextKyc={nextKyc}
@@ -39,7 +28,7 @@ const KycLayout = (props) =>{
 
           <div className="KycLayoutBasicWin">
             <img src={finish} alt="" height="200"/>
-            <h1 className="fuente KycTitles" >Espectacular Andrés</h1>
+            <h1 className="fuente KycTitles" >Espectacular {user.name}</h1>
             <p className="KycParra1" >Haz completado de forma exitosa el proceso de verificación basica</p>
             <div className="Kyccontrols">
                 <p className="fuente" >¿Quieres continuar con el proceso de verifiación avanzado?</p>

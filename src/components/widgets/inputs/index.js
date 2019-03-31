@@ -4,6 +4,9 @@ import { number_format } from '../../../services'
 import { SimpleLoader } from '../loaders'
 import { BigNumber } from "bignumber.js"
 import IconSwitch from '../icons/iconSwitch'
+import Environtment from '../../../environment'
+
+const { CountryUrl } = Environtment
 
 export const InputForm = (props) => {
 const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
@@ -327,7 +330,7 @@ export const InputCountryPrefix = (props) =>{
     <div className={`PhoneamEsta ${open ? 'openS' : '' }`} onClick={open ? null : toggleSection}>
       <div className="inputPhone">
         { search_result &&
-          <img src={search_result.flag} alt="" className="PhoneamEsta_img" width={20} height={20}/>
+          <img src={`${CountryUrl}${search_result.flag}`} alt="" className="PhoneamEsta_img" width={20} height={20}/>
         }
         <p className="fuentePrin PhoneamEsta_p">+ {search_result ? search_result.prefix[0] : '--'}</p>
         <div className={`inputComponentPhone ${open ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
@@ -345,9 +348,7 @@ export const InputCountryPrefix = (props) =>{
               // name="findbar_name"
               name="country_prefix"
             />
-
           }
-
         </div>
       </div>
       <i className={`fas fa-chevron-down PhoneamEsta_icon ${open ? 'anim' : '' }`}  onClick={toggleSection}></i>
@@ -372,14 +373,12 @@ export const InputKycBasic = (props) =>{
     step,
     toggleSection,
     _onFocus,
-    search_result,
+    search_results,
     clean_search_result,
   } = props
 
-
+  let search_result = search_results && search_results[0]
   // console.log('InputKycBasic  S T A T E:::',kyc)
-  // const { ui_type } = kyc[step-1]
-  // console.log('||||°°°°°°°°°InputKycBasic  P R O P S:::', ui_type, search_result)
   return(
     <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
     {/* <div id="kycPrime" className={`containerInputComponent2`}> */}
@@ -404,6 +403,7 @@ export const InputKycBasic = (props) =>{
                             state.ui_type === 'phone' &&
                             <InputCountryPrefix
                               open={state.open_sect}
+                              search_result={search_result}
                               {...props}
                             />
                           }

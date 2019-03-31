@@ -102,9 +102,7 @@ font-size: 20px;
 
 .PhoneamEsta_icon.anim{
   animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
-
 }
-
 
 .inputContainer3>form{
   height: 100% !important;
@@ -497,7 +495,7 @@ form#phone{
 
   .containerInputComponent2.openS{
     transition: .6s;
-    transform: scale(.9);
+    transform: scale(.9) translateX(10px);
   }
 
 .containerInputComponent, .containerInputComponent2, .containerInputComponent3{

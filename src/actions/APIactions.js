@@ -1550,6 +1550,14 @@ export const get_user = (token, user_country) =>{
       verification_level:country[0].verification_level,
       levels:country[0].levels
     }
+    if(country[0].verification_level === "level_1"){
+      user_update.security_center.kyc.basic = true
+    }
+    if(country[0].verification_level === "level_2"){
+      user_update.security_center.kyc.advanced = true
+    }
+
+
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     const get_profile_url = `${IdentityApIUrl}profiles/get-profile`

@@ -70,7 +70,6 @@ class LoaderAplication extends Component {
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
     let pairs = await action.get_all_pairs(token, user_country)
-    // console.log('IMPORTANDO PARES', pairs)
     if(!pairs){
       this.go_to_select_country()
       return false

@@ -1,11 +1,14 @@
 export const Environtment = {
-  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/api/' : 'http://andres.indophi.com:5900/api/',
-  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:5900/' : 'http://andres.indophi.com:5900/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJhdHF5ckZaWk5NVzJiUXB6Tm1LZ2pwa1RqQ21hQk13b0M2dzQwQ2hJSjJoQVpCRmJHUkc1ZzZiYks0QmRQUFRKIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTM5MzY3NjYsImV4cCI6MTU1Mzk0NzU2Nn0._0-R6icgZ85WtECihl8c5zVdQJTV49TbhFiq9Bvjxg_gvNiDn77RVrjgITg24u_FkYpipvvNRys_lC-v6fdaMQ",
-  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:3002/api/' : 'http://andres.indophi.com:3002/api/',
-  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'http://190.192.134.201:3010/api/' : 'http://andres.indophi.com:3010/api/',
+  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/api/' : 'http://andres.indophi.com:5900/api/',
+  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/' : 'http://andres.indophi.com:5900/',
+  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJDTUYxSE9CWnJBdjNNVmtEbXhFM0xrdENlUFdub25pczVsdTgySGdLSmJmYndsTUhZMFpIS0Rob3cxSXUydlRGIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTQwMTM3MDIsImV4cCI6MTU1NDAyNDUwMn0.t8Lt5vVTHiuE9_NzL0QNRJVoU-w3kBpn43gJ5u6UrPtZbCTy4-TJgH_jIalPjO0Lje-uyw7PD0A8OtP8czlThw",
+  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://sendaidentity.ngrok.io/api/' : 'http://andres.indophi.com:3002/api/',
+  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'http://countrylistapi.ngrok.io/api/' : 'http://andres.indophi.com:3010/api/',
+  CountryUrl:'http://countrylistapi.ngrok.io/'
 }
 
+
+// http://190.192.134.201:5900
 
 export default Environtment
 // https://plecto.serveo.net

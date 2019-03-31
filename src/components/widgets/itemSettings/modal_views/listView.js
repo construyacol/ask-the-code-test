@@ -30,35 +30,15 @@ class MVList extends Component {
   }
 
   componentWillReceiveProps(nextProps){
-    this.init_external_data(nextProps)
   }
 
-  init_external_data = async(nextProps)=>{
-
-    const { external_findbar_data, external_findbar } = nextProps
-    // console.log('BEFORE componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
-    if(external_findbar && external_findbar_data && this.props.external_findbar_data !== nextProps.external_findbar_data){
-      // console.log('AFTER componentWillReceiveProps', external_findbar_data, typeof(external_findbar_data))
-      let body = {
-        target:{
-          name:"",
-          value:external_findbar_data
-        }
-      }
-      await this.update(body)
-        this.setState({
-          search:[],
-          current_item:null
-        })
-    }
-  }
 
 
 
 
     componentDidMount(){
       if(this.props.current_item){
-        // this.findCurrentItem(this.props.current_item)
+        this.findCurrentItem(this.props.current_item)
       }
     }
 

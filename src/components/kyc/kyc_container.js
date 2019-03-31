@@ -25,10 +25,10 @@ class Kyc extends Component {
     // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
-    this.props.action.Loader(true)
-    const { user, form_kyc_basic_state } = this.props
+    // this.props.action.Loader(true)
+    // const { user, form_kyc_basic_state } = this.props
     // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
-    let countryvalidators = await this.props.action.countryvalidators()
+    // let countryvalidators = await this.props.action.countryvalidators()
     // if(user.verification_level === 'level_0'){
     // if(user.verification_level !== 'level_0'){
         // this.props.action.Loader(true)
@@ -62,10 +62,9 @@ class Kyc extends Component {
   nextKyc = () => {
 
     this.props.action.Loader(true)
-    this.props.action.CleanForm('kyc_basic')
     this.user_update()
     setTimeout(()=>{
-
+      this.props.action.CleanForm('kyc_basic')
       this.props.action.IncreaseStep('kyc_global_step')
       setTimeout(()=>{this.props.action.Loader(false)},1000)
 
@@ -126,7 +125,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
     user:user[user_id],
-    form_kyc_basic_state:state.form.form_kyc_basic
+    // form_kyc_basic_state:state.form.form_kyc_basic
   }
 }
 

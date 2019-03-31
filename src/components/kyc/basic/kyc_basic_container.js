@@ -7,9 +7,8 @@ import actions from '../../../actions'
 import { objectToArray } from '../../../services'
 import MVList from '../../widgets/itemSettings/modal_views/listView'
 import { matchItem, serveKycData, converToInitState, extractSelectList } from '../../../services'
-
 import SimpleLoader from '../../widgets/loaders'
-
+import ItemListKycBasic from './itemList'
 
 
 
@@ -55,7 +54,6 @@ class KycBasicContainer extends Component {
   // }
 
   init_component = async() =>{
-    this.props.action.Loader(true)
     await this.props.action.CurrentForm('kyc_basic')
 
     // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
@@ -63,42 +61,57 @@ class KycBasicContainer extends Component {
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
     const { user, form_kyc_basic_state } = this.props
     // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
-    let countryvalidators = await this.props.action.countryvalidators()
-    // if(user.verification_level === 'level_0'){
-    if(user.verification_level !== 'level_0'){
+    if(user.verification_level === 'level_0'){
+    // if(user.verification_level !== 'level_0'){
+      this.props.action.Loader(true)
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
         let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
+        console.log('||||||||||||||||||||||| serveKycData:',  kyc_data_basic)
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
         let get_country_list = await this.props.action.get_country_list()
         let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
         select_list.countries = get_country_list
+        await this.setState({kyc_data_basic, select_list})
+
+        let country_default = await this.matchList({value:'colombia', name:'country_prefix'})
 
         let new_init_state = {
               ...init_state,
-              ...form_kyc_basic_state.data_state,
-              country_prefix:""
+              country_prefix:'',
+              ...form_kyc_basic_state.data_state
         }
+
+
+        if(!new_init_state.country_prefix){
+          new_init_state.country_prefix = country_default
+        }
+        if(!new_init_state.country){
+          new_init_state.country = country_default
+        }
+
+        // new_init_state.country_prefix = country_default
+        // name_section === 'phone' ? this.matchList({value:'colombia', name:'country_prefix'}) :
+        // let name_section = kyc_data_basic[this.props.step-1].name
+        // console.log('this.props!!!!!!!', this.props, 'kyc_data_basic', kyc_data_basic)
+        // console.log('this.props!!!!!!!', new_init_state)
+        let current_item = kyc_data_basic[this.props.step-1]
 
         await this.setState({
           data_state:new_init_state,
-          message:kyc_data_basic[(this.props.step-1)].message,
+          message:current_item.message,
           active:false,
           colorMessage:"#50667a",
-          ui_type:kyc_data_basic[(this.props.step-1)].ui_type,
+          ui_type:current_item.ui_type,
           open_sect:false,
-          current_item:kyc_data_basic[(this.props.step-1)].name,
-          current_search:null
+          current_item:current_item.name,
+          // current_search:(current_item.name === 'phone' || current_item.name === 'country') ? this.state.data_state[current_item.name] : null
         })
 
-        // init_state.data_state.country = user.country
+        // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)
 
-        // console.log('||||||||||||| countryvalidators R E S - - - ', countryvalidators.res.levels.level_1.personal[user.person_type])
-        // console.log('||||||||||||| select_list R E S - - - ', this.state)
-
-        // await this.props.action.UpdateForm('kyc_basic', init_state)
-        await this.setState({kyc_data_basic, select_list})
         this.props.action.Loader(false)
+
     }
   }
 
@@ -109,7 +122,7 @@ class KycBasicContainer extends Component {
     const { name, value } = target
     const { step } = this.props
     const { ui_type } = this.state
-    console.log('TYPING', name, value, ui_type)
+    // console.log('TYPING', name, value, ui_type)
     let new_value = null
 
         if(name==='country_prefix' || name === 'country' || ui_type === 'select'){
@@ -122,6 +135,9 @@ class KycBasicContainer extends Component {
                 [name]:new_value ? new_value : value
               },
             })
+     // if(new_value){
+       // this.props.action.UpdateForm('kyc_basic', this.state)
+     // }
      this.validateActive()
   }
 
@@ -134,14 +150,14 @@ class KycBasicContainer extends Component {
     }
     // const {  } = this.props
     const { current_item, select_list } = this.state
-    let res = await matchItem(select_list[name === 'country_prefix' ? 'countries' : name ], {primary:value}, 'code')
-    console.log('||||||matchList', value, name, res)
+    let res = await matchItem(select_list[name === 'country_prefix' || name === 'nationality' ? 'countries' : name ], {primary:value}, 'code')
+    // console.log('||||||matchList', value, name, res)
     if(!res){return false}
     if(res.length<50){
       this.setState({current_search:res})
     }
     if(res.length===1){
-      return res[0]
+      return res
     }
 
 
@@ -167,7 +183,8 @@ class KycBasicContainer extends Component {
 
   siguiente = async() =>{
     const { kyc_data_basic } = this.state
-    if(this.props.step<=kyc_data_basic.length){
+    console.log('NEXT KYC', this.props.step, kyc_data_basic.length)
+    if(this.props.step<kyc_data_basic.length){
       await this.props.action.UpdateForm('kyc_basic', this.state)
       await this.props.action.IncreaseStep('kyc_basic')
       return this.validateActive()
@@ -180,7 +197,9 @@ class KycBasicContainer extends Component {
     event.preventDefault()
     let arre = await objectToArray(this.state.data_state)
     const { step } = this.props
-    console.log('handleSubmit', arre[(step-1)])
+    const { current_item, data_state } = this.state
+    console.log('handleSubmit', arre[(step-1)], this.state)
+    if(current_item === 'phone' && !data_state.country_prefix){return false}
     if(arre[(step-1)]){
         return this.siguiente()
     }
@@ -197,17 +216,20 @@ class KycBasicContainer extends Component {
 
 
 
-
   receivedProps = async(nextProps) =>{
     if(!this.state.kyc_data_basic){return false}
+    // console.log(nextProps.step, this.state.kyc_data_basic.length)
+    if(nextProps.step > this.state.kyc_data_basic.length){return false}
     let name_section = this.state.kyc_data_basic[nextProps.step-1].name
+    let current_search = await name_section === 'phone' ? this.state.data_state['country_prefix'] : name_section === 'country' ? this.state.data_state[name_section] : null
       await this.setState({
         message:`${this.state.open_sect ? "" : this.state.kyc_data_basic[(nextProps.step-1)].message}`,
         colorMessage:"#50667a",
         ui_type:this.state.kyc_data_basic[(nextProps.step-1)].ui_type,
-        current_item:this.state.kyc_data_basic[nextProps.step-1].name,
-        current_search:null
+        current_item:name_section,
+        current_search:current_search ? current_search : null
       })
+      // console.log('||||||||| receivedProps - S T A T E', current_search_list, this.state)
       this.validateActive()
   }
 
@@ -275,18 +297,44 @@ shouldComponentUpdate(nextProps, nextState){
     }
   }
 
+
+
+  select_item = (item) =>{
+    const { current_item, ui_type } = this.state
+    let body = {
+      target:{
+        name:current_item,
+        value:item.code
+      }
+    }
+
+    if(current_item === 'phone'){
+      body.target.name = 'country_prefix'
+    }
+
+    this.update(body)
+    // console.log('|||||select_item in KYC CONTAINER - - ', body, this.state)
+
+  }
+
+
+
   render(){
-    // console.log('P R O P S - -   K Y C', this.props.loader)
+    // console.log('P R O P S - -   K Y C', this.props)
     // console.log('|||E S T A D O - -   K Y C', this.state)
     const { open_sect, search_result, data_state, ui_type, current_item, current_search, kyc_data_basic } = this.state
     const { step  } = this.props
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
+    // console.log('|||current_search', current_search && current_search.length, current_search )
+
+
     return(
 
       <Fragment>
         {
-          this.props.loader || !kyc_data_basic || !step ?
+          // this.props.loader || !kyc_data_basic || !step ?
+          this.props.loader || !kyc_data_basic || !step || this.props.step > this.state.kyc_data_basic.length ?
           <SimpleLoader/>
           :
           <div className="KycLayout">
@@ -299,7 +347,7 @@ shouldComponentUpdate(nextProps, nextState){
               state={this.state}
               toggleSection={this.toggleSection}
               _onFocus={this._onFocus}
-              search_result={ui_type === 'phone' ? (data_state.country_prefix ? data_state.country_prefix : null) :
+              search_results={ui_type === 'phone' ? (data_state.country_prefix ? data_state.country_prefix : null) :
                             ui_type === 'select' ? (data_state[kyc_data_basic[step-1].name] ? data_state[kyc_data_basic[step-1].name] : null): null}
               clean_search_result={this.clean_search_result}
             />
@@ -311,7 +359,12 @@ shouldComponentUpdate(nextProps, nextState){
                   <div className="contCountryList">
                     {
                       current_search.map(item => {
-                        return <div className="itemListCountry" key={item.id}>{item.name}</div>
+                        return <ItemListKycBasic
+                          key={item.id}
+                          item={item}
+                          select_item={this.select_item}
+                          active={current_search && current_search.length === 1 && true}
+                        />
                       })
                     }
                   </div>
@@ -321,7 +374,12 @@ shouldComponentUpdate(nextProps, nextState){
                   <div className="contCountryList">
                     {
                       this.state.select_list[(current_item === 'phone' || current_item === 'nationality') ? 'countries' : current_item].map(item => {
-                        return <div className="itemListCountry" key={item.id}>{item.name}</div>
+                        // return <div className="itemListCountry" key={item.id} id={item.code} name={item.code} onClick={this.select_item}>{item.name}</div>
+                        return <ItemListKycBasic
+                                key={item.id}
+                                item={item}
+                                select_item={this.select_item}
+                              />
                       })
                     }
                   </div>

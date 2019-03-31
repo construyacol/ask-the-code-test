@@ -16,15 +16,15 @@
       "phone":null
     },
     "security_center":{
-      "email":false,
+      "email":true,
       "kyc":{
         "basic":false,
         "advanced":false
       },
       "authenticator":{
-        "auth":true,
+        "auth":false,
         "transactional":false,
-        "withdraw":true
+        "withdraw":false
       }
     },
     "balances":[],

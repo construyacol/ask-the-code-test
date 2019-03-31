@@ -5,11 +5,6 @@ import ActiveItem from '../../items/active_item'
 
 class ItemListView extends Component{
 
-
-  state = {
-    selected:parseInt(this.props.item_active) === parseInt(this.props.item.id)
-  }
-
 itemSelect = () => {
   const{
     item
@@ -28,9 +23,6 @@ itemSelect = () => {
       iconType
     } = this.props
 
-    const {
-      selected
-    } = this.state
 
     const {
       id,
