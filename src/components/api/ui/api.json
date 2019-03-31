@@ -470,8 +470,8 @@
         "name":"id_type",
         "label":"Tipo de documento",
         "placeholder":"Tipo de documento",
-        "message":"",
-        "errmessage":""
+        "message":"Elige el documento con el cual verificarás tu cuenta.",
+        "errmessage":"El dato elegido o escrito no es correcto"
       },
       "id_number":{
         "name":"id_number",

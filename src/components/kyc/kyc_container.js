@@ -59,17 +59,19 @@ class Kyc extends Component {
     // }
   }
 
-  nextKyc = () => {
+  nextKyc = async(info_type) => {
 
+    const { form_kyc_basic, user } = this.props
     this.props.action.Loader(true)
-    this.user_update()
+    await this.props.action.update_identity_profile(form_kyc_basic, user, info_type)
+
     setTimeout(()=>{
-      this.props.action.CleanForm('kyc_basic')
+      this.user_update()
+      // this.props.action.CleanForm('kyc_basic')
       this.props.action.IncreaseStep('kyc_global_step')
+      this.props.action.success_sound()
       setTimeout(()=>{this.props.action.Loader(false)},1000)
-
     }, 3000)
-
   }
 
 
@@ -125,7 +127,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
     user:user[user_id],
-    // form_kyc_basic_state:state.form.form_kyc_basic
+    form_kyc_basic:state.form.form_kyc_basic
   }
 }
 

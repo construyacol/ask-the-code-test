@@ -312,7 +312,8 @@ export const InputCountryPrefix = (props) =>{
     search_result,
     open,
     update,
-    clean_search_result
+    clean_search_result,
+    _onFocus
   } = props
 
   // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)

@@ -144,6 +144,10 @@ font-size: 20px;
 }
 
 .search_result_kyc{
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   height: 32px;
   width: auto;
   max-width: 240px;
@@ -151,7 +155,7 @@ font-size: 20px;
   font-size: 20px;
   color: #50667a;
   padding: 5px 15px;
-  display: flex;
+  /*display: flex;*/
   align-items: center;
   background: #f4f4f4;
   border-radius: 6px;
@@ -277,6 +281,7 @@ form#phone{
   right: 15px;
   cursor: pointer;
   transition: .3s;
+  margin-top: 5px;
 }
 
 .cerratelo:hover{
@@ -316,6 +321,7 @@ form#phone{
   justify-self:center;
   position: absolute;
   backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   right: initial !important;
 }
 .frontInputKyc{
@@ -323,6 +329,7 @@ form#phone{
   justify-self:center;
   position: absolute;
   transform: rotateX(180deg);
+  -moz-backface-visibility: hidden;
   backface-visibility: hidden;
   font-size: 35px;
   color: #0066AA;

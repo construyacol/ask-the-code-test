@@ -69,11 +69,13 @@ class LoaderAplication extends Component {
     // action.ToggleModal()
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
+
     let pairs = await action.get_all_pairs(token, user_country)
     if(!pairs){
       this.go_to_select_country()
       return false
     }
+
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
@@ -85,8 +87,8 @@ class LoaderAplication extends Component {
     // await init_sockets()
     // // // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
     // // // await action.get_pairs_for('colombia', user_collection)
+
     await action.get_pairs_for('colombia')
-    // //
     // let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     // await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
     // await action.get_account_balances(this.props.user)

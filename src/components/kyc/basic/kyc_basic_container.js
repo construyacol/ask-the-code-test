@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { objectToArray } from '../../../services'
 import MVList from '../../widgets/itemSettings/modal_views/listView'
-import { matchItem, serveKycData, converToInitState, extractSelectList } from '../../../services'
+import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
 import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
 
@@ -67,10 +67,11 @@ class KycBasicContainer extends Component {
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
         let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
-        console.log('||||||||||||||||||||||| serveKycData:',  kyc_data_basic)
+        // console.log('|||||kyc_data_basic', kyc_data_basic)
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
         let get_country_list = await this.props.action.get_country_list()
         let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
+        select_list.country = await FormatCountryList(select_list.country, get_country_list)
         select_list.countries = get_country_list
         await this.setState({kyc_data_basic, select_list})
 
@@ -104,6 +105,7 @@ class KycBasicContainer extends Component {
           colorMessage:"#50667a",
           ui_type:current_item.ui_type,
           open_sect:false,
+          show_hide_section:false,
           current_item:current_item.name,
           // current_search:(current_item.name === 'phone' || current_item.name === 'country') ? this.state.data_state[current_item.name] : null
         })
@@ -184,12 +186,16 @@ class KycBasicContainer extends Component {
   siguiente = async() =>{
     const { kyc_data_basic } = this.state
     console.log('NEXT KYC', this.props.step, kyc_data_basic.length)
-    if(this.props.step<kyc_data_basic.length){
+    if(this.props.step<=kyc_data_basic.length){
       await this.props.action.UpdateForm('kyc_basic', this.state)
       await this.props.action.IncreaseStep('kyc_basic')
+
+      if(this.props.step > kyc_data_basic.length){
+        return this.props.nextKyc("personal")
+      }
+
       return this.validateActive()
     }
-      return this.props.nextKyc()
   }
 
 
@@ -236,7 +242,8 @@ class KycBasicContainer extends Component {
   toggleSection = () =>{
     this.setState({
       message:`${!this.state.open_sect ? "" : this.state.kyc_data_basic[(this.props.step-1)].message}`,
-      open_sect:!this.state.open_sect
+      open_sect:!this.state.open_sect,
+      show_hide_section:!this.state.show_hide_section
      })
   }
 
@@ -245,7 +252,8 @@ class KycBasicContainer extends Component {
 
     if(nextProps.step !== this.props.step){
       this.setState({
-        open_sect:false
+        open_sect:false,
+        show_hide_section:false
       })
     }
      this.receivedProps(nextProps)
@@ -264,9 +272,12 @@ shouldComponentUpdate(nextProps, nextState){
     const { step } = this.props
 
     if(ui_type === 'select'){
+      setTimeout(()=>{
+        this.setState({show_hide_section:true})
+      }, 300)
       return this.setState({
-        open_sect:true,
-        message:`${!open_sect ? "" : kyc_data_basic[(step-1)].message}`
+        message:`${!open_sect ? "" : kyc_data_basic[(step-1)].message}`,
+        open_sect:true
       })
     }
   }
@@ -293,7 +304,7 @@ shouldComponentUpdate(nextProps, nextState){
     })
 
     if(ui_type === 'select'){
-      this.setState({open_sect:true})
+      this.setState({open_sect:true, show_hide_section:true})
     }
   }
 
@@ -322,7 +333,7 @@ shouldComponentUpdate(nextProps, nextState){
   render(){
     // console.log('P R O P S - -   K Y C', this.props)
     // console.log('|||E S T A D O - -   K Y C', this.state)
-    const { open_sect, search_result, data_state, ui_type, current_item, current_search, kyc_data_basic } = this.state
+    const { open_sect, search_result, data_state, ui_type, current_item, current_search, kyc_data_basic, show_hide_section } = this.state
     const { step  } = this.props
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
@@ -352,8 +363,9 @@ shouldComponentUpdate(nextProps, nextState){
               clean_search_result={this.clean_search_result}
             />
             <div id="expandibleKycPanel" className="expandibleKycPanel" style={{height:open_sect ? '65vh' : '0', opacity:open_sect ? '1': '0'}}>
-            {/* <div id="expandibleKycPanel" className="expandibleKycPanel"> */}
-              <div className={`contexpandibleKycPanel`}>
+            {
+              show_hide_section &&
+              <div className={`contexpandibleKycPanel ${open_sect ? 'openSec' : ''}`}>
                 {
                   current_search &&
                   <div className="contCountryList">
@@ -385,6 +397,8 @@ shouldComponentUpdate(nextProps, nextState){
                   </div>
                 }
               </div>
+            }
+
             </div>
           </div>
         }
