@@ -3,7 +3,10 @@
   position: relative;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
+  max-width: 450px;
+  width: 100%;
+  justify-self: center;
 }
 
 

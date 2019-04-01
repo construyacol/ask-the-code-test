@@ -10,23 +10,22 @@ import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, nextKyc, loader, siguiente, exit, user, kyc_data_basic, init_state, form_kyc_basic } = props
+ const { globalStep, validate_personal_kyc, loader, siguiente, exit, user,
+   kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc } = props
 
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
- let level = user.verification_level
+ // let level = user.verification_level
  let name = form_kyc_basic && form_kyc_basic.data_state  && form_kyc_basic.data_state.name
-  // let level = 'level_1'
-  // console.log('||||||||||||| KycBasicContainer L E V E L - - - ', level)
 
 
 
   return(
     <section className="KycLayoutMom">
       {/* <div className={`KycLayoutCarousel globalStep0`} > */}
-      <div className={`KycLayoutCarousel ${(level === 'level_0' && globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} >
+      <div className={`KycLayoutCarousel ${(globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} >
 
               <KycBasicContainer
-                nextKyc={nextKyc}
+                validate_personal_kyc={validate_personal_kyc}
                 {...props}
               />
 
@@ -53,7 +52,7 @@ const KycLayout = (props) =>{
                 </div>
             </div>
             {
-              ((level === 'level_0' && globalStep === 0) ||  globalStep === 1) &&
+              (globalStep === 0 ||  globalStep === 1) &&
               <ConfettiComponent/>
             }
 
@@ -63,8 +62,10 @@ const KycLayout = (props) =>{
           <div className="KycLayout" >
             <p className="fuente KycTitle" >Verificación Avanzada</p>
             {
-              (globalStep > 1 || level === 'level_1') &&
-              <KycAvancedContainer/>
+              (globalStep > 1) &&
+              <KycAvancedContainer
+                {...props}
+              />
             }
           </div>
 

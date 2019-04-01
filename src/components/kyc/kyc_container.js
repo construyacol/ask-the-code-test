@@ -13,66 +13,94 @@ import { serveKycData, converToInitState, extractSelectList } from '../../servic
 class Kyc extends Component {
 
   state = {
-    kyc_data_basic:null,
-    select_list:null
+    reset:null
   }
 
-  componentDidMount(){
-    this.init_component()
-  }
 
-  init_component = async() =>{
-    // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
-    // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
-    // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
-    // this.props.action.Loader(true)
-    // const { user, form_kyc_basic_state } = this.props
-    // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
-    // let countryvalidators = await this.props.action.countryvalidators()
-    // if(user.verification_level === 'level_0'){
-    // if(user.verification_level !== 'level_0'){
-        // this.props.action.Loader(true)
-    //     const { user } = this.props
-    //     let countryvalidators = await this.props.action.countryvalidators()
-    //     let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     let get_country_list = await this.props.action.get_country_list()
-    //     let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     select_list.countries = get_country_list
-    //
-    //     init_state = {
-    //         data_state:{
-    //           ...init_state,
-    //           ...form_kyc_basic_state.data_state,
-    //           country_prefix:""
-    //         }
-    //     }
-    //
-    //     init_state.data_state.country = user.country
-    //
-    //     // console.log('||||||||||||| countryvalidators R E S - - - ', countryvalidators.res.levels.level_1.personal[user.person_type])
-    //     // console.log('||||||||||||| select_list R E S - - - ', select_list)
-    //
-    //     await this.props.action.UpdateForm('kyc_basic', init_state)
-    //     await this.setState({kyc_data_basic, select_list})
-    //     this.props.action.Loader(false)
-    // }
-  }
-
-  nextKyc = async(info_type) => {
+  validate_personal_kyc = async(info_type) => {
 
     const { form_kyc_basic, user } = this.props
-    this.props.action.Loader(true)
-    await this.props.action.update_identity_profile(form_kyc_basic, user, info_type)
+    const { data_state } = form_kyc_basic
 
-    setTimeout(()=>{
+    let config = {
+      info:{
+        "name":data_state.name,
+        "surname":data_state.surname,
+        "birthday":data_state.birthday,
+        "address":data_state.address,
+        "phone":`+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
+        "city":data_state.city,
+        "country":data_state.country[0].code,
+        "id_type":data_state.id_type[0].code,
+        "id_number":data_state.id_number,
+        "nationality":data_state.nationality[0].code
+      },
+      info_type:"personal",
+      verification_level:"level_1"
+    }
+
+
+    this.props.action.Loader(true)
+    let res = await this.props.action.update_level_profile(config, user)
+    if(!res){
+             await this.props.action.ReduceStep('kyc_basic', 1)
+             this.props.action.Loader(false)
+             this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+      return this.props.action.ReduceStep('kyc_global_step', 1)
+    }
+    // console.log('||||||| validate_identity_kycRES - - ', res)
+    const { data } = res
+    const { personal } = data
+
+    let user_update = {
+      ...user,
+      ...personal
+    }
+      await this.props.action.update_user(user_update)
+    // setTimeout(()=>{
       this.user_update()
       // this.props.action.CleanForm('kyc_basic')
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
-      setTimeout(()=>{this.props.action.Loader(false)},1000)
-    }, 3000)
+      setTimeout(()=>{
+        this.props.action.Loader(false)
+        this.props.action.ReduceStep('kyc_basic')
+      },1000)
+    // }, 3000)
   }
+
+
+
+  validate_identity_kyc = async({base64}) => {
+    const { user } = this.props
+    const { newselfie, newfront, newback } = base64
+
+    let config = {
+      "info":{
+        "selfie":newselfie,
+        "id_front":newfront,
+        "id_back":newback
+      },
+      "info_type":"identity",
+      "verification_level":"level_1"
+    }
+    this.props.action.Loader(true)
+    let res = await this.props.action.update_level_profile(config, user)
+    console.log('||||||||||| VALIDATE_identity_kyc', res)
+    if(!res){
+             await this.props.action.ReduceStep('kyc_avanced', 1)
+             await this.setState({reset:true})
+             this.props.action.Loader(false)
+            return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+      // return this.props.action.ReduceStep('kyc_global_step', 1)
+    }
+
+    this.props.action.Loader(false)
+
+  }
+
+
+
 
 
   user_update = async() =>{
@@ -108,7 +136,8 @@ class Kyc extends Component {
 
     return(
       <KycLayout
-        nextKyc={this.nextKyc}
+        validate_personal_kyc={this.validate_personal_kyc}
+        validate_identity_kyc={this.validate_identity_kyc}
         siguiente={this.siguiente}
         exit={this.exit}
         {...this.props}

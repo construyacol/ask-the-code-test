@@ -60,12 +60,12 @@ class KycBasicContainer extends Component {
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
     const { user, form_kyc_basic_state } = this.props
-    // console.log('||||||||||||| KycContainer P R O P S - - - ', this.props)
-    if(user.verification_level === 'level_0'){
+    if(!user.levels){
     // if(user.verification_level !== 'level_0'){
       this.props.action.Loader(true)
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
+
         let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
         // console.log('|||||kyc_data_basic', kyc_data_basic)
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
@@ -191,7 +191,7 @@ class KycBasicContainer extends Component {
       await this.props.action.IncreaseStep('kyc_basic')
 
       if(this.props.step > kyc_data_basic.length){
-        return this.props.nextKyc("personal")
+        return this.props.validate_personal_kyc("personal")
       }
 
       return this.validateActive()

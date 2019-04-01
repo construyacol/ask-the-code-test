@@ -1513,6 +1513,7 @@ export const get_all_currencies = () => {
 
 export const get_user = (token, user_country) =>{
   return async(dispatch) => {
+
     await dispatch(load_label('Cargando tu información'))
 
     let body = {
@@ -1548,15 +1549,19 @@ export const get_user = (token, user_country) =>{
       verification_level:country[0].verification_level,
       levels:country[0].levels
     }
-    if(country[0].verification_level === "level_1"){
+
+
+    let kyc_personal = country[0].levels && country[0].levels.personal
+    let kyc_identity = country[0].levels && country[0].levels.identity
+
+    if(kyc_personal){
       user_update.security_center.kyc.basic = true
     }
-    if(country[0].verification_level === "level_2"){
-      user_update.security_center.kyc.advanced = true
-    }
 
-
-
+    // if(kyc_identity){
+    //   user_update.security_center.kyc.advanced = true
+    // }
+    // console.log('|||||| get_user res', user_update,  country[0])
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
@@ -1569,7 +1574,7 @@ export const get_user = (token, user_country) =>{
         person_type:profile_data.data.person_type
       }
     }
-    console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', user_update)
+    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', user_update)
 
     let normalizeUser = await normalize_user(user_update)
     await dispatch(Update_normalized_state(normalizeUser))
@@ -1577,6 +1582,8 @@ export const get_user = (token, user_country) =>{
     return normalizeUser
   }
 }
+
+
 
 
 export const update_user = new_user =>{
@@ -1624,53 +1631,31 @@ export const countryvalidators = () =>{
 
 
 
-export const update_identity_profile = (kyc_state, user, info_type) =>{
+export const update_level_profile = (config, user) =>{
+// @Calls
+// ./components/kyc/kyc_container.js
 
   return async(dispatch) => {
 
-    const { data_state } = kyc_state
 
     let body ={
       "access_token":TokenUser,
       "data": {
         "country":user.country,
         "person_type":user.person_type,
-        "info_type":info_type,
-        "verification_level": "level_1",
-        "info": {
-          "name":data_state.name,
-          "surname":data_state.surname,
-          "birthday":data_state.birthday,
-          "address":data_state.address,
-          "phone":`+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
-          "city":data_state.city,
-          "country":data_state.country[0].code,
-          "id_type":data_state.id_type[0].code,
-          "id_number":data_state.id_number,
-          "nationality":data_state.nationality[0].code
-        }
+        "info_type":config.info_type,
+        "verification_level":config.verification_level,
+        "info":config.info
       }
     }
+    console.log('||||||| add_new_profile body - - ', body)
 
 
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body, true)
+    if(!add_new_profile || add_new_profile === 465){return false}
+    return add_new_profile
 
-    console.log('||||||| add_new_profile res - - ', add_new_profile)
-
-
-    // const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
-    // let res = await ApiGetRequest(url_countryvalidators)
-    // if(!res || res === 465){return false}
-    // let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
-    // let new_array = await objectToArray(countries)
-    // let construct_res = {
-    //   res:res[0],
-    //   countries,
-    //   country_list:new_array
-    // }
-    //
-    // return construct_res
   }
 
 }

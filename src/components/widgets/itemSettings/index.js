@@ -31,9 +31,7 @@ class ItemSettingsInit extends Component{
 
         case 'kyc_advance':
 
-              await this.props.action.IncreaseStep('kyc_global_step')
-              await this.props.action.IncreaseStep('kyc_global_step')
-
+              await this.props.action.IncreaseStep('kyc_global_step', 2)
               return this.props.action.ToggleModal()
 
         case 'phone':
