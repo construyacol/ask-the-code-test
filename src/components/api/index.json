@@ -18,8 +18,8 @@
     "security_center":{
       "email":true,
       "kyc":{
-        "basic":false,
-        "advanced":false
+        "basic":null,
+        "advanced":null
       },
       "authenticator":{
         "auth":false,

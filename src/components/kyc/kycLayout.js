@@ -22,7 +22,7 @@ const KycLayout = (props) =>{
   return(
     <section className="KycLayoutMom">
       {/* <div className={`KycLayoutCarousel globalStep0`} > */}
-      <div className={`KycLayoutCarousel ${(globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} >
+      <div className={`KycLayoutCarousel ${(globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} style={{display:globalStep<3 ? 'grid' : 'none'}} >
 
               <KycBasicContainer
                 validate_personal_kyc={validate_personal_kyc}
@@ -68,6 +68,11 @@ const KycLayout = (props) =>{
               />
             }
           </div>
+
+      </div>
+
+      <div className="KycLayout" style={{display:globalStep>2 ? 'grid' : 'none'}}>
+        <p className="fuente KycTitle" >Verificación Financiera</p>
 
       </div>
     </section>

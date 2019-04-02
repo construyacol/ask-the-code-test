@@ -29,8 +29,11 @@ class ItemSettingsInit extends Component{
         case 'kyc_basic':
           return this.props.action.ToggleModal()
 
-        case 'kyc_advance':
+        case 'kyc_financial':
+              await this.props.action.IncreaseStep('kyc_global_step', 3)
+              return this.props.action.ToggleModal()
 
+        case 'kyc_advanced':
               await this.props.action.IncreaseStep('kyc_global_step', 2)
               return this.props.action.ToggleModal()
 
@@ -108,7 +111,8 @@ class ItemSettingsInit extends Component{
 
     update_state = async(payload) =>{
       const{
-        name
+        name,
+        description
       } = payload
 
       const{
@@ -120,9 +124,8 @@ class ItemSettingsInit extends Component{
       } = user
 
       const {
-        advanced,
-        basic
-      } = security_center.kyc
+        kyc
+      } = security_center
 
       const{
         auth,
@@ -130,33 +133,43 @@ class ItemSettingsInit extends Component{
         withdraw
       } = security_center.authenticator
 
-      // console.log('desde en el compoenente pricni update_state', name, user)
+      console.log('|||desde el componente update_state', payload)
 
       switch (name) {
 
         case 'email':
-
             return {
               available:true,
               verify:security_center.email
             }
-
         case 'identity':
             return {
               available:true,
               verify:true
             }
-
+        case 'kyc_financial':
+            return {
+              available:kyc.basic === 'accepted' && kyc.advanced === 'accepted',
+              verify:false
+            }
         case 'kyc_basic':
             return {
               available:true,
-              verify:basic
+              verify:kyc.basic === 'accepted',
+              description:(kyc.basic === 'confirmed' && !kyc.advanced) ? 'Continúa con la identificación avanzada para dar inicio a la verificación de tus datos.' :
+                          (kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' :
+                          (kyc.basic === 'rejected' && kyc.advanced === 'rejected') ? '¡Vaya!, al parecer los datos no se han podido verificar, vuelve a intentarlo' : description,
+              other_state:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'confirmed' :
+                          (kyc.basic === 'confirmed' && !kyc.advanced) ? 'send' :
+                          kyc.advanced === 'rejected' ? 'rejected' : null
             }
 
-        case 'kyc_advance':
+        case 'kyc_advanced':
             return {
-              available:basic && true,
-              verify:basic ? advanced : false
+              available:kyc.basic === 'confirmed' || kyc.advanced === 'accepted' ? true : null,
+              verify:kyc.advanced === 'accepted' ? true : null,
+              other_state:kyc.advanced === 'rejected' ? null : kyc.advanced,
+              description:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' : description
             }
 
         case '2auth':

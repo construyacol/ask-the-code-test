@@ -204,7 +204,7 @@ class KycBasicContainer extends Component {
     let arre = await objectToArray(this.state.data_state)
     const { step } = this.props
     const { current_item, data_state } = this.state
-    console.log('handleSubmit', arre[(step-1)], this.state)
+    // console.log('handleSubmit', arre[(step-1)], this.state)
     if(current_item === 'phone' && !data_state.country_prefix){return false}
     if(arre[(step-1)]){
         return this.siguiente()

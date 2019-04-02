@@ -21,7 +21,7 @@ const KycDashBoard = props =>{
     id_type
   } = props
 
-  console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', id_type)
+  // console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', id_type)
 
   return(
     <div className="KycDashBoard">

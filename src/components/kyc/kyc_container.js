@@ -48,17 +48,29 @@ class Kyc extends Component {
              this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
       return this.props.action.ReduceStep('kyc_global_step', 1)
     }
-    // console.log('||||||| validate_identity_kycRES - - ', res)
+    console.log('||||||| validate_PERSONAL_kycRES - - ', res)
     const { data } = res
     const { personal } = data
 
     let user_update = {
       ...user,
-      ...personal
+      ...personal,
+      levels:{
+        ...user.levels,
+        personal:'confirmed'
+      },
+      security_center:{
+        ...user.security_center,
+        kyc:{
+          ...user.security_center.kyc,
+          basic:'confirmed'
+        }
+      }
     }
       await this.props.action.update_user(user_update)
     // setTimeout(()=>{
-      this.user_update()
+      // this.user_update()
+
       // this.props.action.CleanForm('kyc_basic')
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
@@ -79,14 +91,14 @@ class Kyc extends Component {
       "info":{
         "selfie":newselfie,
         "id_front":newfront,
-        "id_back":newback
+        "id_back":user.id_type === 'pasaporte' ? newfront : newback
       },
       "info_type":"identity",
       "verification_level":"level_1"
     }
     this.props.action.Loader(true)
     let res = await this.props.action.update_level_profile(config, user)
-    console.log('||||||||||| VALIDATE_identity_kyc', res)
+    console.log('||||||||||| VALIDATE_RES', res)
     if(!res){
              await this.props.action.ReduceStep('kyc_avanced', 1)
              await this.setState({reset:true})
@@ -94,6 +106,22 @@ class Kyc extends Component {
             return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
       // return this.props.action.ReduceStep('kyc_global_step', 1)
     }
+    let user_update = {
+      ...user,
+      levels:{
+        ...user.levels,
+        identity:'confirmed'
+      },
+      security_center:{
+        ...user.security_center,
+        kyc:{
+          ...user.security_center.kyc,
+          advanced:'confirmed'
+        }
+      }
+    }
+    console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+      await this.props.action.update_user(user_update)
 
     this.props.action.Loader(false)
 

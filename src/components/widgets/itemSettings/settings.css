@@ -65,12 +65,86 @@
   font-size: 25px;
 }
 
+
+
 .SCcta{
     align-self: center;
   }
 
 .SCcta #subItemSC, .SCcta #ClassicView{
   transform: scale(0.9);
+}
+
+
+
+.SCcta.send .botonForm.primary{
+  background: #59B200 !important;
+  opacity: 0.4;
+}
+
+.SCcta.confirmed, .SCcta.rejected{
+  border-color: transparent !important;
+}
+
+.contentSubItem.confir, .SCcta.confirmed{
+  animation-name: SCconfirmed;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes SCconfirmed{
+  0%{
+    opacity: .8
+  }
+  50%{
+    opacity: .4
+  }
+  100%{
+    opacity: .8
+  }
+}
+
+.loaderScontainer .lds-roller div:after{
+  background: green !important;
+}
+
+
+.enviarNero{
+  margin-right: 10px;
+  font-size: 18px;
+  animation-name: enviarNero;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes enviarNero{
+  0%{
+    transform: translateY(0px);
+    opacity: 0;
+  }
+  50%{
+    opacity: 1
+  }
+  100%{
+    transform: translateY(40px);
+    opacity: 0
+  }
+}
+
+
+.loaderScontainer{
+  position: relative;
+  width: 30px
+}
+.confirmedIndentSc{
+  display: flex;
+  color: green ;
+}
+
+.confirmedIndentSc .lds-roller{
+  transform: scale(0.3);
+  height: auto !important;
+  width: auto !important;
 }
 
 .contentSubText{

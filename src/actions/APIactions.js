@@ -1527,7 +1527,7 @@ export const get_user = (token, user_country) =>{
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
     const init_state = await ApiPostRequest(init_state_url, body, true)
     if(init_state && !init_state.data){return false}
-    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
+    console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
     const get_status_url = `${IdentityApIUrl}status/get-status`
@@ -1555,12 +1555,16 @@ export const get_user = (token, user_country) =>{
     let kyc_identity = country[0].levels && country[0].levels.identity
 
     if(kyc_personal){
-      user_update.security_center.kyc.basic = true
+      user_update.security_center.kyc.basic = 'accepted'
+      // user_update.security_center.kyc.basic = kyc_personal
     }
 
-    // if(kyc_identity){
-    //   user_update.security_center.kyc.advanced = true
-    // }
+    if(kyc_identity){
+      user_update.security_center.kyc.advanced = 'accepted'
+      // user_update.security_center.kyc.advanced = kyc_identity
+    }
+
+    // console.log('|||||| get_user res', user_update)
     // console.log('|||||| get_user res', user_update,  country[0])
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
@@ -1582,6 +1586,9 @@ export const get_user = (token, user_country) =>{
     return normalizeUser
   }
 }
+
+
+
 
 
 
@@ -1648,7 +1655,7 @@ export const update_level_profile = (config, user) =>{
         "info":config.info
       }
     }
-    console.log('||||||| add_new_profile body - - ', body)
+    // console.log('||||||| add_new_profile body - - ', body)
 
 
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`

@@ -186,7 +186,7 @@ class KycAvancedContainer extends Component{
         newselfie
       } = base64
 
-      if(newfront && newback && newselfie){
+      if(newfront && newback && newselfie || newfront && newselfie && this.props.user.id_type === 'pasaporte'){
         return this.props.validate_identity_kyc(this.state)
       }
 

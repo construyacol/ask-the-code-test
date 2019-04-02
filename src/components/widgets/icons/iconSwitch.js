@@ -67,7 +67,7 @@ class IconSwitch extends Component {
         return <Person {...props} />
       case 'kyc_basic':
         return <Verify1 {...props} />
-      case 'kyc_advance':
+      case 'kyc_advanced':
         return <Identification {...props} />
       case '2auth':
         return <Security2 {...props} />
