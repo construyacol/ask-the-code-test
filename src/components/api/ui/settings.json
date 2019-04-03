@@ -59,7 +59,7 @@
         "id":4,
         "name":"kyc_financial",
         "label":"Financiera",
-        "description":"Adjunta comprobante de ingresos para poder operar con montos superiores a $7.000 dolares.",
+        "description":"Adjunta comprobante de ingresos RUT para operar con montos superiores a $7.000 dolares.",
         "verify":false,
         "cta_primary":"Verificar",
         "cta_secondary":"Verificado",

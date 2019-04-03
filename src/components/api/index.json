@@ -19,7 +19,8 @@
       "email":true,
       "kyc":{
         "basic":null,
-        "advanced":null
+        "advanced":null,
+        "financial":null
       },
       "authenticator":{
         "auth":false,

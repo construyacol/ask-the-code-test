@@ -34,7 +34,11 @@ import {
   Maintence,
   Good,
   Blockchain,
-  Peru
+  Peru,
+  Errors,
+  Financial,
+  Touch,
+  Upload
  } from './'
 
  import {
@@ -63,6 +67,14 @@ class IconSwitch extends Component {
     switch (icon) {
       case 'email':
         return <Email {...props} />
+      case 'upload':
+        return <Upload {...props} />
+      case 'touch':
+        return <Touch {...props} />
+      case 'kyc_financial':
+        return <Financial {...props} />
+      case 'error':
+        return <Errors {...props} />
       case 'identity':
         return <Person {...props} />
       case 'kyc_basic':
@@ -70,6 +82,7 @@ class IconSwitch extends Component {
       case 'kyc_advanced':
         return <Identification {...props} />
       case '2auth':
+      case 'security':
         return <Security2 {...props} />
       case 'transaction':
         return <Swap {...props} />

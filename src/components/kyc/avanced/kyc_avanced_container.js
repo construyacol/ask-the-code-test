@@ -62,9 +62,11 @@ class KycAvancedContainer extends Component{
 
   goFileLoader = async e =>{
     if (e.target.files && e.target.files.length > 0) {
+      console.log('|||||||| goFileLoader', e.target.files)
       this.props.action.Loader(true)
       const imageDataUrl = await readFile(e.target.files[0])
       this.props.action.Loader(false)
+      console.log('|||||||| goFileLoader url', imageDataUrl)
       this.setState({
         imageSrc: imageDataUrl,
         fileloader: !this.state.fileloader
@@ -88,7 +90,7 @@ class KycAvancedContainer extends Component{
 
       this.updateLocalImg(urlImg, base64)
 
-      toast(`¡Imagen guardada !`, {
+      toast(`¡Imagen Cargada !`, {
         position: window.innerWidth>768 ? toast.POSITION.BOTTOM_RIGHT : toast.POSITION.TOP_CENTER,
          pauseOnFocusLoss: false,
          draggablePercent: 60,

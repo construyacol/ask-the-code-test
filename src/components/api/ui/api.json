@@ -42,7 +42,7 @@
     "icon":"activity",
     "clave":"activity",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"1"
   },
   {
@@ -68,6 +68,14 @@
     "active":true,
     "visible":false,
     "id":"4"
+  },
+  {
+    "text":"Centro de seguridad",
+    "icon":"security",
+    "clave":"security",
+    "active":true,
+    "visible":true,
+    "id":"5"
   }
 ],
 "menuPrincipalInferior":[
@@ -76,7 +84,7 @@
     "icon":"settings",
     "clave":"settings",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"5"
   },
   {
@@ -84,7 +92,7 @@
     "icon":"security",
     "clave":"security",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"6"
   }
 ],

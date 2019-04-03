@@ -35,7 +35,6 @@ class WalletList extends Component{
     this.props.action.current_section_clean()
     this.props.action.CurrentForm(path)
 
-
   }
 
 
@@ -203,7 +202,7 @@ if(lista === 'withdraw_accounts' && ready){
  }
 
  // console.log('|||||||||||||||||||||||||ITE_LIST', state.model_data.user[state.model_data.user_id])
- console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
+ // console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
 
   return{
     item_list:item_list,

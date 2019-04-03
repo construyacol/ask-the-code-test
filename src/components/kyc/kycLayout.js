@@ -6,13 +6,13 @@ import SimpleLoader from '../widgets/loaders'
 import { ButtonForms } from '../widgets/buttons/buttons.js'
 import { Medal } from '../widgets/icons'
 import ConfettiComponent from './basic/confetti'
+import KycFinancialComponent from './financial/kyc_financial'
 import './kyc.css'
 
 const KycLayout = (props) =>{
 
  const { globalStep, validate_personal_kyc, loader, siguiente, exit, user,
    kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc } = props
-
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  // let level = user.verification_level
  let name = form_kyc_basic && form_kyc_basic.data_state  && form_kyc_basic.data_state.name
@@ -72,8 +72,8 @@ const KycLayout = (props) =>{
       </div>
 
       <div className="KycLayout" style={{display:globalStep>2 ? 'grid' : 'none'}}>
-        <p className="fuente KycTitle" >Verificación Financiera</p>
-
+        <p className="fuente KycTitle financial" >Verificación Financiera</p>
+          <KycFinancialComponent/>
       </div>
     </section>
   )

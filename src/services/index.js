@@ -188,7 +188,7 @@ export const FormatCountryList = (original_list, to_model_convert_list) => {
 
 
   let new_list = []
-
+  // console.log('!!!! to_model_convert_list', to_model_convert_list)
   original_list.map(async(item)=>{
     let res = await matchItem(to_model_convert_list, {primary:item.code}, 'name')
     if(!res){return false}

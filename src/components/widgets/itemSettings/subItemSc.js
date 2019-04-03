@@ -62,6 +62,8 @@ class SubItemSC extends Component {
     const{
       label,
       name,
+      color,
+      icon,
       description,
       cta_primary,
       cta_secondary,
@@ -71,21 +73,21 @@ class SubItemSC extends Component {
       treeButton,
       classic_view,
       type,
-      state,
       other_state
     } = this.state
 
     let originIndex = index-1
 
     const atributos ={
-      icon:name,
+      icon:icon ? icon : name,
       size:40,
-      color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`
+      color:`${color ? color : classic_view ? '#989898'  : !verify ? '#989898' : '#1babec'}`
     }
 
     // if(this.state.type==='identity'){console.log(type, name, this.state)}
+    // if(this.state.type==='identity'){console.log(type, name, this.state)}
 
-    // console.log('SUB_ITEM PROPS', this.props)
+    // console.log('SUB_ITEM PROPS', atributos, other_state)
 
 // HACEMOS CONEXIÓN A REDUX PARA COMPARAR Y VERIFICAR SI EFECTIVAMENTE ESTE ELEMENTO SE ENCUENTRA VALIDADO, EN FUNCIÓN A ELLO MOSTRAMOS EL cta primary o secondary
 

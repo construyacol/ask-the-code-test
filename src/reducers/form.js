@@ -20,6 +20,9 @@ const initialState = {
   form_kyc_basic:{
         step:1
       },
+  form_kyc_financial:{
+        step:1
+      },
   form_kyc_avanced:{
         newback:null,
         newfront:null,

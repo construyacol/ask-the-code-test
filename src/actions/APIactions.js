@@ -1550,22 +1550,39 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
+    // console.log('||||||  - - -.  --  country_object', country[0])
+
 
     let kyc_personal = country[0].levels && country[0].levels.personal
     let kyc_identity = country[0].levels && country[0].levels.identity
+    let kyc_financial = country[0].levels && country[0].levels.financial
 
     if(kyc_personal){
-      user_update.security_center.kyc.basic = 'accepted'
-      // user_update.security_center.kyc.basic = kyc_personal
+      user_update.security_center.kyc.basic = kyc_personal
     }
 
     if(kyc_identity){
-      user_update.security_center.kyc.advanced = 'accepted'
-      // user_update.security_center.kyc.advanced = kyc_identity
+      user_update.security_center.kyc.advanced = kyc_identity
     }
 
-    // console.log('|||||| get_user res', user_update)
-    // console.log('|||||| get_user res', user_update,  country[0])
+    if(kyc_financial){
+      user_update.security_center.kyc.financial = kyc_financial
+    }
+
+
+
+// para hacer pru
+
+    user_update.security_center.kyc.basic = 'accepted'
+    user_update.security_center.kyc.advanced = 'accepted'
+    // user_update.security_center.kyc.financial = 'accepted'
+
+
+
+
+
+
+
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
@@ -1578,7 +1595,7 @@ export const get_user = (token, user_country) =>{
         person_type:profile_data.data.person_type
       }
     }
-    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', user_update)
+    // console.log('||||||  - - -.  --  USER UPDATE', user_update)
 
     let normalizeUser = await normalize_user(user_update)
     await dispatch(Update_normalized_state(normalizeUser))
@@ -1678,6 +1695,7 @@ export const get_country_list = order_id =>{
     const url_country_list = `${CountryApIUrl}countrys`
 
     let res = await ApiGetRequest(url_country_list)
+    // console.log('get_country_list API', url_country_list, res)
     if(!res || res === 465){return false}
     // let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
     // let new_array = await objectToArray(countries)
@@ -1686,8 +1704,8 @@ export const get_country_list = order_id =>{
     //   countries,
     //   country_list:new_array
     // }
+    // console.log('get_country_list API', res)
     return res
-    // console.log('get_country_list', res)
   }
 
 }
