@@ -73,11 +73,11 @@ updateLocalImg = (img) =>{
     } = ticket
 
     this.props.action.Loader(true)
-    // console.log('°°°||||||||   base 64', id, base64)
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
-    // let res = await this.props.action.confirm_deposit_order(ticket, 'putito');
+    // let res = await this.props.action.confirm_deposit_order(ticket, '');
+    console.log('°°°||||||||   res confirmation', res)
     if(!res){return false}
-    let list = await this.props.action.get_deposit_list(user)
+    // let list = await this.props.action.get_deposit_list(user)
     // console.log('°°°||||||||   RES UPLOAD IMG:', res)
     await update_activity_list()
 

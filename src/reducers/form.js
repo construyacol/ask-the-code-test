@@ -18,20 +18,20 @@ import {
 
 const initialState = {
   form_kyc_basic:{
-        names:"",
-        lastnames:"",
-        birthDate:"",
-        id:"",
-        phone:"",
-        city:"",
-        address:"",
-        activity:"",
+        step:1
+      },
+  form_kyc_financial:{
         step:1
       },
   form_kyc_avanced:{
-        newback:"./docs/back.png",
-        newfront:"./docs/front.png",
-        newselfie:"./docs/selfie.png",
+        newback:null,
+        newfront:null,
+        newselfie:null,
+        base64:{
+          newfront:null,
+          newback:null,
+          newselfie:null
+        },
         step:1
       },
   form_deposit:{
@@ -208,16 +208,16 @@ const forms = (state = initialState, action) =>{
                   case 'kyc_global_step':
                       return {
                         ...state,
-                        globalStep:state.globalStep + 1
+                        globalStep:action.step ? action.step : state.globalStep + 1
                       }
-                  case 'kyc_avanced':
-                      return {
-                        ...state,
-                        form_kyc_avanced:{
-                          ...state.form_kyc_avanced,
-                              step:state.form_kyc_avanced.step + 1
-                            }
-                      }
+                  // case 'kyc_avanced':
+                  //     return {
+                  //       ...state,
+                  //       form_kyc_avanced:{
+                  //         ...state.form_kyc_avanced,
+                  //             step:state.form_kyc_avanced.step + 1
+                  //           }
+                  //     }
               default:
                 const {payload, step} = action
                 let query_prop = `form_${payload}`
@@ -358,15 +358,15 @@ const forms = (state = initialState, action) =>{
                       }
                     }
                 }
-                if(action.form === "kyc_basic"){
-                    return {
-                      ...state,
-                      form_kyc_basic: {
-                        ...action.payload,
-                        step:state.form_kyc_basic.step
-                      }
-                    }
-                }
+                // if(action.form === "kyc_basic"){
+                //     return {
+                //       ...state,
+                //       form_kyc_basic: {
+                //         ...action.payload,
+                //         step:state.form_kyc_basic.step
+                //       }
+                //     }
+                // }
                 if(action.form === "ticket"){
                     return {
                       ...state,

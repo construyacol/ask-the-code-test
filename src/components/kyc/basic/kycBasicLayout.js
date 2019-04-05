@@ -8,7 +8,7 @@ const KycBasicLayout = (props) =>{
         {...props}
       />
   )
-  
+
 }
 
 export default KycBasicLayout

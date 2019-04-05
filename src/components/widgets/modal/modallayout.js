@@ -77,16 +77,17 @@ render(){
     step,
     children,
     action,
-    current
+    current,
+    app_loaded
   } = this.props
 
   return(
-    <section className={`Modal aparecer`}>
+    <section className={`Modal ${app_loaded ? 'aparecer' : 'show_loader_app'}`}>
       <div className={`modalCont ${modalView}`}>
         {children}
 
         {
-          (!loader && modalView === "modalView") &&
+          (!loader && modalView === "modalView" && app_loaded) &&
             <ButtonModalClose toggleModal={this.salir}>
               { window.innerWidth>768 &&
                 'Salir'
@@ -95,7 +96,7 @@ render(){
         }
 
         {
-          (!loader && current === "ticket") &&
+          (!loader && current === "ticket" && app_loaded) &&
             <ButtonModalClose
               color="white"
               toggleModal={this.salirTicket}>
@@ -141,6 +142,9 @@ function mapStateToProps(state, props){
     current === 'kyc_advance' ? 'form_kyc_basic' :
     `form_${current}`)
 
+    const { app_loaded } = state.isLoading
+
+
   // console.log('modal_LAYOUT STATE::::', current)
 
   return {
@@ -149,7 +153,8 @@ function mapStateToProps(state, props){
       redux_route:state.ui.menu_item_active,
       sub_section:state.ui.current_section.params.current_sub_section,
       deposit_direct_access:state.ui.current_section.params.deposit_direct_access,
-      uiAnimation:state.ui.flowAnimationActive
+      uiAnimation:state.ui.flowAnimationActive,
+      app_loaded
   }
 }
 

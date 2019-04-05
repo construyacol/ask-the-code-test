@@ -31,10 +31,10 @@ class WalletList extends Component{
     } = this.props
 
     let path = match.path.replace('/', '')
-    // console.log('|||||||||| ACCOUNT LIST FIND HISTORY', path)
 
     this.props.action.current_section_clean()
     this.props.action.CurrentForm(path)
+
   }
 
 
@@ -100,7 +100,7 @@ class WalletList extends Component{
             {
               this.props.item_list.map(wallet=>{
                 return <ItemWallet
-                  key={wallet.id}
+                  key={wallet && wallet.id}
                   deposit_providers={this.props.deposit_providers}
                   delete_account={this.delete_account_confirmation}
                   wallet={wallet}
@@ -129,7 +129,7 @@ class WalletList extends Component{
         }
 
         {
-          !this.props.loader &&
+          (!this.props.loader && lista === 'withdraw_accounts')  &&
           <AddNewItem
             label={`${lista === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
             type="primary"
@@ -164,7 +164,6 @@ function mapStateToProps(state, props){
 
 
 
-  console.log(ready)
 
   let item_list = []
 
@@ -202,7 +201,7 @@ if(lista === 'withdraw_accounts' && ready){
  }
 
  // console.log('|||||||||||||||||||||||||ITE_LIST', state.model_data.user[state.model_data.user_id])
- console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
+ // console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
 
   return{
     item_list:item_list,

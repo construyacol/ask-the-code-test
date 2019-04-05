@@ -1,18 +1,18 @@
 import Environment from '../environment'
 import * as data_model_actions from './dataModelActions'
 import * as services from '../services'
-import { IncreaseStep, ReduceStep } from './formActions'
+import { IncreaseStep, ReduceStep, ToggleModal } from './formActions'
 import { toast } from 'react-toastify';
 import convertCurrencies from '../services/convert_currency'
 import store from '../'
 
 import { coins } from '../components/api/ui/api.json'
+import user_source from '../components/api'
 
 // MODELOS DE PARA HACER PRUEBAS EN CASO DE QUE EL API ESTE INACCESIBLE
 
 // import pairs from '../components/api/ui/modelo_pairs.json'
 // import deposit_providers from '../components/api/ui/deposit_providers.json'
-import user_source from '../components/api'
 import walletsJSON from '../components/api/ui/model_account.json'
 // import deposits from '../components/api/ui/deposits.json'
 
@@ -22,8 +22,14 @@ import * as normalizr_services from '../schemas'
 
 import {
   toast_sound,
-  show_sound
+  show_sound,
+  success_sound
 } from './soundActions'
+
+import {
+  app_loaded,
+  load_label
+} from './loader'
 
 import {
   current_section_params,
@@ -52,10 +58,12 @@ UpdatePendingSwap
 const {
 matchItem,
 desNormalizedList,
-withdraw_provider_by_type
+withdraw_provider_by_type,
+add_index_to_root_object,
+objectToArray
 } = services
 
-const { ApiUrl, TokenUser } = Environment
+const { ApiUrl, TokenUser, IdentityApIUrl, CountryApIUrl } = Environment
 let local_currency
 
 
@@ -123,16 +131,18 @@ const ApiGetRequest = async(url, params) => {
 }
 
 
-const ApiPostRequest = async(url, body) => {
+const ApiPostRequest = async(url, body, cancel_country) => {
 
   let myHeaders = new Headers({
     'Accept': 'application/json',
     'Content-Type': 'application/json'
   })
 
+if(!cancel_country){
   body.data.country = 'colombia'
+}
 
-  console.log('||||||||ApiPostRequest', body)
+  // console.log('||||||||ApiPostRequest', body)
 
   let parametros = {
                method: 'POST',
@@ -182,25 +192,38 @@ const ApiDelete = async(url) => {
 
 
 
-export const get_all_pairs = (user) =>{
+export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
 
-    const url_pairs = `${ApiUrl}pairs`
-    const pairs = await ApiGetRequest(url_pairs)
-    // console.log('PUTA MADRE',pairs)
-    if(!pairs){return false}
-    dispatch(AllPairs(pairs))
-
-    let user_update = {
-      ...user,
-      available_pairs:[
-        ...pairs
-      ]
+    let body = {
+      "access_token":token,
+      "data": {
+        "country":country
+      }
     }
 
+    await dispatch(load_label('Importando pares'))
+
+    // const url_pairs = `${ApiUrl}pairs`
+    const url_pairs = `${ApiUrl}pairs/get-all-pairs`
+    const pairs = await ApiPostRequest(url_pairs, body, true)
+
+    console.log('|||||| get_all_pairs', pairs)
+    if(!pairs || pairs === 465){return false}
+    const { data } = pairs
+
+    dispatch(AllPairs(data))
+
+    let user_update = {
+      ...user_source,
+      available_pairs:[
+        ...data
+      ]
+    }
     let normalize_pairs = await normalize_user(user_update)
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
+    return normalize_pairs
 
   }
 }
@@ -382,11 +405,10 @@ export const get_account_balances = user => {
 
   return async(dispatch) =>{
 
+    await dispatch(load_label('Obteniendo tus balances'))
     const url_balance = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
     let balances = await ApiGetRequest(url_balance)
-
     if(!balances || balances === 465){return false}
-
     let balance_list = balances.map(balance => {
       return {
         id:balance.id,
@@ -427,36 +449,25 @@ export const get_list_user_wallets = (user) =>{
   // console.log('||||||||||||||°°°°--------get_list_user_wallets--------°°°°|||||||||||||', user)
 
   return async(dispatch) =>{
-    // await get_deposit_providers(user, dispatch)
 
-    // console.log('Puta madre',user.id)
 
+    await dispatch(load_label('Obteniendo tus billeteras'))
     const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
     let wallets = await ApiGetRequest(url_wallets)
-
     if(!wallets){wallets = walletsJSON }
-
-
-    // if(wallets && wallets.length<1 || !wallets || wallets === 404){return false}
     if(!wallets || wallets === 404){return false}
-    // console.log('ApiDelete - - -ApiDelete - - ApiDelete', wallets)
     if(wallets && wallets.length<1){
       await dispatch(reset_model_data({wallets:[]}))
     }
-
       let user_update = {
         ...user,
         wallets:[
           ...wallets
         ]
       }
-
       let list_user_wallets = await normalize_user(user_update)
       await dispatch(Update_normalized_state(list_user_wallets))
       return list_user_wallets
-
-    // }
-    // return wallets
   }
 }
 
@@ -479,12 +490,12 @@ export const get_list_user_wallets = (user) =>{
 export const get_deposit_providers = (user) => {
 
 return async(dispatch) => {
-    // console.log('||||||||||||||°°°°--------DEPOSIT PROVIDERS--------°°°°|||||||||||||', user)
+
+    await dispatch(load_label('Obteniendo proveedores de deposito'))
     const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
     const deposit_providers = await ApiGetRequest(url_dep_prov)
     if(!deposit_providers || deposit_providers === 404){return false}
-
-    const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"colombia"}}`
+    const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"${user.country}"}}`
     const deposit_provider_fiat = await ApiGetRequest(url_dep_prov_fiat)
     if(!deposit_provider_fiat || deposit_provider_fiat === 404){return false}
 
@@ -649,6 +660,7 @@ export const create_deposit_order = (
           "account_id": account_id
         }
       }
+      // console.log('create_deposit_order body', body)
 
 
     const url_new_order = `${ApiUrl}deposits/add-new-deposit`
@@ -721,16 +733,41 @@ export const normalize_new_item = (user, list, item, prop) =>{
 
        let user_update = {
          ...user,
-         deposits:[
+         [prop]:[
            ...new_list,
            item
          ]
        }
 
-        // console.log('usuario new model', user.deposits)
         let normalizeUser = await normalize_user(user_update)
-        // console.log('usuario normalIZADO', normalizeUser)
         await dispatch(Update_normalized_state(normalizeUser))
+  }
+}
+
+
+export const add_order_to = (prop, list, user, new_order) =>{
+  return async(dispatch) => {
+
+    let new_list = await desNormalizedList(list, user[prop])
+    // let new_list = `new_${prop}`
+    new_list = [
+      new_order,
+      ...new_list
+    ]
+
+    let user_update = {
+      ...user,
+      [prop]:[
+        ...new_list
+      ]
+    }
+
+    let normalizeUser = await normalize_user(user_update)
+    await dispatch(Update_normalized_state(normalizeUser))
+    return normalizeUser
+
+    // dispatch(UpdatePendingSwap(swaps_update))
+    // console.log('||||| NEW_SWAP_LIST', swaps_update)
   }
 }
 
@@ -786,33 +823,7 @@ export const add_new_swap = (account_id, pair_id, value) =>{
 
 
 
-export const add_order_to = (prop, list, user, new_order) =>{
-  return async(dispatch) => {
 
-    let new_list = await desNormalizedList(list, user[prop])
-
-    // let new_list = `new_${prop}`
-
-    new_list = [
-      new_order,
-      ...new_list
-    ]
-
-    let user_update = {
-      ...user,
-      [prop]:[
-        ...new_list
-      ]
-    }
-
-    let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
-    return normalizeUser
-
-    // dispatch(UpdatePendingSwap(swaps_update))
-    // console.log('||||| NEW_SWAP_LIST', swaps_update)
-  }
-}
 
 
 export const add_done_swap = (swaps, user, done_swap, update_list) =>{
@@ -870,6 +881,8 @@ const get_currency_from_contra_pair = (swap_pair, currency_account ) =>{
 // OBTENER LISTA DE SWAPS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const get_swap_list = (user, wallets, all_pairs) =>{
   return async(dispatch) => {
+
+    await dispatch(load_label('Obteniendo tus registros de intercambios'))
     const url_swaps = `${ApiUrl}swaps?filter={"where": {"userId": "${user.id}"}}`
     const swaps = await ApiGetRequest(url_swaps)
 
@@ -973,14 +986,14 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
 export const get_deposit_list = (user) =>{
   return async(dispatch) => {
 
+
+
+    await dispatch(load_label('Obteniendo tus registros de deposito'))
     // 5bea1f01ba84493018b7528c
     const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
     const deposits = await ApiGetRequest(url_deposit)
-
     if(!deposits || deposits === 465){return false}
-    // console.log('deposits', deposits)
-    // alert('deposits')
-
+    console.log('|||||||||||| NORMALIZANDO DEPOSITOS::: ', deposits)
     let remodeled_deposits = await deposits.map(item => {
       let new_item = {
         ...item,
@@ -1021,16 +1034,12 @@ export const get_deposit_list = (user) =>{
 export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
   return async(dispatch)=>{
 
+    await dispatch(load_label('Obteniendo cuentas de retiro'))
     const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
     let withdraw_accounts = await ApiGetRequest(get_wAccounts_url)
-    // if(!withdraw_accounts){return false}
-    // console.log('|||||||||| withdraw_accounts::::', withdraw_accounts)
     if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
-
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
-
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
-      // console.log('|||||||||| WITHDRAW ACCOUNTS::::', wa)
       if(wa.info.currency_type === 'fiat'){
         return {
           id:wa.id,
@@ -1106,7 +1115,6 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
         let normalizeUser = await normalize_user(user_update)
         await dispatch(Update_normalized_state(normalizeUser))
-        console.log('||||||||||||| normalizeUser', normalizeUser)
   }
 
 }
@@ -1124,26 +1132,19 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
    return  async(dispatch) => {
 
      let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"${user.country}"}}`
-
+     await dispatch(load_label('Obteniendo proveedores de retiro'))
      if(query){get_wp_url = `${ApiUrl}withdrawProviders?filter=${query}`}
-
      let withdraw_providers = await ApiGetRequest(get_wp_url)
-
-     // if(!withdraw_providers){return false}
      if(!withdraw_providers){withdraw_providers = withdraw_providersJSON}
-
      if(!user){return withdraw_providers}
-
      let user_update = {
        ...user,
        withdraw_providers:[
          ...withdraw_providers
        ]
      }
-
      let normalizeUser = await normalize_user(user_update)
      await dispatch(Update_normalized_state(normalizeUser))
-
      return withdraw_providers
 
    }
@@ -1211,8 +1212,6 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
     // console.log('||||||||||', new_withdraw_order)
     return new_withdraw_update
 
-
-
   }
 }
 
@@ -1247,14 +1246,14 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
 
 
  // OBTENER ORDENES DE RETIRO -------------------------- -------------------------- --------------------------
-
-
 export const get_withdraw_list = (user) =>{
 
   return async(dispatch) => {
 
+
+    await dispatch(load_label('Obteniendo tus registros de retiros'))
 // 5bea1f01ba84493018b7528c
-    const url_withdraw_list = `${ApiUrl}withdraws?filter={"where":{"userId":"5bea1f01ba84493018b7528c"}}`
+    const url_withdraw_list = `${ApiUrl}withdraws?filter={"where":{"userId":"${user.id}"}}`
     let withdrawals = await ApiGetRequest(url_withdraw_list)
 
     if(!withdrawals || withdrawals === 465){return false}
@@ -1324,6 +1323,17 @@ export const delete_withdraw_order = order_id =>{
   }
 
 }
+
+
+export const ready_to_play = payload =>{
+
+  return async(dispatch) => {
+    // dispatch(success_sound())
+    dispatch(app_loaded(payload))
+  }
+
+}
+
 
 
 
@@ -1423,9 +1433,7 @@ export const FlowAnimationLayoutAction = (animation, action, current_section, ex
       default:
       return false
     }
-
   }
-
 }
 
 
@@ -1459,6 +1467,9 @@ export const add_new_transaction_animation = () =>{
 
 export const get_all_currencies = () => {
   return async(dispatch) => {
+
+
+    await dispatch(load_label('Obteniendo todas las divisas'))
     const url_currencies = `${ApiUrl}currencies`
     let currencies = await ApiGetRequest(url_currencies)
     let new_currencies = []
@@ -1495,16 +1506,131 @@ export const get_all_currencies = () => {
 
 
 
-export const get_user = user_id =>{
-  return async(dispatch) => {
-    // hacemos la consulta al api para traer el modelo del usuario....
-    // en este ejemplo utilizaremos un modelo de un json llamado user_source
 
-    let normalizeUser = await normalize_user(user_source)
-    // console.log('||||||||||||||°°°°--------GET_USER--------°°°°|||||||||||||', normalizeUser)
-    dispatch(Update_normalized_state(normalizeUser))
+
+
+// IDENTITY ENDPOINTS ------------------------------------------------------------------------------------
+
+
+export const get_user = (token, user_country) =>{
+  return async(dispatch) => {
+
+    await dispatch(load_label('Cargando tu información'))
+
+    let body = {
+      "access_token":token,
+      "data": {
+        "country":user_country
+      }
+    }
+
+    // 1. inicializamos el estado con el token y el country del usuario
+    const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
+    const init_state = await ApiPostRequest(init_state_url, body, true)
+    if(init_state && !init_state.data){return false}
+    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
+
+    // 2. Obtenemos el status del usuario del cual extraemos el id y el country
+    const get_status_url = `${IdentityApIUrl}status/get-status`
+
+    body = {
+      "access_token":token,
+      "data": {}
+    }
+
+    const status = await ApiPostRequest(get_status_url, body, true)
+    if(!status || status === 465){return false}
+    const { data } = status
+    let country_object = await add_index_to_root_object(data.countries)
+    let country = await objectToArray(country_object)
+    let user_update = {
+      ...user_source,
+      id:data.userId,
+      country:country[0].value,
+      verification_level:country[0].verification_level,
+      levels:country[0].levels
+    }
+
+    // console.log('||||||  - - -.  --  country_object', country[0])
+
+
+    let kyc_personal = country[0].levels && country[0].levels.personal
+    let kyc_identity = country[0].levels && country[0].levels.identity
+    let kyc_financial = country[0].levels && country[0].levels.financial
+
+    if(kyc_personal){
+      user_update.security_center.kyc.basic = kyc_personal
+    }
+
+    if(kyc_identity){
+      user_update.security_center.kyc.advanced = kyc_identity
+    }
+
+    if(kyc_financial){
+      user_update.security_center.kyc.financial = kyc_financial
+    }
+
+
+
+// para setear el estado desde el api maneja los siguientes endpoints
+// Setea el token del usuario en el swagger
+// DELETE /profiles/{id} => Elimina el profile enviandole el id
+// DELETE /status => Eliminar status
+// POST /status/update
+// where: {"userId": "5bea1f01ba84493018b7528c"}
+// {
+//     "userId": "5bea1f01ba84493018b7528c",
+//     "countries": {
+//       "colombia": {
+//         "verification_level": "level_1",
+//         "levels": {
+//           "personal": "accepted",
+//           "identity": "accepted"
+//         }
+//       }
+//     },
+//     "need_review": false,
+//     "need_human": false,
+//     "ring": "155437564351921065",
+//     "id": "5ca5e2ecf0e6656d7567d216"
+//   }
+
+
+
+
+    // user_update.security_center.kyc.basic = 'accepted'
+    // user_update.security_center.kyc.advanced = 'accepted'
+    // user_update.security_center.kyc.financial = 'accepted'
+
+
+
+
+
+
+    //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
+    const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
+    const profile_data = await ApiPostRequest(get_profile_url, body, true)
+    if(profile_data && profile_data.data){
+      // Agregamos la información al modelo usuario (user_update)
+      user_update = {
+        ...user_update,
+        ...profile_data.data.personal,
+        person_type:profile_data.data.person_type
+      }
+    }
+    // console.log('||||||  - - -.  --  USER UPDATE', user_update)
+
+    let normalizeUser = await normalize_user(user_update)
+    await dispatch(Update_normalized_state(normalizeUser))
+    // console.log('||||||  - - -.  --  normalizeUser', normalizeUser)
+    return normalizeUser
   }
 }
+
+
+
+
+
 
 
 export const update_user = new_user =>{
@@ -1513,6 +1639,118 @@ export const update_user = new_user =>{
     dispatch(Update_normalized_state(normalizeUser))
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+export const countryvalidators = () =>{
+
+  return async(dispatch) => {
+    const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
+    let res = await ApiGetRequest(url_countryvalidators)
+    if(!res || res === 465){return false}
+    let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+    let new_array = await objectToArray(countries)
+    let construct_res = {
+      res:res[0],
+      countries,
+      country_list:new_array
+    }
+
+    return construct_res
+  }
+
+}
+
+
+
+
+
+
+
+
+
+export const update_level_profile = (config, user) =>{
+// @Calls
+// ./components/kyc/kyc_container.js
+
+  return async(dispatch) => {
+
+    let body ={
+      "access_token":TokenUser,
+      "data": {
+        "country":user.country,
+        "person_type":user.person_type,
+        "info_type":config.info_type,
+        "verification_level":config.verification_level,
+        "info":config.info
+      }
+    }
+
+    // console.log('||||||| add_new_profile body - - ', body)
+
+
+    const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
+    const add_new_profile = await ApiPostRequest(add_new_profile_url, body, true)
+    if(!add_new_profile || add_new_profile === 465){return false}
+    return add_new_profile
+
+  }
+
+}
+
+
+
+
+
+
+export const get_country_list = order_id =>{
+
+  return async(dispatch) => {
+    const url_country_list = `${CountryApIUrl}countrys`
+
+    let res = await ApiGetRequest(url_country_list)
+    // console.log('get_country_list API', url_country_list, res)
+    if(!res || res === 465){return false}
+    // let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+    // let new_array = await objectToArray(countries)
+    // let construct_res = {
+    //   res:res[0],
+    //   countries,
+    //   country_list:new_array
+    // }
+    // console.log('get_country_list API', res)
+    return res
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

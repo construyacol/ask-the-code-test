@@ -26,7 +26,7 @@ state = {
     const{
       item
     } = this.props
-
+    // console.log('||||||||| initItem', item)
     Object.keys(item).forEach(async(item_id) => {
 
       if(item_id !== 'id'){
@@ -66,11 +66,13 @@ state = {
 
     items.map(async(item)=>{
       let res = await update_state(item)
+      // console.log('||||||||| res', res)
 
       let new_item = {
         ...item,
         ...res
       }
+      // console.log('||||||||| item', new_item)
       return resul.push(new_item)
     })
     return resul

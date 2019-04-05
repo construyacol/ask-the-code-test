@@ -328,7 +328,6 @@ const Success = (props) =>{
                 :
                 <ButtonSuccess toggleModal={finalizar}>Finalizar</ButtonSuccess>
               }
-
             </div>
             </Fragment>
           // </section>

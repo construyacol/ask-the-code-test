@@ -4,6 +4,9 @@ import { number_format } from '../../../services'
 import { SimpleLoader } from '../loaders'
 import { BigNumber } from "bignumber.js"
 import IconSwitch from '../icons/iconSwitch'
+import Environtment from '../../../environment'
+
+const { CountryUrl } = Environtment
 
 export const InputForm = (props) => {
 const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
@@ -302,29 +305,84 @@ render(){
 
 
 
+export const InputCountryPrefix = (props) =>{
+
+  const {
+    toggleSection,
+    search_result,
+    open,
+    update,
+    clean_search_result,
+    _onFocus
+  } = props
+
+  // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
+  // code: "colombia"
+  // flag: "https://restcountries.eu/data/col.svg"
+  // id: 1
+  // name: "Colombia"
+  // prefix: "57"
+
+  // @Param open:boolean => Define si esta desplegado el componente o contraido
+
+  // console.log('||||InputCountryPrefix', search_result && search_result.prefix)
+
+  return(
+    <div className={`PhoneamEsta ${open ? 'openS' : '' }`} onClick={open ? null : toggleSection}>
+      <div className="inputPhone">
+        { search_result &&
+          <img src={`${CountryUrl}${search_result.flag}`} alt="" className="PhoneamEsta_img" width={20} height={20}/>
+        }
+        <p className="fuentePrin PhoneamEsta_p">+ {search_result ? search_result.prefix[0] : '--'}</p>
+        <div className={`inputComponentPhone ${open ? 'openS' : '' } ${search_result ? 'search_result' : ''}`} >
+          {
+            search_result ?
+            <p className={`search_result_kyc ${open ? 'openS' : ''}`}>{search_result.name}
+              <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
+            </p>
+            :
+            <input
+              type="text"
+              className="inputElement3"
+              placeholder="Escribe el país del indicativo."
+              onChange={update}
+              // name="findbar_name"
+              name="country_prefix"
+            />
+          }
+        </div>
+      </div>
+      <i className={`fas fa-chevron-down PhoneamEsta_icon ${open ? 'anim' : '' }`}  onClick={toggleSection}></i>
+      <span className="linePhone"></span>
+    </div>
+  )
+}
+
+
+
+
+
+
 export const InputKycBasic = (props) =>{
 
   const {
     kyc,
-    step,
     update,
     message,
     handleSubmit,
-    colorMessage,
-    names,
-    lastnames,
-    birthDate,
-    id,
-    phone,
-    city,
-    address,
-    activity
+    state,
+    step,
+    toggleSection,
+    _onFocus,
+    search_results,
+    clean_search_result,
   } = props
 
-  // console.log('BUTTONSS:::', names)
-
+  let search_result = search_results && search_results[0]
+  // console.log('InputKycBasic  S T A T E:::', state.data_state)
   return(
-    <div id="kycPrime" className="containerInputComponent2">
+    <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
+    {/* <div id="kycPrime" className={`containerInputComponent2`}> */}
 
       <div className="inputLabelsCont">
         <div className="InputCarous" style={{ top: `-${(step-1)*40}px` }}>
@@ -336,33 +394,40 @@ export const InputKycBasic = (props) =>{
         </div>
       </div>
 
-      <div className={`inputContainer3 ${props.active ? 'inputActivado' : '' }`}>
+      <div className={`inputContainer3 ${state.active ? 'inputActivado' : '' }`}>
 
         {
           kyc.map(item=>{
                 return  step === item.id &&
-                        <form onSubmit={handleSubmit} key={item.id}>
+                        <form onSubmit={handleSubmit} key={item.id} id={`${state.ui_type === 'phone' ? 'phone' : ''}`}>
+                          {
+                            state.ui_type === 'phone' &&
+                            <InputCountryPrefix
+                              open={state.open_sect}
+                              search_result={search_result}
+                              {...props}
+                            />
+                          }
 
-                          <input
-                           key={item.id}
-                           className={`inputElement3 ${props.active ? 'inputActivado' : '' }`}
-                           // type={props.type}
-                           placeholder={item.placeholder}
-                           onChange={update}
-                           name={item.name}
-                           defaultValue={
-                             step === 1 ? names :
-                             step === 2 ? lastnames :
-                             step === 3 ? birthDate :
-                             step === 4 ? id :
-                             step === 5 ? phone :
-                             step === 6 ? city :
-                             step === 7 ? address :
-                             ''
-                             }
-                           // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
-                         />
-
+                          {
+                            (search_result && state.ui_type === 'select') ?
+                            <p className={`search_result_kyc openS`}>{search_result.name}
+                              <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
+                            </p>
+                            :
+                            <input
+                             key={item.id}
+                             className={`inputElement3 ${state.active ? 'inputActivado' : '' } ${state.ui_type === 'phone' ?'phone' :'' }`}
+                             type={state.ui_type === 'phone' ? 'number' :
+                                   state.ui_type === 'select' ? 'text' : state.ui_type }
+                             placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
+                             onChange={update}
+                             name={item.name}
+                             defaultValue={state.ui_type !== 'select' ? state.data_state[item.name] : null}
+                             onFocus={_onFocus}
+                             // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+                            />
+                          }
                         </form>
           })
         }
@@ -371,12 +436,94 @@ export const InputKycBasic = (props) =>{
           <div className="InputProgressed" style={{ width: step<2 ? 0 : `${(((step*100))/kyc.length)}%` }} ></div>
         </div>
 
-        <i className="fas fa-arrow-right arrowcito" onClick={handleSubmit} ></i>
+        <div className={`ctaInputKyc ${state.open_sect ? 'openPhone' : '' }`} onClick={state.open_sect ? toggleSection : handleSubmit}>
+          <div className="contCtaKyc">
+            <i className="fas fa-arrow-right arrowcito backInputKyc" ></i>
+            <i className={` ${state.ui_type === 'phone' ? 'fas fa-mobile-alt' : 'fas fa-check'} frontInputKyc`} ></i>
+          </div>
+        </div>
 
       </div>
       <div className="InputContainerT" >
-        <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{message}</p>
+        <p className="fuente Inputmsg" style={{color:`${state.colorMessage}`}} >{state.message}</p>
         <p className="fuente2 InputStep" >{step}/{kyc.length}</p>
+      </div>
+    </div>
+  )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+export const InputCountry = (props) =>{
+
+  const {
+    message,
+    handleSubmit,
+    colorMessage,
+    update_country,
+    country_match,
+    reset_data,
+    disabled,
+    active
+  } = props
+
+
+  return(
+    <div id="kycPrime" className="containerInputComponent3">
+
+      <div className="inputLabelsCont">
+        <div className="InputCarous">
+           <p  className="labelText3 fuente " >Elige el país desde el que operarás</p>
+        </div>
+      </div>
+
+      <div className={`inputContainer3 ${active ? 'inputActivado' : '' }`}>
+
+        {
+          country_match ?
+
+          <div className="country_selected">
+            <IconSwitch icon={country_match.value}  size={25}/>
+            <p className="fuente">{country_match.ui_name}</p>
+            <i className="fas fa-times cerratelo" onClick={reset_data}></i>
+          </div>
+
+          :
+
+          <form onSubmit={handleSubmit} >
+            <input
+             className={`inputElement3 ${active ? 'inputActivado' : '' }`}
+             type="text"
+             placeholder="Ej: Colombia"
+             onChange={update_country}
+             name="country"
+             disabled={disabled}
+             // defaultValue=""
+           />
+          </form>
+        }
+
+        <div className="InputProgressBar countryppp" >
+          {/* <div className="InputProgressed" style={{ width: step<2 ? 0 : `${(((step*100))/kyc.length)}%` }} ></div> */}
+          <div className="InputProgressed" style={{ width:country_match?'100%':'0'}} ></div>
+        </div>
+
+        <i className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
+
+      </div>
+      <div className="InputContainerT" >
+        {/* <p className="fuente Inputmsg" style={{ color: `${colorMessage}` }} >{message}</p> */}
+        {/* <p className="fuente2 InputStep" >{step}/{kyc.length}</p> */}
       </div>
     </div>
   )

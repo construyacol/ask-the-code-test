@@ -3,45 +3,178 @@ import KycLayout from './kycLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
+import { kyc } from '../api/ui/api.json'
+// import { countries } from '../api/ui/countries'
+
+import { objectToArray, add_index_to_root_object } from '../../services'
+import { serveKycData, converToInitState, extractSelectList } from '../../services'
 
 
 class Kyc extends Component {
 
+  state = {
+    reset:null,
+    financial_success:null
+  }
 
 
-  nextKyc = () => {
+  validate_personal_kyc = async(info_type) => {
+
+    const { form_kyc_basic, user } = this.props
+    const { data_state } = form_kyc_basic
+
+    let config = {
+      info:{
+        "name":data_state.name,
+        "surname":data_state.surname,
+        "birthday":data_state.birthday,
+        "address":data_state.address,
+        "phone":`+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
+        "city":data_state.city,
+        "country":data_state.country[0].code,
+        "id_type":data_state.id_type[0].code,
+        "id_number":data_state.id_number,
+        "nationality":data_state.nationality[0].code
+      },
+      info_type:"personal",
+      verification_level:"level_1"
+    }
+
 
     this.props.action.Loader(true)
-    this.props.action.CleanForm('kyc_basic')
-    this.user_update()
-    setTimeout(()=>{
+    let res = await this.props.action.update_level_profile(config, user)
+    if(!res){
+             await this.props.action.ReduceStep('kyc_basic', 1)
+             this.props.action.Loader(false)
+             this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+      return this.props.action.ReduceStep('kyc_global_step', 1)
+    }
+    console.log('||||||| validate_PERSONAL_kycRES - - ', res)
+    const { data } = res
+    const { personal } = data
 
-      this.props.action.IncreaseStep('kyc_global_step')
-      setTimeout(()=>{this.props.action.Loader(false)},1000)
-
-    }, 3000)
-
-  }
-
-
-  user_update = async() =>{
-        const {
-          user
-        } = this.props
-
-        let new_user = {
-          ...user,
-          security_center:{
-            ...user.security_center,
-            kyc:{
-              ...user.security_center.kyc,
-              basic:true
-            }
-          }
+    let user_update = {
+      ...user,
+      ...personal,
+      levels:{
+        ...user.levels,
+        personal:'confirmed'
+      },
+      security_center:{
+        ...user.security_center,
+        kyc:{
+          ...user.security_center.kyc,
+          basic:'confirmed'
         }
-
-        return this.props.action.update_user(new_user)
+      }
+    }
+      await this.props.action.update_user(user_update)
+    // setTimeout(()=>{
+      // this.user_update()
+      // this.props.action.CleanForm('kyc_basic')
+      this.props.action.IncreaseStep('kyc_global_step')
+      this.props.action.success_sound()
+      setTimeout(()=>{
+        this.props.action.Loader(false)
+        this.props.action.ReduceStep('kyc_basic')
+      },1000)
+    // }, 3000)
   }
+
+
+
+  validate_identity_kyc = async({base64}) => {
+    const { user } = this.props
+    const { newselfie, newfront, newback } = base64
+
+    let config = {
+      "info":{
+        "selfie":newselfie,
+        "id_front":newfront,
+        "id_back":user.id_type === 'pasaporte' ? newfront : newback
+      },
+      "info_type":"identity",
+      "verification_level":"level_1"
+    }
+    this.props.action.Loader(true)
+    let res = await this.props.action.update_level_profile(config, user)
+    console.log('||||||||||| VALIDATE_RES', res)
+    if(!res){
+             await this.props.action.ReduceStep('kyc_avanced', 1)
+             await this.setState({reset:true})
+             this.props.action.Loader(false)
+            return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+      // return this.props.action.ReduceStep('kyc_global_step', 1)
+    }
+    let user_update = {
+      ...user,
+      levels:{
+        ...user.levels,
+        identity:'confirmed'
+      },
+      security_center:{
+        ...user.security_center,
+        kyc:{
+          ...user.security_center.kyc,
+          advanced:'confirmed'
+        }
+      }
+    }
+    console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+      await this.props.action.update_user(user_update)
+    this.props.action.Loader(false)
+  }
+
+
+validate_financial_kyc = async(info) =>{
+
+const { user } = this.props
+
+  let config = {
+    info,
+    info_type:"financial",
+    verification_level:"level_2"
+  }
+
+  let res = await this.props.action.update_level_profile(config, user)
+  console.log('°°°°|||| send_files', res)
+  if(!res){
+           // await this.props.action.ReduceStep('kyc_basic', 1)
+           this.props.action.Loader(false)
+           return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+  }
+  this.props.action.success_sound()
+
+
+  this.setState({
+    financial_success:true
+  })
+  let user_update = {
+    ...user,
+    levels:{
+      ...user.levels,
+      financial:'confirmed'
+    },
+    security_center:{
+      ...user.security_center,
+      kyc:{
+        ...user.security_center.kyc,
+        financial:'confirmed'
+      }
+    }
+  }
+  console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+    await this.props.action.update_user(user_update)
+  this.props.action.Loader(false)
+
+
+}
+
+
+
+
+
+
 
 
 
@@ -54,14 +187,17 @@ class Kyc extends Component {
   }
 
   render(){
-    // console.log('S T A T E -- K Y C --- C O N T A I N E R')
+    // console.log('S T A T E -- K Y C --- C O N T A I N E R', countries)
 
     return(
       <KycLayout
-        nextKyc={this.nextKyc}
+        validate_personal_kyc={this.validate_personal_kyc}
+        validate_identity_kyc={this.validate_identity_kyc}
+        validate_financial_kyc={this.validate_financial_kyc}
         siguiente={this.siguiente}
         exit={this.exit}
         {...this.props}
+        {...this.state}
       />
     )
   }
@@ -75,7 +211,8 @@ function mapStateToProps(state, props){
   return{
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
-    user:user[user_id]
+    user:user[user_id],
+    form_kyc_basic:state.form.form_kyc_basic
   }
 }
 

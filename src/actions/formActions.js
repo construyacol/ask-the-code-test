@@ -183,21 +183,21 @@ export const UpdateForm = (form, state) => {
         }
       }
 
-    case 'kyc_basic':
-      return {
-        type:UPDATE_FORM,
-        form:form,
-        payload:{
-          names:state.names,
-          lastnames:state.lastnames,
-          birthDate:state.birthDate,
-          id:state.id,
-          phone:state.phone,
-          city:state.city,
-          address:state.address,
-          activity:state.activity
-        }
-      }
+    // case 'kyc_basic':
+    //   return {
+    //     type:UPDATE_FORM,
+    //     form:form,
+    //     payload:{
+    //       names:state.names,
+    //       lastnames:state.lastnames,
+    //       birthDate:state.birthDate,
+    //       id:state.id,
+    //       phone:state.phone,
+    //       city:state.city,
+    //       address:state.address,
+    //       activity:state.activity
+    //     }
+    //   }
 
     default:
     return {

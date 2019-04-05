@@ -42,7 +42,7 @@
     "icon":"activity",
     "clave":"activity",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"1"
   },
   {
@@ -68,6 +68,14 @@
     "active":true,
     "visible":false,
     "id":"4"
+  },
+  {
+    "text":"Centro de seguridad",
+    "icon":"security",
+    "clave":"security",
+    "active":true,
+    "visible":true,
+    "id":"5"
   }
 ],
 "menuPrincipalInferior":[
@@ -76,7 +84,7 @@
     "icon":"settings",
     "clave":"settings",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"5"
   },
   {
@@ -84,7 +92,7 @@
     "icon":"security",
     "clave":"security",
     "active":true,
-    "visible":true,
+    "visible":false,
     "id":"6"
   }
 ],
@@ -422,70 +430,80 @@
   }
 ],
 "kyc":{
-  "kyc_basic":[
-    {
-      "id":1,
-      "name":"names",
-      "label":"Nombres Completos",
-      "placeholder":"Ej: Erick Stivens",
-      "type":"text",
-      "message":"Los nombres deben coincidir con los de tu documento de identidad",
-      "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
-    },
-    {
-      "id":2,
-      "name":"lastnames",
-      "label":"Apellidos Completos",
-      "placeholder":"Ej: Laferreire Ospina",
-      "type":"text",
-      "message":"Tus apellidos deben coincidir con los de tu documento.",
-      "errmessage":"Escribe tus Apellidos completos."
-    },
-    {
-      "id":3,
-      "name":"birthDate",
-      "label":"¿Cual es la fecha de tu nacimiento?",
-      "placeholder":"DÍA/MES/AÑO",
-      "type":"text",
-      "message":"La fecha de nacimiento la debes escribir en este orden : Día / Mes /Año",
-      "errmessage":"Oh!!, debes ingresar los datos correctamente"
-    },
-    {
-      "id":4,
-      "name":"id",
-      "label":"Numero de tu documento de identidad",
-      "placeholder":"Numero de documento",
-      "type":"text",
-      "message":"El numero debe coincidir con tu numero de identidad",
-      "errmessage":"Oh!!, debes ingresar los datos correctamente"
-    },
-    {
-      "id":5,
-      "name":"phone",
-      "label":"Numero de Celular",
-      "placeholder":"Numero de Celular",
-      "type":"text",
-      "message":"Escribe el numero de celular mas el indicativo ej '+57 - 315...'",
-      "errmessage":"Oh!!, Al parecer no estas haciendo las cosas bien"
-    },
-    {
-      "id":6,
-      "name":"city",
-      "label":"Ciudad de residencia",
-      "placeholder":"Elige tu ciudad actual",
-      "type":"text",
-      "message":"",
-      "errmessage":"Oh!!, debes ingresar los datos correctamente"
-    },
-    {
-      "id":7,
-      "name":"address",
-      "label":"Dirección de residencia",
-      "placeholder":"Escribe la dirección de tu domicilio",
-      "type":"text",
-      "message":"Escribe de forma clara tu dirección de residencia",
-      "errmessage":"Oh!!, debes ingresar los datos correctamente"
+  "kyc_basic":{
+    "natural":{
+      "name":{
+        "name":"name",
+        "label":"Nombres Completos",
+        "placeholder":"Ej: Erick Stivens",
+        "message":"Los nombres deben coincidir con los de tu documento de identidad",
+        "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
+      },
+      "surname":{
+        "name":"surname",
+        "label":"Apellidos Completos",
+        "placeholder":"Ej: Laferreire Ospina",
+        "message":"Tus apellidos deben coincidir con los de tu documento.",
+        "errmessage":"Escribe tus Apellidos completos."
+      },
+      "birthday":{
+        "name":"birthday",
+        "label":"¿Cual es la fecha de tu nacimiento?",
+        "placeholder":"DÍA / MES / AÑO",
+        "message":"Escribela en este orden : Día / Mes /Año",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      },
+      "phone":{
+        "name":"phone",
+        "label":"Numero de Celular",
+        "placeholder":"Numero de Celular",
+        "message":"Escribe el numero de celular mas el indicativo ej '+57 - 315...'",
+        "errmessage":"Oh!!, Al parecer no estas haciendo las cosas bien"
+      },
+      "address":{
+        "name":"address",
+        "label":"Dirección de residencia",
+        "placeholder":"Escribe la dirección de tu domicilio",
+        "message":"Escribe de forma clara tu dirección de residencia",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      },
+      "city":{
+        "name":"city",
+        "label":"Ciudad de residencia",
+        "placeholder":"Elige tu ciudad actual",
+        "message":"Escribe la ciudad en la que resides actualmente",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      },
+      "id_type":{
+        "name":"id_type",
+        "label":"Tipo de documento",
+        "placeholder":"Tipo de documento",
+        "message":"Elige el documento con el cual verificarás tu cuenta.",
+        "errmessage":"El dato elegido o escrito no es correcto"
+      },
+      "id_number":{
+        "name":"id_number",
+        "label":"Numero de identificación",
+        "placeholder":"Numero de documento",
+        "message":"Escribe el numero de identificación que aparece en tu documento",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      },
+      "country":{
+        "name":"country",
+        "label":"País",
+        "placeholder":"Escribe tu país actual",
+        "message":"Escribe el país desde el que te encuentras operando tu cuenta",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      },
+      "nationality":{
+        "name":"nationality",
+        "label":"Nacionalidad",
+        "placeholder":"País donde fue expedido el documento",
+        "message":"Escribe el país donde fue expedido tu documento de identificación",
+        "errmessage":"Oh!!, debes ingresar los datos correctamente"
+      }
+
     }
-  ]
+  }
 }
 }

@@ -4,67 +4,61 @@ import KycAvancedContainer from './avanced/kyc_avanced_container'
 import finish from '../../assets/kombat.gif'
 import SimpleLoader from '../widgets/loaders'
 import { ButtonForms } from '../widgets/buttons/buttons.js'
+import { Medal } from '../widgets/icons'
+import ConfettiComponent from './basic/confetti'
+import KycFinancialComponent from './financial/kyc_financial'
+import SuccessComponentScreen from './success_screen'
 import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, nextKyc, loader, siguiente, exit } = props
+ const { globalStep, validate_personal_kyc, loader, siguiente, exit, user,
+   kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc, validate_financial_kyc } = props
+ // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
+ // let level = user.verification_level
+ let name = form_kyc_basic && form_kyc_basic.data_state  && form_kyc_basic.data_state.name
+
+
 
   return(
     <section className="KycLayoutMom">
-      <div className={`KycLayoutCarousel ${globalStep === 0 ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2' }`} >
+      <div className={`KycLayoutCarousel ${(globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} style={{display:globalStep<3 ? 'grid' : 'none'}} >
 
-        {
-          loader  ?
-              <SimpleLoader/>
-          :
-          <div className="KycLayout" >
-            <p className="fuente KycTitle" >Verificación Basica</p>
               <KycBasicContainer
-                nextKyc={nextKyc}
+                validate_personal_kyc={validate_personal_kyc}
+                {...props}
               />
-          </div>
-        }
 
-          <div className="KycLayoutBasicWin">
-            <img src={finish} alt="" height="200"/>
-            <h1 className="fuente KycTitles" >Espectacular Andrés</h1>
-            <p className="KycParra1" >Haz completado de forma exitosa el proceso de verificación basica</p>
-            <div className="Kyccontrols">
-                <p className="fuente" >¿Quieres continuar con el proceso de verifiación avanzado?</p>
-                <div className="Kcontrols">
-
-                  {
-                    window.innerWidth>350 &&
-                    <ButtonForms
-                      active={true}
-                      type="secundary"
-                      siguiente={exit}
-                    >{window.innerWidth>768 ? 'Lo haré despues': 'No' }</ButtonForms>
-                  }
-
-
-                      <ButtonForms
-                        active={true}
-                        type="primary"
-                        siguiente={siguiente}
-                      >{window.innerWidth>768 ? 'Continuar verificación': 'Continuar' }</ButtonForms>
-                </div>
-            </div>
-          </div>
-
+              <SuccessComponentScreen {...props}
+                title="Haz completado de forma exitosa el proceso de verificación basica"
+                cta_text="¿Quieres continuar con el proceso de verifiación avanzada?"
+                confetti={(globalStep === 0 || globalStep === 1) ? true : false}
+                cta_secondary={true}
+                cta_primary_text='Continuar verificación'
+                user_name={props.user.name}
+              />
 
           <div className="KycLayout" >
             <p className="fuente KycTitle" >Verificación Avanzada</p>
             {
-              globalStep > 1 &&
-              <KycAvancedContainer/>
+              (globalStep === 2) &&
+              <KycAvancedContainer
+                {...props}
+              />
             }
           </div>
 
       </div>
-    </section>
 
+      {
+        globalStep === 3 &&
+        <div className="KycLayout" style={{display:globalStep>2 ? 'grid' : 'none'}}>
+          <p className="fuente KycTitle financial" >Verificación Financiera</p>
+            <KycFinancialComponent {...props} validate_financial_kyc={validate_financial_kyc}/>
+        </div>
+      }
+
+    </section>
   )
 }
 

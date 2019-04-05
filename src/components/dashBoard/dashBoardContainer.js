@@ -69,12 +69,16 @@ class DashBoardContainer extends Component{
                       :
                       <Fragment>
                           <Switch>
+
                             {/* <Route path="/wallets" render={() => <WalletContainer/>} /> */}
-                              <Route path="/wallets" component={WalletContainer} />
                               <Route path="/withdraw" component={WitdrawAccountContainer} />
                               <Route path="/settings" component={SettingsContainer} />
                               <Route path="/security" component={SecurityCenter} />
-                              <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} />
+                              <Route strict path={["/wallets", "/"]} component={WalletContainer} />
+                              {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
+
+
+
                               {/* <Redirect from="/" to="/activity" /> */}
                               {/* <Route exact path={["/activity", "/"]}  component={ActivityContainer}/> */}
                             </Switch>

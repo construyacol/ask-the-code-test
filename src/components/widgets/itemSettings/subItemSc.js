@@ -5,22 +5,27 @@ import { ButtonForms } from '../buttons/buttons'
 // import actions from '../../../actions'
 import { Email } from '../icons'
 import IconSwitch from '../icons/iconSwitch'
+import SimpleLoader from '../loaders'
 
 
 
 class SubItemSC extends Component {
 
+  // state = {
+  //   label:this.props.subItem.label,
+  //   name:this.props.subItem.name,
+  //   description:this.props.subItem.description,
+  //   cta_primary:this.props.subItem.cta_primary,
+  //   cta_secondary:this.props.subItem.cta_secondary,
+  //   verify:this.props.subItem.verify,
+  //   tree:this.props.subItem.tree,
+  //   available:this.props.subItem.available,
+  //   treeButton:this.props.subItem.treeButton,
+  //   classic_view:this.props.subItem.classic_view
+  // }
+
   state = {
-    label:this.props.subItem.label,
-    name:this.props.subItem.name,
-    description:this.props.subItem.description,
-    cta_primary:this.props.subItem.cta_primary,
-    cta_secondary:this.props.subItem.cta_secondary,
-    verify:this.props.subItem.verify,
-    tree:this.props.subItem.tree,
-    available:this.props.subItem.available,
-    treeButton:this.props.subItem.treeButton,
-    classic_view:this.props.subItem.classic_view
+    ...this.props.subItem
   }
 
   componentDidMount(){
@@ -32,6 +37,7 @@ class SubItemSC extends Component {
   // }
 
   actionHandle = () =>{
+
     const {
       item_action,
       subItem
@@ -56,6 +62,8 @@ class SubItemSC extends Component {
     const{
       label,
       name,
+      color,
+      icon,
       description,
       cta_primary,
       cta_secondary,
@@ -63,18 +71,23 @@ class SubItemSC extends Component {
       tree,
       available,
       treeButton,
-      classic_view
+      classic_view,
+      type,
+      other_state
     } = this.state
 
     let originIndex = index-1
 
     const atributos ={
-      icon:name,
+      icon:icon ? icon : name,
       size:40,
-      color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`
+      color:`${color ? color : classic_view ? '#989898'  : !verify ? '#989898' : '#1babec'}`
     }
 
-    // console.log('SUB_ITEM PROPS', this.props)
+    // if(this.state.type==='identity'){console.log(type, name, this.state)}
+    // if(this.state.type==='identity'){console.log(type, name, this.state)}
+
+    // console.log('SUB_ITEM PROPS', atributos, other_state)
 
 // HACEMOS CONEXIÓN A REDUX PARA COMPARAR Y VERIFICAR SI EFECTIVAMENTE ESTE ELEMENTO SE ENCUENTRA VALIDADO, EN FUNCIÓN A ELLO MOSTRAMOS EL cta primary o secondary
 
@@ -97,9 +110,14 @@ class SubItemSC extends Component {
           <div className={`SCconector ${totalIndex === index ? 'last' : '' } ${(nextVerify || (lastVerify > originIndex)) ? 'active' : '' }`}></div>
         </div>
 
-        <div className={`contentSubItem ${totalIndex === index ? 'last' : '' }`}>
-          <div className="contentSubText fuente" style={{gridTemplateRows:tree ? '70px 1fr': '60px 20px 1fr'}, {opacity:verify && available ? '1': '0.5'}}>
-          <div className="SCtitle" style={{color:classic_view ? 'gray' : (verify && tree) ? '#1fa4e9' :  'gray' }} >
+
+
+        <div className={`contentSubItem ${totalIndex === index ? 'last' : '' }  ${other_state === 'confirmed' ? 'confir':''}`}>
+
+
+
+          <div className="contentSubText fuente" style={{gridTemplateRows:tree ? '70px 1fr': '60px 20px 1fr'}, {opacity:((verify && available) || other_state === 'confirmed' || other_state === 'send') ? '1': other_state === 'rejected' ? '0.8'  : '0.5'}}>
+          <div className="SCtitle" style={{color:classic_view ? 'gray' : (verify && tree) ? '#1fa4e9' : other_state === 'send' ? '#545454' : 'gray' }} >
 
             <div className={`ScimgClassicView ${classic_view ? 'classic_view' : '' }`} style={{display:classic_view ? 'flex' : 'none' }}>
               <IconSwitch {...atributos} />
@@ -108,7 +126,7 @@ class SubItemSC extends Component {
             {label}
           </div>
 
-          <p className="SCverification" style={{color:verify ? '#59B200' : '#540000' , display:tree ? 'none' : 'visible' }}>
+          <div className="SCverification" style={{color:verify ? '#59B200' : other_state === 'confirmed' ? 'gray' : other_state === 'send' ? '#59B200' : '#540000' , display:tree ? 'none' : 'visible' }}>
             {
               verify ?
               <Fragment>
@@ -116,29 +134,53 @@ class SubItemSC extends Component {
                 {`Verificado y/o Habilitado con exito` }
               </Fragment>
               :
+              other_state === 'confirmed' ?
+              <div className="confirmedIndentSc">
+                <div className="loaderScontainer">
+                  <SimpleLoader loader={2} />
+                </div>
+                {`verificando...`}
+              </div>
+
+              :
+              other_state === 'send' ?
+              <Fragment>
+                <i className="SCUnverify fas fa-share"></i>
+                {`Información enviada`}
+              </Fragment>
+              :
               <Fragment>
                 <i className="SCUnverify fas fa-times"></i>
                 {`${label} sin ${cta_primary}`}
               </Fragment>
             }
-          </p>
+          </div>
 
-          <p className="fuente SCdesc" style={{alignSelf:tree ? 'flex-start' : 'center'}} >{description}</p>
+          <p className="fuente SCdesc" style={{alignSelf:tree ? 'flex-start' : 'center', color:other_state === 'send' ? '#545454' : other_state === 'rejected' ? '#a90000' :'gray'}} >
+            {other_state === 'send' && <i className="enviarNero fas fa-angle-double-down"></i>}
+            {description}
+          </p>
         </div>
 
 
-        <div className="SCcta" style={{display:(classic_view || tree && !treeButton) ? 'none' : 'grid' }}>
+
+        {/* Call to action de security_center */}
+        <div className={`SCcta ${other_state}`} style={{display:(classic_view || tree && !treeButton) ? 'none' : 'grid' }}>
           <ButtonForms
             id="subItemSC"
             type={`${verify ? 'secundary' : 'primary' }`}
             active={available}
-            siguiente={verify ? null : this.actionHandle}
+            siguiente={(verify || other_state === 'confirmed' || other_state === 'send') ? null : this.actionHandle}
+            // siguiente={(verify)? null : this.actionHandle}
           >
-          {`${verify ?  cta_secondary : cta_primary }`}
+          {`${other_state === 'confirmed' ? 'Verificando' : other_state === 'send' ? 'Enviado' : verify ?  cta_secondary : cta_primary }`}
           </ButtonForms>
         </div>
 
 
+
+
+        {/* Call to action de settings */}
         <div className="SCcta" style={{display:(classic_view) ? 'grid' : 'none' }}>
           <ButtonForms
             id="ClassicView"

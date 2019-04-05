@@ -1,4 +1,6 @@
 // import nomalizedApp from '../schemas'
+import user_source from '../components/api'
+
 import {
   ALL_PAIRS,
   CURRENT_PAIR,

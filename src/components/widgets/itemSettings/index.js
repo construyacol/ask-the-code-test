@@ -23,17 +23,18 @@ class ItemSettingsInit extends Component{
       const { phone } = user.settings
       const { name } = item
 
-      console.log('CODE SWITCH', name)
+      // console.log('CODE SWITCH', name)
 
       switch (name) {
         case 'kyc_basic':
           return this.props.action.ToggleModal()
 
-        case 'kyc_advance':
+        case 'kyc_financial':
+              await this.props.action.IncreaseStep('kyc_global_step', 3)
+              return this.props.action.ToggleModal()
 
-              await this.props.action.IncreaseStep('kyc_global_step')
-              await this.props.action.IncreaseStep('kyc_global_step')
-
+        case 'kyc_advanced':
+              await this.props.action.IncreaseStep('kyc_global_step', 2)
               return this.props.action.ToggleModal()
 
         case 'phone':
@@ -110,7 +111,8 @@ class ItemSettingsInit extends Component{
 
     update_state = async(payload) =>{
       const{
-        name
+        name,
+        description
       } = payload
 
       const{
@@ -122,9 +124,8 @@ class ItemSettingsInit extends Component{
       } = user
 
       const {
-        advanced,
-        basic
-      } = security_center.kyc
+        kyc
+      } = security_center
 
       const{
         auth,
@@ -132,33 +133,51 @@ class ItemSettingsInit extends Component{
         withdraw
       } = security_center.authenticator
 
-      // console.log('desde en el compoenente pricni update_state', name, user)
+      // console.log('|||desde el componente update_state', payload)
 
       switch (name) {
 
         case 'email':
-
             return {
               available:true,
               verify:security_center.email
             }
-
         case 'identity':
             return {
               available:true,
               verify:true
             }
-
+        case 'kyc_financial':
+            return {
+              icon:kyc.financial === 'rejected' ? 'error' : null,
+              color:kyc.financial === 'rejected' ? '#c70000' : null,
+              available:kyc.basic === 'accepted' && kyc.advanced === 'accepted',
+              verify:kyc.financial === 'accepted',
+              other_state:kyc.financial,
+              description:kyc.financial === 'confirmed' ? 'Tus datos financieros estan siendo verificados en estos momentos...' :
+                          kyc.financial === 'rejected' ? 'Tus datos no se han podido verificar, intenta nuevamente' :  description
+            }
         case 'kyc_basic':
             return {
+              color:kyc.basic === 'rejected' ? '#c70000' : null,
+              icon:kyc.basic === 'rejected' ? 'error' : null,
               available:true,
-              verify:basic
+              verify:kyc.basic === 'accepted',
+              description:(kyc.basic === 'confirmed' && !kyc.advanced) ? 'Continúa con la identificación avanzada para dar inicio a la verificación de tus datos.' :
+                          (kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' :
+                          (kyc.basic === 'rejected' && kyc.advanced === 'rejected') ? '¡Vaya!, al parecer los datos no se han podido verificar, vuelve a intentarlo' : description,
+              other_state:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'confirmed' :
+                          (kyc.basic === 'confirmed' && (!kyc.advanced || kyc.advanced === 'rejected')) ? 'send' :
+                          kyc.advanced === 'rejected' ? 'rejected' : null
             }
 
-        case 'kyc_advance':
+        case 'kyc_advanced':
             return {
-              available:basic && true,
-              verify:basic ? advanced : false
+              available:kyc.basic === 'confirmed' || kyc.advanced === 'accepted' ? true : null,
+              verify:kyc.advanced === 'accepted',
+              other_state:kyc.advanced,
+              description:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' :
+                          (kyc.advanced === 'rejected') ? 'Tus datos han sido rechazados, vuelve a subirlos' :description
             }
 
         case '2auth':

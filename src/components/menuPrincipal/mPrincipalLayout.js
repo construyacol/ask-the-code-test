@@ -1,10 +1,11 @@
 import React from 'react'
 import ButtonPrincipalMenu from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
-import userPic from '../../assets/picture.jpg'
+import userPic from '../../assets/picture.png'
 import octo from '../../assets/octo.png'
 import { menuPrincipal, menuPrincipalInferior } from '../api/ui/api.json'
-
+import { Medal } from '../widgets/icons'
+import ScoresComponent from '../widgets/scores'
 
 const MenuPrincipalLayout = (props) => {
 
@@ -17,8 +18,13 @@ const MenuPrincipalLayout = (props) => {
             <div className="perfilPic">
               <img src={userPic} alt="" className="userPic" width="100%"/>
             </div>
-            <p className="userName" onClick={props.handleClick}><strong>Andres García</strong><i className="fas fa-check-circle mPverify"></i></p>
-            <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span className="number">2.000</span> USD</p>
+            <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
+            {
+              props.user.verification_level === 'level_1' &&
+              <i className="fas fa-check-circle mPverify"></i>
+            }
+          </p>
+            {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span className="number">2.000</span> USD</p> */}
         </div>
 
         <div className="menuItems">
@@ -40,14 +46,8 @@ const MenuPrincipalLayout = (props) => {
                 })
               }
             </div>
-            <div className="scores">
-                <div className="barra">
-                  <div className="progresado"></div>
-                  <img src={octo} alt="" width="30"/>
-                  <p className="score">Score: <span className="number">450 pts</span></p>
-                  <p className="level">level: <span className="number">2</span></p>
-                </div>
-            </div>
+            <ScoresComponent/>
+            
           </section>
         </div>
     </section>

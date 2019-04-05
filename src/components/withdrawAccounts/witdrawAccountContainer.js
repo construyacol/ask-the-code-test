@@ -161,7 +161,7 @@ function mapStateToProps(state, props){
 
   const {
     app_loaded
-  } = state.ui
+  } = state.isLoading
 
   // console.log('|||||||| withdraw_accounts', user[user_id].withdraw_accounts)
 

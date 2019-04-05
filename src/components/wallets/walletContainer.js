@@ -11,7 +11,6 @@ import ActivityView from './views/activity'
 import WithdrawView from './views/withdraw'
 import SwapView from './views/swap'
 
-// import WalletList from './views/walletList'
 import WalletList from '../widgets/accountList/item_account_list'
 import list_wallets_data from '../api/ui/model_account.json'
 import ItemWallet from '../widgets/accountList/items'
@@ -189,7 +188,7 @@ function mapStateToProps(state, props){
 
   const{
     app_loaded
-  } = state.ui
+  } = state.isLoading
 
   // console.log('||||||||| - -  Wallet CONTAINER', state)
 

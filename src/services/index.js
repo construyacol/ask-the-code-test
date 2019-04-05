@@ -1,4 +1,6 @@
 import { toast } from 'react-toastify';
+import { kyc } from '../components/api/ui/api.json'
+import store from '../'
 
 
 export const mensaje = async(msg, type, position) =>{
@@ -55,18 +57,65 @@ export const desNormalizedList = async(normalizedList, indices) =>{
 // indices
 
 export const matchNormalizeWallet = (list, itemReview) => {
-
     return new Promise(async(resolve, reject)=>{
-
     let result = []
-
     await Object.keys(list).forEach((wallet_id) => {
       if(list[wallet_id].currency.currency === itemReview ){
         result.push(list[wallet_id])
       }
     })
-
     return resolve(result)
+  })
+}
+
+
+
+
+
+export const objectToArray = (object_list, assign_id) => {
+
+    return new Promise(async(resolve, reject)=>{
+    let new_list = []
+    let new_object = {
+      ...object_list
+    }
+    let index = 1
+
+    await Object.keys(new_object).forEach((indice) => {
+        if(indice === 'ui_name' || indice === 'ui_type'){return false}
+        if(assign_id){object_list[indice].id = index}
+        new_list.push(object_list[indice])
+        index++
+    })
+
+    return resolve(new_list)
+  })
+
+}
+
+
+
+export const add_index_to_root_object = (list) => {
+
+    return new Promise(async(resolve, reject)=>{
+
+    let new_object
+    await Object.keys(list).forEach((index_id) => {
+      if(index_id === 'ui_name'){return false}
+
+      if(index_id !== 'ui_type'){
+        list[index_id]={
+          ...list[index_id],
+          value:index_id
+        }
+      }
+        new_object = {
+          ...new_object,
+          [index_id]:list[index_id]
+        }
+    })
+
+    return resolve(new_object)
   })
 
 }
@@ -99,6 +148,105 @@ export const serveBankOrCityList = (list, type) => {
 }
 
 
+export const converToInitState = (obj) => {
+  // recibe un objeto como parametro y devuelve ese objeto con todos los parametros vacíos, como un estado inicializado desde 0
+    return new Promise(async(resolve, reject)=>{
+    let new_state
+    await Object.keys(obj).forEach((index_state) => {
+        new_state ={
+          ...new_state,
+          [index_state]:""
+        }
+    })
+    return resolve(new_state)
+  })
+}
+
+
+export const extractSelectList = async(kyc_array, kyc_object) => {
+    let object_list
+    await kyc_array.map(async(item) =>{
+      if(item.ui_type === 'select' && item.name !== "nationality"){
+        let _this_array=[]
+        let items_object
+        let id = 1
+          await Object.keys(kyc_object[item.name]).forEach((indx) => {
+            if(indx === 'ui_name' || indx === 'ui_type'){return false}
+            let new_item = {
+              ...kyc_object[item.name][indx],
+              code:indx,
+              name:kyc_object[item.name][indx].ui_name,
+              id:id++
+            }
+              _this_array.push(new_item)
+            })
+        object_list = {
+          ...object_list,
+          [item.name]:_this_array
+        }
+      }
+    })
+    return object_list
+}
+
+
+export const FormatCountryList = (original_list, to_model_convert_list) => {
+
+
+  let new_list = []
+  // console.log('!!!! to_model_convert_list', to_model_convert_list)
+  original_list.map(async(item)=>{
+    let res = await matchItem(to_model_convert_list, {primary:item.code}, 'name')
+    if(!res){return false}
+    new_list.push(res[0])
+  })
+
+  return new_list
+
+}
+
+
+
+
+
+export const serveKycData = (list) => {
+
+    return new Promise(async(resolve, reject)=>{
+      const { kyc_basic } = kyc
+      const { user, user_id } = store.getState().model_data
+      let kyc_model = kyc_basic[user[user_id].person_type]
+
+      // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user[user_id].person_type])
+      // console.log('|||||| LISTA RECIBIDA BACKENND', list)
+
+      let new_list = []
+      let indices = 1
+      await Object.keys(list).forEach((indice) => {
+          // console.log(`recorriendo objetito: - - FRONT ${indice} - -`, kyc_model[indice])
+          // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])
+          // if(indice === 'ui_name'){return false}
+          let new_item = {
+            label:list[indice].ui_name,
+            name:indice,
+            id:indices,
+            ui_type:list[indice].ui_type ? list[indice].ui_type : 'text',
+            placeholder:list[indice].ui_name,
+            ...kyc_model[indice],
+          }
+          indices++
+          new_list.push(new_item)
+      })
+      // console.log('RESULTADO CONVERSIÓN DATA:', new_list)
+      return resolve(new_list)
+  })
+
+}
+
+
+
+
+
+
 
 export const withdraw_provider_by_type = async(withdraw_providers) => {
 
@@ -116,13 +264,9 @@ export const withdraw_provider_by_type = async(withdraw_providers) => {
 }
 
 
-
-
-
 export const matchItem = (list, itemReview, type, all_results) => {
 
   const { primary } = itemReview
-
 
   let result = []
   // let all_results = false
@@ -206,11 +350,12 @@ export const serve_activity_list = async(get_list, data_user, current_wallet, fi
   const {
     user
   } = normalizeData.entities
+  console.log('||||||||||||||||||||||| °°°°°° normalizeData:::', normalizeData)
 
-  let deposit_array = await serve_orders(user[data_user.id][filter], normalizeData.entities[filter], current_wallet && current_wallet.id, filter)
-  // console.log('||||||||||||||||||||||| °°°°°° DEPOSIT_ARRAY:::', deposit_array)
+  let list = await serve_orders(user[data_user.id][filter], normalizeData.entities[filter], current_wallet && current_wallet.id, filter)
+  console.log('||||||||||||||||||||||| °°°°°° serve_activity_list:::', list)
 
-  return deposit_array
+  return list
 
 }
 

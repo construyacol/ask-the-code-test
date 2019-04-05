@@ -115,6 +115,10 @@
   overflow-y: scroll;
   align-self: flex-start;
   padding-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(auto-fill, 82px);
+  grid-row-gap: 10px;
 }
 
 
@@ -122,19 +126,21 @@
   grid-template-columns: 1fr;
   background: linear-gradient(to bottom left, #2B3742, #060809);
   border-radius: 6px;
+  border: 1px solid #38ef7d;
 }
 .ItemlistViewart.itemActiveListView:hover{
   grid-template-columns: 1fr;
   background: linear-gradient(to bottom left, #2B3742, #060809);
   border-radius: 6px;
+  border: 1px solid #38ef7d;
 }
 
 .ItemlistViewart.itemActiveListView span{
-    color: #1CA8EB;
+    color: #38ef7d;
 }
 
 .ItemlistViewart{
-  width: calc(100% - 60px);
+  width: calc(100% - 62px);
   height: 80px;
   display: grid;
   align-items: center;
@@ -146,7 +152,9 @@
 
 
 .ItemlistViewart:hover{
-  background: #018eee14;
+  background: #f9f9f9;
+  /*border: 1px solid #38ef7d;*/
+  border-radius: 6px;
 }
 
 
@@ -163,7 +171,7 @@
 
 
 .contListItemMV::-webkit-scrollbar {
-  width: 7px;
+  width: 0px;
 }
 .contListItemMV::-webkit-scrollbar-thumb {
   background: #475a6836;
@@ -178,18 +186,16 @@
   left: 0px;
 }
 
-
-.findbar.classic{
-
-}
-
-
-
-
-
 .findbar .containerInputComponent{
     height: auto !important;
 }
+
+.contListItemMV.ultimate{
+  max-height: 65vh;
+}
+
+
+
 
 
 

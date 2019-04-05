@@ -153,14 +153,9 @@ class AuthComponentContainer extends Component {
             </div>
 
 
-
-
-
             <div className={`AuthSwitchComponent ${anim}`}>
                 <this.render_component/>
             </div>
-
-
 
 
 

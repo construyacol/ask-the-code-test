@@ -10,54 +10,87 @@ class KycAvancedContainer extends Component{
 
 
   state = {
-    front:"./docs/front.png",
+    front:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
     back:"./docs/back.png",
-    selfie:"./docs/selfie.png",
+    selfie:this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
+    newfront:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
+    newback:"./docs/back.png",
+    newselfie:this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
+    id_type:this.props.user.id_type,
     dashboard:window.innerWidth>768 ? true : false,
     fileloader:false,
     prevState:this.props.step,
     animation:false,
+    animation2:false,
     onBoarding:window.innerWidth>768 ? false : true,
     topOnBoarding:0,
-    imageSrc:null
+    imageSrc:null,
+    base64:{...this.props.base64}
   }
 
+  componentWillReceiveProps(nextProps){
+    const { reset, step } = nextProps
+    if(reset){
+      this.setState({
+          animation:false,
+          animation2:false,
+          prevState:1
+        })
+    }
+    if(step === 2){
+      setTimeout(()=>{this.setState({animation:true})},1)
+      setTimeout(()=>{this.setState({animation2:true})},300)
+    }
+    if(nextProps.user !== this.props.user){
+      this.setState({
+        front:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
+        selfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
+        newfront:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
+        newselfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
+        id_type:nextProps.user.id_type
+      })
+    }
+    // console.log('||||| ----- componentWillReceiveProps', nextProps)
+  }
+
+
+  componentDidMount(){
+    // console.log('||||||| componentDidMount', this.state )
+  }
+
+
+
   goFileLoader = async e =>{
-
-
     if (e.target.files && e.target.files.length > 0) {
+      console.log('|||||||| goFileLoader', e.target.files)
       this.props.action.Loader(true)
       const imageDataUrl = await readFile(e.target.files[0])
       this.props.action.Loader(false)
-
+      console.log('|||||||| goFileLoader url', imageDataUrl)
       this.setState({
         imageSrc: imageDataUrl,
         fileloader: !this.state.fileloader
       })
-
     }
-
   }
 
   subirImg = (img) =>{
-
     this.props.action.Loader(true)
+
     const{
       urlImg,
       base64
     } = img
-
 // simulamos llamado del endpoint para guardar imagen
     setTimeout(()=>{
-
       this.props.action.Loader(false)
       this.setState({
         fileloader: !this.state.fileloader
       })
 
-      this.updateLocalImg(urlImg)
+      this.updateLocalImg(urlImg, base64)
 
-      toast(`¡Imagen guardada !`, {
+      toast(`¡Imagen Cargada !`, {
         position: window.innerWidth>768 ? toast.POSITION.BOTTOM_RIGHT : toast.POSITION.TOP_CENTER,
          pauseOnFocusLoss: false,
          draggablePercent: 60,
@@ -68,33 +101,28 @@ class KycAvancedContainer extends Component{
       });
     }, 2000)
 
-
   }
 
-  updateLocalImg = img =>{
+  updateLocalImg = async(img, base64) =>{
 
     const name = this.props.step == 1 ? 'newfront' : this.props.step == 2 ? 'newback' : 'newselfie'
-
-    this.props.action.UpdatePicKyc({[name]:img})
-    this.setState({
-      [name]:img
+    // this.props.action.UpdatePicKyc({[name]:img})
+    await this.setState({
+      [name]:img,
+      base64:{
+        ...this.state.base64,
+        [name]:base64
+      }
     })
 
+    await this.props.action.UpdateForm('kyc_avanced', this.state)
 
-    if(this.props.step<4){
-      const step = {
-        target:{
-          title:this.props.step + 1
-        }
-      }
-
-
-      setTimeout(()=>{
-        this.stepChange(step)
+    if(this.props.step<=3){
+      return setTimeout(()=>{
+        this.stepChange()
       },700)
     }
 
-    // console.log('METETE ESTA MASAMORRA!!!!!', this.state.state)
   }
 
 
@@ -114,27 +142,32 @@ class KycAvancedContainer extends Component{
   }
 
 
-    stepChange = async(step) =>{
+    stepChange = async() =>{
       // manejo esta estructura ya que el estep tambien se podrá alterar al dar click en los elementos ./kycDashboardLayout.js=>.imgDashStep
-      const currentStep = step.target.title
+      // const currentStep = step.target.title
+
+      if(this.props.user.id_type === 'pasaporte' && this.props.step === 1){
+        this.setState({prevState:3})
+        return this.props.action.IncreaseStep('kyc_avanced', 3)
+      }
+
       const prevStep = this.props.step
       await this.props.action.IncreaseStep('kyc_avanced')
+      const currentStep = this.props.step
 
       // console.log(`DEBUGEANDO ANDO::::::-----____----- CURRENT: ${currentStep} -- PREVSTEP: ${prevStep}`)
 
       if(currentStep == prevStep){return false}
-
       await this.setState({
         animation:false
       })
 
+      console.log(`|||||| KYC CONTAINER Steps current ${currentStep} , prev ${prevStep}`, this.props)
 
-
-
-      if(currentStep != 3 && prevStep != 3){
-
+      // if(currentStep != 3 && prevStep != 3){
+      if(currentStep < 3){
         setTimeout(()=>{this.setState({animation:true})},1)
-
+        setTimeout(()=>{this.setState({animation2:true})},300)
         return setTimeout(()=>{
            this.setState({
             prevState:currentStep
@@ -142,10 +175,27 @@ class KycAvancedContainer extends Component{
         },500)
       }
 
-      return this.setState({
-        prevState:currentStep
-      })
+      this.setState({
+       prevState:currentStep
+     })
+
+      // Si todo sale bien, Finalizamos y enviamos la información para validar en el back
+      // console.log('||||||||| currentStep', currentStep)
+      const { base64 } = this.state
+      const{
+        newfront,
+        newback,
+        newselfie
+      } = base64
+
+      if(newfront && newback && newselfie || newfront && newselfie && this.props.user.id_type === 'pasaporte'){
+        return this.props.validate_identity_kyc(this.state)
+      }
+
     }
+
+
+
 
     finish = () =>{
       this.props.action.ToggleModal()
@@ -173,12 +223,12 @@ class KycAvancedContainer extends Component{
 }
 
 function mapStateToProps(state, props){
+  const { user, user_id } = state.model_data
   return{
     loader:state.isLoading.loader,
     step:state.form.form_kyc_avanced.step,
-    newback:state.form.form_kyc_avanced.newback,
-    newfront:state.form.form_kyc_avanced.newfront,
-    newselfie:state.form.form_kyc_avanced.newselfie,
+    base64:state.form.form_kyc_avanced.base64,
+    user:user[user_id]
   }
 }
 

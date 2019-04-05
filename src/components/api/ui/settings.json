@@ -10,7 +10,7 @@
           "description":"Confirma tu correo electrónico como respaldo en caso de perdida de tus contraseñas, solo desde el correo o desde tu celular podrán ser recuperadas.",
           "verify":false,
           "cta_primary":"Verificar",
-          "cta_secondary":"Cambiar",
+          "cta_secondary":"Verificado",
           "tree":false,
           "available":true
         }
@@ -28,7 +28,8 @@
         "cta_primary":"Verificar",
         "cta_secondary":"Verificado",
         "tree":true,
-        "available":true
+        "available":true,
+        "type":"identity"
       },
       {
         "id":2,
@@ -39,18 +40,32 @@
         "cta_primary":"Verificar",
         "cta_secondary":"Verificado",
         "tree":false,
-        "available":true
+        "available":true,
+        "type":"identity"
       },
       {
         "id":3,
-        "name":"kyc_advance",
+        "name":"kyc_advanced",
         "label":"Avanzada",
         "description":"Adjunta foto tipo selfie con documento y papel en mano donde se vea la fecha actual",
         "verify":false,
         "cta_primary":"Verificar",
         "cta_secondary":"Verificado",
         "tree":false,
-        "available":false
+        "available":false,
+        "type":"identity"
+      },
+      {
+        "id":4,
+        "name":"kyc_financial",
+        "label":"Financiera",
+        "description":"Adjunta comprobante de ingresos RUT para operar con montos superiores a $7.000 dolares.",
+        "verify":false,
+        "cta_primary":"Verificar",
+        "cta_secondary":"Verificado",
+        "tree":false,
+        "available":false,
+        "type":"identity"
       }
     ]
   },

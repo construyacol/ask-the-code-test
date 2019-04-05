@@ -16,10 +16,12 @@ const KycDashBoard = props =>{
     goFileLoader,
     prevState,
     animation,
-    action
+    action,
+    animation2,
+    id_type
   } = props
 
-  // console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', props)
+  // console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', id_type)
 
   return(
     <div className="KycDashBoard">
@@ -36,18 +38,11 @@ const KycDashBoard = props =>{
           <Marco type="green">
 
           <div className={`imgDashContainerD ${animation ?  'imgDCAnim' : ''}`}>
-              {/* <div className={`imgDashSon ${animation ? 'imgDAnimSon' : ''}`}>
-                <img className="imgDashItem" src={require(`${front}`)} style={{ display: prevState == 1 ? 'initial': 'none'}} alt="" width="100%" />
-                <img className="imgDashItem" src={require(`${back}`)} style={{ display: prevState == 2 ? 'initial': 'none'}} alt="" width="100%" />
-                <img className="imgDashItem" src={require(`${selfie}`)} style={{ display: prevState == 3 ? 'initial': 'none'}} alt="" width="100%" />
-              </div> */}
-
-              <div className={`imgDashSon ${animation ? 'imgDAnimSon' : ''}`}>
-                <img className="imgDashItem" src={require(`${front}`)} style={{ opacity: prevState === 1 ? '1': '0'}} alt="" width="100%" />
-                <img className="imgDashItem" src={require(`${back}`)} style={{ opacity: prevState === 2 ? '1': '0'}} alt="" width="100%" />
+              <div className={`imgDashSon`}>
+                <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
+                <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
                 <img className="imgDashItem" src={require(`${selfie}`)} style={{ opacity: prevState === 3 ? '1': '0'}} alt="" width="100%" />
               </div>
-
           </div>
 
           </Marco>
@@ -58,12 +53,12 @@ const KycDashBoard = props =>{
         }
 
 
-        <div className="imgDashCarousel">
+        <div className="imgDashCarousel" style={{gridTemplateColumns:id_type === 'pasaporte' ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', maxWidth: id_type === 'pasaporte' ? '260px' : '400px'}}>
 
            <div className={`imgDashStep ${step === 1 ? 'active' : ''}`}  title="1">
              {
                front === newfront ?
-               <img className="imgDashItem" src={require(`${newfront}`)} alt="" width="80"  title="1"/>
+               <img className={`imgDashItem ${id_type}`} src={require(`${newfront}`)} alt="" width="80"  title="1"/>
                :
                <Fragment>
                  <img className="imgDashItem" src={newfront} alt="" width="80"  title="1"/>
@@ -72,19 +67,23 @@ const KycDashBoard = props =>{
              }
            </div>
 
-           <div className={`imgDashStep ${step === 2 ? 'active' : ''}`}  title="2">
+            {
+              id_type !== 'pasaporte' &&
+              <div className={`imgDashStep ${step === 2 ? 'active' : ''}`}  title="2">
 
-             {
-               back === newback ?
-               <img className="imgDashItem" src={require(`${newback}`)} alt="" width="80" title="2"/>
-               :
-               <Fragment>
-                 <i className="fas fa-check-circle"></i>
-                 <img className="imgDashItem" src={newback} alt="" width="80" title="2"/>
-               </Fragment>
+                {
+                  back === newback ?
+                  <img className="imgDashItem" src={require(`${newback}`)} alt="" width="80" title="2"/>
+                  :
+                  <Fragment>
+                    <i className="fas fa-check-circle"></i>
+                    <img className="imgDashItem" src={newback} alt="" width="80" title="2"/>
+                  </Fragment>
 
-             }
-           </div>
+                }
+              </div>
+            }
+
 
            <div className={`imgDashStep ${step === 3 ? 'active' : ''}`}  title="3">
              {
@@ -100,6 +99,7 @@ const KycDashBoard = props =>{
 
            </div>
         </div>
+
 
           <div className="controlContainers">
             {
