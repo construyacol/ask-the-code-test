@@ -660,6 +660,7 @@ export const create_deposit_order = (
           "account_id": account_id
         }
       }
+      // console.log('create_deposit_order body', body)
 
 
     const url_new_order = `${ApiUrl}deposits/add-new-deposit`
@@ -732,16 +733,41 @@ export const normalize_new_item = (user, list, item, prop) =>{
 
        let user_update = {
          ...user,
-         deposits:[
+         [prop]:[
            ...new_list,
            item
          ]
        }
 
-        // console.log('usuario new model', user.deposits)
         let normalizeUser = await normalize_user(user_update)
-        // console.log('usuario normalIZADO', normalizeUser)
         await dispatch(Update_normalized_state(normalizeUser))
+  }
+}
+
+
+export const add_order_to = (prop, list, user, new_order) =>{
+  return async(dispatch) => {
+
+    let new_list = await desNormalizedList(list, user[prop])
+    // let new_list = `new_${prop}`
+    new_list = [
+      new_order,
+      ...new_list
+    ]
+
+    let user_update = {
+      ...user,
+      [prop]:[
+        ...new_list
+      ]
+    }
+
+    let normalizeUser = await normalize_user(user_update)
+    await dispatch(Update_normalized_state(normalizeUser))
+    return normalizeUser
+
+    // dispatch(UpdatePendingSwap(swaps_update))
+    // console.log('||||| NEW_SWAP_LIST', swaps_update)
   }
 }
 
@@ -797,33 +823,7 @@ export const add_new_swap = (account_id, pair_id, value) =>{
 
 
 
-export const add_order_to = (prop, list, user, new_order) =>{
-  return async(dispatch) => {
 
-    let new_list = await desNormalizedList(list, user[prop])
-
-    // let new_list = `new_${prop}`
-
-    new_list = [
-      new_order,
-      ...new_list
-    ]
-
-    let user_update = {
-      ...user,
-      [prop]:[
-        ...new_list
-      ]
-    }
-
-    let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
-    return normalizeUser
-
-    // dispatch(UpdatePendingSwap(swaps_update))
-    // console.log('||||| NEW_SWAP_LIST', swaps_update)
-  }
-}
 
 
 export const add_done_swap = (swaps, user, done_swap, update_list) =>{
@@ -993,6 +993,7 @@ export const get_deposit_list = (user) =>{
     const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
     const deposits = await ApiGetRequest(url_deposit)
     if(!deposits || deposits === 465){return false}
+    console.log('|||||||||||| NORMALIZANDO DEPOSITOS::: ', deposits)
     let remodeled_deposits = await deposits.map(item => {
       let new_item = {
         ...item,
@@ -1527,7 +1528,7 @@ export const get_user = (token, user_country) =>{
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
     const init_state = await ApiPostRequest(init_state_url, body, true)
     if(init_state && !init_state.data){return false}
-    console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
+    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
     const get_status_url = `${IdentityApIUrl}status/get-status`
@@ -1571,13 +1572,35 @@ export const get_user = (token, user_country) =>{
 
 
 
-// para hacer pru
+// para setear el estado desde el api maneja los siguientes endpoints
+// Setea el token del usuario en el swagger
+// DELETE /profiles/{id} => Elimina el profile enviandole el id
+// DELETE /status => Eliminar status
+// POST /status/update
+// where: {"userId": "5bea1f01ba84493018b7528c"}
+// {
+//     "userId": "5bea1f01ba84493018b7528c",
+//     "countries": {
+//       "colombia": {
+//         "verification_level": "level_1",
+//         "levels": {
+//           "personal": "accepted",
+//           "identity": "accepted"
+//         }
+//       }
+//     },
+//     "need_review": false,
+//     "need_human": false,
+//     "ring": "155437564351921065",
+//     "id": "5ca5e2ecf0e6656d7567d216"
+//   }
 
-    user_update.security_center.kyc.basic = 'accepted'
-    user_update.security_center.kyc.advanced = 'accepted'
+
+
+
+    // user_update.security_center.kyc.basic = 'accepted'
+    // user_update.security_center.kyc.advanced = 'accepted'
     // user_update.security_center.kyc.financial = 'accepted'
-
-
 
 
 
@@ -1661,7 +1684,6 @@ export const update_level_profile = (config, user) =>{
 
   return async(dispatch) => {
 
-
     let body ={
       "access_token":TokenUser,
       "data": {
@@ -1672,6 +1694,7 @@ export const update_level_profile = (config, user) =>{
         "info":config.info
       }
     }
+
     // console.log('||||||| add_new_profile body - - ', body)
 
 

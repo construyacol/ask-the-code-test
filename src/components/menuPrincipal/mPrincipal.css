@@ -38,12 +38,7 @@
   padding-bottom: 15px;
 }
 
-.progresado{
-  border-radius: 6px;
-  width: 45%;
-  background: linear-gradient(to bottom right, #B3FFAB, #0191F4);
-  height: 100%;
-}
+
 
 .userName{
   color:#14B3F0;
@@ -66,10 +61,11 @@
 }
 
 .perfilPic{
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .menuItems{
@@ -90,45 +86,15 @@
     margin-left: 7px;
 }
 
-.scores{
-  width: 100%;
-  height: 85px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
 
-.barra{
-  height: 7px;
-  background: white;
-  border-radius:6px;
-  width: 87%;
-  position: relative;
-  background: #3A4B5A;
-}
 
-.score, .level{
-  position: absolute;
-  font-size: 12px;
-  right: 0;
-  margin: 0 !important;
-  color: #14B3F0;
-}
 
-.score{
-  top: -25px;
-}
-.level{
-  bottom: -25px;
-  color: #14B3F0;
-}
 
-.barra img{
-  position: absolute;
-  left: 10px;
-  top: -35px;
-}
+
+
+
+
+
 
 .section2{
   display: grid;

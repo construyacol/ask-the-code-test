@@ -13,7 +13,8 @@ import { serveKycData, converToInitState, extractSelectList } from '../../servic
 class Kyc extends Component {
 
   state = {
-    reset:null
+    reset:null,
+    financial_success:null
   }
 
 
@@ -70,7 +71,6 @@ class Kyc extends Component {
       await this.props.action.update_user(user_update)
     // setTimeout(()=>{
       // this.user_update()
-
       // this.props.action.CleanForm('kyc_basic')
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
@@ -126,24 +126,56 @@ class Kyc extends Component {
   }
 
 
+validate_financial_kyc = async(info) =>{
 
-  user_update = async() =>{
-        const {
-          user
-        } = this.props
+const { user } = this.props
 
-        let new_user = {
-          ...user,
-          security_center:{
-            ...user.security_center,
-            kyc:{
-              ...user.security_center.kyc,
-              basic:true
-            }
-          }
-        }
-        return this.props.action.update_user(new_user)
+  let config = {
+    info,
+    info_type:"financial",
+    verification_level:"level_2"
   }
+
+  let res = await this.props.action.update_level_profile(config, user)
+  console.log('°°°°|||| send_files', res)
+  if(!res){
+           // await this.props.action.ReduceStep('kyc_basic', 1)
+           this.props.action.Loader(false)
+           return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+  }
+  this.props.action.success_sound()
+
+
+  this.setState({
+    financial_success:true
+  })
+  let user_update = {
+    ...user,
+    levels:{
+      ...user.levels,
+      financial:'confirmed'
+    },
+    security_center:{
+      ...user.security_center,
+      kyc:{
+        ...user.security_center.kyc,
+        financial:'confirmed'
+      }
+    }
+  }
+  console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+    await this.props.action.update_user(user_update)
+  this.props.action.Loader(false)
+
+
+}
+
+
+
+
+
+
+
 
 
   siguiente = () =>{
@@ -161,6 +193,7 @@ class Kyc extends Component {
       <KycLayout
         validate_personal_kyc={this.validate_personal_kyc}
         validate_identity_kyc={this.validate_identity_kyc}
+        validate_financial_kyc={this.validate_financial_kyc}
         siguiente={this.siguiente}
         exit={this.exit}
         {...this.props}

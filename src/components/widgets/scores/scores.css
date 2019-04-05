@@ -1,0 +1,89 @@
+.scores{
+  width: 100%;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.barra{
+  height: 7px;
+  background: white;
+  border-radius:6px;
+  width: 87%;
+  position: relative;
+  background: #3A4B5A;
+}
+
+.progresado{
+  border-radius: 6px;
+  background: linear-gradient(to bottom right, #B3FFAB, #0191F4);
+  height: 100%;
+  transition: 3s;
+}
+
+
+.levelBar{
+  position: absolute;
+  top: -35px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+.score, .level{
+  position: absolute;
+  font-size: 12px;
+  right: 0;
+  margin: 0 !important;
+  color: #14B3F0;
+}
+
+.score{
+  top: -25px;
+  position: initial !important;
+  margin-left: 6px !important;
+}
+.level{
+  width: 100%;
+  bottom: -25px;
+  color: #14B3F0;
+}
+
+.level span{
+  margin-left: 4px;
+}
+
+.stars{
+  position: absolute;
+  right: 0;
+  color: white;
+  bottom: -25px;
+}
+
+.star_icon{
+  font-size: 12px;
+  color: #ffca00;
+  margin: 0 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

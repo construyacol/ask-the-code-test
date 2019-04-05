@@ -39,7 +39,7 @@ const KycDashBoard = props =>{
 
           <div className={`imgDashContainerD ${animation ?  'imgDCAnim' : ''}`}>
               <div className={`imgDashSon`}>
-                <img className={`imgDashItem ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
+                <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
                 <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
                 <img className="imgDashItem" src={require(`${selfie}`)} style={{ opacity: prevState === 3 ? '1': '0'}} alt="" width="100%" />
               </div>
@@ -58,7 +58,7 @@ const KycDashBoard = props =>{
            <div className={`imgDashStep ${step === 1 ? 'active' : ''}`}  title="1">
              {
                front === newfront ?
-               <img className="imgDashItem" src={require(`${newfront}`)} alt="" width="80"  title="1"/>
+               <img className={`imgDashItem ${id_type}`} src={require(`${newfront}`)} alt="" width="80"  title="1"/>
                :
                <Fragment>
                  <img className="imgDashItem" src={newfront} alt="" width="80"  title="1"/>

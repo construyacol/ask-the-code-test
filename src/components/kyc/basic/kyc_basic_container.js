@@ -67,7 +67,6 @@ class KycBasicContainer extends Component {
         let countryvalidators = await this.props.action.countryvalidators()
 
         let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
-        // console.log('|||||kyc_data_basic', kyc_data_basic)
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
         let get_country_list = await this.props.action.get_country_list()
         let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
@@ -90,6 +89,7 @@ class KycBasicContainer extends Component {
         if(!new_init_state.country){
           new_init_state.country = country_default
         }
+        // console.log('|||||new_init_state', new_init_state)
 
         // new_init_state.country_prefix = country_default
         // name_section === 'phone' ? this.matchList({value:'colombia', name:'country_prefix'}) :
@@ -107,7 +107,6 @@ class KycBasicContainer extends Component {
           open_sect:false,
           show_hide_section:false,
           current_item:current_item.name,
-          // current_search:(current_item.name === 'phone' || current_item.name === 'country') ? this.state.data_state[current_item.name] : null
         })
 
         // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)

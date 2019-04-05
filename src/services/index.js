@@ -72,14 +72,20 @@ export const matchNormalizeWallet = (list, itemReview) => {
 
 
 
-export const objectToArray = (object_list) => {
+export const objectToArray = (object_list, assign_id) => {
 
     return new Promise(async(resolve, reject)=>{
     let new_list = []
+    let new_object = {
+      ...object_list
+    }
+    let index = 1
 
-    await Object.keys(object_list).forEach((indice) => {
+    await Object.keys(new_object).forEach((indice) => {
         if(indice === 'ui_name' || indice === 'ui_type'){return false}
+        if(assign_id){object_list[indice].id = index}
         new_list.push(object_list[indice])
+        index++
     })
 
     return resolve(new_list)
@@ -344,11 +350,12 @@ export const serve_activity_list = async(get_list, data_user, current_wallet, fi
   const {
     user
   } = normalizeData.entities
+  console.log('||||||||||||||||||||||| °°°°°° normalizeData:::', normalizeData)
 
-  let deposit_array = await serve_orders(user[data_user.id][filter], normalizeData.entities[filter], current_wallet && current_wallet.id, filter)
-  // console.log('||||||||||||||||||||||| °°°°°° DEPOSIT_ARRAY:::', deposit_array)
+  let list = await serve_orders(user[data_user.id][filter], normalizeData.entities[filter], current_wallet && current_wallet.id, filter)
+  console.log('||||||||||||||||||||||| °°°°°° serve_activity_list:::', list)
 
-  return deposit_array
+  return list
 
 }
 

@@ -149,9 +149,13 @@ class ItemSettingsInit extends Component{
             }
         case 'kyc_financial':
             return {
+              icon:kyc.financial === 'rejected' ? 'error' : null,
+              color:kyc.financial === 'rejected' ? '#c70000' : null,
               available:kyc.basic === 'accepted' && kyc.advanced === 'accepted',
               verify:kyc.financial === 'accepted',
-              other_state:kyc.financial
+              other_state:kyc.financial,
+              description:kyc.financial === 'confirmed' ? 'Tus datos financieros estan siendo verificados en estos momentos...' :
+                          kyc.financial === 'rejected' ? 'Tus datos no se han podido verificar, intenta nuevamente' :  description
             }
         case 'kyc_basic':
             return {

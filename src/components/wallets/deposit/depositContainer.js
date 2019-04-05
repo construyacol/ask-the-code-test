@@ -346,6 +346,7 @@ updateAmountOnState = async(amount) =>{
       deposits,
       deposit_provider_id.id
     )
+    // console.log('create_deposit_order Respuesta', response)
 
     if(!response){
       this.props.action.Loader(false)
@@ -353,11 +354,18 @@ updateAmountOnState = async(amount) =>{
       return this.props.action.mensaje('No se ha podido crear la orden de deposito', 'error')
     }
 
-    await this.props.action.current_section_params({currentFilter:'deposits'})
 
-    // console.log('||||||||    deposit_provider - - - ', deposit_provider_id)
-    await this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
-    // await this.props.action.normalize_new_item(user, deposits, response, 'deposits')
+    let new_deposit_model = {
+      id:response.id,
+      unique_id:response.unique_id,
+      type_order:'deposit',
+      ...response.deposit_info
+    }
+
+    await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
+    setTimeout(()=>{
+      this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
+    }, 5000)
 
     const { deposit_info } = response
 
@@ -415,6 +423,7 @@ updateAmountOnState = async(amount) =>{
       this.setState({
         new_ticket:new_deposit
       })
+      return this.props.action.current_section_params({currentFilter:'deposits'})
     // }, 1500)
   }
 

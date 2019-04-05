@@ -68,12 +68,10 @@ class HomeContainer extends Component{
       // this.socket.emit('authentication', {body: {access_token: JSON.stringify(TokenUser)}});
 
       this.socket.on("authenticated", () => {
-        // alert('authenticated')
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
 
             await this.props.action.current_section_params({currentFilter:'swaps'})
-
-            // console.log('|||||||||||||||||||||||||||||||||||||| swap',swap)
+            console.log('|||||||||||||||||||||||||||||||||||||| swap', swap)
 
             if(swap.status === 'done' && swap !== this.state.order_socket){
               this.setState({order_socket:swap})
@@ -99,11 +97,12 @@ class HomeContainer extends Component{
 
 
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
-            await this.props.action.get_deposit_list(this.props.user)
-            console.log(deposit)
+
+            // console.log(deposit)
             // alert('Cambio deposito detected by socket')
 
             if(deposit.status === 'done' || deposit.status === 'accepted'){
+              await this.props.action.get_deposit_list(this.props.user)
               this.props.action.get_account_balances(this.props.user)
             }
 
@@ -212,7 +211,7 @@ class HomeContainer extends Component{
 
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-                    <MenuPrincipalContainer  />
+                    <MenuPrincipalContainer/>
 
                     <MenuSuperiorContainer Headroom={Headroom}/>
                     {/* En el componente dashboard se cargan todas las vistas */}

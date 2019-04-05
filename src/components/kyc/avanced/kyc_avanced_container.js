@@ -10,10 +10,10 @@ class KycAvancedContainer extends Component{
 
 
   state = {
-    front:this.props.user.id_type === 'pasaporte' ? "./docs/front.png" : "./docs/front.png",
+    front:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
     back:"./docs/back.png",
     selfie:this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
-    newfront:this.props.user.id_type === 'pasaporte' ? "./docs/front.png" : "./docs/front.png",
+    newfront:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
     newback:"./docs/back.png",
     newselfie:this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
     id_type:this.props.user.id_type,
@@ -43,9 +43,9 @@ class KycAvancedContainer extends Component{
     }
     if(nextProps.user !== this.props.user){
       this.setState({
-        front:nextProps.user.id_type === 'pasaporte' ? "./docs/front.png" : "./docs/front.png",
+        front:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
         selfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
-        newfront:nextProps.user.id_type === 'pasaporte' ? "./docs/front.png" : "./docs/front.png",
+        newfront:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
         newselfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
         id_type:nextProps.user.id_type
       })

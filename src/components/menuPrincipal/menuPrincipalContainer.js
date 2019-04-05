@@ -50,11 +50,10 @@ class MenuPrincipalContainer extends Component{
   function mapStateToProps(state, props){
     // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', state.model_data)
 
-
-    // const user_id = state.model_data.user_id
-    // const user = state.model_data.user[user_id]
+    const { user, user_id } = state.model_data
 
     return{
+      user:user[user_id],
       menu_item_active:state.ui.menu_item_active,
       // user:state.model_data.user ? user : null
     }
