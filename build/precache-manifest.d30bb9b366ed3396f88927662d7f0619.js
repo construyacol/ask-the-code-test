@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/static/media/nequi.461205bc.png"
   },
   {
-    "revision": "57f1bcae1a705d63f91f",
-    "url": "/static/css/main.d3008bf2.chunk.css"
+    "revision": "161ddadad06c9c922411",
+    "url": "/static/css/main.f90ba34c.chunk.css"
   },
   {
     "revision": "295a633a250113d742f08c50426ee929",
     "url": "/static/media/withdraw.295a633a.png"
   },
   {
-    "revision": "590055ebc9b7ac10520d",
-    "url": "/static/js/1.590055eb.chunk.js"
+    "revision": "45908d3fe34c15a0f156",
+    "url": "/static/js/1.45908d3f.chunk.js"
   },
   {
     "revision": "229c360febb4351a89df",
@@ -168,8 +168,8 @@ self.__precacheManifest = [
     "url": "/static/media/itau.77a3b1cd.png"
   },
   {
-    "revision": "57f1bcae1a705d63f91f",
-    "url": "/static/js/main.57f1bcae.chunk.js"
+    "revision": "161ddadad06c9c922411",
+    "url": "/static/js/main.161ddada.chunk.js"
   },
   {
     "revision": "ecc1946912c4a81e435828d3915d7d83",
@@ -206,14 +206,6 @@ self.__precacheManifest = [
   {
     "revision": "88d3be9be88aafa0fd5087465f3d6e0c",
     "url": "/static/media/btc.88d3be9b.png"
-  },
-  {
-    "revision": "fb556d1db05cf51adc67ab360207c2d8",
-    "url": "/static/media/picture.fb556d1d.jpg"
-  },
-  {
-    "revision": "fac2078d26d67df4a74aa4aa4a2ae7a6",
-    "url": "/static/media/kombat.fac2078d.gif"
   },
   {
     "revision": "d29c0fd9c0d4e7e7d79eca7dcc79cb10",
@@ -280,16 +272,24 @@ self.__precacheManifest = [
     "url": "/static/media/fisical.b89c5ea1.png"
   },
   {
-    "revision": "01031f1cdcc0355433366867ccedc9db",
-    "url": "/static/media/back.01031f1c.png"
+    "revision": "ddff1ead52eea7e9a66878c7517f434f",
+    "url": "/static/media/back.ddff1ead.png"
   },
   {
-    "revision": "c2e1c503d9ed705e55c1e2cfa6b9e71f",
-    "url": "/static/media/front.c2e1c503.png"
+    "revision": "3f82b2f325946cbb91b034506daf1c1e",
+    "url": "/static/media/front.3f82b2f3.png"
   },
   {
-    "revision": "c1d8dcaeecc4df9fe65a88b34641b016",
-    "url": "/static/media/selfie.c1d8dcae.png"
+    "revision": "97a1ee506544e29c9c3603431b8c4472",
+    "url": "/static/media/front_passport.97a1ee50.png"
+  },
+  {
+    "revision": "7741aca84edb2424b867261e0649b49c",
+    "url": "/static/media/selfie.7741aca8.png"
+  },
+  {
+    "revision": "559722a35fd228cbf43f3d61a105589f",
+    "url": "/static/media/selfie_passport.559722a3.png"
   },
   {
     "revision": "ced611daf7709cc778da928fec876475",
@@ -306,6 +306,10 @@ self.__precacheManifest = [
   {
     "revision": "f97e3bbf73254b0112091d0192f17aec",
     "url": "/static/media/slick.f97e3bbf.svg"
+  },
+  {
+    "revision": "fac2078d26d67df4a74aa4aa4a2ae7a6",
+    "url": "/static/media/kombat.fac2078d.gif"
   },
   {
     "revision": "10957d163467e8be484f22bee2d96fef",
@@ -328,11 +332,11 @@ self.__precacheManifest = [
     "url": "/static/media/ticketdefault2.92cbf4f3.png"
   },
   {
-    "revision": "590055ebc9b7ac10520d",
-    "url": "/static/css/1.898dbbcb.chunk.css"
+    "revision": "45908d3fe34c15a0f156",
+    "url": "/static/css/1.dc2691b4.chunk.css"
   },
   {
-    "revision": "01c1303900136b34ccee49433ef42b9c",
+    "revision": "07b6832a6607258260c40755f23feb18",
     "url": "/index.html"
   }
 ];

@@ -34,10 +34,10 @@ export const AddNewItem = props => {
 // label define el texto que llevará el botton para agregar
 // handleClick define el evento que se accionara al dar click en el boton
 
-  const { label, type, handleClick } = props
+  const { label, type, handleClick, clases } = props
 
   return(
-      <section className="AddNewItemContainer" onClick={handleClick}>
+      <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
         <div className="BbackgroundAddNew"></div>
         <div className={`AddNewItem ${type}`}>
           <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
@@ -54,12 +54,11 @@ export class ButtonPrincipalMenu extends Component{
   }
 
   render(){
-    // console.log('||||||||||||||||||||||||||||  ButtonPrincipalMenu - - - ', this.props)
     return(
       <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.itemStatus === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
         <div className={`text ${this.props.itemStatus === this.props.clave ? 'activate' : ''}`}>
           <div className="iconButtCont">
-            <IconSwitch icon={this.props.icon} size={20} color="#acacac" />
+            <IconSwitch icon={this.props.icon} size={20} color={`${this.props.itemStatus === this.props.clave ? "#14B3F0" : "#acacac"}`} />
             <PopNotification notifier={this.props.clave}/>
           </div>
           <p className="itemText">{this.props.text}</p>

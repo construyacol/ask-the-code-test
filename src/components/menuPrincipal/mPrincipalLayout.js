@@ -21,7 +21,7 @@ const MenuPrincipalLayout = (props) => {
             <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
             {
               props.user.verification_level === 'level_1' &&
-              <i className="fas fa-check-circle mPverify"></i>
+              <i className="far fa-check-circle mPverify"></i>
             }
           </p>
             {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span className="number">2.000</span> USD</p> */}
@@ -47,7 +47,7 @@ const MenuPrincipalLayout = (props) => {
               }
             </div>
             <ScoresComponent/>
-            
+
           </section>
         </div>
     </section>

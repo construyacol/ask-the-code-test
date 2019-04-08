@@ -24,6 +24,15 @@
   /*grid-area: wallet !important;*/
 }
 
+.retweetCont{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  height: 20px;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
 #ItemWallet.cryptoWallet{
   grid-template-rows: 35px 25px 1fr;
 }
@@ -45,6 +54,31 @@
   opacity: 0.7;
 }
 
+#WalletList2{
+  color: #6b6b6b !important;
+  max-width: 500px !important;
+  font-size: 16px !important;
+}
+
+.withdraw_accounts_screen{
+  background: #f1f1f1;
+  padding: 40px;
+  width: calc(100% - 80px);
+  height: calc(100% - 80px);
+  max-width: 650px;
+  max-height: 400px;
+  display: grid;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.withdraw_accounts_screen_cont{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-row-gap: 80px;
+}
 
 .WIitemDeleted{
   animation-name: WItemDeleted;
@@ -289,6 +323,34 @@
   font-size: 18px;
 }
 
+.contSuscribed{
+  display: flex;
+  align-items: center;
+}
+
+.contSuscribed i{
+  color: #00ff60;
+  margin: 0 6px;
+}
+
+.contLoader2 .lds-roller div:after {
+  background: white !important;
+}
+
+.contLoader2{
+  transform: scale(.5);
+  width: 40px;
+  position: relative;
+  display: block;
+  top: -6px;
+  left: -10px;
+}
+
+.contLoader2 .lds-roller{
+  width: inherit !important;
+  height: inherit !important;
+}
+
 
 .ItemWalletLink{
   width: 100%;
@@ -302,6 +364,11 @@
 .IWLittleTitle{
   font-size: 14px !important;
   /*margin-bottom: 20px;*/
+}
+
+#ItemWallet.NoInscribed{
+  background: gray;
+  opacity: 0.7;
 }
 
 .ItemWallet, .ItemWallet2{

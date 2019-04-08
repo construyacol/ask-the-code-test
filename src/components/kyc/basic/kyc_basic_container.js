@@ -55,7 +55,6 @@ class KycBasicContainer extends Component {
 
   init_component = async() =>{
     await this.props.action.CurrentForm('kyc_basic')
-
     // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
@@ -110,7 +109,6 @@ class KycBasicContainer extends Component {
         })
 
         // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)
-
         this.props.action.Loader(false)
 
     }

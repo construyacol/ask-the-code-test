@@ -9,13 +9,16 @@ import SimpleLoader from '../../widgets/loaders'
 import QRCode from 'qrcode'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
+import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
+
 
 class DepositView extends Component{
 
   state = {
     qr:null,
     address:null,
-    fiat_currency:false
+    fiat_currency:false,
+    verified:false
   }
 
     componentDidMount(){
@@ -23,23 +26,26 @@ class DepositView extends Component{
     }
 
   init_config = async() =>{
+
+      let verified = await this.props.action.user_verification_status('level_1')
+      await this.setState({verified})
+
       await this.props.initial(this.props.match.params.path, this.props.match.params.id)
       const { current_wallet, local_currency, current_pair } = this.props
-
       // if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
       if(current_wallet.currency_type === 'fiat'){this.setState({fiat_currency: true})}
-
       if(current_wallet && current_wallet.dep_prov.length<1 || !current_wallet || !current_wallet.deposit_provider){return false}
-
       let address = this.props.current_wallet.deposit_provider.provider.account.account_id
       const { account_id } = address
-
       let qr = await QRCode.toDataURL(account_id)
       this.setState({
         qr:qr,
         address:account_id
       })
   }
+
+
+
 
 
   fiat_deposit = async() =>{
@@ -55,7 +61,7 @@ class DepositView extends Component{
 render(){
 
   const { current_wallet } = this.props
-  const { qr, address, fiat_currency } = this.state
+  const { qr, address, fiat_currency, verified } = this.state
 
 
   const atributos ={
@@ -69,6 +75,9 @@ render(){
   return(
     <Fragment>
     {
+      !verified ?
+      <UnverifiedComponent/>
+      :
       !current_wallet ?
       <SimpleLoader
         label="Consultando Billetera"
@@ -141,8 +150,10 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   const { current_wallet } = state.ui.current_section.params
+  const { user, user_id } = state.model_data
 // console.log('DESDE DEPOSITOSSSS ', state.ui.current_section.params.short_name)
   return{
+    user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,
     // local_currency:state.model_data.pairs.localCurrency,
     local_currency:state.ui.current_section.params.short_name,

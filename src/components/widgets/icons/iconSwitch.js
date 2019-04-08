@@ -38,7 +38,8 @@ import {
   Errors,
   Financial,
   Touch,
-  Upload
+  Upload,
+  Verified, WithdrawAccount
  } from './'
 
  import {
@@ -67,6 +68,10 @@ class IconSwitch extends Component {
     switch (icon) {
       case 'email':
         return <Email {...props} />
+      case 'withdraw_account':
+        return <WithdrawAccount {...props} />
+      case 'verified':
+        return <Verified {...props} />
       case 'upload':
         return <Upload {...props} />
       case 'touch':

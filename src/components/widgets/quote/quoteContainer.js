@@ -11,8 +11,8 @@ class QuoteContainer extends Component {
 
 
   state = {
-    buy_price:0,
-    sell_price:0,
+    buy_price:this.props.pairs.currentPair.buy_price,
+    sell_price:this.props.pairs.currentPair.sell_price,
     movil:window.innerWidth < 768 ? true : false
   }
 

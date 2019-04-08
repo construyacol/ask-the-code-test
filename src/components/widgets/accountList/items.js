@@ -57,7 +57,7 @@ let current_wallet = wallet
   wallet_detail = async() => {
 
     // this.props.action.current_section_params({current_wallet:current_wallet})
-
+    // alert('detail')
     if(this.props.current === "deposit"){
       this.props.action.ToggleModal()
       this.update_deposit_provider()
@@ -92,8 +92,9 @@ let current_wallet = wallet
 
       // await this.update_deposit_provider()
       // console.log('ItemWallet', this.state)
+      let verified = await this.props.action.user_verification_status('level_1')
       this.props.action.FiatDeposit(this.props.localCurrency)
-      this.props.action.ToggleModal()
+      if(verified){this.props.action.ToggleModal()}
       this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
       return this.props.action.current_section_params({current_wallet:this.state.current_wallet, deposit_direct_access:true})
     }
@@ -107,15 +108,20 @@ let current_wallet = wallet
     if(this.props.wallet.currency_type === 'fiat'){
 
       // this.props.action.FiatDeposit(this.props.localCurrency)
+      let verified = await this.props.action.user_verification_status('level_1')
       this.props.history.push(`/wallets/withdraw/${this.props.wallet.id}`)
       await this.props.action.CurrentForm('withdraw')
-      this.props.action.ToggleModal()
+      if(verified){this.props.action.ToggleModal()}
       return this.props.action.current_section_params({current_wallet:this.state.current_wallet, deposit_direct_access:true})
     }
 
     this.update_deposit_provider()
     return this.props.history.push(`/wallets/withdraw/${this.props.wallet.id}`)
 
+  }
+
+  swap_detail = () =>{
+    return this.props.history.push(`/wallets/swap/${this.props.wallet.id}`)
   }
 
   componentWillReceiveProps(props){
@@ -160,7 +166,7 @@ let current_wallet = wallet
 
     let id_trigger = id_wallet_action === id && true
 
-   // console.log('|||||||||||| - - - - - este es el estado de la wallet - - - ', wallet)
+   // console.log('|||||||||||| - - - - - este es el estado de la wallet - - - ', wallet, inscribed)
 
     return(
     <Fragment>
@@ -168,11 +174,11 @@ let current_wallet = wallet
 
               <div
                 id="ItemWallet"
-                className={` ${wallet_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
+                className={` ${wallet_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : type === 'withdraw' && !inscribed ? 'NoInscribed' : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
                 // className={`ItemWallet ${currency.currency}`}
                 >
                   <a className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail}></a>
-                  <div className={`ItemBarra ${type} ${current_view === 'detail' ? 'noVisible' : ''}`}>
+                  <div className={`ItemBarra ${type} ${(current_view === 'detail' || type === 'withdraw' && !inscribed) ? 'noVisible' : ''}`} >
 
                     <div className={`ItemBarraI ${type === 'withdraw' ? 'noVisible' : ''}`}>
                       <i className="far fa-arrow-alt-circle-up IRetiro IdeleteButton tooltip" onClick={this.withdraw}>
@@ -186,10 +192,17 @@ let current_wallet = wallet
                       </i>
                     </div>
 
-                    <div className="ItemBarraI eraseN">
-                      <i className="fas fa-trash-alt IdeleteButton tooltip" onClick={this.delete_this_account}>
-                        <span className="tooltiptext2 fuente">Borrar</span>
-                      </i>
+                    <div className="ItemBarraI retweetCont">
+                      {
+                        type === 'withdraw' ?
+                        <i className="fas fa-trash-alt IdeleteButton tooltip" onClick={this.delete_this_account}>
+                          <span className="tooltiptext2 fuente">Borrar</span>
+                        </i>
+                        :
+                        <i className="fas fa-retweet tooltip" onClick={this.swap_detail}>
+                          <span className="tooltiptext2 fuente">Swap</span>
+                        </i>
+                      }
                     </div>
                   </div>
 
@@ -228,7 +241,17 @@ let current_wallet = wallet
                     {
                       type === 'withdraw' ?
                       <Fragment>
-                        <p className="IWText fuente IWLittleTitle">{inscribed && used_counter>0 ? 'Aprobada' : inscribed ? 'inscrita' : 'Sin inscribir'}</p>
+                        <div className="contSuscribed">
+                          {
+                            !inscribed ?
+                            <div className="contLoader2">
+                              <SimpleLoader color="white" loader={2}/>
+                            </div>
+                            :
+                            <i className="far fa-check-circle"></i>
+                          }
+                          <p className="IWText fuente IWLittleTitle">{inscribed && used_counter>0 ? 'Aprobada' : inscribed ? 'inscrita' : 'Inscribiendo'}</p>
+                        </div>
                         <p className="IWText fuente IWLittleTitle" style={{display:used_counter<1 ? 'none' : 'flex'}}>Movimientos: {used_counter}</p>
                       </Fragment>
                       :

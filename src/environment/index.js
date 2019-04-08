@@ -1,7 +1,6 @@
 export const Environtment = {
   ApiUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/api/' : 'http://andres.indophi.com:5900/api/',
   SocketUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/' : 'http://andres.indophi.com:5900/',
-  TokenUser:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJXbkNLRnN6cFBleWZDV1lLRkRia0Zremt6bzJaY2YxdHN2UkhFRU9DNzdSemlUUjNpNUhqU3Q0a2dkdkVsZjJaIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTQ0NjI2NjcsImV4cCI6MTU1NDQ3MzQ2N30.ALMKyzRaC_uMw5FHqPJqt8nvmmOoFZKbo4d3LmcWVcEXIRVp_X7BGdx1r6wnYR_iLm_r-MoQAiM74b0nVILISw",
   IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://sendaidentity.ngrok.io/api/' : 'http://andres.indophi.com:3002/api/',
   CountryApIUrl:process.env.NODE_ENV === 'development' ? 'http://countrylistapi.ngrok.io/api/' : 'http://andres.indophi.com:3010/api/',
   CountryUrl:'http://countrylistapi.ngrok.io/' //endpoint imagenes

@@ -8,6 +8,7 @@ import { AddNewItem } from '../buttons/buttons'
 import { toast } from 'react-toastify'
 import PropTypes from "prop-types"
 import { withRouter } from "react-router"
+import IconSwitch from '../icons/iconSwitch'
 
 import '../../wallets/views/wallet_views.css'
 
@@ -16,7 +17,9 @@ class WalletList extends Component{
   state = {
     label:`Obteniendo tus ${this.props.type_list === 'wallets' ? 'Billeteras' : 'Cuentas de retiro' }`,
     wallet_state:"done",
-    id_wallet_action:null
+    id_wallet_action:null,
+    verified:false,
+    state_verification:null
   }
 
   componentDidMount(){
@@ -25,21 +28,68 @@ class WalletList extends Component{
     // this.props.action.section_view_to('initial')
     // this.props.action.current_section_params({current_pair:null})
     // this.props.action.current_section_params({activity:false})
-
     const{
       match
     } = this.props
-
     let path = match.path.replace('/', '')
-
     this.props.action.current_section_clean()
     this.props.action.CurrentForm(path)
+    this.init_component()
+    const { advanced, basic } = this.props.user.security_center.kyc
+    let state_verification = advanced === 'confirmed' && basic === 'confirmed' && 'confirmed'
+    this.setState({state_verification})
+  }
 
+  init_component = async() => {
+    let verified = await this.props.action.user_verification_status('level_1')
+    await this.setState({verified})
+  }
+
+  new_wallet = () => {
+
+    if(this.state.state_verification === 'confirmed'){
+      return this.wait_for_validate()
+    }
+
+    if(!this.state.verified){
+      return this.wanna_validate()
+    }
+    this.props.action.ToggleModal()
+  }
+
+  no_action = () =>{}
+
+  wait_for_validate = () =>{
+    this.props.action.ConfirmationModalToggle()
+    this.props.action.ConfirmationModalPayload({
+      title:"Estamos trabajando en esto...",
+      description:"Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda si todo sale bien",
+      txtPrimary:"Entendido",
+      action:this.no_action,
+      svg:"verified"
+    })
+  }
+
+  goto_verification = async() => {
+    // await this.props.action.section_view_to('initial')
+    await this.props.history.push(`/security`)
+    setTimeout(()=>{
+      this.props.action.ToggleModal()
+    },20)
   }
 
 
-  new_wallet = () => {
-    this.props.action.ToggleModal()
+  wanna_validate = () =>{
+    this.props.action.ConfirmationModalToggle()
+    this.props.action.ConfirmationModalPayload({
+      title:"Aún no estas listo para esto...",
+      description:"Debes completar el nivel de verificación avanzada para poder agregar cuentas de retiro fiat.",
+      txtPrimary:"Verificarme",
+      txtSecondary:"Cancelar",
+      payload:'account_id',
+      action:(this.goto_verification),
+      svg:"verified"
+    })
   }
 
 
@@ -92,6 +142,10 @@ class WalletList extends Component{
       lista
     } = this.props
 
+    const {
+      state_verification
+    } = this.state
+
     return(
       <Fragment>
         {
@@ -119,9 +173,7 @@ class WalletList extends Component{
           :
           (this.props.item_list.length<1 && !this.props.loader) &&
               lista === 'withdraw_accounts' ?
-              <p id="WalletList2" >
-                Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local.
-              </p>
+              <WithdrawAccountsScreen/>
               :
               <p id="WalletList2" >
                 Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos
@@ -155,7 +207,6 @@ function mapStateToProps(state, props){
     withdraw_providers
   } = state.model_data
 
-  let ready = user && withdraw_providers
 
 
   let withdraw_provider_list = (lista !== 'wallets' && user && withdraw_providers) && user[user_id].withdraw_providers.map(w_id=>{
@@ -169,10 +220,11 @@ function mapStateToProps(state, props){
 
   // console.log('ITEM LIST - - - - - -- - 1 1 1 | | | | | | |- - - - - :::', state.model_data[lista])
 
-if(lista === 'withdraw_accounts' && ready){
+if(lista === 'withdraw_accounts'){
    user[user_id][lista].map((item_id)=>{
      if(state.model_data[lista][item_id].currency_type === 'crypto'){return false}
-
+     if(!state.model_data[lista][item_id].visible){return false}
+     // console.log('|||||||||| withdraw_account', state.model_data[lista][item_id])
          return item_list.push({
           active: true,
           app: "Coinsenda",
@@ -181,7 +233,7 @@ if(lista === 'withdraw_accounts' && ready){
           currency: {currency: state.model_data[lista][item_id].account_type.ui_name},
           currency_type: state.model_data[lista][item_id].currency_type,
           dep_prov: [],
-          address:state.model_data[lista][item_id].id_number,
+          address:state.model_data[lista][item_id].account_number.value,
           description:state.model_data[lista][item_id].bank_name.value,
           enabled: true,
           id: state.model_data[lista][item_id].id,
@@ -190,11 +242,14 @@ if(lista === 'withdraw_accounts' && ready){
           reserved: 0,
           type: "withdraw",
           userId: user_id,
-          used_counter:state.model_data[lista][item_id].used_counter
+          used_counter:state.model_data[lista][item_id].used_counter,
+          // inscribed:state.model_data[lista][item_id].inscribed
+          // used_counter:0,
+          inscribed:true
          })
    })
  }
- if(lista === 'wallets' && ready){
+ if(lista === 'wallets'){
    item_list = user[user_id][lista].map((item_id)=>{
    return state.model_data[lista][item_id]
    })
@@ -222,3 +277,23 @@ function mapDispatchToProps(dispatch){
 
 
 export default connect(mapStateToProps, mapDispatchToProps) (withRouter(WalletList))
+
+
+
+
+
+
+
+const WithdrawAccountsScreen = () =>{
+
+  return(
+    <div className="withdraw_accounts_screen">
+      <div className="withdraw_accounts_screen_cont">
+        <IconSwitch icon="withdraw_account" size={110} color="#989898"/>
+        <p id="WalletList2" className="fuente" >
+          Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local.
+        </p>
+      </div>
+    </div>
+  )
+}

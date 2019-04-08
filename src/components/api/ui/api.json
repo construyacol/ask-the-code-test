@@ -435,14 +435,14 @@
       "name":{
         "name":"name",
         "label":"Nombres Completos",
-        "placeholder":"Ej: Erick Stivens",
+        "placeholder":"Ej: Carlos Julio",
         "message":"Los nombres deben coincidir con los de tu documento de identidad",
         "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
       },
       "surname":{
         "name":"surname",
         "label":"Apellidos Completos",
-        "placeholder":"Ej: Laferreire Ospina",
+        "placeholder":"Ej: Sanchez Correa",
         "message":"Tus apellidos deben coincidir con los de tu documento.",
         "errmessage":"Escribe tus Apellidos completos."
       },

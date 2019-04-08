@@ -41,22 +41,6 @@ class WithdrawFlow extends Component {
       let lastStep = this.state.step
       this.setState({step})
 
-      // console.log('||||||| - - - componentWillReceiveProps', lastStep, step)
-      // const {
-      //   have_withdraw_accounts
-      // } = this.props
-      //
-      // if(lastStep !== step && step === 1 || lastStep !== step && step === 2){
-      //   // alert(step)
-      //   // this.setState({
-      //   //   need_new_acount:!have_withdraw_accounts ? true : false,
-      //   //   step
-      //   // })
-      //
-      //   setTimeout(()=>{
-      //     console.log('|||||  -- - setTimeout',this.state.need_new_acount)
-      //   }, 400)
-      // }
     }
 
     init_config = async() =>{
@@ -291,7 +275,7 @@ class WithdrawFlow extends Component {
       }
 
       // let retiros_lista = await this.props.action.get_withdraw_list(this.props.user)
-      // console.log('||||||||||||||||  Respuesta retiros lista', new_withdraw.id)
+      // console.log('||||||||||||||||  Respuesta retiros lista', new_withdraw)
 
       const{
         account_from
@@ -300,12 +284,11 @@ class WithdrawFlow extends Component {
       // console.log('FINALIZANDO', this.props)
       // alert('Finish_Him')
       // this.props.action.CurrentForm('wallets')
-
       await this.props.action.add_order_to('withdrawals', this.props.withdrawals, this.props.user, new_withdraw)
+      await this.props.action.ToggleModal()
       this.props.history.push(`/wallets/activity/${account_from.id}`)
       this.props.action.add_new_transaction_animation()
 
-      // this.props.action.ToggleModal()
       this.props.action.CleanForm('deposit')
       this.props.action.CleanForm('withdraw')
       this.props.action.CleanForm('bank')
@@ -321,7 +304,9 @@ class WithdrawFlow extends Component {
       }
       setTimeout(async()=>{
         await this.props.action.ManageBalance(account_from.id, 'reduce', withdraw_info.amount)
-        setTimeout(async()=>{await this.props.action.get_account_balances(this.props.user)},3000)
+        setTimeout(()=>{
+          return this.props.action.get_account_balances(this.props.user)
+        },3000)
       },2000)
     }
 
