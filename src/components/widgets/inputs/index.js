@@ -379,7 +379,7 @@ export const InputKycBasic = (props) =>{
   } = props
 
   let search_result = search_results && search_results[0]
-  // console.log('InputKycBasic  S T A T E:::', state.data_state)
+  // console.log('InputKycBasic  S T A T E:::', props)
   return(
     <div id="kycPrime" className={`containerInputComponent2 ${state.open_sect ? 'openS' : '' }`}>
     {/* <div id="kycPrime" className={`containerInputComponent2`}> */}

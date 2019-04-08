@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import SimpleLoader from './'
 import { connect } from 'react-redux'
-import Environtment from '../../../environment'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { InputCountry } from '../inputs'
@@ -31,6 +30,16 @@ class LoaderAplication extends Component {
       token
     } = this.props //el country y el token deben llegar desde el auth service, si no llega el country es la primera vez del usuario
 
+
+    // let user_with_token = {
+    //
+    // }
+
+
+
+
+
+
   //1.recibo token y country del usuario
   // 1.1. si el usuario no tiene country es por que es la primera vez que inicia sesión asi que le pedimos el country.
   // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en el transaction service, primer endpoint POST:get_all_pairs
@@ -43,11 +52,8 @@ class LoaderAplication extends Component {
     // le pedimos su país de operaciones => select_country()
 
 
-
     if(!country && !new_country ){return false}
     let user_country = new_country ? new_country : country
-
-
 
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
@@ -69,12 +75,15 @@ class LoaderAplication extends Component {
     // action.ToggleModal()
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
-
+    // este endpoint inicializa la normalización de los modelos, a partir de aquí ya tenemos user en redux
     let pairs = await action.get_all_pairs(token, user_country)
     if(!pairs){
       this.go_to_select_country()
       return false
     }
+
+
+
 
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
@@ -84,6 +93,13 @@ class LoaderAplication extends Component {
     if(!user){return false}
 
 
+    // Seteamos el token del usuario al modelo en redux
+    let user_update = {
+      ...this.props.user,
+      TokenUser:token
+    }
+
+    await action.update_user(user_update)
     await init_sockets()
     // // // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
     // // // await action.get_pairs_for('colombia', user_collection)
@@ -203,7 +219,6 @@ function mapStateToProps(state, props){
 
   const { user, user_id,  wallets, all_pairs } = state.model_data
   const { loader } = state.isLoading
-  const { TokenUser } = Environtment
 
 
   return{
@@ -213,7 +228,7 @@ function mapStateToProps(state, props){
     all_pairs,
     // country:null,
     country:'colombia',
-    token:TokenUser,
+    token:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJhQlo5QjdiR2JQZVBXcnFKMHJGMGhUZnI1dFNZbzZJRnh0SmpRUFdrQldEVUNXcHJ1Wk90NEFIYWRnYkRNNktDIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTQ3MTMyNTQsImV4cCI6MTU1NDcyNDA1NH0.1jF2sdji5HF3EoO8kVoaNC26_3KfswIPRs6tObUMVx9tMcDhPMPY6CDvt74CT1wkFdVQf-oeDSgzWkqTxOhgyg",
     loader
   }
 }

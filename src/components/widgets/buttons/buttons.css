@@ -162,6 +162,33 @@ transform: scale(1.1);
   opacity: 0.4;
 }
 
+.AddNewItemContainer.confirmed{
+  border: none !important;
+  animation-name: buttonConf;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+.AddNewItemContainer p, .AddNewItemContainer i{
+  color: white !important;
+}
+
+
+
+@keyframes buttonConf{
+  0%{
+    opacity: 1;
+  }
+  50%{
+    opacity: .6;
+  }
+  100%{
+    opacity: 1;
+  }
+}
+
+
 .filtrear{
   position: absolute;
   bottom: 0;

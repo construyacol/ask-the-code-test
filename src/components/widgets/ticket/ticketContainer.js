@@ -127,12 +127,12 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:"Cantidad a retirar:",
-                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(amount)}` : amount,
+                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(ticket.amount)}` : ticket.amount,
                   id:7
                 },
                 {
                   ui_name:"Total:",
-                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(amount_neto)}` : amount_neto,
+                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(ticket.amount_neto)}` : ticket.amount_neto,
                   icon:account_from.currency.currency,
                   id:8
                 }
@@ -329,6 +329,49 @@ class TicketContainer extends Component {
               ]
             })
             }
+          case 'swap':
+          return this.setState({current_ticket:[
+            {
+              ui_name:"id intercambio:",
+              value:ticket.id,
+              id:1
+            },
+            // {
+            //   ui_name:"fecha de creación:",
+            //   value:ticket.expiration_date,
+            //   id:2
+            // },
+            {
+              ui_name:"divisa gastada:",
+              value:ticket.currency.currency,
+              icon:ticket.currency.currency,
+              id:3
+            },
+            {
+              ui_name:"cantidad gastada:",
+              value:ticket.spent,
+              icon:ticket.currency.currency,
+              id:4
+            },
+            {
+              ui_name:"divisa adquirida:",
+              value:ticket.currency_bought,
+              icon:ticket.currency_bought,
+              id:5
+            },
+            {
+              ui_name:"cantidad adquirida:",
+              icon:ticket.currency_bought,
+              value:ticket.bought,
+              id:6
+            },
+            {
+              ui_name:"Estado:",
+              value:ticket.state,
+              id:7
+            }
+          ]})
+
         default:
           return this.setState({current_ticket:ticket})
       }

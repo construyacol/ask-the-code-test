@@ -1,6 +1,7 @@
 {
     "id": null,
     "username":null,
+    "TokenUser":null,
     "name": null,
     "surname": null,
     "id_number":null,

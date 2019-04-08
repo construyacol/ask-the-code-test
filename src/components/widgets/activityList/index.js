@@ -48,7 +48,7 @@ class ActivityList extends Component {
         let activity_list = []
         activity_list = await this.filter_activity(currentFilter)
 
-        console.log('|||||||||||||||||||||||||||||ESTE ES EL FILTRO ACTUAL:::::', currentFilter, user[currentFilter], 'USER:::', user, '::::::activity_list::', activity_list)
+        // console.log('|||||||||||||||||||||||||||||ESTE ES EL FILTRO ACTUAL:::::', currentFilter, user[currentFilter], 'USER:::', user, '::::::activity_list::', activity_list)
 
         if(activity_list.length<1){
         activity_list = await this.filter_activity('deposits')
@@ -83,6 +83,14 @@ class ActivityList extends Component {
         this.calcul_pending_section()
   }
 
+  componentWillReceiveProps(){
+    if(this.state.activity && this.state.activity.length<1){
+      this.init_activity()
+    }
+  }
+
+
+
 
   trigger_action = filter =>{
     let trigger_action
@@ -105,7 +113,7 @@ class ActivityList extends Component {
     let activity_list = []
 
     // let trigger_action = await this.trigger_action(filter)
-    console.log('||||||||||||||||||||||||||||||||| ESTA ES LA LISTA TALES', filter, this.props[filter])
+    // console.log('||||||||||||||||||||||||||||||||| ESTA ES LA LISTA TALES', filter, this.props[filter])
     if(this.props[filter] &&  user[filter].length>0){
         activity_list = await serve_orders(user[filter], this.props[filter], current_wallet && current_wallet.id, filter)
       }
@@ -190,12 +198,12 @@ class ActivityList extends Component {
 
     let trigger_action = await this.trigger_action(currentFilter)
 
-    console.log('CURRENT DEPOSIT LIST BEFORE', this.state.activity)
+    // console.log('CURRENT DEPOSIT LIST BEFORE', currentFilter)
 
     let activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, currentFilter, wallets)
 
     // console.log('|11|||||||  TRIGGER ACTION::::::', activity_list)
-    console.log('CURRENT DEPOSIT LIST AFTER', activity_list)
+    // console.log('CURRENT DEPOSIT LIST AFTER', activity_list)
 
     await this.setState({
       activity:activity_list

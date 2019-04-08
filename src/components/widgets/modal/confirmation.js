@@ -66,7 +66,7 @@ class ConfirmationModal extends Component {
       color:`#1babec`
     }
 
-    // console.log(' - - ConfirmationModal - - ', this.props )
+    console.log(' - - ConfirmationModal - - ', this.props.modal_confirmation )
       return(
         <Fragment>
           {
@@ -110,11 +110,15 @@ class ConfirmationModal extends Component {
                             <p  className="fuentePrin" style={{alignSelf:type === 'swap' ? 'center' : 'start' }}>{description}</p>
 
                             <div className="CMControls">
+                              {
+                                txtSecondary &&
                               <ButtonForms
                                 type="secundary"
                                 active={true}
                                 siguiente={this.cancelarClick}
-                                >{txtSecondary}</ButtonForms>
+                                >{txtSecondary}
+                              </ButtonForms>
+                            }
 
                                 <ButtonForms
                                   type="primary"

@@ -1,0 +1,51 @@
+.UnverifiedComponent{
+  width: calc(95% - 50px);
+  max-width: calc(700px - 50px);
+  height: calc(100% - 50px);
+  background: #f1f1f1;
+  border-radius: 4px;
+  padding: 20px 25px 20px 25px;
+  display: grid;
+  grid-row-gap: 5px;
+  grid-template-rows: 50% 30% 1fr !important;
+  grid-template-columns: 1fr !important;
+}
+
+.UnverifiedComponent p{
+  text-align: center;
+  margin: 0 !important;
+  color: #6b6b6b;
+  max-width: 390px;
+  justify-self: center;
+}
+
+.UnverifiedComponentIcon{
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.UnverifiedComponentIconButtons{
+  align-self: center;
+  justify-items: center;
+}
+
+.UnverifiedComponentIconButtons.confirmed{
+  animation-name: buttonConfirmed;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-iteration-count: infinite;
+  border: none !important;
+}
+
+@keyframes buttonConfirmed{
+  0%{
+    opacity:1;
+  }
+  50%{
+    opacity:.4;
+  }
+  100%{
+    opacity:1;
+  }
+}

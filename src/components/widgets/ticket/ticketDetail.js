@@ -77,7 +77,7 @@ const atributos2 ={
   color:'#1babec'
 }
 
-
+  // console.log('|||||||||||||  detalle tickete', state)
 
   return(
         <div className={`TicketDetail ${clases}`}>
@@ -117,9 +117,6 @@ const atributos2 ={
 
 
 
-          {
-            (type_order === 'withdraw' || type_order === 'deposit') ?
-
             <div className="contenidoTicket">
               {
                 (state === 'confirmed' && currency_type === 'fiat') &&
@@ -141,106 +138,6 @@ const atributos2 ={
                 })
               }
             </div>
-            :
-          <div className="contenidoTicket">
-
-
-
-              <Fragment>
-
-                  <div className="TicketDetailItem" >
-                    <p className="fuente TicketItemTitle" >Id deposito:</p>
-                    <CopyContainer
-                      valueToCopy={id}
-                      color="white"
-                      max_width="200"
-                    />
-                  </div>
-
-                  <div className="TicketDetailItem" >
-                    <p className="fuente TicketItemTitle" >Fecha de creación:</p>
-                    <p className="fuente " >{expiration.toLocaleDateString("es-ES", options)}</p>
-                  </div>
-
-
-
-                  {
-                    type_order !== 'swap' ?
-                    <Fragment>
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Moneda (Divisa):</p>
-                        <p className="fuente " >{currency && currency.currency}</p>
-                      </div>
-
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Cantidad:</p>
-                        <p className="fuentePrin">{fiatSimbol} {fiatSimbol ? number_format(amount) : amount}</p>
-                      </div>
-
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Cantidad Total:</p>
-                        <p className="fuentePrin" >{fiatSimbol} {fiatSimbol ? number_format(amount_neto) : amount_neto}</p>
-                      </div>
-
-
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Costo del deposito:</p>
-                        <p className="fuentePrin" >{fiatSimbol} {fiatSimbol ? number_format(deposit_cost) : deposit_cost}</p>
-                      </div>
-                    </Fragment>
-                    :
-                    <Fragment>
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Cantidad gastada:</p>
-                        <div className="fuentePrin swap" >{fiatSimbol} {fiatSimbol ? number_format(spent) : spent} {currency.currency.toUpperCase()} <IconSwitch {...atributos2} /></div>
-                      </div>
-                      <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Cantidad adquirida:</p>
-                        <div className="fuentePrin swap" >{fiatSimbol2} {fiatSimbol2 ? number_format(bought) : bought} {currency_bought.toUpperCase()} <IconSwitch {...atributos} /></div>
-                      </div>
-                      {/* <div className="TicketDetailItem" >
-                        <p className="fuente TicketItemTitle" >Precio de Adquisición:</p>
-                        <div className="fuentePrin swap" >{fiatSimbol2} {fiatSimbol2 ? number_format(action_price) : action_price} {currency_bought.toUpperCase()} <IconSwitch {...atributos} /></div>
-                      </div> */}
-                      <div className="TicketAnim">
-
-                      </div>
-                    </Fragment>
-
-                  }
-
-
-
-
-
-
-
-                  {
-                    ((state === 'confirmed' || state === 'accepted') && currency_type === 'crypto' &&  type_order !== 'swap') &&
-
-                    <div className="TicketDetailItem">
-                      <p className="fuente TicketItemTitle">TXID (Prueba de pago):</p>
-                      <CopyContainer
-                        valueToCopy={proof_of_payment && proof_of_payment.proof}
-                        color="white"
-                        max_width="150"
-                      />
-                    </div>
-                  }
-
-                  {
-                    ((state === 'confirmed' || state === 'accepted') && currency_type === 'fiat' &&  type_order !== 'swap') &&
-
-                    <div className="TicketDetailItem" >
-                      <p className="fuente TicketItemTitle">Prueba de pago:</p>
-                      <img src={proof_of_payment && proof_of_payment.proof} alt="" width="50px"/>
-                    </div>
-                  }
-
-              </Fragment>
-
-          </div>
-        }
 
 
             {

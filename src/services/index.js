@@ -350,10 +350,10 @@ export const serve_activity_list = async(get_list, data_user, current_wallet, fi
   const {
     user
   } = normalizeData.entities
-  console.log('||||||||||||||||||||||| °°°°°° normalizeData:::', normalizeData)
+  // console.log('||||||||||||||||||||||| °°°°°° normalizeData:::', normalizeData)
 
   let list = await serve_orders(user[data_user.id][filter], normalizeData.entities[filter], current_wallet && current_wallet.id, filter)
-  console.log('||||||||||||||||||||||| °°°°°° serve_activity_list:::', list)
+  // console.log('||||||||||||||||||||||| °°°°°° serve_activity_list:::', list)
 
   return list
 
@@ -401,6 +401,8 @@ export const get_ui_name_currency = (short_currency_name) => {
     'Dolares Americanos'
   )
 }
+
+
 
 
 

@@ -33,7 +33,6 @@ const history = createBrowserHistory();
 
 const {
    ApiUrl,
-   TokenUser,
    SocketUrl
 } = Environtment
 
@@ -54,24 +53,21 @@ class HomeContainer extends Component{
 
   startSocket = async() =>{
     this.socket = io(SocketUrl)
-    console.log('INFORMACIÓN SOKET',this.socket)
+    // console.log('INFORMACIÓN SOKET',this.socket)
 
     this.socket.on("connect", ()=>{
       this.props.action.load_label('Autenticando canales bilaterales')
-      // alert('connect')
 
       const body = {
-        body:{access_token:TokenUser}
+        body:{access_token:this.props.user.TokenUser}
       }
 
       this.socket.emit('authentication', body);
-      // this.socket.emit('authentication', {body: {access_token: JSON.stringify(TokenUser)}});
 
       this.socket.on("authenticated", () => {
-          this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
 
+          this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             await this.props.action.current_section_params({currentFilter:'swaps'})
-            console.log('|||||||||||||||||||||||||||||||||||||| swap', swap)
 
             if(swap.status === 'done' && swap !== this.state.order_socket){
               this.setState({order_socket:swap})
@@ -81,7 +77,11 @@ class HomeContainer extends Component{
                 this.update_activity(swap)
                   setTimeout(async()=>{
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
-                    setTimeout(()=>{this.props.action.get_account_balances(this.props.user)},3000)
+                    setTimeout(()=>{
+                      this.props.action.get_account_balances(this.props.user)
+                      this.props.action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
+                    },3000)
+
                   },4000)
               }, 3500)
             }
@@ -97,9 +97,6 @@ class HomeContainer extends Component{
 
 
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
-
-            // console.log(deposit)
-            // alert('Cambio deposito detected by socket')
 
             if(deposit.status === 'done' || deposit.status === 'accepted'){
               await this.props.action.get_deposit_list(this.props.user)

@@ -9,6 +9,8 @@ import { InputForm, InputFormCoin } from '../../widgets/inputs'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import AddressValidator from 'wallet-address-validator'
+import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
+
 
 class WithdrawView extends Component{
 
@@ -19,11 +21,18 @@ state = {
   active:false,
   addressVerify:false,
   show_last_address:false,
-  address_value:null
+  address_value:null,
+  verified:null
 }
 
   componentDidMount(){
     this.props.initial(this.props.match.params.path, this.props.match.params.id)
+    this.init_config()
+  }
+
+  init_config = async() =>{
+    let verified = await this.props.action.user_verification_status('level_1')
+    this.setState({verified})
   }
 
 
@@ -77,8 +86,6 @@ state = {
       user
     } = this.props
 
-    console.log('||||||||||||||| EXIST? ',address,  available_address[address])
-    console.log('||||||||||||||| available_address ', available_address)
 
     let withdraw_account = available_address[address]
 
@@ -156,7 +163,7 @@ state = {
 render(){
 
 const { current_wallet, short_name, available, withdraw_provider, last_address  } = this.props
-const { value, address, active, addressVerify, show_last_address, address_value } = this.state
+const { value, address, active, addressVerify, show_last_address, address_value, verified } = this.state
 // const { currency_type } = current_wallet
 
 const atributos ={
@@ -166,13 +173,17 @@ const atributos ={
   color:'#989898'
 }
 
-  console.log('||||||||||| - - -Componente de retiro crypto', withdraw_provider && withdraw_provider.provider.min_amount)
+  // console.log('||||||||||| - - -Componente de retiro crypto', withdraw_provider && withdraw_provider.provider.min_amount)
   let min_amount = withdraw_provider && withdraw_provider.provider.min_amount
 
   return(
 
     <Fragment>
       {
+        !verified ?
+        <UnverifiedComponent/>
+        :
+
       !current_wallet ?
           <SimpleLoader
             label="Consultando Billetera"

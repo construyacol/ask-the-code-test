@@ -63,7 +63,8 @@ add_index_to_root_object,
 objectToArray
 } = services
 
-const { ApiUrl, TokenUser, IdentityApIUrl, CountryApIUrl } = Environment
+const { ApiUrl, IdentityApIUrl, CountryApIUrl } = Environment
+
 let local_currency
 
 
@@ -233,6 +234,8 @@ export const get_all_pairs = (token, country) =>{
 
 
 export const get_pairs_for = (country, user_collection) => {
+
+
 
   return async(dispatch)=>{
     //defino la moneda local con base a la ubicación operativa del usuario
@@ -587,10 +590,10 @@ export const confirm_deposit_order = (ticket, base64) =>{
       account_id
     } = ticket
     // console.log('ticket', ticket)
-
+    const { user, user_id } = store.getState().model_data
 
     const body = {
-      "access_token":TokenUser,
+      "access_token":user[user_id].TokenUser,
       "data": {
         "unique_id": unique_id,
         "state": "confirmed",
@@ -649,7 +652,7 @@ export const create_deposit_order = (
   return async(dispatch) =>{
 
     const body = {
-        "access_token":TokenUser,
+        "access_token":user.TokenUser,
         "data": {
           "currency": currency,
           "amount": amount,
@@ -745,6 +748,51 @@ export const normalize_new_item = (user, list, item, prop) =>{
 }
 
 
+export const edit_array_element = (search_by, replace_prop, array_list) =>{
+// @Params
+// let search_by = {
+//   name:"unique_id",
+//   unique_id:data.unique_id
+// }
+// => Objeto que contiene en el .name el indice por el que sera identificado el elemento en la lista a editar
+// let replace_prop = {
+//   name:"state",
+//   state:"confirmed"
+// }
+// => Objeto que contiene la propiedad objetivo que será remmplazada en el modelo del elemento matcheado
+// array_list => Lista original que será editada
+
+  return async(dispatch) =>{
+    // console.log('|||||| °°°°° search_by', search_by.name, search_by[search_by.name])
+    // console.log('|||||| °°°°° replace_prop', replace_prop.name, replace_prop[replace_prop.name])
+    // console.log('|||||| array_list ---', array_list)
+
+    let item_result = await matchItem(array_list, {primary:search_by[search_by.name]}, search_by.name)
+    if(!item_result || item_result && item_result.length<1){return false}
+
+    let new_item = {
+      ...item_result[0],
+      [replace_prop.name]:replace_prop[replace_prop.name]
+    }
+
+    let new_array_list = [new_item]
+
+    await array_list.map(item => {
+      if(item[search_by.name] === search_by[search_by.name]){return false}
+      new_array_list.push(item)
+    })
+
+    return new_array_list
+
+    // console.log('|||||| new_array_list ---', new_array_list)
+
+
+  }
+
+}
+
+
+
 export const add_order_to = (prop, list, user, new_order) =>{
   return async(dispatch) => {
 
@@ -796,9 +844,10 @@ export const add_new_swap = (account_id, pair_id, value) =>{
 
 
     await charge_funds()
+    const { user, user_id } =store.getState().model_data
 
     const body = {
-        "access_token":TokenUser,
+        "access_token":user[user_id].TokenUser,
         "data": {
           "account_from_id":account_id,
           "pair_id":pair_id,
@@ -1143,6 +1192,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
          ...withdraw_providers
        ]
      }
+     console.log(withdraw_providers)
      let normalizeUser = await normalize_user(user_update)
      await dispatch(Update_normalized_state(normalizeUser))
      return withdraw_providers
@@ -1194,9 +1244,10 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
 export const add_update_withdraw = (unique_id, state, account_from) =>{
   return async(dispatch) =>{
+    const { user, user_id } =store.getState().model_data
 
     const body = {
-      "access_token":TokenUser,
+      "access_token":user[user_id].TokenUser,
       "data": {
         "unique_id": unique_id,
         "state": state,
@@ -1223,9 +1274,9 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
  export const add_new_withdraw_order = (amount, account_from, withdraw_provider, withdraw_account) =>{
 
    return async(dispatch) =>{
-
+     const { user, user_id } =store.getState().model_data
      const body = {
-       "access_token":TokenUser,
+       "access_token":user[user_id].TokenUser,
        "data": {
          "amount": amount,
          "account_from": account_from,
@@ -1352,7 +1403,7 @@ export const ready_to_play = payload =>{
 
 export const add_new_withdraw_account = (payload, type) =>{
   return async(dispatch) =>{
-
+    const { user, user_id } =store.getState().model_data
     const {
       provider_type,
       name,
@@ -1369,14 +1420,14 @@ export const add_new_withdraw_account = (payload, type) =>{
 
     if(type==='crypto'){
       body = {
-      "access_token":TokenUser,
+      "access_token":user[user_id].TokenUser,
       "data": {
         ...payload
       }
     }
     }else{
       body = {
-      "access_token":TokenUser,
+      "access_token":user[user_id].TokenUser,
       "data": {
         "provider_type": provider_type,
         "name": name,
@@ -1524,6 +1575,7 @@ export const get_user = (token, user_country) =>{
       }
     }
 
+
     // 1. inicializamos el estado con el token y el country del usuario
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
     const init_state = await ApiPostRequest(init_state_url, body, true)
@@ -1550,6 +1602,8 @@ export const get_user = (token, user_country) =>{
       verification_level:country[0].verification_level,
       levels:country[0].levels
     }
+
+
 
     // console.log('||||||  - - -.  --  country_object', country[0])
 
@@ -1685,7 +1739,7 @@ export const update_level_profile = (config, user) =>{
   return async(dispatch) => {
 
     let body ={
-      "access_token":TokenUser,
+      "access_token":user.TokenUser,
       "data": {
         "country":user.country,
         "person_type":user.person_type,
@@ -1733,6 +1787,37 @@ export const get_country_list = order_id =>{
 
 }
 
+
+export const user_verification_status = (level_request) =>{
+// @Call_from
+// ./wallets/views/deposit.js
+// ./wallets/views/withdraw.js
+
+  return async(dispatch) => {
+
+    const { user, user_id } = store.getState().model_data
+    const { advanced, basic, financial } = user[user_id].security_center.kyc
+    const { auth, transactional, withdraw } = user[user_id].security_center.authenticator
+    let verified
+
+
+    switch (level_request) {
+      case 'level_1':
+        verified = advanced === 'accepted' && basic === 'accepted'
+        return verified
+      case 'level_2':
+        verified = advanced === 'accepted' && basic === 'accepted' && financial === 'accepted'
+        return verified
+        break;
+      default:
+        return false
+    }
+
+
+
+  }
+
+}
 
 
 

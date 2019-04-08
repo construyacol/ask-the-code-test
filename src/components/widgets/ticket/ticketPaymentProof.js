@@ -64,7 +64,8 @@ updateLocalImg = (img) =>{
 
     const {
       ticket,
-      user
+      user,
+      deposit_list
     } = this.props
 
     const {
@@ -75,21 +76,38 @@ updateLocalImg = (img) =>{
     this.props.action.Loader(true)
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
     // let res = await this.props.action.confirm_deposit_order(ticket, '');
-    console.log('°°°||||||||   res confirmation', res)
     if(!res){return false}
     // let list = await this.props.action.get_deposit_list(user)
     // console.log('°°°||||||||   RES UPLOAD IMG:', res)
-    await update_activity_list()
-
     const {
       data
     } = res
-
     this.props.update_ticket(data)
+    // let search_by = {
+    //   name:"unique_id",
+    //   unique_id:data.unique_id
+    // }
+    // let replace_prop = {
+    //   name:"state",
+    //   state:"confirmed"
+    // }
+    // let deposits_updated = await this.props.action.edit_array_element(search_by, replace_prop, deposit_list)
+    // let user_update = {
+    //   ...user,
+    //   deposits:[
+    //     ...deposits_updated
+    //   ]
+    // }
+    // console.log('||||||||| Before deposits ', deposit_list)
+    // this.props.action.update_user(user_update)
+    // simulamos llamado del endpoint para guardar imagen
 
-// simulamos llamado del endpoint para guardar imagen
+          setTimeout(async()=>{
+            await update_activity_list()
+          }, 1400)
 
       this.props.action.Loader(false)
+
       this.setState({
         fileloader: !this.state.fileloader
       })
@@ -165,11 +183,16 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id, deposits } = state.model_data
+
+  let deposti_list = user[user_id].deposits.map(deposit_id => {
+    return deposits[deposit_id]
+  })
 
   return{
     loader:state.isLoading.loader,
-    user:user[user_id]
+    user:user[user_id],
+    deposit_list:deposti_list
   }
 }
 
