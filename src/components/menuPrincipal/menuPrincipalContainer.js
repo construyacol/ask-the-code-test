@@ -15,9 +15,9 @@ class MenuPrincipalContainer extends Component{
   activarItem = async (name, link) =>{
     // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', name, link)
     this.props.action.MenuItemActive(link)
-    this.props.action.HeadRoom('unpinned')
     this.props.action.section_view_to('initial')
     this.props.action.CleanNotifications(name)
+      this.props.action.HeadRoom('unpinned')
 
     scroller.scrollTo('firstInsideContainer', {
       duration: this.props.menu_item_active === link ? 500 : 0,

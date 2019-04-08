@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import './icons.css'
-
+import Coinsenda from './logos/coinsenda'
 import BancoBogota from './logos/bancoBogota'
 import Bbva from './logos/bbva'
 
@@ -68,6 +68,8 @@ class IconSwitch extends Component {
     switch (icon) {
       case 'email':
         return <Email {...props} />
+      case 'coinsenda':
+        return <Coinsenda {...props} />
       case 'withdraw_account':
         return <WithdrawAccount {...props} />
       case 'verified':

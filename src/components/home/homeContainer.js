@@ -5,7 +5,6 @@ import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
 import ModalContainer from '../widgets/modal/modalContainer.js'
 import ModalLayout from '../widgets/modal/modallayout'
 import DashBoardContainer from '../dashBoard/dashBoardContainer'
-import Headroom from 'headroom.js'
 import NewWallet from '../wallets/newWallet/newWalletContainer'
 import WithdrawAccountForm from '../withdrawAccounts/new/withdrawAccountForm'
 import { connect } from 'react-redux'
@@ -42,13 +41,9 @@ class HomeContainer extends Component{
   state = {
     handleError:false,
     modalVisible:false,
-    contenidoModal:this.props.current,
     order_socket:null
   }
 
-  componentDidMount(){
-
-  }
 
 
   startSocket = async() =>{
@@ -201,16 +196,14 @@ class HomeContainer extends Component{
         >
           {
             !app_loaded ?
-            <LoaderAplication init_sockets={this.startSocket}/>
+            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket} history={history} current_country="colombia"  />} />
             :
             <Fragment>
                 <ToastContainers/>
 
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
-
                     <MenuPrincipalContainer/>
-
-                    <MenuSuperiorContainer Headroom={Headroom}/>
+                    <MenuSuperiorContainer/>
                     {/* En el componente dashboard se cargan todas las vistas */}
 
                     {/* <DashBoardContainer history={history} {...this.props} /> */}
@@ -249,7 +242,7 @@ class HomeContainer extends Component{
                     <ModalContainer>
                       <Route
                         exact
-                        path={["/wallets", "/", "/withdraw", "/wallets/withdraw/:id", "/wallets/swap/:id", "/wallets/activity/:id"]}
+                        // path={["/wallets", "/", "/withdraw", "/wallets/withdraw/:id", "/wallets/swap/:id", "/wallets/activity/:id", "/security"]}
                         component={ConfirmationModal}
                       />
                         {/* <Route exact path="/wallets" component={ConfirmationModal} /> */}

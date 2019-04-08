@@ -95,7 +95,9 @@ margin: 0 !important;
 }
 
 .itemSup:hover{
-  color:#14B3F0 !important;
+  /*color:#14B3F0 !important;*/
+  color:#fb6257 !important;
+
 }
 
 .itemSup i{

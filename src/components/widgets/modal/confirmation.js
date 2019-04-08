@@ -62,7 +62,7 @@ class ConfirmationModal extends Component {
 
     const atributos ={
       icon:svg,
-      size:80,
+      size:type === 'select_country' ? 100 : 80,
       color:`#1babec`
     }
 
@@ -76,11 +76,12 @@ class ConfirmationModal extends Component {
                 <section className={`Modal aparecer`}>
                   <div className={`modalCont2 ConfirmationModal`}>
 
-                      <div className="Mconfirmar" style={{gridTemplateRows:type === 'swap' ? '70px auto' : 'repeat(auto-fill, minmax(80px, 1fr))' }}>
-                        {
-                          type === 'swap' &&
+                    {/* <div className="Mconfirmar" style={{gridTemplateRows:type === 'swap' ? '70px auto' : 'repeat(auto-fill, minmax(80px, 1fr))' }}> */}
+                      <div className="Mconfirmar">
+                        <div className="titleConfirmed">
                           <h1 className="fuente" >{title}</h1>
-                        }
+                        </div>
+
                           <Fragment>
                             {
                               (type !== 'swap') ?
@@ -102,12 +103,8 @@ class ConfirmationModal extends Component {
                                 </div>
                               </div>
                             }
-                            {
-                              type !== 'swap' &&
-                              <h1 className="fuente" >{title}</h1>
-                            }
 
-                            <p  className="fuentePrin" style={{alignSelf:type === 'swap' ? 'center' : 'start' }}>{description}</p>
+                            <p  className={`${type === 'swap' ? 'fuentePrin' : 'fuente'}  `} style={{alignSelf:type === 'swap' ? 'center' : 'start' }}>{description}</p>
 
                             <div className="CMControls">
                               {

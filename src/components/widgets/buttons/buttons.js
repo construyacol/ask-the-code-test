@@ -20,10 +20,29 @@ export const ButtonSuccess = (props) =>{
 
 
 export const ButtonSuccess2 = (props) =>{
+
   return(
     <div className="botonForm sucky fuente" title="finalizar">
         {props.children}
         <div className="filtrear"></div>
+    </div>
+  )
+}
+
+
+export const SelectCountryButton = (props) =>{
+
+  const { bar, handleClick } = props
+
+  return(
+    <div className={`SelectCountryButton ${bar}`}  onClick={handleClick}>
+        <div className="countryTextSelect">
+          <i className="fas fa-caret-down"></i>
+          <div className="contTextCountryButton">
+            <p className="fuente">Cambiar País</p>
+          </div>
+        </div>
+        <IconSwitch icon="cop" size={22} />
     </div>
   )
 }

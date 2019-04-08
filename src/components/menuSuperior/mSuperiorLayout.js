@@ -3,6 +3,7 @@ import './mSuperior.css'
 import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
 import coin from '../widgets/items/assets/coins/btc2.png'
+import { SelectCountryButton } from '../widgets/buttons/buttons'
 
 const MenuSuperiorLayout = (props) =>{
 
@@ -16,7 +17,9 @@ const MenuSuperiorLayout = (props) =>{
     movil,
     currentPair,
     sell_price,
-    buy_price
+    buy_price,
+    mouseOver,
+    openSelectCountry
   } = props
 
   // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', item_quote)
@@ -25,7 +28,7 @@ const MenuSuperiorLayout = (props) =>{
   return(
     <section className="MenuSuperiorLayout fuente" >
       <div className="contDinamic">
-        <div className={`containerMenuSuperior ${redux_class}`} id="mSuperior">
+        <div className={`containerMenuSuperior ${redux_class}`} id="mSuperior" onMouseOver={mouseOver}>
           <div className="capsuleMenu1">
 
               {
@@ -40,8 +43,9 @@ const MenuSuperiorLayout = (props) =>{
                 </div>
               }
 
-            <div className="itemSup"><i className="far fa-question-circle"></i></div>
-            <div className="itemSup"><i className="fas fa-bell"></i></div>
+            {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
+            <div className="itemSup"><i className="fas fa-bell"></i></div> */}
+            <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
           </div>
           <div className="capsuleMenu2">
             {
