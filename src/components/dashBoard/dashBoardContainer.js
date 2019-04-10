@@ -69,17 +69,13 @@ class DashBoardContainer extends Component{
                       :
                       <Fragment>
                           <Switch>
-
                             {/* <Route path="/wallets" render={() => <WalletContainer/>} /> */}
                               <Route path="/withdraw" component={WitdrawAccountContainer} />
                               <Route path="/settings" component={SettingsContainer} />
                               <Route path="/security" component={SecurityCenter} />
                               <Route path="/wallets" component={WalletContainer} />
-                              <Redirect from="/" to="/wallets" />
+
                               {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
-
-
-
                               {/* <Redirect from="/" to="/activity" /> */}
                               {/* <Route exact path={["/activity", "/"]}  component={ActivityContainer}/> */}
                             </Switch>
@@ -93,8 +89,9 @@ class DashBoardContainer extends Component{
 }
 
 function mapStateToProps(state, props){
+    const { user, user_id } = state.model_data
   return{
-    user:state.model_data.user ? state.model_data.user : null
+    user:user[user_id]
   }
 }
 

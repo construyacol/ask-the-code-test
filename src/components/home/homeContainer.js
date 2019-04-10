@@ -18,7 +18,6 @@ import { Router, Route, Switch } from 'react-router-dom'
 import Environtment from '../../environment'
 
 import ConfirmationModal from '../widgets/modal/confirmation'
-import createBrowserHistory from "history/createBrowserHistory"
 import PairList from "../wallets/views/swap_pair_list"
 import TicketContainer from '../widgets/ticket/ticketContainer'
 import ModalSettingsView from '../widgets/itemSettings/modal_views'
@@ -26,9 +25,6 @@ import ErrorView from '../widgets/errorView'
 import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
-
-
-const history = createBrowserHistory();
 
 const {
    ApiUrl,
@@ -44,11 +40,14 @@ class HomeContainer extends Component{
     order_socket:null
   }
 
-
+componentDidMount(){
+  // console.log('||||||| componentDidMount', this.props)
+  this.props.history.push('/wallets')
+}
 
   startSocket = async() =>{
     this.socket = io(SocketUrl)
-    // console.log('INFORMACIÓN SOKET',this.socket)
+    console.log('INFORMACIÓN SOKET',this.socket)
 
     this.socket.on("connect", ()=>{
       this.props.action.load_label('Autenticando canales bilaterales')
@@ -60,6 +59,7 @@ class HomeContainer extends Component{
       this.socket.emit('authentication', body);
 
       this.socket.on("authenticated", () => {
+        console.log('authenticated SOKET')
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             await this.props.action.current_section_params({currentFilter:'swaps'})
@@ -100,7 +100,7 @@ class HomeContainer extends Component{
 
             if(deposit.currency_type === 'crypto'){
               this.props.action.add_new_transaction_animation()
-              history.push(`/wallets/activity/${deposit.account_id}`)
+              this.props.history.push(`/wallets/activity/${deposit.account_id}`)
             }
 
           })
@@ -192,38 +192,40 @@ class HomeContainer extends Component{
 
     return(
       <Router
-        history={history}
+        basename="/app"
+        history={this.props.history}
         >
           {
             !app_loaded ?
-            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket} history={history} current_country="colombia"  />} />
+            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket}  current_country="colombia" token={this.props.token} />} />
             :
             <Fragment>
                 <ToastContainers/>
 
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
+
                     <MenuPrincipalContainer/>
-                    <MenuSuperiorContainer/>
+                    <MenuSuperiorContainer logOut={this.props.logOut}/>
                     {/* En el componente dashboard se cargan todas las vistas */}
 
                     {/* <DashBoardContainer history={history} {...this.props} /> */}
-                    <Route path="/" render={() => <DashBoardContainer history={history} {...this.props} />} />
+                    <Route path="/" render={() => <DashBoardContainer  {...this.props} />} />
 
 
                   {
                     modalVisible &&
                     <ModalContainer>
 
-                      <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} history={history}>
+                      <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} >
                         {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
-                            <Fragment>
+                            <Switch>
                               <Route exact strict path="/wallets" component={NewWallet} />
                               <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
                               <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
                               <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
                               <Route exact path="/withdraw" component={WithdrawAccountForm} />
                               <Route exact path="/security" component={Kyc} />
-                            </Fragment>
+                            </Switch>
                       </ModalLayout>
                     </ModalContainer>
                   }

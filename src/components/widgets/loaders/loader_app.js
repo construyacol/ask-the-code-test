@@ -101,6 +101,7 @@ class LoaderAplication extends Component {
 
     await action.update_user(user_update)
     await init_sockets()
+
     // // // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
     // // // await action.get_pairs_for('colombia', user_collection)
 
@@ -219,8 +220,8 @@ function mapStateToProps(state, props){
 
   const { user, user_id,  wallets, all_pairs } = state.model_data
   const { loader } = state.isLoading
-  const { current_country } = props
-  console.log('|||||| mapStateToProps', props)
+  const { current_country, token } = props
+  // console.log('|||||| mapStateToProps', props)
 
   return{
     app_load_label:state.isLoading.app_load_label,
@@ -229,7 +230,7 @@ function mapStateToProps(state, props){
     all_pairs,
     // country:null,
     country:current_country,
-    token:"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJzSlNIMXZIbTVGT1ZhalhlQTlGUWZ0dVpBbWdRNm5qaG1lT24yaUZuNGF2QXBMWTdLN0hWMFVHVWJIWWxyZHFSIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTQ3NDgwNDgsImV4cCI6MTU1NDc1ODg0OH0.EZGJ54CVTRpTPWx97twZXZ7iFTTjpKg3Sz_-mbXShSb8P13JFxf0Klyy1lPbt0WWm_kkUQJQ9WqdGJjDstWe9A",
+    token:token,
     loader
   }
 }

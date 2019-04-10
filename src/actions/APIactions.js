@@ -453,7 +453,6 @@ export const get_list_user_wallets = (user) =>{
 
   return async(dispatch) =>{
 
-
     await dispatch(load_label('Obteniendo tus billeteras'))
     const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
     let wallets = await ApiGetRequest(url_wallets)
@@ -1533,7 +1532,7 @@ export const get_all_currencies = () => {
     }
 
      for (let i = 0; i < currencies.length; i++) {
-      // if(currencies[i].currency !== "bitcoin_testnet"){
+      if(currencies[i].currency !== "bitcoin_testnet"){
           let new_item = {
                         "currency_type":currencies[i].currency_type,
                         "id":currencies[i].id,
@@ -1546,7 +1545,7 @@ export const get_all_currencies = () => {
                         ...currencies[i],
                          }
            new_currencies.push(new_item)
-        // }
+        }
     }
     dispatch(UpdateAllCurrencies(new_currencies))
     return new_currencies

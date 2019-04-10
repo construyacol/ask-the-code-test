@@ -1,28 +1,16 @@
 import React, { Fragment } from 'react';
 import {render} from 'react-dom';
 import './index.css';
-import HomeContainer from './components/home/homeContainer'
 import * as serviceWorker from './serviceWorker';
-// import sesion from './components/api'
-import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
-// import nomalizedApp from './schemas'
+import RootContainer from './components/Root'
 import reducer from './reducers'
 import logger from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
-import AuthComponentContainer from './components/auth'
-import CubicMessageComponent from './components/widgets/showMessage/cubic'
-
-// const logger = ({getState, dispatch}) => next => action => {
-//   console.log('estado anterior', getState())
-//   console.log('Acción', action)
-//   const value = next(action)
-//   console.log('este es mi nuevo estado', getState())
-//   return value
-// }
+import { Provider } from 'react-redux'
 
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
 
@@ -41,14 +29,12 @@ const store = createStore(
 
 const home = document.getElementById('home-container')
 
+
 render(
-   <Provider store={store}>
-     <Fragment>
-       <HomeContainer/>
-     </Fragment>
-   </Provider>
- // <AuthComponentContainer/>
-  , home
+  <Provider store={store}>
+      <RootContainer store={store} />
+  </Provider>
+ , home
 );
 
 
@@ -58,3 +44,12 @@ render(
 serviceWorker.unregister();
 
 export default store
+
+
+// const logger = ({getState, dispatch}) => next => action => {
+//   console.log('estado anterior', getState())
+//   console.log('Acción', action)
+//   const value = next(action)
+//   console.log('este es mi nuevo estado', getState())
+//   return value
+// }

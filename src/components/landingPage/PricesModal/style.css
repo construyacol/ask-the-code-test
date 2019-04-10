@@ -1,0 +1,11 @@
+ul.for-modal {
+  text-align: center;
+  padding-top: 24px;
+  font-size: 200%;
+}
+ul.for-modal li {
+  padding: 16px 0;
+}
+ul.for-modal li span.price-label {
+  color: #aaa;
+}

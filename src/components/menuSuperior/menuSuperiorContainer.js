@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { number_format } from '../../services'
 import Headroom from 'headroom.js'
-
+import { withRouter } from "react-router";
 
 class MenuSuperiorContainer extends Component {
 
@@ -15,9 +15,18 @@ class MenuSuperiorContainer extends Component {
     sell_price:number_format(this.props.currentPair.sell_price)
   }
 
-  open = () =>{
+  logout = async() =>{
     // this.props.action.CurrentForm('kyc_basic')
     // this.props.action.ToggleModal()
+    console.log('this.props.history', this.props)
+    // let user_update = {
+    //   ...this.props.user,
+    //   TokenUser:null
+    // }
+    // await this.props.action.update_user(user_update)
+
+    // this.props.history.push('/landing')
+    this.props.logOut()
   }
 
   componentWillReceiveProps(props){
@@ -88,7 +97,7 @@ class MenuSuperiorContainer extends Component {
 
     return(
       <MenuSuperiorLayout
-        open={this.open}
+        logout={this.logout}
         mouseOver={this.mouseOver}
         openSelectCountry={this.openSelectCountry}
         {...this.state}
@@ -105,13 +114,15 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
+  const { user, user_id } = state.model_data
   return{
     redux_class:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,
-    item_quote:state.ui.item_quote
+    item_quote:state.ui.item_quote,
+    user:user[user_id]
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (MenuSuperiorContainer)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (MenuSuperiorContainer))

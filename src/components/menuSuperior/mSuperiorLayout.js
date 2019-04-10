@@ -4,6 +4,7 @@ import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
 import coin from '../widgets/items/assets/coins/btc2.png'
 import { SelectCountryButton } from '../widgets/buttons/buttons'
+import { Link } from 'react-router-dom'
 
 const MenuSuperiorLayout = (props) =>{
 
@@ -11,7 +12,7 @@ const MenuSuperiorLayout = (props) =>{
   let venta = "Te vendemos a:"
 
   const {
-    open,
+    logout,
     redux_class,
     item_quote,
     movil,
@@ -33,12 +34,13 @@ const MenuSuperiorLayout = (props) =>{
 
               {
                 window.innerWidth>768 ?
-                  <div className="itemSup closeSesi" onClick={open}>
+                  <div className="itemSup closeSesi" onClick={logout}>
                     <p>Cerrar Sesión</p>
                     <i className="fas fa-sign-out-alt titi"></i>
                   </div>
+
                 :
-                <div className="itemSup closeSesi" onClick={open}>
+                <div className="itemSup closeSesi" onClick={logout}>
                   <p>fotito</p>
                 </div>
               }
