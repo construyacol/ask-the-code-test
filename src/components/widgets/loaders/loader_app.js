@@ -76,6 +76,8 @@ class LoaderAplication extends Component {
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
     // este endpoint inicializa la normalización de los modelos, a partir de aquí ya tenemos user en redux
+
+    // Si se carga desde este punto no podemos cargar los pares normalizados en la propiedad available pairs del modelo usuario porque no contamos con su id
     let pairs = await action.get_all_pairs(token, user_country)
     if(!pairs){
       this.go_to_select_country()

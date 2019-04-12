@@ -6,6 +6,10 @@ import { connect } from 'react-redux'
 import config from './default'
 import styles from './css/landing.css';
 
+import { bindActionCreators } from 'redux'
+// import actions from '../../actions'
+import { get_pairs_for } from '../../actions/APIactions'
+
 import logo from './img/logo.png'
 import bigLogo from './img/logo.png'
 import screenshot from './img/lap-mobile.png'
@@ -24,35 +28,41 @@ class Landing extends React.Component {
     }
   }
 
-  componentWillUnmount(){
+  componentWillUnmount(){}
 
-  }
+
   componentDidMount () {
-    // const html = document.querySelector('html')
-    // const layer = document.querySelector('div.layer')
-    // if (layer) {
-    //   layer.style.height = html.offsetHeight + 'px'
-    // }
+    this.init_component()
+    const html = document.querySelector('html')
+    const layer = document.querySelector('div.layer')
+    if (layer) {
+      layer.style.height = html.offsetHeight + 'px'
+    }
 
-    // if (this.props.location.search) {
-    //   // URL
-    //   const url = new URL(window.location.href)
-    //
-    //   // Search ref_code
-    //   const ref_code = url.searchParams.get('ref_code')
-    //
-    //   // Set ref_code in localStore
-    //   localStorage.setItem('ref_code', ref_code)
-    //
-    //   // Search ref_code in localStore
-    //   const localCode = localStorage.getItem('ref_code')
-    //
-    //   if (localCode) {
-    //     this.setState({
-    //       ref_code
-    //     })
-    //   }
-    // }
+
+    if (this.props.history.location.search) {
+      // URL
+      const url = new URL(window.location.href)
+
+      // Search ref_code
+      const ref_code = url.searchParams.get('ref_code')
+
+      // Set ref_code in localStore
+      localStorage.setItem('ref_code', ref_code)
+
+      // Search ref_code in localStore
+      const localCode = localStorage.getItem('ref_code')
+
+      if (localCode) {
+        this.setState({
+          ref_code
+        })
+      }
+    }
+  }
+
+  init_component = async() =>{
+    await this.props.get_pairs_for('colombia')
   }
 
   handleClickRemove = () => {
@@ -70,13 +80,13 @@ class Landing extends React.Component {
             <a href="/" id="logo"><img src={logo} alt="Coinsenda" style={{width: 165,padding: "10px 5px"}} /></a>
             <div className="landing buy-sell">
               <div className="landing buy">
-                {/* <p>Precio para vender<br />${this.props.buyPrice.toLocaleString()} COP</p> */}
+                <p>Te compramos Btc a:<br />${this.props.sellPrice && this.props.sellPrice.toLocaleString()} COP</p>
               </div>
               <div className="landing sell">
-                {/* <p>Precio para comprar<br />${this.props.sellPrice.toLocaleString()} COP</p> */}
+                <p>Te vendemos Btc a:<br />${this.props.buyPrice && this.props.buyPrice.toLocaleString()} COP</p>
               </div>
             </div>
-            <a className="landing cotizacion" href="#prices" onClick={() => this.setState({showModal: true})}>Cotización</a>
+            {/* <a className="landing cotizacion" href="#prices" onClick={() => this.setState({showModal: true})}>Cotización</a> */}
             <nav>
               <a href="/#" id="menu-icon">
                 <span></span>
@@ -102,8 +112,8 @@ class Landing extends React.Component {
         </header>
         <section className="landing top">
           <div className="landing bot-skew"></div>
-          <div className="landing container-landing">
-            <div className="landing row-landing">
+          <div className="landing container-landing2">
+            <div className="landing row-landing landing2cont">
               <div className="landing span-full span-6 text-right">
                 <h1>La forma más fácil de comprar y vender
                   <span className="landing big"> Bitcoins</span>
@@ -128,25 +138,30 @@ class Landing extends React.Component {
             <h2>
               <span>Lo primero eres tú</span>
             </h2>
-            <div className="landing row">
-              <div className="landing span-full span-4">
-                <h4>
-                  <span className="landing bondad-01">Operamos las 24hs</span>
-                </h4>
-                <p>El Bitcoin no para; nosotros tampoco. ¡Compra y vende en pesos colombianos cuando quieras! </p>
+            <div className="landing row firstU">
+
+              <div className="firstUCont">
+                  <div className="landing span-full span-4">
+                    <h4>
+                      <span className="landing bondad-01">Operamos las 24hs</span>
+                    </h4>
+                    <p>El Bitcoin no para; nosotros tampoco. ¡Compra y vende en pesos colombianos cuando quieras! </p>
+                  </div>
+                  <div className="landing span-full span-4">
+                    <h4>
+                      <span className="landing bondad-02">Pensamos en ti</span>
+                    </h4>
+                    <p>Brindamos una atención rápida, segura y personalizada para que te sientas cómodo, ¡siempre! </p>
+                  </div>
+                  <div className="landing span-full span-4">
+                    <h4>
+                      <span className="landing bondad-03">Hecho a tu medida</span>
+                    </h4>
+                    <p>Compra en efectivo o transferencia bancaria, utilizando los múltiples medios de pago.</p>
+                  </div>
               </div>
-              <div className="landing span-full span-4">
-                <h4>
-                  <span className="landing bondad-02">Pensamos en ti</span>
-                </h4>
-                <p>Brindamos una atención rápida, segura y personalizada para que te sientas cómodo, ¡siempre! </p>
-              </div>
-              <div className="landing span-full span-4">
-                <h4>
-                  <span className="landing bondad-03">Hecho a tu medida</span>
-                </h4>
-                <p>Compra en efectivo o transferencia bancaria, utilizando los múltiples medios de pago.</p>
-              </div>
+
+
               <div className="landing full-width pull-left text-center">
                 {
                     ref_code ? (
@@ -175,18 +190,22 @@ class Landing extends React.Component {
                 <span>3</span>
               </div>
             </div>
-            <div className="landing step-content">
-              <h4>Reg&iacute;strate</h4>
-              <p>Crea tu cuenta, personal y segura, con tu correo electr&oacute;nico o redes sociales.</p>
+
+            <div className="step-content-cont landingStepss">
+              <div className="landing step-content">
+                <h4>Reg&iacute;strate</h4>
+                <p>Crea tu cuenta, personal y segura, con tu correo electr&oacute;nico o redes sociales.</p>
+              </div>
+              <div className="landing step-content">
+                <h4>Deposita</h4>
+                <p>Utiliza los medios de pago tradicionales que funcionan en Colombia.</p>
+              </div>
+              <div className="landing step-content">
+                <h4>Recibe</h4>
+                <p>Recibe tu saldo en Bitcoin o Pesos Colombianos donde tu quieras.</p>
+              </div>
             </div>
-            <div className="landing step-content">
-              <h4>Deposita</h4>
-              <p>Utiliza los medios de pago tradicionales que funcionan en Colombia.</p>
-            </div>
-            <div className="landing step-content">
-              <h4>Recibe</h4>
-              <p>Recibe tu saldo en Bitcoin o Pesos Colombianos donde tu quieras.</p>
-            </div>
+
           </div>
         </section>
         <section className="landing aprende text-center">
@@ -194,7 +213,10 @@ class Landing extends React.Component {
             <h2>
               <span>¿C&oacute;mo funciona Coinsenda?</span>
             </h2>
-            <div className="landing row">
+
+
+            <div className="landing row howWork">
+
               <div className="landing col-md-4">
                 <div className="landing videoWrapper">
                   <iframe
@@ -237,12 +259,20 @@ class Landing extends React.Component {
                 </div>
                 <h4>Cómo cambiar tus Bitcoins por pesos colombianos</h4>
               </div>
+
             </div>
+
+
           </div>
         </section>
+
+
+
+
+
         <section className="landing footer">
           <div className="landing top-skew"></div>
-          <div className="landing container-fluid" style={{
+          <div className="landing container-fluid  FooterCont" style={{
             position: 'absolute',
             top: 0,
             left: 0,
@@ -250,38 +280,35 @@ class Landing extends React.Component {
             width: '100%',
             background: '#030829'
           }}>
-            <div className="landing row">
-              <div className="landing span-5">
+            <div className="landing row landingFooterCont">
+              <div className="landing span-5 itemFooter itemFooterImg">
                 <img src={bigLogo} width="80%" alt="Coinsenda" className="landing brand" />
               </div>
-              <div className="landing span-5">
+
+
+              <div className="landing span-5 itemFooter">
                 <h4>Legal</h4>
                 <ul>
                   <li>
-                    <Link to="/legal/terms">» T&eacute;rminos y Condiciones</Link>
+                    <Link to="/help/legal/terms">» T&eacute;rminos y Condiciones</Link>
                   </li>
                   <li>
-                    <Link to="/legal/privacy">» Políticas de privacidad</Link>
+                    <Link to="/help/legal/privacy">» Políticas de privacidad</Link>
                   </li>
                 </ul>
-              </div>
-              <div className="landing span-5">
                 <h4>Ayuda</h4>
                 <ul>
                   <li>
                     <Link to="/help">» Preguntas frecuentes</Link>
                   </li>
                   <li>
-                    <Link to="/fees">» Tarifas de uso</Link>
+                    <Link to="/help/fees">» Tarifas de uso</Link>
                   </li>
-                  {/*
-                  <li>
-                    <Link to="/help">» Chat</Link>
-                  </li>
-                  */}
                 </ul>
               </div>
-              <div className="landing span-5">
+
+
+              <div className="landing span-5 itemFooter">
                 <h4>Contacto</h4>
                 <ul>
                   <li>
@@ -304,7 +331,7 @@ class Landing extends React.Component {
                         rel="noopener noreferrer"
                         itemProp="sameAs"
                         className="landing social">
-                        <i className="landing fab fa-facebook" />
+                        <i className="fab fa-facebook" />
                       </a>
                       <a
                         href="https://www.instagram.com/coinsenda"
@@ -312,7 +339,7 @@ class Landing extends React.Component {
                         rel="noopener noreferrer"
                         itemProp="sameAs"
                         className="landing social">
-                        <i className="landing fab fa-instagram" />
+                        <i className="fab fa-instagram" />
                       </a>
                       <a
                         href="https://twitter.com/coin_senda"
@@ -320,7 +347,7 @@ class Landing extends React.Component {
                         rel="noopener noreferrer"
                         itemProp="sameAs"
                         className="landing social">
-                        <i className="landing fab fa-twitter" />
+                        <i className="fab fa-twitter" />
                       </a>
                     </span>
                   </li>
@@ -329,15 +356,15 @@ class Landing extends React.Component {
                   </li>
                 </ul>
               </div>
-              <div className="landing span-5">
+              <div className="landing span-5 itemFooter">
                 <h4>Bogotá</h4>
                 <span className="landing asLink">» Carrera 7 # 156-68 </span>
                 <h4>Cali</h4>
                 <span className="landing asLink">» Calle 33A Norte # 2N-73</span>
               </div>
             </div>
-            <div className='footer-copyright text-center'>
-              © 2018 Coinsenda - All rights reserved
+            <div className='footer-copyright text-center FooterS'>
+              © 2019 Coinsenda - All rights reserved
             </div>
           </div>
         </section>
@@ -346,6 +373,7 @@ class Landing extends React.Component {
           closeHandler={() => this.setState({showModal: false})}
         /> */}
       </div>
+
     )
   }
 }
@@ -356,11 +384,18 @@ class Landing extends React.Component {
 // }
 
 function mapStateToProps(state, props){
+  const { currentPair } = state.model_data.pairs
   return {
-    sellPrice: null,
-    buyPrice: null
+    sellPrice: currentPair && currentPair.sell_price,
+    buyPrice: currentPair && currentPair.buy_price
+  }
+}
+
+function mapDispatchToProps(dispatch){
+  return{
+    get_pairs_for: bindActionCreators(get_pairs_for, dispatch)
   }
 }
 
 // export default connect(mapPairsToProps)(Landing)
-export default connect(mapStateToProps)(Landing)
+export default connect(mapStateToProps, mapDispatchToProps)(Landing)

@@ -209,7 +209,7 @@ export const get_all_pairs = (token, country) =>{
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
 
-    console.log('|||||| get_all_pairs', pairs)
+    // console.log('|||||| get_all_pairs', pairs)
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
 
@@ -221,10 +221,13 @@ export const get_all_pairs = (token, country) =>{
         ...data
       ]
     }
+
     let normalize_pairs = await normalize_user(user_update)
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
     return normalize_pairs
+
+    return data
 
   }
 }
@@ -234,8 +237,6 @@ export const get_all_pairs = (token, country) =>{
 
 
 export const get_pairs_for = (country, user_collection) => {
-
-
 
   return async(dispatch)=>{
     //defino la moneda local con base a la ubicación operativa del usuario

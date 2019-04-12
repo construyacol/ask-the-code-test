@@ -53,7 +53,7 @@ class MenuPrincipalContainer extends Component{
     const { user, user_id } = state.model_data
 
     return{
-      user:user[user_id],
+      user:user && user[user_id],
       menu_item_active:state.ui.menu_item_active,
       // user:state.model_data.user ? user : null
     }

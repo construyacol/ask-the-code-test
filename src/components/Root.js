@@ -4,6 +4,7 @@ import { Router, Route, Switch } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
 import LandingPage from './landingPage'
 import localForage from 'localforage'
+import PagesRouter from './landingPage/pages'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
@@ -29,6 +30,7 @@ class RootContainer extends Component {
     }
 
     let AccessToken = await localForage.getItem('TokenUser')
+    // let AccessToken = null
 
     this.setState({
       TokenUser:AccessToken
@@ -51,11 +53,12 @@ class RootContainer extends Component {
         history={history}
         >
           <Switch>
+            <Route strict path="/help" component={PagesRouter} />
             <Route path="/" render={ () => (
               TokenUser ? (
                   <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
               ) : (
-                <LandingPage/>
+                <LandingPage history={history} />
               )
             )}/>
           </Switch>

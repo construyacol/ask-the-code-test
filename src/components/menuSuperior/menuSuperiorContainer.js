@@ -11,8 +11,8 @@ class MenuSuperiorContainer extends Component {
 
   state = {
     movil:window.innerWidth < 768 ? true : false,
-    buy_price:number_format(this.props.currentPair.buy_price),
-    sell_price:number_format(this.props.currentPair.sell_price)
+    buy_price:this.props.currentPair && number_format(this.props.currentPair.buy_price),
+    sell_price:this.props.currentPair && number_format(this.props.currentPair.sell_price)
   }
 
   logout = async() =>{
@@ -116,11 +116,10 @@ function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
   const { user, user_id } = state.model_data
   return{
-    redux_class:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,
     item_quote:state.ui.item_quote,
-    user:user[user_id]
+    user:user && user[user_id]
   }
 }
 

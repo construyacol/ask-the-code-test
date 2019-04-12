@@ -1,0 +1,27 @@
+.legals h3 {
+  margin-top: 40px;
+  margin-bottom: 28px;
+}
+.legals p {
+  margin-bottom: 28px;
+}
+/* .legals p:not(.text-right),
+.legals p:not(.text-left) {
+  text-align: justify;
+} */
+.legals ol {
+  margin-bottom: 28px;
+}
+.legals ol li {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.legals ul {
+  list-style: none;
+}
+
+.legals ul li:before {
+  content: '✓';
+  margin-right: 8px;
+}

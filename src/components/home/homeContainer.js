@@ -63,9 +63,10 @@ componentDidMount(){
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             await this.props.action.current_section_params({currentFilter:'swaps'})
-
+            console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
             if(swap.status === 'done' && swap !== this.state.order_socket){
               this.setState({order_socket:swap})
+
               return setTimeout(async()=>{
                 this.props.action.success_sound()
                 await this.props.action.current_section_params({swap_socket_channel:swap, swap_done_id:swap.unique_id, swap_done_out:true})
@@ -211,11 +212,9 @@ componentDidMount(){
                     {/* <DashBoardContainer history={history} {...this.props} /> */}
                     <Route path="/" render={() => <DashBoardContainer  {...this.props} />} />
 
-
                   {
                     modalVisible &&
                     <ModalContainer>
-
                       <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} >
                         {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
                             <Switch>
