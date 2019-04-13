@@ -7,12 +7,61 @@
 }
 
 .boardHelp{
-  padding: 70px 0 0 0;
+  padding: 55px 0 0 0;
   width: 100%;
-  height: calc(100% - 70px);
+  height: calc(100% - 55px);
 }
 
 .rowFAQ{
   display: grid;
   grid-template-columns: 19vw 1fr;
+  grid-column-gap: 20px;
 }
+
+.panel-left{
+  position: sticky;
+  top: 0;
+  font-size: 20px;
+  padding: 50px 30px;
+}
+
+.panel_left_cont{
+    background: #ececec;
+}
+
+
+.panel_left_cont a{
+  text-decoration: none;
+  color:#424242;
+}
+
+.panel_left_cont ul{
+  list-style: none;
+  padding: 0;
+}
+
+.panel_left_cont li{
+  margin: 10px 0;
+}
+
+.panel_left_cont h4{
+  color: gray;
+}
+
+.contHelpPage{
+  height: calc(100vh - 55px);
+  overflow-y: scroll;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

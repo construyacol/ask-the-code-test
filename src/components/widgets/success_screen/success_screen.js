@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { Medal } from '../widgets/icons'
-import { ButtonForms } from '../widgets/buttons/buttons.js'
-import ConfettiComponent from './basic/confetti'
+import { Medal } from '../icons'
+import { ButtonForms } from '../buttons/buttons.js'
+import ConfettiComponent from './confetti'
 
 
 const SuccessComponentScreen = props => {

@@ -23,20 +23,25 @@ class ItemSettingsInit extends Component{
       const { phone } = user.settings
       const { name } = item
 
-      // console.log('CODE SWITCH', name)
+      console.log('CODE SWITCH', name)
 
       switch (name) {
         case 'kyc_basic':
+          await this.props.action.CurrentForm('kyc_basic')
           return this.props.action.ToggleModal()
 
         case 'kyc_financial':
+              await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.IncreaseStep('kyc_global_step', 3)
               return this.props.action.ToggleModal()
 
         case 'kyc_advanced':
+              await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.IncreaseStep('kyc_global_step', 2)
               return this.props.action.ToggleModal()
-
+        case '2auth':
+              await this.props.action.CurrentForm('2auth')
+              return this.props.action.ToggleModal()
         case 'phone':
             await this.props.action.current_section_params({settings:{
               title:"Actualizar numero de movil",
@@ -103,7 +108,6 @@ class ItemSettingsInit extends Component{
               code:name
             }})
             return this.props.action.other_modal_toggle()
-
         default:
 
       }

@@ -10,8 +10,8 @@ import { bindActionCreators } from 'redux'
 // import actions from '../../actions'
 import { get_pairs_for } from '../../actions/APIactions'
 
-import logo from './img/logo.png'
-import bigLogo from './img/logo.png'
+import logo from '../../assets/logo.png'
+import bigLogo from '../../assets/logo.png'
 import screenshot from './img/lap-mobile.png'
 import col from './img/ico-col.png'
 const oauth = config.oauth
@@ -67,6 +67,10 @@ class Landing extends React.Component {
 
   handleClickRemove = () => {
     localStorage.removeItem('ref_code')
+  }
+
+  scrollTop = () =>{
+    Window.scrollTo(0,0)
   }
 
   render () {
@@ -290,19 +294,19 @@ class Landing extends React.Component {
                 <h4>Legal</h4>
                 <ul>
                   <li>
-                    <Link to="/help/legal/terms">» T&eacute;rminos y Condiciones</Link>
+                    <Link to="/help/legal/terms" onClick={this.scrollTop}>» T&eacute;rminos y Condiciones</Link>
                   </li>
                   <li>
-                    <Link to="/help/legal/privacy">» Políticas de privacidad</Link>
+                    <Link to="/help/legal/privacy" onClick={this.scrollTop}>» Políticas de privacidad</Link>
                   </li>
                 </ul>
                 <h4>Ayuda</h4>
                 <ul>
                   <li>
-                    <Link to="/help">» Preguntas frecuentes</Link>
+                    <Link to="/help" onClick={this.scrollTop}>» Preguntas frecuentes</Link>
                   </li>
                   <li>
-                    <Link to="/help/fees">» Tarifas de uso</Link>
+                    <Link to="/help/fees" onClick={this.scrollTop}>» Tarifas de uso</Link>
                   </li>
                 </ul>
               </div>

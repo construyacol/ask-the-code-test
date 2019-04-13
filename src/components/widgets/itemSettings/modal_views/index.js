@@ -178,7 +178,7 @@ update_state = (payload) =>{
 
     const atributos ={
       icon:`${auth ? '2auth' : section}`,
-      size:80,
+      size:90,
       color:`${success ? '#59b200' : '#1babec' }`
     }
 
@@ -209,6 +209,7 @@ console.log(' || |||| ModalSettingSwitch - -- - ', this.props)
                             !loader ?
                                 auth ?
                                 <AuthReq
+                                  label="Digita el codigo Authenticator aquí:"
                                   authenticated={this.authenticated}
                                   toggle_anim={this.toggle_anim}
                                 />

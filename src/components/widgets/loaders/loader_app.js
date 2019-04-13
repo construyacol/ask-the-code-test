@@ -36,7 +36,10 @@ class LoaderAplication extends Component {
     // }
 
 
-
+  // Primero validamos la legitimidad del token, para definir si el usuario esta loggedIn o el token no es valido
+  // Si el token no es valido, borramos el token del localForage
+  // si es valido continuamos con la validación del usuario y actualizamos el estado de authenticación a loggedIn:true
+  this.props.action.logged_in(true)
 
 
 

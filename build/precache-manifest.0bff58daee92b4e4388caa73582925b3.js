@@ -1,23 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "461205bc01245d11e64cef75200879d0",
-    "url": "/static/media/nequi.461205bc.png"
+    "revision": "98161fee4636b312bce1121fdbff8c12",
+    "url": "/static/media/rejected.98161fee.mp3"
   },
   {
-    "revision": "161ddadad06c9c922411",
-    "url": "/static/css/main.f90ba34c.chunk.css"
+    "revision": "e597bf0721d132a4bd61",
+    "url": "/static/css/main.eb4558f8.chunk.css"
   },
   {
-    "revision": "295a633a250113d742f08c50426ee929",
-    "url": "/static/media/withdraw.295a633a.png"
+    "revision": "cb9dd12ddd042cab94890c8b9167ca75",
+    "url": "/static/media/BebasNeue.cb9dd12d.svg"
   },
   {
-    "revision": "45908d3fe34c15a0f156",
-    "url": "/static/js/1.45908d3f.chunk.js"
+    "revision": "e1a0a219e7a3db86ff39",
+    "url": "/static/js/1.e1a0a219.chunk.js"
   },
   {
     "revision": "229c360febb4351a89df",
     "url": "/static/js/runtime~main.229c360f.js"
+  },
+  {
+    "revision": "1b4d8aa47c87c7f18897da91347ab9cc",
+    "url": "/static/media/logo.1b4d8aa4.png"
   },
   {
     "revision": "1a487cb786eba76b0e334546b60a5e97",
@@ -26,10 +30,6 @@ self.__precacheManifest = [
   {
     "revision": "abbda3b9e9d283aa8b4de89ed7002eb0",
     "url": "/static/media/back.abbda3b9.png"
-  },
-  {
-    "revision": "1b4d8aa47c87c7f18897da91347ab9cc",
-    "url": "/static/media/logo.1b4d8aa4.png"
   },
   {
     "revision": "329e3e68a16dc222ec3af20ebde80424",
@@ -168,8 +168,8 @@ self.__precacheManifest = [
     "url": "/static/media/itau.77a3b1cd.png"
   },
   {
-    "revision": "161ddadad06c9c922411",
-    "url": "/static/js/main.161ddada.chunk.js"
+    "revision": "461205bc01245d11e64cef75200879d0",
+    "url": "/static/media/nequi.461205bc.png"
   },
   {
     "revision": "ecc1946912c4a81e435828d3915d7d83",
@@ -208,6 +208,10 @@ self.__precacheManifest = [
     "url": "/static/media/btc.88d3be9b.png"
   },
   {
+    "revision": "d4e6a33b3eb1f67beef6ee485ef5c15e",
+    "url": "/static/media/lap-mobile.d4e6a33b.png"
+  },
+  {
     "revision": "d29c0fd9c0d4e7e7d79eca7dcc79cb10",
     "url": "/static/media/success.d29c0fd9.mp3"
   },
@@ -224,8 +228,8 @@ self.__precacheManifest = [
     "url": "/static/media/toast.14804fce.mp3"
   },
   {
-    "revision": "98161fee4636b312bce1121fdbff8c12",
-    "url": "/static/media/rejected.98161fee.mp3"
+    "revision": "e597bf0721d132a4bd61",
+    "url": "/static/js/main.e597bf07.chunk.js"
   },
   {
     "revision": "2f2918f8c61b4d8bbadcd664bc0b59a4",
@@ -296,16 +300,16 @@ self.__precacheManifest = [
     "url": "/static/media/slick.ced611da.eot"
   },
   {
+    "revision": "f97e3bbf73254b0112091d0192f17aec",
+    "url": "/static/media/slick.f97e3bbf.svg"
+  },
+  {
     "revision": "d41f55a78e6f49a5512878df1737e58a",
     "url": "/static/media/slick.d41f55a7.ttf"
   },
   {
     "revision": "b7c9e1e479de3b53f1e4e30ebac2403a",
     "url": "/static/media/slick.b7c9e1e4.woff"
-  },
-  {
-    "revision": "f97e3bbf73254b0112091d0192f17aec",
-    "url": "/static/media/slick.f97e3bbf.svg"
   },
   {
     "revision": "fac2078d26d67df4a74aa4aa4a2ae7a6",
@@ -332,11 +336,123 @@ self.__precacheManifest = [
     "url": "/static/media/ticketdefault2.92cbf4f3.png"
   },
   {
-    "revision": "45908d3fe34c15a0f156",
-    "url": "/static/css/1.dc2691b4.chunk.css"
+    "revision": "295a633a250113d742f08c50426ee929",
+    "url": "/static/media/withdraw.295a633a.png"
   },
   {
-    "revision": "07b6832a6607258260c40755f23feb18",
+    "revision": "7860c2f8fdedb9eccfc2bbd655d5221f",
+    "url": "/static/media/middle.7860c2f8.jpg"
+  },
+  {
+    "revision": "402a085736b2eeaf8ca87b872e56447a",
+    "url": "/static/media/AWConquerorSans-Light.402a0857.woff"
+  },
+  {
+    "revision": "ef81ea3876c5a468c9f10a55477eaf45",
+    "url": "/static/media/BebasNeue.ef81ea38.woff"
+  },
+  {
+    "revision": "b79ebb53fcdca4461646de2fe4440642",
+    "url": "/static/media/top.b79ebb53.jpg"
+  },
+  {
+    "revision": "dc2f91a2ce369ec7e438514261a32799",
+    "url": "/static/media/MuseoSans-100.dc2f91a2.woff"
+  },
+  {
+    "revision": "b060b714f13edc606a92ce9bde5bce9a",
+    "url": "/static/media/MuseoSans-500.b060b714.woff"
+  },
+  {
+    "revision": "92326c8d0e697134885f7a0264bec220",
+    "url": "/static/media/MuseoSans-300.92326c8d.woff"
+  },
+  {
+    "revision": "855c60cea8ab2eed7695fe3d106b5029",
+    "url": "/static/media/BebasNeue.855c60ce.otf"
+  },
+  {
+    "revision": "87f4ad5c6ab981b8c940a380ca1f9130",
+    "url": "/static/media/AWConquerorSans-Light.87f4ad5c.ttf"
+  },
+  {
+    "revision": "bbda6f8ce4e8a94110264fa095c7b5cb",
+    "url": "/static/media/AWConquerorSans-Light.bbda6f8c.eot"
+  },
+  {
+    "revision": "57f000dd3e78f4c1db361374a7173a4a",
+    "url": "/static/media/BebasNeue.57f000dd.eot"
+  },
+  {
+    "revision": "5dadd9fa8907af355eab19604a7ff376",
+    "url": "/static/media/BebasNeue.5dadd9fa.ttf"
+  },
+  {
+    "revision": "888484353c08e4fe6afd6239aae42999",
+    "url": "/static/media/MuseoSans-100.88848435.eot"
+  },
+  {
+    "revision": "7ea91a4665eecb6cd562d5b571f7e147",
+    "url": "/static/media/MuseoSans-100.7ea91a46.ttf"
+  },
+  {
+    "revision": "f685618a57314edf0b910a2a8a572cd7",
+    "url": "/static/media/MuseoSans-100.f685618a.otf"
+  },
+  {
+    "revision": "18a5903f2d5c78a3d53389eb6256295b",
+    "url": "/static/media/MuseoSans-300.18a5903f.eot"
+  },
+  {
+    "revision": "8bd13cc1c303b9d32c11485d50cbf372",
+    "url": "/static/media/MuseoSans-300.8bd13cc1.ttf"
+  },
+  {
+    "revision": "cc14be0ee6b501e5f88e23d2e8c502ee",
+    "url": "/static/media/MuseoSans-500.cc14be0e.eot"
+  },
+  {
+    "revision": "bdb59b808cfc4fb88f3963fa06e6c79b",
+    "url": "/static/media/MuseoSans-300.bdb59b80.otf"
+  },
+  {
+    "revision": "708448d99cc2169d7f7bec42ab4b667c",
+    "url": "/static/media/MuseoSans-500.708448d9.ttf"
+  },
+  {
+    "revision": "62c0135163427c652ae397f327f85010",
+    "url": "/static/media/MuseoSans-500.62c01351.otf"
+  },
+  {
+    "revision": "d774415db9b483ad1038eeca9b1eec6c",
+    "url": "/static/media/AWConquerorSans-Light.d774415d.otf"
+  },
+  {
+    "revision": "6efd33488b38aa130ed281cdc0363125",
+    "url": "/static/media/layer.6efd3348.png"
+  },
+  {
+    "revision": "c438d4555200635784f4402bf93abb75",
+    "url": "/static/media/AWConquerorSans-Light.c438d455.svg"
+  },
+  {
+    "revision": "f857754c34ad956d67dbcf87e44a483f",
+    "url": "/static/media/MuseoSans-100.f857754c.svg"
+  },
+  {
+    "revision": "f9f90ffb8242153e65dcb8334897ecbd",
+    "url": "/static/media/MuseoSans-300.f9f90ffb.svg"
+  },
+  {
+    "revision": "44c32223a850936355be0ca8055bda21",
+    "url": "/static/media/MuseoSans-500.44c32223.svg"
+  },
+  {
+    "revision": "e1a0a219e7a3db86ff39",
+    "url": "/static/css/1.fb2f7652.chunk.css"
+  },
+  {
+    "revision": "e78956ba6dbeec8cfc1997a59dd867d7",
     "url": "/index.html"
   }
 ];

@@ -26,7 +26,8 @@ class MenuSuperiorContainer extends Component {
     // await this.props.action.update_user(user_update)
 
     // this.props.history.push('/landing')
-    this.props.logOut()
+    await this.props.logOut()
+    this.props.action.logged_in(false)
   }
 
   componentWillReceiveProps(props){
@@ -74,9 +75,6 @@ class MenuSuperiorContainer extends Component {
   componentDidMount(){
     let menuSuperior = document.getElementById('mSuperior')
     let detonador = document.getElementById('containerElement')
-
-    // console.log('||||||||| componentDidMount:', this.props)
-
     const headroom = new Headroom(menuSuperior, {
       "offset": 100,
        "tolerance" : 10,
@@ -89,6 +87,12 @@ class MenuSuperiorContainer extends Component {
       }
     })
     headroom.init()
+
+    if(!this.props.currentPair){
+    this.props.action.get_pairs_for('colombia')
+    }
+    // console.log('||||||||| componentDidMount:', this.props)
+
   }
 
   render(){
@@ -116,10 +120,12 @@ function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
   const { user, user_id } = state.model_data
   return{
+    HeadRoomClass:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,
     item_quote:state.ui.item_quote,
-    user:user && user[user_id]
+    loggedIn:state.auth.loggedIn,
+    // user:user && user[user_id]
   }
 }
 

@@ -33,6 +33,9 @@
   right: 13px;
 }
 
+.inputAuths{
+  max-width: 410px !important;
+}
 
 .inputAuths .lds-ellipsis{
   top: -10px !important;
@@ -498,6 +501,11 @@ form#phone{
 
   .inputDeposit{
     opacity: 0;
+  }
+
+  .AuthInputComp{
+    grid-template-rows: 1fr 25px;
+    justify-items:center; 
   }
 
   .containerInputComponent2.openS{

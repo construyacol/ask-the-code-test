@@ -5,6 +5,8 @@ import SimpleLoader from '../widgets/loaders'
 import coin from '../widgets/items/assets/coins/btc2.png'
 import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { Link } from 'react-router-dom'
+import logo from '../../assets/logo.png'
+import MenuLoggedOut from './menuLoggedOut'
 
 const MenuSuperiorLayout = (props) =>{
 
@@ -13,42 +15,54 @@ const MenuSuperiorLayout = (props) =>{
 
   const {
     logout,
-    redux_class,
+    HeadRoomClass,
     item_quote,
     movil,
     currentPair,
     sell_price,
     buy_price,
     mouseOver,
-    openSelectCountry
+    openSelectCountry,
+    loggedIn
   } = props
 
-  // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', item_quote)
+  // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', props)
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
   return(
     <section className="MenuSuperiorLayout fuente" >
       <div className="contDinamic">
-        <div className={`containerMenuSuperior ${redux_class}`} id="mSuperior" onMouseOver={mouseOver}>
-          <div className="capsuleMenu1">
+        <div className="contenedorLogoSenda">
+          <img src={logo} alt="" width="120px"/>
+        </div>
+        <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
+          {
+            loggedIn ?
+            <div className="capsuleMenu1">
+                {
+                  window.innerWidth>768 ?
+                    <div className="itemSup closeSesi" onClick={logout}>
+                      <p>Cerrar Sesión</p>
+                      <i className="fas fa-sign-out-alt titi"></i>
+                    </div>
 
-              {
-                window.innerWidth>768 ?
+                  :
                   <div className="itemSup closeSesi" onClick={logout}>
-                    <p>Cerrar Sesión</p>
-                    <i className="fas fa-sign-out-alt titi"></i>
+                    <p>fotito</p>
                   </div>
+                }
 
-                :
-                <div className="itemSup closeSesi" onClick={logout}>
-                  <p>fotito</p>
-                </div>
-              }
+              {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
+              <div className="itemSup"><i className="fas fa-bell"></i></div> */}
+              <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
+            </div>
+            :
+            <div className="loggedInFalse">
+              <MenuLoggedOut/>
+            </div>
 
-            {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
-            <div className="itemSup"><i className="fas fa-bell"></i></div> */}
-            <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
-          </div>
+          }
+
           <div className="capsuleMenu2">
             {
               !currentPair ?

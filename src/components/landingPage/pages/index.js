@@ -20,7 +20,7 @@ class PagesRouter extends Component {
     return(
       <div className="PagesRouter">
           <MenuSuperiorContainer/>
-          <div className="boardHelp">
+          <div className="boardHelp" >
             <Router history={this.props.history}>
                 <Switch>
                     <Route exact path="/help" component={Help} />

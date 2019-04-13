@@ -5,6 +5,10 @@ import SimpleLoader from '../../loaders'
 import './viewSettings.css'
 
 class AuthReq extends Component {
+  // handleFocus => Evento opcional que se dispara al hacer focus en el input
+  // handleBlur => Evento opcional que se dispara al perder el foco del input
+  // authenticated => Evento que se dispara al ingresar el codigo 2auth correctamente
+  // toggle_anim => Evento opcional para transicionar el componente en caso de exito
 
 
 state = {
@@ -101,6 +105,14 @@ ok_auth = () =>{
       desaparecer
     } = this.state
 
+    const {
+      label,
+      handleFocus,
+      handleBlur
+    } = this.props
+
+
+
     // console.log('|||||  AuthReq - - - ', this.props)
 
     return(
@@ -108,16 +120,17 @@ ok_auth = () =>{
 
         <InputFormAuth
           type="number"
-          label="Ingresa el codigo Authenticator para continuar"
-          placeholder="Digita el codigo aquí"
+          label={label}
+          placeholder="Escribe tu codigo 2FA de 6 digitos"
           name="auth"
           actualizarEstado={this.actualizarEstado}
           active={buttonActive}
           verifying={loader}
-          // value={name}
           value={value}
           status={status}
           error={error}
+          handleFocus={handleFocus}
+          handleBlur={handleBlur}
         />
 
       </div>

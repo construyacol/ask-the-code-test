@@ -55,11 +55,12 @@ const {
   handleKeyPress,
   status,
   verifying,
-  error
+  error,
+  handleFocus,
+  handleBlur
   } = props
 
 // console.log(`${}`)
-
 // <SimpleLoader/>
 
   return(
@@ -81,6 +82,8 @@ const {
             name={name}
             defaultValue={value}
             onKeyPress={name === "account_number" ? handleKeyPress : null}
+            onFocus={handleFocus ? handleFocus : null}
+            onBlur={handleBlur ? handleBlur : null}
           />
           :
           <div className="AuthLoader">

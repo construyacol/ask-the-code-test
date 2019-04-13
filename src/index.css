@@ -82,7 +82,7 @@ code {
 }
 
 .fuente{
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Raleway', sans-serif !important;
 }
 
 .fuente2{

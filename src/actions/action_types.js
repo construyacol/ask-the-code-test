@@ -39,6 +39,7 @@ export const REDUCE_BALANCE = 'REDUCE_BALANCE'
 export const ADD_BALANCE = 'ADD_BALANCE'
 export const APP_LOADED = 'APP_LOADED'
 export const APP_LOAD_LABEL = 'APP_LOAD_LABEL'
+export const LOGGED_IN = 'LOGGED_IN'
 
 
 

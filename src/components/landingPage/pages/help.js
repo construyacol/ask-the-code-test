@@ -16,7 +16,7 @@ export default props => {
         <PanelLeft className='help-menu'>
           <h4>AYUDA</h4>
           <ul>
-            <LinkContainer to="/dashboard">
+            <LinkContainer to="/">
               <MenuItem>
                 <i className="fa fa-home fa-fw" />
                 <span>Inicio</span>

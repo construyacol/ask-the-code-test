@@ -25,6 +25,8 @@ import ErrorView from '../widgets/errorView'
 import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
+import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
+
 
 const {
    ApiUrl,
@@ -183,7 +185,8 @@ componentDidMount(){
       other_modal,
       modalVisible,
       modalConfirmation,
-      app_loaded
+      app_loaded,
+      current
     } = this.props
 
 
@@ -223,7 +226,7 @@ componentDidMount(){
                               <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
                               <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
                               <Route exact path="/withdraw" component={WithdrawAccountForm} />
-                              <Route exact path="/security" component={Kyc} />
+                              <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
                             </Switch>
                       </ModalLayout>
                     </ModalContainer>

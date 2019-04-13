@@ -119,13 +119,24 @@ margin: 0 !important;
 .titi{
 }
 
+.contenedorLogoSenda{
+  position: absolute;
+  height: 100%;
+  width: 200px;
+  top: 0;
+  left: 0;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
 
 .contDinamic{
   width: calc(100% - 25px);
-width: 100%;
-height: 100%;
-display: flex;
-flex-direction: row-reverse;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
 }
 
 .buy>span, .sell>span{
@@ -175,3 +186,62 @@ flex-direction: row-reverse;
   margin: 0 15px;
   color:#37ED7D;
 }
+
+.loggedIn, .register{
+ margin: 0;
+ display: grid;
+ align-items: center;
+}
+
+.register .botonForm{
+  font-size: 16px !important;
+}
+
+.loggedIn .botonForm{
+  background: linear-gradient(to right bottom, #00d451 , #005f24);
+  padding: 0 15px;
+  height: 40px;
+  font-size: 16px !important;
+}
+
+
+.MenuLoggedOut{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  grid-column-gap: 20px;
+  padding: 0 20px;
+}
+
+.MenuLoggedOut a{
+  text-decoration: none;
+  color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

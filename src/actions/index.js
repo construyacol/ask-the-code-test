@@ -4,6 +4,7 @@ import * as APIactions from './APIactions'
 import * as Loader from './loader'
 import * as ui_actions from './uiActions'
 import * as sounds from './soundActions'
+import * as auth from './auth'
 
 const actions = {
   ...Loader,
@@ -11,7 +12,8 @@ const actions = {
   ...APIactions,
   ...dataModelActions,
   ...ui_actions,
-  ...sounds
+  ...sounds,
+  ...auth
 }
 
 export default actions

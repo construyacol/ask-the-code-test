@@ -4,7 +4,7 @@ import PanelRight from '../landingPage/pages/PanelRight'
 // import './style.css'
 const Faq = props => {
   return (
-    <PanelRight className="helps">
+    <PanelRight className="helps" >
       <Col md={12}>
         <h2>Preguntas más frecuentes</h2>
       </Col>
@@ -115,6 +115,7 @@ const Faq = props => {
       </Col>
 
     </PanelRight>
+
   )
 }
 

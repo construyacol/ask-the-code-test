@@ -6,8 +6,10 @@ export default props => {
     ? props.className + ' panel-left'
     : 'panel-left'
   return (
-    <Col {...props} sm={3} md={3} lg={2} className={classes}>
-      {props.children}
-    </Col>
+    <div className="panel_left_cont">
+      <Col {...props} sm={3} md={3} lg={2} className={classes}>
+        {props.children}
+      </Col>
+    </div>
   )
 }

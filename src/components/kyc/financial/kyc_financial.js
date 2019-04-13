@@ -8,7 +8,7 @@ import { readFile, objectToArray, add_index_to_root_object, converToInitState } 
 import images from '../../../assets/pictures.png'
 import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
-import SuccessComponentScreen from '../success_screen'
+import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 
 
 

@@ -5,9 +5,9 @@ import finish from '../../assets/kombat.gif'
 import SimpleLoader from '../widgets/loaders'
 import { ButtonForms } from '../widgets/buttons/buttons.js'
 import { Medal } from '../widgets/icons'
-import ConfettiComponent from './basic/confetti'
+import ConfettiComponent from '../widgets/success_screen/confetti'
 import KycFinancialComponent from './financial/kyc_financial'
-import SuccessComponentScreen from './success_screen'
+import SuccessComponentScreen from '../widgets/success_screen/success_screen'
 import './kyc.css'
 
 const KycLayout = (props) =>{

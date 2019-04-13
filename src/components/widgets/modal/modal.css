@@ -187,8 +187,8 @@
   overflow: hidden;
   border-radius: 7px;
   width: 90%;
-  max-width: 700px;
-  max-height: 700px;
+  max-width: 640px;
+  max-height: 600px;
   /* height: 90%; */
   height: 75%;
   background: white;
