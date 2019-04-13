@@ -35,6 +35,8 @@ class RootContainer extends Component {
     this.setState({
       TokenUser:AccessToken
     })
+
+    console.log('ACCESS TOKEN:', AccessToken)
   }
 
   logOut = async() =>{

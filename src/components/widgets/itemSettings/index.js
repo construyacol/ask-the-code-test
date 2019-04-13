@@ -137,7 +137,7 @@ class ItemSettingsInit extends Component{
         withdraw
       } = security_center.authenticator
 
-      // console.log('|||desde el componente update_state', payload)
+      console.log('|||desde el componente update_state', payload)
 
       switch (name) {
 
@@ -232,6 +232,7 @@ class ItemSettingsInit extends Component{
                     key={item.id}
                     item_action={this.item_action}
                     update_state={this.update_state}
+                    {...this.props}
                   />
                 })
             }

@@ -41,20 +41,28 @@ class TwoFactorActivate extends Component {
     this.setState({inputFocus:false})
   }
 
-  success_event = () => {
+  success_event = async() => {
+    this.props.action.Loader(true)
     this.setState({success_screen:true})
+    let user_update = {
+      ...this.props.user,
+      security_center:{
+        ...this.props.user.security_center,
+        authenticator:{
+          ...this.props.user.security_center.authenticator,
+          auth:true
+        }
+      }
+    }
+    await this.props.action.update_user(user_update)
+    this.props.action.Loader(false)
     setTimeout(()=>{
       this.setState({switch_to_success:true})
     }, 500)
   }
 
   finish_process = async() =>{
-    let user_update = {
-      ...this.props.user
-    }
-    user_update.security_center.authenticator.auth = true
-    await this.props.action.update_user(user_update)
-    this.props.action.ToggleModal()
+      this.props.action.ToggleModal()
   }
 
 
@@ -84,14 +92,14 @@ class TwoFactorActivate extends Component {
           <div className="TLayout layer2">
             <div className="header2fa">
               <h3 className="fuente">Habilitar <span className="fuente2">2FA</span></h3>
-              <IconSwitch icon="2auth" size={90} color="#1babec" />
+              <IconSwitch icon="2auth" size={75} color="#1babec" />
             </div>
             <div className="body2fa">
               <div className="bodySon" style={{height:inputFocus ? '10%' : '50%'}}></div>
               <div className="footer2fa">
                 <div className="footer2faText">
                   <div className={`footer2faTextDes ${inputFocus ? 'desp' : 'desaparecer'}`} >
-                    <p className="fuente">Recuerda que en caso de perdida de tu dispositivo movil, solo podrás reactivar el 2FA con el codigo secreto <span className="secretCode fuente2">{private_key}</span> escribelo en papel y guardalo, es tu unico seguro</p>
+                    <p className="fuente">Recuerda que en caso de perdida de tu dispositivo movil, solo podrás reactivar el 2FA con el codigo secreto <span className="secretCode fuente2">{private_key}</span> escribelo en papel y guardalo, es tu responsabilidad</p>
                   </div>
                   <p className={`fuente ${inputFocus ? 'desaparecer' : 'aparecer'}`}>Ó ingresa el codigo secreto manualmente</p>
                   <p className={`fuente2 secretCode ${inputFocus ? 'desaparecer' : 'aparecer'}`}>{private_key}</p>

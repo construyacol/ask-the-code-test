@@ -72,6 +72,7 @@ class Kyc extends Component {
     // setTimeout(()=>{
       // this.user_update()
       // this.props.action.CleanForm('kyc_basic')
+
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
       setTimeout(()=>{
@@ -98,7 +99,7 @@ class Kyc extends Component {
     }
     this.props.action.Loader(true)
     let res = await this.props.action.update_level_profile(config, user)
-    console.log('||||||||||| VALIDATE_RES', res)
+    // console.log('||||||||||| VALIDATE_RES', res)
     if(!res){
              await this.props.action.ReduceStep('kyc_avanced', 1)
              await this.setState({reset:true})
@@ -120,7 +121,7 @@ class Kyc extends Component {
         }
       }
     }
-    console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+    // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
       await this.props.action.update_user(user_update)
     this.props.action.Loader(false)
   }
