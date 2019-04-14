@@ -76,13 +76,13 @@ update_state = (payload) =>{
             return(
               <PassView {...props} {...this.state} cancelarClick={this.close_modal} update_state={this.update_state} />
             )
-          case 'transaction':
-             this.success()
+          case 'transactional':
+             this.success(code)
              return <SimpleLoader
                       label="Actualizando"
                     />
           case 'withdraw':
-             this.success()
+             this.success(code)
              return <SimpleLoader
                       label="Actualizando"
                     />
@@ -105,8 +105,6 @@ update_state = (payload) =>{
   toggle_anim = payload =>{
     this.setState({animOn:!this.state.animOn})
 
-
-
     if(payload){
       setTimeout(()=>{
         this.setState({
@@ -114,7 +112,6 @@ update_state = (payload) =>{
         })
       },200)
     }
-
 
     setTimeout(()=>{
       this.setState({animOn:!this.state.animOn})
@@ -132,9 +129,22 @@ update_state = (payload) =>{
     }, 1000)
   }
 
-  success = () =>{
-
-      setTimeout(()=>{
+  success = (payload) =>{
+    console.log(payload)
+      setTimeout(async()=>{
+        await this.props.action.Loader(true)
+        let user_update = {
+          ...this.props.user
+        }
+        if(payload === 'transactional'){
+          user_update.security_center.authenticator.transactional = true
+          await this.props.action.update_user(user_update)
+        }
+        if(payload === 'withdraw'){
+          user_update.security_center.authenticator.withdraw = true
+          await this.props.action.update_user(user_update)
+        }
+        await this.props.action.Loader(false)
         this.setState({
           loader:false,
           success:true,
@@ -142,8 +152,8 @@ update_state = (payload) =>{
           buttonActive:true
         })
       },600)
-
   }
+
 
 
 // PassWordView
@@ -182,7 +192,7 @@ update_state = (payload) =>{
       color:`${success ? '#59b200' : '#1babec' }`
     }
 
-console.log(' || |||| ModalSettingSwitch - -- - ', this.props)
+// console.log(' || |||| ModalSettingSwitch - -- - ', this.props)
 
     return(
 
@@ -276,8 +286,11 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
+  const { user, user_id } = state.model_data
+
   return{
-    params:state.ui.current_section.params.settings
+    params:state.ui.current_section.params.settings,
+    user:user[user_id]
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (ModalSettingsView)

@@ -91,7 +91,7 @@ class IconSwitch extends Component {
       case '2auth':
       case 'security':
         return <Security2 {...props} />
-      case 'transaction':
+      case 'transactional':
         return <Swap {...props} />
       case 'withdraw':
         return <Send {...props} />

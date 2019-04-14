@@ -20,6 +20,13 @@ class ScoresComponent extends Component {
     this.calculate_width_bar(user)
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.user.security_center !== this.props.user.security_center){
+      this.calculate_width_bar(nextProps.user)
+    }
+  }
+
+
   calculate_width_bar = async(user) =>{
     const { advanced, basic, financial  } = user.security_center.kyc
     const { auth, transactional, withdraw  } = user.security_center.authenticator

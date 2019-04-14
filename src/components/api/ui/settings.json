@@ -85,7 +85,7 @@
       },
       {
         "id":2,
-        "name":"transaction",
+        "name":"transactional",
         "label":"Transacciones",
         "description":"Activa el segundo factor para realizar intercambios dentro de coinsenda",
         "verify":false,

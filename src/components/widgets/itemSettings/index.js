@@ -70,7 +70,7 @@ class ItemSettingsInit extends Component{
             }})
             return this.props.action.other_modal_toggle()
 
-        case 'transaction':
+        case 'transactional':
             await this.props.action.current_section_params({settings:{
               title:"Agregando capa de seguridad",
               description:`Activa el segundo factor para hacer operaciones de intercambio en coinsenda`,
@@ -137,7 +137,7 @@ class ItemSettingsInit extends Component{
         withdraw
       } = security_center.authenticator
 
-      console.log('|||desde el componente update_state', payload)
+      // console.log('|||desde el componente update_state', payload)
 
       switch (name) {
 
@@ -190,7 +190,7 @@ class ItemSettingsInit extends Component{
               verify:auth
             }
 
-        case 'transaction':
+        case 'transactional':
             return {
               available:auth && true,
               verify:auth && transactional
@@ -209,7 +209,6 @@ class ItemSettingsInit extends Component{
       }
     }
 
-
     update_phone = (prop) =>{
       // console.log('update_phone update_phone update_phone', prop)
     }
@@ -219,7 +218,6 @@ class ItemSettingsInit extends Component{
     const{
       data
     } = this.props
-
     // console.log('ItemSettingsInit', this.props)
 
     return(
