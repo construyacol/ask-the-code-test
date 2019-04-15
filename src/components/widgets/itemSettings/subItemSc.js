@@ -42,6 +42,7 @@ class SubItemSC extends Component {
       item_action,
       subItem
     } = this.props
+    console.log('|||||| ------- actionHandle', subItem)
 
     item_action(subItem)
   }
@@ -96,6 +97,7 @@ class SubItemSC extends Component {
 // contentSubItem // last
 
 // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
+  // console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props)
 
     return(
       <div className="subItemSecurityCenter" style={{gridTemplateColumns:classic_view ? '1fr' : '12vw 1fr' }}>
@@ -164,13 +166,13 @@ class SubItemSC extends Component {
 
 
 
-        {/* Call to action de security_center */}
+        {/* Call to action de security_center *************************************************************************************************************************************** */}
         <div className={`SCcta ${other_state}`} style={{display:(classic_view || tree && !treeButton) ? 'none' : 'grid' }}>
           <ButtonForms
             id="subItemSC"
             type={`${verify ? 'secundary' : 'primary' }`}
             active={available}
-            siguiente={(verify || other_state === 'confirmed' || other_state === 'send') ? null : this.actionHandle}
+            siguiente={other_state === 'to_disable' ? this.actionHandle : (verify || other_state === 'confirmed' || other_state === 'send') ? null : this.actionHandle}
             // siguiente={(verify)? null : this.actionHandle}
           >
           {`${other_state === 'confirmed' ? 'Verificando' : other_state === 'send' ? 'Enviado' : verify ?  cta_secondary : cta_primary }`}
@@ -180,7 +182,7 @@ class SubItemSC extends Component {
 
 
 
-        {/* Call to action de settings */}
+        {/* Call to action de settings *************************************************************************************************************************************** */}
         <div className="SCcta" style={{display:(classic_view) ? 'grid' : 'none' }}>
           <ButtonForms
             id="ClassicView"

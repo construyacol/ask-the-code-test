@@ -77,12 +77,9 @@ update_state = (payload) =>{
               <PassView {...props} {...this.state} cancelarClick={this.close_modal} update_state={this.update_state} />
             )
           case 'transactional':
-             this.success(code)
-             return <SimpleLoader
-                      label="Actualizando"
-                    />
           case 'withdraw':
-             this.success(code)
+          case '2auth':
+             this.success(props)
              return <SimpleLoader
                       label="Actualizando"
                     />
@@ -130,20 +127,35 @@ update_state = (payload) =>{
   }
 
   success = (payload) =>{
-    console.log(payload)
+    const { code } = payload
+
+
       setTimeout(async()=>{
         await this.props.action.Loader(true)
+        const { other_state } = payload
+        // console.log('||||||| success', payload)
+
         let user_update = {
           ...this.props.user
         }
-        if(payload === 'transactional'){
-          user_update.security_center.authenticator.transactional = true
+        // console.log('||||||| user_update1', user_update)
+
+        if(code === 'transactional'){
+          user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           await this.props.action.update_user(user_update)
         }
-        if(payload === 'withdraw'){
-          user_update.security_center.authenticator.withdraw = true
+        if(code === 'withdraw'){
+          user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
           await this.props.action.update_user(user_update)
         }
+        if(code === '2auth'){
+          user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
+          user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
+          user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
+          await this.props.action.update_user(user_update)
+        }
+        // console.log('||||||| user_update2', user_update)
+
         await this.props.action.Loader(false)
         this.setState({
           loader:false,

@@ -21,9 +21,9 @@ class ItemSettingsInit extends Component{
       const { user, advace_global_step } = this.props
       const { authenticator, kyc } = user.security_center
       const { phone } = user.settings
-      const { name } = item
+      const { name, other_state } = item
 
-      console.log('CODE SWITCH', name)
+      console.log('CODE SWITCH', name, item)
 
       switch (name) {
         case 'kyc_basic':
@@ -40,6 +40,19 @@ class ItemSettingsInit extends Component{
               await this.props.action.IncreaseStep('kyc_global_step', 2)
               return this.props.action.ToggleModal()
         case '2auth':
+              // console.log('||||||| CLICK ITEM', item)
+              if(other_state === 'to_disable'){
+                await this.props.action.current_section_params({settings:{
+                  title:"Deshabilitando 2AUTH",
+                  description:`Desactivarás la segunda capa de seguridad en todos los servicios activos.`,
+                  txtPrimary:"Desactivar",
+                  txtSecondary:"Cancelar",
+                  authenticator:authenticator,
+                  code:name,
+                  other_state
+                }})
+                return this.props.action.other_modal_toggle()
+              }
               await this.props.action.CurrentForm('2auth')
               return this.props.action.ToggleModal()
         case 'phone':
@@ -77,7 +90,8 @@ class ItemSettingsInit extends Component{
               txtPrimary:"Agregar",
               txtSecondary:"Cancelar",
               authenticator:authenticator,
-              code:name
+              code:name,
+              other_state
             }})
             return this.props.action.other_modal_toggle()
         case 'withdraw':
@@ -87,7 +101,8 @@ class ItemSettingsInit extends Component{
               txtPrimary:"Agregar",
               txtSecondary:"Cancelar",
               authenticator:authenticator,
-              code:name
+              code:name,
+              other_state
             }})
             return this.props.action.other_modal_toggle()
         case 'country':
@@ -128,7 +143,8 @@ class ItemSettingsInit extends Component{
       } = user
 
       const {
-        kyc
+        kyc,
+        authenticator
       } = security_center
 
       const{
@@ -185,20 +201,24 @@ class ItemSettingsInit extends Component{
             }
 
         case '2auth':
+        // console.log('|||||||||||||| HABILITAR DESACTIVABLE 2AUTH', authenticator)
             return {
               available:true,
+              other_state:auth ? 'to_disable' : null,
               verify:auth
             }
 
         case 'transactional':
             return {
               available:auth && true,
+              other_state:transactional ? 'to_disable' : null,
               verify:auth && transactional
             }
 
         case 'withdraw':
             return {
               available:auth && true,
+              other_state:withdraw ? 'to_disable' : null,
               verify:auth && withdraw
             }
 

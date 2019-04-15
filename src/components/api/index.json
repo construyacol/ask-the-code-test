@@ -24,7 +24,7 @@
         "financial":null
       },
       "authenticator":{
-        "auth":true,
+        "auth":false,
         "transactional":false,
         "withdraw":false
       }
