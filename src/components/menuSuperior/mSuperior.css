@@ -97,7 +97,6 @@ margin: 0 !important;
 .itemSup:hover{
   /*color:#14B3F0 !important;*/
   color:#fb6257 !important;
-
 }
 
 .itemSup i{
@@ -116,18 +115,17 @@ margin: 0 !important;
   margin-left: 10px;
 }
 
-.titi{
-}
 
 .contenedorLogoSenda{
   position: absolute;
   height: 100%;
-  width: 200px;
+  width: auto;
   top: 0;
   left: 0;
   display: grid;
   align-items: center;
   justify-items: center;
+  margin-left: 20px;
 }
 
 .contDinamic{

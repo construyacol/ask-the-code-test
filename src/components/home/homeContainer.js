@@ -44,7 +44,7 @@ class HomeContainer extends Component{
 
 componentDidMount(){
   // console.log('||||||| componentDidMount', this.props)
-  this.props.history.push('/wallets')
+  // this.props.history.push('/wallets')
 }
 
   startSocket = async() =>{
@@ -201,7 +201,7 @@ componentDidMount(){
         >
           {
             !app_loaded ?
-            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket}  current_country="colombia" token={this.props.token} />} />
+            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket}  current_country="colombia" token={this.props.token} logOut={this.props.logOut}/>} />
             :
             <Fragment>
                 <ToastContainers/>

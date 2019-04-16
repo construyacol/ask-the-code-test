@@ -1710,7 +1710,9 @@ export const countryvalidators = () =>{
   return async(dispatch) => {
     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
     let res = await ApiGetRequest(url_countryvalidators)
-    if(!res || res === 465){return false}
+    console.log('||||url_countryvalidators', url_countryvalidators)
+    if(!res || res === 465 || res === 404){return false}
+    console.log('||||countryvalidators', res)
     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
     let new_array = await objectToArray(countries)
     let construct_res = {

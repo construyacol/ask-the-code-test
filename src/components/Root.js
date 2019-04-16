@@ -29,14 +29,13 @@ class RootContainer extends Component {
       await localForage.setItem('TokenUser', TokenUser)
     }
 
-    let AccessToken = await localForage.getItem('TokenUser')
-    // let AccessToken = null
+    // let AccessToken = await localForage.getItem('TokenUser')
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJFeDhxUkw5d3JpcjNPRFYyNXhyQ25NMG9Zb0F3dHF1bUxrb3p2TkZOekxocTZYUGRqckhYdUJGOGpRanlyR29aIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTU0NDk1NjcsImV4cCI6MTU1NTQ2MDM2N30.euvYFPpI3cF1sGo2_FAs1HpID7K-Pu93Gnuncw0fneaqtbZ75_ggnWJV_Lsnr4-K5cPHMYLyk96rYwMs0vSkWQ'
 
     this.setState({
       TokenUser:AccessToken
     })
-
-    console.log('ACCESS TOKEN:', AccessToken)
+    // console.log('ACCESS TOKEN:', AccessToken)
   }
 
   logOut = async() =>{

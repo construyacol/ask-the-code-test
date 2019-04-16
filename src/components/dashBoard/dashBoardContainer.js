@@ -74,6 +74,7 @@ class DashBoardContainer extends Component{
                               <Route path="/settings" component={SettingsContainer} />
                               <Route path="/security" component={SecurityCenter} />
                               <Route path="/wallets" component={WalletContainer} />
+                              <Redirect from="/" to="/wallets" />
 
                               {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
                               {/* <Redirect from="/" to="/activity" /> */}

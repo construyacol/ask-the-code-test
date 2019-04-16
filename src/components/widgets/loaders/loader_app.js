@@ -59,7 +59,10 @@ class LoaderAplication extends Component {
     let user_country = new_country ? new_country : country
 
     let res = await this.props.action.countryvalidators()
-    if(!res){return false}
+    if(!res){
+      // return this.go_to_select_country()
+      return this.props.logOut()
+    }
     // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
     if(!res.countries[user_country]){
       this.go_to_select_country()

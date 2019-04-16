@@ -7,6 +7,7 @@ import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { Link } from 'react-router-dom'
 import logo from '../../assets/logo.png'
 import MenuLoggedOut from './menuLoggedOut'
+import Coinsenda from '../widgets/icons/logos/coinsenda'
 
 const MenuSuperiorLayout = (props) =>{
 
@@ -33,7 +34,7 @@ const MenuSuperiorLayout = (props) =>{
     <section className="MenuSuperiorLayout fuente" >
       <div className="contDinamic">
         <div className="contenedorLogoSenda">
-          <img src={logo} alt="" width="120px"/>
+            <Coinsenda size={30} color="white" />
         </div>
         <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
           {

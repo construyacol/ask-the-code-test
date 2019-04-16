@@ -66,7 +66,7 @@ class ConfirmationModal extends Component {
       color:`#1babec`
     }
 
-    console.log(' - - ConfirmationModal - - ', this.props.modal_confirmation )
+    console.log(' - - ConfirmationModal - - ', atributos, this.props.modal_confirmation )
       return(
         <Fragment>
           {
@@ -96,7 +96,7 @@ class ConfirmationModal extends Component {
                                   <IconSwitch icon={from} size={60} />
                                   <span className="textSwaPcON textRed">- {spent} / {from}</span>
                                 </div>
-                                <IconSwitch icon="transaction" size={35} color="#347fe6" />
+                                <IconSwitch icon="transactional" size={35} color="#347fe6" />
                                 <div>
                                   <IconSwitch icon={to} size={60} />
                                   <span className="textSwaPcON textGreen">+ {bought} / {to}</span>
