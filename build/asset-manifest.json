@@ -68,7 +68,7 @@
   "static/media/front_passport.png": "/static/media/front_passport.97a1ee50.png",
   "static/media/selfie.png": "/static/media/selfie.7741aca8.png",
   "static/media/selfie_passport.png": "/static/media/selfie_passport.559722a3.png",
-  "static/media/slick-theme.css": "/static/media/slick.d41f55a7.ttf",
+  "static/media/slick-theme.css": "/static/media/slick.f97e3bbf.svg",
   "static/media/kombat.gif": "/static/media/kombat.fac2078d.gif",
   "static/media/checked.png": "/static/media/checked.da188ccb.png",
   "static/media/sss.png": "/static/media/sss.51613265.png",
@@ -76,9 +76,9 @@
   "static/media/ticketdefault2.png": "/static/media/ticketdefault2.92cbf4f3.png",
   "static/media/withdraw.png": "/static/media/withdraw.295a633a.png",
   "static/media/landing.css": "/static/media/BebasNeue.8a97d15f.svg",
-  "static/css/1.305b42a9.chunk.css.map": "/static/css/1.305b42a9.chunk.css.map",
   "static/css/main.676c4078.chunk.css.map": "/static/css/main.676c4078.chunk.css.map",
+  "static/css/1.305b42a9.chunk.css.map": "/static/css/1.305b42a9.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.8ee5b1246fb14708363dba3d1245dda6.js": "/precache-manifest.8ee5b1246fb14708363dba3d1245dda6.js",
+  "precache-manifest.b37eb386a185d079e4bead5ba011b81a.js": "/precache-manifest.b37eb386a185d079e4bead5ba011b81a.js",
   "service-worker.js": "/service-worker.js"
 }
