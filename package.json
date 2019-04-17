@@ -34,7 +34,6 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "serve": "serve -s build",
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:build": "cross-env NODE_ENV='production' react-scripts build && serve ./build -s -l 5000",
     "build": "cross-env NODE_ENV='production' react-scripts build",

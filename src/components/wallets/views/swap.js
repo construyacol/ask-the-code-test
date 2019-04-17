@@ -133,7 +133,7 @@ class SwapView extends Component{
 
     await this.props.action.add_order_to('swaps', swaps, user, add_swap)
 
-    this.props.action.add_new_transaction_animation()
+    await this.props.action.add_new_transaction_animation()
 
     this.props.history.push(`/wallets/activity/${current_wallet.id}`)
 
@@ -179,7 +179,7 @@ class SwapView extends Component{
       payload:'aa',
       action:(this.finish_swap),
       img:"swap",
-      type:"swap", 
+      type:"swap",
       from:current_wallet.currency.currency,
       to:secondary_coin,
       spent:value,

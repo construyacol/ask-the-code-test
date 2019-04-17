@@ -1,9 +1,9 @@
 export const Environtment = {
-  ApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
-  SocketUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
-  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'https://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
-  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'https://countrylistapi.ngrok.io/api/' : 'https://countrylistapi.ngrok.io/api/',
-  CountryUrl:'https://countrylistapi.ngrok.io/' //endpoint imagenes
+  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
+  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
+  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
+  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'http://countrylistapi.ngrok.io/api/' : 'https://countrylistapi.ngrok.io/api/',
+  CountryUrl:'http://countrylistapi.ngrok.io/' //endpoint imagenes
 }
 
 // http://190.192.134.201:5900
