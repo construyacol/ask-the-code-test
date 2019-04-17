@@ -115,7 +115,7 @@ const ui = (state = initialState, action)=>{
       }
 
     case CURRENT_SECTION_CLEAN:
-    // console.log('|||||||||| ANDALE PUES MIJO!!!!!', initialState.current_section.params)
+    // console.log('|||||||||| ANDALE PUES MIJO!!!!!', initialState, state)
       return {
         ...state,
         current_section:{
@@ -125,7 +125,8 @@ const ui = (state = initialState, action)=>{
             pairs_for_account:{
               ...state.current_section.params.pairs_for_account
             },
-            update_list:state.current_section.params.update_list
+            update_list:state.current_section.params.update_list,
+            currentFilter:state.current_section.params.currentFilter
           }
         }
       }

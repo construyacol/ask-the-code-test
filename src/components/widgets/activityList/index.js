@@ -30,6 +30,15 @@ class ActivityList extends Component {
     this.props.action.current_section_params({methods:{activity:{update_list:this.update_state_list}}})
   }
 
+  componentWillReceiveProps(nextProps){
+    // console.log('componentWillReceiveProps', nextProps.currentFilter !== this.props.currentFilter, this.props)
+    if(this.state.activity && this.state.activity.length<1){
+      this.init_activity()
+    }
+
+    // nextProps.currentFilter !== this.props.currentFilter ||
+  }
+
 
   init_activity = async() =>{
 
@@ -83,11 +92,7 @@ class ActivityList extends Component {
         this.calcul_pending_section()
   }
 
-  componentWillReceiveProps(){
-    if(this.state.activity && this.state.activity.length<1){
-      this.init_activity()
-    }
-  }
+
 
 
 

@@ -70,14 +70,15 @@ componentDidMount(){
               this.setState({order_socket:swap})
 
               return setTimeout(async()=>{
-                this.props.action.success_sound()
+                await this.props.action.success_sound()
+                await this.props.action.current_section_params({currentFilter:'swaps'})
                 await this.props.action.current_section_params({swap_socket_channel:swap, swap_done_id:swap.unique_id, swap_done_out:true})
                 this.update_activity(swap)
                   setTimeout(async()=>{
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
-                    setTimeout(()=>{
-                      this.props.action.get_account_balances(this.props.user)
-                      this.props.action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
+                    setTimeout(async()=>{
+                      await this.props.action.get_account_balances(this.props.user)
+                      await this.props.action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
                     },3000)
 
                   },4000)
@@ -149,7 +150,7 @@ componentDidMount(){
       } = this.props
 
       await this.props.action.add_done_swap(swaps, user, swap, update_activity_list)
-      this.props.action.current_section_params({swap_done_out:false, swap_done_in:true})
+      await this.props.action.current_section_params({swap_done_out:false, swap_done_in:true})
 
       setTimeout(()=>{
         this.props.action.add_coin_sound()
