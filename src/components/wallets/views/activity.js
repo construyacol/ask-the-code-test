@@ -35,7 +35,6 @@ class ActivityView extends Component{
     //   current_swaps
     // } = this.state
     //
-    // console.log('NUEVA MIERDA EN EL CAMINO--------', props)
 
   }
 
