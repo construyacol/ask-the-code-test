@@ -467,6 +467,7 @@ class ActivityList extends Component {
                               key={item.id}
                               confirmPayment={this.confirmPayment}
                               verTicket={this.verTicket}
+                              delete_order={this.delete_order_confirmation}
                               ticket={item}
                               short_name={short_name}
                                />)

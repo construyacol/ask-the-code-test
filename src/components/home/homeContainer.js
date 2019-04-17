@@ -65,7 +65,7 @@ componentDidMount(){
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             await this.props.action.current_section_params({currentFilter:'swaps'})
-            console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
+            // console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
             if(swap.status === 'done' && swap !== this.state.order_socket){
               this.setState({order_socket:swap})
 

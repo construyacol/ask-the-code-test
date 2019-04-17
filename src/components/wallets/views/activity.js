@@ -53,7 +53,8 @@ render(){
   return(
     <Fragment>
     {
-      (!current_wallet || !wallets || !deposits && !swaps || !all_pairs) ?
+      // (!current_wallet || !wallets || !deposits && !swaps || !all_pairs) ?
+      (!current_wallet || !wallets || !all_pairs) ?
       <SimpleLoader
         label="Cargando Actividad..."
       />
