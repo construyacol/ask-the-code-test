@@ -35,10 +35,10 @@
 
 .score, .level{
   position: absolute;
-  font-size: 12px;
+  font-size: 12px !important;
   right: 0;
-  margin: 0 !important;
-  color: #14B3F0;
+  margin: 0;
+  color: #14B3F0 !important;
 }
 
 .score{
@@ -46,6 +46,11 @@
   position: initial !important;
   margin-left: 6px !important;
 }
+
+#score{
+  margin-left: 6px !important;
+}
+
 .level{
   width: 100%;
   bottom: -25px;

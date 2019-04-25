@@ -62,7 +62,23 @@ class Landing extends React.Component {
   }
 
   init_component = async() =>{
-    await this.props.get_pairs_for('colombia')
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('/sw.js', {scope:'/'})
+      .then((registration) => {
+        console.log('Service worked registered')
+      })
+    navigator.serviceWorker.ready
+    .then(function(registration) {
+      console.log('serviceWorker Ready')
+    })
+      // console.log('registration', registration)
+    }
+
+    // navigator.serviceWorker.ready.then(function(swRegistration) {
+    //   return swRegistration.sync.register('myFirstSync');
+    // });
+
+    // await this.props.get_pairs_for('colombia')
   }
 
   handleClickRemove = () => {

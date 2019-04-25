@@ -54,13 +54,15 @@ const {
   wallets,
   deposits,
   swaps,
-  all_pairs
+  all_pairs,
+  item_active
 } = this.props
 
 // console.log('||||||||||||||||||||||||||||||||||||||||||||| SWAPS - - - ', swaps)
     return(
       <Fragment>
-        <DetailContainerLayout>
+        <DetailContainerLayout
+          >
         {/* {
           (!deposits || !swaps) ?
           <SimpleLoader

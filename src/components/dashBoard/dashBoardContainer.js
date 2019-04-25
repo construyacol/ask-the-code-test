@@ -57,7 +57,6 @@ class DashBoardContainer extends Component{
                <QuoteContainer/>
              </div>
              <div className="containerSection" name="firstInsideContainer">
-                    {/* los componentes solo se podrán mostrar si tenemos el modelo de usuario cargado, este es llamado actualmente en homeContainer */}
                     {
                       !this.props.user ?
                       <DetailContainerLayout>

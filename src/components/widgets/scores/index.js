@@ -86,7 +86,7 @@ class ScoresComponent extends Component {
             <div className="progresado" style={{width:`${level_progress_width}%`}}></div>
             <div className="levelBar">
               <Medal size={25} />
-              <p className="score">{message}</p>
+              <p className="score" id="score">{message}</p>
             </div>
               <div className="level">Nivel:
                 <span className="fuente2">{level}</span>

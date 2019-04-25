@@ -134,7 +134,7 @@ class WalletContainer extends Component{
       const { items_menu } = navigation_components.wallet
       const url = this.state.currentUrl
       const { title }  = this.state
-      const { app_loaded } = this.props
+      const { app_loaded, item_active } = this.props
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
 
@@ -193,7 +193,6 @@ function mapStateToProps(state, props){
   // console.log('||||||||| - -  Wallet CONTAINER', state)
 
   return{
-    redux_route:state.ui.menu_item_active,
     all_pairs,
     user:user[user_id],
     current_wallet:current_wallet,

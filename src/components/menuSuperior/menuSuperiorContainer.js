@@ -92,18 +92,28 @@ class MenuSuperiorContainer extends Component {
     this.props.action.get_pairs_for('colombia')
     }
     // console.log('||||||||| componentDidMount:', this.props)
-
   }
 
+
+  toggle_menu = () =>{
+    this.props.action.current_section_params({show_menu_principal:true})
+  }
+
+  back_method = () =>{
+    this.props.action.section_view_to('initial')
+  }
+
+
+
   render(){
-
     // console.log('MENU SUPERIOR_________::', this.props)
-
     return(
       <MenuSuperiorLayout
         logout={this.logout}
+        toggle_menu={this.toggle_menu}
         mouseOver={this.mouseOver}
         openSelectCountry={this.openSelectCountry}
+        back_method={this.back_method}
         {...this.state}
         {...this.props}/>
     )
@@ -120,11 +130,14 @@ function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
   const { user, user_id } = state.model_data
   return{
+    item_active:state.ui.menu_item_active,
+    current_section:state.ui.current_section.view,
     HeadRoomClass:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,
     item_quote:state.ui.item_quote,
     loggedIn:state.auth.loggedIn,
+    show_menu_principal:state.ui.current_section.params.show_menu_principal
     // user:user && user[user_id]
   }
 }

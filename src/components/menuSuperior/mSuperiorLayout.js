@@ -24,9 +24,15 @@ const MenuSuperiorLayout = (props) =>{
     buy_price,
     mouseOver,
     openSelectCountry,
-    loggedIn
+    loggedIn,
+    toggle_menu,
+    item_active,
+    current_section,
+    back_method
   } = props
 
+  let back_section = item_active === 'wallets' && current_section === 'detail'
+  let view = 'detail'
   // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', props)
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
@@ -34,7 +40,15 @@ const MenuSuperiorLayout = (props) =>{
     <section className="MenuSuperiorLayout fuente" >
       <div className="contDinamic">
         <div className="contenedorLogoSenda">
-            <Coinsenda size={30} color="white" />
+           <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
+             <div className="contItemLogo"><Coinsenda size={30} color="white" /></div>
+             <div className="contItemLogo">
+               <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}} onClick={back_method}>
+               {/* <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}}> */}
+                 <i className="fas fa-arrow-left"></i>
+               </Link>
+             </div>
+           </div>
         </div>
         <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
           {
@@ -44,12 +58,12 @@ const MenuSuperiorLayout = (props) =>{
                   window.innerWidth>768 ?
                     <div className="itemSup closeSesi" onClick={logout}>
                       <p>Cerrar Sesión</p>
-                      <i className="fas fa-sign-out-alt titi"></i>
+                      <i className="far fa-times-circle"></i>
                     </div>
 
                   :
-                  <div className="itemSup closeSesi" onClick={logout}>
-                    <p>fotito</p>
+                  <div className="itemSup closeSesi burgerMen" onClick={toggle_menu}>
+                    <i className="fas fa-bars"></i>
                   </div>
                 }
 
@@ -86,7 +100,6 @@ const MenuSuperiorLayout = (props) =>{
                     <code className="monto" >${sell_price}</code>
                     <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}}></i>
                   </span>
-
                 </p>
                 <p className={`sell ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.sell || !movil) ? 'flex' : 'none'}}>
                   {venta}

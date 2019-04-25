@@ -115,7 +115,7 @@ class witdrawAccountContainer extends Component{
       const { items_menu } = navigation_components.wallet
       const url = this.state.currentUrl
       const { title }  = this.state
-      const {withdraw_accounts, app_loaded } = this.props
+      const {withdraw_accounts, app_loaded, item_active } = this.props
 
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
@@ -166,7 +166,6 @@ function mapStateToProps(state, props){
   // console.log('|||||||| withdraw_accounts', user[user_id].withdraw_accounts)
 
   return{
-    redux_route:state.ui.menu_item_active,
     withdraw_accounts:user[user_id].withdraw_accounts,
     user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,

@@ -14,6 +14,19 @@
   left: 0;
 }
 
+.contCloseMprincipal{
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  display: none;
+}
+
+.contCloseMprincipal i{
+  font-size: 21px;
+  color: white;
+  cursor: pointer;
+}
+
 .putito{
   background: aliceblue !important;
   border-radius: 7px !important;
@@ -85,6 +98,49 @@
     color: #05ff05;
     margin-left: 7px;
 }
+
+
+.closeSessionMo{
+  position: absolute;
+  bottom: 0;
+  justify-self:center;
+  color: white;
+  font-size: 16px;
+  text-align: left;
+  margin-bottom: 25px;
+  width: calc(100% - 30px);
+  padding: 0 15px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
