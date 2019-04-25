@@ -24,10 +24,18 @@ class MenuPrincipalContainer extends Component{
       smooth: true,
       containerId: 'containerElement'
     })
-
-
   }
 
+  close_menu_principal = () =>{
+    this.props.action.current_section_params({show_menu_principal:false})
+  }
+
+  componentDidMount(){
+    if(window.innerWidth<768){
+      return this.props.action.current_section_params({show_menu_principal:false})
+    }
+    this.props.action.current_section_params({show_menu_principal:true})
+  }
 
   render(){
     // console.log('E S T A D O   I N I C I A L   D E S D E  MENU PRINCIPAL::::', this.props )
@@ -36,6 +44,7 @@ class MenuPrincipalContainer extends Component{
           activarItem={this.activarItem}
           itemStatus={this.props.menu_item_active}
           refCallback={this.refCallback}
+          close_menu_principal={this.close_menu_principal}
           {...this.props}/>
     )
   }
@@ -55,6 +64,7 @@ class MenuPrincipalContainer extends Component{
     return{
       user:user && user[user_id],
       menu_item_active:state.ui.menu_item_active,
+      show_menu_principal:state.ui.current_section.params.show_menu_principal
       // user:state.model_data.user ? user : null
     }
   }

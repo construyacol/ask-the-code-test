@@ -32,6 +32,7 @@ class SecurityCenter extends Component{
   render(){
 
     // console.log('SECURITY_CENTER::::', this.props)
+    const { item_active } = this.props
 
     return(
       <Fragment>

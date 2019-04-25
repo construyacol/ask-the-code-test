@@ -40,6 +40,7 @@ class SettingsContainer extends Component{
   render(){
 
     // console.log('|||||||||| °°°°°  Security Container  °°°°°||||||||||', global_settings)
+    const { item_active } = this.props
 
     return(
         <Fragment>

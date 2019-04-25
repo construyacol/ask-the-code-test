@@ -35,6 +35,7 @@ const initialState = {
   current_section:{
     view:"initial", //initial - detail
     params:{
+      show_menu_principal:true,
       current_wallet:null,
       short_name:null,
       pairs_for_account:{},
@@ -126,7 +127,8 @@ const ui = (state = initialState, action)=>{
               ...state.current_section.params.pairs_for_account
             },
             update_list:state.current_section.params.update_list,
-            currentFilter:state.current_section.params.currentFilter
+            currentFilter:state.current_section.params.currentFilter,
+            show_menu_principal:state.current_section.params.show_menu_principal
           }
         }
       }

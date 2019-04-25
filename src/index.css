@@ -256,18 +256,64 @@ circle{
 
 
 
+.logo img{
+  display: initial;
+}
+
+.logo i{
+  display: none;
+}
 
 
 
+@media only screen and (min-width: 900px) {
+    .menuPrincipal{
+      left: 0 !important
+    }
 
+}
 
 
 
 
 @media only screen and (max-width: 1100px) {
+
+  .logo img{
+    display: none !important;
+  }
+
+  .logo i{
+    display: initial;
+    color: white;
+    font-size: 20px;
+    margin-left: 5px;
+  }
+
+  .scores{
+    margin-top: 7px;
+  }
+
+  .userInfo{
+    grid-gap: 7px !important;
+    grid-template-rows: auto !important;
+    padding-top: 15px;
+    padding-bottom: 0px !important;
+  }
+
+  .logo{
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    padding: 0 !important;
+  }
+
+
     .menuPrincipal{
       width: 24vw !important;
+      left: -110vw ;
     }
+
+
 
     .dashBoardLayout{
       margin-left: 24vw !important;
@@ -278,13 +324,14 @@ circle{
 @media only screen and (max-width: 900px) {
 
   .menuPrincipal{
-      transition: .3s;
-      left: -70% !important;
+    width: 100vw !important;
+    transition: .3s;
   }
 
-    .menuPrincipal{
-      width: 24vw !important;
-    }
+  .contCloseMprincipal{
+    display: initial !important;
+    z-index: 2;
+  }
 
     .containerMenuSuperior{
       width: calc(100% - 24vw) !important;
@@ -645,6 +692,10 @@ circle{
 
 /*IPHONE X*/
 @media screen and (max-height: 850px) and (max-width: 768px) {
+
+  .capsuleMenu1{
+    padding-right: 15px !important;
+  }
 
   .AddNewItemContainer{
     position: fixed !important;
