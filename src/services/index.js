@@ -360,10 +360,18 @@ export const serve_activity_list = async(get_list, data_user, current_wallet, fi
 }
 
 
-export const serve_orders = async(indices, list, account_id, filter) =>{
+export const serve_orders = async(account_id, filter) =>{
 
   let new_array = []
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS ',indices, list, account_id, filter)
+  const { model_data } = store.getState()
+  const { user, user_id } = store.getState().model_data
+
+  let list = model_data[filter]
+  let indices = user[user_id][filter]
+  // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', store.getState().model_data, filter)
+  // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', model_data[filter])
+
 
   if(filter === 'swaps' && account_id){
     indices.map((id) => {

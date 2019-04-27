@@ -27,20 +27,31 @@ class ActivityList extends Component {
   componentDidMount(){
     this.props.action.CurrentForm('ticket')
     this.init_activity()
-    this.props.action.current_section_params({methods:{activity:{update_list:this.update_state_list}}})
   }
 
   componentWillReceiveProps(nextProps){
-    // console.log('componentWillReceiveProps', nextProps.currentFilter !== this.props.currentFilter, this.props)
-    if(this.state.activity && this.state.activity.length<1){
-      this.init_activity()
-    }
 
+    // if(this.props.currentFilter !== nextProps.currentFilter){
+    //
+    // }
+    //
+    // console.log('componentWillReceiveProps',  this.props.activity, nextProps.activity)
+
+    // if(this.props.activity && this.props.activity !== nextProps.activity || this.props.currentFilter !== nextProps.currentFilter){
+    //   // console.log('|||||||||||||||||||| ALGO CAMBIO', this.props.activity.length, nextProps.activity.length)
+    //   // console.log('|||||||||||||||||||| ALGO CAMBIO', this.props.activity, nextProps.activity)
+    //   // this.calcul_pending_section()
+    // }
+
+    // if(this.state.activity && this.state.activity.length<1){
+    //   // this.init_activity()
+    // }
     // nextProps.currentFilter !== this.props.currentFilter ||
   }
 
 
   init_activity = async() =>{
+
 
         const {
           wallets,
@@ -55,41 +66,57 @@ class ActivityList extends Component {
 
 
         let activity_list = []
-        activity_list = await this.filter_activity(currentFilter)
 
-        // console.log('|||||||||||||||||||||||||||||ESTE ES EL FILTRO ACTUAL:::::', currentFilter, user[currentFilter], 'USER:::', user, '::::::activity_list::', activity_list)
+        if(this.props.activity){
+          activity_list = this.props.activity
+        }
+
+        if(activity_list.length<1){
+        activity_list = await this.filter_activity(currentFilter)
+        }
 
         if(activity_list.length<1){
         activity_list = await this.filter_activity('deposits')
-        this.props.action.current_section_params({currentFilter:'deposits'})
+        await this.props.action.current_section_params({currentFilter:'deposits'})
         }
 
         if(activity_list.length<1){
         activity_list = await this.filter_activity('withdrawals')
-        this.props.action.current_section_params({currentFilter:'withdrawals'})
+        await this.props.action.current_section_params({currentFilter:'withdrawals'})
         }
 
         if(activity_list.length<1){
           activity_list = await this.filter_activity('swaps')
-          this.props.action.current_section_params({currentFilter:'swaps'})
+          await this.props.action.current_section_params({currentFilter:'swaps'})
         }
 
-        // console.log('||||||||||||||| activity_list', activity_list)
 
         if(!activity_list){return false}
-        await this.setState({
-          activity:activity_list
-        })
+
+        await this.props.action.update_activity_account(current_wallet.id, this.props.currentFilter, activity_list)
+        let updated_activity = await this.filter_activity(this.props.currentFilter)
+
+        // console.log('activity list 1-', this.props.activity.length, updated_activity.length)
+        if(this.props.activity.length !== updated_activity.length){
+          await this.props.action.update_activity_account(current_wallet.id, this.props.currentFilter, updated_activity)
+        }
+        // console.log('activity list 2-', this.props.activity.length, updated_activity.length)
+
+        // await this.setState({
+        //   activity:activity_list
+        // })
+        // console.log('||||||||||||||| activity_list', this.props)
 
         if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
 
-        if(this.state.activity.length<1 && current_wallet){
+        if(this.props.activity.length<1 && current_wallet){
           history.push(`/wallets/deposit/${current_wallet.id}`)
           return this.props.action.current_section_params({activity:false})
         }
 
-        this.props.action.current_section_params({activity:true})
-        this.calcul_pending_section()
+        await this.props.action.current_section_params({activity:true})
+        await this.props.action.update_pending_activity()
+        // this.calcul_pending_section()
   }
 
 
@@ -110,18 +137,17 @@ class ActivityList extends Component {
 
     const {
       current_wallet,
-      user,
-      action,
-      wallets
+      user
     } = this.props
 
     let activity_list = []
 
     // let trigger_action = await this.trigger_action(filter)
-    // console.log('||||||||||||||||||||||||||||||||| ESTA ES LA LISTA TALES', filter, this.props[filter])
+    // console.log('||||||||||||||||||||||||||||||||| filter_activity', filter, this.props[filter])
     if(this.props[filter] &&  user[filter].length>0){
-        activity_list = await serve_orders(user[filter], this.props[filter], current_wallet && current_wallet.id, filter)
+        activity_list = await serve_orders(current_wallet.id, filter)
       }
+      // console.log('||||||||||||||||||||||||||||||||| filter_activity', filter, activity_list)
 
     // if(!this.props[filter]){activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, filter, wallets)}
     return activity_list
@@ -132,30 +158,29 @@ class ActivityList extends Component {
 
 
   calcul_pending_section = async()=>{
+    
+    await this.props.action.update_pending_activity()
 
-    const{ activity} = this.state
-    const{ currentFilter, current_wallet } = this.props
-
-    // let pending = await matchItem(activity, {primary:'pending'}, 'state', true)
-    let pending = (currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity, {primary:'pending'}, 'state', true)
-    let confirmed = await matchItem(activity, {primary:'confirmed'}, 'state', true)
-    let rejected = await matchItem(activity, {primary:'rejected'}, 'state', true)
-    this.setState({expandidoMax:(((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)});
-
-    pending ? this.setState({pending:true, lastPending:(currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id}) :
-    // pending ? this.setState({pending:true, lastPending:pending[0].id}) :
-    rejected ?  this.setState({pending:true, lastPending:rejected[0].id}) :
-    confirmed ?  this.setState({pending:true, lastPending:confirmed[0].id}):
-    this.setState({pending:false, lastPending:false})
-
+    // const{ activity } = this.props
+    // const{ currentFilter, current_wallet } = this.props
+    //
+    // let pending = (currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity, {primary:'pending'}, 'state', true)
+    // let confirmed = await matchItem(activity, {primary:'confirmed'}, 'state', true)
+    // let rejected = await matchItem(activity, {primary:'rejected'}, 'state', true)
+    // this.setState({expandidoMax:(((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)});
+    //
+    // pending ? this.setState({pending:true, lastPending:(currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id}) :
+    // rejected ?  this.setState({pending:true, lastPending:rejected[0].id}) :
+    // confirmed ?  this.setState({pending:true, lastPending:confirmed[0].id}):
+    // this.setState({pending:false, lastPending:false})
 
   }
 
 
   expandir = () =>{
-    const {
-      activity
-    } = this.props
+    // const {
+    //   activity
+    // } = this.props
 
     const {
       expandidoMax
@@ -182,14 +207,6 @@ class ActivityList extends Component {
   }
 
 
-  update_state_list = (list) =>{
-    this.setState({
-      activity:list
-    })
-    setTimeout(()=>{
-      this.calcul_pending_section()
-    }, 1500)
-  }
 
   update_activity_list = async() =>{
 
@@ -358,7 +375,13 @@ class ActivityList extends Component {
   filterChange = async(e) =>{
     let value = e.target.id
 
-    let current_activity = await this.filter_activity(value)
+
+    // let current_activity = await this.filter_activity(value)
+
+      let current_activity = this.props.current_activity_account[value] || []
+      current_activity = current_activity.length>0 ? current_activity : await this.filter_activity(value)
+
+    await this.props.action.update_activity_account(this.props.current_wallet.id, value, current_activity)
 
     this.props.action.current_section_params({currentFilter:value})
     await this.setState({
@@ -388,18 +411,18 @@ class ActivityList extends Component {
       loader,
       short_name,
       swap_done_out,
-      currentFilter
+      currentFilter,
+      activity,
+      pending,
+      expandidoMax,
+      lastPending
     } = this.props
 
     const{
-      pending,
       expandible,
       expandido,
-      expandidoMax,
-      lastPending,
       filter,
       current_order_loader,
-      activity,
       deleting,
       deleted
     } = this.state
@@ -487,14 +510,25 @@ class ActivityList extends Component {
 }
 
 function mapStateToProps(state, props){
-  const { deposits, withdrawals, swaps, activity } = state.model_data
+
+  const { deposits, withdrawals, swaps, activity, user, user_id } = state.model_data
+  const { current_wallet } = props
+  const { currentFilter } =state.ui.current_section.params
+  const { activity_for_account } = state.storage
+  let pending_index = `pending_${currentFilter}`
+  let pending_activity = activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][pending_index]
+
   return{
     newDepositStyle:state.ui.current_section.params.new_deposit_style,
-    currentFilter:state.ui.current_section.params.currentFilter,
+    currentFilter:currentFilter,
     current_form:state.form.current,
     loader:state.isLoading.loader,
     short_name:state.ui.current_section.params.short_name,
-    swap_done_out:state.ui.current_section.params.swap_done_out
+    swap_done_out:state.ui.current_section.params.swap_done_out,
+    user:user[user_id],
+    current_activity_account:activity_for_account[current_wallet.id],
+    activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][currentFilter],
+    ...pending_activity
   }
 }
 

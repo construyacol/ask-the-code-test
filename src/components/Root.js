@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import HomeContainer from './home/homeContainer'
 import { Router, Route, Switch } from 'react-router-dom'
-import { createBrowserHistory } from "history"
+import createBrowserHistory from "history/createBrowserHistory"
 import LandingPage from './landingPage'
 import localForage from 'localforage'
 import PagesRouter from './landingPage/pages'
@@ -30,7 +30,7 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJoZjR1SFVhQzFCSXpYdnVKbG5oN1VLdDdMSGZ6NjJiR0tzVU5kajRsY0F2N2gwc2lIMUZMdldDVTY1Yzd2R3RGIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTYxNzI3ODgsImV4cCI6MTU1NjE4MzU4OH0.ZOQk48BvO7SO1c4_Sfq6kYxKgg13J982qfmpZy9Cd-CsMjcT4j5yXyftollgAASXMS26eR-lYl7bYHEcRURa1A'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJoYVIzZTV2cGJmZzVjM3BSb1BGY3dnUkRiSDE2S2lCeXFPeFdCQ0RWd09pckVBRzdqa014SlpWQzlVaHEweE91IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTYzMzM2MzksImV4cCI6MTU1NjM0NDQzOX0.CTdqdOHWmjQAja40opLdCyfvHLyz9XjzcTf_JdQuNwLuwuBB4GswCfO5xoHbARorvSqjQe4POeeCBSBOOCJ6Xw'
 
     this.setState({
       TokenUser:AccessToken

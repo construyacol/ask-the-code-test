@@ -28,7 +28,7 @@ render(){
   const { view, params } = current_section
   const { activity, current_sub_section } = params
   let movil_viewport = window.innerWidth < 768
-  console.log('|||||||||| °°°°°  DetailContainer  °°°°°||||||||||', this.props)
+  // console.log('|||||||||| °°°°°  DetailContainer  °°°°°||||||||||', this.props)
 
   return(
     <Fragment>

@@ -26,6 +26,7 @@ import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
 import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
+import { serve_orders } from '../../services'
 
 
 const {
@@ -73,7 +74,7 @@ componentDidMount(){
                 await this.props.action.success_sound()
                 await this.props.action.current_section_params({currentFilter:'swaps'})
                 await this.props.action.current_section_params({swap_socket_channel:swap, swap_done_id:swap.unique_id, swap_done_out:true})
-                this.update_activity(swap)
+                this.update_activity(swap, 'swaps')
                   setTimeout(async()=>{
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
                     setTimeout(async()=>{
@@ -140,16 +141,21 @@ componentDidMount(){
   }
 
 
-  update_activity = (swap) =>{
+  update_activity = (swap, filter) =>{
     setTimeout(async()=>{
 
       const {
         user,
         swaps,
-        update_activity_list
+        // update_activity_list
       } = this.props
 
-      await this.props.action.add_done_swap(swaps, user, swap, update_activity_list)
+      console.log('SWAP SOCKET DONE :', swap)
+
+      // await update_activity_list()
+      await this.props.action.add_done_swap(swaps, user, swap)
+      // actualizamos las ordenes de la cuenta desde donde se genera el swap
+      await this.props.action.update_activity_account(swap.swap_info.account_from_id, filter, null)
       await this.props.action.current_section_params({swap_done_out:false, swap_done_in:true})
 
       setTimeout(()=>{

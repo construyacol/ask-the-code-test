@@ -27,6 +27,11 @@ import {
 } from './soundActions'
 
 import {
+  update_activity,
+  pending_activity
+} from './storage'
+
+import {
   app_loaded,
   load_label
 } from './loader'
@@ -60,7 +65,8 @@ matchItem,
 desNormalizedList,
 withdraw_provider_by_type,
 add_index_to_root_object,
-objectToArray
+objectToArray,
+serve_orders
 } = services
 
 const { ApiUrl, IdentityApIUrl, CountryApIUrl } = Environment
@@ -843,7 +849,7 @@ export const add_new_swap = (account_id, pair_id, value) =>{
   return async(dispatch) =>{
 
 
-    await charge_funds()
+    // await charge_funds()
     const { user, user_id } =store.getState().model_data
 
     const body = {
@@ -980,6 +986,77 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
 
   }
 }
+
+
+
+export const update_activity_account = (account_id, activity_type, activity_list) =>{
+
+  return async(dispatch) => {
+
+    if(!activity_list){
+      activity_list = await serve_orders(account_id, activity_type)
+    }
+    await dispatch(update_activity(account_id, activity_type, activity_list))
+      // console.log('update_activity_account- -- -  ', pending_activity)
+      // return pending_activity()
+      // let account = store.getState().model_data.wallets[account_id]
+      //
+      // const { user, user_id } = store.getState().model_data
+      // console.log('update_pending_activity', store.getState(), account)
+  }
+
+}
+
+
+
+export const update_pending_activity = (account_id, activity_type, activity_list) =>{
+
+  return async(dispatch) => {
+
+     const { user, user_id } = store.getState().model_data
+      let current_wallet = store.getState().model_data.wallets[account_id]
+
+      if(!current_wallet){
+        current_wallet = store.getState().ui.current_section.params.current_wallet
+      }
+
+      if(!activity_type){
+        activity_type = await store.getState().ui.current_section.params.currentFilter
+      }
+
+      if(!activity_list){
+        activity_list = await serve_orders(current_wallet.id, activity_type)
+      }
+      // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
+      // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
+
+      let pending = (activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
+      let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
+      let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
+
+      let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)
+      let pending_data;
+      // console.log('-----|||||||| °°°°  update_pending_activity', pending, confirmed, rejected)
+      pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
+      rejected ? (pending_data = rejected ? pending_data = {pending:true, lastPending:rejected[0].id} : null) :
+      confirmed && (pending_data = confirmed ? pending_data = {pending:true, lastPending:confirmed[0].id} : null)
+      // console.log('|||||||||| PENDING DATA', pending_data, 'Agregar al estado  |  expandidoMax - pending_data')
+
+      let pending_activity_payload = {
+        ...pending_data,
+        expandidoMax,
+        account_id:current_wallet.id,
+        activity_type:activity_type
+      }
+
+      dispatch(pending_activity(pending_activity_payload))
+
+
+  }
+
+}
+
+
 
 
 
