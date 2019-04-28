@@ -13,11 +13,8 @@ class ActivityList extends Component {
 
   state = {
     activity:null,
-    pending:false,
     expandible:90,
-    expandidoMax:0,
     expandido:false,
-    lastPending:"",
     filter:true,
     current_order_loader:null,
     deleting:null,
@@ -27,26 +24,6 @@ class ActivityList extends Component {
   componentDidMount(){
     this.props.action.CurrentForm('ticket')
     this.init_activity()
-  }
-
-  componentWillReceiveProps(nextProps){
-
-    // if(this.props.currentFilter !== nextProps.currentFilter){
-    //
-    // }
-    //
-    // console.log('componentWillReceiveProps',  this.props.activity, nextProps.activity)
-
-    // if(this.props.activity && this.props.activity !== nextProps.activity || this.props.currentFilter !== nextProps.currentFilter){
-    //   // console.log('|||||||||||||||||||| ALGO CAMBIO', this.props.activity.length, nextProps.activity.length)
-    //   // console.log('|||||||||||||||||||| ALGO CAMBIO', this.props.activity, nextProps.activity)
-    //   // this.calcul_pending_section()
-    // }
-
-    // if(this.state.activity && this.state.activity.length<1){
-    //   // this.init_activity()
-    // }
-    // nextProps.currentFilter !== this.props.currentFilter ||
   }
 
 
@@ -67,13 +44,17 @@ class ActivityList extends Component {
 
         let activity_list = []
 
+        // Si hay actividad previa en redux, cargue esa actividad
         if(this.props.activity){
           activity_list = this.props.activity
         }
 
+        // Si no hay actividad entonces procesela por el tipo de actividad activo (currentFilter)
         if(activity_list.length<1){
         activity_list = await this.filter_activity(currentFilter)
         }
+
+        // Si no hay actividad de ese tipo (currentFilter), entonces busque por cada uno de los tipos disponibles (deposito, withdraw, currentFilter), Hasta que encuentre..
 
         if(activity_list.length<1){
         activity_list = await this.filter_activity('deposits')
@@ -92,20 +73,13 @@ class ActivityList extends Component {
 
 
         if(!activity_list){return false}
-
         await this.props.action.update_activity_account(current_wallet.id, this.props.currentFilter, activity_list)
         let updated_activity = await this.filter_activity(this.props.currentFilter)
 
-        // console.log('activity list 1-', this.props.activity.length, updated_activity.length)
         if(this.props.activity.length !== updated_activity.length){
           await this.props.action.update_activity_account(current_wallet.id, this.props.currentFilter, updated_activity)
         }
-        // console.log('activity list 2-', this.props.activity.length, updated_activity.length)
 
-        // await this.setState({
-        //   activity:activity_list
-        // })
-        // console.log('||||||||||||||| activity_list', this.props)
 
         if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
 
@@ -116,7 +90,9 @@ class ActivityList extends Component {
 
         await this.props.action.current_section_params({activity:true})
         await this.props.action.update_pending_activity()
-        // this.calcul_pending_section()
+
+
+
   }
 
 
@@ -124,13 +100,6 @@ class ActivityList extends Component {
 
 
 
-  trigger_action = filter =>{
-    let trigger_action
-    return  trigger_action = (filter === 'deposits' ? 'get_deposit_list' :
-                              filter === 'withdrawals' ? 'get_withdraw_list' :
-                              filter === 'swaps' ? 'get_swap_list' :
-                              filter === 'activity' && 'get_activity_list')
-  }
 
 
   filter_activity = async(filter) =>{
@@ -142,14 +111,11 @@ class ActivityList extends Component {
 
     let activity_list = []
 
-    // let trigger_action = await this.trigger_action(filter)
     // console.log('||||||||||||||||||||||||||||||||| filter_activity', filter, this.props[filter])
     if(this.props[filter] &&  user[filter].length>0){
         activity_list = await serve_orders(current_wallet.id, filter)
       }
-      // console.log('||||||||||||||||||||||||||||||||| filter_activity', filter, activity_list)
 
-    // if(!this.props[filter]){activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, filter, wallets)}
     return activity_list
   }
 
@@ -157,34 +123,15 @@ class ActivityList extends Component {
 
 
 
-  calcul_pending_section = async()=>{
-    
-    await this.props.action.update_pending_activity()
 
-    // const{ activity } = this.props
-    // const{ currentFilter, current_wallet } = this.props
-    //
-    // let pending = (currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity, {primary:'pending'}, 'state', true)
-    // let confirmed = await matchItem(activity, {primary:'confirmed'}, 'state', true)
-    // let rejected = await matchItem(activity, {primary:'rejected'}, 'state', true)
-    // this.setState({expandidoMax:(((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)});
-    //
-    // pending ? this.setState({pending:true, lastPending:(currentFilter === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id}) :
-    // rejected ?  this.setState({pending:true, lastPending:rejected[0].id}) :
-    // confirmed ?  this.setState({pending:true, lastPending:confirmed[0].id}):
-    // this.setState({pending:false, lastPending:false})
-
-  }
 
 
   expandir = () =>{
-    // const {
-    //   activity
-    // } = this.props
+
 
     const {
       expandidoMax
-    } = this.state
+    } = this.props
 
     this.setState({
       expandible:expandidoMax,
@@ -198,7 +145,7 @@ class ActivityList extends Component {
 
     const {
       expandidoMax
-    } = this.state
+    } = this.props
 
     this.setState({
       expandible:90,
@@ -207,34 +154,41 @@ class ActivityList extends Component {
   }
 
 
-
-  update_activity_list = async() =>{
-
-    const {
-      action,
-      user,
-      current_wallet,
-      wallets,
-      currentFilter
-    } = this.props
-
-    let trigger_action = await this.trigger_action(currentFilter)
-
-    // console.log('CURRENT DEPOSIT LIST BEFORE', currentFilter)
-
-    let activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, currentFilter, wallets)
-
-    // console.log('|11|||||||  TRIGGER ACTION::::::', activity_list)
-    // console.log('CURRENT DEPOSIT LIST AFTER', activity_list)
-
-    await this.setState({
-      activity:activity_list
-    })
-
-    let pending = await matchItem(this.state.activity, {primary:'pending'}, 'state', true);
-    pending && this.setState({pending:true, lastPending:pending[0].id})
-
+  trigger_action = filter =>{
+    let trigger_action
+    return  trigger_action = (filter === 'deposits' ? 'get_deposit_list' :
+                              filter === 'withdrawals' ? 'get_withdraw_list' :
+                              filter === 'swaps' ? 'get_swap_list' :
+                              filter === 'activity' && 'get_activity_list')
   }
+
+  // update_activity_list = async() =>{
+  //
+  //   const {
+  //     action,
+  //     user,
+  //     current_wallet,
+  //     wallets,
+  //     currentFilter
+  //   } = this.props
+  //
+  //
+  //   let trigger_action = await this.trigger_action(currentFilter)
+  //   console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', trigger_action)
+  //
+  //   alert('se prendio esta mierda')
+  //   return false
+  //
+  //   let activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, currentFilter, wallets)
+  //
+  //   await this.setState({
+  //     activity:activity_list
+  //   })
+  //
+  //   let pending = await matchItem(this.state.activity, {primary:'pending'}, 'state', true);
+  //   pending && this.setState({pending:true, lastPending:pending[0].id})
+  //
+  // }
 
 
 
@@ -255,7 +209,8 @@ class ActivityList extends Component {
   delete_order = async(id) =>{
 
     const{
-      currentFilter
+      currentFilter,
+      user
     } = this.props
 
     this.props.action.Loader(true)
@@ -277,13 +232,18 @@ class ActivityList extends Component {
 
     await this.setState({deleting:false,deleted:true})
 
-    this.props.action.exit_sound()
-      await this.update_activity_list()
+      this.props.action.exit_sound()
+      let trigger_action = await this.trigger_action(currentFilter)
+      await this.props.action[trigger_action](user)
 
-      this.calcul_pending_section()
+      // console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', currentFilter,  trigger_action)
+
+      await this.props.action.update_activity_account(this.props.current_wallet.id, currentFilter)
+      await this.props.action.update_pending_activity()
+
       this.setState({
-        expandidoMax:(this.state.expandidoMax - 100),
-        expandible:this.state.expandido ? (this.state.expandidoMax - 100) : '90px'
+        expandidoMax:(this.props.expandidoMax - 100),
+        expandible:this.state.expandido ? (this.props.expandidoMax - 100) : '90px'
       });
       this.props.action.Loader(false)
       this.setState({deleted:false})
@@ -296,12 +256,6 @@ class ActivityList extends Component {
     const{
       ticket
     } = props
-
-
-    let new_ticket = {
-      ...ticket,
-      update_activity_list:this.update_activity_list
-    }
 
     const{
       state
@@ -316,7 +270,7 @@ class ActivityList extends Component {
 
     await this.props.action.CleanForm(current_form)
     let view = await ticketModalView(state)
-    await this.props.action.UpdateForm(current_form, new_ticket)
+    await this.props.action.UpdateForm(current_form, ticket)
     await this.props.action.ModalView(view)
     this.props.action.ToggleModal()
     setTimeout(()=>{
@@ -339,11 +293,6 @@ class ActivityList extends Component {
       ticket
     } = props
 
-    // console.log('|||||||||  ver TICKET', ticket)
-    let new_ticket = {
-      ...ticket,
-      update_activity_list:this.update_activity_list
-    }
 
     const{
       state
@@ -357,7 +306,7 @@ class ActivityList extends Component {
     let view = await ticketModalView(state)
     // await this.props.action.CurrentForm('ticket')
     // console.log('verTicket', props)
-    await this.props.action.UpdateForm(current_form, new_ticket)
+    await this.props.action.UpdateForm(current_form, ticket)
 
     await this.props.action.ModalView(view)
     this.props.action.ToggleModal()
@@ -377,30 +326,24 @@ class ActivityList extends Component {
 
 
     // let current_activity = await this.filter_activity(value)
+    await this.props.action.current_section_params({currentFilter:value})
 
       let current_activity = this.props.current_activity_account[value] || []
       current_activity = current_activity.length>0 ? current_activity : await this.filter_activity(value)
 
     await this.props.action.update_activity_account(this.props.current_wallet.id, value, current_activity)
-
-    this.props.action.current_section_params({currentFilter:value})
     await this.setState({
       activity:current_activity,
       expandible:90,
       expandido:false
     })
 
-    this.calcul_pending_section()
+    await this.props.action.update_pending_activity()
 
-    // this.toggleFilter()
   }
 
 
 
-// handleSongLoading = props =>{
-//   console.log('handleSongLoading', props)
-//   props.play()
-// }
 
 
 

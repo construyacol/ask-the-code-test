@@ -65,16 +65,17 @@ componentDidMount(){
         console.log('authenticated SOKET')
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
-            await this.props.action.current_section_params({currentFilter:'swaps'})
+            // await this.props.action.current_section_params({currentFilter:'swaps'})
             // console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
             if(swap.status === 'done' && swap !== this.state.order_socket){
               this.setState({order_socket:swap})
 
               return setTimeout(async()=>{
                 await this.props.action.success_sound()
-                await this.props.action.current_section_params({currentFilter:'swaps'})
                 await this.props.action.current_section_params({swap_socket_channel:swap, swap_done_id:swap.unique_id, swap_done_out:true})
-                this.update_activity(swap, 'swaps')
+
+                await this.props.action.swap_activity_update(swap, 'swaps')
+
                   setTimeout(async()=>{
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
                     setTimeout(async()=>{
@@ -98,7 +99,14 @@ componentDidMount(){
 
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
 
-            if(deposit.status === 'done' || deposit.status === 'accepted'){
+            if(deposit.state === 'pending' && deposit.currency_type === 'fiat'){
+              await this.props.action.get_deposit_list(this.props.user)
+              await this.props.action.update_activity_account(null, 'deposits')
+              await this.props.action.update_pending_activity()
+              console.log('||||||||||||||||| ------ DEPOSITO SOCKET|', deposit)
+            }
+
+            if(deposit.state === 'done' || deposit.state === 'accepted'){
               await this.props.action.get_deposit_list(this.props.user)
               this.props.action.get_account_balances(this.props.user)
             }
@@ -122,7 +130,6 @@ componentDidMount(){
                 return this.props.action.get_list_user_wallets(this.props.user)
               default:
               break
-
             }
             // if(withdraw.state === 'accepted'){
             //
@@ -141,34 +148,6 @@ componentDidMount(){
   }
 
 
-  update_activity = (swap, filter) =>{
-    setTimeout(async()=>{
-
-      const {
-        user,
-        swaps,
-        // update_activity_list
-      } = this.props
-
-      console.log('SWAP SOCKET DONE :', swap)
-
-      // await update_activity_list()
-      await this.props.action.add_done_swap(swaps, user, swap)
-      // actualizamos las ordenes de la cuenta desde donde se genera el swap
-      await this.props.action.update_activity_account(swap.swap_info.account_from_id, filter, null)
-      await this.props.action.current_section_params({swap_done_out:false, swap_done_in:true})
-
-      setTimeout(()=>{
-        this.props.action.add_coin_sound()
-        this.props.action.mensaje('Nuevo intercambio realizado', 'success')
-        this.props.action.current_section_params({swap_done_out:false, swap_done_in:false, swap_done_id:false, swap_socket_channel:{
-          unique_id:null,
-          status:null
-        }})
-      }, 3000)
-
-    }, 1800)
-  }
 
 
 
@@ -292,8 +271,7 @@ function mapStateToProps(state, props){
       user:state.model_data.user && state.model_data.user[state.model_data.user_id],
       wallets,
       swaps,
-      all_pairs,
-      update_activity_list:state.ui.current_section.params.methods.activity.update_list
+      all_pairs
   }
 }
 

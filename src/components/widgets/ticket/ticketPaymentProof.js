@@ -69,8 +69,7 @@ updateLocalImg = (img) =>{
     } = this.props
 
     const {
-      id,
-      update_activity_list
+      id
     } = ticket
 
     this.props.action.Loader(true)
@@ -78,33 +77,11 @@ updateLocalImg = (img) =>{
     // let res = await this.props.action.confirm_deposit_order(ticket, '');
     if(!res){return false}
     // let list = await this.props.action.get_deposit_list(user)
-    // console.log('°°°||||||||   RES UPLOAD IMG:', res)
+    console.log('°°°||||||||   RES UPLOAD IMG:', res)
     const {
       data
     } = res
     this.props.update_ticket(data)
-    // let search_by = {
-    //   name:"unique_id",
-    //   unique_id:data.unique_id
-    // }
-    // let replace_prop = {
-    //   name:"state",
-    //   state:"confirmed"
-    // }
-    // let deposits_updated = await this.props.action.edit_array_element(search_by, replace_prop, deposit_list)
-    // let user_update = {
-    //   ...user,
-    //   deposits:[
-    //     ...deposits_updated
-    //   ]
-    // }
-    // console.log('||||||||| Before deposits ', deposit_list)
-    // this.props.action.update_user(user_update)
-    // simulamos llamado del endpoint para guardar imagen
-
-          setTimeout(async()=>{
-            await update_activity_list()
-          }, 1400)
 
       this.props.action.Loader(false)
 
@@ -117,6 +94,19 @@ updateLocalImg = (img) =>{
     setTimeout(()=>{
       this.props.action.mensaje(`¡Orden Confirmada !`, 'success')
     }, 700)
+
+    let search_by = {
+      name:"unique_id",
+      unique_id:data.unique_id
+    }
+    let replace_prop = {
+      name:"state",
+      state:"confirmed"
+    }
+    await this.props.action.edit_array_element(search_by, replace_prop, deposit_list)
+    await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
+
+
   }
 
 
@@ -185,14 +175,15 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state, props){
   const { user, user_id, deposits } = state.model_data
 
-  let deposti_list = user[user_id].deposits.map(deposit_id => {
+  let deposit_list = user[user_id].deposits.map(deposit_id => {
     return deposits[deposit_id]
   })
 
   return{
+    current_wallet:state.ui.current_section.params.current_wallet,
     loader:state.isLoading.loader,
     user:user[user_id],
-    deposit_list:deposti_list
+    deposit_list:deposit_list
   }
 }
 

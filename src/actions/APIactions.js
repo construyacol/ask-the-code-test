@@ -23,7 +23,8 @@ import * as normalizr_services from '../schemas'
 import {
   toast_sound,
   show_sound,
-  success_sound
+  success_sound,
+  add_coin_sound
 } from './soundActions'
 
 import {
@@ -743,10 +744,12 @@ export const normalize_new_item = (user, list, item, prop) =>{
        let user_update = {
          ...user,
          [prop]:[
-           ...new_list,
-           item
+           item,
+           ...new_list
+
          ]
        }
+       // console.log('Normalize List deposits - - - ', user_update)
 
         let normalizeUser = await normalize_user(user_update)
         await dispatch(Update_normalized_state(normalizeUser))
@@ -773,6 +776,9 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
     // console.log('|||||| °°°°° replace_prop', replace_prop.name, replace_prop[replace_prop.name])
     // console.log('|||||| array_list ---', array_list)
 
+    const { user, user_id } =store.getState().model_data
+
+
     let item_result = await matchItem(array_list, {primary:search_by[search_by.name]}, search_by.name)
     if(!item_result || item_result && item_result.length<1){return false}
 
@@ -781,12 +787,21 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
       [replace_prop.name]:replace_prop[replace_prop.name]
     }
 
-    let new_array_list = [new_item]
+    let new_array_list = []
 
     await array_list.map(item => {
-      if(item[search_by.name] === search_by[search_by.name]){return false}
+      if(item[search_by.name] === search_by[search_by.name]){return new_array_list.push(new_item)}
       new_array_list.push(item)
     })
+
+    let user_update = {
+      ...user[user_id],
+      deposits:[
+        ...new_array_list
+      ]
+    }
+
+    await dispatch(update_user(user_update))
 
     return new_array_list
 
@@ -987,74 +1002,6 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
   }
 }
 
-
-
-export const update_activity_account = (account_id, activity_type, activity_list) =>{
-
-  return async(dispatch) => {
-
-    if(!activity_list){
-      activity_list = await serve_orders(account_id, activity_type)
-    }
-    await dispatch(update_activity(account_id, activity_type, activity_list))
-      // console.log('update_activity_account- -- -  ', pending_activity)
-      // return pending_activity()
-      // let account = store.getState().model_data.wallets[account_id]
-      //
-      // const { user, user_id } = store.getState().model_data
-      // console.log('update_pending_activity', store.getState(), account)
-  }
-
-}
-
-
-
-export const update_pending_activity = (account_id, activity_type, activity_list) =>{
-
-  return async(dispatch) => {
-
-     const { user, user_id } = store.getState().model_data
-      let current_wallet = store.getState().model_data.wallets[account_id]
-
-      if(!current_wallet){
-        current_wallet = store.getState().ui.current_section.params.current_wallet
-      }
-
-      if(!activity_type){
-        activity_type = await store.getState().ui.current_section.params.currentFilter
-      }
-
-      if(!activity_list){
-        activity_list = await serve_orders(current_wallet.id, activity_type)
-      }
-      // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
-      // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
-
-      let pending = (activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
-      let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
-      let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
-
-      let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)
-      let pending_data;
-      // console.log('-----|||||||| °°°°  update_pending_activity', pending, confirmed, rejected)
-      pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
-      rejected ? (pending_data = rejected ? pending_data = {pending:true, lastPending:rejected[0].id} : null) :
-      confirmed && (pending_data = confirmed ? pending_data = {pending:true, lastPending:confirmed[0].id} : null)
-      // console.log('|||||||||| PENDING DATA', pending_data, 'Agregar al estado  |  expandidoMax - pending_data')
-
-      let pending_activity_payload = {
-        ...pending_data,
-        expandidoMax,
-        account_id:current_wallet.id,
-        activity_type:activity_type
-      }
-
-      dispatch(pending_activity(pending_activity_payload))
-
-
-  }
-
-}
 
 
 
@@ -1912,6 +1859,113 @@ export const user_verification_status = (level_request) =>{
 
 
 
+
+
+
+
+
+export const update_activity_account = (account_id, activity_type, activity_list) =>{
+
+  return async(dispatch) => {
+
+    let current_wallet = store.getState().model_data.wallets[account_id]
+
+    if(!current_wallet){
+      current_wallet = store.getState().ui.current_section.params.current_wallet
+    }
+
+    if(!activity_list){
+      activity_list = await serve_orders(current_wallet.id, activity_type)
+    }
+    await dispatch(current_section_params({currentFilter:activity_type}))
+    await dispatch(update_activity(current_wallet.id, activity_type, activity_list))
+      // console.log('update_activity_account- -- -  ', pending_activity)
+      // return pending_activity()
+      // let account = store.getState().model_data.wallets[account_id]
+      //
+      // const { user, user_id } = store.getState().model_data
+      // console.log('update_pending_activity', store.getState(), account)
+  }
+
+}
+
+
+
+export const update_pending_activity = (account_id, activity_type, activity_list) =>{
+
+  return async(dispatch) => {
+
+     const { user, user_id } = store.getState().model_data
+      let current_wallet = store.getState().model_data.wallets[account_id]
+
+      if(!current_wallet){
+        current_wallet = store.getState().ui.current_section.params.current_wallet
+      }
+
+      if(!activity_type){
+        activity_type = await store.getState().ui.current_section.params.currentFilter
+      }
+
+      if(!activity_list){
+        activity_list = await serve_orders(current_wallet.id, activity_type)
+      }
+      // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
+      // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
+
+      let pending = (activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
+      let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
+      let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
+
+      let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)
+      let pending_data;
+      // console.log('-----|||||||| °°°°  update_pending_activity', pending, confirmed, rejected)
+      pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
+      rejected ? (pending_data = rejected ? pending_data = {pending:true, lastPending:rejected[0].id} : null) :
+      confirmed && (pending_data = confirmed ? pending_data = {pending:true, lastPending:confirmed[0].id} : null)
+      // console.log('|||||||||| PENDING DATA', pending_data, 'Agregar al estado  |  expandidoMax - pending_data')
+
+      let pending_activity_payload = {
+        ...pending_data,
+        expandidoMax,
+        account_id:current_wallet.id,
+        activity_type:activity_type
+      }
+
+      dispatch(pending_activity(pending_activity_payload))
+
+
+  }
+
+}
+
+
+
+export const swap_activity_update = (swap, filter) =>{
+
+  return async(dispatch) => {
+
+    setTimeout(async()=>{
+
+      const { user, user_id, swaps } = store.getState().model_data
+      await dispatch(add_done_swap(swaps, user[user_id], swap))
+      // actualizamos las ordenes de la cuenta desde donde se genera el swap
+      await dispatch(update_activity_account(swap.swap_info.account_from_id, filter, null))
+      await dispatch(current_section_params({swap_done_out:false, swap_done_in:true}))
+
+      setTimeout(()=>{
+        dispatch(update_pending_activity())
+        dispatch(add_coin_sound())
+        dispatch(mensaje('Nuevo intercambio realizado', 'success'))
+        dispatch(current_section_params({swap_done_out:false, swap_done_in:false, swap_done_id:false, swap_socket_channel:{
+          unique_id:null,
+          status:null
+        }}))
+      }, 3000)
+
+    }, 1800)
+  }
+
+}
 
 
 

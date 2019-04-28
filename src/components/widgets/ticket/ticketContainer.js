@@ -74,7 +74,7 @@ class TicketContainer extends Component {
         current_wallet
       } = this.props
 
-      // console.log('||||||||||||||| - - - - TICKET', ticket)
+      console.log('||||||||||||||| - - - - TICKET', ticket.unique_id)
 
       switch (type_order) {
         case 'withdraw':
@@ -153,7 +153,7 @@ class TicketContainer extends Component {
               current_ticket:[
                 {
                   ui_name:"Id orden:",
-                  value:ticket.id,
+                  value:ticket.unique_id || ticket.id,
                   id:1,
                 },
                 {
@@ -211,67 +211,52 @@ class TicketContainer extends Component {
 
           case 'deposit':
 
-
-              let {
-                id,
-                currency,
-                info,
-                cost_struct,
-                cost,
-                amount,
-                amount_neto,
-                deposit_provider_id,
-                currency_type,
-                proof_of_payment,
-                state
-              } = ticket
-
               let {
                 deposit_providers,
                 currencies
               } = this.props
 
-            if(currency_type == 'crypto'){
+            if(ticket.currency_type == 'crypto'){
               return this.setState({
                 current_ticket:[
                   {
                     ui_name:"Id Orden:",
                     copy:true,
-                    value:id,
+                    value:ticket.unique_id || ticket.id,
                     id:1
                   },
                   {
                     ui_name:"Moneda(Divisa):",
-                    value:currency.currency,
-                    icon:currency.currency,
+                    value:ticket.currency.currency,
+                    icon:ticket.currency.currency,
                     id:2
                   },
                   {
                     ui_name:"Estado:",
-                    value:state,
+                    value:ticket.state,
                     id:3
                   },
                   {
                     ui_name:"Cantidad:",
-                    icon:currency.currency,
-                    value:amount,
+                    icon:ticket.currency.currency,
+                    value:ticket.amount,
                     id:4
                   },
                   {
                     ui_name:"Costo:",
-                    icon:currency.currency,
-                    value:cost,
+                    icon:ticket.currency.currency,
+                    value:ticket.cost,
                     id:5
                   },
                   {
                     ui_name:"Cantidad total recibida:",
-                    icon:currency.currency,
-                    value:amount_neto,
+                    icon:ticket.currency.currency,
+                    value:ticket.amount_neto,
                     id:6
                   },
                   {
                     ui_name:"Tx Id:",
-                    value:proof_of_payment.proof,
+                    value:ticket.proof_of_payment.proof,
                     type:"tx",
                     copy:true,
                     url_explorer:currencies[ticket.currency.currency] && currencies[ticket.currency.currency].node_url,
@@ -281,49 +266,49 @@ class TicketContainer extends Component {
               })
             }
 
-            if(currency_type === 'fiat'){
+            if(ticket.currency_type === 'fiat'){
             return this.setState({
               current_ticket:[
                 {
                   ui_name:"Debes depositar a:",
-                  value:deposit_providers[deposit_provider_id].provider.ui_name,
-                  icon:deposit_providers[deposit_provider_id].provider.name,
+                  value:deposit_providers[ticket.deposit_provider_id].provider.ui_name,
+                  icon:deposit_providers[ticket.deposit_provider_id].provider.name,
                   id:5
                 },
                 {
-                  ui_name:deposit_providers[deposit_provider_id].provider.account.account_id.ui_name,
-                  value:deposit_providers[deposit_provider_id].provider.account.account_id.account_id,
+                  ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.account_id.ui_name,
+                  value:deposit_providers[ticket.deposit_provider_id].provider.account.account_id.account_id,
                   id:6
                 },
                 {
-                  ui_name:deposit_providers[deposit_provider_id].provider.account.type.ui_name,
-                  value:deposit_providers[deposit_provider_id].provider.account.type.type,
+                  ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.type.ui_name,
+                  value:deposit_providers[ticket.deposit_provider_id].provider.account.type.type,
                   id:7
                 },
                 {
-                  ui_name:deposit_providers[deposit_provider_id].provider.account.bussines_name.ui_name,
-                  value:deposit_providers[deposit_provider_id].provider.account.bussines_name.bussines_name,
+                  ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.bussines_name.ui_name,
+                  value:deposit_providers[ticket.deposit_provider_id].provider.account.bussines_name.bussines_name,
                   id:8
                 },
                 {
                   ui_name:"Id deposito:",
-                  value:id,
+                  value:ticket.unique_id || ticket.id,
                   id:1
                 },
                 {
                   ui_name:"Cantidad deposito:",
-                  value:`$ ${number_format(amount)} ${currency.currency}`,
-                  icon:currency.currency,
+                  value:`$ ${number_format(amount)} ${ticket.currency.currency}`,
+                  icon:ticket.currency.currency,
                   id:2
                 },
                 {
                   ui_name:"Costo deposito:",
-                  value:`$ ${number_format(cost)} ${currency.currency}`,
+                  value:`$ ${number_format(ticket.cost)} ${ticket.currency.currency}`,
                   id:3
                 },
                 {
                   ui_name:"Total deposito:",
-                  value:`$ ${number_format(amount_neto)} ${currency.currency}`,
+                  value:`$ ${number_format(amount_neto)} ${ticket.currency.currency}`,
                   id:4
                 }
               ]
@@ -333,7 +318,7 @@ class TicketContainer extends Component {
           return this.setState({current_ticket:[
             {
               ui_name:"id intercambio:",
-              value:ticket.id,
+              value:ticket.unique_id || ticket.id,
               id:1
             },
             // {

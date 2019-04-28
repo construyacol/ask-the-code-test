@@ -346,7 +346,7 @@ updateAmountOnState = async(amount) =>{
       deposits,
       deposit_provider_id.id
     )
-    // console.log('create_deposit_order Respuesta', response)
+    // console.log('create_deposit_order response', response)
 
     if(!response){
       this.props.action.Loader(false)
@@ -362,10 +362,18 @@ updateAmountOnState = async(amount) =>{
       ...response.deposit_info
     }
 
+    console.log('create_deposit_order new_deposit_model', new_deposit_model)
+
+    // await this.props.action.get_deposit_list(user)
     await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
-    setTimeout(()=>{
-      this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
-    }, 5000)
+    await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
+    await this.props.action.update_pending_activity()
+
+    // setTimeout(async()=>{
+    //   await this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
+    //   await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
+    //   await this.props.action.update_pending_activity()
+    // }, 5000)
 
     const { deposit_info } = response
 
