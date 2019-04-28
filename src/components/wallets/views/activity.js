@@ -48,7 +48,7 @@ render(){
     all_pairs
   } = this.props
 
-
+// console.log('hijo de su puta madre', current_wallet, wallets, all_pairs)
   return(
     <Fragment>
     {

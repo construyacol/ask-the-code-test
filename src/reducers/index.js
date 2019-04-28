@@ -3,6 +3,7 @@ import form from './form'
 import isLoading from './is_loading'
 import ui from './ui'
 import auth from './auth'
+import storage from './storage'
 
 import { combineReducers } from 'redux'
 
@@ -11,7 +12,8 @@ import { combineReducers } from 'redux'
    form,
    isLoading,
    ui,
-   auth
+   auth,
+   storage
   })
 
  export default rootReducer

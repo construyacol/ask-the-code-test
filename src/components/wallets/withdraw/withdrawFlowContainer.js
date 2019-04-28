@@ -252,6 +252,7 @@ class WithdrawFlow extends Component {
       // const { data } = res
       const { new_order } = this.state
 
+      console.log('CONFIRMAR ORDEN DATA RES', new_order)
 
       let new_withdraw = {
         account_id:withdraw_info.account_from,
@@ -285,6 +286,9 @@ class WithdrawFlow extends Component {
       // alert('Finish_Him')
       // this.props.action.CurrentForm('wallets')
       await this.props.action.add_order_to('withdrawals', this.props.withdrawals, this.props.user, new_withdraw)
+      await this.props.action.current_section_params({currentFilter:'withdrawals'})
+      await this.props.action.update_activity_account(new_withdraw.account_id, 'withdrawals')
+
       await this.props.action.ToggleModal()
       this.props.history.push(`/wallets/activity/${account_from.id}`)
       this.props.action.add_new_transaction_animation()

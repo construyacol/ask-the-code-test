@@ -5,6 +5,7 @@ import * as Loader from './loader'
 import * as ui_actions from './uiActions'
 import * as sounds from './soundActions'
 import * as auth from './auth'
+import * as storage from './storage'
 
 const actions = {
   ...Loader,
@@ -13,7 +14,8 @@ const actions = {
   ...dataModelActions,
   ...ui_actions,
   ...sounds,
-  ...auth
+  ...auth,
+  ...storage
 }
 
 export default actions

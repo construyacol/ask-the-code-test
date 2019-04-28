@@ -51,12 +51,7 @@ const initialState = {
       swap_done_out:null,
       swap_done_in:null,
       new_deposit_style:null,
-      currentFilter:'deposits',
-      methods:{
-        activity:{
-          update_list:null
-        }
-      }
+      currentFilter:'deposits'
     }
   },
   other_modal:false,
