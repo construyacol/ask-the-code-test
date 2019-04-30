@@ -62,14 +62,16 @@ render(){
 
   const { current_wallet } = this.props
   const { qr, address, fiat_currency, verified } = this.state
+  let movil_viewport = window.innerWidth < 768
 
 
   const atributos ={
     icon: fiat_currency ? 'deposit' : 'deposit_crypto',
-    size:110,
+    size:movil_viewport ? 80 : 100,
     // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
     color:'#989898'
   }
+
 
 
   return(

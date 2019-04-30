@@ -153,22 +153,28 @@ class ItemSettingsInit extends Component{
         withdraw
       } = security_center.authenticator
 
-      // console.log('|||desde el componente update_state', payload)
+      let movil_viewport = window.innerWidth < 768
+
+      // console.log('|||desde el componente ItemSettings', name, payload)
 
       switch (name) {
 
         case 'email':
             return {
               available:true,
-              verify:security_center.email
+              verify:security_center.email,
+              classic_view:movil_viewport
             }
         case 'identity':
             return {
               available:true,
-              verify:true
+              verify:true,
+              classic_view:movil_viewport
+
             }
         case 'kyc_financial':
             return {
+              classic_view:movil_viewport,
               icon:kyc.financial === 'rejected' ? 'error' : null,
               color:kyc.financial === 'rejected' ? '#c70000' : null,
               available:kyc.basic === 'accepted' && kyc.advanced === 'accepted',
@@ -179,6 +185,7 @@ class ItemSettingsInit extends Component{
             }
         case 'kyc_basic':
             return {
+              classic_view:movil_viewport,
               color:kyc.basic === 'rejected' ? '#c70000' : null,
               icon:kyc.basic === 'rejected' ? 'error' : null,
               available:true,
@@ -193,6 +200,7 @@ class ItemSettingsInit extends Component{
 
         case 'kyc_advanced':
             return {
+              classic_view:movil_viewport,
               available:kyc.basic === 'confirmed' || kyc.advanced === 'accepted' ? true : null,
               verify:kyc.advanced === 'accepted',
               other_state:kyc.advanced,
@@ -203,6 +211,7 @@ class ItemSettingsInit extends Component{
         case '2auth':
         // console.log('|||||||||||||| HABILITAR DESACTIVABLE 2AUTH', authenticator)
             return {
+              classic_view:movil_viewport,
               available:true,
               other_state:auth ? 'to_disable' : null,
               verify:auth
@@ -210,6 +219,7 @@ class ItemSettingsInit extends Component{
 
         case 'transactional':
             return {
+              classic_view:movil_viewport,
               available:auth && true,
               other_state:transactional ? 'to_disable' : null,
               verify:auth && transactional
@@ -217,6 +227,7 @@ class ItemSettingsInit extends Component{
 
         case 'withdraw':
             return {
+              classic_view:movil_viewport,
               available:auth && true,
               other_state:withdraw ? 'to_disable' : null,
               verify:auth && withdraw

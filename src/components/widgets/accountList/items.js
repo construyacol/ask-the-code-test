@@ -31,7 +31,7 @@ componentDidMount(){
     // console.log('||||||||||||||||||||||||||||||| UPDATE DEPOSIT CURRENT WALL', dep_prov)
 
     // this.props.action.update_deposit_provider(init, deposit_providers, wallet, dep_prov)
-let current_wallet = wallet
+    let current_wallet = wallet
     if(dep_prov.length>0 && deposit_providers){
 
       let provider_index = (this.props.wallet.dep_prov.length)-1
@@ -141,7 +141,8 @@ let current_wallet = wallet
       current_view,
       wallet_state,
       id_wallet_action,
-      balances
+      balances,
+      clases
     } = this.props
 
     const {
@@ -170,7 +171,7 @@ let current_wallet = wallet
 
     return(
     <Fragment>
-      <div className={` contWalleins ${wallet_state === 'deleting' && id_trigger ? 'WIwalletDeleting' : wallet_state === 'deleted' && id_trigger ? 'WIwalletDeleted' : ''}`}>
+      <div className={` contWalleins ${clases} ${wallet_state === 'deleting' && id_trigger ? 'WIwalletDeleting' : wallet_state === 'deleted' && id_trigger ? 'WIwalletDeleted' : ''}`}>
 
               <div
                 id="ItemWallet"

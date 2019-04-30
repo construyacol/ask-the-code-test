@@ -75,7 +75,11 @@ can_proceed = () =>{
 }
 
 
+
+
 render(){
+
+  let movil_viewport = window.innerWidth < 768
 
   // console.log('||||||||||||||||| -- - - -- WALLET INFO: ', this.props)
 
@@ -160,7 +164,7 @@ render(){
        <div className={`ALDetail ${(loader && current_order_loader === id) ? 'InProcess' : ''}`} onClick={this.detail}></div>
       }
 
-      <div className="ItemLeft">
+      <div className={`ItemLeft ${(currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap') ? 'delete' : 'normal' }`}>
         {
           (currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap')&&
           <div className="contenDe tooltip" onClick={this.delete}>
@@ -171,31 +175,38 @@ render(){
           </div>
         }
 
+
         {
-          (type_order === 'swap' && pendingSwap) ?
-            <div className="loaderViewItem" >
-              {
-                statePendingSwap !== 'done' ?
-                <SimpleLoader loader={2}/>
-                :
-                <div className="successIcon">
-                  <IconSwitch  icon="success" size={80}  color="#1cb179" />
-                </div>
-              }
-            </div>
-          :
-              (currency_type === 'crypto' && state === 'confirmed') ?
-                <div className="ConfirmedTxT fuente2">
-                  <p>
-                    3 <span>/6</span>
-                  </p>
+          !movil_viewport &&
+          <Fragment>
+            {
+              (type_order === 'swap' && pendingSwap) ?
+                <div className="loaderViewItem" >
+                  {
+                    statePendingSwap !== 'done' ?
+                    <SimpleLoader loader={2}/>
+                    :
+                    <div className="successIcon">
+                      <IconSwitch  icon="success" size={80}  color="#1cb179" />
+                    </div>
+                  }
                 </div>
               :
-                <div className="fecha">
-                  <p className="ALdayDate fuente2"  style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>02</p>
-                  <p className="ALmonthDate" style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>JUL</p>
-                </div>
+                  (currency_type === 'crypto' && state === 'confirmed') ?
+                    <div className="ConfirmedTxT fuente2">
+                      <p>
+                        3 <span>/6</span>
+                      </p>
+                    </div>
+                  :
+                    <div className="fecha">
+                      <p className="ALdayDate fuente2"  style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>02</p>
+                      <p className="ALmonthDate" style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>JUL</p>
+                    </div>
+            }
+          </Fragment>
         }
+
 
 
 
@@ -214,10 +225,10 @@ render(){
               :
                 <i
                   style={{color:(state === 'accepted' || statePendingSwap === 'done') ? '#1cb179': state === 'pending' ? '#ff8660':((state === 'pending' && !pendingSwap) || (state === 'confirmed' && !pendingSwap && currency_type !== 'crypto')) ? '#ff8660' : (state === 'confirmed' && currency_type === 'crypto') && '#1cb179'}}
-                  className={`${type_order === 'deposit' ? 'fas fa-arrow-down' : type_order === 'swap' ? 'fas fa-retweet' : type_order === 'withdraw' ? 'fas fa-arrow-up' : ''}`} ></i>
+                  className={`action_type ${type_order === 'deposit' ? 'fas fa-arrow-down' : type_order === 'swap' ? 'fas fa-retweet' : type_order === 'withdraw' ? 'fas fa-arrow-up' : ''}`} ></i>
             }
 
-            <p  style={{color:statePendingSwap === 'done' ? '#1cb179' :
+            <p className="action_type_text"  style={{color:statePendingSwap === 'done' ? '#1cb179' :
               ((state === 'pending' && !pendingSwap) || (state === 'confirmed' && !pendingSwap && currency_type !== 'crypto') ) ? '#ff8660':
               (state === 'confirmed' && currency_type === 'crypto') ? '#1cb179':
               (state === 'accepted' && !pendingSwap ) ? '#1cb179':
@@ -231,11 +242,17 @@ render(){
                 type_order === 'withdraw' && 'Retiro'
               }
             </p>
+
+            {
+              movil_viewport &&
+              <div className="action_date fuente2">
+                23 nov 2019
+              </div>
+            }
+
           </Fragment>
         }
       </div>
-
-
 
 
 
@@ -247,6 +264,7 @@ render(){
         (state === 'accepted') ? '#1cb179' :
         (type_order !== 'swap' && (state === 'rejected' || state === 'canceled'  || statePendingSwap === 'error')) ? '#f44336' :
         (type_order !== 'swap' && state === 'confirmed') ? '#1cb179' : '#80808029'}}>
+
         <p style={{color:"white !important"}}>
           {
             type_order === 'swap' && statePendingSwap !== 'accepted' ?
@@ -256,18 +274,23 @@ render(){
           }
 
           {
-            currency_type === 'crypto' && state ==='confirmed'?
+            !movil_viewport &&
             <Fragment>
-              Confirmado:
-              <span className="fuente2 confirmedNumber">
-                3/6
-              </span>
+              {
+              currency_type === 'crypto' && state ==='confirmed'?
+              <Fragment>
+                Confirmado:
+                <span className="fuente2 confirmedNumber">
+                  3/6
+                </span>
+              </Fragment>
+              :
+              (type_order === 'swap' && pendingSwap) ?
+                  statePendingSwap === 'done' ? 'aceptado' :  statePendingSwap
+                 :
+                 statePendingSwap === 'error' ? 'Error' : state
+               }
             </Fragment>
-            :
-            (type_order === 'swap' && pendingSwap) ?
-                statePendingSwap === 'done' ? 'aceptado' :  statePendingSwap
-               :
-               statePendingSwap === 'error' ? 'Error' : state
           }
         </p>
       </div>
@@ -337,7 +360,12 @@ render(){
                 </div>
               }
             </div>
-            <i id="ALgoto" className="fas fa-angle-right" style={{color:state === 'accepted' ?'#1cb179':'gray'}}></i>
+
+              {
+                !movil_viewport &&
+                <i id="ALgoto" className="fas fa-angle-right" style={{color:state === 'accepted' ?'#1cb179':'gray'}}></i>
+              }
+
           </Fragment>
         }
 

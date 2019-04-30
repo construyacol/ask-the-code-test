@@ -9,6 +9,8 @@ const ActivityFilters = props => {
     toggleFilter
   } = props
 
+  let movil_viewport = window.innerWidth < 768
+
   return(
     <section className="ALFilterSect">
 
@@ -20,33 +22,51 @@ const ActivityFilters = props => {
 
         <p id="deposits" className={`ALitemFill ${currentFilter === 'deposits' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="deposits" className="fas fa-arrow-down"></i>
-          Depositos
+          {
+            !movil_viewport &&
+            'Depositos'
+          }
         </p>
         <p id="withdrawals" className={`ALitemFill ${currentFilter === 'withdrawals' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="withdrawals" className="fas fa-arrow-up"></i>
-          Retiros
+          {
+            !movil_viewport &&
+            'Retiros'
+          }
         </p>
         <p id="swaps" className={`ALitemFill ${currentFilter === 'swaps' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="swaps" className="fas fa-retweet"></i>
-          Intercambios
+          {
+            !movil_viewport &&
+            'Cambios'
+          }
         </p>
       </div>
 
-      <div className={` ALif2 ALitemFill ${filter ? 'ALactive' : ''}`} onClick={toggleFilter}>
-        <div className="ALif2ItemAll" style={{top:filter ? '-100%' : '0%'}}>
 
-            <div className="ALif2Item currentFill" >
-              <i className="fas fa-filter"></i>
-              <p>{currentFilter.toUpperCase()}</p>
-            </div>
+        <div className={` ALif2 ALitemFill ${filter ? 'ALactive' : ''} ${movil_viewport ? 'movil' : ''}`} onClick={movil_viewport ? null : toggleFilter}>
+          <div className="ALif2ItemAll" style={{top:filter ? '-100%' : '0%'}}>
 
-            <div className="ALif2Item" >
-              <i className="fas fa-filter"></i>
-              <p>VER</p>
-            </div>
+              <div className="ALif2Item currentFill">
+                <i className="fas fa-filter"></i>
+                <p>{currentFilter.toUpperCase()}</p>
+              </div>
 
+              <div className="ALif2Item" style={{fontSize:movil_viewport ? '12px' : '14px'}}>
+                <i className="fas fa-filter"></i>
+                {
+                  movil_viewport ?
+                  <p>{currentFilter.toUpperCase()}</p>
+                  :
+                  <p>VER</p>
+                }
+              </div>
+
+          </div>
         </div>
-      </div>
+
+
+
 
     </section>
   )

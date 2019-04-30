@@ -75,7 +75,7 @@
       {
         "id":1,
         "name":"2auth",
-        "label":"Factor de doble verificación 2AUTH",
+        "label":"Segundo factor 2AUTH",
         "description":"Agrega una segunda capa de seguridad al inicio de sesión de tu cuenta con una contraseña dinamica que cambiara cada 30 segundos y que solo estará accesible desde tu dispositivo movil   |   (RECOMENDADO).",
         "verify":true,
         "cta_primary":"Habilitar",

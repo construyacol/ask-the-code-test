@@ -24,7 +24,7 @@
         "id":3
       },
       {
-        "title":"Intercambio",
+        "title":"Cambio",
         "func":"goTo",
         "link":"swap",
         "available":true,

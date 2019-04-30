@@ -253,6 +253,7 @@ export const get_pairs_for = (country, user_collection) => {
 
     const url_pairs = `${ApiUrl}pairs?filter={"where": {"secondary_currency.currency": "${local_currency.toLowerCase()}"}}`
     const pairs = await ApiGetRequest(url_pairs)
+    console.log('111111 get_pairs_for', pairs)
 
     if(!pairs){return false}
     // Actualizo el estado con todas las cotizaciones disponibles en contra(secondary_currency) de la moneda local
@@ -1113,6 +1114,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
     if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
+      // console.log('||||| providers_servedsss...', wa.provider_type, providers_served[wa.provider_type])
       if(wa.info.currency_type === 'fiat'){
         return {
           id:wa.id,
@@ -1630,7 +1632,6 @@ export const get_user = (token, user_country) =>{
 
 
     // console.log('||||||  - - -.  --  country_object', country[0])
-
 
     let kyc_personal = country[0].levels && country[0].levels.personal
     let kyc_identity = country[0].levels && country[0].levels.identity

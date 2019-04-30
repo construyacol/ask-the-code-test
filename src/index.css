@@ -1,7 +1,6 @@
 .flip-2-hor-bottom-fwd{
   -webkit-animation: flip-2-hor-bottom-fwd 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
   animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
-
 }
 
 
@@ -374,7 +373,327 @@ circle{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 768px) {
+
+
+  .DepositView .contButtons{
+    transform: scale(.9) !important;
+  }
+
+  .DepositView p{
+    align-self: center !important;
+  }
+
+  .DepositView{
+    grid-template-rows: 40% 30% 1fr !important;
+    padding: 10px !important;
+    width: calc(100% - 20px) !important;
+    height: calc(100% - 20px) !important;
+  }
+
+  .contWalleins.detail{
+    transform: scale(.93) translateY(-10%);
+  }
+
+  .coinList{
+    transform: scale(.8) translateY(-10px);
+  }
+
+  .sectionFixedPrice{
+    padding-top: 60px !important;
+    height: auto !important;
+  }
+
+  #ALrevised{
+    font-size: 15px !important;
+  }
+
+  #Aldelete{
+    width: 40px !important;
+  }
+
+
+  .ALstatus{
+    display: none !important;
+  }
+
+  .contenido{
+    padding-top: 45px !important;
+    padding-bottom: 95px !important;
+    width: auto !important;
+  }
+
+  .DCcurrent_wallet{
+    grid-template-rows: 180px 1fr !important;
+    padding-top: 45px !important;
+    padding-bottom: 0 !important;
+    min-height: calc(100vh - 145px) !important;
+  }
+
+  .action_date{
+    font-size: 12px;
+    color: gray;
+    min-width: 90px !important;
+  }
+
+  .ItemLeft.delete{
+    display: grid !important;
+    grid-template-areas: "contenDe action_type action_type_text "
+                         "contenDe action_type action_date "
+  }
+
+  .ItemLeft.normal{
+    display: grid !important;
+    grid-template-areas: "action_type action_type_text "
+                         "action_type action_date "
+  }
+
+  .contenDe{
+    grid-area: contenDe;
+  }
+
+  .action_type{
+    grid-area: action_type;
+  }
+
+  .action_type_text{
+    grid-area: action_type_text;
+    font-size: 15px;
+  }
+
+  .date_action{
+    grid-area: date_action;
+  }
+
+  .ItemLeft p{
+    margin: 0px !important;
+  }
+
+  .ItemList{
+    padding: 0 15px !important;
+  }
+
+
+  .containerMenuSuperior{
+    height: 120px !important;
+  }
+
+  .subMenu{
+   top: 60px !important;
+  }
+
+  .MenuSuperiorLayout{
+    height: 60px !important;
+  }
+
+  .ALstatus{
+    transform: scale(.7);
+    min-width: 0 !important;
+  }
+
+  .ALstatus i{
+    margin: 0 !important;
+  }
+
+  .ALfiltros P{
+    color:gray;
+    display: grid;
+    align-items: center;
+    justify-items:center;
+  }
+
+  .ALitemFill{
+    display: grid !important;
+    align-items: center !important;
+    justify-items:center !important;
+  }
+
+  .ALitemFill i{
+    margin-right: 0 !important;
+  }
+
+  .ALif2Item p{
+    margin-left: 7px !important;
+  }
+
+  .containerInputComponent .labelText{
+    display: initial;
+    margin: 0 !important;
+    font-size: 14px;
+  }
+
+  .panelImgFinancial{
+    grid-template-rows: 60% 1fr !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .SCcta{
+    display: none !important;
+  }
+
+  .SCtitle{
+    font-size: 16px !important;
+  }
+
+  .FinancialUploaded{
+    width: auto !important;
+  }
+
+  .SCverification{
+    display: none;
+  }
+
+  .contentSubItem p{
+    display: none;
+  }
+
+  .contentSubItem{
+    grid-template-columns: 1fr !important;
+    border-bottom: none !important;
+  }
+
+  .SCimgItemCont.first{
+    transform: scale(0.8) !important;
+  }
+
+  .SCimgItemCont{
+    transform: scale(0.6) !important;
+  }
+
+  .subItemSecurityCenter{
+    grid-template-columns: 1fr !important;
+    height: 55px !important;
+  }
+
+  .subMenu{
+    min-height: 60px !important;
+  }
+
+
+
+  .InputStep{
+    top: 20px !important;
+  }
+
+  .AddNewItemContainer{
+    width: calc(100% - 30px) !important;
+  }
+
+  #kycPrime.containerInputComponent2{
+    width: 95% !important;
+    min-width: 200px !important;
+  }
+
+  .contCountryList{
+    width: auto !important;
+  }
+
+  .closeModalButtonCont{
+    z-index: 3;
+  }
+
+  .modalCont, .modalCont2{
+    height: calc(100% - 20px) !important;
+    padding: 10px !important;
+  }
+
+  .otherModal{
+    width: 100% !important;
+    max-height: 650px;
+  }
+
+
+  .PairListtitle{
+    font-size: 14px !important
+  }
+
+  .PairListtitle i {
+    position: absolute;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+  .PairListtitle h1{
+    font-size: 16px !important;
+  }
+
+  .containerInputComponent{
+    padding: 0 30px !important;
+    width: calc(100% - 60px) !important;
+  }
+
+  .TwoFactorActivate{
+    width: calc(100% - 30px) !important;
+    padding: 0 15px !important;
+  }
+
+  .PhoneView{
+    grid-template-rows: 100px 1fr 80px !important;
+  }
+
+  .footer2faTextDes p{
+    font-size: 14px !important;
+  }
+
+  .modalCont2 p{
+    align-self:center !important;
+  }
+
+  .TwoFactorActivate p{
+    font-size: 14px !important;
+    width: 100% !important;
+  }
+
+  .bodySon img{
+    width: 150px !important;
+  }
+
+  .TLayout{
+    grid-template-rows: 20% 1fr !important;
+  }
+
+  .contentSubText{
+    padding-left: 10px !important;
+  }
+
+  .header2fa {
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+}
+
+.header2fa h3{
+  margin: 0 !important;
+  font-size: 22px !important;
+}
+
+
+.header2fa .iconSty{
+  /*transform: scale(.8) !important;*/
+}
 
 
   .PhoneamEsta{
@@ -387,7 +706,7 @@ circle{
 
 
   .Mconfirmar {
-    width: calc(97% - 20px) !important;
+    /*width: calc(97% - 20px) !important;*/
     height: 500px !important;
     background: white !important;
   }
@@ -562,41 +881,69 @@ circle{
       margin-top: 0px !important;
   }
 
-.imgDashContainer>p{
-      align-items: flex-end !important;
-      margin: 0 !important;
-}
+  .imgDashContainer>p{
+        align-items: flex-end !important;
+        margin: 0 !important;
+  }
 
-#putita{
-  align-items: center !important;
-}
+  #putita{
+    align-items: center !important;
+  }
 
   .containerKycAvanced{
     grid-template-columns: calc(100vw - 14px) !important;
     grid-template-rows: repeat(2, calc(100vh)) !important;
   }
 
-.KycDashContainer{
-  height: 100% !important;
+  .KycDashContainer{
+    height: 100% !important;
+  }
+
+
+
+  .imgDashContainer{
+    width: 100% !important;
+  }
+
+  .KycDashboard{
+    border: none !important;
+  }
+
+
+ .holi{
+   position: absolute;
+   width: 100%;
+ }
+
+  #paymentConfirButton{
+    padding: 0 5px !important;
+  }
+
 }
 
 
 
-.imgDashContainer{
-  width: 100% !important;
-}
-
-.KycDashboard{
-  border: none !important;
+@media only screen and (max-height: 750px) {
+  .coinList{
+    transform: scale(.8);
+  }
 }
 
 
-.holi{
-  position: absolute;
-  width: 100%;
+
+@media only screen and (max-height: 650px) {
+  .coinList{
+    transform: scale(.75) translateY(-17px);
+  }
 }
 
+
+@media only screen and (max-height: 590px) {
+  .coinList{
+    transform: scale(.65) translateY(-30px);
+  }
 }
+
 
 @media only screen and (max-width: 450px) {
 
@@ -648,9 +995,7 @@ circle{
     font-size: 25px !important;
   }
 
-  .containerMenuSuperior{
-    /*height: 15vh !important;*/
-  }
+
 
   .KycParra1{
     font-size: 18px !important;

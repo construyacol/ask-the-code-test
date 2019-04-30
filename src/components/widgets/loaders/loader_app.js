@@ -110,10 +110,10 @@ class LoaderAplication extends Component {
     await action.update_user(user_update)
     await init_sockets()
 
-    // // // let user_collection = [{primary:'dash'}, {primary:'ethereum'}]
-    // // // await action.get_pairs_for('colombia', user_collection)
+    let user_collection = [{primary:'ethereum'}]
+    await action.get_pairs_for('colombia', user_collection)
 
-    await action.get_pairs_for('colombia')
+    // await action.get_pairs_for('colombia')
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
     await action.get_account_balances(this.props.user)

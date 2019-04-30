@@ -78,11 +78,12 @@ class SubItemSC extends Component {
     } = this.state
 
     let originIndex = index-1
+    let movil_viewport = window.innerWidth < 768
 
     const atributos ={
       icon:icon ? icon : name,
       size:40,
-      color:`${color ? color : classic_view ? '#989898'  : !verify ? '#989898' : '#1babec'}`
+      color:`${color ? color : !verify ? '#989898' : '#1babec'}`
     }
 
     // if(this.state.type==='identity'){console.log(type, name, this.state)}
@@ -97,12 +98,29 @@ class SubItemSC extends Component {
 // contentSubItem // last
 
 // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
-  // console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props)
+  console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem)
 
     return(
-      <div className="subItemSecurityCenter" style={{gridTemplateColumns:classic_view ? '1fr' : '12vw 1fr' }}>
-      {/* <div className="subItemSecurityCenter" > */}
+      <div className="subItemSecurityCenter" style={{gridTemplateColumns:classic_view ? '1fr' : '12vw 1fr' }} onClick={(!available || !movil_viewport) ? null : other_state === 'to_disable' ? this.actionHandle : (verify || other_state === 'confirmed' || other_state === 'send' ) ? null : this.actionHandle}>
 
+        {
+          (movil_viewport && !tree) &&
+          <div className="contCtaMovilSec">
+            {
+              other_state === "send" ?
+              <i class="enviarNero fas fa-angle-double-down" style={{color:"gray"}}></i>
+              :
+              other_state === "confirmed"?
+              <i class="fas fa-spinner rotateGono" style={{color:"#bbbbbb"}}></i>
+              :
+              verify ?
+              <i className="fas fa-check" style={{color:"#59B200"}}></i>
+              :
+              available &&
+              <i className="fas fa-chevron-right" style={{color:"gray"}}></i>
+            }
+          </div>
+        }
 
 
         <div className="SCimgItem" style={{display:classic_view ? 'none' : 'grid' }} >
@@ -119,13 +137,11 @@ class SubItemSC extends Component {
 
 
           <div className="contentSubText fuente" style={{gridTemplateRows:tree ? '70px 1fr': '60px 20px 1fr'}, {opacity:((verify && available) || other_state === 'confirmed' || other_state === 'send') ? '1': other_state === 'rejected' ? '0.8'  : '0.5'}}>
-          <div className="SCtitle" style={{color:classic_view ? 'gray' : (verify && tree) ? '#1fa4e9' : other_state === 'send' ? '#545454' : 'gray' }} >
-
+          <div className="SCtitle" style={{color:(classic_view && verify) ? '#1fa4e9' : classic_view ? 'gray' : (verify && tree) ? '#1fa4e9' : other_state === 'send' ? '#545454' : 'gray' }} >
             <div className={`ScimgClassicView ${classic_view ? 'classic_view' : '' }`} style={{display:classic_view ? 'flex' : 'none' }}>
               <IconSwitch {...atributos} />
             </div>
-
-            {label}
+              {label}
           </div>
 
           <div className="SCverification" style={{color:verify ? '#59B200' : other_state === 'confirmed' ? 'gray' : other_state === 'send' ? '#59B200' : '#540000' , display:tree ? 'none' : 'visible' }}>

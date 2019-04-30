@@ -11,8 +11,7 @@
   display: grid;
   grid-template-columns: 12vw 1fr;
   margin: 15px 0;
-  /*align-items: center;*/
-  /*justify-items:center; */
+  position: relative;
 }
 
 .subItemSecurityCenter div, .subItemSecurityCenter p{
@@ -28,6 +27,22 @@
   /*border-top-color: #d5d5d6;*/
 }
 
+.contCtaMovilSec{
+  position: absolute;
+  right: 0;
+  height: 100%;
+  width: 40px;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+.contCtaMovilSec i{
+  /*color: gray;*/
+  font-size: 18px;
+}
+
+
 
 .contentSubItem.last{
   border-bottom-color: transparent;
@@ -36,6 +51,23 @@
 
 .SCdesc{
   font-size: 15px;
+}
+
+
+.rotateGono{
+  animation-name: rotateLoader;
+  animation-duration: .65s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in;
+}
+
+@keyframes rotateLoader{
+  0%{
+    transform: rotate(0deg);
+  }
+  100%{
+    transform: rotate(357deg);
+  }
 }
 
 
@@ -63,6 +95,11 @@
   align-items: center;
   color: gray;
   font-size: 25px;
+}
+
+.SCtitle p{
+  margin: 0 !important;
+  color: gray;
 }
 
 

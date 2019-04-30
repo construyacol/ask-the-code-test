@@ -752,6 +752,10 @@ font-size: 30px;
   border-style: none !important;
 }
 
+.ALif2.movil{
+  min-width:100px !important;
+}
+
 .ALif2Item{
   display: flex;
   align-items: center;

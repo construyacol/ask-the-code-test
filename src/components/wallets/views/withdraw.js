@@ -168,7 +168,7 @@ const { value, address, active, addressVerify, show_last_address, address_value,
 
 const atributos ={
   icon:'withdraw2',
-  size:110,
+  size:100,
   // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
   color:'#989898'
 }

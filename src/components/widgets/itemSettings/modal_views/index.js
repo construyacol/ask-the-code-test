@@ -200,9 +200,10 @@ update_state = (payload) =>{
 
     const atributos ={
       icon:`${auth ? '2auth' : section}`,
-      size:90,
+      size:80,
       color:`${success ? '#59b200' : '#1babec' }`
     }
+    let movil_viewport = window.innerWidth < 768
 
 // console.log(' || |||| ModalSettingSwitch - -- - ', this.props)
 
@@ -252,7 +253,7 @@ update_state = (payload) =>{
 
                   <div className="CMControls">
                     {
-                      !success ?
+                      !success && !movil_viewport ?
                       <Fragment>
                           <ButtonForms
                             type="secundary"
