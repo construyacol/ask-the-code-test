@@ -1,8 +1,8 @@
 export const Environtment = {
-  ApiUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
-  SocketUrl:process.env.NODE_ENV === 'development' ? 'http://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
-  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'http://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
-  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'http://countrylistapi.ngrok.io/api/' : 'https://countrylistapi.ngrok.io/api/',
+  ApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
+  SocketUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
+  IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'https://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
+  CountryApIUrl:process.env.NODE_ENV === 'development' ? 'https://countrylistapi.ngrok.io/api/' : 'https://countrylistapi.ngrok.io/api/',
   CountryUrl:'http://countrylistapi.ngrok.io/' //endpoint imagenes
 }
 
@@ -29,3 +29,6 @@ export default Environtment
 
 
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
+
+
+// https://oldauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05

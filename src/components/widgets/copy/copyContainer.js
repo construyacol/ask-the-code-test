@@ -7,7 +7,10 @@ import './copyStyle.css'
 
 class CopyContainer extends Component {
 
-
+// @Params
+// valueToCopy => string
+// color => string
+// max_width => number
 
   copy = (payload) => {
     let aux = document.createElement("input")

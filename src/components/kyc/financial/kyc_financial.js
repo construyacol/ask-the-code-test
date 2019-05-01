@@ -96,7 +96,7 @@ class KycFinancialComponent extends Component {
         availableCta:true
       })
 
-      console.log('|||||||| goFileLoader payload', payload, this.state)
+      // console.log('|||||||| goFileLoader payload', payload, this.state)
 
     }
   }

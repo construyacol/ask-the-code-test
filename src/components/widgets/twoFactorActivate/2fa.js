@@ -67,6 +67,7 @@ class TwoFactorActivate extends Component {
 
 
   render(){
+
     const { qr, inputFocus, private_key, success_screen, switch_to_success } = this.state
 
     return(

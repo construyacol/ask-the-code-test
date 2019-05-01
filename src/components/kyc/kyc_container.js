@@ -164,7 +164,7 @@ const { user } = this.props
       }
     }
   }
-  console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+  // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
     await this.props.action.update_user(user_update)
   this.props.action.Loader(false)
 
