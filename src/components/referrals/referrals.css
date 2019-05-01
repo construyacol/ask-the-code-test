@@ -1,0 +1,75 @@
+.ReferralComponent{
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+.textReferral p{
+  text-align: center;
+}
+
+.referralCont{
+  width: calc(100% - 20px);
+  max-width: 700px;
+  height: calc(100% - 70px);
+  padding: 35px 10px;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr;
+}
+
+.titleReferr{
+  font-size: 22px;
+  color: #3c3c3c;
+  font-weight: bold;
+}
+
+.parraFerrer{
+  font-size: 14px;
+  color: gray;
+}
+
+.contReferral{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+.contReferral .labelText{
+  text-align: left !important;
+  font-size: 18px;
+  color: #3c3c3c !important;
+  font-weight: bold;
+}
+
+
+.formControl{
+  width: 100%;
+  max-width: 400px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  height: 220px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.contReferral>img{
+  width:100%;
+  max-width: 370px;
+}

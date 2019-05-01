@@ -220,6 +220,7 @@ const { clase,
   puta
 } = props
 
+let movil_viewport = window.innerWidth < 768
 
   return(
     <Fragment>
@@ -229,7 +230,7 @@ const { clase,
         <div className={`inputContainer ${props.active ? 'inputActivado' : '' }`}>
 
           <div className="coinBalance fuente2" onClick={getMaxAvailable} id={saldoDisponible}>
-              <p id={saldoDisponible}>{saldoDisponible>0 ? `Disponible: ${saldoDisponible}`: '0'} {coin}</p>
+              <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible'} {saldoDisponible>0 ? `${saldoDisponible}`: '0'} {coin}</p>
             {
               coin &&
               <img src={require(`../../../assets/coins/${coin}.png`)} alt="" width="30"/>

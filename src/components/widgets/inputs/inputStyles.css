@@ -241,7 +241,7 @@ form#phone{
 
 .statusInput2{
   color: gray;
-  margin: 0 !important;
+  margin: 0;
   position: absolute;
 }
 
@@ -505,7 +505,7 @@ form#phone{
 
   .AuthInputComp{
     grid-template-rows: 1fr 25px;
-    justify-items:center; 
+    justify-items:center;
   }
 
   .containerInputComponent2.openS{

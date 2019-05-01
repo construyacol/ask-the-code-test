@@ -1952,9 +1952,8 @@ export const swap_activity_update = (swap, filter) =>{
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
       await dispatch(update_activity_account(swap.swap_info.account_from_id, filter, null))
       await dispatch(current_section_params({swap_done_out:false, swap_done_in:true}))
-
+      setTimeout(()=>{dispatch(update_pending_activity())}, 1500)
       setTimeout(()=>{
-        dispatch(update_pending_activity())
         dispatch(add_coin_sound())
         dispatch(mensaje('Nuevo intercambio realizado', 'success'))
         dispatch(current_section_params({swap_done_out:false, swap_done_in:false, swap_done_id:false, swap_socket_channel:{

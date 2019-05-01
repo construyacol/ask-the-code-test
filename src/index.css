@@ -263,6 +263,24 @@ circle{
   display: none;
 }
 
+.itemWalletView.movil{
+  padding: 30px 10px ;
+  max-height: 300px ;
+}
+
+#qrDesposit{
+  width: 180px;
+  height: 180px;
+}
+
+
+
+
+
+
+
+
+
 
 
 @media only screen and (min-width: 900px) {
@@ -271,6 +289,13 @@ circle{
     }
 
 }
+
+
+
+
+
+
+
 
 
 
@@ -318,6 +343,16 @@ circle{
       margin-left: 24vw !important;
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 
 @media only screen and (max-width: 900px) {
@@ -398,18 +433,97 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+  .contAddress{
+    max-height: 350px !important;
+    padding: 10px 0;
+  }
+
+  #qrDesposit{
+    width: 140px;
+    height: 140px;
+  }
+
+  .dirDep{
+   font-size: 15px !important;
+  }
+
+ .address{
+   font-size: 14px !important;
+ }
+
+  .soloAd{
+    font-size: 13px !important;
+  }
+
+  #soloAd2{
+    font-size: 14px !important;
+  }
+
+  .soloAd3{
+    margin-bottom: 7px !important;
+    margin-top: 7px !important;
+    font-size: 15px !important;
+  }
+
+  .WithdrawView, .SwapView, .DepositView{
+    width: calc(100% - 30px) !important ;
+  }
+
+  .inputContainer{
+    font-size: 14px !important;
+  }
+
+  .inputContainer>input{
+    font-size: 14px;
+    margin-left: 7px;
+    max-width: 235px;
+    overflow: hidden;
+    padding-left: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .statusInput2 {
+    font-size: 14px !important;
+    margin-top: 7px !important;
+  }
+
+  .SwapView{
+    grid-template-rows: 1fr 1fr 1fr !important;
+    width: calc(100% - 20px) !important;
+    height: calc(100% - 20px) !important;
+  }
+
+  .WSection1{
+    margin: 0 !important;
+  }
+
+  .middleSection i{
+    bottom: 0 !important;
+  }
+
+  .WSection3 .cenVert{
+    transform: scale(.9) !important;
+  }
+
+  .WSection3{
+    margin-top: 7px !important;
+  }
+
 
   .DepositView .contButtons{
     transform: scale(.9) !important;
   }
 
   .DepositView p{
+    font-size: 15px;
     align-self: center !important;
   }
 
   .DepositView{
+    max-height: 300px;
     grid-template-rows: 40% 30% 1fr !important;
-    padding: 10px !important;
+    /*padding: 10px !important;*/
     width: calc(100% - 20px) !important;
     height: calc(100% - 20px) !important;
   }
@@ -923,6 +1037,11 @@ circle{
 
 
 
+
+
+
+
+
 @media only screen and (max-height: 750px) {
   .coinList{
     transform: scale(.8);
@@ -931,11 +1050,26 @@ circle{
 
 
 
+
+
+
+
 @media only screen and (max-height: 650px) {
   .coinList{
     transform: scale(.75) translateY(-17px);
   }
+
+  .itemWalletView.movil{
+    padding: 10px ;
+    max-height: 300px ;
+  }
 }
+
+
+
+
+
+
 
 
 @media only screen and (max-height: 590px) {
@@ -943,6 +1077,11 @@ circle{
     transform: scale(.65) translateY(-30px);
   }
 }
+
+
+
+
+
 
 
 @media only screen and (max-width: 450px) {
