@@ -164,7 +164,7 @@ if(!cancel_country){
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
-    // console.log('|||||||||| °°°°STATUS°°°°|||||||', error)
+    console.log('|||||||||| °°°°STATUS°°°°|||||||', error)
     return false
   }
 
@@ -216,7 +216,6 @@ export const get_all_pairs = (token, country) =>{
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
 
-    // console.log('|||||| get_all_pairs', pairs)
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
 
@@ -565,7 +564,7 @@ export const get_wallet_by_id = (wallet_id) =>{
 // CREATE NEW ACCOUNT (WALLET) ----------------------------------------------------------------------------------------
 
 export const create_new_wallet = (body) =>{
-  return async(dipatch)=>{
+  return async(dispatch)=>{
     const url_new_account = `${ApiUrl}accounts/create-account`
     return ApiPostRequest(url_new_account, body)
     // get_list_user_wallets()
@@ -1845,6 +1844,68 @@ export const user_verification_status = (level_request) =>{
   }
 
 }
+
+
+
+
+ // -------- REFERIDOS ----------------------------------------------------------------------------------------------------------------------------------
+
+
+export const set_ref_code = (ref_code) =>{
+  return async(dispatch)=>{
+
+    const { user, user_id } = store.getState().model_data
+
+    let body = {
+      "access_token":user[user_id].TokenUser,
+      "data":{
+      	"userId":user[user_id].id,
+        "country":"colombia",
+        "new_ref_code":ref_code
+      }
+    }
+
+    const url_create_ref_code = `${ApiUrl}referrals/set-ref-code`
+    let res = await ApiPostRequest(url_create_ref_code, body)
+
+    let user_update = {
+      ...user[user_id],
+      referral:res
+    }
+
+    await dispatch(update_user(user_update))
+    return res
+
+
+  }
+}
+
+
+export const get_ref_code = () =>{
+  return async(dispatch)=>{
+
+    const { user, user_id } = store.getState().model_data
+
+    const url_get_ref_code = `${ApiUrl}referrals?filter={"where":{"userId":"${user[user_id].id}"}}`
+    let res = await ApiGetRequest(url_get_ref_code)
+    if(!res || res === 465){return false}
+
+    let user_update = {
+      ...user[user_id],
+      referral:res[0]
+    }
+
+    await dispatch(update_user(user_update))
+    return res && res[0]
+    // get_list_user_wallets()
+    // console.log('|||||||||||°°°°°°° - -  create_new_wallet -  - -°°°°°°°|||||||||||', new_wallet)
+  }
+}
+
+
+
+// End referidos ---------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 

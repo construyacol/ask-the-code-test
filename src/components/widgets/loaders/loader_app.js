@@ -112,7 +112,7 @@ class LoaderAplication extends Component {
 
     let user_collection = [{primary:'ethereum'}]
     await action.get_pairs_for('colombia', user_collection)
-
+    await this.props.action.get_ref_code()
     // await action.get_pairs_for('colombia')
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)

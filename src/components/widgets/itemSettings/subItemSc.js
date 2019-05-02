@@ -42,7 +42,7 @@ class SubItemSC extends Component {
       item_action,
       subItem
     } = this.props
-    console.log('|||||| ------- actionHandle', subItem)
+    // console.log('|||||| ------- actionHandle', subItem)
 
     item_action(subItem)
   }
@@ -98,7 +98,7 @@ class SubItemSC extends Component {
 // contentSubItem // last
 
 // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
-  console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem)
+  // console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem)
 
     return(
       <div className="subItemSecurityCenter" style={{gridTemplateColumns:classic_view ? '1fr' : '12vw 1fr' }} onClick={(!available || !movil_viewport) ? null : other_state === 'to_disable' ? this.actionHandle : (verify || other_state === 'confirmed' || other_state === 'send' ) ? null : this.actionHandle}>

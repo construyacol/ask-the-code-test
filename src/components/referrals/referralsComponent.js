@@ -15,7 +15,16 @@ class ReferralComponent extends Component {
 
   state = {
     success_referral:false,
-    haveReferraLink:false
+    haveReferraLink:this.props.user.referral ? true : false,
+    referralLink:this.props.user.referral && `https://coinsenda.com/ref_code?=${this.props.user.referral.ref_code}`
+  }
+
+  componentWillReceiveProps(nextProps){
+
+    if(nextProps.user.referral !== this.props.user.referral){
+      this.setState({referralLink:`https://coinsenda.com/ref_code?=${nextProps.user.referral.ref_code}`})
+    }
+
   }
 
   componentDidMount(){
@@ -23,9 +32,14 @@ class ReferralComponent extends Component {
   }
 
 
+  createLink = async(ref_code) =>{
 
-  createLink = async() =>{
+    let res = await this.props.action.set_ref_code(ref_code)
+    // console.log('Res refcode api =>', res)
+    if(!res){return false}
+
     await this.setState({success_referral:true})
+
     setTimeout(()=>{
       this.setState({haveReferraLink:true})
     }, 300)
@@ -34,7 +48,7 @@ class ReferralComponent extends Component {
 
   render(){
    const { user } = this.props
-   const { linkActive, haveReferraLink, success_referral } = this.state
+   const { haveReferraLink, success_referral, referralLink } = this.state
 
     return(
 
@@ -61,7 +75,7 @@ class ReferralComponent extends Component {
                 <div className="haveReferral">
 
                   <ReferralLinkShare
-                    referralLink='https://coinsenda.com/ref_code?=andres_referral'
+                    referralLink={referralLink}
                   />
 
                   <DashBoardReferralComponent/>

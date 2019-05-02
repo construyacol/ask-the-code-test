@@ -194,7 +194,10 @@ componentDidMount(){
                     </div>
 
                     <div className="ItemBarraI retweetCont">
-                      {
+                      <i className="fas fa-trash-alt IdeleteButton tooltip" onClick={this.delete_this_account}>
+                        <span className="tooltiptext2 fuente">Borrar</span>
+                      </i>
+                      {/* {
                         type === 'withdraw' ?
                         <i className="fas fa-trash-alt IdeleteButton tooltip" onClick={this.delete_this_account}>
                           <span className="tooltiptext2 fuente">Borrar</span>
@@ -203,7 +206,7 @@ componentDidMount(){
                         <i className="fas fa-retweet tooltip" onClick={this.swap_detail}>
                           <span className="tooltiptext2 fuente">Swap</span>
                         </i>
-                      }
+                      } */}
                     </div>
                   </div>
 

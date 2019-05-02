@@ -90,6 +90,7 @@ class Landing extends React.Component {
   }
 
   render () {
+    
     const { ref_code } = this.state
 
     return (
