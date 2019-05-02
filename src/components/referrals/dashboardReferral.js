@@ -9,7 +9,8 @@ class DashBoardReferralComponent extends Component{
     return(
       <div className="DashBoardReferralComponent">
 
-        <div className="withdrawButton fuente">
+        {/* WITHDRAW BUTTON */}
+        <div id="withdrawButton" className="withdrawButton wbutt fuente">
           <IconSwitch
             icon="withdraw"
             size={18}
@@ -19,6 +20,7 @@ class DashBoardReferralComponent extends Component{
             <p className="fuente">Retirar</p>
           </div>
         </div>
+
 
         <div className="iconsRef">
           <div className="contIconRefCircle">
@@ -45,7 +47,7 @@ class DashBoardReferralComponent extends Component{
 
         {/* GANANCIA POR REFERIDOS */}
         <div className="referralAwards">
-          <p className="fuente2 textRefer1">0.8</p>
+          <p id="referAward" className="fuente2 textRefer1">0.8</p>
           <p className="fuente textRefer">Ganancia en BTC</p>
         </div>
 

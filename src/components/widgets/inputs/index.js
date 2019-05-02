@@ -26,16 +26,17 @@ const { clase, disabled, address, focusAction, status, addressVerify, unFocusAct
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
         />
-        { address &&
+        {
+          address &&
           <div className="contIconAddress">
             <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
           </div>
         }
       </div>
-      {
-        (props.type === "number" || props.type ===  "password") &&
-          <p className="statusInput">{status}</p>
-      }
+        {
+          (props.type === "number" || props.type ===  "password") &&
+            <p className="statusInput">{status}</p>
+        }
     </div>
   )
 }
