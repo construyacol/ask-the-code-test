@@ -256,6 +256,7 @@ render(){
   const { current_wallet, short_name, global_loader, current_pair, available } = this.props
   const { value, address, loader, active } = this.state
   const { secondary_coin, secondary_value, pair_id } = current_pair
+  let movil_viewport = window.innerWidth < 768
 
   // console.log('|||||||||| SALDO DISPLONIBLE', typeof(available), current_pair)
 
@@ -272,7 +273,7 @@ render(){
           label="Procesando"
         />
         :
-          <section className="SwapView">
+        <section className={`SwapView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
             <div className="WSection1">
               <p className="fuente title soloAd3">Pago con:</p>
               <InputFormCoin
@@ -290,9 +291,13 @@ render(){
               />
             </div>
 
-            <div className="middleSection">
-              <i className="fas fa-retweet"></i>
-            </div>
+            {
+              !movil_viewport &&
+              <div className="middleSection">
+                <i className="fas fa-retweet"></i>
+              </div>
+            }
+
 
             <div className="WSection1">
               <p className="fuente title soloAd3">Recibo:</p>

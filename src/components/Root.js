@@ -5,6 +5,7 @@ import createBrowserHistory from "history/createBrowserHistory"
 import LandingPage from './landingPage'
 import localForage from 'localforage'
 import PagesRouter from './landingPage/pages'
+import ReferralComponent from './referrals/referralsComponent'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
@@ -30,7 +31,7 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJTZ1U2OXFZT0NCTkcwdkNkNk5VOW9VOW5uanVjT0V3NFRXQWNuSkJsbFVJT3Y3d2cwMTNwNUN5WTFHdVMxbm5YIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTY0ODE3MjksImV4cCI6MTU1NjQ5MjUyOX0.YRgFhlIM-vKxsCjNwfENmWyZi2grn5oovTSq9HtilffWKzYEgfY6H_EkSYlzZUAihY4JPKx4X89AeZ4xbO1ePQ'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJEM1F2QWJGZkNMZkhGWnFZaHBhc3d2ZnE2d2N5WENnYUVYeGh5azVmZnlFU1p2dUpPVDJ3SDNrcGtJN0s1S2ZIIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTY3ODY5MjIsImV4cCI6MTU1Njc5NzcyMn0.ULxTfwP1T8C_BV768opTv_1CzFxmPMJAXfo37H4-gD-gJKN8GU-FCGx8OIIYlAr9n818a0uiH0FKnevWwakAiA'
 
     this.setState({
       TokenUser:AccessToken
@@ -59,6 +60,7 @@ class RootContainer extends Component {
               TokenUser ? (
                   <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
               ) : (
+                // <ReferralComponent/>
                 <LandingPage history={history} />
               )
             )}/>

@@ -195,7 +195,7 @@ export const PaymentConfirButton = (props) => {
     <div className={`contButton ${clases}`} id={`ALconfirmButton`}>
       {
         props.active ?
-        <div className={`botonForm ${type} fuente`} onClick={siguiente}>
+        <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente}>
           <p id="ALbuttonText" className="ALbuttonText">
             <span className="ALbuttonTextSpan fuente">{label}</span>
             <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up"></i>

@@ -55,7 +55,6 @@ class SettingsContainer extends Component{
             :
                 global_settings &&
                 <ItemSettingsInit data={global_settings} />
-
           }
         </DetailContainerLayout>
         </Fragment>

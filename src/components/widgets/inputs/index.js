@@ -26,16 +26,17 @@ const { clase, disabled, address, focusAction, status, addressVerify, unFocusAct
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
         />
-        { address &&
+        {
+          address &&
           <div className="contIconAddress">
             <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
           </div>
         }
       </div>
-      {
-        (props.type === "number" || props.type ===  "password") &&
-          <p className="statusInput">{status}</p>
-      }
+        {
+          (props.type === "number" || props.type ===  "password") &&
+            <p className="statusInput">{status}</p>
+        }
     </div>
   )
 }
@@ -220,6 +221,7 @@ const { clase,
   puta
 } = props
 
+let movil_viewport = window.innerWidth < 768
 
   return(
     <Fragment>
@@ -229,7 +231,7 @@ const { clase,
         <div className={`inputContainer ${props.active ? 'inputActivado' : '' }`}>
 
           <div className="coinBalance fuente2" onClick={getMaxAvailable} id={saldoDisponible}>
-              <p id={saldoDisponible}>{saldoDisponible>0 ? `Disponible: ${saldoDisponible}`: '0'} {coin}</p>
+              <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible'} {saldoDisponible>0 ? `${saldoDisponible}`: '0'} {coin}</p>
             {
               coin &&
               <img src={require(`../../../assets/coins/${coin}.png`)} alt="" width="30"/>

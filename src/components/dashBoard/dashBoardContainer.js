@@ -17,6 +17,7 @@ import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer
 import ActivityContainer from '../activity/activityContainer'
 import SettingsContainer from '../settings/settingsContainer'
 import SecurityCenter from '../securityCenter/securityCenter'
+import ReferralComponent from '../referrals/referralsComponent'
 
 import './dashboard.css'
 
@@ -72,6 +73,7 @@ class DashBoardContainer extends Component{
                               <Route path="/withdraw" component={WitdrawAccountContainer} />
                               <Route path="/settings" component={SettingsContainer} />
                               <Route path="/security" component={SecurityCenter} />
+                              <Route path="/referral" component={ReferralComponent} />
                               <Route path="/wallets" component={WalletContainer} />
                               <Redirect from="/" to="/wallets" />
 

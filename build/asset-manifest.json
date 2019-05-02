@@ -1,7 +1,7 @@
 {
-  "main.css": "/static/css/main.b99672d0.chunk.css",
-  "main.js": "/static/js/main.23c21a77.chunk.js",
-  "main.js.map": "/static/js/main.23c21a77.chunk.js.map",
+  "main.css": "/static/css/main.aebfc341.chunk.css",
+  "main.js": "/static/js/main.513bf9ec.chunk.js",
+  "main.js.map": "/static/js/main.513bf9ec.chunk.js.map",
   "static/css/1.305b42a9.chunk.css": "/static/css/1.305b42a9.chunk.css",
   "static/js/1.d566bd50.chunk.js": "/static/js/1.d566bd50.chunk.js",
   "static/js/1.d566bd50.chunk.js.map": "/static/js/1.d566bd50.chunk.js.map",
@@ -76,9 +76,9 @@
   "static/media/ticketdefault2.png": "/static/media/ticketdefault2.92cbf4f3.png",
   "static/media/withdraw.png": "/static/media/withdraw.295a633a.png",
   "static/media/landing.css": "/static/media/BebasNeue.8a97d15f.svg",
+  "static/css/main.aebfc341.chunk.css.map": "/static/css/main.aebfc341.chunk.css.map",
   "static/css/1.305b42a9.chunk.css.map": "/static/css/1.305b42a9.chunk.css.map",
-  "static/css/main.b99672d0.chunk.css.map": "/static/css/main.b99672d0.chunk.css.map",
   "index.html": "/index.html",
-  "precache-manifest.85497da32d3f5b767e1ed344f98dd436.js": "/precache-manifest.85497da32d3f5b767e1ed344f98dd436.js",
+  "precache-manifest.e834468e94e5398e22fe08b0d3bf5665.js": "/precache-manifest.e834468e94e5398e22fe08b0d3bf5665.js",
   "service-worker.js": "/service-worker.js"
 }

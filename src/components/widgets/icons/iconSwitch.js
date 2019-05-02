@@ -39,7 +39,8 @@ import {
   Financial,
   Touch,
   Upload,
-  Verified, WithdrawAccount
+  ReferralPerson,
+  Verified, WithdrawAccount, Referral
  } from './'
 
  import {
@@ -91,6 +92,10 @@ class IconSwitch extends Component {
       case '2auth':
       case 'security':
         return <Security2 {...props} />
+      case 'referral':
+        return <Referral {...props} />
+      case 'referralPerson':
+        return <ReferralPerson {...props} />
       case 'swap':
       case 'transactional':
         return <Swap {...props} />

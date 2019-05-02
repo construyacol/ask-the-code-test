@@ -62,14 +62,16 @@ render(){
 
   const { current_wallet } = this.props
   const { qr, address, fiat_currency, verified } = this.state
+  let movil_viewport = window.innerWidth < 768
 
 
   const atributos ={
     icon: fiat_currency ? 'deposit' : 'deposit_crypto',
-    size:110,
+    size:movil_viewport ? 80 : 100,
     // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
     color:'#989898'
   }
+
 
 
   return(
@@ -84,11 +86,11 @@ render(){
       />
     :
       qr ?
-      <section className="contAddress" >
-        <p className="fuente title soloAd2">Importante:</p>
+      <section className="contAddress">
+        <p id="soloAd2" className="fuente title soloAd2">Importante:</p>
         <p className="fuente soloAd">Envía solo {current_wallet.currency.currency} a esta Billetera. El envío de cualquier otra moneda a esta dirección puede resultar en la pérdida de su depósito. </p>
-        <img className="itemFuera" src={qr} width="180" alt="" />
-        <p className="fuente title">Dirección de deposito:</p>
+        <img id="qrDesposit" className="itemFuera" src={qr} />
+        <p className="fuente title dirDep">Dirección de deposito:</p>
         <div className="fuente address">
           <CopyContainer
             valueToCopy={address}
@@ -99,7 +101,7 @@ render(){
       :
       fiat_currency ?
 
-      <section className="DepositView">
+      <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
         <div className="contIcontSwitch">
           <IconSwitch {...atributos}/>
@@ -118,7 +120,7 @@ render(){
         </div>
       </section>
       :
-      <section className="DepositView">
+      <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
         <div className="contIcontSwitch">
           <IconSwitch {...atributos}/>

@@ -119,6 +119,7 @@ class WalletContainer extends Component{
             //   delete_wallet={this.delete_wallet_confirmation}
               wallet={this.props.current_wallet}
               history={props.history}
+              clases="detail"
              />
            </section>
         }

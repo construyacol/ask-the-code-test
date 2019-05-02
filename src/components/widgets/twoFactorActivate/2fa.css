@@ -6,9 +6,9 @@
   justify-items: center;
 }
 
-.TwoFactorActivate.success{
+/*.TwoFactorActivate.success{
   opacity: 0;
-}
+}*/
 
 .TwoFactorActivate.desaparecer{
   transform: translateY(30px);

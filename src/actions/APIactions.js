@@ -164,7 +164,7 @@ if(!cancel_country){
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
-    // console.log('|||||||||| °°°°STATUS°°°°|||||||', error)
+    console.log('|||||||||| °°°°STATUS°°°°|||||||', error)
     return false
   }
 
@@ -216,7 +216,6 @@ export const get_all_pairs = (token, country) =>{
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
 
-    // console.log('|||||| get_all_pairs', pairs)
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
 
@@ -253,6 +252,7 @@ export const get_pairs_for = (country, user_collection) => {
 
     const url_pairs = `${ApiUrl}pairs?filter={"where": {"secondary_currency.currency": "${local_currency.toLowerCase()}"}}`
     const pairs = await ApiGetRequest(url_pairs)
+    console.log('111111 get_pairs_for', pairs)
 
     if(!pairs){return false}
     // Actualizo el estado con todas las cotizaciones disponibles en contra(secondary_currency) de la moneda local
@@ -564,7 +564,7 @@ export const get_wallet_by_id = (wallet_id) =>{
 // CREATE NEW ACCOUNT (WALLET) ----------------------------------------------------------------------------------------
 
 export const create_new_wallet = (body) =>{
-  return async(dipatch)=>{
+  return async(dispatch)=>{
     const url_new_account = `${ApiUrl}accounts/create-account`
     return ApiPostRequest(url_new_account, body)
     // get_list_user_wallets()
@@ -1113,6 +1113,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
     if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
+      // console.log('||||| providers_servedsss...', wa.provider_type, providers_served[wa.provider_type])
       if(wa.info.currency_type === 'fiat'){
         return {
           id:wa.id,
@@ -1631,7 +1632,6 @@ export const get_user = (token, user_country) =>{
 
     // console.log('||||||  - - -.  --  country_object', country[0])
 
-
     let kyc_personal = country[0].levels && country[0].levels.personal
     let kyc_identity = country[0].levels && country[0].levels.identity
     let kyc_financial = country[0].levels && country[0].levels.financial
@@ -1848,6 +1848,68 @@ export const user_verification_status = (level_request) =>{
 
 
 
+ // -------- REFERIDOS ----------------------------------------------------------------------------------------------------------------------------------
+
+
+export const set_ref_code = (ref_code) =>{
+  return async(dispatch)=>{
+
+    const { user, user_id } = store.getState().model_data
+
+    let body = {
+      "access_token":user[user_id].TokenUser,
+      "data":{
+      	"userId":user[user_id].id,
+        "country":"colombia",
+        "new_ref_code":ref_code
+      }
+    }
+
+    const url_create_ref_code = `${ApiUrl}referrals/set-ref-code`
+    let res = await ApiPostRequest(url_create_ref_code, body)
+
+    let user_update = {
+      ...user[user_id],
+      referral:res
+    }
+
+    await dispatch(update_user(user_update))
+    return res
+
+
+  }
+}
+
+
+export const get_ref_code = () =>{
+  return async(dispatch)=>{
+
+    const { user, user_id } = store.getState().model_data
+
+    const url_get_ref_code = `${ApiUrl}referrals?filter={"where":{"userId":"${user[user_id].id}"}}`
+    let res = await ApiGetRequest(url_get_ref_code)
+    if(!res || res === 465){return false}
+
+    let user_update = {
+      ...user[user_id],
+      referral:res[0]
+    }
+
+    await dispatch(update_user(user_update))
+    return res && res[0]
+    // get_list_user_wallets()
+    // console.log('|||||||||||°°°°°°° - -  create_new_wallet -  - -°°°°°°°|||||||||||', new_wallet)
+  }
+}
+
+
+
+// End referidos ---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
 
 
@@ -1951,9 +2013,8 @@ export const swap_activity_update = (swap, filter) =>{
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
       await dispatch(update_activity_account(swap.swap_info.account_from_id, filter, null))
       await dispatch(current_section_params({swap_done_out:false, swap_done_in:true}))
-
+      setTimeout(()=>{dispatch(update_pending_activity())}, 1500)
       setTimeout(()=>{
-        dispatch(update_pending_activity())
         dispatch(add_coin_sound())
         dispatch(mensaje('Nuevo intercambio realizado', 'success'))
         dispatch(current_section_params({swap_done_out:false, swap_done_in:false, swap_done_id:false, swap_socket_channel:{

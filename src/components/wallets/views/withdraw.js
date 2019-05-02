@@ -165,10 +165,12 @@ render(){
 const { current_wallet, short_name, available, withdraw_provider, last_address  } = this.props
 const { value, address, active, addressVerify, show_last_address, address_value, verified } = this.state
 // const { currency_type } = current_wallet
+let movil_viewport = window.innerWidth < 768
+
 
 const atributos ={
   icon:'withdraw2',
-  size:110,
+  size:movil_viewport ? 80 : 100,
   // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
   color:'#989898'
 }
@@ -191,7 +193,7 @@ const atributos ={
           :
           <Fragment>
           { current_wallet.currency_type !== 'fiat' ?
-              <section className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''}`}>
+              <section className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
                 {/* <div className="ImportantInfo">
                   <p className="fuente soloAd">Retiro mínimo: 0.002 {short_name}</p>
                   <p className="fuente soloAd der">Limite de retiro por día: 1 {short_name}</p>
@@ -286,9 +288,7 @@ const atributos ={
 
               :
 
-
-
-              <section className="DepositView">
+              <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
                 <div className="contIcontSwitch">
                   <IconSwitch {...atributos}/>
