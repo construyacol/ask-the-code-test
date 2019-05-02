@@ -1968,9 +1968,11 @@ export const update_pending_activity = (account_id, activity_type, activity_list
         activity_type = await store.getState().ui.current_section.params.currentFilter
       }
 
-      if(!activity_list){
+      if(!activity_list && current_wallet){
         activity_list = await serve_orders(current_wallet.id, activity_type)
       }
+
+      if(!activity_list){return false}
       // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
       // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
 
