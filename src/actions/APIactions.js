@@ -1944,7 +1944,7 @@ export const update_activity_account = (account_id, activity_type, activity_list
       // console.log('update_activity_account- -- -  ', pending_activity)
       // return pending_activity()
       // let account = store.getState().model_data.wallets[account_id]
-      //
+
       // const { user, user_id } = store.getState().model_data
       // console.log('update_pending_activity', store.getState(), account)
   }
@@ -1996,7 +1996,6 @@ export const update_pending_activity = (account_id, activity_type, activity_list
       }
 
       dispatch(pending_activity(pending_activity_payload))
-
 
   }
 
