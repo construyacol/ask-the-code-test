@@ -13,10 +13,10 @@ import { withdraw_provider_by_type } from '../../../services'
 
 import actions from '../../../actions'
 
-
 import './withdrawFlow.css'
 
 class WithdrawFlow extends Component {
+  // Withdraw FIAT COMPONENT
 
     state = {
       amount:"",

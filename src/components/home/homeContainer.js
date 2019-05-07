@@ -66,8 +66,9 @@ componentDidMount(){
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             // await this.props.action.current_section_params({currentFilter:'swaps'})
-            // console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
+            console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
             if(swap.status === 'done' && swap !== this.state.order_socket){
+
               this.setState({order_socket:swap})
 
               return setTimeout(async()=>{
@@ -100,10 +101,10 @@ componentDidMount(){
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
 
             if(deposit.state === 'pending' && deposit.currency_type === 'fiat'){
-              await this.props.action.get_deposit_list(this.props.user)
-              await this.props.action.update_activity_account(null, 'deposits')
-              await this.props.action.update_pending_activity()
               console.log('||||||||||||||||| ------ DEPOSITO SOCKET|', deposit)
+              await this.props.action.get_deposit_list(this.props.user)
+              await this.props.action.update_activity_account(deposit.account_id, 'deposits')
+              await this.props.action.update_pending_activity(deposit.account_id, 'deposits')
             }
 
             if(deposit.state === 'done' || deposit.state === 'accepted'){
@@ -125,9 +126,15 @@ componentDidMount(){
               case 'accepted':
                 return this.props.action.mensaje('El retiro ha sido aceptado','success')
               case 'confirmed':
-                // alert('withdraw confirmado')
                  this.props.action.mensaje('Retiro confirmado','success')
                 return this.props.action.get_list_user_wallets(this.props.user)
+              case 'pending':
+                  let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
+                  await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+                  await this.props.action.get_withdraw_list(this.props.user)
+                  await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
+                  this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+                break
               default:
               break
             }

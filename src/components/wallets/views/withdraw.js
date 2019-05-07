@@ -102,13 +102,33 @@ state = {
       await this.props.action.get_withdraw_accounts(user, get_withdraw_providers, `{"where": {"userId": "${user.id}"}}`)
     }
 
-    let retiro = await this.props.action.add_new_withdraw_order(value, current_wallet.id, withdraw_provider.id, withdraw_account.id)
+      let retiro = await this.props.action.add_new_withdraw_order(value, current_wallet.id, withdraw_provider.id, withdraw_account.id)
 
-    if(!retiro){return false}
+      if(!retiro){
+        this.props.action.Loader(false)
+        return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
+      }
+      // console.log('========> RESPUESTA ENDPOINT RETIRO', retiro)
 
-    await this.props.action.current_section_params({currentFilter:'withdrawals'})
+      let new_withdraw_model = {
+        id:retiro.data.id,
+        unique_id:retiro.data.unique_id,
+        type_order:'withdraw',
+        account_id:retiro.data.withdraw_info.account_from,
+        ...retiro.data.withdraw_info
+      }
+
+      // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model)
+
+      await this.props.action.normalize_new_item(this.props.user, this.props.withdrawals, new_withdraw_model, 'withdrawals')
+      await this.props.action.update_activity_account(this.props.current_wallet.id, 'withdrawals')
+      await this.props.action.update_pending_activity()
+
+    await this.props.action.add_new_transaction_animation()
     this.props.history.push(`/wallets/activity/${this.state.account_id}`)
   }
+
+
 
   withdraw = () =>{
     // alert('retirando')
@@ -389,6 +409,7 @@ if(withdraw_accounts){
     available:current_wallet && balances && balances[current_wallet.id] && balances[current_wallet.id].available,
     withdraw_provider:wit_prov_list && current_wallet && wit_prov_list[current_wallet.currency.currency],
     // withdraw_provider:null,
+    withdrawals,
     available_address:withdraw_account_list,
     withdraw_providers:null,
     user:user[user_id],

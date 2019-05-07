@@ -25,6 +25,7 @@ class LoaderAplication extends Component {
 // 'Actualizar el país del usuario'
 
   init_component = async(new_country) =>{
+
     const{
       country,
       token
@@ -78,6 +79,7 @@ class LoaderAplication extends Component {
       init_sockets
     } = this.props
 
+
     // action.ToggleModal()
     // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en (tx service)
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
@@ -85,6 +87,7 @@ class LoaderAplication extends Component {
 
     // Si se carga desde este punto no podemos cargar los pares normalizados en la propiedad available pairs del modelo usuario porque no contamos con su id
     let pairs = await action.get_all_pairs(token, user_country)
+    // console.log('=====>    QUE PASA PRRO', pairs)
     if(!pairs){
       this.go_to_select_country()
       return false

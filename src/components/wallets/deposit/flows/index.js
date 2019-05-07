@@ -250,74 +250,7 @@ const Success = (props) =>{
                 new_ticket &&
                 <TicketDetail ticket={new_ticket} only_detail={true} type_order="deposit" />
               }
-
-            {/* <div className="DLto" >
-
-                  <p className="fuente depoTo" >Debes depositar a:</p>
-
-
-
-              {
-                deposit_way === 'cash' ?
-
-                    <div>
-                          <div className="nBitemSuccesss2">
-                            <p className="fuente" >Destinatario:</p>
-                            <p className="fuente2 bankeins" >
-                              Erick Stivens Ospina puertas
-                            </p>
-                          </div>
-                          <div className="nBitemSuccesss2">
-                            <p className="fuente" >Cedula ciudadanía:</p>
-                            <p className="fuente2" >1.116.444.961</p>
-                          </div>
-
-                          <div className="nBitemSuccesss2">
-                            <p className="fuente" >Ubicación:</p>
-                            <p className="fuente2" >Tuluá - Valle del cauca</p>
-                          </div>
-
-                          <div className="nBitemSuccesss2">
-                            <p className="fuente" >Total + Fee:</p>
-                            <p className="fuente2 tipaa" >${amount}
-                              <img className="DLimg3" src={require(`../../../../assets/countryflag/${short_currency_name}.jpg`)} alt="" width="22" height="22"/>
-                            </p>
-                          </div>
-
-                    </div>
-
-              :
-                  <div>
-                      <div className="nBitemSuccesss2">
-                        <p className="fuente" >Entidad</p>
-                        <p className="fuente2 bankeins" >
-                          <img src={bancolombia} alt="" width="25" />
-                          Bancolombia
-                        </p>
-                      </div>
-                      <div className="nBitemSuccesss2">
-                        <p className="fuente" >Cuenta corriente:</p>
-                        <p className="fuente2" >60597415601</p>
-                      </div>
-                      <div className="nBitemSuccesss2">
-                        <p className="fuente" >Razón social:</p>
-                        <p className="fuente2" >PHI Colombia SAS</p>
-                      </div>
-                      <div className="nBitemSuccesss2">
-                        <p className="fuente" >N.I.T:</p>
-                        <p className="fuente2" >901130547</p>
-                      </div>
-
-                      <div className="nBitemSuccesss2">
-                        <p className="fuente" >Total + Fee:</p>
-                        <p className="fuente2 tipaa" >$512.000
-                          <img className="DLimg3" src={require(`../../../../assets/countryflag/${short_currency_name}.jpg`)} alt="" width="22" height="22"/>
-                        </p>
-                      </div>
-                  </div>
-              }
-
-            </div> */}
+              
           </div>
         </div>
 

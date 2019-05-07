@@ -307,6 +307,7 @@ updateAmountOnState = async(amount) =>{
 
   create_deposit_order = async() => {
 
+
     const {
       localCurrency,
       current_wallet,
@@ -326,7 +327,7 @@ updateAmountOnState = async(amount) =>{
     } = this.state
 
 
-    // console.log('||||||||||   deposit_provider_id', )
+    // console.log('||||||||||   como envio los depositos', deposits)
     // console.log('create_deposit_order CURRENT_WALLET', current_wallet)
     // console.log('create_deposit_order PROPS', this.props)
     let deposit_provider_id = await deposit_providers.find(dep_prov => {
@@ -368,6 +369,8 @@ updateAmountOnState = async(amount) =>{
     await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
     await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
     await this.props.action.update_pending_activity()
+
+    console.log('=> deposits UPDATE', this.props.deposits)
 
     // setTimeout(async()=>{
     //   await this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')

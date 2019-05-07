@@ -211,10 +211,11 @@ export const get_all_pairs = (token, country) =>{
     }
 
     await dispatch(load_label('Importando pares'))
+    console.log('=====>    QUE PASA PRRO BEFORE', body)
 
-    // const url_pairs = `${ApiUrl}pairs`
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
+    console.log('=====>    QUE PASA PRRO AFTER', pairs)
 
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
@@ -735,6 +736,7 @@ export const delete_deposit_order = order_id =>{
 
 
 export const normalize_new_item = (user, list, item, prop) =>{
+  // list =>  normalized data
   return async(dispatch) =>{
 
        let new_list = await desNormalizedList(list, user[prop])
@@ -749,10 +751,11 @@ export const normalize_new_item = (user, list, item, prop) =>{
 
          ]
        }
-       // console.log('Normalize List deposits - - - ', user_update)
-
+       // console.log('=========> user_update - - - ', user_update)
         let normalizeUser = await normalize_user(user_update)
         await dispatch(Update_normalized_state(normalizeUser))
+        // console.log('=========> normalizeUser - - - ', normalizeUser)
+
   }
 }
 
@@ -1217,7 +1220,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
          ...withdraw_providers
        ]
      }
-     console.log(withdraw_providers)
+     // console.log(withdraw_providers)
      let normalizeUser = await normalize_user(user_update)
      await dispatch(Update_normalized_state(normalizeUser))
      return withdraw_providers
@@ -1334,7 +1337,7 @@ export const get_withdraw_list = (user) =>{
 
     if(!withdrawals || withdrawals === 465){return false}
 
-    // console.log('|||||| GE WITHDRAWALS ', withdrawals)
+    // console.log('|||||| GET WITHDRAWALS ', withdrawals)
 
     let withdrawals_remodeled = []
 
@@ -1936,6 +1939,8 @@ export const update_activity_account = (account_id, activity_type, activity_list
       current_wallet = store.getState().ui.current_section.params.current_wallet
     }
 
+    if(!current_wallet){return false}
+
     if(!activity_list){
       activity_list = await serve_orders(current_wallet.id, activity_type)
     }
@@ -1963,6 +1968,8 @@ export const update_pending_activity = (account_id, activity_type, activity_list
       if(!current_wallet){
         current_wallet = store.getState().ui.current_section.params.current_wallet
       }
+
+      if(!current_wallet){return false}
 
       if(!activity_type){
         activity_type = await store.getState().ui.current_section.params.currentFilter
