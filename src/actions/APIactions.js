@@ -392,7 +392,12 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
 
     let pair_id = pair.id
 
+    console.log('====>  convertCurrencies', current_wallet.currency, pair_id)
+
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
+
+
+    console.log('====>  convertCurrencies res =>', data)
 
 
     if(data){

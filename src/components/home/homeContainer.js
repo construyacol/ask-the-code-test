@@ -62,12 +62,16 @@ componentDidMount(){
       this.socket.emit('authentication', body);
 
       this.socket.on("authenticated", () => {
-        console.log('authenticated SOKET')
+        // console.log('authenticated SOKET')
+        // alert('AUTENTICADO')
 
           this.socket.on(`/swap/${this.props.user.id}`, async(swap)=>{
             // await this.props.action.current_section_params({currentFilter:'swaps'})
-            console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
+            // console.log('|||| INTERCAMBIO.... ', swap)
+
             if(swap.status === 'done' && swap !== this.state.order_socket){
+
+              // console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
 
               this.setState({order_socket:swap})
 
@@ -78,6 +82,7 @@ componentDidMount(){
                 await this.props.action.swap_activity_update(swap, 'swaps')
 
                   setTimeout(async()=>{
+                    await this.props.action.current_section_params({active_trade_operation:false})
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
                     setTimeout(async()=>{
                       await this.props.action.get_account_balances(this.props.user)
@@ -129,11 +134,13 @@ componentDidMount(){
                  this.props.action.mensaje('Retiro confirmado','success')
                 return this.props.action.get_list_user_wallets(this.props.user)
               case 'pending':
-                  let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
-                  await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-                  await this.props.action.get_withdraw_list(this.props.user)
-                  await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
-                  this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+              if(withdraw.currency_type === 'crypto'){
+                let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
+                await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+                await this.props.action.get_withdraw_list(this.props.user)
+                await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
+                this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+              }
                 break
               default:
               break

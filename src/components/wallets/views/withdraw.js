@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
+import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import { InputForm, InputFormCoin } from '../../widgets/inputs'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
@@ -73,6 +74,8 @@ state = {
   }
 
   finish_withdraw = async(p) =>{
+    this.props.action.Loader(true)
+
 
     const{
       value,
@@ -125,6 +128,7 @@ state = {
       await this.props.action.update_pending_activity()
 
     await this.props.action.add_new_transaction_animation()
+    this.props.action.Loader(false)
     this.props.history.push(`/wallets/activity/${this.state.account_id}`)
   }
 
@@ -214,94 +218,107 @@ const atributos ={
           <Fragment>
           { current_wallet.currency_type !== 'fiat' ?
               <section className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
+
+
+
                 {/* <div className="ImportantInfo">
                   <p className="fuente soloAd">Retiro mínimo: 0.002 {short_name}</p>
                   <p className="fuente soloAd der">Limite de retiro por día: 1 {short_name}</p>
                 </div> */}
 
-                {
-                  withdraw_provider ?
-
-                <Fragment>
 
 
-                <div className="WSection1">
-                  <p className="fuente title soloAd3">Dirección de retiro de {short_name}:</p>
+              {
+                this.props.loader &&
+                <LoaderTrade
+                  label="Procesando tu retiro"
+                />
+              }
 
-                  <div className="contInputForm">
-                    <InputForm
-                      active={((value>min_amount && value<=available) && active) ? true : false}
-                      clase={true} //retiro los estilos que vienen por defecto
-                      type="text"
-                      placeholder={!withdraw_provider ? 'Billetera en mantenimiento' : 'Dirección de retiro'}
-                      name="name"
-                      actualizarEstado={this.actualizarEstado}
-                      disabled={!withdraw_provider ? true : false}
-                      address={true}
-                      focusAction={this.focusAction}
-                      unFocusAction={this.unFocusAction}
-                      addressVerify={addressVerify}
-                      value={address_value}
-                    />
 
-                    {
-                      (last_address && show_last_address) &&
-                      <div className={`last_address ${show_last_address ? 'show' : '' }`}
-                        onClick={this.load_last_address}>
-                        <p className="address_text fuente">Ultima dirección de retiro utilizada</p>
-                        <span id="address_last" className="fuente2">
-                          <span>
-                            <IconSwitch
-                              icon="root"
-                              size={16}
-                              color="#5999f1"
-                              colorStroke="gray"
-                            />
-                          </span>
-                          {last_address}
-                        </span>
-                      </div>
-                    }
 
-                  </div>
-                </div>
+              {
+                          withdraw_provider ?
 
-                <div className="WSection1">
-                  <p className="fuente title soloAd3">Cantidad:</p>
+                          <Fragment>
+                            <div className="WSection1">
+                              <p className="fuente title soloAd3">Dirección de retiro de {short_name}:</p>
 
-                  <InputFormCoin
-                    active={((value>min_amount && value<=available) && active) ? true : false}
-                    clase={true} //retiro los estilos que vienen por defecto
-                    placeholder={min_amount}
-                    getMaxAvailable={this.getMaxAvailable}
-                    coin={short_name}
-                    saldoDisponible={available}
-                    name="name"
-                    value={value}
-                    actualizarEstado={this.actualizarEstado_coin}
-                    // imgs={short_name}
-                  />
-                </div>
+                              <div className="contInputForm">
+                                <InputForm
+                                  active={((value>min_amount && value<=available) && active) ? true : false}
+                                  clase={true} //retiro los estilos que vienen por defecto
+                                  type="text"
+                                  placeholder={!withdraw_provider ? 'Billetera en mantenimiento' : 'Dirección de retiro'}
+                                  name="name"
+                                  actualizarEstado={this.actualizarEstado}
+                                  disabled={!withdraw_provider ? true : false}
+                                  address={true}
+                                  focusAction={this.focusAction}
+                                  unFocusAction={this.unFocusAction}
+                                  addressVerify={addressVerify}
+                                  value={address_value}
+                                />
 
-                <div className="WSection3">
-                  <ButtonForms
-                    active={((value>min_amount && value<=available) && active) ? true : false}
-                    clases="cenVert"
-                    ancho="200px"
-                    type="primary"
-                    siguiente={this.withdraw}
-                  >
-                      Enviar
-                  </ButtonForms>
-                </div>
+                                {
+                                  (last_address && show_last_address) &&
+                                  <div className={`last_address ${show_last_address ? 'show' : '' }`}
+                                    onClick={this.load_last_address}>
+                                    <p className="address_text fuente">Ultima dirección de retiro utilizada</p>
+                                    <span id="address_last" className="fuente2">
+                                      <span>
+                                        <IconSwitch
+                                          icon="root"
+                                          size={16}
+                                          color="#5999f1"
+                                          colorStroke="gray"
+                                        />
+                                      </span>
+                                      {last_address}
+                                    </span>
+                                  </div>
+                                }
 
-              </Fragment>
-              :
-              <section className="maintanceW">
-                <IconSwitch icon="maintence" size={130} color="#989898"/>
-                <p className="fuente" >Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, lo hacemos por la seguridad de tus activos, ten paciencia...</p>
-              </section>
-            }
+                              </div>
+                            </div>
+
+                            <div className="WSection1">
+                              <p className="fuente title soloAd3">Cantidad:</p>
+
+                              <InputFormCoin
+                                active={((value>min_amount && value<=available) && active) ? true : false}
+                                clase={true} //retiro los estilos que vienen por defecto
+                                placeholder={min_amount}
+                                getMaxAvailable={this.getMaxAvailable}
+                                coin={short_name}
+                                saldoDisponible={available}
+                                name="name"
+                                value={value}
+                                actualizarEstado={this.actualizarEstado_coin}
+                                // imgs={short_name}
+                              />
+                            </div>
+
+                            <div className="WSection3">
+                              <ButtonForms
+                                active={(!this.props.active_trade_operation && (value>min_amount && value<=available) && active) ? true : false}
+                                clases="cenVert"
+                                ancho="200px"
+                                type="primary"
+                                siguiente={this.withdraw}
+                              >
+                                  Enviar
+                              </ButtonForms>
+                            </div>
+
+                          </Fragment>
+                          :
+                          <section className="maintanceW">
+                            <IconSwitch icon="maintence" size={130} color="#989898"/>
+                            <p className="fuente" >Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, lo hacemos por la seguridad de tus activos, ten paciencia...</p>
+                          </section>
+              }
+
 
               </section>
 
@@ -314,12 +331,20 @@ const atributos ={
                   <IconSwitch {...atributos}/>
                 </div>
 
-                  <p className="fuente">Gestiona y realiza retiros en tu moneda local ({short_name}), desde coinsenda a tu cuenta bancaria.</p>
+                <div className="contIcontSwitchCont">
+                  {
+                    this.props.active_trade_operation ?
+                    <p className="fuente active_trade_operation">Operación de intercambio en proceso, una vez finalice podrás hacer retiros.</p>
+                    :
+                    <p className="fuente">Gestiona y realiza retiros en tu moneda local ({short_name}), desde coinsenda a tu cuenta bancaria.</p>
+                  }
+                </div>
+
 
                 <div className="contButtons">
                     <ButtonForms
                       type="primary"
-                      active={true}
+                      active={this.props.active_trade_operation ? false : true}
                       siguiente={this.fiat_withdraw}
                     >
                       Realizar un retiro
@@ -327,6 +352,7 @@ const atributos ={
                 </div>
               </section>
           }
+
           </Fragment>
       }
     </Fragment>
@@ -351,6 +377,10 @@ function mapStateToProps(state, props){
     withdraw_accounts,
     withdrawals
   } = state.model_data
+
+  const {
+    loader
+  } = state.isLoading
 
   const {
     current_wallet
@@ -404,7 +434,9 @@ if(withdraw_accounts){
 // console.log('|||||| ssss', withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value)
 
   return{
+    loader,
     current_wallet:current_wallet,
+    active_trade_operation:state.ui.current_section.params.active_trade_operation,
     short_name:state.ui.current_section.params.short_name,
     available:current_wallet && balances && balances[current_wallet.id] && balances[current_wallet.id].available,
     withdraw_provider:wit_prov_list && current_wallet && wit_prov_list[current_wallet.currency.currency],

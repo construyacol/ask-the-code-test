@@ -115,7 +115,9 @@ state = {
 }
 
 componentWillReceiveProps({primary_value}){
-  this.total_value(primary_value)
+  if(primary_value){
+    this.total_value(primary_value)
+  }
 }
 
 total_value = async(value) =>{

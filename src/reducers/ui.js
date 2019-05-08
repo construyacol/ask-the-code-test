@@ -51,7 +51,8 @@ const initialState = {
       swap_done_out:null,
       swap_done_in:null,
       new_deposit_style:null,
-      currentFilter:'deposits'
+      currentFilter:'deposits',
+      active_trade_operation:false
     }
   },
   other_modal:false,
@@ -123,7 +124,8 @@ const ui = (state = initialState, action)=>{
             },
             update_list:state.current_section.params.update_list,
             currentFilter:state.current_section.params.currentFilter,
-            show_menu_principal:state.current_section.params.show_menu_principal
+            show_menu_principal:state.current_section.params.show_menu_principal,
+            active_trade_operation:state.current_section.params.active_trade_operation
           }
         }
       }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
+import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import { InputForm, InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import { matchItem, number_format, mensaje } from '../../../services'
@@ -16,7 +17,6 @@ class SwapView extends Component{
   state = {
     value:"",
     address:null,
-    loader:false,
     active:false,
     pair_id:null,
     total_value:null
@@ -99,11 +99,12 @@ class SwapView extends Component{
 
     // console.log
     let new_swap = await this.props.action.add_new_swap(current_wallet.id, pair_id, value)
-    this.props.action.Loader(false)
 
     if(!new_swap){
       return this.handleError('No se ha podio hacer el cambio')
     }
+
+    await this.props.action.current_section_params({active_trade_operation:true})
 
     const {
       swap_info,
@@ -135,6 +136,7 @@ class SwapView extends Component{
 
     await this.props.action.add_new_transaction_animation()
 
+    this.props.action.Loader(false)
     this.props.history.push(`/wallets/activity/${current_wallet.id}`)
 
   }
@@ -253,8 +255,8 @@ class SwapView extends Component{
 
 render(){
 
-  const { current_wallet, short_name, global_loader, current_pair, available } = this.props
-  const { value, address, loader, active } = this.state
+  const { current_wallet, short_name, loader, current_pair, available } = this.props
+  const { value, address, active } = this.state
   const { secondary_coin, secondary_value, pair_id } = current_pair
   let movil_viewport = window.innerWidth < 768
 
@@ -267,13 +269,16 @@ render(){
       <SimpleLoader
         label="Consultando Billetera"
       />
-      :
-        global_loader ?
-        <SimpleLoader
-          label="Procesando"
-        />
         :
         <section className={`SwapView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
+
+          {
+            loader &&
+            <LoaderTrade
+              label="Procesando tu cambio"
+            />
+          }
+
             <div className="WSection1">
               <p className="fuente title soloAd3">Pago con:</p>
               <InputFormCoin
@@ -316,7 +321,7 @@ render(){
                 solo_lectura={true}
                 quote_type="primary"
                 account_type={current_wallet.currency_type}
-                loader={global_loader}
+                loader={loader}
                 getOtherPairs={this.getOtherPairs}
               />
             </div>
@@ -351,6 +356,8 @@ function mapStateToProps(state, props){
   const { current_wallet, pairs_for_account } = state.ui.current_section.params
   const { user, user_id,  wallets, all_pairs, balances } = state.model_data
 
+  // console.log('Que carajo pasa con el convertidor', pairs_for_account)
+
   let current_pair = {
     pair_id:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.pair_id,
     secondary_coin:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency,
@@ -360,7 +367,7 @@ function mapStateToProps(state, props){
   // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_pair)
 
   return{
-    global_loader:state.isLoading.loader,
+    loader:state.isLoading.loader,
     user:user[user_id],
     wallets,
     all_pairs,

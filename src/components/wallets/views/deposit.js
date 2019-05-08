@@ -107,12 +107,19 @@ render(){
           <IconSwitch {...atributos}/>
         </div>
 
-          <p className="fuente">La mejor manera de iniciar operaciones en coinsenda es realizando un deposito.</p>
+          <div className="contIcontSwitchCont">
+            {
+              this.props.active_trade_operation ?
+              <p className="fuente active_trade_operation">Operación de intercambio en proceso, una vez finalice podrás hacer depositos.</p>
+              :
+              <p className="fuente">La mejor manera de iniciar operaciones en coinsenda es realizando un deposito.</p>
+            }
+          </div>
 
         <div className="contButtons">
             <ButtonForms
               type="primary"
-              active={true}
+              active={this.props.active_trade_operation ? false : true}
               siguiente={this.fiat_deposit}
             >
               Realizar un deposito
@@ -155,6 +162,7 @@ function mapStateToProps(state, props){
   const { user, user_id } = state.model_data
 // console.log('DESDE DEPOSITOSSSS ', state.ui.current_section.params.short_name)
   return{
+    active_trade_operation:state.ui.current_section.params.active_trade_operation,
     user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,
     // local_currency:state.model_data.pairs.localCurrency,

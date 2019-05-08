@@ -326,10 +326,16 @@ class ActivityList extends Component {
 
 
     // let current_activity = await this.filter_activity(value)
-    await this.props.action.current_section_params({currentFilter:value})
 
-      let current_activity = this.props.current_activity_account[value] || []
-      current_activity = current_activity.length>0 ? current_activity : await this.filter_activity(value)
+    await this.props.action.current_section_params({currentFilter:value})
+    let current_activity = this.props.current_activity_account[value] || []
+    current_activity = current_activity.length>0 ? current_activity : await this.filter_activity(value)
+
+    if(current_activity && current_activity.length === 0){
+      return this.init_activity()
+    }
+    
+    console.log('====>    HAS CAMBIADO DE FILTRO', current_activity)
 
     await this.props.action.update_activity_account(this.props.current_wallet.id, value, current_activity)
     await this.setState({
@@ -341,6 +347,7 @@ class ActivityList extends Component {
     await this.props.action.update_pending_activity()
 
   }
+
 
 
 

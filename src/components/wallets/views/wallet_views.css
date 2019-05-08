@@ -25,6 +25,13 @@
   border-radius: 6px;
 }
 
+.contIcontSwitchCont{
+  display: grid;
+}
+.active_trade_operation{
+  color: #b3b3b3;
+}
+
 .PairList{
   overflow: hidden;
   border-radius: 7px;
@@ -174,6 +181,7 @@
   display: grid;
   grid-template-rows: 30px 1fr 1fr 1fr;
   grid-row-gap: 5px;
+  position: relative;
 }
 
 .WithdrawView{
@@ -328,6 +336,7 @@
     transform: translateY(20px);
   }
 }
+
 
 
 
