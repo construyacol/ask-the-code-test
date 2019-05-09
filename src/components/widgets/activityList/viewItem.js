@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+ import React, { Fragment, Component } from 'react'
 import { number_format } from '../../../services'
 import { PaymentConfirButton } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
@@ -166,7 +166,7 @@ render(){
 
       <div className={`ItemLeft ${(currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap') ? 'delete' : 'normal' }`}>
         {
-          (currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap')&&
+          ((state === 'pending' || state === 'rejected') && type_order !== 'swap')&&
           <div className="contenDe tooltip" onClick={this.delete}>
             <div id="Aldelete">
               <i className="far fa-times-circle "></i>

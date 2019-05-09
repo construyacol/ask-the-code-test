@@ -34,7 +34,7 @@ class TicketContainer extends Component {
 
     // console.log('||||||||| - - CURRENCIES', currencies[ticket.currency.currency].confirmations )
 
-    if(ticket && ticket.state !== 'confirmed' || ticket.currency_type !== 'crypto'){return false}
+    if(ticket && ticket.state !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
 
     let confirm = setInterval(async()=>{
 
@@ -74,7 +74,7 @@ class TicketContainer extends Component {
         current_wallet
       } = this.props
 
-      console.log('||||||||||||||| - - - - TICKET', ticket.unique_id)
+      console.log('||||||||||||||| - - - - TICKET', ticket)
 
       switch (type_order) {
         case 'withdraw':
@@ -199,10 +199,10 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:"Tx Id:",
-                  value:ticket.state === 'pending' ? 'En proceso' : ticket.proof_of_payment.proof,
-                  type:ticket.state !== 'pending' && "tx",
-                  copy:ticket.state !== 'pending' && true,
-                  url_explorer:ticket.state !== 'pending' && (currencies[ticket.currency.currency].node_url),
+                  value:ticket.state === 'confirmed' ? 'En proceso' : ticket.withdraw_proof && ticket.withdraw_proof.value,
+                  type:ticket.state !== 'confirmed' && "tx",
+                  copy:ticket.state !== 'confirmed' && true,
+                  url_explorer:ticket.state !== 'confirmed' && (currencies[ticket.currency.currency].node_url),
                   id:4
                 },
               ]

@@ -238,12 +238,20 @@ class ActivityList extends Component {
 
       // console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', currentFilter,  trigger_action)
 
+      await this.props.action.update_pending_activity(this.props.current_wallet.id, currentFilter)
       await this.props.action.update_activity_account(this.props.current_wallet.id, currentFilter)
-      await this.props.action.update_pending_activity()
+      await this.props.action.update_pending_activity(this.props.current_wallet.id, currentFilter)
+
+
+      // await this.setState({
+      //   activity:current_activity,
+      //   expandible:90,
+      //   expandido:false
+      // })
 
       this.setState({
-        expandidoMax:(this.props.expandidoMax - 100),
-        expandible:this.state.expandido ? (this.props.expandidoMax - 100) : '90px'
+        // expandidoMax:(this.props.expandidoMax - 100),
+        expandible:this.state.expandido ? (this.props.expandidoMax) : '90px'
       });
       this.props.action.Loader(false)
       this.setState({deleted:false})
@@ -334,7 +342,7 @@ class ActivityList extends Component {
     if(current_activity && current_activity.length === 0){
       return this.init_activity()
     }
-    
+
     console.log('====>    HAS CAMBIADO DE FILTRO', current_activity)
 
     await this.props.action.update_activity_account(this.props.current_wallet.id, value, current_activity)

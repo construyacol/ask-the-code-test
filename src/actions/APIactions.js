@@ -211,11 +211,9 @@ export const get_all_pairs = (token, country) =>{
     }
 
     await dispatch(load_label('Importando pares'))
-    console.log('=====>    QUE PASA PRRO BEFORE', body)
 
     const url_pairs = `${ApiUrl}pairs/get-all-pairs`
     const pairs = await ApiPostRequest(url_pairs, body, true)
-    console.log('=====>    QUE PASA PRRO AFTER', pairs)
 
     if(!pairs || pairs === 465){return false}
     const { data } = pairs
@@ -1342,7 +1340,7 @@ export const get_withdraw_list = (user) =>{
 
     if(!withdrawals || withdrawals === 465){return false}
 
-    // console.log('|||||| GET WITHDRAWALS ', withdrawals)
+    console.log('===============> GET WITHDRAWALS BEFORE ', withdrawals)
 
     let withdrawals_remodeled = []
 
@@ -1360,15 +1358,18 @@ export const get_withdraw_list = (user) =>{
         deposit_provider_id:"",
         expiration_date:new Date(),
         id:withdraw.id,
-        state:withdraw.state,
+        state:withdraw.state === 'accepted' && !withdraw.withdraw_proof ? 'confirmed' : withdraw.state,
         unique_id:withdraw.unique_id,
         userId:withdraw.userId,
         withdraw_account:withdraw.withdraw_account,
         withdraw_provider:withdraw.withdraw_provider,
-        type_order:"withdraw"
+        type_order:"withdraw",
+        withdraw_proof:withdraw.withdraw_proof
       }
       withdrawals_remodeled.push(new_withdraw)
     })
+
+    console.log('=====>   GET WITHDRAWALS ', withdrawals_remodeled)
 
     withdrawals_remodeled.reverse()
 

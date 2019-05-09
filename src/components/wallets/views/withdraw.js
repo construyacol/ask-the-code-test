@@ -111,14 +111,24 @@ state = {
         this.props.action.Loader(false)
         return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
       }
-      // console.log('========> RESPUESTA ENDPOINT RETIRO', retiro)
+
+      // Confirmamos la orden de retiro
+      let res = await this.props.action.add_update_withdraw(retiro.data.unique_id, 'confirmed', retiro.data.withdraw_info.account_from)
+
+      if(!res){
+        this.props.action.Loader(false)
+        return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
+      }
+      // 32Dt1Vkz1ZsA9YCyk4Xvfc5pznmVwVsmCc
+      console.log('========> RESPUESTA ENDPOINT RETIRO', res)
 
       let new_withdraw_model = {
         id:retiro.data.id,
         unique_id:retiro.data.unique_id,
         type_order:'withdraw',
         account_id:retiro.data.withdraw_info.account_from,
-        ...retiro.data.withdraw_info
+        ...retiro.data.withdraw_info,
+        state:res.data.withdraw_info.state
       }
 
       // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model)

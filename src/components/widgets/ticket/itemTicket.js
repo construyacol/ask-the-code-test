@@ -13,7 +13,7 @@ const ItemTicket = payload => {
     url_explorer
   } = payload
 
-  // console.log('||||||| ITEM ticket ', url_explorer)
+  console.log('||||||| ITEM ticket ', payload)
 
   return(
     <div className="TicketDetailItem">

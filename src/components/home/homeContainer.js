@@ -130,16 +130,20 @@ componentDidMount(){
             switch (withdraw.state) {
               case 'accepted':
                 return this.props.action.mensaje('El retiro ha sido aceptado','success')
+              // case 'confirmed':
+                 // return this.props.action.mensaje('Retiro confirmado','success')
+                // return this.props.action.get_list_user_wallets(this.props.user)
               case 'confirmed':
-                 this.props.action.mensaje('Retiro confirmado','success')
-                return this.props.action.get_list_user_wallets(this.props.user)
               case 'pending':
               if(withdraw.currency_type === 'crypto'){
-                let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
-                await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-                await this.props.action.get_withdraw_list(this.props.user)
-                await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
-                this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+                setTimeout(async()=>{
+                  let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
+                  await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+                  await this.props.action.get_withdraw_list(this.props.user)
+                  await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
+                  this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+                }, 1000)
+                // El timer es para que se pueda ejecutar la animación al agregar el nuevo item withdraw crypto
               }
                 break
               default:

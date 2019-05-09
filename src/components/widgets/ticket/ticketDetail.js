@@ -86,7 +86,7 @@ const atributos2 ={
             !only_detail &&
               <div className="ticketHeader">
                 {
-                  (state === 'confirmed' && currency_type === 'crypto') ?
+                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposit") ?
                     <ConfirmationCounter
                       confirmations={confirmations}
                       total_confirmations={total_confirmations}
@@ -100,7 +100,7 @@ const atributos2 ={
                 }
 
                 {
-                  (state === 'confirmed' && currency_type === 'crypto') ?
+                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposit") ?
                     <h1 className="fuente confirm TicketTitle">Confirmaciones</h1>
                   :
                   <h1 className="fuente TicketTitle">Transacción {
@@ -108,7 +108,7 @@ const atributos2 ={
                     state === 'accepted' ? 'Aceptada' :
                     state === 'canceled' ? 'Cancelada' :
                     state === 'rejected' ? 'Rechazada' :
-                    state === 'confirmed' && 'en Revisión'
+                    state === 'confirmed' && currency_type === 'crypto' ? 'en proceso' : 'en Revisión'
                   }</h1>
                 }
               </div>
