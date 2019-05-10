@@ -192,7 +192,7 @@ render(){
                   }
                 </div>
               :
-                  (currency_type === 'crypto' && state === 'confirmed') ?
+                  (currency_type === 'crypto' && state === 'confirmed' && type_order === 'deposit') ?
                     <div className="ConfirmedTxT fuente2">
                       <p>
                         3 <span>/6</span>
@@ -200,8 +200,8 @@ render(){
                     </div>
                   :
                     <div className="fecha">
-                      <p className="ALdayDate fuente2"  style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>02</p>
-                      <p className="ALmonthDate" style={{color:(state === 'pending' || state === 'confirmed') ? '#ff8660' :'#1cb179'}}>JUL</p>
+                      <p className="ALdayDate fuente2"  style={{color:(currency_type === 'fiat'  && (state === 'pending' || state === 'confirmed')) ? '#ff8660' : '#1cb179'}}>02</p>
+                      <p className="ALmonthDate" style={{color:(currency_type === 'fiat' && (state === 'pending' || state === 'confirmed')) ? '#ff8660' :'#1cb179'}}>JUL</p>
                     </div>
             }
           </Fragment>
@@ -263,7 +263,8 @@ render(){
         (type_order !== 'swap' && state === 'pending') ? '#ff8660' :
         (state === 'accepted') ? '#1cb179' :
         (type_order !== 'swap' && (state === 'rejected' || state === 'canceled'  || statePendingSwap === 'error')) ? '#f44336' :
-        (type_order !== 'swap' && state === 'confirmed') ? '#1cb179' : '#80808029'}}>
+        (type_order !== 'swap' && state === 'confirmed') ? '#1cb179' : '#80808029'}}
+      >
 
         <p style={{color:"white !important"}}>
           {
@@ -277,7 +278,7 @@ render(){
             !movil_viewport &&
             <Fragment>
               {
-              currency_type === 'crypto' && state ==='confirmed'?
+              currency_type === 'crypto' && state ==='confirmed' && type_order === 'deposit'?
               <Fragment>
                 Confirmado:
                 <span className="fuente2 confirmedNumber">
@@ -286,9 +287,9 @@ render(){
               </Fragment>
               :
               (type_order === 'swap' && pendingSwap) ?
-                  statePendingSwap === 'done' ? 'aceptado' :  statePendingSwap
+              statePendingSwap === 'done' ? 'aceptado' :  statePendingSwap
                  :
-                 statePendingSwap === 'error' ? 'Error' : state
+              statePendingSwap === 'error' ? 'Error' : state === 'confirmed' && type_order === 'withdraw' ? 'Procesando' : state
                }
             </Fragment>
           }

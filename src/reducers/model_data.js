@@ -44,9 +44,9 @@ let models
         ...state.balances,
         [action.payload.id]:{
           ...state.balances[action.payload.id],
-          available:parseFloat(state.balances[action.payload.id].available) - parseFloat(action.payload.amount),
-          total:parseFloat(state.balances[action.payload.id].total) - parseFloat(action.payload.amount),
-          reserved:parseFloat(state.balances[action.payload.id].reserved) + parseFloat(action.payload.amount),
+          // available:parseFloat(state.balances[action.payload.id].available) - parseFloat(action.payload.amount),
+          // total:parseFloat(state.balances[action.payload.id].total) - parseFloat(action.payload.amount),
+          // reserved:parseFloat(state.balances[action.payload.id].reserved) + parseFloat(action.payload.amount),
           lastAction:'reduce',
           actionAmount:parseFloat(action.payload.amount)
         }

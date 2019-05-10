@@ -110,7 +110,7 @@ class ViewAmountComponent extends Component {
               />
 
               <div className="DLstatus">
-                <p className="fuente2 DLstitle DLcop DLcop2" onClick={this.load_amount} >
+                <p id="DLcop2" className="fuente2 DLstitle DLcop DLcop2" onClick={this.load_amount} >
                   {
                     operation_type === 'deposit' ?
                     `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`

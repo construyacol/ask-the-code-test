@@ -52,7 +52,8 @@ class BalanceComponent extends Component {
         current_amount:balance.available,
       })
       await this.play_animation('In')
-      this.setState({animation:null})
+      // this.setState({animation:null})
+      
     // await this.props.action.get_list_user_wallets(this.props.user)
     // await this.props.action.get_account_balances(this.props.user)
   }

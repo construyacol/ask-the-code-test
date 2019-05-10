@@ -433,6 +433,24 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+
+  #DLcop2{
+   text-align: center !important;
+  }
+
+  .DLcontain2{
+    padding: 0 15px;
+  }
+
+  .containerInputComponent.putitass{
+    align-items: end;
+  }
+
+  .signoPesos{
+    font-size: 35px !important;
+    margin-bottom: 20px !important;
+  }
+
   .contAddress{
     max-height: 350px !important;
     padding: 10px 0;
@@ -1198,9 +1216,9 @@ circle{
     bottom: -100px !important;
   }
 
-  .ItemSelectionContainerMovil{
+  /*.ItemSelectionContainerMovil{
     height: 600px !important;
-  }
+  }*/
 
 
   .imgDashContainer{

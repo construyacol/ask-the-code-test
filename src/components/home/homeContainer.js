@@ -85,7 +85,7 @@ componentDidMount(){
                     await this.props.action.current_section_params({active_trade_operation:false})
                     await this.props.action.ManageBalance(swap.swap_info.account_from_id, 'reduce', swap.swap_info.want_to_spend)
                     setTimeout(async()=>{
-                      await this.props.action.get_account_balances(this.props.user)
+                      // await this.props.action.get_account_balances(this.props.user)
                       await this.props.action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
                     },3000)
 
@@ -128,15 +128,15 @@ componentDidMount(){
           this.socket.on(`/withdraw/${this.props.user.id}`, async(withdraw)=>{
 
             switch (withdraw.state) {
-              case 'accepted':
-                return this.props.action.mensaje('El retiro ha sido aceptado','success')
               // case 'confirmed':
                  // return this.props.action.mensaje('Retiro confirmado','success')
                 // return this.props.action.get_list_user_wallets(this.props.user)
               case 'confirmed':
-              case 'pending':
+              case 'accepted':
+              // case 'pending':
               if(withdraw.currency_type === 'crypto'){
                 setTimeout(async()=>{
+                  await this.props.action.ManageBalance(withdraw.account_from, 'reduce', withdraw.amount)
                   let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
                   await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
                   await this.props.action.get_withdraw_list(this.props.user)
@@ -144,6 +144,7 @@ componentDidMount(){
                   this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
                 }, 1000)
                 // El timer es para que se pueda ejecutar la animación al agregar el nuevo item withdraw crypto
+                return this.props.action.mensaje('El retiro se esta procesando','success')
               }
                 break
               default:

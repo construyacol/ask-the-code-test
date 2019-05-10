@@ -269,7 +269,7 @@ export class InputDepositForm extends Component{
     } = props
 
     this.setState({
-      finalValue:value ? number_format(value) : 'Escribe la cantidad'
+      finalValue:value ? number_format(value) : window.innerWidth>768 ? 'Escribe la cantidad' : 'Cantidad'
     })
   }
 

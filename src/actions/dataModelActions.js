@@ -13,7 +13,7 @@ ADD_BALANCE
 } from './action_types'
 
 
-export const ManageBalance = (account_id, action, amount) => {
+export const ManageBalanceAction = (account_id, action, amount) => {
 
   switch (action) {
     case 'reduce':

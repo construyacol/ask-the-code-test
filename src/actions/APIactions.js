@@ -57,7 +57,8 @@ UserPairs,
 Update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
-UpdatePendingSwap
+UpdatePendingSwap,
+ManageBalanceAction
 } = data_model_actions
 
 
@@ -449,6 +450,49 @@ export const get_account_balances = user => {
 
   }
 
+}
+
+
+
+export const ManageBalance = (account_id, action, amount) => {
+
+  return async(dispatch) =>{
+
+    const { user_id } = store.getState().model_data
+    let user = store.getState().model_data.user[user_id]
+
+
+    const url_balance = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
+    let balances_res = await ApiGetRequest(url_balance)
+    if(!balances_res || balances_res === 465){return false}
+    let balance_list = balances_res.map(balance => {
+      return {
+        id:balance.id,
+        currency:balance.currency.currency,
+        reserved:balance.reserved,
+        available:balance.available,
+        total:parseFloat(balance.reserved) + parseFloat(balance.available),
+        lastAction:null,
+        actionAmount:0
+      }
+    })
+
+    let user_update = {
+      ...user,
+      balances:[
+        ...balance_list
+      ]
+    }
+
+    let list_user_balances = await normalize_user(user_update)
+    await dispatch(Update_normalized_state(list_user_balances))
+
+    const { balances } = list_user_balances.entities
+
+    dispatch(ManageBalanceAction(account_id, action, amount))
+
+
+  }
 }
 
 
