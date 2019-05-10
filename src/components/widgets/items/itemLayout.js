@@ -17,12 +17,11 @@ class ItemLayout extends Component {
 
   render(){
 
-  const { type, actives, name, code, placeholder } = this.props
+  const { type, actives, name, code, placeholder, primarySelect } = this.props
 
   return(
-    <div className={type==='payment_method'?'ILtuvieja':''}>
+    <div id={`${primarySelect ? 'primarySelect' : ''}`} className={`${type==='payment_method'?'ILtuvieja':''} `}>
         <div className={`item ${actives ? 'itemSelection': ''}`} onClick={(!actives) ? this.chambea : null}>
-           {/* // <div className={`item ${actives ? 'itemSelection': ''}`} onClick={this.chambea}> */}
 
             {
               (type === "coins" || type === "payment_method" || type === "service_mode") ?
@@ -44,10 +43,22 @@ class ItemLayout extends Component {
                 :
                <img className={`banquis ${actives ? 'itemVisible': ''}`} src={require(`./assets/${type}/${code}.png`)} alt="" id={code} title={name} width="85"/>
             }
-             <p title={name}>{name}</p>
+            {
+              primarySelect ?
+              <div id="primarySelectText" className="primarySelectText">
+                <p title={name}>{name}</p>
+                { placeholder &&
+                  placeholder.map(item=>{
+                    return <p id="ILplaceholder2" className="fuente" key={item.id}>{item.name}</p>
+                  })
+                }
+              </div>
+              :
+              <p title={name}>{name}</p>
+            }
           </div>
           {
-            placeholder &&
+            (placeholder && !primarySelect) &&
             <div className="dimeloPuti">
               {
                 placeholder.map(item=>{

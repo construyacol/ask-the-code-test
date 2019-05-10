@@ -126,7 +126,7 @@ class ItemSelectionContainer extends Component {
 
 
     return(
-      <section className="ItemSelectionContainers">
+      <section className="ItemSelectionContainers" id="itemSelect">
 
         {
           this.state.selected ?

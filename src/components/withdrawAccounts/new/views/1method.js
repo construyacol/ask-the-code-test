@@ -15,20 +15,22 @@ const MethodView = props =>{
     withdraw
   } = props
 
+  let movil_viewport = window.innerWidth<768
+
   return(
-    <div className="DLsteps method">
+    <div id="DLsteps" className="DLsteps method">
 
       <div className="DLcontains">
         <p className="fuente DLtitles2" >{title ? title : 'Title'}</p>
         <p className="fuente DLstitles" >{subtitle ? subtitle : 'Subtitle:'}</p>
       </div>
 
-      <div className={`${window.innerWidth>768 ? 'DLItemSelectionContainers' :  'ItemSelectionContainerMovil'}`}>
-        <div className={`${window.innerWidth>768 ? (!withdraw ? 'DLcontainerItems' : 'DLcontainerItems DLcontainerItems2') :  'containerItems'} chooseMethod`}>
+      <div className={`${!movil_viewport ? 'DLItemSelectionContainers' :  'ItemSelectionContainerMovil'}`}>
+        <div className={`${!movil_viewport ? (!withdraw ? 'DLcontainerItems' : 'DLcontainerItems DLcontainerItems2') :  'containerItems'} chooseMethod`}>
           {
             items.map(item=>{
               if(withdraw && item.code === 'debit'){return false}
-              return <ItemLayout actualizarEstado={select_method} actives={item_active === item.code && true } {...item} key={item.id}/>
+              return <ItemLayout actualizarEstado={select_method} actives={item_active === item.code && true } primarySelect={movil_viewport} {...item} key={item.id}/>
             })
           }
         </div>

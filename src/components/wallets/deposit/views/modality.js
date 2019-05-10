@@ -15,6 +15,7 @@ const ModalityView = props =>{
     title,
     subtitle
   } = props
+  let movil_viewport = window.innerWidth<768
 
   return(
     <div className="DLstep modality">
@@ -24,10 +25,10 @@ const ModalityView = props =>{
       </div>
 
           <div className={`${window.innerWidth>768 ? 'DLItemSelectionContainer' :  'ItemSelectionContainerMovil'}`}>
-            <div className={`${window.innerWidth>768 ? 'DLcontainerItems' :  'containerItems'}`}>
+            <div className={`${window.innerWidth>768 ? 'DLcontainerItems' :  'containerItems'} chooseMethod`}>
           {
             items.map(item=>{
-              return <ItemLayout actualizarEstado={update_service_mode} actives={service_mode === item.code && true } {...item} key={item.id}/>
+              return <ItemLayout  primarySelect={movil_viewport} actualizarEstado={update_service_mode} actives={service_mode === item.code && true } {...item} key={item.id}/>
             })
           }
         </div>

@@ -353,9 +353,7 @@ box-shadow: 0px 0px 21px 0px rgba(0,0,0,0.15);
 }
 
 
-.DLstep.modality{
-  grid-template-rows: 25vh 1fr 25vh !important;
-}
+
 
 .DLsteps.method{
   grid-template-rows: 25vh 1fr 25vh !important;
