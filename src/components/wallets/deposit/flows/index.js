@@ -187,7 +187,7 @@ const Success = (props) =>{
 
 
     return(
-      <div className={`DLstep ${(step === 5 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
+      <div id="DLstep2" className={`DLstep ${(step === 5 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
         {
           loader ?
           <Fragment>
@@ -201,11 +201,11 @@ const Success = (props) =>{
 
           // <section className={`stepFinish ${final ? 'cambiarGrid': ''}`}>
           <Fragment>
-            <span className="DLsave" onClick={guardarMetodo}>
+            {/* <span className="DLsave" onClick={guardarMetodo}>
               <i className="far fa-bookmark tooltip" >
               <span className="tooltiptext tooltiptexts fuente">Guardar Medio de pago</span>
               </i>
-            </span>
+            </span> */}
 
             <div className={`succ nWCabeza ${final ? 'desaparece1' : ''}`}>
               <div className="icon icon--order-success svg">
@@ -231,8 +231,6 @@ const Success = (props) =>{
 
 
           <div className={`nWbody2 DLbody2 Fbody2 eya fuente ${final ? 'desaparece1' : ''}`}>
-
-
               <div className="nBitemSuccesss">
                 <p className="fuente" >Debes depositar por:</p>
                 <div className="fuente" >
@@ -250,11 +248,10 @@ const Success = (props) =>{
                 new_ticket &&
                 <TicketDetail ticket={new_ticket} only_detail={true} type_order="deposit" />
               }
-              
           </div>
         </div>
 
-            <div className="nWcta" >
+            <div id="nWcta" className="nWcta" >
               {
                 finalButton ?
                 <ButtonSuccess2 toggleModal={finalizar}>Finalizar</ButtonSuccess2>

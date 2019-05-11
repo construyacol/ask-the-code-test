@@ -169,11 +169,11 @@ export const ButtonForms = (props) => {
     <div className={`contButton ${clases}`} id={`${id}`}>
       {
         props.active ?
-        <div className={`botonForm ${props.type} fuente`} onClick={props.siguiente} >
+        <div id="botonForm" className={`botonForm ${props.type} fuente`} onClick={props.siguiente} >
           {props.children}
         </div>
         :
-        <div className={`botonForm desactivado fuente ${props.cenVert}`} >
+        <div id="botonForm" className={`botonForm desactivado fuente ${props.cenVert}`} >
           {props.children}
         </div>
       }

@@ -434,6 +434,69 @@ circle{
 @media only screen and (max-width: 768px) {
 
 
+  .FolowTexts{
+    width: 90vw !important;
+  }
+
+  .Ftexto{
+    font-size: 14px !important;
+  }
+
+  #botonForm{
+    width: 100% !important;
+  }
+
+  .cenVert{
+    width: 100% !important;
+  }
+
+  .FolowTexts{
+    /*position: relative !important;*/
+    top: auto !important;
+  }
+
+    #nWcta .botonForm{
+    max-width:none !important;
+    padding: 18px 0 !important;
+    width: 100%;
+  }
+
+  #nWcta{
+    align-self: end !important;
+    width: 90% !important;
+  }
+
+  .TicketDetailItem p{
+    font-size: 14px !important;
+  }
+
+.contenidoTicket{
+  padding: 0 !important;
+}
+
+.nBitemSuccesss{
+  width: 90%;
+  justify-self: center;
+}
+
+.TicketDetailItem{
+    padding: 0 !important;
+    width: 90% !important;
+}
+
+.icon--order-success{
+  display: none;
+}
+
+.nWCabeza{
+ grid-template-rows: 1fr !important;
+}
+
+#DLstep2{
+  max-height: 95%;
+  grid-template-rows: 60px 1fr 15vh !important;
+}
+
 
 .ItemSelectionContainers, .ItemSelectionContainer{
   height: 100% !important;
@@ -912,9 +975,7 @@ circle{
     width: 60% !important;
  }
 
- .FolowTexts{
-   width: 350px !important;
- }
+
 
 
 
@@ -946,9 +1007,7 @@ circle{
     width: 100% !important;
   }
 
-  .DLstep2 {
-    grid-template-rows: 170px 1fr 100px !important;
-  }
+
 
   .DLcontainerItems{
     grid-template-columns: repeat(1, 1fr) !important;
@@ -1158,9 +1217,7 @@ circle{
     /*justify-items: center !important;*/
   }
 
-  .FolowTexts {
-    width: 300px !important;
-  }
+
 
 }
 
@@ -1276,9 +1333,6 @@ circle{
     height: 421px !important;
   }
 
-  .DLstep2{
-
-  }
 }
 
 
@@ -1311,9 +1365,7 @@ circle{
     height: 250px !important;
   }
 
-  .DLstep2 {
-    grid-template-rows: 150px 1fr 80px !important;
-}
+
 
 
 }

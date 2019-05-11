@@ -28,3 +28,24 @@
   justify-items:center;
   border-bottom: 1px solid gray;
 }
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+ .WithdrawAccountList{
+   width: 90% !important;
+ }
+
+ .AccountItemList{
+   grid-template-columns: 120px 1fr 30% !important;
+ }
+
+ .logoAIL{
+   left: 7px !important;
+   width: 90px !important;
+ }
+
+
+}

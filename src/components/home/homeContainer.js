@@ -142,9 +142,9 @@ componentDidMount(){
                   await this.props.action.get_withdraw_list(this.props.user)
                   await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
                   this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
+                  return this.props.action.mensaje('El retiro se esta procesando','success')
                 }, 1000)
                 // El timer es para que se pueda ejecutar la animación al agregar el nuevo item withdraw crypto
-                return this.props.action.mensaje('El retiro se esta procesando','success')
               }
                 break
               default:

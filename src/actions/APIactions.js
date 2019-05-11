@@ -1011,6 +1011,7 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
 
     let remodeled_swaps = []
 
+
     swaps.map(async(swap) => {
       // obtenemos la moneda que cotiza en contra del par, pasandole como params, el swap, el par del swap y la moneda de la cuenta donde se origino el intercambio, la moneda que se gasto
       let currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
@@ -1116,7 +1117,7 @@ export const get_deposit_list = (user) =>{
     const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
     const deposits = await ApiGetRequest(url_deposit)
     if(!deposits || deposits === 465){return false}
-    console.log('|||||||||||| NORMALIZANDO DEPOSITOS::: ', deposits)
+    console.log('|||||||||||| get_deposit_list::: ', deposits)
     let remodeled_deposits = await deposits.map(item => {
       let new_item = {
         ...item,
@@ -1360,6 +1361,8 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
        }
      }
 
+     console.log('|||||| ====> BODY REQUEST WITHDRAW', body)
+
      const new_withdraw_url = `${ApiUrl}withdraws/add-new-withdraw`
      const new_withdraw_order = await ApiPostRequest(new_withdraw_url, body)
      if(!new_withdraw_order || new_withdraw_order === 465){return false}
@@ -1384,7 +1387,7 @@ export const get_withdraw_list = (user) =>{
 
     if(!withdrawals || withdrawals === 465){return false}
 
-    console.log('===============> GET WITHDRAWALS BEFORE ', withdrawals)
+    // console.log('===============> GET WITHDRAWALS BEFORE ', withdrawals)
 
     let withdrawals_remodeled = []
 
@@ -1408,7 +1411,8 @@ export const get_withdraw_list = (user) =>{
         withdraw_account:withdraw.withdraw_account,
         withdraw_provider:withdraw.withdraw_provider,
         type_order:"withdraw",
-        withdraw_proof:withdraw.withdraw_proof
+        withdraw_proof:withdraw.withdraw_proof,
+        created_at:withdraw.created_at,
       }
       withdrawals_remodeled.push(new_withdraw)
     })

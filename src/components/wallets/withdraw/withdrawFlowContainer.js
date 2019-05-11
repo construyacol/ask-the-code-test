@@ -118,7 +118,7 @@ class WithdrawFlow extends Component {
 
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       let res = await this.props.action.add_new_withdraw_order(amount, account_from, withdraw_provider, withdraw_account)
-
+      console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
       if(!res){
         this.setState({
           finish_step:false,
