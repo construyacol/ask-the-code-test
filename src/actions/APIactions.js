@@ -309,14 +309,15 @@ export const get_pair_from = (primary, secondary, all) =>{
   return async(dispatch)=>{
     return get_pair(primary, secondary, all)
   }
+
 }
 
 const get_pair = async(primary, secondary, all) =>{
 
     if(primary && !secondary){
      // consulte todos los pares disponibles donde la moneda primaria es "primary"
-     // let query = `{"where": {"primary_currency":{"eq": {"currency" : "${primary}", "is_token" : false}} }}`
-      let query = `{"where": {"primary_currency":{"eq": {"currency" : "${primary}", "is_token" : false}} }}`
+      // let query = `{"where": {"primary_currency":{"eq": {"currency" : "${primary}", "is_token" : false}} }}`
+      let query = `{"where": {"primary_currency.currency": "${primary}"}}`
       let res = await get_this_pair(query)
       if(all){return res}
       return res[0]
@@ -324,8 +325,7 @@ const get_pair = async(primary, secondary, all) =>{
 
     if(!primary && secondary){
      // consulte todos los pares disponibles donde la moneda secundaria  es "secondary"
-     // let query = `{"where": {"secondary_currency":{"eq": {"currency" : "${secondary}", "is_token" : false}}}}`
-      let query = `{"where": {"secondary_currency":{"eq": {"currency" : "${secondary}", "is_token" : false}}}}`
+      let query = `{"where": {"secondary_currency.currency": "${secondary}"}}`
       let res = await get_this_pair(query)
       if(all){return res}
       return res[0]
@@ -333,7 +333,7 @@ const get_pair = async(primary, secondary, all) =>{
 
     if(!primary || !secondary){return false}
 
-    const query = `{"where": {"primary_currency": {"eq": {"currency" : "${primary}", "is_token" : false}}, "secondary_currency":{"eq": {"currency" : "${secondary}", "is_token" : false}}  }}`
+    const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
     let res = await get_this_pair(query)
     return res[0]
 
@@ -342,6 +342,7 @@ const get_pair = async(primary, secondary, all) =>{
 
 
 export const get_this_pair = async(query) => {
+
 
   const url = `${ApiUrl}pairs?filter=${query}`
   const pairs = await ApiGetRequest(url)
@@ -512,7 +513,7 @@ export const get_list_user_wallets = (user) =>{
     await dispatch(load_label('Obteniendo tus billeteras'))
     const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
     let wallets = await ApiGetRequest(url_wallets)
-    if(!wallets){wallets = walletsJSON }
+    if(!wallets){wallets = walletsJSON}
     if(!wallets || wallets === 404){return false}
     if(wallets && wallets.length<1){
       await dispatch(reset_model_data({wallets:[]}))

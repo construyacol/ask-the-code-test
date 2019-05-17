@@ -181,7 +181,7 @@ class WalletList extends Component{
         }
 
         {
-          (!this.props.loader && lista === 'withdraw_accounts')  &&
+          (!this.props.loader)  &&
           <AddNewItem
             label={`${lista === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
             type="primary"
