@@ -1,8 +1,9 @@
 .nBstep1{
   display: grid;
   grid-template-columns: 1fr;
-  height: 90%;
-  grid-template-rows: 90px 90px 1fr 100px;
+  height: 100vh;
+  grid-template-rows: 25vh 1fr 15vh !important;
+  grid-row-gap: 10px;
 }
 
 .nBstep1 img{
@@ -131,3 +132,48 @@
     font-size: 32px;
     color: #0e83d2;
 }
+
+
+.step1>form{
+  display: grid;
+  grid-template-rows: 15vh 1fr 15vh !important;
+  grid-row-gap: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bah{}

@@ -110,15 +110,17 @@ class BankAccountFlow extends Component{
       loader
     } = this.state
 
-    console.log('|||||| Modelito cities::', cities)
+    // console.log('|||||| Modelito cities::', cities)
 
       return(
         <Fragment>
           {
             step === 2 &&
             <div className="nBstep1 fuente">
-              <img src={bank} alt="" height="70"/>
-              <p>Genial <strong>{name}</strong></p>
+              <div>
+                <img src={bank} alt="" height="70"/>
+                <p>Genial <strong>{name}</strong></p>
+              </div>
               <p className="nBtextInit"> Al añadir una cuenta bancaria para realizar tus retiros de pesos colombianos <strong>(COP)</strong>  por primera vez, tarda en promedio <strong>2 horas habiles</strong> a partir de su inscripción, para que esta sea aprobada por la entidad bancaria, una vez tu cuenta haya sido aprobada, tus retiros serán casi inmediatos</p>
               <ButtonForms type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
             </div>
@@ -149,7 +151,10 @@ class BankAccountFlow extends Component{
                     />
                 }
 
-                <InputButton label="Continuar" type="primary" active={search.length==1}/>
+                <div id="bankChooseButton">
+                  <InputButton label="Continuar" type="primary" active={search.length==1}/>
+                </div>
+
               </form>
             </div>
           }

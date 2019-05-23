@@ -28,7 +28,8 @@ componentDidMount(){
 
     const { deposit_providers, wallet } = this.props
     const { dep_prov } = this.props.wallet
-    // console.log('||||||||||||||||||||||||||||||| UPDATE DEPOSIT CURRENT WALL', dep_prov)
+    // console.log('||||||||||||||||||||||||||||||| UPDATE DEPOSIT CURRENT WALL', deposit_providers, wallet)
+    // alert('deposit provider')
 
     // this.props.action.update_deposit_provider(init, deposit_providers, wallet, dep_prov)
     let current_wallet = wallet

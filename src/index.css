@@ -433,6 +433,112 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+  .nBcontBank{
+    margin: 40px 0 0 0;
+  }
+
+  .contMsg{
+    display: grid;
+    grid-template-rows: auto 1fr 15vh !important;
+    grid-row-gap: 10px;
+  }
+
+  #bankChooseButton .botonForm{
+    width: 100vw !important;
+  }
+
+  #botonForm{
+  }
+
+  #bankChooseButton{
+    width: 100vw !important;
+    display: grid;
+    justify-items:center;
+  }
+
+  .ItemSelectionContainer{
+    max-height: 440px !important;
+  }
+
+  #bankChooseButton{
+    height: 60px;
+    align-self: center;
+    display: grid;
+    align-items: center;
+  }
+
+  .nBstep1>div{
+    display: grid;
+    max-height: 120px;
+    align-self: center;
+  }
+
+  .containerItems>div{
+    transform:scale(.9) !important;
+  }
+
+  .containerItems{
+    grid-template-columns: repeat(2, 1fr) !important;
+    width: calc(100vw - 20px) !important;
+    padding: 0 10px !important;
+    grid-gap: 5px !important;
+    align-self: flex-start !important;
+  }
+
+
+  .ALlistAll{
+    padding-bottom: 20px !important;
+  }
+
+  .droppedImgPaymentProof{
+    width: calc(100vw - 2px);
+    max-height: calc(100vh - 40px) !important;
+  }
+
+  .ImgCropcontrols{
+    display: grid !important;
+    height: auto !important;
+    position: absolute;
+    bottom: 10px !important;
+    grid-row-gap: 7px;
+  }
+
+  .ctaPaymentProof{
+    width: 100vw !important;
+  }
+
+  .msgPayment{
+    width: 90% !important;
+  }
+
+  .smartContainer{
+    height: 100vh !important;
+    max-height: none !important;
+  }
+
+  .ticketSlide{
+    padding: 20px 0 !important;
+    height: calc(100vh - 40px) !important;
+    max-height: none !important;
+  }
+
+  .TicketDetail{
+    height: calc(100vh - 40px) !important;
+    width: 100vw !important;
+  }
+
+  #ALbuttonText{
+    width: auto !important;
+  }
+
+  .laReputas .botonForm{
+    max-width: initial !important;
+  }
+
+  .laReputas{
+    display: grid;
+  }
+
 
   .FolowTexts{
     width: 90vw !important;
@@ -502,9 +608,6 @@ circle{
   height: 100% !important;
 }
 
-.containerItems{
-  grid-template-columns: repeat(2, 1fr) !important;
-}
 
 
 
@@ -513,7 +616,7 @@ circle{
 }
 
 #modal-container .contButton{
-  width: 90%;
+  width: 95vw;
  }
 
  .contButton .botonForm{
@@ -963,7 +1066,8 @@ circle{
 
 
 .nBtextInit{
-  width: 100% !important;
+  padding: 0 20px;
+  width: calc(100% - 40px) !important;
 }
 
 .stepFinish{
@@ -985,7 +1089,7 @@ circle{
 
 
   .crop-container{
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px) !important;
 
   }
 

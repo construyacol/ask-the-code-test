@@ -504,6 +504,7 @@ updateAmountOnState = async(amount) =>{
             name:dep_prov.provider.ui_name,
             selection:false
           }
+        console.log('dep_prov', dep_prov)
         deposit_provider_list.push(new_item)
     })
 
@@ -516,10 +517,11 @@ updateAmountOnState = async(amount) =>{
   render(){
     // console.log('::: __PROPIEDADES_DEPOSITO__ ::', this.props.user)
     // console.log('::: __ESTADO_DEPOSITO__ ::', this.state)
-    // console.log('::: __globalServices__ ::', this.props.current)
 
-
+    const{ deposit_provider_list } = this.state
     const { buttonActive, coins } = this.props
+
+    console.log('::: deposit_provider_list ::', deposit_provider_list)
 
     return(
       <DepositLayout
