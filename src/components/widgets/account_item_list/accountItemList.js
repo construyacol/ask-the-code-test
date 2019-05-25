@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import ActiveItem from '../items/active_item'
 import LimitTermometer from '../limitTermometer/limitTermometer'
-import { matchItem } from '../../../services'
+import { matchItem, number_format, mensaje } from '../../../services'
 
 import './account_item.css'
 
@@ -84,6 +84,10 @@ class AccountItemList extends Component {
   }
 
 
+  need_more_action = () => {
+    return mensaje('Fondos insuficientes', 'error')
+  }
+
   render(){
 
     const {
@@ -114,28 +118,38 @@ class AccountItemList extends Component {
 
     let preferential_account = !addElement ? (preferential_accounts === account.id ? 'preferential' : false) : false
 
+    let withdraw_amount =  parseFloat(amount)
+    let withdraw_min_amount
+
+    if(account && (account.cost && account.provider_min_amount)){
+      withdraw_min_amount = parseFloat(account.cost) + parseFloat(account.provider_min_amount)
+    }
+
+    let need_more_amount = withdraw_amount < withdraw_min_amount ? 'need_more' : withdraw_amount >= withdraw_min_amount && 'satisfy'
+
+    console.log('||||||||  ======> AccountItemList', withdraw_amount, withdraw_min_amount, need_more_amount)
+
     return(
       <div
-        onClick={action ? action : this.create_order}
+        onClick={need_more_amount === 'need_more' ? this.need_more_action : action ? action : this.create_order}
         // className={`AccountItemList ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'}`} onMouseOver={this.loadAmount} onMouseOut={this.unLoadAmount}>
-        className={`AccountItemList ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'}`} >
-        <div className="backgroundAccount"></div>
+        className={`AccountItemList ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'} ${need_more_amount}`} >
+        <div className={`backgroundAccount ${need_more_amount}`}></div>
 
-        <div className="limitComp" style={{display:addElement ? 'none' : 'block'}}>
+        <div className={`limitComp ${need_more_amount}`} style={{display:addElement ? 'none' : 'block'}}>
           <LimitTermometer
             amount={amountCharge}
             max_amount={7}
             limit={addElement ? null : account.percent}
             orders={addElement ? null : account.orders}
-
             // max_amount={this.props.account && this.props.account.provider_max_amount}
           />
         </div>
 
 
         <div className="contLogoAIL">
-          <div className={`logoAIL ${addElement ? 'addElement' : 'noAddElement'}`}>
-            <div className={`backLogoAil ${currency_type}`}></div>
+          <div className={`logoAIL ${addElement ? 'addElement' : 'noAddElement'} ${need_more_amount}`}>
+            <div className={`backLogoAil ${currency_type} ${need_more_amount}`}></div>
             <IconSwitch
               {...atributos}
             />
@@ -148,7 +162,7 @@ class AccountItemList extends Component {
           <Fragment>
             <div className="infoAIL">
 
-              <div className={`infoAILItem ${preferential_account}`}>
+              <div className={`infoAILItem ${preferential_account} ${need_more_amount}`}>
                 {
                   preferential_account &&
                   <IconSwitch icon={preferential_account &&  preferential_account}
@@ -156,11 +170,19 @@ class AccountItemList extends Component {
                     // color="#38ef7d"
                   />
                 }
-                <p className={`infoAILItem name ${preferential_account}`}>{account.bank_name.ui_name}</p>
+                <p className={`infoAILItem name ${preferential_account} ${need_more_amount}`}>
+                  {account.bank_name.ui_name}
+                  {account.cost ? <span className={`costStyle fuente2  ${need_more_amount}`}>| ~${number_format(account.cost)}</span> : ''
+                  }
+                </p>
               </div>
 
-              <p className="infoAILItem account_type">
-                {account.account_type.ui_name}
+              <p className={`infoAILItem account_type ${need_more_amount}`}>
+                {
+                  need_more_amount === 'need_more' ?
+                  'Fondos insuficientes' :
+                  account.account_type.ui_name
+                }
               </p>
 
               <div className="AILAnumber">
@@ -170,34 +192,38 @@ class AccountItemList extends Component {
                   color="#5999f1"
                   colorStroke="gray"
                 />
-                <span className="infoAILItem account_number fuente2">
-                  No.: {account.account_number.value}
+                <span className={`infoAILItem account_number fuente2 ${need_more_amount}`}>
+                  {
+                    need_more_amount === 'need_more' ?
+                    `Cantidad minima: $${number_format(withdraw_min_amount)}` :
+                    `No.: ${account.account_number.value}`
+                  }
+
                 </span>
               </div>
 
             </div>
 
 
-            <div className={`optionsALI ${preferential_account}`}>
+            <div className={`optionsALI ${preferential_account} ${need_more_amount}`}>
               {/* <p style={{color:account.inscribed ? 'green' : 'red'}}>{account.inscribed ? 'Inscrita' : 'NoInscrita'}</p> */}
               {/* <p style={{color:account.visible ? 'green' : 'red'}}>{account.visible ? 'Visible' : 'InVisible'}</p> */}
               {/* <p>{account.limit ? 'Limite Alcanzado' : 'soportado'} {account.provider_max_amount}</p> */}
 
               <div className="controlDespegable">
 
-                <div className="forroDesp">
+                <div className={`forroDesp ${need_more_amount}`}>
                   <div className="contDesp">
                     <IconSwitch
                       icon="arrow_right"
                       size={25}
-                      color="#38ef7d"
+                      color={`${need_more_amount === 'need_more' ? '#d42215' : '#38ef7d'}`}
                     />
                   </div>
                 </div>
 
-
                 <div className="contActiveItem">
-                  <ActiveItem Anim2={true} color="green"/>
+                  <ActiveItem Anim2={true} color={`${need_more_amount === 'need_more' ? 'red' : 'green'}`}/>
                 </div>
 
               </div>

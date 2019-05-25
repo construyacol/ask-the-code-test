@@ -16,6 +16,15 @@
 }
 
 
+.costStyle{
+  font-size: 12px;
+  margin-left: 7px;
+}
+
+.costStyle.need_more{
+  color:red !important;
+}
+
 .AccountItemList.noAddElement:hover{
   transform: scale(1.02);
 }
@@ -121,6 +130,11 @@
   justify-items:center;
 }
 
+
+.noAddElement{
+  /*border: 1px solid gray !important;*/
+}
+
 .AccountItemList.noAddElement:hover .logoAIL{
   border: 1px solid #38ef7d;
 }
@@ -139,6 +153,8 @@
 }
 
 
+
+
 .AccountItemList.noAddElement:hover p{
   color: white;
 }
@@ -152,6 +168,10 @@
 
 .AccountItemList.noAddElement:hover .backgroundAccount{
     opacity: 1;
+}
+
+.backgroundAccount.need_more{
+  background: transparent !important;
 }
 
 .backgroundAccount{
@@ -225,6 +245,10 @@
   width: 50px;
 }
 
+.AccountItemList:hover .forroDesp.need_more{
+  width: 0px !important;
+}
+
 
 
 .controlDespegable{
@@ -289,11 +313,18 @@
 .backLogoAil{
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, #11998e, #38ef7d) !important;
+  background: linear-gradient(to right, #11998e, #38ef7d);
   opacity: 0;
   transition: .15s;
   border-radius: 6px;
 }
+
+.backLogoAil.need_more{
+  /*background: linear-gradient(to right, rgb(171, 47, 38), rgb(255, 17, 0));*/
+  background: transparent;
+}
+
+
 
 
 .AccountItemList:hover .backLogoAil.fiat{
@@ -374,8 +405,42 @@
 }
 
 .optionsALI.preferential .active_account{
-opacity: 1;
+  opacity: 1;
 }
+
+
+
+.optionsALI.need_more .active_account{
+  opacity: 1;
+}
+
+.AccountItemList:hover .infoAILItem.need_more{
+  color: red !important;
+}
+
+.limitComp.need_more{
+  display: none !important;
+}
+
+.need_more ~ .iconSty{
+  filter:grayscale(100%) !important;
+}
+
+
+.AccountItemList.need_more:hover .backgroundAccount{
+  opacity: 1;
+  border: 1px solid #c3c3c3 !important;
+}
+
+.AccountItemList.noAddElement:hover .logoAIL.need_more{
+  border: 1px solid #c3c3c3;
+}
+
+
+.AccountItemList:hover .account_type.need_more {
+  color: gray !important;
+}
+
 
 
 

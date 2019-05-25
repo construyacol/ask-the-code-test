@@ -28,7 +28,10 @@ class WithdrawFlow extends Component {
       ticket_label_loader:`Creando orden de retiro`,
       color_loader:"blue",
       new_order:null,
-      AddNotification:false
+      AddNotification:false,
+      min_amount:0,
+      provider_type:'bank', //Por defecto en el flujo el tipo de retiro es por transferencia bancaria, a futuro habilitaremos cash (efectivo)
+      withdraw_account_list_update:[]
       // step:1
     }
 
@@ -37,20 +40,18 @@ class WithdrawFlow extends Component {
     }
 
     componentWillReceiveProps({step}){
-
       let lastStep = this.state.step
       this.setState({step})
-
     }
 
     init_config = async() =>{
-
 
         const{
           currency_type,
           country,
           withdraw_providers,
-          have_withdraw_accounts
+          have_withdraw_accounts,
+          withdraw_account_list
         } = this.props
 
         if(!have_withdraw_accounts){await this.setState({need_new_acount:true})}
@@ -64,8 +65,44 @@ class WithdrawFlow extends Component {
             ){return available_providers.push(provider)}
         })
 
+
+        if(available_providers.length<1){return false}
+
+        let withdraw_account_list_update = []
+        // Calculamos los costos de retiro en función al proveedor de retiro y las cuentas de retiro disponibles
+        if(this.state.provider_type === 'bank'){
+          // 1.mapear las cuentas de retiros
+          // 2.matchear la cuenta de retiro contra => available_providers por medio de su provider_type ===
+          // 3. Validar si el name withdraw provider es el mismo del name del withdraw account (pertenecen a la misma red de pagos) available_provider.provider.name === withdraw_account.provider_name
+          // 3.1 si no pertenece a la misma red bancaria entonces buscar por withdraw_account.city.value en el modelo let plaza_type = available_provider.info_needed.city.plaza_type
+          // 4.obteniendo el plaza_type agregar al withdraw_account una propiedad llamada cost = available_provider.provider.cost[plaza_type].fixed
+          // con esto ya podemos validar los fondos minimos necesarios para crear la orden de retiro
+
+          let providers_served = await withdraw_provider_by_type(available_providers)
+          withdraw_account_list.map(withdraw_account => {
+            let cost
+            let plaza_type
+            let provider_type = withdraw_account.provider_type
+
+            if(providers_served[provider_type].provider.name === withdraw_account.provider_name){plaza_type = 'same_bank'}
+            if(!plaza_type){plaza_type = providers_served[provider_type].info_needed.city[withdraw_account.city.value].plaza_type}
+            // console.log('withdraw_account', withdraw_account.provider_name, providers_served[provider_type].provider.costs[plaza_type])
+
+            let new_withdraw_account = {
+              ...withdraw_account,
+              cost_struct:providers_served[provider_type].provider.costs[plaza_type],
+              cost:providers_served[provider_type].provider.costs[plaza_type].fixed
+            }
+            return withdraw_account_list_update.push(new_withdraw_account)
+          })
+
+        }
+
+        this.setState({withdraw_account_list_update})
+
         this.setState({
-          withdraw_providers:available_providers.length>0 && available_providers
+          withdraw_providers:available_providers,
+          min_amount:parseInt(available_providers[0].provider.min_amount)
         })
     }
 
@@ -83,7 +120,6 @@ class WithdrawFlow extends Component {
       await this.setState({
         amount:amount,
       })
-
       this.props.action.UpdateForm('withdraw', {amount:amount})
     }
 
@@ -118,7 +154,7 @@ class WithdrawFlow extends Component {
 
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       let res = await this.props.action.add_new_withdraw_order(amount, account_from, withdraw_provider, withdraw_account)
-      console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
+      // console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
       if(!res){
         this.setState({
           finish_step:false,
@@ -158,6 +194,9 @@ class WithdrawFlow extends Component {
       } = this.props.withdraw_order
 
 
+      console.log('CREATE ORDER SUCCESS ====>', data)
+
+
       let new_order_model = [
         {
           ui_name:"El Retiro proviene desde:",
@@ -194,14 +233,21 @@ class WithdrawFlow extends Component {
         },
         {
           ui_name:"Cantidad a retirar:",
-          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount)}` : data.withdraw_info.amount,
+          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount)} ${account_from.currency.currency}` : data.withdraw_info.amount,
+          icon:account_from.currency.currency,
           id:7
         },
         {
-          ui_name:"Total:",
-          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount_neto)}` : data.withdraw_info.amount_neto,
+          ui_name:"Costo Bancario:",
+          value:`$ ${number_format(data.withdraw_info.cost)} ${account_from.currency.currency}`,
           icon:account_from.currency.currency,
           id:8
+        },
+        {
+          ui_name:"Total recibido:",
+          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount_neto)} ${account_from.currency.currency}` : data.withdraw_info.amount_neto,
+          icon:account_from.currency.currency,
+          id:9
         }
       ]
 
@@ -388,13 +434,14 @@ class WithdrawFlow extends Component {
 
       await this.setState({AddNotification:true})
       await this.new_withdraw_order({withdraw_account:id, withdraw_provider:providers_served[provider_type].id})
-      // console.log('withdraw_account_list', withdraw_list)
 
     }
 
 
 
     render(){
+
+      // console.log('=========> Min amount supported:', this.state.min_amount, typeof(this.state.min_amount))
 
       const {
         currency,
@@ -411,7 +458,9 @@ class WithdrawFlow extends Component {
         finish_step,
         ticket,
         ticket_label_loader,
-        color_loader
+        color_loader,
+        min_amount,
+        withdraw_account_list_update
       } = this.state
 
       // console.log('||||||| ---- -Esta gonorrea necesita cuenta?', this.state.need_new_acount)
@@ -428,6 +477,7 @@ class WithdrawFlow extends Component {
                 operation_type="withdraw"
                 available={available}
                 handleSubmit={this.siguiente}
+                min_amount={min_amount}
                 />
               }
 
@@ -455,7 +505,7 @@ class WithdrawFlow extends Component {
                         back={this.volver}
                         amount={amount}
                         withdraw_providers={withdraw_providers}
-                        inherit_account_list={withdraw_account_list}
+                        inherit_account_list={withdraw_account_list_update}
                       />
                     </div>
                   :

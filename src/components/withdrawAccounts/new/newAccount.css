@@ -1,7 +1,7 @@
 .nBstep1{
   display: grid;
   grid-template-columns: 1fr;
-  height: 100vh;
+  height: 100%;
   grid-template-rows: 25vh 1fr 15vh !important;
   grid-row-gap: 10px;
 }
@@ -124,6 +124,9 @@
   }
 }
 
+.titleNewAccount{
+  display: grid;
+}
 
 .nBstep1 p{
     margin: 0;

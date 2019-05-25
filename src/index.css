@@ -433,19 +433,81 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+
+  .TicketDetail .botonForm{
+    width: 95vw !important;
+  }
+
+
+  .finalTicket.TicketDetail{
+    max-height: calc(100vh - 40px) !important;
+  }
+
+
+  .containerFormWallet form{
+    grid-template-rows: 1fr 15vh !important;
+  }
+
+  .formAccountFlow{
+    width: 100vw !important;
+  }
+
+  .contForminputsAccount{
+    width: 90% !important;
+  }
+
+  .DLcontain>p {
+  margin-top: 0 !important
+  }
+
+  .DLtitles2 {
+    font-size: 22px !important;
+  }
+
+  .DLstitles {
+    font-size: 18px !important;
+  }
+
+  .DLcontains>p {
+    margin-top: 0;
+   }
+
+
+  .DLstep, .contButton {
+    align-self: flex-start !important;
+  }
+
+  #primarySelect{
+    transform: scale(.9) !important;
+  }
+
   .nBcontBank{
     margin: 40px 0 0 0;
   }
 
+  .DLcontainerItems.chooseMethod{
+    /*grid-template-columns: repeat(2, 1fr) !important;*/
+    grid-gap: 100px !important;
+  }
+
   .contMsg{
     display: grid;
-    grid-template-rows: auto 1fr 15vh !important;
+    /*grid-template-rows: auto 1fr 15vh !important;*/
     grid-row-gap: 10px;
   }
 
   #bankChooseButton .botonForm{
     width: 100vw !important;
+    max-width: none !important;
   }
+
+  #bankChooseButton .botonForm.desactivado{
+    width: calc(100vw - 50px) !important;
+  }
+  #bankChooseButton .botonForm.primary{
+    width: calc(100vw - 50px) !important;
+  }
+
 
   #botonForm{
   }
@@ -454,6 +516,7 @@ circle{
     width: 100vw !important;
     display: grid;
     justify-items:center;
+    justify-self: flex-start;
   }
 
   .ItemSelectionContainer{
@@ -617,6 +680,7 @@ circle{
 
 #modal-container .contButton{
   width: 95vw;
+  justify-self: flex-start;
  }
 
  .contButton .botonForm{
@@ -1269,6 +1333,14 @@ circle{
     transform: scale(.75) translateY(-17px);
   }
 
+  .contListItemMV{
+    max-height: 240px !important;
+  }
+
+  .DLstep, .contButton {
+    align-self: center !important;
+  }
+
   .itemWalletView.movil{
     padding: 10px ;
     max-height: 300px ;
@@ -1286,6 +1358,7 @@ circle{
   .coinList{
     transform: scale(.65) translateY(-30px);
   }
+
 }
 
 
@@ -1295,6 +1368,10 @@ circle{
 
 
 @media only screen and (max-width: 450px) {
+
+  #DLsteps, .DLstep.modality, .DLstep {
+    grid-row-gap: 0px !important;
+  }
 
   .DLstitle{
     font-size: 16px !important;
@@ -1427,14 +1504,14 @@ circle{
 
 @media screen and (max-height: 750px) and (max-width: 768px){
   .ItemSelectionContainerMovil{
-    height: 530px !important;
+    /*height: 530px !important;*/
   }
   .DLItemSelectionContainer{
     height: 500px !important;
   }
 
   .ItemSelectionContainer{
-    height: 421px !important;
+    /*height: 421px !important;*/
   }
 
 }
@@ -1444,7 +1521,7 @@ circle{
 
 @media screen and (max-height: 670px){
   .ItemSelectionContainerMovil{
-    height: 440px !important;
+    /*height: 440px !important;*/
   }
 
   .DLItemSelectionContainer{
@@ -1462,11 +1539,11 @@ circle{
 
 @media screen and (max-height: 570px){
   .ItemSelectionContainerMovil, .DLItemSelectionContainer{
-    height: 360px !important;
+    /*height: 360px !important;*/
   }
 
   .ItemSelectionContainer{
-    height: 250px !important;
+    /*height: 250px !important;*/
   }
 
 

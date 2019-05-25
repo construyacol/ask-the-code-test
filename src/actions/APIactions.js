@@ -165,11 +165,11 @@ if(!cancel_country){
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
-    console.log('|||||||||| °°°°STATUS°°°°|||||||', error)
+    console.log('|||||||||| °°°°STATUS BAD°°°°|||||||', error)
     return false
   }
 
-  // console.log('|||||||||| °°°°STATUS°°°°|||||||', response)
+  console.log('|||||||||| °°°°STATUS GOOD°°°°|||||||', response)
   // Si el error esta en los datos de la petición, retornamos el estatus 465
   if(!response.ok){return response.status}
   const data = await response.json()
@@ -1015,7 +1015,13 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
 
     swaps.map(async(swap) => {
       // obtenemos la moneda que cotiza en contra del par, pasandole como params, el swap, el par del swap y la moneda de la cuenta donde se origino el intercambio, la moneda que se gasto
-      let currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
+
+      // console.log('=====> get_swap_list', swap.account_from, wallets[swap.account_from])
+
+      let currency_bought
+      if(wallets[swap.account_from]){
+        currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
+      }
       let new_swap = {
         account_id:swap.account_from,
         account_to:swap.account_to,
@@ -1023,8 +1029,8 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
         amount_neto:swap.execution.total,
         comment:"",
         action_price:swap.action_price,
-        currency:wallets[swap.account_from].currency,
-        currency_type:wallets[swap.account_from].currency_type,
+        currency:wallets[swap.account_from] && wallets[swap.account_from].currency,
+        currency_type:wallets[swap.account_from] && wallets[swap.account_from].currency_type,
         cost:"",
         deposit_provider_id:"",
         expiration_date:new Date(),
@@ -1162,6 +1168,8 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
     await dispatch(load_label('Obteniendo cuentas de retiro'))
     const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
     let withdraw_accounts = await ApiGetRequest(get_wAccounts_url)
+    console.log('withdraw_accounts', withdraw_accounts)
+    console.log('withdraw_providers', withdraw_providers)
     if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
@@ -1366,7 +1374,9 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
 
      const new_withdraw_url = `${ApiUrl}withdraws/add-new-withdraw`
      const new_withdraw_order = await ApiPostRequest(new_withdraw_url, body)
+     console.log('|||||| ========> BODY RES WITHDRAW', new_withdraw_order)
      if(!new_withdraw_order || new_withdraw_order === 465){return false}
+
      return new_withdraw_order
 
    }

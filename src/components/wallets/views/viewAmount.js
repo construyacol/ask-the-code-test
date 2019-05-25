@@ -15,7 +15,7 @@ class ViewAmountComponent extends Component {
   state = {
     statusInput:"",
     ui_currency_name:"",
-    minAmount:20000
+    minAmount:this.props.min_amount || 20000
   }
 
   handleKeyPress = async(e) => {
@@ -129,7 +129,7 @@ class ViewAmountComponent extends Component {
               operation_type === 'deposit' ?
                   parseFloat(amount)>=parseFloat(minAmount) ? true : false
                   :
-                  (parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0) ? true : false
+                  (parseFloat(amount)>=parseFloat(minAmount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0) ? true : false
             }
             siguiente={handleSubmit}>
             Continuar

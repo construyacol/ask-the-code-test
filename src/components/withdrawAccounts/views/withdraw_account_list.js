@@ -58,7 +58,7 @@ class WithdrawAccountList extends Component{
 
     })
 
-    // console.log('||||||||||final_withdraw_accounts ', final_withdraw_accounts)
+    console.log('||||||||||final_withdraw_accounts ', final_withdraw_accounts)
     // ------------------------------------------------------------------------
     // Este Fragmento de codigo sirve para detectar si hay cuentas de retiro que operen sobre la misma red bancaria o
     // transaccional del proveedor de retiro, definiendolas como cuentas preferenciales porque tienen un menor costo transaccional

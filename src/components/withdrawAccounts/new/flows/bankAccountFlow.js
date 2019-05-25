@@ -117,12 +117,16 @@ class BankAccountFlow extends Component{
           {
             step === 2 &&
             <div className="nBstep1 fuente">
-              <div>
+              <div className="titleNewAccount">
                 <img src={bank} alt="" height="70"/>
                 <p>Genial <strong>{name}</strong></p>
               </div>
               <p className="nBtextInit"> Al añadir una cuenta bancaria para realizar tus retiros de pesos colombianos <strong>(COP)</strong>  por primera vez, tarda en promedio <strong>2 horas habiles</strong> a partir de su inscripción, para que esta sea aprobada por la entidad bancaria, una vez tu cuenta haya sido aprobada, tus retiros serán casi inmediatos</p>
-              <ButtonForms type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
+
+              <div id="bankChooseButton">
+                <ButtonForms type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
+              </div>
+
             </div>
           }
 
@@ -163,8 +167,8 @@ class BankAccountFlow extends Component{
             (step === 4 || step === 5 || step === 6) &&
             <div className="step2">
               <div className="contMsg" style={{
-                  gridTemplateRows:step === 4 ? '25vh 1fr 25vh' :
-                  step >= 5 ? '25vh 1fr' : ''
+                  gridTemplateRows:step === 4 ? 'auto 1fr 15vh' :
+                  step >= 5 ? 'auto 1fr' : ''
               }}>
 
                 <div className="nBcontBank">
@@ -175,7 +179,7 @@ class BankAccountFlow extends Component{
                   <Fragment>
                     <p className="nBtextInit">Es de vital importancia que esta cuenta <strong>{bank_name}</strong> sea de tu propiedad <strong>{name}</strong>, de lo contrario se invalidarán las transacciones y es posible que tus fondos queden congelados hasta nuevo aviso.</p>
 
-                    <div className="contbuttonAccount">
+                    <div id="bankChooseButton" className="contbuttonAccount">
                       <ButtonForms type="primary" active={true} siguiente={siguiente}>Entiendo, es mi cuenta</ButtonForms>
                     </div>
 
@@ -210,7 +214,7 @@ class BankAccountFlow extends Component{
                       />
 
                     </div>
-                    <div className="contbuttonAccount">
+                    <div id="bankChooseButton" className="contbuttonAccount">
                       <InputButton label="Continuar" type="primary" active={account_type && account_number}/>
                     </div>
 
@@ -235,7 +239,7 @@ class BankAccountFlow extends Component{
                         />
                       </div>
                       <div className="momContbuttonAccount">
-                        <div className="contbuttonAccount">
+                        <div id="bankChooseButton" className="contbuttonAccount">
                           <InputButton label="Crear cuenta" type="primary" active={city}/>
                         </div>
                       </div>

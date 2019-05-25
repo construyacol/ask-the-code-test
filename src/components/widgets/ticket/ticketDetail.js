@@ -58,7 +58,6 @@ class TicketDetail extends Component{
   let fiatSimbol2 = currency_type_bought === 'fiat' ? '$' : ''
   let fiatSimbol = currency_type === 'fiat' ? '$' : ''
 
-
   let expiration = new Date(expiration_date)
   let options = { year: 'numeric', month: 'long', day: 'numeric' };
 
