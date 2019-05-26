@@ -50,7 +50,7 @@ class MVList extends Component {
       select_id:item.id,
       current_item:item
     })
-    // this.props.actualizarEstado(item)
+    this.props.actualizarEstado(item)
   }
 
 
@@ -65,7 +65,7 @@ class MVList extends Component {
       current_item:item
     })
 
-    // this.props.actualizarEstado(item)
+    this.props.actualizarEstado(item)
 
     if(this.props.external_findbar){
       // console.log('item selection with external findbar')
@@ -111,7 +111,7 @@ class MVList extends Component {
       select_id:null,
       current_item:null
     })
-    // this.props.actualizarEstado(body)
+    this.props.actualizarEstado(body)
   }
 
 

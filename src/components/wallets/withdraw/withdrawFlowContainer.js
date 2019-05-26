@@ -8,8 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { number_format } from '../../../services'
-import { withdraw_provider_by_type } from '../../../services'
+import { withdraw_provider_by_type, matchItem, number_format } from '../../../services'
 
 import actions from '../../../actions'
 
@@ -77,25 +76,7 @@ class WithdrawFlow extends Component {
           // 3.1 si no pertenece a la misma red bancaria entonces buscar por withdraw_account.city.value en el modelo let plaza_type = available_provider.info_needed.city.plaza_type
           // 4.obteniendo el plaza_type agregar al withdraw_account una propiedad llamada cost = available_provider.provider.cost[plaza_type].fixed
           // con esto ya podemos validar los fondos minimos necesarios para crear la orden de retiro
-
-          let providers_served = await withdraw_provider_by_type(available_providers)
-          withdraw_account_list.map(withdraw_account => {
-            let cost
-            let plaza_type
-            let provider_type = withdraw_account.provider_type
-
-            if(providers_served[provider_type].provider.name === withdraw_account.provider_name){plaza_type = 'same_bank'}
-            if(!plaza_type){plaza_type = providers_served[provider_type].info_needed.city[withdraw_account.city.value].plaza_type}
-            // console.log('withdraw_account', withdraw_account.provider_name, providers_served[provider_type].provider.costs[plaza_type])
-
-            let new_withdraw_account = {
-              ...withdraw_account,
-              cost_struct:providers_served[provider_type].provider.costs[plaza_type],
-              cost:providers_served[provider_type].provider.costs[plaza_type].fixed
-            }
-            return withdraw_account_list_update.push(new_withdraw_account)
-          })
-
+          withdraw_account_list_update = await this.get_cost_struct(available_providers)
         }
 
         this.setState({withdraw_account_list_update})
@@ -107,20 +88,84 @@ class WithdrawFlow extends Component {
     }
 
 
-    new_acount= async() =>{
-      await this.setState({
-        need_new_acount:true,
-        finish_step:false
+    get_cost_struct = async(available_providers, withdraw_account_list) =>{
+
+      let providers_served = await withdraw_provider_by_type(available_providers || this.props.withdraw_providers)
+
+      let update_list = []
+      let w_account_list = withdraw_account_list || this.props.withdraw_account_list
+
+      w_account_list.map(withdraw_account => {
+        let cost
+        let plaza_type
+        let provider_type = withdraw_account.provider_type
+
+        if(providers_served[provider_type].provider.name === withdraw_account.provider_name){plaza_type = 'same_bank'}
+        if(!plaza_type){plaza_type = providers_served[provider_type].info_needed.city[withdraw_account.city.value].plaza_type}
+
+        let new_withdraw_account = {
+          ...withdraw_account,
+          cost_struct:providers_served[provider_type].provider.costs[plaza_type],
+          cost:providers_served[provider_type].provider.costs[plaza_type].fixed
+        }
+        return update_list.push(new_withdraw_account)
       })
-      this.siguiente()
+
+      return update_list
     }
 
 
-    updateAmountOnState = async(amount) =>{
-      await this.setState({
-        amount:amount,
-      })
-      this.props.action.UpdateForm('withdraw', {amount:amount})
+
+
+    new_account_and_withdraw = async new_account =>{
+      // console.log('=======> new_account', new_account)
+
+      const{
+        withdraw_providers,
+        form_withdraw
+      } = this.props
+
+
+      let providers_served = await withdraw_provider_by_type(withdraw_providers)
+
+      const {
+        provider_type
+      } = new_account
+
+      const{
+        amount
+      } = form_withdraw
+
+      const{
+        min_amount
+      } = this.state
+
+      // console.log('providers_served', providers_served)
+        let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+
+        let withdraw_account_list_update = await this.get_cost_struct(null, withdraw_account_list)
+        await this.setState({withdraw_account_list_update})
+        let new_account_update = await matchItem(withdraw_account_list_update, {primary:new_account.id}, 'id')
+        let min_amount_withdraw = parseFloat(min_amount) + parseFloat(new_account_update[0].cost)
+
+
+        if(parseFloat(amount) < min_amount_withdraw){
+
+          setTimeout(async()=>{
+            this.props.action.AddNotification('withdraw', {id:new_account.id})
+            this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
+            // await this.setState({AddNotification:false})
+          },2000)
+
+          await this.setState({show_list_accounts:false, need_new_acount:null})
+          await this.volver(1)
+          await this.props.action.Loader(false)
+          return  this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
+        }
+
+        await this.setState({AddNotification:true})
+        await this.new_withdraw_order({withdraw_account:new_account.id, withdraw_provider:providers_served[provider_type].id})
+
     }
 
 
@@ -147,6 +192,8 @@ class WithdrawFlow extends Component {
         account_from,
         amount
       } = this.props.form_withdraw
+
+      // return console.log('|||||| form_withdraw', this.props.form_withdraw, state_data)
 
       const{
         user
@@ -183,6 +230,25 @@ class WithdrawFlow extends Component {
 
 
 
+    new_acount= async() =>{
+      await this.setState({
+        need_new_acount:true,
+        finish_step:false
+      })
+      this.siguiente()
+    }
+
+
+    updateAmountOnState = async(amount) =>{
+      await this.setState({
+        amount:amount,
+      })
+      this.props.action.UpdateForm('withdraw', {amount:amount})
+    }
+
+
+
+
 
 
     create_order = async({data}) =>{
@@ -194,7 +260,7 @@ class WithdrawFlow extends Component {
       } = this.props.withdraw_order
 
 
-      console.log('CREATE ORDER SUCCESS ====>', data)
+      // console.log('CREATE ORDER SUCCESS ====>', data)
 
 
       let new_order_model = [
@@ -415,27 +481,7 @@ class WithdrawFlow extends Component {
 
 
 
-    new_account_and_withdraw = async new_account =>{
-      // console.log(new_account)
-      const{
-        withdraw_providers
-      } = this.props
 
-      let providers_served = await withdraw_provider_by_type(withdraw_providers)
-
-      const {
-        id,
-        provider_type
-      } = new_account
-
-      // console.log('new_account_and_withdraw', new_account)
-      // console.log('providers_served', providers_served)
-        let withdraw_list = await this.props.action.get_withdraw_accounts(this.props.user, withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-
-      await this.setState({AddNotification:true})
-      await this.new_withdraw_order({withdraw_account:id, withdraw_provider:providers_served[provider_type].id})
-
-    }
 
 
 

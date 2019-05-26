@@ -2,6 +2,7 @@ import React, { Component }  from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
+import { number_format } from '../../../services'
 
 import './index.css'
 
@@ -53,7 +54,7 @@ class BalanceComponent extends Component {
       })
       await this.play_animation('In')
       // this.setState({animation:null})
-      
+
     // await this.props.action.get_list_user_wallets(this.props.user)
     // await this.props.action.get_account_balances(this.props.user)
   }
@@ -86,7 +87,11 @@ class BalanceComponent extends Component {
       animation
     } = this.state
 
-    // console.log('|||||| BALANCE: ', balance)
+    const {
+      currency_type
+    } = this.props
+
+    console.log('|||||| BALANCE: ', currency_type)
 
     return(
       <div className="BalanceComponent wallet">
@@ -98,7 +103,12 @@ class BalanceComponent extends Component {
                                   actionType === 'add' ? 'add': ''}`}>
 
             {actionType === 'reduce' ? '-' : actionType === 'add' ? '+' : '' }
-            {current_amount}
+            {
+              currency_type === 'fiat' ?
+              `$${number_format(current_amount)}`
+              :
+              current_amount
+            }
 
           </p>
         </div>
@@ -119,11 +129,12 @@ function mapStateToProps(state, props){
     account_id
   } = props
 
-  // console.log('|||||||||||||| mapStateToProps', balances && balances[account_id])
+  // console.log('|||||||||||||| mapStateToProps BALANCE COMPONENT', balances && balances[account_id], state.model_data.wallets[account_id].currency_type)
 
   return{
     balance:balances && balances[account_id],
-    user:user[user_id]
+    user:user[user_id],
+    currency_type:state.model_data.wallets[account_id].currency_type
   }
 }
 

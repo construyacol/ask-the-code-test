@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 // import { updateFormControl, FormWallet } from '../../../actions'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
+import { matchItem } from '../../../services'
 
 
 class NewWallet extends Component{
@@ -14,7 +15,6 @@ class NewWallet extends Component{
     currency:this.props.form_wallet.currency,
     address:this.props.form_wallet.address,
     short_currency_name:this.props.form_wallet.short_currency_name,
-    qr:""
   }
 
 
@@ -43,9 +43,9 @@ class NewWallet extends Component{
 
     crearWallet = async() => {
       // simulación Endpoint Crear wallet
-
       const {
-        user
+        user,
+        currencies
       } = this.props
 
       const {
@@ -53,8 +53,11 @@ class NewWallet extends Component{
         currency
       } = this.state
 
-      this.setState({qr:'http://noticias.universia.net.mx/net/images/ciencia-tecnologia/q/qr/qr-/qr-de-universia-mexico.png',
-                    address:"1ACAgPuFFidYzPMXbiKptSrwT74Dg8hq2v"})
+      // this.setState({qr:'http://noticias.universia.net.mx/net/images/ciencia-tecnologia/q/qr/qr-/qr-de-universia-mexico.png',
+      //               address:"1ACAgPuFFidYzPMXbiKptSrwT74Dg8hq2v"})
+      // currencies
+      // matchItem
+      let get_currency = await matchItem(currencies, {primary:currency}, 'currency')
 
          const body = {
            "data":{
@@ -63,15 +66,15 @@ class NewWallet extends Component{
                "description":"description",
                "country": user && user.settings.current_country,
                "currency": {
-                  "currency": currency,
-                  "is_token": false
+                  "currency":get_currency[0].currency,
+                  "is_token":get_currency[0].is_token
                 }
              }
          }
 
-
-
         const wallets = await this.props.action.create_new_wallet(body)
+
+        // console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
 
 
        if(!wallets || wallets === 465 || wallets === 400){
@@ -79,32 +82,26 @@ class NewWallet extends Component{
          this.props.action.Loader(false)
          let msg = !wallets ? 'ERROR DE CONEXIÓN' : 'Al parecer, aún no tenemos soporte para esta moneda'
 
-         this.props.action.mensaje(msg, 'error')
-
-
-        return console.log('||||||||||ERROR ERROR!!!!!!ERROR ERROR!!!!°°°°|||||||', wallets)
-        // return false
+         return this.props.action.mensaje(msg, 'error')
        }
 
-        // console.log('|||||||||| COMIDAAA!!!!!! TENGO HAMBRE!!!!°°°°|||||||', wallets)
         const {
           account
         } = wallets
 
-        // console.log('||||||||||||| NEW WALLET', account)
 
-        // this.update_form()
-        this.props.action.Loader(false)
-        this.props.action.success_sound()
-        this.props.history.push(`wallets/deposit/${account.id}`)
         // si la acción se lleva satisfactoriamente actualizamos el fondo del modal a un color verde
         let msg = `Nueva wallet ${account.currency.currency} creada!`
         this.props.action.mensaje(msg, 'success')
 
-        this.props.action.ToggleModal()
-        this.props.action.get_list_user_wallets(this.props.user)
+        await this.props.action.get_list_user_wallets(this.props.user)
         await this.props.action.get_account_balances(this.props.user)
-        this.props.action.CleanForm('wallet')
+
+        this.props.action.Loader(false)
+        this.props.action.success_sound()
+        await this.props.action.ToggleModal()
+        await this.props.action.CleanForm('wallet')
+        return this.props.history.push(`wallets/deposit/${account.id}`)
 
         // this.props.action.ModalView('modalSuccess')
     }
@@ -171,7 +168,9 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     step:state.form.form_wallet.step,
     current:state.form.current,
-    user:user
+    user:user,
+    state:state.model_data,
+    currencies:state.model_data.currencies
 
   }
 }

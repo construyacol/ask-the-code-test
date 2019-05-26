@@ -12,7 +12,6 @@ export const mensaje = async(msg, type, position) =>{
      className: `${type === 'error' ? 'toastError': type === 'success' ? 'DCfondo' : 'DCfondoDefault'}`,
      bodyClassName: `${type === 'error' ? 'toastErrorText': type === 'success' ? 'DCTtext' : 'DCTtextDefault'}`,
      progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
-     toastId:1,
      autoClose: 4000
   })
 
@@ -270,6 +269,7 @@ export const matchItem = (list, itemReview, type, all_results) => {
 
   let result = []
   // let all_results = false
+
 
   list.filter((item)=>{
           let query = primary.toLowerCase()

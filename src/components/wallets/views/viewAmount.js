@@ -85,7 +85,7 @@ class ViewAmountComponent extends Component {
 
     // operation_type="withdraw"
 
-    // console.log('||||||||||| VIEW  AMOUNT  ||||||||||', this.props)
+    // console.log('||||||||||| VIEW  AMOUNT  ||||||||||', parseFloat(available) > minAmount, parseFloat(available), minAmount, typeof(parseFloat(available)), typeof(minAmount))
     return(
       <div className="viewAmount DLstep">
         {
@@ -114,8 +114,9 @@ class ViewAmountComponent extends Component {
                   {
                     operation_type === 'deposit' ?
                     `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`
-                    :
-                    `Cantidad disponible: $ ${available} ${currency.toUpperCase()}`
+                    : (operation_type === 'withdraw' && parseFloat(available) > minAmount) ?
+                    `Disponible: ~$${number_format(available)} ${currency.toUpperCase()}`
+                    : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`
                   }
                 </p>
                 <p className="fuente DLstitle DLcop" >{ui_currency_name}</p>

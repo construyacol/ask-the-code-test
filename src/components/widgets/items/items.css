@@ -10,6 +10,14 @@
   grid-template-columns: 1fr;
 }
 
+.item.itemSelection p{
+  color: #14b3f0;
+}
+
+.item:hover p{
+  color: #14b3f0 !important;
+}
+
 .ItemSelectionContainer::-webkit-scrollbar {
   width: 7px;
 }

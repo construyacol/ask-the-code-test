@@ -72,6 +72,8 @@ class BankAccountFlow extends Component{
 
   update_city = payload =>{
 
+    // console.log('CITY SELECT',payload)
+
     let body = {
       target:{
         name:"city",

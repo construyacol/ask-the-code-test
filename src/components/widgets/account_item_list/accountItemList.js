@@ -127,7 +127,7 @@ class AccountItemList extends Component {
 
     let need_more_amount = withdraw_amount < withdraw_min_amount ? 'need_more' : withdraw_amount >= withdraw_min_amount && 'satisfy'
 
-    console.log('||||||||  ======> AccountItemList', withdraw_amount, withdraw_min_amount, need_more_amount)
+    // console.log('||||||||  ======> AccountItemList', withdraw_amount, withdraw_min_amount, need_more_amount)
 
     return(
       <div

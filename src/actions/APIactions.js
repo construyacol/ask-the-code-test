@@ -91,7 +91,6 @@ return async(dispatch) => {
      className: `${type === 'error' ? 'toastError': type === 'success' ? 'DCfondo' : 'DCfondoDefault'}`,
      bodyClassName: `${type === 'error' ? 'toastErrorText': type === 'success' ? 'DCTtext' : 'DCTtextDefault'}`,
      progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
-     toastId:1,
      autoClose: 4000
   })
 }
@@ -1237,7 +1236,7 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
       // }
     })
 
-
+    let original_list = new_withdraw_accounts
     new_withdraw_accounts.reverse()
 
         let user_update = {
@@ -1249,6 +1248,8 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
         let normalizeUser = await normalize_user(user_update)
         await dispatch(Update_normalized_state(normalizeUser))
+
+        return original_list
   }
 
 }
@@ -1624,6 +1625,7 @@ export const get_all_currencies = () => {
       dispatch(UpdateAllCurrencies(new_currencies))
       return new_currencies
     }
+
 
      for (let i = 0; i < currencies.length; i++) {
       if(currencies[i].currency !== "bitcoin_testnet"){
