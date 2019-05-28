@@ -132,6 +132,7 @@ const DepositLayout = (props) => {
             updateAmountOnState={updateAmountOnState}
             operation_type="deposit"
             handleSubmit={siguiente}
+            minAmount={minAmount}
             />
         }
       </Fragment>

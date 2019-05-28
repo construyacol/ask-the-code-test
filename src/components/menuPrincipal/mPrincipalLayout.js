@@ -1,7 +1,7 @@
 import React from 'react'
 import ButtonPrincipalMenu from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
-import userPic from '../../assets/picture.png'
+import userPic from '../../assets/picture.jpg'
 import octo from '../../assets/octo.png'
 import { menuPrincipal, menuPrincipalInferior } from '../api/ui/api.json'
 import { Medal } from '../widgets/icons'

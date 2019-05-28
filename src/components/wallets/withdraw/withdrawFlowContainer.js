@@ -69,7 +69,7 @@ class WithdrawFlow extends Component {
 
         let withdraw_account_list_update = []
         // Calculamos los costos de retiro en función al proveedor de retiro y las cuentas de retiro disponibles
-        if(this.state.provider_type === 'bank'){
+        if(this.state.provider_type === 'bank' && this.props.withdraw_account_list){
           // 1.mapear las cuentas de retiros
           // 2.matchear la cuenta de retiro contra => available_providers por medio de su provider_type ===
           // 3. Validar si el name withdraw provider es el mismo del name del withdraw account (pertenecen a la misma red de pagos) available_provider.provider.name === withdraw_account.provider_name

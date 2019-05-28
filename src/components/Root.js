@@ -5,7 +5,7 @@ import createBrowserHistory from "history/createBrowserHistory"
 import LandingPage from './landingPage'
 import localForage from 'localforage'
 import PagesRouter from './landingPage/pages'
-import ReferralComponent from './referrals/referralsComponent'
+// import AuthComponentContainer from './auth'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
@@ -31,7 +31,7 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJ1R2FnVEF5NmV2dzhTZDlTcTBnREFvNzFzcDJRdXRCd0ZKOEwwVjFBVnFxQWk0aEhXeEV1RkNNc29wUlF6cnhHIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTg4Mzc4MTMsImV4cCI6MTU1ODg0ODYxM30.ZUKXC4w5HggmT2k-PRS_nmsAAf8XMM_In44c5LccI4Jvxyw6aG4ZArHsD3f6KN2k6I4MTDVcqXMAjB1Qh4cP7A'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJuS1FEamxsNE82VlFMaTIwZUg5VTNERFVtRlpmSXBFb2xvamFvRzhVUVFkZ3BHTm0zenZOb04xSERjV0oxTVR5IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTkwMTExNTMsImV4cCI6MTU1OTAyMTk1M30.InTTktQkSISVtAdhX6D7vNhTQMP_--prXB-ep-TdIsWuEOQt5qlFT3w5nDAtgV4mql3sP_hf4A61p3-hv1qOiw'
 
     this.setState({
       TokenUser:AccessToken
@@ -60,7 +60,7 @@ class RootContainer extends Component {
               TokenUser ? (
                   <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
               ) : (
-                // <ReferralComponent/>
+                // <AuthComponentContainer/>
                 <LandingPage history={history} />
               )
             )}/>

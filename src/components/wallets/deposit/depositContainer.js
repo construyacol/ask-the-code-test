@@ -22,7 +22,7 @@ class DepositContainer extends Component {
     short_currency_name:this.props.short_currency_name,
     short_bank_name:this.props.short_bank_name,
     amount:0,
-    minAmount:20000,
+    minAmount:null,
     deposit_way:this.props.deposit_way,
     deposit_service:this.props.deposit_service,
     service_mode:this.props.service_mode,
@@ -363,14 +363,14 @@ updateAmountOnState = async(amount) =>{
       ...response.deposit_info
     }
 
-    console.log('create_deposit_order new_deposit_model', new_deposit_model)
+    // console.log('create_deposit_order new_deposit_model', new_deposit_model)
 
     // await this.props.action.get_deposit_list(user)
     await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
     await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
     await this.props.action.update_pending_activity()
 
-    console.log('=> deposits UPDATE', this.props.deposits)
+    // console.log('=> deposits UPDATE', this.props.deposits)
 
     // setTimeout(async()=>{
     //   await this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
@@ -490,11 +490,10 @@ updateAmountOnState = async(amount) =>{
     const{
       deposit_providers
     } = this.props
-
-    // console.log(deposit_providers)
+    // console.log('||||===> deposit_providers', deposit_providers)
     let deposit_provider_list = []
 
-    await deposit_providers.map(dep_prov => {
+    await deposit_providers.map(async dep_prov => {
       if(dep_prov.currency_type !== 'fiat'){return false}
       // console.log('serve_deposit_provider_views', dep_prov)
       let new_item = {
@@ -502,11 +501,15 @@ updateAmountOnState = async(amount) =>{
             id:dep_prov.id,
             type:'bank',
             name:dep_prov.provider.ui_name,
-            selection:false
+            selection:false,
+            min_amount:dep_prov.provider.min_amount
           }
-        console.log('dep_prov', dep_prov)
+        // console.log('dep_prov', dep_prov)
+        await this.setState({minAmount:dep_prov.provider.min_amount})
         deposit_provider_list.push(new_item)
     })
+
+    // console.log('===============> deposit_provider_list', deposit_provider_list)
 
     return this.setState({deposit_provider_list:deposit_provider_list.length<1 ? null : deposit_provider_list})
 
@@ -521,7 +524,7 @@ updateAmountOnState = async(amount) =>{
     const{ deposit_provider_list } = this.state
     const { buttonActive, coins } = this.props
 
-    console.log('::: deposit_provider_list ::', deposit_provider_list)
+    // console.log('::: deposit_provider_list ::', deposit_provider_list)
 
     return(
       <DepositLayout
