@@ -89,13 +89,14 @@ class WithdrawFlow extends Component {
 
 
     get_cost_struct = async(available_providers, withdraw_account_list) =>{
-      console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
+      // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
       let providers_served = await withdraw_provider_by_type(available_providers || this.props.withdraw_providers)
 
       let update_list = []
       let w_account_list = withdraw_account_list || this.props.withdraw_account_list
 
       w_account_list.map(withdraw_account => {
+        if(withdraw_account.currency_type === 'crypto'){return false}
         let cost
         let plaza_type
         let provider_type = withdraw_account.provider_type
@@ -142,7 +143,9 @@ class WithdrawFlow extends Component {
 
       // console.log('providers_served', providers_served)
         let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-
+        // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
+        // console.log(' =====> withdraw_account_list', withdraw_account_list)
+        // return alert('que paja')
         let withdraw_account_list_update = await this.get_cost_struct(null, withdraw_account_list)
         await this.setState({withdraw_account_list_update})
         let new_account_update = await matchItem(withdraw_account_list_update, {primary:new_account.id}, 'id')

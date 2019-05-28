@@ -101,23 +101,23 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:"Los fondos se recibirán en:",
-                  value:withdraw_account.bank_name.ui_name,
+                  value:withdraw_account ? withdraw_account.bank_name.ui_name : 'Cuenta eliminada',
                   id:2,
-                  icon:withdraw_account.bank_name.value
+                  icon:withdraw_account && withdraw_account.bank_name.value
                 },
                 {
-                  ui_name:`${withdraw_account.account_number.ui_name}:`,
-                  value:withdraw_account.account_number.value,
+                  ui_name:`${withdraw_account ? withdraw_account.account_number.ui_name : 'Cuenta eliminada'}:`,
+                  value:withdraw_account && withdraw_account.account_number.value,
                   id:3
                 },
                 {
                   ui_name:`Ciudad:`,
-                  value:withdraw_account.city.ui_name,
+                  value:withdraw_account && withdraw_account.city.ui_name,
                   id:4
                 },
                 {
                   ui_name:"Propietario de la cuenta:",
-                  value:`${withdraw_account.name} ${withdraw_account.surname}`,
+                  value:`${withdraw_account ? withdraw_account.name : 'Anonimo'} ${withdraw_account ? withdraw_account.surname : ''}`,
                   id:5
                 },
                 {
