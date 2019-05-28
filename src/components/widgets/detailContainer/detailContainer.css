@@ -123,6 +123,17 @@
   transform:scale(1);
 }
 
+.menuMovilItem:hover{
+  color: #14b3f0 !important;
+  transition: .3s;
+}
+
+.menuMovilItem:hover .menuMovilIcon{
+  height:30px;
+  opacity: 1;
+  transform:scale(1);
+}
+
 .menuMovilItem.active{
   border-bottom: 2px solid #14b3f0;
   color: #14b3f0 !important;

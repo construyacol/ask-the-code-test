@@ -15,11 +15,11 @@ class detailContainerLayout extends Component{
   }
 
   to_sub_section = prop => {
+    if(!prop.target.id){return false}
     this.props.action.current_section_params({current_sub_section: prop.target.id})
     if(prop.target.id === 'activity' && !this.props.current_section.params.activity){
       return mensaje('Aún no tienes actividad en esta Billetera')
     }
-
   }
 
 render(){
@@ -41,12 +41,13 @@ render(){
                     return (
                         <NavLink to={`/wallets/${item.link}/${current_wallet.id}`}
                           onClick={this.to_sub_section}
+
                           // className={`DCsubItem ${current_sub_section === item.link ? 'DCactive' : ''} ${(item.link === 'activity' && !activity) ? 'noTamoActivos' : ''}`}
                           id={item.link}
                           key={item.id}
                           className={`menuMovilItem ${current_sub_section === item.link ? 'active' : ''}`}
                           >
-                            <div className={`menuMovilIcon ${current_sub_section === item.link ? 'active' : ''}`} >
+                            <div  className={`menuMovilIcon ${current_sub_section === item.link ? 'active' : ''}`} >
                               <IconSwitch size={20} icon={item.link} color="#14b3f0"/>
                             </div>
                             <p>{item.title}</p>

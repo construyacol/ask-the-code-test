@@ -89,7 +89,7 @@ class WithdrawFlow extends Component {
 
 
     get_cost_struct = async(available_providers, withdraw_account_list) =>{
-
+      console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
       let providers_served = await withdraw_provider_by_type(available_providers || this.props.withdraw_providers)
 
       let update_list = []

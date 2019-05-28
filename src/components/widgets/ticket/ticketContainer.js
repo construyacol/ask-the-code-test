@@ -89,7 +89,7 @@ class TicketContainer extends Component {
                 let account_from = wallets[ticket.account_id]
                 let withdraw_account = withdraw_accounts[ticket.withdraw_account]
                 let withdraw_provider = withdraw_providers[ticket.withdraw_provider]
-                console.log('withdraw_accounts', withdraw_accounts, withdraw_account)
+                // console.log('withdraw_accounts', withdraw_accounts, withdraw_account)
 
             return this.setState({
               current_ticket:[
@@ -129,7 +129,14 @@ class TicketContainer extends Component {
                 {
                   ui_name:"Cantidad a retirar:",
                   value:account_from.currency_type === 'fiat' ? `$ ${number_format(ticket.amount)}` : ticket.amount,
+                  icon:account_from.currency.currency,
                   id:7
+                },
+                {
+                  ui_name:"Costo del retiro:",
+                  value:`$ ${number_format(ticket.cost)}`,
+                  icon:account_from.currency.currency,
+                  id:9
                 },
                 {
                   ui_name:"Total:",

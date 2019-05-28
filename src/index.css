@@ -433,6 +433,19 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+  #WalletList{
+    padding-bottom: 30px !important;
+  }
+
+
+  .titleConfirmed h1{
+    font-size: 18px !important;
+  }
+
+
+    .CMControls{
+      display: block !important;
+    }
 
 
   .Mconfirmar {

@@ -89,8 +89,9 @@ state = {
       user
     } = this.props
 
+    // console.log('|||| ====> available_address', available_address)
 
-    let withdraw_account = available_address[address]
+    let withdraw_account = available_address && available_address[address]
 
     if(!withdraw_account){
       // si la cuenta no existe, se crea una nueva y se consultan

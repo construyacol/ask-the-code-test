@@ -119,7 +119,8 @@ const atributos2 ={
             <div className="contenidoTicket">
               {
                 (state === 'confirmed' && currency_type === 'fiat') &&
-                <p className="TicketmsgPayment TicketConfirm fuente">Esta transacción esta siendo revisada por Doomy(Nombre personaje de coinsenda(lo venderemos como  una inteligencia artificial), el es el que estará siempre en contacto con el usuario final, el que representará comercialmente la voz y la personalidad de marca de coinsenda)</p>
+                // <p className="TicketmsgPayment TicketConfirm fuente">Esta transacción esta siendo revisada por Doomy(Nombre personaje de coinsenda(lo venderemos como  una inteligencia artificial), el es el que estará siempre en contacto con el usuario final, el que representará comercialmente la voz y la personalidad de marca de coinsenda)</p>
+                <p className="TicketmsgPayment TicketConfirm fuente">Estamos a un paso de concretar tu retiro, muy pronto podrás disponer de tus fondos...</p>
               }
 
               {
