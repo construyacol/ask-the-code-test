@@ -5,6 +5,7 @@
    display: grid;
    align-items: center;
    justify-items: center;
+   position: relative;
  }
 
 .QuoteLayoutContainer{
@@ -14,7 +15,11 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 40% 1fr;
+  position: relative;
 }
+
+
+
 
 .Qprice{
   text-shadow: 1px 1px #656565;

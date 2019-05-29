@@ -5,6 +5,7 @@
   "dependencies": {
     "bignumber.js": "^8.0.2",
     "bootstrap": "^3.3.7",
+    "chart.js": "^2.8.0",
     "d3": "4.9.1",
     "headroom.js": "0.9.4",
     "localforage": "^1.7.3",

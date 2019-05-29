@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { coins } from '../../api/ui/api.json'
 import ItemLayout from '../items/itemLayout'
 import Slider from './slide'
+import ChartCoin from '../chartCoin/chartCoin.js'
 
 
 const QuoteLayout = props => {
@@ -21,6 +22,9 @@ const QuoteLayout = props => {
     {
       localCurrency &&
       <section className="QuoteLayout">
+
+        <ChartCoin/>
+
         <div className="QuoteLayoutContainer">
 
             <div className={`${movil ? 'movilPrices' : 'desktopPrices'} prices`}>
