@@ -31,6 +31,15 @@ class MenuPrincipalContainer extends Component{
   }
 
   componentDidMount(){
+    this.props.action.HeadRoom('unpinned')
+
+    scroller.scrollTo('firstInsideContainer', {
+      duration:0,
+      smooth: true,
+      containerId: 'containerElement'
+    })
+
+
     if(window.innerWidth<768){
       return this.props.action.current_section_params({show_menu_principal:false})
     }

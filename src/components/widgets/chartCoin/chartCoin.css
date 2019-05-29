@@ -33,10 +33,10 @@
 #myChart{
   display: block;
   position: absolute;
-  bottom: -15px;
-  height: 100% !important;
+  bottom: -5px;
+  /*height: 60% !important;*/
+  /*height: 100% !important;*/
   width: 105% !important;
-  opacity: 1;
   justify-self:center !important;
 }
 

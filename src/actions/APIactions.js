@@ -164,11 +164,11 @@ if(!cancel_country){
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
-    console.log('|||||||||| °°°°STATUS BAD°°°°|||||||', error)
+    // console.log('|||||||||| °°°°STATUS BAD°°°°|||||||', error)
     return false
   }
 
-  console.log('|||||||||| °°°°STATUS GOOD°°°°|||||||', response)
+  // console.log('|||||||||| °°°°STATUS GOOD°°°°|||||||', response)
   // Si el error esta en los datos de la petición, retornamos el estatus 465
   if(!response.ok){return response.status}
   const data = await response.json()
@@ -195,6 +195,26 @@ const ApiDelete = async(url) => {
   const delete_success = await response.json()
   // console.log('|||||||||||||| - -- -- --  RESPUESTA:',delete_success)
   return delete_success
+}
+
+
+
+export const get_historical_price = (url) => {
+
+  return async(dispatch)=>{
+
+    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=40&api_key={78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41}`
+    let res = await ApiGetRequest(url)
+    if(res.Response === 'Error'){return false}
+    let prices = res.Data.map(item => {
+        return item.close
+    })
+    console.log('!!!! ========> PRICES CONSULTADOS')
+    // alert('||| Last Prices')
+
+    return prices
+  }
+
 }
 
 
@@ -391,12 +411,12 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
 
     let pair_id = pair.id
 
-    console.log('====>  convertCurrencies', current_wallet.currency, pair_id)
+    // console.log('====>  convertCurrencies', current_wallet.currency, pair_id)
 
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
 
 
-    console.log('====>  convertCurrencies res =>', data)
+    // console.log('====>  convertCurrencies res =>', data)
 
 
     if(data){
@@ -517,10 +537,18 @@ export const get_list_user_wallets = (user) =>{
     if(wallets && wallets.length<1){
       await dispatch(reset_model_data({wallets:[]}))
     }
+
+    let visible_wallets = []
+
+     wallets.map(wallet => {
+       if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin_testnet'){return false}
+       return visible_wallets.push(wallet)
+     })
+
       let user_update = {
         ...user,
         wallets:[
-          ...wallets
+          ...visible_wallets
         ]
       }
       let list_user_wallets = await normalize_user(user_update)
