@@ -12,16 +12,13 @@ import './chartCoin.css'
 class ChartCoin extends Component {
 
   componentDidMount(){
-
     this.init_component()
-
-
-
   }
 
   init_component = async() => {
 
-    let lastPrices = await localForage.getItem('pricess')
+    // let lastPrices = await localForage.getItem('prices')
+    let lastPrices
 
     if(!lastPrices){
       lastPrices = await this.props.action.get_historical_price()
@@ -29,23 +26,36 @@ class ChartCoin extends Component {
     }
 
     await localForage.setItem('prices', lastPrices)
+
     let ctx = document.getElementById('myChart').getContext('2d');
 
     let myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: lastPrices,
             datasets: [{
-                label: '_',
-                data: lastPrices,
-                backgroundColor: 'rgb(43, 55, 66, 0.3)',
-                // borderColor: 'rgb(43, 55, 66)',
+                label: 'Precio',
+                data: lastPrices.data_price,
+                backgroundColor: 'rgb(43, 55, 66, 0.25)',
                 borderColor: 'rgb(4, 205, 252)',
                 borderWidth: 1,
-                steppedLine:'middle',
-            }]
+                steppedLine:'middle'
+            },
+            {
+                label: 'Precio',
+                data: lastPrices.data_price,
+                backgroundColor: 'rgb(43, 55, 66)',
+                type:'bar'
+            }],
+            labels: lastPrices.price_date,
         },
         options: {
+          animation: {
+            duration: 0 // general animation time
+        },
+        hover: {
+            animationDuration: 0 // duration of animations when hovering an item
+        },
+        responsiveAnimationDuration: 0, // animation duration after a resize
           layout: {
               padding: {
                   left: -5,
@@ -55,18 +65,19 @@ class ChartCoin extends Component {
               }
           },
           tooltips:{
-            enabled:false
+            enabled:true
           },
-          // elements: {
-          //         line: {
-          //             tension: 0.3, // disables bezier curves
-          //         }
-          //     },
+          elements: {
+                  line: {
+                      tension: 0,
+                  }
+              },
           legend:{
             display: false
           },
           scales: {
                   xAxes: [{
+                    stacked: true,
                     gridLines:{
                       display:false
                     },
@@ -111,7 +122,6 @@ class ChartCoin extends Component {
 
 
 function mapStateToProps(state, props){
-  // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', state.model_data.pairs.user_collection)
   return{
     pairs:null
   }

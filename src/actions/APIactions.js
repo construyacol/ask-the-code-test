@@ -4,6 +4,7 @@ import * as services from '../services'
 import { IncreaseStep, ReduceStep, ToggleModal } from './formActions'
 import { toast } from 'react-toastify';
 import convertCurrencies from '../services/convert_currency'
+import * as moment from 'moment'
 import store from '../'
 
 import { coins } from '../components/api/ui/api.json'
@@ -19,6 +20,7 @@ import walletsJSON from '../components/api/ui/model_account.json'
 import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
 import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
+
 
 import {
   toast_sound,
@@ -198,21 +200,32 @@ const ApiDelete = async(url) => {
 }
 
 
-
 export const get_historical_price = (url) => {
 
   return async(dispatch)=>{
 
-    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=40&api_key={78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41}`
+    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=45&api_key={78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41}`
     let res = await ApiGetRequest(url)
     if(res.Response === 'Error'){return false}
-    let prices = res.Data.map(item => {
-        return item.close
-    })
-    console.log('!!!! ========> PRICES CONSULTADOS')
-    // alert('||| Last Prices')
 
-    return prices
+    // moment.locale('es')
+    let days = res.Data.length
+    moment().locale('es')
+
+    let price_date = []
+    let data_price = []
+
+    await res.Data.map(item => {
+        let date_ago = moment().subtract(days, 'days').calendar()
+        days--
+        price_date.push(date_ago)
+        data_price.push(item.close)
+    })
+
+    return {
+      price_date,
+      data_price
+    }
   }
 
 }
