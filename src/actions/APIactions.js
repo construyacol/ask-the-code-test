@@ -4,7 +4,8 @@ import * as services from '../services'
 import { IncreaseStep, ReduceStep, ToggleModal } from './formActions'
 import { toast } from 'react-toastify';
 import convertCurrencies from '../services/convert_currency'
-import * as moment from 'moment'
+import moment from 'moment'
+import 'moment/locale/es'
 import store from '../'
 
 import { coins } from '../components/api/ui/api.json'
@@ -46,6 +47,8 @@ import {
   // new_fiat_deposit
  } from './uiActions'
 
+ moment.locale('es')
+
 const {
   normalize_user
 } = normalizr_services
@@ -76,6 +79,7 @@ serve_orders
 const { ApiUrl, IdentityApIUrl, CountryApIUrl } = Environment
 
 let local_currency
+moment.locale('es')
 
 
 
@@ -200,22 +204,19 @@ const ApiDelete = async(url) => {
 }
 
 
-export const get_historical_price = (url) => {
+export const get_historical_price = (currency, amount_days, api_key) => {
 
   return async(dispatch)=>{
 
-    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=45&api_key={78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41}`
-    let res = await ApiGetRequest(url)
-    if(res.Response === 'Error'){return false}
+    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=${currency}&tsym=USD&limit=${amount_days}&api_key={${api_key}}`
+    let res = await ApiGetRequest(url) //fetch
+    if(res.Response === 'Error'){return false} //Error message
 
-    // moment.locale('es')
-    let days = res.Data.length
-    moment().locale('es')
-
+    let days = res.Data.length - 1
     let price_date = []
     let data_price = []
 
-    await res.Data.map(item => {
+    res.Data.map(item => {
         let date_ago = moment().subtract(days, 'days').calendar()
         days--
         price_date.push(date_ago)
@@ -226,6 +227,7 @@ export const get_historical_price = (url) => {
       price_date,
       data_price
     }
+
   }
 
 }

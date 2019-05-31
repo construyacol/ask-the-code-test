@@ -27,8 +27,6 @@ export default Environtment
 // https://mensis.serveo.net/
 // https://archa.serveo.net/
 
-
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
-
 
 // https://oldauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05

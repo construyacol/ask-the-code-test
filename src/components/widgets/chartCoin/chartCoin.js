@@ -21,7 +21,7 @@ class ChartCoin extends Component {
     let lastPrices
 
     if(!lastPrices){
-      lastPrices = await this.props.action.get_historical_price()
+      lastPrices = await this.props.action.get_historical_price('BTC', 45, '78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41')
       if(!lastPrices){return false}
     }
 

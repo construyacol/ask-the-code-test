@@ -34,9 +34,10 @@
   display: block;
   position: absolute;
   bottom: -5px;
+  left: -2px;
   /*height: 60% !important;*/
   /*height: 100% !important;*/
-  width: 105% !important;
+  width: 100% !important;
   justify-self:center !important;
 }
 
