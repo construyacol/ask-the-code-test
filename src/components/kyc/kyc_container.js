@@ -49,7 +49,6 @@ class Kyc extends Component {
              this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
       return this.props.action.ReduceStep('kyc_global_step', 1)
     }
-    console.log('||||||| validate_PERSONAL_kycRES - - ', res)
     const { data } = res
     const { personal } = data
 

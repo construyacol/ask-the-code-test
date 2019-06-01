@@ -16,9 +16,7 @@ state = {
 
 
   componentDidMount(){
-
-  this.initItem()
-
+   this.initItem()
   }
 
   initItem = async() =>{

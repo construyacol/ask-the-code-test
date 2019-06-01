@@ -21,6 +21,7 @@ class RootContainer extends Component {
   }
 
   init_component = async() =>{
+
     let result
     let TokenUser
 
@@ -31,11 +32,12 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiIySVVQdGNPaklwdXA0WVZ6MG9EY1duc2EwZElTengzZmd3VUFxY2NJUDBZYVp1Y3QxTW56MW5VUDgwNEpsVFZQIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTkyNzE4NzEsImV4cCI6MTU1OTI4MjY3MX0.e2q0ltvrVOrMhoB3TILgaBc81fTlizpecvgsf-fF6y4GR8ncrDkTzkMSMW7RpDoC3IIXCr21iYSEAIGVbuPLIQ'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJBdVdlNnB2M0pXZmVjU0VGNGFZeHdib2hXOHA0cG16clkySHRxanB1ZHVIQkVsaDA5RXZTTWtIc0JMZVd0cnNDIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTkzNTgwNzgsImV4cCI6MTU1OTM2ODg3OH0.w9uLzOf9BU34-evIB0qsezTwI7cTy8w1w33HdrsWOE5RI3-IZGIp9_ltxbBKEpQdn0SkMg6OkynOMgk_ZQN8WA'
 
     this.setState({
       TokenUser:AccessToken
     })
+    
   }
 
   logOut = async() =>{

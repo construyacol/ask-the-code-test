@@ -1309,7 +1309,8 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
    return  async(dispatch) => {
 
-     let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"${user.country}"}}`
+     // let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"${user.country}"}}`
+     let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"colombia"}}`
      await dispatch(load_label('Obteniendo proveedores de retiro'))
      if(query){get_wp_url = `${ApiUrl}withdrawProviders?filter=${query}`}
      let withdraw_providers = await ApiGetRequest(get_wp_url)
@@ -1887,10 +1888,7 @@ export const update_level_profile = (config, user) =>{
         "info":config.info
       }
     }
-
     // console.log('||||||| add_new_profile body - - ', body)
-
-
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body, true)
     if(!add_new_profile || add_new_profile === 465){return false}

@@ -15,7 +15,6 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 40% 1fr;
-  position: relative;
 }
 
 

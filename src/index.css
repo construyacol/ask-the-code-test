@@ -433,6 +433,11 @@ circle{
 
 @media only screen and (max-width: 768px) {
 
+
+  .QuoteLayoutContainer{
+    position: relative !important; 
+  }
+
   #WalletList{
     padding-bottom: 30px !important;
   }

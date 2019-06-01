@@ -18,21 +18,29 @@ class UnverifiedComponent extends Component {
 
   componentDidMount(){
     const { advanced, basic } = this.props.user.security_center.kyc
-    let state_verification = advanced === 'confirmed' && basic === 'confirmed' && 'confirmed'
+    let state_verification = (advanced === 'confirmed' && basic === 'confirmed') ? 'confirmed' : (advanced === 'rejected' && basic === 'rejected') && 'rejected'
     this.setState({state_verification})
   }
 
   go_verification = async() =>{
     await this.props.action.section_view_to('initial')
     await this.props.history.push(`/security`)
-    setTimeout(()=>{
+    const { user } = this.props
+    setTimeout(async()=>{
+      if(user.levels){
+        if(user.levels.personal === 'rejected' && user.levels.identity === "rejected"){
+          return this.props.action.ToggleModal()
+        }
+        await this.props.action.ToStep('kyc_global_step', 2)
+        return this.props.action.ToggleModal()
+      }
       this.props.action.ToggleModal()
-    },20)
+    }, 0)
   }
 
   render(){
 
-    const atributos ={
+    const atributos = {
       icon: 'verified',
       size:110,
       color:'#989898'
@@ -47,8 +55,11 @@ class UnverifiedComponent extends Component {
         </div>
           <p className="fuente">
 
-            {state_verification !== 'confirmed' ?
-            'Debes completar el proceso de verificación avanzado para poder operar en coinsenda.' : 'Hemos recibido satisfactoriamente tus datos, en breve te notificaremos el estado de verificación de los mismos'}
+            {state_verification == 'rejected' ?
+             '¡Vaya!, al parecer tus datos han sido rechazados, completa nuevamente el proceso de verificación...' :
+             state_verification !== 'confirmed' ?
+             'Debes completar el proceso de verificación avanzado para poder operar en coinsenda.' :
+            'Hemos recibido satisfactoriamente tus datos, en breve te notificaremos el estado de verificación de los mismos'}
 
           </p>
         <div className={`UnverifiedComponentIconButtons ${state_verification}`}>

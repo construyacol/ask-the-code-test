@@ -40,10 +40,6 @@ class DashBoardContainer extends Component{
     Events.scrollEvent.remove("end");
   }
 
-  // WalletContainer = () =>{
-  //
-  // }
-
 
   render(){
 

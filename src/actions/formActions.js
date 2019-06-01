@@ -10,8 +10,18 @@ import {
   TOGGLE_MODAL,
   FIAT_DEPOSIT,
   UPDATE_KYC_PICTURE,
-  CLEAN_SEARCH
+  CLEAN_SEARCH,
+  TO_STEP
 } from './action_types'
+
+
+export const ToStep = (payload, explicitStep) => {
+  return {
+    type:TO_STEP,
+    payload:payload,
+    step:explicitStep
+  }
+}
 
 
 export const IncreaseStep = (payload, explicitStep) => {

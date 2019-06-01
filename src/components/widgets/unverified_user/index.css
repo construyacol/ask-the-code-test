@@ -30,6 +30,11 @@
   justify-items: center;
 }
 
+.UnverifiedComponentIconButtons.rejected{
+  border: none !important;
+  opacity: 1 !important;
+}
+
 .UnverifiedComponentIconButtons.confirmed{
   animation-name: buttonConfirmed;
   animation-duration: 1s;

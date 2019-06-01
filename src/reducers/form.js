@@ -10,6 +10,7 @@ import {
    CLEAN_FORM,
    REDUCE_STEP,
    INCREASE_STEP,
+   TO_STEP,
    FIAT_DEPOSIT,
    UPDATE_KYC_PICTURE,
    CLEAN_SEARCH
@@ -163,6 +164,12 @@ const forms = (state = initialState, action) =>{
                   }
                 }
             }
+          case TO_STEP:
+              return {
+                ...state,
+                [action.payload]:action.step ? action.step : state.globalStep + 1
+              }
+
           case INCREASE_STEP:
             switch (action.payload) {
                   case 'ticket':
