@@ -51,7 +51,9 @@
   padding-bottom: 15px;
 }
 
-
+.perfilPiCont{
+  position: relative;
+}
 
 .userName{
   color:#14B3F0;
@@ -71,6 +73,20 @@
 
 .userBalance{
   font-size: 13px !important;
+}
+
+.perfilPic.rejected{
+  opacity: .5 !important;
+  border: none !important;
+  filter: grayscale(100%);
+}
+
+.contImgPicProfile{
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 1;
+  z-index: 2;
 }
 
 .perfilPic{

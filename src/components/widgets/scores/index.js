@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Medal } from '../icons'
+import { Medal, Errors } from '../icons'
 import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
@@ -49,6 +49,7 @@ class ScoresComponent extends Component {
 
 
     let message = !basic ? 'Completa la verificación basica' :
+                  (basic === 'rejected' && advanced === 'rejected') ? 'Tu verificación ha sido RECHAZADA.' :
                   (basic === 'confirmed' && !advanced) ? 'Completa la verificación avanzada' :
                   (basic === 'confirmed' && advanced === 'confirmed') ? 'Estamos verificando tu identidad' :
                   (basic === 'accepted' && advanced === 'accepted') ? 'Eres un miembro de confianza..' :
@@ -67,26 +68,30 @@ class ScoresComponent extends Component {
       stars,
       message
     })
-
-    // console.log('||||| total_percent', this.state)
-
-
   }
 
 
 
   render(){
 
+    const { advanced, basic, financial  } = this.props.user.security_center.kyc
     const { level_progress_width, level, stars, message } = this.state
     const { verification_level } = this.props.user
+
+    let rejected = (advanced === 'rejected'  && basic === 'rejected') && 'rejected'
 
     return(
       <div className="scores">
           <div className="barra">
             <div className="progresado" style={{width:`${level_progress_width}%`}}></div>
             <div className="levelBar">
-              <Medal size={25} />
-              <p className="score" id="score">{message}</p>
+              {
+                rejected === 'rejected' ?
+                <Errors size={20} color="red"/>
+                :
+                <Medal size={25} />
+              }
+              <p className={`score ${rejected === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
             </div>
               <div className="level">Nivel:
                 <span className="fuente2">{level}</span>
@@ -102,9 +107,7 @@ class ScoresComponent extends Component {
           </div>
       </div>
     )
-
   }
-
 }
 
 function mapDispatchToProps(dispatch){

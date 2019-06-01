@@ -32,6 +32,8 @@ class MenuPrincipalContainer extends Component{
 
   componentDidMount(){
     this.props.action.HeadRoom('unpinned')
+    // this.props.action.AddNotification('security', null, 1)
+    alert('MenuPrincipalContainer', this.props.user)
 
     scroller.scrollTo('firstInsideContainer', {
       duration:0,
@@ -39,14 +41,16 @@ class MenuPrincipalContainer extends Component{
       containerId: 'containerElement'
     })
 
-
     if(window.innerWidth<768){
       return this.props.action.current_section_params({show_menu_principal:false})
     }
+
     this.props.action.current_section_params({show_menu_principal:true})
   }
 
   render(){
+
+
     // console.log('E S T A D O   I N I C I A L   D E S D E  MENU PRINCIPAL::::', this.props )
     return(
         <MenuPrincipalLayout

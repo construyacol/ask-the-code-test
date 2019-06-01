@@ -61,6 +61,9 @@ const initialState = {
     withdraw:{
       amount:0,
       extra:null
+    },
+    security:{
+      amount:0
     }
   }
 }

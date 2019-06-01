@@ -23,7 +23,6 @@
   transition: 3s;
 }
 
-
 .levelBar{
   position: absolute;
   top: -35px;
@@ -32,13 +31,18 @@
   align-items: center;
 }
 
-
 .score, .level{
   position: absolute;
   font-size: 12px !important;
   right: 0;
   margin: 0;
-  color: #14B3F0 !important;
+  color: #14B3F0 ;
+}
+
+#score.rejected{
+  border: none !important;
+  /*color: red !important;*/
+  color: #ff6c6c !important;
 }
 
 .score{
@@ -76,7 +80,24 @@
 
 
 
+.rejected_anim{
+  animation-name: rejected_anim;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
 
+@keyframes rejected_anim{
+  0%{
+    opacity: 1;
+  }
+  50%{
+    opacity: 0.4;
+  }
+  100%{
+    opacity: 1;
+  }
+}
 
 
 

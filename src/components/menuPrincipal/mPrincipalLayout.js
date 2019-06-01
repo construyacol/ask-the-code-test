@@ -4,7 +4,7 @@ import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
 import octo from '../../assets/octo.png'
 import { menuPrincipal, menuPrincipalInferior } from '../api/ui/api.json'
-import { Medal } from '../widgets/icons'
+import { Medal, Errors } from '../widgets/icons'
 import ScoresComponent from '../widgets/scores'
 import {ArrowRight} from '../widgets/icons/'
 import ItemSettingsInit from '../widgets/itemSettings/'
@@ -15,8 +15,13 @@ const MenuPrincipalLayout = (props) => {
 
   const {
     show_menu_principal,
-    close_menu_principal
+    close_menu_principal,
+    user
   } = props
+
+  const { advanced, basic } = user.security_center.kyc
+  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirmed' : ''
+
 
   return(
     <section className="menuPrincipal fuente" style={{left:show_menu_principal ? '0' : '-110vw' }}>
@@ -31,9 +36,26 @@ const MenuPrincipalLayout = (props) => {
               <i className="fas fa-arrow-left"  onClick={close_menu_principal}></i>
               {/* <ArrowRight size={20} color="white" /> */}
           </div>
-            <div className="perfilPic">
+
+          <div className="perfilPiCont">
+            <div className="contImgPicProfile">
+              {
+                status_verification === 'rejected' ?
+                <Errors size={20} color="red"/>
+                :
+                status_verification === 'confirmed' ?
+                <Medal size={25} />
+                :
+                <span></span>
+              }
+            </div>
+            <div className={`perfilPic ${status_verification}`}>
               <img src={userPic} alt="" className="userPic" width="100%"/>
             </div>
+          </div>
+
+
+
             <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
             {
               props.user.verification_level === 'level_1' &&
@@ -48,7 +70,6 @@ const MenuPrincipalLayout = (props) => {
         </div>
 
         <div className="menuItems">
-
           {
             window.innerWidth>768 ?
               <section className="section1">
