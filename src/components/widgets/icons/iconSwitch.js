@@ -40,7 +40,7 @@ import {
   Touch,
   Upload,
   ReferralPerson,
-  Verified, WithdrawAccount, Referral
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search
  } from './'
 
  import {
@@ -67,6 +67,12 @@ class IconSwitch extends Component {
     // console.log('|||| IconSwitch  ||||', icon)
 
     switch (icon) {
+      case 'pending':
+        return <Search {...props} />
+      case 'confirming':
+        return <Confirming {...props} />
+      case 'accepted':
+        return <Medal {...props} />
       case 'email':
         return <Email {...props} />
       case 'coinsenda':

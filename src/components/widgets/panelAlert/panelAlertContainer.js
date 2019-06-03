@@ -33,7 +33,7 @@ class PanelAlertContainer extends Component {
     if(user.security_center.kyc.basic === 'confirmed' && user.security_center.kyc.advanced === 'confirmed'){
       return this.setState({
         visible:true,
-        message:"Nuestro sistema esta analizando tus datos, si todo sale bien, en breve podrás operar en Coinsenda",
+        message:"Nuestro sistema esta verificando tus documentos, en breve podrás operar en Coinsenda",
         icon:'verified',
         ctaText:null,
         background:'linear-gradient(to bottom right, #00D2FF, #3A7BD5)'

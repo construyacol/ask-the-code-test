@@ -3,6 +3,7 @@ import { Medal, Errors } from '../icons'
 import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
+import IconSwitch from '../icons/iconSwitch'
 import './scores.css'
 
 
@@ -78,20 +79,25 @@ class ScoresComponent extends Component {
     const { level_progress_width, level, stars, message } = this.state
     const { verification_level } = this.props.user
 
-    let rejected = (advanced === 'rejected'  && basic === 'rejected') && 'rejected'
+    let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' : 'pending'
 
     return(
       <div className="scores">
           <div className="barra">
             <div className="progresado" style={{width:`${level_progress_width}%`}}></div>
             <div className="levelBar">
-              {
-                rejected === 'rejected' ?
-                <Errors size={20} color="red"/>
-                :
-                <Medal size={25} />
-              }
-              <p className={`score ${rejected === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
+
+              <IconSwitch
+                size={20}
+                color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
+                icon={
+                  status_verification === 'rejected' ? 'error' :
+                  status_verification === 'confirming' ? 'confirming' :
+                  status_verification === 'accepted' ? 'accepted' : status_verification
+                }
+              />
+
+              <p className={`score ${status_verification === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
             </div>
               <div className="level">Nivel:
                 <span className="fuente2">{level}</span>

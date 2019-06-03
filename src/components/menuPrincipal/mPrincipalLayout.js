@@ -4,9 +4,8 @@ import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
 import octo from '../../assets/octo.png'
 import { menuPrincipal, menuPrincipalInferior } from '../api/ui/api.json'
-import { Medal, Errors } from '../widgets/icons'
 import ScoresComponent from '../widgets/scores'
-import {ArrowRight} from '../widgets/icons/'
+import IconSwitch from '../widgets/icons/iconSwitch'
 import ItemSettingsInit from '../widgets/itemSettings/'
 import { security_center } from '../api/ui/settings.json'
 
@@ -20,7 +19,7 @@ const MenuPrincipalLayout = (props) => {
   } = props
 
   const { advanced, basic } = user.security_center.kyc
-  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirmed' : ''
+  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' : 'pending'
 
 
   return(
@@ -39,15 +38,17 @@ const MenuPrincipalLayout = (props) => {
 
           <div className="perfilPiCont">
             <div className="contImgPicProfile">
-              {
-                status_verification === 'rejected' ?
-                <Errors size={20} color="red"/>
-                :
-                status_verification === 'confirmed' ?
-                <Medal size={25} />
-                :
-                <span></span>
-              }
+
+              <IconSwitch
+                size={20}
+                color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
+                icon={
+                  status_verification === 'rejected' ? 'error' :
+                  status_verification === 'confirming' ? 'confirming' :
+                  status_verification === 'accepted' ? 'accepted' : status_verification
+                }
+              />
+
             </div>
             <div className={`perfilPic ${status_verification}`}>
               <img src={userPic} alt="" className="userPic" width="100%"/>
