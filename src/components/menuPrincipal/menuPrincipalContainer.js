@@ -32,8 +32,6 @@ class MenuPrincipalContainer extends Component{
 
   componentDidMount(){
     this.props.action.HeadRoom('unpinned')
-
-
     scroller.scrollTo('firstInsideContainer', {
       offset:0,
       duration:0 ,

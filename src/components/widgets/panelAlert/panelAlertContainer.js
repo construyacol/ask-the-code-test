@@ -13,25 +13,49 @@ class PanelAlertContainer extends Component {
   state = {
     message:"",
     ctaText:"",
-    visible:false
+    visible:false,
+    background:'white'
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps !== this.props){
+      this.validate_state()
+    }
   }
 
   componentDidMount(){
+    this.validate_state()
+  }
+
+  validate_state = () =>{
     const { user } = this.props
-    if(user.levels && user.levels.personal === 'rejected'){
-      this.setState({
+
+    if(user.security_center.kyc.basic === 'confirmed' && user.security_center.kyc.advanced === 'confirmed'){
+      return this.setState({
+        visible:true,
+        message:"Nuestro sistema esta analizando tus datos, si todo sale bien, en breve podrás operar en Coinsenda",
+        icon:'verified',
+        ctaText:null,
+        background:'linear-gradient(to bottom right, #00D2FF, #3A7BD5)'
+      })
+    }
+
+    if(user.security_center.kyc.basic === 'rejected'){
+      return this.setState({
         visible:true,
         message:"Tus datos han sido rechazados, aprende a verificarte correctamente en tan solo 1 minuto.",
         icon:'rejected',
-        ctaText:"Enseñame"
+        ctaText:"Enseñame",
+        background:'#b31217'
       })
     }
-    if(user.levels && user.levels.personal === 'confirmed'){
-      this.setState({
+    if(user.security_center.kyc.basic === 'confirmed'){
+      return this.setState({
         visible:true,
         message:"¡Genial!, estas a 1 solo paso de completar tu proceso de verificación..",
         icon:'verified',
-        ctaText:"Enseñame"
+        ctaText:"Enseñame",
+        background:'#989500'
       })
     }
   }
@@ -46,11 +70,10 @@ class PanelAlertContainer extends Component {
 
   render(){
     const { user } = this.props
-    let verificate_state = user.levels && user.levels.personal === 'rejected' ? 'rejected' : user.levels.personal === 'confirmed' ? 'confirmed_personal' : ''
-    const { visible, message, ctaText, icon } = this.state
+    const { visible, message, ctaText, icon, background } = this.state
 
     return(
-      <div className={`PanelAlertContainer ${visible && 'visible'}`} id="PanelAlertContainer" style={{background:verificate_state === 'rejected' ? '#b31217' : verificate_state === 'confirmed_personal' ? '#989500' : 'white'}}>
+      <div className={`PanelAlertContainer ${visible && 'visible'}`} id="PanelAlertContainer" style={{background:background}}>
          <div className="alertContainer fuente">
            <IconSwitch
              icon={icon}
@@ -59,7 +82,10 @@ class PanelAlertContainer extends Component {
            />
            <div className="alertContainerText">
              <p>{message}</p>
-             <a onClick={this.go_to}>{ctaText}</a>
+             {
+               ctaText &&
+               <a onClick={this.go_to}>{ctaText}</a>
+             }
            </div>
          </div>
          <i className="fas fa-times" onClick={this.close}></i>

@@ -14,8 +14,8 @@ class SecurityCenter extends Component{
   validate_state = () => {
     const { user } = this.props
 
-    if(user.levels && (user.levels.personal === 'rejected' || user.levels.personal === 'confirmed')){
-      this.props.action.AddNotification('security', null, 1)
+    if(user.security_center.kyc.basic === 'rejected' || user.security_center.kyc.basic === 'confirmed'){
+      // this.props.action.AddNotification('security', null, 1)
       scroller.scrollTo('firstInsideContainer', {
         offset:220,
         duration:1,

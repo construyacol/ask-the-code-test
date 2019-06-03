@@ -129,11 +129,10 @@ class LoaderAplication extends Component {
     await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
 
-    console.log('||||||||||| ==========================> INFO USUARIO', this.props.user)
 
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
-
-    if(this.props.user.levels && (this.props.user.levels.personal === 'rejected' && this.props.user.levels.identity === 'rejected') || this.props.user.levels.personal === 'confirmed'){
+    if((this.props.user.security_center.kyc.basic === 'rejected' && this.props.user.security_center.kyc.advanced === 'rejected') || (this.props.user.security_center.kyc.basic === 'confirmed' && (this.props.user.security_center.kyc.advanced === 'rejected' || !this.props.user.security_center.kyc.advanced))){
+      this.props.action.AddNotification('security', null, 1)
       return this.props.history.push('/security')
     }
 

@@ -23,7 +23,6 @@ class WalletList extends Component{
   }
 
   componentDidMount(){
-    // alert(this.props.history)
     // UpdateHistoryRouter
     // this.props.action.section_view_to('initial')
     // this.props.action.current_section_params({current_pair:null})
@@ -63,7 +62,7 @@ class WalletList extends Component{
     this.props.action.ConfirmationModalToggle()
     this.props.action.ConfirmationModalPayload({
       title:"Estamos trabajando en esto...",
-      description:"Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda si todo sale bien",
+      description:"Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary:"Entendido",
       action:this.no_action,
       svg:"verified"
@@ -72,6 +71,22 @@ class WalletList extends Component{
 
   goto_verification = async() => {
     // await this.props.action.section_view_to('initial')
+    // console.log('|||||| goto_verification ======>', this.props.user)
+    const { user } = this.props
+    const { advanced, basic } = this.props.user.security_center.kyc
+
+    if(user.security_center.kyc.basic === 'confirmed' && user.security_center.kyc.advanced === 'confirmed'){
+      await this.props.action.ToStep('globalStep', 2)
+    }
+
+    if(user.security_center.kyc.basic === 'confirmed' && (!user.security_center.kyc.advanced || user.security_center.kyc.advanced === 'rejected')){
+      await this.props.action.ToStep('globalStep', 2)
+    }
+
+    if(user.security_center.kyc.basic === 'rejected'){
+      await this.props.action.ToStep('globalStep', 0)
+    }
+
     await this.props.history.push(`/security`)
     setTimeout(()=>{
       this.props.action.ToggleModal()

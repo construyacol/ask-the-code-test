@@ -167,7 +167,7 @@ const forms = (state = initialState, action) =>{
           case TO_STEP:
               return {
                 ...state,
-                [action.payload]:action.step ? action.step : state.globalStep + 1
+                [action.payload]:action.step
               }
 
           case INCREASE_STEP:
