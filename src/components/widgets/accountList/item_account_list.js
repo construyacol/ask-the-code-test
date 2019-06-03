@@ -36,7 +36,7 @@ class WalletList extends Component{
     this.props.action.CurrentForm(path)
     this.init_component()
     const { advanced, basic } = this.props.user.security_center.kyc
-    let state_verification = advanced === 'confirmed' && basic === 'confirmed' && 'confirmed'
+    let state_verification = (advanced === 'confirmed' && basic === 'confirmed') && 'confirmed'
     this.setState({state_verification})
   }
 
@@ -75,7 +75,7 @@ class WalletList extends Component{
     await this.props.history.push(`/security`)
     setTimeout(()=>{
       this.props.action.ToggleModal()
-    },20)
+    },0)
   }
 
 

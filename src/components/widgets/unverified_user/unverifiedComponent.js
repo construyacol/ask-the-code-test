@@ -31,7 +31,7 @@ class UnverifiedComponent extends Component {
         if(user.levels.personal === 'rejected' && user.levels.identity === "rejected"){
           return this.props.action.ToggleModal()
         }
-        await this.props.action.ToStep('kyc_global_step', 2)
+        await this.props.action.ToStep('globalStep', 2)
         return this.props.action.ToggleModal()
       }
       this.props.action.ToggleModal()

@@ -32,14 +32,16 @@ class MenuPrincipalContainer extends Component{
 
   componentDidMount(){
     this.props.action.HeadRoom('unpinned')
-    // this.props.action.AddNotification('security', null, 1)
-    alert('MenuPrincipalContainer', this.props.user)
+
 
     scroller.scrollTo('firstInsideContainer', {
-      duration:0,
+      offset:0,
+      duration:0 ,
       smooth: true,
       containerId: 'containerElement'
     })
+
+
 
     if(window.innerWidth<768){
       return this.props.action.current_section_params({show_menu_principal:false})

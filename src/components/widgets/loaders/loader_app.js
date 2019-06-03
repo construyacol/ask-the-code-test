@@ -19,6 +19,7 @@ class LoaderAplication extends Component {
   }
 
   componentDidMount(){
+    // console.log('||||||||||||| ==============> LOADER APP componentDidMount', this.props)
     this.init_component()
   }
 
@@ -128,6 +129,15 @@ class LoaderAplication extends Component {
     await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
 
+    console.log('||||||||||| ==========================> INFO USUARIO', this.props.user)
+
+    // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
+
+    if(this.props.user.levels && (this.props.user.levels.personal === 'rejected' && this.props.user.levels.identity === 'rejected') || this.props.user.levels.personal === 'confirmed'){
+      return this.props.history.push('/security')
+    }
+
+    return this.props.history.push('/wallets')
 
 // ------------------------------------------------------------------------------------------------
 

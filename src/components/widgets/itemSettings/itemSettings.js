@@ -19,6 +19,9 @@ state = {
    this.initItem()
   }
 
+
+
+
   initItem = async() =>{
 
     const{
@@ -27,7 +30,7 @@ state = {
     // console.log('||||||||| initItem', item)
     Object.keys(item).forEach(async(item_id) => {
 
-      if(item_id !== 'id'){
+      if(item_id !== 'id' && item_id !== 'name'){
         let items = item[item_id]
         let lastVerify
 
@@ -61,11 +64,10 @@ state = {
     } = this.props
 
     let resul = []
-
+    // console.log('ITEM SETTINGS items', items)
     items.map(async(item)=>{
       let res = await update_state(item)
       // console.log('||||||||| res', res)
-
       let new_item = {
         ...item,
         ...res
@@ -93,10 +95,10 @@ render(){
   } = this.state
 
   let index = 0
-  // console.log('||||ItemSecurityCenter', this.props)
+  // console.log('||||ItemSecurityCenter', this.props.name)
 
   return(
-    <div className="itemSecurityCenter" style={{padding:(current_item[0] && current_item[0].classic_view) ? '0' : '20px 0 20px 0'}}>
+    <div name={this.props.name} className="itemSecurityCenter" style={{padding:(current_item[0] && current_item[0].classic_view) ? '0' : '20px 0 20px 0'}}>
 
       {
         current_item.length>0 &&

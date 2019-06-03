@@ -1,0 +1,66 @@
+#PanelAlertContainer{
+  width: calc(100% - 40px);
+  position: sticky;
+  height: 50px;
+  bottom: 0 !important;
+  background: #ff122e;
+  z-index: 99;
+  display: none;
+  padding: 0 20px;
+  grid-template-columns: 1fr 30px;
+  align-items: center;
+  /*background: linear-gradient(to right, #e52d27, #b31217);*/
+  /*background: #b31217;*/
+}
+
+
+.alertContainer p{
+  margin: 0 !important;
+  color: white;
+}
+
+.alertContainer {
+  padding-left: 10px;
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: 1fr;
+  width: auto;
+  grid-column-gap: 15px;
+  align-items: center;
+}
+
+.alertContainerText{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 15px;
+  align-items: center;
+}
+
+.alertContainer a{
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+}
+
+.alertContainer a:hover{
+  text-decoration:underline;
+  color: white;
+  cursor: pointer;
+}
+
+#PanelAlertContainer.visible{
+  display:grid;
+}
+
+.PanelAlertContainer i{
+  color: white !important;
+  font-size: 20px;
+  justify-items: center;
+  display: grid;
+  cursor: pointer;
+}
+
+.PanelAlertContainer i:hover{
+  transform:scale(1.2);
+}

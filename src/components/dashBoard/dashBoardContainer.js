@@ -18,6 +18,7 @@ import ActivityContainer from '../activity/activityContainer'
 import SettingsContainer from '../settings/settingsContainer'
 import SecurityCenter from '../securityCenter/securityCenter'
 import ReferralComponent from '../referrals/referralsComponent'
+import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 
 import './dashboard.css'
 
@@ -43,7 +44,7 @@ class DashBoardContainer extends Component{
 
   render(){
 
-    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
+    console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
 
     return(
       <Router
@@ -71,7 +72,7 @@ class DashBoardContainer extends Component{
                               <Route path="/security" component={SecurityCenter} />
                               <Route path="/referral" component={ReferralComponent} />
                               <Route path="/wallets" component={WalletContainer} />
-                              <Redirect from="/" to="/wallets" />
+                              {/* <Redirect from="/" to="/wallets" /> */}
 
                               {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
                               {/* <Redirect from="/" to="/activity" /> */}
@@ -79,6 +80,11 @@ class DashBoardContainer extends Component{
                             </Switch>
                       </Fragment>
                     }
+                  {
+                    this.props.history.location.pathname === '/security' &&
+                    <PanelAlertContainer history={this.props.history}/>
+                  }
+
              </div>
           </Element>
       </Router>

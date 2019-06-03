@@ -6,14 +6,30 @@ import actions from '../../actions'
 import SimpleLoader from '../widgets/loaders'
 import { security_center } from '../api/ui/settings.json'
 import ItemSettingsInit from '../widgets/itemSettings/'
+import Scroll, { scroller } from 'react-scroll'
 
 class SecurityCenter extends Component{
 
-  componentDidMount(){
-    this.props.action.Loader(true)
+
+  validate_state = () => {
+    const { user } = this.props
+
+    if(user.levels && (user.levels.personal === 'rejected' || user.levels.personal === 'confirmed')){
+      this.props.action.AddNotification('security', null, 1)
+      scroller.scrollTo('firstInsideContainer', {
+        offset:220,
+        duration:1,
+        smooth: true,
+        containerId: 'containerElement'
+      })
+    }
   }
 
   componentDidMount(){
+
+    this.validate_state()
+
+    this.props.action.Loader(true)
     // this.props.action.MenuItemActive(this.props.location.pathname)
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
      this.props.action.MenuItemActive('security')
@@ -55,7 +71,11 @@ class SecurityCenter extends Component{
 }
 
 function mapStateToProps(state, props){
+
+  const { user, user_id } = state.model_data
+
   return{
+    user:user[user_id],
     loader:state.isLoading.loader
   }
 }

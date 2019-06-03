@@ -18,7 +18,7 @@ class ItemSettingsInit extends Component{
 
 
     item_action = async(item) =>{
-      
+
       const { user, advace_global_step } = this.props
       const { authenticator, kyc } = user.security_center
       const { phone } = user.settings
@@ -28,18 +28,18 @@ class ItemSettingsInit extends Component{
 
       switch (name) {
         case 'kyc_basic':
-          await this.props.action.ToStep('kyc_global_step', 0)
+          await this.props.action.ToStep('globalStep', 0)
           await this.props.action.CurrentForm('kyc_basic')
           return this.props.action.ToggleModal()
 
         case 'kyc_financial':
               await this.props.action.CurrentForm('kyc_basic')
-              await this.props.action.ToStep('kyc_global_step', 3)
+              await this.props.action.ToStep('globalStep', 3)
               return this.props.action.ToggleModal()
 
         case 'kyc_advanced':
               await this.props.action.CurrentForm('kyc_basic')
-              await this.props.action.ToStep('kyc_global_step', 2)
+              await this.props.action.ToStep('globalStep', 2)
               return this.props.action.ToggleModal()
         case '2auth':
               // console.log('||||||| CLICK ITEM', item)
@@ -246,6 +246,7 @@ class ItemSettingsInit extends Component{
       // console.log('update_phone update_phone update_phone', prop)
     }
 
+
   render(){
 
     const{
@@ -259,6 +260,7 @@ class ItemSettingsInit extends Component{
               data &&
                 data.map(item => {
                   return <ItemSettings
+                    name={item.name}
                     item={item}
                     key={item.id}
                     item_action={this.item_action}

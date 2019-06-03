@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { mensaje } from '../../../services'
 import IconSwitch from '../icons/iconSwitch'
+
 import './detailContainer.css'
 
 class detailContainerLayout extends Component{

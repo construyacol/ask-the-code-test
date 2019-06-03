@@ -106,7 +106,7 @@ componentDidMount(){
           this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
 
             if(deposit.state === 'pending' && deposit.currency_type === 'fiat'){
-              console.log('||||||||||||||||| ------ DEPOSITO SOCKET|', deposit)
+              // console.log('||||||||||||||||| ------ DEPOSITO SOCKET|', deposit)
               await this.props.action.get_deposit_list(this.props.user)
               await this.props.action.update_activity_account(deposit.account_id, 'deposits')
               await this.props.action.update_pending_activity(deposit.account_id, 'deposits')
@@ -206,7 +206,7 @@ componentDidMount(){
         >
           {
             !app_loaded ?
-            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket}  current_country="colombia" token={this.props.token} logOut={this.props.logOut}/>} />
+            <Route path="/" render={() => <LoaderAplication init_sockets={this.startSocket}  current_country="colombia" token={this.props.token} logOut={this.props.logOut} history={this.props.history} />} />
             :
             <Fragment>
                 <ToastContainers/>
