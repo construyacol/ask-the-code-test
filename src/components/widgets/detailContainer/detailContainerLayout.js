@@ -103,9 +103,15 @@ render(){
 
       <div className={`contenido ${(view === 'detail' && current_wallet) ? 'DCcurrent_wallet' : ''}`}>
          {this.props.children}
-         <div className="VideoPlayer">
-           <VideoPlayer></VideoPlayer>
-         </div>
+
+         {
+           this.props.history.location.pathname === '/security' &&
+           <div className="VideoPlayer">
+             <VideoPlayer {...this.props} ></VideoPlayer>
+           </div>
+         }
+
+
       </div>
     </Fragment>
   )
