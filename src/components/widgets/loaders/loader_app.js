@@ -128,10 +128,11 @@ class LoaderAplication extends Component {
     await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
     await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
+    let verification_state = await this.get_verification_state()
 
 
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
-    if((this.props.user.security_center.kyc.basic === 'rejected' && this.props.user.security_center.kyc.advanced === 'rejected') || (this.props.user.security_center.kyc.basic === 'confirmed' && (this.props.user.security_center.kyc.advanced === 'rejected' || !this.props.user.security_center.kyc.advanced))){
+    if(verification_state !== null && verification_state !== 'accepted'){
       this.props.action.AddNotification('security', null, 1)
       return this.props.history.push('/security')
     }
@@ -155,6 +156,20 @@ class LoaderAplication extends Component {
   }
 
 
+  get_verification_state = async() =>{
+
+    const { advanced, basic } = this.props.user.security_center.kyc
+
+    let verification_state = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
+    (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirmed' :
+    (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
+    (!advanced  && !basic) ? null : 'pending'
+
+    await this.props.action.verification_state(verification_state)
+
+    return verification_state
+
+  }
 
 
 

@@ -15,14 +15,9 @@ const MenuPrincipalLayout = (props) => {
   const {
     show_menu_principal,
     close_menu_principal,
-    user
+    user,
+    verification_state
   } = props
-
-  const { advanced, basic } = user.security_center.kyc
-  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
-  (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' :
-  (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
-  (!advanced  && !basic) ? null : 'pending'
 
 
   return(
@@ -43,21 +38,21 @@ const MenuPrincipalLayout = (props) => {
             <div className="contImgPicProfile">
 
             {
-              status_verification &&
+              verification_state &&
               <IconSwitch
-                size={status_verification === 'pending' ? 20 : 20}
-                color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
+                size={verification_state === 'pending' ? 20 : 20}
+                color={verification_state === 'rejected' ? 'red' : '#00D2FF'}
                 icon={
-                  status_verification === 'rejected' ? 'error' :
-                  status_verification === 'confirming' ? 'confirming' :
-                  status_verification === 'accepted' ? 'accepted' : status_verification
+                  verification_state === 'rejected' ? 'error' :
+                  verification_state === 'confirmed' ? 'confirmed' :
+                  verification_state === 'accepted' ? 'accepted' : verification_state
                 }
               />
             }
 
 
             </div>
-            <div className={`perfilPic ${status_verification}`}>
+            <div className={`perfilPic ${verification_state}`}>
               <img src={userPic} alt="" className="userPic" width="100%"/>
             </div>
           </div>

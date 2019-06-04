@@ -13,7 +13,33 @@ import {
   FLOW_ANIMATION_OFF,
   ADD_NOTIFICATION,
   CLEAN_NOTIFICATIONS,
+  PLAY_VIDEO,
+  VERIFICATION_STATE,
+  DEFAULT_VIDEO_STATE
 } from './action_types'
+
+
+export const verification_state = (payload) =>{
+  return{
+    type:VERIFICATION_STATE,
+    payload
+  }
+}
+
+
+export const play_video = (payload) =>{
+  return{
+    type:PLAY_VIDEO,
+    payload
+  }
+}
+
+export const default_video_state = (payload) =>{
+  return{
+    type:DEFAULT_VIDEO_STATE,
+    payload
+  }
+}
 
 
 export const AddNotification = (payload, extra, amount) =>{

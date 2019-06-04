@@ -73,11 +73,13 @@ class MenuPrincipalContainer extends Component{
     // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', state.model_data)
 
     const { user, user_id } = state.model_data
+    const { verification_state } = state.ui
 
     return{
       user:user && user[user_id],
       menu_item_active:state.ui.menu_item_active,
-      show_menu_principal:state.ui.current_section.params.show_menu_principal
+      show_menu_principal:state.ui.current_section.params.show_menu_principal,
+      verification_state
       // user:state.model_data.user ? user : null
     }
   }

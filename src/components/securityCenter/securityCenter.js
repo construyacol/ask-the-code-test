@@ -25,10 +25,13 @@ class SecurityCenter extends Component{
     }
   }
 
+
+  componentWillUnmount(){
+    this.props.action.default_video_state()
+  }
+
   componentDidMount(){
-
     this.validate_state()
-
     this.props.action.Loader(true)
     // this.props.action.MenuItemActive(this.props.location.pathname)
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta

@@ -37,16 +37,21 @@
   align-items: center;
 }
 
-.alertContainer a{
-  text-decoration: none;
+.alertContainerText a{
+  border-bottom: 1px solid white;
   color: white;
   cursor: pointer;
+  /*height: 30px;*/
+  display: grid;
+  max-width: 135px;
+  justify-items:center;
 }
 
-.alertContainer a:hover{
-  text-decoration:underline;
+.alertContainerText a:hover{
+  border-bottom: 1px solid white;
   color: white;
   cursor: pointer;
+  font-weight: bold;
 }
 
 #PanelAlertContainer.visible{

@@ -13,7 +13,10 @@ import {
   FLOW_ANIMATION_LAYOUT,
   FLOW_ANIMATION_OFF,
   ADD_NOTIFICATION,
-  CLEAN_NOTIFICATIONS
+  CLEAN_NOTIFICATIONS,
+  PLAY_VIDEO,
+  VERIFICATION_STATE,
+  DEFAULT_VIDEO_STATE
 } from '../actions/action_types'
 
 const initialState = {
@@ -65,7 +68,18 @@ const initialState = {
     security:{
       amount:0
     }
-  }
+  },
+  videos:{
+    kyc_basic:{
+      play:false,
+      url:"https://www.youtube.com/watch?v=oUwxqg90Zc4&showinfo=0"
+    },
+    kyc_advanced:{
+      play:false,
+      url:"https://www.youtube.com/watch?v=qeMFqkcPYcg"
+    }
+  },
+  verification_state:null
 }
 
 
@@ -87,6 +101,40 @@ const ui = (state = initialState, action)=>{
           }
         }
       }
+
+      case VERIFICATION_STATE:
+        return {
+          ...state,
+          verification_state:action.payload
+        }
+
+      case DEFAULT_VIDEO_STATE:
+        return {
+          ...state,
+          videos:{
+            ...state.videos,
+            kyc_basic:{
+              ...state.videos.kyc_basic,
+              play:false
+            },
+            kyc_advanced:{
+              ...state.videos.kyc_advanced,
+              play:false
+            }
+          }
+        }
+
+      case PLAY_VIDEO:
+        return {
+          ...state,
+          videos:{
+            ...state.videos,
+            [action.payload]:{
+              ...state.videos[action.payload],
+              play:true
+            }
+          }
+        }
 
     case CLEAN_NOTIFICATIONS:
       return {
