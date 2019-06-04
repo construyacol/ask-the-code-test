@@ -10,6 +10,7 @@ class KycAvancedContainer extends Component{
 
 
   state = {
+    kyc_success:false,
     front:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
     back:"./docs/back.png",
     selfie:this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
@@ -145,7 +146,6 @@ class KycAvancedContainer extends Component{
     stepChange = async() =>{
       // manejo esta estructura ya que el estep tambien se podrá alterar al dar click en los elementos ./kycDashboardLayout.js=>.imgDashStep
       // const currentStep = step.target.title
-
       if(this.props.user.id_type === 'pasaporte' && this.props.step === 1){
         this.setState({prevState:3})
         return this.props.action.IncreaseStep('kyc_avanced', 3)
@@ -162,9 +162,10 @@ class KycAvancedContainer extends Component{
         animation:false
       })
 
-      console.log(`|||||| KYC CONTAINER Steps current ${currentStep} , prev ${prevStep}`, this.props)
-
+      // console.log(`|||||| KYC CONTAINER Steps current ${currentStep} , prev ${prevStep}`, this.props)
       // if(currentStep != 3 && prevStep != 3){
+
+      // Ejecutamos este if para aplicar la animacion de la cedula
       if(currentStep < 3){
         setTimeout(()=>{this.setState({animation:true})},1)
         setTimeout(()=>{this.setState({animation2:true})},300)
@@ -179,17 +180,22 @@ class KycAvancedContainer extends Component{
        prevState:currentStep
      })
 
+
       // Si todo sale bien, Finalizamos y enviamos la información para validar en el back
       // console.log('||||||||| currentStep', currentStep)
       const { base64 } = this.state
-      const{
+      const {
         newfront,
         newback,
         newselfie
       } = base64
 
+
       if(newfront && newback && newselfie || newfront && newselfie && this.props.user.id_type === 'pasaporte'){
-        return this.props.validate_identity_kyc(this.state)
+       let finish_kyc_advanced = await this.props.validate_identity_kyc(this.state)
+       if(finish_kyc_advanced){
+         return this.setState({kyc_success:true})
+       }
       }
 
     }
@@ -214,6 +220,7 @@ class KycAvancedContainer extends Component{
         continuar={this.continuar}
         subirImg={this.subirImg}
         cancelarSubidaImg={this.cancelarSubidaImg}
+        finish={this.finish}
         {...this.state}
         {...this.props}
       />

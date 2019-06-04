@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { mensaje } from '../../../services'
 import IconSwitch from '../icons/iconSwitch'
+import VideoPlayer from '../video_player/videoPlayer'
 
 import './detailContainer.css'
 
@@ -102,6 +103,9 @@ render(){
 
       <div className={`contenido ${(view === 'detail' && current_wallet) ? 'DCcurrent_wallet' : ''}`}>
          {this.props.children}
+         <div className="VideoPlayer">
+           <VideoPlayer></VideoPlayer>
+         </div>
       </div>
     </Fragment>
   )

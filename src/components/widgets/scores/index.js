@@ -79,7 +79,10 @@ class ScoresComponent extends Component {
     const { level_progress_width, level, stars, message } = this.state
     const { verification_level } = this.props.user
 
-    let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' : 'pending'
+    let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
+    (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' :
+    (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
+    (!advanced  && !basic) ? null : 'pending'
 
     return(
       <div className="scores">
@@ -87,15 +90,18 @@ class ScoresComponent extends Component {
             <div className="progresado" style={{width:`${level_progress_width}%`}}></div>
             <div className="levelBar">
 
-              <IconSwitch
-                size={20}
-                color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
-                icon={
-                  status_verification === 'rejected' ? 'error' :
-                  status_verification === 'confirming' ? 'confirming' :
-                  status_verification === 'accepted' ? 'accepted' : status_verification
-                }
-              />
+              {
+                status_verification &&
+                <IconSwitch
+                  size={status_verification === 'pending' ? 20 : 20}
+                  color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
+                  icon={
+                    status_verification === 'rejected' ? 'error' :
+                    status_verification === 'confirming' ? 'confirming' :
+                    status_verification === 'accepted' ? 'accepted' : status_verification
+                  }
+                />
+              }
 
               <p className={`score ${status_verification === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
             </div>

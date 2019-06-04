@@ -29,28 +29,20 @@ const KycDashBoard = props =>{
 
         <p className={`fuente ${step>3 ? 'tuVieja' : '' }`}>
           {
-            step === 1 ? '1.Frente del documento' : step === 2 ? '2.Revés del documento' : step === 3 ? '3.Selfie con documento y texto' : '¡Lo hiciste muy Bien!'
+            step === 1 ? '1.Frente del documento' : step === 2 ? '2.Revés del documento' : (step === 3 || step === 4) ? '3.Selfie con documento y texto' : '¡Lo hiciste muy Bien!'
           }
         </p>
 
-        {
-          step < 4 ?
+
           <Marco type="green">
-
-          <div className={`imgDashContainerD ${animation ?  'imgDCAnim' : ''}`}>
-              <div className={`imgDashSon`}>
-                <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
-                <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState === 3 ? '0': '1'}} alt="" width="100%" />
-                <img className="imgDashItem" src={require(`${selfie}`)} style={{ opacity: prevState === 3 ? '1': '0'}} alt="" width="100%" />
-              </div>
-          </div>
-
+            <div className={`imgDashContainerD ${animation ?  'imgDCAnim' : ''}`}>
+                <div className={`imgDashSon`}>
+                  <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState > 2 ? '0': '1'}} alt="" width="100%" />
+                  <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState > 2 ? '0': '1'}} alt="" width="100%" />
+                  <img className="imgDashItem" src={require(`${selfie}`)} style={{ opacity: (prevState > 2) ? '1': '0'}} alt="" width="100%" />
+                </div>
+            </div>
           </Marco>
-
-          :
-
-          <p className="fuente parrafeins" id="putita" >Ya tenemos tu información, nuestro sistema se encuentra verificando tus datos, te avisaremos vía email y SMS cuando finalice, muy pronto podrás operar en coinsenda. </p>
-        }
 
 
         <div className="imgDashCarousel" style={{gridTemplateColumns:id_type === 'pasaporte' ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', maxWidth: id_type === 'pasaporte' ? '260px' : '400px'}}>
@@ -85,7 +77,7 @@ const KycDashBoard = props =>{
             }
 
 
-           <div className={`imgDashStep ${step === 3 ? 'active' : ''}`}  title="3">
+           <div className={`imgDashStep ${step === 3 || step === 4 ? 'active' : ''}`}  title="3">
              {
                selfie === newselfie ?
 
@@ -96,7 +88,6 @@ const KycDashBoard = props =>{
                  <img className="imgDashItem" src={newselfie} alt="" width="80" title="3"/>
                </Fragment>
              }
-
            </div>
         </div>
 

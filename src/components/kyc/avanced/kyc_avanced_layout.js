@@ -3,6 +3,7 @@ import KycDashBoard from './dashboard/kycDashboardLayout'
 import SimpleSlider from './carousel/carouselLayout'
 import CropImg from '../../widgets/cropimg'
 import SimpleLoader from '../../widgets/loaders'
+import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 import '../kyc.css'
 
 const KycAvancedLayout = (props) =>{
@@ -17,16 +18,21 @@ const KycAvancedLayout = (props) =>{
     topOnBoarding,
     imageSrc,
     loader,
-    step
+    step,
+    kyc_success,
+    finish
   } = props
   // console.log('FIGAROOOO FIGAROOOO FIGAROOOOOO::::', props)
 
   return(
     <div className="KycAvancedLayout" >
-        <div className={`containerKycAvanced ${(dashboard && step<4 ) ? 'desktop' : ''}`} style={{ top: `${topOnBoarding}vh` }} >
+
+      {
+        !kyc_success ?
+        <div className={`containerKycAvanced ${(dashboard && step<5 ) ? 'desktop' : ''}`} style={{ top: `${topOnBoarding}vh` }} >
 
           {
-            (step < 4 && window.innerWidth>768) &&
+            (step < 5 && window.innerWidth>768) &&
             <div className="KYCAstep KycOnboarding">
               <SimpleSlider
                 onBoarding={onBoarding}
@@ -38,7 +44,7 @@ const KycAvancedLayout = (props) =>{
 
           <div className="KYCAstep KycDashboard">
             <div className="KycprogressBar">
-              <div className="kycPropgressed" style={{width:step == 1 ? '0%' :  step == 2 ? '33%' : step == 3 ? '66%' : '100%' }} ></div>
+              <div className="kycPropgressed" style={{width:step === 1 ? '0%' :  step === 2 ? '33%' : step === 3 ? '66%' : '100%' }} ></div>
             </div>
             {
               loader &&
@@ -54,7 +60,6 @@ const KycAvancedLayout = (props) =>{
               <KycDashBoard
                 {...props}
               />
-              {/* <div className="ssoa" onClick={goFileLoader}> */}
               <div className="ssoa">
                 <CropImg
                   {...props}
@@ -62,9 +67,26 @@ const KycAvancedLayout = (props) =>{
               </div>
             </div>
 
+
           </div>
 
         </div>
+        :
+        <SuccessComponentScreen {...props}
+          confetti={true}
+          cta_secondary={false}
+          title="!Lo haz hecho muy bien!, tus documentos han sido enviados exitosamente y nuestro sistema se encuentra verificandolos."
+          classes="long_msg"
+          cta_primary_text="Finalizar"
+          siguiente={finish}
+          user_name={props.user.name}
+        />
+
+      }
+
+
+
+
     </div>
   )
 }

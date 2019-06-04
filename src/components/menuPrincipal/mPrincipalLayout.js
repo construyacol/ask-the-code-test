@@ -19,7 +19,10 @@ const MenuPrincipalLayout = (props) => {
   } = props
 
   const { advanced, basic } = user.security_center.kyc
-  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' : (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' : 'pending'
+  let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
+  (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' :
+  (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
+  (!advanced  && !basic) ? null : 'pending'
 
 
   return(
@@ -39,8 +42,10 @@ const MenuPrincipalLayout = (props) => {
           <div className="perfilPiCont">
             <div className="contImgPicProfile">
 
+            {
+              status_verification &&
               <IconSwitch
-                size={20}
+                size={status_verification === 'pending' ? 20 : 20}
                 color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
                 icon={
                   status_verification === 'rejected' ? 'error' :
@@ -48,6 +53,8 @@ const MenuPrincipalLayout = (props) => {
                   status_verification === 'accepted' ? 'accepted' : status_verification
                 }
               />
+            }
+
 
             </div>
             <div className={`perfilPic ${status_verification}`}>

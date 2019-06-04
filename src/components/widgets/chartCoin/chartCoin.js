@@ -39,12 +39,6 @@ class ChartCoin extends Component {
                 borderColor: 'rgb(4, 205, 252)',
                 borderWidth: 1,
                 steppedLine:'middle'
-            },
-            {
-                label: 'Precio',
-                data: lastPrices.data_price,
-                backgroundColor: 'rgb(43, 55, 66)',
-                type:'bar'
             }],
             labels: lastPrices.price_date,
         },

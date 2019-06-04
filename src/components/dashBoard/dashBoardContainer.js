@@ -29,7 +29,6 @@ class DashBoardContainer extends Component{
     Events.scrollEvent.register("begin", function() {
       // console.log("begin", arguments);
     });
-
     Events.scrollEvent.register("end", function() {
       // console.log("end", arguments);
     });
@@ -43,8 +42,7 @@ class DashBoardContainer extends Component{
 
 
   render(){
-
-    console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
+    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
 
     return(
       <Router

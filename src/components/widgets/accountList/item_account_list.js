@@ -95,10 +95,15 @@ class WalletList extends Component{
 
 
   wanna_validate = () =>{
+    // console.log('lista', this.props.lista)
+    // alert('wanna validate')
+    let message = this.props.lista === 'wallets' ? 'billeteras crypto/fiat.' :
+    this.props.lista === 'withdraw_accounts' ? ' cuentas de retiro fiat.' : ''
+
     this.props.action.ConfirmationModalToggle()
     this.props.action.ConfirmationModalPayload({
       title:"Aún no estas listo para esto...",
-      description:"Debes completar el nivel de verificación avanzada para poder agregar cuentas de retiro fiat.",
+      description:`Debes completar el nivel de verificación avanzada para poder agregar ${message}`,
       txtPrimary:"Verificarme",
       txtSecondary:"Cancelar",
       payload:'account_id',
