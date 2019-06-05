@@ -167,9 +167,15 @@ class KycBasicContainer extends Component {
     let arre = await objectToArray(this.state.data_state)
     const { step } = this.props
     if(arre[(step-1)]){
-        return this.setState({
+
+        this.setState({
           active:true
         })
+
+        return setTimeout(()=>{
+          this.setState({open_sect:false})
+        }, 250)
+
     }
     return this.unAvailableActive()
   }
@@ -307,7 +313,7 @@ shouldComponentUpdate(nextProps, nextState){
 
 
 
-  select_item = (item) =>{
+  select_item = async(item) =>{
     const { current_item, ui_type } = this.state
     let body = {
       target:{
@@ -320,7 +326,12 @@ shouldComponentUpdate(nextProps, nextState){
       body.target.name = 'country_prefix'
     }
 
-    this.update(body)
+    await this.update(body)
+
+    setTimeout(()=>{
+      this.setState({open_sect:false})
+    }, 250)
+
     // console.log('|||||select_item in KYC CONTAINER - - ', body, this.state)
 
   }
