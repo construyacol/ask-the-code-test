@@ -71,7 +71,7 @@ class TwoFactorActivate extends Component {
     const { qr, inputFocus, private_key, success_screen, switch_to_success } = this.state
 
     return(
-      <div className="TwoFactorActivate">
+      <div className={`TwoFactorActivate ${!switch_to_success ? 'TwoFactorActivateOn' : '' }`}>
 
       {
         !switch_to_success ?

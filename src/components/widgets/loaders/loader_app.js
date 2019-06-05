@@ -128,7 +128,7 @@ class LoaderAplication extends Component {
     await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
     await action.get_withdraw_list(this.props.user)
     await action.ready_to_play(true)
-    let verification_state = await this.get_verification_state()
+    let verification_state = await action.get_verification_state()
 
 
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
@@ -154,23 +154,6 @@ class LoaderAplication extends Component {
     // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
 
   }
-
-
-  get_verification_state = async() =>{
-
-    const { advanced, basic } = this.props.user.security_center.kyc
-
-    let verification_state = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
-    (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirmed' :
-    (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
-    (!advanced  && !basic) ? null : 'pending'
-
-    await this.props.action.verification_state(verification_state)
-
-    return verification_state
-
-  }
-
 
 
   componentWillReceiveProps(nextProps){

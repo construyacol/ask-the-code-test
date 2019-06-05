@@ -42,7 +42,7 @@ class UnverifiedComponent extends Component {
 
     const atributos = {
       icon: 'verified',
-      size:110,
+      size:window.innerWidth>768 ? 110 : 80,
       color:'#989898'
     }
 

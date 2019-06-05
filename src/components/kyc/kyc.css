@@ -91,7 +91,7 @@
 .KycTitles{
   margin: 0 !important;
   color: #0066AA;
-  font-size: 35px !important;
+  font-size: 35px;
 }
 
 .Kcontrols{

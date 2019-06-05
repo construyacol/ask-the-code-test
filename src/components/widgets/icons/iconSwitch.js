@@ -69,7 +69,7 @@ class IconSwitch extends Component {
     switch (icon) {
       case 'pending':
         return <Search {...props} />
-      case 'confirming':
+      case 'confirmed':
         return <Confirming {...props} />
       case 'accepted':
         return <Medal {...props} />

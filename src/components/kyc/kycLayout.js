@@ -13,7 +13,7 @@ import './kyc.css'
 const KycLayout = (props) =>{
 
  const { globalStep, validate_personal_kyc, loader, siguiente, exit, user,
-   kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc, validate_financial_kyc } = props
+   kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc, validate_financial_kyc, identity_success } = props
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  // let level = user.verification_level
  let name = form_kyc_basic && form_kyc_basic.data_state  && form_kyc_basic.data_state.name
@@ -39,7 +39,11 @@ const KycLayout = (props) =>{
               />
 
           <div className="KycLayout" >
-            <p className="fuente KycTitle" >Verificación Avanzada</p>
+            {
+              !identity_success &&
+              <p className="fuente KycTitle" >Verificación Avanzada</p>
+            }
+            
             {
               (globalStep === 2) &&
               <KycAvancedContainer

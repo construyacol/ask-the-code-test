@@ -8,7 +8,6 @@ import { toast, cssTransition } from 'react-toastify';
 
 class KycAvancedContainer extends Component{
 
-
   state = {
     kyc_success:false,
     front:this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
@@ -56,6 +55,7 @@ class KycAvancedContainer extends Component{
 
 
   componentDidMount(){
+    this.props.action.IncreaseStep('kyc_basic', 1)
     // console.log('||||||| componentDidMount', this.state )
   }
 

@@ -14,7 +14,8 @@ class Kyc extends Component {
 
   state = {
     reset:null,
-    financial_success:null
+    financial_success:null,
+    identity_success:false
   }
 
 
@@ -123,6 +124,7 @@ class Kyc extends Component {
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
     await this.props.action.update_user(user_update)
     this.props.action.Loader(false)
+    this.setState({identity_success:true})
     return true
   }
 

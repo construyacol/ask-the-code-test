@@ -108,10 +108,10 @@ class SubItemSC extends Component {
           <div className="contCtaMovilSec">
             {
               other_state === "send" ?
-              <i class="enviarNero fas fa-angle-double-down" style={{color:"gray"}}></i>
+              <i className="enviarNero fas fa-angle-double-down" style={{color:"gray"}}></i>
               :
               other_state === "confirmed"?
-              <i class="fas fa-spinner rotateGono" style={{color:"#bbbbbb"}}></i>
+              <i className="fas fa-spinner rotateGono" style={{color:"#bbbbbb"}}></i>
               :
               verify ?
               <i className="fas fa-check" style={{color:"#59B200"}}></i>

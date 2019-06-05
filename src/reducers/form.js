@@ -209,7 +209,7 @@ const forms = (state = initialState, action) =>{
                         ...state,
                         form_kyc_basic: {
                           ...state.form_kyc_basic,
-                          step:state.form_kyc_basic.step + 1
+                          step:action.step ? action.step : state.form_kyc_basic.step + 1
                         }
                       }
                   case 'kyc_global_step':

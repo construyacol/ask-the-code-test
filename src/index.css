@@ -434,6 +434,72 @@ circle{
 @media only screen and (max-width: 768px) {
 
 
+  .UnverifiedComponent p{
+    font-size: 14px !important;
+  }
+
+  .controlContainers .contButtonUpload{
+    max-width: none !important;
+    justify-self:center !important;
+  }
+
+  .KycTitles{
+    font-size: 25px !important;
+  }
+
+  .continueKyc{
+    font-size: 17px !important;
+  }
+
+  .KycParra1{
+    font-size: 20px !important;
+  }
+
+  .continueKyc{
+    text-align: center !important;
+  }
+
+  .Kyccontrols{
+    width: 100vw !important;
+  }
+
+  .Kcontrols{
+    display: grid !important;
+  }
+
+  .Inputmsg{
+    font-size: 13px !important;
+  }
+
+  .KycLayoutBasicWin{
+    width: 100vw !important;
+  }
+
+  .ItemSelectionContainer{
+    width: 100vw !important;
+    overflow-y: hidden !important;
+  }
+
+
+  .step1>form{
+    height: 100vh !important;
+  }
+
+  .containerFormWallet.newWallet form .InputButton{
+    align-self: center !important;
+  }
+
+  .containerFormWallet.newWallet form .containerInputComponent{
+    max-width: 450px !important;
+  }
+
+  .containerFormWallet.newWallet form .containerInputComponent.nameWallet{
+    justify-self: center !important;
+    width: 90% !important;
+    /*display: none !important;*/
+  }
+
+
   .QuoteLayoutContainer{
     position: relative !important;
   }
@@ -1131,14 +1197,23 @@ circle{
     width: calc(100% - 60px) !important;
   }
 
-  .TwoFactorActivate{
+  .TwoFactorActivateOn{
     width: calc(100% - 30px) !important;
     padding: 0 15px !important;
   }
 
   .PhoneView{
+    width: 100% !important;
     grid-template-rows: 100px 1fr 80px !important;
+    padding: 0 !important;
   }
+
+  .otherModal{
+    position: absolute !important;
+    bottom: 0 !important;
+  }
+
+
 
   .footer2faTextDes p{
     font-size: 14px !important;
@@ -1341,6 +1416,10 @@ circle{
     grid-template-rows: repeat(3, calc(100vh - 14px)) !important;
   }
 
+  .KycLayoutCarousel.globalStep0{
+    grid-template-rows: repeat(3, 100vh) !important;
+  }
+
   .labelText2{
     font-size: 20px !important;
   }
@@ -1393,6 +1472,10 @@ circle{
 
   #paymentConfirButton{
     padding: 0 5px !important;
+  }
+
+  .AuthInputComp{
+    width: 90% !important;
   }
 
 }

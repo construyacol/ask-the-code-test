@@ -23,7 +23,7 @@ const NewWalletLayout = props =>{
 
 
   return(
-    <div className="containerFormWallet">
+    <div className="containerFormWallet newWallet">
       {
         step === 1 &&
         <div className="step1">
@@ -32,6 +32,7 @@ const NewWalletLayout = props =>{
               onSubmit={handleSubmit}
             >
             <InputForm
+              clase="nameWallet containerInputComponent"
               type="text"
               label="Nombra tu nueva billetera"
               placeholder="Billetera de trading"

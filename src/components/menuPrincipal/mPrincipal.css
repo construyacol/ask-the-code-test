@@ -14,7 +14,7 @@
   left: 0;
 }
 
-.perfilPic.pending{
+.perfilPic.pending, .perfilPic.confirmed{
   border: none !important;
 }
 

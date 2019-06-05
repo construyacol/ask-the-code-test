@@ -81,7 +81,7 @@ class DashBoardContainer extends Component{
                   {
                     this.props.history.location.pathname === '/security' &&
                     <Fragment>
-                        <PanelAlertContainer history={this.props.history}/>
+                          <PanelAlertContainer history={this.props.history}/>
                           <VideoPlayer></VideoPlayer>
                     </Fragment>
                   }

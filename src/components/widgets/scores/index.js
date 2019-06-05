@@ -78,11 +78,8 @@ class ScoresComponent extends Component {
     const { advanced, basic, financial  } = this.props.user.security_center.kyc
     const { level_progress_width, level, stars, message } = this.state
     const { verification_level } = this.props.user
+    const { verification_state } = this.props
 
-    let status_verification = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
-    (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirming' :
-    (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
-    (!advanced  && !basic) ? null : 'pending'
 
     return(
       <div className="scores">
@@ -91,19 +88,19 @@ class ScoresComponent extends Component {
             <div className="levelBar">
 
               {
-                status_verification &&
+                verification_state &&
                 <IconSwitch
-                  size={status_verification === 'pending' ? 20 : 20}
-                  color={status_verification === 'rejected' ? 'red' : '#00D2FF'}
+                  size={verification_state === 'pending' ? 20 : 20}
+                  color={verification_state === 'rejected' ? 'red' : '#00D2FF'}
                   icon={
-                    status_verification === 'rejected' ? 'error' :
-                    status_verification === 'confirming' ? 'confirming' :
-                    status_verification === 'accepted' ? 'accepted' : status_verification
+                    verification_state === 'rejected' ? 'error' :
+                    verification_state === 'confirmed' ? 'confirmed' :
+                    verification_state === 'accepted' ? 'accepted' : verification_state
                   }
                 />
               }
 
-              <p className={`score ${status_verification === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
+              <p className={`score ${verification_state === 'rejected' && 'rejected rejected_anim'}`} id="score">{message}</p>
             </div>
               <div className="level">Nivel:
                 <span className="fuente2">{level}</span>
@@ -130,10 +127,12 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   const { user, user_id } = state.model_data
+  const { verification_state } = state.ui
 
   return{
     user:user[user_id],
     menu_item_active:state.ui.menu_item_active,
+    verification_state
     // user:state.model_data.user ? user : null
   }
 }

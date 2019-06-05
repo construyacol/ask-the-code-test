@@ -13,7 +13,7 @@ class PanelAlertContainer extends Component {
   state = {
     message:"",
     ctaText:"",
-    visible:false,
+    visible:true,
     background:'white'
   }
 
@@ -27,9 +27,9 @@ class PanelAlertContainer extends Component {
     this.validate_state()
   }
 
-  validate_state = () =>{
+  validate_state = async() =>{
 
-    const { verification_state } = this.props
+    let verification_state = await this.props.action.get_verification_state()
 
     if(verification_state === 'confirmed'){
       return this.setState({

@@ -43,7 +43,8 @@ import {
 import {
   current_section_params,
   pairs_for_account,
-  FlowAnimationUi
+  FlowAnimationUi,
+  verification_state
   // new_fiat_deposit
  } from './uiActions'
 
@@ -1835,7 +1836,27 @@ export const update_user = new_user =>{
 
 
 
+export const get_verification_state = () =>{
 
+  return async(dispatch) => {
+
+    const { user, user_id } = store.getState().model_data
+    const user_data = user[user_id]
+    const { advanced, basic } = user_data.security_center.kyc
+
+    let verification_state_data = (advanced === 'rejected'  && basic === 'rejected') ? 'rejected' :
+    (advanced === 'confirmed'  && basic === 'confirmed') ? 'confirmed' :
+    (advanced === 'accepted'  && basic === 'accepted') ? 'accepted' :
+    (!advanced  && !basic) ? null : 'pending'
+
+    await dispatch(verification_state(verification_state_data))
+
+    return verification_state_data
+
+
+  }
+
+}
 
 
 
@@ -1848,9 +1869,7 @@ export const countryvalidators = () =>{
   return async(dispatch) => {
     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
     let res = await ApiGetRequest(url_countryvalidators)
-    console.log('||||url_countryvalidators', url_countryvalidators)
     if(!res || res === 465 || res === 404){return false}
-    console.log('||||countryvalidators', res)
     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
     let new_array = await objectToArray(countries)
     let construct_res = {
