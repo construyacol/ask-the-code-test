@@ -29,7 +29,7 @@ class ChartCoin extends Component {
 
     let ctx = document.getElementById('myChart').getContext('2d');
 
-    let myChart = new Chart(ctx, {
+    new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{

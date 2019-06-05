@@ -33,7 +33,7 @@ class WithdrawAccountForm extends Component{
 
       switch (this.props.step) {
         case 3:
-            if (this.props.search.length==1) {
+            if (this.props.search.length===1) {
               this.props.action.UpdateFormControl('bank',true)
             }
             break

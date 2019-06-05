@@ -1,20 +1,18 @@
 import React, {Component, Fragment} from 'react'
 // import DashBoardLayout from './dashBoardLayout.js'
 import {
-  Link,
   Element,
   Events,
   scrollSpy
 } from "react-scroll";
 
-import { Router, Route, Switch, Redirect } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
 import SimpleLoader from '../widgets/loaders'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
-import ActivityContainer from '../activity/activityContainer'
 import SettingsContainer from '../settings/settingsContainer'
 import SecurityCenter from '../securityCenter/securityCenter'
 import ReferralComponent from '../referrals/referralsComponent'

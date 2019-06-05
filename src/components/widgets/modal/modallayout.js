@@ -76,7 +76,6 @@ render(){
     loader,
     step,
     children,
-    action,
     current,
     app_loaded
   } = this.props
@@ -118,7 +117,7 @@ render(){
         }
 
         {
-          (current === 'bank' && step>2 && !loader && modalView === "modalView" || current !== 'bank' && step>1 && !loader && modalView === "modalView") &&
+          ((current === 'bank' && step>2 && !loader && modalView === "modalView") || (current !== 'bank' && step>1 && !loader && modalView === "modalView")) &&
           // (current !== 'bank' && step>1 && !loader && modalView === "modalView") &&
             <ButtonModalBack volver={this.volver}>
               { window.innerWidth>768 &&

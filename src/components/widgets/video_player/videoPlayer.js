@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 // import ReactPlayer from 'react-player'
 import YouTubePlayer from 'react-player/lib/players/YouTube'
-import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -29,9 +28,9 @@ class VideoPlayer extends Component {
 
   render () {
 
-    const { video, verification_state } = this.props
+    const { video } = this.props
     const { isFull } = this.state
-// this.props.action.default_video_state()
+
     return(
       <div className="VideoPlayer" style={{display:(video && video.play ? 'block' : 'none')}}>
         {
@@ -73,7 +72,7 @@ function mapStateToProps(state, props){
 
   const { user, user_id } = state.model_data
   const { videos, verification_state } = state.ui
-  let verification_video = verification_state === 'rejected' ? 'kyc_basic' :
+  let verification_video = (verification_state === 'rejected' || !verification_state) ? 'kyc_basic' :
                            verification_state === 'pending' && 'kyc_advanced'
 
   return {

@@ -130,9 +130,8 @@ class LoaderAplication extends Component {
     await action.ready_to_play(true)
     let verification_state = await action.get_verification_state()
 
-
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
-    if(verification_state !== null && verification_state !== 'accepted'){
+    if(verification_state !== 'accepted'){
       this.props.action.AddNotification('security', null, 1)
       return this.props.history.push('/security')
     }

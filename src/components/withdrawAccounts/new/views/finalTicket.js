@@ -87,7 +87,6 @@ class FinalTicket extends Component {
 
 
     const {
-      ticket,
       finishAction,
       cta_primary_label,
       cta_secondary,

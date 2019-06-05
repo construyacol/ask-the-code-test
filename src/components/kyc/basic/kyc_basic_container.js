@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { objectToArray } from '../../../services'
-import MVList from '../../widgets/itemSettings/modal_views/listView'
 import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
 import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
@@ -58,8 +57,10 @@ class KycBasicContainer extends Component {
     // Debemos desarrollar una pantalla que aparezca en primer instancia pidiento el tipo de persona (legal/natural)
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
-    const { user, form_kyc_basic_state } = this.props
-    if(!user.levels || user.levels && user.levels.personal === 'rejected'){
+    const { form_kyc_basic_state } = this.props
+    let verification_state = await this.props.action.get_verification_state()
+
+    if(!verification_state || verification_state === 'rejected'){
     // if(user.verification_level !== 'level_0'){
       this.props.action.Loader(true)
         const { user } = this.props

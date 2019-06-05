@@ -4,7 +4,7 @@ import InputForm from '../inputs'
 import { ItemSelected } from '../buttons/buttons'
 import { connect } from 'react-redux'
 // import { search_item_store } from '../../../actionCreators'
-import { coins, banks, remittance } from '../../api/ui/api.json'
+import { banks, remittance } from '../../api/ui/api.json'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
 import SimpleLoader from '../loaders'
@@ -65,6 +65,7 @@ class ItemSelectionContainer extends Component {
                               })
                               return coincidencia = item
                             }
+                            return false
                           })
         }
 
@@ -85,7 +86,7 @@ class ItemSelectionContainer extends Component {
 
     buscarItemStore = async(item_name)=>{
       // console.log('buscarItemStore',item_name, this.props.current, this.state.items)
-      let puta = await this.props.action.Search(item_name, this.props.current, this.state.items)
+      await this.props.action.Search(item_name, this.props.current, this.state.items)
       this.props.update_control_form(item_name)
     }
 
@@ -121,7 +122,7 @@ class ItemSelectionContainer extends Component {
 
 
   render(){
-    const { type, search, buttonActive, itemSelect, label } = this.props
+    const { search, buttonActive, itemSelect, label } = this.props
     const { items } = this.state
 
 
@@ -216,7 +217,7 @@ function mapStateToProps(state, props){
     search: current === 'wallets' ?  search_coin : (current === 'bank' || current === 'withdraw') ? search_bank : search_deposit,
     form: current === 'wallets' ? form_wallet : (current === 'bank' || current === 'withdraw') ? form_bank : form_deposit,
     buttonActive: current === 'wallets' ? form_control_wallet : (current === 'bank' || current === 'withdraw') ? form_control_bank : form_control_deposit,
-    selected: current === 'wallets' ?  (search_coin.length==1 ? true : false) : (current === 'bank' || current === 'withdraw') ? (search_bank.length==1 ? true : false) : (search_deposit.length==1 ? true : false),
+    selected: current === 'wallets' ?  (search_coin.length===1 ? true : false) : (current === 'bank' || current === 'withdraw') ? (search_bank.length===1 ? true : false) : (search_deposit.length===1 ? true : false),
     current: current,
     coins:currencies
   }

@@ -1,6 +1,6 @@
 import React, {Fragment, Component} from 'react'
 import ItemList from './viewItem'
-import { matchItem, serve_orders, serve_activity_list, ticketModalView } from '../../../services'
+import { serve_orders, ticketModalView } from '../../../services'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -31,13 +31,10 @@ class ActivityList extends Component {
 
 
         const {
-          wallets,
           current_wallet,
           local_currency,
           current_pair,
           history,
-          user,
-          action,
           currentFilter
         } = this.props
 
@@ -143,10 +140,6 @@ class ActivityList extends Component {
 
   contraer = () =>{
 
-    const {
-      expandidoMax
-    } = this.props
-
     this.setState({
       expandible:90,
       expandido:false
@@ -155,11 +148,10 @@ class ActivityList extends Component {
 
 
   trigger_action = filter =>{
-    let trigger_action
-    return  trigger_action = (filter === 'deposits' ? 'get_deposit_list' :
-                              filter === 'withdrawals' ? 'get_withdraw_list' :
-                              filter === 'swaps' ? 'get_swap_list' :
-                              filter === 'activity' && 'get_activity_list')
+    return (filter === 'deposits' ? 'get_deposit_list' :
+            filter === 'withdrawals' ? 'get_withdraw_list' :
+            filter === 'swaps' ? 'get_swap_list' :
+            filter === 'activity' && 'get_activity_list')
   }
 
   // update_activity_list = async() =>{
@@ -469,7 +461,7 @@ class ActivityList extends Component {
 
 function mapStateToProps(state, props){
 
-  const { deposits, withdrawals, swaps, activity, user, user_id } = state.model_data
+  const { user, user_id } = state.model_data
   const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
   const { activity_for_account } = state.storage

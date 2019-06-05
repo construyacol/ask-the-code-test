@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/lib/Table'
 export default props => {
   return (
     <React.Fragment>
-      <a name="bancolombia"> &nbsp; </a>
+      <span name="bancolombia" href="#"> &nbsp; </span>
       <Col md={12}>
         <h3>Bancolombia</h3>
       </Col>

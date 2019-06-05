@@ -4,13 +4,12 @@ import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
-import { Router, Switch, Redirect, Link, Route } from 'react-router-dom'
+import { Router, Switch, Route } from 'react-router-dom'
 // import { BrowserRouter as Router, Switch, Redirect, Link, Route } from 'react-router-dom'
 import ActivityView from '../wallets/views/activity'
 
 // import WalletList from './views/walletList'
 import WithdrawAccountList from '../widgets/accountList/item_account_list'
-import list_wallets_data from '../api/ui/model_account.json'
 import ItemWallet from '../widgets/accountList/items'
 import SimpleLoader from '../widgets/loaders'
 
@@ -113,9 +112,8 @@ class witdrawAccountContainer extends Component{
     render(){
 
       const { items_menu } = navigation_components.wallet
-      const url = this.state.currentUrl
       const { title }  = this.state
-      const {withdraw_accounts, app_loaded, item_active } = this.props
+      const {withdraw_accounts, app_loaded } = this.props
 
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
@@ -155,8 +153,6 @@ function mapStateToProps(state, props){
   const {
     user,
     user_id,
-    withdraw_accounts,
-    withdraw_providers
   } = state.model_data
 
   const {

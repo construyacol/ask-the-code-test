@@ -3,7 +3,6 @@ import {
   UPDATE_PENDING_ACTIVITY
 } from './action_types'
 
-import store from '../'
 
 
 export const update_activity = (account_id, activity_type, activity_list) => {

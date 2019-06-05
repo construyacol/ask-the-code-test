@@ -1,11 +1,5 @@
 import React, {Fragment} from 'react'
 import './newAccount.css'
-import { InputButton } from '../../widgets/buttons/buttons'
-import { InputForm } from '../../widgets/inputs'
-import DropDownContainer from '../../widgets/inputs/dropdownContainer'
-import {ButtonForms} from '../../widgets/buttons/buttons'
-import ItemSelectionContainer from '../../widgets/items/ItemSelectionContainer'
-import ItemLayout from '../../widgets/items/itemLayout'
 // import bank from '../../../assets/bank.png'
 import SimpleLoader from '../../widgets/loaders'
 import MethodView from './views/1method'
@@ -18,19 +12,11 @@ const WithdrawAccountFormLayout = props =>{
 
   const {
     siguiente,
-    account_number,
-    account_type,
-    bank_name,
     step,
-    loader,
-    name,
-    surname,
     select_withdraw_way,
     withdraw_way,
     ticket,
-    finalizar,
-    withdraw_flow,
-    withdraw_flow_action
+    finalizar
    } = props
 
   // console.log

@@ -5,8 +5,6 @@ import actions from '../../../actions'
 import SimpleLoader from '../loaders'
 import ItemWallet from './items'
 import { AddNewItem } from '../buttons/buttons'
-import { toast } from 'react-toastify'
-import PropTypes from "prop-types"
 import { withRouter } from "react-router"
 import IconSwitch from '../icons/iconSwitch'
 
@@ -72,18 +70,16 @@ class WalletList extends Component{
   goto_verification = async() => {
     // await this.props.action.section_view_to('initial')
     // console.log('|||||| goto_verification ======>', this.props.user)
-    const { user } = this.props
-    const { advanced, basic } = this.props.user.security_center.kyc
 
-    if(user.security_center.kyc.basic === 'confirmed' && user.security_center.kyc.advanced === 'confirmed'){
+    let verification_state = await this.props.action.get_verification_state()
+
+
+    if(verification_state === 'confirmed' || verification_state === 'pending'){
       await this.props.action.ToStep('globalStep', 2)
     }
 
-    if(user.security_center.kyc.basic === 'confirmed' && (!user.security_center.kyc.advanced || user.security_center.kyc.advanced === 'rejected')){
-      await this.props.action.ToStep('globalStep', 2)
-    }
 
-    if(user.security_center.kyc.basic === 'rejected'){
+    if(verification_state === 'rejected'){
       await this.props.action.ToStep('globalStep', 0)
     }
 

@@ -1,8 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import IconSwitch from '../../icons/iconSwitch'
 import InputForm from '../../inputs'
-import { ButtonForms } from '../../buttons/buttons'
-import AuthReq from './authreq'
 
 class PassView extends Component {
 
@@ -67,21 +64,9 @@ class PassView extends Component {
   render(){
 
     const {
-      description,
-      placeholder,
-      code,
-      type,
-      buttonActive,
-      auth
+      buttonActive
     } = this.props
 
-
-
-    const atributos ={
-      icon:`${auth ? '2auth' : code}`,
-      size:80,
-      color:`#1babec`
-    }
 
     const{
       status

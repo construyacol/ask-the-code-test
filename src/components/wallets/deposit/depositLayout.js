@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react'
 // import ItemSelectionContainer from '../../widgets/items/ItemSelectionContainer'
-import { coins, payment_method } from '../../api/ui/api.json'
+import { payment_method } from '../../api/ui/api.json'
 import ItemLayout from '../../widgets/items/itemLayout'
-import { InputDepositForm } from '../../widgets/inputs'
 import { SimpleLoader } from '../../widgets/loaders'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import { TransferFlow, CashFlow } from './flows'
@@ -15,14 +14,10 @@ const DepositLayout = (props) => {
 
   const {
      siguiente,
-     type,
      currency,
      amount,
      deposit_way,
-     deposit_service,
-     service_mode,
      step,
-     handleSubmit,
      buttonActive,
      select_currency,
      itemActive,
@@ -32,18 +27,7 @@ const DepositLayout = (props) => {
      loader,
      updateAmountOnState,
      select_deposit_way,
-     actualizarEstado,
-     update_control_form,
-     update_service_mode,
-     create_deposit_order,
-     finalizar,
-     short_bank_name,
-     update_local_state,
-     handleKeyPress,
-     statusInput,
-     services,
      wallets_list,
-     history,
      deposit,
      msgLoader,
      minAmount,
@@ -52,11 +36,6 @@ const DepositLayout = (props) => {
   } = props
 
 
-  const atributos ={
-    icon:type_currency === 'fiat' ? short_currency_name : currency,
-    size:80,
-    // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
-  }
 
   return(
     <section className="DepositLayout">

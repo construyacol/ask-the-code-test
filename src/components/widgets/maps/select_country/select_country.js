@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import SimpleLoader from '../../loaders'
 import { connect } from 'react-redux'
-import Environtment from '../../../../environment'
 import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
 import SAmerica from '../sAmerica'
@@ -77,7 +76,6 @@ class SelectCountry extends Component {
 
     const{
       app_load_label,
-      country,
       loader
     } = this.props
 

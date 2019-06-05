@@ -2,12 +2,9 @@ import React from 'react'
 import ButtonPrincipalMenu from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
-import octo from '../../assets/octo.png'
-import { menuPrincipal, menuPrincipalInferior } from '../api/ui/api.json'
+import { menuPrincipal } from '../api/ui/api.json'
 import ScoresComponent from '../widgets/scores'
 import IconSwitch from '../widgets/icons/iconSwitch'
-import ItemSettingsInit from '../widgets/itemSettings/'
-import { security_center } from '../api/ui/settings.json'
 
 
 const MenuPrincipalLayout = (props) => {
@@ -15,7 +12,6 @@ const MenuPrincipalLayout = (props) => {
   const {
     show_menu_principal,
     close_menu_principal,
-    user,
     verification_state
   } = props
 

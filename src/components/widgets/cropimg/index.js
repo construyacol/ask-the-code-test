@@ -1,7 +1,5 @@
 import React, {Fragment} from 'react'
-import ReactDOM from 'react-dom'
 import getCroppedImg from './cropImage'
-import { readFile } from '../../../services'
 import { ButtonForms } from '../buttons/buttons'
 
 

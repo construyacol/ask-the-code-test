@@ -4,7 +4,7 @@ import { readFile } from '../../../services'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { toast, cssTransition } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 class KycAvancedContainer extends Component{
 

@@ -3,10 +3,7 @@ import DetailContainerLayout from '../widgets/detailContainer/detailContainerLay
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-import SimpleLoader from '../widgets/loaders'
-import { Link } from 'react-router-dom'
 import { ButtonForms } from '../widgets/buttons/buttons'
-import ActivityList from '../widgets/activityList'
 
 // import { withRouter } from 'react-router-dom'
 import './activity.css'
@@ -49,14 +46,6 @@ toWallets = async() =>{
   render(){
     // console.log(' - - - ||  DetailContainerLayout  || -- - - - -', this.props.history)
 // ActivityList
-
-const {
-  wallets,
-  deposits,
-  swaps,
-  all_pairs,
-  item_active
-} = this.props
 
 // console.log('||||||||||||||||||||||||||||||||||||||||||||| SWAPS - - - ', swaps)
     return(

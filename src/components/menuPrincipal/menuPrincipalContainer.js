@@ -3,10 +3,9 @@ import MenuPrincipalLayout from './mPrincipalLayout'
 import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
-import { toast  } from 'react-toastify'
 import './mPrincipal.css'
 // import { Link as ScrollTo } from "react-scroll"
-import Scroll, { scroller } from 'react-scroll'
+import { scroller } from 'react-scroll'
 // import { bindActionCreators } from 'redux'
 
 

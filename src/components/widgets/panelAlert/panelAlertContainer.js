@@ -31,6 +31,17 @@ class PanelAlertContainer extends Component {
 
     let verification_state = await this.props.action.get_verification_state()
 
+    if(!verification_state){
+      return this.setState({
+        visible:true,
+        message:"Bienvenido, completa el proceso de verificación y comienza a operar en Coinsenda",
+        icon:'verified',
+        ctaText:"Enseñame ahora >>",
+        background:'linear-gradient(to bottom right, #00D2FF, #3A7BD5)',
+        action:this.validate_kyc_basic
+      })
+    }
+
     if(verification_state === 'confirmed'){
       return this.setState({
         visible:true,
@@ -82,7 +93,6 @@ class PanelAlertContainer extends Component {
   }
 
   render(){
-    const { user } = this.props
     const { visible, message, ctaText, icon, background, action } = this.state
 
     return(

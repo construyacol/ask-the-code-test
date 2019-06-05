@@ -1,9 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import './item_wallet.css'
-import { NavLink, Link } from 'react-router-dom'
 import backcard from '../../../assets/wallet_coins/back.png'
 import Imgcop from '../../../assets/wallet_coins/cop2.png'
-import CopyContainer from '../copy/copyContainer'
 import { withRouter } from "react-router";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -136,7 +134,6 @@ componentDidMount(){
 
 
     const {
-      deposit,
       wallet,
       current,
       current_view,
@@ -147,16 +144,9 @@ componentDidMount(){
     } = this.props
 
     const {
-      device
-    } = this.state
-
-
-    const {
-      dep_prov,
       currency,
       name,
       id,
-      currency_type,
       type,
       description,
       used_counter,

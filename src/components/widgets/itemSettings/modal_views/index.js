@@ -6,7 +6,6 @@ import SimpleLoader from '../../loaders'
 import PhoneView from './phone'
 import PassView from './pass'
 import IconSwitch from '../../icons/iconSwitch'
-import InputForm from '../../inputs'
 import { ButtonForms } from '../../buttons/buttons'
 import AuthReq from './authreq'
 import OtherModalLayout from '../../modal/otherModalLayout'
@@ -177,15 +176,9 @@ update_state = (payload) =>{
     } = this.props
 
     const {
-      svg,
-      description,
-      payload,
-      placeholder,
       title,
       txtPrimary,
       txtSecondary,
-      type,
-      cancelarClick,
       code
     } = params
 

@@ -80,9 +80,7 @@ class BalanceComponent extends Component {
   render(){
 
     const{
-      balance,
       current_amount,
-      lastAction,
       actionType,
       animation
     } = this.state

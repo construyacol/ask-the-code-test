@@ -1,10 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-// import './css/landing.css'
+import './css/landing.css'
 import { connect } from 'react-redux'
 import config from './default'
-import styles from './css/landing.css';
 
 import { bindActionCreators } from 'redux'
 // import actions from '../../actions'
@@ -90,7 +88,7 @@ class Landing extends React.Component {
   }
 
   render () {
-    
+
     const { ref_code } = this.state
 
     return (

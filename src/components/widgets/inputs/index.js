@@ -2,7 +2,6 @@ import React, { Fragment, Component } from 'react'
 import './inputStyles.css'
 import { number_format } from '../../../services'
 import { SimpleLoader } from '../loaders'
-import { BigNumber } from "bignumber.js"
 import IconSwitch from '../icons/iconSwitch'
 import Environtment from '../../../environment'
 
@@ -135,20 +134,15 @@ getOtherPairsSend = () =>{
 
 render(){
 
-const { clase,
+const {
   coin,
   secondary_value,
   placeholder,
-  getMaxAvailable,
-  puta,
   secondary_coin,
   solo_lectura,
   active,
   actualizarEstado,
   name,
-  account_type,
-  getOtherPairs,
-  loader,
   primary_value
 } = this.props
 
@@ -214,13 +208,12 @@ total_value
 
 
 export const InputFormCoin = (props) => {
-const { clase,
+const {
   saldoDisponible,
   coin,
   value,
   placeholder,
-  getMaxAvailable,
-  puta
+  getMaxAvailable
 } = props
 
 let movil_viewport = window.innerWidth < 768
@@ -278,10 +271,8 @@ render(){
     actualizar,
     handleKeyPress,
     value,
-    name,
-    status,
-    actives,
-    service } = this.props
+    name
+    } = this.props
 
     const {
       finalValue
@@ -320,7 +311,6 @@ export const InputCountryPrefix = (props) =>{
     open,
     update,
     clean_search_result,
-    _onFocus
   } = props
 
   // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
@@ -375,7 +365,6 @@ export const InputKycBasic = (props) =>{
   const {
     kyc,
     update,
-    message,
     handleSubmit,
     state,
     step,
@@ -474,9 +463,7 @@ export const InputKycBasic = (props) =>{
 export const InputCountry = (props) =>{
 
   const {
-    message,
     handleSubmit,
-    colorMessage,
     update_country,
     country_match,
     reset_data,

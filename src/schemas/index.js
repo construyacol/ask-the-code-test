@@ -1,6 +1,5 @@
 // import user_source from '../components/api'
 import { normalize, schema } from 'normalizr'
-import { connect } from 'react-redux'
 // const hola = this.props.user
 // const paymentMethod = new schema.Entity('payment_methods',{},{processStrategy: (value, parent, key) => ({ ...value, user_id:parent.id})}); //el proccessStrategy es opcional, lo utilice en modo ilustrativo para heredar el id del padre(user) a cada elemento
 

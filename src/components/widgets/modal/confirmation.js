@@ -4,10 +4,8 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { ButtonForms } from '../buttons/buttons'
 // import proof from '../../../assets/deletewallet.png'
-import PairList from '../../wallets/views/swap_pair_list'
 import SimpleLoader from '../loaders'
 import IconSwitch from '../icons/iconSwitch'
-import InputForm from '../inputs'
 
 import './modal.css'
 
@@ -39,7 +37,6 @@ class ConfirmationModal extends Component {
     // console.log('- - - - - ConfirmationModal - - - - -', this.state)
 
     const {
-      visible,
       title,
       description,
       txtPrimary,

@@ -3,12 +3,6 @@ import KycLayout from './kycLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-import { kyc } from '../api/ui/api.json'
-// import { countries } from '../api/ui/countries'
-
-import { objectToArray, add_index_to_root_object } from '../../services'
-import { serveKycData, converToInitState, extractSelectList } from '../../services'
-
 
 class Kyc extends Component {
 

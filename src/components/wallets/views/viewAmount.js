@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { ButtonForms } from '../../widgets/buttons/buttons'
-import ItemLayout from '../../widgets/items/itemLayout'
-import { SimpleLoader } from '../../widgets/loaders'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import { InputDepositForm } from '../../widgets/inputs'
 import { handleKeyPress, number_format, get_ui_name_currency } from '../../../services'

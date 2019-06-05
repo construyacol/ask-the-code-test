@@ -42,8 +42,6 @@ class BankAccountFlow extends Component{
   initComponent = async() =>{
 
     const {
-      user,
-      // provider_type
       withdraw_providers_list
     } = this.props
 
@@ -158,7 +156,7 @@ class BankAccountFlow extends Component{
                 }
 
                 <div id="bankChooseButton">
-                  <InputButton label="Continuar" type="primary" active={search.length==1}/>
+                  <InputButton label="Continuar" type="primary" active={search.length===1}/>
                 </div>
 
               </form>

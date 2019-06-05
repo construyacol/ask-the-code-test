@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import IconSwitch from '../../icons/iconSwitch'
 import InputForm from '../../inputs'
-import { ButtonForms } from '../../buttons/buttons'
-import AuthReq from './authreq'
 
 class PhoneView extends Component {
 

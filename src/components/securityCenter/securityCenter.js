@@ -6,16 +6,15 @@ import actions from '../../actions'
 import SimpleLoader from '../widgets/loaders'
 import { security_center } from '../api/ui/settings.json'
 import ItemSettingsInit from '../widgets/itemSettings/'
-import Scroll, { scroller } from 'react-scroll'
+import { scroller } from 'react-scroll'
 
 class SecurityCenter extends Component{
 
 
-  validate_state = () => {
-    const { user } = this.props
+  validate_state = async() => {
 
-    if(user.security_center.kyc.basic === 'rejected' || user.security_center.kyc.basic === 'confirmed'){
-      // this.props.action.AddNotification('security', null, 1)
+    let verification_state = await this.props.action.get_verification_state()
+    if(verification_state !== 'accepted'){
       scroller.scrollTo('firstInsideContainer', {
         offset:220,
         duration:1,
@@ -51,7 +50,6 @@ class SecurityCenter extends Component{
   render(){
 
     // console.log('SECURITY_CENTER::::', this.props)
-    const { item_active } = this.props
 
     return(
       <Fragment>

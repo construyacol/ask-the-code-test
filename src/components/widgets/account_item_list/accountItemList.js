@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import ActiveItem from '../items/active_item'
 import LimitTermometer from '../limitTermometer/limitTermometer'
-import { matchItem, number_format, mensaje } from '../../../services'
+import { number_format, mensaje } from '../../../services'
 
 import './account_item.css'
 
@@ -15,9 +15,6 @@ class AccountItemList extends Component {
 
 
   componentDidMount(){
-    const {
-      account
-    } = this.props
     // con el account.withdraw_provider_id consultaremos los campos del info_needed para mostrarlos en ui
     this.init_config()
   }

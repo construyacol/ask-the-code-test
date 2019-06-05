@@ -1,7 +1,7 @@
 import Environment from '../environment'
 import * as data_model_actions from './dataModelActions'
 import * as services from '../services'
-import { IncreaseStep, ReduceStep, ToggleModal } from './formActions'
+import { IncreaseStep, ReduceStep } from './formActions'
 import { toast } from 'react-toastify';
 import convertCurrencies from '../services/convert_currency'
 import moment from 'moment'
@@ -26,7 +26,6 @@ import * as normalizr_services from '../schemas'
 import {
   toast_sound,
   show_sound,
-  success_sound,
   add_coin_sound
 } from './soundActions'
 
@@ -43,7 +42,6 @@ import {
 import {
   current_section_params,
   pairs_for_account,
-  FlowAnimationUi,
   verification_state
   // new_fiat_deposit
  } from './uiActions'
@@ -63,7 +61,6 @@ UserPairs,
 Update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
-UpdatePendingSwap,
 ManageBalanceAction
 } = data_model_actions
 
@@ -108,8 +105,7 @@ return async(dispatch) => {
 
 
 const get_local_currency = country =>{
-  let value
-  return value = (
+  return (
     country === 'colombia' ? 'COP' :
     country === 'chile' ? 'CLP' :
     country === 'peru' ? 'PEN' :
@@ -219,9 +215,9 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
     res.Data.map(item => {
         let date_ago = moment().subtract(days, 'days').calendar()
-        days--
         price_date.push(date_ago)
         data_price.push(item.close)
+        return days--
     })
 
     return {
@@ -267,9 +263,6 @@ export const get_all_pairs = (token, country) =>{
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
     return normalize_pairs
-
-    return data
-
   }
 }
 
@@ -287,7 +280,6 @@ export const get_pairs_for = (country, user_collection) => {
 
     const url_pairs = `${ApiUrl}pairs?filter={"where": {"secondary_currency.currency": "${local_currency.toLowerCase()}"}}`
     const pairs = await ApiGetRequest(url_pairs)
-    console.log('111111 get_pairs_for', pairs)
 
     if(!pairs){return false}
     // Actualizo el estado con todas las cotizaciones disponibles en contra(secondary_currency) de la moneda local
@@ -413,7 +405,7 @@ export const get_this_pair = async(query) => {
 export const get_pair_default = (current_wallet, local_currency, current_pair) => {
   return async(dispatch) =>{
 
-    if(current_pair && current_pair.pair_id || !current_wallet){return false}
+    if((current_pair && current_pair.pair_id) || !current_wallet){return false}
     let currency = current_wallet.currency.currency
     let pair;
     // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
@@ -436,7 +428,7 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
 
 
     if(data){
-      const { to_spend_currency, want_to_spend } = data
+      const { to_spend_currency } = data
       return dispatch(pairs_for_account(current_wallet.id, {
           current_pair:{
             pair_id:pair_id,
@@ -522,8 +514,6 @@ export const ManageBalance = (account_id, action, amount) => {
 
     let list_user_balances = await normalize_user(user_update)
     await dispatch(Update_normalized_state(list_user_balances))
-
-    const { balances } = list_user_balances.entities
 
     dispatch(ManageBalanceAction(account_id, action, amount))
 
@@ -629,7 +619,7 @@ export const get_wallet_by_id = (wallet_id) =>{
     const wallet = await ApiGetRequest(url_wallet)
     // console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| get_wallet_by_id :', wallet)
 
-    if(wallet && wallet.length<1 || !wallet || wallet === 404){return false}
+    if((wallet && wallet.length<1) || !wallet || wallet === 404){return false}
 
     let deposit_provider=null
 
@@ -874,7 +864,7 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
 
 
     let item_result = await matchItem(array_list, {primary:search_by[search_by.name]}, search_by.name)
-    if(!item_result || item_result && item_result.length<1){return false}
+    if((!item_result || item_result) && item_result.length<1){return false}
 
     let new_item = {
       ...item_result[0],
@@ -885,7 +875,7 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
 
     await array_list.map(item => {
       if(item[search_by.name] === search_by[search_by.name]){return new_array_list.push(new_item)}
-      new_array_list.push(item)
+      return new_array_list.push(item)
     })
 
     let user_update = {
@@ -935,22 +925,21 @@ export const add_order_to = (prop, list, user, new_order) =>{
 }
 
 
-const charge_funds = props =>{
-
-  return async(dispatch) => {
-    const charge_funds_body = {
-        "data": {
-          "currency":"cop",
-          "amount":"10"
-        }
-    }
-
-
-    const url_charge_debug_funds = `${ApiUrl}accounts/charge-debug-funds`
-    let res = await ApiPostRequest(url_charge_debug_funds, charge_funds_body)
-  }
-
-}
+// const charge_funds = props =>{
+//
+//   return async(dispatch) => {
+//     const charge_funds_body = {
+//         "data": {
+//           "currency":"cop",
+//           "amount":"10"
+//         }
+//     }
+//
+//     const url_charge_debug_funds = `${ApiUrl}accounts/charge-debug-funds`
+//     await ApiPostRequest(url_charge_debug_funds, charge_funds_body)
+//   }
+//
+// }
 
 
 
@@ -1471,7 +1460,7 @@ export const get_withdraw_list = (user) =>{
         withdraw_proof:withdraw.withdraw_proof,
         created_at:withdraw.created_at,
       }
-      withdrawals_remodeled.push(new_withdraw)
+      return  withdrawals_remodeled.push(new_withdraw)
     })
 
     console.log('=====>   GET WITHDRAWALS ', withdrawals_remodeled)
@@ -1953,7 +1942,6 @@ export const user_verification_status = (level_request) =>{
 
     const { user, user_id } = store.getState().model_data
     const { advanced, basic, financial } = user[user_id].security_center.kyc
-    const { auth, transactional, withdraw } = user[user_id].security_center.authenticator
     let verified
 
 
@@ -1964,7 +1952,6 @@ export const user_verification_status = (level_request) =>{
       case 'level_2':
         verified = advanced === 'accepted' && basic === 'accepted' && financial === 'accepted'
         return verified
-        break;
       default:
         return false
     }
@@ -2089,7 +2076,6 @@ export const update_pending_activity = (account_id, activity_type, activity_list
 
   return async(dispatch) => {
 
-     const { user, user_id } = store.getState().model_data
       let current_wallet = store.getState().model_data.wallets[account_id]
 
       if(!current_wallet){

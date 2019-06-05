@@ -44,7 +44,7 @@ export class PairList extends Component {
     this.props.action.other_modal_toggle()
 
     if(data){
-      const { to_spend_currency, want_to_spend, pair_id } = data
+      const { to_spend_currency, pair_id } = data
       await this.props.action.pairs_for_account(current_wallet.id, {
           current_pair:{
             pair_id:pair_id,

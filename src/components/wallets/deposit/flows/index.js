@@ -1,12 +1,9 @@
 import React, { Fragment } from 'react'
 import { SimpleLoader } from '../../../widgets/loaders'
-import ItemLayout from '../../../widgets/items/itemLayout'
-import bancolombia from '../../../widgets/items/assets/bank/bancolombia.png'
 import ItemSelectionContainer from '../../../widgets/items/ItemSelectionContainer'
-import { InputDepositForm } from '../../../widgets/inputs'
 import { ButtonSuccess, ButtonForms, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
 import './flows.css'
-import { coins, payment_method, service_modes, cash_payment } from '../../../api/ui/api.json'
+import { service_modes, cash_payment } from '../../../api/ui/api.json'
 import proof from '../../../../assets/proof.png'
 import TicketDetail from '../../../widgets/ticket/ticketDetail'
 import ModalityView from '../views/modality'
@@ -19,13 +16,8 @@ import IconSwitch from '../../../widgets/icons/iconSwitch'
 export const TransferFlow = (props) => {
 
   const {
-    loader,
     deposit_way,
-    short_bank_name,
     deposit_service,
-    short_currency_name,
-    finalizar,
-    amount,
     step,
     actualizarEstado,
     update_control_form,
@@ -111,13 +103,9 @@ export const CashFlow = (props) => {
   // console.log('LAAAAAA NUEVA PROPIEDAD DE SERVICIOOOOOOOO------------------', props)
 
   const {
-    loader,
     deposit_way,
     short_bank_name,
     deposit_service,
-    short_currency_name,
-    finalizar,
-    amount,
     step,
     update_local_state,
     buttonActive,
@@ -171,14 +159,10 @@ const Success = (props) =>{
   const {
     loader,
     deposit_way,
-    short_bank_name,
     deposit_service,
-    short_currency_name,
     finalizar,
-    amount,
     final,
     finalButton,
-    guardarMetodo,
     step,
     new_ticket
   } = props

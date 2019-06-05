@@ -3,7 +3,6 @@ import { number_format } from '../../../services'
 import { PaymentConfirButton } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 import SimpleLoader from '../loaders'
 import SwapAnimation from '../swapAnimation/swapAnimation'
 
@@ -84,9 +83,7 @@ render(){
   // console.log('||||||||||||||||| -- - - -- WALLET INFO: ', this.props)
 
   const {
-    confirmPayment,
     newDepositStyle,
-    verTicket,
     ticket,
     loader,
     current_order_loader,
@@ -105,7 +102,6 @@ render(){
     state,
     id,
     amount,
-    cost,
     currency_type,
     type_order,
     spent,
@@ -127,9 +123,6 @@ render(){
     color:'#1babec'
   }
 
-  const {
-    stateSwap
-  } = this.state
 
   // cost lo tomamos como referencia para diferenciarlo como deposito
       const {

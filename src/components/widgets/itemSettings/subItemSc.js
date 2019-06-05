@@ -3,7 +3,6 @@ import { ButtonForms } from '../buttons/buttons'
 // import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 // import actions from '../../../actions'
-import { Email } from '../icons'
 import IconSwitch from '../icons/iconSwitch'
 import SimpleLoader from '../loaders'
 
@@ -53,7 +52,6 @@ class SubItemSC extends Component {
 
 
     const{
-      subItem,
       index,
       totalIndex,
       nextVerify,
@@ -73,7 +71,6 @@ class SubItemSC extends Component {
       available,
       treeButton,
       classic_view,
-      type,
       other_state
     } = this.state
 

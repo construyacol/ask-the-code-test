@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 // import { banks, coins } from '../../api/ui/api.json'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { toast, cssTransition } from 'react-toastify';
-import btc from '../../../assets/btc.png'
+import { toast } from 'react-toastify';
 import * as globalServices from '../../../services'
 import './deposit.css'
 import { SavePayment } from '../../widgets/toast/messages'
@@ -309,11 +308,9 @@ updateAmountOnState = async(amount) =>{
 
 
     const {
-      localCurrency,
       current_wallet,
       user,
       deposits,
-      action,
       deposit_providers
     } = this.props
 
@@ -321,8 +318,6 @@ updateAmountOnState = async(amount) =>{
       amount,
       cost_id,
       deposit_service,
-      account_id,
-      deposit_provider_list,
       short_bank_name
     } = this.state
 
@@ -521,7 +516,6 @@ updateAmountOnState = async(amount) =>{
     // console.log('::: __PROPIEDADES_DEPOSITO__ ::', this.props.user)
     // console.log('::: __ESTADO_DEPOSITO__ ::', this.state)
 
-    const{ deposit_provider_list } = this.state
     const { buttonActive, coins } = this.props
 
     // console.log('::: deposit_provider_list ::', deposit_provider_list)
@@ -561,7 +555,6 @@ function mapStateToProps(state, props){
     deposit_way,
     step,
     short_currency_name,
-    currency,
     type_currency,
     deposit_service,
     cost_id

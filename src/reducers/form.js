@@ -3,7 +3,6 @@ import {
    SEARCH_ITEM,
    UPDATE_FORM_CONTROL,
    UPDATE_FORM,
-   LOADER,
    MODAL_VIEW,
    TOGGLE_MODAL,
    CURRENT_FORM,
@@ -61,7 +60,6 @@ const initialState = {
         surname:"",
         owner_id:"",
         account_name:"",
-        bank_name:"",
         account_type:"",
         account_number:"",
         withdraw_way: "bankaccount",
@@ -154,7 +152,7 @@ const forms = (state = initialState, action) =>{
                         }
                       }
               default:
-                const {payload, step} = action
+                const { step } = action
                 let query_prop = `form_${action.payload}`
                 return {
                   ...state,
@@ -417,7 +415,6 @@ const forms = (state = initialState, action) =>{
                         }
           case SEARCH_ITEM:
               let result = []
-              let arreglo = action.tipos
                   action.items.filter((item)=>{
                                 let query = action.payload.query.toLowerCase()
                                 return item.name.toLowerCase().includes(query) && result.push(item)
@@ -458,6 +455,7 @@ const forms = (state = initialState, action) =>{
             }
           default:
             return state
+
     }
 }
 

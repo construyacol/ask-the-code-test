@@ -39,7 +39,6 @@ class WithdrawFlow extends Component {
     }
 
     componentWillReceiveProps({step}){
-      let lastStep = this.state.step
       this.setState({step})
     }
 
@@ -49,8 +48,7 @@ class WithdrawFlow extends Component {
           currency_type,
           country,
           withdraw_providers,
-          have_withdraw_accounts,
-          withdraw_account_list
+          have_withdraw_accounts
         } = this.props
 
         if(!have_withdraw_accounts){await this.setState({need_new_acount:true})}
@@ -61,7 +59,11 @@ class WithdrawFlow extends Component {
               provider.country === country &&
               provider.currency_type === currency_type &&
               provider.enabled
-            ){return available_providers.push(provider)}
+            ){
+              return available_providers.push(provider)
+            }
+
+            return false
         })
 
 
@@ -97,7 +99,6 @@ class WithdrawFlow extends Component {
 
       w_account_list.map(withdraw_account => {
         if(withdraw_account.currency_type === 'crypto'){return false}
-        let cost
         let plaza_type
         let provider_type = withdraw_account.provider_type
 
@@ -198,9 +199,6 @@ class WithdrawFlow extends Component {
 
       // return console.log('|||||| form_withdraw', this.props.form_withdraw, state_data)
 
-      const{
-        user
-      } = this.props
 
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       let res = await this.props.action.add_new_withdraw_order(amount, account_from, withdraw_provider, withdraw_account)
@@ -440,13 +438,11 @@ class WithdrawFlow extends Component {
     siguiente = (event) => {
 
       const{
-        step,
-        have_withdraw_accounts
+        step
       } = this.props
 
       const {
-        need_new_acount,
-        finish_step
+        need_new_acount
       } = this.state
 
       if(step === 1 && !need_new_acount){return this.setState({show_list_accounts:true})}
@@ -495,8 +491,7 @@ class WithdrawFlow extends Component {
       const {
         currency,
         available,
-        step,
-        withdraw_account_list
+        step
       } = this.props
 
       const{

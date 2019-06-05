@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 
 const CopyLayout = (props) => {
 
-  const { valor, copy, color, toast, max_width } = props
+  const { valor, copy, color, max_width } = props
 
   return(
     <Fragment>

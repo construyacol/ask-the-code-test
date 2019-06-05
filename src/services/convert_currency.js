@@ -72,7 +72,7 @@ import store from '../'
 
     objetive_data.pair_id = objetive_pair_instance.id;
 
-    if (to_spend_currency[0] == primary_objetive_currency[0]){
+    if (to_spend_currency[0] === primary_objetive_currency[0]){
       // console.log('Es una venta')
       // Es una venta
       data.want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.primary_currency);
