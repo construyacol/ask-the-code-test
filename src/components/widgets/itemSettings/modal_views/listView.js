@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { countries } from '../../../api/ui/settingList/country.json'
 import { currencies } from '../../../api/ui/settingList/currencies.json'
 import ItemListView from './listItemView'
@@ -82,7 +82,7 @@ class MVList extends Component {
     const {current_list} = this.state
 
     let result = await matchItem(current_list, {primary:value.toLowerCase()}, 'name', true)
-    if(!result || result && result.length>1 || result.length === 0){
+    if(!result || (result && result.length>1) || result.length === 0){
       this.unSelection()
     }
     if(result && result.length>0){
@@ -116,11 +116,13 @@ class MVList extends Component {
 
 
   visiblePosition = (result, current_list) =>{
+
     let new_array = []
+
     new_array.push(result)
     current_list.map((item)=>{
       if(item.id === result.id){return false}
-      new_array.push(item)
+      return new_array.push(item)
     })
     this.setState({
       current_list:new_array,
@@ -136,8 +138,6 @@ class MVList extends Component {
   render(){
 
     const {
-      type,
-      list,
       noIcon,
       noFindbar,
       theme,

@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import CreateReferralLink from './createReferralLink'
-import InputForm from '../widgets/inputs'
 import ReferralLinkShare from './referralLinkShare'
 import DashBoardReferralComponent from './dashboardReferral'
 
@@ -47,7 +46,7 @@ class ReferralComponent extends Component {
 
 
   render(){
-   const { user } = this.props
+    
    const { haveReferraLink, success_referral, referralLink } = this.state
 
     return(

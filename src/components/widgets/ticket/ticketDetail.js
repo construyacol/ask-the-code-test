@@ -1,17 +1,13 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import pending from '../../../assets/ticket/pending.png'
 import rejected from '../../../assets/ticket/warning.png'
-import rejected2 from '../../../assets/ticket/warning2.png'
 import canceled from '../../../assets/ticket/canceled.png'
 import confirmed from '../../../assets/ticket/confirmed.png'
 import { PaymentConfirButton } from '../buttons/buttons'
-import CopyContainer from '../copy/copyContainer'
-import { number_format, matchItem } from '../../../services'
+import { matchItem } from '../../../services'
 import ConfirmationCounter from './confirmationCounter'
-import IconSwitch from '../icons/iconSwitch'
 import ItemTicket from './itemTicket'
 
-import actions from '../../../actions'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 
@@ -29,54 +25,17 @@ class TicketDetail extends Component{
     confirmations,
     state,
     only_detail,
-    currency_type_bought,
     currency_type,
     type_order,
     total_confirmations
   } = this.props
 
   const {
-    step,
-    currency,
-    deposit_cost,
-    expiration_date,
-    id,
-    amount,
-    amount_neto,
-    proof_of_payment,
-    comment,
-    spent,
-    bought,
-    currency_bought,
-    action_price
+    comment
   } = ticket
 
   // console.log('|||||||||||||| - - -  ticket', ticket)
   // console.log('|||||||||||||| - - -  PROPIEDADES', this.props)
-
-
-  let fiatSimbol2 = currency_type_bought === 'fiat' ? '$' : ''
-  let fiatSimbol = currency_type === 'fiat' ? '$' : ''
-
-  let expiration = new Date(expiration_date)
-  let options = { year: 'numeric', month: 'long', day: 'numeric' };
-
-// console.log('|||||||||||||| DETALLE TICKET - - - - ', currency_type_bought)
-
-const atributos ={
-  icon:currency_bought,
-  size:18,
-  color:'#1babec'
-  // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`
-}
-
-const atributos2 ={
-  icon:currency && currency.currency,
-  size:20,
-  color:'#1babec'
-}
-
-  // console.log('|||||||||||||  detalle tickete', state)
 
   return(
         <div className={`TicketDetail ${clases}`}>

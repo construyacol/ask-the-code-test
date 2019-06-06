@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from 'react'
-import { Link } from 'react-router-dom'
 // import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -38,7 +37,6 @@ state = {
 
 
   actualizarEstado_coin = (e) =>{
-    let valor = e.target.value
       this.setState({
         value:e.target.value
       })
@@ -198,7 +196,7 @@ state = {
 render(){
 
 const { current_wallet, short_name, available, withdraw_provider, last_address  } = this.props
-const { value, address, active, addressVerify, show_last_address, address_value, verified } = this.state
+const { value, active, addressVerify, show_last_address, address_value, verified } = this.state
 // const { currency_type } = current_wallet
 let movil_viewport = window.innerWidth < 768
 
@@ -402,27 +400,30 @@ function mapStateToProps(state, props){
   // servir proveedores de retiros
   if(withdraw_providers){
   user[user_id].withdraw_providers.map((provider_id)=>{
+
     if(withdraw_providers[provider_id].currency_type !== 'crypto'){return false}
     if(withdraw_providers[provider_id].country !== user[user_id].country){return false}
-    wit_prov_list = {
+
+    return wit_prov_list = {
       ...wit_prov_list,
       [withdraw_providers[provider_id].provider_type]:{
         ...withdraw_providers[provider_id]
       }
     }
+
   })
 }
 
 let withdraw_list = []
 
 
-
 if(withdrawals && withdraw_accounts && current_wallet){
   user[user_id].withdrawals.map((withdraw_id)=>{
     // if(withdrawals[withdraw_id].account_id === current_wallet.id && withdrawals[withdraw_id].type_order === 'withdraw' && withdrawals[withdraw_id].state==='accepted')
     if(withdrawals[withdraw_id].account_id === current_wallet.id && withdrawals[withdraw_id].type_order === 'withdraw' && withdrawals[withdraw_id].state==='accepted'){
-      withdraw_list.push(withdrawals[withdraw_id])
+      return withdraw_list.push(withdrawals[withdraw_id])
     }
+    return false
   })
 }
 
@@ -432,12 +433,12 @@ let withdraw_account_list
 if(withdraw_accounts){
   user[user_id].withdraw_accounts.map((account_id)=>{
     if(withdraw_accounts[account_id].currency_type !== 'crypto'){return false}
-    withdraw_account_list = {
-      ...withdraw_account_list,
-      [withdraw_accounts[account_id].account_address.value]:{
-        ...withdraw_accounts[account_id]
+      return withdraw_account_list = {
+        ...withdraw_account_list,
+        [withdraw_accounts[account_id].account_address.value]:{
+          ...withdraw_accounts[account_id]
+        }
       }
-    }
   })
 }
 

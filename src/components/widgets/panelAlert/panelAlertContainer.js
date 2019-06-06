@@ -13,7 +13,7 @@ class PanelAlertContainer extends Component {
   state = {
     message:"",
     ctaText:"",
-    visible:true,
+    visible:false,
     background:'white'
   }
 

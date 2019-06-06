@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 // import { useWindowSize } from 'react-use'
 import Confetti from 'react-confetti'
 

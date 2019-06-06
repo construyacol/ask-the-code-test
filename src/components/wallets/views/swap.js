@@ -1,16 +1,13 @@
 import React, { Fragment, Component } from 'react'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import LoaderTrade from '../../widgets/loaders/loaderTrade'
-import { InputForm, InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
+import { InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
 import { ButtonForms } from '../../widgets/buttons/buttons'
-import { matchItem, number_format, mensaje } from '../../../services'
+import { matchItem, mensaje } from '../../../services'
 import convertCurrencies from '../../../services/convert_currency'
-
-import { BigNumber } from "bignumber.js"
 
 class SwapView extends Component{
 
@@ -167,7 +164,7 @@ class SwapView extends Component{
       current_pair
     } = this.props
 
-    const { secondary_coin, secondary_value, pair_id } = current_pair
+    const { secondary_coin } = current_pair
 
     let total_value = await this.get_total_value(value)
 
@@ -191,7 +188,7 @@ class SwapView extends Component{
 
   getOtherPairs = async(initial) => {
 
-    const { local_pairs, current_wallet, short_name, local_currency, currency_pairs } = this.props
+    const { current_wallet, currency_pairs } = this.props
 
     let currency = current_wallet && current_wallet.currency.currency
     let all_pairs = []
@@ -256,8 +253,8 @@ class SwapView extends Component{
 render(){
 
   const { current_wallet, short_name, loader, current_pair, available } = this.props
-  const { value, address, active } = this.state
-  const { secondary_coin, secondary_value, pair_id } = current_pair
+  const { value, active } = this.state
+  const { secondary_coin, secondary_value } = current_pair
   let movil_viewport = window.innerWidth < 768
 
   // console.log('|||||||||| SALDO DISPLONIBLE', typeof(available), current_pair)

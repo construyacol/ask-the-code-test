@@ -1,8 +1,7 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Slider from 'react-slick'
 import ItemLayout from '../../items/itemLayout'
 import './slide.css'
-let iter = 0
 
 export default class SliderComponent extends Component{
 

@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import IconSwitch from '../../icons/iconSwitch'
 import ActiveItem from '../../items/active_item'
 
@@ -42,7 +42,7 @@ itemSelect = () => {
       <div
         id={`${id}`}
         className={`ItemlistViewart ${parseInt(item_active) === parseInt(id) ? 'itemActiveListView' : ''} ${theme}`}
-        style={{gridTemplateColumns:noIcon ? '1fr' : '60px 1fr'}}
+        // style={{gridTemplateColumns:noIcon ? '1fr' : '60px 1fr'}}
         onClick={this.itemSelect}
         style={{gridTemplateColumns:noIcon ? '1fr 90px': '60px 1fr 90px'}}
         >

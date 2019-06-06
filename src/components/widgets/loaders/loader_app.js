@@ -1,9 +1,7 @@
-import React, { Component, Fragment } from 'react'
-import SimpleLoader from './'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { InputCountry } from '../inputs'
 import SelectCountry from '../maps/select_country/select_country'
 import Coinsenda from '../icons/logos/coinsenda.js'
 import IconSwitch from '../icons/iconSwitch'
@@ -157,8 +155,9 @@ class LoaderAplication extends Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.app_load_label !== this.props.app_load_label){
+      let progressBarWidth = this.state.progressBarWidth
       this.setState({
-        progressBarWidth: this.state.progressBarWidth += 8
+        progressBarWidth: progressBarWidth+= 8
       })
     }
   }
@@ -186,9 +185,7 @@ class LoaderAplication extends Component {
   render(){
 
     const{
-      app_load_label,
-      loader,
-      user
+      app_load_label
     } = this.props
 
     const{

@@ -19,21 +19,20 @@ export const mensaje = async(msg, type, position) =>{
 
 
 export const ticketModalView = (state) =>{
-  let view
 
   switch (state) {
     case 'pending':
-        return view = "pendingView"
+        return "pendingView"
     case 'accepted':
-        return view = "modalSuccess"
+        return "modalSuccess"
     case 'canceled':
-        return view = "badView"
+        return "badView"
     case 'rejected':
-        return view = "rejectedView"
+        return "rejectedView"
     case 'confirmed':
-        return view = "confirmedView"
-      break;
+        return "confirmedView"
     default:
+      break;
   }
 }
 
@@ -167,7 +166,6 @@ export const extractSelectList = async(kyc_array, kyc_object) => {
     await kyc_array.map(async(item) =>{
       if(item.ui_type === 'select' && item.name !== "nationality"){
         let _this_array=[]
-        let items_object
         let id = 1
           await Object.keys(kyc_object[item.name]).forEach((indx) => {
             if(indx === 'ui_name' || indx === 'ui_type'){return false}
@@ -252,7 +250,7 @@ export const withdraw_provider_by_type = async(withdraw_providers) => {
   let providers_served
 
   await withdraw_providers.map(provider => {
-    providers_served = {
+    return providers_served = {
       ...providers_served,
       [provider.provider_type]:provider
     }
@@ -306,10 +304,8 @@ export const matchItem = (list, itemReview, type, all_results) => {
 export const handleKeyPress = (e, current) => {
   var keynum = window.event ? window.event.keyCode : e.which;
   // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
-   let message = ""
-
     if (keynum<48 || keynum>57){
-      return message = "Solo se aceptan numeros en este campo"
+      return "Solo se aceptan numeros en este campo"
     }
     return /\d/.test(String.fromCharCode(keynum));
 }
@@ -318,13 +314,13 @@ export const handleKeyPress = (e, current) => {
 
 export const number_format = (amount) => {
     amount += ''; // por si pasan un numero en vez de un string
-    amount = parseFloat(amount.replace(/[^0-9\.]/g, '')); // elimino cualquier cosa que no sea numero o punto
+    amount = parseFloat(amount.replace(/[^0-9]/g, '')); // elimino cualquier cosa que no sea numero o punto
     amount = '' + amount.toFixed(0);
 
     var amount_parts = amount.split('.'),
         regexp = /(\d+)(\d{3})/;
     while (regexp.test(amount_parts[0]))
-        amount_parts[0] = amount_parts[0].replace(regexp, '$1' + ',' + '$2');
+        amount_parts[0] = amount_parts[0].replace(regexp, '$1,$2');
     return amount_parts.join('.');
 }
 
@@ -345,11 +341,8 @@ export const readFile = (file) => {
 export const serve_activity_list = async(get_list, data_user, current_wallet, filter, wallets) =>{
 
   // other_call - será false cuando lo llamamos al iniciar el componenete, y true cuando lo llamamos desde otro metodo accionado por el usuario ej. ActivityList
-  let normalizeData = await get_list(data_user, wallets)
+  await get_list(data_user, wallets)
 
-  const {
-    user
-  } = normalizeData.entities
   // console.log('||||||||||||||||||||||| °°°°°° normalizeData:::', normalizeData)
 
   let list = await serve_orders(current_wallet && current_wallet.id, filter)
@@ -379,20 +372,20 @@ export const serve_orders = async(account_id, filter) =>{
   if(filter === 'swaps' && account_id){
     indices.map((id) => {
       // if(!list[id].account_id){return false}
-       (list[id].account_id === account_id || list[id].account_to === account_id) && new_array.push(list[id])
+       return (list[id].account_id === account_id || list[id].account_to === account_id) && new_array.push(list[id])
     })
   }
 
   if(filter !== 'swaps' && account_id){
     indices.map((id) => {
       // if(!list[id].account_id){return false}
-       (list[id].account_id === account_id) && new_array.push(list[id])
+       return (list[id].account_id === account_id) && new_array.push(list[id])
     })
   }
 
   if(!account_id){
     indices.map((id) => {
-       new_array.push(list[id])
+       return new_array.push(list[id])
     })
   }
 

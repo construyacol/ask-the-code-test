@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react'
-import { Medal, Errors } from '../icons'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
@@ -75,9 +74,7 @@ class ScoresComponent extends Component {
 
   render(){
 
-    const { advanced, basic, financial  } = this.props.user.security_center.kyc
     const { level_progress_width, level, stars, message } = this.state
-    const { verification_level } = this.props.user
     const { verification_state } = this.props
 
 

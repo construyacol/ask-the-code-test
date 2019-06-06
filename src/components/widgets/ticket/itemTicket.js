@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import CopyContainer from '../copy/copyContainer'
 
@@ -8,12 +8,10 @@ const ItemTicket = payload => {
     ui_name,
     value,
     icon,
-    type,
     copy,
     url_explorer
   } = payload
 
-  console.log('||||||| ITEM ticket ', payload)
 
   return(
     <div className="TicketDetailItem">
@@ -39,7 +37,7 @@ const ItemTicket = payload => {
         }
         {
           url_explorer &&
-          <a href={`${url_explorer}/tx/${value}`} target="_blank" className="explorerBlock copy tooltip" >
+          <a href={`${url_explorer}/tx/${value}`} target="_blank" className="explorerBlock copy tooltip" rel="noopener noreferrer">
             <IconSwitch
               icon="arrow_right"
               size={20}

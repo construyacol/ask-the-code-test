@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { ButtonForms } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
 import { withRouter } from "react-router"
@@ -55,7 +55,7 @@ class UnverifiedComponent extends Component {
         </div>
           <p className="fuente">
 
-            {state_verification == 'rejected' ?
+            {state_verification === 'rejected' ?
              '¡Vaya!, al parecer tus datos han sido rechazados, completa nuevamente el proceso de verificación...' :
              state_verification !== 'confirmed' ?
              'Debes completar el proceso de verificación avanzado para poder operar en coinsenda.' :

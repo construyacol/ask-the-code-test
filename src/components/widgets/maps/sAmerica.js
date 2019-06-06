@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import SimpleLoader from '../loaders'
 
 import * as d3 from 'd3'

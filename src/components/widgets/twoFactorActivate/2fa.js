@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import QRCode from 'qrcode'
-import { InputFormAuth } from '../inputs'
 import AuthReq from '../itemSettings/modal_views/authreq'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'

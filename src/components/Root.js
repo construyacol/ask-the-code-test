@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import HomeContainer from './home/homeContainer'
 import { Router, Route, Switch } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
@@ -32,11 +32,12 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJST0ZnVWZsbmt5SDI3QW9USVM1N0xoR3FYNEhMNFA3R05wZjR6S3VlaFFsSWNLZFpmUlVHVWQ2VFd1Yk5VNWd2IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTk3NjY4MjcsImV4cCI6MTU1OTc3NzYyN30.6vZl63-cwooYUj7B4njTWsQmbScdIBMYTT73s0NAAeOq7SkgsruLOJZN0mvzJb899UvUE_Jjeo38GRt2bw_j2Q'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJCWlgyRXoxZHkybllMdTE5UEdHOHBERjJIU3RYUVd2dzhZZWxhd3c4MUQ3cjhVS3RxdmRlQUd2NHFpMHN1VmZwIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NTk3ODI5MTYsImV4cCI6MTU1OTc5MzcxNn0.gGanZaOGq95sacamhKsL7fbhA26hdAWRHgGC7L6Y7zYqdE6khqbiwMyYfHa7X9fTkv-1Xud4yLcBtCLJ5EXzEw'
 
     this.setState({
       TokenUser:AccessToken
     })
+
   }
 
   logOut = async() =>{
@@ -47,7 +48,6 @@ class RootContainer extends Component {
 
   render(){
 
-    const { store } = this.props
     const { TokenUser } = this.state
 
     return(

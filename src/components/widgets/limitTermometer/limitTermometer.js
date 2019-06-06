@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 
 import './termo.css'
@@ -23,13 +23,9 @@ class LimitTermometer extends Component {
   render(){
 
     const {
-      amount,
-      max_amount,
       limit,
       orders
     } = this.props
-
-
 
     return(
       <section className="LimitTermometer">

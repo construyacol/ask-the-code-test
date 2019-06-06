@@ -1,6 +1,4 @@
 import React, { Fragment, Component } from 'react'
-import { Link } from 'react-router-dom'
-// import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -31,11 +29,11 @@ class DepositView extends Component{
       await this.setState({verified})
 
       await this.props.initial(this.props.match.params.path, this.props.match.params.id)
-      const { current_wallet, local_currency, current_pair } = this.props
+      const { current_wallet } = this.props
       if(!current_wallet){return this.props.action.section_view_to('initial')} //Este caso ocurre cuando la url apunta al detalle de la cuenta pero si el estado de verificación del usuario es rejected o pending redireccióna a /security
       // if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
       if(current_wallet.currency_type === 'fiat'){this.setState({fiat_currency: true})}
-      if(current_wallet && current_wallet.dep_prov.length<1 || !current_wallet || !current_wallet.deposit_provider){return false}
+      if((current_wallet && current_wallet.dep_prov.length<1) || !current_wallet || !current_wallet.deposit_provider){return false}
       let address = this.props.current_wallet.deposit_provider.provider.account.account_id
       const { account_id } = address
       let qr = await QRCode.toDataURL(account_id)
@@ -90,7 +88,7 @@ render(){
       <section className="contAddress">
         <p id="soloAd2" className="fuente title soloAd2">Importante:</p>
         <p className="fuente soloAd">Envía solo {current_wallet.currency.currency} a esta Billetera. El envío de cualquier otra moneda a esta dirección puede resultar en la pérdida de su depósito. </p>
-        <img id="qrDesposit" className="itemFuera" src={qr} />
+        <img id="qrDesposit" className="itemFuera" src={qr} alt="" />
         <p className="fuente title dirDep">Dirección de deposito:</p>
         <div className="fuente address">
           <CopyContainer

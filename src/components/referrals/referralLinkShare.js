@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import CopyContainer from '../widgets/copy/copyContainer'
 
 
@@ -60,7 +60,7 @@ class ReferralLinkShare extends Component {
         <div className="buttonsReferralShare fuente">
           {/* BOTON FACEBOOK */}
           <div className='element1Ref' data-href="https://www.coinsenda.com/">
-            <a className="fb-share-button"
+            <a className="fb-share-button" alt="" href={referralLink}
               data-href={referralLink}
               data-layout="button_count">
             </a>
@@ -69,7 +69,7 @@ class ReferralLinkShare extends Component {
           </div>
 
           {/* BOTON TWITTER */}
-          <a className={`element1Ref`} href={`https://twitter.com/intent/tweet?text=${twitter_text}&url=${referralLink}`} target="_blank">
+          <a className={`element1Ref`} href={`https://twitter.com/intent/tweet?text=${twitter_text}&url=${referralLink}`} target="_blank" rel="noopener noreferrer">
             <i className="fab fa-twitter"></i>
             <p className="fuente">Twittear</p>
           </a>
@@ -99,12 +99,11 @@ const ShareElement = props => {
   const {
     cta,
     icon,
-    link,
     active
   } = props
 
   return(
-    <a className={`element1Ref ${active ? 'activo' : 'desactive'}`} >
+    <a className={`element1Ref ${active ? 'activo' : 'desactive'}`} href="#">
       <i className={icon}></i>
       <p className="fuente">{cta}</p>
     </a>

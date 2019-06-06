@@ -26,11 +26,9 @@ import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
 import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
-import { serve_orders } from '../../services'
 
 
 const {
-   ApiUrl,
    SocketUrl
 } = Environtment
 

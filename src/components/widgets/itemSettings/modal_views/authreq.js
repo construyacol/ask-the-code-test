@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { InputFormAuth } from '../../inputs'
-import SimpleLoader from '../../loaders'
 
 import './viewSettings.css'
 
@@ -99,7 +98,6 @@ ok_auth = () =>{
       buttonActive,
       loader,
       status,
-      verifying,
       error,
       value,
       desaparecer

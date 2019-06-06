@@ -25,9 +25,9 @@ class detailContainerLayout extends Component{
 
 render(){
 
-  const { items_menu, title, current_section, current_wallet, item_active, current_item } = this.props
+  const { items_menu, title, current_section, current_wallet, current_item } = this.props
   const { view, params } = current_section
-  const { activity, current_sub_section } = params
+  const { current_sub_section } = params
   let movil_viewport = window.innerWidth < 768
   // console.log('|||||||||| °°°°°  DetailContainer  °°°°°||||||||||', this.props)
 

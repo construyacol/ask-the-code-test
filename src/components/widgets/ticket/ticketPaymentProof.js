@@ -1,10 +1,9 @@
-import React, { Fragment, Component} from 'react'
+import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { readFile } from '../../../services'
 import CropImg from '../../widgets/cropimg'
-import { toast, cssTransition } from 'react-toastify';
 import SimpleLoader from '../../widgets/loaders'
 import imgTikcketDefault from '../../../assets/ticketdefault.png'
 // import imgTikcketDefault from '../../../assets/ticketdefault2.png'
@@ -58,19 +57,14 @@ updateLocalImg = (img) =>{
   subirImg = async(img) =>{
 
     const{
-      urlImg,
       base64
     } = img
 
     const {
       ticket,
-      user,
       deposit_list
     } = this.props
 
-    const {
-      id
-    } = ticket
 
     this.props.action.Loader(true)
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
@@ -122,9 +116,7 @@ render(){
   } = this.props
 
   const {
-    state,
-    step,
-    comment
+    step
   } = ticket
 
   const{

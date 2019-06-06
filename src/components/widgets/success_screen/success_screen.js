@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import { Medal } from '../icons'
 import { ButtonForms } from '../buttons/buttons.js'
 import ConfettiComponent from './confetti'
@@ -12,7 +12,6 @@ const SuccessComponentScreen = props => {
       exit,
       siguiente,
       confetti,
-      cta_primary,
       cta_primary_text,
       cta_secondary,
       title,

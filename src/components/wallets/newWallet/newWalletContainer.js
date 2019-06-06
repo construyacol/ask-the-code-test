@@ -26,7 +26,7 @@ class NewWallet extends Component{
             this.props.action.UpdateFormControl('wallet', false)
       }
 
-      if (this.state.name !== "" && this.props.search.length==1) {
+      if (this.state.name !== "" && this.props.search.length===1) {
         // Valido si hay una coincidencia en la busqueda y un nombre para el item que se esta creando, doy luz verde para continuar hacia el siguiente paso del formulario
         this.props.action.UpdateFormControl('wallet', true)
       }

@@ -1,12 +1,10 @@
 import React, { Fragment, Component } from 'react'
-import { Link } from 'react-router-dom'
-// import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import ActivityList from '../../widgets/activityList'
-import Scroll, { scroller } from 'react-scroll'
+import { scroller } from 'react-scroll'
 
 
 class ActivityView extends Component{
@@ -43,8 +41,6 @@ render(){
   const {
     current_wallet,
     wallets,
-    deposits,
-    swaps,
     all_pairs
   } = this.props
 

@@ -1732,8 +1732,6 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
-
-
     // console.log('||||||  - - -.  --  country_object', country[0])
 
     let kyc_personal = country[0].levels && country[0].levels.personal

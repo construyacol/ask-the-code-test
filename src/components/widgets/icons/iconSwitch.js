@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import './icons.css'
 import Coinsenda from './logos/coinsenda'
 import BancoBogota from './logos/bancoBogota'
@@ -14,7 +14,6 @@ import {
   Swap,
   Send,
   World,
-  Bitcoin,
   Bitcoin2,
   Phone,
   Currency,
@@ -116,7 +115,6 @@ class IconSwitch extends Component {
         return <Phone {...props} />
       case 'pass':
         return <Finger {...props} />
-      case 'accepted':
       case 'success':
         return <Success {...props} />
       case 'bitcoin':

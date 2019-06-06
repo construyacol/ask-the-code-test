@@ -1,16 +1,16 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import ItemSettings from './itemSettings'
 
-const country = [
-  "colombia",
-  "chile",
-  "peru",
-  "republica dominicana",
-  "argentina"
-]
+// const country = [
+//   "colombia",
+//   "chile",
+//   "peru",
+//   "republica dominicana",
+//   "argentina"
+// ]
 
 
 
@@ -19,8 +19,8 @@ class ItemSettingsInit extends Component{
 
     item_action = async(item) =>{
 
-      const { user, advace_global_step } = this.props
-      const { authenticator, kyc } = user.security_center
+      const { user } = this.props
+      const { authenticator } = user.security_center
       const { phone } = user.settings
       const { name, other_state } = item
 
@@ -131,6 +131,7 @@ class ItemSettingsInit extends Component{
     }
 
     update_state = async(payload) =>{
+      
       const{
         name,
         description
@@ -145,8 +146,7 @@ class ItemSettingsInit extends Component{
       } = user
 
       const {
-        kyc,
-        authenticator
+        kyc
       } = security_center
 
       const{

@@ -267,7 +267,7 @@ const ui = (state = initialState, action)=>{
       // console.log('-----MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE-----', action.payload )
 
         let isActive = action.payload
-        if(action.payload.indexOf('/') != -1){
+        if(action.payload.indexOf('/') !== -1){
           isActive = action.payload.substr(1)
         }
 

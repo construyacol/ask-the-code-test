@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Environtment from '../../../environment'
 const { CountryUrl } = Environtment
 
@@ -16,8 +16,7 @@ class ItemListKycBasic extends Component {
 
     const {
       name,
-      flag,
-      prefix
+      flag
      } = item
 
     // console.log('ItemListKycBasic', item)

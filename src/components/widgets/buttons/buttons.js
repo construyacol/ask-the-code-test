@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PopNotification from '../notifications'
 import IconSwitch from '../icons/iconSwitch'
@@ -189,7 +189,7 @@ export const PaymentConfirButton = (props) => {
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // Siguiente: evento a enlazar el boton
 
-  const { clases, id, label, type, cenVert, siguiente } = props
+  const { clases, label, type, cenVert, siguiente } = props
 
   return(
     <div className={`contButton ${clases}`} id={`ALconfirmButton`}>

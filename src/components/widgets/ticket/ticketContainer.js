@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -16,7 +16,6 @@ class TicketContainer extends Component {
     current_ticket:null,
     handleError:false,
     confirmations:0,
-    total_confirmations:null,
     total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency].confirmations,
     current_ticket_state:this.props.ticket && this.props.ticket.state,
     type_order:this.props.ticket && this.props.ticket.type_order,
@@ -34,7 +33,7 @@ class TicketContainer extends Component {
 
     // console.log('||||||||| - - CURRENCIES', currencies[ticket.currency.currency].confirmations )
 
-    if(ticket && ticket.state !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
+    if((ticket && ticket.state) !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
 
     let confirm = setInterval(async()=>{
 
@@ -149,8 +148,6 @@ class TicketContainer extends Component {
           }else{
 
             let {
-              withdraw_accounts,
-              withdraw_providers,
               currencies
             } = this.props
 
@@ -224,7 +221,7 @@ class TicketContainer extends Component {
                 currencies
               } = this.props
 
-            if(ticket.currency_type == 'crypto'){
+            if(ticket.currency_type === 'crypto'){
               return this.setState({
                 current_ticket:[
                   {
@@ -364,7 +361,6 @@ class TicketContainer extends Component {
               id:7
             }
           ]})
-
         default:
           return this.setState({current_ticket:ticket})
       }
@@ -386,15 +382,9 @@ class TicketContainer extends Component {
 
 
   update_ticket = async ticket => {
-
     const {
       current_form
     } = this.props
-
-    const {
-      current_ticket
-    } = this.state
-
 
     await this.setState({
       // current_ticket:this.ticket_serve(ticket),
@@ -415,7 +405,6 @@ class TicketContainer extends Component {
   render(){
 
     const {
-      state,
       step
     } = this.props.ticket
 
@@ -439,13 +428,13 @@ class TicketContainer extends Component {
 
     return(
       <section className="TicketContainer" >
-        <section className={`smartContainer ${step != 1 ? 'ticketStep2Border' : '' }`}>
+        <section className={`smartContainer ${step !== 1 ? 'ticketStep2Border' : '' }`}>
           <div className={`ticketSlide`} style={{transform:step === 1 ? 'translateX(0%)' : 'translateX(-50%)' }}>
 
           {
             current_ticket ?
             <TicketDetail
-              clases={`${step != 1 ? 'desaparecer' : '' }`}
+              clases={`${step !== 1 ? 'desaparecer' : '' }`}
               ticket={current_ticket}
               type_order={type_order}
               state={current_ticket_state}
@@ -461,7 +450,7 @@ class TicketContainer extends Component {
           }
 
             <TicketPaymentProof
-              clases={`${step != 1 ? 'aparecer' : '' }`}
+              clases={`${step !== 1 ? 'aparecer' : '' }`}
               ticket={this.props.ticket}
               update_ticket={this.update_ticket}
             />
@@ -499,7 +488,7 @@ function mapStateToProps(state, props){
 
   if(currencies && current_wallet.currency_type === 'crypto'){
     currencies.map(currency=>{
-      currency_list = {
+      return currency_list = {
         ...currency_list,
         [currency.currency]:{
           ...currency

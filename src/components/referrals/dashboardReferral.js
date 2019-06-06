@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import IconSwitch from '../widgets/icons/iconSwitch'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 
