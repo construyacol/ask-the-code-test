@@ -120,7 +120,6 @@ class KycBasicContainer extends Component {
 
   update = async({target}) => {
     const { name, value } = target
-    const { step } = this.props
     const { ui_type } = this.state
     // console.log('TYPING', name, value, ui_type)
     let new_value = null
@@ -149,7 +148,7 @@ class KycBasicContainer extends Component {
       this.setState({current_search:null})
     }
     // const {  } = this.props
-    const { current_item, select_list } = this.state
+    const { select_list } = this.state
     let res = await matchItem(select_list[name === 'country_prefix' || name === 'nationality' ? 'countries' : name ], {primary:value}, 'code')
     // console.log('||||||matchList', value, name, res)
     if(!res){return false}
@@ -315,7 +314,9 @@ shouldComponentUpdate(nextProps, nextState){
 
 
   select_item = async(item) =>{
-    const { current_item, ui_type } = this.state
+
+    const { current_item } = this.state
+
     let body = {
       target:{
         name:current_item,
@@ -333,8 +334,6 @@ shouldComponentUpdate(nextProps, nextState){
       this.setState({open_sect:false})
     }, 250)
 
-    // console.log('|||||select_item in KYC CONTAINER - - ', body, this.state)
-
   }
 
 
@@ -342,7 +341,7 @@ shouldComponentUpdate(nextProps, nextState){
   render(){
     // console.log('P R O P S - -   K Y C', this.props)
     // console.log('|||E S T A D O - -   K Y C', this.state)
-    const { open_sect, search_result, data_state, ui_type, current_item, current_search, kyc_data_basic, show_hide_section } = this.state
+    const { open_sect, data_state, ui_type, current_item, current_search, kyc_data_basic, show_hide_section } = this.state
     const { step  } = this.props
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
@@ -391,7 +390,7 @@ shouldComponentUpdate(nextProps, nextState){
                   </div>
                 }
                 {
-                  (ui_type === 'select' || ui_type === 'phone' && !current_search) &&
+                  ((ui_type === 'select' || ui_type === 'phone') && !current_search) &&
                   <div className="contCountryList">
                     {
                       this.state.select_list[(current_item === 'phone' || current_item === 'nationality') ? 'countries' : current_item].map(item => {

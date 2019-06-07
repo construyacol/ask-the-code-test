@@ -434,6 +434,18 @@ circle{
 @media only screen and (max-width: 768px) {
 
 
+
+  .contenido.referral{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .referralCont{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+
   .UnverifiedComponent p{
     font-size: 14px !important;
   }
@@ -598,8 +610,6 @@ circle{
   .ticketHeader .iconSty{
     display: none !important;
   }
-
-
 
   .containerFormWallet form{
     grid-template-rows: 1fr 15vh !important;

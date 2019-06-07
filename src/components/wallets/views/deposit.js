@@ -31,6 +31,7 @@ class DepositView extends Component{
       await this.props.initial(this.props.match.params.path, this.props.match.params.id)
       const { current_wallet } = this.props
       if(!current_wallet){return this.props.action.section_view_to('initial')} //Este caso ocurre cuando la url apunta al detalle de la cuenta pero si el estado de verificación del usuario es rejected o pending redireccióna a /security
+
       // if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
       if(current_wallet.currency_type === 'fiat'){this.setState({fiat_currency: true})}
       if((current_wallet && current_wallet.dep_prov.length<1) || !current_wallet || !current_wallet.deposit_provider){return false}

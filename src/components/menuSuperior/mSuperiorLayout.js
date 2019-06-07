@@ -67,7 +67,12 @@ const MenuSuperiorLayout = (props) =>{
 
               {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
               <div className="itemSup"><i className="fas fa-bell"></i></div> */}
-              <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
+
+              {
+                window.innerWidth>768 &&
+                <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
+              }
+
             </div>
             :
             <div className="loggedInFalse">

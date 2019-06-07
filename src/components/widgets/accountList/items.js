@@ -132,7 +132,6 @@ componentDidMount(){
 
     // console.log('||||||||°°°°°CURRENT_WALLET_BALANCE', this.props.balance)
 
-
     const {
       wallet,
       current,
@@ -154,10 +153,7 @@ componentDidMount(){
       address
     } = wallet
 
-
-
     let id_trigger = id_wallet_action === id && true
-
    // console.log('|||||||||||| - - - - - este es el estado de la wallet - - - ', wallet, inscribed)
 
     return(
@@ -169,8 +165,8 @@ componentDidMount(){
                 className={` ${wallet_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : type === 'withdraw' && !inscribed ? 'NoInscribed' : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
                 // className={`ItemWallet ${currency.currency}`}
                 >
-                  <a className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail}></a>
-                  <div className={`ItemBarra ${type} ${(current_view === 'detail' || type === 'withdraw' && !inscribed) ? 'noVisible' : ''}`} >
+                  <a className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail} href="#"></a>
+                  <div className={`ItemBarra ${type} ${(current_view === 'detail' || (type === 'withdraw' && !inscribed)) ? 'noVisible' : ''}`} >
 
                     <div className={`ItemBarraI ${type === 'withdraw' ? 'noVisible' : ''}`}>
                       <i className="far fa-arrow-alt-circle-up IRetiro IdeleteButton tooltip" onClick={this.withdraw}>

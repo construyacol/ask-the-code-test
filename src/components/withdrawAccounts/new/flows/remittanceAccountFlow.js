@@ -8,7 +8,6 @@ class RemittanceAccountFlow extends Component {
 
 
   render(){
-console.log('||||||| info RemittanceAccountFlow', this.props)
 
     const {
       update_control_form,
@@ -16,9 +15,7 @@ console.log('||||||| info RemittanceAccountFlow', this.props)
       actualizarEstado,
       account_name,
       bank_name,
-      step,
-      search,
-      name
+      search
     } = this.props
 
 
@@ -34,7 +31,7 @@ console.log('||||||| info RemittanceAccountFlow', this.props)
               placeholder="Ej. Cuenta de pagos mensuales"
               name="account_name"
               actualizarEstado={actualizarEstado}
-              active={search.length==1 && account_name}
+              active={search.length===1 && account_name}
               value={account_name}
             />
             <ItemSelectionContainer
@@ -45,7 +42,7 @@ console.log('||||||| info RemittanceAccountFlow', this.props)
                 handleSubmit={handleSubmit}
                 update_control_form={update_control_form}
               />
-            <InputButton label="Continuar" type="primary" active={search.length==1 && account_name}/>
+            <InputButton label="Continuar" type="primary" active={search.length===1 && account_name}/>
           </form>
         </div>
       </Fragment>

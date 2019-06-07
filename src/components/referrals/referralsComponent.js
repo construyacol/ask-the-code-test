@@ -46,7 +46,7 @@ class ReferralComponent extends Component {
 
 
   render(){
-    
+
    const { haveReferraLink, success_referral, referralLink } = this.state
 
     return(
@@ -56,6 +56,10 @@ class ReferralComponent extends Component {
         >
         <div className="referralCont">
             <div className="textReferral">
+              {
+                window.innerWidth < 768 &&
+                <p className="fuente titleReferr">Referidos</p>
+              }
               <p className="fuente titleReferr">¡Invita amigos y gana!</p>
               <p className="fuente parraFerrer">Por cada amigo que se registre con tu link de referido ganas el 0.5% de todas las operaciones de compra y venta que tu amigo realice.</p>
             </div>

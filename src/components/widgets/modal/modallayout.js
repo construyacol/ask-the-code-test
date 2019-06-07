@@ -135,7 +135,7 @@ render(){
 
 function mapStateToProps(state, props){
   // console.log('modal_LAYOUT STATE::::', state)
-  const { current, form_wallet, form_bank, form_deposit, form_kyc_basic } = state.form
+  const { current } = state.form
   const steped = (
     current === 'wallets' ?  `form_wallet` :
     current === 'kyc_advance' ? 'form_kyc_basic' :

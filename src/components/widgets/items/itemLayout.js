@@ -8,8 +8,7 @@ class ItemLayout extends Component {
           name,
           code,
           currency_type,
-          pair_id,
-          id
+          pair_id
         } = this.props
 
          this.props.actualizarEstado(name, code, currency_type, pair_id)

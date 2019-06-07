@@ -12,11 +12,9 @@ const KycAvancedLayout = (props) =>{
   const {
     dashboard,
     fileloader,
-    goFileLoader,
     onBoarding,
     continuar,
     topOnBoarding,
-    imageSrc,
     loader,
     step,
     kyc_success,

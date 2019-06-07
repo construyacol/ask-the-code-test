@@ -6,19 +6,19 @@ import { ButtonForms } from '../buttons/buttons'
 import Cropper from 'react-easy-crop'
 import './styles.css'
 
+const minZoom = 0.4
+
+
 class CropImg extends React.Component {
+
   state = {
     imageSrc: null,
     crop: { x: 0, y: 0 },
-    zoom: 1,
+    zoom: minZoom,
     aspect: 4 / 3,
     croppedAreaPixels: null,
     croppedImage: null,
   }
-
-
-
-
 
 
   onCropChange = crop => {
@@ -31,7 +31,20 @@ class CropImg extends React.Component {
   }
 
   onZoomChange = zoom => {
-    this.setState({ zoom })
+
+    let current_zoom = this.state.zoom
+
+    if(zoom>current_zoom && zoom<=3){
+      current_zoom += 0.06
+    }else{
+      current_zoom = zoom
+    }
+
+    // if(zoom<current_zoom){
+    //   current_zoom -= 0.06
+    // }
+
+    this.setState({ zoom:current_zoom })
   }
 
   // onFileChange = async e => {
@@ -88,6 +101,7 @@ class CropImg extends React.Component {
           <Fragment>
             <div className="crop-container">
               <Cropper
+                minZoom={minZoom}
                 image={this.state.imageSrc}
                 crop={this.state.crop}
                 zoom={this.state.zoom}

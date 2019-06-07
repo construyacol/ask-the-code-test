@@ -35,6 +35,7 @@ class SecurityCenter extends Component{
     // this.props.action.MenuItemActive(this.props.location.pathname)
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
      this.props.action.MenuItemActive('security')
+     this.props.action.section_view_to('initial')
 
      setTimeout(()=>{
        // Manejamos la respuesta en el estado, por si ocurre un error, evitamos

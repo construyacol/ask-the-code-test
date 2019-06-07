@@ -5,6 +5,9 @@ import userPic from '../../assets/picture.jpg'
 import { menuPrincipal } from '../api/ui/api.json'
 import ScoresComponent from '../widgets/scores'
 import IconSwitch from '../widgets/icons/iconSwitch'
+import MovilMenuComponent from './movilMenu'
+// import store from '../../'
+
 
 
 const MenuPrincipalLayout = (props) => {
@@ -12,8 +15,14 @@ const MenuPrincipalLayout = (props) => {
   const {
     show_menu_principal,
     close_menu_principal,
-    verification_state
+    verification_state,
+    openSelectCountry,
+    go_to
   } = props
+
+
+  // const { user, user_id } = store.getState().model_data
+  // const country = user[user_id].country
 
 
   return(
@@ -81,12 +90,12 @@ const MenuPrincipalLayout = (props) => {
               </section>
               :
               <section className="section1">
-                {/* <ItemSettingsInit data={security_center} /> */}
+                <MovilMenuComponent openSelectCountry={openSelectCountry} go_to={go_to}/>
               </section>
           }
 
 
-          <section className="section2">
+          <section className={`section2 ${window.innerWidth>768 ? '' : 'movil' }`}>
             {/* <div>
               {
                 menuPrincipalInferior.map((item)=>{
@@ -99,7 +108,9 @@ const MenuPrincipalLayout = (props) => {
               window.innerWidth>768 ?
               <ScoresComponent/>
               :
-              <div className="fuente closeSessionMo">Cerrar sesión</div>
+              <div className="menuMovilItems close">
+                <p className="menuMovilItemTexts close fuente">Cerrar sesión</p>
+              </div>
             }
           </section>
         </div>

@@ -11,6 +11,10 @@ import './detailContainer.css'
 
 class detailContainerLayout extends Component{
 
+  componentDidMount(){
+
+  }
+
   back_method = () =>{
     this.props.action.section_view_to('initial')
   }
@@ -100,13 +104,10 @@ render(){
          </div>
       </div>
 
-      <div className={`contenido ${(view === 'detail' && current_wallet) ? 'DCcurrent_wallet' : ''}`}>
+      <div className={`contenido ${(view === 'detail' && current_wallet) ? 'DCcurrent_wallet' : ''} ${this.props.pathname}`}>
          {this.props.children}
-
-
-
-
       </div>
+
     </Fragment>
   )
 
@@ -114,12 +115,15 @@ render(){
 }
 
 function mapStateToProps(state, props){
-
   // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', props)
+
+  let str = props.history.location.pathname
+  let res = str.replace("/", "");
 
   return{
     current_item:state.ui.menu_item_active,
-    current_section:state.ui.current_section
+    current_section:state.ui.current_section,
+    pathname:res
   }
 }
 

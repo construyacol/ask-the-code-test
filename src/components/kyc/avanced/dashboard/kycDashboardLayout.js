@@ -12,7 +12,6 @@ const KycDashBoard = props =>{
     front,
     back,
     selfie,
-    stepChange,
     goFileLoader,
     prevState,
     animation,

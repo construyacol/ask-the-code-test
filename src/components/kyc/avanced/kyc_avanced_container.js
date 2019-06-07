@@ -106,7 +106,7 @@ class KycAvancedContainer extends Component{
 
   updateLocalImg = async(img, base64) =>{
 
-    const name = this.props.step == 1 ? 'newfront' : this.props.step == 2 ? 'newback' : 'newselfie'
+    const name = this.props.step === 1 ? 'newfront' : this.props.step === 2 ? 'newback' : 'newselfie'
     // this.props.action.UpdatePicKyc({[name]:img})
     await this.setState({
       [name]:img,
@@ -157,7 +157,7 @@ class KycAvancedContainer extends Component{
 
       // console.log(`DEBUGEANDO ANDO::::::-----____----- CURRENT: ${currentStep} -- PREVSTEP: ${prevStep}`)
 
-      if(currentStep == prevStep){return false}
+      if(currentStep === prevStep){return false}
       await this.setState({
         animation:false
       })
@@ -191,7 +191,7 @@ class KycAvancedContainer extends Component{
       } = base64
 
 
-      if(newfront && newback && newselfie || newfront && newselfie && this.props.user.id_type === 'pasaporte'){
+      if((newfront && newback && newselfie) || (newfront && newselfie && this.props.user.id_type === 'pasaporte')){
        let finish_kyc_advanced = await this.props.validate_identity_kyc(this.state)
        if(finish_kyc_advanced){
          return this.setState({kyc_success:true})

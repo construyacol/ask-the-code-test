@@ -14,8 +14,6 @@ class PhoneView extends Component {
 
     const { value } = p.target
 
-    let estado = false
-
     if(value.length>6 && value !== payload){
       this.setState({
         status:""
@@ -45,20 +43,13 @@ class PhoneView extends Component {
       placeholder,
       code,
       type,
-      buttonActive,
-      auth
+      buttonActive
     } = this.props
 
     const {
       status
     } = this.state
 
-
-    const atributos ={
-      icon:`${auth ? '2auth' : code}`,
-      size:80,
-      color:`#1babec`
-    }
 
 
 

@@ -37,15 +37,37 @@ class MenuPrincipalContainer extends Component{
       smooth: true,
       containerId: 'containerElement'
     })
-
-
-
     if(window.innerWidth<768){
       return this.props.action.current_section_params({show_menu_principal:false})
     }
-
     this.props.action.current_section_params({show_menu_principal:true})
   }
+
+  country_change = () => {
+    this.props.action.ready_to_play(false)
+  }
+
+  go_to = async(pathname) =>{
+    await this.props.history.push(pathname)
+    return this.props.action.current_section_params({show_menu_principal:false})
+  }
+
+// history
+
+  openSelectCountry = async() =>{
+    this.props.action.ConfirmationModalToggle()
+    this.props.action.ConfirmationModalPayload({
+      title:"Cambiar país de operación",
+      description:"Elige el país en el que deseas operar, recuerda que cada país maneja un perfil de operación diferente.",
+      txtPrimary:"Cambiar de país",
+      txtSecondary:"Cancelar",
+      payload:'account_id',
+      action:(this.country_change),
+      svg:"coinsenda",
+      type:"select_country"
+    })
+  }
+
 
   render(){
 
@@ -57,6 +79,8 @@ class MenuPrincipalContainer extends Component{
           itemStatus={this.props.menu_item_active}
           refCallback={this.refCallback}
           close_menu_principal={this.close_menu_principal}
+          openSelectCountry={this.openSelectCountry}
+          go_to={this.go_to}
           {...this.props}/>
     )
   }

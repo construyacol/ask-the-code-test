@@ -131,14 +131,12 @@ render(){
       } = socket_swap
 
 
-      let statePendingSwap = status && unique_id === id ? status : state
+  let statePendingSwap = status && unique_id === id ? status : state
 
   // let pendingSwap = unique_id === id && type_order === 'swap'
   let pendingSwap = type_order === 'swap' && (statePendingSwap === 'pending' || statePendingSwap === 'processing' || statePendingSwap === 'done' ) ? true : false
 
   const current_swap_done = swap_done_id === id ? swap_done_id : null
-  // console.log('||||||||||||||||||| - - - - ESTADO DESDE EL ITEM DE ACTIVITY PROPS', spent)
-
 
   return(
     <div className={`NDCont ${statePendingSwap === 'error' ? 'errorSwap' : ''}     ${account_to ? 'swap_bought': ''} ${(current_swap_done && swap_done_out) ? 'current_swap_done_out' : (current_swap_done && swap_done_in) ? 'current_swap_done_in' : ''} ${(lastPendingId === id && newDepositStyle)? 'newDepositContainer' : (deleting && current_order_loader === id) ? 'deletingWallet' : (deleted && current_order_loader === id) ? 'walletDeleted' :  'newDepositContainern' }`}>
@@ -146,10 +144,13 @@ render(){
 
       {
         pendingSwap &&
-        <div className="barraSwap"><div className={`relleno ${(statePendingSwap === 'pending') ? 'swaPending' :
-          (statePendingSwap === 'processing') ? 'swaProcessing' :
-          (statePendingSwap === 'done') ? 'swapDone' : ''
-        }`}></div></div>
+        <div className="barraSwap">
+          <div className={`relleno ${(statePendingSwap === 'pending') ? 'swaPending' :
+            (statePendingSwap === 'processing') ? 'swaProcessing' :
+            (statePendingSwap === 'done') ? 'swapDone' : ''
+            }`}>
+          </div>
+        </div>
       }
 
       {
@@ -242,7 +243,6 @@ render(){
                 23 nov 2019
               </div>
             }
-
           </Fragment>
         }
       </div>
@@ -319,17 +319,17 @@ render(){
           <Fragment>
             <div className="jopolo" style={{gridTemplateRows:(type_order === 'swap' && !account_to) ? 'repeat(2, 1fr)' : '1fr' }}>
               <div className="fuente2 ALamount pentoni"
-                style={{"fontSize":currency_type ==='fiat' ? '17px' : '25px',
-                  color:(type_order === 'deposit' || type_order === 'swap') ?'#1cb179':
-                       'gray',
+                style={{"fontSize":'17px',
                }}>
-
+               <p className="swapAmount" style={{
+                 color:(type_order === 'deposit' || type_order === 'swap') ?'#1cb179': type_order === 'withdraw' ? 'red' : 'gray'
+               }}>
                 {
                   `${(type_order === 'deposit' || type_order === 'swap') ? '+' : '-'}
                    ${(currency_type ==='fiat'  && type_order !== 'swap') ? '$' : ''}`
                 }
-
                 {`${(currency_type ==='fiat' && type_order !== 'swap') ? number_format(amount) : amount  }`}
+              </p>
 
                 {
                   type_order === 'swap' ?

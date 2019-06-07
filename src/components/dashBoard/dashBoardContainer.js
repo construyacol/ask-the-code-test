@@ -18,7 +18,6 @@ import SecurityCenter from '../securityCenter/securityCenter'
 import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
-
 import './dashboard.css'
 
 
@@ -54,7 +53,7 @@ class DashBoardContainer extends Component{
              <div className="containerSection" name="firstInsideContainer">
                     {
                       !this.props.user ?
-                      <DetailContainerLayout>
+                      <DetailContainerLayout history={this.props.history}>
                         <SimpleLoader
                           color="blue"
                           label="Obteniendo datos del usuario"
@@ -69,7 +68,10 @@ class DashBoardContainer extends Component{
                               <Route path="/security" component={SecurityCenter} />
                               <Route path="/referral" component={ReferralComponent} />
                               <Route path="/wallets" component={WalletContainer} />
+
                               {/* <Redirect from="/" to="/wallets" /> */}
+
+
                               {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
                               {/* <Redirect from="/" to="/activity" /> */}
                               {/* <Route exact path={["/activity", "/"]}  component={ActivityContainer}/> */}

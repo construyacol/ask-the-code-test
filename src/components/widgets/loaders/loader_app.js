@@ -125,16 +125,17 @@ class LoaderAplication extends Component {
     await action.get_deposit_list(this.props.user)
     await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
     await action.get_withdraw_list(this.props.user)
-    await action.ready_to_play(true)
     let verification_state = await action.get_verification_state()
 
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
     if(verification_state !== 'accepted'){
-      this.props.action.AddNotification('security', null, 1)
-      return this.props.history.push('/security')
+      await this.props.action.AddNotification('security', null, 1)
+      await this.props.history.push('/security')
+      return action.ready_to_play(true)
     }
 
-    return this.props.history.push('/wallets')
+    await this.props.history.push('/wallets')
+    return action.ready_to_play(true)
 
 // ------------------------------------------------------------------------------------------------
 

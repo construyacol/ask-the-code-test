@@ -1,24 +1,15 @@
-import React, {Fragment} from 'react'
+import React from 'react'
 import KycBasicContainer from './basic/kyc_basic_container'
 import KycAvancedContainer from './avanced/kyc_avanced_container'
-import finish from '../../assets/kombat.gif'
-import SimpleLoader from '../widgets/loaders'
-import { ButtonForms } from '../widgets/buttons/buttons.js'
-import { Medal } from '../widgets/icons'
-import ConfettiComponent from '../widgets/success_screen/confetti'
 import KycFinancialComponent from './financial/kyc_financial'
 import SuccessComponentScreen from '../widgets/success_screen/success_screen'
 import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, validate_personal_kyc, loader, siguiente, exit, user,
-   kyc_data_basic, init_state, form_kyc_basic, validate_identity_kyc, validate_financial_kyc, identity_success } = props
+ const { globalStep, validate_personal_kyc, validate_financial_kyc, identity_success } = props
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  // let level = user.verification_level
- let name = form_kyc_basic && form_kyc_basic.data_state  && form_kyc_basic.data_state.name
-
-
 
   return(
     <section className="KycLayoutMom">
@@ -43,7 +34,7 @@ const KycLayout = (props) =>{
               !identity_success &&
               <p className="fuente KycTitle" >Verificación Avanzada</p>
             }
-            
+
             {
               (globalStep === 2) &&
               <KycAvancedContainer

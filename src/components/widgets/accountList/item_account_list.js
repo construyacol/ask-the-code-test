@@ -32,12 +32,11 @@ class WalletList extends Component{
     this.props.action.current_section_clean()
     this.props.action.CurrentForm(path)
     this.init_component()
-    const { advanced, basic } = this.props.user.security_center.kyc
-    let state_verification = (advanced === 'confirmed' && basic === 'confirmed') && 'confirmed'
-    this.setState({state_verification})
   }
 
   init_component = async() => {
+    let state_verification = await this.props.action.get_verification_state()
+    this.setState({state_verification})
     let verified = await this.props.action.user_verification_status('level_1')
     await this.setState({verified})
   }
@@ -125,8 +124,7 @@ class WalletList extends Component{
 
     this.props.action.exit_sound()
     this.setState({label:"Obteniendo tus Cuentas", wallet_state:"deleted"})
-    let wall = type === 'withdraw' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`) :
-    await this.props.action.get_list_user_wallets(this.props.user)
+    type === 'withdraw' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`) : await this.props.action.get_list_user_wallets(this.props.user)
 
 
     this.props.action.mensaje(msg, success ? 'success' : 'error')
@@ -154,13 +152,8 @@ class WalletList extends Component{
     // console.log('|||||||   WALLET LIST   ||||',  this.props)
 
     const{
-      have_items,
       lista
     } = this.props
-
-    const {
-      state_verification
-    } = this.state
 
     return(
       <Fragment>

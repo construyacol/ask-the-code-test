@@ -105,7 +105,6 @@ class KycFinancialComponent extends Component {
   send_files = async() =>{
 
     const { data_state } = this.state
-    const { user } = this.props
 
     this.props.action.Loader(true)
     let info = {}
@@ -145,8 +144,8 @@ class KycFinancialComponent extends Component {
 
   render(){
 
-    const { current_name, open_sect, data_state, kyc_financial_list, widthBar, availableCta } = this.state
-    const { loader, step, financial_success } = this.props
+    const { current_name, data_state, kyc_financial_list, widthBar, availableCta } = this.state
+    const { loader, financial_success } = this.props
 
     // console.log('||||| KycFinancialComponent ', this.state)
 

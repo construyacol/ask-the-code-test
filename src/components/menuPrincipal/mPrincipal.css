@@ -137,6 +137,64 @@
 
 
 
+/*===========>  MENU MOVIL*/
+
+.MovilMenuComponent{
+  width: 100%;
+  height: auto;
+}
+
+.section2.movil{
+  display: grid;
+  align-items: center;
+}
+
+.menuMovilItems{
+  height: 45px;
+  min-height: 50px;
+  width: auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.menuMovilItems.close{
+  grid-template-columns: 1fr;
+}
+
+.menuMovilItems i{
+  font-size: 15px;
+  color: white;
+}
+
+.menuMovilItemTexts{
+  margin: 0 !important;
+  color: white;
+  font-size: 15px;
+  display: grid;
+  grid-template-columns: 30px auto;
+}
+
+.menuMovilItemTexts.close{
+  grid-template-columns: auto !important;
+  text-align: center;
+}
+
+
+.menuMovilItemTexts i, .menuMovilItemTexts .iconSty{
+  margin-right: 15px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+
+.menuMovilItems.inactive{
+  opacity: 0.3;
+}
+
+
 
 
 

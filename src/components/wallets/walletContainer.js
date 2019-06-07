@@ -34,6 +34,7 @@ class WalletContainer extends Component{
   }
 
   componentWillUnmount(){
+    this.props.action.section_view_to('initial')
     this.props.action.current_section_clean()
 	}
 
@@ -132,9 +133,8 @@ class WalletContainer extends Component{
     render(){
 
       const { items_menu } = navigation_components.wallet
-      const url = this.state.currentUrl
       const { title }  = this.state
-      const { app_loaded, item_active } = this.props
+      const { app_loaded } = this.props
 
       // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
 

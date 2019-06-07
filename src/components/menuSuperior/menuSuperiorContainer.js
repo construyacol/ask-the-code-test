@@ -49,7 +49,6 @@ class MenuSuperiorContainer extends Component {
 
   country_change = () => {
     this.props.action.ready_to_play(false)
-
   }
 
 
@@ -128,7 +127,6 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
-  const { user, user_id } = state.model_data
   return{
     item_active:state.ui.menu_item_active,
     current_section:state.ui.current_section.view,

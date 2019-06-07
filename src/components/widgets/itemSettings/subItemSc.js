@@ -180,7 +180,7 @@ class SubItemSC extends Component {
 
 
         {/* Call to action de security_center *************************************************************************************************************************************** */}
-        <div className={`SCcta ${other_state}`} style={{display:(classic_view || tree && !treeButton) ? 'none' : 'grid' }}>
+        <div className={`SCcta ${other_state}`} style={{display:(classic_view || (tree && !treeButton)) ? 'none' : 'grid' }}>
           <ButtonForms
             id="subItemSC"
             type={`${verify ? 'secundary' : 'primary' }`}

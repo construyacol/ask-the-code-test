@@ -208,10 +208,9 @@ componentDidMount(){
             :
             <Fragment>
                 <ToastContainers/>
-
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-                    <MenuPrincipalContainer/>
+                    <MenuPrincipalContainer history={this.props.history}/>
                     <MenuSuperiorContainer logOut={this.props.logOut}/>
                     {/* En el componente dashboard se cargan todas las vistas */}
 
