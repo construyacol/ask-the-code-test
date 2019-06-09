@@ -32,7 +32,7 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJmVXRjdjJHQ2F1UFZSbTJUNjFJUGQ1MTV0ZHZHb2dlcjVDb1puSzVMVDRIVFZDUzlodktPT29YNkFXREVURW95IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NjAwMzg3MDcsImV4cCI6MTU2MDA0OTUwN30.FmZINhNBkumzytQtSzz9Xe68xcKmQENa7ITJUAHiem9IlhwPsS3YZlXRz9FfxIl1DdIKdxmu-Qz5gjNjdYswGw'
+    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJTcGhvWjUzY2VlTTU4REJkQThFemlqM1VOdUhSZmNPcGFScWZ6QWdHbFZqTm5zZkJxNmh2VXh5RzJwQURQUnRCIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NjAwODg5OTksImV4cCI6MTU2MDA5OTc5OX0.Sx0HmlV1oYgfI6Gntwhp-1akXKkQOVhlfLnmU17NKMxC6GsZHpyl8VZd4UoSFKQT_9mR3NJwoU7mjYAEbyG4Kw'
 
     this.setState({
       TokenUser:AccessToken
@@ -60,7 +60,6 @@ class RootContainer extends Component {
               TokenUser ? (
                   <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
               ) : (
-                // <AuthComponentContainer/>
                 <LandingPage history={history} />
               )
             )}/>

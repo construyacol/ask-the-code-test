@@ -26,7 +26,9 @@ import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
 import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
+import * as Sentry from '@sentry/browser';
 
+Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
 
 const {
    SocketUrl
@@ -42,9 +44,11 @@ class HomeContainer extends Component{
   }
 
 componentDidMount(){
-  // console.log('||||||| componentDidMount', this.props)
+  // console.log('||||||||||| ==============>  Sentry', Sentry)
+  // alert('Sentry')
   // this.props.history.push('/wallets')
 }
+
 
   startSocket = async() =>{
     this.socket = io(SocketUrl)
@@ -172,6 +176,9 @@ componentDidMount(){
 
 
   componentDidCatch(error, info){
+    console.log('error', error)
+    alert(info)
+    Sentry.captureException(error);
     this.setState({
       handleError:true,
     })
@@ -182,6 +189,8 @@ componentDidMount(){
   }
 
   render(){
+
+
     // console.log('Auxilio me desmayo, cashece viejo lesbiano!', Environment.ApiUrl)
     // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props)
     const {

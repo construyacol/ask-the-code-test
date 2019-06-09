@@ -60,6 +60,9 @@ class Landing extends React.Component {
   }
 
   init_component = async() =>{
+
+    if(process.env.NODE_ENV === 'development'){return false}
+
     if('serviceWorker' in navigator){
       navigator.serviceWorker.register('/sw.js', {scope:'/'})
       .then((registration) => {
