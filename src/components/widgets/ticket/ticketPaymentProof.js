@@ -8,7 +8,6 @@ import SimpleLoader from '../../widgets/loaders'
 import imgTikcketDefault from '../../../assets/ticketdefault.png'
 // import imgTikcketDefault from '../../../assets/ticketdefault2.png'
 import imgTouch from '../../../assets/touch.png'
-
 import './ticket.css'
 
 class TicketPaymentProof extends Component  {
@@ -71,7 +70,6 @@ updateLocalImg = (img) =>{
     // let res = await this.props.action.confirm_deposit_order(ticket, '');
     if(!res){return false}
     // let list = await this.props.action.get_deposit_list(user)
-    console.log('°°°||||||||   RES UPLOAD IMG:', res)
     const {
       data
     } = res

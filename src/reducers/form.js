@@ -441,7 +441,7 @@ const forms = (state = initialState, action) =>{
               //   ...state,
               //   search:result
               // }
-
+             break;
           case FIAT_DEPOSIT:
             return{
               ...state,

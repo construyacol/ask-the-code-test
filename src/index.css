@@ -424,14 +424,24 @@ circle{
 
 
 
+.iconBank{
+  right: 120px !important;
+}
 
 
+.iconBank .iconSty{
+  position: relative !important;
+}
 
-
+.iconSty img{
+  top: 0 !important;
+}
 
 
 
 @media only screen and (max-width: 768px) {
+
+
 
 
 

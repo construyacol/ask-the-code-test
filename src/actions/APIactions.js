@@ -46,7 +46,6 @@ import {
   // new_fiat_deposit
  } from './uiActions'
 
- moment.locale('es')
 
 const {
   normalize_user
@@ -1156,7 +1155,7 @@ export const get_deposit_list = (user) =>{
     const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
     const deposits = await ApiGetRequest(url_deposit)
     if(!deposits || deposits === 465){return false}
-    console.log('|||||||||||| get_deposit_list::: ', deposits)
+    
     let remodeled_deposits = await deposits.map(item => {
       let new_item = {
         ...item,

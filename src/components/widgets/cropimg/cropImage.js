@@ -42,6 +42,9 @@ let urlImg = await new Promise((resolve, reject) => {
 
 // retornamos el base 64 para enviar en el microservicio y el urlImg para actualizar en redux, ya que tiene un tamaño menor es recomendable hacerlo así
 
+  // console.log('createImage base64', canvas.toDataURL('image/png'))
+  // alert('img')
+
   return{
     base64:canvas.toDataURL('image/jpeg'),
     urlImg: urlImg

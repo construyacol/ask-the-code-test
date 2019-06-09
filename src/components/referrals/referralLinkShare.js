@@ -21,25 +21,25 @@ class ReferralLinkShare extends Component {
 
   render(){
 
-    let netWorks = [
-      // {
-      //   icon:"fab fa-facebook-f",
-      //   name:"facebook",
-      //   cta:"Compartir",
-      //   clase:"fb-share-button"
-      // },
-      // {
-      //   icon:"fab fa-twitter",
-      //   name:"twitter",
-      //   cta:"Twittear"
-      // },
-      {
-        icon:"fas fa-inbox",
-        name:"mail",
-        cta:"Enviar",
-        active:false
-      }
-    ]
+    // let netWorks = [
+    //   // {
+    //   //   icon:"fab fa-facebook-f",
+    //   //   name:"facebook",
+    //   //   cta:"Compartir",
+    //   //   clase:"fb-share-button"
+    //   // },
+    //   // {
+    //   //   icon:"fab fa-twitter",
+    //   //   name:"twitter",
+    //   //   cta:"Twittear"
+    //   // },
+    //   // {
+    //   //   icon:"fas fa-inbox",
+    //   //   name:"Whatsapp",
+    //   //   cta:"Enviar",
+    //   //   active:false
+    //   // }
+    // ]
 
     let twitter_text = "Amigos, este es mi link de referidos de Coinsenda:"
 
@@ -59,9 +59,11 @@ class ReferralLinkShare extends Component {
 
         <div className="buttonsReferralShare fuente">
           {/* BOTON FACEBOOK */}
-          <div className='element1Ref' data-href="https://www.coinsenda.com/">
-            <a className="fb-share-button" alt="" href={referralLink}
+          <div className='element1Ref' >
+            <a className="tranquilo_fb fb-share-button" alt="" href={referralLink}
               data-href={referralLink}
+              target="_blank"
+              rel="noopener noreferrer"
               data-layout="button_count">
             </a>
             <i className="fab fa-facebook-f"></i>
@@ -74,7 +76,12 @@ class ReferralLinkShare extends Component {
             <p className="fuente">Twittear</p>
           </a>
 
-          {
+          <a className={`element1Ref`} href={`https://wa.me/?text='Hola, te invito a registrarte en Coinsenda con mi link de referido: ${referralLink}'`} target="_blank" rel="noopener noreferrer">
+            <i className="fab fa-whatsapp"></i>
+            <p className="fuente">Whatsapp</p>
+          </a>
+
+          {/* {
             netWorks.map((network)=>{
               return(
                 <ShareElement
@@ -83,7 +90,7 @@ class ReferralLinkShare extends Component {
                 />
               )
             })
-          }
+          } */}
         </div>
 
 
@@ -94,22 +101,22 @@ class ReferralLinkShare extends Component {
 }
 
 
-const ShareElement = props => {
-
-  const {
-    cta,
-    icon,
-    active
-  } = props
-
-  return(
-    <a className={`element1Ref ${active ? 'activo' : 'desactive'}`} href="#">
-      <i className={icon}></i>
-      <p className="fuente">{cta}</p>
-    </a>
-  )
-
-}
+// const ShareElement = props => {
+//
+//   const {
+//     cta,
+//     icon,
+//     active
+//   } = props
+//
+//   return(
+//     <div className={`element1Ref ${active ? 'activo' : 'desactive'}`} >
+//       <i className={icon}></i>
+//       <p className="fuente">{cta}</p>
+//     </div>
+//   )
+//
+// }
 
 
 export default ReferralLinkShare

@@ -319,6 +319,7 @@ class TicketContainer extends Component {
               ]
             })
             }
+          break;
           case 'swap':
           return this.setState({current_ticket:[
             {

@@ -39,7 +39,7 @@ import {
   Touch,
   Upload,
   ReferralPerson,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum
  } from './'
 
  import {
@@ -66,6 +66,8 @@ class IconSwitch extends Component {
     // console.log('|||| IconSwitch  ||||', icon)
 
     switch (icon) {
+      case 'ethereum':
+        return <Ethereum {...props} />
       case 'pending':
         return <Search {...props} />
       case 'confirmed':
@@ -104,6 +106,7 @@ class IconSwitch extends Component {
         return <ReferralPerson {...props} />
       case 'swap':
       case 'transactional':
+      case 'transaction':
         return <Swap {...props} />
       case 'withdraw':
         return <Send {...props} />

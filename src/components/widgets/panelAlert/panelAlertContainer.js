@@ -107,7 +107,7 @@ class PanelAlertContainer extends Component {
              <p>{message}</p>
              {
                ctaText &&
-               <a onClick={action}>{ctaText}</a>
+               <div onClick={action}>{ctaText}</div>
              }
            </div>
          </div>

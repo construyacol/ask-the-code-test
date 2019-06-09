@@ -5,6 +5,9 @@ import IconSwitch from '../icons/iconSwitch'
 import { connect } from 'react-redux'
 import SimpleLoader from '../loaders'
 import SwapAnimation from '../swapAnimation/swapAnimation'
+import moment from 'moment'
+import 'moment/locale/es'
+ moment.locale('es')
 
 class ItemList extends Component{
 
@@ -18,6 +21,8 @@ class ItemList extends Component{
   }
 
   componentDidMount(){
+
+
     if(this.props.ticket.type_order === 'swap'){
       this.initConfig()
     }
@@ -80,7 +85,6 @@ render(){
 
   let movil_viewport = window.innerWidth < 768
 
-  // console.log('||||||||||||||||| -- - - -- WALLET INFO: ', this.props)
 
   const {
     newDepositStyle,
@@ -108,6 +112,10 @@ render(){
     currency,
     currency_bought
   } = ticket
+
+    // let new_date = new Date(ticket.created_at).toLocaleDateString()
+    // console.log('||||||||||||||||| -- - - -- DÍA ', moment(ticket.created_at).format("DD"), '==>', new_date)
+    // console.log('||||||||||||||||| -- - - -- MES ', moment(ticket.created_at).format("MMM"), '==>', new_date)
 
 
   const atributos ={
@@ -194,8 +202,10 @@ render(){
                     </div>
                   :
                     <div className="fecha">
-                      <p className="ALdayDate fuente2"  style={{color:(currency_type === 'fiat'  && (state === 'pending' || state === 'confirmed')) ? '#ff8660' : '#1cb179'}}>02</p>
-                      <p className="ALmonthDate" style={{color:(currency_type === 'fiat' && (state === 'pending' || state === 'confirmed')) ? '#ff8660' :'#1cb179'}}>JUL</p>
+
+
+                      <p className="ALdayDate fuente2"  style={{color:(currency_type === 'fiat'  && (state === 'pending' || state === 'confirmed')) ? '#ff8660' : '#1cb179'}}>{moment(ticket.created_at).format("DD")}</p>
+                      <p className="ALmonthDate" style={{color:(currency_type === 'fiat' && (state === 'pending' || state === 'confirmed')) ? '#ff8660' :'#1cb179'}}>{moment(ticket.created_at).format("MMM").toUpperCase()}</p>
                     </div>
             }
           </Fragment>

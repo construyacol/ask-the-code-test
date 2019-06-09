@@ -165,7 +165,7 @@ componentDidMount(){
                 className={` ${wallet_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : type === 'withdraw' && !inscribed ? 'NoInscribed' : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
                 // className={`ItemWallet ${currency.currency}`}
                 >
-                  <a className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail} href="#"></a>
+                  <div className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail} ></div>
                   <div className={`ItemBarra ${type} ${(current_view === 'detail' || (type === 'withdraw' && !inscribed)) ? 'noVisible' : ''}`} >
 
                     <div className={`ItemBarraI ${type === 'withdraw' ? 'noVisible' : ''}`}>
