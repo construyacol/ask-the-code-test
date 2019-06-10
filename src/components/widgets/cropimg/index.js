@@ -1,6 +1,9 @@
 import React, {Fragment} from 'react'
 import getCroppedImg from './cropImage'
 import { ButtonForms } from '../buttons/buttons'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import actions from '../../../actions'
 
 
 import Cropper from 'react-easy-crop'
@@ -17,7 +20,7 @@ class CropImg extends React.Component {
     zoom: minZoom,
     aspect: 4 / 3,
     croppedAreaPixels: null,
-    croppedImage: null,
+    croppedImage: null
   }
 
 
@@ -61,11 +64,12 @@ class CropImg extends React.Component {
 
 
   showCroppedImage = async () => {
+    await this.props.action.Loader(true)
     const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels)
 
     // return console.log('showCroppedImage', croppedImage)
 
-    if(!croppedImage){return false}
+    if(!croppedImage){return this.props.action.Loader(false)}
 
     const {
       urlImg
@@ -117,7 +121,6 @@ class CropImg extends React.Component {
                       active={true}
                       type="secundary"
                       siguiente={this.cancelCroppedImg}
-
                       >Cancelar</ButtonForms>
                     {/* <img src={this.state.croppedImage} alt="" width="40"/> */}
 
@@ -136,4 +139,12 @@ class CropImg extends React.Component {
 
 
 
-export default CropImg
+function mapDispatchToProps(dispatch){
+  return{
+    action:bindActionCreators(actions, dispatch)
+  }
+}
+
+
+
+export default connect(null, mapDispatchToProps) (CropImg)

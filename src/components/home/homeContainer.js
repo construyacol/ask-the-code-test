@@ -62,9 +62,6 @@ class HomeContainer extends Component{
             // console.log('|||| INTERCAMBIO.... ', swap)
 
             if(swap.status === 'done' && swap !== this.state.order_socket){
-
-              // console.log('|||| INTERCAMBIO REALIZADO.... ', swap)
-
               this.setState({order_socket:swap})
 
               return setTimeout(async()=>{

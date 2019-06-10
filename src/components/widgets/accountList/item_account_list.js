@@ -216,8 +216,7 @@ WalletList.propTypes = {
   lista:PropTypes.string,
   loader:PropTypes.bool,
   type_list:PropTypes.string,
-  user:PropTypes.object,
-  withdraw_providers:PropTypes.bool
+  user:PropTypes.object
 }
 
 
@@ -235,18 +234,11 @@ function mapStateToProps(state, props){
     withdraw_providers
   } = state.model_data
 
-
-
   let withdraw_provider_list = (lista !== 'wallets' && user && withdraw_providers) && user[user_id].withdraw_providers.map(w_id=>{
     return withdraw_providers[w_id]
   })
 
-
-
-
   let item_list = []
-
-  // console.log('ITEM LIST - - - - - -- - 1 1 1 | | | | | | |- - - - - :::', state.model_data[lista])
 
 if(lista === 'withdraw_accounts'){
    user[user_id][lista].map((item_id)=>{
@@ -282,9 +274,6 @@ if(lista === 'withdraw_accounts'){
    return state.model_data[lista][item_id]
    })
  }
-
- // console.log('|||||||||||||||||||||||||ITE_LIST', state.model_data.user[state.model_data.user_id])
- // console.log('|||||||||||||||||||||||||ITEM_LIST', item_list)
 
   return{
     item_list:item_list,

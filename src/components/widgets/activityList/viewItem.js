@@ -54,7 +54,6 @@ detail = async() =>{
 
 
 detail_payment = async() =>{
-
   let proceed = await this.can_proceed()
   if(proceed){return false}
 

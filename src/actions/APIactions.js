@@ -7,6 +7,8 @@ import convertCurrencies from '../services/convert_currency'
 import moment from 'moment'
 import 'moment/locale/es'
 import store from '../'
+// import * as Sentry from '@sentry/browser';
+
 
 import { coins } from '../components/api/ui/api.json'
 import user_source from '../components/api'
@@ -63,7 +65,6 @@ UpdateAllCurrencies,
 ManageBalanceAction
 } = data_model_actions
 
-
 const {
 matchItem,
 desNormalizedList,
@@ -77,7 +78,14 @@ const { ApiUrl, IdentityApIUrl, CountryApIUrl } = Environment
 
 let local_currency
 moment.locale('es')
+// Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
 
+
+// const sentryCaptureMessage = (title, msg) => {
+//   console.log('||||| =======> sentryCaptureMessage', 'title: ', title, 'message', msg)
+//   Sentry.captureMessage(title, msg);
+//   // alert('enviando mensaje a sentry')
+// }
 
 
 export const mensaje = (msg, type, position) =>{
@@ -751,11 +759,10 @@ export const create_deposit_order = (
           "account_id": account_id
         }
       }
-      // console.log('create_deposit_order body', body)
-
 
     const url_new_order = `${ApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body)
+    // sentryCaptureMessage('add-new-deposits', new_fiat_deposit)
 
     // http://localhost:3001/api/deposits/add-new-deposit
     //
