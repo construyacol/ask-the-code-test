@@ -1,0 +1,16 @@
+.HandleError{
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  color: red;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+}
+
+
+.contImgError{
+  max-width: 600px;
+  display: grid;
+  align-self: end;
+}

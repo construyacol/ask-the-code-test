@@ -18,6 +18,8 @@ import SecurityCenter from '../securityCenter/securityCenter'
 import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
+import PropTypes from 'prop-types'
+
 import './dashboard.css'
 
 
@@ -92,6 +94,26 @@ class DashBoardContainer extends Component{
     )
   }
 }
+
+
+DashBoardContainer.propTypes = {
+  activeRoute:PropTypes.string,
+  all_pairs:PropTypes.object,
+  app_loaded:PropTypes.bool,
+  current:PropTypes.string,
+  loader:PropTypes.bool,
+  logOut:PropTypes.func,
+  modalConfirmation:PropTypes.bool,
+  modalView:PropTypes.string,
+  modalVisible:PropTypes.bool,
+  other_modal:PropTypes.bool,
+  token:PropTypes.string,
+  user:PropTypes.object,
+  wallets:PropTypes.object
+}
+
+
+
 
 function mapStateToProps(state, props){
     const { user, user_id } = state.model_data

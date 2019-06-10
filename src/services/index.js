@@ -4,7 +4,6 @@ import store from '../'
 
 
 export const mensaje = async(msg, type, position) =>{
-
   return toast(msg, {
     position: toast.POSITION[!position ? 'BOTTOM_RIGHT' : position],
      pauseOnFocusLoss: false,
@@ -14,12 +13,10 @@ export const mensaje = async(msg, type, position) =>{
      progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
      autoClose: 4000
   })
-
 }
 
 
 export const ticketModalView = (state) =>{
-
   switch (state) {
     case 'pending':
         return "pendingView"

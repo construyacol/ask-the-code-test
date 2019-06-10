@@ -4,9 +4,8 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import './mPrincipal.css'
-// import { Link as ScrollTo } from "react-scroll"
 import { scroller } from 'react-scroll'
-// import { bindActionCreators } from 'redux'
+import PropTypes from 'prop-types'
 
 
 class MenuPrincipalContainer extends Component{
@@ -85,6 +84,17 @@ class MenuPrincipalContainer extends Component{
     )
   }
 }
+
+
+
+MenuPrincipalContainer.propTypes = {
+  menu_item_active:PropTypes.string,
+  show_menu_principal:PropTypes.bool,
+  user:PropTypes.object,
+  verification_state:PropTypes.string
+}
+
+
 
   function mapDispatchToProps(dispatch){
     return {

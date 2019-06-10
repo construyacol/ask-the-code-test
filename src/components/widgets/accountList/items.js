@@ -10,6 +10,8 @@ import IconSwitch from '../icons/iconSwitch'
 import PopNotification from '../notifications'
 import BalanceComponent from '../balance/balance'
 import SimpleLoader from '../loaders'
+import PropTypes from 'prop-types'
+
 
 export class ItemWallet extends Component {
 
@@ -55,18 +57,15 @@ componentDidMount(){
 
   wallet_detail = async() => {
 
-    // this.props.action.current_section_params({current_wallet:current_wallet})
-    // alert('detail')
     if(this.props.current === "deposit"){
-      this.props.action.ToggleModal()
-      this.update_deposit_provider()
-      return this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
       // Esto valida cuando estoy en el formulario deposito en una lista de wallets existentes, osea cierra el modal
+      await this.props.action.ToggleModal()
+      await this.update_deposit_provider()
+      return this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
     }
-
     this.update_deposit_provider()
-
     return this.props.history.push(`/wallets/activity/${this.props.wallet.id}`)
+
   }
 
   delete_this_account = () => {
@@ -130,7 +129,7 @@ componentDidMount(){
 
   render(){
 
-    // console.log('||||||||°°°°°CURRENT_WALLET_BALANCE', this.props.balance)
+    // console.log('||||||||°°°°°CURRENT_WALLET_BALANCE', this.props)
 
     const {
       wallet,
@@ -264,6 +263,28 @@ componentDidMount(){
     )
   }
 }
+
+
+ItemWallet.propTypes = {
+  current:PropTypes.string,
+  balances:PropTypes.object,
+  current_view:PropTypes.string,
+  delete_account:PropTypes.func,
+  deposit_providers:PropTypes.object,
+  label:PropTypes.string,
+  localCurrency:PropTypes.string,
+  user:PropTypes.object,
+  verified:PropTypes.bool,
+  wallet:PropTypes.object,
+  wallet_state:PropTypes.string
+}
+
+
+
+
+
+
+
 
 function mapStateToProps(state, props){
 

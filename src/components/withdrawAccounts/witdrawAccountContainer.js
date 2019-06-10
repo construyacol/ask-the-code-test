@@ -5,14 +5,11 @@ import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
 import { Router, Switch, Route } from 'react-router-dom'
-// import { BrowserRouter as Router, Switch, Redirect, Link, Route } from 'react-router-dom'
 import ActivityView from '../wallets/views/activity'
-
-// import WalletList from './views/walletList'
 import WithdrawAccountList from '../widgets/accountList/item_account_list'
 import ItemWallet from '../widgets/accountList/items'
 import SimpleLoader from '../widgets/loaders'
-
+import PropTypes from 'prop-types'
 import { matchItem } from '../../services'
 
 class witdrawAccountContainer extends Component{
@@ -116,7 +113,7 @@ class witdrawAccountContainer extends Component{
       const {withdraw_accounts, app_loaded } = this.props
 
 
-      // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
+      console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props)
 
       return(
               <Router
@@ -143,6 +140,16 @@ class witdrawAccountContainer extends Component{
               </Router>
       )
     }
+}
+
+
+
+witdrawAccountContainer.propTypes = {
+  app_loaded:PropTypes.bool,
+  currencies:PropTypes.array,
+  current_wallet:PropTypes.object,
+  user:PropTypes.object,
+  withdraw_accounts:PropTypes.array
 }
 
 

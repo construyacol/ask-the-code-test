@@ -3,6 +3,7 @@ import { coins } from '../../api/ui/api.json'
 import ItemLayout from '../items/itemLayout'
 import Slider from './slide'
 import ChartCoin from '../chartCoin/chartCoin.js'
+import PropTypes from 'prop-types'
 
 
 const QuoteLayout = props => {
@@ -77,5 +78,20 @@ const QuoteLayout = props => {
     </Fragment>
   )
 }
+
+QuoteLayout.propTypes = {
+  buy:PropTypes.bool,
+  buy_price:PropTypes.string,
+  loader:PropTypes.bool,
+  movil:PropTypes.bool,
+  pairs:PropTypes.object,
+  select_currency:PropTypes.func,
+  sell:PropTypes.bool,
+  sell_price:PropTypes.string,
+  switchItem:PropTypes.func,
+  user_collection:PropTypes.array
+}
+
+// PropTypes
 
 export default QuoteLayout

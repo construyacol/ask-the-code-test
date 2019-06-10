@@ -16,43 +16,33 @@ import Kyc from '../kyc/kyc_container'
 // import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Router, Route, Switch } from 'react-router-dom'
 import Environtment from '../../environment'
-
 import ConfirmationModal from '../widgets/modal/confirmation'
 import PairList from "../wallets/views/swap_pair_list"
 import TicketContainer from '../widgets/ticket/ticketContainer'
 import ModalSettingsView from '../widgets/itemSettings/modal_views'
-import ErrorView from '../widgets/errorView'
+import HandleError from '../widgets/errorView'
 import io from 'socket.io-client'
 import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
 import LoaderAplication from '../widgets/loaders/loader_app'
 import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
-import * as Sentry from '@sentry/browser';
+import PropTypes from 'prop-types'
 
-Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
 
 const {
    SocketUrl
 } = Environtment
 
-
 class HomeContainer extends Component{
 
   state = {
-    handleError:false,
     modalVisible:false,
     order_socket:null
   }
 
-componentDidMount(){
-  // console.log('||||||||||| ==============>  Sentry', Sentry)
-  // alert('Sentry')
-  // this.props.history.push('/wallets')
-}
-
 
   startSocket = async() =>{
     this.socket = io(SocketUrl)
-    console.log('INFORMACIÓN SOKET',this.socket)
+    // console.log('INFORMACIÓN SOKET',this.socket)
 
     this.socket.on("connect", ()=>{
       this.props.action.load_label('Autenticando canales bilaterales')
@@ -170,15 +160,11 @@ componentDidMount(){
 
 
 
-
-
-
-
+static getDerivedStateFromError(error, info){
+  return { handleError:true };
+}
 
   componentDidCatch(error, info){
-    console.log('error', error)
-    alert(info)
-    Sentry.captureException(error);
     this.setState({
       handleError:true,
     })
@@ -202,11 +188,14 @@ componentDidMount(){
     } = this.props
 
 
-    if(this.state.handleError){
-      return (<ErrorView/>)
-    }
+    // console.log('||||||||| HomeContainer INPUTS =======================> ', this.props)
+
+    // if(this.state.handleError){
+    //   return (<HandleError/>)
+    // }
 
     return(
+      <HandleError>
       <Router
         basename="/app"
         history={this.props.history}
@@ -223,7 +212,6 @@ componentDidMount(){
                     <MenuSuperiorContainer logOut={this.props.logOut}/>
                     {/* En el componente dashboard se cargan todas las vistas */}
 
-                    {/* <DashBoardContainer history={history} {...this.props} /> */}
                     <Route path="/" render={() => <DashBoardContainer  {...this.props} />} />
 
                   {
@@ -265,23 +253,39 @@ componentDidMount(){
                   }
 
                 </HomeLayout>
-
             </Fragment>
       }
 
       </Router>
-
+</HandleError>
     )
   }
+}
+
+
+
+HomeContainer.propTypes = {
+  activeRoute:PropTypes.string,
+  all_pairs:PropTypes.object,
+  app_loaded:PropTypes.bool,
+  current:PropTypes.string,
+  loader:PropTypes.bool,
+  logOut:PropTypes.func,
+  modalConfirmation:PropTypes.bool,
+  modalView:PropTypes.string,
+  modalVisible:PropTypes.bool,
+  other_modal:PropTypes.bool,
+  token:PropTypes.string,
+  user:PropTypes.object,
+  wallets:PropTypes.object
 }
 
 
 function mapStateToProps(state, props){
   // console.log('E S T A D O   I N I C I A L', process.env.NODE_ENV === 'development' ? Environment.development : Environment.production)
   // console.log('E S T A D O   I N I C cI A L', state.model_data.user && state.model_data.user[state.model_data.user_id])
-  const { wallets, all_pairs, swaps } = state.model_data
+  const { wallets, all_pairs } = state.model_data
   const { app_loaded } = state.isLoading
-  // console.log('|||||||||| E S T A D O   I N I C cI A L', app_loaded)
 
   return {
       app_loaded,
@@ -295,7 +299,6 @@ function mapStateToProps(state, props){
       other_modal:state.ui.other_modal,
       user:state.model_data.user && state.model_data.user[state.model_data.user_id],
       wallets,
-      swaps,
       all_pairs
   }
 }

@@ -5,7 +5,6 @@ import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
 import localForage from 'localforage'
 
-
 import './chartCoin.css'
 
 
@@ -100,6 +99,8 @@ class ChartCoin extends Component {
 
   render(){
 
+    // console.log('this.props ChartCoin||||| ================>', this.props)
+
     return(
       <div className="chartCoin">
         <div className="contChartCoin">
@@ -115,16 +116,10 @@ class ChartCoin extends Component {
 }
 
 
-function mapStateToProps(state, props){
-  return{
-    pairs:null
-  }
-}
-
 function mapDispatchToProps(dispatch){
   return{
     action:bindActionCreators(actions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartCoin)
+export default connect(null, mapDispatchToProps)(ChartCoin)

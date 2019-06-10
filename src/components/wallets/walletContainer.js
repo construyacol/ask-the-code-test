@@ -5,18 +5,17 @@ import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
 import { Router, Switch, Route } from 'react-router-dom'
-// import { BrowserRouter as Router, Switch, Redirect, Link, Route } from 'react-router-dom'
 import DepositView from './views/deposit'
 import ActivityView from './views/activity'
 import WithdrawView from './views/withdraw'
 import SwapView from './views/swap'
-
 import WalletList from '../widgets/accountList/item_account_list'
 import ItemWallet from '../widgets/accountList/items'
 import SimpleLoader from '../widgets/loaders'
-
+import PropTypes from 'prop-types'
 
 import { matchItem } from '../../services'
+
 
 class WalletContainer extends Component{
 
@@ -136,7 +135,7 @@ class WalletContainer extends Component{
       const { title }  = this.state
       const { app_loaded } = this.props
 
-      // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props.history)
+      // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props)
 
       return(
         <Router
@@ -170,6 +169,14 @@ class WalletContainer extends Component{
     }
 }
 
+
+WalletContainer.propTypes = {
+  all_pairs:PropTypes.object,
+  app_loaded:PropTypes.bool,
+  currencies:PropTypes.array,
+  current_wallet:PropTypes.object,
+  user:PropTypes.object
+}
 
 
 

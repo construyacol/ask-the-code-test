@@ -5,6 +5,8 @@ import SimpleLoader from '../loaders'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
 import { number_format } from '../../../services'
+import PropTypes from 'prop-types'
+
 import './quote.css'
 
 class QuoteContainer extends Component {
@@ -45,7 +47,7 @@ class QuoteContainer extends Component {
 
 
   render(){
-    // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', window)
+    // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', this.props)
 
     const { currentPair } = this.props.pairs
     return(
@@ -71,6 +73,18 @@ class QuoteContainer extends Component {
   }
 
 }
+
+
+QuoteContainer.propTypes = {
+  buy:PropTypes.bool,
+  sell:PropTypes.bool,
+  loader:PropTypes.bool,
+  pairs:PropTypes.object,
+  user_collection:PropTypes.array
+}
+
+
+
 
 function mapStateToProps(state, props){
   // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', state.model_data.pairs.user_collection)

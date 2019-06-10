@@ -6,6 +6,8 @@ import actions from '../../actions'
 import { number_format } from '../../services'
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
+import PropTypes from 'prop-types'
+
 
 class MenuSuperiorContainer extends Component {
 
@@ -118,6 +120,21 @@ class MenuSuperiorContainer extends Component {
     )
   }
 }
+
+
+
+MenuSuperiorContainer.propTypes = {
+  HeadRoomClass:PropTypes.string,
+  currentPair:PropTypes.object,
+  current_section:PropTypes.string,
+  item_active:PropTypes.string,
+  item_quote:PropTypes.object,
+  loader:PropTypes.bool,
+  logOut:PropTypes.func,
+  loggedIn:PropTypes.bool,
+  show_menu_principal:PropTypes.bool
+}
+
 
 function mapDispatchToProps(dispatch){
   return{

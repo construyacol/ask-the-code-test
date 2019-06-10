@@ -7,6 +7,7 @@ import ItemWallet from './items'
 import { AddNewItem } from '../buttons/buttons'
 import { withRouter } from "react-router"
 import IconSwitch from '../icons/iconSwitch'
+import PropTypes from 'prop-types'
 
 import '../../wallets/views/wallet_views.css'
 
@@ -149,8 +150,6 @@ class WalletList extends Component{
 
   render(){
 
-    // console.log('|||||||   WALLET LIST   ||||',  this.props)
-
     const{
       lista
     } = this.props
@@ -202,6 +201,26 @@ class WalletList extends Component{
     )
   }
 }
+
+
+
+
+WalletList.propTypes = {
+  all_pairs:PropTypes.object,
+  app_loaded:PropTypes.bool,
+  currencies:PropTypes.array,
+  current_wallet:PropTypes.object,
+  deposit_providers:PropTypes.object,
+  have_items:PropTypes.number,
+  item_list:PropTypes.array,
+  lista:PropTypes.string,
+  loader:PropTypes.bool,
+  type_list:PropTypes.string,
+  user:PropTypes.object,
+  withdraw_providers:PropTypes.bool
+}
+
+
 
 
 function mapStateToProps(state, props){
