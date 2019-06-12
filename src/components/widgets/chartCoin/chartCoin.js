@@ -34,7 +34,9 @@ class ChartCoin extends Component {
             datasets: [{
                 label: 'Precio',
                 data: lastPrices.data_price,
-                backgroundColor: 'rgb(43, 55, 66, 0.25)',
+                // backgroundColor: 'rgb(4, 205, 252, 0.4)',
+                // borderColor: 'rgb(55,236,126)',
+                backgroundColor: 'rgb(43, 55, 66, 0.35)',
                 borderColor: 'rgb(4, 205, 252)',
                 borderWidth: 1,
                 steppedLine:'middle'

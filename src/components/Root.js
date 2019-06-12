@@ -2,11 +2,10 @@ import React, { Component } from 'react'
 import HomeContainer from './home/homeContainer'
 import { Router, Route, Switch } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
-import LandingPage from './landingPage'
 import localForage from 'localforage'
 import PagesRouter from './landingPage/pages'
-
 // import AuthComponentContainer from './auth'
+import LandingPageContainer from './landing_page/landingContainer'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
@@ -33,11 +32,11 @@ class RootContainer extends Component {
     }
 
     // let AccessToken = await localForage.getItem('TokenUser')
-    let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJERVZOTjliUVV1cjZDT2d3SkxrM0E3emdYemhEeDBGTXBlNEl4cldZcERCZjNQWVFZdWlDbEV0YVQ5bW5QenpUIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NjAyMDAwODMsImV4cCI6MTU2MDIxMDg4M30.kXTFASPXcjTIS3D_L8Nf3u8jzc_BkxXhXuy40okmFlmjTCbyMH3DRXJJqRB9ipE5dvQlkIixARBrb7Eqdcc7fw'
+    // let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJBUVZKVzZjSTVQVmkwU1RjSWhCZnVZeEdaeUtva1BRYXJFYWg4RVpEZDk0SndRY2t6VXoxZTFlTjNHZ0w3RUFQIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NjAyODY2NDIsImV4cCI6MTU2MDI5NzQ0Mn0.iwN-f20P4ndMoIB1JKzQq_7SWwMC-o9zLPorYXl8oHv3AP1gK7ZnrIwLpfNm35k2s_3-SRGtXmw85oq996BCkg'
 
     this.setState({
-      TokenUser:AccessToken
-      // TokenUser:null
+      // TokenUser:AccessToken
+      TokenUser:null
     })
   }
 
@@ -61,16 +60,14 @@ class RootContainer extends Component {
               TokenUser ? (
                   <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
               ) : (
-                // <HandleError><p>without error children</p></HandleError>
-                <LandingPage history={history} />
+                <LandingPageContainer history={history} />
+                // <LandingPage history={history} />
               )
             )}/>
           </Switch>
       </Router>
     )
-
   }
-
 }
 
 export default RootContainer

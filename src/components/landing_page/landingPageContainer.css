@@ -1,0 +1,69 @@
+body{
+  overflow-y: scroll;
+  background: transparent;
+}
+
+#LandingPageContainer{
+  width: 100vw;
+  height: auto;
+  background: #f3f3f3;
+}
+
+#LandingPageContainer h1 {
+  margin: 0 !important;
+}
+
+.HeaderLandingContent{
+  width: 75%;
+  height: 100vh;
+  position: absolute;
+  justify-self: center;
+  z-index: 2;
+  top: 8vh;
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-row-gap: 45px;
+}
+
+.headerFirstSection{
+  display: grid;
+  position: relative;
+  justify-items:center;
+  grid-row-gap: 10px;
+}
+
+.headerTitle{
+  text-shadow: 2px 1px #565656;
+  color: white;
+  font-size: 35px;
+  text-align: center;
+  font-weight: lighter;
+}
+
+.headerParr{
+  color: white;
+  text-align: center;
+  font-size: 22px;
+  width: 100%;
+  max-width: 550px;
+  margin: 15px;
+  text-shadow: 1px 1px #565656;
+}
+
+.sections{
+  height: 100vh;
+  width: 100vw;
+}
+
+.headerSecondSection{
+  display: grid;
+}
+
+
+
+
+
+
+
+
+/**/

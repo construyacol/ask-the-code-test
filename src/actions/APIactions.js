@@ -762,6 +762,7 @@ export const create_deposit_order = (
 
     const url_new_order = `${ApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body)
+    console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, '| BODY' , body)
     // sentryCaptureMessage('add-new-deposits', new_fiat_deposit)
 
     // http://localhost:3001/api/deposits/add-new-deposit

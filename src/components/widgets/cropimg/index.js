@@ -66,9 +66,7 @@ class CropImg extends React.Component {
   showCroppedImage = async () => {
     await this.props.action.Loader(true)
     const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels)
-
     // return console.log('showCroppedImage', croppedImage)
-
     if(!croppedImage){return this.props.action.Loader(false)}
 
     const {
@@ -76,7 +74,6 @@ class CropImg extends React.Component {
     } = croppedImage
 
     await this.setState({croppedImage: urlImg})
-
     this.props.subirImg(croppedImage)
   }
 
@@ -93,10 +90,10 @@ class CropImg extends React.Component {
     })
   }
 
+
+
   render() {
-
     // console.log('DESDE CROP IMG COMPONENT_______', this.props.action.Loader)
-
     return (
       <div className="App">
         {

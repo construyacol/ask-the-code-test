@@ -249,7 +249,9 @@ render(){
             {
               movil_viewport &&
               <div className="action_date fuente2">
-                23 nov 2019
+                {
+                  moment(ticket.created_at).format("l")
+                }
               </div>
             }
           </Fragment>

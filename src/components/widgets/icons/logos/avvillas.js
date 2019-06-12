@@ -5,9 +5,7 @@ import '../icons.css'
 export const AvVillas = props => {
 
   return(
-    <Icon {...props} viewBox="0 0 225.001 197.667">
-
-      <image overflow="visible" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADcCAMAAACxiTY7AAACE1BMVEUAAAC+1ebg7PXT4u3X5fDP
+      <img width={props.size} alt="" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADcCAMAAACxiTY7AAACE1BMVEUAAAC+1ebg7PXT4u3X5fDP
 4O2xzOE+fa/G2unc6fQTWpDL3uxilr5xoMOpxdlKgayZudMjap8HXJ9RhKwNVYpSjbwbX5Mubp81
 daJajrUJWZe40uUMWJNEeqSSudcraZg/d596p8mLstCkv9MAWaElWn4vc6dalsQcZp8mY406c51I
 iLmJqsAAWJkPXZsWYJosd7JtlrIEUowXaKoXVoQgYpMib64mZpczapQ5gLZMeZh8obtijaqDsNMB
@@ -124,10 +122,7 @@ oSfO+sELDbqdnnn+yfXZen+z77GnhqBBjz/WSf0ndJ/Ydp4lXACzrMovCASgDGOCYdFYUFWJINCa
 zDBZhvEkGPzGjt1b1sFxk+ZtPPbCcWcRIVQOIR53Op1BPsgTwnGcr4znnWUsG88yWGX9zx45tu67
 ZlWWrceP740SkBiEkASyLGOMtQWJhEeST3GlZ58tv6GydFP/ad2Wra++tn/R1BRfNuK7enXv8RMP
 9hzo20r9z7R1b97csaG9vXvdTeUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0r+h2svDNBBx23
-AAAAAABJRU5ErkJggg==" transform="matrix(1 0 0 1 9.765625e-004 -22.333)">
-</image>
-
-    </Icon>
+AAAAAABJRU5ErkJggg=="/>
   )
 
 }

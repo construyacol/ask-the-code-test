@@ -14,23 +14,22 @@ class MenuLoggedOut extends Component {
     return(
       <div className="MenuLoggedOut">
         <div className="contentLogged"></div>
-        <a href={signinUri}>
-          <ButtonForms active={true} clases="register">
-              Registrarme
-          </ButtonForms>
-        </a>
 
-        <a href={signupUri}>
-          <ButtonForms active={true} clases="loggedIn">
-              Iniciar sesión
-          </ButtonForms>
-        </a>
+          <a href={signupUri}>
+            <ButtonForms active={true} clases="loggedIn">
+              <p className="fuenteMuseo ctaLand" >Iniciar sesión</p>
+            </ButtonForms>
+          </a>
+
+          <a href={signinUri}>
+            <ButtonForms active={true} clases="register">
+              <p className="fuenteMuseo ctaLand" >Crear mi cuenta</p>
+            </ButtonForms>
+          </a>
 
       </div>
     )
-
   }
-
 }
 
 export default MenuLoggedOut

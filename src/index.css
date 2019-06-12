@@ -47,14 +47,21 @@ body {
   background: black;
 }
 
+
 @font-face {
-  font-family: Museos;
-  src: url('./assets/fonts/MuseoSans_500.otf');
+  font-family: Museo;
+   src:url('assets/fonts/MuseoSans_500.otf')
 }
 
 .fuenteMuseo {
-  font-family: Museos;
+  font-family: Museo;
 }
+
+
+/*@font-face {
+  font-family: Museos;
+  src: url('./assets/fonts/MuseoSans_500.otf');
+}*/
 
 
 .der{

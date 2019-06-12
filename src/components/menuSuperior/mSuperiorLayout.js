@@ -26,7 +26,9 @@ const MenuSuperiorLayout = (props) =>{
     toggle_menu,
     item_active,
     current_section,
-    back_method
+    back_method,
+    transparent,
+    logo
   } = props
 
   let back_section = item_active === 'wallets' && current_section === 'detail'
@@ -35,18 +37,30 @@ const MenuSuperiorLayout = (props) =>{
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
   return(
-    <section className="MenuSuperiorLayout fuente" >
+    <section className={`MenuSuperiorLayout fuente ${transparent ? 'transparent' : ''}`}>
       <div className="contDinamic">
         <div className="contenedorLogoSenda">
-           <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
-             <div className="contItemLogo"><Coinsenda size={30} color="white" /></div>
-             <div className="contItemLogo">
-               <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}} onClick={back_method}>
-               {/* <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}}> */}
-                 <i className="fas fa-arrow-left"></i>
-               </Link>
-             </div>
-           </div>
+
+          {
+            logo ?
+            <div className="logoComplete">
+              <Coinsenda size={30} color="white" />
+              <p className="fuenteMuseo">Coinsenda</p>
+            </div>
+            :
+            <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
+              <div className="contItemLogo">
+                <Coinsenda size={30} color="white" />
+              </div>
+              <div className="contItemLogo">
+                <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}} onClick={back_method}>
+                  <i className="fas fa-arrow-left"></i>
+                </Link>
+              </div>
+            </div>
+          }
+
+
         </div>
         <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
           {
