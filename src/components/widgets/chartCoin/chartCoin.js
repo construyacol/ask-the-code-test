@@ -7,7 +7,6 @@ import localForage from 'localforage'
 
 import './chartCoin.css'
 
-
 class ChartCoin extends Component {
 
   componentDidMount(){
@@ -15,7 +14,6 @@ class ChartCoin extends Component {
   }
 
   init_component = async() => {
-
     // let lastPrices = await localForage.getItem('prices')
     let lastPrices
 
@@ -28,16 +26,39 @@ class ChartCoin extends Component {
 
     let ctx = document.getElementById('myChart').getContext('2d');
 
+    let gradientStroke
+    let gradientFill
+
+    if(this.props.landingView){
+      gradientStroke = ctx.createLinearGradient(500, 0, 100, 0);
+      gradientStroke.addColorStop(1, "#005790");
+      gradientStroke.addColorStop(0, "#1ea4ff");
+
+      gradientFill = ctx.createLinearGradient(0, 30, 0, 350);
+      gradientFill.addColorStop(1, "rgb(0, 111, 185, 0)");
+      gradientFill.addColorStop(0, "rgb(30, 164, 255, 0.65)");
+    }else{
+      gradientStroke = 'rgb(4, 205, 252)'
+      gradientFill = 'rgb(43, 55, 66, 0.3)'
+    }
+
+
+
     new Chart(ctx, {
         type: 'line',
         data: {
             datasets: [{
                 label: 'Precio',
                 data: lastPrices.data_price,
-                // backgroundColor: 'rgb(4, 205, 252, 0.4)',
-                // borderColor: 'rgb(55,236,126)',
-                backgroundColor: 'rgb(43, 55, 66, 0.35)',
-                borderColor: 'rgb(4, 205, 252)',
+                backgroundColor: gradientFill,
+                fill:true,
+                // backgroundColor: `${this.props.landingView ? gradientFill : 'rgb(43, 55, 66, 0.35)'}`,
+                // borderColor: 'rgb(4, 205, 252)',
+                borderColor:gradientStroke,
+                pointBorderColor:gradientStroke,
+                pointBackgroundColor:gradientStroke,
+                pointHoverBackgroundColor:gradientStroke,
+                pointHoverBorderColor:gradientStroke,
                 borderWidth: 1,
                 steppedLine:'middle'
             }],
@@ -106,8 +127,11 @@ class ChartCoin extends Component {
     return(
       <div className="chartCoin">
         <div className="contChartCoin">
-          <div className="contChartCoinImg"></div>
-          <canvas id="myChart" height="200"></canvas>
+          {
+            !this.props.landingView &&
+            <div className="contChartCoinImg"></div>
+          }
+          <canvas id="myChart" height={`${this.props.landingView ? '280' : '200' }`}></canvas>
         </div>
       </div>
     )

@@ -53,10 +53,7 @@ class NewWallet extends Component{
         currency
       } = this.state
 
-      // this.setState({qr:'http://noticias.universia.net.mx/net/images/ciencia-tecnologia/q/qr/qr-/qr-de-universia-mexico.png',
-      //               address:"1ACAgPuFFidYzPMXbiKptSrwT74Dg8hq2v"})
-      // currencies
-      // matchItem
+
       let get_currency = await matchItem(currencies, {primary:currency}, 'currency')
 
          const body = {
@@ -64,7 +61,7 @@ class NewWallet extends Component{
                "userId":  user && user.id,
                "name":name,
                "description":"description",
-               "country": user && user.settings.current_country,
+               "country": user && user.country,
                "currency": {
                   "currency":get_currency[0].currency,
                   "is_token":get_currency[0].is_token
@@ -74,14 +71,11 @@ class NewWallet extends Component{
 
         const wallets = await this.props.action.create_new_wallet(body)
 
-        // console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
-
 
        if(!wallets || wallets === 465 || wallets === 400){
          this.props.action.ReduceStep('wallets')
          this.props.action.Loader(false)
          let msg = !wallets ? 'ERROR DE CONEXIÓN' : 'Al parecer, aún no tenemos soporte para esta moneda'
-
          return this.props.action.mensaje(msg, 'error')
        }
 
@@ -96,11 +90,13 @@ class NewWallet extends Component{
 
         await this.props.action.get_list_user_wallets(this.props.user)
         await this.props.action.get_account_balances(this.props.user)
+        // return console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
 
         this.props.action.Loader(false)
         this.props.action.success_sound()
         await this.props.action.ToggleModal()
         await this.props.action.CleanForm('wallet')
+
         return this.props.history.push(`wallets/deposit/${account.id}`)
 
         // this.props.action.ModalView('modalSuccess')

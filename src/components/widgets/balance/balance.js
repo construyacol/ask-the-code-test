@@ -2,7 +2,7 @@ import React, { Component }  from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { number_format } from '../../../services'
+import { formatToCurrency } from '../../../services/convert_currency'
 
 import './index.css'
 
@@ -11,46 +11,53 @@ class BalanceComponent extends Component {
 
 
   state = {
-    balance:this.props.balance,
-    current_amount:this.props.balance.available,
+    current_amount:null,
     lastAction:this.props.balance && this.props.balance.lastAction,
     actionType:null,
     animation:null
   }
 
+  componentDidMount(){
+    const convertCurrentAmount = async()=>{
+      let current_amount = await formatToCurrency(this.props.balance.available, this.props.currency, true)
+      this.setState({current_amount})
+    }
+    convertCurrentAmount()
+  }
 
-  componentWillReceiveProps(props){
-    const{
-      balance
-    } = props
 
-    if(this.state.balance === balance){return false}
-    this.setState({balance})
-    this.exec_operation(balance)
-
+  componentDidUpdate(prevProps){
+    if(this.props.balance !== prevProps.balance){
+      this.setState({balance:this.props.balance})
+      this.exec_operation(this.props.balance)
+    }
   }
 
   exec_operation = async balance => {
 
     const{
       lastAction,
-      actionAmount
+      actionAmount,
+      available
     } = balance
 
     if(actionAmount){
+      // el actionAmount es la cantidad a reducir o sumar de la operación, solo con fines de dar feedback visual al usuario, no es indispensable para su funcionalidad
+        let actionAmountFormat = await formatToCurrency(actionAmount, this.props.currency, true)
         await this.play_animation('Out')
         await this.setState({
           actionType:lastAction,
-          current_amount:actionAmount ? actionAmount : balance.available,
+          current_amount:actionAmountFormat,
         })
         await this.play_animation('In')
     }
 
+      let availableAmount = await formatToCurrency(available, this.props.currency, true)
       await this.dead_time()
       await this.play_animation('Out')
       await this.setState({
         actionType:null,
-        current_amount:balance.available,
+        current_amount:availableAmount,
       })
       await this.play_animation('In')
       // this.setState({animation:null})
@@ -89,7 +96,7 @@ class BalanceComponent extends Component {
       currency_type
     } = this.props
 
-    console.log('|||||| BALANCE: ', currency_type)
+    // console.log('|||||| BALANCE: ', currency_type)
 
     return(
       <div className="BalanceComponent wallet">
@@ -103,7 +110,7 @@ class BalanceComponent extends Component {
             {actionType === 'reduce' ? '-' : actionType === 'add' ? '+' : '' }
             {
               currency_type === 'fiat' ?
-              `$${number_format(current_amount)}`
+              `$${current_amount}`
               :
               current_amount
             }
@@ -132,7 +139,8 @@ function mapStateToProps(state, props){
   return{
     balance:balances && balances[account_id],
     user:user[user_id],
-    currency_type:state.model_data.wallets[account_id].currency_type
+    currency_type:state.model_data.wallets[account_id].currency_type,
+    currency:state.model_data.wallets[account_id].currency
   }
 }
 

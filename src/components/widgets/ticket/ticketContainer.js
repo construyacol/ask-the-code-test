@@ -6,7 +6,7 @@ import TicketDetail from './ticketDetail'
 import TicketPaymentProof from './ticketPaymentProof'
 import ErrorView from '../errorView'
 import SimpleLoader from '../loaders'
-import { number_format } from '../../../services'
+import { formatToCurrency } from '../../../services/convert_currency'
 
 import './ticket.css'
 
@@ -15,46 +15,46 @@ class TicketContainer extends Component {
   state = {
     current_ticket:null,
     handleError:false,
-    confirmations:0,
-    total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency].confirmations,
+    confirmations:this.props.ticket.confirmations,
+    total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency] && this.props.currencies[this.props.ticket.currency.currency].confirmations,
     current_ticket_state:this.props.ticket && this.props.ticket.state,
     type_order:this.props.ticket && this.props.ticket.type_order,
     currency_type:this.props.ticket && this.props.ticket.currency_type
   }
-
+// type_order
   componentDidMount(){
 
     const {
-      ticket,
-      currencies
+      ticket
     } = this.props
 
     this.ticket_serve(ticket)
 
+    // console.log('||||||||| - - - - - - - - - - - - - - CURRENCIES', ticket)
     // console.log('||||||||| - - CURRENCIES', currencies[ticket.currency.currency].confirmations )
 
-    if((ticket && ticket.state) !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
-
-    let confirm = setInterval(async()=>{
-
-      const {
-        confirmations
-      } = this.state
-
-
-        await this.setState({
-          confirmations:confirmations >= currencies[ticket.currency.currency].confirmations ? confirmations : confirmations + 1,
-          total_confirmations:currencies[ticket.currency.currency].confirmations
-        });
-
-        if(confirmations === currencies[ticket.currency.currency].confirmations){
-          this.setState({current_ticket_state:'accepted'})
-          this.props.action.ModalView("modalSuccess")
-          this.props.action.success_sound()
-          clearInterval(confirm)
-        }
-
-    }, 3000)
+    // if((ticket && ticket.state) !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
+    //
+    // let confirm = setInterval(async()=>{
+    //
+    //   const {
+    //     confirmations
+    //   } = this.state
+    //
+    //
+    //     await this.setState({
+    //       confirmations:confirmations >= currencies[ticket.currency.currency].confirmations ? confirmations : confirmations + 1,
+    //       // total_confirmations:currencies[ticket.currency.currency].confirmations
+    //     });
+    //
+    //     if(confirmations === currencies[ticket.currency.currency].confirmations){
+    //       this.setState({current_ticket_state:'accepted'})
+    //       this.props.action.ModalView("modalSuccess")
+    //       this.props.action.success_sound()
+    //       clearInterval(confirm)
+    //     }
+    //
+    // }, 3000)
 
   }
 
@@ -64,8 +64,6 @@ class TicketContainer extends Component {
 
 
       const{
-        amount,
-        amount_neto,
         type_order
       } = ticket
 
@@ -73,7 +71,33 @@ class TicketContainer extends Component {
         current_wallet
       } = this.props
 
-      console.log('||||||||||||||| - - - - TICKET', ticket)
+
+      // ticket.amount
+      // ticket.cost
+      // ticket.amount_neto
+      // ticket.currency
+      console.log('||||||||||||||| - - - - TICKET BEFORE', ticket)
+
+      let amount
+      let cost
+      let amount_neto
+      let bought
+      let spent
+
+      if(type_order !== 'swap'){
+         amount = await formatToCurrency(ticket.amount, ticket.currency, true)
+         cost = await formatToCurrency(ticket.cost, ticket.currency, true)
+         amount_neto = await formatToCurrency(ticket.amount_neto, ticket.currency, true)
+      }else{
+        spent = await formatToCurrency(ticket.spent, ticket.currency, true)
+        bought = await formatToCurrency(ticket.bought, ticket.currency_bought, true)
+      }
+
+
+      // console.log('||||||||||||||| - - - - TICKET BOUGHT', bought, bought === 'NaN', ticket.bought)
+
+
+      // formatToCurrency
 
       switch (type_order) {
         case 'withdraw':
@@ -127,19 +151,19 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:"Cantidad a retirar:",
-                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(ticket.amount)}` : ticket.amount,
+                  value:account_from.currency_type === 'fiat' ? `$ ${amount}` : amount,
                   icon:account_from.currency.currency,
                   id:7
                 },
                 {
                   ui_name:"Costo del retiro:",
-                  value:`$ ${number_format(ticket.cost)}`,
+                  value:`$ ${cost}`,
                   icon:account_from.currency.currency,
                   id:9
                 },
                 {
                   ui_name:"Total:",
-                  value:account_from.currency_type === 'fiat' ? `$ ${number_format(ticket.amount_neto)}` : ticket.amount_neto,
+                  value:account_from.currency_type === 'fiat' ? `$ ${amount_neto}` : amount_neto,
                   icon:account_from.currency.currency,
                   id:8
                 }
@@ -151,7 +175,8 @@ class TicketContainer extends Component {
               currencies
             } = this.props
 
-           // console.log('||||||||| - - CURRENCIES', currencies[ticket.currency.currency], )
+            // console.log('||||||||| - - INFO PRINCIPAL', this.props.withdraw_accounts[ticket.withdraw_account], ticket)
+            // console.log('||||||||| - - WITHDRAW ACCOUNTS', this.props.withdraw_accounts)
 
 
             return this.setState({
@@ -169,13 +194,13 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:`Enviado a:`,
-                  value:this.props.withdraw_accounts[ticket.withdraw_account].account_name.value,
+                  value:this.props.withdraw_accounts[ticket.withdraw_account_id].account_name.value,
                   icon:ticket.currency.currency,
                   id:3
                 },
                 {
                   ui_name:`Dirección de billetera:`,
-                  value:this.props.withdraw_accounts[ticket.withdraw_account].account_address.value,
+                  value:this.props.withdraw_accounts[ticket.withdraw_account_id].account_address.value,
                   copy:true,
                   id:7
                 },
@@ -186,25 +211,25 @@ class TicketContainer extends Component {
                 },
                 {
                   ui_name:"Cantidad:",
-                  value:ticket.amount,
+                  value:amount,
                   icon:ticket.currency.currency,
                   id:6
                 },
                 {
                   ui_name:"Costo:",
-                  value:ticket.cost,
+                  value:cost,
                   icon:ticket.currency.currency,
                   id:8
                 },
                 {
                   ui_name:"Cantidad total recibida:",
-                  value:ticket.amount_neto,
+                  value:amount_neto,
                   icon:ticket.currency.currency,
                   id:9
                 },
                 {
                   ui_name:"Tx Id:",
-                  value:ticket.state === 'confirmed' ? 'En proceso' : ticket.withdraw_proof && ticket.withdraw_proof.value,
+                  value:ticket.state === 'confirmed' ? 'En proceso' : ticket.proof,
                   type:ticket.state !== 'confirmed' && "tx",
                   copy:ticket.state !== 'confirmed' && true,
                   url_explorer:ticket.state !== 'confirmed' && (currencies[ticket.currency.currency].node_url),
@@ -244,25 +269,24 @@ class TicketContainer extends Component {
                   {
                     ui_name:"Cantidad:",
                     icon:ticket.currency.currency,
-                    value:ticket.amount,
+                    value:amount,
                     id:4
                   },
                   {
                     ui_name:"Costo:",
                     icon:ticket.currency.currency,
-                    value:ticket.cost,
+                    value:cost,
                     id:5
                   },
                   {
                     ui_name:"Cantidad total recibida:",
                     icon:ticket.currency.currency,
-                    value:ticket.amount_neto,
+                    value:amount_neto,
                     id:6
                   },
                   {
                     ui_name:"Tx Id:",
-                    value:ticket.proof_of_payment.proof,
-                    type:"tx",
+                    value:ticket.paymentProof.proof,
                     copy:true,
                     url_explorer:currencies[ticket.currency.currency] && currencies[ticket.currency.currency].node_url,
                     id:7
@@ -276,22 +300,30 @@ class TicketContainer extends Component {
               current_ticket:[
                 {
                   ui_name:"Debes depositar a:",
+                  // value:'kkk',
                   value:deposit_providers[ticket.deposit_provider_id].provider.ui_name,
+                  // icon:'kkk',
                   icon:deposit_providers[ticket.deposit_provider_id].provider.name,
                   id:5
                 },
                 {
+                  // ui_name:'dsdsd',
                   ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.account_id.ui_name,
+                  // value:'dsdsd',
                   value:deposit_providers[ticket.deposit_provider_id].provider.account.account_id.account_id,
                   id:6
                 },
                 {
+                  // ui_name:'222',
                   ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.type.ui_name,
+                  // value:'222',
                   value:deposit_providers[ticket.deposit_provider_id].provider.account.type.type,
                   id:7
                 },
                 {
+                  // ui_name:'22222',
                   ui_name:deposit_providers[ticket.deposit_provider_id].provider.account.bussines_name.ui_name,
+                  // value:'22222',
                   value:deposit_providers[ticket.deposit_provider_id].provider.account.bussines_name.bussines_name,
                   id:8
                 },
@@ -301,19 +333,19 @@ class TicketContainer extends Component {
                   id:1
                 },
                 {
-                  ui_name:"Cantidad deposito:",
-                  value:`$ ${number_format(amount)} ${ticket.currency.currency}`,
+                  ui_name:"Cantidad de deposito:",
+                  value:`$ ${amount} ${ticket.currency.currency}`,
                   icon:ticket.currency.currency,
                   id:2
                 },
                 {
                   ui_name:"Costo deposito:",
-                  value:`$ ${number_format(ticket.cost)} ${ticket.currency.currency}`,
+                  value:`$ ${cost} ${ticket.currency.currency}`,
                   id:3
                 },
                 {
                   ui_name:"Total deposito:",
-                  value:`$ ${number_format(amount_neto)} ${ticket.currency.currency}`,
+                  value:`$ ${amount_neto} ${ticket.currency.currency}`,
                   id:4
                 }
               ]
@@ -340,20 +372,20 @@ class TicketContainer extends Component {
             },
             {
               ui_name:"cantidad gastada:",
-              value:ticket.spent,
+              value:spent,
               icon:ticket.currency.currency,
               id:4
             },
             {
               ui_name:"divisa adquirida:",
-              value:ticket.currency_bought,
-              icon:ticket.currency_bought,
+              value:ticket.currency_bought.currency,
+              icon:ticket.currency_bought.currency,
               id:5
             },
             {
               ui_name:"cantidad adquirida:",
-              icon:ticket.currency_bought,
-              value:ticket.bought,
+              icon:ticket.currency_bought.currency,
+              value:bought === 'NaN' ? ticket.bought : bought ,
               id:6
             },
             {
@@ -389,7 +421,7 @@ class TicketContainer extends Component {
 
     await this.setState({
       // current_ticket:this.ticket_serve(ticket),
-      current_ticket_state:ticket && ticket.deposit_info.state
+      current_ticket_state:ticket && ticket.state
     })
 
     this.props.action.ModalView("confirmedView")
@@ -498,7 +530,6 @@ function mapStateToProps(state, props){
     })
   }
 
-  // console.log(this.props.currencies && this.props.currencies[this.props.ticket.currency.currency].confirmations)
 
   return{
     ticket:state.form.form_ticket,

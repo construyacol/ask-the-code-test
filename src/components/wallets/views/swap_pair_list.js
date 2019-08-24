@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import ItemLayout from '../../widgets/items/itemLayout'
 import convertCurrencies from '../../../services/convert_currency'
+import OtherModalLayoutPairs from '../../widgets/modal/otherModalLayoutPairs'
 
 export class PairList extends Component {
 
@@ -81,36 +82,33 @@ export class PairList extends Component {
 
 
     return(
-      <section className={`Modal aparecer`}>
-        <div className={`modalCont2 ConfirmationModal`}>
 
-            <div className="PairList">
-              <div className="PairListtitle">
-                <h1 className="fuente">Convertir { current_wallet.currency.currency} a: </h1>
-                <i className="fas fa-times" onClick={this.close_modal}></i>
-              </div>
+      <OtherModalLayoutPairs
+        title={`Convertir ${current_wallet.currency.currency} a:`}
+        close_modal={this.close_modal}
+        >
 
-              <div className="PairListFind"></div>
+        <Fragment>
+          <div className="PairListFind"></div>
 
-              <div className="PairListItems">
-                  {
-                    (all_pairs && !loader) ?
-                       all_pairs.map(pair=>{
-                         return <ItemLayout actives={pair.type_currency==='fiat' ? (pair.code === current_pair.currency) : pair.name === current_pair.currency} actualizarEstado={this.select_quote} {...pair} key={pair.id} />
-                       })
-                    :
-                    <div className="swapLoaderCont">
-                      <SimpleLoader
-                        label={loadermsg}
-                      />
-                    </div>
-                  }
-              </div>
+          <div className="PairListItems">
+              {
+                (all_pairs && !loader) ?
+                   all_pairs.map(pair=>{
+                     return <ItemLayout actives={pair.type_currency==='fiat' ? (pair.code === current_pair.currency) : pair.name === current_pair.currency} actualizarEstado={this.select_quote} {...pair} key={pair.id} />
+                   })
+                :
+                <div className="swapLoaderCont">
+                  <SimpleLoader
+                    label={loadermsg}
+                  />
+                </div>
+              }
+          </div>
+        </Fragment>
 
-            </div>
+      </OtherModalLayoutPairs>
 
-        </div>
-      </section>
     )
   }
 }

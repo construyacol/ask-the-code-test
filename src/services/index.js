@@ -124,7 +124,7 @@ export const serveBankOrCityList = (list, type) => {
     let indices = 0
 
     await Object.keys(list).forEach((indice) => {
-        if(indice === 'ui_name'){return false}
+        if(indice === 'ui_name' || indice === 'ui_type'){return false}
         let new_item = {
           ...list[indice],
           code:indice,
@@ -185,7 +185,6 @@ export const extractSelectList = async(kyc_array, kyc_object) => {
 
 
 export const FormatCountryList = (original_list, to_model_convert_list) => {
-
 
   let new_list = []
   // console.log('!!!! to_model_convert_list', to_model_convert_list)
@@ -280,13 +279,20 @@ export const matchItem = (list, itemReview, type, all_results) => {
                 return item.primary.includes(query) && result.push(item)
             case 'sell_pair':
             // BUSCAMOS COINCIDENCIA DENTRO DEL USER COLLECTION PROVEIDO EN LA LISTA {primary: element}
-                return item.sell_pair.includes(primary) && result.push(item)
+                return item.sell_pair.includes(query) && result.push(item)
             case 'buy_pair':
             // BUSCAMOS COINCIDENCIA DENTRO DEL USER COLLECTION PROVEIDO EN LA LISTA {primary: element}
-                return item.buy_pair.includes(primary) && result.push(item)
+                return item.buy_pair.includes(query) && result.push(item)
             default:
               all_results = true
-              return item[type].toLowerCase().includes(primary) && result.push(item)
+              if(typeof(type) === 'object'){
+                // solo aplica cuando se hacen busquedas en mas de un nivel
+                type.first.toLowerCase()
+                type.second.toLowerCase()
+                console.log(']]]]]]] ====> ANDALE ANDALE', item[type.first][type.second])
+                return item[type.first][type.second].includes(query) && result.push(item)
+              }
+              return item[type].toLowerCase().includes(query) && result.push(item)
           }
       })
 

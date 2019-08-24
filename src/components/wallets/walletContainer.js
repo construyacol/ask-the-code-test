@@ -54,6 +54,7 @@ class WalletContainer extends Component{
     // console.log('1!!!!!!!! CONSULTANDO::::::', current_wallet)
     if(!current_wallet){
       let wallet = await this.props.action.get_wallet_by_id(wallet_id)
+      // console.log('|||||||||||||  init_sub_section', wallet, wallet_id)
       if (wallet){
         if(!this.props.currencies){await this.props.action.get_all_currencies()}
         await this.get_short_currency(wallet)

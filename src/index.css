@@ -3,6 +3,16 @@
   animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 }
 
+.colorTitleLanding{
+  color:#585858;
+}
+
+
+.item p{
+  text-align: center !important;
+}
+
+
 
 @-webkit-keyframes flip-2-hor-bottom-fwd {
   0% {}
@@ -48,16 +58,6 @@ body {
 }
 
 
-@font-face {
-  font-family: Museo;
-   src:url('assets/fonts/MuseoSans_500.otf')
-}
-
-.fuenteMuseo {
-  font-family: Museo;
-}
-
-
 /*@font-face {
   font-family: Museos;
   src: url('./assets/fonts/MuseoSans_500.otf');
@@ -67,6 +67,7 @@ body {
 .der{
 text-align: right !important;
 }
+
 .title{
   font-size: 18px;
   font-weight: bold;

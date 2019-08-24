@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import error_travolta from '../../../assets/error.gif'
 import errorIcon from '../../../assets/erroricon.png'
-import * as Sentry from '@sentry/browser';
+// import * as Sentry from '@sentry/browser';
 import './handleError.css'
 
-Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
+// Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
 
 class HandleError extends Component  {
 
@@ -14,7 +14,7 @@ class HandleError extends Component  {
    }
 
    componentDidCatch(error, info){
-     Sentry.captureException(error);
+     // Sentry.captureException(error);
      this.setState({handleError:true, error})
    }
 

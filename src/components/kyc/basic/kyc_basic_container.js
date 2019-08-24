@@ -226,8 +226,7 @@ class KycBasicContainer extends Component {
 
 
   receivedProps = async(nextProps) =>{
-    if(!this.state.kyc_data_basic){return false}
-    // console.log(nextProps.step, this.state.kyc_data_basic.length)
+    if(!this.state.kyc_data_basic || !this.state.kyc_data_basic[nextProps.step-1]){return false}
     if(nextProps.step > this.state.kyc_data_basic.length){return false}
     let name_section = this.state.kyc_data_basic[nextProps.step-1].name
     let current_search = await name_section === 'phone' ? this.state.data_state['country_prefix'] : name_section === 'country' ? this.state.data_state[name_section] : null

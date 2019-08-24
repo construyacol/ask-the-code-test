@@ -6,11 +6,17 @@ class ConfirmationCounter extends Component {
     ctx:null
   }
 
+  draw_interval
+
   init_draw = async props => {
     let c = document.getElementById("myCanvas")
     await this.setState({
       ctx: c.getContext("2d")
     })
+
+    this.draw_interval =  setInterval(()=>{
+        this.draw(this.props.confirmations)
+    }, 500)
   }
 
 
@@ -19,26 +25,22 @@ class ConfirmationCounter extends Component {
       ctx
     } = this.state
 
-    // console.log(amount)
     if(!ctx){return false}
+    clearInterval(this.draw_interval)
 
     ctx.beginPath()
     ctx.arc(150, 63, 50, 0, 2 * (Math.PI/100)*((100/this.props.total_confirmations)*amount))
-    // ctx.arc(150, 63, 50, 0, 2 * (Math.PI/100)*(17*amount))
     ctx.lineWidth = 3
     ctx.strokeStyle = 'white'
     ctx.stroke()
   }
 
-  componentWillReceiveProps(props){
-    const {
-      confirmations
-    } = props
 
-    this.draw(confirmations)
-
-    // this.draw('||||||||| componentWillReceiveProps' ,confirmations)
+  componentDidUpdate(prevProps) {
+  if (this.props.confirmations !== prevProps.confirmations) {
+      this.draw(this.props.confirmations)
   }
+}
 
   componentDidMount(){
     this.init_draw()

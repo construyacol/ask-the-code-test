@@ -30,7 +30,7 @@ class SelectCountry extends Component {
     this.props.action.Loader(true)
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
-
+    // console.log('||||| =====================================> SelectCountry', res)
     return this.setState({
       available_countries:res.countries,
       available_country_list:res.country_list,
@@ -44,6 +44,7 @@ class SelectCountry extends Component {
     if(match && match.length === 1){
       //Si hay una coincidencia con la busqueda simulamos el click en el país de coincidencia
       this.setState({country_match:match[0]})
+
       if(!without_click){
         this.simulate_click(document.getElementById(`${match[0].value}`), 'click');
       }
@@ -85,6 +86,8 @@ class SelectCountry extends Component {
       disabled
     } = this.state
 
+
+     // console.log('available_countries',available_countries)
 
     return(
       <Fragment>

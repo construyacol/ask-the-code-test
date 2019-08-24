@@ -7,7 +7,7 @@
 	position: absolute;
   opacity: 0.17;
   justify-self:center;
-	top: 30px;
+	top: 40px;
 	border-radius: 50%;
 	box-shadow: -30px -30px 0 -10px rgba(0,0,0,.22) inset,
 				-60px -20px 0 0 rgba(0,0,0,.2) inset,
@@ -16,7 +16,7 @@
 	background: url(../../../assets/map.png);
 	background-size: cover;
 
-	-webkit-animation: tierra-girando 7s infinite linear;
+	-webkit-animation: tierra-girando 12s infinite linear;
   z-index: 1;
 }
 

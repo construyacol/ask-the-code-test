@@ -37,6 +37,7 @@ class SAmerica extends Component {
   // zoom to show a bounding box, with optional additional padding as percentage of box size
   boxZoom = (box, centroid, paddingPerc, d, this_index, paths) => {
 
+
     const { properties } = d
     let country = properties.admin.toLowerCase()
 

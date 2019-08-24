@@ -27,6 +27,7 @@ class ActivityList extends Component {
   }
 
 
+
   init_activity = async() =>{
 
 
@@ -109,7 +110,7 @@ class ActivityList extends Component {
     let activity_list = []
 
     // console.log('||||||||||||||||||||||||||||||||| filter_activity', filter, this.props[filter])
-    if(this.props[filter] &&  user[filter].length>0){
+    if(this.props[filter] && user[filter].length>0){
         activity_list = await serve_orders(current_wallet.id, filter)
       }
 
@@ -213,11 +214,13 @@ class ActivityList extends Component {
 
     let deleted = currentFilter === 'withdrawals' ? await this.props.action.delete_withdraw_order(id) : await this.props.action.delete_deposit_order(id)
 
-    const {
-      count
-    } = deleted
+    // const {
+    //   count
+    // } = deleted
 
-    if(count<0){
+    // return console.log('_______________________DELETE API SERVICE ENDPOINT', deleted)
+
+    if(!deleted){
       await this.setState({deleting:false, current_order_loader:0})
       return false
     }
@@ -289,6 +292,8 @@ class ActivityList extends Component {
 
   verTicket = async(props) =>{
 
+    this.props.action.CleanItemNotifications('wallets', 'order_id')
+
     const{
       ticket
     } = props
@@ -330,12 +335,11 @@ class ActivityList extends Component {
     await this.props.action.current_section_params({currentFilter:value})
     let current_activity = this.props.current_activity_account[value] || []
     current_activity = current_activity.length>0 ? current_activity : await this.filter_activity(value)
-
     if(current_activity && current_activity.length === 0){
       return this.init_activity()
     }
 
-    console.log('====>    HAS CAMBIADO DE FILTRO', current_activity)
+    // console.log('________________________CURRENT ACTIVITY:::::', current_activity)
 
     await this.props.action.update_activity_account(this.props.current_wallet.id, value, current_activity)
     await this.setState({
@@ -365,7 +369,8 @@ class ActivityList extends Component {
       activity,
       pending,
       expandidoMax,
-      lastPending
+      lastPending,
+      currencies
     } = this.props
 
     const{
@@ -377,7 +382,7 @@ class ActivityList extends Component {
       deleted
     } = this.state
 
-    // console.log('|||||||||||| PENDIENTE PARIENTE ARRE! ', activity)
+    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
 
     return(
       <div className="ActivityView">
@@ -414,6 +419,7 @@ class ActivityList extends Component {
                                       current_order_loader={current_order_loader}
                                       deleting={deleting}
                                       deleted={deleted}
+                                      currencies={currencies}
                                        />
                             })
                       }
@@ -443,6 +449,7 @@ class ActivityList extends Component {
                               delete_order={this.delete_order_confirmation}
                               ticket={item}
                               short_name={short_name}
+                              notifier_type="wallets"
                                />)
                       })
                   }
@@ -461,12 +468,25 @@ class ActivityList extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id, currencies } = state.model_data
   const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
   const { activity_for_account } = state.storage
   let pending_index = `pending_${currentFilter}`
   let pending_activity = activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][pending_index]
+
+  let currency_list
+
+    if(currencies && current_wallet.currency_type === 'crypto'){
+      currencies.map(currency=>{
+        return currency_list = {
+          ...currency_list,
+          [currency.currency]:{
+            ...currency
+          }
+        }
+      })
+    }
 
   return{
     newDepositStyle:state.ui.current_section.params.new_deposit_style,
@@ -478,6 +498,7 @@ function mapStateToProps(state, props){
     user:user[user_id],
     current_activity_account:activity_for_account[current_wallet.id],
     activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][currentFilter],
+    currencies:currency_list,
     ...pending_activity
   }
 }

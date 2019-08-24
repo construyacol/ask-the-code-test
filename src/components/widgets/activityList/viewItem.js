@@ -1,4 +1,4 @@
- import React, { Fragment, Component } from 'react'
+import React, { Fragment, Component } from 'react'
 import { number_format } from '../../../services'
 import { PaymentConfirButton } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
@@ -7,6 +7,7 @@ import SimpleLoader from '../loaders'
 import SwapAnimation from '../swapAnimation/swapAnimation'
 import moment from 'moment'
 import 'moment/locale/es'
+import PopNotification from '../notifications'
  moment.locale('es')
 
 class ItemList extends Component{
@@ -16,33 +17,6 @@ class ItemList extends Component{
 // processing
 // done / error
 
-  state = {
-    stateSwap:'pending'
-  }
-
-  componentDidMount(){
-
-
-    if(this.props.ticket.type_order === 'swap'){
-      this.initConfig()
-    }
-  }
-
-initConfig = () =>{
-
-  setTimeout(()=>{
-    this.setState({
-      stateSwap:'processing'
-    })
-  }, 2000)
-
-  setTimeout(()=>{
-    this.setState({
-      stateSwap:'done'
-    })
-  }, 7000)
-
-}
 
 
 detail = async() =>{
@@ -116,9 +90,12 @@ render(){
     // console.log('||||||||||||||||| -- - - -- DÍA ', moment(ticket.created_at).format("DD"), '==>', new_date)
     // console.log('||||||||||||||||| -- - - -- MES ', moment(ticket.created_at).format("MMM"), '==>', new_date)
 
+    // if(ticket.state === 'confirmed'){
+    //   console.log('__________________________________________this.props', this.props.currencies, ticket)
+    // }
 
   const atributos ={
-    icon:currency_bought,
+    icon:currency_bought && currency_bought.currency,
     size:18,
     color:'#1babec'
     // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`
@@ -132,14 +109,9 @@ render(){
 
 
   // cost lo tomamos como referencia para diferenciarlo como deposito
-      const {
-        unique_id,
-        status
-      } = socket_swap
 
 
-  let statePendingSwap = status && unique_id === id ? status : state
-
+  let statePendingSwap = socket_swap.state && socket_swap.id === id ? socket_swap.state : state
   // let pendingSwap = unique_id === id && type_order === 'swap'
   let pendingSwap = type_order === 'swap' && (statePendingSwap === 'pending' || statePendingSwap === 'processing' || statePendingSwap === 'done' ) ? true : false
 
@@ -196,7 +168,7 @@ render(){
                   (currency_type === 'crypto' && state === 'confirmed' && type_order === 'deposit') ?
                     <div className="ConfirmedTxT fuente2">
                       <p>
-                        3 <span>/6</span>
+                        {ticket.confirmations} <span>/{this.props.currencies && this.props.currencies[ticket.currency.currency].confirmations}</span>
                       </p>
                     </div>
                   :
@@ -256,6 +228,7 @@ render(){
             }
           </Fragment>
         }
+        <PopNotification notifier={this.props.notifier_type} item_type="order_id" id={id} type="new"/>
       </div>
 
 
@@ -286,7 +259,7 @@ render(){
               <Fragment>
                 Confirmado:
                 <span className="fuente2 confirmedNumber">
-                  3/6
+                  {ticket.confirmations}/{this.props.currencies && this.props.currencies[ticket.currency.currency].confirmations}
                 </span>
               </Fragment>
               :
@@ -384,7 +357,6 @@ render(){
 
 function mapStateToProps (state, props){
   // console.log('||||||||||||||||||| - - - - ESTADO DESDE EL ITEM DE ACTIVITY', state)
-
 
   return {
     socket_swap:state.ui.current_section.params.swap_socket_channel,

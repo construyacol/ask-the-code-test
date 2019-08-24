@@ -7,20 +7,24 @@
   gird-template-rows: auto auto;
 }
 
+.zap{
+  background: red !important;
+}
+
 #Headers{
   width: 100%;
   height: 90%;
   overflow: hidden;
   transform: skewY(-10deg);
   transform-origin: 0;
-  background: linear-gradient(150deg,#0066AA, #00D2FF);
   position: absolute;
+  background: linear-gradient(150deg, #0066AA, #1ea4ff);
+  top: -60px;
 }
 
-.HeaderLanding img{
-  position: absolute;
-  z-index: 1;
-  justify-self:center;
+
+
+.tierra img{
   opacity: 0.04;
 }
 
@@ -29,39 +33,44 @@
   height: 190px;
 }
 
-.first{
+.header_first{
   width: calc(100% / 3);
   left: calc(calc(calc(100% / 3) / 2) * -1);
-  background: #006fab;
+  background: #0065a9;
   top: 0;
 }
 
-.second{
+.header_second{
   width: calc(100% / 3);
   top: 0;
   left: 16.66666%;
   left: calc(calc(100% / 3) / 2);
   right: auto;
-  background: #0085c2;
+  background: #0b7dca;
 }
 
-.third{
+.header_third{
   width: calc(100% / 3);
   left: calc(calc(calc(100% / 3) / 2) + calc(100% / 3));
   bottom: auto;
-  background: #0085c1;
+  background: #0b7dca;
 }
 
-.four{
+.header_four{
   width: calc(100% / 3);
   top: 380px;
   top: calc(190px * 2);
   right: calc(calc(calc(100% / 3) / 2) * -1);
-  background: #00c2f2;
+  background: #23a6ff;
 }
 
-.five{
+.header_five{
   width: calc(100% / 3);
   bottom: 0;
-  background: #0082c0;
+  background: #0063a5;
+}
+
+
+.tween{
+  z-index: 3;
 }

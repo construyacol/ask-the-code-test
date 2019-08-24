@@ -113,7 +113,7 @@ class witdrawAccountContainer extends Component{
       const {withdraw_accounts, app_loaded } = this.props
 
 
-      console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||', this.props)
+      // console.log('|||||||||| °°°°°  WithdrawContainer  °°°°°||||||||||', this.props)
 
       return(
               <Router
@@ -166,7 +166,7 @@ function mapStateToProps(state, props){
     app_loaded
   } = state.isLoading
 
-  // console.log('|||||||| withdraw_accounts', user[user_id].withdraw_accounts)
+  // console.log('|||||||| withdraw_accounts', user[user_id], user[user_id].withdraw_accounts)
 
   return{
     withdraw_accounts:user[user_id].withdraw_accounts,

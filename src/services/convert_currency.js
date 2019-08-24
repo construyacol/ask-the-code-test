@@ -1,20 +1,22 @@
 import { BigNumber } from "bignumber.js"
 import store from '../'
 
-  const formatToCurrency = async(n, short_currency, delete_surplus_decimals = true) =>{
+  export const formatToCurrency = async(n, short_currency, toFormat, delete_surplus_decimals = true) =>{
+
 
     let config = {
       "bitcoin":BigNumber.clone({ROUNDING_MODE:BigNumber.ROUND_HALF_UP, DECIMAL_PLACES:8}),
       "bitcoin_testnet":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 8}),
-      "usd":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 2}),
+      "usd":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 3}),
       "ethereum":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 8}),
-      "cop":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 0}),
+      "cop":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 3}),
       "bitcoin_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
       "bitcoin_testnet_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
       "usd_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 2}),
       "ethereum_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
       "cop_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 0})
     }
+
 
     let amount = String(n).slice();
 
@@ -25,8 +27,12 @@ import store from '../'
       currency = short_currency.currency;
     }
 
+    // return console.log('PROOF FUNCTION', config[currency])
 
     if (delete_surplus_decimals){
+      if(toFormat){
+        return  config[currency](amount).div("1").toFormat();
+      }
       return  config[currency](amount).div("1");
     } else {
       return  config[currency](amount);
@@ -54,17 +60,15 @@ import store from '../'
 
 
 
-  const convertCurrencies = async(currency, amount_spend , pair_id) => {
+  const convertCurrencies = async(currency, amount_spend, pair_id) => {
 
     let data = {
        "to_spend_currency":currency,
-       "want_to_spend":amount_spend,
-          "pair_id":pair_id
+       "want_to_spend":amount_spend.toString(),
+       "pair_id":pair_id
      }
 
-     // console.log('|||||||||||||||||||||| convertCurrencies', data)
     let objetive_pair_instance = store.getState().model_data.all_pairs[pair_id]
-
 
     let to_spend_currency = extractCurrencies([data.to_spend_currency]);
     let primary_objetive_currency = extractCurrencies([objetive_pair_instance.primary_currency]);
@@ -73,7 +77,6 @@ import store from '../'
     objetive_data.pair_id = objetive_pair_instance.id;
 
     if (to_spend_currency[0] === primary_objetive_currency[0]){
-      // console.log('Es una venta')
       // Es una venta
       data.want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.primary_currency);
 
@@ -94,7 +97,6 @@ import store from '../'
 
       objetive_data.want_to_spend = want_to_spend.div(objetive_pair_instance.buy_price).toFormat();
     }
-
     // console.log(objetive_data)
     // alert('alert')
     return objetive_data;

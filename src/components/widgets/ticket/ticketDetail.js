@@ -84,7 +84,7 @@ class TicketDetail extends Component{
 
               {
                 (state === 'confirmed' && currency_type === 'crypto') &&
-                <p className="TicketmsgPayment TicketConfirm fuente">Genial, ahora solo queda tener algo de paciencia, esta ordén esta siendo confirmada, alcanzando 6 confirmaciones en la blockchain pasará a "Aceptada" y podrás hacer uso de tu saldo.</p>
+                <p className="TicketmsgPayment TicketConfirm fuente">Genial, ahora solo queda tener algo de paciencia, esta ordén esta siendo confirmada, alcanzando {total_confirmations} confirmaciones en la blockchain pasará a "Aceptada" y podrás hacer uso de tu saldo.</p>
               }
 
               {

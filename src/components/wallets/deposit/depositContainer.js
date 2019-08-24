@@ -39,7 +39,7 @@ class DepositContainer extends Component {
 
   componentDidMount(){
     this.props.action.CurrentForm('deposit')
-    this.serve_deposit_provider_views()
+    // this.serve_deposit_provider_views()
     }
 
   update_control_form = (searchMatch) => {
@@ -218,7 +218,7 @@ updateAmountOnState = async(amount) =>{
 
     this.props.action.UpdateFormControl('deposit', true)
     this.update_form()
-    await this.serve_deposit_provider_views(deposit_way === 'cash' ? 'en_efectivo' : 'otros_medios')
+    // await this.serve_deposit_provider_views(deposit_way === 'cash' ? 'en_efectivo' : 'otros_medios')
   }
 
   update_service_mode = async(value, short) =>{
@@ -262,7 +262,7 @@ updateAmountOnState = async(amount) =>{
     // }
 
     if(!this.state.deposit_provider_list){
-      return this.serve_deposit_provider_views()
+      // return this.serve_deposit_provider_views()
     }
 
   }
@@ -306,7 +306,6 @@ updateAmountOnState = async(amount) =>{
 
   create_deposit_order = async() => {
 
-
     const {
       current_wallet,
       user,
@@ -318,16 +317,17 @@ updateAmountOnState = async(amount) =>{
       amount,
       cost_id,
       deposit_service,
-      short_bank_name
+      service_mode
     } = this.state
 
-
-    // console.log('||||||||||   como envio los depositos', deposits)
+    // console.log('||||||||||   como envio los depositos', service_mode)
     // console.log('create_deposit_order CURRENT_WALLET', current_wallet)
     // console.log('create_deposit_order PROPS', this.props)
-    let deposit_provider_id = await deposit_providers.find(dep_prov => {
-      return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
-    })
+
+    // let deposit_provider = await deposit_providers.find(dep_prov => {
+    //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
+    // })
+    let deposit_provider = deposit_providers[0] && deposit_providers[0]
 
     this.siguiente()
     this.props.action.Loader(true)
@@ -340,9 +340,11 @@ updateAmountOnState = async(amount) =>{
       deposit_service,
       user,
       deposits,
-      deposit_provider_id.id
+      service_mode,
+      deposit_provider.id
     )
-    // console.log('create_deposit_order response', response)
+    // return console.log('create_deposit_order response', response)
+    // console.log('°°°°°°°°°°°°°°°°|||||||||||||||||||||deposit_provider', deposit_provider)
 
     if(!response){
       this.props.action.Loader(false)
@@ -353,9 +355,9 @@ updateAmountOnState = async(amount) =>{
 
     let new_deposit_model = {
       id:response.id,
-      unique_id:response.unique_id,
+      unique_id:response.id,
       type_order:'deposit',
-      ...response.deposit_info
+      ...response
     }
 
     // console.log('create_deposit_order new_deposit_model', new_deposit_model)
@@ -363,7 +365,7 @@ updateAmountOnState = async(amount) =>{
     // await this.props.action.get_deposit_list(user)
     await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
     await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
-    await this.props.action.update_pending_activity()
+    // await this.props.action.update_pending_activity()
 
     // console.log('=> deposits UPDATE', this.props.deposits)
 
@@ -373,49 +375,48 @@ updateAmountOnState = async(amount) =>{
     //   await this.props.action.update_pending_activity()
     // }, 5000)
 
-    const { deposit_info } = response
-
+    // return console.log('DEPOSIT INFO RESPONSE', response, new_deposit_model)
     let new_deposit = [
       {
         ui_name:"Id deposito:",
-        value:response.id,
+        value:new_deposit_model.id,
         id:1
       },
       {
         ui_name:"Cantidad deposito:",
-        value:`$ ${this.props.services.number_format(deposit_info.amount)} ${deposit_info.currency.currency}`,
-        icon:deposit_info.currency.currency,
+        value:`$ ${this.props.services.number_format(new_deposit_model.amount)} ${new_deposit_model.currency.currency}`,
+        icon:new_deposit_model.currency.currency,
         id:2
       },
       {
         ui_name:"Costo deposito:",
-        value:`$ ${this.props.services.number_format(deposit_info.cost)} ${deposit_info.currency.currency}`,
+        value:`$ ${this.props.services.number_format(new_deposit_model.cost)} ${new_deposit_model.currency.currency}`,
         id:3
       },
       {
         ui_name:"Total deposito:",
-        value:`$ ${this.props.services.number_format(deposit_info.amount_neto)} ${deposit_info.currency.currency}`,
+        value:`$ ${this.props.services.number_format(new_deposit_model.amount_neto)} ${new_deposit_model.currency.currency}`,
         id:4
       },
       {
         ui_name:"Debes depositar a:",
-        value:deposit_provider_id.provider.ui_name,
-        icon:deposit_provider_id.provider.name,
+        value:deposit_provider.provider.ui_name,
+        icon:deposit_provider.provider.name,
         id:5
       },
       {
-        ui_name:deposit_provider_id.provider.account.account_id.ui_name,
-        value:deposit_provider_id.provider.account.account_id.account_id,
+        ui_name:deposit_provider.provider.account.account_id.ui_name ,
+        value:deposit_provider.provider.account.account_id.account_id,
         id:6
       },
       {
-        ui_name:deposit_provider_id.provider.account.type.ui_name,
-        value:deposit_provider_id.provider.account.type.type,
+        ui_name:deposit_provider.provider.account.type.ui_name ,
+        value:deposit_provider.provider.account.type.type,
         id:7
       },
       {
-        ui_name:deposit_provider_id.provider.account.bussines_name.ui_name,
-        value:deposit_provider_id.provider.account.bussines_name.bussines_name,
+        ui_name:deposit_provider.provider.account.bussines_name.ui_name,
+        value:deposit_provider.provider.account.bussines_name.bussines_name,
         id:8
       }
     ]
@@ -478,37 +479,37 @@ updateAmountOnState = async(amount) =>{
 
 
 
-  serve_deposit_provider_views = async dep_provs =>{
-    // @param dep_prov
-    // otros_medios
-    // en_efectivo
-    const{
-      deposit_providers
-    } = this.props
-    // console.log('||||===> deposit_providers', deposit_providers)
-    let deposit_provider_list = []
-
-    await deposit_providers.map(async dep_prov => {
-      if(dep_prov.currency_type !== 'fiat'){return false}
-      // console.log('serve_deposit_provider_views', dep_prov)
-      let new_item = {
-            code:dep_prov.provider.name,
-            id:dep_prov.id,
-            type:'bank',
-            name:dep_prov.provider.ui_name,
-            selection:false,
-            min_amount:dep_prov.provider.min_amount
-          }
-        // console.log('dep_prov', dep_prov)
-        await this.setState({minAmount:dep_prov.provider.min_amount})
-        deposit_provider_list.push(new_item)
-    })
-
-    // console.log('===============> deposit_provider_list', deposit_provider_list)
-
-    return this.setState({deposit_provider_list:deposit_provider_list.length<1 ? null : deposit_provider_list})
-
-  }
+  // serve_deposit_provider_views = async dep_provs =>{
+  //   // @param dep_prov
+  //   // otros_medios
+  //   // en_efectivo
+  //   const{
+  //     deposit_providers
+  //   } = this.props
+  //   // console.log('||||===> deposit_providers', deposit_providers)
+  //   let deposit_provider_list = []
+  //
+  //   await deposit_providers.map(async dep_prov => {
+  //     if(dep_prov.currency_type !== 'fiat'){return false}
+  //     // console.log('serve_deposit_provider_views', dep_prov)
+  //     let new_item = {
+  //           code:dep_prov.provider.name,
+  //           id:dep_prov.id,
+  //           type:'bank',
+  //           name:dep_prov.provider.ui_name,
+  //           selection:false,
+  //           min_amount:dep_prov.provider.min_amount
+  //         }
+  //       // console.log('dep_prov', dep_prov)
+  //       await this.setState({minAmount:dep_prov.provider.min_amount})
+  //       deposit_provider_list.push(new_item)
+  //   })
+  //
+  //   // console.log('===============> deposit_provider_list', deposit_provider_list)
+  //
+  //   return this.setState({deposit_provider_list:deposit_provider_list.length<1 ? null : deposit_provider_list})
+  //
+  // }
 
 
 
@@ -575,10 +576,13 @@ function mapStateToProps(state, props){
     currencies
   } = state.model_data
 
-  let deposit_providers_list =  user[user_id].deposit_providers.map(provider_id => {
-    return deposit_providers[provider_id]
+  let deposit_providers_list = []
+  user[user_id].deposit_providers.map(provider_id => {
+    if(deposit_providers[provider_id].currency_type !== 'fiat'){return false}
+    return deposit_providers_list.push(deposit_providers[provider_id])
   })
 
+  // console.log('_____________________DEPOSIT PROVIDER ITEM ITERATOR', deposit_providers_list)
 
 
 

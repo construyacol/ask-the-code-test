@@ -156,10 +156,7 @@ class ItemSelectionContainer extends Component {
         <div className="ItemSelectionContainer">
           {
             !this.state.items ?
-
             <SimpleLoader/>
-
-
             :
             <div className="containerItems">
               {
@@ -167,24 +164,23 @@ class ItemSelectionContainer extends Component {
                 search.length>0 ?
                     search.length<2 ?
                           // validamos si dentro de la busqueda hay una sola coincidencia, si la hay actualizamos el estado y la autoseleccionamos
-                          search.map(item=>{
-                            return <ItemLayout actualizarEstado={this.seleccionarItem} actives={true} {...item} key={item.id}/>
+                          search.map(item =>{
+                            return <ItemLayout actualizarEstado={this.seleccionarItem} actives={true} {...item} key={item.id} format={this.props.format}/>
                           })
                         :
                           //Si hay mas de 1 coincidencia, solo mostramos los items inactivos resultantes de la busqueda
                           search.map(item=>{
-                            return <ItemLayout actualizarEstado={this.seleccionarItem} {...item} key={item.id}/>
+                            return <ItemLayout actualizarEstado={this.seleccionarItem} {...item} key={item.id} format={this.props.format}/>
                           })
                 :
                 // sino tenemos busqueda renderice todos los items
                 items.map(item=>{
-                  return <ItemLayout actualizarEstado={this.seleccionarItem} {...item} key={item.id}/>
+                  return <ItemLayout actualizarEstado={this.seleccionarItem} {...item} key={item.id} format={this.props.format}/>
                   // return <ItemLayout actualizarEstado={this.handleClick} {...item} key={item.id}/>
                 })
               }
             </div>
           }
-
         </div>
       </section>
     )

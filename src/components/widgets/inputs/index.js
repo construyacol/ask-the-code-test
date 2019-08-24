@@ -7,6 +7,41 @@ import Environtment from '../../../environment'
 
 const { CountryUrl } = Environtment
 
+
+export const InputFormConverter = (props) => {
+
+  return(
+    <div className="contInputFormConverter">
+      {
+        props.icon &&
+        <div className={`iconConverterContainer iConver ${props.iconPosition}`}>
+          <div className="contIconvert">
+            <IconSwitch
+              icon={props.icon}
+              size={25}
+             />
+          </div>
+           <p className="currencyNameConv fuente">{props.currency_short_name}</p>
+        </div>
+      }
+        <input
+          className={`inputElement ${props.iconPosition}`}
+          type={props.type}
+          placeholder={props.placeholder}
+          onChange={props.onChange}
+          value={props.value}
+          // onFocus={props.focusAction}
+          // onBlur={unFocusAction}
+          name={props.name}
+          // defaultValue={props.value}
+          // disabled={disabled}
+        />
+    </div>
+  )
+
+}
+
+
 export const InputForm = (props) => {
 const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
   return(
@@ -113,9 +148,15 @@ state = {
   total_value:""
 }
 
-componentWillReceiveProps({primary_value}){
-  if(primary_value){
-    this.total_value(primary_value)
+// componentWillReceiveProps({primary_value}){
+//   if(primary_value){
+//     this.total_value(primary_value)
+//   }
+// }
+
+componentDidUpdate(prevProps){
+  if(this.props.primary_value !== prevProps.primary_value){
+    this.total_value(this.props.primary_value)
   }
 }
 
@@ -157,7 +198,8 @@ total_value
       {/* <div className={`${!clase ? 'containerInputComponent' : clase}`}> */}
         <div className={`inputContainer ${active ? 'inputActivado' : '' }`}>
 
-        {  !secondary_value ?
+        {
+          !secondary_value ?
           <div className="ReadReceiveCoinLoader">
              <SimpleLoader/>
           </div>

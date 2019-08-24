@@ -29,7 +29,7 @@ class TicketPaymentProof extends Component  {
     if (e.target.files && e.target.files.length > 0) {
       this.props.action.Loader(true)
       const imageDataUrl = await readFile(e.target.files[0])
-      // console.log('goFileLoader', imageDataUrl)
+      console.log('goFileLoader', imageDataUrl)
       this.props.action.Loader(false)
 
       this.setState({
@@ -67,7 +67,7 @@ updateLocalImg = (img) =>{
 
     this.props.action.Loader(true)
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
-    // let res = await this.props.action.confirm_deposit_order(ticket, '');
+
     if(!res){return false}
     // let list = await this.props.action.get_deposit_list(user)
     const {
@@ -87,9 +87,11 @@ updateLocalImg = (img) =>{
       this.props.action.mensaje(`¡Orden Confirmada !`, 'success')
     }, 700)
 
+    // console.log('_______________________________________________ DATA ORDER CONFIRMED', res)
+
     let search_by = {
-      name:"unique_id",
-      unique_id:data.unique_id
+      name:"id",
+      id:data.id
     }
     let replace_prop = {
       name:"state",

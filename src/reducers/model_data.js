@@ -10,7 +10,8 @@ import {
   LOCAL_PAIRS,
   UPDATE_SWAP_PENDING,
   REDUCE_BALANCE,
-  ADD_BALANCE
+  ADD_BALANCE,
+  ALL_PAIRS_LANDING
 } from '../actions/action_types'
 
 const initialState = {
@@ -143,7 +144,6 @@ let models
 
       let arreglo = state.pairs.local_collections
           arreglo.filter((item)=>{
-
                 let query = action.payload
                 switch (action.prop) {
                   case 'pair':
@@ -158,6 +158,7 @@ let models
               if(result.length<1){
                  result.push(arreglo[0])
               }
+
       return {
           ...state,
           pairs:{
@@ -166,14 +167,20 @@ let models
           }
       }
     case LOCAL_CURRENCY:
-      let localCurrency = action.payload.toLowerCase()
       return{
         ...state,
         pairs:{
           ...state.pairs,
-          localCurrency:localCurrency
+          ...action.payload
         }
       }
+      case ALL_PAIRS_LANDING:
+        return{
+          ...state,
+          all_pairs:{
+            ...action.payload
+          }
+        }
     default:
       return state
   }

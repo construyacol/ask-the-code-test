@@ -1,0 +1,32 @@
+{
+  "currencies":[
+      {
+        "name":"Mi billetera Bitcoin",
+        "red":"Bitcoin",
+        "balance":"0",
+        "id":"1",
+        "status":"Disponible"
+      },
+      {
+        "name":"Mi billetera Ethereum",
+        "red":"Ethereum",
+        "balance":"0",
+        "id":"2",
+        "status":"Disponible"
+      },
+      {
+        "name":"Mi billetera Dash",
+        "red":"Dash",
+        "balance":"0",
+        "id":"3",
+        "status":"Proximamente"
+      },
+      {
+        "name":"Mi billetera Litecoin",
+        "red":"Litecoin",
+        "balance":"0",
+        "id":"4",
+        "status":"Proximamente"
+      }
+  ]
+}

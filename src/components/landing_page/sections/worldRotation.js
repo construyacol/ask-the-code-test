@@ -4,7 +4,7 @@ import '../css/worldRotation.css'
 const WordlView = props => {
 
   return(
-      <div class="tierra"></div>
+      <div className="tierra"></div>
   )
 }
 

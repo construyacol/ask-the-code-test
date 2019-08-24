@@ -37,6 +37,23 @@ export const normalize_user = async(user) => {
   })
 
   return await do_normalization(user, normalizedUser)
+}
+
+
+export const normalize_data = async(all_pairs) => {
+
+  let data = {
+    id:1232323232, //id de prueba
+    all_pairs:all_pairs
+  }
+
+  const all_pair = new schema.Entity('all_pairs',{})
+
+  const normalizeData = new schema.Entity('data', {
+    all_pairs:[all_pair]
+  })
+
+  return await do_normalization(data, normalizeData)
 
 }
 

@@ -5,19 +5,17 @@ import actions from '../../../actions'
 import SelectCountry from '../maps/select_country/select_country'
 import Coinsenda from '../icons/logos/coinsenda.js'
 import IconSwitch from '../icons/iconSwitch'
-
 import './loader.css'
 
 class LoaderAplication extends Component {
 
   state = {
-    country:this.props.country,
+    country:'colombia',
     progressBarWidth:0,
     anim:'in'
   }
 
   componentDidMount(){
-    // console.log('||||||||||||| ==============> LOADER APP componentDidMount', this.props)
     this.init_component()
   }
 
@@ -25,22 +23,38 @@ class LoaderAplication extends Component {
 
   init_component = async(new_country) =>{
 
-    const{
-      country,
-      token
-    } = this.props //el country y el token deben llegar desde el auth service, si no llega el country es la primera vez del usuario
+    const {
+      token,
+      userId,
+      logOut
+    } = this.props.user_data
+
+    const {
+      action
+    } = this.props
 
 
-    // let user_with_token = {
-    //
-    // }
+    const { country } = this.state
+
+    let profile = await action.get_profile(userId, token)
+    if(!profile){
+      if(!new_country){return this.setState({country:null})}
+      profile = await action.add_new_profile(new_country, token)
+    }
+    if(!profile.countries[country] && !profile.countries[new_country]){return false}
+    // const{
+    //   country,
+    //   token
+    // } = this.props
+    //el country y el token deben llegar desde el auth service, si no llega el country es la primera vez del usuario
 
 
+  // let user_with_token = {
+  //
+  // }
   // Primero validamos la legitimidad del token, para definir si el usuario esta loggedIn o el token no es valido
   // Si el token no es valido, borramos el token del localForage
   // si es valido continuamos con la validación del usuario y actualizamos el estado de authenticación a loggedIn:true
-  this.props.action.logged_in(true)
-
 
 
   //1.recibo token y country del usuario
@@ -58,25 +72,22 @@ class LoaderAplication extends Component {
     if(!country && !new_country ){return false}
     let user_country = new_country ? new_country : country
 
-    let res = await this.props.action.countryvalidators()
+    let res = await action.countryvalidators()
     if(!res){
       // return this.go_to_select_country()
-      return this.props.logOut()
+      return logOut()
     }
+
+
     // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
     if(!res.countries[user_country]){
       this.go_to_select_country()
       return false
     }
-
     await this.animation('out')
     await this.setState({country:user_country})
     await this.animation('in')
 
-    const {
-      action,
-      init_sockets
-    } = this.props
 
 
     // action.ToggleModal()
@@ -84,16 +95,14 @@ class LoaderAplication extends Component {
     // Recuerda que el perfil se inicializa en el transaction service GET: /api/profiles/
     // este endpoint inicializa la normalización de los modelos, a partir de aquí ya tenemos user en redux
 
-    // Si se carga desde este punto no podemos cargar los pares normalizados en la propiedad available pairs del modelo usuario porque no contamos con su id
+    // alert('llega')
+
+
     let pairs = await action.get_all_pairs(token, user_country)
-    // console.log('=====>    QUE PASA PRRO', pairs)
+    // return console.log('____________________pairs', pairs)
     if(!pairs){
-      this.go_to_select_country()
-      return false
+      return logOut()
     }
-
-
-
 
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
@@ -102,29 +111,37 @@ class LoaderAplication extends Component {
     let user = await action.get_user(token, user_country)
     if(!user){return false}
 
-
     // Seteamos el token del usuario al modelo en redux
     let user_update = {
       ...this.props.user,
       TokenUser:token
     }
 
+
     await action.update_user(user_update)
-    await init_sockets()
+    await this.props.action.logged_in(true)
+
+    // Si se carga desde este punto no podemos cargar los pares normalizados en la propiedad available pairs del modelo usuario porque no contamos con su id
+    // await this.props.action.get_ref_code()
+
+
+     await action.get_all_currencies()
 
     let user_collection = [{primary:'ethereum'}]
-    await action.get_pairs_for('colombia', user_collection)
-    await this.props.action.get_ref_code()
-    // await action.get_pairs_for('colombia')
-    let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
-    await action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-    await action.get_account_balances(this.props.user)
-    await action.get_deposit_providers(this.props.user)
+     action.get_pairs_for(this.props.user.country, user_collection)
+
+
+     action.get_account_balances(this.props.user)
+     action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
-    await action.get_all_currencies()
+
+
+    let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
+    await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
     await action.get_deposit_list(this.props.user)
-    await action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
+    await action.get_swap_list()
     await action.get_withdraw_list(this.props.user)
+
     let verification_state = await action.get_verification_state()
 
     // si al usuario se le ha rejectado o solo ha enviado la info de la verificación basica('personal') su verificación lo redirigimos hacia centro de seguridad
@@ -152,6 +169,9 @@ class LoaderAplication extends Component {
     // user_collecion(cotizaciones personalizadas del usuario, comparamos las cotizaciones disponibles y las vistas disponibles de estas monedas, si hay matches actualizamos el estado)
 
   }
+
+
+
 
 
   componentWillReceiveProps(nextProps){
@@ -235,7 +255,8 @@ function mapStateToProps(state, props){
 
   const { user, user_id,  wallets, all_pairs } = state.model_data
   const { loader } = state.isLoading
-  const { current_country, token } = props
+  const { token } = props
+  const { loggedIn } = state.auth
   // console.log('|||||| mapStateToProps', props)
 
   return{
@@ -244,9 +265,9 @@ function mapStateToProps(state, props){
     wallets,
     all_pairs,
     // country:null,
-    country:current_country,
     token:token,
-    loader
+    loader,
+    loggedIn
   }
 }
 

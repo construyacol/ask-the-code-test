@@ -8,7 +8,7 @@ import PassView from './pass'
 import IconSwitch from '../../icons/iconSwitch'
 import { ButtonForms } from '../../buttons/buttons'
 import AuthReq from './authreq'
-import OtherModalLayout from '../../modal/otherModalLayout'
+import OtherModalLayoutPairs from '../../modal/otherModalLayoutPairs'
 import MVList from './listView'
 
 import './viewSettings.css'
@@ -202,7 +202,7 @@ update_state = (payload) =>{
 
     return(
 
-      <OtherModalLayout title={title} close_modal={this.close_modal}>
+      <OtherModalLayoutPairs title={title} close_modal={this.close_modal}>
 
               {/* <p className="OtherModalFind"></p> */}
 
@@ -277,7 +277,7 @@ update_state = (payload) =>{
 
               </section>
 
-      </OtherModalLayout>
+      </OtherModalLayoutPairs>
     )
   }
 }
