@@ -3,7 +3,8 @@ import MenuSuperiorLayout from './mSuperiorLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-import { number_format } from '../../services'
+import { formatToCurrency } from '../../services/convert_currency'
+
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
 import PropTypes from 'prop-types'
@@ -13,41 +14,14 @@ class MenuSuperiorContainer extends Component {
 
   state = {
     movil:window.innerWidth < 768 ? true : false,
-    buy_price:this.props.currentPair && number_format(this.props.currentPair.buy_price),
-    sell_price:this.props.currentPair && number_format(this.props.currentPair.sell_price)
+    buy_price:null,
+    sell_price:null
   }
 
   logout = async() =>{
-    // this.props.action.CurrentForm('kyc_basic')
-    // this.props.action.ToggleModal()
-    console.log('this.props.history', this.props)
-    // let user_update = {
-    //   ...this.props.user,
-    //   TokenUser:null
-    // }
-    // await this.props.action.update_user(user_update)
-
-    // this.props.history.push('/landing')
     await this.props.logOut()
     this.props.action.logged_in(false)
   }
-
-  componentWillReceiveProps(props){
-
-    let buy
-    let sell
-
-    if(props.currentPair){
-       buy = number_format(props.currentPair.buy_price)
-       sell = number_format(props.currentPair.sell_price)
-       this.setState({
-         buy_price:buy,
-         sell_price:sell
-       })
-    }
-  }
-
-
 
   country_change = () => {
     this.props.action.ready_to_play(false)
@@ -72,8 +46,26 @@ class MenuSuperiorContainer extends Component {
     this.props.action.HeadRoom('pinned')
   }
 
+  formating_currency = async() => {
+    const { currentPair } = this.props
+    if(!currentPair){return false}
+    let buy_price = await formatToCurrency(currentPair.buy_price, currentPair.secondary_currency, true)
+    let sell_price = await formatToCurrency(currentPair.sell_price, currentPair.secondary_currency, true)
+    this.setState({
+      buy_price,
+      sell_price
+    })
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps !== this.props){
+      this.formating_currency()
+    }
+  }
+
 
   componentDidMount(){
+    this.formating_currency()
     let menuSuperior = document.getElementById('mSuperior')
     let detonador = document.getElementById('containerElement')
     const headroom = new Headroom(menuSuperior, {

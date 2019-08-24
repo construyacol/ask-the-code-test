@@ -215,6 +215,7 @@ export const PaymentConfirButton = (props) => {
 
 
 export const ItemSelected = (props) =>{
+
   const{
     label,
     active,
@@ -233,6 +234,23 @@ export const ItemSelected = (props) =>{
         </div>
     </div>
   )
+
+}
+
+
+export const ButtonNofity = props => {
+
+  const handleAction = () =>{
+    props.buttonAction(props.item_id)
+  }
+
+
+  return(
+    <div className="ButtonNofity fuente" onClick={handleAction}>
+      {props.children}
+    </div>
+  )
+
 }
 
 export default ButtonPrincipalMenu

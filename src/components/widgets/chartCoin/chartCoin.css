@@ -34,12 +34,27 @@
   display: block;
   position: absolute;
   bottom: -5px;
-  left: -2px;
+  left: -10px;
   /*height: 60% !important;*/
   /*height: 100% !important;*/
-  width: 100% !important;
+  width: 101% !important;
   justify-self:center !important;
 }
+
+
+.InputFormConverter{
+  position: absolute;
+  bottom: -30px;
+  width: 100%;
+  max-width: 600px;
+  height: 60px;
+  background: white;
+  z-index: 10;
+  justify-self:center;
+  border-radius: 6px;
+  box-shadow: 10px 10px 17px -13px rgba(0,0,0,0.47);
+}
+
 
 
 @media only screen and (max-width: 768px) {
@@ -47,3 +62,12 @@
    width: 80% !important;
   }*/
 }
+
+
+
+
+
+
+
+
+/**/

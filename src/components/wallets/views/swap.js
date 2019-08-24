@@ -23,8 +23,6 @@ class SwapView extends Component{
     this.init_state()
   }
 
-
-
   init_state = async() => {
     await this.props.initial(this.props.match.params.path, this.props.match.params.id)
     this.getOtherPairs(true)
@@ -37,7 +35,7 @@ class SwapView extends Component{
 
     let value = e.target.value
     let { available } = this.props
-
+    console.log('___________________valor tecleado:', value)
     this.setState({
       value:value,
       active: ((parseFloat(value) <= parseFloat(available))) ? true : false
@@ -66,12 +64,9 @@ class SwapView extends Component{
   }
 
 
-
   handleError = msg =>{
     mensaje(msg, 'error')
   }
-
-
 
 
   finish_swap = async(p) =>{
@@ -91,48 +86,39 @@ class SwapView extends Component{
       current_pair
     } = this.props
 
-    const { secondary_coin, pair_id } = current_pair
+    const { pair_id } = current_pair
     let total_value = await this.get_total_value(value)
-
-    // console.log
     let new_swap = await this.props.action.add_new_swap(current_wallet.id, pair_id, value)
-
+    // console.log('!!!!!____________________________________________add_new_swap', new_swap)
     if(!new_swap){
       return this.handleError('No se ha podio hacer el cambio')
     }
 
     await this.props.action.current_section_params({active_trade_operation:true})
 
-    const {
-      swap_info,
-      unique_id
-    } = new_swap
-
     let add_swap = {
-      account_id: swap_info.account_from_id,
-      account_to: "",
-      action_price: "",
-      amount: total_value.toString(),
+      account_id: new_swap.account_from,
+      account_to: new_swap.account_to,
+      action_price: new_swap.action_price,
+      amount: total_value,
       amount_neto: "",
-      bought: total_value.toString(),
+      bought: total_value,
       comment: "",
-      currency: current_wallet.currency,
-      currency_bought: secondary_coin,
-      currency_type: current_wallet.currency_type,
+      currency: new_swap.to_spend_currency,
+      currency_bought:new_swap.to_buy_currency,
+      currency_type:current_wallet.currency_type,
       deposit_cost: "",
       deposit_provider_id: "",
       expiration_date:new Date(),
-      id:unique_id,
-      unique_id:unique_id,
-      spent: swap_info.want_to_spend,
-      state: "pending",
+      id:new_swap.id,
+      unique_id:new_swap.id,
+      spent: new_swap.spent,
+      state:new_swap.state,
       type_order: "swap"
     }
 
     await this.props.action.add_order_to('swaps', swaps, user, add_swap)
-
     await this.props.action.add_new_transaction_animation()
-
     this.props.action.Loader(false)
     this.props.history.push(`/wallets/activity/${current_wallet.id}`)
 
@@ -140,12 +126,14 @@ class SwapView extends Component{
 
 
   get_total_value = async value =>{
+
     const {
       current_wallet,
       current_pair
     } = this.props
+
     const { pair_id } = current_pair
-    // console.log('|||||||||  current_pair', current_pair)
+    // console.log('|||||||||  current_pair', current_wallet.currency, value, pair_id)
     let total_value = await convertCurrencies(current_wallet.currency, value, pair_id)
     // console.log('|||||||||  total_value', total_value)
     if(!total_value){return false}
@@ -195,7 +183,6 @@ class SwapView extends Component{
 
     // !initial && this.props.action.ConfirmationModalToggle()
     !initial && this.props.action.other_modal_toggle()
-
     if(currency_pairs){return false}
 
     let pairs = await this.props.action.get_pair_from(currency, null, true)
@@ -361,7 +348,7 @@ function mapStateToProps(state, props){
     secondary_value:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency_value
   }
 
-  // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_pair)
+  // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_wallet, pairs_for_account)
 
   return{
     loader:state.isLoading.loader,

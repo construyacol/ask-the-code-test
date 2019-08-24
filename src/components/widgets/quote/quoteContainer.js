@@ -4,17 +4,18 @@ import { connect } from 'react-redux'
 import SimpleLoader from '../loaders'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
-import { number_format } from '../../../services'
+import { formatToCurrency } from '../../../services/convert_currency'
+
+
 import PropTypes from 'prop-types'
 
 import './quote.css'
 
 class QuoteContainer extends Component {
 
-
   state = {
-    buy_price:this.props.pairs.currentPair.buy_price,
-    sell_price:this.props.pairs.currentPair.sell_price,
+    buy_price:null,
+    sell_price:null,
     movil:window.innerWidth < 768 ? true : false
   }
 
@@ -22,25 +23,34 @@ class QuoteContainer extends Component {
     this.props.action.SearchCurrentPair(payload, 'currency')
   }
 
-  componentWillReceiveProps(props){
-    let buy
-    let sell
-    if(props.pairs.currentPair){
-       buy = number_format(props.pairs.currentPair.buy_price)
-       sell = number_format(props.pairs.currentPair.sell_price)
-       this.setState({
-         buy_price:buy,
-         sell_price:sell
-       })
+  componentDidMount(){
+    this.formating_currency()
+  }
+
+  formating_currency = async() => {
+    const { currentPair } = this.props
+    if(!currentPair){return false}
+    let buy_price = await formatToCurrency(currentPair.buy_price, currentPair.secondary_currency, true)
+    let sell_price = await formatToCurrency(currentPair.sell_price, currentPair.secondary_currency, true)
+    this.setState({
+      buy_price,
+      sell_price
+    })
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps !== this.props){
+      this.formating_currency()
     }
   }
+
 
   switchItem = payload =>{
     const action = payload.target.id
     this.props.action.ItemQuoteActive(action)
 
     this.setState({
-      buy:action === 'buy' ? true : false ,
+      buy:action === 'buy' ? true : false,
       sell:action === 'sell' ? true : false
     })
   }
@@ -49,7 +59,7 @@ class QuoteContainer extends Component {
   render(){
     // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', this.props)
 
-    const { currentPair } = this.props.pairs
+    const { currentPair } = this.props
     return(
       <Fragment>
         {
@@ -79,7 +89,6 @@ QuoteContainer.propTypes = {
   buy:PropTypes.bool,
   sell:PropTypes.bool,
   loader:PropTypes.bool,
-  pairs:PropTypes.object,
   user_collection:PropTypes.array
 }
 
@@ -89,7 +98,8 @@ QuoteContainer.propTypes = {
 function mapStateToProps(state, props){
   // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', state.model_data.pairs.user_collection)
   return{
-    pairs:state.model_data.pairs,
+    currentPair:state.model_data.pairs.currentPair,
+    localCurrency:state.model_data.pairs.localCurrency,
     loader:state.isLoading.loader,
     user_collection:state.model_data.pairs.user_collection,
     buy:state.ui.item_quote.buy,

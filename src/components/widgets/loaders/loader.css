@@ -74,7 +74,12 @@
   justify-items:center;
   align-items:center;
 }
-
+.kycPropgressed {
+    height: 100%;
+    width: 20%;
+    transition: .3s;
+    background: linear-gradient(to right, #129A8E , #37ED7D);
+}
 .LoaderContainer{
   height: 200px;
   display: grid;
@@ -86,8 +91,9 @@
 
 .KycprogressBar.loader{
   height: 6px;
-  /*bottom: 0;*/
-  /*top: auto !important;*/
+  top: 0;
+  width: 100%;
+  position: absolute;
 }
 
 .LoaderContainer .lds-ellipsis{

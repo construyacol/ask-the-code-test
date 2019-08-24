@@ -1,4 +1,8 @@
 
+.item div{
+  position: relative;
+}
+
 .ItemSelectionContainer{
   /*height: calc(100% - 55px);*/
       /*align-items: center;*/

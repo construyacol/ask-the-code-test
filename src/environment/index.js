@@ -3,6 +3,10 @@ export const Environtment = {
   SocketUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
   IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'https://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
   CountryApIUrl:process.env.NODE_ENV === 'development' ? 'https://countrylistapi.ngrok.io/api/' : 'https://countrylistapi.ngrok.io/api/',
+  AccountApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendaaccount.ngrok.io/api/' : 'https://sendaaccount.ngrok.io/api/',
+  DepositApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendadeposit.ngrok.io/api/' : 'https://sendadeposit.ngrok.io/api/',
+  WithdrawApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendawithdraw.ngrok.io/api/' : 'https://sendawithdraw.ngrok.io/api/',
+  SwapApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendaswap.ngrok.io/api/' : 'https://sendaswap.ngrok.io/api/',
   CountryUrl:'https://countrylistapi.ngrok.io/' //endpoint imagenes
 }
 
@@ -13,9 +17,6 @@ export default Environtment
 // ApiUrl:process.env.NODE_ENV === 'development' ? 'http://192.168.0.16:3001/api/' : 'https://www.binance.com'
 // token coinsenda
 
-//AUTH
-// https://mensis.serveo.net/public/signin?clientId=5bea09f3b5f9071f69c49e05
-// http://andres.indophi.com:3000/public/signin?clientId=5bea09f3b5f9071f69c49e05
 
   // user: zeky.laf+local@gmail.com
   // pw: starnet1
@@ -27,5 +28,21 @@ export default Environtment
 // https://mensis.serveo.net/
 // https://archa.serveo.net/
 
-// http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
-// https://oldauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
+// https://oldauth.ngrok.io/public/signin?clientId=5d234981249f0d2d1bf1b72e
+
+
+
+// 5d234a113035be2e18a953ca
+
+
+// nuevas APIS
+
+
+// Country: https://countrylistapi.ngrok.io
+// Auth: https://oldauth.ngrok.io
+// Identity: https://sendaidentity.ngrok.io
+// Tx: https://sendatx.ngrok.io
+// Account: https://sendaaccount.ngrok.io
+// Deposit: https://sendadeposit.ngrok.io
+// Witdhraw: https://sendawithdraw.ngrok.io
+// Swap: https://sendaswap.ngrok.io

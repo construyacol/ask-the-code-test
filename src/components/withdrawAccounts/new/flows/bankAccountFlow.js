@@ -53,7 +53,6 @@ class BankAccountFlow extends Component{
     let bank_list = res && res[0].info_needed.bank_name
     let city_list = res && res[0].info_needed.city
 
-
     let serve_bank_list = await serveBankOrCityList(bank_list, 'bank')
     let serve_city_list = await serveBankOrCityList(city_list, 'city')
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)
@@ -148,6 +147,7 @@ class BankAccountFlow extends Component{
                   <ItemSelectionContainer
                       type="banks"
                       items={banks}
+                      format="svg"
                       itemSelect={bank_name}
                       actualizarEstado={actualizarEstado}
                       handleSubmit={handleSubmit}
@@ -172,7 +172,7 @@ class BankAccountFlow extends Component{
               }}>
 
                 <div className="nBcontBank">
-                  <ItemLayout actives={true} type="bank" code={short_name} name={bank_name}/>
+                  <ItemLayout format="svg" actives={true} type="bank" code={short_name} name={bank_name}/>
                 </div>
                 {
                   step === 4 &&
@@ -264,9 +264,14 @@ function mapStateToProps(state, props){
   // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : mapStateToProps withdraw PROVIDERS', state)
   const { user, user_id, withdraw_providers  } = state.model_data
 
-  let withdraw_providers_list = user[user_id].withdraw_providers.map((wp)=>{
-    return withdraw_providers[wp]
+  let withdraw_providers_list = []
+  user[user_id].withdraw_providers.map((wp)=>{
+    if(withdraw_providers[wp].provider_type !== 'bank'){return false}
+    return withdraw_providers_list.push(withdraw_providers[wp])
   })
+
+  console.log('---------------------------SIRVIENDO PROVEEDORES', withdraw_providers_list)
+
 
   return{
     withdraw_providers_list:withdraw_providers_list,

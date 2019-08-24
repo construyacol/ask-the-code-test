@@ -9,7 +9,8 @@ UPDATE_ALL_CURRENCIES,
 LOCAL_PAIRS,
 UPDATE_SWAP_PENDING,
 REDUCE_BALANCE,
-ADD_BALANCE
+ADD_BALANCE,
+ALL_PAIRS_LANDING
 } from './action_types'
 
 
@@ -32,6 +33,14 @@ export const ManageBalanceAction = (account_id, action, amount) => {
           amount:amount
         }
       }
+  }
+}
+
+
+export const all_pairs_landing = (payload) => {
+  return {
+    type:ALL_PAIRS_LANDING,
+    payload
   }
 }
 

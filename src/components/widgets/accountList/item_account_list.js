@@ -109,11 +109,11 @@ class WalletList extends Component{
   }
 
 
-  delete_account = async(wallet_id, type) => {
+  delete_account = async(account_id, type) => {
 
     // this.props.action.Loader(true)
-    this.setState({label:"Eliminando Wallet", wallet_state:"deleting", id_wallet_action:wallet_id})
-    let wallet_delete = await this.props.action.delete_account(wallet_id, type)
+    this.setState({label:"Eliminando Wallet", wallet_state:"deleting", id_wallet_action:account_id})
+    let wallet_delete = await this.props.action.delete_account(account_id, type)
 
     let msg = "Wallet eliminada con exito"
     let success = true
@@ -125,7 +125,7 @@ class WalletList extends Component{
 
     this.props.action.exit_sound()
     this.setState({label:"Obteniendo tus Cuentas", wallet_state:"deleted"})
-    type === 'withdraw' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`) : await this.props.action.get_list_user_wallets(this.props.user)
+    type === 'withdraw' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers) : await this.props.action.get_list_user_wallets(this.props.user)
 
 
     this.props.action.mensaje(msg, success ? 'success' : 'error')
@@ -241,6 +241,7 @@ function mapStateToProps(state, props){
   let item_list = []
 
 if(lista === 'withdraw_accounts'){
+  // console.log('||||||||||||||||||||| inicializar --------------------', user[user_id][lista], state.model_data[lista])
    user[user_id][lista].map((item_id)=>{
      if(state.model_data[lista][item_id].currency_type === 'crypto'){return false}
      if(!state.model_data[lista][item_id].visible){return false}
@@ -265,7 +266,7 @@ if(lista === 'withdraw_accounts'){
           used_counter:state.model_data[lista][item_id].used_counter,
           // inscribed:state.model_data[lista][item_id].inscribed
           // used_counter:0,
-          inscribed:true
+          inscribed:state.model_data[lista][item_id].used_counter > 1 ? true : false
          })
    })
  }

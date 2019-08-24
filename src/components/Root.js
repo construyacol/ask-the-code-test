@@ -3,22 +3,42 @@ import HomeContainer from './home/homeContainer'
 import { Router, Route, Switch } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
 import localForage from 'localforage'
-import PagesRouter from './landingPage/pages'
+// import PagesRouter from './landingPage/pages'
+import HelPages from './landing_page/help_pages'
+import jwt from 'jsonwebtoken'
+
 // import AuthComponentContainer from './auth'
 import LandingPageContainer from './landing_page/landingContainer'
+// import Landing from './landingPage'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
 
+
+
 class RootContainer extends Component {
 
   state = {
-    TokenUser:null
+    TokenUser:null,
+    userId:"default"
   }
 
   componentDidMount(){
     this.init_component()
   }
+
+  token_is_valid = async(created_at) => {
+    // Este metodo valida si el token esta vigente, vigencia => 2.5 hrs (150min)
+    var fechaInicio = created_at.getTime();
+    var fechaFin    = new Date().getTime();
+    var diff = (fechaFin - fechaInicio)/(1000*60);
+    if(parseInt(diff) >= 150){
+      return false
+    }
+    return true
+  }
+
+
 
   init_component = async() =>{
 
@@ -29,39 +49,62 @@ class RootContainer extends Component {
       result = history.location.search.split("?token=")
       TokenUser = result[1]
       await localForage.setItem('TokenUser', TokenUser)
+      await localForage.setItem('created_at', new Date())
+      history.push('/')
     }
 
-    // let AccessToken = await localForage.getItem('TokenUser')
-    // let AccessToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDUiLCJ1c3IiOiI1YmVhMWYwMWJhODQ0OTMwMThiNzUyOGMiLCJqdGkiOiJBUVZKVzZjSTVQVmkwU1RjSWhCZnVZeEdaeUtva1BRYXJFYWg4RVpEZDk0SndRY2t6VXoxZTFlTjNHZ0w3RUFQIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxub3RpZmljYXRpb24iLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1YmVhMDlmM2I1ZjkwNzFmNjljNDllMDVcIn0iLCJpYXQiOjE1NjAyODY2NDIsImV4cCI6MTU2MDI5NzQ0Mn0.iwN-f20P4ndMoIB1JKzQq_7SWwMC-o9zLPorYXl8oHv3AP1gK7ZnrIwLpfNm35k2s_3-SRGtXmw85oq996BCkg'
+    let AccessToken = await localForage.getItem('TokenUser')
 
+
+    let created_at = await localForage.getItem('created_at')
+    if(!created_at || !AccessToken){return this.logOut()}
+
+    let availableToken = await this.token_is_valid(created_at)
+    if(!availableToken){return this.logOut()}
+    // console.log('|||||||| availableToken', availableToken)
+
+    let userData = await jwt.decode(AccessToken)
+    // console.log('|||||||| userData', userData)
+    if(!userData){return this.logOut()}
+    const { usr } = userData
+    // console.log(AccessToken)
     this.setState({
-      // TokenUser:AccessToken
-      TokenUser:null
+      TokenUser:AccessToken,
+      userId:usr
+      // TokenUser:null
     })
   }
 
   logOut = async() =>{
     await localForage.removeItem('TokenUser')
-    await this.setState({TokenUser:false})
+    await localForage.removeItem('created_at')
+    await this.setState({TokenUser:false, userId:null})
     history.push('/')
   }
 
   render(){
 
-    const { TokenUser } = this.state
+    const { TokenUser, userId } = this.state
+
+    const user_data = {
+      token:TokenUser,
+      userId:userId,
+      logOut:this.logOut
+    }
 
     return(
       <Router
         history={history}
         >
           <Switch>
-            <Route strict path="/help" component={PagesRouter} />
+            <Route strict path="/docs" component={HelPages} />
             <Route path="/" render={ () => (
               TokenUser ? (
-                  <HomeContainer history={history} token={TokenUser} logOut={this.logOut} />
-              ) : (
-                <LandingPageContainer history={history} />
-                // <LandingPage history={history} />
+                  <HomeContainer history={history} user_data={user_data} />
+              )
+              : !userId &&
+              (
+               <LandingPageContainer history={history} />
               )
             )}/>
           </Switch>

@@ -94,17 +94,20 @@ state = {
     if(!withdraw_account){
       // si la cuenta no existe, se crea una nueva y se consultan
       withdraw_account = await this.props.action.add_new_withdraw_account({
+        currency:current_wallet.currency,
         provider_type:current_wallet.currency.currency,
         label:current_wallet.currency.currency,
         address:address,
-        currency_type:'crypto'
+        country:user.country
       },'crypto')
 
+
       let get_withdraw_providers = await this.props.action.get_withdraw_providers(user)
-      await this.props.action.get_withdraw_accounts(user, get_withdraw_providers, `{"where": {"userId": "${user.id}"}}`)
+      await this.props.action.get_withdraw_accounts(user, get_withdraw_providers)
     }
 
       let retiro = await this.props.action.add_new_withdraw_order(value, current_wallet.id, withdraw_provider.id, withdraw_account.id)
+
 
       if(!retiro){
         this.props.action.Loader(false)
@@ -112,7 +115,7 @@ state = {
       }
 
       // Confirmamos la orden de retiro
-      let res = await this.props.action.add_update_withdraw(retiro.data.unique_id, 'confirmed', retiro.data.withdraw_info.account_from)
+      let res = await this.props.action.add_update_withdraw(retiro.data.id, 'confirmed')
 
       if(!res){
         this.props.action.Loader(false)
@@ -123,22 +126,22 @@ state = {
 
       let new_withdraw_model = {
         id:retiro.data.id,
-        unique_id:retiro.data.unique_id,
+        unique_id:retiro.data.id,
         type_order:'withdraw',
-        account_id:retiro.data.withdraw_info.account_from,
-        ...retiro.data.withdraw_info,
-        state:res.data.withdraw_info.state
+        account_id:retiro.data.account_id,
+        ...retiro.data,
+        state:res.data.state
       }
 
       // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model)
 
+      await this.props.action.get_account_balances(this.props.user)
       await this.props.action.normalize_new_item(this.props.user, this.props.withdrawals, new_withdraw_model, 'withdrawals')
       await this.props.action.update_activity_account(this.props.current_wallet.id, 'withdrawals')
       await this.props.action.update_pending_activity()
-
-    await this.props.action.add_new_transaction_animation()
-    this.props.action.Loader(false)
-    this.props.history.push(`/wallets/activity/${this.state.account_id}`)
+      await this.props.action.Loader(false)
+      this.props.action.add_new_transaction_animation()
+      this.props.history.push(`/wallets/activity/${this.state.account_id}`)
   }
 
 

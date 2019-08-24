@@ -104,7 +104,7 @@ class WithdrawAccountForm extends Component{
       // simulación Endpoint Crear wallet
       this.props.action.Loader(true)
       let res = await this.props.action.add_new_withdraw_account(this.state)
-
+      // return console.log('RESPUESTA NUEVA CUENTA FIAT CREADA', res)
       if(!res){
         // this.props.action.ReduceStep(this.props.current)
         this.props.action.ReduceStep(this.props.current)
@@ -112,7 +112,7 @@ class WithdrawAccountForm extends Component{
         return this.props.action.Loader(false)
       }
 
-      await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+      await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers)
 
       if(this.props.withdraw_flow){
         return this.props.withdraw_flow_action(res)

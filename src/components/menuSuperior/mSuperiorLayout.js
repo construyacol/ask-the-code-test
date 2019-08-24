@@ -26,9 +26,7 @@ const MenuSuperiorLayout = (props) =>{
     toggle_menu,
     item_active,
     current_section,
-    back_method,
-    transparent,
-    logo
+    back_method
   } = props
 
   let back_section = item_active === 'wallets' && current_section === 'detail'
@@ -37,17 +35,11 @@ const MenuSuperiorLayout = (props) =>{
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
   return(
-    <section className={`MenuSuperiorLayout fuente ${transparent ? 'transparent' : ''}`}>
+    <section className={`MenuSuperiorLayout fuente `}>
       <div className="contDinamic">
         <div className="contenedorLogoSenda">
 
-          {
-            logo ?
-            <div className="logoComplete">
-              <Coinsenda size={30} color="white" />
-              <p className="fuenteMuseo">Coinsenda</p>
-            </div>
-            :
+
             <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
               <div className="contItemLogo">
                 <Coinsenda size={30} color="white" />
@@ -58,8 +50,6 @@ const MenuSuperiorLayout = (props) =>{
                 </Link>
               </div>
             </div>
-          }
-
 
         </div>
         <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
@@ -92,7 +82,6 @@ const MenuSuperiorLayout = (props) =>{
             <div className="loggedInFalse">
               <MenuLoggedOut/>
             </div>
-
           }
 
           <div className="capsuleMenu2">

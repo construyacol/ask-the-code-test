@@ -11,7 +11,10 @@ import thunk from 'redux-thunk'
 import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
 import { Provider } from 'react-redux'
-
+// const script = document.createElement("script");
+// script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
+// script.async = true;
+// document.body.appendChild(script);
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
 
 const store = createStore(

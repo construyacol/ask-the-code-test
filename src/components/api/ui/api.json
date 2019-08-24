@@ -10,21 +10,21 @@
         "id":1
       },
       {
-        "title":"Deposito",
+        "title":"Depositar",
         "func":"goTo",
         "link":"deposit",
         "available":true,
         "id":2
       },
       {
-        "title":"Retiro",
+        "title":"Retirar",
         "func":"goTo",
         "link":"withdraw",
         "available":true,
         "id":3
       },
       {
-        "title":"Cambio",
+        "title":"Cambiar",
         "func":"goTo",
         "link":"swap",
         "available":true,

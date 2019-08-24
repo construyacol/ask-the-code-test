@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import { SimpleLoader } from '../../../widgets/loaders'
-import ItemSelectionContainer from '../../../widgets/items/ItemSelectionContainer'
-import { ButtonSuccess, ButtonForms, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
+import { ButtonSuccess, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
 import './flows.css'
 import { service_modes, cash_payment } from '../../../api/ui/api.json'
 import proof from '../../../../assets/proof.png'
@@ -19,21 +18,17 @@ export const TransferFlow = (props) => {
     deposit_way,
     deposit_service,
     step,
-    actualizarEstado,
-    update_control_form,
     buttonActive,
-    siguiente,
     update_service_mode,
     service_mode,
-    create_deposit_order,
-    deposit_provider_list
+    create_deposit_order
   } = props
 
 
 
   return(
     <section className="DepositLayout" >
-      {
+      {/* {
         (step === 3 && deposit_way === "bankaccount") &&
         <div className="DLstep">
           <div className="DLcontain">
@@ -55,13 +50,13 @@ export const TransferFlow = (props) => {
 
           <ButtonForms type="primary" active={buttonActive} siguiente={siguiente}>Continuar</ButtonForms>
         </div>
-      }
+      } */}
 
       {
-        (step === 4 && deposit_way === "bankaccount") &&
+        (step === 3 && deposit_way === "bankaccount") &&
           <ModalityView
-            title="Utilizaré el servicio"
-            subtitle="En la modalidad de"
+            title="Haré la transferencia"
+            subtitle="Por medio de:"
             items={service_modes}
             update_service_mode={update_service_mode}
             service_mode={service_mode}
@@ -72,7 +67,7 @@ export const TransferFlow = (props) => {
       }
 
       {
-        (step === 5 && deposit_way === "bankaccount") &&
+        (step === 4 && deposit_way === "bankaccount") &&
 
         <Success
           {...props}
@@ -169,7 +164,7 @@ const Success = (props) =>{
 
 
     return(
-      <div id="DLstep2" className={`DLstep ${(step === 5 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
+      <div id="DLstep2" className={`DLstep ${(step === 4 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
         {
           loader ?
           <Fragment>

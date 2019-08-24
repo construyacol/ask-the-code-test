@@ -57,6 +57,7 @@ componentDidMount(){
 
   wallet_detail = async() => {
 
+    this.props.action.CleanItemNotifications('wallets', 'account_id')
     if(this.props.current === "deposit"){
       // Esto valida cuando estoy en el formulario deposito en una lista de wallets existentes, osea cierra el modal
       await this.props.action.ToggleModal()
@@ -68,8 +69,7 @@ componentDidMount(){
 
   }
 
-  delete_this_account = () => {
-
+  delete_this_account = async() => {
     const{
       wallet
     } = this.props
@@ -78,7 +78,8 @@ componentDidMount(){
       type
     } = wallet
 
-    this.props.delete_account(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
+    await this.props.delete_account(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
+    // console.log('CUENTA ELIMINADA', deleteA)
   }
 
 
@@ -152,6 +153,8 @@ componentDidMount(){
       address
     } = wallet
 
+    let notifier_type = type === 'trade' ? 'wallets' : type
+
     let id_trigger = id_wallet_action === id && true
    // console.log('|||||||||||| - - - - - este es el estado de la wallet - - - ', wallet, inscribed)
 
@@ -206,7 +209,7 @@ componentDidMount(){
                   <img id="imgCurrency" src={require(`../../../assets/wallet_coins/${currency.currency === 'cop' ? 'fiat' : currency.currency === 'usd' ? 'fiat' :currency.currency}.png`)} alt="" height="100%"/>
                 }
 
-                <h1 className="IWText titu fuente tobe_continue">{name ? name : 'Mi cartera crypto'} <PopNotification notifier={type} id={id} type="new"/></h1>
+                <h1 className="IWText titu fuente tobe_continue">{name ? name : 'Mi cartera crypto'} <PopNotification notifier={notifier_type} item_type="account_id" id={id} type="new"/></h1>
                   <p className="IWText fuente IWcurrencyText tobe_continue">
                     {
                       currency.currency === 'cop' &&

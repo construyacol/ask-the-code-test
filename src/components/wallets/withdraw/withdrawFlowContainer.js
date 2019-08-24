@@ -156,7 +156,7 @@ class WithdrawFlow extends Component {
         if(parseFloat(amount) < min_amount_withdraw){
 
           setTimeout(async()=>{
-            this.props.action.AddNotification('withdraw', {id:new_account.id})
+            this.props.action.AddNotification('withdraw', {account_id:new_account.id})
             this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
             // await this.setState({AddNotification:false})
           },2000)
@@ -176,8 +176,8 @@ class WithdrawFlow extends Component {
 
     new_withdraw_order = async (state_data, limit, limit_supered) =>{
       // validar que el limite maximo es permitido por el provider
-      // si es así continue por aca
       // alert('epa')
+
       this.props.action.Loader(true)
       await this.setState({
         finish_step:limit_supered ? false : true,
@@ -217,6 +217,7 @@ class WithdrawFlow extends Component {
       const {
         data
       } = res
+
 
       this.setState({
         new_order:data
@@ -261,7 +262,7 @@ class WithdrawFlow extends Component {
       } = this.props.withdraw_order
 
 
-      // console.log('CREATE ORDER SUCCESS ====>', data)
+      // return console.log('_______________________________________________CREATE ORDER SUCCESS ====>', data)
 
 
       let new_order_model = [
@@ -300,19 +301,19 @@ class WithdrawFlow extends Component {
         },
         {
           ui_name:"Cantidad a retirar:",
-          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount)} ${account_from.currency.currency}` : data.withdraw_info.amount,
+          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.amount)} ${account_from.currency.currency}` : data.withdraw_info.amount,
           icon:account_from.currency.currency,
           id:7
         },
         {
           ui_name:"Costo Bancario:",
-          value:`$ ${number_format(data.withdraw_info.cost)} ${account_from.currency.currency}`,
+          value:`$ ${number_format(data.cost)} ${account_from.currency.currency}`,
           icon:account_from.currency.currency,
           id:8
         },
         {
           ui_name:"Total recibido:",
-          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.withdraw_info.amount_neto)} ${account_from.currency.currency}` : data.withdraw_info.amount_neto,
+          value:account_from.currency_type === 'fiat' ? `$ ${number_format(data.amount_neto)} ${account_from.currency.currency}` : data.withdraw_info.amount_neto,
           icon:account_from.currency.currency,
           id:9
         }
@@ -343,12 +344,10 @@ class WithdrawFlow extends Component {
         ticket_label_loader:"Confirmando orden de retiro"
       })
 
-      const{
-        unique_id,
-        withdraw_info
-      } = this.state.new_order
 
-      let res = await this.props.action.add_update_withdraw(unique_id, 'confirmed', withdraw_info.account_from)
+      // return console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state)
+
+      let res = await this.props.action.add_update_withdraw(this.state.new_order.id, 'confirmed')
 
       if(!res){
         this.setState({
@@ -365,26 +364,26 @@ class WithdrawFlow extends Component {
       // const { data } = res
       const { new_order } = this.state
 
-      console.log('CONFIRMAR ORDEN DATA RES', new_order)
+      // return console.log('CONFIRMAR ORDEN DATA RES', new_order)
 
       let new_withdraw = {
-        account_id:withdraw_info.account_from,
-        amount:withdraw_info.amount,
-        amount_neto:withdraw_info.amount_neto,
+        account_id:new_order.account_id,
+        amount:new_order.amount,
+        amount_neto:new_order.amount_neto,
         comment:"",
-        country:withdraw_info.country,
-        currency:withdraw_info.currency,
-        currency_type:withdraw_info.currency_type,
-        cost:withdraw_info.cost,
-        cost_struct:withdraw_info.cost_struct,
+        country:new_order.country,
+        currency:new_order.currency,
+        currency_type:new_order.currency_type,
+        cost:new_order.cost,
+        cost_struct:new_order.cost_struct,
         deposit_provider_id:"",
         expiration_date:new Date(),
         id:new_order.id,
         state:"confirmed",
-        unique_id:new_order.unique_id,
-        userId:withdraw_info.userId,
-        withdraw_account:withdraw_info.withdraw_account,
-        withdraw_provider:withdraw_info.withdraw_provider,
+        unique_id:new_order.id,
+        userId:new_order.userId,
+        withdraw_account:new_order.withdraw_account_id,
+        withdraw_provider:new_order.withdraw_provider_id,
         type_order:"withdraw"
       }
 
@@ -414,13 +413,13 @@ class WithdrawFlow extends Component {
       if(this.state.AddNotification){
         setTimeout(async()=>{
           const {withdraw_account} = new_withdraw
-          this.props.action.AddNotification('withdraw', {id:withdraw_account})
+          this.props.action.AddNotification('withdraw', {account_id:withdraw_account})
           this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
           await this.setState({AddNotification:false})
         },2000)
       }
       setTimeout(async()=>{
-        await this.props.action.ManageBalance(account_from.id, 'reduce', withdraw_info.amount)
+        await this.props.action.ManageBalance(account_from.id, 'reduce', new_order.amount)
         setTimeout(()=>{
           return this.props.action.get_account_balances(this.props.user)
         },3000)

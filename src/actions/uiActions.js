@@ -15,8 +15,19 @@ import {
   CLEAN_NOTIFICATIONS,
   PLAY_VIDEO,
   VERIFICATION_STATE,
-  DEFAULT_VIDEO_STATE
+  DEFAULT_VIDEO_STATE,
+  CLEAN_ITEM_NOTIFICATIONS,
+  SOCKET_NOTIFY
 } from './action_types'
+
+
+export const socket_notify = (payload, item_type) =>{
+  let payload_array = payload && item_type && [{...payload, item_type}]
+  return{
+    type:SOCKET_NOTIFY,
+    payload:payload && payload_array
+  }
+}
 
 
 export const verification_state = (payload) =>{
@@ -62,6 +73,16 @@ export const CleanNotifications = (payload) =>{
     payload
   }
 }
+
+export const CleanItemNotifications = (payload, item_clean) =>{
+  return{
+    type:CLEAN_ITEM_NOTIFICATIONS,
+    payload,
+    item_clean
+  }
+}
+
+
 
 // export const new_fiat_deposit = (wallet_id, data) =>{
 //   // Recibe como parametro un objeto

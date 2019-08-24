@@ -38,14 +38,48 @@ import {
   Financial,
   Touch,
   Upload,
-  ReferralPerson,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum
+  ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod
  } from './'
 
  import {
    Davivienda,
    Bancolombia
  } from './logos'
+
+
+ import { BankAgrario } from './logos/banco_agrario'
+ import { BancajaSocial } from './logos/bancaja_social'
+ // import { BancaMia } from './logos/bancamia'
+ import { BankColpatria } from './logos/banco_colpatria'
+ import { BancoFalabella } from './logos/banco_falabella'
+ import { BancoFinandina } from './logos/banco_finandina'
+ // import { BancoGnb } from './logos/banco_gnb'
+ import { BankItau } from './logos/banco_itau'
+ import { BancOccidente } from './logos/banco_occidente'
+ import { BankPichincha } from './logos/banco_pichincha'
+ import { BancoSantander } from './logos/banco_santander'
+ import { Bancoomeva } from './logos/bancoomeva'
+ import { Nequi } from './logos/nequi'
+ // import { Scotia } from './logos/scotia_bank'
+ import { AvVillas } from './logos/banco_av_villas'
+ import { CitiBank } from './logos/banco_citibank'
+ import { CompartirBank } from './logos/banco_compartir'
+ import { CoopCentral } from './logos/banco_coopcentral'
+ import { Corpbanca } from './logos/banco_corpbanca'
+ import { GnbBank } from './logos/banco_sudameris'
+ import { MultiBank } from './logos/banco_multibank'
+ import { PopularBank } from './logos/banco_popular'
+ import { BankProcredit } from './logos/banco_procredit'
+
+
+
+
+ import {
+   Ecuador,
+   Chile,
+   Argentina
+ } from './flags'
 
 
 // banco_de_bogota
@@ -63,11 +97,43 @@ class IconSwitch extends Component {
 
   switcher = props => {
     const { icon } = props
-    // console.log('|||| IconSwitch  ||||', icon)
-
     switch (icon) {
       case 'ethereum':
         return <Ethereum {...props} />
+      case 'argentina':
+        return <Argentina {...props} />
+      case 'chile':
+        return <Chile {...props} />
+      case 'ecuador':
+        return <Ecuador {...props} />
+      case 'telegram':
+        return <Telegram {...props} />
+      case 'zammad':
+        return <Zammad {...props} />
+      case 'whatsapp':
+        return <Whatsapp {...props} />
+      case 'twitter':
+        return <Twitter {...props} />
+      case 'litecoin':
+        return <Litecoin {...props} />
+      case 'youtube':
+        return <Youtube {...props} />
+      case 'dash':
+        return <Dash {...props} />
+      case 'ux':
+      return <Ux {...props} />
+      case 'account':
+        return <Account {...props} />
+      case 'comillas':
+        return <Comillas {...props} />
+      case 'team':
+        return <Team {...props} />
+      case 'atumedida':
+        return <PaymenthMethod {...props} />
+      case 'aboutYou':
+        return <AboutYou {...props} />
+      case 'atentionHours':
+        return <HoursAtention {...props} />
       case 'pending':
         return <Search {...props} />
       case 'confirmed':
@@ -139,12 +205,15 @@ class IconSwitch extends Component {
       case 'add_account':
         return <Add {...props} />
       case 'davivienda':
+      case 'banco_davivienda':
         return <Davivienda {...props} />
-      case 'bancolombia':
+        case 'bancolombia':
+        case 'banco_bancolombia':
         return <Bancolombia {...props} />
       case 'banco_de_bogota':
         return <BancoBogota {...props} />
       case 'bbva':
+      case 'banco_bbva':
         return <Bbva {...props} />
       case 'arrow_right':
         return <ArrowRight {...props} />
@@ -163,7 +232,52 @@ class IconSwitch extends Component {
         return <Good {...props} />
       case 'blockchain':
         return <Blockchain {...props} />
-
+      case 'banco_agrario':
+        return <BankAgrario {...props} />
+      case 'banco_caja_social':
+        return <BancajaSocial {...props} />
+      case 'banco_colpatria':
+        return <BankColpatria {...props} />
+      case 'banco_falabella':
+        return <BancoFalabella {...props} />
+      case 'banco_finandina':
+        return <BancoFinandina {...props} />
+      case 'banco_itau_corpbanca':
+        return <BankItau {...props} />
+      case 'banco_de_occidente':
+        return <BancOccidente {...props} />
+      case 'banco_pichincha':
+        return <BankPichincha {...props} />
+      case 'banco_santander':
+        return <BancoSantander {...props} />
+      case 'banco_bancoomeva':
+        return <Bancoomeva {...props} />
+      case 'banco_nequi':
+        return <Nequi {...props} />
+      case 'banco_av_villas':
+        return <AvVillas {...props} />
+      case 'banco_citibank':
+        return <CitiBank {...props} />
+      case 'banco_compartir':
+        return <CompartirBank {...props} />
+      case 'banco_coopcentral':
+        return <CoopCentral {...props} />
+      case 'banco_corpbanca':
+        return <Corpbanca {...props} />
+      case 'banco_sudameris':
+        return <GnbBank {...props} />
+      case 'banco_multibank':
+        return <MultiBank {...props} />
+      case 'banco_popular':
+        return <PopularBank {...props} />
+      case 'banco_procredit':
+        return <BankProcredit {...props} />
+      case 'banco_financiera_juriscoop':
+      case 'banco_cootrafa_cooperativa_financiera':
+      case 'banco_cooperativa_financiera_antioquia':
+      case 'banco_confiar_cooperativa_financiera':
+      case 'banco_coltefinanciera':
+        return <Account {...props} />
 
       default:
         return <IconDefault {...props} />

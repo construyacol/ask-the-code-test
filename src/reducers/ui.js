@@ -16,7 +16,9 @@ import {
   CLEAN_NOTIFICATIONS,
   PLAY_VIDEO,
   VERIFICATION_STATE,
-  DEFAULT_VIDEO_STATE
+  DEFAULT_VIDEO_STATE,
+  CLEAN_ITEM_NOTIFICATIONS,
+  SOCKET_NOTIFY
 } from '../actions/action_types'
 
 const initialState = {
@@ -47,8 +49,8 @@ const initialState = {
       current_sub_section:null,
       deposit_direct_access:null,
       swap_socket_channel:{
-        unique_id:null,
-        status:null
+        id:null,
+        state:null
       },
       swap_done_id:null,
       swap_done_out:null,
@@ -63,11 +65,22 @@ const initialState = {
   notifications:{
     withdraw:{
       amount:0,
-      extra:null
+      extra:{
+        account_id:null,
+        order_id:null
+      }
     },
     security:{
       amount:0
-    }
+    },
+    wallets:{
+      amount:0,
+      extra:{
+        account_id:null,
+        order_id:null
+      }
+    },
+    socket_notify:null
   },
   videos:{
     kyc_basic:{
@@ -106,6 +119,15 @@ const ui = (state = initialState, action)=>{
         return {
           ...state,
           verification_state:action.payload
+        }
+
+      case SOCKET_NOTIFY:
+        return {
+          ...state,
+          notifications:{
+            ...state.notifications,
+            socket_notify:action.payload
+          }
         }
 
       case DEFAULT_VIDEO_STATE:
@@ -148,6 +170,21 @@ const ui = (state = initialState, action)=>{
         }
       }
 
+    case CLEAN_ITEM_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications:{
+          ...state.notifications,
+          [action.payload]:{
+            ...state.notifications[action.payload],
+            extra:{
+              ...state.notifications[action.payload].extra,
+              [action.item_clean]:null
+            }
+          }
+        }
+      }
+
     case FLOW_ANIMATION_LAYOUT:
       return {
         ...state,
@@ -163,7 +200,7 @@ const ui = (state = initialState, action)=>{
       }
 
     case CURRENT_SECTION_CLEAN:
-    // console.log('|||||||||| ANDALE PUES MIJO!!!!!', initialState, state)
+
       return {
         ...state,
         current_section:{

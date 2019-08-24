@@ -17,11 +17,10 @@ import user_source from '../components/api'
 
 // import pairs from '../components/api/ui/modelo_pairs.json'
 // import deposit_providers from '../components/api/ui/deposit_providers.json'
-import walletsJSON from '../components/api/ui/model_account.json'
 // import deposits from '../components/api/ui/deposits.json'
 
-import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
-import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
+// import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
+// import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
 
 
@@ -50,7 +49,8 @@ import {
 
 
 const {
-  normalize_user
+  normalize_user,
+  normalize_data
 } = normalizr_services
 
 const {
@@ -62,7 +62,8 @@ UserPairs,
 Update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
-ManageBalanceAction
+ManageBalanceAction,
+all_pairs_landing
 } = data_model_actions
 
 const {
@@ -74,7 +75,7 @@ objectToArray,
 serve_orders
 } = services
 
-const { ApiUrl, IdentityApIUrl, CountryApIUrl } = Environment
+const { ApiUrl, IdentityApIUrl, CountryApIUrl, AccountApiUrl, DepositApiUrl, WithdrawApiUrl, SwapApiUrl } = Environment
 
 let local_currency
 moment.locale('es')
@@ -109,32 +110,21 @@ return async(dispatch) => {
 
 
 
-
-
-const get_local_currency = country =>{
-  return (
-    country === 'colombia' ? 'COP' :
-    country === 'chile' ? 'CLP' :
-    country === 'peru' ? 'PEN' :
-    country === 'uruguay' ? 'UYU' :
-    country === 'argentina' ? 'ARS' :
-    'USD'
-  )
-}
-
-
-const ApiGetRequest = async(url, params) => {
-
+const ApiGetRequest = async(url, header) => {
   // let headers = new Headers();
-  //
-  // let parametros = { method: 'GET',
-  //              headers: headers,
-  //              mode: 'cors',
-  //              cache: 'default' };
+  // let myHeaders = new Headers({
+  //   'Accept': 'application/json',
+  //   'Authorization': 'Basic '+btoa(`access_token:${token}`),
+  // })
+  // console.log('ApiGetRequest', myHeaders)
+  let parametros = {
+              method: 'GET',
+              headers: header,
+             };
 
   let response
   try {
-    response = await fetch(url)
+    response = await fetch(url, parametros)
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
@@ -149,18 +139,13 @@ const ApiGetRequest = async(url, params) => {
 }
 
 
-const ApiPostRequest = async(url, body, cancel_country) => {
+const ApiPostRequest = async(url, body, token) => {
 
-  let myHeaders = new Headers({
+  let myHeaders = {
     'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  })
-
-if(!cancel_country){
-  body.data.country = 'colombia'
-}
-
-  // console.log('||||||||ApiPostRequest', body)
+    'Content-Type': 'application/json',
+    'Authorization':token && `Bearer ${token}`
+  }
 
   let parametros = {
                method: 'POST',
@@ -168,7 +153,9 @@ if(!cancel_country){
                body: JSON.stringify(body)
              }
 
+  // console.log('_______________________________BODY POST =======================>', body, parametros, url)
   let response
+  // console.log('________________________________DESDE EL API POST ', url, parametros)
   try {
     response = await fetch(url, parametros)
   }
@@ -242,27 +229,29 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
 
-    let body = {
-      "access_token":token,
-      "data": {
-        "country":country
-      }
-    }
+    // let body = {
+    //   // "access_token":token,
+    //   "data": {
+    //     "country":country
+    //   }
+    // }
+
 
     await dispatch(load_label('Importando pares'))
 
-    const url_pairs = `${ApiUrl}pairs/get-all-pairs`
-    const pairs = await ApiPostRequest(url_pairs, body, true)
-
+    const url_pairs = `${SwapApiUrl}pairs`
+    // const pairs = await ApiPostRequest(url_pairs, body, true)
+    // console.log('=========>    QUE PASA PRRO get_all_pairs', url_pairs)
+    let pairs = await ApiGetRequest(url_pairs)
+    // return console.log('PARES RES ', pairs)
     if(!pairs || pairs === 465){return false}
-    const { data } = pairs
 
-    dispatch(AllPairs(data))
+    dispatch(AllPairs(pairs))
 
     let user_update = {
       ...user_source,
       available_pairs:[
-        ...data
+        ...pairs
       ]
     }
 
@@ -270,40 +259,136 @@ export const get_all_pairs = (token, country) =>{
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
     dispatch(Update_normalized_state(normalize_pairs))
     return normalize_pairs
+    // return pairs
   }
 }
 
 
 
-
-
-export const get_pairs_for = (country, user_collection) => {
-
+export const get_all_pairs_from_landing = () =>{
   return async(dispatch)=>{
-    //defino la moneda local con base a la ubicación operativa del usuario
-    local_currency = await get_local_currency(country)
-
-    // consulto en el API todos los pares disponibles que cotizan contra la moneda local del usuario
-
-    const url_pairs = `${ApiUrl}pairs?filter={"where": {"secondary_currency.currency": "${local_currency.toLowerCase()}"}}`
+    await dispatch(load_label('Importando pares'))
+    const url_pairs = `${SwapApiUrl}pairs`
     const pairs = await ApiGetRequest(url_pairs)
 
-    if(!pairs){return false}
-    // Actualizo el estado con todas las cotizaciones disponibles en contra(secondary_currency) de la moneda local
-    // await dispatch(AllPairs(data))
-    await dispatch(LocalPairs(pairs))
-    // console.log('CONSULTANDO TODOS LOS PARES DISPONIBLES::::::', pairs)
+    if(!pairs || pairs === 465){return false}
+    // const { data } = pairs
 
-    // el parametro user_colecction es un array con las monedas preferidas o por defecto que se le mostraran al usuario en el dashboard
-    // este es un parametro opcional, si no se pasa el parametro se mostrará solo la cotización de bitcoin contra la moneda local, si tampoco existe esta cotización, se mostrará la que haya disponible
-    if(user_collection){ await get_user_pairs(user_collection, dispatch, pairs)}
-
-    // defino un par por defecto, que será el que se mostrara de primero, bitcoin por default contra la moneda local, en caso de que no exista este par, mostrará el que este disponible
-    dispatch(SearchCurrentPair(`BTC/${local_currency}`, 'pair'))
-    // así mismo actualizo la moneda local del usuario en el estado en redux para posteriores consultas
-    dispatch(LocalCurrency(local_currency))
+    let normalize_pairs = await normalize_data(pairs)
+    dispatch(all_pairs_landing(normalize_pairs.entities.all_pairs))
   }
 }
+
+
+
+    const add_symbol_to_local_collections = async(cop_pairs, local_currency, currencies) =>{
+      // console.log('=]======> local_currencies', bitcoin, cop_pairs)
+
+      let new_cop_pairs = cop_pairs.map(pair => {
+        let secondary_short_name = matchItem(currencies, {primary:local_currency}, 'currency')
+        let primary_short_name = matchItem(currencies, {primary:pair.primary_currency.currency}, 'currency')
+        return {
+          ...pair,
+          secondary_short_name:secondary_short_name[0].symbol,
+          primary_short_name:primary_short_name[0].symbol
+        }
+      })
+      return new_cop_pairs
+    }
+
+
+
+    const get_local_currency = async country =>{
+
+      // https://sendatx.ngrok.io/
+
+      const get_data_country = `${ApiUrl}countries?filter={"where": {"name": "${country}"}}`
+      const data_country = await ApiGetRequest(get_data_country)
+      if((!data_country || data_country) && data_country.length < 1){return false}
+      let local_currency_id = data_country[0].currency_id
+      // console.log('||||||||||| get_local_COUNTRY', local_currency_id)
+
+      const get_local_currency = `${ApiUrl}currencies?filter={"where": {"id": "${local_currency_id}"}}`
+      const local_currency_data = await ApiGetRequest(get_local_currency)
+      if((!local_currency_data || local_currency_data) && local_currency_data.length < 1){return false}
+
+
+      let local_currency
+
+       await local_currency_data.map(currency => {
+            return local_currency = {
+              currency:currency.currency,
+              currency_type:currency.currency_type,
+              localCurrency:currency.symbol.toLowerCase(),
+              country
+              }
+          })
+
+
+      return local_currency
+      //
+      //
+      // const url_get_local_currency = `${ApiUrl}currencies?filter={"where":{"currency_type":"fiat"},"include":{"relation":"countrys","scope":{"where":{"name":"${country}"}}}}`
+      // const currencies = await ApiGetRequest(url_get_local_currency)
+      // // console.log('|||||| CurrencyList =========> ', country, currencies)
+      // // alert('')
+      // if(!currencies || currencies.length < 1){return false}
+      //
+      // let local_currency
+      //
+      //  await currencies.map(currency => {
+      //       let belongs_to_country = matchItem( currency.countrys, {primary:country}, 'name')
+      //       if(!belongs_to_country){return false}
+      //       return local_currency = {
+      //         currency:currency.currency,
+      //         currency_type:currency.currency_type,
+      //         localCurrency:currency.symbol.toLowerCase(),
+      //         country
+      //         }
+      //     })
+      // return local_currency
+  }
+
+
+    export const get_pairs_for = (country, user_collection) => {
+
+      return async(dispatch) => {
+        //defino la moneda local con base a la ubicación operativa del usuario
+        const { currencies } = store.getState().model_data
+
+        local_currency = await get_local_currency(country)
+        if(!local_currency){return console.log('No se ha encontrado país en get_pairs_for')}
+        // consulto en el API todos los pares disponibles que cotizan contra la moneda local del usuario
+        const url_pairs = `${SwapApiUrl}pairs?filter={"where": {"secondary_currency.currency": "${local_currency.currency}"}}`
+        const pairs = await ApiGetRequest(url_pairs)
+        if(!pairs){return false}
+        // Actualizo el estado con todas las cotizaciones disponibles en contra(secondary_currency) de la moneda local
+        // await dispatch(AllPairs(data))
+
+        let local_currencies
+
+        if(currencies){
+          local_currencies = await add_symbol_to_local_collections(pairs, local_currency.currency, currencies)
+        }else{
+          alert('debes cargar las currencies para continuar')
+          return console.log('debes cargar las currencies');
+        }
+
+
+        await dispatch(LocalPairs(local_currencies))
+        // console.log('CONSULTANDO TODOS LOS PARES DISPONIBLES::::::', pairs)
+
+        // el parametro user_colecction es un array con las monedas preferidas o por defecto que se le mostraran al usuario en el dashboard
+        // este es un parametro opcional, si no se pasa el parametro se mostrará solo la cotización de bitcoin contra la moneda local, si tampoco existe esta cotización, se mostrará la que haya disponible
+        if(user_collection){ await get_user_pairs(user_collection, dispatch, pairs)}
+        // defino un par por defecto, que será el que se mostrara de primero, bitcoin por default contra la moneda local, en caso de que no exista este par, mostrará el que este disponible
+        dispatch(SearchCurrentPair(`BTC/${local_currency.currency.toUpperCase()}`, 'pair'))
+        // así mismo actualizo la moneda local del usuario en el estado en redux para posteriores consultas
+        dispatch(LocalCurrency(local_currency))
+        return pairs
+      }
+
+    }
 
 
 
@@ -377,8 +462,7 @@ const get_pair = async(primary, secondary, all) =>{
 
 export const get_this_pair = async(query) => {
 
-
-  const url = `${ApiUrl}pairs?filter=${query}`
+  const url = `${SwapApiUrl}pairs?filter=${query}`
   const pairs = await ApiGetRequest(url)
   if(pairs && pairs.length<1){return false}
   return pairs
@@ -412,6 +496,7 @@ export const get_this_pair = async(query) => {
 export const get_pair_default = (current_wallet, local_currency, current_pair) => {
   return async(dispatch) =>{
 
+
     if((current_pair && current_pair.pair_id) || !current_wallet){return false}
     let currency = current_wallet.currency.currency
     let pair;
@@ -425,6 +510,7 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
     if(!pair){return false}
 
     let pair_id = pair.id
+    // return console.log('____________________________________________get_pair_default', pair)
 
     // console.log('====>  convertCurrencies', current_wallet.currency, pair_id)
 
@@ -457,9 +543,13 @@ export const get_account_balances = user => {
   return async(dispatch) =>{
 
     await dispatch(load_label('Obteniendo tus balances'))
-    const url_balance = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
-    let balances = await ApiGetRequest(url_balance)
-    if(!balances || balances === 465){return false}
+    const url_balance = `${AccountApiUrl}users/${user.id}/accounts`
+    let myHeaders = await generate_headers()
+
+    let balances = await ApiGetRequest(url_balance, myHeaders)
+
+    if(!balances || balances === 465 || balances.length<1){return false}
+    // console.log('===========> BALANCES:', balances)
     let balance_list = balances.map(balance => {
       return {
         id:balance.id,
@@ -472,12 +562,14 @@ export const get_account_balances = user => {
       }
     })
 
+
     let user_update = {
       ...user,
       balances:[
         ...balance_list
       ]
     }
+    // return console.log('========> BALANCES', user_update)
 
     let list_user_balances = await normalize_user(user_update)
     await dispatch(Update_normalized_state(list_user_balances))
@@ -492,13 +584,15 @@ export const get_account_balances = user => {
 export const ManageBalance = (account_id, action, amount) => {
 
   return async(dispatch) =>{
-
     const { user_id } = store.getState().model_data
     let user = store.getState().model_data.user[user_id]
 
 
-    const url_balance = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
-    let balances_res = await ApiGetRequest(url_balance)
+    const url_balance = `${AccountApiUrl}users/${user.id}/accounts`
+    let myHeaders = {
+      'Authorization': `Bearer ${user.TokenUser}`,
+    }
+    let balances_res = await ApiGetRequest(url_balance, myHeaders)
     if(!balances_res || balances_res === 465){return false}
     let balance_list = balances_res.map(balance => {
       return {
@@ -543,20 +637,25 @@ export const get_list_user_wallets = (user) =>{
   return async(dispatch) =>{
 
     await dispatch(load_label('Obteniendo tus billeteras'))
-    const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
-    let wallets = await ApiGetRequest(url_wallets)
-    if(!wallets){wallets = walletsJSON}
+    // const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
+
+    const url_wallets = `${AccountApiUrl}users/${user.id}/accounts`
+    let myHeaders = await generate_headers()
+    let wallets = await ApiGetRequest(url_wallets, myHeaders)
+    // return console.log('________________________________', wallets)
+    // if(!wallets){wallets = walletsJSON}
     if(!wallets || wallets === 404){return false}
     if(wallets && wallets.length<1){
       await dispatch(reset_model_data({wallets:[]}))
     }
 
-    let visible_wallets = []
 
-     wallets.map(wallet => {
-       if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin_testnet'){return false}
-       return visible_wallets.push(wallet)
-     })
+    let visible_wallets = wallets
+    // let visible_wallets = []
+    //  wallets.map(wallet => {
+    //    if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin_testnet'){return false}
+    //    return visible_wallets.push(wallet)
+    //  })
 
       let user_update = {
         ...user,
@@ -564,6 +663,7 @@ export const get_list_user_wallets = (user) =>{
           ...visible_wallets
         ]
       }
+
       let list_user_wallets = await normalize_user(user_update)
       await dispatch(Update_normalized_state(list_user_wallets))
       return list_user_wallets
@@ -591,19 +691,43 @@ export const get_deposit_providers = (user) => {
 return async(dispatch) => {
 
     await dispatch(load_label('Obteniendo proveedores de deposito'))
-    const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
-    const deposit_providers = await ApiGetRequest(url_dep_prov)
+    // const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
+    const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}`
+    let myHeaders = await generate_headers()
+    const deposit_providers = await ApiGetRequest(url_dep_prov, myHeaders)
     if(!deposit_providers || deposit_providers === 404){return false}
-    const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"${user.country}"}}`
-    const deposit_provider_fiat = await ApiGetRequest(url_dep_prov_fiat)
-    if(!deposit_provider_fiat || deposit_provider_fiat === 404){return false}
 
+    const deposit_providersDA_url = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter[include]=depositAccount`
+    const depositAccounts = await ApiGetRequest(deposit_providersDA_url, myHeaders)
+    if(!depositAccounts || depositAccounts === 404){return false}
+
+    let modelDAUpgrade = []
+    let indexDA = 0
+    depositAccounts.map(depositAccount => {
+      let account = Object.assign({}, depositAccount.depositAccount.account, deposit_providers[indexDA].account);
+      let new_deposit_provider = {
+        ...deposit_providers[indexDA],
+        provider:{
+          ...depositAccount.depositAccount,
+          account:{
+            ...account
+          }
+        }
+      }
+      modelDAUpgrade.push(new_deposit_provider)
+      return indexDA++
+    })
+
+
+    // const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"${user.country}"}}`
+    // const deposit_provider_fiat = await ApiGetRequest(url_dep_prov_fiat)
+    // if(!deposit_provider_fiat || deposit_provider_fiat === 404){return false}
 
     let user_update = {
       ...user,
       deposit_providers:[
-        ...deposit_providers,
-        ...deposit_provider_fiat
+        ...modelDAUpgrade,
+        // ...deposit_provider_fiat
       ]
     }
 
@@ -618,26 +742,27 @@ return async(dispatch) => {
 // ACCOUNTS SERVICES BY ID --------------------------------------------------------------------------------------
 
 export const get_wallet_by_id = (wallet_id) =>{
-  // console.log('||||||||||||||°°°°--------get_list_user_wallets--------°°°°|||||||||||||', user)
   return async(dispatch) =>{
-
+    const user = store.getState().model_data.user[store.getState().model_data.user_id]
     // 1consultamos la wallet
-    const url_wallet = `${ApiUrl}accounts?filter={"where": {"id": "${wallet_id}"}}`
-    const wallet = await ApiGetRequest(url_wallet)
-    // console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| get_wallet_by_id :', wallet)
+    // const url_wallet = `${AccountApiUrl}accounts?filter={"where": {"id": "${wallet_id}"}}`
+    let myHeaders = await generate_headers()
+    const url_wallet = `${AccountApiUrl}users/${user.id}/accounts?filter={"where": {"id": "${wallet_id}"}}`
+    const wallet = await ApiGetRequest(url_wallet, myHeaders)
 
     if((wallet && wallet.length<1) || !wallet || wallet === 404){return false}
-
     let deposit_provider=null
 
     if(wallet[0].dep_prov.length>0){
       // 2 si la wallet tiene deposit providers consultamos el ultimo disponible y lo modelamos
       let id_provider = await wallet[0].dep_prov[wallet[0].dep_prov.length-1]
-      const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"id": "${id_provider}"}}`
+      console.log('||||||||||___________deposit_provider VERIFY', id_provider)
+      const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${id_provider}"}}`
+      // const url_dep_prov = `${AccountApiUrl}depositProviders?filter={"where": {"id": "${id_provider}"}}`
       // console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| get_wallet_by_id :', url_dep_prov)
-      deposit_provider = await ApiGetRequest(url_dep_prov)
+      deposit_provider = await ApiGetRequest(url_dep_prov, myHeaders)
     }
-
+    console.log('||||||||||___________deposit_provider', deposit_provider)
     const model_wallet = {
       ...wallet[0],
       deposit_provider:!deposit_provider ? null : {...deposit_provider[0]}
@@ -654,8 +779,9 @@ export const get_wallet_by_id = (wallet_id) =>{
 
 export const create_new_wallet = (body) =>{
   return async(dispatch)=>{
-    const url_new_account = `${ApiUrl}accounts/create-account`
-    return ApiPostRequest(url_new_account, body)
+    const { user, user_id } = store.getState().model_data
+    const url_new_account = `${AccountApiUrl}accounts/add-new-account`
+    return ApiPostRequest(url_new_account, body, user[user_id].TokenUser)
     // get_list_user_wallets()
     // console.log('|||||||||||°°°°°°° - -  create_new_wallet -  - -°°°°°°°|||||||||||', new_wallet)
   }
@@ -666,8 +792,24 @@ export const create_new_wallet = (body) =>{
 
 export const delete_account = (account_id, type) =>{
   return async(dispatch)=>{
-    const url_delet_account = type === 'withdraw' ? `${ApiUrl}withdrawAccounts/${account_id}` : `${ApiUrl}accounts/${account_id}`
-    return ApiDelete(url_delet_account)
+    let url_delet_account
+    if(type === 'withdraw'){
+      const { user, user_id } = store.getState().model_data
+      url_delet_account = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
+      let body = {
+        "data": {
+          "withdraw_account_id":`${account_id}`,
+          "country":user[user_id].country,
+          "visible":false
+        }
+      }
+      let deleteAccount = await ApiPostRequest(url_delet_account, body, user[user_id].TokenUser)
+      // return console.log('||||| _________________________ deleteAccount', deleteAccount)
+      return deleteAccount
+    }
+    url_delet_account = `${AccountApiUrl}accounts/${account_id}`
+    let deleteAccount = await ApiDelete(url_delet_account)
+    return deleteAccount
   }
 }
 
@@ -682,25 +824,26 @@ export const confirm_deposit_order = (ticket, base64) =>{
   return async(dispatch) =>{
 
     const {
-      unique_id,
-      account_id
+      id
     } = ticket
     // console.log('ticket', ticket)
     const { user, user_id } = store.getState().model_data
 
     const body = {
-      "access_token":user[user_id].TokenUser,
+      // "access_token":user[user_id].TokenUser,
       "data": {
-        "unique_id": unique_id,
+        "country":user[user_id].country,
+        "deposit_id": id,
         "state": "confirmed",
-        "account_id": account_id,
+        // "account_id": account_id,
         "proof_of_payment": {
+          "type":"image",
           "proof":base64
         }
       }
     }
 
-    // console.log('body', body)
+    // return console.log('body', body)
 
 
     // http://localhost:3001/api/deposits/add-update-deposit
@@ -717,8 +860,8 @@ export const confirm_deposit_order = (ticket, base64) =>{
     //   }
     // }
 
-    const url_confirm_deposit = `${ApiUrl}deposits/add-update-deposit`
-    const confirm_deposit = await ApiPostRequest(url_confirm_deposit, body)
+    const url_confirm_deposit = `${DepositApiUrl}deposits/add-update-deposit`
+    const confirm_deposit = await ApiPostRequest(url_confirm_deposit, body, user[user_id].TokenUser)
 
 
     return confirm_deposit
@@ -742,27 +885,33 @@ export const create_deposit_order = (
   deposit_service,
   user,
   deposits,
+  service_mode,
   deposit_provider_id
 ) => {
 
   return async(dispatch) =>{
 
+
+
     const body = {
-        "access_token":user.TokenUser,
+        // "access_token":user.TokenUser,
         "data": {
           "currency": currency,
           "amount": amount,
           "cost_id": cost_id,
           "deposit_provider_id":deposit_provider_id,
-          "info": {deposit_service},
+          "info": {deposit_service, service_mode},
           "comment": "",
-          "account_id": account_id
+          "account_id": account_id,
+          "country":user.country
         }
       }
+    // return console.log('jum')
+    const url_new_order = `${DepositApiUrl}deposits/add-new-deposit`
+    const new_fiat_deposit = await ApiPostRequest(url_new_order, body, user.TokenUser)
 
-    const url_new_order = `${ApiUrl}deposits/add-new-deposit`
-    const new_fiat_deposit = await ApiPostRequest(url_new_order, body)
-    console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, '| BODY' , body)
+    // console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, '| BODY' , body)
+
     // sentryCaptureMessage('add-new-deposits', new_fiat_deposit)
 
     // http://localhost:3001/api/deposits/add-new-deposit
@@ -817,8 +966,22 @@ export const create_deposit_order = (
 
 export const delete_deposit_order = order_id =>{
   return async(dispatch)=>{
-    const url_delete_deposit_order = `${ApiUrl}deposits/${order_id}`
-    return ApiDelete(url_delete_deposit_order)
+    // const url_delete_deposit_order = `${DepositApiUrl}deposits/${order_id}`
+    // return ApiDelete(url_delete_deposit_order)
+
+    const { user, user_id } =store.getState().model_data
+
+    const body = {
+        "data": {
+          "country":user[user_id].country,
+          "deposit_id":order_id,
+          "state":"canceled"
+        }
+      }
+    // return console.log('jum')
+    const url_delete_order = `${DepositApiUrl}deposits/add-update-deposit`
+    // return console.log('DEPOSIT DELETE INFO',url_delete_order, body)
+    return ApiPostRequest(url_delete_order, body, user[user_id].TokenUser)
   }
 }
 
@@ -848,11 +1011,11 @@ export const normalize_new_item = (user, list, item, prop) =>{
 }
 
 
-export const edit_array_element = (search_by, replace_prop, array_list) =>{
+export const edit_array_element = (search_by, replace_prop, array_list, new_position, edit_list) =>{
 // @Params
 // let search_by = {
-//   name:"unique_id",
-//   unique_id:data.unique_id
+//   name:"id",
+//   id:data.id
 // }
 // => Objeto que contiene en el .name el indice por el que sera identificado el elemento en la lista a editar
 // let replace_prop = {
@@ -869,7 +1032,7 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
 
     const { user, user_id } =store.getState().model_data
 
-
+    if(!edit_list){edit_list = 'deposits'}
     let item_result = await matchItem(array_list, {primary:search_by[search_by.name]}, search_by.name)
     if((!item_result || item_result) && item_result.length<1){return false}
 
@@ -879,18 +1042,28 @@ export const edit_array_element = (search_by, replace_prop, array_list) =>{
     }
 
     let new_array_list = []
+    // new position colocará el item en la primer posición de la lista
+    if(new_position){new_array_list.push(new_item)}
 
     await array_list.map(item => {
-      if(item[search_by.name] === search_by[search_by.name]){return new_array_list.push(new_item)}
+      if(new_position){
+        if(item[search_by.name] === search_by[search_by.name]){return false}
+      }else{
+        // new_position === false dejará el item en la posición original de la lista
+        if(item[search_by.name] === search_by[search_by.name]){return new_array_list.push(new_item)}
+      }
+
       return new_array_list.push(item)
     })
 
     let user_update = {
       ...user[user_id],
-      deposits:[
+      [edit_list]:[
         ...new_array_list
       ]
     }
+
+    console.log('____________________USER UPDATE', user_update, edit_list)
 
     await dispatch(update_user(user_update))
 
@@ -953,21 +1126,21 @@ export const add_order_to = (prop, list, user, new_order) =>{
 export const add_new_swap = (account_id, pair_id, value) =>{
   return async(dispatch) =>{
 
-
     // await charge_funds()
     const { user, user_id } =store.getState().model_data
 
     const body = {
-        "access_token":user[user_id].TokenUser,
+        // "access_token":user[user_id].TokenUser,
         "data": {
-          "account_from_id":account_id,
+          "want_to_spend":value.toString(),
           "pair_id":pair_id,
-          "want_to_spend":value.toString()
+          "account_from":account_id,
+          "country":user[user_id].country
         }
     }
 
-    const add_new_swap_url = `${ApiUrl}swaps/add-new-swap`
-    const new_swap = await ApiPostRequest(add_new_swap_url, body)
+    const add_new_swap_url = `${SwapApiUrl}swaps/add-new-swap`
+    const new_swap = await ApiPostRequest(add_new_swap_url, body, user[user_id].TokenUser)
     // console.log('°°°°°|||||||||||||||| RESULTADO SWAP....', new_swap)
     if(!new_swap || new_swap === 465){return false}
 
@@ -988,21 +1161,20 @@ export const add_new_swap = (account_id, pair_id, value) =>{
 
 export const add_done_swap = (swaps, user, done_swap, update_list) =>{
   return async(dispatch) => {
-
     let new_swap = {
-      ...swaps[done_swap.unique_id],
+      ...swaps[done_swap.id],
       state:"accepted"
     }
 
     let updated_swaps = {
       ...swaps,
-      [new_swap.unique_id]:{
+      [new_swap.id]:{
         ...new_swap
       }
     }
 
     let array_swaps = await desNormalizedList(updated_swaps, user.swaps)
-
+    // console.log('________________DEPURANDO', array_swaps, new_swap)
     if(update_list){await update_list(array_swaps)}
 
     let user_update = {
@@ -1023,65 +1195,74 @@ export const add_done_swap = (swaps, user, done_swap, update_list) =>{
 
 
 
-const get_currency_from_contra_pair = (swap_pair, currency_account ) =>{
-
-    if(swap_pair.primary_currency.currency === currency_account.currency){
-      return swap_pair.secondary_currency.currency
-    }
-
-    if(swap_pair.secondary_currency.currency === currency_account.currency){
-      return swap_pair.primary_currency.currency
-    }
-
-}
+// export const get_currency_from_contra_pair = (swap_pair, currency_account ) =>{
+//
+//     if(swap_pair.primary_currency.currency === currency_account.currency){
+//       return swap_pair.secondary_currency.currency
+//     }
+//
+//     if(swap_pair.secondary_currency.currency === currency_account.currency){
+//       return swap_pair.primary_currency.currency
+//     }
+//
+// }
 
 
 
 
 // OBTENER LISTA DE SWAPS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-export const get_swap_list = (user, wallets, all_pairs) =>{
+export const get_swap_list = () =>{
   return async(dispatch) => {
 
-    await dispatch(load_label('Obteniendo tus registros de intercambios'))
-    const url_swaps = `${ApiUrl}swaps?filter={"where": {"userId": "${user.id}"}}`
-    const swaps = await ApiGetRequest(url_swaps)
+    const { model_data } =  store.getState()
+    const { wallets } = model_data
+    const user = model_data.user[model_data.user_id]
 
+
+    await dispatch(load_label('Obteniendo tus registros de intercambios'))
+    // const url_swaps = `${ApiUrl}swaps?filter={"where": {"userId": "${user.id}"}}`
+    const url_swaps = `${SwapApiUrl}users/${user.id}/swaps?country=${user.country}`
+    let myHeaders = {
+      'Authorization': `Bearer ${user.TokenUser}`,
+    }
+    const swaps = await ApiGetRequest(url_swaps, myHeaders)
+
+    // console.log('RES SWAPS ===============================================>', swaps)
 
     if(!swaps){return false}
-
     let remodeled_swaps = []
-
-
     swaps.map(async(swap) => {
       // obtenemos la moneda que cotiza en contra del par, pasandole como params, el swap, el par del swap y la moneda de la cuenta donde se origino el intercambio, la moneda que se gasto
+      // let currency_bought
 
-      // console.log('=====> get_swap_list', swap.account_from, wallets[swap.account_from])
+      // if(wallets[swap.account_from] && all_pairs[swap.pair_id]){
+      //   currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
+      // }
 
-      let currency_bought
-      if(wallets[swap.account_from]){
-        currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
-      }
       let new_swap = {
         account_id:swap.account_from,
         account_to:swap.account_to,
         amount:swap.bought,
-        amount_neto:swap.execution.total,
+        amount_neto:swap.bought,
+        pair_id:swap.pair_id,
         comment:"",
         action_price:swap.action_price,
-        currency:wallets[swap.account_from] && wallets[swap.account_from].currency,
+        currency:swap.to_spend_currency,
         currency_type:wallets[swap.account_from] && wallets[swap.account_from].currency_type,
         cost:"",
         deposit_provider_id:"",
         expiration_date:new Date(),
         id:swap.id,
-        state:"accepted",
+        state:swap.state === 'rejected' ? 'canceled' : swap.state,
         bought:swap.bought,
-        currency_bought:currency_bought,
+        currency_bought:swap.to_buy_currency,
         spent:swap.spent,
         type_order:"swap"
       }
       remodeled_swaps.push(new_swap)
     })
+
+    // console.log('RES new_swap ===============================================>', remodeled_swaps)
 
     remodeled_swaps.reverse()
 
@@ -1154,20 +1335,26 @@ export const get_swap_list = (user, wallets, all_pairs) =>{
 
 
 export const get_deposit_list = (user) =>{
+
   return async(dispatch) => {
-
-
 
     await dispatch(load_label('Obteniendo tus registros de deposito'))
     // 5bea1f01ba84493018b7528c
-    const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
-    const deposits = await ApiGetRequest(url_deposit)
+    // const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
+
+    const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter[include]=paymentProof`
+    let myHeaders = {
+      'Authorization': `Bearer ${user.TokenUser}`,
+    }
+    const deposits = await ApiGetRequest(url_deposit, myHeaders)
     if(!deposits || deposits === 465){return false}
+
 
     let remodeled_deposits = await deposits.map(item => {
       let new_item = {
         ...item,
-        type_order:"deposit"
+        type_order:"deposit",
+        paymentProof:item.paymentProof.proof_of_payment
       }
       return new_item
     })
@@ -1183,7 +1370,6 @@ export const get_deposit_list = (user) =>{
 
 
     let normalizeUser = await normalize_user(user_update)
-    // console.log('|||||||||||| NORMALIZANDO DEPOSITOS::: ', normalizeUser)
     await dispatch(Update_normalized_state(normalizeUser))
     return normalizeUser
 
@@ -1201,19 +1387,21 @@ export const get_deposit_list = (user) =>{
 
 
 
-export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
+export const get_withdraw_accounts = (user, withdraw_providers) =>{
   return async(dispatch)=>{
 
+    let myHeaders = await generate_headers()
+
     await dispatch(load_label('Obteniendo cuentas de retiro'))
-    const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
-    let withdraw_accounts = await ApiGetRequest(get_wAccounts_url)
-    console.log('withdraw_accounts', withdraw_accounts)
-    console.log('withdraw_providers', withdraw_providers)
-    if(!withdraw_accounts || withdraw_accounts === 465){withdraw_accounts = withdraw_accountsJSON}
+    const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}`
+    // const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
+    let withdraw_accounts = await ApiGetRequest(get_wAccounts_url, myHeaders)
+    if(!withdraw_accounts || withdraw_accounts === 465 || !withdraw_providers){return false}
+
     let providers_served = await withdraw_provider_by_type(withdraw_providers)
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
-      // console.log('||||| providers_servedsss...', wa.provider_type, providers_served[wa.provider_type])
-      if(wa.info.currency_type === 'fiat'){
+
+      if(providers_served[wa.provider_type].currency_type === 'fiat'){
         return {
           id:wa.id,
           account_number:{
@@ -1264,17 +1452,13 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
           provider_type:wa.provider_type,
           provider_max_amount:providers_served[wa.provider_type].provider.max_amount,
           provider_min_amount:providers_served[wa.provider_type].provider.min_amount,
-          currency_type:wa.info.currency_type,
+          currency_type:providers_served[wa.provider_type] && providers_served[wa.provider_type].currency_type,
           withdraw_provider:providers_served[wa.provider_type].id
         }
       }
 
-      // console.log('||||||||||waccount ', waccount)
-      // return {
-      //   ...wa,
-      //   currency_type:providers_served[wa.provider_type] && providers_served[wa.provider_type].currency_type
-      // }
     })
+    // return console.log('|111|||||||||||||||  new_withdraw_accounts', new_withdraw_accounts, providers_served)
 
     let original_list = new_withdraw_accounts
     new_withdraw_accounts.reverse()
@@ -1301,25 +1485,39 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
  // TRAER LISTA DE PROVEEDORES DE RETIRO -------------------------- -------------------------- --------------------------
 
 
- export const get_withdraw_providers = (user, query) =>{
+ export const get_withdraw_providers = () =>{
+ // export const get_withdraw_providers = (no_necessary_user, query) =>{
+
    // ej query: {"where": {"country": "colombia", "enabled":true, "provider_type":"bank"}}
 
    return  async(dispatch) => {
 
+     // const { user, user_id } = store.getState().model_data
+     const user = store.getState().model_data.user[store.getState().model_data.user_id]
+
      // let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"${user.country}"}}`
-     let get_wp_url = `${ApiUrl}withdrawProviders?filter={"where":{"country":"colombia"}}`
+     let get_wp_url = `${WithdrawApiUrl}withdrawProviders?country=${user.country}`
      await dispatch(load_label('Obteniendo proveedores de retiro'))
-     if(query){get_wp_url = `${ApiUrl}withdrawProviders?filter=${query}`}
-     let withdraw_providers = await ApiGetRequest(get_wp_url)
-     if(!withdraw_providers){withdraw_providers = withdraw_providersJSON}
-     if(!user){return withdraw_providers}
+
+     // if(query){
+     //   get_wp_url = `${ApiUrl}withdrawProviders?filter=${query}`
+     //   return alert('revisar get_withdraw_providers please bitch')
+     // }
+
+     let myHeaders = await generate_headers()
+
+     let withdraw_providers = await ApiGetRequest(get_wp_url, myHeaders)
+     // if(!withdraw_providers){withdraw_providers = withdraw_providersJSON}
+
+     // console.log('!!!!!!!!!!!!!!!!!!!!!withdraw_providers', withdraw_providers)
+     // return alert('mmierda')
+
      let user_update = {
        ...user,
        withdraw_providers:[
          ...withdraw_providers
        ]
      }
-     // console.log(withdraw_providers)
      let normalizeUser = await normalize_user(user_update)
      await dispatch(Update_normalized_state(normalizeUser))
      return withdraw_providers
@@ -1369,23 +1567,21 @@ export const get_withdraw_accounts = (user, withdraw_providers, query) =>{
 
 
 
-export const add_update_withdraw = (unique_id, state, account_from) =>{
+export const add_update_withdraw = (withdraw_id, state) =>{
   return async(dispatch) =>{
-    const { user, user_id } =store.getState().model_data
+    const { user, user_id } = store.getState().model_data
 
     const body = {
-      "access_token":user[user_id].TokenUser,
+      // "access_token":user[user_id].TokenUser,
       "data": {
-        "unique_id": unique_id,
+        "withdraw_id": withdraw_id,
         "state": state,
-        "account_from": account_from,
+        "country":user[user_id].country,
       }
     }
 
-
-
-    const new_update_withdraw_url = `${ApiUrl}withdraws/add-update-withdraw`
-    const new_withdraw_update = await ApiPostRequest(new_update_withdraw_url, body)
+    const new_update_withdraw_url = `${WithdrawApiUrl}withdraws/add-update-withdraw`
+    const new_withdraw_update = await ApiPostRequest(new_update_withdraw_url, body, user[user_id].TokenUser)
     if(!new_withdraw_update || new_withdraw_update === 465){return false}
     // console.log('||||||||||', new_withdraw_order)
     return new_withdraw_update
@@ -1401,24 +1597,23 @@ export const add_update_withdraw = (unique_id, state, account_from) =>{
  export const add_new_withdraw_order = (amount, account_from, withdraw_provider, withdraw_account) =>{
 
    return async(dispatch) =>{
+
      const { user, user_id } =store.getState().model_data
      const body = {
-       "access_token":user[user_id].TokenUser,
+       // "access_token":user[user_id].TokenUser,
        "data": {
          "amount": amount,
-         "account_from": account_from,
-         "withdraw_provider": withdraw_provider,
-         "withdraw_account": withdraw_account,
+         "account_id": account_from,
+         "withdraw_provider_id": withdraw_provider,
+         "withdraw_account_id": withdraw_account,
+         "country":user[user_id].country
        }
      }
 
-     console.log('|||||| ====> BODY REQUEST WITHDRAW', body)
-
-     const new_withdraw_url = `${ApiUrl}withdraws/add-new-withdraw`
-     const new_withdraw_order = await ApiPostRequest(new_withdraw_url, body)
-     console.log('|||||| ========> BODY RES WITHDRAW', new_withdraw_order)
+     const new_withdraw_url = `${WithdrawApiUrl}withdraws/add-new-withdraw`
+     const new_withdraw_order = await ApiPostRequest(new_withdraw_url, body, user[user_id].TokenUser)
+     // console.log('|||||| ========> BODY RES WITHDRAW', new_withdraw_order)
      if(!new_withdraw_order || new_withdraw_order === 465){return false}
-
      return new_withdraw_order
 
    }
@@ -1435,18 +1630,19 @@ export const get_withdraw_list = (user) =>{
 
     await dispatch(load_label('Obteniendo tus registros de retiros'))
 // 5bea1f01ba84493018b7528c
-    const url_withdraw_list = `${ApiUrl}withdraws?filter={"where":{"userId":"${user.id}"}}`
-    let withdrawals = await ApiGetRequest(url_withdraw_list)
-
-    if(!withdrawals || withdrawals === 465){return false}
-
-    // console.log('===============> GET WITHDRAWALS BEFORE ', withdrawals)
-
+    // const url_withdraw_list = `${ApiUrl}withdraws?filter={"where":{"userId":"${user.id}"}}`
+    const url_withdraw_list = `${WithdrawApiUrl}users/${user.id}/withdraws?country=${user.country}`
+    let myHeaders = {
+      'Authorization': `Bearer ${user.TokenUser}`,
+    }
+    let withdrawals = await ApiGetRequest(url_withdraw_list, myHeaders)
+    if((withdrawals && withdrawals.length<1) || !withdrawals || withdrawals === 465){return false}
     let withdrawals_remodeled = []
 
     await withdrawals.map(withdraw => {
       let new_withdraw = {
-        account_id:withdraw.account_from,
+        ...withdraw,
+        account_id:withdraw.account_id,
         amount:withdraw.amount,
         amount_neto:withdraw.amount_neto,
         comment:"",
@@ -1458,19 +1654,18 @@ export const get_withdraw_list = (user) =>{
         deposit_provider_id:"",
         expiration_date:new Date(),
         id:withdraw.id,
-        state:withdraw.state === 'accepted' && !withdraw.withdraw_proof ? 'confirmed' : withdraw.state,
-        unique_id:withdraw.unique_id,
+        state:withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state,
+        unique_id:withdraw.id,
         userId:withdraw.userId,
-        withdraw_account:withdraw.withdraw_account,
-        withdraw_provider:withdraw.withdraw_provider,
+        withdraw_account:withdraw.withdraw_account_id,
+        withdraw_provider:withdraw.withdraw_provider_id,
         type_order:"withdraw",
-        withdraw_proof:withdraw.withdraw_proof,
+        withdraw_proof:withdraw.proof,
         created_at:withdraw.created_at,
       }
       return  withdrawals_remodeled.push(new_withdraw)
     })
-
-    console.log('=====>   GET WITHDRAWALS ', withdrawals_remodeled)
+    // console.log('=====>   GET WITHDRAWALS ', withdrawals_remodeled)
 
     withdrawals_remodeled.reverse()
 
@@ -1538,6 +1733,7 @@ export const ready_to_play = payload =>{
 
 export const add_new_withdraw_account = (payload, type) =>{
   return async(dispatch) =>{
+
     const { user, user_id } =store.getState().model_data
     const {
       provider_type,
@@ -1547,43 +1743,47 @@ export const add_new_withdraw_account = (payload, type) =>{
       short_name,
       account_number,
       account_type,
-      city,
-      email
+      city
     } = payload
 
     let body
 
     if(type==='crypto'){
       body = {
-      "access_token":user[user_id].TokenUser,
+      // "access_token":user[user_id].TokenUser,
       "data": {
         ...payload
       }
     }
     }else{
       body = {
-      "access_token":user[user_id].TokenUser,
+      // "access_token":user[user_id].TokenUser,
       "data": {
+        "currency":{
+          "currency":"cop",
+          "is_token":false
+        },
         "provider_type": provider_type,
         "name": name,
         "surname": surname,
         "id_number": id_number,
+        "id_type":user[user_id].id_type,
         "bank_name": short_name,
         "account_number": account_number,
         "account_type": `cuenta_${account_type}`,
         "city": city,
-        "email": email,
+        "email": user[user_id].email || 'default@coinsenda.com',
         "label": short_name,
-        "currency_type":'fiat'
+        "country":user[user_id].country
       }
     }
   }
 
     // console.log('|||||||||||| - - - - add new Waccount', type, body)
 
-    const new_wa_url = `${ApiUrl}withdrawAccounts/add-new-withdraw-account`
-    const new_wa = await ApiPostRequest(new_wa_url, body)
-    // console.log('°°°°°|||||||||||||||| RESULTADO SWAP....', new_wa)
+    const new_wa_url = `${WithdrawApiUrl}withdrawAccounts/add-new-withdraw-account`
+    const new_wa = await ApiPostRequest(new_wa_url, body, user[user_id].TokenUser)
+    // console.log('°°°°°|||||||||||||||| RESULTADO add_new_withdraw_account....', new_wa)
     if(!new_wa || new_wa === 465){return false}
 
     const {
@@ -1669,7 +1869,8 @@ export const get_all_currencies = () => {
 
 
      for (let i = 0; i < currencies.length; i++) {
-      if(currencies[i].currency !== "bitcoin_testnet"){
+      // if(currencies[i].currency !== "bitcoin_testnet"){
+          let spllit = currencies[i].node_url && currencies[i].node_url.split("api")
           let new_item = {
                         "currency_type":currencies[i].currency_type,
                         "id":currencies[i].id,
@@ -1680,9 +1881,10 @@ export const get_all_currencies = () => {
                         "is_token":currencies[i].is_token,
                         "min_amount":currencies[i].deposit_min_amount,
                         ...currencies[i],
+                        "node_url":spllit && spllit[0]
                          }
            new_currencies.push(new_item)
-        }
+        // }
     }
     dispatch(UpdateAllCurrencies(new_currencies))
     return new_currencies
@@ -1696,7 +1898,7 @@ export const get_all_currencies = () => {
 
 
 
-// IDENTITY ENDPOINTS ------------------------------------------------------------------------------------
+// IDENTITY ENDPOINTS ---------------------------------------------------------------------------------------
 
 
 export const get_user = (token, user_country) =>{
@@ -1714,19 +1916,17 @@ export const get_user = (token, user_country) =>{
 
     // 1. inicializamos el estado con el token y el country del usuario
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
-    const init_state = await ApiPostRequest(init_state_url, body, true)
+    const init_state = await ApiPostRequest(init_state_url, body)
     if(init_state && !init_state.data){return false}
-    // console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
+    // return console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
     const get_status_url = `${IdentityApIUrl}status/get-status`
-
     body = {
-      "access_token":token,
       "data": {}
     }
-
-    const status = await ApiPostRequest(get_status_url, body, true)
+    const status = await ApiPostRequest(get_status_url, body, token)
+    console.log('||||||  - - -.  --  status', status)
     if(!status || status === 465){return false}
     const { data } = status
     let country_object = await add_index_to_root_object(data.countries)
@@ -1739,7 +1939,9 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
-    // console.log('||||||  - - -.  --  country_object', country[0])
+    let profile = await dispatch(get_profile(user_update.id, token))
+
+    if(profile.countries[country[0].value] === user_update.verification_level){
 
     let kyc_personal = country[0].levels && country[0].levels.personal
     let kyc_identity = country[0].levels && country[0].levels.identity
@@ -1756,7 +1958,7 @@ export const get_user = (token, user_country) =>{
     if(kyc_financial){
       user_update.security_center.kyc.financial = kyc_financial
     }
-
+}
 
 
 // para setear el estado desde el api maneja los siguientes endpoints
@@ -1764,9 +1966,9 @@ export const get_user = (token, user_country) =>{
 // DELETE /profiles/{id} => Elimina el profile enviandole el id
 // DELETE /status => Eliminar status
 // POST /status/update
-// where: {"userId": "5bea1f01ba84493018b7528c"}
+// where: {"userId": "5d234a113035be2e18a953ca"}
 // {
-//     "userId": "5bea1f01ba84493018b7528c",
+//     "userId": "5d234a113035be2e18a953ca",
 //     "countries": {
 //       "colombia": {
 //         "verification_level": "level_1",
@@ -1792,11 +1994,9 @@ export const get_user = (token, user_country) =>{
 
 
 
-
-
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
-    const profile_data = await ApiPostRequest(get_profile_url, body, true)
+    const profile_data = await ApiPostRequest(get_profile_url, body, token)
     if(profile_data && profile_data.data){
       // Agregamos la información al modelo usuario (user_update)
       user_update = {
@@ -1805,7 +2005,7 @@ export const get_user = (token, user_country) =>{
         person_type:profile_data.data.person_type
       }
     }
-    // console.log('||||||  - - -.  --  USER UPDATE', user_update)
+    // return console.log('||||||  - - -.  --  USER UPDATE', profile_data)
 
     let normalizeUser = await normalize_user(user_update)
     await dispatch(Update_normalized_state(normalizeUser))
@@ -1847,15 +2047,30 @@ export const get_verification_state = () =>{
 
     return verification_state_data
 
-
   }
-
 }
 
 
 
+// https://api.ip2location.com/v2/?ip=181.55.82.22&key=NBIKK7COQJ&package=WS5
 
+export const country_detect = () =>{
+  return async(dispatch) => {
 
+   const my_ip_url = 'https://api.ipify.org/?format=json'
+   var my_ip_url_request = new Request(my_ip_url);
+   let res_ip = await ApiGetRequest(my_ip_url_request)
+   if(!res_ip || res_ip === 465 || res_ip === 404){return false}
+   const { ip } = res_ip
+
+    const country_detect_url = `http://api.ipstack.com/${ip}?access_key=1acf821243c5a2b11c257c4b3b9bbffd`
+    var myRequest = new Request(country_detect_url);
+    let res = await ApiGetRequest(myRequest)
+    if(!res || res === 465 || res === 404){return false}
+    return res
+
+  }
+}
 
 
 export const countryvalidators = () =>{
@@ -1865,6 +2080,7 @@ export const countryvalidators = () =>{
     let res = await ApiGetRequest(url_countryvalidators)
     if(!res || res === 465 || res === 404){return false}
     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
+    // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
     let new_array = await objectToArray(countries)
     let construct_res = {
       res:res[0],
@@ -1903,7 +2119,7 @@ export const update_level_profile = (config, user) =>{
     }
     // console.log('||||||| add_new_profile body - - ', body)
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
-    const add_new_profile = await ApiPostRequest(add_new_profile_url, body, true)
+    const add_new_profile = await ApiPostRequest(add_new_profile_url, body)
     if(!add_new_profile || add_new_profile === 465){return false}
     return add_new_profile
 
@@ -1966,6 +2182,108 @@ export const user_verification_status = (level_request) =>{
   }
 
 }
+
+
+
+const generate_headers = async(token) =>{
+
+  if(!token){
+    const { user, user_id } = store.getState().model_data
+      token = user[user_id].TokenUser
+  }
+
+  let myHeaders = {
+    'Authorization': `Bearer ${token}`,
+  }
+
+  return myHeaders
+
+}
+
+
+
+
+export const get_profile = (userId, token) =>{
+
+  return async(dispatch) => {
+
+    let myHeaders = await generate_headers(token)
+    let url_get_profile = `${ApiUrl}users/${userId}/profile`
+    let profile = await ApiGetRequest(url_get_profile, myHeaders)
+    if(profile === 465){return false}
+    return profile
+
+  }
+}
+
+
+export const add_new_profile = (country, token) =>{
+
+  return async(dispatch) => {
+
+  let body = {
+    	"data":{
+    		"country":country
+    	}
+    }
+    let url_add_profile = `${ApiUrl}profiles/add-new-profile`
+    let new_profile = await ApiPostRequest(url_add_profile, body, token)
+    if(!new_profile){return false}
+
+    const { data } = new_profile
+
+    return data
+    // let myHeaders = await generate_headers(token)
+    //
+    // let url_get_profile = `${ApiUrl}users/${userId}/profile`
+    // let profile = await ApiGetRequest(url_get_profile, myHeaders)
+    // return profile
+
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2101,16 +2419,16 @@ export const update_pending_activity = (account_id, activity_type, activity_list
       // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
       // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
 
-      let pending = (activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
+      let pending = (activity_type === 'withdrawals') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
       let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
       let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
 
       let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)
       let pending_data;
-      // console.log('-----|||||||| °°°°  update_pending_activity', pending, confirmed, rejected)
-      pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
-      rejected ? (pending_data = rejected ? pending_data = {pending:true, lastPending:rejected[0].id} : null) :
-      confirmed && (pending_data = confirmed ? pending_data = {pending:true, lastPending:confirmed[0].id} : null)
+      // pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
+      pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id} : null) :
+      rejected ? (pending_data = rejected ? pending_data = {pending:true, lastPending:rejected[0] && rejected[0].id} : null) :
+      confirmed && (pending_data = confirmed ? pending_data = {pending:true, lastPending:confirmed[0] && confirmed[0].id} : null)
       // console.log('|||||||||| PENDING DATA', pending_data, 'Agregar al estado  |  expandidoMax - pending_data')
 
       let pending_activity_payload = {
@@ -2133,11 +2451,10 @@ export const swap_activity_update = (swap, filter) =>{
   return async(dispatch) => {
 
     setTimeout(async()=>{
-
       const { user, user_id, swaps } = store.getState().model_data
       await dispatch(add_done_swap(swaps, user[user_id], swap))
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
-      await dispatch(update_activity_account(swap.swap_info.account_from_id, filter, null))
+      await dispatch(update_activity_account(swap.account_from, filter, null))
       await dispatch(current_section_params({swap_done_out:false, swap_done_in:true}))
       setTimeout(()=>{dispatch(update_pending_activity())}, 1500)
       setTimeout(()=>{

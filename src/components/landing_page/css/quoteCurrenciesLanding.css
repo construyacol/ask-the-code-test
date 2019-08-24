@@ -9,4 +9,94 @@
   -moz-box-shadow: 10px 10px 17px -13px rgba(0,0,0,0.47);
   box-shadow: 10px 10px 17px -13px rgba(0,0,0,0.47);
   display: grid;
+  max-height: 560px;
+  position: relative;
+  transition: .3s;
+  top: 0;
 }
+
+/*#QuoteCurrenciesLanding.active{
+  top: 90px;
+}*/
+
+.InputFormConverter{
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 40px 1fr;
+}
+
+.contInputFormConverter{
+  position: relative;
+  display: grid;
+}
+
+.iconConverterContainer{
+  position: absolute;
+  align-self: center;
+  display: grid;
+  height: 100%;
+  align-items: center;
+  width: 75px;
+  justify-items:center;
+}
+
+.iConver.right{
+  right: 10px;
+  grid-template-areas: "currency_name icon";
+}
+
+.iConver.left{
+  left:0;
+  grid-template-areas: "icon currency_name";
+}
+
+.iconConverterContainer p{
+  margin: 0 0 0 6px !important;
+}
+
+.inputElement.right{
+  padding-right: 85px;
+}
+
+.inputElement.left{
+  padding-left: 85px;
+}
+
+.contIconvert{
+  grid-area: icon;
+}
+
+.currencyNameConv{
+  grid-area: currency_name;
+  color: gray;
+}
+
+
+.contInputFormConverter input{
+  width: calc(100% - 85px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**/

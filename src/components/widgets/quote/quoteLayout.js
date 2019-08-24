@@ -8,15 +8,15 @@ import PropTypes from 'prop-types'
 
 const QuoteLayout = props => {
 
-  const { user_collection, buy, sell, movil, switchItem } = props
+  const { user_collection, buy, sell, movil, switchItem, landingView } = props
   const { select_currency } = props
-  const { localCurrency } = props.pairs
+  const { localCurrency } = props
   const { buy_price, sell_price } = props
-  const { currency } = props.pairs.currentPair.primary_currency
-  const { buy_pair } = props.pairs.currentPair
+  const { currency } = props.currentPair.primary_currency
+  const { buy_pair } = props.currentPair
   let iter = 0
 
-  // console.log('S T A T E - - - Q U O T E - - - - L A Y O U T - - - C O N T A I N E R:::', props)
+  // console.log('S T A T E - - - Q U O T E - - - - L A Y O U T - - - C O N T A I N E R:::', landingView, props)
 
   return(
     <Fragment>
@@ -24,10 +24,12 @@ const QuoteLayout = props => {
       localCurrency &&
       <section className="QuoteLayout">
 
-        <ChartCoin/>
+        <ChartCoin landingView={landingView}/>
 
         <div className="QuoteLayoutContainer">
 
+          {
+            !landingView &&
             <div className={`${movil ? 'movilPrices' : 'desktopPrices'} prices`}>
               <div className="movilSwitch" style={{display:movil ? 'grid' : 'none'}}>
                   <p className={`itemSwitch ${buy ? 'active' : 'inactive' }`} onClick={switchItem} id="buy">Te compramos a:</p>
@@ -44,6 +46,7 @@ const QuoteLayout = props => {
                     <h1 className="fuente2 Qprice">${buy_price} <span className="fuente">{localCurrency.toUpperCase()} <i className="Qventa fas fa-angle-double-down" style={{display: movil ? 'initial' : 'none'}} ></i></span></h1>
               </div>
             </div>
+          }
 
             <div className={`coinList ${user_collection ? ((user_collection.length>1 && window.innerWidth>768) ? 'user_collection': '') : ''}`}>
                 {
@@ -84,7 +87,6 @@ QuoteLayout.propTypes = {
   buy_price:PropTypes.string,
   loader:PropTypes.bool,
   movil:PropTypes.bool,
-  pairs:PropTypes.object,
   select_currency:PropTypes.func,
   sell:PropTypes.bool,
   sell_price:PropTypes.string,
