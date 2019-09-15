@@ -1,6 +1,26 @@
 import { toast } from 'react-toastify';
 import { kyc } from '../components/api/ui/api.json'
+import Compressor from 'compressorjs';
+
 import store from '../'
+
+
+export const img_compressor = (file, quality) => {
+  return new Promise((resolve, reject) => {
+    if(file.size > 2000000){
+      // console.log('La imagen es superior a 2MB, será comprimida')
+      new Compressor(file, {
+        quality: quality || 0.5,
+        success: resolve,
+        error: reject,
+      })
+      return resolve
+    }
+    // console.log('La imagen es INFERIOR a 2MB, NO será comprimida')
+    return resolve(file)
+  })
+}
+
 
 
 export const mensaje = async(msg, type, position) =>{
@@ -368,7 +388,6 @@ export const serve_orders = async(account_id, filter) =>{
 
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS2 ', list, indices)
 
-  // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', store.getState().model_data, filter)
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', model_data[filter])
 
 

@@ -2,12 +2,13 @@ import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile } from '../../../services'
+import { readFile, img_compressor } from '../../../services'
 import CropImg from '../../widgets/cropimg'
 import SimpleLoader from '../../widgets/loaders'
 import imgTikcketDefault from '../../../assets/ticketdefault.png'
 // import imgTikcketDefault from '../../../assets/ticketdefault2.png'
 import imgTouch from '../../../assets/touch.png'
+
 import './ticket.css'
 
 class TicketPaymentProof extends Component  {
@@ -23,12 +24,14 @@ class TicketPaymentProof extends Component  {
   }
 
 
-  goFileLoader = async e =>{
 
+  goFileLoader = async e =>{
 
     if (e.target.files && e.target.files.length > 0) {
       this.props.action.Loader(true)
-      const imageDataUrl = await readFile(e.target.files[0])
+
+      const file = await img_compressor(e.target.files[0], 0.5)
+      const imageDataUrl = await readFile(file)
       console.log('goFileLoader', imageDataUrl)
       this.props.action.Loader(false)
 
@@ -36,9 +39,7 @@ class TicketPaymentProof extends Component  {
         imageSrc: imageDataUrl,
         fileloader: !this.state.fileloader
       })
-
     }
-
   }
 
 
@@ -49,7 +50,6 @@ updateLocalImg = (img) =>{
   })
 
 }
-
 
 
 
@@ -66,9 +66,10 @@ updateLocalImg = (img) =>{
 
 
     this.props.action.Loader(true)
-    let res = await this.props.action.confirm_deposit_order(ticket, base64);
 
-    if(!res){return false}
+    let res = await this.props.action.confirm_deposit_order(ticket, base64);
+    console.log('Confirm deposit order', res)
+    if(!res || res === 465){return false}
     // let list = await this.props.action.get_deposit_list(user)
     const {
       data

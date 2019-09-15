@@ -131,10 +131,11 @@ class LoaderAplication extends Component {
      action.get_pairs_for(this.props.user.country, user_collection)
 
 
-     action.get_account_balances(this.props.user)
-     action.get_deposit_providers(this.props.user)
+    await action.get_account_balances(this.props.user)
+    await action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
 
+    // return false
 
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)

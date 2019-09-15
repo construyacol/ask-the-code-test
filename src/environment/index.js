@@ -43,6 +43,6 @@ export default Environtment
 // Identity: https://sendaidentity.ngrok.io
 // Tx: https://sendatx.ngrok.io
 // Account: https://sendaaccount.ngrok.io
-// Deposit: https://sendadeposit.ngrok.io
+  // Deposit: https://sendadeposit.ngrok.io
 // Witdhraw: https://sendawithdraw.ngrok.io
 // Swap: https://sendaswap.ngrok.io
