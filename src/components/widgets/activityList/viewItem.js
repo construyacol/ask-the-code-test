@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Fragment } from 'react'
 import { number_format } from '../../../services'
 import { PaymentConfirButton } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
@@ -8,9 +8,10 @@ import SwapAnimation from '../swapAnimation/swapAnimation'
 import moment from 'moment'
 import 'moment/locale/es'
 import PopNotification from '../notifications'
+import { ObserverHook } from '../../hooks/observerCustomHook'
  moment.locale('es')
 
-class ItemList extends Component{
+const ItemList = props => {
 
 // states:
 // pending
@@ -18,43 +19,49 @@ class ItemList extends Component{
 // done / error
 
 
+const [ show,  element ] = ObserverHook()
 
-detail = async() =>{
-  // console.log('Ey arnold',this.props.ticket)
-  let proceed = await this.can_proceed()
+
+
+const detail = async() =>{
+  // console.log('Ey arnold',props.ticket)
+  let proceed = await can_proceed()
   if(proceed){return false}
-  this.props.verTicket(this.props)
+  props.verTicket(props)
 }
 
 
-detail_payment = async() =>{
-  let proceed = await this.can_proceed()
+const detail_payment = async() =>{
+  let proceed = await can_proceed()
   if(proceed){return false}
 
-  this.props.confirmPayment(this.props)
+  props.confirmPayment(props)
 }
 
 
-delete = async() => {
-  let proceed = await this.can_proceed()
+const _delete = async() => {
+  let proceed = await can_proceed()
   if(proceed){return false}
-  this.props.delete_order(this.props.ticket.id)
+  props.delete_order(props.ticket.id)
 }
 
 
-can_proceed = () =>{
+const can_proceed = () =>{
   const {
     deleting,
     current_order_loader
-  } = this.props
+  } = props
 
   if(deleting && current_order_loader){return false}
 }
 
 
+// componentDidUpdate(prevProps, prevState){
+//
+//   console.log('||||||| ___ componentDidUpdate, ', prevState.element)
+//
+// }
 
-
-render(){
 
   let movil_viewport = window.innerWidth < 768
 
@@ -73,7 +80,7 @@ render(){
     swap_done_out,
     swap_done_in,
     account_to
-  } = this.props
+  } = props
 
   const {
     state,
@@ -91,7 +98,7 @@ render(){
     // console.log('||||||||||||||||| -- - - -- MES ', moment(ticket.created_at).format("MMM"), '==>', new_date)
 
     // if(ticket.state === 'confirmed'){
-    //   console.log('__________________________________________this.props', this.props.currencies, ticket)
+    //   console.log('__________________________________________props', props.currencies, ticket)
     // }
 
   const atributos ={
@@ -118,7 +125,12 @@ render(){
   const current_swap_done = swap_done_id === id ? swap_done_id : null
 
   return(
-    <div className={`NDCont ${statePendingSwap === 'error' ? 'errorSwap' : ''}     ${account_to ? 'swap_bought': ''} ${(current_swap_done && swap_done_out) ? 'current_swap_done_out' : (current_swap_done && swap_done_in) ? 'current_swap_done_in' : ''} ${(lastPendingId === id && newDepositStyle)? 'newDepositContainer' : (deleting && current_order_loader === id) ? 'deletingWallet' : (deleted && current_order_loader === id) ? 'walletDeleted' :  'newDepositContainern' }`}>
+    <div ref={element} className={`NDCont ${show && 'shower'} ${statePendingSwap === 'error' ? 'errorSwap' : ''}     ${account_to ? 'swap_bought': ''} ${(current_swap_done && swap_done_out) ? 'current_swap_done_out' : (current_swap_done && swap_done_in) ? 'current_swap_done_in' : ''} ${(lastPendingId === id && newDepositStyle)? 'newDepositContainer' : (deleting && current_order_loader === id) ? 'deletingWallet' : (deleted && current_order_loader === id) ? 'walletDeleted' :  'newDepositContainern' }`}>
+      {
+        show &&
+        <Fragment>
+
+
     <div  id={`${id}`} className={`ItemList fuente  ${(current_swap_done && swap_done_out) ? 'current_swap_done_item_out' : (current_swap_done && swap_done_in) ? 'current_swap_done_item_in' : ''}  ${(pendingSwap && statePendingSwap === 'processing') ? 'swaProcessing' : (pendingSwap && statePendingSwap === 'done') ? 'swapDone' : ''}   ${(lastPendingId === id && newDepositStyle)? 'newDepositStyle' : (deleted && current_order_loader === id) ? 'deletedDepositStyle' : '' } ${state === 'pending' ? 'pending' : state === 'accepted' ? 'accepted' : (state === 'confirmed' && currency_type === 'crypto') ? 'confirmedCrypto' : (state === 'confirmed' && currency_type !== 'crypto') ? 'confirmed' : state === 'rejected' ? 'rejected' : 'canceled'}`} >
 
       {
@@ -134,13 +146,13 @@ render(){
 
       {
        statePendingSwap !== 'error' &&
-       <div className={`ALDetail ${(loader && current_order_loader === id) ? 'InProcess' : ''}`} onClick={this.detail}></div>
+       <div className={`ALDetail ${(loader && current_order_loader === id) ? 'InProcess' : ''}`} onClick={detail}></div>
       }
 
       <div className={`ItemLeft ${(currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap') ? 'delete' : 'normal' }`}>
         {
           ((state === 'pending' || state === 'rejected') && type_order !== 'swap')&&
-          <div className="contenDe tooltip" onClick={this.delete}>
+          <div className="contenDe tooltip" onClick={_delete}>
             <div id="Aldelete">
               <i className="far fa-times-circle "></i>
             </div>
@@ -168,7 +180,7 @@ render(){
                   (currency_type === 'crypto' && state === 'confirmed' && type_order === 'deposit') ?
                     <div className="ConfirmedTxT fuente2">
                       <p>
-                        {ticket.confirmations} <span>/{this.props.currencies && this.props.currencies[ticket.currency.currency].confirmations}</span>
+                        {ticket.confirmations} <span>/{props.currencies && props.currencies[ticket.currency.currency].confirmations}</span>
                       </p>
                     </div>
                   :
@@ -228,7 +240,7 @@ render(){
             }
           </Fragment>
         }
-        <PopNotification notifier={this.props.notifier_type} item_type="order_id" id={id} type="new"/>
+        <PopNotification notifier={props.notifier_type} item_type="order_id" id={id} type="new"/>
       </div>
 
 
@@ -259,7 +271,7 @@ render(){
               <Fragment>
                 Confirmado:
                 <span className="fuente2 confirmedNumber">
-                  {ticket.confirmations}/{this.props.currencies && this.props.currencies[ticket.currency.currency].confirmations}
+                  {ticket.confirmations}/{props.currencies && props.currencies[ticket.currency.currency].confirmations}
                 </span>
               </Fragment>
               :
@@ -286,7 +298,7 @@ render(){
               clases="laReputas"
               active={true}
               type="primary"
-              siguiente={this.detail_payment}
+              siguiente={detail_payment}
               label="Confirmar"
             />
           :
@@ -296,7 +308,7 @@ render(){
             clases={` ${lastPendingId === id ? 'ALbuttonActive' : 'laReputas' }`}
             active={true}
             type="primary"
-            siguiente={this.detail_payment}
+            siguiente={detail_payment}
             label="Confirmar"
           />
           :
@@ -349,9 +361,10 @@ render(){
 
       </div>
     </div>
+      </Fragment>
+    }
     </div>
   )
- }
 }
 
 

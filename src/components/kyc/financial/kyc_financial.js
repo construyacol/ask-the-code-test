@@ -9,6 +9,7 @@ import images from '../../../assets/pictures.png'
 import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
+import { img_compressor } from '../../../services'
 
 
 
@@ -82,7 +83,8 @@ class KycFinancialComponent extends Component {
         name:e.target.files[0].name,
         type:e.target.files[0].type,
       }
-      const imageDataUrl = await readFile(e.target.files[0])
+      const file = await img_compressor(e.target.files[0])
+      const imageDataUrl = await readFile(file)
       payload.base64 = imageDataUrl
       // console.log('|||||||| goFileLoader payload', payload, this.state)
 
@@ -204,7 +206,7 @@ class KycFinancialComponent extends Component {
                         </div>
                         {
                           data_state[item.value] &&
-                          <img src={data_state[item.value].type === 'image/jpeg' ? images : pdf } alt="" width="30px"/>
+                          <img src={(data_state[item.value].type === 'image/jpeg' || data_state[item.value].type === 'image/png' ) ? images : pdf } alt="" width="30px"/>
                         }
                       </div>)
               })

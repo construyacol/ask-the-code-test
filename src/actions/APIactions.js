@@ -1944,10 +1944,10 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
-    let profile = await dispatch(get_profile(user_update.id, token))
+    // let profile = await dispatch(get_profile(user_update.id, token))
 
-    if(profile.countries[country[0].value] === user_update.verification_level){
 
+    // if(profile.countries[country[0].value] === user_update.verification_level){
     let kyc_personal = country[0].levels && country[0].levels.personal
     let kyc_identity = country[0].levels && country[0].levels.identity
     let kyc_financial = country[0].levels && country[0].levels.financial
@@ -1963,7 +1963,9 @@ export const get_user = (token, user_country) =>{
     if(kyc_financial){
       user_update.security_center.kyc.financial = kyc_financial
     }
-}
+// }
+
+
 
 
 // para setear el estado desde el api maneja los siguientes endpoints

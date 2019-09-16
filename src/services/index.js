@@ -5,22 +5,35 @@ import Compressor from 'compressorjs';
 import store from '../'
 
 
+
+
+
 export const img_compressor = (file, quality) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async(resolve, reject) => {
     if(file.size > 2000000){
-      // console.log('La imagen es superior a 2MB, será comprimida')
+      console.log('La imagen es superior a 2MB, será comprimida')
+      if(!quality){
+        // Calcula el nivel de compresión en función al tamaño de la imagen
+        quality = await get_img_quality(file.size)
+        console.log('quality', quality, typeof quality)
+      }
       new Compressor(file, {
-        quality: quality || 0.5,
+        quality: quality,
         success: resolve,
         error: reject,
       })
       return resolve
     }
-    // console.log('La imagen es INFERIOR a 2MB, NO será comprimida')
+    console.log('La imagen es INFERIOR a 2MB, NO será comprimida')
     return resolve(file)
   })
 }
 
+
+const get_img_quality = (size) => {
+  let quality = (size>12000000) ? 0.3 : (size>8000000) ? 0.4 : (size>5000000) ? 0.5 : (size>4000000) ? 0.6 : (size>2000000) && 0.7
+  return quality
+}
 
 
 export const mensaje = async(msg, type, position) =>{

@@ -10,6 +10,7 @@
     "compressorjs": "^1.0.5",
     "d3": "4.9.1",
     "headroom.js": "0.9.4",
+    "intersection-observer": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
     "localforage": "^1.7.3",
     "moment": "^2.24.0",
