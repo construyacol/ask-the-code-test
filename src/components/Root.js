@@ -64,10 +64,10 @@ class RootContainer extends Component {
     // console.log('|||||||| availableToken', availableToken)
 
     let userData = await jwt.decode(AccessToken)
-    // console.log('|||||||| userData', userData)
+    console.log('|||||||| userData', userData)
     if(!userData){return this.logOut()}
     const { usr } = userData
-    // console.log(AccessToken)
+    console.log(AccessToken)
     this.setState({
       TokenUser:AccessToken,
       userId:usr

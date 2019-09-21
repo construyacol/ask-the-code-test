@@ -36,87 +36,6 @@ class HomeContainer extends Component{
   }
 
 
-  // startSocket = async() =>{
-  //
-  //   this.socket = io(SocketUrl)
-  //
-  //   this.socket.on("connect", ()=>{
-  //     this.props.action.load_label('Autenticando canales bilaterales')
-  //     console.log(this.socket)
-  //     alert('conectado?')
-  //
-  //     const body = {
-  //       body:{access_token:this.props.user.TokenUser}
-  //     }
-  //     this.socket.emit('authentication', body);
-  //     this.socket.on("authenticated", () => {
-  //       // console.log('authenticated SOKET')
-  //       alert('AUTENTICADO')
-  //
-          // this.socket.on(`/deposit/${this.props.user.id}`, async(deposit)=>{
-          //
-          //   if(deposit.state === 'pending' && deposit.currency_type === 'fiat'){
-          //     // console.log('||||||||||||||||| ------ DEPOSITO SOCKET|', deposit)
-          //     await this.props.action.get_deposit_list(this.props.user)
-          //     await this.props.action.update_activity_account(deposit.account_id, 'deposits')
-          //     await this.props.action.update_pending_activity(deposit.account_id, 'deposits')
-          //   }
-          //
-          //   if(deposit.state === 'done' || deposit.state === 'accepted'){
-          //     await this.props.action.get_deposit_list(this.props.user)
-          //     this.props.action.get_account_balances(this.props.user)
-          //   }
-          //
-          //   if(deposit.currency_type === 'crypto'){
-          //     this.props.action.add_new_transaction_animation()
-          //     this.props.history.push(`/wallets/activity/${deposit.account_id}`)
-          //   }
-          //
-          // })
-  //
-  //
-  //         this.socket.on(`/withdraw/${this.props.user.id}`, async(withdraw)=>{
-  //
-  //           switch (withdraw.state) {
-  //             // case 'confirmed':
-  //                // return this.props.action.mensaje('Retiro confirmado','success')
-  //               // return this.props.action.get_list_user_wallets(this.props.user)
-  //             case 'confirmed':
-  //             case 'accepted':
-  //             // case 'pending':
-  //             if(withdraw.currency_type === 'crypto'){
-  //               setTimeout(async()=>{
-  //                 await this.props.action.ManageBalance(withdraw.account_from, 'reduce', withdraw.amount)
-  //                 let get_withdraw_providers = await this.props.action.get_withdraw_providers(this.props.user)
-  //                 await this.props.action.get_withdraw_accounts(this.props.user, get_withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
-  //                 await this.props.action.get_withdraw_list(this.props.user)
-  //                 await this.props.action.update_activity_account(withdraw.account_from, 'withdrawals')
-  //                 this.props.action.update_pending_activity(withdraw.account_from, 'withdrawals')
-  //                 return this.props.action.mensaje('El retiro se esta procesando','success')
-  //               }, 1000)
-  //               // El timer es para que se pueda ejecutar la animación al agregar el nuevo item withdraw crypto
-  //             }
-  //               break
-  //             default:
-  //             break
-  //           }
-  //           // if(withdraw.state === 'accepted'){
-  //           //
-  //           // }
-  //           //
-  //           // if(withdraw.state === 'confirmed'){
-  //           //   this.props.action.mensaje('El retiro ha sido aceptado','success')
-  //           // }
-  //           // console.log('WITHDRAWWWW!!!! ', withdraw)
-  //           // alert('withdraw actualizado')
-  //           // this.props.action.get_withdraw_list(this.props.user)
-  //         })
-  //         // /sawp/userId
-  //     })
-  //   })
-  // }
-
-
 
 static getDerivedStateFromError(error, info){
   return { handleError:true };
@@ -145,19 +64,6 @@ static getDerivedStateFromError(error, info){
   //   }
   // }
 
-  // componentDidMount(){
-  // }
-
-  // formatToCurrencies = async props =>{
-  //   let currency = {
-  //     currency:'cop',
-  //     is_token:false
-  //   }
-  //   let resul = await formatToCurrency(50000, currency, true)
-  //   console.log('formatToCurrencies', resul, true)
-  //   alert('puta')
-  // }
-
   render(){
 
     const {
@@ -174,7 +80,7 @@ static getDerivedStateFromError(error, info){
 
     return(
       <HandleError>
-        <SocketsComponent/>
+        {/* <SocketsComponent/> */}
 
       <Router
         basename="/app"

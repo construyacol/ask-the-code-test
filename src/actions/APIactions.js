@@ -1944,26 +1944,25 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
-    // let profile = await dispatch(get_profile(user_update.id, token))
+    let profile = await dispatch(get_profile(user_update.id, token))
 
+    if(profile.countries[country[0].value] === user_update.verification_level){
+      let kyc_personal = country[0].levels && country[0].levels.personal
+      let kyc_identity = country[0].levels && country[0].levels.identity
+      let kyc_financial = country[0].levels && country[0].levels.financial
 
-    // if(profile.countries[country[0].value] === user_update.verification_level){
-    let kyc_personal = country[0].levels && country[0].levels.personal
-    let kyc_identity = country[0].levels && country[0].levels.identity
-    let kyc_financial = country[0].levels && country[0].levels.financial
+      if(kyc_personal){
+        user_update.security_center.kyc.basic = kyc_personal
+      }
 
-    if(kyc_personal){
-      user_update.security_center.kyc.basic = kyc_personal
+      if(kyc_identity){
+        user_update.security_center.kyc.advanced = kyc_identity
+      }
+
+      if(kyc_financial){
+        user_update.security_center.kyc.financial = kyc_financial
+      }
     }
-
-    if(kyc_identity){
-      user_update.security_center.kyc.advanced = kyc_identity
-    }
-
-    if(kyc_financial){
-      user_update.security_center.kyc.financial = kyc_financial
-    }
-// }
 
 
 

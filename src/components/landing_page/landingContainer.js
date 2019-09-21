@@ -198,7 +198,6 @@ class LandingPageContainer extends Component {
 
     return(
     <Fragment>
-              <BubbleMsg/>
               <section id="LandingPageContainer">
                 <LandingBarNav menuActive={menuActive} signinUri={signinUri} signupUri={signupUri} logoAnim={logoAnim} landing={true}/>
 

@@ -25,7 +25,71 @@ import './dashboard.css'
 
 class DashBoardContainer extends Component{
 
+
+  init_user_freshChat = async(user) => {
+    // var restoreId = RESTOREID //Which need to be fetched from your DB
+      var restoreId
+
+      await window.fcWidget.init({
+        token: "516c4588-f5f6-409f-8972-ffd3ec9aede5",
+        host: "https://wchat.freshchat.com",
+        externalId: '223312322332',
+        restoreId: restoreId ? restoreId : null
+      });
+
+      window.fcWidget.user.get(function(resp) {
+        var status = resp && resp.status,
+            data = resp && resp.data;
+        if (status !== 200) {
+          window.fcWidget.user.setProperties({
+            firstName:user.name,
+            lastName:user.surname,
+            email: "erickOspina7@hotmail.com",
+            phone:user.phone
+          });
+          console.log('||||||||| _______________________ init_user_freshChat: ', resp, window.fcWidget)
+
+          window.fcWidget.on('user:created', function(resp) {
+            // El usuario se crea cuando inicia el chat
+            var status = resp && resp.status,
+                data = resp && resp.data;
+                console.log('___________ user:created', resp)
+            if (status === 200) {
+              if (data.restoreId) {
+                console.log('___________ restoreId', data.restoreId)
+                // Update restoreId in your database
+              }
+            }
+          });
+        }
+      });
+  }
+
+
+
   componentDidMount() {
+
+    // console.log('________________________|||||||||| DATOS USUARIOS ||||||||||_______:', window.fcWidget, this.props.user)
+      // window.fcWidget.setExternalId(this.props.user.id);
+      // window.fcWidget.user.setFirstName(this.props.user.name);
+      // window.fcWidget.user.setLastName(this.props.user.surname);
+      // window.fcWidget.user.setEmail(this.props.user.email);
+
+      // window.fcWidget.init({
+      //   token: "516c4588-f5f6-409f-8972-ffd3ec9aede5",
+      //   host: "https://wchat.freshchat.com",
+      //   // externalId: this.props.user.id,     // user’s id unique to your system
+      //   externalId:'123',     // user’s id unique to your system
+      //   restoreId:'123',
+      //   firstName: this.props.user.name,              // user’s first name
+      //   lastName:this.props.user.surname,                // user’s last name
+      //   email: "erickOspina7@hotmail.com",    // user’s email address
+      //   phone: this.props.user.phone,            // phone number without country code
+      //   phoneCountryCode: "+57"          // phone’s country code
+      // })
+
+    this.init_user_freshChat(this.props.user)
+
     Events.scrollEvent.register("begin", function() {
       // console.log("begin", arguments);
     });

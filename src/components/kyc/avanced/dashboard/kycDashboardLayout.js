@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+ import React, {Fragment} from 'react'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
 import Marco from '../../../widgets/marco'
 
@@ -36,8 +36,8 @@ const KycDashBoard = props =>{
           <Marco type="green">
             <div className={`imgDashContainerD ${animation ?  'imgDCAnim' : ''}`}>
                 <div className={`imgDashSon`}>
-                  <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState > 2 ? '0': '1'}} alt="" width="100%" />
-                  <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState > 2 ? '0': '1'}} alt="" width="100%" />
+                  <img className={`imgDashItem ${id_type} ${animation2 ? 'frontImg' : ''}`} src={require(`${front}`)} style={{ opacity: prevState === 1 ? '1': '0', zIndex:2}} alt="" width="100%" />
+                  <img className={`imgDashItem ${animation2 ? 'backImg' : 'backInit'}`} src={require(`${back}`)}  style={{ opacity: prevState > 2 ? '0': '1', zIndex:1}} alt="" width="100%" />
                   <img className="imgDashItem" src={require(`${selfie}`)} style={{ opacity: (prevState > 2) ? '1': '0'}} alt="" width="100%" />
                 </div>
             </div>
