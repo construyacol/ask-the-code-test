@@ -40,8 +40,7 @@ import ItemListKycBasic from './itemList'
 
 class KycBasicContainer extends Component {
 
-  state = {
-  }
+  state = {}
 
   componentDidMount(){
     this.init_component()
@@ -81,7 +80,7 @@ class KycBasicContainer extends Component {
               country_prefix:'',
               ...form_kyc_basic_state.data_state
         }
-
+        // console.log('||||||_______ new_init_state', new_init_state)
 
         if(!new_init_state.country_prefix){
           new_init_state.country_prefix = country_default

@@ -8,6 +8,12 @@ import ActiveItem from '../../widgets/items/active_item'
 
 const controller = new ScrollMagic.Controller();
 
+let colombia,
+    peru,
+    ecuador,
+    argentina,
+    chile
+
 class SelectCountryLanding extends Component{
 
 
@@ -23,20 +29,22 @@ class SelectCountryLanding extends Component{
     // console.log('AAAAAA||||||||| ==========================>  available_countries', available_countries)
   }
 
-
+componentWillUnmount(){
+  controller.removeScene([colombia, peru, ecuador, argentina, chile])
+}
 
   componentDidMount(){
 
     this.load_countries()
 
-    let colombia = new ScrollMagic.Scene({
+    colombia = new ScrollMagic.Scene({
           triggerElement: ".layerStickyTriggerCountry1",
           triggerHook:0.05,
           duration: "100px"
       })
       .addTo(controller);
 
-      colombia.on("enter", async(event) => {
+      colombia.on("progress", async(event) => {
         if(this.props.current_country === 'colombia'){return false}
         await this.props.country_change('colombia')
         this.update_country(this.props.current_country)
@@ -44,14 +52,14 @@ class SelectCountryLanding extends Component{
   //
 
 
-    let peru = new ScrollMagic.Scene({
+    peru = new ScrollMagic.Scene({
           triggerElement: ".layerStickyTriggerCountry2",
           triggerHook:0.05,
           duration: "100px"
       })
       .addTo(controller);
 
-      peru.on("enter", async(event) => {
+      peru.on("progress", async(event) => {
         if(this.props.current_country === 'peru'){return false}
         await this.props.country_change('peru')
         this.update_country(this.props.current_country)
@@ -59,41 +67,41 @@ class SelectCountryLanding extends Component{
 
 
 
-    let ecuador = new ScrollMagic.Scene({
+    ecuador = new ScrollMagic.Scene({
           triggerElement: ".layerStickyTriggerCountry3",
           triggerHook:0.05,
           duration: "100px"
       })
       .addTo(controller);
 
-      ecuador.on("enter", async(event) => {
+      ecuador.on("progress", async(event) => {
         if(this.props.current_country === 'ecuador'){return false}
         await this.props.country_change('ecuador')
         this.update_country(this.props.current_country)
       })
   //
   //
-    let argentina = new ScrollMagic.Scene({
+    argentina = new ScrollMagic.Scene({
           triggerElement: ".layerStickyTriggerCountry4",
           triggerHook:0.05,
           duration: "100px"
       })
       .addTo(controller);
 
-      argentina.on("enter", async(event) => {
+      argentina.on("progress", async(event) => {
         if(this.props.current_country === 'argentina'){return false}
         await this.props.country_change('argentina')
         this.update_country(this.props.current_country)
       })
   //
-  let chile = new ScrollMagic.Scene({
+  chile = new ScrollMagic.Scene({
         triggerElement: ".layerStickyTriggerCountry5",
         triggerHook:0.05,
         duration: "100px"
     })
     .addTo(controller);
 
-    chile.on("enter", async(event) => {
+    chile.on("progress", async(event) => {
       if(this.props.current_country === 'chile'){return false}
       await this.props.country_change('chile')
       this.update_country(this.props.current_country)
@@ -107,7 +115,7 @@ class SelectCountryLanding extends Component{
   //   })
   //   .addTo(controller);
   //
-  //   brazil.on("enter", async(event) => {
+  //   brazil.on("progress", async(event) => {
   //     if(this.props.current_country === 'brazil'){return false}
   //     await this.props.country_change('brazil')
   //     this.update_country(this.props.current_country)

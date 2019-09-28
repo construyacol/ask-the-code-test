@@ -34,12 +34,12 @@
           "id":1,
           "category_id":2,
           "faq":"¿Puedo confirmar un deposito antes de realizar el pago?",
-          "answer":"No, la unica forma de confirmar un deposito es adjuntando una foto del desprendible de pago del deposito realizado."
+          "answer":"No, únicamente debes confirmar una orden de depósito una vez hayas realizado la tranferencia o déposito correspondiente para que el sistema puede verificarlo y lo apruebe."
         },
         {
           "id":2,
           "category_id":2,
-          "faq":"¿Qué pasa si realizo un depósito en pesos colombianos y nunca lo confirmó?",
+          "faq":"¿Qué pasa si realizo un depósito en pesos colombianos y nunca lo confirmo?",
           "answer":"Si el usuario realiza un depósito a la cuenta corporativa y nunca lo confirmó, debe comunicarse con soporte@coinsenda.com para recibir ayuda creando la orden de depósito por el valor exacto por el cual se realizó. El no crear la orden de depósito o confirmarlo hace que no puedan acreditarse automáticamente en su cuenta de Coinsenda."
         },
         {
@@ -65,13 +65,13 @@
           "id":2,
           "category_id":3,
           "faq":"¿Cuánto tiempo tarda en procesarse un retiro en pesos a mi cuenta bancaria?",
-          "answer":"Si se solicita en horario bancario hábil, la primera vez toma dos horas pues debe inscribirse la cuenta bancaria del usuario previamente, del segundo retiro en adelante si la cuenta del usuario ya se encuentra inscrita toma minutos en procesarse."
+          "answer":"Si se solicita en horario bancario hábil, la primera vez toma dos horas, pues debe inscribirse la cuenta bancaria del usuario previamente, del segundo retiro en adelante si la cuenta del usuario ya se encuentra inscrita toma minutos en procesarse en horario bancario hábil."
         },
         {
           "id":3,
           "category_id":3,
           "faq":"¿Cuánto tiempo tarda en reflejarse el dinero en mi cuenta bancaria?",
-          "answer":"El tiempo de verificación de tu cuenta puede tardar máximo 48 horas hábiles en caso de haber cargado toda la información y documentos correctamente. Sin embargo en la mayoría de los casos suele tardar menos de 2 horas en verificarse."
+          "answer":"Cuando el retiro se confirma por el usuario en horario bancario hábil, si tu cuenta es de Bancolombia el dinero se verá reflejado instantáneamente una vez te llegue el correo de confirmación a tu correo electrónico de registro. Si tu banco es de una entidad diferente a Bancolombia esta se convierte en una transferencia ACH, por lo que se debita de nuestra cuenta corporativa pero debe esperarse a que el banco de destino la acredite. Para este proceso es importante tener presente que la cuenta bancaria del usuario debe encontrarse previamente inscrita."
         }
       ]
     },
@@ -84,7 +84,7 @@
           "id":1,
           "category_id":4,
           "faq":"¿Tienen costo los retiros en BTC en Coinsenda?",
-          "answer":"Los retiros de BTC en Coinsenda son 100% gratuitos para nuestros miembros, la tarifa o comisión por transacción la asume Coinsenda en su totalidad."
+          "answer":"El costo de retiro de la red Bitcoin es de 0.0005 BTC."
         },
         {
           "id":2,
@@ -96,7 +96,7 @@
           "id":3,
           "category_id":4,
           "faq":"¿Cómo me doy cuenta que mi retiro o depósito BTC fue procesado?",
-          "answer":"Una vez un retiro o depósito BTC haya sido procesado por el sistema, automáticamente va a llegar siempre un correo electrónico con los detalles de la transacción, recuerda siempre estar pendiente de tu bandeja de entrada y/o spam"
+          "answer":"Una vez un retiro o depósito BTC haya sido procesado por el sistema, automáticamente va a llegarte siempre un correo electrónico de confirmación, recuerda siempre estar pendiente de tu bandeja de entrada y/o spam."
         }
       ]
     },
@@ -109,13 +109,13 @@
           "id":1,
           "category_id":5,
           "faq":"¿Cómo puedo comunicarme con el área de soporte y atención al usuario?",
-          "answer":"Nuestros miembros pueden comunicarse vía WhatsApp o Telegram a la línea de soporte y atención: +57 311-765-6310, vía correo electrónico a soporte@coinsenda.com o a cualquiera de la redes sociales oficiales de Coinsenda para recibir una atención personalizada siempre que lo necesiten."
+          "answer":"Nuestros usuarios pueden comunicarse vía WhatsApp o Telegram a la línea de soporte y atención: +57 311 765 6310, vía correo electrónico a soporte@coinsenda.com o a cualquiera de la redes sociales oficiales de Coinsenda para recibir una atención personalizada siempre que lo necesiten."
         },
         {
           "id":2,
           "category_id":5,
-          "faq":"Si soy un usuario nuevo, ¿como puedo encontrar videos tutoriales del proceso de compra y venta?",
-          "answer":"En nuestro sitio oficial: www.coinsenda.com, en youtube buscándonos como coinsenda y diferentes medios sociales puedes encontrar guías para: compra, venta, registro, verificación de cuenta y demás procesos necesarios para la utilización de todos nuestros servicios."
+          "faq":"Si soy un usuario nuevo, ¿Como puedo encontrar videos tutoriales del proceso de compra y venta?",
+          "answer":"En nuestro sitio oficial: www.coinsenda.com, en youtube buscándonos como coinsenda y diferentes medios sociales puedes encontrar guías para: Compra, venta, registro, verificación de cuenta y demás procesos necesarios para la utilización de todos nuestros servicios."
         }
       ]
     },
@@ -128,7 +128,7 @@
           "id":1,
           "category_id":6,
           "faq":"¿Puedo obtener algún incentivo por referir usuarios en Coinsenda?",
-          "answer":"Si, obtienes el 0.5% de las operaciones realizadas por usuarios registrados por medio de tu link de referido, estos incentivos son a perpetuidad(por siempre)."
+          "answer":"Si, obtienes el 0.5% de las operaciones realizadas por usuarios registrados por medio de tu link de referido siempre que realicen operaciones de compra o venta."
         },
         {
           "id":2,
@@ -146,7 +146,7 @@
           "id":4,
           "category_id":6,
           "faq":"¿Porque debo verificar mi cuenta?",
-          "answer":"La verificación de identidad es obligatoria para cumplir con las leyes de prevención del blanqueo de capitales reguladas por el estado. El cumplimiento de esta normativa sirve para proporcionarte una experiencia segura, sencilla y personalizada"
+          "answer":"La verificación de identidad es obligatoria para cumplir con las leyes de prevención del blanqueo de capitales reguladas por el estado. El cumplimiento de esta normativa sirve para proporcionarte una experiencia segura, sencilla y personalizada."
         },
         {
           "id":5,

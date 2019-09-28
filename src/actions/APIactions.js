@@ -89,22 +89,22 @@ moment.locale('es')
 
 
 export const mensaje = (msg, type, position) =>{
-return async(dispatch) => {
+  return async(dispatch) => {
 
-  setTimeout(()=>{
-    dispatch(toast_sound())
-  }, 300)
+    setTimeout(()=>{
+      dispatch(toast_sound())
+    }, 300)
 
-  toast(msg, {
-    position: toast.POSITION[!position ? 'BOTTOM_RIGHT' : position],
-     pauseOnFocusLoss: false,
-     draggablePercent: 60,
-     className: `${type === 'error' ? 'toastError': type === 'success' ? 'DCfondo' : 'DCfondoDefault'}`,
-     bodyClassName: `${type === 'error' ? 'toastErrorText': type === 'success' ? 'DCTtext' : 'DCTtextDefault'}`,
-     progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
-     autoClose: 4000
-  })
-}
+    toast(msg, {
+      position: toast.POSITION[!position ? 'BOTTOM_RIGHT' : position],
+       pauseOnFocusLoss: false,
+       draggablePercent: 60,
+       className: `${type === 'error' ? 'toastError': type === 'success' ? 'DCfondo' : 'DCfondoDefault'}`,
+       bodyClassName: `${type === 'error' ? 'toastErrorText': type === 'success' ? 'DCTtext' : 'DCTtextDefault'}`,
+       progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
+       autoClose: 4000
+    })
+  }
 }
 
 
@@ -205,6 +205,9 @@ export const get_historical_price = (currency, amount_days, api_key) => {
     let url = `https://min-api.cryptocompare.com/data/histoday?fsym=${currency}&tsym=USD&limit=${amount_days}&api_key={${api_key}}`
     let res = await ApiGetRequest(url) //fetch
     if(res.Response === 'Error'){return false} //Error message
+    // console.log(res)
+    // alert()
+    if(!res.Data.length){return false} //Error message
 
     let days = res.Data.length - 1
     let price_date = []
@@ -308,8 +311,8 @@ export const get_all_pairs_from_landing = () =>{
       const get_data_country = `${ApiUrl}countries?filter={"where": {"name": "${country}"}}`
       const data_country = await ApiGetRequest(get_data_country)
       if((!data_country || data_country) && data_country.length < 1){return false}
+      // console.log('||||||||||| get_local_COUNTRY', data_country)
       let local_currency_id = data_country[0].currency_id
-      // console.log('||||||||||| get_local_COUNTRY', local_currency_id)
 
       const get_local_currency = `${ApiUrl}currencies?filter={"where": {"id": "${local_currency_id}"}}`
       const local_currency_data = await ApiGetRequest(get_local_currency)
@@ -1944,9 +1947,9 @@ export const get_user = (token, user_country) =>{
       levels:country[0].levels
     }
 
-    let profile = await dispatch(get_profile(user_update.id, token))
+    // let profile = await dispatch(get_profile(user_update.id, token))
 
-    if(profile.countries[country[0].value] === user_update.verification_level){
+    // if((profile.countries[country[0].value] !== 'level_0') && (user_update.verification_level !== 'level_0')){
       let kyc_personal = country[0].levels && country[0].levels.personal
       let kyc_identity = country[0].levels && country[0].levels.identity
       let kyc_financial = country[0].levels && country[0].levels.financial
@@ -1962,7 +1965,7 @@ export const get_user = (token, user_country) =>{
       if(kyc_financial){
         user_update.security_center.kyc.financial = kyc_financial
       }
-    }
+    // }
 
 
 
@@ -2025,7 +2028,6 @@ export const get_user = (token, user_country) =>{
 
 
 
-
 export const update_user = new_user =>{
   return async(dispatch) => {
     let normalizeUser = await normalize_user(new_user)
@@ -2034,13 +2036,12 @@ export const update_user = new_user =>{
 }
 
 
-
-
 export const get_verification_state = () =>{
 
   return async(dispatch, getState) => {
 
     const { user, user_id } = getState().model_data
+    if(!user){return false}
     const user_data = user[user_id]
     const { advanced, basic } = user_data.security_center.kyc
 

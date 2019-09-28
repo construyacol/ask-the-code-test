@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import IconSwitch from '../icons/iconSwitch'
+import FreshChat from '../../../services/freshChat'
 
 import './panelAlert.css'
 
@@ -72,7 +73,6 @@ class PanelAlertContainer extends Component {
         action:this.validate_kyc_advanced
       })
     }
-
   }
 
   validate_kyc_advanced = () =>{
@@ -88,7 +88,14 @@ class PanelAlertContainer extends Component {
     // alert('goto')
   }
 
-  close = () =>{
+  close = async() =>{
+    let verification_state = await this.props.action.get_verification_state()
+    // console.log('||||||__________ verification_state', verification_state)
+
+    if(!verification_state || (verification_state !== 'confirmed' && verification_state !== 'accepted')){
+      FreshChat.track('need help to verification')
+    }
+    // console.log('AYuda para verificación', (this.props.user.levels && this.props.user.levels.personal !== 'confirmed'), this.props.user)
     return this.setState({visible:false})
   }
 
@@ -97,6 +104,7 @@ class PanelAlertContainer extends Component {
 
     return(
       <div className={`PanelAlertContainer ${visible && 'visible'}`} id="PanelAlertContainer" style={{background:background}}>
+        <i className="fas fa-times" onClick={this.close}></i>
          <div className="alertContainer fuente">
            <IconSwitch
              icon={icon}
@@ -111,7 +119,6 @@ class PanelAlertContainer extends Component {
              }
            </div>
          </div>
-         <i className="fas fa-times" onClick={this.close}></i>
       </div>
     )
   }

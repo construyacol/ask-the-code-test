@@ -5,9 +5,6 @@ import Compressor from 'compressorjs';
 import store from '../'
 
 
-
-
-
 export const img_compressor = (file, quality) => {
   return new Promise(async(resolve, reject) => {
     if(file.size > 2000000){
@@ -15,7 +12,7 @@ export const img_compressor = (file, quality) => {
       if(!quality){
         // Calcula el nivel de compresión en función al tamaño de la imagen
         quality = await get_img_quality(file.size)
-        console.log('quality', quality, typeof quality)
+        // console.log('quality', quality, typeof quality)
       }
       new Compressor(file, {
         quality: quality,

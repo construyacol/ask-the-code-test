@@ -7,20 +7,25 @@ import SimpleLoader from '../widgets/loaders'
 import { security_center } from '../api/ui/settings.json'
 import ItemSettingsInit from '../widgets/itemSettings/'
 import { scroller } from 'react-scroll'
+import FreshChat from '../../services/freshChat'
+
 
 class SecurityCenter extends Component{
-
 
   validate_state = async() => {
 
     let verification_state = await this.props.action.get_verification_state()
     if(verification_state !== 'accepted'){
+
       scroller.scrollTo('firstInsideContainer', {
         offset:220,
         duration:1,
         smooth: true,
         containerId: 'containerElement'
       })
+
+      FreshChat.show_tags(['verify'], 'article')
+
     }
   }
 

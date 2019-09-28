@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import Navbar from '../navbar'
 import { Router, Route, Switch } from 'react-router-dom'
 import { Link } from 'react-router-dom'
@@ -24,6 +24,12 @@ const HelPages = props => {
 
 
  const [ menuState, setMenuState ] = useState(false)
+
+ useEffect(()=>{
+   history.listen((location, action) => {
+     window.scrollTo(0, 0);
+   })
+ }, [history])
 
  const toggle_menu = () => {
     setMenuState(!menuState)

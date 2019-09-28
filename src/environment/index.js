@@ -1,4 +1,4 @@
-export const Environtment = {
+export const Environment = {
   ApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
   SocketUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
   IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'https://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
@@ -12,7 +12,7 @@ export const Environtment = {
 
 // http://190.192.134.201:5900
 
-export default Environtment
+export default Environment
 // https://plecto.serveo.net
 // ApiUrl:process.env.NODE_ENV === 'development' ? 'http://192.168.0.16:3001/api/' : 'https://www.binance.com'
 // token coinsenda
@@ -29,7 +29,6 @@ export default Environtment
 // https://archa.serveo.net/
 
 // https://oldauth.ngrok.io/public/signin?clientId=5d234981249f0d2d1bf1b72e
-
 
 
 // 5d234a113035be2e18a953ca

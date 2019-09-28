@@ -20,9 +20,12 @@ import VideoTutorialContainer from './sections/videoTutorials'
 import LayerStickyComponent from './sections/layerStickyComponent'
 import SelectCountryLanding from './sections/selectCountryLanding'
 import { CountryList } from './sections/selectCountryLanding'
-import BubbleMsg from '../widgets/msgBubble/msgBubble'
-
 import { CurrencyList } from './sections/currencies_implemented'
+// import BubbleMsg from '../widgets/msgBubble/msgBubble'
+
+
+import FreshChat from '../../services/freshChat'
+import localForage from 'localforage'
 
 import './landingPageContainer.css'
 
@@ -31,7 +34,12 @@ const signinUri = `${oauth.host}/${oauth.signup}?clientId=${oauth.key}`
 const signupUri = `${oauth.host}/${oauth.signin}?clientId=${oauth.key}`
 
 const controller = new ScrollMagic.Controller();
-
+let quote,
+LogoAnim,
+BarNav,
+reviews,
+videoTutorial,
+updatePairs
 
 class LandingPageContainer extends Component {
 
@@ -52,10 +60,28 @@ class LandingPageContainer extends Component {
   }
 
   componentWillUnmount(){
-    // scene.remove();
+    controller.removeScene([quote, LogoAnim, BarNav, reviews, videoTutorial])
+    clearInterval(updatePairs)
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+    const restoreId = await localForage.getItem('restoreId')
+    const externalId = await localForage.getItem('externalId')
+    await FreshChat.init_user('anonymous', restoreId, externalId)
+    // await FreshChat.show_channels(["support"])
+    // console.log('|||||||||||||||||||||||||||||window.fcWidget', window.fcWidget)
+    // window.fcWidget.open();
+    // setTimeout(()=>{
+    //   // window.fcWidget.setConfig({config:{
+    //   //     showFAQOnOpen: true,
+    //   //     hideFAQ: false,
+    //   // }})
+    //   window.fcWidget.setFaqTags({
+    //     tags : ['registro'],
+    //     filterType:'article'
+    //   });
+      // window.fcWidget.open();
+    // }, 3000)
     this.init_component()
     // VideoTutorialContainer.hola()
   }
@@ -73,16 +99,19 @@ class LandingPageContainer extends Component {
 
 
 
-
-
     await this.props.action.get_all_pairs_from_landing()
+
+    updatePairs = setInterval(async()=>{
+      await this.props.action.get_all_pairs_from_landing()
+    }, 30000)
+
     await this.props.action.get_pairs_for('colombia')
 
     if(process.env.NODE_ENV === 'development'){
       this.setState({triggerBackground:false})
     }
 
-      new ScrollMagic.Scene({
+      quote = new ScrollMagic.Scene({
           triggerHook:0.07,
           triggerElement: "#headerTrigger",
           duration: "100%"
@@ -91,7 +120,7 @@ class LandingPageContainer extends Component {
       .addTo(controller);
 
 
-      let LogoAnim = new ScrollMagic.Scene({
+      LogoAnim = new ScrollMagic.Scene({
           offset: window.innerWidth<768 ? 0 : 80
       })
       .addTo(controller);
@@ -108,7 +137,7 @@ class LandingPageContainer extends Component {
           })
       })
 
-      let BarNav = new ScrollMagic.Scene({
+      BarNav = new ScrollMagic.Scene({
           triggerElement: "#headerTrigger",
           offset: window.innerWidth<768 ? 0 : 200
       })
@@ -129,7 +158,7 @@ class LandingPageContainer extends Component {
 
 
       if(window.innerWidth>768){
-        new ScrollMagic.Scene({
+        reviews = new ScrollMagic.Scene({
             triggerHook:0.6,
             triggerElement: "#triggerReviews",
             duration: "150%"
@@ -149,7 +178,7 @@ class LandingPageContainer extends Component {
 
       // VideoTutorialContainer =====================================================================================================================
 
-      let videoTutorial = new ScrollMagic.Scene({
+      videoTutorial = new ScrollMagic.Scene({
           triggerElement: "#VideoTutorialMenu",
           triggerHook:1,
           duration: "130%"

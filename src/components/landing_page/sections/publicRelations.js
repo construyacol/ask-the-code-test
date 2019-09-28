@@ -84,7 +84,7 @@ const PublicRelationsContainer = props => {
     videoTrigger.on("enter", (event) => {
       setPlayingVideo(true)
     }).on("leave", (event) => {
-      console.log('========> event', event)
+      // console.log('========> event', event)
       // setPlayingVideo(false)
       if (event.state === 'AFTER' || event.state === 'BEFORE') {
         setPlayingVideo(false)
@@ -92,6 +92,9 @@ const PublicRelationsContainer = props => {
     });
 
 
+    return (()=>{
+      controller.removeScene([first, second, videoTrigger])
+    })
 
   }, [])
 

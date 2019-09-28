@@ -54,7 +54,7 @@ class VideoPlayer extends Component {
                         playing={video.play}
                         controls
                         onStart={this.goFull}
-                        onPlay={this.goFull}
+                        // onPlay={this.goFull}
                         onPause={this.minimize}
                         onEnded={this.props.action.default_video_state}
                        />
