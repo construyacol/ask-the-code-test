@@ -1748,10 +1748,12 @@ export const add_new_withdraw_account = (payload, type) =>{
       name,
       surname,
       id_number,
+      id_type,
       short_name,
       account_number,
       account_type,
-      city
+      city,
+      currency
     } = payload
 
     let body
@@ -1767,18 +1769,15 @@ export const add_new_withdraw_account = (payload, type) =>{
       body = {
       // "access_token":user[user_id].TokenUser,
       "data": {
-        "currency":{
-          "currency":"cop",
-          "is_token":false
-        },
+        "currency":currency,
         "provider_type": provider_type,
         "name": name,
         "surname": surname,
         "id_number": id_number,
-        "id_type":user[user_id].id_type,
+        "id_type":id_type,
         "bank_name": short_name,
         "account_number": account_number,
-        "account_type": `cuenta_${account_type}`,
+        "account_type":account_type,
         "city": city,
         "email": user[user_id].email || 'default@coinsenda.com',
         "label": short_name,
@@ -1787,7 +1786,7 @@ export const add_new_withdraw_account = (payload, type) =>{
     }
   }
 
-    // console.log('|||||||||||| - - - - add new Waccount', type, body)
+    console.log('|||||||||||| - - - - add new Waccount', body)
 
     const new_wa_url = `${WithdrawApiUrl}withdrawAccounts/add-new-withdraw-account`
     const new_wa = await ApiPostRequest(new_wa_url, body, user[user_id].TokenUser)
@@ -1920,7 +1919,6 @@ export const get_user = (token, user_country) =>{
         "country":user_country
       }
     }
-
 
     // 1. inicializamos el estado con el token y el country del usuario
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
@@ -2124,7 +2122,9 @@ export const update_level_profile = (config, user) =>{
         "info":config.info
       }
     }
-    // console.log('||||||| add_new_profile body - - ', body)
+
+    // return console.log('|||||||| update_level_profile_____________body', body)
+
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body)
     if(!add_new_profile || add_new_profile === 465){return false}

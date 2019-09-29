@@ -10,12 +10,12 @@ const DropDownLayout = (props) =>{
     <div className="containerInputComponent">
       <p className="labelText fuente">{ label}</p>
       <div  className={`inputContainer2 ${ active ? 'inputActivado' : '' }`}>
-        <div className="InputDropDown" onClick={props.abrir}>
+        <div className={`InputDropDown ${active ? 'activeText' : '' }`} onClick={props.abrir}>
           {placeholder}
           <div className={`InputDesplegable ${ open ? 'Idesplegado' : '' }`} style={{ height: open ? `${elements.length*45}px` : '0px'}}>
             {
-              elements.map(element=>{
-                return <p key={element.id} title={element.name} onClick={props.selectItem} >{element.name} </p>
+              elements.map((element, id)=>{
+                return <p key={id} data-value={element.value} data-ui_name={element.ui_name} onClick={props.selectItem} >{element.ui_name} </p>
               })
             }
           </div>

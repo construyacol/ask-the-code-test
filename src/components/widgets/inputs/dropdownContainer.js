@@ -7,7 +7,7 @@ class DropDownContainer extends Component{
   state = {
     elements:this.props.elements,
     open:false,
-    placeHolder:"Ahorros/Corriente"
+    placeHolder:this.props.placeholder
   }
 
   abrir = (e) =>{
@@ -18,17 +18,17 @@ class DropDownContainer extends Component{
 
   selectItem = (event) => {
 
-    const text = event.target.title
+    console.log('mielda', event.target.dataset.ui_name, event.target.dataset.value)
 
     const estado = {
       target:{
-        name:'account_type',
-        value:text
+        name:this.props.name,
+        value: event.target.dataset.value
       }
     }
 
     this.setState({
-      placeHolder:text
+      placeHolder:event.target.dataset.ui_name
     })
 
     this.props.actualizarEstado(estado)

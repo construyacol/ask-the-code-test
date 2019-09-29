@@ -69,6 +69,7 @@ class KycBasicContainer extends Component {
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
         let get_country_list = await this.props.action.get_country_list()
         let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
+        // console.log('|||||||||__________select_list',kyc_data_basic ,select_list)
         select_list.country = await FormatCountryList(select_list.country, get_country_list)
         select_list.countries = get_country_list
         await this.setState({kyc_data_basic, select_list})

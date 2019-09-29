@@ -121,6 +121,8 @@ export const objectToArray = (object_list, assign_id) => {
 
 
 export const add_index_to_root_object = (list) => {
+  // @params
+  // list:object
 
     return new Promise(async(resolve, reject)=>{
 
