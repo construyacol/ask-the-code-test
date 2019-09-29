@@ -4,7 +4,7 @@ import KycBasicLayout from './kycBasicLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { objectToArray } from '../../../services'
+import { objectToArray, capitalizarPalabras } from '../../../services'
 import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
 import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
@@ -118,12 +118,14 @@ class KycBasicContainer extends Component {
 
 
 
+
+
   update = async({target}) => {
     const { name, value } = target
     const { ui_type } = this.state
-    // console.log('TYPING', name, value, ui_type)
-    let new_value = null
+    // console.log('TYPING', name, value)
 
+    let new_value = null
         if(name==='country_prefix' || name === 'country' || ui_type === 'select'){
           new_value = await this.matchList(target)
           if(!new_value){return false}
@@ -131,7 +133,7 @@ class KycBasicContainer extends Component {
         await this.setState({
               data_state:{
                 ...this.state.data_state,
-                [name]:new_value ? new_value : value
+                [name]:new_value ? capitalizarPalabras(new_value) : value && capitalizarPalabras(value)
               },
             })
      // if(new_value){
@@ -139,7 +141,6 @@ class KycBasicContainer extends Component {
      // }
      this.validateActive()
   }
-
 
 
 

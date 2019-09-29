@@ -14,7 +14,7 @@ class WithdrawAccountForm extends Component{
     account_type:this.props.form_bank.account_type,
     account_number:this.props.form_bank.account_number,
     short_name:this.props.form_bank.short_name,
-    id_type:"",
+    id_type:null,
     statusInput:"",
     withdraw_way:"bankaccount",
     provider_type:"",

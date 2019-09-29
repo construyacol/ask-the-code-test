@@ -97,8 +97,6 @@ class LandingPageContainer extends Component {
     //   let pairs = await this.props.action.get_pairs_for('colombia')
     // }
 
-
-
     await this.props.action.get_all_pairs_from_landing()
 
     updatePairs = setInterval(async()=>{

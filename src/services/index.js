@@ -46,6 +46,17 @@ export const mensaje = async(msg, type, position) =>{
 }
 
 
+export const capitalizarPalabras = ( val ) => {
+  // console.log('_______________________capitalizarPalabras', val, typeof val)
+  if(typeof val !== 'string'){return val}
+  return val.toLowerCase()
+            .trim()
+            .split(' ')
+            .map( v => v[0].toUpperCase() + v.substr(1) )
+            .join(' ');
+}
+
+
 export const ticketModalView = (state) =>{
   switch (state) {
     case 'pending':

@@ -49,6 +49,7 @@ class BankAccountFlow extends Component{
 
   initComponent = async() =>{
 
+
     const {
       withdraw_providers_list
     } = this.props
@@ -69,11 +70,11 @@ class BankAccountFlow extends Component{
 
     let account_type_object = await add_index_to_root_object(res && res[0].info_needed.account_type)
     let account_type_list = await objectToArray(account_type_object)
-    console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| withdraw_providers_list |', res[0])
+    // console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| withdraw_providers_list |', res[0])
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : VIRGIN BANK', bank_list)
 
-    this.props.actualizarEstado({target:{name:'currency', value:res[0].currency}})
+    await this.props.actualizarEstado({target:{name:'currency', value:res[0].currency}})
 
     this.setState({
       banks:serve_bank_list,
@@ -84,6 +85,15 @@ class BankAccountFlow extends Component{
     })
 
   }
+
+
+componentDidUpdate(prevProps){
+
+  if(prevProps !== this.props){
+    console.log('|||||_________________user? ', this.props.user.id_type, this.props.id_type)
+  }
+
+}
 
 
   update_city = payload =>{
@@ -208,31 +218,38 @@ class BankAccountFlow extends Component{
                           <div className="contForminputsAccount">
 
                             <DropDownContainer
-                              placeholder="ej. Cedula de ciudadanía"
+                              placeholder="ej. Cedula de ciudadanía, Pasaporte etc"
                               name='id_type'
                               elements={this.state.id_types}
                               label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
                               actualizarEstado={actualizarEstado}
-                              active={id_type && id_number}
+                              active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
                             />
 
-                          <InputForm
-                            type="text"
-                            label="Escribe el numero de documento de identidad"
-                            placeholder="Ej. 1123321..."
-                            name="id_number"
-                            actualizarEstado={actualizarEstado}
-                            active={id_type && id_number}
-                            value={account_number}
-                            handleKeyPress={handleKeyPress}
-                            status = {statusInput}
-                          />
+                            {
+                              this.props.id_type && (this.props.user.id_type !== this.props.id_type) &&
+                              <InputForm
+                                type="text"
+                                label="Escribe el numero de documento de identidad"
+                                placeholder="Ej. 1123321..."
+                                name="id_number"
+                                actualizarEstado={actualizarEstado}
+                                active={id_type && id_number}
+                                value={account_number}
+                                handleKeyPress={handleKeyPress}
+                                status = {statusInput}
+                              />
+                            }
+
+
 
                         </div>
                         </div>
 
                       <div id="bankChooseButton" className="contbuttonAccount">
-                        <InputButton label="Continuar" type="primary" active={id_type && id_number}/>
+                        <InputButton label="Continuar" type="primary"
+                          active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
+                        />
                       </div>
                     </form>
 
