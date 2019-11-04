@@ -21,13 +21,14 @@ import LayerStickyComponent from './sections/layerStickyComponent'
 import SelectCountryLanding from './sections/selectCountryLanding'
 import { CountryList } from './sections/selectCountryLanding'
 import { CurrencyList } from './sections/currencies_implemented'
+import SupportForm from './sections/supportForm'
+
 // import BubbleMsg from '../widgets/msgBubble/msgBubble'
-
-
 import FreshChat from '../../services/freshChat'
 import localForage from 'localforage'
 
 import './landingPageContainer.css'
+
 
 const oauth = config.oauth
 const signinUri = `${oauth.host}/${oauth.signup}?clientId=${oauth.key}`
@@ -226,6 +227,12 @@ class LandingPageContainer extends Component {
     return(
     <Fragment>
               <section id="LandingPageContainer">
+                
+                {
+                  this.props.other_modal &&
+                    <SupportForm/>
+                }
+
                 <LandingBarNav menuActive={menuActive} signinUri={signinUri} signupUri={signupUri} logoAnim={logoAnim} landing={true}/>
 
                     <HeaderLanding>
@@ -292,13 +299,23 @@ class LandingPageContainer extends Component {
 
               </section>
               <section id="FooterLanding">
-                <FooterContainer/>
+                <FooterContainer action={this.props.action}/>
               </section>
     </Fragment>
     )
 
   }
 }
+
+
+
+
+function mapStateToProps(state){
+  return{
+    other_modal:state.ui.other_modal
+  }
+}
+
 
 
 function mapDispatchToProps(dispatch){
@@ -308,4 +325,4 @@ function mapDispatchToProps(dispatch){
 }
 
 
-export default connect(null, mapDispatchToProps) (LandingPageContainer)
+export default connect(mapStateToProps, mapDispatchToProps) (LandingPageContainer)

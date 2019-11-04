@@ -151,7 +151,7 @@ const can_proceed = () =>{
 
       <div className={`ItemLeft ${(currency_type !== 'crypto' && (state === 'pending' || state === 'rejected') && type_order !== 'swap') ? 'delete' : 'normal' }`}>
         {
-          ((state === 'pending' || state === 'rejected') && type_order !== 'swap')&&
+          ((state === 'pending') && type_order !== 'swap')&&
           <div className="contenDe tooltip" onClick={_delete}>
             <div id="Aldelete">
               <i className="far fa-times-circle "></i>
@@ -290,17 +290,17 @@ const can_proceed = () =>{
         {
           (state === 'confirmed' && currency_type !== 'crypto' && type_order !== 'withdraw' ) ?
           <p className="fuente" id="ALrevised">En revisión <i className="far fa-clock"></i></p>
-          :
-          state === 'rejected' ?
-            // <div>Resubir Comprobante</div>
-            <PaymentConfirButton
-              id="ALconfirmButton"
-              clases="laReputas"
-              active={true}
-              type="primary"
-              siguiente={detail_payment}
-              label="Confirmar"
-            />
+          // :
+          // state === 'rejected' ?
+          //   // <div>Resubir Comprobante</div>
+          //   <PaymentConfirButton
+          //     id="ALconfirmButton"
+          //     clases="laReputas"
+          //     active={true}
+          //     type="primary"
+          //     siguiente={detail_payment}
+          //     label="Confirmar"
+          //   />
           :
           (state === 'pending' && type_order !== 'swap' && type_order !== 'withdraw') ?
           <PaymentConfirButton

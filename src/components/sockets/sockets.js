@@ -67,7 +67,8 @@ class SocketsComponent extends Component {
           })
 
           socket.on(`/withdraw/${user.id}`, async(withdraw)=>{
-            // console.log('||||||||||||||||||| __________________________________withdraw', withdraw)
+            console.log('||||||||||||||||||| __________________________________withdraw SOCKET', withdraw)
+            alert('socket withdraw')
             if(withdraw.state === 'pending' && withdraw.currency_type === 'crypto'){
               this.setState({currentWithdraw:withdraw})
             }

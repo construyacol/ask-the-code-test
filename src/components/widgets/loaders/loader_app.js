@@ -235,7 +235,7 @@ class LoaderAplication extends Component {
             <IconSwitch icon={country}  size={60}/>
 
             <div className="logotypes">
-              <Coinsenda size={50} color="#0198FF"/>
+              <Coinsenda size={50} color="white"/>
               <h1 className="fuente">Coinsenda</h1>
             </div>
             {/* <Coinsenda color="#0198FF" size={70}/> */}

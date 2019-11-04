@@ -22,6 +22,12 @@ import user_source from '../components/api'
 // import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
 
+import {
+  ApiGetRequest,
+  ApiPostRequest,
+  ApiDelete,
+  generate_headers
+} from './API'
 
 import {
   toast_sound,
@@ -109,93 +115,6 @@ export const mensaje = (msg, type, position) =>{
 
 
 
-const ApiGetRequest = async(url, header) => {
-  // let headers = new Headers();
-  // let myHeaders = new Headers({
-  //   'Accept': 'application/json',
-  //   'Authorization': 'Basic '+btoa(`access_token:${token}`),
-  // })
-  // console.log('ApiGetRequest', myHeaders)
-  let parametros = {
-              method: 'GET',
-              headers: header,
-             };
-
-  let response
-  try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
-    // si no tenemos conexión con el API nos retornara esto:
-    return false
-  }
-  // console.log('|||||||||| °°°°STATUS°°°°|||||||', response)
-  // Si el error esta en los datos de la petición, retornamos el estatus 465
-  // console.log('RESPUESTA POST:', response)
-  if(!response.ok){return response.status}
-  const data = await response.json()
-  return data
-}
-
-
-const ApiPostRequest = async(url, body, token, fuck) => {
-
-  let myHeaders = {
-    Accept: '*/*',
-    'Content-Type': 'application/json',
-    'Authorization':token && `Bearer ${token}`
-  }
-
-  let parametros = {
-               method: 'POST',
-               headers: myHeaders,
-               body:JSON.stringify(body)
-             }
-
-             if(fuck){
-               parametros.data = JSON.stringify(body)
-             }
-
-  // console.log('_______________________________BODY POST =======================>', body, parametros, url)
-  let response
-  console.log('________________________________DESDE EL API POST ', url, parametros)
-  try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
-    // si no tenemos conexión con el API nos retornara esto:
-    // console.log('|||||||||| °°°°STATUS BAD°°°°|||||||', error)
-    return false
-  }
-
-  // console.log('|||||||||| °°°°STATUS GOOD°°°°|||||||', response)
-  // Si el error esta en los datos de la petición, retornamos el estatus 465
-  if(!response.ok){return response.status}
-  const data = await response.json()
-  return data
-}
-
-
-const ApiDelete = async(url) => {
-
-  let parametros = {
-          method: 'DELETE'
-        }
-  let response
-
-  try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
-    // si no tenemos conexión con el API nos retornara esto:
-    return false
-  }
-  // Si el error esta en los datos de la petición, retornamos el estatus 465
-  if(!response.ok){return response.status}
-  const delete_success = await response.json()
-  // console.log('|||||||||||||| - -- -- --  RESPUESTA:',delete_success)
-  return delete_success
-}
 
 
 export const get_historical_price = (currency, amount_days, api_key) => {
@@ -1034,6 +953,7 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
 // array_list => Lista original que será editada
 
   return async(dispatch, getState) =>{
+    // alert('Pelotudo')
     // console.log('|||||| °°°°° search_by', search_by.name, search_by[search_by.name])
     // console.log('|||||| °°°°° replace_prop', replace_prop.name, replace_prop[replace_prop.name])
     // console.log('|||||| array_list ---', array_list)
@@ -1041,6 +961,15 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
     const { user, user_id } = getState().model_data
 
     if(!edit_list){edit_list = 'deposits'}
+
+    if(!array_list){
+      let normalize_list = getState().model_data[edit_list]
+      array_list =  user[user_id][edit_list].map(list_id => {
+          return normalize_list[list_id]
+        })
+    }
+
+
     let item_result = await matchItem(array_list, {primary:search_by[search_by.name]}, search_by.name)
     if((!item_result || item_result) && item_result.length<1){return false}
 
@@ -1071,7 +1000,7 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
       ]
     }
 
-    console.log('____________________USER UPDATE', user_update, edit_list)
+    // console.log('____________________USER UPDATE', user_update, edit_list)
 
     await dispatch(update_user(user_update))
 
@@ -1342,54 +1271,7 @@ export const get_swap_list = () =>{
 // OBTENER LISTA DE DEPOSITOS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-export const get_deposit_list = (user) =>{
 
-  return async(dispatch) => {
-
-    await dispatch(load_label('Obteniendo tus registros de deposito'))
-    // 5bea1f01ba84493018b7528c
-    // const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
-
-    const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter[include]=paymentProof`
-    let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
-    }
-    const deposits = await ApiGetRequest(url_deposit, myHeaders)
-    if(!deposits || deposits === 465){return false}
-
-
-    let remodeled_deposits = await deposits.map(item => {
-      let new_item = {
-        ...item,
-        type_order:"deposit",
-        paymentProof:item.paymentProof.proof_of_payment
-      }
-      return new_item
-    })
-
-    await remodeled_deposits.reverse()
-
-    let user_update = {
-      ...user,
-      deposits:[
-        ...remodeled_deposits
-      ]
-    }
-
-
-    let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
-    return normalizeUser
-
-    // return console.log('SERVICE: : get_deposit_list - - ', normalizeUser)
-
-
-    // const url_deposit = `${ApiUrl}accounts?filter={"where": {"userId": "5bea1f01ba84493018b7528c", "account_id":"5c19d6ed89c42e352f1297ff"}}`
-
-    // const wallet = await ApiGetRequest(url_wallet)
-    // console.log('get_deposit_list')
-  }
-}
 
 
 
@@ -1588,10 +1470,13 @@ export const add_update_withdraw = (withdraw_id, state) =>{
       }
     }
 
+    console.log('||||| add_update_withdraw BODY BEFORE', body)
+
     const new_update_withdraw_url = `${WithdrawApiUrl}withdraws/add-update-withdraw`
     const new_withdraw_update = await ApiPostRequest(new_update_withdraw_url, body, user[user_id].TokenUser)
     if(!new_withdraw_update || new_withdraw_update === 465){return false}
-    // console.log('||||||||||', new_withdraw_order)
+    // console.log('|||||||||| ================> RES WITHDRAW', new_withdraw_update)
+    // alert('update withdraw')
     return new_withdraw_update
 
   }
@@ -2192,23 +2077,7 @@ export const user_verification_status = (level_request) =>{
 
 
 
-const generate_headers = (token) =>{
 
-
-  return async(dispatch, getState) => {
-    if(!token){
-      const { user, user_id } = getState().model_data
-        token = user[user_id].TokenUser
-    }
-
-    let myHeaders = {
-      'Authorization': `Bearer ${token}`,
-    }
-
-    return myHeaders
-  }
-
-}
 
 
 
@@ -2433,7 +2302,7 @@ export const update_pending_activity = (account_id, activity_type, activity_list
       let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
       let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
 
-      let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length) + (rejected && rejected.length))*100)
+      let expandidoMax = (((pending && pending.length) + (confirmed && confirmed.length))*100)
       let pending_data;
       // pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals' && current_wallet.currency_type === 'fiat') ? confirmed[0].id : pending[0].id} : null) :
       pending ? (pending_data = pending ? pending_data = {pending:true, lastPending:(activity_type === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id} : null) :

@@ -10,8 +10,31 @@ LOCAL_PAIRS,
 UPDATE_SWAP_PENDING,
 REDUCE_BALANCE,
 ADD_BALANCE,
-ALL_PAIRS_LANDING
+ALL_PAIRS_LANDING,
+UPDATE_ITEM_STATE
 } from './action_types'
+
+
+export const update_item_state = (item, item_type) => {
+
+// @params
+// item:object => ex: normalized_object: {identifier:{}}
+// item_type:string => ex: users
+
+    let payload = {
+      item,
+      item_type
+    }
+
+    // console.log('=========> update_item_state', payload)
+
+    return {
+      type:UPDATE_ITEM_STATE,
+      payload
+    }
+
+}
+
 
 
 export const ManageBalanceAction = (account_id, action, amount) => {

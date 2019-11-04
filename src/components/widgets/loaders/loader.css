@@ -69,7 +69,7 @@
 .LoaderAplication{
   width:100vw;
   height:100vh;
-  background: white;
+  background: linear-gradient(to bottom right, #014c7d, #0198ff);
   display:grid;
   justify-items:center;
   align-items:center;
@@ -78,7 +78,10 @@
     height: 100%;
     width: 20%;
     transition: .3s;
-    background: linear-gradient(to right, #129A8E , #37ED7D);
+    opacity: 0.5;
+    /* background: linear-gradient(to bottom right, #014c7d, #0198ff) !important; */
+    /* background: linear-gradient(to right, #129A8E , #37ED7D); */
+    background: white !important;
 }
 .LoaderContainer{
   height: 200px;
@@ -104,7 +107,7 @@
   margin: 0;
   display: grid;
   align-items: center;
-  color: #0198FF;
+  color: white;
   font-weight: bold;
   justify-content: center;
 }
@@ -118,7 +121,7 @@
 }
 
 .logotypes h1{
-  color: #0198FF;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;

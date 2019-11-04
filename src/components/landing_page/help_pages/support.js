@@ -3,6 +3,8 @@ import IconSwitch from '../../widgets/icons/iconSwitch'
 
 
 export default props => {
+
+
   return (
     <section className="HeaderLanding support">
 
@@ -38,7 +40,7 @@ export default props => {
         </div>
       </a>
 
-      <a href="https://soporte.coinsenda.com/" target="_blank" rel="noopener noreferrer">
+      <a onClick={props.action.other_modal_toggle}>
         <div className="supportOption">
           <div className="supportImg">
             <IconSwitch icon="zammad" size={50} />
@@ -47,6 +49,16 @@ export default props => {
           <p className="supportText fuente">Abre un ticket de soporte</p>
         </div>
       </a>
+
+      {/* <a href="https://soporte.coinsenda.com/" target="_blank" rel="noopener noreferrer">
+        <div className="supportOption">
+          <div className="supportImg">
+            <IconSwitch icon="zammad" size={50} />
+          </div>
+          <h2 className="supportText fuente">Zammad</h2>
+          <p className="supportText fuente">Abre un ticket de soporte</p>
+        </div>
+      </a> */}
 
       </div>
 

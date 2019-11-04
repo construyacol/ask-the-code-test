@@ -6,6 +6,7 @@ import * as ui_actions from './uiActions'
 import * as sounds from './soundActions'
 import * as auth from './auth'
 import * as storage from './storage'
+import * as deposit_actions from './API/deposit_actions'
 
 const actions = {
   ...Loader,
@@ -15,7 +16,8 @@ const actions = {
   ...ui_actions,
   ...sounds,
   ...auth,
-  ...storage
+  ...storage,
+  ...deposit_actions
 }
 
 export default actions

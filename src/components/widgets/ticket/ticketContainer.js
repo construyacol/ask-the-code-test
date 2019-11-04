@@ -22,41 +22,27 @@ class TicketContainer extends Component {
     currency_type:this.props.ticket && this.props.ticket.currency_type
   }
 // type_order
-  componentDidMount(){
+  async componentDidMount(){
 
     const {
       ticket
     } = this.props
 
     this.ticket_serve(ticket)
+    if(ticket.type_order !== 'deposit' || ticket.currency_type === 'fiat'){return false}
+    if(ticket.paymentProof){return false}
+    let deposit = await this.props.action.get_one_deposit(ticket.id)
+    this.ticket_serve({...ticket, ...deposit})
 
-    // console.log('||||||||| - - - - - - - - - - - - - - CURRENCIES', ticket)
-    // console.log('||||||||| - - CURRENCIES', currencies[ticket.currency.currency].confirmations )
-
-    // if((ticket && ticket.state) !== 'confirmed' || ticket.currency_type !== 'crypto' || ticket.type_order !== 'deposit'){return false}
-    //
-    // let confirm = setInterval(async()=>{
-    //
-    //   const {
-    //     confirmations
-    //   } = this.state
-    //
-    //
-    //     await this.setState({
-    //       confirmations:confirmations >= currencies[ticket.currency.currency].confirmations ? confirmations : confirmations + 1,
-    //       // total_confirmations:currencies[ticket.currency.currency].confirmations
-    //     });
-    //
-    //     if(confirmations === currencies[ticket.currency.currency].confirmations){
-    //       this.setState({current_ticket_state:'accepted'})
-    //       this.props.action.ModalView("modalSuccess")
-    //       this.props.action.success_sound()
-    //       clearInterval(confirm)
-    //     }
-    //
-    // }, 3000)
+    let update_ticket = {
+      [ticket.id]:{...ticket, ...deposit}
+    }
+    await this.props.action.update_item_state(update_ticket, 'deposits')
+    //Este metodo se utiliza de forma provicional, hasta que se actualice el ticket directamente desde el estado y el mismo sea referenciado (ticket.id) desde la url
+    this.props.action.update_activity_account(ticket.account_id, 'deposits')
 
   }
+
 
 
 
@@ -286,9 +272,9 @@ class TicketContainer extends Component {
                   },
                   {
                     ui_name:"Tx Id:",
-                    value:ticket.paymentProof.proof,
-                    copy:true,
-                    url_explorer:currencies[ticket.currency.currency] && currencies[ticket.currency.currency].node_url,
+                    value:ticket.paymentProof ? ticket.paymentProof.proof_of_payment.proof : 'Sin Registro',
+                    copy:ticket.paymentProof && true,
+                    url_explorer:(ticket.paymentProof && currencies[ticket.currency.currency]) && currencies[ticket.currency.currency].node_url,
                     id:7
                   }
                 ]
@@ -475,6 +461,8 @@ class TicketContainer extends Component {
               total_confirmations={total_confirmations}
               paymentProof={this.paymentProof}
               currency_type={currency_type}
+              current_form={this.props.current_form}
+              action={this.props.action}
             />
             :
             <div className="loaderTicketCont">
@@ -517,6 +505,7 @@ function mapStateToProps(state, props){
     current_wallet
   } = state.ui.current_section.params
 
+
   let currency_list
 
   if(currencies && current_wallet.currency_type === 'crypto'){
@@ -529,6 +518,8 @@ function mapStateToProps(state, props){
       }
     })
   }
+
+
 
 
   return{

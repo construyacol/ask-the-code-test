@@ -60,8 +60,7 @@ updateLocalImg = (img) =>{
     } = img
 
     const {
-      ticket,
-      deposit_list
+      ticket
     } = this.props
 
 
@@ -70,10 +69,10 @@ updateLocalImg = (img) =>{
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
     console.log('Confirm deposit order', res)
     if(!res || res === 465){return false}
-    // let list = await this.props.action.get_deposit_list(user)
     const {
       data
     } = res
+
     this.props.update_ticket(data)
 
       this.props.action.Loader(false)
@@ -98,7 +97,7 @@ updateLocalImg = (img) =>{
       name:"state",
       state:"confirmed"
     }
-    await this.props.action.edit_array_element(search_by, replace_prop, deposit_list)
+    await this.props.action.edit_array_element(search_by, replace_prop)
     await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
 
 
@@ -166,17 +165,13 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id, deposits } = state.model_data
+  const { user, user_id } = state.model_data
 
-  let deposit_list = user[user_id].deposits.map(deposit_id => {
-    return deposits[deposit_id]
-  })
 
   return{
     current_wallet:state.ui.current_section.params.current_wallet,
     loader:state.isLoading.loader,
-    user:user[user_id],
-    deposit_list:deposit_list
+    user:user[user_id]
   }
 }
 
