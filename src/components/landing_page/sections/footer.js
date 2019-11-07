@@ -4,6 +4,11 @@ import Coinsenda from '../../widgets/icons/logos/coinsenda'
 
 
 const FooterContainer = props => {
+
+//
+  console.log('||||||| ___________________ From footer container :  ', props.action.other_modal_toggle)
+
+
   return(
     <Fragment>
     <div className="FooterContainer">
@@ -22,7 +27,8 @@ const FooterContainer = props => {
         }
 
         <Link to="/docs/support" className="fuente">Canales de Soporte</Link>
-        <a href="https://soporte.coinsenda.com/" target="_blank"  rel="noopener noreferrer"  className="fuente">Abrir ticket soporte >> </a>
+        <p onClick={props.action.other_modal_toggle} className="fuente">Abrir ticket soporte >> </p>
+        {/* <a href="https://soporte.coinsenda.com/" target="_blank"  rel="noopener noreferrer"  className="fuente">Abrir ticket soporte >> </a> */}
       </div>
 
       <div className="FooterItem FooterItem2">

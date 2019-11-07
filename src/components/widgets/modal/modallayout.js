@@ -28,7 +28,7 @@ class ModalLayout extends Component {
       sub_section
     } = this.props
 
-
+alert('salir')
 
     if(current === 'deposit' || current === 'withdraw'){
       await this.props.action.CurrentForm('wallets')

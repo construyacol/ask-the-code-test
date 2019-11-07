@@ -1,6 +1,36 @@
 import { toast } from 'react-toastify';
 import { kyc } from '../components/api/ui/api.json'
+import Compressor from 'compressorjs';
+
 import store from '../'
+
+
+export const img_compressor = (file, quality) => {
+  return new Promise(async(resolve, reject) => {
+    if(file.size > 2000000){
+      console.log('La imagen es superior a 2MB, será comprimida')
+      if(!quality){
+        // Calcula el nivel de compresión en función al tamaño de la imagen
+        quality = await get_img_quality(file.size)
+        // console.log('quality', quality, typeof quality)
+      }
+      new Compressor(file, {
+        quality: quality,
+        success: resolve,
+        error: reject,
+      })
+      return resolve
+    }
+    console.log('La imagen es INFERIOR a 2MB, NO será comprimida')
+    return resolve(file)
+  })
+}
+
+
+const get_img_quality = (size) => {
+  let quality = (size>12000000) ? 0.3 : (size>8000000) ? 0.4 : (size>5000000) ? 0.5 : (size>4000000) ? 0.6 : (size>2000000) && 0.7
+  return quality
+}
 
 
 export const mensaje = async(msg, type, position) =>{
@@ -13,6 +43,17 @@ export const mensaje = async(msg, type, position) =>{
      progressClassName: `${type === 'error' ? 'ErroProgressBar': type === 'success' ? 'DCProgress' : 'DCProgress'}`,
      autoClose: 4000
   })
+}
+
+
+export const capitalizarPalabras = ( val ) => {
+  // console.log('_______________________capitalizarPalabras', val, typeof val)
+  if(typeof val !== 'string'){return val}
+  return val.toLowerCase()
+            .trim()
+            .split(' ')
+            .map( v => v[0].toUpperCase() + v.substr(1) )
+            .join(' ');
 }
 
 
@@ -91,6 +132,8 @@ export const objectToArray = (object_list, assign_id) => {
 
 
 export const add_index_to_root_object = (list) => {
+  // @params
+  // list:object
 
     return new Promise(async(resolve, reject)=>{
 
@@ -368,7 +411,6 @@ export const serve_orders = async(account_id, filter) =>{
 
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS2 ', list, indices)
 
-  // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', store.getState().model_data, filter)
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', model_data[filter])
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 // import Navbar from '../navbar'
 import { Router, Route, Switch } from 'react-router-dom'
 import { Link } from 'react-router-dom'
@@ -11,6 +11,10 @@ import Support from './support'
 import Terms from '../../Legal/Terms'
 import Legal from '../../Legal/Privacy'
 import Fees from '../../Fees'
+import { bindActionCreators } from 'redux'
+import actions from '../../../actions'
+import { connect } from 'react-redux'
+import SupportForm from '../sections/supportForm'
 
 import './pages.css'
 
@@ -22,25 +26,35 @@ const signupUri = `${oauth.host}/${oauth.signin}?clientId=${oauth.key}`
 
 const HelPages = props => {
 
-
  const [ menuState, setMenuState ] = useState(false)
+
+ useEffect(()=>{
+   history.listen((location, action) => {
+     window.scrollTo(0, 0);
+   })
+ }, [history])
 
  const toggle_menu = () => {
     setMenuState(!menuState)
  }
 
  const close_menu = () => {
-   console.log('puto to close')
+   // console.log(props.action.other_modal_toggle)
    setMenuState(false)
  }
 
- const { history } = props
+ const { history, other_modal } = props
 
  // let menu_action = window.innerWidth<768 ? menuState : null
 
-
     return(
       <div className="PagesRouters">
+
+
+        {
+          other_modal &&
+          <SupportForm/>
+        }
 
           <LandingBarNav menuActive={true} logoAnim={true} signinUri={signinUri} signupUri={signupUri} toggle_menu={toggle_menu}/>
 
@@ -65,7 +79,7 @@ const HelPages = props => {
               <Router history={props.history}>
                   <Switch>
                       <Route exact path="/docs/faqs" component={FaqSection} />
-                      <Route exact path="/docs/support" component={Support} />
+                      <Route exact path="/docs/support" render={()=>(<Support {...props} />)} />
                       <Route path="/docs/terms" component={Terms} />
                       <Route path="/docs/legal" component={Legal} />
                       <Route path="/docs/fees" component={Fees} />
@@ -83,4 +97,20 @@ const HelPages = props => {
 }
 
 
-export default HelPages
+
+function mapStateToProps(state){
+  return{
+    other_modal:state.ui.other_modal
+  }
+}
+
+
+
+function mapDispatchToProps(dispatch){
+  return{
+    action: bindActionCreators(actions, dispatch)
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (HelPages)

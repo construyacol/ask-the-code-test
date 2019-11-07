@@ -7,8 +7,10 @@
     "bignumber.js": "^8.1.1",
     "bootstrap": "^4.3.1",
     "chart.js": "^2.8.0",
+    "compressorjs": "^1.0.5",
     "d3": "4.9.1",
     "headroom.js": "0.9.4",
+    "intersection-observer": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
     "localforage": "^1.7.3",
     "moment": "^2.24.0",
@@ -22,6 +24,7 @@
     "react-easy-crop": "^1.13.0",
     "react-full-screen": "^0.2.4",
     "react-gsap": "^1.2.0",
+    "react-hotjar": "^2.0.2",
     "react-player": "^1.11.0",
     "react-redux": "5.1.0",
     "react-router": "^4.3.1",
@@ -33,7 +36,6 @@
     "react-tilt": "^0.1.4",
     "react-toastify": "^4.5.2",
     "redux": "4.0.1",
-    "redux-logger": "^3.0.6",
     "redux-sounds": "^3.0.1",
     "redux-thunk": "^2.3.0",
     "scrollmagic": "^2.0.7",
@@ -63,6 +65,8 @@
   "devDependencies": {
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
-    "redux-devtools-extension": "^2.13.8"
+    "redux-devtools-extension": "^2.13.8",
+    "redux-logger": "^3.0.6",
+    "serve": "^11.2.0"
   }
 }

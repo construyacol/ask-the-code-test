@@ -14,12 +14,14 @@ class WithdrawAccountForm extends Component{
     account_type:this.props.form_bank.account_type,
     account_number:this.props.form_bank.account_number,
     short_name:this.props.form_bank.short_name,
+    id_type:null,
     statusInput:"",
     withdraw_way:"bankaccount",
     provider_type:"",
-    id_number:this.props.user.id_number,
+    id_number:"",
     city:"medellin",
     email:this.props.user.email,
+    currency:null,
     ticket:null
   }
 
@@ -47,6 +49,7 @@ class WithdrawAccountForm extends Component{
           console.log('')
       }
     }
+
 
 
     // this.props.action.UpdateForm('deposit', this.state)
@@ -178,6 +181,7 @@ class WithdrawAccountForm extends Component{
   }
 
   componentDidMount(){
+
     const {
       withdraw_flow
     } = this.props

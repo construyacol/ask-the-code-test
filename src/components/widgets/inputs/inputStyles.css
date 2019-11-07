@@ -12,9 +12,6 @@
 }
 
 
-
-
-
 .AuthLoader{
   transform: scale(.8);
 }
@@ -639,6 +636,10 @@ form#phone{
   color: #3A7BD5;
 }
 
+
+.InputDropDown.activeText{
+  color:#3A7BD5;
+}
 
 .InputDropDown{
   width: calc(100% - 20px);

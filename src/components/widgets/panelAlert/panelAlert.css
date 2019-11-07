@@ -7,7 +7,7 @@
   z-index: 99;
   display: none;
   padding: 0 20px;
-  grid-template-columns: 1fr 30px;
+  grid-template-columns: 30px 1fr;
   align-items: center;
   /*background: linear-gradient(to right, #e52d27, #b31217);*/
   /*background: #b31217;*/

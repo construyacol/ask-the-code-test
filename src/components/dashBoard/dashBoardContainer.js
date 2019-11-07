@@ -1,4 +1,6 @@
 import React, {Component, Fragment} from 'react'
+import localForage from 'localforage'
+
 // import DashBoardLayout from './dashBoardLayout.js'
 import {
   Element,
@@ -19,21 +21,45 @@ import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
+import FreshChat from '../../services/freshChat'
+
 
 import './dashboard.css'
 
 
 class DashBoardContainer extends Component{
 
-  componentDidMount() {
-    Events.scrollEvent.register("begin", function() {
-      // console.log("begin", arguments);
-    });
-    Events.scrollEvent.register("end", function() {
-      // console.log("end", arguments);
-    });
+
+  async componentDidMount() {
+
+    const restoreId = await localForage.getItem('restoreId')
+    await FreshChat.init_user(this.props.user, '4b85e7f7-5161-4c8a-9978-bbc828369603')
+    // return false
+    await FreshChat.user_update(this.props.user)
+    let verification_state = await this.props.action.get_verification_state()
+    if(verification_state === 'accepted'){
+        FreshChat.track('user login verified')
+    }
+
+    if(!this.props.user.security_center.authenticator.auth){
+      FreshChat.show_tags(['security', '2factor'], 'article')
+    }
+
+    // if(this.props.user)
+
+    // console.log('|||||||||||||||||_____________________________________- window.tiggered', verification_state, this.props)
+    // console.log('|||||||||||||||||_____________________________________- window.tiggered', this.props, window.fcWidget)
+    // FreshChat.track('track_item', {puta:'traqueteada mas hpta a usuario logeado'})
+    // Events.scrollEvent.register("begin", function() {
+    //   // console.log("begin", arguments);
+    // });
+    // Events.scrollEvent.register("end", function() {
+    //   // console.log("end", arguments);
+    // });
+
     scrollSpy.update();
   }
+
 
   componentWillUnmount() {
     Events.scrollEvent.remove("begin");

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { toast } from 'react-toastify';
+import { img_compressor } from '../../../services'
 
 class KycAvancedContainer extends Component{
 
@@ -65,7 +66,10 @@ class KycAvancedContainer extends Component{
     if (e.target.files && e.target.files.length > 0) {
       // console.log('|||||||| goFileLoader', e.target.files)
       this.props.action.Loader(true)
-      const imageDataUrl = await readFile(e.target.files[0])
+      // console.log('||||||||||IMG BEFORE', e.target.files[0])
+      const file = await img_compressor(e.target.files[0])
+      // return console.log('||||||||||IMG AFTER', file)
+      const imageDataUrl = await readFile(file)
       this.props.action.Loader(false)
       // console.log('|||||||| goFileLoader url', imageDataUrl)
       this.setState({

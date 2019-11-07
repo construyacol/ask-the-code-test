@@ -11,7 +11,8 @@ import {
   UPDATE_SWAP_PENDING,
   REDUCE_BALANCE,
   ADD_BALANCE,
-  ALL_PAIRS_LANDING
+  ALL_PAIRS_LANDING,
+  UPDATE_ITEM_STATE
 } from '../actions/action_types'
 
 const initialState = {
@@ -35,6 +36,18 @@ let user_id
 let models
 
   switch (action.type) {
+
+    case UPDATE_ITEM_STATE:
+
+    // console.log('deposit approve ====================> ', action)
+    // alert('//REDUCER: UPDATE_ITEM_STATE')
+      return {
+        ...state,
+        [action.payload.item_type]:{
+          ...state[action.payload.item_type],
+          ...action.payload.item
+        }
+      }
 
     case REDUCE_BALANCE:
     return {

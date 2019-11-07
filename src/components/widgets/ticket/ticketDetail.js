@@ -16,6 +16,21 @@ import './ticket.css'
 class TicketDetail extends Component{
 
 
+
+ salirTicket = () => {
+
+   const {
+     current_form
+   } = this.props
+
+   this.props.action.ModalView('modalView')
+   this.props.action.CleanForm(current_form)
+
+   return  this.props.action.ToggleModal()
+ }
+
+
+
   render(){
 
   const {
@@ -35,7 +50,7 @@ class TicketDetail extends Component{
   } = ticket
 
   // console.log('|||||||||||||| - - -  ticket', ticket)
-  // console.log('|||||||||||||| - - -  PROPIEDADES', this.props)
+  console.log('|||||||||||||| - - -  PROPIEDADES', this.props)
 
   return(
         <div className={`TicketDetail ${clases}`}>
@@ -100,7 +115,7 @@ class TicketDetail extends Component{
 
 
             {
-              ((state === 'pending' || state === 'rejected')&& !only_detail && currency_type === 'fiat') &&
+              ((state === 'pending')&& !only_detail && currency_type === 'fiat' && type_order !== 'swap') ?
               <PaymentConfirButton
                 id="ALconfirmButton"
                 clases="laReputas"
@@ -108,6 +123,15 @@ class TicketDetail extends Component{
                 type="primary"
                 siguiente={paymentProof}
                 label="Confirmar"
+              />
+              :
+              <PaymentConfirButton
+                id="ALconfirmButton"
+                clases="laReputas"
+                active={true}
+                type="primary"
+                siguiente={this.salirTicket}
+                label="Cerrar "
               />
             }
 

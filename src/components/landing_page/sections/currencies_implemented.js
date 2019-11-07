@@ -61,6 +61,15 @@ export const CurrencyList = props => {
          setCurrency(currencies[3])
         })
 
+        return (()=>{
+          controller.removeScene([
+            bitcoin,
+            ethereum,
+            dash,
+            litecoin
+          ])
+        })
+
   },[])
 
 // console.log('||||| =========> currency', currencyItem)

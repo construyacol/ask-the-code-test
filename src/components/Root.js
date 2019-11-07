@@ -6,7 +6,7 @@ import localForage from 'localforage'
 // import PagesRouter from './landingPage/pages'
 import HelPages from './landing_page/help_pages'
 import jwt from 'jsonwebtoken'
-
+// import FreshChat from '../services/freshChat'
 // import AuthComponentContainer from './auth'
 import LandingPageContainer from './landing_page/landingContainer'
 // import Landing from './landingPage'
@@ -42,6 +42,7 @@ class RootContainer extends Component {
 
   init_component = async() =>{
 
+
     let result
     let TokenUser
 
@@ -50,28 +51,29 @@ class RootContainer extends Component {
       TokenUser = result[1]
       await localForage.setItem('TokenUser', TokenUser)
       await localForage.setItem('created_at', new Date())
-      history.push('/')
+      // history.push('/')
     }
 
     let AccessToken = await localForage.getItem('TokenUser')
-
 
     let created_at = await localForage.getItem('created_at')
     if(!created_at || !AccessToken){return this.logOut()}
 
     let availableToken = await this.token_is_valid(created_at)
     if(!availableToken){return this.logOut()}
+
     // console.log('|||||||| availableToken', availableToken)
 
     let userData = await jwt.decode(AccessToken)
-    // console.log('|||||||| userData', userData)
+    console.log('|||||||| userData', userData)
     if(!userData){return this.logOut()}
     const { usr } = userData
-    // console.log(AccessToken)
+    console.log(AccessToken)
     this.setState({
+      // TokenUser:'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZDIzNDk4MTI0OWYwZDJkMWJmMWI3MmUiLCJ1c3IiOiI1ZDIzNGExMTMwMzViZTJlMThhOTUzY2EiLCJqdGkiOiJ3WjRwUk5rd096TjZmZUxsMGxBRVhZZld2QXpoRG0zMVVMVWZ1S0tvdTZHcngxYWdNODdMcHcyOVB4Umw1QmdWIiwiYXVkIjoidHJhbnNhY3Rpb24saWRlbnRpdHksYXV0aCIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjVkMjM0OTgxMjQ5ZjBkMmQxYmYxYjcyZVwifSIsImlhdCI6MTU2OTQzODU2OCwiZXhwIjoxNTY5NDQ5MzY4fQ.1XkXD0mdOj0LfrSVyTsFs4ZkguH1kWS9aYPYdPs3v8_nSMIfVtU-Y6YXIgU0_gDoVU_Yr7tueZ5rxQWlxlNUkQ',
       TokenUser:AccessToken,
       userId:usr
-      // TokenUser:null
+      // TokenUser:'5d234a113035be2e18a953ca'
     })
   }
 
@@ -79,7 +81,7 @@ class RootContainer extends Component {
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')
     await this.setState({TokenUser:false, userId:null})
-    history.push('/')
+    // history.push('/')
   }
 
   render(){

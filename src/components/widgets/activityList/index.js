@@ -407,7 +407,7 @@ class ActivityList extends Component {
                           activity &&
                             activity.map(item=>{
                               // console.log('ConFill', item)
-                              if(item.state === 'accepted' || item.state === 'canceled' || (item.type_order === 'withdraw' && item.state === 'pending' && item.currency_type !== 'crypto')){return false}
+                              if((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected') || (item.type_order === 'withdraw' && item.state === 'pending' && item.currency_type !== 'crypto')){return false}
                               return <ItemList key={item.id}
                                       confirmPayment={this.confirmPayment}
                                       lastPendingId={lastPending}
@@ -441,7 +441,7 @@ class ActivityList extends Component {
                 <div className="ALlistAll">
                   {
                     activity.map(item=>{
-                      if(item.state !== 'accepted' && item.state !== 'canceled'){return false}
+                      if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
                       return (<ItemList
                               key={item.id}
                               confirmPayment={this.confirmPayment}

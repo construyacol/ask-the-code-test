@@ -2,12 +2,13 @@ import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile } from '../../../services'
+import { readFile, img_compressor } from '../../../services'
 import CropImg from '../../widgets/cropimg'
 import SimpleLoader from '../../widgets/loaders'
 import imgTikcketDefault from '../../../assets/ticketdefault.png'
 // import imgTikcketDefault from '../../../assets/ticketdefault2.png'
 import imgTouch from '../../../assets/touch.png'
+
 import './ticket.css'
 
 class TicketPaymentProof extends Component  {
@@ -23,12 +24,14 @@ class TicketPaymentProof extends Component  {
   }
 
 
-  goFileLoader = async e =>{
 
+  goFileLoader = async e =>{
 
     if (e.target.files && e.target.files.length > 0) {
       this.props.action.Loader(true)
-      const imageDataUrl = await readFile(e.target.files[0])
+
+      const file = await img_compressor(e.target.files[0], 0.5)
+      const imageDataUrl = await readFile(file)
       console.log('goFileLoader', imageDataUrl)
       this.props.action.Loader(false)
 
@@ -36,9 +39,7 @@ class TicketPaymentProof extends Component  {
         imageSrc: imageDataUrl,
         fileloader: !this.state.fileloader
       })
-
     }
-
   }
 
 
@@ -52,7 +53,6 @@ updateLocalImg = (img) =>{
 
 
 
-
   subirImg = async(img) =>{
 
     const{
@@ -60,19 +60,19 @@ updateLocalImg = (img) =>{
     } = img
 
     const {
-      ticket,
-      deposit_list
+      ticket
     } = this.props
 
 
     this.props.action.Loader(true)
-    let res = await this.props.action.confirm_deposit_order(ticket, base64);
 
-    if(!res){return false}
-    // let list = await this.props.action.get_deposit_list(user)
+    let res = await this.props.action.confirm_deposit_order(ticket, base64);
+    console.log('Confirm deposit order', res)
+    if(!res || res === 465){return false}
     const {
       data
     } = res
+
     this.props.update_ticket(data)
 
       this.props.action.Loader(false)
@@ -97,7 +97,7 @@ updateLocalImg = (img) =>{
       name:"state",
       state:"confirmed"
     }
-    await this.props.action.edit_array_element(search_by, replace_prop, deposit_list)
+    await this.props.action.edit_array_element(search_by, replace_prop)
     await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
 
 
@@ -165,17 +165,13 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id, deposits } = state.model_data
+  const { user, user_id } = state.model_data
 
-  let deposit_list = user[user_id].deposits.map(deposit_id => {
-    return deposits[deposit_id]
-  })
 
   return{
     current_wallet:state.ui.current_section.params.current_wallet,
     loader:state.isLoading.loader,
-    user:user[user_id],
-    deposit_list:deposit_list
+    user:user[user_id]
   }
 }
 

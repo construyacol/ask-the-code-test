@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import error_travolta from '../../../assets/error.gif'
+import error_travolta from '../../../assets/error.png'
 import errorIcon from '../../../assets/erroricon.png'
 // import * as Sentry from '@sentry/browser';
 import './handleError.css'

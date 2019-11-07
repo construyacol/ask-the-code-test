@@ -35,8 +35,8 @@ class LoaderAplication extends Component {
 
 
     const { country } = this.state
-
     let profile = await action.get_profile(userId, token)
+
     if(!profile){
       if(!new_country){return this.setState({country:null})}
       profile = await action.add_new_profile(new_country, token)
@@ -73,6 +73,7 @@ class LoaderAplication extends Component {
     let user_country = new_country ? new_country : country
 
     let res = await action.countryvalidators()
+
     if(!res){
       // return this.go_to_select_country()
       return logOut()
@@ -104,12 +105,18 @@ class LoaderAplication extends Component {
       return logOut()
     }
 
+
+
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
     let user = await action.get_user(token, user_country)
+    // console.log('===================================>>>>   user', user)
+    alert()
     if(!user){return false}
+
+
 
     // Seteamos el token del usuario al modelo en redux
     let user_update = {
@@ -131,10 +138,11 @@ class LoaderAplication extends Component {
      action.get_pairs_for(this.props.user.country, user_collection)
 
 
-     action.get_account_balances(this.props.user)
-     action.get_deposit_providers(this.props.user)
+    await action.get_account_balances(this.props.user)
+    await action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
 
+    // return false
 
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
@@ -233,7 +241,7 @@ class LoaderAplication extends Component {
             <IconSwitch icon={country}  size={60}/>
 
             <div className="logotypes">
-              <Coinsenda size={50} color="#0198FF"/>
+              <Coinsenda size={50} color="white"/>
               <h1 className="fuente">Coinsenda</h1>
             </div>
             {/* <Coinsenda color="#0198FF" size={70}/> */}

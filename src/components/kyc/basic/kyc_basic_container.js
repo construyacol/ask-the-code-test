@@ -4,7 +4,7 @@ import KycBasicLayout from './kycBasicLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { objectToArray } from '../../../services'
+import { objectToArray, capitalizarPalabras } from '../../../services'
 import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
 import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
@@ -40,8 +40,7 @@ import ItemListKycBasic from './itemList'
 
 class KycBasicContainer extends Component {
 
-  state = {
-  }
+  state = {}
 
   componentDidMount(){
     this.init_component()
@@ -70,6 +69,7 @@ class KycBasicContainer extends Component {
         let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
         let get_country_list = await this.props.action.get_country_list()
         let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
+        // console.log('|||||||||__________select_list',kyc_data_basic ,select_list)
         select_list.country = await FormatCountryList(select_list.country, get_country_list)
         select_list.countries = get_country_list
         await this.setState({kyc_data_basic, select_list})
@@ -81,7 +81,7 @@ class KycBasicContainer extends Component {
               country_prefix:'',
               ...form_kyc_basic_state.data_state
         }
-
+        // console.log('||||||_______ new_init_state', new_init_state)
 
         if(!new_init_state.country_prefix){
           new_init_state.country_prefix = country_default
@@ -118,12 +118,14 @@ class KycBasicContainer extends Component {
 
 
 
+
+
   update = async({target}) => {
     const { name, value } = target
     const { ui_type } = this.state
-    // console.log('TYPING', name, value, ui_type)
-    let new_value = null
+    // console.log('TYPING', name, value)
 
+    let new_value = null
         if(name==='country_prefix' || name === 'country' || ui_type === 'select'){
           new_value = await this.matchList(target)
           if(!new_value){return false}
@@ -131,7 +133,7 @@ class KycBasicContainer extends Component {
         await this.setState({
               data_state:{
                 ...this.state.data_state,
-                [name]:new_value ? new_value : value
+                [name]:new_value ? capitalizarPalabras(new_value) : value && capitalizarPalabras(value)
               },
             })
      // if(new_value){
@@ -139,7 +141,6 @@ class KycBasicContainer extends Component {
      // }
      this.validateActive()
   }
-
 
 
 

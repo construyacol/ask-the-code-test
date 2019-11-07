@@ -5,72 +5,63 @@ import Table from 'react-bootstrap/lib/Table'
 export default props => {
   return (
     <React.Fragment>
-      <span name="bancolombia" href="#"> &nbsp; </span>
+      <a name="bancolombia"> &nbsp; </a>
       <Col md={12}>
-        <h3>Bancolombia</h3>
+        <h3>Tarifas de uso / Límites de depósitos y retiros</h3>
       </Col>
       <Col md={12}>
         <hr />
       </Col>
       <Col md={12}>
         <h4>
-          Para depositar y recibir, ¿Cuánto es lo mínimo y máximo que puedo realizar por Bancolombia en una operación?
+          Para depositar y retirar, ¿Cuál es el mínimo y máximo por cuenta bancaria en una operación?
         </h4>
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td>Valor Mínimo</td>
-              <td>No hay valores mínimos</td>
+              <td>Valor mínimo</td>
+              <td>$ 20.000</td>
             </tr>
             <tr>
-              <td>Valor Máximo</td>
+              <td>Valor máximo</td>
               <td>No hay valores máximos</td>
             </tr>
           </tbody>
         </Table>
       </Col>
       <Col md={12}>
-        <h3>Costos cuando recibo</h3>
+        <h3>Costo de retiro</h3>
       </Col>
       <Col md={12}>
-        <h4>Transferencia de Bancolombia a Bancolombia</h4>
+        <h4>Retiro a Bancolombia</h4>
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td className="text-center">${Number(3570).toLocaleString()}</td>
+              <td className="text-center">$3.570</td>
             </tr>
           </tbody>
         </Table>
       </Col>
       <Col md={12}>
-        <h4>Transferencia a Otros Bancos (ACH)</h4>
+        <h4>Retiros a Otros Bancos (ACH)</h4>
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td className="text-center">Plaza 1 (Principales) Plaza 2 (Intermedias)</td>
-              <td className="text-center">${Number(6664).toLocaleString()} Pesos</td>
-            </tr>
-            <tr>
-              <td className="text-center">Plazas 3</td>
-              <td className="text-center">${Number(22491).toLocaleString()} Pesos</td>
-            </tr>
-            <tr>
-              <td className="text-center">Plazas 4</td>
-              <td className="text-center">{Number(1.9).toLocaleString()}% del pago</td>
+              <td className="text-center">$ 6.664</td>
             </tr>
           </tbody>
         </Table>
       </Col>
       <Col md={12}>
-        <h3>Costos cuando envío</h3>
+        <h3>Costos de depósito</h3>
       </Col>
       <Col md={12}>
-        <h4>Sucursal física</h4>
+        <h4>Sucursal física o Corresponsal bancario</h4>
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td className="text-center">Incluye todas las consignaciones en efectivo</td>
-              <td className="text-center">${Number(12138).toLocaleString()} Pesos</td>
+              <td className="text-center">Incluye todos los depósitos en efectivo</td>
+              <td className="text-center">$13.000 </td>
             </tr>
           </tbody>
         </Table>
@@ -80,16 +71,16 @@ export default props => {
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td className="text-center">Corresponsal Bancario a cuenta empresarial</td>
-              <td className="text-center">Mismos costos que sucursal física</td>
+              <td className="text-center">Sucursal Virtual o APP</td>
+              <td className="text-center">Sin costo</td>
             </tr>
             <tr>
               <td className="text-center">PAC Bancario</td>
-              <td className="text-center">Tarifas bancarias externas</td>
+              <td className="text-center">Sin costo</td>
             </tr>
             <tr>
-              <td className="text-center">Cajero</td>
-              <td className="text-center">Tarifas bancarias externas</td>
+              <td className="text-center">Cajero (Traslados)</td>
+              <td className="text-center">Sin costo</td>
             </tr>
           </tbody>
         </Table>
@@ -97,15 +88,27 @@ export default props => {
       <Col md={12}>
         <h4>Inscripción Cuentas Bancarias</h4>
         <p>
-          Para recibir en tu cuenta bancaria, o transferir a la cuenta bancaria de la empresa. La inscripción de las cuentas por políticas directas del banco deben realizarse en el horario de lunes a viernes de 6:00 AM a 8:00 PM y sábados de 6:00 AM a 2:00 PM (Días hábiles).
+          La inscripción de las cuentas, por políticas directas del banco, deben realizarse en el horario de lunes a viernes de 6:00 AM a 8:00 PM y sábados de 6:00 AM a 2:00 PM (Días hábiles).
         </p>
         <p>
-          Las que se hagan en este rango son aprobadas en dos horas, si se hace fuera de horario quedan para el día hábil siguiente.
-        </p>
-        <p>
-          Recuerda que si tu cuenta ya fue inscrita por la empresa con anterioridad no tendrá que hacerse de nuevo, o si tienes la cuenta de la empresa ya inscrita también podrás transferir cuando quieras sin ningún problema.
+          Las inscripciones que se hagan en este rango son aprobadas en dos horas. Si se hace fuera de ese horario quedan para el día hábil siguiente.
         </p>
       </Col>
+
+      <Col md={12}>
+        <h3>Bitcoin</h3>
+      </Col>
+      <Col md={12}>
+        <h4>Fee de la red Bitcoin</h4>
+        <Table responsive bordered striped>
+          <tbody>
+            <tr>
+              <td className="text-center">0.0005 BTC</td>
+            </tr>
+          </tbody>
+        </Table>
+      </Col>
+
     </React.Fragment>
   )
 }

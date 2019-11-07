@@ -10,18 +10,24 @@ import SimpleLoader from '../../../widgets/loaders'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
-import { serveBankOrCityList } from '../../../../services'
+import { serveBankOrCityList, add_index_to_root_object, objectToArray } from '../../../../services'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
 
 const dropDawnElements = [
+  {name:'ahorro'},
+  {name:'corriente'},
+]
+
+const dropDawnElements2 = [
   {name:'ahorro', id:1},
   {name:'corriente', id:2},
 ]
 
 
+
 class BankAccountFlow extends Component{
 
-  componentDidMount(){
+  async componentDidMount(){
 
     this.initComponent()
     this.props.actualizarEstado({
@@ -30,7 +36,9 @@ class BankAccountFlow extends Component{
         value:"bank"
       }
     })
+
   }
+
 
   state={
     banks:null,
@@ -40,6 +48,7 @@ class BankAccountFlow extends Component{
 
 
   initComponent = async() =>{
+
 
     const {
       withdraw_providers_list
@@ -55,16 +64,36 @@ class BankAccountFlow extends Component{
 
     let serve_bank_list = await serveBankOrCityList(bank_list, 'bank')
     let serve_city_list = await serveBankOrCityList(city_list, 'city')
+
+    let id_types_object = await add_index_to_root_object(res && res[0].info_needed.id_type)
+    let id_type_list = await objectToArray(id_types_object)
+
+    let account_type_object = await add_index_to_root_object(res && res[0].info_needed.account_type)
+    let account_type_list = await objectToArray(account_type_object)
+    // console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| withdraw_providers_list |', res[0])
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : VIRGIN BANK', bank_list)
+
+    await this.props.actualizarEstado({target:{name:'currency', value:res[0].currency}})
 
     this.setState({
       banks:serve_bank_list,
       cities:serve_city_list,
+      id_types:id_type_list, //tipos de documentos disponibles para indicar con el que se abrio la cuenta de retiro
+      account_types:account_type_list, //tipos de cuentas bancarias disponibles
       loader:false
     })
 
   }
+
+
+componentDidUpdate(prevProps){
+
+  if(prevProps !== this.props){
+    console.log('|||||_________________user? ', this.props.user.id_type, this.props.id_type)
+  }
+
+}
 
 
   update_city = payload =>{
@@ -100,7 +129,9 @@ class BankAccountFlow extends Component{
       name,
       actualizarEstado,
       city,
-      final_step_create_account
+      final_step_create_account,
+      id_type,
+      id_number
     } = this.props
 
     const {
@@ -177,11 +208,50 @@ class BankAccountFlow extends Component{
                 {
                   step === 4 &&
                   <Fragment>
-                    <p className="nBtextInit">Es de vital importancia que esta cuenta <strong>{bank_name}</strong> sea de tu propiedad <strong>{name}</strong>, de lo contrario se invalidarán las transacciones y es posible que tus fondos queden congelados hasta nuevo aviso.</p>
 
-                    <div id="bankChooseButton" className="contbuttonAccount">
-                      <ButtonForms type="primary" active={true} siguiente={siguiente}>Entiendo, es mi cuenta</ButtonForms>
-                    </div>
+                    <form
+                      className="formAccountFlow grid-disable"
+                      onSubmit={handleSubmit}
+                      >
+                        <div className="contInfoIdType">
+                          <p className="nBtextInit">Es de vital importancia que esta cuenta <strong>{bank_name}</strong> sea de tu propiedad <strong>{name}</strong>, de lo contrario se invalidarán las transacciones y es posible que tus fondos queden congelados hasta nuevo aviso.</p>
+                          <div className="contForminputsAccount">
+
+                            <DropDownContainer
+                              placeholder="ej. Cedula de ciudadanía, Pasaporte etc"
+                              name='id_type'
+                              elements={this.state.id_types}
+                              label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
+                              actualizarEstado={actualizarEstado}
+                              active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
+                            />
+
+                            {
+                              this.props.id_type && (this.props.user.id_type !== this.props.id_type) &&
+                              <InputForm
+                                type="text"
+                                label="Escribe el numero de documento de identidad"
+                                placeholder="Ej. 1123321..."
+                                name="id_number"
+                                actualizarEstado={actualizarEstado}
+                                active={id_type && id_number}
+                                value={account_number}
+                                handleKeyPress={handleKeyPress}
+                                status = {statusInput}
+                              />
+                            }
+
+
+
+                        </div>
+                        </div>
+
+                      <div id="bankChooseButton" className="contbuttonAccount">
+                        <InputButton label="Continuar" type="primary"
+                          active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
+                        />
+                      </div>
+                    </form>
 
                   </Fragment>
                 }
@@ -195,9 +265,11 @@ class BankAccountFlow extends Component{
                       <div className="contForminputsAccount">
 
                         <DropDownContainer
-                          elements={dropDawnElements}
+                          placeholder="ej. Cuenta Corriente"
+                          elements={this.state.account_types}
                           label="Elige el tipo de cuenta:"
                           actualizarEstado={actualizarEstado}
+                          name='account_type'
                           active={account_type && account_number}
                         />
 
@@ -270,7 +342,7 @@ function mapStateToProps(state, props){
     return withdraw_providers_list.push(withdraw_providers[wp])
   })
 
-  console.log('---------------------------SIRVIENDO PROVEEDORES', withdraw_providers_list)
+  // console.log('---------------------------SIRVIENDO PROVEEDORES', withdraw_providers_list)
 
 
   return{
