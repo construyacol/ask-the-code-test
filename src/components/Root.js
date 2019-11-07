@@ -51,7 +51,7 @@ class RootContainer extends Component {
       TokenUser = result[1]
       await localForage.setItem('TokenUser', TokenUser)
       await localForage.setItem('created_at', new Date())
-      history.push('/')
+      // history.push('/')
     }
 
     let AccessToken = await localForage.getItem('TokenUser')
@@ -81,7 +81,7 @@ class RootContainer extends Component {
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')
     await this.setState({TokenUser:false, userId:null})
-    history.push('/')
+    // history.push('/')
   }
 
   render(){

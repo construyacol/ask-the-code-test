@@ -35,8 +35,8 @@ class LoaderAplication extends Component {
 
 
     const { country } = this.state
-
     let profile = await action.get_profile(userId, token)
+
     if(!profile){
       if(!new_country){return this.setState({country:null})}
       profile = await action.add_new_profile(new_country, token)
@@ -105,12 +105,18 @@ class LoaderAplication extends Component {
       return logOut()
     }
 
+
+
     // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
     let user = await action.get_user(token, user_country)
+    // console.log('===================================>>>>   user', user)
+    alert()
     if(!user){return false}
+
+
 
     // Seteamos el token del usuario al modelo en redux
     let user_update = {

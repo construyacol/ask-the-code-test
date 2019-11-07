@@ -22,7 +22,7 @@ import SelectCountryLanding from './sections/selectCountryLanding'
 import { CountryList } from './sections/selectCountryLanding'
 import { CurrencyList } from './sections/currencies_implemented'
 import SupportForm from './sections/supportForm'
-
+import { hotjar } from 'react-hotjar';
 // import BubbleMsg from '../widgets/msgBubble/msgBubble'
 import FreshChat from '../../services/freshChat'
 import localForage from 'localforage'
@@ -61,11 +61,15 @@ class LandingPageContainer extends Component {
   }
 
   componentWillUnmount(){
+
     controller.removeScene([quote, LogoAnim, BarNav, reviews, videoTutorial])
     clearInterval(updatePairs)
   }
 
   async componentDidMount(){
+
+    hotjar.initialize(1558627, 6);
+
     const restoreId = await localForage.getItem('restoreId')
     const externalId = await localForage.getItem('externalId')
     await FreshChat.init_user('anonymous', restoreId, externalId)
@@ -227,7 +231,7 @@ class LandingPageContainer extends Component {
     return(
     <Fragment>
               <section id="LandingPageContainer">
-                
+
                 {
                   this.props.other_modal &&
                     <SupportForm/>

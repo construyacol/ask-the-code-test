@@ -1809,6 +1809,9 @@ export const get_user = (token, user_country) =>{
     const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
     const init_state = await ApiPostRequest(init_state_url, body)
     // return console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
+    console.log('===================================>>>>   init_state', init_state)
+
+
     if(init_state && !init_state.data){return false}
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
