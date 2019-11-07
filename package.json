@@ -39,7 +39,6 @@
     "redux-sounds": "^3.0.1",
     "redux-thunk": "^2.3.0",
     "scrollmagic": "^2.0.7",
-    "serve": "^11.2.0",
     "siriwave": "^1.2.4",
     "slick-carousel": "^1.8.1",
     "socket.io": "^2.2.0",
@@ -67,6 +66,7 @@
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "redux-devtools-extension": "^2.13.8",
-    "redux-logger": "^3.0.6"
+    "redux-logger": "^3.0.6",
+    "serve": "^11.2.0"
   }
 }
