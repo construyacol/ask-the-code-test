@@ -7,6 +7,7 @@ import TicketPaymentProof from './ticketPaymentProof'
 import ErrorView from '../errorView'
 import SimpleLoader from '../loaders'
 import { formatToCurrency } from '../../../services/convert_currency'
+import { ticketModalView } from '../../../services'
 
 import './ticket.css'
 
@@ -15,20 +16,38 @@ class TicketContainer extends Component {
   state = {
     current_ticket:null,
     handleError:false,
-    confirmations:this.props.ticket.confirmations,
-    total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency] && this.props.currencies[this.props.ticket.currency.currency].confirmations,
-    current_ticket_state:this.props.ticket && this.props.ticket.state,
-    type_order:this.props.ticket && this.props.ticket.type_order,
+    // confirmations:this.props.ticket.confirmations,
+    // total_confirmations:this.props.current_wallet.currency_type === 'crypto' && this.props.currencies[this.props.ticket.currency.currency] && this.props.currencies[this.props.ticket.currency.currency].confirmations,
+    // current_ticket_state:this.props.ticket && this.props.ticket.state,
+    type_order:this.props.type_order,
     currency_type:this.props.ticket && this.props.ticket.currency_type
   }
-// type_order
+
   async componentDidMount(){
 
     const {
       ticket
     } = this.props
 
+
+    this.props.action.CurrentForm('ticket')
+    let view = await ticketModalView(ticket.state)
+    await this.props.action.ModalView(view)
+
     this.ticket_serve(ticket)
+    // return console.log('||||||||||||||||||| ======> FROM TICKET CONTAINER ==> ', ticket)
+
+    this.get_deposit_payment_proof()
+
+
+  }
+
+  get_deposit_payment_proof = async() =>{
+
+    const {
+      ticket
+    } = this.props
+
     if(ticket.type_order !== 'deposit' || ticket.currency_type === 'fiat'){return false}
     if(ticket.paymentProof){return false}
     let deposit = await this.props.action.get_one_deposit(ticket.id)
@@ -37,12 +56,20 @@ class TicketContainer extends Component {
     let update_ticket = {
       [ticket.id]:{...ticket, ...deposit}
     }
-    await this.props.action.update_item_state(update_ticket, 'deposits')
-    //Este metodo se utiliza de forma provicional, hasta que se actualice el ticket directamente desde el estado y el mismo sea referenciado (ticket.id) desde la url
-    this.props.action.update_activity_account(ticket.account_id, 'deposits')
+    console.log('||||||||||||||||||| ======> FROM TICKET CONTAINER ==> ', update_ticket)
 
+    await this.props.action.update_item_state(update_ticket, 'deposits')
+    this.props.action.update_activity_state(ticket.account_id, 'deposits')
   }
 
+
+
+    async componentDidUpdate(prevProps){
+      // console.log('||||||||||||   componentDidUpdate ==> ', prevProps.current_ticket_state, this.props.current_ticket_state)
+      if(prevProps.current_ticket_state === this.props.current_ticket_state){return false}
+      let view = await ticketModalView(this.props.ticket.state)
+      await this.props.action.ModalView(view)
+    }
 
 
 
@@ -51,7 +78,7 @@ class TicketContainer extends Component {
 
       const{
         type_order
-      } = ticket
+      } = this.props
 
       const{
         current_wallet
@@ -70,7 +97,7 @@ class TicketContainer extends Component {
       let bought
       let spent
 
-      if(type_order !== 'swap'){
+      if(type_order !== 'swaps'){
          amount = await formatToCurrency(ticket.amount, ticket.currency, true)
          cost = await formatToCurrency(ticket.cost, ticket.currency, true)
          amount_neto = await formatToCurrency(ticket.amount_neto, ticket.currency, true)
@@ -86,7 +113,7 @@ class TicketContainer extends Component {
       // formatToCurrency
 
       switch (type_order) {
-        case 'withdraw':
+        case 'withdraws':
             if(current_wallet.currency_type === 'fiat'){
                 let {
                   wallets,
@@ -225,7 +252,7 @@ class TicketContainer extends Component {
             })
           }
 
-          case 'deposit':
+          case 'deposits':
 
               let {
                 deposit_providers,
@@ -338,7 +365,7 @@ class TicketContainer extends Component {
             })
             }
           break;
-          case 'swap':
+          case 'swaps':
           return this.setState({current_ticket:[
             {
               ui_name:"id intercambio:",
@@ -405,10 +432,10 @@ class TicketContainer extends Component {
       current_form
     } = this.props
 
-    await this.setState({
-      // current_ticket:this.ticket_serve(ticket),
-      current_ticket_state:ticket && ticket.state
-    })
+    // await this.setState({
+    //   // current_ticket:this.ticket_serve(ticket),
+    //   current_ticket_state:ticket && ticket.state
+    // })
 
     this.props.action.ModalView("confirmedView")
     this.props.action.ReduceStep(current_form)
@@ -421,20 +448,22 @@ class TicketContainer extends Component {
     })
   }
 
+
   render(){
 
     const {
-      step
-    } = this.props.ticket
+      step,
+      confirmations,
+      current_wallet,
+      current_ticket_state,
+      total_confirmations
+    } = this.props
 
     const{
       current_ticket,
       handleError,
-      confirmations,
-      current_ticket_state,
       type_order,
       currency_type,
-      total_confirmations
     } = this.state
 
 
@@ -474,6 +503,7 @@ class TicketContainer extends Component {
               clases={`${step !== 1 ? 'aparecer' : '' }`}
               ticket={this.props.ticket}
               update_ticket={this.update_ticket}
+              current_wallet={current_wallet}
             />
 
           </div>
@@ -493,6 +523,12 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
+  const { account_id, tx_path, order_id } = props.match.params
+
+  // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
+
+  let current_wallet = state.model_data.wallets[account_id]
+
   const{
     withdraw_providers,
     withdraw_accounts,
@@ -500,10 +536,6 @@ function mapStateToProps(state, props){
     deposit_providers,
     currencies
   } = state.model_data
-
-  const{
-    current_wallet
-  } = state.ui.current_section.params
 
 
   let currency_list
@@ -519,18 +551,22 @@ function mapStateToProps(state, props){
     })
   }
 
-
-
+  let ticket = state.model_data[tx_path][order_id]
 
   return{
-    ticket:state.form.form_ticket,
+    step:state.form.form_ticket.step,
+    type_order:tx_path,
+    ticket,
     current_form:state.form.current,
     withdraw_providers,
     withdraw_accounts,
     wallets,
     deposit_providers,
     current_wallet,
-    currencies:currency_list
+    currencies:currency_list,
+    confirmations:ticket.confirmations,
+    total_confirmations:current_wallet.currency_type === 'crypto' && currency_list[ticket.currency.currency] && currency_list[ticket.currency.currency].confirmations,
+    current_ticket_state:ticket.state
   }
 }
 

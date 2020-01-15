@@ -122,12 +122,15 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { id, currency } = state.ui.current_section.params.current_wallet
-  // console.log('StateToProps:::', state.ui.current_section.params.pairs_for_account)
-  // console.log('StateToPropssssss:::', currency)
+
+  const { wallets } = state.model_data
+  const { params } = props.match
+  const current_wallet = wallets[params.account_id]
+  const { id, currency } = current_wallet
+  // console.log('||||||| PAIR SWAP LIST DATA ==> ', props, current_wallet)
 
   return{
-    current_wallet:state.ui.current_section.params.current_wallet,
+    current_wallet,
     short_name:state.ui.current_section.params.short_name,
     all_pairs:state.ui.current_section.params.pairs_for_account[currency.currency] && state.ui.current_section.params.pairs_for_account[currency.currency].all_pairs,
     current_pair:state.ui.current_section.params.pairs_for_account[id] && state.ui.current_section.params.pairs_for_account[id].current_pair,

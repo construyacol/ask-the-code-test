@@ -27,7 +27,7 @@ const detail = async() =>{
   // console.log('Ey arnold',props.ticket)
   let proceed = await can_proceed()
   if(proceed){return false}
-  props.verTicket(props)
+  props.verTicket(props.ticket)
 }
 
 
@@ -369,14 +369,15 @@ const can_proceed = () =>{
 
 
 function mapStateToProps (state, props){
-  // console.log('||||||||||||||||||| - - - - ESTADO DESDE EL ITEM DE ACTIVITY', state)
+  // console.log('||||||||||||||||||| - - - - ESTADO DESDE EL ITEM DE ACTIVITY', props)
 
   return {
     socket_swap:state.ui.current_section.params.swap_socket_channel,
     swap_done_id:state.ui.current_section.params.swap_done_id,
     swap_done_out:state.ui.current_section.params.swap_done_out,
     swap_done_in:state.ui.current_section.params.swap_done_in,
-    account_to:state.ui.current_section.params.current_wallet.id === props.ticket.account_to
+    // account_to:state.ui.current_section.params.current_wallet.id === props.ticket.account_to
+    account_to:props.match.params.account_id === props.ticket.account_to
   }
 }
 

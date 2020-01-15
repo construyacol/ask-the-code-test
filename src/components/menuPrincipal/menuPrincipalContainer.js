@@ -11,18 +11,20 @@ import PropTypes from 'prop-types'
 class MenuPrincipalContainer extends Component{
 
   activarItem = async (name, link) =>{
-    // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', name, link)
-    this.props.action.MenuItemActive(link)
     this.props.action.section_view_to('initial')
     this.props.action.CleanNotifications(name)
       this.props.action.HeadRoom('unpinned')
 
     scroller.scrollTo('firstInsideContainer', {
-      duration: this.props.menu_item_active === link ? 500 : 0,
+      duration: this.props.path === link ? 500 : 0,
       smooth: true,
       containerId: 'containerElement'
     })
   }
+
+  // componentDidUpdate(prevProps){
+  //   console.log('|||||||||||||||||||||||||||| ====================> componentDidUpdate MENU PRINCIPAL ==> ', this.props)
+  // }
 
   close_menu_principal = () =>{
     this.props.action.current_section_params({show_menu_principal:false})
@@ -75,7 +77,7 @@ class MenuPrincipalContainer extends Component{
     return(
         <MenuPrincipalLayout
           activarItem={this.activarItem}
-          itemStatus={this.props.menu_item_active}
+          path={this.props.path}
           refCallback={this.refCallback}
           close_menu_principal={this.close_menu_principal}
           openSelectCountry={this.openSelectCountry}
@@ -88,7 +90,7 @@ class MenuPrincipalContainer extends Component{
 
 
 MenuPrincipalContainer.propTypes = {
-  menu_item_active:PropTypes.string,
+  path:PropTypes.string,
   show_menu_principal:PropTypes.bool,
   user:PropTypes.object,
   verification_state:PropTypes.string
@@ -103,14 +105,16 @@ MenuPrincipalContainer.propTypes = {
   }
 
   function mapStateToProps(state, props){
-    // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', state.model_data)
 
+    // let path = props.location.pathname.replace('/', '')
+    let path = props.match.params.primary_path
+    // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', path, props)
     const { user, user_id } = state.model_data
     const { verification_state } = state.ui
 
     return{
       user:user && user[user_id],
-      menu_item_active:state.ui.menu_item_active,
+      path,
       show_menu_principal:state.ui.current_section.params.show_menu_principal,
       verification_state
       // user:state.model_data.user ? user : null

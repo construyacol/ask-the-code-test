@@ -18,7 +18,7 @@ UPDATE_ITEM_STATE
 export const update_item_state = (item, item_type) => {
 
 // @params
-// item:object => ex: normalized_object: {identifier:{}}
+// item:object => ex: normalized_object: {item_id:{}}
 // item_type:string => ex: users
 
     let payload = {
@@ -90,7 +90,7 @@ export const reset_model_data = payload => {
   }
 }
 
-export const Update_normalized_state = payload => {
+export const update_normalized_state = payload => {
   return{
     type:UPDATE_NORMALIZED_STATE,
     payload

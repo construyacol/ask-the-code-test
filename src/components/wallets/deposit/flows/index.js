@@ -197,7 +197,7 @@ const Success = (props) =>{
             </div>
 
 
-        <div className="putaasa">
+        <div className="asaras">
              <div className={`${final ? 'apareces1': ''} nWbody2 Fbody2 FlowCont fuente DLmessage`}>
                 <div className="FolowTexts" >
                   <p className="fuente Fimportant" >¡IMPORTANTE!</p>

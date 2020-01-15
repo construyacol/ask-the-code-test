@@ -9,6 +9,8 @@ import ActivityFilters from './filters'
 
 import './activity_view.css'
 
+
+
 class ActivityList extends Component {
 
   state = {
@@ -23,6 +25,7 @@ class ActivityList extends Component {
 
   componentDidMount(){
     this.props.action.CurrentForm('ticket')
+    // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', this.props)
     this.init_activity()
   }
 
@@ -42,13 +45,16 @@ class ActivityList extends Component {
 
         let activity_list = []
 
+
         // Si hay actividad previa en redux, cargue esa actividad
         if(this.props.activity){
+          // alert('si hay activity')
           activity_list = this.props.activity
         }
 
         // Si no hay actividad entonces procesela por el tipo de actividad activo (currentFilter)
         if(activity_list.length<1){
+          // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', this.props)
         activity_list = await this.filter_activity(currentFilter)
         }
 
@@ -155,38 +161,13 @@ class ActivityList extends Component {
             filter === 'activity' && 'get_activity_list')
   }
 
-  // update_activity_list = async() =>{
-  //
-  //   const {
-  //     action,
-  //     user,
-  //     current_wallet,
-  //     wallets,
-  //     currentFilter
-  //   } = this.props
-  //
-  //
-  //   let trigger_action = await this.trigger_action(currentFilter)
-  //   console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', trigger_action)
-  //
-  //   alert('se prendio esta mierda')
-  //   return false
-  //
-  //   let activity_list = await serve_activity_list(action[trigger_action], user, current_wallet, currentFilter, wallets)
-  //
-  //   await this.setState({
-  //     activity:activity_list
-  //   })
-  //
-  //   let pending = await matchItem(this.state.activity, {primary:'pending'}, 'state', true);
-  //   pending && this.setState({pending:true, lastPending:pending[0].id})
-  //
-  // }
 
 
 
 
   delete_order_confirmation = (id) =>{
+    alert('delete')
+
     this.props.action.ConfirmationModalToggle()
     this.props.action.ConfirmationModalPayload({
       title:"Esto es importante, estas a punto de...",
@@ -197,9 +178,12 @@ class ActivityList extends Component {
       action:this.delete_order,
       img:"deleteticket"
     })
+
   }
 
   delete_order = async(id) =>{
+
+    alert('delete order')
 
     const{
       currentFilter,
@@ -212,13 +196,13 @@ class ActivityList extends Component {
       deleting:true
     })
 
-    let deleted = currentFilter === 'withdrawals' ? await this.props.action.delete_withdraw_order(id) : await this.props.action.delete_deposit_order(id)
+    let deleted = await this.props.action.delete_deposit_order(id)
+    // let deleted = currentFilter === 'withdraws' ? await this.props.action.delete_withdraw_order(id) : await this.props.action.delete_deposit_order(id)
 
     // const {
     //   count
     // } = deleted
-
-    // return console.log('_______________________DELETE API SERVICE ENDPOINT', deleted)
+    return console.log('_______________________DELETE API SERVICE ENDPOINT', deleted)
 
     if(!deleted){
       await this.setState({deleting:false, current_order_loader:0})
@@ -467,6 +451,9 @@ class ActivityList extends Component {
 }
 
 function mapStateToProps(state, props){
+
+
+  // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', props)
 
   const { user, user_id, currencies } = state.model_data
   const { current_wallet } = props

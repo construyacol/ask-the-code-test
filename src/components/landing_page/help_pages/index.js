@@ -25,7 +25,8 @@ const signupUri = `${oauth.host}/${oauth.signin}?clientId=${oauth.key}`
 
 
 const HelPages = props => {
-
+  
+  const { history, other_modal } = props
  const [ menuState, setMenuState ] = useState(false)
 
  useEffect(()=>{
@@ -43,7 +44,6 @@ const HelPages = props => {
    setMenuState(false)
  }
 
- const { history, other_modal } = props
 
  // let menu_action = window.innerWidth<768 ? menuState : null
 

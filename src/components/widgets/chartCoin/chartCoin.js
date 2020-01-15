@@ -3,7 +3,7 @@ import Chart from 'chart.js'
 import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
-import localForage from 'localforage'
+// import localForage from 'localforage'
 
 import './chartCoin.css'
 
@@ -22,7 +22,8 @@ class ChartCoin extends Component {
       if(!lastPrices){return false}
     }
 
-    await localForage.setItem('prices', lastPrices)
+    // return console.log('|||||||||||||||||||||||||||| GET HISTORICAL DATA ==>', lastPrices)
+    // await localForage.setItem('prices', lastPrices)
 
     let ctx = document.getElementById('myChart').getContext('2d');
 
@@ -49,7 +50,7 @@ class ChartCoin extends Component {
         data: {
             datasets: [{
                 label: 'Precio',
-                data: lastPrices.data_price,
+                data: lastPrices.price_list,
                 backgroundColor: gradientFill,
                 fill:true,
                 // backgroundColor: `${this.props.landingView ? gradientFill : 'rgb(43, 55, 66, 0.35)'}`,
@@ -62,7 +63,7 @@ class ChartCoin extends Component {
                 borderWidth: 1,
                 steppedLine:'middle'
             }],
-            labels: lastPrices.price_date,
+            labels: lastPrices.date_list,
         },
         options: {
           animation: {

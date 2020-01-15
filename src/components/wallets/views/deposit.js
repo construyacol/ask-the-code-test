@@ -20,6 +20,7 @@ class DepositView extends Component{
   }
 
     componentDidMount(){
+      // console.log('|||||||||||||||||||||| ======= DEPOSIT VIEW ', this.props)
       this.init_config()
     }
 
@@ -28,23 +29,30 @@ class DepositView extends Component{
       let verified = await this.props.action.user_verification_status('level_1')
       await this.setState({verified})
 
-      await this.props.initial(this.props.match.params.path, this.props.match.params.id)
-      const { current_wallet } = this.props
+      // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
+      const { current_wallet, deposit_providers } = this.props
 
       if(!current_wallet){return this.props.action.section_view_to('initial')} //Este caso ocurre cuando la url apunta al detalle de la cuenta pero si el estado de verificación del usuario es rejected o pending redireccióna a /security
 
       // if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
       if(current_wallet.currency_type === 'fiat'){return this.setState({fiat_currency: true})}
-
-      if((current_wallet && current_wallet.dep_prov.length<1) || !current_wallet || !current_wallet.deposit_provider){return false}
-      console.log('this.props.current_wallet', current_wallet)
-      let address = current_wallet.deposit_provider.account.account_id
-      const { account_id } = address
-      let qr = await QRCode.toDataURL(account_id)
+      if((current_wallet && current_wallet.dep_prov.length<1) || !deposit_providers ){return false}
+      let dep_prov = deposit_providers[current_wallet.dep_prov[0]]
+      if(!dep_prov || !dep_prov.account.account_id.account_id){return false}
+      console.log('DESDE DEPOSITOSSSS ', dep_prov)
+      // let address = current_wallet.deposit_provider.account.account_id
+      const { account } = dep_prov
+      let qr = await QRCode.toDataURL(account.account_id.account_id)
       this.setState({
         qr:qr,
-        address:account_id
+        address:account.account_id.account_id
       })
+  }
+
+  componentDidUpdate(prevProps){
+    if(prevProps.current_wallet !== this.props.current_wallet){
+      this.init_config()
+    }
   }
 
 
@@ -52,18 +60,44 @@ class DepositView extends Component{
 
 
   fiat_deposit = async() =>{
+    // console.log('|||||||||||||| FIAT DEPOSIT', this.props.local_currency)
       await this.props.action.FiatDeposit(this.props.local_currency || 'usd')
       this.props.action.ToggleModal()
   }
 
-  get_deposit_provider = () => {
-    alert('Servicio para asignar deposit provider (Dirección de deposito)')
+
+  create_deposit_provider = async() => {
+    // 5dce0483a389244fa63bf6a7
+    this.props.action.Loader(true)
+    const { current_wallet } = this.props
+    let dep_prov_id = await this.props.action.create_deposit_provider(current_wallet.id, current_wallet.country)
+    // let dep_prov_id = 23232323
+    if(!dep_prov_id){
+      this.props.action.Loader(false)
+      return false
+    }
+
+    let deposit_providers = await this.props.action.get_deposit_providers(this.props.user)
+
+    let update_wallet = {
+      [current_wallet.id]:{...current_wallet, dep_prov:[dep_prov_id], deposit_provider:deposit_providers[dep_prov_id]}
+    }
+
+    await this.props.action.update_item_state(update_wallet, 'wallets')
+
+    this.props.action.current_section_params({
+      current_wallet:update_wallet[current_wallet.id]
+    })
+    this.props.action.Loader(false)
+
+    // console.log('|||||||||||||| ====================================> Deposit_provider ID', dep_prov_id, deposit_providers[dep_prov_id], deposit_providers)
+
   }
 
 
 render(){
 
-  const { current_wallet } = this.props
+  const { current_wallet, loader } = this.props
   const { qr, address, fiat_currency, verified } = this.state
   let movil_viewport = window.innerWidth < 768
 
@@ -138,11 +172,17 @@ render(){
 
           <p className="fuente">Esta Billetera aún no tiene dirección de deposito, creala ahora e inicia operaciones con esta cuenta.</p>
 
-        <div className="contButtons">
+        <div className="contButtons deposit">
+          {
+            loader &&
+            <div className="deposit_loader">
+              <SimpleLoader/>
+            </div>
+          }
             <ButtonForms
               type="primary"
-              active={true}
-              siguiente={this.get_deposit_provider}
+              active={!loader}
+              siguiente={this.create_deposit_provider}
             >
               Crear dirección de deposito
             </ButtonForms>
@@ -161,15 +201,22 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { current_wallet } = state.ui.current_section.params
-  const { user, user_id } = state.model_data
-// console.log('DESDE DEPOSITOSSSS ', state.ui.current_section.params.short_name)
+  const { user, user_id, wallets, deposit_providers } = state.model_data
+  const { loader } = state.isLoading
+  const { params } = props.match
+  const current_wallet = wallets[params.account_id]
+
+
+  // console.log('DESDE DEPOSITOSSSS ', state.model_data.pairs)
+
   return{
     active_trade_operation:state.ui.current_section.params.active_trade_operation,
     user:user[user_id],
-    current_wallet:state.ui.current_section.params.current_wallet,
-    // local_currency:state.model_data.pairs.localCurrency,
-    local_currency:state.ui.current_section.params.short_name,
+    current_wallet,
+    loader,
+    local_currency:state.model_data.pairs.localCurrency,
+    deposit_providers,
+    // local_currency:state.ui.current_section.params.short_name,
     current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair)
 
   }

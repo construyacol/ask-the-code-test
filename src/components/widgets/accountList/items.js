@@ -136,7 +136,7 @@ componentDidMount(){
       wallet,
       current,
       current_view,
-      wallet_state,
+      account_state,
       id_wallet_action,
       balances,
       clases
@@ -160,15 +160,16 @@ componentDidMount(){
 
     return(
     <Fragment>
-      <div className={` contWalleins ${clases} ${wallet_state === 'deleting' && id_trigger ? 'WIwalletDeleting' : wallet_state === 'deleted' && id_trigger ? 'WIwalletDeleted' : ''}`}>
+      <div className={` contWalleins ${clases} ${account_state === 'deleting' && id_trigger ? 'WIwalletDeleting' : account_state === 'deleted' && id_trigger ? 'WIwalletDeleted' : ''}`}>
 
               <div
                 id="ItemWallet"
-                className={` ${wallet_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : type === 'withdraw' && !inscribed ? 'NoInscribed' : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
+                className={` ${account_state === 'deleted' && id_trigger ? 'WIitemDeleted' : ''} ${current === 'deposit'?'ItemWallet2':'ItemWallet'} ${type !== 'withdraw' ? currency.currency : type === 'withdraw' && !inscribed ? 'NoInscribed' : 'cop'} ${type !== 'withdraw' ? 'cryptoWallet' : ''}`}
                 // className={`ItemWallet ${currency.currency}`}
                 >
                   <div className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail} ></div>
-                  <div className={`ItemBarra ${type} ${(current_view === 'detail' || (type === 'withdraw' && !inscribed)) ? 'noVisible' : ''}`} >
+
+                  <div className={`ItemBarra ${type} ${(current_view === 'detail') ? 'noVisible' : ''}`} >
 
                     <div className={`ItemBarraI ${type === 'withdraw' ? 'noVisible' : ''}`}>
                       <i className="far fa-arrow-alt-circle-up IRetiro IdeleteButton tooltip" onClick={this.withdraw}>
@@ -279,7 +280,7 @@ ItemWallet.propTypes = {
   user:PropTypes.object,
   verified:PropTypes.bool,
   wallet:PropTypes.object,
-  wallet_state:PropTypes.string
+  account_state:PropTypes.string
 }
 
 

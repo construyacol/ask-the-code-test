@@ -9,6 +9,7 @@ import 'moment/locale/es'
 // import * as Sentry from '@sentry/browser';
 
 
+
 import { coins } from '../components/api/ui/api.json'
 import user_source from '../components/api'
 
@@ -36,7 +37,7 @@ import {
 } from './soundActions'
 
 import {
-  update_activity,
+  // update_activity,
   pending_activity
 } from './storage'
 
@@ -64,7 +65,7 @@ AllPairs,
 SearchCurrentPair,
 LocalCurrency,
 UserPairs,
-Update_normalized_state,
+update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
 ManageBalanceAction,
@@ -77,7 +78,8 @@ desNormalizedList,
 withdraw_provider_by_type,
 add_index_to_root_object,
 objectToArray,
-serve_orders
+serve_orders,
+update_activity_state
 } = services
 
 const { ApiUrl, IdentityApIUrl, CountryApIUrl, AccountApiUrl, DepositApiUrl, WithdrawApiUrl, SwapApiUrl } = Environment
@@ -119,30 +121,57 @@ export const mensaje = (msg, type, position) =>{
 
 export const get_historical_price = (currency, amount_days, api_key) => {
 
-  return async(dispatch)=>{
+  return async(dispatch, getState)=>{
 
-    let url = `https://min-api.cryptocompare.com/data/histoday?fsym=${currency}&tsym=USD&limit=${amount_days}&api_key={${api_key}}`
-    let res = await ApiGetRequest(url) //fetch
-    if(res.Response === 'Error'){return false} //Error message
-    // console.log(res)
-    // alert()
-    if(!res.Data.length){return false} //Error message
+    // let url = `https://min-api.cryptocompare.com/data/histoday?fsym=${currency}&tsym=USD&limit=${amount_days}&api_key={${api_key}}`
+    // let res = await ApiGetRequest(url) //fetch
+    // if(res.Response === 'Error'){return false} //Error message
+    // // console.log(res)
+    // // alert()
+    // if(res.Data && !res.Data.length){return false} //Error message
+    //
+    // let days = res.Data.length - 1
+    // let price_date = []
+    // let data_price = []
+    //
+    // res.Data.map(item => {
+    //     let date_ago = moment().subtract(days, 'days').calendar()
+    //     price_date.push(date_ago)
+    //     data_price.push(item.close)
+    //     return days--
+    // })
+    //
+    // return {
+    //   price_date,
+    //   data_price
+    // }
 
-    let days = res.Data.length - 1
-    let price_date = []
-    let data_price = []
+    // const { user, user_id } = getState().model_data
 
-    res.Data.map(item => {
-        let date_ago = moment().subtract(days, 'days').calendar()
-        price_date.push(date_ago)
-        data_price.push(item.close)
-        return days--
-    })
 
-    return {
-      price_date,
-      data_price
+    const body = {
+      "data": {
+    	 "currency_from": "BTC",
+    	 "currency_to": "USD",
+    	 "amount_days": 45
+    	}
     }
+
+    let price_list = [], date_list = []
+
+    const url_historical_price = `${CountryApIUrl}cryptoCompares/get-daily-historical-data`
+    let prices = await ApiPostRequest(url_historical_price, body)
+
+    if(prices === 465 || !prices){return false}
+
+    const { historical_data } = prices.data
+
+    for(let data of historical_data){
+      price_list.push(data.close_price)
+      date_list.push(data.date)
+    }
+
+    return { price_list:price_list.reverse(), date_list }
 
   }
 
@@ -182,7 +211,7 @@ export const get_all_pairs = (token, country) =>{
 
     let normalize_pairs = await normalize_user(user_update)
     // console.log('|||||||||||||||||||||||||||||||||||||||| - norma_pairs', normalize_pairs)
-    dispatch(Update_normalized_state(normalize_pairs))
+    dispatch(update_normalized_state(normalize_pairs))
     return normalize_pairs
     // return pairs
   }
@@ -207,16 +236,19 @@ export const get_all_pairs_from_landing = () =>{
 
 
     const add_symbol_to_local_collections = async(cop_pairs, local_currency, currencies) =>{
-      // console.log('=]======> local_currencies', bitcoin, cop_pairs)
+      // console.log('=]======>=]======>=]======>=]======> local_currencies', cop_pairs, local_currency, currencies)
 
-      let new_cop_pairs = cop_pairs.map(pair => {
+      let new_cop_pairs = []
+
+      cop_pairs.map(pair => {
         let secondary_short_name = matchItem(currencies, {primary:local_currency}, 'currency')
         let primary_short_name = matchItem(currencies, {primary:pair.primary_currency.currency}, 'currency')
-        return {
+        if(!primary_short_name || !secondary_short_name){return false}
+        return new_cop_pairs.push({
           ...pair,
           secondary_short_name:secondary_short_name[0].symbol,
           primary_short_name:primary_short_name[0].symbol
-        }
+        })
       })
       return new_cop_pairs
     }
@@ -295,11 +327,11 @@ export const get_all_pairs_from_landing = () =>{
         if(currencies){
           local_currencies = await add_symbol_to_local_collections(pairs, local_currency.currency, currencies)
         }else{
-          alert('debes cargar las currencies para continuar')
+          // alert('debes cargar las currencies para continuar')
           return console.log('debes cargar las currencies');
         }
 
-
+        // return console.log(' =================================>>>    local_currencies', local_currencies)
         await dispatch(LocalPairs(local_currencies))
         // console.log('CONSULTANDO TODOS LOS PARES DISPONIBLES::::::', pairs)
 
@@ -497,7 +529,7 @@ export const get_account_balances = user => {
     // return console.log('========> BALANCES', user_update)
 
     let list_user_balances = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(list_user_balances))
+    await dispatch(update_normalized_state(list_user_balances))
     return list_user_balances
 
   }
@@ -539,7 +571,7 @@ export const ManageBalance = (account_id, action, amount) => {
     }
 
     let list_user_balances = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(list_user_balances))
+    await dispatch(update_normalized_state(list_user_balances))
 
     dispatch(ManageBalanceAction(account_id, action, amount))
 
@@ -575,12 +607,15 @@ export const get_list_user_wallets = (user) =>{
     }
 
 
-    let visible_wallets = wallets
-    // let visible_wallets = []
-    //  wallets.map(wallet => {
-    //    if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin_testnet'){return false}
-    //    return visible_wallets.push(wallet)
-    //  })
+    // let visible_wallets = wallets
+    let visible_wallets = []
+     wallets.map(wallet => {
+       // if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin_testnet'){return false}
+       // console.log('|||||||||||||||||||||||||||||||||||||| wallet ===> ', (wallet.currency.currency === 'bitcoin' && wallet.available !== 0) && wallet)
+       if(!wallet.visible || wallet.currency.currency === 'usd'){return false}
+       // if(wallet.currency.currency === 'usd' || wallet.currency.currency === 'bitcoin' || (wallet.currency.currency === 'bitcoin_testnet' && wallet.name !== 'Default_name_bitcoin_testnet')){return false}
+       return visible_wallets.push({...wallet, visible:true})
+     })
 
       let user_update = {
         ...user,
@@ -590,7 +625,7 @@ export const get_list_user_wallets = (user) =>{
       }
 
       let list_user_wallets = await normalize_user(user_update)
-      await dispatch(Update_normalized_state(list_user_wallets))
+      await dispatch(update_normalized_state(list_user_wallets))
       return list_user_wallets
   }
 }
@@ -609,58 +644,6 @@ export const get_list_user_wallets = (user) =>{
 
 
 
-// OBTENER DEPOSIT_PROVIDERS
-
-export const get_deposit_providers = (user) => {
-
-return async(dispatch) => {
-
-    await dispatch(load_label('Obteniendo proveedores de deposito'))
-    // const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
-    const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}`
-    let myHeaders = await dispatch(generate_headers())
-    const deposit_providers = await ApiGetRequest(url_dep_prov, myHeaders)
-    if(!deposit_providers || deposit_providers === 404){return false}
-
-    const deposit_providersDA_url = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter[include]=depositAccount`
-    const depositAccounts = await ApiGetRequest(deposit_providersDA_url, myHeaders)
-    if(!depositAccounts || depositAccounts === 404){return false}
-
-    let modelDAUpgrade = []
-    let indexDA = 0
-    depositAccounts.map(depositAccount => {
-      let account = Object.assign({}, depositAccount.depositAccount.account, deposit_providers[indexDA].account);
-      let new_deposit_provider = {
-        ...deposit_providers[indexDA],
-        provider:{
-          ...depositAccount.depositAccount,
-          account:{
-            ...account
-          }
-        }
-      }
-      modelDAUpgrade.push(new_deposit_provider)
-      return indexDA++
-    })
-
-
-    // const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"${user.country}"}}`
-    // const deposit_provider_fiat = await ApiGetRequest(url_dep_prov_fiat)
-    // if(!deposit_provider_fiat || deposit_provider_fiat === 404){return false}
-
-    let user_update = {
-      ...user,
-      deposit_providers:[
-        ...modelDAUpgrade,
-        // ...deposit_provider_fiat
-      ]
-    }
-
-    let dep_provs = await normalize_user(user_update)
-    dispatch(Update_normalized_state(dep_provs))
-  }
-
-}
 
 
 
@@ -681,13 +664,13 @@ export const get_wallet_by_id = (wallet_id) =>{
     if(wallet[0].dep_prov.length>0){
       // 2 si la wallet tiene deposit providers consultamos el ultimo disponible y lo modelamos
       let id_provider = await wallet[0].dep_prov[wallet[0].dep_prov.length-1]
-      console.log('||||||||||___________deposit_provider VERIFY', id_provider)
+      // console.log('||||||||||___________deposit_provider VERIFY', id_provider)
       const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${id_provider}"}}`
       // const url_dep_prov = `${AccountApiUrl}depositProviders?filter={"where": {"id": "${id_provider}"}}`
       // console.log('°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| get_wallet_by_id :', url_dep_prov)
       deposit_provider = await ApiGetRequest(url_dep_prov, myHeaders)
     }
-    console.log('||||||||||___________deposit_provider', deposit_provider)
+    // console.log('||||||||||___________deposit_provider', deposit_provider)
     const model_wallet = {
       ...wallet[0],
       deposit_provider:!deposit_provider ? null : {...deposit_provider[0]}
@@ -715,29 +698,75 @@ export const create_new_wallet = (body) =>{
 
 // DELETE ACCOUNT (WALLET - WITHDRAW)--------------------------------------------------------------------------------------------------
 
-export const delete_account = (account_id, type) =>{
+export const delete_account = (account, type) =>{
   return async(dispatch, getState)=>{
-    let url_delet_account
-    if(type === 'withdraw'){
-      const { user, user_id } = getState().model_data
+
+    const { id, country } = account
+
+    // let url_delet_account
+    const { user, user_id } = getState().model_data
+    const url_delet_account = `${AccountApiUrl}accounts/update-visibility`
+
+    let body = {
+      data: {
+             account_id:id,
+             country,
+             visible:false
+            }
+    }
+    let deleteAccount = await ApiPostRequest(url_delet_account, body, user[user_id].TokenUser)
+    // console.log('||||| _________________________ deleteAccount', deleteAccount)
+    if(!deleteAccount || deleteAccount === 404 || deleteAccount === 465){return false}
+    return deleteAccount
+
+
+
+
+
+
+
+
+
+
+    // let url_delet_account
+    // // if(type === 'withdraw_accounts'){
+    // //   const { user, user_id, withdraw_accounts } = getState().model_data
+    // //   url_delet_account = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
+    // //   let body = {
+    // //     "data": {
+    // //       "withdraw_account_id":`${account_id}`,
+    // //       "country":withdraw_accounts[account_id].info.country,
+    // //       "visible":false
+    // //     }
+    // //   }
+    // //   let deleteAccount = await ApiPostRequest(url_delet_account, body, user[user_id].TokenUser)
+    // //   // return console.log('||||| _________________________ deleteAccount', deleteAccount)
+    // //   return deleteAccount
+    // // }
+    // url_delet_account = `${AccountApiUrl}accounts/${account_id}`
+    // let deleteAccount = await ApiDelete(url_delet_account)
+    // return deleteAccount
+  }
+}
+
+
+export const delete_withdraw_account = (account_id) =>{
+  return async(dispatch, getState)=>{
+      let url_delet_account
+      const { user, user_id, withdraw_accounts } = getState().model_data
       url_delet_account = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
       let body = {
         "data": {
           "withdraw_account_id":`${account_id}`,
-          "country":user[user_id].country,
+          "country":withdraw_accounts[account_id].info.country,
           "visible":false
         }
       }
       let deleteAccount = await ApiPostRequest(url_delet_account, body, user[user_id].TokenUser)
-      // return console.log('||||| _________________________ deleteAccount', deleteAccount)
+      console.log('||||| _________________________ deleteAccount', deleteAccount, body)
       return deleteAccount
-    }
-    url_delet_account = `${AccountApiUrl}accounts/${account_id}`
-    let deleteAccount = await ApiDelete(url_delet_account)
-    return deleteAccount
   }
 }
-
 
 
 
@@ -811,7 +840,6 @@ export const create_deposit_order = (
   cost_id,
   deposit_service,
   user,
-  deposits,
   service_mode,
   deposit_provider_id
 ) => {
@@ -913,29 +941,29 @@ export const delete_deposit_order = order_id =>{
 }
 
 
-export const normalize_new_item = (user, list, item, prop) =>{
-  // list =>  normalized data
-  return async(dispatch) =>{
-
-       let new_list = await desNormalizedList(list, user[prop])
-
-       // console.log('Desnormalized List deposits - - - ', new_list)
-
-       let user_update = {
-         ...user,
-         [prop]:[
-           item,
-           ...new_list
-
-         ]
-       }
-       // console.log('=========> user_update - - - ', user_update)
-        let normalizeUser = await normalize_user(user_update)
-        await dispatch(Update_normalized_state(normalizeUser))
-        // console.log('=========> normalizeUser - - - ', normalizeUser)
-
-  }
-}
+// export const normalize_new_item = (user, list, item, prop) =>{
+//   // list =>  normalized data
+//   return async(dispatch) =>{
+//
+//        let new_list = await desNormalizedList(list, user[prop])
+//
+//        // console.log('Desnormalized List deposits - - - ', new_list)
+//
+//        let user_update = {
+//          ...user,
+//          [prop]:[
+//            item,
+//            ...new_list
+//
+//          ]
+//        }
+//        // console.log('=========> user_update - - - ', user_update)
+//         let normalizeUser = await normalize_user(user_update)
+//         await dispatch(update_normalized_state(normalizeUser))
+//         // console.log('=========> normalizeUser - - - ', normalizeUser)
+//
+//   }
+// }
 
 
 export const edit_array_element = (search_by, replace_prop, array_list, new_position, edit_list) =>{
@@ -1015,25 +1043,24 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
 
 
 
-export const add_order_to = (prop, list, user, new_order) =>{
-  return async(dispatch) => {
+export const add_item_state = (list_type, new_order) =>{
+  return async(dispatch, getState) => {
 
-    let new_list = await desNormalizedList(list, user[prop])
-    // let new_list = `new_${prop}`
-    new_list = [
-      new_order,
-      ...new_list
-    ]
+    const { user_id } = getState().model_data
+    let list = getState().model_data[list_type]
+    let user = getState().model_data.user[user_id]
 
     let user_update = {
       ...user,
-      [prop]:[
-        ...new_list
-      ]
+      [list_type]:{
+        new_order,
+        ...list
+      }
     }
 
+
     let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(update_normalized_state(normalizeUser))
     return normalizeUser
 
     // dispatch(UpdatePendingSwap(swaps_update))
@@ -1123,7 +1150,7 @@ export const add_done_swap = (swaps, user, done_swap, update_list) =>{
     // console.log('||||| SWAPS', user_update)
 
     let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(update_normalized_state(normalizeUser))
     return normalizeUser
     // dispatch(UpdatePendingSwap(swaps_update))
     // console.log('||||| NEW_SWAP_LIST', swaps_update)
@@ -1149,6 +1176,7 @@ export const add_done_swap = (swaps, user, done_swap, update_list) =>{
 
 // OBTENER LISTA DE SWAPS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 export const get_swap_list = () =>{
+
   return async(dispatch, getState) => {
 
     const { model_data } =  getState()
@@ -1211,7 +1239,7 @@ export const get_swap_list = () =>{
     }
 
     let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(update_normalized_state(normalizeUser))
     return normalizeUser
 
   }
@@ -1316,13 +1344,14 @@ export const get_withdraw_accounts = (user, withdraw_providers) =>{
           id_number:wa.info.id_number,
           name:wa.info.name,
           surname:wa.info.surname,
-          inscribed:wa.inscribed,
+          inscribed:wa.used_counter > 0 ? true : false,
           visible:wa.visible,
           provider_type:wa.provider_type,
           provider_max_amount:providers_served[wa.provider_type].provider.max_amount,
           provider_min_amount:providers_served[wa.provider_type].provider.min_amount,
           currency_type:providers_served[wa.provider_type] && providers_served[wa.provider_type].currency_type,
-          withdraw_provider:providers_served[wa.provider_type].id
+          withdraw_provider:providers_served[wa.provider_type].id,
+          ...wa
         }
       }
       else{
@@ -1337,17 +1366,21 @@ export const get_withdraw_accounts = (user, withdraw_providers) =>{
             value:wa.info.address
           },
           used_counter:wa.used_counter,
-          inscribed:wa.inscribed,
+          inscribed:wa.used_counter > 0 ? true : false,
           visible:wa.visible,
           provider_type:wa.provider_type,
           provider_max_amount:providers_served[wa.provider_type].provider.max_amount,
           provider_min_amount:providers_served[wa.provider_type].provider.min_amount,
           currency_type:providers_served[wa.provider_type] && providers_served[wa.provider_type].currency_type,
-          withdraw_provider:providers_served[wa.provider_type].id
+          withdraw_provider:providers_served[wa.provider_type].id,
+          ...wa
         }
       }
 
     })
+
+    // console.log('|||||||||||||||||||||||||| ============================>>> new_withdraw_accounts  ===> ', new_withdraw_accounts)
+
     // return console.log('|111|||||||||||||||  new_withdraw_accounts', new_withdraw_accounts, providers_served)
 
     let original_list = new_withdraw_accounts
@@ -1361,7 +1394,7 @@ export const get_withdraw_accounts = (user, withdraw_providers) =>{
         }
 
         let normalizeUser = await normalize_user(user_update)
-        await dispatch(Update_normalized_state(normalizeUser))
+        await dispatch(update_normalized_state(normalizeUser))
 
         return original_list
   }
@@ -1409,7 +1442,7 @@ export const get_withdraw_accounts = (user, withdraw_providers) =>{
        ]
      }
      let normalizeUser = await normalize_user(user_update)
-     await dispatch(Update_normalized_state(normalizeUser))
+     await dispatch(update_normalized_state(normalizeUser))
      return withdraw_providers
 
    }
@@ -1470,7 +1503,7 @@ export const add_update_withdraw = (withdraw_id, state) =>{
       }
     }
 
-    console.log('||||| add_update_withdraw BODY BEFORE', body)
+    // console.log('||||| add_update_withdraw BODY BEFORE', body)
 
     const new_update_withdraw_url = `${WithdrawApiUrl}withdraws/add-update-withdraw`
     const new_withdraw_update = await ApiPostRequest(new_update_withdraw_url, body, user[user_id].TokenUser)
@@ -1482,6 +1515,30 @@ export const add_update_withdraw = (withdraw_id, state) =>{
   }
 }
 
+
+export const add_restoreid = (restore_id) => {
+
+  return async(dispatch, getState) => {
+
+    const body = {
+      "data": {
+      	restore_id
+      }
+    }
+
+    const { user, user_id } = getState().model_data
+
+    const url_add_restoreid = `${ApiUrl}profiles/add-restoreid`
+    const res = await ApiPostRequest(url_add_restoreid, body, user[user_id].TokenUser)
+
+    if(res === 465 || !res){return false}
+
+    return res
+
+
+  }
+
+}
 
 
 
@@ -1572,7 +1629,7 @@ export const get_withdraw_list = (user) =>{
 
 
     let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(update_normalized_state(normalizeUser))
 
 
     return normalizeUser
@@ -1761,7 +1818,8 @@ export const get_all_currencies = () => {
 
 
      for (let i = 0; i < currencies.length; i++) {
-      // if(currencies[i].currency !== "bitcoin_testnet"){
+       // if(currencies[i].currency !== "bitcoin_testnet"){
+      // if(currencies[i].currency !== "bitcoin"){
           let spllit = currencies[i].node_url && currencies[i].node_url.split("api")
           let new_item = {
                         "currency_type":currencies[i].currency_type,
@@ -1793,46 +1851,58 @@ export const get_all_currencies = () => {
 // IDENTITY ENDPOINTS ---------------------------------------------------------------------------------------
 
 
-export const get_user = (token, user_country) =>{
+export const get_user = (token, user_country, userId, email, restore_id) =>{
   return async(dispatch) => {
 
     await dispatch(load_label('Cargando tu información'))
 
-    let body = {
-      "access_token":token,
-      "data": {
-        "country":user_country
-      }
-    }
+    // let body = {
+    //   "access_token":token,
+    //   "data": {
+    //     "country":user_country
+    //   }
+    // }
+
 
     // 1. inicializamos el estado con el token y el country del usuario
-    const init_state_url = `${IdentityApIUrl}countryvalidators/get-existant-country-validator`
-    const init_state = await ApiPostRequest(init_state_url, body)
-    // return console.log('||||||  - - -.  --  COUNTRY - V A L I D A T O R S', init_state)
-    console.log('===================================>>>>   init_state', init_state)
+    const init_state_url = `${IdentityApIUrl}countryvalidators/findOne?country=${user_country}`
+    let myHeaders = await dispatch(generate_headers(token))
+    let init_state = await ApiGetRequest(init_state_url, myHeaders)
+    // console.log('===================================>>>>   init_state', init_state, userId)
 
 
-    if(init_state && !init_state.data){return false}
+    if(!init_state){return false}
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
-    const get_status_url = `${IdentityApIUrl}status/get-status`
-    body = {
-      "data": {}
-    }
-    const status = await ApiPostRequest(get_status_url, body, token)
-    // console.log('||||||  - - -.  --  status', status)
-    if(!status || status === 465){return false}
-    const { data } = status
-    let country_object = await add_index_to_root_object(data.countries)
+    // const get_status_url = `${IdentityApIUrl}status/get-status`
+    // body = {
+    //   "data": {}
+    // }
+    // const status = await ApiPostRequest(get_status_url, body, token)
+    // if(!status || status === 465){return false}
+
+
+    const get_status_url = `${IdentityApIUrl}users/${userId}/status`
+    let status = await ApiGetRequest(get_status_url, myHeaders)
+
+
+    // const { data } = status
+
+    let country_object = await add_index_to_root_object(status.countries)
     let country = await objectToArray(country_object)
+
     let user_update = {
       ...user_source,
-      id:data.userId,
+      email,
+      restore_id,
+      id:status.userId,
       country:country[0].value,
       verification_level:country[0].verification_level,
+      verification_error:country[0].errors && country[0].errors[0],
       levels:country[0].levels
     }
 
+    // return console.log('||||||  - - -.  --  status  =====> ', user_update)
     // let profile = await dispatch(get_profile(user_update.id, token))
 
     // if((profile.countries[country[0].value] !== 'level_0') && (user_update.verification_level !== 'level_0')){
@@ -1890,20 +1960,25 @@ export const get_user = (token, user_country) =>{
 
 
     //3. Obtenemos el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
-    const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
-    const profile_data = await ApiPostRequest(get_profile_url, body, token)
-    if(profile_data && profile_data.data){
+    // const get_profile_url = `${IdentityApIUrl}profiles/get-profile`
+    // const profile_data = await ApiPostRequest(get_profile_url, body, token)
+
+    const get_profile_url = `${IdentityApIUrl}users/${userId}/profiles`
+    let profile_data = await ApiGetRequest(get_profile_url, myHeaders)
+
+    if(profile_data && profile_data.length > 0){
       // Agregamos la información al modelo usuario (user_update)
       user_update = {
         ...user_update,
-        ...profile_data.data.personal,
-        person_type:profile_data.data.person_type
+        ...profile_data[0].personal,
+        person_type:profile_data[0].person_type
       }
     }
+     // console.log('||||||  - - -.  --  USER UPDATE', user_update)
     // return console.log('||||||  - - -.  --  USER UPDATE', profile_data)
 
     let normalizeUser = await normalize_user(user_update)
-    await dispatch(Update_normalized_state(normalizeUser))
+    await dispatch(update_normalized_state(normalizeUser))
     // console.log('||||||  - - -.  --  normalizeUser', normalizeUser)
     return normalizeUser
   }
@@ -1917,7 +1992,7 @@ export const get_user = (token, user_country) =>{
 export const update_user = new_user =>{
   return async(dispatch) => {
     let normalizeUser = await normalize_user(new_user)
-    dispatch(Update_normalized_state(normalizeUser))
+    dispatch(update_normalized_state(normalizeUser))
   }
 }
 
@@ -1999,9 +2074,9 @@ export const update_level_profile = (config, user) =>{
 // ./components/kyc/kyc_container.js
 
   return async(dispatch) => {
+    // "access_token":user.TokenUser,
 
     let body ={
-      "access_token":user.TokenUser,
       "data": {
         "country":user.country,
         "person_type":user.person_type,
@@ -2011,10 +2086,10 @@ export const update_level_profile = (config, user) =>{
       }
     }
 
-    // return console.log('|||||||| update_level_profile_____________body', body)
 
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
-    const add_new_profile = await ApiPostRequest(add_new_profile_url, body)
+    const add_new_profile = await ApiPostRequest(add_new_profile_url, body, user.TokenUser)
+    console.log('|||||||| update_level_profile_____________', body, add_new_profile)
     if(!add_new_profile || add_new_profile === 465){return false}
     return add_new_profile
 
@@ -2248,32 +2323,29 @@ export const get_ref_code = () =>{
 
 
 
-export const update_activity_account = (account_id, activity_type, activity_list) =>{
-
-  return async(dispatch, getState) => {
-
-    let current_wallet = getState().model_data.wallets[account_id]
-
-    if(!current_wallet){
-      current_wallet = getState().ui.current_section.params.current_wallet
-    }
-
-    if(!current_wallet){return false}
-
-    if(!activity_list){
-      activity_list = await serve_orders(current_wallet.id, activity_type)
-    }
-    await dispatch(current_section_params({currentFilter:activity_type}))
-    await dispatch(update_activity(current_wallet.id, activity_type, activity_list))
-      // console.log('update_activity_account- -- -  ', pending_activity)
-      // return pending_activity()
-      // let account = getState().model_data.wallets[account_id]
-
-      // const { user, user_id } = getState().model_data
-      // console.log('update_pending_activity', getState(), account)
-  }
-
-}
+// export const update_activity_account = (account_id, activity_type, activity_list) =>{
+//
+//   return async(dispatch, getState) => {
+//
+//     return dispatch(update_activity_state(account_id, activity_type, activity_list))
+//
+//     // let current_wallet = getState().model_data.wallets[account_id]
+//     //
+//     // // if(!current_wallet){
+//     // //   current_wallet = getState().ui.current_section.params.current_wallet
+//     // // }
+//     //
+//     // if(!current_wallet){return false}
+//     //
+//     // if(!activity_list){
+//     //   activity_list = await serve_orders(current_wallet.id, activity_type)
+//     // }
+//     // await dispatch(current_section_params({currentFilter:activity_type}))
+//     // await dispatch(update_activity(current_wallet.id, activity_type, activity_list))
+//
+//   }
+//
+// }
 
 
 
@@ -2281,7 +2353,10 @@ export const update_pending_activity = (account_id, activity_type, activity_list
 
   return async(dispatch, getState) => {
 
+
       let current_wallet = getState().model_data.wallets[account_id]
+
+      // return console.log('||||||||||||||| update_pending_activity =====> ', current_wallet)
 
       if(!current_wallet){
         current_wallet = getState().ui.current_section.params.current_wallet
@@ -2299,9 +2374,9 @@ export const update_pending_activity = (account_id, activity_type, activity_list
 
       if(!activity_list){return false}
       // console.log('-----|||||||| °°°°  current_wallet', current_wallet)
-      // console.log('-----|||||||| °°°°  update_pending_activity', activity_type, current_wallet)
+      // console.log('-----|||||||| °°°°  update_pending_activity', activity_type)
 
-      let pending = (activity_type === 'withdrawals') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
+      let pending = (activity_type === 'withdraws') ? 0 : await matchItem(activity_list, {primary:'pending'}, 'state', true)
       let confirmed = await matchItem(activity_list, {primary:'confirmed'}, 'state', true)
       let rejected = await matchItem(activity_list, {primary:'rejected'}, 'state', true)
 
@@ -2336,9 +2411,9 @@ export const swap_activity_update = (swap, filter) =>{
       const { user, user_id, swaps } = getState().model_data
       await dispatch(add_done_swap(swaps, user[user_id], swap))
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
-      await dispatch(update_activity_account(swap.account_from, filter, null))
+      await dispatch(update_activity_state(swap.account_from, filter))
       await dispatch(current_section_params({swap_done_out:false, swap_done_in:true}))
-      setTimeout(()=>{dispatch(update_pending_activity())}, 1500)
+      setTimeout(()=>{dispatch(update_pending_activity())}, 2500)
       setTimeout(()=>{
         dispatch(add_coin_sound())
         dispatch(mensaje('Nuevo intercambio realizado', 'success'))

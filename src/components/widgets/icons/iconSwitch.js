@@ -37,9 +37,9 @@ import {
   Errors,
   Financial,
   Touch,
-  Upload,
+  Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol
  } from './'
 
  import {
@@ -100,6 +100,8 @@ class IconSwitch extends Component {
     switch (icon) {
       case 'ethereum':
         return <Ethereum {...props} />
+      case 'ethereum_account':
+        return <EtherAccount {...props} />
       case 'argentina':
         return <Argentina {...props} />
       case 'chile':
@@ -175,6 +177,7 @@ class IconSwitch extends Component {
       case 'transaction':
         return <Swap {...props} />
       case 'withdraw':
+      case 'withdraw_accounts':
         return <Send {...props} />
       case 'languaje':
         return <World {...props} />
@@ -195,6 +198,7 @@ class IconSwitch extends Component {
       case 'peru':
         return <Peru {...props} />
       case 'deposit':
+      case 'deposits':
         return <Deposit {...props} />
       case 'deposit_crypto':
         return <DepositCrypto {...props} />
@@ -256,6 +260,8 @@ class IconSwitch extends Component {
         return <Nequi {...props} />
       case 'banco_av_villas':
         return <AvVillas {...props} />
+      case 'bank':
+        return <DollarSymbol {...props} />
       case 'banco_citibank':
         return <CitiBank {...props} />
       case 'banco_compartir':

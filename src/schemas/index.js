@@ -13,7 +13,7 @@ export const normalize_user = async(user) => {
 
   const balance = new schema.Entity('balances',{})
   const deposit = new schema.Entity('deposits',{})
-  const withdraw = new schema.Entity('withdrawals',{})
+  const withdraw = new schema.Entity('withdraws',{})
   const withdraw_account = new schema.Entity('withdraw_accounts',{})
   const withdraw_provider = new schema.Entity('withdraw_providers',{})
   const pair = new schema.Entity('all_pairs',{})
@@ -32,7 +32,7 @@ export const normalize_user = async(user) => {
     withdraw_accounts:[withdraw_account],
     withdraw_providers:[withdraw_provider],
     available_pairs:[pair],
-    withdrawals:[withdraw],
+    withdraws:[withdraw],
     balances:[balance]
   })
 

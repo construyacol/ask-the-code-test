@@ -23,6 +23,7 @@ const storage = (state = initialState, action) => {
       }
 
       case UPDATE_PENDING_ACTIVITY:
+      // console.log('||||||||||||||||||||| UPDATE_ACTIVITY ==>', action)
         let activity_label = `pending_${action.payload.activity_type}`
         let new_payload = {
           expandidoMax:action.payload.expandidoMax,

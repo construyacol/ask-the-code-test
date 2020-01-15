@@ -1,68 +1,118 @@
-import React, { Fragment, Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
-import ActivityList from '../../widgets/activityList'
+import ActivityList from '../../widgets/activityList/activity'
 import { scroller } from 'react-scroll'
+import ActivityFilters from '../../widgets/activityList/filters'
+import './wallet_views.css'
 
 
-class ActivityView extends Component{
+const ActivityView = props => {
 
-  state = {
-    activity:[]
+  const { params } = props.match
+
+  const redirect = (activity_list) =>{
+    // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, activity_list && !activity_list.length)
+    if((activity_list && activity_list.length)){return false}
+      props.action.mensaje('Esta cuenta aún no tiene actividad')
+      props.history.push(`/${params.primary_path}/deposit/${params.account_id}`)
+  }
+
+  const redirect_activity = async(path) => {
+    // alert('redirect_activity')
+    props.action.current_section_params({currentFilter:path})
+    return props.history.push(`/${params.primary_path}/activity/${params.account_id}/${path}`)
   }
 
 
-  componentDidMount(){
-    this.props.initial(this.props.match.params.path, this.props.match.params.id)
+  const get_activity = async(method) => {
+    // const method = `get_${path}`
+    let activity = []
+    const { activity_for_account } = props
+    const { account_id } = params
+
+
+
+    if(method !== 'get_deposits'){
+      if(activity_for_account[account_id] && (activity_for_account[account_id].deposits && activity_for_account[account_id].deposits.length)){return redirect_activity('deposits')}
+      if(!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].deposits)){
+        // alert('get_deposits')
+        activity = await props.action.get_deposits(account_id)
+        if(activity.length){return props.history.push(`/${params.primary_path}/activity/${params.account_id}/deposits`)}
+      }
+    }
+
+    if(method !== 'get_withdraws'){
+        if(activity_for_account[account_id] && (activity_for_account[account_id].withdraws && activity_for_account[account_id].withdraws.length)){return redirect_activity('withdraws')}
+          if(!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].withdraws)){
+          // alert('get_withdraws')
+          activity = await props.action.get_withdraws(params.account_id)
+          if(activity.length){return props.history.push(`/${params.primary_path}/activity/${params.account_id}/withdraws`)}
+        }
+    }
+
+    if(method !== 'get_swaps'){
+          if(activity_for_account[account_id] && (activity_for_account[account_id].swaps && activity_for_account[account_id].swaps.length)){return redirect_activity('swaps')}
+            if(!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].swaps)){
+            // alert('get_swaps')
+            activity = await props.action.get_swaps(params.account_id)
+            if(activity.length){return props.history.push(`/${params.primary_path}/activity/${params.account_id}/swaps`)}
+          }
+    }
+
+    return redirect(activity)
+  }
+
+  useEffect(()=>{
+    if(!props.order_list || !props.order_list.length){
+      const init_activity = async() =>{
+        let method = `get_${params.tx_path}`
+        // const { activity_for_account } = props
+        // console.log('||||||||||| get_METHOD =====> ||||  ', activity_for_account[params.account_id], (activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path]) && !activity_for_account[params.account_id][params.tx_path].length)
+        // if((activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path]) && !activity_for_account[params.account_id][params.tx_path].length){return redirect(props[params.tx_path])}
+        let activity_list = await props.action[method](params.account_id)
+        // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, method)
+        if(!activity_list.length){
+          get_activity(method)
+        }
+      }
+      init_activity()
+    }
+  }, [params.tx_path])
+
+  useEffect(()=>{
     scroller.scrollTo('firstInsideContainer', {
       duration: 0,
       smooth: true,
       offset: -55,
       containerId: 'containerElement'
     })
-  }
-
-  componentWillReceiveProps(props){
-    // const {
-    //   swaps
-    // } = props
-    //
-    // const {
-    //   current_swaps
-    // } = this.state
-    //
-
-  }
-
-render(){
-
-  const {
-    current_wallet,
-    wallets,
-    all_pairs
-  } = this.props
-
-  // console.log('_______________________________________________ACTIVITY LIST', current_wallet, wallets, all_pairs)
+  }, [])
 
   return(
-    <Fragment>
+    <div className="ActivityView">
+      <ActivityFilters/>
     {
-      // (!current_wallet || !wallets || !deposits && !swaps || !all_pairs) ?
-      (!current_wallet || !wallets || !all_pairs) ?
-      <SimpleLoader
-        label="Cargando Actividad..."
-      />
+      !props.order_list ?
+      <div className="contLoaderAct" >
+        <SimpleLoader
+          label="Cargando Actividad..."
+        />
+      </div>
       :
           <ActivityList
-            {...this.props}
+            activity={props.order_list}
+            {...props}
           />
     }
-    </Fragment>
+    </div>
   )
+
 }
-}
+
+
 
 function mapDispatchToProps(dispatch){
   return{
@@ -74,22 +124,71 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { current_wallet } = state.ui.current_section.params
-  const { user, user_id, wallets, withdrawals, deposits, swaps, activity, all_pairs } = state.model_data
+  // const { current_wallet } = state.ui.current_section.params
+  const { swaps, withdraws, deposits } = state.model_data
+
+  const { activity_for_account } = state.storage
+  const { params } = props.match
 
   return{
-    current_wallet:state.ui.current_section.params.current_wallet,
-    local_currency:state.model_data.pairs.localCurrency,
-    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
-    user:user[user_id],
-    wallets,
-    withdrawals,
-    deposits,
+    order_list:activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path],
+    activity_for_account,
     swaps,
-    activity,
-    all_pairs:all_pairs
+    withdraws,
+    deposits
+    // activity_for_account:activity_for_account[params.account_id]
+
+    // current_wallet:state.ui.current_section.params.current_wallet,
+    // local_currency:state.model_data.pairs.localCurrency,
+    // current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
+    // user:user[user_id],
+    // all_pairs:all_pairs
   }
 }
 
 
 export default connect(mapStateToProps, mapDispatchToProps) (ActivityView)
+
+
+
+// class ActivityView extends Component{
+//
+//
+//   componentDidMount(){
+//     // this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
+//     scroller.scrollTo('firstInsideContainer', {
+//       duration: 0,
+//       smooth: true,
+//       offset: -55,
+//       containerId: 'containerElement'
+//     })
+//   }
+//
+//
+// render(){
+//
+//   const {
+//     current_wallet,
+//     wallets,
+//     all_pairs
+//   } = this.props
+//
+//   // console.log('||||||_______________________________________________ACTIVITY LIST', current_wallet, wallets, all_pairs)
+//   console.log('||||||_______________________________________________ACTIVITY LIST', this.props)
+//
+//   return(
+//     <Fragment>
+//     {
+//       (!current_wallet || !wallets || !all_pairs) ?
+//       <SimpleLoader
+//         label="Cargando Actividad..."
+//       />
+//       :
+//           <ActivityList
+//             {...this.props}
+//           />
+//     }
+//     </Fragment>
+//   )
+// }
+// }

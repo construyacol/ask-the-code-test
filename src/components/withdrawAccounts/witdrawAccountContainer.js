@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
 import { Router, Switch, Route } from 'react-router-dom'
-import ActivityView from '../wallets/views/activity'
-import WithdrawAccountList from '../widgets/accountList/item_account_list'
+// import ActivityView from '../wallets/views/activity'
+import AccountList from '../widgets/accountList/item_account_list'
 import ItemWallet from '../widgets/accountList/items'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
-import { matchItem } from '../../services'
+// import { matchItem } from '../../services'
 
 class witdrawAccountContainer extends Component{
 
@@ -22,7 +22,8 @@ class witdrawAccountContainer extends Component{
 
 
   componentDidMount(){
-     this.props.action.MenuItemActive('withdraw')
+     // let path = this.props.match.path.replace('/', '')
+     this.props.action.CurrentForm('bank')
   }
 
   componentWillUnmount(){
@@ -30,60 +31,54 @@ class witdrawAccountContainer extends Component{
 	}
 
 
-  AccounList = () => {
-    return(
-      <WithdrawAccountList lista="withdraw_accounts" {...this.props} />
-    )
-  }
 
+  // init_sub_section = async(second_path, wallet_id) =>{
+  //   this.props.action.section_view_to('detail')
+  //   this.props.action.current_section_params({current_sub_section: second_path})
+  //
+  //
+  //   let current_wallet = this.props.current_wallet
+  //   // console.log('1!!!!!!!! CONSULTANDO::::::', current_wallet)
+  //   if(!current_wallet){
+  //     let wallet = await this.props.action.get_wallet_by_id(wallet_id)
+  //     if (wallet){
+  //       if(!this.props.currencies){await this.props.action.get_all_currencies()}
+  //       await this.get_short_currency(wallet)
+  //       // console.log('1!!!!!!!! CONSULTANDO DESDE SERVER....::::::', wallet)
+  //       return this.props.action.current_section_params({
+  //         current_wallet:wallet
+  //       })
+  //     }
+  //   }
+  //   await this.get_short_currency(current_wallet)
+  //   return current_wallet
+  // }
 
-  init_sub_section = async(second_path, wallet_id) =>{
-    this.props.action.section_view_to('detail')
-    this.props.action.current_section_params({current_sub_section: second_path})
+  // get_short_currency = async(wallet) =>{
+  //   if(this.props.currencies && wallet){
+  //
+  //     let currencies = this.props.currencies
+  //     let currency_source = wallet.currency.currency
+  //
+  //     let currency = await matchItem(currencies, {primary:currency_source}, 'view')
+  //     return this.props.action.current_section_params({
+  //       short_name:currency.code
+  //     })
+  //   }
+  // }
 
-
-    let current_wallet = this.props.current_wallet
-    // console.log('1!!!!!!!! CONSULTANDO::::::', current_wallet)
-    if(!current_wallet){
-      let wallet = await this.props.action.get_wallet_by_id(wallet_id)
-      if (wallet){
-        if(!this.props.currencies){await this.props.action.get_all_currencies()}
-        await this.get_short_currency(wallet)
-        // console.log('1!!!!!!!! CONSULTANDO DESDE SERVER....::::::', wallet)
-        return this.props.action.current_section_params({
-          current_wallet:wallet
-        })
-      }
-    }
-    await this.get_short_currency(current_wallet)
-    return current_wallet
-  }
-
-  get_short_currency = async(wallet) =>{
-    if(this.props.currencies && wallet){
-
-      let currencies = this.props.currencies
-      let currency_source = wallet.currency.currency
-
-      let currency = await matchItem(currencies, {primary:currency_source}, 'view')
-      return this.props.action.current_section_params({
-        short_name:currency.code
-      })
-    }
-  }
-
-  render_view = props =>{
-    const { match } = props
-    const { params } = match
-    return(
-      <Fragment>
-        {
-          params.path === 'activity' &&
-          <ActivityView initial={this.init_sub_section} {...props}/>
-        }
-      </Fragment>
-    )
-  }
+  // render_view = props =>{
+  //   const { match } = props
+  //   const { params } = match
+  //   return(
+  //     <Fragment>
+  //       {
+  //         params.path === 'activity' &&
+  //         <ActivityView initial={this.init_sub_section} {...props}/>
+  //       }
+  //     </Fragment>
+  //   )
+  // }
 
   wallet_detail = props => {
     // console.log('this is america___', props)
@@ -133,7 +128,7 @@ class witdrawAccountContainer extends Component{
                             <SimpleLoader/>
                           :
                           (app_loaded && withdraw_accounts) &&
-                          <Route exact path="/withdraw" render={this.AccounList}  />
+                          <Route exact path="/:primary_path" component={AccountList}  />
                         }
                     </DetailContainerLayout>
                   </Switch>

@@ -43,6 +43,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
+    "styled-components": "^4.4.1",
     "wallet-address-validator": "^0.2.4"
   },
   "scripts": {

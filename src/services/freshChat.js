@@ -1,63 +1,72 @@
-
-import localForage from 'localforage'
-import { get_verification_state } from '../actions/APIactions'
+// import localForage from 'localforage'
+import { get_verification_state, add_restoreid } from '../actions/APIactions'
 import store from '../'
 
 
-const init_user = async(user, restoreId, externalId) => {
+export const freshchat_init_user = (user, externalId = null) => {
 
-    let external_id = externalId
+    // console.log('RESTORE ID: ', restoreId)
+    // alert('RESTORE')
+return async(dispatch) => {
 
-    if(!external_id){
-      external_id = user === 'anonymous' ? Date.now() : user.id
-    }
+  let external_id = externalId
 
-    localForage.setItem('externalId', external_id)
-    localForage.setItem('restoreId', restoreId)
+  if(!external_id){
+    external_id = user === 'anonymous' ? Date.now() : user.id
+  }
 
-    await window.fcWidget.init({
-      token: "86e166f6-5421-4aaf-bdf6-746ac7a54525",
-      host: "https://wchat.freshchat.com",
-      locale: "es-LA",
-      externalId: external_id,
-      // externalId: '12332223221',
-      restoreId: restoreId ? restoreId : null,
-    });
+  // await dispatch(add_restoreid('epa'))
 
+  // localForage.setItem('externalId', external_id)
+  // localForage.setItem('restoreId', restoreId)
 
-
-    window.fcWidget.user.get(function(resp) {
-      var status = resp && resp.status,
-          data = resp && resp.data;
-          console.log('___________Usuario consultado:', external_id, restoreId, resp)
+  await window.fcWidget.init({
+    token: "86e166f6-5421-4aaf-bdf6-746ac7a54525",
+    host: "https://wchat.freshchat.com",
+    locale: "es-LA",
+    externalId: external_id,
+    restoreId: (user && user.restore_id) || null,
+    // externalId: null,
+    // restoreId:null,
+  });
 
 
-      if (status !== 200) {
-        // Si el usuario no existe y recibimos los datos del mismo desde el dashboard, enviamos esta información a freshChat
-        // console.log('______________________________________ Generate status', status)
 
-        if(user && user !== 'anonymous'){
-          window.fcWidget.user.setProperties({
-            email: "construyacol@gmail.com"
-          });
-        }
+  window.fcWidget.user.get(function(resp) {
+    var status = resp && resp.status
+    // data = resp && resp.data;
+    // console.log('___________Usuario consultado:', resp)
 
-        // Creamos el usuario y guardamos el storeId en el profile del tx
-        window.fcWidget.on('user:created', function(resp) {
-          // El usuario se crea cuando inicia el chat
-          var status = resp && resp.status,
-              data = resp && resp.data;
-          if (status === 200) {
-            if (data.restoreId) {
-              console.log('______________________________________ Generate restoreId', data.restoreId)
-              localForage.setItem('restoreId', data.restoreId)
-              // Update restoreId in your database
-            }
-          }
+
+    if (status !== 200) {
+      // Si el usuario no existe y recibimos los datos del mismo desde el dashboard, enviamos esta información a freshChat
+      // console.log('______________________________________ Generate status', status)
+
+      if((user && user !== 'anonymous') && (user && user.email)){
+        window.fcWidget.user.setProperties({
+          email: user.email
         });
       }
-    });
+
+      // Creamos el usuario y guardamos el storeId en el profile del tx
+      window.fcWidget.on('user:created', function(resp) {
+        // El usuario se crea cuando inicia el chat
+        var status = resp && resp.status,
+        data = resp && resp.data;
+        if (status === 200) {
+          if (data.restoreId) {
+            // console.log('______________________________________ Generate restoreId', data.restoreId)
+            dispatch(add_restoreid(data.restoreId))
+            // add_restoreid(data.restoreId)
+          }
+        }
+      });
+    }
+  });
+
+  }
 }
+
 
 
 
@@ -69,7 +78,7 @@ const user_update = async(user) => {
       window.fcWidget.user.update({
         firstName:user.name,
         lastName:user.surname,
-        email: "astecomp@hotmail.com",
+        email:user.email,
         phone:user.phone,
         meta:{
           twofactor:user.security_center.authenticator.auth,
@@ -159,7 +168,6 @@ const isLoaded = () => {
 
 
 export default {
-  init_user,
   isLoaded,
   track,
   show_channels,

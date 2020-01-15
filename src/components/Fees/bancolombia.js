@@ -5,7 +5,7 @@ import Table from 'react-bootstrap/lib/Table'
 export default props => {
   return (
     <React.Fragment>
-      <a name="bancolombia"> &nbsp; </a>
+      <p name="bancolombia" > &nbsp; </p>
       <Col md={12}>
         <h3>Tarifas de uso / Límites de depósitos y retiros</h3>
       </Col>

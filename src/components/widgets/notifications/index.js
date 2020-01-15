@@ -15,14 +15,15 @@ class PopNotification extends Component {
       notification,
       extra,
       id,
-      item_type
+      item_type,
+      notifier
     } = this.props
 
     switch (type) {
       case "new":
         return(
 
-          <div className={`PopNotification newPop ${(extra && item_type && extra[item_type] === id ) ? 'Visible' : 'Invi'}`}>
+          <div className={`PopNotification newPop ${notifier} ${((extra && item_type) && extra[item_type] === id ) ? 'Visible' : 'Invi'}`}>
           {/* <div className={`PopNotification newPop ${(extra && (extra.account_id === id || extra.order_id === id)) ? 'Visible' : 'Invi'}`}> */}
             <p className="fuente2" >Nuevo</p>
           </div>

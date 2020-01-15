@@ -13,15 +13,15 @@ import actions from '../../../../actions'
 import { serveBankOrCityList, add_index_to_root_object, objectToArray } from '../../../../services'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
 
-const dropDawnElements = [
-  {name:'ahorro'},
-  {name:'corriente'},
-]
-
-const dropDawnElements2 = [
-  {name:'ahorro', id:1},
-  {name:'corriente', id:2},
-]
+// const dropDawnElements = [
+//   {name:'ahorro'},
+//   {name:'corriente'},
+// ]
+//
+// const dropDawnElements2 = [
+//   {name:'ahorro', id:1},
+//   {name:'corriente', id:2},
+// ]
 
 
 
@@ -151,7 +151,7 @@ componentDidUpdate(prevProps){
                 <img src={bank} alt="" height="70"/>
                 <p>Genial <strong>{name}</strong></p>
               </div>
-              <p className="nBtextInit"> Al añadir una cuenta bancaria para realizar tus retiros de pesos colombianos <strong>(COP)</strong>  por primera vez, tarda en promedio <strong>2 horas habiles</strong> a partir de su inscripción, para que esta sea aprobada por la entidad bancaria, una vez tu cuenta haya sido aprobada, tus retiros serán casi inmediatos</p>
+              <p className="nBtextInit fuente"> Al añadir una cuenta bancaria para realizar tus retiros de pesos colombianos <strong>(COP)</strong>  por primera vez, tarda en promedio <strong>2 horas habiles</strong> a partir de su inscripción, para que esta sea aprobada por la entidad bancaria, una vez tu cuenta haya sido aprobada, tus retiros serán casi inmediatos</p>
 
               <div id="bankChooseButton">
                 <ButtonForms type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
@@ -165,6 +165,7 @@ componentDidUpdate(prevProps){
             <div className="step1">
               <form
                   onSubmit={handleSubmit}
+                  className="NWithdrawAccountFlow"
                 >
 
                 <div className="titleAccountFlow">
@@ -197,7 +198,7 @@ componentDidUpdate(prevProps){
           {
             (step === 4 || step === 5 || step === 6) &&
             <div className="step2">
-              <div className="contMsg" style={{
+              <div id="contMsg" className="contMsg" style={{
                   gridTemplateRows:step === 4 ? 'auto 1fr 15vh' :
                   step >= 5 ? 'auto 1fr' : ''
               }}>
@@ -214,7 +215,7 @@ componentDidUpdate(prevProps){
                       onSubmit={handleSubmit}
                       >
                         <div className="contInfoIdType">
-                          <p className="nBtextInit">Es de vital importancia que esta cuenta <strong>{bank_name}</strong> sea de tu propiedad <strong>{name}</strong>, de lo contrario se invalidarán las transacciones y es posible que tus fondos queden congelados hasta nuevo aviso.</p>
+                          <p className="nBtextInit fuente">Es de vital importancia que esta cuenta <strong>{bank_name}</strong> sea de tu propiedad <strong>{name}</strong>, de lo contrario se invalidarán las transacciones y es posible que tus fondos queden congelados hasta nuevo aviso.</p>
                           <div className="contForminputsAccount">
 
                             <DropDownContainer
@@ -223,7 +224,7 @@ componentDidUpdate(prevProps){
                               elements={this.state.id_types}
                               label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
                               actualizarEstado={actualizarEstado}
-                              active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
+                              active={(this.props.id_type && this.props.user.id_type === this.props.id_type) || (id_type && id_number)}
                             />
 
                             {
@@ -248,7 +249,7 @@ componentDidUpdate(prevProps){
 
                       <div id="bankChooseButton" className="contbuttonAccount">
                         <InputButton label="Continuar" type="primary"
-                          active={this.props.id_type && (this.props.user.id_type === this.props.id_type) || id_type && id_number}
+                          active={(this.props.id_type && this.props.user.id_type === this.props.id_type) || (id_type && id_number)}
                         />
                       </div>
                     </form>
@@ -296,7 +297,7 @@ componentDidUpdate(prevProps){
                 {
                   step === 6 &&
                   <form
-                    className="formAccountFlow"
+                    className="formAccountFlow city"
                     onSubmit={final_step_create_account}
                     >
                       <div className="contListCities">

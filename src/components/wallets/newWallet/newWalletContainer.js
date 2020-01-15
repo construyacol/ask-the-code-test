@@ -79,6 +79,9 @@ class NewWallet extends Component{
          return this.props.action.mensaje(msg, 'error')
        }
 
+       // return console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
+
+
         const {
           account
         } = wallets
@@ -88,7 +91,8 @@ class NewWallet extends Component{
         let msg = `Nueva wallet ${account.currency.currency} creada!`
         this.props.action.mensaje(msg, 'success')
 
-        await this.props.action.get_list_user_wallets(this.props.user)
+        await this.props.action.add_item_state('wallets', {...account, visible:true})
+        // await this.props.action.get_list_user_wallets(this.props.user)
         await this.props.action.get_account_balances(this.props.user)
         // return console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
 
@@ -97,7 +101,7 @@ class NewWallet extends Component{
         await this.props.action.ToggleModal()
         await this.props.action.CleanForm('wallet')
 
-        return this.props.history.push(`wallets/deposit/${account.id}`)
+        return this.props.history.push(`/wallets/deposit/${account.id}`)
 
         // this.props.action.ModalView('modalSuccess')
     }
@@ -154,8 +158,8 @@ class NewWallet extends Component{
 
 function mapStateToProps(state, props){
   // console.log('R E N D E R I Z A N D O  - - -- -  NEW WALLET -----::: ', state)
-  const userid = state.model_data.user_id
-  const user = state.model_data.user[userid]
+  const { user_id } = state.model_data
+  const user = state.model_data.user[user_id]
 
   return {
     search:state.form.search_coin,
@@ -164,7 +168,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     step:state.form.form_wallet.step,
     current:state.form.current,
-    user:user,
+    user,
     state:state.model_data,
     currencies:state.model_data.currencies
 

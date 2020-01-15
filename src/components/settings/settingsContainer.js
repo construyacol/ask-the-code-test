@@ -16,7 +16,6 @@ class SettingsContainer extends Component{
     this.props.action.Loader(true)
 
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
-     this.props.action.MenuItemActive('settings')
 
      setTimeout(async()=>{
        // Manejamos la respuesta en el estado, por si ocurre un error, evitamos
