@@ -15,7 +15,9 @@ export const ObserverHook = () => {
             observer.disconnect()
           }
         })
-        observer.observe(element.current)
+        if(observer){
+          observer.observe(element.current)
+        }
       })
 
   }, [element])

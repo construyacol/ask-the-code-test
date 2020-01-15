@@ -42,7 +42,6 @@
   align-items: center;
   justify-items:center;
   width: calc(100% - 30px) !important;
-  /*height: calc(180px - 30px) !important;*/
   transform-style: preserve-3d;
   perspective: 2000px;
 }
@@ -250,9 +249,7 @@
   visibility: visible !important;
 }
 
-.ItemWallet:hover .ItemBarra{
-  right: 0 !important;
-}
+
 
 .Ideposit:hover{
   color: #00ff00;
@@ -371,10 +368,7 @@
   opacity: 0.7;
 }
 
-.ItemWallet, .ItemWallet2{
-  background: #80808036;
-  position: relative;
-}
+
 .IWBalance{
   font-size: 20px;
 }
@@ -384,10 +378,8 @@
   z-index: 2;
 }
 
-.ItemWallet img, .ItemWallet2 img{
-    position: absolute;
-    align-self: center;
-}
+
+
 
 #imgCurrency{
   right: -70px;
@@ -451,6 +443,24 @@
   background: linear-gradient(to right, #A477D0, #5136AB);
 }
 
+.ItemWallet img, .ItemWallet2 img{
+    position: absolute;
+    align-self: center;
+}
+
+.ItemWallet, .ItemWallet2{
+  background: #80808036;
+  position: relative;
+}
+
+.ItemWallet:hover .ItemBarra{
+  right: 0 !important;
+}
+
+.ItemWallet.litecoin, .ItemWallet2.litecoin{
+  background: linear-gradient(to right, #bfbfbf, #a0a0a0);
+}
+
 
 
 .iconBank2{
@@ -491,9 +501,7 @@ box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
   position: relative !important;
 }
 
-.ItemWallet.litecoin, .ItemWallet2.litecoin{
-  background: linear-gradient(to right, #bfbfbf, #a0a0a0);
-}
+
 
 .ItemTemplate{
   /*width: 370px;*/

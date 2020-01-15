@@ -24,10 +24,16 @@ class LoaderAplication extends Component {
   init_component = async(new_country) =>{
 
     const {
+      user_data
+    } = this.props
+
+    const {
       token,
       userId,
-      logOut
-    } = this.props.user_data
+      logOut,
+      // email
+    } = user_data
+    // console.log('|||||||| user_data ==>', user_data)
 
     const {
       action
@@ -36,12 +42,17 @@ class LoaderAplication extends Component {
 
     const { country } = this.state
     let profile = await action.get_profile(userId, token)
+    console.log('|||||||| profile res ==>', profile)
 
     if(!profile){
       if(!new_country){return this.setState({country:null})}
       profile = await action.add_new_profile(new_country, token)
     }
+
     if(!profile.countries[country] && !profile.countries[new_country]){return false}
+    // console.log('===================================>>>>   profile', profile)
+    // alert()
+
     // const{
     //   country,
     //   token
@@ -111,9 +122,10 @@ class LoaderAplication extends Component {
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
-    let user = await action.get_user(token, user_country)
-    // console.log('===================================>>>>   user', user)
-    alert()
+
+    let user = await action.get_user(token, user_country, profile.userId, user_data.email, profile.restore_id)
+    // console.log('===================================>>>>   tx profile', profile)
+    // alert('user')
     if(!user){return false}
 
 
@@ -137,18 +149,17 @@ class LoaderAplication extends Component {
     let user_collection = [{primary:'ethereum'}]
      action.get_pairs_for(this.props.user.country, user_collection)
 
-
     await action.get_account_balances(this.props.user)
     await action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
-
     // return false
 
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
-    await action.get_deposit_list(this.props.user)
-    await action.get_swap_list()
-    await action.get_withdraw_list(this.props.user)
+
+    // await action.get_deposit_list(this.props.user)
+    // await action.get_swap_list()
+    // await action.get_withdraw_list(this.props.user)
 
     let verification_state = await action.get_verification_state()
 

@@ -1,3 +1,13 @@
+
+.contenido.activity{
+  grid-row-gap: 30px;
+  grid-template-rows: auto 1fr;
+}
+
+.WalletContainer{
+  min-height: 210px;
+}
+
 .flip-2-hor-bottom-fwd{
   -webkit-animation: flip-2-hor-bottom-fwd 0.5s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
   animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
@@ -7,13 +17,31 @@
   color:#585858;
 }
 
+.statusInput2{
+  margin-top: 20px !important;
+}
+
+
+.NDCont.shower {
+  transform: scale(.98) !important;
+}
 
 .item p{
   text-align: center !important;
 }
 
 
+.textin{
+  text-shadow: 1px 1px 3px #8a8a8a;
+}
 
+.cop .imgCurrency{
+  opacity: .5 !important;
+}
+
+.labelText, .labelText2, .labelText3{
+  text-align: left !important;
+}
 
 
 .swing-in-bottom-bck {
@@ -132,12 +160,22 @@ code {
   font-family: fa5-proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+
+.fuentePrin.value, .value{
+  font-family: 'Tomorrow', sans-serif;
+}
+
 .fuente{
   font-family: 'Raleway', sans-serif !important;
 }
 
 .fuente2{
-  font-family: 'Inconsolata', monospace;
+  /* font-family: 'Inconsolata', monospace; */
+  font-family: 'Tomorrow', sans-serif;
+}
+
+.monto{
+  font-family: 'Tomorrow', sans-serif;
 }
 
 @font-face {
@@ -324,6 +362,519 @@ circle{
   width: 180px;
   height: 180px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media screen and (max-height: 800px) and (max-width: 1366px) {
+
+
+
+.cotization.desktop{
+  transform: scale(.9);
+}
+
+
+/* LOADER APP */
+
+.LoaderContainer.loaderLayout.in{
+  transform: scale(.9) !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* FORM WITHDRAW ACCOUNT */
+
+  .finalTicket.TicketDetail, .DLstep2{
+    max-height: 100vh !important;
+    height: 100vh !important;
+  }
+
+
+  .formAccountFlow.city{
+    grid-template-rows: 1fr auto !important;
+  }
+
+  .NWithdrawAccountFlow .containerItems{
+    transform: scale(1) !important;
+  }
+
+  .containerFormWallet{
+    height: 100vh !important;
+  }
+
+  .containerFormWallet .nBstep1{
+    transform: scale(.9);
+  }
+
+  #bankChooseButton{
+    display: grid;
+    align-self: center;
+  }
+
+
+  .nBcontBank>div{
+    transform: scale(.85);
+  }
+
+  #contMsg{
+    grid-template-rows: 170px 1fr !important;
+  }
+
+
+
+  /* WITHDRAW ACCOUNT FORM LIST */
+
+
+  .WA{
+    transform: scale(.9);
+  }
+
+
+
+
+
+
+
+
+
+
+/* FORM DEPOSIT */
+
+
+  .asaras{
+    transform:translateY(60px);
+  }
+
+  .DepositLayout .DLstep2{
+    transform: scale(.9);
+  }
+
+
+  .DLsteps.method{
+    transform: scale(.95);
+  }
+
+  .DLstep.modality{
+    grid-template-rows: 25vh 1fr 25vh !important;
+    transform: scale(.95);
+  }
+
+  .DepositLayout .DLItemSelectionContainer{
+    height: auto !important;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* SECURITY SECTION */
+
+
+  .SCcta #subItemSC, .SCcta #ClassicView{
+    transform: scale(.82) !important;
+  }
+
+  .SCtitle{
+    font-size: 20px !important;
+  }
+
+  .SCimgItem{
+    transform: scale(.9);
+  }
+
+  .SCconector{
+    height: 120px !important;
+    bottom: -50% !important;
+  }
+
+  #myChart{
+    height: 175px !important;
+  }
+
+  .perfilPiCont{
+    transform: scale(.9);
+  }
+
+
+
+
+
+
+  .containerSection{
+    grid-template-rows: minmax(55px, 7vh) 1fr;
+    background: #F9F9FB;
+  }
+
+
+
+
+
+
+/* FORM 2FACTOR */
+
+  .TwoFactorActivate{
+    transform: scale(.95);
+  }
+
+  .header2fa .iconSty{
+    transform: scale(.9);
+  }
+
+  .TLayout{
+    grid-row-gap: 20px !important;
+  }
+
+  .body2fa img{
+    transform: scale(.9) !important;
+  }
+
+
+
+
+
+/* KYC */
+
+.KycLayoutCarousel{
+   grid-template-rows: repeat(3, 100vh) !important;
+}
+
+.KycLayout{
+  transform: scale(.9) !important;
+}
+
+.Inputmsg{
+  font-size: 16px;
+}
+
+.globalStep1 {
+  top: -100vh !important;
+}
+
+.globalStep2{
+  top: -200vh !important;
+}
+
+.imgDashSon{
+  transform: scale(.8) !important;
+}
+
+
+.SimpleSliderItem p{
+  font-size: 14px !important;
+}
+
+
+
+
+
+  /* WALLETS ===============>>>>>>>>> */
+
+
+  .PairListItems .item{
+    transform: scale(.95) !important;
+  }
+
+  .dashBoardLayout{
+    background: #F9F9FB !important;
+  }
+
+  .statusInput2{
+    margin-top: 15px !important;
+  }
+
+  .title.balanceTitle {
+    font-size: 16px !important;
+}
+
+  .menuMovilItem p{
+    font-size: 14px !important;
+  }
+
+.SwapView .contButton{
+  align-self: flex-end !important;
+}
+
+
+  #WalletList {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr )) !important;
+      row-gap: 0px !important;
+      column-gap: 0px !important;
+  }
+
+  .contWalleins{
+    transform: scale(.9);
+    align-self: flex-start !important;
+  }
+
+  .itemText{
+    font-size: 14px;
+  }
+
+  .indicatorCont, .AddNewItem.primary{
+    transform: scale(.9);
+  }
+
+
+  .displayCont p{
+    font-size: 30px !important;
+  }
+
+
+  /* FORM WALLET */
+
+  .modalCont{
+    padding: 0 !important;
+    height: 100% !important;
+  }
+
+  .modalCont form{
+    transform: scale(.9);
+  }
+
+  .containerItems{
+    transform: scale(.9);
+  }
+
+
+
+
+
+
+
+  /* WALLETS/ACTIVITY */
+
+  .ALFilterSect{
+    transform:scale(.95);
+  }
+
+  .NDCont.shower {
+    transform: scale(.9) !important;
+  }
+
+  .ALlistAll{
+    grid-row-gap: 10px !important;
+  }
+
+  .subMenu{
+  top: 50px !important;
+  }
+
+  .DCcurrent_wallet{
+    grid-template-rows: 200px 340px !important;
+    transform: scale(.9) !important;
+    padding: 0 15px !important;
+
+    /* grid-row-gap: 0px !important; */
+  }
+
+
+  .WithdrawView, .SwapView, .DepositView{
+    min-height: 340px !important;
+    transform: scale(.9) !important;
+  }
+
+  .contAddress{
+    transform: scale(.9) !important;
+  }
+
+
+  .Mconfirmar{
+    transform: scale(.9) !important;
+  }
+
+  .PairList{
+    transform: scale(.9);
+    height: 100% !important;
+  }
+
+
+
+  /* TICKET DETAIL */
+
+
+  .smartContainer,
+  .ticketSlide,
+  .ticketSlide .TicketDetail{
+    max-height: 100vh !important;
+    height: 100vh !important;
+  }
+
+  .ticketHeader>.icon,
+  .succ.nWCabeza>.icon,
+  .ticketHeader img,
+  .ticketHeader .rejectedCont,
+  .nBitemSuccesss,
+  .ticketHeader .iconSty{
+    display: none !important;
+  }
+
+  .ticketHeader{
+    grid-template-rows: 1fr !important;
+  }
+
+
+  .TicketDetail{
+    grid-template-rows: 80px 1fr 70px !important;
+    transform: scale(.9);
+  }
+
+  .contenidoTicket{
+    min-height: 350px;
+    overflow: overlay;
+  }
+
+  .contenidoTicket::-webkit-scrollbar {
+    width: 4px;
+  }
+  .contenidoTicket::-webkit-scrollbar-thumb {
+    background: white;
+    opacity: 0.5;
+  }
+
+  .DLcontain2{
+    transform: scale(.9) !important;
+  }
+
+  .DLcontainerItems.chooseMethod{
+    transform: scale(.9) !important;
+  }
+
+  .succ.nWCabeza{
+    grid-template-rows: 1fr;
+  }
+
+  .DLstep.DLstep2{
+    grid-template-rows: 80px 1fr 100px !important;
+  }
+
+
+
+
+
+
+  /* Referrals */
+
+  .referralCont{
+    padding: 0 10px !important;
+    height: calc(100% - 100px) !important;
+  }
+
+  .contReferral{
+    transform: scale(.9);
+    height: 400px !important;
+  }
+
+
+
+
+
+
+
+  /* QUOTE PRICES  */
+
+  .desktopPrices.prices{
+    transform: scale(.85) ;
+  }
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1573,7 +2124,7 @@ circle{
 
 @media only screen and (max-height: 650px) {
   .coinList{
-    transform: scale(.75) translateY(-17px);
+    transform: scale(.8) translateY(-17px);
   }
 
   .contListItemMV{
@@ -1789,7 +2340,63 @@ circle{
     /*height: 250px !important;*/
   }
 
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  */

@@ -55,8 +55,8 @@
   },
   {
     "text":"Cuentas de retiro",
-    "icon":"withdraw",
-    "clave":"withdraw",
+    "icon":"withdraw_accounts",
+    "clave":"withdraw_accounts",
     "active":true,
     "visible":true,
     "id":"3"

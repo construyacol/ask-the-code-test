@@ -35,7 +35,7 @@ const DepositLayout = (props) => {
      deposit_providers
   } = props
 
-
+  // console.log('|||||||||||| deposit Layout ===> ', currency)
 
   return(
     <section className="DepositLayout">

@@ -17,6 +17,8 @@ import './socketNotify.css'
 const SocketNotify = props => {
 
   const [ formatCurrency, setFormatCurrency ] = useState(null)
+  const { item_type, title } = props.socket_notify
+  let ui_text =  `${item_type === 'deposits' ? 'deposito' : item_type === 'withdraws' ? 'retiro' : ''}`
 
   useEffect(()=>{
 
@@ -45,14 +47,32 @@ const SocketNotify = props => {
     props.action.other_modal_toggle()
   }
 
-  const { item_type } = props.socket_notify
+
 
   return(
     // <OtherModalLayout on_click={modal_click}>
-    <OtherModalLayout >
+    <OtherModalLayout>
       {
-        item_type === 'deposit' &&
-        <OrderNotifyView item_type={item_type} formatCurrency={formatCurrency} close_modal={close_modal} {...props} />
+        item_type === 'deposits' ?
+          <OrderNotifyView
+            title={`${title ? title : `Nuevo ${ui_text} aprobado.`}`}
+            button_tittle={`Ver ${ui_text}`}
+            item_type={item_type}
+            formatCurrency={formatCurrency}
+            close_modal={close_modal}
+            {...props} />
+
+          :
+
+        item_type === 'withdraws' &&
+          <OrderNotifyView
+            title={`${title ? title : `Nuevo ${ui_text} enviado`}`}
+            button_tittle={`Ver ${ui_text}.`}
+            item_type={item_type}
+            formatCurrency={formatCurrency}
+            close_modal={close_modal}
+            {...props} />
+
       }
     </OtherModalLayout>
   )
@@ -77,21 +97,21 @@ const SocketNotify = props => {
 
 const OrderNotifyView = props => {
 
-  const { socket_notify, formatCurrency, currencies, close_modal } = props
+  const { socket_notify, formatCurrency, currencies, close_modal, title, button_tittle } = props
 
   const {
     item_type,
     currency,
-    state
+    // state
   } = props.socket_notify
 
-  // console.log('||||||||||||||_____________________________________________socket_notify', socket_notify)
+  // console.log('||||||||||||||_____________________________________________socket_notify', props)
   const buttonAction = async(wallet_id) => {
     // console.log('||||||||||||||_____________________________________________buttonAction', wallet_id)
     props.action.socket_notify(null)
     await props.action.other_modal_toggle()
-    await props.action.current_section_params({currentFilter:'deposits'})
-    props.history.push(`/wallets/activity/${wallet_id}`)
+    // await props.action.current_section_params({currentFilter:item_type})
+    props.history.push(`/wallets/activity/${wallet_id}/${item_type}`)
   }
 
   return(
@@ -111,16 +131,16 @@ const OrderNotifyView = props => {
       </div>
 
       <div className="bottomSection">
-        <h3 className="fuente">Nuevo {item_type === 'deposit' ? 'deposito' : 'operación'} {state === 'pending' ? 'Pendiente' : state === 'confirmed' ? 'Confirmandose' : 'Aprobado'}</h3>
+        <h3 className="fuente">{title}</h3>
         <div className="depositAmount">
           <IconSwitch
             icon={currency.currency}
             size={35}
           />
-          <p id="deposit_amount" className="fuenteMuseo">{formatCurrency} <span>{currencies[socket_notify.currency.currency].symbol}</span></p>
+          <p id="order_amount" className="fuenteMuseo">{formatCurrency} <span>{currencies[socket_notify.currency.currency].symbol}</span></p>
         </div>
         <ButtonNofity buttonAction={buttonAction} item_id={socket_notify.account_id}>
-          <p id="ButtonNofityText" className="fuente">Ver {item_type === 'deposit' ? 'deposito' : 'operación'}</p>
+          <p id="ButtonNofityText" className="fuente">{button_tittle}</p>
         </ButtonNofity>
       </div>
     </LayoutSocketNotify>

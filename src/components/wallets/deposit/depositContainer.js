@@ -32,7 +32,7 @@ class DepositContainer extends Component {
     msgLoader:"",
     wallets_list:[],
     cost_id:this.props.cost_id,
-    account_id:this.props.match.params && this.props.match.params.id,
+    account_id:this.props.match.params && this.props.match.params.account_id,
     new_ticket:null,
     deposit_provider_list:null
   }
@@ -273,21 +273,21 @@ updateAmountOnState = async(amount) =>{
     } = props
 
     this.setState({
-     account_id:match.params && match.params.id
+     account_id:match.params && match.params.account_id
     })
 
   }
 
 
-  finalizar = () =>{
+  finalizar = async() =>{
 
     if(this.state.final){
       this.props.action.CurrentForm('wallets')
       // programamos la animación del nuevo deposito creado
       this.props.action.add_new_transaction_animation()
       this.props.action.CleanForm('deposit')
-
-      return this.props.history.push(`/wallets/activity/${this.state.account_id}`)
+      // console.log('||||||||||||||||||| FINISH HIM', this.state)
+      return this.props.history.push(`/wallets/activity/${this.state.account_id}/deposits`)
     }
 
     this.setState({
@@ -309,7 +309,6 @@ updateAmountOnState = async(amount) =>{
     const {
       current_wallet,
       user,
-      deposits,
       deposit_providers
     } = this.props
 
@@ -322,15 +321,20 @@ updateAmountOnState = async(amount) =>{
 
     // console.log('||||||||||   como envio los depositos', service_mode)
     // console.log('create_deposit_order CURRENT_WALLET', current_wallet)
-    // console.log('create_deposit_order PROPS', this.props)
 
     // let deposit_provider = await deposit_providers.find(dep_prov => {
     //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
     // })
-    let deposit_provider = deposit_providers[0] && deposit_providers[0]
+    let deposit_provider = deposit_providers && deposit_providers[0]
+
+    // console.log('create_deposit_order PROPS', deposit_provider, current_wallet)
 
     this.siguiente()
     this.props.action.Loader(true)
+
+    if(!this.props.deposits){
+      await this.props.action.get_deposits(this.props.current_wallet.id)
+    }
 
     let response = await this.props.action.create_deposit_order(
       current_wallet && current_wallet.currency,
@@ -339,7 +343,6 @@ updateAmountOnState = async(amount) =>{
       cost_id,
       deposit_service,
       user,
-      deposits,
       service_mode,
       deposit_provider.id
     )
@@ -361,14 +364,21 @@ updateAmountOnState = async(amount) =>{
     }
 
     // console.log('create_deposit_order new_deposit_model', new_deposit_model)
-
     // await this.props.action.get_deposit_list(user)
-    await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
-    await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
+
+
+
+
+    // await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
+    // await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
+
+
+
+
+
+
     // await this.props.action.update_pending_activity()
-
     // console.log('=> deposits UPDATE', this.props.deposits)
-
     // setTimeout(async()=>{
     //   await this.props.services.serve_activity_list(action.get_deposit_list, user, current_wallet, 'deposits')
     //   await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
@@ -519,7 +529,7 @@ updateAmountOnState = async(amount) =>{
 
     const { buttonActive, coins } = this.props
 
-    // console.log('::: deposit_provider_list ::', deposit_provider_list)
+    // console.log('::: Deposit Container ::', this.props)
 
     return(
       <DepositLayout
@@ -561,9 +571,14 @@ function mapStateToProps(state, props){
     cost_id
   } = state.form.form_deposit
 
+  // const {
+  //   short_name
+  // } = state.ui.current_section.params
+
   const {
-    short_name
-  } = state.ui.current_section.params
+    localCurrency,
+    currency
+  } = state.model_data.pairs
   // console.log('::: __ESTADO_DEPOSITO__ ::', state.ui.current_section.params.current_wallet)
 
   const {
@@ -572,7 +587,7 @@ function mapStateToProps(state, props){
     deposit_providers,
     wallets,
     pairs,
-    deposits,
+    // deposits,
     currencies
   } = state.model_data
 
@@ -582,7 +597,11 @@ function mapStateToProps(state, props){
     return deposit_providers_list.push(deposit_providers[provider_id])
   })
 
-  // console.log('_____________________DEPOSIT PROVIDER ITEM ITERATOR', deposit_providers_list)
+  const { account_id } = props.match.params
+
+  let current_wallet = wallets[account_id]
+  // console.log('_____________________DEPOSIT PROVIDER ITEM ITERATOR', props, deposit_providers_list)
+  // console.log('_____________________DEPOSIT PROVIDER ITEM ITERATOR', props)
 
 
 
@@ -590,9 +609,9 @@ function mapStateToProps(state, props){
     buttonActive:state.form.form_control_deposit,
     step:step,
     current:state.form.current,
-    short_currency_name:short_currency_name ? short_currency_name : short_name,
+    short_currency_name:short_currency_name ? short_currency_name : localCurrency,
     short_bank_name:short_bank_name,
-    // currency:currency,
+    currency,
     deposit_service:deposit_service,
     type_currency:type_currency,
     cost_id:cost_id,
@@ -605,8 +624,8 @@ function mapStateToProps(state, props){
     wallets:wallets,
     user:user[user_id],
     localCurrency:pairs.localCurrency,
-    current_wallet:state.ui.current_section.params.current_wallet,
-    deposits:deposits,
+    current_wallet,
+    deposits:state.storage.activity_for_account[account_id] && state.storage.activity_for_account[account_id].deposits,
     coins:currencies,
     deposit_providers:deposit_providers_list
   }

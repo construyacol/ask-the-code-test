@@ -8,7 +8,7 @@ import HelPages from './landing_page/help_pages'
 import jwt from 'jsonwebtoken'
 // import FreshChat from '../services/freshChat'
 // import AuthComponentContainer from './auth'
-import LandingPageContainer from './landing_page/landingContainer'
+// import LandingPageContainer from './landing_page/landingContainer'
 // import Landing from './landingPage'
 
 const history = createBrowserHistory();
@@ -51,7 +51,7 @@ class RootContainer extends Component {
       TokenUser = result[1]
       await localForage.setItem('TokenUser', TokenUser)
       await localForage.setItem('created_at', new Date())
-      // history.push('/')
+      history.push('/')
     }
 
     let AccessToken = await localForage.getItem('TokenUser')
@@ -67,31 +67,34 @@ class RootContainer extends Component {
     let userData = await jwt.decode(AccessToken)
     console.log('|||||||| userData', userData)
     if(!userData){return this.logOut()}
-    const { usr } = userData
+    const { usr, email } = userData
     console.log(AccessToken)
     this.setState({
       // TokenUser:'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZDIzNDk4MTI0OWYwZDJkMWJmMWI3MmUiLCJ1c3IiOiI1ZDIzNGExMTMwMzViZTJlMThhOTUzY2EiLCJqdGkiOiJ3WjRwUk5rd096TjZmZUxsMGxBRVhZZld2QXpoRG0zMVVMVWZ1S0tvdTZHcngxYWdNODdMcHcyOVB4Umw1QmdWIiwiYXVkIjoidHJhbnNhY3Rpb24saWRlbnRpdHksYXV0aCIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjVkMjM0OTgxMjQ5ZjBkMmQxYmYxYjcyZVwifSIsImlhdCI6MTU2OTQzODU2OCwiZXhwIjoxNTY5NDQ5MzY4fQ.1XkXD0mdOj0LfrSVyTsFs4ZkguH1kWS9aYPYdPs3v8_nSMIfVtU-Y6YXIgU0_gDoVU_Yr7tueZ5rxQWlxlNUkQ',
       TokenUser:AccessToken,
-      userId:usr
+      userId:usr,
+      email
       // TokenUser:'5d234a113035be2e18a953ca'
     })
+    history.push('/')
   }
 
   logOut = async() =>{
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')
     await this.setState({TokenUser:false, userId:null})
-    // history.push('/')
+    window.location.href = 'https://www.coinsenda.com';
   }
 
   render(){
 
-    const { TokenUser, userId } = this.state
+    const { TokenUser, userId, email } = this.state
 
     const user_data = {
       token:TokenUser,
-      userId:userId,
-      logOut:this.logOut
+      userId,
+      logOut:this.logOut,
+      email
     }
 
     return(
@@ -101,15 +104,9 @@ class RootContainer extends Component {
           <Switch>
             <Route strict path="/docs" component={HelPages} />
             <Route path="/" render={ () => (
-              TokenUser ? (
-                  <HomeContainer history={history} user_data={user_data} />
-              )
-              : !userId &&
-              (
-               <LandingPageContainer history={history} />
-              )
+              TokenUser && (<HomeContainer history={history} user_data={user_data} />)
             )}/>
-          </Switch>
+            </Switch>
       </Router>
     )
   }

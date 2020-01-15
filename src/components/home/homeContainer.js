@@ -54,7 +54,7 @@ static getDerivedStateFromError(error, info){
   //         currency:'cop',
   //         is_token:false
   //       }
-  //       this.props.action.socket_notify({account_id:'5d406e3cbb245069d61021c5', item_type:'deposit', currency, amount:1500000}, 'deposit')
+  //       this.props.action.socket_notify({account_id:'5d406e3cbb245069d61021c5', currency, amount:1500000}, 'deposits')
   //       this.props.action.other_modal_toggle()
   //       this.props.action.success_sound()
   //       // add_coin_sound
@@ -80,7 +80,7 @@ static getDerivedStateFromError(error, info){
 
     return(
       <HandleError>
-        {/* <SocketsComponent/> */}
+        <SocketsComponent/>
 
       <Router
         basename="/app"
@@ -94,7 +94,8 @@ static getDerivedStateFromError(error, info){
                 <ToastContainers/>
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-                    <MenuPrincipalContainer history={this.props.history}/>
+                    {/* <MenuPrincipalContainer history={this.props.history}/> */}
+                    <Route path={["/:primary_path", "/"]} component={MenuPrincipalContainer} />
                     <MenuSuperiorContainer logOut={user_data.logOut}/>
                     {/* En el componente dashboard se cargan todas las vistas */}
 
@@ -107,10 +108,10 @@ static getDerivedStateFromError(error, info){
                         {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
                             <Switch>
                               <Route exact strict path="/wallets" component={NewWallet} />
-                              <Route exact strict path="/wallets/activity/:id" component={TicketContainer} />
-                              <Route exact strict path={["/wallets/deposit/:id", "/activity", "/"]} component={DepositContainer} />
-                              <Route exact path="/wallets/withdraw/:id" component={WithdrawFlow} />
-                              <Route exact path="/withdraw" component={WithdrawAccountForm} />
+                              <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+                              <Route exact strict path={["/wallets/deposit/:account_id", "/activity", "/"]} component={DepositContainer} />
+                              <Route exact path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
+                              <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
                               <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
                             </Switch>
                       </ModalLayout>
@@ -125,7 +126,7 @@ static getDerivedStateFromError(error, info){
                           <Route path="/" component={SocketNotify} />
                           :
                           <Fragment>
-                            <Route exact strict path="/wallets/swap/:id" component={PairList} />
+                            <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                           </Fragment>
                       }

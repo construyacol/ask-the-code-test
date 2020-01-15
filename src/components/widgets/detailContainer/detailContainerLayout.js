@@ -1,37 +1,33 @@
 import React, { Fragment, Component } from 'react'
 import { NavLink, Link } from 'react-router-dom'
-import { withRouter } from 'react-router'
+// import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { mensaje } from '../../../services'
+// import { mensaje } from '../../../services'
 import IconSwitch from '../icons/iconSwitch'
 
 import './detailContainer.css'
 
 class detailContainerLayout extends Component{
 
-  componentDidMount(){
+  // back_method = () =>{
+  //   // this.props.action.section_view_to('initial')
+  // }
 
-  }
-
-  back_method = () =>{
-    this.props.action.section_view_to('initial')
-  }
-
-  to_sub_section = prop => {
-    if(!prop.target.id){return false}
-    this.props.action.current_section_params({current_sub_section: prop.target.id})
-    if(prop.target.id === 'activity' && !this.props.current_section.params.activity){
-      return mensaje('Aún no tienes actividad en esta Billetera')
-    }
-  }
+  // to_sub_section = prop => {
+    // if(!prop.target.id){return false}
+    // this.props.action.current_section_params({current_sub_section: prop.target.id})
+    // if(prop.target.id === 'activity' && !this.props.current_section.params.activity){
+    //   return mensaje('Aún no tienes actividad en esta Billetera')
+    // }
+  // }
 
 render(){
 
-  const { items_menu, title, current_section, current_wallet, current_item } = this.props
-  const { view, params } = current_section
-  const { current_sub_section } = params
+  const { items_menu, title, current_section, current_wallet, current_item, pathname } = this.props
+  const { params } = current_section
+  // const { current_sub_section } = params
   let movil_viewport = window.innerWidth < 768
   // console.log('|||||||||| °°°°°  DetailContainer  °°°°°||||||||||', this.props)
 
@@ -39,20 +35,18 @@ render(){
     <Fragment>
       <div className="subMenu">
           <div className="menuContainer">
-            <div className="itemsMenu fuente" style={{display:view === 'initial' ? 'none' : 'grid'}}>
+            <div className="itemsMenu fuente" style={{display:!pathname ? 'none' : 'grid'}}>
               {
                 (current_wallet && items_menu ? items_menu.length>0 : false) &&
                   items_menu.map(item=>{
                     return (
-                        <NavLink to={`/wallets/${item.link}/${current_wallet.id}`}
-                          onClick={this.to_sub_section}
-
-                          // className={`DCsubItem ${current_sub_section === item.link ? 'DCactive' : ''} ${(item.link === 'activity' && !activity) ? 'noTamoActivos' : ''}`}
+                        <NavLink to={`/wallets/${item.link}/${current_wallet.id}${item.link === 'activity' ? `/${params.currentFilter}` : ''}`}
+                          // onClick={this.to_sub_section}
                           id={item.link}
                           key={item.id}
-                          className={`menuMovilItem ${current_sub_section === item.link ? 'active' : ''}`}
+                          className={`menuMovilItem ${pathname === item.link ? 'active' : ''}`}
                           >
-                            <div  className={`menuMovilIcon ${current_sub_section === item.link ? 'active' : ''}`} >
+                            <div  className={`menuMovilIcon ${pathname === item.link ? 'active' : ''}`} >
                               <IconSwitch size={20} icon={item.link} color="#14b3f0"/>
                             </div>
                             <p>{item.title}</p>
@@ -64,14 +58,14 @@ render(){
 
             {
               !movil_viewport &&
-              <Link to="/wallets" className="DCBack" style={{display:view === 'detail' ? '' : 'none'}} onClick={this.back_method}>
+              <Link to="/wallets" className="DCBack" style={{display:pathname ? '' : 'none'}} >
                 <i className="fas fa-arrow-left"></i>
                 <p>Volver</p>
               </Link>
             }
 
 
-            <div className={`DCTitle ${movil_viewport ? 'movil' : ''}`} style={{display:view === 'detail' ? 'none' : ''}} >
+            <div className={`DCTitle ${movil_viewport ? 'movil' : ''}`} style={{display:pathname ? 'none' : ''}} >
               {
                 movil_viewport ?
                 <Fragment>
@@ -104,7 +98,7 @@ render(){
          </div>
       </div>
 
-      <div className={`contenido ${(view === 'detail' && current_wallet) ? 'DCcurrent_wallet' : ''} ${this.props.pathname}`}>
+      <div className={`contenido ${(pathname && current_wallet) ? 'DCcurrent_wallet' : ''} ${pathname}`}>
          {this.props.children}
       </div>
 
@@ -115,15 +109,28 @@ render(){
 }
 
 function mapStateToProps(state, props){
-  // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', props)
 
-  let str = props.history.location.pathname
-  let res = str.replace("/", "");
+  // let path = props.location && props.location.pathname
+  // let str = path
+  // let res = path && str.split("/");
+  // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', res.length, res[2], path)
+
+  let account_opts = {}
+  if(props.match){
+    const { path, account_id } = props.match.params
+    account_opts = {
+      current_wallet:(props.wallets && account_id) && props.wallets[account_id],
+      pathname:path
+    }
+  }
+
+  // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', path, props)
 
   return{
     current_item:state.ui.menu_item_active,
     current_section:state.ui.current_section,
-    pathname:res
+    // pathname:res && res.length > 1 && res[2]
+    ...account_opts
   }
 }
 
@@ -136,4 +143,5 @@ function mapDispatchToProps(dispatch){
 
 
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (detailContainerLayout))
+export default connect(mapStateToProps, mapDispatchToProps) (detailContainerLayout)
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps) (detailContainerLayout))

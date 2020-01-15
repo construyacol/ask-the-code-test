@@ -22,31 +22,33 @@ class ModalLayout extends Component {
 
   salir = async() => {
 
+    // alert('queloque')
     const{
-      deposit_direct_access,
+      // deposit_direct_access,
       current,
-      sub_section
+      // sub_section
     } = this.props
 
-alert('salir')
-
-    if(current === 'deposit' || current === 'withdraw'){
-      await this.props.action.CurrentForm('wallets')
-      // await this.props.action.current_section_params({current_wallet:null})
-      this.props.action.section_view_to('initial')
-    }
-
-    if(sub_section && !deposit_direct_access && (current === 'deposit' || current === 'withdraw')){
-      this.props.action.section_view_to('detail')
-    }else{
-      this.props.history.push(`/${this.props.redux_route}`)
-    }
-
     this.props.action.ToggleModal()
-    if(current === 'withdraw' || current === 'bank'){
-      this.props.action.CleanForm('bank')
-      this.props.action.CleanForm('withdraw')
-    }
+    this.props.action.CleanForm(current)
+
+    // if(current === 'deposit' || current === 'withdraw'){
+    //   await this.props.action.CurrentForm('wallets')
+    //   // await this.props.action.current_section_params({current_wallet:null})
+    //   this.props.action.section_view_to('initial')
+    // }
+    //
+    // if(sub_section && !deposit_direct_access && (current === 'deposit' || current === 'withdraw')){
+    //   this.props.action.section_view_to('detail')
+    // }else{
+    //   this.props.history.push(`/${this.props.redux_route}`)
+    // }
+    //
+    // this.props.action.ToggleModal()
+    // if(current === 'withdraw' || current === 'bank'){
+    //   this.props.action.CleanForm('bank')
+    //   this.props.action.CleanForm('withdraw')
+    // }
   }
 
 

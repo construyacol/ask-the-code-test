@@ -1,8 +1,33 @@
 import { toast } from 'react-toastify';
 import { kyc } from '../components/api/ui/api.json'
 import Compressor from 'compressorjs';
+import Environment from '../environment'
+
+import { update_activity } from '../actions/storage'
+import { update_pending_activity } from '../actions/APIactions'
+import { update_normalized_state } from '../actions/dataModelActions'
+import * as normalizr_services from '../schemas'
+import {
+  current_section_params,
+} from '../actions/uiActions'
+
+import {
+  ApiGetRequest
+} from '../actions/API'
 
 import store from '../'
+
+const {
+  WithdrawApiUrl,
+  DepositApiUrl,
+  SwapApiUrl
+ } = Environment
+
+
+
+const {
+  normalize_user
+} = normalizr_services
 
 
 export const img_compressor = (file, quality) => {
@@ -78,6 +103,62 @@ export const ticketModalView = (state) =>{
 
 
 
+
+
+export const update_activity_state = (account_id, activity_type, activity_list) => {
+
+  return async(dispatch, getState) => {
+
+    if(!activity_list){
+      activity_list = await serve_orders(account_id, activity_type)
+    }
+
+    await dispatch(current_section_params({currentFilter:activity_type}))
+    await dispatch(update_activity(account_id, activity_type, activity_list))
+    await dispatch(update_pending_activity(account_id, activity_type, activity_list))
+
+  }
+
+}
+
+export const normalized_list = (activity_list, activity_type) => {
+  return async(dispatch, getState) => {
+
+    const user = getState().model_data.user[getState().model_data.user_id]
+
+    let list = await arrayToObject(activity_list)
+    if(getState().model_data[activity_type]){
+      // Si ya hay depositos/retiros/swaps en el estado, entonces tomarlos en cuenta en la adición
+      list = {
+        ...getState().model_data[activity_type],
+        ...list
+      }
+    }
+
+    let user_update = {
+      ...user,
+      [activity_type]:{
+        ...list
+      }
+    }
+
+    let normalizeUser = await normalize_user(user_update)
+    await dispatch(update_normalized_state(normalizeUser))
+
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
 export const desNormalizedList = async(normalizedList, indices) =>{
 // Recibimos como parametros el objeto con la info normalizada y la lista de indices
   let new_list = []
@@ -105,6 +186,27 @@ export const matchNormalizeWallet = (list, itemReview) => {
 }
 
 
+
+export const arrayToObject = (array_list) => {
+
+  let new_object = {}
+
+  // array_list.map((item) => {
+  //   new_object = {
+  //     ...new_object,
+  //     [item.id]:item
+  //   }
+  // })
+
+  for(let item of array_list){
+    new_object = {
+      ...new_object,
+      [item.id]:item
+    }
+  }
+
+  return new_object
+}
 
 
 
@@ -184,6 +286,35 @@ export const serveBankOrCityList = (list, type) => {
   })
 
 }
+
+
+
+export const get_order_by_id = (order_id, order_type) => {
+
+  return async(dispatch, getState) => {
+    const user = getState().model_data.user[getState().model_data.user_id]
+    const apiUrl = order_type === 'deposits' ? DepositApiUrl : order_type === 'withdraws' ? WithdrawApiUrl : SwapApiUrl
+
+    let filter = `{"where":{"id":"${order_id}"}}`
+    const url_order = `${apiUrl}users/${user.id}/${order_type}?country=${user.country}&filter=${filter}`
+
+    let myHeaders = {
+      'Authorization': `Bearer ${user.TokenUser}`,
+    }
+    const order = await ApiGetRequest(url_order, myHeaders)
+
+    // console.log('||||||||||||||||||||||||||||| get_account_id_by_order_id', url_order, myHeaders, order)
+    if(!order || order.length<1){return false}
+
+    return order[0]
+
+
+
+  }
+}
+
+
+
 
 
 export const converToInitState = (obj) => {

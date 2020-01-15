@@ -1,7 +1,6 @@
 
 import {
   HEAD_ROOM,
-  MENU_ITEM_ACTIVE,
   ITEM_QUOTE_ACTIVE,
   MODAL_CONFIRMATION_TOGGLE,
   CONFIRMATION_MODAL_PAYLOAD,
@@ -63,7 +62,7 @@ const initialState = {
   other_modal:false,
   flowAnimationLayout:"",
   notifications:{
-    withdraw:{
+    withdraw_accounts:{
       amount:0,
       extra:{
         account_id:null,
@@ -103,7 +102,7 @@ const ui = (state = initialState, action)=>{
   // payload,
   // amount
     case ADD_NOTIFICATION:
-    // console.log('ADD_NOTIFICATION', action)
+    console.log('||||||||||||||||||||||||||||||||||||||||||||||||| ADD_NOTIFICATION =====>', action)
       return {
         ...state,
         notifications:{
@@ -300,19 +299,6 @@ const ui = (state = initialState, action)=>{
           sell:ex === 'sell' ? true : false,
         }
       }
-    case MENU_ITEM_ACTIVE:
-      // console.log('-----MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE----------MENU_ITEM_ACTIVE-----', action.payload )
-
-        let isActive = action.payload
-        if(action.payload.indexOf('/') !== -1){
-          isActive = action.payload.substr(1)
-        }
-
-
-      return {
-        ...state,
-        menu_item_active:isActive
-        }
 
     default:
       return state

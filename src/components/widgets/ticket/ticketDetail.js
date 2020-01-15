@@ -3,10 +3,11 @@ import pending from '../../../assets/ticket/pending.png'
 import rejected from '../../../assets/ticket/warning.png'
 import canceled from '../../../assets/ticket/canceled.png'
 import confirmed from '../../../assets/ticket/confirmed.png'
-import { PaymentConfirButton } from '../buttons/buttons'
+import { PaymentConfirButton, ButtonSuccess } from '../buttons/buttons'
 import { matchItem } from '../../../services'
 import ConfirmationCounter from './confirmationCounter'
 import ItemTicket from './itemTicket'
+// import { ButtonSuccess, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
 
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
@@ -49,8 +50,7 @@ class TicketDetail extends Component{
     comment
   } = ticket
 
-  // console.log('|||||||||||||| - - -  ticket', ticket)
-  console.log('|||||||||||||| - - -  PROPIEDADES', this.props)
+  // console.log('|||||||||||||| - - -  PROPIEDADES', this.props)
 
   return(
         <div className={`TicketDetail ${clases}`}>
@@ -59,7 +59,7 @@ class TicketDetail extends Component{
             !only_detail &&
               <div className="ticketHeader">
                 {
-                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposit") ?
+                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposits") ?
                     <ConfirmationCounter
                       confirmations={confirmations}
                       total_confirmations={total_confirmations}
@@ -73,7 +73,7 @@ class TicketDetail extends Component{
                 }
 
                 {
-                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposit") ?
+                  (state === 'confirmed' && currency_type === 'crypto' && type_order === "deposits") ?
                     <h1 className="fuente confirm TicketTitle">Confirmaciones</h1>
                   :
                   <h1 className="fuente TicketTitle">Transacción {
@@ -115,7 +115,7 @@ class TicketDetail extends Component{
 
 
             {
-              ((state === 'pending')&& !only_detail && currency_type === 'fiat' && type_order !== 'swap') ?
+              ((state === 'pending')&& !only_detail && currency_type === 'fiat' && type_order !== 'swaps') ?
               <PaymentConfirButton
                 id="ALconfirmButton"
                 clases="laReputas"
@@ -125,14 +125,11 @@ class TicketDetail extends Component{
                 label="Confirmar"
               />
               :
-              <PaymentConfirButton
-                id="ALconfirmButton"
-                clases="laReputas"
-                active={true}
-                type="primary"
-                siguiente={this.salirTicket}
-                label="Cerrar "
-              />
+              (state) &&
+              <div id="nWcta" className="nWcta" >
+                <ButtonSuccess cta_secondary toggleModal={this.salirTicket}>Cerrar</ButtonSuccess>
+              </div>
+
             }
 
         </div>
@@ -195,7 +192,7 @@ function mapStateToProps(state, props){
 
   let currency_type_bought
 
-  if(ticket.type_order === 'swap'){
+  if(ticket.type_order === 'swaps'){
     currency_type_bought = matchItem(model_data.currencies, {primary:ticket.currency_bought}, 'name')
   }
 

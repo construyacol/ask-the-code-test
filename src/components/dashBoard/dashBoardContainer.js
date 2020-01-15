@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import localForage from 'localforage'
+// import localForage from 'localforage'
 
 // import DashBoardLayout from './dashBoardLayout.js'
 import {
@@ -32,8 +32,7 @@ class DashBoardContainer extends Component{
 
   async componentDidMount() {
 
-    const restoreId = await localForage.getItem('restoreId')
-    await FreshChat.init_user(this.props.user, '4b85e7f7-5161-4c8a-9978-bbc828369603')
+    await this.props.action.freshchat_init_user(this.props.user)
     // return false
     await FreshChat.user_update(this.props.user)
     let verification_state = await this.props.action.get_verification_state()
@@ -91,7 +90,7 @@ class DashBoardContainer extends Component{
                       <Fragment>
                           <Switch>
                             {/* <Route path="/wallets" render={() => <WalletContainer/>} /> */}
-                              <Route path="/withdraw" component={WitdrawAccountContainer} />
+                              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
                               <Route path="/settings" component={SettingsContainer} />
                               <Route path="/security" component={SecurityCenter} />
                               <Route path="/referral" component={ReferralComponent} />

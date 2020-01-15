@@ -74,18 +74,18 @@ export class ButtonPrincipalMenu extends Component{
 
   render(){
     return(
-      <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.itemStatus === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
-        <div className={`text ${this.props.itemStatus === this.props.clave ? 'activate' : ''}`}>
+      <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.path === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
+        <div className={`text ${this.props.path === this.props.clave ? 'activate' : ''}`}>
           <div className="iconButtCont">
-            <IconSwitch icon={this.props.icon} size={20} color={`${this.props.itemStatus === this.props.clave ? "#14B3F0" : "#acacac"}`} />
+            <IconSwitch icon={this.props.icon} size={20} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
             <PopNotification notifier={this.props.clave}/>
           </div>
-          <p className="itemText">{this.props.text}</p>
+          <p className="itemText fuente">{this.props.text}</p>
         </div>
 
         <div className="indicatorCont">
-            <div className={`indicator ${this.props.itemStatus === this.props.clave ? 'activate' : ''}`}>
-              <div className={`indicatorSon ${this.props.itemStatus === this.props.clave ? 'activate' : ''}`}></div>
+            <div className={`indicator ${this.props.path === this.props.clave ? 'activate' : ''}`}>
+              <div className={`indicatorSon ${this.props.path === this.props.clave ? 'activate' : ''}`}></div>
             </div>
         </div>
       </Link>

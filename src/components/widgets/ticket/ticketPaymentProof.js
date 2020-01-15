@@ -48,7 +48,6 @@ updateLocalImg = (img) =>{
   this.setState({
    localImg:img
   })
-
 }
 
 
@@ -62,12 +61,10 @@ updateLocalImg = (img) =>{
     const {
       ticket
     } = this.props
-
-
     this.props.action.Loader(true)
 
     let res = await this.props.action.confirm_deposit_order(ticket, base64);
-    console.log('Confirm deposit order', res)
+    // console.log('Confirm deposit order', res)
     if(!res || res === 465){return false}
     const {
       data
@@ -86,21 +83,6 @@ updateLocalImg = (img) =>{
     setTimeout(()=>{
       this.props.action.mensaje(`¡Orden Confirmada !`, 'success')
     }, 700)
-
-    // console.log('_______________________________________________ DATA ORDER CONFIRMED', res)
-
-    let search_by = {
-      name:"id",
-      id:data.id
-    }
-    let replace_prop = {
-      name:"state",
-      state:"confirmed"
-    }
-    await this.props.action.edit_array_element(search_by, replace_prop)
-    await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
-
-
   }
 
 
@@ -111,13 +93,10 @@ updateLocalImg = (img) =>{
 render(){
 
   const {
-    ticket,
-    loader
+    // ticket,
+    loader,
+    clases
   } = this.props
-
-  const {
-    step
-  } = ticket
 
   const{
     fileloader,
@@ -127,12 +106,10 @@ render(){
   // console.log('TicketPaymentProof', ticket)
 
   return(
-    <div className={`TicketPaymentProof ${step === 2 ? 'aparecer' : ''} `} style={{transform:fileloader ? 'translateY(-50%)' : 'translateY(0%)' }}>
+    <div className={`TicketPaymentProof ${clases} `} style={{transform:fileloader ? 'translateY(-50%)' : 'translateY(0%)' }}>
 
         <div className="ctaPaymentProof fuente" >
           <input id="TFileUpload" type="file" onChange={this.goFileLoader} />
-
-
 
           <p className="titlePayment"><img src={imgTouch} alt="" width="70"/>Toca para subir tu comprobante de pago</p>
 
@@ -169,7 +146,6 @@ function mapStateToProps(state, props){
 
 
   return{
-    current_wallet:state.ui.current_section.params.current_wallet,
     loader:state.isLoading.loader,
     user:user[user_id]
   }

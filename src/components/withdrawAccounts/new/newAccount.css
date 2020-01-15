@@ -19,10 +19,14 @@
   display: grid;
 }
 
-.titleAccountFlow{
-
+#bankChooseButton {
+    display: grid;
+    align-self: center;
 }
 
+.formAccountFlow #bankChooseButton {
+   align-self: flex-end;
+}
 
 .nBtextInit{
   color: #656565 !important;
@@ -57,6 +61,7 @@
   grid-template-rows: repeat(2, 1fr);
   align-items: center;
   justify-items:center;
+  align-self: center;
 }
 .contListCities{
   width: 100%;

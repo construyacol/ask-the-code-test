@@ -26,10 +26,6 @@ class ReferralComponent extends Component {
 
   }
 
-  componentDidMount(){
-    this.props.action.MenuItemActive('referral')
-  }
-
 
   createLink = async(ref_code) =>{
 

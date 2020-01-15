@@ -10,6 +10,8 @@ import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import AddressValidator from 'wallet-address-validator'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
+import { formatToCurrency } from '../../../services/convert_currency'
+
 
 
 class WithdrawView extends Component{
@@ -25,21 +27,44 @@ state = {
   verified:null
 }
 
-  componentDidMount(){
-    this.props.initial(this.props.match.params.path, this.props.match.params.id)
+
+  // componentDidUpdate(prevProps){
+  //   if(prevProps.current_wallet !== this.props.current_wallet){
+  //     console.log(this.props.current_wallet)
+  //   }
+  // }
+
+  async componentDidMount(){
+    // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
     this.init_config()
+    if(!this.props.withdraws){
+      await this.props.action.get_withdraws(this.props.current_wallet.id)
+    }
   }
 
   init_config = async() =>{
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||| CURRENT_WALLET', this.props.current_wallet)
+    // formatToCurrency
     let verified = await this.props.action.user_verification_status('level_1')
     this.setState({verified})
   }
 
 
-  actualizarEstado_coin = (e) =>{
+  actualizarEstado_coin = async(e) =>{
+
+
+    this.setState({
+      value:e.target.value,
+    })
+
+      let value = await formatToCurrency(e.target.value, this.props.current_wallet.currency)
+      let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
+
       this.setState({
-        value:e.target.value
+        validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
       })
+
+      // console.log('|||||||||||||||||||||||||||||||||||||||||| Format currency response ====>>>', this.props.current_wallet.currency.currency, value, min_amount)
   }
 
   actualizarEstado = async({target}) =>{
@@ -62,13 +87,21 @@ state = {
     })
   }
 
-  getMaxAvailable = e =>{
+
+  getMaxAvailable = async e =>{
     let valor = e.target.id
     if(valor>0){
       this.setState({
-        value:e.target.id
+        value:valor
       })
     }
+
+    let value = await formatToCurrency(valor, this.props.current_wallet.currency)
+    let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
+
+    this.setState({
+      validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
+    })
   }
 
   finish_withdraw = async(p) =>{
@@ -86,6 +119,7 @@ state = {
       available_address,
       user
     } = this.props
+
 
     // console.log('|||| ====> available_address', available_address)
 
@@ -108,40 +142,43 @@ state = {
 
       let retiro = await this.props.action.add_new_withdraw_order(value, current_wallet.id, withdraw_provider.id, withdraw_account.id)
 
-
       if(!retiro){
         this.props.action.Loader(false)
         return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
       }
 
+
+
+
+
+
+
       // Confirmamos la orden de retiro
-      let res = await this.props.action.add_update_withdraw(retiro.data.id, 'confirmed')
-
-      if(!res){
-        this.props.action.Loader(false)
-        return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
-      }
-      // 32Dt1Vkz1ZsA9YCyk4Xvfc5pznmVwVsmCc
-      console.log('========> RESPUESTA ENDPOINT RETIRO', res)
-
-      let new_withdraw_model = {
-        id:retiro.data.id,
-        unique_id:retiro.data.id,
-        type_order:'withdraw',
-        account_id:retiro.data.account_id,
-        ...retiro.data,
-        state:res.data.state
-      }
-
+      // let res = await this.props.action.add_update_withdraw(retiro.data.id, 'confirmed')
+      //
+      // if(!res || res === 465){
+      //   this.props.action.Loader(false)
+      //   return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
+      // }
+      //
+      // let new_withdraw_model = {
+      //   id:retiro.data.id,
+      //   unique_id:retiro.data.id,
+      //   type_order:'withdraw',
+      //   account_id:retiro.data.account_id,
+      //   ...retiro.data,
+      //   state:res.data.state
+      // }
+      //
+      //
+      // await this.props.action.get_account_balances(this.props.user)
+      //
       // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model)
-
-      await this.props.action.get_account_balances(this.props.user)
-      await this.props.action.normalize_new_item(this.props.user, this.props.withdrawals, new_withdraw_model, 'withdrawals')
-      await this.props.action.update_activity_account(this.props.current_wallet.id, 'withdrawals')
-      await this.props.action.update_pending_activity()
-      await this.props.action.Loader(false)
-      this.props.action.add_new_transaction_animation()
-      this.props.history.push(`/wallets/activity/${this.state.account_id}`)
+      // await this.props.action.add_item_state('withdraws', new_withdraw_model)
+      // await this.props.action.update_activity_state(new_withdraw_model.account_id, 'withdraws')
+      // await this.props.action.Loader(false)
+      // this.props.action.add_new_transaction_animation()
+      // this.props.history.push(`/wallets/activity/${this.state.account_id}/withdraws`)
   }
 
 
@@ -162,18 +199,18 @@ state = {
 
 
   fiat_withdraw = async() => {
-    this.props.action.current_section_params({currentFilter:'withdrawals'})
-    const{
-      match
-    } = this.props
+    this.props.action.current_section_params({currentFilter:'withdraws'})
+    // const{
+    //   match
+    // } = this.props
 
-  this.props.action.UpdateForm('withdraw', {account_from:match.params.id})
-  await this.props.action.CurrentForm('withdraw')
+  // this.props.action.UpdateForm('withdraw', {account_from:match.params.id})
+  // await this.props.action.CurrentForm('withdraw')
   this.props.action.ToggleModal()
   }
 
 
-  focusAction = () =>{
+  focusAction = async() =>{
     this.setState({show_last_address:true})
   }
 
@@ -204,6 +241,8 @@ const { value, active, addressVerify, show_last_address, address_value, verified
 let movil_viewport = window.innerWidth < 768
 
 
+// console.log('||||||||||||||||||||||||| WITHDRAW ==>  last_address ==> ', last_address)
+
 const atributos ={
   icon:'withdraw2',
   size:movil_viewport ? 80 : 100,
@@ -211,8 +250,8 @@ const atributos ={
   color:'#989898'
 }
 
-  // console.log('||||||||||| - - -Componente de retiro crypto', withdraw_provider && withdraw_provider.provider.min_amount)
-  let min_amount = withdraw_provider && withdraw_provider.provider.min_amount
+  let { validate_min_amount } = this.state
+
 
   return(
 
@@ -258,7 +297,7 @@ const atributos ={
 
                               <div className="contInputForm">
                                 <InputForm
-                                  active={((value>min_amount && value<=available) && active) ? true : false}
+                                  active={((validate_min_amount && value<=available) && active) ? true : false}
                                   clase={true} //retiro los estilos que vienen por defecto
                                   type="text"
                                   placeholder={!withdraw_provider ? 'Billetera en mantenimiento' : 'Dirección de retiro'}
@@ -298,9 +337,9 @@ const atributos ={
                               <p className="fuente title soloAd3">Cantidad:</p>
 
                               <InputFormCoin
-                                active={((value>min_amount && value<=available) && active) ? true : false}
+                                active={((validate_min_amount && value<=available) && active) ? true : false}
                                 clase={true} //retiro los estilos que vienen por defecto
-                                placeholder={min_amount}
+                                placeholder={withdraw_provider && withdraw_provider.provider.min_amount}
                                 getMaxAvailable={this.getMaxAvailable}
                                 coin={short_name}
                                 saldoDisponible={available}
@@ -313,7 +352,7 @@ const atributos ={
 
                             <div className="WSection3">
                               <ButtonForms
-                                active={(!this.props.active_trade_operation && (value>min_amount && value<=available) && active) ? true : false}
+                                active={(!this.props.active_trade_operation && (validate_min_amount && value<=available) && active) ? true : false}
                                 clases="cenVert"
                                 ancho="200px"
                                 type="primary"
@@ -387,16 +426,18 @@ function mapStateToProps(state, props){
     user,
     user_id,
     withdraw_accounts,
-    withdrawals
+    withdraws,
+    wallets
   } = state.model_data
+
+  const { params } = props.match
+
 
   const {
     loader
   } = state.isLoading
 
-  const {
-    current_wallet
-  } = state.ui.current_section.params
+  const current_wallet = wallets[params.account_id]
 
   let wit_prov_list = null
 
@@ -420,11 +461,11 @@ function mapStateToProps(state, props){
 let withdraw_list = []
 
 
-if(withdrawals && withdraw_accounts && current_wallet){
-  user[user_id].withdrawals.map((withdraw_id)=>{
-    // if(withdrawals[withdraw_id].account_id === current_wallet.id && withdrawals[withdraw_id].type_order === 'withdraw' && withdrawals[withdraw_id].state==='accepted')
-    if(withdrawals[withdraw_id].account_id === current_wallet.id && withdrawals[withdraw_id].type_order === 'withdraw' && withdrawals[withdraw_id].state==='accepted'){
-      return withdraw_list.push(withdrawals[withdraw_id])
+if(withdraws && withdraw_accounts && current_wallet){
+  user[user_id].withdraws.map((withdraw_id)=>{
+    if(withdraws[withdraw_id].account_id === current_wallet.id && withdraws[withdraw_id].state==='accepted'){
+      // console.log('withdraws list =============> |°°°°°°°°°°°°°°°°°', withdraw_id)
+      return withdraw_list.push(withdraws[withdraw_id])
     }
     return false
   })
@@ -446,21 +487,22 @@ if(withdraw_accounts){
 }
 
 
-// console.log('|||||| ssss', withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value)
+// console.log('|||||||||||||||||||||||||||||| withdraw_accounts ===>', withdraw_list, withdraw_accounts)
 
   return{
     loader,
-    current_wallet:current_wallet,
+    current_wallet,
     active_trade_operation:state.ui.current_section.params.active_trade_operation,
     short_name:state.ui.current_section.params.short_name,
     available:current_wallet && balances && balances[current_wallet.id] && balances[current_wallet.id].available,
     withdraw_provider:wit_prov_list && current_wallet && wit_prov_list[current_wallet.currency.currency],
     // withdraw_provider:null,
-    withdrawals,
+    withdraws:state.storage.activity_for_account[params.account_id] && state.storage.activity_for_account[params.account_id].withdraws,
     available_address:withdraw_account_list,
     withdraw_providers:null,
     user:user[user_id],
-    last_address:current_wallet && current_wallet.currency_type === 'crypto' && withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value
+    last_address:null
+    // last_address:(current_wallet && current_wallet.currency_type === 'crypto') && (withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value)
   }
 }
 

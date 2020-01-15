@@ -131,7 +131,7 @@ class ItemSettingsInit extends Component{
     }
 
     update_state = async(payload) =>{
-      
+
       const{
         name,
         description
@@ -194,7 +194,7 @@ class ItemSettingsInit extends Component{
               verify:kyc.basic === 'accepted',
               description:(kyc.basic === 'confirmed' && !kyc.advanced) ? 'Continúa con la identificación avanzada para dar inicio a la verificación de tus datos.' :
                           (kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' :
-                          (kyc.basic === 'rejected' && kyc.advanced === 'rejected') ? '¡Vaya!, al parecer los datos no se han podido verificar, vuelve a intentarlo' : description,
+                          (kyc.basic === 'rejected' && kyc.advanced === 'rejected') ? (user.verification_error || '¡Vaya!, al parecer los datos no se han podido verificar, vuelve a intentarlo') : '',
               other_state:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'confirmed' :
                           (kyc.basic === 'confirmed' && (!kyc.advanced || kyc.advanced === 'rejected')) ? 'send' :
                           kyc.advanced === 'rejected' ? 'rejected' : null
@@ -207,7 +207,7 @@ class ItemSettingsInit extends Component{
               verify:kyc.advanced === 'accepted',
               other_state:kyc.advanced,
               description:(kyc.basic === 'confirmed' && kyc.advanced === 'confirmed') ? 'El sistema esta verificando tus datos...' :
-                          (kyc.advanced === 'rejected') ? 'Tus datos han sido rechazados, vuelve a subirlos' :description
+                          (kyc.advanced === 'rejected') && ''
             }
 
         case '2auth':

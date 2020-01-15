@@ -24,7 +24,7 @@ class SwapView extends Component{
   }
 
   init_state = async() => {
-    await this.props.initial(this.props.match.params.path, this.props.match.params.id)
+    // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
     this.getOtherPairs(true)
     const { current_wallet, local_currency, current_pair } = this.props
     this.props.action.get_pair_default(current_wallet, local_currency, current_pair)
@@ -71,56 +71,62 @@ class SwapView extends Component{
 
   finish_swap = async(p) =>{
 
-    this.props.action.Loader(true)
-    await this.props.action.get_swap_list(this.props.user, this.props.wallets, this.props.all_pairs)
-    await this.props.action.current_section_params({currentFilter:'swaps'})
-
     const {
       value,
     } = this.state
 
     const{
       current_wallet,
-      swaps,
-      user,
       current_pair
     } = this.props
 
+    this.props.action.Loader(true)
+    await this.props.action.get_swaps(current_wallet.id)
+    // await this.props.action.current_section_params({currentFilter:'swaps'})
+
     const { pair_id } = current_pair
-    let total_value = await this.get_total_value(value)
+    // let total_value = await this.get_total_value(value)
     let new_swap = await this.props.action.add_new_swap(current_wallet.id, pair_id, value)
     // console.log('!!!!!____________________________________________add_new_swap', new_swap)
+    // return console.log('SWAP EJECUTADO', new_swap, total_value)
+
     if(!new_swap){
       return this.handleError('No se ha podio hacer el cambio')
     }
 
-    await this.props.action.current_section_params({active_trade_operation:true})
-
-    let add_swap = {
-      account_id: new_swap.account_from,
-      account_to: new_swap.account_to,
-      action_price: new_swap.action_price,
-      amount: total_value,
-      amount_neto: "",
-      bought: total_value,
-      comment: "",
-      currency: new_swap.to_spend_currency,
-      currency_bought:new_swap.to_buy_currency,
-      currency_type:current_wallet.currency_type,
-      deposit_cost: "",
-      deposit_provider_id: "",
-      expiration_date:new Date(),
-      id:new_swap.id,
-      unique_id:new_swap.id,
-      spent: new_swap.spent,
-      state:new_swap.state,
-      type_order: "swap"
-    }
-
-    await this.props.action.add_order_to('swaps', swaps, user, add_swap)
-    await this.props.action.add_new_transaction_animation()
-    this.props.action.Loader(false)
-    this.props.history.push(`/wallets/activity/${current_wallet.id}`)
+    // return false
+    //
+    // await this.props.action.current_section_params({active_trade_operation:true})
+    //
+    // // el bought lo retorna el socket en el estado aceptado
+    // let add_swap = {
+    //   account_id: new_swap.account_from,
+    //   account_to: new_swap.account_to,
+    //   action_price: new_swap.action_price,
+    //   amount: total_value,
+    //   amount_neto: "",
+    //   bought: total_value,
+    //   comment: "",
+    //   currency: new_swap.to_spend_currency,
+    //   currency_bought:new_swap.to_buy_currency,
+    //   // currency_type:current_wallet.currency_type,
+    //   deposit_cost: "",
+    //   deposit_provider_id: "",
+    //   expiration_date:new Date(),
+    //   id:new_swap.id,
+    //   unique_id:new_swap.id,
+    //   spent: new_swap.spent,
+    //   state:new_swap.state,
+    //   type_order: "swap"
+    // }
+    // // console.log(' ||||||||||||||| NEW SWAP  =====> ', {[add_swap.id]:{...add_swap, state:add_swap.state}})
+    // // await this.props.action.update_item_state({[add_swap.id]:{...add_swap, state:add_swap.state}}, 'swaps')
+    //
+    // await this.props.action.add_item_state('swaps', add_swap)
+    // await this.props.action.update_activity_state(current_wallet.id, 'swaps')
+    // await this.props.action.add_new_transaction_animation()
+    // this.props.action.Loader(false)
+    // this.props.history.push(`/wallets/activity/${current_wallet.id}/swaps`)
 
   }
 
@@ -337,9 +343,10 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { current_wallet, pairs_for_account } = state.ui.current_section.params
+  const { pairs_for_account } = state.ui.current_section.params
   const { user, user_id,  wallets, all_pairs, balances } = state.model_data
-
+  const { params } = props.match
+  const current_wallet = wallets[params.account_id]
   // console.log('Que carajo pasa con el convertidor', pairs_for_account)
 
   let current_pair = {
@@ -347,6 +354,9 @@ function mapStateToProps(state, props){
     secondary_coin:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency,
     secondary_value:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency_value
   }
+
+
+
 
   // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_wallet, pairs_for_account)
 
@@ -356,7 +366,7 @@ function mapStateToProps(state, props){
     wallets,
     all_pairs,
     swaps:state.model_data.swaps,
-    current_wallet:current_wallet,
+    current_wallet,
     short_name:state.ui.current_section.params.short_name,
     local_pairs:state.model_data.pairs.collections || null,
     quote_type:state.ui.current_section.params.quote_type,

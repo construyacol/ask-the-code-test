@@ -27,7 +27,17 @@
   width: auto !important;
   border-radius: 10% !important;
   padding: 0 3px !important;
+  max-width: 50px !important;
 }
+
+.walletTitleCont .PopNotification, .PopNotification.withdraw_accounts{
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+}
+
+
 
 
 .PopNotification{

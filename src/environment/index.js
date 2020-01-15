@@ -17,7 +17,6 @@ export default Environment
 // ApiUrl:process.env.NODE_ENV === 'development' ? 'http://192.168.0.16:3001/api/' : 'https://www.binance.com'
 // token coinsenda
 
-
   // user: zeky.laf+local@gmail.com
   // pw: starnet1
 
@@ -30,18 +29,22 @@ export default Environment
 
 // https://oldauth.ngrok.io/public/signin?clientId=5d234981249f0d2d1bf1b72e
 
-
 // 5d234a113035be2e18a953ca
-
 
 // nuevas APIS
 
-
 // Country: https://countrylistapi.ngrok.io
-// Auth: https://oldauth.ngrok.io
+  // Auth: https://oldauth.ngrok.io
 // Identity: https://sendaidentity.ngrok.io
 // Tx: https://sendatx.ngrok.io
 // Account: https://sendaaccount.ngrok.io
-  // Deposit: https://sendadeposit.ngrok.io
+// Deposit: https://sendadeposit.ngrok.io
 // Witdhraw: https://sendawithdraw.ngrok.io
 // Swap: https://sendaswap.ngrok.io
+
+
+
+// remote machine
+
+// depoosit: npm run npm2
+// swap: npm run nodemon

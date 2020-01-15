@@ -1,5 +1,4 @@
 import {
-  MENU_ITEM_ACTIVE,
   HEAD_ROOM,
   ITEM_QUOTE_ACTIVE,
   MODAL_CONFIRMATION_TOGGLE,
@@ -21,8 +20,8 @@ import {
 } from './action_types'
 
 
-export const socket_notify = (payload, item_type) =>{
-  let payload_array = payload && item_type && [{...payload, item_type}]
+export const socket_notify = (payload, item_type, title) =>{
+  let payload_array = (payload && item_type) && [{...payload, item_type, title}]
   return{
     type:SOCKET_NOTIFY,
     payload:payload && payload_array
@@ -54,6 +53,7 @@ export const default_video_state = (payload) =>{
 
 
 export const AddNotification = (payload, extra, amount) =>{
+
   return{
     type:ADD_NOTIFICATION,
     payload,
@@ -68,6 +68,7 @@ export const AddNotification = (payload, extra, amount) =>{
 }
 
 export const CleanNotifications = (payload) =>{
+
   return{
     type:CLEAN_NOTIFICATIONS,
     payload
@@ -161,12 +162,7 @@ export const section_view_to = payload =>{
   }
 }
 
-export const MenuItemActive = payload =>{
-  return{
-    type:MENU_ITEM_ACTIVE,
-    payload
-  }
-}
+
 
 export const HeadRoom = payload => {
   return{
@@ -198,4 +194,4 @@ export const ConfirmationModalPayload = payload =>{
 
 
 
-export default MenuItemActive
+export default HeadRoom
