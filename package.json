@@ -51,6 +51,7 @@
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:build": "cross-env NODE_ENV='production' react-scripts build && serve ./build -s -l 5000",
     "build": "cross-env NODE_ENV='production' react-scripts build",
+    "postbuild": "react-snap",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

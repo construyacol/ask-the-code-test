@@ -4,7 +4,6 @@ import { Router, Route, Switch } from 'react-router-dom'
 import createBrowserHistory from "history/createBrowserHistory"
 import localForage from 'localforage'
 // import PagesRouter from './landingPage/pages'
-import HelPages from './landing_page/help_pages'
 import jwt from 'jsonwebtoken'
 // import FreshChat from '../services/freshChat'
 // import AuthComponentContainer from './auth'
@@ -102,7 +101,6 @@ class RootContainer extends Component {
         history={history}
         >
           <Switch>
-            <Route strict path="/docs" component={HelPages} />
             <Route path="/" render={ () => (
               TokenUser && (<HomeContainer history={history} user_data={user_data} />)
             )}/>
