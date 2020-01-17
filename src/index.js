@@ -1,6 +1,7 @@
 import React from 'react';
 // import {render} from 'react-dom';
-import { hydrate, render } from "react-dom";
+// import { hydrate, render } from "react-dom";
+import { render } from 'react-snapshot';
 import './index.css';
 // import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux'
@@ -32,18 +33,18 @@ const store = createStore(
   // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
-// const home = document.getElementById('home-container')
-// render(
-  // <Provider store={store}><RootContainer/></Provider>
-//  , home
-// );
+const home = document.getElementById('home-container')
+render(
+  <Provider store={store}><RootContainer/></Provider>
+ , home
+);
 
-const rootElement = document.getElementById('home-container')
-if (rootElement.hasChildNodes()) {
-  hydrate(<Provider store={store}><RootContainer/></Provider>, rootElement);
-} else {
-  render(<Provider store={store}><RootContainer/></Provider>, rootElement);
-}
+// const rootElement = document.getElementById('home-container')
+// if (rootElement.hasChildNodes()) {
+//   hydrate(<Provider store={store}><RootContainer/></Provider>, rootElement);
+// } else {
+//   render(<Provider store={store}><RootContainer/></Provider>, rootElement);
+// }
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

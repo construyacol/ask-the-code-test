@@ -41,7 +41,6 @@ class RootContainer extends Component {
 
   init_component = async() =>{
 
-
     let result
     let TokenUser
 
@@ -64,7 +63,7 @@ class RootContainer extends Component {
     // console.log('|||||||| availableToken', availableToken)
 
     let userData = await jwt.decode(AccessToken)
-    console.log('|||||||| userData', userData)
+    // console.log('|||||||| userData', userData)
     if(!userData){return this.logOut()}
     const { usr, email } = userData
     console.log(AccessToken)
@@ -100,12 +99,17 @@ class RootContainer extends Component {
       <Router
         history={history}
         >
-          <Switch>
-            <Route path="/" render={ () => (
-              TokenUser && (<HomeContainer history={history} user_data={user_data} />)
-            )}/>
-            </Switch>
+        <Switch>
+          <Route path="/help" render={()=>(<h1 style={{color:"black", background:"white", fontSize:"50px"}}>HELP</h1>)}/>
+          <Route path="/" render={()=>(
+            TokenUser ?
+            <HomeContainer history={history} user_data={user_data} {...this.props} />
+            :
+            <h1 style={{color:"black", background:"white", fontSize:"50px"}}>WTF</h1>
+          )}/>
+        </Switch>
       </Router>
+
     )
   }
 }

@@ -1,19 +1,15 @@
 import React, {Component, Fragment} from 'react'
-// import localForage from 'localforage'
 
-// import DashBoardLayout from './dashBoardLayout.js'
 import {
   Element,
   Events,
   scrollSpy
 } from "react-scroll";
-
+//
 import { Router, Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
-import SimpleLoader from '../widgets/loaders'
-import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
 import SettingsContainer from '../settings/settingsContainer'
 import SecurityCenter from '../securityCenter/securityCenter'
@@ -73,48 +69,33 @@ class DashBoardContainer extends Component{
       <Router
         history={this.props.history}
         >
-          <Element id="containerElement" className="dashBoardLayout">
-             <div className="sectionFixedPrice">
-               <QuoteContainer/>
-             </div>
-             <div className="containerSection" name="firstInsideContainer">
-                    {
-                      !this.props.user ?
-                      <DetailContainerLayout history={this.props.history}>
-                        <SimpleLoader
-                          color="blue"
-                          label="Obteniendo datos del usuario"
-                        />
-                      </DetailContainerLayout>
-                      :
-                      <Fragment>
-                          <Switch>
-                            {/* <Route path="/wallets" render={() => <WalletContainer/>} /> */}
-                              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-                              <Route path="/settings" component={SettingsContainer} />
-                              <Route path="/security" component={SecurityCenter} />
-                              <Route path="/referral" component={ReferralComponent} />
-                              <Route path="/wallets" component={WalletContainer} />
+          <Fragment>
+            <Element id="containerElement" className="dashBoardLayout">
+               <div className="sectionFixedPrice">
+                 <QuoteContainer/>
+               </div>
+               <div className="containerSection" name="firstInsideContainer">
 
-                              {/* <Redirect from="/" to="/wallets" /> */}
+                        <Fragment>
+                            <Switch>
+                                <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
+                                <Route path="/settings" component={SettingsContainer} />
+                                <Route path="/security" component={SecurityCenter} />
+                                <Route path="/referral" component={ReferralComponent} />
+                                <Route path="/wallets" component={WalletContainer} />
+                              </Switch>
+                        </Fragment>
 
-
-                              {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
-                              {/* <Redirect from="/" to="/activity" /> */}
-                              {/* <Route exact path={["/activity", "/"]}  component={ActivityContainer}/> */}
-                            </Switch>
-                      </Fragment>
-                    }
-                  {
-                    this.props.history.location.pathname === '/security' &&
-                    <Fragment>
-                          <PanelAlertContainer history={this.props.history}/>
-                          <VideoPlayer></VideoPlayer>
-                    </Fragment>
-                  }
-
-             </div>
-          </Element>
+                      {
+                        this.props.history.location.pathname === '/security' &&
+                        <Fragment>
+                              <PanelAlertContainer history={this.props.history}/>
+                              <VideoPlayer></VideoPlayer>
+                        </Fragment>
+                      }
+               </div>
+            </Element>
+          </Fragment>
       </Router>
     )
   }
