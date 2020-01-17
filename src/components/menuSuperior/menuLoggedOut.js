@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ButtonForms } from '../widgets/buttons/buttons'
-import config from '../landing_page/default'
+// import config from '../landing_page/default'
 
 const oauth = config.oauth
 const signinUri = `${oauth.host}/${oauth.signin}?clientId=${oauth.key}`

@@ -78,10 +78,10 @@ class RootContainer extends Component {
   }
 
   logOut = async() =>{
+    window.location.href = 'https://www.coinsenda.com';
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')
     await this.setState({TokenUser:false, userId:null})
-    window.location.href = 'https://www.coinsenda.com';
   }
 
   render(){
@@ -100,12 +100,11 @@ class RootContainer extends Component {
         history={history}
         >
         <Switch>
-          <Route path="/help" render={()=>(<h1 style={{color:"black", background:"white", fontSize:"50px"}}>HELP</h1>)}/>
           <Route path="/" render={()=>(
             TokenUser ?
             <HomeContainer history={history} user_data={user_data} {...this.props} />
             :
-            <h1 style={{color:"black", background:"white", fontSize:"50px"}}>WTF</h1>
+            <div style={{background:"linear-gradient(to bottom right,#014c7d,#0198ff)", width:"100vw", height:"100vh"}} ></div>
           )}/>
         </Switch>
       </Router>

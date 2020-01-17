@@ -77,19 +77,18 @@ static getDerivedStateFromError(error, info){
 
     return(
       <HandleError>
+        <ToastContainers/>
+        <SocketsComponent/>
 
       <Router
         history={this.props.history}
         >
-
 
           {
             !app_loaded ?
             <Route path="/" render={() => <LoaderAplication user_data={user_data} history={this.props.history} />} />
             :
             <Fragment>
-                <ToastContainers/>
-                <SocketsComponent/>
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
                     <Route path="/:primary_path" component={MenuPrincipalContainer} />

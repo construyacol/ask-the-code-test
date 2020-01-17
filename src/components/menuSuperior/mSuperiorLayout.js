@@ -4,7 +4,7 @@ import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
 import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { Link } from 'react-router-dom'
-import MenuLoggedOut from './menuLoggedOut'
+// import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 
 const MenuSuperiorLayout = (props) =>{
@@ -80,7 +80,7 @@ const MenuSuperiorLayout = (props) =>{
             </div>
             :
             <div className="loggedInFalse">
-              <MenuLoggedOut/>
+              {/* <MenuLoggedOut/> */}
             </div>
           }
 
