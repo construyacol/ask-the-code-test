@@ -1874,6 +1874,7 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
     if(!init_state){return false}
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
+
     // const get_status_url = `${IdentityApIUrl}status/get-status`
     // body = {
     //   "data": {}
@@ -1885,6 +1886,7 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
     const get_status_url = `${IdentityApIUrl}users/${userId}/status`
     let status = await ApiGetRequest(get_status_url, myHeaders)
 
+    // console.log('===================================>>>>   identity status', status)
 
     // const { data } = status
 
@@ -1904,6 +1906,9 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
 
     // return console.log('||||||  - - -.  --  status  =====> ', user_update)
     // let profile = await dispatch(get_profile(user_update.id, token))
+
+    // provitional line
+    // user_update.security_center.kyc.basic = "confirmed"
 
     // if((profile.countries[country[0].value] !== 'level_0') && (user_update.verification_level !== 'level_0')){
       let kyc_personal = country[0].levels && country[0].levels.personal
@@ -2089,7 +2094,7 @@ export const update_level_profile = (config, user) =>{
 
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body, user.TokenUser)
-    console.log('|||||||| update_level_profile_____________', body, add_new_profile)
+    // console.log('|||||||| update_level_profile_____________', body, add_new_profile)
     if(!add_new_profile || add_new_profile === 465){return false}
     return add_new_profile
 

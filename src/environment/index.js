@@ -42,9 +42,9 @@ export default Environment
 // Witdhraw: https://sendawithdraw.ngrok.io
 // Swap: https://sendaswap.ngrok.io
 
-
-
 // remote machine
 
 // depoosit: npm run npm2
 // swap: npm run nodemon
+
+// https://dev-admin.devsertec.com/ ==> deploy url staging

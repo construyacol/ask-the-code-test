@@ -1,6 +1,6 @@
 import React from 'react'
 import KycDashBoard from './dashboard/kycDashboardLayout'
-// import SimpleSlider from './carousel/carouselLayout'
+import SimpleSlider from './carousel/carouselLayout'
 import CropImg from '../../widgets/cropimg'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
@@ -12,8 +12,8 @@ const KycAvancedLayout = (props) =>{
   const {
     dashboard,
     fileloader,
-    // onBoarding,
-    // continuar,
+    onBoarding,
+    continuar,
     topOnBoarding,
     loader,
     step,
@@ -29,7 +29,7 @@ const KycAvancedLayout = (props) =>{
         !kyc_success ?
         <div className={`containerKycAvanced ${(dashboard && step<5 ) ? 'desktop' : ''}`} style={{ top: `${topOnBoarding}vh` }} >
 
-          {/* {
+          {
             (step < 5 && window.innerWidth>768) &&
             <div className="KYCAstep KycOnboarding">
               <SimpleSlider
@@ -37,7 +37,7 @@ const KycAvancedLayout = (props) =>{
                 continuar={continuar}
               />
             </div>
-          } */}
+          }
 
 
           <div className="KYCAstep KycDashboard">

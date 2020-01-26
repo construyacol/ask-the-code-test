@@ -39,7 +39,7 @@ import {
   Touch,
   Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut
  } from './'
 
  import {
@@ -98,6 +98,8 @@ class IconSwitch extends Component {
   switcher = props => {
     const { icon } = props
     switch (icon) {
+      case 'logout':
+        return <LogOut {...props} />
       case 'ethereum':
         return <Ethereum {...props} />
       case 'ethereum_account':

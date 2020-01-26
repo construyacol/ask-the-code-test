@@ -15,11 +15,25 @@ class MenuSuperiorContainer extends Component {
   state = {
     movil:window.innerWidth < 768 ? true : false,
     buy_price:null,
-    sell_price:null
+    sell_price:null,
+    headRoomClass:'pinned'
   }
 
   logout = async() =>{
-    await this.props.logOut()
+    this.props.action.ConfirmationModalToggle()
+    this.props.action.ConfirmationModalPayload({
+      title:"Estás a punto de cerrar sesión...",
+      description:"¿Estás seguro que deseas salir de Coinsenda?",
+      txtPrimary:"Salir de Coinsenda",
+      txtSecondary:"Quiero quedarme",
+      action:(this.logOutFin),
+      svg:"logout",
+      type:"select_country"
+    })
+  }
+
+  logOutFin = () => {
+    this.props.logOut()
     this.props.action.logged_in(false)
   }
 
@@ -43,7 +57,8 @@ class MenuSuperiorContainer extends Component {
   }
 
   mouseOver = () =>{
-    this.props.action.HeadRoom('pinned')
+    this.setState({headRoomClass:'pinned'})
+    // this.props.action.HeadRoom('pinned')
   }
 
   formating_currency = async() => {
@@ -58,14 +73,16 @@ class MenuSuperiorContainer extends Component {
   }
 
   componentDidUpdate(prevProps){
-    if(prevProps !== this.props){
+    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path){
       this.formating_currency()
+      this.setState({headRoomClass:'unpinned'})
     }
   }
 
 
   componentDidMount(){
     this.formating_currency()
+    this.setState({headRoomClass:'unpinned'})
     let menuSuperior = document.getElementById('mSuperior')
     let detonador = document.getElementById('containerElement')
     const headroom = new Headroom(menuSuperior, {
@@ -73,10 +90,12 @@ class MenuSuperiorContainer extends Component {
        "tolerance" : 10,
       "scroller" :detonador,
       onUnpin:()=>{
-        this.props.action.HeadRoom('unpinned')
+        this.setState({headRoomClass:'unpinned'})
+        // this.props.action.HeadRoom('unpinned')
       },
       onPin:()=>{
-        this.props.action.HeadRoom('pinned')
+        this.setState({headRoomClass:'pinned'})
+        // this.props.action.HeadRoom('pinned')
       }
     })
     headroom.init()
@@ -116,7 +135,6 @@ class MenuSuperiorContainer extends Component {
 
 
 MenuSuperiorContainer.propTypes = {
-  HeadRoomClass:PropTypes.string,
   currentPair:PropTypes.object,
   current_section:PropTypes.string,
   item_active:PropTypes.string,
@@ -138,7 +156,6 @@ function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
   return{
     item_active:state.ui.menu_item_active,
-    current_section:state.ui.current_section.view,
     HeadRoomClass:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,

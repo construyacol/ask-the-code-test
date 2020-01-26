@@ -43,36 +43,36 @@ export const InputFormConverter = (props) => {
 
 
 export const InputForm = (props) => {
-const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
-  return(
-    <div className={`${!clase ? 'containerInputComponent' : clase}`}>
-      <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
-      <div className={`inputContainer ${props.active ? 'inputActivado' : '' } ${state_item}`}>
-        <input
-          className={`inputElement ${props.active ? 'inputActivado' : '' } ${addressVerify}`}
-          type={props.type}
-          placeholder={props.placeholder}
-          onChange={props.actualizarEstado}
-          onFocus={focusAction}
-          onBlur={unFocusAction}
-          name={props.name}
-          defaultValue={props.value}
-          onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
-          disabled={disabled}
-        />
-        {
-          address &&
-          <div className="contIconAddress">
-            <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
-          </div>
-        }
+  const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
+    return(
+      <div className={`${!clase ? 'containerInputComponent' : clase}`}>
+        <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
+        <div className={`inputContainer ${props.active ? 'inputActivado' : '' } ${state_item}`}>
+          <input
+            className={`inputElement ${props.active ? 'inputActivado' : '' } ${addressVerify}`}
+            type={props.type}
+            placeholder={props.placeholder}
+            onChange={props.actualizarEstado}
+            onFocus={focusAction}
+            onBlur={unFocusAction}
+            name={props.name}
+            defaultValue={props.value}
+            onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+            disabled={disabled}
+          />
+          {
+            address &&
+            <div className="contIconAddress">
+              <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
+            </div>
+          }
+        </div>
+          {
+            (props.type === "number" || props.type ===  "password") &&
+              <p className="statusInput">{status}</p>
+          }
       </div>
-        {
-          (props.type === "number" || props.type ===  "password") &&
-            <p className="statusInput">{status}</p>
-        }
-    </div>
-  )
+    )
 }
 
 

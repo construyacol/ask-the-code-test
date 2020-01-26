@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import './mSuperior.css'
 import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
-import { SelectCountryButton } from '../widgets/buttons/buttons'
+// import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
@@ -14,14 +14,14 @@ const MenuSuperiorLayout = (props) =>{
 
   const {
     logout,
-    HeadRoomClass,
+    headRoomClass,
     item_quote,
     movil,
     currentPair,
     sell_price,
     buy_price,
     mouseOver,
-    openSelectCountry,
+    // openSelectCountry,
     loggedIn,
     toggle_menu,
     item_active,
@@ -52,7 +52,7 @@ const MenuSuperiorLayout = (props) =>{
             </div>
 
         </div>
-        <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
+        <div className={`containerMenuSuperior ${headRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
           {
             loggedIn ?
             <div className="capsuleMenu1">
@@ -72,10 +72,10 @@ const MenuSuperiorLayout = (props) =>{
               {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
               <div className="itemSup"><i className="fas fa-bell"></i></div> */}
 
-              {
+              {/* {
                 window.innerWidth>768 &&
                 <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
-              }
+              } */}
 
             </div>
             :
