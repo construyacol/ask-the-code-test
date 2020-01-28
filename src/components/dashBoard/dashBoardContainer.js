@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component, Fragment, Suspense} from 'react'
 
 import {
   Element,
@@ -10,17 +10,26 @@ import { Router, Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
-import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
-import SettingsContainer from '../settings/settingsContainer'
-import SecurityCenter from '../securityCenter/securityCenter'
-import ReferralComponent from '../referrals/referralsComponent'
+// import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
+// import SettingsContainer from '../settings/settingsContainer'
+// import SecurityCenter from '../securityCenter/securityCenter'
+// import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
 import FreshChat from '../../services/freshChat'
+import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
+import SimpleLoader from '../widgets/loaders'
 
 
 import './dashboard.css'
+
+
+const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
+const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
+const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
+const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
+
 
 
 class DashBoardContainer extends Component{
@@ -76,15 +85,15 @@ class DashBoardContainer extends Component{
                </div>
                <div className="containerSection" name="firstInsideContainer">
 
-                        <Fragment>
+                        <Suspense fallback={<LazyLoaderPAge/>}>
                             <Switch>
-                                <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
+                              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
                                 <Route path="/settings" component={SettingsContainer} />
                                 <Route path="/security" component={SecurityCenter} />
                                 <Route path="/referral" component={ReferralComponent} />
                                 <Route path="/wallets" component={WalletContainer} />
                               </Switch>
-                        </Fragment>
+                        </Suspense>
 
                       {
                         this.props.history.location.pathname === '/security' &&
@@ -129,3 +138,16 @@ function mapStateToProps(state, props){
 }
 
 export default connect(mapStateToProps) (DashBoardContainer)
+
+
+// style={{height:'90vh', width:'100vw', background:'white'}}
+
+const LazyLoaderPAge = () => {
+  return(
+    <DetailContainerLayout
+      title="cargando"
+      >
+      <SimpleLoader/>
+    </DetailContainerLayout>
+  )
+}

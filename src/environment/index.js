@@ -1,4 +1,5 @@
 export const Environment = {
+  DeployUrl:process.env.NODE_ENV === 'development' ? 'https://app.devsertec.com' : 'https://app.coinsenda.com',
   ApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/api/' : 'https://sendatx.ngrok.io/api/',
   SocketUrl:process.env.NODE_ENV === 'development' ? 'https://sendatx.ngrok.io/' : 'https://sendatx.ngrok.io/',
   IdentityApIUrl:process.env.NODE_ENV === 'development' ? 'https://sendaidentity.ngrok.io/api/' : 'https://sendaidentity.ngrok.io/api/',
@@ -9,6 +10,7 @@ export const Environment = {
   SwapApiUrl:process.env.NODE_ENV === 'development' ? 'https://sendaswap.ngrok.io/api/' : 'https://sendaswap.ngrok.io/api/',
   CountryUrl:'https://countrylistapi.ngrok.io/' //endpoint imagenes
 }
+
 
 // http://190.192.134.201:5900
 

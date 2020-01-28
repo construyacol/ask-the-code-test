@@ -9,11 +9,13 @@ import jwt from 'jsonwebtoken'
 // import AuthComponentContainer from './auth'
 // import LandingPageContainer from './landing_page/landingContainer'
 // import Landing from './landingPage'
+import Environment from '../environment'
 
 const history = createBrowserHistory();
 // http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
 
 
+const { DeployUrl } = Environment
 
 class RootContainer extends Component {
 
@@ -78,7 +80,7 @@ class RootContainer extends Component {
   }
 
   logOut = async() =>{
-    window.location.href = 'https://www.coinsenda.com';
+    window.location.href = DeployUrl;
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')
     await this.setState({TokenUser:false, userId:null})

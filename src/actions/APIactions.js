@@ -865,49 +865,7 @@ export const create_deposit_order = (
     const url_new_order = `${DepositApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body, user.TokenUser)
 
-    // console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, '| BODY' , body)
-
-    // sentryCaptureMessage('add-new-deposits', new_fiat_deposit)
-
-    // http://localhost:3001/api/deposits/add-new-deposit
-    //
-    // {
-    //   "access_token": {{access_token}},
-    //   "data": {
-    //     "currency": {
-    //         "currency" : "cop",
-    //         "is_token" : false
-    //       },
-    //     "amount": "1000000",
-    //     "cost_id": "en_efectivo",
-    //     "deposit_provider_id": "5c5941b94820f94673d22d8e",
-    //     "info": "",
-    //     "comment": "",
-    //     "account_id": "5c19d6ed89c42e352f1297ff"
-    //   }
-    // }
-
-
-
-
-    // console.log('BOOOOOOODY!!!!,', body , new_fiat_deposit)
-
-    // const new_fiat_deposit = {
-    //   "account_id": "5c04f873eb9c94511fd2edfc",
-    //   "amount": "300000",
-    //   "amount_neto": "300000",
-    //   "comment": "Putoooo",
-    //   "cost_id": "Otros medios",
-    //   "currency":currency,
-    //   "currency_type": "fiat",
-    //   "cost": "0",
-    //   "deposit_provider_id": "5c0d57120fcccc1c74575e50",
-    //   "expiration_date": "2019-01-03T07:47:21.037Z",
-    //   "id": "5c2726896be6a827dfc0e40d",
-    //   "info":"",
-    //   "state": "pending",
-    //   "userId": "5bea1f01ba84493018b7528c"
-    // }
+    console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, ' | BODY' , body)
 
     if(new_fiat_deposit === 465 || !new_fiat_deposit){return false}
     const { data } = new_fiat_deposit

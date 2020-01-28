@@ -12,7 +12,9 @@ import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 // import { matchItem } from '../../services'
 
-class witdrawAccountContainer extends Component{
+
+
+class WitdrawAccountContainer extends Component{
 
 // userWallets, lo utilozamos para hacer validación de la respuesta del API
 
@@ -24,6 +26,7 @@ class witdrawAccountContainer extends Component{
   componentDidMount(){
      // let path = this.props.match.path.replace('/', '')
      this.props.action.CurrentForm('bank')
+     console.log('WithdrawAccount ====> ', this.props)
   }
 
   componentWillUnmount(){
@@ -139,7 +142,7 @@ class witdrawAccountContainer extends Component{
 
 
 
-witdrawAccountContainer.propTypes = {
+WitdrawAccountContainer.propTypes = {
   app_loaded:PropTypes.bool,
   currencies:PropTypes.array,
   current_wallet:PropTypes.object,
@@ -179,4 +182,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(witdrawAccountContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(WitdrawAccountContainer)
