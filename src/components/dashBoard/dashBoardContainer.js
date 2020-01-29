@@ -72,7 +72,7 @@ class DashBoardContainer extends Component{
 
 
   render(){
-    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
+    console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props)
 
     return(
       <Router
@@ -96,7 +96,7 @@ class DashBoardContainer extends Component{
                         </Suspense>
 
                       {
-                        this.props.history.location.pathname === '/security' &&
+                        this.props.primary_path === 'security' &&
                         <Fragment>
                               <PanelAlertContainer history={this.props.history}/>
                               <VideoPlayer></VideoPlayer>
@@ -131,9 +131,12 @@ DashBoardContainer.propTypes = {
 
 
 function mapStateToProps(state, props){
+
     const { user, user_id } = state.model_data
+
   return{
-    user:user[user_id]
+    user:user[user_id],
+    primary_path:props.match.params && props.match.params.primary_path
   }
 }
 

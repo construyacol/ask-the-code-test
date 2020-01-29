@@ -352,7 +352,7 @@ export const InputCountryPrefix = (props) =>{
     search_result,
     open,
     update,
-    clean_search_result,
+    clean_search_result
   } = props
 
   // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
@@ -510,12 +510,17 @@ export const InputCountry = (props) =>{
     country_match,
     reset_data,
     disabled,
-    active
+    active,
+    loader
   } = props
+
+  console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
+
 
 
   return(
     <div id="kycPrime" className="containerInputComponent3">
+
 
       <div className="inputLabelsCont">
         <div className="InputCarous">
@@ -524,6 +529,14 @@ export const InputCountry = (props) =>{
       </div>
 
       <div className={`inputContainer3 ${active ? 'inputActivado' : '' }`}>
+
+        {
+          loader &&
+          <div className="inputCountryLoader">
+            <SimpleLoader loader={2}/>
+          </div>
+        }
+
 
         {
           country_match ?

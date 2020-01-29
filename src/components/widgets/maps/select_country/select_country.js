@@ -22,12 +22,12 @@ class SelectCountry extends Component {
   }
 
   action_loader = (payload) =>{
-    this.props.action.Loader(payload)
+    // this.props.action.Loader(payload)
     this.setState({disabled:false})
   }
 
   load_countries = async() =>{
-    this.props.action.Loader(true)
+    // this.props.action.Loader(true)
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
     // console.log('||||| =====================================> SelectCountry', res)
@@ -99,6 +99,7 @@ class SelectCountry extends Component {
                 country_match={country_match}
                 update_country={this.update_country}
                 reset_data={this.reset_data}
+                loader={loader}
                 disabled={disabled}
                 handleSubmit={this.new_country_selected}
                 active={country_match ? true : null}
@@ -109,7 +110,6 @@ class SelectCountry extends Component {
             <SAmerica
               width={900}
               height={768}
-              loader={loader}
               action_loader={this.action_loader}
               available_countries={available_countries}
               select_country_component={this.update_country}
