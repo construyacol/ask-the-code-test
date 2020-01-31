@@ -4,6 +4,18 @@ import styled, { css } from 'styled-components'
 
 
 
+export const AccountListContainer = styled.section`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr ));
+  justify-items: center;
+  grid-template-rows: repeat(auto-fill, 200px);
+  row-gap: 20px;
+  column-gap: 20px;
+  align-items: center;
+`
+
 export const ACta = styled.div`
   position: absolute;
   width: 100%;
@@ -158,12 +170,12 @@ export const ItemAccountL = styled.div`
   transition: .2s;
   cursor: pointer;
   grid-row-gap: 3px;
-  -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
-  -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
-  box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
   overflow: hidden;
   transform-origin: top;
   grid-template-rows: ${props => props.wallet ? '35px 25px 1fr' : '35px 20px 25px 20px 1fr'};
+  -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
+  -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
+  box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
 
 
   &.deleted{
@@ -206,6 +218,51 @@ export const ItemAccountL = styled.div`
     -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.2);
     box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.2);
     transform: scale(1.01);
+  }
+
+
+
+  &.loader:hover{
+    box-shadow: 0px !important;
+    transform: scale(1) !important;
+    background: #f9f9fb;
+  }
+
+
+  &.loader div{
+    background: #eaeaea;
+    border-radius: 6px;
+  }
+
+  &.loader{
+    background: white;
+    grid-row-gap: 12px;
+    animation-name: accountLoader;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    opacity: 0;
+  }
+
+  &.loader.dos{
+    animation-delay: .4s;
+  }
+
+  &.loader.tres{
+    animation-delay: .8s;
+  }
+
+
+
+  @keyframes accountLoader{
+    0%{
+      opacity: 0;
+    }
+    70%{
+      opacity: 1;
+    }
+    100%{
+      opacity: 0;
+    }
   }
 
 

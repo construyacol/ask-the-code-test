@@ -12,7 +12,7 @@ import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
 // import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
 // import SettingsContainer from '../settings/settingsContainer'
-// import SecurityCenter from '../securityCenter/securityCenter'
+import SecurityCenter from '../securityCenter/securityCenter'
 // import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
@@ -20,14 +20,15 @@ import PropTypes from 'prop-types'
 import FreshChat from '../../services/freshChat'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import SimpleLoader from '../widgets/loaders'
-
+import ItemAccount from '../widgets/accountList/item_account'
+import { AccountListContainer } from '../widgets/accountList/styles'
 
 import './dashboard.css'
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
-const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
-const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
+// const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
+// const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
 
 
@@ -85,13 +86,14 @@ class DashBoardContainer extends Component{
                </div>
                <div className="containerSection" name="firstInsideContainer">
 
-                        <Suspense fallback={<LazyLoaderPAge/>}>
+                        <Suspense fallback={<LazyLoaderPAge path={this.props.primary_path}/>}>
                             <Switch>
+                              {/* <Route path="/withdraw_accounts" render={()=>(<LazyLoaderPAge path={this.props.primary_path}/>)}/> */}
                               <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-                                <Route path="/settings" component={SettingsContainer} />
                                 <Route path="/security" component={SecurityCenter} />
                                 <Route path="/referral" component={ReferralComponent} />
                                 <Route path="/wallets" component={WalletContainer} />
+                                {/* <Route path="/settings" component={SettingsContainer} /> */}
                               </Switch>
                         </Suspense>
 
@@ -145,12 +147,43 @@ export default connect(mapStateToProps) (DashBoardContainer)
 
 // style={{height:'90vh', width:'100vw', background:'white'}}
 
-const LazyLoaderPAge = () => {
+const LazyLoaderPAge = ({path}) => {
+
+  let title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
+  let LoaderScreen = path === 'withdraw_accounts' ? WithdrawAccountLoader : SimpleLoader
+
   return(
     <DetailContainerLayout
-      title="cargando"
+      title={title}
       >
-      <SimpleLoader/>
+      <LoaderScreen/>
     </DetailContainerLayout>
   )
 }
+
+
+
+
+const WithdrawAccountLoader = props => {
+
+  return(
+      <AccountListContainer>
+        <ItemAccount loader/>
+      </AccountListContainer>
+  )
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
