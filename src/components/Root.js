@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import HomeContainer from './home/homeContainer'
 import { Router, Route, Switch } from 'react-router-dom'
-import createBrowserHistory from "history/createBrowserHistory"
+// import createBrowserHistory from "history/createBrowserHistory"
+import { createBrowserHistory } from "history";
 import localForage from 'localforage'
 // import PagesRouter from './landingPage/pages'
 import jwt from 'jsonwebtoken'
@@ -12,7 +13,6 @@ import jwt from 'jsonwebtoken'
 import Environment from '../environment'
 
 const history = createBrowserHistory();
-// http://sendaauth.ngrok.io/public/signin?clientId=5bea09f3b5f9071f69c49e05
 
 
 const { DeployUrl } = Environment
@@ -68,7 +68,7 @@ class RootContainer extends Component {
     // console.log('|||||||| userData', userData)
     if(!userData){return this.logOut()}
     const { usr, email } = userData
-    console.log(AccessToken)
+    // console.log(AccessToken)
     this.setState({
       // TokenUser:'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZDIzNDk4MTI0OWYwZDJkMWJmMWI3MmUiLCJ1c3IiOiI1ZDIzNGExMTMwMzViZTJlMThhOTUzY2EiLCJqdGkiOiJ3WjRwUk5rd096TjZmZUxsMGxBRVhZZld2QXpoRG0zMVVMVWZ1S0tvdTZHcngxYWdNODdMcHcyOVB4Umw1QmdWIiwiYXVkIjoidHJhbnNhY3Rpb24saWRlbnRpdHksYXV0aCIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjVkMjM0OTgxMjQ5ZjBkMmQxYmYxYjcyZVwifSIsImlhdCI6MTU2OTQzODU2OCwiZXhwIjoxNTY5NDQ5MzY4fQ.1XkXD0mdOj0LfrSVyTsFs4ZkguH1kWS9aYPYdPs3v8_nSMIfVtU-Y6YXIgU0_gDoVU_Yr7tueZ5rxQWlxlNUkQ',
       TokenUser:AccessToken,

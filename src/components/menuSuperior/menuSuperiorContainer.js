@@ -12,11 +12,13 @@ import PropTypes from 'prop-types'
 
 class MenuSuperiorContainer extends Component {
 
+  _isMounted = false;
+
   state = {
     movil:window.innerWidth < 768 ? true : false,
     buy_price:null,
     sell_price:null,
-    headRoomClass:'pinned'
+    headRoomClass:'unpinned'
   }
 
   logout = async() =>{
@@ -66,23 +68,28 @@ class MenuSuperiorContainer extends Component {
     if(!currentPair){return false}
     let buy_price = await formatToCurrency(currentPair.buy_price, currentPair.secondary_currency, true)
     let sell_price = await formatToCurrency(currentPair.sell_price, currentPair.secondary_currency, true)
-    this.setState({
-      buy_price,
-      sell_price
-    })
+    if(this._isMounted){
+      this.setState({
+        buy_price,
+        sell_price
+      })
+    }
   }
 
   componentDidUpdate(prevProps){
-    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path){
+    if(prevProps.location.pathname !== this.props.location.pathname){
       this.formating_currency()
       this.setState({headRoomClass:'unpinned'})
     }
   }
 
+    componentWillUnmount(){
+      this._isMounted = false
+    }
 
-  componentDidMount(){
-    this.formating_currency()
-    this.setState({headRoomClass:'unpinned'})
+   async componentDidMount(){
+     this._isMounted = true
+    // this.setState({headRoomClass:'unpinned'})
     let menuSuperior = document.getElementById('mSuperior')
     let detonador = document.getElementById('containerElement')
     const headroom = new Headroom(menuSuperior, {
@@ -98,12 +105,14 @@ class MenuSuperiorContainer extends Component {
         // this.props.action.HeadRoom('pinned')
       }
     })
-    headroom.init()
+    await headroom.init()
 
     if(!this.props.currentPair){
-    this.props.action.get_pairs_for('colombia')
+      this.props.action.get_pairs_for('colombia')
+    }else{
+      this.formating_currency()
     }
-    // console.log('||||||||| componentDidMount:', this.props)
+
   }
 
 
@@ -118,7 +127,6 @@ class MenuSuperiorContainer extends Component {
 
 
   render(){
-    // console.log('MENU SUPERIOR_________::', this.props)
     return(
       <MenuSuperiorLayout
         logout={this.logout}

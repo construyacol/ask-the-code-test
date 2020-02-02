@@ -12,7 +12,7 @@ import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
 // import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
 // import SettingsContainer from '../settings/settingsContainer'
-import SecurityCenter from '../securityCenter/securityCenter'
+// import SecurityCenter from '../securityCenter/securityCenter'
 // import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
@@ -23,12 +23,18 @@ import SimpleLoader from '../widgets/loaders'
 import ItemAccount from '../widgets/accountList/item_account'
 import { AccountListContainer } from '../widgets/accountList/styles'
 
+import {
+  ItemSecurity,
+  SecurityLayoutLoader
+} from '../securityCenter/styles'
+// import styled from 'styled-components'
+
 import './dashboard.css'
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
 // const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
-// const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
+const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
 
 
@@ -73,7 +79,7 @@ class DashBoardContainer extends Component{
 
 
   render(){
-    console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props)
+    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props)
 
     return(
       <Router
@@ -86,14 +92,14 @@ class DashBoardContainer extends Component{
                </div>
                <div className="containerSection" name="firstInsideContainer">
 
-                        <Suspense fallback={<LazyLoaderPAge path={this.props.primary_path}/>}>
+                        <Suspense fallback={<LazyLoaderPage path={this.props.primary_path}/>}>
                             <Switch>
-                              {/* <Route path="/withdraw_accounts" render={()=>(<LazyLoaderPAge path={this.props.primary_path}/>)}/> */}
-                              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-                                <Route path="/security" component={SecurityCenter} />
-                                <Route path="/referral" component={ReferralComponent} />
                                 <Route path="/wallets" component={WalletContainer} />
+                                <Route path="/withdraw_accounts" render={(props)=>(<WitdrawAccountContainer {...props} {...this.props}/>)} />
+                                <Route path="/security" render={(props)=>(<SecurityCenter {...props} {...this.props} />)} />
+                                <Route path="/referral" render={(props)=>(<ReferralComponent {...props} {...this.props}/>)} />
                                 {/* <Route path="/settings" component={SettingsContainer} /> */}
+                                {/* <Route path="/security" render={()=>(<LazyLoaderPage path={this.props.primary_path}/>)}/> */}
                               </Switch>
                         </Suspense>
 
@@ -145,12 +151,11 @@ function mapStateToProps(state, props){
 export default connect(mapStateToProps) (DashBoardContainer)
 
 
-// style={{height:'90vh', width:'100vw', background:'white'}}
 
-const LazyLoaderPAge = ({path}) => {
+const LazyLoaderPage = ({path}) => {
 
   let title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
-  let LoaderScreen = path === 'withdraw_accounts' ? WithdrawAccountLoader : SimpleLoader
+  let LoaderScreen = path === 'withdraw_accounts' ? AccountListLoader : path === 'security' ? SecurityCenterLoader : SimpleLoader
 
   return(
     <DetailContainerLayout
@@ -164,22 +169,43 @@ const LazyLoaderPAge = ({path}) => {
 
 
 
-const WithdrawAccountLoader = props => {
-
+const AccountListLoader = props => {
   return(
       <AccountListContainer>
         <ItemAccount loader/>
       </AccountListContainer>
   )
-
 }
 
 
+const SecurityCenterLoader = props => {
 
+  const loaderList = new Array(4).fill({})
 
-
-
-
+  return(
+    <Fragment>
+      {
+        loaderList.map((item, key) => {
+          return(<SecurityLayoutLoader key={key}>
+                  <ItemSecurity className="loader">
+                    <div className="SCimgItem">
+                      <div className="SCimgItemCont"></div>
+                    </div>
+                    <div className="contentSubItem last">
+                      <div className="contentSubText">
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                      </div>
+                      <div className="SCcta"></div>
+                    </div>
+                  </ItemSecurity>
+                </SecurityLayoutLoader>)
+        })
+      }
+    </Fragment>
+  )
+}
 
 
 

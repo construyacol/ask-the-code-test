@@ -3,7 +3,7 @@ import DetailContainerLayout from '../widgets/detailContainer/detailContainerLay
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-import SimpleLoader from '../widgets/loaders'
+// import SimpleLoader from '../widgets/loaders'
 import { security_center } from '../api/ui/settings.json'
 import ItemSettingsInit from '../widgets/itemSettings/'
 import { scroller } from 'react-scroll'
@@ -36,32 +36,30 @@ class SecurityCenter extends Component{
 
   componentDidMount(){
     this.validate_state()
-    this.props.action.Loader(true)
+    // this.props.action.Loader(true)
     // this.props.action.MenuItemActive(this.props.location.pathname)
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
-     this.props.action.section_view_to('initial')
+     // this.props.action.section_view_to('initial')
 
      setTimeout(()=>{
        // Manejamos la respuesta en el estado, por si ocurre un error, evitamos
        // this.setState({
        //   userWallets: await this.props.action.get_list_user_wallets(this.props.user)
        // })
-       this.props.action.Loader(false)
+       // this.props.action.Loader(false)
       // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
     }, 0)
   }
 
 
   render(){
-
     // console.log('SECURITY_CENTER::::', this.props)
-
     return(
       <Fragment>
         <DetailContainerLayout
           title="Centro de seguridad"
           >
-        {
+        {/* {
           this.props.loader ?
           <SimpleLoader
             label="Obteniendo configuraciones"
@@ -69,6 +67,11 @@ class SecurityCenter extends Component{
           :
               security_center &&
               <ItemSettingsInit data={security_center} />
+        } */}
+
+        {
+          security_center &&
+          <ItemSettingsInit data={security_center} />
         }
       </DetailContainerLayout>
       </Fragment>
