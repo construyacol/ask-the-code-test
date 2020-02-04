@@ -58,6 +58,7 @@ class SecurityCenter extends Component{
       <Fragment>
         <DetailContainerLayout
           title="Centro de seguridad"
+          {...this.props}
           >
         {/* {
           this.props.loader ?

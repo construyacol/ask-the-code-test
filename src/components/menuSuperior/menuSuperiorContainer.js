@@ -77,7 +77,8 @@ class MenuSuperiorContainer extends Component {
   }
 
   componentDidUpdate(prevProps){
-    if(prevProps.location.pathname !== this.props.location.pathname){
+    // console.log('||||||||||||||||||||||||||||||||| componentDidMount MENU CONTAINER ==> ', this.props)
+    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path){
       this.formating_currency()
       this.setState({headRoomClass:'unpinned'})
     }
@@ -144,8 +145,6 @@ class MenuSuperiorContainer extends Component {
 
 MenuSuperiorContainer.propTypes = {
   currentPair:PropTypes.object,
-  current_section:PropTypes.string,
-  item_active:PropTypes.string,
   item_quote:PropTypes.object,
   loader:PropTypes.bool,
   logOut:PropTypes.func,
@@ -163,7 +162,6 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
   return{
-    item_active:state.ui.menu_item_active,
     HeadRoomClass:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,

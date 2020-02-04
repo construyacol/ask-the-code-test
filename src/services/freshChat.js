@@ -74,7 +74,7 @@ const user_update = async(user) => {
   let load = await isLoaded()
   if(load){
     let verify_status = await store.dispatch(get_verification_state())
-    console.log('||||||||||||||°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°|||| ||||||||||||||||||user_update', user)
+    // console.log('||||||||||||||°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°°|||| ||||||||||||||||||user_update', user)
       window.fcWidget.user.update({
         firstName:user.name,
         lastName:user.surname,

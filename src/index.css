@@ -1596,7 +1596,7 @@ circle{
     transform: scale(.8) translateY(-10px);
   }
 
-  .sectionFixedPrice{
+  .sectionFixedPrice{ 
     padding-top: 60px !important;
     height: auto !important;
   }
@@ -1618,6 +1618,11 @@ circle{
     padding-top: 45px !important;
     padding-bottom: 95px !important;
     width: auto !important;
+    min-height: calc(100vh - (45px + 90px + 120px)) !important;
+  }
+
+  #containerElement{
+    background: #f5f5f7;
   }
 
   .DCcurrent_wallet{

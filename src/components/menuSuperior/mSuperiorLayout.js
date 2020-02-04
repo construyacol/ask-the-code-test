@@ -24,14 +24,18 @@ const MenuSuperiorLayout = (props) =>{
     // openSelectCountry,
     loggedIn,
     toggle_menu,
-    item_active,
-    current_section,
-    back_method
+    back_method,
+    match
   } = props
 
-  let back_section = item_active === 'wallets' && current_section === 'detail'
+
+
   let view = 'detail'
+
   // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', props)
+  let path = match.params.path
+  const { primary_path } = match.params
+
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
   return(
@@ -40,7 +44,7 @@ const MenuSuperiorLayout = (props) =>{
         <div className="contenedorLogoSenda">
 
 
-            <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
+            <div className="contLogos" style={{top:(path || primary_path === 'referral') ? '-100%' : '0%'}}>
               <div className="contItemLogo">
                 <Coinsenda size={30} color="white" />
               </div>

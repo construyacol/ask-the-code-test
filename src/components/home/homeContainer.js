@@ -92,7 +92,7 @@ static getDerivedStateFromError(error, info){
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
                     <Route path="/:primary_path" component={MenuPrincipalContainer} />
-                    <MenuSuperiorContainer logOut={user_data.logOut}/>
+                    <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props)=>(<MenuSuperiorContainer {...this.props} {...props} logOut={user_data.logOut}/>)} />
                     <Route path="/:primary_path" render={(props) => <DashBoardContainer  {...props} {...this.props} />} />
 
                   {

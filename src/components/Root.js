@@ -29,11 +29,11 @@ class RootContainer extends Component {
   }
 
   token_is_valid = async(created_at) => {
-    // Este metodo valida si el token esta vigente, vigencia => 3.3 hrs (150min)
+    // Este metodo valida si el token esta vigente, vigencia => 2.5 hrs (150min)
     var fechaInicio = created_at.getTime();
     var fechaFin    = new Date().getTime();
     var diff = (fechaFin - fechaInicio)/(1000*60);
-    if(parseInt(diff) >= 200){
+    if(parseInt(diff) >= 150){
       return false
     }
     return true
