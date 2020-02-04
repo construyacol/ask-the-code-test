@@ -230,17 +230,17 @@ export const ItemAccountL = styled.div`
 
 
   &.loader div{
-    background: #eaeaea;
+    background: #cacaca;
     border-radius: 6px;
   }
 
   &.loader{
-    background: white;
+    border: 1px solid #cacaca;
     grid-row-gap: 12px;
     animation-name: accountLoader;
     animation-duration: 2s;
     animation-iteration-count: infinite;
-    opacity: 0;
+    opacity: 0.35;
   }
 
   &.loader.dos{
@@ -255,13 +255,13 @@ export const ItemAccountL = styled.div`
 
   @keyframes accountLoader{
     0%{
-      opacity: 0;
+      opacity: 0.35;
     }
     70%{
       opacity: 1;
     }
     100%{
-      opacity: 0;
+      opacity: 0.35;
     }
   }
 

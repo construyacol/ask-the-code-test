@@ -180,14 +180,15 @@ const AccountListLoader = props => {
 
 const SecurityCenterLoader = props => {
 
-  const loaderList = new Array(4).fill({})
+  const elements = (window.innerWidth < 768) ? 10 : 5
+  const loaderList = new Array(elements).fill({})
 
   return(
     <Fragment>
       {
         loaderList.map((item, key) => {
-          return(<SecurityLayoutLoader key={key}>
-                  <ItemSecurity className="loader">
+          return(<SecurityLayoutLoader id="security_loader" className="SecurityLayoutLoader" key={key}>
+                  <ItemSecurity className="loader ItemSecurity">
                     <div className="SCimgItem">
                       <div className="SCimgItemCont"></div>
                     </div>
