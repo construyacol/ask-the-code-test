@@ -85,7 +85,7 @@
 }
 
 .contListCities .findbar{
-  top: 40px !important;
+  top: 40px;
   justify-self: center;
 }
 

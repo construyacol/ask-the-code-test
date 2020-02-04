@@ -1042,10 +1042,44 @@ circle{
 
 
 
+
+
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 768px) {
 
 
+  .contListCities .findbar{
+    top: 4em !important;
+  }
 
+
+  .contListItemMV .containerInputComponent{
+    width: calc(100% - 60px) !important;
+  }
+
+  .contListCities p{
+    text-align: center !important;
+    margin: 10px 0 0 !important;
+  }
+
+  .contListCities{
+    width: 90% !important;
+    display: grid !important;
+    grid-template-rows: auto 1fr;
+    grid-row-gap: 25px;
+  }
+
+
+  .containerFormWallet{
+    height: 100vh !important;
+  }
 
 
   .contenido.referral{
@@ -1232,8 +1266,17 @@ circle{
     width: 100vw !important;
   }
 
+  .formAccountFlow #bankChooseButton{
+    align-self: center !important;
+  }
+
+  .formAccountFlow #bankChooseButton .botonForm.desactivado {
+    width: calc(100vw - 100px) !important;
+  }
+
   .contForminputsAccount{
     width: 90% !important;
+    justify-self:center !important;
   }
 
   .DLcontain>p {
@@ -1270,9 +1313,9 @@ circle{
     grid-gap: 100px !important;
   }
 
-  .contMsg{
+  #contMsg{
     display: grid;
-    /*grid-template-rows: auto 1fr 15vh !important;*/
+    grid-template-rows: auto 1fr !important;
     grid-row-gap: 10px;
   }
 
@@ -1282,10 +1325,10 @@ circle{
   }
 
   #bankChooseButton .botonForm.desactivado{
-    width: calc(100vw - 50px) !important;
+    width: calc(100vw - 100px) !important;
   }
   #bankChooseButton .botonForm.primary{
-    width: calc(100vw - 50px) !important;
+    width: calc(100vw - 100px) !important;
   }
 
 
@@ -1596,7 +1639,7 @@ circle{
     transform: scale(.8) translateY(-10px);
   }
 
-  .sectionFixedPrice{ 
+  .sectionFixedPrice{
     padding-top: 60px !important;
     height: auto !important;
   }
@@ -1615,10 +1658,10 @@ circle{
   }
 
   .contenido{
-    padding-top: 45px !important;
+    padding-top: 25px !important;
     padding-bottom: 95px !important;
     width: auto !important;
-    min-height: calc(100vh - (45px + 90px + 120px)) !important;
+    min-height: calc(100vh - (25px + 90px + 120px)) !important;
   }
 
   #containerElement{
@@ -1923,6 +1966,7 @@ circle{
 .nBtextInit{
   padding: 0 20px;
   width: calc(100% - 40px) !important;
+  font-size: 14px !important;
 }
 
 .stepFinish{
@@ -2261,6 +2305,9 @@ circle{
 /*IPHONE X*/
 @media screen and (max-height: 850px) and (max-width: 768px) {
 
+  .containerFormWallet{
+    height: 100vh !important;
+  }
 
   .capsuleMenu1{
     padding-right: 15px !important;
@@ -2311,6 +2358,10 @@ circle{
 
   .ItemSelectionContainer{
     /*height: 421px !important;*/
+  }
+
+  .containerFormWallet{
+    height: 100vh !important;
   }
 
 }
