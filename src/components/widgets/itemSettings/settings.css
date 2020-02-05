@@ -102,6 +102,10 @@
   color: gray;
 }
 
+.contentSubText.available{
+  opacity: 1 !important;
+}
+
 
 
 .SCcta{
@@ -138,6 +142,26 @@
   }
   100%{
     opacity: .8
+  }
+}
+
+
+.anim-flow{
+
+  animation-name: animFlow;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes animFlow{
+  0%{
+    transform: translateX(0);
+  }
+  50%{
+    transform: translateX(5px);
+  }
+  100%{
+    transform: translateX(0);
   }
 }
 

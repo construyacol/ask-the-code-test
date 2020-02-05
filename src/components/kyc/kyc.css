@@ -13,6 +13,34 @@
   position: initial !important
 }
 
+.inputLabelsCont.loader, .InputContainerT.loader, .KycTitless.loader, .inputContainer3.loader p{
+  background: #cacaca;
+  border-radius: 6px;
+}
+
+.InputContainerT.loader{
+  width: 65%;
+  height: 100%;
+}
+
+
+.inputLabelsCont.loader{
+  width: 45% ;
+  height: 50%;
+}
+
+.inputContainer3.loader p{
+  height: 20px;
+  width: 120px;
+  position: relative;
+  left: 15px;
+}
+
+.KycTitless.loader{
+  height: 35px;
+  width: 200px;
+}
+
 .KycParra1.long_msg{
   font-size: 20px !important;
   max-width: 600px !important;

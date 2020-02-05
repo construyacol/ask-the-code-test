@@ -114,7 +114,7 @@ class SubItemSC extends Component {
               <i className="fas fa-check" style={{color:"#59B200"}}></i>
               :
               available &&
-              <i className="fas fa-chevron-right" style={{color:"gray"}}></i>
+              <i className="fas fa-chevron-right anim-flow" style={{color:"gray", fontSize: "20px"}}></i>
             }
           </div>
         }
@@ -133,7 +133,7 @@ class SubItemSC extends Component {
 
 
 
-          <div className="contentSubText fuente" style={{gridTemplateRows:tree ? '70px 1fr': '60px 20px 1fr', opacity:((verify && available) || other_state === 'confirmed' || other_state === 'send') ? '1': other_state === 'rejected' ? '0.8'  : '0.5'}}>
+          <div className={`contentSubText ${available ? 'available' : ''} fuente`} style={{gridTemplateRows:tree ? '70px 1fr': '60px 20px 1fr', opacity:((verify && available) || other_state === 'confirmed' || other_state === 'send') ? '1': other_state === 'rejected' ? '0.8'  : '0.35'}}>
           <div className="SCtitle" style={{color:(classic_view && verify) ? '#1fa4e9' : classic_view ? 'gray' : (verify && tree) ? '#1fa4e9' : other_state === 'send' ? '#545454' : 'gray' }} >
             <div className={`ScimgClassicView ${classic_view ? 'classic_view' : '' }`} style={{display:classic_view ? 'flex' : 'none' }}>
               <IconSwitch {...atributos} />

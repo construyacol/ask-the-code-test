@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { objectToArray, capitalizarPalabras } from '../../../services'
 import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
-import SimpleLoader from '../../widgets/loaders'
+// import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
 
 
@@ -354,7 +354,15 @@ shouldComponentUpdate(nextProps, nextState){
         {
           // this.props.loader || !kyc_data_basic || !step ?
           this.props.loader || !kyc_data_basic || !step || this.props.step > this.state.kyc_data_basic.length ?
-          <SimpleLoader/>
+          // <SimpleLoader/>
+          <div className="KycLayout">
+            <p className="fuente KycTitle KycTitless loader" ></p>
+            <div id="kycPrime" className="containerInputComponent2">
+              <div className="inputLabelsCont loader"></div>
+              <div className="inputContainer3 loader"><p></p></div>
+              <div className="InputContainerT loader"></div>
+            </div>
+          </div>
           :
           <div className="KycLayout">
             <p className="fuente KycTitle KycTitless" >Verificación Basica</p>
@@ -394,7 +402,6 @@ shouldComponentUpdate(nextProps, nextState){
                   <div className="contCountryList">
                     {
                       this.state.select_list[(current_item === 'phone' || current_item === 'nationality') ? 'countries' : current_item].map(item => {
-                        // return <div className="itemListCountry" key={item.id} id={item.code} name={item.code} onClick={this.select_item}>{item.name}</div>
                         return <ItemListKycBasic
                                 key={item.id}
                                 item={item}

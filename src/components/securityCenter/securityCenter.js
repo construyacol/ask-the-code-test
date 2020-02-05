@@ -3,7 +3,7 @@ import DetailContainerLayout from '../widgets/detailContainer/detailContainerLay
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-// import SimpleLoader from '../widgets/loaders'
+import SimpleLoader from '../widgets/loaders'
 import { security_center } from '../api/ui/settings.json'
 import ItemSettingsInit from '../widgets/itemSettings/'
 import { scroller } from 'react-scroll'
@@ -60,7 +60,7 @@ class SecurityCenter extends Component{
           title="Centro de seguridad"
           {...this.props}
           >
-        {/* {
+        {
           this.props.loader ?
           <SimpleLoader
             label="Obteniendo configuraciones"
@@ -68,12 +68,12 @@ class SecurityCenter extends Component{
           :
               security_center &&
               <ItemSettingsInit data={security_center} />
-        } */}
+        }
 
-        {
+        {/* {
           security_center &&
           <ItemSettingsInit data={security_center} />
-        }
+        } */}
       </DetailContainerLayout>
       </Fragment>
     )
