@@ -161,7 +161,7 @@ class AccountList extends Component{
       <Fragment>
         {
           (this.props.item_list && this.props.item_list.length>0)?
-            <AccountListContainer>
+            <AccountListContainer className="AccountListContainer">
               {
                 this.props.item_list.map((account, id)=>{
                   if(!account.visible){return null}

@@ -171,7 +171,7 @@ const LazyLoaderPage = ({path}) => {
 
 const AccountListLoader = props => {
   return(
-      <AccountListContainer>
+      <AccountListContainer className="AccountListContainer">
         <ItemAccount loader/>
       </AccountListContainer>
   )
