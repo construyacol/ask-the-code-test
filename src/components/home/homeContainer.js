@@ -44,22 +44,24 @@ static getDerivedStateFromError(error, info){
     })
   }
 
-  // componentDidUpdate(prevProps){
-  //   if (this.props.app_loaded !== prevProps.app_loaded) {
-  //     setTimeout(()=>{
-  //       let currency = {
-  //         currency:'cop',
-  //         is_token:false
-  //       }
-  //       this.props.action.socket_notify({account_id:'5d406e3cbb245069d61021c5', currency, amount:1500000}, 'deposits')
-  //       this.props.action.other_modal_toggle()
-  //       this.props.action.success_sound()
-  //       // add_coin_sound
-  //     }, 1000)
-  //     // this.formatToCurrencies()
-  //
-  //   }
-  // }
+
+
+  componentDidUpdate(prevProps){
+    if (this.props.app_loaded !== prevProps.app_loaded) {
+      setTimeout(()=>{
+        let currency = {
+          currency:'cop',
+          is_token:false
+        }
+        this.props.action.socket_notify({account_id:'5d406e3cbb245069d61021c5', currency, amount:1500000}, 'deposits')
+        this.props.action.other_modal_toggle()
+        this.props.action.success_sound()
+        // add_coin_sound
+      }, 1000)
+      // this.formatToCurrencies()
+
+    }
+  }
 
   render(){
 

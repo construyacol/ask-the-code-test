@@ -148,14 +148,17 @@ state = {
   total_value:""
 }
 
-// componentWillReceiveProps({primary_value}){
-//   if(primary_value){
-//     this.total_value(primary_value)
-//   }
-// }
+
 
 componentDidUpdate(prevProps){
+  if(this.props.total_value !== prevProps.total_value){
+    console.log('||||||||||| UPDATE => total_value')
+    this.setState({
+      total_value: this.props.total_value
+    })
+  }
   if(this.props.primary_value !== prevProps.primary_value){
+    console.log('||||||||||| UPDATE => TOO TYPE')
     this.total_value(this.props.primary_value)
   }
 }

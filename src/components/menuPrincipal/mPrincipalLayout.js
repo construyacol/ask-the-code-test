@@ -1,5 +1,5 @@
 import React from 'react'
-import ButtonPrincipalMenu from '../widgets/buttons/buttons'
+import { ButtonPrincipalMenu } from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
 import { menuPrincipal } from '../api/ui/api.json'

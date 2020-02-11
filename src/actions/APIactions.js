@@ -8,17 +8,13 @@ import moment from 'moment'
 import 'moment/locale/es'
 // import * as Sentry from '@sentry/browser';
 
-
-
 import { coins } from '../components/api/ui/api.json'
 import user_source from '../components/api'
 
 // MODELOS DE PARA HACER PRUEBAS EN CASO DE QUE EL API ESTE INACCESIBLE
-
 // import pairs from '../components/api/ui/modelo_pairs.json'
 // import deposit_providers from '../components/api/ui/deposit_providers.json'
 // import deposits from '../components/api/ui/deposits.json'
-
 // import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
 // import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
@@ -53,10 +49,9 @@ import {
   // new_fiat_deposit
  } from './uiActions'
 
-
 const {
   normalize_user,
-  normalize_data
+  // normalize_data
 } = normalizr_services
 
 const {
@@ -69,7 +64,7 @@ update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
 ManageBalanceAction,
-all_pairs_landing
+// all_pairs_landing
 } = data_model_actions
 
 const {
@@ -179,7 +174,6 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 
 
-
 export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
 
@@ -195,7 +189,6 @@ export const get_all_pairs = (token, country) =>{
 
     const url_pairs = `${SwapApiUrl}pairs`
     // const pairs = await ApiPostRequest(url_pairs, body, true)
-    // console.log('=========>    QUE PASA PRRO get_all_pairs', url_pairs)
     let pairs = await ApiGetRequest(url_pairs)
     // return console.log('PARES RES ', pairs)
     if(!pairs || pairs === 465){return false}
@@ -219,19 +212,19 @@ export const get_all_pairs = (token, country) =>{
 
 
 
-export const get_all_pairs_from_landing = () =>{
-  return async(dispatch)=>{
-    await dispatch(load_label('Importando pares'))
-    const url_pairs = `${SwapApiUrl}pairs`
-    const pairs = await ApiGetRequest(url_pairs)
-
-    if(!pairs || pairs === 465){return false}
-    // const { data } = pairs
-
-    let normalize_pairs = await normalize_data(pairs)
-    dispatch(all_pairs_landing(normalize_pairs.entities.all_pairs))
-  }
-}
+// export const get_all_pairs_from_landing = () =>{
+//   return async(dispatch)=>{
+//     await dispatch(load_label('Importando pares'))
+//     const url_pairs = `${SwapApiUrl}pairs`
+//     const pairs = await ApiGetRequest(url_pairs)
+//
+//     if(!pairs || pairs === 465){return false}
+//     // const { data } = pairs
+//
+//     let normalize_pairs = await normalize_data(pairs)
+//     dispatch(all_pairs_landing(normalize_pairs.entities.all_pairs))
+//   }
+// }
 
 
 
@@ -331,7 +324,7 @@ export const get_all_pairs_from_landing = () =>{
           return console.log('debes cargar las currencies');
         }
 
-        // return console.log(' =================================>>>    local_currencies', local_currencies)
+        // console.log(' =================================>>>    local_currency', local_currency)
         await dispatch(LocalPairs(local_currencies))
         // console.log('CONSULTANDO TODOS LOS PARES DISPONIBLES::::::', pairs)
 
@@ -505,8 +498,8 @@ export const get_account_balances = user => {
 
     let balances = await ApiGetRequest(url_balance, myHeaders)
 
+    console.log('===========> BALANCES:', balances)
     if(!balances || balances === 465 || balances.length<1){return false}
-    // console.log('===========> BALANCES:', balances)
     let balance_list = balances.map(balance => {
       return {
         id:balance.id,

@@ -246,11 +246,14 @@ export const ButtonNofity = props => {
 
 
   return(
-    <div className="ButtonNofity fuente" onClick={handleAction}>
+    <div className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
       {props.children}
     </div>
   )
 
 }
 
-export default ButtonPrincipalMenu
+export default {
+  ButtonPrincipalMenu,
+  ButtonNofity
+}

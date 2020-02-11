@@ -16,13 +16,14 @@ class LoaderAplication extends Component {
   }
 
   componentDidMount(){
-    this.registerColors()
     this.init_component()
+    this.registerColors()
   }
 
 
   registerColors = () => {
 
+  if((window && window.CSS) && window.CSS.registerProperty){
     window.CSS.registerProperty({
       name: '--primary',
       syntax: '<color>',
@@ -36,6 +37,7 @@ class LoaderAplication extends Component {
       inherits: true,
       initialValue: '#0198ff',
     });
+  }
 
 
   }
@@ -168,14 +170,14 @@ class LoaderAplication extends Component {
 
      await action.get_all_currencies()
 
-    let user_collection = [{primary:'ethereum'}]
-     action.get_pairs_for(this.props.user.country, user_collection)
+    // let user_collection = [{primary:'ethereum'}]
+    await action.get_pairs_for(this.props.user.country)
 
     await action.get_account_balances(this.props.user)
     await action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
     // return false
-
+    // console.log('||||||||||||||| USER COUNTRY ::', this.props.user)
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
 

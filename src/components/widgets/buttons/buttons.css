@@ -776,6 +776,15 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   /*background: linear-gradient(to right, #11998e, #38da75);*/
 }
 
+.ButtonNofity.swap{
+  background: #0276c7;
+  /*background: linear-gradient(to right, #11998e, #38da75);*/
+}
+
+
+.ButtonNofity.swap p{
+  color: white !important;
+}
 
 
 

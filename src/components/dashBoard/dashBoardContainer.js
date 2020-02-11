@@ -41,8 +41,16 @@ const ReferralComponent = React.lazy(() => import('../referrals/referralsCompone
 
 class DashBoardContainer extends Component{
 
+  _updateCurrentPair
 
   async componentDidMount() {
+
+    // clearInterval(this._updateCurrentPair)
+    // this._updateCurrentPair = setInterval(()=>{
+    //   let query =`{"where":{"buy_pair":"${this.props.currentPair && this.props.currentPair.buy_pair}"}}`
+    //   this.props.action.update_current_pair(query)
+    // }, 10000)
+
 
     await this.props.action.freshchat_init_user(this.props.user)
     // return false
@@ -56,8 +64,8 @@ class DashBoardContainer extends Component{
       FreshChat.show_tags(['security', '2factor'], 'article')
     }
 
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||| DashBoardContainer', this.props.action.update_current_pair, this.props)
     // if(this.props.user)
-
     // console.log('|||||||||||||||||_____________________________________- window.tiggered', verification_state, this.props)
     // console.log('|||||||||||||||||_____________________________________- window.tiggered', this.props, window.fcWidget)
     // FreshChat.track('track_item', {puta:'traqueteada mas hpta a usuario logeado'})
@@ -73,6 +81,7 @@ class DashBoardContainer extends Component{
 
 
   componentWillUnmount() {
+    clearInterval(this._updateCurrentPair)
     Events.scrollEvent.remove("begin");
     Events.scrollEvent.remove("end");
   }
@@ -141,10 +150,12 @@ DashBoardContainer.propTypes = {
 function mapStateToProps(state, props){
 
     const { user, user_id } = state.model_data
+    const { currentPair } = state.model_data.pairs
 
   return{
     user:user[user_id],
-    primary_path:props.match.params && props.match.params.primary_path
+    primary_path:props.match.params && props.match.params.primary_path,
+    currentPair
   }
 }
 
