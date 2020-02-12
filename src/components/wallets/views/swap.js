@@ -24,6 +24,14 @@ class SwapView extends Component{
     this.init_state()
   }
 
+  componentDidUpdate(prevProps){
+    if(prevProps.current_pair.secondary_coin !== this.props.current_pair.secondary_coin && this.state.value){
+      // console.log('|||||||||||||| SWAP UPDATE PASS CONDITIONAL ==========>', this.props.current_pair)
+      // alert('cambio de moneda')
+      this.swap()
+    }
+  }
+
   init_state = async() => {
     // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
     this.getOtherPairs(true)
@@ -48,10 +56,6 @@ class SwapView extends Component{
     })
   }
 
-  // getTotalValue = total_value =>{
-  //   if(!total_value){return false}
-  //   this.setState(total_value)
-  // }
 
   getMaxAvailable = e =>{
     let value = e.target.id
@@ -119,8 +123,7 @@ class SwapView extends Component{
   //       all_pairs
   //     } = this.props
   //
-  //     const { primary_currency } = all_pairs[current_pair.pair_id]
-  //     const { secondary_currency } = all_pairs[current_pair.pair_id]
+  //     const { primary_currency, secondary_currency } = all_pairs[current_pair.pair_id]
   //
   //     // console.log('Comparison ==> ', currency, primary_currency)
   //     if(currency === primary_currency.currency){
@@ -129,26 +132,6 @@ class SwapView extends Component{
   //       return primary_currency
   //     }
   //
-  // }
-
-  //
-  // componentDidUpdate(prevProps){
-  //   // console.log('NO CONDITIONAL', this.props)
-  //   if(prevProps.all_pairs !== this.props.all_pairs){
-  //     const { value } = this.state
-  //     console.log('componentDidUpdate', value, this.props)
-  //     this.actualizarEstado_coin({target:{value}})
-  //
-  //
-  //
-  //     // this.setState()
-  //   }
-  //
-  //
-  // }
-
-  // updateSwapCurrentPair = async props => {
-  //   this.get_total_value(this.props.available)
   // }
 
   init_swap = async() => {
@@ -175,11 +158,6 @@ class SwapView extends Component{
     const spent_currency_amount = await formatToCurrency(value, current_wallet.currency, true)
     const total_value = await this.get_total_value(value)
     this.setState({total_value})
-
-    // const bought_currency = await this.extract_currencies(current_wallet.currency.currency)
-    // const bought_currency_amount = await formatToCurrency(total_value, bought_currency, true)
-    // console.log('Spent currency ==> ', current_wallet.currency)
-    // console.log('Bought currency ==> ', bought_currency_amount, total_value)
 
     this.props.action.ConfirmationModalPayload({
       title:"Confirmando Intercambio",

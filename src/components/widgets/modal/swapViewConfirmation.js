@@ -15,13 +15,13 @@ const SwapVIewConfirm = props => {
 
   const {
     title,
-    description,
-    txtPrimary,
-    txtSecondary,
-    img,
-    svg,
+    // description,
+    // txtPrimary,
+    // txtSecondary,
+    // img,
+    // svg,
     type,
-    from, spent, to, bought, pair_id, handleSwap
+    from, spent, to, bought, handleSwap
   } = props.modal_confirmation
 
   const [ counter, setCounter ] = useState(20)
@@ -30,10 +30,11 @@ const SwapVIewConfirm = props => {
   useEffect(()=>{
     const SwapCounter = setInterval(async()=>{
       clearInterval(SwapCounter)
-      if(counter === 0){
-        // formatToCurrency
-        // alert()
+      if(counter === 1){
         handleSwap()
+      }
+
+      if(counter === 0){
         setCounter(20)
       }else{
         setCounter(counter - 1)

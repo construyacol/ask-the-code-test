@@ -78,7 +78,7 @@ class MenuSuperiorContainer extends Component {
 
   componentDidUpdate(prevProps){
     // console.log('||||||||||||||||||||||||||||||||| componentDidMount MENU CONTAINER ==> ', this.props)
-    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path){
+    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path || prevProps.currentPair !== this.props.currentPair){
       this.formating_currency()
       this.setState({headRoomClass:'unpinned'})
     }

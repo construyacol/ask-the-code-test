@@ -48,8 +48,8 @@ class DashBoardContainer extends Component{
     // clearInterval(this._updateCurrentPair)
     // this._updateCurrentPair = setInterval(()=>{
     //   let query =`{"where":{"buy_pair":"${this.props.currentPair && this.props.currentPair.buy_pair}"}}`
-    //   this.props.action.update_current_pair(query)
-    // }, 10000)
+    //   this.props.action.update_current_pair(query, 'currentPair')
+    // }, 45000)
 
 
     await this.props.action.freshchat_init_user(this.props.user)
