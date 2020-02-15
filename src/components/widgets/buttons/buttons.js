@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PopNotification from '../notifications'
 import IconSwitch from '../icons/iconSwitch'
+import SimpleLoader from '../loaders'
 // import { Link as ScrollTo } from "react-scroll";
 
 import './buttons.css'
@@ -158,24 +159,31 @@ export const InputButton = (props) => {
 
 export const ButtonForms = (props) => {
 
+  // SimpleLoader
+
   // Propiedades componente:
   // active: true/false, define si el boton esta o no disponible(available)
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // siguiente: evento a enlazar el boton
 
-  const { clases, id } = props
+  const { clases, id, loader } = props
 
   return(
     <div className={`contButton ${clases}`} id={`${id}`}>
       {
         props.active ?
-        <div id="botonForm" className={`botonForm ${props.type} fuente`} onClick={props.siguiente} >
-          {props.children}
-        </div>
+          <div id="botonForm" className={`botonForm swap ${loader ? 'loader' : ''} ${props.type} fuente`} onClick={loader ? null : props.siguiente}>
+            {
+              !loader ?
+                props.children
+              :
+                <SimpleLoader loader={2}/>
+            }
+          </div>
         :
-        <div id="botonForm" className={`botonForm desactivado fuente ${props.cenVert}`} >
-          {props.children}
-        </div>
+          <div id="botonForm" className={`botonForm desactivado fuente ${props.cenVert}`} >
+            {props.children}
+          </div>
       }
     </div>
   )

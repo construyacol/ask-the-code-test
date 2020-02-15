@@ -3,6 +3,7 @@ import './icons.css'
 import Coinsenda from './logos/coinsenda'
 import BancoBogota from './logos/bancoBogota'
 import Bbva from './logos/bbva'
+import Usa from '../../../assets/svg/usa.svg'
 
 import {
   Email,
@@ -97,7 +98,11 @@ class IconSwitch extends Component {
 
   switcher = props => {
     const { icon } = props
+    // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case 'usd':
+        // return <LogOut {...props} />
+        return <img src={Usa} alt="" width={`${props.size}px`} height={`${props.size}px`}/>
       case 'logout':
         return <LogOut {...props} />
       case 'ethereum':

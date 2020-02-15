@@ -1,4 +1,5 @@
 import React, {Component, Fragment, Suspense} from 'react'
+import { hotjar } from 'react-hotjar';
 
 import {
   Element,
@@ -51,7 +52,7 @@ class DashBoardContainer extends Component{
     //   this.props.action.update_current_pair(query, 'currentPair')
     // }, 45000)
 
-
+    hotjar.initialize(1688041, 6);
     await this.props.action.freshchat_init_user(this.props.user)
     // return false
     await FreshChat.user_update(this.props.user)

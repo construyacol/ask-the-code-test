@@ -17,7 +17,8 @@ class SwapView extends Component{
     address:null,
     active:false,
     pair_id:null,
-    total_value:null
+    total_value:null,
+    loader_button:false
   }
 
   componentDidMount(){
@@ -58,6 +59,7 @@ class SwapView extends Component{
 
 
   getMaxAvailable = e =>{
+
     let value = e.target.id
     let { available } = this.props
 
@@ -135,8 +137,10 @@ class SwapView extends Component{
   // }
 
   init_swap = async() => {
+    this.setState({loader_button:true})
     await this.swap()
     this.props.action.ConfirmationModalToggle()
+    this.setState({loader_button:false})
   }
 
 
@@ -242,7 +246,7 @@ class SwapView extends Component{
 render(){
 
   const { current_wallet, short_name, loader, current_pair, available } = this.props
-  const { value, active, total_value } = this.state
+  const { value, active, total_value, loader_button } = this.state
   const { secondary_coin, secondary_value } = current_pair
   let movil_viewport = window.innerWidth < 768
 
@@ -270,6 +274,7 @@ render(){
             <div className="WSection1">
               <p className="fuente title soloAd3">Pago con:</p>
               <InputFormCoin
+                secondary_value={secondary_value}
                 active={active && secondary_coin && available>0 && value > 0}
                 // active={(value>0 && value<=current_wallet.available) ? true : false}
                 clase={true} //retiro los estilos que vienen por defecto
@@ -324,6 +329,7 @@ render(){
                 ancho="200px"
                 type="primary"
                 siguiente={this.init_swap}
+                loader={loader_button}
               >
                   Cambiar
               </ButtonForms>

@@ -253,12 +253,14 @@ total_value
 
 
 export const InputFormCoin = (props) => {
+
 const {
   saldoDisponible,
   coin,
   value,
   placeholder,
-  getMaxAvailable
+  getMaxAvailable,
+  secondary_value
 } = props
 
 let movil_viewport = window.innerWidth < 768
@@ -270,7 +272,7 @@ let movil_viewport = window.innerWidth < 768
         <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
         <div className={`inputContainer ${props.active ? 'inputActivado' : '' }`}>
 
-          <div className="coinBalance fuente2" onClick={getMaxAvailable} id={saldoDisponible}>
+          <div className="coinBalance fuente2" onClick={!secondary_value ? null : getMaxAvailable} id={saldoDisponible}>
               <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible'} {saldoDisponible>0 ? `${saldoDisponible}`: '0'} {coin}</p>
             {
               coin &&

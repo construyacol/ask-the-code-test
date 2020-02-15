@@ -143,7 +143,7 @@ transform: scale(1.1);
 }
 
 .primary{
-  background: linear-gradient(to bottom right, #00D2FF, #3A7BD5);
+  background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
 .secundary{
@@ -330,6 +330,16 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   align-self: center;
 }
 
+
+.contButton.loader{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0.3;
+}
+
+
 .botonForm{
   max-width: 300px;
   width: auto;
@@ -346,6 +356,26 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   transition: .2s;
   /*box-sizing: initial !important;*/
 }
+
+.botonForm.swap .lds-roller{
+  align-self: center;
+  justify-self: center;
+}
+
+.botonForm.swap{
+ position: relative;
+}
+
+
+.botonForm.loader{
+  opacity: 0.6;
+}
+
+
+.botonForm.swap .lds-roller div:after {
+    background: white;
+}
+
 
 
 .botonForm2 p{
@@ -467,7 +497,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 .AddNewItem.primary{
-  background: linear-gradient(to bottom right, #00D2FF, #3A7BD5);
+  background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
 
