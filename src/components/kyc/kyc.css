@@ -288,6 +288,7 @@ grid-template-rows: repeat(2, calc(100vh - 160px));
   height: 100%;
   cursor: pointer;
   opacity: 0;
+  z-index: 2;
 }
 
 .controlContainers{

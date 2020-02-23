@@ -90,7 +90,7 @@ class BankAccountFlow extends Component{
 componentDidUpdate(prevProps){
 
   if(prevProps !== this.props){
-    console.log('|||||_________________user? ', this.props.user.id_type, this.props.id_type)
+    // console.log('|||||_________________user? ', this.props.user.id_type, this.props.id_type)
   }
 
 }

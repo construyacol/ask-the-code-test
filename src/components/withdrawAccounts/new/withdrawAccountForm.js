@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 // import { updateFormControl, FormWallet } from '../../../actions'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
+import { withRouter } from "react-router";
 
 class WithdrawAccountForm extends Component{
 
@@ -182,6 +183,10 @@ class WithdrawAccountForm extends Component{
 
   componentDidMount(){
 
+    setTimeout(()=>{
+      this.props.history.push(`?form=wa_terms`)
+    }, 100)
+
     const {
       withdraw_flow
     } = this.props
@@ -190,6 +195,45 @@ class WithdrawAccountForm extends Component{
 
     this.props.action.CurrentForm('bank')
   }
+
+    componentDidUpdate(prevProps){
+
+      // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+      if(prevProps.step === this.props.step){return}
+      // console.log('||||||||||||||||||| STEP WITHDRAW ACCOUNT FORM ==> ', prevProps.step, this.props.step, this.props)
+
+      let route
+
+      if(this.props.step === 2){
+        route = `?form=wa_terms`
+      }
+
+      if(this.props.step === 3){
+        route = `?form=wa_choose_bank`
+      }
+
+      if(this.props.step === 4){
+        route = `?form=wa_enter_bank_details`
+      }
+
+
+      if(this.props.step === 5){
+        route = `?form=wa_id_type`
+      }
+
+      if(this.props.step === 6){
+        route = `?form=wa_opening_city`
+      }
+
+      if(this.props.step === 7){
+        route = `?form=wa_success`
+      }
+        // console.log('||||||||||||||||||||||||||||||| componentDidUpdate =?=> ')
+        setTimeout(()=>{
+          this.props.history.push(route)
+        }, 100)
+        // alert()
+    }
 
 
   render(){
@@ -257,4 +301,4 @@ function mapDispatchToProps(dispatch){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (WithdrawAccountForm)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (WithdrawAccountForm))

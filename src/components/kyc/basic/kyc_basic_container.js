@@ -42,9 +42,63 @@ class KycBasicContainer extends Component {
 
   state = {}
 
-  componentDidMount(){
-    this.init_component()
+  async componentDidMount(){
+    await this.init_component()
+    if(this.props.current !== 'kyc_basic'){
+      this.props.history.push(`?form=personal_names`)
+    }
   }
+
+
+    componentDidUpdate(prevProps){
+
+      // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+      if(prevProps.step === this.props.step && this.props.current !== 'kyc_basic'){return}
+      // console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC BASIC ===> ', prevProps.step, this.props.step, this.props)
+      //
+      let route
+      //
+      if(this.props.step === 1){
+        route = `?form=personal_names`
+      }
+
+      if(this.props.step === 2){
+        route = `?form=personal_surnames`
+      }
+
+      if(this.props.step === 3){
+        route = `?form=personal_birthday`
+      }
+
+      if(this.props.step === 4){
+        route = `?form=personal_phone`
+      }
+
+      if(this.props.step === 5){
+        route = `?form=personal_address`
+      }
+
+      if(this.props.step === 6){
+        route = `?form=personal_residence_city`
+      }
+
+      if(this.props.step === 7){
+        route = `?form=personal_country`
+      }
+
+      if(this.props.step === 8){
+        route = `?form=personal_type_id`
+      }
+
+      if(this.props.step === 9){
+        route = `?form=personal_number_id`
+      }
+
+      if(this.props.step === 10){
+        route = `?form=personal_nacionality`
+      }
+        this.props.history.push(route)
+    }
 
   // init_component = async() =>{
   //   await this.props.action.CurrentForm('kyc_basic')
@@ -433,6 +487,7 @@ function mapStateToProps(state, props){
 
   return{
       ...state.form.form_kyc_basic,
+      current:state.form.current,
       form_kyc_basic_state:state.form.form_kyc_basic,
       user:user[user_id],
       loader:state.isLoading.loader

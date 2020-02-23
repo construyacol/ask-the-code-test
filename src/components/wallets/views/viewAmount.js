@@ -83,7 +83,7 @@ class ViewAmountComponent extends Component {
 
     // operation_type="withdraw"
 
-    console.log('|||||||||||||||| VIEW AMOUNT =======> ', currency)
+    // console.log('|||||||||||||||| VIEW AMOUNT =======> ', currency)
 
     // console.log('||||||||||| VIEW  AMOUNT  ||||||||||', parseFloat(available) > minAmount, parseFloat(available), minAmount, typeof(parseFloat(available)), typeof(minAmount))
     return(

@@ -8,6 +8,7 @@ import ErrorView from '../errorView'
 import SimpleLoader from '../loaders'
 import { formatToCurrency } from '../../../services/convert_currency'
 import { ticketModalView } from '../../../services'
+import { withRouter } from "react-router";
 
 import './ticket.css'
 
@@ -423,7 +424,7 @@ class TicketContainer extends Component {
     } = this.props
 
     this.props.action.IncreaseStep(current_form)
-
+    this.props.history.push('?form=upload_deposit_payment_proof')
   }
 
 
@@ -570,4 +571,4 @@ function mapStateToProps(state, props){
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (TicketContainer)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (TicketContainer))

@@ -13,6 +13,7 @@ class Kyc extends Component {
   }
 
 
+
   validate_personal_kyc = async(info_type) => {
 
     const { form_kyc_basic, user } = this.props

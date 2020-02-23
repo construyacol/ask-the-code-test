@@ -103,8 +103,8 @@ static getDerivedStateFromError(error, info){
                             <Switch>
                               <Route exact strict path="/wallets" component={NewWallet} />
                               <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
-                              <Route exact strict path={["/wallets/deposit/:account_id", "/activity", "/"]} component={DepositContainer} />
-                              <Route exact path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
+                              <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
+                              <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
                               <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
                               <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
                             </Switch>
