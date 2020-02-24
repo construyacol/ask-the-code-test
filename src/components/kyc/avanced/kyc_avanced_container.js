@@ -57,13 +57,18 @@ class KycAvancedContainer extends Component{
 
     async componentDidMount(){
       await this.props.action.CurrentForm('kyc_advance')
-      if(this.props.current !== 'kyc_advance'){
-        this.props.history.push(`?form=personal_names`)
+      if(this.props.current === 'kyc_advance'){
+        this.props.action.Loader(false)
+        this.props.history.push(`?form=identity_front_upload`)
       }
     }
 
 
       componentDidUpdate(prevProps){
+        // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+        if(prevProps.step === this.props.step && this.props.current === 'kyc_advance'){return}
+        console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
+
         const { reset, step } = this.props
         if(reset){
           this.setState({
@@ -86,53 +91,23 @@ class KycAvancedContainer extends Component{
           })
         }
 
-      //
-      //   // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
-      //   if(prevProps.step === this.props.step && this.props.current !== 'kyc_advance'){return}
-      //   console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
-      //   //
-      //   let route
-      //   //
-      //   if(this.props.step === 1){
-      //     route = `?form=personal_names`
-      //   }
-      //
-      //   if(this.props.step === 2){
-      //     route = `?form=personal_surnames`
-      //   }
-      //
-      //   if(this.props.step === 3){
-      //     route = `?form=personal_birthday`
-      //   }
-      //
-      //   if(this.props.step === 4){
-      //     route = `?form=personal_phone`
-      //   }
-      //
-      //   if(this.props.step === 5){
-      //     route = `?form=personal_address`
-      //   }
-      //
-      //   if(this.props.step === 6){
-      //     route = `?form=personal_residence_city`
-      //   }
-      //
-      //   if(this.props.step === 7){
-      //     route = `?form=personal_country`
-      //   }
-      //
-      //   if(this.props.step === 8){
-      //     route = `?form=personal_type_id`
-      //   }
-      //
-      //   if(this.props.step === 9){
-      //     route = `?form=personal_number_id`
-      //   }
-      //
-      //   if(this.props.step === 10){
-      //     route = `?form=personal_nacionality`
-      //   }
-      //     this.props.history.push(route)
+
+        //
+        let route
+        //
+
+        if(this.props.step === 2){
+          route = `?form=identity_back_upload`
+        }
+
+        if(this.props.step === 3){
+          route = `?form=identity_selfie_upload`
+        }
+
+        if(this.props.step === 4){
+          route = `?form=identity_files_uploaded_success`
+        }
+          this.props.history.push(route)
       }
 
 
@@ -310,11 +285,13 @@ class KycAvancedContainer extends Component{
 
 function mapStateToProps(state, props){
   const { user, user_id } = state.model_data
+  const { current } = state.form
   return{
     loader:state.isLoading.loader,
     step:state.form.form_kyc_avanced.step,
     base64:state.form.form_kyc_avanced.base64,
-    user:user[user_id]
+    user:user[user_id],
+    current
   }
 }
 

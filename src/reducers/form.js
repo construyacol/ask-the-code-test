@@ -154,6 +154,9 @@ const forms = (state = initialState, action) =>{
               default:
                 const { step } = action
                 let query_prop = `form_${action.payload}`
+                if(!state[query_prop] || (state[query_prop] && !state[query_prop].step)){
+                  return state
+                }
                 return {
                   ...state,
                   [query_prop]:{

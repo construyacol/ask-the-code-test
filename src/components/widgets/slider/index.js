@@ -116,6 +116,7 @@ const Controls = ({ config:{ controls, autoSwap, swapInterval }, slider, setcurr
         next(true)
       }, (swapInterval || 1500))
     }
+    return () => clearInterval(autoSwapInterval)
   }, [position])
 
 
