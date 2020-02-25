@@ -40,7 +40,8 @@ import {
   Touch,
   Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
+  QRCode
  } from './'
 
  import {
@@ -100,8 +101,9 @@ class IconSwitch extends Component {
     const { icon } = props
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case 'qr':
+        return <QRCode {...props} />
       case 'usd':
-        // return <LogOut {...props} />
         return <img src={Usa} alt="" width={`${props.size}px`} height={`${props.size}px`}/>
       case 'logout':
         return <LogOut {...props} />

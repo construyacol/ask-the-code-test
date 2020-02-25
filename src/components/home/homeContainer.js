@@ -33,10 +33,9 @@ class HomeContainer extends Component{
     modalVisible:false
   }
 
-
-static getDerivedStateFromError(error, info){
-  return { handleError:true };
-}
+  static getDerivedStateFromError(error, info){
+    return { handleError:true };
+  }
 
   componentDidCatch(error, info){
     this.setState({
