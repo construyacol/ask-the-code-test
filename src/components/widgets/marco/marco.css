@@ -31,12 +31,13 @@
 }
 
 .imgDashFramework2{
-  width: 230px;
+  min-width: 230px;
   height: 150px;
   position: relative;
   display: grid;
   align-items: center;
   justify-items:center;
+  width: 0;
   /*opacity: 0.75;*/
 }
 

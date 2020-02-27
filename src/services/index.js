@@ -3,6 +3,7 @@ import { kyc } from '../components/api/ui/api.json'
 import Compressor from 'compressorjs';
 import Environment from '../environment'
 
+import * as Sentry from '@sentry/browser';
 import { update_activity } from '../actions/storage'
 import { update_pending_activity } from '../actions/APIactions'
 import { update_normalized_state } from '../actions/dataModelActions'
@@ -28,6 +29,19 @@ const {
 const {
   normalize_user
 } = normalizr_services
+
+
+
+
+
+
+export const SentryCaptureException = error => {
+
+  Sentry.captureException(error);
+
+}
+
+
 
 
 export const img_compressor = (file, quality) => {

@@ -37,9 +37,38 @@ class DepositContainer extends Component {
     deposit_provider_list:null
   }
 
+
+
   componentDidMount(){
     this.props.action.CurrentForm('deposit')
     // this.serve_deposit_provider_views()
+    this.props.history.push(`?form=deposit_amount`)
+    }
+
+    componentDidUpdate(prevProps){
+
+      // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+      if(prevProps.step === this.props.step){return}
+
+      let route
+
+      if(this.props.step === 1){
+        route = `?form=deposit_amount`
+      }
+
+      if(this.props.step === 2){
+        route = `?form=deposit_way_to_pay`
+      }
+
+      if(this.props.step === 3){
+        route = `?form=deposit_payment_method`
+      }
+
+      if(this.props.step === 4){
+        route = `?form=deposit_finish`
+      }
+        // console.log('||||||||||||||||||||||||||||||| componentDidUpdate =?=> ')
+        this.props.history.push(route)
     }
 
   update_control_form = (searchMatch) => {
@@ -289,6 +318,9 @@ updateAmountOnState = async(amount) =>{
       // console.log('||||||||||||||||||| FINISH HIM', this.state)
       return this.props.history.push(`/wallets/activity/${this.state.account_id}/deposits`)
     }
+
+    this.props.history.push(`?form=deposit_close`)
+
 
     this.setState({
       final:true,

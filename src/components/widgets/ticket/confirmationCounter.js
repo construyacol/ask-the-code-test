@@ -37,10 +37,10 @@ class ConfirmationCounter extends Component {
 
 
   componentDidUpdate(prevProps) {
-  if (this.props.confirmations !== prevProps.confirmations) {
-      this.draw(this.props.confirmations)
+    if (this.props.confirmations !== prevProps.confirmations) {
+        this.draw(this.props.confirmations)
+    }
   }
-}
 
   componentDidMount(){
     this.init_draw()

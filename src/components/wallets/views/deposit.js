@@ -8,6 +8,7 @@ import QRCode from 'qrcode'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
+import { SentryCaptureException } from '../../../services'
 
 
 class DepositView extends Component{
@@ -16,7 +17,9 @@ class DepositView extends Component{
     qr:null,
     address:null,
     fiat_currency:false,
-    verified:false
+    verified:false,
+    validating_msg:null,
+    validating_address:false
   }
 
     componentDidMount(){
@@ -39,14 +42,27 @@ class DepositView extends Component{
       if((current_wallet && current_wallet.dep_prov.length<1) || !deposit_providers ){return false}
       let dep_prov = deposit_providers[current_wallet.dep_prov[0]]
       if(!dep_prov || !dep_prov.account.account_id.account_id){return false}
-      console.log('DESDE DEPOSITOSSSS ', dep_prov)
+      // console.log('DESDE DEPOSITOSSSS ', dep_prov)
       // let address = current_wallet.deposit_provider.account.account_id
       const { account } = dep_prov
       let qr = await QRCode.toDataURL(account.account_id.account_id)
       this.setState({
         qr:qr,
-        address:account.account_id.account_id
+        address:account.account_id.account_id,
+        validating_address:true
       })
+      const validateAddress = await this.props.action.validate_address(account.account_id.account_id)
+      // const validateAddress = await this.props.action.validate_address('asd')
+      if(!validateAddress){
+        // sentry call emit error
+        SentryCaptureException('ADDRESS posiblemente vulnerada, review /wallets/views/deposit')
+        return this.setState({address:null,
+        validating_msg:'Dirección invalida, por favor contacte con soporte...'})
+      }
+      this.setState({
+        validating_address:false
+      })
+      // console.log('DESDE validateAddress ', validateAddress)
   }
 
   componentDidUpdate(prevProps){
@@ -98,9 +114,8 @@ class DepositView extends Component{
 render(){
 
   const { current_wallet, loader } = this.props
-  const { qr, address, fiat_currency, verified } = this.state
+  const { qr, address, fiat_currency, verified, validating_address, validating_msg } = this.state
   let movil_viewport = window.innerWidth < 768
-
 
   const atributos ={
     icon: fiat_currency ? 'deposit' : 'deposit_crypto',
@@ -126,11 +141,15 @@ render(){
       <section className="contAddress">
         <p id="soloAd2" className="fuente title soloAd2">Importante:</p>
         <p className="fuente soloAd">Envía solo {current_wallet.currency.currency} a esta Billetera. El envío de cualquier otra moneda a esta dirección puede resultar en la pérdida de su depósito. </p>
-        <img id="qrDesposit" className="itemFuera" src={qr} alt="" />
+
+        <div className="qrContainer">
+              <QrProtector active={validating_address} invalid={validating_msg}/>
+          <img id="qrDesposit" className="itemFuera" src={qr} alt="" />
+        </div>
         <p className="fuente title dirDep">Dirección de deposito:</p>
         <div className="fuente address">
           <CopyContainer
-            valueToCopy={address}
+            valueToCopy={validating_msg ? 'Dirección invalida, contacta con soporte' : validating_address ? 'XXXXXX- Verificando dirección -XXXXXX' : address}
             color="black"
           />
         </div>
@@ -206,7 +225,6 @@ function mapStateToProps(state, props){
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
 
-
   // console.log('DESDE DEPOSITOSSSS ', state.model_data.pairs)
 
   return{
@@ -224,3 +242,15 @@ function mapStateToProps(state, props){
 
 export default connect(mapStateToProps, mapDispatchToProps) (DepositView)
 // export default withRouter(DepositView)
+
+
+
+const QrProtector = ({ active, invalid }) => (
+  <div className={`qrProtector ${active ? 'active' : ''} ${invalid ? 'error' : ''}`}>
+    <IconSwitch
+      icon="qr"
+      size={35}
+      color="black"
+    />
+  </div>
+)

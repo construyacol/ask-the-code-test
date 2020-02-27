@@ -13,6 +13,7 @@ class Kyc extends Component {
   }
 
 
+
   validate_personal_kyc = async(info_type) => {
 
     const { form_kyc_basic, user } = this.props
@@ -69,10 +70,11 @@ class Kyc extends Component {
 
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
-      setTimeout(()=>{
-        this.props.action.Loader(false)
-        this.props.action.ReduceStep('kyc_basic')
-      },1000)
+      this.props.action.Loader(false)
+      // setTimeout(()=>{
+        // this.props.action.Loader(false)
+        // this.props.action.ReduceStep('kyc_basic')
+      // },1000)
     // }, 3000)
   }
 
@@ -204,12 +206,14 @@ const { user } = this.props
 function mapStateToProps(state, props){
   // console.log('S T A T E -- K Y C --- C O N T A I N E R', state)
   const { user, user_id} = state.model_data
+  const { current } = state.form
 
   return{
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
     user:user[user_id],
-    form_kyc_basic:state.form.form_kyc_basic
+    form_kyc_basic:state.form.form_kyc_basic,
+    current
   }
 }
 

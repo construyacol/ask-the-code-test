@@ -352,10 +352,12 @@ withdraw_mangagement = async (withdraw) => {
 
 
    if(deposit.state === 'confirmed'){
+     // console.log('deposito confirmado fiat')
      if((this.props.deposits && this.props.deposits[deposit.id]) && this.props.deposits[deposit.id].currency_type === 'fiat'){
        await this.props.action.update_item_state({[deposit.id]:{...this.props.deposits[deposit.id], state:deposit.state}}, 'deposits')
        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
        this.props.action.get_account_balances(this.props.user)
+       this.props.history.push('?form=deposit_confirmed_success')
      }
    }
 

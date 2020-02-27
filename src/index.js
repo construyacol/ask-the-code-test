@@ -1,9 +1,12 @@
 import React from 'react';
-import {render} from 'react-dom';
+// import {render} from 'react-dom';
+// import { hydrate, render } from "react-dom";
+import { render } from 'react-snapshot';
 import './index.css';
 // import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux'
 import RootContainer from './components/Root'
+// import RootContainer from './root'
 import reducer from './reducers'
 import logger from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
@@ -31,15 +34,17 @@ const store = createStore(
 )
 
 const home = document.getElementById('home-container')
-
-
 render(
-  <Provider store={store}>
-      <RootContainer/>
-  </Provider>
+  <Provider store={store}><RootContainer/></Provider>
  , home
 );
 
+// const rootElement = document.getElementById('home-container')
+// if (rootElement.hasChildNodes()) {
+//   hydrate(<Provider store={store}><RootContainer/></Provider>, rootElement);
+// } else {
+//   render(<Provider store={store}><RootContainer/></Provider>, rootElement);
+// }
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
@@ -48,7 +53,6 @@ render(
 // serviceWorker.unregister();
 
 export default store
-
 
 // const logger = ({getState, dispatch}) => next => action => {
 //   console.log('estado anterior', getState())

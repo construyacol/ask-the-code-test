@@ -59,7 +59,7 @@ state = {
 
       let value = await formatToCurrency(e.target.value, this.props.current_wallet.currency)
       let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
-
+      console.log('validate_min_amount', value.isGreaterThanOrEqualTo(min_amount), this.props.withdraw_provider.provider.min_amount)
       this.setState({
         validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
       })
@@ -341,11 +341,12 @@ const atributos ={
                                 clase={true} //retiro los estilos que vienen por defecto
                                 placeholder={withdraw_provider && withdraw_provider.provider.min_amount}
                                 getMaxAvailable={this.getMaxAvailable}
-                                coin={short_name}
+                                // coin={short_name}
                                 saldoDisponible={available}
                                 name="name"
                                 value={value}
                                 actualizarEstado={this.actualizarEstado_coin}
+                                secondary_value
                                 // imgs={short_name}
                               />
                             </div>
@@ -493,7 +494,7 @@ if(withdraw_accounts){
     loader,
     current_wallet,
     active_trade_operation:state.ui.current_section.params.active_trade_operation,
-    short_name:state.ui.current_section.params.short_name,
+    short_name:current_wallet.currency.currency,
     available:current_wallet && balances && balances[current_wallet.id] && balances[current_wallet.id].available,
     withdraw_provider:wit_prov_list && current_wallet && wit_prov_list[current_wallet.currency.currency],
     // withdraw_provider:null,

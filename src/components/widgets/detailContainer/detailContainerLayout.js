@@ -25,7 +25,7 @@ class detailContainerLayout extends Component{
 
 render(){
 
-  const { items_menu, title, current_section, current_wallet, current_item, pathname } = this.props
+  const { items_menu, title, current_section, current_wallet, pathname, primary_path } = this.props
   const { params } = current_section
   // const { current_sub_section } = params
   let movil_viewport = window.innerWidth < 768
@@ -57,37 +57,38 @@ render(){
             </div>
 
             {
-              !movil_viewport &&
-              <Link to="/wallets" className="DCBack" style={{display:pathname ? '' : 'none'}} >
+              (!movil_viewport) &&
+              <Link to="/wallets" className="DCBack" style={{display:(pathname) ? '' : 'none'}} >
                 <i className="fas fa-arrow-left"></i>
                 <p>Volver</p>
               </Link>
             }
 
 
-            <div className={`DCTitle ${movil_viewport ? 'movil' : ''}`} style={{display:pathname ? 'none' : ''}} >
+            <div className={`DCTitle ${primary_path} ${movil_viewport ? 'movil' : ''}`} style={{display:pathname ? 'none' : ''}} >
               {
-                movil_viewport ?
+                (movil_viewport && primary_path !== 'referral') ?
                 <Fragment>
-                  <Link to="/wallets" className={`menuMovilItem ${current_item === 'wallets' ? 'active' : ''}`}>
-                  <div className={`menuMovilIcon ${current_item === 'wallets' ? 'active' : ''}`} >
+                  <Link to="/wallets" className={`menuMovilItem ${primary_path === 'wallets' ? 'active' : ''}`}>
+                  <div className={`menuMovilIcon ${primary_path === 'wallets' ? 'active' : ''}`} >
                     <IconSwitch size={20} icon="wallets" color="#14b3f0"/>
                   </div>
-                   <p>Billeteras</p>
+                   <p className="fuente" >Billeteras</p>
                   </Link>
 
-                    <Link to="/withdraw" className={`menuMovilItem ${current_item === 'withdraw' ? 'active' : ''}`}>
-                    <div className={`menuMovilIcon ${current_item === 'withdraw' ? 'active' : ''}`} >
+                    <Link to="/withdraw_accounts" className={`menuMovilItem ${primary_path === 'withdraw_accounts' ? 'active' : ''}`}>
+                    <div className={`menuMovilIcon ${primary_path === 'withdraw_accounts' ? 'active' : ''}`} >
                       <IconSwitch size={20} icon="withdraw" color="#14b3f0"/>
                     </div>
-                     <p>Retiros</p>
+                     <p className="fuente" >Retiros</p>
                     </Link>
 
-                  <Link to="/security" className={`menuMovilItem ${current_item === 'security' ? 'active' : ''}`}>
-                    <div className={`menuMovilIcon ${current_item === 'security' ? 'active' : ''}`} >
+                  <Link to="/security" className={`menuMovilItem ${primary_path === 'security' ? 'active' : ''}`}>
+                    <div className={`menuMovilIcon ${primary_path === 'security' ? 'active' : ''}`} >
                       <IconSwitch size={20} icon="security" color="#14b3f0"/>
                     </div>
-                   <p>Seguridad</p>
+                   <p className="fuente" >Seguridad</p>
+
                   </Link>
 
                 </Fragment>
@@ -98,7 +99,7 @@ render(){
          </div>
       </div>
 
-      <div className={`contenido ${(pathname && current_wallet) ? 'DCcurrent_wallet' : ''} ${pathname}`}>
+      <div className={`contenido ${(primary_path && current_wallet) ? 'DCcurrent_wallet' : ''} ${primary_path} ${pathname}`}>
          {this.props.children}
       </div>
 
@@ -117,17 +118,17 @@ function mapStateToProps(state, props){
 
   let account_opts = {}
   if(props.match){
-    const { path, account_id } = props.match.params
+    const { path, primary_path, account_id } = props.match.params
     account_opts = {
       current_wallet:(props.wallets && account_id) && props.wallets[account_id],
-      pathname:path
+      pathname:path,
+      primary_path
     }
   }
 
-  // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', path, props)
+  // console.log('||||||||| VALIDANDO DETALLE ACCOUNT::', props)
 
   return{
-    current_item:state.ui.menu_item_active,
     current_section:state.ui.current_section,
     // pathname:res && res.length > 1 && res[2]
     ...account_opts

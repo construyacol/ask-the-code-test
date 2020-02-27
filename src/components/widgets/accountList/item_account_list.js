@@ -9,6 +9,7 @@ import { AddNewItem } from '../buttons/buttons'
 import { withRouter } from "react-router"
 import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
+import { AccountListContainer } from './styles'
 
 import '../../wallets/views/wallet_views.css'
 
@@ -160,29 +161,20 @@ class AccountList extends Component{
       <Fragment>
         {
           (this.props.item_list && this.props.item_list.length>0)?
-          <section id="WalletList">
-            {
-              this.props.item_list.map((account, id)=>{
-                if(!account.visible){return null}
-                return <ItemAccount
-                  key={id}
-                  account={account}
-                  account_type={path}
-                  actions
-                  // delete_account={this.delete_account}
-                  {...this.props}
-                />
-                // return <ItemWallet
-                //   key={wallet && wallet.id}
-                //   deposit_providers={this.props.deposit_providers}
-                //   delete_account={this.delete_account_confirmation}
-                //   wallet={wallet}
-                //   history={this.props.history}
-                //   {...this.state}
-                //  />
-              })
-            }
-          </section>
+            <AccountListContainer className="AccountListContainer">
+              {
+                this.props.item_list.map((account, id)=>{
+                  if(!account.visible){return null}
+                  return <ItemAccount
+                    key={id}
+                    account={account}
+                    account_type={path}
+                    actions
+                    {...this.props}
+                  />
+                })
+              }
+            </AccountListContainer>
           :
           this.props.loader ?
           <SimpleLoader

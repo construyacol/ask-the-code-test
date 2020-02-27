@@ -11,14 +11,20 @@ const KycLayout = (props) =>{
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  // let level = user.verification_level
 
+ // console.log( '||||||||||||||||||||||||||||||||||| CURRENT FORM =>', props)
   return(
     <section className="KycLayoutMom">
       <div className={`KycLayoutCarousel ${(globalStep === 0) ? 'globalStep0': globalStep === 1 ? 'globalStep1' : 'globalStep2'}`} style={{display:globalStep<3 ? 'grid' : 'none'}} >
 
-              <KycBasicContainer
-                validate_personal_kyc={validate_personal_kyc}
-                {...props}
-              />
+          {
+            (props.user.security_center.kyc.basic !== 'accepted' && props.user.security_center.kyc.basic !== 'confirmed') ?
+            <KycBasicContainer
+              validate_personal_kyc={validate_personal_kyc}
+              {...props}
+            />
+            :
+            <div></div>
+          }
 
               <SuccessComponentScreen {...props}
                 title="Haz completado de forma exitosa el proceso de verificación basica"

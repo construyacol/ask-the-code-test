@@ -12,14 +12,30 @@ import PropTypes from 'prop-types'
 
 class MenuSuperiorContainer extends Component {
 
+  _isMounted = false;
+
   state = {
     movil:window.innerWidth < 768 ? true : false,
     buy_price:null,
-    sell_price:null
+    sell_price:null,
+    headRoomClass:'unpinned'
   }
 
   logout = async() =>{
-    await this.props.logOut()
+    this.props.action.ConfirmationModalToggle()
+    this.props.action.ConfirmationModalPayload({
+      title:"Estás a punto de cerrar sesión...",
+      description:"¿Estás seguro que deseas salir de Coinsenda?",
+      txtPrimary:"Salir de Coinsenda",
+      txtSecondary:"Quiero quedarme",
+      action:(this.logOutFin),
+      svg:"logout",
+      type:"select_country"
+    })
+  }
+
+  logOutFin = () => {
+    this.props.logOut()
     this.props.action.logged_in(false)
   }
 
@@ -43,7 +59,8 @@ class MenuSuperiorContainer extends Component {
   }
 
   mouseOver = () =>{
-    this.props.action.HeadRoom('pinned')
+    this.setState({headRoomClass:'pinned'})
+    // this.props.action.HeadRoom('pinned')
   }
 
   formating_currency = async() => {
@@ -51,21 +68,29 @@ class MenuSuperiorContainer extends Component {
     if(!currentPair){return false}
     let buy_price = await formatToCurrency(currentPair.buy_price, currentPair.secondary_currency, true)
     let sell_price = await formatToCurrency(currentPair.sell_price, currentPair.secondary_currency, true)
-    this.setState({
-      buy_price,
-      sell_price
-    })
-  }
-
-  componentDidUpdate(prevProps){
-    if(prevProps !== this.props){
-      this.formating_currency()
+    if(this._isMounted){
+      this.setState({
+        buy_price,
+        sell_price
+      })
     }
   }
 
+  componentDidUpdate(prevProps){
+    // console.log('||||||||||||||||||||||||||||||||| componentDidMount MENU CONTAINER ==> ', this.props)
+    if(prevProps.match.params.primary_path !== this.props.match.params.primary_path || prevProps.currentPair !== this.props.currentPair){
+      this.formating_currency()
+      this.setState({headRoomClass:'unpinned'})
+    }
+  }
 
-  componentDidMount(){
-    this.formating_currency()
+    componentWillUnmount(){
+      this._isMounted = false
+    }
+
+   async componentDidMount(){
+     this._isMounted = true
+    // this.setState({headRoomClass:'unpinned'})
     let menuSuperior = document.getElementById('mSuperior')
     let detonador = document.getElementById('containerElement')
     const headroom = new Headroom(menuSuperior, {
@@ -73,18 +98,22 @@ class MenuSuperiorContainer extends Component {
        "tolerance" : 10,
       "scroller" :detonador,
       onUnpin:()=>{
-        this.props.action.HeadRoom('unpinned')
+        this.setState({headRoomClass:'unpinned'})
+        // this.props.action.HeadRoom('unpinned')
       },
       onPin:()=>{
-        this.props.action.HeadRoom('pinned')
+        this.setState({headRoomClass:'pinned'})
+        // this.props.action.HeadRoom('pinned')
       }
     })
-    headroom.init()
+    await headroom.init()
 
     if(!this.props.currentPair){
-    this.props.action.get_pairs_for('colombia')
+      this.props.action.get_pairs_for(this.props.user.country)
+    }else{
+      this.formating_currency()
     }
-    // console.log('||||||||| componentDidMount:', this.props)
+
   }
 
 
@@ -99,7 +128,6 @@ class MenuSuperiorContainer extends Component {
 
 
   render(){
-    // console.log('MENU SUPERIOR_________::', this.props)
     return(
       <MenuSuperiorLayout
         logout={this.logout}
@@ -116,10 +144,7 @@ class MenuSuperiorContainer extends Component {
 
 
 MenuSuperiorContainer.propTypes = {
-  HeadRoomClass:PropTypes.string,
   currentPair:PropTypes.object,
-  current_section:PropTypes.string,
-  item_active:PropTypes.string,
   item_quote:PropTypes.object,
   loader:PropTypes.bool,
   logOut:PropTypes.func,
@@ -136,16 +161,15 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
+  const { user, user_id } = state.model_data
   return{
-    item_active:state.ui.menu_item_active,
-    current_section:state.ui.current_section.view,
     HeadRoomClass:state.ui.headroom,
     currentPair:state.model_data.pairs.currentPair,
     loader:state.isLoading.loader,
     item_quote:state.ui.item_quote,
     loggedIn:state.auth.loggedIn,
-    show_menu_principal:state.ui.current_section.params.show_menu_principal
-    // user:user && user[user_id]
+    show_menu_principal:state.ui.current_section.params.show_menu_principal,
+    user:user && user[user_id]
   }
 }
 

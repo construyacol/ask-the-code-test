@@ -15,7 +15,8 @@ export const ObserverHook = () => {
             observer.disconnect()
           }
         })
-        if(observer){
+        if(observer && (element && element.current)){
+          // console.log('|||||||||||||| INTERSECTION OBSERVER ==> ', element)
           observer.observe(element.current)
         }
       })

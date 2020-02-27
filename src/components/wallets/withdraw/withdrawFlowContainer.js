@@ -37,11 +37,44 @@ class WithdrawFlow extends Component {
     async componentDidMount(){
       await this.props.action.CurrentForm('withdraw')
       this.init_config()
+      this.props.history.push(`?form=withdraw_amount`)
     }
 
-    componentWillReceiveProps({step}){
-      this.setState({step})
-    }
+    updateTimes = 0
+
+
+      componentDidUpdate(prevProps, prevState){
+
+        // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+        // console.log('|||||||||||||||||||||||||||||||| =======> withdraw flow CONT ==> ', this.props)
+        let route
+        if((prevProps.step === 1 && this.state.show_list_accounts) && this.updateTimes < 1){
+          route = `?form=withdraw_select_account`
+          this.updateTimes ++
+          return this.props.history.push(route)
+        }
+
+        if((prevProps.step === 1 && !this.state.show_list_accounts) && this.updateTimes > 0){
+          route = `?form=withdraw_amount`
+          this.updateTimes --
+          this.props.history.push(route)
+        }
+
+        if(prevProps.step === this.props.step){return}
+        // console.log('NEXT STEP ==>', this.props.step, prevProps.step)
+
+        if(this.props.step >= 2){
+          this.updateTimes --
+          route = `?form=withdraw_order_created`
+        }
+
+          this.props.history.push(route)
+          // alert()
+      }
+
+    // componentWillReceiveProps({step}){
+    //   this.setState({step})
+    // }
 
     init_config = async() =>{
 
@@ -408,7 +441,7 @@ class WithdrawFlow extends Component {
 
 
       await this.props.action.ToggleModal()
-      await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws`)
+      await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
 
       this.props.action.CleanForm('deposit')
       this.props.action.CleanForm('withdraw')

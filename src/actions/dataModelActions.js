@@ -11,7 +11,7 @@ UPDATE_SWAP_PENDING,
 REDUCE_BALANCE,
 ADD_BALANCE,
 ALL_PAIRS_LANDING,
-UPDATE_ITEM_STATE
+UPDATE_ITEM_STATE,
 } from './action_types'
 
 
@@ -127,6 +127,9 @@ export const SearchCurrentPair = (payload, prop) => {
     prop
   }
 }
+
+
+
 
 export const LocalCurrency = payload => {
   return{

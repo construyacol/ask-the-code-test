@@ -3,6 +3,7 @@ import './icons.css'
 import Coinsenda from './logos/coinsenda'
 import BancoBogota from './logos/bancoBogota'
 import Bbva from './logos/bbva'
+import Usa from '../../../assets/svg/usa.svg'
 
 import {
   Email,
@@ -39,7 +40,8 @@ import {
   Touch,
   Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
+  QRCode
  } from './'
 
  import {
@@ -97,7 +99,14 @@ class IconSwitch extends Component {
 
   switcher = props => {
     const { icon } = props
+    // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case 'qr':
+        return <QRCode {...props} />
+      case 'usd':
+        return <img src={Usa} alt="" width={`${props.size}px`} height={`${props.size}px`}/>
+      case 'logout':
+        return <LogOut {...props} />
       case 'ethereum':
         return <Ethereum {...props} />
       case 'ethereum_account':

@@ -179,7 +179,11 @@ let models
             currentPair:result[0]
           }
       }
+
+
+
     case LOCAL_CURRENCY:
+    // console.log(' =================================>>>    local_currency', action.payload)
       return{
         ...state,
         pairs:{

@@ -128,6 +128,9 @@ class ActivityList extends Component {
       inputFile.click()
     }, 740)
 
+    this.props.history.push('?form=upload_deposit_payment_proof')
+
+
   }
 
 

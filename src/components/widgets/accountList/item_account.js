@@ -20,7 +20,16 @@ import {
 
 import './item_wallet.css'
 
+
+
+
 const ItemAccount = props => {
+
+  if(props.loader){
+    return(
+      <LoaderAccount/>
+    )
+  }
 
   const account_detail = async(payload) => {
     props.action.CleanItemNotifications(payload, 'account_id')
@@ -208,6 +217,24 @@ const WithdrawAccount = props => {
     </WithdrawAccountL>
   )
 
+}
+
+const LoaderAccount = () => {
+  const items = ['uno', 'dos', 'tres']
+  return(
+    <Fragment>
+      {
+        items.map((e, key)=>{
+            return <WalletLayout className={`loader ${e}`} key={key}>
+              <div/>
+              <div/>
+              <div/>
+              <div/>
+            </WalletLayout>
+        })
+      }
+    </Fragment>
+  )
 }
 
 

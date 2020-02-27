@@ -1,16 +1,14 @@
 import React, { Component } from "react";
-import Slider from "react-slick";
 import './carousel.css'
 import Marco from '../../../widgets/marco'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import {ButtonForms} from '../../../widgets/buttons/buttons'
-
 import perspective from '../../../../assets/docs/perspective.png'
 import borroso from '../../../../assets/docs/borroso.png'
 import oscuro from '../../../../assets/docs/oscuro.png'
 import gris from '../../../../assets/docs/gris.png'
 import sinmarc from '../../../../assets/docs/sinmarc.png'
+import Slider from '../../../widgets/slider'
+
 
 
 export default class SimpleSlider extends Component {
@@ -18,24 +16,26 @@ export default class SimpleSlider extends Component {
 
   render() {
 
+
     const { onBoarding, continuar } = this.props
 
-    const settings = {
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 4000,
-      pauseOnHover: true,
-      swipeToSlide: true
-    };
+    const config = {
+      // pauseOnFocus
+      autoSwap:true,
+      swapInterval:7000,
+      controls:{
+        size:"50px"
+      }
+    }
 
     return (
       <div className="SimpleSlider">
         <h1 className="TitleSlider fuente">La foto DEBE ser:</h1>
-        <Slider ref={c => (this.slider = c)} {...settings}>
+
+        <Slider
+          config={config}
+          >
+
           <div className="SimpleSliderItem">
 
             <h1 className="fuente" >Plana</h1>
@@ -47,14 +47,15 @@ export default class SimpleSlider extends Component {
           </div>
 
           <div className="SimpleSliderItem">
-
-            <h1 className="fuente" >Legible</h1>
+           <h1 className="fuente" >Legible</h1>
             <Marco>
               <img src={borroso} alt="" width="80%"/>
             </Marco>
             <p className="fuente" >Asegurese que la identificación este totalmente visible y enfocada, incluidos su nombre completo, fecha de nacimiento y numero de identificación.</p>
-
           </div>
+
+
+
 
           <div className="SimpleSliderItem">
 
@@ -63,7 +64,6 @@ export default class SimpleSlider extends Component {
               <img src={oscuro} alt="" width="80%"/>
             </Marco>
             <p className="fuente" >la imagen no debe estar oscura, procure tomarla con iluminación natural</p>
-
           </div>
 
           <div className="SimpleSliderItem">
@@ -77,13 +77,11 @@ export default class SimpleSlider extends Component {
           </div>
 
           <div className="SimpleSliderItem">
-
             <h1 className="fuente" >Entera</h1>
             <Marco>
               <img src={sinmarc} alt="" width="100%"/>
             </Marco>
             <p className="fuente" >Asegurese que las 4 esquinas del documento se vean completamente en el marco de la foto</p>
-
           </div>
         </Slider>
 

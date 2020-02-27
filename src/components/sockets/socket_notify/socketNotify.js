@@ -119,7 +119,9 @@ const OrderNotifyView = props => {
       <div className="close_modal_btn" onClick={close_modal}><i className="fas fa-times"></i></div>
 
       <div className="topSection">
-        <div className="backTopSection animate"></div>
+        <div className="contBackTopSection">
+          <div className="backTopSection animate"/>
+        </div>
         <div className="socketIconContainer in">
           <div className="wavExpansive in"></div>
           <IconSwitch

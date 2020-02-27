@@ -49,6 +49,7 @@ class ReferralComponent extends Component {
 
       <DetailContainerLayout
         title="Referidos"
+        {...this.props}
         >
         <div className="referralCont">
             <div className="textReferral">

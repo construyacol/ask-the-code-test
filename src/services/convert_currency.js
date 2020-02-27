@@ -42,10 +42,6 @@ import store from '../'
 
 
 
-
-
-
-
   const extractCurrencies = (currencies_instances) =>{
       let arr = [];
       currencies_instances.forEach((currency_instance) => {
@@ -76,6 +72,7 @@ import store from '../'
 
     objetive_data.pair_id = objetive_pair_instance.id;
 
+    // console.log('||||||||||||||||| converter, to_spend_currency', to_spend_currency[0], primary_objetive_currency[0])
     if (to_spend_currency[0] === primary_objetive_currency[0]){
       // Es una venta
       data.want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.primary_currency);

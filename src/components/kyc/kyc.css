@@ -13,6 +13,34 @@
   position: initial !important
 }
 
+.inputLabelsCont.loader, .InputContainerT.loader, .KycTitless.loader, .inputContainer3.loader p{
+  background: #cacaca;
+  border-radius: 6px;
+}
+
+.InputContainerT.loader{
+  width: 65%;
+  height: 100%;
+}
+
+
+.inputLabelsCont.loader{
+  width: 45% ;
+  height: 50%;
+}
+
+.inputContainer3.loader p{
+  height: 20px;
+  width: 120px;
+  position: relative;
+  left: 15px;
+}
+
+.KycTitless.loader{
+  height: 35px;
+  width: 200px;
+}
+
 .KycParra1.long_msg{
   font-size: 20px !important;
   max-width: 600px !important;
@@ -260,6 +288,7 @@ grid-template-rows: repeat(2, calc(100vh - 160px));
   height: 100%;
   cursor: pointer;
   opacity: 0;
+  z-index: 2;
 }
 
 .controlContainers{

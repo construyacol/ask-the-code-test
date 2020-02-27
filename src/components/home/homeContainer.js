@@ -1,4 +1,4 @@
-import React, { Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import HomeLayout from './homeLayout'
 import MenuPrincipalContainer from '../menuPrincipal/menuPrincipalContainer'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
@@ -13,7 +13,6 @@ import ToastContainers from '../widgets/toast/ToastContainer'
 import DepositContainer from '../wallets/deposit/depositContainer'
 import actions from '../../actions'
 import Kyc from '../kyc/kyc_container'
-// import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Router, Route, Switch } from 'react-router-dom'
 import ConfirmationModal from '../widgets/modal/confirmation'
 import PairList from "../wallets/views/swap_pair_list"
@@ -26,7 +25,6 @@ import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
 import PropTypes from 'prop-types'
 import SocketNotify from '../sockets/socket_notify/socketNotify'
 import SocketsComponent from '../sockets/sockets'
-// import { formatToCurrency } from '../../services/convert_currency'
 
 
 class HomeContainer extends Component{
@@ -35,17 +33,17 @@ class HomeContainer extends Component{
     modalVisible:false
   }
 
-
-
-static getDerivedStateFromError(error, info){
-  return { handleError:true };
-}
+  static getDerivedStateFromError(error, info){
+    return { handleError:true };
+  }
 
   componentDidCatch(error, info){
     this.setState({
       handleError:true,
     })
   }
+
+
 
   // componentDidUpdate(prevProps){
   //   if (this.props.app_loaded !== prevProps.app_loaded) {
@@ -60,7 +58,6 @@ static getDerivedStateFromError(error, info){
   //       // add_coin_sound
   //     }, 1000)
   //     // this.formatToCurrencies()
-  //
   //   }
   // }
 
@@ -80,37 +77,33 @@ static getDerivedStateFromError(error, info){
 
     return(
       <HandleError>
+        <ToastContainers/>
         <SocketsComponent/>
 
       <Router
-        basename="/app"
         history={this.props.history}
         >
+
           {
             !app_loaded ?
             <Route path="/" render={() => <LoaderAplication user_data={user_data} history={this.props.history} />} />
             :
             <Fragment>
-                <ToastContainers/>
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-                    {/* <MenuPrincipalContainer history={this.props.history}/> */}
-                    <Route path={["/:primary_path", "/"]} component={MenuPrincipalContainer} />
-                    <MenuSuperiorContainer logOut={user_data.logOut}/>
-                    {/* En el componente dashboard se cargan todas las vistas */}
-
-                    <Route path="/" render={() => <DashBoardContainer  {...this.props} />} />
+                    <Route path="/:primary_path" component={MenuPrincipalContainer} />
+                    <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props)=>(<MenuSuperiorContainer {...this.props} {...props} logOut={user_data.logOut}/>)} />
+                    <Route path="/:primary_path" render={(props) => <DashBoardContainer  {...props} {...this.props} />} />
 
                   {
                     modalVisible &&
                     <ModalContainer>
                       <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} >
-                        {/* <Route exact strict path={["/wallets", "/wallets/"]} component={NewWallet} /> */}
                             <Switch>
                               <Route exact strict path="/wallets" component={NewWallet} />
                               <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
-                              <Route exact strict path={["/wallets/deposit/:account_id", "/activity", "/"]} component={DepositContainer} />
-                              <Route exact path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
+                              <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
+                              <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
                               <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
                               <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
                             </Switch>
@@ -121,6 +114,7 @@ static getDerivedStateFromError(error, info){
                   {
                     other_modal &&
                     <ModalContainer>
+                      <Switch>
                       {
                         this.props.socket_notify ?
                           <Route path="/" component={SocketNotify} />
@@ -130,6 +124,7 @@ static getDerivedStateFromError(error, info){
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                           </Fragment>
                       }
+                    </Switch>
                     </ModalContainer>
                   }
 
@@ -139,10 +134,8 @@ static getDerivedStateFromError(error, info){
                     <ModalContainer>
                       <Route
                         exact
-                        // path={["/wallets", "/", "/withdraw", "/wallets/withdraw/:id", "/wallets/swap/:id", "/wallets/activity/:id", "/security"]}
                         component={ConfirmationModal}
                       />
-                        {/* <Route exact path="/wallets" component={ConfirmationModal} /> */}
                     </ModalContainer>
                   }
 

@@ -2,10 +2,12 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import SimpleLoader from '../../widgets/loaders'
+// import SimpleLoader from '../../widgets/loaders'
 import ActivityList from '../../widgets/activityList/activity'
 import { scroller } from 'react-scroll'
 import ActivityFilters from '../../widgets/activityList/filters'
+import LoaderActivity from '../../widgets/activityList/order_item'
+
 import './wallet_views.css'
 
 
@@ -96,16 +98,18 @@ const ActivityView = props => {
       <ActivityFilters/>
     {
       !props.order_list ?
-      <div className="contLoaderAct" >
-        <SimpleLoader
-          label="Cargando Actividad..."
-        />
-      </div>
+      // <div className="contLoaderAct" >
+      //   <SimpleLoader
+      //     label="Cargando Actividad..."
+      //   />
+      // </div>
+      <LoaderActivity/>
       :
-          <ActivityList
-            activity={props.order_list}
-            {...props}
-          />
+      // <LoaderActivity/>
+         <ActivityList
+           activity={props.order_list}
+           {...props}
+         />
     }
     </div>
   )
@@ -124,9 +128,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  // const { current_wallet } = state.ui.current_section.params
   const { swaps, withdraws, deposits } = state.model_data
-
   const { activity_for_account } = state.storage
   const { params } = props.match
 
@@ -136,59 +138,8 @@ function mapStateToProps(state, props){
     swaps,
     withdraws,
     deposits
-    // activity_for_account:activity_for_account[params.account_id]
-
-    // current_wallet:state.ui.current_section.params.current_wallet,
-    // local_currency:state.model_data.pairs.localCurrency,
-    // current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
-    // user:user[user_id],
-    // all_pairs:all_pairs
   }
 }
 
 
 export default connect(mapStateToProps, mapDispatchToProps) (ActivityView)
-
-
-
-// class ActivityView extends Component{
-//
-//
-//   componentDidMount(){
-//     // this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
-//     scroller.scrollTo('firstInsideContainer', {
-//       duration: 0,
-//       smooth: true,
-//       offset: -55,
-//       containerId: 'containerElement'
-//     })
-//   }
-//
-//
-// render(){
-//
-//   const {
-//     current_wallet,
-//     wallets,
-//     all_pairs
-//   } = this.props
-//
-//   // console.log('||||||_______________________________________________ACTIVITY LIST', current_wallet, wallets, all_pairs)
-//   console.log('||||||_______________________________________________ACTIVITY LIST', this.props)
-//
-//   return(
-//     <Fragment>
-//     {
-//       (!current_wallet || !wallets || !all_pairs) ?
-//       <SimpleLoader
-//         label="Cargando Actividad..."
-//       />
-//       :
-//           <ActivityList
-//             {...this.props}
-//           />
-//     }
-//     </Fragment>
-//   )
-// }
-// }

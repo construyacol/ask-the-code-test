@@ -165,7 +165,6 @@ export const create_deposit_provider = (account_id, country) => {
 //
 // /api/cryptoCompares/get-daily-historical-data
 
-
 // OBTENER DEPOSIT_PROVIDERS
 
 export const get_deposit_providers = (user) => {
@@ -174,10 +173,10 @@ return async(dispatch) => {
 
     await dispatch(load_label('Obteniendo proveedores de deposito'))
     // const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
-    const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}`
+    // const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}`
     let myHeaders = await dispatch(generate_headers())
-    const deposit_providers = await ApiGetRequest(url_dep_prov, myHeaders)
-    if(!deposit_providers || deposit_providers === 404){return false}
+    // const deposit_providers = await ApiGetRequest(url_dep_prov, myHeaders)
+    // if(!deposit_providers || deposit_providers === 404){return false}
 
     const deposit_providersDA_url = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter[include]=depositAccount`
     const depositAccounts = await ApiGetRequest(deposit_providersDA_url, myHeaders)
@@ -185,25 +184,22 @@ return async(dispatch) => {
 
     let modelDAUpgrade = []
     let indexDA = 0
+
     depositAccounts.map(depositAccount => {
-      let account = Object.assign({}, depositAccount.depositAccount.account, deposit_providers[indexDA].account);
+      // let account = Object.assign({}, depositAccount.depositAccount.account, deposit_providers[indexDA].account);
+      // console.log('||||||||| account =>', account)
       let new_deposit_provider = {
-        ...deposit_providers[indexDA],
+        ...depositAccount,
         provider:{
           ...depositAccount.depositAccount,
           account:{
-            ...account
+            ...depositAccount.depositAccount.account
           }
         }
       }
       modelDAUpgrade.push(new_deposit_provider)
       return indexDA++
     })
-
-
-    // const url_dep_prov_fiat = `${ApiUrl}depositProviders?filter={"where":{"provider_type":"bank","country":"${user.country}"}}`
-    // const deposit_provider_fiat = await ApiGetRequest(url_dep_prov_fiat)
-    // if(!deposit_provider_fiat || deposit_provider_fiat === 404){return false}
 
     let user_update = {
       ...user,
@@ -267,5 +263,27 @@ export const get_one_deposit = (deposit_id) =>{
     // let normalizeUser = await normalize_user(user_update)
     // await dispatch(Update_normalized_state(normalizeUser))
     // return normalizeUser
+  }
+}
+
+
+export const validate_address = (address) =>{
+
+  return async(dispatch, getState) => {
+
+    const { user_id }  = getState().model_data
+    const user = getState().model_data.user[user_id]
+
+    const url_address = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
+    let myHeaders = await dispatch(generate_headers(user.TokenUser))
+
+    const Raddress = await ApiGetRequest(url_address, myHeaders)
+    if(!Raddress || Raddress === 465 || !Raddress.length){return false}
+    console.log(Raddress)
+    if(address === Raddress[0].account.account_id.account_id){
+      return true
+    }
+    return false
+
   }
 }

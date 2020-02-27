@@ -44,7 +44,7 @@ export const ApiPostRequest = async(url, body, token) => {
 
   // console.log('_______________________________BODY POST =======================>', body, parametros, url)
   let response
-  console.log('________________________________DESDE EL API POST ', url, parametros)
+  // console.log('________________________________DESDE EL API POST ', url, parametros)
   try {
     response = await fetch(url, parametros)
   }

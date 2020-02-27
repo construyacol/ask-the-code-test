@@ -1,6 +1,5 @@
 
 import {
-  HEAD_ROOM,
   ITEM_QUOTE_ACTIVE,
   MODAL_CONFIRMATION_TOGGLE,
   CONFIRMATION_MODAL_PAYLOAD,
@@ -21,7 +20,6 @@ import {
 } from '../actions/action_types'
 
 const initialState = {
-  headroom:"",
   menu_item_active:"",
   item_quote:{
     buy:true,
@@ -285,11 +283,6 @@ const ui = (state = initialState, action)=>{
           visible:!state.modal_confirmation.visible
         }
       }
-    case HEAD_ROOM:
-      return {
-        ...state,
-        headroom:action.payload
-        }
     case ITEM_QUOTE_ACTIVE:
       let ex = action.payload
       return {

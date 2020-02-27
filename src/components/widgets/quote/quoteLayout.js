@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { coins } from '../../api/ui/api.json'
 import ItemLayout from '../items/itemLayout'
-import Slider from './slide'
+// import Slider from './slide'
 import ChartCoin from '../chartCoin/chartCoin.js'
 import PropTypes from 'prop-types'
 
@@ -51,8 +51,7 @@ const QuoteLayout = props => {
             <div className={`coinList ${user_collection ? ((user_collection.length>1 && window.innerWidth>768) ? 'user_collection': '') : ''}`}>
                 {
                   (user_collection) ?
-
-
+                      (
                        window.innerWidth>768 ?
                             user_collection.map(item=>{
                                 iter++
@@ -64,9 +63,9 @@ const QuoteLayout = props => {
                               )
                             })
                         :
-                        <Slider currency={currency} items={user_collection} select_currency={select_currency} />
-
-
+                        <ItemLayout actives {...coins[0]} key={coins[0].id} />
+                        // <Slider currency={currency} items={user_collection} select_currency={select_currency} />
+                     )
                      :
                      (buy_pair === `BTC/${localCurrency.toUpperCase()}`) ?
                         <ItemLayout actives={true} {...coins[0]} key={coins[0].id} />

@@ -1,5 +1,4 @@
 import {
-  HEAD_ROOM,
   ITEM_QUOTE_ACTIVE,
   MODAL_CONFIRMATION_TOGGLE,
   CONFIRMATION_MODAL_PAYLOAD,
@@ -164,12 +163,12 @@ export const section_view_to = payload =>{
 
 
 
-export const HeadRoom = payload => {
-  return{
-    type:HEAD_ROOM,
-    payload
-  }
-}
+// export const HeadRoom = payload => {
+//   return{
+//     type:HEAD_ROOM,
+//     payload
+//   }
+// }
 
 export const ItemQuoteActive = payload =>{
   return{
@@ -194,4 +193,4 @@ export const ConfirmationModalPayload = payload =>{
 
 
 
-export default HeadRoom
+// export default HeadRoom

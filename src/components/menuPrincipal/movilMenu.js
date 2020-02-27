@@ -1,14 +1,15 @@
 import React from 'react'
 import IconSwitch from '../widgets/icons/iconSwitch'
-import store from '../../'
+// import store from '../../'
 import './mPrincipal.css'
 
 
 const MovilMenuComponent = props => {
 
-  const { user, user_id } = store.getState().model_data
-  const country = user[user_id].country
-  const { openSelectCountry, go_to } = props
+  // const { user, user_id } = store.getState().model_data
+  // const country = user[user_id].country
+  // const { openSelectCountry, go_to } = props
+  const {go_to } = props
 
   return (
     <div className="MovilMenuComponent">
@@ -28,10 +29,10 @@ const MovilMenuComponent = props => {
         <i className="fas fa-arrow-right"></i>
       </div>
 
-      <div className="menuMovilItems" onClick={openSelectCountry}>
+      {/* <div className="menuMovilItems" onClick={openSelectCountry}>
         <div className="menuMovilItemTexts fuente" > <IconSwitch icon={country} size={15} color="white" />Cambiar de país</div>
         <i className="fas fa-arrow-right"></i>
-      </div>
+      </div> */}
 
     </div>
   )

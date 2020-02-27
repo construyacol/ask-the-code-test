@@ -71,6 +71,7 @@ class QuoteContainer extends Component {
             />
           </div>
           :
+          // <h1 style={{background:"white", fontSize:"50px"}}>DASHBOARD</h1>
           <QuoteLayout
             select_currency={this.select_currency}
             switchItem={this.switchItem}

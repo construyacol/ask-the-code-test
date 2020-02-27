@@ -8,17 +8,13 @@ import moment from 'moment'
 import 'moment/locale/es'
 // import * as Sentry from '@sentry/browser';
 
-
-
 import { coins } from '../components/api/ui/api.json'
 import user_source from '../components/api'
 
 // MODELOS DE PARA HACER PRUEBAS EN CASO DE QUE EL API ESTE INACCESIBLE
-
 // import pairs from '../components/api/ui/modelo_pairs.json'
 // import deposit_providers from '../components/api/ui/deposit_providers.json'
 // import deposits from '../components/api/ui/deposits.json'
-
 // import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
 // import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
@@ -53,10 +49,9 @@ import {
   // new_fiat_deposit
  } from './uiActions'
 
-
 const {
   normalize_user,
-  normalize_data
+  // normalize_data
 } = normalizr_services
 
 const {
@@ -69,7 +64,7 @@ update_normalized_state,
 reset_model_data,
 UpdateAllCurrencies,
 ManageBalanceAction,
-all_pairs_landing
+// all_pairs_landing
 } = data_model_actions
 
 const {
@@ -179,7 +174,6 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 
 
-
 export const get_all_pairs = (token, country) =>{
   return async(dispatch)=>{
 
@@ -195,7 +189,6 @@ export const get_all_pairs = (token, country) =>{
 
     const url_pairs = `${SwapApiUrl}pairs`
     // const pairs = await ApiPostRequest(url_pairs, body, true)
-    // console.log('=========>    QUE PASA PRRO get_all_pairs', url_pairs)
     let pairs = await ApiGetRequest(url_pairs)
     // return console.log('PARES RES ', pairs)
     if(!pairs || pairs === 465){return false}
@@ -219,19 +212,19 @@ export const get_all_pairs = (token, country) =>{
 
 
 
-export const get_all_pairs_from_landing = () =>{
-  return async(dispatch)=>{
-    await dispatch(load_label('Importando pares'))
-    const url_pairs = `${SwapApiUrl}pairs`
-    const pairs = await ApiGetRequest(url_pairs)
-
-    if(!pairs || pairs === 465){return false}
-    // const { data } = pairs
-
-    let normalize_pairs = await normalize_data(pairs)
-    dispatch(all_pairs_landing(normalize_pairs.entities.all_pairs))
-  }
-}
+// export const get_all_pairs_from_landing = () =>{
+//   return async(dispatch)=>{
+//     await dispatch(load_label('Importando pares'))
+//     const url_pairs = `${SwapApiUrl}pairs`
+//     const pairs = await ApiGetRequest(url_pairs)
+//
+//     if(!pairs || pairs === 465){return false}
+//     // const { data } = pairs
+//
+//     let normalize_pairs = await normalize_data(pairs)
+//     dispatch(all_pairs_landing(normalize_pairs.entities.all_pairs))
+//   }
+// }
 
 
 
@@ -331,7 +324,7 @@ export const get_all_pairs_from_landing = () =>{
           return console.log('debes cargar las currencies');
         }
 
-        // return console.log(' =================================>>>    local_currencies', local_currencies)
+        // console.log(' =================================>>>    local_currency', local_currency)
         await dispatch(LocalPairs(local_currencies))
         // console.log('CONSULTANDO TODOS LOS PARES DISPONIBLES::::::', pairs)
 
@@ -504,9 +497,8 @@ export const get_account_balances = user => {
     let myHeaders = await dispatch(generate_headers())
 
     let balances = await ApiGetRequest(url_balance, myHeaders)
-
-    if(!balances || balances === 465 || balances.length<1){return false}
     // console.log('===========> BALANCES:', balances)
+    if(!balances || balances === 465 || balances.length<1){return false}
     let balance_list = balances.map(balance => {
       return {
         id:balance.id,
@@ -865,49 +857,7 @@ export const create_deposit_order = (
     const url_new_order = `${DepositApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body, user.TokenUser)
 
-    // console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, '| BODY' , body)
-
-    // sentryCaptureMessage('add-new-deposits', new_fiat_deposit)
-
-    // http://localhost:3001/api/deposits/add-new-deposit
-    //
-    // {
-    //   "access_token": {{access_token}},
-    //   "data": {
-    //     "currency": {
-    //         "currency" : "cop",
-    //         "is_token" : false
-    //       },
-    //     "amount": "1000000",
-    //     "cost_id": "en_efectivo",
-    //     "deposit_provider_id": "5c5941b94820f94673d22d8e",
-    //     "info": "",
-    //     "comment": "",
-    //     "account_id": "5c19d6ed89c42e352f1297ff"
-    //   }
-    // }
-
-
-
-
-    // console.log('BOOOOOOODY!!!!,', body , new_fiat_deposit)
-
-    // const new_fiat_deposit = {
-    //   "account_id": "5c04f873eb9c94511fd2edfc",
-    //   "amount": "300000",
-    //   "amount_neto": "300000",
-    //   "comment": "Putoooo",
-    //   "cost_id": "Otros medios",
-    //   "currency":currency,
-    //   "currency_type": "fiat",
-    //   "cost": "0",
-    //   "deposit_provider_id": "5c0d57120fcccc1c74575e50",
-    //   "expiration_date": "2019-01-03T07:47:21.037Z",
-    //   "id": "5c2726896be6a827dfc0e40d",
-    //   "info":"",
-    //   "state": "pending",
-    //   "userId": "5bea1f01ba84493018b7528c"
-    // }
+    console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, ' | BODY' , body)
 
     if(new_fiat_deposit === 465 || !new_fiat_deposit){return false}
     const { data } = new_fiat_deposit
@@ -1874,6 +1824,7 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
     if(!init_state){return false}
 
     // 2. Obtenemos el status del usuario del cual extraemos el id y el country
+
     // const get_status_url = `${IdentityApIUrl}status/get-status`
     // body = {
     //   "data": {}
@@ -1885,6 +1836,7 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
     const get_status_url = `${IdentityApIUrl}users/${userId}/status`
     let status = await ApiGetRequest(get_status_url, myHeaders)
 
+    // console.log('===================================>>>>   identity status', status)
 
     // const { data } = status
 
@@ -1904,6 +1856,9 @@ export const get_user = (token, user_country, userId, email, restore_id) =>{
 
     // return console.log('||||||  - - -.  --  status  =====> ', user_update)
     // let profile = await dispatch(get_profile(user_update.id, token))
+
+    // provitional line
+    // user_update.security_center.kyc.basic = "confirmed"
 
     // if((profile.countries[country[0].value] !== 'level_0') && (user_update.verification_level !== 'level_0')){
       let kyc_personal = country[0].levels && country[0].levels.personal
@@ -2089,7 +2044,7 @@ export const update_level_profile = (config, user) =>{
 
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body, user.TokenUser)
-    console.log('|||||||| update_level_profile_____________', body, add_new_profile)
+    // console.log('|||||||| update_level_profile_____________', body, add_new_profile)
     if(!add_new_profile || add_new_profile === 465){return false}
     return add_new_profile
 

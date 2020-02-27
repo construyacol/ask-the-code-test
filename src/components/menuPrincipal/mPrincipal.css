@@ -147,6 +147,14 @@
 .section2.movil{
   display: grid;
   align-items: center;
+  background: black;
+  grid-gap: 0 !important;
+}
+
+.section2.movil .menuMovilItemTexts{
+  font-size: 17px;
+  font-weight: bold;
+  color: #fb6257 !important;
 }
 
 .menuMovilItems{

@@ -13,8 +13,6 @@ class MenuPrincipalContainer extends Component{
   activarItem = async (name, link) =>{
     this.props.action.section_view_to('initial')
     this.props.action.CleanNotifications(name)
-      this.props.action.HeadRoom('unpinned')
-
     scroller.scrollTo('firstInsideContainer', {
       duration: this.props.path === link ? 500 : 0,
       smooth: true,
@@ -31,7 +29,6 @@ class MenuPrincipalContainer extends Component{
   }
 
   componentDidMount(){
-    this.props.action.HeadRoom('unpinned')
     scroller.scrollTo('firstInsideContainer', {
       offset:0,
       duration:0 ,

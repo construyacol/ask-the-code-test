@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 import './mSuperior.css'
 import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
-import { SelectCountryButton } from '../widgets/buttons/buttons'
+// import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { Link } from 'react-router-dom'
-import MenuLoggedOut from './menuLoggedOut'
+// import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 
 const MenuSuperiorLayout = (props) =>{
@@ -14,24 +14,28 @@ const MenuSuperiorLayout = (props) =>{
 
   const {
     logout,
-    HeadRoomClass,
+    headRoomClass,
     item_quote,
     movil,
     currentPair,
     sell_price,
     buy_price,
     mouseOver,
-    openSelectCountry,
+    // openSelectCountry,
     loggedIn,
     toggle_menu,
-    item_active,
-    current_section,
-    back_method
+    back_method,
+    match
   } = props
 
-  let back_section = item_active === 'wallets' && current_section === 'detail'
+
+
   let view = 'detail'
+
   // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', props)
+  let path = match.params.path
+  const { primary_path } = match.params
+
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
   return(
@@ -40,7 +44,7 @@ const MenuSuperiorLayout = (props) =>{
         <div className="contenedorLogoSenda">
 
 
-            <div className="contLogos" style={{top:back_section ? '-100%' : '0%'}}>
+            <div className="contLogos" style={{top:(path || primary_path === 'referral') ? '-100%' : '0%'}}>
               <div className="contItemLogo">
                 <Coinsenda size={30} color="white" />
               </div>
@@ -52,7 +56,7 @@ const MenuSuperiorLayout = (props) =>{
             </div>
 
         </div>
-        <div className={`containerMenuSuperior ${HeadRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
+        <div className={`containerMenuSuperior ${headRoomClass}`} id="mSuperior" onMouseOver={mouseOver}>
           {
             loggedIn ?
             <div className="capsuleMenu1">
@@ -72,15 +76,15 @@ const MenuSuperiorLayout = (props) =>{
               {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
               <div className="itemSup"><i className="fas fa-bell"></i></div> */}
 
-              {
+              {/* {
                 window.innerWidth>768 &&
                 <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
-              }
+              } */}
 
             </div>
             :
             <div className="loggedInFalse">
-              <MenuLoggedOut/>
+              {/* <MenuLoggedOut/> */}
             </div>
           }
 

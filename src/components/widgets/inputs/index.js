@@ -43,36 +43,36 @@ export const InputFormConverter = (props) => {
 
 
 export const InputForm = (props) => {
-const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
-  return(
-    <div className={`${!clase ? 'containerInputComponent' : clase}`}>
-      <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
-      <div className={`inputContainer ${props.active ? 'inputActivado' : '' } ${state_item}`}>
-        <input
-          className={`inputElement ${props.active ? 'inputActivado' : '' } ${addressVerify}`}
-          type={props.type}
-          placeholder={props.placeholder}
-          onChange={props.actualizarEstado}
-          onFocus={focusAction}
-          onBlur={unFocusAction}
-          name={props.name}
-          defaultValue={props.value}
-          onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
-          disabled={disabled}
-        />
-        {
-          address &&
-          <div className="contIconAddress">
-            <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
-          </div>
-        }
+  const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
+    return(
+      <div className={`${!clase ? 'containerInputComponent' : clase}`}>
+        <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
+        <div className={`inputContainer ${props.active ? 'inputActivado' : '' } ${state_item}`}>
+          <input
+            className={`inputElement ${props.active ? 'inputActivado' : '' } ${addressVerify}`}
+            type={props.type}
+            placeholder={props.placeholder}
+            onChange={props.actualizarEstado}
+            onFocus={focusAction}
+            onBlur={unFocusAction}
+            name={props.name}
+            defaultValue={props.value}
+            onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+            disabled={disabled}
+          />
+          {
+            address &&
+            <div className="contIconAddress">
+              <IconSwitch icon={addressVerify === 'Verify' ? 'verify' : 'wallet'} color={addressVerify === 'Verify' ? '#4caf50' : 'gray'} size={25}/>
+            </div>
+          }
+        </div>
+          {
+            (props.type === "number" || props.type ===  "password") &&
+              <p className="statusInput">{status}</p>
+          }
       </div>
-        {
-          (props.type === "number" || props.type ===  "password") &&
-            <p className="statusInput">{status}</p>
-        }
-    </div>
-  )
+    )
 }
 
 
@@ -148,14 +148,17 @@ state = {
   total_value:""
 }
 
-// componentWillReceiveProps({primary_value}){
-//   if(primary_value){
-//     this.total_value(primary_value)
-//   }
-// }
+
 
 componentDidUpdate(prevProps){
+  if(this.props.total_value !== prevProps.total_value){
+    // console.log('||||||||||| UPDATE => total_value')
+    this.setState({
+      total_value: this.props.total_value
+    })
+  }
   if(this.props.primary_value !== prevProps.primary_value){
+    // console.log('||||||||||| UPDATE => TOO TYPE')
     this.total_value(this.props.primary_value)
   }
 }
@@ -250,12 +253,14 @@ total_value
 
 
 export const InputFormCoin = (props) => {
+
 const {
   saldoDisponible,
   coin,
   value,
   placeholder,
-  getMaxAvailable
+  getMaxAvailable,
+  secondary_value
 } = props
 
 let movil_viewport = window.innerWidth < 768
@@ -267,7 +272,7 @@ let movil_viewport = window.innerWidth < 768
         <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
         <div className={`inputContainer ${props.active ? 'inputActivado' : '' }`}>
 
-          <div className="coinBalance fuente2" onClick={getMaxAvailable} id={saldoDisponible}>
+          <div className="coinBalance fuente2" onClick={!secondary_value ? null : getMaxAvailable} id={saldoDisponible}>
               <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible'} {saldoDisponible>0 ? `${saldoDisponible}`: '0'} {coin}</p>
             {
               coin &&
@@ -352,7 +357,7 @@ export const InputCountryPrefix = (props) =>{
     search_result,
     open,
     update,
-    clean_search_result,
+    clean_search_result
   } = props
 
   // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
@@ -510,12 +515,17 @@ export const InputCountry = (props) =>{
     country_match,
     reset_data,
     disabled,
-    active
+    active,
+    loader
   } = props
+
+  console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
+
 
 
   return(
     <div id="kycPrime" className="containerInputComponent3">
+
 
       <div className="inputLabelsCont">
         <div className="InputCarous">
@@ -524,6 +534,14 @@ export const InputCountry = (props) =>{
       </div>
 
       <div className={`inputContainer3 ${active ? 'inputActivado' : '' }`}>
+
+        {
+          loader &&
+          <div className="inputCountryLoader">
+            <SimpleLoader loader={2}/>
+          </div>
+        }
+
 
         {
           country_match ?

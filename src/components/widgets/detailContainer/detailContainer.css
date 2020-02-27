@@ -38,6 +38,7 @@
   display: flex;
   align-items: center;
   color: #696969;
+  z-index: 2;
 }
 
 .contenido{
@@ -87,6 +88,11 @@
 
 .DCTitle.movil{
   grid-template-columns: repeat(3, 1fr);
+}
+
+
+.DCTitle.referral{
+  grid-template-columns: 1fr;
 }
 
 .menuMovilItem{

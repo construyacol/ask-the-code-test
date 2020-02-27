@@ -1,37 +1,58 @@
-import React, {Component, Fragment} from 'react'
-// import localForage from 'localforage'
+import React, {Component, Fragment, Suspense} from 'react'
+import { hotjar } from 'react-hotjar';
 
-// import DashBoardLayout from './dashBoardLayout.js'
 import {
   Element,
   Events,
   scrollSpy
 } from "react-scroll";
-
+//
 import { Router, Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
-import SimpleLoader from '../widgets/loaders'
-import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
-import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
-import SettingsContainer from '../settings/settingsContainer'
-import SecurityCenter from '../securityCenter/securityCenter'
-import ReferralComponent from '../referrals/referralsComponent'
+// import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
+// import SettingsContainer from '../settings/settingsContainer'
+// import SecurityCenter from '../securityCenter/securityCenter'
+// import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
 import FreshChat from '../../services/freshChat'
+import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
+import SimpleLoader from '../widgets/loaders'
+import ItemAccount from '../widgets/accountList/item_account'
+import { AccountListContainer } from '../widgets/accountList/styles'
 
+import {
+  ItemSecurity,
+  SecurityLayoutLoader
+} from '../securityCenter/styles'
+// import styled from 'styled-components'
 
 import './dashboard.css'
 
 
+const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
+// const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
+const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
+const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
+
+
+
 class DashBoardContainer extends Component{
 
+  _updateCurrentPair
 
   async componentDidMount() {
 
+    // clearInterval(this._updateCurrentPair)
+    // this._updateCurrentPair = setInterval(()=>{
+    //   let query =`{"where":{"buy_pair":"${this.props.currentPair && this.props.currentPair.buy_pair}"}}`
+    //   this.props.action.update_current_pair(query, 'currentPair')
+    // }, 45000)
+
+    hotjar.initialize(1688041, 6);
     await this.props.action.freshchat_init_user(this.props.user)
     // return false
     await FreshChat.user_update(this.props.user)
@@ -44,8 +65,8 @@ class DashBoardContainer extends Component{
       FreshChat.show_tags(['security', '2factor'], 'article')
     }
 
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||| DashBoardContainer', this.props.action.update_current_pair, this.props)
     // if(this.props.user)
-
     // console.log('|||||||||||||||||_____________________________________- window.tiggered', verification_state, this.props)
     // console.log('|||||||||||||||||_____________________________________- window.tiggered', this.props, window.fcWidget)
     // FreshChat.track('track_item', {puta:'traqueteada mas hpta a usuario logeado'})
@@ -61,60 +82,47 @@ class DashBoardContainer extends Component{
 
 
   componentWillUnmount() {
+    clearInterval(this._updateCurrentPair)
     Events.scrollEvent.remove("begin");
     Events.scrollEvent.remove("end");
   }
 
 
   render(){
-    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props.history)
+    // console.log('|||||°°°°||||||| Este es el inicio del historial |||||°°°°|||||||', this.props)
 
     return(
       <Router
         history={this.props.history}
         >
-          <Element id="containerElement" className="dashBoardLayout">
-             <div className="sectionFixedPrice">
-               <QuoteContainer/>
-             </div>
-             <div className="containerSection" name="firstInsideContainer">
-                    {
-                      !this.props.user ?
-                      <DetailContainerLayout history={this.props.history}>
-                        <SimpleLoader
-                          color="blue"
-                          label="Obteniendo datos del usuario"
-                        />
-                      </DetailContainerLayout>
-                      :
-                      <Fragment>
-                          <Switch>
-                            {/* <Route path="/wallets" render={() => <WalletContainer/>} /> */}
-                              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-                              <Route path="/settings" component={SettingsContainer} />
-                              <Route path="/security" component={SecurityCenter} />
-                              <Route path="/referral" component={ReferralComponent} />
-                              <Route path="/wallets" component={WalletContainer} />
+          <Fragment>
+            <Element id="containerElement" className="dashBoardLayout">
+               <div className="sectionFixedPrice">
+                 <QuoteContainer/>
+               </div>
+               <div className="containerSection" name="firstInsideContainer">
 
-                              {/* <Redirect from="/" to="/wallets" /> */}
+                        <Suspense fallback={<LazyLoaderPage path={this.props.primary_path}/>}>
+                            <Switch>
+                                <Route path="/wallets" component={WalletContainer} />
+                                <Route path="/withdraw_accounts" render={(props)=>(<WitdrawAccountContainer {...props} {...this.props}/>)} />
+                                <Route path="/security" render={(props)=>(<SecurityCenter {...props} {...this.props} />)} />
+                                <Route path="/referral" render={(props)=>(<ReferralComponent {...props} {...this.props}/>)} />
+                                {/* <Route path="/settings" component={SettingsContainer} /> */}
+                                {/* <Route path="/security" render={()=>(<LazyLoaderPage path={this.props.primary_path}/>)}/> */}
+                              </Switch>
+                        </Suspense>
 
-
-                              {/* <Route path={["/activity", "/"]} render={() => <ActivityContainer {...this.props}/>} /> */}
-                              {/* <Redirect from="/" to="/activity" /> */}
-                              {/* <Route exact path={["/activity", "/"]}  component={ActivityContainer}/> */}
-                            </Switch>
-                      </Fragment>
-                    }
-                  {
-                    this.props.history.location.pathname === '/security' &&
-                    <Fragment>
-                          <PanelAlertContainer history={this.props.history}/>
-                          <VideoPlayer></VideoPlayer>
-                    </Fragment>
-                  }
-
-             </div>
-          </Element>
+                      {
+                        this.props.primary_path === 'security' &&
+                        <Fragment>
+                              <PanelAlertContainer history={this.props.history}/>
+                              <VideoPlayer></VideoPlayer>
+                        </Fragment>
+                      }
+               </div>
+            </Element>
+          </Fragment>
       </Router>
     )
   }
@@ -141,10 +149,80 @@ DashBoardContainer.propTypes = {
 
 
 function mapStateToProps(state, props){
+
     const { user, user_id } = state.model_data
+    const { currentPair } = state.model_data.pairs
+
   return{
-    user:user[user_id]
+    user:user[user_id],
+    primary_path:props.match.params && props.match.params.primary_path,
+    currentPair
   }
 }
 
 export default connect(mapStateToProps) (DashBoardContainer)
+
+
+
+const LazyLoaderPage = ({path}) => {
+
+  let title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
+  let LoaderScreen = path === 'withdraw_accounts' ? AccountListLoader : path === 'security' ? SecurityCenterLoader : SimpleLoader
+
+  return(
+    <DetailContainerLayout
+      title={title}
+      >
+      <LoaderScreen/>
+    </DetailContainerLayout>
+  )
+}
+
+
+
+
+const AccountListLoader = props => {
+  return(
+      <AccountListContainer className="AccountListContainer">
+        <ItemAccount loader/>
+      </AccountListContainer>
+  )
+}
+
+
+const SecurityCenterLoader = props => {
+
+  const elements = (window.innerWidth < 768) ? 10 : 5
+  const loaderList = new Array(elements).fill({})
+
+  return(
+    <Fragment>
+      {
+        loaderList.map((item, key) => {
+          return(<SecurityLayoutLoader id="security_loader" className="SecurityLayoutLoader" key={key}>
+                  <ItemSecurity className="loader ItemSecurity">
+                    <div className="SCimgItem">
+                      <div className="SCimgItemCont"></div>
+                    </div>
+                    <div className="contentSubItem last">
+                      <div className="contentSubText">
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                      </div>
+                      <div className="SCcta"></div>
+                    </div>
+                  </ItemSecurity>
+                </SecurityLayoutLoader>)
+        })
+      }
+    </Fragment>
+  )
+}
+
+
+
+
+
+
+//

@@ -17,6 +17,29 @@ class LoaderAplication extends Component {
 
   componentDidMount(){
     this.init_component()
+    this.registerColors()
+  }
+
+
+  registerColors = () => {
+
+  if((window && window.CSS) && window.CSS.registerProperty){
+    window.CSS.registerProperty({
+      name: '--primary',
+      syntax: '<color>',
+      inherits: true,
+      initialValue: '#014c7d',
+    });
+
+    window.CSS.registerProperty({
+      name: '--secondary',
+      syntax: '<color>',
+      inherits: true,
+      initialValue: '#0198ff',
+    });
+  }
+
+
   }
 
 // 'Actualizar el país del usuario'
@@ -42,11 +65,12 @@ class LoaderAplication extends Component {
 
     const { country } = this.state
     let profile = await action.get_profile(userId, token)
-    console.log('|||||||| profile res ==>', profile)
+    // console.log('|||||||| profile res ==>', profile)
 
     if(!profile){
       if(!new_country){return this.setState({country:null})}
       profile = await action.add_new_profile(new_country, token)
+      action.Loader(false)
     }
 
     if(!profile.countries[country] && !profile.countries[new_country]){return false}
@@ -146,14 +170,14 @@ class LoaderAplication extends Component {
 
      await action.get_all_currencies()
 
-    let user_collection = [{primary:'ethereum'}]
-     action.get_pairs_for(this.props.user.country, user_collection)
+    // let user_collection = [{primary:'ethereum'}]
+    await action.get_pairs_for(this.props.user.country)
 
     await action.get_account_balances(this.props.user)
     await action.get_deposit_providers(this.props.user)
     await action.get_list_user_wallets(this.props.user)
     // return false
-
+    // console.log('||||||||||||||| USER COUNTRY ::', this.props.user)
     let get_withdraw_providers = await action.get_withdraw_providers(this.props.user)
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
 
@@ -193,8 +217,8 @@ class LoaderAplication extends Component {
 
 
 
-  componentWillReceiveProps(nextProps){
-    if(nextProps.app_load_label !== this.props.app_load_label){
+  componentDidUpdate(prevProps){
+    if(prevProps.app_load_label !== this.props.app_load_label){
       let progressBarWidth = this.state.progressBarWidth
       this.setState({
         progressBarWidth: progressBarWidth+= 8
@@ -209,6 +233,7 @@ class LoaderAplication extends Component {
   }
 
   select_country = (new_country) =>{
+    this.props.action.Loader(true)
     this.init_component(new_country)
   }
 
@@ -238,7 +263,7 @@ class LoaderAplication extends Component {
     // console.log('LoaderAplication RENDER((((()))))', user)
 
     return(
-      <div className="LoaderAplication">
+      <div className={`LoaderAplication ${!country ? 'withOutContry' : ''}`}>
         {
           // !country && available_countries ?
           !country ?
@@ -273,7 +298,7 @@ class LoaderAplication extends Component {
 function mapStateToProps(state, props){
 
   const { user, user_id,  wallets, all_pairs } = state.model_data
-  const { loader } = state.isLoading
+  // const { loader } = state.isLoading
   const { token } = props
   const { loggedIn } = state.auth
   // console.log('|||||| mapStateToProps', props)
@@ -285,7 +310,7 @@ function mapStateToProps(state, props){
     all_pairs,
     // country:null,
     token:token,
-    loader,
+    // loader,
     loggedIn
   }
 }
