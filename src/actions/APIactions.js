@@ -497,8 +497,7 @@ export const get_account_balances = user => {
     let myHeaders = await dispatch(generate_headers())
 
     let balances = await ApiGetRequest(url_balance, myHeaders)
-
-    console.log('===========> BALANCES:', balances)
+    // console.log('===========> BALANCES:', balances)
     if(!balances || balances === 465 || balances.length<1){return false}
     let balance_list = balances.map(balance => {
       return {

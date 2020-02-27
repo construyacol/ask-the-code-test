@@ -1,4 +1,4 @@
-import React, { Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import HomeLayout from './homeLayout'
 import MenuPrincipalContainer from '../menuPrincipal/menuPrincipalContainer'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'

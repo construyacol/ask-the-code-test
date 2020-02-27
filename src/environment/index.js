@@ -11,7 +11,6 @@ export const Environment = {
   CountryUrl:'https://countrylistapi.ngrok.io/' //endpoint imagenes
 }
 
-
 // http://190.192.134.201:5900
 
 export default Environment
@@ -36,7 +35,7 @@ export default Environment
 // nuevas APIS
 
 // Country: https://countrylistapi.ngrok.io
-  // Auth: https://oldauth.ngrok.io
+// Auth: https://oldauth.ngrok.io
 // Identity: https://sendaidentity.ngrok.io
 // Tx: https://sendatx.ngrok.io
 // Account: https://sendaaccount.ngrok.io
