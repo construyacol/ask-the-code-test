@@ -1,10 +1,5 @@
 export const ApiGetRequest = async(url, header) => {
-  // let headers = new Headers();
-  // let myHeaders = new Headers({
-  //   'Accept': 'application/json',
-  //   'Authorization': 'Basic '+btoa(`access_token:${token}`),
-  // })
-  // console.log('ApiGetRequest', myHeaders)
+
   let parametros = {
               method: 'GET',
               headers: header,
@@ -18,9 +13,6 @@ export const ApiGetRequest = async(url, header) => {
     // si no tenemos conexión con el API nos retornara esto:
     return false
   }
-  // console.log('|||||||||| °°°°STATUS°°°°|||||||', response)
-  // Si el error esta en los datos de la petición, retornamos el estatus 465
-  // console.log('RESPUESTA POST:', response)
   if(!response.ok){return response.status}
   const data = await response.json()
   return data
@@ -41,16 +33,12 @@ export const ApiPostRequest = async(url, body, token) => {
                body:JSON.stringify(body)
              }
 
-
-  // console.log('_______________________________BODY POST =======================>', body, parametros, url)
   let response
-  // console.log('________________________________DESDE EL API POST ', url, parametros)
   try {
     response = await fetch(url, parametros)
   }
   catch(error) {
     // si no tenemos conexión con el API nos retornara esto:
-    // console.log('|||||||||| °°°°STATUS BAD°°°°|||||||', error)
     return false
   }
 
@@ -79,7 +67,6 @@ export const ApiDelete = async(url) => {
   // Si el error esta en los datos de la petición, retornamos el estatus 465
   if(!response.ok){return response.status}
   const delete_success = await response.json()
-  // console.log('|||||||||||||| - -- -- --  RESPUESTA:',delete_success)
   return delete_success
 }
 
