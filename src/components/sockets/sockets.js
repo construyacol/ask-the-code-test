@@ -392,7 +392,6 @@ withdraw_mangagement = async (withdraw) => {
 
     if(swap.state === 'pending'){
       await this.props.action.current_section_params({active_trade_operation:true})
-
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
 
@@ -400,9 +399,9 @@ withdraw_mangagement = async (withdraw) => {
         account_id: new_swap.account_from,
         account_to: new_swap.account_to,
         action_price: new_swap.action_price,
-        amount: 0.5,
+        amount: '--',
         amount_neto: "",
-        bought: 0.5,
+        bought: '--',
         comment: "",
         currency: new_swap.to_spend_currency,
         currency_bought:new_swap.to_buy_currency,
@@ -429,7 +428,9 @@ withdraw_mangagement = async (withdraw) => {
 
     if(swap.state === 'accepted' && this.state.currentSwap.state !== 'done'){
       const { currentSwap } = this.state
-      // console.log('________________________swap_management', currentSwap)
+      // console.log('________________________swap_ accepted', swap)
+      // await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
+
       await this.props.action.current_section_params({swap_socket_channel:{...currentSwap, state:'processing'}})
 
       return setTimeout(async()=>{
@@ -442,6 +443,9 @@ withdraw_mangagement = async (withdraw) => {
             await this.props.action.current_section_params({active_trade_operation:false})
             await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
             setTimeout(async()=>{
+              await this.props.action.update_item_state({[swap.id]:{...currentSwap, bought:swap.bought}}, 'swaps')
+              // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
+
               // await  this.props.action.get_swap_list()
               // await  this.props.action.update_pending_activity(currentSwap.account_from, 'swaps')
             },3000)

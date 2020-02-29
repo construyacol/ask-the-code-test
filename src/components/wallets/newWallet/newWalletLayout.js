@@ -26,8 +26,8 @@ const NewWalletLayout = props =>{
     <div className="containerFormWallet newWallet">
       {
         step === 1 &&
-        <div className="step1">
-
+        <div className="step1 newWallet">
+          <h1 className="fuente" > Nueva billetera </h1>
           <form
               onSubmit={handleSubmit}
             >
