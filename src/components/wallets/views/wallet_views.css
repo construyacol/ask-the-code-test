@@ -1,5 +1,7 @@
 
-
+.soloAd3 span{
+  text-transform: capitalize;
+}
 
 .contLoaderAct{
   display: grid;

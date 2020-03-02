@@ -90,7 +90,7 @@ class TicketContainer extends Component {
       // ticket.cost
       // ticket.amount_neto
       // ticket.currency
-      console.log('||||||||||||||| - - - - TICKET BEFORE', ticket)
+      // console.log('||||||||||||||| - - - - TICKET BEFORE', ticket)
 
       let amount
       let cost
@@ -103,6 +103,7 @@ class TicketContainer extends Component {
          cost = await formatToCurrency(ticket.cost, ticket.currency, true)
          amount_neto = await formatToCurrency(ticket.amount_neto, ticket.currency, true)
       }else{
+        // console.log('||||||||||||||| - - - - TICKET swap', spent, bought)
         spent = await formatToCurrency(ticket.spent, ticket.currency, true)
         bought = await formatToCurrency(ticket.bought, ticket.currency_bought, true)
       }

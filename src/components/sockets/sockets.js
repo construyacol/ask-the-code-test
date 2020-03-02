@@ -443,7 +443,7 @@ withdraw_mangagement = async (withdraw) => {
             await this.props.action.current_section_params({active_trade_operation:false})
             await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
             setTimeout(async()=>{
-              await this.props.action.update_item_state({[swap.id]:{...currentSwap, bought:swap.bought}}, 'swaps')
+              // await this.props.action.update_item_state({[swap.id]:{...currentSwap, state:'accepted', bought:swap.bought}}, 'swaps')
               // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
 
               // await  this.props.action.get_swap_list()
