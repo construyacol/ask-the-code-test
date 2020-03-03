@@ -83,6 +83,7 @@ class SubItemSC extends Component {
       color:`${color ? color : !verify ? '#989898' : '#1babec'}`
     }
 
+
     // if(this.state.type==='identity'){console.log(type, name, this.state)}
     // if(this.state.type==='identity'){console.log(type, name, this.state)}
 

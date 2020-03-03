@@ -43,6 +43,8 @@ class SwapView extends Component{
   }
 
   actualizarEstado_coin = (e) =>{
+    // return alert()
+    if(!this.props.current_pair.secondary_value){return}
     let value = e.target.value
     let { available, current_wallet } = this.props
     if(current_wallet.currency_type === 'fiat'){
@@ -260,6 +262,7 @@ render(){
   // console.log('|||||||||| VALUE STATAE', value)
 
 
+
   return(
     <Fragment>
     {
@@ -320,7 +323,7 @@ render(){
                 solo_lectura={true}
                 quote_type="primary"
                 account_type={current_wallet.currency_type}
-                loader={loader}
+                // loader={loader}
                 getOtherPairs={this.getOtherPairs}
                 total_value={total_value}
               />

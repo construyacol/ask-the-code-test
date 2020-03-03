@@ -7,7 +7,7 @@ import Environtment from '../../environment'
 // import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
 const { SocketUrl } = Environtment
-
+let add_swap
 
 
 class SocketsComponent extends Component {
@@ -395,7 +395,7 @@ withdraw_mangagement = async (withdraw) => {
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
 
-      let add_swap = {
+      add_swap = {
         account_id: new_swap.account_from,
         account_to: new_swap.account_to,
         action_price: new_swap.action_price,
@@ -436,14 +436,14 @@ withdraw_mangagement = async (withdraw) => {
       return setTimeout(async()=>{
         await this.props.action.success_sound()
         await this.props.action.current_section_params({swap_socket_channel:{...currentSwap, state:'done'}, swap_done_id:currentSwap.id, swap_done_out:true})
-        await this.props.action.swap_activity_update(currentSwap, 'swaps')
+        await this.props.action.swap_activity_update({...currentSwap, bought:swap.bought}, 'swaps')
         await this.setState({currentSwap:{...currentSwap, state:'done'}})
 
           setTimeout(async()=>{
             await this.props.action.current_section_params({active_trade_operation:false})
             await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
             setTimeout(async()=>{
-              // await this.props.action.update_item_state({[swap.id]:{...currentSwap, state:'accepted', bought:swap.bought}}, 'swaps')
+              // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
               // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
 
               // await  this.props.action.get_swap_list()
