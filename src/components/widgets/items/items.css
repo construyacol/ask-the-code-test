@@ -3,17 +3,6 @@
   position: relative;
 }
 
-.ItemSelectionContainer{
-  /*height: calc(100% - 55px);*/
-      /*align-items: center;*/
-  height: 348px ;
-  width: 610px;
-  overflow-y: scroll;
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-}
-
 .item.itemSelection p{
   color: #14b3f0;
 }

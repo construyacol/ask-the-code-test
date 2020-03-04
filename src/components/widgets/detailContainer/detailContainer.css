@@ -40,27 +40,6 @@
   z-index: 2;
 }
 
-.contenido {
-  position: relative;
-  background: #F9F9FB;
-  padding-top: 3vh;
-  padding-bottom: 8vh;
-  /* min-height: calc(100vh - 130px); */
-  min-height: calc(100vh - 25vh);
-  /*height: 100%;*/
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  padding-left: 15px;
-  padding-right: 15px;
-  width: calc(100% - 30px)
-}
-
-.DCcurrent_wallet {
-  grid-template-rows: 220px 1fr;
-  grid-row-gap: 12px;
-}
-
 #Imgfiat {
   position: relative !important;
   margin-right: 7px;

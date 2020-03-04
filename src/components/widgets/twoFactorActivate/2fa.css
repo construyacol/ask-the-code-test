@@ -112,7 +112,7 @@
     height: 0;
   }
   100%{
-    height: 100px;
+    height: 110px;
   }
 }
 
@@ -139,7 +139,7 @@
 .secretCode{
   color: #1babec !important;
   text-decoration: underline;
-  height: 30px;
+  height: 80px;
   font-size: 25px;
   margin-top: 10px !important;
 }
