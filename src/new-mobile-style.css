@@ -14,6 +14,21 @@
     width: calc(100% - 30px)
 }
 
+.finalTicket.TicketDetail {
+    display: grid;
+    grid-template-rows: 20vh 1fr 70px;
+    width: 100%;
+    max-height: calc(100vh - 80px);
+    height: calc(100vh - 80px);
+    max-width: 650px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    transition: .25s;
+    align-self: baseline;
+    justify-self: center;
+}
+
 .DCcurrent_wallet {
     grid-template-rows: 220px 1fr;
     grid-row-gap: 12px;
@@ -66,24 +81,80 @@
         grid-template-rows: 80px 1fr 70px !important;
         transform: scale(.9);
     }
+
+    .smartContainer,
+    .ticketSlide,
+    .ticketSlide .TicketDetail {
+        max-height: 100vh !important;
+        height: 100vh !important;
+    }
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
-    .dashBoardLayout {        
+    .dashBoardLayout {
         grid-template-rows: 1fr !important;
+    }
+
+    #qrDesposit {
+        width: 180px;
+        height: 180px;
+    }
+
+    .nWcta2 {
+        display: flex !important;
+        justify-content: space-evenly;
+        width: 90% !important;
+    }
+
+    .TicketDetailItem span {
+        white-space: nowrap;
+    }
+
+    .TicketDetailItem>p {
+        white-space: pre-wrap;
+        width: 50%;
+        text-align: left;
+    }
+
+    .ticketHeader>img {
+        display: none;
+    }
+
+    .ticketHeader {
+        grid-template-rows: unset !important;
+    }
+
+    .finalTicket.TicketDetail {
+        max-height: calc(100vh - 40px) !important;
+        grid-template-rows: 80px 1fr 60px !important;
+        align-self: center !important;
+    }
+
+    .contenido.DCcurrent_wallet {
+        align-items: center !important;
+    }
+
+    .contenido.wallets {
+        align-items: start;
+    }
+
+    .ticketHeader .iconSty {
+        display: none !important;
     }
 
     .DCcurrent_wallet {
         transform: unset;
     }
-    
+
     .textFinancial {
         margin: 0 !important;
     }
 
+    .ticketSlide .TicketDetail,
     .TicketDetail {
+        max-height: calc(100vh - 40px) !important;
         transform: none;
-        grid-template-rows: 80px 65% 70px !important;
+        grid-template-rows: 80px 1fr 60px !important;
     }
 
     .NWithdrawAccountFlow {
@@ -163,7 +234,7 @@
     .ALif2.movil {
         min-width: 85px !important;
     }
-    
+
     .nWbody2 {
         margin-top: 0 !important;
     }
@@ -181,16 +252,16 @@
     }
 
     .KycFinancialComponent {
-        grid-template-rows: auto auto 200px 20% !important;
+        grid-template-rows: auto auto 260px 150px !important;
         grid-row-gap: 8px !important;
     }
 
     .FinancialUploadImg {
-        grid-template-rows: 90px !important;
+        grid-template-rows: 150px !important;
     }
 
     .loaderImgComponent {
-        height: 100px !important;
+        height: 150px !important;
     }
 
     .panelImgFinancial {
@@ -225,7 +296,8 @@
     #DLsteps,
     .DLstep.modality,
     .DLstep {
-        grid-template-rows: 15vh 1fr 18% !important;
+        grid-template-rows: 100px 1fr 60px !important;
+        max-height: calc(100vh - 40px) !important;
         grid-row-gap: 10px;
         width: 100%;
     }
@@ -242,6 +314,12 @@
         padding-top: 45px;
         padding-bottom: 0;
         min-height: calc(100vh - 145px);
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .nWbody2 .contenidoTicket {
+        height: 65vh;
     }
 }
 
@@ -282,21 +360,23 @@
     .KycLayout {
         grid-template-rows: 35px 1fr auto !important;
     }
-
-    #DLsteps,
-    .DLstep.modality,
-    .DLstep {
-        grid-template-rows: 15vh 1fr 18% !important;
-        grid-row-gap: 10px;
-        width: 100%;
-        grid-template-rows: 15vh 65% 18% !important;        
-    }
 }
 
 @media only screen and (max-height: 568px) {
-    #DLsteps,
-    .DLstep.modality,
-    .DLstep {        
-        grid-template-rows: 15vh 55% 18% !important;
+    .KycFinancialComponent {
+        grid-template-rows: auto auto 200px 100px !important;
+        grid-row-gap: 0 !important;
+    }
+
+    .FinancialUploadImg {
+        grid-template-rows: 100px !important;
+    }
+
+    .loaderImgComponent {
+        height: 100px !important;
+    }
+
+    #botonForm {
+        width: 70% !important;
     }
 }
