@@ -85,6 +85,9 @@
     .nBtextInit {
         font-size: 18px !important;
     }
+    .contenido.activity {
+        grid-template-rows: 200px 340px;
+    }
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
@@ -93,6 +96,9 @@
         padding-bottom: 95px;
         width: auto;
         min-height: calc(100vh - (25px + 90px + 120px));
+    }
+    .containerSection {
+        grid-template-rows: 10vh 1fr !important;
     }
     .dashBoardLayout {
         grid-template-rows: 1fr !important;
