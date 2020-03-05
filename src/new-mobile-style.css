@@ -58,13 +58,6 @@
 }
 
 @media screen and (max-height: 800px) and (max-width: 1366px) {
-    .contenido {
-        padding-top: 25px;
-        padding-bottom: 95px;
-        width: auto;
-        min-height: calc(100vh - (25px + 90px + 120px));
-    }
-
     .DCcurrent_wallet {
         grid-template-rows: 200px 340px;
         transform: scale(.9);
@@ -88,9 +81,19 @@
         max-height: 100vh !important;
         height: 100vh !important;
     }
+    
+    .nBtextInit {
+        font-size: 18px !important;
+    }
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
+    .contenido {
+        padding-top: 25px;
+        padding-bottom: 95px;
+        width: auto;
+        min-height: calc(100vh - (25px + 90px + 120px));
+    }
     .dashBoardLayout {
         grid-template-rows: 1fr !important;
     }
@@ -353,6 +356,8 @@
     }
 
     .nBtextInit {
+        font-size: 18px;
+    } {
         font-size: 15px !important;
         margin-top: 0;
     }
