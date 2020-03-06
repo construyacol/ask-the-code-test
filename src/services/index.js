@@ -502,8 +502,9 @@ export const handleKeyPress = (e, current) => {
 }
 
 
-
+let prev = "";
 export const number_format = (amount) => {
+  if(!amount) return prev;
     amount += ''; // por si pasan un numero en vez de un string
     amount = parseFloat(amount.replace(/[^0-9]/g, '')); // elimino cualquier cosa que no sea numero o punto
     amount = '' + amount.toFixed(0);
@@ -512,6 +513,7 @@ export const number_format = (amount) => {
         regexp = /(\d+)(\d{3})/;
     while (regexp.test(amount_parts[0]))
         amount_parts[0] = amount_parts[0].replace(regexp, '$1,$2');
+    prev = amount_parts.join('.');
     return amount_parts.join('.');
 }
 
