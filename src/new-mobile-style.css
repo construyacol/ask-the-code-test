@@ -158,9 +158,8 @@
     .DCcurrent_wallet {
         grid-template-rows: 200px 340px;
         transform: scale(.9);
-        padding: 0 15px;
 
-        /* grid-row-gap: 0px; */
+        grid-row-gap: 20px;
     }
 
     .asaras .TicketDetail {
@@ -454,7 +453,6 @@
     .DCcurrent_wallet {
         grid-template-rows: 190px 1fr;
         padding-top: 45px;
-        padding-bottom: 0;
         min-height: calc(100vh - 145px);
     }
 }
