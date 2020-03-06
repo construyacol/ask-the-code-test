@@ -61,13 +61,126 @@
     max-width: 650px;
 }
 
+.contenido.withdraw_accounts {
+    min-height: 100%;
+}
+
+
+@media screen and (min-width: 1366px) {
+    .TicketDetail {
+        height: 85vh !important;
+        grid-template-rows: 18vh 1fr 70px;
+    }
+
+    .contenidoTicket {
+        overflow: overlay;
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .TicketDetail .ticketHeader svg {
+        display: none;
+    }
+}
+
+@media screen and (min-height: 800px) {
+    .TicketDetail {
+        height: 90vh !important;
+    }
+
+    .contenidoTicket {
+        overflow: overlay;
+    }
+    .asaras .TicketDetail {
+        grid-template-rows: 1fr !important;
+        height: 100% !important;
+        overflow: overlay !important;
+    }
+
+    .asaras .TicketDetail .contenidoTicket {
+        padding: 0 !important;
+        overflow: unset !important;
+    }
+    
+    .FlowCont {
+        top: unset !important;
+    }    
+}
+
+@media screen and (max-height: 800px) and (min-width: 1366px) {
+    .asaras .TicketDetail {
+        grid-template-rows: 1fr !important;
+        height: 100% !important;
+        overflow: overlay !important;
+    }
+
+    .asaras .TicketDetail .contenidoTicket {
+        padding: 0 !important;
+        overflow: unset !important;
+    }
+
+    .FolowTexts {
+        top: unset !important;
+    }
+
+    .FolowTexts img {
+        width: 20%;
+        margin-top: 0;
+    }
+
+    .FlowCont {
+        top: unset;
+    }
+
+    .FolowTexts .Fimportant {
+        margin-top: 45px;
+    }
+}
+
 @media screen and (max-height: 800px) and (max-width: 1366px) {
+    .FolowTexts {
+        top: unset !important;
+    }
+
+    .FolowTexts img {
+        width: 25%;
+        margin-top: 0;
+    }
+
+    .FlowCont {
+        top: unset;
+    }
+
+    .FolowTexts .Fimportant {
+        margin-top: 100px;
+    }
+
     .DCcurrent_wallet {
         grid-template-rows: 200px 340px;
         transform: scale(.9);
         padding: 0 15px;
 
         /* grid-row-gap: 0px; */
+    }
+
+    .asaras .TicketDetail {
+        grid-template-rows: 1fr !important;
+        height: 100%;
+        overflow: overlay !important;
+    }
+
+    .asaras .TicketDetail .contenidoTicket {
+        padding: 0 !important;
+        overflow: unset !important;
+    }
+
+    .asaras {
+        transform: none !important;
+        overflow: hidden;
+    }
+
+    .nBitemSuccesss {
+        display: flex !important;
     }
 
     .NWithdrawAccountFlow .containerItems {
@@ -104,7 +217,7 @@
         padding-top: 0 !important;
         padding-bottom: 95px;
         width: auto;
-        min-height: calc(100vh - (25px + 90px + 120px));
+        min-height: calc(100vh - (25px + 90px + 120px)) !important;
     }
 
     .ALlistAll {
@@ -117,7 +230,7 @@
     }
 
     .containerSection {
-        grid-template-rows: 10vh 1fr !important;
+        grid-template-rows: 12vh 1fr !important;
     }
 
     .dashBoardLayout {
