@@ -78,7 +78,6 @@ class RootContainer extends Component {
   }
 
   logOut = async() =>{
-
     window.location.href = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" :"https://www.coinsenda.com/";
     await localForage.removeItem('TokenUser')
     await localForage.removeItem('created_at')

@@ -2,7 +2,9 @@ import React from 'react';
 // import {render} from 'react-dom';
 // import { hydrate, render } from "react-dom";
 import { render } from 'react-snapshot';
+import './basic-style.css';
 import './index.css';
+import './new-mobile-style.css';
 // import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux'
 import RootContainer from './components/Root'
