@@ -14,6 +14,10 @@
     width: calc(100% - 30px)
 }
 
+.nBtextInit {
+    font-size: 18px !important;
+}
+
 .finalTicket.TicketDetail {
     display: grid;
     grid-template-rows: 20vh 1fr 70px;
@@ -81,10 +85,11 @@
         max-height: 100vh !important;
         height: 100vh !important;
     }
-    
+
     .nBtextInit {
         font-size: 18px !important;
     }
+
     .contenido.activity {
         grid-template-rows: 200px 340px;
     }
@@ -92,14 +97,25 @@
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
     .contenido {
-        padding-top: 25px;
+        padding-top: 0 !important;
         padding-bottom: 95px;
         width: auto;
         min-height: calc(100vh - (25px + 90px + 120px));
     }
+
+    .ALlistAll {
+        padding-bottom: 50px !important;
+    }
+
+    .contenido.activity {
+        grid-row-gap: 30px;
+        grid-template-rows: 190px 1fr;
+    }
+
     .containerSection {
         grid-template-rows: 10vh 1fr !important;
     }
+
     .dashBoardLayout {
         grid-template-rows: 1fr !important;
     }
@@ -319,7 +335,7 @@
 
 @media only screen and (max-width: 768px) {
     .DCcurrent_wallet {
-        grid-template-rows: 180px 1fr;
+        grid-template-rows: 190px 1fr;
         padding-top: 45px;
         padding-bottom: 0;
         min-height: calc(100vh - 145px);
@@ -376,9 +392,6 @@
 
     .nBtextInit {
         font-size: 18px;
-    } {
-        font-size: 15px !important;
-        margin-top: 0;
     }
 
     .KycLayout {
