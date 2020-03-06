@@ -248,6 +248,9 @@ export const ItemAccountL = styled.div`
     animation-duration: 2s;
     animation-iteration-count: infinite;
     opacity: 0.35;
+    @media screen and (max-height: 800px) and (max-width: 1366px) {
+      transform: scale(.90);
+    }
   }
 
   &.loader.dos{

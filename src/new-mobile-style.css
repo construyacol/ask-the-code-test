@@ -332,6 +332,19 @@
     }
 }
 
+@media only screen and (max-height: 700px) {
+    .contListItemMV {
+        max-height: calc(100% - 60px) !important;
+    }
+
+    .contListItemMV {
+        grid-template-rows: none !important;
+        grid-auto-rows: 10vh;
+        padding: 0 !important;
+        margin-top: 60px;
+    }
+}
+
 @media only screen and (max-height: 570px) {
     .containerItems {
         transform: scale(.8) translateX(-20px) translateY(-20px) !important;
