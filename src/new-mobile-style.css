@@ -93,6 +93,10 @@
     .contenido.activity {
         grid-template-rows: 200px 340px;
     }
+
+    .ALlistAll {
+        padding-bottom: 50px !important;
+    }
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
