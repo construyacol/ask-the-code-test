@@ -183,12 +183,10 @@ class ActivityList extends Component {
       deleted
     } = this.state
 
-    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', tx_path)
+    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', activity)
 
     return(
         <Fragment>
-
-
               <section className="ALpendingMom" style={{display:pending ? 'block' : 'none' }}>
                 <p className="ALtext" style={{display:(pending) ? 'block' : 'none' }}>Pendiente </p>
                   <div className="ALpendingCont" style={{height:`${expandible}px`}}>
@@ -248,7 +246,6 @@ class ActivityList extends Component {
                   }
                 </div>
               </section>
-
     </Fragment>
 
     )
@@ -265,10 +262,10 @@ function mapStateToProps(state, props){
   let pending_index = `pending_${params.tx_path}`
   let current_wallet = wallets[params.account_id]
 
-  // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', props)
 
   let pending_activity = activity_for_account[params.account_id] && activity_for_account[params.account_id][pending_index]
 
+  // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', pending_activity)
   let currency_list
 
     if(currencies && current_wallet.currency_type === 'crypto'){

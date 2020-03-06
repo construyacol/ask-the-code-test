@@ -18,7 +18,7 @@ return async(dispatch) => {
   // await dispatch(add_restoreid('epa'))
 
   // localForage.setItem('externalId', external_id)
-  // localForage.setItem('restoreId', restoreId)
+  localStorage.setItem('RESTORE_ID', 'restore_id_from_panel_user')
 
   await window.fcWidget.init({
     token: "86e166f6-5421-4aaf-bdf6-746ac7a54525",
@@ -99,7 +99,7 @@ const track = async(item, payload) => {
   // @param payload:object
   let load = await isLoaded()
   if(load){
-    console.log('|||||||||||||||______________________- tracking____', item)
+    console.log('|||||||||||||||______________________- tracking____', item, payload)
     window.fcWidget.track(item, payload);
   }
 }

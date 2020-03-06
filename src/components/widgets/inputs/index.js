@@ -4,7 +4,7 @@ import { number_format } from '../../../services'
 import { SimpleLoader } from '../loaders'
 import IconSwitch from '../icons/iconSwitch'
 import Environtment from '../../../environment'
-
+import NumberInput from './numberInput'
 const { CountryUrl } = Environtment
 
 
@@ -260,7 +260,8 @@ const {
   value,
   placeholder,
   getMaxAvailable,
-  secondary_value
+  secondary_value,
+  useFiatInput
 } = props
 
 let movil_viewport = window.innerWidth < 768
@@ -270,25 +271,40 @@ let movil_viewport = window.innerWidth < 768
       {/* <div className={`${!clase ? 'containerInputComponent' : clase}`}> */}
       <div>
         <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
-        <div className={`inputContainer ${props.active ? 'inputActivado' : '' }`}>
+        <div className={`InputFormCoin inputContainer ${props.active ? 'inputActivado' : '' }`}>
 
           <div className="coinBalance fuente2" onClick={!secondary_value ? null : getMaxAvailable} id={saldoDisponible}>
-              <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible'} {saldoDisponible>0 ? `${saldoDisponible}`: '0'} {coin}</p>
+              <p id={saldoDisponible}>{!movil_viewport && 'Saldo disponible '}
+                {saldoDisponible>0 ? (useFiatInput ? `${number_format(saldoDisponible)}` : `${saldoDisponible}`): '0'} {coin}
+              </p>
             {
               coin &&
               <img src={require(`../../../assets/coins/${coin}.png`)} alt="" width="30"/>
             }
           </div>
-
-          <input
-            className={`inputElement ${props.active ? 'inputActivado' : '' }`}
-            type="number"
-            placeholder={placeholder}
-            onChange={props.actualizarEstado}
-            name={props.name}
-            value={value}
-            onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
-          />
+          {
+            useFiatInput ?
+            <NumberInput
+              type="text"
+              autoComplete="off"
+              onChange={props.actualizarEstado}
+              placeholder={placeholder}
+              name={props.name}
+              className={`inputElement ${props.active ? 'inputActivado' : '' }`}
+              value={value}
+              max_available={saldoDisponible}
+             />
+            :
+            <input
+              className={`inputElement ${props.active ? 'inputActivado' : '' }`}
+              type="number"
+              placeholder={placeholder}
+              onChange={props.actualizarEstado}
+              name={props.name}
+              value={value}
+              onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
+            />
+          }
         </div>
 
       </div>

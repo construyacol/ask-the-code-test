@@ -98,7 +98,7 @@ const can_proceed = () =>{
     // console.log('||||||||||||||||| -- - - -- MES ', moment(ticket.created_at).format("MMM"), '==>', new_date)
 
     // if(ticket.state === 'confirmed'){
-    //   console.log('__________________________________________props', props.currencies, ticket)
+      // console.log('__________________________________________props', props.currencies, ticket)
     // }
 
   const atributos ={

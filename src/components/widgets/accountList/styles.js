@@ -14,6 +14,9 @@ export const AccountListContainer = styled.section`
   row-gap: 20px;
   column-gap: 20px;
   align-items: center;
+  @media screen and (max-height: 830px) and (max-width: 900px) {
+    height: auto;
+  }
 `
 
 export const ACta = styled.div`
@@ -153,6 +156,10 @@ export const AccountLayout = styled.div`
   @media screen and (max-height: 800px) and (max-width: 1366px) {
     transform: scale(.90);
   }
+
+  @media screen and (max-height: 830px) and (max-width: 900px) {
+    transform: none;
+  }
 `
 
 
@@ -241,6 +248,9 @@ export const ItemAccountL = styled.div`
     animation-duration: 2s;
     animation-iteration-count: infinite;
     opacity: 0.35;
+    @media screen and (max-height: 800px) and (max-width: 1366px) {
+      transform: scale(.90);
+    }
   }
 
   &.loader.dos{

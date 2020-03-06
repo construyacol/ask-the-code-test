@@ -5,6 +5,7 @@ import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import { InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
+
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import { matchItem, mensaje } from '../../../services'
 import convertCurrencies, { formatToCurrency } from '../../../services/convert_currency'
@@ -42,9 +43,16 @@ class SwapView extends Component{
   }
 
   actualizarEstado_coin = (e) =>{
+    // return alert()
+    if(!this.props.current_pair.secondary_value){return}
     let value = e.target.value
-    let { available } = this.props
-    // console.log('___________________valor tecleado:', value)
+    let { available, current_wallet } = this.props
+    if(current_wallet.currency_type === 'fiat'){
+      value = String(e.target.value).replace(/,/g, '') || '0'
+      if (isNaN(value) || value === 'NaN') {
+        return e.preventDefault()
+      }
+    }
     this.setState({
       value:value,
       active: ((parseFloat(value) <= parseFloat(available))) ? true : false
@@ -251,7 +259,8 @@ render(){
   let movil_viewport = window.innerWidth < 768
 
   // console.log('|||||||||| VALUE STATAE', typeof(available), current_pair)
-  // console.log('|||||||||| swap ', total_value)
+  // console.log('|||||||||| VALUE STATAE', value)
+
 
 
   return(
@@ -272,21 +281,20 @@ render(){
           }
 
             <div className="WSection1">
-              <p className="fuente title soloAd3">Pago con:</p>
-              <InputFormCoin
-                secondary_value={secondary_value}
-                active={active && secondary_coin && available>0 && value > 0}
-                // active={(value>0 && value<=current_wallet.available) ? true : false}
-                clase={true} //retiro los estilos que vienen por defecto
-                placeholder="Escribe la cantidad"
-                getMaxAvailable={this.getMaxAvailable}
-                coin={short_name}
-                saldoDisponible={available}
-                name="name"
-                value={value}
-                actualizarEstado={this.actualizarEstado_coin}
-                // imgs={btc}
-              />
+              <p className="fuente title soloAd3">Pago con: <span>{current_wallet.currency.currency}</span></p>
+                <InputFormCoin
+                  useFiatInput={current_wallet.currency_type === 'fiat'}
+                  secondary_value={secondary_value}
+                  active={active && secondary_coin && available>0 && value > 0}
+                  clase={true} //retiro los estilos que vienen por defecto
+                  placeholder="Escribe la cantidad"
+                  getMaxAvailable={this.getMaxAvailable}
+                  coin={short_name}
+                  saldoDisponible={available}
+                  name="name"
+                  value={value}
+                  actualizarEstado={this.actualizarEstado_coin}
+                />
             </div>
 
             {
@@ -315,7 +323,7 @@ render(){
                 solo_lectura={true}
                 quote_type="primary"
                 account_type={current_wallet.currency_type}
-                loader={loader}
+                // loader={loader}
                 getOtherPairs={this.getOtherPairs}
                 total_value={total_value}
               />

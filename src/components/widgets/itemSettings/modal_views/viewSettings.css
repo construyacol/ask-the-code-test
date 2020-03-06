@@ -141,7 +141,7 @@
 
 .ItemlistViewart{
   width: calc(100% - 62px);
-  height: 80px;
+  height: 100%;
   display: grid;
   align-items: center;
   justify-content: center;
