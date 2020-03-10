@@ -8,6 +8,7 @@ import actions from '../../../actions'
 
 import Cropper from 'react-easy-crop'
 import './styles.css'
+import CropperIMG from './Cropper/CropperIMG'
 
 const minZoom = 0.4
 
@@ -17,7 +18,7 @@ class CropImg extends React.Component {
   state = {
     imageSrc: null,
     crop: { x: 0, y: 0 },
-    zoom: minZoom,
+    zoom: 1,
     aspect: 4 / 3,
     croppedAreaPixels: null,
     croppedImage: null
@@ -100,8 +101,7 @@ class CropImg extends React.Component {
           this.state.imageSrc &&
 
           <Fragment>
-            <div className="crop-container">
-              <Cropper
+              {/* <Cropper
                 minZoom={minZoom}
                 image={this.state.imageSrc}
                 crop={this.state.crop}
@@ -110,8 +110,8 @@ class CropImg extends React.Component {
                 onCropChange={this.onCropChange}
                 onCropComplete={this.onCropComplete}
                 onZoomChange={this.onZoomChange}
-              />
-            </div>
+              /> */}
+              <CropperIMG image={this.state.imageSrc} />
             <div className="ImgCropcontrols">
 
                     <ButtonForms

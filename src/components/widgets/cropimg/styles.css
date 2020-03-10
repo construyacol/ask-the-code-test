@@ -10,6 +10,7 @@ body {
   right: 0;
   bottom: 0;
 }
+
 /*.crop-container {
   position: absolute;
   top: 0;
@@ -19,14 +20,15 @@ body {
 }*/
 
 
-.App{
+.App {
   height: 100%
-
 }
 
 .crop-container {
+  display: flex;
+  flex-direction: column-reverse;
   width: 100%;
-      height: calc(100% - 100px);
+  height: calc(100% - 100px);
   position: relative;
 }
 
@@ -44,4 +46,32 @@ body {
 .slider {
   width: 200px;
   height: 10px;
+}
+
+.crop-controls {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.crop-controls div {
+  display: flex;
+  flex-direction: column;
+}
+
+.crop-controls div:nth-child(1) {
+  width: 60%;
+}
+
+.crop-controls .crop-rotate-button {
+  color: white;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  margin-top: 6px;
+  width: 60px;
+  height: 30px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 30px;
 }

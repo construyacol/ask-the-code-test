@@ -2017,8 +2017,7 @@ circle{
 
 
   .crop-container{
-    height: calc(100vh - 100px) !important;
-
+    height: calc(100vh - 230px) !important;
   }
 
   .ItemSelectedButton{
