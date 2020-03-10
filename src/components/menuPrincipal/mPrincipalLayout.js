@@ -29,7 +29,7 @@ const MenuPrincipalLayout = (props) => {
     <section className="menuPrincipal fuente" style={{left:show_menu_principal ? '0' : '-110vw' }}>
 
         <div className="contCloseMprincipal" onClick={close_menu_principal}>
-          {/* <i class="fas fa-times"></i> */}
+          {/* <i className="fas fa-times"></i> */}
         </div>
 
         <div className="userInfo">

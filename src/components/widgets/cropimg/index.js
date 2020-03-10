@@ -4,13 +4,8 @@ import { ButtonForms } from '../buttons/buttons'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-
-
-import Cropper from 'react-easy-crop'
-import './styles.css'
 import CropperIMG from './Cropper/CropperIMG'
-
-const minZoom = 0.4
+import './styles.css'
 
 
 class CropImg extends React.Component {
@@ -111,7 +106,7 @@ class CropImg extends React.Component {
                 onCropComplete={this.onCropComplete}
                 onZoomChange={this.onZoomChange}
               /> */}
-              <CropperIMG image={this.state.imageSrc} />
+              <CropperIMG onCropComplete={this.onCropComplete} image={this.state.imageSrc} />
             <div className="ImgCropcontrols">
 
                     <ButtonForms

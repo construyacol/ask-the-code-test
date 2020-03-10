@@ -5,6 +5,6 @@ export default function BarSlider({
     ...props
 }) {
     return (
-        <input {...props} />
+        <input type="range" {...props} />
     )
 }
