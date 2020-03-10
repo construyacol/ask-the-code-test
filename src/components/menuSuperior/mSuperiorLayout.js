@@ -104,23 +104,28 @@ const MenuSuperiorLayout = (props) =>{
             <Fragment>
               <img className="itemFuera" src={require(`./assets/${currency}.png`)} width="22" alt="" id={currency} title={currency} />
 
-
               <div className={`cotization ${movil ? 'movil' : 'desktop' }`}>
-                <PricesComponent change={true} data={{ currencyLabel: currency, buyPrice: buy_price, sellPrice: sell_price }}  />
-                {/* <p className={`buy ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.buy || !movil) ? 'flex' : 'none'}}>
-                  {compra}
-                  <span>
-                    <code className="monto" >${sell_price}</code>
-                    <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}}></i>
-                  </span>
-                </p>
-                <p className={`sell ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.sell || !movil) ? 'flex' : 'none'}}>
-                  {venta}
-                  <span>
-                    <code className="monto" >${buy_price}</code>
-                    <i className="Qventa fas fa-angle-double-down" style={{display: movil ? 'initial' : 'none'}} ></i>
-                  </span>
-                </p> */}
+                {
+                  !movil ?
+                  <PricesComponent change={true} data={{ currencyLabel: currency, buyPrice: buy_price, sellPrice: sell_price }}  />
+                  :
+                  <Fragment>
+                    <p className={`buy ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.buy || !movil) ? 'flex' : 'none'}}>
+                      {compra}
+                      <span>
+                        <code className="monto" >${sell_price}</code>
+                        <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}}></i>
+                      </span>
+                    </p>
+                    <p className={`sell ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.sell || !movil) ? 'flex' : 'none'}}>
+                      {venta}
+                      <span>
+                        <code className="monto" >${buy_price}</code>
+                        <i className="Qventa fas fa-angle-double-down" style={{display: movil ? 'initial' : 'none'}} ></i>
+                      </span>
+                    </p>
+                  </Fragment>
+                }
               </div>
             </Fragment>
           }
