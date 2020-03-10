@@ -21,7 +21,17 @@ body {
 
 
 .App {
+  display: grid;
+  grid-template-rows: 1fr 60px 80px;
   height: 100%
+}
+
+
+/* this media query must be relocated on future */
+@media (max-width: 900px) {
+  .App {
+    grid-template-rows: 1fr 60px 130px;
+  }
 }
 
 .crop-container {
