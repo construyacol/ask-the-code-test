@@ -1,0 +1,131 @@
+.root-footer{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    height: 9%;
+    min-width: 230px;
+    color: rgba(255, 255, 255, 1);
+    align-items: center;
+    font-size: 8px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    z-index: 2;
+}
+
+.exchange-box {
+  position: absolute;
+  transition: top 300ms linear, left 300ms linear;
+  transition-delay: 0s;
+}
+
+.root-content-numbers {
+    font-weight: bold;
+    font-size: 21px;
+    font-family: Tomorrow;
+    font-display: swap;
+}
+
+.exchange-divider {
+  height: 30px;
+  width: 2px;
+  margin: 0 4em;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transform: rotate(10deg)
+}
+
+.exchange-text-box {
+  display: flex;
+  font-family: 'Raleway'
+}
+
+.exchange-text-box > label {
+  text-align: center;
+  letter-spacing: 4px;
+  font-size: 10px;
+  line-height: 26px;
+}
+
+.exchange-text-box > label > .strong {
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Raleway'
+}
+
+@media (min-width: 1220px) and (max-width: 1380px) {
+  .ajust-to-screen {
+    left: 28%;
+    transform: scale(0.9);
+  }
+}
+
+@media (min-width: 1150px) and (max-width: 1220px) {
+  .ajust-to-screen {
+    left: 25%;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 900px) {
+  .exchange-box {
+    transform: scale(1.4);
+    left: 0;
+    right: 0;
+  }
+  .root-content-numbers {
+    font-size: 15px;
+    letter-spacing: -1;
+  }
+  .exchange-text-box > label {
+    letter-spacing: 0px;
+    font-size: 9px;
+    line-height: 18px;
+  }
+  .exchange-divider {
+    height: 25px;
+    width: 1px;
+    margin: 0 1em;
+    transform: rotate(0deg)
+  }
+}
+
+@media (max-width: 320px) {
+  .exchange-box {
+    left: 22%;
+    transform: scale(0.8);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .exchange-box {
+  }
+  .root-content-numbers {
+    font-size: 15px;
+    letter-spacing: -1;
+  }
+  .exchange-text-box > label {
+    letter-spacing: 0px;
+    font-size: 9px;
+    line-height: 18px;
+  }
+  .exchange-divider {
+    height: 25px;
+    width: 1px;
+    margin: 0 1em;
+    transform: rotate(0deg)
+  }
+}
+
+@keyframes swipe{
+  0% {
+    opacity:0;
+    top: 2%;
+  }
+
+  100% {
+    opacity:1;
+    top: 1%;
+  }
+}
