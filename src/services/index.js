@@ -501,8 +501,6 @@ export const handleKeyPress = (e, current) => {
     return /\d/.test(String.fromCharCode(keynum));
 }
 
-
-
 export const number_format = (amount) => {
     amount += ''; // por si pasan un numero en vez de un string
     amount = parseFloat(amount.replace(/[^0-9]/g, '')); // elimino cualquier cosa que no sea numero o punto
