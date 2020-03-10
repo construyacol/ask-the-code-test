@@ -1,17 +1,5 @@
 .root-footer{
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    height: 9%;
-    min-width: 230px;
-    color: rgba(255, 255, 255, 1);
-    align-items: center;
-    font-size: 8px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: auto;
-    z-index: 2;
+    
 }
 
 .exchange-box {
@@ -69,25 +57,9 @@
 }
 
 @media (max-width: 900px) {
-  .exchange-box {
-    transform: scale(1.4);
-    left: 0;
-    right: 0;
-  }
   .root-content-numbers {
     font-size: 15px;
     letter-spacing: -1;
-  }
-  .exchange-text-box > label {
-    letter-spacing: 0px;
-    font-size: 9px;
-    line-height: 18px;
-  }
-  .exchange-divider {
-    height: 25px;
-    width: 1px;
-    margin: 0 1em;
-    transform: rotate(0deg)
   }
 }
 
@@ -99,22 +71,9 @@
 }
 
 @media (min-width: 481px) and (max-width: 767px) {
-  .exchange-box {
-  }
   .root-content-numbers {
     font-size: 15px;
     letter-spacing: -1;
-  }
-  .exchange-text-box > label {
-    letter-spacing: 0px;
-    font-size: 9px;
-    line-height: 18px;
-  }
-  .exchange-divider {
-    height: 25px;
-    width: 1px;
-    margin: 0 1em;
-    transform: rotate(0deg)
   }
 }
 
