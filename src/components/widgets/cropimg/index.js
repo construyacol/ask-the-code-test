@@ -1,11 +1,11 @@
 import React, {Fragment} from 'react'
-import getCroppedImg from './cropImage'
 import { ButtonForms } from '../buttons/buttons'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import CropperIMG from './Cropper/CropperIMG'
 import './styles.css'
+import getCroppedImg from './Cropper/do-img-crop'
 
 
 class CropImg extends React.Component {
@@ -16,6 +16,7 @@ class CropImg extends React.Component {
     zoom: 1,
     aspect: 4 / 3,
     croppedAreaPixels: null,
+    imgRotation: 0,
     croppedImage: null
   }
 
@@ -24,9 +25,9 @@ class CropImg extends React.Component {
     this.setState({ crop })
   }
 
-  onCropComplete = (croppedArea, croppedAreaPixels) => {
+  onCropComplete = (croppedAreaPixels, imgRotation) => {
     // console.log(croppedArea, croppedAreaPixels)
-    this.setState({ croppedAreaPixels})
+    this.setState({ croppedAreaPixels, imgRotation })
   }
 
   onZoomChange = zoom => {
@@ -59,9 +60,9 @@ class CropImg extends React.Component {
   // }
 
 
-  showCroppedImage = async () => {
+  showCroppedImage = async (img, cropArea, rotation) => {
     await this.props.action.Loader(true)
-    const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels)
+    const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels, this.state.imgRotation)
     // return console.log('showCroppedImage', croppedImage)
     if(!croppedImage){return this.props.action.Loader(false)}
 

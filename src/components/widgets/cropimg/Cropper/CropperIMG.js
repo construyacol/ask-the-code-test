@@ -11,6 +11,9 @@ export default function CropperIMG({ image, onCropComplete }) {
   const [crop, setChange] = useState({ x: 0, y: 0 })
   const [zoom, setZoom] = useState(1)
   const [deg, setDeg] = useState(360);
+
+
+
   return (
     <>
       <div className="crop-container">
@@ -31,7 +34,7 @@ export default function CropperIMG({ image, onCropComplete }) {
           zoom={zoom}
           onCropChange={setChange}
           onZoomChange={setZoom}
-          onCropComplete={onCropComplete}
+          onCropComplete={(_, croppedAreaPixels) => onCropComplete(croppedAreaPixels, deg)}
         />
       </div>
       <div className="crop-controls">
