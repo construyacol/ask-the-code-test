@@ -47,9 +47,11 @@ class RootContainer extends Component {
     if(history.location.search){
       result = history.location.search.split("?token=")
       TokenUser = result[1]
-      await localForage.setItem('TokenUser', TokenUser)
-      await localForage.setItem('created_at', new Date())
-      history.push('/')
+      if(TokenUser) {
+        await localForage.setItem('TokenUser', TokenUser)
+        await localForage.setItem('created_at', new Date())
+        history.push('/')
+      }
     }
 
     let AccessToken = await localForage.getItem('TokenUser')
