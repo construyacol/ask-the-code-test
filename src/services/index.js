@@ -46,7 +46,7 @@ export const SentryCaptureException = error => {
 
 export const img_compressor = (file, quality) => {
   return new Promise(async(resolve, reject) => {
-    if(file.size > 2000000){
+    if(file.type.includes('image') && file.size > 2000000){
       console.log('La imagen es superior a 2MB, será comprimida')
       if(!quality){
         // Calcula el nivel de compresión en función al tamaño de la imagen
@@ -500,8 +500,6 @@ export const handleKeyPress = (e, current) => {
     }
     return /\d/.test(String.fromCharCode(keynum));
 }
-
-
 
 export const number_format = (amount) => {
     amount += ''; // por si pasan un numero en vez de un string

@@ -325,7 +325,7 @@ export class InputDepositForm extends Component{
     } = props
 
     this.setState({
-      finalValue:value ? number_format(value) : window.innerWidth>768 ? 'Escribe la cantidad' : 'Cantidad'
+      finalValue:value && this.state.finalValue ? number_format(value) : window.innerWidth>768 ? 'Escribe la cantidad' : 'Cantidad'
     })
   }
 
@@ -351,7 +351,7 @@ render(){
             <input
               // className={`inputElement2 ${actives ? 'inputActivado' : '' }`}
               className={`inputElement2 inputDeposit`}
-              type="number"
+              type="text"
               placeholder={placeholder}
               onChange={actualizar}
               name={name}
