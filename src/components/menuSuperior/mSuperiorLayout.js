@@ -6,6 +6,7 @@ import SimpleLoader from '../widgets/loaders'
 import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
+import PricesComponent from '../Prices/PricesComponent'
 
 const MenuSuperiorLayout = (props) =>{
 
@@ -104,20 +105,27 @@ const MenuSuperiorLayout = (props) =>{
               <img className="itemFuera" src={require(`./assets/${currency}.png`)} width="22" alt="" id={currency} title={currency} />
 
               <div className={`cotization ${movil ? 'movil' : 'desktop' }`}>
-                <p className={`buy ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.buy || !movil) ? 'flex' : 'none'}}>
-                  {compra}
-                  <span>
-                    <code className="monto" >${sell_price}</code>
-                    <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}}></i>
-                  </span>
-                </p>
-                <p className={`sell ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.sell || !movil) ? 'flex' : 'none'}}>
-                  {venta}
-                  <span>
-                    <code className="monto" >${buy_price}</code>
-                    <i className="Qventa fas fa-angle-double-down" style={{display: movil ? 'initial' : 'none'}} ></i>
-                  </span>
-                </p>
+                {
+                  !movil ?
+                  <PricesComponent change={true} data={{ currencyLabel: currency, buyPrice: buy_price, sellPrice: sell_price }}  />
+                  :
+                  <Fragment>
+                    <p className={`buy ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.buy || !movil) ? 'flex' : 'none'}}>
+                      {compra}
+                      <span>
+                        <code className="monto" >${sell_price}</code>
+                        <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}}></i>
+                      </span>
+                    </p>
+                    <p className={`sell ${movil ? 'movil' : 'desktop' }`} style={{display:(item_quote.sell || !movil) ? 'flex' : 'none'}}>
+                      {venta}
+                      <span>
+                        <code className="monto" >${buy_price}</code>
+                        <i className="Qventa fas fa-angle-double-down" style={{display: movil ? 'initial' : 'none'}} ></i>
+                      </span>
+                    </p>
+                  </Fragment>
+                }
               </div>
             </Fragment>
           }

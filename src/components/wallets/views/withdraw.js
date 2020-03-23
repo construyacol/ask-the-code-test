@@ -74,12 +74,11 @@ state = {
       current_wallet
     } = this.props
 
-  let value = target.value.replace(' ', '')
-
+  // console.log('|||||||||||||| CURRENT TARGET', target.value)
+  let value = target.value.replace(/[^a-zA-Z0-9()]/g, '');
+  console.log('|||||||||||||| VALUE', value)
   let addressVerify = await AddressValidator.validate(value, current_wallet.currency.currency === 'bitcoin_testnet' ? 'bitcoin' : current_wallet.currency.currency)
-  // let addressVerify = await AddressValidator.validate(target.value, 'bitcoin')
 
-  // console.log('AddressValidator', target.value.length)
     this.setState({
       address:value,
       addressVerify:addressVerify ? 'Verify' : (value.length>20 && !addressVerify) ? 'NoVerify' : '',
@@ -241,7 +240,7 @@ const { value, active, addressVerify, show_last_address, address_value, verified
 let movil_viewport = window.innerWidth < 768
 
 
-// console.log('||||||||||||||||||||||||| WITHDRAW ==>  last_address ==> ', last_address)
+console.log('||||||||||||||||||||||||| WITHDRAW ==>  address_value ==> ', address_value)
 
 const atributos ={
   icon:'withdraw2',

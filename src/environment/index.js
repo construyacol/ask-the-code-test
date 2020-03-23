@@ -27,3 +27,8 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 export default Environment
+
+
+// construyacol+555@gmail.com
+// http://auth1.devsertec.com/public/signup?clientId=5e79471764dcdb016a369cd8
+// http://auth1.devsertec.com/public/signin?clientId=5e79471764dcdb016a369cd8
