@@ -471,7 +471,7 @@ const mapStateToProps = (state, props) =>{
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)
 
   const { loggedIn } = state.auth
-  const { user, user_id, deposits, withdraws } = state.model_data
+  const { user, user_id, deposits, withdraws } = state.modelData
 
   return{
     loggedIn,

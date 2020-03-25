@@ -131,7 +131,7 @@ class SelectCountry extends Component {
 function mapStateToProps(state, props){
 
   // console.log('||||||||| LOADEER STATE', state)
-  const { user, user_id, wallets, all_pairs } = state.model_data
+  const { user, user_id, wallets, all_pairs } = state.modelData
   const { loader } = state.isLoading
 
   return{

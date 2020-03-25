@@ -298,7 +298,7 @@ function mapStateToProps(state, props){
 
   const{
     balances
-  } = state.model_data
+  } = state.modelData
 
 
 
@@ -308,8 +308,8 @@ function mapStateToProps(state, props){
     current:state.form.current,
     balances:balances ? balances[wallet.id] : null,
     current_view:state.ui.current_section.view,
-    localCurrency:state.model_data.pairs.localCurrency,
-    user:state.model_data.user[state.model_data.user_id]
+    localCurrency:state.modelData.pairs.localCurrency,
+    user:state.modelData.user[state.modelData.user_id]
   }
 
 }

@@ -205,7 +205,7 @@ const { user } = this.props
 
 function mapStateToProps(state, props){
   // console.log('S T A T E -- K Y C --- C O N T A I N E R', state)
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
   const { current } = state.form
 
   return{

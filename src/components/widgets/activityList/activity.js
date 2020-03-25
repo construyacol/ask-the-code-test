@@ -254,7 +254,7 @@ class ActivityList extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id, currencies, wallets } = state.model_data
+  const { user, user_id, currencies, wallets } = state.modelData
   const { params } = props.match
   // const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params

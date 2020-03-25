@@ -358,7 +358,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   const { pairs_for_account } = state.ui.current_section.params
-  const { user, user_id,  wallets, all_pairs, balances } = state.model_data
+  const { user, user_id,  wallets, all_pairs, balances } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
   // console.log('Que carajo pasa con el convertidor', pairs_for_account)
@@ -379,13 +379,13 @@ function mapStateToProps(state, props){
     user:user[user_id],
     wallets,
     all_pairs,
-    swaps:state.model_data.swaps,
+    swaps:state.modelData.swaps,
     current_wallet,
     short_name:state.ui.current_section.params.short_name,
-    local_pairs:state.model_data.pairs.collections || null,
+    local_pairs:state.modelData.pairs.collections || null,
     quote_type:state.ui.current_section.params.quote_type,
-    local_currency:state.model_data.pairs.localCurrency,
-    currencies:state.model_data.currencies,
+    local_currency:state.modelData.pairs.localCurrency,
+    currencies:state.modelData.currencies,
     currency_pairs:!current_wallet ? null : (pairs_for_account[current_wallet.currency.currency] && pairs_for_account[current_wallet.currency.currency].all_pairs),
     // current_pair:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair
     current_pair:current_pair,

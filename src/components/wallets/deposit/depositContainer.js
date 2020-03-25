@@ -610,7 +610,7 @@ function mapStateToProps(state, props){
   const {
     localCurrency,
     currency
-  } = state.model_data.pairs
+  } = state.modelData.pairs
   // console.log('::: __ESTADO_DEPOSITO__ ::', state.ui.current_section.params.current_wallet)
 
   const {
@@ -621,7 +621,7 @@ function mapStateToProps(state, props){
     pairs,
     // deposits,
     currencies
-  } = state.model_data
+  } = state.modelData
 
   let deposit_providers_list = []
   user[user_id].deposit_providers.map(provider_id => {

@@ -168,8 +168,8 @@ HomeContainer.propTypes = {
 
 function mapStateToProps(state, props){
   // console.log('E S T A D O   I N I C I A L', process.env.NODE_ENV === 'development' ? Environment.development : Environment.production)
-  // console.log('E S T A D O   I N I C cI A L', state.model_data.user && state.model_data.user[state.model_data.user_id])
-  const { wallets, all_pairs } = state.model_data
+  // console.log('E S T A D O   I N I C cI A L', state.modelData.user && state.modelData.user[state.modelData.user_id])
+  const { wallets, all_pairs } = state.modelData
   const { app_loaded } = state.isLoading
   const { socket_notify } = state.ui.notifications
 
@@ -183,7 +183,7 @@ function mapStateToProps(state, props){
       activeRoute:state.ui.menu_item_active,
       modalConfirmation:state.ui.modal_confirmation.visible,
       other_modal:state.ui.other_modal,
-      user:state.model_data.user && state.model_data.user[state.model_data.user_id],
+      user:state.modelData.user && state.modelData.user[state.modelData.user_id],
       wallets,
       all_pairs,
       socket_notify

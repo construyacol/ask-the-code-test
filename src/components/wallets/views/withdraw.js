@@ -429,7 +429,7 @@ function mapStateToProps(state, props){
     withdraw_accounts,
     withdraws,
     wallets
-  } = state.model_data
+  } = state.modelData
 
   const { params } = props.match
 

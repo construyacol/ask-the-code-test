@@ -106,7 +106,7 @@ MenuPrincipalContainer.propTypes = {
     // let path = props.location.pathname.replace('/', '')
     let path = props.match.params.primary_path
     // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', path, props)
-    const { user, user_id } = state.model_data
+    const { user, user_id } = state.modelData
     const { verification_state } = state.ui
 
     return{
@@ -114,7 +114,7 @@ MenuPrincipalContainer.propTypes = {
       path,
       show_menu_principal:state.ui.current_section.params.show_menu_principal,
       verification_state
-      // user:state.model_data.user ? user : null
+      // user:state.modelData.user ? user : null
     }
   }
 

@@ -529,7 +529,7 @@ function mapStateToProps(state, props){
 
   // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
 
-  let current_wallet = state.model_data.wallets[account_id]
+  let current_wallet = state.modelData.wallets[account_id]
 
   const{
     withdraw_providers,
@@ -537,7 +537,7 @@ function mapStateToProps(state, props){
     wallets,
     deposit_providers,
     currencies
-  } = state.model_data
+  } = state.modelData
 
 
   let currency_list
@@ -553,7 +553,7 @@ function mapStateToProps(state, props){
     })
   }
 
-  let ticket = state.model_data[tx_path][order_id]
+  let ticket = state.modelData[tx_path][order_id]
 
   return{
     step:state.form.form_ticket.step,

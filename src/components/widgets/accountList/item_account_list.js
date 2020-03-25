@@ -229,7 +229,7 @@ function mapStateToProps(state, props){
     user,
     user_id,
     withdraw_providers
-  } = state.model_data
+  } = state.modelData
 
   let withdraw_provider_list = (path !== 'wallets' && user && withdraw_providers) && user[user_id].withdraw_providers.map(w_id=>{
     return withdraw_providers[w_id]
@@ -239,17 +239,17 @@ function mapStateToProps(state, props){
 
 
    item_list = user[user_id][path].map((item_id)=>{
-     if(path === 'withdraw_accounts' && state.model_data[path][item_id].currency_type === 'crypto'){return false}
-   return state.model_data[path][item_id]
+     if(path === 'withdraw_accounts' && state.modelData[path][item_id].currency_type === 'crypto'){return false}
+   return state.modelData[path][item_id]
    })
 
   return{
     item_list:item_list,
     path,
     have_items:user[user_id][path] && user[user_id][path].length,
-    deposit_providers:path !== 'wallets' ? null : state.model_data.deposit_providers,
+    deposit_providers:path !== 'wallets' ? null : state.modelData.deposit_providers,
     withdraw_providers:withdraw_provider_list,
-    user:state.model_data.user[state.model_data.user_id],
+    user:state.modelData.user[state.modelData.user_id],
     loader:state.isLoading.loader
   }
 }

@@ -97,7 +97,7 @@ class ReferralComponent extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   return{
     user:user && user[user_id]
   }

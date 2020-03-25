@@ -1,6 +1,6 @@
 import Environment from '../../environment'
 // import * as normalizr_services from '../../schemas'
-// import { update_normalized_state } from '../dataModelActions'
+// import { updateNormalizedDataAction } from '../dataModelActions'
 
 
 import {
@@ -16,7 +16,7 @@ import {
 
 // import {
 //   app_loaded,
-//   load_label
+//   appLoadLabelAction
 // } from '../loader'
 
 import {
@@ -29,7 +29,7 @@ const {
  } = Environment
 
 // const {
-//   normalize_user,
+//   normalizeUser,
 //   normalize_data
 // } = normalizr_services
 
@@ -41,7 +41,7 @@ export const get_withdraws = (account_id) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().model_data.user[getState().model_data.user_id]
+    const user = getState().modelData.user[getState().modelData.user_id]
 
     let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
     const url_withdraw = `${WithdrawApiUrl}users/${user.id}/withdraws?country=${user.country}&filter=${filter}`

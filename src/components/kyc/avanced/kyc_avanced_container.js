@@ -284,7 +284,7 @@ class KycAvancedContainer extends Component{
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   const { current } = state.form
   return{
     loader:state.isLoading.loader,

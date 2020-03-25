@@ -109,7 +109,7 @@ class MenuSuperiorContainer extends Component {
     await headroom.init()
 
     if(!this.props.currentPair){
-      this.props.action.get_pairs_for(this.props.user.country)
+      this.props.action.getPairByCountry(this.props.user.country)
     }else{
       this.formating_currency()
     }
@@ -161,10 +161,10 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
   // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   return{
     HeadRoomClass:state.ui.headroom,
-    currentPair:state.model_data.pairs.currentPair,
+    currentPair:state.modelData.pairs.currentPair,
     loader:state.isLoading.loader,
     item_quote:state.ui.item_quote,
     loggedIn:state.auth.loggedIn,

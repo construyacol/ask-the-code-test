@@ -1,6 +1,6 @@
 import Environment from '../../environment'
 // import * as normalizr_services from '../../schemas'
-// import { update_normalized_state } from '../dataModelActions'
+// import { updateNormalizedDataAction } from '../dataModelActions'
 
 
 import {
@@ -17,7 +17,7 @@ import {
 
 // import {
 //   app_loaded,
-//   load_label
+//   appLoadLabelAction
 // } from '../loader'
 
 
@@ -29,7 +29,7 @@ import {
 const { SwapApiUrl } = Environment
 
 // const {
-//   normalize_user,
+//   normalizeUser,
 //   normalize_data
 // } = normalizr_services
 
@@ -40,8 +40,8 @@ export const get_swaps = (account_id) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().model_data.user[getState().model_data.user_id]
-    const { wallets } = getState().model_data
+    const user = getState().modelData.user[getState().modelData.user_id]
+    const { wallets } = getState().modelData
 
     let filter = `{"where":{"or":[{"account_to":"${account_id}"}, {"account_from":"${account_id}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
     const url_swaps = `${SwapApiUrl}users/${user.id}/swaps?country=${user.country}&filter=${filter}`

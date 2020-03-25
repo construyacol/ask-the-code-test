@@ -128,7 +128,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { swaps, withdraws, deposits } = state.model_data
+  const { swaps, withdraws, deposits } = state.modelData
   const { activity_for_account } = state.storage
   const { params } = props.match
 

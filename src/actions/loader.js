@@ -7,21 +7,21 @@ import {
 
 export const Loader = (payload) => {
   return {
-    type:LOADER,
+    type: LOADER,
     payload
   }
 }
 
-export const app_loaded = (payload) =>{
-  return{
-    type:APP_LOADED,
+export const app_loaded = (payload) => {
+  return {
+    type: APP_LOADED,
     payload
   }
 }
 
-export const load_label = (payload) =>{
-  return{
-    type:APP_LOAD_LABEL,
+export const appLoadLabelAction = (payload) => {
+  return {
+    type: APP_LOAD_LABEL,
     payload
   }
 }

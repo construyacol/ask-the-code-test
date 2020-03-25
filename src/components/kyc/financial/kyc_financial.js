@@ -259,7 +259,7 @@ class KycFinancialComponent extends Component {
 
 function mapStateToProps(state, props){
   // console.log('|||| mapStateToProps', state.form.form_kyc_financial)
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
   const { step } = state.form.form_kyc_financial
 
   return{

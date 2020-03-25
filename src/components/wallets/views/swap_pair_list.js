@@ -123,7 +123,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { wallets } = state.model_data
+  const { wallets } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
   const { id, currency } = current_wallet

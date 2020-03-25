@@ -20,7 +20,7 @@ class QuoteContainer extends Component {
   }
 
   select_currency = payload => {
-    this.props.action.SearchCurrentPair(payload, 'currency')
+    this.props.action.searchCurrentPairAction(payload, 'currency')
   }
 
   componentDidMount(){
@@ -97,12 +97,12 @@ QuoteContainer.propTypes = {
 
 
 function mapStateToProps(state, props){
-  // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', state.model_data.pairs.user_collection)
+  // console.log('S T A T E - - - Q U O T E - - - C O N T A I N E R:::', state.modelData.pairs.user_collection)
   return{
-    currentPair:state.model_data.pairs.currentPair,
-    localCurrency:state.model_data.pairs.localCurrency,
+    currentPair:state.modelData.pairs.currentPair,
+    localCurrency:state.modelData.pairs.localCurrency,
     loader:state.isLoading.loader,
-    user_collection:state.model_data.pairs.user_collection,
+    user_collection:state.modelData.pairs.user_collection,
     buy:state.ui.item_quote.buy,
     sell:state.ui.item_quote.sell
   }

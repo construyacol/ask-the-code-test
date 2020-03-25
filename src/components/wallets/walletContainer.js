@@ -181,7 +181,7 @@ function mapStateToProps(state, props){
     user_id,
     all_pairs,
     wallets
-  } = state.model_data
+  } = state.modelData
 
   // const{
   //   current_wallet
@@ -198,7 +198,7 @@ function mapStateToProps(state, props){
     all_pairs,
     user:user[user_id],
     // current_wallet:current_wallet,
-    currencies:state.model_data.currencies || null,
+    currencies:state.modelData.currencies || null,
     wallets,
     app_loaded
   }

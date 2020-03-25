@@ -9,7 +9,7 @@ const do_normalization = (data_source, data_to_normalize)=>{
   return normalized_data
 }
 
-export const normalize_user = async(user) => {
+export const normalizeUser = async(user) => {
 
   const balance = new schema.Entity('balances',{})
   const deposit = new schema.Entity('deposits',{})
@@ -58,4 +58,4 @@ export const normalize_data = async(all_pairs) => {
 }
 
 
-export default normalize_user
+export default normalizeUser

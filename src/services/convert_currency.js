@@ -64,7 +64,7 @@ import store from '../'
        "pair_id":pair_id
      }
 
-    let objetive_pair_instance = store.getState().model_data.all_pairs[pair_id]
+    let objetive_pair_instance = store.getState().modelData.all_pairs[pair_id]
 
     let to_spend_currency = extractCurrencies([data.to_spend_currency]);
     let primary_objetive_currency = extractCurrencies([objetive_pair_instance.primary_currency]);

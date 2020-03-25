@@ -21,7 +21,7 @@ const MenuPrincipalLayout = (props) => {
   } = props
 
 
-  // const { user, user_id } = store.getState().model_data
+  // const { user, user_id } = store.getState().modelData
   // const country = user[user_id].country
 
 

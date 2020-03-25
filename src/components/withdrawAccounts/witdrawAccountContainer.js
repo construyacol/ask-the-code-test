@@ -158,7 +158,7 @@ function mapStateToProps(state, props){
   const {
     user,
     user_id,
-  } = state.model_data
+  } = state.modelData
 
   const {
     app_loaded
@@ -170,7 +170,7 @@ function mapStateToProps(state, props){
     withdraw_accounts:user[user_id].withdraw_accounts,
     user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,
-    currencies:state.model_data.currencies || null,
+    currencies:state.modelData.currencies || null,
     app_loaded
     // ready:user && withdraw_accounts && withdraw_providers
   }

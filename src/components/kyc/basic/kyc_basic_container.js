@@ -487,7 +487,7 @@ shouldComponentUpdate(nextProps, nextState){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
 
 
   return{

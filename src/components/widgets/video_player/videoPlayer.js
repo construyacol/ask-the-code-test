@@ -70,7 +70,7 @@ class VideoPlayer extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   const { videos, verification_state } = state.ui
   let verification_video = (verification_state === 'rejected' || !verification_state) ? 'kyc_basic' :
                            verification_state === 'pending' && 'kyc_advanced'

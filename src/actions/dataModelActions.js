@@ -90,14 +90,14 @@ export const reset_model_data = payload => {
   }
 }
 
-export const update_normalized_state = payload => {
+export const updateNormalizedDataAction = payload => {
   return{
     type:UPDATE_NORMALIZED_STATE,
     payload
   }
 }
 
-export const LocalPairs = payload => {
+export const loadLocalPairsAction = payload => {
   return{
     type:LOCAL_PAIRS,
     payload:payload
@@ -105,7 +105,7 @@ export const LocalPairs = payload => {
 }
 
 
-export const AllPairs = payload => {
+export const getAllPairsAction = payload => {
   return{
     type:ALL_PAIRS,
     payload:payload
@@ -119,7 +119,7 @@ export const UserPairs = payload => {
   }
 }
 
-export const SearchCurrentPair = (payload, prop) => {
+export const searchCurrentPairAction = (payload, prop) => {
 
   return{
     type:CURRENT_PAIR,
@@ -131,7 +131,7 @@ export const SearchCurrentPair = (payload, prop) => {
 
 
 
-export const LocalCurrency = payload => {
+export const loadLocalCurrencyAction = payload => {
   return{
     type:LOCAL_CURRENCY,
     payload
@@ -140,4 +140,4 @@ export const LocalCurrency = payload => {
 
 
 
-export default LocalPairs
+export default loadLocalPairsAction

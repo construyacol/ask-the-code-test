@@ -277,7 +277,7 @@ class WithdrawAccountForm extends Component{
 function mapStateToProps(state, props){
   // console.log('R E N D E R I Z A N D O ssssssss', props)
   const { withdraw_flow } = props
-  const { user, user_id, withdraw_providers } = state.model_data
+  const { user, user_id, withdraw_providers } = state.modelData
 
   let withdraw_provider_list = user[user_id].withdraw_providers.map(w_id => {
     return withdraw_providers[w_id]

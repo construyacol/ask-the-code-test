@@ -179,7 +179,7 @@ new_account = () =>{
       withdraw_accounts,
       user,
       user_id
-    } = state.model_data
+    } = state.modelData
 
     const{
       currency_type,

@@ -150,8 +150,8 @@ DashBoardContainer.propTypes = {
 
 function mapStateToProps(state, props){
 
-    const { user, user_id } = state.model_data
-    const { currentPair } = state.model_data.pairs
+    const { user, user_id } = state.modelData
+    const { currentPair } = state.modelData.pairs
 
   return{
     user:user[user_id],

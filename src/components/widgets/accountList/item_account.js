@@ -70,7 +70,7 @@ const ItemAccount = props => {
 const mapStateToProps = (state, props) => {
 
   const { account } = props
-  const { balances } = state.model_data
+  const { balances } = state.modelData
   const { currentFilter } = state.ui.current_section.params
 
   // console.log('||||||||||||||||||||||||||||||| ACCOUNT ITEM ACCOUNT ==> ', account)

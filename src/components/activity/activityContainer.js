@@ -88,12 +88,12 @@ toWallets = async() =>{
 function mapStateToProps(state, props){
 
   const { current_wallet } = state.ui.current_section.params
-  const { user, user_id, wallets, withdrawals, deposits, swaps, activity, all_pairs } = state.model_data
+  const { user, user_id, wallets, withdrawals, deposits, swaps, activity, all_pairs } = state.modelData
 
   return{
     loader:state.isLoading.loader,
     wallet_router:state.ui.router_wallet_container,
-    local_currency:state.model_data.pairs.localCurrency,
+    local_currency:state.modelData.pairs.localCurrency,
     current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
     user:user[user_id],
     wallets,

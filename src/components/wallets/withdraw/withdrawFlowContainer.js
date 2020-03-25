@@ -651,7 +651,7 @@ function mapStateToProps(state, props){
     wallets,
     withdraws,
     balances
-  } = state.model_data
+  } = state.modelData
 
   const current_wallet = wallets[params.account_id]
 

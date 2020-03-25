@@ -220,19 +220,19 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id, wallets, deposit_providers } = state.model_data
+  const { user, user_id, wallets, deposit_providers } = state.modelData
   const { loader } = state.isLoading
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
 
-  // console.log('DESDE DEPOSITOSSSS ', state.model_data.pairs)
+  // console.log('DESDE DEPOSITOSSSS ', state.modelData.pairs)
 
   return{
     active_trade_operation:state.ui.current_section.params.active_trade_operation,
     user:user[user_id],
     current_wallet,
     loader,
-    local_currency:state.model_data.pairs.localCurrency,
+    local_currency:state.modelData.pairs.localCurrency,
     deposit_providers,
     // local_currency:state.ui.current_section.params.short_name,
     current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair)

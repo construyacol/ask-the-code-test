@@ -128,19 +128,19 @@ function mapStateToProps(state, props){
     balances,
     user,
     user_id
-  } = state.model_data
+  } = state.modelData
 
   const{
     account_id
   } = props
 
-  // console.log('|||||||||||||| mapStateToProps BALANCE COMPONENT', balances && balances[account_id], state.model_data.wallets[account_id].currency_type)
+  // console.log('|||||||||||||| mapStateToProps BALANCE COMPONENT', balances && balances[account_id], state.modelData.wallets[account_id].currency_type)
 
   return{
     balance:balances && balances[account_id],
     user:user[user_id],
-    currency_type:state.model_data.wallets[account_id].currency_type,
-    currency:state.model_data.wallets[account_id].currency
+    currency_type:state.modelData.wallets[account_id].currency_type,
+    currency:state.modelData.wallets[account_id].currency
   }
 }
 

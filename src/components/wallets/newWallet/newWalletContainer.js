@@ -158,8 +158,8 @@ class NewWallet extends Component{
 
 function mapStateToProps(state, props){
   // console.log('R E N D E R I Z A N D O  - - -- -  NEW WALLET -----::: ', state)
-  const { user_id } = state.model_data
-  const user = state.model_data.user[user_id]
+  const { user_id } = state.modelData
+  const user = state.modelData.user[user_id]
 
   return {
     search:state.form.search_coin,
@@ -169,8 +169,8 @@ function mapStateToProps(state, props){
     step:state.form.form_wallet.step,
     current:state.form.current,
     user,
-    state:state.model_data,
-    currencies:state.model_data.currencies
+    state:state.modelData,
+    currencies:state.modelData.currencies
 
   }
 }

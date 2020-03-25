@@ -171,7 +171,7 @@ class LoaderAplication extends Component {
      await action.get_all_currencies()
 
     // let user_collection = [{primary:'ethereum'}]
-    await action.get_pairs_for(this.props.user.country)
+    await action.getPairByCountry(this.props.user.country)
 
     await action.get_account_balances(this.props.user)
     await action.get_deposit_providers(this.props.user)
@@ -200,7 +200,7 @@ class LoaderAplication extends Component {
 // ------------------------------------------------------------------------------------------------
 
 
-    // get_pairs_for(param1, param2)
+    // getPairByCountry(param1, param2)
     // recibe 2 parametros, país y colección de monedas de usuario(array)
 
     // Esta función define el estado de "model_data.pairs" donde contenemos:
@@ -297,7 +297,7 @@ class LoaderAplication extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id,  wallets, all_pairs } = state.model_data
+  const { user, user_id,  wallets, all_pairs } = state.modelData
   // const { loader } = state.isLoading
   const { token } = props
   const { loggedIn } = state.auth

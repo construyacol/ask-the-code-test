@@ -6,7 +6,7 @@ import './mPrincipal.css'
 
 const MovilMenuComponent = props => {
 
-  // const { user, user_id } = store.getState().model_data
+  // const { user, user_id } = store.getState().modelData
   // const country = user[user_id].country
   // const { openSelectCountry, go_to } = props
   const {go_to } = props

@@ -292,7 +292,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
 
   return{
     params:state.ui.current_section.params.settings,

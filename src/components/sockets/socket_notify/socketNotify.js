@@ -182,7 +182,7 @@ const LayoutSocketNotify = props => {
 const mapStateToProps = (state, props) => {
 
   const { socket_notify } = state.ui.notifications
-  const { currencies } = state.model_data
+  const { currencies } = state.modelData
 
   let currency_list
 

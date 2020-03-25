@@ -6,7 +6,7 @@ import Environment from '../environment'
 import * as Sentry from '@sentry/browser';
 import { update_activity } from '../actions/storage'
 import { update_pending_activity } from '../actions/APIactions'
-import { update_normalized_state } from '../actions/dataModelActions'
+import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
 import {
   current_section_params,
@@ -27,7 +27,7 @@ const {
 
 
 const {
-  normalize_user
+  normalizeUser
 } = normalizr_services
 
 
@@ -138,13 +138,13 @@ export const update_activity_state = (account_id, activity_type, activity_list) 
 export const normalized_list = (activity_list, activity_type) => {
   return async(dispatch, getState) => {
 
-    const user = getState().model_data.user[getState().model_data.user_id]
+    const user = getState().modelData.user[getState().modelData.user_id]
 
     let list = await arrayToObject(activity_list)
-    if(getState().model_data[activity_type]){
+    if(getState().modelData[activity_type]){
       // Si ya hay depositos/retiros/swaps en el estado, entonces tomarlos en cuenta en la adición
       list = {
-        ...getState().model_data[activity_type],
+        ...getState().modelData[activity_type],
         ...list
       }
     }
@@ -156,8 +156,8 @@ export const normalized_list = (activity_list, activity_type) => {
       }
     }
 
-    let normalizeUser = await normalize_user(user_update)
-    await dispatch(update_normalized_state(normalizeUser))
+    let normalizeUser = await normalizeUser(user_update)
+    await dispatch(updateNormalizedDataAction(normalizeUser))
 
 
   }
@@ -306,7 +306,7 @@ export const serveBankOrCityList = (list, type) => {
 export const get_order_by_id = (order_id, order_type) => {
 
   return async(dispatch, getState) => {
-    const user = getState().model_data.user[getState().model_data.user_id]
+    const user = getState().modelData.user[getState().modelData.user_id]
     const apiUrl = order_type === 'deposits' ? DepositApiUrl : order_type === 'withdraws' ? WithdrawApiUrl : SwapApiUrl
 
     let filter = `{"where":{"id":"${order_id}"}}`
@@ -394,7 +394,7 @@ export const serveKycData = (list) => {
 
     return new Promise(async(resolve, reject)=>{
       const { kyc_basic } = kyc
-      const { user, user_id } = store.getState().model_data
+      const { user, user_id } = store.getState().modelData
       let kyc_model = kyc_basic[user[user_id].person_type]
 
       // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user[user_id].person_type])
@@ -549,7 +549,7 @@ export const serve_orders = async(account_id, filter) =>{
   let new_array = []
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', account_id, filter)
   const { model_data } = store.getState()
-  const { user, user_id } = store.getState().model_data
+  const { user, user_id } = store.getState().modelData
 
   let list = model_data[filter]
   let indices = user[user_id][filter]

@@ -335,7 +335,7 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state, props){
   // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : mapStateToProps withdraw PROVIDERS', state)
-  const { user, user_id, withdraw_providers  } = state.model_data
+  const { user, user_id, withdraw_providers  } = state.modelData
 
   let withdraw_providers_list = []
   user[user_id].withdraw_providers.map((wp)=>{

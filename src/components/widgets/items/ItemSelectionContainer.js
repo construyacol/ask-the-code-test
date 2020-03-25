@@ -207,7 +207,7 @@ function mapStateToProps(state, props){
 
   const {
     currencies
-  } = state.model_data
+  } = state.modelData
 
   return {
     search: current === 'wallets' ?  search_coin : (current === 'bank' || current === 'withdraw') ? search_bank : search_deposit,

@@ -458,7 +458,7 @@ function mapStateToProps(state, props){
 
   // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', props)
 
-  const { user, user_id, currencies } = state.model_data
+  const { user, user_id, currencies } = state.modelData
   const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
   const { activity_for_account } = state.storage
