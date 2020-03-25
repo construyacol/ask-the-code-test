@@ -11,7 +11,7 @@ import IconSwitch from '../../widgets/icons/iconSwitch'
 import AddressValidator from 'wallet-address-validator'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
 import { formatToCurrency } from '../../../services/convert_currency'
-
+// import { BigNumber } from "bignumber.js"
 
 
 class WithdrawView extends Component{
@@ -26,7 +26,6 @@ state = {
   address_value:null,
   verified:null
 }
-
 
   // componentDidUpdate(prevProps){
   //   if(prevProps.current_wallet !== this.props.current_wallet){
@@ -50,21 +49,17 @@ state = {
   }
 
 
-  actualizarEstado_coin = async(e) =>{
-
-
-    this.setState({
-      value:e.target.value,
-    })
-
-      let value = await formatToCurrency(e.target.value, this.props.current_wallet.currency)
+  actualizarEstado_coin = async({target}) =>{
+      // if(RegExp(/[\.]/).test(val)){
+      //   this.props.action.mensaje('Debes separar decímales con coma ","', 'error')
+      // }
+      let value = await formatToCurrency(target.value, this.props.current_wallet.currency)
       let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
-      console.log('validate_min_amount', value.isGreaterThanOrEqualTo(min_amount), this.props.withdraw_provider.provider.min_amount)
       this.setState({
+        value:value.toNumber(),
         validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
       })
-
-      // console.log('|||||||||||||||||||||||||||||||||||||||||| Format currency response ====>>>', this.props.current_wallet.currency.currency, value, min_amount)
+      console.log(value.toNumber())
   }
 
   actualizarEstado = async({target}) =>{
@@ -75,15 +70,15 @@ state = {
     } = this.props
 
   // console.log('|||||||||||||| CURRENT TARGET', target.value)
-  let value = target.value.replace(/[^a-zA-Z0-9()]/g, '');
-  console.log('|||||||||||||| VALUE', value)
+  let value = target.value.replace(/[^a-zA-Z0-9]/g, '');
+  // console.log('|||||||||||||| VALUE', value)
   let addressVerify = await AddressValidator.validate(value, current_wallet.currency.currency === 'bitcoin_testnet' ? 'bitcoin' : current_wallet.currency.currency)
 
     this.setState({
       address:value,
       addressVerify:addressVerify ? 'Verify' : (value.length>20 && !addressVerify) ? 'NoVerify' : '',
       active:addressVerify
-    })
+    }, () => target.value = value)
   }
 
 
@@ -240,7 +235,7 @@ const { value, active, addressVerify, show_last_address, address_value, verified
 let movil_viewport = window.innerWidth < 768
 
 
-console.log('||||||||||||||||||||||||| WITHDRAW ==>  address_value ==> ', address_value)
+// console.log('||||||||||||||||||||||||| WITHDRAW ==>  address_value ==> ', address_value)
 
 const atributos ={
   icon:'withdraw2',

@@ -265,7 +265,7 @@ const {
 } = props
 
 let movil_viewport = window.innerWidth < 768
-
+  // console.log('InputFormCoin', value)
   return(
     <Fragment>
       {/* <div className={`${!clase ? 'containerInputComponent' : clase}`}> */}
@@ -301,7 +301,7 @@ let movil_viewport = window.innerWidth < 768
               placeholder={placeholder}
               onChange={props.actualizarEstado}
               name={props.name}
-              value={value}
+              // value={value}
               onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
             />
           }

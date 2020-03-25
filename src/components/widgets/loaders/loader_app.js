@@ -56,7 +56,7 @@ class LoaderAplication extends Component {
       logOut,
       // email
     } = user_data
-    // console.log('|||||||| user_data ==>', user_data)
+    console.log('|||||||| user_data ==>', user_data)
 
     const {
       action
@@ -65,13 +65,13 @@ class LoaderAplication extends Component {
 
     const { country } = this.state
     let profile = await action.get_profile(userId, token)
-    // console.log('|||||||| profile res ==>', profile)
 
     if(!profile){
       if(!new_country){return this.setState({country:null})}
       profile = await action.add_new_profile(new_country, token)
       action.Loader(false)
     }
+    console.log('|||||||| profile res ==>', profile)
 
     if(!profile.countries[country] && !profile.countries[new_country]){return false}
     // console.log('===================================>>>>   profile', profile)
