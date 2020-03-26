@@ -23,22 +23,21 @@ class LoaderAplication extends Component {
 
   registerColors = () => {
 
-  if((window && window.CSS) && window.CSS.registerProperty){
-    window.CSS.registerProperty({
-      name: '--primary',
-      syntax: '<color>',
-      inherits: true,
-      initialValue: '#014c7d',
-    });
+    if((window && window.CSS) && window.CSS.registerProperty){
+      window.CSS.registerProperty({
+        name: '--primary',
+        syntax: '<color>',
+        inherits: true,
+        initialValue: '#014c7d',
+      });
 
-    window.CSS.registerProperty({
-      name: '--secondary',
-      syntax: '<color>',
-      inherits: true,
-      initialValue: '#0198ff',
-    });
-  }
-
+      window.CSS.registerProperty({
+        name: '--secondary',
+        syntax: '<color>',
+        inherits: true,
+        initialValue: '#0198ff',
+      });
+    }
 
   }
 
@@ -54,14 +53,12 @@ class LoaderAplication extends Component {
       token,
       userId,
       logOut,
-      // email
     } = user_data
-    console.log('|||||||| user_data ==>', user_data)
+    // console.log('|||||||| user_data ==>', user_data)
 
     const {
       action
     } = this.props
-
 
     const { country } = this.state
     let profile = await action.get_profile(userId, token)
@@ -71,9 +68,10 @@ class LoaderAplication extends Component {
       profile = await action.add_new_profile(new_country, token)
       action.Loader(false)
     }
-    console.log('|||||||| profile res ==>', profile)
 
-    if(!profile.countries[country] && !profile.countries[new_country]){return false}
+    console.log('|||||||| profile res ==>', profile)
+    if(!profile || (!profile.countries[country] && !profile.countries[new_country])){return false}
+
     // console.log('===================================>>>>   profile', profile)
     // alert()
 

@@ -27,11 +27,7 @@ state = {
   verified:null
 }
 
-  // componentDidUpdate(prevProps){
-  //   if(prevProps.current_wallet !== this.props.current_wallet){
-  //     console.log(this.props.current_wallet)
-  //   }
-  // }
+
 
   async componentDidMount(){
     // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
@@ -54,17 +50,16 @@ state = {
       //   this.props.action.mensaje('Debes separar decímales con coma ","', 'error')
       // }
       let value = await formatToCurrency(target.value, this.props.current_wallet.currency)
+      if(isNaN(value.toNumber()) || value.toNumber() === 'NaN'){return target.value = null}
       let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
       this.setState({
         value:value.toNumber(),
         validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
       })
-      console.log(value.toNumber())
   }
 
   actualizarEstado = async({target}) =>{
     // AddressValidator
-    // alert('puto')
     const {
       current_wallet
     } = this.props
@@ -262,16 +257,12 @@ const atributos ={
           :
           <Fragment>
           { current_wallet.currency_type !== 'fiat' ?
-              <section className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
-
-
+              <form id="withdrawForm" className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
                 {/* <div className="ImportantInfo">
                   <p className="fuente soloAd">Retiro mínimo: 0.002 {short_name}</p>
                   <p className="fuente soloAd der">Limite de retiro por día: 1 {short_name}</p>
                 </div> */}
-
-
 
               {
                 this.props.loader &&
@@ -279,8 +270,6 @@ const atributos ={
                   label="Procesando tu retiro"
                 />
               }
-
-
 
               {
                           withdraw_provider ?
@@ -366,7 +355,7 @@ const atributos ={
               }
 
 
-              </section>
+            </form>
 
 
               :

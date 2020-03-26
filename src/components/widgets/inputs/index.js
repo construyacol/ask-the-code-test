@@ -170,6 +170,7 @@ total_value = async(value) =>{
   this.setState({
     total_value: total_value
   })
+  this.props.getTotalValue(total_value === '0' ? false : total_value)
 }
 
 getOtherPairsSend = () =>{
@@ -301,7 +302,7 @@ let movil_viewport = window.innerWidth < 768
               placeholder={placeholder}
               onChange={props.actualizarEstado}
               name={props.name}
-              // value={value}
+              value={value}
               onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
             />
           }
@@ -535,13 +536,11 @@ export const InputCountry = (props) =>{
     loader
   } = props
 
-  console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
-
+  // console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
 
 
   return(
     <div id="kycPrime" className="containerInputComponent3">
-
 
       <div className="inputLabelsCont">
         <div className="InputCarous">
@@ -558,7 +557,6 @@ export const InputCountry = (props) =>{
           </div>
         }
 
-
         {
           country_match ?
 
@@ -570,7 +568,7 @@ export const InputCountry = (props) =>{
 
           :
 
-          <form onSubmit={handleSubmit} >
+          <form onSubmit={handleSubmit}>
             <input
              className={`inputElement3 ${active ? 'inputActivado' : '' }`}
              type="text"
