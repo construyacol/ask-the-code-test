@@ -1,5 +1,5 @@
 import { HistoricalPriceService } from "./HistoricalPricesService";
-import { CoinsendaSwapService } from "./CoinsendaSwapService";
+import { CoinsendaPairsService } from "./CoinsendaPairsService";
 
 class MultiClass {
     static inherit(..._bases) {
@@ -36,7 +36,7 @@ class MultiClass {
     }
 }
 
-export class MainService extends CoinsendaSwapService {
+export class MainService extends CoinsendaPairsService {
     constructor(dispatch, state) {
         super()
         this.dispatch = dispatch

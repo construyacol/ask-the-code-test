@@ -94,7 +94,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     wallet_router:state.ui.router_wallet_container,
     local_currency:state.modelData.pairs.localCurrency,
-    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
+    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairsForAccount[current_wallet.id] && state.ui.current_section.params.pairsForAccount[current_wallet.id].current_pair),
     user:user[user_id],
     wallets,
     withdrawals,

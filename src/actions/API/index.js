@@ -77,7 +77,7 @@ export const generate_headers = (token) =>{
   return async(dispatch, getState) => {
     if(!token){
       const { user, user_id } = getState().modelData
-        token = user[user_id].TokenUser
+        token = user[user_id].userToken
     }
 
     let myHeaders = {

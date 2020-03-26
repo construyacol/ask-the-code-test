@@ -1,6 +1,6 @@
 import {
   LOADER,
-  APP_LOADED,
+  IS_APP_LOADED,
   APP_LOAD_LABEL
 } from './action_types'
 
@@ -12,9 +12,9 @@ export const Loader = (payload) => {
   }
 }
 
-export const app_loaded = (payload) => {
+export const isAppLoaded = (payload) => {
   return {
-    type: APP_LOADED,
+    type: IS_APP_LOADED,
     payload
   }
 }

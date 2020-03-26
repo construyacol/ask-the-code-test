@@ -4,7 +4,7 @@ import { ButtonForms } from '../../widgets/buttons/buttons.js'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile, objectToArray, add_index_to_root_object, converToInitState } from '../../../services'
+import { readFile, objectToArray, addIndexToRootObject, converToInitState } from '../../../services'
 import images from '../../../assets/pictures.png'
 import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
@@ -50,7 +50,7 @@ class KycFinancialComponent extends Component {
     //     value:'compro'
     //   }
     // }
-    let kyc_financial_data = await add_index_to_root_object(financial_data)
+    let kyc_financial_data = await addIndexToRootObject(financial_data)
     let kyc_data_state = await converToInitState(kyc_financial_data)
     let kyc_financial = await objectToArray(kyc_financial_data, true)
     // console.log('|||||||| countryvalidators', kyc_financial, `kyc_financial_data`, kyc_data_state)

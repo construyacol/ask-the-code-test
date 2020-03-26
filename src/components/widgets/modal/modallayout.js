@@ -79,16 +79,16 @@ render(){
     step,
     children,
     current,
-    app_loaded
+    isAppLoaded
   } = this.props
 
   return(
-    <section className={`Modal ${app_loaded ? 'aparecer' : 'show_loader_app'}`}>
+    <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>
       <div className={`modalCont ${modalView}`}>
         {children}
 
         {
-          (!loader && modalView === "modalView" && app_loaded) &&
+          (!loader && modalView === "modalView" && isAppLoaded) &&
             <ButtonModalClose toggleModal={this.salir}>
               { window.innerWidth>768 &&
                 'Salir'
@@ -97,7 +97,7 @@ render(){
         }
 
         {
-          (!loader && current === "ticket" && app_loaded) &&
+          (!loader && current === "ticket" && isAppLoaded) &&
             <ButtonModalClose
               color="white"
               toggleModal={this.salirTicket}>
@@ -143,7 +143,7 @@ function mapStateToProps(state, props){
     current === 'kyc_advance' ? 'form_kyc_basic' :
     `form_${current}`)
 
-    const { app_loaded } = state.isLoading
+    const { isAppLoaded } = state.isLoading
 
 
   // console.log('modal_LAYOUT STATE::::', current)
@@ -155,7 +155,7 @@ function mapStateToProps(state, props){
       sub_section:state.ui.current_section.params.current_sub_section,
       deposit_direct_access:state.ui.current_section.params.deposit_direct_access,
       uiAnimation:state.ui.flowAnimationActive,
-      app_loaded
+      isAppLoaded
   }
 }
 

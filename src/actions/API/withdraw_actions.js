@@ -15,7 +15,7 @@ import {
 
 
 // import {
-//   app_loaded,
+//   isAppLoaded,
 //   appLoadLabelAction
 // } from '../loader'
 
@@ -47,7 +47,7 @@ export const get_withdraws = (account_id) => {
     const url_withdraw = `${WithdrawApiUrl}users/${user.id}/withdraws?country=${user.country}&filter=${filter}`
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
     const withdraws = await ApiGetRequest(url_withdraw, myHeaders)
     if(!withdraws || withdraws === 465){return false}

@@ -141,17 +141,17 @@ update_state = (payload) =>{
 
         if(code === 'transactional'){
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         if(code === 'withdraw'){
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         if(code === '2auth'){
           user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         // console.log('||||||| user_update2', user_update)
 

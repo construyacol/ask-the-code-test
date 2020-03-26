@@ -157,11 +157,11 @@ class LoaderAplication extends Component {
     // Seteamos el token del usuario al modelo en redux
     let user_update = {
       ...this.props.user,
-      TokenUser:token
+      userToken:token
     }
 
 
-    await action.update_user(user_update)
+    await action.updateUser(user_update)
     await this.props.action.logged_in(true)
 
     // Si se carga desde este punto no podemos cargar los pares normalizados en la propiedad available pairs del modelo usuario porque no contamos con su id
@@ -171,7 +171,7 @@ class LoaderAplication extends Component {
      await action.get_all_currencies()
 
     // let user_collection = [{primary:'ethereum'}]
-    await action.getPairByCountry(this.props.user.country)
+    await action.getPairsByCountry(this.props.user.country)
 
     await action.get_account_balances(this.props.user)
     await action.get_deposit_providers(this.props.user)
@@ -182,7 +182,7 @@ class LoaderAplication extends Component {
     await action.get_withdraw_accounts(this.props.user, get_withdraw_providers)
 
     // await action.get_deposit_list(this.props.user)
-    // await action.get_swap_list()
+    // await action.getSwapList()
     // await action.get_withdraw_list(this.props.user)
 
     let verification_state = await action.get_verification_state()
@@ -200,7 +200,7 @@ class LoaderAplication extends Component {
 // ------------------------------------------------------------------------------------------------
 
 
-    // getPairByCountry(param1, param2)
+    // getPairsByCountry(param1, param2)
     // recibe 2 parametros, país y colección de monedas de usuario(array)
 
     // Esta función define el estado de "model_data.pairs" donde contenemos:

@@ -8,7 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { withdraw_provider_by_type, matchItem, number_format } from '../../../services'
+import { withdrawProvidersByType, matchItem, number_format } from '../../../services'
 
 import actions from '../../../actions'
 
@@ -126,7 +126,7 @@ class WithdrawFlow extends Component {
 
     get_cost_struct = async(available_providers, withdraw_account_list) =>{
       // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
-      let providers_served = await withdraw_provider_by_type(available_providers || this.props.withdraw_providers)
+      let providers_served = await withdrawProvidersByType(available_providers || this.props.withdraw_providers)
 
       let update_list = []
       let w_account_list = withdraw_account_list || this.props.withdraw_account_list
@@ -162,7 +162,7 @@ class WithdrawFlow extends Component {
       } = this.props
 
 
-      let providers_served = await withdraw_provider_by_type(withdraw_providers)
+      let providers_served = await withdrawProvidersByType(withdraw_providers)
 
       const {
         provider_type

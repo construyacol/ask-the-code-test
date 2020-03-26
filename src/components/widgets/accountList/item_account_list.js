@@ -205,7 +205,7 @@ class AccountList extends Component{
 
 AccountList.propTypes = {
   all_pairs:PropTypes.object,
-  app_loaded:PropTypes.bool,
+  isAppLoaded:PropTypes.bool,
   currencies:PropTypes.array,
   current_wallet:PropTypes.object,
   deposit_providers:PropTypes.object,

@@ -53,7 +53,7 @@ class TwoFactorActivate extends Component {
         }
       }
     }
-    await this.props.action.update_user(user_update)
+    await this.props.action.updateUser(user_update)
     this.props.action.Loader(false)
     setTimeout(()=>{
       this.setState({switch_to_success:true})

@@ -40,7 +40,7 @@ const initialState = {
       show_menu_principal:true,
       current_wallet:null,
       short_name:null,
-      pairs_for_account:{},
+      pairsForAccount:{},
       activity:false,
       settings:null,
       current_sub_section:null,
@@ -204,8 +204,8 @@ const ui = (state = initialState, action)=>{
           ...state.current_section,
           params:{
             ...initialState.current_section.params,
-            pairs_for_account:{
-              ...state.current_section.params.pairs_for_account
+            pairsForAccount:{
+              ...state.current_section.params.pairsForAccount
             },
             update_list:state.current_section.params.update_list,
             currentFilter:state.current_section.params.currentFilter,
@@ -224,10 +224,10 @@ const ui = (state = initialState, action)=>{
           ...state.current_section,
               params:{
                 ...state.current_section.params,
-                pairs_for_account:{
-                  ...state.current_section.params.pairs_for_account,
+                pairsForAccount:{
+                  ...state.current_section.params.pairsForAccount,
                   [action.payload.wallet_id]:{
-                    ...state.current_section.params.pairs_for_account[action.payload.wallet_id],
+                    ...state.current_section.params.pairsForAccount[action.payload.wallet_id],
                     ...action.payload.data
                   }
                 }

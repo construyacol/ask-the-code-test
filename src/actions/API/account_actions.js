@@ -15,7 +15,7 @@ import {
 // } from '../dataModelActions'
 
 // import {
-//   app_loaded,
+//   isAppLoaded,
 //   appLoadLabelAction
 // } from '../loader'
 
@@ -42,7 +42,7 @@ export const get_fiat_accounts_by_userId = (userId) => {
 
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
 
     const fiat_accounts = await ApiGetRequest(url_accounts, myHeaders)

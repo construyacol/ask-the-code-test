@@ -22,7 +22,7 @@ import {
 } from '../soundActions'
 
 import {
-  // app_loaded,
+  // isAppLoaded,
   appLoadLabelAction
 } from '../loader'
 
@@ -49,7 +49,7 @@ export const get_deposits = (account_id) => {
     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
 
     const deposits = await ApiGetRequest(url_deposit, myHeaders)
@@ -87,7 +87,7 @@ export const get_deposits = (account_id) => {
 //     // const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter[include]=paymentProof`
 //     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}`
 //     let myHeaders = {
-//       'Authorization': `Bearer ${user.TokenUser}`,
+//       'Authorization': `Bearer ${user.userToken}`,
 //     }
 //
 //     const deposits = await ApiGetRequest(url_deposit, myHeaders)
@@ -142,7 +142,7 @@ export const create_deposit_provider = (account_id, country) => {
     }
 
     const url_deposit_prov = `${DepositApiUrl}depositProviders/create-deposit-provider-by-account-id`
-    const deposit_prov = await ApiPostRequest(url_deposit_prov, body, user.TokenUser)
+    const deposit_prov = await ApiPostRequest(url_deposit_prov, body, user.userToken)
 
     if(!deposit_prov || deposit_prov === 465){return false}
 
@@ -227,7 +227,7 @@ export const get_one_deposit = (deposit_id) =>{
 
     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter={"where": {"id":"${deposit_id}"}, "include":{"relation":"paymentProof"}}`
 
-    let myHeaders = await dispatch(generate_headers(user.TokenUser))
+    let myHeaders = await dispatch(generate_headers(user.userToken))
 
     const deposit = await ApiGetRequest(url_deposit, myHeaders)
     if(!deposit || deposit === 465){return false}
@@ -275,7 +275,7 @@ export const validate_address = (address) =>{
     const user = getState().modelData.user[user_id]
 
     const url_address = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
-    let myHeaders = await dispatch(generate_headers(user.TokenUser))
+    let myHeaders = await dispatch(generate_headers(user.userToken))
 
     const Raddress = await ApiGetRequest(url_address, myHeaders)
     if(!Raddress || Raddress === 465 || !Raddress.length){return false}

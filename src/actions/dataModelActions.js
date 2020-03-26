@@ -37,7 +37,7 @@ export const update_item_state = (item, item_type) => {
 
 
 
-export const ManageBalanceAction = (account_id, action, amount) => {
+export const manageBalanceAction = (account_id, action, amount) => {
 
   switch (action) {
     case 'reduce':
@@ -76,14 +76,14 @@ export const UpdatePendingSwap = (payload) => {
   }
 }
 
-export const UpdateAllCurrencies = (payload) => {
+export const updateAllCurrenciesAction = (payload) => {
   return {
     type:UPDATE_ALL_CURRENCIES,
     payload:payload
   }
 }
 
-export const reset_model_data = payload => {
+export const resetModelData = payload => {
   return{
     type:RESET_DATA,
     payload

@@ -43,7 +43,7 @@ class WitdrawAccountContainer extends Component{
   //   let current_wallet = this.props.current_wallet
   //   // console.log('1!!!!!!!! CONSULTANDO::::::', current_wallet)
   //   if(!current_wallet){
-  //     let wallet = await this.props.action.get_wallet_by_id(wallet_id)
+  //     let wallet = await this.props.action.getWalletsById(wallet_id)
   //     if (wallet){
   //       if(!this.props.currencies){await this.props.action.get_all_currencies()}
   //       await this.get_short_currency(wallet)
@@ -108,7 +108,7 @@ class WitdrawAccountContainer extends Component{
 
       const { items_menu } = navigation_components.wallet
       const { title }  = this.state
-      const {withdraw_accounts, app_loaded } = this.props
+      const {withdraw_accounts, isAppLoaded } = this.props
 
 
       // console.log('|||||||||| °°°°°  WithdrawContainer  °°°°°||||||||||', this.props)
@@ -127,10 +127,10 @@ class WitdrawAccountContainer extends Component{
                           {/* <Route exact path="/withdraw/:path/:id" component={this.wallet_detail} /> */}
                           {/* <Route exact path="/withdraw" render={this.AccounList}  /> */}
                         {
-                          !app_loaded ?
+                          !isAppLoaded ?
                             <SimpleLoader/>
                           :
-                          (app_loaded && withdraw_accounts) &&
+                          (isAppLoaded && withdraw_accounts) &&
                           <Route exact path="/:primary_path" component={AccountList}  />
                         }
                     </DetailContainerLayout>
@@ -143,7 +143,7 @@ class WitdrawAccountContainer extends Component{
 
 
 WitdrawAccountContainer.propTypes = {
-  app_loaded:PropTypes.bool,
+  isAppLoaded:PropTypes.bool,
   currencies:PropTypes.array,
   current_wallet:PropTypes.object,
   user:PropTypes.object,
@@ -161,7 +161,7 @@ function mapStateToProps(state, props){
   } = state.modelData
 
   const {
-    app_loaded
+    isAppLoaded
   } = state.isLoading
 
   // console.log('|||||||| withdraw_accounts', user[user_id], user[user_id].withdraw_accounts)
@@ -171,7 +171,7 @@ function mapStateToProps(state, props){
     user:user[user_id],
     current_wallet:state.ui.current_section.params.current_wallet,
     currencies:state.modelData.currencies || null,
-    app_loaded
+    isAppLoaded
     // ready:user && withdraw_accounts && withdraw_providers
   }
 }

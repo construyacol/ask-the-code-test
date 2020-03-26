@@ -235,7 +235,7 @@ function mapStateToProps(state, props){
     local_currency:state.modelData.pairs.localCurrency,
     deposit_providers,
     // local_currency:state.ui.current_section.params.short_name,
-    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair)
+    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairsForAccount[current_wallet.id] && state.ui.current_section.params.pairsForAccount[current_wallet.id].current_pair)
 
   }
 }

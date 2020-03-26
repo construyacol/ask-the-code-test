@@ -16,7 +16,7 @@ import {
 
 
 // import {
-//   app_loaded,
+//   isAppLoaded,
 //   appLoadLabelAction
 // } from '../loader'
 
@@ -49,7 +49,7 @@ export const get_swaps = (account_id) => {
     // let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
     const swaps = await ApiGetRequest(url_swaps, myHeaders)
     if(!swaps || swaps === 465){return false}

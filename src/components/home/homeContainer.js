@@ -27,26 +27,26 @@ import SocketNotify from '../sockets/socket_notify/socketNotify'
 import SocketsComponent from '../sockets/sockets'
 
 
-class HomeContainer extends Component{
+class HomeContainer extends Component {
 
   state = {
-    modalVisible:false
+    modalVisible: false
   }
 
-  static getDerivedStateFromError(error, info){
-    return { handleError:true };
+  static getDerivedStateFromError(error, info) {
+    return { handleError: true };
   }
 
-  componentDidCatch(error, info){
+  componentDidCatch(error, info) {
     this.setState({
-      handleError:true,
+      handleError: true,
     })
   }
 
 
 
   // componentDidUpdate(prevProps){
-  //   if (this.props.app_loaded !== prevProps.app_loaded) {
+  //   if (this.props.isAppLoaded !== prevProps.isAppLoaded) {
   //     setTimeout(()=>{
   //       let currency = {
   //         currency:'cop',
@@ -61,13 +61,13 @@ class HomeContainer extends Component{
   //   }
   // }
 
-  render(){
+  render() {
 
     const {
       other_modal,
       modalVisible,
       modalConfirmation,
-      app_loaded,
+      isAppLoaded,
       current,
       user_data
     } = this.props
@@ -75,38 +75,38 @@ class HomeContainer extends Component{
 
 
 
-    return(
+    return (
       <HandleError>
-        <ToastContainers/>
-        <SocketsComponent/>
+        <ToastContainers />
+        <SocketsComponent />
 
-      <Router
-        history={this.props.history}
+        <Router
+          history={this.props.history}
         >
 
           {
-            !app_loaded ?
-            <Route path="/" render={() => <LoaderAplication user_data={user_data} history={this.props.history} />} />
-            :
-            <Fragment>
+            !isAppLoaded ?
+              <Route path="/" render={() => <LoaderAplication user_data={user_data} history={this.props.history} />} />
+              :
+              <Fragment>
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
-                    <Route path="/:primary_path" component={MenuPrincipalContainer} />
-                    <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props)=>(<MenuSuperiorContainer {...this.props} {...props} logOut={user_data.logOut}/>)} />
-                    <Route path="/:primary_path" render={(props) => <DashBoardContainer  {...props} {...this.props} />} />
+                  <Route path="/:primary_path" component={MenuPrincipalContainer} />
+                  <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props) => (<MenuSuperiorContainer {...this.props} {...props} logOut={user_data.logOut} />)} />
+                  <Route path="/:primary_path" render={(props) => <DashBoardContainer  {...props} {...this.props} />} />
 
                   {
                     modalVisible &&
                     <ModalContainer>
-                      <ModalLayout  modalView={this.props.modalView} loader={this.props.loader} >
-                            <Switch>
-                              <Route exact strict path="/wallets" component={NewWallet} />
-                              <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
-                              <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
-                              <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
-                              <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
-                              <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
-                            </Switch>
+                      <ModalLayout modalView={this.props.modalView} loader={this.props.loader} >
+                        <Switch>
+                          <Route exact strict path="/wallets" component={NewWallet} />
+                          <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+                          <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
+                          <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
+                          <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
+                          <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
+                        </Switch>
                       </ModalLayout>
                     </ModalContainer>
                   }
@@ -115,16 +115,16 @@ class HomeContainer extends Component{
                     other_modal &&
                     <ModalContainer>
                       <Switch>
-                      {
-                        this.props.socket_notify ?
-                          <Route path="/" component={SocketNotify} />
-                          :
-                          <Fragment>
-                            <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
-                            <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
-                          </Fragment>
-                      }
-                    </Switch>
+                        {
+                          this.props.socket_notify ?
+                            <Route path="/" component={SocketNotify} />
+                            :
+                            <Fragment>
+                              <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
+                              <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
+                            </Fragment>
+                        }
+                      </Switch>
                     </ModalContainer>
                   }
 
@@ -140,11 +140,11 @@ class HomeContainer extends Component{
                   }
 
                 </HomeLayout>
-            </Fragment>
-      }
+              </Fragment>
+          }
 
-      </Router>
-</HandleError>
+        </Router>
+      </HandleError>
     )
   }
 }
@@ -152,48 +152,48 @@ class HomeContainer extends Component{
 
 
 HomeContainer.propTypes = {
-  activeRoute:PropTypes.string,
-  all_pairs:PropTypes.object,
-  app_loaded:PropTypes.bool,
-  current:PropTypes.string,
-  loader:PropTypes.bool,
-  modalConfirmation:PropTypes.bool,
-  modalView:PropTypes.string,
-  modalVisible:PropTypes.bool,
-  other_modal:PropTypes.bool,
-  user:PropTypes.object,
-  wallets:PropTypes.object
+  activeRoute: PropTypes.string,
+  all_pairs: PropTypes.object,
+  isAppLoaded: PropTypes.bool,
+  current: PropTypes.string,
+  loader: PropTypes.bool,
+  modalConfirmation: PropTypes.bool,
+  modalView: PropTypes.string,
+  modalVisible: PropTypes.bool,
+  other_modal: PropTypes.bool,
+  user: PropTypes.object,
+  wallets: PropTypes.object
 }
 
 
-function mapStateToProps(state, props){
+function mapStateToProps(state, props) {
   // console.log('E S T A D O   I N I C I A L', process.env.NODE_ENV === 'development' ? Environment.development : Environment.production)
   // console.log('E S T A D O   I N I C cI A L', state.modelData.user && state.modelData.user[state.modelData.user_id])
   const { wallets, all_pairs } = state.modelData
-  const { app_loaded } = state.isLoading
+  const { isAppLoaded } = state.isLoading
   const { socket_notify } = state.ui.notifications
 
   return {
-      app_loaded,
-      modalView:state.form.modalView,
-      modalVisible:state.form.modal_visible,
-      loader:state.isLoading.loader,
-      firstDeposit:state.form.form_deposit.first_deposit,
-      current:state.form.current,
-      activeRoute:state.ui.menu_item_active,
-      modalConfirmation:state.ui.modal_confirmation.visible,
-      other_modal:state.ui.other_modal,
-      user:state.modelData.user && state.modelData.user[state.modelData.user_id],
-      wallets,
-      all_pairs,
-      socket_notify
+    isAppLoaded,
+    modalView: state.form.modalView,
+    modalVisible: state.form.modal_visible,
+    loader: state.isLoading.loader,
+    firstDeposit: state.form.form_deposit.first_deposit,
+    current: state.form.current,
+    activeRoute: state.ui.menu_item_active,
+    modalConfirmation: state.ui.modal_confirmation.visible,
+    other_modal: state.ui.other_modal,
+    user: state.modelData.user && state.modelData.user[state.modelData.user_id],
+    wallets,
+    all_pairs,
+    socket_notify
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return{
+function mapDispatchToProps(dispatch) {
+  return {
     action: bindActionCreators(actions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (HomeContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer)

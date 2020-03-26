@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import AccountItemList from '../../widgets/account_item_list/accountItemList'
 import { SimpleLoader } from '../../widgets/loaders'
-import { withdraw_provider_by_type, matchItem } from '../../../services'
+import { withdrawProvidersByType, matchItem } from '../../../services'
 import '../WAccount.css'
 
 
@@ -42,7 +42,7 @@ class WithdrawAccountList extends Component{
 
     if(!withdraw_providers && !amount){return false}
 
-    let providers_served = await withdraw_provider_by_type(withdraw_providers)
+    let providers_served = await withdrawProvidersByType(withdraw_providers)
 
     let final_withdraw_accounts = await withdraw_accounts.map(wa => {
 

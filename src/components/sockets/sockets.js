@@ -42,7 +42,7 @@ class SocketsComponent extends Component {
 
       socket.on("connect", ()=>{
         clearInterval(intervalID)
-        const body = {body:{access_token:user.TokenUser}}
+        const body = {body:{access_token:user.userToken}}
         socket.emit('authentication', body);
 
 
@@ -446,7 +446,7 @@ withdraw_mangagement = async (withdraw) => {
               // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
               // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
 
-              // await  this.props.action.get_swap_list()
+              // await  this.props.action.getSwapList()
               // await  this.props.action.update_pending_activity(currentSwap.account_from, 'swaps')
             },3000)
           },4000)

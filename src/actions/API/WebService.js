@@ -14,20 +14,33 @@ export class WebService {
         }
     }
 
-    Get(url, headers) {
+    Get(url) {
+        const headers = {
+            'Authorization': `Bearer ${this.state.user.userToken}`,
+        }
         return this.doFetch(url, {
             method: `GET`,
             headers
         })
     }
 
-    Post(url, body, token) {
+    getHeaders(token) {
+        return {
+            'Authorization': `Bearer ${token}`,
+        }
+    }
+
+    isEmpty(data) {
+        return !data || (data && data.lenght === 0)
+    }
+
+    Post(url, body) {
         const params = {
             method: `POST`,
             headers: {
                 Accept: `*/*`,
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${this.state.user.userToken}`
             },
             body: JSON.stringify(body)
         }

@@ -157,7 +157,7 @@ class ActivityList extends Component {
   trigger_action = filter =>{
     return (filter === 'deposits' ? 'get_deposit_list' :
             filter === 'withdrawals' ? 'get_withdraw_list' :
-            filter === 'swaps' ? 'get_swap_list' :
+            filter === 'swaps' ? 'getSwapList' :
             filter === 'activity' && 'get_activity_list')
   }
 

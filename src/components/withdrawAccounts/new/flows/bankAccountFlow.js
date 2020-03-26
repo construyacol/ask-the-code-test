@@ -10,7 +10,7 @@ import SimpleLoader from '../../../widgets/loaders'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
-import { serveBankOrCityList, add_index_to_root_object, objectToArray } from '../../../../services'
+import { serveBankOrCityList, addIndexToRootObject, objectToArray } from '../../../../services'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
 
 // const dropDawnElements = [
@@ -65,10 +65,10 @@ class BankAccountFlow extends Component{
     let serve_bank_list = await serveBankOrCityList(bank_list, 'bank')
     let serve_city_list = await serveBankOrCityList(city_list, 'city')
 
-    let id_types_object = await add_index_to_root_object(res && res[0].info_needed.id_type)
+    let id_types_object = await addIndexToRootObject(res && res[0].info_needed.id_type)
     let id_type_list = await objectToArray(id_types_object)
 
-    let account_type_object = await add_index_to_root_object(res && res[0].info_needed.account_type)
+    let account_type_object = await addIndexToRootObject(res && res[0].info_needed.account_type)
     let account_type_list = await objectToArray(account_type_object)
     // console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| withdraw_providers_list |', res[0])
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)

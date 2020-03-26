@@ -206,7 +206,7 @@ class SwapView extends Component{
     // if(all_pairs.length<1){return (!initial && this.props.action.ConfirmationModalToggle())}
     if(all_pairs.length<1){return (!initial && this.props.action.other_modal_toggle())}
     let pairs_result = await this.createListPairs(all_pairs, currency)
-    return this.props.action.pairs_for_account(current_wallet.currency.currency, {all_pairs:pairs_result}, 'currency')
+    return this.props.action.pairsForAccount(current_wallet.currency.currency, {all_pairs:pairs_result}, 'currency')
   }
 
   createListPairs = async(all_pairs, currency) =>{
@@ -357,22 +357,22 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { pairs_for_account } = state.ui.current_section.params
+  const { pairsForAccount } = state.ui.current_section.params
   const { user, user_id,  wallets, all_pairs, balances } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
-  // console.log('Que carajo pasa con el convertidor', pairs_for_account)
+  // console.log('Que carajo pasa con el convertidor', pairsForAccount)
 
   let current_pair = {
-    pair_id:(current_wallet && pairs_for_account[current_wallet.id]) && pairs_for_account[current_wallet.id].current_pair.pair_id,
-    secondary_coin:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency,
-    secondary_value:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency_value
+    pair_id:(current_wallet && pairsForAccount[current_wallet.id]) && pairsForAccount[current_wallet.id].current_pair.pair_id,
+    secondary_coin:current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency,
+    secondary_value:current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency_value
   }
 
 
 
 
-  // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_wallet, pairs_for_account)
+  // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_wallet, pairsForAccount)
 
   return{
     loader:state.isLoading.loader,
@@ -386,8 +386,8 @@ function mapStateToProps(state, props){
     quote_type:state.ui.current_section.params.quote_type,
     local_currency:state.modelData.pairs.localCurrency,
     currencies:state.modelData.currencies,
-    currency_pairs:!current_wallet ? null : (pairs_for_account[current_wallet.currency.currency] && pairs_for_account[current_wallet.currency.currency].all_pairs),
-    // current_pair:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair
+    currency_pairs:!current_wallet ? null : (pairsForAccount[current_wallet.currency.currency] && pairsForAccount[current_wallet.currency.currency].all_pairs),
+    // current_pair:current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair
     current_pair:current_pair,
     available:balances && balances[current_wallet && current_wallet.id] && balances[current_wallet.id].available
   }

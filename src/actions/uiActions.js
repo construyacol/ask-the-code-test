@@ -28,7 +28,7 @@ export const socket_notify = (payload, item_type, title) =>{
 }
 
 
-export const verification_state = (payload) =>{
+export const verificationStateAction = (payload) =>{
   return{
     type:VERIFICATION_STATE,
     payload
@@ -123,7 +123,7 @@ export const other_modal_toggle = () =>{
 }
 
 
-export const pairs_for_account = (wallet_id, data) =>{
+export const pairsForAccount = (wallet_id, data) =>{
   // Recibe como parametro un objeto
   // ej this.props.action.current_section_params({current_wallet:this.state.current_wallet})
   return{

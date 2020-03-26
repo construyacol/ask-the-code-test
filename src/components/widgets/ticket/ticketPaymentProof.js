@@ -63,7 +63,7 @@ updateLocalImg = (img) =>{
     } = this.props
     this.props.action.Loader(true)
 
-    let res = await this.props.action.confirm_deposit_order(ticket, base64);
+    let res = await this.props.action.confirmDepositOrder(ticket, base64);
     // console.log('Confirm deposit order', res)
     if(!res || res === 465){return false}
     const {

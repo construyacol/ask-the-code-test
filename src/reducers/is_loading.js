@@ -1,12 +1,12 @@
 import {
   LOADER,
-  APP_LOADED,
+  IS_APP_LOADED,
   APP_LOAD_LABEL
 } from '../actions/action_types'
 
 const initialState = {
   loader:false,
-  app_loaded:false,
+  isAppLoaded:false,
   app_load_label:"Iniciando"
 }
 
@@ -17,10 +17,10 @@ const isLoading = (state = initialState, action) => {
         ...state,
         loader: action.payload
       }
-    case APP_LOADED:
+    case IS_APP_LOADED:
       return{
         ...state,
-        app_loaded:action.payload
+        isAppLoaded:action.payload
       }
     case APP_LOAD_LABEL:
       return{

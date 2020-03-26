@@ -49,7 +49,7 @@ class WalletContainer extends Component{
     // let current_wallet = this.props.current_wallet
     // // console.log('1!!!!!!!! CONSULTANDO::::::', current_wallet)
     // if(!current_wallet){
-    //   let wallet = await this.props.action.get_wallet_by_id(wallet_id)
+    //   let wallet = await this.props.action.getWalletsById(wallet_id)
     //   // console.log('|||||||||||||  init_sub_section', wallet, wallet_id)
     //   if (wallet){
     //     if(!this.props.currencies){await this.props.action.get_all_currencies()}
@@ -128,7 +128,7 @@ class WalletContainer extends Component{
 
       const { items_menu } = navigation_components.wallet
       const { title }  = this.state
-      const { app_loaded } = this.props
+      const { isAppLoaded } = this.props
 
       return(
         <Router
@@ -146,7 +146,7 @@ class WalletContainer extends Component{
                   >
                       <Route strict path="/:primary_path/:path/:account_id" component={this.wallet_detail} />
                     {
-                      !app_loaded ?
+                      !isAppLoaded ?
                         <SimpleLoader/>
                        :
                        <Fragment>
@@ -167,7 +167,7 @@ class WalletContainer extends Component{
 
 WalletContainer.propTypes = {
   all_pairs:PropTypes.object,
-  app_loaded:PropTypes.bool,
+  isAppLoaded:PropTypes.bool,
   currencies:PropTypes.array,
   user:PropTypes.object
 }
@@ -188,7 +188,7 @@ function mapStateToProps(state, props){
   // } = state.ui.current_section.params
 
   const{
-    app_loaded
+    isAppLoaded
   } = state.isLoading
 
   // const { path } = props.match
@@ -200,7 +200,7 @@ function mapStateToProps(state, props){
     // current_wallet:current_wallet,
     currencies:state.modelData.currencies || null,
     wallets,
-    app_loaded
+    isAppLoaded
   }
 }
 

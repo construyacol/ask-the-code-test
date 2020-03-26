@@ -132,7 +132,7 @@ class DashBoardContainer extends Component{
 DashBoardContainer.propTypes = {
   activeRoute:PropTypes.string,
   all_pairs:PropTypes.object,
-  app_loaded:PropTypes.bool,
+  isAppLoaded:PropTypes.bool,
   current:PropTypes.string,
   loader:PropTypes.bool,
   logOut:PropTypes.func,

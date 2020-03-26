@@ -247,7 +247,7 @@ export const objectToArray = (object_list, assign_id) => {
 
 
 
-export const add_index_to_root_object = (list) => {
+export const addIndexToRootObject = (list) => {
   // @params
   // list:object
 
@@ -313,7 +313,7 @@ export const get_order_by_id = (order_id, order_type) => {
     const url_order = `${apiUrl}users/${user.id}/${order_type}?country=${user.country}&filter=${filter}`
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
     const order = await ApiGetRequest(url_order, myHeaders)
 
@@ -429,7 +429,7 @@ export const serveKycData = (list) => {
 
 
 
-export const withdraw_provider_by_type = async(withdraw_providers) => {
+export const withdrawProvidersByType = async(withdraw_providers) => {
 
   let providers_served
 

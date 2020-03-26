@@ -46,7 +46,7 @@ export class PairList extends Component {
 
     if(data){
       const { to_spend_currency, pair_id } = data
-      await this.props.action.pairs_for_account(current_wallet.id, {
+      await this.props.action.pairsForAccount(current_wallet.id, {
           current_pair:{
             pair_id:pair_id,
             currency:to_spend_currency.currency,
@@ -132,8 +132,8 @@ function mapStateToProps(state, props){
   return{
     current_wallet,
     short_name:state.ui.current_section.params.short_name,
-    all_pairs:state.ui.current_section.params.pairs_for_account[currency.currency] && state.ui.current_section.params.pairs_for_account[currency.currency].all_pairs,
-    current_pair:state.ui.current_section.params.pairs_for_account[id] && state.ui.current_section.params.pairs_for_account[id].current_pair,
+    all_pairs:state.ui.current_section.params.pairsForAccount[currency.currency] && state.ui.current_section.params.pairsForAccount[currency.currency].all_pairs,
+    current_pair:state.ui.current_section.params.pairsForAccount[id] && state.ui.current_section.params.pairsForAccount[id].current_pair,
     loader:state.isLoading.loader
   }
 }

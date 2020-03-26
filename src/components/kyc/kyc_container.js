@@ -63,7 +63,7 @@ class Kyc extends Component {
         }
       }
     }
-      await this.props.action.update_user(user_update)
+      await this.props.action.updateUser(user_update)
     // setTimeout(()=>{
       // this.user_update()
       // this.props.action.CleanForm('kyc_basic')
@@ -118,7 +118,7 @@ class Kyc extends Component {
       }
     }
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.update_user(user_update)
+    await this.props.action.updateUser(user_update)
     this.props.action.Loader(false)
     this.setState({identity_success:true})
     return true
@@ -163,7 +163,7 @@ const { user } = this.props
     }
   }
   // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.update_user(user_update)
+    await this.props.action.updateUser(user_update)
   this.props.action.Loader(false)
 
 
