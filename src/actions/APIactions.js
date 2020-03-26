@@ -2001,9 +2001,9 @@ export const countryvalidators = () =>{
   return async(dispatch) => {
     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
     let res = await ApiGetRequest(url_countryvalidators)
+    // console.log('||| ==================================> LOAD C O U N T R I E S =>2', res)
     if(!res || res === 465 || res === 404){return false}
     let countries = await add_index_to_root_object(res[0].levels.level_1.personal.natural.country)
-    // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
     let new_array = await objectToArray(countries)
     let construct_res = {
       res:res[0],
@@ -2138,8 +2138,11 @@ export const add_new_profile = (country, token) =>{
     		"country":country
     	}
     }
+
     let url_add_profile = `${ApiUrl}profiles/add-new-profile`
     let new_profile = await ApiPostRequest(url_add_profile, body, token)
+    console.log('|||||| add_new_profile => ', new_profile)
+    // alert('new_profile')
     if(!new_profile){return false}
 
     const { data } = new_profile
@@ -2150,8 +2153,6 @@ export const add_new_profile = (country, token) =>{
     // let url_get_profile = `${ApiUrl}users/${userId}/profile`
     // let profile = await ApiGetRequest(url_get_profile, myHeaders)
     // return profile
-
-
   }
 }
 

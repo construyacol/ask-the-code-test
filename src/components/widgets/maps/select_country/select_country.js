@@ -38,6 +38,7 @@ class SelectCountry extends Component {
   }
 
   update_country = async(e, without_click) =>{
+    // alert('update country')
     const { value } = e.target
     const { available_country_list } = this.state
     let match = await matchItem(available_country_list, {primary:value}, 'value')

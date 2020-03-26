@@ -201,8 +201,8 @@ class SAmerica extends Component {
 
           // get map data
           d3.json(
-            // "https://api.myjson.com/bins/gc29i",
-            "https://api.jsonbin.io/b/5c904d232d33133c40168935",
+            "https://api.myjson.com/bins/gc29i",
+            // "https://api.jsonbin.io/b/5c904d232d33133c40168935",
             async(json) => {
 
               const {
