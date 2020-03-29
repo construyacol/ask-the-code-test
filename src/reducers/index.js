@@ -1,4 +1,4 @@
-import model_data from './model_data'
+import modelData from './modelData'
 import form from './form'
 import isLoading from './is_loading'
 import ui from './ui'
@@ -8,7 +8,7 @@ import storage from './storage'
 import { combineReducers } from 'redux'
 
  const rootReducer = combineReducers({
-   model_data,
+   modelData,
    form,
    isLoading,
    ui,

@@ -144,10 +144,4 @@ export class CoinsendaPairsService extends WebService {
             }))
         }
     }
-
-    getHeaders(token) {
-        return {
-            'Authorization': `Bearer ${token}`,
-        }
-    }
 }

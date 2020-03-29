@@ -1,11 +1,13 @@
-import {
+import Enviroment from "../../environment"
+
+const {
     AccountApiUrl,
     ApiUrl,
     WithdrawApiUrl,
     DepositApiUrl,
     SwapApiUrl,
     IdentityApIUrl
-} from "../../environment"
+} = Enviroment
 
 export const loadLabels = {
     IMPORTANDO_PARES: 'Importando pares',

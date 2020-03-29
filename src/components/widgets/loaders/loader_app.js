@@ -6,6 +6,7 @@ import SelectCountry from '../maps/select_country/select_country'
 import Coinsenda from '../icons/logos/coinsenda.js'
 import IconSwitch from '../icons/iconSwitch'
 import './loader.css'
+import { withRouter } from 'react-router'
 
 class LoaderAplication extends Component {
 
@@ -47,16 +48,16 @@ class LoaderAplication extends Component {
   init_component = async(new_country) =>{
 
     const {
-      user_data
+      authData
     } = this.props
 
     const {
-      token,
+      userToken,
       userId,
       logOut,
       // email
-    } = user_data
-    // console.log('|||||||| user_data ==>', user_data)
+    } = authData
+    console.log('|||||||| authData ==>', authData)
 
     const {
       action
@@ -64,12 +65,12 @@ class LoaderAplication extends Component {
 
 
     const { country } = this.state
-    let profile = await action.get_profile(userId, token)
+    let profile = await action.get_profile(userId, userToken)
     // console.log('|||||||| profile res ==>', profile)
 
     if(!profile){
       if(!new_country){return this.setState({country:null})}
-      profile = await action.add_new_profile(new_country, token)
+      profile = await action.add_new_profile(new_country, userToken)
       action.Loader(false)
     }
 
@@ -79,23 +80,23 @@ class LoaderAplication extends Component {
 
     // const{
     //   country,
-    //   token
+    //   userToken
     // } = this.props
-    //el country y el token deben llegar desde el auth service, si no llega el country es la primera vez del usuario
+    //el country y el userToken deben llegar desde el auth service, si no llega el country es la primera vez del usuario
 
 
-  // let user_with_token = {
+  // let user_with_userToken = {
   //
   // }
-  // Primero validamos la legitimidad del token, para definir si el usuario esta loggedIn o el token no es valido
-  // Si el token no es valido, borramos el token del localForage
+  // Primero validamos la legitimidad del userToken, para definir si el usuario esta loggedIn o el userToken no es valido
+  // Si el userToken no es valido, borramos el userToken del localForage
   // si es valido continuamos con la validación del usuario y actualizamos el estado de authenticación a loggedIn:true
 
 
-  //1.recibo token y country del usuario
+  //1.recibo userToken y country del usuario
   // 1.1. si el usuario no tiene country es por que es la primera vez que inicia sesión asi que le pedimos el country.
   // 1.2. con el country ya podemos comenzar a validar los demas endpoints, en ese momento automaticamente se crea el profile en el transaction service, primer endpoint POST:get_all_pairs
-  // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
+  // 2.con el country y el userToken le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
   // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id)
 
   // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
@@ -134,7 +135,7 @@ class LoaderAplication extends Component {
     // alert('llega')
 
 
-    let pairs = await action.get_all_pairs(token, user_country)
+    let pairs = await action.get_all_pairs(userToken, user_country)
     // return console.log('____________________pairs', pairs)
     if(!pairs){
       return logOut()
@@ -142,22 +143,22 @@ class LoaderAplication extends Component {
 
 
 
-    // 2.con el country y el token le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
+    // 2.con el country y el userToken le pegamos a countryvalidators/get-existant-country-validator para inicializar el status
     // 3.Con el status inicializado, le pegamos al api identity POST: "status/get-status" para obtener el status del usuario(user_id, country) y comenzar a armar el modelo del mismo
     // 4.luego le pegamos a identity POST: "profiles/get-profile" &  para obtener el profile del usuario, si no retorna nada es porque el nivel de verificación del usuario es 0 y no tiene profile en identity
     // console.log('LoaderAplication', user)
 
-    let user = await action.get_user(token, user_country, profile.userId, user_data.email, profile.restore_id)
+    let user = await action.get_user(userToken, user_country, profile.userId, authData.email, profile.restore_id)
     // console.log('===================================>>>>   tx profile', profile)
     // alert('user')
     if(!user){return false}
 
 
 
-    // Seteamos el token del usuario al modelo en redux
+    // Seteamos el userToken del usuario al modelo en redux
     let user_update = {
       ...this.props.user,
-      userToken:token
+      userToken:userToken
     }
 
 
@@ -203,7 +204,7 @@ class LoaderAplication extends Component {
     // getPairsByCountry(param1, param2)
     // recibe 2 parametros, país y colección de monedas de usuario(array)
 
-    // Esta función define el estado de "model_data.pairs" donde contenemos:
+    // Esta función define el estado de "modelData.pairs" donde contenemos:
 
     // localCurrency(Moneda local definida en función al país(param1))
     // collections(lista de todos los pares disponibles que cotizan en contra(secondary_currency) de la moneda local)
@@ -218,7 +219,7 @@ class LoaderAplication extends Component {
 
 
   componentDidUpdate(prevProps){
-    if(prevProps.app_load_label !== this.props.app_load_label){
+    if(prevProps.appLoadLabel !== this.props.appLoadLabel){
       let progressBarWidth = this.state.progressBarWidth
       this.setState({
         progressBarWidth: progressBarWidth+= 8
@@ -250,7 +251,7 @@ class LoaderAplication extends Component {
   render(){
 
     const{
-      app_load_label
+      appLoadLabel
     } = this.props
 
     const{
@@ -281,8 +282,8 @@ class LoaderAplication extends Component {
               <h1 className="fuente">Coinsenda</h1>
             </div>
             {/* <Coinsenda color="#0198FF" size={70}/> */}
-            {/* <SimpleLoader label={`${app_load_label}`} /> */}
-            <p className="fuente">{app_load_label}</p>
+            {/* <SimpleLoader label={`${appLoadLabel}`} /> */}
+            <p className="fuente">{appLoadLabel}</p>
           </div>
         }
         <div className="KycprogressBar loader">
@@ -295,23 +296,20 @@ class LoaderAplication extends Component {
 }
 
 
-function mapStateToProps(state, props){
+function mapStateToProps(state){
 
-  const { user, user_id,  wallets, all_pairs } = state.modelData
+  const { user, user_id,  wallets, all_pairs, authData } = state.modelData
   // const { loader } = state.isLoading
-  const { token } = props
+  console.log(authData)
   const { loggedIn } = state.auth
-  // console.log('|||||| mapStateToProps', props)
 
   return{
-    app_load_label:state.isLoading.app_load_label,
+    appLoadLabel:state.isLoading.appLoadLabel,
     user:user && user[user_id],
     wallets,
     all_pairs,
-    // country:null,
-    token:token,
-    // loader,
-    loggedIn
+    loggedIn,
+    authData
   }
 }
 
@@ -323,4 +321,4 @@ function mapDispatchToProps(dispatch){
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (LoaderAplication)
+export default connect(mapStateToProps, mapDispatchToProps) (withRouter(LoaderAplication))

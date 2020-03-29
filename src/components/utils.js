@@ -1,4 +1,4 @@
-export function isTokenValid(createAt) {
+export function isValidToken(createAt) {
     const initialDate = createAt.getTime();
     var endDate = new Date().getTime();
     var diff = (endDate - initialDate) / (1000 * 60);

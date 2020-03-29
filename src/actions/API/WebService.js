@@ -16,7 +16,7 @@ export class WebService {
 
     Get(url) {
         const headers = {
-            'Authorization': `Bearer ${this.state.user.userToken}`,
+            'Authorization': `Bearer ${this.token}`,
         }
         return this.doFetch(url, {
             method: `GET`,
@@ -40,7 +40,7 @@ export class WebService {
             headers: {
                 Accept: `*/*`,
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.state.user.userToken}`
+                Authorization: `Bearer ${this.token}`
             },
             body: JSON.stringify(body)
         }

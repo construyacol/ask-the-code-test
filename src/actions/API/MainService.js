@@ -37,9 +37,10 @@ class MultiClass {
 }
 
 export class MainService extends CoinsendaPairsService {
-    constructor(dispatch, state) {
+    constructor(dispatch, state, token) {
         super()
         this.dispatch = dispatch
         this.state = state
+        this.token = token
     }
 }

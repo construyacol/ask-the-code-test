@@ -176,7 +176,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 
 export const get_all_pairs = (token, country) =>{
-  return async(dispatch)=>{
+  return async(dispatch, getState)=>{
 
     // let body = {
     //   // "access_token":token,
@@ -184,8 +184,8 @@ export const get_all_pairs = (token, country) =>{
     //     "country":country
     //   }
     // }
-
-    const test = new MainService(dispatch)
+    console.log(getState())
+    const test = new MainService(dispatch, getState(), token)
     console.log(test, 'CLASS')
     return test.fetchAllPairs()
   }
@@ -1111,9 +1111,9 @@ export const getSwapList = () =>{
 
   return async(dispatch, getState) => {
 
-    const { model_data } =  getState()
-    const { wallets } = model_data
-    const user = model_data.user[model_data.user_id]
+    const { modelData } =  getState()
+    const { wallets } = modelData
+    const user = modelData.user[modelData.user_id]
 
 
     await dispatch(appLoadLabelAction('Obteniendo tus registros de intercambios'))

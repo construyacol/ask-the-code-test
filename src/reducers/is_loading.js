@@ -7,7 +7,7 @@ import {
 const initialState = {
   loader:false,
   isAppLoaded:false,
-  app_load_label:"Iniciando"
+  appLoadLabel:"Iniciando"
 }
 
 const isLoading = (state = initialState, action) => {
@@ -25,7 +25,7 @@ const isLoading = (state = initialState, action) => {
     case APP_LOAD_LABEL:
       return{
         ...state,
-        app_load_label:action.payload
+        appLoadLabel:action.payload
       }
     default:
       return state

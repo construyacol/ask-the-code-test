@@ -8,6 +8,10 @@ import localForage from 'localforage'
 import jwt from 'jsonwebtoken'
 
 import { isValidToken } from "./utils"
+import { connect } from 'react-redux';
+import actions from '../actions';
+import { bindActionCreators } from 'redux';
+
 // import FreshChat from '../services/freshChat'
 // import AuthComponentContainer from './auth'
 // import LandingPageContainer from './landing_page/landingContainer'
@@ -15,10 +19,15 @@ import { isValidToken } from "./utils"
 
 const history = createBrowserHistory();
 
-function RootContainer() {
+function RootContainer(props) {
   const [userToken, setUserToken] = useState(null)
-  const [userId, setUserId] = useState(null)
-  const [userEmail, setUserEmail] = useState(null);
+
+  const doLogout = async () => {
+    await localForage.removeItem('user_token')
+    await localForage.removeItem('created_at')
+    setUserToken(null)
+    window.location.href = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
+  }
 
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search)
@@ -42,32 +51,19 @@ function RootContainer() {
     if (!userData) { return doLogout() }
     const { usr, email } = userData
 
-    setUserId(usr)
+    props.setAuthData({
+      userToken,
+      userEmail: email,
+      userId: usr,
+      doLogout
+    })
     setUserToken(userToken)
-    setUserEmail(email)
-
     history.push('/')
-  }
-
-  const doLogout = async () => {
-    await localForage.removeItem('user_token')
-    await localForage.removeItem('created_at')
-    setUserId(null)
-    setUserToken(null)
-    setUserEmail(null)
-    window.location.href = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
   }
 
   useEffect(() => {
     initComponent()
   }, [])
-
-  const authProps = {
-    userToken,
-    userEmail,
-    userId,
-    doLogout
-  }
 
   return (
     <Router
@@ -76,7 +72,7 @@ function RootContainer() {
       <Switch>
         <Route path="/" render={() => (
           userToken ?
-            <HomeContainer history={history} user_data={authProps} {...this.props} />
+            <HomeContainer />
             :
             <div style={{ background: "linear-gradient(to bottom right,#014c7d,#0198ff)", width: "100vw", height: "100vh" }} />
         )} />
@@ -87,4 +83,4 @@ function RootContainer() {
 
 }
 
-export default RootContainer
+export default connect(() => ({}), (dispatch) => bindActionCreators({ setAuthData: actions.setAuthData }, dispatch))(RootContainer)

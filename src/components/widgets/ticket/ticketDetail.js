@@ -188,12 +188,12 @@ export const TicketSuccess = () =>{
 function mapStateToProps(state, props){
 
   const { ticket } = props
-  const { model_data } = state
+  const { modelData } = state
 
   let currency_type_bought
 
   if(ticket.type_order === 'swaps'){
-    currency_type_bought = matchItem(model_data.currencies, {primary:ticket.currency_bought}, 'name')
+    currency_type_bought = matchItem(modelData.currencies, {primary:ticket.currency_bought}, 'name')
   }
 
   return{

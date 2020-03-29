@@ -29,38 +29,6 @@ import SocketsComponent from '../sockets/sockets'
 
 class HomeContainer extends Component {
 
-  state = {
-    modalVisible: false
-  }
-
-  static getDerivedStateFromError(error, info) {
-    return { handleError: true };
-  }
-
-  componentDidCatch(error, info) {
-    this.setState({
-      handleError: true,
-    })
-  }
-
-
-
-  // componentDidUpdate(prevProps){
-  //   if (this.props.isAppLoaded !== prevProps.isAppLoaded) {
-  //     setTimeout(()=>{
-  //       let currency = {
-  //         currency:'cop',
-  //         is_token:false
-  //       }
-  //       this.props.action.socket_notify({account_id:'5d406e3cbb245069d61021c5', currency, amount:1500000}, 'deposits')
-  //       this.props.action.other_modal_toggle()
-  //       this.props.action.success_sound()
-  //       // add_coin_sound
-  //     }, 1000)
-  //     // this.formatToCurrencies()
-  //   }
-  // }
-
   render() {
 
     const {
@@ -69,30 +37,23 @@ class HomeContainer extends Component {
       modalConfirmation,
       isAppLoaded,
       current,
-      user_data
+      doLogout
     } = this.props
-
-
-
 
     return (
       <HandleError>
         <ToastContainers />
         <SocketsComponent />
 
-        <Router
-          history={this.props.history}
-        >
-
           {
             !isAppLoaded ?
-              <Route path="/" render={() => <LoaderAplication user_data={user_data} history={this.props.history} />} />
+              <Route path="/" render={() => <LoaderAplication history={this.props.history} />} />
               :
               <Fragment>
                 <HomeLayout modal={modalConfirmation || other_modal || modalVisible ? true : false} >
 
                   <Route path="/:primary_path" component={MenuPrincipalContainer} />
-                  <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props) => (<MenuSuperiorContainer {...this.props} {...props} logOut={user_data.logOut} />)} />
+                  <Route path={["/:primary_path/:path", "/:primary_path"]} render={(props) => (<MenuSuperiorContainer {...this.props} {...props} logOut={doLogout} />)} />
                   <Route path="/:primary_path" render={(props) => <DashBoardContainer  {...props} {...this.props} />} />
 
                   {
@@ -143,7 +104,6 @@ class HomeContainer extends Component {
               </Fragment>
           }
 
-        </Router>
       </HandleError>
     )
   }
@@ -169,7 +129,7 @@ HomeContainer.propTypes = {
 function mapStateToProps(state, props) {
   // console.log('E S T A D O   I N I C I A L', process.env.NODE_ENV === 'development' ? Environment.development : Environment.production)
   // console.log('E S T A D O   I N I C cI A L', state.modelData.user && state.modelData.user[state.modelData.user_id])
-  const { wallets, all_pairs } = state.modelData
+  const { wallets, all_pairs, authData } = state.modelData
   const { isAppLoaded } = state.isLoading
   const { socket_notify } = state.ui.notifications
 
@@ -186,7 +146,8 @@ function mapStateToProps(state, props) {
     user: state.modelData.user && state.modelData.user[state.modelData.user_id],
     wallets,
     all_pairs,
-    socket_notify
+    socket_notify,
+    doLogout: authData.doLogout
   }
 }
 

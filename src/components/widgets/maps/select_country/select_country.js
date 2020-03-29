@@ -76,7 +76,7 @@ class SelectCountry extends Component {
   render(){
 
     const{
-      app_load_label,
+      appLoadLabel,
       loader
     } = this.props
 
@@ -119,7 +119,7 @@ class SelectCountry extends Component {
 
           </div>
           :
-          <SimpleLoader label={`${app_load_label}`} />
+          <SimpleLoader label={`${appLoadLabel}`} />
         }
       </Fragment>
 
@@ -135,7 +135,7 @@ function mapStateToProps(state, props){
   const { loader } = state.isLoading
 
   return{
-    app_load_label:state.isLoading.app_load_label,
+    appLoadLabel:state.isLoading.appLoadLabel,
     user:user && user[user_id],
     wallets,
     all_pairs,
