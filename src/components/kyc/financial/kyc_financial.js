@@ -36,7 +36,7 @@ class KycFinancialComponent extends Component {
   }
 
   init_component = async() => {
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     const { user, step } = this.props
     let countryvalidators = await this.props.action.countryvalidators()
     if(!countryvalidators){return false}
@@ -69,7 +69,7 @@ class KycFinancialComponent extends Component {
       data_state:kyc_data_state,
       kyc_financial_list:kyc_financial
     })
-    this.props.action.Loader(false)
+    this.props.action.isAppLoading(false)
 
     // console.log('|||||||| countryvalidators', kyc_financial[step-1], `step: ${step}`, this.state, kyc_financial)
   }
@@ -82,7 +82,7 @@ class KycFinancialComponent extends Component {
       // console.log('|||||||| goFileLoader before', e.target.files)
       //
       // const imageDataUrl = await readFile(e.target.files[0])
-      // this.props.action.Loader(false)
+      // this.props.action.isAppLoading(false)
       let payload = {
         name:e.target.files[0].name,
         type:e.target.files[0].type,
@@ -112,7 +112,7 @@ class KycFinancialComponent extends Component {
 
     const { data_state } = this.state
 
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     let info = {}
     await Object.keys(data_state).forEach((indice) => {
       info = {

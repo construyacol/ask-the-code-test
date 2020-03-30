@@ -71,26 +71,29 @@ export class CoinsendaSwapService extends WebService {
 
         if (!swaps) { return false }
         
-        const finalSwapList = swaps.reduce((result, swap) => result.push({
-            account_id: swap.account_from,
-            account_to: swap.account_to,
-            amount: swap.bought,
-            amount_neto: swap.bought,
-            pair_id: swap.pair_id,
-            comment: "",
-            action_price: swap.action_price,
-            currency: swap.to_spend_currency,
-            currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
-            cost: "",
-            deposit_provider_id: "",
-            expiration_date: new Date(),
-            id: swap.id,
-            state: swap.state === 'rejected' ? 'canceled' : swap.state,
-            bought: swap.bought,
-            currency_bought: swap.to_buy_currency,
-            spent: swap.spent,
-            type_order: "swap"
-        }), [])
+        const finalSwapList = swaps.reduce((result, swap) => {
+            result.push({
+                account_id: swap.account_from,
+                account_to: swap.account_to,
+                amount: swap.bought,
+                amount_neto: swap.bought,
+                pair_id: swap.pair_id,
+                comment: "",
+                action_price: swap.action_price,
+                currency: swap.to_spend_currency,
+                currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
+                cost: "",
+                deposit_provider_id: "",
+                expiration_date: new Date(),
+                id: swap.id,
+                state: swap.state === 'rejected' ? 'canceled' : swap.state,
+                bought: swap.bought,
+                currency_bought: swap.to_buy_currency,
+                spent: swap.spent,
+                type_order: "swap"
+            })
+            return result
+        }, [])
 
         finalSwapList.reverse()
 

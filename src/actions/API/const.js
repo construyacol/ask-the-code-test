@@ -18,7 +18,8 @@ export const loadLabels = {
     OBTENIENDO_PROVEEDORES_DE_RETIRO : 'Obteniendo proveedores de retiro',
     OBTENIENDO_TUS_REGISTROS_DE_RETIROS: 'Obteniendo tus registros de retiros',
     OBTENIENDO_TODAS_LAS_DIVISAS: 'Obteniendo todas las divisas',
-    CARGANDO_TU_INFORMACION: 'Cargando tu información'
+    CARGANDO_TU_INFORMACION: 'Cargando tu información',
+    OBTENIENDO_PROVEEDORES_DE_DEPOSITO: 'Obteniendo proveedores de deposito'
 }
 
 export const ACCOUNT_URL = `${AccountApiUrl}users`

@@ -41,7 +41,7 @@ class TwoFactorActivate extends Component {
   }
 
   success_event = async() => {
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     this.setState({success_screen:true})
     let user_update = {
       ...this.props.user,
@@ -54,7 +54,7 @@ class TwoFactorActivate extends Component {
       }
     }
     await this.props.action.updateUser(user_update)
-    this.props.action.Loader(false)
+    this.props.action.isAppLoading(false)
     setTimeout(()=>{
       this.setState({switch_to_success:true})
     }, 500)

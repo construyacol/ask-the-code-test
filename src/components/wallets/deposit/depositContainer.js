@@ -139,9 +139,9 @@ class DepositContainer extends Component {
          msgLoader:"Obteniendo tus billeteras"
        })
 
-       this.props.action.Loader(true)
+       this.props.action.isAppLoading(true)
        let res = await this.props.action.get_list_user_wallets(this.props.user)
-       this.props.action.Loader(false)
+       this.props.action.isAppLoading(false)
        if(!res){return this.handleError('No se han podido consultar tus Billeteras')}
        wallets = !res.entities.wallets ? [] : res.entities.wallets
       }
@@ -186,7 +186,7 @@ class DepositContainer extends Component {
 
     crearWallet = async() =>{
 
-        this.props.action.Loader(true)
+        this.props.action.isAppLoading(true)
         this.setState({
           msgLoader:`Creando billetera ${this.state.currency}`
         })
@@ -209,7 +209,7 @@ class DepositContainer extends Component {
       // setTimeout(()=>{
         await this.props.action.get_list_user_wallets(this.props.user)
 
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         this.to_deposit_wallet(new_wallet.account.id)
         if(this.state.type_currency !== 'fiat'){this.props.action.CleanForm('deposit')}
         let message = `¡Estas dentro de la nueva wallet ${this.state.currency}!`
@@ -362,7 +362,7 @@ updateAmountOnState = async(amount) =>{
     // console.log('create_deposit_order PROPS', deposit_provider, current_wallet)
 
     this.siguiente()
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
     if(!this.props.deposits){
       await this.props.action.get_deposits(this.props.current_wallet.id)
@@ -382,7 +382,7 @@ updateAmountOnState = async(amount) =>{
     // console.log('°°°°°°°°°°°°°°°°|||||||||||||||||||||deposit_provider', deposit_provider)
 
     if(!response){
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.props.action.ReduceStep(this.props.current)
       return this.props.action.mensaje('No se ha podido crear la orden de deposito', 'error')
     }
@@ -464,7 +464,7 @@ updateAmountOnState = async(amount) =>{
     ]
 
     // setTimeout(()=>{
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       // si la acción se lleva satisfactoriamente actualizamos el fondo del modal a un color verde
       this.props.action.ModalView('modalSuccess')
       this.props.action.success_sound()

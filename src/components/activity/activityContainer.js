@@ -11,7 +11,7 @@ import './activity.css'
 class ActivityContainer extends Component{
 
   componentWillMount(){
-     this.props.action.Loader(true)
+     this.props.action.isAppLoading(true)
   }
 
   componentDidMount(){
@@ -24,7 +24,7 @@ class ActivityContainer extends Component{
        // this.setState({
        //   userWallets: await this.props.action.get_list_user_wallets(this.props.user)
        // })
-       this.props.action.Loader(false)
+       this.props.action.isAppLoading(false)
       // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
     }, 0)
      // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||')

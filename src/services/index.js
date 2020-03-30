@@ -547,7 +547,7 @@ export const serve_orders = async(account_id, filter) =>{
   let new_array = []
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS ', account_id, filter)
   const { modelData } = store.getState()
-  const { user, user_id } = store.getState().modelData
+  const { user } = store.getState().modelData
 
   let list = modelData[filter]
   let indices = user[filter]

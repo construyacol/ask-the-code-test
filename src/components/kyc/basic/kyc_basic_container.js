@@ -120,7 +120,7 @@ class KycBasicContainer extends Component {
 
     if(!verification_state || verification_state === 'rejected'){
     // if(user.verification_level !== 'level_0'){
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
 
@@ -169,7 +169,7 @@ class KycBasicContainer extends Component {
         })
 
         // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
 
     }
   }

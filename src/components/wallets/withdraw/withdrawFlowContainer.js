@@ -199,7 +199,7 @@ class WithdrawFlow extends Component {
 
           await this.setState({show_list_accounts:false, need_new_acount:null})
           await this.volver(1)
-          await this.props.action.Loader(false)
+          await this.props.action.isAppLoading(false)
           return  this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
         }
 
@@ -215,7 +215,7 @@ class WithdrawFlow extends Component {
 
 
 
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       await this.setState({
         finish_step:limit_supered ? false : true,
         limit_supered_component:limit_supered ? true : false,
@@ -250,7 +250,7 @@ class WithdrawFlow extends Component {
           need_new_acount:true
         })
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         return this.handleError('La orden no ha podido ser creada')
       }
 
@@ -264,7 +264,7 @@ class WithdrawFlow extends Component {
         new_order:data
       })
 
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       return this.create_order(res)
     }
 
@@ -398,7 +398,7 @@ class WithdrawFlow extends Component {
         })
         // await this.props.action.ModalView('modalView')
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         return this.handleError('La orden no ha podido ser confirmada')
       }
 
@@ -503,11 +503,11 @@ class WithdrawFlow extends Component {
         ticket:null
       })
 
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       // console.log(`cancelWithdrawOrder ${this.state.new_order.id}`, res, this.state.new_order)
       // alert('delete')
       await this.volver(1)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.setState({
         ticket_label_loader:"Creando orden de retiro",
         show_list_accounts:true,

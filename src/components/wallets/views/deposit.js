@@ -84,12 +84,12 @@ class DepositView extends Component{
 
   create_deposit_provider = async() => {
     // 5dce0483a389244fa63bf6a7
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     const { current_wallet } = this.props
     let dep_prov_id = await this.props.action.create_deposit_provider(current_wallet.id, current_wallet.country)
     // let dep_prov_id = 23232323
     if(!dep_prov_id){
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       return false
     }
 
@@ -104,7 +104,7 @@ class DepositView extends Component{
     this.props.action.current_section_params({
       current_wallet:update_wallet[current_wallet.id]
     })
-    this.props.action.Loader(false)
+    this.props.action.isAppLoading(false)
 
     // console.log('|||||||||||||| ====================================> Deposit_provider ID', dep_prov_id, deposit_providers[dep_prov_id], deposit_providers)
 

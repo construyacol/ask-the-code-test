@@ -58,7 +58,7 @@ class KycAvancedContainer extends Component{
     async componentDidMount(){
       await this.props.action.CurrentForm('kyc_advance')
       if(this.props.current === 'kyc_advance'){
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         this.props.history.push(`?form=identity_front_upload`)
       }
     }
@@ -117,12 +117,12 @@ class KycAvancedContainer extends Component{
   goFileLoader = async e =>{
     if (e.target.files && e.target.files.length > 0) {
       // console.log('|||||||| goFileLoader', e.target.files)
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       // console.log('||||||||||IMG BEFORE', e.target.files[0])
       const file = await img_compressor(e.target.files[0])
       // return console.log('||||||||||IMG AFTER', file)
       const imageDataUrl = await readFile(file)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       // console.log('|||||||| goFileLoader url', imageDataUrl)
       this.setState({
         imageSrc: imageDataUrl,
@@ -132,7 +132,7 @@ class KycAvancedContainer extends Component{
   }
 
   subirImg = (img) =>{
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
     const{
       urlImg,
@@ -140,7 +140,7 @@ class KycAvancedContainer extends Component{
     } = img
 // simulamos llamado del endpoint para guardar imagen
     setTimeout(()=>{
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.setState({
         fileloader: !this.state.fileloader
       })

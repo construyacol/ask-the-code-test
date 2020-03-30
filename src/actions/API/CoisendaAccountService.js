@@ -10,19 +10,18 @@ import {
     loadLabels,
     CURRENCIES_URL
 } from "./const";
-import { coins } from '../components/api/ui/api.json'
+import { coins } from '../../components/api/ui/api.json'
 import { appLoadLabelAction } from "../loader";
 
 export class CoinsendaAccountService extends WebService {
     getUser() {
         return this.state.modelData.user
     }
-    async getWalletsByUser(user) {
+    async getWalletsByUser() {
+        this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS))        
+        const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
-
-        const headers = this.getHeaders(user.userToken)
-
-        const wallets = await this.Get(accountUrl, headers)
+        const wallets = await this.Get(accountUrl)
 
         if (!wallets || wallets === 404) { return false }
         if (this.isEmpty(wallets)) {
@@ -163,7 +162,7 @@ export class CoinsendaAccountService extends WebService {
 
         const currencies = response.reduce((result, currency) => {
             const split = currency.node_url && currency.node_url.split("api")
-            return result.push({
+            result.push({
                 "currency_type": currency.currency_type,
                 "id": currency.id,
                 "type": "coins",
@@ -175,6 +174,7 @@ export class CoinsendaAccountService extends WebService {
                 ...currency,
                 "node_url": split && split[0]
             })
+            return result
         }, [])
 
         this.dispatch(updateAllCurrenciesAction(currencies))

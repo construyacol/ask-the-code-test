@@ -28,12 +28,12 @@ class TicketPaymentProof extends Component  {
   goFileLoader = async e =>{
 
     if (e.target.files && e.target.files.length > 0) {
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
 
       const file = await img_compressor(e.target.files[0], 0.5)
       const imageDataUrl = await readFile(file)
       console.log('goFileLoader', imageDataUrl)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
 
       this.setState({
         imageSrc: imageDataUrl,
@@ -61,7 +61,7 @@ updateLocalImg = (img) =>{
     const {
       ticket
     } = this.props
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
     let res = await this.props.action.confirmDepositOrder(ticket, base64);
     // console.log('Confirm deposit order', res)
@@ -72,7 +72,7 @@ updateLocalImg = (img) =>{
 
     this.props.update_ticket(data)
 
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
 
       this.setState({
         fileloader: !this.state.fileloader

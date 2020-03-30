@@ -5,7 +5,7 @@ import {
 } from './action_types'
 
 
-export const Loader = (payload) => {
+export const isAppLoading = (payload) => {
   return {
     type: LOADER,
     payload
@@ -28,4 +28,4 @@ export const appLoadLabelAction = (payload) => {
 
 
 
-export default Loader
+export default isAppLoading

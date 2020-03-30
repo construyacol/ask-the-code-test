@@ -34,7 +34,7 @@ class NewWallet extends Component{
 
     handleSubmit = (event) => {
       event.preventDefault()
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       this.siguiente()
       this.actualizarEstado(event)
       this.crearWallet()
@@ -74,7 +74,7 @@ class NewWallet extends Component{
 
        if(!wallets || wallets === 465 || wallets === 400){
          this.props.action.ReduceStep('wallets')
-         this.props.action.Loader(false)
+         this.props.action.isAppLoading(false)
          let msg = !wallets ? 'ERROR DE CONEXIÓN' : 'Al parecer, aún no tenemos soporte para esta moneda'
          return this.props.action.mensaje(msg, 'error')
        }
@@ -96,7 +96,7 @@ class NewWallet extends Component{
         await this.props.action.get_account_balances(this.props.user)
         // return console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
 
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         this.props.action.success_sound()
         await this.props.action.ToggleModal()
         await this.props.action.CleanForm('wallet')

@@ -6,6 +6,7 @@ import { normalize, schema } from 'normalizr'
 const do_normalization = (data_source, data_to_normalize)=>{
 // Parametro 1: fuente de datos, Parametro 2: Schema de datos a normalizar con la fuente
   const normalized_data = normalize(data_source, data_to_normalize)
+  
   return normalized_data
 }
 
@@ -35,7 +36,7 @@ export const normalizeUser = async(user) => {
     withdraws:[withdraw],
     balances:[balance]
   })
-
+  
   return await do_normalization(user, normalizedUser)
 }
 

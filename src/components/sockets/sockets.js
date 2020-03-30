@@ -142,7 +142,7 @@ withdraw_mangagement = async (withdraw) => {
 
     let res = await this.props.action.add_update_withdraw(withdraw.id, 'confirmed')
     if(!res){
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
     }
   }
@@ -168,7 +168,7 @@ withdraw_mangagement = async (withdraw) => {
     await this.props.action.add_item_state('withdraws', new_withdraw_model)
     await this.props.action.update_activity_state(new_withdraw_model.account_id, 'withdraws')
     await this.props.action.ManageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
-    await this.props.action.Loader(false)
+    await this.props.action.isAppLoading(false)
     this.props.action.add_new_transaction_animation()
     this.props.action.get_account_balances(this.props.user)
     this.props.history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`)
@@ -421,7 +421,7 @@ withdraw_mangagement = async (withdraw) => {
       await this.props.action.add_item_state('swaps', add_swap)
       await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
       await this.props.action.add_new_transaction_animation()
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       return this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
     }
 

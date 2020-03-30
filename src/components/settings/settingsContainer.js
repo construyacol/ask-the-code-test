@@ -13,7 +13,7 @@ class SettingsContainer extends Component{
 
   componentDidMount(){
     // this.props.action.MenuItemActive(this.props.location.pathname)
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
 
@@ -22,7 +22,7 @@ class SettingsContainer extends Component{
        // this.setState({
        //   userWallets: await this.props.action.get_list_user_wallets(this.props.user)
        // })
-       this.props.action.Loader(false)
+       this.props.action.isAppLoading(false)
 
       // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
     }, 0)

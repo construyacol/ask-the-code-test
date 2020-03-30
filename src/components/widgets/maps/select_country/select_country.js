@@ -22,12 +22,12 @@ class SelectCountry extends Component {
   }
 
   action_loader = (payload) =>{
-    // this.props.action.Loader(payload)
+    // this.props.action.isAppLoading(payload)
     this.setState({disabled:false})
   }
 
   load_countries = async() =>{
-    // this.props.action.Loader(true)
+    // this.props.action.isAppLoading(true)
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
     // console.log('||||| =====================================> SelectCountry', res)

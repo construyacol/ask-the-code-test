@@ -6,7 +6,6 @@ import loadLocalPairsAction, {
     searchCurrentPairAction,
     loadLocalCurrencyAction,
 } from "../dataModelActions"
-import userSource from '../../components/api'
 import { loadLabels, DEFAULT_URL, LOCAL_CURRENCIES_URL, CURRENCIES_URL, PAIRS_URL } from "./const";
 import normalizeUser from "../../schemas";
 import { matchItem } from "../../services";
@@ -20,9 +19,8 @@ export class CoinsendaPairsService extends WebService {
         const pairs = await this.Get(DEFAULT_URL)
 
         this.dispatch(getAllPairsAction(pairs))
-
         let updatedUser = {
-            ...userSource,
+            ...this.user,
             available_pairs: [
                 ...pairs
             ]
@@ -53,11 +51,11 @@ export class CoinsendaPairsService extends WebService {
     }
 
     async getLocalCurrency(country) {
-        const countryCurrency = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`)
+        const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`)
 
         if (this.isEmpty(countryCurrency)) return
 
-        const localCurrencyId = countryCurrency[0].currency_id
+        const localCurrencyId = countryCurrency.currency_id
         let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`)
         if (this.isEmpty(localCurrencyData)) return
         localCurrencyData = localCurrencyData[0]

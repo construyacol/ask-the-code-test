@@ -106,14 +106,14 @@ class WithdrawAccountForm extends Component{
 
     crearCuenta = async() => {
       // simulación Endpoint Crear wallet
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       let res = await this.props.action.add_new_withdraw_account(this.state)
       // return console.log('RESPUESTA NUEVA CUENTA FIAT CREADA', res, this.state)
       if(!res){
         // this.props.action.ReduceStep(this.props.current)
         this.props.action.ReduceStep(this.props.current)
         this.props.action.mensaje('No es posible crear la cuenta ahora.', 'error')
-        return this.props.action.Loader(false)
+        return this.props.action.isAppLoading(false)
       }
 
       await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers)
@@ -129,7 +129,7 @@ class WithdrawAccountForm extends Component{
       // setTimeout(()=>{
       this.props.action.success_sound()
         this.update_form()
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         this.props.action.ModalView('modalSuccess')
       // }, 1500)
     }

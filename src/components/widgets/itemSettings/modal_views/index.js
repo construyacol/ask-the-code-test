@@ -130,7 +130,7 @@ update_state = (payload) =>{
 
 
       setTimeout(async()=>{
-        await this.props.action.Loader(true)
+        await this.props.action.isAppLoading(true)
         const { other_state } = payload
         // console.log('||||||| success', payload)
 
@@ -155,7 +155,7 @@ update_state = (payload) =>{
         }
         // console.log('||||||| user_update2', user_update)
 
-        await this.props.action.Loader(false)
+        await this.props.action.isAppLoading(false)
         this.setState({
           loader:false,
           success:true,

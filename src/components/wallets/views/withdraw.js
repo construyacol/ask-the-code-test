@@ -94,7 +94,7 @@ state = {
   }
 
   finish_withdraw = async(p) =>{
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
 
     const{
@@ -132,7 +132,7 @@ state = {
       let retiro = await this.props.action.add_new_withdraw_order(value, current_wallet.id, withdraw_provider.id, withdraw_account.id)
 
       if(!retiro){
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
       }
 
@@ -146,7 +146,7 @@ state = {
       // let res = await this.props.action.add_update_withdraw(retiro.data.id, 'confirmed')
       //
       // if(!res || res === 465){
-      //   this.props.action.Loader(false)
+      //   this.props.action.isAppLoading(false)
       //   return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
       // }
       //
@@ -165,7 +165,7 @@ state = {
       // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model)
       // await this.props.action.add_item_state('withdraws', new_withdraw_model)
       // await this.props.action.update_activity_state(new_withdraw_model.account_id, 'withdraws')
-      // await this.props.action.Loader(false)
+      // await this.props.action.isAppLoading(false)
       // this.props.action.add_new_transaction_animation()
       // this.props.history.push(`/wallets/activity/${this.state.account_id}/withdraws`)
   }

@@ -33,7 +33,7 @@ export class PairList extends Component {
     // console.log(name, code, type_currency, pair_id);
 
     const { current_wallet } = this.props
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     this.setState({
       loadermsg:"Ajustando nave nodriza..."
     })
@@ -41,7 +41,7 @@ export class PairList extends Component {
     // const { data } = await this.props.action.currency_calculator_exported(current_wallet.currency.currency, 1, pair_id)
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
 
-    this.props.action.Loader(false)
+    this.props.action.isAppLoading(false)
     this.props.action.other_modal_toggle()
 
     if(data){

@@ -101,7 +101,7 @@ class SwapView extends Component{
       current_pair
     } = this.props
 
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     await this.props.action.get_swaps(current_wallet.id)
     // await this.props.action.current_section_params({currentFilter:'swaps'})
 

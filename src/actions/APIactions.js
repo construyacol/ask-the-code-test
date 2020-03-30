@@ -91,6 +91,16 @@ moment.locale('es')
 //   // alert('enviando mensaje a sentry')
 // }
 
+export const loadFirstEschema = () => {
+  return async (dispatch) => {
+    const dataNormalized = await normalizeUser(user_source)
+    dispatch(updateNormalizedDataAction(dataNormalized))
+  }
+}
+
+export const inicializarClasses = (country, callback) => async(dispatch, state) => {
+  return new MainService(dispatch, state(), state().modelData.authData.userToken).init(country, callback)
+}
 
 export const mensaje = (msg, type, position) => {
   return async (dispatch) => {
@@ -851,7 +861,7 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
     // console.log('|||||| °°°°° replace_prop', replace_prop.name, replace_prop[replace_prop.name])
     // console.log('|||||| array_list ---', array_list)
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     if (!edit_list) { edit_list = 'deposits' }
 
@@ -1043,7 +1053,7 @@ export const add_done_swap = (swaps, user, done_swap, update_list) => {
 export const getSwapList = () => {
 
   return async (dispatch, getState) => {
-
+    return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
     const { modelData } = getState()
     const { wallets } = modelData
     const user = modelData.user
@@ -1171,8 +1181,8 @@ export const getSwapList = () => {
 
 
 export const get_withdraw_accounts = (user, withdraw_providers) => {
-  return async (dispatch) => {
-
+  return async (dispatch, state) => {
+    const { user } = state().modelData;
     let myHeaders = await dispatch(generate_headers())
 
     await dispatch(appLoadLabelAction('Obteniendo cuentas de retiro'))

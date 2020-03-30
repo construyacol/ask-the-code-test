@@ -1,7 +1,7 @@
 import * as formActions from './formActions'
 import * as dataModelActions from './dataModelActions'
 import * as APIactions from './APIactions'
-import * as Loader from './loader'
+import * as isAppLoading from './loader'
 import * as ui_actions from './uiActions'
 import * as sounds from './soundActions'
 import * as auth from './auth'
@@ -16,7 +16,7 @@ import { freshchat_init_user } from '../services/freshChat'
 
 
 const actions = {
-  ...Loader,
+  ...isAppLoading,
   ...formActions,
   ...APIactions,
   ...dataModelActions,

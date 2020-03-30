@@ -112,7 +112,7 @@ class AccountList extends Component {
 
   delete_account = async (account_id, type) => {
 
-    // this.props.action.Loader(true)
+    // this.props.action.isAppLoading(true)
     this.setState({ label: "Eliminando Wallet", account_state: "deleting", id_wallet_action: account_id })
     let wallet_delete = await this.props.action.delete_account(account_id, type)
 
