@@ -297,12 +297,12 @@ export const get_user_pairs = async (user_collection, dispatch, data) => {
 export const getPairs = (primary, secondary, all) => {
 
   return async (dispatch) => {
-    console.log(primary, secondary, all, 'gtePairs')
     if (primary && !secondary) {
       // consulte todos los pares disponibles donde la moneda primaria es "primary"
       // let query = `{"where": {"primary_currency":{"eq": {"currency" : "${primary}", "is_token" : false}} }}`
       let query = `{"where": {"primary_currency.currency": "${primary}"}}`
       let res = await get_this_pair(query)
+
       if (all) { return res }
       return res[0]
     }
@@ -367,18 +367,15 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
     let currency = current_wallet.currency.currency
     let pair;
     // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
-    pair = await getPairs(currency, local_currency)
-    !pair && (pair = await getPairs('bitcoin', currency))
-    !pair && (pair = await getPairs(currency))
-    !pair && (pair = await getPairs(null, currency))
+    pair = await getPairs(currency, local_currency)()
+    !pair && (pair = await getPairs('bitcoin', currency)())
+    !pair && (pair = await getPairs(currency)())
+    !pair && (pair = await getPairs(null, currency)())
 
 
     if (!pair) { return false }
 
     let pair_id = pair.id
-    // return console.log('____________________________________________get_pair_default', pair)
-
-    console.log('====>  convertCurrencies', current_wallet.currency, pair_id, pair, local_currency)
 
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
 

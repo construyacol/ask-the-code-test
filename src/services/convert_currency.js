@@ -63,7 +63,7 @@ import store from '../'
        "want_to_spend":amount_spend.toString(),
        "pair_id":pair_id
      }
-
+     
     let objetive_pair_instance = store.getState().modelData.all_pairs[pair_id]
 
     let to_spend_currency = extractCurrencies([data.to_spend_currency]);
