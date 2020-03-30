@@ -21,7 +21,7 @@
     "react": "16.8.6",
     "react-confetti": "^2.8.0",
     "react-dom": "16.8.6",
-    "react-easy-crop": "^1.13.0",
+    "react-easy-crop": "^2.1.0",
     "react-full-screen": "^0.2.4",
     "react-hotjar": "^2.0.2",
     "react-icons": "^3.8.0",

@@ -12,7 +12,11 @@ import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 import { img_compressor } from '../../../services'
 
 
-
+const ACCEPT_FILE_TYPE = [
+  "image/jpeg",
+  "image/png",
+  ".pdf"
+]
 class KycFinancialComponent extends Component {
 
 
@@ -176,7 +180,7 @@ class KycFinancialComponent extends Component {
               <div className="kycPropgressed" style={{width:widthBar}}></div>
             </div>
             <div className="loaderImgComponent" style={{opacity:availableCta ? '.4' : '1'}}>
-              <input type="file" id="uploadIMGF" onChange={this.goFileLoader} />
+              <input type="file" id="uploadIMGF" accept={ACCEPT_FILE_TYPE.join()} onChange={this.goFileLoader} />
               <div className="payloadFinancial">
                 <IconSwitch icon="upload" size={70} color="#3e87d9" />
                 <div className="fuente textFinancial">

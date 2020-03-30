@@ -1,0 +1,90 @@
+.root-footer{
+    
+}
+
+.exchange-box {
+  position: absolute;
+  transition: top 300ms linear, left 300ms linear;
+  transition-delay: 0s;
+}
+
+.root-content-numbers {
+    font-weight: bold;
+    font-size: 21px;
+    font-family: Tomorrow;
+    font-display: swap;
+}
+
+.exchange-divider {
+  height: 30px;
+  width: 2px;
+  margin: 0 4em;
+  background-color: #ffffff;
+  border-radius: 4px;
+  transform: rotate(10deg)
+}
+
+.exchange-text-box {
+  display: flex;
+  font-family: 'Raleway'
+}
+
+.exchange-text-box > label {
+  text-align: center;
+  letter-spacing: 4px;
+  font-size: 10px;
+  line-height: 26px;
+}
+
+.exchange-text-box > label > .strong {
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Raleway'
+}
+
+@media (min-width: 1220px) and (max-width: 1380px) {
+  .ajust-to-screen {
+    left: 28%;
+    transform: scale(0.9);
+  }
+}
+
+@media (min-width: 1150px) and (max-width: 1220px) {
+  .ajust-to-screen {
+    left: 25%;
+    transform: scale(0.8);
+  }
+}
+
+@media (max-width: 900px) {
+  .root-content-numbers {
+    font-size: 15px;
+    letter-spacing: -1;
+  }
+}
+
+@media (max-width: 320px) {
+  .exchange-box {
+    left: 22%;
+    transform: scale(0.8);
+  }
+}
+
+@media (min-width: 481px) and (max-width: 767px) {
+  .root-content-numbers {
+    font-size: 15px;
+    letter-spacing: -1;
+  }
+}
+
+@keyframes swipe{
+  0% {
+    opacity:0;
+    top: 2%;
+  }
+
+  100% {
+    opacity:1;
+    top: 1%;
+  }
+}

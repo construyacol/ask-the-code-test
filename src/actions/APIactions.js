@@ -2054,6 +2054,7 @@ export const add_new_profile = (country, token) => {
         "country": country
       }
     }
+
     let url_add_profile = `${ApiUrl}profiles/add-new-profile`
     let new_profile = await ApiPostRequest(url_add_profile, body, token)
     if (!new_profile) { return false }
@@ -2066,8 +2067,6 @@ export const add_new_profile = (country, token) => {
     // let url_get_profile = `${ApiUrl}users/${userId}/profile`
     // let profile = await ApiGetRequest(url_get_profile, myHeaders)
     // return profile
-
-
   }
 }
 

@@ -170,6 +170,7 @@ total_value = async(value) =>{
   this.setState({
     total_value: total_value
   })
+  this.props.getTotalValue(total_value === '0' ? false : total_value)
 }
 
 getOtherPairsSend = () =>{
@@ -265,7 +266,7 @@ const {
 } = props
 
 let movil_viewport = window.innerWidth < 768
-
+  // console.log('InputFormCoin', value)
   return(
     <Fragment>
       {/* <div className={`${!clase ? 'containerInputComponent' : clase}`}> */}
@@ -325,7 +326,7 @@ export class InputDepositForm extends Component{
     } = props
 
     this.setState({
-      finalValue:value ? number_format(value) : window.innerWidth>768 ? 'Escribe la cantidad' : 'Cantidad'
+      finalValue:value && this.state.finalValue ? number_format(value) : window.innerWidth>768 ? 'Escribe la cantidad' : 'Cantidad'
     })
   }
 
@@ -351,7 +352,7 @@ render(){
             <input
               // className={`inputElement2 ${actives ? 'inputActivado' : '' }`}
               className={`inputElement2 inputDeposit`}
-              type="number"
+              type="text"
               placeholder={placeholder}
               onChange={actualizar}
               name={name}
@@ -535,13 +536,11 @@ export const InputCountry = (props) =>{
     loader
   } = props
 
-  console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
-
+  // console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
 
 
   return(
     <div id="kycPrime" className="containerInputComponent3">
-
 
       <div className="inputLabelsCont">
         <div className="InputCarous">
@@ -558,7 +557,6 @@ export const InputCountry = (props) =>{
           </div>
         }
 
-
         {
           country_match ?
 
@@ -570,7 +568,7 @@ export const InputCountry = (props) =>{
 
           :
 
-          <form onSubmit={handleSubmit} >
+          <form onSubmit={handleSubmit}>
             <input
              className={`inputElement3 ${active ? 'inputActivado' : '' }`}
              type="text"

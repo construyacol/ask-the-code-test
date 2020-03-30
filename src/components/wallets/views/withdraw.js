@@ -11,7 +11,7 @@ import IconSwitch from '../../widgets/icons/iconSwitch'
 import AddressValidator from 'wallet-address-validator'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
 import { formatToCurrency } from '../../../services/convert_currency'
-
+// import { BigNumber } from "bignumber.js"
 
 
 class WithdrawView extends Component{
@@ -28,11 +28,6 @@ state = {
 }
 
 
-  // componentDidUpdate(prevProps){
-  //   if(prevProps.current_wallet !== this.props.current_wallet){
-  //     console.log(this.props.current_wallet)
-  //   }
-  // }
 
   async componentDidMount(){
     // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
@@ -50,41 +45,35 @@ state = {
   }
 
 
-  actualizarEstado_coin = async(e) =>{
-
-
-    this.setState({
-      value:e.target.value,
-    })
-
-      let value = await formatToCurrency(e.target.value, this.props.current_wallet.currency)
+  actualizarEstado_coin = async({target}) =>{
+      // if(RegExp(/[\.]/).test(val)){
+      //   this.props.action.mensaje('Debes separar decímales con coma ","', 'error')
+      // }
+      let value = await formatToCurrency(target.value, this.props.current_wallet.currency)
+      if(isNaN(value.toNumber()) || value.toNumber() === 'NaN'){return target.value = null}
       let min_amount = await formatToCurrency(this.props.withdraw_provider.provider.min_amount, this.props.current_wallet.currency)
-      console.log('validate_min_amount', value.isGreaterThanOrEqualTo(min_amount), this.props.withdraw_provider.provider.min_amount)
       this.setState({
+        value:value.toNumber(),
         validate_min_amount:value.isGreaterThanOrEqualTo(min_amount)
       })
-
-      // console.log('|||||||||||||||||||||||||||||||||||||||||| Format currency response ====>>>', this.props.current_wallet.currency.currency, value, min_amount)
   }
 
   actualizarEstado = async({target}) =>{
     // AddressValidator
-    // alert('puto')
     const {
       current_wallet
     } = this.props
 
-  let value = target.value.replace(' ', '')
-
+  // console.log('|||||||||||||| CURRENT TARGET', target.value)
+  let value = target.value.replace(/[^a-zA-Z0-9]/g, '');
+  // console.log('|||||||||||||| VALUE', value)
   let addressVerify = await AddressValidator.validate(value, current_wallet.currency.currency === 'bitcoin_testnet' ? 'bitcoin' : current_wallet.currency.currency)
-  // let addressVerify = await AddressValidator.validate(target.value, 'bitcoin')
 
-  // console.log('AddressValidator', target.value.length)
     this.setState({
       address:value,
       addressVerify:addressVerify ? 'Verify' : (value.length>20 && !addressVerify) ? 'NoVerify' : '',
       active:addressVerify
-    })
+    }, () => target.value = value)
   }
 
 
@@ -241,7 +230,7 @@ const { value, active, addressVerify, show_last_address, address_value, verified
 let movil_viewport = window.innerWidth < 768
 
 
-// console.log('||||||||||||||||||||||||| WITHDRAW ==>  last_address ==> ', last_address)
+// console.log('||||||||||||||||||||||||| WITHDRAW ==>  address_value ==> ', address_value)
 
 const atributos ={
   icon:'withdraw2',
@@ -268,16 +257,12 @@ const atributos ={
           :
           <Fragment>
           { current_wallet.currency_type !== 'fiat' ?
-              <section className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
-
-
+              <form id="withdrawForm" className={`WithdrawView ${!withdraw_provider ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
                 {/* <div className="ImportantInfo">
                   <p className="fuente soloAd">Retiro mínimo: 0.002 {short_name}</p>
                   <p className="fuente soloAd der">Limite de retiro por día: 1 {short_name}</p>
                 </div> */}
-
-
 
               {
                 this.props.loader &&
@@ -285,8 +270,6 @@ const atributos ={
                   label="Procesando tu retiro"
                 />
               }
-
-
 
               {
                           withdraw_provider ?
@@ -372,7 +355,7 @@ const atributos ={
               }
 
 
-              </section>
+            </form>
 
 
               :

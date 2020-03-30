@@ -1,15 +1,11 @@
 import React, {Fragment} from 'react'
-import getCroppedImg from './cropImage'
 import { ButtonForms } from '../buttons/buttons'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-
-
-import Cropper from 'react-easy-crop'
+import CropperIMG from './Cropper/CropperIMG'
 import './styles.css'
-
-const minZoom = 0.4
+import getCroppedImg from './Cropper/do-img-crop'
 
 
 class CropImg extends React.Component {
@@ -17,9 +13,10 @@ class CropImg extends React.Component {
   state = {
     imageSrc: null,
     crop: { x: 0, y: 0 },
-    zoom: minZoom,
+    zoom: 1,
     aspect: 4 / 3,
     croppedAreaPixels: null,
+    imgRotation: 0,
     croppedImage: null
   }
 
@@ -28,9 +25,9 @@ class CropImg extends React.Component {
     this.setState({ crop })
   }
 
-  onCropComplete = (croppedArea, croppedAreaPixels) => {
+  onCropComplete = (croppedAreaPixels, imgRotation) => {
     // console.log(croppedArea, croppedAreaPixels)
-    this.setState({ croppedAreaPixels})
+    this.setState({ croppedAreaPixels, imgRotation })
   }
 
   onZoomChange = zoom => {
@@ -63,9 +60,9 @@ class CropImg extends React.Component {
   // }
 
 
-  showCroppedImage = async () => {
+  showCroppedImage = async (img, cropArea, rotation) => {
     await this.props.action.Loader(true)
-    const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels)
+    const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels, this.state.imgRotation)
     // return console.log('showCroppedImage', croppedImage)
     if(!croppedImage){return this.props.action.Loader(false)}
 
@@ -100,8 +97,7 @@ class CropImg extends React.Component {
           this.state.imageSrc &&
 
           <Fragment>
-            <div className="crop-container">
-              <Cropper
+              {/* <Cropper
                 minZoom={minZoom}
                 image={this.state.imageSrc}
                 crop={this.state.crop}
@@ -110,8 +106,8 @@ class CropImg extends React.Component {
                 onCropChange={this.onCropChange}
                 onCropComplete={this.onCropComplete}
                 onZoomChange={this.onZoomChange}
-              />
-            </div>
+              /> */}
+              <CropperIMG onCropComplete={this.onCropComplete} image={this.state.imageSrc} />
             <div className="ImgCropcontrols">
 
                     <ButtonForms

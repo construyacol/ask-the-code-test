@@ -1,6 +1,29 @@
 import { BigNumber } from "bignumber.js"
 import store from '../'
 
+  // export const getFormatCurrency = async(short_currency, amount) => {
+  //
+  //   let config = {
+  //     "bitcoin":BigNumber.clone({DECIMAL_PLACES:8}),
+  //     "bitcoin_testnet":8,
+  //     "usd":BigNumber.clone({DECIMAL_PLACES: 3}),
+  //     "ethereum":BigNumber.clone({DECIMAL_PLACES: 8}),
+  //     "cop":BigNumber.clone({DECIMAL_PLACES: 3}),
+  //     "bitcoin_fee":BigNumber.clone({DECIMAL_PLACES: 6}),
+  //     "bitcoin_testnet_fee":BigNumber.clone({DECIMAL_PLACES: 6}),
+  //     "usd_fee":BigNumber.clone({DECIMAL_PLACES: 2}),
+  //     "ethereum_fee":BigNumber.clone({DECIMAL_PLACES: 6}),
+  //     "cop_fee":BigNumber.clone({DECIMAL_PLACES: 0})
+  //   }
+  //   let x = new BigNumber(amount)
+  //   return x.decimalPlaces(config[short_currency.currency]).toFormat()
+  //   // console.log('short_currency.currency', short_currency.currency)
+  //   // return config[short_currency.currency](amount).toFormat()
+  //
+  // }
+
+
+
   export const formatToCurrency = async(n, short_currency, toFormat, delete_surplus_decimals = true) =>{
 
 

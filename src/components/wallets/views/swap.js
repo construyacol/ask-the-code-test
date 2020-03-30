@@ -27,6 +27,7 @@ class SwapView extends Component{
   }
 
   componentDidUpdate(prevProps){
+
     if(prevProps.current_pair.secondary_coin !== this.props.current_pair.secondary_coin && this.state.value){
       // console.log('|||||||||||||| SWAP UPDATE PASS CONDITIONAL ==========>', this.props.current_pair)
       // alert('cambio de moneda')
@@ -42,21 +43,27 @@ class SwapView extends Component{
     // console.log('||||||||||||||||||||||| CURRENT BY init_state', res)
   }
 
-  actualizarEstado_coin = (e) =>{
+  actualizarEstado_coin = async({target, preventDefault}) =>{
     // return alert()
     if(!this.props.current_pair.secondary_value){return}
-    let value = e.target.value
+    let value = target.value
     let { available, current_wallet } = this.props
     if(current_wallet.currency_type === 'fiat'){
-      value = String(e.target.value).replace(/,/g, '') || '0'
-      if (isNaN(value) || value === 'NaN') {
-        return e.preventDefault()
+      value = String(target.value).replace(/,/g, '') || '0'
+      if (isNaN(value) || value === 'NaN'){
+        return preventDefault()
       }
+    }else{
+      value = await formatToCurrency(target.value, current_wallet.currency)
+      if(isNaN(value.toNumber()) || value.toNumber() === 'NaN'){return target.value = null}
     }
+    // const total_value = await this.get_total_value(value)
+
     this.setState({
-      value:value,
-      active: ((parseFloat(value) <= parseFloat(available))) ? true : false
+      value:current_wallet.currency_type === 'fiat' ? value : value.toNumber(),
+      active: parseFloat(value) <= parseFloat(available) ? true : false
     })
+
   }
 
   actualizarEstado = (e) =>{
@@ -245,7 +252,9 @@ class SwapView extends Component{
   }
 
 
-
+getTotalValue = (total_value) => {
+  this.setState({total_value})
+}
 
 
 
@@ -259,7 +268,6 @@ render(){
   let movil_viewport = window.innerWidth < 768
 
   // console.log('|||||||||| VALUE STATAE', typeof(available), current_pair)
-  // console.log('|||||||||| VALUE STATAE', value)
 
 
 
@@ -271,7 +279,7 @@ render(){
         label="Consultando Billetera"
       />
         :
-        <section className={`SwapView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
+        <form id="swapForm" className={`SwapView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
           {
             loader &&
@@ -309,7 +317,7 @@ render(){
               <p className="fuente title soloAd3">Recibo:</p>
 
               <ReadReceiveCoin
-                active={active && secondary_coin && available>0 && value > 0}
+                active={(active && secondary_coin) && (available>0 && value > 0)  && total_value}
                 clase={true} //retiro los estilos que vienen por defecto
                 placeholder="Total a recibir"
                 getMaxAvailable={this.getMaxAvailable}
@@ -325,13 +333,15 @@ render(){
                 account_type={current_wallet.currency_type}
                 // loader={loader}
                 getOtherPairs={this.getOtherPairs}
-                total_value={total_value}
+                getTotalValue={this.getTotalValue}
+                // name="received"
+                // total_value={total_value}
               />
             </div>
 
             <div className="WSection3">
               <ButtonForms
-                active={active && secondary_coin && available>0 && value > 0}
+                active={(active && secondary_coin) && (available>0 && value > 0) && total_value}
                 // active={(value>0 && value<=current_wallet.available) ? true : false}
                 clases="cenVert"
                 ancho="200px"
@@ -343,7 +353,7 @@ render(){
               </ButtonForms>
             </div>
 
-          </section>
+          </form>
     }
     </Fragment>
   )

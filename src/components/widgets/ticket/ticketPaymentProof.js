@@ -109,7 +109,7 @@ render(){
     <div className={`TicketPaymentProof ${clases} `} style={{transform:fileloader ? 'translateY(-50%)' : 'translateY(0%)' }}>
 
         <div className="ctaPaymentProof fuente" >
-          <input id="TFileUpload" type="file" onChange={this.goFileLoader} />
+          <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={this.goFileLoader} />
 
           <p className="titlePayment"><img src={imgTouch} alt="" width="70"/>Toca para subir tu comprobante de pago</p>
 
