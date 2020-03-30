@@ -247,7 +247,7 @@ function mapStateToProps(state, props) {
     have_items: user[path] && user[path].length,
     deposit_providers: path !== 'wallets' ? null : state.modelData.deposit_providers,
     withdraw_providers: withdraw_provider_list,
-    user: state.modelData.user[state.modelData.user_id],
+    user: state.modelData.user,
     loader: state.isLoading.loader
   }
 }

@@ -1046,7 +1046,7 @@ export const getSwapList = () => {
 
     const { modelData } = getState()
     const { wallets } = modelData
-    const user = modelData.user[modelData.user_id]
+    const user = modelData.user
 
 
     await dispatch(appLoadLabelAction('Obteniendo tus registros de intercambios'))

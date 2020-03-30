@@ -35,7 +35,7 @@ export const get_fiat_accounts_by_userId = (userId) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
 
     let filter = `filter={"where": {"currency_type": "fiat"}}`
     const url_accounts = `${AccountApiUrl}users/${user.id}/accounts?country=${user.country}&${filter}`

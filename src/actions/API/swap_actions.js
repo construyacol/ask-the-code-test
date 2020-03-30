@@ -40,7 +40,7 @@ export const get_swaps = (account_id) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
     const { wallets } = getState().modelData
 
     let filter = `{"where":{"or":[{"account_to":"${account_id}"}, {"account_from":"${account_id}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`

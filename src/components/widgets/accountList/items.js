@@ -309,7 +309,7 @@ function mapStateToProps(state, props){
     balances:balances ? balances[wallet.id] : null,
     current_view:state.ui.current_section.view,
     localCurrency:state.modelData.pairs.localCurrency,
-    user:state.modelData.user[state.modelData.user_id]
+    user:state.modelData.user
   }
 
 }
