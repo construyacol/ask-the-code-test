@@ -229,7 +229,7 @@ function mapStateToProps(state, props){
 
   return{
     active_trade_operation:state.ui.current_section.params.active_trade_operation,
-    user:user[user_id],
+    user:user,
     current_wallet,
     loader,
     local_currency:state.modelData.pairs.localCurrency,

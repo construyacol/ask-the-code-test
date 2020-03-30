@@ -144,7 +144,7 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state, props){
   const { user, user_id } = state.modelData
   return{
-    user:user[user_id]
+    user:user
   }
 }
 

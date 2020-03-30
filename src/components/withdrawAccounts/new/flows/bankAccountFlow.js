@@ -338,7 +338,7 @@ function mapStateToProps(state, props){
   const { user, user_id, withdraw_providers  } = state.modelData
 
   let withdraw_providers_list = []
-  user[user_id].withdraw_providers.map((wp)=>{
+  user.withdraw_providers.map((wp)=>{
     if(withdraw_providers[wp].provider_type !== 'bank'){return false}
     return withdraw_providers_list.push(withdraw_providers[wp])
   })
@@ -348,7 +348,7 @@ function mapStateToProps(state, props){
 
   return{
     withdraw_providers_list:withdraw_providers_list,
-    user:user[user_id]
+    user:user
   }
 
 }

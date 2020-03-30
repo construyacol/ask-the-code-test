@@ -76,7 +76,7 @@ function mapStateToProps(state, props){
                            verification_state === 'pending' && 'kyc_advanced'
 
   return {
-      user:user[user_id],
+      user:user,
       video:videos[verification_video],
       verification_state
   }

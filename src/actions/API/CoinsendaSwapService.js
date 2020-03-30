@@ -11,7 +11,7 @@ export class CoinsendaSwapService extends WebService {
         const { user } = this.state.modelData
 
         const body = {
-            // "access_token":user[user_id].userToken,
+            // "access_token":user.userToken,
             "data": {
                 "want_to_spend": value.toString(),
                 "pair_id": pairId,

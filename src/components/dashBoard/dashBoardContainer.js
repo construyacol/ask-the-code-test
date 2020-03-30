@@ -154,7 +154,7 @@ function mapStateToProps(state, props){
     const { currentPair } = state.modelData.pairs
 
   return{
-    user:user[user_id],
+    user:user,
     primary_path:props.match.params && props.match.params.primary_path,
     currentPair
   }

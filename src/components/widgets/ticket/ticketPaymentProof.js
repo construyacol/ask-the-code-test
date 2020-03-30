@@ -147,7 +147,7 @@ function mapStateToProps(state, props){
 
   return{
     loader:state.isLoading.loader,
-    user:user[user_id]
+    user:user
   }
 }
 

@@ -290,7 +290,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     step:state.form.form_kyc_avanced.step,
     base64:state.form.form_kyc_avanced.base64,
-    user:user[user_id],
+    user:user,
     current
   }
 }

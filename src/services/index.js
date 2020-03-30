@@ -138,7 +138,7 @@ export const update_activity_state = (account_id, activity_type, activity_list) 
 export const normalized_list = (activity_list, activity_type) => {
   return async(dispatch, getState) => {
 
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
 
     let list = await arrayToObject(activity_list)
     if(getState().modelData[activity_type]){
@@ -156,8 +156,8 @@ export const normalized_list = (activity_list, activity_type) => {
       }
     }
 
-    let normalizeUser = await normalizeUser(user_update)
-    await dispatch(updateNormalizedDataAction(normalizeUser))
+    let normalizedUser = await normalizeUser(user_update)
+    await dispatch(updateNormalizedDataAction(normalizedUser))
 
 
   }
@@ -306,7 +306,7 @@ export const serveBankOrCityList = (list, type) => {
 export const get_order_by_id = (order_id, order_type) => {
 
   return async(dispatch, getState) => {
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
     const apiUrl = order_type === 'deposits' ? DepositApiUrl : order_type === 'withdraws' ? WithdrawApiUrl : SwapApiUrl
 
     let filter = `{"where":{"id":"${order_id}"}}`
@@ -395,9 +395,9 @@ export const serveKycData = (list) => {
     return new Promise(async(resolve, reject)=>{
       const { kyc_basic } = kyc
       const { user, user_id } = store.getState().modelData
-      let kyc_model = kyc_basic[user[user_id].person_type]
+      let kyc_model = kyc_basic[user.person_type]
 
-      // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user[user_id].person_type])
+      // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user.person_type])
       // console.log('|||||| LISTA RECIBIDA BACKENND', list)
 
       let new_list = []
@@ -552,7 +552,7 @@ export const serve_orders = async(account_id, filter) =>{
   const { user, user_id } = store.getState().modelData
 
   let list = modelData[filter]
-  let indices = user[user_id][filter]
+  let indices = user[filter]
 
   // console.log('°°°°||||||||||||||| ORDER SERVIDAS2 ', list, indices)
 

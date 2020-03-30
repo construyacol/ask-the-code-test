@@ -136,7 +136,7 @@ function mapStateToProps(state, props){
 
   return{
     appLoadLabel:state.isLoading.appLoadLabel,
-    user:user && user[user_id],
+    user:user,
     wallets,
     all_pairs,
     country:null,

@@ -199,9 +199,9 @@ class SwapView extends Component{
     !initial && this.props.action.other_modal_toggle()
     if(currency_pairs){return false}
 
-    let pairs = await this.props.action.get_pair_from(currency, null, true)
+    let pairs = await this.props.action.getPairs(currency, null, true)
     if(pairs){all_pairs = [...pairs]}
-    let pairs2 = await this.props.action.get_pair_from(null, currency, true)
+    let pairs2 = await this.props.action.getPairs(null, currency, true)
     if(pairs2){all_pairs = [...all_pairs, ...pairs2]}
     // if(all_pairs.length<1){return (!initial && this.props.action.ConfirmationModalToggle())}
     if(all_pairs.length<1){return (!initial && this.props.action.other_modal_toggle())}
@@ -376,7 +376,7 @@ function mapStateToProps(state, props){
 
   return{
     loader:state.isLoading.loader,
-    user:user[user_id],
+    user:user,
     wallets,
     all_pairs,
     swaps:state.modelData.swaps,

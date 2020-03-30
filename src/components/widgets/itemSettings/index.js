@@ -279,7 +279,7 @@ function mapStateToProps(state, props){
   return{
     loader:state.isLoading.loader,
     advace_global_step:state.form.globalStep,
-    user:user[user_id]
+    user:user
   }
 }
 

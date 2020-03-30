@@ -169,7 +169,7 @@ function mapStateToProps(state, props){
     item_quote:state.ui.item_quote,
     loggedIn:state.auth.loggedIn,
     show_menu_principal:state.ui.current_section.params.show_menu_principal,
-    user:user && user[user_id]
+    user:user 
   }
 }
 

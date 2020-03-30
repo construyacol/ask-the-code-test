@@ -485,7 +485,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     short_name:state.ui.current_section.params.short_name,
     swap_done_out:state.ui.current_section.params.swap_done_out,
-    user:user[user_id],
+    user:user,
     current_activity_account:activity_for_account[current_wallet.id],
     activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][currentFilter],
     currencies:currency_list,

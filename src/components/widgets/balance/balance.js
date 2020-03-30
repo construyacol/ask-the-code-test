@@ -138,7 +138,7 @@ function mapStateToProps(state, props){
 
   return{
     balance:balances && balances[account_id],
-    user:user[user_id],
+    user:user,
     currency_type:state.modelData.wallets[account_id].currency_type,
     currency:state.modelData.wallets[account_id].currency
   }

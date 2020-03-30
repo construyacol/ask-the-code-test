@@ -663,13 +663,13 @@ function mapStateToProps(state, props){
   } = state.form.form_withdraw
 
   // console.log('Antes de reeeeeeenderizar : : : : ',state.form.form_withdraw)
-  let withdraw_providers_list = user[user_id].withdraw_providers.map((id_prov)=>{
+  let withdraw_providers_list = user.withdraw_providers.map((id_prov)=>{
     return withdraw_providers[id_prov]
   })
 
   let withdraw_account_list = []
 
-  user[user_id].withdraw_accounts.map(account_id => {
+  user.withdraw_accounts.map(account_id => {
     // if(withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || !withdraw_accounts[account_id].inscribed){return false}
     if(withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible){return false}
     return withdraw_account_list.push(withdraw_accounts[account_id])
@@ -684,8 +684,8 @@ function mapStateToProps(state, props){
     account_id:params.account_id,
     withdraws,
     currency_type:current_wallet && current_wallet.currency_type,
-    user:user[user_id],
-    country:user[user_id].country,
+    user:user,
+    country:user.country,
     currency:current_wallet && current_wallet.currency.currency,
     available:current_wallet && balances && balances[current_wallet.id].available,
     current:state.form.current,

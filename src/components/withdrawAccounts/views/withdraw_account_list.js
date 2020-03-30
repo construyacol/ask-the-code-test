@@ -190,7 +190,7 @@ new_account = () =>{
 
     if(!withdraw_account_list){
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta
-      user[user_id].withdraw_accounts.map(account_id => {
+      user.withdraw_accounts.map(account_id => {
         if(withdraw_accounts[account_id].currency_type !== currency_type || !withdraw_accounts[account_id].visible){return false}
         return withdraw_account_list.push(withdraw_accounts[account_id])
       })

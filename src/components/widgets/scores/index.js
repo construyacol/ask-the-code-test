@@ -127,7 +127,7 @@ function mapStateToProps(state, props){
   const { verification_state } = state.ui
 
   return{
-    user:user[user_id],
+    user:user,
     menu_item_active:state.ui.menu_item_active,
     verification_state
     // user:state.modelData.user ? user : null

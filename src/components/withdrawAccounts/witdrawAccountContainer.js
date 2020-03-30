@@ -164,11 +164,11 @@ function mapStateToProps(state, props){
     isAppLoaded
   } = state.isLoading
 
-  // console.log('|||||||| withdraw_accounts', user[user_id], user[user_id].withdraw_accounts)
+  // console.log('|||||||| withdraw_accounts', user, user.withdraw_accounts)
 
   return{
-    withdraw_accounts:user[user_id].withdraw_accounts,
-    user:user[user_id],
+    withdraw_accounts:user.withdraw_accounts,
+    user:user,
     current_wallet:state.ui.current_section.params.current_wallet,
     currencies:state.modelData.currencies || null,
     isAppLoaded

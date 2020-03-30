@@ -57,7 +57,6 @@ class LoaderAplication extends Component {
       logOut,
       // email
     } = authData
-    console.log('|||||||| authData ==>', authData)
 
     const {
       action
@@ -151,6 +150,7 @@ class LoaderAplication extends Component {
     let user = await action.get_user(userToken, user_country, profile.userId, authData.email, profile.restore_id)
     // console.log('===================================>>>>   tx profile', profile)
     // alert('user')
+    
     if(!user){return false}
 
 
@@ -298,14 +298,14 @@ class LoaderAplication extends Component {
 
 function mapStateToProps(state){
 
-  const { user, user_id,  wallets, all_pairs, authData } = state.modelData
+  const { user,  wallets, all_pairs, authData } = state.modelData
   // const { loader } = state.isLoading
-  console.log(authData)
+  
   const { loggedIn } = state.auth
 
   return{
     appLoadLabel:state.isLoading.appLoadLabel,
-    user:user && user[user_id],
+    user:user,
     wallets,
     all_pairs,
     loggedIn,

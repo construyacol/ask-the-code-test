@@ -42,25 +42,25 @@ export class CoinsendaPairsService extends WebService {
             const secondaryShortName = matchItem(currencies, { primary: localCurrency }, 'currency')
             const primaryShortName = matchItem(currencies, { primary: value.primary_currency.currency }, 'currency')
             if (secondaryShortName && primaryShortName) {
-                return result.push({
+                result.push({
                     ...value,
                     secondaryShortName: secondaryShortName[0].symbol,
                     primaryShortName: primaryShortName[0].symbol
                 })
+                return result
             }
-            return false
         }, [])
     }
 
-    async getloadLocalCurrencyAction(country) {
+    async getLocalCurrency(country) {
         const countryCurrency = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`)
 
         if (this.isEmpty(countryCurrency)) return
 
         const localCurrencyId = countryCurrency[0].currency_id
-        const localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`)
-
+        let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`)
         if (this.isEmpty(localCurrencyData)) return
+        localCurrencyData = localCurrencyData[0]
 
         return {
             currency: localCurrencyData.currency,
@@ -77,7 +77,7 @@ export class CoinsendaPairsService extends WebService {
 
     async getPairsByCountry(country, userCollection) {
         const { currencies } = this.state.modelData
-        const localCurrency = await this.getloadLocalCurrencyAction(country)
+        const localCurrency = await this.getLocalCurrency(country)
 
         if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
 

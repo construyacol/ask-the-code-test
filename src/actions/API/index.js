@@ -78,7 +78,7 @@ export const generate_headers = (token) =>{
     if(!token){
       const { user, user_id } = getState().modelData
       console.log(user, user_id)
-        token = user[user_id].userToken
+        token = user.userToken
     }
 
     let myHeaders = {

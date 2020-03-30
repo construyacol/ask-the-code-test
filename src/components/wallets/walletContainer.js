@@ -196,7 +196,7 @@ function mapStateToProps(state, props){
 
   return{
     all_pairs,
-    user:user[user_id],
+    user:user,
     // current_wallet:current_wallet,
     currencies:state.modelData.currencies || null,
     wallets,

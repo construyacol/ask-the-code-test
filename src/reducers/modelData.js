@@ -113,6 +113,9 @@ const data = (state = initialState, action) => {
       return {
         ...state,
         ...models,
+        user: {
+          ...models.user[user_id],
+        },
         user_id
       }
 

@@ -1,42 +1,45 @@
 import { HistoricalPriceService } from "./HistoricalPricesService";
 import { CoinsendaPairsService } from "./CoinsendaPairsService";
+import { CoinsendaReferralService } from "./CoinsendaReferralService";
+import { CoinsendaWithdrawService } from "./CoinsendaWithdrawService";
+import { CoinsendaIndetityService } from "./CoisendaIndetityService";
+import { CoinsendaDepositService } from "./CoinsendaDepositService";
+import { CoinsendaSwapService } from "./CoinsendaSwapService";
 
-class MultiClass {
-    static inherit(..._bases) {
-        class classes {
-
-            get base() { return _bases; }
-
-            constructor(..._args) {
-                var index = 0;
-
-                for (let b of this.base) {
-                    let obj = new b(_args[index++]);
-                    MultiClass.copy(this, obj);
-                }
-            }
-
-        }
-
-        for (let base of _bases) {
-            MultiClass.copy(classes, base);
-            MultiClass.copy(classes.prototype, base.prototype);
-        }
-
-        return classes;
-    }
-
-    static copy(_target, _source) {
-        for (let key of Reflect.ownKeys(_source)) {
-            if (key !== "constructor" && key !== "prototype" && key !== "name") {
-                let desc = Object.getOwnPropertyDescriptor(_source, key);
-                Object.defineProperty(_target, key, desc);
-            }
+const aggregation = (baseClass, ...mixins) => {
+    let base = class _Combined extends baseClass {
+        constructor (...args) {
+            super(...args)
+            mixins.forEach((mixin) => {
+                mixin.prototype.initializer && mixin.prototype.initializer.call(this)
+            })
         }
     }
+    let copyProps = (target, source) => {
+        Object.getOwnPropertyNames(source)
+            .concat(Object.getOwnPropertySymbols(source))
+            .forEach((prop) => {
+            if (prop.match(/^(?:constructor|prototype|arguments|caller|name|bind|call|apply|toString|length)$/))
+                return
+            Object.defineProperty(target, prop, Object.getOwnPropertyDescriptor(source, prop))
+        })
+    }
+    mixins.forEach((mixin) => {
+        copyProps(base.prototype, mixin.prototype)
+        copyProps(base, mixin)
+    })
+    return base
 }
 
-export class MainService extends CoinsendaPairsService {
+const inheritances = aggregation(
+    CoinsendaPairsService,
+    CoinsendaReferralService,
+    CoinsendaWithdrawService,
+    CoinsendaIndetityService,
+    CoinsendaDepositService,
+    CoinsendaSwapService
+);
+export class MainService extends inheritances{
     constructor(dispatch, state, token) {
         super()
         this.dispatch = dispatch

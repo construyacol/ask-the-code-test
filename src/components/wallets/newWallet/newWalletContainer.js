@@ -159,7 +159,7 @@ class NewWallet extends Component{
 function mapStateToProps(state, props){
   // console.log('R E N D E R I Z A N D O  - - -- -  NEW WALLET -----::: ', state)
   const { user_id } = state.modelData
-  const user = state.modelData.user[user_id]
+  const user = state.modelData.user
 
   return {
     search:state.form.search_coin,

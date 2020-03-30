@@ -444,10 +444,10 @@ function mapStateToProps(state, props){
 
   // servir proveedores de retiros
   if(withdraw_providers){
-  user[user_id].withdraw_providers.map((provider_id)=>{
+  user.withdraw_providers.map((provider_id)=>{
 
     if(withdraw_providers[provider_id].currency_type !== 'crypto'){return false}
-    if(withdraw_providers[provider_id].country !== user[user_id].country){return false}
+    if(withdraw_providers[provider_id].country !== user.country){return false}
 
     return wit_prov_list = {
       ...wit_prov_list,
@@ -463,7 +463,7 @@ let withdraw_list = []
 
 
 if(withdraws && withdraw_accounts && current_wallet){
-  user[user_id].withdraws.map((withdraw_id)=>{
+  user.withdraws.map((withdraw_id)=>{
     if(withdraws[withdraw_id].account_id === current_wallet.id && withdraws[withdraw_id].state==='accepted'){
       // console.log('withdraws list =============> |°°°°°°°°°°°°°°°°°', withdraw_id)
       return withdraw_list.push(withdraws[withdraw_id])
@@ -476,7 +476,7 @@ if(withdraws && withdraw_accounts && current_wallet){
 let withdraw_account_list
 
 if(withdraw_accounts){
-  user[user_id].withdraw_accounts.map((account_id)=>{
+  user.withdraw_accounts.map((account_id)=>{
     if(withdraw_accounts[account_id].currency_type !== 'crypto'){return false}
       return withdraw_account_list = {
         ...withdraw_account_list,
@@ -501,7 +501,7 @@ if(withdraw_accounts){
     withdraws:state.storage.activity_for_account[params.account_id] && state.storage.activity_for_account[params.account_id].withdraws,
     available_address:withdraw_account_list,
     withdraw_providers:null,
-    user:user[user_id],
+    user:user,
     last_address:null
     // last_address:(current_wallet && current_wallet.currency_type === 'crypto') && (withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value)
   }

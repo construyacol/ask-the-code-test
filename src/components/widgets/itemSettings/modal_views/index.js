@@ -296,7 +296,7 @@ function mapStateToProps(state, props){
 
   return{
     params:state.ui.current_section.params.settings,
-    user:user[user_id]
+    user:user
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (ModalSettingsView)

@@ -211,7 +211,7 @@ function mapStateToProps(state, props){
   return{
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
-    user:user[user_id],
+    user:user,
     form_kyc_basic:state.form.form_kyc_basic,
     current
   }

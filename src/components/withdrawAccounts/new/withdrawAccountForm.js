@@ -279,7 +279,7 @@ function mapStateToProps(state, props){
   const { withdraw_flow } = props
   const { user, user_id, withdraw_providers } = state.modelData
 
-  let withdraw_provider_list = user[user_id].withdraw_providers.map(w_id => {
+  let withdraw_provider_list = user.withdraw_providers.map(w_id => {
     return withdraw_providers[w_id]
   })
 
@@ -291,7 +291,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     current:state.form.current,
     step:withdraw_flow ? state.form.form_withdraw.step : state.form.form_bank.step,
-    user:user[user_id]
+    user:user
   }
 }
 

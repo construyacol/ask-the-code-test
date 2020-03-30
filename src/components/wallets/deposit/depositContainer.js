@@ -624,7 +624,7 @@ function mapStateToProps(state, props){
   } = state.modelData
 
   let deposit_providers_list = []
-  user[user_id].deposit_providers.map(provider_id => {
+  user.deposit_providers.map(provider_id => {
     if(deposit_providers[provider_id].currency_type !== 'fiat'){return false}
     return deposit_providers_list.push(deposit_providers[provider_id])
   })
@@ -654,7 +654,7 @@ function mapStateToProps(state, props){
     services:globalServices,
     redux_route:state.ui.menu_item_active,
     wallets:wallets,
-    user:user[user_id],
+    user:user,
     localCurrency:pairs.localCurrency,
     current_wallet,
     deposits:state.storage.activity_for_account[account_id] && state.storage.activity_for_account[account_id].deposits,

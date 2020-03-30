@@ -1,7 +1,7 @@
 import { WebService } from "./WebService";
 import { appLoadLabelAction } from "../loader";
 import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "./const";
-import userDefaultState from '../components/api'
+import userDefaultState from '../../components/api'
 import { objectToArray, addIndexToRootObject } from "../../services";
 import normalizeUser from "../../schemas";
 import { verificationStateAction } from "../uiActions";

@@ -471,11 +471,11 @@ const mapStateToProps = (state, props) =>{
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)
 
   const { loggedIn } = state.auth
-  const { user, user_id, deposits, withdraws } = state.modelData
+  const { user, deposits, withdraws } = state.modelData
 
   return{
     loggedIn,
-    user:user && user[user_id],
+    user:user,
     deposits,
     withdraws,
     activity_for_account:state.storage.activity_for_account

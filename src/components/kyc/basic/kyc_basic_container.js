@@ -494,7 +494,7 @@ function mapStateToProps(state, props){
       ...state.form.form_kyc_basic,
       current:state.form.current,
       form_kyc_basic_state:state.form.form_kyc_basic,
-      user:user[user_id],
+      user:user,
       loader:state.isLoading.loader
   }
 

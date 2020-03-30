@@ -43,7 +43,7 @@ export const get_deposits = (account_id) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
 
     let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
@@ -132,7 +132,7 @@ export const create_deposit_provider = (account_id, country) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().modelData.user[getState().modelData.user_id]
+    const user = getState().modelData.user
     // const {  } = getState().modelData
     let body = {
       "data": {
@@ -223,7 +223,7 @@ export const get_one_deposit = (deposit_id) =>{
   return async(dispatch, getState) => {
 
     const { user_id }  = getState().modelData
-    const user = getState().modelData.user[user_id]
+    const user = getState().modelData.user
 
     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter={"where": {"id":"${deposit_id}"}, "include":{"relation":"paymentProof"}}`
 
@@ -272,7 +272,7 @@ export const validate_address = (address) =>{
   return async(dispatch, getState) => {
 
     const { user_id }  = getState().modelData
-    const user = getState().modelData.user[user_id]
+    const user = getState().modelData.user
 
     const url_address = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
     let myHeaders = await dispatch(generate_headers(user.userToken))

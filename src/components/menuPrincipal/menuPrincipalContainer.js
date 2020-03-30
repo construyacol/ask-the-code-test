@@ -110,7 +110,7 @@ MenuPrincipalContainer.propTypes = {
     const { verification_state } = state.ui
 
     return{
-      user:user && user[user_id],
+      user:user ,
       path,
       show_menu_principal:state.ui.current_section.params.show_menu_principal,
       verification_state
