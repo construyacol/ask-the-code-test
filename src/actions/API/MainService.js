@@ -128,16 +128,16 @@ const sleep = (time) => new Promise(resolve => {
 
 export const useCoinsendaServices = (authData) => {
     const dispatch = useDispatch()
-    const rState = useSelector(state => state)
-    mainService.initialize(dispatch, rState, authData.userToken)
+    const reduxState = useSelector(state => state)
+    mainService.initialize(dispatch, reduxState, reduxState.modelData.authData.userToken)
 
     useEffect(() => {
-        mainService.setGlobalState(rState)
-    }, [rState])
+        mainService.setGlobalState(reduxState)
+    }, [reduxState])
 
     // useEffect(() => {
     //     services._globalState = state
     // }, [state])
 
-    return mainService;
+    return [mainService, reduxState];
 }

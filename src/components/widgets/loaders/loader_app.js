@@ -14,8 +14,10 @@ function LoaderAplication(props) {
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
-  const previousLoadLabel = usePrevious(props.appLoadLabel)
-  const coinsendaServices = useCoinsendaServices(props.authData)
+  const [coinsendaServices, reduxState] = useCoinsendaServices()
+  const { authData } = reduxState.modelData
+  const { appLoadLabel } = reduxState.isLoading
+  const previousLoadLabel = usePrevious(appLoadLabel)
 
   const registerColors = () => {
     if ((window && window.CSS) && window.CSS.registerProperty) {
@@ -35,7 +37,7 @@ function LoaderAplication(props) {
   }
 
   const initComponent = async (newCountry) => {
-    const { authData, actions } = props
+    const { actions } = props
     const {
       userToken,
       userId,
@@ -126,10 +128,10 @@ function LoaderAplication(props) {
   }, [])
 
   useEffect(() => {
-    if (previousLoadLabel !== props.appLoadLabel) {
+    if (previousLoadLabel !== appLoadLabel) {
       setProgressBarWidth(progressBarWidth + 8)
     }
-  }, [props.appLoadLabel])
+  }, [appLoadLabel])
 
   return (
     <div className={`LoaderAplication ${!country ? 'withOutContry' : ''}`}>
@@ -148,7 +150,7 @@ function LoaderAplication(props) {
               <Coinsenda size={50} color="white" />
               <h1 className="fuente">Coinsenda</h1>
             </div>
-            <p className="fuente">{props.appLoadLabel}</p>
+            <p className="fuente">{appLoadLabel}</p>
           </div>
       }
       <div className="KycprogressBar loader">
@@ -159,23 +161,6 @@ function LoaderAplication(props) {
   )
 }
 
-function mapStateToProps(state) {
-
-  const { user, wallets, all_pairs, authData } = state.modelData
-  // const { loader } = state.isLoading
-
-  const { loggedIn } = state.auth
-
-  return {
-    appLoadLabel: state.isLoading.appLoadLabel,
-    user: user,
-    wallets,
-    all_pairs,
-    loggedIn,
-    authData
-  }
-}
-
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -184,4 +169,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoaderAplication))
+export default connect({}, mapDispatchToProps)(withRouter(LoaderAplication))
