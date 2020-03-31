@@ -407,7 +407,7 @@ function mapStateToProps(state, props){
 
   const{
     balances,
-    withdraw_providers,
+    withdrawProviders,
     user,
     user_id,
     withdraw_accounts,
@@ -427,16 +427,16 @@ function mapStateToProps(state, props){
   let wit_prov_list = null
 
   // servir proveedores de retiros
-  if(withdraw_providers){
-  user.withdraw_providers.map((provider_id)=>{
+  if(withdrawProviders){
+  user.withdrawProviders.map((provider_id)=>{
 
-    if(withdraw_providers[provider_id].currency_type !== 'crypto'){return false}
-    if(withdraw_providers[provider_id].country !== user.country){return false}
+    if(withdrawProviders[provider_id].currency_type !== 'crypto'){return false}
+    if(withdrawProviders[provider_id].country !== user.country){return false}
 
     return wit_prov_list = {
       ...wit_prov_list,
-      [withdraw_providers[provider_id].provider_type]:{
-        ...withdraw_providers[provider_id]
+      [withdrawProviders[provider_id].provider_type]:{
+        ...withdrawProviders[provider_id]
       }
     }
 
@@ -484,7 +484,7 @@ if(withdraw_accounts){
     // withdraw_provider:null,
     withdraws:state.storage.activity_for_account[params.account_id] && state.storage.activity_for_account[params.account_id].withdraws,
     available_address:withdraw_account_list,
-    withdraw_providers:null,
+    withdrawProviders:null,
     user:user,
     last_address:null
     // last_address:(current_wallet && current_wallet.currency_type === 'crypto') && (withdraw_list.length>0 && withdraw_accounts[withdraw_list[0].withdraw_account].account_address.value)

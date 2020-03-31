@@ -1180,7 +1180,7 @@ export const getSwapList = () => {
 
 
 
-export const get_withdraw_accounts = (user, withdraw_providers) => {
+export const get_withdraw_accounts = (user, withdrawProviders) => {
   return async (dispatch, state) => {
     const { user } = state().modelData;
     let myHeaders = generate_headers(null, state)
@@ -1189,9 +1189,9 @@ export const get_withdraw_accounts = (user, withdraw_providers) => {
     const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}`
     // const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
     let withdraw_accounts = await ApiGetRequest(get_wAccounts_url, myHeaders)
-    if (!withdraw_accounts || withdraw_accounts === 465 || !withdraw_providers) { return false }
+    if (!withdraw_accounts || withdraw_accounts === 465 || !withdrawProviders) { return false }
 
-    let providers_served = await withdrawProvidersByType(withdraw_providers)
+    let providers_served = await withdrawProvidersByType(withdrawProviders)
     let new_withdraw_accounts = await withdraw_accounts.map(wa => {
 
       if (providers_served[wa.provider_type].currency_type === 'fiat') {
@@ -1304,21 +1304,21 @@ export const get_withdraw_providers = () => {
 
     let myHeaders = generate_headers(null, getState)
 
-    let withdraw_providers = await ApiGetRequest(get_wp_url, myHeaders)
-    // if(!withdraw_providers){withdraw_providers = withdraw_providersJSON}
+    let withdrawProviders = await ApiGetRequest(get_wp_url, myHeaders)
+    // if(!withdrawProviders){withdrawProviders = withdraw_providersJSON}
 
-    // console.log('!!!!!!!!!!!!!!!!!!!!!withdraw_providers', withdraw_providers)
+    // console.log('!!!!!!!!!!!!!!!!!!!!!withdrawProviders', withdrawProviders)
     // return alert('mmierda')
 
     let user_update = {
       ...user,
-      withdraw_providers: [
-        ...withdraw_providers
+      withdrawProviders: [
+        ...withdrawProviders
       ]
     }
     let normalizedUser = await normalizeUser(user_update)
     await dispatch(updateNormalizedDataAction(normalizedUser))
-    return withdraw_providers
+    return withdrawProviders
 
   }
 }

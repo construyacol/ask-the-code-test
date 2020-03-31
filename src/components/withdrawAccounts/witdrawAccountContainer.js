@@ -172,7 +172,7 @@ function mapStateToProps(state, props){
     current_wallet:state.ui.current_section.params.current_wallet,
     currencies:state.modelData.currencies || null,
     isAppLoaded
-    // ready:user && withdraw_accounts && withdraw_providers
+    // ready:user && withdraw_accounts && withdrawProviders
   }
 }
 

@@ -184,7 +184,7 @@ const WithdrawAccount = props => {
     console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
     props.action.exit_sound()
     set_account_state('deleted')
-    await props.action.get_withdraw_accounts(props.user, props.withdraw_providers)
+    await props.action.get_withdraw_accounts(props.user, props.withdrawProviders)
     props.action.mensaje(msg, success ? 'success' : 'error')
   }
 

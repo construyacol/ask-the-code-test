@@ -106,15 +106,18 @@ export class MainService extends inheritances {
         await this.getBalancesByAccount(this.user)
         await this.fetchDepositProviders()
         await this.getWalletsByUser()
+        await this.fetchWithdrawProviders()
+        await this.fetchWithdrawAccounts()
     }
 }
 
-decorate(MainService, {
-    _globalState: observable.deep,
-    setGlobalState: action,
-    user: computed,
-    globalState: computed
-})
+// preserve for future aplication
+// decorate(MainService, {
+//     _globalState: observable.deep,
+//     setGlobalState: action,
+//     user: computed,
+//     globalState: computed
+// })
 
 const mainService = new MainService()
 

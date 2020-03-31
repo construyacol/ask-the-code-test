@@ -335,12 +335,12 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state, props){
   // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : mapStateToProps withdraw PROVIDERS', state)
-  const { user, user_id, withdraw_providers  } = state.modelData
+  const { user, user_id, withdrawProviders  } = state.modelData
 
   let withdraw_providers_list = []
-  user.withdraw_providers.map((wp)=>{
-    if(withdraw_providers[wp].provider_type !== 'bank'){return false}
-    return withdraw_providers_list.push(withdraw_providers[wp])
+  user.withdrawProviders.map((wp)=>{
+    if(withdrawProviders[wp].provider_type !== 'bank'){return false}
+    return withdraw_providers_list.push(withdrawProviders[wp])
   })
 
   // console.log('---------------------------SIRVIENDO PROVEEDORES', withdraw_providers_list)

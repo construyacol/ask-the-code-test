@@ -13,74 +13,76 @@ import {
 import { updateNormalizedDataAction } from "../dataModelActions";
 import normalizeUser from "../../schemas";
 import { withdrawProvidersByType } from "../../services";
+import { toJS } from "mobx";
 
 export class CoinsendaWithdrawService extends WebService {
-    async fetchWithdrawAccounts(user, withdrawProviders) {
+    async fetchWithdrawAccounts() {
+        const { user, withdrawProviders } = this.globalState.modelData
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}`
 
         const result = await this.Get(finalUrl)
         if (!result || result === 465 || !withdrawProviders) { return false }
 
-        const providersServed = await withdrawProvidersByType(withdrawProviders)
+        const providersServed = await this.withdrawProvidersByType
 
-        const withdrawAccounts = await result.map(withdrawAccount => {
-            const aux = providersServed[withdrawAccount.provider_type];
+        const withdrawAccounts = await result.map(account => {
+            const aux = providersServed[account.provider_type];
             if (aux.currency_type === 'fiat') {
                 return {
-                    id: withdrawAccount.id,
+                    id: account.id,
                     account_number: {
                         ui_name: aux.info_needed.account_number.ui_name,
-                        value: withdrawAccount.info.account_number
+                        value: account.info.account_number
                     },
                     account_type: {
-                        ui_name: aux.info_needed.account_type[withdrawAccount.info.account_type].ui_name,
-                        value: withdrawAccount.info.account_type
+                        ui_name: aux.info_needed.account_type[account.info.account_type].ui_name,
+                        value: account.info.account_type
                     },
                     bank_name: {
-                        ui_name: aux.info_needed.bank_name[withdrawAccount.info.bank_name].ui_name,
-                        value: withdrawAccount.info.bank_name
+                        ui_name: aux.info_needed.bank_name[account.info.bank_name].ui_name,
+                        value: account.info.bank_name
                     },
                     city: {
-                        ui_name: aux.info_needed.city[withdrawAccount.info.city].ui_name,
-                        value: withdrawAccount.info.city
+                        ui_name: aux.info_needed.city[account.info.city].ui_name,
+                        value: account.info.city
                     },
-                    provider_name: withdrawAccount.info.bank_name,
-                    used_counter: withdrawAccount.used_counter,
-                    email: withdrawAccount.info.email,
-                    id_number: withdrawAccount.info.id_number,
-                    name: withdrawAccount.info.name,
-                    surname: withdrawAccount.info.surname,
-                    inscribed: withdrawAccount.used_counter > 0 ? true : false,
-                    visible: withdrawAccount.visible,
-                    provider_type: withdrawAccount.provider_type,
+                    provider_name: account.info.bank_name,
+                    used_counter: account.used_counter,
+                    email: account.info.email,
+                    id_number: account.info.id_number,
+                    name: account.info.name,
+                    surname: account.info.surname,
+                    inscribed: account.used_counter > 0 ? true : false,
+                    visible: account.visible,
+                    provider_type: account.provider_type,
                     provider_max_amount: aux.provider.max_amount,
                     provider_min_amount: aux.provider.min_amount,
                     currency_type: aux && aux.currency_type,
                     withdraw_provider: aux.id,
-                    ...withdrawAccount
+                    ...account
                 }
             }
             else {
                 return { //crypto case
-                    id: withdrawAccount.id,
+                    id: account.id,
                     account_name: {
                         ui_name: aux.info_needed.label.ui_name,
-                        value: withdrawAccount.info.label
+                        value: account.info.label
                     },
                     account_address: {
                         ui_name: aux.info_needed.address.ui_name,
-                        value: withdrawAccount.info.address
+                        value: account.info.address
                     },
-                    used_counter: withdrawAccount.used_counter,
-                    inscribed: withdrawAccount.used_counter > 0 ? true : false,
-                    visible: withdrawAccount.visible,
-                    provider_type: withdrawAccount.provider_type,
+                    used_counter: account.used_counter,
+                    inscribed: account.used_counter > 0 ? true : false,
+                    visible: account.visible,
+                    provider_type: account.provider_type,
                     provider_max_amount: aux.provider.max_amount,
                     provider_min_amount: aux.provider.min_amount,
                     currency_type: aux && aux.currency_type,
                     withdraw_provider: aux.id,
-                    ...withdrawAccount
+                    ...account
                 }
             }
 
@@ -97,8 +99,16 @@ export class CoinsendaWithdrawService extends WebService {
 
         const normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
-
         return withdrawAccounts
+    }
+
+    get withdrawProvidersByType() {
+        return this.withdrawProviders && this.withdrawProviders.reduce((result, provider) => {
+            return {
+                ...result,
+                [provider.provider_type]: provider
+            }
+        }, {}) 
     }
 
     async fetchWithdrawProviders() {
@@ -110,12 +120,13 @@ export class CoinsendaWithdrawService extends WebService {
 
         let updatedUser = {
             ...user,
-            withdraw_providers: [
+            withdrawProviders: [
                 ...withdrawProviders
             ]
         }
         let normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
+        this.withdrawProviders = withdrawProviders
         return withdrawProviders
     }
 

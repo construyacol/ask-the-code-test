@@ -19,7 +19,7 @@ class WithdrawFlow extends Component {
 
     state = {
       amount:"",
-      withdraw_providers:null,
+      withdrawProviders:null,
       need_new_acount:null,
       show_list_accounts:false,
       finish_step:false,
@@ -81,14 +81,14 @@ class WithdrawFlow extends Component {
         const{
           currency_type,
           country,
-          withdraw_providers,
+          withdrawProviders,
           have_withdraw_accounts
         } = this.props
 
         if(!have_withdraw_accounts){await this.setState({need_new_acount:true})}
         let available_providers = []
 
-        await withdraw_providers.map(provider => {
+        await withdrawProviders.map(provider => {
             if(
               provider.country === country &&
               provider.currency_type === currency_type &&
@@ -118,7 +118,7 @@ class WithdrawFlow extends Component {
         this.setState({withdraw_account_list_update})
 
         this.setState({
-          withdraw_providers:available_providers,
+          withdrawProviders:available_providers,
           min_amount:parseInt(available_providers[0].provider.min_amount)
         })
     }
@@ -126,7 +126,7 @@ class WithdrawFlow extends Component {
 
     get_cost_struct = async(available_providers, withdraw_account_list) =>{
       // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
-      let providers_served = await withdrawProvidersByType(available_providers || this.props.withdraw_providers)
+      let providers_served = await withdrawProvidersByType(available_providers || this.props.withdrawProviders)
 
       let update_list = []
       let w_account_list = withdraw_account_list || this.props.withdraw_account_list
@@ -157,12 +157,12 @@ class WithdrawFlow extends Component {
       // console.log('=======> new_account', new_account)
 
       const{
-        withdraw_providers,
+        withdrawProviders,
         form_withdraw
       } = this.props
 
 
-      let providers_served = await withdrawProvidersByType(withdraw_providers)
+      let providers_served = await withdrawProvidersByType(withdrawProviders)
 
       const {
         provider_type
@@ -177,7 +177,7 @@ class WithdrawFlow extends Component {
       } = this.state
 
       // console.log('providers_served', providers_served)
-        let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+        let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdrawProviders, `{"where": {"userId": "${this.props.user.id}"}}`)
         // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
         // console.log(' =====> withdraw_account_list', withdraw_account_list)
         // return alert('que paja')
@@ -533,7 +533,7 @@ class WithdrawFlow extends Component {
 
       const{
         amount,
-        withdraw_providers,
+        withdrawProviders,
         need_new_acount,
         show_list_accounts,
         finish_step,
@@ -565,7 +565,7 @@ class WithdrawFlow extends Component {
 
               {
                 (step === 1 && show_list_accounts) && (
-                  (withdraw_providers) ?
+                  (withdrawProviders) ?
                     <div className="WA">
                         <ButtonModalBack
                           color="gray"
@@ -586,7 +586,7 @@ class WithdrawFlow extends Component {
                         new_account_method={this.new_acount}
                         back={this.volver}
                         amount={amount}
-                        withdraw_providers={withdraw_providers}
+                        withdrawProviders={withdrawProviders}
                         inherit_account_list={withdraw_account_list_update}
                       />
                     </div>
@@ -647,7 +647,7 @@ function mapStateToProps(state, props){
     withdraw_accounts,
     user,
     user_id,
-    withdraw_providers,
+    withdrawProviders,
     wallets,
     withdraws,
     balances
@@ -663,8 +663,8 @@ function mapStateToProps(state, props){
   } = state.form.form_withdraw
 
   // console.log('Antes de reeeeeeenderizar : : : : ',state.form.form_withdraw)
-  let withdraw_providers_list = user.withdraw_providers.map((id_prov)=>{
-    return withdraw_providers[id_prov]
+  let withdraw_providers_list = user.withdrawProviders.map((id_prov)=>{
+    return withdrawProviders[id_prov]
   })
 
   let withdraw_account_list = []
@@ -679,7 +679,7 @@ function mapStateToProps(state, props){
     withdraw_order:{
       account_from:wallets[params.account_id],
       withdraw_account:withdraw_account && withdraw_accounts[withdraw_account],
-      withdraw_provider:withdraw_provider && withdraw_providers[withdraw_provider]
+      withdraw_provider:withdraw_provider && withdrawProviders[withdraw_provider]
     },
     account_id:params.account_id,
     withdraws,
@@ -691,7 +691,7 @@ function mapStateToProps(state, props){
     current:state.form.current,
     step:state.form.form_withdraw.step,
     form_withdraw:state.form.form_withdraw,
-    withdraw_providers:withdraw_providers_list,
+    withdrawProviders:withdraw_providers_list,
     withdraw_account_list:withdraw_account_list.length>0 && withdraw_account_list,
     have_withdraw_accounts:withdraw_account_list.length>0
     // have_withdraw_accounts:false

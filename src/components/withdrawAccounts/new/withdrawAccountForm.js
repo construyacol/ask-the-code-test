@@ -116,7 +116,7 @@ class WithdrawAccountForm extends Component{
         return this.props.action.isAppLoading(false)
       }
 
-      await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers)
+      await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders)
 
       if(this.props.withdraw_flow){
         return this.props.withdraw_flow_action(res)
@@ -277,15 +277,15 @@ class WithdrawAccountForm extends Component{
 function mapStateToProps(state, props){
   // console.log('R E N D E R I Z A N D O ssssssss', props)
   const { withdraw_flow } = props
-  const { user, user_id, withdraw_providers } = state.modelData
+  const { user, user_id, withdrawProviders } = state.modelData
 
-  let withdraw_provider_list = user.withdraw_providers.map(w_id => {
-    return withdraw_providers[w_id]
+  let withdraw_provider_list = user.withdrawProviders.map(w_id => {
+    return withdrawProviders[w_id]
   })
 
   return {
     search:state.form.search_bank,
-    withdraw_providers:withdraw_provider_list,
+    withdrawProviders:withdraw_provider_list,
     form_bank:state.form.form_bank,
     buttonActive:state.form.form_control_bank,
     loader:state.isLoading.loader,

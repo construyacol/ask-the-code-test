@@ -16,7 +16,7 @@ export const normalizeUser = async(user) => {
   const deposit = new schema.Entity('deposits',{})
   const withdraw = new schema.Entity('withdraws',{})
   const withdraw_account = new schema.Entity('withdraw_accounts',{})
-  const withdraw_provider = new schema.Entity('withdraw_providers',{})
+  const withdraw_provider = new schema.Entity('withdrawProviders',{})
   const pair = new schema.Entity('all_pairs',{})
   const swap = new schema.Entity('swaps',{})
   const deposit_prov = new schema.Entity('deposit_providers', {})
@@ -31,7 +31,7 @@ export const normalizeUser = async(user) => {
     deposits:[deposit],
     swaps:[swap],
     withdraw_accounts:[withdraw_account],
-    withdraw_providers:[withdraw_provider],
+    withdrawProviders:[withdraw_provider],
     available_pairs:[pair],
     withdraws:[withdraw],
     balances:[balance]

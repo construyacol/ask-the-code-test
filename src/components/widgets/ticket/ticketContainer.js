@@ -120,13 +120,13 @@ class TicketContainer extends Component {
                 let {
                   wallets,
                   withdraw_accounts,
-                  withdraw_providers
+                  withdrawProviders
                 } = this.props
 
 
                 let account_from = wallets[ticket.account_id]
                 let withdraw_account = withdraw_accounts[ticket.withdraw_account]
-                let withdraw_provider = withdraw_providers[ticket.withdraw_provider]
+                let withdraw_provider = withdrawProviders[ticket.withdraw_provider]
                 // console.log('withdraw_accounts', withdraw_accounts, withdraw_account)
 
             return this.setState({
@@ -532,7 +532,7 @@ function mapStateToProps(state, props){
   let current_wallet = state.modelData.wallets[account_id]
 
   const{
-    withdraw_providers,
+    withdrawProviders,
     withdraw_accounts,
     wallets,
     deposit_providers,
@@ -560,7 +560,7 @@ function mapStateToProps(state, props){
     type_order:tx_path,
     ticket,
     current_form:state.form.current,
-    withdraw_providers,
+    withdrawProviders,
     withdraw_accounts,
     wallets,
     deposit_providers,

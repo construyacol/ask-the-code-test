@@ -126,7 +126,7 @@ class AccountList extends Component {
 
     this.props.action.exit_sound()
     this.setState({ label: "Obteniendo tus Cuentas", account_state: "deleted" })
-    type === 'withdraw_accounts' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdraw_providers) : await this.props.action.get_list_user_wallets(this.props.user)
+    type === 'withdraw_accounts' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders) : await this.props.action.get_list_user_wallets(this.props.user)
 
 
     this.props.action.mensaje(msg, success ? 'success' : 'error')
@@ -226,11 +226,11 @@ function mapStateToProps(state, props) {
 
   const {
     user,
-    withdraw_providers
+    withdrawProviders
   } = state.modelData
 
-  let withdraw_provider_list = (path !== 'wallets' && user && withdraw_providers) && user.withdraw_providers.map(w_id => {
-    return withdraw_providers[w_id]
+  let withdraw_provider_list = (path !== 'wallets' && user && withdrawProviders) && user.withdrawProviders.map(w_id => {
+    return withdrawProviders[w_id]
   })
 
   let item_list = []
@@ -246,7 +246,7 @@ function mapStateToProps(state, props) {
     path,
     have_items: user[path] && user[path].length,
     deposit_providers: path !== 'wallets' ? null : state.modelData.deposit_providers,
-    withdraw_providers: withdraw_provider_list,
+    withdrawProviders: withdraw_provider_list,
     user: state.modelData.user,
     loader: state.isLoading.loader
   }

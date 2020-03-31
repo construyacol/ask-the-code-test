@@ -35,14 +35,14 @@ class WithdrawAccountList extends Component{
   init_config = async() => {
 
     const {
-      withdraw_providers,
+      withdrawProviders,
       withdraw_accounts,
       amount
     } = this.props
 
-    if(!withdraw_providers && !amount){return false}
+    if(!withdrawProviders && !amount){return false}
 
-    let providers_served = await withdrawProvidersByType(withdraw_providers)
+    let providers_served = await withdrawProvidersByType(withdrawProviders)
 
     let final_withdraw_accounts = await withdraw_accounts.map(wa => {
 
@@ -65,7 +65,7 @@ class WithdrawAccountList extends Component{
 
       let preferential_accounts = []
 
-      await withdraw_providers.map(async(withdraw_provider) => {
+      await withdrawProviders.map(async(withdraw_provider) => {
         if(withdraw_provider.currency_type !== 'fiat'){return false}
 
         let result = await matchItem(final_withdraw_accounts, {primary:withdraw_provider.provider.name}, 'provider_name')

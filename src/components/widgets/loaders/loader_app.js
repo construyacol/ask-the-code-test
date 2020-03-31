@@ -86,9 +86,6 @@ function LoaderAplication(props) {
 
     await coinsendaServices.init(userCountry, doLogout)
 
-    let get_withdraw_providers = await actions.get_withdraw_providers(props.user)
-    await actions.get_withdraw_accounts(userData, get_withdraw_providers)
-
     let verification_state = await actions.get_verification_state()
 
     if (verification_state !== 'accepted') {
