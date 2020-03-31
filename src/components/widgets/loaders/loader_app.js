@@ -169,4 +169,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect({}, mapDispatchToProps)(withRouter(LoaderAplication))
+export default connect(() => ({}), mapDispatchToProps)(withRouter(LoaderAplication))
