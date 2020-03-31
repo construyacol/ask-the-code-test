@@ -103,7 +103,7 @@ export class CoinsendaWithdrawService extends WebService {
 
     async fetchWithdrawProviders() {
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_RETIRO))
-        const { user } = this.state.modelData
+        const user = this.user
         const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`
 
         let withdrawProviders = await this.Get(finalUrl)
@@ -120,7 +120,7 @@ export class CoinsendaWithdrawService extends WebService {
     }
 
     async addOrUpdateWithdraw(withdrawId, state) {
-        const { user } = this.state.modelData
+        const user = this.user
         const body = {
             // "access_token":user.userToken,
             "data": {
@@ -138,7 +138,7 @@ export class CoinsendaWithdrawService extends WebService {
     }
 
     async addRestoreId(restoreId) {
-        const { user } = this.state.modelData
+        const user = this.user
         const body = {
             "data": {
                 restoreId
@@ -152,7 +152,7 @@ export class CoinsendaWithdrawService extends WebService {
     }
 
     async addWithdrawOrder(amount, accountFrom, withdrawProvider, withdrawAccount) {
-        const { user } = this.state.modelData
+        const user = this.user
         const body = {
             // "access_token":user.userToken,
             "data": {
@@ -221,7 +221,7 @@ export class CoinsendaWithdrawService extends WebService {
     }
 
     async addNewWithdrawAccount(payload, type) {
-        const { user } = this.state.modelData
+        const user = this.user
         const {
             provider_type,
             name,

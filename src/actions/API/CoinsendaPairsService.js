@@ -74,7 +74,7 @@ export class CoinsendaPairsService extends WebService {
     }
 
     async getPairsByCountry(country, userCollection) {
-        const { currencies } = this.state.modelData
+        const { currencies } = this.globalState.modelData
         const localCurrency = await this.getLocalCurrency(country)
 
         if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }

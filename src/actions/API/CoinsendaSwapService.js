@@ -8,7 +8,7 @@ import { appLoadLabelAction } from "../loader";
 export class CoinsendaSwapService extends WebService {
 
     async addNewSwap(accountId, pairId, value) {
-        const { user } = this.state.modelData
+        const user = this.user
 
         const body = {
             // "access_token":user.userToken,
@@ -61,7 +61,7 @@ export class CoinsendaSwapService extends WebService {
     }
 
     async getSwapList() {
-        const { user, wallets } = this.state.modelData
+        const { user, wallets } = this.globalState.modelData
 
 
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_REGISTRO_DE_INTERCAMBIOS))

@@ -4,7 +4,7 @@ import { updateUser } from "../APIactions";
 
 export class CoinsendaReferralService extends WebService {
     async setReferralCode(code) {
-        const { user } = this.state.modelData
+        const user = this.user
 
         let body = {
             "access_token": user.userToken,
@@ -28,7 +28,7 @@ export class CoinsendaReferralService extends WebService {
     }
 
     async getReferralCode() {
-        const { user } = this.state.modelData
+        const user = this.user
 
         const finalUrl = `${REFERRALS_URL}?filter={"where":{"userId":"${user.id}"}}`
         let response = await this.Get(finalUrl)

@@ -71,20 +71,15 @@ export const ApiDelete = async(url) => {
 }
 
 
-export const generate_headers = (token) =>{
-
-
-  return async(dispatch, getState) => {
-    if(!token){
-      const { authData } = getState().modelData
-        token = authData.userToken
-    }
-
-    let myHeaders = {
-      'Authorization': `Bearer ${token}`,
-    }
-
-    return myHeaders
+export const generate_headers = (token, getState) =>{
+  if(!token){
+    const { authData } = getState().modelData
+      token = authData.userToken
   }
 
+  let myHeaders = {
+    'Authorization': `Bearer ${token}`,
+  }
+
+  return myHeaders
 }

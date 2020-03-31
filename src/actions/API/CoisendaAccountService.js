@@ -14,9 +14,6 @@ import { coins } from '../../components/api/ui/api.json'
 import { appLoadLabelAction } from "../loader";
 
 export class CoinsendaAccountService extends WebService {
-    getUser() {
-        return this.state.modelData.user
-    }
     async getWalletsByUser() {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS))        
         const user = this.user
@@ -47,7 +44,7 @@ export class CoinsendaAccountService extends WebService {
     }
 
     async getWalletById(walletId) {
-        const user = this.getUser()
+        const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`
         const headers = this.getHeaders(user.userToken)
 
@@ -75,12 +72,12 @@ export class CoinsendaAccountService extends WebService {
     }
 
     async createWallet(body) {
-        return this.Post(CREATE_WALLET_URL, body, this.getUser().userToken)
+        return this.Post(CREATE_WALLET_URL, body, this.user.userToken)
     }
 
     async deleteWallet(account) {
         const { id, country } = account
-        const user = this.getUser()
+        const user = this.user
 
         const body = {
             data: {
@@ -143,7 +140,7 @@ export class CoinsendaAccountService extends WebService {
     }
 
     async manageBalance(accountId, action, amount) {
-        const { user } = this.state.modelData
+        const user = this.user
         await this.getBalancesByAccount(user)
         this.dispatch(manageBalanceAction(accountId, action, amount))
     }

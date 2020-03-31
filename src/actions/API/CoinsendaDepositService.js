@@ -36,7 +36,7 @@ export class CoinsendaDepositService extends WebService {
     }
 
     async confirmDepositOrder(order, base64image) {
-        const { user } = this.state.modelData
+        const user = this.user
 
         const body = {
             // "access_token":user.userToken,
@@ -88,7 +88,7 @@ export class CoinsendaDepositService extends WebService {
     }
 
     async deleteDeposit(depositId) {
-        const { user } = this.state.modelData
+        const user = this.user
 
         const body = {
             "data": {

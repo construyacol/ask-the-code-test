@@ -75,7 +75,7 @@ export class CoinsendaIndetityService extends WebService {
     }
 
     async getVerificationState() {
-        const { user } = this.state.user.modelData
+        const { user } = this.globalState.user.modelData
         if (!user) { return false }
         const { advanced, basic } = user.security_center.kyc
         let status = 'pending'
@@ -124,7 +124,7 @@ export class CoinsendaIndetityService extends WebService {
 
     async userVerificationStatus(level) {
 
-        const { user } = this.state.modelData
+        const user = this.user
         const { advanced, basic, financial } = user.security_center.kyc
 
         switch (level) {

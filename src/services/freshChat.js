@@ -56,7 +56,7 @@ return async(dispatch) => {
         if (status === 200) {
           if (data.restoreId) {
             // console.log('______________________________________ Generate restoreId', data.restoreId)
-            dispatch(add_restoreid(data.restoreId))
+            add_restoreid(data.restoreId, user)
             // add_restoreid(data.restoreId)
           }
         }

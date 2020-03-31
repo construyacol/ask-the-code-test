@@ -169,12 +169,12 @@ export const create_deposit_provider = (account_id, country) => {
 
 export const get_deposit_providers = (user) => {
 
-return async(dispatch) => {
+return async(dispatch, state) => {
 
     await dispatch(appLoadLabelAction('Obteniendo proveedores de deposito'))
     // const url_dep_prov = `${ApiUrl}depositProviders?filter={"where": {"userId": "${user.id}"}}`
     // const url_dep_prov = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}`
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(null, state)
     // const deposit_providers = await ApiGetRequest(url_dep_prov, myHeaders)
     // if(!deposit_providers || deposit_providers === 404){return false}
 
@@ -221,13 +221,11 @@ return async(dispatch) => {
 export const get_one_deposit = (deposit_id) =>{
 
   return async(dispatch, getState) => {
-
-    const { user_id }  = getState().modelData
     const user = getState().modelData.user
 
     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter={"where": {"id":"${deposit_id}"}, "include":{"relation":"paymentProof"}}`
 
-    let myHeaders = await dispatch(generate_headers(user.userToken))
+    let myHeaders = generate_headers(user.userToken, getState)
 
     const deposit = await ApiGetRequest(url_deposit, myHeaders)
     if(!deposit || deposit === 465){return false}
@@ -270,16 +268,14 @@ export const get_one_deposit = (deposit_id) =>{
 export const validate_address = (address) =>{
 
   return async(dispatch, getState) => {
-
-    const { user_id }  = getState().modelData
     const user = getState().modelData.user
 
     const url_address = `${DepositApiUrl}users/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
-    let myHeaders = await dispatch(generate_headers(user.userToken))
+    let myHeaders = generate_headers(user.userToken, getState)
 
     const Raddress = await ApiGetRequest(url_address, myHeaders)
     if(!Raddress || Raddress === 465 || !Raddress.length){return false}
-    console.log(Raddress)
+    
     if(address === Raddress[0].account.account_id.account_id){
       return true
     }

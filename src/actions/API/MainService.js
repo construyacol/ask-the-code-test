@@ -11,6 +11,9 @@ import { addIndexToRootObject, objectToArray } from "../../services";
 import normalizeUser from "../../schemas";
 import { updateNormalizedDataAction } from "../dataModelActions";
 import { CoinsendaAccountService } from "./CoisendaAccountService";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
     let base = class _Combined extends baseClass {
@@ -47,27 +50,26 @@ const inheritances = aggregation(
     CoinsendaAccountService
 );
 export class MainService extends inheritances {
-    constructor(dispatch, state, token) {
-        super()
+    token;
+    _globalState;
+    dispatch; 
+
+    initialize(dispatch, state, token) {
         this.dispatch = dispatch
-        this.state = state
-        this.token = token
+        this._globalState = state
+        this.token = token ? token : this.token
     }
 
-    get userId() {
-        return this.user.userId
+    get user() {     
+        return this._globalState.modelData.user
     }
 
-    get userToken () {
-        return this.user.userToken
+    setGlobalState(newValue) {
+        return this._globalState = newValue
     }
 
-    get country() {
-        return this.country
-    }
-
-    get user() {
-        return this.state.modelData.user
+    get globalState () {
+        return this._globalState
     }
 
     async loadFirstEschema() {
@@ -90,7 +92,10 @@ export class MainService extends inheritances {
     }
 
     async init(country, callback) {
-        let pairs = await this.fetchAllPairs(this.userToken, country)
+        while(!this.user) {
+            await sleep(2000)
+        }
+        let pairs = await this.fetchAllPairs(this.user.userToken, country)
         
         if (!pairs) {
             return callback()
@@ -102,4 +107,34 @@ export class MainService extends inheritances {
         await this.fetchDepositProviders()
         await this.getWalletsByUser()
     }
+}
+
+decorate(MainService, {
+    _globalState: observable.deep,
+    setGlobalState: action,
+    user: computed,
+    globalState: computed
+})
+
+const mainService = new MainService()
+
+
+const sleep = (time) => new Promise(resolve => {
+    setTimeout(() => resolve(), time)
+})
+
+export const useCoinsendaServices = (authData) => {
+    const dispatch = useDispatch()
+    const rState = useSelector(state => state)
+    mainService.initialize(dispatch, rState, authData.userToken)
+
+    useEffect(() => {
+        mainService.setGlobalState(rState)
+    }, [rState])
+
+    // useEffect(() => {
+    //     services._globalState = state
+    // }, [state])
+
+    return mainService;
 }

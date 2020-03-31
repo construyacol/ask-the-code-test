@@ -8,12 +8,14 @@ import IconSwitch from '../icons/iconSwitch'
 import './loader.css'
 import { withRouter } from 'react-router'
 import usePrevious from '../../hooks/usePreviousValue'
+import { useCoinsendaServices } from '../../../actions/API/MainService'
 
 function LoaderAplication(props) {
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
   const previousLoadLabel = usePrevious(props.appLoadLabel)
+  const coinsendaServices = useCoinsendaServices(props.authData)
 
   const registerColors = () => {
     if ((window && window.CSS) && window.CSS.registerProperty) {
@@ -82,7 +84,7 @@ function LoaderAplication(props) {
     await actions.updateUser(userData)
     await props.actions.logged_in(true)
 
-    await actions.inicializarClasses(userCountry, doLogout)
+    await coinsendaServices.init(userCountry, doLogout)
 
     let get_withdraw_providers = await actions.get_withdraw_providers(props.user)
     await actions.get_withdraw_accounts(userData, get_withdraw_providers)
@@ -127,7 +129,7 @@ function LoaderAplication(props) {
   }, [])
 
   useEffect(() => {
-    if (previousLoadLabel === props.appLoadLabel) {
+    if (previousLoadLabel !== props.appLoadLabel) {
       setProgressBarWidth(progressBarWidth + 8)
     }
   }, [props.appLoadLabel])

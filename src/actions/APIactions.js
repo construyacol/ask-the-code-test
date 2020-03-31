@@ -413,12 +413,12 @@ export const get_pair_default = (current_wallet, local_currency, current_pair) =
 
 export const get_account_balances = user => {
 
-  return async (dispatch) => {
+  return async (dispatch, state) => {
 
     await dispatch(appLoadLabelAction('Obteniendo tus balances'))
     const url_balance = `${AccountApiUrl}users/${user.id}/accounts`
     // IMPORTANT: This cause undefined action call
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(null, state)
 
     let balances = await ApiGetRequest(url_balance, myHeaders)
     // console.log('===========> BALANCES:', balances)
@@ -507,13 +507,13 @@ export const ManageBalance = (account_id, action, amount) => {
 export const get_list_user_wallets = (user) => {
   // console.log('||||||||||||||°°°°--------get_list_user_wallets--------°°°°|||||||||||||', user)
 
-  return async (dispatch) => {
+  return async (dispatch, state) => {
 
     await dispatch(appLoadLabelAction('Obteniendo tus billeteras'))
     // const url_wallets = `${ApiUrl}accounts?filter={"where": {"userId": "${user.id}"}}`
 
     const url_wallets = `${AccountApiUrl}users/${user.id}/accounts`
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(null, state)
     let wallets = await ApiGetRequest(url_wallets, myHeaders)
     // return console.log('________________________________', wallets)
     // if(!wallets){wallets = walletsJSON}
@@ -571,7 +571,7 @@ export const getWalletsById = (wallet_id) => {
     const user = getState().modelData.user
     // 1consultamos la wallet
     // const url_wallet = `${AccountApiUrl}accounts?filter={"where": {"id": "${wallet_id}"}}`
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(null, getState)
     const url_wallet = `${AccountApiUrl}users/${user.id}/accounts?filter={"where": {"id": "${wallet_id}"}}`
     const wallet = await ApiGetRequest(url_wallet, myHeaders)
 
@@ -896,16 +896,16 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
       return new_array_list.push(item)
     })
 
-    let user_update = {
-      ...user,
-      [edit_list]: [
-        ...new_array_list
-      ]
-    }
+    // let user_update = {
+    //   ...user,
+    //   [edit_list]: [
+    //     ...new_array_list
+    //   ]
+    // }
 
-    // console.log('____________________USER UPDATE', user_update, edit_list)
+    // // console.log('____________________USER UPDATE', user_update, edit_list)
 
-    await dispatch(updateUser(user_update))
+    // await dispatch(updateUser(user_update))
 
     return new_array_list
 
@@ -934,9 +934,9 @@ export const add_item_state = (list_type, new_order) => {
     }
 
 
-    let normalizeUser = await normalizeUser(user_update)
-    await dispatch(updateNormalizedDataAction(normalizeUser))
-    return normalizeUser
+    let normalizedUser = await normalizeUser(user_update)
+    await dispatch(updateNormalizedDataAction(normalizedUser))
+    return normalizedUser
 
     // dispatch(UpdatePendingSwap(swaps_update))
     // console.log('||||| NEW_SWAP_LIST', swaps_update)
@@ -1183,7 +1183,7 @@ export const getSwapList = () => {
 export const get_withdraw_accounts = (user, withdraw_providers) => {
   return async (dispatch, state) => {
     const { user } = state().modelData;
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(state)
 
     await dispatch(appLoadLabelAction('Obteniendo cuentas de retiro'))
     const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}`
@@ -1302,7 +1302,7 @@ export const get_withdraw_providers = () => {
     //   return alert('revisar get_withdraw_providers please bitch')
     // }
 
-    let myHeaders = await dispatch(generate_headers())
+    let myHeaders = generate_headers(null, getState)
 
     let withdraw_providers = await ApiGetRequest(get_wp_url, myHeaders)
     // if(!withdraw_providers){withdraw_providers = withdraw_providersJSON}
@@ -1391,17 +1391,13 @@ export const add_update_withdraw = (withdraw_id, state) => {
 }
 
 
-export const add_restoreid = (restore_id) => {
-
-  return async (dispatch, getState) => {
+export const add_restoreid = async (restore_id, user) => {
 
     const body = {
       "data": {
         restore_id
       }
-    }
-
-    const { user, user_id } = getState().modelData
+    }   
 
     const url_add_restoreid = `${ApiUrl}profiles/add-restoreid`
     const res = await ApiPostRequest(url_add_restoreid, body, user.userToken)
@@ -1409,9 +1405,6 @@ export const add_restoreid = (restore_id) => {
     if (res === 465 || !res) { return false }
 
     return res
-
-
-  }
 
 }
 
@@ -1727,7 +1720,7 @@ export const get_all_currencies = () => {
 
 
 export const get_user = (token, user_country, userId, email, restore_id) => {
-  return async (dispatch) => {
+  return async (dispatch, state) => {
 
     await dispatch(appLoadLabelAction('Cargando tu información'))
 
@@ -1741,7 +1734,7 @@ export const get_user = (token, user_country, userId, email, restore_id) => {
 
     // 1. inicializamos el estado con el token y el country del usuario
     const init_state_url = `${IdentityApIUrl}countryvalidators/findOne?country=${user_country}`
-    let myHeaders = await dispatch(generate_headers(token))
+    let myHeaders = generate_headers(token, state)
     let init_state = await ApiGetRequest(init_state_url, myHeaders)
     // console.log('===================================>>>>   init_state', init_state, userId)
 
@@ -1858,7 +1851,7 @@ export const get_user = (token, user_country, userId, email, restore_id) => {
     // return console.log('||||||  - - -.  --  USER UPDATE', profile_data)
 
     let normalizedUser = await normalizeUser(user_update)
-    console.log('NORMALIZR: ', normalizedUser)
+    
     await dispatch(updateNormalizedDataAction(normalizedUser))
     // console.log('||||||  - - -.  --  normalizeUser', normalizeUser)
     return normalizedUser
@@ -2043,9 +2036,9 @@ export const user_verification_status = (level_request) => {
 
 export const get_profile = (userId, token) => {
 
-  return async (dispatch) => {
+  return async (dispatch, state) => {
 
-    let myHeaders = await dispatch(generate_headers(token))
+    let myHeaders = generate_headers(token, state)
     let url_get_profile = `${ApiUrl}users/${userId}/profile`
     let profile = await ApiGetRequest(url_get_profile, myHeaders)
     if (profile === 465) { return false }
@@ -2072,7 +2065,7 @@ export const add_new_profile = (country, token) => {
     const { data } = new_profile
 
     return data
-    // let myHeaders = await dispatch(generate_headers(token))
+    // let myHeaders = generate_headers(token, state)
     //
     // let url_get_profile = `${ApiUrl}users/${userId}/profile`
     // let profile = await ApiGetRequest(url_get_profile, myHeaders)
@@ -2145,12 +2138,12 @@ export const set_ref_code = (ref_code) => {
     const url_create_ref_code = `${ApiUrl}referrals/set-ref-code`
     let res = await ApiPostRequest(url_create_ref_code, body)
 
-    let user_update = {
-      ...user,
-      referral: res
-    }
+    // let user_update = {
+    //   ...user,
+    //   referral: res
+    // }
 
-    await dispatch(updateUser(user_update))
+    // await dispatch(updateUser(user_update))
     return res
 
 
@@ -2167,12 +2160,12 @@ export const get_ref_code = () => {
     let res = await ApiGetRequest(url_get_ref_code)
     if (!res || res === 465) { return false }
 
-    let user_update = {
-      ...user,
-      referral: res[0]
-    }
+    // let user_update = {
+    //   ...user,
+    //   referral: res[0]
+    // }
 
-    await dispatch(updateUser(user_update))
+    // await dispatch(updateUser(user_update))
     return res && res[0]
     // get_list_user_wallets()
     // console.log('|||||||||||°°°°°°° - -  create_new_wallet -  - -°°°°°°°|||||||||||', new_wallet)
