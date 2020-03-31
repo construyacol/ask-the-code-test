@@ -1024,9 +1024,9 @@ export const add_done_swap = (swaps, user, done_swap, update_list) => {
     }
     // console.log('||||| SWAPS', user_update)
 
-    let normalizeUser = await normalizeUser(user_update)
-    await dispatch(updateNormalizedDataAction(normalizeUser))
-    return normalizeUser
+    let normalizedUser = await normalizeUser(user_update)
+    await dispatch(updateNormalizedDataAction(normalizedUser))
+    return normalizedUser
     // dispatch(UpdatePendingSwap(swaps_update))
     // console.log('||||| NEW_SWAP_LIST', swaps_update)
   }
@@ -1183,7 +1183,7 @@ export const getSwapList = () => {
 export const get_withdraw_accounts = (user, withdraw_providers) => {
   return async (dispatch, state) => {
     const { user } = state().modelData;
-    let myHeaders = generate_headers(state)
+    let myHeaders = generate_headers(null, state)
 
     await dispatch(appLoadLabelAction('Obteniendo cuentas de retiro'))
     const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}`

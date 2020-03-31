@@ -68,6 +68,7 @@ state = {
   let value = target.value.replace(/[^a-zA-Z0-9]/g, '');
   // console.log('|||||||||||||| VALUE', value)
   let addressVerify = await AddressValidator.validate(value, current_wallet.currency.currency === 'bitcoin_testnet' ? 'bitcoin' : current_wallet.currency.currency)
+  console.log(value, addressVerify, current_wallet)
 
     this.setState({
       address:value,
