@@ -48,7 +48,7 @@ import {
   verificationStateAction
   // new_fiat_deposit
 } from './uiActions'
-import { MainService } from './API/MainService';
+// import { MainService } from './API/MainService';
 
 const {
   normalizeUser,
@@ -98,9 +98,10 @@ export const loadFirstEschema = () => {
   }
 }
 
-export const inicializarClasses = (country, callback) => async(dispatch, state) => {
-  return new MainService(dispatch, state(), state().modelData.authData.userToken).init(country, callback)
-}
+// export const inicializarClasses = (country, callback) => async(dispatch, state) => {
+//   alert()
+//   return new MainService(dispatch, state(), state().modelData.authData.userToken).init(country, callback)
+// }
 
 export const mensaje = (msg, type, position) => {
   return async (dispatch) => {
@@ -185,12 +186,12 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 
 
-export const get_all_pairs = (token, country) => {
-  return async (dispatch, getState) => {
-    const test = new MainService(dispatch, getState(), token)
-    return test.fetchAllPairs()
-  }
-}
+// export const get_all_pairs = (token, country) => {
+//   return async (dispatch, getState) => {
+//     const test = new MainService(dispatch, getState(), token)
+//     return test.fetchAllPairs()
+//   }
+// }
 
 
 const addSymboltoLocalCollections = async (cop_pairs, local_currency, currencies) => {
@@ -263,13 +264,13 @@ const getLocalCurrency = async country => {
 }
 
 
-export const getPairsByCountry = (country, user_collection) => {
-
-  return async (dispatch, getState) => {
-    return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
-  }
-
-}
+// export const getPairsByCountry = (country, user_collection) => {
+//
+//   return async (dispatch, getState) => {
+//     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
+//   }
+//
+// }
 
 
 
@@ -1050,75 +1051,77 @@ export const add_done_swap = (swaps, user, done_swap, update_list) => {
 
 
 // OBTENER LISTA DE SWAPS---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-export const getSwapList = () => {
-
-  return async (dispatch, getState) => {
-    return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
-    const { modelData } = getState()
-    const { wallets } = modelData
-    const user = modelData.user
-
-
-    await dispatch(appLoadLabelAction('Obteniendo tus registros de intercambios'))
-    // const url_swaps = `${ApiUrl}swaps?filter={"where": {"userId": "${user.id}"}}`
-    const url_swaps = `${SwapApiUrl}users/${user.id}/swaps?country=${user.country}`
-    let myHeaders = {
-      'Authorization': `Bearer ${user.userToken}`,
-    }
-    const swaps = await ApiGetRequest(url_swaps, myHeaders)
-
-    // console.log('RES SWAPS ===============================================>', swaps)
-
-    if (!swaps) { return false }
-    let remodeled_swaps = []
-    swaps.map(async (swap) => {
-      // obtenemos la moneda que cotiza en contra del par, pasandole como params, el swap, el par del swap y la moneda de la cuenta donde se origino el intercambio, la moneda que se gasto
-      // let currency_bought
-
-      // if(wallets[swap.account_from] && all_pairs[swap.pair_id]){
-      //   currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
-      // }
-
-      let new_swap = {
-        account_id: swap.account_from,
-        account_to: swap.account_to,
-        amount: swap.bought,
-        amount_neto: swap.bought,
-        pair_id: swap.pair_id,
-        comment: "",
-        action_price: swap.action_price,
-        currency: swap.to_spend_currency,
-        currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
-        cost: "",
-        deposit_provider_id: "",
-        expiration_date: new Date(),
-        id: swap.id,
-        state: swap.state === 'rejected' ? 'canceled' : swap.state,
-        bought: swap.bought,
-        currency_bought: swap.to_buy_currency,
-        spent: swap.spent,
-        type_order: "swap"
-      }
-      remodeled_swaps.push(new_swap)
-    })
-
-    // console.log('RES new_swap ===============================================>', remodeled_swaps)
-
-    remodeled_swaps.reverse()
-
-    let user_update = {
-      ...user,
-      swaps: [
-        ...remodeled_swaps
-      ]
-    }
-
-    let normalizeUser = await normalizeUser(user_update)
-    await dispatch(updateNormalizedDataAction(normalizeUser))
-    return normalizeUser
-
-  }
-}
+// export const getSwapList = () => {
+//
+//   return async (dispatch, getState) => {
+//     alert('getSwapList')
+//     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
+//
+//     const { modelData } = getState()
+//     const { wallets } = modelData
+//     const user = modelData.user
+//
+//
+//     await dispatch(appLoadLabelAction('Obteniendo tus registros de intercambios'))
+//     // const url_swaps = `${ApiUrl}swaps?filter={"where": {"userId": "${user.id}"}}`
+//     const url_swaps = `${SwapApiUrl}users/${user.id}/swaps?country=${user.country}`
+//     let myHeaders = {
+//       'Authorization': `Bearer ${user.userToken}`,
+//     }
+//     const swaps = await ApiGetRequest(url_swaps, myHeaders)
+//
+//     // console.log('RES SWAPS ===============================================>', swaps)
+//
+//     if (!swaps) { return false }
+//     let remodeled_swaps = []
+//     swaps.map(async (swap) => {
+//       // obtenemos la moneda que cotiza en contra del par, pasandole como params, el swap, el par del swap y la moneda de la cuenta donde se origino el intercambio, la moneda que se gasto
+//       // let currency_bought
+//
+//       // if(wallets[swap.account_from] && all_pairs[swap.pair_id]){
+//       //   currency_bought = get_currency_from_contra_pair(all_pairs[swap.pair_id], wallets[swap.account_from].currency)
+//       // }
+//
+//       let new_swap = {
+//         account_id: swap.account_from,
+//         account_to: swap.account_to,
+//         amount: swap.bought,
+//         amount_neto: swap.bought,
+//         pair_id: swap.pair_id,
+//         comment: "",
+//         action_price: swap.action_price,
+//         currency: swap.to_spend_currency,
+//         currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
+//         cost: "",
+//         deposit_provider_id: "",
+//         expiration_date: new Date(),
+//         id: swap.id,
+//         state: swap.state === 'rejected' ? 'canceled' : swap.state,
+//         bought: swap.bought,
+//         currency_bought: swap.to_buy_currency,
+//         spent: swap.spent,
+//         type_order: "swap"
+//       }
+//       remodeled_swaps.push(new_swap)
+//     })
+//
+//     // console.log('RES new_swap ===============================================>', remodeled_swaps)
+//
+//     remodeled_swaps.reverse()
+//
+//     let user_update = {
+//       ...user,
+//       swaps: [
+//         ...remodeled_swaps
+//       ]
+//     }
+//
+//     let normalizeUser = await normalizeUser(user_update)
+//     await dispatch(updateNormalizedDataAction(normalizeUser))
+//     return normalizeUser
+//
+//   }
+// }
 
 
 
@@ -1397,7 +1400,7 @@ export const add_restoreid = async (restore_id, user) => {
       "data": {
         restore_id
       }
-    }   
+    }
 
     const url_add_restoreid = `${ApiUrl}profiles/add-restoreid`
     const res = await ApiPostRequest(url_add_restoreid, body, user.userToken)
@@ -1851,7 +1854,7 @@ export const get_user = (token, user_country, userId, email, restore_id) => {
     // return console.log('||||||  - - -.  --  USER UPDATE', profile_data)
 
     let normalizedUser = await normalizeUser(user_update)
-    
+
     await dispatch(updateNormalizedDataAction(normalizedUser))
     // console.log('||||||  - - -.  --  normalizeUser', normalizeUser)
     return normalizedUser
@@ -1915,25 +1918,25 @@ export const country_detect = () => {
 }
 
 
-export const countryvalidators = () => {
-
-  return async (dispatch) => {
-    const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
-    let res = await ApiGetRequest(url_countryvalidators)
-    if (!res || res === 465 || res === 404) { return false }
-    let countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
-    // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
-    let new_array = await objectToArray(countries)
-    let construct_res = {
-      res: res[0],
-      countries,
-      country_list: new_array
-    }
-
-    return construct_res
-  }
-
-}
+// export const countryvalidators = () => {
+//
+//   return async (dispatch) => {
+//     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
+//     let res = await ApiGetRequest(url_countryvalidators)
+//     if (!res || res === 465 || res === 404) { return false }
+//     let countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
+//     // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
+//     let new_array = await objectToArray(countries)
+//     let construct_res = {
+//       res: res[0],
+//       countries,
+//       country_list: new_array
+//     }
+//     console.log('||| 1. countryvalidators = ', construct_res)
+//     return construct_res
+//   }
+//
+// }
 
 
 
@@ -2316,4 +2319,4 @@ export const swap_activity_update = (swap, filter) => {
 
 
 
-export default getPairsByCountry
+// export default getPairsByCountry

@@ -71,11 +71,7 @@ const ActivityView = props => {
     if(!props.order_list || !props.order_list.length){
       const init_activity = async() =>{
         let method = `get_${params.tx_path}`
-        // const { activity_for_account } = props
-        // console.log('||||||||||| get_METHOD =====> ||||  ', activity_for_account[params.account_id], (activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path]) && !activity_for_account[params.account_id][params.tx_path].length)
-        // if((activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path]) && !activity_for_account[params.account_id][params.tx_path].length){return redirect(props[params.tx_path])}
         let activity_list = await props.action[method](params.account_id)
-        // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, method)
         if(!activity_list.length){
           get_activity(method)
         }

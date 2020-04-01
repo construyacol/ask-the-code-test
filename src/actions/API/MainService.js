@@ -12,8 +12,9 @@ import normalizeUser from "../../schemas";
 import { updateNormalizedDataAction } from "../dataModelActions";
 import { CoinsendaAccountService } from "./CoisendaAccountService";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { observable, decorate, computed, action } from "mobx"
+import { useEffect } from "react";
+import isAppLoading from "../loader";
+// import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
     let base = class _Combined extends baseClass {
@@ -52,7 +53,7 @@ const inheritances = aggregation(
 export class MainService extends inheritances {
     token;
     _globalState;
-    dispatch; 
+    dispatch;
 
     initialize(dispatch, state, token) {
         this.dispatch = dispatch
@@ -60,7 +61,7 @@ export class MainService extends inheritances {
         this.token = token ? token : this.token
     }
 
-    get user() {     
+    get user() {
         return this._globalState.modelData.user
     }
 
@@ -77,7 +78,7 @@ export class MainService extends inheritances {
         this.dispatch(updateNormalizedDataAction(dataNormalized))
     }
 
-    static async countryValidator() {
+    async countryValidator() {
         const URL = `${Environment.IdentityApIUrl}countryvalidators`
         const res = await this.Get(URL)
         const countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
@@ -91,12 +92,16 @@ export class MainService extends inheritances {
         return result
     }
 
+    setIsAppLoading(value) {
+        return this.dispatch(isAppLoading(value))
+    }
+
     async init(country, callback) {
         while(!this.user) {
             await sleep(2000)
         }
         let pairs = await this.fetchAllPairs(this.user.userToken, country)
-        
+
         if (!pairs) {
             return callback()
         }
@@ -126,7 +131,7 @@ const sleep = (time) => new Promise(resolve => {
     setTimeout(() => resolve(), time)
 })
 
-export const useCoinsendaServices = (authData) => {
+export const useCoinsendaServices = () => {
     const dispatch = useDispatch()
     const reduxState = useSelector(state => state)
     mainService.initialize(dispatch, reduxState, reduxState.modelData.authData.userToken)
@@ -135,9 +140,5 @@ export const useCoinsendaServices = (authData) => {
         mainService.setGlobalState(reduxState)
     }, [reduxState])
 
-    // useEffect(() => {
-    //     services._globalState = state
-    // }, [state])
-
-    return [mainService, reduxState];
+    return [mainService, reduxState, MainService];
 }

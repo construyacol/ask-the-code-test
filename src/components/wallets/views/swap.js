@@ -9,7 +9,6 @@ import { InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import { matchItem, mensaje } from '../../../services'
 import convertCurrencies, { formatToCurrency } from '../../../services/convert_currency'
-// import {  } from '../../../services/convert_currency'
 
 class SwapView extends Component{
 
@@ -335,7 +334,7 @@ render(){
                 getOtherPairs={this.getOtherPairs}
                 getTotalValue={this.getTotalValue}
                 // name="received"
-                // total_value={total_value}
+                total_value={total_value}
               />
             </div>
 
