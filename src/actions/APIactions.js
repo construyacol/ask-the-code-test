@@ -1917,26 +1917,26 @@ export const country_detect = () => {
   }
 }
 
+// Uncomment for select_country component
+export const countryvalidators = () => {
 
-// export const countryvalidators = () => {
-//
-//   return async (dispatch) => {
-//     const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
-//     let res = await ApiGetRequest(url_countryvalidators)
-//     if (!res || res === 465 || res === 404) { return false }
-//     let countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
-//     // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
-//     let new_array = await objectToArray(countries)
-//     let construct_res = {
-//       res: res[0],
-//       countries,
-//       country_list: new_array
-//     }
-//     console.log('||| 1. countryvalidators = ', construct_res)
-//     return construct_res
-//   }
-//
-// }
+  return async (dispatch) => {
+    const url_countryvalidators = `${IdentityApIUrl}countryvalidators`
+    let res = await ApiGetRequest(url_countryvalidators)
+    if (!res || res === 465 || res === 404) { return false }
+    let countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
+    // console.log('||| ==================================> LOAD C O U N T R I E S =>2', countries)
+    let new_array = await objectToArray(countries)
+    let construct_res = {
+      res: res[0],
+      countries,
+      country_list: new_array
+    }
+    console.log('||| 1. countryvalidators = ', construct_res)
+    return construct_res
+  }
+
+}
 
 
 

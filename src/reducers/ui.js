@@ -57,7 +57,7 @@ const initialState = {
       active_trade_operation:false
     }
   },
-  other_modal:false,
+  otherModal:false,
   flowAnimationLayout:"",
   notifications:{
     withdraw_accounts:{
@@ -251,7 +251,7 @@ const ui = (state = initialState, action)=>{
     // console.log('haz hecho click en el modal confirmation', action.payload)
       return {
         ...state,
-        other_modal:!state.other_modal
+        otherModal:!state.otherModal
       }
     case SECTION_VIEW_TO:
     // console.log('haz hecho click en el modal confirmation', action.payload)

@@ -45,7 +45,7 @@ class MenuPrincipalContainer extends Component{
     this.props.action.ready_to_play(false)
   }
 
-  go_to = async(pathname) =>{
+  navigateTo = async(pathname) =>{
     await this.props.history.push(pathname)
     return this.props.action.current_section_params({show_menu_principal:false})
   }
@@ -78,7 +78,7 @@ class MenuPrincipalContainer extends Component{
           refCallback={this.refCallback}
           close_menu_principal={this.close_menu_principal}
           openSelectCountry={this.openSelectCountry}
-          go_to={this.go_to}
+          navigateTo={this.navigateTo}
           {...this.props}/>
     )
   }
@@ -106,7 +106,7 @@ MenuPrincipalContainer.propTypes = {
     // let path = props.location.pathname.replace('/', '')
     let path = props.match.params.primary_path
     // console.log('ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ROUTER -- -- - - - ', path, props)
-    const { user, user_id } = state.modelData
+    const { user } = state.modelData
     const { verification_state } = state.ui
 
     return{

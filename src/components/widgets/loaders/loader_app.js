@@ -9,12 +9,13 @@ import './loader.css'
 import { withRouter } from 'react-router'
 import usePrevious from '../../hooks/usePreviousValue'
 import { useCoinsendaServices } from '../../../actions/API/MainService'
+import withHandleError from '../../withHandleError'
 
-function LoaderAplication(props) {
+function LoaderAplication({ actions, history }) {
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
-  const [coinsendaServices, reduxState, MainService] = useCoinsendaServices()
+  const [coinsendaServices, reduxState] = useCoinsendaServices()
   const { authData } = reduxState.modelData
   const { appLoadLabel } = reduxState.isLoading
   const previousLoadLabel = usePrevious(appLoadLabel)
@@ -37,12 +38,13 @@ function LoaderAplication(props) {
   }
 
   const initComponent = async (newCountry) => {
-    const { actions } = props
     const {
       userToken,
       userId,
       doLogout
     } = authData
+
+    if(!userToken) return;
 
     let profile = await actions.get_profile(userId, userToken)
     if (!profile) {
@@ -84,19 +86,19 @@ function LoaderAplication(props) {
     }
 
     await actions.updateUser(userData)
-    await props.actions.logged_in(true)
+    await actions.logged_in(true)
 
     await coinsendaServices.init(userCountry, doLogout)
 
     let verification_state = await actions.get_verification_state()
 
     if (verification_state !== 'accepted') {
-      await props.actions.AddNotification('security', null, 1)
-      await props.history.push('/security')
+      await actions.AddNotification('security', null, 1)
+      await history.push('/security')
       return actions.ready_to_play(true)
     }
 
-    await props.history.push('/wallets')
+    await history.push('/wallets')
     return actions.ready_to_play(true)
 
   }
@@ -109,7 +111,7 @@ function LoaderAplication(props) {
   }
 
   const selectCountry = (newCountry) => {
-    props.actions.isAppLoading(true)
+    actions.isAppLoading(true)
     initComponent(newCountry)
   }
 
@@ -123,9 +125,12 @@ function LoaderAplication(props) {
   }
 
   useEffect(() => {
-    initComponent()
     registerColors()
   }, [])
+
+  useEffect(() => {
+    initComponent()
+  }, [authData.userToken])
 
   useEffect(() => {
     if (previousLoadLabel !== appLoadLabel) {
@@ -169,4 +174,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(() => ({}), mapDispatchToProps)(withRouter(LoaderAplication))
+export default withHandleError(connect(() => ({}), mapDispatchToProps)(withRouter(LoaderAplication)))

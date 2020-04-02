@@ -141,7 +141,7 @@ DashBoardContainer.propTypes = {
   modalConfirmation:PropTypes.bool,
   modalView:PropTypes.string,
   modalVisible:PropTypes.bool,
-  other_modal:PropTypes.bool,
+  otherModal:PropTypes.bool,
   token:PropTypes.string,
   user:PropTypes.object,
   wallets:PropTypes.object

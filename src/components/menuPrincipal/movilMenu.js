@@ -8,8 +8,8 @@ const MovilMenuComponent = props => {
 
   // const { user, user_id } = store.getState().modelData
   // const country = user.country
-  // const { openSelectCountry, go_to } = props
-  const {go_to } = props
+  // const { openSelectCountry, navigateTo } = props
+  const { navigateTo } = props
 
   return (
     <div className="MovilMenuComponent">
@@ -24,7 +24,7 @@ const MovilMenuComponent = props => {
         <i className="fas fa-arrow-right"></i>
       </div>
 
-      <div className="menuMovilItems" onClick={()=>go_to('/referral')}>
+      <div className="menuMovilItems" onClick={() => navigateTo('/referral')}>
         <div className="menuMovilItemTexts fuente"> <IconSwitch icon="referral" size={15} color="white" />Referidos</div>
         <i className="fas fa-arrow-right"></i>
       </div>

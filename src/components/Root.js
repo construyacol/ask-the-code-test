@@ -1,32 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import HomeContainer from './home/homeContainer'
+import React, { useEffect } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
-// import createBrowserHistory from "history/createBrowserHistory"
 import { createBrowserHistory } from "history";
 import localForage from 'localforage'
-// import PagesRouter from './landingPage/pages'
 import jwt from 'jsonwebtoken'
-
-import { isValidToken } from "./utils"
-import { connect } from 'react-redux';
-import actions from '../actions';
+import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// import FreshChat from '../services/freshChat'
-// import AuthComponentContainer from './auth'
-// import LandingPageContainer from './landing_page/landingContainer'
-// import Landing from './landingPage'
+import actions from '../actions';
+import LoaderAplication from './widgets/loaders/loader_app'
+import HomeContainer from './home/home-container'
+import { isValidToken } from "./utils"
 
 const history = createBrowserHistory();
+const COINSENDA_URL = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
 
 function RootContainer(props) {
-  const [userToken, setUserToken] = useState(null)
+  // TODO: rename isLoading from state
+  const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
 
   const doLogout = async () => {
     await localForage.removeItem('user_token')
     await localForage.removeItem('created_at')
-    setUserToken(null)
-    window.location.href = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
+    window.location.href = COINSENDA_URL
   }
 
   const initComponent = async () => {
@@ -57,7 +52,6 @@ function RootContainer(props) {
       userId: usr,
       doLogout
     })
-    setUserToken(userToken)
     history.push('/')
   }
 
@@ -70,12 +64,7 @@ function RootContainer(props) {
       history={history}
     >
       <Switch>
-        <Route path="/" render={() => (
-          userToken ?
-            <HomeContainer />
-            :
-            <div style={{ background: "linear-gradient(to bottom right,#014c7d,#0198ff)", width: "100vw", height: "100vh" }} />
-        )} />
+        <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />
       </Switch>
     </Router>
 
