@@ -14,7 +14,7 @@ function LoaderAplication(props) {
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
-  const [coinsendaServices, reduxState] = useCoinsendaServices()
+  const [coinsendaServices, reduxState, MainService] = useCoinsendaServices()
   const { authData } = reduxState.modelData
   const { appLoadLabel } = reduxState.isLoading
   const previousLoadLabel = usePrevious(appLoadLabel)
@@ -57,7 +57,7 @@ function LoaderAplication(props) {
     if (!country && !newCountry) { return false }
     let userCountry = newCountry ? newCountry : country
 
-    let res = await actions.countryvalidators()
+    let res = await coinsendaServices.countryValidator()
 
     if (!res) {
       prepareCountrySelection()
