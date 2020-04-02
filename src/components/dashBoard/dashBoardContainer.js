@@ -140,7 +140,7 @@ DashBoardContainer.propTypes = {
   logOut:PropTypes.func,
   modalConfirmation:PropTypes.bool,
   modalView:PropTypes.string,
-  modalVisible:PropTypes.bool,
+  isModalVisible:PropTypes.bool,
   otherModal:PropTypes.bool,
   token:PropTypes.string,
   user:PropTypes.object,

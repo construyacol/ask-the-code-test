@@ -5,9 +5,9 @@ const HomeLayout = (props) => {
 
   const { modal } = props
 
-  return(
+  return (
     <section className={`HomeLayout ${modal ? 'conFirmationM' : ''}`}>
-        {props.children}
+      {props.children}
     </section>
   )
 }

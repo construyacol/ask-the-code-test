@@ -81,7 +81,7 @@ const initialState = {
   form_control_bank:false,
   form_control_wallet:false,
   form_control_deposit:false,
-  modal_visible:false,
+  isModalVisible:false,
   modalView:"modalView",
   search_deposit:[],
   search_bank:[],
@@ -252,7 +252,7 @@ const forms = (state = initialState, action) =>{
                           form_bank:{
                             ...initialState.form_bank
                           },
-                            modal_visible:false,
+                            isModalVisible:false,
                             loader:false,
                             modalView:"modalView",
                             form_control_bank:false,
@@ -271,7 +271,7 @@ const forms = (state = initialState, action) =>{
                                    step:1
                                  },
                              form_control_wallet:false,
-                             modal_visible:false,
+                             isModalVisible:false,
                              loader:false,
                              modalView:"modalView",
                              search_coin:[],
@@ -291,7 +291,7 @@ const forms = (state = initialState, action) =>{
                                  step:1
                                },
                              form_control_deposit:false,
-                             modal_visible:false,
+                             isModalVisible:false,
                              loader:false,
                              modalView:"modalView",
                              search_deposit:[]
@@ -331,7 +331,7 @@ const forms = (state = initialState, action) =>{
           case TOGGLE_MODAL:
               return {
                 ...state,
-                modal_visible: !state.modal_visible
+                isModalVisible: !state.isModalVisible
             }
           case MODAL_VIEW:
               return {

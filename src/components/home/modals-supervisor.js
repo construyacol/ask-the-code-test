@@ -22,55 +22,43 @@ import withHandleError from '../withHandleError'
 function ModalsSupervisor(props) {
     const {
         otherModal,
-        modalVisible,
+        isModalVisible,
         modalConfirmation,
         current,
         modalView,
         loader,
-        socket_notify
+        isSocketNotification
     } = props
 
     return (
         <>
-            {
-                modalVisible &&
-                <ModalContainer>
-                    <ModalLayout modalView={modalView} loader={loader} >
-                        <Route exact strict path="/wallets" component={NewWallet} />
-                        <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
-                        <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
-                        <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
-                        <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
-                        <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
-                    </ModalLayout>
-                </ModalContainer>
-            }
-
-            {
-                otherModal &&
-                <ModalContainer>
-                    {
-                        socket_notify ?
-                            <Route path="/" component={SocketNotify} />
-                            :
-                            <>
-                                <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
-                                <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
-                            </>
-                    }
-                </ModalContainer>
-            }
-
-
-            {
-                modalConfirmation &&
-                <ModalContainer>
-                    <Route
-                        exact
-                        component={ConfirmationModal}
-                    />
-                </ModalContainer>
-            }
+            <ModalContainer condition={isModalVisible}>
+                <ModalLayout modalView={modalView} loader={loader} >
+                    <Route exact strict path="/wallets" component={NewWallet} />
+                    <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+                    <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
+                    <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
+                    <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />
+                    <Route exact path="/security" component={current === '2auth' ? TwoFactorActivate : Kyc} />
+                </ModalLayout>
+            </ModalContainer>
+            <ModalContainer condition={otherModal}>
+                {
+                    isSocketNotification ?
+                        <Route path="/" component={SocketNotify} />
+                        :
+                        <>
+                            <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
+                            <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
+                        </>
+                }
+            </ModalContainer>
+            <ModalContainer condition={modalConfirmation}>
+                <Route
+                    exact
+                    component={ConfirmationModal}
+                />
+            </ModalContainer>
         </>
     )
 
@@ -82,7 +70,7 @@ ModalsSupervisor.propTypes = {
     loader: PropTypes.bool,
     modalConfirmation: PropTypes.bool,
     modalView: PropTypes.string,
-    modalVisible: PropTypes.bool,
+    isModalVisible: PropTypes.bool,
     otherModal: PropTypes.bool
 }
 
@@ -90,12 +78,12 @@ ModalsSupervisor.propTypes = {
 function mapStateToProps({ ui, form, isLoading }) {
     return {
         modalView: form.modalView,
-        modalVisible: form.modal_visible,
+        isModalVisible: form.isModalVisible,
         loader: isLoading.loader,
         current: form.current,
         modalConfirmation: ui.modal_confirmation.visible,
         otherModal: ui.otherModal,
-        socket_notify: ui.notifications.socket_notify,
+        isSocketNotification: ui.notifications.socket_notify,
     }
 }
 

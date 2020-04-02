@@ -9,7 +9,7 @@ import MovilMenuComponent from './movilMenu'
 // import store from '../../'
 
 
-
+// TODO: remove all window ref from components, may be the cause of future issues
 const MenuPrincipalLayout = (props) => {
 
   const {

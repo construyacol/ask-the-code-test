@@ -4,8 +4,6 @@ import MenuPrincipalContainer from '../menuPrincipal/menuPrincipalContainer'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
 import DashBoardContainer from '../dashBoard/dashBoardContainer'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import actions from '../../actions'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import withHandleError from '../withHandleError'
@@ -21,14 +19,12 @@ const BuildedHome = (props) => (
 
 function HomeContainer(props) {
   const {
-    otherModal,
-    modalVisible,
-    modalConfirmation,
+    isSomeModalRendered,
     doLogout,
   } = props
 
   return (
-    <HomeLayout modal={modalConfirmation || otherModal || modalVisible ? true : false} >
+    <HomeLayout modal={isSomeModalRendered} >
       <ModalsSupervisor />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
@@ -41,25 +37,16 @@ function HomeContainer(props) {
 
 HomeContainer.propTypes = {
   loader: PropTypes.bool,
-  modalConfirmation: PropTypes.bool,
-  modalVisible: PropTypes.bool,
-  otherModal: PropTypes.bool
+  isSomeModalRendered: PropTypes.bool
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps({ form, isLoading, ui }) {
+  const isSomeModalRendered = form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal
   return {
-    modalVisible: state.form.modal_visible,
-    loader: state.isLoading.loader,
-    modalConfirmation: state.ui.modal_confirmation.visible,
-    otherModal: state.ui.otherModal,
+    loader: isLoading.loader,
+    isSomeModalRendered
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    action: bindActionCreators(actions, dispatch)
-  }
-}
-
-export default withHandleError(connect(mapStateToProps, mapDispatchToProps)(HomeContainer))
+export default withHandleError(connect(mapStateToProps)(HomeContainer))
