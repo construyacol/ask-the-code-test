@@ -31,6 +31,8 @@ import {
 // import styled from 'styled-components'
 
 import './dashboard.css'
+import { bindActionCreators } from 'redux';
+import actions from '../../actions';
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
@@ -150,17 +152,25 @@ DashBoardContainer.propTypes = {
 
 function mapStateToProps(state, props){
 
-    const { user, user_id } = state.modelData
+    const { user, wallets, all_pairs } = state.modelData
     const { currentPair } = state.modelData.pairs
 
   return{
     user:user,
     primary_path:props.match.params && props.match.params.primary_path,
-    currentPair
+    currentPair,
+    wallets,
+    all_pairs
   }
 }
 
-export default connect(mapStateToProps) (DashBoardContainer)
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (DashBoardContainer)
 
 
 
