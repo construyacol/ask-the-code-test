@@ -34,12 +34,10 @@ function HomeContainer(props) {
 
 }
 
-
 HomeContainer.propTypes = {
   loader: PropTypes.bool,
   isSomeModalRendered: PropTypes.bool
 }
-
 
 function mapStateToProps({ form, isLoading, ui }) {
   const isSomeModalRendered = form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal
