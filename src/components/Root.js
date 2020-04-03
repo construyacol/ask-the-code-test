@@ -10,6 +10,9 @@ import actions from '../actions';
 import LoaderAplication from './widgets/loaders/loader_app'
 import HomeContainer from './home/home-container'
 import { isValidToken } from "./utils"
+import withHandleError from './withHandleError';
+import SocketsComponent from './sockets/sockets'
+import ToastContainers from './widgets/toast/ToastContainer'
 
 const history = createBrowserHistory();
 const COINSENDA_URL = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
@@ -64,6 +67,8 @@ function RootContainer(props) {
     <Router
       history={history}
     >
+      <SocketsComponent />
+      <ToastContainers />   
       <Switch>
         <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />
       </Switch>
@@ -73,4 +78,4 @@ function RootContainer(props) {
 
 }
 
-export default connect(() => ({}), (dispatch) => bindActionCreators({ setAuthData: actions.setAuthData }, dispatch))(RootContainer)
+export default withHandleError(connect(() => ({}), (dispatch) => bindActionCreators({ setAuthData: actions.setAuthData }, dispatch))(RootContainer))
