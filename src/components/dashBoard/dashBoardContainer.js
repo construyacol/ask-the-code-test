@@ -100,7 +100,7 @@ class DashBoardContainer extends Component{
           <Fragment>
             <Element id="containerElement" className="dashBoardLayout">
                <div className="sectionFixedPrice">
-                 <QuoteContainer/>
+                 {/* <QuoteContainer/> */}
                </div>
                <div className="containerSection" name="firstInsideContainer">
 

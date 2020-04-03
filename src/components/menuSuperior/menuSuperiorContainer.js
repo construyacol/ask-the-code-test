@@ -109,7 +109,7 @@ class MenuSuperiorContainer extends Component {
     await headroom.init()
 
     if(!this.props.currentPair){
-      this.props.action.getPairsByCountry(this.props.user.country)
+      // this.props.action.getPairsByCountry(this.props.user.country)
     }else{
       this.formating_currency()
     }
@@ -169,7 +169,7 @@ function mapStateToProps(state, props){
     item_quote:state.ui.item_quote,
     loggedIn:state.auth.loggedIn,
     show_menu_principal:state.ui.current_section.params.show_menu_principal,
-    user:user 
+    user:user
   }
 }
 

@@ -12,6 +12,7 @@ import { useCoinsendaServices } from '../../../actions/API/MainService'
 import withHandleError from '../../withHandleError'
 
 function LoaderAplication({ actions, history }) {
+
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
@@ -38,6 +39,7 @@ function LoaderAplication({ actions, history }) {
   }
 
   const initComponent = async (newCountry) => {
+
     const {
       userToken,
       userId,
@@ -80,6 +82,7 @@ function LoaderAplication({ actions, history }) {
 
     let user = await actions.get_user(userToken, userCountry, profile.userId, authData.email, profile.restore_id)
     if (!user) { return false }
+
     let userData = {
       ...user.entities.user[user.result],
       userToken: userToken
@@ -87,7 +90,7 @@ function LoaderAplication({ actions, history }) {
 
     await actions.updateUser(userData)
     await actions.logged_in(true)
-
+    
     await coinsendaServices.init(userCountry, doLogout)
 
     let verification_state = await actions.get_verification_state()
