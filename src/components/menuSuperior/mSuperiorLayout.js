@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import './mSuperior.css'
 import SimpleLoader from '../widgets/loaders'
 // import coin from '../../assets/btc.png'
@@ -7,11 +7,24 @@ import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
+import { useCoinsendaServices } from '../../actions/API/MainService'
+
 
 const MenuSuperiorLayout = (props) =>{
 
   let compra = "Te compramos a:"
   let venta = "Te vendemos a:"
+  const [coinsendaServices] = useCoinsendaServices()
+
+  useEffect(()=>{
+    let init = async() => {
+      await coinsendaServices.fetchAllPairs()
+      await coinsendaServices.fetchAllCurrencies()
+      await coinsendaServices.getPairsByCountry(props.user.country)
+    }
+
+    init()
+  }, [])
 
   const {
     logout,

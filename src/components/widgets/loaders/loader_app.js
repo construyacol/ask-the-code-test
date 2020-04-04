@@ -57,11 +57,11 @@ function LoaderAplication({ actions, history }) {
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) { return false }
 
-
     if (!country && !newCountry) { return false }
     let userCountry = newCountry ? newCountry : country
 
     let res = await coinsendaServices.countryValidator()
+
 
     if (!res) {
       prepareCountrySelection()
@@ -90,8 +90,9 @@ function LoaderAplication({ actions, history }) {
 
     await actions.updateUser(userData)
     await actions.logged_in(true)
-    
+
     await coinsendaServices.init(userCountry, doLogout)
+    // return console.log('||||||||| stop')
 
     let verification_state = await actions.get_verification_state()
 
@@ -137,7 +138,7 @@ function LoaderAplication({ actions, history }) {
 
   useEffect(() => {
     if (previousLoadLabel !== appLoadLabel) {
-      setProgressBarWidth(progressBarWidth + 8)
+      setProgressBarWidth(progressBarWidth + 33)
     }
   }, [appLoadLabel])
 
