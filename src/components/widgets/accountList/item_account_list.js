@@ -229,7 +229,9 @@ function mapStateToProps(state, props) {
     withdrawProviders
   } = state.modelData
 
-  let withdraw_provider_list = (path !== 'wallets' && user && withdrawProviders) && user.withdrawProviders.map(w_id => {
+  // console.log(path, user, withdrawProviders)
+
+  let withdraw_provider_list = (path !== 'wallets' && (user && withdrawProviders)) && user.withdrawProviders.map(w_id => {
     return withdrawProviders[w_id]
   })
 

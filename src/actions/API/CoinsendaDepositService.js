@@ -4,12 +4,14 @@ import { appLoadLabelAction } from "../loader";
 import normalizeUser from "../../schemas";
 import { updateNormalizedDataAction } from "../dataModelActions";
 
-export class CoinsendaDepositService extends WebService {
+export class DepositService extends WebService {
+
     async fetchDepositProviders() {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO))
 
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
+
         const result = response.reduce((result, item) => {
             result.push({
                 ...item,
@@ -29,11 +31,13 @@ export class CoinsendaDepositService extends WebService {
                 ...result,
             ]
         }
+        // return console.log('||||||||| fetchDepositProviders', finalData)
 
         const normalizedData = await normalizeUser(finalData)
         this.dispatch(updateNormalizedDataAction(normalizedData))
         return normalizedData.entities.deposit_providers
     }
+
 
     async confirmDepositOrder(order, base64image) {
         const user = this.user

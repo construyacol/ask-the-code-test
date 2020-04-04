@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
 
+
 const MenuSuperiorLayout = (props) =>{
 
   let compra = "Te compramos a:"

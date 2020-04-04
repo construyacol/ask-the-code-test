@@ -11,8 +11,7 @@ const {
 
 export const loadLabels = {
     IMPORTANDO_PARES: 'Importando pares',
-    OBTENIENDO_TUS_BALANCES: 'Obteniendo tus balances',
-    OBTENIENDO_TUS_BILLETERAS: 'Obteniendo tus billeteras',
+    OBTENIENDO_TUS_BILLETERAS_Y_BALANCES: 'Obteniendo tus billeteras y balances',
     OBTENIENDO_REGISTRO_DE_INTERCAMBIOS: 'Obteniendo tus registros de intercambios',
     OBTENIENDO_CUENTAS_DE_RETIRO: 'Obteniendo cuentas de retiro',
     OBTENIENDO_PROVEEDORES_DE_RETIRO : 'Obteniendo proveedores de retiro',
@@ -45,7 +44,7 @@ export const DEPOSITS_URL = `${DepositApiUrl}`
 export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`
 
-export const DEFAULT_URL = `${SwapApiUrl}pairs`
+export const SWAP_URL = `${SwapApiUrl}pairs`
 export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`
 export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`

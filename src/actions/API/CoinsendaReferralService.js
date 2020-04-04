@@ -2,7 +2,7 @@ import { WebService } from "./WebService";
 import { REFERRALS_URL } from "./const";
 import { updateUser } from "../APIactions";
 
-export class CoinsendaReferralService extends WebService {
+export class ReferralService extends WebService {
     async setReferralCode(code) {
         const user = this.user
 

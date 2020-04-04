@@ -188,7 +188,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 // export const get_all_pairs = (token, country) => {
 //   return async (dispatch, getState) => {
-//     const test = new MainService(dispatch, getState(), token)
+    // const test = new MainService(dispatch, getState(), token)
 //     return test.fetchAllPairs()
 //   }
 // }
@@ -267,7 +267,7 @@ const getLocalCurrency = async country => {
 export const getPairsByCountry = (country, user_collection) => {
 
   return async (dispatch, getState) => {
-    return console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||| getPairsByCountry', getState())
+    // return console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||| getPairsByCountry', getState())
     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
   }
 
@@ -563,7 +563,33 @@ export const get_list_user_wallets = (user) => {
 
 
 
+export const temporaryFetchDepositProviders = () => {
+  return async (dispatch, getState) => {
+    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+    return test.fetchDepositProviders()
+  }
 
+}
+
+
+export const temporaryFetchWithdrawProviders = () => {
+  return async (dispatch, getState) => {
+    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+    await test.fetchWithdrawProviders()
+  }
+}
+
+
+export const temporaryFetchWithdrawAccounts = () => {
+  return async (dispatch, getState) => {
+    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+    // alert('fetch api action')
+    return test.fetchWithdrawAccounts()
+  }
+}
 
 
 // ACCOUNTS SERVICES BY ID --------------------------------------------------------------------------------------
@@ -1056,7 +1082,7 @@ export const add_done_swap = (swaps, user, done_swap, update_list) => {
 //
 //   return async (dispatch, getState) => {
 //     alert('getSwapList')
-//     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
+    // return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
 //
 //     const { modelData } = getState()
 //     const { wallets } = modelData

@@ -432,7 +432,6 @@ export const serveKycData = (list) => {
 export const withdrawProvidersByType = async(withdrawProviders) => {
 
   let providers_served
-  
   await withdrawProviders.map(provider => {
     return providers_served = {
       ...providers_served,

@@ -1,11 +1,110 @@
 import { WebService } from "./WebService";
-import { ADD_NEW_SWAP, loadLabels, GET_SWAPS_BY_USERS_URL } from "./const";
+import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "./const";
 import { desNormalizedList } from "../../services";
 import normalizeUser from "../../schemas";
-import { updateNormalizedDataAction } from "../dataModelActions";
+import loadLocalPairsAction, {
+  updateNormalizedDataAction,
+  getAllPairsAction,
+  searchCurrentPairAction,
+  loadLocalCurrencyAction } from "../dataModelActions";
 import { appLoadLabelAction } from "../loader";
+import convertCurrencies from "../../services/convert_currency";
+import { pairsForAccount } from "../uiActions";
 
-export class CoinsendaSwapService extends WebService {
+export class SwapService extends WebService {
+
+
+  async fetchAllPairs() {
+
+      this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
+      const pairs = await this.Get(SWAP_URL)
+      this.dispatch(getAllPairsAction(pairs))
+      let updatedUser = {
+          ...this.user,
+          available_pairs: [
+              ...pairs
+          ]
+      }
+
+      let dataNormalized = await normalizeUser(updatedUser)
+      this.dispatch(updateNormalizedDataAction(dataNormalized))
+      return dataNormalized
+  }
+
+  pairsRequest(query) {
+      const requestCompleteUrl = `${PAIRS_URL}${query}`
+      return this.Get(requestCompleteUrl)
+  }
+
+  async getPairsByCountry(country, userCollection) {
+      const { currencies } = this.globalState.modelData
+      const localCurrency = await this.getLocalCurrency(country)
+
+      if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
+
+      const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
+      // console.log('getPairsByCountry, ', pairs)
+
+      if (!pairs) return
+
+      if (currencies) {
+          const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
+          await this.dispatch(loadLocalPairsAction(localCurrencies))
+
+          // TODO: Evaluate this
+          // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
+
+          this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
+
+          this.dispatch(loadLocalCurrencyAction(localCurrency))
+      }
+      return console.log('debes cargar las currencies');
+  }
+
+  async getPairs(primary, secondary, all) {
+      if (!primary && !secondary) return
+
+      if (primary || secondary) {
+          const query = !secondary ?
+              `{"where": {"primary_currency.currency": "${primary}"}}` :
+              `{"where": {"secondary_currency.currency": "${secondary}"}}`
+          const response = await this.pairsRequest(query)
+          if (this.isEmpty(response)) return
+          if (all) { return response }
+          return response[0]
+      }
+      const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
+      const response = await this.pairsRequest(query)
+      if (this.isEmpty(response)) return
+      return response[0]
+  }
+
+  async loadPairs(currentWallet, localCurrency, currentPair) {
+      if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
+      const currency = currentWallet.currency.currency
+
+      // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
+      let pair = await this.getPairs(currency, localCurrency)
+      !pair && (pair = await this.getPairs('bitcoin', currency))
+      !pair && (pair = await this.getPairs(currency))
+      !pair && (pair = await this.getPairs(null, currency))
+
+      if (!pair) { return false }
+
+      const pairId = pair.id
+      const data = await convertCurrencies(currentWallet.currency, '1', pairId)
+
+      if (data) {
+          const { to_spend_currency } = data
+          return this.dispatch(pairsForAccount(currentWallet.id, {
+              current_pair: {
+                  pair_id: pairId,
+                  currency: to_spend_currency.currency,
+                  currency_value: data.want_to_spend
+              }
+          }))
+      }
+  }
 
     async addNewSwap(accountId, pairId, value) {
         const user = this.user
