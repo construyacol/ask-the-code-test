@@ -10,10 +10,6 @@ import { Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
-// import WitdrawAccountContainer from '../withdrawAccounts/witdrawAccountContainer'
-// import SettingsContainer from '../settings/settingsContainer'
-// import SecurityCenter from '../securityCenter/securityCenter'
-// import ReferralComponent from '../referrals/referralsComponent'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
@@ -27,19 +23,25 @@ import {
   ItemSecurity,
   SecurityLayoutLoader
 } from '../securityCenter/styles'
-// import styled from 'styled-components'
 
 import './dashboard.css'
 import { bindActionCreators } from 'redux';
 import actions from '../../actions';
+import ContentTab from '../widgets/detailContainer/content-tab';
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
-// const SettingsContainer = React.lazy(() => import('../settings/settingsContainer'))
 const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
 
 const UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
+const TAB_TITLE = {
+  security: 'Centro de seguridad',
+  wallets: 'Mis billeteras',
+  referral: 'Referidos',
+  withdraw_accounts: 'Mis Cuentas de retiro'
+}
+
 function DashBoardContainer(props) {
   const onMount = async () => {
     hotjar.initialize(1688041, 6);
@@ -73,6 +75,9 @@ function DashBoardContainer(props) {
         <QuoteContainer />
       </div>
       <div className="containerSection" name="firstInsideContainer">
+        <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+          <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
+        )} />
         <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
           <Switch>
             <Route path="/wallets" component={WalletContainer} />

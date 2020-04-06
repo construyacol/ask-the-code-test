@@ -10,30 +10,10 @@ import WithdrawView from './views/withdraw'
 import SwapView from './views/swap'
 import AccountList from '../widgets/accountList/item_account_list'
 import ItemAccount from '../widgets/accountList/item_account'
-// import ItemAccount from './item_account'
-
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 
-import { matchItem } from '../../services'
-
 function WalletContainer(props) {
-  const staticState = {
-    title: "Mis billeteras",
-    userWallets: true, //solo lo uso para validar si se estan haciendo consultas al API
-  }
-
-  const getShortCurrency = async (wallet) => {
-    if (props.currencies && wallet) {
-      const currencies = props.currencies
-      const currency_source = wallet.currency.currency
-      const currency = await matchItem(currencies, { primary: currency_source }, 'view')
-      return props.action.current_section_params({
-        short_name: currency.code
-      })
-    }
-  }
-
   useEffect(() => {
     const path = props.match.path.replace('/', '')
     props.action.CurrentForm(path)
@@ -47,8 +27,6 @@ function WalletContainer(props) {
     <Switch>
       <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
         <DetailContainerLayout
-          title={staticState.title}
-          {...staticState}
           {...props}
           {...routeProps}
         >
@@ -87,7 +65,7 @@ const WalletDetail = props => {
   )
 }
 
-// TODO: review re-rendered on this component every time, no perfirmance here
+// TODO: review re-rendered on this component every time, no performance here
 const SwitchView = props => {
   const { params } = props.match
   const Views = {

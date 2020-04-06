@@ -40,32 +40,29 @@ function LoaderAplication({ actions, history }) {
   const initComponent = async (newCountry) => {
     const {
       userToken,
-      userId,
       doLogout
     } = authData
 
-    if(!userToken) return;
+    if (!userToken) return;
 
-    let profile = await actions.get_profile(userId, userToken)
+    let profile = await coinsendaServices.fetchUserProfile()
     if (!profile) {
       if (!newCountry) { return setCountry(null) }
-      profile = await actions.add_new_profile(newCountry, userToken)
-      actions.isAppLoading(false)
+      profile = await coinsendaServices.addNewProfile(newCountry)
     }
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) { return false }
 
 
     if (!country && !newCountry) { return false }
-    let userCountry = newCountry ? newCountry : country
+    const userCountry = newCountry ? newCountry : country
 
-    let res = await coinsendaServices.countryValidator()
+    const res = await coinsendaServices.countryValidator()
 
     if (!res) {
       prepareCountrySelection()
       return doLogout()
     }
-
 
     // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
     if (!res.countries[userCountry]) {
@@ -76,30 +73,25 @@ function LoaderAplication({ actions, history }) {
     await setCountry(userCountry)
     await animation('in')
 
-    await actions.loadFirstEschema()
+    await coinsendaServices.loadFirstEschema()
 
-    let user = await actions.get_user(userToken, userCountry, profile.userId, authData.email, profile.restore_id)
+    const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile.restore_id)
     if (!user) { return false }
-    let userData = {
-      ...user.entities.user[user.result],
-      userToken: userToken
-    }
 
-    await actions.updateUser(userData)
-    await actions.logged_in(true)
+    await actions.isLogedInAction(true)
 
     await coinsendaServices.init(userCountry, doLogout)
 
-    let verification_state = await actions.get_verification_state()
+    const verificationStatus = await coinsendaServices.getVerificationState()
 
-    if (verification_state !== 'accepted') {
-      await actions.AddNotification('security', null, 1)
+    if (verificationStatus !== 'accepted') {
+      await actions.addNotification('security', null, 1)
       await history.push('/security')
-      return actions.ready_to_play(true)
+      return actions.isAppLoaded(true)
     }
 
     await history.push('/wallets')
-    return actions.ready_to_play(true)
+    return actions.isAppLoaded(true)
 
   }
 

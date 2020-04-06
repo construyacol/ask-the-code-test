@@ -25,41 +25,41 @@ import './item_wallet.css'
 
 const ItemAccount = props => {
 
-  if(props.loader){
-    return(
-      <LoaderAccount/>
+  if (props.loader) {
+    return (
+      <LoaderAccount />
     )
   }
 
-  const account_detail = async(payload) => {
+  const account_detail = async (payload) => {
     props.action.CleanItemNotifications(payload, 'account_id')
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
     // return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
   }
 
-  const [ account_state, set_account_state ] = useState()
-  const [ id_wallet_action, set_id_wallet_action ] = useState()
+  const [account_state, set_account_state] = useState()
+  const [id_wallet_action, set_id_wallet_action] = useState()
   let id_trigger = id_wallet_action === props.account.id
   const { account_type } = props
 
-  return(
+  return (
     <AccountLayout className={`AccountLayout ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
       {
         account_type === 'wallets' ?
-        <Wallet
-          handleAction={account_detail}
-          set_id_wallet_action={set_id_wallet_action}
-          set_account_state={set_account_state}
-          account_state={account_state}
-          id_trigger={id_trigger}
-          {...props}/>
-        :
-        <WithdrawAccount
-          set_id_wallet_action={set_id_wallet_action}
-          set_account_state={set_account_state}
-          account_state={account_state}
-          id_trigger={id_trigger}
-          {...props}/>
+          <Wallet
+            handleAction={account_detail}
+            set_id_wallet_action={set_id_wallet_action}
+            set_account_state={set_account_state}
+            account_state={account_state}
+            id_trigger={id_trigger}
+            {...props} />
+          :
+          <WithdrawAccount
+            set_id_wallet_action={set_id_wallet_action}
+            set_account_state={set_account_state}
+            account_state={account_state}
+            id_trigger={id_trigger}
+            {...props} />
       }
     </AccountLayout>
   )
@@ -75,9 +75,9 @@ const mapStateToProps = (state, props) => {
 
   // console.log('||||||||||||||||||||||||||||||| ACCOUNT ITEM ACCOUNT ==> ', account)
 
-  return{
+  return {
     currentFilter,
-    balances:(balances && account) && balances[account.id],
+    balances: (balances && account) && balances[account.id],
   }
 
 }
@@ -98,18 +98,18 @@ const Wallet = props => {
   let icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
   // let notifier_type = type === 'trade' ? 'wallets' : type
 
-  const delete_account = async() => {
+  const delete_account = async () => {
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.action.delete_account(account)
     // console.log('°|||||||||||||||||°°°°°°°°°°°°°°°°°°°°°°° DELETE WALLET AFTER ===> ', account_deleted)
     let msg = "Cuenta eliminada con exito"
     let success = true
-    if(!account_deleted){
-       msg = "La cuenta no se ha podido eliminar"
-       success = false
+    if (!account_deleted) {
+      msg = "La cuenta no se ha podido eliminar"
+      success = false
     }
-    setTimeout(()=>{
+    setTimeout(() => {
       set_account_state('deleted')
       props.action.get_list_user_wallets(props.user)
     }, 300)
@@ -119,34 +119,34 @@ const Wallet = props => {
 
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
-  return(
+  return (
     <WalletLayout className={`walletLayout ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
-        {
-          props.actions &&
-          <Fragment>
-            <AccountCta handleAction={props.handleAction} payload={props.account_type}/>
-            <OptionsAccount
-              delete_account={delete_account}
-              {...props}/>
-          </Fragment>
-        }
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%"/>
+      {
+        props.actions &&
+        <Fragment>
+          <AccountCta handleAction={props.handleAction} payload={props.account_type} />
+          <OptionsAccount
+            delete_account={delete_account}
+            {...props} />
+        </Fragment>
+      }
+      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconWallet">
-        <IconSwitch icon={icon} size={195}/>
+        <IconSwitch icon={icon} size={195} />
       </div>
       <div className="walletTitleCont IWText">
         <h1 className="IWText fuente tobe_continue">{name ? name : 'Mi cartera crypto'}</h1>
-        <PopNotification notifier='wallets' item_type="account_id" id={id} type="new"/>
+        <PopNotification notifier='wallets' item_type="account_id" id={id} type="new" />
       </div>
       <p className="IWText fuente IWcurrencyText tobe_continue">{currency.currency}</p>
       <Fragment>
         {
           balances ?
-          <BalanceComponent account_id={id} />
-          :
-          <div className="loadItem">
-            <SimpleLoader color="white"/>
-          </div>
+            <BalanceComponent account_id={id} />
+            :
+            <div className="loadItem">
+              <SimpleLoader color="white" />
+            </div>
         }
       </Fragment>
     </WalletLayout>
@@ -167,7 +167,7 @@ const WithdrawAccount = props => {
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
 
-  const delete_account = async(account_id) => {
+  const delete_account = async (account_id) => {
     console.log('|||||||||||| Withdraw Account delete_account ===> ', id)
     const { set_id_wallet_action, set_account_state } = props
     set_account_state('deleting')
@@ -175,11 +175,11 @@ const WithdrawAccount = props => {
     let account_deleted = await props.action.delete_withdraw_account(id)
     let msg = "Cuenta eliminada con exito"
     let success = true
-    if(account_deleted === 404 || account_deleted === 465 || !account_deleted){
-       msg = "La cuenta no se ha podido eliminar"
-       success = false
-       set_account_state('CancelDeleting')
-       return props.action.mensaje(msg, success ? 'success' : 'error')
+    if (account_deleted === 404 || account_deleted === 465 || !account_deleted) {
+      msg = "La cuenta no se ha podido eliminar"
+      success = false
+      set_account_state('CancelDeleting')
+      return props.action.mensaje(msg, success ? 'success' : 'error')
     }
     console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
     props.action.exit_sound()
@@ -189,30 +189,30 @@ const WithdrawAccount = props => {
   }
 
 
-  return(
+  return (
     <WithdrawAccountL className={`withdrawAccount ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} inscribed={account.inscribed}>
       <OptionsAccount
         delete_account={delete_account}
-        {...props}/>
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%"/>
+        {...props} />
+      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
-        <IconSwitch icon={account.bank_name && account.bank_name.value} size={100}/>
+        <IconSwitch icon={account.bank_name && account.bank_name.value} size={100} />
       </div>
-      <h1 className="IWText fuente tobe_continue">{bank_name.ui_name} <PopNotification notifier='withdraw_accounts' item_type="account_id" id={id} type="new"/></h1>
+      <h1 className="IWText fuente tobe_continue">{bank_name.ui_name} <PopNotification notifier='withdraw_accounts' item_type="account_id" id={id} type="new" /></h1>
       <p className="IWText fuente2 IWLittleTitle">No. {account_number.value}</p>
       <Fragment>
         <div className="contSuscribed">
           {
             !inscribed ?
-            <div className="contLoader2">
-              <SimpleLoader color="white" loader={2}/>
-            </div>
-            :
-            <i className="far fa-check-circle"></i>
+              <div className="contLoader2">
+                <SimpleLoader color="white" loader={2} />
+              </div>
+              :
+              <i className="far fa-check-circle"></i>
           }
           <p className="IWText fuente IWLittleTitle">{inscribed ? 'inscrita' : 'Inscribiendo'}</p>
         </div>
-        <p className="IWText fuente IWLittleTitle" style={{display:!inscribed ? 'none' : 'flex'}}>Movimientos: {used_counter}</p>
+        <p className="IWText fuente IWLittleTitle" style={{ display: !inscribed ? 'none' : 'flex' }}>Movimientos: {used_counter}</p>
       </Fragment>
     </WithdrawAccountL>
   )
@@ -221,16 +221,16 @@ const WithdrawAccount = props => {
 
 const LoaderAccount = () => {
   const items = ['uno', 'dos', 'tres']
-  return(
+  return (
     <Fragment>
       {
-        items.map((e, key)=>{
-            return <WalletLayout className={`loader ${e}`} key={key}>
-              <div/>
-              <div/>
-              <div/>
-              <div/>
-            </WalletLayout>
+        items.map((e, key) => {
+          return <WalletLayout className={`loader ${e}`} key={key}>
+            <div />
+            <div />
+            <div />
+            <div />
+          </WalletLayout>
         })
       }
     </Fragment>
@@ -242,23 +242,23 @@ const LoaderAccount = () => {
 const OptionsAccount = props => {
 
 
-  const delete_account_confirmation = async() => {
+  const delete_account_confirmation = async () => {
     props.action.ConfirmationModalToggle()
     props.action.ConfirmationModalPayload({
-      title:"Esto es importante, estas a punto de...",
-      description:"Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
-      txtPrimary:"Eliminar",
-      txtSecondary:"Cancelar",
+      title: "Esto es importante, estas a punto de...",
+      description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
+      txtPrimary: "Eliminar",
+      txtSecondary: "Cancelar",
       // payload:props.account.id,
-      action:(props.delete_account),
-      img:"deletewallet",
+      action: (props.delete_account),
+      img: "deletewallet",
       // code:props.account_type
     })
   }
 
   // console.log('|||||||||||||||||||  redirectGo ==>> ', e.target.dataset && e.target.dataset.address)
   const redirectGo = (e) => {
-    if( e.target.dataset && e.target.dataset.address){
+    if (e.target.dataset && e.target.dataset.address) {
       return props.history.push(`/wallets/${e.target.dataset.address}/${props.account.id}`)
     }
   }
@@ -267,7 +267,7 @@ const OptionsAccount = props => {
 
   const { account_type } = props
 
-  return(
+  return (
     // <div className={`ItemBarra ${account_type} ${(current_view === 'detail') ? 'noVisible' : ''}`} >
     <OptionsLayout className={`OptionsLayout ${account_type}`}>
 

@@ -9,7 +9,7 @@ import Environment from "../../environment";
 import { updateNormalizedDataAction } from "../dataModelActions";
 
 export class CoinsendaIndetityService extends WebService {
-    async getUser(token, userCountry, userId, email, restoreId) {
+    async fetchCompleteUserData(userCountry, restoreId) {
         await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
 
         const finalUrlFirst = `${INDETITY_URL}?country=${userCountry}`
@@ -18,7 +18,7 @@ export class CoinsendaIndetityService extends WebService {
 
         if (!firstResponse) { return false }
 
-        const finalUrlSecond = `${INDENTITY_USERS_URL}/${userId}/status`
+        const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`
         const secondResponse = await this.Get(finalUrlSecond)
 
         let country_object = await addIndexToRootObject(secondResponse.countries)
@@ -26,7 +26,8 @@ export class CoinsendaIndetityService extends WebService {
 
         let updatedUser = {
             ...userDefaultState,
-            email,
+            email: this.authData.email,
+            userToken: this.authData.userToken,
             restoreId,
             id: secondResponse.userId,
             country: country[0].value,
@@ -51,7 +52,7 @@ export class CoinsendaIndetityService extends WebService {
             updatedUser.security_center.kyc.financial = kyc_financial
         }
 
-        const finalUrlThird = `${INDENTITY_USERS_URL}/${userId}/profiles`
+        const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`
         let thirdResponse = await this.Get(finalUrlThird)
 
         if (thirdResponse && thirdResponse.length > 0) {
@@ -137,18 +138,18 @@ export class CoinsendaIndetityService extends WebService {
         }
     }
 
-    async getProfile(userId, token) {
-        return this.Get(`${GET_PROFILE_URL}/${userId}/profile`)
+    async fetchUserProfile() {
+        return this.Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`)
     }
 
-    async addNewProfile(country, token) {
+    async addNewProfile(country) {
         let body = {
             "data": {
                 "country": country
             }
         }
 
-        let response = await this.Post(ADD_PROFILE_URL, body, token)
+        let response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken)
         if (!response) { return false }
 
         const { data } = response

@@ -27,7 +27,7 @@ class WithdrawFlow extends Component {
       ticket_label_loader:`Creando orden de retiro`,
       color_loader:"blue",
       new_order:null,
-      AddNotification:false,
+      addNotification:false,
       min_amount:0,
       provider_type:'bank', //Por defecto en el flujo el tipo de retiro es por transferencia bancaria, a futuro habilitaremos cash (efectivo)
       withdraw_account_list_update:[]
@@ -192,9 +192,9 @@ class WithdrawFlow extends Component {
           setTimeout(async()=>{
             console.log('________________________________________new_account_and_withdraw', new_account)
 
-            this.props.action.AddNotification('withdraw_accounts', {account_id:new_account.id}, 1)
+            this.props.action.addNotification('withdraw_accounts', {account_id:new_account.id}, 1)
             this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
-            // await this.setState({AddNotification:false})
+            // await this.setState({addNotification:false})
           },2000)
 
           await this.setState({show_list_accounts:false, need_new_acount:null})
@@ -203,7 +203,7 @@ class WithdrawFlow extends Component {
           return  this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
         }
 
-        await this.setState({AddNotification:true})
+        await this.setState({addNotification:true})
         await this.new_withdraw_order({withdraw_account:new_account.id, withdraw_provider:providers_served[provider_type].id})
 
     }
@@ -447,11 +447,11 @@ class WithdrawFlow extends Component {
       this.props.action.CleanForm('withdraw')
       this.props.action.CleanForm('bank')
 
-      if(this.state.AddNotification){
+      if(this.state.addNotification){
         setTimeout(async()=>{
-          this.props.action.AddNotification('withdraw_accounts', {account_id:new_order.withdraw_account_id}, 1)
+          this.props.action.addNotification('withdraw_accounts', {account_id:new_order.withdraw_account_id}, 1)
           this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
-          await this.setState({AddNotification:false})
+          await this.setState({addNotification:false})
         },2000)
       }
       setTimeout(async()=>{

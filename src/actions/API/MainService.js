@@ -65,6 +65,10 @@ export class MainService extends inheritances {
         return this._globalState.modelData.user
     }
 
+    get authData() {
+        return this._globalState.modelData.authData
+    }
+
     setGlobalState(newValue) {
         return this._globalState = newValue
     }
@@ -127,7 +131,7 @@ export class MainService extends inheritances {
 const mainService = new MainService()
 
 
-const sleep = (time) => new Promise(resolve => {
+export const sleep = (time) => new Promise(resolve => {
     setTimeout(() => resolve(), time)
 })
 

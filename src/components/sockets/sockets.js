@@ -127,7 +127,7 @@ class SocketsComponent extends Component {
       if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
         await this.props.action.update_item_state({ [withdraw.id]: { ...this.props.withdraws[withdraw.id], proof: withdraw.proof, sent: true, state: "accepted" } }, 'withdraws')
         await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
-        this.props.action.AddNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
+        this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
         this.props.action.other_modal_toggle()
         this.props.action.success_sound()
@@ -261,7 +261,7 @@ class SocketsComponent extends Component {
         }
 
         // console.log('======================================> DEPOSIT SOCKET ', cDeposit, this.props.activity_for_account[cDeposit.account_id])
-        this.props.action.AddNotification('wallets', { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1)
+        this.props.action.addNotification('wallets', { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1)
         await this.props.action.socket_notify({ ...cDeposit, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
         this.props.action.other_modal_toggle()
         this.props.action.success_sound()
@@ -296,7 +296,7 @@ class SocketsComponent extends Component {
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
 
-        this.props.action.AddNotification('wallets', { account_id: this.props.deposits[deposit.id].account_id, order_id: deposit.id }, 1)
+        this.props.action.addNotification('wallets', { account_id: this.props.deposits[deposit.id].account_id, order_id: deposit.id }, 1)
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)

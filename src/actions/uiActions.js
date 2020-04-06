@@ -51,7 +51,7 @@ export const default_video_state = (payload) =>{
 }
 
 
-export const AddNotification = (payload, extra, amount) =>{
+export const addNotification = (payload, extra, amount) =>{
 
   return{
     type:ADD_NOTIFICATION,
