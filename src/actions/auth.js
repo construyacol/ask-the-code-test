@@ -2,7 +2,7 @@ import {
   LOGGED_IN, SET_AUTH_DATA
 } from './action_types'
 
-export const isLogedInAction = (payload) => {
+export const isLoggedInAction = (payload) => {
   return {
     type:LOGGED_IN,
     payload

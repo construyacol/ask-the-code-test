@@ -88,7 +88,7 @@ function LoaderAplication({ actions, history }) {
     }
 >>>>>>> 5626415fa683d21877285655a1335f22ac5a1ca1
 
-    await actions.isLogedInAction(true)
+    await actions.isLoggedInAction(true)
 
     await coinsendaServices.init(userCountry, doLogout)
     // return console.log('||||||||| stop')

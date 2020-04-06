@@ -35,13 +35,8 @@ class MenuSuperiorContainer extends Component {
   }
 
   logOutFin = () => {
-<<<<<<< HEAD
-    this.props.logOut()
-    this.props.action.isLogedInAction(false)
-=======
     // this.props.logOut()
-    // this.props.action.logged_in(false)
->>>>>>> 5626415fa683d21877285655a1335f22ac5a1ca1
+    // this.props.action.isLoggedInAction(false)
   }
 
   country_change = () => {
