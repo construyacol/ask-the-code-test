@@ -79,14 +79,6 @@ function LoaderAplication({ actions, history }) {
 
     const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile.restore_id)
     if (!user) { return false }
-<<<<<<< HEAD
-=======
-
-    let userData = {
-      ...user.entities.user[user.result],
-      userToken: userToken
-    }
->>>>>>> 5626415fa683d21877285655a1335f22ac5a1ca1
 
     await actions.isLoggedInAction(true)
 
