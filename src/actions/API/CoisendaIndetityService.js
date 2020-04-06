@@ -8,7 +8,7 @@ import { verificationStateAction } from "../uiActions";
 import Environment from "../../environment";
 import { updateNormalizedDataAction } from "../dataModelActions";
 
-export class CoinsendaIndetityService extends WebService {
+export class IndetityService extends WebService {
     async fetchCompleteUserData(userCountry, restoreId) {
         await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
 
