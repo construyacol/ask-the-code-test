@@ -44,10 +44,12 @@ const TAB_TITLE = {
 
 function DashBoardContainer(props) {
   const onMount = async () => {
+
     hotjar.initialize(1688041, 6);
     await props.action.freshchat_init_user(props.user)
     await FreshChat.user_update(props.user)
     const verification_state = await props.action.get_verification_state()
+
     if (verification_state === 'accepted') {
       FreshChat.track('user login verified')
     }

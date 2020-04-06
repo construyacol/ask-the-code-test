@@ -48,7 +48,7 @@ import {
   verificationStateAction
   // new_fiat_deposit
 } from './uiActions'
-// import { MainService } from './API/MainService';
+import { MainService } from './API/MainService';
 
 const {
   normalizeUser,
@@ -264,13 +264,14 @@ const getLocalCurrency = async country => {
 }
 
 
-// export const getPairsByCountry = (country, user_collection) => {
-//
-//   return async (dispatch, getState) => {
-//     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
-//   }
-//
-// }
+export const getPairsByCountry = (country, user_collection) => {
+
+  return async (dispatch, getState) => {
+    return console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||| getPairsByCountry', getState())
+    return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
+  }
+
+}
 
 
 
@@ -2319,4 +2320,4 @@ export const swap_activity_update = (swap, filter) => {
 
 
 
-// export default getPairsByCountry
+export default getPairsByCountry

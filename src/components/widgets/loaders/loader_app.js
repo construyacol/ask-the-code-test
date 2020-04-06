@@ -12,6 +12,7 @@ import { useCoinsendaServices } from '../../../actions/API/MainService'
 import withHandleError from '../../withHandleError'
 
 function LoaderAplication({ actions, history }) {
+
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
   const [anim, setAnim] = useState('in')
@@ -38,6 +39,7 @@ function LoaderAplication({ actions, history }) {
   }
 
   const initComponent = async (newCountry) => {
+
     const {
       userToken,
       doLogout
@@ -53,11 +55,11 @@ function LoaderAplication({ actions, history }) {
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) { return false }
 
-
     if (!country && !newCountry) { return false }
     const userCountry = newCountry ? newCountry : country
 
     const res = await coinsendaServices.countryValidator()
+
 
     if (!res) {
       prepareCountrySelection()
@@ -77,10 +79,19 @@ function LoaderAplication({ actions, history }) {
 
     const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile.restore_id)
     if (!user) { return false }
+<<<<<<< HEAD
+=======
+
+    let userData = {
+      ...user.entities.user[user.result],
+      userToken: userToken
+    }
+>>>>>>> 5626415fa683d21877285655a1335f22ac5a1ca1
 
     await actions.isLogedInAction(true)
 
     await coinsendaServices.init(userCountry, doLogout)
+    // return console.log('||||||||| stop')
 
     const verificationStatus = await coinsendaServices.getVerificationState()
 
@@ -126,7 +137,7 @@ function LoaderAplication({ actions, history }) {
 
   useEffect(() => {
     if (previousLoadLabel !== appLoadLabel) {
-      setProgressBarWidth(progressBarWidth + 8)
+      setProgressBarWidth(progressBarWidth + 33)
     }
   }, [appLoadLabel])
 

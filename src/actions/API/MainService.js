@@ -1,16 +1,16 @@
 import { HistoricalPriceService } from "./HistoricalPricesService";
-import { CoinsendaPairsService } from "./CoinsendaPairsService";
-import { CoinsendaReferralService } from "./CoinsendaReferralService";
-import { CoinsendaWithdrawService } from "./CoinsendaWithdrawService";
-import { CoinsendaIndetityService } from "./CoisendaIndetityService";
-import { CoinsendaDepositService } from "./CoinsendaDepositService";
-import { CoinsendaSwapService } from "./CoinsendaSwapService";
+import { TransactionService } from "./CoinsendaTransactionService";
+import { ReferralService } from "./CoinsendaReferralService";
+import { WithdrawService } from "./CoinsendaWithdrawService";
+import { IndetityService } from "./CoisendaIndetityService";
+import { DepositService } from "./CoinsendaDepositService";
+import { SwapService } from "./CoinsendaSwapService";
+import { AccountService } from "./CoisendaAccountService";
 import userSource from  '../../components/api'
 import Environment from "../../environment";
 import { addIndexToRootObject, objectToArray } from "../../services";
 import normalizeUser from "../../schemas";
 import { updateNormalizedDataAction } from "../dataModelActions";
-import { CoinsendaAccountService } from "./CoisendaAccountService";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import isAppLoading from "../loader";
@@ -42,13 +42,13 @@ const aggregation = (baseClass, ...mixins) => {
 }
 
 const inheritances = aggregation(
-    CoinsendaPairsService,
-    CoinsendaReferralService,
-    CoinsendaWithdrawService,
-    CoinsendaIndetityService,
-    CoinsendaDepositService,
-    CoinsendaSwapService,
-    CoinsendaAccountService
+    TransactionService,
+    ReferralService,
+    WithdrawService,
+    IndetityService,
+    DepositService,
+    SwapService,
+    AccountService
 );
 export class MainService extends inheritances {
     token;
@@ -83,16 +83,16 @@ export class MainService extends inheritances {
     }
 
     async countryValidator() {
-        const URL = `${Environment.IdentityApIUrl}countryvalidators`
+      // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
+        const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
         const res = await this.Get(URL)
-        const countries = await addIndexToRootObject(res[0].levels.level_1.personal.natural.country)
+        const countries = await addIndexToRootObject(res.levels.level_1.personal.natural.country)
         const array = await objectToArray(countries)
         const result = {
             res: res[0],
             countries,
             country_list: array
         }
-
         return result
     }
 
@@ -104,19 +104,18 @@ export class MainService extends inheritances {
         while(!this.user) {
             await sleep(2000)
         }
-        let pairs = await this.fetchAllPairs(this.user.userToken, country)
+        // let pairs = await this.fetchAllPairs(this.user.userToken, country)
+        // if (!pairs) {
+        //     return callback()
+        // }
 
-        if (!pairs) {
-            return callback()
-        }
-
-        await this.fetchAllCurrencies()
-        await this.getPairsByCountry(this.user.country)
-        await this.getBalancesByAccount(this.user)
-        await this.fetchDepositProviders()
+        // await this.fetchAllCurrencies()
+        // await this.getPairsByCountry(this.user.country)
         await this.getWalletsByUser()
-        await this.fetchWithdrawProviders()
-        await this.fetchWithdrawAccounts()
+        // await this.getBalancesByAccount(this.user)
+        // await this.fetchDepositProviders()
+        // await this.fetchWithdrawProviders()
+        // await this.fetchWithdrawAccounts()
     }
 }
 

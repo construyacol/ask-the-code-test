@@ -62,6 +62,7 @@ function RootContainer(props) {
     initComponent()
   }, [])
 
+
   return (
     <Router
       history={history}

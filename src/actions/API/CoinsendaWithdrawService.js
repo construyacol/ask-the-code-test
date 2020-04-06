@@ -5,7 +5,6 @@ import {
     GET_WITHDRAW_BY_USER_URL,
     WITHDRAW_PROVIDERS_URL,
     UPDATE_WITHDRAW_URL,
-    ADD_RESTORE_ID_URL,
     NEW_WITHDRAW_URL,
     DELETE_WITHDRAW_URL,
     NEW_WITHDRAW_ACCOUNT_URL
@@ -13,9 +12,9 @@ import {
 import { updateNormalizedDataAction } from "../dataModelActions";
 import normalizeUser from "../../schemas";
 import { withdrawProvidersByType } from "../../services";
-import { toJS } from "mobx";
+// import { toJS } from "mobx";
 
-export class CoinsendaWithdrawService extends WebService {
+export class WithdrawService extends WebService {
     async fetchWithdrawAccounts() {
         const { user, withdrawProviders } = this.globalState.modelData
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
@@ -25,6 +24,7 @@ export class CoinsendaWithdrawService extends WebService {
         if (!result || result === 465 || !withdrawProviders) { return false }
 
         const providersServed = await this.withdrawProvidersByType
+        // return console.log('||||||||| fetchDepositProviders', providersServed)
 
         const withdrawAccounts = await result.map(account => {
             const aux = providersServed[account.provider_type];
@@ -108,7 +108,7 @@ export class CoinsendaWithdrawService extends WebService {
                 ...result,
                 [provider.provider_type]: provider
             }
-        }, {}) 
+        }, {})
     }
 
     async fetchWithdrawProviders() {
@@ -117,7 +117,7 @@ export class CoinsendaWithdrawService extends WebService {
         const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`
 
         let withdrawProviders = await this.Get(finalUrl)
-
+        // return console.log('||||||||| fetchWithdrawProviders', withdrawProviders, finalUrl)
         let updatedUser = {
             ...user,
             withdrawProviders: [
@@ -148,19 +148,7 @@ export class CoinsendaWithdrawService extends WebService {
 
     }
 
-    async addRestoreId(restoreId) {
-        const user = this.user
-        const body = {
-            "data": {
-                restoreId
-            }
-        }
-        const response = await this.Post(ADD_RESTORE_ID_URL, body, user.userToken)
-        if (response === 465 || !response) { return false }
 
-        return response
-
-    }
 
     async addWithdrawOrder(amount, accountFrom, withdrawProvider, withdrawAccount) {
         const user = this.user

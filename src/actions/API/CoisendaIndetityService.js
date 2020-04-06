@@ -124,7 +124,6 @@ export class CoinsendaIndetityService extends WebService {
     }
 
     async userVerificationStatus(level) {
-
         const user = this.user
         const { advanced, basic, financial } = user.security_center.kyc
 
@@ -143,13 +142,13 @@ export class CoinsendaIndetityService extends WebService {
     }
 
     async addNewProfile(country) {
-        let body = {
+        const body = {
             "data": {
                 "country": country
             }
         }
 
-        let response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken)
+        const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken)
         if (!response) { return false }
 
         const { data } = response
