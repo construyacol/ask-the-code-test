@@ -11,7 +11,7 @@ import SwapView from './views/swap'
 import AccountList from '../widgets/accountList/item_account_list'
 import ItemAccount from '../widgets/accountList/item_account'
 // import ItemAccount from './item_account'
-import { useCoinsendaServices } from '../../actions/API/MainService'
+import { useCoinsendaServices } from '../../services/MainService'
 
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
