@@ -18,6 +18,7 @@ const BuildedHome = (props) => (
 )
 
 function HomeContainer(props) {
+
   const {
     isSomeModalRendered,
     doLogout,

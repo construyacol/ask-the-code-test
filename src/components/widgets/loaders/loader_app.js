@@ -61,6 +61,7 @@ function LoaderAplication({ actions, history }) {
     const res = await coinsendaServices.countryValidator()
 
 
+
     if (!res) {
       prepareCountrySelection()
       return doLogout()

@@ -10,11 +10,47 @@ import WithdrawView from './views/withdraw'
 import SwapView from './views/swap'
 import AccountList from '../widgets/accountList/item_account_list'
 import ItemAccount from '../widgets/accountList/item_account'
+// import ItemAccount from './item_account'
+import { useCoinsendaServices } from '../../actions/API/MainService'
+
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
+import { matchItem } from '../../utils'
 
 function WalletContainer(props) {
+
+  const staticState = {
+    title: "Mis billeteras",
+    userWallets: true, //solo lo uso para validar si se estan haciendo consultas al API
+  }
+
+  const [ coinsendaServices ] = useCoinsendaServices()
+
+  const getShortCurrency = async (wallet) => {
+    if (props.currencies && wallet) {
+      const currencies = props.currencies
+      const currency_source = wallet.currency.currency
+      const currency = await matchItem(currencies, { primary: currency_source }, 'view')
+      return props.action.current_section_params({
+        short_name: currency.code
+      })
+    }
+  }
+
+  //
   useEffect(() => {
+
+    let initServices = async() => {
+      await coinsendaServices.fetchAllPairs()
+      await coinsendaServices.fetchAllCurrencies()
+      await coinsendaServices.getPairsByCountry(props.user.country)
+      if(!props.deposit_providers){await coinsendaServices.fetchDepositProviders()}  //TODO: to refactor, at the moment it is temporary
+      if(!props.withdrawProviders){await coinsendaServices.fetchWithdrawProviders()}  //TODO: to refactor, at the moment it is temporary
+      if(!props.withdraw_accounts){await coinsendaServices.fetchWithdrawAccounts()}  //TODO: to refactor, at the moment it is temporary
+    }
+
+    initServices()
+
     const path = props.match.path.replace('/', '')
     props.action.CurrentForm(path)
     return () => {
@@ -82,14 +118,20 @@ WalletContainer.propTypes = {
   all_pairs: PropTypes.object,
   isAppLoaded: PropTypes.bool,
   currencies: PropTypes.array,
-  user: PropTypes.object
+  user: PropTypes.object,
+  deposit_providers: PropTypes.object, //TODO: to refactor, at the moment it is temporary
+  withdrawProviders: PropTypes.object, //TODO: to refactor, at the moment it is temporary
+  withdraw_accounts: PropTypes.object, //TODO: to refactor, at the moment it is temporary
 }
 
 function mapStateToProps({ modelData, isLoading }) {
   const {
     user,
     all_pairs,
-    wallets
+    wallets,
+    deposit_providers, //TODO: to refactor, at the moment it is temporary
+    withdrawProviders, //TODO: to refactor, at the moment it is temporary
+    withdraw_accounts //TODO: to refactor, at the moment it is temporary
   } = modelData
 
   const {
@@ -101,7 +143,11 @@ function mapStateToProps({ modelData, isLoading }) {
     user: user,
     currencies: modelData.currencies || null,
     wallets,
-    isAppLoaded
+    isAppLoaded,
+    deposit_providers, //TODO: to refactor, at the moment it is temporary
+    withdrawProviders, //TODO: to refactor, at the moment it is temporary
+    withdraw_accounts, //TODO: to refactor, at the moment it is temporary
+
   }
 }
 

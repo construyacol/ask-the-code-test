@@ -10,7 +10,6 @@ export class DepositService extends WebService {
 
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
-        // return console.log('||||||||| fetchDepositProviders', response)
 
         const result = response.reduce((result, item) => {
             result.push({
@@ -31,11 +30,13 @@ export class DepositService extends WebService {
                 ...result,
             ]
         }
+        // return console.log('||||||||| fetchDepositProviders', finalData)
 
         const normalizedData = await normalizeUser(finalData)
         this.dispatch(updateNormalizedDataAction(normalizedData))
         return normalizedData.entities.deposit_providers
     }
+
 
     async confirmDepositOrder(order, base64image) {
         const user = this.user

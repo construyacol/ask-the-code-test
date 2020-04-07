@@ -10,6 +10,7 @@ import PricesComponent from '../Prices/PricesComponent'
 import { useCoinsendaServices } from '../../services/MainService'
 
 
+
 const MenuSuperiorLayout = (props) =>{
 
   let compra = "Te compramos a:"

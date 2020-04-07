@@ -16,15 +16,16 @@ import { withdrawProvidersByType } from "../utils";
 
 export class WithdrawService extends WebService {
     async fetchWithdrawAccounts() {
-        const { user, withdrawProviders } = this.globalState.modelData
+        const { user } = this.globalState.modelData
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}`
 
         const result = await this.Get(finalUrl)
-        if (!result || result === 465 || !withdrawProviders) { return false }
-
+        if (!result || result === 465 || !this.withdrawProviders) { return false }
         const providersServed = await this.withdrawProvidersByType
         // return console.log('||||||||| fetchDepositProviders', providersServed)
+
+
 
         const withdrawAccounts = await result.map(account => {
             const aux = providersServed[account.provider_type];
@@ -117,13 +118,14 @@ export class WithdrawService extends WebService {
         const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`
 
         let withdrawProviders = await this.Get(finalUrl)
-        // return console.log('||||||||| fetchWithdrawProviders', withdrawProviders, finalUrl)
         let updatedUser = {
             ...user,
             withdrawProviders: [
                 ...withdrawProviders
             ]
         }
+        console.log('||||||||||||||||||||||||||||||||||||||||||||||| fetchWithdrawProviders', this._globalState, updatedUser)
+        // return alert('|||||||| fetchWithdrawProviders')
         let normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         this.withdrawProviders = withdrawProviders
