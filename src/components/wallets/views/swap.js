@@ -7,8 +7,8 @@ import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import { InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
 
 import { ButtonForms } from '../../widgets/buttons/buttons'
-import { matchItem, mensaje } from '../../../services'
-import convertCurrencies, { formatToCurrency } from '../../../services/convert_currency'
+import { matchItem, mensaje } from '../../../utils'
+import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'
 
 class SwapView extends Component{
 

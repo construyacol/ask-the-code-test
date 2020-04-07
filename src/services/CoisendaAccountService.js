@@ -1,6 +1,6 @@
-import { WebService } from "./WebService";
-import { resetModelData, updateNormalizedDataAction, manageBalanceAction, updateAllCurrenciesAction } from "../dataModelActions";
-import normalizeUser from "../../schemas";
+import { WebService } from "../actions/API/WebService";
+import { resetModelData, updateNormalizedDataAction, manageBalanceAction, updateAllCurrenciesAction } from "../actions/dataModelActions";
+import normalizeUser from "../schemas";
 import {
     ACCOUNT_URL,
     DEPOSITS_URL,
@@ -9,9 +9,9 @@ import {
     DELETE_WITHDRAW_ACCOUNT_URL,
     loadLabels,
     CURRENCIES_URL
-} from "./const";
-import { coins } from '../../components/api/ui/api.json'
-import { appLoadLabelAction } from "../loader";
+} from "../const/const";
+import { coins } from '../components/api/ui/api.json'
+import { appLoadLabelAction } from "../actions/loader";
 
 export class AccountService extends WebService {
     async getWalletsByUser() {

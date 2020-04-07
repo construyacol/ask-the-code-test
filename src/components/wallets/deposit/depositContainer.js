@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { toast } from 'react-toastify';
-import * as globalServices from '../../../services'
+import * as globalServices from '../../../utils'
 import './deposit.css'
 import { SavePayment } from '../../widgets/toast/messages'
 import { withRouter } from "react-router";

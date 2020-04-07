@@ -6,8 +6,8 @@ import TicketDetail from './ticketDetail'
 import TicketPaymentProof from './ticketPaymentProof'
 import ErrorView from '../errorView'
 import SimpleLoader from '../loaders'
-import { formatToCurrency } from '../../../services/convert_currency'
-import { ticketModalView } from '../../../services'
+import { formatToCurrency } from '../../../utils/convert_currency'
+import { ticketModalView } from '../../../utils'
 import { withRouter } from "react-router";
 
 import './ticket.css'

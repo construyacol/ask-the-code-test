@@ -10,7 +10,7 @@ import * as deposit_actions from './API/deposit_actions'
 import * as withdraw_actions from './API/withdraw_actions'
 import * as swap_actions from './API/swap_actions'
 import * as account_actions from './API/account_actions'
-import { update_activity_state, get_order_by_id } from '../services'
+import { update_activity_state, get_order_by_id } from '../utils'
 import { freshchat_init_user } from '../services/freshChat'
 
 

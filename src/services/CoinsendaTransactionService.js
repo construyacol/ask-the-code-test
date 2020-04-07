@@ -1,11 +1,11 @@
-import { WebService } from "./WebService";
-import { appLoadLabelAction } from "../loader";
+import { WebService } from "../actions/API/WebService";
+import { appLoadLabelAction } from "../actions/loader";
 import {
     updateNormalizedDataAction
-} from "../dataModelActions"
-import { loadLabels, LOCAL_CURRENCIES_URL, CURRENCIES_URL, ADD_RESTORE_ID_URL } from "./const";
-import normalizeUser from "../../schemas";
-import { matchItem } from "../../services";
+} from "../actions/dataModelActions"
+import { loadLabels, LOCAL_CURRENCIES_URL, CURRENCIES_URL, ADD_RESTORE_ID_URL } from "../const/const";
+import normalizeUser from "../schemas";
+import { matchItem } from "../utils";
 
 export class TransactionService extends WebService {
 

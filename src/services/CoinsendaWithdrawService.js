@@ -1,5 +1,5 @@
-import { WebService } from "./WebService";
-import { appLoadLabelAction } from "../loader";
+import { WebService } from "../actions/API/WebService";
+import { appLoadLabelAction } from "../actions/loader";
 import {
     loadLabels,
     GET_WITHDRAW_BY_USER_URL,
@@ -8,10 +8,10 @@ import {
     NEW_WITHDRAW_URL,
     DELETE_WITHDRAW_URL,
     NEW_WITHDRAW_ACCOUNT_URL
-} from "./const";
-import { updateNormalizedDataAction } from "../dataModelActions";
-import normalizeUser from "../../schemas";
-import { withdrawProvidersByType } from "../../services";
+} from "../const/const";
+import { updateNormalizedDataAction } from "../actions/dataModelActions";
+import normalizeUser from "../schemas";
+import { withdrawProvidersByType } from "../utils";
 // import { toJS } from "mobx";
 
 export class WithdrawService extends WebService {

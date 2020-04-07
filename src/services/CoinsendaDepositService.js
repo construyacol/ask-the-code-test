@@ -1,8 +1,8 @@
-import { WebService } from "./WebService";
-import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL } from "./const";
-import { appLoadLabelAction } from "../loader";
-import normalizeUser from "../../schemas";
-import { updateNormalizedDataAction } from "../dataModelActions";
+import { WebService } from "../actions/API/WebService";
+import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL } from "../const/const";
+import { appLoadLabelAction } from "../actions/loader";
+import normalizeUser from "../schemas";
+import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class DepositService extends WebService {
     async fetchDepositProviders() {

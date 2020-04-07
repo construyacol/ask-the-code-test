@@ -16,7 +16,7 @@ import {
   ApiGetRequest
 } from '../actions/API'
 
-import store from '../'
+import store from '..'
 
 const {
   WithdrawApiUrl,

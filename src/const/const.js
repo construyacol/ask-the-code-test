@@ -1,4 +1,4 @@
-import Enviroment from "../../environment"
+import Enviroment from "../environment"
 
 const {
     AccountApiUrl,

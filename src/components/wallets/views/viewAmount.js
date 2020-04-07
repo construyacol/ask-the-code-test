@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import { InputDepositForm } from '../../widgets/inputs'
-import { handleKeyPress, number_format, get_ui_name_currency } from '../../../services'
+import { handleKeyPress, number_format, get_ui_name_currency } from '../../../utils'
 
 
 import '../deposit/deposit.css'

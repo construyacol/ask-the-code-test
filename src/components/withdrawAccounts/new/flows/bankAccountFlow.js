@@ -10,7 +10,7 @@ import SimpleLoader from '../../../widgets/loaders'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
-import { serveBankOrCityList, addIndexToRootObject, objectToArray } from '../../../../services'
+import { serveBankOrCityList, addIndexToRootObject, objectToArray } from '../../../../utils'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
 
 // const dropDawnElements = [

@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import SimpleLoader from '../loaders'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
-import { formatToCurrency } from '../../../services/convert_currency'
+import { formatToCurrency } from '../../../utils/convert_currency'
 import PropTypes from 'prop-types'
 import './quote.css'
 

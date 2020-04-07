@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 // import { updateFormControl, FormWallet } from '../../../actions'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { matchItem } from '../../../services'
+import { matchItem } from '../../../utils'
 
 
 class NewWallet extends Component{

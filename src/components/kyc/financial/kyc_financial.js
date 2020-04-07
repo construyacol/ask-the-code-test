@@ -4,12 +4,12 @@ import { ButtonForms } from '../../widgets/buttons/buttons.js'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile, objectToArray, addIndexToRootObject, converToInitState } from '../../../services'
+import { readFile, objectToArray, addIndexToRootObject, converToInitState } from '../../../utils'
 import images from '../../../assets/pictures.png'
 import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
-import { img_compressor } from '../../../services'
+import { img_compressor } from '../../../utils'
 
 
 const ACCEPT_FILE_TYPE = [

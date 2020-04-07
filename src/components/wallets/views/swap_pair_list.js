@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import ItemLayout from '../../widgets/items/itemLayout'
-import convertCurrencies from '../../../services/convert_currency'
+import convertCurrencies from '../../../utils/convert_currency'
 import OtherModalLayoutPairs from '../../widgets/modal/otherModalLayoutPairs'
 
 export class PairList extends Component {

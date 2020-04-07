@@ -5,7 +5,7 @@ import { updateNormalizedDataAction } from '../dataModelActions'
 import {
   update_activity_state,
   normalized_list
-} from '../../services'
+} from '../../utils'
 
 import {
   ApiGetRequest,

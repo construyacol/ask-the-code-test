@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import KycAvancedLayout from './kyc_avanced_layout'
-import { readFile } from '../../../services'
+import { readFile } from '../../../utils'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { toast } from 'react-toastify';
-import { img_compressor } from '../../../services'
+import { img_compressor } from '../../../utils'
 
 class KycAvancedContainer extends Component{
 

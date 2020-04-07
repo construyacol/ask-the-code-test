@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
-import { useCoinsendaServices } from '../../actions/API/MainService'
+import { useCoinsendaServices } from '../../services/MainService'
 
 
 const MenuSuperiorLayout = (props) =>{

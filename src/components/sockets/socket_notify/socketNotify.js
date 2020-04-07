@@ -5,7 +5,7 @@ import actions from '../../../actions'
 import OtherModalLayout from '../../widgets/modal/otherModalLayout'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import { ButtonNofity } from '../../widgets/buttons/buttons'
-import { formatToCurrency } from '../../../services/convert_currency'
+import { formatToCurrency } from '../../../utils/convert_currency'
 
 import './socketNotify.css'
 

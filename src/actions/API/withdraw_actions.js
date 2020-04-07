@@ -22,7 +22,7 @@ import {
 import {
   update_activity_state,
   normalized_list
-} from '../../services'
+} from '../../utils'
 
 const {
   WithdrawApiUrl

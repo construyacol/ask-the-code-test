@@ -8,7 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { withdrawProvidersByType, matchItem, number_format } from '../../../services'
+import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
 
 import actions from '../../../actions'
 

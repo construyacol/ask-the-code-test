@@ -8,7 +8,7 @@ import IconSwitch from '../icons/iconSwitch'
 import './loader.css'
 import { withRouter } from 'react-router'
 import usePrevious from '../../hooks/usePreviousValue'
-import { useCoinsendaServices } from '../../../actions/API/MainService'
+import { useCoinsendaServices } from '../../../services/MainService'
 import withHandleError from '../../withHandleError'
 
 function LoaderAplication({ actions, history }) {

@@ -1,9 +1,9 @@
 import Environment from '../environment'
 import * as data_model_actions from './dataModelActions'
-import * as services from '../services'
+import * as services from '../utils'
 import { IncreaseStep, ReduceStep } from './formActions'
 import { toast } from 'react-toastify';
-import convertCurrencies from '../services/convert_currency'
+import convertCurrencies from '../utils/convert_currency'
 import moment from 'moment'
 import 'moment/locale/es'
 // import * as Sentry from '@sentry/browser';
@@ -48,7 +48,7 @@ import {
   verificationStateAction
   // new_fiat_deposit
 } from './uiActions'
-import { MainService } from './API/MainService';
+import { MainService } from '../services/MainService';
 
 const {
   normalizeUser,

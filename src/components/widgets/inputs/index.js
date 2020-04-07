@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react'
 import './inputStyles.css'
-import { number_format } from '../../../services'
+import { number_format } from '../../../utils'
 import { SimpleLoader } from '../loaders'
 import IconSwitch from '../icons/iconSwitch'
 import Environtment from '../../../environment'

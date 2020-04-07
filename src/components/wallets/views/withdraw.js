@@ -10,7 +10,7 @@ import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import AddressValidator from 'wallet-address-validator'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
-import { formatToCurrency } from '../../../services/convert_currency'
+import { formatToCurrency } from '../../../utils/convert_currency'
 // import { BigNumber } from "bignumber.js"
 
 

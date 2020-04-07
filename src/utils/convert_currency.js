@@ -1,5 +1,5 @@
 import { BigNumber } from "bignumber.js"
-import store from '../'
+import store from '..'
 
   // export const getFormatCurrency = async(short_currency, amount) => {
   //

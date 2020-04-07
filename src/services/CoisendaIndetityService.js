@@ -1,12 +1,12 @@
-import { WebService } from "./WebService";
-import { appLoadLabelAction } from "../loader";
-import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "./const";
-import userDefaultState from '../../components/api'
-import { objectToArray, addIndexToRootObject } from "../../services";
-import normalizeUser from "../../schemas";
-import { verificationStateAction } from "../uiActions";
-import Environment from "../../environment";
-import { updateNormalizedDataAction } from "../dataModelActions";
+import { WebService } from "../actions/API/WebService";
+import { appLoadLabelAction } from "../actions/loader";
+import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "../const/const";
+import userDefaultState from '../components/api'
+import { objectToArray, addIndexToRootObject } from "../utils";
+import normalizeUser from "../schemas";
+import { verificationStateAction } from "../actions/uiActions";
+import Environment from "../environment";
+import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
     async fetchCompleteUserData(userCountry, restoreId) {

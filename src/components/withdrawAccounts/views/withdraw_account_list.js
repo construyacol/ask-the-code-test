@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import AccountItemList from '../../widgets/account_item_list/accountItemList'
 import { SimpleLoader } from '../../widgets/loaders'
-import { withdrawProvidersByType, matchItem } from '../../../services'
+import { withdrawProvidersByType, matchItem } from '../../../utils'
 import '../WAccount.css'
 
 

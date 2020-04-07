@@ -1,15 +1,15 @@
-import { WebService } from "./WebService";
-import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "./const";
-import { desNormalizedList } from "../../services";
-import normalizeUser from "../../schemas";
+import { WebService } from "../actions/API/WebService";
+import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "../const/const";
+import { desNormalizedList } from "../utils";
+import normalizeUser from "../schemas";
 import loadLocalPairsAction, {
   updateNormalizedDataAction,
   getAllPairsAction,
   searchCurrentPairAction,
-  loadLocalCurrencyAction } from "../dataModelActions";
-import { appLoadLabelAction } from "../loader";
-import convertCurrencies from "../../services/convert_currency";
-import { pairsForAccount } from "../uiActions";
+  loadLocalCurrencyAction } from "../actions/dataModelActions";
+import { appLoadLabelAction } from "../actions/loader";
+import convertCurrencies from "../utils/convert_currency";
+import { pairsForAccount } from "../actions/uiActions";
 
 export class SwapService extends WebService {
 

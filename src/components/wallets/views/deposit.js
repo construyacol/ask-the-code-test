@@ -8,7 +8,7 @@ import QRCode from 'qrcode'
 import { ButtonForms } from '../../widgets/buttons/buttons'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import UnverifiedComponent from '../../widgets/unverified_user/unverifiedComponent'
-import { SentryCaptureException } from '../../../services'
+import { SentryCaptureException } from '../../../utils'
 
 
 class DepositView extends Component{

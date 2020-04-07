@@ -3,7 +3,7 @@ import MenuSuperiorLayout from './mSuperiorLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
-import { formatToCurrency } from '../../services/convert_currency'
+import { formatToCurrency } from '../../utils/convert_currency'
 
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";

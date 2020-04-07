@@ -1,6 +1,6 @@
-import { WebService } from "./WebService";
-import { REFERRALS_URL } from "./const";
-import { updateUser } from "../APIactions";
+import { WebService } from "../actions/API/WebService";
+import { REFERRALS_URL } from "../const/const";
+import { updateUser } from "../actions/APIactions";
 
 export class ReferralService extends WebService {
     async setReferralCode(code) {

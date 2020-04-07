@@ -1,4 +1,4 @@
-import { HistoricalPriceService } from "./HistoricalPricesService";
+import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
 import { TransactionService } from "./CoinsendaTransactionService";
 import { ReferralService } from "./CoinsendaReferralService";
 import { WithdrawService } from "./CoinsendaWithdrawService";
@@ -6,14 +6,14 @@ import { IndetityService } from "./CoisendaIndetityService";
 import { DepositService } from "./CoinsendaDepositService";
 import { SwapService } from "./CoinsendaSwapService";
 import { AccountService } from "./CoisendaAccountService";
-import userSource from  '../../components/api'
-import Environment from "../../environment";
-import { addIndexToRootObject, objectToArray } from "../../services";
-import normalizeUser from "../../schemas";
-import { updateNormalizedDataAction } from "../dataModelActions";
+import userSource from  '../components/api'
+import Environment from "../environment";
+import { addIndexToRootObject, objectToArray } from "../utils";
+import normalizeUser from "../schemas";
+import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import isAppLoading from "../loader";
+import isAppLoading from "../actions/loader";
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
