@@ -11,6 +11,8 @@ export class DepositService extends WebService {
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
 
+        if(!response) return;
+
         const result = response.reduce((result, item) => {
             result.push({
                 ...item,

@@ -11,8 +11,6 @@ import {
 } from "../const/const";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
-import { withdrawProvidersByType } from "../utils";
-// import { toJS } from "mobx";
 
 export class WithdrawService extends WebService {
     async fetchWithdrawAccounts() {
@@ -117,8 +115,11 @@ export class WithdrawService extends WebService {
         const user = this.user
         const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`
 
-        let withdrawProviders = await this.Get(finalUrl)
-        let updatedUser = {
+        const withdrawProviders = await this.Get(finalUrl)
+
+        if(!withdrawProviders) return;
+
+        const updatedUser = {
             ...user,
             withdrawProviders: [
                 ...withdrawProviders
@@ -126,7 +127,7 @@ export class WithdrawService extends WebService {
         }
         console.log('||||||||||||||||||||||||||||||||||||||||||||||| fetchWithdrawProviders', this._globalState, updatedUser)
         // return alert('|||||||| fetchWithdrawProviders')
-        let normalizedUser = await normalizeUser(updatedUser)
+        const normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         this.withdrawProviders = withdrawProviders
         return withdrawProviders

@@ -5,7 +5,6 @@ import {
   Events,
   scrollSpy
 } from "react-scroll";
-//
 import { Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
