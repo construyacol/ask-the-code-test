@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
-import { createBrowserHistory } from "history";
 import localForage from 'localforage'
 import jwt from 'jsonwebtoken'
 import { connect, useSelector } from 'react-redux';
@@ -13,9 +12,7 @@ import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
 import ToastContainers from './widgets/toast/ToastContainer'
-
-const history = createBrowserHistory();
-const COINSENDA_URL = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
+import { COINSENDA_URL, history } from '../const/const';
 
 function RootContainer(props) {
   // TODO: rename isLoading from state

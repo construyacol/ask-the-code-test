@@ -59,6 +59,9 @@ class WitdrawAccountContainer extends Component {
             title={title}
             {...this.props}
             {...this.state}
+            style={{
+              height: '100%'
+            }}
           >
             {
               !isAppLoaded ?

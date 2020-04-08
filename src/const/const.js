@@ -1,3 +1,4 @@
+import { createBrowserHistory } from "history";
 import Enviroment from "../environment"
 
 const {
@@ -55,3 +56,6 @@ export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidato
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
+
+export const history = createBrowserHistory();
+export const COINSENDA_URL = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
