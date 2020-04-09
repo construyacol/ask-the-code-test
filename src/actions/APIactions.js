@@ -265,7 +265,7 @@ const getLocalCurrency = async country => {
 
 
 export const getPairsByCountry = (country, user_collection) => {
-
+  debugger
   return async (dispatch, getState) => {
     // return console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||| getPairsByCountry', getState())
     return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)

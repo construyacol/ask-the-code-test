@@ -10,6 +10,7 @@ import loadLocalPairsAction, {
 import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
+import sleep from "../utils/sleep";
 
 export class SwapService extends WebService {
 
@@ -36,8 +37,7 @@ export class SwapService extends WebService {
       return this.Get(requestCompleteUrl)
   }
 
-  async getPairsByCountry(country, userCollection) {
-      const { currencies } = this.globalState.modelData
+  async getPairsByCountry(country, currencies) {
       const localCurrency = await this.getLocalCurrency(country)
 
       if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
@@ -48,17 +48,16 @@ export class SwapService extends WebService {
       if (!pairs) return
 
       if (currencies) {
-          const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
-          await this.dispatch(loadLocalPairsAction(localCurrencies))
+        const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
+        await this.dispatch(loadLocalPairsAction(localCurrencies))
 
-          // TODO: Evaluate this
-          // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
+        // TODO: Evaluate this
+        // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
 
-          this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
+        this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
 
-          this.dispatch(loadLocalCurrencyAction(localCurrency))
+        this.dispatch(loadLocalCurrencyAction(localCurrency))   
       }
-      return console.log('debes cargar las currencies');
   }
 
   async getPairs(primary, secondary, all) {

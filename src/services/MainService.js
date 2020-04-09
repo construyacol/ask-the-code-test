@@ -6,7 +6,7 @@ import { IndetityService } from "./CoisendaIndetityService";
 import { DepositService } from "./CoinsendaDepositService";
 import { SwapService } from "./CoinsendaSwapService";
 import { AccountService } from "./CoisendaAccountService";
-import userSource from  '../components/api'
+import userSource from '../components/api'
 import Environment from "../environment";
 import { addIndexToRootObject, objectToArray } from "../utils";
 import normalizeUser from "../schemas";
@@ -14,6 +14,7 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import isAppLoading from "../actions/loader";
+import sleep from "../utils/sleep";
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
@@ -73,7 +74,7 @@ export class MainService extends inheritances {
         return this._globalState = newValue
     }
 
-    get globalState () {
+    get globalState() {
         return this._globalState
     }
 
@@ -83,7 +84,7 @@ export class MainService extends inheritances {
     }
 
     async countryValidator() {
-      // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
+        // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
         const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
         const res = await this.Get(URL)
         const countries = await addIndexToRootObject(res.levels.level_1.personal.natural.country)
@@ -101,22 +102,32 @@ export class MainService extends inheritances {
     }
 
     async init(country, callback) {
-        while(!this.user) {
+        while (!this.user) {
             await sleep(2000)
         }
-        // let pairs = await this.fetchAllPairs(this.user.userToken, country)
-        // if (!pairs) {
-        //     return callback()
-        // }
-
-        // await this.fetchAllCurrencies()
-        // await this.getPairsByCountry(this.user.country)
         await this.getWalletsByUser()
-        // await this.getBalancesByAccount(this.user)
-        // await this.fetchDepositProviders()
-        // await this.fetchWithdrawProviders()
-        // await this.fetchWithdrawAccounts()
-        // return
+        this.postLoader(country, callback)
+        return
+    }
+
+    async postLoader(country, callback) {
+        try {
+            let pairs = await this.fetchAllPairs(this.user.userToken, country)
+            
+            if (!pairs) {
+                return callback()
+            }
+            const currencies = await this.fetchAllCurrencies()
+            if(!currencies) throw currencies
+            await this.getPairsByCountry(this.user.country, currencies)            
+            await this.getBalancesByAccount()
+            await this.fetchDepositProviders()
+            await this.fetchWithdrawProviders()
+            await this.fetchWithdrawAccounts()
+        } catch (error) {
+            await sleep(2000)
+            this.postLoader(country, callback)
+        }
     }
 }
 
@@ -130,11 +141,6 @@ export class MainService extends inheritances {
 
 const mainService = new MainService()
 
-
-export const sleep = (time) => new Promise(resolve => {
-    setTimeout(() => resolve(), time)
-})
-
 export const useCoinsendaServices = () => {
     const dispatch = useDispatch()
     const reduxState = useSelector(state => state)
@@ -142,7 +148,7 @@ export const useCoinsendaServices = () => {
 
     useEffect(() => {
         mainService.setGlobalState(reduxState)
-    }, [reduxState])
+    })
 
     return [mainService, reduxState, MainService];
 }
