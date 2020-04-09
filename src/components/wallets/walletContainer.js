@@ -18,13 +18,7 @@ import PropTypes from 'prop-types'
 import { matchItem } from '../../utils'
 
 function WalletContainer(props) {
-
-  const staticState = {
-    title: "Mis billeteras",
-    userWallets: true, //solo lo uso para validar si se estan haciendo consultas al API
-  }
-
-  const [ coinsendaServices ] = useCoinsendaServices()
+  const [coinsendaServices] = useCoinsendaServices()
 
   const getShortCurrency = async (wallet) => {
     if (props.currencies && wallet) {
@@ -40,13 +34,13 @@ function WalletContainer(props) {
   //
   useEffect(() => {
 
-    let initServices = async() => {
+    let initServices = async () => {
       await coinsendaServices.fetchAllPairs()
       await coinsendaServices.fetchAllCurrencies()
       await coinsendaServices.getPairsByCountry(props.user.country)
-      if(!props.deposit_providers){await coinsendaServices.fetchDepositProviders()}  //TODO: to refactor, at the moment it is temporary
-      if(!props.withdrawProviders){await coinsendaServices.fetchWithdrawProviders()}  //TODO: to refactor, at the moment it is temporary
-      if(!props.withdraw_accounts){await coinsendaServices.fetchWithdrawAccounts()}  //TODO: to refactor, at the moment it is temporary
+      if (!props.deposit_providers) { await coinsendaServices.fetchDepositProviders() }  //TODO: to refactor, at the moment it is temporary
+      if (!props.withdrawProviders) { await coinsendaServices.fetchWithdrawProviders() }  //TODO: to refactor, at the moment it is temporary
+      if (!props.withdraw_accounts) { await coinsendaServices.fetchWithdrawAccounts() }  //TODO: to refactor, at the moment it is temporary
     }
 
     initServices()
