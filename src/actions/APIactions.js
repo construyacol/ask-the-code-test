@@ -48,7 +48,7 @@ import {
   verificationStateAction
   // new_fiat_deposit
 } from './uiActions'
-import { MainService } from '../services/MainService';
+// import { MainService } from '../services/MainService';
 
 const {
   normalizeUser,
@@ -268,7 +268,7 @@ export const getPairsByCountry = (country, user_collection) => {
   debugger
   return async (dispatch, getState) => {
     // return console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||| getPairsByCountry', getState())
-    return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
+    // return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getPairsByCountry(country)
   }
 
 }
@@ -563,33 +563,33 @@ export const get_list_user_wallets = (user) => {
 
 
 
-export const temporaryFetchDepositProviders = () => {
-  return async (dispatch, getState) => {
-    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
-    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
-    return test.fetchDepositProviders()
-  }
-
-}
-
-
-export const temporaryFetchWithdrawProviders = () => {
-  return async (dispatch, getState) => {
-    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
-    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
-    await test.fetchWithdrawProviders()
-  }
-}
-
-
-export const temporaryFetchWithdrawAccounts = () => {
-  return async (dispatch, getState) => {
-    const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
-    await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
-    // alert('fetch api action')
-    return test.fetchWithdrawAccounts()
-  }
-}
+// export const temporaryFetchDepositProviders = () => {
+//   return async (dispatch, getState) => {
+//     const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+//     await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+//     return test.fetchDepositProviders()
+//   }
+//
+// }
+//
+//
+// export const temporaryFetchWithdrawProviders = () => {
+//   return async (dispatch, getState) => {
+//     const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+//     await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+//     await test.fetchWithdrawProviders()
+//   }
+// }
+//
+//
+// export const temporaryFetchWithdrawAccounts = () => {
+//   return async (dispatch, getState) => {
+//     const test = new MainService(dispatch, getState(), getState().modelData.authData.userToken)
+//     await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
+//     // alert('fetch api action')
+//     return test.fetchWithdrawAccounts()
+//   }
+// }
 
 
 // ACCOUNTS SERVICES BY ID --------------------------------------------------------------------------------------

@@ -125,7 +125,6 @@ export class WithdrawService extends WebService {
                 ...withdrawProviders
             ]
         }
-        console.log('||||||||||||||||||||||||||||||||||||||||||||||| fetchWithdrawProviders', this._globalState, updatedUser)
         // return alert('|||||||| fetchWithdrawProviders')
         const normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
