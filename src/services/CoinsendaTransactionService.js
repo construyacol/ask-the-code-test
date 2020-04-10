@@ -3,7 +3,7 @@ import { appLoadLabelAction } from "../actions/loader";
 import {
     updateNormalizedDataAction
 } from "../actions/dataModelActions"
-import { loadLabels, LOCAL_CURRENCIES_URL, CURRENCIES_URL, ADD_RESTORE_ID_URL } from "../const/const";
+import { loadLabels, LOCAL_CURRENCIES_URL, CURRENCIES_URL, ADD_RESTORE_ID_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "../const/const";
 import normalizeUser from "../schemas";
 import { matchItem } from "../utils";
 
@@ -55,6 +55,26 @@ export class TransactionService extends WebService {
             localCurrency: localCurrencyData.symbol.toLowerCase(),
             country
         }
+    }
+
+
+    async fetchUserProfile() {
+        return this.Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`)
+    }
+
+    async addNewProfile(country) {
+        const body = {
+            "data": {
+                "country": country
+            }
+        }
+
+        const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken)
+        if (!response) { return false }
+
+        const { data } = response
+
+        return data
     }
 
 

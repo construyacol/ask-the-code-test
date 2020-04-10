@@ -113,14 +113,13 @@ export class MainService extends inheritances {
     async postLoader(country, callback) {
         try {
             let pairs = await this.fetchAllPairs(this.user.userToken, country)
-            
+
             if (!pairs) {
                 return callback()
             }
             const currencies = await this.fetchAllCurrencies()
             if(!currencies) throw currencies
-            await this.getPairsByCountry(this.user.country, currencies)            
-            await this.getBalancesByAccount()
+            await this.getPairsByCountry(this.user.country, currencies)
             await this.fetchDepositProviders()
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()

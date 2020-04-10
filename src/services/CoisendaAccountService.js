@@ -123,41 +123,41 @@ export class AccountService extends WebService {
 
     async manageBalance(accountId, action, amount) {
         const user = this.user
-        await this.getBalancesByAccount(user)
+        // await this.getBalancesByAccount(user)
         this.dispatch(manageBalanceAction(accountId, action, amount))
     }
 
-    async getBalancesByAccount() {
-        const user = this.user
-        this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
-        const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
-
-        const headers = this.getHeaders(user.userToken)
-
-        const balances = await this.Get(accountUrl, headers)
-
-        if (this.isEmpty(balances)) return
-
-        const balanceList = balances.map(balanceItem => ({
-            id: balanceItem.id,
-            currency: balanceItem.currency.currency,
-            reserved: balanceItem.reserved,
-            available: balanceItem.available,
-            total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),
-            lastAction: null,
-            actionAmount: 0
-        }))
-
-        const updatedUser = {
-            ...user,
-            balances: [
-                ...balanceList
-            ]
-        }
-
-        const userBalances = await normalizeUser(updatedUser)
-        await this.dispatch(updateNormalizedDataAction(userBalances))
-    }
+    // async getBalancesByAccount() {
+    //     const user = this.user
+    //     this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
+    //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
+    //
+    //     const headers = this.getHeaders(user.userToken)
+    //
+    //     const balances = await this.Get(accountUrl, headers)
+    //
+    //     if (this.isEmpty(balances)) return
+    //
+    //     const balanceList = balances.map(balanceItem => ({
+    //         id: balanceItem.id,
+    //         currency: balanceItem.currency.currency,
+    //         reserved: balanceItem.reserved,
+    //         available: balanceItem.available,
+    //         total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),
+    //         lastAction: null,
+    //         actionAmount: 0
+    //     }))
+    //
+    //     const updatedUser = {
+    //         ...user,
+    //         balances: [
+    //             ...balanceList
+    //         ]
+    //     }
+    //
+    //     const userBalances = await normalizeUser(updatedUser)
+    //     await this.dispatch(updateNormalizedDataAction(userBalances))
+    // }
 
     async fetchAllCurrencies() {
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS))

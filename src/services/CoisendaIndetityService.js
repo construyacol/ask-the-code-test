@@ -1,6 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
-import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "../const/const";
+import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL } from "../const/const";
 import userDefaultState from '../components/api'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
@@ -9,13 +9,12 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
-    async fetchCompleteUserData(userCountry, restoreId) {
+    async fetchCompleteUserData(userCountry, profile) {
         await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
 
         const finalUrlFirst = `${INDETITY_URL}?country=${userCountry}`
 
         const firstResponse = await this.Get(finalUrlFirst)
-
         if (!firstResponse) { return false }
 
         const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`
@@ -28,7 +27,7 @@ export class IndetityService extends WebService {
             ...userDefaultState,
             email: this.authData.email,
             userToken: this.authData.userToken,
-            restoreId,
+            restoreId:profile.restoreId,
             id: secondResponse.userId,
             country: country[0].value,
             verification_level: country[0].verification_level,
@@ -36,6 +35,7 @@ export class IndetityService extends WebService {
             levels: country[0].levels
         }
 
+        // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
         let kyc_personal = country[0].levels && country[0].levels.personal
         let kyc_identity = country[0].levels && country[0].levels.identity
         let kyc_financial = country[0].levels && country[0].levels.financial
@@ -51,6 +51,7 @@ export class IndetityService extends WebService {
         if (kyc_financial) {
             updatedUser.security_center.kyc.financial = kyc_financial
         }
+        // }
 
         const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`
         let thirdResponse = await this.Get(finalUrlThird)
@@ -137,22 +138,5 @@ export class IndetityService extends WebService {
         }
     }
 
-    async fetchUserProfile() {
-        return this.Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`)
-    }
 
-    async addNewProfile(country) {
-        const body = {
-            "data": {
-                "country": country
-            }
-        }
-
-        const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken)
-        if (!response) { return false }
-
-        const { data } = response
-
-        return data
-    }
 }

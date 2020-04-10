@@ -78,7 +78,7 @@ function LoaderAplication({ actions, history }) {
 
     await coinsendaServices.loadFirstEschema()
 
-    const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile.restore_id)
+    const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile)
     if (!user) { return false }
 
     await actions.isLoggedInAction(true)
