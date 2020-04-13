@@ -53,29 +53,25 @@ const inheritances = aggregation(
 );
 export class MainService extends inheritances {
     token;
-    _globalState;
+    globalState;
     dispatch;
 
     initialize(dispatch, state, token) {
         this.dispatch = dispatch
-        this._globalState = state
+        this.globalState = state
         this.token = token ? token : this.token
     }
 
     get user() {
-        return this._globalState.modelData.user
+        return this.globalState.modelData.user
     }
 
     get authData() {
-        return this._globalState.modelData.authData
+        return this.globalState.modelData.authData
     }
 
     setGlobalState(newValue) {
-        return this._globalState = newValue
-    }
-
-    get globalState() {
-        return this._globalState
+        return this.globalState = newValue
     }
 
     async loadFirstEschema() {
@@ -133,13 +129,13 @@ export class MainService extends inheritances {
 
 // preserve for future aplication
 // decorate(MainService, {
-//     _globalState: observable.deep,
+//     globalState: observable.deep,
 //     setGlobalState: action,
 //     user: computed,
 //     globalState: computed
 // })
 
-const mainService = new MainService()
+export const mainService = new MainService()
 
 export const useCoinsendaServices = () => {
     const dispatch = useDispatch()
@@ -148,7 +144,7 @@ export const useCoinsendaServices = () => {
 
     useEffect(() => {
         mainService.setGlobalState(reduxState)
-    })
+    }, [reduxState.modelData])
 
     return [mainService, reduxState, MainService];
 }
