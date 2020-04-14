@@ -118,7 +118,7 @@ export class WithdrawService extends WebService {
         const withdrawProviders = await this.Get(finalUrl)
 
         if(!withdrawProviders) return;
-
+        
         const updatedUser = {
             ...user,
             withdrawProviders: [

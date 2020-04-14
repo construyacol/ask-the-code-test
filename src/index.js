@@ -24,8 +24,8 @@ import { mainService } from './services/MainService';
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
 
 const updateServices = store => next => action => {
-  mainService.setGlobalState(store.getState())
   next(action);
+  mainService.setGlobalState(store.getState())
 }
 
 const store = createStore(
