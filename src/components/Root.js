@@ -13,10 +13,8 @@ import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
 import ToastContainers from './widgets/toast/ToastContainer'
 import { COINSENDA_URL, history } from '../const/const';
-import { useCoinsendaServices } from '../services/MainService';
 
 function RootContainer(props) {
-  useCoinsendaServices() // keep alive main useEffect
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
 
