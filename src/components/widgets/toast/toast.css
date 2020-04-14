@@ -45,7 +45,7 @@ font-size: 21px;
 
 
 .DCfondo{
-  background: linear-gradient(to bottom right, #129A8E, #37ED7D);
+  background: linear-gradient(to bottom right, #129A8E, #37ED7D) !important;
   border-radius: 6px !important;
   height: 2px !important;
 }

@@ -4,7 +4,6 @@ import { readFile } from '../../../utils'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { toast } from 'react-toastify';
 import { img_compressor } from '../../../utils'
 
 class KycAvancedContainer extends Component{
@@ -29,7 +28,7 @@ class KycAvancedContainer extends Component{
     base64:{...this.props.base64}
   }
 
-  componentWillReceiveProps(nextProps){
+  // componentWillReceiveProps(nextProps){
     // const { reset, step } = nextProps
     // if(reset){
     //   this.setState({
@@ -52,7 +51,7 @@ class KycAvancedContainer extends Component{
     //   })
     // }
     // // console.log('||||| ----- componentWillReceiveProps', nextProps)
-  }
+  // }
 
 
     async componentDidMount(){
@@ -67,7 +66,7 @@ class KycAvancedContainer extends Component{
       componentDidUpdate(prevProps){
         // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
         if(prevProps.step === this.props.step && this.props.current === 'kyc_advance'){return}
-        console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
+        // console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
 
         const { reset, step } = this.props
         if(reset){
@@ -147,15 +146,9 @@ class KycAvancedContainer extends Component{
 
       this.updateLocalImg(urlImg, base64)
 
-      toast(`¡Imagen Cargada !`, {
-        position: window.innerWidth>768 ? toast.POSITION.BOTTOM_RIGHT : toast.POSITION.TOP_CENTER,
-         pauseOnFocusLoss: false,
-         draggablePercent: 60,
-         className: "DCfondo",
-         bodyClassName: "DCTtext",
-         progressClassName: 'DCProgress',
-         autoClose: 3000
-      });
+      this.props.action.mensaje('¡Imagen cargada con exito!', 'success')
+
+
     }, 2000)
 
   }

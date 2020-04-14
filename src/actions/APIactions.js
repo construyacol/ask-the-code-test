@@ -1994,6 +1994,7 @@ export const update_level_profile = (config, user) => {
     const add_new_profile_url = `${IdentityApIUrl}profiles/add-new-profile`
     const add_new_profile = await ApiPostRequest(add_new_profile_url, body, user.userToken)
     // console.log('|||||||| update_level_profile_____________', body, add_new_profile)
+    // alert('res endpoint')
     if (!add_new_profile || add_new_profile === 465) { return false }
     return add_new_profile
 

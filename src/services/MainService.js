@@ -102,7 +102,7 @@ export class MainService extends inheritances {
             await sleep(2000)
         }
         await this.getWalletsByUser()
-        await this.postLoader(country, callback)
+        this.postLoader(country, callback)
         return
     }
 

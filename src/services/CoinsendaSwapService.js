@@ -41,10 +41,8 @@ export class SwapService extends WebService {
       const localCurrency = await this.getLocalCurrency(country)
 
       if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
-
+      
       const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
-      // console.log('getPairsByCountry, ', pairs)
-
       if (!pairs) return
 
       if (currencies) {
@@ -56,7 +54,7 @@ export class SwapService extends WebService {
 
         this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
 
-        this.dispatch(loadLocalCurrencyAction(localCurrency))   
+        this.dispatch(loadLocalCurrencyAction(localCurrency))
       }
   }
 
