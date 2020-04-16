@@ -10,6 +10,7 @@ export class WebService {
             return await response.json();
         } catch (_) {
             // TODO: return an action to get feedback about errors
+            console.log(_, _.response)
             return false;
         }
     }

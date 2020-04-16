@@ -73,6 +73,8 @@ const get_img_quality = (size) => {
 
 
 export const mensaje = async(msg, type, position) =>{
+  console.log('mensaje', msg, type)
+  alert('mensaje')
   return toast(msg, {
     position: toast.POSITION[!position ? 'BOTTOM_RIGHT' : position],
      pauseOnFocusLoss: false,
