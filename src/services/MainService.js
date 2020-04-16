@@ -11,10 +11,9 @@ import Environment from "../environment";
 import { addIndexToRootObject, objectToArray } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import isAppLoading from "../actions/loader";
 import sleep from "../utils/sleep";
+import { GET_URLS } from "../const/const";
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
@@ -114,7 +113,7 @@ export class MainService extends inheritances {
                 return callback()
             }
             const currencies = await this.fetchAllCurrencies()
-            if(!currencies) throw currencies
+            if (!currencies) throw currencies
             await this.getPairsByCountry(this.user.country, currencies)
             await this.fetchDepositProviders()
             await this.fetchWithdrawProviders()
@@ -124,6 +123,18 @@ export class MainService extends inheritances {
             this.postLoader(country, callback)
         }
     }
+
+    async getOrderById(orderId, orderType) {
+        const apiUrl = GET_URLS[orderType] || GET_URLS.swaps
+        const filter = `{"where":{"id":"${orderId}"}}`
+        const finalUrl = `${apiUrl}users/${this.user.id}/${orderType}?country=${this.user.country}&filter=${filter}`
+
+        const order = await this.Get(finalUrl)
+
+        if (!order || order.length < 1) { return false }
+
+        return order[0]
+    }  
 }
 
 // preserve for future aplication
@@ -135,15 +146,3 @@ export class MainService extends inheritances {
 // })
 
 export const mainService = new MainService()
-
-export const useCoinsendaServices = () => {
-    const dispatch = useDispatch()
-    const reduxState = useSelector(state => state)
-    mainService.initialize(dispatch, reduxState, reduxState.modelData.authData.userToken)
-
-    useEffect(() => {
-        mainService.setGlobalState(reduxState)
-    }, [reduxState.modelData])
-
-    return [mainService, reduxState, MainService];
-}

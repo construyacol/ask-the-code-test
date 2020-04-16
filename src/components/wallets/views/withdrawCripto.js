@@ -3,7 +3,7 @@ import WithdrawViewState from '../../hooks/withdrawStateHandle'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
 import ControlButton from '../../widgets/buttons/controlButton'
-import { useCoinsendaServices } from '../../../services/MainService'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 
 
@@ -26,6 +26,9 @@ export const CriptoSupervisor = props => {
     </>
   )
 }
+
+
+
 
 
 const WithOutProvider = ({current_wallet}) => {

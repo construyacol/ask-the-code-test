@@ -119,7 +119,7 @@ export class WithdrawService extends WebService {
 
         const withdrawProviders = await this.Get(finalUrl)
 
-        if(!withdrawProviders) return;
+        if (!withdrawProviders) return;
 
         const updatedUser = {
             ...user,
@@ -243,22 +243,22 @@ export class WithdrawService extends WebService {
                 ...payload
             }
         } : {
-            "data": {
-                "currency": currency,
-                "provider_type": provider_type,
-                "name": name,
-                "surname": surname,
-                "id_number": id_number || user.id_number,
-                "id_type": id_type,
-                "bank_name": short_name,
-                "account_number": account_number,
-                "account_type": account_type,
-                "city": city,
-                "email": user.email || 'default@coinsenda.com',
-                "label": short_name,
-                "country": user.country
+                "data": {
+                    "currency": currency,
+                    "provider_type": provider_type,
+                    "name": name,
+                    "surname": surname,
+                    "id_number": id_number || user.id_number,
+                    "id_type": id_type,
+                    "bank_name": short_name,
+                    "account_number": account_number,
+                    "account_type": account_type,
+                    "city": city,
+                    "email": user.email || 'default@coinsenda.com',
+                    "label": short_name,
+                    "country": user.country
+                }
             }
-        }
 
         const response = await this.Post(NEW_WITHDRAW_ACCOUNT_URL, body, user.userToken)
 
@@ -270,7 +270,6 @@ export class WithdrawService extends WebService {
 
         return data
     }
-
 
 
     async getWithdraws(account_id) {
@@ -342,4 +341,16 @@ export class WithdrawService extends WebService {
     }
 
 
+    async addUpdateWithdraw(withdrawId, state) {
+        const body = {
+            "data": {
+                "withdraw_id": withdrawId,
+                "state": state,
+                "country": this.user.country,
+            }
+        }
+        const response = await this.Post(UPDATE_WITHDRAW_URL, body)
+
+        return response
+    }
 }

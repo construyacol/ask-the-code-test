@@ -231,36 +231,6 @@ export const get_one_deposit = (deposit_id) =>{
     if(!deposit || deposit === 465){return false}
 
     return deposit[0]
-
-    // update_item_state
-
-    // console.log('______________- ==============================>>> - ________________- get_one_deposit', deposit)
-
-    // actualizar el modelo del estado
-
-    //
-    // let remodeled_deposits = await deposits.map(item => {
-    //   let new_item = {
-    //     ...item,
-    //     type_order:"deposit",
-    //     paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
-    //   }
-    //   return new_item
-    // })
-    //
-    // await remodeled_deposits.reverse()
-    //
-    // let user_update = {
-    //   ...user,
-    //   deposits:[
-    //     ...remodeled_deposits
-    //   ]
-    // }
-    //
-    //
-    // let normalizeUser = await normalizeUser(user_update)
-    // await dispatch(Update_normalized_state(normalizeUser))
-    // return normalizeUser
   }
 }
 

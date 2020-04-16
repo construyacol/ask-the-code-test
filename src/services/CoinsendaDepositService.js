@@ -1,5 +1,5 @@
 import { WebService } from "../actions/API/WebService";
-import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL } from "../const/const";
+import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL, GET_DEPOSIT_BY_USERS_URL } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
@@ -11,7 +11,7 @@ export class DepositService extends WebService {
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
 
-        if(!response) return;
+        if (!response) return;
 
         const result = response.reduce((result, item) => {
             result.push({
@@ -104,5 +104,12 @@ export class DepositService extends WebService {
         }
 
         return this.Post(UPDATE_DEPOSIT_URL, body, user.userToken)
+    }
+
+    async getDepositById(id) {
+        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}users/${this.user.id}/deposits?country=${this.user.country}&filter={"where": {"id":"${id}"}, "include":{"relation":"paymentProof"}}`
+        const deposit = await this.Get(finalUrl)
+
+        return deposit[0]
     }
 }

@@ -11,6 +11,7 @@ import HomeContainer from './home/home-container'
 import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
+// import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
 import { COINSENDA_URL, history } from '../const/const';
 
@@ -35,7 +36,6 @@ function RootContainer(props) {
     }
 
     const userToken = await localForage.getItem('user_token')
-
     const created_at = await localForage.getItem('created_at')
     if (!created_at || !userToken) { return doLogout() }
 
@@ -65,7 +65,8 @@ function RootContainer(props) {
       history={history}
     >
       <SocketsComponent />
-      <ToastContainers />   
+      {/* <CoinsendaSocket /> */}
+      <ToastContainers />
       <Switch>
         <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />
       </Switch>
