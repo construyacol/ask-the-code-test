@@ -1,5 +1,6 @@
 import { createBrowserHistory } from "history";
 import Enviroment from "../environment"
+import BigNumber from "bignumber.js";
 
 const {
     AccountApiUrl,
@@ -42,6 +43,7 @@ export const DELETE_WITHDRAW_URL = `${ApiUrl}withdraws`
 export const NEW_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/add-new-withdraw-account`
 
 export const DEPOSITS_URL = `${DepositApiUrl}`
+export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}/users`
 export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`
 
@@ -57,5 +59,25 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
 
+export const GET_URLS = {
+    withdraws: GET_WITHDRAW_BY_USER_URL,
+    swaps: GET_SWAPS_BY_USERS_URL,
+    deposits: GET_DEPOSIT_BY_USERS_URL
+}
+
 export const history = createBrowserHistory();
 export const COINSENDA_URL = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" : "https://www.coinsenda.com/";
+
+export const currencyFormatByCoin = {
+    "bitcoin":BigNumber.clone({ROUNDING_MODE:BigNumber.ROUND_HALF_UP, DECIMAL_PLACES:8}),
+    "bitcoin_testnet":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 8}),
+    "usd":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 3}),
+    "ethereum":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 8}),
+    "cop":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_HALF_UP, DECIMAL_PLACES: 3}),
+    "bitcoin_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
+    "bitcoin_testnet_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
+    "usd_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 2}),
+    "ethereum_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
+    "cop_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 0})
+  }
+
