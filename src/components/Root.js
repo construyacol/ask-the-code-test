@@ -11,7 +11,7 @@ import HomeContainer from './home/home-container'
 import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
-import CoinsendaSocket from './sockets/new-socket'
+// import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
 import { COINSENDA_URL, history } from '../const/const';
 

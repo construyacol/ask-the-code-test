@@ -106,9 +106,10 @@ function LoaderAplication({ actions, history }) {
     await animation('in')
   }
 
-  const selectCountry = (newCountry) => {
+  const selectCountry = async(newCountry) => {
     actions.isAppLoading(true)
-    initComponent(newCountry)
+    await initComponent(newCountry)
+    actions.isAppLoading(false)
   }
 
   const animation = async (animation) => {

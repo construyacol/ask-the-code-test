@@ -36,6 +36,7 @@ export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
 export const GET_WITHDRAW_BY_USER_URL = `${WithdrawApiUrl}users`
+export const GET_WITHDRAWS_BY_ACCOUNT_ID = `${WithdrawApiUrl}users`
 export const WITHDRAW_PROVIDERS_URL = `${WithdrawApiUrl}withdrawProviders`
 export const UPDATE_WITHDRAW_URL = `${WithdrawApiUrl}withdraws/add-update-withdraw`
 export const NEW_WITHDRAW_URL = `${WithdrawApiUrl}withdraws/add-new-withdraw`

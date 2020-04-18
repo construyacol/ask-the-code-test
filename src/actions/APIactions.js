@@ -1457,6 +1457,9 @@ export const add_new_withdraw_order = (amount, account_from, withdraw_provider, 
       }
     }
 
+    // console.log('|||||| ========> BODY RES WITHDRAW', body)
+    // return alert('withdraw service')
+
     const new_withdraw_url = `${WithdrawApiUrl}withdraws/add-new-withdraw`
     const new_withdraw_order = await ApiPostRequest(new_withdraw_url, body, user.userToken)
     // console.log('|||||| ========> BODY RES WITHDRAW', new_withdraw_order)
