@@ -64,8 +64,8 @@ function RootContainer(props) {
     <Router
       history={history}
     >
-      {/* <SocketsComponent /> */}
-      <CoinsendaSocket />
+      <SocketsComponent />
+      {/* <CoinsendaSocket /> */}
       <ToastContainers />
       <Switch>
         <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />
