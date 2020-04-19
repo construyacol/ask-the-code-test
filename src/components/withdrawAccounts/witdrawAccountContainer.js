@@ -7,8 +7,9 @@ import { navigation_components } from '../api/ui/api.json'
 import { Router, Switch, Route } from 'react-router-dom'
 import AccountList from '../widgets/accountList/item_account_list'
 import ItemWallet from '../widgets/accountList/items'
-import SimpleLoader from '../widgets/loaders'
+// import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
+import { AccountListLoader } from '../dashBoard/dashBoardContainer'
 
 class WitdrawAccountContainer extends Component {
 
@@ -49,6 +50,8 @@ class WitdrawAccountContainer extends Component {
     const { title } = this.state
     const { withdraw_accounts, isAppLoaded } = this.props
 
+    // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
+
     return (
       <Router
         history={this.props.history}
@@ -64,8 +67,8 @@ class WitdrawAccountContainer extends Component {
             }}
           >
             {
-              !isAppLoaded ?
-                <SimpleLoader />
+              !withdraw_accounts ?
+                <AccountListLoader />
                 :
                 (isAppLoaded && withdraw_accounts) &&
                 <Route exact path="/:primary_path" component={AccountList} />

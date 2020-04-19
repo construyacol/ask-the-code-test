@@ -9,34 +9,33 @@ import WithdrawViewState from './withdrawStateHandle'
 
 export default () => {
 
-  const [ inputStatus, setInputStatus ] = useState()
+  const [ inputState, setInputState ] = useState()
   // const [ setHandleError ] = useError()
   // const globalState = useSelector(state => state)
   // const params = useParams()
   // const { account_id } = params
   // const { wallets, withdrawProviders } = globalState.modelData
-  const [ withdrawState ]  = WithdrawViewState()
-  const { current_wallet, withdrawProviders } = withdrawState
+  const [ { current_wallet, withdrawProviders } ]  = WithdrawViewState()
 
-  const validate = async(inputName, e) => {
-      if(!e.target.value || e.target.value.length === 0){return setInputStatus(null)}
+  const validateState = async(inputName, e) => {
+      if(!e.target.value || e.target.value.length === 0){return setInputState(null)}
       switch (inputName) {
       //   case 'email':
       //     let minRegex = /@/
       //     let emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
       //     if (emailRegex.test(value.replace(/^\s+|\s+$|\s+(?=\s)/g, "")) && value.length>8) {
-      //       setInputStatus('good')
+      //       setInputState('good')
       //     }else if(minRegex.test(value)){
-      //       setInputStatus('bad')
+      //       setInputState('bad')
       //     }else{
-      //       setInputStatus(null)
+      //       setInputState(null)
       //     }
       //   break
       //   case 'password':
       //     if(value.length > 6){
-      //       setInputStatus('good')
+      //       setInputState('good')
       //     }else{
-      //       setInputStatus(null)
+      //       setInputState(null)
       //     }
       //   break
       //   case 'password2':
@@ -44,14 +43,14 @@ export default () => {
       //     const password = form.get('password')
       //     let password2 = value
       //     if(password2.length > 6 && password2 === password){
-      //       return setInputStatus('good')
+      //       return setInputState('good')
       //     }
       //     if(password2.length > 6 && password2 !== password){
       //       // dispatch(handleError({response:{data:{error:'Las contraseñas no coinciden'}}}))
       //       // setHandleError('Las contraseñas no coinciden')
-      //       setInputStatus('bad')
+      //       setInputState('bad')
       //     }else{
-      //       setInputStatus(null)
+      //       setInputState(null)
       //     }
       //     break
         case 'address':
@@ -64,9 +63,9 @@ export default () => {
           let addressVerify = await AddressValidator.validate(finalValue, currency)
 
             if(addressVerify){
-              setInputStatus('good')
+              setInputState('good')
             }else{
-              setInputStatus('bad')
+              setInputState('bad')
             }
             e.target.value = finalValue
         break;
@@ -78,17 +77,17 @@ export default () => {
           let min_amount = await formatToCurrency(withdrawProviders[current_wallet.currency.currency].provider.min_amount, current_wallet.currency)
           let available = await formatToCurrency(current_wallet.available, current_wallet.currency)
           if(value.isGreaterThanOrEqualTo(min_amount) && value.isLessThanOrEqualTo(available)){
-            setInputStatus('good')
+            setInputState('good')
             return e.target.value = value.toNumber()
           }else{
-            setInputStatus('bad')
+            setInputState('bad')
           }
           break
         default:
       }
   }
 
-  return [ inputStatus, validate ]
+  return [ inputState, validateState, setInputState ]
 }
 
 

@@ -152,8 +152,7 @@ const LazyLoaderPage = ({ path }) => {
   )
 }
 
-const AccountListLoader = () => {
-
+export const AccountListLoader = () => {
   return (
     <AccountListContainer className="AccountListContainer">
       <ItemAccount loader />

@@ -4,13 +4,15 @@ import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
 import ControlButton from '../../widgets/buttons/controlButton'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-
+import styled from 'styled-components'
 
 
 
 export const CriptoSupervisor = props => {
 
   const [ { current_wallet, withdrawProviders } ] = WithdrawViewState()
+  // const [ { current_wallet } ] = WithdrawViewState()
+  // const withdrawProviders = {}
 
   return(
     <>
@@ -121,8 +123,16 @@ export const CriptoView = () => {
     }))
   }
 
+  const handleMaxAvailable = (e) => {
+    let amount = document.getElementsByName('amount')[0]
+    amount.value = current_wallet.available
+    setAmountState('good')
+  }
+
+
   return(
-      <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}>
+    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}>
+      {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
         <InputForm
           type="text"
           placeholder="Dirección de retiro"
@@ -130,7 +140,12 @@ export const CriptoView = () => {
           handleStatus={setAddressState}
           label={`Ingresa la dirección ${current_wallet.currency.currency}`}
           disabled={loader}
+          SuffixComponent={() => <IconSwitch
+            icon={`${addressState === 'good' ? 'verify' : 'wallet' }`}
+            color={`${addressState === 'good' ? 'green' : 'gray' }`}
+            size={`${addressState === 'good' ? 22 : 25 }`}  />}
         />
+
         <InputForm
           type="text"
           placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
@@ -138,25 +153,96 @@ export const CriptoView = () => {
           handleStatus={setAmountState}
           label={`Ingresa la cantidad de retiro`}
           disabled={loader}
-          // suffix
-          // prefix
+          state={amountState}
+          SuffixComponent={() => <AvailableBalance
+            handleAction={handleMaxAvailable}
+            amount={current_wallet.available} />}
+          // PrefixComponent
         />
         <ControlButton
           loader={loader}
           formValidate={!active_trade_operation && ( amountState === 'good' && addressState === 'good')}
           label="Enviar"
         />
-      </form>
+      {/* </form> */}
+    </WithdrawForm>
   )
 
 }
 
 
-const CriptoViewLoader = ({ withdrawProviders }) => {
+const AvailableBalance = ({ handleAction, amount }) => {
+
+  let movil = window.innerWidth < 768
+
+  return(
+    <BalanceContainer>
+      <p className={`fuente2 ${movil ? 'movil' : ''}`} onClick={handleAction} >{movil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
+    </BalanceContainer>
+  )
+
+}
+
+
+export const OperationForm = styled.form`
+  width: calc(95% - 50px);
+  max-width: calc(700px - 50px);
+  height: calc(100% - 50px);
+  /* border: 1px solid #c4c4c5; */
+  background: #f1f1f1;
+  border-radius: 4px;
+  padding: 20px 25px 20px 25px;
+  display: grid;
+  grid-row-gap: 5px;
+  position: relative;
+`
+
+const WithdrawForm = styled(OperationForm)`
+  grid-template-rows: 40% 1fr 1fr;
+`
+
+const BalanceContainer = styled.div`
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  right: 5px;
+  color: gray;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: .15s;
+  transform: scale(1);
+  max-height: 47px;
+  align-self: self-end;
+  width: max-content;
+
+  .movil{
+    font-size: 11px;
+  }
+
+  &:hover{
+    transform: scale(1.005);
+    color: #b48728;
+  }
+
+
+`
+
+
+
+
+const CriptoViewLoader = () => {
 
   return(
     <>
-        CARGANDO
+      <WithdrawForm>
+        <InputForm skeleton/>
+        <InputForm skeleton/>
+        <ControlButton
+          formValidate={false}
+          label="Enviar"
+        />
+      </WithdrawForm>
     </>
   )
 

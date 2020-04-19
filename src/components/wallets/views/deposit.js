@@ -45,6 +45,9 @@ class DepositView extends Component{
       // console.log('DESDE DEPOSITOSSSS ', dep_prov)
       // let address = current_wallet.deposit_provider.account.account_id
       const { account } = dep_prov
+
+      // console.log('|||                       |||                ||         DEP PROV ==>', dep_prov)
+      // alert()
       let qr = await QRCode.toDataURL(account.account_id.account_id)
       this.setState({
         qr:qr,

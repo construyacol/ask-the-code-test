@@ -57,6 +57,10 @@ const LoaderContainer = styled.div`
     justify-self: center !important;
     z-index: 1;
   }
+
+  .lds-roller div:after {
+    background: #014c7d;
+}
 `
 
 

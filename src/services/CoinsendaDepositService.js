@@ -106,6 +106,22 @@ export class DepositService extends WebService {
         return this.Post(UPDATE_DEPOSIT_URL, body, user.userToken)
     }
 
+
+  async validateAddress (address) {
+        const user = this.user
+
+        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
+        const Raddress = await this.Get(finalUrl)
+
+        if (!Raddress) return;
+
+        if(address === Raddress[0].account.account_id.account_id){
+          return true
+        }
+        return false
+    }
+
+
     async getDepositById(id) {
         const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}users/${this.user.id}/deposits?country=${this.user.country}&filter={"where": {"id":"${id}"}, "include":{"relation":"paymentProof"}}`
         const deposit = await this.Get(finalUrl)

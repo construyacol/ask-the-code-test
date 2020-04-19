@@ -113,7 +113,6 @@ class MenuSuperiorContainer extends Component {
     } else {
       this.formating_currency()
     }
-
   }
 
 

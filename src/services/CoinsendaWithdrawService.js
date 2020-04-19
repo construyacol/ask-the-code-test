@@ -13,6 +13,12 @@ import {
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
 
+import {
+  update_activity_state,
+  normalized_list
+} from '../utils'
+
+
 export class WithdrawService extends WebService {
     async fetchWithdrawAccounts() {
         const { user } = this.globalState.modelData
@@ -172,52 +178,52 @@ export class WithdrawService extends WebService {
         return response
     }
 
-    async fetchWithdrawByUser(user) {
-        await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_REGISTROS_DE_RETIROS))
-
-        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdraws?country=${user.country}`
-        const response = await this.Get(finalUrl)
-        if (response && response.length < 1) { return false }
-
-        const withdrawals = response.reduce((result, withdraw) => result.push({
-            ...withdraw,
-            account_id: withdraw.account_id,
-            amount: withdraw.amount,
-            amount_neto: withdraw.amount_neto,
-            comment: "",
-            country: withdraw.country,
-            currency: withdraw.currency,
-            currency_type: withdraw.currency_type,
-            cost: withdraw.cost,
-            cost_struct: withdraw.cost_struct,
-            deposit_provider_id: "",
-            expiration_date: new Date(),
-            id: withdraw.id,
-            state: withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state,
-            unique_id: withdraw.id,
-            userId: withdraw.userId,
-            withdraw_account: withdraw.withdraw_account_id,
-            withdraw_provider: withdraw.withdraw_provider_id,
-            type_order: "withdraw",
-            withdraw_proof: withdraw.proof,
-            created_at: withdraw.created_at,
-        }), [])
-
-
-        withdrawals.reverse()
-
-        const updatedUser = {
-            ...user,
-            withdrawals: [
-                ...withdrawals
-            ]
-        }
-
-        const normalizedUser = await normalizeUser(updatedUser)
-        await this.dispatch(updateNormalizedDataAction(normalizedUser))
-
-        return normalizedUser
-    }
+    // async fetchWithdrawByUser(user) {
+    //     await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_REGISTROS_DE_RETIROS))
+    //
+    //     const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdraws?country=${user.country}`
+    //     const response = await this.Get(finalUrl)
+    //     if (response && response.length < 1) { return false }
+    //
+    //     const withdrawals = response.reduce((result, withdraw) => result.push({
+    //         ...withdraw,
+    //         account_id: withdraw.account_id,
+    //         amount: withdraw.amount,
+    //         amount_neto: withdraw.amount_neto,
+    //         comment: "",
+    //         country: withdraw.country,
+    //         currency: withdraw.currency,
+    //         currency_type: withdraw.currency_type,
+    //         cost: withdraw.cost,
+    //         cost_struct: withdraw.cost_struct,
+    //         deposit_provider_id: "",
+    //         expiration_date: new Date(),
+    //         id: withdraw.id,
+    //         state: withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state,
+    //         unique_id: withdraw.id,
+    //         userId: withdraw.userId,
+    //         withdraw_account: withdraw.withdraw_account_id,
+    //         withdraw_provider: withdraw.withdraw_provider_id,
+    //         type_order: "withdraw",
+    //         withdraw_proof: withdraw.proof,
+    //         created_at: withdraw.created_at,
+    //     }), [])
+    //
+    //
+    //     withdrawals.reverse()
+    //
+    //     const updatedUser = {
+    //         ...user,
+    //         withdrawals: [
+    //             ...withdrawals
+    //         ]
+    //     }
+    //
+    //     const normalizedUser = await normalizeUser(updatedUser)
+    //     await this.dispatch(updateNormalizedDataAction(normalizedUser))
+    //
+    //     return normalizedUser
+    // }
 
     async deleteWithdrawOrder(orderId) {
         return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`)
@@ -272,7 +278,7 @@ export class WithdrawService extends WebService {
     }
 
 
-    async getWithdraws(account_id) {
+    async get_withdraws(account_id) {
     // @params:
     // account_id
 
@@ -282,63 +288,53 @@ export class WithdrawService extends WebService {
 
         let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
         const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`
-        const result = await this.Get(url_withdraw)
+        const withdraws = await this.Get(url_withdraw)
 
-        // console.log('URL WITHDRAWS', url_withdraw)
-        return console.log('GET_WITHDRAWS_BY_ACCOUNT_ID', result)
+        // return console.log('GET_WITHDRAWS_BY_ACCOUNT_ID', withdraws)
 
-        // let myHeaders = {
-        //   'Authorization': `Bearer ${user.userToken}`,
-        // }
-        // const withdraws = await ApiGetRequest(url_withdraw, myHeaders)
-        // if(!withdraws || withdraws === 465){return false}
-        //
-        //
-        //
-        // let withdraws_remodeled = await withdraws.map(withdraw => {
-        //
-        //   let state
-        //   if(withdraw.currency_type === 'fiat'){
-        //     state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
-        //   }
-        //   if(withdraw.currency_type === 'crypto'){
-        //     state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
-        //   }
-        //
-        //   let new_withdraw = {
-        //     ...withdraw,
-        //     account_id:withdraw.account_id,
-        //     amount:withdraw.amount,
-        //     amount_neto:withdraw.amount_neto,
-        //     comment:"",
-        //     country:withdraw.country,
-        //     currency:withdraw.currency,
-        //     currency_type:withdraw.currency_type,
-        //     cost:withdraw.cost,
-        //     cost_struct:withdraw.cost_struct,
-        //     deposit_provider_id:"",
-        //     expiration_date:new Date(),
-        //     id:withdraw.id,
-        //     state,
-        //     unique_id:withdraw.id,
-        //     userId:withdraw.userId,
-        //     withdraw_account:withdraw.withdraw_account_id,
-        //     withdraw_provider:withdraw.withdraw_provider_id,
-        //     type_order:"withdraw",
-        //     withdraw_proof:withdraw.proof,
-        //     created_at:withdraw.created_at,
-        //   }
-        //   return  new_withdraw
-        // })
-        //
-        //
-        // await dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
-        // await dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))
-        // return withdraws_remodeled
+        if (withdraws && withdraws.length < 1) { return false }
+        let withdraws_remodeled = await withdraws.map(withdraw => {
 
-      // }
+          let state
+          if(withdraw.currency_type === 'fiat'){
+            state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
+          }
+          if(withdraw.currency_type === 'crypto'){
+            state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
+          }
 
-    }
+          let new_withdraw = {
+            ...withdraw,
+            account_id:withdraw.account_id,
+            amount:withdraw.amount,
+            amount_neto:withdraw.amount_neto,
+            comment:"",
+            country:withdraw.country,
+            currency:withdraw.currency,
+            currency_type:withdraw.currency_type,
+            cost:withdraw.cost,
+            cost_struct:withdraw.cost_struct,
+            deposit_provider_id:"",
+            expiration_date:new Date(),
+            id:withdraw.id,
+            state,
+            unique_id:withdraw.id,
+            userId:withdraw.userId,
+            withdraw_account:withdraw.withdraw_account_id,
+            withdraw_provider:withdraw.withdraw_provider_id,
+            type_order:"withdraw",
+            withdraw_proof:withdraw.proof,
+            created_at:withdraw.created_at,
+          }
+          return  new_withdraw
+        })
+
+        await this.dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
+        await this.dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))
+        return withdraws_remodeled
+
+      }
+
 
 
     async addUpdateWithdraw(withdrawId, state) {
