@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
@@ -17,6 +17,11 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
     const [currentDeposit, setCurrentDeposit] = useState(null)
     const [currentWithdraw, setCurrentWithdraw] = useState(null)
     const [mainService] = useCoinsendaServices()
+    const currentSwapRef = useRef(currentSwap)
+
+    useEffect(() => {
+        currentSwapRef.current = currentSwap
+    })
 
     useEffect(() => {
         if (loggedIn) {
@@ -39,7 +44,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
                 SOCKET.on("authenticated", () => {
                     SOCKET.on(`/swap/${user.id}`, async (swap) => {
                         if (swap.state === 'pending') {
-                            setCurrentSwap(swap)
+                            setCurrentSwap({...swap})
                         }
                         swapManagement(swap)
                     })
@@ -217,7 +222,8 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
 
     }
 
-    const swapManagement = async (swap) => {
+    const swapManagement = async (swap) => {        
+        const localCurrentSwap = currentSwapRef.current;
         if (swap.state === 'pending') {
             await actions.current_section_params({ active_trade_operation: true })
             // el bought lo retorna el socket en el estado aceptado
@@ -250,18 +256,18 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
         }
 
 
-        if (swap.state === 'accepted' && currentSwap && currentSwap.state !== 'done') {
-            await actions.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'processing' } })
+        if (swap.state === 'accepted' && localCurrentSwap && localCurrentSwap.state !== 'done') {
+            await actions.current_section_params({ swap_socket_channel: { ...localCurrentSwap, state: 'processing' } })
 
             return setTimeout(async () => {
                 await actions.success_sound()
-                await actions.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'done' }, swap_done_id: currentSwap.id, swap_done_out: true })
-                await actions.swap_activity_update({ ...currentSwap, bought: swap.bought }, 'swaps')
-                setCurrentSwap({ ...currentSwap, state: 'done' })
+                await actions.current_section_params({ swap_socket_channel: { ...localCurrentSwap, state: 'done' }, swap_done_id: localCurrentSwap.id, swap_done_out: true })
+                await actions.swap_activity_update({ ...localCurrentSwap, bought: swap.bought }, 'swaps')
+                setCurrentSwap({ ...localCurrentSwap, state: 'done' })
 
                 setTimeout(async () => {
                     await actions.current_section_params({ active_trade_operation: false })
-                    await actions.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+                    await actions.ManageBalance(localCurrentSwap.account_from, 'reduce', localCurrentSwap.spent)
                 }, 4000)
             }, 3500)
         }
