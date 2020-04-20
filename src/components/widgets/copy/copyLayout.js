@@ -10,9 +10,9 @@ const CopyLayout = (props) => {
       <div onClick={copy} id={valor} className="nWaddress">
         {
           valor &&
-          <p onClick={copy} id={valor} className="nWaddressTxt fuentePrin" style={{maxWidth:max_width ? `${max_width}px` : 'auto' }} >{valor}</p>
+          <p id={valor} className="nWaddressTxt fuentePrin" style={{maxWidth:max_width ? `${max_width}px` : 'auto' }} >{valor}</p>
         }
-        <i style={{color: color}} className="copy far fa-clone tooltip" id={valor} onClick={copy}>
+        <i style={{color: color}} className="copy far fa-clone tooltip" id={valor} >
           <span className="tooltiptext fuente">Copiar</span>
         </i>
       </div>

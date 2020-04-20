@@ -64,9 +64,9 @@ font-size: 21px;
 }
 
 .DCTtextDefault{
-  color: gray !important;
-  /*color:#13b5f1 !important;*/
-  font-size: 17px !important;
+  color: #2B3742 !important;
+  font-weight: bold;
+  font-size: 14px !important;
   text-align: center !important;
 }
 

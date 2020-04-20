@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import InputValidate  from '../../hooks/inputValidate'
 import styled from 'styled-components'
+import SkeletonAnimation from '../loaders/skeleton'
 
 
 
@@ -80,25 +81,8 @@ const InputForm = (props) => {
 
 
 
-const InputLayout = styled.div`
-  &.skeleton{
-    animation-name: skeleton;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    opacity: .5;
-  }
+const InputLayout = styled(SkeletonAnimation)`
 
-  @keyframes skeleton{
-    0%{
-      opacity: .5;
-    }
-    70%{
-      opacity: 1;
-    }
-    100%{
-      opacity: .5;
-    }
-  }
 `
 
 const SuffixComponentContainer = styled.div`
@@ -146,7 +130,7 @@ const InputContainer = styled.div`
 
   &.skeleton::before{
     content:'';
-    background: #dfdee0;
+    background: #bfbfbf;
     width: 100%;
     border-radius: 3px;
     height: 15px;
@@ -165,7 +149,7 @@ const ContainerInputComponent = styled.div`
   align-items: center;
 
   p.skeleton{
-    background: #dfdee0;
+    background: #bfbfbf;
     width: 100%;
     height: 15px;
     max-width: 400px;

@@ -141,6 +141,8 @@ export const create_deposit_provider = (account_id, country) => {
       }
     }
 
+    // return console.log('|||||||||| create_deposit_provider ', body)
+
     const url_deposit_prov = `${DepositApiUrl}depositProviders/create-deposit-provider-by-account-id`
     const deposit_prov = await ApiPostRequest(url_deposit_prov, body, user.userToken)
 
@@ -245,7 +247,7 @@ export const validate_address = (address) =>{
 
     const Raddress = await ApiGetRequest(url_address, myHeaders)
     if(!Raddress || Raddress === 465 || !Raddress.length){return false}
-    
+
     if(address === Raddress[0].account.account_id.account_id){
       return true
     }

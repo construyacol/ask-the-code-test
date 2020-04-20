@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CopyLayout from './copyLayout'
-import { toast } from 'react-toastify';
+import { mensaje } from '../../../utils'
 
 import './copyStyle.css'
 
@@ -19,17 +19,8 @@ class CopyContainer extends Component {
      aux.select();
      document.execCommand("copy");
      document.body.removeChild(aux);
+    return mensaje("¡Copiado Exitosamente!")
 
-     toast("¡Copiado Exitosamente!", {
-       position: toast.POSITION.BOTTOM_RIGHT,
-        pauseOnFocusLoss: false,
-        draggablePercent: 60,
-        className: "putito",
-        bodyClassName: "putitoText",
-        progressClassName: 'putitoProgress',
-        toastId:1,
-        autoClose: 3000
-     });
   }
 
   render(){

@@ -62,6 +62,7 @@ class NewWallet extends Component{
                "name":name,
                "description":"description",
                "country": user && user.country,
+               "enabled":true,
                "currency": {
                   "currency":get_currency[0].currency,
                   "is_token":get_currency[0].is_token

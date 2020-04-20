@@ -3,6 +3,11 @@ import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL, GET_DEPO
 import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
+import {
+  success_sound
+} from '../actions/soundActions'
+
+
 
 export class DepositService extends WebService {
     async fetchDepositProviders() {
@@ -10,7 +15,6 @@ export class DepositService extends WebService {
 
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
-
         if (!response) return;
 
         const result = response.reduce((result, item) => {
@@ -26,13 +30,16 @@ export class DepositService extends WebService {
             return result
         }, [])
 
+        // console.log('||||||||| fetchDepositProviders', response)
+        // alert('deposit providers')
+
         const finalData = {
             ...this.user,
             deposit_providers: [
                 ...result,
             ]
         }
-        // return console.log('||||||||| fetchDepositProviders', finalData)
+
 
         const normalizedData = await normalizeUser(finalData)
         this.dispatch(updateNormalizedDataAction(normalizedData))
@@ -128,4 +135,34 @@ export class DepositService extends WebService {
 
         return deposit[0]
     }
+
+
+    async createDepositProvider(account_id, country) {
+
+        const user = this.user
+
+        let body = {
+          "data": {
+            account_id,
+            country
+          }
+        }
+
+        const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`
+        const deposit_prov = await this.Post(finalUrl, body, user.userToken)
+        if (deposit_prov === 465 || !deposit_prov) { return }
+
+        const { data } = deposit_prov
+        this.dispatch(success_sound())
+        return data[0].id
+
+
+
+    }
+
+
+
+
+
+
 }

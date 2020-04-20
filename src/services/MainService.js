@@ -134,7 +134,7 @@ export class MainService extends inheritances {
         if (!order || order.length < 1) { return false }
 
         return order[0]
-    }  
+    }
 }
 
 // preserve for future aplication
