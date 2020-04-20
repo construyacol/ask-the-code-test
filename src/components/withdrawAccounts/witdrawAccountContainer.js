@@ -50,7 +50,7 @@ class WitdrawAccountContainer extends Component {
     const { title } = this.state
     const { withdraw_accounts, isAppLoaded } = this.props
 
-    // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
+    console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
 
     return (
       <Router
@@ -62,16 +62,13 @@ class WitdrawAccountContainer extends Component {
             title={title}
             {...this.props}
             {...this.state}
-            style={{
-              height: '100%'
-            }}
           >
             {
               !withdraw_accounts ?
                 <AccountListLoader />
                 :
                 (isAppLoaded && withdraw_accounts) &&
-                <Route exact path="/:primary_path" component={AccountList} />
+                <Route exact path="/:primary_path" component={renderProps => (<AccountList {...renderProps} isWithdrawList={true} />)} />
             }
           </DetailContainerLayout>
         </Switch>

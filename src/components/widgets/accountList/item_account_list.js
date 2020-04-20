@@ -155,15 +155,22 @@ class AccountList extends Component {
       path
     } = this.props
 
-    // console.log('||||||||||||||||||||||||||||||||||||||| ================== item_list ==================> ', this.props.item_list)
-
+    const item_list = this.props.item_list
+    const isHugeContainer = item_list > 10
+    const styleForHugeContainer = {
+      height: 'auto',
+    }
+    const isWithdrawListStyle = {
+      marginBottom: '40px'
+    }
+    
     return (
       <Fragment>
         {
-          (this.props.item_list && this.props.item_list.length > 0) ?
-            <AccountListContainer className="AccountListContainer">
+          (item_list && item_list.length > 0) ?
+            <AccountListContainer style={isHugeContainer ? {...styleForHugeContainer, ...isWithdrawListStyle} : isWithdrawListStyle} className="AccountListContainer">
               {
-                this.props.item_list.map((account, id) => {
+                item_list.map((account, id) => {
                   if (!account.visible) { return null }
                   return <ItemAccount
                     key={id}
@@ -182,7 +189,7 @@ class AccountList extends Component {
                 label={this.state.label}
               />
               :
-              (this.props.item_list.length < 1 && !this.props.loader) &&
+              (item_list.length < 1 && !this.props.loader) &&
               <AccountsNotFound account_type={path} />
         }
 
