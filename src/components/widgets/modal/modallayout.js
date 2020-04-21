@@ -29,7 +29,7 @@ class ModalLayout extends Component {
       // sub_section
     } = this.props
 
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     this.props.action.CleanForm(current)
 
     // if(current === 'deposit' || current === 'withdraw'){
@@ -44,7 +44,7 @@ class ModalLayout extends Component {
     //   this.props.history.push(`/${this.props.redux_route}`)
     // }
     //
-    // this.props.action.ToggleModal()
+    // this.props.action.toggleModal()
     // if(current === 'withdraw' || current === 'bank'){
     //   this.props.action.CleanForm('bank')
     //   this.props.action.CleanForm('withdraw')
@@ -61,7 +61,7 @@ salirTicket = async() =>{
   this.props.action.ModalView('modalView')
   this.props.action.CleanForm(current)
 
-  return  this.props.action.ToggleModal()
+  return  this.props.action.toggleModal()
 }
 
 render(){

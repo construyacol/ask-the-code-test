@@ -72,13 +72,11 @@ function DashBoardContainer(props) {
 
   return (
     <Element id="containerElement" className="dashBoardLayout">
-      <div className="sectionFixedPrice">
-        <QuoteContainer />
-      </div>
+      <QuoteContainer />
+      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+        <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
+      )} />
       <div className="containerSection" name="firstInsideContainer">
-        <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-          <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
-        )} />
         <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
           <Switch>
             <Route path="/wallets" component={WalletContainer} />
@@ -143,7 +141,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(DashBoardContainer)
 
 const LazyLoaderPage = ({ path }) => {
   const title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
-  const LoaderScreen = path === 'withdraw_accounts' ? AccountListLoader : path === 'security' ? SecurityCenterLoader : SimpleLoader
+  const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader : path === 'security' ? SecurityCenterSkeletonLoader : SimpleLoader
 
   return (
     <DetailContainerLayout title={title}>
@@ -152,7 +150,7 @@ const LazyLoaderPage = ({ path }) => {
   )
 }
 
-export const AccountListLoader = () => {
+export const AccountListSkeletonLoader = () => {
   return (
     <AccountListContainer className="AccountListContainer">
       <ItemAccount loader />
@@ -160,7 +158,7 @@ export const AccountListLoader = () => {
   )
 }
 
-const SecurityCenterLoader = () => {
+const SecurityCenterSkeletonLoader = () => {
   const elements = (window.innerWidth < 768) ? 10 : 5
   const loaderList = new Array(elements).fill({})
 

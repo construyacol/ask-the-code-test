@@ -30,17 +30,17 @@ class ItemSettingsInit extends Component{
         case 'kyc_basic':
           await this.props.action.ToStep('globalStep', 0)
           await this.props.action.CurrentForm('kyc_basic')
-          return this.props.action.ToggleModal()
+          return this.props.action.toggleModal()
 
         case 'kyc_financial':
               await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.ToStep('globalStep', 3)
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
 
         case 'kyc_advanced':
               await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.ToStep('globalStep', 2)
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
         case '2auth':
               // console.log('||||||| CLICK ITEM', item)
               if(other_state === 'to_disable'){
@@ -56,7 +56,7 @@ class ItemSettingsInit extends Component{
                 return this.props.action.other_modal_toggle()
               }
               await this.props.action.CurrentForm('2auth')
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
         case 'phone':
             await this.props.action.current_section_params({settings:{
               title:"Actualizar numero de movil",

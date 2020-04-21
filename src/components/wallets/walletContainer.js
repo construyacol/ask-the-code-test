@@ -10,7 +10,7 @@ import ActivityView from './views/activity'
 // import WithdrawView from './views/withdraw'
 import WithdrawView from './views/withdraw'
 import SwapView from './views/swap'
-import AccountList from '../widgets/accountList/item_account_list'
+import AccountList from '../widgets/accountList/account-list'
 import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
@@ -22,7 +22,7 @@ function WalletContainer(props) {
     props.action.CurrentForm(path)
     return () => {
       props.action.section_view_to('initial')
-      props.action.current_section_clean()
+      props.action.cleanCurrentSection()
     }
   }, [])
 

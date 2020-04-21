@@ -16,6 +16,7 @@ class MenuPrincipalContainer extends Component {
     scroller.scrollTo('firstInsideContainer', {
       duration: this.props.path === link ? 500 : 0,
       smooth: true,
+      offset: -120,
       containerId: 'containerElement'
     })
   }
@@ -26,7 +27,7 @@ class MenuPrincipalContainer extends Component {
 
   componentDidMount() {
     scroller.scrollTo('firstInsideContainer', {
-      offset: 0,
+      offset: -120,
       duration: 0,
       smooth: true,
       containerId: 'containerElement'
@@ -47,8 +48,8 @@ class MenuPrincipalContainer extends Component {
   }
 
   openSelectCountry = async () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Cambiar país de operación",
       description: "Elige el país en el que deseas operar, recuerda que cada país maneja un perfil de operación diferente.",
       txtPrimary: "Cambiar de país",

@@ -153,7 +153,7 @@ class SwapView extends Component{
   init_swap = async() => {
     this.setState({loader_button:true})
     await this.swap()
-    this.props.action.ConfirmationModalToggle()
+    this.props.action.confirmationModalToggle()
     this.setState({loader_button:false})
   }
 
@@ -177,7 +177,7 @@ class SwapView extends Component{
     const total_value = await this.get_total_value(value)
     this.setState({total_value})
 
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalPayload({
       title:"Confirmando Intercambio",
       txtPrimary:"Confirmar Intercambio",
       txtSecondary:"Cancelar",
@@ -201,7 +201,7 @@ class SwapView extends Component{
     let currency = current_wallet && current_wallet.currency.currency
     let all_pairs = []
 
-    // !initial && this.props.action.ConfirmationModalToggle()
+    // !initial && this.props.action.confirmationModalToggle()
     !initial && this.props.action.other_modal_toggle()
     if(currency_pairs){return false}
 
@@ -209,7 +209,7 @@ class SwapView extends Component{
     if(pairs){all_pairs = [...pairs]}
     let pairs2 = await this.props.action.getPairs(null, currency, true)
     if(pairs2){all_pairs = [...all_pairs, ...pairs2]}
-    // if(all_pairs.length<1){return (!initial && this.props.action.ConfirmationModalToggle())}
+    // if(all_pairs.length<1){return (!initial && this.props.action.confirmationModalToggle())}
     if(all_pairs.length<1){return (!initial && this.props.action.other_modal_toggle())}
     let pairs_result = await this.createListPairs(all_pairs, currency)
     return this.props.action.pairsForAccount(current_wallet.currency.currency, {all_pairs:pairs_result}, 'currency')

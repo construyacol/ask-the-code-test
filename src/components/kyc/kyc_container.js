@@ -182,7 +182,7 @@ const { user } = this.props
   }
 
   exit = () =>{
-    this.props.action.ToggleModal(false)
+    this.props.action.toggleModal(false)
   }
 
   render(){

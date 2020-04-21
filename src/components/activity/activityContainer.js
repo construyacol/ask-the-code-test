@@ -34,7 +34,7 @@ deposit = () =>{
   // this.props.action.FiatDeposit('cop')
   // this.props.action.UpdateFormControl('deposit', true)
   this.props.action.CleanForm('deposit')
-  this.props.action.ToggleModal()
+  this.props.action.toggleModal()
 }
 
 toWallets = async() =>{

@@ -128,7 +128,7 @@ class DepositContainer extends Component {
 
       this.update_form(this.state)
       // this.props.history.push("/wallets/deposit/5c04f873eb9c94511fd2edfa")
-      // this.props.action.ToggleModal()
+      // this.props.action.toggleModal()
       // console.log('|||||||||||| PRIMER DEPOSITO', this.state.type_currency)
 
       let wallets = this.props.wallets
@@ -160,8 +160,8 @@ class DepositContainer extends Component {
           if(current_wallets.length===1 || (current_wallets.length >= 1 &&  type_currency === 'fiat')){
             let unica_wallet = current_wallets.pop()
             // return console.log(unica_wallet.id)
-            if(this.state.type_currency !== 'fiat'){this.props.action.ToggleModal()}
-            // this.props.action.ToggleModal()
+            if(this.state.type_currency !== 'fiat'){this.props.action.toggleModal()}
+            // this.props.action.toggleModal()
             await this.to_deposit_wallet(unica_wallet.id)
             return this.props.action.CurrentForm('deposit')
           }
@@ -178,7 +178,7 @@ class DepositContainer extends Component {
     handleError = (msg) => {
 
       this.props.action.mensaje(msg, 'error')
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
       this.props.action.CleanForm('deposit')
     }
 
@@ -479,7 +479,7 @@ updateAmountOnState = async(amount) =>{
 
 
   to_deposit_crypto = (wallet, history) =>{
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     return history.push(`wallets/deposit/${wallet.id}`)
   }
 

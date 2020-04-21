@@ -22,8 +22,8 @@ class MenuSuperiorContainer extends Component {
   }
 
   logout = async () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Estás a punto de cerrar sesión...",
       description: "¿Estás seguro que deseas salir de Coinsenda?",
       txtPrimary: "Salir de Coinsenda",
@@ -45,8 +45,8 @@ class MenuSuperiorContainer extends Component {
 
 
   openSelectCountry = async () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Cambiar país de operación",
       description: "Elige el país en el que deseas operar, recuerda que cada país maneja un perfil de operación diferente.",
       txtPrimary: "Cambiar de país",

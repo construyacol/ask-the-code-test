@@ -55,7 +55,7 @@ class QuoteContainer extends Component {
     const { currentPair } = this.props
 
     return (
-      <Fragment>
+      <div className="sectionFixedPrice">
         {
           !currentPair ?
             <div className="quoteLoader">
@@ -72,7 +72,7 @@ class QuoteContainer extends Component {
               {...this.props}
             />
         }
-      </Fragment>
+      </div>
     )
   }
 }

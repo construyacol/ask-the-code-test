@@ -155,7 +155,7 @@
 
 
   .containerSection {
-    grid-template-rows: minmax(55px, 7vh) 1fr;
+    grid-template-rows: 1fr;
     background: #F9F9FB;
   }
 

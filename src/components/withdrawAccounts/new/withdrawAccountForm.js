@@ -170,7 +170,7 @@ class WithdrawAccountForm extends Component {
   finalizar = (event) => {
     this.props.action.CleanForm('bank')
     this.props.action.CleanForm('withdraw')
-    // this.props.action.ToggleModal()
+    // this.props.action.toggleModal()
   }
 
   cleanSearch = () => {

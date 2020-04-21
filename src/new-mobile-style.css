@@ -1,8 +1,8 @@
 .contenido {
     position: relative;
     background: #F9F9FB;
-    padding-top: 3vh;
-    padding-bottom: 8vh;
+    padding-top: 5vh;
+    padding-bottom: 10vh;
     /* min-height: calc(100vh - 130px); */
     min-height: calc(100vh - 25vh);
     /*height: 100%;*/
@@ -229,7 +229,7 @@
     }
 
     .containerSection {
-        grid-template-rows: 12vh 1fr !important;
+        grid-template-rows: 1fr !important;
     }
 
     .dashBoardLayout {

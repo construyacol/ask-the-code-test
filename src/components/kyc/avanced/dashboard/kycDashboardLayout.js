@@ -112,7 +112,7 @@ const KycDashBoard = props =>{
             <ButtonForms
               active={true}
               type="primary"
-              siguiente={action.ToggleModal}
+              siguiente={action.toggleModal}
               > Finalizar</ButtonForms>
 
           }

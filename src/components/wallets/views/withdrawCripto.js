@@ -58,8 +58,8 @@ export const CriptoView = () => {
       loader
     },
     {
-     ConfirmationModalToggle,
-     ConfirmationModalPayload,
+     confirmationModalToggle,
+     confirmationModalPayload,
      mensaje,
      isAppLoading
    }, dispatch ] = WithdrawViewState()
@@ -112,8 +112,8 @@ export const CriptoView = () => {
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
 
-    dispatch(ConfirmationModalToggle())
-    dispatch(ConfirmationModalPayload({
+    dispatch(confirmationModalToggle())
+    dispatch(confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
       txtPrimary: "Confirmar Retiro",

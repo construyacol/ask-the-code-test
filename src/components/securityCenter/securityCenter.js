@@ -18,7 +18,7 @@ class SecurityCenter extends Component {
     if (verification_state !== 'accepted') {
 
       scroller.scrollTo('firstInsideContainer', {
-        offset: 220,
+        offset: -100,
         duration: 1,
         smooth: true,
         containerId: 'containerElement'

@@ -84,7 +84,7 @@ export const CleanForm = (form) => {
   }
 }
 
-export const ToggleModal = () => {
+export const toggleModal = () => {
   return {
     type:TOGGLE_MODAL
   }

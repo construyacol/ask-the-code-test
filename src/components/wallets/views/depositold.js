@@ -29,7 +29,7 @@ class DepositView extends Component{
 
   init_config = async() =>{
 
-      let verified = await this.props.action.user_verification_status('level_1')
+      let verified = await this.props.action.getUserVerificationStatus('level_1')
       await this.setState({verified})
 
       // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
@@ -81,7 +81,7 @@ class DepositView extends Component{
   fiat_deposit = async() =>{
     // console.log('|||||||||||||| FIAT DEPOSIT', this.props.local_currency)
       await this.props.action.FiatDeposit(this.props.local_currency || 'usd')
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
   }
 
 

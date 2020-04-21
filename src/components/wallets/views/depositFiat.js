@@ -18,7 +18,7 @@ const DepositFiat = () => {
       modelData:{ deposit_providers }
     },
     {
-      ToggleModal,
+      toggleModal,
       FiatDeposit
     },
     dispatch
@@ -33,7 +33,7 @@ const DepositFiat = () => {
   const fiat_deposit = async(e) =>{
     e.preventDefault()
     await dispatch(FiatDeposit(current_wallet.currency.currency || 'usd'))
-    dispatch(ToggleModal())
+    dispatch(toggleModal())
   }
 
 

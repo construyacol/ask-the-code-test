@@ -20,9 +20,6 @@ import {
 
 import './item_wallet.css'
 
-
-
-
 const ItemAccount = props => {
 
   if (props.loader) {
@@ -30,9 +27,9 @@ const ItemAccount = props => {
       <LoaderAccount />
     )
   }
-
+  
   const account_detail = async (payload) => {
-    props.action.CleanItemNotifications(payload, 'account_id')
+    props.actions.cleanNotificationItem(payload, 'account_id')
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
     // return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
   }
@@ -85,12 +82,6 @@ const mapStateToProps = (state, props) => {
 // ¿Es necesario conectar redux tanto para Wallet como para Withdraw Account?
 export default connect(mapStateToProps)(ItemAccount)
 
-
-
-
-
-
-
 const Wallet = props => {
 
   const { account, balances, account_state, id_trigger, set_id_wallet_action, set_account_state } = props
@@ -101,7 +92,7 @@ const Wallet = props => {
   const delete_account = async () => {
     set_account_state('deleting')
     set_id_wallet_action(id)
-    let account_deleted = await props.action.delete_account(account)
+    let account_deleted = await props.actions.delete_account(account)
     // console.log('°|||||||||||||||||°°°°°°°°°°°°°°°°°°°°°°° DELETE WALLET AFTER ===> ', account_deleted)
     let msg = "Cuenta eliminada con exito"
     let success = true
@@ -111,10 +102,10 @@ const Wallet = props => {
     }
     setTimeout(() => {
       set_account_state('deleted')
-      props.action.get_list_user_wallets(props.user)
+      props.actions.get_list_user_wallets(props.user)
     }, 300)
-    props.action.exit_sound()
-    props.action.mensaje(msg, success ? 'success' : 'error')
+    props.actions.exit_sound()
+    props.actions.mensaje(msg, success ? 'success' : 'error')
   }
 
   // console.log('|||||||||||| WALLET Account ===> ', props)
@@ -154,38 +145,30 @@ const Wallet = props => {
 
 }
 
-
-
-
-
-
-
-
 const WithdrawAccount = props => {
 
   const { account, account_state, id_trigger } = props
   const { bank_name, id, account_number, inscribed, used_counter } = account
-
 
   const delete_account = async (account_id) => {
     console.log('|||||||||||| Withdraw Account delete_account ===> ', id)
     const { set_id_wallet_action, set_account_state } = props
     set_account_state('deleting')
     set_id_wallet_action(id)
-    let account_deleted = await props.action.delete_withdraw_account(id)
+    let account_deleted = await props.actions.delete_withdraw_account(id)
     let msg = "Cuenta eliminada con exito"
     let success = true
     if (account_deleted === 404 || account_deleted === 465 || !account_deleted) {
       msg = "La cuenta no se ha podido eliminar"
       success = false
       set_account_state('CancelDeleting')
-      return props.action.mensaje(msg, success ? 'success' : 'error')
+      return props.actions.mensaje(msg, success ? 'success' : 'error')
     }
     console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
-    props.action.exit_sound()
+    props.actions.exit_sound()
     set_account_state('deleted')
-    await props.action.get_withdraw_accounts(props.user, props.withdrawProviders)
-    props.action.mensaje(msg, success ? 'success' : 'error')
+    await props.actions.get_withdraw_accounts(props.user, props.withdrawProviders)
+    props.actions.mensaje(msg, success ? 'success' : 'error')
   }
 
 
@@ -243,8 +226,8 @@ const OptionsAccount = props => {
 
 
   const delete_account_confirmation = async () => {
-    props.action.ConfirmationModalToggle()
-    props.action.ConfirmationModalPayload({
+    props.actions.ConfirmationModalToggle()
+    props.actions.ConfirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
       txtPrimary: "Eliminar",

@@ -84,7 +84,7 @@ const ActivityView = props => {
     scroller.scrollTo('firstInsideContainer', {
       duration: 0,
       smooth: true,
-      offset: -55,
+      offset: -100,
       containerId: 'containerElement'
     })
   }, [])

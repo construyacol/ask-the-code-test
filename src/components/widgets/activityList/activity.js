@@ -58,8 +58,8 @@ class ActivityList extends Component {
 
 
   delete_order_confirmation = (id) =>{
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title:"Esto es importante, estas a punto de...",
       description:"Eliminar esta orden, ¿Estas seguro de hacer esto?",
       txtPrimary:"Eliminar",
@@ -117,7 +117,7 @@ class ActivityList extends Component {
     const { primary_path, account_id, path, tx_path } = this.props.match.params
     this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
 
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     setTimeout(()=>{
       this.props.action.IncreaseStep('ticket')
     }, 170)
@@ -139,7 +139,7 @@ class ActivityList extends Component {
 
     const { primary_path, account_id, path, tx_path } = this.props.match.params
     this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
-    this.props.action.CleanItemNotifications('wallets', 'order_id')
+    this.props.action.cleanNotificationItem('wallets', 'order_id')
 
     // const{
     //   state
@@ -149,7 +149,7 @@ class ActivityList extends Component {
     //   current_form
     // } = this.props
 
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     // console.log('||||||||||||||||||| ======> Ticket ACTIVITY ==> ',  ticket)
 
   }

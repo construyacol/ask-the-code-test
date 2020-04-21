@@ -99,7 +99,7 @@ class NewWallet extends Component{
 
         this.props.action.isAppLoading(false)
         this.props.action.success_sound()
-        await this.props.action.ToggleModal()
+        await this.props.action.toggleModal()
         await this.props.action.CleanForm('wallet')
 
         return this.props.history.push(`/wallets/deposit/${account.id}`)
@@ -129,7 +129,7 @@ class NewWallet extends Component{
 
   finalizar =(event) =>{
       // reiniciamos el estado del formulario(./reducers/form)
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     this.props.action.CleanForm('wallet')
   }
 

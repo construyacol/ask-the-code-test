@@ -2031,7 +2031,7 @@ export const get_country_list = order_id => {
 }
 
 
-export const user_verification_status = (level_request) => {
+export const getUserVerificationStatus = (level_request) => {
   // @Call_from
   // ./wallets/views/deposit.js
   // ./wallets/views/withdraw.js

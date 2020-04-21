@@ -73,7 +73,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
         }
     }, [loggedIn])
 
-    const withdrawManagement = async ({ id, proof, state, currency_type, history }) => {
+    const withdrawManagement = async ({ id, proof, state, currency_type }) => {
         const localWithdraw = currentWithdrawRef.current
         if (proof) {
             if (!withdraws || (withdraws && !withdraws[id])) {

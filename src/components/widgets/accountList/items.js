@@ -57,10 +57,10 @@ componentDidMount(){
 
   wallet_detail = async() => {
 
-    this.props.action.CleanItemNotifications('wallets', 'account_id')
+    this.props.action.cleanNotificationItem('wallets', 'account_id')
     if(this.props.current === "deposit"){
       // Esto valida cuando estoy en el formulario deposito en una lista de wallets existentes, osea cierra el modal
-      await this.props.action.ToggleModal()
+      await this.props.action.toggleModal()
       await this.update_deposit_provider()
       return this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
     }
@@ -91,9 +91,9 @@ componentDidMount(){
 
       // await this.update_deposit_provider()
       // console.log('ItemWallet', this.state)
-      let verified = await this.props.action.user_verification_status('level_1')
+      let verified = await this.props.action.getUserVerificationStatus('level_1')
       this.props.action.FiatDeposit(this.props.localCurrency)
-      if(verified){this.props.action.ToggleModal()}
+      if(verified){this.props.action.toggleModal()}
       this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
       return this.props.action.current_section_params({current_wallet:this.state.current_wallet, deposit_direct_access:true})
     }
@@ -107,10 +107,10 @@ componentDidMount(){
     if(this.props.wallet.currency_type === 'fiat'){
 
       // this.props.action.FiatDeposit(this.props.localCurrency)
-      let verified = await this.props.action.user_verification_status('level_1')
+      let verified = await this.props.action.getUserVerificationStatus('level_1')
       this.props.history.push(`/wallets/withdraw/${this.props.wallet.id}`)
       await this.props.action.CurrentForm('withdraw')
-      if(verified){this.props.action.ToggleModal()}
+      if(verified){this.props.action.toggleModal()}
       return this.props.action.current_section_params({current_wallet:this.state.current_wallet, deposit_direct_access:true})
     }
 

@@ -22,13 +22,13 @@ class ConfirmationModal extends Component {
 
     // Ejecutamos la acción desde redux, para eliminar wallet pasandole como parametro el id del wallet
     action(payload, code)
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload(null)
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload(null)
   }
 
   cancelarClick = () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload(null)
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload(null)
   }
 
 
