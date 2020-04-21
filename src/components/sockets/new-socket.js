@@ -18,9 +18,11 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
     const [currentWithdraw, setCurrentWithdraw] = useState(null)
     const [mainService] = useCoinsendaServices()
     const currentSwapRef = useRef(currentSwap)
+    const currentWithdrawRef = useRef(currentWithdraw)
 
     useEffect(() => {
         currentSwapRef.current = currentSwap
+        currentWithdrawRef.current = currentWithdraw
     })
 
     useEffect(() => {
@@ -72,6 +74,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
     }, [loggedIn])
 
     const withdrawManagement = async ({ id, proof, state, currency_type, history }) => {
+        const localWithdraw = currentWithdrawRef.current
         if (proof) {
             if (!withdraws || (withdraws && !withdraws[id])) {
                 const response = await mainService.getOrderById(id, 'withdraws')
@@ -96,13 +99,13 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
             }
         }
 
-        if (state === 'confirmed' && currentWithdraw.currency_type === 'crypto') {
+        if (state === 'confirmed' && localWithdraw.currency_type === 'crypto') {
             const new_withdraw_model = {
-                id: currentWithdraw.id,
-                unique_id: currentWithdraw.id,
+                id: localWithdraw.id,
+                unique_id: localWithdraw.id,
                 type_order: 'withdraw',
-                account_id: currentWithdraw.account_id,
-                ...currentWithdraw,
+                account_id: localWithdraw.account_id,
+                ...localWithdraw,
                 state: "confirmed"
             }
 
@@ -115,26 +118,26 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
             history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`)
         }
 
-        if (state === 'accepted' && currentWithdraw.currency_type === 'fiat') {
+        if (state === 'accepted' && localWithdraw.currency_type === 'fiat') {
             const newWithdraw = {
-                account_id: currentWithdraw.account_id,
-                amount: currentWithdraw.amount,
-                amount_neto: currentWithdraw.amount_neto,
+                account_id: localWithdraw.account_id,
+                amount: localWithdraw.amount,
+                amount_neto: localWithdraw.amount_neto,
                 comment: "",
-                country: currentWithdraw.country,
-                currency: currentWithdraw.currency,
-                currency_type: currentWithdraw.currency_type,
-                cost: currentWithdraw.cost,
-                cost_struct: currentWithdraw.cost_struct,
+                country: localWithdraw.country,
+                currency: localWithdraw.currency,
+                currency_type: localWithdraw.currency_type,
+                cost: localWithdraw.cost,
+                cost_struct: localWithdraw.cost_struct,
                 deposit_provider_id: "",
                 expiration_date: new Date(),
-                id: currentWithdraw.id,
+                id: localWithdraw.id,
                 state: "confirmed",
                 sent: false,
-                unique_id: currentWithdraw.id,
-                userId: currentWithdraw.userId,
-                withdraw_account: currentWithdraw.withdraw_account_id,
-                withdraw_provider: currentWithdraw.withdraw_provider_id,
+                unique_id: localWithdraw.id,
+                userId: localWithdraw.userId,
+                withdraw_account: localWithdraw.withdraw_account_id,
+                withdraw_provider: localWithdraw.withdraw_provider_id,
                 type_order: "withdraw",
             }
 
@@ -146,6 +149,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
 
     const depositManagement = async (deposit) => {
         const { state, currency_type, account_id, id, confirmations } = deposit
+        
         if (state === 'pending' && currency_type === 'fiat') {
             await actions.add_item_state('deposits', { ...deposit, type_order: 'deposit' })
             await actions.update_activity_state(account_id, 'deposits')
@@ -154,7 +158,6 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
         if (state === 'confirmed') {
             if (!deposits || (deposits && !deposits[id])) {
                 const response = await mainService.getDepositById(id)
-
                 if (activity_for_account[response.account_id] && activity_for_account[response.account_id].deposits) {
                     await actions.add_item_state('deposits', { ...response, type_order: 'deposit' })
                     await actions.update_activity_state(response.account_id, 'deposits')
