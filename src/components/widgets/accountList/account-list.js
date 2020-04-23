@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import actions from '../../../actions'
 import SimpleLoader from '../loaders'
-// import ItemWallet from './items'
 import ItemAccount from './item_account'
 import { AddNewItem } from '../buttons/buttons'
-import { withRouter } from "react-router"
 import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
 import { AccountListContainer } from './styles'
+import withListCreator from '../../withListCreator'
 
 import '../../wallets/views/wallet_views.css'
 
 function AccountList(props) {
-  const { path, actions, history } = props
-  const [label, setLabel] = useState(`Obteniendo tus ${path === 'wallets' ? 'Billeteras' : 'Cuentas de retiro'}`)
+  const { isWalletsView, isWithdrawView, actions, history } = props
+  const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [isVerified, setIsVerified] = useState(false)
-  const [accountState, setAccountState] = useState('done')
-  const [walletId, setWalletId] = useState(false)
 
   useEffect(() => {
     actions.cleanCurrentSection()
@@ -72,7 +66,7 @@ function AccountList(props) {
 
 
   const callToValidate = () => {
-    const message = props.path === 'wallets' ? 'billeteras crypto/fiat.' : 'cuentas de retiro fiat.'
+    const message = isWalletsView ? 'billeteras crypto/fiat.' : 'cuentas de retiro fiat.'
 
     actions.confirmationModalToggle()
     actions.confirmationModalPayload({
@@ -87,28 +81,28 @@ function AccountList(props) {
   }
 
 
-  const deleteAccount = async (accountId, type) => {
-    setLabel("Eliminando Wallet")
-    setAccountState("deleting")
-    setWalletId(accountId)
-    const accountDeleted = await actions.delete_account(accountId, type)
-    let msg = "Wallet eliminada con exito"
-    let success = true
+  // const deleteAccount = async (accountId, type) => {
+  //   setLabel("Eliminando Wallet")
+  //   setAccountState("deleting")
+  //   setWalletId(accountId)
+  //   const accountDeleted = await actions.delete_account(accountId, type)
+  //   let msg = "Wallet eliminada con exito"
+  //   let success = true
 
-    if (accountDeleted === 404 || !accountDeleted) {
-      msg = "La wallet no se ha podido eliminar"
-      success = false
-    }
+  //   if (accountDeleted === 404 || !accountDeleted) {
+  //     msg = "La wallet no se ha podido eliminar"
+  //     success = false
+  //   }
 
-    actions.exit_sound()
-    setLabel("Obteniendo tus Cuentas")
-    setAccountState("deleted")
-    type === 'withdraw_accounts' ?
-      await actions.get_withdraw_accounts(props.user, props.withdrawProviders) :
-      await actions.get_list_user_wallets(props.user)
+  //   actions.exit_sound()
+  //   setLabel("Obteniendo tus Cuentas")
+  //   setAccountState("deleted")
+  //   type === 'withdraw_accounts' ?
+  //     await actions.get_withdraw_accounts(props.user, props.withdrawProviders) :
+  //     await actions.get_list_user_wallets(props.user)
 
-    actions.mensaje(msg, success ? 'success' : 'error')
-  }
+  //   actions.mensaje(msg, success ? 'success' : 'error')
+  // }
 
   const items = props.items
   const isHugeContainer = items > 10
@@ -130,7 +124,7 @@ function AccountList(props) {
                 return <ItemAccount
                   key={id}
                   account={account}
-                  account_type={path}
+                  account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'}
                   {...props}
                 />
               })
@@ -144,13 +138,13 @@ function AccountList(props) {
             />
             :
             (items.length < 1 && !props.loader) &&
-            <AccountsNotFound account_type={path} />
+            <AccountsNotFound account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'} />
       }
 
       {
         (!props.loader) &&
         <AddNewItem
-          label={`${path === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
+          label={`${isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
           type="primary"
           handleClick={createNewWallet}
         />
@@ -167,42 +161,7 @@ AccountList.propTypes = {
   current_wallet: PropTypes.object,
   items: PropTypes.array,
   loader: PropTypes.bool,
-  path: PropTypes.string,
   user: PropTypes.object
-}
-
-function mapStateToProps(state, props) {
-  const path = props.match.params.primary_path
-  const {
-    user,
-    withdrawProviders
-  } = state.modelData
-  let withdrawProvidersList = null
-
-  if (path !== 'wallets' && withdrawProviders) {
-    withdrawProvidersList = []
-    Object.keys(withdrawProviders).map(key => withdrawProvidersList.push(withdrawProviders[key]))
-  }
-
-  const items = user[path].map((item_id) => {
-    if (path === 'withdraw_accounts' && state.modelData[path][item_id].currency_type === 'crypto') { return false }
-    return state.modelData[path][item_id]
-  })
-
-  return {
-    items,
-    path,
-    verificationState: state.ui.verification_state,
-    withdrawProviders: withdrawProvidersList,
-    user: state.modelData.user,
-    loader: state.isLoading.loader
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  }
 }
 
 const AccountsNotFound = ({ account_type }) => {
@@ -224,4 +183,4 @@ const AccountsNotFound = ({ account_type }) => {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AccountList))
+export default withListCreator(AccountList)
