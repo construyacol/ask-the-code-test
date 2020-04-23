@@ -27,7 +27,9 @@ const ItemAccount = props => {
       <LoaderAccount />
     )
   }
-  
+
+  // 5d3dedf1bb245069d61021bb
+
   const account_detail = async (payload) => {
     props.actions.cleanNotificationItem(payload, 'account_id')
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
@@ -84,12 +86,15 @@ export default connect(mapStateToProps)(ItemAccount)
 
 const Wallet = props => {
 
+
   const { account, balances, account_state, id_trigger, set_id_wallet_action, set_account_state } = props
   const { name, id, currency } = account
   let icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
   // let notifier_type = type === 'trade' ? 'wallets' : type
+  // console.log('|||||||||||| WALLETS  ===> ', account)
 
   const delete_account = async () => {
+    if(account.available > 0){return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')}
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.actions.delete_account(account)
@@ -151,7 +156,6 @@ const WithdrawAccount = props => {
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
   const delete_account = async (account_id) => {
-    console.log('|||||||||||| Withdraw Account delete_account ===> ', id)
     const { set_id_wallet_action, set_account_state } = props
     set_account_state('deleting')
     set_id_wallet_action(id)
@@ -170,6 +174,8 @@ const WithdrawAccount = props => {
     await props.actions.get_withdraw_accounts(props.user, props.withdrawProviders)
     props.actions.mensaje(msg, success ? 'success' : 'error')
   }
+
+  console.log('|||||||||||| Withdraw Account delete_account ===> ', account_state)
 
 
   return (

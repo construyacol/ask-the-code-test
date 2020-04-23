@@ -50,7 +50,7 @@ class WitdrawAccountContainer extends Component {
     const { title } = this.state
     const { withdraw_accounts, isAppLoaded } = this.props
 
-    console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
+    // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
 
     return (
       <Router

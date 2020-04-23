@@ -17,6 +17,7 @@ export class DepositService extends WebService {
         const response = await this.Get(finalUrl)
         if (!response) return;
 
+
         const result = response.reduce((result, item) => {
             result.push({
                 ...item,

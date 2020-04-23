@@ -6,7 +6,6 @@ import {
     DEPOSITS_URL,
     CREATE_WALLET_URL,
     DELETE_WALLET_URL,
-    DELETE_WITHDRAW_ACCOUNT_URL,
     loadLabels,
     CURRENCIES_URL
 } from "../const/const";
@@ -104,21 +103,9 @@ export class AccountService extends WebService {
         return deleteAccount
     }
 
-    async deleteWithdrawAccount(accountId) {
-        const { user, withdraw_accounts } = this.modelData
 
-        const body = {
-            "data": {
-                "withdraw_account_id": `${accountId}`,
-                "country": withdraw_accounts[accountId].info.country,
-                "visible": false
-            }
-        }
 
-        const deleteAccount = await this.Post(DELETE_WITHDRAW_ACCOUNT_URL, body, user.userToken)
 
-        return deleteAccount
-    }
 
 
     async manageBalance(accountId, action, amount) {
@@ -191,4 +178,11 @@ export class AccountService extends WebService {
         await this.dispatch(updateAllCurrenciesAction(currencies))
         return currencies
     }
+
+
+
+
+
+
+
 }
