@@ -17,6 +17,7 @@ UPDATE_ITEM_STATE,
 
 export const update_item_state = (item, item_type) => {
 
+  // console.log('|||||||||||          ||||||||||||||||||||||             ||||||||||||||        update_item_state', item_type, item)
 // @params
 // item:object => ex: normalized_object: {item_id:{}}
 // item_type:string => ex: users

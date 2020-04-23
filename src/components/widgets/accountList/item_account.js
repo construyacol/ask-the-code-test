@@ -7,6 +7,8 @@ import SimpleLoader from '../loaders'
 import BalanceComponent from '../balance/balance'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import { LoaderContainer } from '../loaders'
 
 import {
   ACta,
@@ -25,6 +27,7 @@ import './item_wallet.css'
 
 const ItemAccount = props => {
 
+
   if (props.loader) {
     return (
       <LoaderAccount />
@@ -33,22 +36,43 @@ const ItemAccount = props => {
 
   // 5d3dedf1bb245069d61021bb
 
-  const account_detail = async (payload) => {
-    props.action.CleanItemNotifications(payload, 'account_id')
+  const getCount = async() => {
+    set_loader(true)
+    const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
+    const { count } = countAccount
+    await props.action.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
+    if(count < 1){
+      set_loader(false)
+      return props.history.push(`/wallets/deposit/${props.account.id}`)
+    }
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
-    // return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
   }
 
+
+  const account_detail = async (payload) => {
+    props.action.CleanItemNotifications(payload, 'account_id')
+    if(props.account.count === undefined){
+      return getCount()
+    }
+    if(props.account.count < 1){
+      return props.history.push(`/wallets/deposit/${props.account.id}`)
+    }
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
+  }
+
+  const [ coinsendaServices ] = useCoinsendaServices()
   const [account_state, set_account_state] = useState()
+  const [loader, set_loader] = useState()
   const [id_wallet_action, set_id_wallet_action] = useState()
   let id_trigger = id_wallet_action === props.account.id
   const { account_type } = props
 
   return (
-    <AccountLayout className={`AccountLayout ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
+    <AccountLayout className={`AccountLayout  ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
       {
         account_type === 'wallets' ?
           <Wallet
+            loaderAccount={loader}
             handleAction={account_detail}
             set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
@@ -57,6 +81,7 @@ const ItemAccount = props => {
             {...props} />
           :
           <WithdrawAccount
+            loaderAccount={loader}
             set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
             account_state={account_state}
@@ -125,7 +150,15 @@ const Wallet = props => {
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
-    <WalletLayout className={`walletLayout ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
+    <WalletLayout className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
+
+      {
+        props.loaderAccount &&
+        <LoaderContainer>
+          <SimpleLoader loader={2} />
+        </LoaderContainer>
+      }
+
       {
         props.actions &&
         <Fragment>

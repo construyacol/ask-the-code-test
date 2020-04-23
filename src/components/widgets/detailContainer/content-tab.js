@@ -9,19 +9,22 @@ import './detailContainer.css'
 // TODO: refactor this component
 class ContentTab extends Component {
     render() {
-        const { title, current_section, current_wallet, pathname, primary_path } = this.props
+        const { title, current_section, current_wallet, pathname, primary_path, wallets } = this.props
         const { items_menu } = navigation_components.wallet
         const { params } = current_section
         const movil_viewport = window.innerWidth < 768
-
         return (
-            
+
             <div className="subMenu">
                 <div className="menuContainer">
                     <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                         {
                             (current_wallet && items_menu ? items_menu.length > 0 : false) &&
                             items_menu.map(item => {
+                              // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
+                                if((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && !wallets[current_wallet].count){
+                                  return null
+                                }
                                 return (
                                     <NavLink to={`/wallets/${item.link}/${current_wallet}${item.link === 'activity' ? `/${params.currentFilter}` : ''}`}
                                         // onClick={this.to_sub_section}

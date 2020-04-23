@@ -2,7 +2,7 @@ import React from 'react'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
 import styled from 'styled-components'
-
+import { LoaderContainer } from '../loaders'
 
 const  ControlButton = ({loader, formValidate, label, handleAction}) => {
   return(
@@ -44,24 +44,7 @@ const InputButton = (props) => {
 }
 
 
-const LoaderContainer = styled.div`
-  position: absolute;
-  justify-self: center;
-  /* background: red; */
-  width: 100%;
-  height: 100%;
-  display: grid;
-  max-width: 300px;
 
-  .lds-roller{
-    justify-self: center !important;
-    z-index: 1;
-  }
-
-  .lds-roller div:after {
-    background: #014c7d;
-}
-`
 
 
 const InputButtonCont = styled.div`

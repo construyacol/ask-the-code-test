@@ -125,6 +125,9 @@ export const AccountLayout = styled.div`
   width: calc(100% - 30px) !important;
   transform-style: preserve-3d;
   perspective: 2000px;
+  position: relative;
+
+
 
   &.deleting{
     transition:.3s !important;
@@ -183,6 +186,16 @@ export const ItemAccountL = styled.div`
   -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
   -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
   box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
+
+  &.loading::after{
+    content:'';
+    position: absolute;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.7);;
+    width: 100%;
+    height: 100%;
+    padding: 0 15px;
+  }
 
 
   &.deleted{
