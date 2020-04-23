@@ -38,7 +38,7 @@ const ItemAccount = props => {
     set_loader(true)
     const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
     const { count } = countAccount
-    await props.action.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
+    await props.actions.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
     if(count < 1){
       set_loader(false)
       return props.history.push(`/wallets/deposit/${props.account.id}`)

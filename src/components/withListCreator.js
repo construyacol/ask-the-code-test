@@ -13,7 +13,7 @@ export default function withListCreator(AsComponent) {
             loader: isLoading.loader
         }
         const { isWithdrawView, data } = props
-        const items = Object.keys(data).map(key => {
+        const items = data && Object.keys(data).map(key => {
             if (isWithdrawView && data[key].currency_type === 'crypto') return false
             return data[key]
         })
