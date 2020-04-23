@@ -181,6 +181,12 @@ export class AccountService extends WebService {
 
 
 
+    async countOfAccountTransactions(account_id) {
+      const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
+      return response
+    }
+
+
 
 
 

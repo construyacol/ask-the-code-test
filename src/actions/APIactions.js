@@ -165,7 +165,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
     }
 
     let price_list = [], date_list = []
-    
+
     const url_historical_price = `https://info1.devsertec.com/api/cryptoCompares/get-daily-historical-data`
     // const url_historical_price = `${CountryApIUrl}cryptoCompares/get-daily-historical-data`
     let prices = await ApiPostRequest(url_historical_price, body)
@@ -179,7 +179,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
       date_list.push(data.date)
     }
 
-    return { price_list: price_list.reverse(), date_list }
+    return { price_list: price_list, date_list }
 
   }
 
@@ -793,6 +793,7 @@ export const create_deposit_order = (
 
 
 
+
     const body = {
       // "access_token":user.userToken,
       "data": {
@@ -801,17 +802,14 @@ export const create_deposit_order = (
         "cost_id": cost_id,
         "deposit_provider_id": deposit_provider_id,
         "info": { deposit_service, service_mode },
-        "comment": "",
         "account_id": account_id,
         "country": user.country
       }
     }
-    // return console.log('jum')
+    // console.log('|||||||||||||||||||||||||  create_deposit_order ==> ', body)
     const url_new_order = `${DepositApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body, user.userToken)
-
-    console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, ' | BODY', body)
-
+    // console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, ' | BODY', body)
     if (new_fiat_deposit === 465 || !new_fiat_deposit) { return false }
     const { data } = new_fiat_deposit
     // await dispatch(new_fiat_deposit(new_fiat_deposit))

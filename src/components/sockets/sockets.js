@@ -241,6 +241,7 @@ class SocketsComponent extends Component {
     // this.props.action.success_sound()
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
+
       await this.props.action.add_item_state('deposits', { ...deposit, type_order: 'deposit' })
       await this.props.action.update_activity_state(deposit.account_id, 'deposits')
     }
@@ -284,7 +285,6 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
       }
     }
-
 
     if (deposit.state === 'accepted') {
 
