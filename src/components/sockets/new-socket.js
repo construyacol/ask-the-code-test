@@ -86,7 +86,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
                 await actions.update_activity_state(withdraws[id].account_id, 'withdraws')
                 actions.addNotification('wallets', { account_id: withdraws[id].account_id, order_id: id }, 1)
                 await actions.socket_notify(withdraws[id], 'withdraws')
-                actions.other_modal_toggle()
+                actions.toggleOtherModal()
                 actions.success_sound()
             }
         }
@@ -167,7 +167,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
 
                 actions.addNotification('wallets', { account_id: response.account_id, order_id: response.id }, 1)
                 await actions.socket_notify({ ...response, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
-                actions.other_modal_toggle()
+                actions.toggleOtherModal()
                 actions.success_sound()
                 // setTimeout
                 setTimeout(() => { actions.add_coin_sound() }, 1500)
@@ -199,7 +199,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
                 await actions.update_activity_state(deposits[id].account_id, 'deposits')
                 actions.get_account_balances(user)
                 await actions.socket_notify(deposits[id], 'deposits')
-                actions.other_modal_toggle()
+                actions.toggleOtherModal()
                 actions.success_sound()
                 setTimeout(() => { actions.add_coin_sound() }, 1500)
             }

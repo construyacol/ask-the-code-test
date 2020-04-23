@@ -165,7 +165,7 @@ componentDidUpdate(prevProps){
 
 total_value = async(value) =>{
 
-  let total_value = value && await this.props.get_total_value(value)
+  let total_value = value && await this.props._getTotalValue(value)
   if(total_value === this.state.total_value || !total_value){return false}
   this.setState({
     total_value: total_value

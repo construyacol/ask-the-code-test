@@ -38,13 +38,13 @@ const SocketNotify = props => {
   //   const { target } = e
   //   if(target.dataset.close_modal){
   //     props.action.socket_notify(null)
-  //     props.action.other_modal_toggle()
+  //     props.action.toggleOtherModal()
   //   }
   // }
 
   const close_modal = () => {
     props.action.socket_notify(null)
-    props.action.other_modal_toggle()
+    props.action.toggleOtherModal()
   }
 
 
@@ -109,7 +109,7 @@ const OrderNotifyView = props => {
   const buttonAction = async(wallet_id) => {
     // console.log('||||||||||||||_____________________________________________buttonAction', wallet_id)
     props.action.socket_notify(null)
-    await props.action.other_modal_toggle()
+    await props.action.toggleOtherModal()
     // await props.action.current_section_params({currentFilter:item_type})
     props.history.push(`/wallets/activity/${wallet_id}/${item_type}`)
   }

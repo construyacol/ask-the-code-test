@@ -85,7 +85,7 @@ class ActivityList extends Component {
         }
 
 
-        if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
+        if(!current_pair){this.props.action.getDefaultPair(current_wallet, local_currency, current_pair)}
 
         if(this.props.activity.length<1 && current_wallet){
           history.push(`/wallets/deposit/${current_wallet.id}`)

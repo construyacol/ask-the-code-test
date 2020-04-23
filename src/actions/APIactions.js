@@ -370,7 +370,7 @@ export const get_this_pair = async (query) => {
 // }
 
 
-export const get_pair_default = (current_wallet, local_currency, current_pair) => {
+export const getDefaultPair = (current_wallet, local_currency, current_pair) => {
   return async (dispatch) => {
 
 

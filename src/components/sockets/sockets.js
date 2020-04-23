@@ -129,7 +129,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
-        this.props.action.other_modal_toggle()
+        this.props.action.toggleOtherModal()
         this.props.action.success_sound()
       }
       // await this.props.action.get_account_id_by_withdraw_id(withdraw.id)
@@ -263,7 +263,7 @@ class SocketsComponent extends Component {
         // console.log('======================================> DEPOSIT SOCKET ', cDeposit, this.props.activity_for_account[cDeposit.account_id])
         this.props.action.addNotification('wallets', { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1)
         await this.props.action.socket_notify({ ...cDeposit, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
-        this.props.action.other_modal_toggle()
+        this.props.action.toggleOtherModal()
         this.props.action.success_sound()
         setTimeout(() => { this.props.action.add_coin_sound() }, 1500)
       }
@@ -301,7 +301,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)
         await this.props.action.socket_notify(this.props.deposits[deposit.id], 'deposits')
-        this.props.action.other_modal_toggle()
+        this.props.action.toggleOtherModal()
         this.props.action.success_sound()
         setTimeout(() => { this.props.action.add_coin_sound() }, 1500)
 

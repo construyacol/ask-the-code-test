@@ -53,7 +53,7 @@ class ItemSettingsInit extends Component{
                   code:name,
                   other_state
                 }})
-                return this.props.action.other_modal_toggle()
+                return this.props.action.toggleOtherModal()
               }
               await this.props.action.CurrentForm('2auth')
               return this.props.action.toggleModal()
@@ -70,7 +70,7 @@ class ItemSettingsInit extends Component{
               placeholder:"Escribe el nuevo numero",
               authenticator:authenticator
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
 
         case 'pass':
             await this.props.action.current_section_params({settings:{
@@ -83,7 +83,7 @@ class ItemSettingsInit extends Component{
               placeholder:"Escribe el nuevo numero",
               authenticator:authenticator
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
 
         case 'transactional':
             await this.props.action.current_section_params({settings:{
@@ -95,7 +95,7 @@ class ItemSettingsInit extends Component{
               code:name,
               other_state
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'withdraw':
             await this.props.action.current_section_params({settings:{
               title:"Agregando capa de seguridad",
@@ -106,7 +106,7 @@ class ItemSettingsInit extends Component{
               code:name,
               other_state
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'country':
             await this.props.action.current_section_params({settings:{
               title:"Elige el país de operación actual",
@@ -115,7 +115,7 @@ class ItemSettingsInit extends Component{
               authenticator:false,
               code:name
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'currency':
             await this.props.action.current_section_params({settings:{
               title:"Elige tu divisa de cotización",
@@ -124,7 +124,7 @@ class ItemSettingsInit extends Component{
               authenticator:false,
               code:name
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         default:
 
       }

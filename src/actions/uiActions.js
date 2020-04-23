@@ -116,7 +116,7 @@ export const FlowAnimationUi = payload =>{
 }
 
 
-export const other_modal_toggle = () =>{
+export const toggleOtherModal = () =>{
   return{
     type:OTHER_MODAL
   }

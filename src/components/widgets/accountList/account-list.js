@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -120,7 +120,7 @@ function AccountList(props) {
   }
  
   return (
-    <Fragment>
+    <>
       {
         (items && items.length > 0) ?
           <AccountListContainer style={isHugeContainer ? { ...styleForHugeContainer, ...isWithdrawListStyle } : isWithdrawListStyle} className="AccountListContainer">
@@ -156,7 +156,7 @@ function AccountList(props) {
         />
       }
 
-    </Fragment>
+    </>
   )
 }
 
@@ -177,11 +177,11 @@ function mapStateToProps(state, props) {
     user,
     withdrawProviders
   } = state.modelData
-  let withdraw_provider_list = null
+  let withdrawProvidersList = null
 
   if (path !== 'wallets' && withdrawProviders) {
-    withdraw_provider_list = []
-    Object.keys(withdrawProviders).map(key => withdraw_provider_list.push(withdrawProviders[key]))
+    withdrawProvidersList = []
+    Object.keys(withdrawProviders).map(key => withdrawProvidersList.push(withdrawProviders[key]))
   }
 
   const items = user[path].map((item_id) => {
@@ -193,7 +193,7 @@ function mapStateToProps(state, props) {
     items,
     path,
     verificationState: state.ui.verification_state,
-    withdrawProviders: withdraw_provider_list,
+    withdrawProviders: withdrawProvidersList,
     user: state.modelData.user,
     loader: state.isLoading.loader
   }
@@ -204,8 +204,6 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(actions, dispatch)
   }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AccountList))
 
 const AccountsNotFound = ({ account_type }) => {
 
@@ -225,3 +223,5 @@ const AccountsNotFound = ({ account_type }) => {
     </div>
   )
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AccountList))
