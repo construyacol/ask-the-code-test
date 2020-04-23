@@ -165,8 +165,9 @@ export const get_historical_price = (currency, amount_days, api_key) => {
     }
 
     let price_list = [], date_list = []
-
-    const url_historical_price = `${CountryApIUrl}cryptoCompares/get-daily-historical-data`
+    
+    const url_historical_price = `https://info1.devsertec.com/api/cryptoCompares/get-daily-historical-data`
+    // const url_historical_price = `${CountryApIUrl}cryptoCompares/get-daily-historical-data`
     let prices = await ApiPostRequest(url_historical_price, body)
 
     if (prices === 465 || !prices) { return false }
@@ -1215,7 +1216,8 @@ export const get_withdraw_accounts = (user, withdrawProviders) => {
     let myHeaders = generate_headers(null, state)
 
     await dispatch(appLoadLabelAction('Obteniendo cuentas de retiro'))
-    const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}`
+    const get_wAccounts_url = `${WithdrawApiUrl}users/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
+
     // const get_wAccounts_url = `${ApiUrl}withdrawAccounts?filter=${query}`
     let withdraw_accounts = await ApiGetRequest(get_wAccounts_url, myHeaders)
     if (!withdraw_accounts || withdraw_accounts === 465 || !withdrawProviders) { return false }

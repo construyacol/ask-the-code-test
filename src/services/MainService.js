@@ -107,8 +107,7 @@ export class MainService extends inheritances {
 
     async postLoader(country, callback) {
         try {
-            let pairs = await this.fetchAllPairs(this.user.userToken, country)
-
+          let pairs = await this.fetchAllPairs(this.user.userToken, country)
             if (!pairs) {
                 return callback()
             }

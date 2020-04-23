@@ -163,7 +163,7 @@ class AccountList extends Component {
     const isWithdrawListStyle = {
       marginBottom: '40px'
     }
-    
+
     return (
       <Fragment>
         {

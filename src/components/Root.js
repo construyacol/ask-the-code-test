@@ -10,8 +10,8 @@ import LoaderAplication from './widgets/loaders/loader_app'
 import HomeContainer from './home/home-container'
 import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
-// import SocketsComponent from './sockets/sockets'
-import CoinsendaSocket from './sockets/new-socket'
+import SocketsComponent from './sockets/sockets'
+// import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
 import { COINSENDA_URL, history } from '../const/const';
 
@@ -64,8 +64,8 @@ function RootContainer(props) {
     <Router
       history={history}
     >
-      {/* <SocketsComponent /> */}
-      <CoinsendaSocket />
+      <SocketsComponent />
+      {/* <CoinsendaSocket /> */}
       <ToastContainers />
       <Switch>
         <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />

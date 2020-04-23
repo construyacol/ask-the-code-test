@@ -121,7 +121,7 @@ const InputContainer = styled.div`
   }
 
   &.good input {
-    color: green;
+    color: #3A7BD5;
   }
 
   .amount{

@@ -8,7 +8,8 @@ import {
     NEW_WITHDRAW_URL,
     DELETE_WITHDRAW_URL,
     NEW_WITHDRAW_ACCOUNT_URL,
-    GET_WITHDRAWS_BY_ACCOUNT_ID
+    GET_WITHDRAWS_BY_ACCOUNT_ID,
+    DELETE_WITHDRAW_ACCOUNT_URL
 } from "../const/const";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
@@ -20,13 +21,15 @@ import {
 
 
 export class WithdrawService extends WebService {
+
     async fetchWithdrawAccounts() {
         const { user } = this.globalState.modelData
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
-        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}`
+        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
         if (!result || result === 465 || !this.withdrawProviders) { return false }
+        // console.log('||||||||| fetchWithdrawAccounts', result)
         const providersServed = await this.withdrawProvidersByType
         // console.log('||||||||| fetchDepositProviders', providersServed)
         // alert('providers serve')
@@ -109,6 +112,25 @@ export class WithdrawService extends WebService {
         return withdrawAccounts
     }
 
+
+    async deleteWithdrawAccount(accountId) {
+
+        const { withdraw_accounts } = this.globalState.modelData
+        const user = this.user
+
+        const body = {
+            "data": {
+                "withdraw_account_id": `${accountId}`,
+                "country": withdraw_accounts[accountId].info.country,
+                "visible": false
+            }
+        }
+
+        const deleteAccount = await this.Post(DELETE_WITHDRAW_ACCOUNT_URL, body, user.userToken)
+
+        return deleteAccount
+    }
+
     get withdrawProvidersByType() {
         return this.withdrawProviders && this.withdrawProviders.reduce((result, provider) => {
             return {
@@ -133,7 +155,8 @@ export class WithdrawService extends WebService {
                 ...withdrawProviders
             ]
         }
-        // return alert('|||||||| fetchWithdrawProviders')
+        // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||| fetchWithdrawProviders', withdrawProviders)
+        // alert('|||||||| fetchWithdrawProviders')
         const normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         this.withdrawProviders = withdrawProviders
