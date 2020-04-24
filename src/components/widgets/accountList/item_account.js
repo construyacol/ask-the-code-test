@@ -263,11 +263,9 @@ const LoaderAccount = () => {
 
 
 const OptionsAccount = props => {
-
-
   const delete_account_confirmation = async () => {
-    props.actions.ConfirmationModalToggle()
-    props.actions.ConfirmationModalPayload({
+    props.actions.confirmationModalToggle()
+    props.actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
       txtPrimary: "Eliminar",
