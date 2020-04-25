@@ -60,8 +60,8 @@ class AccountList extends Component {
   no_action = () => { }
 
   wait_for_validate = () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Estamos trabajando en esto...",
       description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary: "Entendido",
@@ -97,8 +97,8 @@ class AccountList extends Component {
     let message = this.props.path === 'wallets' ? 'billeteras crypto/fiat.' :
       this.props.path === 'withdraw_accounts' ? ' cuentas de retiro fiat.' : ''
 
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Aún no estas listo para esto...",
       description: `Debes completar el nivel de verificación avanzada para poder agregar ${message}`,
       txtPrimary: "Verificarme",
@@ -110,33 +110,33 @@ class AccountList extends Component {
   }
 
 
-  delete_account = async (account_id, type) => {
-
-    // this.props.action.isAppLoading(true)
-    this.setState({ label: "Eliminando Wallet", account_state: "deleting", id_wallet_action: account_id })
-    let wallet_delete = await this.props.action.delete_account(account_id, type)
-
-    let msg = "Wallet eliminada con exito"
-    let success = true
-
-    if (wallet_delete === 404 || !wallet_delete) {
-      msg = "La wallet no se ha podido eliminar"
-      success = false
-    }
-
-    this.props.action.exit_sound()
-    this.setState({ label: "Obteniendo tus Cuentas", account_state: "deleted" })
-    type === 'withdraw_accounts' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders) : await this.props.action.get_list_user_wallets(this.props.user)
-
-
-    this.props.action.mensaje(msg, success ? 'success' : 'error')
-  }
+  // delete_account = async (account_id, type) => {
+  //
+  //   // this.props.action.isAppLoading(true)
+  //   this.setState({ label: "Eliminando Wallet", account_state: "deleting", id_wallet_action: account_id })
+  //   let wallet_delete = await this.props.action.delete_account(account_id, type)
+  //
+  //   let msg = "Wallet eliminada con exito"
+  //   let success = true
+  //
+  //   if (wallet_delete === 404 || !wallet_delete) {
+  //     msg = "La wallet no se ha podido eliminar"
+  //     success = false
+  //   }
+  //
+  //   this.props.action.exit_sound()
+  //   this.setState({ label: "Obteniendo tus Cuentas", account_state: "deleted" })
+  //   type === 'withdraw_accounts' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders) : await this.props.action.get_list_user_wallets(this.props.user)
+  //
+  //
+  //   this.props.action.mensaje(msg, success ? 'success' : 'error')
+  // }
 
 
 
   // delete_account_confirmation = async(account_id, type) => {
-  //   this.props.action.ConfirmationModalToggle()
-  //   this.props.action.ConfirmationModalPayload({
+  //   this.props.action.confirmationModalToggle()
+  //   this.props.action.confirmationModalPayload({
   //     title:"Esto es importante, estas a punto de...",
   //     description:"Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
   //     txtPrimary:"Eliminar",

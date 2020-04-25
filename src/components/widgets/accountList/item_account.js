@@ -7,6 +7,8 @@ import SimpleLoader from '../loaders'
 import BalanceComponent from '../balance/balance'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import { LoaderContainer } from '../loaders'
 
 import {
   ACta,
@@ -23,6 +25,7 @@ import { withRouter } from 'react-router'
 
 const ItemAccount = props => {
 
+
   if (props.loader) {
     return (
       <LoaderAccount />
@@ -31,22 +34,43 @@ const ItemAccount = props => {
 
   // 5d3dedf1bb245069d61021bb
 
-  const account_detail = async (payload) => {
-    props.actions.cleanNotificationItem(payload, 'account_id')
+  const getCount = async() => {
+    set_loader(true)
+    const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
+    const { count } = countAccount
+    await props.actions.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
+    if(count < 1){
+      set_loader(false)
+      return props.history.push(`/wallets/deposit/${props.account.id}`)
+    }
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
-    // return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
   }
 
+
+  const account_detail = async (payload) => {
+    props.actions.cleanNotificationItem(payload, 'account_id')
+    if(props.account.count === undefined){
+      return getCount()
+    }
+    if(props.account.count < 1){
+      return props.history.push(`/wallets/deposit/${props.account.id}`)
+    }
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
+  }
+
+  const [ coinsendaServices ] = useCoinsendaServices()
   const [account_state, set_account_state] = useState()
+  const [loader, set_loader] = useState()
   const [id_wallet_action, set_id_wallet_action] = useState()
   let id_trigger = id_wallet_action === props.account.id
   const { account_type } = props
 
   return (
-    <AccountLayout className={`AccountLayout ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
+    <AccountLayout className={`AccountLayout  ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
       {
         account_type === 'wallets' ?
           <Wallet
+            loaderAccount={loader}
             handleAction={account_detail}
             set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
@@ -55,6 +79,7 @@ const ItemAccount = props => {
             {...props} />
           :
           <WithdrawAccount
+            loaderAccount={loader}
             set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
             account_state={account_state}
@@ -95,7 +120,7 @@ const Wallet = props => {
   // console.log('|||||||||||| WALLETS  ===> ', account)
 
   const delete_account = async () => {
-    if (account.available > 0) { return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error') }
+    if (account.available > 0) { return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error') }
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.actions.delete_account(account)
@@ -117,7 +142,15 @@ const Wallet = props => {
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
-    <WalletLayout className={`walletLayout ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
+    <WalletLayout className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
+
+      {
+        props.loaderAccount &&
+        <LoaderContainer>
+          <SimpleLoader loader={2} />
+        </LoaderContainer>
+      }
+
       {
         props.actions &&
         <Fragment>
@@ -230,11 +263,9 @@ const LoaderAccount = () => {
 
 
 const OptionsAccount = props => {
-
-
   const delete_account_confirmation = async () => {
-    props.actions.ConfirmationModalToggle()
-    props.actions.ConfirmationModalPayload({
+    props.actions.confirmationModalToggle()
+    props.actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
       txtPrimary: "Eliminar",

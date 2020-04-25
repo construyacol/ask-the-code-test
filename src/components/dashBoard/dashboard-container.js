@@ -73,10 +73,10 @@ function DashBoardContainer(props) {
   return (
     <Element id="containerElement" className="dashBoardLayout">
       <QuoteContainer />
-      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-        <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
-      )} />
       <div className="containerSection" name="firstInsideContainer">
+        <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+          <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
+        )} />
         <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
           <Switch>
             <Route path="/wallets" component={WalletContainer} />

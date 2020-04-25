@@ -16,7 +16,6 @@ class MenuPrincipalContainer extends Component {
     scroller.scrollTo('firstInsideContainer', {
       duration: this.props.path === link ? 500 : 0,
       smooth: true,
-      offset: -120,
       containerId: 'containerElement'
     })
   }
@@ -27,7 +26,7 @@ class MenuPrincipalContainer extends Component {
 
   componentDidMount() {
     scroller.scrollTo('firstInsideContainer', {
-      offset: -120,
+      offset: 0,
       duration: 0,
       smooth: true,
       containerId: 'containerElement'

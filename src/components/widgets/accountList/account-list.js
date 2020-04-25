@@ -107,10 +107,10 @@ function AccountList(props) {
   const items = props.items
   const isHugeContainer = items > 10
   const styleForHugeContainer = {
-    height: 'auto',
+    // height: 'auto',
   }
   const isWithdrawListStyle = {
-    marginBottom: '40px'
+    // marginBottom: '40px'
   }
  
   return (
