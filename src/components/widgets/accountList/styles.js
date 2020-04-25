@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components'
 
 export const AccountListContainer = styled.section`
   width: 100%;
-  /* height: 100%; */
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr ));
   justify-items: center;
@@ -15,7 +15,7 @@ export const AccountListContainer = styled.section`
   column-gap: 20px;
   align-items: center;
   @media screen and (max-height: 830px) and (max-width: 900px) {
-    /* height: auto; */
+    height: auto;
   }
 `
 

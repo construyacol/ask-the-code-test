@@ -14,11 +14,11 @@ function ContentTab(props) {
     const { params } = current_section
     const movil_viewport = window.innerWidth < 768
 
-    useEffect(() => {
-        window.requestAnimationFrame(() => {
-            tabRef.current.scrollIntoView({ block: "start", behavior: "smooth" })
-        })
-    }, [title, path])
+    // useEffect(() => {
+    //     window.requestAnimationFrame(() => {
+    //         tabRef.current.scrollIntoView({ block: "start", behavior: "smooth" })
+    //     })
+    // }, [title, path])
 
     return (
         <div className="subMenu" ref={tabRef}>

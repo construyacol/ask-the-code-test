@@ -13,11 +13,11 @@ class MenuPrincipalContainer extends Component {
   activarItem = async (name, link) => {
     this.props.action.section_view_to('initial')
     this.props.action.CleanNotifications(name)
-    // scroller.scrollTo('firstInsideContainer', {
-    //   duration: this.props.path === link ? 500 : 0,
-    //   smooth: true,
-    //   containerId: 'containerElement'
-    // })
+    scroller.scrollTo('firstInsideContainer', {
+      duration: this.props.path === link ? 500 : 0,
+      smooth: true,
+      containerId: 'containerElement'
+    })
   }
 
   close_menu_principal = () => {
@@ -25,12 +25,12 @@ class MenuPrincipalContainer extends Component {
   }
 
   componentDidMount() {
-    // scroller.scrollTo('firstInsideContainer', {
-    //   offset: 0,
-    //   duration: 0,
-    //   smooth: true,
-    //   containerId: 'containerElement'
-    // })
+    scroller.scrollTo('firstInsideContainer', {
+      offset: 0,
+      duration: 0,
+      smooth: true,
+      containerId: 'containerElement'
+    })
     if (window.innerWidth < 768) {
       return this.props.action.current_section_params({ show_menu_principal: false })
     }
