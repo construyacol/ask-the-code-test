@@ -1,6 +1,6 @@
 .contenido.activity {
-    grid-row-gap: 30px;
-    grid-template-rows: auto 1fr;
+    /* grid-row-gap: 30px;
+    grid-template-rows: auto 1fr; */
   }
   
   .WalletContainer {

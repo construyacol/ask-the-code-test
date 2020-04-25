@@ -9,7 +9,7 @@ import AccountList from '../widgets/accountList/account-list'
 import ItemWallet from '../widgets/accountList/items'
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
-import { AccountListSkeletonLoader } from '../dashBoard/dashBoardContainer'
+import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
 
 class WitdrawAccountContainer extends Component {
 

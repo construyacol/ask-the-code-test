@@ -5,7 +5,7 @@
   margin-left: 19vw;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 45vh 68px 1fr;
+  grid-template-rows: 45vh 7vh 1fr;
   height: 100vh;
   /*height: 300vh;*/
   position: relative;
@@ -78,6 +78,7 @@ padding: 20px;
 }
 
 .containerSection{
+  min-height: calc(100vh - 14vh);
   /*padding-top: 8vh;*/
   /*padding-left: 20px;*/
   /*padding-right: 20px;*/

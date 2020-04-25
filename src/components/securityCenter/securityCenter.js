@@ -17,12 +17,12 @@ class SecurityCenter extends Component {
     let verification_state = await this.props.action.get_verification_state()
     if (verification_state !== 'accepted') {
 
-      scroller.scrollTo('firstInsideContainer', {
-        offset: -100,
-        duration: 1,
-        smooth: true,
-        containerId: 'containerElement'
-      })
+      // scroller.scrollTo('firstInsideContainer', {
+      //   offset: 0,
+      //   duration: 1,
+      //   smooth: true,
+      //   containerId: 'containerElement'
+      // })
 
       FreshChat.show_tags(['verify'], 'article')
 

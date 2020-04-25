@@ -81,12 +81,12 @@ const ActivityView = props => {
   }, [params.tx_path])
 
   useEffect(() => {
-    scroller.scrollTo('firstInsideContainer', {
-      duration: 0,
-      smooth: true,
-      offset: -100,
-      containerId: 'containerElement'
-    })
+    // scroller.scrollTo('firstInsideContainer', {
+    //   duration: 0,
+    //   smooth: true,
+    //   offset: -55,
+    //   containerId: 'containerElement'
+    // })
   }, [])
 
   return (

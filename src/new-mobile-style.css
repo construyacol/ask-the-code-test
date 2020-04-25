@@ -1,13 +1,13 @@
 .contenido {
     position: relative;
     background: #F9F9FB;
-    padding-top: 5vh;
-    padding-bottom: 10vh;
+    padding-top: 3vh;
+    padding-bottom: 8vh;
     /* min-height: calc(100vh - 130px); */
-    min-height: calc(100vh - 25vh);
+    /* min-height: calc(100vh - 25vh); */
     /*height: 100%;*/
     display: grid;
-    align-items: center;
+    align-items: flex-start;
     justify-items: center;
     padding-left: 15px;
     padding-right: 15px;
@@ -213,7 +213,7 @@
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
     .contenido {
-        padding-top: 0 !important;
+        /* padding-top: 0 !important; */
         padding-bottom: 95px;
         width: auto;
         min-height: calc(100vh - (25px + 90px + 120px)) !important;

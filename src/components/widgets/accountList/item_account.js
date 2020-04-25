@@ -120,7 +120,7 @@ const Wallet = props => {
   // console.log('|||||||||||| WALLETS  ===> ', account)
 
   const delete_account = async () => {
-    if (account.available > 0) { return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error') }
+    if (account.available > 0) { return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error') }
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.actions.delete_account(account)

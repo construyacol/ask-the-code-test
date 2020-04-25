@@ -229,6 +229,10 @@
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
   }
 
+  .AccountListContainer > div:last-child {
+    /* padding-bottom: 80px; */
+  }
+
   .PairListItems .item {
     transform: scale(.95) !important;
   }
