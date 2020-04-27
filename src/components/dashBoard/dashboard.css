@@ -5,7 +5,8 @@
   margin-left: 19vw;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 45vh 68px 1fr;
+  /* fixed grid for 2 childs elements */
+  grid-template-rows: 45vh 1fr;
   height: 100vh;
   /*height: 300vh;*/
   position: relative;
@@ -81,7 +82,7 @@ padding: 20px;
   /*padding-top: 8vh;*/
   /*padding-left: 20px;*/
   /*padding-right: 20px;*/
-  /*min-height: calc(100vh - 8vh);*/
+  /* min-height: calc(100vh - 8vh); */
   /*min-height: 100vh;*/
   height: auto !important;
   position: relative;

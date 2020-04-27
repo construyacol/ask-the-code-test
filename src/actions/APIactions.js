@@ -988,7 +988,7 @@ export const add_item_state = (list_type, new_order) => {
 
 
 
-export const add_new_swap = (account_id, pair_id, value) => {
+export const addNewSwap = (account_id, pair_id, value) => {
   return async (dispatch, getState) => {
 
     // await charge_funds()
@@ -1004,8 +1004,8 @@ export const add_new_swap = (account_id, pair_id, value) => {
       }
     }
 
-    const add_new_swap_url = `${SwapApiUrl}swaps/add-new-swap`
-    const new_swap = await ApiPostRequest(add_new_swap_url, body, user.userToken)
+    const addNewSwap_url = `${SwapApiUrl}swaps/add-new-swap`
+    const new_swap = await ApiPostRequest(addNewSwap_url, body, user.userToken)
     // console.log('°°°°°|||||||||||||||| RESULTADO SWAP....', new_swap)
     if (!new_swap || new_swap === 465) { return false }
 

@@ -10,21 +10,21 @@ import styled from 'styled-components'
 
 export const CriptoSupervisor = props => {
 
-  const [ { current_wallet, withdrawProviders } ] = WithdrawViewState()
+  const [{ current_wallet, withdrawProviders }] = WithdrawViewState()
   // const [ { current_wallet } ] = WithdrawViewState()
   // const withdrawProviders = {}
 
-  return(
+  return (
     <>
-        {
-          Object.keys(withdrawProviders).length === 0 ?
-            <CriptoViewLoader/>
+      {
+        Object.keys(withdrawProviders).length === 0 ?
+          <CriptoViewLoader />
           :
           !withdrawProviders[current_wallet.currency.currency] ?
-            <WithOutProvider current_wallet={current_wallet}/>
-          :
-            <CriptoView/>
-        }
+            <WithOutProvider current_wallet={current_wallet} />
+            :
+            <CriptoView />
+      }
     </>
   )
 }
@@ -33,10 +33,10 @@ export const CriptoSupervisor = props => {
 
 
 
-const WithOutProvider = ({current_wallet}) => {
-  return(
+const WithOutProvider = ({ current_wallet }) => {
+  return (
     <section className="maintanceW">
-      <IconSwitch icon="maintence" size={130} color="#989898"/>
+      <IconSwitch icon="maintence" size={130} color="#989898" />
       <p className="fuente" >
         Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, ten paciencia...
       </p>
@@ -48,7 +48,7 @@ const WithOutProvider = ({current_wallet}) => {
 
 export const CriptoView = () => {
 
-  const [ coinsendaServices ] = useCoinsendaServices()
+  const [coinsendaServices] = useCoinsendaServices()
   const [
     {
       current_wallet,
@@ -58,14 +58,14 @@ export const CriptoView = () => {
       loader
     },
     {
-     confirmationModalToggle,
-     confirmationModalPayload,
-     mensaje,
-     isAppLoading
-   }, dispatch ] = WithdrawViewState()
+      confirmationModalToggle,
+      confirmationModalPayload,
+      mensaje,
+      isAppLoading
+    }, dispatch] = WithdrawViewState()
 
-  const [ addressState, setAddressState ] = useState()
-  const [ amountState, setAmountState ] = useState()
+  const [addressState, setAddressState] = useState()
+  const [amountState, setAmountState] = useState()
   let movil_viewport = window.innerWidth < 768
 
   const finish_withdraw = async () => {
@@ -124,65 +124,63 @@ export const CriptoView = () => {
   }
 
   const handleMaxAvailable = (e) => {
+    // TODO: no se debe manajar valores deirecto del DOM
     let amount = document.getElementsByName('amount')[0]
     amount.value = current_wallet.available
+    // TODO: los types para validaciones deberian ser booleano
     setAmountState('good')
   }
 
 
-  return(
+  return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}>
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
-        <InputForm
-          type="text"
-          placeholder="Dirección de retiro"
-          name="address"
-          handleStatus={setAddressState}
-          label={`Ingresa la dirección ${current_wallet.currency.currency}`}
-          disabled={loader}
-          SuffixComponent={() => <IconSwitch
-            icon={`${addressState === 'good' ? 'verify' : 'wallet' }`}
-            color={`${addressState === 'good' ? 'green' : 'gray' }`}
-            size={`${addressState === 'good' ? 22 : 25 }`}  />}
-        />
+      <InputForm
+        type="text"
+        placeholder="Dirección de retiro"
+        name="address"
+        handleStatus={setAddressState}
+        label={`Ingresa la dirección ${current_wallet.currency.currency}`}
+        disabled={loader}
+        SuffixComponent={() => <IconSwitch
+          icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
+          color={`${addressState === 'good' ? 'green' : 'gray'}`}
+          size={`${addressState === 'good' ? 22 : 25}`} />}
+      />
 
-        <InputForm
-          type="text"
-          placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
-          name="amount"
-          handleStatus={setAmountState}
-          label={`Ingresa la cantidad de retiro`}
-          disabled={loader}
-          state={amountState}
-          SuffixComponent={() => <AvailableBalance
-            handleAction={handleMaxAvailable}
-            amount={current_wallet.available} />}
-          // PrefixComponent
-        />
-        <ControlButton
-          loader={loader}
-          formValidate={!active_trade_operation && ( amountState === 'good' && addressState === 'good')}
-          label="Enviar"
-        />
+      <InputForm
+        type="text"
+        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+        name="amount"
+        handleStatus={setAmountState}
+        label={`Ingresa la cantidad de retiro`}
+        disabled={loader}
+        state={amountState}
+        SuffixComponent={() => <AvailableBalance
+          handleAction={handleMaxAvailable}
+          amount={current_wallet.available} />}
+      // PrefixComponent
+      />
+      <ControlButton
+        loader={loader}
+        formValidate={!active_trade_operation && (amountState === 'good' && addressState === 'good')}
+        label="Enviar"
+      />
       {/* </form> */}
     </WithdrawForm>
   )
 
 }
 
+export const AvailableBalance = ({ handleAction, amount }) => {
+  const isMovil = window.innerWidth < 768
 
-const AvailableBalance = ({ handleAction, amount }) => {
-
-  let movil = window.innerWidth < 768
-
-  return(
+  return (
     <BalanceContainer>
-      <p className={`fuente2 ${movil ? 'movil' : ''}`} onClick={handleAction} >{movil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
+      <p className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
     </BalanceContainer>
   )
-
 }
-
 
 export const OperationForm = styled.form`
   width: calc(95% - 50px);
@@ -224,20 +222,15 @@ const BalanceContainer = styled.div`
     transform: scale(1.005);
     color: #b48728;
   }
-
-
 `
-
-
-
 
 const CriptoViewLoader = () => {
 
-  return(
+  return (
     <>
       <WithdrawForm>
-        <InputForm skeleton/>
-        <InputForm skeleton/>
+        <InputForm skeleton />
+        <InputForm skeleton />
         <ControlButton
           formValidate={false}
           label="Enviar"

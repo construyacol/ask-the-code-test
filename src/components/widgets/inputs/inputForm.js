@@ -17,7 +17,9 @@ const InputForm = (props) => {
     disabled,
     SuffixComponent,
     state,
-    skeleton
+    skeleton,
+    handleChange,
+    readOnly = false
   } = props
 
   if(skeleton){
@@ -31,6 +33,7 @@ const InputForm = (props) => {
     )
   }
 
+  // TODO: cambiar las validacines a valores bolleanos, asi evitamos evaluar foo === "bad" o "good"
   const [ inputState, setInputState, changeState ] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
@@ -38,6 +41,7 @@ const InputForm = (props) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
     e.persist()
     setInputState(name, e)
+    handleChange && handleChange(e.target.value)
   }
 
   useEffect(()=>{
@@ -61,6 +65,7 @@ const InputForm = (props) => {
           <input
             className={`inputElement ${name} ${movil ? 'movil' : ''}`}
             type={type}
+            readOnly={readOnly}
             placeholder={placeholder}
             onChange={validate}
             name={name}
