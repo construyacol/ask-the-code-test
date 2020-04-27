@@ -12,13 +12,17 @@ import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
 import sleep from "../utils/sleep";
 
-export class SwapService extends WebService {
 
+
+export class SwapService extends WebService {
 
   async fetchAllPairs() {
 
       this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
       const pairs = await this.Get(SWAP_URL)
+      // console.log('||||||||| pairs', pairs)
+      // alert('pairs')
+
       this.dispatch(getAllPairsAction(pairs))
       let updatedUser = {
           ...this.user,
@@ -38,10 +42,10 @@ export class SwapService extends WebService {
   }
 
   async getPairsByCountry(country, currencies) {
+
       const localCurrency = await this.getLocalCurrency(country)
 
       if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
-
       const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
       if (!pairs) return
 

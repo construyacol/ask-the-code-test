@@ -125,7 +125,6 @@ class ItemSelectionContainer extends Component {
     const { search, buttonActive, itemSelect, label } = this.props
     const { items } = this.state
 
-
     return(
       <section className="ItemSelectionContainers" id="itemSelect">
 

@@ -15,6 +15,8 @@ import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 
+
+
 function WalletContainer(props) {
 
   useEffect(() => {
@@ -27,28 +29,28 @@ function WalletContainer(props) {
   }, [])
 
   return (
-    <Switch>
-      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-        <DetailContainerLayout
-          {...props}
-          {...routeProps}
-        >
-          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
-            <WalletDetail wallets={props.wallets} {...renderProps} />
-          )} />
-          {
-            !props.isAppLoaded ?
-              <SimpleLoader />
-              :
-              <>
-                <Route exact path="/:primary_path" component={AccountList} />
-                <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
-                <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
-              </>
-          }
-        </DetailContainerLayout>
-      )} />
-    </Switch>
+      <Switch>
+        <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+          <DetailContainerLayout
+            {...props}
+            {...routeProps}
+          >
+            <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
+              <WalletDetail wallets={props.wallets} {...renderProps} />
+            )} />
+            {
+              !props.isAppLoaded ?
+                <SimpleLoader />
+                :
+                <>
+                  <Route exact path="/:primary_path" component={AccountList} />
+                  <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
+                  <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
+                </>
+            }
+          </DetailContainerLayout>
+        )} />
+      </Switch>
   )
 
 }

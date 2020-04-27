@@ -206,13 +206,6 @@ export const arrayToObject = (array_list) => {
 
   let new_object = {}
 
-  // array_list.map((item) => {
-  //   new_object = {
-  //     ...new_object,
-  //     [item.id]:item
-  //   }
-  // })
-
   for(let item of array_list){
     new_object = {
       ...new_object,
@@ -221,6 +214,45 @@ export const arrayToObject = (array_list) => {
   }
 
   return new_object
+}
+
+
+function getProps(obj, path) {
+  var arr = path.split('.');
+  var parent = obj;
+  var name = arr[0];
+
+  arr.slice(1).forEach((fieldName) => {
+    parent[name] = parent[name] || {};
+    parent = parent[name];
+    name = fieldName;
+  });
+  return parent[name];
+}
+
+export const convertToObjectWithCustomIndex = ( matriz, customIndex ) => {
+// @param matriz: arrray | object
+  let MATRIZ = matriz
+  let OBJECT_RESULT = {}
+  let INDEX
+  customIndex = !customIndex ? 'id' : customIndex
+
+
+  if(typeof MATRIZ === 'object'){ MATRIZ = Object.values(MATRIZ)} //if it's object so convert to array
+
+  if(Array.isArray(MATRIZ)){
+
+    for (let item of MATRIZ) {
+        INDEX = getProps(item, customIndex)
+        OBJECT_RESULT = {
+          ...OBJECT_RESULT,
+          [INDEX]:item
+        }
+    }
+
+  }
+
+  return OBJECT_RESULT
 }
 
 

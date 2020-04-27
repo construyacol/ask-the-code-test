@@ -152,6 +152,7 @@ class NewWallet extends Component{
         finalizar={this.finalizar}
         step = {step}
         {...this.state}
+        {...this.props}
       />
     )
   }
@@ -171,7 +172,8 @@ function mapStateToProps(state, props){
     current:state.form.current,
     user,
     state:state.modelData,
-    currencies:state.modelData.currencies
+    currencies:state.modelData.currencies,
+    wallets:state.modelData.wallets
 
   }
 }

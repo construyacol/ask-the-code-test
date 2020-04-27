@@ -31,8 +31,6 @@ export class DepositService extends WebService {
             return result
         }, [])
 
-        // console.log('||||||||| fetchDepositProviders', response)
-        // alert('deposit providers')
 
         const finalData = {
             ...this.user,

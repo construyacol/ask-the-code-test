@@ -11,6 +11,8 @@ import usePrevious from '../../hooks/usePreviousValue'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import withHandleError from '../../withHandleError'
 
+
+
 function LoaderAplication({ actions, history }) {
 
   const [country, setCountry] = useState('colombia')
@@ -124,6 +126,7 @@ function LoaderAplication({ actions, history }) {
   useEffect(() => {
     registerColors()
   }, [])
+
 
   useEffect(() => {
     initComponent()
