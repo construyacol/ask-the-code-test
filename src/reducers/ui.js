@@ -37,6 +37,7 @@ const initialState = {
   current_section:{
     view:"initial", //initial - detail
     params:{
+      enabled_create_wallet_button:true,
       show_menu_principal:true,
       current_wallet:null,
       short_name:null,

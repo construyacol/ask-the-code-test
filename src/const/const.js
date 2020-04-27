@@ -44,7 +44,7 @@ export const DELETE_WITHDRAW_URL = `${ApiUrl}withdraws`
 export const NEW_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/add-new-withdraw-account`
 
 export const DEPOSITS_URL = `${DepositApiUrl}`
-export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}/users`
+export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}users`
 export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`
 
@@ -81,4 +81,3 @@ export const currencyFormatByCoin = {
     "ethereum_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 6}),
     "cop_fee":BigNumber.clone({ROUNDING_MODE: BigNumber.ROUND_UP, DECIMAL_PLACES: 0})
   }
-

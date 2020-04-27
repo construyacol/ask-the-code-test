@@ -31,8 +31,6 @@ export class DepositService extends WebService {
             return result
         }, [])
 
-        // console.log('||||||||| fetchDepositProviders', response)
-        // alert('deposit providers')
 
         const finalData = {
             ...this.user,
@@ -131,7 +129,7 @@ export class DepositService extends WebService {
 
 
     async getDepositById(id) {
-        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}users/${this.user.id}/deposits?country=${this.user.country}&filter={"where": {"id":"${id}"}, "include":{"relation":"paymentProof"}}`
+        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where": {"id":"${id}"}, "include":{"relation":"paymentProof"}}`
         const deposit = await this.Get(finalUrl)
 
         return deposit[0]
@@ -157,8 +155,13 @@ export class DepositService extends WebService {
         this.dispatch(success_sound())
         return data[0].id
 
+    }
 
 
+    async getDepositByAccountId(accountId) {
+        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"}}`
+        const deposit = await this.Get(finalUrl)
+        return deposit
     }
 
 

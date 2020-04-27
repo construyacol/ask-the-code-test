@@ -36,13 +36,17 @@ const ItemAccount = props => {
 
   // 5d3dedf1bb245069d61021bb
 
-  const getCount = async() => {
+  const getAccountTransactions = async() => {
     set_loader(true)
     const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
     const { count } = countAccount
     await props.action.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
     if(count < 1){
+      let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id)
       set_loader(false)
+      if(areThereDeposits && areThereDeposits.length){
+        return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
+      }
       return props.history.push(`/wallets/deposit/${props.account.id}`)
     }
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
@@ -52,7 +56,7 @@ const ItemAccount = props => {
   const account_detail = async (payload) => {
     props.action.CleanItemNotifications(payload, 'account_id')
     if(props.account.count === undefined){
-      return getCount()
+      return getAccountTransactions()
     }
     if(props.account.count < 1){
       return props.history.push(`/wallets/deposit/${props.account.id}`)
@@ -218,14 +222,14 @@ const WithdrawAccount = props => {
       set_account_state('CancelDeleting')
       return props.action.mensaje(msg, success ? 'success' : 'error')
     }
-    console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
+    // console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
     props.action.exit_sound()
     set_account_state('deleted')
     await props.action.get_withdraw_accounts(props.user, props.withdrawProviders)
     props.action.mensaje(msg, success ? 'success' : 'error')
   }
 
-  console.log('|||||||||||| Withdraw Account delete_account ===> ', account_state)
+  // console.log('|||||||||||| Withdraw Account delete_account ===> ', account_state)
 
 
   return (

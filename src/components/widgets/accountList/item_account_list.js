@@ -5,7 +5,7 @@ import actions from '../../../actions'
 import SimpleLoader from '../loaders'
 // import ItemWallet from './items'
 import ItemAccount from './item_account'
-import { AddNewItem } from '../buttons/buttons'
+import { AddNewItem2, AddNewItem } from '../buttons/buttons'
 import { withRouter } from "react-router"
 import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
@@ -24,6 +24,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
+
     // UpdateHistoryRouter
     // this.props.action.section_view_to('initial')
     // this.props.action.current_section_params({current_pair:null})
@@ -194,6 +195,13 @@ class AccountList extends Component {
         }
 
         {
+          (!this.props.loader && path === 'wallets') ?
+          <AddNewItem2
+            label={`${path === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
+            type="primary"
+            handleClick={this.new_wallet}
+          />
+          :
           (!this.props.loader) &&
           <AddNewItem
             label={`${path === 'withdraw_accounts' ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}

@@ -1,9 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import PopNotification from '../notifications'
 import IconSwitch from '../icons/iconSwitch'
 import SimpleLoader from '../loaders'
 // import { Link as ScrollTo } from "react-scroll";
+import availableWalletCreator from '../../hooks/availableWalletCreator'
+
 
 import './buttons.css'
 
@@ -49,6 +51,7 @@ export const SelectCountryButton = (props) =>{
 }
 
 
+
 export const AddNewItem = props => {
 // type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
 // label define el texto que llevará el botton para agregar
@@ -56,10 +59,33 @@ export const AddNewItem = props => {
 
   const { label, type, handleClick, clases } = props
 
+
   return(
       <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
         <div className="BbackgroundAddNew"></div>
         <div className={`AddNewItem ${type}`}>
+          <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
+        </div>
+      </section>
+  )
+}
+
+
+export const AddNewItem2 = props => {
+// type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
+// label define el texto que llevará el botton para agregar
+// handleClick define el evento que se accionara al dar click en el boton
+
+  // const theme = useContext(CAccountAllowedContext);
+  const { label, type, handleClick, clases } = props
+  const [ availableCurrencies ] = availableWalletCreator()
+  // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
+
+  return(
+      <section className={`AddNewItemContainer ${clases}`} onClick={(availableCurrencies && availableCurrencies.length) ? handleClick : null}>
+        <div className="BbackgroundAddNew"></div>
+        <div className={`AddNewItem ${(availableCurrencies && availableCurrencies.length) ? 'primary' : 'desactivado'}`}>
+        {/* <div className={`AddNewItem`}> */}
           <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
         </div>
       </section>
