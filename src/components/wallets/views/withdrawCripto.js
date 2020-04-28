@@ -195,7 +195,7 @@ export const OperationForm = styled.form`
   position: relative;
 `
 
-const WithdrawForm = styled(OperationForm)`
+export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 40% 1fr 1fr;
 `
 

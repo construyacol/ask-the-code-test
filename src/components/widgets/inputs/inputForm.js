@@ -19,7 +19,9 @@ const InputForm = (props) => {
     state,
     skeleton,
     handleChange,
-    readOnly = false
+    readOnly = false,
+    value = '',
+    isControlled
   } = props
 
   if(skeleton){
@@ -41,7 +43,7 @@ const InputForm = (props) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
     e.persist()
     setInputState(name, e)
-    handleChange && handleChange(e.target.value)
+    handleChange && handleChange(name, e.target.value)
   }
 
   useEffect(()=>{
@@ -57,20 +59,26 @@ const InputForm = (props) => {
 
   let movil = window.innerWidth < 768
 
+  const inputProps = {
+    className: `inputElement ${name} ${movil ? 'movil' : ''}`,
+    type,
+    readOnly,
+    placeholder,
+    onChange: validate,
+    name,
+    disabled
+  }
+
+  if(isControlled) {
+    inputProps.value = value
+  }
+
   return(
       <InputLayout>
       <ContainerInputComponent>
         <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
         <InputContainer className={`${inputState}`}>
-          <input
-            className={`inputElement ${name} ${movil ? 'movil' : ''}`}
-            type={type}
-            readOnly={readOnly}
-            placeholder={placeholder}
-            onChange={validate}
-            name={name}
-            disabled={disabled}
-          />
+          <input {...inputProps} />
         </InputContainer>
         {
           SuffixComponent &&

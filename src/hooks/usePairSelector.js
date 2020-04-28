@@ -1,8 +1,11 @@
 import { matchItem } from "../utils"
+import { useState } from "react"
 
 export function usePairSelector(props) {
     const {currentWallet, currencyPairs} = props
+    const [isReady, setIsReady] = useState(false)
     const selectPair = async (initial) => {
+        setIsReady(false)
         let currency = currentWallet && currentWallet.currency.currency
         let all_pairs = []
     
@@ -16,6 +19,7 @@ export function usePairSelector(props) {
         
         if (all_pairs.length < 1) { return (!initial && props.actions.toggleOtherModal()) }
         let pairs_result = await createListPairs(all_pairs, currency)
+        setIsReady(true)
         return props.actions.pairsForAccount(currentWallet.currency.currency, { all_pairs: pairs_result }, 'currency')
     }
     
@@ -45,5 +49,5 @@ export function usePairSelector(props) {
           }
         })
       }
-    return { selectPair }
+    return { selectPair, isReady }
 }
