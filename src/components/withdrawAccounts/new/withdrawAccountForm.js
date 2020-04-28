@@ -149,8 +149,6 @@ class WithdrawAccountForm extends Component {
         const patt = new RegExp(/^[A-Za-z0-9]+$/g)
         if(event.target && (!patt.test(value) || value.length > 50)) {
           value = value.slice(0, -1)
-          event.target.value = value
-          return
         }
       }
       if (name) {

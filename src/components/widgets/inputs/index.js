@@ -56,6 +56,7 @@ export const InputForm = (props) => {
           onFocus={focusAction}
           onBlur={unFocusAction}
           name={props.name}
+          value={props.value}
           defaultValue={props.value}
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
@@ -275,17 +276,34 @@ export const InputFormCoin = (props) => {
 export class InputDepositForm extends Component {
 
   state = {
-    finalValue: number_format(this.props.value)
+    placeHolder: window.innerWidth > 768 ? 'Escribe la cantidad' : 'Cantidad',
+    finalValue: '',
   }
+
+  componentDidMount() {
+    this.setState({
+      finalValue: this.state.placeHolder
+    })
+  }
+  componentDidUpdate() {
+    console.log(this.props.value)
+  }
+
   componentWillReceiveProps(props) {
     // console.log('InputDepositForm / componentWillReceiveProps -', isNaN(props.value))
     const {
       value
     } = props
 
-    this.setState({
-      finalValue: value && this.state.finalValue ? number_format(value) : window.innerWidth > 768 ? 'Escribe la cantidad' : 'Cantidad'
-    })
+    if(value) {
+      this.setState({
+        finalValue: number_format(value)
+      })
+    } else {
+      this.setState({
+        finalValue: this.state.placeHolder
+      })
+    }
   }
 
   render() {
@@ -314,7 +332,7 @@ export class InputDepositForm extends Component {
           placeholder={placeholder}
           onChange={actualizar}
           name={name}
-          defaultValue={value}
+          value={value ? value : ''}
           onKeyPress={handleKeyPress}
         />
         {/* <p className="statusInputs">{status}</p> */}
