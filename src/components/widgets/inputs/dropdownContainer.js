@@ -17,9 +17,6 @@ class DropDownContainer extends Component{
   }
 
   selectItem = (event) => {
-
-    console.log('mielda', event.target.dataset.ui_name, event.target.dataset.value)
-
     const estado = {
       target:{
         name:this.props.name,

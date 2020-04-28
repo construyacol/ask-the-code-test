@@ -135,21 +135,30 @@ class WithdrawAccountForm extends Component {
   }
 
   actualizarEstado = async (event) => {
-
+    event.persist && event.persist()
     if (event.target && event.target.short_name) {
       this.setState({ short_name: event.target.short_name })
     }
 
     const name = event.target.name
-    const value = event.target.value
+    let value = event.target.value
     // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
     // console.log('|||||| ESTADO ACTUAL:::', this.state)
-
-    if (name) {
-      await this.setState({ [name]: value })
-    }
-    this.update_control_form(value)
-    this.update_form()
+    window.requestAnimationFrame(() => {
+      if(name && name === 'id_number') {
+        const patt = new RegExp(/^[A-Za-z0-9]+$/g)
+        if(event.target && (!patt.test(value) || value.length > 50)) {
+          value = value.slice(0, -1)
+          event.target.value = value
+          return
+        }
+      }
+      if (name) {
+        this.setState({ [name]: value })
+      }
+      this.update_control_form(value)
+      this.update_form()
+    })
   }
 
   update_form = () => {
