@@ -9,6 +9,7 @@ import * as globalServices from '../../../utils'
 import './deposit.css'
 import { SavePayment } from '../../widgets/toast/messages'
 import { withRouter } from "react-router";
+import BigNumber from 'bignumber.js'
 
 
 
@@ -246,7 +247,8 @@ class DepositContainer extends Component {
     // let amountw = await this.props.services.number_format(amount)
     // verificamos que no supere el monto maximo permitido por el preveedor
     const maxDepositAmount = this.state.currentDepositProvider && this.state.currentDepositProvider.provider.max_amount;
-    if(amount < maxDepositAmount){
+    const decimalAmount = new BigNumber(amount)
+    if(!amount || decimalAmount.isLessThan(maxDepositAmount)){
       await this.setState({
         amount: amount,
       })

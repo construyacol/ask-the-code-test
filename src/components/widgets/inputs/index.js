@@ -285,9 +285,6 @@ export class InputDepositForm extends Component {
       finalValue: this.state.placeHolder
     })
   }
-  componentDidUpdate() {
-    console.log(this.props.value)
-  }
 
   componentWillReceiveProps(props) {
     // console.log('InputDepositForm / componentWillReceiveProps -', isNaN(props.value))
