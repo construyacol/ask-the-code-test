@@ -275,7 +275,7 @@ class BankAccountFlow extends Component {
                     />
 
                     <InputForm
-                      type="number"
+                      type="text"
                       label="Escribe el numero de cuenta"
                       placeholder="Ej. 1123321..."
                       name="account_number"

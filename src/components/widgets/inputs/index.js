@@ -57,7 +57,6 @@ export const InputForm = (props) => {
           onBlur={unFocusAction}
           name={props.name}
           value={props.value}
-          defaultValue={props.value}
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
         />

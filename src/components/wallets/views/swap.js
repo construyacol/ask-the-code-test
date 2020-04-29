@@ -19,7 +19,7 @@ function SwapView(props) {
   const [active, setActive] = useState(undefined)
   // const [pairId, setPairId] = useState()
   const [totalValue, setTotalValue] = useState()
-  // const [loaderButton, setLoaderButton] = useState()
+  const [loaderButton, setLoaderButton] = useState()
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -119,8 +119,10 @@ function SwapView(props) {
 
   const startSwap = async (e) => {
     e.preventDefault()
+    setLoaderButton(true)
     await swap()
     actions.confirmationModalToggle()
+    setLoaderButton(false)
   }
 
 
@@ -220,7 +222,7 @@ function SwapView(props) {
       </div>
 
       <ControlButton
-        loader={loader}
+        loader={loaderButton}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0'}
         label="Cambiar"
       />
