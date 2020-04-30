@@ -99,6 +99,7 @@ export const update_current_pair = (query, currentPair) => {
     // }
 
     const url_current_pair = `${SwapApiUrl}pairs?filter=${query}`
+    // return console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||||||    url_current_pair ::', url_current_pair)
     let current_pair = await ApiGetRequest(url_current_pair)
     if(!current_pair || current_pair === 465){return}
 

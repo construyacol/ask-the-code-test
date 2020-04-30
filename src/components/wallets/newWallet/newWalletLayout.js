@@ -32,14 +32,9 @@ const NewWalletLayout = props =>{
       {
         step === 1 &&
         <div className="step1 newWallet">
-
             {
-              (availableCurrencies && availableCurrencies.length === 0)  ?
-                <p className="fuente" >YA TIENES CUENTAS ASIGNADAS A LAS DIVISAS DISPONIBLES</p>
-              :
               availableCurrencies ?
               <>
-
               <h1 className="fuente" > Nueva billetera </h1>
               <form
                 onSubmit={handleSubmit}
@@ -61,7 +56,7 @@ const NewWalletLayout = props =>{
                   itemSelect={currency}
                   actualizarEstado={actualizarEstado}
                   update_control_form={props.update_control_form}
-                  items={availableCurrencies}
+                  // items={availableCurrencies}
                 />
                 <InputButton label="Crear Billetera" type="primary" active={buttonActive}/>
               </form>

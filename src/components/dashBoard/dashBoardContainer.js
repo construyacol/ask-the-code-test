@@ -33,17 +33,49 @@ const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/wit
 const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
 
-const UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
+let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
+
 const TAB_TITLE = {
   security: 'Centro de seguridad',
   wallets: 'Mis billeteras',
-  referral: 'Referidos',
+  referral: 'Mis Referidos',
   withdraw_accounts: 'Mis Cuentas de retiro'
 }
 
-function DashBoardContainer(props) {
-  const onMount = async () => {
 
+
+
+
+function DashBoardContainer(props) {
+
+  const proofSocketNotify = () => {
+    const { wallets } = props
+    const account_id = '5eaa24fb039930003309cf1c'
+
+    setTimeout(()=>{
+      let currency = {
+        currency:'bitcoin_testnet',
+        is_token:false
+      }
+      props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
+      props.action.socket_notify({account_id, currency, amount:0.15}, 'deposits')
+      props.action.other_modal_toggle()
+      props.action.success_sound()
+    }, 1000)
+  }
+
+
+  const updateCurrentPair = async () =>{
+    clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
+    UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(()=>{
+      let query =`{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
+      props.action.update_current_pair(query, 'currentPair')
+    }, 20000)
+  }
+
+
+
+  const onMount = async () => {
     hotjar.initialize(1688041, 6);
     await props.action.freshchat_init_user(props.user)
     await FreshChat.user_update(props.user)
@@ -59,14 +91,25 @@ function DashBoardContainer(props) {
     scrollSpy.update();
   }
 
+
+
   const onUnmount = () => {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
     Events.scrollEvent.remove("begin");
     Events.scrollEvent.remove("end");
   }
 
+
+
+  useEffect(()=>{
+    if(props.currentPair){
+      // updateCurrentPair()
+    }
+  }, [props.currentPair])
+
   useEffect(() => {
     onMount()
+    // proofSocketNotify()
     return onUnmount
   }, [])
 

@@ -20,7 +20,6 @@ const availableWalletCreator = () => {
       if(!availableWallets[currency_name]){
         resultCurrencies.push(objectCurrencies[currency_name])
       }
-
     })
     setAvailableCurrencies(resultCurrencies)
   }

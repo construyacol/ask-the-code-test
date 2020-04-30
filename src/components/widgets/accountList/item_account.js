@@ -71,6 +71,8 @@ const ItemAccount = props => {
   let id_trigger = id_wallet_action === props.account.id
   const { account_type } = props
 
+  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||  ItemAccount < ItemAccount ::', reduxState, props)
+
   return (
     <AccountLayout className={`AccountLayout  ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
       {
@@ -128,11 +130,12 @@ const Wallet = props => {
   const { account, balances, account_state, id_trigger, set_id_wallet_action, set_account_state } = props
   const { name, id, currency } = account
   let icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
+  // console.log('|||||||||||||||||||||||||||||||||||||||||| Wallet detail ', balances)
   // let notifier_type = type === 'trade' ? 'wallets' : type
   // console.log('|||||||||||| WALLETS  ===> ', account)
 
   const delete_account = async () => {
-    if(account.available > 0){return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')}
+    if(balances.total > 0){return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')}
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.action.delete_account(account)
