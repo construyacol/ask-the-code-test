@@ -8,21 +8,19 @@ import { AccountListContainer } from './styles'
 import withListCreator from '../../withListCreator'
 
 import '../../wallets/views/wallet_views.css'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history } = props
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
+  const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
 
   useEffect(() => {
     actions.cleanCurrentSection()
-    init()
-  }, [])
-
-  const init = async () => {
-    const verified = await actions.getUserVerificationStatus('level_1')
+    const verified = coinsendaService.getUserVerificationStatus('level_1')
     setIsVerified(verified)
-  }
+  }, [])
 
   const createNewWallet = () => {
     if (props.verificationState === 'confirmed') {
@@ -161,7 +159,6 @@ AccountList.propTypes = {
   current_wallet: PropTypes.object,
   items: PropTypes.array,
   loader: PropTypes.bool,
-  user: PropTypes.object
 }
 
 const AccountsNotFound = ({ account_type }) => {

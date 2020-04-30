@@ -96,7 +96,7 @@ function mapStateToProps({ modelData, ui, isLoading}) {
 
   return {
     withdraw_accounts: user.withdraw_accounts,
-    user: user,
+    user,
     current_wallet: ui.current_section.params.current_wallet,
     currencies: modelData.currencies || null,
     isAppLoaded,

@@ -42,7 +42,7 @@ function WalletContainer(props) {
               <SimpleLoader />
               :
               <>
-                <Route exact path="/:primary_path" component={() =>(<AccountList isWalletsView data={props.data} />)} />
+                <Route exact path="/:primary_path" component={() =>(<AccountList isWalletsView data={props.wallets} />)} />
                 <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
                 <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
               </>
@@ -85,7 +85,6 @@ const SwitchView = props => {
 
 
 WalletContainer.propTypes = {
-  all_pairs: PropTypes.object,
   isAppLoaded: PropTypes.bool,
   currencies: PropTypes.array,
   user: PropTypes.object,
@@ -94,7 +93,6 @@ WalletContainer.propTypes = {
 function mapStateToProps({ modelData, isLoading }) {
   const {
     user,
-    all_pairs,
     wallets,
   } = modelData
 
@@ -103,12 +101,9 @@ function mapStateToProps({ modelData, isLoading }) {
   } = isLoading
 
   return {
-    all_pairs,
-    user: user,
-    currencies: modelData.currencies || null,
+    user,
     wallets,
     isAppLoaded,
-    data: modelData.wallets
   }
 }
 

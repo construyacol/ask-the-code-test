@@ -107,7 +107,7 @@ export class MainService extends inheritances {
 
     async postLoader(country, callback) {
         try {
-          let pairs = await this.fetchAllPairs(this.user.userToken, country)
+            let pairs = await this.fetchAllPairs(this.user.userToken, country)
             if (!pairs) {
                 return callback()
             }
@@ -133,6 +133,19 @@ export class MainService extends inheritances {
         if (!order || order.length < 1) { return false }
 
         return order[0]
+    }
+
+    getUserVerificationStatus(levelRequest) {
+        const { advanced, basic, financial } = this.user.security_center.kyc
+        switch (levelRequest) {
+            case 'level_1':
+                return advanced === 'accepted' && basic === 'accepted'
+            case 'level_2':
+                return advanced === 'accepted' && basic === 'accepted' && financial === 'accepted'
+            default:
+                return false
+        }
+
     }
 }
 

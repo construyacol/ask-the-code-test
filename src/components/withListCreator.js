@@ -1,22 +1,27 @@
-import React from 'react'
-import { useCoinsendaServices } from '../services/useCoinsendaServices'
+import React, { useState, useEffect } from 'react'
 import { useActions } from '../hooks/useActions'
+import { useSelector } from 'react-redux'
 
 export default function withListCreator(AsComponent) {    
     return function (props) {
-        const [, reduxState] = useCoinsendaServices()
+        const { isLoading } = useSelector(state => state)
         const actions = useActions()
-        const { modelData, ui, isLoading } = reduxState
+        const [items, setItems] = useState([])
         const toProps = {
-            verificationState: ui.verification_state,
-            user: modelData.user,
+            verificationState: true,
             loader: isLoading.loader
         }
         const { isWithdrawView, data } = props
-        const items = data && Object.keys(data).map(key => {
-            if (isWithdrawView && data[key].currency_type === 'crypto') return false
-            return data[key]
-        })
+        
+        useEffect(() => {
+            const newItems = data && Object.keys(data).filter(key => {
+                return !(isWithdrawView && data[key].currency_type === 'crypto')
+            }).map(key => {            
+                return data[key]
+            })
+            setItems(newItems)
+        }, [JSON.stringify(data)])
+        
 
         return (
             <AsComponent {...toProps} actions={actions} items={items} {...props} />

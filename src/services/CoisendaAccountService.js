@@ -103,11 +103,6 @@ export class AccountService extends WebService {
         return deleteAccount
     }
 
-
-
-
-
-
     async manageBalance(accountId, action, amount) {
         const user = this.user
         // await this.getBalancesByAccount(user)
@@ -178,17 +173,9 @@ export class AccountService extends WebService {
         await this.dispatch(updateAllCurrenciesAction(currencies))
         return currencies
     }
-
-
-
+    
     async countOfAccountTransactions(account_id) {
       const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
       return response
     }
-
-
-
-
-
-
 }

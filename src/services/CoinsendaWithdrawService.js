@@ -116,7 +116,6 @@ export class WithdrawService extends WebService {
 
         const { withdraw_accounts } = this.globalState.modelData
         const user = this.user
-
         const body = {
             "data": {
                 "withdraw_account_id": `${accountId}`,

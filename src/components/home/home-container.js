@@ -20,12 +20,11 @@ const BuildedHome = (props) => (
 function HomeContainer(props) {
 
   const {
-    isSomeModalRendered,
     doLogout,
   } = props
 
   return (
-    <HomeLayout modal={isSomeModalRendered} >
+    <HomeLayout>
       <ModalsSupervisor />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
@@ -40,11 +39,10 @@ HomeContainer.propTypes = {
   isSomeModalRendered: PropTypes.bool
 }
 
-function mapStateToProps({ form, isLoading, ui }) {
-  const isSomeModalRendered = form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal
+function mapStateToProps({ isLoading }) {
+  
   return {
-    loader: isLoading.loader,
-    isSomeModalRendered
+    loader: isLoading.loader
   }
 }
 

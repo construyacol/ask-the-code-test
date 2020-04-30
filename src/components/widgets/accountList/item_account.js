@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react'
+import React, { useState, Fragment, useEffect } from 'react'
 // import styled, { css } from 'styled-components'
 import backcard from '../../../assets/wallet_coins/back.png'
 import IconSwitch from '../icons/iconSwitch'
@@ -25,21 +25,30 @@ import { withRouter } from 'react-router'
 
 const ItemAccount = props => {
 
-
   if (props.loader) {
     return (
       <LoaderAccount />
     )
   }
 
+  const [coinsendaServices] = useCoinsendaServices()
+  const [account_state, set_account_state] = useState()
+  const [loader, set_loader] = useState()
+  const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
+  const [id_wallet_action, set_id_wallet_action] = useState('')
+  const { account_type } = props
   // 5d3dedf1bb245069d61021bb
+  
+  useEffect(() => {
+    setShouldHaveDeleteClassName((id_wallet_action === props.account.id) && account_state)
+  }, [account_state, props.account.id])
 
-  const getCount = async() => {
+  const getCount = async () => {
     set_loader(true)
     const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
     const { count } = countAccount
     await props.actions.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
-    if(count < 1){
+    if (count < 1) {
       set_loader(false)
       return props.history.push(`/wallets/deposit/${props.account.id}`)
     }
@@ -49,41 +58,65 @@ const ItemAccount = props => {
 
   const account_detail = async (payload) => {
     props.actions.cleanNotificationItem(payload, 'account_id')
-    if(props.account.count === undefined){
+    if (props.account.count === undefined) {
       return getCount()
     }
-    if(props.account.count < 1){
+    if (props.account.count < 1) {
       return props.history.push(`/wallets/deposit/${props.account.id}`)
     }
     return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : 'deposits'}`)
   }
 
-  const [ coinsendaServices ] = useCoinsendaServices()
-  const [account_state, set_account_state] = useState()
-  const [loader, set_loader] = useState()
-  const [id_wallet_action, set_id_wallet_action] = useState()
-  let id_trigger = id_wallet_action === props.account.id
-  const { account_type } = props
+  const delete_account = async () => {
+    const isWallet = props.account_type === 'wallets'
+    if (isWallet && props.account.available > 0) {
+      return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')
+    }
+    set_account_state('deleting')
+    set_id_wallet_action(props.account.id)
+    let msg = "Cuenta eliminada con exito"
+    let success = true
+    let result = false
+    if (isWallet) {
+      result = await coinsendaServices.deleteWallet(props.account)
+    } else {
+      result = await await coinsendaServices.deleteWithdrawAccount(props.account.id)
+    }
+    if (result === 404 || result === 465 || !result) {
+      msg = "La cuenta no se ha podido eliminar"
+      success = false
+      set_account_state('CancelDeleting')
+      return props.actions.mensaje(msg, success ? 'success' : 'error')
+    }
+    set_account_state('deleted')
+    if (isWallet) {
+      setTimeout(async () => {
+        await coinsendaServices.getWalletsByUser()
+      }, 500)
+    } else {
+      await coinsendaServices.fetchWithdrawAccounts()
+    }
+    props.actions.exit_sound()
+    props.actions.mensaje(msg, success ? 'success' : 'error')
+  }
 
   return (
-    <AccountLayout className={`AccountLayout  ${account_state === 'deleting' && id_trigger ? 'deleting' : account_state === 'deleted' && id_trigger ? 'deleted' : ''}`}>
+    <AccountLayout className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}>
       {
         account_type === 'wallets' ?
           <Wallet
             loaderAccount={loader}
             handleAction={account_detail}
-            set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
-            account_state={account_state}
-            id_trigger={id_trigger}
+            shouldHaveDeleteClassName={shouldHaveDeleteClassName}
+            delete_account={delete_account}
             {...props} />
           :
           <WithdrawAccount
             loaderAccount={loader}
-            set_id_wallet_action={set_id_wallet_action}
             set_account_state={set_account_state}
-            account_state={account_state}
-            id_trigger={id_trigger}
+            shouldHaveDeleteClassName={shouldHaveDeleteClassName}
+            delete_account={delete_account}
             {...props} />
       }
     </AccountLayout>
@@ -111,38 +144,14 @@ const mapStateToProps = (state, props) => {
 export default connect(mapStateToProps)(withRouter(ItemAccount))
 
 const Wallet = props => {
-
-
-  const { account, balances, account_state, id_trigger, set_id_wallet_action, set_account_state } = props
+  const { account, balances, delete_account, shouldHaveDeleteClassName } = props
   const { name, id, currency } = account
-  let icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
-  // let notifier_type = type === 'trade' ? 'wallets' : type
-  // console.log('|||||||||||| WALLETS  ===> ', account)
-
-  const delete_account = async () => {
-    if (account.available > 0) { return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error') }
-    set_account_state('deleting')
-    set_id_wallet_action(id)
-    let account_deleted = await props.actions.delete_account(account)
-    // console.log('°|||||||||||||||||°°°°°°°°°°°°°°°°°°°°°°° DELETE WALLET AFTER ===> ', account_deleted)
-    let msg = "Cuenta eliminada con exito"
-    let success = true
-    if (!account_deleted) {
-      msg = "La cuenta no se ha podido eliminar"
-      success = false
-    }
-    setTimeout(() => {
-      set_account_state('deleted')
-      props.actions.get_list_user_wallets(props.user)
-    }, 300)
-    props.actions.exit_sound()
-    props.actions.mensaje(msg, success ? 'success' : 'error')
-  }
+  const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
 
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
-    <WalletLayout className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} wallet inscribed>
+    <WalletLayout className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
 
       {
         props.loaderAccount &&
@@ -186,34 +195,11 @@ const Wallet = props => {
 
 const WithdrawAccount = props => {
 
-  const { account, account_state, id_trigger } = props
+  const { account, delete_account, shouldHaveDeleteClassName } = props
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
-  const delete_account = async (account_id) => {
-    const { set_id_wallet_action, set_account_state } = props
-    set_account_state('deleting')
-    set_id_wallet_action(id)
-    let account_deleted = await props.actions.delete_withdraw_account(id)
-    let msg = "Cuenta eliminada con exito"
-    let success = true
-    if (account_deleted === 404 || account_deleted === 465 || !account_deleted) {
-      msg = "La cuenta no se ha podido eliminar"
-      success = false
-      set_account_state('CancelDeleting')
-      return props.actions.mensaje(msg, success ? 'success' : 'error')
-    }
-    console.log('||||||||||||||||||| DELETE ACCOUNT ==> ', account_deleted)
-    props.actions.exit_sound()
-    set_account_state('deleted')
-    await props.actions.get_withdraw_accounts(props.user, props.withdrawProviders)
-    props.actions.mensaje(msg, success ? 'success' : 'error')
-  }
-
-  console.log('|||||||||||| Withdraw Account delete_account ===> ', account_state)
-
-
   return (
-    <WithdrawAccountL className={`withdrawAccount ${account_state === 'deleted' && id_trigger ? 'deleted' : ''}`} inscribed={account.inscribed}>
+    <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       <OptionsAccount
         delete_account={delete_account}
         {...props} />
