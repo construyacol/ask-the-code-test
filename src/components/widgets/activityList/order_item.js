@@ -100,7 +100,7 @@ export const DataContainer = styled.div`
 
   .loaderElement{
     width: 100px;
-    height: 17px;
+    height: 13px;
     background: #cacaca;
     border-radius: 4px;
   }
@@ -141,7 +141,7 @@ export const ActivityLayout = styled.section`
 
   .titleActivity{
     margin-bottom: 15px;
-    height: 20px;
+    height: 16px;
     width: 115px;
     background: #cacaca;
     border-radius: 4px;

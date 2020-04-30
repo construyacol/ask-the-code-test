@@ -237,7 +237,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async deposit => {
 
-    console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
+    // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
     // this.props.action.success_sound()
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
@@ -258,12 +258,12 @@ class SocketsComponent extends Component {
           console.log('======================================> ESTA CUENTA SI TIENE DEPOSITOS, MANUAL ADD ', this.props.deposits[deposit.id], cDeposit)
         } else {
           await this.props.action.get_deposits(cDeposit.account_id)
-          console.log('======================================> ESTA CUENTA NO TIENE DEPOSITOS, GET DEPOSITS ', this.props.deposits[deposit.id], cDeposit)
+          // console.log('======================================> ESTA CUENTA NO TIENE DEPOSITOS, GET DEPOSITS ', this.props.deposits[deposit.id], cDeposit)
         }
 
         // console.log('======================================> DEPOSIT SOCKET ', cDeposit, this.props.activity_for_account[cDeposit.account_id])
-
-        // props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
+        // console.log('||||||||||||||||||||||||||||||||||| READ ABOUT WALLETS PROPS::', this.props.wallets, cDeposit)
+        this.props.action.update_item_state({ [cDeposit.account_id]: { ...this.props.wallets[cDeposit.account_id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         this.props.action.addNotification('wallets', { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1)
         await this.props.action.socket_notify({ ...cDeposit, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
         this.props.action.other_modal_toggle()
@@ -285,18 +285,17 @@ class SocketsComponent extends Component {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], confirmations: deposit.confirmations } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
       }
+      return
     }
 
     if (deposit.state === 'accepted') {
-
+      let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
         await this.props.action.get_deposits(cDeposit.account_id)
-        // console.log('=============> DEPOSIT SOCKET ', cDeposit)
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
-
+        this.props.action.update_item_state({ [cDeposit.account_id]: { ...this.props.wallets[cDeposit.account_id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         this.props.action.addNotification('wallets', { account_id: this.props.deposits[deposit.id].account_id, order_id: deposit.id }, 1)
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
@@ -423,14 +422,15 @@ const mapStateToProps = (state, props) => {
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)
 
   const { loggedIn } = state.auth
-  const { user, deposits, withdraws } = state.modelData
+  const { user, deposits, withdraws, wallets } = state.modelData
 
   return {
     loggedIn,
     user: user,
     deposits,
     withdraws,
-    activity_for_account: state.storage.activity_for_account
+    activity_for_account: state.storage.activity_for_account,
+    wallets
   }
 
 }

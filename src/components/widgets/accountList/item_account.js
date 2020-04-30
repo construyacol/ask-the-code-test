@@ -45,6 +45,8 @@ const ItemAccount = props => {
       let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id)
       set_loader(false)
       if(areThereDeposits && areThereDeposits.length){
+        // console.log('||||||||||||||| -------------- |||||||||||||||||||||||||||   ARE THERE DEPOSITS :: ', props, props.wallets)
+        props.action.update_item_state({ [props.account.id]: { ...props.wallets[props.account.id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
       }
       return props.history.push(`/wallets/deposit/${props.account.id}`)
@@ -103,7 +105,7 @@ const ItemAccount = props => {
 const mapStateToProps = (state, props) => {
 
   const { account } = props
-  const { balances } = state.modelData
+  const { balances, wallets } = state.modelData
   const { currentFilter } = state.ui.current_section.params
 
   // console.log('||||||||||||||||||||||||||||||| ACCOUNT ITEM ACCOUNT ==> ', account)
@@ -111,6 +113,7 @@ const mapStateToProps = (state, props) => {
   return {
     currentFilter,
     balances: (balances && account) && balances[account.id],
+    wallets
   }
 
 }
