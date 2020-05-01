@@ -167,7 +167,7 @@ class SocketsComponent extends Component {
       await this.props.action.ManageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
       await this.props.action.isAppLoading(false)
       this.props.action.add_new_transaction_animation()
-      this.props.action.get_account_balances(this.props.user)
+      // this.props.action.get_account_balances(this.props.user)
       this.props.history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`)
     }
 
@@ -393,6 +393,7 @@ class SocketsComponent extends Component {
         setTimeout(async () => {
           await this.props.action.current_section_params({ active_trade_operation: false })
           await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+          // this.props.action.get_account_balances(this.props.user)
           setTimeout(async () => {
             // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
             // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')

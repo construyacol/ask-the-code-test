@@ -13,6 +13,7 @@ import { coins } from '../components/api/ui/api.json'
 import { appLoadLabelAction } from "../actions/loader";
 
 export class AccountService extends WebService {
+  
     async getWalletsByUser() {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES))
         const user = this.user

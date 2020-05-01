@@ -158,9 +158,10 @@ export class DepositService extends WebService {
     }
 
 
-    async getDepositByAccountId(accountId) {
-        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"}}`
+    async getDepositByAccountId(accountId, filter) {
+        const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"${filter ? `, ${filter}` : ''}}}`
         const deposit = await this.Get(finalUrl)
+        // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
         return deposit
     }
 

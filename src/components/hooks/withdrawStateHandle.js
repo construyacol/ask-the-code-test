@@ -13,7 +13,8 @@ const WithdrawViewState = () => {
     const {
       wallets,
       withdraw_accounts,
-      withdrawProviders
+      withdrawProviders,
+      balances
     } = state.modelData
 
     const {
@@ -57,6 +58,7 @@ const WithdrawViewState = () => {
     return [
       {
         current_wallet,
+        balance:balances[current_wallet.id],
         withdrawProviders: withdrawProvidersByType(),
         withdraw_accounts: withdrawAccountsByAddress(),
         active_trade_operation,

@@ -133,12 +133,17 @@ const Wallet = props => {
   const { account, balances, account_state, id_trigger, set_id_wallet_action, set_account_state } = props
   const { name, id, currency } = account
   let icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
+  const [ coinsendaServices ] = useCoinsendaServices()
   // console.log('|||||||||||||||||||||||||||||||||||||||||| Wallet detail ', balances)
   // let notifier_type = type === 'trade' ? 'wallets' : type
   // console.log('|||||||||||| WALLETS  ===> ', account)
 
+
+
   const delete_account = async () => {
     if(balances.total > 0){return props.action.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')}
+    let areThereDeposits = await coinsendaServices.getDepositByAccountId(account.id, '"state":"confirmed"')
+    if(areThereDeposits && areThereDeposits.length){return props.action.mensaje('Las cuentas con depositos pendientes no pueden ser eliminadas', 'error')}
     set_account_state('deleting')
     set_id_wallet_action(id)
     let account_deleted = await props.action.delete_account(account)

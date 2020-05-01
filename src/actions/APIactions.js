@@ -569,7 +569,6 @@ export const get_list_user_wallets = (user) => {
 //     await test.initialize(dispatch, getState(), getState().modelData.authData.userToken)
 //     return test.fetchDepositProviders()
 //   }
-//
 // }
 //
 //

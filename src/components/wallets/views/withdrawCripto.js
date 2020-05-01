@@ -55,7 +55,8 @@ export const CriptoView = () => {
       withdrawProviders,
       withdraw_accounts,
       active_trade_operation,
-      loader
+      loader,
+      balance
     },
     {
      ConfirmationModalToggle,
@@ -125,8 +126,10 @@ export const CriptoView = () => {
 
   const handleMaxAvailable = (e) => {
     let amount = document.getElementsByName('amount')[0]
-    amount.value = current_wallet.available
-    setAmountState('good')
+    amount.value = balance.available
+    if(amount.value > 0){
+      setAmountState('good')
+    }
   }
 
 
@@ -156,7 +159,7 @@ export const CriptoView = () => {
           state={amountState}
           SuffixComponent={() => <AvailableBalance
             handleAction={handleMaxAvailable}
-            amount={current_wallet.available} />}
+            amount={balance.available} />}
           // PrefixComponent
         />
         <ControlButton

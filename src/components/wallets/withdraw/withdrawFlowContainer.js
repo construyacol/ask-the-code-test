@@ -456,9 +456,9 @@ class WithdrawFlow extends Component {
       }
       setTimeout(async()=>{
         await this.props.action.ManageBalance(this.props.account_id, 'reduce', new_order.amount)
-        setTimeout(()=>{
-          return this.props.action.get_account_balances(this.props.user)
-        },3000)
+        // setTimeout(()=>{
+        //   return this.props.action.get_account_balances(this.props.user)
+        // },3000)
       },2000)
 
 
