@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import InputValidate  from '../../hooks/inputValidate'
+import InputValidate from '../../hooks/inputValidate'
 import styled from 'styled-components'
 import SkeletonAnimation from '../loaders/skeleton'
 
@@ -18,44 +18,52 @@ const InputForm = (props) => {
     SuffixComponent,
     state,
     skeleton,
-    handleChange,
+    handleChange = () => null,
     readOnly = false,
     value = '',
-    isControlled
+    isControlled,
+    customError
   } = props
 
-  if(skeleton){
-    return(
+  if (skeleton) {
+    return (
       <InputLayout className="skeleton">
         <ContainerInputComponent>
           <p className="skeleton"></p>
-          <InputContainer className="skeleton"/>
+          <InputContainer className="skeleton" />
         </ContainerInputComponent>
       </InputLayout>
     )
   }
 
   // TODO: cambiar las validacines a valores bolleanos, asi evitamos evaluar foo === "bad" o "good"
-  const [ inputState, setInputState, changeState ] = InputValidate(state)
+  const [inputState, setInputState, changeState] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
   const validate = (e) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
     e.persist()
     setInputState(name, e)
-    handleChange && handleChange(name, e.target.value)
+    handleChange(name, e.target.value, changeState)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     // setIcon(GetIcon(name, inputState))
-    if(handleStatus){
+    if (handleStatus) {
       handleStatus(inputState)
     }
   }, [inputState])
 
-  useEffect(()=>{
+  useEffect(() => {
     state && changeState(state)
   }, [state])
+
+  useEffect(() => {
+    handleChange(name, value, changeState)
+    if(customError) {
+      changeState('bad')
+    }
+  }, [customError, value])
 
   let movil = window.innerWidth < 768
 
@@ -69,30 +77,36 @@ const InputForm = (props) => {
     disabled
   }
 
-  if(isControlled) {
+  if (isControlled) {
     inputProps.value = value
   }
 
-  return(
-      <InputLayout>
+  return (
+    <InputLayout>
       <ContainerInputComponent>
-        <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
+        <p className="labelText fuente" style={{ display: !props.label ? 'none' : 'initial' }}>{props.label}</p>
         <InputContainer className={`${inputState}`}>
           <input {...inputProps} />
         </InputContainer>
         {
           SuffixComponent &&
           <SuffixComponentContainer>
-            <SuffixComponent/>
+            <SuffixComponent />
           </SuffixComponentContainer>
         }
-    </ContainerInputComponent>
+      </ContainerInputComponent>
+      {customError && (
+        <ErrorText>{customError.text}</ErrorText>
+      )}
     </InputLayout>
 
   )
 }
 
-
+const ErrorText = styled.div`
+  opacity: 0.7;
+  color: red;
+`
 
 const InputLayout = styled(SkeletonAnimation)`
 
@@ -137,7 +151,7 @@ const InputContainer = styled.div`
     color: #3A7BD5;
   }
 
-  .amount{
+  .amount, .buy-amount, .sell-amount{
     font-family: 'Tomorrow', sans-serif;
   }
 

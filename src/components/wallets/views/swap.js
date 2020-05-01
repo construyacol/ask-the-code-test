@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import SimpleLoader from '../../widgets/loaders'
+import BigNumber from 'bignumber.js'
 import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import InputForm from '../../widgets/inputs/inputForm'
 import { mensaje, formatNumber } from '../../../utils'
@@ -20,12 +20,17 @@ function SwapView(props) {
   // const [pairId, setPairId] = useState()
   const [totalValue, setTotalValue] = useState()
   const [loaderButton, setLoaderButton] = useState()
+  const [minAmountByOrder, setMinAmountByOrder] = useState({
+    minAmount: 0,
+    currencyCode: ""
+  })
+  const [valueError, setValueError] = useState()
+  const actions = useActions()
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
   const prevCurrentPair = usePrevious(currentPair)
   const { isMovilViewport } = useWindowSize()
-  const actions = useActions()
   const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs })
   const isFiat = currentWallet.currency_type === 'fiat'
 
@@ -35,13 +40,25 @@ function SwapView(props) {
     actions.getDefaultPair(currentWallet, local_currency, currentPair)
   }, [])
 
-  useEffect(() => {
+  useEffect(() => {  
+    if(currentPair && currentPair.pair_id) {
+      const _minAmountByOrder = props.all_pairs[currentPair.pair_id].exchange.min_order
+      setMinAmountByOrder({
+        currencyCode: _minAmountByOrder.currency.currency,
+        minAmount: _minAmountByOrder.min_amount
+      })
+    } else {
+      setMinAmountByOrder({
+        minAmount: 0,
+        currencyCode: ""
+      })
+    }
     if (value && prevCurrentPair && prevCurrentPair.current_pair) {
       if (prevCurrentPair.current_pair.secondary_coin !== currentPair.secondary_coin) {
         swap()
       }
     }
-  })
+  }, [currentPair])
 
   useEffect(() => {
     callToSetTotalValue()
@@ -58,9 +75,18 @@ function SwapView(props) {
     setActive(formatValue.isLessThanOrEqualTo(availableBalance))
   }
 
-  const handleChange = async (name, newValue) => {
+  const handleChangeBuyAmount = (name, newValue, setInputState) => {
+    if(newValue !== '' && newValue !== '0' && !valueError) {
+      setInputState('good')
+    } else {
+      setInputState('bad')
+    }
+  }
+
+  const handleChangeSellAmount = async (name, newValue, setInputState) => {
     if (!currentPair.secondary_value) return
     if (newValue === '') return setValue(undefined)
+    setInputState('good')
     const valueAfterDot = newValue.split(".")
 
     // limit to only one "."
@@ -114,6 +140,15 @@ function SwapView(props) {
     if (value === undefined) return undefined
     const totalValue = await convertCurrencies(currentWallet.currency, value, pair_id)
     if (!totalValue) { return false }
+    const _totalValue = new BigNumber(totalValue.want_to_spend.replace(/,/g, ''))
+    if (_totalValue.isLessThan(minAmountByOrder.minAmount)) {
+      const text = `${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()}`
+      setValueError({
+        text: `Error: El monto a pagar es menor que el valor mínimo a recibir (${text})`
+      })
+    } else {
+      setValueError(null)
+    }
     return totalValue.want_to_spend
   }
 
@@ -169,7 +204,7 @@ function SwapView(props) {
       <SwapViewLoader />
     )
   }
-
+  
   return (
     <form id="swapForm" className={`SwapView itemWalletView ${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
@@ -181,12 +216,15 @@ function SwapView(props) {
       }
 
       <InputForm
+        classes="fuente2"
         type="text"
         placeholder="Escribe la cantidad"
         name="sell-amount"
-        handleChange={handleChange}
+        value={value}
+        handleChange={handleChangeSellAmount}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
+        customError={valueError}
         SuffixComponent={() => <AvailableBalance
           handleAction={handleMaxAvailable}
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}
@@ -200,10 +238,12 @@ function SwapView(props) {
       }
 
       <InputForm
+        classes="fuente2"
         type="text"
         placeholder="Total a recibir"
         name="buy-amount"
         value={totalValue}
+        handleChange={handleChangeBuyAmount}
         isControlled={true}
         label={`Total a recibir:`}
         disabled={loader}
@@ -215,15 +255,12 @@ function SwapView(props) {
       />
 
       <div>
-        {
-          !totalValue &&
-          <CoinPrice>1 {short_name} = {!secondary_value ? 'Sin Cotización' : secondary_value} {secondary_coin}</CoinPrice>
-        }
+        <CoinPrice>1 {short_name} = {!secondary_value ? 'Sin Cotización' : secondary_value} {secondary_coin}</CoinPrice>
       </div>
 
       <ControlButton
         loader={loaderButton}
-        formValidate={shouldActiveInput && totalValue && totalValue !== '0'}
+        formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
       />
     </form>
@@ -272,9 +309,10 @@ const SwapViewLoader = () => {
 
 function mapStateToProps(state, props) {
   const { pairsForAccount } = state.ui.current_section.params
-  const { user, wallets, all_pairs } = state.modelData
+  const { wallets, all_pairs } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
+  
   const currentPair = {
     pair_id: (current_wallet && pairsForAccount[current_wallet.id]) && pairsForAccount[current_wallet.id].current_pair.pair_id,
     secondary_coin: current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency,
@@ -283,8 +321,6 @@ function mapStateToProps(state, props) {
 
   return {
     loader: state.isLoading.loader,
-    user,
-    wallets,
     all_pairs,
     short_name: state.ui.current_section.params.short_name,
     local_currency: state.modelData.pairs.localCurrency,
