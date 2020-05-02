@@ -12,7 +12,7 @@ const { SocketUrl } = Environtment
 let INTERVAL_ID = null
 let SOCKET = null
 
-function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, history, loggedIn, user }) {
+function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, history, loggedIn, user, wallets }) {
     const [currentSwap, setCurrentSwap] = useState(null)
     const [currentDeposit, setCurrentDeposit] = useState(null)
     const [currentWithdraw, setCurrentWithdraw] = useState(null)
@@ -184,16 +184,22 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
                 await actions.update_item_state({ [id]: { ...deposits[id], confirmations } }, 'deposits')
                 await actions.update_activity_state(deposits[id].account_id, 'deposits')
             }
+            return
         }
 
         if (state === 'accepted') {
-
+            const response = await mainService.getDepositById(id, 'deposits')
             if (!deposits || (deposits && !deposits[id])) {
-                const response = await mainService.getDepositById(id, 'deposits')
                 await actions.get_deposits(response.account_id)
             }
 
             if (deposits && deposits[id]) {
+                actions.update_item_state({ 
+                    [response.account_id]: { 
+                        ...wallets[response.account_id], 
+                        count:1 
+                    }
+                }, 'wallets') //actualiza el movimiento operacional de la wallet
                 actions.addNotification('wallets', { account_id: deposits[id].account_id, order_id: id }, 1)
                 await actions.update_item_state({ [id]: { ...deposits[id], state: state } }, 'deposits')
                 await actions.update_activity_state(deposits[id].account_id, 'deposits')
@@ -286,14 +292,15 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
 
 const mapStateToProps = (state) => {
     const { loggedIn } = state.auth
-    const { user, deposits, withdraws } = state.modelData
+    const { user, deposits, withdraws, wallets } = state.modelData
 
     return {
         loggedIn,
         user,
         deposits,
         withdraws,
-        activity_for_account: state.storage.activity_for_account
+        activity_for_account: state.storage.activity_for_account,
+        wallets
     }
 
 }

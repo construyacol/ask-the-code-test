@@ -135,7 +135,6 @@ const DepositLayout = (props) => {
 
   {
         deposit_way === "bankaccount" &&
-        // <p>HIJO DE PUTA</p>
         <TransferFlow
           {...props}
         />

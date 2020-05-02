@@ -284,6 +284,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], confirmations: deposit.confirmations } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
       }
+      return
     }
 
     if (deposit.state === 'accepted') {
