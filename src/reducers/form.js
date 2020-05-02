@@ -417,11 +417,14 @@ const forms = (state = initialState, action) =>{
                             return state
                         }
           case SEARCH_ITEM:
-              let result = []
-                  action.items.filter((item)=>{
+                  const result = action.items.filter((item)=>{
                                 let query = action.payload.query.toLowerCase()
-                                return item.name.toLowerCase().includes(query) && result.push(item)
+                                if(action.isEqual) {
+                                  return item.name.toLowerCase() === query
+                                }
+                                return item.name.toLowerCase().includes(query)
                               })
+                  debugger
                   if(action.tipos === 'wallets'){
                     return {
                       ...state,

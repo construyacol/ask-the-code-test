@@ -141,7 +141,7 @@ class BankAccountFlow extends Component {
     } = this.state
 
     // console.log('|||||| Modelito cities::', cities)
-    console.log(account_number)
+    
     return (
       <Fragment>
         {
@@ -335,7 +335,7 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state, props) {
   // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : mapStateToProps withdraw PROVIDERS', state)
-  const { user, user_id, withdrawProviders } = state.modelData
+  const { user, withdrawProviders } = state.modelData
 
   let withdraw_providers_list = []
   user.withdrawProviders.map((wp) => {

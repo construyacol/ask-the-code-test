@@ -146,6 +146,7 @@ class WithdrawAccountForm extends Component {
     // console.log('|||||| ESTADO ACTUAL:::', this.state)
     window.requestAnimationFrame(() => {
       let truncateString = false
+      let maxLength = 50
       if (name && name === 'id_number') {
         value = value.replace(/[^a-zA-Z0-9]/g, "");
         truncateString = true
@@ -154,10 +155,11 @@ class WithdrawAccountForm extends Component {
       if (name && name === 'account_number') {
         value = value.replace(/[^0-9]/g, "");
         truncateString = true
+        maxLength = 20
       }
-
-      if (truncateString && event.target && value.length > 50) {
-        value = value.slice(0, -1)
+      
+      if (truncateString && value.length > maxLength) {
+        value = value.slice(0, maxLength)
       }
 
       if (name) {

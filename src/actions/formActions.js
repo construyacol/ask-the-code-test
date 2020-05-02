@@ -111,14 +111,15 @@ export const ModalView = (view) => {
   }
 }
 
-export const Search = (query, type, items) => {
+export const Search = (query, type, items, isEqual = false) => {
   return {
     type:SEARCH_ITEM,
     payload:{
       query:query,
     },
     tipos:type,
-    items:items
+    items:items,
+    isEqual
   }
 }
 

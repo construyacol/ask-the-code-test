@@ -38,7 +38,7 @@ const ItemAccount = props => {
   const [id_wallet_action, set_id_wallet_action] = useState('')
   const { account_type } = props
   // 5d3dedf1bb245069d61021bb
-  
+
   useEffect(() => {
     setShouldHaveDeleteClassName((id_wallet_action === props.account.id) && account_state)
   }, [account_state, props.account.id])
@@ -89,13 +89,13 @@ const ItemAccount = props => {
       return props.actions.mensaje(msg, success ? 'success' : 'error')
     }
     set_account_state('deleted')
-    if (isWallet) {
-      setTimeout(async () => {
+    setTimeout(async () => {
+      if (isWallet) {
         await coinsendaServices.getWalletsByUser()
-      }, 500)
-    } else {
-      await coinsendaServices.fetchWithdrawAccounts()
-    }
+      } else {
+        await coinsendaServices.fetchWithdrawAccounts()
+      }
+    }, 300)
     props.actions.exit_sound()
     props.actions.mensaje(msg, success ? 'success' : 'error')
   }
