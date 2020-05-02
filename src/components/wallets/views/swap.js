@@ -97,7 +97,7 @@ function SwapView(props) {
   }
 
   const handleChangeBuyAmount = (name, newValue, setInputState) => {
-    if(newValue !== '' && newValue !== '0' && !valueError) {
+    if(newValue !== '' && newValue !== '0' && !valueError && active) {
       setInputState('good')
     } else {
       setInputState('bad')
@@ -238,7 +238,7 @@ function SwapView(props) {
         handleChange={handleChangeSellAmount}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
-        customError={valueError}
+        customError={valueError || !active}
         SuffixComponent={() => <AvailableBalance
           handleAction={handleMaxAvailable}
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}
