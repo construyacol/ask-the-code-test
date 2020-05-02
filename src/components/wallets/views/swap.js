@@ -65,6 +65,27 @@ function SwapView(props) {
     callToShouldActiveButton()
   }, [value, currentPair, isReady])
 
+  useEffect(() => {
+    if(currentPair && currentPair.secondary_coin) {
+      const conditionForText = currentPair.secondary_coin === minAmountByOrder.currencyCode
+      let actualValue = (conditionForText ? totalValue : value) || ''
+      actualValue = new BigNumber(actualValue.replace(/,/g, ''))
+      if (actualValue.isLessThan(minAmountByOrder.minAmount)) {
+        let text = ''
+        if(conditionForText) {
+          text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+        } else {
+          text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+        }
+        setValueError({
+          text: `Error: El monto a pagar es menor que el valor mínimo ${text}`
+        })
+      } else {
+        setValueError(null)
+      }
+    }
+  }, [totalValue, value, currentPair])
+
   const callToSetTotalValue = async () => {
     const totalValue = value ? await getTotalValue() : undefined
     setTotalValue(totalValue)
@@ -83,10 +104,12 @@ function SwapView(props) {
     }
   }
 
-  const handleChangeSellAmount = async (name, newValue, setInputState) => {
+  const handleChangeSellAmount = async (name, newValue, setInputState, isOnlyTypingValidation = false) => {
     if (!currentPair.secondary_value) return
     if (newValue === '') return setValue(undefined)
     setInputState('good')
+    if(isOnlyTypingValidation) return
+
     const valueAfterDot = newValue.split(".")
 
     // limit to only one "."
@@ -139,16 +162,7 @@ function SwapView(props) {
     const { pair_id } = currentPair
     if (value === undefined) return undefined
     const totalValue = await convertCurrencies(currentWallet.currency, value, pair_id)
-    if (!totalValue) { return false }
-    const _totalValue = new BigNumber(totalValue.want_to_spend.replace(/,/g, ''))
-    if (_totalValue.isLessThan(minAmountByOrder.minAmount)) {
-      const text = `${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()}`
-      setValueError({
-        text: `Error: El monto a pagar es menor que el valor mínimo a recibir (${text})`
-      })
-    } else {
-      setValueError(null)
-    }
+    if (!totalValue) { return false }    
     return totalValue.want_to_spend
   }
 
