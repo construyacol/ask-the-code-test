@@ -95,7 +95,7 @@ const ItemAccount = props => {
       } else {
         await coinsendaServices.fetchWithdrawAccounts()
       }
-    }, 300)
+    }, 0)
     props.actions.exit_sound()
     props.actions.mensaje(msg, success ? 'success' : 'error')
   }
@@ -108,14 +108,14 @@ const ItemAccount = props => {
             loaderAccount={loader}
             handleAction={account_detail}
             set_account_state={set_account_state}
-            shouldHaveDeleteClassName={shouldHaveDeleteClassName}
+            shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
             delete_account={delete_account}
             {...props} />
           :
           <WithdrawAccount
             loaderAccount={loader}
             set_account_state={set_account_state}
-            shouldHaveDeleteClassName={shouldHaveDeleteClassName}
+            shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
             delete_account={delete_account}
             {...props} />
       }
