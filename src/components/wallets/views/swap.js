@@ -107,7 +107,13 @@ function SwapView(props) {
   const handleChangeSellAmount = async (name, newValue, setInputState, isOnlyTypingValidation = false) => {
     if (!currentPair.secondary_value) return
     if (newValue === '') return setValue(undefined)
-    setInputState('good')
+    newValue = String(newValue).replace(/[^0-9,.]/g, '').replace(/,/g, '')
+
+    const formatedValue = await formatToCurrency(newValue, currentWallet.currency)
+    const isGood = formatedValue.isGreaterThan(0) && formatedValue.isLessThanOrEqualTo(availableBalance)
+
+    setInputState(isGood ? 'good' : 'bad')
+
     if(isOnlyTypingValidation) return
 
     const valueAfterDot = newValue.split(".")
@@ -122,9 +128,7 @@ function SwapView(props) {
     if (valueAfterDot[1] === '' || RegExp('^[0]+$').test(valueAfterDot[1])) {
       shouldSetElement = false
     }
-
-    newValue = String(newValue).replace(/[^0-9,.]/g, '').replace(/,/g, '')
-    const formatedValue = await formatToCurrency(newValue, currentWallet.currency)
+    
     const element = shouldSetElement ? document.getElementsByName(name)[0] : {}
 
     if (isNaN(formatedValue) || formatedValue === 'NaN' || formatedValue.toNumber() === 0) {
@@ -238,7 +242,7 @@ function SwapView(props) {
         handleChange={handleChangeSellAmount}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
-        customError={valueError || !active}
+        customError={valueError}
         SuffixComponent={() => <AvailableBalance
           handleAction={handleMaxAvailable}
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}

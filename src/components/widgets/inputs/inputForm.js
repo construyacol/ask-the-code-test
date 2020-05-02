@@ -59,9 +59,10 @@ const InputForm = (props) => {
   }, [state])
 
   useEffect(() => {
-    handleChange(name, value, changeState, true)
     if(customError) {
       changeState('bad')
+    } else {
+      handleChange(name, value, changeState, true)
     }
   }, [customError, value])
 
