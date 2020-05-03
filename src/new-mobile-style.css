@@ -156,9 +156,9 @@
     }
 
     .DCcurrent_wallet {
-        grid-template-rows: 200px 340px;
+        grid-template-rows: 200px 400px;
         transform: scale(.9);
-
+        padding-top: 1vh;
         grid-row-gap: 20px;
     }
 
@@ -203,7 +203,7 @@
     }
 
     .contenido.activity {
-        grid-template-rows: 200px 340px;
+        grid-template-rows: 200px 400px;
     }
 
     .ALlistAll {

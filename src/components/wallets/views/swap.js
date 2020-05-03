@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import ControlButton from '../../widgets/buttons/controlButton'
 import { usePairSelector } from '../../../hooks/usePairSelector'
 import { useActions } from '../../../hooks/useActions'
-import { AvailableBalance, WithdrawForm } from './withdrawCripto'
+import { AvailableBalance, OperationForm } from './withdrawCripto'
 
 function SwapView(props) {
   const [value, setValue] = useState(undefined)
@@ -40,8 +40,8 @@ function SwapView(props) {
     actions.getDefaultPair(currentWallet, local_currency, currentPair)
   }, [])
 
-  useEffect(() => {  
-    if(currentPair && currentPair.pair_id) {
+  useEffect(() => {
+    if (currentPair && currentPair.pair_id) {
       const _minAmountByOrder = props.all_pairs[currentPair.pair_id].exchange.min_order
       setMinAmountByOrder({
         currencyCode: _minAmountByOrder.currency.currency,
@@ -66,13 +66,13 @@ function SwapView(props) {
   }, [value, currentPair, isReady])
 
   useEffect(() => {
-    if(currentPair && currentPair.secondary_coin) {
+    if (currentPair && currentPair.secondary_coin) {
       const conditionForText = currentPair.secondary_coin === minAmountByOrder.currencyCode
       let actualValue = (conditionForText ? totalValue : value) || ''
       actualValue = new BigNumber(actualValue.replace(/,/g, ''))
       if (actualValue.isLessThan(minAmountByOrder.minAmount)) {
         let text = ''
-        if(conditionForText) {
+        if (conditionForText) {
           text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
         } else {
           text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
@@ -97,7 +97,7 @@ function SwapView(props) {
   }
 
   const handleChangeBuyAmount = (name, newValue, setInputState) => {
-    if(newValue !== '' && newValue !== '0' && !valueError && active) {
+    if (newValue !== '' && newValue !== '0' && !valueError && active) {
       setInputState('good')
     } else {
       setInputState('bad')
@@ -114,21 +114,21 @@ function SwapView(props) {
 
     setInputState(isGood ? 'good' : 'bad')
 
-    if(isOnlyTypingValidation) return
+    if (isOnlyTypingValidation) return
 
     const valueAfterDot = newValue.split(".")
 
     // limit to only one "."
-    if(valueAfterDot.length > 2) {
+    if (valueAfterDot.length > 2) {
       document.getElementsByName(name)[0].value = valueAfterDot[0] + "."
-      return 
+      return
     }
-    
+
     let shouldSetElement = true
     if (valueAfterDot[1] === '' || RegExp('^[0]+$').test(valueAfterDot[1])) {
       shouldSetElement = false
     }
-    
+
     const element = shouldSetElement ? document.getElementsByName(name)[0] : {}
 
     if (isNaN(formatedValue) || formatedValue === 'NaN' || formatedValue.toNumber() === 0) {
@@ -166,7 +166,7 @@ function SwapView(props) {
     const { pair_id } = currentPair
     if (value === undefined) return undefined
     const totalValue = await convertCurrencies(currentWallet.currency, value, pair_id)
-    if (!totalValue) { return false }    
+    if (!totalValue) { return false }
     return totalValue.want_to_spend
   }
 
@@ -222,9 +222,9 @@ function SwapView(props) {
       <SwapViewLoader />
     )
   }
-  
+
   return (
-    <form id="swapForm" className={`SwapView itemWalletView ${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
+    <SwapForm id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
       {
         loader &&
@@ -281,7 +281,7 @@ function SwapView(props) {
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
       />
-    </form>
+    </SwapForm>
 
   )
 }
@@ -309,19 +309,23 @@ const CoinPrice = styled.p`
   }
 `
 
+const SwapForm = styled(OperationForm)`
+  grid-template-rows: 1fr 30px 1fr 20px 1fr;
+`
+
 const SwapViewLoader = () => {
 
   return (
-    <>
-      <WithdrawForm>
-        <InputForm skeleton />
-        <InputForm skeleton />
-        <ControlButton
-          formValidate={false}
-          label="Enviar"
-        />
-      </WithdrawForm>
-    </>
+    <SwapForm>
+      <InputForm skeleton />
+      <div></div>
+      <InputForm skeleton />
+      <div></div>
+      <ControlButton
+        formValidate={false}
+        label="Enviar"
+      />
+    </SwapForm>
   )
 }
 
@@ -330,7 +334,7 @@ function mapStateToProps(state, props) {
   const { wallets, all_pairs } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
-  
+
   const currentPair = {
     pair_id: (current_wallet && pairsForAccount[current_wallet.id]) && pairsForAccount[current_wallet.id].current_pair.pair_id,
     secondary_coin: current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency,
