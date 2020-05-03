@@ -4,27 +4,27 @@ import { useSelector } from 'react-redux'
 
 export default function withListCreator(AsComponent) {    
     return function (props) {
-        const { isLoading } = useSelector(state => state)
+        const loader = useSelector(state => state.isLoading.loader)
         const actions = useActions()
         const [items, setItems] = useState([])
         const toProps = {
             verificationState: true,
-            loader: isLoading.loader
+            loader
         }
         const { isWithdrawView, data } = props
         
-        useEffect(() => {
-            const newItems = data && Object.keys(data).filter(key => {
-                return !(isWithdrawView && data[key].currency_type === 'crypto')
-            }).map(key => {            
-                return data[key]
-            })
-            setItems(newItems)
-        }, [JSON.stringify(data)])
+        // useEffect(() => {
+        //     setItems(newItems)
+        // }, [data])
+        const newItems = data && Object.keys(data).filter(key => {
+            return !(isWithdrawView && data[key].currency_type === 'crypto')
+        }).map(key => {            
+            return data[key]
+        })
         
 
         return (
-            <AsComponent {...toProps} actions={actions} items={items} {...props} />
+            <AsComponent {...toProps} actions={actions} items={newItems} {...props} />
         )
     }
 }
