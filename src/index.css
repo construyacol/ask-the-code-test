@@ -327,7 +327,7 @@
   .SwapView,
   .DepositView {
     min-height: 340px !important;
-    transform: scale(.9) !important;
+    /* transform: scale(.9) !important; */
   }
 
   .contAddress {
@@ -1188,7 +1188,8 @@
   }
 
 
-  .DepositView .contButtons {
+  /* .DepositView  */
+  .contButtons {
     transform: scale(.9) !important;
   }
 
@@ -1199,7 +1200,7 @@
 
   .DepositView {
     max-height: 300px;
-    grid-template-rows: 40% 30% 1fr !important;
+    grid-template-rows: 40% 25% 1fr !important;
     /*padding: 10px !important;*/
     width: calc(100% - 20px) !important;
     height: calc(100% - 20px) !important;

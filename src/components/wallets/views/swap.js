@@ -224,7 +224,7 @@ function SwapView(props) {
   }
 
   return (
-    <SwapForm id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
+    <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
       {
         loader &&
@@ -236,7 +236,7 @@ function SwapView(props) {
       <InputForm
         classes="fuente2"
         type="text"
-        placeholder="Escribe la cantidad"
+        placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
         name="sell-amount"
         value={value}
         handleChange={handleChangeSellAmount}
@@ -248,11 +248,11 @@ function SwapView(props) {
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}
       />
 
-      {
-        !isMovilViewport &&
-        <div className="middleSection">
+      { 
+        !isMovilViewport &&       
+        (<div className="middleSection">
           <i className="fas fa-retweet"></i>
-        </div>
+        </div>)
       }
 
       <InputForm
@@ -310,7 +310,7 @@ const CoinPrice = styled.p`
 `
 
 const SwapForm = styled(OperationForm)`
-  grid-template-rows: 1fr 30px 1fr 20px 1fr;
+  grid-template-rows: 1fr ${props => !props.isMovilViewport ? "30px" : ''} 1fr 20px 1fr;
 `
 
 const SwapViewLoader = () => {
