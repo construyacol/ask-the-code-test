@@ -61,7 +61,7 @@ class TwoFactorActivate extends Component {
   }
 
   finish_process = async() =>{
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
   }
 
 

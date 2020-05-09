@@ -29,7 +29,7 @@ export class ModalSettingsView extends Component {
   }
 
   close_modal = () => {
-  this.props.action.other_modal_toggle()
+  this.props.action.toggleOtherModal()
   }
 
   authenticated = () =>{

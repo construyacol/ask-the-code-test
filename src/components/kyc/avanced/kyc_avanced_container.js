@@ -253,7 +253,7 @@ class KycAvancedContainer extends Component{
 
 
     finish = () =>{
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
     }
 
 

@@ -61,8 +61,8 @@ class AccountList extends Component {
   no_action = () => { }
 
   wait_for_validate = () => {
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Estamos trabajando en esto...",
       description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary: "Entendido",
@@ -98,8 +98,8 @@ class AccountList extends Component {
     let message = this.props.path === 'wallets' ? 'billeteras crypto/fiat.' :
       this.props.path === 'withdraw_accounts' ? ' cuentas de retiro fiat.' : ''
 
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Aún no estas listo para esto...",
       description: `Debes completar el nivel de verificación avanzada para poder agregar ${message}`,
       txtPrimary: "Verificarme",
@@ -136,8 +136,8 @@ class AccountList extends Component {
 
 
   // delete_account_confirmation = async(account_id, type) => {
-  //   this.props.action.ConfirmationModalToggle()
-  //   this.props.action.ConfirmationModalPayload({
+  //   this.props.action.confirmationModalToggle()
+  //   this.props.action.confirmationModalPayload({
   //     title:"Esto es importante, estas a punto de...",
   //     description:"Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
   //     txtPrimary:"Eliminar",

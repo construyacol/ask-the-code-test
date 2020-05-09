@@ -1,14 +1,15 @@
 import React from 'react'
 import './home.css'
+import { useSelector } from 'react-redux'
 
 const HomeLayout = (props) => {
-
-  const { modal } = props
-
+  const { form, ui } = useSelector(state => state)
+  const isSomeModalRendered = form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal
+  
   return (
-    <section className={`HomeLayout ${modal ? 'conFirmationM' : ''}`}>
+    <div className={`HomeLayout ${isSomeModalRendered ? 'conFirmationM' : ''}`}>
       {props.children}
-    </section>
+    </div>
   )
 }
 

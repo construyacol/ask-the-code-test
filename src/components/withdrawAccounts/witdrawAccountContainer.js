@@ -5,11 +5,11 @@ import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
 import { Router, Switch, Route } from 'react-router-dom'
-import AccountList from '../widgets/accountList/item_account_list'
+import AccountList from '../widgets/accountList/account-list'
 import ItemWallet from '../widgets/accountList/items'
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
-import { AccountListLoader } from '../dashBoard/dashBoardContainer'
+import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
 
 class WitdrawAccountContainer extends Component {
 
@@ -24,7 +24,7 @@ class WitdrawAccountContainer extends Component {
   }
 
   componentWillUnmount() {
-    this.props.action.current_section_clean()
+    this.props.action.cleanCurrentSection()
   }
 
   wallet_detail = props => {
@@ -48,13 +48,13 @@ class WitdrawAccountContainer extends Component {
   render() {
     const { items_menu } = navigation_components.wallet
     const { title } = this.state
-    const { withdraw_accounts, isAppLoaded } = this.props
+    const { withdraw_accounts, isAppLoaded, data, history } = this.props
 
     // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
 
     return (
       <Router
-        history={this.props.history}
+        history={history}
       >
         <Switch>
           <DetailContainerLayout
@@ -65,10 +65,10 @@ class WitdrawAccountContainer extends Component {
           >
             {
               !withdraw_accounts ?
-                <AccountListLoader />
+                <AccountListSkeletonLoader />
                 :
                 (isAppLoaded && withdraw_accounts) &&
-                <Route exact path="/:primary_path" component={renderProps => (<AccountList {...renderProps} isWithdrawList={true} />)} />
+                <AccountList isWithdrawView data={data} />
             }
           </DetailContainerLayout>
         </Switch>
@@ -85,21 +85,22 @@ WitdrawAccountContainer.propTypes = {
   withdraw_accounts: PropTypes.array
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ modelData, ui, isLoading}) {
   const {
     user
-  } = state.modelData
+  } = modelData
 
   const {
     isAppLoaded
-  } = state.isLoading
+  } = isLoading
 
   return {
     withdraw_accounts: user.withdraw_accounts,
-    user: user,
-    current_wallet: state.ui.current_section.params.current_wallet,
-    currencies: state.modelData.currencies || null,
-    isAppLoaded
+    user,
+    current_wallet: ui.current_section.params.current_wallet,
+    currencies: modelData.currencies || null,
+    isAppLoaded,
+    data: modelData.withdraw_accounts
   }
 }
 

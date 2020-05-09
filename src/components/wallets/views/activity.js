@@ -86,11 +86,13 @@ const ActivityView = props => {
   }, [params.tx_path])
 
   useEffect(() => {
-    scroller.scrollTo('firstInsideContainer', {
-      duration: 0,
-      smooth: true,
-      offset: -55,
-      containerId: 'containerElement'
+    window.requestAnimationFrame(() => {
+      // scroller.scrollTo('firstInsideContainer', {
+      //   duration: 0,
+      //   smooth: true,
+      //   containerId: 'containerElement',
+      //   offset: 100
+      // })
     })
   }, [])
 

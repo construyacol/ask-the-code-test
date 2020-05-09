@@ -40,7 +40,7 @@ class WithdrawView extends Component {
   init_config = async () => {
     // console.log('|||||||||||||||||||||||||||||||||||||||||||| CURRENT_WALLET', this.props.current_wallet)
     // formatToCurrency
-    let verified = await this.props.action.user_verification_status('level_1')
+    let verified = await this.props.action.getUserVerificationStatus('level_1')
     this.setState({ verified })
   }
 
@@ -175,8 +175,8 @@ class WithdrawView extends Component {
 
   withdraw = () => {
     // alert('retirando')
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: `Hacer un retiro de ${this.state.value} ${this.props.short_name}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
       txtPrimary: "Confirmar Retiro",
@@ -196,7 +196,7 @@ class WithdrawView extends Component {
 
     // this.props.action.UpdateForm('withdraw', {account_from:match.params.id})
     // await this.props.action.CurrentForm('withdraw')
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
   }
 
 

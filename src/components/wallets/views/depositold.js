@@ -29,7 +29,7 @@ class DepositView extends Component{
 
   init_config = async() =>{
 
-      let verified = await this.props.action.user_verification_status('level_1')
+      let verified = await this.props.action.getUserVerificationStatus('level_1')
       await this.setState({verified})
 
       // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
@@ -37,7 +37,7 @@ class DepositView extends Component{
 
       if(!current_wallet){return this.props.action.section_view_to('initial')} //Este caso ocurre cuando la url apunta al detalle de la cuenta pero si el estado de verificación del usuario es rejected o pending redireccióna a /security
 
-      // if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
+      // if(!current_pair){this.props.action.getDefaultPair(current_wallet, local_currency, current_pair)}
       if(current_wallet.currency_type === 'fiat'){return this.setState({fiat_currency: true})}
       if((current_wallet && current_wallet.dep_prov.length<1) || !deposit_providers ){return false}
       let dep_prov = deposit_providers[current_wallet.dep_prov[0]]
@@ -81,7 +81,7 @@ class DepositView extends Component{
   fiat_deposit = async() =>{
     // console.log('|||||||||||||| FIAT DEPOSIT', this.props.local_currency)
       await this.props.action.FiatDeposit(this.props.local_currency || 'usd')
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
   }
 
 

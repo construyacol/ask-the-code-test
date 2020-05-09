@@ -1,12 +1,13 @@
 import { WebService } from "../actions/API/WebService";
 import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "../const/const";
-import { desNormalizedList } from "../utils";
+import { desNormalizedList, normalized_list, update_activity_state } from "../utils";
 import normalizeUser from "../schemas";
 import loadLocalPairsAction, {
-  updateNormalizedDataAction,
-  getAllPairsAction,
-  searchCurrentPairAction,
-  loadLocalCurrencyAction } from "../actions/dataModelActions";
+    updateNormalizedDataAction,
+    getAllPairsAction,
+    searchCurrentPairAction,
+    loadLocalCurrencyAction
+} from "../actions/dataModelActions";
 import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
@@ -80,32 +81,32 @@ export class SwapService extends WebService {
       return response[0]
   }
 
-  async loadPairs(currentWallet, localCurrency, currentPair) {
-      if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
-      const currency = currentWallet.currency.currency
+    async loadPairs(currentWallet, localCurrency, currentPair) {
+        if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
+        const currency = currentWallet.currency.currency
 
-      // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
-      let pair = await this.getPairs(currency, localCurrency)
-      !pair && (pair = await this.getPairs('bitcoin', currency))
-      !pair && (pair = await this.getPairs(currency))
-      !pair && (pair = await this.getPairs(null, currency))
+        // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
+        let pair = await this.getPairs(currency, localCurrency)
+        !pair && (pair = await this.getPairs('bitcoin', currency))
+        !pair && (pair = await this.getPairs(currency))
+        !pair && (pair = await this.getPairs(null, currency))
 
-      if (!pair) { return false }
+        if (!pair) { return false }
 
-      const pairId = pair.id
-      const data = await convertCurrencies(currentWallet.currency, '1', pairId)
+        const pairId = pair.id
+        const data = await convertCurrencies(currentWallet.currency, '1', pairId)
 
-      if (data) {
-          const { to_spend_currency } = data
-          return this.dispatch(pairsForAccount(currentWallet.id, {
-              current_pair: {
-                  pair_id: pairId,
-                  currency: to_spend_currency.currency,
-                  currency_value: data.want_to_spend
-              }
-          }))
-      }
-  }
+        if (data) {
+            const { to_spend_currency } = data
+            return this.dispatch(pairsForAccount(currentWallet.id, {
+                current_pair: {
+                    pair_id: pairId,
+                    currency: to_spend_currency.currency,
+                    currency_value: data.want_to_spend
+                }
+            }))
+        }
+    }
 
     async addNewSwap(accountId, pairId, value) {
         const user = this.user
@@ -160,6 +161,48 @@ export class SwapService extends WebService {
         return normalizedUser
     }
 
+    async fetchSwapByAccountId(accountId) {
+        const user = this.user
+        const { wallets } = this.modelData
+
+        let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+        const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`
+
+        // let filter = `{"where":{"accountId":"${accountId}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+
+        const swaps = await this.Get(finalUrl)
+        if (!swaps || swaps === 465) { return false }
+
+        const result = swaps.map(async (swap) => {
+            return {
+                account_id: swap.account_from,
+                account_to: swap.account_to,
+                amount: swap.bought,
+                amount_neto: swap.bought,
+                pair_id: swap.pair_id,
+                comment: "",
+                action_price: swap.action_price,
+                currency: swap.to_spend_currency,
+                currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
+                cost: "",
+                deposit_provider_id: "",
+                expiration_date: new Date(),
+                id: swap.id,
+                state: swap.state === 'rejected' ? 'canceled' : swap.state,
+                bought: swap.bought,
+                currency_bought: swap.to_buy_currency,
+                spent: swap.spent,
+                type_order: "swap"
+            }
+        })
+
+        await this.dispatch(normalized_list(result, 'swaps'))
+        await this.dispatch(update_activity_state(accountId, 'swaps', result))
+
+        return result
+
+    }
+
     // async getSwapList() {
     //     alert()
     //     const { user, wallets } = this.globalState.modelData
@@ -208,11 +251,3 @@ export class SwapService extends WebService {
     //     return normalizedUser
     // }
 }
-
-
-
-
-
-
-
-//

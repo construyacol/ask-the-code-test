@@ -135,21 +135,39 @@ class WithdrawAccountForm extends Component {
   }
 
   actualizarEstado = async (event) => {
-
+    event.persist && event.persist()
     if (event.target && event.target.short_name) {
       this.setState({ short_name: event.target.short_name })
     }
 
     const name = event.target.name
-    const value = event.target.value
+    let value = event.target.value
     // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
     // console.log('|||||| ESTADO ACTUAL:::', this.state)
+    window.requestAnimationFrame(() => {
+      let truncateString = false
+      let maxLength = 50
+      if (name && name === 'id_number') {
+        value = value.replace(/[^a-zA-Z0-9]/g, "");
+        truncateString = true
+      }
 
-    if (name) {
-      await this.setState({ [name]: value })
-    }
-    this.update_control_form(value)
-    this.update_form()
+      if (name && name === 'account_number') {
+        value = value.replace(/[^0-9]/g, "");
+        truncateString = true
+        maxLength = 20
+      }
+      
+      if (truncateString && value.length > maxLength) {
+        value = value.slice(0, maxLength)
+      }
+
+      if (name) {
+        this.setState({ [name]: value })
+      }
+      this.update_control_form(value)
+      this.update_form()
+    })
   }
 
   update_form = () => {
@@ -170,7 +188,7 @@ class WithdrawAccountForm extends Component {
   finalizar = (event) => {
     this.props.action.CleanForm('bank')
     this.props.action.CleanForm('withdraw')
-    // this.props.action.ToggleModal()
+    // this.props.action.toggleModal()
   }
 
   cleanSearch = () => {

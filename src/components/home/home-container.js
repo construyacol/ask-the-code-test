@@ -1,8 +1,8 @@
 import React from 'react'
 import HomeLayout from './homeLayout'
-import MenuPrincipalContainer from '../menuPrincipal/menuPrincipalContainer'
+import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
-import DashBoardContainer from '../dashBoard/dashBoardContainer'
+import DashBoardContainer from '../dashBoard/dashboard-container'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
@@ -20,12 +20,11 @@ const BuildedHome = (props) => (
 function HomeContainer(props) {
 
   const {
-    isSomeModalRendered,
     doLogout,
   } = props
 
   return (
-    <HomeLayout modal={isSomeModalRendered} >
+    <HomeLayout>
       <ModalsSupervisor />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
@@ -40,11 +39,10 @@ HomeContainer.propTypes = {
   isSomeModalRendered: PropTypes.bool
 }
 
-function mapStateToProps({ form, isLoading, ui }) {
-  const isSomeModalRendered = form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal
+function mapStateToProps({ isLoading }) {
+  
   return {
-    loader: isLoading.loader,
-    isSomeModalRendered
+    loader: isLoading.loader
   }
 }
 

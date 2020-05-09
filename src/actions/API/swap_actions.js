@@ -89,7 +89,7 @@ export const get_swaps = (account_id) => {
 }
 
 
-export const update_current_pair = (query, currentPair) => {
+export const updateCurrentPair = (query, currentPair) => {
 
   return async(dispatch) => {
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import InputValidate  from '../../hooks/inputValidate'
+import InputValidate from '../../hooks/inputValidate'
 import styled from 'styled-components'
 import SkeletonAnimation from '../loaders/skeleton'
 
@@ -17,69 +17,97 @@ const InputForm = (props) => {
     disabled,
     SuffixComponent,
     state,
-    skeleton
+    skeleton,
+    handleChange = () => null,
+    readOnly = false,
+    value = '',
+    isControlled,
+    customError
   } = props
 
-  if(skeleton){
-    return(
+  if (skeleton) {
+    return (
       <InputLayout className="skeleton">
         <ContainerInputComponent>
           <p className="skeleton"></p>
-          <InputContainer className="skeleton"/>
+          <InputContainer className="skeleton" />
         </ContainerInputComponent>
       </InputLayout>
     )
   }
 
-  const [ inputState, setInputState, changeState ] = InputValidate(state)
+  // TODO: cambiar las validacines a valores bolleanos, asi evitamos evaluar foo === "bad" o "good"
+  const [inputState, setInputState, changeState] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
   const validate = (e) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
     e.persist()
     setInputState(name, e)
+    handleChange(name, e.target.value, changeState)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     // setIcon(GetIcon(name, inputState))
-    if(handleStatus){
+    if (handleStatus) {
       handleStatus(inputState)
     }
   }, [inputState])
 
-  useEffect(()=>{
+  useEffect(() => {
     state && changeState(state)
   }, [state])
 
+  useEffect(() => {
+    if(customError) {
+      changeState('bad')
+    } else {
+      handleChange(name, value, changeState, true)
+    }
+  }, [customError, value])
+
   let movil = window.innerWidth < 768
 
-  return(
-      <InputLayout>
+  const inputProps = {
+    className: `inputElement ${name} ${movil ? 'movil' : ''}`,
+    type,
+    readOnly,
+    placeholder,
+    onChange: validate,
+    name,
+    disabled
+  }
+
+  if (isControlled) {
+    inputProps.value = value
+  }
+
+  return (
+    <InputLayout>
       <ContainerInputComponent>
-        <p className="labelText fuente" style={{display:!props.label ? 'none' : 'initial' }}>{props.label}</p>
+        <p className="labelText fuente" style={{ display: !props.label ? 'none' : 'initial' }}>{props.label}</p>
         <InputContainer className={`${inputState}`}>
-          <input
-            className={`inputElement ${name} ${movil ? 'movil' : ''}`}
-            type={type}
-            placeholder={placeholder}
-            onChange={validate}
-            name={name}
-            disabled={disabled}
-          />
+          <input {...inputProps} />
         </InputContainer>
         {
           SuffixComponent &&
           <SuffixComponentContainer>
-            <SuffixComponent/>
+            <SuffixComponent />
           </SuffixComponentContainer>
         }
-    </ContainerInputComponent>
+      </ContainerInputComponent>
+      {customError && (
+        <ErrorText>{customError.text}</ErrorText>
+      )}
     </InputLayout>
 
   )
 }
 
-
+const ErrorText = styled.div`
+  opacity: 0.7;
+  color: red;
+`
 
 const InputLayout = styled(SkeletonAnimation)`
 
@@ -124,7 +152,7 @@ const InputContainer = styled.div`
     color: #3A7BD5;
   }
 
-  .amount{
+  .amount, .buy-amount, .sell-amount{
     font-family: 'Tomorrow', sans-serif;
   }
 

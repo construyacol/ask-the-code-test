@@ -198,7 +198,7 @@ const Success = (props) =>{
 
 
         <div className="asaras">
-             <div className={`${final ? 'apareces1': ''} nWbody2 Fbody2 FlowCont fuente DLmessage`}>
+             <div style={{marginTop: '-20%', zIndex: 999}} className={`${final ? 'apareces1': ''} nWbody2 Fbody2 FlowCont fuente DLmessage`}>
                 <div className="FolowTexts" >
                   <p className="fuente Fimportant" >¡IMPORTANTE!</p>
                   <p className="Ftexto fuente ">Una vez realizado el deposito bancario debes confirmar la transacción con una fotografía del <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la orden de pago</p>

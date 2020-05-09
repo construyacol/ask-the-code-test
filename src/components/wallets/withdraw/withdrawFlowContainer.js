@@ -440,7 +440,7 @@ class WithdrawFlow extends Component {
       console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state, res)
 
 
-      await this.props.action.ToggleModal()
+      await this.props.action.toggleModal()
       await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
 
       this.props.action.CleanForm('deposit')

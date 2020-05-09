@@ -15,7 +15,7 @@ export class PairList extends Component {
   }
 
   close_modal = () => {
-  this.props.action.other_modal_toggle()
+  this.props.action.toggleOtherModal()
   }
 
   componentWillReceiveProps(props){
@@ -42,7 +42,7 @@ export class PairList extends Component {
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
 
     this.props.action.isAppLoading(false)
-    this.props.action.other_modal_toggle()
+    this.props.action.toggleOtherModal()
 
     if(data){
       const { to_spend_currency, pair_id } = data

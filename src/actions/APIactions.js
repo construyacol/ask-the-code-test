@@ -142,7 +142,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
     // let data_price = []
     //
     // res.Data.map(item => {
-    //     let date_ago = moment().subtract(days, 'days').calendar()
+        // let date_ago = moment().subtract(days, 'days').calendar()
     //     price_date.push(date_ago)
     //     data_price.push(item.close)
     //     return days--
@@ -174,9 +174,12 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
     const { historical_data } = prices.data
 
+    let days = historical_data.length - 1
+
     for (let data of historical_data) {
       price_list.push(data.close_price)
-      date_list.push(data.date)
+      date_list.push(moment().subtract(days, 'days').calendar())
+      days--
     }
 
     return { price_list: price_list, date_list }
@@ -371,7 +374,7 @@ export const get_this_pair = async (query) => {
 // }
 
 
-export const get_pair_default = (current_wallet, local_currency, current_pair) => {
+export const getDefaultPair = (current_wallet, local_currency, current_pair) => {
   return async (dispatch) => {
 
 
@@ -987,7 +990,7 @@ export const add_item_state = (list_type, new_order) => {
 
 
 
-export const add_new_swap = (account_id, pair_id, value) => {
+export const addNewSwap = (account_id, pair_id, value) => {
   return async (dispatch, getState) => {
 
     // await charge_funds()
@@ -1003,8 +1006,8 @@ export const add_new_swap = (account_id, pair_id, value) => {
       }
     }
 
-    const add_new_swap_url = `${SwapApiUrl}swaps/add-new-swap`
-    const new_swap = await ApiPostRequest(add_new_swap_url, body, user.userToken)
+    const addNewSwap_url = `${SwapApiUrl}swaps/add-new-swap`
+    const new_swap = await ApiPostRequest(addNewSwap_url, body, user.userToken)
     // console.log('°°°°°|||||||||||||||| RESULTADO SWAP....', new_swap)
     if (!new_swap || new_swap === 465) { return false }
 
@@ -2030,7 +2033,7 @@ export const get_country_list = order_id => {
 }
 
 
-export const user_verification_status = (level_request) => {
+export const getUserVerificationStatus = (level_request) => {
   // @Call_from
   // ./wallets/views/deposit.js
   // ./wallets/views/withdraw.js

@@ -247,7 +247,6 @@ const DepositForm = styled(OperationForm)`
     }
 
 
-
 `
 
 

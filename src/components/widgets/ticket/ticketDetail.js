@@ -27,7 +27,7 @@ class TicketDetail extends Component{
    this.props.action.ModalView('modalView')
    this.props.action.CleanForm(current_form)
 
-   return  this.props.action.ToggleModal()
+   return  this.props.action.toggleModal()
  }
 
 

@@ -55,24 +55,14 @@ class QuoteContainer extends Component {
     const { currentPair } = this.props
 
     return (
-      <Fragment>
-        {
-          !currentPair ?
-            <div className="quoteLoader">
-              <SimpleLoader
-                label="Cargando Precios"
-                color="white"
-              />
-            </div>
-            :
+      <div className="sectionFixedPrice">
             <QuoteLayout
               select_currency={this.select_currency}
               switchItem={this.switchItem}
               {...this.state}
               {...this.props}
             />
-        }
-      </Fragment>
+      </div>
     )
   }
 }

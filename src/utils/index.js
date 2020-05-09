@@ -545,6 +545,49 @@ export const number_format = (amount) => {
     return amount_parts.join('.');
 }
 
+
+export function formatNumber(number) {
+  const dotsCount = (number.match(/\./g) || []).length;
+  const commasCount = (number.match(/,/g) || []).length;
+  const dotIndex = number.search(/\./);
+  const commaIndex = number.search(/,/);
+  const dotFirst = dotsCount === commasCount && dotIndex < commaIndex;
+  const commaFirst = dotsCount === commasCount && commaIndex < dotIndex;
+
+  // Remove thousands separators from input
+  if (dotsCount > 1 || dotFirst) {
+    number = number.split('.').join('');
+  } else if (commasCount > 1 || commaFirst) {
+    number = number.split(',').join('');
+  }
+
+  if (Number.isNaN(Number(number.replace(',', '.')))) {
+    return '';
+  }
+
+  let integer = '';
+  let decimals = '';
+  let thousandsSeparator = '';
+  let decimalPoint = '';
+
+  if (number.includes(',')) {
+    [thousandsSeparator, decimalPoint] = ['.', ','];
+  } else {
+    [thousandsSeparator, decimalPoint] = [',', '.'];
+  }
+
+  [integer, decimals] = number.split(decimalPoint);
+  integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
+  integer = integer === '' ? '0' : integer;
+
+  if (!decimals) {
+    return integer;
+  }
+
+  return [integer, decimals].join(decimalPoint);
+}
+
+
 export const readFile = (file) => {
   return new Promise(resolve => {
     const reader = new FileReader()

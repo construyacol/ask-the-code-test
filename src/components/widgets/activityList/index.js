@@ -85,7 +85,7 @@ class ActivityList extends Component {
         }
 
 
-        if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
+        if(!current_pair){this.props.action.getDefaultPair(current_wallet, local_currency, current_pair)}
 
         if(this.props.activity.length<1 && current_wallet){
           history.push(`/wallets/deposit/${current_wallet.id}`)
@@ -168,8 +168,8 @@ class ActivityList extends Component {
   delete_order_confirmation = (id) =>{
     alert('delete')
 
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title:"Esto es importante, estas a punto de...",
       description:"Eliminar esta orden, ¿Estas seguro de hacer esto?",
       txtPrimary:"Eliminar",
@@ -259,7 +259,7 @@ class ActivityList extends Component {
     let view = await ticketModalView(state)
     await this.props.action.UpdateForm(current_form, ticket)
     await this.props.action.ModalView(view)
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     setTimeout(()=>{
       this.props.action.IncreaseStep(current_form)
     }, 170)
@@ -279,7 +279,7 @@ class ActivityList extends Component {
 
   verTicket = async(props) =>{
 
-    this.props.action.CleanItemNotifications('wallets', 'order_id')
+    this.props.action.cleanNotificationItem('wallets', 'order_id')
 
     const{
       ticket
@@ -301,7 +301,7 @@ class ActivityList extends Component {
     await this.props.action.UpdateForm(current_form, ticket)
 
     await this.props.action.ModalView(view)
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
 
   }
 

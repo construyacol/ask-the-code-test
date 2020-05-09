@@ -74,7 +74,7 @@ export const CleanNotifications = (payload) =>{
   }
 }
 
-export const CleanItemNotifications = (payload, item_clean) =>{
+export const cleanNotificationItem = (payload, item_clean) =>{
   return{
     type:CLEAN_ITEM_NOTIFICATIONS,
     payload,
@@ -116,7 +116,7 @@ export const FlowAnimationUi = payload =>{
 }
 
 
-export const other_modal_toggle = () =>{
+export const toggleOtherModal = () =>{
   return{
     type:OTHER_MODAL
   }
@@ -146,7 +146,7 @@ export const current_section_params = payload =>{
   }
 }
 
-export const current_section_clean = () =>{
+export const cleanCurrentSection = () =>{
   return{
     type:CURRENT_SECTION_CLEAN
   }
@@ -177,14 +177,14 @@ export const ItemQuoteActive = payload =>{
   }
 }
 
-export const ConfirmationModalToggle = payload =>{
+export const confirmationModalToggle = payload =>{
   return{
     type:MODAL_CONFIRMATION_TOGGLE,
     payload
   }
 }
 
-export const ConfirmationModalPayload = payload =>{
+export const confirmationModalPayload = payload =>{
   return{
     type:CONFIRMATION_MODAL_PAYLOAD,
     payload
