@@ -1,406 +1,353 @@
-import React, { Fragment, Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import actions from '../../../actions'
-import SimpleLoader from '../../widgets/loaders'
+import BigNumber from 'bignumber.js'
 import LoaderTrade from '../../widgets/loaders/loaderTrade'
-import { InputFormCoin, ReadReceiveCoin } from '../../widgets/inputs'
+import InputForm from '../../widgets/inputs/inputForm'
+import { mensaje, formatNumber } from '../../../utils'
+import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'
+import usePrevious from '../../hooks/usePreviousValue'
+import useWindowSize from '../../../hooks/useWindowSize'
+import { useWalletInfo } from '../../../hooks/useWalletInfo'
+import styled from 'styled-components'
+import ControlButton from '../../widgets/buttons/controlButton'
+import { usePairSelector } from '../../../hooks/usePairSelector'
+import { useActions } from '../../../hooks/useActions'
+import { AvailableBalance, OperationForm } from './withdrawCripto'
 
-import { ButtonForms } from '../../widgets/buttons/buttons'
-import { matchItem, mensaje } from '../../../services'
-import convertCurrencies, { formatToCurrency } from '../../../services/convert_currency'
-// import {  } from '../../../services/convert_currency'
+function SwapView(props) {
+  const [value, setValue] = useState(undefined)
+  const [active, setActive] = useState(undefined)
+  // const [pairId, setPairId] = useState()
+  const [totalValue, setTotalValue] = useState()
+  const [loaderButton, setLoaderButton] = useState()
+  const [minAmountByOrder, setMinAmountByOrder] = useState({
+    minAmount: 0,
+    currencyCode: ""
+  })
+  const [valueError, setValueError] = useState()
+  const actions = useActions()
 
-class SwapView extends Component{
+  const { currentPair } = props
+  const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
+  const prevCurrentPair = usePrevious(currentPair)
+  const { isMovilViewport } = useWindowSize()
+  const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs })
+  const isFiat = currentWallet.currency_type === 'fiat'
 
-  state = {
-    value:"",
-    address:null,
-    active:false,
-    pair_id:null,
-    total_value:null,
-    loader_button:false
-  }
+  useEffect(() => {
+    selectPair(true)
+    const { local_currency } = props
+    actions.getDefaultPair(currentWallet, local_currency, currentPair)
+  }, [])
 
-  componentDidMount(){
-    this.init_state()
-  }
-
-  componentDidUpdate(prevProps){
-
-    if(prevProps.current_pair.secondary_coin !== this.props.current_pair.secondary_coin && this.state.value){
-      // console.log('|||||||||||||| SWAP UPDATE PASS CONDITIONAL ==========>', this.props.current_pair)
-      // alert('cambio de moneda')
-      this.swap()
+  useEffect(() => {
+    if (currentPair && currentPair.pair_id) {
+      const _minAmountByOrder = props.all_pairs[currentPair.pair_id].exchange.min_order
+      setMinAmountByOrder({
+        currencyCode: _minAmountByOrder.currency.currency,
+        minAmount: _minAmountByOrder.min_amount
+      })
+    } else {
+      setMinAmountByOrder({
+        minAmount: 0,
+        currencyCode: ""
+      })
     }
-  }
-
-  init_state = async() => {
-    // await this.props.initial(this.props.match.params.path, this.props.match.params.account_id)
-    this.getOtherPairs(true)
-    const { current_wallet, local_currency, current_pair } = this.props
-    this.props.action.get_pair_default(current_wallet, local_currency, current_pair)
-    // console.log('||||||||||||||||||||||| CURRENT BY init_state', res)
-  }
-
-  actualizarEstado_coin = async({target, preventDefault}) =>{
-    // return alert()
-    if(!this.props.current_pair.secondary_value){return}
-    let value = target.value
-    let { available, current_wallet } = this.props
-    if(current_wallet.currency_type === 'fiat'){
-      value = String(target.value).replace(/,/g, '') || '0'
-      if (isNaN(value) || value === 'NaN'){
-        return preventDefault()
+    if (value && prevCurrentPair && prevCurrentPair.current_pair) {
+      if (prevCurrentPair.current_pair.secondary_coin !== currentPair.secondary_coin) {
+        swap()
       }
-    }else{
-      value = await formatToCurrency(target.value, current_wallet.currency)
-      if(isNaN(value.toNumber()) || value.toNumber() === 'NaN'){return target.value = null}
     }
-    // const total_value = await this.get_total_value(value)
+  }, [currentPair])
 
-    this.setState({
-      value:current_wallet.currency_type === 'fiat' ? value : value.toNumber(),
-      active: parseFloat(value) <= parseFloat(available) ? true : false
-    })
+  useEffect(() => {
+    callToSetTotalValue()
+    callToShouldActiveButton()
+  }, [value, currentPair, isReady])
 
+  useEffect(() => {
+    if (currentPair && currentPair.secondary_coin) {
+      const conditionForText = currentPair.secondary_coin === minAmountByOrder.currencyCode
+      let actualValue = (conditionForText ? totalValue : value) || ''
+      actualValue = new BigNumber(actualValue.replace(/,/g, ''))
+      if (actualValue.isLessThan(minAmountByOrder.minAmount)) {
+        let text = ''
+        if (conditionForText) {
+          text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+        } else {
+          text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+        }
+        setValueError({
+          text: `Error: El monto a pagar es menor que el valor mínimo ${text}`
+        })
+      } else {
+        setValueError(null)
+      }
+    }
+  }, [totalValue, value, currentPair])
+
+  const callToSetTotalValue = async () => {
+    const totalValue = value ? await getTotalValue() : undefined
+    setTotalValue(totalValue)
   }
 
-  actualizarEstado = (e) =>{
-    this.setState({
-      address:e.target.value
+  const callToShouldActiveButton = async () => {
+    const formatValue = await formatToCurrency(value, currentWallet.currency)
+    setActive(formatValue.isLessThanOrEqualTo(availableBalance))
+  }
+
+  const handleChangeBuyAmount = (name, newValue, setInputState) => {
+    if (newValue !== '' && newValue !== '0' && !valueError && active) {
+      setInputState('good')
+    } else {
+      setInputState('bad')
+    }
+  }
+
+  const handleChangeSellAmount = async (name, newValue, setInputState, isOnlyTypingValidation = false) => {
+    if (!currentPair.secondary_value) return
+    if (newValue === '') return setValue(undefined)
+    newValue = String(newValue).replace(/[^0-9,.]/g, '').replace(/,/g, '')
+
+    const formatedValue = await formatToCurrency(newValue, currentWallet.currency)
+    const isGood = formatedValue.isGreaterThan(0) && formatedValue.isLessThanOrEqualTo(availableBalance)
+
+    setInputState(isGood ? 'good' : 'bad')
+
+    if (isOnlyTypingValidation) return
+
+    const valueAfterDot = newValue.split(".")
+
+    // limit to only one "."
+    if (valueAfterDot.length > 2) {
+      document.getElementsByName(name)[0].value = valueAfterDot[0] + "."
+      return
+    }
+
+    let shouldSetElement = true
+    if (valueAfterDot[1] === '' || RegExp('^[0]+$').test(valueAfterDot[1])) {
+      shouldSetElement = false
+    }
+
+    const element = shouldSetElement ? document.getElementsByName(name)[0] : {}
+
+    if (isNaN(formatedValue) || formatedValue === 'NaN' || formatedValue.toNumber() === 0) {
+      return window.requestAnimationFrame(() => {
+        if (formatedValue.toNumber() === 0) {
+          setValue(0)
+        }
+        element.value = isFiat ? formatNumber(newValue) : newValue
+      })
+    }
+
+    window.requestAnimationFrame(() => {
+      element.value = isFiat ? formatNumber(formatedValue.toString()) : formatedValue.toString()
+      setValue(formatedValue.toString())
     })
   }
 
-
-  getMaxAvailable = e =>{
-
-    let value = e.target.id
-    let { available } = this.props
-
-    this.setState({
-      value:value,
-      active:parseFloat(value) <= parseFloat(available) ? true : false
-    })
-  }
-
-
-  handleError = msg =>{
+  const handleError = msg => {
     mensaje(msg, 'error')
   }
 
+  const confirmSwap = async () => {
+    actions.isAppLoading(true)
 
-  finish_swap = async() =>{
+    await actions.get_swaps(currentWallet.id)
 
-    const {
-      value,
-    } = this.state
-
-    const{
-      current_wallet,
-      current_pair
-    } = this.props
-
-    this.props.action.Loader(true)
-    await this.props.action.get_swaps(current_wallet.id)
-    // await this.props.action.current_section_params({currentFilter:'swaps'})
-
-    const { pair_id } = current_pair
-    // let total_value = await this.get_total_value(value)
-    let new_swap = await this.props.action.add_new_swap(current_wallet.id, pair_id, value)
-    // console.log('!!!!!____________________________________________add_new_swap', new_swap)
-    if(!new_swap){
-      return this.handleError('No se ha podio hacer el cambio')
+    const { pair_id } = currentPair
+    const newSwap = await actions.addNewSwap(currentWallet.id, pair_id, value)
+    if (!newSwap) {
+      return handleError('No se ha podio hacer el cambio')
     }
+  }
 
+  const getTotalValue = async () => {
+    const { pair_id } = currentPair
+    if (value === undefined) return undefined
+    const totalValue = await convertCurrencies(currentWallet.currency, value, pair_id)
+    if (!totalValue) { return false }
+    return totalValue.want_to_spend
+  }
+
+  const startSwap = async (e) => {
+    e.preventDefault()
+    setLoaderButton(true)
+    await swap()
+    actions.confirmationModalToggle()
+    setLoaderButton(false)
   }
 
 
-  get_total_value = async value =>{
+  const swap = async () => {
+    const { secondary_coin, pair_id } = currentPair
+    let query = `{"where":{"id":"${pair_id}"}}`
+    await actions.updateCurrentPair(query)
 
-    const {
-      current_wallet,
-      current_pair
-    } = this.props
+    const spent_currency_amount = await formatToCurrency(value, currentWallet.currency, true)
+    const secureTotalValue = await getTotalValue(value)
 
-    // console.log('||||||||||||| current_pair ==> ', current_pair)
-    const { pair_id } = current_pair
-    let total_value = await convertCurrencies(current_wallet.currency, value, pair_id)
-    if(!total_value){return false}
-
-    this.setState({value})
-    return total_value.want_to_spend
-  }
-
-
-  // extract_currencies = async(currency) => {
-  //
-  //     const {
-  //       current_pair,
-  //       all_pairs
-  //     } = this.props
-  //
-  //     const { primary_currency, secondary_currency } = all_pairs[current_pair.pair_id]
-  //
-  //     // console.log('Comparison ==> ', currency, primary_currency)
-  //     if(currency === primary_currency.currency){
-  //       return secondary_currency
-  //     }else{
-  //       return primary_currency
-  //     }
-  //
-  // }
-
-  init_swap = async() => {
-    this.setState({loader_button:true})
-    await this.swap()
-    this.props.action.ConfirmationModalToggle()
-    this.setState({loader_button:false})
-  }
-
-
-  swap = async() =>{
-
-    const {
-      value
-    } = this.state
-
-    const {
-      current_wallet,
-      current_pair
-    } = this.props
-
-    let query =`{"where":{"id":"${current_pair.pair_id}"}}`
-    await this.props.action.update_current_pair(query)
-
-    const { secondary_coin, pair_id } = current_pair
-    const spent_currency_amount = await formatToCurrency(value, current_wallet.currency, true)
-    const total_value = await this.get_total_value(value)
-    this.setState({total_value})
-
-    this.props.action.ConfirmationModalPayload({
-      title:"Confirmando Intercambio",
-      txtPrimary:"Confirmar Intercambio",
-      txtSecondary:"Cancelar",
-      payload:'aa',
-      action:(this.finish_swap),
-      img:"swap",
-      type:"swap",
-      from:current_wallet.currency.currency,
-      to:secondary_coin,
-      handleSwap:this.swap,
-      spent:spent_currency_amount,
-      bought:total_value,
+    actions.confirmationModalPayload({
+      title: "Confirmando Intercambio",
+      txtPrimary: "Confirmar Intercambio",
+      txtSecondary: "Cancelar",
+      payload: 'aa',
+      action: (confirmSwap),
+      img: "swap",
+      type: "swap",
+      from: currentWallet.currency.currency,
+      to: secondary_coin,
+      handleSwap: swap,
+      spent: spent_currency_amount,
+      bought: secureTotalValue,
       pair_id
     })
   }
 
-  getOtherPairs = async(initial) => {
-
-    const { current_wallet, currency_pairs } = this.props
-
-    let currency = current_wallet && current_wallet.currency.currency
-    let all_pairs = []
-
-    // !initial && this.props.action.ConfirmationModalToggle()
-    !initial && this.props.action.other_modal_toggle()
-    if(currency_pairs){return false}
-
-    let pairs = await this.props.action.get_pair_from(currency, null, true)
-    if(pairs){all_pairs = [...pairs]}
-    let pairs2 = await this.props.action.get_pair_from(null, currency, true)
-    if(pairs2){all_pairs = [...all_pairs, ...pairs2]}
-    // if(all_pairs.length<1){return (!initial && this.props.action.ConfirmationModalToggle())}
-    if(all_pairs.length<1){return (!initial && this.props.action.other_modal_toggle())}
-    let pairs_result = await this.createListPairs(all_pairs, currency)
-    return this.props.action.pairs_for_account(current_wallet.currency.currency, {all_pairs:pairs_result}, 'currency')
+  const handleMaxAvailable = (e) => {
+    window.requestAnimationFrame(() => {
+      const amount = document.getElementsByName('sell-amount')[0]
+      amount.value = isFiat ? formatNumber(availableBalance) : availableBalance
+      setValue(availableBalance)
+    })
   }
 
-  createListPairs = async(all_pairs, currency) =>{
+  const { short_name, loader } = props
+  const { secondary_coin, secondary_value } = currentPair
 
-    const { currencies } = this.props
+  const shouldActiveInput = (active && secondary_coin) && (availableBalance > 0 && value > 0)
 
-    if(!currencies){return false}
-
-    let result = []
-
-    for (var i = 0; i < all_pairs.length; i++) {
-
-      let name
-
-      if(all_pairs[i].primary_currency.currency === currency){
-        name = all_pairs[i].secondary_currency.currency
-      }
-      if(all_pairs[i].secondary_currency.currency === currency){
-        name = all_pairs[i].primary_currency.currency
-      }
-
-      if(!name){return false}
-
-      let match = await matchItem(currencies, {primary:name}, 'view')
-
-      if(!match){return false}
-
-        result.push({
-          ...match,
-          pair_id:all_pairs[i].id
-        })
-
-    }
-
-    return result
+  if (!currentWallet || !currentPair || !secondary_coin) {
+    return (
+      <SwapViewLoader />
+    )
   }
 
+  return (
+    <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
-getTotalValue = (total_value) => {
-  this.setState({total_value})
-}
+      {
+        loader &&
+        <LoaderTrade
+          label="Procesando tu cambio"
+        />
+      }
 
-
-
-
-
-render(){
-
-  const { current_wallet, short_name, loader, current_pair, available } = this.props
-  const { value, active, total_value, loader_button } = this.state
-  const { secondary_coin, secondary_value } = current_pair
-  let movil_viewport = window.innerWidth < 768
-
-  // console.log('|||||||||| VALUE STATAE', typeof(available), current_pair)
-
-
-
-  return(
-    <Fragment>
-    {
-      !current_wallet ?
-      <SimpleLoader
-        label="Consultando Billetera"
+      <InputForm
+        classes="fuente2"
+        type="text"
+        placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
+        name="sell-amount"
+        value={value}
+        handleChange={handleChangeSellAmount}
+        label={`Pago con: ${currentWallet.currency.currency}`}
+        disabled={loader}
+        customError={valueError}
+        SuffixComponent={() => <AvailableBalance
+          handleAction={handleMaxAvailable}
+          amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}
       />
-        :
-        <form id="swapForm" className={`SwapView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
 
-          {
-            loader &&
-            <LoaderTrade
-              label="Procesando tu cambio"
-            />
-          }
+      { 
+        !isMovilViewport &&       
+        (<div className="middleSection">
+          <i className="fas fa-retweet"></i>
+        </div>)
+      }
 
-            <div className="WSection1">
-              <p className="fuente title soloAd3">Pago con: <span>{current_wallet.currency.currency}</span></p>
-                <InputFormCoin
-                  useFiatInput={current_wallet.currency_type === 'fiat'}
-                  secondary_value={secondary_value}
-                  active={active && secondary_coin && available>0 && value > 0}
-                  clase={true} //retiro los estilos que vienen por defecto
-                  placeholder="Escribe la cantidad"
-                  getMaxAvailable={this.getMaxAvailable}
-                  coin={short_name}
-                  saldoDisponible={available}
-                  name="name"
-                  value={value}
-                  actualizarEstado={this.actualizarEstado_coin}
-                />
-            </div>
+      <InputForm
+        classes="fuente2"
+        type="text"
+        placeholder="Total a recibir"
+        name="buy-amount"
+        value={totalValue}
+        handleChange={handleChangeBuyAmount}
+        isControlled={true}
+        label={`Total a recibir:`}
+        disabled={loader}
+        readOnly={true}
+        SuffixComponent={() => <PairSelect
+          selectPair={selectPair}
+          secondaryCoin={secondary_coin}
+        />}
+      />
 
-            {
-              !movil_viewport &&
-              <div className="middleSection">
-                <i className="fas fa-retweet"></i>
-              </div>
-            }
+      <div>
+        <CoinPrice>1 {short_name} = {!secondary_value ? 'Sin Cotización' : secondary_value} {secondary_coin}</CoinPrice>
+      </div>
 
+      <ControlButton
+        loader={loaderButton}
+        formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
+        label="Cambiar"
+      />
+    </SwapForm>
 
-            <div className="WSection1">
-              <p className="fuente title soloAd3">Recibo:</p>
-
-              <ReadReceiveCoin
-                active={(active && secondary_coin) && (available>0 && value > 0)  && total_value}
-                clase={true} //retiro los estilos que vienen por defecto
-                placeholder="Total a recibir"
-                getMaxAvailable={this.getMaxAvailable}
-                // getTotalValue={this.getTotalValue}
-                coin={short_name}
-                secondary_value={secondary_value}
-                get_total_value={this.get_total_value}
-                primary_value={value}
-                // primary_value={1000000}
-                secondary_coin={secondary_coin}
-                solo_lectura={true}
-                quote_type="primary"
-                account_type={current_wallet.currency_type}
-                // loader={loader}
-                getOtherPairs={this.getOtherPairs}
-                getTotalValue={this.getTotalValue}
-                // name="received"
-                // total_value={total_value}
-              />
-            </div>
-
-            <div className="WSection3">
-              <ButtonForms
-                active={(active && secondary_coin) && (available>0 && value > 0) && total_value}
-                // active={(value>0 && value<=current_wallet.available) ? true : false}
-                clases="cenVert"
-                ancho="200px"
-                type="primary"
-                siguiente={this.init_swap}
-                loader={loader_button}
-              >
-                  Cambiar
-              </ButtonForms>
-            </div>
-
-          </form>
-    }
-    </Fragment>
   )
 }
-}
 
-function mapDispatchToProps(dispatch){
-  return{
-    action: bindActionCreators(actions, dispatch)
+const PairSelect = ({ selectPair, secondaryCoin }) => (
+  <div className="coinBalance2 fuente2" onClick={() => selectPair(false)} >
+    <div className="coinB2">
+      <i className="fas fa-angle-down"></i>
+      <p>{secondaryCoin}</p>
+      {
+        secondaryCoin &&
+        <img src={require(`../../../assets/coins/${secondaryCoin}.png`)} alt="" width="30" />
+      }
+    </div>
+  </div>
+)
+
+
+const CoinPrice = styled.p`
+  color: gray;
+  margin: 0;
+  position: absolute;
+  @media only screen and (max-width: 768px) {
+    font-size: 14px !important;
   }
+`
+
+const SwapForm = styled(OperationForm)`
+  grid-template-rows: 1fr ${props => !props.isMovilViewport ? "30px" : ''} 1fr 20px 1fr;
+`
+
+const SwapViewLoader = () => {
+
+  return (
+    <SwapForm>
+      <InputForm skeleton />
+      <div></div>
+      <InputForm skeleton />
+      <div></div>
+      <ControlButton
+        formValidate={false}
+        label="Enviar"
+      />
+    </SwapForm>
+  )
 }
 
-function mapStateToProps(state, props){
-  const { pairs_for_account } = state.ui.current_section.params
-  const { user, user_id,  wallets, all_pairs, balances } = state.model_data
+function mapStateToProps(state, props) {
+  const { pairsForAccount } = state.ui.current_section.params
+  const { wallets, all_pairs } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
-  // console.log('Que carajo pasa con el convertidor', pairs_for_account)
 
-  let current_pair = {
-    pair_id:(current_wallet && pairs_for_account[current_wallet.id]) && pairs_for_account[current_wallet.id].current_pair.pair_id,
-    secondary_coin:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency,
-    secondary_value:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair.currency_value
+  const currentPair = {
+    pair_id: (current_wallet && pairsForAccount[current_wallet.id]) && pairsForAccount[current_wallet.id].current_pair.pair_id,
+    secondary_coin: current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency,
+    secondary_value: current_wallet && pairsForAccount[current_wallet.id] && pairsForAccount[current_wallet.id].current_pair.currency_value
   }
 
-
-
-
-  // console.log('||||||||||||||||||||||| CURRENT BY STATETOPROPS', current_wallet, pairs_for_account)
-
-  return{
-    loader:state.isLoading.loader,
-    user:user[user_id],
-    wallets,
+  return {
+    loader: state.isLoading.loader,
     all_pairs,
-    swaps:state.model_data.swaps,
-    current_wallet,
-    short_name:state.ui.current_section.params.short_name,
-    local_pairs:state.model_data.pairs.collections || null,
-    quote_type:state.ui.current_section.params.quote_type,
-    local_currency:state.model_data.pairs.localCurrency,
-    currencies:state.model_data.currencies,
-    currency_pairs:!current_wallet ? null : (pairs_for_account[current_wallet.currency.currency] && pairs_for_account[current_wallet.currency.currency].all_pairs),
-    // current_pair:current_wallet && pairs_for_account[current_wallet.id] && pairs_for_account[current_wallet.id].current_pair
-    current_pair:current_pair,
-    available:balances && balances[current_wallet && current_wallet.id] && balances[current_wallet.id].available
+    short_name: state.ui.current_section.params.short_name,
+    local_currency: state.modelData.pairs.localCurrency,
+    currencies: state.modelData.currencies,
+    currentPair
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps) (SwapView)
-// export default withRouter(DepositView)
+export default connect(mapStateToProps)(SwapView)

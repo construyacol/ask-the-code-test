@@ -37,10 +37,11 @@ const initialState = {
   current_section:{
     view:"initial", //initial - detail
     params:{
+      enabled_create_wallet_button:true,
       show_menu_principal:true,
       current_wallet:null,
       short_name:null,
-      pairs_for_account:{},
+      pairsForAccount:{},
       activity:false,
       settings:null,
       current_sub_section:null,
@@ -57,7 +58,7 @@ const initialState = {
       active_trade_operation:false
     }
   },
-  other_modal:false,
+  otherModal:false,
   flowAnimationLayout:"",
   notifications:{
     withdraw_accounts:{
@@ -204,8 +205,8 @@ const ui = (state = initialState, action)=>{
           ...state.current_section,
           params:{
             ...initialState.current_section.params,
-            pairs_for_account:{
-              ...state.current_section.params.pairs_for_account
+            pairsForAccount:{
+              ...state.current_section.params.pairsForAccount
             },
             update_list:state.current_section.params.update_list,
             currentFilter:state.current_section.params.currentFilter,
@@ -224,10 +225,10 @@ const ui = (state = initialState, action)=>{
           ...state.current_section,
               params:{
                 ...state.current_section.params,
-                pairs_for_account:{
-                  ...state.current_section.params.pairs_for_account,
+                pairsForAccount:{
+                  ...state.current_section.params.pairsForAccount,
                   [action.payload.wallet_id]:{
-                    ...state.current_section.params.pairs_for_account[action.payload.wallet_id],
+                    ...state.current_section.params.pairsForAccount[action.payload.wallet_id],
                     ...action.payload.data
                   }
                 }
@@ -251,7 +252,7 @@ const ui = (state = initialState, action)=>{
     // console.log('haz hecho click en el modal confirmation', action.payload)
       return {
         ...state,
-        other_modal:!state.other_modal
+        otherModal:!state.otherModal
       }
     case SECTION_VIEW_TO:
     // console.log('haz hecho click en el modal confirmation', action.payload)

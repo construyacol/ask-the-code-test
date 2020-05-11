@@ -16,11 +16,17 @@ import thunk from 'redux-thunk'
 import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
 import { Provider } from 'react-redux'
+import { mainService } from './services/MainService';
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
 // document.body.appendChild(script);
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
+
+const updateServices = store => next => action => {
+  next(action);
+  mainService.setGlobalState(store.getState())
+}
 
 const store = createStore(
   reducer,
@@ -29,7 +35,8 @@ const store = createStore(
     applyMiddleware(
       logger,
       thunk,
-      loadedSoundsMiddleware
+      loadedSoundsMiddleware,
+      updateServices
     )
   )
   // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
@@ -37,7 +44,9 @@ const store = createStore(
 
 const home = document.getElementById('home-container')
 render(
-  <Provider store={store}><RootContainer/></Provider>
+  <Provider store={store}>
+      <RootContainer/>
+  </Provider>
  , home
 );
 

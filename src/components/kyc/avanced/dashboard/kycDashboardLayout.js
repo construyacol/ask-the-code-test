@@ -6,9 +6,6 @@ const KycDashBoard = props =>{
 
   const {
     step,
-    newback,
-    newfront,
-    newselfie,
     front,
     back,
     selfie,
@@ -17,10 +14,18 @@ const KycDashBoard = props =>{
     animation,
     action,
     animation2,
-    id_type
+    id_type,
+    base64
   } = props
 
-  // console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', id_type)
+
+  const {
+    newfront,
+    newselfie,
+    newback
+  } = base64
+
+  console.log('DESDE KYC AVANCED LAYOUT DASH:::: ', newfront, front)
 
   return(
     <div className="KycDashBoard">
@@ -49,8 +54,8 @@ const KycDashBoard = props =>{
 
            <div className={`imgDashStep ${step === 1 ? 'active' : ''}`}  title="1">
              {
-               front === newfront ?
-               <img className={`imgDashItem ${id_type}`} src={require(`${newfront}`)} alt="" width="80"  title="1"/>
+               !newfront ?
+               <img className={`imgDashItem ${id_type}`} src={require(`${front}`)} alt="" width="80"  title="1"/>
                :
                <Fragment>
                  <img className="imgDashItem" src={newfront} alt="" width="80"  title="1"/>
@@ -64,8 +69,8 @@ const KycDashBoard = props =>{
               <div className={`imgDashStep ${step === 2 ? 'active' : ''}`}  title="2">
 
                 {
-                  back === newback ?
-                  <img className="imgDashItem" src={require(`${newback}`)} alt="" width="80" title="2"/>
+                  (!newback) ?
+                  <img className="imgDashItem" src={require(`${back}`)} alt="" width="80" title="2"/>
                   :
                   <Fragment>
                     <i className="fas fa-check-circle"></i>
@@ -79,9 +84,8 @@ const KycDashBoard = props =>{
 
            <div className={`imgDashStep ${step === 3 || step === 4 ? 'active' : ''}`}  title="3">
              {
-               selfie === newselfie ?
-
-               <img className="imgDashItem" src={require(`${newselfie}`)} alt="" width="80" title="3"/>
+               !newselfie ?
+               <img className="imgDashItem" src={require(`${selfie}`)} alt="" width="80" title="3"/>
                :
                <Fragment>
                  <i className="fas fa-check-circle"></i>
@@ -108,7 +112,7 @@ const KycDashBoard = props =>{
             <ButtonForms
               active={true}
               type="primary"
-              siguiente={action.ToggleModal}
+              siguiente={action.toggleModal}
               > Finalizar</ButtonForms>
 
           }

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { number_format } from '../../../services'
+import { number_format } from '../../../utils'
 import { PaymentConfirButton } from '../buttons/buttons'
 import IconSwitch from '../icons/iconSwitch'
 import { connect } from 'react-redux'

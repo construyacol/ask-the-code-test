@@ -23,7 +23,7 @@ const CountrySelector = props => {
 const mapStateToProps = state => {
 
   return{
-    country:state.model_data.pairs.country
+    country:state.modelData.pairs.country
   }
 
 }

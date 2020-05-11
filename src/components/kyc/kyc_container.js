@@ -37,11 +37,11 @@ class Kyc extends Component {
     }
 
 
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     let res = await this.props.action.update_level_profile(config, user)
     if(!res){
              await this.props.action.ReduceStep('kyc_basic', 1)
-             this.props.action.Loader(false)
+             this.props.action.isAppLoading(false)
              this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
       return this.props.action.ReduceStep('kyc_global_step', 1)
     }
@@ -63,16 +63,16 @@ class Kyc extends Component {
         }
       }
     }
-      await this.props.action.update_user(user_update)
+      await this.props.action.updateUser(user_update)
     // setTimeout(()=>{
       // this.user_update()
       // this.props.action.CleanForm('kyc_basic')
 
       this.props.action.IncreaseStep('kyc_global_step')
       this.props.action.success_sound()
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       // setTimeout(()=>{
-        // this.props.action.Loader(false)
+        // this.props.action.isAppLoading(false)
         // this.props.action.ReduceStep('kyc_basic')
       // },1000)
     // }, 3000)
@@ -93,13 +93,13 @@ class Kyc extends Component {
       "info_type":"identity",
       "verification_level":"level_1"
     }
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     let res = await this.props.action.update_level_profile(config, user)
     // console.log('||||||||||| VALIDATE_RES', res)
     if(!res){
              await this.props.action.ReduceStep('kyc_avanced', 1)
              await this.setState({reset:true})
-             this.props.action.Loader(false)
+             this.props.action.isAppLoading(false)
             return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
       // return this.props.action.ReduceStep('kyc_global_step', 1)
     }
@@ -118,8 +118,8 @@ class Kyc extends Component {
       }
     }
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.update_user(user_update)
-    this.props.action.Loader(false)
+    await this.props.action.updateUser(user_update)
+    this.props.action.isAppLoading(false)
     this.setState({identity_success:true})
     return true
   }
@@ -139,7 +139,7 @@ const { user } = this.props
   console.log('°°°°|||| send_files', res)
   if(!res){
            // await this.props.action.ReduceStep('kyc_basic', 1)
-           this.props.action.Loader(false)
+           this.props.action.isAppLoading(false)
            return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
   }
   this.props.action.success_sound()
@@ -163,8 +163,8 @@ const { user } = this.props
     }
   }
   // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.update_user(user_update)
-  this.props.action.Loader(false)
+    await this.props.action.updateUser(user_update)
+  this.props.action.isAppLoading(false)
 
 
 }
@@ -182,7 +182,7 @@ const { user } = this.props
   }
 
   exit = () =>{
-    this.props.action.ToggleModal(false)
+    this.props.action.toggleModal(false)
   }
 
   render(){
@@ -205,13 +205,13 @@ const { user } = this.props
 
 function mapStateToProps(state, props){
   // console.log('S T A T E -- K Y C --- C O N T A I N E R', state)
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
   const { current } = state.form
 
   return{
     loader:state.isLoading.loader,
     globalStep:state.form.globalStep,
-    user:user[user_id],
+    user:user,
     form_kyc_basic:state.form.form_kyc_basic,
     current
   }

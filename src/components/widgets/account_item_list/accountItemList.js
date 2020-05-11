@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import ActiveItem from '../items/active_item'
 import LimitTermometer from '../limitTermometer/limitTermometer'
-import { number_format, mensaje } from '../../../services'
+import { number_format, mensaje } from '../../../utils'
 
 import './account_item.css'
 

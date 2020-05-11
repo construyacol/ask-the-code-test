@@ -9,7 +9,7 @@ import MovilMenuComponent from './movilMenu'
 // import store from '../../'
 
 
-
+// TODO: remove all window ref from components, may be the cause of future issues
 const MenuPrincipalLayout = (props) => {
 
   const {
@@ -17,30 +17,30 @@ const MenuPrincipalLayout = (props) => {
     close_menu_principal,
     verification_state,
     openSelectCountry,
-    go_to
+    navigateTo
   } = props
 
 
-  // const { user, user_id } = store.getState().model_data
-  // const country = user[user_id].country
+  // const { user, user_id } = store.getState().modelData
+  // const country = user.country
 
 
-  return(
-    <section className="menuPrincipal fuente" style={{left:show_menu_principal ? '0' : '-110vw' }}>
+  return (
+    <section className="menuPrincipal fuente" style={{ left: show_menu_principal ? '0' : '-110vw' }}>
 
-        <div className="contCloseMprincipal" onClick={close_menu_principal}>
-          {/* <i className="fas fa-times"></i> */}
+      <div className="contCloseMprincipal" onClick={close_menu_principal}>
+        {/* <i className="fas fa-times"></i> */}
+      </div>
+
+      <div className="userInfo">
+        <div className="logo">
+          <img src={logo} alt="" width="110" />
+          <i className="fas fa-arrow-left" onClick={close_menu_principal}></i>
+          {/* <ArrowRight size={20} color="white" /> */}
         </div>
 
-        <div className="userInfo">
-          <div className="logo">
-              <img src={logo} alt="" width="110"  />
-              <i className="fas fa-arrow-left"  onClick={close_menu_principal}></i>
-              {/* <ArrowRight size={20} color="white" /> */}
-          </div>
-
-          <div className="perfilPiCont">
-            <div className="contImgPicProfile">
+        <div className="perfilPiCont">
+          <div className="contImgPicProfile">
 
             {
               verification_state &&
@@ -49,54 +49,54 @@ const MenuPrincipalLayout = (props) => {
                 color={verification_state === 'rejected' ? 'red' : '#00D2FF'}
                 icon={
                   verification_state === 'rejected' ? 'error' :
-                  verification_state === 'confirmed' ? 'confirmed' :
-                  verification_state === 'accepted' ? 'accepted' : verification_state
+                    verification_state === 'confirmed' ? 'confirmed' :
+                      verification_state === 'accepted' ? 'accepted' : verification_state
                 }
               />
             }
 
 
-            </div>
-            <div className={`perfilPic ${verification_state}`}>
-              <img src={userPic} alt="" className="userPic" width="100%"/>
-            </div>
           </div>
-
-
-
-            <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
-            {
-              props.user.verification_level === 'level_1' &&
-              <i className="far fa-check-circle mPverify"></i>
-            }
-            </p>
-            {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span cl  assName="number">2.000</span> USD</p> */}
-            {
-              window.innerWidth<768 &&
-              <ScoresComponent/>
-            }
+          <div className={`perfilPic ${verification_state}`}>
+            <img src={userPic} alt="" className="userPic" width="100%" />
+          </div>
         </div>
 
-        <div className="menuItems">
+
+
+        <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
           {
-            window.innerWidth>768 ?
-              <section className="section1">
-                {
-                  menuPrincipal.map((item)=>{
-                    if(!item.visible){return false}
-                    return <ButtonPrincipalMenu {...props} {...item} key={item.id}/>
-                  })
-                }
-              </section>
-              :
-              <section className="section1">
-                <MovilMenuComponent openSelectCountry={openSelectCountry} go_to={go_to}/>
-              </section>
+            props.user.verification_level === 'level_1' &&
+            <i className="far fa-check-circle mPverify"></i>
           }
+        </p>
+        {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span cl  assName="number">2.000</span> USD</p> */}
+        {
+          window.innerWidth < 768 &&
+          <ScoresComponent />
+        }
+      </div>
+
+      <div className="menuItems">
+        {
+          window.innerWidth > 768 ?
+            <section className="section1">
+              {
+                menuPrincipal.map((item) => {
+                  if (!item.visible) { return false }
+                  return <ButtonPrincipalMenu {...props} {...item} key={item.id} />
+                })
+              }
+            </section>
+            :
+            <section className="section1">
+              <MovilMenuComponent openSelectCountry={openSelectCountry} navigateTo={navigateTo} />
+            </section>
+        }
 
 
-          <section className={`section2 ${window.innerWidth>768 ? '' : 'movil' }`}>
-            {/* <div>
+        <section className={`section2 ${window.innerWidth > 768 ? '' : 'movil'}`}>
+          {/* <div>
               {
                 menuPrincipalInferior.map((item)=>{
                   if(!item.visible){return false}
@@ -104,16 +104,16 @@ const MenuPrincipalLayout = (props) => {
                 })
               }
             </div> */}
-            {
-              window.innerWidth>768 ?
-              <ScoresComponent/>
+          {
+            window.innerWidth > 768 ?
+              <ScoresComponent />
               :
               <div className="menuMovilItems close">
                 <p className="menuMovilItemTexts close fuente">Cerrar sesión</p>
               </div>
-            }
-          </section>
-        </div>
+          }
+        </section>
+      </div>
     </section>
   )
 }

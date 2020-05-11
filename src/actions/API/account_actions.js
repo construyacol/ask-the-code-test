@@ -1,6 +1,6 @@
 import Environment from '../../environment'
 // import * as normalizr_services from '../../schemas'
-// import { update_normalized_state } from '../dataModelActions'
+// import { updateNormalizedDataAction } from '../dataModelActions'
 
 import {
   ApiGetRequest,
@@ -15,8 +15,8 @@ import {
 // } from '../dataModelActions'
 
 // import {
-//   app_loaded,
-//   load_label
+//   isAppLoaded,
+//   appLoadLabelAction
 // } from '../loader'
 
 // import {
@@ -27,7 +27,7 @@ import {
 const { AccountApiUrl } = Environment
 
 // const {
-//   normalize_user,
+//   normalizeUser,
 //   normalize_data
 // } = normalizr_services
 
@@ -35,14 +35,14 @@ export const get_fiat_accounts_by_userId = (userId) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().model_data.user[getState().model_data.user_id]
+    const user = getState().modelData.user
 
     let filter = `filter={"where": {"currency_type": "fiat"}}`
     const url_accounts = `${AccountApiUrl}users/${user.id}/accounts?country=${user.country}&${filter}`
 
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
 
     const fiat_accounts = await ApiGetRequest(url_accounts, myHeaders)

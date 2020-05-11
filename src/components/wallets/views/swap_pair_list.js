@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../../widgets/loaders'
 import ItemLayout from '../../widgets/items/itemLayout'
-import convertCurrencies from '../../../services/convert_currency'
+import convertCurrencies from '../../../utils/convert_currency'
 import OtherModalLayoutPairs from '../../widgets/modal/otherModalLayoutPairs'
 
 export class PairList extends Component {
@@ -15,7 +15,7 @@ export class PairList extends Component {
   }
 
   close_modal = () => {
-  this.props.action.other_modal_toggle()
+  this.props.action.toggleOtherModal()
   }
 
   componentWillReceiveProps(props){
@@ -33,7 +33,7 @@ export class PairList extends Component {
     // console.log(name, code, type_currency, pair_id);
 
     const { current_wallet } = this.props
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     this.setState({
       loadermsg:"Ajustando nave nodriza..."
     })
@@ -41,12 +41,12 @@ export class PairList extends Component {
     // const { data } = await this.props.action.currency_calculator_exported(current_wallet.currency.currency, 1, pair_id)
     const data = await convertCurrencies(current_wallet.currency, '1', pair_id)
 
-    this.props.action.Loader(false)
-    this.props.action.other_modal_toggle()
+    this.props.action.isAppLoading(false)
+    this.props.action.toggleOtherModal()
 
     if(data){
       const { to_spend_currency, pair_id } = data
-      await this.props.action.pairs_for_account(current_wallet.id, {
+      await this.props.action.pairsForAccount(current_wallet.id, {
           current_pair:{
             pair_id:pair_id,
             currency:to_spend_currency.currency,
@@ -123,7 +123,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { wallets } = state.model_data
+  const { wallets } = state.modelData
   const { params } = props.match
   const current_wallet = wallets[params.account_id]
   const { id, currency } = current_wallet
@@ -132,8 +132,8 @@ function mapStateToProps(state, props){
   return{
     current_wallet,
     short_name:state.ui.current_section.params.short_name,
-    all_pairs:state.ui.current_section.params.pairs_for_account[currency.currency] && state.ui.current_section.params.pairs_for_account[currency.currency].all_pairs,
-    current_pair:state.ui.current_section.params.pairs_for_account[id] && state.ui.current_section.params.pairs_for_account[id].current_pair,
+    all_pairs:state.ui.current_section.params.pairsForAccount[currency.currency] && state.ui.current_section.params.pairsForAccount[currency.currency].all_pairs,
+    current_pair:state.ui.current_section.params.pairsForAccount[id] && state.ui.current_section.params.pairsForAccount[id].current_pair,
     loader:state.isLoading.loader
   }
 }

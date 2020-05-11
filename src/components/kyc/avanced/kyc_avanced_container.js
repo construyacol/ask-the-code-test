@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import KycAvancedLayout from './kyc_avanced_layout'
-import { readFile } from '../../../services'
+import { readFile } from '../../../utils'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { toast } from 'react-toastify';
-import { img_compressor } from '../../../services'
+import { img_compressor } from '../../../utils'
 
 class KycAvancedContainer extends Component{
 
@@ -29,7 +28,7 @@ class KycAvancedContainer extends Component{
     base64:{...this.props.base64}
   }
 
-  componentWillReceiveProps(nextProps){
+  // componentWillReceiveProps(nextProps){
     // const { reset, step } = nextProps
     // if(reset){
     //   this.setState({
@@ -52,13 +51,13 @@ class KycAvancedContainer extends Component{
     //   })
     // }
     // // console.log('||||| ----- componentWillReceiveProps', nextProps)
-  }
+  // }
 
 
     async componentDidMount(){
       await this.props.action.CurrentForm('kyc_advance')
       if(this.props.current === 'kyc_advance'){
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         this.props.history.push(`?form=identity_front_upload`)
       }
     }
@@ -67,7 +66,7 @@ class KycAvancedContainer extends Component{
       componentDidUpdate(prevProps){
         // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
         if(prevProps.step === this.props.step && this.props.current === 'kyc_advance'){return}
-        console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
+        // console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC ADVANCE ===> ', prevProps.step, this.props.step, this.props)
 
         const { reset, step } = this.props
         if(reset){
@@ -117,12 +116,12 @@ class KycAvancedContainer extends Component{
   goFileLoader = async e =>{
     if (e.target.files && e.target.files.length > 0) {
       // console.log('|||||||| goFileLoader', e.target.files)
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       // console.log('||||||||||IMG BEFORE', e.target.files[0])
       const file = await img_compressor(e.target.files[0])
       // return console.log('||||||||||IMG AFTER', file)
       const imageDataUrl = await readFile(file)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       // console.log('|||||||| goFileLoader url', imageDataUrl)
       this.setState({
         imageSrc: imageDataUrl,
@@ -132,7 +131,7 @@ class KycAvancedContainer extends Component{
   }
 
   subirImg = (img) =>{
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
     const{
       urlImg,
@@ -140,22 +139,16 @@ class KycAvancedContainer extends Component{
     } = img
 // simulamos llamado del endpoint para guardar imagen
     setTimeout(()=>{
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.setState({
         fileloader: !this.state.fileloader
       })
 
       this.updateLocalImg(urlImg, base64)
 
-      toast(`¡Imagen Cargada !`, {
-        position: window.innerWidth>768 ? toast.POSITION.BOTTOM_RIGHT : toast.POSITION.TOP_CENTER,
-         pauseOnFocusLoss: false,
-         draggablePercent: 60,
-         className: "DCfondo",
-         bodyClassName: "DCTtext",
-         progressClassName: 'DCProgress',
-         autoClose: 3000
-      });
+      this.props.action.mensaje('¡Imagen cargada con exito!', 'success')
+
+
     }, 2000)
 
   }
@@ -260,7 +253,7 @@ class KycAvancedContainer extends Component{
 
 
     finish = () =>{
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
     }
 
 
@@ -284,13 +277,13 @@ class KycAvancedContainer extends Component{
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   const { current } = state.form
   return{
     loader:state.isLoading.loader,
     step:state.form.form_kyc_avanced.step,
     base64:state.form.form_kyc_avanced.base64,
-    user:user[user_id],
+    user:user,
     current
   }
 }

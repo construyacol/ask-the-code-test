@@ -28,7 +28,7 @@ export const socket_notify = (payload, item_type, title) =>{
 }
 
 
-export const verification_state = (payload) =>{
+export const verificationStateAction = (payload) =>{
   return{
     type:VERIFICATION_STATE,
     payload
@@ -51,7 +51,7 @@ export const default_video_state = (payload) =>{
 }
 
 
-export const AddNotification = (payload, extra, amount) =>{
+export const addNotification = (payload, extra, amount) =>{
 
   return{
     type:ADD_NOTIFICATION,
@@ -74,7 +74,7 @@ export const CleanNotifications = (payload) =>{
   }
 }
 
-export const CleanItemNotifications = (payload, item_clean) =>{
+export const cleanNotificationItem = (payload, item_clean) =>{
   return{
     type:CLEAN_ITEM_NOTIFICATIONS,
     payload,
@@ -116,14 +116,14 @@ export const FlowAnimationUi = payload =>{
 }
 
 
-export const other_modal_toggle = () =>{
+export const toggleOtherModal = () =>{
   return{
     type:OTHER_MODAL
   }
 }
 
 
-export const pairs_for_account = (wallet_id, data) =>{
+export const pairsForAccount = (wallet_id, data) =>{
   // Recibe como parametro un objeto
   // ej this.props.action.current_section_params({current_wallet:this.state.current_wallet})
   return{
@@ -146,7 +146,7 @@ export const current_section_params = payload =>{
   }
 }
 
-export const current_section_clean = () =>{
+export const cleanCurrentSection = () =>{
   return{
     type:CURRENT_SECTION_CLEAN
   }
@@ -177,14 +177,14 @@ export const ItemQuoteActive = payload =>{
   }
 }
 
-export const ConfirmationModalToggle = payload =>{
+export const confirmationModalToggle = payload =>{
   return{
     type:MODAL_CONFIRMATION_TOGGLE,
     payload
   }
 }
 
-export const ConfirmationModalPayload = payload =>{
+export const confirmationModalPayload = payload =>{
   return{
     type:CONFIRMATION_MODAL_PAYLOAD,
     payload

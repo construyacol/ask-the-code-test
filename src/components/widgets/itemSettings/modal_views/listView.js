@@ -3,7 +3,7 @@ import { countries } from '../../../api/ui/settingList/country.json'
 import { currencies } from '../../../api/ui/settingList/currencies.json'
 import ItemListView from './listItemView'
 import { InputForm } from '../../inputs'
-import { matchItem } from '../../../../services'
+import { matchItem } from '../../../../utils'
 import './listView.css'
 
 import './viewSettings.css'

@@ -1,118 +1,114 @@
-import React, { Component } from 'react'
-import HomeContainer from './home/homeContainer'
+import React, { useEffect, useState } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
-// import createBrowserHistory from "history/createBrowserHistory"
-import { createBrowserHistory } from "history";
 import localForage from 'localforage'
-// import PagesRouter from './landingPage/pages'
 import jwt from 'jsonwebtoken'
-// import FreshChat from '../services/freshChat'
-// import AuthComponentContainer from './auth'
-// import LandingPageContainer from './landing_page/landingContainer'
-// import Landing from './landingPage'
+import { connect, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-const history = createBrowserHistory();
+import actions from '../actions';
+import LoaderAplication from './widgets/loaders/loader_app'
+import HomeContainer from './home/home-container'
+import { isValidToken } from "./utils"
+import withHandleError from './withHandleError';
+import SocketsComponent from './sockets/sockets'
+// import CoinsendaSocket from './sockets/new-socket'
+import ToastContainers from './widgets/toast/ToastContainer'
+import { COINSENDA_URL } from '../const/const';
+import { doLogout } from './utils'
+import { history } from '../const/const';
+// import SessionRestore from './hooks/sessionRestore'
+// import { useCoinsendaServices } from '../services/useCoinsendaServices'
 
+let session = {}
 
+function RootContainer(props) {
+  // TODO: rename isLoading from state
+  const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
+  // const [ session ] = SessionRestore()
+  // const [ coinsendaServices ] = useCoinsendaServices()
 
-class RootContainer extends Component {
+  const initComponent = async () => {
+    // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)
+    const params = new URLSearchParams(history.location.search)
 
-  state = {
-    TokenUser:null,
-    userId:"default"
-  }
+    if (params.has('token')) {
+      await localForage.setItem('user_token', params.get('token'))
+      await localForage.setItem('created_at', new Date())
 
-  componentDidMount(){
-    this.init_component()
-  }
-
-  token_is_valid = async(created_at) => {
-    // Este metodo valida si el token esta vigente, vigencia => 2.5 hrs (150min)
-    var fechaInicio = created_at.getTime();
-    var fechaFin    = new Date().getTime();
-    var diff = (fechaFin - fechaInicio)/(1000*60);
-    if(parseInt(diff) >= 150){
-      return false
-    }
-    return true
-  }
-
-
-
-  init_component = async() =>{
-
-    let result
-    let TokenUser
-
-    if(history.location.search){
-      result = history.location.search.split("?token=")
-      TokenUser = result[1]
-      if(TokenUser) {
-        await localForage.setItem('TokenUser', TokenUser)
-        await localForage.setItem('created_at', new Date())
-        history.push('/')
-      }
+      history.push('/')
     }
 
-    let AccessToken = await localForage.getItem('TokenUser')
+    const userToken = await localForage.getItem('user_token')
+    const created_at = await localForage.getItem('created_at')
+    if (!created_at || !userToken) { return doLogout() }
 
-    let created_at = await localForage.getItem('created_at')
-    if(!created_at || !AccessToken){return this.logOut()}
-
-    let availableToken = await this.token_is_valid(created_at)
-    if(!availableToken){return this.logOut()}
-
-    // console.log('|||||||| availableToken', availableToken)
-
-    let userData = await jwt.decode(AccessToken)
-    // console.log('|||||||| userData', userData)
-    if(!userData){return this.logOut()}
+    const availableToken = isValidToken(created_at)
+    if (!availableToken) { return doLogout() }
+    const userData = jwt.decode(userToken)
+    if (!userData) { return doLogout() }
     const { usr, email } = userData
-    // console.log(AccessToken)
-    this.setState({
-      // TokenUser:'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Inpla3kubGFmK2xvY2FsQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZDIzNDk4MTI0OWYwZDJkMWJmMWI3MmUiLCJ1c3IiOiI1ZDIzNGExMTMwMzViZTJlMThhOTUzY2EiLCJqdGkiOiJ3WjRwUk5rd096TjZmZUxsMGxBRVhZZld2QXpoRG0zMVVMVWZ1S0tvdTZHcngxYWdNODdMcHcyOVB4Umw1QmdWIiwiYXVkIjoidHJhbnNhY3Rpb24saWRlbnRpdHksYXV0aCIsIm1ldGFkYXRhIjoie1wiY2xpZW50SWRcIjpcIjVkMjM0OTgxMjQ5ZjBkMmQxYmYxYjcyZVwifSIsImlhdCI6MTU2OTQzODU2OCwiZXhwIjoxNTY5NDQ5MzY4fQ.1XkXD0mdOj0LfrSVyTsFs4ZkguH1kWS9aYPYdPs3v8_nSMIfVtU-Y6YXIgU0_gDoVU_Yr7tueZ5rxQWlxlNUkQ',
-      TokenUser:AccessToken,
-      userId:usr,
-      email
-      // TokenUser:'5d234a113035be2e18a953ca'
+
+    props.actions.setAuthData({
+      userToken,
+      userEmail: email,
+      userId: usr
     })
     history.push('/')
   }
 
-  logOut = async() =>{
-    window.location.href = process.env.NODE_ENV === 'development' ? "https://devsertec.com/" :"https://www.coinsenda.com/";
-    await localForage.removeItem('TokenUser')
-    await localForage.removeItem('created_at')
-    await this.setState({TokenUser:false, userId:null})
-  }
 
-  render(){
+  useEffect(() => {
+    initComponent()
+  }, [])
 
-    const { TokenUser, userId, email } = this.state
+  // useEffect(()=>{
+  //   // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION :', session)
+  //   // debugger
+  //   if(session && Object.keys(session).length){
+  //     const init = async() => {
+  //       // await coinsendaServices.countryValidator()
+  //       coinsendaServices.postLoader(doLogout)
+  //       await props.actions.isLoggedInAction(true)
+  //       await props.actions.isAppLoaded(true)
+  //       return history.push('/wallets')
+  //     }
+  //     init()
+  //   }
+  // }, [session])
 
-    const user_data = {
-      token:TokenUser,
-      userId,
-      logOut:this.logOut,
-      email
-    }
 
-    return(
-      <Router
-        history={history}
-        >
-        <Switch>
-          <Route path="/" render={()=>(
-            TokenUser ?
-            <HomeContainer history={history} user_data={user_data} {...this.props} />
-            :
-            <div style={{background:"linear-gradient(to bottom right,#014c7d,#0198ff)", width:"100vw", height:"100vh"}} ></div>
-          )}/>
-        </Switch>
-      </Router>
+  return (
+    <Router
+      history={history}
+    >
 
-    )
+      <SocketsComponent />
+      {/* <CoinsendaSocket /> */}
+      <ToastContainers />
+      <Switch>
+        <Route path="/" render={() => (
+          !isAppLoaded ?
+          <LoaderAplication history={history} />
+          :
+          <HomeContainer />)} />
+      </Switch>
+    </Router>
+  )
+
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions , dispatch)
   }
 }
 
-export default RootContainer
+export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer))
+
+
+
+
+
+
+
+//

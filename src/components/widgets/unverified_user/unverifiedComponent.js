@@ -29,12 +29,12 @@ class UnverifiedComponent extends Component {
     setTimeout(async()=>{
       if(user.levels){
         if(user.levels.personal === 'rejected' && user.levels.identity === "rejected"){
-          return this.props.action.ToggleModal()
+          return this.props.action.toggleModal()
         }
         await this.props.action.ToStep('globalStep', 2)
-        return this.props.action.ToggleModal()
+        return this.props.action.toggleModal()
       }
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
     }, 0)
   }
 
@@ -80,10 +80,10 @@ class UnverifiedComponent extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
 
   return{
-    user:user[user_id]
+    user:user
   }
 
 }

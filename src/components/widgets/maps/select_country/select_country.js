@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
 import SAmerica from '../sAmerica'
 import { InputCountry } from '../../inputs'
-import { matchItem } from '../../../../services'
+import { matchItem } from '../../../../utils'
 
 import './loader_app.css'
 
@@ -22,12 +22,12 @@ class SelectCountry extends Component {
   }
 
   action_loader = (payload) =>{
-    // this.props.action.Loader(payload)
+    // this.props.action.isAppLoading(payload)
     this.setState({disabled:false})
   }
 
   load_countries = async() =>{
-    // this.props.action.Loader(true)
+    // this.props.action.isAppLoading(true)
     let res = await this.props.action.countryvalidators()
     if(!res){return false}
     // console.log('||||| =====================================> SelectCountry', res)
@@ -77,7 +77,7 @@ class SelectCountry extends Component {
   render(){
 
     const{
-      app_load_label,
+      appLoadLabel,
       loader
     } = this.props
 
@@ -120,7 +120,7 @@ class SelectCountry extends Component {
 
           </div>
           :
-          <SimpleLoader label={`${app_load_label}`} />
+          <SimpleLoader label={`${appLoadLabel}`} />
         }
       </Fragment>
 
@@ -132,12 +132,12 @@ class SelectCountry extends Component {
 function mapStateToProps(state, props){
 
   // console.log('||||||||| LOADEER STATE', state)
-  const { user, user_id, wallets, all_pairs } = state.model_data
+  const { user, wallets, all_pairs } = state.modelData
   const { loader } = state.isLoading
 
   return{
-    app_load_label:state.isLoading.app_load_label,
-    user:user && user[user_id],
+    appLoadLabel:state.isLoading.appLoadLabel,
+    user:user,
     wallets,
     all_pairs,
     country:null,

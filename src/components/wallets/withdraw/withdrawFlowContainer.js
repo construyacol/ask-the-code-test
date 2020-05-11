@@ -8,7 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { withdraw_provider_by_type, matchItem, number_format } from '../../../services'
+import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
 
 import actions from '../../../actions'
 
@@ -19,7 +19,7 @@ class WithdrawFlow extends Component {
 
     state = {
       amount:"",
-      withdraw_providers:null,
+      withdrawProviders:null,
       need_new_acount:null,
       show_list_accounts:false,
       finish_step:false,
@@ -27,7 +27,7 @@ class WithdrawFlow extends Component {
       ticket_label_loader:`Creando orden de retiro`,
       color_loader:"blue",
       new_order:null,
-      AddNotification:false,
+      addNotification:false,
       min_amount:0,
       provider_type:'bank', //Por defecto en el flujo el tipo de retiro es por transferencia bancaria, a futuro habilitaremos cash (efectivo)
       withdraw_account_list_update:[]
@@ -81,14 +81,14 @@ class WithdrawFlow extends Component {
         const{
           currency_type,
           country,
-          withdraw_providers,
+          withdrawProviders,
           have_withdraw_accounts
         } = this.props
 
         if(!have_withdraw_accounts){await this.setState({need_new_acount:true})}
         let available_providers = []
 
-        await withdraw_providers.map(provider => {
+        await withdrawProviders.map(provider => {
             if(
               provider.country === country &&
               provider.currency_type === currency_type &&
@@ -118,7 +118,7 @@ class WithdrawFlow extends Component {
         this.setState({withdraw_account_list_update})
 
         this.setState({
-          withdraw_providers:available_providers,
+          withdrawProviders:available_providers,
           min_amount:parseInt(available_providers[0].provider.min_amount)
         })
     }
@@ -126,7 +126,7 @@ class WithdrawFlow extends Component {
 
     get_cost_struct = async(available_providers, withdraw_account_list) =>{
       // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
-      let providers_served = await withdraw_provider_by_type(available_providers || this.props.withdraw_providers)
+      let providers_served = await withdrawProvidersByType(available_providers || this.props.withdrawProviders)
 
       let update_list = []
       let w_account_list = withdraw_account_list || this.props.withdraw_account_list
@@ -157,12 +157,12 @@ class WithdrawFlow extends Component {
       // console.log('=======> new_account', new_account)
 
       const{
-        withdraw_providers,
+        withdrawProviders,
         form_withdraw
       } = this.props
 
 
-      let providers_served = await withdraw_provider_by_type(withdraw_providers)
+      let providers_served = await withdrawProvidersByType(withdrawProviders)
 
       const {
         provider_type
@@ -177,7 +177,7 @@ class WithdrawFlow extends Component {
       } = this.state
 
       // console.log('providers_served', providers_served)
-        let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdraw_providers, `{"where": {"userId": "${this.props.user.id}"}}`)
+        let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdrawProviders, `{"where": {"userId": "${this.props.user.id}"}}`)
         // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
         // console.log(' =====> withdraw_account_list', withdraw_account_list)
         // return alert('que paja')
@@ -192,18 +192,18 @@ class WithdrawFlow extends Component {
           setTimeout(async()=>{
             console.log('________________________________________new_account_and_withdraw', new_account)
 
-            this.props.action.AddNotification('withdraw_accounts', {account_id:new_account.id}, 1)
+            this.props.action.addNotification('withdraw_accounts', {account_id:new_account.id}, 1)
             this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
-            // await this.setState({AddNotification:false})
+            // await this.setState({addNotification:false})
           },2000)
 
           await this.setState({show_list_accounts:false, need_new_acount:null})
           await this.volver(1)
-          await this.props.action.Loader(false)
+          await this.props.action.isAppLoading(false)
           return  this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
         }
 
-        await this.setState({AddNotification:true})
+        await this.setState({addNotification:true})
         await this.new_withdraw_order({withdraw_account:new_account.id, withdraw_provider:providers_served[provider_type].id})
 
     }
@@ -215,7 +215,7 @@ class WithdrawFlow extends Component {
 
 
 
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       await this.setState({
         finish_step:limit_supered ? false : true,
         limit_supered_component:limit_supered ? true : false,
@@ -250,7 +250,7 @@ class WithdrawFlow extends Component {
           need_new_acount:true
         })
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         return this.handleError('La orden no ha podido ser creada')
       }
 
@@ -264,7 +264,7 @@ class WithdrawFlow extends Component {
         new_order:data
       })
 
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       return this.create_order(res)
     }
 
@@ -398,7 +398,7 @@ class WithdrawFlow extends Component {
         })
         // await this.props.action.ModalView('modalView')
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
         return this.handleError('La orden no ha podido ser confirmada')
       }
 
@@ -440,25 +440,25 @@ class WithdrawFlow extends Component {
       console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state, res)
 
 
-      await this.props.action.ToggleModal()
+      await this.props.action.toggleModal()
       await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
 
       this.props.action.CleanForm('deposit')
       this.props.action.CleanForm('withdraw')
       this.props.action.CleanForm('bank')
 
-      if(this.state.AddNotification){
+      if(this.state.addNotification){
         setTimeout(async()=>{
-          this.props.action.AddNotification('withdraw_accounts', {account_id:new_order.withdraw_account_id}, 1)
+          this.props.action.addNotification('withdraw_accounts', {account_id:new_order.withdraw_account_id}, 1)
           this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
-          await this.setState({AddNotification:false})
+          await this.setState({addNotification:false})
         },2000)
       }
       setTimeout(async()=>{
         await this.props.action.ManageBalance(this.props.account_id, 'reduce', new_order.amount)
-        setTimeout(()=>{
-          return this.props.action.get_account_balances(this.props.user)
-        },3000)
+        // setTimeout(()=>{
+        //   return this.props.action.get_account_balances(this.props.user)
+        // },3000)
       },2000)
 
 
@@ -503,11 +503,11 @@ class WithdrawFlow extends Component {
         ticket:null
       })
 
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
       // console.log(`cancelWithdrawOrder ${this.state.new_order.id}`, res, this.state.new_order)
       // alert('delete')
       await this.volver(1)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.setState({
         ticket_label_loader:"Creando orden de retiro",
         show_list_accounts:true,
@@ -533,7 +533,7 @@ class WithdrawFlow extends Component {
 
       const{
         amount,
-        withdraw_providers,
+        withdrawProviders,
         need_new_acount,
         show_list_accounts,
         finish_step,
@@ -565,7 +565,7 @@ class WithdrawFlow extends Component {
 
               {
                 (step === 1 && show_list_accounts) && (
-                  (withdraw_providers) ?
+                  (withdrawProviders) ?
                     <div className="WA">
                         <ButtonModalBack
                           color="gray"
@@ -586,7 +586,7 @@ class WithdrawFlow extends Component {
                         new_account_method={this.new_acount}
                         back={this.volver}
                         amount={amount}
-                        withdraw_providers={withdraw_providers}
+                        withdrawProviders={withdrawProviders}
                         inherit_account_list={withdraw_account_list_update}
                       />
                     </div>
@@ -647,11 +647,11 @@ function mapStateToProps(state, props){
     withdraw_accounts,
     user,
     user_id,
-    withdraw_providers,
+    withdrawProviders,
     wallets,
     withdraws,
     balances
-  } = state.model_data
+  } = state.modelData
 
   const current_wallet = wallets[params.account_id]
 
@@ -663,13 +663,13 @@ function mapStateToProps(state, props){
   } = state.form.form_withdraw
 
   // console.log('Antes de reeeeeeenderizar : : : : ',state.form.form_withdraw)
-  let withdraw_providers_list = user[user_id].withdraw_providers.map((id_prov)=>{
-    return withdraw_providers[id_prov]
+  let withdraw_providers_list = user.withdrawProviders.map((id_prov)=>{
+    return withdrawProviders[id_prov]
   })
 
   let withdraw_account_list = []
 
-  user[user_id].withdraw_accounts.map(account_id => {
+  user.withdraw_accounts.map(account_id => {
     // if(withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || !withdraw_accounts[account_id].inscribed){return false}
     if(withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible){return false}
     return withdraw_account_list.push(withdraw_accounts[account_id])
@@ -679,19 +679,19 @@ function mapStateToProps(state, props){
     withdraw_order:{
       account_from:wallets[params.account_id],
       withdraw_account:withdraw_account && withdraw_accounts[withdraw_account],
-      withdraw_provider:withdraw_provider && withdraw_providers[withdraw_provider]
+      withdraw_provider:withdraw_provider && withdrawProviders[withdraw_provider]
     },
     account_id:params.account_id,
     withdraws,
     currency_type:current_wallet && current_wallet.currency_type,
-    user:user[user_id],
-    country:user[user_id].country,
+    user:user,
+    country:user.country,
     currency:current_wallet && current_wallet.currency.currency,
     available:current_wallet && balances && balances[current_wallet.id].available,
     current:state.form.current,
     step:state.form.form_withdraw.step,
     form_withdraw:state.form.form_withdraw,
-    withdraw_providers:withdraw_providers_list,
+    withdrawProviders:withdraw_providers_list,
     withdraw_account_list:withdraw_account_list.length>0 && withdraw_account_list,
     have_withdraw_accounts:withdraw_account_list.length>0
     // have_withdraw_accounts:false

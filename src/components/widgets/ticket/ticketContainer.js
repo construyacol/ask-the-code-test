@@ -6,8 +6,8 @@ import TicketDetail from './ticketDetail'
 import TicketPaymentProof from './ticketPaymentProof'
 import ErrorView from '../errorView'
 import SimpleLoader from '../loaders'
-import { formatToCurrency } from '../../../services/convert_currency'
-import { ticketModalView } from '../../../services'
+import { formatToCurrency } from '../../../utils/convert_currency'
+import { ticketModalView } from '../../../utils'
 import { withRouter } from "react-router";
 
 import './ticket.css'
@@ -120,13 +120,13 @@ class TicketContainer extends Component {
                 let {
                   wallets,
                   withdraw_accounts,
-                  withdraw_providers
+                  withdrawProviders
                 } = this.props
 
 
                 let account_from = wallets[ticket.account_id]
                 let withdraw_account = withdraw_accounts[ticket.withdraw_account]
-                let withdraw_provider = withdraw_providers[ticket.withdraw_provider]
+                let withdraw_provider = withdrawProviders[ticket.withdraw_provider]
                 // console.log('withdraw_accounts', withdraw_accounts, withdraw_account)
 
             return this.setState({
@@ -529,15 +529,15 @@ function mapStateToProps(state, props){
 
   // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
 
-  let current_wallet = state.model_data.wallets[account_id]
+  let current_wallet = state.modelData.wallets[account_id]
 
   const{
-    withdraw_providers,
+    withdrawProviders,
     withdraw_accounts,
     wallets,
     deposit_providers,
     currencies
-  } = state.model_data
+  } = state.modelData
 
 
   let currency_list
@@ -553,14 +553,14 @@ function mapStateToProps(state, props){
     })
   }
 
-  let ticket = state.model_data[tx_path][order_id]
+  let ticket = state.modelData[tx_path][order_id]
 
   return{
     step:state.form.form_ticket.step,
     type_order:tx_path,
     ticket,
     current_form:state.form.current,
-    withdraw_providers,
+    withdrawProviders,
     withdraw_accounts,
     wallets,
     deposit_providers,

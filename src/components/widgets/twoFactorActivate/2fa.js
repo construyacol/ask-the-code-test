@@ -41,7 +41,7 @@ class TwoFactorActivate extends Component {
   }
 
   success_event = async() => {
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     this.setState({success_screen:true})
     let user_update = {
       ...this.props.user,
@@ -53,15 +53,15 @@ class TwoFactorActivate extends Component {
         }
       }
     }
-    await this.props.action.update_user(user_update)
-    this.props.action.Loader(false)
+    await this.props.action.updateUser(user_update)
+    this.props.action.isAppLoading(false)
     setTimeout(()=>{
       this.setState({switch_to_success:true})
     }, 500)
   }
 
   finish_process = async() =>{
-      this.props.action.ToggleModal()
+      this.props.action.toggleModal()
   }
 
 
@@ -142,9 +142,9 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   return{
-    user:user[user_id]
+    user:user
   }
 }
 

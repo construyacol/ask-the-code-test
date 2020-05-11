@@ -59,7 +59,7 @@ const ConvertCurrency = props => {
               value={wantSpend}
               icon={props.currentPair && props.currentPair.primary_currency.currency}
               iconPosition="left"
-              currency_short_name={props.currentPair && props.currentPair.primary_short_name}
+              currency_short_name={props.currentPair && props.currentPair.primaryShortName}
             />
 
             <IconSwitch
@@ -74,7 +74,7 @@ const ConvertCurrency = props => {
               value={recieved}
               icon={props.currentPair && props.currentPair.secondary_currency.currency}
               iconPosition="right"
-              currency_short_name={props.currentPair && props.currentPair.secondary_short_name}
+              currency_short_name={props.currentPair && props.currentPair.secondaryShortName}
             />
           </div>
   )
@@ -83,7 +83,7 @@ const ConvertCurrency = props => {
 const mapStateToProps = state => {
 
   return{
-    currentPair:state.model_data.pairs.currentPair
+    currentPair:state.modelData.pairs.currentPair
   }
 
 }

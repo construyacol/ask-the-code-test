@@ -85,7 +85,7 @@ class ActivityList extends Component {
         }
 
 
-        if(!current_pair){this.props.action.get_pair_default(current_wallet, local_currency, current_pair)}
+        if(!current_pair){this.props.action.getDefaultPair(current_wallet, local_currency, current_pair)}
 
         if(this.props.activity.length<1 && current_wallet){
           history.push(`/wallets/deposit/${current_wallet.id}`)
@@ -157,7 +157,7 @@ class ActivityList extends Component {
   trigger_action = filter =>{
     return (filter === 'deposits' ? 'get_deposit_list' :
             filter === 'withdrawals' ? 'get_withdraw_list' :
-            filter === 'swaps' ? 'get_swap_list' :
+            filter === 'swaps' ? 'getSwapList' :
             filter === 'activity' && 'get_activity_list')
   }
 
@@ -168,8 +168,8 @@ class ActivityList extends Component {
   delete_order_confirmation = (id) =>{
     alert('delete')
 
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title:"Esto es importante, estas a punto de...",
       description:"Eliminar esta orden, ¿Estas seguro de hacer esto?",
       txtPrimary:"Eliminar",
@@ -190,7 +190,7 @@ class ActivityList extends Component {
       user
     } = this.props
 
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     await this.setState({
       current_order_loader:id,
       deleting:true
@@ -232,7 +232,7 @@ class ActivityList extends Component {
         // expandidoMax:(this.props.expandidoMax - 100),
         expandible:this.state.expandido ? (this.props.expandidoMax) : '90px'
       });
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       this.setState({deleted:false})
       this.props.action.mensaje('Orden eliminada con exito', 'success')
 
@@ -259,7 +259,7 @@ class ActivityList extends Component {
     let view = await ticketModalView(state)
     await this.props.action.UpdateForm(current_form, ticket)
     await this.props.action.ModalView(view)
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     setTimeout(()=>{
       this.props.action.IncreaseStep(current_form)
     }, 170)
@@ -279,7 +279,7 @@ class ActivityList extends Component {
 
   verTicket = async(props) =>{
 
-    this.props.action.CleanItemNotifications('wallets', 'order_id')
+    this.props.action.cleanNotificationItem('wallets', 'order_id')
 
     const{
       ticket
@@ -301,7 +301,7 @@ class ActivityList extends Component {
     await this.props.action.UpdateForm(current_form, ticket)
 
     await this.props.action.ModalView(view)
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
 
   }
 
@@ -458,7 +458,7 @@ function mapStateToProps(state, props){
 
   // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', props)
 
-  const { user, user_id, currencies } = state.model_data
+  const { user, user_id, currencies } = state.modelData
   const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
   const { activity_for_account } = state.storage
@@ -485,7 +485,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     short_name:state.ui.current_section.params.short_name,
     swap_done_out:state.ui.current_section.params.swap_done_out,
-    user:user[user_id],
+    user:user,
     current_activity_account:activity_for_account[current_wallet.id],
     activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][currentFilter],
     currencies:currency_list,

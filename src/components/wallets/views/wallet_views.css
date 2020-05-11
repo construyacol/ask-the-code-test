@@ -279,7 +279,7 @@
 
 
 .DepositView{
-  grid-template-rows: 50% 30% 1fr;
+  grid-template-rows: 50% 25% 1fr;
   grid-template-columns: 1fr !important;
 }
 

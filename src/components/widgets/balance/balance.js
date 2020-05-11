@@ -1,8 +1,8 @@
-import React, { Component }  from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { formatToCurrency } from '../../../services/convert_currency'
+import { formatToCurrency } from '../../../utils/convert_currency'
 
 import './index.css'
 
@@ -11,82 +11,82 @@ class BalanceComponent extends Component {
 
 
   state = {
-    current_amount:null,
-    lastAction:this.props.balance && this.props.balance.lastAction,
-    actionType:null,
-    animation:null
+    current_amount: null,
+    lastAction: this.props.balance && this.props.balance.lastAction,
+    actionType: null,
+    animation: null
   }
 
-  componentDidMount(){
-    const convertCurrentAmount = async()=>{
+  componentDidMount() {
+    const convertCurrentAmount = async () => {
       let current_amount = await formatToCurrency(this.props.balance.available, this.props.currency, true)
-      this.setState({current_amount})
+      this.setState({ current_amount })
     }
     convertCurrentAmount()
   }
 
 
-  componentDidUpdate(prevProps){
-    if(this.props.balance !== prevProps.balance){
-      this.setState({balance:this.props.balance})
+  componentDidUpdate(prevProps) {
+    if (this.props.balance !== prevProps.balance) {
+      this.setState({ balance: this.props.balance })
       this.exec_operation(this.props.balance)
     }
   }
 
   exec_operation = async balance => {
 
-    const{
+    const {
       lastAction,
       actionAmount,
       available
     } = balance
 
-    if(actionAmount){
+    if (actionAmount) {
       // el actionAmount es la cantidad a reducir o sumar de la operación, solo con fines de dar feedback visual al usuario, no es indispensable para su funcionalidad
-        let actionAmountFormat = await formatToCurrency(actionAmount, this.props.currency, true)
-        await this.play_animation('Out')
-        await this.setState({
-          actionType:lastAction,
-          current_amount:actionAmountFormat,
-        })
-        await this.play_animation('In')
-    }
-
-      let availableAmount = await formatToCurrency(available, this.props.currency, true)
-      await this.dead_time()
+      let actionAmountFormat = await formatToCurrency(actionAmount, this.props.currency, true)
       await this.play_animation('Out')
       await this.setState({
-        actionType:null,
-        current_amount:availableAmount,
+        actionType: lastAction,
+        current_amount: actionAmountFormat,
       })
       await this.play_animation('In')
-      // this.setState({animation:null})
+    }
+
+    let availableAmount = await formatToCurrency(available, this.props.currency, true)
+    await this.dead_time()
+    await this.play_animation('Out')
+    await this.setState({
+      actionType: null,
+      current_amount: availableAmount,
+    })
+    await this.play_animation('In')
+    // this.setState({animation:null})
 
     // await this.props.action.get_list_user_wallets(this.props.user)
     // await this.props.action.get_account_balances(this.props.user)
   }
 
-  dead_time = async anim =>{
-      return new Promise(async(resolve, reject)=>{
-        setTimeout(async()=>{
-          return resolve(true)
-        }, 1000)
-      })
+  dead_time = async anim => {
+    return new Promise(async (resolve, reject) => {
+      setTimeout(async () => {
+        return resolve(true)
+      }, 1000)
+    })
   }
 
-  play_animation = async anim =>{
-      return new Promise(async(resolve, reject)=>{
-        await this.setState({animation:anim})
-        setTimeout(async()=>{
-          return resolve(true)
-        }, 250)
-      })
+  play_animation = async anim => {
+    return new Promise(async (resolve, reject) => {
+      await this.setState({ animation: anim })
+      setTimeout(async () => {
+        return resolve(true)
+      }, 250)
+    })
   }
 
 
-  render(){
+  render() {
 
-    const{
+    const {
       current_amount,
       actionType,
       animation
@@ -96,23 +96,21 @@ class BalanceComponent extends Component {
       currency_type
     } = this.props
 
-    // console.log('|||||| BALANCE: ', currency_type)
-
-    return(
+    return (
       <div className="BalanceComponent wallet">
         <p className="fuente title balanceTitle">Balance </p>
 
         <div className={`displayCont itt ${animation}`}>
           <p
-            className={`textin fuente2 ${actionType === 'reduce' ? 'reduce':
-                                  actionType === 'add' ? 'add': ''}`}>
+            className={`textin fuente2 ${actionType === 'reduce' ? 'reduce' :
+              actionType === 'add' ? 'add' : ''}`}>
 
-            {actionType === 'reduce' ? '-' : actionType === 'add' ? '+' : '' }
+            {actionType === 'reduce' ? '-' : actionType === 'add' ? '+' : ''}
             {
               currency_type === 'fiat' ?
-              `$${current_amount}`
-              :
-              current_amount
+                `$${current_amount}`
+                :
+                current_amount
             }
 
           </p>
@@ -122,34 +120,31 @@ class BalanceComponent extends Component {
   }
 }
 
-function mapStateToProps(state, props){
+function mapStateToProps(state, props) {
 
-  const{
+  const {
     balances,
-    user,
-    user_id
-  } = state.model_data
+    user
+  } = state.modelData
 
-  const{
+  const {
     account_id
   } = props
 
-  // console.log('|||||||||||||| mapStateToProps BALANCE COMPONENT', balances && balances[account_id], state.model_data.wallets[account_id].currency_type)
-
-  return{
-    balance:balances && balances[account_id],
-    user:user[user_id],
-    currency_type:state.model_data.wallets[account_id].currency_type,
-    currency:state.model_data.wallets[account_id].currency
+  return {
+    balance: balances && balances[account_id],
+    user: user,
+    currency_type: state.modelData.wallets[account_id].currency_type,
+    currency: state.modelData.wallets[account_id].currency
   }
 }
 
 
-function mapDispatchToProps(dispatch){
-  return{
-    action:bindActionCreators(actions, dispatch)
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (BalanceComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(BalanceComponent)

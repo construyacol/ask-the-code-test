@@ -4,12 +4,12 @@ import { ButtonForms } from '../../widgets/buttons/buttons.js'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile, objectToArray, add_index_to_root_object, converToInitState } from '../../../services'
+import { readFile, objectToArray, addIndexToRootObject, converToInitState } from '../../../utils'
 import images from '../../../assets/pictures.png'
 import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
-import { img_compressor } from '../../../services'
+import { img_compressor } from '../../../utils'
 
 
 const ACCEPT_FILE_TYPE = [
@@ -36,7 +36,7 @@ class KycFinancialComponent extends Component {
   }
 
   init_component = async() => {
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     const { user, step } = this.props
     let countryvalidators = await this.props.action.countryvalidators()
     if(!countryvalidators){return false}
@@ -54,7 +54,7 @@ class KycFinancialComponent extends Component {
     //     value:'compro'
     //   }
     // }
-    let kyc_financial_data = await add_index_to_root_object(financial_data)
+    let kyc_financial_data = await addIndexToRootObject(financial_data)
     let kyc_data_state = await converToInitState(kyc_financial_data)
     let kyc_financial = await objectToArray(kyc_financial_data, true)
     // console.log('|||||||| countryvalidators', kyc_financial, `kyc_financial_data`, kyc_data_state)
@@ -69,7 +69,7 @@ class KycFinancialComponent extends Component {
       data_state:kyc_data_state,
       kyc_financial_list:kyc_financial
     })
-    this.props.action.Loader(false)
+    this.props.action.isAppLoading(false)
 
     // console.log('|||||||| countryvalidators', kyc_financial[step-1], `step: ${step}`, this.state, kyc_financial)
   }
@@ -82,7 +82,7 @@ class KycFinancialComponent extends Component {
       // console.log('|||||||| goFileLoader before', e.target.files)
       //
       // const imageDataUrl = await readFile(e.target.files[0])
-      // this.props.action.Loader(false)
+      // this.props.action.isAppLoading(false)
       let payload = {
         name:e.target.files[0].name,
         type:e.target.files[0].type,
@@ -112,7 +112,7 @@ class KycFinancialComponent extends Component {
 
     const { data_state } = this.state
 
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
     let info = {}
     await Object.keys(data_state).forEach((indice) => {
       info = {
@@ -131,7 +131,7 @@ class KycFinancialComponent extends Component {
 
 
   finish = () =>{
-    this.props.action.ToggleModal(false)
+    this.props.action.toggleModal(false)
   }
 
 
@@ -263,13 +263,13 @@ class KycFinancialComponent extends Component {
 
 function mapStateToProps(state, props){
   // console.log('|||| mapStateToProps', state.form.form_kyc_financial)
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
   const { step } = state.form.form_kyc_financial
 
   return{
       step:step,
       loader:state.isLoading.loader,
-      user:user[user_id]
+      user:user
   }
 }
 

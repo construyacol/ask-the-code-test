@@ -12,11 +12,13 @@ REDUCE_BALANCE,
 ADD_BALANCE,
 ALL_PAIRS_LANDING,
 UPDATE_ITEM_STATE,
+SET_SESSION_RESTORE
 } from './action_types'
 
 
 export const update_item_state = (item, item_type) => {
 
+  // console.log('|||||||||||          ||||||||||||||||||||||             ||||||||||||||        update_item_state', item_type, item)
 // @params
 // item:object => ex: normalized_object: {item_id:{}}
 // item_type:string => ex: users
@@ -35,9 +37,19 @@ export const update_item_state = (item, item_type) => {
 
 }
 
+export const set_session_restore = (payload) => {
+
+  return {
+    type:SET_SESSION_RESTORE,
+    payload
+  }
+
+}
 
 
-export const ManageBalanceAction = (account_id, action, amount) => {
+
+
+export const manageBalanceAction = (account_id, action, amount) => {
 
   switch (action) {
     case 'reduce':
@@ -76,28 +88,28 @@ export const UpdatePendingSwap = (payload) => {
   }
 }
 
-export const UpdateAllCurrencies = (payload) => {
+export const updateAllCurrenciesAction = (payload) => {
   return {
     type:UPDATE_ALL_CURRENCIES,
     payload:payload
   }
 }
 
-export const reset_model_data = payload => {
+export const resetModelData = payload => {
   return{
     type:RESET_DATA,
     payload
   }
 }
 
-export const update_normalized_state = payload => {
+export const updateNormalizedDataAction = payload => {
   return{
     type:UPDATE_NORMALIZED_STATE,
     payload
   }
 }
 
-export const LocalPairs = payload => {
+export const loadLocalPairsAction = payload => {
   return{
     type:LOCAL_PAIRS,
     payload:payload
@@ -105,7 +117,7 @@ export const LocalPairs = payload => {
 }
 
 
-export const AllPairs = payload => {
+export const getAllPairsAction = payload => {
   return{
     type:ALL_PAIRS,
     payload:payload
@@ -119,7 +131,7 @@ export const UserPairs = payload => {
   }
 }
 
-export const SearchCurrentPair = (payload, prop) => {
+export const searchCurrentPairAction = (payload, prop) => {
 
   return{
     type:CURRENT_PAIR,
@@ -131,7 +143,7 @@ export const SearchCurrentPair = (payload, prop) => {
 
 
 
-export const LocalCurrency = payload => {
+export const loadLocalCurrencyAction = payload => {
   return{
     type:LOCAL_CURRENCY,
     payload
@@ -140,4 +152,4 @@ export const LocalCurrency = payload => {
 
 
 
-export default LocalPairs
+export default loadLocalPairsAction

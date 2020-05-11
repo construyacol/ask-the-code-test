@@ -129,10 +129,10 @@ class PanelAlertContainer extends Component {
 
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   const { verification_state } = state.ui
   return {
-      user:user[user_id],
+      user:user,
       verification_state
   }
 }

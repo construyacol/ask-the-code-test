@@ -29,7 +29,7 @@ export class ModalSettingsView extends Component {
   }
 
   close_modal = () => {
-  this.props.action.other_modal_toggle()
+  this.props.action.toggleOtherModal()
   }
 
   authenticated = () =>{
@@ -130,7 +130,7 @@ update_state = (payload) =>{
 
 
       setTimeout(async()=>{
-        await this.props.action.Loader(true)
+        await this.props.action.isAppLoading(true)
         const { other_state } = payload
         // console.log('||||||| success', payload)
 
@@ -141,21 +141,21 @@ update_state = (payload) =>{
 
         if(code === 'transactional'){
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         if(code === 'withdraw'){
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         if(code === '2auth'){
           user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-          await this.props.action.update_user(user_update)
+          await this.props.action.updateUser(user_update)
         }
         // console.log('||||||| user_update2', user_update)
 
-        await this.props.action.Loader(false)
+        await this.props.action.isAppLoading(false)
         this.setState({
           loader:false,
           success:true,
@@ -292,11 +292,11 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
 
   return{
     params:state.ui.current_section.params.settings,
-    user:user[user_id]
+    user:user
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps) (ModalSettingsView)

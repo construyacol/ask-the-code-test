@@ -52,20 +52,20 @@ const CountryWidgetComponent = props => {
                   !movil ?
                   <Fragment>
                     <div className="buy cQuote" style={{display:'grid'}}>
-                      <p className="fuente" >Te compramos {props.pairs.currentPair.primary_short_name} a:</p>
+                      <p className="fuente" >Te compramos {props.pairs.currentPair.primaryShortName} a:</p>
                           <h1 className="fuente2">
                             ${sellPrice}
                             <span className="fuente">
-                            {props.pairs.currentPair.secondary_short_name} <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}} ></i>
+                            {props.pairs.currentPair.secondaryShortName} <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}} ></i>
                             </span>
                           </h1>
                     </div>
 
                     <div className="buy cQuote" style={{display:'grid'}}>
-                      <p className="fuente" >Te vendemos {props.pairs.currentPair.primary_short_name} a:</p>
+                      <p className="fuente" >Te vendemos {props.pairs.currentPair.primaryShortName} a:</p>
                           <h1 className="fuente2">${buyPrice}
                             <span className="fuente">
-                            {props.pairs.currentPair.secondary_short_name} <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}} ></i>
+                            {props.pairs.currentPair.secondaryShortName} <i className="Qventa fas fa-angle-double-up" style={{display: movil ? 'initial' : 'none'}} ></i>
                             </span>
                           </h1>
                     </div>
@@ -83,7 +83,7 @@ const CountryWidgetComponent = props => {
                               `$${buyPrice}`
                             }
                             <span className="fuente">
-                            {props.pairs.currentPair.secondary_short_name}
+                            {props.pairs.currentPair.secondaryShortName}
                             </span>
                           </h1>
                     </div>
@@ -117,7 +117,7 @@ const CountryWidgetComponent = props => {
 
 const mapStateToProps = (state) => {
   return{
-    pairs:state.model_data.pairs,
+    pairs:state.modelData.pairs,
   }
 }
 

@@ -4,7 +4,7 @@ import rejected from '../../../assets/ticket/warning.png'
 import canceled from '../../../assets/ticket/canceled.png'
 import confirmed from '../../../assets/ticket/confirmed.png'
 import { PaymentConfirButton, ButtonSuccess } from '../buttons/buttons'
-import { matchItem } from '../../../services'
+import { matchItem } from '../../../utils'
 import ConfirmationCounter from './confirmationCounter'
 import ItemTicket from './itemTicket'
 // import { ButtonSuccess, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
@@ -27,7 +27,7 @@ class TicketDetail extends Component{
    this.props.action.ModalView('modalView')
    this.props.action.CleanForm(current_form)
 
-   return  this.props.action.ToggleModal()
+   return  this.props.action.toggleModal()
  }
 
 
@@ -188,12 +188,12 @@ export const TicketSuccess = () =>{
 function mapStateToProps(state, props){
 
   const { ticket } = props
-  const { model_data } = state
+  const { modelData } = state
 
   let currency_type_bought
 
   if(ticket.type_order === 'swaps'){
-    currency_type_bought = matchItem(model_data.currencies, {primary:ticket.currency_bought}, 'name')
+    currency_type_bought = matchItem(modelData.currencies, {primary:ticket.currency_bought}, 'name')
   }
 
   return{

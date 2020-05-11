@@ -1,6 +1,6 @@
 import Environment from '../../environment'
 // import * as normalizr_services from '../../schemas'
-// import { update_normalized_state } from '../dataModelActions'
+// import { updateNormalizedDataAction } from '../dataModelActions'
 
 
 import {
@@ -16,20 +16,20 @@ import {
 
 
 // import {
-//   app_loaded,
-//   load_label
+//   isAppLoaded,
+//   appLoadLabelAction
 // } from '../loader'
 
 
 import {
   update_activity_state,
   normalized_list
-} from '../../services'
+} from '../../utils'
 
 const { SwapApiUrl } = Environment
 
 // const {
-//   normalize_user,
+//   normalizeUser,
 //   normalize_data
 // } = normalizr_services
 
@@ -40,8 +40,8 @@ export const get_swaps = (account_id) => {
 
   return async(dispatch, getState) => {
 
-    const user = getState().model_data.user[getState().model_data.user_id]
-    const { wallets } = getState().model_data
+    const user = getState().modelData.user
+    const { wallets } = getState().modelData
 
     let filter = `{"where":{"or":[{"account_to":"${account_id}"}, {"account_from":"${account_id}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
     const url_swaps = `${SwapApiUrl}users/${user.id}/swaps?country=${user.country}&filter=${filter}`
@@ -49,7 +49,7 @@ export const get_swaps = (account_id) => {
     // let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
 
     let myHeaders = {
-      'Authorization': `Bearer ${user.TokenUser}`,
+      'Authorization': `Bearer ${user.userToken}`,
     }
     const swaps = await ApiGetRequest(url_swaps, myHeaders)
     if(!swaps || swaps === 465){return false}
@@ -89,7 +89,7 @@ export const get_swaps = (account_id) => {
 }
 
 
-export const update_current_pair = (query, currentPair) => {
+export const updateCurrentPair = (query, currentPair) => {
 
   return async(dispatch) => {
 
@@ -99,6 +99,7 @@ export const update_current_pair = (query, currentPair) => {
     // }
 
     const url_current_pair = `${SwapApiUrl}pairs?filter=${query}`
+    // return console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||||||    url_current_pair ::', url_current_pair)
     let current_pair = await ApiGetRequest(url_current_pair)
     if(!current_pair || current_pair === 465){return}
 

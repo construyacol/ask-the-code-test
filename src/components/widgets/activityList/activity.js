@@ -58,8 +58,8 @@ class ActivityList extends Component {
 
 
   delete_order_confirmation = (id) =>{
-    this.props.action.ConfirmationModalToggle()
-    this.props.action.ConfirmationModalPayload({
+    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalPayload({
       title:"Esto es importante, estas a punto de...",
       description:"Eliminar esta orden, ¿Estas seguro de hacer esto?",
       txtPrimary:"Eliminar",
@@ -77,7 +77,7 @@ class ActivityList extends Component {
       // user
     } = this.props
 
-    this.props.action.Loader(true)
+    // this.props.action.isAppLoading(true)
     await this.setState({
       current_order_loader:id,
       deleting:true
@@ -101,7 +101,7 @@ class ActivityList extends Component {
       // });
 
       await this.setState({deleting:false, current_order_loader:0})
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
       // this.setState({deleted:true})
       // this.props.action.mensaje('Orden eliminada con exito', 'success')
 
@@ -117,7 +117,7 @@ class ActivityList extends Component {
     const { primary_path, account_id, path, tx_path } = this.props.match.params
     this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
 
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     setTimeout(()=>{
       this.props.action.IncreaseStep('ticket')
     }, 170)
@@ -139,7 +139,7 @@ class ActivityList extends Component {
 
     const { primary_path, account_id, path, tx_path } = this.props.match.params
     this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
-    this.props.action.CleanItemNotifications('wallets', 'order_id')
+    this.props.action.cleanNotificationItem('wallets', 'order_id')
 
     // const{
     //   state
@@ -149,7 +149,7 @@ class ActivityList extends Component {
     //   current_form
     // } = this.props
 
-    this.props.action.ToggleModal()
+    this.props.action.toggleModal()
     // console.log('||||||||||||||||||| ======> Ticket ACTIVITY ==> ',  ticket)
 
   }
@@ -254,7 +254,7 @@ class ActivityList extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id, currencies, wallets } = state.model_data
+  const { user, user_id, currencies, wallets } = state.modelData
   const { params } = props.match
   // const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
@@ -286,7 +286,7 @@ function mapStateToProps(state, props){
     loader:state.isLoading.loader,
     short_name:state.ui.current_section.params.short_name,
     swap_done_out:state.ui.current_section.params.swap_done_out,
-    user:user[user_id],
+    user:user,
     // current_activity_account:activity_for_account[current_wallet.id],
     // activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][params.tx_path],
     currencies:currency_list,

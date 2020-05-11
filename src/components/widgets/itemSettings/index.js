@@ -30,17 +30,17 @@ class ItemSettingsInit extends Component{
         case 'kyc_basic':
           await this.props.action.ToStep('globalStep', 0)
           await this.props.action.CurrentForm('kyc_basic')
-          return this.props.action.ToggleModal()
+          return this.props.action.toggleModal()
 
         case 'kyc_financial':
               await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.ToStep('globalStep', 3)
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
 
         case 'kyc_advanced':
               await this.props.action.CurrentForm('kyc_basic')
               await this.props.action.ToStep('globalStep', 2)
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
         case '2auth':
               // console.log('||||||| CLICK ITEM', item)
               if(other_state === 'to_disable'){
@@ -53,10 +53,10 @@ class ItemSettingsInit extends Component{
                   code:name,
                   other_state
                 }})
-                return this.props.action.other_modal_toggle()
+                return this.props.action.toggleOtherModal()
               }
               await this.props.action.CurrentForm('2auth')
-              return this.props.action.ToggleModal()
+              return this.props.action.toggleModal()
         case 'phone':
             await this.props.action.current_section_params({settings:{
               title:"Actualizar numero de movil",
@@ -70,7 +70,7 @@ class ItemSettingsInit extends Component{
               placeholder:"Escribe el nuevo numero",
               authenticator:authenticator
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
 
         case 'pass':
             await this.props.action.current_section_params({settings:{
@@ -83,7 +83,7 @@ class ItemSettingsInit extends Component{
               placeholder:"Escribe el nuevo numero",
               authenticator:authenticator
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
 
         case 'transactional':
             await this.props.action.current_section_params({settings:{
@@ -95,7 +95,7 @@ class ItemSettingsInit extends Component{
               code:name,
               other_state
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'withdraw':
             await this.props.action.current_section_params({settings:{
               title:"Agregando capa de seguridad",
@@ -106,7 +106,7 @@ class ItemSettingsInit extends Component{
               code:name,
               other_state
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'country':
             await this.props.action.current_section_params({settings:{
               title:"Elige el país de operación actual",
@@ -115,7 +115,7 @@ class ItemSettingsInit extends Component{
               authenticator:false,
               code:name
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         case 'currency':
             await this.props.action.current_section_params({settings:{
               title:"Elige tu divisa de cotización",
@@ -124,7 +124,7 @@ class ItemSettingsInit extends Component{
               authenticator:false,
               code:name
             }})
-            return this.props.action.other_modal_toggle()
+            return this.props.action.toggleOtherModal()
         default:
 
       }
@@ -275,11 +275,11 @@ class ItemSettingsInit extends Component{
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
   return{
     loader:state.isLoading.loader,
     advace_global_step:state.form.globalStep,
-    user:user[user_id]
+    user:user
   }
 }
 

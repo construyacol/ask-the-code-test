@@ -20,7 +20,7 @@ const KycAvancedLayout = (props) =>{
     kyc_success,
     finish
   } = props
-  // console.log('FIGAROOOO FIGAROOOO FIGAROOOOOO::::', props)
+  console.log('KycAvancedLayout PROPS ::::::::::::::::::::::::::::::::::::::::', props)
 
   return(
     <div className="KycAvancedLayout" >

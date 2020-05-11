@@ -2,7 +2,7 @@ import React, { Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { readFile, img_compressor } from '../../../services'
+import { readFile, img_compressor } from '../../../utils'
 import CropImg from '../../widgets/cropimg'
 import SimpleLoader from '../../widgets/loaders'
 import imgTikcketDefault from '../../../assets/ticketdefault.png'
@@ -28,12 +28,12 @@ class TicketPaymentProof extends Component  {
   goFileLoader = async e =>{
 
     if (e.target.files && e.target.files.length > 0) {
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
 
       const file = await img_compressor(e.target.files[0], 0.5)
       const imageDataUrl = await readFile(file)
       console.log('goFileLoader', imageDataUrl)
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
 
       this.setState({
         imageSrc: imageDataUrl,
@@ -61,9 +61,9 @@ updateLocalImg = (img) =>{
     const {
       ticket
     } = this.props
-    this.props.action.Loader(true)
+    this.props.action.isAppLoading(true)
 
-    let res = await this.props.action.confirm_deposit_order(ticket, base64);
+    let res = await this.props.action.confirmDepositOrder(ticket, base64);
     // console.log('Confirm deposit order', res)
     if(!res || res === 465){return false}
     const {
@@ -72,7 +72,7 @@ updateLocalImg = (img) =>{
 
     this.props.update_ticket(data)
 
-      this.props.action.Loader(false)
+      this.props.action.isAppLoading(false)
 
       this.setState({
         fileloader: !this.state.fileloader
@@ -142,12 +142,12 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.model_data
+  const { user, user_id } = state.modelData
 
 
   return{
     loader:state.isLoading.loader,
-    user:user[user_id]
+    user:user
   }
 }
 

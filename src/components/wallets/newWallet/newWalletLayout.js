@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './newWallet.css'
 import { InputButton, ButtonSuccess } from '../../widgets/buttons/buttons'
 import InputForm from '../../widgets/inputs'
 import ItemSelectionContainer from '../../widgets/items/ItemSelectionContainer'
 import CopyContainer from '../../widgets/copy/copyContainer'
 import {SimpleLoader} from '../../widgets/loaders'
+import availableWalletCreator from '../../hooks/availableWalletCreator'
 
 const NewWalletLayout = props =>{
 
@@ -18,8 +19,12 @@ const NewWalletLayout = props =>{
     loader,
     address,
     short_currency_name,
-    qr
+    qr,
+    currencies,
+    wallets
   } = props
+
+  const [ availableCurrencies ] = availableWalletCreator()
 
 
   return(
@@ -27,33 +32,39 @@ const NewWalletLayout = props =>{
       {
         step === 1 &&
         <div className="step1 newWallet">
-          <h1 className="fuente" > Nueva billetera </h1>
-          <form
-              onSubmit={handleSubmit}
-            >
-            <InputForm
-              clase="nameWallet containerInputComponent"
-              type="text"
-              label="Nombra tu nueva billetera"
-              placeholder="Billetera de trading"
-              name="name"
-              actualizarEstado={actualizarEstado}
-              active={buttonActive}
-              value={name}
-            />
+            {
+              availableCurrencies ?
+              <>
+              <h1 className="fuente" > Nueva billetera </h1>
+              <form
+                onSubmit={handleSubmit}
+                style={{width:"100%"}}
+                >
+                  <InputForm
+                    clase="nameWallet containerInputComponent"
+                    type="text"
+                    label="Nombra tu nueva billetera"
+                    placeholder="Billetera de trading"
+                    name="name"
+                    actualizarEstado={actualizarEstado}
+                    active={buttonActive}
+                    value={name}
+                  />
+                <ItemSelectionContainer
+                  type="coins"
+                  label="¿Cual moneda manejarás en tu billetera?"
+                  itemSelect={currency}
+                  actualizarEstado={actualizarEstado}
+                  update_control_form={props.update_control_form}
+                  items={availableCurrencies}
+                />
+                <InputButton label="Crear Billetera" type="primary" active={buttonActive}/>
+              </form>
+              </>
+              :
+                <SimpleLoader/>
+            }
 
-
-              <ItemSelectionContainer
-                type="coins"
-                label="¿Cual moneda manejarás en tu billetera?"
-                itemSelect={currency}
-                actualizarEstado={actualizarEstado}
-                update_control_form={props.update_control_form}
-              />
-
-              <InputButton label="Crear Billetera" type="primary" active={buttonActive}/>
-
-          </form>
 
         </div>
       }

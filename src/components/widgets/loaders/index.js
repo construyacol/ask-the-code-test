@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import styled from 'styled-components'
 import './loader.css'
 
 export const SimpleLoader = (props) => {
@@ -37,3 +38,25 @@ export const SimpleLoader = (props) => {
 }
 
 export default SimpleLoader
+
+
+
+export const LoaderContainer = styled.div`
+  position: absolute;
+  justify-self: center;
+  /* background: red; */
+  width: 100%;
+  height: 100%;
+  display: grid;
+  max-width: 300px;
+  z-index: 3;
+
+  .lds-roller{
+    justify-self: center !important;
+    z-index: 1;
+  }
+
+  .lds-roller div:after {
+    background: #014c7d;
+}
+`

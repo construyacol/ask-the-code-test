@@ -6,16 +6,17 @@ import { normalize, schema } from 'normalizr'
 const do_normalization = (data_source, data_to_normalize)=>{
 // Parametro 1: fuente de datos, Parametro 2: Schema de datos a normalizar con la fuente
   const normalized_data = normalize(data_source, data_to_normalize)
+  
   return normalized_data
 }
 
-export const normalize_user = async(user) => {
+export const normalizeUser = async(user) => {
 
   const balance = new schema.Entity('balances',{})
   const deposit = new schema.Entity('deposits',{})
   const withdraw = new schema.Entity('withdraws',{})
   const withdraw_account = new schema.Entity('withdraw_accounts',{})
-  const withdraw_provider = new schema.Entity('withdraw_providers',{})
+  const withdraw_provider = new schema.Entity('withdrawProviders',{})
   const pair = new schema.Entity('all_pairs',{})
   const swap = new schema.Entity('swaps',{})
   const deposit_prov = new schema.Entity('deposit_providers', {})
@@ -30,12 +31,12 @@ export const normalize_user = async(user) => {
     deposits:[deposit],
     swaps:[swap],
     withdraw_accounts:[withdraw_account],
-    withdraw_providers:[withdraw_provider],
+    withdrawProviders:[withdraw_provider],
     available_pairs:[pair],
     withdraws:[withdraw],
     balances:[balance]
   })
-
+  
   return await do_normalization(user, normalizedUser)
 }
 
@@ -58,4 +59,4 @@ export const normalize_data = async(all_pairs) => {
 }
 
 
-export default normalize_user
+export default normalizeUser

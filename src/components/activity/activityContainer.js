@@ -11,7 +11,7 @@ import './activity.css'
 class ActivityContainer extends Component{
 
   componentWillMount(){
-     this.props.action.Loader(true)
+     this.props.action.isAppLoading(true)
   }
 
   componentDidMount(){
@@ -24,7 +24,7 @@ class ActivityContainer extends Component{
        // this.setState({
        //   userWallets: await this.props.action.get_list_user_wallets(this.props.user)
        // })
-       this.props.action.Loader(false)
+       this.props.action.isAppLoading(false)
       // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
     }, 0)
      // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||')
@@ -34,7 +34,7 @@ deposit = () =>{
   // this.props.action.FiatDeposit('cop')
   // this.props.action.UpdateFormControl('deposit', true)
   this.props.action.CleanForm('deposit')
-  this.props.action.ToggleModal()
+  this.props.action.toggleModal()
 }
 
 toWallets = async() =>{
@@ -88,14 +88,14 @@ toWallets = async() =>{
 function mapStateToProps(state, props){
 
   const { current_wallet } = state.ui.current_section.params
-  const { user, user_id, wallets, withdrawals, deposits, swaps, activity, all_pairs } = state.model_data
+  const { user, user_id, wallets, withdrawals, deposits, swaps, activity, all_pairs } = state.modelData
 
   return{
     loader:state.isLoading.loader,
     wallet_router:state.ui.router_wallet_container,
-    local_currency:state.model_data.pairs.localCurrency,
-    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairs_for_account[current_wallet.id] && state.ui.current_section.params.pairs_for_account[current_wallet.id].current_pair),
-    user:user[user_id],
+    local_currency:state.modelData.pairs.localCurrency,
+    current_pair:!current_wallet ? null : (state.ui.current_section.params.pairsForAccount[current_wallet.id] && state.ui.current_section.params.pairsForAccount[current_wallet.id].current_pair),
+    user:user,
     wallets,
     withdrawals,
     deposits,

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import AccountItemList from '../../widgets/account_item_list/accountItemList'
 import { SimpleLoader } from '../../widgets/loaders'
-import { withdraw_provider_by_type, matchItem } from '../../../services'
+import { withdrawProvidersByType, matchItem } from '../../../utils'
 import '../WAccount.css'
 
 
@@ -35,14 +35,14 @@ class WithdrawAccountList extends Component{
   init_config = async() => {
 
     const {
-      withdraw_providers,
+      withdrawProviders,
       withdraw_accounts,
       amount
     } = this.props
 
-    if(!withdraw_providers && !amount){return false}
+    if(!withdrawProviders && !amount){return false}
 
-    let providers_served = await withdraw_provider_by_type(withdraw_providers)
+    let providers_served = await withdrawProvidersByType(withdrawProviders)
 
     let final_withdraw_accounts = await withdraw_accounts.map(wa => {
 
@@ -65,7 +65,7 @@ class WithdrawAccountList extends Component{
 
       let preferential_accounts = []
 
-      await withdraw_providers.map(async(withdraw_provider) => {
+      await withdrawProviders.map(async(withdraw_provider) => {
         if(withdraw_provider.currency_type !== 'fiat'){return false}
 
         let result = await matchItem(final_withdraw_accounts, {primary:withdraw_provider.provider.name}, 'provider_name')
@@ -179,7 +179,7 @@ new_account = () =>{
       withdraw_accounts,
       user,
       user_id
-    } = state.model_data
+    } = state.modelData
 
     const{
       currency_type,
@@ -190,7 +190,7 @@ new_account = () =>{
 
     if(!withdraw_account_list){
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta
-      user[user_id].withdraw_accounts.map(account_id => {
+      user.withdraw_accounts.map(account_id => {
         if(withdraw_accounts[account_id].currency_type !== currency_type || !withdraw_accounts[account_id].visible){return false}
         return withdraw_account_list.push(withdraw_accounts[account_id])
       })

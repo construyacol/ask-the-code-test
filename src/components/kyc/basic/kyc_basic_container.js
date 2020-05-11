@@ -4,8 +4,8 @@ import KycBasicLayout from './kycBasicLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
-import { objectToArray, capitalizarPalabras } from '../../../services'
-import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../services'
+import { objectToArray, capitalizarPalabras } from '../../../utils'
+import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../utils'
 // import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
 
@@ -120,7 +120,7 @@ class KycBasicContainer extends Component {
 
     if(!verification_state || verification_state === 'rejected'){
     // if(user.verification_level !== 'level_0'){
-      this.props.action.Loader(true)
+      this.props.action.isAppLoading(true)
         const { user } = this.props
         let countryvalidators = await this.props.action.countryvalidators()
 
@@ -169,7 +169,7 @@ class KycBasicContainer extends Component {
         })
 
         // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)
-        this.props.action.Loader(false)
+        this.props.action.isAppLoading(false)
 
     }
   }
@@ -487,14 +487,14 @@ shouldComponentUpdate(nextProps, nextState){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id} = state.model_data
+  const { user, user_id} = state.modelData
 
 
   return{
       ...state.form.form_kyc_basic,
       current:state.form.current,
       form_kyc_basic_state:state.form.form_kyc_basic,
-      user:user[user_id],
+      user:user,
       loader:state.isLoading.loader
   }
 
