@@ -27,6 +27,8 @@ import './dashboard.css'
 import { bindActionCreators } from 'redux';
 import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
+import localForage from 'localforage'
+
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
@@ -47,6 +49,7 @@ const TAB_TITLE = {
 
 
 function DashBoardContainer(props) {
+
 
   const proofSocketNotify = () => {
     const { wallets } = props
@@ -97,6 +100,8 @@ function DashBoardContainer(props) {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
     Events.scrollEvent.remove("begin");
     Events.scrollEvent.remove("end");
+    // const { userName } = JSON.parse(localStorage.getItem('user'));
+
   }
 
 
@@ -109,9 +114,14 @@ function DashBoardContainer(props) {
 
   useEffect(() => {
     onMount()
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||| DASHBOARD ::', props)
     // proofSocketNotify()
     return onUnmount
   }, [])
+
+
+
+
 
   return (
     <Element id="containerElement" className="dashBoardLayout">

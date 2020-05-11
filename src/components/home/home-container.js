@@ -8,6 +8,7 @@ import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import withHandleError from '../withHandleError'
 import ModalsSupervisor from './modals-supervisor'
+import { doLogout } from '../utils'
 
 const BuildedHome = (props) => (
   <>
@@ -18,10 +19,6 @@ const BuildedHome = (props) => (
 )
 
 function HomeContainer(props) {
-
-  const {
-    doLogout,
-  } = props
 
   return (
     <HomeLayout>
@@ -40,7 +37,7 @@ HomeContainer.propTypes = {
 }
 
 function mapStateToProps({ isLoading }) {
-  
+
   return {
     loader: isLoading.loader
   }

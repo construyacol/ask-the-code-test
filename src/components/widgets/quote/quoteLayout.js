@@ -32,10 +32,10 @@ const QuoteLayout = props => {
               :
           <QuoteLayoutContainer className="qLC">
             <PricesContainer className={`${movil ? 'movilPrices' : 'desktopPrices'} prices`}>
-              {/* <div className="movilSwitch" style={{display:movil ? 'grid' : 'none'}}>
+              <div className="movilSwitch" style={{display:movil ? 'grid' : 'none'}}>
                   <p className={`itemSwitch ${buy ? 'active' : 'inactive' }`} onClick={switchItem} id="buy">Te compramos a:</p>
                   <p className={`itemSwitch ${sell ? 'active' : 'inactive' }`} onClick={switchItem} id="sell">Te vendemos a:</p>
-              </div> */}
+              </div>
 
               <div className="buy" style={{display: (buy || !movil) ? 'grid' : 'none'}}>
                 <p className="fuente" style={{display: movil ? 'none' : 'initial'}}>Te compramos a:</p>
@@ -105,8 +105,8 @@ const SkeletonLoader = () => {
 
   return(
       <QuoteLayoutContainer>
-        <PricesContainer className={`${movil ? 'movilPrices' : 'desktopPrices'} prices`}>
-          <div className="buy" style={{display: 'grid'}}>
+        <PricesContainer className={`${movil ? 'movilPrices' : 'desktopPrices'} prices skeleton`}>
+          <div className="buy" style={{display: `${movil ? 'none' : 'grid'}`}}>
             <p className="fuente skeleton"></p>
             <h1 className="fuente2 Qprice skeleton"></h1>
           </div>
@@ -138,6 +138,10 @@ const PricesContainer = styled.div`
   color: white;
   grid-column-gap: 10px;
   column-gap: 10px;
+
+  &.movilPrices.skeleton{
+    grid-template-rows: initial;
+  }
 
   p, h1 {
     margin: 0 !important;

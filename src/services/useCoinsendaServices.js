@@ -21,5 +21,6 @@ export const useCoinsendaServices = () => {
     {
       ...reduxState,
       current_wallet: reduxState.modelData.wallets && reduxState.modelData.wallets[account_id]
-    }, actions, dispatch];
+    }, actions, dispatch
+  ]
 }

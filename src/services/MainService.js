@@ -50,6 +50,7 @@ const inheritances = aggregation(
     SwapService,
     AccountService
 );
+
 export class MainService extends inheritances {
     token;
     globalState;
@@ -96,19 +97,20 @@ export class MainService extends inheritances {
         return this.dispatch(isAppLoading(value))
     }
 
-    async init(country, callback) {
+    async init(callback) {
         while (!this.user) {
             await sleep(2000)
         }
         await this.getWalletsByUser()
-        this.postLoader(country, callback)
+        this.postLoader(callback)
         return
     }
 
-    async postLoader(country, callback) {
+    async postLoader(callback) {
         try {
-            let pairs = await this.fetchAllPairs(this.user.userToken, country)
+            let pairs = await this.fetchAllPairs()
             if (!pairs) {
+                debugger
                 return callback()
             }
             const currencies = await this.fetchAllCurrencies()
@@ -118,8 +120,9 @@ export class MainService extends inheritances {
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()
         } catch (error) {
+            debugger
             await sleep(2000)
-            this.postLoader(country, callback)
+            this.postLoader(this.user.country, callback)
         }
     }
 
@@ -145,7 +148,6 @@ export class MainService extends inheritances {
             default:
                 return false
         }
-
     }
 }
 

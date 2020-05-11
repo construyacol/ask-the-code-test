@@ -25,7 +25,7 @@ function WalletContainer(props) {
     props.action.CurrentForm(path)
     return () => {
       props.action.section_view_to('initial')
-      props.action.cleanCurrentSection()
+      // props.action.cleanCurrentSection()
     }
   }, [])
 

@@ -44,7 +44,9 @@ const store = createStore(
 
 const home = document.getElementById('home-container')
 render(
-  <Provider store={store}><RootContainer/></Provider>
+  <Provider store={store}>
+      <RootContainer/>
+  </Provider>
  , home
 );
 

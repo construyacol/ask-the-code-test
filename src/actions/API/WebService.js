@@ -1,8 +1,9 @@
 export class WebService {
     async doFetch(url, params) {
+      // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
         try {
             const response = await fetch(url, params)
-
+            // console.log('get res ::', response)
             if (!response.ok && response.status === 465) {
                 throw response.status
             }

@@ -10,7 +10,7 @@ import { withRouter } from 'react-router'
 import usePrevious from '../../hooks/usePreviousValue'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import withHandleError from '../../withHandleError'
-
+import { doLogout } from '../../utils'
 
 
 function LoaderAplication({ actions, history }) {
@@ -40,12 +40,22 @@ function LoaderAplication({ actions, history }) {
     }
   }
 
+
   const initComponent = async (newCountry) => {
 
     const {
-      userToken,
-      doLogout
+      userToken
     } = authData
+
+
+    // if(session && Object.keys(session).length){
+    //   await actions.isLoggedInAction(true)
+    //   return redirectURL()
+    // }
+
+    // alert()
+
+    // debugger
 
     if (!userToken) return;
 
@@ -61,9 +71,6 @@ function LoaderAplication({ actions, history }) {
     const userCountry = newCountry ? newCountry : country
 
     const res = await coinsendaServices.countryValidator()
-
-
-
     if (!res) {
       prepareCountrySelection()
       return doLogout()
@@ -84,12 +91,15 @@ function LoaderAplication({ actions, history }) {
     if (!user) { return false }
 
     await actions.isLoggedInAction(true)
-
-    await coinsendaServices.init(userCountry, doLogout)
+    // debugger
+    await coinsendaServices.init(doLogout)
     // return console.log('||||||||| stop')
+    return redirectURL()
 
+  }
+
+  const redirectURL = async () => {
     const verificationStatus = await coinsendaServices.getVerificationState()
-
     if (verificationStatus !== 'accepted') {
       await actions.addNotification('security', null, 1)
       await history.push('/security')
@@ -97,8 +107,8 @@ function LoaderAplication({ actions, history }) {
     }
 
     await history.push('/wallets')
+    // return console.log('_________________________________________________________________||||| stop ::', session, session && Object.keys(session).length)
     return actions.isAppLoaded(true)
-
   }
 
   const prepareCountrySelection = async () => {
@@ -129,7 +139,9 @@ function LoaderAplication({ actions, history }) {
 
 
   useEffect(() => {
-    initComponent()
+    if(authData.userToken){
+      initComponent()
+    }
   }, [authData.userToken])
 
   useEffect(() => {
@@ -137,6 +149,8 @@ function LoaderAplication({ actions, history }) {
       setProgressBarWidth(progressBarWidth + 33)
     }
   }, [appLoadLabel])
+
+
 
   return (
     <div className={`LoaderAplication ${!country ? 'withOutContry' : ''}`}>

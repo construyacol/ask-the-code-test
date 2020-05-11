@@ -13,7 +13,8 @@ import {
   ADD_BALANCE,
   ALL_PAIRS_LANDING,
   UPDATE_ITEM_STATE,
-  SET_AUTH_DATA
+  SET_AUTH_DATA,
+  SET_SESSION_RESTORE
 } from '../actions/action_types'
 
 const initialState = {
@@ -107,7 +108,7 @@ const data = (state = initialState, action) => {
     case UPDATE_NORMALIZED_STATE:
       // Actualizamos lista de billeteras de usuario, de momento estoy sirviendo toda la data normalizado para hecer pruebas
       models = action.payload.entities
-      user_id = action.payload.result      
+      user_id = action.payload.result
       // console.log('||||||||||||||  R E S P U E S T A |||||||||||||||||||', models)
       // alert('hijoputa')
       return {
@@ -203,9 +204,6 @@ const data = (state = initialState, action) => {
           ...action.payload
         }
       }
-    default:
-      return state
-
     case SET_AUTH_DATA:
       return {
         ...state,
@@ -213,6 +211,16 @@ const data = (state = initialState, action) => {
           ...action.payload
         }
       }
+    case SET_SESSION_RESTORE:
+      return {
+        ...state,
+        ...action.payload
+      }
+
+    default:
+      return state
+
+
   }
 
 }

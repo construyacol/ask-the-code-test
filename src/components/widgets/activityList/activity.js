@@ -77,7 +77,7 @@ class ActivityList extends Component {
       // user
     } = this.props
 
-    this.props.action.isAppLoading(true)
+    // this.props.action.isAppLoading(true)
     await this.setState({
       current_order_loader:id,
       deleting:true

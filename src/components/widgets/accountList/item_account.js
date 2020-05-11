@@ -63,7 +63,7 @@ const ItemAccount = props => {
 
 
   const account_detail = async (payload) => {
-    console.log('actions', props)
+    console.log('actions', payload)
     props.actions.cleanNotificationItem(payload, 'account_id')
     if(props.account.count === undefined){
       return getAccountTransactions()
@@ -179,6 +179,7 @@ const Wallet = props => {
         <Fragment>
           <AccountCta handleAction={props.handleAction} payload={props.account_type} />
           <OptionsAccount
+            account_detail={props.handleAction}
             delete_account={delete_account}
             {...props} />
         </Fragment>
@@ -215,6 +216,7 @@ const WithdrawAccount = props => {
   return (
     <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       <OptionsAccount
+        account_detail={props.handleAction}
         delete_account={delete_account}
         {...props} />
       <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
@@ -284,7 +286,7 @@ const OptionsAccount = props => {
     }
   }
 
-  // console.log('|||||||||||||||||||||| OptionsAccount ===========================> ', props)
+  // console.log('|||||||||||||||||||||| OptionsAccount ===========================> ', props.account, props.account.count)
 
   const { account_type } = props
 
@@ -292,24 +294,32 @@ const OptionsAccount = props => {
     // <div className={`ItemBarra ${account_type} ${(current_view === 'detail') ? 'noVisible' : ''}`} >
     <OptionsLayout className={`OptionsLayout ${account_type}`}>
 
-      {/* onClick={this.withdraw} */}
-      <BarIconCont account_type={account_type} onClick={redirectGo} data-address="withdraw">
-        <Icon className="far fa-arrow-alt-circle-up IdeleteButton tooltip" data-address="withdraw">
-          <span className="tooltiptext2 fuente" data-address="withdraw">Retirar</span>
-        </Icon>
-      </BarIconCont>
+      {
+        props.account.count ?
+        <>
+        <BarIconCont account_type={account_type} onClick={redirectGo} data-address="withdraw">
+          <Icon className="far fa-arrow-alt-circle-up IdeleteButton tooltip" data-address="withdraw">
+            <span className="tooltiptext2 fuente" data-address="withdraw">Retirar</span>
+          </Icon>
+        </BarIconCont>
+        <BarIconCont account_type={account_type} onClick={redirectGo} data-address="deposit">
+          <Icon className="far fa-arrow-alt-circle-down Ideposit IdeleteButton tooltip" data-address="deposit">
+            <span className="tooltiptext2 fuente" data-address="deposit">Depositar</span>
+          </Icon>
+        </BarIconCont>
+        </>
+        :
+        <>
+        <div></div>
+        <div></div>
+        </>
+      }
 
 
-      {/* onClick={this.depositar} */}
-      <BarIconCont account_type={account_type} onClick={redirectGo} data-address="deposit">
-        <Icon className="far fa-arrow-alt-circle-down Ideposit IdeleteButton tooltip" data-address="deposit">
-          <span className="tooltiptext2 fuente" data-address="deposit">Depositar</span>
-        </Icon>
-      </BarIconCont>
 
 
 
-      {/* onClick={this.delete_this_account} */}
+
       <BarIconCont className="retweetCont" account_type={account_type} onClick={delete_account_confirmation}>
         <Icon className="fas fa-trash-alt IdeleteButton tooltip">
           <span className="tooltiptext2 fuente">Borrar</span>

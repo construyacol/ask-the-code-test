@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { formatToCurrency } from '../../utils/convert_currency'
-
+import { doLogout } from '../utils'
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
 import PropTypes from 'prop-types'
@@ -28,16 +28,12 @@ class MenuSuperiorContainer extends Component {
       description: "¿Estás seguro que deseas salir de Coinsenda?",
       txtPrimary: "Salir de Coinsenda",
       txtSecondary: "Quiero quedarme",
-      action: (this.logOutFin),
+      action: (doLogout),
       svg: "logout",
       type: "select_country"
     })
   }
 
-  logOutFin = () => {
-    // this.props.logOut()
-    // this.props.action.isLoggedInAction(false)
-  }
 
   country_change = () => {
     this.props.action.ready_to_play(false)

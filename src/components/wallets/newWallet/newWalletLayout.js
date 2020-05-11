@@ -56,7 +56,7 @@ const NewWalletLayout = props =>{
                   itemSelect={currency}
                   actualizarEstado={actualizarEstado}
                   update_control_form={props.update_control_form}
-                  // items={availableCurrencies}
+                  items={availableCurrencies}
                 />
                 <InputButton label="Crear Billetera" type="primary" active={buttonActive}/>
               </form>

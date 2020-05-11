@@ -12,6 +12,7 @@ REDUCE_BALANCE,
 ADD_BALANCE,
 ALL_PAIRS_LANDING,
 UPDATE_ITEM_STATE,
+SET_SESSION_RESTORE
 } from './action_types'
 
 
@@ -35,6 +36,16 @@ export const update_item_state = (item, item_type) => {
     }
 
 }
+
+export const set_session_restore = (payload) => {
+
+  return {
+    type:SET_SESSION_RESTORE,
+    payload
+  }
+
+}
+
 
 
 

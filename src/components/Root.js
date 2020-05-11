@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import localForage from 'localforage'
 import jwt from 'jsonwebtoken'
@@ -13,19 +13,22 @@ import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
 // import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
-import { COINSENDA_URL, history } from '../const/const';
+import { COINSENDA_URL } from '../const/const';
+import { doLogout } from './utils'
+import { history } from '../const/const';
+// import SessionRestore from './hooks/sessionRestore'
+// import { useCoinsendaServices } from '../services/useCoinsendaServices'
+
+let session = {}
 
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
-
-  const doLogout = async () => {
-    await localForage.removeItem('user_token')
-    await localForage.removeItem('created_at')
-    window.location.href = COINSENDA_URL
-  }
+  // const [ session ] = SessionRestore()
+  // const [ coinsendaServices ] = useCoinsendaServices()
 
   const initComponent = async () => {
+    // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)
     const params = new URLSearchParams(history.location.search)
 
     if (params.has('token')) {
@@ -41,39 +44,71 @@ function RootContainer(props) {
 
     const availableToken = isValidToken(created_at)
     if (!availableToken) { return doLogout() }
-
     const userData = jwt.decode(userToken)
     if (!userData) { return doLogout() }
     const { usr, email } = userData
 
-    props.setAuthData({
+    props.actions.setAuthData({
       userToken,
       userEmail: email,
-      userId: usr,
-      doLogout
+      userId: usr
     })
     history.push('/')
   }
 
+
   useEffect(() => {
     initComponent()
   }, [])
+
+  // useEffect(()=>{
+  //   // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION :', session)
+  //   // debugger
+  //   if(session && Object.keys(session).length){
+  //     const init = async() => {
+  //       // await coinsendaServices.countryValidator()
+  //       coinsendaServices.postLoader(doLogout)
+  //       await props.actions.isLoggedInAction(true)
+  //       await props.actions.isAppLoaded(true)
+  //       return history.push('/wallets')
+  //     }
+  //     init()
+  //   }
+  // }, [session])
 
 
   return (
     <Router
       history={history}
     >
+
       <SocketsComponent />
       {/* <CoinsendaSocket /> */}
       <ToastContainers />
       <Switch>
-        <Route path="/" render={() => (!isAppLoaded ? <LoaderAplication history={history} /> : <HomeContainer />)} />
+        <Route path="/" render={() => (
+          !isAppLoaded ?
+          <LoaderAplication history={history} />
+          :
+          <HomeContainer />)} />
       </Switch>
     </Router>
-
   )
 
 }
 
-export default withHandleError(connect(() => ({}), (dispatch) => bindActionCreators({ setAuthData: actions.setAuthData }, dispatch))(RootContainer))
+const mapDispatchToProps = (dispatch) => {
+  return {
+    actions: bindActionCreators(actions , dispatch)
+  }
+}
+
+export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer))
+
+
+
+
+
+
+
+//

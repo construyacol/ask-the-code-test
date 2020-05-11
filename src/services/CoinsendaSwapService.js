@@ -21,7 +21,8 @@ export class SwapService extends WebService {
 
       this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
       const pairs = await this.Get(SWAP_URL)
-      // console.log('||||||||| pairs', pairs)
+      if(!pairs){return}
+      console.log('||||||||| pairs', pairs)
       // alert('pairs')
 
       this.dispatch(getAllPairsAction(pairs))
