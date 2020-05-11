@@ -17,7 +17,7 @@ function AccountList(props) {
   const [isVerified, setIsVerified] = useState(false)
 
   useEffect(() => {
-    // actions.cleanCurrentSection()
+    actions.cleanCurrentSection()
     const verified = coinsendaService.getUserVerificationStatus('level_1')
     setIsVerified(verified)
   }, [])
