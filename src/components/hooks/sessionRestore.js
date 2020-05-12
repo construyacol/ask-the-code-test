@@ -23,10 +23,8 @@ const SessionRestore = () => {
 
   const onUnmount = () => {
     const { user, wallets, balances, authData } = modelData
-    debugger
     if (user && wallets && balances && authData) {
       delete modelData.authData
-      debugger
       return localForage.setItem('sessionState', JSON.stringify(modelData))
     }
   }

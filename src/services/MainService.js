@@ -110,7 +110,6 @@ export class MainService extends inheritances {
         try {
             let pairs = await this.fetchAllPairs()
             if (!pairs) {
-                debugger
                 return callback()
             }
             const currencies = await this.fetchAllCurrencies()
@@ -120,7 +119,6 @@ export class MainService extends inheritances {
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()
         } catch (error) {
-            debugger
             await sleep(2000)
             this.postLoader(this.user.country, callback)
         }

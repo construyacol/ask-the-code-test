@@ -61,22 +61,6 @@ function RootContainer(props) {
     initComponent()
   }, [])
 
-  // useEffect(()=>{
-  //   // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION :', session)
-  //   // debugger
-  //   if(session && Object.keys(session).length){
-  //     const init = async() => {
-  //       // await coinsendaServices.countryValidator()
-  //       coinsendaServices.postLoader(doLogout)
-  //       await props.actions.isLoggedInAction(true)
-  //       await props.actions.isAppLoaded(true)
-  //       return history.push('/wallets')
-  //     }
-  //     init()
-  //   }
-  // }, [session])
-
-
   return (
     <Router
       history={history}

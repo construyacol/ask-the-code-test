@@ -48,24 +48,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       userId
     } = authData
 
-    // if (session && Object.keys(session).length) {
-    //   // await coinsendaServices.countryValidator()
-    //   coinsendaServices.postLoader(doLogout)
-    //   await actions.isLoggedInAction(true)
-    //   await actions.isAppLoaded(true)
-    //   return history.push('/wallets')
-    // }
-
     const isSessionRestored = await tryRestoreSession(userId)
     if (isSessionRestored) {
       await actions.isLoggedInAction(true)
       coinsendaServices.postLoader(doLogout)
       return redirectURL()
     }
-
-    // alert()
-
-    // debugger
 
     if (!userToken) return;
 
@@ -101,7 +89,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if (!user) { return false }
 
     await actions.isLoggedInAction(true)
-    // debugger
     await coinsendaServices.init(doLogout)
     // return console.log('||||||||| stop')
     return redirectURL()
