@@ -13,7 +13,7 @@ import withHandleError from '../../withHandleError'
 import { doLogout } from '../../utils'
 
 
-function LoaderAplication({ actions, history }) {
+function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
@@ -44,14 +44,24 @@ function LoaderAplication({ actions, history }) {
   const initComponent = async (newCountry) => {
 
     const {
-      userToken
+      userToken,
+      userId
     } = authData
 
-
-    // if(session && Object.keys(session).length){
+    // if (session && Object.keys(session).length) {
+    //   // await coinsendaServices.countryValidator()
+    //   coinsendaServices.postLoader(doLogout)
     //   await actions.isLoggedInAction(true)
-    //   return redirectURL()
+    //   await actions.isAppLoaded(true)
+    //   return history.push('/wallets')
     // }
+
+    const isSessionRestored = await tryRestoreSession(userId)
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true)
+      coinsendaServices.postLoader(doLogout)
+      return redirectURL()
+    }
 
     // alert()
 
@@ -118,7 +128,7 @@ function LoaderAplication({ actions, history }) {
     await animation('in')
   }
 
-  const selectCountry = async(newCountry) => {
+  const selectCountry = async (newCountry) => {
     actions.isAppLoading(true)
     await initComponent(newCountry)
     actions.isAppLoading(false)
@@ -139,7 +149,7 @@ function LoaderAplication({ actions, history }) {
 
 
   useEffect(() => {
-    if(authData.userToken){
+    if (authData.userToken) {
       initComponent()
     }
   }, [authData.userToken])
