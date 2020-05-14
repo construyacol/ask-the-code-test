@@ -11,11 +11,11 @@ const SessionRestore = () => {
   const actions = useActions();
   const modelData = useSelector(state => state.modelData)
 
-  const tryRestoreSession = async (userId) => {
+  const tryRestoreSession = async (userToken) => {
     const SESSION = await localForage.getItem('sessionState')
     const SESSION_STATE = JSON.parse(SESSION)
     console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION STATE :', SESSION_STATE)
-    if (!SESSION_STATE || SESSION_STATE.user_id !== userId) { return false }
+    if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) { return false }
     await actions.appLoadLabelAction("Restaurando datos")
     await actions.set_session_restore(SESSION_STATE)
     return true
