@@ -13,6 +13,5 @@ export function isValidToken(createAt) {
 export const doLogout = async () => {
   await localForage.removeItem('user_token')
   await localForage.removeItem('created_at')
-  await localForage.removeItem('sessionState')
   window.location.href = COINSENDA_URL
 }
