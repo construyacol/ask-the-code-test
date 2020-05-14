@@ -13,7 +13,7 @@ import withHandleError from '../../withHandleError'
 import { doLogout } from '../../utils'
 
 
-function LoaderAplication({ actions, history }) {
+function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const [country, setCountry] = useState('colombia')
   const [progressBarWidth, setProgressBarWidth] = useState(0)
@@ -44,18 +44,16 @@ function LoaderAplication({ actions, history }) {
   const initComponent = async (newCountry) => {
 
     const {
-      userToken
+      userToken,
+      userId
     } = authData
 
-
-    // if(session && Object.keys(session).length){
-    //   await actions.isLoggedInAction(true)
-    //   return redirectURL()
-    // }
-
-    // alert()
-
-    // debugger
+    const isSessionRestored = await tryRestoreSession(userToken)
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true)
+      coinsendaServices.postLoader(doLogout)
+      return redirectURL()
+    }
 
     if (!userToken) return;
 
@@ -91,7 +89,6 @@ function LoaderAplication({ actions, history }) {
     if (!user) { return false }
 
     await actions.isLoggedInAction(true)
-    // debugger
     await coinsendaServices.init(doLogout)
     // return console.log('||||||||| stop')
     return redirectURL()
@@ -118,7 +115,7 @@ function LoaderAplication({ actions, history }) {
     await animation('in')
   }
 
-  const selectCountry = async(newCountry) => {
+  const selectCountry = async (newCountry) => {
     actions.isAppLoading(true)
     await initComponent(newCountry)
     actions.isAppLoading(false)
@@ -139,7 +136,7 @@ function LoaderAplication({ actions, history }) {
 
 
   useEffect(() => {
-    if(authData.userToken){
+    if (authData.userToken) {
       initComponent()
     }
   }, [authData.userToken])

@@ -16,7 +16,7 @@ import ToastContainers from './widgets/toast/ToastContainer'
 import { COINSENDA_URL } from '../const/const';
 import { doLogout } from './utils'
 import { history } from '../const/const';
-// import SessionRestore from './hooks/sessionRestore'
+import SessionRestore from './hooks/sessionRestore'
 // import { useCoinsendaServices } from '../services/useCoinsendaServices'
 
 let session = {}
@@ -24,7 +24,7 @@ let session = {}
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
-  // const [ session ] = SessionRestore()
+  const [ tryRestoreSession ] = SessionRestore()
   // const [ coinsendaServices ] = useCoinsendaServices()
 
   const initComponent = async () => {
@@ -61,22 +61,6 @@ function RootContainer(props) {
     initComponent()
   }, [])
 
-  // useEffect(()=>{
-  //   // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION :', session)
-  //   // debugger
-  //   if(session && Object.keys(session).length){
-  //     const init = async() => {
-  //       // await coinsendaServices.countryValidator()
-  //       coinsendaServices.postLoader(doLogout)
-  //       await props.actions.isLoggedInAction(true)
-  //       await props.actions.isAppLoaded(true)
-  //       return history.push('/wallets')
-  //     }
-  //     init()
-  //   }
-  // }, [session])
-
-
   return (
     <Router
       history={history}
@@ -88,7 +72,7 @@ function RootContainer(props) {
       <Switch>
         <Route path="/" render={() => (
           !isAppLoaded ?
-          <LoaderAplication history={history} />
+          <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} />
           :
           <HomeContainer />)} />
       </Switch>

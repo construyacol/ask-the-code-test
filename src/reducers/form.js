@@ -424,7 +424,6 @@ const forms = (state = initialState, action) =>{
                                 }
                                 return item.name.toLowerCase().includes(query)
                               })
-                  // debugger
                   if(action.tipos === 'wallets'){
                     return {
                       ...state,

@@ -3,57 +3,41 @@ import { useSelector, useDispatch } from "react-redux"
 import localForage from 'localforage'
 import { set_session_restore } from '../../actions/dataModelActions'
 import { doLogout } from '../utils'
+import { useActions } from '../../hooks/useActions'
 
 
 const SessionRestore = () => {
 
-  const dispatch = useDispatch();
-  const state = useSelector(state => state)
-  const [ session, setSession ] = useState()
+  const actions = useActions();
+  const modelData = useSelector(state => state.modelData)
 
-
-  const getSessionState = async () => {
+  const tryRestoreSession = async (userToken) => {
     const SESSION = await localForage.getItem('sessionState')
     const SESSION_STATE = JSON.parse(SESSION)
     console.log('||||||||||||||||||||||||||||||||||||||||||||||||||||||| SESSION STATE :', SESSION_STATE)
-    if(!SESSION_STATE){return setSession({})}
-    await dispatch(set_session_restore(SESSION_STATE))
-    return setSession(SESSION_STATE)
+    if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) { return false }
+    await actions.appLoadLabelAction("Restaurando datos")
+    await actions.set_session_restore(SESSION_STATE)
+    return true
   }
 
   const onUnmount = () => {
-    const { user, wallets, balances, authData } = state.modelData
-    if(user && wallets && balances && authData ){
-      return localForage.setItem('sessionState', JSON.stringify({
-        user,
-        wallets,
-        balances,
-        authData,
-        userId:authData.userId
-      }))
+    const { user, wallets, balances, authData } = modelData
+    if (user && wallets && balances && authData) {
+      delete modelData.authData
+      return localForage.setItem('sessionState', JSON.stringify(modelData))
     }
   }
 
-  useEffect(()=>{
-    getSessionState()
-  }, [])
+  // useEffect(()=>{
+  //   getSessionState()
+  // }, [])
 
-  useEffect(()=>{
-    // return window.onbeforeunload = function() {
-    //   const { user, wallets, balances } = state.modelData
-    //   if(user && wallets && balances ){
-    //     return localForage.setItem('sessionState', JSON.stringify({
-    //       user,
-    //       wallets,
-    //       balances
-    //     }))
-    //   }
-    //  // return localStorage.setItem('sessionState', state.modelData.user)
-    // }
-    return onUnmount
-  }, [state.modelData])
+  useEffect(() => {
+    window.onbeforeunload = onUnmount
+  }, [modelData])
 
-  return [ session ]
+  return [tryRestoreSession]
 
 }
 

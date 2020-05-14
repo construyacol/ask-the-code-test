@@ -15,7 +15,7 @@ export const AccountListContainer = styled.section`
   column-gap: 20px;
   align-items: center;
   @media screen and (max-height: 830px) and (max-width: 900px) {
-    height: auto;
+    height: 100%;
   }
 `
 
