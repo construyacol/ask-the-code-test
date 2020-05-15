@@ -1,139 +1,133 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useEffect } from 'react'
 import { InputFormAuth } from '../../inputs'
-
-import './viewSettings.css'
-
-class AuthReq extends Component {
-  // handleFocus => Evento opcional que se dispara al hacer focus en el input
-  // handleBlur => Evento opcional que se dispara al perder el foco del input
-  // authenticated => Evento que se dispara al ingresar el codigo 2auth correctamente
-  // toggle_anim => Evento opcional para transicionar el componente en caso de exito
+import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
 
 
-state = {
-  buttonActive:false,
-  loader:false,
-  verifying:false,
-  status:"",
-  error:false,
-  value:"",
-  desaparecer:false
-}
 
-actualizarEstado = p =>{
 
-  const { value } = p.target
+import './viewSettings.css';
 
-  if(value.length > 5 && value === '666999'){
+const AuthReq = (props) => {
 
-    setTimeout(()=>{
-     this.setState({
-        buttonActive:true,
-        status:"Verificado con Exito",
-        error:false,
-        loader:false,
-        value:value
-      })
-      this.ok_auth()
-    },700)
+  const [ buttonActive, setButtonActive ] = useState()
+  const [ loader, setLoader ] = useState()
+  const [ verifying, setVerifying ] = useState()
+  const [ status, setStatus ] = useState()
+  const [ error, setError ] = useState()
+  const [ value, setValue ] = useState()
+  const [ desaparecer, setDesaparecer ] = useState()
+  const [ coinsendaServices ] = useCoinsendaServices()
 
-    return this.setState({
-      loader:true,
-      buttonActive:false,
-      status:"Verificando..."
-    })
+
+
+
+  const actualizarEstado = async p =>{
+
+    const { value } = p.target
+
+    if(value.length > 5){
+      setLoader(true)
+      setButtonActive(false)
+      setStatus("Verificando...")
+
+        const res = await coinsendaServices.addNewTransactionSecurity(value)
+        if(!res){
+          setStatus("El codigo de verificación es incorrecto")
+          setError(true)
+          return setLoader(false)
+        }
+
+        setButtonActive(true)
+        setStatus("Verificado con Exito")
+        setError(false)
+        setLoader(false)
+        setValue(value)
+
+        return ok_auth()
+
+
+
+      // debugger
+      //   setStatus("El codigo de verificación es incorrecto")
+      //   setError(true)
+      //   setLoader(false)
+      //
+      //   setButtonActive(true)
+      //   setStatus("Verificado con Exito")
+      //   setError(false)
+      //   setLoader(false)
+      //   setValue(value)
+      //
+      //   return ok_auth()
+
+    }
+
+    // if(value.length > 5 && value !== '666999'){
+    //
+    //   setTimeout(()=>{
+    //     setStatus("El codigo de verificación es incorrecto")
+    //     setError(true)
+    //     setLoader(false)
+    //   }, 500)
+    //
+    //
+    //   setButtonActive(false)
+    //   setLoader(true)
+    //   return setStatus("Verificando...")
+    //
+    // }
+    setStatus("")
+    setButtonActive(false)
+    setLoader(false)
+    setError(false)
 
   }
 
 
 
-  if(value.length > 5 && value !== '666999'){
+  const ok_auth = () =>{
 
     setTimeout(()=>{
-      this.setState({
-        error:true,
-        loader:false,
-        status:"El codigo de verificación es incorrecto"
-      })
-    },500)
+      props.toggle_anim && props.toggle_anim()
+      setDesaparecer(props.toggle_anim && true)
+    },1200)
 
-
-    return this.setState({
-      loader:true,
-      buttonActive:false,
-      status:"Verificando..."
-    })
+    setTimeout(()=>{
+      props.authenticated && props.authenticated()
+    }, 1500)
   }
 
-  this.setState({
-    status:"",
-    buttonActive:false,
-    loader:false,
-    error:false
-  })
 
-
-
-}
-
-ok_auth = () =>{
-
-  setTimeout(()=>{
-    this.props.toggle_anim && this.props.toggle_anim()
-    this.setState({
-      desaparecer:this.props.toggle_anim && true
-    })
-  },1200)
-
-  setTimeout(()=>{
-    this.props.authenticated && this.props.authenticated()
-    // this.props.toggle_anim()
-  }, 1500)
-}
-
-
-  render(){
-
-    const {
-      buttonActive,
-      loader,
-      status,
-      error,
-      value,
-      desaparecer
-    } = this.state
-
-    const {
+  const {
       label,
       handleFocus,
-      handleBlur
-    } = this.props
+      handleBlur,
+      disabled
+    } = props
 
 
+  return(
+    <div id="authReq" className={`${desaparecer ? 'desaparece': ''}`}>
 
-    // console.log('|||||  AuthReq - - - ', this.props)
+      <InputFormAuth
+        disabled={disabled}
+        type="number"
+        label={label}
+        placeholder="CODIGO 2FA"
+        name="auth"
+        actualizarEstado={actualizarEstado}
+        active={buttonActive}
+        verifying={loader}
+        value={value}
+        status={status}
+        error={error}
+        handleFocus={handleFocus}
+        handleBlur={handleBlur}
+      />
 
-    return(
-      <div id="authReq" className={`${desaparecer ? 'desaparece': ''}`}>
+    </div>
+  )
 
-        <InputFormAuth
-          type="number"
-          label={label}
-          placeholder="Escribe tu codigo 2FA de 6 digitos"
-          name="auth"
-          actualizarEstado={this.actualizarEstado}
-          active={buttonActive}
-          verifying={loader}
-          value={value}
-          status={status}
-          error={error}
-          handleFocus={handleFocus}
-          handleBlur={handleBlur}
-        />
-
-      </div>
-    )
-  }
 }
 
 export default AuthReq

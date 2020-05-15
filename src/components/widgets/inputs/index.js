@@ -92,7 +92,8 @@ export const InputFormAuth = (props) => {
     verifying,
     error,
     handleFocus,
-    handleBlur
+    handleBlur,
+    disabled
   } = props
 
   // console.log(`${}`)
@@ -109,7 +110,7 @@ export const InputFormAuth = (props) => {
         {
           !verifying ?
             <input
-              className={`inputElement`}
+              className={`inputElement TwoFactorTypo fuente2`}
               style={{ color: active ? '#59b200' : 'gray' }}
               type={type}
               placeholder={placeholder}
@@ -119,6 +120,7 @@ export const InputFormAuth = (props) => {
               onKeyPress={name === "account_number" ? handleKeyPress : null}
               onFocus={handleFocus ? handleFocus : null}
               onBlur={handleBlur ? handleBlur : null}
+              disabled={disabled}
             />
             :
             <div className="AuthLoader">

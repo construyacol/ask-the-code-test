@@ -33,6 +33,7 @@ export const ADD_RESTORE_ID_URL = `${ApiUrl}profiles/add-restoreid`
 export const CURRENCIES_URL_ALT = `${ApiUrl}currencies`
 export const GET_PROFILE_URL = `${ApiUrl}users`
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`
+export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
 export const GET_WITHDRAW_BY_USER_URL = `${WithdrawApiUrl}users`

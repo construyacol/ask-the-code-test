@@ -73,6 +73,7 @@
 .footer2faText{
   position: relative;
   height: 100px;
+  display: grid;
 }
 
 .footer2faTextDes span{

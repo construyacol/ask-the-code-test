@@ -11,6 +11,16 @@
       background: white;
 }
 
+.inputElement.TwoFactorTypo {
+    padding: 0 20px;
+    width: calc(100% - 40px);
+    font-size: 25px !important;
+    text-align: center;
+    letter-spacing: 12px;
+    color: #7995af;
+}
+.inputElement.TwoFactorTypo::placeholder { color: #50667a4d ; }
+
 
 .inputCountryLoader{
   position: absolute;
@@ -49,6 +59,10 @@
 
 .inputAuths{
   max-width: 410px !important;
+}
+
+.inputContainer.inputAuths{
+  height: 50px !important;
 }
 
 .inputAuths .lds-ellipsis{

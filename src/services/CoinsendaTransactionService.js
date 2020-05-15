@@ -3,11 +3,51 @@ import { appLoadLabelAction } from "../actions/loader";
 import {
     updateNormalizedDataAction
 } from "../actions/dataModelActions"
-import { loadLabels, LOCAL_CURRENCIES_URL, CURRENCIES_URL, ADD_RESTORE_ID_URL, GET_PROFILE_URL, ADD_PROFILE_URL } from "../const/const";
+import { loadLabels,
+  LOCAL_CURRENCIES_URL,
+  CURRENCIES_URL,
+  ADD_RESTORE_ID_URL,
+  GET_PROFILE_URL,
+  ADD_PROFILE_URL,
+  TWO_FACTOR_URL
+} from "../const/const";
 import normalizeUser from "../schemas";
 import { matchItem } from "../utils";
 
 export class TransactionService extends WebService {
+
+
+  async getNew2faSecretCode() {
+      const user = this.user
+      const body = {
+          "data": {
+              "country":this.user.country
+          }
+      }
+      const response = await this.Post(`${TWO_FACTOR_URL}/get-new-2fa-secret-code`, body, user.userToken)
+      if (response === 465 || !response) { return false }
+
+      return response;
+
+  }
+
+
+  async addNewTransactionSecurity(twofa_token) {
+      const user = this.user
+      const body = {
+        "data": {
+          "country": this.user.country,
+          "enabled": true,
+          "type": "2fa",
+          twofa_token
+        }
+      }
+      const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body, user.userToken)
+      if (response === 465 || !response) { return false }
+      return response
+  }
+
+
 
   async addRestoreId(restoreId) {
       const user = this.user

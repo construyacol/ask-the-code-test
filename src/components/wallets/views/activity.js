@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -14,7 +14,7 @@ import './wallet_views.css'
 const ActivityView = props => {
 
   const { params } = props.match
-  const { loader } = props
+  const [ loader, setLoader ] = useState(false)
 
   const redirect = (activity_list) => {
     // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, activity_list && !activity_list.length)
@@ -73,28 +73,28 @@ const ActivityView = props => {
   useEffect(() => {
     if (!props.order_list || !props.order_list.length) {
       const init_activity = async () => {
-        props.action.isAppLoading(true)
+        setLoader(true)
         let method = `get_${params.tx_path}`
         let activity_list = await props.action[method](params.account_id)
         if (!activity_list.length) {
           get_activity(method)
         }
-        props.action.isAppLoading(false)
+        setLoader(false)
       }
       init_activity()
     }
   }, [params.tx_path])
 
-  useEffect(() => {
-    window.requestAnimationFrame(() => {
-      // scroller.scrollTo('firstInsideContainer', {
-      //   duration: 0,
-      //   smooth: true,
-      //   containerId: 'containerElement',
-      //   offset: 100
-      // })
-    })
-  }, [])
+  // useEffect(() => {
+  //   window.requestAnimationFrame(() => {
+  //     scroller.scrollTo('firstInsideContainer', {
+  //       duration: 0,
+  //       smooth: true,
+  //       containerId: 'containerElement',
+  //       offset: -20
+  //     })
+  //   })
+  // }, [])
 
   return (
     <div className="ActivityView">
