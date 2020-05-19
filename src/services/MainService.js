@@ -56,10 +56,19 @@ export class MainService extends inheritances {
     globalState;
     dispatch;
 
+    static instance;
+
     initialize(dispatch, state, token) {
         this.dispatch = dispatch
         this.globalState = state
         this.token = token ? token : this.token
+    }
+
+    static getInstance() {
+        if(!MainService.instance) {
+            MainService.instance = new MainService()
+        }
+        return MainService.instance
     }
 
     get user() {
@@ -157,4 +166,4 @@ export class MainService extends inheritances {
 //     globalState: computed
 // })
 
-export const mainService = new MainService()
+export const mainService = MainService.getInstance()
