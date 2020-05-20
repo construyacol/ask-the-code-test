@@ -18,6 +18,7 @@
       "phone":null
     },
     "security_center":{
+      "txSecurityId":false,
       "email":true,
       "kyc":{
         "basic":null,

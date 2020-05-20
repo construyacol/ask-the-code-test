@@ -23,11 +23,8 @@ async userHasTransactionSecurity(userId) {
 
     const url = `${TWO_FACTOR_URL}?filter={"where": {"userId": "${userId}"}}`
     const response = await this.Get(url)
-    console.log('||||||||||||||||||||| TXResponse', url)
     if (!response || response === 465 || response && !response.length) { return false }
-
-    return true;
-
+    return response[0].id;
 }
 
   async getNew2faSecretCode() {
