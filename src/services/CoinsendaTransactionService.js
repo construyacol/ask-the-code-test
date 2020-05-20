@@ -17,6 +17,19 @@ import { matchItem } from "../utils";
 export class TransactionService extends WebService {
 
 
+
+
+async userHasTransactionSecurity(userId) {
+
+    const url = `${TWO_FACTOR_URL}?filter={"where": {"userId": "${userId}"}}`
+    const response = await this.Get(url)
+    console.log('||||||||||||||||||||| TXResponse', url)
+    if (!response || response === 465 || response && !response.length) { return false }
+
+    return true;
+
+}
+
   async getNew2faSecretCode() {
       const user = this.user
       const body = {

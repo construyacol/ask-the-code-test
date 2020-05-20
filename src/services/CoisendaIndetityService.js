@@ -20,6 +20,7 @@ export class IndetityService extends WebService {
         const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`
         const secondResponse = await this.Get(finalUrlSecond)
 
+
         let country_object = await addIndexToRootObject(secondResponse.countries)
         let country = await objectToArray(country_object)
 
@@ -34,6 +35,13 @@ export class IndetityService extends WebService {
             verification_error: country[0].errors && country[0].errors[0],
             levels: country[0].levels
         }
+
+        const securityTransaction = await this.userHasTransactionSecurity(updatedUser.id)
+        if(securityTransaction){
+          updatedUser.security_center.authenticator.auth = true
+          updatedUser.security_center.authenticator.withdraw = true
+        }
+
 
         // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
         let kyc_personal = country[0].levels && country[0].levels.personal
