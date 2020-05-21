@@ -1,5 +1,5 @@
 import { WebService } from "../actions/API/WebService";
-import { resetModelData, updateNormalizedDataAction, manageBalanceAction, updateAllCurrenciesAction } from "../actions/dataModelActions";
+import { resetModelData, updateNormalizedDataAction, manageBalanceAction } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
 import {
     ACCOUNT_URL,
@@ -9,11 +9,10 @@ import {
     loadLabels,
     CURRENCIES_URL
 } from "../const/const";
-import { coins } from '../components/api/ui/api.json'
 import { appLoadLabelAction } from "../actions/loader";
 
 export class AccountService extends WebService {
-  
+
     async getWalletsByUser() {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES))
         const user = this.user
@@ -142,39 +141,8 @@ export class AccountService extends WebService {
     //     await this.dispatch(updateNormalizedDataAction(userBalances))
     // }
 
-    async fetchAllCurrencies() {
-        await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS))
 
-        const response = await this.Get(CURRENCIES_URL)
-        let new_currencies = []
 
-        // en caso de que ocurra un error en esta petición cargaremos con datos harcodeados el modelo
-        if (!response) {
-            this.dispatch(updateAllCurrenciesAction(new_currencies))
-            return coins
-        }
-
-        const currencies = response.reduce((result, currency) => {
-            const split = currency.node_url && currency.node_url.split("api")
-            result.push({
-                "currency_type": currency.currency_type,
-                "id": currency.id,
-                "type": "coins",
-                "name": currency.currency,
-                "code": currency.symbol.toLowerCase(),
-                "selection": false,
-                "is_token": currency.is_token,
-                "min_amount": currency.deposit_min_amount,
-                ...currency,
-                "node_url": split && split[0]
-            })
-            return result
-        }, [])
-        // console.log('GET CURRENCIES, ', currencies)
-        await this.dispatch(updateAllCurrenciesAction(currencies))
-        return currencies
-    }
-    
     async countOfAccountTransactions(account_id) {
       const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
       return response
