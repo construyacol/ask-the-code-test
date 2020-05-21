@@ -25,7 +25,8 @@ export class ModalSettingsView extends Component {
     action_triger:null,
     animOn:false,
     loader:false,
-    success:false
+    success:false,
+    disable2fa: false
   }
 
   close_modal = () => {
@@ -151,6 +152,8 @@ update_state = (payload) =>{
           user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
+
+          this.setState({ disable2fa: !this.state.disable2fa})
           await this.props.action.updateUser(user_update)
         }
         // console.log('||||||| user_update2', user_update)
@@ -228,6 +231,8 @@ update_state = (payload) =>{
                                   label="Digita el codigo Authenticator aquí:"
                                   authenticated={this.authenticated}
                                   toggle_anim={this.toggle_anim}
+                                  disable2fa={this.state.disable2fa}
+                                  isTryToDisable2fa={true}
                                 />
                                 :
                                 <this.view_switch  {...params} />
