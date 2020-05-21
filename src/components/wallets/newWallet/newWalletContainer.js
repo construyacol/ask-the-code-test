@@ -58,7 +58,6 @@ class NewWallet extends Component {
 
     const body = {
       "data": {
-        "userId": user && user.id,
         "name": name,
         "description": "description",
         "country": user && user.country,
