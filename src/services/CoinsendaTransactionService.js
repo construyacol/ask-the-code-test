@@ -28,13 +28,12 @@ async userHasTransactionSecurity(userId) {
 }
 
   async getNew2faSecretCode() {
-      const user = this.user
       const body = {
           "data": {
               "country":this.user.country
           }
       }
-      const response = await this.Post(`${TWO_FACTOR_URL}/get-new-2fa-secret-code`, body, user.userToken)
+      const response = await this.Post(`${TWO_FACTOR_URL}/get-new-2fa-secret-code`, body)
       if (response === 465 || !response) { return false }
 
       return response;
@@ -43,7 +42,6 @@ async userHasTransactionSecurity(userId) {
 
 
   async addNewTransactionSecurity(twofa_token) {
-      const user = this.user
       const body = {
         "data": {
           "country": this.user.country,
@@ -52,7 +50,7 @@ async userHasTransactionSecurity(userId) {
           twofa_token
         }
       }
-      const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body, user.userToken)
+      const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body)
       if (response === 465 || !response) { return false }
       return response
   }
@@ -60,13 +58,12 @@ async userHasTransactionSecurity(userId) {
 
 
   async addRestoreId(restoreId) {
-      const user = this.user
       const body = {
           "data": {
               restoreId
           }
       }
-      const response = await this.Post(ADD_RESTORE_ID_URL, body, user.userToken)
+      const response = await this.Post(ADD_RESTORE_ID_URL, body)
       if (response === 465 || !response) { return false }
 
       return response

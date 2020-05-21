@@ -275,7 +275,7 @@ class ItemSettingsInit extends Component{
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
   return{
     loader:state.isLoading.loader,
     advace_global_step:state.form.globalStep,

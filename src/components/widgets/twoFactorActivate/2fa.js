@@ -10,9 +10,9 @@ import styled from 'styled-components'
 import { skeleton } from '../loaders/skeleton'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
-
 import './2fa.css'
 
+const OTP_TITLE = 'Coinsenda'
 
 const TwoFactorActivate = props => {
 
@@ -43,7 +43,8 @@ const TwoFactorActivate = props => {
         ...props.user.security_center,
         authenticator:{
           ...props.user.security_center.authenticator,
-          auth:true
+          auth:true,
+          withdraw: true
         }
       }
     }
@@ -63,7 +64,7 @@ const TwoFactorActivate = props => {
       const code = await coinsendaServices.getNew2faSecretCode()
       if(!code){return}
       const { data } = code
-      setQr(await QRCode.toDataURL(data))
+      setQr(await QRCode.toDataURL(`otpauth://totp/${OTP_TITLE}?secret=${data}`))
       setPrivate_key(data)
       setLoader(false)
     }

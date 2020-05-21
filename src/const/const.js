@@ -61,6 +61,8 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
 
+export const DISABLE_2FA_URL = `${ApiUrl}transactionSecuritys/disable-transaction-security`
+
 export const GET_URLS = {
     withdraws: GET_WITHDRAW_BY_USER_URL,
     swaps: GET_SWAPS_BY_USERS_URL,
