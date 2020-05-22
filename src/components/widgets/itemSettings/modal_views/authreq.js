@@ -108,8 +108,9 @@ const AuthReq = (props) => {
   }, [props.showError])
 
   const tryToDisabled2fa = async (token) => {
-    const res = coinsendaServices.disable2fa(token)
+    const res = await coinsendaServices.disable2fa(token)
     if(res) {
+      await coinsendaServices.fetchCompleteUserData()
       ok_auth()
     }
     return res
