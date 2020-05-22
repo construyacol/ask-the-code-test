@@ -102,19 +102,19 @@ export class MainService extends inheritances {
             await sleep(2000)
         }
         await this.getWalletsByUser()
-        // this.postLoader(callback)
+        this.postLoader(callback)
         return
     }
 
     async postLoader(callback) {
         try {
-            // let pairs = await this.fetchAllPairs()
-            // if (!pairs) {
-            //     return callback()
-            // }
+            let pairs = await this.fetchAllPairs()
+            if (!pairs) {
+                return callback()
+            }
             const currencies = await this.fetchAllCurrencies()
             if (!currencies) throw currencies
-            // await this.getPairsByCountry(this.user.country, currencies)
+            await this.getPairsByCountry(this.user.country, currencies)
             await this.fetchDepositProviders()
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()
