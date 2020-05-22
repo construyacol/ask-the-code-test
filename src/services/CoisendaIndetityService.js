@@ -9,10 +9,11 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
-    async fetchCompleteUserData(userCountry, profile) {
+    async fetchCompleteUserData(userCountry, profile = {}) {
         await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
+        const user = this.user;
 
-        const finalUrlFirst = `${INDETITY_URL}?country=${userCountry}`
+        const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`
 
         const firstResponse = await this.Get(finalUrlFirst)
         if (!firstResponse) { return false }
@@ -28,7 +29,7 @@ export class IndetityService extends WebService {
             ...userDefaultState,
             email: this.authData.email,
             userToken: this.authData.userToken,
-            restoreId: profile.restoreId,
+            restoreId: profile.restoreId || user.restoreId,
             id: secondResponse.userId,
             country: country[0].value,
             verification_level: country[0].verification_level,
@@ -156,6 +157,7 @@ export class IndetityService extends WebService {
         }
 
         const res = await this.Post(DISABLE_2FA_URL, body)
+
         return res
     }
 

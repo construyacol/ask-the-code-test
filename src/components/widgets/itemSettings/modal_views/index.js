@@ -26,7 +26,8 @@ export class ModalSettingsView extends Component {
     animOn:false,
     loader:false,
     success:false,
-    disable2fa: false
+    disable2fa: false,
+    tryToDisable2Fa: () => null
   }
 
   close_modal = () => {
@@ -122,7 +123,7 @@ update_state = (payload) =>{
     })
 
     setTimeout(()=>{
-      this.success()
+      this.success(this.props.params)
     }, 1000)
   }
 
@@ -149,11 +150,21 @@ update_state = (payload) =>{
           await this.props.action.updateUser(user_update)
         }
         if(code === '2auth'){
+          const res = await this.state.tryToDisable2Fa()
+          if(!res) {
+            await this.props.action.isAppLoading(false)
+            this.setState({
+              loader:false,
+              success:false,
+              buttonActive:false
+            })
+            return
+          }
+
           user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
 
-          this.setState({ disable2fa: !this.state.disable2fa})
           await this.props.action.updateUser(user_update)
         }
         // console.log('||||||| user_update2', user_update)
@@ -231,8 +242,10 @@ update_state = (payload) =>{
                                   label="Digita el codigo Authenticator aquí:"
                                   authenticated={this.authenticated}
                                   toggle_anim={this.toggle_anim}
-                                  disable2fa={this.state.disable2fa}
                                   isTryToDisable2fa={true}
+                                  activeButton={(callToDisable, token) => {
+                                    this.setState({ buttonActive: true, tryToDisable2Fa: () => callToDisable(token)})
+                                  }}
                                 />
                                 :
                                 <this.view_switch  {...params} />

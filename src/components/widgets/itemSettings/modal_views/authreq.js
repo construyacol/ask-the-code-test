@@ -28,22 +28,25 @@ const AuthReq = (props) => {
     if (value.length > 5) {
       setLoader(true)
       setButtonActive(false)
-      setStatus("Verificando...")
-
+      
       if (!props.isTryToDisable2fa) {
+        setStatus("Verificando...")
         const res = await coinsendaServices.addNewTransactionSecurity(value)
         if (!res) {
           setStatus("El codigo de verificación es incorrecto")
           setError(true)
           return setLoader(false)
         }
+        await coinsendaServices.fetchCompleteUserData()
       }
 
       setButtonActive(true)
-      setStatus("Verificado con Exito")
+      !props.isTryToDisable2fa && setStatus("Verificado con Exito")
       setError(false)
       setLoader(false)
       setValue(value)
+
+      props.activeButton && props.activeButton(tryToDisabled2fa, value)
 
       return !props.isTryToDisable2fa && ok_auth()
 
@@ -99,16 +102,13 @@ const AuthReq = (props) => {
     }, 1500)
   }
 
-  const tryToDisabled2fa = async () => {
-    if (props.disable2fa) {
-      coinsendaServices.disable2fa(value)
+  const tryToDisabled2fa = async (token) => {
+    const res = coinsendaServices.disable2fa(token)
+    if(res) {
       ok_auth()
     }
+    return res
   }
-
-  useEffect(() => {
-    tryToDisabled2fa()
-  }, [props.disable2fa])
 
 
   const {
