@@ -18,8 +18,11 @@ const AuthReq = (props) => {
   const [desaparecer, setDesaparecer] = useState()
   const [coinsendaServices] = useCoinsendaServices()
 
-
-
+  const errorCallback = () => {
+    setStatus("El codigo de verificación es incorrecto")
+    setError(true)
+    setLoader(false)
+  }
 
   const actualizarEstado = async p => {
 
@@ -33,9 +36,7 @@ const AuthReq = (props) => {
         setStatus("Verificando...")
         const res = await coinsendaServices.addNewTransactionSecurity(value)
         if (!res) {
-          setStatus("El codigo de verificación es incorrecto")
-          setError(true)
-          return setLoader(false)
+          return errorCallback
         }
         await coinsendaServices.fetchCompleteUserData()
       }
@@ -98,13 +99,18 @@ const AuthReq = (props) => {
     }, 1200)
 
     setTimeout(() => {
-      props.authenticated && props.authenticated()
+      !props.isTryToDisable2fa && props.authenticated && props.authenticated()
     }, 1500)
   }
 
+  useEffect(() => {
+    if(props.showError) errorCallback()
+  }, [props.showError])
+
   const tryToDisabled2fa = async (token) => {
-    const res = coinsendaServices.disable2fa(token)
+    const res = await coinsendaServices.disable2fa(token)
     if(res) {
+      await coinsendaServices.fetchCompleteUserData()
       ok_auth()
     }
     return res
