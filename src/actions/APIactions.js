@@ -808,7 +808,8 @@ export const create_deposit_order = (
         "country": user.country
       }
     }
-    // console.log('|||||||||||||||||||||||||  create_deposit_order ==> ', body)
+
+
     const url_new_order = `${DepositApiUrl}deposits/add-new-deposit`
     const new_fiat_deposit = await ApiPostRequest(url_new_order, body, user.userToken)
     // console.log('|||||| =====> RES REQUEST: ', new_fiat_deposit, ' | BODY', body)
