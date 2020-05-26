@@ -21,7 +21,8 @@ const NewWalletLayout = props =>{
     short_currency_name,
     qr,
     currencies,
-    wallets
+    wallets,
+    clearCurrency
   } = props
 
   const [ availableCurrencies ] = availableWalletCreator()
@@ -47,8 +48,8 @@ const NewWalletLayout = props =>{
                     placeholder="Billetera de trading"
                     name="name"
                     actualizarEstado={actualizarEstado}
-                    active={buttonActive}
-                    value={name}
+                    active={name && currency}
+                    // value={name}
                   />
                 <ItemSelectionContainer
                   type="coins"
@@ -57,8 +58,9 @@ const NewWalletLayout = props =>{
                   actualizarEstado={actualizarEstado}
                   update_control_form={props.update_control_form}
                   items={availableCurrencies}
+                  clearItem={clearCurrency}
                 />
-                <InputButton label="Crear Billetera" type="primary" active={buttonActive}/>
+                <InputButton label="Crear Billetera" type="primary" active={name && currency}/>
               </form>
               </>
               :

@@ -103,8 +103,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       return actions.isAppLoaded(true)
     }
 
-    // await history.push('/wallets')
-    await history.push('/security')
+    await history.push('/wallets')
     // return console.log('_________________________________________________________________||||| stop ::', session, session && Object.keys(session).length)
     return actions.isAppLoaded(true)
   }

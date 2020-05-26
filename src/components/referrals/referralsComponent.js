@@ -14,7 +14,8 @@ class ReferralComponent extends Component {
 
   state = {
     success_referral:false,
-    haveReferraLink:this.props.user.referral ? true : false,
+    // haveReferraLink:this.props.user.referral ? true : false,
+    haveReferraLink:false,
     referralLink:this.props.user.referral && `https://coinsenda.com/ref_code?=${this.props.user.referral.ref_code}`
   }
 
@@ -97,7 +98,7 @@ function mapStateToProps(state, props){
 
   const { user } = state.modelData
   return{
-    user:user 
+    user:user
   }
 
 }

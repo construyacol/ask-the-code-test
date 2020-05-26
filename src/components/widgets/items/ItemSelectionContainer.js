@@ -112,6 +112,9 @@ class ItemSelectionContainer extends Component {
 
 
   close = () => {
+    if(this.props.clearItem){
+      this.props.clearItem()
+    }
     this.setState({
       selected: false,
       placeholder: this.props.type === "coins" ? "ej: Bitcoin" : "ej: Bancolombia"
@@ -126,7 +129,7 @@ class ItemSelectionContainer extends Component {
     const { search, buttonActive, itemSelect, label } = this.props
     const { items } = this.state
 
-
+    // console.log('this.state.selected  ', this.state, search)
     return (
       <section className="ItemSelectionContainers" id="itemSelect">
 
@@ -136,10 +139,10 @@ class ItemSelectionContainer extends Component {
             <ItemSelected
               close={this.close}
               label={label}
-              active={itemSelect}
-              value={itemSelect}
+              active={itemSelect || search.length}
+              value={itemSelect || (search.length && search[0].currency)}
             >
-              {!this.state.coincidencia ? itemSelect : this.state.coincidencia}
+              {this.state.coincidencia || itemSelect || search.length && search[0].currency}
             </ItemSelected>
 
             :

@@ -119,7 +119,6 @@ export class MainService extends inheritances {
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()
         } catch (error) {
-          debugger
             await sleep(2000)
             this.postLoader(this.user.country, callback)
         }
