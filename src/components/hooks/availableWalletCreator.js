@@ -11,7 +11,7 @@ const availableWalletCreator = () => {
 
 
   const getAvailableCurrencies = async() =>{
-    if(!currencies || !wallets){return}
+    if(!currencies || !wallets){return setAvailableCurrencies(currencies)}
     let objectCurrencies = await convertToObjectWithCustomIndex(currencies, 'currency')
     let availableWallets = await convertToObjectWithCustomIndex(wallets, 'currency.currency')
     let resultCurrencies = []

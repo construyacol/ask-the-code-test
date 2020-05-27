@@ -27,7 +27,6 @@ const NewWalletLayout = props =>{
 
   const [ availableCurrencies ] = availableWalletCreator()
 
-
   return(
     <div className="containerFormWallet newWallet">
       {

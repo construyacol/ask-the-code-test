@@ -151,7 +151,6 @@ const NewWallet = props => {
     return () => props.action.CurrentForm('wallets')
   }, [])
 
-  console.log('update component ::', name, currency)
 
   let states = {
   name,
