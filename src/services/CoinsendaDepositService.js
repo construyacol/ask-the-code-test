@@ -90,6 +90,8 @@ export class DepositService extends WebService {
             }
         }
 
+        // console.log(body)
+        // debugger
 
         const result = await this.Post(NEW_DEPOSIT_URL, body, user.userToken)
         if (result === 465 || !result) { return false }
@@ -131,7 +133,7 @@ export class DepositService extends WebService {
     async getDepositById(id) {
         const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where": {"id":"${id}"}, "include":{"relation":"paymentProof"}}`
         const deposit = await this.Get(finalUrl)
-                
+
         return deposit[0]
     }
 

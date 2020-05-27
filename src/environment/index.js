@@ -1,28 +1,29 @@
 let Environment
 
 if(process.env.NODE_ENV === 'development'){
-  // Environment = {
-  //   ApiUrl:'https://tx1.devsertec.com/api/',
-  //   SocketUrl:'https://tx1.devsertec.com/',
-  //   IdentityApIUrl:'https://identity1.devsertec.com/api/',
-  //   CountryApIUrl:'https://info1.devsertec.com/api/',
-  //   AccountApiUrl:'https://account1.devsertec.com/api/',
-  //   DepositApiUrl:'https://deposit1.devsertec.com/api/',
-  //   WithdrawApiUrl:'https://withdraw1.devsertec.com/api/' ,
-  //   SwapApiUrl:'https://swap1.devsertec.com/api/',
-  //   CountryUrl:'https://info1.devsertec.com/'
-  // }
   Environment = {
-    ApiUrl:'https://sendatx.ngrok.io/api/',
-    SocketUrl:'https://sendatx.ngrok.io/',
-    IdentityApIUrl:'https://sendaidentity.ngrok.io/api/',
-    CountryApIUrl:'https://countrylistapi.ngrok.io/api/',
-    AccountApiUrl:'https://sendaaccount.ngrok.io/api/',
-    DepositApiUrl:'https://sendadeposit.ngrok.io/api/',
-    WithdrawApiUrl:'https://sendawithdraw.ngrok.io/api/' ,
-    SwapApiUrl:'https://sendaswap.ngrok.io/api/',
-    CountryUrl:'https://countrylistapi.ngrok.io/'
+    ApiUrl:'https://tx1.devsertec.com/api/',
+    SocketUrl:'https://tx1.devsertec.com/',
+    IdentityApIUrl:'https://identity1.devsertec.com/api/',
+    CountryApIUrl:'https://info1.devsertec.com/api/',
+    AccountApiUrl:'https://account1.devsertec.com/api/',
+    DepositApiUrl:'https://deposit1.devsertec.com/api/',
+    WithdrawApiUrl:'https://withdraw1.devsertec.com/api/' ,
+    SwapApiUrl:'https://swap1.devsertec.com/api/',
+    CountryUrl:'https://info1.devsertec.com/'
   }
+
+  // Environment = {
+  //   ApiUrl:'https://sendatx.ngrok.io/api/',
+  //   SocketUrl:'https://sendatx.ngrok.io/',
+  //   IdentityApIUrl:'https://sendaidentity.ngrok.io/api/',
+  //   CountryApIUrl:'https://countrylistapi.ngrok.io/api/',
+  //   AccountApiUrl:'https://sendaaccount.ngrok.io/api/',
+  //   DepositApiUrl:'https://sendadeposit.ngrok.io/api/',
+  //   WithdrawApiUrl:'https://sendawithdraw.ngrok.io/api/' ,
+  //   SwapApiUrl:'https://sendaswap.ngrok.io/api/',
+  //   CountryUrl:'https://countrylistapi.ngrok.io/'
+  // }
 }else{
   Environment = {
     ApiUrl:'https://sendatx.ngrok.io/api/',
@@ -35,6 +36,7 @@ if(process.env.NODE_ENV === 'development'){
     SwapApiUrl:'https://sendaswap.ngrok.io/api/',
     CountryUrl:'https://countrylistapi.ngrok.io/'
   }
+
   // Environment = {
   //   ApiUrl:'https://tx1.devsertec.com/api/',
   //   SocketUrl:'https://tx1.devsertec.com/',
@@ -55,7 +57,7 @@ export default Environment
 // userID staging: 5e9543697410260066675479
 
 // construyacol+zz21@gmail.com
-// construyacol+4a452@gmail.com
+// construyacol+douglas@gmail.com
 
 // https://auth1.devsertec.com/signin?clientId=5e79471764dcdb016a369cd8
 

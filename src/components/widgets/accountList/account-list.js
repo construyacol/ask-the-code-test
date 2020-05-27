@@ -102,7 +102,7 @@ function AccountList(props) {
   //   actions.mensaje(msg, success ? 'success' : 'error')
   // }
 
-  const items = props.items
+  const items = props.items || []
   const isHugeContainer = items > 10
   const styleForHugeContainer = {
     // height: 'auto',

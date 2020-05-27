@@ -75,12 +75,24 @@ const ItemAccount = props => {
   }
 
   const delete_account = async () => {
-    const isWallet = props.account_type === 'wallets'
-    if (isWallet && props.account.available > 0) {
-      return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')
-    }
     set_account_state('deleting')
     set_id_wallet_action(props.account.id)
+    const isWallet = props.account_type === 'wallets'
+
+    if (isWallet) {
+      if(props.balances.total > 0){
+        set_account_state('')
+        return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')
+      }
+
+      let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id, '"state":"confirmed"')
+      if(areThereDeposits && areThereDeposits.length){
+        set_account_state('')
+        return props.actions.mensaje('Las cuentas con depositos pendientes no pueden ser eliminadas', 'error')
+      }
+
+    }
+
     let msg = "Cuenta eliminada con exito"
     let success = true
     let result = false

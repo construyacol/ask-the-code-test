@@ -33,6 +33,7 @@ export const ADD_RESTORE_ID_URL = `${ApiUrl}profiles/add-restoreid`
 export const CURRENCIES_URL_ALT = `${ApiUrl}currencies`
 export const GET_PROFILE_URL = `${ApiUrl}users`
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`
+export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
 export const GET_WITHDRAW_BY_USER_URL = `${WithdrawApiUrl}users`
@@ -59,6 +60,8 @@ export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidato
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
+
+export const DISABLE_2FA_URL = `${ApiUrl}transactionSecuritys/disable-transaction-security`
 
 export const GET_URLS = {
     withdraws: GET_WITHDRAW_BY_USER_URL,

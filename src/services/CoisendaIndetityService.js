@@ -1,6 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
-import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL } from "../const/const";
+import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, DISABLE_2FA_URL } from "../const/const";
 import userDefaultState from '../components/api'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
@@ -9,16 +9,18 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
-    async fetchCompleteUserData(userCountry, profile) {
+    async fetchCompleteUserData(userCountry, profile = {}) {
         await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
+        const user = this.user;
 
-        const finalUrlFirst = `${INDETITY_URL}?country=${userCountry}`
+        const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`
 
         const firstResponse = await this.Get(finalUrlFirst)
         if (!firstResponse) { return false }
 
         const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`
         const secondResponse = await this.Get(finalUrlSecond)
+
 
         let country_object = await addIndexToRootObject(secondResponse.countries)
         let country = await objectToArray(country_object)
@@ -27,12 +29,19 @@ export class IndetityService extends WebService {
             ...userDefaultState,
             email: this.authData.email,
             userToken: this.authData.userToken,
-            restoreId:profile.restoreId,
+            restoreId: profile.restoreId || user.restoreId,
             id: secondResponse.userId,
             country: country[0].value,
             verification_level: country[0].verification_level,
             verification_error: country[0].errors && country[0].errors[0],
             levels: country[0].levels
+        }
+
+        const securityTransaction = await this.userHasTransactionSecurity(updatedUser.id)
+        if (securityTransaction) {
+            updatedUser.security_center.txSecurityId = securityTransaction
+            updatedUser.security_center.authenticator.auth = true
+            updatedUser.security_center.authenticator.withdraw = true
         }
 
         // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
@@ -136,6 +145,20 @@ export class IndetityService extends WebService {
             default:
                 return false
         }
+    }
+
+    async disable2fa(token) {
+        const body = {
+            "data": {
+                "transaction_security_id": this.user.security_center.txSecurityId,
+                "country": this.user.country || "colombia",
+                "twofa_token": token
+            }
+        }
+
+        const res = await this.Post(DISABLE_2FA_URL, body)
+
+        return res
     }
 
 

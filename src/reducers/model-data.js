@@ -27,6 +27,7 @@ const initialState = {
     localCurrency: ""
   },
   user: null,
+  deposit_providers:[],
   wallets: null,
   currencies: null,
   balances: {},

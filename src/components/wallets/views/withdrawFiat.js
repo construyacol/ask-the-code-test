@@ -46,7 +46,8 @@ const FiatView = props => {
 
 
       <ControlButton
-        loader={loader || Object.keys(withdraw_accounts).length === 0}
+        loader={loader}
+        // loader={loader || Object.keys(withdraw_accounts).length === 0}
         formValidate={!active_trade_operation}
         label="Realizar un retiro"
         handleAction={handleSubmit}

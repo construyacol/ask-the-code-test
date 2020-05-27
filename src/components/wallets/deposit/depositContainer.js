@@ -51,9 +51,8 @@ class DepositContainer extends Component {
     // let deposit_provider = await deposit_providers.find(dep_prov => {
     //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
     // })
-    const currentDepositProvider = deposit_providers && deposit_providers[0]
+    const currentDepositProvider = deposit_providers && deposit_providers[this.props.current_wallet.dep_prov[0]]
     this.setState({currentDepositProvider})
-    // fin de seleccion de deposit provider
   }
 
   componentDidUpdate(prevProps) {
@@ -378,7 +377,8 @@ class DepositContainer extends Component {
     // let deposit_provider = await deposit_providers.find(dep_prov => {
     //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
     // })
-    let deposit_provider = deposit_providers && deposit_providers[0]
+    // let deposit_provider = deposit_providers && deposit_providers[0]
+    const deposit_provider = deposit_providers && deposit_providers[current_wallet.dep_prov[0]]
 
     // console.log('create_deposit_order PROPS', deposit_provider, current_wallet)
 
@@ -399,8 +399,6 @@ class DepositContainer extends Component {
       service_mode,
       deposit_provider.id
     )
-    // return console.log('create_deposit_order response', response)
-    // console.log('°°°°°°°°°°°°°°°°|||||||||||||||||||||deposit_provider', deposit_provider)
 
     if (!response) {
       this.props.action.isAppLoading(false)
@@ -416,12 +414,12 @@ class DepositContainer extends Component {
       ...response
     }
 
-    // console.log('create_deposit_order new_deposit_model', new_deposit_model)
+    if(!current_wallet.count){
+      await this.props.action.update_item_state({ [current_wallet.id]: { ...current_wallet, count:99} }, 'wallets')
+    }
+
+
     // await this.props.action.get_deposit_list(user)
-
-
-
-
     // await this.props.action.normalize_new_item(user, deposits, new_deposit_model, 'deposits')
     // await this.props.action.update_activity_account(this.props.current_wallet.id, 'deposits')
 
@@ -644,11 +642,11 @@ function mapStateToProps(state, props) {
     currencies
   } = state.modelData
 
-  let deposit_providers_list = []
-  user.deposit_providers.map(provider_id => {
-    if (deposit_providers[provider_id].currency_type !== 'fiat') { return false }
-    return deposit_providers_list.push(deposit_providers[provider_id])
-  })
+  // let deposit_providers_list = []
+  // user.deposit_providers.map(provider_id => {
+  //   if (deposit_providers[provider_id].currency_type !== 'fiat') { return false }
+  //   return deposit_providers_list.push(deposit_providers[provider_id])
+  // })
 
   const { account_id } = props.match.params
 
@@ -680,7 +678,8 @@ function mapStateToProps(state, props) {
     current_wallet,
     deposits: state.storage.activity_for_account[account_id] && state.storage.activity_for_account[account_id].deposits,
     coins: currencies,
-    deposit_providers: deposit_providers_list
+    // deposit_providers: deposit_providers_list
+    deposit_providers
   }
 
 }
