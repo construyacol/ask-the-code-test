@@ -18,16 +18,16 @@ export class AccountService extends WebService {
         const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
         const wallets = await this.Get(accountUrl)
-
         if (!wallets || wallets === 404) { return false }
-        if (this.isEmpty(wallets)) {
-            await this.dispatch(resetModelData({ wallets: [] }))
-        }
+
 
         const availableWallets = wallets.filter(wallet => {
             return (wallet.visible && wallet.currency.currency !== 'usd') ? wallet : false
         })
 
+        if (!availableWallets.length) {
+            await this.dispatch(resetModelData({ wallets: [] }))
+        }
 
         const balanceList = availableWallets.map(balanceItem => ({
             id: balanceItem.id,
@@ -49,7 +49,9 @@ export class AccountService extends WebService {
                 ...balanceList
             ]
         }
+
         let userWallets = await normalizeUser(updatedUser)
+
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
     }
