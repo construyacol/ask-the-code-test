@@ -39,7 +39,7 @@ const AuthReq = (props) => {
 
 
         if(!res){
-          setStatus("El codigo de verificación es incorrecto")
+          setStatus("El código de verificación es incorrecto")
           setError(true)
           return setLoader(false)
         }
