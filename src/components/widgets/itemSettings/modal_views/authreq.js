@@ -9,47 +9,48 @@ import './viewSettings.css';
 
 const AuthReq = (props) => {
 
-  const [buttonActive, setButtonActive] = useState()
-  const [loader, setLoader] = useState()
-  const [verifying, setVerifying] = useState()
-  const [status, setStatus] = useState()
-  const [error, setError] = useState()
-  const [value, setValue] = useState()
-  const [desaparecer, setDesaparecer] = useState()
-  const [coinsendaServices] = useCoinsendaServices()
+  const [ buttonActive, setButtonActive ] = useState()
+  const [ loader, setLoader ] = useState()
+  const [ verifying, setVerifying ] = useState()
+  const [ status, setStatus ] = useState()
+  const [ error, setError ] = useState()
+  const [ value, setValue ] = useState()
+  const [ desaparecer, setDesaparecer ] = useState()
+  const [ coinsendaServices ] = useCoinsendaServices()
 
-  const errorCallback = () => {
-    setStatus("El codigo de verificación es incorrecto")
-    setError(true)
-    setLoader(false)
-  }
 
-  const actualizarEstado = async p => {
+
+
+  const actualizarEstado = async p =>{
 
     const { value } = p.target
 
-    if (value.length > 5) {
+    if(value.length > 5){
       setLoader(true)
       setButtonActive(false)
-      
-      if (!props.isTryToDisable2fa) {
-        setStatus("Verificando...")
-        const res = await coinsendaServices.addNewTransactionSecurity(value)
-        if (!res) {
-          return errorCallback
-        }
-        await coinsendaServices.fetchCompleteUserData()
+      setStatus("Verificando...")
+
+      let res
+      if(props.isTryToDisable2fa){
+        res = await coinsendaServices.disable2fa(value)
+      }else{
+        res = await coinsendaServices.addNewTransactionSecurity(value)
       }
 
-      setButtonActive(true)
-      !props.isTryToDisable2fa && setStatus("Verificado con Exito")
-      setError(false)
-      setLoader(false)
-      setValue(value)
 
-      props.activeButton && props.activeButton(tryToDisabled2fa, value)
+        if(!res){
+          setStatus("El codigo de verificación es incorrecto")
+          setError(true)
+          return setLoader(false)
+        }
 
-      return !props.isTryToDisable2fa && ok_auth()
+        setButtonActive(true)
+        setStatus("Verificado con Exito")
+        setError(false)
+        setLoader(false)
+        setValue(value)
+
+        return ok_auth()
 
 
 
@@ -91,42 +92,29 @@ const AuthReq = (props) => {
 
 
 
-  const ok_auth = () => {
+  const ok_auth = () =>{
 
-    setTimeout(() => {
+    setTimeout(()=>{
       props.toggle_anim && props.toggle_anim()
       setDesaparecer(props.toggle_anim && true)
-    }, 1200)
+    },1200)
 
-    setTimeout(() => {
-      !props.isTryToDisable2fa && props.authenticated && props.authenticated()
+    setTimeout(()=>{
+      props.authenticated && props.authenticated()
     }, 1500)
-  }
-
-  useEffect(() => {
-    if(props.showError) errorCallback()
-  }, [props.showError])
-
-  const tryToDisabled2fa = async (token) => {
-    const res = await coinsendaServices.disable2fa(token)
-    if(res) {
-      await coinsendaServices.fetchCompleteUserData()
-      ok_auth()
-    }
-    return res
   }
 
 
   const {
-    label,
-    handleFocus,
-    handleBlur,
-    disabled
-  } = props
+      label,
+      handleFocus,
+      handleBlur,
+      disabled
+    } = props
 
 
-  return (
-    <div id="authReq" className={`${desaparecer ? 'desaparece' : ''}`}>
+  return(
+    <div id="authReq" className={`${desaparecer ? 'desaparece': ''}`}>
 
       <InputFormAuth
         disabled={disabled}

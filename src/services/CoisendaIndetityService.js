@@ -1,6 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
-import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL, DISABLE_2FA_URL } from "../const/const";
+import { loadLabels, INDETITY_URL, INDENTITY_USERS_URL, INDETITY_COUNTRY_VALIDATORS_URL, INDETITY_UPDATE_PROFILE_URL } from "../const/const";
 import userDefaultState from '../components/api'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
@@ -146,20 +146,5 @@ export class IndetityService extends WebService {
                 return false
         }
     }
-
-    async disable2fa(token) {
-        const body = {
-            "data": {
-                "transaction_security_id": this.user.security_center.txSecurityId,
-                "country": this.user.country || "colombia",
-                "twofa_token": token
-            }
-        }
-
-        const res = await this.Post(DISABLE_2FA_URL, body)
-
-        return res
-    }
-
 
 }

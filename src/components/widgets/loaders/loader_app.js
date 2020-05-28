@@ -90,7 +90,8 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
     await actions.isLoggedInAction(true)
     await coinsendaServices.init(doLogout)
-    // return console.log('||||||||| stop')
+    // Si es la primer vez de inicio de sesión verificado y sin wallets, creamos wallet de btc y cop con sus respectivos deposit providers
+    
     return redirectURL()
 
   }
