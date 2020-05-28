@@ -81,21 +81,7 @@ const AddDepositProviderCripto = () => {
   const createDepositProvider = async(e) => {
     e.preventDefault()
     dispatch(isAppLoading(true))
-
-    const dep_prov_id = await coinsendaServices.createDepositProvider(current_wallet.id, current_wallet.country)
-
-    if(!dep_prov_id){
-      return dispatch(isAppLoading(false))
-    }
-    const deposit_providers = await coinsendaServices.fetchDepositProviders()
-    // console.log('||||||||||||||||||||||||||||||||||| createDepositProvider ==> ', deposit_providers)
-    const update_wallet = {
-      [current_wallet.id]:{...current_wallet, dep_prov:[dep_prov_id], deposit_provider:deposit_providers[dep_prov_id]}
-    }
-    await dispatch(update_item_state(update_wallet, 'wallets'))
-    dispatch(current_section_params({
-      current_wallet:update_wallet[current_wallet.id]
-    }))
+    const dep_prov = await coinsendaServices.createAndInsertDepositProvider(current_wallet)
     dispatch(isAppLoading(false))
   }
 

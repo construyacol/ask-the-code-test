@@ -110,10 +110,15 @@ export class MainService extends inheritances {
         while (!this.user) {
             await sleep(2000)
         }
-        await this.getWalletsByUser()
+        const wallets = await this.getWalletsByUser()
+        const verificationStatus = await this.getVerificationState()
+        if (!wallets && verificationStatus === 'accepted') {
+          await this.createInitialEnvironmentAccount()
+        }
         this.postLoader(callback)
         return
     }
+
 
     async postLoader(callback) {
         try {

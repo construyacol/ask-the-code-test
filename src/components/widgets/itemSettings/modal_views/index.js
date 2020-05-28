@@ -202,7 +202,7 @@ console.log(' || |||| ModalSettingSwitch - -- - ', code)
 
     return(
 
-      <OtherModalLayoutPairs title={title} close_modal={this.close_modal}>
+      <OtherModalLayoutPairs title={title} close_modal={this.close_modal} classes={code}>
 
               {/* <p className="OtherModalFind"></p> */}
 

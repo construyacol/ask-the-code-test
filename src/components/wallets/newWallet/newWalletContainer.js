@@ -56,8 +56,8 @@ const NewWallet = props => {
 
     const body = {
       "data": {
-        "name": name,
-        "description": "description",
+        // "name": name,
+        // "description": "description",
         "country": user && user.country,
         "enabled": true,
         "currency": {
@@ -71,25 +71,26 @@ const NewWallet = props => {
     const wallets = await coinsendaServices.createWallet(body)
 
 
-    if (!wallets || wallets === 465 || wallets === 400) {
-      props.action.ReduceStep('wallets')
-      props.action.isAppLoading(false)
-      let msg = !wallets ? 'ERROR DE CONEXIÓN' : 'Al parecer, aún no tenemos soporte para esta moneda'
-      return props.action.mensaje(msg, 'error')
+    if (!wallets) {
+      return errorHandle('Error al crear la billetera...')
     }
-
+    await coinsendaServices.getWalletsByUser()
     const {
       account
     } = wallets
 
-    // const dep_prov_id = await coinsendaServices.createDepositProvider(account.id, account.country)
-    await createDepositProvider(account)
+    const dep_prov = await coinsendaServices.createAndInsertDepositProvider(account)
+
+    if (!dep_prov) {
+      return errorHandle('Error al crear el proveedor de deposito de la billetera...')
+    }
+
     // si la acción se lleva satisfactoriamente actualizamos el fondo del modal a un color verde
     let msg = `Nueva wallet ${account.currency.currency} creada!`
     props.action.mensaje(msg, 'success')
 
-    await props.action.add_item_state('wallets', { ...account, visible: true })
-    await props.action.get_account_balances(props.user)
+    // await props.action.add_item_state('wallets', { ...account, visible: true })
+    // await props.action.get_account_balances(props.user)
     // return console.log('=================> CREATE WALLET CURRENCIE=>', wallets)
 
     props.action.isAppLoading(false)
@@ -100,22 +101,10 @@ const NewWallet = props => {
     return props.history.push(`/wallets/deposit/${account.id}`)
   }
 
-  const createDepositProvider = async(account) => {
-
-    const dep_prov_id = await coinsendaServices.createDepositProvider(account.id, account.country)
-
-    if(!dep_prov_id){
-      return props.action.isAppLoading(false)
-    }
-    const deposit_providers = await coinsendaServices.fetchDepositProviders()
-    // console.log('||||||||||||||||||||||||||||||||||| createDepositProvider ==> ', deposit_providers)
-    const update_wallet = {
-      [account.id]:{...account, dep_prov:[dep_prov_id], deposit_provider:deposit_providers[dep_prov_id]}
-    }
-    await dispatch(update_item_state(update_wallet, 'wallets'))
-    // dispatch(current_section_params({
-    //   current_wallet:update_wallet[account.id]
-    // }))
+  const errorHandle = (msg) => {
+    props.action.ReduceStep('wallets')
+    props.action.isAppLoading(false)
+    return props.action.mensaje(msg ? msg : 'Ups, al parecer esto no podrá ser...', 'error')
   }
 
 

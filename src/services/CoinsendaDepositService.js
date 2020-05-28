@@ -6,7 +6,10 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import {
   success_sound
 } from '../actions/soundActions'
-
+import actions from '../actions'
+const {
+  update_item_state
+} = actions
 
 
 export class DepositService extends WebService {
@@ -157,6 +160,18 @@ export class DepositService extends WebService {
         this.dispatch(success_sound())
         return data[0].id
 
+    }
+
+    async createAndInsertDepositProvider(account) {
+      const dep_prov_id = await this.createDepositProvider(account.id, account.country)
+      const deposit_providers = await this.fetchDepositProviders()
+      if(!dep_prov_id){return}
+
+      const update_wallet = {
+        [account.id]:{...account, dep_prov:[dep_prov_id], deposit_provider:deposit_providers[dep_prov_id]}
+      }
+      await this.dispatch(update_item_state(update_wallet, 'wallets'))
+      return true
     }
 
 
