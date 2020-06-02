@@ -14,7 +14,7 @@ export default OrderItem
 
 const LoaderItem = () => {
 
-  const loaderItems = new Array(5).fill({})
+  const loaderItems = new Array(3).fill({})
 
   return(
     <ActivityLayout>

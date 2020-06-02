@@ -7,6 +7,11 @@ import {
   success_sound
 } from '../actions/soundActions'
 import actions from '../actions'
+import {
+  update_activity_state,
+  normalized_list
+} from '../utils'
+
 const {
   update_item_state
 } = actions
@@ -182,6 +187,36 @@ export class DepositService extends WebService {
         return deposit
     }
 
+
+    async get_deposits(account_id) {
+    // @params:
+    // account_id
+
+      // return async(dispatch, getState) => {
+
+        const user = this.user
+
+        let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+        const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
+
+        const deposits = await this.Get(finalUrl)
+        if(!deposits || deposits === 465){return false}
+
+        let remodeled_deposits = await deposits.map(item => {
+          let new_item = {
+            ...item,
+            type_order:"deposit",
+            // paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
+          }
+          return new_item
+        })
+
+        await this.dispatch(normalized_list(remodeled_deposits, 'deposits'))
+        await this.dispatch(update_activity_state(account_id, 'deposits', remodeled_deposits))
+        return remodeled_deposits
+      // }
+
+    }
 
 
 

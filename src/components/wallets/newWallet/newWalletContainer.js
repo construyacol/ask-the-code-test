@@ -56,8 +56,8 @@ const NewWallet = props => {
 
     const body = {
       "data": {
-        // "name": name,
-        // "description": "description",
+        "name": name,
+        "description": "description",
         "country": user && user.country,
         "enabled": true,
         "currency": {

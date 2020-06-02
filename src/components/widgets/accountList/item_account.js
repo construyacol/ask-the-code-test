@@ -63,7 +63,7 @@ const ItemAccount = props => {
 
 
   const account_detail = async (payload) => {
-    console.log('actions', payload)
+    if(account_state === 'deleting' || account_state === 'deleted'){return}
     props.actions.cleanNotificationItem(payload, 'account_id')
     if(props.account.count === undefined){
       return getAccountTransactions()
@@ -92,6 +92,10 @@ const ItemAccount = props => {
       }
 
     }
+    // else if(props.account.used_counter){
+    //   setTimeout(()=>set_account_state(''), 700)
+    //   return props.actions.mensaje('Las cuentas de retiro con movimiento no pueden ser eliminadas...', 'error')
+    // }
 
     let msg = "Cuenta eliminada con exito"
     let success = true
@@ -104,7 +108,7 @@ const ItemAccount = props => {
     if (result === 404 || result === 465 || !result) {
       msg = "La cuenta no se ha podido eliminar"
       success = false
-      set_account_state('CancelDeleting')
+      set_account_state('')
       return props.actions.mensaje(msg, success ? 'success' : 'error')
     }
     set_account_state('deleted')
