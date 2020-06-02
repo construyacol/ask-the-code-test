@@ -71,6 +71,7 @@ export class AccountService extends WebService {
       for (let body of accounts) {
         // TODO: assign currency by country
         body.data.country = this.user.country
+        body.data.name = `Mi Billetera ${body.data.currency.currency}`
         const wallets = await this.createWallet(body)
         if(!wallets){return}
         await this.getWalletsByUser()
