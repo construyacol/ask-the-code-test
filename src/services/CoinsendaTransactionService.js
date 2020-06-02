@@ -58,8 +58,13 @@ async userHasTransactionSecurity(userId) {
     const url = `${TWO_FACTOR_URL}?filter={"where": {"userId": "${userId}"}}`
     const response = await this.Get(url)
     if (!response || response === 465 || (response && !response.length)) { return false }
-
-    return response[0].id;
+    const withdrawScope = 'withdraw:withdraws:addNewWithdraw::*'
+    return {
+      transaction_security_id:response[0].id,
+      scopes:{
+        withdraw:response[0].scopes[withdrawScope]
+      }
+    }
 
 }
 
@@ -90,15 +95,22 @@ async userHasTransactionSecurity(userId) {
       }
       const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body, user.userToken)
       if (response === 465 || !response) { return false }
-      return response
+      const withdrawScope = 'withdraw:withdraws:addNewWithdraw::*'
+      const { data } = response
+      return {
+        transaction_security_id:data.id,
+        scopes:{
+          withdraw:data.scopes[withdrawScope]
+        }
+      }
   }
 
   async disable2fa(token) {
 
-      const transaction_security_id = await this.userHasTransactionSecurity(this.user.id)
+      // const { transaction_security_id } = await this.userHasTransactionSecurity(this.user.id)
       const body = {
           "data": {
-              transaction_security_id,
+              transaction_security_id:this.user.security_center.txSecurityId,
               "country": this.user.country || "colombia",
               "twofa_token": token
           }

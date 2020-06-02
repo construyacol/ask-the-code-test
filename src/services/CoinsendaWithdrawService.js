@@ -170,23 +170,7 @@ export class WithdrawService extends WebService {
         return withdrawProviders
     }
 
-    async addOrUpdateWithdraw(withdrawId, state) {
-        const user = this.user
-        const body = {
-            // "access_token":user.userToken,
-            "data": {
-                "withdraw_id": withdrawId,
-                "state": state,
-                "country": user.country,
-            }
-        }
 
-        const response = await this.Post(UPDATE_WITHDRAW_URL, body, user.userToken)
-        if (!response || response === 465) { return false }
-
-        return response
-
-    }
 
 
 
@@ -370,7 +354,23 @@ export class WithdrawService extends WebService {
 
     }
 
-
+    // async addOrUpdateWithdraw(withdrawId, state) {
+    //     const user = this.user
+    //     const body = {
+    //         // "access_token":user.userToken,
+    //         "data": {
+    //             "withdraw_id": withdrawId,
+    //             "state": state,
+    //             "country": user.country,
+    //         }
+    //     }
+    //
+    //     const response = await this.Post(UPDATE_WITHDRAW_URL, body, user.userToken)
+    //     if (!response || response === 465) { return false }
+    //
+    //     return response
+    //
+    // }
 
     async addUpdateWithdraw(withdrawId, state) {
         const body = {

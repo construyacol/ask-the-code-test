@@ -9,10 +9,14 @@ import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
 import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
-
+import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import actions from '../../../actions'
 
 import './withdrawFlow.css'
+
+
+
+
 
 class WithdrawFlow extends Component {
   // Withdraw FIAT COMPONENT
@@ -30,7 +34,8 @@ class WithdrawFlow extends Component {
       addNotification:false,
       min_amount:0,
       provider_type:'bank', //Por defecto en el flujo el tipo de retiro es por transferencia bancaria, a futuro habilitaremos cash (efectivo)
-      withdraw_account_list_update:[]
+      withdraw_account_list_update:[],
+      twoFaToken:null
       // step:1
     }
 
@@ -190,7 +195,7 @@ class WithdrawFlow extends Component {
         if(parseFloat(amount) < min_amount_withdraw){
 
           setTimeout(async()=>{
-            console.log('________________________________________new_account_and_withdraw', new_account)
+            // console.log('________________________________________new_account_and_withdraw', new_account)
 
             this.props.action.addNotification('withdraw_accounts', {account_id:new_account.id}, 1)
             this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
@@ -208,14 +213,18 @@ class WithdrawFlow extends Component {
 
     }
 
-
+    setTowFaToken = (twoFaToken) => {
+      alert(twoFaToken)
+      this.setState({twoFaToken})
+    }
 
     new_withdraw_order = async (state_data, limit, limit_supered) =>{
       // validar que el limite maximo es permitido por el provider
-
-
-
       this.props.action.isAppLoading(true)
+      if(this.props.user.security_center.authenticator.withdraw && !this.state.twoFaToken){
+        return this.props.action.renderModal(() => <Withdraw2FaModal callback={this.setTowFaToken}/>)
+      }
+
       await this.setState({
         finish_step:limit_supered ? false : true,
         limit_supered_component:limit_supered ? true : false,
@@ -237,7 +246,6 @@ class WithdrawFlow extends Component {
       const { account_id } = this.props
 
       // return console.log('|||||| form_withdraw', this.props.form_withdraw, state_data)
-
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       // console.log('||||||| ======>>> add_new_withdraw_order', amount, account_id, withdraw_provider, withdraw_account)
       let res = await this.props.action.add_new_withdraw_order(amount, account_id, withdraw_provider, withdraw_account)
@@ -693,7 +701,8 @@ function mapStateToProps(state, props){
     form_withdraw:state.form.form_withdraw,
     withdrawProviders:withdraw_providers_list,
     withdraw_account_list:withdraw_account_list.length>0 && withdraw_account_list,
-    have_withdraw_accounts:withdraw_account_list.length>0
+    have_withdraw_accounts:withdraw_account_list.length>0,
+    wallets
     // have_withdraw_accounts:false
   }
 }

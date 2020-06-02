@@ -27,7 +27,8 @@ function ModalsSupervisor(props) {
         current,
         modalView,
         loader,
-        isSocketNotification
+        isSocketNotification,
+        RenderModal
     } = props
 
     return (
@@ -59,6 +60,14 @@ function ModalsSupervisor(props) {
                     component={ConfirmationModal}
                 />
             </ModalContainer>
+
+            <ModalContainer condition={RenderModal}>
+              {
+                RenderModal &&
+                <RenderModal/>
+              }
+            </ModalContainer>
+
         </>
     )
 
@@ -84,6 +93,7 @@ function mapStateToProps({ ui, form, isLoading }) {
         modalConfirmation: ui.modal_confirmation.visible,
         otherModal: ui.otherModal,
         isSocketNotification: ui.notifications.socket_notify,
+        RenderModal:ui.modal.render
     }
 }
 

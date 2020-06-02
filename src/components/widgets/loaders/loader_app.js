@@ -48,12 +48,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       userId
     } = authData
 
-    const isSessionRestored = await tryRestoreSession(userToken)
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true)
-      coinsendaServices.postLoader(doLogout)
-      return redirectURL()
-    }
+    // const isSessionRestored = await tryRestoreSession(userToken)
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true)
+    //   coinsendaServices.postLoader(doLogout)
+    //   return redirectURL()
+    // }
 
     if (!userToken) return;
 
