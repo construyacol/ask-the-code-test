@@ -56,7 +56,7 @@ function WalletContainer(props) {
 
 }
 
-const WalletDetail = props => {
+export const WalletDetail = props => {
   const {
     wallets,
     match: { params }

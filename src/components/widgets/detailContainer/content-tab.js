@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import IconSwitch from '../icons/iconSwitch'
@@ -9,8 +9,9 @@ import './detailContainer.css'
 // TODO: refactor this component
 function ContentTab(props) {
     const tabRef = useRef()
-    const { title, current_section, current_wallet, pathname, primary_path, wallets, path } = props
-    const { items_menu } = navigation_components.wallet
+    const { title, current_section, current_wallet, pathname, primary_path, wallets } = props
+    
+    const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets 
     const { params } = current_section
     const movil_viewport = window.innerWidth < 768
 
@@ -28,11 +29,11 @@ function ContentTab(props) {
                         (current_wallet && items_menu ? items_menu.length > 0 : false) &&
                         items_menu.map(item => {
                             // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
-                            if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && !wallets[current_wallet].count) {
+                            if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && !wallets[current_wallet].count) {
                                 return null
                             }
                             return (
-                                <NavLink to={`/wallets/${item.link}/${current_wallet}${item.link === 'activity' ? `/${params.currentFilter}` : ''}`}
+                                <NavLink to={`/${primary_path}/${item.link}/${current_wallet}${item.link === 'activity' ? `/${params.currentFilter}` : ''}`}
                                     // onClick={this.to_sub_section}
                                     id={item.link}
                                     key={item.id}

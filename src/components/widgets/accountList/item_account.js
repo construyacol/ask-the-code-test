@@ -63,6 +63,9 @@ const ItemAccount = props => {
 
 
   const account_detail = async (payload) => {
+    if(payload !== 'wallets') {
+      return props.history.push(`/withdraw_accounts/activity/${props.account.id}`)
+    }
     if(account_state === 'deleting' || account_state === 'deleted'){return}
     props.actions.cleanNotificationItem(payload, 'account_id')
     if(props.account.count === undefined){
@@ -139,6 +142,7 @@ const ItemAccount = props => {
           :
           <WithdrawAccount
             loaderAccount={loader}
+            handleAction={account_detail}
             set_account_state={set_account_state}
             shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
             delete_account={delete_account}
@@ -231,6 +235,7 @@ const WithdrawAccount = props => {
 
   return (
     <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
+      <AccountCta handleAction={props.handleAction} payload={props.account_type} />
       <OptionsAccount
         account_detail={props.handleAction}
         delete_account={delete_account}
