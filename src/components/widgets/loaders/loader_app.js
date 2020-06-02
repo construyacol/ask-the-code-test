@@ -90,7 +90,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
     await actions.isLoggedInAction(true)
     await coinsendaServices.init(doLogout)
-    // return console.log('||||||||| stop')
     return redirectURL()
 
   }

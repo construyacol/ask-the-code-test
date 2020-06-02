@@ -78,7 +78,7 @@
       {
         "id":1,
         "name":"2auth",
-        "label":"Segundo factor 2AUTH",
+        "label":"Autenticación 2FA",
         "description":"Agrega una segunda capa de seguridad al inicio de sesión de tu cuenta con una contraseña dinamica que cambiara cada 30 segundos y que solo estará accesible desde tu dispositivo movil   |   (RECOMENDADO).",
         "verify":true,
         "cta_primary":"Habilitar",
@@ -88,17 +88,6 @@
       },
       {
         "id":2,
-        "name":"transactional",
-        "label":"Transacciones",
-        "description":"Activa el segundo factor para realizar intercambios dentro de coinsenda",
-        "verify":false,
-        "cta_primary":"Habilitar",
-        "cta_secondary":"Deshabilitar",
-        "tree":false,
-        "available":true
-      },
-      {
-        "id":3,
         "name":"withdraw",
         "label":"Retiros de saldo",
         "description":"Activa el segundo factor para realizar retiros de saldos en coinsenda.",

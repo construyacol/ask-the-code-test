@@ -112,8 +112,6 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
-    // console.log('||||||||||||||||||| )======)>>>> WITHDRAW == ', withdraw)
-    // this.props.action.success_sound()
 
 
     // proof withdraw fiat/cripto
@@ -201,14 +199,18 @@ class SocketsComponent extends Component {
       }
 
       await this.props.action.add_item_state('withdraws', new_withdraw)
-      // await this.props.action.update_item_state({[new_withdraw.id]:new_withdraw}, 'withdraws')
       await this.props.action.update_activity_state(new_withdraw.account_id, 'withdraws')
-      // await this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`)
       this.props.action.add_new_transaction_animation()
     }
 
 
-
+    if (withdraw.state === 'accepted' && currentWithdraw.currency_type === 'fiat') {
+      //update used_counter of withdraw account relation
+      if(this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]){
+        let withdraw_account = this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]
+        this.props.action.update_item_state({ [currentWithdraw.withdraw_account_id]: { ...withdraw_account, used_counter:++withdraw_account.used_counter, inscribed:true } }, 'withdraw_accounts') //actualiza el movimiento operacional de la wallet
+      }
+    }
 
 
 
@@ -238,7 +240,7 @@ class SocketsComponent extends Component {
   deposit_mangagement = async deposit => {
 
     // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
-    // this.props.action.success_sound()
+    // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
 
@@ -423,7 +425,7 @@ const mapStateToProps = (state, props) => {
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)
 
   const { loggedIn } = state.auth
-  const { user, deposits, withdraws, wallets } = state.modelData
+  const { user, deposits, withdraws, wallets, withdraw_accounts } = state.modelData
 
   return {
     loggedIn,
@@ -431,7 +433,8 @@ const mapStateToProps = (state, props) => {
     deposits,
     withdraws,
     activity_for_account: state.storage.activity_for_account,
-    wallets
+    wallets,
+    withdraw_accounts
   }
 
 }

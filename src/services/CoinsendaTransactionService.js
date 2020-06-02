@@ -93,6 +93,21 @@ async userHasTransactionSecurity(userId) {
       return response
   }
 
+  async disable2fa(token) {
+
+      const transaction_security_id = await this.userHasTransactionSecurity(this.user.id)
+      const body = {
+          "data": {
+              transaction_security_id,
+              "country": this.user.country || "colombia",
+              "twofa_token": token
+          }
+      }
+
+      const res = await this.Post(`${TWO_FACTOR_URL}/disable-transaction-security`, body)
+      return res
+  }
+
 
 
   async addRestoreId(restoreId) {

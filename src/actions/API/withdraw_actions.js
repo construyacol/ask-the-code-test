@@ -52,10 +52,8 @@ export const get_withdraws = (account_id) => {
     const withdraws = await ApiGetRequest(url_withdraw, myHeaders)
     if(!withdraws || withdraws === 465){return false}
 
-
-
-    let withdraws_remodeled = await withdraws.map(withdraw => {
-
+    let withdraws_remodeled = []
+    for (let withdraw of withdraws) {
       let state
       if(withdraw.currency_type === 'fiat'){
         state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
@@ -87,9 +85,51 @@ export const get_withdraws = (account_id) => {
         withdraw_proof:withdraw.proof,
         created_at:withdraw.created_at,
       }
-      return  new_withdraw
-    })
 
+      if(new_withdraw.state !== 'pending'){
+        withdraws_remodeled.push(new_withdraw)
+      }
+    }
+
+    // let withdraws_remodeled = await withdraws.map(withdraw => {
+    //
+    //   let state
+    //   if(withdraw.currency_type === 'fiat'){
+    //     state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
+    //   }
+    //   if(withdraw.currency_type === 'crypto'){
+    //     state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
+    //   }
+    //
+    //   if(withdraw.state === 'pending'){return}
+    //
+    //   let new_withdraw = {
+    //     ...withdraw,
+    //     account_id:withdraw.account_id,
+    //     amount:withdraw.amount,
+    //     amount_neto:withdraw.amount_neto,
+    //     comment:"",
+    //     country:withdraw.country,
+    //     currency:withdraw.currency,
+    //     currency_type:withdraw.currency_type,
+    //     cost:withdraw.cost,
+    //     cost_struct:withdraw.cost_struct,
+    //     deposit_provider_id:"",
+    //     expiration_date:new Date(),
+    //     id:withdraw.id,
+    //     state,
+    //     unique_id:withdraw.id,
+    //     userId:withdraw.userId,
+    //     withdraw_account:withdraw.withdraw_account_id,
+    //     withdraw_provider:withdraw.withdraw_provider_id,
+    //     type_order:"withdraw",
+    //     withdraw_proof:withdraw.proof,
+    //     created_at:withdraw.created_at,
+    //   }
+    //   return  new_withdraw
+    // })
+
+    console.log('withdraws_remodeled', withdraws_remodeled)
 
     await dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
     await dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))

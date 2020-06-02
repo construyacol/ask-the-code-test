@@ -11,7 +11,7 @@ import {
     GET_WITHDRAWS_BY_ACCOUNT_ID,
     DELETE_WITHDRAW_ACCOUNT_URL
 } from "../const/const";
-import { updateNormalizedDataAction } from "../actions/dataModelActions";
+import { updateNormalizedDataAction, resetModelData } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
 
 import {
@@ -28,8 +28,17 @@ export class WithdrawService extends WebService {
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
+        if (!result.length) {
+          let userWithOutWA = {
+              ...user,
+              withdraw_accounts: []
+          }
+          // TODO: create function to normalize user
+          const toNormalize = await normalizeUser(userWithOutWA)
+          await this.dispatch(updateNormalizedDataAction(toNormalize))
+          return this.dispatch(resetModelData({ withdraw_accounts: [] }))
+        }
         if (!result || result === 465 || !this.withdrawProviders) { return false }
-        // console.log('||||||||| fetchWithdrawAccounts', result)
         const providersServed = await this.withdrawProvidersByType
         // console.log('||||||||| fetchDepositProviders', providersServed)
         // alert('providers serve')
@@ -194,6 +203,8 @@ export class WithdrawService extends WebService {
             }
         }
         const response = await this.Post(NEW_WITHDRAW_URL, body, user.userToken)
+        // console.log(body, response)
+        // debugger
         if (!response || response === 465) { return false }
 
         return response
@@ -281,7 +292,7 @@ export class WithdrawService extends WebService {
                     "account_number": account_number,
                     "account_type": account_type,
                     "city": city,
-                    "email": user.email || 'default@coinsenda.com',
+                    "email": user.email || 'default@coinsendaDepositApiUrl.com',
                     "label": short_name,
                     "country": user.country
                 }
@@ -304,7 +315,6 @@ export class WithdrawService extends WebService {
         // account_id
 
         // return async(dispatch, getState) => {
-
         const user = this.user
 
         let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
@@ -314,41 +324,45 @@ export class WithdrawService extends WebService {
         // return console.log('GET_WITHDRAWS_BY_ACCOUNT_ID', withdraws)
 
         if (withdraws && withdraws.length < 1) { return false }
-        let withdraws_remodeled = await withdraws.map(withdraw => {
 
-            let state
-            if (withdraw.currency_type === 'fiat') {
-                state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
-            }
-            if (withdraw.currency_type === 'crypto') {
-                state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
-            }
+        let withdraws_remodeled = []
+        for (let withdraw of withdraws) {
+          let state
+          if(withdraw.currency_type === 'fiat'){
+            state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
+          }
+          if(withdraw.currency_type === 'crypto'){
+            state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
+          }
 
-            let new_withdraw = {
-                ...withdraw,
-                account_id: withdraw.account_id,
-                amount: withdraw.amount,
-                amount_neto: withdraw.amount_neto,
-                comment: "",
-                country: withdraw.country,
-                currency: withdraw.currency,
-                currency_type: withdraw.currency_type,
-                cost: withdraw.cost,
-                cost_struct: withdraw.cost_struct,
-                deposit_provider_id: "",
-                expiration_date: new Date(),
-                id: withdraw.id,
-                state,
-                unique_id: withdraw.id,
-                userId: withdraw.userId,
-                withdraw_account: withdraw.withdraw_account_id,
-                withdraw_provider: withdraw.withdraw_provider_id,
-                type_order: "withdraw",
-                withdraw_proof: withdraw.proof,
-                created_at: withdraw.created_at,
-            }
-            return new_withdraw
-        })
+          let new_withdraw = {
+            ...withdraw,
+            account_id:withdraw.account_id,
+            amount:withdraw.amount,
+            amount_neto:withdraw.amount_neto,
+            comment:"",
+            country:withdraw.country,
+            currency:withdraw.currency,
+            currency_type:withdraw.currency_type,
+            cost:withdraw.cost,
+            cost_struct:withdraw.cost_struct,
+            deposit_provider_id:"",
+            expiration_date:new Date(),
+            id:withdraw.id,
+            state,
+            unique_id:withdraw.id,
+            userId:withdraw.userId,
+            withdraw_account:withdraw.withdraw_account_id,
+            withdraw_provider:withdraw.withdraw_provider_id,
+            type_order:"withdraw",
+            withdraw_proof:withdraw.proof,
+            created_at:withdraw.created_at,
+          }
+
+          if(new_withdraw.state !== 'pending'){
+            withdraws_remodeled.push(new_withdraw)
+          }
+        }
 
         await this.dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
         await this.dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))

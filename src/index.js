@@ -17,6 +17,7 @@ import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
 import { Provider } from 'react-redux'
 import { mainService } from './services/MainService';
+import { updateLocalForagePersistState } from './components/hooks/sessionRestore';
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
@@ -28,6 +29,10 @@ const updateServices = store => next => action => {
   mainService.setGlobalState(store.getState())
 }
 
+const persistState = store => next => action => {
+  next(action);
+  window.onbeforeunload = updateLocalForagePersistState({ ...store.getState().modelData, authData: undefined })
+}
 const store = createStore(
   reducer,
   {},
@@ -36,7 +41,8 @@ const store = createStore(
       logger,
       thunk,
       loadedSoundsMiddleware,
-      updateServices
+      updateServices,
+      persistState
     )
   )
   // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

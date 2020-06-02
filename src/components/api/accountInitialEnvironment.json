@@ -1,0 +1,24 @@
+{
+  "accounts":[
+    {
+      "data": {
+        "country": null,
+        "enabled": true,
+        "currency": {
+          "currency": "bitcoin",
+          "is_token": false
+        }
+      }
+    },
+    {
+      "data": {
+        "country": null,
+        "enabled": true,
+        "currency": {
+          "currency": "cop",
+          "is_token": false
+        }
+      }
+    }
+  ]
+}

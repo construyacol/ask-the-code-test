@@ -10,6 +10,7 @@ import {
     CURRENCIES_URL
 } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
+import initialAccounts from '../components/api/accountInitialEnvironment.json'
 
 export class AccountService extends WebService {
 
@@ -20,14 +21,22 @@ export class AccountService extends WebService {
         const wallets = await this.Get(accountUrl)
         if (!wallets || wallets === 404) { return false }
 
-
         const availableWallets = wallets.filter(wallet => {
             return (wallet.visible && wallet.currency.currency !== 'usd') ? wallet : false
         })
 
         if (!availableWallets.length) {
-            await this.dispatch(resetModelData({ wallets: [] }))
+          let userWithOutW = {
+              ...user,
+              wallets: []
+          }
+          const toNormalize = await normalizeUser(userWithOutW)
+          await this.dispatch(updateNormalizedDataAction(toNormalize))
+          return this.dispatch(resetModelData({ wallets: [] }))
         }
+
+
+
 
         const balanceList = availableWallets.map(balanceItem => ({
             id: balanceItem.id,
@@ -55,6 +64,23 @@ export class AccountService extends WebService {
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
     }
+
+
+    async createInitialEnvironmentAccount() {
+      const { accounts } = initialAccounts
+      for (let body of accounts) {
+        // TODO: assign currency by country
+        body.data.country = this.user.country
+        const wallets = await this.createWallet(body)
+        if(!wallets){return}
+        await this.getWalletsByUser()
+        const { account } = wallets
+        const dep_prov = await this.createAndInsertDepositProvider(account)
+        if(!dep_prov){return}
+        // console.log(account)
+      }
+    }
+
 
     async getWalletById(walletId) {
         const user = this.user

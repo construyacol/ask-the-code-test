@@ -56,10 +56,19 @@ export class MainService extends inheritances {
     globalState;
     dispatch;
 
+    static instance;
+
     initialize(dispatch, state, token) {
         this.dispatch = dispatch
         this.globalState = state
         this.token = token ? token : this.token
+    }
+
+    static getInstance() {
+        if(!MainService.instance) {
+            MainService.instance = new MainService()
+        }
+        return MainService.instance
     }
 
     get user() {
@@ -101,10 +110,15 @@ export class MainService extends inheritances {
         while (!this.user) {
             await sleep(2000)
         }
-        await this.getWalletsByUser()
+        const wallets = await this.getWalletsByUser()
+        const verificationStatus = await this.getVerificationState()
+        if (!wallets && verificationStatus === 'accepted') {
+          await this.createInitialEnvironmentAccount()
+        }
         this.postLoader(callback)
         return
     }
+
 
     async postLoader(callback) {
         try {
@@ -157,4 +171,4 @@ export class MainService extends inheritances {
 //     globalState: computed
 // })
 
-export const mainService = new MainService()
+export const mainService = MainService.getInstance()

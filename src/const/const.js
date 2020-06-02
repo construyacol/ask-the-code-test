@@ -49,7 +49,7 @@ export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}users`
 export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`
 
-export const SWAP_URL = `${SwapApiUrl}pairs`
+export const SWAP_URL = `${SwapApiUrl}`
 export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`
 export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`
@@ -61,7 +61,6 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
 
-export const DISABLE_2FA_URL = `${ApiUrl}transactionSecuritys/disable-transaction-security`
 
 export const GET_URLS = {
     withdraws: GET_WITHDRAW_BY_USER_URL,
