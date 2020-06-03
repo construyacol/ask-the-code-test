@@ -235,11 +235,16 @@ const WithdrawAccount = props => {
 
   return (
     <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
-      <AccountCta handleAction={props.handleAction} payload={props.account_type} />
-      <OptionsAccount
-        account_detail={props.handleAction}
-        delete_account={delete_account}
-        {...props} />
+      {
+        props.actions &&
+        <Fragment>
+          <AccountCta handleAction={props.handleAction} payload={props.account_type} />
+          <OptionsAccount
+            account_detail={props.handleAction}
+            delete_account={delete_account}
+            {...props} />
+        </Fragment>
+      }
       <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
         <IconSwitch icon={account.bank_name && account.bank_name.value} size={100} />
