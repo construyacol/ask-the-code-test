@@ -165,6 +165,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
                     await actions.get_deposits(response.account_id)
                 }
 
+                actions.update_item_state({ [response.account_id]: { ...wallets[response.account_id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
                 actions.addNotification('wallets', { account_id: response.account_id, order_id: response.id }, 1)
                 await actions.socket_notify({ ...response, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
                 actions.toggleOtherModal()
@@ -293,7 +294,7 @@ function CoinsendaSocket({ actions, withdraws, deposits, activity_for_account, h
 const mapStateToProps = (state) => {
     const { loggedIn } = state.auth
     const { user, deposits, withdraws, wallets } = state.modelData
-
+    
     return {
         loggedIn,
         user,
