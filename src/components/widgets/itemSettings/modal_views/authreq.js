@@ -40,7 +40,6 @@ const AuthReq = (props) => {
 
       if(props.isModal2fa){
         return ok_auth(value)
-        // return setTimeout(()=>success(value, value), 500)
       }
 
       let res

@@ -87,7 +87,7 @@ const InputForm = (props) => {
       <ContainerInputComponent>
         <p className="labelText fuente" style={{ display: !props.label ? 'none' : 'initial' }}>{props.label}</p>
         <InputContainer className={`${inputState}`}>
-          <input {...inputProps} />
+          <input {...inputProps}/>
         </InputContainer>
         {
           SuffixComponent &&

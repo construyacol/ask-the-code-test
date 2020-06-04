@@ -19,3 +19,41 @@ export const swing_in_bottom_bck = keyframes`
     opacity: 1;
   }
 `;
+
+
+
+export const socketIconContainerIntro = keyframes`
+  0% {
+    transform: translateY(15px) scale(0);
+  }
+  60% {
+    transform: translateY(15px) scale(1.15);
+  }
+  100% {
+    transform: translateY(15px) scale(1);
+  }
+`
+
+
+export const backTopSection = keyframes`
+  0% {
+    left:0%;
+    top:0%;
+  }
+  25%{
+    left:-20%;
+    top:0%;
+  }
+  50%{
+    left:-20%;
+    top:-20%;
+  }
+  75%{
+    left:0%;
+    top:-20%;
+  }
+  100% {
+    left:0%;
+    top:0%;
+  }
+`

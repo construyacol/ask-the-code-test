@@ -41,7 +41,8 @@ import {
   Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
   Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
-  QRCode
+  QRCode,
+  AuthFactor
  } from './'
 
  import {
@@ -101,6 +102,8 @@ class IconSwitch extends Component {
     const { icon } = props
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case 'twofa':
+        return <AuthFactor {...props} />
       case 'qr':
         return <QRCode {...props} />
       case 'usd':

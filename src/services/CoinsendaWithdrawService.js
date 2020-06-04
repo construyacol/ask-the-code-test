@@ -174,19 +174,14 @@ export class WithdrawService extends WebService {
 
 
 
-    async addWithdrawOrder(amount, accountFrom, withdrawProvider, withdrawAccount) {
+    async addWithdrawOrder(body, twoFaToken) {
         const user = this.user
-        const body = {
-            // "access_token":user.userToken,
-            "data": {
-                "amount": amount,
-                "account_id": accountFrom,
-                "withdraw_provider_id": withdrawProvider,
-                "withdraw_account_id": withdrawAccount,
-                "country": user.country
-            }
+        if(twoFaToken){
+          body.data.twofa_token = twoFaToken
         }
-        const response = await this.Post(NEW_WITHDRAW_URL, body, user.userToken)
+        // console.log(body)
+
+        const response = await this.Post(NEW_WITHDRAW_URL, body)
         // console.log(body, response)
         // debugger
         if (!response || response === 465) { return false }

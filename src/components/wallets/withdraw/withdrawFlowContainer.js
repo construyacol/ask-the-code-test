@@ -213,24 +213,27 @@ class WithdrawFlow extends Component {
 
     }
 
-    setTowFaToken = (twoFaToken) => {
-      alert(twoFaToken)
+    setTowFaToken = async (twoFaToken) => {
       this.setState({twoFaToken})
+      this.props.action.renderModal(null)
+      const { state_data, limit, limit_supered } = this.state
+      this.new_withdraw_order(state_data, limit, limit_supered)
     }
 
     new_withdraw_order = async (state_data, limit, limit_supered) =>{
       // validar que el limite maximo es permitido por el provider
-      this.props.action.isAppLoading(true)
+
       if(this.props.user.security_center.authenticator.withdraw && !this.state.twoFaToken){
+        this.setState({state_data, limit, limit_supered})
         return this.props.action.renderModal(() => <Withdraw2FaModal callback={this.setTowFaToken}/>)
       }
+      this.props.action.isAppLoading(true)
 
       await this.setState({
         finish_step:limit_supered ? false : true,
         limit_supered_component:limit_supered ? true : false,
         need_new_acount:false
       })
-
       this.props.action.FlowAnimationLayoutAction('nextV', 'next', "withdraw")
       await this.props.action.get_withdraws(this.props.account_id, 'withdraws')
 
@@ -248,14 +251,15 @@ class WithdrawFlow extends Component {
       // return console.log('|||||| form_withdraw', this.props.form_withdraw, state_data)
       await this.props.action.UpdateForm('withdraw', {withdraw_account:withdraw_account, withdraw_provider:withdraw_provider})
       // console.log('||||||| ======>>> add_new_withdraw_order', amount, account_id, withdraw_provider, withdraw_account)
-      let res = await this.props.action.add_new_withdraw_order(amount, account_id, withdraw_provider, withdraw_account)
+      let res = await this.props.action.add_new_withdraw_order(amount, account_id, withdraw_provider, withdraw_account, this.state.twoFaToken)
       // console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
 
       if(!res){
         this.setState({
           finish_step:false,
           limit_supered_component:false,
-          need_new_acount:true
+          need_new_acount:true,
+          twoFaToken:null
         })
         this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
         this.props.action.isAppLoading(false)

@@ -1444,7 +1444,7 @@ export const add_restoreid = async (restore_id, user) => {
 
 // AÑADIR NUEVA ORDEN DE RETIRO -------------------------- -------------------------- --------------------------
 
-export const add_new_withdraw_order = (amount, account_from, withdraw_provider, withdraw_account) => {
+export const add_new_withdraw_order = (amount, account_from, withdraw_provider, withdraw_account, twoFaToken) => {
 
   return async (dispatch, getState) => {
 
@@ -1458,6 +1458,10 @@ export const add_new_withdraw_order = (amount, account_from, withdraw_provider, 
         "withdraw_account_id": withdraw_account,
         "country": user.country
       }
+    }
+
+    if(twoFaToken){
+      body.data.twofa_token = twoFaToken
     }
 
     const new_withdraw_url = `${WithdrawApiUrl}withdraws/add-new-withdraw`
