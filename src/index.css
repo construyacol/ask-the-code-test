@@ -307,20 +307,20 @@
 
   /* WALLETS/ACTIVITY */
 
-  .ALFilterSect {
+  /* .ALFilterSect {
     transform: scale(.95);
   }
 
   .NDCont.shower {
     transform: scale(.9) !important;
-  }
+  } */
 
   .ALlistAll {
     grid-row-gap: 10px !important;
   }
 
   .subMenu {
-    top: 55px !important;
+    top: 7vh !important;
   }
 
   .WithdrawView,
