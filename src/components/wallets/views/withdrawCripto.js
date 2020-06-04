@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
 import ControlButton from '../../widgets/buttons/controlButton'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
 
 
 
 export const CriptoSupervisor = props => {
+
 
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState()
   // const [ { current_wallet } ] = WithdrawViewState()
@@ -56,26 +58,38 @@ export const CriptoView = () => {
       withdraw_accounts,
       active_trade_operation,
       loader,
-      balance
+      balance,
+      user
     },
     {
       confirmationModalToggle,
       confirmationModalPayload,
       mensaje,
-      isAppLoading
+      isAppLoading,
+      renderModal
     }, dispatch] = WithdrawViewState()
 
   const [addressState, setAddressState] = useState()
   const [amountState, setAmountState] = useState()
   let movil_viewport = window.innerWidth < 768
 
-  const finish_withdraw = async () => {
+
+  const setTowFaTokenMethod = async (twoFaToken) => {
+    dispatch(renderModal(null))
+    finish_withdraw(twoFaToken)
+  }
+
+  const finish_withdraw = async (twoFaToken) => {
 
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
     const address = form.get('address')
-    dispatch(isAppLoading(true))
 
+    if(user.security_center.authenticator.withdraw && !twoFaToken){
+      return dispatch(renderModal(() => <Withdraw2FaModal callback={setTowFaTokenMethod}/>))
+    }
+
+    dispatch(isAppLoading(true))
     let withdraw_account = withdraw_accounts[address]
     // return console.log('|||||||||||||||||||||||||| finish_withdraw ==> ', current_wallet)
     if (!withdraw_account) {
@@ -91,17 +105,22 @@ export const CriptoView = () => {
       await coinsendaServices.fetchWithdrawAccounts()
     }
 
-    const withdraw = await coinsendaServices.addWithdrawOrder(
-      amount,
-      current_wallet.id,
-      withdrawProviders[current_wallet.currency.currency].id,
-      withdraw_account.id,
-      withdrawProviders[current_wallet.currency.currency].country
-    )
+    const withdraw = await coinsendaServices.addWithdrawOrder({
+          "data": {
+               amount,
+              "account_id": current_wallet.id,
+              "withdraw_provider_id": withdrawProviders[current_wallet.currency.currency].id,
+              "withdraw_account_id": withdraw_account.id,
+              "country": user.country
+          }
+      }, twoFaToken)
     // return console.log('||||||||||||||||||||||||||||||||||||||||| withdraw', withdraw)
 
     if (!withdraw) {
       dispatch(isAppLoading(false))
+      if(twoFaToken){
+        return dispatch(mensaje('Al parecer el codigo 2Fa es incorrecto...', 'error'))
+      }
       return dispatch(mensaje('No se ha podido crear la orden de retiro', 'error'))
     }
 
@@ -135,7 +154,7 @@ export const CriptoView = () => {
 
 
   return (
-    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}>
+    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
         <InputForm
           type="text"

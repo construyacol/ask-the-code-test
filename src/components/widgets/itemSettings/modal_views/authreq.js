@@ -14,12 +14,20 @@ const AuthReq = (props) => {
   const [ verifying, setVerifying ] = useState()
   const [ status, setStatus ] = useState()
   const [ error, setError ] = useState()
-  const [ value, setValue ] = useState()
+  const [ valueState, setValueState ] = useState()
   const [ desaparecer, setDesaparecer ] = useState()
   const [ coinsendaServices ] = useCoinsendaServices()
 
 
 
+  const success = (value, res) => {
+    setButtonActive(true)
+    setStatus("Verificado con Exito")
+    setError(false)
+    setLoader(false)
+    setValueState(value)
+    return ok_auth(res)
+  }
 
   const actualizarEstado = async p =>{
 
@@ -29,6 +37,10 @@ const AuthReq = (props) => {
       setLoader(true)
       setButtonActive(false)
       setStatus("Verificando...")
+
+      if(props.isModal2fa){
+        return ok_auth(value)
+      }
 
       let res
       if(props.isTryToDisable2fa){
@@ -44,45 +56,9 @@ const AuthReq = (props) => {
           return setLoader(false)
         }
 
-        setButtonActive(true)
-        setStatus("Verificado con Exito")
-        setError(false)
-        setLoader(false)
-        setValue(value)
-
-        return ok_auth()
-
-
-
-      // debugger
-      //   setStatus("El codigo de verificación es incorrecto")
-      //   setError(true)
-      //   setLoader(false)
-      //
-      //   setButtonActive(true)
-      //   setStatus("Verificado con Exito")
-      //   setError(false)
-      //   setLoader(false)
-      //   setValue(value)
-      //
-      //   return ok_auth()
-
+        return success(value, res)
     }
 
-    // if(value.length > 5 && value !== '666999'){
-    //
-    //   setTimeout(()=>{
-    //     setStatus("El codigo de verificación es incorrecto")
-    //     setError(true)
-    //     setLoader(false)
-    //   }, 500)
-    //
-    //
-    //   setButtonActive(false)
-    //   setLoader(true)
-    //   return setStatus("Verificando...")
-    //
-    // }
     setStatus("")
     setButtonActive(false)
     setLoader(false)
@@ -92,7 +68,7 @@ const AuthReq = (props) => {
 
 
 
-  const ok_auth = () =>{
+  const ok_auth = (payload) =>{
 
     setTimeout(()=>{
       props.toggle_anim && props.toggle_anim()
@@ -100,7 +76,7 @@ const AuthReq = (props) => {
     },1200)
 
     setTimeout(()=>{
-      props.authenticated && props.authenticated()
+      props.authenticated && props.authenticated(payload)
     }, 1500)
   }
 
@@ -125,7 +101,7 @@ const AuthReq = (props) => {
         actualizarEstado={actualizarEstado}
         active={buttonActive}
         verifying={loader}
-        value={value}
+        value={valueState}
         status={status}
         error={error}
         handleFocus={handleFocus}

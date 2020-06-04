@@ -34,17 +34,19 @@ const TwoFactorActivate = props => {
     setInputFocus(false)
   }
 
-  const success_event = async() => {
+  const success_event = async(payload) => {
     props.action.isAppLoading(true)
     setSuccess_screen(true)
+    const { transaction_security_id, scopes } = payload
     let user_update = {
       ...props.user,
       security_center:{
         ...props.user.security_center,
+        txSecurityId:transaction_security_id,
         authenticator:{
           ...props.user.security_center.authenticator,
           auth:true,
-          withdraw: true
+          withdraw:scopes.withdraw
         }
       }
     }

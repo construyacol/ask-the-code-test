@@ -16,10 +16,14 @@ import {
   VERIFICATION_STATE,
   DEFAULT_VIDEO_STATE,
   CLEAN_ITEM_NOTIFICATIONS,
-  SOCKET_NOTIFY
+  SOCKET_NOTIFY,
+  SET_RENDER_MODAL
 } from '../actions/action_types'
 
 const initialState = {
+  modal:{
+    render:null
+  },
   menu_item_active:"",
   item_quote:{
     buy:true,
@@ -112,6 +116,14 @@ const ui = (state = initialState, action)=>{
           }
         }
       }
+
+      case SET_RENDER_MODAL:
+        return {
+          ...state,
+          modal:{
+            render:action.payload
+          }
+        }
 
       case VERIFICATION_STATE:
         return {

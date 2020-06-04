@@ -14,7 +14,8 @@ const WithdrawViewState = () => {
       wallets,
       withdraw_accounts,
       withdrawProviders,
-      balances
+      balances,
+      user
     } = state.modelData
 
     const {
@@ -52,11 +53,12 @@ const WithdrawViewState = () => {
         return result
     }
     // useEffect(()=>{
-      // console.log('||||||| current_wallet', actions)
+    //   console.log('||||||| current_wallet', actions)
     // }, [])
 
     return [
       {
+        user,
         current_wallet,
         balance:balances[current_wallet.id],
         withdrawProviders: withdrawProvidersByType(),

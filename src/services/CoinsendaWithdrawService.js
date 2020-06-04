@@ -170,39 +170,18 @@ export class WithdrawService extends WebService {
         return withdrawProviders
     }
 
-    async addOrUpdateWithdraw(withdrawId, state) {
+
+
+
+
+    async addWithdrawOrder(body, twoFaToken) {
         const user = this.user
-        const body = {
-            // "access_token":user.userToken,
-            "data": {
-                "withdraw_id": withdrawId,
-                "state": state,
-                "country": user.country,
-            }
+        if(twoFaToken){
+          body.data.twofa_token = twoFaToken
         }
+        // console.log(body)
 
-        const response = await this.Post(UPDATE_WITHDRAW_URL, body, user.userToken)
-        if (!response || response === 465) { return false }
-
-        return response
-
-    }
-
-
-
-    async addWithdrawOrder(amount, accountFrom, withdrawProvider, withdrawAccount) {
-        const user = this.user
-        const body = {
-            // "access_token":user.userToken,
-            "data": {
-                "amount": amount,
-                "account_id": accountFrom,
-                "withdraw_provider_id": withdrawProvider,
-                "withdraw_account_id": withdrawAccount,
-                "country": user.country
-            }
-        }
-        const response = await this.Post(NEW_WITHDRAW_URL, body, user.userToken)
+        const response = await this.Post(NEW_WITHDRAW_URL, body)
         // console.log(body, response)
         // debugger
         if (!response || response === 465) { return false }
@@ -370,7 +349,23 @@ export class WithdrawService extends WebService {
 
     }
 
-
+    // async addOrUpdateWithdraw(withdrawId, state) {
+    //     const user = this.user
+    //     const body = {
+    //         // "access_token":user.userToken,
+    //         "data": {
+    //             "withdraw_id": withdrawId,
+    //             "state": state,
+    //             "country": user.country,
+    //         }
+    //     }
+    //
+    //     const response = await this.Post(UPDATE_WITHDRAW_URL, body, user.userToken)
+    //     if (!response || response === 465) { return false }
+    //
+    //     return response
+    //
+    // }
 
     async addUpdateWithdraw(withdrawId, state) {
         const body = {

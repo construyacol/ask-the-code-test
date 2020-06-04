@@ -130,7 +130,7 @@ export const InputFormAuth = (props) => {
 
       </div>
       <p
-        className="statusInput"
+        className="statusInput fuente"
         style={{ color: (verifying && !active) ? '#039aff' : active ? '#59b200' : error ? 'red' : '#50667a61' }}
       >
         <i className="fas fa-check"

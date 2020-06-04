@@ -36,13 +36,16 @@ export class IndetityService extends WebService {
             verification_error: country[0].errors && country[0].errors[0],
             levels: country[0].levels
         }
+        const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id)
 
-        const securityTransaction = await this.userHasTransactionSecurity(updatedUser.id)
-        if (securityTransaction) {
-            updatedUser.security_center.txSecurityId = securityTransaction
+        if (transactionSecurity) {
+            const { transaction_security_id, scopes } = transactionSecurity
+            updatedUser.security_center.txSecurityId = transaction_security_id
             updatedUser.security_center.authenticator.auth = true
-            updatedUser.security_center.authenticator.withdraw = true
+            updatedUser.security_center.authenticator.withdraw = scopes.withdraw
         }
+
+
 
         // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
         let kyc_personal = country[0].levels && country[0].levels.personal

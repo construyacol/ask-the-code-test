@@ -15,9 +15,17 @@ import {
   VERIFICATION_STATE,
   DEFAULT_VIDEO_STATE,
   CLEAN_ITEM_NOTIFICATIONS,
-  SOCKET_NOTIFY
+  SOCKET_NOTIFY,
+  SET_RENDER_MODAL
 } from './action_types'
 
+
+export const renderModal = (payload) =>{
+  return{
+    type:SET_RENDER_MODAL,
+    payload:payload
+  }
+}
 
 export const socket_notify = (payload, item_type, title) =>{
   let payload_array = (payload && item_type) && [{...payload, item_type, title}]
