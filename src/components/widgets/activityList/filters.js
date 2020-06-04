@@ -37,13 +37,13 @@ const ActivityFilters = props => {
           Todo
         </p> */}
 
-        <p id="deposits" className={`ALitemFill ${currentFilter === 'deposits' ? 'ALactive' : ''}`} onClick={filterChange}>
+        {props.view !== 'withdraw_accounts' && <p id="deposits" className={`ALitemFill ${currentFilter === 'deposits' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="deposits" className="fas fa-arrow-down"></i>
           {
             !movil_viewport &&
             'Depositos'
           }
-        </p>
+        </p>}
         <p id="withdraws" className={`ALitemFill ${currentFilter === 'withdraws' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="withdraws" className="fas fa-arrow-up"></i>
           {
@@ -51,13 +51,13 @@ const ActivityFilters = props => {
             'Retiros'
           }
         </p>
-        <p id="swaps" className={`ALitemFill ${currentFilter === 'swaps' ? 'ALactive' : ''}`} onClick={filterChange}>
+        {props.view !== 'withdraw_accounts' && <p id="swaps" className={`ALitemFill ${currentFilter === 'swaps' ? 'ALactive' : ''}`} onClick={filterChange}>
           <i id="swaps" className="fas fa-retweet"></i>
           {
             !movil_viewport &&
             'Cambios'
           }
-        </p>
+        </p>}
       </div>
 
 

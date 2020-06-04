@@ -1,509 +1,519 @@
 {
-"navigation_components":{
-  "wallet":{
-    "items_menu":[
-      {
-        "title":"Actividad",
-        "func":"goTo",
-        "link":"activity",
-        "available":true,
-        "id":1
-      },
-      {
-        "title":"Depositar",
-        "func":"goTo",
-        "link":"deposit",
-        "available":true,
-        "id":2
-      },
-      {
-        "title":"Retirar",
-        "func":"goTo",
-        "link":"withdraw",
-        "available":true,
-        "id":3
-      },
-      {
-        "title":"Cambiar",
-        "func":"goTo",
-        "link":"swap",
-        "available":true,
-        "id":4
-      }
-    ]
-  }
-
-
-}
-,
-"menuPrincipal":[
-  {
-    "text":"Actividad",
-    "icon":"activity",
-    "clave":"activity",
-    "active":true,
-    "visible":false,
-    "id":"1"
-  },
-  {
-    "text":"Billeteras",
-    "icon":"wallet",
-    "clave":"wallets",
-    "active":true,
-    "visible":true,
-    "id":"2"
-  },
-  {
-    "text":"Cuentas de retiro",
-    "icon":"withdraw_accounts",
-    "clave":"withdraw_accounts",
-    "active":true,
-    "visible":true,
-    "id":"3"
-  },
-  {
-    "text":"Referidos",
-    "icon":"referral",
-    "clave":"referral",
-    "active":true,
-    "visible":true,
-    "id":"4"
-  },
-  {
-    "text":"Centro de seguridad",
-    "icon":"security",
-    "clave":"security",
-    "active":true,
-    "visible":true,
-    "id":"5"
-  }
-],
-"menuPrincipalInferior":[
-  {
-    "text":"Configuraciones",
-    "icon":"settings",
-    "clave":"settings",
-    "active":true,
-    "visible":false,
-    "id":"5"
-  },
-  {
-    "text":"Centro de seguridad",
-    "icon":"security",
-    "clave":"security",
-    "active":true,
-    "visible":false,
-    "id":"6"
-  }
-],
-"menuSuperior":[
-  {
-    "text":"CERRAR SESIÓN",
-    "title":"close",
-    "link":"/",
-    "icon":"fas fa-sign-out-alt",
-    "active":true,
-    "visible":true,
-    "id":"7"
-  },
-  {
-    "text":"Notificaciones",
-    "title":"notification",
-    "link":"/",
-    "icon":"notification",
-    "active":true,
-    "visible":true,
-    "id":"8"
-  },
-  {
-    "text":"Help",
-    "title":"help",
-    "link":"/",
-    "icon":"far fa-question-circle",
-    "active":true,
-    "visible":true,
-    "id":"9"
-  }
-],
-"coins":[
-  {
-    "id":1,
-    "type":"coins",
-    "name":"bitcoin",
-    "code":"btc",
-    "type_currency":"crypto",
-    "selection":false
-  },
-  {
-    "id":2,
-    "type":"coins",
-    "name":"ethereum",
-    "code":"eth",
-    "type_currency":"crypto",
-    "selection":false
-  },
-  {
-    "id":3,
-    "type":"coins",
-    "name":"litecoin",
-    "code":"ltc",
-    "type_currency":"crypto",
-    "selection":false
-  },
-  {
-    "id":4,
-    "type":"coins",
-    "name":"dash",
-    "code":"dash",
-    "type_currency":"crypto",
-    "selection":false
-  },
-  {
-    "id":5,
-    "type":"coins",
-    "name":"pesos colombianos",
-    "code":"cop",
-    "type_currency":"fiat",
-    "selection":false
-  }
-],
-"banks":[
-  {
-    "id":1,
-    "type":"bank",
-    "code":"bancolombia",
-    "name":"bancolombia",
-    "selection":false
-  },
-  {
-    "id":2,
-    "type":"bank",
-    "code":"bbva",
-    "name":"banco bbva",
-    "selection":false
-  },
-  {
-    "id":3,
-    "type":"bank",
-    "code":"banco_de_bogota",
-    "name":"banco de bogota",
-    "selection":false
-  },
-  {
-    "id":4,
-    "type":"bank",
-    "code":"davivienda",
-    "name":"banco davivienda",
-    "selection":false
-  },
-  {
-    "id":5,
-    "type":"bank",
-    "code":"boc",
-    "name":"banco de occidente",
-    "selection":false
-  },
-  {
-    "id":6,
-    "type":"bank",
-    "code":"cs",
-    "name":"banco caja social",
-    "selection":false
-  },
-  {
-    "id":7,
-    "type":"bank",
-    "code":"sb",
-    "name":"scotia bank",
-    "selection":false
-  },
-  {
-    "id":8,
-    "type":"bank",
-    "code":"gnb",
-    "name":"banco gnb",
-    "selection":false
-  },
-  {
-    "id":9,
-    "type":"bank",
-    "code":"itau",
-    "name":"banco itau",
-    "selection":false
-  },
-  {
-    "id":10,
-    "type":"bank",
-    "code":"colpatria",
-    "name":"banco colpatria",
-    "selection":false
-  },
-  {
-    "id":11,
-    "type":"bank",
-    "code":"ba",
-    "name":"banco agrario",
-    "selection":false
-  },
-  {
-    "id":12,
-    "type":"bank",
-    "code":"bm",
-    "name":"bancamia",
-    "selection":false
-  },
-  {
-    "id":13,
-    "type":"bank",
-    "code":"pcc",
-    "name":"banco pichincha",
-    "selection":false
-  },
-  {
-    "id":14,
-    "type":"bank",
-    "code":"bcv",
-    "name":"bancoomeva",
-    "selection":false
-  },
-  {
-    "id":15,
-    "type":"bank",
-    "code":"fb",
-    "name":"banco falabella",
-    "selection":false
-  },
-  {
-    "id":16,
-    "type":"bank",
-    "code":"fd",
-    "name":"banco finandina",
-    "selection":false
-  },
-  {
-    "id":17,
-    "type":"bank",
-    "code":"sd",
-    "name":"banco santander",
-    "selection":false
-  },
-  {
-    "id":18,
-    "type":"bank",
-    "code":"nequi",
-    "name":"nequi",
-    "selection":false
-  }
-],
-"payment_method":[
-  {
-    "id":1,
-    "type":"payment_method",
-    "code":"bankaccount",
-    "cost_id":"Otros medios",
-    "name":"Transferencia bancaria",
-    "placeholder":[
-      {
-        "id":1,
-        "name":"Sucursal Fisica"
-      },
-      {
-        "id":2,
-        "name":"Cajero Automatico"
-      },
-      {
-        "id":3,
-        "name":"Transferencia por App"
-      }
-    ]
-  },
-  {
-    "id":3,
-    "type":"payment_method",
-    "code":"cash",
-    "cost_id":"en_efectivo",
-    "name":"Dinero en efectivo",
-    "placeholder":[
-      {
-        "id":1,
-        "name":"Corresponsal Bancario"
-      },
-      {
-        "id":2,
-        "name":"Cajero multifuncional (solo efectivo)"
-      },
-      {
-        "id":3,
-        "name":"Sucursal fisica (solo efectivo)"
-      }
-    ]
-  }
-],
-"service_modes":[
-  {
-    "id":1,
-    "type":"service_mode",
-    "code":"fisical",
-    "name":"Sucursal física"
-  },
-  {
-    "id":2,
-    "type":"service_mode",
-    "code":"atm",
-    "name":"Cajero automático"
-  },
-  {
-    "id":3,
-    "type":"service_mode",
-    "code":"app",
-    "name":"Sucursal virtual"
-  }
-],
-"cash_payment":[
-  {
-    "id":1,
-    "type":"service_mode",
-    "code":"fisicals",
-    "name":"Sucursal física",
-    "placeholder":[
-      {
-        "id":1,
-        "name":"Efectivo solo en sucursales Bancolombia"
-      }
-    ]
-  },
-  {
-    "id":2,
-    "type":"service_mode",
-    "code":"atms",
-    "name":"Cajero multifuncional",
-    "placeholder":[
-      {
-        "id":1,
-        "name":"Efectivo solo en cajeros Bancolombia"
-      }
-    ]
-  },
-  {
-    "id":3,
-    "type":"service_mode",
-    "code":"cb",
-    "name":"Corresponsal bancario",
-    "placeholder":[
-      {
-        "id":1,
-        "name":"Efectivo solo en corresponsal Bancolombia"
-      }
-    ]
-  }
-],
-"remittance":[
-  {
-    "id":1,
-    "type":"remittance",
-    "code":"gane",
-    "name":"gane"
-  },
-  {
-    "id":2,
-    "type":"remittance",
-    "code":"baloto",
-    "name":"baloto"
-  },
-  {
-    "id":3,
-    "type":"remittance",
-    "code":"pr",
-    "name":"puntored"
-  },
-  {
-    "id":4,
-    "type":"remittance",
-    "code":"efecty",
-    "name":"efecty"
-  },
-  {
-    "id":5,
-    "type":"remittance",
-    "code":"cb",
-    "name":"corresponsal bancario"
-  }
-],
-"kyc":{
-  "kyc_basic":{
-    "natural":{
-      "name":{
-        "name":"name",
-        "label":"Nombres Completos",
-        "placeholder":"Ej: Carlos Julio",
-        "message":"Los nombres deben coincidir con los de tu documento de identidad",
-        "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
-      },
-      "surname":{
-        "name":"surname",
-        "label":"Apellidos Completos",
-        "placeholder":"Ej: Sanchez Correa",
-        "message":"Tus apellidos deben coincidir con los de tu documento.",
-        "errmessage":"Escribe tus Apellidos completos."
-      },
-      "birthday":{
-        "name":"birthday",
-        "label":"¿Cual es la fecha de tu nacimiento?",
-        "placeholder":"DÍA / MES / AÑO",
-        "message":"Escribela en este orden : Día / Mes /Año",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      },
-      "phone":{
-        "name":"phone",
-        "label":"Numero de Celular",
-        "placeholder":"Numero de Celular",
-        "message":"Escribe el numero de celular mas el indicativo ej '+57 - 315...'",
-        "errmessage":"Oh!!, Al parecer no estas haciendo las cosas bien"
-      },
-      "address":{
-        "name":"address",
-        "label":"Dirección de residencia",
-        "placeholder":"Escribe la dirección de tu domicilio",
-        "message":"Escribe de forma clara tu dirección de residencia",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      },
-      "city":{
-        "name":"city",
-        "label":"Ciudad de residencia",
-        "placeholder":"Elige tu ciudad actual",
-        "message":"Escribe la ciudad en la que resides actualmente",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      },
-      "id_type":{
-        "name":"id_type",
-        "label":"Tipo de documento",
-        "placeholder":"Tipo de documento",
-        "message":"Elige el documento con el cual verificarás tu cuenta.",
-        "errmessage":"El dato elegido o escrito no es correcto"
-      },
-      "id_number":{
-        "name":"id_number",
-        "label":"Numero de identificación",
-        "placeholder":"Numero de documento",
-        "message":"Escribe el numero de identificación que aparece en tu documento",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      },
-      "country":{
-        "name":"country",
-        "label":"País",
-        "placeholder":"Escribe tu país actual",
-        "message":"Escribe el país desde el que te encuentras operando tu cuenta",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      },
-      "nationality":{
-        "name":"nationality",
-        "label":"Nacionalidad",
-        "placeholder":"País donde fue expedido el documento",
-        "message":"Escribe el país donde fue expedido tu documento de identificación",
-        "errmessage":"Oh!!, debes ingresar los datos correctamente"
-      }
-
+  "navigation_components":{
+    "wallets":{
+      "items_menu":[
+        {
+          "title":"Actividad",
+          "func":"goTo",
+          "link":"activity",
+          "available":true,
+          "id":1
+        },
+        {
+          "title":"Depositar",
+          "func":"goTo",
+          "link":"deposit",
+          "available":true,
+          "id":2
+        },
+        {
+          "title":"Retirar",
+          "func":"goTo",
+          "link":"withdraw",
+          "available":true,
+          "id":3
+        },
+        {
+          "title":"Cambiar",
+          "func":"goTo",
+          "link":"swap",
+          "available":true,
+          "id":4
+        }
+      ]
+    },
+    "withdraw_accounts" : {
+      "items_menu":[
+        {
+          "title":"Actividad",
+          "func":"goTo",
+          "link":"activity",
+          "available":true,
+          "id":1
+        }
+      ]
     }
   }
-}
-}
+  ,
+  "menuPrincipal":[
+    {
+      "text":"Actividad",
+      "icon":"activity",
+      "clave":"activity",
+      "active":true,
+      "visible":false,
+      "id":"1"
+    },
+    {
+      "text":"Billeteras",
+      "icon":"wallet",
+      "clave":"wallets",
+      "active":true,
+      "visible":true,
+      "id":"2"
+    },
+    {
+      "text":"Cuentas de retiro",
+      "icon":"withdraw_accounts",
+      "clave":"withdraw_accounts",
+      "active":true,
+      "visible":true,
+      "id":"3"
+    },
+    {
+      "text":"Referidos",
+      "icon":"referral",
+      "clave":"referral",
+      "active":true,
+      "visible":true,
+      "id":"4"
+    },
+    {
+      "text":"Centro de seguridad",
+      "icon":"security",
+      "clave":"security",
+      "active":true,
+      "visible":true,
+      "id":"5"
+    }
+  ],
+  "menuPrincipalInferior":[
+    {
+      "text":"Configuraciones",
+      "icon":"settings",
+      "clave":"settings",
+      "active":true,
+      "visible":false,
+      "id":"5"
+    },
+    {
+      "text":"Centro de seguridad",
+      "icon":"security",
+      "clave":"security",
+      "active":true,
+      "visible":false,
+      "id":"6"
+    }
+  ],
+  "menuSuperior":[
+    {
+      "text":"CERRAR SESIÓN",
+      "title":"close",
+      "link":"/",
+      "icon":"fas fa-sign-out-alt",
+      "active":true,
+      "visible":true,
+      "id":"7"
+    },
+    {
+      "text":"Notificaciones",
+      "title":"notification",
+      "link":"/",
+      "icon":"notification",
+      "active":true,
+      "visible":true,
+      "id":"8"
+    },
+    {
+      "text":"Help",
+      "title":"help",
+      "link":"/",
+      "icon":"far fa-question-circle",
+      "active":true,
+      "visible":true,
+      "id":"9"
+    }
+  ],
+  "coins":[
+    {
+      "id":1,
+      "type":"coins",
+      "name":"bitcoin",
+      "code":"btc",
+      "type_currency":"crypto",
+      "selection":false
+    },
+    {
+      "id":2,
+      "type":"coins",
+      "name":"ethereum",
+      "code":"eth",
+      "type_currency":"crypto",
+      "selection":false
+    },
+    {
+      "id":3,
+      "type":"coins",
+      "name":"litecoin",
+      "code":"ltc",
+      "type_currency":"crypto",
+      "selection":false
+    },
+    {
+      "id":4,
+      "type":"coins",
+      "name":"dash",
+      "code":"dash",
+      "type_currency":"crypto",
+      "selection":false
+    },
+    {
+      "id":5,
+      "type":"coins",
+      "name":"pesos colombianos",
+      "code":"cop",
+      "type_currency":"fiat",
+      "selection":false
+    }
+  ],
+  "banks":[
+    {
+      "id":1,
+      "type":"bank",
+      "code":"bancolombia",
+      "name":"bancolombia",
+      "selection":false
+    },
+    {
+      "id":2,
+      "type":"bank",
+      "code":"bbva",
+      "name":"banco bbva",
+      "selection":false
+    },
+    {
+      "id":3,
+      "type":"bank",
+      "code":"banco_de_bogota",
+      "name":"banco de bogota",
+      "selection":false
+    },
+    {
+      "id":4,
+      "type":"bank",
+      "code":"davivienda",
+      "name":"banco davivienda",
+      "selection":false
+    },
+    {
+      "id":5,
+      "type":"bank",
+      "code":"boc",
+      "name":"banco de occidente",
+      "selection":false
+    },
+    {
+      "id":6,
+      "type":"bank",
+      "code":"cs",
+      "name":"banco caja social",
+      "selection":false
+    },
+    {
+      "id":7,
+      "type":"bank",
+      "code":"sb",
+      "name":"scotia bank",
+      "selection":false
+    },
+    {
+      "id":8,
+      "type":"bank",
+      "code":"gnb",
+      "name":"banco gnb",
+      "selection":false
+    },
+    {
+      "id":9,
+      "type":"bank",
+      "code":"itau",
+      "name":"banco itau",
+      "selection":false
+    },
+    {
+      "id":10,
+      "type":"bank",
+      "code":"colpatria",
+      "name":"banco colpatria",
+      "selection":false
+    },
+    {
+      "id":11,
+      "type":"bank",
+      "code":"ba",
+      "name":"banco agrario",
+      "selection":false
+    },
+    {
+      "id":12,
+      "type":"bank",
+      "code":"bm",
+      "name":"bancamia",
+      "selection":false
+    },
+    {
+      "id":13,
+      "type":"bank",
+      "code":"pcc",
+      "name":"banco pichincha",
+      "selection":false
+    },
+    {
+      "id":14,
+      "type":"bank",
+      "code":"bcv",
+      "name":"bancoomeva",
+      "selection":false
+    },
+    {
+      "id":15,
+      "type":"bank",
+      "code":"fb",
+      "name":"banco falabella",
+      "selection":false
+    },
+    {
+      "id":16,
+      "type":"bank",
+      "code":"fd",
+      "name":"banco finandina",
+      "selection":false
+    },
+    {
+      "id":17,
+      "type":"bank",
+      "code":"sd",
+      "name":"banco santander",
+      "selection":false
+    },
+    {
+      "id":18,
+      "type":"bank",
+      "code":"nequi",
+      "name":"nequi",
+      "selection":false
+    }
+  ],
+  "payment_method":[
+    {
+      "id":1,
+      "type":"payment_method",
+      "code":"bankaccount",
+      "cost_id":"Otros medios",
+      "name":"Transferencia bancaria",
+      "placeholder":[
+        {
+          "id":1,
+          "name":"Sucursal Fisica"
+        },
+        {
+          "id":2,
+          "name":"Cajero Automatico"
+        },
+        {
+          "id":3,
+          "name":"Transferencia por App"
+        }
+      ]
+    },
+    {
+      "id":3,
+      "type":"payment_method",
+      "code":"cash",
+      "cost_id":"en_efectivo",
+      "name":"Dinero en efectivo",
+      "placeholder":[
+        {
+          "id":1,
+          "name":"Corresponsal Bancario"
+        },
+        {
+          "id":2,
+          "name":"Cajero multifuncional (solo efectivo)"
+        },
+        {
+          "id":3,
+          "name":"Sucursal fisica (solo efectivo)"
+        }
+      ]
+    }
+  ],
+  "service_modes":[
+    {
+      "id":1,
+      "type":"service_mode",
+      "code":"fisical",
+      "name":"Sucursal física"
+    },
+    {
+      "id":2,
+      "type":"service_mode",
+      "code":"atm",
+      "name":"Cajero automático"
+    },
+    {
+      "id":3,
+      "type":"service_mode",
+      "code":"app",
+      "name":"Sucursal virtual"
+    }
+  ],
+  "cash_payment":[
+    {
+      "id":1,
+      "type":"service_mode",
+      "code":"fisicals",
+      "name":"Sucursal física",
+      "placeholder":[
+        {
+          "id":1,
+          "name":"Efectivo solo en sucursales Bancolombia"
+        }
+      ]
+    },
+    {
+      "id":2,
+      "type":"service_mode",
+      "code":"atms",
+      "name":"Cajero multifuncional",
+      "placeholder":[
+        {
+          "id":1,
+          "name":"Efectivo solo en cajeros Bancolombia"
+        }
+      ]
+    },
+    {
+      "id":3,
+      "type":"service_mode",
+      "code":"cb",
+      "name":"Corresponsal bancario",
+      "placeholder":[
+        {
+          "id":1,
+          "name":"Efectivo solo en corresponsal Bancolombia"
+        }
+      ]
+    }
+  ],
+  "remittance":[
+    {
+      "id":1,
+      "type":"remittance",
+      "code":"gane",
+      "name":"gane"
+    },
+    {
+      "id":2,
+      "type":"remittance",
+      "code":"baloto",
+      "name":"baloto"
+    },
+    {
+      "id":3,
+      "type":"remittance",
+      "code":"pr",
+      "name":"puntored"
+    },
+    {
+      "id":4,
+      "type":"remittance",
+      "code":"efecty",
+      "name":"efecty"
+    },
+    {
+      "id":5,
+      "type":"remittance",
+      "code":"cb",
+      "name":"corresponsal bancario"
+    }
+  ],
+  "kyc":{
+    "kyc_basic":{
+      "natural":{
+        "name":{
+          "name":"name",
+          "label":"Nombres Completos",
+          "placeholder":"Ej: Carlos Julio",
+          "message":"Los nombres deben coincidir con los de tu documento de identidad",
+          "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
+        },
+        "surname":{
+          "name":"surname",
+          "label":"Apellidos Completos",
+          "placeholder":"Ej: Sanchez Correa",
+          "message":"Tus apellidos deben coincidir con los de tu documento.",
+          "errmessage":"Escribe tus Apellidos completos."
+        },
+        "birthday":{
+          "name":"birthday",
+          "label":"¿Cual es la fecha de tu nacimiento?",
+          "placeholder":"DÍA / MES / AÑO",
+          "message":"Escribela en este orden : Día / Mes /Año",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        },
+        "phone":{
+          "name":"phone",
+          "label":"Numero de Celular",
+          "placeholder":"Numero de Celular",
+          "message":"Escribe el numero de celular mas el indicativo ej '+57 - 315...'",
+          "errmessage":"Oh!!, Al parecer no estas haciendo las cosas bien"
+        },
+        "address":{
+          "name":"address",
+          "label":"Dirección de residencia",
+          "placeholder":"Escribe la dirección de tu domicilio",
+          "message":"Escribe de forma clara tu dirección de residencia",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        },
+        "city":{
+          "name":"city",
+          "label":"Ciudad de residencia",
+          "placeholder":"Elige tu ciudad actual",
+          "message":"Escribe la ciudad en la que resides actualmente",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        },
+        "id_type":{
+          "name":"id_type",
+          "label":"Tipo de documento",
+          "placeholder":"Tipo de documento",
+          "message":"Elige el documento con el cual verificarás tu cuenta.",
+          "errmessage":"El dato elegido o escrito no es correcto"
+        },
+        "id_number":{
+          "name":"id_number",
+          "label":"Numero de identificación",
+          "placeholder":"Numero de documento",
+          "message":"Escribe el numero de identificación que aparece en tu documento",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        },
+        "country":{
+          "name":"country",
+          "label":"País",
+          "placeholder":"Escribe tu país actual",
+          "message":"Escribe el país desde el que te encuentras operando tu cuenta",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        },
+        "nationality":{
+          "name":"nationality",
+          "label":"Nacionalidad",
+          "placeholder":"País donde fue expedido el documento",
+          "message":"Escribe el país donde fue expedido tu documento de identificación",
+          "errmessage":"Oh!!, debes ingresar los datos correctamente"
+        }
+  
+      }
+    }
+  }
+  }
+  
