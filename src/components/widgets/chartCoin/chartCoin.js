@@ -3,6 +3,7 @@ import Chart from 'chart.js'
 import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
+import useViewport from '../../../hooks/useWindowSize'
 // import localForage from 'localforage'
 
 import './chartCoin.css'
@@ -12,6 +13,7 @@ const ChartCoin = props => {
 
   const [ lastPrices, setLastPrices ] = useState()
   const [ loader, setLoader ] = useState()
+  const { isMovilViewport } = useViewport()
 
   useEffect(()=>{
     const getPrices = async() => {
@@ -22,7 +24,9 @@ const ChartCoin = props => {
   }, [])
 
   useEffect(()=>{
-    init_component()
+    if(!isMovilViewport){
+      init_component()
+    }
   }, [])
 
   useEffect(()=>{

@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { skeleton } from '../loaders/skeleton'
 
-
 const QuoteLayout = props => {
 
   // console.log('S T A T E - - - Q U O T E - - - - L A Y O U T - - - C O N T A I N E R:::', props)
@@ -21,10 +20,10 @@ const QuoteLayout = props => {
   const { buy_price, sell_price } = props
   let iter = 0
 
-
   return(
      <QuoteLayoutCont>
-        <ChartCoin/>
+
+         <ChartCoin/>
 
           {
             !props.currentPair ?

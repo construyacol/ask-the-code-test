@@ -214,6 +214,11 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
+
+  @media (max-width: 768) {
+      display: none !important;
+  }
+
 `
 
 export const WithdrawForm = styled(OperationForm)`
