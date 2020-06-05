@@ -1,12 +1,34 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { Title, ReferralBox, Divider, MAIN_COLOR } from './shareStyles'
 import { device } from '../../const/const'
 import { copy } from '../../utils'
 
 const SECTION_TITLE = "Link de referidos"
+const TWITTER_TEXT = "Amigos, este es mi link de referidos de Coinsenda:"
+const FACEBOOK_INIT = () => {
+  (function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'))
+}
 
-const ShareSection = ({referralLink}) => {
+const ShareSection = ({ referralLink }) => {
+  const shareOnTwitter = () => {
+    window.open(`https://twitter.com/intent/tweet?text=${TWITTER_TEXT}&url=${encodeURI(referralLink)}`, "_blank")
+  }
+
+  const shareOnFacebook = () => {
+    const options = 'toolbar=0,status=0,resizable=1,width=626,height=436';
+    return window.open(`https://www.facebook.com/sharer.php?display=popup&u=${encodeURI(referralLink)}`,'sharer',options);
+  }
+
+  useEffect(() => {
+    // FACEBOOK_INIT()
+  }, [])
 
   return (
     <StyledShareSection>
@@ -22,11 +44,13 @@ const ShareSection = ({referralLink}) => {
         <p>Compartir en:</p>
         <Divider height="65%" />
         <ShareButtons>
-          <IconBox><i className="fab fa-facebook-square" /></IconBox>
-          <IconBox><i className="fab fa-twitter" /></IconBox>
+          <IconBox onClick={shareOnFacebook}><i className="fab fa-facebook-square" /></IconBox>
+          <IconBox onClick={shareOnTwitter}><i className="fab fa-twitter" /></IconBox>
         </ShareButtons>
       </BottomSection>
-
+      {/* <div id="fb-share-button" class="fb-share-button"
+        data-href={referralLink}
+        data-layout="button_count">Boton de prueba</div> */}
     </StyledShareSection>
   )
 
