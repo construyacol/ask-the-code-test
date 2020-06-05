@@ -101,6 +101,7 @@ const ReferralGrid = styled.div`
   gap: 0px 8%;
   grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
   color: ${FONT_COLOR};
+  font-family: 'Raleway', sans-serif;
   transition; all 500ms ease;
   @media ${device.laptopL} {
     width: 90%;

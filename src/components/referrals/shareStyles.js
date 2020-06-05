@@ -29,6 +29,7 @@ export const Divider = styled.div`
 `
 
 export const Number = styled.p`
+    font-family: 'Tomorrow', sans-serif;
     font-weight: 600;
     margin: 0;
     font-size: ${props => props.fontSize ? props.fontSize : "36px"};
