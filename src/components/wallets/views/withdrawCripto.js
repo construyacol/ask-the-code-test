@@ -214,15 +214,15 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
-
-  @media (max-width: 768) {
-      display: none !important;
-  }
-
 `
 
 export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 40% 1fr 1fr;
+  @media (max-width: 768px){
+      height: calc(100% - 40px);
+      width: 100%;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
 `
 
 const BalanceContainer = styled.div`

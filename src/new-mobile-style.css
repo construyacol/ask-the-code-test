@@ -110,7 +110,7 @@
 @media screen and (max-height: 800px) and (min-width: 1366px) {
 
   .contenido.withdraw_accounts.activity{
-    grid-row-gap: 16px; 
+    grid-row-gap: 16px;
   }
 
   .DepositView, #swapForm, .DCcurrent_wallet form, .contenido.withdraw_accounts.activity{
@@ -463,6 +463,16 @@
         grid-template-rows: 190px 1fr;
         padding-top: 45px;
         min-height: calc(100vh - 145px);
+    }
+
+    .DCcurrent_wallet.wallets.deposit, .DCcurrent_wallet.wallets.withdraw, .DCcurrent_wallet.wallets.swap{
+      padding: 40px 30px 20px 30px !important;
+      height: calc(100vh - 160px) !important;
+    }
+
+    .withdrawView{
+      height: calc(100% - 40px) !important;
+      max-height: none !important;
     }
 }
 
