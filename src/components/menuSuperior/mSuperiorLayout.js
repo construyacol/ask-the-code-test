@@ -74,7 +74,7 @@ const MenuSuperiorLayout = (props) => {
                   window.innerWidth > 768 ?
                     <div className="itemSup closeSesi" onClick={showPrices}>
                       <p>Ver precios</p>
-                      <i class="fas fa-tags"></i>
+                      <i className="fas fa-tags"></i>
                     </div>
 
                     :

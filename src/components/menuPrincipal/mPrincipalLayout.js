@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonPrincipalMenu } from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
@@ -20,6 +20,7 @@ const MenuPrincipalLayout = (props) => {
     navigateTo
   } = props
 
+  const [ acronym, setAcronym ] = useState()
   const actions = useActions()
   // const { user, user_id } = store.getState().modelData
   // const country = user.country
@@ -36,6 +37,15 @@ const MenuPrincipalLayout = (props) => {
       type: "select_country"
     })
   }
+
+  useEffect(()=>{
+    if(props.user.name){
+      const { name } = props.user
+      let patt1 = /[A-Z]/g;
+      let result = name.match(patt1);
+      setAcronym(result.toString().replace(',', ' '))
+    }
+  }, [])
 
   return (
     <section className="menuPrincipal fuente" style={{ left: show_menu_principal ? '0' : '-110vw' }}>
@@ -70,7 +80,14 @@ const MenuPrincipalLayout = (props) => {
 
           </div> */}
           <div className={`perfilPic ${verification_state}`}>
-            <p className="fuente">EY</p>
+            <p className="fuente">
+              {
+                !acronym  ?
+                <IconSwitch icon="coinsenda" size={40} color="white"/>
+                :
+                acronym
+              }
+            </p>
             {/* <img src={userPic} alt="" className="userPic" width="100%" /> */}
           </div>
         </div>
