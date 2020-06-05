@@ -7,13 +7,18 @@ import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
+import {useActions} from '../../hooks/useActions'
+
+
+
 
 const MenuSuperiorLayout = (props) => {
+
   let compra = "Te compramos a:"
   let venta = "Te vendemos a:"
+  const actions = useActions()
 
   const {
-    showPrices,
     headRoomClass,
     item_quote,
     movil,
@@ -28,6 +33,11 @@ const MenuSuperiorLayout = (props) => {
     match
   } = props
 
+  const showPrices = async() => {
+    const PricesModal = await import('../widgets/prices')
+    if(!PricesModal){return}
+    actions.renderModal(PricesModal.default)
+  }
 
 
   let view = 'detail'

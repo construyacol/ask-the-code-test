@@ -11,7 +11,7 @@
   cursor:pointer;
   transition: .3s;
   border-left: 2px solid transparent;
-  opacity: 0.4;
+  opacity: 1;
 }
 
 .iconButtCont{
@@ -59,13 +59,13 @@
   transform: scale(0);
 }
 
-/* .itemMenu:hover .indicatorSon{
-  transform: scale(1);
+.itemMenu:hover .indicatorSon{
+  transform: scale(.5);
 }
 
 .itemMenu:hover .indicator{
-  transform: scale(1);
-} */
+  transform: scale(.5);
+}
 
 
 .itemMenu:hover{
