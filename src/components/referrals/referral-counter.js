@@ -1,10 +1,17 @@
 import React from 'react'
 import NumberBox from './number-box'
+import { Handshake } from '../widgets/icons'
 
 const ReferralCounter = () => {
-    const Icon = () => (<i className="far fa-handshake" />)
     return (
-        <NumberBox textCss="grid-area: mid-right;" Icon={Icon} quantity={"500 R"} definition="Referidos" highlight />
+        <NumberBox 
+            textCss="grid-area: mid-right;" 
+            Icon={Handshake} 
+            quantity={"500 R"} 
+            definition="Referidos" 
+            highlight
+            responsive={true}
+        />
     )
 }
 

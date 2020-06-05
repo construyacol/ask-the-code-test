@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { connect } from 'react-redux'
-import actions from '../../actions'
-import { bindActionCreators } from 'redux'
 import ShareSection from './share-section'
 import { useActions } from '../../hooks/useActions'
 import sleep from '../../utils/sleep'
@@ -12,8 +10,8 @@ import BalanceSelect from './balance-select'
 import WithdrawAd from './withdraw-ad'
 import { device } from '../../const/const'
 import CreateCode from './create-code'
-
-import './referrals.css'
+import { FONT_COLOR } from './shareStyles'
+import { scroller } from 'react-scroll'
 
 const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
 
@@ -22,8 +20,19 @@ const ReferralComponent = (props) => {
 
   const actions = useActions()
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
-  const [haveReferraLink, setHaveReferralLink] = useState(false)
+  const [haveReferraLink, setHaveReferralLink] = useState(true)
   const [referralLink, setReferralLink] = useState('')
+
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      scroller.scrollTo('firstInsideContainer', {
+        offset: 0,
+        duration: 0,
+        smooth: true,
+        containerId: 'containerElement'
+      })
+    })
+  }, [])
 
   useEffect(() => {
     if (referral) {
@@ -44,6 +53,7 @@ const ReferralComponent = (props) => {
   return (
     <DetailContainerLayout
       title="Referidos"
+      customClass="referral-layout"
       {...props}
     >
       {!haveReferraLink ? (
@@ -53,11 +63,9 @@ const ReferralComponent = (props) => {
          />
       ) : (
         <ReferralGrid>
-          <div className="top">
-            <FirstText>
-              Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.
-            </FirstText>
-          </div>
+          <FirstText>
+            Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.
+          </FirstText>
           <ShareSection referralLink={referralLink} />
           <ReferralCounter />
           <BalanceSelect />
@@ -70,11 +78,15 @@ const ReferralComponent = (props) => {
 }
 
 const FirstText = styled.p`
+  grid-area: top;
   font-size: 20px;
   color: black;
   font-weight: 100;
   @media ${device.laptopL} {
     font-size: 17px;
+  }
+  @media ${device.tabletL} {
+    display: none;
   }
 `
 
@@ -88,12 +100,20 @@ const ReferralGrid = styled.div`
   grid-template-rows: 0.4fr 0.5fr 1.5fr;
   gap: 0px 8%;
   grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
-  color: #696969;
+  color: ${FONT_COLOR};
   transition; all 500ms ease;
-  .top { grid-area: top; }
   @media ${device.laptopL} {
     width: 90%;
     padding: 0 5%;
+  }
+  @media ${device.tabletL} {
+    height: calc(100vh - 100px);
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90vw;
+    padding: 0 0vw;
   }
 `;
 
@@ -106,10 +126,4 @@ function mapStateToProps(state, props) {
 
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    action: bindActionCreators(actions, dispatch)
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ReferralComponent)
+export default connect(mapStateToProps)(ReferralComponent)

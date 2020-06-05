@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
 import { device } from "../../const/const";
 
-export const MAIN_COLOR= '#0e95f8'
+export const MAIN_COLOR = '#0e95f8'
+export const FONT_COLOR = '#939393'
 
 export const ReferralBox = styled.div`
 width: 100%;
@@ -12,7 +13,10 @@ ${props => props.highlight ?
 }
 `
 export const Title = styled.p`
-
+@media ${device.tabletL} {
+    font-weight: 500;
+    margin-bottom: 1.8em;
+  }
 `
 
 export const Divider = styled.div`
@@ -26,7 +30,6 @@ export const Divider = styled.div`
 
 export const Number = styled.p`
     font-weight: 600;
-    opacity: 0.7;
     margin: 0;
     font-size: ${props => props.fontSize ? props.fontSize : "36px"};
     @media ${device.laptopL} {
