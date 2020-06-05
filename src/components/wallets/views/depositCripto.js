@@ -187,6 +187,10 @@ const CriptoView = () => {
 
 const DepositForm = styled(OperationForm)`
 
+.qrContainer{
+  transform: scale(.9);
+}
+
     @media (max-width: 768px){
         width: 100%;
         height: calc(100% - 40px);

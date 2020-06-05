@@ -94,11 +94,21 @@
 }
 
 .perfilPic{
-  width: 70px;
-  height: 70px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   overflow: hidden;
   margin-bottom: 10px;
+  background: #0198FF;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 14px -2px rgba(0,0,0,0.3);
+}
+
+.perfilPic p{
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .menuItems{
@@ -147,14 +157,28 @@
 .section2.movil{
   display: grid;
   align-items: center;
-  background: black;
   grid-gap: 0 !important;
+  transform: scale(.85);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.section2.movil:hover{
+  background: black;
 }
 
 .section2.movil .menuMovilItemTexts{
-  font-size: 17px;
+  font-size: 18px;
   font-weight: bold;
   color: #fb6257 !important;
+  display: flex;
+  justify-content: center;
+}
+
+.menuMovilItemTexts i{
+  color: #fb6257 !important;
+  margin-left: 10px;
 }
 
 .menuMovilItems{
@@ -207,7 +231,9 @@
 
 
 
-
+.itemText{
+  font-size: 14px !important;
+}
 
 
 

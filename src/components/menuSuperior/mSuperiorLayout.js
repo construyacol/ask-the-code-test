@@ -13,7 +13,7 @@ const MenuSuperiorLayout = (props) => {
   let venta = "Te vendemos a:"
 
   const {
-    logout,
+    showPrices,
     headRoomClass,
     item_quote,
     movil,
@@ -62,9 +62,9 @@ const MenuSuperiorLayout = (props) => {
               <div className="capsuleMenu1">
                 {
                   window.innerWidth > 768 ?
-                    <div className="itemSup closeSesi" onClick={logout}>
-                      <p>Cerrar Sesión</p>
-                      <i className="far fa-times-circle"></i>
+                    <div className="itemSup closeSesi" onClick={showPrices}>
+                      <p>Ver precios</p>
+                      <i class="fas fa-tags"></i>
                     </div>
 
                     :
