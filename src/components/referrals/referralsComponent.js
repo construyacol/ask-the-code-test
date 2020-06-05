@@ -1,110 +1,113 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
-import CreateReferralLink from './createReferralLink'
-import ReferralLinkShare from './referralLinkShare'
-import DashBoardReferralComponent from './dashboardReferral'
-
+import ShareSection from './share-section'
+import { useActions } from '../../hooks/useActions'
+import sleep from '../../utils/sleep'
+import styled from 'styled-components'
+import ReferralCounter from './referral-counter'
+import BalanceSelect from './balance-select'
+import WithdrawAd from './withdraw-ad'
+import { device } from '../../const/const'
+import CreateCode from './create-code'
 
 import './referrals.css'
 
-class ReferralComponent extends Component {
+const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
 
-  state = {
-    success_referral:false,
-    // haveReferraLink:this.props.user.referral ? true : false,
-    haveReferraLink:false,
-    referralLink:this.props.user.referral && `https://coinsenda.com/ref_code?=${this.props.user.referral.ref_code}`
-  }
+const ReferralComponent = (props) => {
+  const { user: { referral } } = props
 
-  componentWillReceiveProps(nextProps){
+  const actions = useActions()
+  const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
+  const [haveReferraLink, setHaveReferralLink] = useState(false)
+  const [referralLink, setReferralLink] = useState('')
 
-    if(nextProps.user.referral !== this.props.user.referral){
-      this.setState({referralLink:`https://coinsenda.com/ref_code?=${nextProps.user.referral.ref_code}`})
+  useEffect(() => {
+    if (referral) {
+      setReferralLink(REFERRAL_LINK(referral.ref_code))
     }
+  }, [referral])
 
+  const createLink = async code => {
+    const res = await actions.set_ref_code(code)
+
+    if (!res) return
+
+    setWasReferralCodeCreated(true)
+    await sleep(300)
+    setHaveReferralLink(true)
   }
 
-
-  createLink = async(ref_code) =>{
-
-    let res = await this.props.action.set_ref_code(ref_code)
-    // console.log('Res refcode api =>', res)
-    if(!res){return false}
-
-    await this.setState({success_referral:true})
-
-    setTimeout(()=>{
-      this.setState({haveReferraLink:true})
-    }, 300)
-  }
-
-
-  render(){
-
-   const { haveReferraLink, success_referral, referralLink } = this.state
-
-    return(
-
-      <DetailContainerLayout
-        title="Referidos"
-        {...this.props}
-        >
-        <div className="referralCont">
-            <div className="textReferral">
-              {
-                window.innerWidth < 768 &&
-                <p className="fuente titleReferr">Referidos</p>
-              }
-              <p className="fuente titleReferr">¡Invita amigos y gana!</p>
-              <p className="fuente parraFerrer">Por cada amigo que se registre con tu link de referido ganas el 0.5% de todas las operaciones de compra y venta que tu amigo realice.</p>
-            </div>
-
-            {
-              !haveReferraLink ?
-              <div className={`contReferral createReferralink ${success_referral ? 'desaparecer' : '' }`}>
-                <CreateReferralLink
-                  createLink={this.createLink}
-                  {...this.state}
-                  {...this.props}
-                />
-              </div>
-              :
-              <div className={`contReferral ${success_referral ? 'aparecer' : '' }`}>
-                <div className="haveReferral">
-
-                  <ReferralLinkShare
-                    referralLink={referralLink}
-                  />
-
-                  <DashBoardReferralComponent/>
-
-                </div>
-              </div>
-            }
-        </div>
-
-
-
-      </DetailContainerLayout>
-    )
-  }
+  return (
+    <DetailContainerLayout
+      title="Referidos"
+      {...props}
+    >
+      {!haveReferraLink ? (
+        <CreateCode 
+          createLink={createLink} 
+          wasReferralCodeCreated={wasReferralCodeCreated}
+         />
+      ) : (
+        <ReferralGrid>
+          <div className="top">
+            <FirstText>
+              Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.
+            </FirstText>
+          </div>
+          <ShareSection referralLink={referralLink} />
+          <ReferralCounter />
+          <BalanceSelect />
+          <WithdrawAd />
+        </ReferralGrid>
+      )}
+    </DetailContainerLayout>
+  )
 
 }
 
-function mapStateToProps(state, props){
+const FirstText = styled.p`
+  font-size: 20px;
+  color: black;
+  font-weight: 100;
+  @media ${device.laptopL} {
+    font-size: 17px;
+  }
+`
+
+const ReferralGrid = styled.div`
+  padding: 0 10%;
+  padding-top: 100px;
+  width: 80%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 1.5fr;
+  grid-template-rows: 0.4fr 0.5fr 1.5fr;
+  gap: 0px 8%;
+  grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
+  color: #696969;
+  transition; all 500ms ease;
+  .top { grid-area: top; }
+  @media ${device.laptopL} {
+    width: 90%;
+    padding: 0 5%;
+  }
+`;
+
+function mapStateToProps(state, props) {
 
   const { user } = state.modelData
-  return{
-    user:user
+  return {
+    user: user
   }
 
 }
 
-function mapDispatchToProps(dispatch){
-  return{
+function mapDispatchToProps(dispatch) {
+  return {
     action: bindActionCreators(actions, dispatch)
   }
 }
