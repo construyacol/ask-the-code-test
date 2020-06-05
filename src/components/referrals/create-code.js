@@ -38,10 +38,13 @@ const Text = styled.div`
     color: #3c3c3c;
     font-weight: bold;
     text-align: center;
+    margin-top: 1em;
     p {
         font-size: 14px;
         color: gray;
+        font-weight: 100;
         max-width: 600px;
+        margin-top: 2em;
     }
 }
 `
