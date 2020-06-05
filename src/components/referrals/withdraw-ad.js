@@ -1,11 +1,14 @@
 import React from 'react'
 import NumberBox from './number-box'
+import styled from 'styled-components'
+import { device } from '../../const/const'
+import IconSwitch from '../widgets/icons/iconSwitch'
 
 const WithdrawAd = () => {
-    const Icon = () => (<i className="far fa-handshake" />)
+    const Icon = () => (<IconSwitch icon={'colombia'} />)
+
     return (
-        <NumberBox
-            style={{ marginBottom: "20%" }}
+        <StyledNumberBox
             textCss="grid-area: bottom-right;"
             Icon={Icon}
             height="135px"
@@ -17,5 +20,12 @@ const WithdrawAd = () => {
             />
     )
 }
+
+const StyledNumberBox = styled(NumberBox)`
+    margin-bottom: 20%;
+    @media ${device.tabletL} {
+        margin-bottom: 0;
+    }
+`
 
 export default WithdrawAd

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { ReferralBox, Divider, Number, MAIN_COLOR, Title } from './shareStyles'
+import { ReferralBox, Number, MAIN_COLOR, Title } from './shareStyles'
 import * as Icons from '../widgets/icons'
 import { device } from '../../const/const'
 
@@ -8,7 +8,7 @@ const SECTION_TITLE = "Saldo disponible"
 const ITEMS = [
     {name: 'Ethereum', icon: 'Ethereum', coinCode: 'ETH', mockBalance: 0.00136},
     {name: 'Bitcoin', icon: 'Bitcoin2', coinCode: 'BTC', mockBalance: 0.00136},
-    {name: 'Cardano', icon: 'Bitcoin', coinCode: 'ADA', mockBalance: 0.00136}
+    {name: 'Cardano', icon: 'Cardano', coinCode: 'ADA', mockBalance: 0.00136}
 ]
 
 const BalanceSelect = () => {
@@ -49,7 +49,7 @@ const HideButton = styled.div`
     align-items: center;
     justify-content: center;
     width: 58px;
-    height: 90px;
+    height: calc(100% - 2px);
     position: absolute;
     color: #36ceb9;
     font-size: 20px;
@@ -63,9 +63,6 @@ const HideButton = styled.div`
     }
     &:hover {
         box-shadow: inset 0px 0px 0px 2px ${MAIN_COLOR};
-    }
-    @media ${device.laptopL} {
-        height: 72px;
     }
 `
 
@@ -95,7 +92,7 @@ const PriceContainer = styled.div`
 const MainButton = styled.div`
     background: white;
     width: 100%;
-    height: 90px;
+    height: calc(100% - 2px);
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -107,16 +104,22 @@ const MainButton = styled.div`
     left: 0;
     top: 0;
     z-index: 9;
-    @media ${device.laptopL} {
-        height: 72px;
-    }
+    
 `
 
 const SelectItem = styled.div`
     display: flex;
     position: relative;
+    height: 90px;
     &:hover ${MainButton} {
         ${hoverStyle}
+    }
+    @media ${device.laptopL} {
+        height: 72px;
+    }
+    @media ${device.tabletL} {
+        height: 8vh;
+        min-height: 62px;
     }
 `
 

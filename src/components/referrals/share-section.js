@@ -2,6 +2,7 @@ import React from 'react'
 import styled, { css } from 'styled-components'
 import { Title, ReferralBox, Divider, MAIN_COLOR } from './shareStyles'
 import { device } from '../../const/const'
+import { copy } from '../../utils'
 
 const SECTION_TITLE = "Link de referidos"
 
@@ -14,7 +15,7 @@ const ShareSection = ({referralLink}) => {
       <MidSection>
         <LinkIcon><i className="fas fa-link" /></LinkIcon>
         <p>{referralLink}</p>
-        <LinkIcon button><i className="fas fa-copy" /></LinkIcon>
+        <LinkIcon button onClick={() => copy(referralLink)}><i className="fas fa-copy" /></LinkIcon>
       </MidSection>
 
       <BottomSection>
@@ -54,6 +55,11 @@ const LinkIcon = styled.div`
     height: 32px;
     width: 32px;
   }
+  @media ${device.tabletL} {
+    height: 28px;
+    width: 28px;
+    margin-right: 6px;
+  }
 `
 
 const ShareButtons = styled.div`
@@ -61,6 +67,9 @@ const ShareButtons = styled.div`
   width: 110px;
   @media ${device.laptopL} {
     width: 104px;
+  }
+  @media ${device.tabletL} {
+    width: 84px;
   }
 `
 
@@ -71,6 +80,12 @@ const BottomSection = styled.div`
   @media ${device.laptopL} {
     font-size: 14px;
   }
+  @media ${device.tabletL} {
+    ${Divider} {
+      height: 50%;
+    }
+    margin-top: 0px;
+  }
 `
 
 const MidSection = styled(ReferralBox)`
@@ -79,10 +94,18 @@ const MidSection = styled(ReferralBox)`
   color: ${MAIN_COLOR};
   > p {
     width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   > i {
     font-size: 18px;
     margin-right: 8px;
+  }
+  @media ${device.tabletL} {
+    > p {
+      width: 75%;
+    }
   }
 `
 
@@ -119,6 +142,11 @@ const IconBox = styled(ReferralBox)`
     height: 40px;
     width: 40px;
     border-radius: 6px;
+  }
+  @media ${device.tabletL} {
+    height: 32px;
+    width: 32px;
+    border-radius: 5px;
   }
 `
 

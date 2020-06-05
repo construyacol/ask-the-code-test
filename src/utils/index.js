@@ -85,6 +85,17 @@ export const mensaje = async(msg, type, position) =>{
   })
 }
 
+export const copy = (payload) => {
+  if(!document || !payload) return;
+  let aux = document.createElement("input")
+  aux.setAttribute("value", payload)
+   document.body.appendChild(aux);
+   aux.select();
+   document.execCommand("copy");
+   document.body.removeChild(aux);
+  return mensaje("¡Copiado Exitosamente!")
+}
+
 
 export const capitalizarPalabras = ( val ) => {
   // console.log('_______________________capitalizarPalabras', val, typeof val)
