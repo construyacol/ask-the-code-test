@@ -29,10 +29,18 @@ export const Divider = styled.div`
 `
 
 export const Number = styled.p`
+    font-family: 'Tomorrow', sans-serif;
     font-weight: 600;
     margin: 0;
     font-size: ${props => props.fontSize ? props.fontSize : "36px"};
     @media ${device.laptopL} {
         font-size: ${props => props.fontSize ? `calc(${props.fontSize} - 6px)` : "32px"};
     }
+`
+
+export const skeletonStyle = css`
+    background: #c9c9c9;
+    border-radius: 3px;
+    color: #c9c9c9;
+    pointer-events: none;
 `

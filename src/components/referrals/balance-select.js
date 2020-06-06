@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { ReferralBox, Number, MAIN_COLOR, Title } from './shareStyles'
+import { ReferralBox, Number, MAIN_COLOR, Title, skeletonStyle } from './shareStyles'
 import * as Icons from '../widgets/icons'
 import { device } from '../../const/const'
 
@@ -11,35 +11,42 @@ const ITEMS = [
     {name: 'Cardano', icon: 'Cardano', coinCode: 'ADA', mockBalance: 0.00136}
 ]
 
-const BalanceSelect = () => {
+const BalanceSelect = ({loading}) => {
 
   return (
     <StyledShareSection>
         <Title>{SECTION_TITLE}</Title>
-        <SelectConainer>
+        <SelectConainer loading={loading}>
             {ITEMS.map((item, index) => {
                 const Icon = Icons[item.icon]
                 return (
-                    <SelectItem key={index}>
-                        <MainButton>
-                            <IconContainer><Icon/></IconContainer>
-                            {item.name}
-                            <PriceContainer>
-                                <Number style={{ marginRight: 6 }} fontSize="28px">{item.mockBalance}</Number>
-                                <Number fontSize="14px"> {item.coinCode}</Number>
-                            </PriceContainer>
-                        </MainButton>
-                        <HideButton>
-                            <i className="fas fa-arrow-up" />
-                            <p>Retirar</p>
-                        </HideButton>
-                    </SelectItem>
+                  <ItemComponent item={item} Icon={Icon} index={index} />  
                 )
             })}
         </SelectConainer>
     </StyledShareSection>
   )
 
+}
+
+const ItemComponent = ({ item, Icon, index }) => {
+    Icon = Icon || <div/>
+    return (
+        <SelectItem key={index}>
+            <MainButton>
+                <IconContainer><Icon/></IconContainer>
+                <p>{item.name}</p>
+                <PriceContainer>
+                    <Number style={{ marginRight: 6 }} fontSize="28px">{item.mockBalance}</Number>
+                    <Number fontSize="14px"> {item.coinCode}</Number>
+                </PriceContainer>
+            </MainButton>
+            <HideButton>
+                <i className="fas fa-arrow-up" />
+                <p>Retirar</p>
+            </HideButton>
+        </SelectItem>
+    )
 }
 
 const HideButton = styled.div`
@@ -76,6 +83,8 @@ const hoverStyle = css`
 
 const IconContainer = styled.div`
     width: 38px;
+    height: 38px;
+    margin-right: 10px;
     img, svg {
         width: 33px;
         height: 33px;
@@ -85,7 +94,7 @@ const IconContainer = styled.div`
 const PriceContainer = styled.div`
     display: flex;
     align-items: baseline;
-    width: 75%;
+    width: 60%;
     justify-content: flex-end;
 `
 
@@ -104,6 +113,9 @@ const MainButton = styled.div`
     left: 0;
     top: 0;
     z-index: 9;
+    > p {
+        flex: 1 1 auto;
+    }
     
 `
 
@@ -124,6 +136,22 @@ const SelectItem = styled.div`
 `
 
 const SelectConainer = styled(ReferralBox)`
+    ${props => props.loading && css`
+        p {
+            ${skeletonStyle}
+            width: fit-content;
+        }
+        ${IconContainer} {
+            ${skeletonStyle}
+            border-radius: 50%;
+            img, svg {
+                display: none;
+            }
+        }
+        ${SelectItem} {
+            pointer-events: none;
+        } 
+    `}
     position: relative;
     &>:first-child >:first-child {
         border-radius: 5px 5px 0 0;

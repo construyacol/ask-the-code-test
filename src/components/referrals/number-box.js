@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { css } from 'styled-components'
-import { ReferralBox, Divider, Number, MAIN_COLOR } from './shareStyles'
+import { ReferralBox, Divider, Number, MAIN_COLOR, skeletonStyle } from './shareStyles'
 import { device } from '../../const/const'
 
 const NumberBox = (props) => {
@@ -9,7 +9,7 @@ const NumberBox = (props) => {
         <StyledShareSection {...props} radius="10px">
             <Icon><props.Icon color={MAIN_COLOR} /></Icon>
             <Divider height="55px" margin="15px" />
-            <Counter>
+            <Counter loading={props.loading}>
                 <Number>{props.quantity}</Number>
                 <p className="sub-text" dangerouslySetInnerHTML={{ __html: props.definition }} />
             </Counter>
@@ -78,6 +78,12 @@ const Counter = styled.div`
     flex-direction: column;
     width: 80%;
     align-items: start !important;
+    ${props => props.loading && css`
+        p {
+            ${skeletonStyle}
+            width: fit-content;
+        }
+    `}
     .sub-text {
         font-size: 14px;
         margin-bottom: 0;

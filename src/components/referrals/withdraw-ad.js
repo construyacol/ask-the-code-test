@@ -4,11 +4,12 @@ import styled from 'styled-components'
 import { device } from '../../const/const'
 import IconSwitch from '../widgets/icons/iconSwitch'
 
-const WithdrawAd = () => {
+const WithdrawAd = ({loading}) => {
     const Icon = () => (<IconSwitch icon={'colombia'} />)
 
     return (
         <StyledNumberBox
+            loading = {loading}
             textCss="grid-area: bottom-right;"
             Icon={Icon}
             height="135px"
