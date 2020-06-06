@@ -68,7 +68,7 @@ const ReferralComponent = (props) => {
       ) : (
         <ReferralGrid>
           <FirstText loading={loading}>
-            <p>Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
+            <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
           <ReferralCounter loading={loading} />
