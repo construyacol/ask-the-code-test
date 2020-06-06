@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import localForage from 'localforage'
 import actions from '../../../actions'
 import SelectCountry from '../maps/select_country/select_country'
 import Coinsenda from '../icons/logos/coinsenda.js'
@@ -52,7 +53,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if (isSessionRestored) {
       await actions.isLoggedInAction(true)
       coinsendaServices.postLoader(doLogout)
-      return redirectURL()
+      return redirectURL(isSessionRestored)
     }
 
     if (!userToken) return;
@@ -94,7 +95,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   }
 
-  const redirectURL = async () => {
+  const redirectURL = async (isSessionRestored) => {
     const verificationStatus = await coinsendaServices.getVerificationState()
     if (verificationStatus !== 'accepted') {
       await actions.addNotification('security', null, 1)
@@ -102,7 +103,13 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       return actions.isAppLoaded(true)
     }
 
-    await history.push('/wallets')
+    if (isSessionRestored) {
+      const PREVIOUS_ROUTE = await localForage.getItem('previousRoute')
+      history.push(PREVIOUS_ROUTE ? PREVIOUS_ROUTE : '/wallets')
+      actions.isAppLoading(false)
+    } else {
+      await history.push('/wallets')
+    }
     // return console.log('_________________________________________________________________||||| stop ::', session, session && Object.keys(session).length)
     return actions.isAppLoaded(true)
   }
@@ -117,7 +124,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const selectCountry = async (newCountry) => {
     actions.isAppLoading(true)
     await initComponent(newCountry)
-    actions.isAppLoading(false)
   }
 
   const animation = async (animation) => {

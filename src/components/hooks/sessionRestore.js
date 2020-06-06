@@ -19,7 +19,6 @@ const SessionRestore = () => {
     if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) { return false }
     await actions.appLoadLabelAction("Restaurando datos")
     await actions.set_session_restore(SESSION_STATE)
-    // window.history.back();
     return true
   }
 
