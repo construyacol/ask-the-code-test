@@ -78,7 +78,7 @@ function SwapView(props) {
           text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
         }
         setValueError({
-          text: `Error: El monto a pagar es menor que el valor mínimo ${text}`
+          text: `El monto mínimo para pagar es: ${text}`
         })
       } else {
         setValueError(null)
@@ -258,12 +258,12 @@ function SwapView(props) {
       <InputForm
         classes="fuente2"
         type="text"
-        placeholder="Total a recibir"
+        placeholder="0"
         name="buy-amount"
         value={totalValue}
         handleChange={handleChangeBuyAmount}
         isControlled={true}
-        label={`Total a recibir:`}
+        label={`Recibo:`}
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => <PairSelect
@@ -312,7 +312,7 @@ const CoinPrice = styled.p`
 const SwapForm = styled(OperationForm)`
   grid-template-rows: 1fr ${props => !props.isMovilViewport ? "30px" : ''} 1fr 20px 1fr;
   @media (max-width: 768px){
-      width:100% !important; 
+      width:100% !important;
     }
 
 `

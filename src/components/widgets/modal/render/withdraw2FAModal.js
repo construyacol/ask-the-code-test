@@ -6,7 +6,7 @@ import AuthReq from '../../itemSettings/modal_views/authreq'
 import IconSwitch from '../../icons/iconSwitch'
 import {useActions} from '../../../../hooks/useActions'
 
-const Withdraw2FaModal = ({callback}) => {
+const Withdraw2FaModal = ({callback, isWithdraw2fa}) => {
 
   const actions = useActions()
 
@@ -35,7 +35,7 @@ const Withdraw2FaModal = ({callback}) => {
                 <p className="fuente">Digita el código <span className="fuente2">2fa</span> para continuar.</p>
                 <AutContainer>
                   <AuthReq
-                    isModal2fa
+                    isWithdraw2fa={isWithdraw2fa}
                     authenticated={callback}
                   />
                 </AutContainer>

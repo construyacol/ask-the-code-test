@@ -86,7 +86,7 @@ export const CriptoView = () => {
     const address = form.get('address')
 
     if(user.security_center.authenticator.withdraw && !twoFaToken){
-      return dispatch(renderModal(() => <Withdraw2FaModal callback={setTowFaTokenMethod}/>))
+      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod}/>))
     }
 
     dispatch(isAppLoading(true))

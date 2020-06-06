@@ -38,7 +38,7 @@ const AuthReq = (props) => {
       setButtonActive(false)
       setStatus("Verificando...")
 
-      if(props.isModal2fa){
+      if(props.isWithdraw2fa){
         return ok_auth(value)
       }
 
