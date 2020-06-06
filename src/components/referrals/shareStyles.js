@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { device } from "../../const/const";
+import { OnlySkeletonAnimation } from "../widgets/loaders/skeleton";
 
 export const MAIN_COLOR = '#0e95f8'
 export const FONT_COLOR = '#939393'
@@ -43,4 +44,5 @@ export const skeletonStyle = css`
     border-radius: 3px;
     color: #c9c9c9;
     pointer-events: none;
+    ${OnlySkeletonAnimation}
 `
