@@ -16,13 +16,13 @@ import { scroller } from 'react-scroll'
 const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
 
 const ReferralComponent = (props) => {
-  const { user: { referral } } = props
+  const { user } = props
 
   const actions = useActions()
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
   const [haveReferraLink, setHaveReferralLink] = useState(true)
   const [referralLink, setReferralLink] = useState('')
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(props.setSkeleton ? true : false)
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -39,10 +39,10 @@ const ReferralComponent = (props) => {
   }, [])
 
   useEffect(() => {
-    if (referral) {
-      setReferralLink(REFERRAL_LINK(referral.ref_code))
+    if (user && user.referral) {
+      setReferralLink(REFERRAL_LINK(user.referral.ref_code))
     }
-  }, [referral])
+  }, [user])
 
   const createLink = async code => {
     const res = await actions.set_ref_code(code)
@@ -68,7 +68,7 @@ const ReferralComponent = (props) => {
       ) : (
         <ReferralGrid>
           <FirstText loading={loading}>
-            <p>Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
+            <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
           <ReferralCounter loading={loading} />
@@ -136,5 +136,7 @@ function mapStateToProps(state, props) {
   }
 
 }
+
+export const ReferralComponentAsSkeleton = () => (<ReferralComponent setSkeleton={true} />)
 
 export default connect(mapStateToProps)(ReferralComponent)
