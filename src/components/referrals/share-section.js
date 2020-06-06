@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
-import { Title, ReferralBox, Divider, MAIN_COLOR } from './shareStyles'
+import { Title, ReferralBox, Divider, MAIN_COLOR, skeletonStyle } from './shareStyles'
 import { device } from '../../const/const'
 import { copy } from '../../utils'
 
@@ -16,7 +16,7 @@ const FACEBOOK_INIT = () => {
   }(document, 'script', 'facebook-jssdk'))
 }
 
-const ShareSection = ({ referralLink }) => {
+const ShareSection = ({ referralLink, loading }) => {
   const shareOnTwitter = () => {
     window.open(`https://twitter.com/intent/tweet?text=${TWITTER_TEXT}&url=${encodeURI(referralLink)}`, "_blank")
   }
@@ -34,16 +34,16 @@ const ShareSection = ({ referralLink }) => {
     <StyledShareSection>
       <Title>{SECTION_TITLE}</Title>
 
-      <MidSection>
+      <MidSection loading={loading}>
         <LinkIcon><i className="fas fa-link" /></LinkIcon>
         <p>{referralLink}</p>
-        <LinkIcon button onClick={() => copy(referralLink)}><i className="fas fa-copy" /></LinkIcon>
+        <LinkIcon button onClick={() => copy(referralLink)}><i className="far fa-clone tooltip" /></LinkIcon>
       </MidSection>
 
       <BottomSection>
         <p>Compartir en:</p>
         <Divider height="65%" />
-        <ShareButtons>
+        <ShareButtons loading={loading}>
           <IconBox onClick={shareOnFacebook}><i className="fab fa-facebook-square" /></IconBox>
           <IconBox onClick={shareOnTwitter}><i className="fab fa-twitter" /></IconBox>
         </ShareButtons>
@@ -89,6 +89,11 @@ const LinkIcon = styled.div`
 const ShareButtons = styled.div`
   justify-content: space-between;
   width: 110px;
+  ${props => props.loading && css`
+    ${IconBox} {
+      pointer-events: none;
+    }
+  `}
   @media ${device.laptopL} {
     width: 104px;
   }
@@ -121,6 +126,19 @@ const MidSection = styled(ReferralBox)`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+  ${LinkIcon}, p  {
+    ${props => props.loading && css`
+      ${skeletonStyle}
+      &:first-child {
+        border-radius: 50%;
+      }
+      &:last-child {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+    `}
   }
   > i {
     font-size: 18px;

@@ -4,13 +4,13 @@ import { connect } from 'react-redux'
 import ShareSection from './share-section'
 import { useActions } from '../../hooks/useActions'
 import sleep from '../../utils/sleep'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import ReferralCounter from './referral-counter'
 import BalanceSelect from './balance-select'
 import WithdrawAd from './withdraw-ad'
 import { device } from '../../const/const'
 import CreateCode from './create-code'
-import { FONT_COLOR } from './shareStyles'
+import { FONT_COLOR, skeletonStyle } from './shareStyles'
 import { scroller } from 'react-scroll'
 
 const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
@@ -22,6 +22,7 @@ const ReferralComponent = (props) => {
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
   const [haveReferraLink, setHaveReferralLink] = useState(true)
   const [referralLink, setReferralLink] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -32,6 +33,9 @@ const ReferralComponent = (props) => {
         containerId: 'containerElement'
       })
     })
+
+    // The code below is for test purpose on view skeleton UI
+    setTimeout(() => setLoading(false), 3000)
   }, [])
 
   useEffect(() => {
@@ -63,13 +67,13 @@ const ReferralComponent = (props) => {
          />
       ) : (
         <ReferralGrid>
-          <FirstText>
-            Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.
+          <FirstText loading={loading}>
+            <p>Invita amigos con tu link de referido gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
           </FirstText>
-          <ShareSection referralLink={referralLink} />
-          <ReferralCounter />
-          <BalanceSelect />
-          <WithdrawAd />
+          <ShareSection loading={loading} referralLink={referralLink} />
+          <ReferralCounter loading={loading} />
+          <BalanceSelect loading={loading} />
+          <WithdrawAd loading={loading} />
         </ReferralGrid>
       )}
     </DetailContainerLayout>
@@ -77,11 +81,17 @@ const ReferralComponent = (props) => {
 
 }
 
-const FirstText = styled.p`
+const FirstText = styled.div`
   grid-area: top;
   font-size: 20px;
   color: black;
   font-weight: 100;
+  p {
+    ${props => props.loading && css`
+      ${skeletonStyle}
+      width: fit-content;
+    `}
+  }
   @media ${device.laptopL} {
     font-size: 17px;
   }
@@ -97,7 +107,7 @@ const ReferralGrid = styled.div`
   height: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 0.5fr 1.5fr;
-  grid-template-rows: 0.4fr 0.5fr 1.5fr;
+  grid-template-rows: 0.35fr 0.5fr 1.5fr;
   gap: 0px 8%;
   grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
   color: ${FONT_COLOR};

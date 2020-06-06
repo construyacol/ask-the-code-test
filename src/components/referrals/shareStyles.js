@@ -37,3 +37,10 @@ export const Number = styled.p`
         font-size: ${props => props.fontSize ? `calc(${props.fontSize} - 6px)` : "32px"};
     }
 `
+
+export const skeletonStyle = css`
+    background: #c9c9c9;
+    border-radius: 3px;
+    color: #c9c9c9;
+    pointer-events: none;
+`
