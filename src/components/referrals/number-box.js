@@ -10,7 +10,7 @@ const NumberBox = (props) => {
             <Icon><props.Icon color={MAIN_COLOR} /></Icon>
             <Divider height="55px" margin="15px" />
             <Counter loading={props.loading}>
-                <Number>{props.quantity}</Number>
+                <Number className="numberC">{props.quantitys || '-----------'}</Number>
                 <p className="sub-text" dangerouslySetInnerHTML={{ __html: props.definition }} />
             </Counter>
 
@@ -72,13 +72,19 @@ const Icon = styled.div`
         width: 60px;
         height: 60px;
         font-size: 26px;
-    }  
+    }
 `
 const Counter = styled.div`
     flex-direction: column;
     width: 80%;
     align-items: start !important;
+
+
+
     ${props => props.loading && css`
+        .numberC{
+          font-size: 20px !important;
+        }
         p {
             ${skeletonStyle}
             width: fit-content;
@@ -154,13 +160,13 @@ const StyledShareSection = styled(ReferralBox)`
         }
         ${Number} {
             font-size: 40px;
-            opacity: 1; 
+            opacity: 1;
          }
     }
     ${props => props.responsive && css`
         @media ${device.tabletL} {
             border: unset;
-            background-color: #f8fcfe;            
+            background-color: #f8fcfe;
             height: 9vh;
             margin-top: 10px;
             ${Divider} {
@@ -176,13 +182,13 @@ const StyledShareSection = styled(ReferralBox)`
                 margin: auto 0;
             }
             ${Number} {
-               font-size: 22px; 
+               font-size: 22px;
             }
             ${Icon} {
                 min-width: 42px;
                 width: 42px;
                 height: 42px;
-                font-size: 20px; 
+                font-size: 20px;
                 margin: 0;
             }
         }

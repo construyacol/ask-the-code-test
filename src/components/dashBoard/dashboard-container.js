@@ -141,7 +141,7 @@ function DashBoardContainer(props) {
             <Route path="/wallets" component={WalletContainer} />
             <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
             <Route path="/security" component={SecurityCenter} />
-            <Route path="/referral" component={ReferralComponent} />
+            <Route path="/referral" component={ReferralComponentAsSkeleton} />
           </Switch>
         </Suspense>
 
@@ -199,11 +199,12 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoardContainer)
 
 const LazyLoaderPage = ({ path }) => {
-  if(path === 'referral') {
-    return <ReferralComponentAsSkeleton />
-  }
+
   const title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
-  const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader : path === 'security' ? SecurityCenterSkeletonLoader : SimpleLoader
+  const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader :
+                        path === 'referral' ? ReferralComponentAsSkeleton :
+                        path === 'security' ?  SecurityCenterSkeletonLoader :
+                        SimpleLoader
 
   return (
     <DetailContainerLayout title={title}>

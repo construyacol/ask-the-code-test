@@ -13,7 +13,7 @@ const WithdrawAd = ({loading}) => {
             textCss="grid-area: bottom-right;"
             Icon={Icon}
             height="135px"
-            quantity={"$500.000"} 
+            quantity={"$500.000"}
             definition="Saldo total en <strong>COP</strong>"
             bottomText={`<p>RETIRAR TOTAL <i class="fas fa-arrow-up"/></p>`}
             withPadding

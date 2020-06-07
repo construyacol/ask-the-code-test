@@ -15,12 +15,12 @@ const BalanceSelect = ({loading}) => {
 
   return (
     <StyledShareSection>
-        <Title>{SECTION_TITLE}</Title>
+      <Title loading={loading}>{SECTION_TITLE}</Title>
         <SelectConainer loading={loading}>
             {ITEMS.map((item, index) => {
                 const Icon = Icons[item.icon]
                 return (
-                  <ItemComponent item={item} Icon={Icon} index={index} />  
+                  <ItemComponent item={item} Icon={Icon} index={index} key={index} />
                 )
             })}
         </SelectConainer>
@@ -37,7 +37,7 @@ const ItemComponent = ({ item, Icon, index }) => {
                 <IconContainer><Icon/></IconContainer>
                 <p>{item.name}</p>
                 <PriceContainer>
-                    <Number style={{ marginRight: 6 }} fontSize="28px">{item.mockBalance}</Number>
+                    <Number className="numberC" style={{ marginRight: 6 }} fontSize="28px">{item.mockBalance}</Number>
                     <Number fontSize="14px"> {item.coinCode}</Number>
                 </PriceContainer>
             </MainButton>
@@ -116,7 +116,7 @@ const MainButton = styled.div`
     > p {
         flex: 1 1 auto;
     }
-    
+
 `
 
 const SelectItem = styled.div`
@@ -137,6 +137,9 @@ const SelectItem = styled.div`
 
 const SelectConainer = styled(ReferralBox)`
     ${props => props.loading && css`
+      .numberC{
+        font-size: 20px !important;
+      }
         p {
             ${skeletonStyle}
             width: fit-content;
@@ -150,7 +153,7 @@ const SelectConainer = styled(ReferralBox)`
         }
         ${SelectItem} {
             pointer-events: none;
-        } 
+        }
     `}
     position: relative;
     &>:first-child >:first-child {
@@ -169,7 +172,7 @@ const SelectConainer = styled(ReferralBox)`
 
 const StyledShareSection = styled.div`
   grid-area: bottom-left;
-  
+
 `
 
 export default BalanceSelect

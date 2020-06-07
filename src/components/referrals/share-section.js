@@ -32,25 +32,26 @@ const ShareSection = ({ referralLink, loading }) => {
 
   return (
     <StyledShareSection>
-      <Title>{SECTION_TITLE}</Title>
+      <Title loading={loading ? "true" : ""}>{SECTION_TITLE}</Title>
 
-      <MidSection loading={loading}>
+      <MidSection className={`${loading ? 'skeleton' : ''}`} loading={loading ? "true" : ""}>
         <LinkIcon><i className="fas fa-link" /></LinkIcon>
         <p>{referralLink}</p>
         <LinkIcon button onClick={() => copy(referralLink)}><i className="far fa-clone tooltip" /></LinkIcon>
       </MidSection>
 
-      <BottomSection>
-        <p>Compartir en:</p>
-        <Divider height="65%" />
-        <ShareButtons loading={loading}>
-          <IconBox onClick={shareOnFacebook}><i className="fab fa-facebook-square" /></IconBox>
-          <IconBox onClick={shareOnTwitter}><i className="fab fa-twitter" /></IconBox>
-        </ShareButtons>
-      </BottomSection>
-      {/* <div id="fb-share-button" class="fb-share-button"
-        data-href={referralLink}
-        data-layout="button_count">Boton de prueba</div> */}
+      {
+        !loading &&
+        <BottomSection>
+          <p>Compartir en:</p>
+          <Divider height="65%" />
+          <ShareButtons loading={loading ? "true" : ""}>
+            <IconBox onClick={shareOnFacebook}><i className="fab fa-facebook-square" /></IconBox>
+            <IconBox onClick={shareOnTwitter}><i className="fab fa-twitter" /></IconBox>
+          </ShareButtons>
+        </BottomSection>
+      }
+
     </StyledShareSection>
   )
 
@@ -118,15 +119,26 @@ const BottomSection = styled.div`
 `
 
 const MidSection = styled(ReferralBox)`
-  justify-content: space-around;
+  display: grid !important;
+  grid-template-columns: 50px 1fr 50px;
   align-items: center;
   color: ${MAIN_COLOR};
+  background: white;
   > p {
     width: 80%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  &.skeleton{
+    p{
+      ${skeletonStyle}
+      width: 300px;
+      height: 18px;
+    }
+  }
+
   ${LinkIcon}, p  {
     ${props => props.loading && css`
       ${skeletonStyle}

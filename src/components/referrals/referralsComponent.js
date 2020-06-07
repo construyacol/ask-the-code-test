@@ -35,7 +35,7 @@ const ReferralComponent = (props) => {
     })
 
     // The code below is for test purpose on view skeleton UI
-    setTimeout(() => setLoading(false), 3000)
+    // setTimeout(() => setLoading(false), 3000)
   }, [])
 
   useEffect(() => {
@@ -61,19 +61,19 @@ const ReferralComponent = (props) => {
       {...props}
     >
       {!haveReferraLink ? (
-        <CreateCode 
-          createLink={createLink} 
+        <CreateCode
+          createLink={createLink}
           wasReferralCodeCreated={wasReferralCodeCreated}
          />
       ) : (
         <ReferralGrid>
-          <FirstText loading={loading}>
+          <FirstText className={`${loading === true ? 'skeleton' : '' }`} >
             <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
-          <ReferralCounter loading={loading} />
-          <BalanceSelect loading={loading} />
-          <WithdrawAd loading={loading} />
+          <ReferralCounter loading={loading.toString()} />
+          <BalanceSelect loading={loading.toString()} />
+          <WithdrawAd loading={loading.toString()} />
         </ReferralGrid>
       )}
     </DetailContainerLayout>
@@ -83,15 +83,18 @@ const ReferralComponent = (props) => {
 
 const FirstText = styled.div`
   grid-area: top;
-  font-size: 20px;
+  font-size: 16px;
   color: black;
   font-weight: 100;
-  p {
-    ${props => props.loading && css`
+
+  &.skeleton{
+    p{
       ${skeletonStyle}
       width: fit-content;
-    `}
+      height: 18px;
+    }
   }
+
   @media ${device.laptopL} {
     font-size: 17px;
   }

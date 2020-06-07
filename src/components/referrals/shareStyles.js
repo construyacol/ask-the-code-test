@@ -8,12 +8,19 @@ export const FONT_COLOR = '#939393'
 export const ReferralBox = styled.div`
 width: 100%;
 border-radius: ${props => props.radius ? props.radius : "5px"};
-${props => props.highlight ? 
+${props => props.highlight ?
     css`border: 2px solid ${MAIN_COLOR};` :
     css`border: 1px solid lightgrey;`
 }
 `
 export const Title = styled.p`
+  color: gray;
+
+  ${props => props.loading && css`
+      ${skeletonStyle}
+      width: fit-content;
+      height: 16px;
+  `}
 @media ${device.tabletL} {
     font-weight: 500;
     margin-bottom: 1.8em;
