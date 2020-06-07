@@ -22,8 +22,8 @@ const ReferralComponent = (props) => {
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
   const [haveReferraLink, setHaveReferralLink] = useState(true)
   const [referralLink, setReferralLink] = useState('')
-  // const [loading, setLoading] = useState(props.setSkeleton ? true : false)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(props.setSkeleton ? true : false)
+  // const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -36,7 +36,7 @@ const ReferralComponent = (props) => {
     })
 
     // The code below is for test purpose on view skeleton UI
-    setTimeout(() => setLoading(false), 3000)
+    // setTimeout(() => setLoading(false), 3000)
   }, [])
 
   useEffect(() => {
