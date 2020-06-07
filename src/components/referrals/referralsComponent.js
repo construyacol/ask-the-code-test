@@ -1,112 +1,145 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { connect } from 'react-redux'
-import actions from '../../actions'
-import { bindActionCreators } from 'redux'
-import CreateReferralLink from './createReferralLink'
-import ReferralLinkShare from './referralLinkShare'
-import DashBoardReferralComponent from './dashboardReferral'
+import ShareSection from './share-section'
+import { useActions } from '../../hooks/useActions'
+import sleep from '../../utils/sleep'
+import styled, { css } from 'styled-components'
+import ReferralCounter from './referral-counter'
+import BalanceSelect from './balance-select'
+import WithdrawAd from './withdraw-ad'
+import { device } from '../../const/const'
+import CreateCode from './create-code'
+import { FONT_COLOR, skeletonStyle } from './shareStyles'
+import { scroller } from 'react-scroll'
 
+const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
 
-import './referrals.css'
+const ReferralComponent = (props) => {
+  const { user } = props
 
-class ReferralComponent extends Component {
+  const actions = useActions()
+  const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
+  const [haveReferraLink, setHaveReferralLink] = useState(true)
+  const [referralLink, setReferralLink] = useState('')
+  const [loading, setLoading] = useState(props.setSkeleton ? true : false)
 
-  state = {
-    success_referral:false,
-    // haveReferraLink:this.props.user.referral ? true : false,
-    haveReferraLink:false,
-    referralLink:this.props.user.referral && `https://coinsenda.com/ref_code?=${this.props.user.referral.ref_code}`
-  }
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      scroller.scrollTo('firstInsideContainer', {
+        offset: 0,
+        duration: 0,
+        smooth: true,
+        containerId: 'containerElement'
+      })
+    })
 
-  componentWillReceiveProps(nextProps){
+    // The code below is for test purpose on view skeleton UI
+    // setTimeout(() => setLoading(false), 3000)
+  }, [])
 
-    if(nextProps.user.referral !== this.props.user.referral){
-      this.setState({referralLink:`https://coinsenda.com/ref_code?=${nextProps.user.referral.ref_code}`})
+  useEffect(() => {
+    if (user && user.referral) {
+      setReferralLink(REFERRAL_LINK(user.referral.ref_code))
     }
+  }, [user])
 
+  const createLink = async code => {
+    const res = await actions.set_ref_code(code)
+
+    if (!res) return
+
+    setWasReferralCodeCreated(true)
+    await sleep(300)
+    setHaveReferralLink(true)
   }
 
-
-  createLink = async(ref_code) =>{
-
-    let res = await this.props.action.set_ref_code(ref_code)
-    // console.log('Res refcode api =>', res)
-    if(!res){return false}
-
-    await this.setState({success_referral:true})
-
-    setTimeout(()=>{
-      this.setState({haveReferraLink:true})
-    }, 300)
-  }
-
-
-  render(){
-
-   const { haveReferraLink, success_referral, referralLink } = this.state
-
-    return(
-
-      <DetailContainerLayout
-        title="Referidos"
-        {...this.props}
-        >
-        <div className="referralCont">
-            <div className="textReferral">
-              {
-                window.innerWidth < 768 &&
-                <p className="fuente titleReferr">Referidos</p>
-              }
-              <p className="fuente titleReferr">¡Invita amigos y gana!</p>
-              <p className="fuente parraFerrer">Por cada amigo que se registre con tu link de referido ganas el 0.5% de todas las operaciones de compra y venta que tu amigo realice.</p>
-            </div>
-
-            {
-              !haveReferraLink ?
-              <div className={`contReferral createReferralink ${success_referral ? 'desaparecer' : '' }`}>
-                <CreateReferralLink
-                  createLink={this.createLink}
-                  {...this.state}
-                  {...this.props}
-                />
-              </div>
-              :
-              <div className={`contReferral ${success_referral ? 'aparecer' : '' }`}>
-                <div className="haveReferral">
-
-                  <ReferralLinkShare
-                    referralLink={referralLink}
-                  />
-
-                  <DashBoardReferralComponent/>
-
-                </div>
-              </div>
-            }
-        </div>
-
-
-
-      </DetailContainerLayout>
-    )
-  }
+  return (
+    <DetailContainerLayout
+      title="Referidos"
+      customClass="referral-layout"
+      {...props}
+    >
+      {!haveReferraLink ? (
+        <CreateCode
+          createLink={createLink}
+          wasReferralCodeCreated={wasReferralCodeCreated}
+         />
+      ) : (
+        <ReferralGrid>
+          <FirstText className={`${loading === true ? 'skeleton' : '' }`} >
+            <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
+          </FirstText>
+          <ShareSection loading={loading} referralLink={referralLink} />
+          <ReferralCounter loading={loading.toString()} />
+          <BalanceSelect loading={loading.toString()} />
+          <WithdrawAd loading={loading.toString()} />
+        </ReferralGrid>
+      )}
+    </DetailContainerLayout>
+  )
 
 }
 
-function mapStateToProps(state, props){
+const FirstText = styled.div`
+  grid-area: top;
+  font-size: 16px;
+  color: black;
+  font-weight: 100;
+
+  &.skeleton{
+    p{
+      ${skeletonStyle}
+      width: fit-content;
+      height: 18px;
+    }
+  }
+
+  @media ${device.laptopL} {
+    font-size: 17px;
+  }
+  @media ${device.tabletL} {
+    display: none;
+  }
+`
+
+const ReferralGrid = styled.div`
+  padding: 0 10%;
+  padding-top: 100px;
+  width: 80%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.5fr 1.5fr;
+  grid-template-rows: 0.35fr 0.5fr 1.5fr;
+  gap: 0px 8%;
+  grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
+  color: ${FONT_COLOR};
+  font-family: 'Raleway', sans-serif;
+  transition; all 500ms ease;
+  @media ${device.laptopL} {
+    width: 90%;
+    padding: 0 5%;
+  }
+  @media ${device.tabletL} {
+    height: calc(100vh - 100px);
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90vw;
+    padding: 0 0vw;
+  }
+`;
+
+function mapStateToProps(state, props) {
 
   const { user } = state.modelData
-  return{
-    user:user
+  return {
+    user: user
   }
 
 }
 
-function mapDispatchToProps(dispatch){
-  return{
-    action: bindActionCreators(actions, dispatch)
-  }
-}
+export const ReferralComponentAsSkeleton = () => (<ReferralComponent setSkeleton={true} />)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReferralComponent)
+export default connect(mapStateToProps)(ReferralComponent)

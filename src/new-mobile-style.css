@@ -65,6 +65,12 @@
     /* min-height: 100%; */
 }
 
+@media screen and (max-width: 900px) {
+    .referral-layout {
+        padding: 0 !important;
+    }
+}
+
 
 @media screen and (min-width: 1366px) {
     .TicketDetail {
