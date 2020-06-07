@@ -22,7 +22,8 @@ const ReferralComponent = (props) => {
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
   const [haveReferraLink, setHaveReferralLink] = useState(true)
   const [referralLink, setReferralLink] = useState('')
-  const [loading, setLoading] = useState(props.setSkeleton ? true : false)
+  // const [loading, setLoading] = useState(props.setSkeleton ? true : false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -35,7 +36,7 @@ const ReferralComponent = (props) => {
     })
 
     // The code below is for test purpose on view skeleton UI
-    // setTimeout(() => setLoading(false), 3000)
+    setTimeout(() => setLoading(false), 3000)
   }, [])
 
   useEffect(() => {
@@ -71,9 +72,9 @@ const ReferralComponent = (props) => {
             <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
-          <ReferralCounter loading={loading.toString()} />
-          <BalanceSelect loading={loading.toString()} />
-          <WithdrawAd loading={loading.toString()} />
+          <ReferralCounter loading={loading ? loading.toString() : null} />
+          <BalanceSelect loading={loading ? loading.toString() : null} />
+          <WithdrawAd loading={loading ? loading.toString() : null} />
         </ReferralGrid>
       )}
     </DetailContainerLayout>
@@ -104,6 +105,7 @@ const FirstText = styled.div`
 `
 
 const ReferralGrid = styled.div`
+  transform: scale(.96);
   padding: 0 10%;
   padding-top: 100px;
   width: 80%;

@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components'
 import { Title, ReferralBox, Divider, MAIN_COLOR, skeletonStyle } from './shareStyles'
 import { device } from '../../const/const'
 import { copy } from '../../utils'
+import CopyContainer from '../widgets/copy/copyContainer'
 
 const SECTION_TITLE = "Link de referidos"
 const TWITTER_TEXT = "Amigos, este es mi link de referidos de Coinsenda:"
@@ -37,7 +38,11 @@ const ShareSection = ({ referralLink, loading }) => {
       <MidSection className={`${loading ? 'skeleton' : ''}`} loading={loading ? "true" : ""}>
         <LinkIcon><i className="fas fa-link" /></LinkIcon>
         <p>{referralLink}</p>
-        <LinkIcon button onClick={() => copy(referralLink)}><i className="far fa-clone tooltip" /></LinkIcon>
+        <CopyContainer
+          valueToCopy={referralLink}
+          color="#0e95f8"
+          onlyIcon
+        />
       </MidSection>
 
       {
@@ -132,9 +137,16 @@ const MidSection = styled(ReferralBox)`
   }
 
   &.skeleton{
-    p{
+    .nWaddress{
+      width: 25px;
+    }
+
+    .nWaddress i{
+      color: #c9c9c9 !important;
+    }
+
+    p, .nWaddress{
       ${skeletonStyle}
-      width: 300px;
       height: 18px;
     }
   }

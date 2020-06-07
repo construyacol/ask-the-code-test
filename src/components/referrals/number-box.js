@@ -10,7 +10,7 @@ const NumberBox = (props) => {
             <Icon><props.Icon color={MAIN_COLOR} /></Icon>
             <Divider height="55px" margin="15px" />
             <Counter loading={props.loading}>
-                <Number className="numberC">{props.quantitys || '-----------'}</Number>
+                <Number className="numberC">{props.quantity || '-----------'}</Number>
                 <p className="sub-text" dangerouslySetInnerHTML={{ __html: props.definition }} />
             </Counter>
 

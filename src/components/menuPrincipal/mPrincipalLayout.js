@@ -80,14 +80,14 @@ const MenuPrincipalLayout = (props) => {
 
           </div> */}
           <div className={`perfilPic ${verification_state}`}>
-            <p className="fuente">
+            <div className="fuente">
               {
                 !acronym  ?
                 <IconSwitch icon="coinsenda" size={40} color="white"/>
                 :
-                acronym
+                <p>{acronym}</p>
               }
-            </p>
+            </div>
             {/* <img src={userPic} alt="" className="userPic" width="100%" /> */}
           </div>
         </div>

@@ -141,7 +141,7 @@ function DashBoardContainer(props) {
             <Route path="/wallets" component={WalletContainer} />
             <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
             <Route path="/security" component={SecurityCenter} />
-            <Route path="/referral" component={ReferralComponentAsSkeleton} />
+            <Route path="/referral" component={ReferralComponent} />
           </Switch>
         </Suspense>
 
