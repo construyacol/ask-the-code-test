@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { formatToCurrency } from '../../utils/convert_currency'
-import { doLogout } from '../utils'
+// import { doLogout } from '../utils'
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
 import PropTypes from 'prop-types'
@@ -21,18 +21,7 @@ class MenuSuperiorContainer extends Component {
     headRoomClass: 'unpinned'
   }
 
-  logout = async () => {
-    this.props.action.confirmationModalToggle()
-    this.props.action.confirmationModalPayload({
-      title: "Estás a punto de cerrar sesión...",
-      description: "¿Estás seguro que deseas salir de Coinsenda?",
-      txtPrimary: "Salir de Coinsenda",
-      txtSecondary: "Quiero quedarme",
-      action: (doLogout),
-      svg: "logout",
-      type: "select_country"
-    })
-  }
+
 
 
   country_change = () => {
@@ -125,7 +114,6 @@ class MenuSuperiorContainer extends Component {
   render() {
     return (
       <MenuSuperiorLayout
-        logout={this.logout}
         toggle_menu={this.toggle_menu}
         mouseOver={this.mouseOver}
         openSelectCountry={this.openSelectCountry}
@@ -142,7 +130,7 @@ MenuSuperiorContainer.propTypes = {
   currentPair: PropTypes.object,
   item_quote: PropTypes.object,
   loader: PropTypes.bool,
-  logOut: PropTypes.func,
+  showPrices: PropTypes.func,
   loggedIn: PropTypes.bool,
   show_menu_principal: PropTypes.bool
 }

@@ -37,6 +37,7 @@ function ModalsSupervisor(props) {
                 <ModalLayout modalView={modalView} loader={loader} >
                     <Route exact strict path="/wallets" component={NewWallet} />
                     <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+                    <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
                     <Route strict path="/wallets/deposit/:account_id" component={DepositContainer} />
                     <Route strict path="/wallets/withdraw/:account_id" component={WithdrawFlow} />
                     <Route exact path="/withdraw_accounts" component={WithdrawAccountForm} />

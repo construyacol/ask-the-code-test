@@ -29,7 +29,7 @@ const FiatView = props => {
   }
 
   return(
-    <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''}`}>
+    <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
 
       <div className="contIcontSwitch">
         <IconSwitch {...atributos} />

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const OrderItem = props => {
 
   return(
-    <LoaderItem/>
+    <LoaderItem {...props} />
   )
 
 }
@@ -12,13 +12,13 @@ const OrderItem = props => {
 
 export default OrderItem
 
-const LoaderItem = () => {
+const LoaderItem = (props) => {
 
-  const loaderItems = new Array(3).fill({})
+  const loaderItems = new Array(props.arrayLength || 3).fill({})
 
   return(
     <ActivityLayout>
-      <p className="titleActivity"></p>
+      {!props.arrayLength && <p className="titleActivity"></p>}
       <LayoutList>
 
         {

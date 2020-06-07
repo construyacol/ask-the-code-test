@@ -116,7 +116,7 @@ class TicketContainer extends Component {
 
       switch (type_order) {
         case 'withdraws':
-            if(current_wallet.currency_type === 'fiat'){
+            if(!current_wallet || current_wallet.currency_type === 'fiat'){
                 let {
                   wallets,
                   withdraw_accounts,
@@ -525,7 +525,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { account_id, tx_path, order_id } = props.match.params
+  const { account_id, tx_path, order_id, primary_path } = props.match.params
 
   // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
 
@@ -541,8 +541,8 @@ function mapStateToProps(state, props){
 
 
   let currency_list
-
-  if(currencies && current_wallet.currency_type === 'crypto'){
+  
+  if(current_wallet && currencies && current_wallet.currency_type === 'crypto'){
     currencies.map(currency=>{
       return currency_list = {
         ...currency_list,
@@ -554,6 +554,8 @@ function mapStateToProps(state, props){
   }
 
   let ticket = state.modelData[tx_path][order_id]
+
+  const total_confirmations = current_wallet && (current_wallet.currency_type === 'crypto' && currency_list[ticket.currency.currency] && currency_list[ticket.currency.currency].confirmations)
 
   return{
     step:state.form.form_ticket.step,
@@ -567,7 +569,7 @@ function mapStateToProps(state, props){
     current_wallet,
     currencies:currency_list,
     confirmations:ticket.confirmations,
-    total_confirmations:current_wallet.currency_type === 'crypto' && currency_list[ticket.currency.currency] && currency_list[ticket.currency.currency].confirmations,
+    total_confirmations,
     current_ticket_state:ticket.state
   }
 }

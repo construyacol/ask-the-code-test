@@ -5,10 +5,10 @@ import './detailContainer.css'
 
 class detailContainerLayout extends Component {
   render() {
-    const { current_wallet, pathname, primary_path, style } = this.props
+    const { current_wallet, pathname, primary_path, style, customClass = '' } = this.props
 
     return (
-      <div style={style ? style : {}} className={`contenido ${(primary_path && current_wallet) ? 'DCcurrent_wallet' : ''} ${primary_path} ${pathname}`}>
+      <div style={style ? style : {}} className={`${customClass} contenido ${(primary_path && current_wallet) ? 'DCcurrent_wallet' : ''} ${primary_path} ${pathname}`}>
         {this.props.children}
       </div>
     )

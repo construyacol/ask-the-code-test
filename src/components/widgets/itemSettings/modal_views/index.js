@@ -225,7 +225,7 @@ console.log(' || |||| ModalSettingSwitch - -- - ', code)
                             !loader ?
                                 auth ?
                                 <AuthReq
-                                  label="Digita el codigo Authenticator aquí:"
+                                  label="Digita el código Authenticator aquí:"
                                   authenticated={this.authenticated}
                                   toggle_anim={this.toggle_anim}
                                   isTryToDisable2fa

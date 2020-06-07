@@ -105,7 +105,8 @@ margin: 0 !important;
 
 .itemSup:hover{
   /*color:#14B3F0 !important;*/
-  color:#fb6257 !important;
+  color:#14B3F0 !important;
+
 }
 
 .burgerMen:active i, .burgerMen:hover i{
@@ -119,7 +120,7 @@ margin: 0 !important;
 
 .itemSup i{
   /*transition: .2s;*/
-  font-size: 22px;
+  font-size: 15px;
   cursor: pointer;
 }
 

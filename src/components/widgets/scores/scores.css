@@ -8,7 +8,7 @@
 }
 
 .barra{
-  height: 7px;
+  height: 5px;
   background: white;
   border-radius:6px;
   width: 87%;
@@ -18,14 +18,15 @@
 
 .progresado{
   border-radius: 6px;
-  background: linear-gradient(to bottom right, #B3FFAB, #0191F4);
+  /* background: linear-gradient(to bottom right, #B3FFAB, #0191F4); */
+  background: #0198FF;
   height: 100%;
   transition: 3s;
 }
 
 .levelBar{
   position: absolute;
-  top: -35px;
+  top: -30px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -46,7 +47,7 @@
 }
 
 .score{
-  top: -25px;
+  top: -22px;
   position: initial !important;
   margin-left: 6px !important;
 }
@@ -58,7 +59,7 @@
 .level{
   width: 100%;
   bottom: -25px;
-  color: #14B3F0;
+  color: white;
 }
 
 .level span{

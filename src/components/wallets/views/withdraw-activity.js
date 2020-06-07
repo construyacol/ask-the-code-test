@@ -1,0 +1,102 @@
+import React, { useEffect, useState, useRef } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import actions from '../../../actions'
+import ActivityList from '../../widgets/activityList/activity'
+import ActivityFilters from '../../widgets/activityList/filters'
+import LoaderActivity from '../../widgets/activityList/order_item'
+
+import './wallet_views.css'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import useObserver from '../../../hooks/useObserver'
+
+const ActivityView = props => {
+  const { params } = props.match
+  const [loader, setLoader] = useState(true)
+  const [CoinsendaService] = useCoinsendaServices()
+
+  const [observer, setElements, entries] = useObserver({
+    root: null,
+    rootMargin: "0px",
+    threshold: 0
+  });
+
+  const items_ = useRef([])
+  const [showLoaderItems, setLoadingItems] = useState(true)
+  const [page, setPage] = useState(0)
+
+  const getItems = async () => {
+    const res = await CoinsendaService.fetchActivityByAccount(params.account_id, page)
+    items_.current = [...items_.current, ...res]
+    res && setPage(page + 1)
+    if (res.length < 10) {
+      setLoadingItems(false)
+    }
+    setLoader(false)
+  }
+
+  const init = async () => {
+    window.requestAnimationFrame(async () => {
+      setLoadingItems(true)
+      setPage(0)
+      const elements = document.querySelectorAll(".lazy");
+      setElements(elements)
+    })
+  }
+
+  useEffect(() => {
+    init()
+  }, [])
+
+  useEffect(() => {    
+    entries && entries.forEach(async entry => {
+      if (entry.isIntersecting) {
+        await getItems()
+      }
+      if (!showLoaderItems) observer.unobserve(entry.target)
+    })
+  }, [entries, observer])
+
+  return (
+    <div className="ActivityView">
+      <ActivityFilters view={params.primary_path} />
+      {
+        (loader) ?
+          <LoaderActivity />
+          :
+          <ActivityList
+            activity={items_.current}
+            {...props}
+          />
+      }
+      {showLoaderItems && (
+        <div
+          className="lazy"
+          style={{ paddingTop: 20 }}
+        >
+          <LoaderActivity arrayLength={3} />
+        </div>
+      )}
+    </div>
+  )
+
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
+  }
+}
+
+function mapStateToProps(state, props) {
+  const { loader } = state.isLoading
+  const { params } = props.match
+  const isWithdraws = params.primary_path === 'withdraw_accounts'
+
+  return {
+    loader,
+    isWithdraws
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ActivityView)

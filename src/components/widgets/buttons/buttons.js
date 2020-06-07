@@ -104,7 +104,7 @@ export class ButtonPrincipalMenu extends Component{
       <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.path === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
         <div className={`text ${this.props.path === this.props.clave ? 'activate' : ''}`}>
           <div className="iconButtCont">
-            <IconSwitch icon={this.props.icon} size={20} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
+            <IconSwitch icon={this.props.icon} size={18} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
             <PopNotification notifier={this.props.clave}/>
           </div>
           <p className="itemText fuente">{this.props.text}</p>

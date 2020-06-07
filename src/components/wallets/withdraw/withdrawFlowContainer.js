@@ -225,7 +225,7 @@ class WithdrawFlow extends Component {
 
       if(this.props.user.security_center.authenticator.withdraw && !this.state.twoFaToken){
         this.setState({state_data, limit, limit_supered})
-        return this.props.action.renderModal(() => <Withdraw2FaModal callback={this.setTowFaToken}/>)
+        return this.props.action.renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={this.setTowFaToken}/>)
       }
       this.props.action.isAppLoading(true)
 

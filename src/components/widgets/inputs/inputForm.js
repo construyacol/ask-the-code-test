@@ -97,7 +97,7 @@ const InputForm = (props) => {
         }
       </ContainerInputComponent>
       {customError && (
-        <ErrorText>{customError.text}</ErrorText>
+        <ErrorText className="fuente">{customError.text}</ErrorText>
       )}
     </InputLayout>
 
@@ -107,6 +107,8 @@ const InputForm = (props) => {
 const ErrorText = styled.div`
   opacity: 0.7;
   color: red;
+  font-size: 14px;
+  margin-top: 10px;
 `
 
 const InputLayout = styled(SkeletonAnimation)`

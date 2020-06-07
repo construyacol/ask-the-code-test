@@ -28,12 +28,18 @@ import { bindActionCreators } from 'redux';
 import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
 import localForage from 'localforage'
+import { ReferralComponentAsSkeleton } from '../referrals/referralsComponent';
 
 
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
 const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
+// const Test = React.lazy(() => {
+//   return new Promise(resolve => {
+//     setTimeout(() => resolve(import('../referrals/referralsComponent')), 3000);
+//   });
+// });
 
 let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
 
@@ -193,8 +199,12 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoardContainer)
 
 const LazyLoaderPage = ({ path }) => {
+
   const title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
-  const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader : path === 'security' ? SecurityCenterSkeletonLoader : SimpleLoader
+  const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader :
+                        path === 'referral' ? ReferralComponentAsSkeleton :
+                        path === 'security' ?  SecurityCenterSkeletonLoader :
+                        SimpleLoader
 
   return (
     <DetailContainerLayout title={title}>

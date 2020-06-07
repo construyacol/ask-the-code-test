@@ -18,13 +18,13 @@ class ItemSettingsInit extends Component{
 
 
     item_action = async(item) =>{
-
       const { user } = this.props
       const { authenticator } = user.security_center
       const { phone } = user.settings
       const { name, other_state } = item
 
-      // console.log('CODE SWITCH', name, item)
+      console.log('CODE SWITCH', name, item, this.props.action)
+      // debugger
 
       switch (name) {
         case 'kyc_basic':
@@ -87,7 +87,7 @@ class ItemSettingsInit extends Component{
 
         case 'transactional':
             await this.props.action.current_section_params({settings:{
-              title:"Agregando capa de seguridad",
+              title:`${other_state === 'to_disable' ? 'Deshabilitando 2FA' : "Agregando capa de seguridad"}`,
               description:`Activa el segundo factor para hacer operaciones de intercambio en coinsenda`,
               txtPrimary:"Agregar",
               txtSecondary:"Cancelar",
@@ -98,7 +98,7 @@ class ItemSettingsInit extends Component{
             return this.props.action.toggleOtherModal()
         case 'withdraw':
             await this.props.action.current_section_params({settings:{
-              title:"Agregando capa de seguridad",
+              title:`${other_state === 'to_disable' ? 'Deshabilitando 2FA' : "Agregando capa de seguridad"}`,
               description:`Activa el segundo factor para hacer operaciones de Retiro en coinsenda`,
               txtPrimary:"Agregar",
               txtSecondary:"Cancelar",

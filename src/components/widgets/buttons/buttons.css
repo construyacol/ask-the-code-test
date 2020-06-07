@@ -11,6 +11,7 @@
   cursor:pointer;
   transition: .3s;
   border-left: 2px solid transparent;
+  opacity: 1;
 }
 
 .iconButtCont{
@@ -59,17 +60,16 @@
 }
 
 .itemMenu:hover .indicatorSon{
-  transform: scale(1);
+  transform: scale(.5);
 }
 
 .itemMenu:hover .indicator{
-  transform: scale(1);
+  transform: scale(.5);
 }
 
 
 .itemMenu:hover{
-  color: #14B3F0;
-  border-left: 2px solid #14B3F0;
+  opacity: 1;
 }
 
 .text{
@@ -125,6 +125,9 @@ transform: scale(1.1);
 .itemMenu.activate {
     color: #14B3F0 !important;
     border-left: 2px solid #14B3F0 !important;
+}
+.itemMenu.activo {
+  opacity: 1;
 }
 
 

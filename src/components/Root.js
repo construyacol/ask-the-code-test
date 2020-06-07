@@ -21,6 +21,12 @@ import SessionRestore from './hooks/sessionRestore'
 
 let session = {}
 
+history.listen((location) => {
+  if(location && location.pathname !== '/') {
+    return localForage.setItem('previousRoute', location.pathname)
+  }
+})
+
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)

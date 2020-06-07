@@ -25,7 +25,7 @@ class CopyContainer extends Component {
 
   render(){
 
-    const { valueToCopy, color, max_width }= this.props
+    const { valueToCopy, color, max_width, onlyIcon } = this.props
 
     return(
       <CopyLayout
@@ -33,6 +33,7 @@ class CopyContainer extends Component {
         copy = {this.copy}
         color = {color}
         max_width= {max_width}
+        onlyIcon = {onlyIcon}
       />
     )
   }

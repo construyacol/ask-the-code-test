@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonPrincipalMenu } from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
 import userPic from '../../assets/picture.jpg'
@@ -6,8 +6,8 @@ import { menuPrincipal } from '../api/ui/api.json'
 import ScoresComponent from '../widgets/scores'
 import IconSwitch from '../widgets/icons/iconSwitch'
 import MovilMenuComponent from './movilMenu'
-// import store from '../../'
-
+import {useActions} from '../../hooks/useActions'
+import { doLogout } from '../utils'
 
 // TODO: remove all window ref from components, may be the cause of future issues
 const MenuPrincipalLayout = (props) => {
@@ -20,10 +20,32 @@ const MenuPrincipalLayout = (props) => {
     navigateTo
   } = props
 
-
+  const [ acronym, setAcronym ] = useState()
+  const actions = useActions()
   // const { user, user_id } = store.getState().modelData
   // const country = user.country
 
+  const logOut = () => {
+    actions.confirmationModalToggle()
+    actions.confirmationModalPayload({
+      title: "Estás a punto de cerrar sesión...",
+      description: "¿Estás seguro que deseas salir de Coinsenda?",
+      txtPrimary: "Salir de Coinsenda",
+      txtSecondary: "Quiero quedarme",
+      action: (doLogout),
+      svg: "logout",
+      type: "select_country"
+    })
+  }
+
+  useEffect(()=>{
+    if(props.user.name){
+      const { name } = props.user
+      let patt1 = /[A-Z]/g;
+      let result = name.match(patt1);
+      setAcronym(result.toString().replace(',', ' '))
+    }
+  }, [])
 
   return (
     <section className="menuPrincipal fuente" style={{ left: show_menu_principal ? '0' : '-110vw' }}>
@@ -40,7 +62,7 @@ const MenuPrincipalLayout = (props) => {
         </div>
 
         <div className="perfilPiCont">
-          <div className="contImgPicProfile">
+          {/* <div className="contImgPicProfile">
 
             {
               verification_state &&
@@ -56,9 +78,17 @@ const MenuPrincipalLayout = (props) => {
             }
 
 
-          </div>
+          </div> */}
           <div className={`perfilPic ${verification_state}`}>
-            <img src={userPic} alt="" className="userPic" width="100%" />
+            <div className="fuente">
+              {
+                !acronym  ?
+                <IconSwitch icon="coinsenda" size={40} color="white"/>
+                :
+                <p>{acronym}</p>
+              }
+            </div>
+            {/* <img src={userPic} alt="" className="userPic" width="100%" /> */}
           </div>
         </div>
 
@@ -71,10 +101,7 @@ const MenuPrincipalLayout = (props) => {
           }
         </p>
         {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span cl  assName="number">2.000</span> USD</p> */}
-        {
-          window.innerWidth < 768 &&
           <ScoresComponent />
-        }
       </div>
 
       <div className="menuItems">
@@ -95,7 +122,9 @@ const MenuPrincipalLayout = (props) => {
         }
 
 
-        <section className={`section2 ${window.innerWidth > 768 ? '' : 'movil'}`}>
+
+
+        <section className={`section2 movil`}>
           {/* <div>
               {
                 menuPrincipalInferior.map((item)=>{
@@ -104,14 +133,10 @@ const MenuPrincipalLayout = (props) => {
                 })
               }
             </div> */}
-          {
-            window.innerWidth > 768 ?
-              <ScoresComponent />
-              :
-              <div className="menuMovilItems close">
-                <p className="menuMovilItemTexts close fuente">Cerrar sesión</p>
+
+              <div className="menuMovilItems close" onClick={logOut}>
+                <p className="menuMovilItemTexts close fuente">Cerrar sesión <i className="fas fa-power-off"></i></p>
               </div>
-          }
         </section>
       </div>
     </section>

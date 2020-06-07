@@ -186,8 +186,21 @@ const CriptoView = () => {
 
 
 const DepositForm = styled(OperationForm)`
-    ${'' /* grid-template-rows: 50% 30% 1fr;
-    grid-template-columns: 1fr !important; */}
+
+.qrContainer{
+  transform: scale(.9);
+}
+
+    @media (max-width: 768px){
+        width: 100%;
+        height: calc(100% - 40px);
+
+        .qrContainer{
+          transform: scale(.8);
+        }
+      }
+
+
 
     &.skeleton .soloAd2,
     &.skeleton .soloAd,

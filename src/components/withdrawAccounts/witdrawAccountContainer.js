@@ -1,80 +1,67 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
-import { Router, Switch, Route } from 'react-router-dom'
+import { Router, Route } from 'react-router-dom'
 import AccountList from '../widgets/accountList/account-list'
-import ItemWallet from '../widgets/accountList/items'
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
+import { WalletDetail } from '../wallets/walletContainer'
+import ActivityView from '../wallets/views/activity'
+import withdrawActivity from '../wallets/views/withdraw-activity'
 
-class WitdrawAccountContainer extends Component {
+function WitdrawAccountContainer(props) {
 
   // userWallets, lo utilozamos para hacer validación de la respuesta del API
+  const title = "Mis Cuentas de retiro"
 
-  state = {
-    title: "Mis Cuentas de retiro",
-  }
+  useEffect(() => {
+    props.action.cleanCurrentSection()
+    props.action.CurrentForm('bank')
+  }, [])
 
-  componentDidMount() {
-    this.props.action.CurrentForm('bank')
-  }
+  const { items_menu } = navigation_components.wallets
+  const { withdraw_accounts, isAppLoaded, data, history } = props
 
-  componentWillUnmount() {
-    this.props.action.cleanCurrentSection()
-  }
+  // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
 
-  wallet_detail = props => {
+  return (
+    <Router
+      history={history}
+    >
 
-    return (
-      <>
-        {
-          this.props.current_wallet &&
-          <section className="WalletContainer">
-            <ItemWallet
-              wallet={this.props.current_wallet}
-              history={props.history}
-            />
-          </section>
-        }
-      </>
-    )
-  }
+      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+        <DetailContainerLayout
+          items_menu={items_menu}
+          title={title}
+          {...props}
+          {...routeProps}
+        >
+          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
+            <WalletDetail wallets={data} {...renderProps} />
+          )} />
+          <>
+            <Route exact path="/:primary_path" component={() => (
+              <>
+                {
+                  !withdraw_accounts ?
+                    <AccountListSkeletonLoader />
+                    :
+                    (isAppLoaded && withdraw_accounts) &&
+                    <AccountList isWithdrawView data={data} />
+                }
+              </>
+            )} />
+            <Route strict path={["/:primary_path/:path/:account_id", "/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
+          </>
+        </DetailContainerLayout>
+      )} />
 
-
-  render() {
-    const { items_menu } = navigation_components.wallet
-    const { title } = this.state
-    const { withdraw_accounts, isAppLoaded, data, history } = this.props
-
-    // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
-
-    return (
-      <Router
-        history={history}
-      >
-        <Switch>
-          <DetailContainerLayout
-            items_menu={items_menu}
-            title={title}
-            {...this.props}
-            {...this.state}
-          >
-            {
-              !withdraw_accounts ?
-                <AccountListSkeletonLoader />
-                :
-                (isAppLoaded && withdraw_accounts) &&
-                <AccountList isWithdrawView data={data} />
-            }
-          </DetailContainerLayout>
-        </Switch>
-      </Router>
-    )
-  }
+    </Router>
+  )
 }
 
 WitdrawAccountContainer.propTypes = {
@@ -85,7 +72,7 @@ WitdrawAccountContainer.propTypes = {
   withdraw_accounts: PropTypes.array
 }
 
-function mapStateToProps({ modelData, ui, isLoading}) {
+function mapStateToProps({ modelData, ui, isLoading }) {
   const {
     user
   } = modelData

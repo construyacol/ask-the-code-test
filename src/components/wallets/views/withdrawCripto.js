@@ -86,7 +86,7 @@ export const CriptoView = () => {
     const address = form.get('address')
 
     if(user.security_center.authenticator.withdraw && !twoFaToken){
-      return dispatch(renderModal(() => <Withdraw2FaModal callback={setTowFaTokenMethod}/>))
+      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod}/>))
     }
 
     dispatch(isAppLoading(true))
@@ -218,6 +218,11 @@ export const OperationForm = styled.form`
 
 export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 40% 1fr 1fr;
+  @media (max-width: 768px){
+      height: calc(100% - 40px);
+      width: 100%;
+      grid-template-rows: 1fr 1fr 1fr;
+    }
 `
 
 const BalanceContainer = styled.div`

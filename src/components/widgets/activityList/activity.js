@@ -138,7 +138,7 @@ class ActivityList extends Component {
   verTicket = async(ticket) =>{
 
     const { primary_path, account_id, path, tx_path } = this.props.match.params
-    this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
+    this.props.history.push(`/${primary_path}/${path}/${account_id}/${this.props.isWithdraws ? "withdraws" : tx_path}/${ticket.id}`)
     this.props.action.cleanNotificationItem('wallets', 'order_id')
 
     // const{
@@ -262,13 +262,16 @@ function mapStateToProps(state, props){
   let pending_index = `pending_${params.tx_path}`
   let current_wallet = wallets[params.account_id]
 
-
   let pending_activity = activity_for_account[params.account_id] && activity_for_account[params.account_id][pending_index]
+  
+  if(props.isWithdraws) {
+    pending_activity = {}
+  }
 
   // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', pending_activity)
   let currency_list
 
-    if(currencies && current_wallet.currency_type === 'crypto'){
+    if(!props.isWithdraws && currencies && current_wallet.currency_type === 'crypto'){
       currencies.map(currency=>{
         return currency_list = {
           ...currency_list,

@@ -62,7 +62,13 @@
 }
 
 .contenido.withdraw_accounts {
-    min-height: 100%;
+    /* min-height: 100%; */
+}
+
+@media screen and (max-width: 900px) {
+    .referral-layout {
+        padding: 0 !important;
+    }
 }
 
 
@@ -101,13 +107,22 @@
         padding: 0 !important;
         overflow: unset !important;
     }
-    
+
     .FlowCont {
         top: unset !important;
-    }    
+    }
 }
 
 @media screen and (max-height: 800px) and (min-width: 1366px) {
+
+  .contenido.withdraw_accounts.activity{
+    grid-row-gap: 16px;
+  }
+
+  .DepositView, #swapForm, .DCcurrent_wallet form, .contenido.withdraw_accounts.activity{
+    transform: scale(.9);
+  }
+
     .asaras .TicketDetail {
         grid-template-rows: 1fr !important;
         height: 100% !important;
@@ -156,10 +171,10 @@
     }
 
     .DCcurrent_wallet {
-        grid-template-rows: 200px 400px;
-        transform: scale(.9);
-        padding-top: 1vh;
-        grid-row-gap: 20px;
+      padding: 0 !important;
+      grid-template-rows: 30% 70%;
+      max-height: calc(100vh - 15vh);
+      transform: scale(.9) translateY(22px);
     }
 
     .asaras .TicketDetail {
@@ -454,6 +469,16 @@
         grid-template-rows: 190px 1fr;
         padding-top: 45px;
         min-height: calc(100vh - 145px);
+    }
+
+    .DCcurrent_wallet.wallets.deposit, .DCcurrent_wallet.wallets.withdraw, .DCcurrent_wallet.wallets.swap{
+      padding: 40px 30px 20px 30px !important;
+      height: calc(100vh - 160px) !important;
+    }
+
+    .withdrawView{
+      height: calc(100% - 40px) !important;
+      max-height: none !important;
     }
 }
 

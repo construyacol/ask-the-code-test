@@ -65,6 +65,10 @@ const DepositFiat = () => {
 
 
 const DepositForm = styled(OperationForm)`
+  @media (max-width: 768px){
+      height: calc(100% - 40px) !important;
+      max-height: none !important;
+    }
 `
 
 export default DepositFiat

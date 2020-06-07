@@ -7,13 +7,18 @@ import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
+import {useActions} from '../../hooks/useActions'
+
+
+
 
 const MenuSuperiorLayout = (props) => {
+
   let compra = "Te compramos a:"
   let venta = "Te vendemos a:"
+  const actions = useActions()
 
   const {
-    logout,
     headRoomClass,
     item_quote,
     movil,
@@ -28,6 +33,11 @@ const MenuSuperiorLayout = (props) => {
     match
   } = props
 
+  const showPrices = async() => {
+    const PricesModal = await import('../widgets/prices')
+    if(!PricesModal){return}
+    actions.renderModal(PricesModal.default)
+  }
 
 
   let view = 'detail'
@@ -62,9 +72,9 @@ const MenuSuperiorLayout = (props) => {
               <div className="capsuleMenu1">
                 {
                   window.innerWidth > 768 ?
-                    <div className="itemSup closeSesi" onClick={logout}>
-                      <p>Cerrar Sesión</p>
-                      <i className="far fa-times-circle"></i>
+                    <div className="itemSup closeSesi" onClick={showPrices}>
+                      <p>Ver precios</p>
+                      <i className="fas fa-tags"></i>
                     </div>
 
                     :
