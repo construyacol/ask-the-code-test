@@ -13,7 +13,7 @@ import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading from "../actions/loader";
 import sleep from "../utils/sleep";
-import { GET_URLS, GET_WITHDRAWS_BY_ACCOUNT_ID } from "../const/const";
+import { GET_URLS, GET_WITHDRAWS_BY_ACCOUNT_ID, GET_CHART_DATA_URL } from "../const/const";
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
@@ -204,6 +204,12 @@ export class MainService extends inheritances {
         }
 
         return finalResult
+    }
+
+    async fetchChartData(data) {
+        const response = await this.Post(GET_CHART_DATA_URL, data, false)
+        debugger
+        return response
     }
 }
 

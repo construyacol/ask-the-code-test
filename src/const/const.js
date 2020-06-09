@@ -8,7 +8,8 @@ const {
     WithdrawApiUrl,
     DepositApiUrl,
     SwapApiUrl,
-    IdentityApIUrl
+    IdentityApIUrl,
+    CountryUrl
 } = Enviroment
 
 export const loadLabels = {
@@ -61,6 +62,7 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
 
+export const GET_CHART_DATA_URL = `${CountryUrl}cryptoCompares/get-daily-historical-data`
 
 export const GET_URLS = {
     withdraws: GET_WITHDRAW_BY_USER_URL,
@@ -106,3 +108,10 @@ export const currencyFormatByCoin = {
     desktop: `(max-width: ${size.desktop})`,
     desktopL: `(max-width: ${size.desktop})`
   };
+
+  export const currencyLabels = {
+    usd: "USD",
+    bitcoin: "BTC",
+    cop: "COP",
+    bitcoin_testnet: "BTCT"
+}
