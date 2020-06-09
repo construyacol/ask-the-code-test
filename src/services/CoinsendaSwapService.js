@@ -164,17 +164,17 @@ export class SwapService extends WebService {
 
     async get_swaps(accountId) {
         const user = this.user
-        const { wallets } = this.modelData
+        const { wallets } = this.globalState.modelData
 
         let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
         const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`
 
-        // let filter = `{"where":{"accountId":"${accountId}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
 
         const swaps = await this.Get(finalUrl)
+
         if (!swaps || swaps === 465) { return false }
 
-        const result = swaps.map(async (swap) => {
+        const result = swaps.map((swap) => {
             return {
                 account_id: swap.account_from,
                 account_to: swap.account_to,

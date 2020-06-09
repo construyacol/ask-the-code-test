@@ -1459,7 +1459,7 @@ export const add_new_withdraw_order = (amount, account_from, withdraw_provider, 
         "country": user.country
       }
     }
-
+    // alert()
     if(twoFaToken){
       body.data.twofa_token = twoFaToken
     }

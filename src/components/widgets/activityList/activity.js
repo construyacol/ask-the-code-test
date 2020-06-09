@@ -1,5 +1,6 @@
 import React, {Fragment, Component} from 'react'
 import ItemList from './viewItem'
+import OrderItem from './order_item'
 // import { serve_orders, ticketModalView } from '../../../services'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -130,7 +131,6 @@ class ActivityList extends Component {
 
     this.props.history.push('?form=upload_deposit_payment_proof')
 
-
   }
 
 
@@ -183,7 +183,9 @@ class ActivityList extends Component {
       deleted
     } = this.state
 
-    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', activity)
+    console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
+    // let OrderRender
+    // OrderItem
 
     return(
         <Fragment>
@@ -196,21 +198,31 @@ class ActivityList extends Component {
                             activity.map((item, indx)=>{
                               if((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected' ) || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')){return null}
                               if(item.state === 'pending' && item.currency_type === 'crypto'){return null}
+
+                              if(this.props.tx_path === 'deposits'){
+                                return <OrderItem
+                                        order={item}
+                                        key={indx}
+                                      />
+                              }else{
+                                return <ItemList key={item.id}
+                                        confirmPayment={this.confirmPayment}
+                                        lastPendingId={lastPending}
+                                        newDepositStyle={newDepositStyle}
+                                        verTicket={this.verTicket}
+                                        delete_order={this.delete_order_confirmation}
+                                        ticket={item}
+                                        loader={loader}
+                                        current_order_loader={current_order_loader}
+                                        deleting={deleting}
+                                        deleted={deleted}
+                                        currencies={currencies}
+                                        {...this.props}
+                                         />
+                              }
+
                               // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
-                              return <ItemList key={item.id}
-                                      confirmPayment={this.confirmPayment}
-                                      lastPendingId={lastPending}
-                                      newDepositStyle={newDepositStyle}
-                                      verTicket={this.verTicket}
-                                      delete_order={this.delete_order_confirmation}
-                                      ticket={item}
-                                      loader={loader}
-                                      current_order_loader={current_order_loader}
-                                      deleting={deleting}
-                                      deleted={deleted}
-                                      currencies={currencies}
-                                      {...this.props}
-                                       />
+
                             })
                       }
                     </div>
@@ -230,18 +242,25 @@ class ActivityList extends Component {
                 <p className="ALtext" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
                 <div className="ALlistAll">
                   {
-                    activity.map(item=>{
+                    activity.map((item, index) => {
                       if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
-                      return (<ItemList
-                              key={item.id}
-                              confirmPayment={this.confirmPayment}
-                              verTicket={this.verTicket}
-                              delete_order={this.delete_order_confirmation}
-                              ticket={item}
-                              short_name={short_name}
-                              notifier_type="wallets"
-                              {...this.props}
-                               />)
+                        if(this.props.tx_path === 'deposits'){
+                          return <OrderItem
+                                  order={item}
+                                  key={index}
+                                />
+                        }else{
+                          return (<ItemList
+                            key={item.id}
+                            confirmPayment={this.confirmPayment}
+                            verTicket={this.verTicket}
+                            delete_order={this.delete_order_confirmation}
+                            ticket={item}
+                            short_name={short_name}
+                            notifier_type="wallets"
+                            {...this.props}
+                          />)
+                        }
                       })
                   }
                 </div>
@@ -263,7 +282,7 @@ function mapStateToProps(state, props){
   let current_wallet = wallets[params.account_id]
 
   let pending_activity = activity_for_account[params.account_id] && activity_for_account[params.account_id][pending_index]
-  
+
   if(props.isWithdraws) {
     pending_activity = {}
   }
