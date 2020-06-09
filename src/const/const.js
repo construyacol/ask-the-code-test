@@ -62,7 +62,7 @@ export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-pr
 
 export const REFERRALS_URL = `${ApiUrl}referrals`
 
-export const GET_CHART_DATA_URL = `${CountryUrl}cryptoCompares/get-daily-historical-data`
+export const GET_CHART_DATA_URL = `${CountryUrl}api/cryptoCompares/get-daily-historical-data`
 
 export const GET_URLS = {
     withdraws: GET_WITHDRAW_BY_USER_URL,

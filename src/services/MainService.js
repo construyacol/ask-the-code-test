@@ -207,8 +207,7 @@ export class MainService extends inheritances {
     }
 
     async fetchChartData(data) {
-        const response = await this.Post(GET_CHART_DATA_URL, data, false)
-        debugger
+        const response = await this.Post(GET_CHART_DATA_URL, data)
         return response
     }
 }

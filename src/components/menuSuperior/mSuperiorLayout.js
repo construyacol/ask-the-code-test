@@ -78,9 +78,15 @@ const MenuSuperiorLayout = (props) => {
                     </div>
 
                     :
-                    <div className="itemSup closeSesi burgerMen" onClick={toggle_menu}>
-                      <i className="fas fa-bars"></i>
-                    </div>
+                    <>
+                      <div className="itemSup closeSesi burgerMen" onClick={toggle_menu}>
+                        <i className="fas fa-bars"></i>
+                      </div>
+                      <div className="itemSup closeSesi" onClick={showPrices}>
+                        <p>Ver precios</p>
+                        <i className="fas fa-tags"></i>
+                      </div>                      
+                    </>
                 }
 
                 {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>

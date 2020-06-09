@@ -1,18 +1,21 @@
 .base-container {
   display: grid;
-  height: calc(100vh - (65px + 8em));
-  position: relative;
-  top: 65px;
+  height: calc(100% - (10em));
   grid-template-columns: 65% 1fr;
   grid-template-rows: 1fr;
-  padding: 4em 60px;
-  width: calc(100vw - 120px);
+  padding: 4em 0;
+  width: 90%;
+  margin: auto;
   grid-column-gap: 45px;
+}
+
+#chart .highcharts-root {
+  margin-top: 25px;
 }
 
 .cta-pair {
   display: grid;
-  grid-template-columns: 1fr 150px;
+  grid-template-columns: 1fr 0.5fr;
   align-items: center;
 }
 
@@ -32,6 +35,7 @@
 
 .chart-container {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
 }
@@ -47,41 +51,50 @@
 .pair-prices {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 12%;
+  grid-column-gap: 0;
 }
 
 .pair-prices p {
-  margin: 0;
+  margin: 0 !important;
 }
 
 .pair-prices .price {
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .amount_price {
-  font-size: 35px;
+  margin: 0 !important;
+  font-size: 28px !important;
+  font-family: Tomorrow,sans-serif;
 }
 
 
 .price-container {
-  max-width: 250px;
   text-align: center;
   display: grid;
   row-gap: 10px;
 }
 
 .price-container.buy {
-  justify-self: end;
+  /* justify-self: end; */
 }
 
 .price-container.sell {
-  justify-self: flex-start;
+  /* justify-self: flex-start; */
 }
 
 .base-item-text-cont p,
 .base-item-text-cont h2 {
-  margin: 0;
+  font-size: 17px !important;
+  display: block !important;
+  margin: 0 !important;
   text-transform: capitalize;
+}
+
+.base-item-text-cont p {
+  padding: 0 !important;
+  font-size: 14px !important;
+  text-align: left !important;
 }
 
 .base-item-text-cont {
@@ -92,26 +105,26 @@
 
 .pair-list {
   display: grid;
-  grid-template-rows: repeat(auto-fill, 135px);
-  row-gap: 15px;
+  grid-template-rows: 100px repeat(auto-fill, 70px);
+  row-gap: 10px;
 }
 
 .pair-list>div>img:first-child {
-  height: 44px;
+  height: 38px;
 }
 
 
 .base-item-content {
   width: 100%;
-  height: 125px;
-  max-width: 400px;
+  height: 70px;
+  max-width: 300px;
   border-radius: 6px;
   cursor: pointer;
   margin: auto;
   display: grid;
   align-items: center;
   justify-items: center;
-  padding: 10px 2.5em;
+  padding: 5px 2em;
   box-sizing: border-box;
   border-top: 7px solid transparent;
   border-left: 1px solid transparent;
@@ -120,10 +133,11 @@
   box-shadow: rgba(0, 0, 0, 0) 2px 17px 34px;
   transition: .3s;
   grid-template-columns: auto 1fr auto;
-  column-gap: 25px;
+  column-gap: 18px;
 }
 
 .item-content-active {
+  height: 100px;
   border-top: 7px solid #04D499;
   box-shadow: rgba(0, 0, 0, 0.09) 2px 17px 34px;
   border-left: 1px solid #EBEBEB;
@@ -155,7 +169,7 @@ g.highcharts-scrollbar {
 }
 
 .item-content-calc-number {
-  height: 2em;
+  height: 1.5em;
   width: 42%;
   padding: 0.5em;
   display: flex;
@@ -168,8 +182,8 @@ g.highcharts-scrollbar {
 }
 
 .item-content-calc-number img {
-  height: 22px;
-  width: 22px;
+  height: 18px;
+  width: 18px;
   margin-right: 8px;
 }
 
@@ -211,8 +225,9 @@ g.highcharts-scrollbar {
 .exchange-label {
   color: #181D2B;
   margin-left: 10px;
-  font-family: 'raleway-bold';
-  font-size: 44px
+  font-family: 'Raleway';
+  font-weight: bold;
+  font-size: 34px
 }
 
 #overlay {
@@ -244,7 +259,7 @@ g.highcharts-scrollbar {
 }
 
 .cta-pair img {
-  height: 36px;
+  height: 30px;
 }
 
 @media (max-width: 900px) {
@@ -390,13 +405,6 @@ g.highcharts-scrollbar {
   }
 }
 
-
-@media (max-height: 812px) {
-  .pair-list {
-    height: 70vh;
-  }
-}
-
 @media (max-height: 736px) {
   .root-content-items-calc {
     margin: 6% 0;
@@ -427,6 +435,8 @@ g.highcharts-scrollbar {
 
   .base-container {
     overflow: auto;
+    height: calc(100% - (8em));
+    grid-template-columns: 61% 1fr;
   }
 
   .base-item-text-cont h2 {
@@ -435,8 +445,11 @@ g.highcharts-scrollbar {
   }
 
   .base-item-content {
-    height: 110px;
-    padding: 10px 2em;
+    height: 65px;
+    width: 85%;
+  }
+  .item-content-active {
+    height: 90px;
   }
 
   .root-content-items-calc {

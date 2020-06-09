@@ -11,15 +11,14 @@ function ChartComponent(props) {
 		currency_from: currencyLabels.bitcoin,
 		currency_to: currencyLabels.cop,
 		amount_days: 60
-    })
-    const [coinsendaServices] = useCoinsendaServices()
+	})
+	const [coinsendaServices] = useCoinsendaServices()
 
 	const getChartData = async () => {
-		return;
 		const response = await coinsendaServices.fetchChartData({ data: requestBody })
-		if (!response.data.data.historical_data) return;
+		if (!response) return;
 		const data = []
-		response.data.data.historical_data.forEach(e => {
+		response.data.historical_data.forEach(e => {
 			const date = new Date(e['date']).getTime();
 			if (!Number.isNaN(date))
 				data.push([date, e['close_price']])
@@ -28,11 +27,18 @@ function ChartComponent(props) {
 	}
 
 	const createChart = () => {
-		const moreConfigs = props.width < 900 || props.height < 1366 ? {
+		let moreConfigs = props.height < 1366 ? {
 			chart: {
-				height: props.height / 2
+				height: props.height / 2.4
 			},
 		} : {};
+
+		moreConfigs = props.width < 900 ?
+			{
+				chart: {
+					height: props.height / 1.7
+				},
+			} : {};
 
 		Highcharts.stockChart('chart', {
 			rangeSelector: {
@@ -58,12 +64,12 @@ function ChartComponent(props) {
 
 	useEffect(() => {
 		getChartData()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [requestBody])
 
 	useEffect(() => {
 		createChart()
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chartData])
 
 	useEffect(() => {

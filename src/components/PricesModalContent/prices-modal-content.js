@@ -4,13 +4,11 @@ import './style.css'
 import ChartComponent from './chart';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
 import useCurrencyPrices from '../../hooks/useCurrencyPrices';
-import PricesComponent from '../Prices/PricesComponent';
-// import convertCurrencies from '../utils/convert_currency'
 
 const FIRST_CRITERIA = ['BTC/COP', 'BTC/USD', 'BTC/']
 
 export default function PricesModalContent(props) {
-  const [isDesktop, width , height] = useWindowDimensions()
+  const [isDesktop, width, height] = useWindowDimensions()
   const [showSelect, setShowSelect] = useState(false)
   const overlayRef = useRef();
   const selectRef = useRef();
@@ -28,7 +26,7 @@ export default function PricesModalContent(props) {
 
   useEffect(() => {
     setSelectStyles()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSelect])
 
   if (!pairs || !currentPair) {
@@ -36,39 +34,28 @@ export default function PricesModalContent(props) {
   }
 
   return (
-    <div style={{ overflow: "hidden", height: ''}}>
+    <div style={{ overflow: "hidden", height: '100%' }}>
       <div ref={overlayRef} onClick={() => setShowSelect(false)} id="overlay"></div>
-      <div className="prices-main-container">
+      <div className="prices-main-container" style={{ height: '100%' }}>
         <div className="base-container">
 
           <div className="chart-container">
-
             <div className="cta-pair">
               <div className="" onClick={isDesktop ? () => null : () => setShowSelect(true)}>
-                <img 
+                <img
                   src={require(`../../assets/prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`)}
                   alt="" />
                 <label className="exchange-label">{currentPair.buy_pair}</label>
                 {!isDesktop && <img
-                  style={{ transform: `rotate(${showSelect ? -90 : 90}deg)`}}
+                  style={{ transform: `rotate(${showSelect ? -90 : 90}deg)` }}
                   className="arrow-down"
                   src={require(`../../assets/prices-modal/ic_arrow_right_desabled.svg`)}
                   alt="" />}
               </div>
-              {
-                isDesktop &&
-                (<button className="general-buttom" onClick={()=>{window.location.href = props.signinUrl}}>
-                  OPERAR AHORA
-              </button>)
-              }
+              <PairPrices currentPair={currentPair} />
             </div>
 
-            {
-              isDesktop ?
-                <PairPrices currentPair={currentPair} /> :
-                <PricesComponent className="prices-exchange-pair" currentPair={currentPair} change={true} />
-            }
-
+            <div className="fill" />
             <ChartComponent currentPair={currentPair} height={height} width={width} />
 
           </div>
@@ -76,16 +63,12 @@ export default function PricesModalContent(props) {
           <div className="pair-list-container">
             {isDesktop && <PairsSelect {...props} />}
             <CalculatorComponent currentPair={currentPair} />
-            {!isDesktop && <button className="general-buttom max-width">
-              OPERAR AHORA
-          </button>}
           </div>
         </div>
       </div>
       {!isDesktop && <PairsSelect setShowSelect={setShowSelect} selectRef={selectRef} {...props} />}
     </div>
   )
-
 }
 
 const PairPrices = ({ currentPair }) => {
