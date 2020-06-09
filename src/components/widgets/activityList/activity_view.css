@@ -134,7 +134,7 @@
 }
 
 .canceled:hover{
-  opacity: 0.8;
+  /* opacity: 0.8; */
 }
 
 
@@ -192,13 +192,13 @@
 
 
 .canceled{
-  border: 1px solid #f44336 !important;
-  opacity: 0.3;
+  /* border: 1px solid #f44336 !important; */
+  /* opacity: 0.3; */
   transition: .3s;
 }
 
 .rejected p, .rejected i, .canceled p, .canceled i{
-  color: #f44336 !important;
+  /* color: #f44336 !important; */
   /*opacity: .7;*/
 }
 
@@ -326,11 +326,11 @@
 
 
 .pending, .confirmed{
-  border: 1px solid #ff8660 !important;
+  /* border: 1px solid #ff8660 !important; */
 }
 
 .pending p, .pending i, .confirmed p, .confirmed i{
-    color: #ff8660;
+    /* color: #ff8660; */
 }
 
 #doneState{
@@ -511,8 +511,6 @@ font-size: 30px;
   perspective: 1000px;
   perspective-origin: center top;
   transition: .3s;
-
-
 }
 
 
@@ -598,18 +596,15 @@ font-size: 30px;
 }
 
 
-.newDepositStyle{
-  /*border: 2px solid #ff8660 !important;*/
+/* .newDepositStyle{
   animation-name: activeItem;
   animation-duration: .7s;
-  /*animation-iteration-count: infinite;*/
   animation-timing-function: cubic-bezier(1,1,1,1);
   animation-fill-mode: forwards;
 }
 
 @keyframes activeItem{
   0%{
-    /*transform: scale(0)*/
     opacity: 0;
     transform: rotateX(-90deg);
   }
@@ -625,7 +620,7 @@ font-size: 30px;
   100%{
     transform: rotateX(0deg);
   }
-}
+} */
 
 @keyframes deletedItem{
   0%{
@@ -681,7 +676,7 @@ font-size: 30px;
 
 }
 
-.newDepositContainer{
+/* .newDepositContainer{
   animation-name: containerDeposit;
   perspective: 1000px;
   perspective-origin: center top;
@@ -693,15 +688,13 @@ font-size: 30px;
 
 @keyframes containerDeposit{
   0%{
-    /*transform: scale(0)*/
     transform: scale(0.9) ;
   }
 
   100%{
     transform: scale(1) ;
-    /*transform: scale(1)*/
   }
-}
+} */
 
 /*.newDepositContainerNone{
   display: none;

@@ -239,11 +239,10 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async deposit => {
 
-    // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
+    console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
     // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
-
       await this.props.action.add_item_state('deposits', { ...deposit, type_order: 'deposit' })
       await this.props.action.update_activity_state(deposit.account_id, 'deposits')
     }
@@ -317,8 +316,12 @@ class SocketsComponent extends Component {
       if (this.props.deposits[deposit.id].state === 'canceled') { return false }
       // setTimeout(async()=>{
       // Tiempo para que transcurra la animación del item
-      await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
-      await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
+
+      setTimeout(async()=>{
+        await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
+        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
+        // await this.props.action.update_pending_activity(this.props.deposits[deposit.id].account_id, 'deposits')
+      }, 500)
       this.props.action.exit_sound()
       let state = deposit.state === 'canceled' ? 'cancelado' : 'rechazado'
       this.props.action.mensaje(`Deposito ${state}`, 'error')

@@ -1,23 +1,38 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import UseTxState from '../../hooks/useTxState'
+import { PaymentConfirButton } from '../buttons/buttons'
+import { useFormatCurrency } from '../../hooks/useFormatCurrency'
+import IconSwitch from '../icons/iconSwitch'
+import { ObserverHook } from '../../hooks/observerCustomHook'
+
+import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
 import 'moment/locale/es'
 moment.locale('es')
 
 
+const OrderItem = ({ order }) => {
 
-const OrderItem = props => {
+  const { tx_path, new_order_style } = UseTxState(order.id)
+  const [ show,  element ] = ObserverHook()
+  const [ orderState, setOrderState ] = useState()
 
-  const { tx_path } = UseTxState()
+
+  // useEffect(()=>{
+  //   if(orderState){
+  //     alert(orderState)
+  //   }
+  // }, [orderState])
 
   return(
-    <>
-      {
-        tx_path === 'deposits' &&
-        <DepositOrder order={props.order} />
-      }
-    </>
+        <OrderContainer ref={element} className={`${show && 'shower'} ${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}>
+          {
+            show &&
+            tx_path === 'deposits' &&
+            <DepositOrder order={{...order, orderState, setOrderState}} />
+          }
+        </OrderContainer>
   )
 
 }
@@ -47,18 +62,24 @@ const getState = state => {
 
 const DepositOrder = ({ order }) => {
 
-  console.log('|||||||||||||||||||||||||| DEPOSIT ORDER ::', order)
+  const { new_order_style } = UseTxState(order.id)
 
   const {
     state,
-    created_at
+    created_at,
+    currency,
+    id,
+    setOrderState,
+    orderState
   } = order
 
-  return (
-    <OrderContainer>
-      <Order className={`${state}`}>
+  const [ amount ] = useFormatCurrency(order.amount, currency)
 
-        <DataContainer className="align_first">
+  return (
+      <Order className={`${state} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
+
+        <DataContainer className={`align_first ${state}`}>
+          <DeleteButton {...order} setOrderState={setOrderState}/>
           <DateCont>
             <Day className="fuente2">{moment(created_at).format("DD")}</Day>
             <Month className="fuente">{moment(created_at).format("MMM").toUpperCase()}</Month>
@@ -76,20 +97,99 @@ const DepositOrder = ({ order }) => {
           </OrderStatusCont>
         </DataContainer>
 
+        <DataContainer className="align_last">
+          <DepositPanelRight {...order}/>
+        </DataContainer>
+
       </Order>
-     </OrderContainer>
   )
 
 }
 
 
+const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
 
+  const { lastPendingOrderId } = UseTxState(id)
+
+  return(
+    <>
+    {
+      state === 'pending' ?
+      <PaymentConfirButton
+        id="ALconfirmButton"
+        clases={` ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton' }`}
+        active={true}
+        type="primary"
+        // siguiente={detail_payment}
+        label="Confirmar"
+      />
+      :
+      state === 'confirmed' ?
+      <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
+      :
+      <>
+      <AmountText className="fuente2">+ {currency_type === 'fiat' && '$'} {amount}</AmountText>
+      <IconSwitch icon={currency.currency} size={16} />
+      <AmountIcon className="fas fa-angle-right" />
+      </>
+    }
+    </>
+  )
+}
+
+const DeleteButton = ({ state, id, setOrderState }) => {
+
+  const { actions, coinsendaServices } = UseTxState(id)
+
+
+  const deleteDeposit = () => {
+    actions.confirmationModalToggle()
+    actions.confirmationModalPayload({
+      title:"Esto es importante, estas a punto de...",
+      description:"Cancelar esta orden, ¿Estas seguro de hacer esto?",
+      txtPrimary:"Continuar",
+      txtSecondary:"Cancelar",
+      payload:id,
+      action:delete_order,
+      img:"deleteticket"
+    })
+    // setTimeout(()=>{setOrderState('deleted')}, 1000)
+  }
+
+  const delete_order = async(id) =>{
+    setOrderState('deleting')
+
+    let deleted = await coinsendaServices.deleteDeposit(id)
+    // let deleted = await actions.delete_deposit_order(id)
+    if(!deleted){
+      return false
+    }
+    setOrderState('deleted')
+  }
+
+  return(
+    <>
+      {
+        state === 'pending' &&
+        <div className="tooltip" onClick={deleteDeposit}>
+          <div id="Aldelete">
+            <i className="far fa-times-circle "></i>
+          </div>
+          <span className="tooltipDelete fuente">Cancelar</span>
+        </div>
+      }
+    </>
+  )
+}
 
 const Icon = styled.i`
   margin-right: 10px;
 `
 const StatusIcon = styled(Icon)`
   margin-right: 5px;
+`
+const AmountIcon = styled(Icon)`
+  margin-left: 10px;
 `
 
 const OrderIcon = styled(Icon)`
@@ -99,7 +199,7 @@ const OrderIcon = styled(Icon)`
 const OrderStatus = styled.p`
   margin:0;
   display: flex;
-  font-size: 13px;
+  font-size: 12px;
   align-items: center;
 `
 
@@ -115,11 +215,18 @@ const OrderStatusCont = styled.div`
   padding: 2px 10px;
 `
 
-const TypeOrderText = styled.p`
 
+
+const Text = styled.p`
 `
 
+const TypeOrderText = styled(Text)`
+`
 
+const AmountText = styled(Text)`
+  font-size: 16px !important;
+  margin-right: 7px;
+`
 
 const DateCont = styled.div`
   margin-right: 20px;
@@ -147,40 +254,92 @@ export const Order = styled.div`
   align-items: center;
   padding: 0 25px;
   position: relative;
-  overflow: hidden;
   transition: .3s;
   transform-origin: top;
+  box-shadow: 0px 5px 14px 3px rgba(0,0,0,0);
+
+  :hover #ALconfirmButton>div{
+    border: 2px solid #1cb179 !important;
+    .ALbuttonTextSpan{
+      color: #1cb179 !important;
+    }
+  }
+
+  &.newOrderStyle{
+    animation-name: ${newOrderStyleAnim};
+    animation-duration: .7s;
+    animation-timing-function: cubic-bezier(1,1,1,1);
+    animation-fill-mode: forwards;
+  }
+
+  &.deleted{
+    animation-name: ${deletedOrderAnim};
+    animation-duration: .3s;
+    animation-timing-function: cubic-bezier(1,1,1,1);
+    animation-fill-mode: forwards;
+    ${'' /* animation-direction: reverse; */}
+  }
+
+  :hover{
+    box-shadow: 0px 1px 14px 3px rgba(0,0,0,0.07);
+    #Aldelete{
+      width: 40px !important;
+    }
+    ${AmountIcon}{
+      animation-name:${gotoTx};
+      animation-duration: .5s;
+      animation-iteration-count: infinite;
+      transform: scale(.5);
+    }
+
+
+  }
+
+  &.pending{
+    ${OrderStatusCont}{
+      background: #ff8660;
+    }
+  }
+
+  &.confirmed{
+    ${OrderStatusCont}{
+      background: rgb(28,177,121);
+    }
+  }
 
   &.pending, &.confirmed {
     border: 1px solid #ff8660 !important;
-    ${Day}, ${Month}, ${OrderIcon}, ${TypeOrderText}{
-      color: #ff8660;
+    ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon}{
+      color: #ff8660 ;
     }
     ${StatusIcon}{
       color: white !important;
-    }
-    ${OrderStatusCont}{
-      background: #ff8660;
     }
     ${OrderStatus}{
       color: white !important;
     }
   }
 
-  &.canceled{
+  &.canceled, &.rejected{
       border: 1px solid #f44336 !important;
       opacity: 0.3;
       transition: .3s;
       :hover{
         opacity: 0.8;
       }
-      ${Day}, ${Month}, ${OrderIcon}, ${TypeOrderText}{
+      :hover .canceled{
+        opacity: 0.8 !important;
+      }
+      ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon}{
         color: #f44336;
+      }
+      ${OrderStatus}{
+        color: red !important;
       }
   }
 
   &.accepted{
-    ${Day}, ${Month}, ${OrderIcon}, ${TypeOrderText}{
+    ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon}{
       color: rgb(28, 177, 121);
     }
     ${OrderStatusCont}{
@@ -202,7 +361,7 @@ export const LoaderItem = (props) => {
         {
           loaderItems.map((e, key) =>{
             return(
-              <OrderContainer key={key}>
+              <OrderContainer key={key} className="shower">
                 <Order>
                   <DataContainer className="align_first loader">
                     <div className="loaderImg"></div>
@@ -237,6 +396,19 @@ export const DataContainer = styled.div`
   display: flex;
   align-items: center;
 
+
+
+  #Aldelete i{
+    color: #ff8660 ;
+  }
+
+  #ALrevised i {
+    margin-left: 8px;
+  }
+
+  &.pending{
+    ${'' /* overflow: hidden; */}
+  }
 
   &.align_first{
     justify-self: start;
@@ -294,9 +466,33 @@ export const DataContainer = styled.div`
 `
 
 export const OrderContainer = styled.div`
-  transition: .3s;
+  transition: .1s;
   perspective: 2000px;
   transform: scale(.98);
+  transform: scale(1) translateY(-3px);
+  opacity: 0;
+
+  &.shower{
+    transform: scale(1) translateY(0px);
+    opacity: 1 !important;
+  }
+
+  &.newOrderContainer{
+    animation-name: ${containerDepositAnim};
+    perspective: 1000px;
+    perspective-origin: center top;
+    position: relative;
+    animation-duration: .4s;
+    animation-timing-function: cubic-bezier(1,1,1,1);
+    animation-fill-mode: forwards;
+  }
+
+  &.deleting{
+    transition: .3s;
+    transform: scale(0.96);
+    opacity: 0.5 !important;
+  }
+
 `
 
 

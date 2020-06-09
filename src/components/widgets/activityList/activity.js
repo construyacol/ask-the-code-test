@@ -183,14 +183,14 @@ class ActivityList extends Component {
       deleted
     } = this.state
 
-    console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
+    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
     // let OrderRender
     // OrderItem
 
     return(
         <Fragment>
               <section className="ALpendingMom" style={{display:pending ? 'block' : 'none' }}>
-                <p className="ALtext" style={{display:(pending) ? 'block' : 'none' }}>Pendiente </p>
+                <p className="ALtext fuente" style={{display:(pending) ? 'block' : 'none' }}>Pendiente </p>
                   <div className="ALpendingCont" style={{height:`${expandible}px`}}>
                     <div className="ALlist" style={{height:`${expandidoMax}px`}}>
                       {
@@ -201,7 +201,7 @@ class ActivityList extends Component {
 
                               if(this.props.tx_path === 'deposits'){
                                 return <OrderItem
-                                        order={item}
+                                        order={{...item}}
                                         key={indx}
                                       />
                               }else{
@@ -239,13 +239,14 @@ class ActivityList extends Component {
               </section>
 
               <section className={`ALactivity ${pending ? 'ALactivityPending' : ''}`}>
-                <p className="ALtext" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
+                <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
                 <div className="ALlistAll">
                   {
                     activity.map((item, index) => {
                       if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
                         if(this.props.tx_path === 'deposits'){
                           return <OrderItem
+                                  index={index}
                                   order={item}
                                   key={index}
                                 />
@@ -302,7 +303,7 @@ function mapStateToProps(state, props){
     }
 
   return{
-    newDepositStyle:state.ui.current_section.params.new_deposit_style,
+    newDepositStyle:state.ui.current_section.params.new_order_style,
     currentFilter:currentFilter,
     tx_path:params.tx_path,
     loader:state.isLoading.loader,

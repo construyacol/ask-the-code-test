@@ -20,6 +20,61 @@ export const swing_in_bottom_bck = keyframes`
   }
 `;
 
+export const gotoTx = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px) scale(1.2);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
+export const deletedOrderAnim = keyframes`
+  0%{
+    transform: rotateX(20deg) scale(.95);
+  }
+  10%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+    transform: rotateX(90deg) scale(0.7);
+  }
+`;
+
+
+export const newOrderStyleAnim = keyframes`
+  0%{
+    opacity: 0;
+    transform: rotateX(-90deg);
+  }
+  40%{
+    opacity: 1;
+  }
+  60%{
+    transform: rotateX(30deg);
+  }
+  80%{
+    transform: rotateX(-30deg);
+  }
+  100%{
+    transform: rotateX(0deg);
+  }
+`;
+
+export const containerDepositAnim = keyframes`
+  0% {
+    transform: scale(0.9) ;
+  }
+  100% {
+    transform: scale(1) ;
+  }
+`;
+
+
 
 
 export const socketIconContainerIntro = keyframes`

@@ -837,6 +837,8 @@ export const delete_deposit_order = order_id => {
         "state": "canceled"
       }
     }
+    // console.log(body)
+    // debugger
     // return console.log('jum')
     const url_delete_order = `${DepositApiUrl}deposits/add-update-deposit`
     // return console.log('DEPOSIT DELETE INFO',url_delete_order, body)
@@ -1687,9 +1689,9 @@ export const FlowAnimationLayoutAction = (animation, action, current_section, ex
 export const add_new_transaction_animation = () => {
   return async (dispatch) => {
 
-    dispatch(current_section_params({ new_deposit_style: true }))
+    dispatch(current_section_params({ new_order_style: true }))
     setTimeout(() => {
-      dispatch(current_section_params({ new_deposit_style: false }))
+      dispatch(current_section_params({ new_order_style: false }))
     }, 1000)
     setTimeout(() => {
       dispatch(show_sound())
