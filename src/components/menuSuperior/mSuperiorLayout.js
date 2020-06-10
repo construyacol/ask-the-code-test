@@ -115,7 +115,7 @@ const MenuSuperiorLayout = (props) => {
                   </div>
                 :
                 <>
-                  <img className="itemFuera" src={require(`./assets/${currency}.png`)} width="22" alt="" id={currency} title={currency} />
+                  <img className="itemFuera" src={require(`./assets/${'bitcoin'}.png`)} width="22" alt="" id={currency} title={currency} />
 
                   <div className={`cotization ${movil ? 'movil' : 'desktop'}`}>
                     {

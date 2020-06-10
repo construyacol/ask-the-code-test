@@ -105,7 +105,7 @@
 
 .pair-list {
   display: grid;
-  grid-template-rows: 100px repeat(auto-fill, 70px);
+  grid-template-rows: repeat(auto-fill, 100px);
   row-gap: 10px;
 }
 
@@ -425,7 +425,7 @@ g.highcharts-scrollbar {
 
 @media (min-width: 900px) and (max-width: 1366px) {
   .pair-list {
-    grid-template-rows: repeat(auto-fill, 110px);
+    grid-template-rows: repeat(auto-fill, 100px);
     row-gap: 12px;
   }
 

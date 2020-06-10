@@ -111,7 +111,7 @@ const PairsSelect = ({ pairs, currentPair, changePair, selectRef, setShowSelect 
         return <div
           className={itemClasses}
           onClick={e => {
-            changePair(pair)
+            changePair(pair.buy_pair, 'pair')
             setShowSelect && setShowSelect(false)
           }}
           key={key}

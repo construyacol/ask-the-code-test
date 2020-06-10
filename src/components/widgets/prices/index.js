@@ -11,7 +11,7 @@ const PricesModal = () => {
   const actions = useActions()
   const [, state] = useCoinsendaServices();
   const currentPair = state.modelData.pairs.currentPair
-  const pairs = state.modelData.pairs.all_collections
+  const pairs = state.modelData.pairs.local_collections
 
   const closeModal = () => {
     actions.renderModal(null)
@@ -19,17 +19,33 @@ const PricesModal = () => {
 
   return(
     <OtherModalLayout>
-      <MainContainer onClick={closeModal}>
-        <PricesModalContent currentPair={currentPair} pairs={pairs} />
+      <MainContainer>
+        <CloseButton onClick={closeModal}><i className="far fa-times-circle"></i></CloseButton>
+        <PricesModalContent changePair={actions.searchCurrentPairAction} currentPair={currentPair} pairs={pairs} />
       </MainContainer>
     </OtherModalLayout>
   )
 }
 
+const CloseButton = styled.div`
+  cursor: pointer;
+  border-radius: 50%;
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  font-size: 2em;
+  transition: all 500ms ease;
+  color: #4a4a4a;
+  &:hover {
+    right: 0.8em;
+  }
+`
+
 const MainContainer = styled.div`
   width: 90%;
   height: 90%;
   background: white;
+  position: relative;
   @media ${device.tabletL} {
     width: 100%;
     height: 100%;
