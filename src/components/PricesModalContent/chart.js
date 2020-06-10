@@ -1,24 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
 import * as Highcharts from 'highcharts/highstock';
-import currencyLabels from '../Prices/currency-labels';
-import { useCoinsendaServices } from '../../services/useCoinsendaServices';
+import useChartData from '../../hooks/useChartData';
 
 function ChartComponent(props) {
-
 	const [chartData, setChartData] = useState([])
-	const [requestBody, setRequestBody] = useState({
-		currency_from: currencyLabels.bitcoin,
-		currency_to: currencyLabels.cop,
-		amount_days: 60
-	})
-	const [coinsendaServices] = useCoinsendaServices()
+	const [unparsedData] = useChartData();
+	
 
-	const getChartData = async () => {
-		const response = await coinsendaServices.fetchChartData({ data: requestBody })
-		if (!response) return;
+	const parseChartData = async () => {
+		if (!unparsedData) return;
 		const data = []
-		response.data.historical_data.forEach(e => {
+		unparsedData.data.historical_data.forEach(e => {
 			const date = new Date(e['date']).getTime();
 			if (!Number.isNaN(date))
 				data.push([date, e['close_price']])
@@ -63,23 +56,14 @@ function ChartComponent(props) {
 	}
 
 	useEffect(() => {
-		getChartData()
+		parseChartData()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [requestBody])
+	}, [unparsedData])
 
 	useEffect(() => {
 		createChart()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chartData])
-
-	useEffect(() => {
-		const settings = {
-			currency_from: currencyLabels[props.currentPair.primary_currency.currency],
-			currency_to: currencyLabels[props.currentPair.secondary_currency.currency],
-			amount_days: 45
-		}
-		setRequestBody(settings)
-	}, [props.currentPair])
 
 	return (
 		<div id='chart'></div>

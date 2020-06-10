@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
 import {useActions} from '../../hooks/useActions'
-
-
+//import { genIconPath } from '../../utils'
 
 
 const MenuSuperiorLayout = (props) => {
@@ -115,7 +114,7 @@ const MenuSuperiorLayout = (props) => {
                   </div>
                 :
                 <>
-                  <img className="itemFuera" src={require(`./assets/${'bitcoin'}.png`)} width="22" alt="" id={currency} title={currency} />
+                  <img className="itemFuera" src={require(`./assets/${currency.includes('testnet') ? 'bitcoin' : currency}.png`)} width={currency === 'usd' ? 32 : 22} alt="" id={currency} title={currency} />
 
                   <div className={`cotization ${movil ? 'movil' : 'desktop'}`}>
                     {
