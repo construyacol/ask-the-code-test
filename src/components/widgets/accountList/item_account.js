@@ -238,7 +238,7 @@ const WithdrawAccount = props => {
       {
         props.actions &&
         <>
-          {used_counter && used_counter > 0 && (
+          {(used_counter > 0) && (
             <AccountCta handleAction={props.handleAction} payload={props.account_type} />
           )}
           <OptionsAccount
