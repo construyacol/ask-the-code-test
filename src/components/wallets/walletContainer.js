@@ -44,7 +44,7 @@ function WalletContainer(props) {
               <SimpleLoader />
               :
               <>
-                <Route exact path="/:primary_path" component={() =>(<AccountList isWalletsView data={props.wallets} />)} />
+                <Route exact path="/:primary_path" component={() =>(<AccountList {...routeProps} isWalletsView data={props.wallets} />)} />
                 <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
                 <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
               </>
