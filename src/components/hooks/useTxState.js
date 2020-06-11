@@ -3,6 +3,7 @@ import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { useActions } from '../../hooks/useActions'
 import { useCoinsendaServices } from '../../services/useCoinsendaServices'
+import { convertToObjectWithCustomIndex } from '../../utils'
 
 
 
@@ -13,9 +14,9 @@ const UseTxState = (order_id) => {
     const params = useParams()
     const [ orderState, setOrderState ] = useState()
     const [ coinsendaServices ] = useCoinsendaServices()
-
-
     const { primary_path, tx_path, account_id, path  } = params
+    const { currencies } = state.modelData
+
 
     const { activity_for_account } = state.storage
     let pending_index = `pending_${tx_path}`
@@ -27,6 +28,7 @@ const UseTxState = (order_id) => {
         lastPendingOrderId:lastPendingOrderId === order_id ? lastPendingOrderId : null,
         new_order_style:state.ui.current_section.params.new_order_style && lastPendingOrderId === order_id,
         coinsendaServices,
+        currencies:currencies && convertToObjectWithCustomIndex(currencies, 'currency'),
         actions:{...actions}
       }
 }

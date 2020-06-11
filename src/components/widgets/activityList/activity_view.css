@@ -2,7 +2,7 @@
   height: 100%;
   max-height: auto;
   width: 100%;
-  max-width: 800px;
+  max-width: 820px;
   position: relative;
   /*display: grid;*/
 }
@@ -498,6 +498,7 @@ font-size: 30px;
   min-height: 100%;
   grid-row-gap: 20px;
   transform-style: preserve-3d;
+  justify-items:center;
 }
 
 .ALlist{
@@ -511,6 +512,8 @@ font-size: 30px;
   perspective: 1000px;
   perspective-origin: center top;
   transition: .3s;
+  display: grid;
+  justify-items: center;
 }
 
 
@@ -642,6 +645,7 @@ font-size: 30px;
   /*opacity: 1 !important;*/
   perspective: 2000px;
   opacity: 0;
+  width: 100%;
   /*perspective-origin: center top;*/
 }
 

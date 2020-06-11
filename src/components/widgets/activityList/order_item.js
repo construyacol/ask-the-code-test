@@ -5,6 +5,8 @@ import { PaymentConfirButton } from '../buttons/buttons'
 import { useFormatCurrency } from '../../hooks/useFormatCurrency'
 import IconSwitch from '../icons/iconSwitch'
 import { ObserverHook } from '../../hooks/observerCustomHook'
+import { device } from '../../../const/const'
+import PopNotification from '../notifications'
 
 import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
@@ -19,14 +21,16 @@ const OrderItem = ({ order }) => {
   const [ orderState, setOrderState ] = useState()
 
 
-  // useEffect(()=>{
-  //   if(orderState){
-  //     alert(orderState)
-  //   }
-  // }, [orderState])
+  const orderDetail = () => {
+    alert('detail')
+  }
 
   return(
-        <OrderContainer ref={element} className={`${show && 'shower'} ${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}>
+        <OrderContainer
+          ref={element}
+          className={`${show && 'shower'} ${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
+          onClick={orderState ? null : orderDetail}
+          >
           {
             show &&
             tx_path === 'deposits' &&
@@ -51,9 +55,10 @@ const getIcon = state => {
   // swap = 'fas fa-arrow-down'
     }
 
-const getState = state => {
+const getState = ({ state, currency_type }) => {
   return state === 'pending' ? 'Pendiente' :
-         state === 'confirmed' ? 'Confirmado' :
+         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
+         state === 'confirmed' ? 'Confirmando' :
          state === 'accepted' ? 'Aceptado' :
          state === 'canceled' ? 'Cancelado' :
          state === 'rejected' && 'Rechazado'
@@ -70,29 +75,29 @@ const DepositOrder = ({ order }) => {
     currency,
     id,
     setOrderState,
-    orderState
+    orderState,
+    currency_type
   } = order
 
   const [ amount ] = useFormatCurrency(order.amount, currency)
 
   return (
-      <Order className={`${state} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
+      <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
 
-        <DataContainer className={`align_first ${state}`}>
+        <DataContainer className={`align_first ${state} ${currency_type}`}>
           <DeleteButton {...order} setOrderState={setOrderState}/>
-          <DateCont>
-            <Day className="fuente2">{moment(created_at).format("DD")}</Day>
-            <Month className="fuente">{moment(created_at).format("MMM").toUpperCase()}</Month>
-          </DateCont>
+          <DepositPanelLeft {...order} />
           <OrderIcon className="fas fa-arrow-down" />
           <TypeOrderText className="fuente">Deposito</TypeOrderText>
+          <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
         </DataContainer>
 
         <DataContainer className="align_middle">
           <OrderStatusCont>
             <OrderStatus className="fuente">
               <StatusIcon className={getIcon(state)} />
-              {getState(state)}
+              {getState(order)}
             </OrderStatus>
           </OrderStatusCont>
         </DataContainer>
@@ -106,6 +111,44 @@ const DepositOrder = ({ order }) => {
 
 }
 
+
+
+const DepositPanelLeft = (order) => {
+
+  const { currencies } = UseTxState(order.id)
+
+  return(
+    <>
+    {
+      order.currency_type === 'crypto' && order.state === 'confirmed' ?
+      <Confrimations className="fuente2">
+        <p>
+          {order.confirmations}<span>/{currencies[order.currency.currency].confirmations}</span>
+        </p>
+      </Confrimations>
+      :
+      <DateCont>
+        <Day className="fuente2">{moment(order.created_at).format("DD")}</Day>
+        <Month className="fuente">{moment(order.created_at).format("MMM").toUpperCase()}</Month>
+      </DateCont>
+    }
+    </>
+  )
+}
+
+const Confrimations = styled.div`
+  grid-area: confirmations;
+  p{
+    margin: 0 20px 0 0;
+    color: #1cb179;
+    font-size: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 35px;
+  }
+`
 
 const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
 
@@ -124,7 +167,7 @@ const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
         label="Confirmar"
       />
       :
-      state === 'confirmed' ?
+      (state === 'confirmed' && currency_type ==='fiat') ?
       <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
       :
       <>
@@ -194,6 +237,7 @@ const AmountIcon = styled(Icon)`
 
 const OrderIcon = styled(Icon)`
   font-size: 22px;
+  grid-area: orderIcon;
 `
 
 const OrderStatus = styled.p`
@@ -221,6 +265,7 @@ const Text = styled.p`
 `
 
 const TypeOrderText = styled(Text)`
+  grid-area: typeOrderText
 `
 
 const AmountText = styled(Text)`
@@ -245,6 +290,13 @@ const Day = styled.p`
   font-size: 30px;
 `
 
+const MobileDate = styled.div`
+  font-size: 12px;
+  color: gray;
+  min-width: 90px !important;
+  display: none;
+`
+
 export const Order = styled.div`
   border: 1px solid #8080808f;
   border-radius: 6px;
@@ -257,6 +309,21 @@ export const Order = styled.div`
   transition: .3s;
   transform-origin: top;
   box-shadow: 0px 5px 14px 3px rgba(0,0,0,0);
+
+
+  @media ${device.tablet} {
+    .align_middle, ${DateCont}{
+      display: none;
+    }
+
+    ${MobileDate}{
+      display: initial;
+    }
+    ${TypeOrderText}{
+      margin: 3px 0;
+    }
+  }
+
 
   :hover #ALconfirmButton>div{
     border: 2px solid #1cb179 !important;
@@ -281,7 +348,9 @@ export const Order = styled.div`
   }
 
   :hover{
-    box-shadow: 0px 1px 14px 3px rgba(0,0,0,0.07);
+    box-shadow: 0px 1px 14px 3px rgba(0,0,0,0.1);
+    transform: scale(1.01);
+    background: rgba(255, 255, 255, 0.6);
     #Aldelete{
       width: 40px !important;
     }
@@ -338,7 +407,11 @@ export const Order = styled.div`
       }
   }
 
-  &.accepted{
+   &.confirmed.crypto{
+     border: 1px solid rgb(28, 177, 121) !important;
+   }
+
+  &.accepted, &.confirmed.crypto{
     ${Day}, ${Month}, ${OrderIcon}, ${Text}, ${AmountIcon}{
       color: rgb(28, 177, 121);
     }
@@ -346,7 +419,6 @@ export const Order = styled.div`
       background: rgb(28, 177, 121);
       color: white;
     }
-
   }
 `
 
@@ -395,6 +467,27 @@ export const DataContainer = styled.div`
   align-self: center;
   display: flex;
   align-items: center;
+
+  @media ${device.tablet} {
+    &.align_first{
+      display: grid !important;
+      grid-template-areas:
+      "orderIcon typeOrderText"
+      "orderIcon action_date";
+    }
+
+    &.align_first.confirmed.crypto{
+      display: grid !important;
+      grid-template-areas:
+      "orderIcon confirmations typeOrderText"
+      "orderIcon action_date action_date";
+      grid-template-columns: auto 45px;
+    }
+
+    ${Confrimations} p{
+      font-size: 20px !important;
+    }
+  }
 
 
 
@@ -471,6 +564,8 @@ export const OrderContainer = styled.div`
   transform: scale(.98);
   transform: scale(1) translateY(-3px);
   opacity: 0;
+  width: 100%;
+  max-width: 800px;
 
   &.shower{
     transform: scale(1) translateY(0px);

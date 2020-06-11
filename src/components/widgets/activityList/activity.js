@@ -241,7 +241,7 @@ class ActivityList extends Component {
               <section className={`ALactivity ${pending ? 'ALactivityPending' : ''}`}>
                 <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
                 <div className="ALlistAll">
-                  {
+                  { 
                     activity.map((item, index) => {
                       if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
                         if(this.props.tx_path === 'deposits'){
