@@ -59,9 +59,14 @@ const getIcon = state => {
   // swap = 'fas fa-arrow-down'
     }
 
-const getState = ({ state, currency_type }) => {
+const getState = ({ state, currency_type, id }) => {
+
+  const { tx_path } = UseTxState(id)
+
   return state === 'pending' ? 'Pendiente' :
          (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
+         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
+         state === 'confirmed' && tx_path === 'withdraws' ? 'Procesando' :
          state === 'confirmed' ? 'Confirmando' :
          state === 'accepted' ? 'Aceptado' :
          state === 'canceled' ? 'Cancelado' :
@@ -136,7 +141,7 @@ const WithdrawOrder = ({ order }) => {
 
         <DataContainer className={`align_first ${state} ${currency_type}`}>
           <DepositPanelLeft {...order} />
-          <OrderIcon className="fas fa-arrow-down" />
+          <OrderIcon className="fas fa-arrow-up" />
           <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
           <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
           <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
