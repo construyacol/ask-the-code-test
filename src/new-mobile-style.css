@@ -121,7 +121,7 @@
   }
 
   .DepositView, #swapForm, .DCcurrent_wallet form, .contenido.withdraw_accounts.activity{
-    transform: scale(.9);
+    /* transform: scale(.9); */
   }
 
     .asaras .TicketDetail {
