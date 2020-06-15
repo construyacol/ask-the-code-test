@@ -22,12 +22,12 @@ const QuoteLayout = props => {
   
   const secondCurrency = localCurrency.includes('testnet') ? 'bitcoin' : localCurrency
   const toSearch = 
-    currentPair.primary_currency.currency.includes('testnet') ? 'bitcoin' : 
-    currentPair.primary_currency.currency
+    currentPair && currentPair.primary_currency.currency.includes('testnet') ? 'bitcoin' : 
+    currentPair && currentPair.primary_currency.currency
   const conditionToShowIcon = 
-    currentPair.buy_pair === `BTC/${secondCurrency.toUpperCase()}` ||
+    currentPair && (currentPair.buy_pair === `BTC/${secondCurrency.toUpperCase()}` ||
     currentPair.buy_pair === `USD/${secondCurrency.toUpperCase()}` ||
-    currentPair.buy_pair === `BTCT/${secondCurrency.toUpperCase()}`
+    currentPair.buy_pair === `BTCT/${secondCurrency.toUpperCase()}`)
   const foundCoin = coins.find(item => item.name.includes(toSearch))
   
   return(

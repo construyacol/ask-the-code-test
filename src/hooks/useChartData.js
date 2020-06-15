@@ -22,14 +22,16 @@ export default function useChartData() {
 
     useEffect(() => {
         const currentPair = modelData.pairs.currentPair
-        const currencyTo = currentPair.primary_currency.currency.includes('usd') ?
-            currentPair.secondary_currency.currency : 'usd'
-		const settings = {
-			currency_from: currencyLabels[currentPair.primary_currency.currency],
-			currency_to: currencyLabels[currencyTo],
-			amount_days: 45
-		}
-		setRequestBody(settings)
+        if(currentPair) {
+            const currencyTo = currentPair.primary_currency.currency.includes('usd') ?
+                currentPair.secondary_currency.currency : 'usd'
+            const settings = {
+                currency_from: currencyLabels[currentPair.primary_currency.currency],
+                currency_to: currencyLabels[currencyTo],
+                amount_days: 45
+            }
+            setRequestBody(settings)
+        }
 	}, [modelData.pairs.currentPair])
 
     return [data];
