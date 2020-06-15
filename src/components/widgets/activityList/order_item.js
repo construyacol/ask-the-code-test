@@ -14,7 +14,7 @@ import 'moment/locale/es'
 moment.locale('es')
 
 
-const OrderItem = ({ order }) => {
+const OrderItem = ({ order, handleAction }) => {
 
   const { tx_path, new_order_style } = UseTxState(order.id)
   const [ show,  element ] = ObserverHook()
@@ -22,7 +22,8 @@ const OrderItem = ({ order }) => {
 
 
   const orderDetail = () => {
-    alert('detail')
+    // alert('detail')
+    handleAction(order)
   }
 
   return(
@@ -33,8 +34,11 @@ const OrderItem = ({ order }) => {
           >
           {
             show &&
-            tx_path === 'deposits' &&
+            tx_path === 'deposits' ?
             <DepositOrder order={{...order, orderState, setOrderState}} />
+            :
+            tx_path === 'withdraws' &&
+            <WithdrawOrder order={{...order}} />
           }
         </OrderContainer>
   )
@@ -79,7 +83,6 @@ const DepositOrder = ({ order }) => {
     currency_type
   } = order
 
-  const [ amount ] = useFormatCurrency(order.amount, currency)
 
   return (
       <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
@@ -88,7 +91,53 @@ const DepositOrder = ({ order }) => {
           <DeleteButton {...order} setOrderState={setOrderState}/>
           <DepositPanelLeft {...order} />
           <OrderIcon className="fas fa-arrow-down" />
-          <TypeOrderText className="fuente">Deposito</TypeOrderText>
+          <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
+          <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
+        </DataContainer>
+
+        <DataContainer className="align_middle">
+          <OrderStatusCont>
+            <OrderStatus className="fuente">
+              <StatusIcon className={getIcon(state)} />
+              {getState(order)}
+            </OrderStatus>
+          </OrderStatusCont>
+        </DataContainer>
+
+        <DataContainer className="align_last">
+          <DepositPanelRight {...order}/>
+        </DataContainer>
+
+      </Order>
+  )
+
+}
+
+
+
+
+
+const WithdrawOrder = ({ order }) => {
+
+  const { new_order_style } = UseTxState(order.id)
+
+  const {
+    state,
+    created_at,
+    currency,
+    id,
+    currency_type
+  } = order
+
+
+  return (
+      <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''}`}>
+
+        <DataContainer className={`align_first ${state} ${currency_type}`}>
+          <DepositPanelLeft {...order} />
+          <OrderIcon className="fas fa-arrow-down" />
+          <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
           <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
           <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
         </DataContainer>
@@ -115,12 +164,12 @@ const DepositOrder = ({ order }) => {
 
 const DepositPanelLeft = (order) => {
 
-  const { currencies } = UseTxState(order.id)
+  const { currencies, tx_path } = UseTxState(order.id)
 
   return(
     <>
     {
-      order.currency_type === 'crypto' && order.state === 'confirmed' ?
+      ((order.currency_type === 'crypto' && order.state === 'confirmed') && tx_path === 'deposits') ?
       <Confrimations className="fuente2">
         <p>
           {order.confirmations}<span>/{currencies[order.currency.currency].confirmations}</span>
@@ -136,23 +185,17 @@ const DepositPanelLeft = (order) => {
   )
 }
 
-const Confrimations = styled.div`
-  grid-area: confirmations;
-  p{
-    margin: 0 20px 0 0;
-    color: #1cb179;
-    font-size: 25px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 35px;
-  }
-`
+const getTypeOrder = (order) => {
+  const { tx_path } = UseTxState(order.id)
+  return tx_path === 'deposits' ? 'Deposito' : tx_path === 'withdraws' ? 'Retiro' : tx_path === 'swaps' && 'Intercambio'
+}
+
+
 
 const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
 
-  const { lastPendingOrderId } = UseTxState(id)
+  const { lastPendingOrderId, tx_path } = UseTxState(id)
+  const [ amountC ] = useFormatCurrency(amount, currency)
 
   return(
     <>
@@ -171,7 +214,11 @@ const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
       <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
       :
       <>
-      <AmountText className="fuente2">+ {currency_type === 'fiat' && '$'} {amount}</AmountText>
+      <AmountText className={`fuente2 ${tx_path}`}>
+        {tx_path === 'deposits' ? '+' : tx_path === 'withdraws' ? '- ' : ''}
+        {currency_type === 'fiat' && '$'}
+        {amountC}
+      </AmountText>
       <IconSwitch icon={currency.currency} size={16} />
       <AmountIcon className="fas fa-angle-right" />
       </>
@@ -225,6 +272,22 @@ const DeleteButton = ({ state, id, setOrderState }) => {
   )
 }
 
+
+
+const Confrimations = styled.div`
+  grid-area: confirmations;
+  p{
+    margin: 0 20px 0 0;
+    color: #1cb179;
+    font-size: 25px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 35px;
+  }
+`
+
 const Icon = styled.i`
   margin-right: 10px;
 `
@@ -271,6 +334,9 @@ const TypeOrderText = styled(Text)`
 const AmountText = styled(Text)`
   font-size: 16px !important;
   margin-right: 7px;
+  &.withdraws{
+    color: #f44336 !important;
+  }
 `
 
 const DateCont = styled.div`

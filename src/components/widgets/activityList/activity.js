@@ -199,9 +199,10 @@ class ActivityList extends Component {
                               if((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected' ) || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')){return null}
                               if(item.state === 'pending' && item.currency_type === 'crypto'){return null}
 
-                              if(this.props.tx_path === 'deposits'){
+                              if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws'){
                                 return <OrderItem
                                         order={{...item}}
+                                        handleAction={this.verTicket}
                                         key={indx}
                                       />
                               }else{
@@ -241,12 +242,13 @@ class ActivityList extends Component {
               <section className={`ALactivity ${pending ? 'ALactivityPending' : ''}`}>
                 <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
                 <div className="ALlistAll">
-                  { 
+                  {
                     activity.map((item, index) => {
                       if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
-                        if(this.props.tx_path === 'deposits'){
+                        if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws'){
                           return <OrderItem
                                   index={index}
+                                  handleAction={this.verTicket}
                                   order={item}
                                   key={index}
                                 />
