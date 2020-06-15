@@ -4,9 +4,12 @@ import { connect } from 'react-redux'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
 import useViewport from '../../../hooks/useWindowSize'
+import moment from 'moment'
+import 'moment/locale/es'
 // import localForage from 'localforage'
 
 import './chartCoin.css'
+import useChartData from '../../../hooks/useChartData'
 let chart
 
 const ChartCoin = props => {
@@ -14,14 +17,28 @@ const ChartCoin = props => {
   const [ lastPrices, setLastPrices ] = useState()
   const [ loader, setLoader ] = useState()
   const { isMovilViewport } = useViewport()
+  const [unparsedData] = useChartData()
+
+  const getPrices = async() => {
+    if(!unparsedData) return;
+    setLoader(true)
+    let price_list = [], date_list = []
+    const { historical_data } = unparsedData.data
+    if(!historical_data) return setLoader(false)
+    let days = historical_data.length - 1
+
+    for (let data of historical_data) {
+      price_list.push(data.close_price)
+      date_list.push(moment().subtract(days, 'days').calendar())
+      days--
+    }
+
+    setLastPrices({ price_list: price_list, date_list })
+  }
 
   useEffect(()=>{
-    const getPrices = async() => {
-      setLoader(true)
-      setLastPrices(await props.action.get_historical_price('BTC', 45, '78557cdd8ee21cca98278c189e51b1d2cd859c6ae1bf2992042b61abf7825f41'))
-    }
     getPrices()
-  }, [])
+  }, [unparsedData])
 
   useEffect(()=>{
     if(!isMovilViewport){

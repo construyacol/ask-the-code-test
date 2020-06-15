@@ -8,8 +8,7 @@ import { Link } from 'react-router-dom'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
 import {useActions} from '../../hooks/useActions'
-
-
+//import { genIconPath } from '../../utils'
 
 
 const MenuSuperiorLayout = (props) => {
@@ -78,9 +77,15 @@ const MenuSuperiorLayout = (props) => {
                     </div>
 
                     :
-                    <div className="itemSup closeSesi burgerMen" onClick={toggle_menu}>
-                      <i className="fas fa-bars"></i>
-                    </div>
+                    <>
+                      <div className="itemSup closeSesi burgerMen" onClick={toggle_menu}>
+                        <i className="fas fa-bars"></i>
+                      </div>
+                      <div className="itemSup closeSesi" onClick={showPrices}>
+                        <p>Ver precios</p>
+                        <i className="fas fa-tags"></i>
+                      </div>                      
+                    </>
                 }
 
                 {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
@@ -109,7 +114,7 @@ const MenuSuperiorLayout = (props) => {
                   </div>
                 :
                 <>
-                  <img className="itemFuera" src={require(`./assets/${currency}.png`)} width="22" alt="" id={currency} title={currency} />
+                  <img className="itemFuera" src={require(`./assets/${currency.includes('testnet') ? 'bitcoin' : currency}.png`)} width={currency === 'usd' ? 32 : 22} alt="" id={currency} title={currency} />
 
                   <div className={`cotization ${movil ? 'movil' : 'desktop'}`}>
                     {

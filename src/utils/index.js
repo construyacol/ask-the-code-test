@@ -682,16 +682,4 @@ export const get_ui_name_currency = (short_currency_name) => {
   )
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 export default handleKeyPress

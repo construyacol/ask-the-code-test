@@ -462,7 +462,6 @@ export const get_account_balances = user => {
 export const ManageBalance = (account_id, action, amount) => {
 
   return async (dispatch, getState) => {
-    const { user_id } = getState().modelData
     let user = getState().modelData.user
 
 
@@ -634,7 +633,7 @@ export const getWalletsById = (wallet_id) => {
 
 export const create_new_wallet = (body) => {
   return async (dispatch, getState) => {
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     const url_new_account = `${AccountApiUrl}accounts/add-new-account`
     return ApiPostRequest(url_new_account, body, user.userToken)
     // get_list_user_wallets()
@@ -651,7 +650,7 @@ export const delete_account = (account, type) => {
     const { id, country } = account
 
     // let url_delet_account
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     const url_delet_account = `${AccountApiUrl}accounts/update-visibility`
 
     let body = {
@@ -700,7 +699,7 @@ export const delete_account = (account, type) => {
 export const delete_withdraw_account = (account_id) => {
   return async (dispatch, getState) => {
     let url_delet_account
-    const { user, user_id, withdraw_accounts } = getState().modelData
+    const { user, withdraw_accounts } = getState().modelData
     url_delet_account = `${WithdrawApiUrl}withdrawAccounts/update-visibility`
     let body = {
       "data": {
@@ -728,7 +727,7 @@ export const confirmDepositOrder = (ticket, base64) => {
       id
     } = ticket
     // console.log('ticket', ticket)
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     const body = {
       // "access_token":user.userToken,
@@ -828,7 +827,7 @@ export const delete_deposit_order = order_id => {
     // const url_delete_deposit_order = `${DepositApiUrl}deposits/${order_id}`
     // return ApiDelete(url_delete_deposit_order)
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     const body = {
       "data": {
@@ -952,7 +951,6 @@ export const edit_array_element = (search_by, replace_prop, array_list, new_posi
 export const add_item_state = (list_type, new_order) => {
   return async (dispatch, getState) => {
 
-    const { user_id } = getState().modelData
     let list = getState().modelData[list_type]
     let user = getState().modelData.user
 
@@ -997,7 +995,7 @@ export const addNewSwap = (account_id, pair_id, value) => {
   return async (dispatch, getState) => {
 
     // await charge_funds()
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     const body = {
       // "access_token":user.userToken,
@@ -1401,7 +1399,7 @@ export const get_withdraw_providers = () => {
 
 export const add_update_withdraw = (withdraw_id, state) => {
   return async (dispatch, getState) => {
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     const body = {
       // "access_token":user.userToken,
@@ -1450,7 +1448,7 @@ export const add_new_withdraw_order = (amount, account_from, withdraw_provider, 
 
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     const body = {
       // "access_token":user.userToken,
       "data": {
@@ -1590,7 +1588,7 @@ export const ready_to_play = payload => {
 export const add_new_withdraw_account = (payload, type) => {
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     const {
       provider_type,
       name,
@@ -1913,7 +1911,7 @@ export const get_verification_state = () => {
 
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     if (!user) { return false }
     const user_data = user
     const { advanced, basic } = user_data.security_center.kyc
@@ -2044,7 +2042,7 @@ export const getUserVerificationStatus = (level_request) => {
 
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
     const { advanced, basic, financial } = user.security_center.kyc
     let verified
 
@@ -2163,7 +2161,7 @@ export const add_new_profile = (country, token) => {
 export const set_ref_code = (ref_code) => {
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     let body = {
       "access_token": user.userToken,
@@ -2193,7 +2191,7 @@ export const set_ref_code = (ref_code) => {
 export const get_ref_code = () => {
   return async (dispatch, getState) => {
 
-    const { user, user_id } = getState().modelData
+    const { user } = getState().modelData
 
     const url_get_ref_code = `${ApiUrl}referrals?filter={"where":{"userId":"${user.id}"}}`
     let res = await ApiGetRequest(url_get_ref_code)
@@ -2320,7 +2318,7 @@ export const swap_activity_update = (swap, filter) => {
   return async (dispatch, getState) => {
 
     setTimeout(async () => {
-      const { user, user_id, swaps } = getState().modelData
+      const { user, swaps } = getState().modelData
       await dispatch(add_done_swap(swaps, user, swap))
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
       await dispatch(update_activity_state(swap.account_from, filter))
