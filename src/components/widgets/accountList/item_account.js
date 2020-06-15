@@ -64,7 +64,7 @@ const ItemAccount = props => {
 
   const account_detail = async (payload) => {
     if(payload !== 'wallets') {
-      return props.history.push(`/withdraw_accounts/activity/${props.account.id}`)
+      return props.history.push(`/withdraw_accounts/activity/${props.account.id}/withdraws`)
     }
     if(account_state === 'deleting' || account_state === 'deleted'){return}
     props.actions.cleanNotificationItem(payload, 'account_id')

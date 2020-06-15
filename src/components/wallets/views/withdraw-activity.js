@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import ActivityList from '../../widgets/activityList/activity'
 import ActivityFilters from '../../widgets/activityList/filters'
-import LoaderActivity from '../../widgets/activityList/order_item'
+import { LoaderItem } from '../../widgets/activityList/order_item'
 
 import './wallet_views.css'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
@@ -48,7 +48,7 @@ const ActivityView = props => {
     init()
   }, [])
 
-  useEffect(() => {    
+  useEffect(() => {
     entries && entries.forEach(async entry => {
       if (entry.isIntersecting) {
         await getItems()
@@ -62,7 +62,7 @@ const ActivityView = props => {
       <ActivityFilters view={params.primary_path} />
       {
         (loader) ?
-          <LoaderActivity />
+          <LoaderItem />
           :
           <ActivityList
             activity={items_.current}
@@ -74,7 +74,7 @@ const ActivityView = props => {
           className="lazy"
           style={{ paddingTop: 20 }}
         >
-          <LoaderActivity arrayLength={3} />
+          <LoaderItem arrayLength={3} />
         </div>
       )}
     </div>

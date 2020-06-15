@@ -40,7 +40,7 @@ function WitdrawAccountContainer(props) {
           {...props}
           {...routeProps}
         >
-          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
+          <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={(renderProps) => (
             <WalletDetail wallets={data} {...renderProps} />
           )} />
           <>
@@ -55,7 +55,7 @@ function WitdrawAccountContainer(props) {
                 }
               </>
             )} />
-            <Route strict path={["/:primary_path/:path/:account_id", "/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
+            <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
           </>
         </DetailContainerLayout>
       )} />
