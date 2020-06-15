@@ -8,12 +8,15 @@ import LoaderActivity from '../../widgets/activityList/order_item'
 
 import './wallet_views.css'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import useViewport from '../../../hooks/useWindowSize'
 import useObserver from '../../../hooks/useObserver'
+import { scroller } from 'react-scroll'
 
 const ActivityView = props => {
   const { params } = props.match
   const [loader, setLoader] = useState(true)
   const [CoinsendaService] = useCoinsendaServices()
+  const { isMovilViewport } = useViewport()
 
   const [observer, setElements, entries] = useObserver({
     root: null,
@@ -45,6 +48,14 @@ const ActivityView = props => {
   }
 
   useEffect(() => {
+    isMovilViewport && window.requestAnimationFrame(() => {
+      scroller.scrollTo('firstInsideContainer', {
+        offset: -60,
+        duration: 0,
+        smooth: true,
+        containerId: 'containerElement'
+      })
+    })
     init()
   }, [])
 

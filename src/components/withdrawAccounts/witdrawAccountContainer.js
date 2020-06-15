@@ -10,7 +10,6 @@ import AccountList from '../widgets/accountList/account-list'
 import PropTypes from 'prop-types'
 import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
 import { WalletDetail } from '../wallets/walletContainer'
-import ActivityView from '../wallets/views/activity'
 import withdrawActivity from '../wallets/views/withdraw-activity'
 
 function WitdrawAccountContainer(props) {
