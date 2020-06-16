@@ -438,7 +438,7 @@ export const serveKycData = (list) => {
 
     return new Promise(async(resolve, reject)=>{
       const { kyc_basic } = kyc
-      const { user, user_id } = store.getState().modelData
+      const { user } = store.getState().modelData
       let kyc_model = kyc_basic[user.person_type]
 
       // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user.person_type])

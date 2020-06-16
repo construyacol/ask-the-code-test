@@ -52,7 +52,7 @@ const NewWalletLayout = props =>{
                   />
                 <ItemSelectionContainer
                   type="coins"
-                  label="¿Cual moneda manejarás en tu billetera?"
+                  label="¿Cúal moneda manejarás en tu billetera?"
                   itemSelect={currency}
                   actualizarEstado={actualizarEstado}
                   update_control_form={props.update_control_form}

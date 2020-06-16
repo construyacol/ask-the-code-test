@@ -100,7 +100,7 @@ const ItemAccount = props => {
     //   return props.actions.mensaje('Las cuentas de retiro con movimiento no pueden ser eliminadas...', 'error')
     // }
 
-    let msg = "Cuenta eliminada con exito"
+    let msg = "Cuenta eliminada con éxito"
     let success = true
     let result = false
     if (isWallet) {

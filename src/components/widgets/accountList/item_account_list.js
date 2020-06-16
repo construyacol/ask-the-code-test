@@ -117,7 +117,7 @@ class AccountList extends Component {
   //   this.setState({ label: "Eliminando Wallet", account_state: "deleting", id_wallet_action: account_id })
   //   let wallet_delete = await this.props.action.delete_account(account_id, type)
   //
-  //   let msg = "Wallet eliminada con exito"
+  //   let msg = "Wallet eliminada con éxito"
   //   let success = true
   //
   //   if (wallet_delete === 404 || !wallet_delete) {

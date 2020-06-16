@@ -465,9 +465,9 @@
         },
         "birthday":{
           "name":"birthday",
-          "label":"¿Cual es la fecha de tu nacimiento?",
+          "label":"¿Cúal es la fecha de tu nacimiento?",
           "placeholder":"DÍA / MES / AÑO",
-          "message":"Escribela en este orden : Día / Mes /Año",
+          "message":"Escríbela en este orden : Día / Mes /Año",
           "errmessage":"Oh!!, debes ingresar los datos correctamente"
         },
         "phone":{
