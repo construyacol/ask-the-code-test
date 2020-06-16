@@ -189,63 +189,66 @@ class ActivityList extends Component {
 
     return(
         <Fragment>
-              <section className="ALpendingMom" style={{display:pending ? 'block' : 'none' }}>
-                <p className="ALtext fuente" style={{display:(pending) ? 'block' : 'none' }}>Pendiente </p>
-                  <div className="ALpendingCont" style={{height:`${expandible}px`}}>
-                    <div className="ALlist" style={{height:`${expandidoMax}px`}}>
-                      {
-                          activity &&
-                            activity.map((item, indx)=>{
-                              if((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected' ) || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')){return null}
-                              if(item.state === 'pending' && item.currency_type === 'crypto'){return null}
-
-                              if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws'){
-                                return <OrderItem
-                                        order={{...item}}
-                                        handleAction={this.verTicket}
-                                        key={indx}
-                                      />
-                              }else{
-                                return <ItemList key={item.id}
-                                        confirmPayment={this.confirmPayment}
-                                        lastPendingId={lastPending}
-                                        newDepositStyle={newDepositStyle}
-                                        verTicket={this.verTicket}
-                                        delete_order={this.delete_order_confirmation}
-                                        ticket={item}
-                                        loader={loader}
-                                        current_order_loader={current_order_loader}
-                                        deleting={deleting}
-                                        deleted={deleted}
-                                        currencies={currencies}
-                                        {...this.props}
-                                         />
-                              }
-
-                              // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
-
-                            })
+          {
+            tx_path !== 'swaps' &&
+            <section className="ALpendingMom" style={{display:pending ? 'block' : 'none' }}>
+              <p className="ALtext fuente" style={{display:(pending) ? 'block' : 'none' }}>Pendiente </p>
+              <div className="ALpendingCont" style={{height:`${expandible}px`}}>
+                <div className="ALlist" style={{height:`${expandidoMax}px`}}>
+                  {
+                    activity &&
+                    activity.map((item, indx)=>{
+                      if((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected' ) || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')){return null}
+                      if(item.state === 'pending' && item.currency_type === 'crypto'){return null}
+                      if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws'){
+                        return <OrderItem
+                          order={{...item}}
+                          handleAction={this.verTicket}
+                          key={indx}
+                        />
+                      }else{
+                        return <ItemList key={item.id}
+                          confirmPayment={this.confirmPayment}
+                          lastPendingId={lastPending}
+                          newDepositStyle={newDepositStyle}
+                          verTicket={this.verTicket}
+                          delete_order={this.delete_order_confirmation}
+                          ticket={item}
+                          loader={loader}
+                          current_order_loader={current_order_loader}
+                          deleting={deleting}
+                          deleted={deleted}
+                          currencies={currencies}
+                          {...this.props}
+                        />
                       }
-                    </div>
-                  </div>
-                  <p className="ALverTodo" onClick={this.expandir} style={{display:((expandidoMax/100) <2 || expandido) ? 'none' : 'block'}}>
-                  {/* <p className="ALverTodo" onClick={this.expandir} style={{display:expandido ? 'none' : 'block'}}> */}
-                    Ver todo
-                    <span>+{(expandidoMax/100)-1}</span>
-                    <i className="fas fa-angle-down"></i>
-                  </p>
-                  <p className="ALverTodo" onClick={this.contraer} style={{display:(expandidoMax/100) <2 || !expandido ? 'none' : 'block'}}>Reducir
-                    <i className="fas fa-angle-up"></i>
-                  </p>
-              </section>
 
-              <section className={`ALactivity ${pending ? 'ALactivityPending' : ''}`}>
-                <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p>
+                      // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
+
+                    })
+                  }
+                </div>
+              </div>
+              <p className="ALverTodo" onClick={this.expandir} style={{display:((expandidoMax/100) <2 || expandido) ? 'none' : 'block'}}>
+              {/* <p className="ALverTodo" onClick={this.expandir} style={{display:expandido ? 'none' : 'block'}}> */}
+              Ver todo
+              <span>+{(expandidoMax/100)-1}</span>
+              <i className="fas fa-angle-down"></i>
+            </p>
+            <p className="ALverTodo" onClick={this.contraer} style={{display:(expandidoMax/100) <2 || !expandido ? 'none' : 'block'}}>Reducir
+            <i className="fas fa-angle-up"></i>
+          </p>
+        </section>
+          }
+
+              <section className={`ALactivity ${(pending && tx_path !== 'swaps') ? 'ALactivityPending' : ''}`}>
+                {/* <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p> */}
+                <p className="ALtext fuente">Actividad</p>
                 <div className="ALlistAll">
                   {
                     activity.map((item, index) => {
-                      if(item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected'){return false}
-                        if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws'){
+                      if((item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected') && tx_path !== 'swaps'){return false}
+                        if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps'){
                           return <OrderItem
                                   index={index}
                                   handleAction={this.verTicket}

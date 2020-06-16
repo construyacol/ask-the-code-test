@@ -7,6 +7,8 @@ import IconSwitch from '../icons/iconSwitch'
 import { ObserverHook } from '../../hooks/observerCustomHook'
 import { device } from '../../../const/const'
 import PopNotification from '../notifications'
+import SwapAnimation from '../swapAnimation/swapAnimation'
+import SimpleLoader from '../loaders'
 
 import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
@@ -26,6 +28,7 @@ const OrderItem = ({ order, handleAction }) => {
     handleAction(order)
   }
 
+
   return(
         <OrderContainer
           ref={element}
@@ -37,8 +40,13 @@ const OrderItem = ({ order, handleAction }) => {
             tx_path === 'deposits' ?
             <DepositOrder order={{...order, orderState, setOrderState}} />
             :
-            tx_path === 'withdraws' &&
+            tx_path === 'withdraws' ?
             <WithdrawOrder order={{...order}} />
+            :
+            tx_path === 'swaps' ?
+            <SwapOrder order={{...order}} />
+            :
+            <LoaderItem/>
           }
         </OrderContainer>
   )
@@ -64,9 +72,8 @@ const getState = ({ state, currency_type, id }) => {
   const { tx_path } = UseTxState(id)
 
   return state === 'pending' ? 'Pendiente' :
-         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
-         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
          state === 'confirmed' && tx_path === 'withdraws' ? 'Procesando' :
+         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
          state === 'confirmed' ? 'Confirmando' :
          state === 'accepted' ? 'Aceptado' :
          state === 'canceled' ? 'Cancelado' :
@@ -94,7 +101,7 @@ const DepositOrder = ({ order }) => {
 
         <DataContainer className={`align_first ${state} ${currency_type}`}>
           <DeleteButton {...order} setOrderState={setOrderState}/>
-          <DepositPanelLeft {...order} />
+          <PanelLeft {...order} />
           <OrderIcon className="fas fa-arrow-down" />
           <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
           <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
@@ -111,7 +118,7 @@ const DepositOrder = ({ order }) => {
         </DataContainer>
 
         <DataContainer className="align_last">
-          <DepositPanelRight {...order}/>
+          <PanelRight order={order}/>
         </DataContainer>
 
       </Order>
@@ -120,6 +127,86 @@ const DepositOrder = ({ order }) => {
 }
 
 
+
+const BarraSwap = styled.div`
+  width: 100% !important;
+  height: 1px;
+  background: #00000012;
+  position: absolute;
+  top: 1px;
+  right: 0;
+  opacity: 0.6;
+`
+
+const SwapOrder = (props) => {
+
+  const { new_order_style, tx_path, order } = UseTxState(props.order.id)
+
+  const {
+    state,
+    created_at,
+    currency,
+    id,
+    currency_type
+  } = order
+
+
+  return (
+      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${order.inProcess ? 'inProcess' : '' }`}>
+
+        {
+          order.inProcess &&
+          <BarraSwap className="barraSwap">
+            <div className={`relleno ${(state === 'pending') ? 'swaPending' :
+              (state === 'confirmed') ? 'swaProcessing' :
+              (state === 'accepted') ? 'swapDone' : ''
+            }`}>
+            </div>
+          </BarraSwap>
+        }
+
+        <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
+          {
+            order.inProcess ?
+            <>
+            <div className="loaderViewItem" >
+              <SimpleLoader loader={2}/>
+            </div>
+            <SwapAnimation
+              from={order.to_spend_currency.currency}
+              to={order.to_buy_currency.currency}
+              colorIcon="#1cb179"
+              // colorIcon={statePendingSwap === 'done' ? '#1cb179' : statePendingSwap === 'processing' ? '#77b59d' : statePendingSwap === 'pending' && '#ff8660' }
+            />
+            </>
+            :
+            <>
+            <PanelLeft {...order} />
+            <OrderIcon className="fas fa-retweet swap" />
+            <TypeOrderText className="fuente swap">{getTypeOrder(order)}</TypeOrderText>
+            <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+            </>
+          }
+          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
+        </DataContainer>
+
+        <DataContainer className="align_middle">
+          <OrderStatusCont>
+            <OrderStatus className="fuente">
+              <StatusIcon className={getIcon(state)} />
+              {getState(order)}
+            </OrderStatus>
+          </OrderStatusCont>
+        </DataContainer>
+
+        <DataContainer className={`align_last ${tx_path}`}>
+          <PanelRight order={order}/>
+        </DataContainer>
+
+      </Order>
+  )
+
+}
 
 
 
@@ -140,7 +227,7 @@ const WithdrawOrder = ({ order }) => {
       <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''}`}>
 
         <DataContainer className={`align_first ${state} ${currency_type}`}>
-          <DepositPanelLeft {...order} />
+          <PanelLeft {...order} />
           <OrderIcon className="fas fa-arrow-up" />
           <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
           <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
@@ -157,7 +244,7 @@ const WithdrawOrder = ({ order }) => {
         </DataContainer>
 
         <DataContainer className="align_last">
-          <DepositPanelRight {...order}/>
+          <PanelRight order={order}/>
         </DataContainer>
 
       </Order>
@@ -167,7 +254,7 @@ const WithdrawOrder = ({ order }) => {
 
 
 
-const DepositPanelLeft = (order) => {
+const PanelLeft = (order) => {
 
   const { currencies, tx_path } = UseTxState(order.id)
 
@@ -197,14 +284,29 @@ const getTypeOrder = (order) => {
 
 
 
-const DepositPanelRight = ({ state, id, currency_type, amount, currency }) => {
+const PanelRight = ({order}) => {
 
+  const { state, id, currency_type, amount, currency } = order
   const { lastPendingOrderId, tx_path } = UseTxState(id)
   const [ amountC ] = useFormatCurrency(amount, currency)
+
 
   return(
     <>
     {
+      tx_path === 'swaps' ?
+      <>
+      <AmountText className={`fuente2 amount`}>
+        + {order.bought || '--'}
+      </AmountText>
+      <IconSwitch className={`currency_bought`} icon={order.to_buy_currency.currency} size={16} />
+      <AmountText className={`fuente2 amount_spent`}>
+        - {order.spent || '--'}
+      </AmountText>
+      <IconSwitch className={`currency_spent`} icon={order.to_spend_currency.currency} size={16} />
+      <AmountIcon className={`fas fa-angle-right arrow_right`} />
+      </>
+      :
       state === 'pending' ?
       <PaymentConfirButton
         id="ALconfirmButton"
@@ -351,6 +453,8 @@ const DateCont = styled.div`
     p{
       margin: 0;
     }
+
+
 `
 
 const Month = styled.p`
@@ -418,7 +522,7 @@ export const Order = styled.div`
     ${'' /* animation-direction: reverse; */}
   }
 
-  :hover{
+  :hover, &.swaps.pending, &.swaps.confirmed, &.swaps.accepted.inProcess{
     box-shadow: 0px 1px 14px 3px rgba(0,0,0,0.1);
     transform: scale(1.01);
     background: rgba(255, 255, 255, 0.6);
@@ -457,6 +561,16 @@ export const Order = styled.div`
     }
     ${OrderStatus}{
       color: white !important;
+    }
+  }
+
+  &.confirmed.swaps{
+    border: 1px solid #a9c2b9 !important;
+    .confirmed p, .confirmed i{
+      color: #a9c2b9 !important;
+    }
+    ${OrderStatusCont}{
+      background: #5fc79f !important;
     }
   }
 
@@ -538,6 +652,40 @@ export const DataContainer = styled.div`
   align-self: center;
   display: flex;
   align-items: center;
+
+  &.swaps{
+    row-gap: 7px;
+    column-gap: 5px;
+    display: grid !important;
+    grid-template-areas:
+    "amount currency_bought arrow_right"
+    "amount_spent currency_spent arrow_right"
+  }
+
+  &.swaps p{
+    margin: 0;
+  }
+
+  .amount{
+    font-size: 15px !important;
+    grid-area: amount;
+  }
+  .currency_bought{
+    grid-area: currency_bought;
+  }
+  .arrow_right{
+    grid-area: arrow_right;
+  }
+  .amount_spent{
+    color: red !important;
+    text-align: right;
+    font-size: 13px !important;
+    grid-area: amount_spent;
+  }
+  .currency_spent{
+    grid-area: currency_spent;
+  }
+
 
   @media ${device.tablet} {
     &.align_first{

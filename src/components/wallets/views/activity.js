@@ -77,6 +77,8 @@ const ActivityView = props => {
 
   useEffect(() => {
     if (!props.order_list || !props.order_list.length) {
+      console.log(props.order_list, props[params.tx_path])
+      // debugger
       const init_activity = async () => {
         setLoader(true)
         let method = `get_${params.tx_path}`

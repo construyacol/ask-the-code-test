@@ -134,7 +134,6 @@ export const ticketModalView = (state) =>{
 export const update_activity_state = (account_id, activity_type, activity_list) => {
 
   return async(dispatch, getState) => {
-
     if(!activity_list){
       activity_list = await serve_orders(account_id, activity_type)
     }
@@ -646,7 +645,7 @@ export const serve_orders = async(account_id, filter) =>{
   if(filter === 'swaps' && account_id){
     indices.map((id) => {
       // if(!list[id].account_id){return false}
-       return (list[id].account_id === account_id || list[id].account_to === account_id) && new_array.push(list[id])
+       return (list[id].account_from === account_id || list[id].account_to === account_id) && new_array.push(list[id])
     })
   }
 

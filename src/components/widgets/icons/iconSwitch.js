@@ -306,11 +306,12 @@ class IconSwitch extends Component {
   render(){
 
     const{
-      animOn
+      animOn,
+      className
     } = this.props
 
     return(
-        <div className={`iconSty ${animOn ? 'animOn' : '' }`}>
+        <div className={`iconSty ${animOn ? 'animOn' : '' } ${className}`}>
           <this.switcher {...this.props} />
         </div>
     )
