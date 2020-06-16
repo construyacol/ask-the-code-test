@@ -149,8 +149,9 @@ class WithdrawAccountForm extends Component {
       let truncateString = false
       let maxLength = 50
       if (name && name === 'id_number') {
-        if(this.state.id_type === 'nit') {
+        if (this.state.id_type === 'nit') {
           maxLength = 11
+          truncateString = true
           value = value.replace(/(\d{9})(\d{1})/, "$1-$2")
         } else {
           value = value.replace(/[^a-zA-Z0-9]/g, "");
@@ -163,7 +164,7 @@ class WithdrawAccountForm extends Component {
         truncateString = true
         maxLength = 20
       }
-      
+
       if (truncateString && value.length > maxLength) {
         value = value.slice(0, maxLength)
       }

@@ -6,12 +6,16 @@ import AuthReq from '../../itemSettings/modal_views/authreq'
 import IconSwitch from '../../icons/iconSwitch'
 import {useActions} from '../../../../hooks/useActions'
 
-const Withdraw2FaModal = ({callback, isWithdraw2fa}) => {
+const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
 
   const actions = useActions()
 
   const cerrar = () => {
     actions.renderModal(null)
+    if(cancelAction) {
+      actions.toggleModal()
+      cancelAction()
+    }
   }
 
     return(
