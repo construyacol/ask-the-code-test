@@ -226,7 +226,7 @@ class WithdrawFlow extends Component {
     if (this.props.user.security_center.authenticator.withdraw && !this.state.twoFaToken) {
       this.setState({ state_data, limit, limit_supered })
       return this.props.action.renderModal(() => 
-        <Withdraw2FaModal cancelAction={() => this.resetFlow()} isWithdraw2fa callback={this.setTowFaToken} />)
+        <Withdraw2FaModal cancelAction={() => this.close2FaModal()} isWithdraw2fa callback={this.setTowFaToken} />)
     }
     this.props.action.isAppLoading(true)
 
@@ -256,7 +256,15 @@ class WithdrawFlow extends Component {
     // console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
 
     if (!res) {
-      return this.resetFlow()
+      this.setState({
+        finish_step: false,
+        limit_supered_component: false,
+        need_new_acount: true,
+        twoFaToken: null
+      })
+      this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
+      this.props.action.isAppLoading(false)
+      return this.handleError('La orden no ha podido ser creada')
     }
 
     const {
@@ -273,18 +281,15 @@ class WithdrawFlow extends Component {
     return this.create_order(res)
   }
 
-  resetFlow() {
+  close2FaModal () {
+    if(!this.state.need_new_acount) return
     this.setState({
-      finish_step: false,
-      limit_supered_component: false,
-      need_new_acount: true,
-      twoFaToken: null
+      need_new_acount: false,
+      show_list_accounts: true,
     })
-    this.props.action.FlowAnimationLayoutAction('backV', 'back', "withdraw", 1)
     this.props.action.isAppLoading(false)
-    return this.handleError('La orden no ha podido ser creada')
+    this.volver(1)
   }
-
 
 
 

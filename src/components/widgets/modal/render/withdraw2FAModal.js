@@ -13,7 +13,6 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
   const cerrar = () => {
     actions.renderModal(null)
     if(cancelAction) {
-      actions.toggleModal()
       cancelAction()
     }
   }
