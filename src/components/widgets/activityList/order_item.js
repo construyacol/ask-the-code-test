@@ -71,7 +71,8 @@ const getState = ({ state, currency_type, id }) => {
 
   const { tx_path } = UseTxState(id)
 
-  return state === 'pending' ? 'Pendiente' :
+  return tx_path === 'swaps' && (state === 'pending' || state === 'confirmed') ? 'Procesando' :
+         state === 'pending' ? 'Pendiente' :
          state === 'confirmed' && tx_path === 'withdraws' ? 'Procesando' :
          (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
          state === 'confirmed' ? 'Confirmando' :
@@ -150,12 +151,14 @@ const SwapOrder = (props) => {
     currency_type
   } = order
 
+  // let tradeActive = state === 'pending' || state === 'confirmed' || null
+  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| tradeActive', tradeActive)
 
   return (
-      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${order.inProcess ? 'inProcess' : '' }`}>
+      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${order.activeTrade ? 'inProcess' : '' }`}>
 
         {
-          order.inProcess &&
+          order.activeTrade &&
           <BarraSwap className="barraSwap">
             <div className={`relleno ${(state === 'pending') ? 'swaPending' :
               (state === 'confirmed') ? 'swaProcessing' :
@@ -167,7 +170,7 @@ const SwapOrder = (props) => {
 
         <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
           {
-            order.inProcess ?
+            order.activeTrade ?
             <>
             <div className="loaderViewItem" >
               <SimpleLoader loader={2}/>
@@ -176,14 +179,14 @@ const SwapOrder = (props) => {
               from={order.to_spend_currency.currency}
               to={order.to_buy_currency.currency}
               colorIcon="#1cb179"
-              // colorIcon={statePendingSwap === 'done' ? '#1cb179' : statePendingSwap === 'processing' ? '#77b59d' : statePendingSwap === 'pending' && '#ff8660' }
+              colorIcon={state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660' }
             />
             </>
             :
             <>
             <PanelLeft {...order} />
             <OrderIcon className="fas fa-retweet swap" />
-            <TypeOrderText className="fuente swap">{getTypeOrder(order)}</TypeOrderText>
+            <TypeOrderText className="fuente swap">Intercambio</TypeOrderText>
             <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
             </>
           }

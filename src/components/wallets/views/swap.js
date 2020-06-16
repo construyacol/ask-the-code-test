@@ -157,8 +157,9 @@ function SwapView(props) {
 
   const confirmSwap = async () => {
     actions.isAppLoading(true)
-    // await coinsendaServices.get_swaps(currentWallet.id)
-    // await actions.update_activity_state(currentWallet.id, 'swaps')
+    if(!props.order_list){
+      await coinsendaServices.get_swaps(currentWallet.id)
+    }
     const { pair_id } = currentPair
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, pair_id, value)
     actions.isAppLoading(false)
@@ -231,12 +232,6 @@ function SwapView(props) {
   return (
     <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
-      {
-        loader &&
-        <LoaderTrade
-          label="Procesando tu cambio"
-        />
-      }
 
       <InputForm
         classes="fuente2"
@@ -282,7 +277,7 @@ function SwapView(props) {
       </div>
 
       <ControlButton
-        loader={loaderButton}
+        loader={loaderButton || loader}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
       />
@@ -336,6 +331,7 @@ const SwapViewLoader = () => {
       />
     </SwapForm>
   )
+
 }
 
 function mapStateToProps(state, props) {
@@ -356,7 +352,8 @@ function mapStateToProps(state, props) {
     short_name: state.ui.current_section.params.short_name,
     local_currency: state.modelData.pairs.localCurrency,
     currencies: state.modelData.currencies,
-    currentPair
+    currentPair,
+    order_list:state.storage.activity_for_account[current_wallet.id] && state.storage.activity_for_account[current_wallet.id].swaps
   }
 }
 export default connect(mapStateToProps)(SwapView)

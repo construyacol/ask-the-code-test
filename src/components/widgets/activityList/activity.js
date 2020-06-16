@@ -5,7 +5,10 @@ import OrderItem from './order_item'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
+// import OrderDetail from '../modal/render/orderDetail'
 // import SimpleLoader from '../loaders'
+
+
 
 import './activity_view.css'
 
@@ -154,6 +157,10 @@ class ActivityList extends Component {
 
   }
 
+  openOrder = async() => {
+    const OrderDetail = await import('../modal/render/orderDetail')
+    this.props.action.renderModal(()=><OrderDetail.default/>)
+  }
 
 
 
@@ -251,7 +258,7 @@ class ActivityList extends Component {
                         if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps'){
                           return <OrderItem
                                   index={index}
-                                  handleAction={this.verTicket}
+                                  handleAction={this.openOrder}
                                   order={item}
                                   key={index}
                                 />

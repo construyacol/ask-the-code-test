@@ -355,41 +355,32 @@ class SocketsComponent extends Component {
 
         // console.log(new_swap)
         // debugger
-         await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', inProcess:true})
+         await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', activeTrade:true})
          await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
          this.props.action.isAppLoading(false)
          await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
          this.props.action.add_new_transaction_animation()
     }
-
     // return
     if (swap.state === 'accepted' && this.state.currentSwap.state !== 'done') {
       const { currentSwap } = this.state
 
+      await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
       setTimeout(async()=>{
-        await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "confirmed", bought:"0.02" } }, 'swaps')
-        // await this.props.action.update_activity_state(this.props.swaps[currentSwap.id].account_from, 'swaps')
-
+        await this.props.action.success_sound()
+        this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "confirmed", bought:swap.bought } }, 'swaps')
       },2000)
 
       setTimeout(async()=>{
-        // this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "accepted", inProcess: false } }, 'swaps')
-        // await this.props.action.update_activity_state(this.props.swaps[currentSwap.id].account_from, 'swaps')
-        // await this.props.action.success_sound()
-        // await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
-        // await this.props.action.current_section_params({ active_trade_operation: {id:currentSwap.id, state:"confirmed", inProcess:true} })
-
-        // setTimeout(async()=>{
-          // await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], inProcess: false } }, 'swaps')
-          // await this.props.action.update_activity_state(this.props.swaps[currentSwap.id].account_from, 'swaps')
-          // await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
-        // },1050)
-      }, 3500)
-
-
-
-
-
+        this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "accepted"} }, 'swaps')
+        await this.props.action.success_sound()
+        setTimeout(async()=>{
+          await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], activeTrade:false} }, 'swaps')
+          await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+          await this.props.action.add_coin_sound()
+          await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
+        },1500)
+      }, 4500)
 
       // return setTimeout(async () => {
       //   await this.props.action.success_sound()
@@ -412,11 +403,11 @@ class SocketsComponent extends Component {
       // }, 3500)
     }
 
-    // if (swap.status === 'error') {
-    //   this.props.action.mensaje('El intercambio no se pudo realizar, contacta con soporte', 'error')
-    //   this.props.action.ticket_canceled()
-    //   // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
-    // }
+    if (swap.status === 'error') {
+      this.props.action.mensaje('El intercambio no se pudo realizar, contacta con soporte', 'error')
+      this.props.action.ticket_canceled()
+      // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
+    }
 
   }
 

@@ -16,7 +16,6 @@ const UseTxState = (order_id) => {
     const [ coinsendaServices ] = useCoinsendaServices()
     const { primary_path, tx_path, account_id, path  } = params
     const { currencies } = state.modelData
-    // const { active_trade_operation } = state.ui.current_section.params
 
 
     const { activity_for_account } = state.storage
@@ -32,7 +31,6 @@ const UseTxState = (order_id) => {
         currencies:currencies && convertToObjectWithCustomIndex(currencies, 'currency'),
         actions:{...actions},
         order:state.modelData[tx_path] && state.modelData[tx_path][order_id]
-        // active_trade:active_trade_operation && active_trade_operation.id === order_id && active_trade_operation
       }
 }
 

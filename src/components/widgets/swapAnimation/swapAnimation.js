@@ -14,17 +14,17 @@ class SwapAnimation extends Component {
       colorIcon
     } = this.props
 // manejar un estado donde me cambie el atributo icon en 90 grados para aparecer el siguiente simbolo vectorizado en la animación
-  console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| SWAP ANIMATION', this.props);
+  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| SWAP ANIMATION', this.props);
 
     return(
       <div className="SwapAnimation">
         <div className="portaDivisas">
           <div className="contCurrencieSwap">
               <div className="FromCurrency">
-                <IconSwitch icon={from} size={20}/>
+                <IconSwitch icon={from || 'bitcoin'} size={20}/>
               </div>
               <div className="ToCurrency">
-                <IconSwitch icon={to} size={20}/>
+                <IconSwitch icon={to || 'bitcoin'} size={20}/>
               </div>
           </div>
         </div>
