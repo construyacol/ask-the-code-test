@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 import { ButtonForms } from '../buttons/buttons'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -34,9 +34,9 @@ class CropImg extends React.Component {
 
     let current_zoom = this.state.zoom
 
-    if(zoom>current_zoom && zoom<=3){
+    if (zoom > current_zoom && zoom <= 3) {
       current_zoom += 0.06
-    }else{
+    } else {
       current_zoom = zoom
     }
 
@@ -44,7 +44,7 @@ class CropImg extends React.Component {
     //   current_zoom -= 0.06
     // }
 
-    this.setState({ zoom:current_zoom })
+    this.setState({ zoom: current_zoom })
   }
 
   // onFileChange = async e => {
@@ -64,24 +64,24 @@ class CropImg extends React.Component {
     await this.props.action.isAppLoading(true)
     const croppedImage = await getCroppedImg(this.state.imageSrc, this.state.croppedAreaPixels, this.state.imgRotation)
     // return console.log('showCroppedImage', croppedImage)
-    if(!croppedImage){return this.props.action.isAppLoading(false)}
+    if (!croppedImage) { return this.props.action.isAppLoading(false) }
 
     const {
       urlImg
     } = croppedImage
 
-    await this.setState({croppedImage: urlImg})
+    await this.setState({ croppedImage: urlImg })
     this.props.subirImg(croppedImage)
   }
 
-  cancelCroppedImg = () =>{
+  cancelCroppedImg = () => {
     this.setState({
-      croppedImage:null
+      croppedImage: null
     })
     this.props.cancelarSubidaImg()
   }
 
-  componentWillReceiveProps(props){
+  componentWillReceiveProps(props) {
     this.setState({
       imageSrc: props.imageSrc
     })
@@ -97,7 +97,7 @@ class CropImg extends React.Component {
           this.state.imageSrc &&
 
           <Fragment>
-              {/* <Cropper
+            {/* <Cropper
                 minZoom={minZoom}
                 image={this.state.imageSrc}
                 crop={this.state.crop}
@@ -107,21 +107,21 @@ class CropImg extends React.Component {
                 onCropComplete={this.onCropComplete}
                 onZoomChange={this.onZoomChange}
               /> */}
-              <CropperIMG onCropComplete={this.onCropComplete} image={this.state.imageSrc} />
+            <CropperIMG onCropComplete={this.onCropComplete} image={this.state.imageSrc} />
             <div className="ImgCropcontrols">
 
-                    <ButtonForms
-                      active={true}
-                      type="secundary"
-                      siguiente={this.cancelCroppedImg}
-                      >Cancelar</ButtonForms>
-                    {/* <img src={this.state.croppedImage} alt="" width="40"/> */}
+              <ButtonForms
+                active={true}
+                type="secundary"
+                siguiente={this.cancelCroppedImg}
+              >Cancelar</ButtonForms>
+              {/* <img src={this.state.croppedImage} alt="" width="40"/> */}
 
-                    <ButtonForms
-                      active={true}
-                      type="primary"
-                      siguiente={this.showCroppedImage}
-                      >Guardar</ButtonForms>
+              <ButtonForms
+                active={true}
+                type="primary"
+                siguiente={this.showCroppedImage}
+              >Guardar</ButtonForms>
             </div>
           </Fragment>
         }
@@ -132,12 +132,12 @@ class CropImg extends React.Component {
 
 
 
-function mapDispatchToProps(dispatch){
-  return{
-    action:bindActionCreators(actions, dispatch)
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
   }
 }
 
 
 
-export default connect(null, mapDispatchToProps) (CropImg)
+export default connect(null, mapDispatchToProps)(CropImg)

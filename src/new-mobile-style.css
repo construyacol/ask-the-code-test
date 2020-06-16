@@ -63,6 +63,7 @@
 
 .contenido.withdraw_accounts {
     /* min-height: 100%; */
+    grid-row-gap: 12px;    
 }
 
 @media screen and (max-width: 900px) {
@@ -120,7 +121,7 @@
   }
 
   .DepositView, #swapForm, .DCcurrent_wallet form, .contenido.withdraw_accounts.activity{
-    transform: scale(.9);
+    /* transform: scale(.9); */
   }
 
     .asaras .TicketDetail {

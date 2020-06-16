@@ -36,7 +36,6 @@ const InputForm = (props) => {
     )
   }
 
-  // TODO: cambiar las validacines a valores bolleanos, asi evitamos evaluar foo === "bad" o "good"
   const [inputState, setInputState, changeState] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 

@@ -59,6 +59,15 @@ function RootContainer(props) {
       userEmail: email,
       userId: usr
     })
+
+    // En este punto el token es valido
+    // aqui se verifica que el origen del mensaje sea del Landing
+
+    const parent = window.parent;
+    if(parent) {
+      parent.postMessage('loadedAndLogged', '*');
+    }
+
     history.push('/')
   }
 

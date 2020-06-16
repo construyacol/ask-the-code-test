@@ -10,7 +10,6 @@ import AccountList from '../widgets/accountList/account-list'
 import PropTypes from 'prop-types'
 import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
 import { WalletDetail } from '../wallets/walletContainer'
-import ActivityView from '../wallets/views/activity'
 import withdrawActivity from '../wallets/views/withdraw-activity'
 
 function WitdrawAccountContainer(props) {
@@ -40,7 +39,7 @@ function WitdrawAccountContainer(props) {
           {...props}
           {...routeProps}
         >
-          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
+          <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={(renderProps) => (
             <WalletDetail wallets={data} {...renderProps} />
           )} />
           <>
@@ -51,11 +50,11 @@ function WitdrawAccountContainer(props) {
                     <AccountListSkeletonLoader />
                     :
                     (isAppLoaded && withdraw_accounts) &&
-                    <AccountList isWithdrawView data={data} />
+                    <AccountList {...routeProps} isWithdrawView data={data} />
                 }
               </>
             )} />
-            <Route strict path={["/:primary_path/:path/:account_id", "/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
+            <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
           </>
         </DetailContainerLayout>
       )} />

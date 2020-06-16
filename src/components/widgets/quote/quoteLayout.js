@@ -19,7 +19,17 @@ const QuoteLayout = props => {
   const { localCurrency } = props
   const { buy_price, sell_price } = props
   let iter = 0
-
+  
+  const secondCurrency = localCurrency.includes('testnet') ? 'bitcoin' : localCurrency
+  const toSearch = 
+    currentPair && currentPair.primary_currency.currency.includes('testnet') ? 'bitcoin' : 
+    currentPair && currentPair.primary_currency.currency
+  const conditionToShowIcon = 
+    currentPair && (currentPair.buy_pair === `BTC/${secondCurrency.toUpperCase()}` ||
+    currentPair.buy_pair === `USD/${secondCurrency.toUpperCase()}` ||
+    currentPair.buy_pair === `BTCT/${secondCurrency.toUpperCase()}`)
+  const foundCoin = coins.find(item => item.name.includes(toSearch))
+  
   return(
      <QuoteLayoutCont>
 
@@ -66,8 +76,8 @@ const QuoteLayout = props => {
                         // <Slider currency={currency} items={user_collection} select_currency={select_currency} />
                      )
                      :
-                     (currentPair.buy_pair === `BTC/${localCurrency.toUpperCase()}`) ?
-                        <ItemLayout actives={true} {...coins[0]} key={coins[0].id} />
+                     (conditionToShowIcon && foundCoin) ?
+                        <ItemLayout actives={true} {...foundCoin} />
                      :
                         <h1>{currentPair.buy_pair}</h1>
                 }

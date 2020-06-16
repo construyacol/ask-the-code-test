@@ -85,7 +85,7 @@ const MenuPrincipalLayout = (props) => {
                 !acronym  ?
                 <IconSwitch icon="coinsenda" size={40} color="white"/>
                 :
-                <p>{acronym}</p>
+                <p className="fuente">{acronym}</p>
               }
             </div>
             {/* <img src={userPic} alt="" className="userPic" width="100%" /> */}
@@ -95,10 +95,10 @@ const MenuPrincipalLayout = (props) => {
 
 
         <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
-          {
+          {/* {
             props.user.verification_level === 'level_1' &&
             <i className="far fa-check-circle mPverify"></i>
-          }
+          } */}
         </p>
         {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span cl  assName="number">2.000</span> USD</p> */}
           <ScoresComponent />

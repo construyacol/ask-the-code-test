@@ -144,12 +144,18 @@ class WithdrawAccountForm extends Component {
     let value = event.target.value
     // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
     // console.log('|||||| ESTADO ACTUAL:::', this.state)
+
     window.requestAnimationFrame(() => {
       let truncateString = false
       let maxLength = 50
       if (name && name === 'id_number') {
-        value = value.replace(/[^a-zA-Z0-9]/g, "");
-        truncateString = true
+        if(this.state.id_type === 'nit') {
+          maxLength = 11
+          value = value.replace(/(\d{9})(\d{1})/, "$1-$2")
+        } else {
+          value = value.replace(/[^a-zA-Z0-9]/g, "");
+          truncateString = true
+        }
       }
 
       if (name && name === 'account_number') {

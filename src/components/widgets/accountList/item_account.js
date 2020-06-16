@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 // import styled, { css } from 'styled-components'
 import backcard from '../../../assets/wallet_coins/back.png'
 import IconSwitch from '../icons/iconSwitch'
@@ -64,7 +64,7 @@ const ItemAccount = props => {
 
   const account_detail = async (payload) => {
     if(payload !== 'wallets') {
-      return props.history.push(`/withdraw_accounts/activity/${props.account.id}`)
+      return props.history.push(`/withdraw_accounts/activity/${props.account.id}/withdraws`)
     }
     if(account_state === 'deleting' || account_state === 'deleted'){return}
     props.actions.cleanNotificationItem(payload, 'account_id')
@@ -196,13 +196,13 @@ const Wallet = props => {
 
       {
         props.actions &&
-        <Fragment>
+        <>
           <AccountCta handleAction={props.handleAction} payload={props.account_type} />
           <OptionsAccount
             account_detail={props.handleAction}
             delete_account={delete_account}
             {...props} />
-        </Fragment>
+        </>
       }
       <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconWallet">
@@ -213,7 +213,7 @@ const Wallet = props => {
         <PopNotification notifier='wallets' item_type="account_id" id={id} type="new" />
       </div>
       <p className="IWText fuente IWcurrencyText tobe_continue">{currency.currency}</p>
-      <Fragment>
+      <>
         {
           balances ?
             <BalanceComponent account_id={id} />
@@ -222,7 +222,7 @@ const Wallet = props => {
               <SimpleLoader color="white" />
             </div>
         }
-      </Fragment>
+      </>
     </WalletLayout>
   )
 
@@ -237,13 +237,15 @@ const WithdrawAccount = props => {
     <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       {
         props.actions &&
-        <Fragment>
-          <AccountCta handleAction={props.handleAction} payload={props.account_type} />
+        <>
+          {(used_counter > 0) && (
+            <AccountCta handleAction={props.handleAction} payload={props.account_type} />
+          )}
           <OptionsAccount
             account_detail={props.handleAction}
             delete_account={delete_account}
             {...props} />
-        </Fragment>
+        </>
       }
       <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
@@ -251,7 +253,7 @@ const WithdrawAccount = props => {
       </div>
       <h1 className="IWText fuente tobe_continue">{bank_name.ui_name} <PopNotification notifier='withdraw_accounts' item_type="account_id" id={id} type="new" /></h1>
       <p className="IWText fuente2 IWLittleTitle">No. {account_number.value}</p>
-      <Fragment>
+      <>
         <div className="contSuscribed">
           {
             !inscribed ?
@@ -264,7 +266,7 @@ const WithdrawAccount = props => {
           <p className="IWText fuente IWLittleTitle">{inscribed ? 'inscrita' : 'Inscribiendo'}</p>
         </div>
         <p className="IWText fuente IWLittleTitle" style={{ display: !inscribed ? 'none' : 'flex' }}>Movimientos: {used_counter}</p>
-      </Fragment>
+      </>
     </WithdrawAccountL>
   )
 
@@ -273,7 +275,7 @@ const WithdrawAccount = props => {
 const LoaderAccount = () => {
   const items = ['uno', 'dos', 'tres']
   return (
-    <Fragment>
+    <>
       {
         items.map((e, key) => {
           return <WalletLayout className={`loader ${e}`} key={key}>
@@ -284,7 +286,7 @@ const LoaderAccount = () => {
           </WalletLayout>
         })
       }
-    </Fragment>
+    </>
   )
 }
 

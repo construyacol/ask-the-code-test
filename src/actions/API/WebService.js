@@ -36,14 +36,14 @@ export class WebService {
         return !data || (data && data.lenght === 0)
     }
 
-    Post(url, body) {
+    Post(url, body, withAuth = true) {
         const params = {
             method: `POST`,
-            headers: {
+            headers: withAuth ? {
                 Accept: `*/*`,
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${this.token}`
-            },
+            } : {},
             body: JSON.stringify(body)
         }
 

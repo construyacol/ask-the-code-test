@@ -6,7 +6,9 @@ import actions from '../../../actions'
 import ActivityList from '../../widgets/activityList/activity'
 import { scroller } from 'react-scroll'
 import ActivityFilters from '../../widgets/activityList/filters'
-import LoaderActivity from '../../widgets/activityList/order_item'
+import { LoaderItem } from '../../widgets/activityList/order_item'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+
 
 import './wallet_views.css'
 
@@ -15,6 +17,9 @@ const ActivityView = props => {
 
   const { params } = props.match
   const [ loader, setLoader ] = useState(false)
+  const [coinsendaServices] = useCoinsendaServices()
+
+
 
   const redirect = (activity_list) => {
     // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, activity_list && !activity_list.length)
@@ -75,7 +80,9 @@ const ActivityView = props => {
       const init_activity = async () => {
         setLoader(true)
         let method = `get_${params.tx_path}`
-        let activity_list = await props.action[method](params.account_id)
+        // let activity_list = await props.action[method](params.account_id)
+        let activity_list = await coinsendaServices[method](params.account_id)
+
         if (!activity_list.length) {
           get_activity(method)
         }
@@ -101,7 +108,7 @@ const ActivityView = props => {
       <ActivityFilters />
       {
         (loader || !props.order_list) ?
-          <LoaderActivity />
+          <LoaderItem />
           :
           <ActivityList
             activity={props.order_list}

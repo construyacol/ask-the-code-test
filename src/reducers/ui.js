@@ -57,7 +57,7 @@ const initialState = {
       swap_done_id:null,
       swap_done_out:null,
       swap_done_in:null,
-      new_deposit_style:null,
+      new_order_style:null,
       currentFilter:'deposits',
       active_trade_operation:false
     }

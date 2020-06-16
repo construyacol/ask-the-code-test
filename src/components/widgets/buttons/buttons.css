@@ -558,18 +558,18 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 .TicketDetail #confirmIcon{
   font-size: 16px !important;
 }
-.TicketDetail .laReputas>div{
+.TicketDetail .confirmButton>div{
   height: 55px !important;
 }
 
-.TicketDetail .laReputas{
+.TicketDetail .confirmButton{
   height: 60px !important;
 }
 
 
 
 
-.laReputas>div{
+.confirmButton>div{
   /*width: 100px;*/
   padding: 0 15px !important;
   font-size: 14px !important;
@@ -578,12 +578,12 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   color: gray;
 }
 
-.ItemList:hover .laReputas>div{
+.ItemList:hover .confirmButton>div{
   border: 2px solid #1cb179 !important;
 }
 
 
-.ItemList:hover .laReputas{
+.ItemList:hover .confirmButton{
   animation-name: rotaloPerro2;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
@@ -591,7 +591,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 }
 
 
-.laReputas{
+.confirmButton{
   margin: 0 !important;
   height: 50px;
   display: flex;
