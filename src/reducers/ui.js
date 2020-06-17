@@ -261,13 +261,13 @@ const ui = (state = initialState, action)=>{
       }
 
     case OTHER_MODAL:
-    // console.log('haz hecho click en el modal confirmation', action.payload)
+    // console.log('has hecho click en el modal confirmation', action.payload)
       return {
         ...state,
         otherModal:!state.otherModal
       }
     case SECTION_VIEW_TO:
-    // console.log('haz hecho click en el modal confirmation', action.payload)
+    // console.log('has hecho click en el modal confirmation', action.payload)
       return {
         ...state,
         current_section:{
@@ -277,7 +277,7 @@ const ui = (state = initialState, action)=>{
       }
 
     case CONFIRMATION_MODAL_PAYLOAD:
-    // console.log('haz hecho click en el modal confirmation', action.payload)
+    // console.log('has hecho click en el modal confirmation', action.payload)
       return {
         ...state,
         modal_confirmation:{
@@ -288,7 +288,7 @@ const ui = (state = initialState, action)=>{
       }
 
     case MODAL_CONFIRMATION_TOGGLE:
-    // console.log('haz hecho click en el modal confirmation', state.modal_confirmation)
+    // console.log('has hecho click en el modal confirmation', state.modal_confirmation)
       return {
         ...state,
         modal_confirmation:{
