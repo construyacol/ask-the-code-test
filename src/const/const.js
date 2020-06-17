@@ -133,3 +133,14 @@ export const chartOptions = {
     loading: 'Cargando...'
   }
 }
+
+export const ACCEPT_FILE_TYPE = [
+  "image/jpeg",
+  "image/png",
+  ".pdf"
+]
+
+export const ACCEPT_FILE_TYPE_ADVANCE_KYC = [
+  "image/jpeg",
+  "image/png",
+]

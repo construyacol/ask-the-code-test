@@ -10,13 +10,8 @@ import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 import { img_compressor } from '../../../utils'
+import { ACCEPT_FILE_TYPE } from '../../../const/const'
 
-
-const ACCEPT_FILE_TYPE = [
-  "image/jpeg",
-  "image/png",
-  ".pdf"
-]
 class KycFinancialComponent extends Component {
 
 
