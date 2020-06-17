@@ -5,6 +5,10 @@ import { SimpleLoader } from '../loaders'
 import IconSwitch from '../icons/iconSwitch'
 import Environtment from '../../../environment'
 import NumberInput from './numberInput'
+import MaskedInput from 'react-text-mask'
+import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe'
+
+const autoCorrectedDatePipe = createAutoCorrectedDatePipe('dd/mm/yyyy')
 const { CountryUrl } = Environtment
 
 
@@ -293,7 +297,7 @@ export class InputDepositForm extends Component {
       value
     } = props
 
-    if(value) {
+    if (value) {
       this.setState({
         finalValue: number_format(value)
       })
@@ -432,6 +436,8 @@ export const InputKycBasic = (props) => {
 
         {
           kyc.map(item => {
+            const isDateInput = state.ui_type === 'date'
+            const classNames = `inputElement3 ${state.active ? 'inputActivado' : ''} ${state.ui_type === 'phone' ? 'phone' : ''}`
             return step === item.id &&
               <form onSubmit={handleSubmit} key={item.id} id={`${state.ui_type === 'phone' ? 'phone' : ''}`}>
                 {
@@ -444,14 +450,31 @@ export const InputKycBasic = (props) => {
                 }
 
                 {
+                  isDateInput && (
+                    <MaskedInput
+                      mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
+                      className={classNames}
+                      placeholder={item.placeholder}
+                      guide={true}
+                      name={item.name}
+                      pipe={autoCorrectedDatePipe}
+                      onChange={(e) => {
+                        e.persist()
+                        update(e)
+                      }}
+                    />
+                  )
+                }
+
+                {
                   (search_result && state.ui_type === 'select') ?
                     <p className={`search_result_kyc openS`}>{search_result.name}
                       <i className="fas fa-times cerratelo" onClick={clean_search_result}></i>
                     </p>
                     :
-                    <input
+                    !isDateInput && <input
                       key={item.id}
-                      className={`inputElement3 ${state.active ? 'inputActivado' : ''} ${state.ui_type === 'phone' ? 'phone' : ''}`}
+                      className={classNames}
                       type={state.ui_type === 'phone' ? 'number' :
                         state.ui_type === 'select' ? 'text' : state.ui_type}
                       placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
