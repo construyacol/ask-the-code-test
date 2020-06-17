@@ -424,7 +424,7 @@ shouldComponentUpdate(nextProps, nextState){
           </div>
           :
           <div className="KycLayout">
-            <p className="fuente KycTitle KycTitless" >Verificación Basica</p>
+            <p className="fuente KycTitle KycTitless" >Verificación Básica</p>
             <KycBasicLayout
               update={this.update}
               handleSubmit={this.handleSubmit}
@@ -487,7 +487,7 @@ shouldComponentUpdate(nextProps, nextState){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id} = state.modelData
+  const { user } = state.modelData
 
 
   return{

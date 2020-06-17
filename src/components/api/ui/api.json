@@ -454,7 +454,7 @@
           "label":"Nombres Completos",
           "placeholder":"Ej: Carlos Julio",
           "message":"Los nombres deben coincidir con los de tu documento de identidad",
-          "errmessage":"Escribe tus dos o mas nombres completos, ojo solo los nombres."
+          "errmessage":"Escribe tus dos o más nombres completos, ojo solo los nombres."
         },
         "surname":{
           "name":"surname",
@@ -472,9 +472,9 @@
         },
         "phone":{
           "name":"phone",
-          "label":"Numero de Celular",
-          "placeholder":"Numero de Celular",
-          "message":"Escribe el numero de celular mas el indicativo ej '+57 - 315...'",
+          "label":"Número de Celular",
+          "placeholder":"Número de Celular",
+          "message":"Escribe el número de celular más el indicativo ej '+57 - 315...'",
           "errmessage":"Oh!!, Al parecer no estas haciendo las cosas bien"
         },
         "address":{
@@ -500,9 +500,9 @@
         },
         "id_number":{
           "name":"id_number",
-          "label":"Numero de identificación",
-          "placeholder":"Numero de documento",
-          "message":"Escribe el numero de identificación que aparece en tu documento",
+          "label":"Número de identificación",
+          "placeholder":"Número de documento",
+          "message":"Escribe el número de identificación que aparece en tu documento",
           "errmessage":"Oh!!, debes ingresar los datos correctamente"
         },
         "country":{

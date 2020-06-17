@@ -42,7 +42,7 @@ class Kyc extends Component {
     if(!res){
              await this.props.action.ReduceStep('kyc_basic', 1)
              this.props.action.isAppLoading(false)
-             this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+             this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
       return this.props.action.ReduceStep('kyc_global_step', 1)
     }
     const { data } = res
@@ -100,7 +100,7 @@ class Kyc extends Component {
              await this.props.action.ReduceStep('kyc_avanced', 1)
              await this.setState({reset:true})
              this.props.action.isAppLoading(false)
-            return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+            return this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
       // return this.props.action.ReduceStep('kyc_global_step', 1)
     }
     let user_update = {
@@ -140,7 +140,7 @@ const { user } = this.props
   if(!res){
            // await this.props.action.ReduceStep('kyc_basic', 1)
            this.props.action.isAppLoading(false)
-           return this.props.action.mensaje('No puedes verificarte en este momento, intenta mas tarde', 'error')
+           return this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
   }
   this.props.action.success_sound()
 

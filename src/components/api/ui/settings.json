@@ -161,7 +161,7 @@
         {
           "id":4,
           "name":"phone",
-          "label":"Numero Móvil",
+          "label":"Número Móvil",
           "description":"Agregalo como metodo de respaldo adicional y monitoréa tu cuenta por medio de SMS desde tu telefono movil.",
           "verify":true,
           "cta_primary":"+57 315 608 44 66",

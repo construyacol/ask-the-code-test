@@ -245,7 +245,7 @@ class KycFinancialComponent extends Component {
           name={this.props.user.name}
           confetti={true}
           cta_secondary={false}
-          title="!Lo haz hecho muy bien!, tus documentos han sido enviados exitosamente, los analizaremos y te pondremos al tanto de novedades lo mas pronto posible."
+          title="!Lo haz hecho muy bien!, tus documentos han sido enviados exitosamente, los analizaremos y te pondremos al tanto de novedades lo más pronto posible."
           classes="long_msg"
           cta_primary_text="Finalizar"
           siguiente={this.finish}

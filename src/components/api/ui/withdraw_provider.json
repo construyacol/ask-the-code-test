@@ -40,7 +40,7 @@
       "ui_name": "Apellidos"
     },
     "id_number": {
-      "ui_name": "Cedula o NIT"
+      "ui_name": "Cédula o NIT"
     },
     "bank_name": {
         "ui_name": "Banco",
@@ -139,7 +139,7 @@
       "ui_name": "Apellidos"
     },
     "id_number": {
-      "ui_name": "Cedula o NIT"
+      "ui_name": "Cédula o NIT"
     },
     "bank_name": {
         "ui_name": "Banco",

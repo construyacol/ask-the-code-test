@@ -539,14 +539,14 @@ export const handleKeyPress = (e, current) => {
   var keynum = window.event ? window.event.keyCode : e.which;
   // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
     if (keynum<48 || keynum>57){
-      return "Solo se aceptan numeros en este campo"
+      return "Solo se aceptan números en este campo"
     }
     return /\d/.test(String.fromCharCode(keynum));
 }
 
 export const number_format = (amount) => {
-    amount += ''; // por si pasan un numero en vez de un string
-    amount = parseFloat(amount.replace(/[^0-9]/g, '')); // elimino cualquier cosa que no sea numero o punto
+    amount += ''; // por si pasan un número en vez de un string
+    amount = parseFloat(amount.replace(/[^0-9]/g, '')); // elimino cualquier cosa que no sea número o punto
     amount = '' + amount.toFixed(0);
 
     var amount_parts = amount.split('.'),

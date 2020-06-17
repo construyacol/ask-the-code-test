@@ -74,7 +74,7 @@ class WithdrawAccountForm extends Component {
     var keynum = window.event ? window.event.keyCode : e.which;
     // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
     if (keynum < 48 || keynum > 57) {
-      this.setState({ statusInput: "Solo se aceptan numeros en este campo" })
+      this.setState({ statusInput: "Solo se aceptan números en este campo" })
       return true;
     }
 

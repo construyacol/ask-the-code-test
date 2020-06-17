@@ -51,7 +51,7 @@ export default class SimpleSlider extends Component {
             <Marco>
               <img src={borroso} alt="" width="80%"/>
             </Marco>
-            <p className="fuente" >Asegurese que la identificación este totalmente visible y enfocada, incluidos su nombre completo, fecha de nacimiento y numero de identificación.</p>
+            <p className="fuente" >Asegurese que la identificación este totalmente visible y enfocada, incluidos su nombre completo, fecha de nacimiento y número de identificación.</p>
           </div>
 
 
