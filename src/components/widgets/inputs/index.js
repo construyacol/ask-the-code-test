@@ -475,12 +475,12 @@ export const InputKycBasic = (props) => {
                     !isDateInput && <input
                       key={item.id}
                       className={classNames}
-                      type={state.ui_type === 'phone' ? 'number' :
+                      type={state.ui_type === 'phone' ? 'text' :
                         state.ui_type === 'select' ? 'text' : state.ui_type}
                       placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
                       onChange={update}
                       name={item.name}
-                      defaultValue={state.ui_type !== 'select' ? state.data_state[item.name] : null}
+                      value={state.ui_type !== 'select' ? state.data_state[item.name] : null}
                       onFocus={_onFocus}
                     // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                     />
