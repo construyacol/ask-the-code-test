@@ -18,14 +18,16 @@ moment.locale('es')
 
 const OrderItem = ({ order, handleAction }) => {
 
-  const { tx_path, new_order_style } = UseTxState(order.id)
+  const txState = UseTxState(order.id)
+  const { tx_path, new_order_style, actions } = txState
   const [ show,  element ] = ObserverHook()
   const [ orderState, setOrderState ] = useState()
 
 
-  const orderDetail = () => {
-    // alert('detail')
-    handleAction(order)
+  const orderDetail = async() => {
+    if(!order){return}
+    const OrderDetail = await import('../modal/render/orderDetail')
+    actions.renderModal(()=><OrderDetail.default order={order} {...txState}/>)
   }
 
 
@@ -168,26 +170,37 @@ const SwapOrder = (props) => {
           </BarraSwap>
         }
 
+
+
         <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
           {
-            order.activeTrade ?
+            order.activeTrade && order.state !== 'accepted' ?
             <>
-            <div className="loaderViewItem" >
-              <SimpleLoader loader={2}/>
-            </div>
-            <SwapAnimation
-              from={order.to_spend_currency.currency}
-              to={order.to_buy_currency.currency}
-              colorIcon="#1cb179"
-              colorIcon={state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660' }
-            />
+              <div className="loaderViewItem" >
+                <SimpleLoader loader={2}/>
+              </div>
+              <SwapAnimation
+                from={order.to_spend_currency.currency}
+                to={order.to_buy_currency.currency}
+                colorIcon="#1cb179"
+                colorIcon={state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660' }
+              />
             </>
             :
             <>
-            <PanelLeft {...order} />
-            <OrderIcon className="fas fa-retweet swap" />
-            <TypeOrderText className="fuente swap">Intercambio</TypeOrderText>
-            <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+              {
+                order.activeTrade && order.state === 'accepted' ?
+                <div className="loaderViewItem" >
+                  <div className="successIcon">
+                    <IconSwitch size={80} icon="success" color="#1cb179"/>
+                  </div>
+                </div>
+                :
+                <PanelLeft {...order} />
+              }
+              <OrderIcon className="fas fa-retweet swap" />
+              <TypeOrderText className="fuente swap">Intercambio</TypeOrderText>
+              <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
             </>
           }
           <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
@@ -655,6 +668,10 @@ export const DataContainer = styled.div`
   align-self: center;
   display: flex;
   align-items: center;
+
+  .acceptedIcon{
+    transform: scale(.4);
+  }
 
   &.swaps{
     row-gap: 7px;

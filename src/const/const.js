@@ -115,3 +115,7 @@ export const currencyFormatByCoin = {
     cop: "COP",
     bitcoin_testnet: "BTCT"
 }
+
+export const orderStateColors = {
+  accepted:'linear-gradient(to bottom right, #11998e, #48c778);'
+}

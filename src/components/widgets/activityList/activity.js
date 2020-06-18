@@ -157,10 +157,10 @@ class ActivityList extends Component {
 
   }
 
-  openOrder = async() => {
-    const OrderDetail = await import('../modal/render/orderDetail')
-    this.props.action.renderModal(()=><OrderDetail.default/>)
-  }
+  // openOrder = async(order) => {
+  //   const OrderDetail = await import('../modal/render/orderDetail')
+  //   this.props.action.renderModal(()=><OrderDetail.default order={order}/>)
+  // }
 
 
 
@@ -258,7 +258,7 @@ class ActivityList extends Component {
                         if(this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps'){
                           return <OrderItem
                                   index={index}
-                                  handleAction={this.openOrder}
+                                  // handleAction={this.openOrder}
                                   order={item}
                                   key={index}
                                 />

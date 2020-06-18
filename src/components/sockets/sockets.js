@@ -352,16 +352,13 @@ class SocketsComponent extends Component {
       // await this.props.action.current_section_params({ active_trade_operation: true })
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
-
-        // console.log(new_swap)
-        // debugger
          await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', activeTrade:true})
          await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
          this.props.action.isAppLoading(false)
          await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
          this.props.action.add_new_transaction_animation()
     }
-    // return
+
     if (swap.state === 'accepted' && this.state.currentSwap.state !== 'done') {
       const { currentSwap } = this.state
 
@@ -369,7 +366,7 @@ class SocketsComponent extends Component {
       setTimeout(async()=>{
         await this.props.action.success_sound()
         this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "confirmed", bought:swap.bought } }, 'swaps')
-      },2000)
+      },2500)
 
       setTimeout(async()=>{
         this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "accepted"} }, 'swaps')
@@ -379,8 +376,8 @@ class SocketsComponent extends Component {
           await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
           await this.props.action.add_coin_sound()
           await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
-        },1500)
-      }, 4500)
+        },2000)
+      }, 5500)
 
       // return setTimeout(async () => {
       //   await this.props.action.success_sound()

@@ -42,7 +42,8 @@ import {
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
   Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
   QRCode,
-  AuthFactor
+  AuthFactor,
+  Accepeted
  } from './'
 
  import {
@@ -154,6 +155,8 @@ class IconSwitch extends Component {
         return <Confirming {...props} />
       case 'accepted':
         return <Medal {...props} />
+      case 'accepted2':
+        return <Accepeted {...props}/>
       case 'email':
         return <Email {...props} />
       case 'coinsenda':
