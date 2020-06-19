@@ -17,7 +17,7 @@ export default function NumberInput(props) {
 
   const handleChange = (event) => {
     const value = String(event.target.value);
-    const isValid = /^[0-9,.]*$/.test(value);
+    const isValid = /^[\d,]{0,30}([.])?([\d]{1,8})?$/.test(value);
     if (!isValid) {
       return;
     }
@@ -40,6 +40,7 @@ export default function NumberInput(props) {
   }
 
   const keyDownHandler = (event) => {
+    if (event.keyCode === 188 || event.key === 'Comma') return event.preventDefault();
     if (event.keyCode === 8 || event.key === 'Backspace') {
       const currentValue = event.currentTarget.value;
       const cursor = event.currentTarget.selectionStart || 0;
