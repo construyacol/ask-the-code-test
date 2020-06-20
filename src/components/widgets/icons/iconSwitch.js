@@ -171,6 +171,7 @@ class IconSwitch extends Component {
         return <Touch {...props} />
       case 'kyc_financial':
         return <Financial {...props} />
+      case 'canceled':
       case 'rejected':
       case 'error':
         return <Errors {...props} />

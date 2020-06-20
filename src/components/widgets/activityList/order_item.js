@@ -152,7 +152,7 @@ const SwapOrder = (props) => {
     id,
     currency_type
   } = order
-
+  const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660'
   // let tradeActive = state === 'pending' || state === 'confirmed' || null
   // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| tradeActive', tradeActive)
 
@@ -177,13 +177,12 @@ const SwapOrder = (props) => {
             order.activeTrade && order.state !== 'accepted' ?
             <>
               <div className="loaderViewItem" >
-                <SimpleLoader loader={2}/>
+                <SimpleLoader loader={2} color={colorState}/>
               </div>
               <SwapAnimation
                 from={order.to_spend_currency.currency}
                 to={order.to_buy_currency.currency}
-                colorIcon="#1cb179"
-                colorIcon={state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660' }
+                colorIcon={colorState}
               />
             </>
             :

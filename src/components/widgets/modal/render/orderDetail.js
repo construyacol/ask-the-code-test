@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OtherModalLayout from '../otherModalLayout'
 import styled from 'styled-components'
 import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '../../animations'
@@ -7,15 +7,22 @@ import IconSwitch from '../../icons/iconSwitch'
 import { useActions } from '../../../../hooks/useActions'
 import useViewport from '../../../../hooks/useWindowSize'
 import DetailGenerator from '../../orderDetail/detailGenerator'
+import { useFormatCurrency } from '../../../hooks/useFormatCurrency'
+import UseTxState from '../../../hooks/useTxState'
+import SimpleLoader from '../../loaders'
+import QRCode from 'qrcode'
+
+
 import moment from 'moment'
 import 'moment/locale/es'
 moment.locale('es')
 
 
-const OrderDetail = ({order, tx_path}) => {
+const OrderDetail = ({order}) => {
 
   const actions = useActions()
   const  { isMovilViewport } = useViewport()
+  const { tx_path, currencies } = UseTxState()
 
   const cerrar = (e) => {
     if(e.target.dataset.close_modal){
@@ -30,6 +37,7 @@ const OrderDetail = ({order, tx_path}) => {
 
   const textState = state === 'accepted' ? 'Aceptado' : state === 'confirmed' ? 'Confirmado' : state === 'pending' ? 'Pendiente' : state === 'rejected' ? 'Rechazado' : 'Cancelado'
   const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' ? '#ff8660' : 'red'
+
 
     return(
       <OtherModalLayout on_click={cerrar}>
@@ -67,6 +75,14 @@ const OrderDetail = ({order, tx_path}) => {
 
           <DetailGenerator order={order} title={`Detalle del ${TitleText}`}/>
 
+          <BottomSection
+            order={order}
+            colorState={colorState}
+            tx_path={tx_path}
+            currencies={currencies}
+          />
+
+
         </Layout>
       </OtherModalLayout>
     )
@@ -75,8 +91,177 @@ const OrderDetail = ({order, tx_path}) => {
   export default OrderDetail
 
 
-  const MiddleSection = styled.div`
+  const BottomSection = ({order, colorState, tx_path, currencies}) => {
 
+    const [ amount ] = useFormatCurrency(order.amount || order.bought, order.currency)
+    const textTotal = (tx_path === 'swaps' && order.state === 'accepted') ? 'Saldo adquirido:' : order.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
+    const currency = tx_path === 'swaps' ? currencies[order.to_buy_currency.currency] : currencies[order.currency.currency]
+
+    return(
+      <BottomSectionContainer>
+        <TitleBottom>
+          <hr/>
+          { tx_path !== 'swaps' && <p className="fuente">Comprobante de pago</p> }
+        </TitleBottom>
+        <Container>
+          <PaymentProof order={order} className={`${order.state}`}/>
+          <TotalAmount color={colorState}>
+            <p className="fuente saldo">{textTotal}</p>
+            <p className="fuente2 amount">
+              {order.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
+            </p>
+          </TotalAmount>
+        </Container>
+      </BottomSectionContainer>
+    )
+  }
+
+
+  const PaymentProof = ({className, order}) => {
+
+    const { primary_path, coinsendaServices, actions } = UseTxState(order.id)
+    const [ paymentProof, setPaymentProof ] = useState()
+
+    const getPaymentProof = async(order) =>{
+      if(order.paymentProof){
+        const { proof_of_payment } = order.paymentProof
+        setPaymentProof(order.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(proof_of_payment.proof))
+      }
+    }
+
+    useEffect(()=>{
+      if(primary_path !== 'swaps' && !order.paymentProof){
+        const getData = async() => {
+          const PP = await coinsendaServices.getDepositById(order.id)
+          if(!PP){return}
+          const { proof_of_payment } = PP.paymentProof
+
+          let updateOrder = {
+            [PP.id]:{...PP}
+          }
+          actions.update_item_state(updateOrder, 'deposits')
+          getPaymentProof(PP)
+        }
+        getData()
+      }
+    }, [])
+
+    useEffect(()=>{
+        getPaymentProof(order)
+    }, [order])
+
+
+    return (
+      <PaymentProofContainer className={className}>
+
+
+        {
+          paymentProof ?
+          <img src={paymentProof} width="90%" height="90%" alt=""/>
+          :
+          <LoaderContainer >
+            <SimpleLoader loader={2} justify="center" color="#206f65"/>
+          </LoaderContainer>
+        }
+      </PaymentProofContainer>
+    )
+
+  }
+
+
+  const LoaderContainer = styled.div`
+    width: 90%;
+    height: 90%;
+    background: white;
+    opacity: .6;
+    border-radius: 3px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    position: relative;
+  `
+
+  const TotalAmount = styled.div`
+    width: auto;
+    height: 70px;
+    justify-self: end;
+    align-self: end;
+    p{
+      color: ${props => props.color};
+      margin: 0;
+      text-align: right;
+    }
+    &>p{
+      margin-bottom: 10px;
+    }
+    .amount{
+      font-size: 30px;
+      span{
+        font-size: 18px;
+      }
+    }
+    .saldo{
+      font-size: 16px;
+    }
+  `
+
+
+  const PaymentProofContainer = styled.div`
+    width: 100%;
+    height: 80%;
+    border-radius: 3px;
+    align-self: center;
+    display: grid;
+    align-items: center;
+    justify-items:center;
+    img{
+      border-radius: 3px;
+    }
+    &.accepted{
+      background: #206f65;
+    }
+    &.rejected, &.canceled{
+      background: gray;
+      opacity: .5;
+    }
+  `
+
+  const Container = styled.div`
+    width: calc(100% - 60px);
+    padding: 0 30px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+  `
+
+  const TitleBottom = styled.div`
+    display: grid;
+    position: relative;
+    justify-items:center;
+    hr{
+      width: 98%;
+      opacity: .35;
+    }
+    p{
+      color:gray;
+      margin: 0;
+      background-color: white;
+      position: absolute;
+      left: 20px;
+      padding: 0 10px;
+      align-self: self-end;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  `
+
+  const BottomSectionContainer = styled.section`
+    height: calc(200px - 40px);
+    width: 100%;
+    padding: 20px 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: 20px;
   `
 
   const TitleContainer = styled.div`
@@ -211,7 +396,7 @@ const OrderDetail = ({order, tx_path}) => {
   `
 
   const TopSection = styled.section`
-    background: ${props => props.state ? orderStateColors[props.state] : 'white'};
+    background: ${props => props.state ? orderStateColors[props.state] : 'gray'};
     width: 100%;
     height: 100%;
     display: grid;
@@ -222,9 +407,9 @@ const OrderDetail = ({order, tx_path}) => {
 
   const Layout = styled.div`
     width: 100%;
-    max-width: 550px;
+    max-width: 600px;
     height: auto;
-    min-height:650px; 
+    min-height:650px;
     background: white;
     display: grid;
     align-items: center;
@@ -233,7 +418,7 @@ const OrderDetail = ({order, tx_path}) => {
     transition: .3s;
     border-radius: 11px;
     position: relative;
-    grid-template-rows: 115px 1fr;
+    grid-template-rows: 115px 1fr auto;
 
     -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;

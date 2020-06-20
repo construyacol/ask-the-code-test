@@ -117,5 +117,7 @@ export const currencyFormatByCoin = {
 }
 
 export const orderStateColors = {
-  accepted:'linear-gradient(to bottom right, #11998e, #48c778);'
+  accepted:'linear-gradient(to bottom right, #11998e, #48c778);',
+  canceled:'linear-gradient(to bottom right, gray, gray);',
+  confirmed:'linear-gradient(to bottom right, gray, gray);'
 }

@@ -55,6 +55,8 @@ const DetailGenerator = ({order, title}) => {
       case 'cost_id':
       case 'deposit_provider_id':
       case 'type_order':
+      case 'activeTrade':
+      case 'paymentProof':
           return
       default:
           return itemText
@@ -128,9 +130,9 @@ const Container = styled.section`
   padding: 25px 35px;
 
   &.withTitle{
-    height: calc(100% - 70px);
-    padding-top: 45px !important;
-    grid-template-rows: 60px repeat(auto-fill, 20px);
+    height: calc(100% - 95px);
+    padding-top: 70px !important;
+    grid-template-rows: 70px repeat(auto-fill,20px);
   }
 
 
@@ -153,7 +155,7 @@ const Container = styled.section`
 
 const ItemContainer = styled.div`
   width: 100%;
-  height: 16px;
+  height: 20px;
   display: grid;
   grid-template-columns: auto 1fr auto;
 `
