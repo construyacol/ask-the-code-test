@@ -103,13 +103,14 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       return actions.isAppLoaded(true)
     }
 
-    if (isSessionRestored) {
-      const PREVIOUS_ROUTE = await localForage.getItem('previousRoute')
-      history.push(PREVIOUS_ROUTE ? PREVIOUS_ROUTE : '/wallets')
-      actions.isAppLoading(false)
-    } else {
-      await history.push('/wallets')
-    }
+    // if (isSessionRestored) {
+    //   const PREVIOUS_ROUTE = await localForage.getItem('previousRoute')
+    //   history.push(PREVIOUS_ROUTE ? PREVIOUS_ROUTE : '/wallets')
+    //   actions.isAppLoading(false)
+    // } else {
+    //   await history.push('/wallets')
+    // }
+    await history.push('/wallets')
     // return console.log('_________________________________________________________________||||| stop ::', session, session && Object.keys(session).length)
     return actions.isAppLoaded(true)
   }

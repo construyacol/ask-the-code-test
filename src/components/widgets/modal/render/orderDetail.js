@@ -21,19 +21,23 @@ import 'moment/locale/es'
 moment.locale('es')
 
 
-const OrderDetail = ({order}) => {
+const OrderDetail = ({}) => {
 
   const actions = useActions()
   const  { isMovilViewport } = useViewport()
-  const { tx_path, currencies } = UseTxState()
+  const { tx_path, currencies, currentOrder, primary_path, history } = UseTxState()
+  console.log(currentOrder, currentOrder.id, tx_path, primary_path)
+
+  if(!currentOrder){return null}
 
   const cerrar = (e) => {
     if(e.target.dataset.close_modal){
       actions.renderModal(null)
+      history.goBack()
     }
   }
 
-  const { state } = order
+  const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :
                 tx_path === 'withdraws' ? 'Retiro' :
                 tx_path === 'swaps' && 'Intercambio';
@@ -44,7 +48,7 @@ const OrderDetail = ({order}) => {
 
     return(
       <OtherModalLayout on_click={cerrar}>
-        <Layout>
+        <Layout className="layout3">
           {
             isMovilViewport &&
             <CloseButton onClick={cerrar}>
@@ -52,13 +56,13 @@ const OrderDetail = ({order}) => {
             </CloseButton>
           }
 
-          <TopSection state={order.state}>
+          <TopSection state={currentOrder.state}>
 
             <TitleContainer>
               <OrderIcon className={`fa ${tx_path}`}/>
-              <IconSwitch className="TitleIconOrder" size={28} icon={order.currency && order.currency.currency || 'cop'} />
+              <IconSwitch className="TitleIconOrder" size={28} icon={currentOrder.currency && currentOrder.currency.currency || 'cop'} />
               <Title className="fuente">{TitleText}</Title>
-              <DateTitle className="fuente2">Actualizado {moment(order.updated_at).format("LL")}</DateTitle>
+              <DateTitle className="fuente2">Actualizado {moment(currentOrder.updated_at).format("LL")}</DateTitle>
             </TitleContainer>
 
             <CircleIconContainer>
@@ -76,13 +80,10 @@ const OrderDetail = ({order}) => {
 
           </TopSection>
 
-          <DetailGenerator order={order} title={`Detalle del ${TitleText}`}/>
+          <DetailGenerator order={currentOrder} title={`Detalle del ${TitleText}`}/>
 
           <BottomSection
-            order={order}
             colorState={colorState}
-            tx_path={tx_path}
-            currencies={currencies}
           />
 
 
@@ -94,11 +95,12 @@ const OrderDetail = ({order}) => {
   export default OrderDetail
 
 
-  const BottomSection = ({order, colorState, tx_path, currencies}) => {
+  const BottomSection = ({ colorState }) => {
 
-    const [ amount ] = useFormatCurrency(order.amount || order.bought, order.currency)
-    const textTotal = (tx_path === 'swaps' && order.state === 'accepted') ? 'Saldo adquirido:' : order.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
-    const currency = tx_path === 'swaps' ? currencies[order.to_buy_currency.currency] : currencies[order.currency.currency]
+    const { currentOrder, tx_path, currencies } = UseTxState()
+    const [ amount ] = useFormatCurrency(currentOrder.amount || currentOrder.bought, currentOrder.currency)
+    const textTotal = (tx_path === 'swaps' && currentOrder.state === 'accepted') ? 'Saldo adquirido:' : currentOrder.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
+    const currency = tx_path === 'swaps' ? currencies[currentOrder.to_buy_currency.currency] : currencies[currentOrder.currency.currency]
 
     return(
       <BottomSectionContainer>
@@ -109,14 +111,14 @@ const OrderDetail = ({order}) => {
         <Container>
           {
             tx_path !== 'swaps' ?
-            <PaymentProof order={order} className={`${order.state}`}/>
+            <PaymentProof className={`${currentOrder.state}`}/>
             :
             <div></div>
           }
           <TotalAmount color={colorState}>
             <p className="fuente saldo">{textTotal}</p>
             <p className="fuente2 amount">
-              {order.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
+              {currentOrder.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
             </p>
           </TotalAmount>
         </Container>
@@ -125,33 +127,33 @@ const OrderDetail = ({order}) => {
   }
 
 
-  const PaymentProof = ({className, order}) => {
+  const PaymentProof = ({className}) => {
 
-    const { primary_path, coinsendaServices, actions, currencies } = UseTxState(order.id)
+    const { primary_path, coinsendaServices, actions, currencies, currentOrder } = UseTxState()
     const [ imgProof, setImgProof ] = useState()
     const [ txId, setTxId ] = useState()
     const [ urlExplorer, setUrlExplorer ] = useState()
 
-    const getPaymentProof = async(order) =>{
-      if(order.paymentProof){
-        const { proof_of_payment } = order.paymentProof
-        // console.log(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-        setImgProof(order.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`))
-        if(order.currency_type === 'crypto'){
+    const getPaymentProof = async(currentOrder) =>{
+      if(currentOrder.paymentProof){
+        const { proof_of_payment } = currentOrder.paymentProof
+        // console.log(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
+        setImgProof(currentOrder.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`))
+        if(currentOrder.currency_type === 'crypto'){
           setTxId(proof_of_payment.proof)
-          setUrlExplorer(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`)
+          setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
         }
-      }else if(order.proof){
-        setImgProof(await QRCode.toDataURL(`${currencies[order.currency.currency].node_url}tx/${order.proof}`))
-        setTxId(order.proof)
-        setUrlExplorer(`${currencies[order.currency.currency].node_url}tx/${order.proof}`)
+      }else if(currentOrder.proof){
+        setImgProof(await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`))
+        setTxId(currentOrder.proof)
+        setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`)
       }
     }
 
     useEffect(()=>{
-      if(!order.paymentProof){
+      if(!currentOrder.paymentProof){
         const getData = async() => {
-          const PP = await coinsendaServices.getDepositById(order.id)
+          const PP = await coinsendaServices.getDepositById(currentOrder.id)
           if(!PP){return}
           const { proof_of_payment } = PP.paymentProof
 
@@ -166,19 +168,19 @@ const OrderDetail = ({order}) => {
     }, [])
 
     useEffect(()=>{
-      getPaymentProof(order)
-    }, [])
+      getPaymentProof(currentOrder)
+    }, [currentOrder])
 
     const openBlockchain = () => {
       window.open(
         urlExplorer,
-        '_blank' // <- This is what makes it open in a new window.
+        '_blank'
       );
     }
 
 
     return (
-      <PaymentProofContainer className={`${className} ${order.currency_type} ${order.state}`}>
+      <PaymentProofContainer className={`${className} ${currentOrder.currency_type} ${currentOrder.state}`}>
         <FiatPaymentProofZoom/>
 
         {
@@ -186,7 +188,7 @@ const OrderDetail = ({order}) => {
           <ProofContainer>
             <img src={imgProof} width="90%" height="90%" alt=""/>
             {
-              order.currency_type === 'crypto' &&
+              currentOrder.currency_type === 'crypto' &&
               <HoverProof>
                 <IconContainer className="tooltip" data-copy={txId} onClick={copy}>
                   <MdContentCopy size={16}/>

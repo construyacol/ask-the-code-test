@@ -116,6 +116,15 @@
   justify-items:center;
 }
 
+@media only screen and (max-height: 768px) {
+  .modalCont3{
+    overflow-y: scroll;
+  }
+  .modalCont3 .layout3{
+    margin: 70px 0;
+  }
+}
+
 
 .Mconfirmar{
   position: relative;

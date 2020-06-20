@@ -22,7 +22,10 @@ function HomeContainer(props) {
 
   return (
     <HomeLayout>
-      <ModalsSupervisor />
+      {/* <ModalsSupervisor /> */}
+      <Route
+        path={["/:primary_path/:path/:account_id/:tx_path/:order_id", "/"]}
+        render={renderProps => (<ModalsSupervisor {...renderProps}  />)} />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={renderProps => (<BuildedHome {...renderProps} logOut={doLogout} />)} />

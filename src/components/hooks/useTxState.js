@@ -4,40 +4,24 @@ import { useParams, useLocation } from "react-router-dom"
 import { useActions } from '../../hooks/useActions'
 import { useCoinsendaServices } from '../../services/useCoinsendaServices'
 import { convertToObjectWithCustomIndex } from '../../utils'
+import { useHistory } from "react-router-dom";
 
 
 
-const UseTxState = (order_id) => {
+const UseTxState = (current_order_id) => {
 
+    const history = useHistory()
     const location = useLocation()
     const actions = useActions()
     const state = useSelector(state => state)
     const params = useParams()
     const [ orderState, setOrderState ] = useState()
     const [ coinsendaServices ] = useCoinsendaServices()
-    const { primary_path, tx_path, account_id, path  } = params
+    const { primary_path, tx_path, account_id, path, order_id  } = params
     const { currencies } = state.modelData
 
-
-    const getTxPath = () => {
-      if(!tx_path){
-          const paths = location.pathname.split('/');
-          return paths.length > 4 && paths[4]
-      }
-      return tx_path
-    }
-
-    const getPrimaryPath = () => {
-      if(!tx_path){
-          const paths = location.pathname.split('/');
-          return paths.length > 4 && paths[1]
-      }
-      return tx_path
-    }
-
     const getPaymentProof = async() => {
-      const TX_PATH = getTxPath()
-      const order = state.modelData[TX_PATH][order_id]
+      const order = state.modelData[tx_path][order_id]
     }
 
 
@@ -48,14 +32,13 @@ const UseTxState = (order_id) => {
 
     return {
         ...params,
-        lastPendingOrderId:lastPendingOrderId === order_id ? lastPendingOrderId : null,
-        new_order_style:state.ui.current_section.params.new_order_style && lastPendingOrderId === order_id,
+        history,
+        lastPendingOrderId:lastPendingOrderId === current_order_id ? lastPendingOrderId : null,
+        new_order_style:state.ui.current_section.params.new_order_style && lastPendingOrderId === current_order_id,
         coinsendaServices,
         currencies:currencies && convertToObjectWithCustomIndex(currencies, 'currency'),
         actions:{...actions},
-        order:state.modelData[tx_path] && state.modelData[tx_path][order_id],
-        tx_path:getTxPath(),
-        primary_path:getPrimaryPath(),
+        currentOrder:state.modelData[tx_path] && state.modelData[tx_path][order_id],
         getPaymentProof
       }
 }

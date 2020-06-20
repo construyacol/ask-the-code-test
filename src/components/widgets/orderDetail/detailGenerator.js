@@ -102,7 +102,7 @@ const DetailGenerator = ({order, title}) => {
                  </ItemContainer>
         })
         :
-        new Array(7).fill('1').map((item, indx)=>{
+        new Array(10).fill('1').map((item, indx)=>{
           return  <ItemContainer className="skeleton" key={indx}>
                     <LeftText>skeleton --</LeftText>
                     <MiddleSection/>

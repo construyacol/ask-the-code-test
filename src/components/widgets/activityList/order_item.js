@@ -19,13 +19,15 @@ moment.locale('es')
 const OrderItem = ({ order, handleAction }) => {
 
   const txState = UseTxState(order.id)
-  const { tx_path, new_order_style, actions } = txState
+  const { tx_path, new_order_style, actions, history } = txState
   const [ show,  element ] = ObserverHook()
   const [ orderState, setOrderState ] = useState()
 
 
   const orderDetail = async() => {
     if(!order){return}
+    const { tx_path, account_id, primary_path, path } = txState
+    history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     const OrderDetail = await import('../modal/render/orderDetail')
     actions.renderModal(()=><OrderDetail.default order={order} {...txState}/>)
   }
@@ -141,26 +143,30 @@ const BarraSwap = styled.div`
   opacity: 0.6;
 `
 
-const SwapOrder = (props) => {
+const SwapOrder = ({order}) => {
 
-  const { new_order_style, tx_path, order } = UseTxState(props.order.id)
+  const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
 
   const {
-    state,
     created_at,
     currency,
     id,
     currency_type
   } = order
+
+  const {
+    state
+  } = currentOrder
+
   const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660'
   // let tradeActive = state === 'pending' || state === 'confirmed' || null
   // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| tradeActive', tradeActive)
 
   return (
-      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${order.activeTrade ? 'inProcess' : '' }`}>
+      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${currentOrder.activeTrade ? 'inProcess' : '' }`}>
 
         {
-          order.activeTrade &&
+          currentOrder.activeTrade &&
           <BarraSwap className="barraSwap">
             <div className={`relleno ${(state === 'pending') ? 'swaPending' :
               (state === 'confirmed') ? 'swaProcessing' :
@@ -174,7 +180,7 @@ const SwapOrder = (props) => {
 
         <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
           {
-            order.activeTrade && order.state !== 'accepted' ?
+            currentOrder.activeTrade && state !== 'accepted' ?
             <>
               <div className="loaderViewItem" >
                 <SimpleLoader loader={2} color={colorState}/>
@@ -188,7 +194,7 @@ const SwapOrder = (props) => {
             :
             <>
               {
-                order.activeTrade && order.state === 'accepted' ?
+                currentOrder.activeTrade && state === 'accepted' ?
                 <div className="loaderViewItem" >
                   <div className="successIcon">
                     <IconSwitch size={80} icon="success" color="#1cb179"/>
@@ -209,13 +215,13 @@ const SwapOrder = (props) => {
           <OrderStatusCont>
             <OrderStatus className="fuente">
               <StatusIcon className={getIcon(state)} />
-              {getState(order)}
+              {getState(currentOrder)}
             </OrderStatus>
           </OrderStatusCont>
         </DataContainer>
 
         <DataContainer className={`align_last ${tx_path}`}>
-          <PanelRight order={order}/>
+          <PanelRight order={currentOrder}/>
         </DataContainer>
 
       </Order>
