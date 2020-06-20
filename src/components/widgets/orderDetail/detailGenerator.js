@@ -10,7 +10,8 @@ const DetailGenerator = ({order, title}) => {
 
   const [ Orders, setOrders ] = useState([])
 
-  const formatOrderText = (itemText) => {
+  const formatOrderText = async(itemText) => {
+    // console.log(itemText)
     switch (itemText[0]) {
       case 'to_spend_currency':
           return ['Moneda gastada:', itemText[1].currency]
@@ -36,6 +37,8 @@ const DetailGenerator = ({order, title}) => {
           return ['Creado en:', moment(itemText[1]).format("LL")]
       case 'updated_at':
           return ['Actualizado en:', moment(itemText[1]).format("LL")]
+      case 'expiration_date':
+          return ['Expira en:', moment(itemText[1]).format("LL")]
       case 'account_to':
       case 'account_from':
       case 'type':
@@ -57,6 +60,11 @@ const DetailGenerator = ({order, title}) => {
       case 'type_order':
       case 'activeTrade':
       case 'paymentProof':
+      case 'withdraw_proof':
+      case 'requestedFundsOrigin':
+      case 'proof':
+      case 'sent':
+      case 'comment':
           return
       default:
           return itemText
@@ -64,24 +72,28 @@ const DetailGenerator = ({order, title}) => {
   }
 
   useEffect(()=> {
+    console.log()
     // the order is converted to an array and formatted
     if(!order){return}
-    const transOrders = []
-    for (let orderItem of Object.entries(order)) {
-      const ui_items = formatOrderText(orderItem)
-      if(ui_items){
-        transOrders.push(ui_items)
+    const init = async() =>{
+      const transOrders = []
+      for (let orderItem of Object.entries(order)) {
+        const ui_items = await formatOrderText(orderItem)
+        // console.log(ui_items)
+        if(ui_items){
+          transOrders.push(ui_items)
+        }
       }
+      setOrders(transOrders)
     }
-    setOrders(transOrders)
-    // console.log(transOrders)
+    init()
   }, [])
 
   return(
     <Container className={`${title ? 'withTitle' : ''}`}>
       {title&&<Title className="fuente">{title}</Title>}
       {
-        (Orders && Orders.length) &&
+        (Orders && Orders.length) ?
         Orders.map((item, indx) => {
           return <ItemContainer key={indx}>
                     <LeftText className="fuente">{item[0]}</LeftText>
@@ -89,7 +101,14 @@ const DetailGenerator = ({order, title}) => {
                     <RightText className="fuente2">{item[1]}</RightText>
                  </ItemContainer>
         })
-
+        :
+        new Array(7).fill('1').map((item, indx)=>{
+          return  <ItemContainer className="skeleton" key={indx}>
+                    <LeftText>skeleton --</LeftText>
+                    <MiddleSection/>
+                    <RightText>skeleton ---- </RightText>
+                  </ItemContainer>
+        })
       }
     </Container>
   )
@@ -97,6 +116,7 @@ const DetailGenerator = ({order, title}) => {
 }
 
 export default DetailGenerator
+
 
 const Text = styled.p`
   width: auto;
@@ -111,6 +131,10 @@ const RightText = styled(Text)`
   text-align: right;
   padding-left: 15px;
   text-transform: capitalize;
+  white-space: nowrap;
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 const LeftText = styled(Text)`
   text-align: left;
@@ -121,6 +145,27 @@ const MiddleSection = styled.span`
   border-bottom: 1px dotted;
   opacity: .15;
 `
+
+const ItemContainer = styled.div`
+  width: 100%;
+  height: 20px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+
+  &.skeleton{
+    ${RightText}, ${LeftText}{
+      background: gray;
+      height: 16px;
+      border-radius: 3px;
+      opacity: .5;
+    }
+  }
+
+`
+
+
+
+
 const Container = styled.section`
   width: calc(100% - 70px);
   height: calc(100% - 50px);
@@ -152,10 +197,4 @@ const Container = styled.section`
 
 
 
-
-const ItemContainer = styled.div`
-  width: 100%;
-  height: 20px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-`
+//

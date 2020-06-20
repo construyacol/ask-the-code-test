@@ -314,28 +314,32 @@ export class WithdrawService extends WebService {
             state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
           }
 
+          // let new_withdraw = {
+          //   ...withdraw,
+          //   account_id:withdraw.account_id,
+          //   amount:withdraw.amount,
+          //   amount_neto:withdraw.amount_neto,
+          //   comment:"",
+          //   country:withdraw.country,
+          //   currency:withdraw.currency,
+          //   currency_type:withdraw.currency_type,
+          //   cost:withdraw.cost,
+          //   cost_struct:withdraw.cost_struct,
+          //   deposit_provider_id:"",
+          //   expiration_date:new Date(),
+          //   id:withdraw.id,
+          //   state,
+          //   unique_id:withdraw.id,
+          //   userId:withdraw.userId,
+          //   withdraw_account:withdraw.withdraw_account_id,
+          //   withdraw_provider:withdraw.withdraw_provider_id,
+          //   type_order:"withdraw",
+          //   withdraw_proof:withdraw.proof,
+          //   created_at:withdraw.created_at,
+          // }
           let new_withdraw = {
             ...withdraw,
-            account_id:withdraw.account_id,
-            amount:withdraw.amount,
-            amount_neto:withdraw.amount_neto,
-            comment:"",
-            country:withdraw.country,
-            currency:withdraw.currency,
-            currency_type:withdraw.currency_type,
-            cost:withdraw.cost,
-            cost_struct:withdraw.cost_struct,
-            deposit_provider_id:"",
-            expiration_date:new Date(),
-            id:withdraw.id,
-            state,
-            unique_id:withdraw.id,
-            userId:withdraw.userId,
-            withdraw_account:withdraw.withdraw_account_id,
-            withdraw_provider:withdraw.withdraw_provider_id,
-            type_order:"withdraw",
-            withdraw_proof:withdraw.proof,
-            created_at:withdraw.created_at,
+            state
           }
 
           if(new_withdraw.state !== 'pending'){

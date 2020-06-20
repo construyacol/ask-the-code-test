@@ -11,6 +11,9 @@ import { useFormatCurrency } from '../../../hooks/useFormatCurrency'
 import UseTxState from '../../../hooks/useTxState'
 import SimpleLoader from '../../loaders'
 import QRCode from 'qrcode'
+import { BsUpload } from "react-icons/bs";
+import { MdContentCopy } from "react-icons/md";
+import { copy } from '../../../../utils'
 
 
 import moment from 'moment'
@@ -104,7 +107,12 @@ const OrderDetail = ({order}) => {
           { tx_path !== 'swaps' && <p className="fuente">Comprobante de pago</p> }
         </TitleBottom>
         <Container>
-          <PaymentProof order={order} className={`${order.state}`}/>
+          {
+            tx_path !== 'swaps' ?
+            <PaymentProof order={order} className={`${order.state}`}/>
+            :
+            <div></div>
+          }
           <TotalAmount color={colorState}>
             <p className="fuente saldo">{textTotal}</p>
             <p className="fuente2 amount">
@@ -119,18 +127,29 @@ const OrderDetail = ({order}) => {
 
   const PaymentProof = ({className, order}) => {
 
-    const { primary_path, coinsendaServices, actions } = UseTxState(order.id)
-    const [ paymentProof, setPaymentProof ] = useState()
+    const { primary_path, coinsendaServices, actions, currencies } = UseTxState(order.id)
+    const [ imgProof, setImgProof ] = useState()
+    const [ txId, setTxId ] = useState()
+    const [ urlExplorer, setUrlExplorer ] = useState()
 
     const getPaymentProof = async(order) =>{
       if(order.paymentProof){
         const { proof_of_payment } = order.paymentProof
-        setPaymentProof(order.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(proof_of_payment.proof))
+        // console.log(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`)
+        setImgProof(order.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`))
+        if(order.currency_type === 'crypto'){
+          setTxId(proof_of_payment.proof)
+          setUrlExplorer(`${currencies[order.currency.currency].node_url}tx/${proof_of_payment.proof}`)
+        }
+      }else if(order.proof){
+        setImgProof(await QRCode.toDataURL(`${currencies[order.currency.currency].node_url}tx/${order.proof}`))
+        setTxId(order.proof)
+        setUrlExplorer(`${currencies[order.currency.currency].node_url}tx/${order.proof}`)
       }
     }
 
     useEffect(()=>{
-      if(primary_path !== 'swaps' && !order.paymentProof){
+      if(!order.paymentProof){
         const getData = async() => {
           const PP = await coinsendaServices.getDepositById(order.id)
           if(!PP){return}
@@ -147,27 +166,128 @@ const OrderDetail = ({order}) => {
     }, [])
 
     useEffect(()=>{
-        getPaymentProof(order)
-    }, [order])
+      getPaymentProof(order)
+    }, [])
+
+    const openBlockchain = () => {
+      window.open(
+        urlExplorer,
+        '_blank' // <- This is what makes it open in a new window.
+      );
+    }
 
 
     return (
-      <PaymentProofContainer className={className}>
-
+      <PaymentProofContainer className={`${className} ${order.currency_type} ${order.state}`}>
+        <FiatPaymentProofZoom/>
 
         {
-          paymentProof ?
-          <img src={paymentProof} width="90%" height="90%" alt=""/>
+          imgProof ?
+          <ProofContainer>
+            <img src={imgProof} width="90%" height="90%" alt=""/>
+            {
+              order.currency_type === 'crypto' &&
+              <HoverProof>
+                <IconContainer className="tooltip" data-copy={txId} onClick={copy}>
+                  <MdContentCopy size={16}/>
+                  <span className="tooltiptext fuente">Copiar</span>
+                </IconContainer>
+
+                <IconContainer className="tooltip" onClick={openBlockchain}>
+                  <BsUpload size={20}/>
+                  <span className="tooltiptext fuente">Ver en Blockchain</span>
+                </IconContainer>
+              </HoverProof>
+            }
+          </ProofContainer>
           :
           <LoaderContainer >
             <SimpleLoader loader={2} justify="center" color="#206f65"/>
           </LoaderContainer>
         }
+
       </PaymentProofContainer>
     )
 
   }
 
+  const FiatPaymentProofZoom = styled.div`
+    position: absolute;
+    width: calc(100% - 20px);
+    height: calc(100% - 170px);
+    background: #206f65;
+    top: 10px;
+    justify-self: center;
+    border-radius: 3px;
+    display: none;
+  `
+
+  const IconContainer = styled.div`
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    border:1px solid gray;
+    display: grid !important;
+    align-items: center;
+    justify-items:center;
+    position: relative;
+    align-self: flex-start;
+
+    ::after{
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left:0;
+      top:0;
+    }
+
+    .tooltiptext{
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+      width: auto !important;
+      min-width: 60px !important;
+    }
+
+    i, svg{
+      color: gray;
+    }
+
+    :hover{
+      i, svg{
+        color: #0c96fa;
+      }
+    }
+  `
+
+  const HoverProof = styled.div`
+    position: absolute;
+    height: 100%;
+    width: calc(100% - 20px);
+    top: 0;
+    transition: .15s !important;
+    align-items: baseline;
+    display: grid;
+    padding: 0 10px;
+    justify-items:center;
+    grid-template-columns: repeat(2, 1fr);
+    transform: translateX(100%);
+  `
+
+  const ProofContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-items:center;
+
+    :hover ${HoverProof}{
+      opacity: 1;
+    }
+
+  `
 
   const LoaderContainer = styled.div`
     width: 90%;
@@ -223,6 +343,14 @@ const OrderDetail = ({order}) => {
     &.rejected, &.canceled{
       background: gray;
       opacity: .5;
+    }
+
+    &.fiat.accepted:hover ${FiatPaymentProofZoom}{
+      display: initial;
+    }
+
+    &.fiat{
+      cursor: pointer;
     }
   `
 
@@ -293,9 +421,9 @@ const OrderDetail = ({order}) => {
     `
 
   const Icon = styled.i`
-    margin-right: 10px;
   `
   const OrderIcon = styled(Icon)`
+    margin-right: 10px;
     font-size: 22px;
     grid-area: OrderIcon;
     color: white;

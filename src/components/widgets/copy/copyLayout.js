@@ -7,12 +7,12 @@ const CopyLayout = (props) => {
 
   return(
     <Fragment>
-      <div onClick={copy} id={valor} className="nWaddress">
+      <div onClick={copy} data-copy={valor} id={valor} className="nWaddress">
         {
           (valor && !onlyIcon) &&
-          <p id={valor} className="nWaddressTxt fuentePrin" style={{maxWidth:max_width ? `${max_width}px` : 'auto' }} >{valor}</p>
+          <p id={valor} data-copy={valor} className="nWaddressTxt fuentePrin" style={{maxWidth:max_width ? `${max_width}px` : 'auto' }} >{valor}</p>
         }
-        <i style={{color: color}} className="copy far fa-clone tooltip" id={valor} >
+        <i style={{color: color}} className="copy far fa-clone tooltip" data-copy={valor} id={valor} >
           <span className="tooltiptext fuente">Copiar</span>
         </i>
       </div>
