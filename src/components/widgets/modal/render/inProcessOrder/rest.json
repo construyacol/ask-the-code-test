@@ -1,0 +1,26 @@
+{
+  "deposits":{
+    "created":{
+      "completed":false,
+      "ui_text":"Deposito creado"
+    },
+    "pending":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Deposito agregado en blockchain",
+        "fiat":"Confirmando deposito"
+        }
+    },
+    "confirmed":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Confirmando en blockchain",
+        "fiat":"Aceptando prueba de deposito"
+        }
+    },
+    "accepted":{
+      "completed":false,
+      "ui_text":"Deposito aceptado"
+    }
+  }
+}
