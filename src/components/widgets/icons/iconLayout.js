@@ -16,6 +16,7 @@ function Icon(props){
         height={size}
         width={size}
         fill={color}
+        {...props}
         >
         {props.children}
       </svg>
