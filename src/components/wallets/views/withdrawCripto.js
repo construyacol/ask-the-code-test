@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
@@ -7,6 +7,8 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
+import { useActions } from '../../../hooks/useActions'
+import QrScanner from '../../qr-scanner'
 
 
 
@@ -69,6 +71,8 @@ export const CriptoView = () => {
       isAppLoading,
       renderModal
     }, dispatch] = WithdrawViewState()
+
+  const actions = useActions()
 
   const [addressState, setAddressState] = useState()
   const [amountState, setAmountState] = useState()
@@ -153,10 +157,17 @@ export const CriptoView = () => {
     }
   }
 
-  const showQrScanner = () => {
-    return alert('QR')
+  const showQrScanner = async () => {
+    renderModal(null)
+    const Element = () => (<QrScanner onScan={(data => {
+      const el = document.getElementsByName('address')[0]
+      if(el) {
+        el.value = data
+      }
+    })} />)
+    actions.renderModal(Element)
   }
-
+  
   return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
