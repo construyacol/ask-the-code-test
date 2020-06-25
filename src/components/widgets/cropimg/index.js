@@ -11,7 +11,7 @@ import getCroppedImg from './Cropper/do-img-crop'
 class CropImg extends React.Component {
 
   state = {
-    imageSrc: null,
+    imageSrc: this.props.imageSrc || null,
     crop: { x: 0, y: 0 },
     zoom: 1,
     aspect: 4 / 3,
@@ -72,6 +72,7 @@ class CropImg extends React.Component {
 
     await this.setState({ croppedImage: urlImg })
     this.props.subirImg(croppedImage)
+    // await this.props.action.isAppLoading(false)
   }
 
   cancelCroppedImg = () => {
@@ -90,7 +91,7 @@ class CropImg extends React.Component {
 
 
   render() {
-    // console.log('DESDE CROP IMG COMPONENT_______', this.props.action.isAppLoading)
+    // console.log('DESDE CROP IMG COMPONENT_______', this.state, this.props)
     return (
       <div className="App">
         {

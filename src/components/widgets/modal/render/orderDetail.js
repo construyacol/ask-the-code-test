@@ -14,14 +14,33 @@ import QRCode from 'qrcode'
 import { BsUpload } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
 import { copy } from '../../../../utils'
-
+import InProcessOrder from './inProcessOrder/inProcessOrder'
 
 import moment from 'moment'
 import 'moment/locale/es'
 moment.locale('es')
 
 
-const OrderDetail = ({}) => {
+const OrderSupervisor = ({order}) => {
+
+  return(
+    <>
+      {
+        order.state === 'accepted' || order.state === 'rejected' || order.state === 'canceled' ?
+        <OrderDetail/>
+        :
+        <InProcessOrder/>
+      }
+    </>
+  )
+
+}
+
+
+export default OrderSupervisor
+
+
+const OrderDetail = () => {
 
   const actions = useActions()
   const  { isMovilViewport } = useViewport()
@@ -92,7 +111,6 @@ const OrderDetail = ({}) => {
     )
   }
 
-  export default OrderDetail
 
 
   const BottomSection = ({ colorState }) => {

@@ -24,6 +24,7 @@ body {
   display: grid;
   grid-template-rows: 1fr 60px 80px;
   height: 90%;
+  row-gap:30px;
 }
 
 
@@ -38,7 +39,7 @@ body {
   display: flex;
   flex-direction: column-reverse;
   width: 100%;
-  height: calc(100% - 100px);
+  height: 100%;
   position: relative;
 }
 
@@ -58,23 +59,30 @@ body {
   height: 10px;
 }
 
-.crop-controls {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
+.crop-controls svg {
+  cursor: pointer;
 }
 
-.crop-controls div {
-  display: flex;
-  flex-direction: column;
+.crop-controls {
+  display: grid;
+  background: #ffffff;
+  border-radius: 4px;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0 30px;
+  column-gap: 15px;
 }
 
 .crop-controls div:nth-child(1) {
-  width: 60%;
+  width: auto;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: 10px;
 }
 
 .crop-controls .crop-rotate-button {
-  color: white;
+  color: gray;
   background: transparent;
   border: none;
   font-size: 20px;

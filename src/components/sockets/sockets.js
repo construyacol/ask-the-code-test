@@ -336,6 +336,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)
         this.props.history.push('?form=deposit_confirmed_success')
+        this.props.action.isAppLoading(false)
       }
     }
 

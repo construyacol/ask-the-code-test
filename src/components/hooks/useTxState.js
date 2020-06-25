@@ -19,6 +19,7 @@ const UseTxState = (current_order_id) => {
     const [ coinsendaServices ] = useCoinsendaServices()
     const { primary_path, tx_path, account_id, path, order_id  } = params
     const { currencies } = state.modelData
+    const { loader } = state.isLoading
 
     const getPaymentProof = async() => {
       const order = state.modelData[tx_path][order_id]
@@ -29,6 +30,7 @@ const UseTxState = (current_order_id) => {
     let pending_index = `pending_${tx_path}`
     let lastPendingOrderId = activity_for_account[account_id] && activity_for_account[account_id][pending_index] && activity_for_account[account_id][pending_index].lastPending
 
+    // console.log('UseTxState || currentOrder', order_id, state.modelData)
 
     return {
         ...params,
@@ -38,8 +40,9 @@ const UseTxState = (current_order_id) => {
         coinsendaServices,
         currencies:currencies && convertToObjectWithCustomIndex(currencies, 'currency'),
         actions:{...actions},
-        currentOrder:state.modelData[tx_path] && state.modelData[tx_path][order_id],
-        getPaymentProof
+        currentOrder:state.modelData[tx_path] && state.modelData[tx_path][order_id || current_order_id],
+        getPaymentProof,
+        loader
       }
 }
 
