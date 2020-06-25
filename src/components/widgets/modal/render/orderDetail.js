@@ -45,7 +45,7 @@ const OrderDetail = () => {
   const actions = useActions()
   const  { isMovilViewport } = useViewport()
   const { tx_path, currencies, currentOrder, primary_path, history } = UseTxState()
-  console.log(currentOrder, currentOrder.id, tx_path, primary_path)
+  // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
 
   if(!currentOrder){return null}
 
@@ -129,7 +129,7 @@ const OrderDetail = () => {
         <Container>
           {
             tx_path !== 'swaps' ?
-            <PaymentProof className={`${currentOrder.state}`}/>
+            <PaymentProof/>
             :
             <div></div>
           }
@@ -145,15 +145,22 @@ const OrderDetail = () => {
   }
 
 
-  const PaymentProof = ({className}) => {
 
-    const { primary_path, coinsendaServices, actions, currencies, currentOrder } = UseTxState()
-    const [ imgProof, setImgProof ] = useState()
+
+
+
+
+  export const PaymentProof = ({ payload }) => {
+    // console.log('PaymentProof', payload)
+    const { primary_path, coinsendaServices, actions, currencies, currentOrder, loader } = UseTxState()
+    const [ imgProof, setImgProof ] = useState(payload)
     const [ txId, setTxId ] = useState()
     const [ urlExplorer, setUrlExplorer ] = useState()
 
     const getPaymentProof = async(currentOrder) =>{
+      // alert('getpayment')
       if(currentOrder.paymentProof){
+        // alert('tiene pp')
         const { proof_of_payment } = currentOrder.paymentProof
         // console.log(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
         setImgProof(currentOrder.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`))
@@ -169,7 +176,7 @@ const OrderDetail = () => {
     }
 
     useEffect(()=>{
-      if(!currentOrder.paymentProof){
+      if(!currentOrder.paymentProof && currentOrder.state !== 'pending'){
         const getData = async() => {
           const PP = await coinsendaServices.getDepositById(currentOrder.id)
           if(!PP){return}
@@ -182,12 +189,17 @@ const OrderDetail = () => {
           getPaymentProof(PP)
         }
         getData()
+      }else{
+        getPaymentProof(currentOrder)
       }
     }, [])
 
     useEffect(()=>{
-      getPaymentProof(currentOrder)
-    }, [currentOrder])
+      if(imgProof !== payload){
+        setImgProof(payload)
+      }
+    }, [payload])
+
 
     const openBlockchain = () => {
       window.open(
@@ -196,15 +208,22 @@ const OrderDetail = () => {
       );
     }
 
-
+    // console.log('LOADER ==> ', loader)
     return (
-      <PaymentProofContainer className={`${className} ${currentOrder.currency_type} ${currentOrder.state}`}>
-        <FiatPaymentProofZoom/>
+      <>
+      <PaymentProofContainer className={`${currentOrder.currency_type} ${currentOrder.state}`}>
 
         {
-          imgProof ?
+          (!imgProof || loader) &&
+          <LoaderContainer >
+            <SimpleLoader loader={2} justify="center" color="#206f65"/>
+          </LoaderContainer>
+        }
+
+        {
+          imgProof &&
           <ProofContainer>
-            <img src={imgProof} width="90%" height="90%" alt=""/>
+            <img src={imgProof} width="auto" height="90%" alt=""/>
             {
               currentOrder.currency_type === 'crypto' &&
               <HoverProof>
@@ -220,13 +239,11 @@ const OrderDetail = () => {
               </HoverProof>
             }
           </ProofContainer>
-          :
-          <LoaderContainer >
-            <SimpleLoader loader={2} justify="center" color="#206f65"/>
-          </LoaderContainer>
         }
 
       </PaymentProofContainer>
+      <FiatPaymentProofZoom state={currentOrder.state}/>
+    </>
     )
 
   }
@@ -234,7 +251,7 @@ const OrderDetail = () => {
   const FiatPaymentProofZoom = styled.div`
     position: absolute;
     width: calc(100% - 20px);
-    height: calc(100% - 170px);
+    height: ${props => props.state === 'confirmed' ? 'calc(100% - 230px)' : 'calc(100% - 170px)' };
     background: #206f65;
     top: 10px;
     justify-self: center;
@@ -318,7 +335,10 @@ const OrderDetail = () => {
     display: grid;
     align-items: center;
     justify-items: center;
-    position: relative;
+    position: absolute;
+    justify-self:center;
+    align-self: center;
+    z-index: 1;
   `
 
   const TotalAmount = styled.div`
@@ -349,15 +369,21 @@ const OrderDetail = () => {
   const PaymentProofContainer = styled.div`
     width: 100%;
     height: 80%;
-    border-radius: 3px;
+    border-radius: 4px;
     align-self: center;
     display: grid;
     align-items: center;
     justify-items:center;
+    max-height: 100px;
+    max-width: 110px;
+    position: relative;
+    justify-self:start;
+    overflow: hidden;
+
     img{
       border-radius: 3px;
     }
-    &.accepted{
+    &.accepted, &.confirmed{
       background: #206f65;
     }
     &.rejected, &.canceled{
@@ -365,7 +391,7 @@ const OrderDetail = () => {
       opacity: .5;
     }
 
-    &.fiat.accepted:hover ${FiatPaymentProofZoom}{
+    &.fiat.accepted:hover ~ ${FiatPaymentProofZoom}, &.fiat.confirmed:hover ~ ${FiatPaymentProofZoom}{
       display: initial;
     }
 
@@ -553,7 +579,7 @@ const OrderDetail = () => {
     border-top-left-radius: 6px;
   `
 
-  const Layout = styled.div`
+  export const Layout = styled.div`
     width: 100%;
     max-width: 600px;
     height: auto;

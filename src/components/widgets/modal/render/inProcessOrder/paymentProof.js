@@ -11,8 +11,9 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
   const { coinsendaServices, actions } = UseTxState()
 
   const subirImg = async({base64}) => {
-    setImgSrc({...imgSrc, src:base64, completed:'100%'})
+    setImgSrc(base64)
     setActiveSection(null)
+    actions.isAppLoading(true)
     let confirmation = await coinsendaServices.confirmDepositOrder(order_id, base64)
     if(!confirmation){
       actions.isAppLoading(false)
@@ -30,7 +31,7 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
     <OverflowContainer>
       <Container className={`${activeSection ? 'activated' : ''}`}>
           <CropImg
-            imageSrc={imgSrc.src}
+            imageSrc={imgSrc}
             subirImg={subirImg}
             cancelarSubidaImg={cancelarSubidaImg}
           />

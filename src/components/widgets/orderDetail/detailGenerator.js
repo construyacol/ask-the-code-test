@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { OnlySkeletonAnimation } from '../loaders/skeleton'
+
 import moment from 'moment'
 import 'moment/locale/es'
 moment.locale('es')
@@ -72,7 +74,6 @@ const DetailGenerator = ({order, title}) => {
   }
 
   useEffect(()=> {
-    console.log()
     // the order is converted to an array and formatted
     if(!order){return}
     const init = async() =>{
@@ -106,7 +107,7 @@ const DetailGenerator = ({order, title}) => {
           return  <ItemContainer className="skeleton" key={indx}>
                     <LeftText>skeleton --</LeftText>
                     <MiddleSection/>
-                    <RightText>skeleton ---- </RightText>
+                    <RightText>skeleton -------- </RightText>
                   </ItemContainer>
         })
       }
@@ -153,6 +154,7 @@ const ItemContainer = styled.div`
   grid-template-columns: auto 1fr auto;
 
   &.skeleton{
+    ${OnlySkeletonAnimation}
     ${RightText}, ${LeftText}{
       background: gray;
       height: 16px;

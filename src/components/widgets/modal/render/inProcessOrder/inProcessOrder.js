@@ -7,6 +7,9 @@ import OtherModalLayout from '../../otherModalLayout'
 import UseTxState from '../../../../hooks/useTxState'
 import SimpleLoader from '../../../loaders'
 import QRCode from 'qrcode'
+import { PaymentProof } from '../orderDetail'
+import { readFile, img_compressor } from '../../../../../utils'
+import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 
 // import { Layout } from '../orderDetail'
 
@@ -31,6 +34,7 @@ const InProcessOrder = () => {
 
   const cerrar = (e) => {
     if(e.target.dataset.close_modal){
+      actions.isAppLoading(false)
       actions.renderModal(null)
       history.goBack()
     }
@@ -51,23 +55,10 @@ export default InProcessOrder
 
 
 
-const readFile = (file) => {
-  return new Promise(resolve => {
-    const reader = new FileReader()
-    reader.addEventListener('load',
-      () => resolve(reader.result),
-      false
-    )
-    reader.readAsDataURL(file)
-  })
-}
-
-
 const FiatOrderDespoit = ({ order }) => {
 
   const [ onDrag, setOnDrag ] = useState(false)
   const [ imgSrc, setImgSrc ] = useState(false)
-  const [ loader, setLoader ] = useState(false)
   const { actions  } = UseTxState()
 
 
@@ -90,13 +81,10 @@ const FiatOrderDespoit = ({ order }) => {
       setOnDrag(false)
       if(e.target.files[0].type !== 'image/png' && e.target.files[0].type !== 'image/jpeg'){return alert('formato no permitido')}
       const data = e.target.files[0]
-      // const file = await img_compressor(e.target.files[0], 0.5)
-      const imageDataUrl = await readFile(data)
-      setImgSrc({
-        name:data.name,
-        src:imageDataUrl,
-        completed:null
-      })
+      const file = await img_compressor(e.target.files[0], 0.25)
+      // console.log('result compresor', file.size)
+      const imageDataUrl = await readFile(file)
+      setImgSrc(imageDataUrl)
       actions.isAppLoading(true)
     }
   }
@@ -109,7 +97,7 @@ const FiatOrderDespoit = ({ order }) => {
 
         <OrderContainer onDragOver={dragOver}>
 
-          {(onDrag && !imgSrc) && <DropZoneComponent dragLeave={dragLeave} goFileLoader={goFileLoader}/>}
+          {((onDrag && !imgSrc) && order.state === 'pending') && <DropZoneComponent dragLeave={dragLeave} goFileLoader={goFileLoader}/>}
           {imgSrc && order.state === 'pending' && <PaymentProofComponent order_id={order.id} imgSrc={imgSrc} setImgSrc={setImgSrc} />}
 
 
@@ -134,7 +122,6 @@ const FiatOrderDespoit = ({ order }) => {
               <UploadComponent
                 imgSrc={imgSrc}
                 goFileLoader={goFileLoader}
-                loader={loader}
                 setImgSrc={setImgSrc}
               />
           </BottomSection>
@@ -155,6 +142,9 @@ const FiatOrderDespoit = ({ order }) => {
 const OrderStatus = ({ order }) => {
 
   const [ orderState, setOrderState ] = useState()
+  const { currentOrder } = UseTxState()
+
+  const skeletons = new Array(4).fill(["created"])
 
    useEffect(()=>{
 
@@ -164,13 +154,16 @@ const OrderStatus = ({ order }) => {
          ...orders,
          [prop]:{
            ...deposits[prop],
-           completed:order.state === prop
+           completed:currentOrder.state === prop
          }
        }
      }
      // console.log(orders, deposits)
      setOrderState(Object.entries(orders))
-   }, [order.state])
+   }, [currentOrder.state])
+
+   console.log(orderState)
+   console.log(skeletons)
 
 
   return(
@@ -181,10 +174,10 @@ const OrderStatus = ({ order }) => {
       </TopSectionStatus>
       <StatusContainer>
         {
-          orderState && orderState.map((state, index) => {
+          orderState ? orderState.map((state, index) => {
             return <StatusItem
               state={state}
-              order={order}
+              order={currentOrder}
               key={index}
               active={state[1].completed}
               className={`
@@ -192,13 +185,22 @@ const OrderStatus = ({ order }) => {
                 ${state[1].completed ? 'activeStep' : ''}
                 `} />
           })
+          :
+          skeletons.map((state, index)=>{
+            return <StatusItem
+              state={state}
+              key={index}
+              className={`${skeletons.length === (index + 1) ? 'statusStep finalStep' : 'statusStep'} skeleton`}
+              skeleton
+            />
+          })
         }
       </StatusContainer>
     </OrderStatusContainer>
   )
 }
 
-const StatusItem = ({ className, state, order, active }) => {
+const StatusItem = ({ className, state, order, active, skeleton }) => {
 
   const activated = active && active.toString()
   // console.log((state[0] === "confirmed" && (order.state === 'pending' || order.state === 'confirmed')), state )
@@ -207,16 +209,23 @@ const StatusItem = ({ className, state, order, active }) => {
     <Status className={`status ${className}`}>
       <Indicator className={className}/>
       <Description>
-        <StatusTitle active={activated}>{state[1].ui_text[order.currency_type] || state[1].ui_text}</StatusTitle>
-        <DateStatusText active={activated}>
-          {
-            active && order.state === 'pending' ? 'Pendiente' :
-            active ? 'En proceso...' :
-            state[0] === "created" ? moment(order.created_at).format("LL") :
-            state[0] === "pending" ? moment(order.updated_at).format("LL") :
-            (state[0] === "confirmed" && order.state === 'confirmed') ? moment(order.updated_at).format("LL") : ''
-          }
+        {
+          skeleton ?
+          <Skeleton/>
+          :
+          <>
+          <StatusTitle active={activated}>{state[1].ui_text[order.currency_type] || state[1].ui_text}</StatusTitle>
+          <DateStatusText active={activated}>
+            {
+              active && order.state === 'pending' ? 'Pendiente' :
+              active ? 'En proceso...' :
+              state[0] === "created" ? moment(order.created_at).format("LL") :
+              state[0] === "pending" ? moment(order.updated_at).format("LL") :
+              (state[0] === "confirmed" && order.state === 'confirmed') ? moment(order.updated_at).format("LL") : ''
+            }
           </DateStatusText>
+        </>
+        }
       </Description>
     </Status>
   )
@@ -225,7 +234,13 @@ const StatusItem = ({ className, state, order, active }) => {
 
 
 
-
+const Skeleton = styled.div`
+  width: 100%;
+  height: 16px;
+  background: #c1c1c1;
+  border-radius: 3px;
+  ${OnlySkeletonAnimation}
+`
 
 
 
@@ -244,49 +259,9 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
 
 
 
-const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, setImgSrc }) => {
+const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
-  const { loader, currentOrder, actions, coinsendaServices, currencies } = UseTxState()
-
-  const getPaymentProof = async(currentOrder) =>{
-    if(currentOrder.paymentProof){
-      const { proof_of_payment } = currentOrder.paymentProof
-      // console.log(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-      setImgSrc({
-        name:'Comprobante de pago',
-        src:currentOrder.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-      })
-      // if(currentOrder.currency_type === 'crypto'){
-      //   setTxId(proof_of_payment.proof)
-      //   setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-      // }
-    }
-    // else if(currentOrder.proof){
-    //   setImgProof(await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`))
-    //   setTxId(currentOrder.proof)
-    //   setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`)
-    // }
-  }
-
-  useEffect(()=>{
-    if(!currentOrder.paymentProof){
-      const getData = async() => {
-        const PP = await coinsendaServices.getDepositById(currentOrder.id)
-        if(!PP){return}
-        let updateOrder = {
-          [PP.id]:{...PP}
-        }
-        actions.update_item_state(updateOrder, 'deposits')
-        getPaymentProof(PP)
-      }
-      getData()
-    }else{
-      getPaymentProof(currentOrder)
-    }
-  }, [])
-
-
-  console.log(currentOrder)
+  const { currentOrder } = UseTxState()
 
 
   return(
@@ -314,26 +289,11 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, setImgSrc }) =
         </Fragment>
         :
         <Fragment>
-          <UploadMiddle className="titleSection">
+          <UploadMiddle className="titleSection payment">
             <UploadTextMiddle className="titleSection">Comprobante de pago</UploadTextMiddle>
             <hr/>
           </UploadMiddle>
-          <PaymentProofDetail>
-            <ImgContainer className={`${loader && 'loader' || ''}`}>
-              {(loader || !imgSrc) && <SimpleLoader loader={2} justify="center" color="#206f65"/>}
-                <Img src={imgSrc && imgSrc.src || null}/>
-            </ImgContainer>
-
-            {
-              currentOrder.state !== 'confirmed' &&
-              <>
-              <PaymentTitle>
-                {imgSrc.name}
-              </PaymentTitle>
-              <ProgressBar progresed={imgSrc.completed || '0%'}/>
-              </>
-            }
-          </PaymentProofDetail>
+          <PaymentProof payload={imgSrc}/>
         </Fragment>
       }
 
@@ -524,6 +484,12 @@ const UploadMiddle = styled.div`
       color: #c5c5c5;
     }
   }
+  &.payment{
+    p{
+      padding-left: 0 !important;
+    }
+    position: relative !important;
+  }
 }
 `
 
@@ -534,16 +500,16 @@ const UploadText = styled(Text)`
 
 const UploadContainer = styled.section`
   display: grid;
-  grid-template-columns:1fr;
   justify-items:center;
   row-gap:12px;
   width: 100%;
   min-height: 170px;
   height: auto;
   &.loaded{
-
+    grid-template-rows: auto 1fr;
   }
   &.unload{
+    grid-template-columns:1fr;
     max-width: 400px;
     grid-template-rows: repeat(4, auto);
   }
@@ -560,7 +526,6 @@ const BottomSection = styled(Section)`
   display: grid;
   justify-items:center;
   align-items: center;
-  position: relative;
 `
 
 
@@ -585,8 +550,8 @@ const DateStatusText = styled(Text)`
 
 const Indicator = styled.div`
   justify-self:center;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   background: #0198FF;
   border-radius: 50%;
   position: relative;
@@ -594,6 +559,9 @@ const Indicator = styled.div`
   display: grid;
   align-items: center;
   justify-items:center;
+  border: 2px solid #f5f5f5;
+
+
 
   &.activeStep{
     width: 14px;
@@ -602,8 +570,7 @@ const Indicator = styled.div`
     background: transparent !important;
     position: relative;
     ::after{
-      top: 18px !important;
-      height: 60px !important;
+      top: 16px !important;
     }
     ::before{
       content:'';
@@ -617,7 +584,7 @@ const Indicator = styled.div`
   &.statusStep::after{
     content: '';
     width: 2px;
-    height: 60px;
+    height: 64px;
     background: #0198FF;
     position: absolute;
     -webkit-align-self: center;
@@ -628,6 +595,13 @@ const Indicator = styled.div`
 
   &.statusStep.finalStep::after{
     display: none;
+  }
+
+  &.skeleton{
+    background: #c1c1c1;
+    ::after{
+      background: #c1c1c1;
+    }
   }
 `
 

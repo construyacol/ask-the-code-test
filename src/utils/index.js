@@ -47,11 +47,10 @@ export const SentryCaptureException = error => {
 export const img_compressor = (file, quality) => {
   return new Promise(async(resolve, reject) => {
     if(file.type.includes('image') && file.size > 2000000){
-      console.log('La imagen es superior a 2MB, será comprimida')
+      console.log('La imagen es superior a 2MB, será comprimida', file.size)
       if(!quality){
         // Calcula el nivel de compresión en función al tamaño de la imagen
         quality = await get_img_quality(file.size)
-        // console.log('quality', quality, typeof quality)
       }
       new Compressor(file, {
         quality: quality,
