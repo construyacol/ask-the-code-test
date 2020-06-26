@@ -75,6 +75,7 @@ export const CriptoView = () => {
   const actions = useActions()
 
   const [addressState, setAddressState] = useState()
+  const [addressValue, setAddressValue] = useState()
   const [amountState, setAmountState] = useState()
   let movil_viewport = window.innerWidth < 768
 
@@ -159,12 +160,7 @@ export const CriptoView = () => {
 
   const showQrScanner = async () => {
     renderModal(null)
-    const Element = () => (<QrScanner onScan={(data => {
-      const el = document.getElementsByName('address')[0]
-      if(el) {
-        el.value = data
-      }
-    })} />)
+    const Element = () => (<QrScanner onScan={setAddressValue} />)
     actions.renderModal(Element)
   }
   
@@ -176,6 +172,9 @@ export const CriptoView = () => {
         placeholder="Dirección de retiro"
         name="address"
         handleStatus={setAddressState}
+        isControlled
+        handleChange={(_, value) => setAddressValue(value)}
+        value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
         disabled={loader}
         SuffixComponent={() => <IconsContainer>

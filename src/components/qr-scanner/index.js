@@ -24,7 +24,7 @@ const QrScanner = (props) => {
             if (data.indexOf('?')) {
                 data = data.slice(0, data.indexOf('?'))
             }
-            props.onScan(data.replace('bitcoin:', ''))
+            props.onScan(data.slice(data.indexOf(':') + 1))
             closeModal()
         }
     }
