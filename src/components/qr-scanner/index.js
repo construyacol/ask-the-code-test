@@ -21,7 +21,10 @@ const QrScanner = (props) => {
 
     const handleScan = data => {
         if (data) {
-            props.onScan(data)
+            if (data.indexOf('?')) {
+                data = data.slice(0, data.indexOf('?'))
+            }
+            props.onScan(data.replace('bitcoin:', ''))
             closeModal()
         }
     }
@@ -55,8 +58,8 @@ const CornerPos = "-2px"
 const CornerStyle = `2px solid ${MAIN_COLOR}`
 
 const Container = styled.div`
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 25vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -65,6 +68,8 @@ const Container = styled.div`
         color: white !important;
         font-family: 'Raleway';
         font-weight: bold;
+        width: 100%;
+        padding: 0 !important;
     }
     > .qr-scanner {
         width: 94%;
