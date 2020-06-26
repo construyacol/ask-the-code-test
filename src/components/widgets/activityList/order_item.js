@@ -28,8 +28,8 @@ const OrderItem = ({ order, handleAction }) => {
     if(!order){return}
     const { tx_path, account_id, primary_path, path } = txState
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
-    const OrderDetail = await import('../modal/render/orderDetail')
-    actions.renderModal(()=><OrderDetail.default order={order} {...txState}/>)
+    const OrderDetail = await import('../modal/render/orderDetail/index.js')
+    actions.renderModal(()=><OrderDetail.default/>)
   }
 
 

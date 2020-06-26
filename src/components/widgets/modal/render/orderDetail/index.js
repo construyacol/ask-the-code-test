@@ -1,37 +1,51 @@
 import React, { useEffect, useState } from 'react'
-import OtherModalLayout from '../otherModalLayout'
+import OtherModalLayout from '../../otherModalLayout'
 import styled from 'styled-components'
-import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '../../animations'
-import { orderStateColors } from '../../../../const/const'
-import IconSwitch from '../../icons/iconSwitch'
-import { useActions } from '../../../../hooks/useActions'
-import useViewport from '../../../../hooks/useWindowSize'
-import DetailGenerator from '../../orderDetail/detailGenerator'
-import { useFormatCurrency } from '../../../hooks/useFormatCurrency'
-import UseTxState from '../../../hooks/useTxState'
-import SimpleLoader from '../../loaders'
-import QRCode from 'qrcode'
-import { BsUpload } from "react-icons/bs";
-import { MdContentCopy } from "react-icons/md";
-import { copy } from '../../../../utils'
-import InProcessOrder from './inProcessOrder/inProcessOrder'
+import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '../../../animations'
+import { orderStateColors } from '../../../../../const/const'
+import IconSwitch from '../../../icons/iconSwitch'
+import { useActions } from '../../../../../hooks/useActions'
+import useViewport from '../../../../../hooks/useWindowSize'
+import DetailGenerator from '../../../orderDetail/detailGenerator'
+import { useFormatCurrency } from '../../../../hooks/useFormatCurrency'
+import UseTxState from '../../../../hooks/useTxState'
+import InProcessOrder from './inProcessOrder'
+import { PaymentProof } from './paymentProof'
 
 import moment from 'moment'
 import 'moment/locale/es'
 moment.locale('es')
 
 
-const OrderSupervisor = ({order}) => {
+const OrderSupervisor = () => {
+
+  const { actions, history, currentOrder } = UseTxState()
+  const  { isMovilViewport } = useViewport()
+
+  const cerrar = (e) => {
+    if(e.target.dataset.close_modal){
+      actions.isAppLoading(false)
+      actions.renderModal(null)
+      history.goBack()
+    }
+  }
 
   return(
-    <>
+    <OtherModalLayout on_click={cerrar}>
       {
-        order.state === 'accepted' || order.state === 'rejected' || order.state === 'canceled' ?
+        isMovilViewport &&
+        <CloseButton onClick={cerrar}>
+          <i className="fas fa-times"></i>
+        </CloseButton>
+      }
+
+      {
+        currentOrder.state === 'accepted' || currentOrder.state === 'rejected' || currentOrder.state === 'canceled' ?
         <OrderDetail/>
         :
         <InProcessOrder/>
       }
-    </>
+    </OtherModalLayout>
   )
 
 }
@@ -43,18 +57,12 @@ export default OrderSupervisor
 const OrderDetail = () => {
 
   const actions = useActions()
-  const  { isMovilViewport } = useViewport()
   const { tx_path, currencies, currentOrder, primary_path, history } = UseTxState()
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
 
   if(!currentOrder){return null}
 
-  const cerrar = (e) => {
-    if(e.target.dataset.close_modal){
-      actions.renderModal(null)
-      history.goBack()
-    }
-  }
+
 
   const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :
@@ -66,14 +74,8 @@ const OrderDetail = () => {
 
 
     return(
-      <OtherModalLayout on_click={cerrar}>
         <Layout className="layout3">
-          {
-            isMovilViewport &&
-            <CloseButton onClick={cerrar}>
-              <i className="fas fa-times"></i>
-            </CloseButton>
-          }
+
 
           <TopSection state={currentOrder.state}>
 
@@ -107,7 +109,6 @@ const OrderDetail = () => {
 
 
         </Layout>
-      </OtherModalLayout>
     )
   }
 
@@ -150,196 +151,8 @@ const OrderDetail = () => {
 
 
 
-  export const PaymentProof = ({ payload }) => {
-    // console.log('PaymentProof', payload)
-    const { primary_path, coinsendaServices, actions, currencies, currentOrder, loader } = UseTxState()
-    const [ imgProof, setImgProof ] = useState(payload)
-    const [ txId, setTxId ] = useState()
-    const [ urlExplorer, setUrlExplorer ] = useState()
-
-    const getPaymentProof = async(currentOrder) =>{
-      // alert('getpayment')
-      if(currentOrder.paymentProof){
-        // alert('tiene pp')
-        const { proof_of_payment } = currentOrder.paymentProof
-        // console.log(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-        setImgProof(currentOrder.currency_type === 'fiat' ? `data:image/png;base64, ${proof_of_payment.raw}` : await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`))
-        if(currentOrder.currency_type === 'crypto'){
-          setTxId(proof_of_payment.proof)
-          setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${proof_of_payment.proof}`)
-        }
-      }else if(currentOrder.proof){
-        setImgProof(await QRCode.toDataURL(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`))
-        setTxId(currentOrder.proof)
-        setUrlExplorer(`${currencies[currentOrder.currency.currency].node_url}tx/${currentOrder.proof}`)
-      }
-    }
-
-    useEffect(()=>{
-      if(!currentOrder.paymentProof && currentOrder.state !== 'pending'){
-        const getData = async() => {
-          const PP = await coinsendaServices.getDepositById(currentOrder.id)
-          if(!PP){return}
-          const { proof_of_payment } = PP.paymentProof
-
-          let updateOrder = {
-            [PP.id]:{...PP}
-          }
-          actions.update_item_state(updateOrder, 'deposits')
-          getPaymentProof(PP)
-        }
-        getData()
-      }else{
-        getPaymentProof(currentOrder)
-      }
-    }, [])
-
-    useEffect(()=>{
-      if(imgProof !== payload){
-        setImgProof(payload)
-      }
-    }, [payload])
 
 
-    const openBlockchain = () => {
-      window.open(
-        urlExplorer,
-        '_blank'
-      );
-    }
-
-    // console.log('LOADER ==> ', loader)
-    return (
-      <>
-      <PaymentProofContainer className={`${currentOrder.currency_type} ${currentOrder.state}`}>
-
-        {
-          (!imgProof || loader) &&
-          <LoaderContainer >
-            <SimpleLoader loader={2} justify="center" color="#206f65"/>
-          </LoaderContainer>
-        }
-
-        {
-          imgProof &&
-          <ProofContainer>
-            <img src={imgProof} width="auto" height="90%" alt=""/>
-            {
-              currentOrder.currency_type === 'crypto' &&
-              <HoverProof>
-                <IconContainer className="tooltip" data-copy={txId} onClick={copy}>
-                  <MdContentCopy size={16}/>
-                  <span className="tooltiptext fuente">Copiar</span>
-                </IconContainer>
-
-                <IconContainer className="tooltip" onClick={openBlockchain}>
-                  <BsUpload size={20}/>
-                  <span className="tooltiptext fuente">Ver en Blockchain</span>
-                </IconContainer>
-              </HoverProof>
-            }
-          </ProofContainer>
-        }
-
-      </PaymentProofContainer>
-      <FiatPaymentProofZoom state={currentOrder.state}/>
-    </>
-    )
-
-  }
-
-  const FiatPaymentProofZoom = styled.div`
-    position: absolute;
-    width: calc(100% - 20px);
-    height: ${props => props.state === 'confirmed' ? 'calc(100% - 230px)' : 'calc(100% - 170px)' };
-    background: #206f65;
-    top: 10px;
-    justify-self: center;
-    border-radius: 3px;
-    display: none;
-  `
-
-  const IconContainer = styled.div`
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    border-radius: 3px;
-    border:1px solid gray;
-    display: grid !important;
-    align-items: center;
-    justify-items:center;
-    position: relative;
-    align-self: flex-start;
-
-    ::after{
-      content: '';
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      left:0;
-      top:0;
-    }
-
-    .tooltiptext{
-      padding-left: 4px !important;
-      padding-right: 4px !important;
-      width: auto !important;
-      min-width: 60px !important;
-    }
-
-    i, svg{
-      color: gray;
-    }
-
-    :hover{
-      i, svg{
-        color: #0c96fa;
-      }
-    }
-  `
-
-  const HoverProof = styled.div`
-    position: absolute;
-    height: 100%;
-    width: calc(100% - 20px);
-    top: 0;
-    transition: .15s !important;
-    align-items: baseline;
-    display: grid;
-    padding: 0 10px;
-    justify-items:center;
-    grid-template-columns: repeat(2, 1fr);
-    transform: translateX(100%);
-  `
-
-  const ProofContainer = styled.div`
-    width: 100%;
-    height: 100%;
-    position: relative;
-    display: grid;
-    align-items: center;
-    justify-items:center;
-
-    :hover ${HoverProof}{
-      opacity: 1;
-    }
-
-  `
-
-  const LoaderContainer = styled.div`
-    width: 90%;
-    height: 90%;
-    background: white;
-    opacity: .6;
-    border-radius: 3px;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    position: absolute;
-    justify-self:center;
-    align-self: center;
-    z-index: 1;
-  `
 
   const TotalAmount = styled.div`
     width: auto;
@@ -366,39 +179,7 @@ const OrderDetail = () => {
   `
 
 
-  const PaymentProofContainer = styled.div`
-    width: 100%;
-    height: 80%;
-    border-radius: 4px;
-    align-self: center;
-    display: grid;
-    align-items: center;
-    justify-items:center;
-    max-height: 100px;
-    max-width: 110px;
-    position: relative;
-    justify-self:start;
-    overflow: hidden;
 
-    img{
-      border-radius: 3px;
-    }
-    &.accepted, &.confirmed{
-      background: #206f65;
-    }
-    &.rejected, &.canceled{
-      background: gray;
-      opacity: .5;
-    }
-
-    &.fiat.accepted:hover ~ ${FiatPaymentProofZoom}, &.fiat.confirmed:hover ~ ${FiatPaymentProofZoom}{
-      display: initial;
-    }
-
-    &.fiat{
-      cursor: pointer;
-    }
-  `
 
   const Container = styled.div`
     width: calc(100% - 60px);
