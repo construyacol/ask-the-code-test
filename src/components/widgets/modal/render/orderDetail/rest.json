@@ -22,5 +22,23 @@
       "completed":false,
       "ui_text":"Deposito aceptado"
     }
+  },
+  "orderStatus":{
+    "pending":{
+      "fiat":{
+        "title":"Orden pendiente de confirmación",
+        "description":"Sube una fotografía o captura del compbrante de pago para continuar..."
+      }
+    },
+    "confirmed":{
+      "fiat":{
+        "title":"Tu deposito está en revisión",
+        "description":"Coinsenda está verificando el comprobante de pago..."
+      },
+      "crypto":{
+        "title":"Tu deposito está siendo confirmado",
+        "description":"Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
+      }
+    }
   }
 }

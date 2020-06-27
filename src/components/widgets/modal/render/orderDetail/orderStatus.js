@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UseTxState from '../../../../hooks/useTxState'
-import { deposits } from './rest.json'
+import { deposits, orderStatus } from './rest.json'
 import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import styled from 'styled-components'
 
@@ -33,12 +33,14 @@ const OrderStatus = ({ order }) => {
      setOrderState(Object.entries(orders))
    }, [currentOrder.state])
 
+   // console.log('|||||||||||||||| OrderSupervisor ::', order)
+
 
   return(
     <OrderStatusContainer>
-      <TopSectionStatus>
-        <Text>Orden pendiente de confirmación</Text>
-        <SubTitle>Sube una fotografía o captura del compbrante de pago para continuar...</SubTitle>
+      <TopSectionStatus >
+        <Text className="fuente">{orderStatus[order.state][order.currency_type].title}</Text>
+        <SubTitle className="fuente">{orderStatus[order.state][order.currency_type].description}</SubTitle>
       </TopSectionStatus>
       <StatusContainer>
         {
@@ -82,8 +84,8 @@ const StatusItem = ({ className, state, order, active, skeleton }) => {
           <Skeleton/>
           :
           <>
-          <StatusTitle active={activated}>{state[1].ui_text[order.currency_type] || state[1].ui_text}</StatusTitle>
-          <DateStatusText active={activated}>
+          <StatusTitle className="fuente" active={activated}>{state[1].ui_text[order.currency_type] || state[1].ui_text}</StatusTitle>
+          <DateStatusText className="fuente2" active={activated}>
             {
               active && order.state === 'pending' ? 'Pendiente' :
               active ? 'En proceso...' :
@@ -147,7 +149,7 @@ const TopSectionStatus = styled.div`
 `
 
 const SubTitle = styled(Text)`
-  font-size: 12px;
+  font-size: 13px;
   color: gray;
 `
 

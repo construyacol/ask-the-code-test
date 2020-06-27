@@ -18,7 +18,7 @@ const UseTxState = (current_order_id) => {
     const [ orderState, setOrderState ] = useState()
     const [ coinsendaServices ] = useCoinsendaServices()
     const { primary_path, tx_path, account_id, path, order_id  } = params
-    const { currencies } = state.modelData
+    const { currencies, deposit_providers } = state.modelData
     const { loader } = state.isLoading
 
     const getPaymentProof = async() => {
@@ -42,7 +42,8 @@ const UseTxState = (current_order_id) => {
         actions:{...actions},
         currentOrder:state.modelData[tx_path] && state.modelData[tx_path][order_id || current_order_id],
         getPaymentProof,
-        loader
+        loader,
+        deposit_providers
       }
 }
 

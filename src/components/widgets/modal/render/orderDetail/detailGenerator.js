@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { OnlySkeletonAnimation } from '../loaders/skeleton'
+import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
+import UseTxState from '../../../../hooks/useTxState'
+import { useFormatCurrency } from '../../../../hooks/useFormatCurrency'
 
 import moment from 'moment'
 import 'moment/locale/es'
@@ -8,9 +10,11 @@ moment.locale('es')
 
 
 
-const DetailGenerator = ({order, title}) => {
+const DetailGenerator = ({order, title, TitleSuffix}) => {
 
   const [ Orders, setOrders ] = useState([])
+  const { deposit_providers } = UseTxState()
+  const [ , formatCurrency ] = useFormatCurrency()
 
   const formatOrderText = async(itemText) => {
     // console.log(itemText)
@@ -73,10 +77,38 @@ const DetailGenerator = ({order, title}) => {
     }
   }
 
+  const inProcesOrder = async order => {
+
+    let depositProviderInfo = []
+    if(deposit_providers && deposit_providers[order.deposit_provider_id]){
+      const depositProvider = deposit_providers[order.deposit_provider_id]
+      depositProviderInfo = [
+        ["Entidad de deposito:", `${depositProvider.depositAccount.ui_name}`],
+        [`${depositProvider.depositAccount.account.type.ui_name}`, `${depositProvider.depositAccount.account.type.type}`],
+        [`${depositProvider.depositAccount.account.account_id.ui_name}`, `${depositProvider.depositAccount.account.account_id.account_id}`],
+        [`${depositProvider.depositAccount.account.bussines_name.ui_name}`, `${depositProvider.depositAccount.account.bussines_name.bussines_name}`],
+        [`${depositProvider.depositAccount.account.nit.ui_name}`, `${depositProvider.depositAccount.account.nit.nit}`]
+      ]
+    }
+    // console.log('deposit_providers', order)
+    const amount = await formatCurrency(order.amount, order.currency)
+    const amount_neto = await formatCurrency(order.amount_neto, order.currency)
+
+    setOrders([
+      ...depositProviderInfo,
+      ["Comisión:", `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${order.fee}`],
+      ["Impuesto:", `~ ${order.tax}`],
+      ["Cantidad acreditada:", `~ $${amount}`],
+      ["Total a depositar:", `~ $${amount_neto}`],
+    ])
+
+  }
+
   useEffect(()=> {
     // the order is converted to an array and formatted
     if(!order){return}
     const init = async() =>{
+      if((order.state === 'pending' || order.state === 'confirmed') && order.currency_type === 'fiat'){return await inProcesOrder(order)}
       const transOrders = []
       for (let orderItem of Object.entries(order)) {
         const ui_items = await formatOrderText(orderItem)
@@ -88,15 +120,23 @@ const DetailGenerator = ({order, title}) => {
       setOrders(transOrders)
     }
     init()
-  }, [])
+  }, [deposit_providers])
+
+  // console.log(order)
 
   return(
     <Container className={`${title ? 'withTitle' : ''}`}>
-      {title&&<Title className="fuente">{title}</Title>}
+      {
+        title&&
+        <TitleContainer className={`${TitleSuffix ? 'titleSuffix' : ''} ${order.state}`}>
+          <Title className="fuente">{title}</Title>
+          {TitleSuffix && <TitleSuffix/>}
+        </TitleContainer>
+      }
       {
         (Orders && Orders.length) ?
         Orders.map((item, indx) => {
-          return <ItemContainer key={indx}>
+          return <ItemContainer key={indx} className={`${(Orders.length === (indx + 1) && order.state) && order.state}`}>
                     <LeftText className="fuente">{item[0]}</LeftText>
                     <MiddleSection/>
                     <RightText className="fuente2">{item[1]}</RightText>
@@ -118,12 +158,34 @@ const DetailGenerator = ({order, title}) => {
 
 export default DetailGenerator
 
-
 const Text = styled.p`
   width: auto;
   margin:0;
   font-size: 14px;
 `
+
+const TotalAmountContainer = styled.div`
+  width: 100%;
+  height: 50px;
+  margin-top: 10px;
+  border-top: 1px solid #bfbfbf;
+  display: flex;
+  justify-content: space-between;
+`
+
+const TitleContainer = styled.div`
+  display: flex;
+  &.titleSuffix{
+    justify-content: space-between;
+  }
+  &.pending p{
+    color:#ff8660;
+  }
+  &.confirmed p{
+    color:#1cb179;
+  }
+`
+
 const Title = styled(Text)`
   font-size: 17px;
   font-weight: bold;
@@ -163,6 +225,21 @@ const ItemContainer = styled.div`
     }
   }
 
+  &.pending, &.confirmed{
+    height: 50px;
+    margin-top: 10px;
+    border-top: 1px solid #bfbfbf;
+    align-items: center;
+    ${RightText}, ${LeftText}{
+      font-size: 18px;
+      color: #383838;
+    }
+    ${RightText}{
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
 `
 
 
@@ -178,7 +255,7 @@ const Container = styled.section`
 
   &.withTitle{
     height: calc(100% - 95px);
-    padding-top: 70px !important;
+    padding-top: 70px;
     grid-template-rows: 70px repeat(auto-fill,20px);
   }
 

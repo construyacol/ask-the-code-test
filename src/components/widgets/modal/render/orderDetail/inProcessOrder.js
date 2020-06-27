@@ -5,9 +5,14 @@ import PaymentProofComponent, { PaymentProof } from './paymentProof'
 import UseTxState from '../../../../hooks/useTxState'
 import SimpleLoader from '../../../loaders'
 import QRCode from 'qrcode'
-// import { PaymentProof } from '../orderDetail'
 import { readFile, img_compressor } from '../../../../../utils'
 import OrderStatus from './orderStatus'
+import DetailGenerator from './detailGenerator'
+import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
+import IconSwitch from '../../../icons/iconSwitch'
+import { AiOutlineClockCircle } from 'react-icons/ai';
+
+// import { PaymentProof } from '../orderDetail'
 // import { Layout } from '../orderDetail'
 
 
@@ -33,7 +38,7 @@ const InProcessOrder = () => {
     <>
       {
         currentOrder.currency_type === 'fiat' &&
-        <FiatOrderDespoit order={currentOrder}/>
+        <FiatDespoitOrder order={currentOrder}/>
       }
     </>
   )
@@ -42,12 +47,34 @@ const InProcessOrder = () => {
 export default InProcessOrder
 
 
+const getTitle = (tx_path) => {
+  return tx_path === 'deposits' ? 'Deposito' : 'Retiro'
+}
 
-const FiatOrderDespoit = ({ order }) => {
+const GetIcon = ({ order }) => {
+
+  const coloIcon = order.state === 'pending' ? '#ff8660' : '#1cb179'
+  const RenderIcon = order.state === 'pending' ? AiOutlineClockCircle : order.state === 'confirmed' && (()=> <SimpleLoader loader={2} color={coloIcon} justify="center"/>)
+
+  return(
+    <IconContainer>
+      <RenderIcon size={25} color={coloIcon}/>
+    </IconContainer>
+  )
+
+}
+
+const getState = (state) => {
+  return state === 'pending' ? 'Pendiente' : 'En proceso de aceptación...'
+}
+
+
+
+const FiatDespoitOrder = ({ order }) => {
 
   const [ onDrag, setOnDrag ] = useState(false)
   const [ imgSrc, setImgSrc ] = useState(false)
-  const { actions  } = UseTxState()
+  const { actions, tx_path  } = UseTxState()
 
 
   const dragOver = event => {
@@ -76,7 +103,8 @@ const FiatOrderDespoit = ({ order }) => {
       actions.isAppLoading(true)
     }
   }
-  // console.log(imgSrc)
+
+  // console.log('|||||||||||||||| FiatOrderDespoit ::', order)
 
 
   return(
@@ -90,20 +118,25 @@ const FiatOrderDespoit = ({ order }) => {
 
 
           <TopSection>
-            <Icon/>
+            <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
             <TitleContainer>
-              <Text>Deposito</Text>
-              <Currency>
-                COP
+              <Text className="fuente">{getTitle(tx_path)}</Text>
+              <Currency className="fuente">
+                {order.currency.currency }
               </Currency>
             </TitleContainer>
             <DateIdContainter>
-                <Text className="fuente2">#21312321321321231232</Text>
+                <Text className="fuente2">#{order.id}</Text>
                 <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
             </DateIdContainter>
           </TopSection>
 
-          <MiddleSection>
+          <MiddleSection state={order.state}>
+            <DetailGenerator
+              order={order}
+              title={`${getState(order.state)}`}
+              TitleSuffix={()=><GetIcon order={order}/>}
+            />
           </MiddleSection>
 
           <BottomSection>
@@ -164,18 +197,18 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
         (!imgSrc && currentOrder.state !== 'confirmed') ?
         <Fragment>
             <AiOutlineUpload size={45} color="gray"/>
-            <UploadText>{title || 'Arrastra el archivo que quieres subir'}</UploadText>
+            <UploadText className="fuente">{title || 'Arrastra el archivo que quieres subir'}</UploadText>
             {
               !unButtom &&
               <Fragment>
                 <UploadMiddle>
-                  <UploadTextMiddle>o selecciona un archivo</UploadTextMiddle>
+                  <UploadTextMiddle className="fuente">o selecciona un archivo</UploadTextMiddle>
                   <hr/>
                 </UploadMiddle>
 
                 <Buttom>
                   <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} />
-                  <Text style={{color:"white"}}>Subir comprobante</Text>
+                  <Text style={{color:"white"}} className="fuente">Subir comprobante</Text>
                 </Buttom>
               </Fragment>
             }
@@ -183,7 +216,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
         </Fragment>
         :
         <Fragment>
-          <UploadMiddle className="titleSection payment">
+          <UploadMiddle className="titleSection payment fuente">
             <UploadTextMiddle className="titleSection">Comprobante de pago</UploadTextMiddle>
             <hr/>
           </UploadMiddle>
@@ -230,7 +263,12 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
 
 
-
+const IconContainer = styled.div`
+  position: relative;
+  width: 25px;
+  height: 25px;
+  display: grid;
+`
 
 
 const DropZoneContainer = styled.section`
@@ -450,6 +488,7 @@ const TitleContainer = styled.div`
 
 const Currency = styled(Text)`
   margin-left: 7px !important;
+  text-transform: uppercase;
 `
 
 const Icon = styled.span`
@@ -471,9 +510,13 @@ const MiddleSection = styled(Section)`
     content:'';
     position: absolute;
     height: 7px;
-    background: orange;
+    background: ${props => props.state === 'pending' ? '#ff8660' : '#1cb179' };
     top: 0;
     width: 100%;
+    ${props => props.state === 'confirmed' && OnlySkeletonAnimation}
+  }
+  .withTitle{
+    padding-top: 55px !important;
   }
 `
 
@@ -481,12 +524,17 @@ const TopSection = styled(Section)`
   display: grid;
   align-items: center;
   grid-template-rows: auto auto;
-  row-gap:7px;
+  column-gap: 12px;
+  row-gap:5px;
   grid-template-columns: auto 1fr;
   grid-template-areas: "icon titleContainer"
                        "icon dateIdContainter";
   span{
     margin-right: 15px;
+  }
+
+  .TitleIconOrder{
+    grid-area: icon;
   }
 `
 
@@ -523,7 +571,6 @@ const InProcessOrderContainer = styled.section`
   }
 
   p{
-    font-family: 'Raleway', sans-serif;
     margin: 0;
   }
 
