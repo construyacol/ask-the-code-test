@@ -16,6 +16,11 @@ import 'moment/locale/es'
 moment.locale('es')
 
 
+const confirmPayment = async() => {
+    const TFileUpload = document.getElementById("TFileUpload")
+    TFileUpload && TFileUpload.click()
+}
+
 const OrderItem = ({ order, handleAction }) => {
 
   const txState = UseTxState(order.id)
@@ -24,14 +29,20 @@ const OrderItem = ({ order, handleAction }) => {
   const [ orderState, setOrderState ] = useState()
 
 
-  const orderDetail = async() => {
+
+
+  const orderDetail = async(e) => {
     if(!order){return}
-    const { tx_path, account_id, primary_path, path } = txState
+    const target = e.target
+    if(target.dataset && target.dataset.is_deletion_action){return}
+    const { tx_path, account_id, primary_path, path, isModalOpen } = txState
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     actions.cleanNotificationItem('wallets', 'order_id')
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
-    actions.renderModal(()=><OrderDetail.default/>)
+    await actions.renderModal(()=><OrderDetail.default/>)
+    if(target.dataset && target.dataset.is_confirm_deposit){confirmPayment()}
   }
+
 
 
   return(
@@ -49,7 +60,7 @@ const OrderItem = ({ order, handleAction }) => {
             <WithdrawOrder order={{...order}} />
             :
             tx_path === 'swaps' ?
-            <SwapOrder order={{...order}} />
+            <SwapOrder order={{...order}} setOrderState={setOrderState}/>
             :
             <LoaderItem/>
           }
@@ -89,7 +100,7 @@ const getState = ({ state, currency_type, id }) => {
 
 const DepositOrder = ({ order }) => {
 
-  const { new_order_style } = UseTxState(order.id)
+  const { new_order_style, tx_path } = UseTxState(order.id)
 
   const {
     state,
@@ -102,10 +113,12 @@ const DepositOrder = ({ order }) => {
   } = order
 
 
+
+
   return (
       <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
 
-        <DataContainer className={`align_first ${state} ${currency_type}`}>
+        <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
           <DeleteButton {...order} setOrderState={setOrderState}/>
           <PanelLeft {...order} />
           <OrderIcon className="fas fa-arrow-down" />
@@ -144,9 +157,18 @@ const BarraSwap = styled.div`
   opacity: 0.6;
 `
 
-const SwapOrder = ({order}) => {
+const SwapOrder = ({ order, setOrderState }) => {
 
   const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
+
+
+  useEffect(()=>{
+    if(currentOrder.state === 'pending' || currentOrder.state === 'confirmed'){
+      setOrderState('inProcess')
+    }else{
+      setOrderState()
+    }
+  }, [currentOrder])
 
   const {
     created_at,
@@ -306,7 +328,7 @@ const getTypeOrder = (order) => {
 
 
 
-const PanelRight = ({order}) => {
+const PanelRight = ({ order }) => {
 
   const { state, id, currency_type, amount, currency } = order
   const { lastPendingOrderId, tx_path } = UseTxState(id)
@@ -318,7 +340,7 @@ const PanelRight = ({order}) => {
     {
       tx_path === 'swaps' ?
       <>
-      <AmountText className={`fuente2 amount`}>
+      <AmountText className={`fuente2 amount swaps`}>
         + {order.bought || '--'}
       </AmountText>
       <IconSwitch className={`currency_bought`} icon={order.to_buy_currency.currency} size={16} />
@@ -335,7 +357,6 @@ const PanelRight = ({order}) => {
         clases={` ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton' }`}
         active={true}
         type="primary"
-        // siguiente={detail_payment}
         label="Confirmar"
       />
       :
@@ -390,11 +411,11 @@ const DeleteButton = ({ state, id, setOrderState }) => {
     <>
       {
         state === 'pending' &&
-        <div className="tooltip" onClick={deleteDeposit}>
-          <div id="Aldelete">
-            <i className="far fa-times-circle "></i>
+        <div className="tooltip" onClick={deleteDeposit} data-is_deletion_action={true}>
+          <div id="Aldelete" data-is_deletion_action={true}>
+            <i className="far fa-times-circle " data-is_deletion_action={true}></i>
           </div>
-          <span className="tooltipDelete fuente">Cancelar</span>
+          <span className="tooltipDelete fuente" data-is_deletion_action={true}>Cancelar</span>
         </div>
       }
     </>
@@ -461,8 +482,18 @@ const TypeOrderText = styled(Text)`
 `
 
 const AmountText = styled(Text)`
+
   font-size: 16px !important;
   margin-right: 7px;
+
+
+  @media ${device.tablet} {
+    white-space: nowrap;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   &.withdraws{
     color: #f44336 !important;
   }
@@ -724,7 +755,7 @@ export const DataContainer = styled.div`
       "orderIcon action_date";
     }
 
-    &.align_first.confirmed.crypto{
+    &.align_first.confirmed.crypto.deposits{
       display: grid !important;
       grid-template-areas:
       "orderIcon confirmations typeOrderText"
@@ -809,7 +840,7 @@ export const DataContainer = styled.div`
 export const OrderContainer = styled.div`
   transition: .1s;
   perspective: 2000px;
-  transform: scale(.98);
+  ${'' /* transform: scale(.98); */}
   transform: scale(1) translateY(-3px);
   opacity: 0;
   width: 100%;

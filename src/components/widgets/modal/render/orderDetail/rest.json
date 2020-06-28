@@ -32,7 +32,7 @@
       "completed":false,
       "ui_text":{
         "crypto":"Retiro agregado en blockchain",
-        "fiat":"Confirmando deposito"
+        "fiat":"Confirmando retiro"
         }
     },
     "confirmed":{
@@ -58,7 +58,7 @@
       "confirmed":{
         "fiat":{
           "title":"Tu deposito está en revisión",
-          "description":"Coinsenda está verificando el comprobante de pago..."
+          "description":"Estamos verificando el comprobante de pago..."
         },
         "crypto":{
           "title":"Tu deposito está siendo confirmado",
@@ -75,8 +75,8 @@
     },
     "confirmed":{
       "fiat":{
-        "title":"Tu retiro está en revisión",
-        "description":"--"
+        "title":"Estamos procesando tu retiro.",
+        "description":"Pronto podrás disponer de tu dinero..."
       },
       "crypto":{
         "title":"Tu retiro está siendo procesado",

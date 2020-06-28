@@ -43,7 +43,8 @@ const UseTxState = (current_order_id) => {
         currentOrder:state.modelData[tx_path] && state.modelData[tx_path][order_id || current_order_id],
         getPaymentProof,
         loader,
-        deposit_providers
+        deposit_providers,
+        isModalOpen:state.ui.modal_confirmation.visible
       }
 }
 

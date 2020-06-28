@@ -113,8 +113,8 @@ class SocketsComponent extends Component {
   withdraw_mangagement = async (withdraw) => {
 
 
+    // console.log('|||||||| _______________________________________ WITHDRAW SOCKET', withdraw)
 
-    // proof withdraw fiat/cripto
     if (withdraw.proof) {
 
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
@@ -127,8 +127,11 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
-        this.props.action.toggleOtherModal()
         this.props.action.success_sound()
+        if(!this.props.isModalActive){
+          this.props.action.toggleOtherModal()
+        }
+
       }
       // await this.props.action.get_account_id_by_withdraw_id(withdraw.id)
     }
@@ -151,8 +154,6 @@ class SocketsComponent extends Component {
 
       let new_withdraw_model = {
         id: currentWithdraw.id,
-        unique_id: currentWithdraw.id,
-        type_order: 'withdraw',
         account_id: currentWithdraw.account_id,
         ...currentWithdraw,
         state: "confirmed"
@@ -424,6 +425,7 @@ const mapStateToProps = (state, props) => {
 
   const { loggedIn } = state.auth
   const { user, deposits, withdraws, wallets, withdraw_accounts, swaps } = state.modelData
+  const { ui } = state
 
   return {
     loggedIn,
@@ -433,7 +435,8 @@ const mapStateToProps = (state, props) => {
     activity_for_account: state.storage.activity_for_account,
     wallets,
     swaps,
-    withdraw_accounts
+    withdraw_accounts,
+    isModalActive:ui.otherModal
   }
 
 }

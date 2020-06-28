@@ -83,10 +83,13 @@ const CryptoDespoitOrder = ({ order }) => {
 
           <BottomSection className={`crypto`}>
               <UploadComponent/>
+              {
+                tx_path === 'deposits' &&
                 <ConfirmationCounter
                   confirmations={order.confirmations}
                   total_confirmations={currencies[order.currency.currency].confirmations}
                 />
+              }
           </BottomSection>
 
         </OrderContainer>
@@ -218,17 +221,6 @@ const FiatDespoitOrder = ({ order }) => {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
 
   return(
@@ -322,7 +314,7 @@ const GetIcon = ({ order }) => {
 const getState = ({state, currency_type}) => {
   switch (currency_type) {
     case 'fiat':
-      return state === 'pending' ? 'Pendiente' : 'En proceso de aceptación...'
+      return state === 'pending' ? 'Pendiente' : (state === 'confirmed' && currency_type === 'fiat') ? 'Procesando...' : 'En proceso de aceptación...'
     case 'crypto':
       return state === 'pending' ? 'Pendiente' : 'Confirmando en blockchain...'
     default:

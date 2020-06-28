@@ -193,6 +193,7 @@ class IconSwitch extends Component {
       case 'transaction':
         return <Swap {...props} />
       case 'withdraw':
+      case 'withdraws':
       case 'withdraw_accounts':
         return <Send {...props} />
       case 'languaje':

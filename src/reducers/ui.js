@@ -105,7 +105,7 @@ const ui = (state = initialState, action)=>{
   // payload,
   // amount
     case ADD_NOTIFICATION:
-    console.log('||||||||||||||||||||||||||||||||||||||||||||||||| ADD_NOTIFICATION =====>', action)
+    // console.log('||||||||||||||||||||||||||||||||||||||||||||||||| ADD_NOTIFICATION =====>', action)
       return {
         ...state,
         notifications:{

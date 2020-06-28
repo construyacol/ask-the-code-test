@@ -6,6 +6,7 @@ import actions from '../../../../actions'
 import SAmerica from '../sAmerica'
 import { InputCountry } from '../../inputs'
 import { matchItem } from '../../../../utils'
+import { simulate_click } from '../../../../utils'
 
 import './loader_app.css'
 
@@ -47,24 +48,15 @@ class SelectCountry extends Component {
       this.setState({country_match:match[0]})
 
       if(!without_click){
-        this.simulate_click(document.getElementById(`${match[0].value}`), 'click');
+        simulate_click(document.getElementById(`${match[0].value}`), 'click');
       }
     }
   }
 
-  simulate_click = (el, etype) =>{
-    // Función para simular click sobre el elemento (path country)
-    if (el.fireEvent) {
-      el.fireEvent('on' + etype);
-    } else {
-      var evObj = document.createEvent('Events');
-      evObj.initEvent(etype, true, false);
-      el.dispatchEvent(evObj);
-    }
-  }
+
 
   reset_data = () =>{
-    this.simulate_click(document.getElementById(`${this.state.country_match.value}`), 'click');
+    simulate_click(document.getElementById(`${this.state.country_match.value}`), 'click');
     this.setState({country_match:null})
   }
 

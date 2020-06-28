@@ -13,6 +13,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import './wallet_views.css'
 
 
+
 const ActivityView = props => {
 
   const { params } = props.match
@@ -40,8 +41,6 @@ const ActivityView = props => {
     let activity = []
     const { activity_for_account } = props
     const { account_id } = params
-
-
 
     if (method !== 'get_deposits') {
       if (activity_for_account[account_id] && (activity_for_account[account_id].deposits && activity_for_account[account_id].deposits.length)) { return redirect_activity('deposits') }
@@ -86,6 +85,7 @@ const ActivityView = props => {
         let activity_list = await coinsendaServices[method](params.account_id)
 
         if (!activity_list.length) {
+          props.action.mensaje(`Esta billetera no tiene ${getTxPath(params.tx_path)}`, 'error')
           get_activity(method)
         }
         setLoader(false)
@@ -151,3 +151,10 @@ function mapStateToProps(state, props) {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityView)
+
+
+
+
+const getTxPath = tx_path => {
+  return tx_path === 'swaps' ? 'Intercambios' : tx_path === 'deposits' ? 'Depositos' : 'Retiros'
+}

@@ -56,6 +56,8 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
           return ['Costo:', order.cost]
 
 
+      case 'withdraw_provider':
+      case 'withdraw_account':
       case 'metadata':
       case 'withdraw_account_id':
       case 'withdraw_provider_id':
@@ -131,7 +133,6 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
       ])
         break;
       default:
-
     }
 
 
@@ -156,7 +157,7 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
     init()
   }, [deposit_providers])
 
-  console.log(order, orders)
+  // console.log(order, orders)
 
   return(
     <Container className={`${title ? 'withTitle' : ''}`}>

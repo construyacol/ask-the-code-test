@@ -41,7 +41,17 @@ export const SentryCaptureException = error => {
 
 }
 
-
+// simulate_click(document.getElementById(`${match[0].value}`), 'click');
+export const simulate_click = (el, etype) =>{
+  // Función para simular click sobre el elemento (path country)
+  if (el.fireEvent) {
+    el.fireEvent('on' + etype);
+  } else {
+    var evObj = document.createEvent('Events');
+    evObj.initEvent(etype, true, false);
+    el.dispatchEvent(evObj);
+  }
+}
 
 
 export const img_compressor = (file, quality) => {

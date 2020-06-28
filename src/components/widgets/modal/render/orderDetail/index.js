@@ -142,7 +142,7 @@ const OrderDetail = () => {
             :
             <PaymentProof/>
           }
-          <TotalAmount color={colorState}>
+          <TotalAmount color={colorState} className={`${currentOrder.state}`}>
             <p className="fuente saldo">{textTotal}</p>
             <p className="fuente2 amount">
               {currentOrder.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
@@ -167,6 +167,13 @@ const OrderDetail = () => {
     height: 70px;
     justify-self: end;
     align-self: end;
+
+    &.rejected, &.canceled{
+      .amount{
+        text-decoration: line-through;
+      }
+    }
+
     p{
       color: ${props => props.color};
       margin: 0;

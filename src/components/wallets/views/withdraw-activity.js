@@ -30,6 +30,7 @@ const ActivityView = props => {
 
   const getItems = async () => {
     const res = await CoinsendaService.fetchActivityByAccount(params.account_id, page)
+    console.log(res)
     items_.current = [...items_.current, ...res]
     res && setPage(page + 1)
     if (res.length < 10) {
