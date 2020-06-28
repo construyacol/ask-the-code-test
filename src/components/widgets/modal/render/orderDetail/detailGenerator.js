@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import UseTxState from '../../../../hooks/useTxState'
 import { useFormatCurrency } from '../../../../hooks/useFormatCurrency'
+import { getState } from './'
 
 import moment from 'moment'
 import 'moment/locale/es'
@@ -12,8 +13,8 @@ moment.locale('es')
 
 const DetailGenerator = ({order, title, TitleSuffix}) => {
 
-  const [ Orders, setOrders ] = useState([])
-  const { deposit_providers } = UseTxState()
+  const [ orders, setOrders ] = useState([])
+  const { deposit_providers, tx_path } = UseTxState()
   const [ , formatCurrency ] = useFormatCurrency()
 
   const formatOrderText = async(itemText) => {
@@ -26,15 +27,11 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
       case 'currency':
           return ['Divisa:', itemText[1].currency]
       case 'spent':
-          return ['Cantidad gastada:', itemText[1]]
+          return ['Cantidad gastada:', await formatCurrency(order.spent, order.to_spend_currency)]
       case 'bought':
-          return ['Cantidad adquirida:', itemText[1]]
+          return ['Cantidad adquirida:', await formatCurrency(order.bought, order.to_buy_currency)]
       case 'state':
-          const state = itemText[1] === 'accepted' ? 'Aceptado' :
-          itemText[1] === 'confirmed' ? 'Confirmado' :
-          itemText[1] === 'pending' ? 'Pendiente' :
-          itemText[1] === 'rejected' ? 'Rechazado' : 'Cancelado'
-          return ['Estado:', state]
+          return ['Estado:', getState(itemText[1])]
       case 'price_percent':
           return ['Comisión:', itemText[1]]
       case 'id':
@@ -45,6 +42,23 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
           return ['Actualizado en:', moment(itemText[1]).format("LL")]
       case 'expiration_date':
           return ['Expira en:', moment(itemText[1]).format("LL")]
+      case 'amount':
+          return ['Cantidad:', await formatCurrency(order.amount, order.currency)]
+      case 'amount_neto':
+          return ['Cantidad neta:', await formatCurrency(order.amount_neto, order.currency)]
+      case 'confirmations':
+          return ['Confirmations:', order.confirmations]
+      case 'fee':
+          return ['Comisión:', order.fee]
+      case 'tax':
+          return ['Impuesto:', order.tax]
+      case 'cost':
+          return ['Costo:', order.cost]
+
+
+      case 'metadata':
+      case 'withdraw_account_id':
+      case 'withdraw_provider_id':
       case 'account_to':
       case 'account_from':
       case 'type':
@@ -79,28 +93,48 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
 
   const inProcesOrder = async order => {
 
-    let depositProviderInfo = []
-    if(deposit_providers && deposit_providers[order.deposit_provider_id]){
-      const depositProvider = deposit_providers[order.deposit_provider_id]
-      depositProviderInfo = [
-        ["Entidad de deposito:", `${depositProvider.depositAccount.ui_name}`],
-        [`${depositProvider.depositAccount.account.type.ui_name}`, `${depositProvider.depositAccount.account.type.type}`],
-        [`${depositProvider.depositAccount.account.account_id.ui_name}`, `${depositProvider.depositAccount.account.account_id.account_id}`],
-        [`${depositProvider.depositAccount.account.bussines_name.ui_name}`, `${depositProvider.depositAccount.account.bussines_name.bussines_name}`],
-        [`${depositProvider.depositAccount.account.nit.ui_name}`, `${depositProvider.depositAccount.account.nit.nit}`]
-      ]
-    }
-    // console.log('deposit_providers', order)
-    const amount = await formatCurrency(order.amount, order.currency)
-    const amount_neto = await formatCurrency(order.amount_neto, order.currency)
+    switch (order.currency_type) {
+      case 'fiat':
+      let depositProviderInfo = []
+      if(deposit_providers && deposit_providers[order.deposit_provider_id]){
+        const depositProvider = deposit_providers[order.deposit_provider_id]
+        depositProviderInfo = [
+          ["Entidad de deposito:", `${depositProvider.depositAccount.ui_name}`],
+          [`${depositProvider.depositAccount.account.type.ui_name}`, `${depositProvider.depositAccount.account.type.type}`],
+          [`${depositProvider.depositAccount.account.account_id.ui_name}`, `${depositProvider.depositAccount.account.account_id.account_id}`],
+          [`${depositProvider.depositAccount.account.bussines_name.ui_name}`, `${depositProvider.depositAccount.account.bussines_name.bussines_name}`],
+          [`${depositProvider.depositAccount.account.nit.ui_name}`, `${depositProvider.depositAccount.account.nit.nit}`]
+        ]
+      }
+      // console.log('deposit_providers', order)
+      const amount = await formatCurrency(order.amount, order.currency)
+      const amount_neto = await formatCurrency(order.amount_neto, order.currency)
 
-    setOrders([
-      ...depositProviderInfo,
-      ["Comisión:", `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${order.fee}`],
-      ["Impuesto:", `~ ${order.tax}`],
-      ["Cantidad acreditada:", `~ $${amount}`],
-      ["Total a depositar:", `~ $${amount_neto}`],
-    ])
+      setOrders([
+        ...depositProviderInfo,
+        ["Comisión:", `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${order.fee}`],
+        ["Impuesto:", `~ ${order.tax}`],
+        ["Cantidad acreditada:", `~ $${amount}`],
+        ["Total a depositar:", `~ $${amount_neto}`]
+      ])
+        break;
+      case 'crypto':
+      setOrders([
+        ["Número de orden:", order.id],
+        ["Estado:", getState(order.state)],
+        ["Divisa:", `${order.currency.currency}`],
+        ["Orden creada en:", moment(order.created_at).format("LL")],
+        ["Confirmaciones:", order.confirmations],
+        ["Cantidad acreditada:", await formatCurrency(order.amount, order.currency)],
+        ["Costo de operación:", order.cost_id],
+        ["Total deposito:", await formatCurrency(order.amount_neto, order.currency)]
+      ])
+        break;
+      default:
+
+    }
+
+
 
   }
 
@@ -108,7 +142,7 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
     // the order is converted to an array and formatted
     if(!order){return}
     const init = async() =>{
-      if((order.state === 'pending' || order.state === 'confirmed') && order.currency_type === 'fiat'){return await inProcesOrder(order)}
+      if((order.state === 'pending' || order.state === 'confirmed') && tx_path === 'deposits'){return await inProcesOrder(order)}
       const transOrders = []
       for (let orderItem of Object.entries(order)) {
         const ui_items = await formatOrderText(orderItem)
@@ -122,7 +156,7 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
     init()
   }, [deposit_providers])
 
-  // console.log(order)
+  console.log(order, orders)
 
   return(
     <Container className={`${title ? 'withTitle' : ''}`}>
@@ -134,9 +168,9 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
         </TitleContainer>
       }
       {
-        (Orders && Orders.length) ?
-        Orders.map((item, indx) => {
-          return <ItemContainer key={indx} className={`${(Orders.length === (indx + 1) && order.state) && order.state}`}>
+        (orders && orders.length) ?
+        orders.map((item, indx) => {
+          return <ItemContainer key={indx} className={`${((orders.length === (indx + 1) && order.state) && tx_path === 'deposits') && order.state}`}>
                     <LeftText className="fuente">{item[0]}</LeftText>
                     <MiddleSection/>
                     <RightText className="fuente2">{item[1]}</RightText>

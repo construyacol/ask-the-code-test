@@ -23,22 +23,66 @@
       "ui_text":"Deposito aceptado"
     }
   },
+  "withdraws":{
+    "created":{
+      "completed":false,
+      "ui_text":"Retiro creado"
+    },
+    "pending":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Retiro agregado en blockchain",
+        "fiat":"Confirmando deposito"
+        }
+    },
+    "confirmed":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Creando transacción en blockchain",
+        "fiat":"Procesando orden de retiro"
+        }
+    },
+    "accepted":{
+      "completed":false,
+      "ui_text":"Retiro aceptado"
+    }
+  },
   "orderStatus":{
+    "deposits":{
+      "pending":{
+        "fiat":{
+          "title":"Orden pendiente de confirmación",
+          "description":"Sube una fotografía o captura del compbrante de pago para continuar..."
+        }
+      },
+      "confirmed":{
+        "fiat":{
+          "title":"Tu deposito está en revisión",
+          "description":"Coinsenda está verificando el comprobante de pago..."
+        },
+        "crypto":{
+          "title":"Tu deposito está siendo confirmado",
+          "description":"Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
+        }
+    }
+  },
+  "withdraws":{
     "pending":{
       "fiat":{
-        "title":"Orden pendiente de confirmación",
-        "description":"Sube una fotografía o captura del compbrante de pago para continuar..."
+        "title":"--",
+        "description":"--"
       }
     },
     "confirmed":{
       "fiat":{
-        "title":"Tu deposito está en revisión",
-        "description":"Coinsenda está verificando el comprobante de pago..."
+        "title":"Tu retiro está en revisión",
+        "description":"--"
       },
       "crypto":{
-        "title":"Tu deposito está siendo confirmado",
-        "description":"Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
+        "title":"Tu retiro está siendo procesado",
+        "description":"Blockchain está generando el TxId de tu retiro..."
       }
-    }
+  }
+  }
   }
 }

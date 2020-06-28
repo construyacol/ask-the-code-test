@@ -28,6 +28,7 @@ const OrderItem = ({ order, handleAction }) => {
     if(!order){return}
     const { tx_path, account_id, primary_path, path } = txState
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
+    actions.cleanNotificationItem('wallets', 'order_id')
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
     actions.renderModal(()=><OrderDetail.default/>)
   }
@@ -342,7 +343,7 @@ const PanelRight = ({order}) => {
       <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
       :
       <>
-      <AmountText className={`fuente2 ${tx_path}`}>
+      <AmountText className={`fuente2 ${tx_path} ${order.state}`}>
         {tx_path === 'deposits' ? '+' : tx_path === 'withdraws' ? '- ' : ''}
         {currency_type === 'fiat' && '$'}
         {amountC}
@@ -464,6 +465,9 @@ const AmountText = styled(Text)`
   margin-right: 7px;
   &.withdraws{
     color: #f44336 !important;
+  }
+  &.rejected, &.canceled{
+    text-decoration: line-through;
   }
 `
 

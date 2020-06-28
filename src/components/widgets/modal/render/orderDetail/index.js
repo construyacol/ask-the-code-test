@@ -54,6 +54,13 @@ const OrderSupervisor = () => {
 export default OrderSupervisor
 
 
+export const getState = state => {
+  return state === 'accepted' ? 'Aceptado' :
+  state === 'confirmed' ? 'Confirmado' :
+  state === 'pending' ? 'Pendiente' :
+  state === 'rejected' ? 'Rechazado' : 'Cancelado'
+}
+
 const OrderDetail = () => {
 
   const actions = useActions()
@@ -120,6 +127,7 @@ const OrderDetail = () => {
     const [ amount ] = useFormatCurrency(currentOrder.amount || currentOrder.bought, currentOrder.currency)
     const textTotal = (tx_path === 'swaps' && currentOrder.state === 'accepted') ? 'Saldo adquirido:' : currentOrder.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
     const currency = tx_path === 'swaps' ? currencies[currentOrder.to_buy_currency.currency] : currencies[currentOrder.currency.currency]
+    const isFiatWithdraw = tx_path === 'withdraws' && currentOrder.currency_type === 'fiat'
 
     return(
       <BottomSectionContainer>
@@ -129,10 +137,10 @@ const OrderDetail = () => {
         </TitleBottom>
         <Container>
           {
-            tx_path !== 'swaps' ?
-            <PaymentProof/>
-            :
+            (tx_path === 'swaps' || isFiatWithdraw ) ?
             <div></div>
+            :
+            <PaymentProof/>
           }
           <TotalAmount color={colorState}>
             <p className="fuente saldo">{textTotal}</p>

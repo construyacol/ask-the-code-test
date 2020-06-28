@@ -239,7 +239,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async deposit => {
 
-    console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
+    // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
     // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
@@ -302,6 +302,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)
         await this.props.action.socket_notify(this.props.deposits[deposit.id], 'deposits')
+        await this.props.action.renderModal(null)
         this.props.action.toggleOtherModal()
         this.props.action.success_sound()
         setTimeout(() => { this.props.action.add_coin_sound() }, 1500)

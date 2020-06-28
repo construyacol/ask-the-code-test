@@ -11,6 +11,7 @@ import DetailGenerator from './detailGenerator'
 import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import IconSwitch from '../../../icons/iconSwitch'
 import { AiOutlineClockCircle } from 'react-icons/ai';
+import ConfirmationCounter from './confirmationCounter'
 
 // import { PaymentProof } from '../orderDetail'
 // import { Layout } from '../orderDetail'
@@ -37,8 +38,10 @@ const InProcessOrder = () => {
   return(
     <>
       {
-        currentOrder.currency_type === 'fiat' &&
+        currentOrder.currency_type === 'fiat' ?
         <FiatDespoitOrder order={currentOrder}/>
+        :
+        <CryptoDespoitOrder order={currentOrder} />
       }
     </>
   )
@@ -47,26 +50,80 @@ const InProcessOrder = () => {
 export default InProcessOrder
 
 
-const getTitle = (tx_path) => {
-  return tx_path === 'deposits' ? 'Deposito' : 'Retiro'
-}
+const CryptoDespoitOrder = ({ order }) => {
 
-const GetIcon = ({ order }) => {
+  const { actions, tx_path, currencies } = UseTxState()
 
-  const coloIcon = order.state === 'pending' ? '#ff8660' : '#1cb179'
-  const RenderIcon = order.state === 'pending' ? AiOutlineClockCircle : order.state === 'confirmed' && (()=> <SimpleLoader loader={2} color={coloIcon} justify="center"/>)
 
   return(
-    <IconContainer>
-      <RenderIcon size={25} color={coloIcon}/>
-    </IconContainer>
+      <InProcessOrderContainer>
+
+        <OrderContainer>
+          <TopSection>
+            <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
+            <TitleContainer>
+              <Text className="fuente">{getTitle(tx_path)}</Text>
+              <Currency className="fuente">
+                {order.currency.currency }
+              </Currency>
+            </TitleContainer>
+            <DateIdContainter>
+                <Text className="fuente2">#{order.id}</Text>
+                <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
+            </DateIdContainter>
+          </TopSection>
+
+          <MiddleSection state={order.state}>
+            <DetailGenerator
+              order={order}
+              title={`${getState(order)}`}
+              TitleSuffix={()=><GetIcon order={order}/>}
+            />
+          </MiddleSection>
+
+          <BottomSection className={`crypto`}>
+              <UploadComponent/>
+                <ConfirmationCounter
+                  confirmations={order.confirmations}
+                  total_confirmations={currencies[order.currency.currency].confirmations}
+                />
+          </BottomSection>
+
+        </OrderContainer>
+
+        <OrderStatus order={order}/>
+
+      </InProcessOrderContainer>
   )
 
 }
 
-const getState = (state) => {
-  return state === 'pending' ? 'Pendiente' : 'En proceso de aceptación...'
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,7 +131,8 @@ const FiatDespoitOrder = ({ order }) => {
 
   const [ onDrag, setOnDrag ] = useState(false)
   const [ imgSrc, setImgSrc ] = useState(false)
-  const { actions, tx_path  } = UseTxState()
+  const { actions, tx_path } = UseTxState()
+
 
 
   const dragOver = event => {
@@ -104,7 +162,7 @@ const FiatDespoitOrder = ({ order }) => {
     }
   }
 
-  // console.log('|||||||||||||||| FiatOrderDespoit ::', order)
+  // console.log('|||||||||||||||| FiatOrderDespoit ::', currencies)
 
 
   return(
@@ -134,7 +192,7 @@ const FiatDespoitOrder = ({ order }) => {
           <MiddleSection state={order.state}>
             <DetailGenerator
               order={order}
-              title={`${getState(order.state)}`}
+              title={`${getState(order)}`}
               TitleSuffix={()=><GetIcon order={order}/>}
             />
           </MiddleSection>
@@ -243,6 +301,34 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
 
 
+
+
+const getTitle = (tx_path) => {
+  return tx_path === 'deposits' ? 'Deposito' : 'Retiro'
+}
+
+const GetIcon = ({ order }) => {
+
+  const coloIcon = order.state === 'pending' ? '#ff8660' : '#1cb179'
+  const RenderIcon = order.state === 'pending' ? AiOutlineClockCircle : order.state === 'confirmed' && (()=> <SimpleLoader loader={2} color={coloIcon} justify="center"/>)
+
+  return(
+    <IconContainer>
+      <RenderIcon size={25} color={coloIcon}/>
+    </IconContainer>
+  )
+}
+
+const getState = ({state, currency_type}) => {
+  switch (currency_type) {
+    case 'fiat':
+      return state === 'pending' ? 'Pendiente' : 'En proceso de aceptación...'
+    case 'crypto':
+      return state === 'pending' ? 'Pendiente' : 'Confirmando en blockchain...'
+    default:
+
+  }
+}
 
 
 
@@ -458,6 +544,10 @@ const BottomSection = styled(Section)`
   display: grid;
   justify-items:center;
   align-items: center;
+
+  &.crypto{
+    position: relative;
+  }
 `
 
 

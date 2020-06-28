@@ -9,7 +9,6 @@ import { BsUpload } from "react-icons/bs";
 import { copy } from '../../../../../utils'
 
 
-
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
 
   const [ activeSection, setActiveSection ] = useState(true)
@@ -45,6 +44,7 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
   )
 
 }
+
 
 const CropEdit = styled.div`
   width: 100%;
@@ -124,7 +124,7 @@ export default PaymentProofComponent
 
 export const PaymentProof = ({ payload }) => {
   // console.log('PaymentProof', payload)
-  const { primary_path, coinsendaServices, actions, currencies, currentOrder, loader } = UseTxState()
+  const { primary_path, coinsendaServices, actions, currencies, currentOrder, loader, tx_path } = UseTxState()
   const [ imgProof, setImgProof ] = useState(payload)
   const [ txId, setTxId ] = useState()
   const [ urlExplorer, setUrlExplorer ] = useState()
@@ -148,7 +148,8 @@ export const PaymentProof = ({ payload }) => {
   }
 
   useEffect(()=>{
-    if(!currentOrder.paymentProof && currentOrder.state !== 'pending'){
+
+    if(!currentOrder.paymentProof && currentOrder.state !== 'pending' && tx_path === 'deposits'){
       const getData = async() => {
         const PP = await coinsendaServices.getDepositById(currentOrder.id)
         if(!PP){return}
@@ -214,19 +215,38 @@ export const PaymentProof = ({ payload }) => {
       }
 
     </PaymentProofContainer>
-    <FiatPaymentProofZoom state={currentOrder.state}/>
+    {
+      imgProof &&
+      <FiatPaymentProofZoom state={currentOrder.state}>
+        <ProofCont>
+          <img src={imgProof} width="100%" alt=""/>
+        </ProofCont>
+      </FiatPaymentProofZoom>
+    }
   </>
   )
 
 }
 
 
+const ProofCont = styled.div`
+  width: 90%;
+  height: 90%;
+  justify-self: center;
+  align-self: center;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  img{
+    border-radius: 4px;
+  }
+`
 
 const FiatPaymentProofZoom = styled.div`
   position: absolute;
   width: calc(100% - 20px);
   height: ${props => props.state === 'confirmed' ? 'calc(100% - 230px)' : 'calc(100% - 170px)' };
-  background: #206f65;
+  background: #eeeeee;
   top: 10px;
   justify-self: center;
   border-radius: 3px;
@@ -251,6 +271,7 @@ const PaymentProofContainer = styled.div`
   img{
     border-radius: 3px;
     max-width: 100px;
+    min-width: 90%;
   }
   &.accepted, &.confirmed{
     background: #206f65;
@@ -261,7 +282,7 @@ const PaymentProofContainer = styled.div`
   }
 
   &.fiat.accepted:hover ~ ${FiatPaymentProofZoom}, &.fiat.confirmed:hover ~ ${FiatPaymentProofZoom}{
-    display: initial;
+    display: grid;
   }
 
   &.fiat{

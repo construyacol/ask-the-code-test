@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import UseTxState from '../../../../hooks/useTxState'
-import { deposits, orderStatus } from './rest.json'
+import api, { orderStatus } from './rest.json'
 import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import styled from 'styled-components'
 
@@ -13,23 +13,23 @@ moment.locale('es')
 const OrderStatus = ({ order }) => {
 
   const [ orderState, setOrderState ] = useState()
-  const { currentOrder } = UseTxState()
+  const { currentOrder, tx_path } = UseTxState()
 
   const skeletons = new Array(4).fill(["created"])
 
    useEffect(()=>{
 
      let orders = {}
-     for (let prop in deposits) {
+     for (let prop in api[tx_path]) {
        orders = {
          ...orders,
          [prop]:{
-           ...deposits[prop],
+           ...api[tx_path][prop],
            completed:currentOrder.state === prop
          }
        }
      }
-     // console.log(orders, deposits)
+     // console.log(orders, api[tx_path])
      setOrderState(Object.entries(orders))
    }, [currentOrder.state])
 
@@ -39,8 +39,8 @@ const OrderStatus = ({ order }) => {
   return(
     <OrderStatusContainer>
       <TopSectionStatus >
-        <Text className="fuente">{orderStatus[order.state][order.currency_type].title}</Text>
-        <SubTitle className="fuente">{orderStatus[order.state][order.currency_type].description}</SubTitle>
+        <Text className="fuente">{orderStatus[tx_path][order.state][order.currency_type].title}</Text>
+        <SubTitle className="fuente">{orderStatus[tx_path][order.state][order.currency_type].description}</SubTitle>
       </TopSectionStatus>
       <StatusContainer>
         {
