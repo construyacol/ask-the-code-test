@@ -43,7 +43,8 @@ import {
   Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
   QRCode,
   AuthFactor,
-  Accepeted
+  Accepeted,
+  SwapCamera
  } from './'
 
  import {
@@ -301,7 +302,8 @@ class IconSwitch extends Component {
       case 'banco_confiar_cooperativa_financiera':
       case 'banco_coltefinanciera':
         return <Account {...props} />
-
+      case 'swap-camera':
+        return <SwapCamera {...props} />
       default:
         return <IconDefault {...props} />
     }

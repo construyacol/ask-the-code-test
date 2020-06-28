@@ -172,7 +172,7 @@
     }
 
     .DCcurrent_wallet {
-      padding: 0 !important;
+      /* padding: 0 !important; */
       grid-template-rows: 30% 70%;
       max-height: calc(100vh - 15vh);
       transform: scale(.9) translateY(22px);
@@ -241,7 +241,7 @@
 
     .contenido.activity {
         grid-row-gap: 30px;
-        grid-template-rows: 190px 1fr;
+        grid-template-rows: 190px 30vh;
     }
 
     .containerSection {

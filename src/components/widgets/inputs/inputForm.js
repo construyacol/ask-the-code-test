@@ -61,6 +61,7 @@ const InputForm = (props) => {
     if(customError) {
       changeState('bad')
     } else {
+      setInputState(name, { target: { value } })
       handleChange(name, value, changeState, true)
     }
   }, [customError, value])

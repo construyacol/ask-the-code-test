@@ -11,6 +11,7 @@ import { useFormatCurrency } from '../../../../hooks/useFormatCurrency'
 import UseTxState from '../../../../hooks/useTxState'
 import InProcessOrder from './inProcessOrder'
 import { PaymentProof } from './paymentProof'
+import { CloseButton } from '../../../shared-styles'
 
 import moment from 'moment'
 import 'moment/locale/es'
@@ -312,26 +313,6 @@ const OrderDetail = () => {
     overflow: hidden;
   `
 
-  const CloseButton = styled.div`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 35px;
-    height: 35px;
-    background: white;
-    border-radius: 50%;
-    z-index: 2;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    cursor: pointer;
-    -webkit-transition: .15s;
-    transition: .15s;
-
-    i{
-      color: gray;
-    }
-  `
 
 
 
