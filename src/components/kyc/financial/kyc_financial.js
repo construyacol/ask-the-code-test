@@ -10,13 +10,8 @@ import pdf from '../../../assets/pdf.png'
 import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 import { img_compressor } from '../../../utils'
+import { ACCEPT_FILE_TYPE } from '../../../const/const'
 
-
-const ACCEPT_FILE_TYPE = [
-  "image/jpeg",
-  "image/png",
-  ".pdf"
-]
 class KycFinancialComponent extends Component {
 
 
@@ -245,7 +240,7 @@ class KycFinancialComponent extends Component {
           name={this.props.user.name}
           confetti={true}
           cta_secondary={false}
-          title="!Lo haz hecho muy bien!, tus documentos han sido enviados exitosamente, los analizaremos y te pondremos al tanto de novedades lo mas pronto posible."
+          title="!Lo has hecho muy bien!, tus documentos han sido enviados exitosamente, los analizaremos y te pondremos al tanto de novedades lo más pronto posible."
           classes="long_msg"
           cta_primary_text="Finalizar"
           siguiente={this.finish}

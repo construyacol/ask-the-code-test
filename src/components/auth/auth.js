@@ -98,7 +98,7 @@ class AuthComponent extends Component {
           // console.log('||||||| pass valid', value.length >= pswrd.length, value, pswrd)
           if(pswrd.length<=6){
             return this.setState({cubicSettings:{
-              cubicMessage:"La contraseña debe contener mas de 6 caracteres",
+              cubicMessage:"La contraseña debe contener más de 6 caracteres",
               backgroundColor:"#f443360d",
               color:"red",
               rotate:true
@@ -141,7 +141,7 @@ class AuthComponent extends Component {
 
       if((section === 'register' || section === 'reset_pass') && this.state.pswrd.length<=6){
         return this.setState({cubicSettings:{
-          cubicMessage:"La contraseña debe contener mas de 6 caracteres",
+          cubicMessage:"La contraseña debe contener más de 6 caracteres",
           backgroundColor:"#f443360d",
           color:"red",
           rotate:true

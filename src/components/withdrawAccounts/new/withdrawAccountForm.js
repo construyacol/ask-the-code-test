@@ -74,7 +74,7 @@ class WithdrawAccountForm extends Component {
     var keynum = window.event ? window.event.keyCode : e.which;
     // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
     if (keynum < 48 || keynum > 57) {
-      this.setState({ statusInput: "Solo se aceptan numeros en este campo" })
+      this.setState({ statusInput: "Solo se aceptan números en este campo" })
       return true;
     }
 
@@ -149,12 +149,14 @@ class WithdrawAccountForm extends Component {
       let truncateString = false
       let maxLength = 50
       if (name && name === 'id_number') {
-        if(this.state.id_type === 'nit') {
+        truncateString = true
+        if(this.state.id_type === 'pasaporte') {
+          if (value && !/^[a-zA-Z0-9]{1,20}$/g.test(value)) return
+        } else if (this.state.id_type === 'nit') {
           maxLength = 11
           value = value.replace(/(\d{9})(\d{1})/, "$1-$2")
         } else {
-          value = value.replace(/[^a-zA-Z0-9]/g, "");
-          truncateString = true
+          if (value && !/^[0-9]{1,12}$/g.test(value)) return
         }
       }
 
@@ -163,7 +165,7 @@ class WithdrawAccountForm extends Component {
         truncateString = true
         maxLength = 20
       }
-      
+
       if (truncateString && value.length > maxLength) {
         value = value.slice(0, maxLength)
       }
@@ -171,6 +173,8 @@ class WithdrawAccountForm extends Component {
       if (name) {
         this.setState({ [name]: value })
       }
+
+      // optimize, the actions below make app slow
       this.update_control_form(value)
       this.update_form()
     })

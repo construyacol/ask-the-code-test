@@ -25,7 +25,7 @@ class HandleError extends Component {
         <div className="HandleError">
           <img src={errorIcon} alt="" width="70" />
           <h1 className="fuente">ERROR</h1>
-          <p className="fuente">Ha ocurrido un error, intentalo mas tarde...</p>
+          <p className="fuente">Ha ocurrido un error, intentalo más tarde...</p>
           <div className="contImgError">
             <img src={error_travolta} alt="" width="100%" />
           </div>

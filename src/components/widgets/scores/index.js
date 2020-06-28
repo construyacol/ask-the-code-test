@@ -48,7 +48,7 @@ class ScoresComponent extends Component {
                 verification_level === 'level_3' ? 3 : 0
 
 
-    let message = !basic ? 'Completa la verificación basica' :
+    let message = !basic ? 'Completa la verificación básica' :
                   (basic === 'rejected' && advanced === 'rejected') ? 'Tu verificación ha sido RECHAZADA.' :
                   (basic === 'confirmed' && !advanced) ? 'Completa la verificación avanzada' :
                   (basic === 'confirmed' && advanced === 'confirmed') ? 'Estamos verificando tu identidad' :

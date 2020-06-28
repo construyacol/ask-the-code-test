@@ -22,7 +22,7 @@ const AuthReq = (props) => {
 
   const success = (value, res) => {
     setButtonActive(true)
-    setStatus("Verificado con Exito")
+    setStatus("Verificado con Éxito")
     setError(false)
     setLoader(false)
     setValueState(value)

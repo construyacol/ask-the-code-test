@@ -70,7 +70,7 @@ render(){
 // console.log('ModalLayout - - - - - ', this.props)
 // modalview recibe los siguientes parametros
 // modalView: vista de modal fondoblanco habilita botones de navegación del modal
-// modalSuccess: vista final de un proceso realizado con exito (fondo verde)
+// modalSuccess: vista final de un proceso realizado con éxito (fondo verde)
 // modalRejected: vista final de un proceso NO REALIZADO (fondo rojo)
 
   const {

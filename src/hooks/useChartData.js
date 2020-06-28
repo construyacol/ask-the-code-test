@@ -4,6 +4,8 @@ import currencyLabels from "../components/Prices/currency-labels";
 
 export default function useChartData() {
     const [data, setData] = useState();
+    const [isLoading, setLoading] = useState(false);
+    const [name, setName] = useState('')
     const [requestBody, setRequestBody] = useState({
 		currency_from: currencyLabels.bitcoin,
 		currency_to: currencyLabels.cop,
@@ -12,8 +14,12 @@ export default function useChartData() {
     const [coinsendaServices, { modelData }] = useCoinsendaServices()
 
     const getData = async () => {
+        setLoading(true)
         const res = await coinsendaServices.fetchChartData({ data: requestBody })
+        if(!res) return
+        setName(res.data.pair)
         setData(res)
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -34,5 +40,5 @@ export default function useChartData() {
         }
 	}, [modelData.pairs.currentPair])
 
-    return [data];
+    return [data, isLoading, name];
 }

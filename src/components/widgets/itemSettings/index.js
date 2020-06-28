@@ -59,15 +59,15 @@ class ItemSettingsInit extends Component{
               return this.props.action.toggleModal()
         case 'phone':
             await this.props.action.current_section_params({settings:{
-              title:"Actualizar numero de movil",
-              description:`${phone ? `Tu numero actual es: ${phone}` : 'Aún no tienes numero celular de respaldo'}`,
+              title:"Actualizar número de movil",
+              description:`${phone ? `Tu número actual es: ${phone}` : 'Aún no tienes número celular de respaldo'}`,
               txtPrimary:"Actualizar",
               txtSecondary:"Cancelar",
               // action:this.update_phone,
               payload:phone,
               code:name,
               type:"number",
-              placeholder:"Escribe el nuevo numero",
+              placeholder:"Escribe el nuevo número",
               authenticator:authenticator
             }})
             return this.props.action.toggleOtherModal()
@@ -80,7 +80,7 @@ class ItemSettingsInit extends Component{
               txtSecondary:"Cancelar",
               code:name,
               type:"number",
-              placeholder:"Escribe el nuevo numero",
+              placeholder:"Escribe el nuevo número",
               authenticator:authenticator
             }})
             return this.props.action.toggleOtherModal()

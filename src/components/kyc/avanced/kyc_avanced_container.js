@@ -146,7 +146,7 @@ class KycAvancedContainer extends Component{
 
       this.updateLocalImg(urlImg, base64)
 
-      this.props.action.mensaje('¡Imagen cargada con exito!', 'success')
+      this.props.action.mensaje('¡Imagen cargada con éxito!', 'success')
 
 
     }, 2000)

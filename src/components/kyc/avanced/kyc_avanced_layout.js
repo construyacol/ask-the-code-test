@@ -73,7 +73,7 @@ const KycAvancedLayout = (props) =>{
         <SuccessComponentScreen {...props}
           confetti={true}
           cta_secondary={false}
-          title="!Lo haz hecho muy bien!, tus documentos han sido enviados exitosamente y nuestro sistema se encuentra verificandolos."
+          title="!Lo has hecho muy bien!, tus documentos han sido enviados exitosamente y nuestro sistema se encuentra verificándolos."
           classes="long_msg"
           cta_primary_text="Finalizar"
           siguiente={finish}

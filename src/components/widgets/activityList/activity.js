@@ -107,7 +107,7 @@ class ActivityList extends Component {
       await this.setState({deleting:false, current_order_loader:0})
       this.props.action.isAppLoading(false)
       // this.setState({deleted:true})
-      // this.props.action.mensaje('Orden eliminada con exito', 'success')
+      // this.props.action.mensaje('Orden eliminada con éxito', 'success')
 
   }
 
