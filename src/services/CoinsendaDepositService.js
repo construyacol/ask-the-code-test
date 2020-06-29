@@ -54,14 +54,14 @@ export class DepositService extends WebService {
     }
 
 
-    async confirmDepositOrder(order, base64image) {
+    async confirmDepositOrder(order_id, base64image) {
         const user = this.user
 
         const body = {
             // "access_token":user.userToken,
             "data": {
                 "country": user.country,
-                "deposit_id": order.id,
+                "deposit_id": order_id,
                 "state": "confirmed",
                 // "account_id": account_id,
                 "proof_of_payment": {
@@ -70,7 +70,6 @@ export class DepositService extends WebService {
                 }
             }
         }
-
         return await this.Post(UPDATE_DEPOSIT_URL, body, user.userToken, true)
     }
 

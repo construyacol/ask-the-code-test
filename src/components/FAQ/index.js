@@ -87,7 +87,7 @@ const Faq = props => {
           Una vez que tengas saldo cargado en pesos colombianos podrás darle clic en la opción “Retirar”, seleccionar el medio de pago completando los datos y confirmar tu retiro.
         </p>
         <p>
-          Debes tener en cuenta que el tiempo para que se vea reflejado tu dinero en el medio de pago que escogiste depende de las políticas de la entidad que seleccionaste, sin embargo, en la mayoría de los casos es bastante rápido, esto principalmente para usuarios que ya han realizado retiros anteriormente en la plataforma ya que su numero de cuenta se encuentra inscrito con anterioridad.
+          Debes tener en cuenta que el tiempo para que se vea reflejado tu dinero en el medio de pago que escogiste depende de las políticas de la entidad que seleccionaste, sin embargo, en la mayoría de los casos es bastante rápido, esto principalmente para usuarios que ya han realizado retiros anteriormente en la plataforma ya que su número de cuenta se encuentra inscrito con anterioridad.
         </p>
         <hr />
 

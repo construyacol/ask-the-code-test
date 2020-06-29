@@ -105,7 +105,7 @@ const TwoFactorActivate = props => {
             <div className="footer2fa">
               <div className="footer2faText">
                 <div className={`footer2faTextDes ${inputFocus ? 'desp' : 'desaparecer'}`} >
-                  <p className="fuente">Recuerda que en caso de perdida de tu dispositivo movil, solo podrás reactivar el 2FA con el codigo secreto <span className={`secretCode fuente2`}>{private_key}</span> escribelo en papel y guardalo, es tu responsabilidad</p>
+                  <p className="fuente">Recuerda que en caso de pérdida de tu dispositivo movil, solo podrás reactivar el 2FA con el codigo secreto <span className={`secretCode fuente2`}>{private_key}</span> escribelo en papel y guardalo, es tu responsabilidad</p>
                 </div>
                 <p className={`fuente ${inputFocus ? 'desaparecer' : 'aparecer'}`}>Ó ingresa el codigo secreto manualmente</p>
                 <p className={`fuente2 secretCode ${private_key ? '' : 'skeleton text'} ${inputFocus ? 'desaparecer' : 'aparecer'}`}>{private_key}</p>

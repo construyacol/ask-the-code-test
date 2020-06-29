@@ -1,0 +1,88 @@
+{
+  "deposits":{
+    "created":{
+      "completed":false,
+      "ui_text":"Deposito creado"
+    },
+    "pending":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Deposito agregado en blockchain",
+        "fiat":"Confirmando deposito"
+        }
+    },
+    "confirmed":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Confirmando en blockchain",
+        "fiat":"Aceptando prueba de deposito"
+        }
+    },
+    "accepted":{
+      "completed":false,
+      "ui_text":"Deposito aceptado"
+    }
+  },
+  "withdraws":{
+    "created":{
+      "completed":false,
+      "ui_text":"Retiro creado"
+    },
+    "pending":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Retiro agregado en blockchain",
+        "fiat":"Confirmando retiro"
+        }
+    },
+    "confirmed":{
+      "completed":false,
+      "ui_text":{
+        "crypto":"Creando transacción en blockchain",
+        "fiat":"Procesando orden de retiro"
+        }
+    },
+    "accepted":{
+      "completed":false,
+      "ui_text":"Retiro aceptado"
+    }
+  },
+  "orderStatus":{
+    "deposits":{
+      "pending":{
+        "fiat":{
+          "title":"Orden pendiente de confirmación",
+          "description":"Sube una fotografía o captura del compbrante de pago para continuar..."
+        }
+      },
+      "confirmed":{
+        "fiat":{
+          "title":"Tu deposito está en revisión",
+          "description":"Estamos verificando el comprobante de pago..."
+        },
+        "crypto":{
+          "title":"Tu deposito está siendo confirmado",
+          "description":"Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
+        }
+    }
+  },
+  "withdraws":{
+    "pending":{
+      "fiat":{
+        "title":"--",
+        "description":"--"
+      }
+    },
+    "confirmed":{
+      "fiat":{
+        "title":"Estamos procesando tu retiro.",
+        "description":"Pronto podrás disponer de tu dinero..."
+      },
+      "crypto":{
+        "title":"Tu retiro está siendo procesado",
+        "description":"Blockchain está generando el TxId de tu retiro..."
+      }
+  }
+  }
+  }
+}

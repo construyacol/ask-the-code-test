@@ -219,7 +219,7 @@ class BankAccountFlow extends Component {
                       <div className="contForminputsAccount">
 
                         <DropDownContainer
-                          placeholder="ej. Cedula de ciudadanía, Pasaporte etc"
+                          placeholder="ej. Cédula de ciudadanía, Pasaporte etc"
                           name='id_type'
                           elements={this.state.id_types}
                           label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
@@ -231,7 +231,7 @@ class BankAccountFlow extends Component {
                           this.props.id_type && (this.props.user.id_type !== this.props.id_type) &&
                           <InputForm
                             type="text"
-                            label="Escribe el numero de documento de identidad"
+                            label="Escribe el número de documento de identidad"
                             placeholder="Ej. 1123321..."
                             name="id_number"
                             actualizarEstado={actualizarEstado}
@@ -276,7 +276,7 @@ class BankAccountFlow extends Component {
 
                     <InputForm
                       type="text"
-                      label="Escribe el numero de cuenta"
+                      label="Escribe el número de cuenta"
                       placeholder="Ej. 1123321..."
                       name="account_number"
                       actualizarEstado={actualizarEstado}

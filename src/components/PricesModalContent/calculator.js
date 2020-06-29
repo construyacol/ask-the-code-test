@@ -26,7 +26,6 @@ export default (props) => {
     }
     setAmount(value)
     convert(value)
-    console.log('|||||||| typo amount => ', value)
   }
 
   let inputStyles = {

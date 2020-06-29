@@ -114,6 +114,8 @@ const OrderNotifyView = props => {
     props.history.push(`/wallets/activity/${wallet_id}/${item_type}`)
   }
 
+  console.log('item_type', item_type)
+
   return(
     <LayoutSocketNotify>
       <div className="close_modal_btn" onClick={close_modal}><i className="fas fa-times"></i></div>
@@ -139,7 +141,7 @@ const OrderNotifyView = props => {
             icon={currency.currency}
             size={35}
           />
-          <p id="order_amount" className="fuenteMuseo">{formatCurrency} <span>{currencies[socket_notify.currency.currency].symbol}</span></p>
+          <p id="order_amount" className="fuente2">{formatCurrency} <span>{currencies[socket_notify.currency.currency].symbol}</span></p>
         </div>
         <ButtonNofity buttonAction={buttonAction} item_id={socket_notify.account_id}>
           <p id="ButtonNofityText" className="fuente">{button_tittle}</p>

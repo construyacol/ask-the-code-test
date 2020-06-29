@@ -124,6 +124,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const selectCountry = async (newCountry) => {
     actions.isAppLoading(true)
     await initComponent(newCountry)
+    actions.isAppLoading(false)
   }
 
   const animation = async (animation) => {

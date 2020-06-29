@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
@@ -6,6 +6,9 @@ import ControlButton from '../../widgets/buttons/controlButton'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
+import { MAIN_COLOR } from '../../referrals/shareStyles'
+import { useActions } from '../../../hooks/useActions'
+import QrScanner from '../../qr-scanner'
 
 
 
@@ -69,7 +72,10 @@ export const CriptoView = () => {
       renderModal
     }, dispatch] = WithdrawViewState()
 
+  const actions = useActions()
+
   const [addressState, setAddressState] = useState()
+  const [addressValue, setAddressValue] = useState()
   const [amountState, setAmountState] = useState()
   let movil_viewport = window.innerWidth < 768
 
@@ -85,8 +91,8 @@ export const CriptoView = () => {
     const amount = form.get('amount')
     const address = form.get('address')
 
-    if(user.security_center.authenticator.withdraw && !twoFaToken){
-      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod}/>))
+    if (user.security_center.authenticator.withdraw && !twoFaToken) {
+      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />))
     }
 
     dispatch(isAppLoading(true))
@@ -106,19 +112,19 @@ export const CriptoView = () => {
     }
 
     const withdraw = await coinsendaServices.addWithdrawOrder({
-          "data": {
-               amount,
-              "account_id": current_wallet.id,
-              "withdraw_provider_id": withdrawProviders[current_wallet.currency.currency].id,
-              "withdraw_account_id": withdraw_account.id,
-              "country": user.country
-          }
-      }, twoFaToken)
+      "data": {
+        amount,
+        "account_id": current_wallet.id,
+        "withdraw_provider_id": withdrawProviders[current_wallet.currency.currency].id,
+        "withdraw_account_id": withdraw_account.id,
+        "country": user.country
+      }
+    }, twoFaToken)
     // return console.log('||||||||||||||||||||||||||||||||||||||||| withdraw', withdraw)
 
     if (!withdraw) {
       dispatch(isAppLoading(false))
-      if(twoFaToken){
+      if (twoFaToken) {
         return dispatch(mensaje('Al parecer el codigo 2Fa es incorrecto...', 'error'))
       }
       return dispatch(mensaje('No se ha podido crear la orden de retiro', 'error'))
@@ -147,46 +153,61 @@ export const CriptoView = () => {
     // TODO: no se debe manajar valores deirecto del DOM
     let amount = document.getElementsByName('amount')[0]
     amount.value = balance.available
-    if(amount.value > 0){
+    if (amount.value > 0) {
       setAmountState('good')
     }
   }
 
-
+  const showQrScanner = async () => {
+    renderModal(null)
+    const Element = () => (<QrScanner onScan={setAddressValue} />)
+    actions.renderModal(Element)
+  }
+  
   return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
-        <InputForm
-          type="text"
-          placeholder="Dirección de retiro"
-          name="address"
-          handleStatus={setAddressState}
-          label={`Ingresa la dirección ${current_wallet.currency.currency}`}
-          disabled={loader}
-          SuffixComponent={() => <IconSwitch
-            icon={`${addressState === 'good' ? 'verify' : 'wallet' }`}
-            color={`${addressState === 'good' ? 'green' : 'gray' }`}
-            size={`${addressState === 'good' ? 22 : 25 }`}  />}
-        />
+      <InputForm
+        type="text"
+        placeholder="Dirección de retiro"
+        name="address"
+        handleStatus={setAddressState}
+        isControlled
+        handleChange={(_, value) => setAddressValue(value)}
+        value={addressValue}
+        label={`Ingresa la dirección ${current_wallet.currency.currency}`}
+        disabled={loader}
+        SuffixComponent={() => <IconsContainer>
+          <IconSwitch
+            icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
+            color={`${addressState === 'good' ? 'green' : 'gray'}`}
+            size={`${addressState === 'good' ? 22 : 25}`} />
+          <IconSwitch
+            onClick={showQrScanner}
+            icon="qr"
+            color="gray"
+            size={25} />
+        </IconsContainer>}
+      />
 
-        <InputForm
-          type="text"
-          placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
-          name="amount"
-          handleStatus={setAmountState}
-          label={`Ingresa la cantidad de retiro`}
-          disabled={loader}
-          state={amountState}
-          SuffixComponent={() => <AvailableBalance
-            handleAction={handleMaxAvailable}
-            amount={balance.available} />}
-          // PrefixComponent
-        />
-        <ControlButton
-          loader={loader}
-          formValidate={!active_trade_operation && ( amountState === 'good' && addressState === 'good')}
-          label="Enviar"
-        />
+      <InputForm
+        type="text"
+        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+        name="amount"
+        handleStatus={setAmountState}
+        label={`Ingresa la cantidad de retiro`}
+        disabled={loader}
+        state={amountState}
+        SuffixComponent={() => <AvailableBalance
+          handleAction={handleMaxAvailable}
+          amount={balance.available} />}
+      // PrefixComponent
+      />
+      <ControlButton
+        loader={loader}
+        formValidate={!active_trade_operation && (amountState === 'good' && addressState === 'good')}
+        label="Enviar"
+      />
       {/* </form> */}
     </WithdrawForm>
   )
@@ -202,6 +223,22 @@ export const AvailableBalance = ({ handleAction, amount }) => {
     </BalanceContainer>
   )
 }
+
+const IconsContainer = styled.div`
+  display: flex;
+  > div:first-child {
+    margin: 0 12px;
+  }
+  > div:last-child {
+    cursor: pointer;
+    transition: all 300ms ease;
+    &:hover {
+      >svg {
+        fill: ${MAIN_COLOR} !important;
+      }
+    }
+  }
+`
 
 export const OperationForm = styled.form`
   width: calc(95% - 50px);

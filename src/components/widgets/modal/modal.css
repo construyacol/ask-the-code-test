@@ -102,7 +102,7 @@
 }
 
 
-.modalCont, .modalCont2{
+.modalCont, .modalCont2, .modalCont3{
   position: relative;
   height: calc(100% - 80px);
   padding: 40px;
@@ -110,10 +110,19 @@
 }
 
 
-.modalCont2{
+.modalCont2, .modalCont3{
   display: grid;
   align-items: center;
   justify-items:center;
+}
+
+@media only screen and (max-height: 768px) {
+  .modalCont3{
+    overflow-y: scroll;
+  }
+  .modalCont3 .layout3{
+    margin: 70px 0;
+  }
 }
 
 
@@ -169,7 +178,7 @@
   text-align: center;
   align-items: flex-end;
   font-size: 16px;
-  margin: 15px 0 0 0 !important;
+  margin: 15px 0 0 0;
   padding: 0 5%;
   align-self: start;
   color: #4a4a4a;

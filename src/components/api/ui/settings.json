@@ -8,7 +8,7 @@
           "id":1,
           "name":"email",
           "label":"Correo electrónico",
-          "description":"Confirma tu correo electrónico como respaldo en caso de perdida de tus contraseñas, solo desde el correo o desde tu celular podrán ser recuperadas.",
+          "description":"Confirma tu correo electrónico como respaldo en caso de pérdida de tus contraseñas, solo desde el correo o desde tu celular podrán ser recuperadas.",
           "verify":false,
           "cta_primary":"Verificar",
           "cta_secondary":"Verificado",
@@ -36,7 +36,7 @@
       {
         "id":2,
         "name":"kyc_basic",
-        "label":"Basica",
+        "label":"Básica",
         "description":"Completa los datos basicos de tu perfil (nombres, apellidos, pais, ciudad etc...)",
         "verify":false,
         "cta_primary":"Verificar",
@@ -161,7 +161,7 @@
         {
           "id":4,
           "name":"phone",
-          "label":"Numero Móvil",
+          "label":"Número Móvil",
           "description":"Agregalo como metodo de respaldo adicional y monitoréa tu cuenta por medio de SMS desde tu telefono movil.",
           "verify":true,
           "cta_primary":"+57 315 608 44 66",

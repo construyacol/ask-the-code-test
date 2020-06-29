@@ -42,7 +42,9 @@ import {
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
   Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
   QRCode,
-  AuthFactor
+  AuthFactor,
+  Accepeted,
+  SwapCamera
  } from './'
 
  import {
@@ -154,6 +156,8 @@ class IconSwitch extends Component {
         return <Confirming {...props} />
       case 'accepted':
         return <Medal {...props} />
+      case 'accepted2':
+        return <Accepeted {...props}/>
       case 'email':
         return <Email {...props} />
       case 'coinsenda':
@@ -168,6 +172,7 @@ class IconSwitch extends Component {
         return <Touch {...props} />
       case 'kyc_financial':
         return <Financial {...props} />
+      case 'canceled':
       case 'rejected':
       case 'error':
         return <Errors {...props} />
@@ -189,6 +194,7 @@ class IconSwitch extends Component {
       case 'transaction':
         return <Swap {...props} />
       case 'withdraw':
+      case 'withdraws':
       case 'withdraw_accounts':
         return <Send {...props} />
       case 'languaje':
@@ -296,7 +302,8 @@ class IconSwitch extends Component {
       case 'banco_confiar_cooperativa_financiera':
       case 'banco_coltefinanciera':
         return <Account {...props} />
-
+      case 'swap-camera':
+        return <SwapCamera {...props} />
       default:
         return <IconDefault {...props} />
     }
@@ -306,11 +313,12 @@ class IconSwitch extends Component {
   render(){
 
     const{
-      animOn
+      animOn,
+      className
     } = this.props
 
     return(
-        <div className={`iconSty ${animOn ? 'animOn' : '' }`}>
+        <div className={`iconSty ${animOn ? 'animOn' : '' } ${className}`}>
           <this.switcher {...this.props} />
         </div>
     )

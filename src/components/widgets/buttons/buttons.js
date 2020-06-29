@@ -226,20 +226,20 @@ export const PaymentConfirButton = (props) => {
   const { clases, label, type, cenVert, siguiente } = props
 
   return(
-    <div className={`contButton ${clases}`} id={`ALconfirmButton`}>
+    <div className={`contButton ${clases}`} id={`ALconfirmButton`} data-is_confirm_deposit>
       {
         props.active ?
-        <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente}>
-          <p id="ALbuttonText" className="ALbuttonText">
-            <span className="ALbuttonTextSpan fuente">{label}</span>
-            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up"></i>
+        <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
+          <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
+            <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
+            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
           </p>
         </div>
         :
-        <div className={`botonForm desactivado fuente ${cenVert}`} >
-          <p id="ALbuttonText" className="ALbuttonText">
-            <span className="ALbuttonTextSpan fuente">{label}</span>
-            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up"></i>
+        <div className={`botonForm desactivado fuente ${cenVert}`} data-is_confirm_deposit>
+          <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
+            <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
+            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
           </p>
         </div>
       }

@@ -24,7 +24,7 @@ const  ControlButton = ({loader, formValidate, label, handleAction}) => {
 }
 
 
-const InputButton = (props) => {
+export const InputButton = (props) => {
   // Este es el cta por default
   //clase large => "width:200px !important"
 

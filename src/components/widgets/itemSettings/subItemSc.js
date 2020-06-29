@@ -147,7 +147,7 @@ class SubItemSC extends Component {
               verify ?
               <Fragment>
                 <i className="fas fa-check"></i>
-                {`Verificado y/o Habilitado con exito` }
+                {`Verificado y/o Habilitado con éxito` }
               </Fragment>
               :
               other_state === 'confirmed' ?

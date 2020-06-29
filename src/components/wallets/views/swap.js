@@ -13,8 +13,13 @@ import ControlButton from '../../widgets/buttons/controlButton'
 import { usePairSelector } from '../../../hooks/usePairSelector'
 import { useActions } from '../../../hooks/useActions'
 import { AvailableBalance, OperationForm } from './withdrawCripto'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+
+
 
 function SwapView(props) {
+
+  const [coinsendaServices] = useCoinsendaServices()
   const [value, setValue] = useState(undefined)
   const [active, setActive] = useState(undefined)
   // const [pairId, setPairId] = useState()
@@ -152,11 +157,12 @@ function SwapView(props) {
 
   const confirmSwap = async () => {
     actions.isAppLoading(true)
-
-    await actions.get_swaps(currentWallet.id)
-
+    if(!props.order_list){
+      await coinsendaServices.get_swaps(currentWallet.id)
+    }
     const { pair_id } = currentPair
-    const newSwap = await actions.addNewSwap(currentWallet.id, pair_id, value)
+    const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, pair_id, value)
+    actions.isAppLoading(false)
     if (!newSwap) {
       return handleError('No se ha podio hacer el cambio')
     }
@@ -226,12 +232,6 @@ function SwapView(props) {
   return (
     <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
 
-      {
-        loader &&
-        <LoaderTrade
-          label="Procesando tu cambio"
-        />
-      }
 
       <InputForm
         classes="fuente2"
@@ -277,7 +277,7 @@ function SwapView(props) {
       </div>
 
       <ControlButton
-        loader={loaderButton}
+        loader={loaderButton || loader}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
       />
@@ -331,6 +331,7 @@ const SwapViewLoader = () => {
       />
     </SwapForm>
   )
+
 }
 
 function mapStateToProps(state, props) {
@@ -351,7 +352,8 @@ function mapStateToProps(state, props) {
     short_name: state.ui.current_section.params.short_name,
     local_currency: state.modelData.pairs.localCurrency,
     currencies: state.modelData.currencies,
-    currentPair
+    currentPair,
+    order_list:state.storage.activity_for_account[current_wallet.id] && state.storage.activity_for_account[current_wallet.id].swaps
   }
 }
 export default connect(mapStateToProps)(SwapView)

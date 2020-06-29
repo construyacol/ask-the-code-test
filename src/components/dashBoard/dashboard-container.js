@@ -59,7 +59,7 @@ function DashBoardContainer(props) {
 
   const proofSocketNotify = () => {
     const { wallets } = props
-    const account_id = '5eaa24fb039930003309cf1c'
+    const account_id = '5ed5a8fe5dea880032d2eb9d'
 
     setTimeout(()=>{
       let currency = {
@@ -120,7 +120,6 @@ function DashBoardContainer(props) {
 
   useEffect(() => {
     onMount()
-    // console.log('|||||||||||||||||||||||||||||||||||||||||||||| DASHBOARD ::', props)
     // proofSocketNotify()
     return onUnmount
   }, [])

@@ -113,8 +113,8 @@ class SocketsComponent extends Component {
   withdraw_mangagement = async (withdraw) => {
 
 
+    // console.log('|||||||| _______________________________________ WITHDRAW SOCKET', withdraw)
 
-    // proof withdraw fiat/cripto
     if (withdraw.proof) {
 
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
@@ -127,8 +127,11 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
-        this.props.action.toggleOtherModal()
         this.props.action.success_sound()
+        if(!this.props.isModalActive){
+          this.props.action.toggleOtherModal()
+        }
+
       }
       // await this.props.action.get_account_id_by_withdraw_id(withdraw.id)
     }
@@ -151,8 +154,6 @@ class SocketsComponent extends Component {
 
       let new_withdraw_model = {
         id: currentWithdraw.id,
-        unique_id: currentWithdraw.id,
-        type_order: 'withdraw',
         account_id: currentWithdraw.account_id,
         ...currentWithdraw,
         state: "confirmed"
@@ -239,7 +240,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async deposit => {
 
-    console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
+    // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
     // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
@@ -302,6 +303,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)
         await this.props.action.socket_notify(this.props.deposits[deposit.id], 'deposits')
+        await this.props.action.renderModal(null)
         this.props.action.toggleOtherModal()
         this.props.action.success_sound()
         setTimeout(() => { this.props.action.add_coin_sound() }, 1500)
@@ -335,7 +337,11 @@ class SocketsComponent extends Component {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
         this.props.action.get_account_balances(this.props.user)
-        this.props.history.push('?form=deposit_confirmed_success')
+        // this.props.history.push('?form=deposit_confirmed_success')
+        this.props.action.isAppLoading(false)
+        this.props.action.success_sound()
+        this.props.action.mensaje('Deposito confirmado con exito', 'success')
+
       }
     }
 
@@ -345,69 +351,59 @@ class SocketsComponent extends Component {
 
   swap_management = async (swap) => {
 
-    // console.log('||||||||||||||||||||||||||||| ===========> SOCKET SWAP => ', swap.state, '  ==>  ', swap, this.props)
+    // console.log('||||||||||||||||||||||||||||| ===========> SOCKET SWAP => ', swap.state, '  ==>  ', swap)
+    // debugger
 
     if (swap.state === 'pending') {
-      await this.props.action.current_section_params({ active_trade_operation: true })
+      // await this.props.action.current_section_params({ active_trade_operation: true })
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
-
-      add_swap = {
-        account_id: new_swap.account_from,
-        account_to: new_swap.account_to,
-        action_price: new_swap.action_price,
-        amount: '--',
-        amount_neto: "",
-        bought: '--',
-        comment: "",
-        currency: new_swap.to_spend_currency,
-        currency_bought: new_swap.to_buy_currency,
-        // currency_type:current_wallet.currency_type,
-        deposit_cost: "",
-        deposit_provider_id: "",
-        expiration_date: new Date(),
-        id: new_swap.id,
-        unique_id: new_swap.id,
-        spent: new_swap.spent,
-        state: new_swap.state,
-        type_order: "swap"
-      }
-      // console.log(' ||||||||||||||| NEW SWAP  =====> ', {[add_swap.id]:{...add_swap, state:add_swap.state}})
-      // await this.props.action.update_item_state({[add_swap.id]:{...add_swap, state:add_swap.state}}, 'swaps')
-
-       await this.props.action.add_item_state('swaps', add_swap)
-       await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
-       await this.props.action.add_new_transaction_animation()
-      this.props.action.isAppLoading(false)
-      return this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
+         await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', activeTrade:true})
+         await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
+         this.props.action.isAppLoading(false)
+         await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
+         this.props.action.add_new_transaction_animation()
     }
-
 
     if (swap.state === 'accepted' && this.state.currentSwap.state !== 'done') {
       const { currentSwap } = this.state
-      // console.log('________________________swap_ accepted', swap)
-      // await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
-      await this.props.action.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'processing' } })
 
-      return setTimeout(async () => {
+      await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
+      setTimeout(async()=>{
         await this.props.action.success_sound()
-        await this.props.action.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'done' }, swap_done_id: currentSwap.id, swap_done_out: true })
-        await this.props.action.swap_activity_update({ ...currentSwap, bought: swap.bought }, 'swaps')
-        await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
+        this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "confirmed", bought:swap.bought } }, 'swaps')
+      },2500)
 
-        setTimeout(async () => {
-          await this.props.action.current_section_params({ active_trade_operation: false })
+      setTimeout(async()=>{
+        this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], state: "accepted"} }, 'swaps')
+        await this.props.action.success_sound()
+        setTimeout(async()=>{
+          await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], activeTrade:false} }, 'swaps')
           await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
-          // this.props.action.get_account_balances(this.props.user)
-          setTimeout(async () => {
-            // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
-            // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
+          await this.props.action.add_coin_sound()
+          await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
+        },2000)
+      }, 5500)
 
-            // await  this.props.action.getSwapList()
-            // await  this.props.action.update_pending_activity(currentSwap.account_from, 'swaps')
-          }, 3000)
-        }, 4000)
-      }, 3500)
+      // return setTimeout(async () => {
+      //   await this.props.action.success_sound()
+      //   await this.props.action.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'done' }, swap_done_id: currentSwap.id, swap_done_out: true })
+      //   await this.props.action.swap_activity_update({ ...currentSwap, bought: swap.bought }, 'swaps')
+      //   await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
+      //
+      //   setTimeout(async () => {
+      //     await this.props.action.current_section_params({ active_trade_operation: false })
+      //     await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+      //     // this.props.action.get_account_balances(this.props.user)
+      //     setTimeout(async () => {
+      //       // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
+      //       // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
+      //
+      //       // await  this.props.action.getSwapList()
+      //       // await  this.props.action.update_pending_activity(currentSwap.account_from, 'swaps')
+      //     }, 3000)
+      //   }, 4000)
+      // }, 3500)
     }
 
     if (swap.status === 'error') {
@@ -428,7 +424,8 @@ const mapStateToProps = (state, props) => {
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)
 
   const { loggedIn } = state.auth
-  const { user, deposits, withdraws, wallets, withdraw_accounts } = state.modelData
+  const { user, deposits, withdraws, wallets, withdraw_accounts, swaps } = state.modelData
+  const { ui } = state
 
   return {
     loggedIn,
@@ -437,7 +434,9 @@ const mapStateToProps = (state, props) => {
     withdraws,
     activity_for_account: state.storage.activity_for_account,
     wallets,
-    withdraw_accounts
+    swaps,
+    withdraw_accounts,
+    isModalActive:ui.otherModal
   }
 
 }

@@ -26,7 +26,7 @@ class PhoneView extends Component {
 
     if(value.length>6 && value === payload){
       this.setState({
-        status:"Tu nuevo numero no puede coincidir con el numero actual, cambialo."
+        status:"Tu nuevo número no puede coincidir con el número actual, cambialo."
       })
     }
     return this.props.update_state({

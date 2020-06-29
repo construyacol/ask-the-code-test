@@ -204,7 +204,7 @@ class SAmerica extends Component {
             "https://api.jsonbin.io/b/5e961dcd5fa47104cea07454",
             // "https://api.jsonbin.io/b/5c904d232d33133c40168935",
             async(json) => {
-
+              if(!json) return
               const {
                 action_loader,
                 available_countries

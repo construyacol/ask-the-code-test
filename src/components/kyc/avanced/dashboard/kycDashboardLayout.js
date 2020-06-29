@@ -1,6 +1,7 @@
  import React, {Fragment} from 'react'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
 import Marco from '../../../widgets/marco'
+import { ACCEPT_FILE_TYPE_ADVANCE_KYC } from '../../../../const/const'
 
 const KycDashBoard = props =>{
 
@@ -102,7 +103,7 @@ const KycDashBoard = props =>{
               step < 4 ?
 
             <div className="contButtonUpload">
-              <input type="file" onChange={goFileLoader} />
+              <input type="file" accept={ACCEPT_FILE_TYPE_ADVANCE_KYC.join()} onChange={goFileLoader} />
               <ButtonForms
                 active={true}
                 type="primary"

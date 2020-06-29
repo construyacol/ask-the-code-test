@@ -314,28 +314,32 @@ export class WithdrawService extends WebService {
             state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
           }
 
+          // let new_withdraw = {
+          //   ...withdraw,
+          //   account_id:withdraw.account_id,
+          //   amount:withdraw.amount,
+          //   amount_neto:withdraw.amount_neto,
+          //   comment:"",
+          //   country:withdraw.country,
+          //   currency:withdraw.currency,
+          //   currency_type:withdraw.currency_type,
+          //   cost:withdraw.cost,
+          //   cost_struct:withdraw.cost_struct,
+          //   deposit_provider_id:"",
+          //   expiration_date:new Date(),
+          //   id:withdraw.id,
+          //   state,
+          //   unique_id:withdraw.id,
+          //   userId:withdraw.userId,
+          //   withdraw_account:withdraw.withdraw_account_id,
+          //   withdraw_provider:withdraw.withdraw_provider_id,
+          //   type_order:"withdraw",
+          //   withdraw_proof:withdraw.proof,
+          //   created_at:withdraw.created_at,
+          // }
           let new_withdraw = {
             ...withdraw,
-            account_id:withdraw.account_id,
-            amount:withdraw.amount,
-            amount_neto:withdraw.amount_neto,
-            comment:"",
-            country:withdraw.country,
-            currency:withdraw.currency,
-            currency_type:withdraw.currency_type,
-            cost:withdraw.cost,
-            cost_struct:withdraw.cost_struct,
-            deposit_provider_id:"",
-            expiration_date:new Date(),
-            id:withdraw.id,
-            state,
-            unique_id:withdraw.id,
-            userId:withdraw.userId,
-            withdraw_account:withdraw.withdraw_account_id,
-            withdraw_provider:withdraw.withdraw_provider_id,
-            type_order:"withdraw",
-            withdraw_proof:withdraw.proof,
-            created_at:withdraw.created_at,
+            state
           }
 
           if(new_withdraw.state !== 'pending'){
@@ -379,4 +383,69 @@ export class WithdrawService extends WebService {
 
         return response
     }
+
+
+
+
+
+
+
+
+
+
+    async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {
+        const skip = page * 10
+
+        const _withdrawsQuery = `{"where":{"withdraw_account_id":"${accountId}", "sent":true}, "limit": 10, "order":"id DESC", "skip": ${skip}}`
+        const mainUrl = GET_WITHDRAWS_BY_ACCOUNT_ID
+        const query = _withdrawsQuery
+
+        const url = `${mainUrl}/${this.user.id}/${type}?country=${this.user.country}&filter=${query}`
+
+        let res = await this.Get(url)
+
+        let finalResult
+        res = res ? res : []
+
+        finalResult = res.filter(item => item.state === 'accepted').map(withdraw => {
+            // let state
+            // if (withdraw.currency_type === 'fiat') {
+            //     state = !withdraw.sent ? 'confirmed' : withdraw.state
+            // }
+            // if (withdraw.currency_type === 'crypto') {
+            //     state = !withdraw.proof ? 'confirmed' : withdraw.state
+            // }
+
+            return {
+                ...withdraw,
+                comment: "",
+                deposit_provider_id: "",
+                expiration_date: new Date(),
+                // state,
+                unique_id: withdraw.id,
+                withdraw_account: withdraw.withdraw_account_id,
+                withdraw_provider: withdraw.withdraw_provider_id,
+                type_order: "withdraw",
+                withdraw_proof: withdraw.proof,
+            }
+        })
+
+        if (finalResult.length > 0) {
+            await this.dispatch(normalized_list(finalResult, type))
+        }
+
+        return finalResult
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

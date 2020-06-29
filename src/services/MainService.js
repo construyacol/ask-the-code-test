@@ -13,7 +13,7 @@ import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading from "../actions/loader";
 import sleep from "../utils/sleep";
-import { GET_URLS, GET_WITHDRAWS_BY_ACCOUNT_ID, GET_CHART_DATA_URL } from "../const/const";
+import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
@@ -162,49 +162,7 @@ export class MainService extends inheritances {
         }
     }
 
-    async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {
-        const skip = page * 10
-        
-        const _withdrawsQuery = `{"where":{"withdraw_account_id":"${accountId}"}, "limit": 10, "order":"id DESC", "skip": ${skip}}`
-        const mainUrl = GET_WITHDRAWS_BY_ACCOUNT_ID
-        const query = _withdrawsQuery
 
-        const url = `${mainUrl}/${this.user.id}/${type}?country=${this.user.country}&filter=${query}`
-
-        let res = await this.Get(url)
-
-        let finalResult
-        res = res ? res : []
-
-        finalResult = res.filter(item => item.state === 'accepted').map(withdraw => {
-            // let state
-            // if (withdraw.currency_type === 'fiat') {
-            //     state = !withdraw.sent ? 'confirmed' : withdraw.state
-            // }
-            // if (withdraw.currency_type === 'crypto') {
-            //     state = !withdraw.proof ? 'confirmed' : withdraw.state
-            // }
-
-            return {
-                ...withdraw,
-                comment: "",
-                deposit_provider_id: "",
-                expiration_date: new Date(),
-                // state,
-                unique_id: withdraw.id,
-                withdraw_account: withdraw.withdraw_account_id,
-                withdraw_provider: withdraw.withdraw_provider_id,
-                type_order: "withdraw",
-                withdraw_proof: withdraw.proof,
-            }
-        })
-        
-        if (finalResult.length > 0) {
-            await this.dispatch(normalized_list(finalResult, type))
-        }
-
-        return finalResult
-    }
 
     async fetchChartData(data) {
         const response = await this.Post(GET_CHART_DATA_URL, data)

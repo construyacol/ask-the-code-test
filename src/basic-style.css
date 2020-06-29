@@ -241,26 +241,24 @@
   }
 
 
-  .dashBoardLayout::-webkit-scrollbar {
+
+  .dashBoardLayout::-webkit-scrollbar, .modalCont3::-webkit-scrollbar {
     width: 7px !important;
     background: #2b3742 !important;
   }
 
-  .dashBoardLayout::-webkit-scrollbar-thumb {
+  .dashBoardLayout::-webkit-scrollbar-thumb, .modalCont3::-webkit-scrollbar-thumb {
     background: #101418 !important;
   }
 
-  .dashBoardLayout::-moz-scrollbar {
+  .dashBoardLayout::-moz-scrollbar, .modalCont3::-moz-scrollbar-thumb {
     width: 7px !important;
     background: #2b3742 !important;
   }
 
-  .dashBoardLayout::-moz-scrollbar-thumb {
+  .dashBoardLayout::-moz-scrollbar-thumb, .modalCont3::-moz-scrollbar-thumb {
     background: #101418 !important;
   }
-
-
-
 
 
   @-webkit-keyframes checkmark {

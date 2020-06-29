@@ -65,7 +65,7 @@ function ModalsSupervisor(props) {
             <ModalContainer condition={RenderModal}>
               {
                 RenderModal &&
-                <RenderModal/>
+                React.createElement(RenderModal)
               }
             </ModalContainer>
 

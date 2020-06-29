@@ -84,7 +84,7 @@ function AccountList(props) {
   //   setAccountState("deleting")
   //   setWalletId(accountId)
   //   const accountDeleted = await actions.delete_account(accountId, type)
-  //   let msg = "Wallet eliminada con exito"
+  //   let msg = "Wallet eliminada con éxito"
   //   let success = true
 
   //   if (accountDeleted === 404 || !accountDeleted) {
