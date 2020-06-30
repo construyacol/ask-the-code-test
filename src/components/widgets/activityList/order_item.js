@@ -29,8 +29,6 @@ const OrderItem = ({ order, handleAction }) => {
   const [ orderState, setOrderState ] = useState()
 
 
-
-
   const orderDetail = async(e) => {
     if(!order){return}
     const target = e.target
@@ -411,7 +409,7 @@ const DeleteButton = ({ state, id, setOrderState }) => {
     <>
       {
         state === 'pending' &&
-        <div className="tooltip" onClick={deleteDeposit} data-is_deletion_action={true}>
+        <div className="tooltip deleteOrder" onClick={deleteDeposit} data-is_deletion_action={true}>
           <div id="Aldelete" data-is_deletion_action={true}>
             <i className="far fa-times-circle " data-is_deletion_action={true}></i>
           </div>
@@ -746,6 +744,10 @@ export const DataContainer = styled.div`
     grid-area: currency_spent;
   }
 
+  .deleteOrder{
+    grid-area: deleteOrder;
+  }
+
 
   @media ${device.tablet} {
     &.align_first{
@@ -753,6 +755,13 @@ export const DataContainer = styled.div`
       grid-template-areas:
       "orderIcon typeOrderText"
       "orderIcon action_date";
+    }
+
+    &.align_first.pending.fiat{
+      display: grid !important;
+      grid-template-areas:
+      "deleteOrder orderIcon typeOrderText"
+      "deleteOrder orderIcon action_date";
     }
 
     &.align_first.confirmed.crypto.deposits{

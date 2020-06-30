@@ -3,6 +3,7 @@ import UseTxState from '../../../../hooks/useTxState'
 import api, { orderStatus } from './rest.json'
 import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import styled from 'styled-components'
+import { device } from '../../../../../const/const'
 
 import moment from 'moment'
 import 'moment/locale/es'
@@ -10,7 +11,7 @@ moment.locale('es')
 
 
 
-const OrderStatus = ({ order }) => {
+const OrderStatus = ({ order, movil }) => {
 
   const [ orderState, setOrderState ] = useState()
   const { currentOrder, tx_path } = UseTxState()
@@ -42,30 +43,33 @@ const OrderStatus = ({ order }) => {
         <Text className="fuente">{orderStatus[tx_path][order.state][order.currency_type].title}</Text>
         <SubTitle className="fuente">{orderStatus[tx_path][order.state][order.currency_type].description}</SubTitle>
       </TopSectionStatus>
-      <StatusContainer>
-        {
-          orderState ? orderState.map((state, index) => {
-            return <StatusItem
-              state={state}
-              order={currentOrder}
-              key={index}
-              active={state[1].completed}
-              className={`
-                ${orderState.length === (index + 1) ? 'statusStep finalStep' : 'statusStep'}
-                ${state[1].completed ? 'activeStep' : ''}
-                `} />
-          })
-          :
-          skeletons.map((state, index)=>{
-            return <StatusItem
-              state={state}
-              key={index}
-              className={`${skeletons.length === (index + 1) ? 'statusStep finalStep' : 'statusStep'} skeleton`}
-              skeleton
-            />
-          })
-        }
-      </StatusContainer>
+      {
+        !movil &&
+        <StatusContainer>
+          {
+            orderState ? orderState.map((state, index) => {
+              return <StatusItem
+                state={state}
+                order={currentOrder}
+                key={index}
+                active={state[1].completed}
+                className={`
+                  ${orderState.length === (index + 1) ? 'statusStep finalStep' : 'statusStep'}
+                  ${state[1].completed ? 'activeStep' : ''}
+                  `} />
+                })
+                :
+                skeletons.map((state, index)=>{
+                  return <StatusItem
+                    state={state}
+                    key={index}
+                    className={`${skeletons.length === (index + 1) ? 'statusStep finalStep' : 'statusStep'} skeleton`}
+                    skeleton
+                  />
+                })
+              }
+            </StatusContainer>
+      }
     </OrderStatusContainer>
   )
 }
@@ -141,6 +145,10 @@ const OrderStatusContainer = styled.div`
   grid-template-rows: auto 1fr;
   row-gap:25px;
   padding: 30px 40px;
+  @media ${device.tablet} {
+    grid-template-rows: 1fr;
+    padding: 25px 20px;
+  }
 `
 const TopSectionStatus = styled.div`
   display: grid;

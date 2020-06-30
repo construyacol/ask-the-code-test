@@ -4,6 +4,7 @@ import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import UseTxState from '../../../../hooks/useTxState'
 import { useFormatCurrency } from '../../../../hooks/useFormatCurrency'
 import { getState } from './'
+import { device } from '../../../../../const/const'
 
 import moment from 'moment'
 import 'moment/locale/es'
@@ -287,6 +288,11 @@ const Container = styled.section`
   grid-template-rows: repeat(auto-fill, 20px);
   row-gap:7px;
   padding: 25px 35px;
+
+  @media ${device.tablet} {
+    padding: 25px 20px;
+    width: calc(100% - 40px);
+  }
 
   &.withTitle{
     height: calc(100% - 95px);
