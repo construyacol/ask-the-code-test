@@ -181,7 +181,6 @@ const SwapOrder = ({ order, setOrderState }) => {
 
   const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660'
   // let tradeActive = state === 'pending' || state === 'confirmed' || null
-  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| tradeActive', tradeActive)
 
   return (
       <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${currentOrder.activeTrade ? 'inProcess' : '' }`}>
@@ -745,7 +744,7 @@ export const DataContainer = styled.div`
   }
 
   .deleteOrder{
-    grid-area: deleteOrder;
+    grid-area:
   }
 
 

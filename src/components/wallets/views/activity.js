@@ -46,7 +46,7 @@ const ActivityView = props => {
       if (activity_for_account[account_id] && (activity_for_account[account_id].deposits && activity_for_account[account_id].deposits.length)) { return redirect_activity('deposits') }
       if (!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].deposits)) {
         // alert('get_deposits')
-        activity = await props.action.get_deposits(account_id)
+        activity = await coinsendaServices.get_deposits(account_id)
         if (activity.length) { return props.history.push(`/${params.primary_path}/activity/${params.account_id}/deposits`) }
       }
     }
@@ -55,7 +55,7 @@ const ActivityView = props => {
       if (activity_for_account[account_id] && (activity_for_account[account_id].withdraws && activity_for_account[account_id].withdraws.length)) { return redirect_activity('withdraws') }
       if (!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].withdraws)) {
         // alert('get_withdraws')
-        activity = await props.action.get_withdraws(params.account_id)
+        activity = await coinsendaServices.get_withdraws(params.account_id)
         if (activity.length) { return props.history.push(`/${params.primary_path}/activity/${params.account_id}/withdraws`) }
       }
     }
@@ -64,7 +64,7 @@ const ActivityView = props => {
       if (activity_for_account[account_id] && (activity_for_account[account_id].swaps && activity_for_account[account_id].swaps.length)) { return redirect_activity('swaps') }
       if (!activity_for_account[account_id] || (activity_for_account[account_id] && !activity_for_account[account_id].swaps)) {
         // alert('get_swaps')
-        activity = await props.action.get_swaps(params.account_id)
+        activity = await coinsendaServices.get_swaps(params.account_id)
         if (activity.length) { return props.history.push(`/${params.primary_path}/activity/${params.account_id}/swaps`) }
       }
     }

@@ -168,8 +168,7 @@ DashBoardContainer.propTypes = {
   isModalVisible: PropTypes.bool,
   otherModal: PropTypes.bool,
   token: PropTypes.string,
-  user: PropTypes.object,
-  wallets: PropTypes.object
+  user: PropTypes.object
 }
 
 

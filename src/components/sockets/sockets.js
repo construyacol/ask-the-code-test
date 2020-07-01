@@ -385,6 +385,15 @@ class SocketsComponent extends Component {
         },2000)
       }, 5500)
 
+
+      // add the acredited order into account to
+      if(this.props.wallets[currentSwap.account_to]){
+        const { wallets } = this.props
+        this.props.action.update_activity_state(currentSwap.account_to, 'swaps')
+        this.props.action.update_item_state({ [currentSwap.account_to]: { ...wallets[currentSwap.account_to], count:1 } }, 'wallets')
+      }
+
+
       // return setTimeout(async () => {
       //   await this.props.action.success_sound()
       //   await this.props.action.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'done' }, swap_done_id: currentSwap.id, swap_done_out: true })

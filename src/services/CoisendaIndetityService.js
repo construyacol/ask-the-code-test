@@ -96,9 +96,7 @@ export class IndetityService extends WebService {
         if (advanced === basic) {
             status = !advanced ? null : advanced
         }
-
         await this.dispatch(verificationStateAction(status))
-
         return status
     }
 

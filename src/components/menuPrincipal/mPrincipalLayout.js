@@ -9,6 +9,7 @@ import MovilMenuComponent from './movilMenu'
 import {useActions} from '../../hooks/useActions'
 import { doLogout } from '../utils'
 
+
 // TODO: remove all window ref from components, may be the cause of future issues
 const MenuPrincipalLayout = (props) => {
 
@@ -22,8 +23,6 @@ const MenuPrincipalLayout = (props) => {
 
   const [ acronym, setAcronym ] = useState()
   const actions = useActions()
-  // const { user, user_id } = store.getState().modelData
-  // const country = user.country
 
   const logOut = () => {
     actions.confirmationModalToggle()
@@ -51,34 +50,15 @@ const MenuPrincipalLayout = (props) => {
     <section className="menuPrincipal fuente" style={{ left: show_menu_principal ? '0' : '-110vw' }}>
 
       <div className="contCloseMprincipal" onClick={close_menu_principal}>
-        {/* <i className="fas fa-times"></i> */}
       </div>
 
       <div className="userInfo">
         <div className="logo">
           <img src={logo} alt="" width="110" />
           <i className="fas fa-arrow-left" onClick={close_menu_principal}></i>
-          {/* <ArrowRight size={20} color="white" /> */}
         </div>
 
         <div className="perfilPiCont">
-          {/* <div className="contImgPicProfile">
-
-            {
-              verification_state &&
-              <IconSwitch
-                size={verification_state === 'pending' ? 20 : 20}
-                color={verification_state === 'rejected' ? 'red' : '#00D2FF'}
-                icon={
-                  verification_state === 'rejected' ? 'error' :
-                    verification_state === 'confirmed' ? 'confirmed' :
-                      verification_state === 'accepted' ? 'accepted' : verification_state
-                }
-              />
-            }
-
-
-          </div> */}
           <div className={`perfilPic ${verification_state}`}>
             <div className="fuente">
               {
@@ -88,19 +68,11 @@ const MenuPrincipalLayout = (props) => {
                 <p className="fuente">{acronym}</p>
               }
             </div>
-            {/* <img src={userPic} alt="" className="userPic" width="100%" /> */}
           </div>
         </div>
 
-
-
         <p className="userName" onClick={props.handleClick}><strong>{props.user.name ? props.user.name : props.user.email ? props.user.email : 'Bienvenido'}</strong>
-          {/* {
-            props.user.verification_level === 'level_1' &&
-            <i className="far fa-check-circle mPverify"></i>
-          } */}
         </p>
-        {/* <p className="userBalance"><strong>SALDO</strong>: <span className="number">0.0003</span> BTC / <span cl  assName="number">2.000</span> USD</p> */}
           <ScoresComponent />
       </div>
 
@@ -110,7 +82,7 @@ const MenuPrincipalLayout = (props) => {
             <section className="section1">
               {
                 menuPrincipal.map((item) => {
-                  if (!item.visible) { return false }
+                  if (item.clave !== 'security' && verification_state !== 'accepted') { return false }
                   return <ButtonPrincipalMenu {...props} {...item} key={item.id} />
                 })
               }
@@ -120,20 +92,7 @@ const MenuPrincipalLayout = (props) => {
               <MovilMenuComponent openSelectCountry={openSelectCountry} navigateTo={navigateTo} />
             </section>
         }
-
-
-
-
         <section className={`section2 movil`}>
-          {/* <div>
-              {
-                menuPrincipalInferior.map((item)=>{
-                  if(!item.visible){return false}
-                  return  <ButtonPrincipalMenu {...props} {...item} key={item.id}/>
-                })
-              }
-            </div> */}
-
               <div className="menuMovilItems close" onClick={logOut}>
                 <p className="menuMovilItemTexts close fuente">Cerrar sesión <i className="fas fa-power-off"></i></p>
               </div>
