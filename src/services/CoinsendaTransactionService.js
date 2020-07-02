@@ -122,16 +122,15 @@ async userHasTransactionSecurity(userId) {
 
 
 
-  async addRestoreId(restoreId) {
+  async addRestoreId(restore_id) {
       const user = this.user
       const body = {
           "data": {
-              restoreId
+              restore_id
           }
       }
       const response = await this.Post(ADD_RESTORE_ID_URL, body, user.userToken)
       if (response === 465 || !response) { return false }
-
       return response
   }
 

@@ -49,12 +49,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       userId
     } = authData
 
-    const isSessionRestored = await tryRestoreSession(userToken)
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true)
-      coinsendaServices.postLoader(doLogout)
-      return redirectURL(isSessionRestored)
-    }
+    // const isSessionRestored = await tryRestoreSession(userToken)
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true)
+    //   coinsendaServices.postLoader(doLogout)
+    //   return redirectURL(isSessionRestored)
+    // }
 
     if (!userToken) return;
 
@@ -91,6 +91,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
     await actions.isLoggedInAction(true)
     await coinsendaServices.init(doLogout)
+    coinsendaServices.freshChatInitUser()
     return redirectURL()
 
   }

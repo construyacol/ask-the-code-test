@@ -57,21 +57,21 @@ const TAB_TITLE = {
 function DashBoardContainer(props) {
 
 
-  const proofSocketNotify = () => {
-    const { wallets } = props
-    const account_id = '5ed5a8fe5dea880032d2eb9d'
-
-    setTimeout(()=>{
-      let currency = {
-        currency:'bitcoin_testnet',
-        is_token:false
-      }
-      props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
-      props.action.socket_notify({account_id, currency, amount:0.15}, 'deposits')
-      props.action.other_modal_toggle()
-      props.action.success_sound()
-    }, 1000)
-  }
+  // const proofSocketNotify = () => {
+  //   const { wallets } = props
+  //   const account_id = '5ed5a8fe5dea880032d2eb9d'
+  //
+  //   setTimeout(()=>{
+  //     let currency = {
+  //       currency:'bitcoin_testnet',
+  //       is_token:false
+  //     }
+  //     props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
+  //     props.action.socket_notify({account_id, currency, amount:0.15}, 'deposits')
+  //     props.action.other_modal_toggle()
+  //     props.action.success_sound()
+  //   }, 1000)
+  // }
 
 
   const updateCurrentPair = async () =>{
@@ -86,17 +86,15 @@ function DashBoardContainer(props) {
 
   const onMount = async () => {
     hotjar.initialize(1688041, 6);
-    await props.action.freshchat_init_user(props.user)
-    await FreshChat.user_update(props.user)
-    const verification_state = await props.action.get_verification_state()
-
-    if (verification_state === 'accepted') {
-      FreshChat.track('user login verified')
-    }
-
-    if (!props.user.security_center.authenticator.auth) {
-      FreshChat.show_tags(['security', '2factor'], 'article')
-    }
+    // await props.action.freshchat_init_user(props.user)
+    // await FreshChat.user_update(props.user)
+    // const verification_state = await props.action.get_verification_state()
+    // if (verification_state === 'accepted') {
+    //   FreshChat.track('user login verified')
+    // }
+    // if (!props.user.security_center.authenticator.auth) {
+    //   FreshChat.show_tags(['security', '2factor'], 'article')
+    // }
     scrollSpy.update();
   }
 

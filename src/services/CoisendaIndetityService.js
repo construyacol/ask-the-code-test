@@ -27,9 +27,9 @@ export class IndetityService extends WebService {
 
         let updatedUser = {
             ...userDefaultState,
-            email: this.authData.email,
+            email: this.authData.userEmail,
             userToken: this.authData.userToken,
-            restoreId: profile.restoreId || user.restoreId,
+            restore_id: profile.restore_id || user.restore_id,
             id: secondResponse.userId,
             country: country[0].value,
             verification_level: country[0].verification_level,

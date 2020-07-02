@@ -5,8 +5,6 @@ import store from '../'
 
 export const freshchat_init_user = (user, externalId = null) => {
 
-    // console.log('RESTORE ID: ', restoreId)
-    // alert('RESTORE')
 return async(dispatch) => {
 
   let external_id = externalId
@@ -15,10 +13,7 @@ return async(dispatch) => {
     external_id = user === 'anonymous' ? Date.now() : user.id
   }
 
-  // await dispatch(add_restoreid('epa'))
-
-  // localForage.setItem('externalId', external_id)
-  localStorage.setItem('RESTORE_ID', 'restore_id_from_panel_user')
+  // localStorage.setItem('RESTORE_ID', 'restore_id_from_panel_user')
 
   await window.fcWidget.init({
     token: "86e166f6-5421-4aaf-bdf6-746ac7a54525",
@@ -34,20 +29,14 @@ return async(dispatch) => {
 
   window.fcWidget.user.get(function(resp) {
     var status = resp && resp.status
-    // data = resp && resp.data;
-    // console.log('___________Usuario consultado:', resp)
-
 
     if (status !== 200) {
       // Si el usuario no existe y recibimos los datos del mismo desde el dashboard, enviamos esta información a freshChat
-      // console.log('______________________________________ Generate status', status)
-
       if((user && user !== 'anonymous') && (user && user.email)){
         window.fcWidget.user.setProperties({
           email: user.email
         });
       }
-
       // Creamos el usuario y guardamos el storeId en el profile del tx
       window.fcWidget.on('user:created', function(resp) {
         // El usuario se crea cuando inicia el chat
@@ -55,9 +44,7 @@ return async(dispatch) => {
         data = resp && resp.data;
         if (status === 200) {
           if (data.restoreId) {
-            // console.log('______________________________________ Generate restoreId', data.restoreId)
-            add_restoreid(data.restoreId, user)
-            // add_restoreid(data.restoreId)
+            // add_restoreid(data.restoreId, user)
           }
         }
       });

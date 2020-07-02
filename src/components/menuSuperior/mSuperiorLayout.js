@@ -41,9 +41,9 @@ const MenuSuperiorLayout = (props) => {
 
   let view = 'detail'
 
-  // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', props)
   let path = match.params.path
   const { primary_path } = match.params
+  // console.log(' - - - - MenuSuperiorLayout - - - -- - :::', primary_path)
 
   let currency = currentPair ? currentPair.primary_currency.currency : 'coinsenda'
 
@@ -58,7 +58,7 @@ const MenuSuperiorLayout = (props) => {
               <Coinsenda size={30} color="white" />
             </div>
             <div className="contItemLogo">
-              <Link to="/wallets" className="DCBack" style={{ display: view === 'detail' ? '' : 'none' }} onClick={back_method}>
+              <Link to={`/${primary_path === 'referral' ? 'wallets' : primary_path}`} className="DCBack" style={{ display: view === 'detail' ? '' : 'none' }} onClick={back_method}>
                 <i className="fas fa-arrow-left"></i>
               </Link>
             </div>
@@ -84,7 +84,7 @@ const MenuSuperiorLayout = (props) => {
                       <div className="itemSup closeSesi" onClick={showPrices}>
                         <p>Ver precios</p>
                         <i className="fas fa-tags"></i>
-                      </div>                      
+                      </div>
                     </>
                 }
 

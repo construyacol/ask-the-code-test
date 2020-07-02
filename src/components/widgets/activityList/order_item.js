@@ -9,6 +9,7 @@ import { device } from '../../../const/const'
 import PopNotification from '../notifications'
 import SwapAnimation from '../swapAnimation/swapAnimation'
 import SimpleLoader from '../loaders'
+import useViewport from '../../../'
 
 import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
@@ -158,7 +159,8 @@ const BarraSwap = styled.div`
 const SwapOrder = ({ order, setOrderState }) => {
 
   const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
-
+  // const {} = useViewport
+  console.log(useViewport)
 
   useEffect(()=>{
     if(currentOrder.state === 'pending' || currentOrder.state === 'confirmed'){

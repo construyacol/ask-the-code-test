@@ -5,7 +5,9 @@ import { WithdrawService } from "./CoinsendaWithdrawService";
 import { IndetityService } from "./CoisendaIndetityService";
 import { DepositService } from "./CoinsendaDepositService";
 import { SwapService } from "./CoinsendaSwapService";
-import { AccountService } from "./CoisendaAccountService";
+import { AccountService } from "./CoinsendaAccountService";
+import { FreshChatService } from "./CoinsendaFreshChatService";
+
 import userSource from '../components/api'
 import Environment from "../environment";
 import { addIndexToRootObject, objectToArray, normalized_list } from "../utils";
@@ -48,7 +50,8 @@ const inheritances = aggregation(
     IndetityService,
     DepositService,
     SwapService,
-    AccountService
+    AccountService,
+    FreshChatService
 );
 
 export class MainService extends inheritances {
