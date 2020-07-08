@@ -51,7 +51,7 @@
 .pair-prices {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-column-gap: 0;
+  grid-column-gap: 20px;
 }
 
 .pair-prices p {
@@ -116,7 +116,7 @@
 
 .base-item-content {
   width: 100%;
-  height: 70px;
+  height: 100px;
   max-width: 300px;
   border-radius: 6px;
   cursor: pointer;

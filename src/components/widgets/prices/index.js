@@ -36,9 +36,6 @@ const CloseButton = styled.div`
   font-size: 2em;
   transition: all 500ms ease;
   color: #4a4a4a;
-  &:hover {
-    right: 0.8em;
-  }
 `
 
 const MainContainer = styled.div`
@@ -46,6 +43,7 @@ const MainContainer = styled.div`
   height: 90%;
   background: white;
   position: relative;
+  border-radius: 6px;
   @media ${device.tabletL} {
     width: 100%;
     height: 100%;

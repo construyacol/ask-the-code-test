@@ -9,7 +9,7 @@ import { device } from '../../../const/const'
 import PopNotification from '../notifications'
 import SwapAnimation from '../swapAnimation/swapAnimation'
 import SimpleLoader from '../loaders'
-import useViewport from '../../../'
+import useViewport from '../../../hooks/useWindowSize'
 
 import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
@@ -34,9 +34,12 @@ const OrderItem = ({ order, handleAction }) => {
     if(!order){return}
     const target = e.target
     if(target.dataset && target.dataset.is_deletion_action){return}
+
     const { tx_path, account_id, primary_path, path, isModalOpen } = txState
+
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     actions.cleanNotificationItem('wallets', 'order_id')
+    
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
     await actions.renderModal(()=><OrderDetail.default/>)
     if(target.dataset && target.dataset.is_confirm_deposit){confirmPayment()}
@@ -159,8 +162,7 @@ const BarraSwap = styled.div`
 const SwapOrder = ({ order, setOrderState }) => {
 
   const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
-  // const {} = useViewport
-  console.log(useViewport)
+  const { isMovilViewport } = useViewport()
 
   useEffect(()=>{
     if(currentOrder.state === 'pending' || currentOrder.state === 'confirmed'){
@@ -216,7 +218,7 @@ const SwapOrder = ({ order, setOrderState }) => {
             :
             <>
               {
-                currentOrder.activeTrade && state === 'accepted' ?
+                !isMovilViewport && currentOrder.activeTrade && state === 'accepted' ?
                 <div className="loaderViewItem" >
                   <div className="successIcon">
                     <IconSwitch size={80} icon="success" color="#1cb179"/>
