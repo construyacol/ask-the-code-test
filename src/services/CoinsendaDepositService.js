@@ -47,7 +47,6 @@ export class DepositService extends WebService {
             ]
         }
 
-
         const normalizedData = await normalizeUser(finalData)
         this.dispatch(updateNormalizedDataAction(normalizedData))
         return normalizedData.entities.deposit_providers
@@ -187,15 +186,13 @@ export class DepositService extends WebService {
     }
 
 
-    async get_deposits(account_id) {
+    async get_deposits(account_id, limit = 20, skip = 0) {
     // @params:
     // account_id
 
-      // return async(dispatch, getState) => {
-
         const user = this.user
 
-        let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+        let filter = `{"where":{"account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`
         const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
 
         const deposits = await this.Get(finalUrl)
@@ -210,10 +207,15 @@ export class DepositService extends WebService {
           return new_item
         })
 
+        // const { storage: { activity_for_account } } = this.globalState
+        //
+
+
+        remodeled_deposits = this.parseActivty(remodeled_deposits, 'deposits', account_id)
+
         await this.dispatch(normalized_list(remodeled_deposits, 'deposits'))
         await this.dispatch(update_activity_state(account_id, 'deposits', remodeled_deposits))
-        return remodeled_deposits
-      // }
+        return deposits
 
     }
 

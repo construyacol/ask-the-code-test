@@ -171,6 +171,19 @@ export class MainService extends inheritances {
         const response = await this.Post(GET_CHART_DATA_URL, data)
         return response
     }
+
+
+    parseActivty(activity, activityType, accountId) {
+      const { storage: { activity_for_account } } = this.globalState
+      if(activity_for_account && activity_for_account[accountId] && activity_for_account[accountId][activityType]){
+        activity = [
+          ...activity_for_account[accountId][activityType],
+          ...activity
+        ]
+      }
+
+      return activity
+    }
 }
 
 // preserve for future aplication

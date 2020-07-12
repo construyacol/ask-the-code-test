@@ -91,12 +91,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
     await actions.isLoggedInAction(true)
     await coinsendaServices.init(doLogout)
-    coinsendaServices.freshChatInitUser()
     return redirectURL()
 
   }
 
   const redirectURL = async (isSessionRestored) => {
+    coinsendaServices.freshChatInitUser()
     const verificationStatus = await coinsendaServices.getVerificationState()
     if (verificationStatus !== 'accepted') {
       await actions.addNotification('security', null, 1)

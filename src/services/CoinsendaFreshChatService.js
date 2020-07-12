@@ -18,6 +18,8 @@ export class FreshChatService extends WebService {
 
         if (status !== 200) {
           // Si el usuario no existe y recibimos los datos del mismo desde el dashboard, enviamos esta información a freshChat
+
+          if(this.user.surname || this.user.name){
             window.fcWidget.user.setProperties({
               firstName:this.user.name,
               lastName:this.user.surname,
@@ -25,6 +27,7 @@ export class FreshChatService extends WebService {
               phone:this.user.phone,
               "country":this.user.country
             });
+          }
           window.fcWidget.on('user:created', (resp) => {
             // El usuario se crea cuando inicia el chat
             var status = resp && resp.status,
@@ -85,18 +88,18 @@ export class FreshChatService extends WebService {
     // }
     //
     //
-    // const show_tags = async(tags, filterType) => {
-    //   // @Params
-    //   // tags:array
-    //   // filterType:string
-    //   let load = await isLoaded()
-    //   if(load){
-    //     window.fcWidget.setFaqTags({
-    //       tags,
-    //       filterType
-    //     });
-    //   }
-    // }
+    async freshChatShowTags (tags, filterType){
+      // @Params
+      // tags:array
+      // filterType:string
+      let load = await this.isLoaded()
+      if(load){
+        window.fcWidget.setFaqTags({
+          tags,
+          filterType
+        });
+      }
+    }
     //
     //
     // const destroy = async() => {
@@ -113,29 +116,26 @@ export class FreshChatService extends WebService {
     //
     //
     //
-    // const isLoaded = () => {
-    //   return new Promise(async(resolve, reject) => {
-    //     if (window.fcWidget.isLoaded() === true) {
-    //       return resolve(true)
-    //     }else{
-    //       tryLoad(resolve)
-    //     }
-    //   })
-    //  }
-    //
-    //
-    //
-    //
-    //  const tryLoad = (resolve) => {
-    //     let intervalLoad = setInterval(()=>{
-    //      console.log('No Cargado')
-    //      if (window.fcWidget.isLoaded() === true) {
-    //        clearInterval(intervalLoad)
-    //        console.log('_________ load success')
-    //        return resolve(true)
-    //      }
-    //    }, 500)
-    //  }
+    isLoaded(){
+      return new Promise(async(resolve, reject) => {
+        if (window.fcWidget.isLoaded() === true) {
+          return resolve(true)
+        }else{
+          this.tryLoad(resolve)
+        }
+      })
+     }
+
+     tryLoad(resolve){
+        let intervalLoad = setInterval(()=>{
+         console.log('No Cargado')
+         if (window.fcWidget.isLoaded() === true) {
+           clearInterval(intervalLoad)
+           console.log('_________ load success')
+           return resolve(true)
+         }
+       }, 500)
+     }
 
 
 

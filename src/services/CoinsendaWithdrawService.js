@@ -289,14 +289,14 @@ export class WithdrawService extends WebService {
     }
 
 
-    async get_withdraws(account_id) {
+    async get_withdraws(account_id, limit = 20, skip = 0) {
         // @params:
         // account_id
 
         // return async(dispatch, getState) => {
         const user = this.user
 
-        let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+        let filter = `{"where":{"account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`
         const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`
         const withdraws = await this.Get(url_withdraw)
 
@@ -346,6 +346,9 @@ export class WithdrawService extends WebService {
             withdraws_remodeled.push(new_withdraw)
           }
         }
+
+        withdraws_remodeled = this.parseActivty(withdraws_remodeled, 'withdraws', account_id)
+
 
         await this.dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
         await this.dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))

@@ -4,7 +4,7 @@ import UseTxState from '../../hooks/useTxState'
 import { PaymentConfirButton } from '../buttons/buttons'
 import { useFormatCurrency } from '../../hooks/useFormatCurrency'
 import IconSwitch from '../icons/iconSwitch'
-import { ObserverHook } from '../../hooks/observerCustomHook'
+// import { ObserverHook } from '../../hooks/observerCustomHook'
 import { device } from '../../../const/const'
 import PopNotification from '../notifications'
 import SwapAnimation from '../swapAnimation/swapAnimation'
@@ -26,7 +26,7 @@ const OrderItem = ({ order, handleAction }) => {
 
   const txState = UseTxState(order.id)
   const { tx_path, new_order_style, actions, history } = txState
-  const [ show,  element ] = ObserverHook()
+  // const [ show,  element ] = ObserverHook()
   const [ orderState, setOrderState ] = useState()
 
 
@@ -39,7 +39,7 @@ const OrderItem = ({ order, handleAction }) => {
 
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     actions.cleanNotificationItem('wallets', 'order_id')
-    
+
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
     await actions.renderModal(()=><OrderDetail.default/>)
     if(target.dataset && target.dataset.is_confirm_deposit){confirmPayment()}
@@ -49,12 +49,10 @@ const OrderItem = ({ order, handleAction }) => {
 
   return(
         <OrderContainer
-          ref={element}
-          className={`${show && 'shower'} ${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
+          className={`${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
           onClick={orderState ? null : orderDetail}
           >
           {
-            show &&
             tx_path === 'deposits' ?
             <DepositOrder order={{...order, orderState, setOrderState}} />
             :
@@ -64,7 +62,7 @@ const OrderItem = ({ order, handleAction }) => {
             tx_path === 'swaps' ?
             <SwapOrder order={{...order}} setOrderState={setOrderState}/>
             :
-            <LoaderItem/>
+            <LoaderView/>
           }
         </OrderContainer>
   )
@@ -663,8 +661,8 @@ export const Order = styled.div`
     }
   }
 `
-
-export const LoaderItem = (props) => {
+// LoaderItem
+export const LoaderView = (props) => {
 
   const loaderItems = new Array(props.arrayLength || 3).fill({})
 
@@ -674,24 +672,7 @@ export const LoaderItem = (props) => {
       <LayoutList>
         {
           loaderItems.map((e, key) =>{
-            return(
-              <OrderContainer key={key} className="shower">
-                <Order>
-                  <DataContainer className="align_first loader">
-                    <div className="loaderImg"></div>
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-
-                  <DataContainer className="align_middle loader">
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-
-                  <DataContainer className="align_last loader">
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-                </Order>
-              </OrderContainer>
-            )
+            return <LoaderItem key={key}/>
           })
         }
       </LayoutList>
@@ -699,7 +680,24 @@ export const LoaderItem = (props) => {
   )
 }
 
+export const LoaderItem = () => (
+  <OrderContainer className="shower">
+    <Order>
+      <DataContainer className="align_first loader">
+        <div className="loaderImg"></div>
+        <div className="loaderElement"></div>
+      </DataContainer>
 
+      <DataContainer className="align_middle loader">
+        <div className="loaderElement"></div>
+      </DataContainer>
+
+      <DataContainer className="align_last loader">
+        <div className="loaderElement"></div>
+      </DataContainer>
+    </Order>
+  </OrderContainer>
+)
 
 
 export const DataContainer = styled.div`
@@ -853,15 +851,15 @@ export const OrderContainer = styled.div`
   transition: .1s;
   perspective: 2000px;
   ${'' /* transform: scale(.98); */}
-  transform: scale(1) translateY(-3px);
-  opacity: 0;
+  ${'' /* transform: scale(1) translateY(-3px); */}
+  opacity: 1;
   width: 100%;
   max-width: 800px;
 
-  &.shower{
+  ${'' /* &.shower{
     transform: scale(1) translateY(0px);
     opacity: 1 !important;
-  }
+  } */}
 
   &.newOrderContainer{
     animation-name: ${containerDepositAnim};
