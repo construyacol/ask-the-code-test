@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import OtherModalLayout from '../../otherModalLayout'
 import styled from 'styled-components'
 import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '../../../animations'
-import { orderStateColors } from '../../../../../const/const'
+import { orderStateColors, device } from '../../../../../const/const'
 import IconSwitch from '../../../icons/iconSwitch'
 import { useActions } from '../../../../../hooks/useActions'
 import useViewport from '../../../../../hooks/useWindowSize'
@@ -35,7 +35,7 @@ const OrderSupervisor = () => {
     <OtherModalLayout on_click={cerrar}>
       {
         isMovilViewport &&
-        <CloseButton onClick={cerrar}>
+        <CloseButton data-close_modal={true}>
           <i className="fas fa-times"></i>
         </CloseButton>
       }
@@ -67,6 +67,7 @@ const OrderDetail = () => {
   const actions = useActions()
   const { tx_path, currencies, currentOrder, primary_path, history } = UseTxState()
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
+  const  { isMovilViewport } = useViewport()
 
   if(!currentOrder){return null}
 
@@ -95,7 +96,7 @@ const OrderDetail = () => {
             </TitleContainer>
 
             <CircleIconContainer>
-                <IconSwitch size={45} icon={state === 'accepted' ? 'accepted2' : state} color={colorState}/>
+                <IconSwitch size={isMovilViewport ? 25 : 45} icon={state === 'accepted' ? 'accepted2' : state} color={colorState}/>
                 <p className="fuente"
                   style={{color:`${colorState}`}}
                   >
@@ -328,6 +329,7 @@ const OrderDetail = () => {
     align-self: flex-end;
     position: relative;
     transform: translate(-30px, 45px) !important;
+
     p{
         position: absolute;
         margin: 0;
@@ -335,6 +337,17 @@ const OrderDetail = () => {
         font-size: 14px;
         justify-self:center;
     }
+
+    @media ${device.tablet} {
+      width: 60px;
+      height: 60px;
+      transform: translate(-20px, 45px) !important;
+      p{
+        bottom: -8px;
+      }
+    }
+
+
   `
 
   const Title = styled.h3`

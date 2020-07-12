@@ -10,6 +10,7 @@ export default function useViewport() {
     }, []);
 
     const isMovilViewport = width < 768
+    const isTabletOrMovilViewport = width < 900
 
-    return { width, isMovilViewport };
+    return { width, isMovilViewport, isTabletOrMovilViewport };
 }

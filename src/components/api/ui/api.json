@@ -47,14 +47,6 @@
   ,
   "menuPrincipal":[
     {
-      "text":"Actividad",
-      "icon":"activity",
-      "clave":"activity",
-      "active":true,
-      "visible":false,
-      "id":"1"
-    },
-    {
       "text":"Billeteras",
       "icon":"wallet",
       "clave":"wallets",
@@ -85,24 +77,6 @@
       "active":true,
       "visible":true,
       "id":"5"
-    }
-  ],
-  "menuPrincipalInferior":[
-    {
-      "text":"Configuraciones",
-      "icon":"settings",
-      "clave":"settings",
-      "active":true,
-      "visible":false,
-      "id":"5"
-    },
-    {
-      "text":"Centro de seguridad",
-      "icon":"security",
-      "clave":"security",
-      "active":true,
-      "visible":false,
-      "id":"6"
     }
   ],
   "menuSuperior":[
@@ -519,9 +493,8 @@
           "message":"Escribe el país donde fue expedido tu documento de identificación",
           "errmessage":"Oh!!, debes ingresar los datos correctamente"
         }
-  
+
       }
     }
   }
   }
-  

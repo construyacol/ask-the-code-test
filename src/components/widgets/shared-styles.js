@@ -15,8 +15,16 @@ export const CloseButton = styled.div`
   justify-items: center;
   cursor: pointer;
   transition: .3s;
+
   :hover{
     transform: scale(1.1);
+  }
+
+  ::after{
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
   }
 
   i{

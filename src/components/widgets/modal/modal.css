@@ -116,7 +116,15 @@
   justify-items:center;
 }
 
-@media only screen and (max-height: 768px) {
+@media only screen and (max-width: 768px) {
+  .modalCont3{
+    padding: 20px 10px;
+    width: calc(100% - 20px);
+    height: calc(100% - 40px);
+  }
+}
+
+@media only screen and (max-height: 900px) {
   .modalCont3{
     overflow-y: scroll;
   }

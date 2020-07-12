@@ -4,11 +4,12 @@ import UseTxState from '../../hooks/useTxState'
 import { PaymentConfirButton } from '../buttons/buttons'
 import { useFormatCurrency } from '../../hooks/useFormatCurrency'
 import IconSwitch from '../icons/iconSwitch'
-import { ObserverHook } from '../../hooks/observerCustomHook'
+// import { ObserverHook } from '../../hooks/observerCustomHook'
 import { device } from '../../../const/const'
 import PopNotification from '../notifications'
 import SwapAnimation from '../swapAnimation/swapAnimation'
 import SimpleLoader from '../loaders'
+import useViewport from '../../../hooks/useWindowSize'
 
 import { gotoTx, containerDepositAnim, newOrderStyleAnim, deletedOrderAnim } from '../animations'
 import moment from 'moment'
@@ -25,19 +26,20 @@ const OrderItem = ({ order, handleAction }) => {
 
   const txState = UseTxState(order.id)
   const { tx_path, new_order_style, actions, history } = txState
-  const [ show,  element ] = ObserverHook()
+  // const [ show,  element ] = ObserverHook()
   const [ orderState, setOrderState ] = useState()
-
-
 
 
   const orderDetail = async(e) => {
     if(!order){return}
     const target = e.target
     if(target.dataset && target.dataset.is_deletion_action){return}
+
     const { tx_path, account_id, primary_path, path, isModalOpen } = txState
+
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     actions.cleanNotificationItem('wallets', 'order_id')
+
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
     await actions.renderModal(()=><OrderDetail.default/>)
     if(target.dataset && target.dataset.is_confirm_deposit){confirmPayment()}
@@ -47,12 +49,10 @@ const OrderItem = ({ order, handleAction }) => {
 
   return(
         <OrderContainer
-          ref={element}
-          className={`${show && 'shower'} ${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
+          className={`${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
           onClick={orderState ? null : orderDetail}
           >
           {
-            show &&
             tx_path === 'deposits' ?
             <DepositOrder order={{...order, orderState, setOrderState}} />
             :
@@ -62,7 +62,7 @@ const OrderItem = ({ order, handleAction }) => {
             tx_path === 'swaps' ?
             <SwapOrder order={{...order}} setOrderState={setOrderState}/>
             :
-            <LoaderItem/>
+            <LoaderView/>
           }
         </OrderContainer>
   )
@@ -160,7 +160,7 @@ const BarraSwap = styled.div`
 const SwapOrder = ({ order, setOrderState }) => {
 
   const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
-
+  const { isMovilViewport } = useViewport()
 
   useEffect(()=>{
     if(currentOrder.state === 'pending' || currentOrder.state === 'confirmed'){
@@ -183,7 +183,6 @@ const SwapOrder = ({ order, setOrderState }) => {
 
   const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' && '#ff8660'
   // let tradeActive = state === 'pending' || state === 'confirmed' || null
-  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| tradeActive', tradeActive)
 
   return (
       <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${currentOrder.activeTrade ? 'inProcess' : '' }`}>
@@ -217,7 +216,7 @@ const SwapOrder = ({ order, setOrderState }) => {
             :
             <>
               {
-                currentOrder.activeTrade && state === 'accepted' ?
+                !isMovilViewport && currentOrder.activeTrade && state === 'accepted' ?
                 <div className="loaderViewItem" >
                   <div className="successIcon">
                     <IconSwitch size={80} icon="success" color="#1cb179"/>
@@ -411,7 +410,7 @@ const DeleteButton = ({ state, id, setOrderState }) => {
     <>
       {
         state === 'pending' &&
-        <div className="tooltip" onClick={deleteDeposit} data-is_deletion_action={true}>
+        <div className="tooltip deleteOrder" onClick={deleteDeposit} data-is_deletion_action={true}>
           <div id="Aldelete" data-is_deletion_action={true}>
             <i className="far fa-times-circle " data-is_deletion_action={true}></i>
           </div>
@@ -662,8 +661,8 @@ export const Order = styled.div`
     }
   }
 `
-
-export const LoaderItem = (props) => {
+// LoaderItem
+export const LoaderView = (props) => {
 
   const loaderItems = new Array(props.arrayLength || 3).fill({})
 
@@ -673,24 +672,7 @@ export const LoaderItem = (props) => {
       <LayoutList>
         {
           loaderItems.map((e, key) =>{
-            return(
-              <OrderContainer key={key} className="shower">
-                <Order>
-                  <DataContainer className="align_first loader">
-                    <div className="loaderImg"></div>
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-
-                  <DataContainer className="align_middle loader">
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-
-                  <DataContainer className="align_last loader">
-                    <div className="loaderElement"></div>
-                  </DataContainer>
-                </Order>
-              </OrderContainer>
-            )
+            return <LoaderItem key={key}/>
           })
         }
       </LayoutList>
@@ -698,7 +680,24 @@ export const LoaderItem = (props) => {
   )
 }
 
+export const LoaderItem = () => (
+  <OrderContainer className="shower">
+    <Order>
+      <DataContainer className="align_first loader">
+        <div className="loaderImg"></div>
+        <div className="loaderElement"></div>
+      </DataContainer>
 
+      <DataContainer className="align_middle loader">
+        <div className="loaderElement"></div>
+      </DataContainer>
+
+      <DataContainer className="align_last loader">
+        <div className="loaderElement"></div>
+      </DataContainer>
+    </Order>
+  </OrderContainer>
+)
 
 
 export const DataContainer = styled.div`
@@ -746,6 +745,10 @@ export const DataContainer = styled.div`
     grid-area: currency_spent;
   }
 
+  .deleteOrder{
+    grid-area:
+  }
+
 
   @media ${device.tablet} {
     &.align_first{
@@ -753,6 +756,13 @@ export const DataContainer = styled.div`
       grid-template-areas:
       "orderIcon typeOrderText"
       "orderIcon action_date";
+    }
+
+    &.align_first.pending.fiat{
+      display: grid !important;
+      grid-template-areas:
+      "deleteOrder orderIcon typeOrderText"
+      "deleteOrder orderIcon action_date";
     }
 
     &.align_first.confirmed.crypto.deposits{
@@ -841,15 +851,15 @@ export const OrderContainer = styled.div`
   transition: .1s;
   perspective: 2000px;
   ${'' /* transform: scale(.98); */}
-  transform: scale(1) translateY(-3px);
-  opacity: 0;
+  ${'' /* transform: scale(1) translateY(-3px); */}
+  opacity: 1;
   width: 100%;
   max-width: 800px;
 
-  &.shower{
+  ${'' /* &.shower{
     transform: scale(1) translateY(0px);
     opacity: 1 !important;
-  }
+  } */}
 
   &.newOrderContainer{
     animation-name: ${containerDepositAnim};

@@ -162,18 +162,19 @@ export class SwapService extends WebService {
         return normalizedUser
     }
 
-    async get_swaps(accountId) {
+    async get_swaps(accountId, limit = 20, skip = 0) {
         const user = this.user
         const { wallets } = this.globalState.modelData
 
-        let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
+        let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`
         const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`
 
 
-        const swaps = await this.Get(finalUrl)
+        let swaps = await this.Get(finalUrl)
 
         if (!swaps || swaps === 465) { return false }
 
+        let swapResult = [...swaps]
         // const result = swaps.map((swap) => {
         //     return {
         //         account_id: swap.account_from,
@@ -196,9 +197,9 @@ export class SwapService extends WebService {
         //         type_order: "swap"
         //     }
         // })
-
-        await this.dispatch(normalized_list(swaps, 'swaps'))
-        await this.dispatch(update_activity_state(accountId, 'swaps', swaps))
+        swapResult = this.parseActivty(swaps, 'swaps', accountId)
+        await this.dispatch(normalized_list(swapResult, 'swaps'))
+        await this.dispatch(update_activity_state(accountId, 'swaps', swapResult))
 
         return swaps
     }

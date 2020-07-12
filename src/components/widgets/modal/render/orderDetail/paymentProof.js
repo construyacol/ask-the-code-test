@@ -129,6 +129,7 @@ export const PaymentProof = ({ payload }) => {
   const [ txId, setTxId ] = useState()
   const [ urlExplorer, setUrlExplorer ] = useState()
 
+
   const getPaymentProof = async(currentOrder) =>{
     // alert('getpayment')
     if(currentOrder.paymentProof){

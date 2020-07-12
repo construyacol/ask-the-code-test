@@ -1,4 +1,4 @@
-import React, {Fragment, Component} from 'react'
+import React, {Fragment, Component } from 'react'
 import ItemList from './viewItem'
 import OrderItem from './order_item'
 // import { serve_orders, ticketModalView } from '../../../services'
@@ -7,6 +7,9 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 // import OrderDetail from '../modal/render/orderDetail'
 // import SimpleLoader from '../loaders'
+import InifiniteScrollComponent from './infiniteScroll'
+
+
 
 
 
@@ -21,7 +24,8 @@ class ActivityList extends Component {
     filter:true,
     current_order_loader:null,
     deleting:null,
-    deleted:null
+    deleted:null,
+    scrollLoader:null
   }
 
   // componentDidMount(){
@@ -35,11 +39,11 @@ class ActivityList extends Component {
     }
   }
 
-
+  setLoader = scrollLoader => {
+    this.setState({scrollLoader})
+  }
 
   expandir = () =>{
-
-
     const {
       expandidoMax
     } = this.props
@@ -277,12 +281,20 @@ class ActivityList extends Component {
                       })
                   }
                 </div>
+
+                  <InifiniteScrollComponent
+                    setLoader={this.setLoader}
+                    loader={this.state.scrollLoader}
+                  />
               </section>
     </Fragment>
 
     )
   }
 }
+
+
+
 
 function mapStateToProps(state, props){
 

@@ -31,7 +31,7 @@
     "pending":{
       "completed":false,
       "ui_text":{
-        "crypto":"Retiro agregado en blockchain",
+        "crypto":"Retiro procesado en coinsenda",
         "fiat":"Confirmando retiro"
         }
     },

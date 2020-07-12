@@ -52,7 +52,6 @@ body {
   align-items: center;
   background: linear-gradient(to bottom, transparent, black);
   justify-content: center;
-
 }
 
 .slider {
@@ -72,6 +71,9 @@ body {
   align-items: center;
   padding: 0 30px;
   column-gap: 15px;
+  max-width: 700px;
+  justify-self: center;
+  width: 100%;
 }
 
 .crop-controls div:nth-child(1) {

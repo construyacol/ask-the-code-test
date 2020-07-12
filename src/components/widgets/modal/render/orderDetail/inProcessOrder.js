@@ -12,9 +12,8 @@ import { OnlySkeletonAnimation } from '../../../loaders/skeleton'
 import IconSwitch from '../../../icons/iconSwitch'
 import { AiOutlineClockCircle } from 'react-icons/ai';
 import ConfirmationCounter from './confirmationCounter'
-
-// import { PaymentProof } from '../orderDetail'
-// import { Layout } from '../orderDetail'
+import useViewport from '../../../../../hooks/useWindowSize'
+import { device } from '../../../../../const/const'
 
 
 import moment from 'moment'
@@ -53,12 +52,14 @@ export default InProcessOrder
 const CryptoDespoitOrder = ({ order }) => {
 
   const { actions, tx_path, currencies } = UseTxState()
+  const { isTabletOrMovilViewport } = useViewport()
 
 
   return(
       <InProcessOrderContainer>
 
         <OrderContainer>
+
           <TopSection>
             <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
             <TitleContainer>
@@ -72,6 +73,11 @@ const CryptoDespoitOrder = ({ order }) => {
                 <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
             </DateIdContainter>
           </TopSection>
+
+          {
+            isTabletOrMovilViewport &&
+            <OrderStatus order={order} movil/>
+          }
 
           <MiddleSection state={order.state}>
             <DetailGenerator
@@ -94,7 +100,10 @@ const CryptoDespoitOrder = ({ order }) => {
 
         </OrderContainer>
 
-        <OrderStatus order={order}/>
+        {
+          !isTabletOrMovilViewport &&
+          <OrderStatus order={order}/>
+        }
 
       </InProcessOrderContainer>
   )
@@ -135,6 +144,7 @@ const FiatDespoitOrder = ({ order }) => {
   const [ onDrag, setOnDrag ] = useState(false)
   const [ imgSrc, setImgSrc ] = useState(false)
   const { actions, tx_path } = UseTxState()
+  const { isTabletOrMovilViewport } = useViewport()
 
 
 
@@ -192,6 +202,11 @@ const FiatDespoitOrder = ({ order }) => {
             </DateIdContainter>
           </TopSection>
 
+          {
+            isTabletOrMovilViewport &&
+            <OrderStatus order={order} movil/>
+          }
+
           <MiddleSection state={order.state}>
             <DetailGenerator
               order={order}
@@ -211,8 +226,10 @@ const FiatDespoitOrder = ({ order }) => {
         </OrderContainer>
 
 
-
-        <OrderStatus order={order}/>
+        {
+          !isTabletOrMovilViewport &&
+          <OrderStatus order={order}/>
+        }
 
 
       </InProcessOrderContainer>
@@ -240,7 +257,6 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
   const { currentOrder } = UseTxState()
 
-
   return(
     <UploadContainer className={`${imgSrc || currentOrder.state === 'confirmed' ? 'loaded' : 'unload'}`}>
       {
@@ -256,7 +272,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
                   <hr/>
                 </UploadMiddle>
 
-                <Buttom>
+                <Buttom >
                   <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} />
                   <Text style={{color:"white"}} className="fuente">Subir comprobante</Text>
                 </Buttom>
@@ -639,6 +655,9 @@ const OrderContainer = styled.div`
   grid-template-rows: auto 1fr auto;
   row-gap:30px;
   position: relative;
+  @media ${device.tablet} {
+    grid-template-rows: auto auto 1fr auto;
+  }
 `
 
 const InProcessOrderContainer = styled.section`
@@ -664,9 +683,27 @@ const InProcessOrderContainer = styled.section`
   height: auto;
   min-height: 750px;
   background: white;
-  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.1);
   display: grid;
-  grid-template-columns: 1fr 400px;
   border-radius: 6px;
   overflow: hidden;
+  box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.1);
+  grid-template-columns: 1fr 400px;
+
+  @media ${device.laptop} {
+    width: 100%;
+  }
+
+  @media ${device.tabletL} {
+    grid-template-columns: 1fr;
+    position: absolute;
+    top: 10px;
+  }
+
+  @media ${device.tablet} {
+    ${OrderContainer}{
+      padding: 30px 15px;
+    }
+  }
+
+
 `
