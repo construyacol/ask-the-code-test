@@ -4,13 +4,15 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import ActivityList from '../../widgets/activityList/activity'
 import ActivityFilters from '../../widgets/activityList/filters'
-import { LoaderView } from '../../widgets/activityList/order_item'
+import { LoaderItem, LoaderView } from '../../widgets/activityList/order_item'
 
 import './wallet_views.css'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import useViewport from '../../../hooks/useWindowSize'
 import useObserver from '../../../hooks/useObserver'
 import { scroller } from 'react-scroll'
+import { InifiniteScrollContainer } from '../../widgets/activityList/infiniteScroll'
+
 
 const ActivityView = props => {
   const { params } = props.match
@@ -30,7 +32,6 @@ const ActivityView = props => {
 
   const getItems = async () => {
     const res = await CoinsendaService.fetchActivityByAccount(params.account_id, page)
-    console.log(res)
     items_.current = [...items_.current, ...res]
     res && setPage(page + 1)
     if (res.length < 10) {
@@ -82,12 +83,9 @@ const ActivityView = props => {
           />
       }
       {showLoaderItems && (
-        <div
-          className="lazy"
-          style={{ paddingTop: 20 }}
-        >
-          <LoaderView arrayLength={3} />
-        </div>
+        <InifiniteScrollContainer style={{opacity:`${loader ? '0' : '1'}`}} className="lazy">
+          <LoaderItem />
+        </InifiniteScrollContainer>
       )}
     </div>
   )

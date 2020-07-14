@@ -42,9 +42,9 @@ export default ({ loader, setLoader }) => {
         !loader ?
         <InfiniteScrollItem ref={setElement}/>
         :
-        <Container>
+        <InifiniteScrollContainer>
           <LoaderItem/>
-        </Container>
+        </InifiniteScrollContainer>
       }
 
     </>
@@ -52,17 +52,19 @@ export default ({ loader, setLoader }) => {
 
 }
 
-const Container = styled.div`
+export const InifiniteScrollContainer = styled.div`
   width: 100%;
   margin-top: 20px;
   height: 80px;
   display: grid;
   align-items: center;
   justify-items:center;
+  &.lazy{
+  }
 
 `
 
-const InfiniteScrollItem = styled.div`
+export const InfiniteScrollItem = styled.div`
   width: 100%;
-  height: 35px;
+  height: 20px;
 `

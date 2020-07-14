@@ -45,11 +45,11 @@ class KycBasicContainer extends Component {
   }
 
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, nextState) {
 
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
     if (prevProps.step === this.props.step) { return }
-    console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC BASIC ===> ', prevProps.step, this.props.step, this.props)
+    // console.log('||||||||||||||||||||||||||||||| componentDidUpdate KYC BASIC ===> ', prevProps.step, this.props.step, this.props)
     //
     // alert()
     let route
@@ -98,6 +98,19 @@ class KycBasicContainer extends Component {
       route = `?form=personal_success`
     }
     this.props.history.push(route)
+
+    if(this.props.step === 10 && this.state.data_state.id_type && (this.state.data_state.id_type[0].code === 'cedula_ciudadania' || this.state.data_state.id_type[0].code=== 'cedula_extranjeria' )){
+      const updateState = async() => {
+        await this.setState({
+          data_state:{
+            ...this.state.data_state,
+            nationality:this.state.data_state.country
+          }})
+          this.siguiente()
+      }
+      updateState()
+        // from:  personal_type_id
+    }
   }
 
   // init_component = async() =>{
@@ -111,6 +124,7 @@ class KycBasicContainer extends Component {
     // validamos si el (user.verification_level === 'level_0' && user.person_type === null) seteamos un estado para mostrar la pantalla donde pedimos el person_type, ej:this.setState({person_type})
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
     const { form_kyc_basic_state } = this.props
+    // console.log(form_kyc_basic_state, modelFormData)
     let verification_state = await this.props.action.get_verification_state()
 
     if (!verification_state || verification_state === 'rejected') {
@@ -172,7 +186,12 @@ class KycBasicContainer extends Component {
 
 
 
-
+ // const body = {
+ //   target:{
+ //     name:,
+ //     value:
+ //   }
+ // }
 
   update = async ({ target }) => {
     target.preventDefault && target.preventDefault()
@@ -196,7 +215,7 @@ class KycBasicContainer extends Component {
     if(name === modelFormData.city) {
       if (value && value.length > 100) return
     }
-    
+
     if(name === modelFormData.id_number.name) {
       const idType = this.state.data_state.id_type[0].code
       if(idType === 'pasaporte') {
@@ -211,7 +230,11 @@ class KycBasicContainer extends Component {
     if (name === 'country_prefix' || name === 'country' || ui_type === 'select') {
       new_value = await this.matchList(target)
       if (!new_value) { return false }
+      // console.log(new_value, target)
+      // if(new_value){debugger}
     }
+
+
     await this.setState({
       data_state: {
         ...this.state.data_state,
@@ -271,12 +294,13 @@ class KycBasicContainer extends Component {
 
   siguiente = async () => {
     const { kyc_data_basic } = this.state
-    console.log('NEXT KYC', this.props.step, kyc_data_basic.length)
+    // console.log('NEXT KYC', this.props.step, kyc_data_basic.length, this.state)
     if (this.props.step <= kyc_data_basic.length) {
       await this.props.action.UpdateForm('kyc_basic', this.state)
       await this.props.action.IncreaseStep('kyc_basic')
 
       if (this.props.step > kyc_data_basic.length) {
+        console.log(this.state)
         return this.props.validate_personal_kyc("personal")
       }
 
@@ -502,6 +526,7 @@ class KycBasicContainer extends Component {
                               key={item.id}
                               item={item}
                               select_item={this.select_item}
+                              suffixText={this.state.current_item === 'id_type' && (item.code === 'cedula_ciudadania' || item.code === 'cedula_extranjeria') ? this.state.data_state.country && this.state.data_state.country[0].code : null}
                             />
                           })
                         }
