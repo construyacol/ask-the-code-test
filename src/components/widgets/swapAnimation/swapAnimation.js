@@ -20,7 +20,7 @@ import './swapAnimation.css'
         setTimeout(()=>{
           setFromCoin(from)
           setToCoin(to)
-        }, 500)
+        }, 1000)
       }
     }, [props])
 

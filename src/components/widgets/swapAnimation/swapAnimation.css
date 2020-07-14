@@ -21,7 +21,6 @@ align-items: center;
   display: grid;
   align-items: center;
   justify-items:center;
-  background: red;
   /*perspective-origin: center;*/
   /*transform-style: preserve-3d;*/
 }
