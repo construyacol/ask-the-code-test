@@ -707,6 +707,7 @@ export const get_ui_name_currency = (short_currency_name) => {
 }
 
 export function setInputFilter(textbox, inputFilter) {
+  if (!textbox) return
   ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
     textbox.addEventListener(event, function () {
       if (inputFilter(this.value)) {

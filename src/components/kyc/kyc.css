@@ -602,6 +602,7 @@ grid-template-rows: repeat(2, calc(100vh - 160px));
   display: flex;
   align-items: center;
   color: #50667a;
+  text-transform: capitalize;
 }
 
 .ItemListKycBasic img {

@@ -12,7 +12,7 @@ class ItemListKycBasic extends Component {
 
   render(){
 
-    const { item, active } = this.props
+    const { item, active, suffixText } = this.props
 
     const {
       name,
@@ -29,6 +29,7 @@ class ItemListKycBasic extends Component {
             <img src={`${CountryUrl}${flag}`} alt="" width={30}/>
           }
           {name}
+          {suffixText && ` | ( ${suffixText} )`}
         </p>
       </div>
     )
