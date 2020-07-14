@@ -1,32 +1,45 @@
-import React, { Component} from 'react'
+import React, { useEffect, useState } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 
 import './swapAnimation.css'
 
-class SwapAnimation extends Component {
-
-
-  render(){
+// class SwapAnimation extends Component {
+  const SwapAnimation = props => {
 
     const{
       from,
       to,
       colorIcon
-    } = this.props
+    } = props
+
+    const [ fromCoin, setFromCoin ] = useState()
+    const [ toCoin, setToCoin ] = useState()
+
+    useEffect(()=>{
+      if(from && to){
+        setTimeout(()=>{
+          setFromCoin(from)
+          setToCoin(to)
+        }, 500)
+      }
+    }, [props])
+
 // manejar un estado donde me cambie el atributo icon en 90 grados para aparecer el siguiente simbolo vectorizado en la animación
-  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| SWAP ANIMATION', this.props);
 
     return(
       <div className="SwapAnimation">
         <div className="portaDivisas">
-          <div className="contCurrencieSwap">
+          {
+            (fromCoin && toCoin) &&
+            <div className="contCurrencieSwap">
               <div className="FromCurrency">
-                <IconSwitch icon={from || 'bitcoin'} size={20}/>
+                <IconSwitch icon={fromCoin} size={20}/>
               </div>
               <div className="ToCurrency">
-                <IconSwitch icon={to || 'bitcoin'} size={20}/>
+                <IconSwitch icon={toCoin} size={20}/>
               </div>
-          </div>
+            </div>
+          }
         </div>
 
         <div className="transacSwapAnim">
@@ -35,7 +48,6 @@ class SwapAnimation extends Component {
 
       </div>
     )
-  }
 }
 
 
