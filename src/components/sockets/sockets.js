@@ -394,25 +394,6 @@ class SocketsComponent extends Component {
       }
 
 
-      // return setTimeout(async () => {
-      //   await this.props.action.success_sound()
-      //   await this.props.action.current_section_params({ swap_socket_channel: { ...currentSwap, state: 'done' }, swap_done_id: currentSwap.id, swap_done_out: true })
-      //   await this.props.action.swap_activity_update({ ...currentSwap, bought: swap.bought }, 'swaps')
-      //   await this.setState({ currentSwap: { ...currentSwap, state: 'done' } })
-      //
-      //   setTimeout(async () => {
-      //     await this.props.action.current_section_params({ active_trade_operation: false })
-      //     await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
-      //     // this.props.action.get_account_balances(this.props.user)
-      //     setTimeout(async () => {
-      //       // await this.props.action.update_item_state({[swap.id]:{...add_swap, bought:swap.bought}}, 'swaps')
-      //       // await this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
-      //
-      //       // await  this.props.action.getSwapList()
-      //       // await  this.props.action.update_pending_activity(currentSwap.account_from, 'swaps')
-      //     }, 3000)
-      //   }, 4000)
-      // }, 3500)
     }
 
     if (swap.status === 'error') {
