@@ -83,7 +83,7 @@
 
 .menuItem p {
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   align-self: center;
 }
@@ -96,6 +96,12 @@
   grid-template-rows: 1fr auto;
   color: #14b3f0;
 }
+
+.menuItem:hover p{
+  color: #14b3f0;
+}
+
+
 
 
 
@@ -122,7 +128,7 @@
   transition: .3s;
 }
 
-.menuMovilItem:hover .menuMovilIcon {
+.menuItem:hover .menuMovilIcon {
   height: 30px;
   opacity: 1;
   transform: scale(1);

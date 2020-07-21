@@ -187,7 +187,6 @@ class AccountItemList extends Component {
                   icon="root"
                   size={16}
                   color="#5999f1"
-                  colorStroke="gray"
                 />
                 <span className={`infoAILItem account_number fuente2 ${need_more_amount}`}>
                   {

@@ -94,7 +94,7 @@ const MovilMenu = ({ primary_path }) => {
       key:'security',
       ui_text:'Seguridad',
     }
-  ]
+  ];
 
 
   return(

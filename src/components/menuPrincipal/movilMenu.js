@@ -41,10 +41,10 @@ const MovilMenuComponent = props => {
       <i className="fas fa-arrow-right"></i>
     </div> */}
 
-      <div className="menuMovilItems inactive" onClick={() => navigateTo('/referral')}>
+      {/* <div className="menuMovilItems inactive" onClick={() => navigateTo('/referral')}>
         <div className="menuMovilItemTexts fuente"> <IconSwitch icon="referral" size={15} color="white" />Referidos</div>
         <i className="fas fa-arrow-right"></i>
-      </div>
+      </div> */}
 
 
       {/* <div className="menuMovilItems" onClick={openSelectCountry}>
