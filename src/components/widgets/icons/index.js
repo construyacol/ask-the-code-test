@@ -875,19 +875,17 @@ export function GooglePlay(props) {
 
 
 export function Root(props) {
-  const {
-    colorStroke
-  } = props
+
 
   return (
     <Icon {...props} viewBox="0 0 16 16">
       <circle cx="3.763" cy="12.278" r="1.46" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="3.5" y1="2" x2="3.5" y2="4" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="3.5" y1="5" x2="3.5" y2="7" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="3.5" y1="8" x2="3.5" y2="10" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="8" y1="12.5" x2="6" y2="12.5" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="11" y1="12.5" x2="9" y2="12.5" />
-      <line fill="none" stroke={colorStroke} strokeMiterlimit="10" x1="14" y1="12.5" x2="12" y2="12.5" />
+      <line fill="none" strokeMiterlimit="10" x1="3.5" y1="2" x2="3.5" y2="4" />
+      <line fill="none" strokeMiterlimit="10" x1="3.5" y1="5" x2="3.5" y2="7" />
+      <line fill="none" strokeMiterlimit="10" x1="3.5" y1="8" x2="3.5" y2="10" />
+      <line fill="none" strokeMiterlimit="10" x1="8" y1="12.5" x2="6" y2="12.5" />
+      <line fill="none" strokeMiterlimit="10" x1="11" y1="12.5" x2="9" y2="12.5" />
+      <line fill="none" strokeMiterlimit="10" x1="14" y1="12.5" x2="12" y2="12.5" />
     </Icon>
   )
 }
