@@ -382,6 +382,7 @@ class SocketsComponent extends Component {
           await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
           await this.props.action.add_coin_sound()
           await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
+          this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
         },2000)
       }, 5500)
 
