@@ -53,7 +53,7 @@ const MenuSuperiorLayout = (props) => {
         <div className="contenedorLogoSenda">
 
 
-          <div className="contLogos" style={{ top: (path || primary_path === 'referral') ? '-100%' : '0%' }}>
+          <div className="contLogos" style={{ top: (path) ? '-100%' : '0%' }}>
             <div className="contItemLogo">
               <Coinsenda size={30} color="white" />
             </div>

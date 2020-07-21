@@ -10,8 +10,8 @@ import './detailContainer.css'
 function ContentTab(props) {
     const tabRef = useRef()
     const { title, current_section, current_wallet, pathname, primary_path, wallets } = props
-    
-    const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets 
+
+    const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets
     const { params } = current_section
     const movil_viewport = window.innerWidth < 768
 
@@ -37,7 +37,7 @@ function ContentTab(props) {
                                     // onClick={this.to_sub_section}
                                     id={item.link}
                                     key={item.id}
-                                    className={`menuMovilItem ${pathname === item.link ? 'active' : ''}`}
+                                    className={`menuItem ${pathname === item.link ? 'active' : ''}`}
                                 >
                                     <div className={`menuMovilIcon ${pathname === item.link ? 'active' : ''}`} >
                                         <IconSwitch size={20} icon={item.link} color="#14b3f0" />
@@ -60,31 +60,10 @@ function ContentTab(props) {
 
                 <div className={`DCTitle ${primary_path} ${movil_viewport ? 'movil' : ''}`} style={{ display: pathname ? 'none' : '' }} >
                     {
-                        (movil_viewport && primary_path !== 'referral') ?
-                            <>
-                                <Link to="/wallets" className={`menuMovilItem ${primary_path === 'wallets' ? 'active' : ''}`}>
-                                    <div className={`menuMovilIcon ${primary_path === 'wallets' ? 'active' : ''}`} >
-                                        <IconSwitch size={20} icon="wallets" color="#14b3f0" />
-                                    </div>
-                                    <p className="fuente" >Billeteras</p>
-                                </Link>
-
-                                <Link to="/withdraw_accounts" className={`menuMovilItem ${primary_path === 'withdraw_accounts' ? 'active' : ''}`}>
-                                    <div className={`menuMovilIcon ${primary_path === 'withdraw_accounts' ? 'active' : ''}`} >
-                                        <IconSwitch size={20} icon="withdraw" color="#14b3f0" />
-                                    </div>
-                                    <p className="fuente" >Retiros</p>
-                                </Link>
-
-                                <Link to="/security" className={`menuMovilItem ${primary_path === 'security' ? 'active' : ''}`}>
-                                    <div className={`menuMovilIcon ${primary_path === 'security' ? 'active' : ''}`} >
-                                        <IconSwitch size={20} icon="security" color="#14b3f0" />
-                                    </div>
-                                    <p className="fuente" >Seguridad</p>
-
-                                </Link>
-
-                            </>
+                        (movil_viewport) ?
+                            <MovilMenu
+                              primary_path={primary_path}
+                            />
                             :
                             <p className="fuente">{title}</p>
                     }
@@ -94,6 +73,48 @@ function ContentTab(props) {
 
     )
 }
+
+
+const MovilMenu = ({ primary_path }) => {
+
+  const dataMenu = [
+    {
+      key:'wallets',
+      ui_text:'Billeteras',
+    },
+    {
+      key:'withdraw_accounts',
+      ui_text:'Ctas retiros',
+    },
+    {
+      key:'referral',
+      ui_text:'Referidos',
+    },
+    {
+      key:'security',
+      ui_text:'Seguridad',
+    }
+  ]
+
+
+  return(
+    <>
+      {
+        dataMenu.map((itemMenu, indx) => {
+          const isActive =  primary_path === itemMenu.key
+          return <Link to={`/${itemMenu.key}`} className={`menuItem movil ${isActive ? 'active' : ''}`} key={indx}>
+                    <IconSwitch size={20} icon={itemMenu.key} color={`${isActive ? '#14b3f0' : 'gray'}`} />
+                    <div className={`menuMovilIcon ${isActive ? 'active' : ''}`} >
+                        <p className="fuente" >{itemMenu.ui_text}</p>
+                    </div>
+                </Link>
+        })
+      }
+    </>
+  )
+
+}
+
 
 function mapStateToProps(state, props) {
     let account_opts = {}

@@ -44,7 +44,8 @@ import {
   QRCode,
   AuthFactor,
   Accepeted,
-  SwapCamera
+  SwapCamera,
+  Handshake
  } from './'
 
  import {
@@ -186,7 +187,7 @@ class IconSwitch extends Component {
       case 'security':
         return <Security2 {...props} />
       case 'referral':
-        return <Referral {...props} />
+        return <Handshake {...props} />
       case 'referralPerson':
         return <ReferralPerson {...props} />
       case 'swap':
