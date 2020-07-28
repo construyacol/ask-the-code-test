@@ -49,6 +49,7 @@ export const DEPOSITS_URL = `${DepositApiUrl}`
 export const GET_DEPOSIT_BY_USERS_URL = `${DepositApiUrl}users`
 export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`
+export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subscribe-to-new-deposits`
 
 export const SWAP_URL = `${SwapApiUrl}`
 export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`

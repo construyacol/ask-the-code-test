@@ -129,7 +129,7 @@ const DetailGenerator = ({order, title, TitleSuffix}) => {
         ["Orden creada en:", moment(order.created_at).format("LL")],
         ["Confirmaciones:", order.confirmations],
         ["Cantidad acreditada:", await formatCurrency(order.amount, order.currency)],
-        ["Costo de operación:", order.cost_id],
+        ["Costo de operación:", order.cost],
         ["Total deposito:", await formatCurrency(order.amount_neto, order.currency)]
       ])
         break;
