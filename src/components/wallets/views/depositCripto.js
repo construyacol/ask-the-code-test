@@ -107,24 +107,33 @@ const AddDepositProviderCripto = () => {
 
 
 
+let INTERVAL
 
 const CriptoView = () => {
 
 
-  const [ , { current_wallet, modelData: { deposit_providers } }, ,dispatch  ] = useCoinsendaServices()
-
-
+  const [ coinsendaServices, { current_wallet, modelData: { deposit_providers } }, ,dispatch  ] = useCoinsendaServices()
   const [ qrState, setQrState ] = useState(true)
   const [ qrError, setQrError ] = useState()
   const [ address, setAddress ] = useState()
-  const [ coinsendaServices ] = useCoinsendaServices()
+
+  const subscribeToNewDeposits = (provider_id) => {
+    clearInterval(INTERVAL)
+      let i = 0
+      INTERVAL = setInterval(async()=>{
+        if(i >= 3) {return clearInterval(INTERVAL)}
+        const res = await coinsendaServices.subscribeToNewDeposits(provider_id)
+        console.log('INTERVAL', i, res)
+        i++
+      }, 30000)
+  }
 
 
   useEffect(() => {
-
     if(deposit_providers){
         const validateAddress = async() => {
         const provider = deposit_providers[current_wallet.dep_prov[0]]
+        subscribeToNewDeposits(provider.id)
         const { account:{ account_id: { account_id } } } = provider
 
         const validateAddress = await coinsendaServices.validateAddress(account_id)
@@ -143,6 +152,9 @@ const CriptoView = () => {
    }
 
   }, [ deposit_providers ])
+
+
+
 
 
   return(

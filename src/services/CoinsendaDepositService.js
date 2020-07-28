@@ -1,5 +1,5 @@
 import { WebService } from "../actions/API/WebService";
-import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL, GET_DEPOSIT_BY_USERS_URL } from "../const/const";
+import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL, GET_DEPOSIT_BY_USERS_URL, SUBSCRIBE_TO_DEPOSITS_URL } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
@@ -183,6 +183,18 @@ export class DepositService extends WebService {
         const deposit = await this.Get(finalUrl)
         // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
         return deposit
+    }
+
+
+    async subscribeToNewDeposits(provider_id) {
+        const user = this.user
+        const body = {
+            "data": {
+                "country": user.country,
+                "deposit_provider_id": provider_id,
+            }
+        }
+        return await this.Post(SUBSCRIBE_TO_DEPOSITS_URL, body, user.userToken, true)
     }
 
 
