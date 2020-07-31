@@ -82,7 +82,7 @@ const MenuPrincipalLayout = (props) => {
             <section className="section1">
               {
                 menuPrincipal.map((item) => {
-                  // if (item.clave !== 'security' && verification_state !== 'accepted') { return false }
+                  if (item.clave !== 'security' && verification_state !== 'accepted') { return false }
                   return <ButtonPrincipalMenu {...props} {...item} key={item.id} />
                 })
               }
