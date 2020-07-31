@@ -480,7 +480,7 @@ export const InputKycBasic = (props) => {
                       placeholder={state.data_state[item.name] ? state.data_state[item.name] : item.placeholder}
                       onChange={update}
                       name={item.name}
-                      value={state.ui_type !== 'select' ? state.data_state[item.name] : null}
+                      value={state.ui_type !== 'select' ? state.data_state[item.name] : ''}
                       onFocus={_onFocus}
                     // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                     />
