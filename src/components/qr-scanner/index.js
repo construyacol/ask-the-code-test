@@ -22,7 +22,7 @@ const QrScanner = (props) => {
 
     const handleScan = data => {
         if (data) {
-            if (data.indexOf('?')) {
+            if (data.indexOf('?') > -1) {
                 data = data.slice(0, data.indexOf('?'))
             }
             props.onScan(data.slice(data.indexOf(':') + 1))
