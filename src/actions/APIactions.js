@@ -2257,7 +2257,7 @@ export const get_ref_code = () => {
 //
 // }
 
-export const _updatePendingActivity = (accountId, type, activityList) => async (dispatch, getState) => {
+export const updatePendingActivity = (accountId, type, activityList) => async (dispatch, getState) => {
   const { modelData, ui } = getState()
 
   if (!modelData.wallets) return;
@@ -2371,7 +2371,7 @@ export const swap_activity_update = (swap, filter) => {
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
       await dispatch(update_activity_state(swap.account_from, filter))
       await dispatch(current_section_params({ swap_done_out: false, swap_done_in: true }))
-      setTimeout(() => { dispatch(_updatePendingActivity()) }, 2500)
+      setTimeout(() => { dispatch(updatePendingActivity()) }, 2500)
       setTimeout(() => {
         dispatch(add_coin_sound())
         dispatch(mensaje('Nuevo intercambio realizado', 'success'))
