@@ -5,7 +5,7 @@ import Environment from '../environment'
 
 import * as Sentry from '@sentry/browser';
 import { update_activity } from '../actions/storage'
-import { update_pending_activity } from '../actions/APIactions'
+import { update_pending_activity, _updatePendingActivity } from '../actions/APIactions'
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
 import {
@@ -165,7 +165,7 @@ export const update_activity_state = (account_id, activity_type, activity_list) 
 
     await dispatch(current_section_params({ currentFilter: activity_type }))
     await dispatch(update_activity(account_id, activity_type, activity_list))
-    await dispatch(update_pending_activity(account_id, activity_type, activity_list))
+    await dispatch(_updatePendingActivity(account_id, activity_type, activity_list))
 
   }
 

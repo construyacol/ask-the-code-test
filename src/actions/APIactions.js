@@ -142,7 +142,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
     // let data_price = []
     //
     // res.Data.map(item => {
-        // let date_ago = moment().subtract(days, 'days').calendar()
+    // let date_ago = moment().subtract(days, 'days').calendar()
     //     price_date.push(date_ago)
     //     data_price.push(item.close)
     //     return days--
@@ -192,7 +192,7 @@ export const get_historical_price = (currency, amount_days, api_key) => {
 
 // export const get_all_pairs = (token, country) => {
 //   return async (dispatch, getState) => {
-    // const test = new MainService(dispatch, getState(), token)
+// const test = new MainService(dispatch, getState(), token)
 //     return test.fetchAllPairs()
 //   }
 // }
@@ -1083,7 +1083,7 @@ export const add_done_swap = (swaps, user, done_swap, update_list) => {
 //
 //   return async (dispatch, getState) => {
 //     alert('getSwapList')
-    // return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
+// return new MainService(dispatch, getState(), getState().modelData.authData.userToken).getSwapList()
 //
 //     const { modelData } = getState()
 //     const { wallets } = modelData
@@ -1425,18 +1425,18 @@ export const add_update_withdraw = (withdraw_id, state) => {
 
 export const add_restoreid = async (restore_id, user) => {
 
-    const body = {
-      "data": {
-        restore_id
-      }
+  const body = {
+    "data": {
+      restore_id
     }
+  }
 
-    const url_add_restoreid = `${ApiUrl}profiles/add-restoreid`
-    const res = await ApiPostRequest(url_add_restoreid, body, user.userToken)
+  const url_add_restoreid = `${ApiUrl}profiles/add-restoreid`
+  const res = await ApiPostRequest(url_add_restoreid, body, user.userToken)
 
-    if (res === 465 || !res) { return false }
+  if (res === 465 || !res) { return false }
 
-    return res
+  return res
 
 }
 
@@ -1460,7 +1460,7 @@ export const add_new_withdraw_order = (amount, account_from, withdraw_provider, 
       }
     }
     // alert()
-    if(twoFaToken){
+    if (twoFaToken) {
       body.data.twofa_token = twoFaToken
     }
 
@@ -2257,12 +2257,60 @@ export const get_ref_code = () => {
 //
 // }
 
+export const _updatePendingActivity = (accountId, type, activityList) => async (dispatch, getState) => {
+  const { modelData, ui } = getState()
 
+  if (!modelData.wallets) return;
+
+  const fallbackCurrentWallet = ui.current_section.params.current_wallet
+  const fallbackActivityType = ui.current_section.params.currentFilter
+  const currentWallet = modelData.wallets[accountId] || fallbackCurrentWallet
+
+  if (!currentWallet) return;
+
+  const activityType = type || fallbackActivityType
+
+  if (!activityList && currentWallet) {
+    activityList = await serve_orders(currentWallet.id, activityType)
+    if (!activityList) return;
+  }
+
+  const isWithdraws = activityType === 'withdraws'
+  let expandidoMax, pendingData
+  const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
+
+  // If activity is equal to withdraws filter, always set up as 0 value
+  const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
+  const confirmed = await filterActivitiesByStatus('confirmed')
+  const rejected = await filterActivitiesByStatus('rejected')
+
+  if (pending && confirmed) {
+    expandidoMax = (pending.length + confirmed.length) * 100
+  }
+
+  if (pending) {
+    pendingData = { pending: true, lastPending: (activityType === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id }
+  } else if (rejected) {
+    pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
+  } else if (confirmed) {
+    pendingData = { pending: true, lastPending: confirmed[0] && confirmed[0].id }
+  }
+  
+  let finalResult = {
+    ...pendingData,
+    expandidoMax,
+    account_id: currentWallet.id,
+    activity_type: activityType
+  }
+
+  dispatch(pending_activity(finalResult))
+
+}
 
 export const update_pending_activity = (account_id, activity_type, activity_list) => {
 
   return async (dispatch, getState) => {
-
+    // TODO: Refactor this
 
     let current_wallet = getState().modelData.wallets[account_id]
 
@@ -2323,7 +2371,7 @@ export const swap_activity_update = (swap, filter) => {
       // actualizamos las ordenes de la cuenta desde donde se genera el swap
       await dispatch(update_activity_state(swap.account_from, filter))
       await dispatch(current_section_params({ swap_done_out: false, swap_done_in: true }))
-      setTimeout(() => { dispatch(update_pending_activity()) }, 2500)
+      setTimeout(() => { dispatch(_updatePendingActivity()) }, 2500)
       setTimeout(() => {
         dispatch(add_coin_sound())
         dispatch(mensaje('Nuevo intercambio realizado', 'success'))
