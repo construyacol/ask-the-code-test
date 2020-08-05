@@ -2274,24 +2274,22 @@ export const updatePendingActivity = (accountId, type, activityList) => async (d
     activityList = await serve_orders(currentWallet.id, activityType)
     if (!activityList) return;
   }
-
+  
   const isWithdraws = activityType === 'withdraws'
-  let expandidoMax, pendingData
+  let pendingData
   const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
-
+  
   // If activity is equal to withdraws filter, always set up as 0 value
   const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
   const confirmed = await filterActivitiesByStatus('confirmed')
-  const rejected = await filterActivitiesByStatus('rejected')
-
-  if (pending && confirmed) {
-    expandidoMax = (pending.length + confirmed.length) * 100
-  }
-
+  // const rejected = await filterActivitiesByStatus('rejected')
+  
+  const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100
+  
   if (pending) {
     pendingData = { pending: true, lastPending: (activityType === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id }
-  } else if (rejected) {
-    pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
+  // } else if (rejected) {
+  //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
   } else if (confirmed) {
     pendingData = { pending: true, lastPending: confirmed[0] && confirmed[0].id }
   }
