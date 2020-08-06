@@ -13,6 +13,12 @@
   "display": "standalone",
   "theme_color": "#0066AA",
   "background_color": "#ffffff",
-  "related_applications":[],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=io.coinsenda.coinsenda",
+      "id": "io.coinsenda.coinsenda"
+    }
+  ],
   "prefer_related_applications":false
 }
