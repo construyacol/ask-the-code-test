@@ -1,51 +1,50 @@
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import IconSwitch from '../icons/iconSwitch'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-// import FreshChat from '../../../services/freshChat'
+import FreshChat from '../../../services/freshChat'
 
 import './panelAlert.css'
 
 
 
-const PanelAlertContainer = (props) => {
+class PanelAlertContainer extends Component {
 
-  const [ coinsendaServices ] = useCoinsendaServices()
-  const [ state, setState ] = useState({
-    visible:false,
+  state = {
     message:"",
-    icon:'',
     ctaText:"",
-    background:'white',
-    action:null
-  })
+    visible:false,
+    background:'white'
+  }
 
-  useEffect(()=>{
-    if(props.history.location.pathname === '/security'){
-      validate_state()
+  componentDidUpdate(prevProps){
+    if(prevProps !== this.props){
+      this.validate_state()
     }
-  }, [props.user])
+  }
 
+  componentDidMount(){
+    this.validate_state()
+  }
 
-  const validate_state = async() =>{
+  validate_state = async() =>{
 
-    const verification_state = await coinsendaServices.getVerificationState()
+    let verification_state = await this.props.action.get_verification_state()
 
     if(!verification_state){
-      return setState({
+      return this.setState({
         visible:true,
         message:"Bienvenido, completa el proceso de verificación y comienza a operar en Coinsenda",
         icon:'verified',
         ctaText:"Enseñame ahora >>",
         background:'linear-gradient(to bottom right, #00D2FF, #3A7BD5)',
-        action:validate_kyc_basic
+        action:this.validate_kyc_basic
       })
     }
 
     if(verification_state === 'confirmed'){
-      return setState({
+      return this.setState({
         visible:true,
         message:"Nuestro sistema esta verificando tus documentos, en breve podrás operar en Coinsenda",
         icon:'verified',
@@ -55,55 +54,57 @@ const PanelAlertContainer = (props) => {
       })
     }
     if(verification_state === 'rejected'){
-      return setState({
+      return this.setState({
         visible:true,
         message:"Tus datos han sido rechazados, aprende a verificarte correctamente en tan solo 1 minuto.",
         icon:'rejected',
         ctaText:"Enseñame ahora >>",
         background:'#b31217',
-        action:validate_kyc_basic
+        action:this.validate_kyc_basic
       })
     }
     if(verification_state === 'pending'){
-      return setState({
+      return this.setState({
         visible:true,
         message:"¡Genial!, estas a 1 solo paso de completar tu proceso de verificación..",
         icon:'verified',
         ctaText:"Enseñame ahora >>",
         background:'#989500',
-        action:validate_kyc_advanced
+        action:this.validate_kyc_advanced
       })
     }
   }
 
-  const validate_kyc_advanced = () =>{
-    props.action.play_video('kyc_advanced')
+  validate_kyc_advanced = () =>{
+    this.props.action.play_video('kyc_advanced')
   }
 
-  const validate_kyc_basic = () =>{
-    props.action.play_video('kyc_basic')
+  validate_kyc_basic = () =>{
+    this.props.action.play_video('kyc_basic')
   }
 
-  // go_to = () =>{
-  //   // props.action.play_video('kyc_basic')
-  //   // alert('goto')
-  // }
+  go_to = () =>{
+    // this.props.action.play_video('kyc_basic')
+    // alert('goto')
+  }
 
-  const close = async() =>{
-    const verification_state = await coinsendaServices.getVerificationState()
+  close = async() =>{
+    let verification_state = await this.props.action.get_verification_state()
+    // console.log('||||||__________ verification_state', verification_state)
 
     if(!verification_state || (verification_state !== 'confirmed' && verification_state !== 'accepted')){
-      coinsendaServices.freshChatTrack('need help to verification')
+      FreshChat.track('need help to verification')
     }
-    // console.log('AYuda para verificación', (props.user.levels && props.user.levels.personal !== 'confirmed'), props.user)
-    return setState({...state, visible:false})
+    // console.log('AYuda para verificación', (this.props.user.levels && this.props.user.levels.personal !== 'confirmed'), this.props.user)
+    return this.setState({visible:false})
   }
 
-    const { visible, message, ctaText, icon, background, action } = state
+  render(){
+    const { visible, message, ctaText, icon, background, action } = this.state
 
     return(
       <div className={`PanelAlertContainer ${visible && 'visible'}`} id="PanelAlertContainer" style={{background:background}}>
-        <i className="fas fa-times" onClick={close}></i>
+        <i className="fas fa-times" onClick={this.close}></i>
          <div className="alertContainer fuente">
            <IconSwitch
              icon={icon}
@@ -120,6 +121,7 @@ const PanelAlertContainer = (props) => {
          </div>
       </div>
     )
+  }
 
 }
 
