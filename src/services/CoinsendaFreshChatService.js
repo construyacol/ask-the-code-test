@@ -68,15 +68,7 @@ export class FreshChatService extends WebService {
     //
     //
     //
-    // const track = async(item, payload) => {
-    //   // @param item:string
-    //   // @param payload:object
-    //   let load = await isLoaded()
-    //   if(load){
-    //     console.log('|||||||||||||||______________________- tracking____', item, payload)
-    //     window.fcWidget.track(item, payload);
-    //   }
-    // }
+
     //
     //
     // const show_channels = async(channels) => {
@@ -88,18 +80,7 @@ export class FreshChatService extends WebService {
     // }
     //
     //
-    async freshChatShowTags (tags, filterType){
-      // @Params
-      // tags:array
-      // filterType:string
-      let load = await this.isLoaded()
-      if(load){
-        window.fcWidget.setFaqTags({
-          tags,
-          filterType
-        });
-      }
-    }
+
     //
     //
     // const destroy = async() => {
@@ -137,6 +118,31 @@ export class FreshChatService extends WebService {
        }, 500)
      }
 
+
+
+     async freshChatShowTags (tags, filterType){
+       // @Params
+       // tags:array
+       // filterType:string
+       let load = await this.isLoaded()
+       if(load){
+         window.fcWidget.setFaqTags({
+           tags,
+           filterType
+         });
+       }
+     }
+
+
+     async freshChatTrack (item, payload) {
+       // @param item:string
+       // @param payload:object
+       let load = await this.isLoaded()
+       if(load){
+         // console.log('|||||||||||||||______________________- tracking____', item, payload)
+         window.fcWidget.track(item, payload);
+       }
+     }
 
 
 
