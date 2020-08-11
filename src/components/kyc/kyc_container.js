@@ -1,49 +1,47 @@
-import React, { Component } from 'react'
+import React from 'react'
 import KycLayout from './kycLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
+import { useState } from 'react'
+import { useToastMesssage } from '../../hooks/useToastMessage'
 
-class Kyc extends Component {
+const Kyc = (props) => {
+  const [reset, setReset] = useState()
+  const [financial_success, setFinancial_success] = useState()
+  const [identity_success, setIdentity_success] = useState(false)
+  const [ toastMessage ] = useToastMesssage()
 
-  state = {
-    reset:null,
-    financial_success:null,
-    identity_success:false
-  }
+  const validate_personal_kyc = async (info_type) => {
 
-
-
-  validate_personal_kyc = async(info_type) => {
-
-    const { form_kyc_basic, user } = this.props
+    const { form_kyc_basic, user } = props
     const { data_state } = form_kyc_basic
 
     let config = {
-      info:{
-        "name":data_state.name,
-        "surname":data_state.surname,
-        "birthday":data_state.birthday,
-        "address":data_state.address,
-        "phone":`+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
-        "city":data_state.city,
-        "country":data_state.country[0].code,
-        "id_type":data_state.id_type[0].code,
-        "id_number":data_state.id_number,
-        "nationality":data_state.nationality[0].code
+      info: {
+        "name": data_state.name,
+        "surname": data_state.surname,
+        "birthday": data_state.birthday,
+        "address": data_state.address,
+        "phone": `+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
+        "city": data_state.city,
+        "country": data_state.country[0].code,
+        "id_type": data_state.id_type[0].code,
+        "id_number": data_state.id_number,
+        "nationality": data_state.nationality[0].code
       },
-      info_type:"personal",
-      verification_level:"level_1"
+      info_type: "personal",
+      verification_level: "level_1"
     }
 
 
-    this.props.action.isAppLoading(true)
-    let res = await this.props.action.update_level_profile(config, user)
-    if(!res){
-             await this.props.action.ReduceStep('kyc_basic', 1)
-             this.props.action.isAppLoading(false)
-             this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
-      return this.props.action.ReduceStep('kyc_global_step', 1)
+    props.action.isAppLoading(true)
+    let res = await props.action.update_level_profile(config, user)
+    if (!res) {
+      await props.action.ReduceStep('kyc_basic', 1)
+      props.action.isAppLoading(false)
+      toastMessage('No puedes verificarte en este momento, intenta más tarde', 'error')
+      return props.action.ReduceStep('kyc_global_step', 1)
     }
     const { data } = res
     const { personal } = data
@@ -51,176 +49,163 @@ class Kyc extends Component {
     let user_update = {
       ...user,
       ...personal,
-      levels:{
+      levels: {
         ...user.levels,
-        personal:'confirmed'
+        personal: 'confirmed'
       },
-      security_center:{
+      security_center: {
         ...user.security_center,
-        kyc:{
+        kyc: {
           ...user.security_center.kyc,
-          basic:'confirmed'
+          basic: 'confirmed'
         }
       }
     }
-      await this.props.action.updateUser(user_update)
+    await props.action.updateUser(user_update)
     // setTimeout(()=>{
-      // this.user_update()
-      // this.props.action.CleanForm('kyc_basic')
+    // user_update()
+    // props.action.CleanForm('kyc_basic')
 
-      this.props.action.IncreaseStep('kyc_global_step')
-      this.props.action.success_sound()
-      this.props.action.isAppLoading(false)
-      // setTimeout(()=>{
-        // this.props.action.isAppLoading(false)
-        // this.props.action.ReduceStep('kyc_basic')
-      // },1000)
+    props.action.IncreaseStep('kyc_global_step')
+    props.action.success_sound()
+    props.action.isAppLoading(false)
+    // setTimeout(()=>{
+    // props.action.isAppLoading(false)
+    // props.action.ReduceStep('kyc_basic')
+    // },1000)
     // }, 3000)
   }
 
-
-
-  validate_identity_kyc = async({base64}) => {
-    const { user } = this.props
+  const validate_identity_kyc = async ({ base64 }) => {
+    const { user } = props
     const { newselfie, newfront, newback } = base64
 
     let config = {
-      "info":{
-        "selfie":newselfie,
-        "id_front":newfront,
-        "id_back":user.id_type === 'pasaporte' ? newfront : newback
+      "info": {
+        "selfie": newselfie,
+        "id_front": newfront,
+        "id_back": user.id_type === 'pasaporte' ? newfront : newback
       },
-      "info_type":"identity",
-      "verification_level":"level_1"
+      "info_type": "identity",
+      "verification_level": "level_1"
     }
-    this.props.action.isAppLoading(true)
-    let res = await this.props.action.update_level_profile(config, user)
+    props.action.isAppLoading(true)
+    let res = await props.action.update_level_profile(config, user)
     // console.log('||||||||||| VALIDATE_RES', res)
-    if(!res){
-             await this.props.action.ReduceStep('kyc_avanced', 1)
-             await this.setState({reset:true})
-             this.props.action.isAppLoading(false)
-            return this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
-      // return this.props.action.ReduceStep('kyc_global_step', 1)
+    if (!res) {
+      await props.action.ReduceStep('kyc_avanced', 1)
+      await setReset(true)
+      props.action.isAppLoading(false)
+      return toastMessage('No puedes verificarte en este momento, intenta más tarde', 'error')
+      // return props.action.ReduceStep('kyc_global_step', 1)
     }
     let user_update = {
       ...user,
-      levels:{
+      levels: {
         ...user.levels,
-        identity:'confirmed'
+        identity: 'confirmed'
       },
-      security_center:{
+      security_center: {
         ...user.security_center,
-        kyc:{
+        kyc: {
           ...user.security_center.kyc,
-          advanced:'confirmed'
+          advanced: 'confirmed'
         }
       }
     }
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.updateUser(user_update)
-    this.props.action.isAppLoading(false)
-    this.setState({identity_success:true})
+    await props.action.updateUser(user_update)
+    props.action.isAppLoading(false)
+    setIdentity_success(true)
     return true
   }
 
+  const validate_financial_kyc = async (info) => {
 
-validate_financial_kyc = async(info) =>{
+    const { user } = props
 
-const { user } = this.props
+    let config = {
+      info,
+      info_type: "financial",
+      verification_level: "level_2"
+    }
 
-  let config = {
-    info,
-    info_type:"financial",
-    verification_level:"level_2"
-  }
-
-  let res = await this.props.action.update_level_profile(config, user)
-  console.log('°°°°|||| send_files', res)
-  if(!res){
-           // await this.props.action.ReduceStep('kyc_basic', 1)
-           this.props.action.isAppLoading(false)
-           return this.props.action.mensaje('No puedes verificarte en este momento, intenta más tarde', 'error')
-  }
-  this.props.action.success_sound()
+    let res = await props.action.update_level_profile(config, user)
+    console.log('°°°°|||| send_files', res)
+    if (!res) {
+      // await props.action.ReduceStep('kyc_basic', 1)
+      props.action.isAppLoading(false)
+      return toastMessage('No puedes verificarte en este momento, intenta más tarde', 'error')
+    }
+    props.action.success_sound()
 
 
-  this.setState({
-    financial_success:true
-  })
-  let user_update = {
-    ...user,
-    levels:{
-      ...user.levels,
-      financial:'confirmed'
-    },
-    security_center:{
-      ...user.security_center,
-      kyc:{
-        ...user.security_center.kyc,
-        financial:'confirmed'
+    setFinancial_success(true)
+    let user_update = {
+      ...user,
+      levels: {
+        ...user.levels,
+        financial: 'confirmed'
+      },
+      security_center: {
+        ...user.security_center,
+        kyc: {
+          ...user.security_center.kyc,
+          financial: 'confirmed'
+        }
       }
     }
-  }
-  // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await this.props.action.updateUser(user_update)
-  this.props.action.isAppLoading(false)
+    // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
+    await props.action.updateUser(user_update)
+    props.action.isAppLoading(false)
 
+
+  }
+
+  const siguiente = () => {
+    props.action.IncreaseStep('kyc_global_step')
+  }
+
+  const exit = () => {
+    props.action.toggleModal(false)
+  }
+
+  return (
+    <KycLayout
+      validate_personal_kyc={validate_personal_kyc}
+      validate_identity_kyc={validate_identity_kyc}
+      validate_financial_kyc={validate_financial_kyc}
+      siguiente={siguiente}
+      exit={exit}
+      {...props}
+      {...{
+        reset,
+        financial_success,
+        identity_success
+      }}
+    />
+  )
 
 }
 
-
-
-
-
-
-
-
-
-  siguiente = () =>{
-    this.props.action.IncreaseStep('kyc_global_step')
-  }
-
-  exit = () =>{
-    this.props.action.toggleModal(false)
-  }
-
-  render(){
-    // console.log('S T A T E -- K Y C --- C O N T A I N E R', countries)
-
-    return(
-      <KycLayout
-        validate_personal_kyc={this.validate_personal_kyc}
-        validate_identity_kyc={this.validate_identity_kyc}
-        validate_financial_kyc={this.validate_financial_kyc}
-        siguiente={this.siguiente}
-        exit={this.exit}
-        {...this.props}
-        {...this.state}
-      />
-    )
-  }
-
-}
-
-function mapStateToProps(state, props){
+function mapStateToProps(state, props) {
   // console.log('S T A T E -- K Y C --- C O N T A I N E R', state)
   const { user } = state.modelData
   const { current } = state.form
 
-  return{
-    loader:state.isLoading.loader,
-    globalStep:state.form.globalStep,
-    user:user,
-    form_kyc_basic:state.form.form_kyc_basic,
+  return {
+    loader: state.isLoading.loader,
+    globalStep: state.form.globalStep,
+    user: user,
+    form_kyc_basic: state.form.form_kyc_basic,
     current
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return{
+function mapDispatchToProps(dispatch) {
+  return {
     action: bindActionCreators(actions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (Kyc)
+export default connect(mapStateToProps, mapDispatchToProps)(Kyc)

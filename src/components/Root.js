@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import localForage from 'localforage'
 import jwt from 'jsonwebtoken'
@@ -13,13 +13,11 @@ import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
 // import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
-import { COINSENDA_URL } from '../const/const';
 import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
+import { useToastMesssage } from '../hooks/useToastMessage';
 // import { useCoinsendaServices } from '../services/useCoinsendaServices'
-
-let session = {}
 
 history.listen((location) => {
   if(location && location.pathname !== '/') {
@@ -31,6 +29,7 @@ function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
   const [ tryRestoreSession ] = SessionRestore()
+  const [ toastMessage ] = useToastMesssage()
   // const [ coinsendaServices ] = useCoinsendaServices()
 
   const initComponent = async () => {
@@ -81,7 +80,7 @@ function RootContainer(props) {
       history={history}
     >
 
-      <SocketsComponent />
+      <SocketsComponent toastMessage={toastMessage} />
       {/* <CoinsendaSocket /> */}
       <ToastContainers />
       <Switch>

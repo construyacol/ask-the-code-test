@@ -141,7 +141,7 @@ class SocketsComponent extends Component {
       let res = await this.props.action.add_update_withdraw(withdraw.id, 'confirmed')
       if (!res) {
         this.props.action.isAppLoading(false)
-        return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
+        return this.props.toastMessage('No se ha podido crear la orden de retiro', 'error')
       }
     }
 
@@ -230,7 +230,7 @@ class SocketsComponent extends Component {
     //         await this.props.action.get_withdraws(fiat_accounts[i].id, 'withdraws')
     //       }
     //     }
-    //     this.props.action.mensaje('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
+    //     this.props.toastMessage('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
     //     this.props.action.success_sound()
     //
     // }
@@ -326,7 +326,7 @@ class SocketsComponent extends Component {
       }, 500)
       this.props.action.exit_sound()
       let state = deposit.state === 'canceled' ? 'cancelado' : 'rechazado'
-      this.props.action.mensaje(`Deposito ${state}`, 'error')
+      this.props.toastMessage(`Deposito ${state}`, 'error')
       // }, 2000)
     }
 
@@ -340,7 +340,7 @@ class SocketsComponent extends Component {
         // this.props.history.push('?form=deposit_confirmed_success')
         this.props.action.isAppLoading(false)
         this.props.action.success_sound()
-        this.props.action.mensaje('Deposito confirmado con exito', 'success')
+        this.props.toastMessage('Deposito confirmado con exito', 'success')
 
       }
     }
@@ -381,7 +381,7 @@ class SocketsComponent extends Component {
           await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], activeTrade:false} }, 'swaps')
           await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
           await this.props.action.add_coin_sound()
-          await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
+          await this.props.toastMessage('Nuevo intercambio realizado', 'success')
           this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
         },2000)
       }, 5500)
@@ -398,7 +398,7 @@ class SocketsComponent extends Component {
     }
 
     if (swap.status === 'error') {
-      this.props.action.mensaje('El intercambio no se pudo realizar, contacta con soporte', 'error')
+      this.props.toastMessage('El intercambio no se pudo realizar, contacta con soporte', 'error')
       this.props.action.ticket_canceled()
       // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
     }

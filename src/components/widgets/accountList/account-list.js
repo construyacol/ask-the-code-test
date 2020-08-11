@@ -9,12 +9,14 @@ import withListCreator from '../../withListCreator'
 
 import '../../wallets/views/wallet_views.css'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history } = props
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
+  const [ toastMessage ] = useToastMesssage()
 
   useEffect(() => {
     actions.cleanCurrentSection()
@@ -99,7 +101,7 @@ function AccountList(props) {
   //     await actions.get_withdraw_accounts(props.user, props.withdrawProviders) :
   //     await actions.get_list_user_wallets(props.user)
 
-  //   actions.mensaje(msg, success ? 'success' : 'error')
+  //   toastMessage(msg, success ? 'success' : 'error')
   // }
 
   const items = props.items || []

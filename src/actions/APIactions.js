@@ -6,17 +6,9 @@ import { toast } from 'react-toastify';
 import convertCurrencies from '../utils/convert_currency'
 import moment from 'moment'
 import 'moment/locale/es'
-// import * as Sentry from '@sentry/browser';
 
 import { coins } from '../components/api/ui/api.json'
 import user_source from '../components/api'
-
-// MODELOS DE PARA HACER PRUEBAS EN CASO DE QUE EL API ESTE INACCESIBLE
-// import pairs from '../components/api/ui/modelo_pairs.json'
-// import deposit_providers from '../components/api/ui/deposit_providers.json'
-// import deposits from '../components/api/ui/deposits.json'
-// import withdraw_providersJSON from '../components/api/ui/withdraw_provider.json'
-// import withdraw_accountsJSON from '../components/api/ui/withdrawAccounts/withdraw_accounts.json'
 import * as normalizr_services from '../schemas'
 
 import {
@@ -33,7 +25,6 @@ import {
 } from './soundActions'
 
 import {
-  // update_activity,
   pending_activity
 } from './storage'
 
@@ -46,26 +37,18 @@ import {
   current_section_params,
   pairsForAccount,
   verificationStateAction
-  // new_fiat_deposit
 } from './uiActions'
-// import { MainService } from '../services/MainService';
 
 const {
   normalizeUser,
-  // normalize_data
 } = normalizr_services
 
 const {
-  loadLocalPairsAction,
-  getAllPairsAction,
-  searchCurrentPairAction,
-  loadLocalCurrencyAction,
   UserPairs,
   updateNormalizedDataAction,
   resetModelData,
   updateAllCurrenciesAction,
-  manageBalanceAction,
-  // all_pairs_landing
+  manageBalanceAction
 } = data_model_actions
 
 const {
@@ -80,16 +63,7 @@ const {
 
 const { ApiUrl, IdentityApIUrl, CountryApIUrl, AccountApiUrl, DepositApiUrl, WithdrawApiUrl, SwapApiUrl } = Environment
 
-let local_currency
 moment.locale('es')
-// Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
-
-
-// const sentryCaptureMessage = (title, msg) => {
-//   console.log('||||| =======> sentryCaptureMessage', 'title: ', title, 'message', msg)
-//   Sentry.captureMessage(title, msg);
-//   // alert('enviando mensaje a sentry')
-// }
 
 export const loadFirstEschema = () => {
   return async (dispatch) => {
@@ -97,11 +71,6 @@ export const loadFirstEschema = () => {
     dispatch(updateNormalizedDataAction(dataNormalized))
   }
 }
-
-// export const inicializarClasses = (country, callback) => async(dispatch, state) => {
-//   alert()
-//   return new MainService(dispatch, state(), state().modelData.authData.userToken).init(country, callback)
-// }
 
 export const mensaje = (msg, type, position) => {
   return async (dispatch) => {
@@ -2274,26 +2243,26 @@ export const updatePendingActivity = (accountId, type, activityList) => async (d
     activityList = await serve_orders(currentWallet.id, activityType)
     if (!activityList) return;
   }
-  
+
   const isWithdraws = activityType === 'withdraws'
   let pendingData
   const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
-  
+
   // If activity is equal to withdraws filter, always set up as 0 value
   const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
   const confirmed = await filterActivitiesByStatus('confirmed')
   // const rejected = await filterActivitiesByStatus('rejected')
-  
+
   const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100
-  
+
   if (pending) {
     pendingData = { pending: true, lastPending: (activityType === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id }
-  // } else if (rejected) {
-  //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
+    // } else if (rejected) {
+    //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
   } else if (confirmed) {
     pendingData = { pending: true, lastPending: confirmed[0] && confirmed[0].id }
   }
-  
+
   let finalResult = {
     ...pendingData,
     expandidoMax,
@@ -2356,47 +2325,5 @@ export const update_pending_activity = (account_id, activity_type, activity_list
   }
 
 }
-
-
-
-export const swap_activity_update = (swap, filter) => {
-
-  return async (dispatch, getState) => {
-
-    setTimeout(async () => {
-      const { user, swaps } = getState().modelData
-      await dispatch(add_done_swap(swaps, user, swap))
-      // actualizamos las ordenes de la cuenta desde donde se genera el swap
-      await dispatch(update_activity_state(swap.account_from, filter))
-      await dispatch(current_section_params({ swap_done_out: false, swap_done_in: true }))
-      setTimeout(() => { dispatch(updatePendingActivity()) }, 2500)
-      setTimeout(() => {
-        dispatch(add_coin_sound())
-        dispatch(mensaje('Nuevo intercambio realizado', 'success'))
-        dispatch(current_section_params({
-          swap_done_out: false, swap_done_in: false, swap_done_id: false, swap_socket_channel: {
-            unique_id: null,
-            status: null
-          }
-        }))
-      }, 3000)
-
-    }, 1800)
-  }
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export default getPairsByCountry

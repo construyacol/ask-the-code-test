@@ -5,7 +5,7 @@ import Environment from '../environment'
 
 import * as Sentry from '@sentry/browser';
 import { update_activity } from '../actions/storage'
-import { update_pending_activity, updatePendingActivity } from '../actions/APIactions'
+import { updatePendingActivity } from '../actions/APIactions'
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
 import {
@@ -17,6 +17,7 @@ import {
 } from '../actions/API'
 
 import store from '..'
+import { useToastMesssage } from '../hooks/useToastMessage';
 
 const {
   WithdrawApiUrl,
@@ -97,13 +98,14 @@ export const mensaje = async (msg, type, position) => {
 
 export const copy = (payload) => {
   if(!document || !payload) return;
+  const [ toastMessage ] = useToastMesssage()
    let aux = document.createElement("input")
    aux.setAttribute("value", payload.target.dataset && payload.target.dataset.copy)
    document.body.appendChild(aux);
    aux.select();
    document.execCommand("copy");
    document.body.removeChild(aux);
-  return mensaje("¡Copiado Exitosamente!")
+  return toastMessage("¡Copiado Exitosamente!")
 }
 
 
