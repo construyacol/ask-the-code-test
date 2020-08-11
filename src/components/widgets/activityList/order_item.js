@@ -746,7 +746,7 @@ export const DataContainer = styled.div`
   }
 
   .deleteOrder{
-    grid-area:
+    grid-area: deleteOrder;
   }
 
 
