@@ -112,7 +112,7 @@ class WithdrawAccountForm extends Component {
     if (!res) {
       // this.props.action.ReduceStep(this.props.current)
       this.props.action.ReduceStep(this.props.current)
-      this.props.action.mensaje('No es posible crear la cuenta ahora.', 'error')
+      this.props.toastMessage('No es posible crear la cuenta ahora.', 'error')
       return this.props.action.isAppLoading(false)
     }
 

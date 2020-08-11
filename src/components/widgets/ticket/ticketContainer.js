@@ -506,6 +506,7 @@ class TicketContainer extends Component {
               ticket={this.props.ticket}
               update_ticket={this.update_ticket}
               current_wallet={current_wallet}
+              toastMessage={this.props.toastMessage}
             />
 
           </div>
@@ -525,7 +526,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { account_id, tx_path, order_id, primary_path } = props.match.params
+  const { account_id, tx_path, order_id } = props.match.params
 
   // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
 

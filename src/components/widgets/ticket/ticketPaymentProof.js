@@ -81,7 +81,7 @@ updateLocalImg = (img) =>{
       // this.updateLocalImg(urlImg)
       this.props.action.confirm_sound()
     setTimeout(()=>{
-      this.props.action.mensaje(`¡Orden Confirmada !`, 'success')
+      this.props.toastMessage(`¡Orden Confirmada !`, 'success')
     }, 700)
   }
 

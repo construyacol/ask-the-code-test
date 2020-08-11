@@ -198,14 +198,14 @@ class WithdrawFlow extends Component {
         // console.log('________________________________________new_account_and_withdraw', new_account)
 
         this.props.action.addNotification('withdraw_accounts', { account_id: new_account.id }, 1)
-        this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
+        this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
         // await this.setState({addNotification:false})
       }, 500)
 
       await this.setState({ show_list_accounts: false, need_new_acount: null })
       await this.volver(1)
       await this.props.action.isAppLoading(false)
-      return this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
+      return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
     }
 
     await this.setState({ addNotification: true })
@@ -470,7 +470,7 @@ class WithdrawFlow extends Component {
     if (this.state.addNotification) {
       setTimeout(async () => {
         this.props.action.addNotification('withdraw_accounts', { account_id: new_order.withdraw_account_id }, 1)
-        this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
+        this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
         await this.setState({ addNotification: false })
       }, 2000)
     }
@@ -488,7 +488,7 @@ class WithdrawFlow extends Component {
 
 
   handleError = msg => {
-    return this.props.action.mensaje(msg, 'error')
+    return this.props.toastMessage(msg, 'error')
   }
 
 
@@ -623,6 +623,7 @@ class WithdrawFlow extends Component {
             <WithdrawAccountForm
               withdraw_flow={true}
               withdraw_flow_action={this.new_account_and_withdraw}
+              toastMessage={this.props.toastMessage}
             />
           }
 

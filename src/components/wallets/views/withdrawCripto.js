@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
 import QrScanner from '../../qr-scanner'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 
 
@@ -67,12 +68,12 @@ export const CriptoView = () => {
     {
       confirmationModalToggle,
       confirmationModalPayload,
-      mensaje,
       isAppLoading,
       renderModal
     }, dispatch] = WithdrawViewState()
 
   const actions = useActions()
+  const [ toastMessage ] = useToastMesssage()
 
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
@@ -125,9 +126,9 @@ export const CriptoView = () => {
     if (!withdraw) {
       dispatch(isAppLoading(false))
       if (twoFaToken) {
-        return dispatch(mensaje('Al parecer el codigo 2Fa es incorrecto...', 'error'))
+        return toastMessage('Al parecer el codigo 2Fa es incorrecto...', 'error')
       }
-      return dispatch(mensaje('No se ha podido crear la orden de retiro', 'error'))
+      return toastMessage('No se ha podido crear la orden de retiro', 'error')
     }
 
   }

@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import NewWalletLayout from './newWalletLayout'
 import { connect } from 'react-redux'
 // import { updateFormControl, FormWallet } from '../../../actions'
@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { matchItem } from '../../../utils'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 
 
@@ -15,12 +16,10 @@ const NewWallet = props => {
 
   const [ name, setName ] = useState()
   const [ currency, setCurrency ] = useState(props.search.length && props.search[0].currency)
-  const [ address, setAddress ] = useState()
+  const [ address ] = useState()
   const [ short_currency_name, setShortCurrencyName ] = useState()
-  const [ coinsendaServices, ,{
-  update_item_state,
-  current_section_params
-  }, dispatch ] = useCoinsendaServices()
+  const [ coinsendaServices ] = useCoinsendaServices()
+  const [ toastMessage ] = useToastMesssage()
 
   const update_control_form = (searchMatch) => {
     // if (!searchMatch || props.search.length > 1) {
@@ -87,7 +86,7 @@ const NewWallet = props => {
 
     // si la acción se lleva satisfactoriamente actualizamos el fondo del modal a un color verde
     let msg = `Nueva wallet ${account.currency.currency} creada!`
-    props.action.mensaje(msg, 'success')
+    toastMessage(msg, 'success')
 
     // await props.action.add_item_state('wallets', { ...account, visible: true })
     // await props.action.get_account_balances(props.user)
@@ -104,7 +103,7 @@ const NewWallet = props => {
   const errorHandle = (msg) => {
     props.action.ReduceStep('wallets')
     props.action.isAppLoading(false)
-    return props.action.mensaje(msg ? msg : 'Ups, al parecer esto no podrá ser...', 'error')
+    return toastMessage(msg ? msg : 'Ups, al parecer esto no podrá ser...', 'error')
   }
 
 
