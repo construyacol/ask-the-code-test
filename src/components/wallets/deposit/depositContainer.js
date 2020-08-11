@@ -193,7 +193,7 @@ class DepositContainer extends Component {
 
   handleError = (msg) => {
 
-    this.props.action.mensaje(msg, 'error')
+    this.props.toastMessage(msg, 'error')
     this.props.action.toggleModal()
     this.props.action.CleanForm('deposit')
   }
@@ -229,7 +229,7 @@ class DepositContainer extends Component {
     this.to_deposit_wallet(new_wallet.account.id)
     if (this.state.type_currency !== 'fiat') { this.props.action.CleanForm('deposit') }
     let message = `¡Estas dentro de la nueva wallet ${this.state.currency}!`
-    this.props.action.mensaje(message, 'success')
+    this.props.toastMessage(message, 'success')
 
     // }, 1500)
   }
@@ -403,7 +403,7 @@ class DepositContainer extends Component {
     if (!response) {
       this.props.action.isAppLoading(false)
       this.props.action.ReduceStep(this.props.current)
-      return this.props.action.mensaje('No se ha podido crear la orden de deposito', 'error')
+      return this.props.toastMessage('No se ha podido crear la orden de deposito', 'error')
     }
 
 
