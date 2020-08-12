@@ -108,7 +108,7 @@ const ItemAccount = props => {
     if (isWallet) {
       result = await coinsendaServices.deleteWallet(props.account)
     } else {
-      result = await await coinsendaServices.deleteWithdrawAccount(props.account.id)
+      result = await await coinsendaServices.deleteAccount(props.account.id)
     }
     if (result === 404 || result === 465 || !result) {
       msg = "La cuenta no se ha podido eliminar"

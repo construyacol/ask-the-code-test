@@ -14,6 +14,7 @@ import InifiniteScrollComponent from './infiniteScroll'
 
 
 import './activity_view.css'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class ActivityList extends Component {
 
@@ -91,7 +92,7 @@ class ActivityList extends Component {
       deleting:true
     })
 
-    let deleted = tx_path === 'deposits' && await this.props.action.delete_deposit_order(id)
+    let deleted = tx_path === 'deposits' && await this.props.coinsendaServices.deleteDeposit(id)
 
     if(!deleted){
       // await this.setState({deleting:false, current_order_loader:0})
@@ -349,4 +350,4 @@ function mapDispatchToProps(dispatch){
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (ActivityList)
+export default connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(ActivityList))

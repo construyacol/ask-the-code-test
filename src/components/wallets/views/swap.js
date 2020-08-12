@@ -42,7 +42,7 @@ function SwapView(props) {
   useEffect(() => {
     selectPair(true)
     const { local_currency } = props
-    actions.getDefaultPair(currentWallet, local_currency, currentPair)
+    coinsendaServices.getDefaultPair(currentWallet, local_currency, currentPair)
   }, [])
 
   useEffect(() => {

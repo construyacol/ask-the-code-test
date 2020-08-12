@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import SimpleLoader from '../loaders'
-// import ItemWallet from './items'
 import ItemAccount from './item_account'
 import { AddNewItem2, AddNewItem } from '../buttons/buttons'
 import { withRouter } from "react-router"
@@ -24,18 +23,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
-
-    // UpdateHistoryRouter
-    // this.props.action.section_view_to('initial')
-    // this.props.action.current_section_params({current_pair:null})
-    // this.props.action.current_section_params({activity:false})
-    // const{
-    //   match
-    // } = this.props
-    // let path = match.path.replace('/', '')
     this.props.action.current_section_clean()
-    // this.props.action.CurrentForm(this.props.match.params.primary_path)
-    // console.log('|||||||||||||||| ==============>>> pathname', this.props.match.params.primary_path)
     this.init_component()
   }
 
@@ -109,46 +97,6 @@ class AccountList extends Component {
       svg: "verified"
     })
   }
-
-
-  // delete_account = async (account_id, type) => {
-  //
-  //   // this.props.action.isAppLoading(true)
-  //   this.setState({ label: "Eliminando Wallet", account_state: "deleting", id_wallet_action: account_id })
-  //   let wallet_delete = await this.props.action.delete_account(account_id, type)
-  //
-  //   let msg = "Wallet eliminada con éxito"
-  //   let success = true
-  //
-  //   if (wallet_delete === 404 || !wallet_delete) {
-  //     msg = "La wallet no se ha podido eliminar"
-  //     success = false
-  //   }
-  //
-  //   this.props.action.exit_sound()
-  //   this.setState({ label: "Obteniendo tus Cuentas", account_state: "deleted" })
-  //   type === 'withdraw_accounts' ? await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders) : await this.props.action.get_list_user_wallets(this.props.user)
-  //
-  //
-  //   this.props.action.mensaje(msg, success ? 'success' : 'error')
-  // }
-
-
-
-  // delete_account_confirmation = async(account_id, type) => {
-  //   this.props.action.confirmationModalToggle()
-  //   this.props.action.confirmationModalPayload({
-  //     title:"Esto es importante, estas a punto de...",
-  //     description:"Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
-  //     txtPrimary:"Eliminar",
-  //     txtSecondary:"Cancelar",
-  //     payload:account_id,
-  //     action:(this.delete_account),
-  //     img:"deletewallet",
-  //     code:type === 'withdraw' ? "withdraw" : "wallet"
-  //   })
-  // }
-
 
   render() {
 

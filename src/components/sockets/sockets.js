@@ -6,8 +6,8 @@ import io from 'socket.io-client'
 import Environtment from '../../environment'
 // import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
+import withCoinsendaServices from '../withCoinsendaServices'
 const { SocketUrl } = Environtment
-let add_swap
 
 
 class SocketsComponent extends Component {
@@ -138,7 +138,7 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === 'pending' && withdraw.currency_type === 'crypto') {
 
-      let res = await this.props.action.add_update_withdraw(withdraw.id, 'confirmed')
+      let res = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, 'confirmed')
       if (!res) {
         this.props.action.isAppLoading(false)
         return this.props.toastMessage('No se ha podido crear la orden de retiro', 'error')
@@ -161,12 +161,12 @@ class SocketsComponent extends Component {
 
       // console.log('°°=°=°=°==°=°=°=°=°=°==°=°=°=°=°=°=°=°==°=°=°==°=°=°=°  WITHDRAW CONFIRMED ==>', this.props.user)
 
-      await this.props.action.add_item_state('withdraws', new_withdraw_model)
+      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw_model)
       await this.props.action.update_activity_state(new_withdraw_model.account_id, 'withdraws')
-      await this.props.action.ManageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
+      await this.props.coinsendaServices.manageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
       await this.props.action.isAppLoading(false)
       this.props.action.add_new_transaction_animation()
-      // this.props.action.get_account_balances(this.props.user)
+      // this.props.coinsendaServices.getWalletsByUser(true)
       this.props.history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`)
     }
 
@@ -199,7 +199,7 @@ class SocketsComponent extends Component {
         type_order: "withdraw",
       }
 
-      await this.props.action.add_item_state('withdraws', new_withdraw)
+      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw)
       await this.props.action.update_activity_state(new_withdraw.account_id, 'withdraws')
       this.props.action.add_new_transaction_animation()
     }
@@ -244,7 +244,7 @@ class SocketsComponent extends Component {
     // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
-      await this.props.action.add_item_state('deposits', { ...deposit, type_order: 'deposit' })
+      await this.props.coinsendaServices.addItemToState('deposits', { ...deposit, type_order: 'deposit' })
       await this.props.action.update_activity_state(deposit.account_id, 'deposits')
     }
 
@@ -255,7 +255,7 @@ class SocketsComponent extends Component {
         let cDeposit = await this.props.action.get_one_deposit(deposit.id)
 
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
-          await this.props.action.add_item_state('deposits', { ...cDeposit, type_order: 'deposit' })
+          await this.props.coinsendaServices.addItemToState('deposits', { ...cDeposit, type_order: 'deposit' })
           await this.props.action.update_activity_state(cDeposit.account_id, 'deposits')
           console.log('======================================> ESTA CUENTA SI TIENE DEPOSITOS, MANUAL ADD ', this.props.deposits[deposit.id], cDeposit)
         } else {
@@ -301,7 +301,7 @@ class SocketsComponent extends Component {
         this.props.action.addNotification('wallets', { account_id: this.props.deposits[deposit.id].account_id, order_id: deposit.id }, 1)
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
-        this.props.action.get_account_balances(this.props.user)
+        await this.props.coinsendaServices.getWalletsByUser(true)
         await this.props.action.socket_notify(this.props.deposits[deposit.id], 'deposits')
         await this.props.action.renderModal(null)
         this.props.action.toggleOtherModal()
@@ -336,7 +336,7 @@ class SocketsComponent extends Component {
       if ((this.props.deposits && this.props.deposits[deposit.id]) && this.props.deposits[deposit.id].currency_type === 'fiat') {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
-        this.props.action.get_account_balances(this.props.user)
+        await this.props.coinsendaServices.getWalletsByUser(true)
         // this.props.history.push('?form=deposit_confirmed_success')
         this.props.action.isAppLoading(false)
         this.props.action.success_sound()
@@ -358,7 +358,7 @@ class SocketsComponent extends Component {
       // await this.props.action.current_section_params({ active_trade_operation: true })
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
-         await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', activeTrade:true})
+         await this.props.coinsendaServices.addItemToState('swaps', {...new_swap, state:'pending', activeTrade:true})
          await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
          this.props.action.isAppLoading(false)
          await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
@@ -379,7 +379,7 @@ class SocketsComponent extends Component {
         await this.props.action.success_sound()
         setTimeout(async()=>{
           await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], activeTrade:false} }, 'swaps')
-          await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+          await this.props.coinsendaServices.manageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
           await this.props.action.add_coin_sound()
           await this.props.toastMessage('Nuevo intercambio realizado', 'success')
           this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
@@ -439,4 +439,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SocketsComponent))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(SocketsComponent)))

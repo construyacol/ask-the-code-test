@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { withRouter } from "react-router";
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class WithdrawAccountForm extends Component {
 
@@ -108,7 +109,6 @@ class WithdrawAccountForm extends Component {
     // simulación Endpoint Crear wallet
     this.props.action.isAppLoading(true)
     let res = await this.props.action.add_new_withdraw_account(this.state)
-    // return console.log('RESPUESTA NUEVA CUENTA FIAT CREADA', res, this.state)
     if (!res) {
       // this.props.action.ReduceStep(this.props.current)
       this.props.action.ReduceStep(this.props.current)
@@ -116,7 +116,7 @@ class WithdrawAccountForm extends Component {
       return this.props.action.isAppLoading(false)
     }
 
-    await this.props.action.get_withdraw_accounts(this.props.user, this.props.withdrawProviders)
+    await this.props.coinsendaServices.fetchWithdrawAccounts()
 
     if (this.props.withdraw_flow) {
       return this.props.withdraw_flow_action(res)
@@ -329,4 +329,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WithdrawAccountForm))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(WithdrawAccountForm)))

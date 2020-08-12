@@ -40,9 +40,6 @@ export class WithdrawService extends WebService {
         }
         if (!result || result === 465 || !this.withdrawProviders) { return false }
         const providersServed = await this.withdrawProvidersByType
-        // console.log('||||||||| fetchDepositProviders', providersServed)
-        // alert('providers serve')
-
 
         const withdrawAccounts = await result.map(account => {
             const aux = providersServed[account.provider_type];
@@ -81,7 +78,6 @@ export class WithdrawService extends WebService {
                     ...account
                 }
             } else {
-                // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||', account)
                 return { //crypto case
                     id: account.id,
                     account_name: {
@@ -121,7 +117,7 @@ export class WithdrawService extends WebService {
     }
 
 
-    async deleteWithdrawAccount(accountId) {
+    async deleteAccount(accountId) {
 
         const { withdraw_accounts } = this.globalState.modelData
         const user = this.user
@@ -162,8 +158,6 @@ export class WithdrawService extends WebService {
                 ...withdrawProviders
             ]
         }
-        // console.log('||||||||||||||||||||||||||||||||||||||||||||||||||| fetchWithdrawProviders', withdrawProviders)
-        // alert('|||||||| fetchWithdrawProviders')
         const normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         this.withdrawProviders = withdrawProviders
@@ -175,7 +169,6 @@ export class WithdrawService extends WebService {
 
 
     async addWithdrawOrder(body, twoFaToken) {
-        const user = this.user
         if(twoFaToken){
           body.data.twofa_token = twoFaToken
         }

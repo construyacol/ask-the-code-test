@@ -10,6 +10,7 @@ import imgTikcketDefault from '../../../assets/ticketdefault.png'
 import imgTouch from '../../../assets/touch.png'
 
 import './ticket.css'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class TicketPaymentProof extends Component  {
 
@@ -63,7 +64,7 @@ updateLocalImg = (img) =>{
     } = this.props
     this.props.action.isAppLoading(true)
 
-    let res = await this.props.action.confirmDepositOrder(ticket, base64);
+    let res = await this.props.coinsendaServices.confirmDepositOrder(ticket, base64);
     // console.log('Confirm deposit order', res)
     if(!res || res === 465){return false}
     const {
@@ -142,7 +143,7 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
 
 
   return{
@@ -153,4 +154,4 @@ function mapStateToProps(state, props){
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (TicketPaymentProof)
+export default connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(TicketPaymentProof))

@@ -56,7 +56,6 @@ class BankAccountFlow extends Component {
 
     this.setState({ loader: true })
 
-    // let res = await this.props.action.get_withdraw_providers(false ,`{"where": {"country": "${user.country}", "enabled":true, "provider_type":"bank"}}`)
     let res = withdraw_providers_list
     if (!res) { return false }
     let bank_list = res && res[0].info_needed.bank_name

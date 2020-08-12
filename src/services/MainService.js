@@ -68,7 +68,7 @@ export class MainService extends inheritances {
     }
 
     static getInstance() {
-        if(!MainService.instance) {
+        if (!MainService.instance) {
             MainService.instance = new MainService()
         }
         return MainService.instance
@@ -116,12 +116,11 @@ export class MainService extends inheritances {
         const wallets = await this.getWalletsByUser()
         const verificationStatus = await this.getVerificationState()
         if (!wallets && verificationStatus === 'accepted') {
-          await this.createInitialEnvironmentAccount()
+            await this.createInitialEnvironmentAccount()
         }
         this.postLoader(callback)
         return
     }
-
 
     async postLoader(callback) {
         try {
@@ -165,24 +164,38 @@ export class MainService extends inheritances {
         }
     }
 
-
-
     async fetchChartData(data) {
         const response = await this.Post(GET_CHART_DATA_URL, data)
         return response
     }
 
-
     parseActivty(activity, activityType, accountId) {
-      const { storage: { activity_for_account } } = this.globalState
-      if(activity_for_account && activity_for_account[accountId] && activity_for_account[accountId][activityType]){
-        activity = [
-          ...activity_for_account[accountId][activityType],
-          ...activity
-        ]
-      }
+        const { storage: { activity_for_account } } = this.globalState
+        if (activity_for_account && activity_for_account[accountId] && activity_for_account[accountId][activityType]) {
+            activity = [
+                ...activity_for_account[accountId][activityType],
+                ...activity
+            ]
+        }
 
-      return activity
+        return activity
+    }
+
+    async addItemToState(typeList, newOrder) {
+        let list = this.globalState.modelData[typeList]
+        let user = this.user
+    
+        let user_update = {
+          ...user,
+          [typeList]: {
+            new_order: newOrder,
+            ...list
+          }
+        }
+    
+        let normalizedUser = await normalizeUser(user_update)
+        await this.dispatch(updateNormalizedDataAction(normalizedUser))
+        return normalizedUser
     }
 }
 

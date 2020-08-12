@@ -115,6 +115,7 @@ const ActivityView = props => {
           :
           <ActivityList
             activity={props.order_list}
+            getDefaultPair={coinsendaServices.getDefaultPair}
             {...props}
           />
       }

@@ -399,7 +399,6 @@ const DeleteButton = ({ state, id, setOrderState }) => {
     setOrderState('deleting')
 
     let deleted = await coinsendaServices.deleteDeposit(id)
-    // let deleted = await actions.delete_deposit_order(id)
     if(!deleted){
       return false
     }

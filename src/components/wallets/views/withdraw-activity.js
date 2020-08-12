@@ -17,7 +17,7 @@ import { InifiniteScrollContainer } from '../../widgets/activityList/infiniteScr
 const ActivityView = props => {
   const { params } = props.match
   const [loader, setLoader] = useState(true)
-  const [CoinsendaService] = useCoinsendaServices()
+  const [coinsendaServices] = useCoinsendaServices()
   const { isMovilViewport } = useViewport()
 
   const [observer, setElements, entries] = useObserver({
@@ -31,7 +31,7 @@ const ActivityView = props => {
   const [page, setPage] = useState(0)
 
   const getItems = async () => {
-    const res = await CoinsendaService.fetchActivityByAccount(params.account_id, page)
+    const res = await coinsendaServices.fetchActivityByAccount(params.account_id, page)
     items_.current = [...items_.current, ...res]
     res && setPage(page + 1)
     if (res.length < 10) {
@@ -79,6 +79,7 @@ const ActivityView = props => {
           :
           <ActivityList
             activity={items_.current}
+            getDefaultPair={coinsendaServices.getDefaultPair}
             {...props}
           />
       }

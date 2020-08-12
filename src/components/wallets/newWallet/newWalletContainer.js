@@ -66,7 +66,6 @@ const NewWallet = props => {
       }
     }
 
-    // const wallets = await props.action.create_new_wallet(body)
     const wallets = await coinsendaServices.createWallet(body)
 
 

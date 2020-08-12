@@ -98,7 +98,6 @@ export const CriptoView = () => {
 
     dispatch(isAppLoading(true))
     let withdraw_account = withdraw_accounts[address]
-    // return console.log('|||||||||||||||||||||||||| finish_withdraw ==> ', current_wallet)
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({
@@ -108,7 +107,6 @@ export const CriptoView = () => {
         address: address,
         country: current_wallet.country
       }, 'cripto')
-      // console.log('NUEVA CUENTA CREADA ==> ', withdraw_account)
       await coinsendaServices.fetchWithdrawAccounts()
     }
 
@@ -121,7 +119,6 @@ export const CriptoView = () => {
         "country": user.country
       }
     }, twoFaToken)
-    // return console.log('||||||||||||||||||||||||||||||||||||||||| withdraw', withdraw)
 
     if (!withdraw) {
       dispatch(isAppLoading(false))

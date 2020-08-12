@@ -11,13 +11,11 @@ import HomeContainer from './home/home-container'
 import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
-// import CoinsendaSocket from './sockets/new-socket'
 import ToastContainers from './widgets/toast/ToastContainer'
 import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
 import { useToastMesssage } from '../hooks/useToastMessage';
-// import { useCoinsendaServices } from '../services/useCoinsendaServices'
 
 history.listen((location) => {
   if(location && location.pathname !== '/') {
@@ -30,7 +28,6 @@ function RootContainer(props) {
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
   const [ tryRestoreSession ] = SessionRestore()
   const [ toastMessage ] = useToastMesssage()
-  // const [ coinsendaServices ] = useCoinsendaServices()
 
   const initComponent = async () => {
     // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)

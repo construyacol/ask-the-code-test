@@ -7,14 +7,13 @@ import {
     CREATE_WALLET_URL,
     DELETE_WALLET_URL,
     loadLabels,
-    CURRENCIES_URL
 } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
 import initialAccounts from '../components/api/accountInitialEnvironment.json'
 
 export class AccountService extends WebService {
 
-    async getWalletsByUser() {
+    async getWalletsByUser(onlyBalances = false) {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES))
         const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
@@ -26,13 +25,13 @@ export class AccountService extends WebService {
         })
 
         if (!availableWallets.length) {
-          let userWithOutW = {
-              ...user,
-              wallets: []
-          }
-          const toNormalize = await normalizeUser(userWithOutW)
-          await this.dispatch(updateNormalizedDataAction(toNormalize))
-          return this.dispatch(resetModelData({ wallets: [] }))
+            let userWithOutW = {
+                ...user,
+                wallets: []
+            }
+            const toNormalize = await normalizeUser(userWithOutW)
+            await this.dispatch(updateNormalizedDataAction(toNormalize))
+            return this.dispatch(resetModelData({ wallets: [] }))
         }
 
 
@@ -59,27 +58,33 @@ export class AccountService extends WebService {
             ]
         }
 
-        let userWallets = await normalizeUser(updatedUser)
+        const updatedOnlyBalances = {
+            ...user,
+            balances: [
+                ...balanceList
+            ]
+        }
+
+        let userWallets = await normalizeUser(onlyBalances ? updatedOnlyBalances : updatedUser)
 
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
     }
 
-
     async createInitialEnvironmentAccount() {
-      const { accounts } = initialAccounts
-      for (let body of accounts) {
-        // TODO: assign currency by country
-        body.data.country = this.user.country
-        body.data.name = `Mi Billetera ${body.data.currency.currency}`
-        const wallets = await this.createWallet(body)
-        if(!wallets){return}
-        await this.getWalletsByUser()
-        const { account } = wallets
-        const dep_prov = await this.createAndInsertDepositProvider(account)
-        if(!dep_prov){return}
-        // console.log(account)
-      }
+        const { accounts } = initialAccounts
+        for (let body of accounts) {
+            // TODO: assign currency by country
+            body.data.country = this.user.country
+            body.data.name = `Mi Billetera ${body.data.currency.currency}`
+            const wallets = await this.createWallet(body)
+            if (!wallets) { return }
+            await this.getWalletsByUser()
+            const { account } = wallets
+            const dep_prov = await this.createAndInsertDepositProvider(account)
+            if (!dep_prov) { return }
+            // console.log(account)
+        }
     }
 
 
@@ -133,8 +138,7 @@ export class AccountService extends WebService {
     }
 
     async manageBalance(accountId, action, amount) {
-        const user = this.user
-        // await this.getBalancesByAccount(user)
+        await this.getWalletsByUser(true)
         this.dispatch(manageBalanceAction(accountId, action, amount))
     }
 
@@ -142,13 +146,13 @@ export class AccountService extends WebService {
     //     const user = this.user
     //     this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
     //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
-    //
+    
     //     const headers = this.getHeaders(user.userToken)
-    //
+    
     //     const balances = await this.Get(accountUrl, headers)
-    //
+    
     //     if (this.isEmpty(balances)) return
-    //
+    
     //     const balanceList = balances.map(balanceItem => ({
     //         id: balanceItem.id,
     //         currency: balanceItem.currency.currency,
@@ -158,22 +162,20 @@ export class AccountService extends WebService {
     //         lastAction: null,
     //         actionAmount: 0
     //     }))
-    //
+    
     //     const updatedUser = {
     //         ...user,
     //         balances: [
     //             ...balanceList
     //         ]
     //     }
-    //
+    
     //     const userBalances = await normalizeUser(updatedUser)
     //     await this.dispatch(updateNormalizedDataAction(userBalances))
     // }
 
-
-
     async countOfAccountTransactions(account_id) {
-      const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
-      return response
+        const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
+        return response
     }
 }

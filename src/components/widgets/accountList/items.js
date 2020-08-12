@@ -11,6 +11,7 @@ import PopNotification from '../notifications'
 import BalanceComponent from '../balance/balance'
 import SimpleLoader from '../loaders'
 import PropTypes from 'prop-types'
+import withCoinsendaServices from '../../withCoinsendaServices';
 
 
 export class ItemWallet extends Component {
@@ -78,7 +79,7 @@ componentDidMount(){
       type
     } = wallet
 
-    await this.props.delete_account(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
+    await this.props.coinsendaService.deleteAccount(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
     // console.log('CUENTA ELIMINADA', deleteA)
   }
 
@@ -321,4 +322,4 @@ function mapDispatchToProps(dispatch){
 }
 
 // export default ItemWallet
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (ItemWallet))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(ItemWallet)))
