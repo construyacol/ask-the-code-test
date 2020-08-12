@@ -15,7 +15,6 @@ import { updateNormalizedDataAction, resetModelData } from "../actions/dataModel
 import normalizeUser from "../schemas";
 
 import {
-    update_activity_state,
     normalized_list
 } from '../utils'
 
@@ -344,7 +343,7 @@ export class WithdrawService extends WebService {
 
 
         await this.dispatch(normalized_list(withdraws_remodeled, 'withdraws'))
-        await this.dispatch(update_activity_state(account_id, 'withdraws', withdraws_remodeled))
+        await this.updateActivityState(account_id, 'withdraws', withdraws_remodeled)
         return withdraws_remodeled
 
     }

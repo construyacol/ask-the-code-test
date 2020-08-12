@@ -10,6 +10,9 @@ import {
 } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
 import initialAccounts from '../components/api/accountInitialEnvironment.json'
+import { serve_orders, matchItem } from "../utils";
+import update_activity, { pending_activity } from "../actions/storage";
+import { current_section_params } from "../actions/uiActions";
 
 export class AccountService extends WebService {
 
@@ -146,13 +149,13 @@ export class AccountService extends WebService {
     //     const user = this.user
     //     this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
     //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
-    
+
     //     const headers = this.getHeaders(user.userToken)
-    
+
     //     const balances = await this.Get(accountUrl, headers)
-    
+
     //     if (this.isEmpty(balances)) return
-    
+
     //     const balanceList = balances.map(balanceItem => ({
     //         id: balanceItem.id,
     //         currency: balanceItem.currency.currency,
@@ -162,14 +165,14 @@ export class AccountService extends WebService {
     //         lastAction: null,
     //         actionAmount: 0
     //     }))
-    
+
     //     const updatedUser = {
     //         ...user,
     //         balances: [
     //             ...balanceList
     //         ]
     //     }
-    
+
     //     const userBalances = await normalizeUser(updatedUser)
     //     await this.dispatch(updateNormalizedDataAction(userBalances))
     // }
@@ -177,5 +180,63 @@ export class AccountService extends WebService {
     async countOfAccountTransactions(account_id) {
         const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
         return response
+    }
+
+    async updatePendingActivity(accountId, type, activityList) {
+        const { modelData, ui } = this.globalState
+
+        if (!modelData.wallets) return;
+
+        const fallbackCurrentWallet = ui.current_section.params.current_wallet
+        const fallbackActivityType = ui.current_section.params.currentFilter
+        const currentWallet = modelData.wallets[accountId] || fallbackCurrentWallet
+
+        if (!currentWallet) return;
+
+        const activityType = type || fallbackActivityType
+
+        if (!activityList && currentWallet) {
+            activityList = await serve_orders(currentWallet.id, activityType)
+            if (!activityList) return;
+        }
+
+        const isWithdraws = activityType === 'withdraws'
+        let pendingData
+        const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
+
+        // If activity is equal to withdraws filter, always set up as 0 value
+        const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
+        const confirmed = await filterActivitiesByStatus('confirmed')
+        // const rejected = await filterActivitiesByStatus('rejected')
+
+        const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100
+
+        if (pending) {
+            pendingData = { pending: true, lastPending: (activityType === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id }
+            // } else if (rejected) {
+            //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
+        } else if (confirmed) {
+            pendingData = { pending: true, lastPending: confirmed[0] && confirmed[0].id }
+        }
+
+        let finalResult = {
+            ...pendingData,
+            expandidoMax,
+            account_id: currentWallet.id,
+            activity_type: activityType
+        }
+
+        this.dispatch(pending_activity(finalResult))
+
+    }
+
+    async updateActivityState(accountId, type, activities) {
+        if(!activities){
+            activities = await serve_orders(accountId, type)
+          }
+      
+          await this.dispatch(current_section_params({ currentFilter: type }))
+          await this.dispatch(update_activity(accountId, type, activities))
+          await this.updatePendingActivity(accountId, type, activities)
     }
 }

@@ -233,7 +233,7 @@ class WithdrawFlow extends Component {
       need_new_acount: false
     })
     this.props.action.FlowAnimationLayoutAction('nextV', 'next', "withdraw")
-    await this.props.action.get_withdraws(this.props.account_id, 'withdraws')
+    await this.props.coinsendaServices.get_withdraws(this.props.account_id, 'withdraws')
 
     const {
       withdraw_account,

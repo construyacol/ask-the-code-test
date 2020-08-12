@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import './mPrincipal.css'
 import { scroller } from 'react-scroll'
 import PropTypes from 'prop-types'
+import withCoinsendaServices from '../withCoinsendaServices'
 
 
 class MenuPrincipalContainer extends Component {
@@ -42,7 +43,7 @@ class MenuPrincipalContainer extends Component {
   }
 
   changeCountry = () => {
-    this.props.action.ready_to_play(false)
+    this.props.coinsendaServices.setAppLoading(false)
   }
 
   navigateTo = async (pathname) => {
@@ -109,4 +110,4 @@ function mapStateToProps(state, props) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MenuPrincipalContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(MenuPrincipalContainer))

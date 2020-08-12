@@ -108,7 +108,7 @@ class WithdrawAccountForm extends Component {
   crearCuenta = async () => {
     // simulación Endpoint Crear wallet
     this.props.action.isAppLoading(true)
-    let res = await this.props.action.add_new_withdraw_account(this.state)
+    let res = await this.props.coinsendaServices.addNewWithdrawAccount(this.state)
     if (!res) {
       // this.props.action.ReduceStep(this.props.current)
       this.props.action.ReduceStep(this.props.current)

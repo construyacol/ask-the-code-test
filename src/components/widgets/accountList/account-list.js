@@ -6,9 +6,9 @@ import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
 import { AccountListContainer } from './styles'
 import withListCreator from '../../withListCreator'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 import '../../wallets/views/wallet_views.css'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history } = props

@@ -3,11 +3,11 @@ import ItemLayout from './itemLayout'
 import InputForm from '../inputs'
 import { ItemSelected } from '../buttons/buttons'
 import { connect } from 'react-redux'
-// import { search_item_store } from '../../../actionCreators'
 import { banks, remittance } from '../../api/ui/api.json'
 import actions from '../../../actions'
 import { bindActionCreators } from 'redux'
 import SimpleLoader from '../loaders'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 import './items.css'
 
@@ -32,7 +32,7 @@ class ItemSelectionContainer extends Component {
   load_items = async (items_type) => {
     let items
     if (items_type === 'coins') {
-      items = this.props.coins ? this.props.coins : await this.props.action.get_all_currencies()
+      items = this.props.coins ? this.props.coins : await this.props.coinsendaServices.fetchAllCurrencies()
     }
     if (items_type === 'banks') {
       items = banks
@@ -230,4 +230,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemSelectionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(ItemSelectionContainer))

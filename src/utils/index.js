@@ -4,13 +4,8 @@ import Compressor from 'compressorjs';
 import Environment from '../environment'
 
 import * as Sentry from '@sentry/browser';
-import { update_activity } from '../actions/storage'
-import { updatePendingActivity } from '../actions/APIactions'
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
-import {
-  current_section_params,
-} from '../actions/uiActions'
 
 import {
   ApiGetRequest
@@ -150,27 +145,6 @@ export const ticketModalView = (state) => {
     default:
       break;
   }
-}
-
-
-
-
-
-
-
-export const update_activity_state = (account_id, activity_type, activity_list) => {
-
-  return async(dispatch, getState) => {
-    if(!activity_list){
-      activity_list = await serve_orders(account_id, activity_type)
-    }
-
-    await dispatch(current_section_params({ currentFilter: activity_type }))
-    await dispatch(update_activity(account_id, activity_type, activity_list))
-    await dispatch(updatePendingActivity(account_id, activity_type, activity_list))
-
-  }
-
 }
 
 export const normalized_list = (activity_list, activity_type) => {

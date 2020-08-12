@@ -378,7 +378,7 @@ class DepositContainer extends Component {
     this.props.action.isAppLoading(true)
 
     if (!this.props.deposits) {
-      await this.props.action.get_deposits(this.props.current_wallet.id)
+      await this.props.coinsendaServices.get_deposits(this.props.current_wallet.id)
     }
 
     let response = await this.props.coinsendaServices.createDeposit(

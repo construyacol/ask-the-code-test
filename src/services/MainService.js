@@ -13,7 +13,7 @@ import Environment from "../environment";
 import { addIndexToRootObject, objectToArray, normalized_list } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import isAppLoading from "../actions/loader";
+import isAppLoading, { isAppLoaded } from "../actions/loader";
 import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
 // import { observable, decorate, computed, action } from "mobx"
@@ -196,6 +196,10 @@ export class MainService extends inheritances {
         let normalizedUser = await normalizeUser(user_update)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         return normalizedUser
+    }
+
+    async setAppLoading (payload) {
+        this.dispatch(isAppLoaded(payload))
     }
 }
 

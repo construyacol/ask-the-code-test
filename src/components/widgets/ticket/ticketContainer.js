@@ -11,6 +11,7 @@ import { ticketModalView } from '../../../utils'
 import { withRouter } from "react-router";
 
 import './ticket.css'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class TicketContainer extends Component {
 
@@ -60,7 +61,7 @@ class TicketContainer extends Component {
     console.log('||||||||||||||||||| ======> FROM TICKET CONTAINER ==> ', update_ticket)
 
     await this.props.action.update_item_state(update_ticket, 'deposits')
-    this.props.action.update_activity_state(ticket.account_id, 'deposits')
+    this.props.coinsendaServices.updateActivityState(ticket.account_id, 'deposits')
   }
 
 
@@ -575,4 +576,4 @@ function mapStateToProps(state, props){
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (TicketContainer))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(TicketContainer)))

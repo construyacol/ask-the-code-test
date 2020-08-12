@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { useState } from 'react'
 import { useToastMesssage } from '../../hooks/useToastMessage'
+import withCoinsendaServices from '../withCoinsendaServices'
 
 const Kyc = (props) => {
   const [reset, setReset] = useState()
@@ -36,7 +37,7 @@ const Kyc = (props) => {
 
 
     props.action.isAppLoading(true)
-    let res = await props.action.update_level_profile(config, user)
+    let res = await props.coinsendaServices.updateLevelProfile(config, user)
     if (!res) {
       await props.action.ReduceStep('kyc_basic', 1)
       props.action.isAppLoading(false)
@@ -61,7 +62,7 @@ const Kyc = (props) => {
         }
       }
     }
-    await props.action.updateUser(user_update)
+    await props.coinsendaServices.updateUser(user_update)
     // setTimeout(()=>{
     // user_update()
     // props.action.CleanForm('kyc_basic')
@@ -90,7 +91,7 @@ const Kyc = (props) => {
       "verification_level": "level_1"
     }
     props.action.isAppLoading(true)
-    let res = await props.action.update_level_profile(config, user)
+    let res = await props.coinsendaServices.updateLevelProfile(config, user)
     // console.log('||||||||||| VALIDATE_RES', res)
     if (!res) {
       await props.action.ReduceStep('kyc_avanced', 1)
@@ -114,7 +115,7 @@ const Kyc = (props) => {
       }
     }
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await props.action.updateUser(user_update)
+    await props.coinsendaServices.updateUser(user_update)
     props.action.isAppLoading(false)
     setIdentity_success(true)
     return true
@@ -130,7 +131,7 @@ const Kyc = (props) => {
       verification_level: "level_2"
     }
 
-    let res = await props.action.update_level_profile(config, user)
+    let res = await props.coinsendaServices.updateLevelProfile(config, user)
     console.log('°°°°|||| send_files', res)
     if (!res) {
       // await props.action.ReduceStep('kyc_basic', 1)
@@ -156,7 +157,7 @@ const Kyc = (props) => {
       }
     }
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
-    await props.action.updateUser(user_update)
+    await props.coinsendaServices.updateUser(user_update)
     props.action.isAppLoading(false)
 
 
@@ -208,4 +209,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Kyc)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(Kyc))

@@ -1,7 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
 import {
-    updateNormalizedDataAction,
     updateAllCurrenciesAction
 } from "../actions/dataModelActions"
 import { loadLabels,
@@ -12,7 +11,6 @@ import { loadLabels,
   ADD_PROFILE_URL,
   TWO_FACTOR_URL
 } from "../const/const";
-import normalizeUser from "../schemas";
 import { matchItem } from "../utils";
 import { coins } from '../components/api/ui/api.json'
 

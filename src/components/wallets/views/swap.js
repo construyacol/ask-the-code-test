@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import BigNumber from 'bignumber.js'
-import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import InputForm from '../../widgets/inputs/inputForm'
 import { mensaje, formatNumber } from '../../../utils'
 import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'

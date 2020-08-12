@@ -11,6 +11,7 @@ import PropTypes from 'prop-types'
 import { AccountListContainer } from './styles'
 
 import '../../wallets/views/wallet_views.css'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class AccountList extends Component {
 
@@ -28,7 +29,7 @@ class AccountList extends Component {
   }
 
   init_component = async () => {
-    let state_verification = await this.props.action.get_verification_state()
+    let state_verification = await this.props.coinsendaServices.getVerificationState()
     this.setState({ state_verification })
     let verified = await this.props.action.user_verification_status('level_1')
     await this.setState({ verified })
@@ -60,10 +61,7 @@ class AccountList extends Component {
   }
 
   goto_verification = async () => {
-    // await this.props.action.section_view_to('initial')
-    // console.log('|||||| goto_verification ======>', this.props.user)
-
-    let verification_state = await this.props.action.get_verification_state()
+    let verification_state = await this.props.coinsendaServices.getVerificationState()
 
 
     if (verification_state === 'confirmed' || verification_state === 'pending') {
@@ -226,7 +224,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(AccountList))
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withCoinsendaServices(AccountList)))
 
 
 

@@ -1,6 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "../const/const";
-import { desNormalizedList, normalized_list, update_activity_state } from "../utils";
+import { desNormalizedList, normalized_list } from "../utils";
 import normalizeUser from "../schemas";
 import loadLocalPairsAction, {
     updateNormalizedDataAction,
@@ -231,7 +231,7 @@ export class SwapService extends WebService {
         // })
         swapResult = this.parseActivty(swaps, 'swaps', accountId)
         await this.dispatch(normalized_list(swapResult, 'swaps'))
-        await this.dispatch(update_activity_state(accountId, 'swaps', swapResult))
+        await this.updateActivityState(accountId, 'swaps', swapResult)
 
         return swaps
     }

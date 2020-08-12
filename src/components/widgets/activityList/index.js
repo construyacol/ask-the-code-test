@@ -91,18 +91,8 @@ class ActivityList extends Component {
         }
 
         await this.props.action.current_section_params({activity:true})
-        await this.props.action.updatePendingActivity()
-
-
-
+        await this.props.coinsendaServices.updatePendingActivity()
   }
-
-
-
-
-
-
-
 
   filter_activity = async(filter) =>{
 
@@ -208,9 +198,9 @@ class ActivityList extends Component {
 
       // console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', currentFilter,  trigger_action)
 
-      await this.props.action.updatePendingActivity(this.props.current_wallet.id, currentFilter)
+      await this.props.coinsendaServices.updatePendingActivity(this.props.current_wallet.id, currentFilter)
       await this.props.action.update_activity_account(this.props.current_wallet.id, currentFilter)
-      await this.props.action.updatePendingActivity(this.props.current_wallet.id, currentFilter)
+      await this.props.coinsendaServices.updatePendingActivity(this.props.current_wallet.id, currentFilter)
 
 
       // await this.setState({
@@ -326,7 +316,7 @@ class ActivityList extends Component {
       expandido:false
     })
 
-    await this.props.action.updatePendingActivity()
+    await this.props.coinsendaServices.updatePendingActivity()
 
   }
 

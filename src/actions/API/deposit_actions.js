@@ -3,11 +3,6 @@ import * as normalizr_services from '../../schemas'
 import { updateNormalizedDataAction } from '../dataModelActions'
 
 import {
-  update_activity_state,
-  normalized_list
-} from '../../utils'
-
-import {
   ApiGetRequest,
   generate_headers,
   ApiPostRequest,
@@ -34,99 +29,6 @@ const {
   normalizeUser,
   // normalize_data
 } = normalizr_services
-
-
-
-export const get_deposits = (account_id) => {
-// @params:
-// account_id
-
-  return async(dispatch, getState) => {
-
-    const user = getState().modelData.user
-
-    let filter = `{"where":{"account_id":"${account_id}"}, "limit":30, "order":"id DESC", "include":{"relation":"user"}}`
-    const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
-
-    let myHeaders = {
-      'Authorization': `Bearer ${user.userToken}`,
-    }
-
-    const deposits = await ApiGetRequest(url_deposit, myHeaders)
-    if(!deposits || deposits === 465){return false}
-
-    let remodeled_deposits = await deposits.map(item => {
-      let new_item = {
-        ...item,
-        type_order:"deposit",
-        // paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
-      }
-      return new_item
-    })
-
-    // console.log('|||||||||||||||||| get deposits', remodeled_deposits)
-
-    await dispatch(normalized_list(remodeled_deposits, 'deposits'))
-    await dispatch(update_activity_state(account_id, 'deposits', remodeled_deposits))
-    return remodeled_deposits
-  }
-
-}
-
-
-
-
-// export const get_deposit_list = (user) =>{
-//
-//   return async(dispatch) => {
-//
-//     await dispatch(appLoadLabelAction('Obteniendo tus registros de deposito'))
-//     // 5bea1f01ba84493018b7528c
-//     // const url_deposit = `${ApiUrl}deposits?filter={"where": {"userId": "${user.id}"}}`
-//
-//     // const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}&filter[include]=paymentProof`
-//     const url_deposit = `${DepositApiUrl}users/${user.id}/deposits?country=${user.country}`
-//     let myHeaders = {
-//       'Authorization': `Bearer ${user.userToken}`,
-//     }
-//
-//     const deposits = await ApiGetRequest(url_deposit, myHeaders)
-//     if(!deposits || deposits === 465){return false}
-//
-//
-//     let remodeled_deposits = await deposits.map(item => {
-//       let new_item = {
-//         ...item,
-//         type_order:"deposit",
-//         paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
-//       }
-//       return new_item
-//     })
-//
-//     await remodeled_deposits.reverse()
-//
-//     let user_update = {
-//       ...user,
-//       deposits:[
-//         ...remodeled_deposits
-//       ]
-//     }
-//
-//
-//     let normalizeUser = await normalizeUser(user_update)
-//     await dispatch(updateNormalizedDataAction(normalizeUser))
-//     return normalizeUser
-//
-//     // return console.log('SERVICE: : get_deposit_list - - ', normalizeUser)
-//
-//
-//     // const url_deposit = `${ApiUrl}accounts?filter={"where": {"userId": "5bea1f01ba84493018b7528c", "account_id":"5c19d6ed89c42e352f1297ff"}}`
-//
-//     // const wallet = await ApiGetRequest(url_wallet)
-//     // console.log('get_deposit_list')
-//   }
-// }
-
 
 export const create_deposit_provider = (account_id, country) => {
 
