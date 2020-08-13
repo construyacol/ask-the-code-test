@@ -222,7 +222,7 @@ class SocketsComponent extends Component {
     //       if(fiat_accounts[i].currency.currency !== 'usd'){
     //         const { activity_for_account } = this.props
     //         if(activity_for_account[fiat_accounts[i].id] && activity_for_account[fiat_accounts[i].id].withdraws){return false}
-    //         await this.props.coisendaServices.get_withdraws(fiat_accounts[i].id, 'withdraws')
+    //         await this.props.coisendaServices.get_withdraws(fiat_accounts[i].id)
     //       }
     //     }
     //     this.props.toastMessage('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
