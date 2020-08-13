@@ -97,6 +97,8 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const redirectURL = async (isSessionRestored) => {
     coinsendaServices.freshChatInitUser()
+    coinsendaServices.initPushNotificator()
+
     const verificationStatus = await coinsendaServices.getVerificationState()
     if (verificationStatus !== 'accepted') {
       await actions.addNotification('security', null, 1)
