@@ -13,7 +13,7 @@ const Kyc = (props) => {
   const [identity_success, setIdentity_success] = useState(false)
   const [ toastMessage ] = useToastMesssage()
 
-  const validate_personal_kyc = async (info_type) => {
+  const validate_personal_kyc = async () => {
 
     const { form_kyc_basic, user } = props
     const { data_state } = form_kyc_basic
@@ -37,6 +37,7 @@ const Kyc = (props) => {
 
 
     props.action.isAppLoading(true)
+    
     let res = await props.coinsendaServices.updateLevelProfile(config, user)
     if (!res) {
       await props.action.ReduceStep('kyc_basic', 1)

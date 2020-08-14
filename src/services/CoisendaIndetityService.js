@@ -116,7 +116,7 @@ export class IndetityService extends WebService {
         return countriesObject
     }
 
-    updateLevelProfile(user, config) {
+    updateLevelProfile(config, user) {
         let body = {
             "data": {
                 "country": user.country,
@@ -126,7 +126,7 @@ export class IndetityService extends WebService {
                 "info": config.info
             }
         }
-
+        
         return this.Post(INDETITY_UPDATE_PROFILE_URL, body, user.userToken)
     }
 
