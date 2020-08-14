@@ -101,7 +101,8 @@ export class IndetityService extends WebService {
     }
 
     async countryValidators() {
-        let response = await this.Get(INDETITY_COUNTRY_VALIDATORS_URL)
+
+        let response = await this.GetWithOutHeaders(INDETITY_COUNTRY_VALIDATORS_URL)
         if (!response || response === 465 || response === 404) { return false }
         let countries = await addIndexToRootObject(response[0].levels.level_1.personal.natural.country)
 

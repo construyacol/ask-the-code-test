@@ -91,19 +91,19 @@ export class MainService extends inheritances {
         this.dispatch(updateNormalizedDataAction(dataNormalized))
     }
 
-    async countryValidator() {
-        // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
-        const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
-        const res = await this.Get(URL)
-        const countries = await addIndexToRootObject(res.levels.level_1.personal.natural.country)
-        const array = await objectToArray(countries)
-        const result = {
-            res: res[0],
-            countries,
-            country_list: array
-        }
-        return result
-    }
+    // async countryValidator() {
+    //     // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
+    //     const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
+    //     const res = await this.Get(URL)
+    //     const countries = await addIndexToRootObject(res.levels.level_1.personal.natural.country)
+    //     const array = await objectToArray(countries)
+    //     const result = {
+    //         res: res[0],
+    //         countries,
+    //         country_list: array
+    //     }
+    //     return result
+    // }
 
     setIsAppLoading(value) {
         return this.dispatch(isAppLoading(value))
@@ -184,7 +184,7 @@ export class MainService extends inheritances {
     async addItemToState(typeList, newOrder) {
         let list = this.globalState.modelData[typeList]
         let user = this.user
-    
+
         let user_update = {
           ...user,
           [typeList]: {
@@ -192,7 +192,7 @@ export class MainService extends inheritances {
             ...list
           }
         }
-    
+
         let normalizedUser = await normalizeUser(user_update)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         return normalizedUser
