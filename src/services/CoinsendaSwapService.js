@@ -82,24 +82,38 @@ export class SwapService extends WebService {
         return response[0]
     }
 
+    async _getPairs(primary, secondary, all) {
+        if (!primary || !secondary) { return false }
+        let res, query
+        if (primary && !secondary) {
+            query = `{"where": {"primary_currency.currency": "${primary}"}}`
+        }
+        if (!primary && secondary) {
+            query = `{"where": {"secondary_currency.currency": "${secondary}"}}`     
+        }
+        query && (res = await this.pairsRequest(query))
+        if(res) {
+            if (all) { return res }
+            return res[0]
+        }
+
+        query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
+        res = await this.pairsRequest(query)
+        if (this.isEmpty(res)) return
+        return res[0]
+    }
+
+    // TODO: review this fn:getDefaultPair
     async getDefaultPair(currentWallet, localCurrency, currentPair) {
         if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
 
         const currency = currentWallet.currency.currency
-        let pair;
-        // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
-        pair = await this.getPairs(currency, localCurrency)
 
-        if (!pair) {
-            pair = await this.getPairs('bitcoin', currency)
-        }
-        if (!pair) {
-            pair = await this.getPairs(currency)
-        }
-        if (!pair) {
-            pair = await this.getPairs(null, currency)
-        }
-        if (!pair) { return false }
+        let pair = await this._getPairs(currency, localCurrency)
+        !pair && (pair = await this._getPairs('bitcoin', currency))
+        !pair && (pair = await this._getPairs(currency))
+        !pair && (pair = await this._getPairs(null, currency))
+
 
         let pair_id = pair.id
 
