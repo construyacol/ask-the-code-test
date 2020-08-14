@@ -6,7 +6,8 @@ import loadLocalPairsAction, {
     updateNormalizedDataAction,
     getAllPairsAction,
     searchCurrentPairAction,
-    loadLocalCurrencyAction
+    loadLocalCurrencyAction,
+    update_item_state
 } from "../actions/dataModelActions";
 import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies from "../utils/convert_currency";
@@ -83,36 +84,36 @@ export class SwapService extends WebService {
 
     async getDefaultPair(currentWallet, localCurrency, currentPair) {
         if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
-        
+
         const currency = currentWallet.currency.currency
         let pair;
         // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
         pair = await this.getPairs(currency, localCurrency)
-        
-        if(!pair) {
+
+        if (!pair) {
             pair = await this.getPairs('bitcoin', currency)
         }
-        if(!pair) {
+        if (!pair) {
             pair = await this.getPairs(currency)
         }
-        if(!pair) {
+        if (!pair) {
             pair = await this.getPairs(null, currency)
         }
         if (!pair) { return false }
-    
+
         let pair_id = pair.id
-    
+
         const data = await convertCurrencies(currentWallet.currency, '1', pair_id)
 
         if (data) {
-          const { to_spend_currency } = data
-          return this.dispatch(pairsForAccount(currentWallet.id, {
-            current_pair: {
-              pair_id,
-              currency: to_spend_currency.currency,
-              currency_value: data.want_to_spend
-            }
-          }))
+            const { to_spend_currency } = data
+            return this.dispatch(pairsForAccount(currentWallet.id, {
+                current_pair: {
+                    pair_id,
+                    currency: to_spend_currency.currency,
+                    currency_value: data.want_to_spend
+                }
+            }))
         }
     }
 
@@ -194,6 +195,17 @@ export class SwapService extends WebService {
         let normalizedUser = await normalizeUser(updatedUser)
         await this.dispatch(updateNormalizedDataAction(normalizedUser))
         return normalizedUser
+    }
+
+    async updateCurrentPair(query, currentPair) {
+        const result = await this.Get(`${PAIRS_URL}${query}`)
+        if (!result || result === 465) { return }
+
+        if (currentPair) {
+            this.dispatch(update_item_state({ currentPair: { ...result[0] } }, 'pairs'))
+        } else {
+            this.dispatch(update_item_state({ [result[0].id]: { ...result[0] } }, 'all_pairs'))
+        }
     }
 
     async get_swaps(accountId, limit = 20, skip = 0) {

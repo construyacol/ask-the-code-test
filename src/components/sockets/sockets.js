@@ -91,7 +91,7 @@ class SocketsComponent extends Component {
               //     state:"accepted"
               //   }
               //   await this.props.action.edit_array_element(search_by, replace_prop, withdraw_array, true, 'withdrawals')
-              //   // await this.props.action.get_withdraw_list(this.props.user)
+              //   // await this.props.coinsendaServices.fetchWithdrawByUser(this.props.user)
               //   await this.props.coinsendaServices.updateActivityState(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
               //   await this.props.action.update_pending_activity(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
               //   this.props.action.success_sound()
@@ -113,7 +113,7 @@ class SocketsComponent extends Component {
     if (withdraw.proof) {
 
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
-        let cWithdraw = await this.props.action.get_order_by_id(withdraw.id, 'withdraws')
+        let cWithdraw = await this.props.coinsendaServices.getOrderById(withdraw.id, 'withdraws')
         await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id)
       }
 
@@ -215,7 +215,7 @@ class SocketsComponent extends Component {
     //   // alert('withdraw socket')
     //
     //     const { userId } = withdraw
-    //     let fiat_accounts = await this.props.action.get_fiat_accounts_by_userId(userId)
+    //     let fiat_accounts = await this.props.coinsendaServices.getFiatAccountByUserId()
     //     if(!fiat_accounts){return false}
     //
     //     for (let i = 0; i < fiat_accounts.length; i++) {
@@ -247,7 +247,7 @@ class SocketsComponent extends Component {
     if (deposit.state === 'confirmed') {
 
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        let cDeposit = await this.props.action.get_one_deposit(deposit.id)
+        let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id)
 
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
           await this.props.coinsendaServices.addItemToState('deposits', { ...cDeposit, type_order: 'deposit' })
@@ -273,7 +273,7 @@ class SocketsComponent extends Component {
 
     if (deposit.confirmations) {
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
+        let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, 'deposits')
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
         // console.log('=============> DEPOSIT SOCKET ', cDeposit)
       }
@@ -286,7 +286,7 @@ class SocketsComponent extends Component {
     }
 
     if (deposit.state === 'accepted') {
-      let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
+      let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, 'deposits')
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
       }

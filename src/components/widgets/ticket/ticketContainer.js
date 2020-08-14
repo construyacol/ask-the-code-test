@@ -52,7 +52,7 @@ class TicketContainer extends Component {
 
     if(ticket.type_order !== 'deposit' || ticket.currency_type === 'fiat'){return false}
     if(ticket.paymentProof){return false}
-    let deposit = await this.props.action.get_one_deposit(ticket.id)
+    let deposit = await this.props.coinsendaServices.getDepositById(ticket.id)
     this.ticket_serve({...ticket, ...deposit})
 
     let update_ticket = {

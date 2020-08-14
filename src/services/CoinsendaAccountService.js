@@ -37,9 +37,6 @@ export class AccountService extends WebService {
             return this.dispatch(resetModelData({ wallets: [] }))
         }
 
-
-
-
         const balanceList = availableWallets.map(balanceItem => ({
             id: balanceItem.id,
             currency: balanceItem.currency.currency,
@@ -231,12 +228,23 @@ export class AccountService extends WebService {
     }
 
     async updateActivityState(accountId, type, activities) {
-        if(!activities){
+        if (!activities) {
             activities = await serve_orders(accountId, type)
-          }
-      
-          await this.dispatch(current_section_params({ currentFilter: type }))
-          await this.dispatch(update_activity(accountId, type, activities))
-          await this.updatePendingActivity(accountId, type, activities)
+        }
+
+        await this.dispatch(current_section_params({ currentFilter: type }))
+        await this.dispatch(update_activity(accountId, type, activities))
+        await this.updatePendingActivity(accountId, type, activities)
+    }
+
+    async getFiatAccountByUserId() {
+        const user = this.user
+        const filter = `filter={"where": {"currency_type": "fiat"}}`
+        const URL = `${ACCOUNT_URL}/${user.id}/accounts?country=${user.country}&${filter}`
+
+        const response = await this.Get(URL)
+
+        if (!response || response.length < 1) { return false }
+        return response
     }
 }

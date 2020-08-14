@@ -1,35 +1,15 @@
 import { toast } from 'react-toastify';
 import { kyc } from '../components/api/ui/api.json'
 import Compressor from 'compressorjs';
-import Environment from '../environment'
-
 import * as Sentry from '@sentry/browser';
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
-
-import {
-  ApiGetRequest
-} from '../actions/API'
-
 import store from '..'
 import { useToastMesssage } from '../hooks/useToastMessage';
 
 const {
-  WithdrawApiUrl,
-  DepositApiUrl,
-  SwapApiUrl
-} = Environment
-
-
-
-const {
   normalizeUser
 } = normalizr_services
-
-
-
-
-
 
 export const SentryCaptureException = error => {
 
@@ -347,37 +327,10 @@ export const serveBankOrCityList = (list, type) => {
 
 
 
-export const get_order_by_id = (order_id, order_type) => {
-
-  return async (dispatch, getState) => {
-    const user = getState().modelData.user
-    const apiUrl = order_type === 'deposits' ? DepositApiUrl : order_type === 'withdraws' ? WithdrawApiUrl : SwapApiUrl
-
-    let filter = `{"where":{"id":"${order_id}"}}`
-    const url_order = `${apiUrl}users/${user.id}/${order_type}?country=${user.country}&filter=${filter}`
-
-    let myHeaders = {
-      'Authorization': `Bearer ${user.userToken}`,
-    }
-    const order = await ApiGetRequest(url_order, myHeaders)
-
-    // console.log('||||||||||||||||||||||||||||| get_account_id_by_order_id', url_order, myHeaders, order)
-    if (!order || order.length < 1) { return false }
-
-    return order[0]
-
-
-
-  }
-}
-
-
-
-
 
 export const converToInitState = (obj) => {
   // recibe un objeto como parametro y devuelve ese objeto con todos los parametros vacíos, como un estado inicializado desde 0
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     let new_state
     await Object.keys(obj).forEach((index_state) => {
       new_state = {

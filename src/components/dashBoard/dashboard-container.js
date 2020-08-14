@@ -110,11 +110,11 @@ function DashBoardContainer(props) {
 
 
 
-  useEffect(()=>{
-    if(props.currentPair){
-      // updateCurrentPair()
-    }
-  }, [props.currentPair])
+  // useEffect(()=>{
+  //   if(props.currentPair){
+  //     // updateCurrentPair()
+  //   }
+  // }, [props.currentPair])
 
   useEffect(() => {
     onMount()
