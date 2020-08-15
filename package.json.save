@@ -1,3 +1,4 @@
+
 {
   "name": "CoinsendaApp",
   "version": "0.1.0",
@@ -49,7 +50,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
-    "start:build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw && serve ./build -s -l 5000",
+    "start:build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && serve ./build -s -l 5000",
     "build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
