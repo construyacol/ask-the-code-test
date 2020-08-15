@@ -1,9 +1,11 @@
 import { matchItem } from "../utils"
 import { useState } from "react"
+import { useCoinsendaServices } from "../services/useCoinsendaServices"
 
 export function usePairSelector(props) {
     const {currentWallet, currencyPairs} = props
     const [isReady, setIsReady] = useState(false)
+    const [ coinsendaServices ] = useCoinsendaServices()
     const selectPair = async (initial) => {
         setIsReady(false)
         let currency = currentWallet && currentWallet.currency.currency
@@ -12,9 +14,9 @@ export function usePairSelector(props) {
         !initial && props.actions.toggleOtherModal()
         if (currencyPairs) { return false }
     
-        let pairs = await props.actions.getPairs(currency, null, true)
+        let pairs = await coinsendaServices.getPairs(currency, null, true)
         if (pairs) { all_pairs = [...pairs] }
-        let pairs2 = await props.actions.getPairs(null, currency, true)
+        let pairs2 = await coinsendaServices.getPairs(null, currency, true)
         if (pairs2) { all_pairs = [...all_pairs, ...pairs2] }
         
         if (all_pairs.length < 1) { return (!initial && props.actions.toggleOtherModal()) }

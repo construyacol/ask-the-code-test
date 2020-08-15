@@ -2,20 +2,21 @@ import React, { useState } from 'react'
 import QrReader from 'react-qr-reader'
 import OtherModalLayout from '../widgets/modal/otherModalLayout'
 import { useActions } from '../../hooks/useActions'
+import { useToastMesssage } from '../../hooks/useToastMessage'
 import styled from 'styled-components'
 import { device } from '../../const/const'
 import { MAIN_COLOR } from '../referrals/shareStyles'
 import IconSwitch from '../widgets/icons/iconSwitch'
-import { InputButton } from '../widgets/buttons/controlButton'
 import { CloseButton } from '../widgets/shared-styles'
 
 const QrScanner = (props) => {
     const [facingMode, setFacingMode] = useState(false)
+    const [ toastMessage ] = useToastMesssage()
     const actions = useActions()
 
     const closeModal = (e) => {
         if(e && e.name) {
-            actions.mensaje(`Camara no disponible`, 'error')
+            toastMessage(`Camara no disponible`, 'error')
         }
         actions.renderModal(null)
     }

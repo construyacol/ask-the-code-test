@@ -9,31 +9,27 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import ControlButton from '../../widgets/buttons/controlButton'
 import { skeleton } from '../../widgets/loaders/skeleton'
 
-
-
-
 const CriptoSupervisor = props => {
+  const [, { current_wallet, modelData: { deposit_providers } }] = useCoinsendaServices()
 
-  const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices()
-
-  return(
+  return (
     <>
-        {
-          (!deposit_providers || Object.keys(deposit_providers).length === 0) ?
-            <LoaderView/>
+      {
+        (!deposit_providers || Object.keys(deposit_providers).length === 0) ?
+          <LoaderView />
           :
           current_wallet.dep_prov.length < 1 ?
-            <AddDepositProviderCripto/>
-          :
-            <CriptoView/>
-        }
+            <AddDepositProviderCripto />
+            :
+            <CriptoView />
+      }
     </>
   )
 }
 
 const LoaderView = () => {
 
-  return(
+  return (
     <DepositForm className="skeleton">
       <section className="contAddress">
         <p id="soloAd2" className="fuente title soloAd2"></p>
@@ -49,24 +45,18 @@ const LoaderView = () => {
 
 }
 
-
 const AddDepositProviderCripto = () => {
-
-    const [
-      coinsendaServices,
-      {
-        current_wallet,
-        isLoading:{ loader }
-      },
-      {
-        isAppLoading,
-        create_deposit_provider,
-        get_deposit_providers,
-        update_item_state,
-        current_section_params
-      },
-      dispatch
-     ] = useCoinsendaServices()
+  const [
+    coinsendaServices,
+    {
+      current_wallet,
+      isLoading: { loader }
+    },
+    {
+      isAppLoading
+    },
+    dispatch
+  ] = useCoinsendaServices()
 
 
   const movil_viewport = window.innerWidth < 768
@@ -75,69 +65,64 @@ const AddDepositProviderCripto = () => {
   const atributos = {
     icon: 'deposit_crypto',
     size: movil_viewport ? 80 : 100,
-    color:'#989898'
+    color: '#989898'
   }
 
-  const createDepositProvider = async(e) => {
+  const createDepositProvider = async (e) => {
     e.preventDefault()
     dispatch(isAppLoading(true))
-    const dep_prov = await coinsendaServices.createAndInsertDepositProvider(current_wallet)
+    await coinsendaServices.createAndInsertDepositProvider(current_wallet)
     dispatch(isAppLoading(false))
   }
 
-  return(
+  return (
     <DepositForm className="DepositView" onSubmit={createDepositProvider}>
       <div className="contIcontSwitch">
-        <IconSwitch {...atributos}/>
+        <IconSwitch {...atributos} />
       </div>
 
-        <p className="fuente">Esta Billetera aún no tiene dirección de deposito, creala ahora e inicia operaciones con esta cuenta.</p>
+      <p className="fuente">Esta Billetera aún no tiene dirección de deposito, creala ahora e inicia operaciones con esta cuenta.</p>
 
       <div className="contButtons deposit">
-          <ControlButton
-            loader={loader}
-            formValidate
-            label="Crear dirección de deposito"
-          />
+        <ControlButton
+          loader={loader}
+          formValidate
+          label="Crear dirección de deposito"
+        />
       </div>
     </DepositForm>
   )
 
 }
 
-
-
 let INTERVAL
 
 const CriptoView = () => {
-
-
-  const [ coinsendaServices, { current_wallet, modelData: { deposit_providers } }, ,dispatch  ] = useCoinsendaServices()
-  const [ qrState, setQrState ] = useState(true)
-  const [ qrError, setQrError ] = useState()
-  const [ address, setAddress ] = useState()
+  const [coinsendaServices, { current_wallet, modelData: { deposit_providers } }] = useCoinsendaServices()
+  const [qrState, setQrState] = useState(true)
+  const [qrError, setQrError] = useState()
+  const [address, setAddress] = useState()
 
   const subscribeToNewDeposits = (provider_id) => {
     clearInterval(INTERVAL)
-      let i = 0
-      INTERVAL = setInterval(async()=>{
-        if(i >= 3) {return clearInterval(INTERVAL)}
-        const res = await coinsendaServices.subscribeToNewDeposits(provider_id)
-        console.log('INTERVAL', i, res)
-        i++
-      }, 30000)
+    let i = 0
+    INTERVAL = setInterval(async () => {
+      if (i >= 3) { return clearInterval(INTERVAL) }
+      const res = await coinsendaServices.subscribeToNewDeposits(provider_id)
+      console.log('INTERVAL', i, res)
+      i++
+    }, 30000)
   }
 
-
   useEffect(() => {
-    if(deposit_providers){
-        const validateAddress = async() => {
+    if (deposit_providers) {
+      const validateAddress = async () => {
         const provider = deposit_providers[current_wallet.dep_prov[0]]
         subscribeToNewDeposits(provider.id)
-        const { account:{ account_id: { account_id } } } = provider
+        const { account: { account_id: { account_id } } } = provider
 
         const validateAddress = await coinsendaServices.validateAddress(account_id)
-        if(!validateAddress){
+        if (!validateAddress) {
           // sentry call emit error
           const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`
           SentryCaptureException(errorMsg)
@@ -149,22 +134,18 @@ const CriptoView = () => {
         setAddress(account_id)
       }
       validateAddress()
-   }
+    }
 
-  }, [ deposit_providers ])
+  }, [deposit_providers])
 
-
-
-
-
-  return(
+  return (
     <DepositForm>
       <section className="contAddress">
         <p id="soloAd2" className="fuente title soloAd2">Importante:</p>
         <p className="fuente soloAd">Envía solo {current_wallet.currency.currency} a esta Billetera. El envío de cualquier otra moneda a esta dirección puede resultar en la pérdida de su depósito. </p>
 
         <div className="qrContainer">
-          <QrProtector visible={qrState} invalid={qrError}/>
+          <QrProtector visible={qrState} invalid={qrError} />
           {
             (typeof qrState === 'string') &&
             <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
@@ -183,19 +164,15 @@ const CriptoView = () => {
 
 }
 
-
-  const QrProtector = ({ visible, invalid }) => (
-    <div className={`qrProtector ${(visible === true) ? 'active' : ''} ${invalid ? 'error' : ''}`}>
-      <IconSwitch
-        icon="qr"
-        size={35}
-        color="black"
-      />
-    </div>
-  )
-
-
-
+const QrProtector = ({ visible, invalid }) => (
+  <div className={`qrProtector ${(visible === true) ? 'active' : ''} ${invalid ? 'error' : ''}`}>
+    <IconSwitch
+      icon="qr"
+      size={35}
+      color="black"
+    />
+  </div>
+)
 
 const DepositForm = styled(OperationForm)`
 
@@ -211,9 +188,6 @@ const DepositForm = styled(OperationForm)`
           transform: scale(.8);
         }
       }
-
-
-
     &.skeleton .soloAd2,
     &.skeleton .soloAd,
     &.skeleton .dirDep,
@@ -256,10 +230,6 @@ const DepositForm = styled(OperationForm)`
       animation-iteration-count: infinite;
       opacity: .5;
     }
-
-
 `
-
-
 
 export default CriptoSupervisor

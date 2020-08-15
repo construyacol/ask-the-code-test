@@ -8,8 +8,7 @@ import SimpleLoader from '../loaders'
 import ActivityFilters from './filters'
 
 import './activity_view.css'
-
-
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class ActivityList extends Component {
 
@@ -25,7 +24,6 @@ class ActivityList extends Component {
 
   componentDidMount(){
     this.props.action.CurrentForm('ticket')
-    // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', this.props)
     this.init_activity()
   }
 
@@ -85,7 +83,7 @@ class ActivityList extends Component {
         }
 
 
-        if(!current_pair){this.props.action.getDefaultPair(current_wallet, local_currency, current_pair)}
+        if(!current_pair){this.props.getDefaultPair(current_wallet, local_currency, current_pair)}
 
         if(this.props.activity.length<1 && current_wallet){
           history.push(`/wallets/deposit/${current_wallet.id}`)
@@ -93,18 +91,8 @@ class ActivityList extends Component {
         }
 
         await this.props.action.current_section_params({activity:true})
-        await this.props.action.updatePendingActivity()
-
-
-
+        await this.props.coinsendaServices.updatePendingActivity()
   }
-
-
-
-
-
-
-
 
   filter_activity = async(filter) =>{
 
@@ -182,9 +170,6 @@ class ActivityList extends Component {
   }
 
   delete_order = async(id) =>{
-
-    alert('delete order')
-
     const{
       currentFilter,
       user
@@ -196,12 +181,8 @@ class ActivityList extends Component {
       deleting:true
     })
 
-    let deleted = await this.props.action.delete_deposit_order(id)
-    // let deleted = currentFilter === 'withdraws' ? await this.props.action.delete_withdraw_order(id) : await this.props.action.delete_deposit_order(id)
+    let deleted = await this.props.coinsendaServices.deleteDeposit(id)
 
-    // const {
-    //   count
-    // } = deleted
     return console.log('_______________________DELETE API SERVICE ENDPOINT', deleted)
 
     if(!deleted){
@@ -217,9 +198,9 @@ class ActivityList extends Component {
 
       // console.log('|||| CURRENT DEPOSIT LIST BEFORE - trigger_action', currentFilter,  trigger_action)
 
-      await this.props.action.updatePendingActivity(this.props.current_wallet.id, currentFilter)
+      await this.props.coinsendaServices.updatePendingActivity(this.props.current_wallet.id, currentFilter)
       await this.props.action.update_activity_account(this.props.current_wallet.id, currentFilter)
-      await this.props.action.updatePendingActivity(this.props.current_wallet.id, currentFilter)
+      await this.props.coinsendaServices.updatePendingActivity(this.props.current_wallet.id, currentFilter)
 
 
       // await this.setState({
@@ -234,7 +215,7 @@ class ActivityList extends Component {
       });
       this.props.action.isAppLoading(false)
       this.setState({deleted:false})
-      this.props.action.mensaje('Orden eliminada con éxito', 'success')
+      // this.props.action.mensaje('Orden eliminada con éxito', 'success')
 
   }
 
@@ -335,7 +316,7 @@ class ActivityList extends Component {
       expandido:false
     })
 
-    await this.props.action.updatePendingActivity()
+    await this.props.coinsendaServices.updatePendingActivity()
 
   }
 
@@ -458,7 +439,7 @@ function mapStateToProps(state, props){
 
   // console.log('|||||||||||||||||||||||||||||||||||| ACTIVITY COMPONENT ==> ', props)
 
-  const { user, user_id, currencies } = state.modelData
+  const { user, currencies } = state.modelData
   const { current_wallet } = props
   const { currentFilter } =state.ui.current_section.params
   const { activity_for_account } = state.storage
@@ -501,4 +482,4 @@ function mapDispatchToProps(dispatch){
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (ActivityList)
+export default connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(ActivityList))

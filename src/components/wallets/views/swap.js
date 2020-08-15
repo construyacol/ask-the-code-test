@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import BigNumber from 'bignumber.js'
-import LoaderTrade from '../../widgets/loaders/loaderTrade'
 import InputForm from '../../widgets/inputs/inputForm'
 import { mensaje, formatNumber } from '../../../utils'
 import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'
@@ -42,7 +41,7 @@ function SwapView(props) {
   useEffect(() => {
     selectPair(true)
     const { local_currency } = props
-    actions.getDefaultPair(currentWallet, local_currency, currentPair)
+    coinsendaServices.getDefaultPair(currentWallet, local_currency, currentPair)
   }, [])
 
   useEffect(() => {
@@ -188,7 +187,7 @@ function SwapView(props) {
   const swap = async () => {
     const { secondary_coin, pair_id } = currentPair
     let query = `{"where":{"id":"${pair_id}"}}`
-    await actions.updateCurrentPair(query)
+    await coinsendaServices.updateCurrentPair(query)
 
     const spent_currency_amount = await formatToCurrency(value, currentWallet.currency, true)
     const secureTotalValue = await getTotalValue(value)

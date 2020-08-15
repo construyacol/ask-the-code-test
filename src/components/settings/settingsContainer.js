@@ -12,22 +12,11 @@ class SettingsContainer extends Component{
 
 
   componentDidMount(){
-    // this.props.action.MenuItemActive(this.props.location.pathname)
     this.props.action.isAppLoading(true)
-
     // activamos el item desde aquí en caso de acceder al componente por medio de la ruta
-
      setTimeout(async()=>{
-       // Manejamos la respuesta en el estado, por si ocurre un error, evitamos
-       // this.setState({
-       //   userWallets: await this.props.action.get_list_user_wallets(this.props.user)
-       // })
        this.props.action.isAppLoading(false)
-
-      // console.log('°°°°°°° RESPUESTA DE LAS WALLETS  °°°°°°', userWallets)
     }, 0)
-
-     // console.log('|||||||||| °°°°°  WalletContainer  °°°°°||||||||||')
   }
 
 
@@ -37,9 +26,6 @@ class SettingsContainer extends Component{
 
 
   render(){
-
-    // console.log('|||||||||| °°°°°  Security Container  °°°°°||||||||||', global_settings)
-
     return(
         <Fragment>
           <DetailContainerLayout

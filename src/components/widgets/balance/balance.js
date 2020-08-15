@@ -60,10 +60,6 @@ class BalanceComponent extends Component {
       current_amount: availableAmount,
     })
     await this.play_animation('In')
-    // this.setState({animation:null})
-
-    // await this.props.action.get_list_user_wallets(this.props.user)
-    // await this.props.action.get_account_balances(this.props.user)
   }
 
   dead_time = async anim => {

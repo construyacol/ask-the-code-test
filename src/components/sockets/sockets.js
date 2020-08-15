@@ -6,9 +6,8 @@ import io from 'socket.io-client'
 import Environtment from '../../environment'
 // import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
+import withCoinsendaServices from '../withCoinsendaServices'
 const { SocketUrl } = Environtment
-let add_swap
-
 
 class SocketsComponent extends Component {
 
@@ -92,8 +91,8 @@ class SocketsComponent extends Component {
               //     state:"accepted"
               //   }
               //   await this.props.action.edit_array_element(search_by, replace_prop, withdraw_array, true, 'withdrawals')
-              //   // await this.props.action.get_withdraw_list(this.props.user)
-              //   await this.props.action.update_activity_state(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
+              //   // await this.props.coinsendaServices.fetchWithdrawByUser(this.props.user)
+              //   await this.props.coinsendaServices.updateActivityState(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
               //   await this.props.action.update_pending_activity(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
               //   this.props.action.success_sound()
               // }, 3000)
@@ -111,20 +110,16 @@ class SocketsComponent extends Component {
   }
 
   withdraw_mangagement = async (withdraw) => {
-
-
-    // console.log('|||||||| _______________________________________ WITHDRAW SOCKET', withdraw)
-
     if (withdraw.proof) {
 
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
-        let cWithdraw = await this.props.action.get_order_by_id(withdraw.id, 'withdraws')
-        await this.props.action.get_withdraws(cWithdraw.account_id)
+        let cWithdraw = await this.props.coinsendaServices.getOrderById(withdraw.id, 'withdraws')
+        await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id)
       }
 
       if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
         await this.props.action.update_item_state({ [withdraw.id]: { ...this.props.withdraws[withdraw.id], proof: withdraw.proof, sent: true, state: "accepted" } }, 'withdraws')
-        await this.props.action.update_activity_state(this.props.withdraws[withdraw.id].account_id, 'withdraws')
+        await this.props.coinsendaServices.updateActivityState(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
         this.props.action.success_sound()
@@ -138,10 +133,10 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === 'pending' && withdraw.currency_type === 'crypto') {
 
-      let res = await this.props.action.add_update_withdraw(withdraw.id, 'confirmed')
+      let res = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, 'confirmed')
       if (!res) {
         this.props.action.isAppLoading(false)
-        return this.props.action.mensaje('No se ha podido crear la orden de retiro', 'error')
+        return this.props.toastMessage('No se ha podido crear la orden de retiro', 'error')
       }
     }
 
@@ -161,12 +156,12 @@ class SocketsComponent extends Component {
 
       // console.log('°°=°=°=°==°=°=°=°=°=°==°=°=°=°=°=°=°=°==°=°=°==°=°=°=°  WITHDRAW CONFIRMED ==>', this.props.user)
 
-      await this.props.action.add_item_state('withdraws', new_withdraw_model)
-      await this.props.action.update_activity_state(new_withdraw_model.account_id, 'withdraws')
-      await this.props.action.ManageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
+      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw_model)
+      await this.props.coinsendaServices.updateActivityState(new_withdraw_model.account_id, 'withdraws')
+      await this.props.coinsendaServices.manageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
       await this.props.action.isAppLoading(false)
       this.props.action.add_new_transaction_animation()
-      // this.props.action.get_account_balances(this.props.user)
+      // this.props.coinsendaServices.getWalletsByUser(true)
       this.props.history.push(`/wallets/activity/${new_withdraw_model.account_id}/withdraws`)
     }
 
@@ -199,8 +194,8 @@ class SocketsComponent extends Component {
         type_order: "withdraw",
       }
 
-      await this.props.action.add_item_state('withdraws', new_withdraw)
-      await this.props.action.update_activity_state(new_withdraw.account_id, 'withdraws')
+      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw)
+      await this.props.coinsendaServices.updateActivityState(new_withdraw.account_id, 'withdraws')
       this.props.action.add_new_transaction_animation()
     }
 
@@ -220,17 +215,17 @@ class SocketsComponent extends Component {
     //   // alert('withdraw socket')
     //
     //     const { userId } = withdraw
-    //     let fiat_accounts = await this.props.action.get_fiat_accounts_by_userId(userId)
+    //     let fiat_accounts = await this.props.coinsendaServices.getFiatAccountByUserId()
     //     if(!fiat_accounts){return false}
     //
     //     for (let i = 0; i < fiat_accounts.length; i++) {
     //       if(fiat_accounts[i].currency.currency !== 'usd'){
     //         const { activity_for_account } = this.props
     //         if(activity_for_account[fiat_accounts[i].id] && activity_for_account[fiat_accounts[i].id].withdraws){return false}
-    //         await this.props.action.get_withdraws(fiat_accounts[i].id, 'withdraws')
+    //         await this.props.coisendaServices.get_withdraws(fiat_accounts[i].id)
     //       }
     //     }
-    //     this.props.action.mensaje('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
+    //     this.props.toastMessage('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
     //     this.props.action.success_sound()
     //
     // }
@@ -244,22 +239,22 @@ class SocketsComponent extends Component {
     // debugger
 
     if (deposit.state === 'pending' && deposit.currency_type === 'fiat') {
-      await this.props.action.add_item_state('deposits', { ...deposit, type_order: 'deposit' })
-      await this.props.action.update_activity_state(deposit.account_id, 'deposits')
+      await this.props.coinsendaServices.addItemToState('deposits', { ...deposit, type_order: 'deposit' })
+      await this.props.coinsendaServices.updateActivityState(deposit.account_id, 'deposits')
     }
 
     // if(deposit.state === 'confirmed' && (this.state.currentDeposit && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === 'confirmed') {
 
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        let cDeposit = await this.props.action.get_one_deposit(deposit.id)
+        let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id)
 
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
-          await this.props.action.add_item_state('deposits', { ...cDeposit, type_order: 'deposit' })
-          await this.props.action.update_activity_state(cDeposit.account_id, 'deposits')
+          await this.props.coinsendaServices.addItemToState('deposits', { ...cDeposit, type_order: 'deposit' })
+          await this.props.coinsendaServices.updateActivityState(cDeposit.account_id, 'deposits')
           console.log('======================================> ESTA CUENTA SI TIENE DEPOSITOS, MANUAL ADD ', this.props.deposits[deposit.id], cDeposit)
         } else {
-          await this.props.action.get_deposits(cDeposit.account_id)
+          await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
           // console.log('======================================> ESTA CUENTA NO TIENE DEPOSITOS, GET DEPOSITS ', this.props.deposits[deposit.id], cDeposit)
         }
 
@@ -278,30 +273,30 @@ class SocketsComponent extends Component {
 
     if (deposit.confirmations) {
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
-        await this.props.action.get_deposits(cDeposit.account_id)
+        let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, 'deposits')
+        await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
         // console.log('=============> DEPOSIT SOCKET ', cDeposit)
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], confirmations: deposit.confirmations } }, 'deposits')
-        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
+        await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, 'deposits')
       }
       return
     }
 
     if (deposit.state === 'accepted') {
-      let cDeposit = await this.props.action.get_order_by_id(deposit.id, 'deposits')
+      let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, 'deposits')
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        await this.props.action.get_deposits(cDeposit.account_id)
+        await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
         this.props.action.update_item_state({ [cDeposit.account_id]: { ...this.props.wallets[cDeposit.account_id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         this.props.action.addNotification('wallets', { account_id: this.props.deposits[deposit.id].account_id, order_id: deposit.id }, 1)
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
-        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
-        this.props.action.get_account_balances(this.props.user)
+        await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, 'deposits')
+        await this.props.coinsendaServices.getWalletsByUser(true)
         await this.props.action.socket_notify(this.props.deposits[deposit.id], 'deposits')
         await this.props.action.renderModal(null)
         this.props.action.toggleOtherModal()
@@ -321,12 +316,12 @@ class SocketsComponent extends Component {
 
       setTimeout(async()=>{
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
-        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
+        await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, 'deposits')
         // await this.props.action.update_pending_activity(this.props.deposits[deposit.id].account_id, 'deposits')
       }, 500)
       this.props.action.exit_sound()
       let state = deposit.state === 'canceled' ? 'cancelado' : 'rechazado'
-      this.props.action.mensaje(`Deposito ${state}`, 'error')
+      this.props.toastMessage(`Deposito ${state}`, 'error')
       // }, 2000)
     }
 
@@ -335,12 +330,12 @@ class SocketsComponent extends Component {
       // console.log('deposito confirmado fiat')
       if ((this.props.deposits && this.props.deposits[deposit.id]) && this.props.deposits[deposit.id].currency_type === 'fiat') {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
-        await this.props.action.update_activity_state(this.props.deposits[deposit.id].account_id, 'deposits')
-        this.props.action.get_account_balances(this.props.user)
+        await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, 'deposits')
+        await this.props.coinsendaServices.getWalletsByUser(true)
         // this.props.history.push('?form=deposit_confirmed_success')
         this.props.action.isAppLoading(false)
         this.props.action.success_sound()
-        this.props.action.mensaje('Deposito confirmado con exito', 'success')
+        this.props.toastMessage('Deposito confirmado con exito', 'success')
 
       }
     }
@@ -358,8 +353,8 @@ class SocketsComponent extends Component {
       // await this.props.action.current_section_params({ active_trade_operation: true })
       // el bought lo retorna el socket en el estado aceptado
       let new_swap = swap
-         await this.props.action.add_item_state('swaps', {...new_swap, state:'pending', activeTrade:true})
-         await this.props.action.update_activity_state(new_swap.account_from, 'swaps')
+         await this.props.coinsendaServices.addItemToState('swaps', {...new_swap, state:'pending', activeTrade:true})
+         await this.props.coinsendaServices.updateActivityState(new_swap.account_from, 'swaps')
          this.props.action.isAppLoading(false)
          await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`)
          this.props.action.add_new_transaction_animation()
@@ -379,10 +374,10 @@ class SocketsComponent extends Component {
         await this.props.action.success_sound()
         setTimeout(async()=>{
           await this.props.action.update_item_state({ [currentSwap.id]: { ...this.props.swaps[currentSwap.id], activeTrade:false} }, 'swaps')
-          await this.props.action.ManageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
+          await this.props.coinsendaServices.manageBalance(currentSwap.account_from, 'reduce', currentSwap.spent)
           await this.props.action.add_coin_sound()
-          await this.props.action.mensaje('Nuevo intercambio realizado', 'success')
-          this.props.action.update_activity_state(currentSwap.account_from, 'swaps')
+          await this.props.toastMessage('Nuevo intercambio realizado', 'success')
+          this.props.coinsendaServices.updateActivityState(currentSwap.account_from, 'swaps')
         },2000)
       }, 5500)
 
@@ -390,7 +385,7 @@ class SocketsComponent extends Component {
       // add the acredited order into account to
       if(this.props.wallets[currentSwap.account_to]){
         const { wallets } = this.props
-        this.props.action.update_activity_state(currentSwap.account_to, 'swaps')
+        this.props.coinsendaServices.updateActivityState(currentSwap.account_to, 'swaps')
         this.props.action.update_item_state({ [currentSwap.account_to]: { ...wallets[currentSwap.account_to], count:1 } }, 'wallets')
       }
 
@@ -398,7 +393,7 @@ class SocketsComponent extends Component {
     }
 
     if (swap.status === 'error') {
-      this.props.action.mensaje('El intercambio no se pudo realizar, contacta con soporte', 'error')
+      this.props.toastMessage('El intercambio no se pudo realizar, contacta con soporte', 'error')
       this.props.action.ticket_canceled()
       // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
     }
@@ -439,4 +434,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SocketsComponent))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(SocketsComponent)))

@@ -11,6 +11,7 @@ import { ticketModalView } from '../../../utils'
 import { withRouter } from "react-router";
 
 import './ticket.css'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class TicketContainer extends Component {
 
@@ -51,7 +52,7 @@ class TicketContainer extends Component {
 
     if(ticket.type_order !== 'deposit' || ticket.currency_type === 'fiat'){return false}
     if(ticket.paymentProof){return false}
-    let deposit = await this.props.action.get_one_deposit(ticket.id)
+    let deposit = await this.props.coinsendaServices.getDepositById(ticket.id)
     this.ticket_serve({...ticket, ...deposit})
 
     let update_ticket = {
@@ -60,7 +61,7 @@ class TicketContainer extends Component {
     console.log('||||||||||||||||||| ======> FROM TICKET CONTAINER ==> ', update_ticket)
 
     await this.props.action.update_item_state(update_ticket, 'deposits')
-    this.props.action.update_activity_state(ticket.account_id, 'deposits')
+    this.props.coinsendaServices.updateActivityState(ticket.account_id, 'deposits')
   }
 
 
@@ -506,6 +507,7 @@ class TicketContainer extends Component {
               ticket={this.props.ticket}
               update_ticket={this.update_ticket}
               current_wallet={current_wallet}
+              toastMessage={this.props.toastMessage}
             />
 
           </div>
@@ -525,7 +527,7 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { account_id, tx_path, order_id, primary_path } = props.match.params
+  const { account_id, tx_path, order_id } = props.match.params
 
   // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
 
@@ -574,4 +576,4 @@ function mapStateToProps(state, props){
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (TicketContainer))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(TicketContainer)))

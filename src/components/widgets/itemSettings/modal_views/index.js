@@ -12,6 +12,7 @@ import OtherModalLayoutPairs from '../../modal/otherModalLayoutPairs'
 import MVList from './listView'
 
 import './viewSettings.css'
+import withCoinsendaServices from '../../../withCoinsendaServices'
 // import ItemLayout from '../../widgets/items/itemLayout'
 
 export class ModalSettingsView extends Component {
@@ -141,17 +142,17 @@ update_state = (payload) =>{
 
         if(code === 'transactional'){
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
-          await this.props.action.updateUser(user_update)
+          await this.props.coinsendaServices.updateUser(user_update)
         }
         // if(code === 'withdraw'){
         //   user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-        //   await this.props.action.updateUser(user_update)
+        //   await this.props.coinsendaServices.updateUser(user_update)
         // }
         if(code === '2auth' || code === 'withdraw'){
           user_update.security_center.authenticator.auth = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.transactional = other_state === 'to_disable' ? false : true
           user_update.security_center.authenticator.withdraw = other_state === 'to_disable' ? false : true
-          await this.props.action.updateUser(user_update)
+          await this.props.coinsendaServices.updateUser(user_update)
         }
         // console.log('||||||| user_update2', user_update)
 
@@ -293,11 +294,11 @@ function mapDispatchToProps(dispatch){
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
 
   return{
     params:state.ui.current_section.params.settings,
     user:user
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps) (ModalSettingsView)
+export default connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(ModalSettingsView))

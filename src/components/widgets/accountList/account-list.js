@@ -6,9 +6,9 @@ import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
 import { AccountListContainer } from './styles'
 import withListCreator from '../../withListCreator'
+import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 import '../../wallets/views/wallet_views.css'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history } = props
@@ -77,30 +77,6 @@ function AccountList(props) {
       svg: "verified"
     })
   }
-
-
-  // const deleteAccount = async (accountId, type) => {
-  //   setLabel("Eliminando Wallet")
-  //   setAccountState("deleting")
-  //   setWalletId(accountId)
-  //   const accountDeleted = await actions.delete_account(accountId, type)
-  //   let msg = "Wallet eliminada con éxito"
-  //   let success = true
-
-  //   if (accountDeleted === 404 || !accountDeleted) {
-  //     msg = "La wallet no se ha podido eliminar"
-  //     success = false
-  //   }
-
-  //   actions.exit_sound()
-  //   setLabel("Obteniendo tus Cuentas")
-  //   setAccountState("deleted")
-  //   type === 'withdraw_accounts' ?
-  //     await actions.get_withdraw_accounts(props.user, props.withdrawProviders) :
-  //     await actions.get_list_user_wallets(props.user)
-
-  //   actions.mensaje(msg, success ? 'success' : 'error')
-  // }
 
   const items = props.items || []
   const isHugeContainer = items > 10

@@ -8,7 +8,6 @@ import {
 } from '../actions/soundActions'
 import actions from '../actions'
 import {
-  update_activity_state,
   normalized_list
 } from '../utils'
 
@@ -226,7 +225,7 @@ export class DepositService extends WebService {
         remodeled_deposits = this.parseActivty(remodeled_deposits, 'deposits', account_id)
 
         await this.dispatch(normalized_list(remodeled_deposits, 'deposits'))
-        await this.dispatch(update_activity_state(account_id, 'deposits', remodeled_deposits))
+        await this.updateActivityState(account_id, 'deposits', remodeled_deposits)
         return deposits
 
     }

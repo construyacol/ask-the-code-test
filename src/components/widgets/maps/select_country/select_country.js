@@ -9,6 +9,7 @@ import { matchItem } from '../../../../utils'
 import { simulate_click } from '../../../../utils'
 
 import './loader_app.css'
+import withCoinsendaServices from '../../../withCoinsendaServices'
 
 class SelectCountry extends Component {
 
@@ -29,7 +30,7 @@ class SelectCountry extends Component {
 
   load_countries = async() =>{
     // this.props.action.isAppLoading(true)
-    let res = await this.props.action.countryvalidators()
+    let res = await this.props.coinsendaServices.countryValidators()
     if(!res){return false}
     // console.log('||||| =====================================> SelectCountry', res)
     return this.setState({
@@ -146,4 +147,4 @@ function mapDispatchToProps(dispatch){
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (SelectCountry)
+export default connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(SelectCountry))

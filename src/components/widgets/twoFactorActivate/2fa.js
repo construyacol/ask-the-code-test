@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import IconSwitch from '../icons/iconSwitch'
 import QRCode from 'qrcode'
 import AuthReq from '../itemSettings/modal_views/authreq'
@@ -50,7 +50,7 @@ const TwoFactorActivate = props => {
         }
       }
     }
-    await props.action.updateUser(user_update)
+    await coinsendaServices.updateUser(user_update)
     props.action.isAppLoading(false)
     setTimeout(()=>{
       setSwitch_to_success(true)
@@ -149,7 +149,7 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
   return{
     user:user
   }

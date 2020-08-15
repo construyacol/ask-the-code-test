@@ -11,6 +11,7 @@ import SimpleLoader from '../../widgets/loaders'
 import SuccessComponentScreen from '../../widgets/success_screen/success_screen'
 import { img_compressor } from '../../../utils'
 import { ACCEPT_FILE_TYPE } from '../../../const/const'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class KycFinancialComponent extends Component {
 
@@ -33,7 +34,7 @@ class KycFinancialComponent extends Component {
   init_component = async() => {
     this.props.action.isAppLoading(true)
     const { user, step } = this.props
-    let countryvalidators = await this.props.action.countryvalidators()
+    let countryvalidators = await this.props.coinsendaServices.countryValidators()
     if(!countryvalidators){return false}
     const { financial } = countryvalidators.res.levels.level_2
     let financial_data = financial[user.person_type]
@@ -258,7 +259,7 @@ class KycFinancialComponent extends Component {
 
 function mapStateToProps(state, props){
   // console.log('|||| mapStateToProps', state.form.form_kyc_financial)
-  const { user, user_id} = state.modelData
+  const { user} = state.modelData
   const { step } = state.form.form_kyc_financial
 
   return{
@@ -275,4 +276,4 @@ function mapDispatchToProps(dispatch){
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(KycFinancialComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(KycFinancialComponent))
