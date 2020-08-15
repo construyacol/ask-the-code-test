@@ -4,11 +4,10 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { formatToCurrency } from '../../utils/convert_currency'
-// import { doLogout } from '../utils'
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
 import PropTypes from 'prop-types'
-
+import withCoinsendaServices from '../withCoinsendaServices'
 
 class MenuSuperiorContainer extends Component {
 
@@ -21,13 +20,9 @@ class MenuSuperiorContainer extends Component {
     headRoomClass: 'unpinned'
   }
 
-
-
-
   country_change = () => {
-    this.props.action.ready_to_play(false)
+    this.props.coinsendaServices.setAppLoading(false)
   }
-
 
   openSelectCountry = async () => {
     this.props.action.confirmationModalToggle()
@@ -109,8 +104,6 @@ class MenuSuperiorContainer extends Component {
     this.props.action.section_view_to('initial')
   }
 
-
-
   render() {
     return (
       <MenuSuperiorLayout
@@ -124,8 +117,6 @@ class MenuSuperiorContainer extends Component {
   }
 }
 
-
-
 MenuSuperiorContainer.propTypes = {
   currentPair: PropTypes.object,
   item_quote: PropTypes.object,
@@ -135,15 +126,13 @@ MenuSuperiorContainer.propTypes = {
   show_menu_principal: PropTypes.bool
 }
 
-
 function mapDispatchToProps(dispatch) {
   return {
     action: bindActionCreators(actions, dispatch)
   }
 }
 
-function mapStateToProps(state, props) {
-  // console.log('desde M E N U - - - S U P E R I O R - - - - :::', state)
+function mapStateToProps(state) {
   const { user } = state.modelData
 
   return {
@@ -157,5 +146,4 @@ function mapStateToProps(state, props) {
   }
 }
 
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(MenuSuperiorContainer))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(MenuSuperiorContainer)))

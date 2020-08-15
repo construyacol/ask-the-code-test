@@ -1,39 +1,15 @@
 import { toast } from 'react-toastify';
 import { kyc } from '../components/api/ui/api.json'
 import Compressor from 'compressorjs';
-import Environment from '../environment'
-
 import * as Sentry from '@sentry/browser';
-import { update_activity } from '../actions/storage'
-import { update_pending_activity, updatePendingActivity } from '../actions/APIactions'
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
-import {
-  current_section_params,
-} from '../actions/uiActions'
-
-import {
-  ApiGetRequest
-} from '../actions/API'
-
 import store from '..'
-
-const {
-  WithdrawApiUrl,
-  DepositApiUrl,
-  SwapApiUrl
-} = Environment
-
-
+import { useToastMesssage } from '../hooks/useToastMessage';
 
 const {
   normalizeUser
 } = normalizr_services
-
-
-
-
-
 
 export const SentryCaptureException = error => {
 
@@ -97,13 +73,14 @@ export const mensaje = async (msg, type, position) => {
 
 export const copy = (payload) => {
   if(!document || !payload) return;
+  const [ toastMessage ] = useToastMesssage()
    let aux = document.createElement("input")
    aux.setAttribute("value", payload.target.dataset && payload.target.dataset.copy)
    document.body.appendChild(aux);
    aux.select();
    document.execCommand("copy");
    document.body.removeChild(aux);
-  return mensaje("¡Copiado Exitosamente!")
+  return toastMessage("¡Copiado Exitosamente!")
 }
 
 
@@ -148,27 +125,6 @@ export const ticketModalView = (state) => {
     default:
       break;
   }
-}
-
-
-
-
-
-
-
-export const update_activity_state = (account_id, activity_type, activity_list) => {
-
-  return async(dispatch, getState) => {
-    if(!activity_list){
-      activity_list = await serve_orders(account_id, activity_type)
-    }
-
-    await dispatch(current_section_params({ currentFilter: activity_type }))
-    await dispatch(update_activity(account_id, activity_type, activity_list))
-    await dispatch(updatePendingActivity(account_id, activity_type, activity_list))
-
-  }
-
 }
 
 export const normalized_list = (activity_list, activity_type) => {
@@ -371,37 +327,10 @@ export const serveBankOrCityList = (list, type) => {
 
 
 
-export const get_order_by_id = (order_id, order_type) => {
-
-  return async (dispatch, getState) => {
-    const user = getState().modelData.user
-    const apiUrl = order_type === 'deposits' ? DepositApiUrl : order_type === 'withdraws' ? WithdrawApiUrl : SwapApiUrl
-
-    let filter = `{"where":{"id":"${order_id}"}}`
-    const url_order = `${apiUrl}users/${user.id}/${order_type}?country=${user.country}&filter=${filter}`
-
-    let myHeaders = {
-      'Authorization': `Bearer ${user.userToken}`,
-    }
-    const order = await ApiGetRequest(url_order, myHeaders)
-
-    // console.log('||||||||||||||||||||||||||||| get_account_id_by_order_id', url_order, myHeaders, order)
-    if (!order || order.length < 1) { return false }
-
-    return order[0]
-
-
-
-  }
-}
-
-
-
-
 
 export const converToInitState = (obj) => {
   // recibe un objeto como parametro y devuelve ese objeto con todos los parametros vacíos, como un estado inicializado desde 0
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     let new_state
     await Object.keys(obj).forEach((index_state) => {
       new_state = {

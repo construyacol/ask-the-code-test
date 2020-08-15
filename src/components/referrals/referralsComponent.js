@@ -12,6 +12,7 @@ import { device } from '../../const/const'
 import CreateCode from './create-code'
 import { FONT_COLOR, skeletonStyle } from './shareStyles'
 import { scroller } from 'react-scroll'
+import { useCoinsendaServices } from '../../services/useCoinsendaServices'
 
 const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
 
@@ -24,6 +25,7 @@ const ReferralComponent = (props) => {
   const [referralLink, setReferralLink] = useState('')
   const [loading, setLoading] = useState(props.setSkeleton ? true : false)
   // const [loading, setLoading] = useState(true)
+  const [ coinsendaServices ] = useCoinsendaServices()
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -46,7 +48,7 @@ const ReferralComponent = (props) => {
   }, [user])
 
   const createLink = async code => {
-    const res = await actions.set_ref_code(code)
+    const res = await coinsendaServices.setReferralCode(code)
 
     if (!res) return
 

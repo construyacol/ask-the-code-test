@@ -13,10 +13,7 @@ import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import actions from '../../../actions'
 
 import './withdrawFlow.css'
-
-
-
-
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 class WithdrawFlow extends Component {
   // Withdraw FIAT COMPONENT
@@ -182,7 +179,7 @@ class WithdrawFlow extends Component {
     } = this.state
 
     // console.log('providers_served', providers_served)
-    let withdraw_account_list = await this.props.action.get_withdraw_accounts(this.props.user, withdrawProviders, `{"where": {"userId": "${this.props.user.id}"}}`)
+    let withdraw_account_list = await this.props.coinsendaServices.fetchWithdrawAccounts()
     // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
     // console.log(' =====> withdraw_account_list', withdraw_account_list)
     // return alert('que paja')
@@ -198,14 +195,14 @@ class WithdrawFlow extends Component {
         // console.log('________________________________________new_account_and_withdraw', new_account)
 
         this.props.action.addNotification('withdraw_accounts', { account_id: new_account.id }, 1)
-        this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
+        this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
         // await this.setState({addNotification:false})
       }, 500)
 
       await this.setState({ show_list_accounts: false, need_new_acount: null })
       await this.volver(1)
       await this.props.action.isAppLoading(false)
-      return this.props.action.mensaje(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
+      return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, 'error')
     }
 
     await this.setState({ addNotification: true })
@@ -225,7 +222,7 @@ class WithdrawFlow extends Component {
 
     if (this.props.user.security_center.authenticator.withdraw && !this.state.twoFaToken) {
       this.setState({ state_data, limit, limit_supered })
-      return this.props.action.renderModal(() => 
+      return this.props.action.renderModal(() =>
         <Withdraw2FaModal cancelAction={() => this.close2FaModal()} isWithdraw2fa callback={this.setTowFaToken} />)
     }
     this.props.action.isAppLoading(true)
@@ -236,7 +233,7 @@ class WithdrawFlow extends Component {
       need_new_acount: false
     })
     this.props.action.FlowAnimationLayoutAction('nextV', 'next', "withdraw")
-    await this.props.action.get_withdraws(this.props.account_id, 'withdraws')
+    await this.props.coinsendaServices.get_withdraws(this.props.account_id)
 
     const {
       withdraw_account,
@@ -249,11 +246,16 @@ class WithdrawFlow extends Component {
 
     const { account_id } = this.props
 
-    // return console.log('|||||| form_withdraw', this.props.form_withdraw, state_data)
     await this.props.action.UpdateForm('withdraw', { withdraw_account: withdraw_account, withdraw_provider: withdraw_provider })
-    // console.log('||||||| ======>>> add_new_withdraw_order', amount, account_id, withdraw_provider, withdraw_account)
-    let res = await this.props.action.add_new_withdraw_order(amount, account_id, withdraw_provider, withdraw_account, this.state.twoFaToken)
-    // console.log('RESPUESTA ENDPOINT RETIRO FIAT', res)
+    let res = await this.props.coinsendaServices.addWithdrawOrder({
+      "data": {
+        amount,
+        "account_id": account_id,
+        "withdraw_provider_id": withdraw_provider,
+        "withdraw_account_id": withdraw_account,
+        "country": this.props.user.country
+      }
+    }, this.state.twoFaToken)
 
     if (!res) {
       this.setState({
@@ -281,8 +283,8 @@ class WithdrawFlow extends Component {
     return this.create_order(res)
   }
 
-  close2FaModal () {
-    if(!this.state.need_new_acount) return
+  close2FaModal() {
+    if (!this.state.need_new_acount) return
     this.setState({
       need_new_acount: false,
       show_list_accounts: true,
@@ -408,7 +410,7 @@ class WithdrawFlow extends Component {
 
     // return console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state)
 
-    let res = await this.props.action.add_update_withdraw(this.state.new_order.id, 'confirmed')
+    let res = await this.props.coinsendaServices.addUpdateWithdraw(this.state.new_order.id, 'confirmed')
 
     if (!res || res === 465) {
       this.setState({
@@ -423,42 +425,6 @@ class WithdrawFlow extends Component {
     }
 
     const { new_order } = this.state
-    //
-    // let new_withdraw = {
-    //   account_id:new_order.account_id,
-    //   amount:new_order.amount,
-    //   amount_neto:new_order.amount_neto,
-    //   comment:"",
-    //   country:new_order.country,
-    //   currency:new_order.currency,
-    //   currency_type:new_order.currency_type,
-    //   cost:new_order.cost,
-    //   cost_struct:new_order.cost_struct,
-    //   deposit_provider_id:"",
-    //   expiration_date:new Date(),
-    //   id:new_order.id,
-    //   state:"confirmed",
-    //   unique_id:new_order.id,
-    //   userId:new_order.userId,
-    //   withdraw_account:new_order.withdraw_account_id,
-    //   withdraw_provider:new_order.withdraw_provider_id,
-    //   type_order:"withdraw"
-    // }
-    //
-    // const{
-    //   account_from
-    // } = this.props.withdraw_order
-    //
-    //
-    // await this.props.action.add_item_state('withdraws', new_withdraw)
-    // await this.props.action.update_activity_state(new_order.account_id, 'withdraws')
-    // await this.props.history.push(`/wallets/activity/${account_from.id}/withdraws`)
-    // this.props.action.add_new_transaction_animation()
-
-
-
-    console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state, res)
-
 
     await this.props.action.toggleModal()
     await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
@@ -470,30 +436,20 @@ class WithdrawFlow extends Component {
     if (this.state.addNotification) {
       setTimeout(async () => {
         this.props.action.addNotification('withdraw_accounts', { account_id: new_order.withdraw_account_id }, 1)
-        this.props.action.mensaje('Nueva cuenta de retiro creada', 'success')
+        this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
         await this.setState({ addNotification: false })
       }, 2000)
     }
     setTimeout(async () => {
-      await this.props.action.ManageBalance(this.props.account_id, 'reduce', new_order.amount)
-      // setTimeout(()=>{
-      //   return this.props.action.get_account_balances(this.props.user)
-      // },3000)
+      await this.props.coinsendaServices.manageBalance(this.props.account_id, 'reduce', new_order.amount)
     }, 2000)
-
-
   }
-
-
-
 
   handleError = msg => {
-    return this.props.action.mensaje(msg, 'error')
+    return this.props.toastMessage(msg, 'error')
   }
 
-
   siguiente = (event) => {
-
     const {
       step
     } = this.props
@@ -514,7 +470,6 @@ class WithdrawFlow extends Component {
     return this.setState({ show_list_accounts: false, need_new_acount: false })
   }
 
-
   cancelWithdrawOrder = async () => {
 
     await this.props.action.ModalView('modalView')
@@ -524,27 +479,15 @@ class WithdrawFlow extends Component {
     })
 
     this.props.action.isAppLoading(true)
-    // console.log(`cancelWithdrawOrder ${this.state.new_order.id}`, res, this.state.new_order)
-    // alert('delete')
     await this.volver(1)
     this.props.action.isAppLoading(false)
     this.setState({
       ticket_label_loader: "Creando orden de retiro",
       show_list_accounts: true,
     })
-    // alert('cancelado')
   }
 
-
-
-
-
-
-
   render() {
-
-    // console.log('=========> Min amount supported:', this.state.min_amount, typeof(this.state.min_amount))
-
     const {
       currency,
       available,
@@ -563,9 +506,6 @@ class WithdrawFlow extends Component {
       min_amount,
       withdraw_account_list_update
     } = this.state
-
-    // console.log('||||||| ---- -necesita cuenta?', this.state.need_new_acount)
-    // console.log('||||||| ---- -necesita cuenta?', step, show_list_accounts)
 
     return (
       <section className="WFC DepositLayout">
@@ -623,6 +563,7 @@ class WithdrawFlow extends Component {
             <WithdrawAccountForm
               withdraw_flow={true}
               withdraw_flow_action={this.new_account_and_withdraw}
+              toastMessage={this.props.toastMessage}
             />
           }
 
@@ -724,4 +665,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WithdrawFlow)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(WithdrawFlow))

@@ -1,86 +1,135 @@
 import { WebService } from "../actions/API/WebService";
 import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "../const/const";
-import { desNormalizedList, normalized_list, update_activity_state } from "../utils";
+import { desNormalizedList, normalized_list } from "../utils";
 import normalizeUser from "../schemas";
 import loadLocalPairsAction, {
     updateNormalizedDataAction,
     getAllPairsAction,
     searchCurrentPairAction,
-    loadLocalCurrencyAction
+    loadLocalCurrencyAction,
+    update_item_state
 } from "../actions/dataModelActions";
 import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
-import sleep from "../utils/sleep";
 
 
 
 export class SwapService extends WebService {
 
-  async fetchAllPairs() {
+    async fetchAllPairs() {
 
-      this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
-      const pairs = await this.Get(`${SWAP_URL}pairs`)
-      if(!pairs){return}
-      console.log('||||||||| pairs', pairs)
-      // alert('pairs')
+        this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
+        const pairs = await this.Get(`${SWAP_URL}pairs`)
+        if (!pairs) { return }
+        console.log('||||||||| pairs', pairs)
+        // alert('pairs')
 
-      this.dispatch(getAllPairsAction(pairs))
-      let updatedUser = {
-          ...this.user,
-          available_pairs: [
-              ...pairs
-          ]
-      }
+        this.dispatch(getAllPairsAction(pairs))
+        let updatedUser = {
+            ...this.user,
+            available_pairs: [
+                ...pairs
+            ]
+        }
 
-      let dataNormalized = await normalizeUser(updatedUser)
-      this.dispatch(updateNormalizedDataAction(dataNormalized))
-      return dataNormalized
-  }
+        let dataNormalized = await normalizeUser(updatedUser)
+        this.dispatch(updateNormalizedDataAction(dataNormalized))
+        return dataNormalized
+    }
 
-  pairsRequest(query) {
-      const requestCompleteUrl = `${PAIRS_URL}${query}`
-      return this.Get(requestCompleteUrl)
-  }
+    pairsRequest(query) {
+        const requestCompleteUrl = `${PAIRS_URL}${query}`
+        return this.Get(requestCompleteUrl)
+    }
 
-  async getPairsByCountry(country, currencies) {
+    async getPairsByCountry(country, currencies) {
 
-      const localCurrency = await this.getLocalCurrency(country)
+        const localCurrency = await this.getLocalCurrency(country)
 
-      if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
-      const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
-      if (!pairs) return
+        if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
+        const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
+        if (!pairs) return
 
-      if (currencies) {
-        const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
-        await this.dispatch(loadLocalPairsAction(localCurrencies))
+        if (currencies) {
+            const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
+            await this.dispatch(loadLocalPairsAction(localCurrencies))
 
-        // TODO: Evaluate this
-        // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
+            // TODO: Evaluate this
+            // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
 
-        this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
+            this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
 
-        this.dispatch(loadLocalCurrencyAction(localCurrency))
-      }
-  }
+            this.dispatch(loadLocalCurrencyAction(localCurrency))
+        }
+    }
 
-  async getPairs(primary, secondary, all) {
-      if (!primary && !secondary) return
+    async getPairs(primary, secondary, all) {
+        if (!primary && !secondary) return
 
-      if (primary || secondary) {
-          const query = !secondary ?
-              `{"where": {"primary_currency.currency": "${primary}"}}` :
-              `{"where": {"secondary_currency.currency": "${secondary}"}}`
-          const response = await this.pairsRequest(query)
-          if (this.isEmpty(response)) return
-          if (all) { return response }
-          return response[0]
-      }
-      const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
-      const response = await this.pairsRequest(query)
-      if (this.isEmpty(response)) return
-      return response[0]
-  }
+        if (primary || secondary) {
+            const query = !secondary ?
+                `{"where": {"primary_currency.currency": "${primary}"}}` :
+                `{"where": {"secondary_currency.currency": "${secondary}"}}`
+            const response = await this.pairsRequest(query)
+            if (this.isEmpty(response)) return
+            if (all) { return response }
+            return response[0]
+        }
+        const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
+        const response = await this.pairsRequest(query)
+        if (this.isEmpty(response)) return
+        return response[0]
+    }
+
+    async _getPairs(primary, secondary, all) {
+        if (!primary || !secondary) { return false }
+        let res, query
+        if (primary && !secondary) {
+            query = `{"where": {"primary_currency.currency": "${primary}"}}`
+        }
+        if (!primary && secondary) {
+            query = `{"where": {"secondary_currency.currency": "${secondary}"}}`     
+        }
+        query && (res = await this.pairsRequest(query))
+        if(res) {
+            if (all) { return res }
+            return res[0]
+        }
+
+        query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
+        res = await this.pairsRequest(query)
+        if (this.isEmpty(res)) return
+        return res[0]
+    }
+
+    // TODO: review this fn:getDefaultPair
+    async getDefaultPair(currentWallet, localCurrency, currentPair) {
+        if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
+
+        const currency = currentWallet.currency.currency
+
+        let pair = await this._getPairs(currency, localCurrency)
+        !pair && (pair = await this._getPairs('bitcoin', currency))
+        !pair && (pair = await this._getPairs(currency))
+        !pair && (pair = await this._getPairs(null, currency))
+
+
+        let pair_id = pair.id
+
+        const data = await convertCurrencies(currentWallet.currency, '1', pair_id)
+
+        if (data) {
+            const { to_spend_currency } = data
+            return this.dispatch(pairsForAccount(currentWallet.id, {
+                current_pair: {
+                    pair_id,
+                    currency: to_spend_currency.currency,
+                    currency_value: data.want_to_spend
+                }
+            }))
+        }
+    }
 
     async loadPairs(currentWallet, localCurrency, currentPair) {
         if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
@@ -162,10 +211,19 @@ export class SwapService extends WebService {
         return normalizedUser
     }
 
+    async updateCurrentPair(query, currentPair) {
+        const result = await this.Get(`${PAIRS_URL}${query}`)
+        if (!result || result === 465) { return }
+
+        if (currentPair) {
+            this.dispatch(update_item_state({ currentPair: { ...result[0] } }, 'pairs'))
+        } else {
+            this.dispatch(update_item_state({ [result[0].id]: { ...result[0] } }, 'all_pairs'))
+        }
+    }
+
     async get_swaps(accountId, limit = 20, skip = 0) {
         const user = this.user
-        const { wallets } = this.globalState.modelData
-
         let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`
         const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`
 
@@ -199,7 +257,7 @@ export class SwapService extends WebService {
         // })
         swapResult = this.parseActivty(swaps, 'swaps', accountId)
         await this.dispatch(normalized_list(swapResult, 'swaps'))
-        await this.dispatch(update_activity_state(accountId, 'swaps', swapResult))
+        await this.updateActivityState(accountId, 'swaps', swapResult)
 
         return swaps
     }

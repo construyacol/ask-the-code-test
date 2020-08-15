@@ -7,12 +7,14 @@ import SimpleLoader from '../../../loaders'
 import { MdContentCopy } from "react-icons/md";
 import { BsUpload } from "react-icons/bs";
 import { copy } from '../../../../../utils'
+import { useToastMesssage } from '../../../../../hooks/useToastMessage'
 
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
 
   const [ activeSection, setActiveSection ] = useState(true)
   const { coinsendaServices, actions } = UseTxState()
+  const [ toastMessage ] = useToastMesssage()
 
   const subirImg = async({base64}) => {
     setImgSrc(base64)
@@ -21,7 +23,7 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
     let confirmation = await coinsendaServices.confirmDepositOrder(order_id, base64)
     if(!confirmation){
       actions.isAppLoading(false)
-      actions.mensaje('El deposito No se ha confirmado', 'error')
+      toastMessage('El deposito No se ha confirmado', 'error')
       setImgSrc(null)
     }
   }

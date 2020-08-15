@@ -22,6 +22,7 @@ import {
 
 import './item_wallet.css'
 import { withRouter } from 'react-router'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 const ItemAccount = props => {
 
@@ -32,6 +33,7 @@ const ItemAccount = props => {
   }
 
   const [coinsendaServices] = useCoinsendaServices()
+  const [ toastMessage ] = useToastMesssage()
   const [account_state, set_account_state] = useState()
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
@@ -85,19 +87,19 @@ const ItemAccount = props => {
     if (isWallet) {
       if(props.balances.total > 0){
         set_account_state('')
-        return props.actions.mensaje('Las cuentas con balance no pueden ser eliminadas', 'error')
+        return toastMessage('Las cuentas con balance no pueden ser eliminadas', 'error')
       }
 
       let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id, '"state":"confirmed"')
       if(areThereDeposits && areThereDeposits.length){
         set_account_state('')
-        return props.actions.mensaje('Las cuentas con depositos pendientes no pueden ser eliminadas', 'error')
+        return toastMessage('Las cuentas con depositos pendientes no pueden ser eliminadas', 'error')
       }
 
     }
     // else if(props.account.used_counter){
     //   setTimeout(()=>set_account_state(''), 700)
-    //   return props.actions.mensaje('Las cuentas de retiro con movimiento no pueden ser eliminadas...', 'error')
+    //   return toastMessage('Las cuentas de retiro con movimiento no pueden ser eliminadas...', 'error')
     // }
 
     let msg = "Cuenta eliminada con éxito"
@@ -106,13 +108,13 @@ const ItemAccount = props => {
     if (isWallet) {
       result = await coinsendaServices.deleteWallet(props.account)
     } else {
-      result = await await coinsendaServices.deleteWithdrawAccount(props.account.id)
+      result = await await coinsendaServices.deleteAccount(props.account.id)
     }
     if (result === 404 || result === 465 || !result) {
       msg = "La cuenta no se ha podido eliminar"
       success = false
       set_account_state('')
-      return props.actions.mensaje(msg, success ? 'success' : 'error')
+      return toastMessage(msg, success ? 'success' : 'error')
     }
     set_account_state('deleted')
     setTimeout(async () => {
@@ -123,7 +125,7 @@ const ItemAccount = props => {
       }
     }, 0)
     props.actions.exit_sound()
-    props.actions.mensaje(msg, success ? 'success' : 'error')
+    toastMessage(msg, success ? 'success' : 'error')
   }
 
   // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||  ItemAccount < ItemAccount ::', reduxState, props)

@@ -9,6 +9,7 @@ import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
 import QrScanner from '../../qr-scanner'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 
 
@@ -67,12 +68,12 @@ export const CriptoView = () => {
     {
       confirmationModalToggle,
       confirmationModalPayload,
-      mensaje,
       isAppLoading,
       renderModal
     }, dispatch] = WithdrawViewState()
 
   const actions = useActions()
+  const [ toastMessage ] = useToastMesssage()
 
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
@@ -97,7 +98,6 @@ export const CriptoView = () => {
 
     dispatch(isAppLoading(true))
     let withdraw_account = withdraw_accounts[address]
-    // return console.log('|||||||||||||||||||||||||| finish_withdraw ==> ', current_wallet)
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({
@@ -107,7 +107,6 @@ export const CriptoView = () => {
         address: address,
         country: current_wallet.country
       }, 'cripto')
-      // console.log('NUEVA CUENTA CREADA ==> ', withdraw_account)
       await coinsendaServices.fetchWithdrawAccounts()
     }
 
@@ -120,14 +119,13 @@ export const CriptoView = () => {
         "country": user.country
       }
     }, twoFaToken)
-    // return console.log('||||||||||||||||||||||||||||||||||||||||| withdraw', withdraw)
 
     if (!withdraw) {
       dispatch(isAppLoading(false))
       if (twoFaToken) {
-        return dispatch(mensaje('Al parecer el codigo 2Fa es incorrecto...', 'error'))
+        return toastMessage('Al parecer el codigo 2Fa es incorrecto...', 'error')
       }
-      return dispatch(mensaje('No se ha podido crear la orden de retiro', 'error'))
+      return toastMessage('No se ha podido crear la orden de retiro', 'error')
     }
 
   }

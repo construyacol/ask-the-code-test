@@ -9,6 +9,7 @@ import { objectToArray, capitalizeString } from '../../../utils'
 import { matchItem, serveKycData, converToInitState, extractSelectList, FormatCountryList } from '../../../utils'
 // import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from './itemList'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 const modelFormData = kyc.kyc_basic.natural
 
@@ -125,17 +126,17 @@ class KycBasicContainer extends Component {
     // de momento solo aceptaremos personas naturales por lo tanto viene seteado por defecto en (user.person_type:'natural')
     const { form_kyc_basic_state } = this.props
     // console.log(form_kyc_basic_state, modelFormData)
-    let verification_state = await this.props.action.get_verification_state()
+    let verification_state = await this.props.coinsendaServices.getVerificationState()
 
     if (!verification_state || verification_state === 'rejected') {
       // if(user.verification_level !== 'level_0'){
       this.props.action.isAppLoading(true)
       const { user } = this.props
-      let countryvalidators = await this.props.action.countryvalidators()
+      let countryvalidators = await this.props.coinsendaServices.countryValidators()
 
       let kyc_data_basic = await serveKycData(countryvalidators.res.levels.level_1.personal[user.person_type])
       let init_state = await converToInitState(countryvalidators.res.levels.level_1.personal[user.person_type])
-      let get_country_list = await this.props.action.get_country_list()
+      let get_country_list = await this.props.coinsendaServices.getCountryList()
       let select_list = await extractSelectList(kyc_data_basic, countryvalidators.res.levels.level_1.personal[user.person_type])
       // console.log('|||||||||__________select_list',kyc_data_basic ,select_list)
       select_list.country = await FormatCountryList(select_list.country, get_country_list)
@@ -547,10 +548,8 @@ class KycBasicContainer extends Component {
 }
 
 
-function mapStateToProps(state, props) {
-
+function mapStateToProps(state) {
   const { user } = state.modelData
-
 
   return {
     ...state.form.form_kyc_basic,
@@ -563,9 +562,10 @@ function mapStateToProps(state, props) {
 }
 
 function mapDispatchToProps(dispatch) {
+
   return {
     action: bindActionCreators(actions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(KycBasicContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(KycBasicContainer))

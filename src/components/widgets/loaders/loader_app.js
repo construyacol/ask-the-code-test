@@ -69,7 +69,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if (!country && !newCountry) { return false }
     const userCountry = newCountry ? newCountry : country
 
-    const res = await coinsendaServices.countryValidator()
+    const res = await coinsendaServices.countryValidators()
     if (!res) {
       prepareCountrySelection()
       return doLogout()

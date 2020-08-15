@@ -1,6 +1,5 @@
 import { WebService } from "../actions/API/WebService";
 import { REFERRALS_URL } from "../const/const";
-import { updateUser } from "../actions/APIactions";
 
 export class ReferralService extends WebService {
     async setReferralCode(code) {
@@ -18,12 +17,12 @@ export class ReferralService extends WebService {
         const finalUrl = `${REFERRALS_URL}/set-ref-code`
         let res = await this.Post(finalUrl, body)
 
-        let updatedUser = {
-            ...user,
-            referral: res
-        }
+        // let updatedUser = {
+        //     ...user,
+        //     referral: res
+        // }
 
-        await this.dispatch(updateUser(updatedUser))
+        // await this.dispatch(this.updateUser(updatedUser))
         return res
     }
 
@@ -38,7 +37,7 @@ export class ReferralService extends WebService {
             referral: response[0]
         }
 
-        await this.dispatch(updateUser(updatedUser))
+        await this.dispatch(this.updateUser(updatedUser))
         return response && response[0]
     }
 }

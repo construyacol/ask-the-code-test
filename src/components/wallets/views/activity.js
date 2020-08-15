@@ -11,6 +11,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 
 import './wallet_views.css'
+import { useToastMesssage } from '../../../hooks/useToastMessage'
 
 
 
@@ -19,13 +20,14 @@ const ActivityView = props => {
   const { params } = props.match
   const [ loader, setLoader ] = useState(false)
   const [coinsendaServices] = useCoinsendaServices()
+  const [ toastMessage ] = useToastMesssage()
 
 
 
   const redirect = (activity_list) => {
     // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, activity_list && !activity_list.length)
     if ((activity_list && activity_list.length)) { return false }
-    props.action.mensaje('Esta cuenta aún no tiene actividad')
+    toastMessage('Esta cuenta aún no tiene actividad')
     props.history.push(`/${params.primary_path}/deposit/${params.account_id}`)
   }
 
@@ -84,7 +86,7 @@ const ActivityView = props => {
         let activity_list = await coinsendaServices[method](params.account_id)
 
         if (!activity_list.length) {
-          props.action.mensaje(`Esta billetera no tiene ${getTxPath(params.tx_path)}`, 'error')
+          toastMessage(`Esta billetera no tiene ${getTxPath(params.tx_path)}`, 'error')
           get_activity(method)
         }
         setLoader(false)
@@ -113,6 +115,7 @@ const ActivityView = props => {
           :
           <ActivityList
             activity={props.order_list}
+            getDefaultPair={coinsendaServices.getDefaultPair}
             {...props}
           />
       }

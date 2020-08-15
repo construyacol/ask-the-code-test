@@ -10,6 +10,7 @@ import './deposit.css'
 import { SavePayment } from '../../widgets/toast/messages'
 import { withRouter } from "react-router";
 import BigNumber from 'bignumber.js'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 
 
@@ -156,7 +157,7 @@ class DepositContainer extends Component {
       })
 
       this.props.action.isAppLoading(true)
-      let res = await this.props.action.get_list_user_wallets(this.props.user)
+      let res = await this.props.coinsendaServices.getWalletsByUser()
       this.props.action.isAppLoading(false)
       if (!res) { return this.handleError('No se han podido consultar tus Billeteras') }
       wallets = !res.entities.wallets ? [] : res.entities.wallets
@@ -193,7 +194,7 @@ class DepositContainer extends Component {
 
   handleError = (msg) => {
 
-    this.props.action.mensaje(msg, 'error')
+    this.props.toastMessage(msg, 'error')
     this.props.action.toggleModal()
     this.props.action.CleanForm('deposit')
   }
@@ -220,16 +221,16 @@ class DepositContainer extends Component {
       }
     }
 
-    const new_wallet = await this.props.action.create_new_wallet(body)
+    const new_wallet = await this.props.coinsendaServices.createWallet(body)
 
     // setTimeout(()=>{
-    await this.props.action.get_list_user_wallets(this.props.user)
+    await this.props.coinsendaServices.getWalletsByUser()
 
     this.props.action.isAppLoading(false)
     this.to_deposit_wallet(new_wallet.account.id)
     if (this.state.type_currency !== 'fiat') { this.props.action.CleanForm('deposit') }
     let message = `¡Estas dentro de la nueva wallet ${this.state.currency}!`
-    this.props.action.mensaje(message, 'success')
+    this.props.toastMessage(message, 'success')
 
     // }, 1500)
   }
@@ -371,25 +372,16 @@ class DepositContainer extends Component {
       service_mode
     } = this.state
 
-    // console.log('||||||||||   como envio los depositos', service_mode)
-    // console.log('create_deposit_order CURRENT_WALLET', current_wallet)
-
-    // let deposit_provider = await deposit_providers.find(dep_prov => {
-    //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
-    // })
-    // let deposit_provider = deposit_providers && deposit_providers[0]
     const deposit_provider = deposit_providers && deposit_providers[current_wallet.dep_prov[0]]
-
-    // console.log('create_deposit_order PROPS', deposit_provider, current_wallet)
 
     this.siguiente()
     this.props.action.isAppLoading(true)
 
     if (!this.props.deposits) {
-      await this.props.action.get_deposits(this.props.current_wallet.id)
+      await this.props.coinsendaServices.get_deposits(this.props.current_wallet.id)
     }
 
-    let response = await this.props.action.create_deposit_order(
+    let response = await this.props.coinsendaServices.createDeposit(
       current_wallet && current_wallet.currency,
       amount,
       current_wallet.id,
@@ -403,7 +395,7 @@ class DepositContainer extends Component {
     if (!response) {
       this.props.action.isAppLoading(false)
       this.props.action.ReduceStep(this.props.current)
-      return this.props.action.mensaje('No se ha podido crear la orden de deposito', 'error')
+      return this.props.toastMessage('No se ha podido crear la orden de deposito', 'error')
     }
 
 
@@ -694,4 +686,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(DepositContainer))
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(withRouter(DepositContainer)))

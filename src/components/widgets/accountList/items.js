@@ -11,6 +11,7 @@ import PopNotification from '../notifications'
 import BalanceComponent from '../balance/balance'
 import SimpleLoader from '../loaders'
 import PropTypes from 'prop-types'
+import withCoinsendaServices from '../../withCoinsendaServices';
 
 
 export class ItemWallet extends Component {
@@ -78,7 +79,7 @@ componentDidMount(){
       type
     } = wallet
 
-    await this.props.delete_account(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
+    await this.props.coinsendaServices.deleteAccount(this.props.wallet.id, type === 'withdraw' ? 'withdraw' : 'wallet')
     // console.log('CUENTA ELIMINADA', deleteA)
   }
 
@@ -91,7 +92,7 @@ componentDidMount(){
 
       // await this.update_deposit_provider()
       // console.log('ItemWallet', this.state)
-      let verified = await this.props.action.getUserVerificationStatus('level_1')
+      let verified = await this.props.coinsendaServices.getUserVerificationStatus('level_1')
       this.props.action.FiatDeposit(this.props.localCurrency)
       if(verified){this.props.action.toggleModal()}
       this.props.history.push(`/wallets/deposit/${this.props.wallet.id}`)
@@ -107,7 +108,7 @@ componentDidMount(){
     if(this.props.wallet.currency_type === 'fiat'){
 
       // this.props.action.FiatDeposit(this.props.localCurrency)
-      let verified = await this.props.action.getUserVerificationStatus('level_1')
+      let verified = await this.props.coinsendaServices.getUserVerificationStatus('level_1')
       this.props.history.push(`/wallets/withdraw/${this.props.wallet.id}`)
       await this.props.action.CurrentForm('withdraw')
       if(verified){this.props.action.toggleModal()}
@@ -321,4 +322,4 @@ function mapDispatchToProps(dispatch){
 }
 
 // export default ItemWallet
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (ItemWallet))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (withCoinsendaServices(ItemWallet)))

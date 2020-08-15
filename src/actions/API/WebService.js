@@ -26,6 +26,12 @@ export class WebService {
         })
     }
 
+    GetWithOutHeaders(url){
+        return this.doFetch(url, {
+            method: `GET`
+        })
+    }
+
     getHeaders(token) {
         return {
             'Authorization': `Bearer ${token}`,
