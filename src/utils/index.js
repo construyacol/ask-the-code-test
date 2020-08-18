@@ -5,7 +5,6 @@ import * as Sentry from '@sentry/browser';
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
 import store from '..'
-import { useToastMesssage } from '../hooks/useToastMessage';
 
 const {
   normalizeUser
@@ -73,14 +72,13 @@ export const mensaje = async (msg, type, position) => {
 
 export const copy = (payload) => {
   if(!document || !payload) return;
-  const [ toastMessage ] = useToastMesssage()
    let aux = document.createElement("input")
    aux.setAttribute("value", payload.target.dataset && payload.target.dataset.copy)
    document.body.appendChild(aux);
    aux.select();
    document.execCommand("copy");
    document.body.removeChild(aux);
-  return toastMessage("¡Copiado Exitosamente!")
+  return mensaje("¡Copiado Exitosamente!")
 }
 
 
