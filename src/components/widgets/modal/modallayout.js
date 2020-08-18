@@ -41,7 +41,7 @@ const ModalLayout = (props) => {
   }
 
   useEffect(() => {
-    const el = document.getElementById('modal-layout')
+    const el = window
     el.onkeydown = (event) => {
       // esc
       if (event.keyCode === 27) {
@@ -50,11 +50,13 @@ const ModalLayout = (props) => {
         // event.preventDefault();
       }
     }
-    return el.onkeydown = () => null
+    return () => {
+      el.onkeydown = () => null
+    }
   }, [])
 
   return (
-    <section id="modal-layout" className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>
+    <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>
       <div className={`modalCont ${modalView}`}>
         {children}
 
