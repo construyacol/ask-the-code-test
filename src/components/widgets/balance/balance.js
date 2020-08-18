@@ -63,7 +63,7 @@ class BalanceComponent extends Component {
   }
 
   dead_time = async anim => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       setTimeout(async () => {
         return resolve(true)
       }, 1000)
@@ -71,7 +71,7 @@ class BalanceComponent extends Component {
   }
 
   play_animation = async anim => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       await this.setState({ animation: anim })
       setTimeout(async () => {
         return resolve(true)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import OtherModalLayout from '../modal/otherModalLayout'
 import styled from 'styled-components'
 import { useActions } from '../../../hooks/useActions'
@@ -16,6 +16,17 @@ const PricesModal = () => {
   const closeModal = () => {
     actions.renderModal(null)
   }
+
+  useEffect(() => {
+    document.onkeydown = (event) => {
+      // esc
+      if (event.keyCode === 27) {
+        closeModal()
+        // event.preventDefault();
+      }
+    }
+    return () => document.onkeydown = () => null
+  }, [])
 
   return(
     <OtherModalLayout>

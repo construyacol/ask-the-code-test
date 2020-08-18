@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ItemLayout from '../../../widgets/items/itemLayout'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
 
@@ -17,6 +17,10 @@ const ModalityView = props =>{
   } = props
   let movil_viewport = window.innerWidth<768
 
+  useEffect(() => {
+    update_service_mode("Sucursal virtual", "app")
+  }, [])
+  
   return(
     <div className="DLstep modality">
       <div className="DLcontain">
