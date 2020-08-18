@@ -13,152 +13,152 @@ import ViewAmountComponent from '../views/viewAmount'
 const DepositLayout = (props) => {
 
   const {
-     siguiente,
-     currency,
-     amount,
-     deposit_way,
-     step,
-     buttonActive,
-     select_currency,
-     itemActive,
-     short_currency_name,
-     type_currency,
-     primerDeposito,
-     loader,
-     updateAmountOnState,
-     select_deposit_way,
-     wallets_list,
-     deposit,
-     msgLoader,
-     minAmount,
-     coins,
-     deposit_providers
+    siguiente,
+    currency,
+    amount,
+    deposit_way,
+    step,
+    buttonActive,
+    select_currency,
+    itemActive,
+    short_currency_name,
+    type_currency,
+    primerDeposito,
+    loader,
+    updateAmountOnState,
+    select_deposit_way,
+    wallets_list,
+    deposit,
+    msgLoader,
+    minAmount,
+    coins,
+    deposit_providers
   } = props
 
   // console.log('|||||||||||| deposit Layout ===> ', currency)
 
-  return(
+  return (
     <section className="DepositLayout">
-    {
-      (!short_currency_name && step === 1) &&
+      {
+        (!short_currency_name && step === 1) &&
         <div className="DLstep">
-            <p className="fuente DLtitle" >¿En que moneda deseas hacer el deposito?</p>
+          <p className="fuente DLtitle" >¿En que moneda deseas hacer el deposito?</p>
 
-            <div className="ItemSelectionContainer2 ItemSelectionContainerMovil">
-              <div className="containerItems">
-                {
-                  coins?
-                  coins.map(item=>{
-                    return <ItemLayout actualizarEstado={select_currency} actives={itemActive === item.name && true } {...item} key={item.id}/>
+          <div className="ItemSelectionContainer2 ItemSelectionContainerMovil">
+            <div className="containerItems">
+              {
+                coins ?
+                  coins.map(item => {
+                    return <ItemLayout actualizarEstado={select_currency} actives={itemActive === item.name && true} {...item} key={item.id} />
                   })
                   :
-                  <div className="LoaderIt" ><SimpleLoader label="Obteniendo Activos"/></div>
-                }
-              </div>
-            </div>
-        <ButtonForms type="primary" active={buttonActive} siguiente={primerDeposito}>Continuar</ButtonForms>
-      </div>
-    }
-
-    {
-      (type_currency === 'crypto' && step === 1) &&
-      // step === 1 &&
-            <Fragment>
-            {
-              loader &&
-                <SimpleLoader
-                  label={msgLoader}
-                />
-            }
-            </Fragment>
-    }
-
-    {
-      // step === 1 && wallets_list.length>0 &&
-      (type_currency === 'crypto' && step === 1 && wallets_list.length>0) &&
-        <section className="DLwallet_list_container">
-           <p className="DLtitle2">Elige la cuenta {currency} en la que deseas depositar:</p>
-            <div className="DLwallet_list">
-              {
-                wallets_list.map(wallet=>{
-                  return <ItemWallet
-                    key={wallet.id}
-                    deposit={deposit}
-                    deposit_providers={deposit_providers}
-                    // delete_wallet={this.delete_wallet_confirmation}
-                    wallet={wallet}
-                    walletDetail={deposit}
-                    // history={this.props.history}
-                   />
-                })
+                  <div className="LoaderIt" ><SimpleLoader label="Obteniendo Activos" /></div>
               }
             </div>
-        </section>
-    }
+          </div>
+          <ButtonForms type="primary" active={buttonActive} siguiente={primerDeposito}>Continuar</ButtonForms>
+        </div>
+      }
 
-    {
-      (type_currency === 'fiat' && step === 1) &&
-      <Fragment>
-        {
-          loader ?
-          <SimpleLoader
-            label="Accediendo a la cuenta"
-          />
-          :
-          <ViewAmountComponent
-            currency={currency}
-            amount={amount}
-            updateAmountOnState={updateAmountOnState}
-            operation_type="deposit"
-            handleSubmit={siguiente}
-            minAmount={minAmount}
+      {
+        (type_currency === 'crypto' && step === 1) &&
+        // step === 1 &&
+        <Fragment>
+          {
+            loader &&
+            <SimpleLoader
+              label={msgLoader}
             />
-        }
-      </Fragment>
-    }
+          }
+        </Fragment>
+      }
 
-    {
-      (type_currency === 'fiat' && step === 2) &&
+      {
+        // step === 1 && wallets_list.length>0 &&
+        (type_currency === 'crypto' && step === 1 && wallets_list.length > 0) &&
+        <section className="DLwallet_list_container">
+          <p className="DLtitle2">Elige la cuenta {currency} en la que deseas depositar:</p>
+          <div className="DLwallet_list">
+            {
+              wallets_list.map(wallet => {
+                return <ItemWallet
+                  key={wallet.id}
+                  deposit={deposit}
+                  deposit_providers={deposit_providers}
+                  // delete_wallet={this.delete_wallet_confirmation}
+                  wallet={wallet}
+                  walletDetail={deposit}
+                // history={this.props.history}
+                />
+              })
+            }
+          </div>
+        </section>
+      }
 
-      <MethodView
-        title="Utilizando la siguiente"
-        subtitle="forma de pago"
-        items={payment_method}
-        select_method={select_deposit_way}
-        item_active={deposit_way}
-        siguiente={siguiente}
-      />
+      {
+        (type_currency === 'fiat' && step === 1) &&
+        <Fragment>
+          {
+            loader ?
+              <SimpleLoader
+                label="Accediendo a la cuenta"
+              />
+              :
+              <ViewAmountComponent
+                currency={currency}
+                amount={amount}
+                updateAmountOnState={updateAmountOnState}
+                operation_type="deposit"
+                handleSubmit={siguiente}
+                minAmount={minAmount}
+              />
+          }
+        </Fragment>
+      }
 
-    }
+      {
+        (type_currency === 'fiat' && step === 2) &&
 
-{/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
+        <MethodView
+          title="Utilizando la siguiente"
+          subtitle="forma de pago"
+          items={payment_method}
+          select_method={select_deposit_way}
+          item_active={deposit_way}
+          siguiente={siguiente}
+        />
 
-  {
+      }
+
+      {/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
+
+      {
         deposit_way === "bankaccount" &&
         <TransferFlow
           {...props}
         />
-  }
+      }
 
 
-    {/* ---------------------------------------------------------FLUJO TARJETA DEBITO.-------------------------------------------------------------------- */}
+      {/* ---------------------------------------------------------FLUJO TARJETA DEBITO.-------------------------------------------------------------------- */}
 
-    {
-      (step === 3 && deposit_way === "debit") &&
+      {
+        (step === 3 && deposit_way === "debit") &&
         <div className="DLstep">
           <p>DEBITO PSE</p>
         </div>
-    }
+      }
 
-    {/* ---------------------------------------------------------FLUJO DINERO EN EFECTIVO.-------------------------------------------------------------------- */}
+      {/* ---------------------------------------------------------FLUJO DINERO EN EFECTIVO.-------------------------------------------------------------------- */}
 
 
-    {
-          deposit_way === "cash" &&
-          <CashFlow
-            {...props}
-          />
-    }
+      {
+        deposit_way === "cash" &&
+        <CashFlow
+          {...props}
+        />
+      }
 
 
 

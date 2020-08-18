@@ -53,7 +53,39 @@ class DepositContainer extends Component {
     //   return dep_prov.provider.name === short_bank_name || (cost_id === "en_efectivo" &&  dep_prov.provider_type === 'bank')
     // })
     const currentDepositProvider = deposit_providers && deposit_providers[this.props.current_wallet.dep_prov[0]]
-    this.setState({currentDepositProvider})
+    this.setState({ currentDepositProvider })
+    this.keyActions()
+  }
+
+  keyActions() {
+    document.onkeydown = (event) => {
+      // backspace
+      if ((event.keyCode === 8 || event.keyCode === 46) && this.props.step > 1) {
+        this.props.action.ReduceStep(this.props.current)
+        // event.preventDefault();
+      }
+      // enter
+      if (event.keyCode === 13) {
+        if (this.props.step === 3 && !this.props.buttonActive) {
+          return
+        }
+        if (this.props.step === 3) {
+          return this.create_deposit_order()
+        }
+        if (this.state.amount < (this.state.minAmount || 20000)) {
+          return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${globalServices.number_format(this.state.minAmount || 20000)}`, 'error')
+        }
+        if (this.props.step === 4 || this.state.final) {
+          return this.finalizar()
+        }
+        this.siguiente()
+        // event.preventDefault();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    document.onkeydown = () => null
   }
 
   componentDidUpdate(prevProps) {
@@ -194,7 +226,7 @@ class DepositContainer extends Component {
 
   handleError = (msg) => {
 
-    this.props.toastMessage(msg, 'error')
+    this.props.toastMessage()(msg, 'error')
     this.props.action.toggleModal()
     this.props.action.CleanForm('deposit')
   }
@@ -230,7 +262,7 @@ class DepositContainer extends Component {
     this.to_deposit_wallet(new_wallet.account.id)
     if (this.state.type_currency !== 'fiat') { this.props.action.CleanForm('deposit') }
     let message = `¡Estas dentro de la nueva wallet ${this.state.currency}!`
-    this.props.toastMessage(message, 'success')
+    this.props.toastMessage()(message, 'success')
 
     // }, 1500)
   }
@@ -248,7 +280,7 @@ class DepositContainer extends Component {
     // verificamos que no supere el monto maximo permitido por el preveedor
     const maxDepositAmount = this.state.currentDepositProvider && this.state.currentDepositProvider.provider.max_amount;
     const decimalAmount = new BigNumber(amount)
-    if(!amount || decimalAmount.isLessThan(maxDepositAmount)){
+    if (!amount || decimalAmount.isLessThan(maxDepositAmount)) {
       await this.setState({
         amount: amount,
       })
@@ -395,7 +427,7 @@ class DepositContainer extends Component {
     if (!response) {
       this.props.action.isAppLoading(false)
       this.props.action.ReduceStep(this.props.current)
-      return this.props.toastMessage('No se ha podido crear la orden de deposito', 'error')
+      return this.props.toastMessage()('No se ha podido crear la orden de deposito', 'error')
     }
 
 
@@ -406,8 +438,8 @@ class DepositContainer extends Component {
       ...response
     }
 
-    if(!current_wallet.count){
-      await this.props.action.update_item_state({ [current_wallet.id]: { ...current_wallet, count:99} }, 'wallets')
+    if (!current_wallet.count) {
+      await this.props.action.update_item_state({ [current_wallet.id]: { ...current_wallet, count: 99 } }, 'wallets')
     }
 
 
@@ -626,7 +658,6 @@ function mapStateToProps(state, props) {
 
   const {
     user,
-    user_id,
     deposit_providers,
     wallets,
     pairs,

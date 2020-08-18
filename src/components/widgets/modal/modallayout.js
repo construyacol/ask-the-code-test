@@ -15,27 +15,28 @@ const ModalLayout = (props) => {
     isAppLoaded
   } = props
   const actions = useActions()
-  // const [_] = useKeyActions(props)
-
+  
   const volver = () => {
     const { uiAnimation } = props
     if (uiAnimation) { return actions.FlowAnimationLayoutAction('backV', 'back', props.current) }
     actions.ReduceStep(props.current)
   }
-
+  
   const salir = async () => {
     const { current } = props
-
+    if(!loader && current === "ticket" && isAppLoaded) {
+      return salirTicket()
+    }
     actions.toggleModal()
     actions.CleanForm(current)
   }
-
+  
   const salirTicket = async () => {
     const { current } = props
 
     actions.ModalView('modalView')
     actions.CleanForm(current)
-
+    
     return actions.toggleModal()
   }
 

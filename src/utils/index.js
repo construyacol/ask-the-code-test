@@ -489,7 +489,7 @@ export const matchItem = (list, itemReview, type, all_results) => {
 export const handleKeyPress = (e, current) => {
   var keynum = window.event ? window.event.keyCode : e.which;
   // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
-  if (keynum < 48 || keynum > 57 && keynum !== 13) {
+  if ((keynum < 48 || keynum > 57) && keynum !== 13) {
     return "Solo se aceptan números en este campo"
   }
   return /\d/.test(String.fromCharCode(keynum));
