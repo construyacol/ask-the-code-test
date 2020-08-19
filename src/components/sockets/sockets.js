@@ -55,7 +55,6 @@ class SocketsComponent extends Component {
             })
 
             socket.on(`/deposit/${user.id}`, async (deposit) => {
-              // DEPOSITO CRIPTO ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
               if (deposit.state === 'pending' && deposit.currency_type === 'crypto') {
                 await this.setState({ currentDeposit: deposit })
               } else {
@@ -110,20 +109,26 @@ class SocketsComponent extends Component {
   }
 
   withdraw_mangagement = async (withdraw) => {
+
+
     if (withdraw.proof) {
 
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
         let cWithdraw = await this.props.coinsendaServices.getOrderById(withdraw.id, 'withdraws')
         await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id)
+        await this.setState({currentWithdraw:cWithdraw})
       }
+
+      // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, this.state.currentWithdraw)
 
       if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
         await this.props.action.update_item_state({ [withdraw.id]: { ...this.props.withdraws[withdraw.id], proof: withdraw.proof, sent: true, state: "accepted" } }, 'withdraws')
         await this.props.coinsendaServices.updateActivityState(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
-        await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
+        // this.props.coinsendaServices.showNotification('Retiro exitoso', 'Retiro enviado con éxito')
         this.props.action.success_sound()
-        if(!this.props.isModalActive){
+        if((this.state.currentWithdraw.currency_type === 'fiat' && !this.props.isModalActive) && !this.props.isRenderModalActive){
+          await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
           this.props.action.toggleOtherModal()
         }
 
@@ -132,7 +137,6 @@ class SocketsComponent extends Component {
     }
 
     if (withdraw.state === 'pending' && withdraw.currency_type === 'crypto') {
-
       let res = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, 'confirmed')
       if (!res) {
         this.props.action.isAppLoading(false)
@@ -235,6 +239,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async deposit => {
 
+
     // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
     // debugger
 
@@ -245,23 +250,18 @@ class SocketsComponent extends Component {
 
     // if(deposit.state === 'confirmed' && (this.state.currentDeposit && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === 'confirmed') {
-
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+        // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id)
-
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
           await this.props.coinsendaServices.addItemToState('deposits', { ...cDeposit, type_order: 'deposit' })
           await this.props.coinsendaServices.updateActivityState(cDeposit.account_id, 'deposits')
-          console.log('======================================> ESTA CUENTA SI TIENE DEPOSITOS, MANUAL ADD ', this.props.deposits[deposit.id], cDeposit)
         } else {
           await this.props.coinsendaServices.get_deposits(cDeposit.account_id)
-          // console.log('======================================> ESTA CUENTA NO TIENE DEPOSITOS, GET DEPOSITS ', this.props.deposits[deposit.id], cDeposit)
         }
-
-        // console.log('======================================> DEPOSIT SOCKET ', cDeposit, this.props.activity_for_account[cDeposit.account_id])
-        // console.log('||||||||||||||||||||||||||||||||||| READ ABOUT WALLETS PROPS::', this.props.wallets, cDeposit)
         this.props.action.update_item_state({ [cDeposit.account_id]: { ...this.props.wallets[cDeposit.account_id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         this.props.action.addNotification('wallets', { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1)
+        // this.props.coinsendaServices.showNotification('Deposito Cripto', 'Nuevo deposito detectado')
         await this.props.action.socket_notify({ ...cDeposit, state: 'confirmed' }, 'deposits', 'Nuevo deposito detectado')
         this.props.action.toggleOtherModal()
         this.props.action.success_sound()
@@ -301,8 +301,8 @@ class SocketsComponent extends Component {
         await this.props.action.renderModal(null)
         this.props.action.toggleOtherModal()
         this.props.action.success_sound()
+        // this.props.coinsendaServices.showNotification('Deposito aceptado', 'Tu deposito ha sido aceptado exitosamente')
         setTimeout(() => { this.props.action.add_coin_sound() }, 1500)
-
       }
 
     }
@@ -328,6 +328,7 @@ class SocketsComponent extends Component {
 
     if (deposit.state === 'confirmed') {
       // console.log('deposito confirmado fiat')
+      // this.props.coinsendaServices.showNotification('Deposito fiat', 'Su deposito ha sido confirmado con éxito')
       if ((this.props.deposits && this.props.deposits[deposit.id]) && this.props.deposits[deposit.id].currency_type === 'fiat') {
         await this.props.action.update_item_state({ [deposit.id]: { ...this.props.deposits[deposit.id], state: deposit.state } }, 'deposits')
         await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, 'deposits')
@@ -422,7 +423,8 @@ const mapStateToProps = (state, props) => {
     wallets,
     swaps,
     withdraw_accounts,
-    isModalActive:ui.otherModal
+    isModalActive:ui.otherModal,
+    isRenderModalActive:ui.modal.render
   }
 
 }
