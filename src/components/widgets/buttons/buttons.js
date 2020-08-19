@@ -1,4 +1,4 @@
-import React, { Component, useContext } from 'react'
+import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PopNotification from '../notifications'
 import IconSwitch from '../icons/iconSwitch'
@@ -9,43 +9,43 @@ import availableWalletCreator from '../../hooks/availableWalletCreator'
 
 import './buttons.css'
 
-export const ButtonSuccess = (props) =>{
-  const{
+export const ButtonSuccess = (props) => {
+  const {
     cta_secondary
   } = props
 
-  return(
-    <div id={`${cta_secondary ? 'secondary' : '' }`} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : '' }`} onClick={props.toggleModal} title="finalizar">
-        {props.children}
+  return (
+    <div id={`${cta_secondary ? 'secondary' : 'pre-finalizar-button'}`} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
+      {props.children}
     </div>
   )
 }
 
 
-export const ButtonSuccess2 = (props) =>{
+export const ButtonSuccess2 = (props) => {
 
-  return(
+  return (
     <div className="botonForm sucky fuente" title="finalizar">
-        {props.children}
-        <div className="filtrear"></div>
+      {props.children}
+      <div className="filtrear"></div>
     </div>
   )
 }
 
 
-export const SelectCountryButton = (props) =>{
+export const SelectCountryButton = (props) => {
 
   const { bar, handleClick } = props
 
-  return(
-    <div className={`SelectCountryButton ${bar}`}  onClick={handleClick}>
-        <div className="countryTextSelect">
-          <i className="fas fa-caret-down"></i>
-          <div className="contTextCountryButton">
-            <p className="fuente">Cambiar País</p>
-          </div>
+  return (
+    <div className={`SelectCountryButton ${bar}`} onClick={handleClick}>
+      <div className="countryTextSelect">
+        <i className="fas fa-caret-down"></i>
+        <div className="contTextCountryButton">
+          <p className="fuente">Cambiar País</p>
         </div>
-        <IconSwitch icon="cop" size={22} />
+      </div>
+      <IconSwitch icon="cop" size={22} />
     </div>
   )
 }
@@ -53,67 +53,67 @@ export const SelectCountryButton = (props) =>{
 
 
 export const AddNewItem = props => {
-// type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
-// label define el texto que llevará el botton para agregar
-// handleClick define el evento que se accionara al dar click en el boton
+  // type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
+  // label define el texto que llevará el botton para agregar
+  // handleClick define el evento que se accionara al dar click en el boton
 
   const { label, type, handleClick, clases } = props
 
 
-  return(
-      <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
-        <div className="BbackgroundAddNew"></div>
-        <div className={`AddNewItem ${type}`}>
-          <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
-        </div>
-      </section>
+  return (
+    <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
+      <div className="BbackgroundAddNew"></div>
+      <div className={`AddNewItem ${type}`}>
+        <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
+      </div>
+    </section>
   )
 }
 
 
 export const AddNewItem2 = props => {
-// type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
-// label define el texto que llevará el botton para agregar
-// handleClick define el evento que se accionara al dar click en el boton
+  // type define el estilo del boton, recibe 2 parametros 'primary' y 'secondary'
+  // label define el texto que llevará el botton para agregar
+  // handleClick define el evento que se accionara al dar click en el boton
 
   // const theme = useContext(CAccountAllowedContext);
   const { label, type, handleClick, clases } = props
-  const [ availableCurrencies ] = availableWalletCreator()
+  const [availableCurrencies] = availableWalletCreator()
   // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
 
-  return(
-      <section className={`AddNewItemContainer ${clases}`} onClick={(availableCurrencies && availableCurrencies.length) ? handleClick : null}>
-        <div className="BbackgroundAddNew"></div>
-        <div className={`AddNewItem ${(availableCurrencies && availableCurrencies.length) ? 'primary' : 'desactivado'}`}>
+  return (
+    <section className={`AddNewItemContainer ${clases}`} onClick={(availableCurrencies && availableCurrencies.length) ? handleClick : null}>
+      <div className="BbackgroundAddNew"></div>
+      <div className={`AddNewItem ${(availableCurrencies && availableCurrencies.length) ? 'primary' : 'desactivado'}`}>
         {/* <div className={`AddNewItem`}> */}
-          <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
-        </div>
-      </section>
+        <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
+      </div>
+    </section>
   )
 }
 
 
-export class ButtonPrincipalMenu extends Component{
+export class ButtonPrincipalMenu extends Component {
 
-  activarItem = () =>{
+  activarItem = () => {
     this.props.activarItem(this.props.clave, this.props.clave)
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.path === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
         <div className={`text ${this.props.path === this.props.clave ? 'activate' : ''}`}>
           <div className="iconButtCont">
             <IconSwitch icon={this.props.icon} size={18} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
-            <PopNotification notifier={this.props.clave}/>
+            <PopNotification notifier={this.props.clave} />
           </div>
           <p className="itemText fuente">{this.props.text}</p>
         </div>
 
         <div className="indicatorCont">
-            <div className={`indicator ${this.props.path === this.props.clave ? 'activate' : ''}`}>
-              <div className={`indicatorSon ${this.props.path === this.props.clave ? 'activate' : ''}`}></div>
-            </div>
+          <div className={`indicator ${this.props.path === this.props.clave ? 'activate' : ''}`}>
+            <div className={`indicatorSon ${this.props.path === this.props.clave ? 'activate' : ''}`}></div>
+          </div>
         </div>
       </Link>
     )
@@ -142,8 +142,8 @@ export const ButtonModalClose = (props) => {
     color
   } = props
 
-  return(
-    <div className="closeModalButtonCont" onClick={toggleModal} style={{color:color ? color : 'gray'}}>
+  return (
+    <div className="closeModalButtonCont" onClick={toggleModal} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-times" ></i>
       {props.children}
     </div>
@@ -157,8 +157,8 @@ export const ButtonModalBack = (props) => {
     color
   } = props
 
-  return(
-    <div className="closeModalButtonBack" onClick={volver}  style={{color:color ? color : 'gray'}}>
+  return (
+    <div className="closeModalButtonBack" onClick={volver} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-arrow-left"></i>
       {props.children}
     </div>
@@ -169,15 +169,15 @@ export const InputButton = (props) => {
   // Este es el cta por default
   //clase large => "width:200px !important"
 
-  return(
+  return (
     <div className="InputButton" >
       {
         props.active ?
-        <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
-        :
-        <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
-          {props.label}
-        </div>
+          <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
+          :
+          <div className="botonForm desactivado fuente" style={{ width: props.ancho }}  >
+            {props.label}
+          </div>
       }
     </div>
   )
@@ -194,7 +194,7 @@ export const ButtonForms = (props) => {
 
   const { clases, id, loader } = props
 
-  return(
+  return (
     <div className={`contButton ${clases}`} id={`${id}`}>
       {
         props.active ?
@@ -202,11 +202,11 @@ export const ButtonForms = (props) => {
             {
               !loader ?
                 props.children
-              :
-                <SimpleLoader loader={2}/>
+                :
+                <SimpleLoader loader={2} />
             }
           </div>
-        :
+          :
           <div id="botonForm" className={`botonForm desactivado fuente ${props.cenVert}`} >
             {props.children}
           </div>
@@ -225,47 +225,47 @@ export const PaymentConfirButton = (props) => {
 
   const { clases, label, type, cenVert, siguiente } = props
 
-  return(
+  return (
     <div className={`contButton ${clases}`} id={`ALconfirmButton`} data-is_confirm_deposit>
       {
         props.active ?
-        <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
-          <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
-            <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
-            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
-          </p>
-        </div>
-        :
-        <div className={`botonForm desactivado fuente ${cenVert}`} data-is_confirm_deposit>
-          <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
-            <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
-            <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
-          </p>
-        </div>
+          <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
+            <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
+              <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
+              <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
+            </p>
+          </div>
+          :
+          <div className={`botonForm desactivado fuente ${cenVert}`} data-is_confirm_deposit>
+            <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
+              <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
+              <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
+            </p>
+          </div>
       }
     </div>
   )
 }
 
 
-export const ItemSelected = (props) =>{
+export const ItemSelected = (props) => {
 
-  const{
+  const {
     label,
     active,
     close
   } = props
 
-  return(
+  return (
     <div className="containerInputComponent">
       {
         label &&
         <p className="buttonsP fuente">{label}</p>
       }
-        <div className={`ItemSelectedButton ${active ? 'buttonActivated': ''}`}>
-          <i className="fas fa-times itemClose" onClick={close}></i>
-          {props.children}
-        </div>
+      <div className={`ItemSelectedButton ${active ? 'buttonActivated' : ''}`}>
+        <i className="fas fa-times itemClose" onClick={close}></i>
+        {props.children}
+      </div>
     </div>
   )
 
@@ -274,12 +274,12 @@ export const ItemSelected = (props) =>{
 
 export const ButtonNofity = props => {
 
-  const handleAction = () =>{
+  const handleAction = () => {
     props.buttonAction(props.item_id)
   }
 
 
-  return(
+  return (
     <div className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
       {props.children}
     </div>

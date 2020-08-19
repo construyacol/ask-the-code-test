@@ -9,7 +9,7 @@ const FiatView = props => {
 
 
   const [
-    { active_trade_operation, current_wallet, loader, withdraw_accounts },
+    { active_trade_operation, current_wallet, loader },
     { current_section_params, toggleModal },
     dispatch
   ] = WithdrawViewState()
@@ -24,11 +24,11 @@ const FiatView = props => {
 
 
   const handleSubmit = (e) => {
-      dispatch(current_section_params({ currentFilter: 'withdraws' }))
-      dispatch(toggleModal())
+    dispatch(current_section_params({ currentFilter: 'withdraws' }))
+    dispatch(toggleModal())
   }
 
-  return(
+  return (
     <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
 
       <div className="contIcontSwitch">

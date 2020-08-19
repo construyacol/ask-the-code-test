@@ -45,7 +45,7 @@ class KycBasicContainer extends Component {
     // }
     document.onkeydown = (event) => {
       if (event.keyCode === 8 || event.keyCode === 46) {
-        if(this.props.step === 1) return
+        if (this.props.step === 1 || this.props.step === 11) return
         this.props.action.ReduceStep('kyc_basic')
         // event.preventDefault();
       }

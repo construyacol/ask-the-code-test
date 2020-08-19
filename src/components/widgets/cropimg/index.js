@@ -20,6 +20,24 @@ class CropImg extends React.Component {
     croppedImage: null
   }
 
+  componentDidMount() {
+    document.onkeydown = (event) => {
+
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        this.cancelCroppedImg()
+        // event.preventDefault();
+      }
+      // enter
+      if (event.keyCode === 13) {
+        this.showCroppedImage()
+        // event.preventDefault();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    document.onkeydown = () => null
+  }
 
   onCropChange = crop => {
     this.setState({ crop })

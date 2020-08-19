@@ -54,6 +54,7 @@ class WithdrawFlow extends Component {
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
+        // if(finish_step) return
         if (step === 1 && show_list_accounts) {
           return this.backAmount()
         }
