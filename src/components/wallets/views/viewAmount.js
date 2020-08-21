@@ -43,6 +43,7 @@ class ViewAmountComponent extends Component {
 
   actualizarAmount = ({target}) =>{
     const amount = target.value.replace(/\D/g,'')
+    if(amount === 0 || amount === '0') return
     // target.value = amount;
     this.props.updateAmountOnState(amount)
   }

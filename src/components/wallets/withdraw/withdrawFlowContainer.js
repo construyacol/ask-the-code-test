@@ -46,11 +46,13 @@ class WithdrawFlow extends Component {
         show_list_accounts,
         amount,
         need_new_acount,
-        finish_step
+        finish_step,
+        min_amount
       } = this.state
 
       const {
-        step
+        step,
+        available
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
@@ -69,6 +71,9 @@ class WithdrawFlow extends Component {
         if (step === 1 && !show_list_accounts) {
           if (!amount) {
             return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
+          }
+          if(amount && !(parseFloat(amount)>=parseFloat(min_amount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0)) {
+            return
           }
           return this.siguiente()
         }

@@ -24,10 +24,9 @@ const ModalLayout = (props) => {
   
   const salir = async () => {
     const { current } = props
-    if(!loader && current === "ticket" && isAppLoaded) {
-      return salirTicket()
-    }
-    actions.toggleModal()
+    actions.CleanForm('deposit')
+    actions.CleanForm('withdraw')
+    actions.CleanForm('bank')
     actions.CleanForm(current)
   }
   
