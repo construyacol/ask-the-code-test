@@ -74,10 +74,10 @@ function DashBoardContainer(props) {
   // }
 
 
-  const updateCurrentPair = async () =>{
+  const updateCurrentPair = async () => {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
-    UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(()=>{
-      let query =`{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
+    UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
+      let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
       props.action.update_current_pair(query, 'currentPair')
     }, 20000)
   }
@@ -118,6 +118,25 @@ function DashBoardContainer(props) {
 
   useEffect(() => {
     onMount()
+    const scroll = document.getElementById('scrollArea')
+    const scrollContainer = document.getElementById('containerElement')
+    if (scroll && scrollContainer) {
+      const addClass = () => {
+        scroll.style.pointerEvents = 'none'
+        scrollContainer.classList.add('wideScrollbar')
+      }
+      const removeClass = () => {
+        scrollContainer.classList.remove('wideScrollbar')
+      }
+      scrollContainer.childNodes.forEach(el => {
+        el.onmouseenter = () => {
+          removeClass()
+          scroll.style.pointerEvents = 'all'
+        }
+      })
+      scroll.onmouseenter = addClass
+    }
+
     // proofSocketNotify()
     return onUnmount
   }, [])
@@ -127,30 +146,42 @@ function DashBoardContainer(props) {
 
 
   return (
-    <Element id="containerElement" className="dashBoardLayout">
-      <QuoteContainer />
-      <div className="containerSection" name="firstInsideContainer">
-        <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-          <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
-        )} />
-        <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
-          <Switch>
-            <Route path="/wallets" component={WalletContainer} />
-            <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-            <Route path="/security" component={SecurityCenter} />
-            <Route path="/referral" component={ReferralComponent} />
-          </Switch>
-        </Suspense>
-
-        {
-          props.primary_path === 'security' &&
-          <>
-            <PanelAlertContainer history={props.history} />
-            <VideoPlayer />
-          </>
-        }
+    <>
+      <div id="scrollArea" style={{
+            position: 'absolute',
+            height: '100vh',
+            width: '10px',
+            right: 0,
+            zIndex: 10
+      }}>
+        
       </div>
-    </Element>
+      <Element id="containerElement" className="dashBoardLayout">
+        <QuoteContainer />
+        <div className="containerSection" name="firstInsideContainer">
+          <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+            <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />
+          )} />
+          <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
+            <Switch>
+              <Route path="/wallets" component={WalletContainer} />
+              <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
+              <Route path="/security" component={SecurityCenter} />
+              <Route path="/referral" component={ReferralComponent} />
+            </Switch>
+          </Suspense>
+
+          {
+            props.primary_path === 'security' &&
+            <>
+              <PanelAlertContainer history={props.history} />
+              <VideoPlayer />
+            </>
+          }
+        </div>
+      </Element>
+
+    </>
   )
 }
 
@@ -198,9 +229,9 @@ const LazyLoaderPage = ({ path }) => {
 
   const title = path === 'withdraw_accounts' ? 'Cuentas de retiro' : 'Cargando...'
   const LoaderScreen = path === 'withdraw_accounts' ? AccountListSkeletonLoader :
-                        path === 'referral' ? ReferralComponentAsSkeleton :
-                        path === 'security' ?  SecurityCenterSkeletonLoader :
-                        SimpleLoader
+    path === 'referral' ? ReferralComponentAsSkeleton :
+      path === 'security' ? SecurityCenterSkeletonLoader :
+        SimpleLoader
 
   return (
     <DetailContainerLayout title={title}>

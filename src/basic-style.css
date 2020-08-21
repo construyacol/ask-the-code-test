@@ -204,7 +204,7 @@
   }
 
   .WA::-webkit-scrollbar {
-    width: 2px !important;
+    width: 2px;
     background: transparent;
   }
 
@@ -213,7 +213,7 @@
   }
 
   .WA::-moz-scrollbar {
-    width: 7px !important;
+    width: 7px;
     background: transparent;
   }
 
@@ -223,7 +223,7 @@
 
 
   body::-webkit-scrollbar {
-    width: 7px !important;
+    width: 7px;
     background: #2b3742;
   }
 
@@ -232,7 +232,7 @@
   }
 
   body::-moz-scrollbar {
-    width: 7px !important;
+    width: 7px;
     background: #2b3742;
   }
 
@@ -243,7 +243,8 @@
 
 
   .dashBoardLayout::-webkit-scrollbar, .modalCont3::-webkit-scrollbar {
-    width: 7px !important;
+    transition: all 500ms ease;
+    width: 7px;
     background: #2b3742 !important;
   }
 
@@ -252,7 +253,7 @@
   }
 
   .dashBoardLayout::-moz-scrollbar, .modalCont3::-moz-scrollbar-thumb {
-    width: 7px !important;
+    width: 7px;
     background: #2b3742 !important;
   }
 
@@ -260,6 +261,13 @@
     background: #101418 !important;
   }
 
+  .wideScrollbar::-webkit-scrollbar {
+    width: 20px !important;
+  }
+
+  .wideScrollbar > * {
+
+  }
 
   @-webkit-keyframes checkmark {
     0% {
