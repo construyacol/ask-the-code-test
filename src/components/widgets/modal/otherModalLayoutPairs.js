@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './modal.css'
 
 const OtherModalLayoutPairs = props =>{
@@ -8,6 +8,18 @@ const OtherModalLayoutPairs = props =>{
     close_modal,
     classes
   } = props
+
+  useEffect(() => {
+    document.onkeydown = (event) => {
+      // esc
+      if (event.keyCode === 27) {
+        close_modal && close_modal()
+        // event.preventDefault();
+      }
+    }
+    return () => document.onkeydown = () => null
+  }, [])
+  
   return(
     <section className={`Modal aparecer`}>
       <div className={`modalCont2 ConfirmationModal`}>

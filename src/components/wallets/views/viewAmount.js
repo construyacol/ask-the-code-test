@@ -16,8 +16,8 @@ class ViewAmountComponent extends Component {
     minAmount:this.props.min_amount || 20000
   }
 
-  handleKeyPress = async(e) => {
-    let message = await handleKeyPress(e)
+  handleKeyPress = (e) => {
+    let message = handleKeyPress(e)
     return this.setState({statusInput:message})
   }
 
@@ -25,12 +25,16 @@ class ViewAmountComponent extends Component {
     this.init_config()
   }
 
-  init_config = async() => {
+  componentWillUnmount() {
+
+  }
+
+  init_config = () => {
     const {
       currency
     } = this.props
 
-    let ui_currency_name = await get_ui_name_currency(currency)
+    let ui_currency_name = get_ui_name_currency(currency)
 
     this.setState({
       ui_currency_name
@@ -39,6 +43,7 @@ class ViewAmountComponent extends Component {
 
   actualizarAmount = ({target}) =>{
     const amount = target.value.replace(/\D/g,'')
+    if(amount === 0 || amount === '0') return
     // target.value = amount;
     this.props.updateAmountOnState(amount)
   }

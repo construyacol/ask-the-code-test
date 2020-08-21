@@ -18,8 +18,8 @@ class BalanceComponent extends Component {
   }
 
   componentDidMount() {
-    const convertCurrentAmount = async () => {
-      let current_amount = await formatToCurrency(this.props.balance.available, this.props.currency, true)
+    const convertCurrentAmount = () => {
+      let current_amount = formatToCurrency(this.props.balance.available, this.props.currency, true)
       this.setState({ current_amount })
     }
     convertCurrentAmount()
@@ -63,7 +63,7 @@ class BalanceComponent extends Component {
   }
 
   dead_time = async anim => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       setTimeout(async () => {
         return resolve(true)
       }, 1000)
@@ -71,7 +71,7 @@ class BalanceComponent extends Component {
   }
 
   play_animation = async anim => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       await this.setState({ animation: anim })
       setTimeout(async () => {
         return resolve(true)

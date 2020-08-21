@@ -21,17 +21,30 @@ moment.locale('es')
 const OrderSupervisor = () => {
 
   const { actions, history, currentOrder } = UseTxState()
-  const  { isMovilViewport } = useViewport()
+  const { isMovilViewport } = useViewport()
 
-  const cerrar = (e) => {
-    if(e.target.dataset.close_modal){
+  const cerrar = (e, forceClose) => {
+    if (e.target.dataset.close_modal || forceClose) {
       actions.isAppLoading(false)
       actions.renderModal(null)
       history.goBack()
     }
   }
 
-  return(
+  useEffect(() => {
+    const el = window
+    el.onkeydown = (event) => {
+      if (event.keyCode === 27) {
+        cerrar(event, true)
+        // event.preventDefault();
+      }
+    }
+    return () => {
+      el.onkeydown = () => null
+    }
+  }, [])
+
+  return (
     <OtherModalLayout on_click={cerrar}>
       {
         isMovilViewport &&
@@ -42,9 +55,9 @@ const OrderSupervisor = () => {
 
       {
         currentOrder.state === 'accepted' || currentOrder.state === 'rejected' || currentOrder.state === 'canceled' ?
-        <OrderDetail/>
-        :
-        <InProcessOrder/>
+          <OrderDetail />
+          :
+          <InProcessOrder />
       }
     </OtherModalLayout>
   )
@@ -57,9 +70,9 @@ export default OrderSupervisor
 
 export const getState = state => {
   return state === 'accepted' ? 'Aceptado' :
-  state === 'confirmed' ? 'Confirmado' :
-  state === 'pending' ? 'Pendiente' :
-  state === 'rejected' ? 'Rechazado' : 'Cancelado'
+    state === 'confirmed' ? 'Confirmado' :
+      state === 'pending' ? 'Pendiente' :
+        state === 'rejected' ? 'Rechazado' : 'Cancelado'
 }
 
 const OrderDetail = () => {
@@ -67,93 +80,93 @@ const OrderDetail = () => {
   const actions = useActions()
   const { tx_path, currencies, currentOrder, primary_path, history } = UseTxState()
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
-  const  { isMovilViewport } = useViewport()
+  const { isMovilViewport } = useViewport()
 
-  if(!currentOrder){return null}
+  if (!currentOrder) { return null }
 
 
 
   const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :
-                tx_path === 'withdraws' ? 'Retiro' :
-                tx_path === 'swaps' && 'Intercambio';
+    tx_path === 'withdraws' ? 'Retiro' :
+      tx_path === 'swaps' && 'Intercambio';
 
   const textState = state === 'accepted' ? 'Aceptado' : state === 'confirmed' ? 'Confirmado' : state === 'pending' ? 'Pendiente' : state === 'rejected' ? 'Rechazado' : 'Cancelado'
   const colorState = state === 'accepted' ? '#1cb179' : state === 'confirmed' ? '#77b59d' : state === 'pending' ? '#ff8660' : 'red'
 
 
-    return(
-        <Layout className="layout3">
+  return (
+    <Layout className="layout3">
 
 
-          <TopSection state={currentOrder.state}>
+      <TopSection state={currentOrder.state}>
 
-            <TitleContainer>
-              <OrderIcon className={`fa ${tx_path}`}/>
-              <IconSwitch className="TitleIconOrder" size={28} icon={currentOrder.currency && currentOrder.currency.currency || 'cop'} />
-              <Title className="fuente">{TitleText}</Title>
-              <DateTitle className="fuente2">Actualizado {moment(currentOrder.updated_at).format("LL")}</DateTitle>
-            </TitleContainer>
+        <TitleContainer>
+          <OrderIcon className={`fa ${tx_path}`} />
+          <IconSwitch className="TitleIconOrder" size={28} icon={currentOrder.currency && currentOrder.currency.currency || 'cop'} />
+          <Title className="fuente">{TitleText}</Title>
+          <DateTitle className="fuente2">Actualizado {moment(currentOrder.updated_at).format("LL")}</DateTitle>
+        </TitleContainer>
 
-            <CircleIconContainer>
-                <IconSwitch size={isMovilViewport ? 25 : 45} icon={state === 'accepted' ? 'accepted2' : state} color={colorState}/>
-                <p className="fuente"
-                  style={{color:`${colorState}`}}
-                  >
-                    {textState}
-                </p>
-            </CircleIconContainer>
+        <CircleIconContainer>
+          <IconSwitch size={isMovilViewport ? 25 : 45} icon={state === 'accepted' ? 'accepted2' : state} color={colorState} />
+          <p className="fuente"
+            style={{ color: `${colorState}` }}
+          >
+            {textState}
+          </p>
+        </CircleIconContainer>
 
-            <ContBackTopSection>
-              <BackTopSection />
-            </ContBackTopSection>
+        <ContBackTopSection>
+          <BackTopSection />
+        </ContBackTopSection>
 
-          </TopSection>
+      </TopSection>
 
-          <DetailGenerator order={currentOrder} title={`Detalle del ${TitleText}`}/>
+      <DetailGenerator order={currentOrder} title={`Detalle del ${TitleText}`} />
 
-          <BottomSection
-            colorState={colorState}
-          />
-
-
-        </Layout>
-    )
-  }
+      <BottomSection
+        colorState={colorState}
+      />
 
 
+    </Layout>
+  )
+}
 
-  const BottomSection = ({ colorState }) => {
 
-    const { currentOrder, tx_path, currencies } = UseTxState()
-    const [ amount ] = useFormatCurrency(currentOrder.amount || currentOrder.bought, currentOrder.currency)
-    const textTotal = (tx_path === 'swaps' && currentOrder.state === 'accepted') ? 'Saldo adquirido:' : currentOrder.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
-    const currency = tx_path === 'swaps' ? currencies[currentOrder.to_buy_currency.currency] : currencies[currentOrder.currency.currency]
-    const isFiatWithdraw = tx_path === 'withdraws' && currentOrder.currency_type === 'fiat'
 
-    return(
-      <BottomSectionContainer>
-        <TitleBottom>
-          <hr/>
-          { tx_path !== 'swaps' && <p className="fuente">Comprobante de pago</p> }
-        </TitleBottom>
-        <Container>
-          {
-            (tx_path === 'swaps' || isFiatWithdraw ) ?
+const BottomSection = ({ colorState }) => {
+
+  const { currentOrder, tx_path, currencies } = UseTxState()
+  const [amount] = useFormatCurrency(currentOrder.amount || currentOrder.bought, currentOrder.currency)
+  const textTotal = (tx_path === 'swaps' && currentOrder.state === 'accepted') ? 'Saldo adquirido:' : currentOrder.state === 'accepted' ? 'Saldo acreditado:' : 'Saldo SIN acreditar:'
+  const currency = tx_path === 'swaps' ? currencies[currentOrder.to_buy_currency.currency] : currencies[currentOrder.currency.currency]
+  const isFiatWithdraw = tx_path === 'withdraws' && currentOrder.currency_type === 'fiat'
+
+  return (
+    <BottomSectionContainer>
+      <TitleBottom>
+        <hr />
+        {tx_path !== 'swaps' && <p className="fuente">Comprobante de pago</p>}
+      </TitleBottom>
+      <Container>
+        {
+          (tx_path === 'swaps' || isFiatWithdraw) ?
             <div></div>
             :
-            <PaymentProof/>
-          }
-          <TotalAmount color={colorState} className={`${currentOrder.state}`}>
-            <p className="fuente saldo">{textTotal}</p>
-            <p className="fuente2 amount">
-              {currentOrder.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
-            </p>
-          </TotalAmount>
-        </Container>
-      </BottomSectionContainer>
-    )
-  }
+            <PaymentProof />
+        }
+        <TotalAmount color={colorState} className={`${currentOrder.state}`}>
+          <p className="fuente saldo">{textTotal}</p>
+          <p className="fuente2 amount">
+            {currentOrder.currency_type === 'fiat' && '$ '}{amount} {currency && <span className="fuente">{currency.code}</span>}
+          </p>
+        </TotalAmount>
+      </Container>
+    </BottomSectionContainer>
+  )
+}
 
 
 
@@ -164,7 +177,7 @@ const OrderDetail = () => {
 
 
 
-  const TotalAmount = styled.div`
+const TotalAmount = styled.div`
     width: auto;
     height: 70px;
     justify-self: end;
@@ -198,7 +211,7 @@ const OrderDetail = () => {
 
 
 
-  const Container = styled.div`
+const Container = styled.div`
     width: calc(100% - 60px);
     padding: 0 30px;
     height: 100%;
@@ -206,7 +219,7 @@ const OrderDetail = () => {
     grid-template-columns: 100px 1fr;
   `
 
-  const TitleBottom = styled.div`
+const TitleBottom = styled.div`
     display: grid;
     position: relative;
     justify-items:center;
@@ -227,7 +240,7 @@ const OrderDetail = () => {
     }
   `
 
-  const BottomSectionContainer = styled.section`
+const BottomSectionContainer = styled.section`
     height: calc(200px - 40px);
     width: 100%;
     padding: 20px 0;
@@ -236,7 +249,7 @@ const OrderDetail = () => {
     row-gap: 20px;
   `
 
-  const TitleContainer = styled.div`
+const TitleContainer = styled.div`
     display: grid;
     .TitleIconOrder{
       grid-area: IconSwitch;
@@ -253,7 +266,7 @@ const OrderDetail = () => {
     "OrderIcon IconSwitch DateTitle";
   `
 
-  const DateTitle = styled.p`
+const DateTitle = styled.p`
     font-size: 12px;
     color: white;
     grid-area: DateTitle;
@@ -264,9 +277,9 @@ const OrderDetail = () => {
     margin-left: 4px;
     `
 
-  const Icon = styled.i`
+const Icon = styled.i`
   `
-  const OrderIcon = styled(Icon)`
+const OrderIcon = styled(Icon)`
     margin-right: 10px;
     font-size: 22px;
     grid-area: OrderIcon;
@@ -292,7 +305,7 @@ const OrderDetail = () => {
 
 
 
-  const BackTopSection = styled.div`
+const BackTopSection = styled.div`
     width: 120%;
     height: 120%;
     position: absolute;
@@ -307,7 +320,7 @@ const OrderDetail = () => {
     transform: scale(1.5);
   `
 
-  const ContBackTopSection = styled.div`
+const ContBackTopSection = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -317,7 +330,7 @@ const OrderDetail = () => {
 
 
 
-  const CircleIconContainer = styled.div`
+const CircleIconContainer = styled.div`
     display: grid;
     align-items: center;
     justify-content: center;
@@ -350,7 +363,7 @@ const OrderDetail = () => {
 
   `
 
-  const Title = styled.h3`
+const Title = styled.h3`
     text-align: left;
     color: white;
     margin: 0;
@@ -359,7 +372,7 @@ const OrderDetail = () => {
     margin-left: 4px;
   `
 
-  const TopSection = styled.section`
+const TopSection = styled.section`
     background: ${props => props.state ? orderStateColors[props.state] : 'gray'};
     width: 100%;
     height: 100%;
@@ -369,7 +382,7 @@ const OrderDetail = () => {
     border-top-left-radius: 6px;
   `
 
-  export const Layout = styled.div`
+export const Layout = styled.div`
     width: 100%;
     max-width: 600px;
     height: auto;

@@ -4,15 +4,15 @@ import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import {
-  success_sound
+    success_sound
 } from '../actions/soundActions'
 import actions from '../actions'
 import {
-  normalized_list
+    normalized_list
 } from '../utils'
 
 const {
-  update_item_state
+    update_item_state
 } = actions
 
 
@@ -120,7 +120,7 @@ export class DepositService extends WebService {
     }
 
 
-  async validateAddress (address) {
+    async validateAddress(address) {
         const user = this.user
 
         const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`
@@ -128,8 +128,8 @@ export class DepositService extends WebService {
 
         if (!Raddress) return;
 
-        if(address === Raddress[0].account.account_id.account_id){
-          return true
+        if (address === Raddress[0].account.account_id.account_id) {
+            return true
         }
         return false
     }
@@ -148,32 +148,33 @@ export class DepositService extends WebService {
         const user = this.user
 
         let body = {
-          "data": {
-            account_id,
-            country
-          }
+            "data": {
+                account_id,
+                country
+            }
         }
-
+        
         const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`
         const deposit_prov = await this.Post(finalUrl, body, user.userToken)
         if (deposit_prov === 465 || !deposit_prov) { return }
 
         const { data } = deposit_prov
         this.dispatch(success_sound())
-        return data[0].id
+        return data[0] && data[0].id
 
     }
 
     async createAndInsertDepositProvider(account) {
-      const dep_prov_id = await this.createDepositProvider(account.id, account.country)
-      const deposit_providers = await this.fetchDepositProviders()
-      if(!dep_prov_id){return}
+        if(!account) return
+        const dep_prov_id = await this.createDepositProvider(account.id, account.country)
+        const deposit_providers = await this.fetchDepositProviders()
+        if (!dep_prov_id) { return }
 
-      const update_wallet = {
-        [account.id]:{...account, dep_prov:[dep_prov_id], deposit_provider:deposit_providers[dep_prov_id]}
-      }
-      await this.dispatch(update_item_state(update_wallet, 'wallets'))
-      return true
+        const update_wallet = {
+            [account.id]: { ...account, dep_prov: [dep_prov_id], deposit_provider: deposit_providers[dep_prov_id] }
+        }
+        await this.dispatch(update_item_state(update_wallet, 'wallets'))
+        return true
     }
 
 
@@ -198,8 +199,8 @@ export class DepositService extends WebService {
 
 
     async get_deposits(account_id, limit = 20, skip = 0) {
-    // @params:
-    // account_id
+        // @params:
+        // account_id
 
         const user = this.user
 
@@ -207,15 +208,15 @@ export class DepositService extends WebService {
         const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`
 
         const deposits = await this.Get(finalUrl)
-        if(!deposits || deposits === 465){return false}
+        if (!deposits || deposits === 465) { return false }
 
         let remodeled_deposits = await deposits.map(item => {
-          let new_item = {
-            ...item,
-            type_order:"deposit",
-            // paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
-          }
-          return new_item
+            let new_item = {
+                ...item,
+                type_order: "deposit",
+                // paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
+            }
+            return new_item
         })
 
         // const { storage: { activity_for_account } } = this.globalState

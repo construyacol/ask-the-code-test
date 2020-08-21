@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -13,7 +13,7 @@ import './modal.css'
 
 class ConfirmationModal extends Component {
 
-  handleClick = async() =>{
+  handleClick = () => {
     const {
       action,
       payload,
@@ -31,13 +31,36 @@ class ConfirmationModal extends Component {
     this.props.action.confirmationModalPayload(null)
   }
 
+  componentDidMount() {
+    this.keyActions()
+  }
 
-  render(){
+  keyActions() {
+    document.onkeydown = (event) => {
+      // backspace
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        this.cancelarClick()
+        // event.preventDefault();
+      }
+      // enter
+      if (event.keyCode === 13) {
+        this.handleClick()
+        // event.preventDefault();
+      }
+      // esc
+      if (event.keyCode === 27) {
+        this.cancelarClick()
+        // event.preventDefault();
+    }
+    }
+  }
 
-    // console.log('- - - - - ConfirmationModal - - - - -', Buttons)
+  componentWillUnmount() {
+    document.onkeydown = () => null
+  }
 
 
-
+  render() {
     const {
       loader
     } = this.props
@@ -46,51 +69,50 @@ class ConfirmationModal extends Component {
       type
     } = this.props.modal_confirmation
 
-    // console.log(' - - ConfirmationModal - - ', atributos, this.props.modal_confirmation )
-      return(
-        <Fragment>
-          {
-                  loader ?
-                    <SimpleLoader/>
+    return (
+      <>
+        {
+          loader ?
+            <SimpleLoader />
+            :
+            <section className={`Modal aparecer`}>
+              {
+                type === 'swap' ?
+                  <SwapVIewConfirm
+                    cancelarClick={this.cancelarClick}
+                    handleClick={this.handleClick}
+                    {...this.props}
+                  />
                   :
-                <section className={`Modal aparecer`}>
-                    {
-                      type === 'swap' ?
-                        <SwapVIewConfirm
-                          cancelarClick={this.cancelarClick}
-                          handleClick={this.handleClick}
-                          {...this.props}
-                        />
-                      :
-                      <StandardTicket
-                        cancelarClick={this.cancelarClick}
-                        handleClick={this.handleClick}
-                        {...this.props}
-                        />
-                    }
-                 </section>
-            }
-        </Fragment>
-      )
+                  <StandardTicket
+                    cancelarClick={this.cancelarClick}
+                    handleClick={this.handleClick}
+                    {...this.props}
+                  />
+              }
+            </section>
+        }
+      </>
+    )
   }
 }
 
 
-function mapStateToProps(state, props){
-  return{
-    modal_confirmation:state.ui.modal_confirmation,
-    loader:state.isLoading.loader
+function mapStateToProps(state, props) {
+  return {
+    modal_confirmation: state.ui.modal_confirmation,
+    loader: state.isLoading.loader
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return{
-    action:bindActionCreators(actions, dispatch)
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (ConfirmationModal)
+export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal)
 // ConfirmationModal
 
 
@@ -110,50 +132,50 @@ export const StandardTicket = props => {
     type
   } = props.modal_confirmation
 
-  const atributos ={
-    icon:svg,
-    size:type === 'select_country' ? 100 : 80,
-    color:`#1babec`
+  const atributos = {
+    icon: svg,
+    size: type === 'select_country' ? 100 : 80,
+    color: `#1babec`
   }
 
-  return(
+  return (
     <div className={`modalCont2 ConfirmationModal`}>
 
-        <div className={`Mconfirmar ${type}`}>
-          <div className="titleConfirmed">
-            <h1 className="fuente" >{title}</h1>
-          </div>
-
-            <Fragment>
-              {
-                    img ?
-                    <img className="itemFuera" src={require(`../../../assets/${img}.png`)} width="80" alt="" id={img} title={img} />
-                    :
-                    svg &&
-                    <IconSwitch {...atributos} />
-              }
-
-                <p  className='fuente' style={{alignSelf:'start'}}>{description}</p>
-
-              <div className="CMControls">
-                {
-                  txtSecondary &&
-                <ButtonForms
-                  type="secundary"
-                  active={true}
-                  siguiente={cancelarClick}
-                  >{txtSecondary}
-                </ButtonForms>
-              }
-
-                  <ButtonForms
-                    type="primary"
-                    active={true}
-                    siguiente={handleClick}
-                    >{txtPrimary}</ButtonForms>
-              </div>
-            </Fragment>
+      <div className={`Mconfirmar ${type}`}>
+        <div className="titleConfirmed">
+          <h1 className="fuente" >{title}</h1>
         </div>
+
+        <>
+          {
+            img ?
+              <img className="itemFuera" src={require(`../../../assets/${img}.png`)} width="80" alt="" id={img} title={img} />
+              :
+              svg &&
+              <IconSwitch {...atributos} />
+          }
+
+          <p className='fuente' style={{ alignSelf: 'start' }}>{description}</p>
+
+          <div className="CMControls">
+            {
+              txtSecondary &&
+              <ButtonForms
+                type="secundary"
+                active={true}
+                siguiente={cancelarClick}
+              >{txtSecondary}
+              </ButtonForms>
+            }
+
+            <ButtonForms
+              type="primary"
+              active={true}
+              siguiente={handleClick}
+            >{txtPrimary}</ButtonForms>
+          </div>
+        </>
+      </div>
 
     </div>
   )

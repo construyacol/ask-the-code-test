@@ -21,10 +21,10 @@ import 'moment/locale/es'
 moment.locale('es')
 
 const orderModel = {
-  "created_at":new Date(),
-  "updated_at":new Date(),
-  "state":"pending",
-  "currency_type":"fiat"
+  "created_at": new Date(),
+  "updated_at": new Date(),
+  "state": "pending",
+  "currency_type": "fiat"
 }
 
 
@@ -34,13 +34,13 @@ const InProcessOrder = () => {
 
   const { currentOrder } = UseTxState()
 
-  return(
+  return (
     <>
       {
         currentOrder.currency_type === 'fiat' ?
-        <FiatDespoitOrder order={currentOrder}/>
-        :
-        <CryptoDespoitOrder order={currentOrder} />
+          <FiatDespoitOrder order={currentOrder} />
+          :
+          <CryptoDespoitOrder order={currentOrder} />
       }
     </>
   )
@@ -55,57 +55,57 @@ const CryptoDespoitOrder = ({ order }) => {
   const { isTabletOrMovilViewport } = useViewport()
 
 
-  return(
-      <InProcessOrderContainer>
+  return (
+    <InProcessOrderContainer>
 
-        <OrderContainer>
+      <OrderContainer>
 
-          <TopSection>
-            <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
-            <TitleContainer>
-              <Text className="fuente">{getTitle(tx_path)}</Text>
-              <Currency className="fuente">
-                {order.currency.currency }
-              </Currency>
-            </TitleContainer>
-            <DateIdContainter>
-                <Text className="fuente2">#{order.id}</Text>
-                <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
-            </DateIdContainter>
-          </TopSection>
-
-          {
-            isTabletOrMovilViewport &&
-            <OrderStatus order={order} movil/>
-          }
-
-          <MiddleSection state={order.state}>
-            <DetailGenerator
-              order={order}
-              title={`${getState(order)}`}
-              TitleSuffix={()=><GetIcon order={order}/>}
-            />
-          </MiddleSection>
-
-          <BottomSection className={`crypto`}>
-              <UploadComponent/>
-              {
-                tx_path === 'deposits' &&
-                <ConfirmationCounter
-                  confirmations={order.confirmations}
-                  total_confirmations={currencies[order.currency.currency].confirmations}
-                />
-              }
-          </BottomSection>
-
-        </OrderContainer>
+        <TopSection>
+          <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
+          <TitleContainer>
+            <Text className="fuente">{getTitle(tx_path)}</Text>
+            <Currency className="fuente">
+              {order.currency.currency}
+            </Currency>
+          </TitleContainer>
+          <DateIdContainter>
+            <Text className="fuente2">#{order.id}</Text>
+            <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
+          </DateIdContainter>
+        </TopSection>
 
         {
-          !isTabletOrMovilViewport &&
-          <OrderStatus order={order}/>
+          isTabletOrMovilViewport &&
+          <OrderStatus order={order} movil />
         }
 
-      </InProcessOrderContainer>
+        <MiddleSection state={order.state}>
+          <DetailGenerator
+            order={order}
+            title={`${getState(order)}`}
+            TitleSuffix={() => <GetIcon order={order} />}
+          />
+        </MiddleSection>
+
+        <BottomSection className={`crypto`}>
+          <UploadComponent />
+          {
+            tx_path === 'deposits' &&
+            <ConfirmationCounter
+              confirmations={order.confirmations}
+              total_confirmations={currencies[order.currency.currency].confirmations}
+            />
+          }
+        </BottomSection>
+
+      </OrderContainer>
+
+      {
+        !isTabletOrMovilViewport &&
+        <OrderStatus order={order} />
+      }
+
+    </InProcessOrderContainer>
   )
 
 }
@@ -141,33 +141,33 @@ const CryptoDespoitOrder = ({ order }) => {
 
 const FiatDespoitOrder = ({ order }) => {
 
-  const [ onDrag, setOnDrag ] = useState(false)
-  const [ imgSrc, setImgSrc ] = useState(false)
+  const [onDrag, setOnDrag] = useState(false)
+  const [imgSrc, setImgSrc] = useState(false)
   const { actions, tx_path } = UseTxState()
   const { isTabletOrMovilViewport } = useViewport()
 
 
 
   const dragOver = event => {
-     event.preventDefault();
-     if(!onDrag){
-       setOnDrag(!onDrag)
-     }
-  }
-
-  const dragLeave = event =>{
     event.preventDefault();
-    if(onDrag){
+    if (!onDrag) {
       setOnDrag(!onDrag)
     }
   }
 
-  const goFileLoader = async e =>{
+  const dragLeave = event => {
+    event.preventDefault();
+    if (onDrag) {
+      setOnDrag(!onDrag)
+    }
+  }
+
+  const goFileLoader = async e => {
     if (e.target.files && e.target.files.length > 0) {
       setOnDrag(false)
-      if(e.target.files[0].type !== 'image/png' && e.target.files[0].type !== 'image/jpeg'){return alert('formato no permitido')}
       const data = e.target.files[0]
-      const file = await img_compressor(e.target.files[0], 0.25)
+      if (data.type !== 'image/png' && data.type !== 'image/jpeg') { return alert('formato no permitido') }
+      const file = await img_compressor(data, 0.25)
       // console.log('result compresor', file.size)
       const imageDataUrl = await readFile(file)
       setImgSrc(imageDataUrl)
@@ -178,61 +178,61 @@ const FiatDespoitOrder = ({ order }) => {
   // console.log('|||||||||||||||| FiatOrderDespoit ::', currencies)
 
 
-  return(
-      <InProcessOrderContainer>
+  return (
+    <InProcessOrderContainer>
 
 
-        <OrderContainer onDragOver={dragOver}>
+      <OrderContainer onDragOver={dragOver}>
 
-          {((onDrag && !imgSrc) && order.state === 'pending') && <DropZoneComponent dragLeave={dragLeave} goFileLoader={goFileLoader}/>}
-          {imgSrc && order.state === 'pending' && <PaymentProofComponent order_id={order.id} imgSrc={imgSrc} setImgSrc={setImgSrc} />}
+        {((onDrag && !imgSrc) && order.state === 'pending') && <DropZoneComponent dragLeave={dragLeave} goFileLoader={goFileLoader} />}
+        {imgSrc && order.state === 'pending' && <PaymentProofComponent order_id={order.id} imgSrc={imgSrc} setImgSrc={setImgSrc} />}
 
 
-          <TopSection>
-            <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
-            <TitleContainer>
-              <Text className="fuente">{getTitle(tx_path)}</Text>
-              <Currency className="fuente">
-                {order.currency.currency }
-              </Currency>
-            </TitleContainer>
-            <DateIdContainter>
-                <Text className="fuente2">#{order.id}</Text>
-                <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
-            </DateIdContainter>
-          </TopSection>
-
-          {
-            isTabletOrMovilViewport &&
-            <OrderStatus order={order} movil/>
-          }
-
-          <MiddleSection state={order.state}>
-            <DetailGenerator
-              order={order}
-              title={`${getState(order)}`}
-              TitleSuffix={()=><GetIcon order={order}/>}
-            />
-          </MiddleSection>
-
-          <BottomSection>
-              <UploadComponent
-                imgSrc={imgSrc}
-                goFileLoader={goFileLoader}
-                setImgSrc={setImgSrc}
-              />
-          </BottomSection>
-
-        </OrderContainer>
-
+        <TopSection>
+          <IconSwitch className="TitleIconOrder" size={35} icon={order.currency.currency || 'cop'} />
+          <TitleContainer>
+            <Text className="fuente">{getTitle(tx_path)}</Text>
+            <Currency className="fuente">
+              {order.currency.currency}
+            </Currency>
+          </TitleContainer>
+          <DateIdContainter>
+            <Text className="fuente2">#{order.id}</Text>
+            <DateText className="fuente2">{moment(order.updated_at).format("LL")}</DateText>
+          </DateIdContainter>
+        </TopSection>
 
         {
-          !isTabletOrMovilViewport &&
-          <OrderStatus order={order}/>
+          isTabletOrMovilViewport &&
+          <OrderStatus order={order} movil />
         }
 
+        <MiddleSection state={order.state}>
+          <DetailGenerator
+            order={order}
+            title={`${getState(order)}`}
+            TitleSuffix={() => <GetIcon order={order} />}
+          />
+        </MiddleSection>
 
-      </InProcessOrderContainer>
+        <BottomSection>
+          <UploadComponent
+            imgSrc={imgSrc}
+            goFileLoader={goFileLoader}
+            setImgSrc={setImgSrc}
+          />
+        </BottomSection>
+
+      </OrderContainer>
+
+
+      {
+        !isTabletOrMovilViewport &&
+        <OrderStatus order={order} />
+      }
+
+
+    </InProcessOrderContainer>
   )
 
 }
@@ -240,10 +240,10 @@ const FiatDespoitOrder = ({ order }) => {
 
 const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
 
-  return(
+  return (
     <DropZoneContainer >
-      <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} onDragLeave={dragLeave}/>
-      <UploadComponent unButtom title="Suelta aquí el archivo que quieres subir..."/>
+      <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} onDragLeave={dragLeave} />
+      <UploadComponent unButtom title="Suelta aquí el archivo que quieres subir..." />
     </DropZoneContainer>
   )
 
@@ -257,37 +257,37 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
   const { currentOrder } = UseTxState()
 
-  return(
+  return (
     <UploadContainer className={`${imgSrc || currentOrder.state === 'confirmed' ? 'loaded' : 'unload'}`}>
       {
         (!imgSrc && currentOrder.state !== 'confirmed') ?
-        <Fragment>
-            <AiOutlineUpload size={45} color="gray"/>
+          <Fragment>
+            <AiOutlineUpload size={45} color="gray" />
             <UploadText className="fuente">{title || 'Arrastra el archivo que quieres subir'}</UploadText>
             {
               !unButtom &&
               <Fragment>
                 <UploadMiddle>
                   <UploadTextMiddle className="fuente">o selecciona un archivo</UploadTextMiddle>
-                  <hr/>
+                  <hr />
                 </UploadMiddle>
 
                 <Buttom >
                   <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} />
-                  <Text style={{color:"white"}} className="fuente">Subir comprobante</Text>
+                  <Text style={{ color: "white" }} className="fuente">Subir comprobante</Text>
                 </Buttom>
               </Fragment>
             }
 
-        </Fragment>
-        :
-        <Fragment>
-          <UploadMiddle className="titleSection payment fuente">
-            <UploadTextMiddle className="titleSection">Comprobante de pago</UploadTextMiddle>
-            <hr/>
-          </UploadMiddle>
-          <PaymentProof payload={imgSrc}/>
-        </Fragment>
+          </Fragment>
+          :
+          <Fragment>
+            <UploadMiddle className="titleSection payment fuente">
+              <UploadTextMiddle className="titleSection">Comprobante de pago</UploadTextMiddle>
+              <hr />
+            </UploadMiddle>
+            <PaymentProof payload={imgSrc} />
+          </Fragment>
       }
 
     </UploadContainer>
@@ -318,16 +318,16 @@ const getTitle = (tx_path) => {
 const GetIcon = ({ order }) => {
 
   const coloIcon = order.state === 'pending' ? '#ff8660' : '#1cb179'
-  const RenderIcon = order.state === 'pending' ? AiOutlineClockCircle : order.state === 'confirmed' && (()=> <SimpleLoader loader={2} color={coloIcon} justify="center"/>)
+  const RenderIcon = order.state === 'pending' ? AiOutlineClockCircle : order.state === 'confirmed' && (() => <SimpleLoader loader={2} color={coloIcon} justify="center" />)
 
-  return(
+  return (
     <IconContainer>
-      <RenderIcon size={25} color={coloIcon}/>
+      <RenderIcon size={25} color={coloIcon} />
     </IconContainer>
   )
 }
 
-const getState = ({state, currency_type}) => {
+const getState = ({ state, currency_type }) => {
   switch (currency_type) {
     case 'fiat':
       return state === 'pending' ? 'Pendiente' : (state === 'confirmed' && currency_type === 'fiat') ? 'Procesando...' : 'En proceso de aceptación...'
@@ -608,7 +608,7 @@ const MiddleSection = styled(Section)`
     content:'';
     position: absolute;
     height: 7px;
-    background: ${props => props.state === 'pending' ? '#ff8660' : '#1cb179' };
+    background: ${props => props.state === 'pending' ? '#ff8660' : '#1cb179'};
     top: 0;
     width: 100%;
     ${props => props.state === 'confirmed' && OnlySkeletonAnimation}

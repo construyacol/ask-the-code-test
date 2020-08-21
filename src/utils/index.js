@@ -424,10 +424,10 @@ export const serveKycData = (list) => {
 
 
 
-export const withdrawProvidersByType = async (withdrawProviders) => {
+export const withdrawProvidersByType = (withdrawProviders) => {
 
   let providers_served
-  await withdrawProviders.map(provider => {
+  withdrawProviders.map(provider => {
     return providers_served = {
       ...providers_served,
       [provider.provider_type]: provider
@@ -489,7 +489,7 @@ export const matchItem = (list, itemReview, type, all_results) => {
 export const handleKeyPress = (e, current) => {
   var keynum = window.event ? window.event.keyCode : e.which;
   // if ((keynum == 8) || (keynum == 46) || (keynum == 45) || (keynum == 44) ){
-  if (keynum < 48 || keynum > 57) {
+  if ((keynum < 48 || keynum > 57) && keynum !== 13) {
     return "Solo se aceptan números en este campo"
   }
   return /\d/.test(String.fromCharCode(keynum));

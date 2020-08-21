@@ -27,7 +27,13 @@ import MVList from '../../../widgets/itemSettings/modal_views/listView'
 
 class BankAccountFlow extends Component {
 
-  async componentDidMount() {
+  state = {
+    banks: null,
+    cities: null,
+    loader: false
+  }
+
+  componentDidMount() {
 
     this.initComponent()
     this.props.actualizarEstado({
@@ -36,15 +42,63 @@ class BankAccountFlow extends Component {
         value: "bank"
       }
     })
+    this.keyActions()
+  }
 
+  keyActions() {
+    document.onkeydown = (event) => {
+      const {
+        step,
+        handleSubmit,
+        final_step_create_account,
+        search,
+        siguiente,
+        id_type,
+        user,
+        id_number,
+        account_type,
+        account_number,
+        city,
+        finalizar
+      } = this.props
+
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        // event.preventDefault();
+      }
+      // enter
+      if (event.keyCode === 13) {
+        if (step === 6 && city) {
+          return final_step_create_account(event)
+        }
+        if (step === 3 && search.length === 1) {
+          return handleSubmit(event)
+        }
+        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
+          return handleSubmit(event)
+        }
+        if (step === 5 && (account_type && account_number)) {
+          return handleSubmit(event)
+        }
+        if (step === 2) {
+          siguiente()
+        }
+        if (step === 7) {
+          finalizar()
+        }
+        // event.preventDefault();
+      }
+      // esc
+      if (event.keyCode === 27) {
+        // event.preventDefault();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    document.onkeydown = () => null
   }
 
 
-  state = {
-    banks: null,
-    cities: null,
-    loader: false
-  }
 
 
   initComponent = async () => {
@@ -130,7 +184,8 @@ class BankAccountFlow extends Component {
       city,
       final_step_create_account,
       id_type,
-      id_number
+      id_number,
+      user
     } = this.props
 
     const {
@@ -140,7 +195,7 @@ class BankAccountFlow extends Component {
     } = this.state
 
     // console.log('|||||| Modelito cities::', cities)
-    
+
     return (
       <Fragment>
         {
@@ -248,7 +303,7 @@ class BankAccountFlow extends Component {
 
                     <div id="bankChooseButton" className="contbuttonAccount">
                       <InputButton label="Continuar" type="primary"
-                        active={(this.props.id_type && this.props.user.id_type === this.props.id_type) || (id_type && id_number)}
+                        active={(id_type && user.id_type === id_type) || (id_type && id_number)}
                       />
                     </div>
                   </form>

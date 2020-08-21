@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import moment from 'moment'
 import KycBasicLayout from './kycBasicLayout'
 import { kyc } from '../../api/ui/api.json'
@@ -43,6 +43,17 @@ class KycBasicContainer extends Component {
     // if(this.props.current === 'kyc_basic'){
     this.props.history.push(`?form=personal_names`)
     // }
+    document.onkeydown = (event) => {
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        if (this.props.step === 1 || this.props.step === 11) return
+        this.props.action.ReduceStep('kyc_basic')
+        // event.preventDefault();
+      }
+      if (event.keyCode === 13) {
+        this.handleSubmit(event)
+        // event.preventDefault();
+      }
+    }
   }
 
 
@@ -100,17 +111,18 @@ class KycBasicContainer extends Component {
     }
     this.props.history.push(route)
 
-    if(this.props.step === 10 && this.state.data_state.id_type && (this.state.data_state.id_type[0].code === 'cedula_ciudadania' || this.state.data_state.id_type[0].code=== 'cedula_extranjeria' )){
-      const updateState = async() => {
+    if (this.props.step === 10 && this.state.data_state.id_type && (this.state.data_state.id_type[0].code === 'cedula_ciudadania' || this.state.data_state.id_type[0].code === 'cedula_extranjeria')) {
+      const updateState = async () => {
         await this.setState({
-          data_state:{
+          data_state: {
             ...this.state.data_state,
-            nationality:this.state.data_state.country
-          }})
-          this.siguiente()
+            nationality: this.state.data_state.country
+          }
+        })
+        this.siguiente()
       }
       updateState()
-        // from:  personal_type_id
+      // from:  personal_type_id
     }
   }
 
@@ -187,12 +199,12 @@ class KycBasicContainer extends Component {
 
 
 
- // const body = {
- //   target:{
- //     name:,
- //     value:
- //   }
- // }
+  // const body = {
+  //   target:{
+  //     name:,
+  //     value:
+  //   }
+  // }
 
   update = async ({ target }) => {
     target.preventDefault && target.preventDefault()
@@ -205,21 +217,21 @@ class KycBasicContainer extends Component {
       if (value && !/(^[ñÑáÁéÉíÍóÓúÚA]?|^\b)(?!.*?\s{2})[ñÑáÁéÉíÍóÓúÚA-Za-z ]{1,25}(\s?)$/g.test(value)) return
     }
 
-    if(name === modelFormData.phone.name) {
+    if (name === modelFormData.phone.name) {
       if (value && !/^[0-9]{1,14}$/g.test(value)) return
     }
 
-    if(name === modelFormData.address.name) {
+    if (name === modelFormData.address.name) {
       if (value && value.length > 150) return
     }
 
-    if(name === modelFormData.city) {
+    if (name === modelFormData.city) {
       if (value && value.length > 100) return
     }
 
-    if(name === modelFormData.id_number.name) {
+    if (name === modelFormData.id_number.name) {
       const idType = this.state.data_state.id_type[0].code
-      if(idType === 'pasaporte') {
+      if (idType === 'pasaporte') {
         if (value && !/^[a-zA-Z0-9]{1,20}$/g.test(value)) return
       } else {
         if (value && !/^[0-9]{1,12}$/g.test(value)) return
@@ -471,7 +483,7 @@ class KycBasicContainer extends Component {
 
     return (
 
-      <Fragment>
+      <>
         {
           // this.props.loader || !kyc_data_basic || !step ?
           this.props.loader || !kyc_data_basic || !step || this.props.step > this.state.kyc_data_basic.length ?
@@ -539,7 +551,7 @@ class KycBasicContainer extends Component {
               </div>
             </div>
         }
-      </Fragment>
+      </>
 
     )
 

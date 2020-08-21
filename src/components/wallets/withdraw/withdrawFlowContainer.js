@@ -1,19 +1,19 @@
 import React, { Component, Fragment } from 'react'
-import FlowAnimationLayout from '../../widgets/flowAnimationLayout/flowAnimationLayout'
-import ViewAmountComponent from '../views/viewAmount'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import FlowAnimationLayout from '../../widgets/flowAnimationLayout/flowAnimationLayout'
+import ViewAmountComponent from '../views/viewAmount'
 import WithdrawAccountList from '../../withdrawAccounts/views/withdraw_account_list'
 import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
 import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
-import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import actions from '../../../actions'
+import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
+import withCoinsendaServices from '../../withCoinsendaServices'
 
 import './withdrawFlow.css'
-import withCoinsendaServices from '../../withCoinsendaServices'
 
 class WithdrawFlow extends Component {
   // Withdraw FIAT COMPONENT
@@ -36,16 +36,63 @@ class WithdrawFlow extends Component {
     // step:1
   }
 
-  async componentDidMount() {
-    await this.props.action.CurrentForm('withdraw')
+  componentDidMount() {
+    this.props.action.CurrentForm('withdraw')
     this.init_config()
     this.props.history.push(`?form=withdraw_amount`)
+    document.onkeydown = (event) => {
+      // backspace
+      const {
+        show_list_accounts,
+        amount,
+        need_new_acount,
+        finish_step,
+        min_amount
+      } = this.state
+
+      const {
+        step,
+        available
+      } = this.props
+
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        // if(finish_step) return
+        if (step === 1 && show_list_accounts) {
+          return this.backAmount()
+        }
+        if (step >= 2 && !need_new_acount && finish_step) {
+          return this.cancelWithdrawOrder()
+        }
+        // event.preventDefault();
+      }
+      // enter
+      if (event.keyCode === 13) {
+        // console.log('ENTER was pressed');
+        if (step === 1 && !show_list_accounts) {
+          if (!amount) {
+            return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
+          }
+          if(amount && !(parseFloat(amount)>=parseFloat(min_amount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0)) {
+            return
+          }
+          return this.siguiente()
+        }
+        if (step >= 2 && !need_new_acount && finish_step) {
+          this.confirmar()
+        }
+        // event.preventDefault();
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    document.onkeydown = () => null
   }
 
   updateTimes = 0
 
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
 
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
     // console.log('|||||||||||||||||||||||||||||||| =======> withdraw flow CONT ==> ', this.props)
@@ -78,7 +125,7 @@ class WithdrawFlow extends Component {
   //   this.setState({step})
   // }
 
-  init_config = async () => {
+  init_config = () => {
 
     const {
       currency_type,
@@ -87,10 +134,10 @@ class WithdrawFlow extends Component {
       have_withdraw_accounts
     } = this.props
 
-    if (!have_withdraw_accounts) { await this.setState({ need_new_acount: true }) }
+    if (!have_withdraw_accounts) { this.setState({ need_new_acount: true }) }
     let available_providers = []
 
-    await withdrawProviders.map(provider => {
+    withdrawProviders.map(provider => {
       if (
         provider.country === country &&
         provider.currency_type === currency_type &&
@@ -114,7 +161,7 @@ class WithdrawFlow extends Component {
       // 3.1 si no pertenece a la misma red bancaria entonces buscar por withdraw_account.city.value en el modelo let plaza_type = available_provider.info_needed.city.plaza_type
       // 4.obteniendo el plaza_type agregar al withdraw_account una propiedad llamada cost = available_provider.provider.cost[plaza_type].fixed
       // con esto ya podemos validar los fondos minimos necesarios para crear la orden de retiro
-      withdraw_account_list_update = await this.get_cost_struct(available_providers)
+      withdraw_account_list_update = this.get_cost_struct(available_providers)
     }
 
     this.setState({ withdraw_account_list_update })
@@ -126,9 +173,9 @@ class WithdrawFlow extends Component {
   }
 
 
-  get_cost_struct = async (available_providers, withdraw_account_list) => {
+  get_cost_struct = (available_providers, withdraw_account_list) => {
     // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
-    let providers_served = await withdrawProvidersByType(available_providers || this.props.withdrawProviders)
+    let providers_served = withdrawProvidersByType(available_providers || this.props.withdrawProviders)
 
     let update_list = []
     let w_account_list = withdraw_account_list || this.props.withdraw_account_list
@@ -304,11 +351,12 @@ class WithdrawFlow extends Component {
   }
 
 
-  updateAmountOnState = async (amount) => {
-    await this.setState({
+  updateAmountOnState = (amount) => {
+    this.setState({
       amount: amount,
+    }, () => {
+      this.props.action.UpdateForm('withdraw', { amount: amount })
     })
-    this.props.action.UpdateForm('withdraw', { amount: amount })
   }
 
 

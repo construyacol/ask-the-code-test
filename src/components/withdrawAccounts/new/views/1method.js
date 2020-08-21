@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
 import ItemLayout from '../../../widgets/items/itemLayout'
 import './views.css'
@@ -16,6 +16,10 @@ const MethodView = props =>{
   } = props
 
   let movil_viewport = window.innerWidth<768
+  
+  useEffect(() => {
+    select_method("Transferencia bancaria", "bankaccount")
+  }, [])
 
   return(
     <div id="DLsteps" className="DLsteps method">
