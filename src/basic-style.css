@@ -241,6 +241,9 @@
   }
 
 
+  .dashBoardLayout {
+    overflow-y: overlay !important;
+  }
 
   .dashBoardLayout::-webkit-scrollbar, .modalCont3::-webkit-scrollbar {
     transition: all 500ms ease;
