@@ -265,12 +265,9 @@
   }
 
   .wideScrollbar::-webkit-scrollbar {
-    width: 20px !important;
+    width: 11px !important;
   }
 
-  .wideScrollbar > * {
-
-  }
 
   @-webkit-keyframes checkmark {
     0% {
