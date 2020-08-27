@@ -12,6 +12,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../../actions'
 import { serveBankOrCityList, addIndexToRootObject, objectToArray } from '../../../../utils'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
+import { createSelector } from 'reselect'
 
 // const dropDawnElements = [
 //   {name:'ahorro'},
@@ -387,21 +388,24 @@ function mapDispatchToProps(dispatch) {
     action: bindActionCreators(actions, dispatch)
   }
 }
-function mapStateToProps(state, props) {
-  // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : mapStateToProps withdraw PROVIDERS', state)
-  const { user, withdrawProviders } = state.modelData
 
-  let withdraw_providers_list = []
-  user.withdrawProviders.map((wp) => {
-    if (withdrawProviders[wp].provider_type !== 'bank') { return false }
-    return withdraw_providers_list.push(withdrawProviders[wp])
-  })
+const selectWithdrawProviders = createSelector(
+  [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
+  (_withdrawProviders, withdrawProviders) => {
+    const withdraw_providers_list = []
+    _withdrawProviders.map((wp) => {
+      if (withdrawProviders[wp].provider_type !== 'bank') { return false }
+      return withdraw_providers_list.push(withdrawProviders[wp])
+    })
+    return withdraw_providers_list
+  }
+)
 
-  // console.log('---------------------------SIRVIENDO PROVEEDORES', withdraw_providers_list)
-
+function mapStateToProps(state) {
+  const { user } = state.modelData
 
   return {
-    withdraw_providers_list: withdraw_providers_list,
+    withdraw_providers_list: selectWithdrawProviders(state),
     user: user
   }
 

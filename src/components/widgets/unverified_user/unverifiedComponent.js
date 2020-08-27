@@ -80,7 +80,7 @@ class UnverifiedComponent extends Component {
 
 function mapStateToProps(state, props){
 
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
 
   return{
     user:user

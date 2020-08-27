@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {
   DownCounter,
   Buttons
- } from '../../'
+} from '../../'
 
 const SwapVIewConfirm = props => {
 
@@ -24,24 +24,24 @@ const SwapVIewConfirm = props => {
     from, spent, to, bought, handleSwap
   } = props.modal_confirmation
 
-  const [ counter, setCounter ] = useState(20)
+  const [counter, setCounter] = useState(20)
 
 
-  useEffect(()=>{
-    const SwapCounter = setInterval(async()=>{
+  useEffect(() => {
+    const SwapCounter = setInterval(async () => {
       clearInterval(SwapCounter)
-      if(counter === 1){
+      if (counter === 1) {
         handleSwap()
       }
 
-      if(counter === 0){
+      if (counter === 0) {
         setCounter(20)
-      }else{
+      } else {
         setCounter(counter - 1)
       }
     }, 1000)
 
-    return (()=>{clearInterval(SwapCounter)})
+    return (() => { clearInterval(SwapCounter) })
 
   }, [counter])
 
@@ -51,9 +51,9 @@ const SwapVIewConfirm = props => {
   // useEffect(()=>{
   //   formatToCurrency
   // }, [])
-// handleSwap
-// console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
-  return(
+  // handleSwap
+  // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
+  return (
 
     <div className={`modalCont2 ConfirmationModal`}>
       <h1 className="bigCounter fuente2">{counter}</h1>
@@ -65,37 +65,37 @@ const SwapVIewConfirm = props => {
           <div className="topSection swap">
             <h3 className="fuente swapTitleConfir">{title}</h3>
             <div className="contBackTopSection">
-              <div className="backTopSection animate swap"/>
+              <div className="backTopSection animate swap" />
             </div>
             <div className="socketIconContainer in swap">
-              <div className="wavExpansive in"/>
-              <DownCounter current={counter}/>
+              <div className="wavExpansive in" />
+              <DownCounter current={counter} />
             </div>
           </div>
 
           <div className={`bottomSection ${type}`}>
             <div className="swapdescriptionText">
 
-            <article id="Swapdescription" className="fuente" >
-              Gastarás la cantidad de: <label className="fuente2">- {spent} {from}</label>, para adquirir la cantidad de:
+              <article id="Swapdescription" className="fuente" >
+                Gastarás la cantidad de: <label className="fuente2">- {spent} {from}</label>, para adquirir la cantidad de:
             </article>
 
-            <article className="depositAmount swap">
-              <IconSwitch
-                icon={to}
-                size={35}
-              />
-              <article id="order_amount" className="fuente2 swap">
-                {/* {formatCurrency}  */}
-                {/* {description} */}
+              <article className="depositAmount swap">
+                <IconSwitch
+                  icon={to}
+                  size={35}
+                />
+                <article id="order_amount" className="fuente2 swap">
+                  {/* {formatCurrency}  */}
+                  {/* {description} */}
                 + {bought}
-                <span className={to}>
-                  {to}
-                </span>
+                  <span className={to}>
+                    {to}
+                  </span>
+                </article>
               </article>
-            </article>
 
-          </div>
+            </div>
 
             <Buttons.ButtonNofity className="swap" buttonAction={handleClick} >
               <p id="ButtonNofityText" className="fuente">Confirmar Intercambio</p>
@@ -108,14 +108,4 @@ const SwapVIewConfirm = props => {
 
 }
 
-
-const mapStateToProps = (state, props) => {
-
-  return{
-    ...props
-  }
-}
-
-
-
-export default connect(mapStateToProps)(SwapVIewConfirm)
+export default SwapVIewConfirm

@@ -8,6 +8,7 @@ import { ButtonNofity } from '../../widgets/buttons/buttons'
 import { formatToCurrency } from '../../../utils/convert_currency'
 
 import './socketNotify.css'
+import { createSelector } from 'reselect'
 
 
 
@@ -16,20 +17,20 @@ import './socketNotify.css'
 
 const SocketNotify = props => {
 
-  const [ formatCurrency, setFormatCurrency ] = useState(null)
+  const [formatCurrency, setFormatCurrency] = useState(null)
   const { item_type, title } = props.socket_notify
-  let ui_text =  `${item_type === 'deposits' ? 'deposito' : item_type === 'withdraws' ? 'retiro' : ''}`
+  let ui_text = `${item_type === 'deposits' ? 'deposito' : item_type === 'withdraws' ? 'retiro' : ''}`
 
-  useEffect(()=>{
+  useEffect(() => {
 
-    if(props.socket_notify && props.socket_notify.amount){
+    if (props.socket_notify && props.socket_notify.amount) {
       const { amount, currency } = props.socket_notify
       formatToCurrencies(amount, currency)
     }
-  },[props.socket_notify])
+  }, [props.socket_notify])
 
 
-  const formatToCurrencies = async (amount, currency) =>{
+  const formatToCurrencies = async (amount, currency) => {
     let resul = await formatToCurrency(amount, currency, true)
     setFormatCurrency(resul)
   }
@@ -49,7 +50,7 @@ const SocketNotify = props => {
 
 
 
-  return(
+  return (
     // <OtherModalLayout on_click={modal_click}>
     <OtherModalLayout>
       {
@@ -64,7 +65,7 @@ const SocketNotify = props => {
 
           :
 
-        item_type === 'withdraws' &&
+          item_type === 'withdraws' &&
           <OrderNotifyView
             title={`${title ? title : `Nuevo ${ui_text} enviado`}`}
             button_tittle={`Ver ${ui_text}.`}
@@ -106,7 +107,7 @@ const OrderNotifyView = props => {
   } = props.socket_notify
 
   // console.log('||||||||||||||_____________________________________________socket_notify', props)
-  const buttonAction = async(wallet_id) => {
+  const buttonAction = async (wallet_id) => {
     // console.log('||||||||||||||_____________________________________________buttonAction', wallet_id)
     props.action.socket_notify(null)
     await props.action.toggleOtherModal()
@@ -116,13 +117,13 @@ const OrderNotifyView = props => {
 
   console.log('item_type', item_type)
 
-  return(
+  return (
     <LayoutSocketNotify>
       <div className="close_modal_btn" onClick={close_modal}><i className="fas fa-times"></i></div>
 
       <div className="topSection">
         <div className="contBackTopSection">
-          <div className="backTopSection animate"/>
+          <div className="backTopSection animate" />
         </div>
         <div className="socketIconContainer in">
           <div className="wavExpansive in"></div>
@@ -162,7 +163,7 @@ const OrderNotifyView = props => {
 
 const LayoutSocketNotify = props => {
 
-  return(
+  return (
     <div className="LayoutSocketNotify swing-in-bottom-bck">
       <div className="socketContent">
         {props.children}
@@ -178,39 +179,41 @@ const LayoutSocketNotify = props => {
 
 
 
-
-
-
-const mapStateToProps = (state, props) => {
-
-  const { socket_notify } = state.ui.notifications
-  const { currencies } = state.modelData
-
-  let currency_list
-
-    if(currencies){
-      currencies.map(currency=>{
+const selectCurrencies = createSelector(
+  state => state.modelData.currencies,
+  (currencies) => {
+    let currency_list
+    if (currencies) {
+      currencies.map(currency => {
         return currency_list = {
           ...currency_list,
-          [currency.currency]:{
+          [currency.currency]: {
             ...currency
           }
         }
       })
     }
+    return currency_list
+  }
+)
+
+
+const mapStateToProps = (state) => {
+
+  const { socket_notify } = state.ui.notifications
 
   return {
-    socket_notify:socket_notify && socket_notify[0],
-    currencies:currency_list
+    socket_notify: socket_notify && socket_notify[0],
+    currencies: selectCurrencies(state)
   }
 
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return{
+  return {
     action: bindActionCreators(actions, dispatch)
   }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (SocketNotify)
+export default connect(mapStateToProps, mapDispatchToProps)(SocketNotify)
