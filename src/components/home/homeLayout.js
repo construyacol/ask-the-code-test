@@ -4,8 +4,10 @@ import { useSelector } from 'react-redux'
 import { createSelector } from 'reselect'
 
 const selectIsSomeModalRendered = createSelector(
-  [state => state.ui, state => state.form],
-  (ui, form) => {
+  state => state.ui,
+  state => state.form,
+  state => state.isLoading,
+  (ui, form, isLoading) => {
     return form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal || ui.modal.render
   }
 )

@@ -51,10 +51,10 @@ const UseTxState = (current_order_id) => {
   // const { tx_path, order_id } = params
 
   // verificar esta funcion
-  const getPaymentProof = async () => {
-    return
-    // const order = state.modelData[tx_path][order_id]
-  }
+  // const getPaymentProof = async () => {
+  //   return
+  //   // const order = state.modelData[tx_path][order_id]
+  // }
   const resp = {
     ...params,
     history,
@@ -64,7 +64,6 @@ const UseTxState = (current_order_id) => {
     currencies,
     actions,
     currentOrder,
-    getPaymentProof,
     loader,
     deposit_providers,
     isModalOpen
