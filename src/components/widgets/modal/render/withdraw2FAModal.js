@@ -4,72 +4,72 @@ import styled from 'styled-components'
 import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '../../animations'
 import AuthReq from '../../itemSettings/modal_views/authreq'
 import IconSwitch from '../../icons/iconSwitch'
-import {useActions} from '../../../../hooks/useActions'
+import { useActions } from '../../../../hooks/useActions'
 
-const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
+const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
 
   const actions = useActions()
 
   const cerrar = () => {
     actions.renderModal(null)
-    if(cancelAction) {
+    if (cancelAction) {
       cancelAction()
     }
   }
 
-    return(
-      <OtherModalLayout>
-        <Layout>
-          <CloseButton onClick={cerrar}>
-            <i className="fas fa-times"></i>
-          </CloseButton>
-          <TopSection>
-            <Title className="fuente">Autenticación de retiro</Title>
-            <CircleIconContainer>
-              <div className="wavExpansive in"/>
-              <IconSwitch size={60} icon="twofa" />
-            </CircleIconContainer>
-            <ContBackTopSection>
-              <BackTopSection className="backTopSection"/>
-            </ContBackTopSection>
-          </TopSection>
-          <BottomSection>
-            <Description>
-                <p className="fuente">Digita el código <span className="fuente2">2fa</span> para continuar.</p>
-                <AutContainer>
-                  <AuthReq
-                    isWithdraw2fa={isWithdraw2fa}
-                    authenticated={callback}
-                  />
-                </AutContainer>
-            </Description>
-            <ButtonCont onClick={cerrar}>
-                Cancelar
+  return (
+    <OtherModalLayout on_click={cerrar}>
+      <Layout>
+        <CloseButton onClick={cerrar}>
+          <i className="fas fa-times"></i>
+        </CloseButton>
+        <TopSection>
+          <Title className="fuente">Autenticación de retiro</Title>
+          <CircleIconContainer>
+            <div className="wavExpansive in" />
+            <IconSwitch size={60} icon="twofa" />
+          </CircleIconContainer>
+          <ContBackTopSection>
+            <BackTopSection className="backTopSection" />
+          </ContBackTopSection>
+        </TopSection>
+        <BottomSection>
+          <Description>
+            <p className="fuente">Digita el código <span className="fuente2">2fa</span> para continuar.</p>
+            <AutContainer>
+              <AuthReq
+                isWithdraw2fa={isWithdraw2fa}
+                authenticated={callback}
+              />
+            </AutContainer>
+          </Description>
+          <ButtonCont onClick={cerrar}>
+            Cancelar
             </ButtonCont>
-          </BottomSection>
+        </BottomSection>
 
-        </Layout>
-      </OtherModalLayout>
-    )
-  }
+      </Layout>
+    </OtherModalLayout>
+  )
+}
 
-  export default Withdraw2FaModal
+export default Withdraw2FaModal
 
-  const BackTopSection = styled.div`
+const BackTopSection = styled.div`
     opacity: 0.05 !important;
     animation: ${backTopSection};
     animation-duration: 30s;
     animation-iteration-count: infinite;
   `
 
-  const ContBackTopSection = styled.div`
+const ContBackTopSection = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
     overflow: hidden;
   `
 
-  const CloseButton = styled.div`
+const CloseButton = styled.div`
     position: absolute;
     top: 10px;
     right: 10px;
@@ -90,13 +90,13 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     }
   `
 
-  const AutContainer = styled.div`
+const AutContainer = styled.div`
     width: 100%;
     position: relative;
     height: 70px;
   `
 
-  const ButtonCont = styled.div`
+const ButtonCont = styled.div`
     padding: 8px 15px 8px 15px;
     background: #e6e6e6;
     display: grid;
@@ -120,7 +120,7 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     }
   `
 
-  const Description = styled.div`
+const Description = styled.div`
     width: 80%;
     position: relative;
     display: grid;
@@ -132,7 +132,7 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     }
   `
 
-  const BottomSection = styled.div`
+const BottomSection = styled.div`
     width: 100%;
     display: grid;
     justify-items: center;
@@ -146,7 +146,7 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     row-gap: 10px;
   `
 
-  const CircleIconContainer = styled.div`
+const CircleIconContainer = styled.div`
     display: grid;
     align-items: center;
     justify-content: center;
@@ -165,13 +165,13 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     transform: translateY(15px) scale(0);
   `
 
-  const Title = styled.h3`
+const Title = styled.h3`
     text-align: center;
     color: white;
     margin: 30px 0 10px 0;
   `
 
-  const TopSection = styled.section`
+const TopSection = styled.section`
     background: linear-gradient(to bottom right, #0175c3, #039aff);
     width: 100%;
     height: 100%;
@@ -181,7 +181,7 @@ const Withdraw2FaModal = ({callback, isWithdraw2fa, cancelAction}) => {
     border-top-left-radius: 6px;
   `
 
-  const Layout = styled.div`
+const Layout = styled.div`
     width: 100%;
     max-width: 410px;
     height: 460px;

@@ -30,9 +30,9 @@ const OrderSupervisor = () => {
       history.goBack()
     }
   }
-
+  
+  const el = window
   useEffect(() => {
-    const el = window
     el.onkeydown = (event) => {
       if (event.keyCode === 27) {
         cerrar(event, true)
@@ -42,7 +42,7 @@ const OrderSupervisor = () => {
     return () => {
       el.onkeydown = () => null
     }
-  }, [])
+  }, [el.onkeydown])
 
   return (
     <OtherModalLayout on_click={cerrar}>
