@@ -6,7 +6,8 @@ const OtherModalLayout = props =>{
   const {
     children,
     // close_modal,
-    on_click
+    on_click,
+    doNotCloseOnClick
   } = props
   const el = window
   
@@ -26,7 +27,7 @@ const OtherModalLayout = props =>{
 
   return(
     <section className={`Modal aparecer`}>
-      <div className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={on_click ? on_click : null}>
+      <div className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={!doNotCloseOnClick && on_click ? on_click : null}>
         {children}
       </div>
     </section>

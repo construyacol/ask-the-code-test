@@ -18,7 +18,7 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
   }
 
   return (
-    <OtherModalLayout on_click={cerrar}>
+    <OtherModalLayout doNotCloseOnClick={true} on_click={cerrar} >
       <Layout>
         <CloseButton onClick={cerrar}>
           <i className="fas fa-times"></i>
