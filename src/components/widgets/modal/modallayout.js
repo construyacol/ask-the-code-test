@@ -15,6 +15,7 @@ const ModalLayout = (props) => {
     isAppLoaded
   } = props
   const actions = useActions()
+  const el = window
   
   const volver = () => {
     const { uiAnimation } = props
@@ -40,7 +41,6 @@ const ModalLayout = (props) => {
   }
 
   useEffect(() => {
-    const el = window
     el.onkeydown = (event) => {
       // esc
       if (event.keyCode === 27) {
@@ -52,7 +52,7 @@ const ModalLayout = (props) => {
     return () => {
       el.onkeydown = () => null
     }
-  }, [])
+  }, [el.onkeydown])
 
   return (
     <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>

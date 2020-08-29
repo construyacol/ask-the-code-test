@@ -26,7 +26,7 @@ const PricesModal = () => {
       }
     }
     return () => document.onkeydown = () => null
-  }, [])
+  }, [document.onkeydown])
 
   return(
     <OtherModalLayout>
