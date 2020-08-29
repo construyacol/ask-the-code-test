@@ -6,16 +6,16 @@ const OtherModalLayout = props =>{
   const {
     children,
     // close_modal,
-    on_click,
-    doNotCloseOnClick
+    on_click
   } = props
   const el = window
-  
+
   useEffect(() => {
     el.onkeydown = (event) => {
       // esc
       if (event.keyCode === 27) {
         // console.log('ESC was pressed');
+        // on_click && on_click({target:{dataset:{close_modal:true}}})
         on_click && on_click()
         // event.preventDefault();
       }
@@ -27,7 +27,7 @@ const OtherModalLayout = props =>{
 
   return(
     <section className={`Modal aparecer`}>
-      <div className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={!doNotCloseOnClick && on_click ? on_click : null}>
+      <div className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={on_click ? on_click : null}>
         {children}
       </div>
     </section>
