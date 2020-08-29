@@ -12,6 +12,7 @@ import { withdrawProvidersByType, matchItem, number_format } from '../../../util
 import actions from '../../../actions'
 import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import withCoinsendaServices from '../../withCoinsendaServices'
+import { createSelector } from 'reselect'
 
 import './withdrawFlow.css'
 
@@ -72,7 +73,7 @@ class WithdrawFlow extends Component {
           if (!amount) {
             return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
           }
-          if(amount && !(parseFloat(amount)>=parseFloat(min_amount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0)) {
+          if (amount && !(parseFloat(amount) >= parseFloat(min_amount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0)) {
             return
           }
           return this.siguiente()
@@ -644,11 +645,31 @@ class WithdrawFlow extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
+const selectWithdrawProvidersList = createSelector(
+  [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
+  (_withdrawProviders, withdrawProviders) => {
+    return _withdrawProviders.map((id_prov) => {
+      return withdrawProviders[id_prov]
+    })
+  }
+)
 
-  // const{
-  //   current_wallet
-  // } = state.ui.current_section.params
+const selectWithdrawAccountList = createSelector(
+  [state => state.modelData.user.withdraw_accounts, state => state.modelData.withdraw_accounts],
+  (_withdraw_accounts, withdraw_accounts) => {
+    const withdraw_account_list = []
+    _withdraw_accounts.map(account_id => {
+      if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) { return false }
+      return withdraw_account_list.push(withdraw_accounts[account_id])
+    })
+    return {
+      withdraw_account_list: withdraw_account_list.length > 0 && withdraw_account_list,
+      have_withdraw_accounts: withdraw_account_list.length > 0
+    }
+  }
+)
+
+function mapStateToProps(state, props) {
 
   const { params } = props.match
 
@@ -663,25 +684,10 @@ function mapStateToProps(state, props) {
 
   const current_wallet = wallets[params.account_id]
 
-  // console.log('||||||| ---- Withdraw Flow ==> ', current_wallet)
-
   const {
     withdraw_provider,
     withdraw_account
   } = state.form.form_withdraw
-
-  // console.log('Antes de reeeeeeenderizar : : : : ',state.form.form_withdraw)
-  let withdraw_providers_list = user.withdrawProviders.map((id_prov) => {
-    return withdrawProviders[id_prov]
-  })
-
-  let withdraw_account_list = []
-
-  user.withdraw_accounts.map(account_id => {
-    // if(withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || !withdraw_accounts[account_id].inscribed){return false}
-    if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) { return false }
-    return withdraw_account_list.push(withdraw_accounts[account_id])
-  })
 
   return {
     withdraw_order: {
@@ -699,11 +705,9 @@ function mapStateToProps(state, props) {
     current: state.form.current,
     step: state.form.form_withdraw.step,
     form_withdraw: state.form.form_withdraw,
-    withdrawProviders: withdraw_providers_list,
-    withdraw_account_list: withdraw_account_list.length > 0 && withdraw_account_list,
-    have_withdraw_accounts: withdraw_account_list.length > 0,
-    wallets
-    // have_withdraw_accounts:false
+    withdrawProviders: selectWithdrawProvidersList(state),
+    wallets,
+    ...selectWithdrawAccountList(state),
   }
 }
 

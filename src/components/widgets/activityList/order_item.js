@@ -17,54 +17,54 @@ import 'moment/locale/es'
 moment.locale('es')
 
 
-const confirmPayment = async() => {
-    const TFileUpload = document.getElementById("TFileUpload")
-    TFileUpload && TFileUpload.click()
+const confirmPayment = async () => {
+  const TFileUpload = document.getElementById("TFileUpload")
+  TFileUpload && TFileUpload.click()
 }
 
-const OrderItem = ({ order, handleAction }) => {
+const OrderItem = ({ order }) => {
 
   const txState = UseTxState(order.id)
   const { tx_path, new_order_style, actions, history } = txState
   // const [ show,  element ] = ObserverHook()
-  const [ orderState, setOrderState ] = useState()
+  const [orderState, setOrderState] = useState()
 
 
-  const orderDetail = async(e) => {
-    if(!order){return}
+  const orderDetail = async (e) => {
+    if (!order) { return }
     const target = e.target
-    if(target.dataset && target.dataset.is_deletion_action){return}
+    if (target.dataset && target.dataset.is_deletion_action) { return }
 
-    const { tx_path, account_id, primary_path, path, isModalOpen } = txState
+    const { tx_path, account_id, primary_path, path } = txState
 
     history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`)
     actions.cleanNotificationItem('wallets', 'order_id')
 
     const OrderDetail = await import('../modal/render/orderDetail/index.js')
-    await actions.renderModal(()=><OrderDetail.default/>)
-    if(target.dataset && target.dataset.is_confirm_deposit){confirmPayment()}
+    await actions.renderModal(() => <OrderDetail.default />)
+    if (target.dataset && target.dataset.is_confirm_deposit) { confirmPayment() }
   }
 
 
 
-  return(
-        <OrderContainer
-          className={`${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
-          onClick={orderState ? null : orderDetail}
-          >
-          {
-            tx_path === 'deposits' ?
-            <DepositOrder order={{...order, orderState, setOrderState}} />
-            :
-            tx_path === 'withdraws' ?
-            <WithdrawOrder order={{...order}} />
+  return (
+    <OrderContainer
+      className={`${new_order_style ? 'newOrderContainer' : ''} ${orderState}`}
+      onClick={orderState ? null : orderDetail}
+    >
+      {
+        tx_path === 'deposits' ?
+          <DepositOrder order={{ ...order, orderState, setOrderState }} />
+          :
+          tx_path === 'withdraws' ?
+            <WithdrawOrder order={{ ...order }} />
             :
             tx_path === 'swaps' ?
-            <SwapOrder order={{...order}} setOrderState={setOrderState}/>
-            :
-            <LoaderView/>
-          }
-        </OrderContainer>
+              <SwapOrder order={{ ...order }} setOrderState={setOrderState} />
+              :
+              <LoaderView />
+      }
+    </OrderContainer>
   )
 
 }
@@ -73,39 +73,36 @@ const OrderItem = ({ order, handleAction }) => {
 export default OrderItem
 
 const getIcon = state => {
-  return state === 'pending' ? 'far fa-clock':
-         (state === 'canceled' || state === 'rejected') ? 'far fas fa-times' :
-         // state === 'accepted' ? 'far fas fa-check' :
-         state === 'accepted' ? '' :
-         state === 'confirmed' && 'far fa-clock'
+  return state === 'pending' ? 'far fa-clock' :
+    (state === 'canceled' || state === 'rejected') ? 'far fas fa-times' :
+      // state === 'accepted' ? 'far fas fa-check' :
+      state === 'accepted' ? '' :
+        state === 'confirmed' && 'far fa-clock'
   // deposit = 'fas fa-arrow-down'
   // withdraw = 'fas fa-arrow-up'
   // swap = 'fas fa-arrow-down'
-    }
+}
 
-const getState = ({ state, currency_type, id }) => {
-
-  const { tx_path } = UseTxState(id)
+const getState = ({ state, currency_type }, tx_path) => {
 
   return tx_path === 'swaps' && (state === 'pending' || state === 'confirmed') ? 'Procesando' :
-         state === 'pending' ? 'Pendiente' :
-         state === 'confirmed' && tx_path === 'withdraws' ? 'Procesando' :
-         (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
-         state === 'confirmed' ? 'Confirmando' :
-         state === 'accepted' ? 'Aceptado' :
-         state === 'canceled' ? 'Cancelado' :
-         state === 'rejected' && 'Rechazado'
+    state === 'pending' ? 'Pendiente' :
+      state === 'confirmed' && tx_path === 'withdraws' ? 'Procesando' :
+        (state === 'confirmed' && currency_type === 'fiat') ? 'Confirmado' :
+          state === 'confirmed' ? 'Confirmando' :
+            state === 'accepted' ? 'Aceptado' :
+              state === 'canceled' ? 'Cancelado' :
+                state === 'rejected' && 'Rechazado'
 }
 
 
 const DepositOrder = ({ order }) => {
 
-  const { new_order_style, tx_path } = UseTxState(order.id)
+  const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id)
 
   const {
     state,
     created_at,
-    currency,
     id,
     setOrderState,
     orderState,
@@ -116,31 +113,31 @@ const DepositOrder = ({ order }) => {
 
 
   return (
-      <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
+    <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''} ${orderState}`}>
 
-        <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
-          <DeleteButton {...order} setOrderState={setOrderState}/>
-          <PanelLeft {...order} />
-          <OrderIcon className="fas fa-arrow-down" />
-          <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
-          <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
-          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
-        </DataContainer>
+      <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
+        <DeleteButton {...order} setOrderState={setOrderState} />
+        <PanelLeft {...order} />
+        <OrderIcon className="fas fa-arrow-down" />
+        <TypeOrderText className="fuente">{getTypeOrder(tx_path)}</TypeOrderText>
+        <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+        <PopNotification notifier="wallets" item_type="order_id" id={id} type="new" />
+      </DataContainer>
 
-        <DataContainer className="align_middle">
-          <OrderStatusCont>
-            <OrderStatus className="fuente">
-              <StatusIcon className={getIcon(state)} />
-              {getState(order)}
-            </OrderStatus>
-          </OrderStatusCont>
-        </DataContainer>
+      <DataContainer className="align_middle">
+        <OrderStatusCont>
+          <OrderStatus className="fuente">
+            <StatusIcon className={getIcon(state)} />
+            {getState(order, tx_path)}
+          </OrderStatus>
+        </OrderStatusCont>
+      </DataContainer>
 
-        <DataContainer className="align_last">
-          <PanelRight order={order}/>
-        </DataContainer>
+      <DataContainer className="align_last">
+        <PanelRight order={order} tx_path={tx_path} lastPendingOrderId={lastPendingOrderId} />
+      </DataContainer>
 
-      </Order>
+    </Order>
   )
 
 }
@@ -159,20 +156,19 @@ const BarraSwap = styled.div`
 
 const SwapOrder = ({ order, setOrderState }) => {
 
-  const { new_order_style, tx_path, currentOrder } = UseTxState(order.id)
+  const { new_order_style, tx_path, currentOrder, lastPendingOrderId } = UseTxState(order.id)
   const { isMovilViewport } = useViewport()
 
-  useEffect(()=>{
-    if(currentOrder.state === 'pending' || currentOrder.state === 'confirmed'){
+  useEffect(() => {
+    if (currentOrder.state === 'pending' || currentOrder.state === 'confirmed') {
       setOrderState('inProcess')
-    }else{
+    } else {
       setOrderState()
     }
   }, [currentOrder])
 
   const {
     created_at,
-    currency,
     id,
     currency_type
   } = order
@@ -185,27 +181,27 @@ const SwapOrder = ({ order, setOrderState }) => {
   // let tradeActive = state === 'pending' || state === 'confirmed' || null
 
   return (
-      <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${currentOrder.activeTrade ? 'inProcess' : '' }`}>
+    <Order className={`${state} ${currency_type || ''} ${new_order_style ? 'newOrderStyle' : ''} ${tx_path} ${currentOrder.activeTrade ? 'inProcess' : ''}`}>
 
-        {
-          currentOrder.activeTrade &&
-          <BarraSwap className="barraSwap">
-            <div className={`relleno ${(state === 'pending') ? 'swaPending' :
-              (state === 'confirmed') ? 'swaProcessing' :
+      {
+        currentOrder.activeTrade &&
+        <BarraSwap className="barraSwap">
+          <div className={`relleno ${(state === 'pending') ? 'swaPending' :
+            (state === 'confirmed') ? 'swaProcessing' :
               (state === 'accepted') ? 'swapDone' : ''
             }`}>
-            </div>
-          </BarraSwap>
-        }
+          </div>
+        </BarraSwap>
+      }
 
 
 
-        <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
-          {
-            currentOrder.activeTrade && state !== 'accepted' ?
+      <DataContainer className={`align_first ${state} ${currency_type || ''}`}>
+        {
+          currentOrder.activeTrade && state !== 'accepted' ?
             <>
               <div className="loaderViewItem" >
-                <SimpleLoader loader={2} color={colorState}/>
+                <SimpleLoader loader={2} color={colorState} />
               </div>
               <SwapAnimation
                 from={order.to_spend_currency.currency}
@@ -217,36 +213,36 @@ const SwapOrder = ({ order, setOrderState }) => {
             <>
               {
                 !isMovilViewport && currentOrder.activeTrade && state === 'accepted' ?
-                <div className="loaderViewItem" >
-                  <div className="successIcon">
-                    <IconSwitch size={80} icon="success" color="#1cb179"/>
+                  <div className="loaderViewItem" >
+                    <div className="successIcon">
+                      <IconSwitch size={80} icon="success" color="#1cb179" />
+                    </div>
                   </div>
-                </div>
-                :
-                <PanelLeft {...order} />
+                  :
+                  <PanelLeft {...order} />
               }
               <OrderIcon className="fas fa-retweet swap" />
               <TypeOrderText className="fuente swap">Intercambio</TypeOrderText>
               <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
             </>
-          }
-          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
-        </DataContainer>
+        }
+        <PopNotification notifier="wallets" item_type="order_id" id={id} type="new" />
+      </DataContainer>
 
-        <DataContainer className="align_middle">
-          <OrderStatusCont>
-            <OrderStatus className="fuente">
-              <StatusIcon className={getIcon(state)} />
-              {getState(currentOrder)}
-            </OrderStatus>
-          </OrderStatusCont>
-        </DataContainer>
+      <DataContainer className="align_middle">
+        <OrderStatusCont>
+          <OrderStatus className="fuente">
+            <StatusIcon className={getIcon(state)} />
+            {getState(order, tx_path)}
+          </OrderStatus>
+        </OrderStatusCont>
+      </DataContainer>
 
-        <DataContainer className={`align_last ${tx_path}`}>
-          <PanelRight order={currentOrder}/>
-        </DataContainer>
+      <DataContainer className={`align_last ${tx_path}`}>
+        <PanelRight order={currentOrder} tx_path={tx_path} lastPendingOrderId={lastPendingOrderId} />
+      </DataContainer>
 
-      </Order>
+    </Order>
   )
 
 }
@@ -255,42 +251,41 @@ const SwapOrder = ({ order, setOrderState }) => {
 
 const WithdrawOrder = ({ order }) => {
 
-  const { new_order_style } = UseTxState(order.id)
+  const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id)
 
   const {
     state,
     created_at,
-    currency,
     id,
     currency_type
   } = order
 
 
   return (
-      <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''}`}>
+    <Order className={`${state} ${currency_type} ${new_order_style ? 'newOrderStyle' : ''}`}>
 
-        <DataContainer className={`align_first ${state} ${currency_type}`}>
-          <PanelLeft {...order} />
-          <OrderIcon className="fas fa-arrow-up" />
-          <TypeOrderText className="fuente">{getTypeOrder(order)}</TypeOrderText>
-          <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
-          <PopNotification notifier="wallets" item_type="order_id" id={id} type="new"/>
-        </DataContainer>
+      <DataContainer className={`align_first ${state} ${currency_type}`}>
+        <PanelLeft {...order} />
+        <OrderIcon className="fas fa-arrow-up" />
+        <TypeOrderText className="fuente">{getTypeOrder(tx_path)}</TypeOrderText>
+        <MobileDate className="fuente2">{moment(created_at).format("l")}</MobileDate>
+        <PopNotification notifier="wallets" item_type="order_id" id={id} type="new" />
+      </DataContainer>
 
-        <DataContainer className="align_middle">
-          <OrderStatusCont>
-            <OrderStatus className="fuente">
-              <StatusIcon className={getIcon(state)} />
-              {getState(order)}
-            </OrderStatus>
-          </OrderStatusCont>
-        </DataContainer>
+      <DataContainer className="align_middle">
+        <OrderStatusCont>
+          <OrderStatus className="fuente">
+            <StatusIcon className={getIcon(state)} />
+            {getState(order, tx_path)}
+          </OrderStatus>
+        </OrderStatusCont>
+      </DataContainer>
 
-        <DataContainer className="align_last">
-          <PanelRight order={order}/>
-        </DataContainer>
+      <DataContainer className="align_last">
+        <PanelRight order={order} tx_path={tx_path} lastPendingOrderId={lastPendingOrderId} />
+      </DataContainer>
 
-      </Order>
+    </Order>
   )
 
 }
@@ -301,77 +296,75 @@ const PanelLeft = (order) => {
 
   const { currencies, tx_path } = UseTxState(order.id)
 
-  return(
+  return (
     <>
-    {
-      ((order.currency_type === 'crypto' && order.state === 'confirmed') && tx_path === 'deposits') ?
-      <Confrimations className="fuente2">
-        <p>
-          {order.confirmations}<span>/{currencies[order.currency.currency].confirmations}</span>
-        </p>
-      </Confrimations>
-      :
-      <DateCont>
-        <Day className="fuente2">{moment(order.created_at).format("DD")}</Day>
-        <Month className="fuente">{moment(order.created_at).format("MMM").toUpperCase()}</Month>
-      </DateCont>
-    }
+      {
+        ((order.currency_type === 'crypto' && order.state === 'confirmed') && tx_path === 'deposits') ?
+          <Confrimations className="fuente2">
+            <p>
+              {order.confirmations}<span>/{currencies[order.currency.currency].confirmations}</span>
+            </p>
+          </Confrimations>
+          :
+          <DateCont>
+            <Day className="fuente2">{moment(order.created_at).format("DD")}</Day>
+            <Month className="fuente">{moment(order.created_at).format("MMM").toUpperCase()}</Month>
+          </DateCont>
+      }
     </>
   )
 }
 
-const getTypeOrder = (order) => {
-  const { tx_path } = UseTxState(order.id)
+const getTypeOrder = (tx_path) => {
   return tx_path === 'deposits' ? 'Deposito' : tx_path === 'withdraws' ? 'Retiro' : tx_path === 'swaps' && 'Intercambio'
 }
 
 
 
-const PanelRight = ({ order }) => {
+const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
 
-  const { state, id, currency_type, amount, currency } = order
-  const { lastPendingOrderId, tx_path } = UseTxState(id)
-  const [ amountC ] = useFormatCurrency(amount, currency)
+  const { state, currency_type, amount, currency } = order
+  const [amountC] = useFormatCurrency(amount, currency)
 
 
-  return(
+  return (
     <>
-    {
-      tx_path === 'swaps' ?
-      <>
-      <AmountText className={`fuente2 amount swaps`}>
-        + {order.bought || '--'}
-      </AmountText>
-      <IconSwitch className={`currency_bought`} icon={order.to_buy_currency.currency} size={16} />
-      <AmountText className={`fuente2 amount_spent`}>
-        - {order.spent || '--'}
-      </AmountText>
-      <IconSwitch className={`currency_spent`} icon={order.to_spend_currency.currency} size={16} />
-      <AmountIcon className={`fas fa-angle-right arrow_right`} />
-      </>
-      :
-      state === 'pending' ?
-      <PaymentConfirButton
-        id="ALconfirmButton"
-        clases={` ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton' }`}
-        active={true}
-        type="primary"
-        label="Confirmar"
-      />
-      :
-      (state === 'confirmed' && currency_type ==='fiat') ?
-      <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
-      :
-      <>
-      <AmountText className={`fuente2 ${tx_path} ${order.state}`}>
-        {tx_path === 'deposits' ? '+' : tx_path === 'withdraws' ? '- ' : ''}
-        {currency_type === 'fiat' && '$'}
-        {amountC}
-      </AmountText>
-      <IconSwitch icon={currency.currency} size={16} />
-      <AmountIcon className="fas fa-angle-right" />
-      </>
-    }
+      {
+        tx_path === 'swaps' ?
+          <>
+            <AmountText className={`fuente2 amount swaps`}>
+              + {order.bought || '--'}
+            </AmountText>
+            <IconSwitch className={`currency_bought`} icon={order.to_buy_currency.currency} size={16} />
+            <AmountText className={`fuente2 amount_spent`}>
+              - {order.spent || '--'}
+            </AmountText>
+            <IconSwitch className={`currency_spent`} icon={order.to_spend_currency.currency} size={16} />
+            <AmountIcon className={`fas fa-angle-right arrow_right`} />
+          </>
+          :
+          state === 'pending' ?
+            <PaymentConfirButton
+              id="ALconfirmButton"
+              clases={` ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton'}`}
+              active={true}
+              type="primary"
+              label="Confirmar"
+            />
+            :
+            (state === 'confirmed' && currency_type === 'fiat') ?
+              <p className="fuente" id="ALrevised">En revisión<i className="far fa-clock"></i></p>
+              :
+              <>
+                <AmountText className={`fuente2 ${tx_path} ${order.state}`}>
+                  {tx_path === 'deposits' ? '+' : tx_path === 'withdraws' ? '- ' : ''}
+                  {currency_type === 'fiat' && '$'}
+                  {amountC}
+                </AmountText>
+                <IconSwitch icon={currency.currency} size={16} />
+                <AmountIcon className="fas fa-angle-right" />
+              </>
+      }
     </>
   )
 }
@@ -384,28 +377,28 @@ const DeleteButton = ({ state, id, setOrderState }) => {
   const deleteDeposit = () => {
     actions.confirmationModalToggle()
     actions.confirmationModalPayload({
-      title:"Esto es importante, estas a punto de...",
-      description:"Cancelar esta orden, ¿Estas seguro de hacer esto?",
-      txtPrimary:"Continuar",
-      txtSecondary:"Cancelar",
-      payload:id,
-      action:delete_order,
-      img:"deleteticket"
+      title: "Esto es importante, estas a punto de...",
+      description: "Cancelar esta orden, ¿Estas seguro de hacer esto?",
+      txtPrimary: "Continuar",
+      txtSecondary: "Cancelar",
+      payload: id,
+      action: delete_order,
+      img: "deleteticket"
     })
     // setTimeout(()=>{setOrderState('deleted')}, 1000)
   }
 
-  const delete_order = async(id) =>{
+  const delete_order = async (id) => {
     setOrderState('deleting')
 
     let deleted = await coinsendaServices.deleteDeposit(id)
-    if(!deleted){
+    if (!deleted) {
       return false
     }
     setOrderState('deleted')
   }
 
-  return(
+  return (
     <>
       {
         state === 'pending' &&
@@ -665,13 +658,13 @@ export const LoaderView = (props) => {
 
   const loaderItems = new Array(props.arrayLength || 3).fill({})
 
-  return(
+  return (
     <ActivityLayout>
       {!props.arrayLength && <p className="titleActivity"></p>}
       <LayoutList>
         {
-          loaderItems.map((e, key) =>{
-            return <LoaderItem key={key}/>
+          loaderItems.map((e, key) => {
+            return <LoaderItem key={key} />
           })
         }
       </LayoutList>

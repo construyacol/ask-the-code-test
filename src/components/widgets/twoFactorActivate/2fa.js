@@ -151,7 +151,7 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state, props){
   const { user } = state.modelData
   return{
-    user:user
+    user
   }
 }
 

@@ -6,33 +6,34 @@ import AccountItemList from '../../widgets/account_item_list/accountItemList'
 import { SimpleLoader } from '../../widgets/loaders'
 import { withdrawProvidersByType, matchItem } from '../../../utils'
 import '../WAccount.css'
+import { createSelector } from 'reselect'
 
 
-class WithdrawAccountList extends Component{
+class WithdrawAccountList extends Component {
 
   state = {
-    withdraw_accounts:null
+    withdraw_accounts: null
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.init_config()
   }
 
-  find_units = amount =>{
-  // Este metodo me retorna la cantidad de ordenes en las que se ejecutaría el retiro
+  find_units = amount => {
+    // Este metodo me retorna la cantidad de ordenes en las que se ejecutaría el retiro
 
-    let units = amount/100
+    let units = amount / 100
     let limit = 2
 
     for (let i = 0; i < limit; i++) {
       // console.log(`limite: ${limit} - - percent: ${amount} - - units:${units}`)
-      if(units<=1){return units=1}
-      if(units<=limit){return limit}
-      limit ++
+      if (units <= 1) { return units = 1 }
+      if (units <= limit) { return limit }
+      limit++
     }
   }
 
-  init_config = async() => {
+  init_config = async () => {
 
     const {
       withdrawProviders,
@@ -40,21 +41,21 @@ class WithdrawAccountList extends Component{
       amount
     } = this.props
 
-    if(!withdrawProviders && !amount){return false}
+    if (!withdrawProviders && !amount) { return false }
 
     let providers_served = await withdrawProvidersByType(withdrawProviders)
 
     let final_withdraw_accounts = await withdraw_accounts.map(wa => {
 
       let provider_max_amount = providers_served[wa.provider_type].provider.max_amount
-      let limit = (amount*100)/provider_max_amount
+      let limit = (amount * 100) / provider_max_amount
 
-        return {
-          ...wa,
-          orders:this.find_units(parseInt(limit)),
-          percent:parseInt(limit),
-          limit:parseFloat(amount)>=parseFloat(providers_served[wa.provider_type].provider.max_amount) && true,
-        }
+      return {
+        ...wa,
+        orders: this.find_units(parseInt(limit)),
+        percent: parseInt(limit),
+        limit: parseFloat(amount) >= parseFloat(providers_served[wa.provider_type].provider.max_amount) && true,
+      }
 
     })
 
@@ -63,59 +64,59 @@ class WithdrawAccountList extends Component{
     // Este Fragmento de codigo sirve para detectar si hay cuentas de retiro que operen sobre la misma red bancaria o
     // transaccional del proveedor de retiro, definiendolas como cuentas preferenciales porque tienen un menor costo transaccional
 
-      let preferential_accounts = []
+    let preferential_accounts = []
 
-      await withdrawProviders.map(async(withdraw_provider) => {
-        if(withdraw_provider.currency_type !== 'fiat'){return false}
+    await withdrawProviders.map(async (withdraw_provider) => {
+      if (withdraw_provider.currency_type !== 'fiat') { return false }
 
-        let result = await matchItem(final_withdraw_accounts, {primary:withdraw_provider.provider.name}, 'provider_name')
+      let result = await matchItem(final_withdraw_accounts, { primary: withdraw_provider.provider.name }, 'provider_name')
 
-        if(result && result.length>0){
-          preferential_accounts.push(...result)
+      if (result && result.length > 0) {
+        preferential_accounts.push(...result)
+      }
+    })
+
+
+    if (preferential_accounts.length > 0) {
+      let new_withdraw_list = [...preferential_accounts]
+      // new_withdraw_list.push(preferential_accounts[0])
+
+      await final_withdraw_accounts.map(async wa => {
+        let matches = await matchItem(preferential_accounts, { primary: wa.id }, 'id')
+        if (!matches) {
+          new_withdraw_list.push(wa)
         }
       })
 
+      let preferential_account_id = await preferential_accounts.map(p_account => { return p_account.id })
 
-      if(preferential_accounts.length>0){
-        let new_withdraw_list = [...preferential_accounts]
-        // new_withdraw_list.push(preferential_accounts[0])
+      // console.log('|||||||preferential_account_id',preferential_account_id, preferential_account_id.length)
 
-        await final_withdraw_accounts.map(async wa=>{
-          let matches = await matchItem(preferential_accounts, {primary:wa.id}, 'id')
-          if(!matches){
-            new_withdraw_list.push(wa)
-          }
-        })
+      return this.setState({
+        withdraw_accounts: new_withdraw_list,
+        preferential_accounts: preferential_account_id
+      })
 
-        let preferential_account_id = await preferential_accounts.map(p_account => {return p_account.id})
+    }
 
-        // console.log('|||||||preferential_account_id',preferential_account_id, preferential_account_id.length)
-
-        return this.setState({
-          withdraw_accounts:new_withdraw_list,
-          preferential_accounts:preferential_account_id
-        })
-
-      }
-
-// ------------------------------------------------------------------
-// Si no hay cuentas preferenciales returnamos la lista original
+    // ------------------------------------------------------------------
+    // Si no hay cuentas preferenciales returnamos la lista original
     this.setState({
-      withdraw_accounts:final_withdraw_accounts
+      withdraw_accounts: final_withdraw_accounts
     })
 
   }
 
 
-new_account = () =>{
+  new_account = () => {
 
-  const {
-    withdraw_flow,
-    new_account_method
-  } = this.props
+    const {
+      withdraw_flow,
+      new_account_method
+    } = this.props
 
-  if(withdraw_flow){return new_account_method()}
-}
+    if (withdraw_flow) { return new_account_method() }
+  }
 
 
   volver = () => {
@@ -123,13 +124,13 @@ new_account = () =>{
       back
     } = this.props
 
-    if(back){return setTimeout(()=>{back()}, 500)}
+    if (back) { return setTimeout(() => { back() }, 500) }
   }
 
 
-  render(){
+  render() {
 
-    const{
+    const {
       amount
     } = this.props
 
@@ -138,7 +139,7 @@ new_account = () =>{
       preferential_accounts
     } = this.state
 
-    return(
+    return (
       <Fragment>
         <section className="WithdrawAccountList">
 
@@ -151,20 +152,20 @@ new_account = () =>{
           <div className="listWA">
             {
               withdraw_accounts ?
-                    withdraw_accounts.map(account => {
-                        return (
-                          <AccountItemList
-                            key={account.id}
-                            amount={amount}
-                            account={account}
-                            new_withdraw_order={this.props.new_withdraw_order}
-                            preferential_accounts={preferential_accounts}
-                          />
-                        )
-                    })
-                    // <div>puta</div>
-              :
-              <SimpleLoader/>
+                withdraw_accounts.map(account => {
+                  return (
+                    <AccountItemList
+                      key={account.id}
+                      amount={amount}
+                      account={account}
+                      new_withdraw_order={this.props.new_withdraw_order}
+                      preferential_accounts={preferential_accounts}
+                    />
+                  )
+                })
+                // <div>puta</div>
+                :
+                <SimpleLoader />
             }
           </div>
         </section>
@@ -173,40 +174,39 @@ new_account = () =>{
   }
 }
 
-  function mapStateToProps(state, props){
-
+const selectWithdrawAccountList = createSelector(
+  state => state.modelData.withdraw_accounts,
+  state => state.modelData.user,
+  (_, props) => props,
+  (withdraw_accounts, user, props) => {
     const {
-      withdraw_accounts,
-      user,
-      user_id
-    } = state.modelData
-
-    const{
       currency_type,
       inherit_account_list
     } = props
-
+  
     let withdraw_account_list = inherit_account_list
-
-    if(!withdraw_account_list){
+    if (!withdraw_account_list) {
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta
       user.withdraw_accounts.map(account_id => {
-        if(withdraw_accounts[account_id].currency_type !== currency_type || !withdraw_accounts[account_id].visible){return false}
+        if (withdraw_accounts[account_id].currency_type !== currency_type || !withdraw_accounts[account_id].visible) { return false }
         return withdraw_account_list.push(withdraw_accounts[account_id])
       })
     }
 
-
-
-    return{
-      withdraw_accounts:withdraw_account_list
-    }
+    return withdraw_account_list
   }
+)
 
-  function mapDispatchToProps(dispatch){
-    return{
-      action:bindActionCreators(actions, dispatch)
-    }
+function mapStateToProps(state, props) {
+  return {
+    withdraw_accounts: selectWithdrawAccountList(state, props)
   }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps) (WithdrawAccountList)
+function mapDispatchToProps(dispatch) {
+  return {
+    action: bindActionCreators(actions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(WithdrawAccountList)

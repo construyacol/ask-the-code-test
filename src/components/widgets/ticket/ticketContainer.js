@@ -12,6 +12,7 @@ import { withRouter } from "react-router";
 
 import './ticket.css'
 import withCoinsendaServices from '../../withCoinsendaServices'
+import { createSelector } from 'reselect'
 
 class TicketContainer extends Component {
 
@@ -525,12 +526,31 @@ function mapDispatchToProps(dispatch){
   }
 }
 
+const selectCurrencies = createSelector(
+  state => state.modelData.currencies,
+  (state, props) => state.modelData.wallets[props.match.params.account_id],
+  (currencies, current_wallet) => {
+    let currency_list
+  
+    if(current_wallet && currencies && current_wallet.currency_type === 'crypto'){
+      currencies.map(currency=>{
+        return currency_list = {
+          ...currency_list,
+          [currency.currency]:{
+            ...currency
+          }
+        }
+      })
+    }
+
+    return currency_list
+  }
+
+)
+
 function mapStateToProps(state, props){
 
   const { account_id, tx_path, order_id } = props.match.params
-
-  // console.log('||||||||||||||||||| ======> Ticket CONTAINER ==> ',  props)
-
   let current_wallet = state.modelData.wallets[account_id]
 
   const{
@@ -538,23 +558,10 @@ function mapStateToProps(state, props){
     withdraw_accounts,
     wallets,
     deposit_providers,
-    currencies
   } = state.modelData
 
 
-  let currency_list
-  
-  if(current_wallet && currencies && current_wallet.currency_type === 'crypto'){
-    currencies.map(currency=>{
-      return currency_list = {
-        ...currency_list,
-        [currency.currency]:{
-          ...currency
-        }
-      }
-    })
-  }
-
+  let currency_list = selectCurrencies(state, props)
   let ticket = state.modelData[tx_path][order_id]
 
   const total_confirmations = current_wallet && (current_wallet.currency_type === 'crypto' && currency_list[ticket.currency.currency] && currency_list[ticket.currency.currency].confirmations)

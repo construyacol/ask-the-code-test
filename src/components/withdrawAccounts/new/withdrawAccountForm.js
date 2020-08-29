@@ -6,6 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { withRouter } from "react-router";
 import withCoinsendaServices from '../../withCoinsendaServices'
+import { createSelector } from 'reselect'
 
 class WithdrawAccountForm extends Component {
 
@@ -301,19 +302,23 @@ class WithdrawAccountForm extends Component {
   }
 }
 
+const selectWithdrawProviders = createSelector(
+  [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
+  (_withdrawProviders, withdrawProviders) => {
+    return _withdrawProviders.map(w_id => {
+      return withdrawProviders[w_id]
+    })
+  }
+)
 
 function mapStateToProps(state, props) {
   // console.log('R E N D E R I Z A N D O ssssssss', props)
   const { withdraw_flow } = props
-  const { user, withdrawProviders } = state.modelData
-
-  let withdraw_provider_list = user.withdrawProviders.map(w_id => {
-    return withdrawProviders[w_id]
-  })
+  const { user } = state.modelData
 
   return {
     search: state.form.search_bank,
-    withdrawProviders: withdraw_provider_list,
+    withdrawProviders: selectWithdrawProviders(state),
     form_bank: state.form.form_bank,
     buttonActive: state.form.form_control_bank,
     loader: state.isLoading.loader,

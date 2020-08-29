@@ -123,7 +123,7 @@ function mapDispatchToProps(dispatch){
 }
 
 function mapStateToProps(state, props){
-  const { user, user_id } = state.modelData
+  const { user } = state.modelData
   const { verification_state } = state.ui
 
   return{
