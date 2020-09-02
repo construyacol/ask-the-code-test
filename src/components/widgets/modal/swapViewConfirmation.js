@@ -45,8 +45,11 @@ const SwapVIewConfirm = props => {
 
   }, [counter])
 
-
-
+  const _cancelarClick = (e) => {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+      cancelarClick()
+    }
+  }
 
   // useEffect(()=>{
   //   formatToCurrency
@@ -55,7 +58,7 @@ const SwapVIewConfirm = props => {
   // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
 
-    <div className={`modalCont2 ConfirmationModal`}>
+    <div className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
       <h1 className="bigCounter fuente2">{counter}</h1>
       <div className="LayoutSocketNotify swing-in-bottom-bck">
         <div className="msgSwapDisclamer" ><p className="fuente">La cotización se actualizará cada 20 segundos.</p></div>

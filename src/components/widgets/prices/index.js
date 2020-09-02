@@ -13,8 +13,10 @@ const PricesModal = () => {
   const currentPair = state.modelData.pairs.currentPair
   const pairs = state.modelData.pairs.local_collections
 
-  const closeModal = () => {
-    actions.renderModal(null)
+  const closeModal = (e) => {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+      actions.renderModal(null)
+    }
   }
 
   useEffect(() => {
@@ -29,9 +31,9 @@ const PricesModal = () => {
   }, [document.onkeydown])
 
   return(
-    <OtherModalLayout>
+    <OtherModalLayout on_click={closeModal}>
       <MainContainer>
-        <CloseButton onClick={closeModal}><i className="far fa-times-circle"></i></CloseButton>
+        <CloseButton onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton>
         <PricesModalContent changePair={actions.searchCurrentPairAction} currentPair={currentPair} pairs={pairs} />
       </MainContainer>
     </OtherModalLayout>

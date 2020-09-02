@@ -138,8 +138,14 @@ export const StandardTicket = props => {
     color: `#1babec`
   }
 
+  const _cancelarClick = (e) => {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+      cancelarClick()
+    }
+  }
+
   return (
-    <div className={`modalCont2 ConfirmationModal`}>
+    <div className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
 
       <div className={`Mconfirmar ${type}`}>
         <div className="titleConfirmed">

@@ -17,7 +17,6 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
         cancelAction()
       }
     }
-
   }
 
   return (
