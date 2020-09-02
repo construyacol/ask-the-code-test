@@ -18,6 +18,7 @@ const ModalLayout = (props) => {
   const el = window
   
   const volver = () => {
+    if(step === 1) return
     const { uiAnimation } = props
     if (uiAnimation) { return actions.FlowAnimationLayoutAction('backV', 'back', props.current) }
     actions.ReduceStep(props.current)

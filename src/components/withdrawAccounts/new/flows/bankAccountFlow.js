@@ -60,25 +60,28 @@ class BankAccountFlow extends Component {
         account_type,
         account_number,
         city,
-        finalizar
+        finalizar,
+        action,
+        current
       } = this.props
 
-      if (event.keyCode === 8 || event.keyCode === 46) {
+      if ((event.keyCode === 8 || event.keyCode === 46) && !event.srcElement.tagName.includes('INPUT')) {
         // event.preventDefault();
+        action.ReduceStep(current)
       }
       // enter
       if (event.keyCode === 13) {
         if (step === 6 && city) {
-          return final_step_create_account(event)
+          final_step_create_account(event)
         }
         if (step === 3 && search.length === 1) {
-          return handleSubmit(event)
+          handleSubmit(event)
         }
-        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
-          return handleSubmit(event)
+        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number !== ''))) {
+          handleSubmit(event)
         }
         if (step === 5 && (account_type && account_number)) {
-          return handleSubmit(event)
+          handleSubmit(event)
         }
         if (step === 2) {
           siguiente()
@@ -86,6 +89,7 @@ class BankAccountFlow extends Component {
         if (step === 7) {
           finalizar()
         }
+        debugger
         // event.preventDefault();
       }
       // esc
@@ -406,7 +410,8 @@ function mapStateToProps(state) {
 
   return {
     withdraw_providers_list: selectWithdrawProviders(state),
-    user: user
+    user: user,
+    current: state.form.current
   }
 
 }

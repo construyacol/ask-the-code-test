@@ -257,6 +257,15 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
   const { currentOrder } = UseTxState()
 
+  useEffect(() => {
+    document.onkeydown = (event) => {
+      if(event.keyCode === 13) {
+        document.getElementById('TFileUpload').click()
+      }
+    }
+    return () => document.onkeydown = false
+  }, [document.onkeydown])
+
   return (
     <UploadContainer className={`${imgSrc || currentOrder.state === 'confirmed' ? 'loaded' : 'unload'}`}>
       {
