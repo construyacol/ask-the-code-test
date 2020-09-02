@@ -21,6 +21,14 @@ class CropImg extends React.Component {
   }
 
   componentDidMount() {
+    this.keyEvents()
+  }
+
+  componentDidUpdate() {
+    this.keyEvents()  
+  }
+
+  keyEvents() {
     document.onkeydown = (event) => {
 
       if (event.keyCode === 8 || event.keyCode === 46) {

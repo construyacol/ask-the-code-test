@@ -259,7 +259,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
   useEffect(() => {
     document.onkeydown = (event) => {
-      if(event.keyCode === 13) {
+      if(event.keyCode === 13 && document.getElementById('TFileUpload')) {
         document.getElementById('TFileUpload').click()
       }
     }

@@ -63,6 +63,10 @@ class KycAvancedContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.onkeydown = false
+  }
+
 
   componentDidUpdate(prevProps) {
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
