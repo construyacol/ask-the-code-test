@@ -264,7 +264,6 @@ class KycAvancedContainer extends Component {
 
 
   render() {
-    // console.log('FIGAROOOO FIGAROOOO FIGAROOOOOO::::', this.state)
     return (
       <KycAvancedLayout
         stepChange={this.stepChange}
