@@ -24,19 +24,21 @@ class FinalTicket extends Component {
   }
 
   keyActions() {
-    document.onkeydown = false
-    window.onkeydown = (event) => {
+    setTimeout(() => {
+      window.onkeydown = false
+    }, 0)
+    document.onkeydown = (event) => {
       if (event.keyCode === 8 || event.keyCode === 46) {
         document.getElementById('cancel') && document.getElementById('cancel').click()
       }
       if (event.keyCode === 13) {
-        document.getElementById('accept') && document.getElementById('accept').click()
+        document.getElementById('pre-finalizar-button') && document.getElementById('pre-finalizar-button').click()
       }
     }
   }
 
   componentWillUnmount() {
-    window.onkeydown = () => null
+    document.onkeydown = () => null
   }
 
   composeMethod = async () => {
@@ -147,7 +149,7 @@ class FinalTicket extends Component {
                 cta_secondary &&
                 <ButtonSuccess id='cancel' cta_secondary={true} toggleModal={cta_secondary_action}>{cta_secondary_label ? cta_secondary_label : 'Cancelar'}</ButtonSuccess>
               }
-              <ButtonSuccess id='accept' toggleModal={finishAction}>{cta_primary_label ? cta_primary_label : 'Finalizar'}</ButtonSuccess>
+              <ButtonSuccess toggleModal={finishAction}>{cta_primary_label ? cta_primary_label : 'Finalizar'}</ButtonSuccess>
             </div>
 
           </Fragment>

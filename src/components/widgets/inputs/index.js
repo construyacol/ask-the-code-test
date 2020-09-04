@@ -126,6 +126,7 @@ export const InputFormAuth = (props) => {
               onFocus={handleFocus ? handleFocus : null}
               onBlur={handleBlur ? handleBlur : null}
               disabled={disabled}
+              autoFocus={true}
             />
             :
             <div className="AuthLoader">

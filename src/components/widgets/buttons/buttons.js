@@ -11,11 +11,12 @@ import './buttons.css'
 
 export const ButtonSuccess = (props) => {
   const {
-    cta_secondary
+    cta_secondary,
+    id
   } = props
-
+  const _id = id || (cta_secondary ? 'secondary' : 'pre-finalizar-button')
   return (
-    <div id={`${cta_secondary ? 'secondary' : 'pre-finalizar-button'}`} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
+    <div id={_id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
       {props.children}
     </div>
   )

@@ -59,6 +59,7 @@ class WithdrawFlow extends Component {
       if (event.keyCode === 8 || event.keyCode === 46) {
         if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         // if(finish_step) return
+        event.preventDefault()
         if (step === 1 && show_list_accounts) {
           this.props.action.renderModal(null)
           return this.backAmount()
@@ -246,6 +247,7 @@ class WithdrawFlow extends Component {
 
         this.props.action.addNotification('withdraw_accounts', { account_id: new_account.id }, 1)
         this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
+        this.props.action.CleanForm('bank')
         // await this.setState({addNotification:false})
       }, 500)
 
