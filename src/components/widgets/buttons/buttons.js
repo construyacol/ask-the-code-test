@@ -77,7 +77,7 @@ export const AddNewItem2 = props => {
   // handleClick define el evento que se accionara al dar click en el boton
 
   // const theme = useContext(CAccountAllowedContext);
-  const { label, type, handleClick, clases } = props
+  const { label, handleClick, clases } = props
   const [availableCurrencies] = availableWalletCreator()
   // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
 
@@ -192,13 +192,13 @@ export const ButtonForms = (props) => {
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // siguiente: evento a enlazar el boton
 
-  const { clases, id, loader } = props
+  const { clases, id, loader, _id } = props
 
   return (
     <div className={`contButton ${clases}`} id={`${id}`}>
       {
         props.active ?
-          <div id="botonForm" className={`botonForm swap ${loader ? 'loader' : ''} ${props.type} fuente`} onClick={loader ? null : props.siguiente}>
+          <div id={_id} className={`botonForm swap ${loader ? 'loader' : ''} ${props.type} fuente`} onClick={loader ? null : props.siguiente}>
             {
               !loader ?
                 props.children

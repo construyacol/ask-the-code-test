@@ -22,6 +22,7 @@ const InputForm = (props) => {
     readOnly = false,
     value = '',
     isControlled,
+    autoFocus,
     customError
   } = props
 
@@ -75,7 +76,8 @@ const InputForm = (props) => {
     placeholder,
     onChange: validate,
     name,
-    disabled
+    disabled,
+    autoFocus
   }
 
   if (isControlled) {

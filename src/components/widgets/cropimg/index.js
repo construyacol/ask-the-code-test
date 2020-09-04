@@ -37,6 +37,7 @@ class CropImg extends React.Component {
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault()
         this.showCroppedImage()
         // event.preventDefault();
       }

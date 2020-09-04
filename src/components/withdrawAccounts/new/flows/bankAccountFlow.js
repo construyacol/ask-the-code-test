@@ -65,22 +65,23 @@ class BankAccountFlow extends Component {
         current
       } = this.props
 
-      if ((event.keyCode === 8 || event.keyCode === 46) && !event.srcElement.tagName.includes('INPUT')) {
-        // event.preventDefault();
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         action.ReduceStep(current)
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault();
         if (step === 6 && city) {
           final_step_create_account(event)
         }
         if (step === 3 && search.length === 1) {
           handleSubmit(event)
         }
-        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number !== ''))) {
+        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
           handleSubmit(event)
         }
-        if (step === 5 && (account_type && account_number)) {
+        if (step === 5 && (account_type && account_number !== '')) {
           handleSubmit(event)
         }
         if (step === 2) {
@@ -89,22 +90,18 @@ class BankAccountFlow extends Component {
         if (step === 7) {
           finalizar()
         }
-        debugger
-        // event.preventDefault();
-      }
-      // esc
-      if (event.keyCode === 27) {
         // event.preventDefault();
       }
     }
   }
 
+  componentDidUpdate() {
+    this.keyActions()
+  }
+
   componentWillUnmount() {
     document.onkeydown = () => null
   }
-
-
-
 
   initComponent = async () => {
 
@@ -290,6 +287,7 @@ class BankAccountFlow extends Component {
                           this.props.id_type && (this.props.user.id_type !== this.props.id_type) &&
                           <InputForm
                             type="text"
+                            autoFocus={true}
                             label="Escribe el número de documento de identidad"
                             placeholder="Ej. 1123321..."
                             name="id_number"
@@ -338,6 +336,7 @@ class BankAccountFlow extends Component {
                       label="Escribe el número de cuenta"
                       placeholder="Ej. 1123321..."
                       name="account_number"
+                      autoFocus={true}
                       actualizarEstado={actualizarEstado}
                       active={account_type && account_number}
                       value={account_number}

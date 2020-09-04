@@ -48,6 +48,7 @@ const NewWalletLayout = props =>{
                     name="name"
                     actualizarEstado={actualizarEstado}
                     active={name && currency}
+                    autoFocus={true}
                     // value={name}
                   />
                 <ItemSelectionContainer

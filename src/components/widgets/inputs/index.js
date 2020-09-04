@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import './inputStyles.css'
 import { number_format } from '../../../utils'
 import { SimpleLoader } from '../loaders'
@@ -47,7 +47,7 @@ export const InputFormConverter = (props) => {
 
 
 export const InputForm = (props) => {
-  const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item } = props
+  const { clase, disabled, address, focusAction, status, addressVerify, unFocusAction, state_item, autoFocus } = props
   return (
     <div className={`${!clase ? 'containerInputComponent' : clase}`}>
       <p className="labelText fuente" style={{ display: !props.label ? 'none' : 'initial' }}>{props.label}</p>
@@ -63,6 +63,7 @@ export const InputForm = (props) => {
           value={props.value}
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
+          autoFocus={autoFocus}
         />
         {
           address &&
@@ -313,7 +314,8 @@ export class InputDepositForm extends Component {
       actualizar,
       handleKeyPress,
       value,
-      name
+      name,
+      autoFocus
     } = this.props
 
     const {
@@ -334,6 +336,7 @@ export class InputDepositForm extends Component {
           placeholder={placeholder}
           onChange={actualizar}
           name={name}
+          autoFocus={autoFocus}
           value={value ? value : ''}
           onKeyPress={handleKeyPress}
         />
@@ -352,7 +355,8 @@ export const InputCountryPrefix = (props) => {
     search_result,
     open,
     update,
-    clean_search_result
+    clean_search_result,
+    autoFocus
   } = props
 
   // @Param search_result:object  => modelo que almacena la información del país (imagen, prefijo)
@@ -383,6 +387,7 @@ export const InputCountryPrefix = (props) => {
               <input
                 type="text"
                 className="inputElement3"
+                autoFocus={autoFocus}
                 placeholder="Escribe el país del indicativo."
                 onChange={update}
                 // name="findbar_name"
@@ -444,6 +449,7 @@ export const InputKycBasic = (props) => {
                   state.ui_type === 'phone' &&
                   <InputCountryPrefix
                     open={state.open_sect}
+                    autoFocus={true}
                     search_result={search_result}
                     {...props}
                   />
@@ -457,6 +463,7 @@ export const InputKycBasic = (props) => {
                       placeholder={item.placeholder}
                       guide={true}
                       name={item.name}
+                      autoFocus={true}
                       pipe={autoCorrectedDatePipe}
                       onChange={(e) => {
                         e.persist()
@@ -474,6 +481,7 @@ export const InputKycBasic = (props) => {
                     :
                     !isDateInput && <input
                       key={item.id}
+                      autoFocus={true}
                       className={classNames}
                       type={state.ui_type === 'phone' ? 'text' :
                         state.ui_type === 'select' ? 'text' : state.ui_type}
@@ -534,7 +542,16 @@ export const InputCountry = (props) => {
   } = props
 
   // console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
-
+  useEffect(() => {
+    window.onkeydown = (event) => {
+      if (event.keyCode === 13) {
+        country_match && document.getElementById('next') && document.getElementById('next').click()
+      }
+    }
+    return () => {
+      window.onkeydown = false
+    }
+  }, [window.onkeydown])
 
   return (
     <div id="kycPrime" className="containerInputComponent3">
@@ -583,7 +600,7 @@ export const InputCountry = (props) => {
           <div className="InputProgressed" style={{ width: country_match ? '100%' : '0' }} ></div>
         </div>
 
-        <i className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
+        <i id="next" className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
 
       </div>
       <div className="InputContainerT" >

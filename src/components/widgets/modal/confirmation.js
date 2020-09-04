@@ -44,8 +44,8 @@ class ConfirmationModal extends Component {
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault()
         this.handleClick()
-        // event.preventDefault();
       }
       // esc
       if (event.keyCode === 27) {

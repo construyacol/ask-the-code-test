@@ -242,6 +242,7 @@ function SwapView(props) {
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
         customError={valueError}
+        autoFocus={true}
         SuffixComponent={() => <AvailableBalance
           handleAction={handleMaxAvailable}
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}

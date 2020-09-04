@@ -44,14 +44,16 @@ class KycBasicContainer extends Component {
     this.props.history.push(`?form=personal_names`)
     // }
     document.onkeydown = (event) => {
-      if ((event.keyCode === 8 || event.keyCode === 46) && !event.srcElement.tagName.includes('INPUT')) {
+
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         if (this.props.step === 1 || this.props.step === 11) return
         this.props.action.ReduceStep('kyc_basic')
         // event.preventDefault();
       }
       if (event.keyCode === 13) {
+        event.preventDefault()
         this.handleSubmit(event)
-        // event.preventDefault();
       }
     }
   }
@@ -328,6 +330,13 @@ class KycBasicContainer extends Component {
     const { step } = this.props
     const value = arre[(step - 1)]
     const { current_item, data_state } = this.state
+
+    if(!String(value).trim()) {
+      return this.setState({
+        message: 'No se permiten valores vacíos',
+        colorMessage: "#ff1100"
+      })
+    }
 
     // check birthday
     if (current_item === modelFormData.birthday.name && value) {

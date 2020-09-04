@@ -56,7 +56,8 @@ class WithdrawFlow extends Component {
         available
       } = this.props
 
-      if ((event.keyCode === 8 || event.keyCode === 46) && !event.srcElement.tagName.includes('INPUT')) {
+      if (event.keyCode === 8 || event.keyCode === 46) {
+        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         // if(finish_step) return
         if (step === 1 && show_list_accounts) {
           this.props.action.renderModal(null)
@@ -69,6 +70,7 @@ class WithdrawFlow extends Component {
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault()
         // console.log('ENTER was pressed');
         if (step === 1 && !show_list_accounts) {
           if (!amount) {
@@ -82,7 +84,6 @@ class WithdrawFlow extends Component {
         if (step >= 2 && !need_new_acount && finish_step) {
           this.confirmar()
         }
-        // event.preventDefault();
       }
     }
   }

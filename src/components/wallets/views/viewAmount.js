@@ -109,6 +109,7 @@ class ViewAmountComponent extends Component {
 
               <InputDepositForm
                 value={amount}
+                autoFocus={true}
                 actualizar={this.actualizarAmount}
                 name="amount"
                 handleKeyPress={this.handleKeyPress}

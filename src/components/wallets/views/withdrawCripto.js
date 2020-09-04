@@ -175,6 +175,7 @@ export const CriptoView = () => {
         value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
         disabled={loader}
+        autoFocus={true}
         SuffixComponent={() => <IconsContainer>
           <IconSwitch
             icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
