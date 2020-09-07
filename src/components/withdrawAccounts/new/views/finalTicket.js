@@ -38,7 +38,7 @@ class FinalTicket extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
   composeMethod = async () => {

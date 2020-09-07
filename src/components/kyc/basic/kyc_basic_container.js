@@ -58,6 +58,9 @@ class KycBasicContainer extends Component {
     }
   }
 
+  componentWillUnmount() {
+    document.onkeydown = false
+  }
 
   componentDidUpdate(prevProps, nextState) {
 
@@ -511,7 +514,7 @@ class KycBasicContainer extends Component {
                 handleSubmit={this.handleSubmit}
                 kyc={kyc_data_basic}
                 step={this.props.step}
-                state={this.state}
+                state={{ ...this.state, open_sect }}
                 toggleSection={this.toggleSection}
                 _onFocus={this._onFocus}
                 search_results={ui_type === 'phone' ? (data_state.country_prefix ? data_state.country_prefix : null) :

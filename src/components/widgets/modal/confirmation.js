@@ -56,7 +56,7 @@ class ConfirmationModal extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
 

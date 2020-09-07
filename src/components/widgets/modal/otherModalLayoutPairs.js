@@ -17,7 +17,9 @@ const OtherModalLayoutPairs = props =>{
         // event.preventDefault();
       }
     }
-    return () => document.onkeydown = () => null
+    return () => {
+      document.onkeydown = false
+    }
   }, [])
 
   const closeModal = (e) => {

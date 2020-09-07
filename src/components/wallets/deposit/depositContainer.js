@@ -92,7 +92,7 @@ class DepositContainer extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
   componentDidUpdate(prevProps) {

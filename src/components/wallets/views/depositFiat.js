@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import styled from 'styled-components'
 import { OperationForm } from './withdrawCripto'
 import IconSwitch from '../../widgets/icons/iconSwitch'
-import ControlButton from '../../widgets/buttons/controlButton'
+import ControlButton, { KeyActionComponent } from '../../widgets/buttons/controlButton'
 
 
 
@@ -30,16 +30,21 @@ const DepositFiat = () => {
     color:'#989898'
   }
 
+  useEffect(() => {
+    dispatch(FiatDeposit(current_wallet.currency.currency || 'usd'))
+  }, [])
+
   const fiat_deposit = async(e) =>{
     e.preventDefault()
     await dispatch(FiatDeposit(current_wallet.currency.currency || 'usd'))
     dispatch(toggleModal())
   }
 
-
   return(
     <DepositForm className="DepositView itemWalletView" onSubmit={fiat_deposit}>
+      
       <div className="contIcontSwitch">
+        <KeyActionComponent action={fiat_deposit} />
         <IconSwitch {...atributos}/>
       </div>
 

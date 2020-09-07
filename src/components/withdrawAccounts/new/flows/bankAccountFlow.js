@@ -103,7 +103,7 @@ class BankAccountFlow extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
   initComponent = async () => {

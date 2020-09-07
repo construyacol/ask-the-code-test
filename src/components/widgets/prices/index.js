@@ -27,7 +27,9 @@ const PricesModal = () => {
         // event.preventDefault();
       }
     }
-    return () => document.onkeydown = () => null
+    return () => {
+      document.onkeydown = false
+    }
   }, [document.onkeydown])
 
   return(

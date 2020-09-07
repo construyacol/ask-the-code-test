@@ -21,7 +21,7 @@ const OtherModalLayout = props =>{
       }
     }
     return () => {
-      el.onkeydown = () => null
+      el.onkeydown = false
     }
   }, [el.onkeydown])
 

@@ -43,15 +43,12 @@ const ModalLayout = (props) => {
 
   useEffect(() => {
     el.onkeydown = (event) => {
-      // esc
       if (event.keyCode === 27) {
-        // console.log('ESC was pressed');
         salir()
-        // event.preventDefault();
       }
     }
     return () => {
-      el.onkeydown = () => null
+      el.onkeydown = false
     }
   }, [el.onkeydown])
 

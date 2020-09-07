@@ -40,7 +40,7 @@ const OrderSupervisor = () => {
       }
     }
     return () => {
-      el.onkeydown = () => null
+      el.onkeydown = false
     }
   }, [el.onkeydown])
 

@@ -83,7 +83,6 @@ const SwitchView = props => {
   return Views[params.path]
 }
 
-
 WalletContainer.propTypes = {
   isAppLoaded: PropTypes.bool,
   currencies: PropTypes.array,

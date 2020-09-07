@@ -45,7 +45,7 @@ class CropImg extends React.Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
   onCropChange = crop => {

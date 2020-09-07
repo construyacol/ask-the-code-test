@@ -67,12 +67,11 @@ class WithdrawFlow extends Component {
         if (step >= 2 && !need_new_acount && finish_step) {
           return this.cancelWithdrawOrder()
         }
-        // event.preventDefault();
       }
-      // enter
+      
       if (event.keyCode === 13) {
         event.preventDefault()
-        // console.log('ENTER was pressed');
+
         if (step === 1 && !show_list_accounts) {
           if (!amount) {
             return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
@@ -90,7 +89,7 @@ class WithdrawFlow extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
   }
 
   updateTimes = 0
