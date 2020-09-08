@@ -41,6 +41,10 @@ class WithdrawFlow extends Component {
     this.props.action.CurrentForm('withdraw')
     this.init_config()
     this.props.history.push(`?form=withdraw_amount`)
+    this.keyActions() 
+  }
+
+  keyActions() {
     document.onkeydown = (event) => {
       // backspace
       const {
@@ -57,7 +61,7 @@ class WithdrawFlow extends Component {
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
-        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
+        if (event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         // if(finish_step) return
         event.preventDefault()
         if (step === 1 && show_list_accounts) {
@@ -68,7 +72,7 @@ class WithdrawFlow extends Component {
           return this.cancelWithdrawOrder()
         }
       }
-      
+
       if (event.keyCode === 13) {
         event.preventDefault()
 
@@ -90,6 +94,7 @@ class WithdrawFlow extends Component {
 
   componentWillUnmount() {
     document.onkeydown = false
+    this.props.history.push(window.location.pathname)
   }
 
   updateTimes = 0
@@ -614,6 +619,7 @@ class WithdrawFlow extends Component {
             (step >= 2 && need_new_acount && !finish_step) &&
             <WithdrawAccountForm
               withdraw_flow={true}
+              initPrevKeyActions={() => this.keyActions()}
               withdraw_flow_action={this.new_account_and_withdraw}
               toastMessage={this.props.toastMessage}
             />

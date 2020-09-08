@@ -4,12 +4,13 @@ import styled from 'styled-components'
 import SimpleLoader from '../loaders'
 import { LoaderContainer } from '../loaders'
 
-export const KeyActionComponent = ({ action }) => {
+export const KeyActionComponent = ({ action, isFiat }) => {
 
   useEffect(() => {
     if (!window.onkeydown) {
       window.onkeydown = (event) => {
         if (event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
+          if(!isFiat) return
           if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
           action(event)
         }

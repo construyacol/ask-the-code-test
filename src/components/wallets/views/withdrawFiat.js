@@ -32,7 +32,7 @@ const FiatView = props => {
     <section id="" className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
 
       <div className="contIcontSwitch">
-        <KeyActionComponent action={handleSubmit} />
+        <KeyActionComponent action={handleSubmit} isFiat={current_wallet.currency_type === 'fiat'} />
         <IconSwitch {...atributos} />
       </div>
 

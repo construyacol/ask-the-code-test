@@ -93,6 +93,7 @@ class DepositContainer extends Component {
 
   componentWillUnmount() {
     document.onkeydown = false
+    this.props.history.push(window.location.pathname)
   }
 
   componentDidUpdate(prevProps) {

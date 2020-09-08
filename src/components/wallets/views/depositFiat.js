@@ -8,7 +8,7 @@ import ControlButton, { KeyActionComponent } from '../../widgets/buttons/control
 
 
 
-const DepositFiat = () => {
+const DepositFiat = (props) => {
 
   const movil_viewport = window.innerWidth < 768
   const [ ,
@@ -44,7 +44,7 @@ const DepositFiat = () => {
     <DepositForm className="DepositView itemWalletView" onSubmit={fiat_deposit}>
       
       <div className="contIcontSwitch">
-        <KeyActionComponent action={fiat_deposit} />
+        <KeyActionComponent action={fiat_deposit} isFiat={current_wallet.currency_type === 'fiat'} />
         <IconSwitch {...atributos}/>
       </div>
 

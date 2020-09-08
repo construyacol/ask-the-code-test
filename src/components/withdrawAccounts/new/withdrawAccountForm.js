@@ -294,6 +294,7 @@ class WithdrawAccountForm extends Component {
         step={step}
         select_withdraw_way={this.select_withdraw_way}
         cleanSearch={this.cleanSearch}
+        initPrevKeyActions={this.props.initPrevKeyActions}
         search={search}
         final_step_create_account={this.final_step_create_account}
         {...this.state}

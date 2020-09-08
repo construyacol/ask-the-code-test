@@ -10,6 +10,7 @@ import './detailContainer.css'
 function ContentTab(props) {
     const tabRef = useRef()
     const forceStatePathnameIndex = useRef({ currentIndex: 0 })
+    const forceCurrentWallet = useRef('')
     const [haveMenu, setHaveMenu] = useState(false)
     const { title, current_section, current_wallet, pathname, primary_path, wallets, history } = props
 
@@ -28,11 +29,14 @@ function ContentTab(props) {
             const currentIndex = items_menu.findIndex(item => item.link === pathname)
             forceStatePathnameIndex.current = { pathname, currentIndex }
         }
+        if (forceCurrentWallet.current !== current_wallet) {
+            forceCurrentWallet.current = current_wallet
+        }
         setHaveMenu((current_wallet && items_menu ? items_menu.length > 0 : false))
     }, [current_wallet, items_menu, pathname])
 
     const getLink = (link) => {
-        return `/${primary_path}/${link}/${current_wallet}${link === 'activity' ? `/${params.currentFilter}` : ''}`
+        return `/${primary_path}/${link}/${forceCurrentWallet.current}${link === 'activity' ? `/${params.currentFilter}` : ''}`
     }
 
     const goPrev = () => {
@@ -55,24 +59,24 @@ function ContentTab(props) {
 
     useEffect(() => {
         document.onkeyup = (event) => {
-            const condition = 
-                current_wallet || 
-                !document.onkeydown || 
-                window.location.href.includes(forceStatePathnameIndex.current.pathname) ||
-                !window.location.href.includes('?')
-            if (event.keyCode === 37) {
-                if (condition)
-                goPrev()
-            }
-            if (event.keyCode === 39) {
-                if (condition)
-                goNext()
-            }
-            if (event.keyCode === 8) {
-                if (event.srcElement.tagName.includes('INPUT')) return
-                if (condition)
-                exit()
-            }
+            window.requestAnimationFrame(() => {
+                const condition =
+                    current_wallet &&
+                    !document.onkeydown &&
+                    window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
+                    !window.location.href.includes('?')
+
+                if (event.keyCode === 37) {
+                    if (condition) goPrev()
+                }
+                if (event.keyCode === 39) {
+                    if (condition) goNext()
+                }
+                if (event.keyCode === 8) {
+                    if (event.srcElement.tagName.includes('INPUT')) return
+                    if (condition) exit()
+                }
+            })
         }
     }, [document.onkeydown])
 
