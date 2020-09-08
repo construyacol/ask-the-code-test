@@ -61,7 +61,7 @@ function ContentTab(props) {
         document.onkeyup = (event) => {
             window.requestAnimationFrame(() => {
                 const condition =
-                    current_wallet &&
+                    forceCurrentWallet.current &&
                     !document.onkeydown &&
                     window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
                     !window.location.href.includes('?')

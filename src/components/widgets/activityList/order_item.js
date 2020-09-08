@@ -24,10 +24,10 @@ const confirmPayment = async () => {
 
 const OrderItem = ({ order }) => {
 
+  const [orderState, setOrderState] = useState()
   const txState = UseTxState(order.id)
   const { tx_path, new_order_style, actions, history } = txState
   // const [ show,  element ] = ObserverHook()
-  const [orderState, setOrderState] = useState()
 
 
   const orderDetail = async (e) => {

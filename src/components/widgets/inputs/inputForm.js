@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import InputValidate from '../../hooks/inputValidate'
 import styled from 'styled-components'
 import SkeletonAnimation from '../loaders/skeleton'
@@ -23,7 +23,8 @@ const InputForm = (props) => {
     value = '',
     isControlled,
     autoFocus,
-    customError
+    customError,
+    onKeyDown
   } = props
 
   if (skeleton) {
@@ -77,7 +78,8 @@ const InputForm = (props) => {
     onChange: validate,
     name,
     disabled,
-    autoFocus
+    autoFocus,
+    onKeyDown
   }
 
   if (isControlled) {

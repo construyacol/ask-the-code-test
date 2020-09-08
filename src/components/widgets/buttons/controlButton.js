@@ -21,7 +21,7 @@ export const KeyActionComponent = ({ action, isFiat }) => {
   return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
 }
 
-const ControlButton = ({ loader, formValidate, label, handleAction }) => {
+const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
   return (
     <ControlsContainer className={`${loader ? 'loader' : ''}`}>
       {
@@ -33,6 +33,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction }) => {
       <InputButton
         label={label}
         type="primary"
+        id={id}
         active={formValidate}
         handleAction={(e) => {
           e.currentTarget.blur()
@@ -52,7 +53,7 @@ export const InputButton = (props) => {
     <InputButtonCont>
       {
         props.active ?
-          <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.handleAction} />
+          <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.handleAction} />
           :
           // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
           <DisabledButton>

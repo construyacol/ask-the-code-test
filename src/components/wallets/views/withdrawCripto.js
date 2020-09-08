@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import InputForm from '../../widgets/inputs/inputForm'
@@ -73,11 +73,12 @@ export const CriptoView = () => {
     }, dispatch] = WithdrawViewState()
 
   const actions = useActions()
-  const [ toastMessage ] = useToastMesssage()
+  const [toastMessage] = useToastMesssage()
 
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
   const [amountState, setAmountState] = useState()
+  const isValidForm = useRef(false)
   let movil_viewport = window.innerWidth < 768
 
 
@@ -132,19 +133,22 @@ export const CriptoView = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    e.stopPropagation()
 
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
 
     dispatch(confirmationModalToggle())
-    dispatch(confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
-      description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
-      txtPrimary: "Confirmar Retiro",
-      txtSecondary: "Cancelar",
-      action: (finish_withdraw),
-      img: "withdraw"
-    }))
+    window.requestAnimationFrame(() => {
+      dispatch(confirmationModalPayload({
+        title: "Esto es importante, estas a punto de...",
+        description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
+        txtPrimary: "Confirmar Retiro",
+        txtSecondary: "Cancelar",
+        action: (finish_withdraw),
+        img: "withdraw"
+      }))
+    })
   }
 
   const handleMaxAvailable = (e) => {
@@ -161,9 +165,34 @@ export const CriptoView = () => {
     const Element = () => (<QrScanner onScan={setAddressValue} />)
     actions.renderModal(Element)
   }
-  
+
+  useEffect(() => {
+    const condition = !active_trade_operation && (amountState === 'good' && addressState === 'good')
+    if (isValidForm.current !== condition) {
+      isValidForm.current = condition
+    }
+    if (addressState === 'good') {
+      document.getElementsByName('amount')[0].focus()
+    }
+  }, [active_trade_operation, amountState, addressState])
+
+  const enterEvent = (event) => {
+    if (event.keyCode === 13 && !window.onkeydown && isValidForm.current) {
+      event.preventDefault()
+      document.getElementById('send-form').click()
+      return false
+    }
+  }
+
+  const cancelEnterAction = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault()
+      return false
+    }
+  }
+
   return (
-    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
+    <WithdrawForm onKeyDown={cancelEnterAction} onKeyPress={cancelEnterAction} onKeyUp={enterEvent} id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
@@ -197,12 +226,20 @@ export const CriptoView = () => {
         label={`Ingresa la cantidad de retiro`}
         disabled={loader}
         state={amountState}
+        onKeyDown={(e) => {
+          if (e.keyCode === 77) {
+            document.getElementsByName('amount')[0].blur()
+            document.getElementById('set-max-available').click()
+          }
+        }}
         SuffixComponent={() => <AvailableBalance
+          id="set-max-available"
           handleAction={handleMaxAvailable}
           amount={balance.available} />}
       // PrefixComponent
       />
       <ControlButton
+        id='send-form'
         loader={loader}
         formValidate={!active_trade_operation && (amountState === 'good' && addressState === 'good')}
         label="Enviar"
@@ -213,12 +250,12 @@ export const CriptoView = () => {
 
 }
 
-export const AvailableBalance = ({ handleAction, amount }) => {
+export const AvailableBalance = ({ handleAction, amount, id }) => {
   const isMovil = window.innerWidth < 768
 
   return (
     <BalanceContainer>
-      <p className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
+      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
     </BalanceContainer>
   )
 }
