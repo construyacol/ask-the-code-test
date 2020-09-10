@@ -311,37 +311,31 @@ export class InputDepositForm extends Component {
   }
 
   render() {
-    const { placeholder,
+    const {
       actualizar,
       handleKeyPress,
       value,
       name,
       autoFocus
     } = this.props
-
     const {
       finalValue
     } = this.state
-
-
+    const style = { fontSize: (finalValue.length < 10) ? '90px' : (finalValue.length < 15) ? '60px' : '40px' }
 
     return (
-      <div className="containerInputComponent putitass">
-        <p className="signoPesos fuente2" style={{ fontSize: (finalValue.length < 10) ? '90px' : (finalValue.length < 15) ? '60px' : '40px' }}>
-          {`$ ${finalValue}`}
-        </p>
+      <div className="containerInputComponent with-adapt">
         <input
-          // className={`inputElement2 ${actives ? 'inputActivado' : '' }`}
-          className={`inputElement2 inputDeposit`}
+          className={`inputElement2 signoPesos fuente2 width-adapt-child`}
           type="text"
-          placeholder={placeholder}
+          style={style}
+          placeholder={`$ ${finalValue}`}
           onChange={actualizar}
           name={name}
           autoFocus={autoFocus}
-          value={value ? value : ''}
+          value={value ? `$ ${finalValue}` : ''}
           onKeyPress={handleKeyPress}
         />
-        {/* <p className="statusInputs">{status}</p> */}
       </div>
     )
   }
