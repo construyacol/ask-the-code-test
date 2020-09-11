@@ -129,6 +129,21 @@ const ItemAccount = props => {
     toastMessage(msg, success ? 'success' : 'error')
   }
 
+  const delete_account_confirmation = () => {
+    props.actions.confirmationModalToggle()
+    props.actions.confirmationModalPayload({
+      title: "Esto es importante, estas a punto de...",
+      description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
+      txtPrimary: "Eliminar",
+      txtSecondary: "Cancelar",
+      // payload:props.account.id,
+      action: delete_account,
+      img: "deletewallet",
+      // code:props.account_type
+    })
+  }
+
+
   useEffect(() => {
     const element = document.getElementById(props.focusedId)
     if(element) {
@@ -141,9 +156,14 @@ const ItemAccount = props => {
         setIsSelected(false)
       }
 
-      element.onkeypress = (event) => {
-        if(event.keyCode === 100) {
-          delete_account()
+      element.onkeydown = (event) => {
+        if(event.keyCode === 46) {
+          event.stopPropagation()
+          delete_account_confirmation()
+          return
+        }
+        if(event.keyCode === 13) {
+          account_detail(props.account_type)
         }
       }
     }
@@ -160,7 +180,7 @@ const ItemAccount = props => {
             handleAction={account_detail}
             set_account_state={set_account_state}
             shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
-            delete_account={delete_account}
+            delete_account={delete_account_confirmation}
             {...props} />
           :
           <WithdrawAccount
@@ -168,7 +188,7 @@ const ItemAccount = props => {
             handleAction={account_detail}
             set_account_state={set_account_state}
             shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
-            delete_account={delete_account}
+            delete_account={delete_account_confirmation}
             {...props} />
       }
     </AccountLayout>
@@ -194,7 +214,7 @@ const mapStateToProps = (state, props) => {
 }
 
 // ¿Es necesario conectar redux tanto para Wallet como para Withdraw Account?
-export default connect(mapStateToProps)(withRouter(ItemAccount))
+export default connect(mapStateToProps)(withRouter(React.memo(ItemAccount)))
 
 
 
@@ -316,20 +336,6 @@ const LoaderAccount = () => {
 
 
 const OptionsAccount = props => {
-  const delete_account_confirmation = async () => {
-    props.actions.confirmationModalToggle()
-    props.actions.confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
-      description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
-      txtPrimary: "Eliminar",
-      txtSecondary: "Cancelar",
-      // payload:props.account.id,
-      action: (props.delete_account),
-      img: "deletewallet",
-      // code:props.account_type
-    })
-  }
-
   // console.log('|||||||||||||||||||  redirectGo ==>> ', e.target.dataset && e.target.dataset.address)
   const redirectGo = (e) => {
     if (e.target.dataset && e.target.dataset.address) {
@@ -366,12 +372,7 @@ const OptionsAccount = props => {
         </>
       }
 
-
-
-
-
-
-      <BarIconCont className="retweetCont" account_type={account_type} onClick={delete_account_confirmation}>
+      <BarIconCont className="retweetCont" account_type={account_type} onClick={props.delete_account}>
         <Icon className="fas fa-trash-alt IdeleteButton tooltip">
           <span className="tooltiptext2 fuente">Borrar</span>
         </Icon>

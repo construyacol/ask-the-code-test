@@ -89,6 +89,13 @@ function AccountList(props) {
   }
 
   useEffect(() => {
+    if(items.length > 0) {
+      const el = document.getElementById(`elementFocusable${0}`)
+          el && el.focus()
+    }
+  }, [items])
+
+  useEffect(() => {
     window.onkeydown = false
     if(!window.onkeydown && items && items.length > 0) {
       window.onkeydown = (event) => {
@@ -182,4 +189,4 @@ const AccountsNotFound = ({ account_type }) => {
   )
 }
 
-export default withListCreator(AccountList)
+export default React.memo(withListCreator(AccountList))

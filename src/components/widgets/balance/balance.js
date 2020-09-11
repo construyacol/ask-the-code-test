@@ -61,8 +61,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
       }, 250)
     })
   }
-
-  console.log(current_amount)
+  
   return (
     <div className="BalanceComponent wallet">
       <p className="fuente title balanceTitle">Balance </p>
