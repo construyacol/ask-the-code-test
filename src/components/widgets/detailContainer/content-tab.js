@@ -188,6 +188,7 @@ function mapStateToProps(state, props) {
     return {
         current_section: state.ui.current_section,
         path: props.match.params.path || null,
+        wallets: state.modelData.wallets,
         ...account_opts
     }
 }

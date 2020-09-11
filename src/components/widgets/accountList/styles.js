@@ -165,7 +165,19 @@ export const AccountLayout = styled.div`
   }
 `
 
+const selected = css`
+  -webkit-box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
+  -moz-box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
+  box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
+  transform: scale(1.01);
+  & ${OptionsLayout} {
+    right: 0 !important;
+  }
 
+  & .IdeleteButton{
+    opacity: 1;
+  }
+`
 
 export const ItemAccountL = styled.div`
   color:white !important;
@@ -240,7 +252,7 @@ export const ItemAccountL = styled.div`
     transform: scale(1.01);
   }
 
-
+  ${props => props.isSelected ? selected : ''}
 
   &.loader:hover{
     box-shadow: 0px !important;

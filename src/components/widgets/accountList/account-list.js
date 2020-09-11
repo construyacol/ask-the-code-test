@@ -15,9 +15,10 @@ function AccountList(props) {
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
+  const [currentSelection, setCurrentSelection] = useState(-1)
 
   useEffect(() => {
-    actions.cleanCurrentSection()
+    // actions.cleanCurrentSection()
     const verified = coinsendaService.getUserVerificationStatus('level_1')
     setIsVerified(verified)
   }, [])
@@ -87,6 +88,28 @@ function AccountList(props) {
     // marginBottom: '40px'
   }
 
+  useEffect(() => {
+    window.onkeydown = false
+    if(!window.onkeydown && items && items.length > 0) {
+      window.onkeydown = (event) => {
+        const length = items.length - 1
+        if(event.keyCode === 37) {
+          const elementId = currentSelection < 0 ? length : currentSelection - 1
+          const el = document.getElementById(`elementFocusable${Math.max(0, elementId)}`)
+          el && el.focus()
+        } 
+        if(event.keyCode === 39 || (event.keyCode === 13 && currentSelection < 0)) {
+          const elementId = currentSelection < 0 ? 0 : currentSelection + 1
+          const el = document.getElementById(`elementFocusable${Math.min(length, elementId)}`)
+          el && el.focus()
+        }
+      }
+      return () => {
+        window.onkeydown = false
+      }
+    }
+  }, [window.onkeydown, items])
+
   return (
     <>
       {
@@ -97,6 +120,9 @@ function AccountList(props) {
                 if (!account.visible) { return null }
                 return <ItemAccount
                   key={id}
+                  setCurrentSelection={setCurrentSelection}
+                  number={id}
+                  focusedId={`elementFocusable${id}`}
                   account={account}
                   account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'}
                   {...props}

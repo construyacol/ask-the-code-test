@@ -35,6 +35,7 @@ const ItemAccount = props => {
   const [coinsendaServices] = useCoinsendaServices()
   const [ toastMessage ] = useToastMesssage()
   const [account_state, set_account_state] = useState()
+  const [isSelected, setIsSelected] = useState(false)
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
   const [id_wallet_action, set_id_wallet_action] = useState('')
@@ -128,13 +129,33 @@ const ItemAccount = props => {
     toastMessage(msg, success ? 'success' : 'error')
   }
 
-  // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||  ItemAccount < ItemAccount ::', reduxState, props)
+  useEffect(() => {
+    const element = document.getElementById(props.focusedId)
+    if(element) {
+      element.onfocus = () => {
+        setIsSelected(true)
+        props.setCurrentSelection(props.number)
+      }
+  
+      element.onblur = () => {
+        setIsSelected(false)
+      }
+
+      element.onkeypress = (event) => {
+        if(event.keyCode === 100) {
+          delete_account()
+        }
+      }
+    }
+  }, [])
 
   return (
     <AccountLayout className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}>
+      <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0}} id={props.focusedId} />
       {
         account_type === 'wallets' ?
           <Wallet
+            isSelected={isSelected}
             loaderAccount={loader}
             handleAction={account_detail}
             set_account_state={set_account_state}
@@ -180,14 +201,14 @@ export default connect(mapStateToProps)(withRouter(ItemAccount))
 
 
 const Wallet = props => {
-  const { account, balances, delete_account, shouldHaveDeleteClassName } = props
+  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected } = props
   const { name, id, currency } = account
   const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
 
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
-    <WalletLayout className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
+    <WalletLayout isSelected={isSelected} className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
 
       {
         props.loaderAccount &&
