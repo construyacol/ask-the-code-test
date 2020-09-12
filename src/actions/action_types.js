@@ -52,6 +52,7 @@ export const UPDATE_ITEM_STATE = 'UPDATE_ITEM_STATE'
 export const SET_RENDER_MODAL = 'SET_RENDER_MODAL'
 
 export const SET_AUTH_DATA = 'SET_AUTH_DATA'
+export const UPDATE_LOADERS = 'UPDATE_LOADERS'
 
 
 

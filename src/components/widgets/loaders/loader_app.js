@@ -45,8 +45,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const initComponent = async (newCountry) => {
 
     const {
-      userToken,
-      userId
+      userToken
     } = authData
 
     const isSessionRestored = await tryRestoreSession(userToken)

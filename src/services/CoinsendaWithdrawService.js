@@ -27,9 +27,14 @@ export class WithdrawService extends WebService {
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
+
+        if(await this.isCached('fetchWithdrawAccounts_', result)) {
+            return this.globalState.modelData.withdraw_accounts
+        }
+
         if (!result.length) {
           let userWithOutWA = {
-              ...user,
+              id: user.id,
               withdraw_accounts: []
           }
           // TODO: create function to normalize user
@@ -104,7 +109,7 @@ export class WithdrawService extends WebService {
         withdrawAccounts.reverse()
 
         const updatedUser = {
-            ...user,
+            id: user.id,
             withdraw_accounts: [
                 ...withdrawAccounts
             ]
@@ -150,9 +155,13 @@ export class WithdrawService extends WebService {
         const withdrawProviders = await this.Get(finalUrl)
 
         if (!withdrawProviders) return;
+        
+        if(await this.isCached('fetchWithdrawProviders_', withdrawProviders)) {
+            return withdrawProviders
+        }
 
         const updatedUser = {
-            ...user,
+            id: user.id,
             withdrawProviders: [
                 ...withdrawProviders
             ]
@@ -296,6 +305,10 @@ export class WithdrawService extends WebService {
 
         if (withdraws && withdraws.length < 1) { return false }
 
+        if(await this.isCached(this.getThisPath('get_deposits'), withdraws)) {
+            return withdraws
+        }
+
         let withdraws_remodeled = []
         for (let withdraw of withdraws) {
           let state
@@ -401,6 +414,10 @@ export class WithdrawService extends WebService {
 
         let finalResult
         res = res ? res : []
+
+        if(await this.isCached(this.getThisPath('fetchActivityByAccount_'), res)) {
+            return res
+        } 
 
         finalResult = res.filter(item => item.state === 'accepted').map(withdraw => {
             // let state

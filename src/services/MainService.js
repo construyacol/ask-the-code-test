@@ -1,3 +1,4 @@
+import localForage from 'localforage'
 import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
 import { TransactionService } from "./CoinsendaTransactionService";
 import { ReferralService } from "./CoinsendaReferralService";
@@ -10,13 +11,13 @@ import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
 
 import userSource from '../components/api'
-import Environment from "../environment";
-import { addIndexToRootObject, objectToArray, normalized_list } from "../utils";
+import { deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading, { isAppLoaded } from "../actions/loader";
 import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
+import { updateLoadersAction } from '../actions/uiActions';
 // import { observable, decorate, computed, action } from "mobx"
 
 const aggregation = (baseClass, ...mixins) => {
@@ -126,6 +127,9 @@ export class MainService extends inheritances {
 
     async postLoader(callback) {
         try {
+            this.dispatch(updateLoadersAction({
+                mainList: true
+            }))
             let pairs = await this.fetchAllPairs()
             if (!pairs) {
                 return callback()
@@ -136,9 +140,12 @@ export class MainService extends inheritances {
             await this.fetchDepositProviders()
             await this.fetchWithdrawProviders()
             await this.fetchWithdrawAccounts()
+            this.dispatch(updateLoadersAction({
+                mainList: false
+            }))
         } catch (error) {
-            await sleep(2000)
-            this.postLoader(this.user.country, callback)
+            await sleep(5000)
+            this.postLoader(callback)
         }
     }
 
@@ -188,11 +195,11 @@ export class MainService extends inheritances {
         let user = this.user
 
         let user_update = {
-          ...user,
-          [typeList]: {
-            new_order: newOrder,
-            ...list
-          }
+            id: user.id,
+            [typeList]: {
+                new_order: newOrder,
+                ...list
+            }
         }
 
         let normalizedUser = await normalizeUser(user_update)
@@ -200,8 +207,22 @@ export class MainService extends inheritances {
         return normalizedUser
     }
 
-    async setAppLoading (payload) {
+    async setAppLoading(payload) {
         this.dispatch(isAppLoaded(payload))
+    }
+
+    async isCached(path, newData) {
+        const cached = await localForage.getItem('CACHED_DATA')
+        if (cached[path]) {
+            if (deepEqual(cached[path], newData)) {
+                return true
+            } else {
+                await localForage.setItem('CACHED_DATA', { ...cached, [path]: newData })
+            }
+        } else {
+            await localForage.setItem('CACHED_DATA', { ...cached, [path]: newData })
+        }
+        return false
     }
 }
 

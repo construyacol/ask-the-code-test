@@ -23,13 +23,21 @@ export class AccountService extends WebService {
         const wallets = await this.Get(accountUrl)
         if (!wallets || wallets === 404) { return false }
 
+        if(await this.isCached('getWalletsByUser_', wallets)) {
+            return {
+                entities : {
+                    wallets: this.globalState.modelData.wallets
+                }
+            }
+        }
+
         const availableWallets = wallets.filter(wallet => {
             return (wallet.visible && wallet.currency.currency !== 'usd') ? wallet : false
         })
 
         if (!availableWallets.length) {
             let userWithOutW = {
-                ...user,
+                id: user.id,
                 wallets: []
             }
             const toNormalize = await normalizeUser(userWithOutW)
@@ -49,7 +57,7 @@ export class AccountService extends WebService {
 
 
         let updatedUser = {
-            ...user,
+            id: user.id,
             wallets: [
                 ...availableWallets
             ],
@@ -59,7 +67,7 @@ export class AccountService extends WebService {
         }
 
         const updatedOnlyBalances = {
-            ...user,
+            id: user.id,
             balances: [
                 ...balanceList
             ]

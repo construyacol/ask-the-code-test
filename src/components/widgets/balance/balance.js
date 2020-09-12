@@ -28,7 +28,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
 
     if (actionAmount) {
       // el actionAmount es la cantidad a reducir o sumar de la operación, solo con fines de dar feedback visual al usuario, no es indispensable para su funcionalidad
-      let actionAmountFormat = await formatToCurrency(actionAmount, currency, true)
+      let actionAmountFormat = formatToCurrency(actionAmount, currency, true)
       await play_animation('Out')
 
       setActionType(lastAction)
@@ -36,7 +36,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
       await play_animation('In')
     }
 
-    let availableAmount = await formatToCurrency(available, currency, true)
+    let availableAmount = formatToCurrency(available, currency, true)
     await dead_time()
     await play_animation('Out')
 

@@ -11,7 +11,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import '../../wallets/views/wallet_views.css'
 
 function AccountList(props) {
-  const { isWalletsView, isWithdrawView, actions, history } = props
+  const { isWalletsView, isWithdrawView, actions, history, mainListLoader } = props
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
@@ -89,15 +89,15 @@ function AccountList(props) {
   }
 
   useEffect(() => {
-    if(items.length > 0) {
+    if(items.length > 0 && !mainListLoader) {
       const el = document.getElementById(`elementFocusable${0}`)
           el && el.focus()
     }
-  }, [items])
+  }, [items, mainListLoader])
 
   useEffect(() => {
     window.onkeydown = false
-    if(!window.onkeydown && items && items.length > 0) {
+    if(!window.onkeydown && items && items.length > 0 && !mainListLoader) {
       window.onkeydown = (event) => {
         const length = items.length - 1
         if(event.keyCode === 37) {
@@ -115,7 +115,7 @@ function AccountList(props) {
         window.onkeydown = false
       }
     }
-  }, [window.onkeydown, items])
+  }, [window.onkeydown, items, mainListLoader])
 
   return (
     <>

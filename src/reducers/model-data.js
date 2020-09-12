@@ -27,7 +27,7 @@ const initialState = {
     localCurrency: ""
   },
   user: null,
-  deposit_providers:[],
+  deposit_providers: [],
   wallets: null,
   currencies: null,
   balances: {},
@@ -110,12 +110,12 @@ const data = (state = initialState, action) => {
       // Actualizamos lista de billeteras de usuario, de momento estoy sirviendo toda la data normalizado para hecer pruebas
       models = action.payload.entities
       user_id = action.payload.result
-      // console.log('||||||||||||||  R E S P U E S T A |||||||||||||||||||', models)
-      // alert('hijoputa')
+      
       return {
         ...state,
         ...models,
         user: {
+          ...state.user,
           ...models.user[user_id],
         },
         user_id
@@ -186,9 +186,6 @@ const data = (state = initialState, action) => {
           currentPair: result[0]
         }
       }
-
-
-
     case LOCAL_CURRENCY:
       // console.log(' =================================>>>    local_currency', action.payload)
       return {

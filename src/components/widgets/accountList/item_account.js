@@ -39,9 +39,13 @@ const ItemAccount = props => {
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
   const [id_wallet_action, set_id_wallet_action] = useState('')
-  const { account_type } = props
+  const { account_type, mainListLoader } = props
   // 5d3dedf1bb245069d61021bb
 
+  useEffect(() =>{
+    set_loader(mainListLoader)
+  }, [mainListLoader])
+  
   useEffect(() => {
     setShouldHaveDeleteClassName((id_wallet_action === props.account.id) && account_state)
   }, [account_state, props.account.id])
