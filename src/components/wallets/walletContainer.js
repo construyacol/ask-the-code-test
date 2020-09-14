@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
-import { Switch, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import DepositView from './views/deposit'
 import ActivityView from './views/activity'
 // import WithdrawView from './views/withdraw'
@@ -28,28 +28,26 @@ function WalletContainer(props) {
   }, [])
 
   return (
-    <Switch>
-      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-        <DetailContainerLayout
-          {...props}
-          {...routeProps}
-        >
-          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
-            <WalletDetail wallets={props.wallets} {...renderProps} />
-          )} />
-          {
-            !props.isAppLoaded ?
-              <SimpleLoader />
-              :
-              <>
-                <Route exact path="/:primary_path" component={() =>(<AccountList {...routeProps} isWalletsView data={props.wallets} />)} />
-                <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
-                <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
-              </>
-          }
-        </DetailContainerLayout>
-      )} />
-    </Switch>
+    <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+      <DetailContainerLayout
+        {...props}
+        {...routeProps}
+      >
+        <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
+          <WalletDetail wallets={props.wallets} match={match} />
+        )} />
+        {
+          !props.isAppLoaded ?
+            <SimpleLoader />
+            :
+            <>
+              <Route exact path="/:primary_path" render={() => (<AccountList {...routeProps} isWalletsView />)} />
+              <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
+              <Route exact path="/:primary_path/:path/:account_id" render={() => <SwitchView {...routeProps} />} />
+            </>
+        }
+      </DetailContainerLayout>
+    )} />
   )
 
 }

@@ -8,11 +8,11 @@ import './detailContainer.css'
 
 // TODO: refactor this component
 function ContentTab(props) {
+    const { title, current_section, current_wallet, pathname, primary_path, wallets, history } = props
     const tabRef = useRef()
     const forceStatePathnameIndex = useRef({ currentIndex: 0 })
-    const forceCurrentWallet = useRef('')
+    const forceCurrentWallet = useRef(current_wallet)
     const [haveMenu, setHaveMenu] = useState(false)
-    const { title, current_section, current_wallet, pathname, primary_path, wallets, history } = props
 
     const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets
     const { params } = current_section
@@ -88,7 +88,7 @@ function ContentTab(props) {
                         haveMenu &&
                         items_menu.map(item => {
                             // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
-                            if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && wallets[current_wallet] && !wallets[current_wallet].count) {
+                            if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && wallets[current_wallet] && wallets[current_wallet].count === 0) {
                                 return null
                             }
                             return (

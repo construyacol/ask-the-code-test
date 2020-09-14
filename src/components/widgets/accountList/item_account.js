@@ -23,44 +23,42 @@ import {
 import './item_wallet.css'
 import { withRouter } from 'react-router'
 import { useToastMesssage } from '../../../hooks/useToastMessage'
+import { useActions } from '../../../hooks/useActions'
 
 const ItemAccount = props => {
 
-  if (props.loader) {
+  if (props.loader || !props.account) {
     return (
       <LoaderAccount />
     )
   }
 
   const [coinsendaServices] = useCoinsendaServices()
-  const [ toastMessage ] = useToastMesssage()
+  const actions = useActions()
+  const [toastMessage] = useToastMesssage()
   const [account_state, set_account_state] = useState()
   const [isSelected, setIsSelected] = useState(false)
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
   const [id_wallet_action, set_id_wallet_action] = useState('')
-  const { account_type, mainListLoader } = props
+  const { account_type } = props
   // 5d3dedf1bb245069d61021bb
 
-  useEffect(() =>{
-    set_loader(mainListLoader)
-  }, [mainListLoader])
-  
   useEffect(() => {
     setShouldHaveDeleteClassName((id_wallet_action === props.account.id) && account_state)
   }, [account_state, props.account.id])
 
-  const getAccountTransactions = async() => {
+  const getAccountTransactions = async () => {
     set_loader(true)
     const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id)
     const { count } = countAccount
-    await props.actions.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
-    if(count < 1){
+    await actions.update_item_state({ [props.account.id]: { ...props.account, count } }, 'wallets')
+    if (count < 1) {
       let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id)
       set_loader(false)
-      if(areThereDeposits && areThereDeposits.length){
+      if (areThereDeposits && areThereDeposits.length) {
         // console.log('||||||||||||||| -------------- |||||||||||||||||||||||||||   ARE THERE DEPOSITS :: ', props, props.wallets)
-        props.actions.update_item_state({ [props.account.id]: { ...props.wallets[props.account.id], count:1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
+        actions.update_item_state({ [props.account.id]: { ...props.specifiedWallet, count: 1 } }, 'wallets') //actualiza el movimiento operacional de la wallet
         return props.history.push(`/wallets/activity/${props.account.id}/deposits`)
       }
       return props.history.push(`/wallets/deposit/${props.account.id}`)
@@ -70,12 +68,12 @@ const ItemAccount = props => {
 
 
   const account_detail = async (payload) => {
-    if(payload !== 'wallets') {
+    if (payload !== 'wallets') {
       return props.history.push(`/withdraw_accounts/activity/${props.account.id}/withdraws`)
     }
-    if(account_state === 'deleting' || account_state === 'deleted'){return}
-    props.actions.cleanNotificationItem(payload, 'account_id')
-    if(props.account.count === undefined){
+    if (account_state === 'deleting' || account_state === 'deleted') { return }
+    actions.cleanNotificationItem(payload, 'account_id')
+    if (props.account.count === undefined) {
       return getAccountTransactions()
     }
     if (props.account.count < 1) {
@@ -90,13 +88,13 @@ const ItemAccount = props => {
     const isWallet = props.account_type === 'wallets'
 
     if (isWallet) {
-      if(props.balances.total > 0){
+      if (props.balances.total > 0) {
         set_account_state('')
         return toastMessage('Las cuentas con balance no pueden ser eliminadas', 'error')
       }
 
       let areThereDeposits = await coinsendaServices.getDepositByAccountId(props.account.id, '"state":"confirmed"')
-      if(areThereDeposits && areThereDeposits.length){
+      if (areThereDeposits && areThereDeposits.length) {
         set_account_state('')
         return toastMessage('Las cuentas con depositos pendientes no pueden ser eliminadas', 'error')
       }
@@ -129,13 +127,13 @@ const ItemAccount = props => {
         await coinsendaServices.fetchWithdrawAccounts()
       }
     }, 0)
-    props.actions.exit_sound()
+    actions.exit_sound()
     toastMessage(msg, success ? 'success' : 'error')
   }
 
   const delete_account_confirmation = () => {
-    props.actions.confirmationModalToggle()
-    props.actions.confirmationModalPayload({
+    actions.confirmationModalToggle()
+    actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
       txtPrimary: "Eliminar",
@@ -150,50 +148,55 @@ const ItemAccount = props => {
 
   useEffect(() => {
     const element = document.getElementById(props.focusedId)
-    if(element) {
+    if (element) {
       element.onfocus = () => {
         setIsSelected(true)
         props.setCurrentSelection(props.number)
       }
-  
+
       element.onblur = () => {
         setIsSelected(false)
       }
 
       element.onkeydown = (event) => {
-        if(event.keyCode === 46) {
+        if (event.keyCode === 46) {
           event.stopPropagation()
           delete_account_confirmation()
           return
         }
-        if(event.keyCode === 13) {
+        if (event.keyCode === 13) {
           account_detail(props.account_type)
         }
       }
     }
   }, [])
 
+  const toProps = {
+    loaderAccount: loader,
+    handleAction: account_detail,
+    set_account_state,
+    shouldHaveDeleteClassName: shouldHaveDeleteClassName && account_state === 'deleted',
+    delete_account: delete_account_confirmation,
+    account: props.account,
+    balances: props.balances,
+    actions,
+    account_type,
+  }
+
   return (
     <AccountLayout className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}>
-      <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0}} id={props.focusedId} />
+      <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0 }} id={props.focusedId} />
       {
         account_type === 'wallets' ?
           <Wallet
             isSelected={isSelected}
-            loaderAccount={loader}
-            handleAction={account_detail}
-            set_account_state={set_account_state}
-            shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
-            delete_account={delete_account_confirmation}
-            {...props} />
+            {...toProps}
+          />
           :
           <WithdrawAccount
             loaderAccount={loader}
-            handleAction={account_detail}
-            set_account_state={set_account_state}
-            shouldHaveDeleteClassName={shouldHaveDeleteClassName && account_state === 'deleted'}
-            delete_account={delete_account_confirmation}
-            {...props} />
+            {...toProps}
+          />
       }
     </AccountLayout>
   )
@@ -212,20 +215,20 @@ const mapStateToProps = (state, props) => {
   return {
     currentFilter,
     balances: (balances && account) && balances[account.id],
-    wallets
+    specifiedWallet: account && wallets[props.account.id]
   }
 
 }
 
 // ¿Es necesario conectar redux tanto para Wallet como para Withdraw Account?
-export default connect(mapStateToProps)(withRouter(React.memo(ItemAccount)))
+export default connect(mapStateToProps)(withRouter(ItemAccount))
 
 
 
 
 
 const Wallet = props => {
-  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected } = props
+  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions } = props
   const { name, id, currency } = account
   const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
 
@@ -242,7 +245,7 @@ const Wallet = props => {
       }
 
       {
-        props.actions &&
+        actions &&
         <>
           <AccountCta handleAction={props.handleAction} payload={props.account_type} />
           <OptionsAccount
@@ -277,13 +280,13 @@ const Wallet = props => {
 
 const WithdrawAccount = props => {
 
-  const { account, delete_account, shouldHaveDeleteClassName } = props
+  const { account, delete_account, shouldHaveDeleteClassName, actions } = props
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
   return (
     <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       {
-        props.actions &&
+        actions &&
         <>
           {(used_counter > 0) && (
             <AccountCta handleAction={props.handleAction} payload={props.account_type} />
@@ -357,23 +360,23 @@ const OptionsAccount = props => {
 
       {
         props.account.count ?
-        <>
-        <BarIconCont account_type={account_type} onClick={redirectGo} data-address="withdraw">
-          <Icon className="far fa-arrow-alt-circle-up IdeleteButton tooltip" data-address="withdraw">
-            <span className="tooltiptext2 fuente" data-address="withdraw">Retirar</span>
-          </Icon>
-        </BarIconCont>
-        <BarIconCont account_type={account_type} onClick={redirectGo} data-address="deposit">
-          <Icon className="far fa-arrow-alt-circle-down Ideposit IdeleteButton tooltip" data-address="deposit">
-            <span className="tooltiptext2 fuente" data-address="deposit">Depositar</span>
-          </Icon>
-        </BarIconCont>
-        </>
-        :
-        <>
-        <div></div>
-        <div></div>
-        </>
+          <>
+            <BarIconCont account_type={account_type} onClick={redirectGo} data-address="withdraw">
+              <Icon className="far fa-arrow-alt-circle-up IdeleteButton tooltip" data-address="withdraw">
+                <span className="tooltiptext2 fuente" data-address="withdraw">Retirar</span>
+              </Icon>
+            </BarIconCont>
+            <BarIconCont account_type={account_type} onClick={redirectGo} data-address="deposit">
+              <Icon className="far fa-arrow-alt-circle-down Ideposit IdeleteButton tooltip" data-address="deposit">
+                <span className="tooltiptext2 fuente" data-address="deposit">Depositar</span>
+              </Icon>
+            </BarIconCont>
+          </>
+          :
+          <>
+            <div></div>
+            <div></div>
+          </>
       }
 
       <BarIconCont className="retweetCont" account_type={account_type} onClick={props.delete_account}>

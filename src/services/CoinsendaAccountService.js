@@ -16,20 +16,12 @@ import { current_section_params } from "../actions/uiActions";
 
 export class AccountService extends WebService {
 
-    async getWalletsByUser(onlyBalances = false) {
+    async getWalletsByUser(onlyBalances = false, lastActionDetail) {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES))
         const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
         const wallets = await this.Get(accountUrl)
         if (!wallets || wallets === 404) { return false }
-
-        if(await this.isCached('getWalletsByUser_', wallets)) {
-            return {
-                entities : {
-                    wallets: this.globalState.modelData.wallets
-                }
-            }
-        }
 
         const availableWallets = wallets.filter(wallet => {
             return (wallet.visible && wallet.currency.currency !== 'usd') ? wallet : false
@@ -45,16 +37,23 @@ export class AccountService extends WebService {
             return this.dispatch(resetModelData({ wallets: [] }))
         }
 
-        const balanceList = availableWallets.map(balanceItem => ({
-            id: balanceItem.id,
-            currency: balanceItem.currency.currency,
-            reserved: balanceItem.reserved,
-            available: balanceItem.available,
-            total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),
-            lastAction: null,
-            actionAmount: 0
-        }))
+        const balanceList = availableWallets.map(wallet => {
+            let newWallet = {
+                id: wallet.id,
+                currency: wallet.currency.currency,
+                reserved: wallet.reserved,
+                available: wallet.available,
+                total: parseFloat(wallet.reserved) + parseFloat(wallet.available),
+                lastAction: null,
+                actionAmount: 0
+            }
 
+            if(lastActionDetail && wallet.id === lastActionDetail.id) {
+                newWallet = { ...newWallet, ...lastActionDetail }
+            }
+
+            return newWallet
+        })
 
         let updatedUser = {
             id: user.id,
@@ -74,6 +73,10 @@ export class AccountService extends WebService {
         }
 
         let userWallets = await normalizeUser(onlyBalances ? updatedOnlyBalances : updatedUser)
+        
+        if(await this.isCached(`getWalletsByUser_`, wallets)) {
+            return userWallets
+        }
 
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
@@ -145,9 +148,12 @@ export class AccountService extends WebService {
         return deleteAccount
     }
 
-    async manageBalance(accountId, action, amount) {
-        await this.getWalletsByUser(true)
-        this.dispatch(manageBalanceAction(accountId, action, amount))
+    async manageBalance(id, lastAction, actionAmount) {
+        await this.getWalletsByUser(true, {
+            id,
+            lastAction,
+            actionAmount
+        })
     }
 
     // async getBalancesByAccount() {

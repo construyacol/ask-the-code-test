@@ -499,7 +499,7 @@ class WithdrawFlow extends Component {
     }
     setTimeout(async () => {
       await this.props.coinsendaServices.manageBalance(this.props.account_id, 'reduce', new_order.amount)
-    }, 2000)
+    }, 1000)
   }
 
   handleError = msg => {
@@ -657,7 +657,7 @@ class WithdrawFlow extends Component {
 const selectWithdrawProvidersList = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
-    return _withdrawProviders.map((id_prov) => {
+    return _withdrawProviders && _withdrawProviders.map((id_prov) => {
       return withdrawProviders[id_prov]
     })
   }
@@ -667,7 +667,7 @@ const selectWithdrawAccountList = createSelector(
   [state => state.modelData.user.withdraw_accounts, state => state.modelData.withdraw_accounts],
   (_withdraw_accounts, withdraw_accounts) => {
     const withdraw_account_list = []
-    _withdraw_accounts.map(account_id => {
+    _withdraw_accounts && _withdraw_accounts.map(account_id => {
       if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) { return false }
       return withdraw_account_list.push(withdraw_accounts[account_id])
     })

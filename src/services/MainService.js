@@ -121,15 +121,16 @@ export class MainService extends inheritances {
         if (!wallets && verificationStatus === 'accepted') {
             await this.createInitialEnvironmentAccount()
         }
-        this.postLoader(callback)
+        this.postLoader(callback, false)
         return
     }
 
-    async postLoader(callback) {
+    async postLoader(callback, restoreBalancesAndWallets = true) {
         try {
             this.dispatch(updateLoadersAction({
                 mainList: true
             }))
+            restoreBalancesAndWallets && await this.getWalletsByUser()
             let pairs = await this.fetchAllPairs()
             if (!pairs) {
                 return callback()

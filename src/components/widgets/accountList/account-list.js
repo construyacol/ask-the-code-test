@@ -124,7 +124,7 @@ function AccountList(props) {
           <AccountListContainer style={isHugeContainer ? { ...styleForHugeContainer, ...isWithdrawListStyle } : isWithdrawListStyle} className="AccountListContainer">
             {
               items.map((account, id) => {
-                if (!account.visible) { return null }
+                if (!account || !account.visible) { return null }
                 return <ItemAccount
                   key={id}
                   setCurrentSelection={setCurrentSelection}
@@ -132,7 +132,7 @@ function AccountList(props) {
                   focusedId={`elementFocusable${id}`}
                   account={account}
                   account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'}
-                  {...props}
+                  loader={props.loader}
                 />
               })
             }
@@ -189,4 +189,4 @@ const AccountsNotFound = ({ account_type }) => {
   )
 }
 
-export default React.memo(withListCreator(AccountList))
+export default withListCreator(AccountList)

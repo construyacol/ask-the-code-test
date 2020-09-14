@@ -164,7 +164,7 @@ function DashBoardContainer(props) {
           )} />
           <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
             <Switch>
-              <Route path="/wallets" component={WalletContainer} />
+              <Route path="/wallets" render={(renderProps) => <WalletContainer {...renderProps} />} />
               <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
               <Route path="/security" component={SecurityCenter} />
               <Route path="/referral" component={ReferralComponent} />
