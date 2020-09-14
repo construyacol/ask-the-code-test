@@ -31,7 +31,7 @@ export class TransactionService extends WebService {
         }
 
         let updateState = true
-        if (this.isCached('fetchAllCurrencies_', response) && this.globalState.modelData.currencies) {
+        if (this.isCached('fetchAllCurrencies_', response, false) && this.globalState.modelData.currencies) {
             updateState = false
         }
 

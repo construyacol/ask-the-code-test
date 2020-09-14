@@ -23,7 +23,7 @@ export class SwapService extends WebService {
         const pairs = await this.Get(`${SWAP_URL}pairs`)
         if (!pairs) { return }
         
-        if(await this.isCached('fetchAllPairs_', pairs)) {
+        if(await this.isCached('available_pairs', pairs)) {
             return pairs
         }
 
@@ -55,7 +55,7 @@ export class SwapService extends WebService {
         if (currencies) {
             const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
 
-            if(this.isCached('getPairsByCountry_', localCurrencies) && this.globalState.modelData.pairs.currentPair) {
+            if(this.isCached('getPairsByCountry_', localCurrencies, false) && this.globalState.modelData.pairs.currentPair) {
                 return
             }
 
@@ -238,7 +238,7 @@ export class SwapService extends WebService {
 
         if (!swaps || swaps === 465) { return false }
 
-        if(await this.isCached(this.getThisPath('get_deposits'), swaps)) {
+        if(await this.isCached('swaps', swaps)) {
             return swaps
         } 
 

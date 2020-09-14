@@ -24,15 +24,6 @@ import { updateLocalForagePersistState } from './components/hooks/sessionRestore
 // document.body.appendChild(script);
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
 
-const updateServices = store => next => action => {
-  next(action);
-  mainService.setGlobalState(store.getState())
-}
-
-const persistState = store => next => action => {
-  next(action);
-  window.onbeforeunload = updateLocalForagePersistState({ ...store.getState().modelData, authData: undefined })
-}
 const store = createStore(
   reducer,
   {},
@@ -40,20 +31,25 @@ const store = createStore(
     applyMiddleware(
       logger,
       thunk,
-      loadedSoundsMiddleware,
-      updateServices,
-      persistState
+      loadedSoundsMiddleware
     )
   )
   // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
 
+store.subscribe(() => {
+  if (store.getState().modelData.authData.userToken) {
+    mainService.setGlobalState(store.getState())
+  }
+  window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData)
+});
+
 const home = document.getElementById('home-container')
 render(
   <Provider store={store}>
-      <RootContainer/>
+    <RootContainer />
   </Provider>
- , home
+  , home
 );
 
 // const rootElement = document.getElementById('home-container')

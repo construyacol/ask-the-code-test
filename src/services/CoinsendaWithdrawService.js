@@ -28,7 +28,7 @@ export class WithdrawService extends WebService {
 
         const result = await this.Get(finalUrl)
 
-        if(await this.isCached('fetchWithdrawAccounts_', result)) {
+        if(await this.isCached('withdraw_accounts', result)) {
             return this.globalState.modelData.withdraw_accounts
         }
 
@@ -156,7 +156,7 @@ export class WithdrawService extends WebService {
 
         if (!withdrawProviders) return;
         
-        if(await this.isCached('fetchWithdrawProviders_', withdrawProviders)) {
+        if(await this.isCached('withdrawProviders', withdrawProviders)) {
             return withdrawProviders
         }
 
@@ -305,7 +305,7 @@ export class WithdrawService extends WebService {
 
         if (withdraws && withdraws.length < 1) { return false }
 
-        if(await this.isCached(this.getThisPath('get_deposits'), withdraws)) {
+        if(await this.isCached('withdraws', withdraws)) {
             return withdraws
         }
 
@@ -392,15 +392,6 @@ export class WithdrawService extends WebService {
         return response
     }
 
-
-
-
-
-
-
-
-
-
     async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {
         const skip = page * 10
 
@@ -414,10 +405,6 @@ export class WithdrawService extends WebService {
 
         let finalResult
         res = res ? res : []
-
-        if(await this.isCached(this.getThisPath('fetchActivityByAccount_'), res)) {
-            return res
-        } 
 
         finalResult = res.filter(item => item.state === 'accepted').map(withdraw => {
             // let state
@@ -441,6 +428,10 @@ export class WithdrawService extends WebService {
                 withdraw_proof: withdraw.proof,
             }
         })
+
+        if(await this.isCached(type, res)) {
+            return finalResult
+        } 
 
         if (finalResult.length > 0) {
             await this.dispatch(normalized_list(finalResult, type))

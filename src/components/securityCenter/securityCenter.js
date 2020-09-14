@@ -32,7 +32,9 @@ const SecurityCenter = props => {
 
   useEffect(()=>{
     validate_state()
-    return actions.default_video_state()
+    return () => {
+      actions.default_video_state()
+    }
   }, [])
 
 

@@ -212,10 +212,15 @@ export class MainService extends inheritances {
         this.dispatch(isAppLoaded(payload))
     }
 
-    async isCached(path, newData) {
+    async isCached(path, newData, doStateValidation = true) {
+        const localState = this.globalState.modelData
         const cached = await localForage.getItem('CACHED_DATA')
-        if (cached[path]) {
+        if (cached && cached[path]) {
             if (deepEqual(cached[path], newData)) {
+                const existInState = localState[path]
+                if (doStateValidation && !existInState) {
+                    return false
+                }
                 return true
             } else {
                 await localForage.setItem('CACHED_DATA', { ...cached, [path]: newData })

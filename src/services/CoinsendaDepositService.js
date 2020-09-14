@@ -24,7 +24,7 @@ export class DepositService extends WebService {
         if (!response) return;
 
         let updateState = true
-        if(await this.isCached(this.getThisPath('fetchDepositProviders'), response)) {
+        if(await this.isCached('deposit_providers', response)) {
             updateState = false
         }
 
@@ -212,7 +212,7 @@ export class DepositService extends WebService {
         const deposits = await this.Get(finalUrl)
         if (!deposits || deposits === 465) { return false }
 
-        if(await this.isCached(this.getThisPath('get_deposits'), deposits)) {
+        if(await this.isCached('deposits', deposits)) {
             return deposits
         }        
 
@@ -229,9 +229,5 @@ export class DepositService extends WebService {
         await this.updateActivityState(account_id, 'deposits', remodeled_deposits)
         return deposits
 
-    }
-
-    getThisPath(methodName) {
-        return `DepositService${methodName}`
     }
 }

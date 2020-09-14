@@ -71,13 +71,13 @@ export class AccountService extends WebService {
                 ...balanceList
             ]
         }
-
+        
         let userWallets = await normalizeUser(onlyBalances ? updatedOnlyBalances : updatedUser)
         
-        if(await this.isCached(`getWalletsByUser_`, wallets)) {
+        if(await this.isCached(onlyBalances ? `balances` : `wallets`, wallets)) {
             return userWallets
         }
-
+        
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
     }
