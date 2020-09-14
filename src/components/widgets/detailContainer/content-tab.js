@@ -25,15 +25,47 @@ function ContentTab(props) {
     // }, [title, path])
 
     useEffect(() => {
+        document.onkeyup = (event) => {
+            const condition =
+                forceCurrentWallet.current &&
+                !document.onkeydown &&
+                window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
+                !window.location.href.includes('?')
+
+            const haveBalances = wallets[forceCurrentWallet.current] && (wallets[forceCurrentWallet.current].count > 0 ||
+                wallets[forceCurrentWallet.current].available > 0)
+
+            if (event.keyCode === 37) {
+                if (condition && haveBalances) goPrev()
+            }
+            if (event.keyCode === 39) {
+                if (condition && haveBalances) goNext()
+            }
+            if (event.keyCode === 8) {
+                if (event.srcElement.tagName.includes('INPUT')) return
+                if (condition) exit()
+            }
+        }
+    }, [document.onkeydown, primary_path, current_wallet])
+
+    useEffect(() => {
         if (forceStatePathnameIndex.current.pathname !== pathname) {
             const currentIndex = items_menu.findIndex(item => item.link === pathname)
             forceStatePathnameIndex.current = { pathname, currentIndex }
         }
+
         if (forceCurrentWallet.current !== current_wallet) {
             forceCurrentWallet.current = current_wallet
         }
-        setHaveMenu((current_wallet && items_menu ? items_menu.length > 0 : false))
-    }, [current_wallet, items_menu, pathname])
+
+        const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 ||
+            wallets[current_wallet].available > 0)
+
+        const condition = primary_path === 'wallets' ? haveBalances && items_menu : items_menu
+
+        setHaveMenu(condition ? items_menu.length > 0 : false)
+
+    }, [current_wallet, items_menu, pathname, primary_path])
 
     const getLink = (link) => {
         return `/${primary_path}/${link}/${forceCurrentWallet.current}${link === 'activity' ? `/${params.currentFilter}` : ''}`
@@ -54,57 +86,42 @@ function ContentTab(props) {
     }
 
     const exit = () => {
-        history.push('/wallets')
+        history.push(`/${primary_path}`)
     }
-
-    useEffect(() => {
-        document.onkeyup = (event) => {
-            window.requestAnimationFrame(() => {
-                const condition =
-                    forceCurrentWallet.current &&
-                    !document.onkeydown &&
-                    window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
-                    !window.location.href.includes('?')
-
-                if (event.keyCode === 37) {
-                    if (condition) goPrev()
-                }
-                if (event.keyCode === 39) {
-                    if (condition) goNext()
-                }
-                if (event.keyCode === 8) {
-                    if (event.srcElement.tagName.includes('INPUT')) return
-                    if (condition) exit()
-                }
-            })
-        }
-    }, [document.onkeydown])
 
     return (
         <div className="subMenu" ref={tabRef}>
             <div className="menuContainer">
                 <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                     {
-                        haveMenu &&
-                        items_menu.map(item => {
-                            // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
-                            if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && wallets[current_wallet] && wallets[current_wallet].count === 0) {
-                                return null
-                            }
-                            return (
-                                <NavLink to={getLink(item.link)}
-                                    // onClick={this.to_sub_section}
-                                    id={item.link}
-                                    key={item.id}
-                                    className={`menuItem ${pathname === item.link ? 'active' : ''}`}
-                                >
-                                    <div className={`menuMovilIcon ${pathname === item.link ? 'active' : ''}`} >
-                                        <IconSwitch size={20} icon={item.link} color="#14b3f0" />
+                        haveMenu ?
+                            items_menu.map(item => {
+                                // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
+                                if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && wallets[current_wallet] && wallets[current_wallet].count === 0) {
+                                    return null
+                                }
+                                return (
+                                    <NavLink to={getLink(item.link)}
+                                        // onClick={this.to_sub_section}
+                                        id={item.link}
+                                        key={item.id}
+                                        className={`menuItem ${pathname === item.link ? 'active' : ''}`}
+                                    >
+                                        <div className={`menuMovilIcon ${pathname === item.link ? 'active' : ''}`} >
+                                            <IconSwitch size={20} icon={item.link} color="#14b3f0" />
+                                        </div>
+                                        <p>{item.title}</p>
+                                    </NavLink>
+                                )
+                            }) : (
+
+                                <NavLink to={getLink('deposit')} className="menuItem active">
+                                    <div className={`menuMovilIcon active`} >
+                                        <IconSwitch size={20} icon={'deposit'} color="#14b3f0" />
                                     </div>
-                                    <p>{item.title}</p>
+                                    <p>Depositar</p>
                                 </NavLink>
                             )
-                        })
                     }
                 </div>
 

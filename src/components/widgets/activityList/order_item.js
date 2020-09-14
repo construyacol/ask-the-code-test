@@ -24,13 +24,14 @@ const confirmPayment = async () => {
 
 const OrderItem = ({ order }) => {
 
-  const [orderState, setOrderState] = useState()
   const txState = UseTxState(order.id)
+  const [orderState, setOrderState] = useState()
   const { tx_path, new_order_style, actions, history } = txState
   // const [ show,  element ] = ObserverHook()
 
 
   const orderDetail = async (e) => {
+    e.preventDefault()
     if (!order) { return }
     const target = e.target
     if (target.dataset && target.dataset.is_deletion_action) { return }
