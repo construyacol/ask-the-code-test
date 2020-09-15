@@ -24,7 +24,7 @@ const ModalLayout = (props) => {
     actions.ReduceStep(props.current)
   }
   
-  const salir = async () => {
+  const salir = async (callback) => {
     const { current } = props
     actions.CleanForm('deposit')
     actions.CleanForm('withdraw')
@@ -42,12 +42,16 @@ const ModalLayout = (props) => {
   }
 
   useEffect(() => {
-    el.onkeydown = (event) => {
-      if (event.keyCode === 27) {
-        salir()
+    const timeId = setTimeout(() => {
+      el.onkeydown = (event) => {
+        if (event.keyCode === 27) {
+          el.onkeydown = false
+          salir()
+        }
       }
-    }
+    }, 0)
     return () => {
+      clearTimeout(timeId)
       el.onkeydown = false
     }
   }, [el.onkeydown])

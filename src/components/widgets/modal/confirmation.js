@@ -27,6 +27,12 @@ class ConfirmationModal extends Component {
   }
 
   cancelarClick = () => {
+    const {
+      cancelCallback
+    } = this.props.modal_confirmation
+    if(typeof cancelCallback === 'function') {
+      cancelCallback()
+    }
     this.props.action.confirmationModalToggle()
     this.props.action.confirmationModalPayload(null)
   }

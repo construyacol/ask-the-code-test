@@ -239,6 +239,7 @@ class BankAccountFlow extends Component {
                   :
                   <ItemSelectionContainer
                     type="banks"
+                    autoFocus={true}
                     items={banks}
                     format="svg"
                     itemSelect={bank_name}

@@ -149,6 +149,7 @@ class ItemSelectionContainer extends Component {
 
             <InputForm
               type="text"
+              autoFocus={this.props.autoFocus}
               label={label}
               placeholder={this.state.placeholder}
               name="currency"

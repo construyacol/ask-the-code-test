@@ -131,7 +131,7 @@ const ItemAccount = props => {
     toastMessage(msg, success ? 'success' : 'error')
   }
 
-  const delete_account_confirmation = () => {
+  const delete_account_confirmation = (cancelCallback) => {
     actions.confirmationModalToggle()
     actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
@@ -141,6 +141,7 @@ const ItemAccount = props => {
       // payload:props.account.id,
       action: delete_account,
       img: "deletewallet",
+      cancelCallback
       // code:props.account_type
     })
   }
@@ -148,7 +149,14 @@ const ItemAccount = props => {
 
   useEffect(() => {
     const element = document.getElementById(props.focusedId)
+    const parentElement = document.getElementById(`hoverable${props.focusedId}`)
     if (element) {
+      if(parentElement) {
+        parentElement.onmouseenter = (event) => {
+          element.focus()
+        }
+      }
+
       element.onfocus = () => {
         setIsSelected(true)
         props.setCurrentSelection(props.number)
@@ -159,9 +167,10 @@ const ItemAccount = props => {
       }
 
       element.onkeydown = (event) => {
+        element.blur()
         if (event.keyCode === 46) {
           event.stopPropagation()
-          delete_account_confirmation()
+          delete_account_confirmation(() => element.focus())
           return
         }
         if (event.keyCode === 13) {
@@ -181,13 +190,16 @@ const ItemAccount = props => {
     balances: props.balances,
     actions,
     account_type,
+    focusedId: props.focusedId
   }
+
+  const isWallet = account_type === 'wallets'
 
   return (
     <AccountLayout className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}>
-      <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0 }} id={props.focusedId} />
+      {isWallet && <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0 }} id={props.focusedId} />}
       {
-        account_type === 'wallets' ?
+        isWallet ?
           <Wallet
             isSelected={isSelected}
             {...toProps}
@@ -228,14 +240,14 @@ export default connect(mapStateToProps)(withRouter(ItemAccount))
 
 
 const Wallet = props => {
-  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions } = props
+  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions, focusedId } = props
   const { name, id, currency } = account
   const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
 
   // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
-    <WalletLayout isSelected={isSelected} className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
+    <WalletLayout id={`hoverable${focusedId}`} isSelected={isSelected} className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
 
       {
         props.loaderAccount &&

@@ -183,6 +183,7 @@
   display: grid;
   align-items: center;
   justify-items:center;
+  pointer-events: none;
 }
 
 .WSection3{

@@ -91,12 +91,11 @@ function AccountList(props) {
   useEffect(() => {
     if(items.length > 0 && !mainListLoader) {
       const el = document.getElementById(`elementFocusable${0}`)
-          el && el.focus()
+      el && el.focus()
     }
   }, [items, mainListLoader])
 
   useEffect(() => {
-    window.onkeydown = false
     if(!window.onkeydown && items && items.length > 0 && !mainListLoader) {
       window.onkeydown = (event) => {
         const length = items.length - 1
