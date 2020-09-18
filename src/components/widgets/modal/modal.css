@@ -13,6 +13,8 @@
   width: 100vw;
   opacity: 0;
   z-index: 4;
+  backdrop-filter: blur(0px);
+  transition: .3s;
 }
 
 
@@ -41,11 +43,12 @@
 }
 
 
-.aparecer{
+.Modal.aparecer{
   animation-name: aparece;
   animation-duration: .4s;
   animation-fill-mode: forwards;
   animation-timing-function: ease;
+  backdrop-filter: blur(2px);
 }
 
 @keyframes aparece{

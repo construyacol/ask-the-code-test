@@ -12,6 +12,7 @@ import usePrevious from '../../hooks/usePreviousValue'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import withHandleError from '../../withHandleError'
 import { doLogout } from '../../utils'
+import KeyActionsInfo from '../modal/render/keyActionsInfo'
 
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
@@ -113,8 +114,19 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     } else {
       await history.push('/wallets')
     }
-    // return console.log('_________________________________________________________________||||| stop ::', session, session && Object.keys(session).length)
+    showKeyActionModal(verificationStatus)
     return actions.isAppLoaded(true)
+  }
+
+  const showKeyActionModal = async(verificationStatus) => {
+    if(verificationStatus === 'accepted'){
+      const toParse = await localForage.getItem('keysModalShow')
+      const keysModalShowed = JSON.parse(toParse)
+      if(!keysModalShowed || (keysModalShowed.showed &&  keysModalShowed.showed < 2)){
+        actions.renderModal(KeyActionsInfo)
+        localForage.setItem('keysModalShow', JSON.stringify({showed:keysModalShowed ? keysModalShowed.showed+1 : 0}))
+      }
+    }
   }
 
   const prepareCountrySelection = async () => {
