@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
@@ -7,21 +7,25 @@ import { SimpleLoader } from '../../widgets/loaders'
 import { withdrawProvidersByType, matchItem } from '../../../utils'
 import '../WAccount.css'
 import { createSelector } from 'reselect'
+import { useEffect } from 'react'
+import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
+
+function WithdrawAccountList(props) {
+  const [withdrawAccounts, setWithdrawAccounts] = useState(null)
+  const [preferentialAccounts, setPreferentialAccounts] = useState()
+  const [setCurrentSelection] = useNavigationKeyActions(withdrawAccounts, false, 'withdrawAccountItem', false, {
+    next: 38,
+    prev: 40,
+    default: 1
+  })
 
 
-class WithdrawAccountList extends Component {
+  useEffect(() => {
+    init()
+  }, [])
 
-  state = {
-    withdraw_accounts: null
-  }
-
-  componentDidMount() {
-    this.init_config()
-  }
-
-  find_units = amount => {
+  const find_units = amount => {
     // Este metodo me retorna la cantidad de ordenes en las que se ejecutaría el retiro
-
     let units = amount / 100
     let limit = 2
 
@@ -33,13 +37,13 @@ class WithdrawAccountList extends Component {
     }
   }
 
-  init_config = async () => {
+  const init = async () => {
 
     const {
       withdrawProviders,
       withdraw_accounts,
       amount
-    } = this.props
+    } = props
 
     if (!withdrawProviders && !amount) { return false }
 
@@ -52,14 +56,12 @@ class WithdrawAccountList extends Component {
 
       return {
         ...wa,
-        orders: this.find_units(parseInt(limit)),
+        orders: find_units(parseInt(limit)),
         percent: parseInt(limit),
         limit: parseFloat(amount) >= parseFloat(providers_served[wa.provider_type].provider.max_amount) && true,
       }
 
     })
-
-    // console.log('||||||||||final_withdraw_accounts ', final_withdraw_accounts)
     // ------------------------------------------------------------------------
     // Este Fragmento de codigo sirve para detectar si hay cuentas de retiro que operen sobre la misma red bancaria o
     // transaccional del proveedor de retiro, definiendolas como cuentas preferenciales porque tienen un menor costo transaccional
@@ -90,88 +92,59 @@ class WithdrawAccountList extends Component {
 
       let preferential_account_id = await preferential_accounts.map(p_account => { return p_account.id })
 
-      // console.log('|||||||preferential_account_id',preferential_account_id, preferential_account_id.length)
-
-      return this.setState({
-        withdraw_accounts: new_withdraw_list,
-        preferential_accounts: preferential_account_id
-      })
-
+      setWithdrawAccounts(new_withdraw_list)
+      setPreferentialAccounts(preferential_account_id)
+      return
     }
-
     // ------------------------------------------------------------------
     // Si no hay cuentas preferenciales returnamos la lista original
-    this.setState({
-      withdraw_accounts: final_withdraw_accounts
-    })
+    setWithdrawAccounts(final_withdraw_accounts)
 
   }
 
-
-  new_account = () => {
-
+  const newAccount = () => {
     const {
       withdraw_flow,
       new_account_method
-    } = this.props
-
+    } = props
     if (withdraw_flow) { return new_account_method() }
   }
 
+  return (
+    <section className="WithdrawAccountList">
 
-  volver = () => {
-    const {
-      back
-    } = this.props
+      <div className="seccionPrinWA">
+        <AccountItemList
+          setCurrentSelection={setCurrentSelection}
+          number={0}
+          focusedId={`withdrawAccountItem${0}`}
+          action={newAccount}
+          addElement={true} />
+      </div>
 
-    if (back) { return setTimeout(() => { back() }, 500) }
-  }
-
-
-  render() {
-
-    const {
-      amount
-    } = this.props
-
-    const {
-      withdraw_accounts,
-      preferential_accounts
-    } = this.state
-
-    return (
-      <Fragment>
-        <section className="WithdrawAccountList">
-
-          <div className="seccionPrinWA">
-            <AccountItemList
-              action={this.new_account}
-              addElement={true} />
-          </div>
-
-          <div className="listWA">
-            {
-              withdraw_accounts ?
-                withdraw_accounts.map(account => {
-                  return (
-                    <AccountItemList
-                      key={account.id}
-                      amount={amount}
-                      account={account}
-                      new_withdraw_order={this.props.new_withdraw_order}
-                      preferential_accounts={preferential_accounts}
-                    />
-                  )
-                })
-                // <div>puta</div>
-                :
-                <SimpleLoader />
-            }
-          </div>
-        </section>
-      </Fragment>
-    )
-  }
+      <div className="listWA">
+        {
+          withdrawAccounts ?
+            withdrawAccounts.map((account, id) => {
+              return (
+                <AccountItemList
+                  key={account.id}
+                  setCurrentSelection={setCurrentSelection}
+                  number={id + 1}
+                  focusedId={`withdrawAccountItem${id + 1}`}
+                  amount={props.amount}
+                  account={account}
+                  new_withdraw_order={props.new_withdraw_order}
+                  preferential_accounts={preferentialAccounts}
+                />
+              )
+            })
+            :
+            <SimpleLoader />
+        }
+      </div>
+    </section>
+  )
 }
 
 const selectWithdrawAccountList = createSelector(
@@ -183,7 +156,7 @@ const selectWithdrawAccountList = createSelector(
       currency_type,
       inherit_account_list
     } = props
-  
+
     let withdraw_account_list = inherit_account_list
     if (!withdraw_account_list) {
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta

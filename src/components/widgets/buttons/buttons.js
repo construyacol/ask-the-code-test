@@ -62,12 +62,12 @@ export const AddNewItem = props => {
 
 
   return (
-    <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
+    <div className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
       <div className="BbackgroundAddNew"></div>
       <div className={`AddNewItem ${type}`}>
         <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
       </div>
-    </section>
+    </div>
   )
 }
 

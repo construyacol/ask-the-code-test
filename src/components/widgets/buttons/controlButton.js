@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
 import { LoaderContainer } from '../loaders'
 
 export const KeyActionComponent = ({ action, isFiat }) => {
+  const isModalVisible = useSelector(state => state.form.isModalVisible)
 
   useEffect(() => {
     if (!window.onkeydown) {
       window.onkeydown = (event) => {
-        if (event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
+        if (!isModalVisible && event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
           if(!isFiat) return
           if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
           action(event)
         }
       }
     }
-  }, [window.onkeydown])
+  }, [window.onkeydown, isModalVisible])
 
   return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
 }

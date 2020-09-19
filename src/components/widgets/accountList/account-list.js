@@ -9,13 +9,15 @@ import withListCreator from '../../withListCreator'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 import '../../wallets/views/wallet_views.css'
+import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history, mainListLoader } = props
+  const items = props.items || []
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
-  const [currentSelection, setCurrentSelection] = useState(-1)
+  const [setCurrentSelection] = useNavigationKeyActions(items, mainListLoader, 'accountItem')
 
   useEffect(() => {
     // actions.cleanCurrentSection()
@@ -78,43 +80,13 @@ function AccountList(props) {
       svg: "verified"
     })
   }
-
-  const items = props.items || []
   const isHugeContainer = items > 10
   const styleForHugeContainer = {
     // height: 'auto',
   }
   const isWithdrawListStyle = {
     // marginBottom: '40px'
-  }
-
-  useEffect(() => {
-    if(items.length > 0 && !mainListLoader) {
-      const el = document.getElementById(`elementFocusable${0}`)
-      el && el.focus()
-    }
-  }, [items, mainListLoader])
-
-  useEffect(() => {
-    if(!window.onkeydown && items && items.length > 0 && !mainListLoader) {
-      window.onkeydown = (event) => {
-        const length = items.length - 1
-        if(event.keyCode === 37) {
-          const elementId = currentSelection < 0 ? length : currentSelection - 1
-          const el = document.getElementById(`elementFocusable${Math.max(0, elementId)}`)
-          el && el.focus()
-        } 
-        if(event.keyCode === 39 || (event.keyCode === 13 && currentSelection < 0)) {
-          const elementId = currentSelection < 0 ? 0 : currentSelection + 1
-          const el = document.getElementById(`elementFocusable${Math.min(length, elementId)}`)
-          el && el.focus()
-        }
-      }
-      return () => {
-        window.onkeydown = false
-      }
-    }
-  }, [window.onkeydown, items, mainListLoader])
+  }  
 
   return (
     <>
@@ -128,7 +100,7 @@ function AccountList(props) {
                   key={id}
                   setCurrentSelection={setCurrentSelection}
                   number={id}
-                  focusedId={`elementFocusable${id}`}
+                  focusedId={`accountItem${id}`}
                   account={account}
                   account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'}
                   loader={props.loader}

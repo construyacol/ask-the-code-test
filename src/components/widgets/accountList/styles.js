@@ -1,8 +1,10 @@
 import styled, { css } from 'styled-components'
 
-
-
-
+export const InputKeyActionHandler = styled.input`
+  width: 0;
+  height: 0;
+  opacity: 0;
+`
 
 export const AccountListContainer = styled.section`
   width: 100%;
@@ -166,17 +168,9 @@ export const AccountLayout = styled.div`
 `
 
 const selected = css`
-  -webkit-box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
-  -moz-box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
-  box-shadow: 0px 0px 8px 2px rgba(0,6,120,0.23);
-  transform: scale(1.01);
-  & ${OptionsLayout} {
-    right: 0 !important;
-  }
-
-  & .IdeleteButton{
-    opacity: 1;
-  }
+  -webkit-box-shadow: 0px 0px 1px 3px #54e783;
+  -moz-box-shadow: 0px 0px 1px 3px #54e783;
+  box-shadow: 0px 0px 1px 3px #54e783;
 `
 
 export const ItemAccountL = styled.div`

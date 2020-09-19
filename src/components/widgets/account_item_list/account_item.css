@@ -15,6 +15,11 @@
   /*grid-template-columns: */
 }
 
+.item-selected {
+  -webkit-box-shadow: 0px 0px 1px 3px #54e783;
+  -moz-box-shadow: 0px 0px 1px 3px #54e783;
+  box-shadow: 0px 0px 1px 3px #54e783;
+}
 
 .costStyle{
   font-size: 12px;

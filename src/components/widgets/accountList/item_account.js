@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import { LoaderContainer } from '../loaders'
+import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions' 
 
 import {
   ACta,
@@ -17,7 +18,7 @@ import {
   OptionsLayout,
   AccountLayout,
   WalletLayout,
-  WithdrawAccountL
+  WithdrawAccountL, InputKeyActionHandler
 } from './styles'
 
 import './item_wallet.css'
@@ -37,7 +38,6 @@ const ItemAccount = props => {
   const actions = useActions()
   const [toastMessage] = useToastMesssage()
   const [account_state, set_account_state] = useState()
-  const [isSelected, setIsSelected] = useState(false)
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)
   const [id_wallet_action, set_id_wallet_action] = useState('')
@@ -146,39 +146,7 @@ const ItemAccount = props => {
     })
   }
 
-
-  useEffect(() => {
-    const element = document.getElementById(props.focusedId)
-    const parentElement = document.getElementById(`hoverable${props.focusedId}`)
-    if (element) {
-      if(parentElement) {
-        parentElement.onmouseenter = (event) => {
-          element.focus()
-        }
-      }
-
-      element.onfocus = () => {
-        setIsSelected(true)
-        props.setCurrentSelection(props.number)
-      }
-
-      element.onblur = () => {
-        setIsSelected(false)
-      }
-
-      element.onkeydown = (event) => {
-        element.blur()
-        if (event.keyCode === 46) {
-          event.stopPropagation()
-          delete_account_confirmation(() => element.focus())
-          return
-        }
-        if (event.keyCode === 13) {
-          account_detail(props.account_type)
-        }
-      }
-    }
-  }, [])
+  const [isSelected] = useItemsInteractions(props, { suprKeyAction: delete_account_confirmation, enterKeyAction: () => account_detail(account_type)})
 
   const toProps = {
     loaderAccount: loader,
@@ -197,7 +165,7 @@ const ItemAccount = props => {
 
   return (
     <AccountLayout className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}>
-      {isWallet && <input name="itemFromList" style={{ width: 0, height: 0, opacity: 0 }} id={props.focusedId} />}
+      <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
       {
         isWallet ?
           <Wallet
@@ -206,6 +174,7 @@ const ItemAccount = props => {
           />
           :
           <WithdrawAccount
+            isSelected={isSelected}
             loaderAccount={loader}
             {...toProps}
           />
@@ -235,16 +204,10 @@ const mapStateToProps = (state, props) => {
 // ¿Es necesario conectar redux tanto para Wallet como para Withdraw Account?
 export default connect(mapStateToProps)(withRouter(ItemAccount))
 
-
-
-
-
 const Wallet = props => {
   const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions, focusedId } = props
   const { name, id, currency } = account
   const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
-
-  // console.log('|||||||||||| WALLET Account ===> ', props)
 
   return (
     <WalletLayout id={`hoverable${focusedId}`} isSelected={isSelected} className={`walletLayout ${props.loaderAccount ? 'loading' : ''} ${currency.currency} ${shouldHaveDeleteClassName && 'deleted'}`} wallet inscribed>
@@ -292,11 +255,11 @@ const Wallet = props => {
 
 const WithdrawAccount = props => {
 
-  const { account, delete_account, shouldHaveDeleteClassName, actions } = props
+  const { account, delete_account, shouldHaveDeleteClassName, actions, isSelected, focusedId } = props
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
   return (
-    <WithdrawAccountL className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
+    <WithdrawAccountL id={`hoverable${focusedId}`} isSelected={isSelected} className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       {
         actions &&
         <>

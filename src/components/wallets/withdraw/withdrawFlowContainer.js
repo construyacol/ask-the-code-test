@@ -145,7 +145,7 @@ class WithdrawFlow extends Component {
     if (!have_withdraw_accounts) { this.setState({ need_new_acount: true }) }
     let available_providers = []
 
-    withdrawProviders.map(provider => {
+    withdrawProviders && withdrawProviders.map(provider => {
       if (
         provider.country === country &&
         provider.currency_type === currency_type &&
@@ -484,7 +484,7 @@ class WithdrawFlow extends Component {
     const { new_order } = this.state
 
     await this.props.action.toggleModal()
-    await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
+    await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws`)
 
     this.props.action.CleanForm('deposit')
     this.props.action.CleanForm('withdraw')

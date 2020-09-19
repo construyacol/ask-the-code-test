@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import './newWallet.css'
 import { InputButton, ButtonSuccess } from '../../widgets/buttons/buttons'
 import InputForm from '../../widgets/inputs'
@@ -12,7 +12,6 @@ const NewWalletLayout = props =>{
   const {
     handleSubmit,
     actualizarEstado,
-    buttonActive,
     name,
     currency,
     step,
@@ -20,8 +19,6 @@ const NewWalletLayout = props =>{
     address,
     short_currency_name,
     qr,
-    currencies,
-    wallets,
     clearCurrency
   } = props
 
