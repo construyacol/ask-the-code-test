@@ -13,7 +13,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import withHandleError from '../../withHandleError'
 import { doLogout } from '../../utils'
 import KeyActionsInfo from '../modal/render/keyActionsInfo'
-
+import useViewport from '../../../hooks/useWindowSize'
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
 
@@ -24,6 +24,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const { authData } = reduxState.modelData
   const { appLoadLabel } = reduxState.isLoading
   const previousLoadLabel = usePrevious(appLoadLabel)
+  const { isTabletOrMovilViewport } = useViewport()
 
   const registerColors = () => {
     if ((window && window.CSS) && window.CSS.registerProperty) {
@@ -122,7 +123,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if(verificationStatus === 'accepted'){
       const toParse = await localForage.getItem('keysModalShow')
       const keysModalShowed = JSON.parse(toParse)
-      if(!keysModalShowed || (keysModalShowed.showed &&  keysModalShowed.showed < 2)){
+      if(!isTabletOrMovilViewport && (!keysModalShowed || (keysModalShowed.showed &&  keysModalShowed.showed < 2))){
         actions.renderModal(KeyActionsInfo)
         localForage.setItem('keysModalShow', JSON.stringify({showed:keysModalShowed ? keysModalShowed.showed+1 : 0}))
       }
