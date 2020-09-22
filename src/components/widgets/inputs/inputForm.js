@@ -24,7 +24,7 @@ const InputForm = (props) => {
     isControlled,
     autoFocus,
     customError,
-    onKeyDown
+    setMaxWithActionKey
   } = props
 
   if (skeleton) {
@@ -69,6 +69,17 @@ const InputForm = (props) => {
   }, [customError, value])
 
   let movil = window.innerWidth < 768
+  const subfixId = 'set-max-available'
+
+  const setMaxWithActionKeyFn = (e) => {
+    if (e.keyCode === 77) {
+      const toClickElement = document.getElementById(subfixId)
+      if(toClickElement) {
+        document.getElementsByName(name)[0].blur()
+        toClickElement.click()
+      }
+    }
+  }
 
   const inputProps = {
     className: `inputElement ${name} ${movil ? 'movil' : ''}`,
@@ -79,7 +90,7 @@ const InputForm = (props) => {
     name,
     disabled,
     autoFocus,
-    onKeyDown
+    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : null
   }
 
   if (isControlled) {
@@ -96,7 +107,7 @@ const InputForm = (props) => {
         {
           SuffixComponent &&
           <SuffixComponentContainer>
-            <SuffixComponent />
+            <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
         }
       </ContainerInputComponent>

@@ -226,14 +226,9 @@ export const CriptoView = () => {
         label={`Ingresa la cantidad de retiro`}
         disabled={loader}
         state={amountState}
-        onKeyDown={(e) => {
-          if (e.keyCode === 77) {
-            document.getElementsByName('amount')[0].blur()
-            document.getElementById('set-max-available').click()
-          }
-        }}
-        SuffixComponent={() => <AvailableBalance
-          id="set-max-available"
+        setMaxWithActionKey={true}
+        SuffixComponent={({id}) => <AvailableBalance
+          id={id}
           handleAction={handleMaxAvailable}
           amount={balance.available} />}
       // PrefixComponent
@@ -255,7 +250,7 @@ export const AvailableBalance = ({ handleAction, amount, id }) => {
 
   return (
     <BalanceContainer>
-      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Saldo disponible:'} {amount}</p>
+      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Disponible:'} {amount}</p>
     </BalanceContainer>
   )
 }
