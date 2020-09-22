@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 export default function useNavigationKeyActions(items, loader, className, modalRestriction = true, config = {
     next: 37,
     prev: 39,
-    default: 0
+    default: 0,
+    originalLength: false
 }) {
     const [currentSelection, setCurrentSelection] = useState(-1)
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
@@ -22,7 +23,7 @@ export default function useNavigationKeyActions(items, loader, className, modalR
         if (!isModalRenderShowing && !isModalVisible && !window.onkeyup && items && items.length > 0) {
             window.onkeyup = (event) => {
                 if(isModalVisible) return
-                const length = items.length - 1
+                const length = config.originalLength ? items.length : items.length - 1
                 const currentSelectionIsDownZero = currentSelection < 0
                 let elementId = 0
                 if (event.keyCode === config.next) {

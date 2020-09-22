@@ -69,7 +69,10 @@ const ItemAccount = props => {
 
   const account_detail = async (payload) => {
     if (payload !== 'wallets') {
-      return props.history.push(`/withdraw_accounts/activity/${props.account.id}/withdraws`)
+      if(props.account.used_counter > 0) {
+        return props.history.push(`/withdraw_accounts/activity/${props.account.id}/withdraws`)
+      }
+      return
     }
     if (account_state === 'deleting' || account_state === 'deleted') { return }
     actions.cleanNotificationItem(payload, 'account_id')
@@ -158,7 +161,8 @@ const ItemAccount = props => {
     balances: props.balances,
     actions,
     account_type,
-    focusedId: props.focusedId
+    focusedId: props.focusedId,
+    isStatic: props.isStatic
   }
 
   const isWallet = account_type === 'wallets'
@@ -205,7 +209,7 @@ const mapStateToProps = (state, props) => {
 export default connect(mapStateToProps)(withRouter(ItemAccount))
 
 const Wallet = props => {
-  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions, focusedId } = props
+  const { account, balances, delete_account, shouldHaveDeleteClassName, isSelected, actions, focusedId, isStatic } = props
   const { name, id, currency } = account
   const icon = account.currency.currency === 'cop' ? 'bank' : account.currency.currency === 'ethereum' ? 'ethereum_account' : account.currency.currency
 
@@ -220,7 +224,7 @@ const Wallet = props => {
       }
 
       {
-        actions &&
+        !isStatic && actions &&
         <>
           <AccountCta handleAction={props.handleAction} payload={props.account_type} />
           <OptionsAccount
@@ -255,13 +259,13 @@ const Wallet = props => {
 
 const WithdrawAccount = props => {
 
-  const { account, delete_account, shouldHaveDeleteClassName, actions, isSelected, focusedId } = props
+  const { account, delete_account, shouldHaveDeleteClassName, actions, isSelected, focusedId, isStatic } = props
   const { bank_name, id, account_number, inscribed, used_counter } = account
 
   return (
     <WithdrawAccountL id={`hoverable${focusedId}`} isSelected={isSelected} className={`withdrawAccount ${shouldHaveDeleteClassName && 'deleted'}`} inscribed={account.inscribed}>
       {
-        actions &&
+        !isStatic && actions &&
         <>
           {(used_counter > 0) && (
             <AccountCta handleAction={props.handleAction} payload={props.account_type} />

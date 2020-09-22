@@ -16,7 +16,8 @@ function WithdrawAccountList(props) {
   const [setCurrentSelection] = useNavigationKeyActions(withdrawAccounts, false, 'withdrawAccountItem', false, {
     next: 38,
     prev: 40,
-    default: 1
+    default: 1,
+    originalLength: true
   })
 
 

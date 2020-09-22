@@ -64,6 +64,7 @@ export const WalletDetail = props => {
         key={params.account_id}
         account={wallets[params.account_id]}
         account_type={params.primary_path}
+        isStatic={true}
       />
     </section>
   )
