@@ -17,7 +17,7 @@ function WithdrawAccountList(props) {
     items: withdrawAccounts,
     loader: false,
     className: 'withdrawAccountItem',
-    modalRetriction: false,
+    modalRestriction: false,
     next: 38,
     prev: 40,
     default: 1,
