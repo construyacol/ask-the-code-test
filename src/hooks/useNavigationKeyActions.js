@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-export default function useNavigationKeyActions(items, loader, className, modalRestriction = true, config = {
+const DEFAULT_ARGS = {
+    modalRestriction: true,
     next: 37,
     prev: 39,
     default: 0,
-    originalLength: false
-}) {
+    originalLength: false,
+}
+
+export default function useNavigationKeyActions(config) {
+    const valuesAsProps = {...DEFAULT_ARGS, ...config}
+    const { modalRestriction, className, loader, items } = valuesAsProps
     const [currentSelection, setCurrentSelection] = useState(-1)
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
     const isModalRenderShowing = useSelector(state => state.ui.modal.render)
@@ -14,7 +19,7 @@ export default function useNavigationKeyActions(items, loader, className, modalR
     useEffect(() => {
         if (items && items.length > 0 && !loader) {
             if(isModalVisible) return
-            const el = document.getElementById(`${className}${config.default}`)
+            const el = document.getElementById(`${className}${valuesAsProps.default}`)
             el && el.focus()
         }
     }, [items, loader])
@@ -23,15 +28,15 @@ export default function useNavigationKeyActions(items, loader, className, modalR
         if (!isModalRenderShowing && !isModalVisible && !window.onkeyup && items && items.length > 0) {
             window.onkeyup = (event) => {
                 if(isModalVisible) return
-                const length = config.originalLength ? items.length : items.length - 1
+                const length = valuesAsProps.originalLength ? items.length : items.length - 1
                 const currentSelectionIsDownZero = currentSelection < 0
                 let elementId = 0
-                if (event.keyCode === config.next) {
+                if (event.keyCode === valuesAsProps.next) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     const el = document.getElementById(`${className}${Math.max(0, elementId)}`)
                     el && el.focus()
                 }
-                if (event.keyCode === config.prev || (event.keyCode === 13 && currentSelectionIsDownZero)) {
+                if (event.keyCode === valuesAsProps.prev || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     const el = document.getElementById(`${className}${Math.min(length, elementId)}`)
                     el && el.focus()

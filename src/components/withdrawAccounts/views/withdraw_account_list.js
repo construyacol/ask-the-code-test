@@ -13,7 +13,11 @@ import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
 function WithdrawAccountList(props) {
   const [withdrawAccounts, setWithdrawAccounts] = useState(null)
   const [preferentialAccounts, setPreferentialAccounts] = useState()
-  const [setCurrentSelection] = useNavigationKeyActions(withdrawAccounts, false, 'withdrawAccountItem', false, {
+  const [setCurrentSelection] = useNavigationKeyActions({
+    items: withdrawAccounts,
+    loader: false,
+    className: 'withdrawAccountItem',
+    modalRetriction: false,
     next: 38,
     prev: 40,
     default: 1,

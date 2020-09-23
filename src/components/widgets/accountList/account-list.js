@@ -17,7 +17,12 @@ function AccountList(props) {
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
-  const [setCurrentSelection] = useNavigationKeyActions(items, mainListLoader, 'accountItem')
+  const [setCurrentSelection] = useNavigationKeyActions({
+    items, 
+    loader: mainListLoader,
+    className: 'accountItem',
+    default: -1
+  })
 
   useEffect(() => {
     // actions.cleanCurrentSection()
