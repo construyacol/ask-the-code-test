@@ -174,18 +174,21 @@
 
 
 
-.AccountItemList.noAddElement:hover p {
+.AccountItemList.noAddElement:hover p,
+.item-selected.noAddElement p {
   color: white;
 }
 
-.AccountItemList.noAddElement:hover span {
+.AccountItemList.noAddElement:hover span,
+.item-selected.noAddElement span {
   color: #b5b4b4;
 }
 
 
 
 
-.AccountItemList.noAddElement:hover .backgroundAccount {
+.AccountItemList.noAddElement:hover .backgroundAccount,
+.item-selected.noAddElement .backgroundAccount {
   opacity: 1;
 }
 
