@@ -60,8 +60,7 @@ function AccountItemList(props) {
   } = props
 
   const handleClick = action ? action : createOrder
-  const parentId = `${props.focusedId}-parent`
-  const [isSelected] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: handleClick }, false, parentId)
+  const [isSelected] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: handleClick }, false)
 
   let currency_type = props.account && props.account.currency_type
 
@@ -87,7 +86,6 @@ function AccountItemList(props) {
 
   return (
     <div
-      id={parentId}
       onClick={need_more_amount === 'need_more' ? showRequireActionMessage : handleClick}
       className={`AccountItemList ${isSelected && 'item-selected'} ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'} ${need_more_amount}`} >
       <div className={`backgroundAccount ${need_more_amount}`}>

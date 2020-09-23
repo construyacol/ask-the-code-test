@@ -32,7 +32,7 @@
 
 .AccountItemList.noAddElement:hover,
 .AccountItemList.noAddElement:focus,
-.hovered-item:not(.addElement) {
+.item-selected:not(.addElement) {
   transform: scale(1.02);
 }
 
@@ -47,12 +47,12 @@
 }
 
 .AccountItemList:hover .bigEgg,
-.hovered-item:not(.addElement) .bigEgg {
+.item-selected:not(.addElement) .bigEgg {
   animation-name: bigEgg;
 }
 
 .AccountItemList:hover .egg,
-.hovered-item:not(.addElement) .egg {
+.item-selected:not(.addElement) .egg {
   animation-name: egg2;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .AccountItemList:hover .active_account,
-.hovered-item:not(.addElement) .active_account {
+.item-selected:not(.addElement) .active_account {
   opacity: 1;
 }
 
@@ -100,13 +100,13 @@
 }
 
 .addElement:hover p,
-.addElement.hovered-item p {
+.addElement.item-selected p {
   color: #00bfff !important;
 }
 
 
 .addElement:hover svg,
-.addElement.hovered-item svg {
+.addElement.item-selected svg {
   fill: #00bfff !important;
 }
 
@@ -158,7 +158,7 @@
 }
 
 .AccountItemList:hover .infoAILItem.name,
-.hovered-item:not(.addElement) .infoAILItem.name {
+.item-selected:not(.addElement) .infoAILItem.name {
   /*color: #00bfff !important;*/
   color: #38ef7d !important;
 }
@@ -258,12 +258,12 @@
 
 
 .AccountItemList:hover .forroDesp,
-.hovered-item:not(.addElement) .forroDesp {
+.item-selected:not(.addElement) .forroDesp {
   width: 50px;
 }
 
 .AccountItemList:hover .forroDesp.need_more,
-.hovered-item:not(.addElement) .forroDesp.need_more {
+.item-selected:not(.addElement) .forroDesp.need_more {
   width: 0px !important;
 }
 
@@ -322,7 +322,7 @@
 
 
 .AccountItemList:hover .LimitTermometer,
-.hovered-item:not(.addElement) .LimitTermometer {
+.item-selected:not(.addElement) .LimitTermometer {
   filter: grayscale(0%);
   opacity: 1;
   /*background: #33404c3b;*/
@@ -347,7 +347,7 @@
 
 
 .AccountItemList:hover .backLogoAil.fiat,
-.hovered-item:not(.addElement) .backLogoAil.fiat {
+.item-selected:not(.addElement) .backLogoAil.fiat {
   opacity: 1;
 }
 
@@ -365,7 +365,7 @@
 }*/
 
 .AccountItemList:hover .logoAIL>.iconSty,
-.hovered-item:not(.addElement) .logoAIL>.iconSty {
+.item-selected:not(.addElement) .logoAIL>.iconSty {
   opacity: 1;
   /*animation-name: iconLogo;*/
   /*animation-duration: .3s;*/
@@ -412,7 +412,7 @@
 }
 
 .AccountItemList:hover .infoAILItem.preferential svg,
-.hovered-item:not(.addElement) .infoAILItem.preferential svg {
+.item-selected:not(.addElement) .infoAILItem.preferential svg {
   /*color: #11998e;*/
   fill: #38ef7d;
 }
@@ -438,7 +438,7 @@
 }
 
 .AccountItemList:hover .infoAILItem.need_more,
-.hovered-item:not(.addElement) .infoAILItem.need_more {
+.item-selected:not(.addElement) .infoAILItem.need_more {
   color: red !important;
 }
 
@@ -452,19 +452,19 @@
 
 
 .AccountItemList.need_more:hover .backgroundAccount,
-.hovered-item:not(.addElement) .backgroundAccount {
+.item-selected:not(.addElement) .backgroundAccount {
   opacity: 1;
   border: 1px solid #c3c3c3 !important;
 }
 
 .AccountItemList.noAddElement:hover .logoAIL.need_more,
-.hovered-item:not(.addElement) .logoAIL.need_more {
+.item-selected:not(.addElement) .logoAIL.need_more {
   border: 1px solid #c3c3c3;
 }
 
 
 .AccountItemList:hover .account_type.need_more,
-.hovered-item:not(.addElement) .account_type.need_more {
+.item-selected:not(.addElement) .account_type.need_more {
   color: gray !important;
 }
 
