@@ -73,6 +73,7 @@ const InputForm = (props) => {
 
   const setMaxWithActionKeyFn = (e) => {
     if (e.keyCode === 77) {
+      e.preventDefault()
       const toClickElement = document.getElementById(subfixId)
       if(toClickElement) {
         document.getElementsByName(name)[0].blur()

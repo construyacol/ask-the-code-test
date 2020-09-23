@@ -193,7 +193,7 @@ class WithdrawFlow extends Component {
       let plaza_type
       let provider_type = withdraw_account.provider_type
 
-      if (providers_served[provider_type].provider.name === withdraw_account.provider_name) { plaza_type = 'same_bank' }
+      if (providers_served[provider_type].provider && providers_served[provider_type].provider.name === withdraw_account.provider_name) { plaza_type = 'same_bank' }
       if (!plaza_type) { plaza_type = providers_served[provider_type].info_needed.city[withdraw_account.city.value].plaza_type }
 
       let new_withdraw_account = {

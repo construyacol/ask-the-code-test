@@ -13,6 +13,7 @@ import { usePairSelector } from '../../../hooks/usePairSelector'
 import { useActions } from '../../../hooks/useActions'
 import { AvailableBalance, OperationForm } from './withdrawCripto'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 
@@ -30,6 +31,7 @@ function SwapView(props) {
   })
   const [valueError, setValueError] = useState()
   const actions = useActions()
+  const idForClickeableElement = useKeyActionAsClick()
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -279,6 +281,7 @@ function SwapView(props) {
       </div>
 
       <ControlButton
+        id={idForClickeableElement}
         loader={loaderButton || loader}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
