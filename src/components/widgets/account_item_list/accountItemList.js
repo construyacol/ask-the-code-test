@@ -60,7 +60,8 @@ function AccountItemList(props) {
   } = props
 
   const handleClick = action ? action : createOrder
-  const [isSelected] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: handleClick }, false)
+  const parentId = `${props.focusedId}-parent`
+  const [isSelected] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: handleClick }, false, parentId)
 
   let currency_type = props.account && props.account.currency_type
 
@@ -84,10 +85,9 @@ function AccountItemList(props) {
 
   let need_more_amount = withdraw_amount < withdraw_min_amount ? 'need_more' : withdraw_amount >= withdraw_min_amount && 'satisfy'
 
-  // console.log('||||||||  ======> AccountItemList', withdraw_amount, withdraw_min_amount, need_more_amount)
-
   return (
     <div
+      id={parentId}
       onClick={need_more_amount === 'need_more' ? showRequireActionMessage : handleClick}
       className={`AccountItemList ${isSelected && 'item-selected'} ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'} ${need_more_amount}`} >
       <div className={`backgroundAccount ${need_more_amount}`}>

@@ -306,7 +306,7 @@ class WithdrawAccountForm extends Component {
 const selectWithdrawProviders = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
-    return _withdrawProviders.map(w_id => {
+    return _withdrawProviders && _withdrawProviders.map(w_id => {
       return withdrawProviders[w_id]
     })
   }

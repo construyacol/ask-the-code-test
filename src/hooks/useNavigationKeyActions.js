@@ -51,20 +51,24 @@ export default function useNavigationKeyActions(config) {
     return [setCurrentSelection]
 }
 
-export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, modalRestriction = true) {
+export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, modalRestriction = true, parentElementId = false) {
     const [isSelected, setIsSelected] = useState(false)
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
 
+    const parentElement = document.getElementById(parentElementId)
+    parentElementId && useEffect(() => {
+        if(parentElement) {
+            if(isSelected) {
+                parentElement.classList.add('hovered-item')
+            } else {
+                parentElement.classList.remove('hovered-item')
+            }
+        }
+    }, [isSelected, props, parentElement])
+
     useEffect(() => {
         const element = document.getElementById(props.focusedId)
-        // const parentElement = document.getElementById(`hoverable${props.focusedId}`)
         if (element) {
-            // if (parentElement) {
-            //     parentElement.onmouseenter = (event) => {
-            //         element.focus()
-            //     }
-            // }
-
             element.onfocus = () => {
                 setIsSelected(true)
                 props.setCurrentSelection(props.number)
