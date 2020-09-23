@@ -47,12 +47,12 @@
 }
 
 .AccountItemList:hover .bigEgg,
-.item-selected:not(.addElement) .bigEgg {
+.item-selected .bigEgg {
   animation-name: bigEgg;
 }
 
 .AccountItemList:hover .egg,
-.item-selected:not(.addElement) .egg {
+.item-selected .egg {
   animation-name: egg2;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .AccountItemList:hover .active_account,
-.item-selected:not(.addElement) .active_account {
+.item-selected .active_account {
   opacity: 1;
 }
 
@@ -104,10 +104,14 @@
   color: #00bfff !important;
 }
 
-
 .addElement:hover svg,
 .addElement.item-selected svg {
   fill: #00bfff !important;
+}
+
+.item-selected .logoAIL .iconSty {
+  opacity: 1;
+  color: #00bfff !important;
 }
 
 /*noAddElement*/
@@ -258,12 +262,12 @@
 
 
 .AccountItemList:hover .forroDesp,
-.item-selected:not(.addElement) .forroDesp {
+.item-selected .forroDesp {
   width: 50px;
 }
 
 .AccountItemList:hover .forroDesp.need_more,
-.item-selected:not(.addElement) .forroDesp.need_more {
+.item-selected .forroDesp.need_more {
   width: 0px !important;
 }
 
@@ -322,7 +326,7 @@
 
 
 .AccountItemList:hover .LimitTermometer,
-.item-selected:not(.addElement) .LimitTermometer {
+.item-selected .LimitTermometer {
   filter: grayscale(0%);
   opacity: 1;
   /*background: #33404c3b;*/
