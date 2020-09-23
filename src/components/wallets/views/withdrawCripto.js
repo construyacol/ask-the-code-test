@@ -250,7 +250,7 @@ export const AvailableBalance = ({ handleAction, amount, id }) => {
 
   return (
     <BalanceContainer>
-      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Disponible:'} {amount}</p>
+      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Disponible [M]:'} {amount}</p>
     </BalanceContainer>
   )
 }
