@@ -96,7 +96,8 @@ export const AddNewItem2 = props => {
 
 export class ButtonPrincipalMenu extends Component {
 
-  activarItem = () => {
+  activarItem = (event) => {
+    event.currentTarget.blur()
     this.props.activarItem(this.props.clave, this.props.clave)
   }
 

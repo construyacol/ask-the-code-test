@@ -10,15 +10,15 @@ const DEFAULT_ARGS = {
 }
 
 export default function useNavigationKeyActions(config) {
-    const valuesAsProps = {...DEFAULT_ARGS, ...config}
+    const valuesAsProps = { ...DEFAULT_ARGS, ...config }
     const { modalRestriction, className, loader, items } = valuesAsProps
     const [currentSelection, setCurrentSelection] = useState(-1)
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
     const isModalRenderShowing = useSelector(state => state.ui.modal.render)
 
     useEffect(() => {
-        if (items && items.length > 0 && !loader) {
-            if(isModalVisible) return
+        if (items && items.length > 0) {
+            if (isModalVisible) return
             const el = document.getElementById(`${className}${valuesAsProps.default}`)
             el && el.focus()
         }
@@ -27,26 +27,27 @@ export default function useNavigationKeyActions(config) {
     useEffect(() => {
         if (!isModalRenderShowing && !isModalVisible && !window.onkeyup && items && items.length > 0) {
             window.onkeyup = (event) => {
-                if(isModalVisible) return
+                if (isModalVisible) return
                 const length = valuesAsProps.originalLength ? items.length : items.length - 1
                 const currentSelectionIsDownZero = currentSelection < 0
                 let elementId = 0
+                let el = null
                 if (event.keyCode === valuesAsProps.next) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
-                    const el = document.getElementById(`${className}${Math.max(0, elementId)}`)
-                    el && el.focus()
+                    el = document.getElementById(`${className}${Math.max(0, elementId)}`)
                 }
                 if (event.keyCode === valuesAsProps.prev || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
-                    const el = document.getElementById(`${className}${Math.min(length, elementId)}`)
-                    el && el.focus()
+                    el = document.getElementById(`${className}${Math.min(length, elementId)}`)
                 }
+                el && el.blur()
+                el && el.focus()
             }
         }
         return () => {
             window.onkeyup = false
         }
-    }, [window.onkeyup, isModalVisible, items, loader, isModalRenderShowing])
+    }, [window.onkeyup, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
 
     return [setCurrentSelection]
 }
@@ -59,8 +60,10 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
         const element = document.getElementById(props.focusedId)
         if (element) {
             element.onfocus = () => {
-                setIsSelected(true)
-                props.setCurrentSelection(props.number)
+                window.requestAnimationFrame(() => {
+                    setIsSelected(true)
+                    props.setCurrentSelection(props.number)
+                })
             }
 
             element.onblur = () => {
@@ -69,7 +72,7 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
 
             element.onkeydown = (event) => {
                 element.blur()
-                if(isModalVisible) return
+                if (isModalVisible) return
                 if (event.keyCode === 46) {
                     event.stopPropagation()
                     suprKeyAction(() => element.focus())
