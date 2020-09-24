@@ -17,7 +17,7 @@ export default function useNavigationKeyActions(config) {
     const isModalRenderShowing = useSelector(state => state.ui.modal.render)
 
     useEffect(() => {
-        if (items && items.length > 0) {
+        if (items && items.length > 0 && !loader) {
             if (isModalVisible) return
             const el = document.getElementById(`${className}${valuesAsProps.default}`)
             el && el.focus()
@@ -35,13 +35,13 @@ export default function useNavigationKeyActions(config) {
                 if (event.keyCode === valuesAsProps.next) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     el = document.getElementById(`${className}${Math.max(0, elementId)}`)
+                    el && el.focus()
                 }
                 if (event.keyCode === valuesAsProps.prev || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     el = document.getElementById(`${className}${Math.min(length, elementId)}`)
+                    el && el.focus()
                 }
-                el && el.blur()
-                el && el.focus()
             }
         }
         return () => {
@@ -60,10 +60,8 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
         const element = document.getElementById(props.focusedId)
         if (element) {
             element.onfocus = () => {
-                window.requestAnimationFrame(() => {
-                    setIsSelected(true)
-                    props.setCurrentSelection(props.number)
-                })
+                setIsSelected(true)
+                props.setCurrentSelection(props.number)
             }
 
             element.onblur = () => {

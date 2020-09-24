@@ -42,7 +42,7 @@ function ContentTab(props) {
                 if (condition && haveBalances) goNext()
             }
             if (event.keyCode === 8) {
-                if (event.srcElement.tagName.includes('INPUT')) return
+                if (event.srcElement.tagName.includes('INPUT')) return event.srcElement.blur()
                 if (condition) exit()
             }
         }
