@@ -1,16 +1,19 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import styled from 'styled-components'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
 import { LoaderContainer } from '../loaders'
 
-export const KeyActionComponent = ({ action, isFiat }) => {
+export const KeyActionComponent = ({ action, isFiat, currentWallet }) => {
   const isModalVisible = useSelector(state => state.form.isModalVisible)
+  const route = useHistory()
 
   useEffect(() => {
     if (!window.onkeydown) {
       window.onkeydown = (event) => {
+        if(!route.location.pathname.includes(currentWallet.id)) return
         if (!isModalVisible && event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
           if(!isFiat) return
           if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
@@ -18,7 +21,7 @@ export const KeyActionComponent = ({ action, isFiat }) => {
         }
       }
     }
-  }, [window.onkeydown, isModalVisible])
+  }, [window.onkeydown, isModalVisible, route, currentWallet])
 
   return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
 }

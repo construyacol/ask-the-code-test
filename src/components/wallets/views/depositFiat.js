@@ -44,7 +44,7 @@ const DepositFiat = (props) => {
     <DepositForm className="DepositView itemWalletView" onSubmit={fiat_deposit}>
       
       <div className="contIcontSwitch">
-        <KeyActionComponent action={fiat_deposit} isFiat={current_wallet.currency_type === 'fiat'} />
+        <KeyActionComponent action={fiat_deposit} currentWallet={current_wallet} isFiat={current_wallet.currency_type === 'fiat'} />
         <IconSwitch {...atributos}/>
       </div>
 

@@ -42,7 +42,12 @@ function ContentTab(props) {
                 if (condition && haveBalances) goNext()
             }
             if (event.keyCode === 8) {
-                if (event.srcElement.tagName.includes('INPUT')) return event.srcElement.blur()
+                if (event.srcElement.tagName.includes('INPUT') && !event.srcElement.value) {
+                    event.stopPropagation()
+                    event.preventDefault()
+                    return event.srcElement.blur()
+                }
+                if(event.srcElement.tagName.includes('INPUT') && !event.srcElement.value) return
                 if (condition) exit()
             }
         }
