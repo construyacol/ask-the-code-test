@@ -203,7 +203,7 @@ class WithdrawFlow extends Component {
       }
       return update_list.push(new_withdraw_account)
     })
-
+    
     return update_list
   }
 
@@ -233,26 +233,20 @@ class WithdrawFlow extends Component {
       min_amount
     } = this.state
 
-    // console.log('providers_served', providers_served)
     let withdraw_account_list = await this.props.coinsendaServices.fetchWithdrawAccounts()
-    // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
-    // console.log(' =====> withdraw_account_list', withdraw_account_list)
-    // return alert('que paja')
-    let withdraw_account_list_update = await this.get_cost_struct(null, withdraw_account_list)
-    await this.setState({ withdraw_account_list_update })
-    let new_account_update = await matchItem(withdraw_account_list_update, { primary: new_account.id }, 'id')
+
+    let withdraw_account_list_update = this.get_cost_struct(null, withdraw_account_list)
+    this.setState({ withdraw_account_list_update })
+    let new_account_update = matchItem(withdraw_account_list_update, { primary: new_account.id }, 'id')
     let min_amount_withdraw = parseFloat(min_amount) + parseFloat(new_account_update[0].cost)
 
 
     if (parseFloat(amount) < min_amount_withdraw) {
 
       setTimeout(async () => {
-        // console.log('________________________________________new_account_and_withdraw', new_account)
-
         this.props.action.addNotification('withdraw_accounts', { account_id: new_account.id }, 1)
         this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
         this.props.action.CleanForm('bank')
-        // await this.setState({addNotification:false})
       }, 500)
 
       await this.setState({ show_list_accounts: false, need_new_acount: null })

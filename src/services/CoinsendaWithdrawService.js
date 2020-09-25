@@ -27,11 +27,7 @@ export class WithdrawService extends WebService {
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
-
-        if(await this.isCached('withdraw_accounts', result)) {
-            return this.globalState.modelData.withdraw_accounts
-        }
-
+        
         if (!result.length) {
           let userWithOutWA = {
               id: user.id,
@@ -113,6 +109,10 @@ export class WithdrawService extends WebService {
             withdraw_accounts: [
                 ...withdrawAccounts
             ]
+        }
+
+        if(await this.isCached('withdraw_accounts', result)) {
+            return withdrawAccounts
         }
 
         const normalizedUser = await normalizeUser(updatedUser)
