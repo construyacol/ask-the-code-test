@@ -22,6 +22,7 @@ function SwapView(props) {
   const [coinsendaServices] = useCoinsendaServices()
   const [value, setValue] = useState(undefined)
   const [active, setActive] = useState(undefined)
+  const [shouldActiveButtom, setShouldActiveButton] = useState(true)
   // const [pairId, setPairId] = useState()
   const [totalValue, setTotalValue] = useState()
   const [loaderButton, setLoaderButton] = useState()
@@ -31,7 +32,7 @@ function SwapView(props) {
   })
   const [valueError, setValueError] = useState()
   const actions = useActions()
-  const idForClickeableElement = useKeyActionAsClick()
+  const idForClickeableElement = useKeyActionAsClick(shouldActiveButtom)
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -164,6 +165,7 @@ function SwapView(props) {
     const { pair_id } = currentPair
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, pair_id, value)
     actions.isAppLoading(false)
+    setShouldActiveButton(true)
     if (!newSwap) {
       return handleError('No se ha podio hacer el cambio')
     }
@@ -182,6 +184,7 @@ function SwapView(props) {
     setLoaderButton(true)
     await swap()
     actions.confirmationModalToggle()
+    setShouldActiveButton(false)
     setLoaderButton(false)
   }
 
@@ -231,8 +234,7 @@ function SwapView(props) {
   }
 
   return (
-    <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
-
+    <SwapForm onSubmit={(e) => e.preventDefault()} isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`}>
 
       <InputForm
         classes="fuente2"
@@ -282,6 +284,7 @@ function SwapView(props) {
 
       <ControlButton
         id={idForClickeableElement}
+        handleAction={startSwap}
         loader={loaderButton || loader}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
