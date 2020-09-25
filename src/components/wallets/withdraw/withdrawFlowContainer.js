@@ -188,7 +188,7 @@ class WithdrawFlow extends Component {
     let update_list = []
     let w_account_list = withdraw_account_list || this.props.withdraw_account_list
 
-    w_account_list.map(withdraw_account => {
+    w_account_list && w_account_list.map(withdraw_account => {
       if (withdraw_account.currency_type === 'crypto') { return false }
       let plaza_type
       let provider_type = withdraw_account.provider_type
@@ -657,9 +657,9 @@ class WithdrawFlow extends Component {
 const selectWithdrawProvidersList = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
-    return _withdrawProviders && _withdrawProviders.map((id_prov) => {
+    return _withdrawProviders ? _withdrawProviders.map((id_prov) => {
       return withdrawProviders[id_prov]
-    })
+    }) : []
   }
 )
 
