@@ -64,7 +64,8 @@ class BankAccountFlow extends Component {
         action,
         current,
         withdraw_flow,
-        initPrevKeyActions
+        initPrevKeyActions,
+        bank_name
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
@@ -80,7 +81,7 @@ class BankAccountFlow extends Component {
         if (step === 6 && city) {
           final_step_create_account(event)
         }
-        if (step === 3 && search.length === 1) {
+        if (step === 3 && search.length === 1 && bank_name) {
           handleSubmit(event)
         }
         if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
@@ -250,7 +251,7 @@ class BankAccountFlow extends Component {
               }
 
               <div id="bankChooseButton">
-                <InputButton label="Continuar" type="primary" active={search.length === 1} />
+                <InputButton label="Continuar" type="primary" active={search.length === 1 && bank_name !== ''} />
               </div>
 
             </form>
@@ -402,7 +403,7 @@ const selectWithdrawProviders = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
     const withdraw_providers_list = []
-    _withdrawProviders.map((wp) => {
+    _withdrawProviders && _withdrawProviders.map((wp) => {
       if (withdrawProviders[wp].provider_type !== 'bank') { return false }
       return withdraw_providers_list.push(withdrawProviders[wp])
     })
