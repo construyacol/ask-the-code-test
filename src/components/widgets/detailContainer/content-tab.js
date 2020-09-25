@@ -47,7 +47,7 @@ function ContentTab(props) {
                     event.preventDefault()
                     return event.srcElement.blur()
                 }
-                if(event.srcElement.tagName.includes('INPUT') && !event.srcElement.value) return
+                if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value) return
                 if (condition) exit()
             }
         }
