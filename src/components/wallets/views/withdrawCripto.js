@@ -10,6 +10,7 @@ import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
 import QrScanner from '../../qr-scanner'
 import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 
@@ -78,8 +79,10 @@ export const CriptoView = () => {
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
   const [amountState, setAmountState] = useState()
+  const [shouldActiveButton, setShouldActiveButton] = useState(true)
   const isValidForm = useRef(false)
   let movil_viewport = window.innerWidth < 768
+  const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
 
 
   const setTowFaTokenMethod = async (twoFaToken) => {
@@ -132,8 +135,8 @@ export const CriptoView = () => {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
+    e && e.preventDefault()
+    e && e.stopPropagation()
 
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
@@ -176,23 +179,8 @@ export const CriptoView = () => {
     }
   }, [active_trade_operation, amountState, addressState])
 
-  const enterEvent = (event) => {
-    if (event.keyCode === 13 && !window.onkeydown && isValidForm.current) {
-      event.preventDefault()
-      document.getElementById('send-form').click()
-      return false
-    }
-  }
-
-  const cancelEnterAction = (event) => {
-    if (event.keyCode === 13) {
-      event.preventDefault()
-      return false
-    }
-  }
-
   return (
-    <WithdrawForm onKeyDown={cancelEnterAction} onKeyPress={cancelEnterAction} onKeyUp={enterEvent} id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit} >
+    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={e => e.preventDefault()} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
@@ -234,8 +222,9 @@ export const CriptoView = () => {
       // PrefixComponent
       />
       <ControlButton
-        id='send-form'
+        id={idForClickeableElement}
         loader={loader}
+        handleAction={handleSubmit}
         formValidate={!active_trade_operation && (amountState === 'good' && addressState === 'good')}
         label="Enviar"
       />

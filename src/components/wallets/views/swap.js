@@ -22,7 +22,7 @@ function SwapView(props) {
   const [coinsendaServices] = useCoinsendaServices()
   const [value, setValue] = useState(undefined)
   const [active, setActive] = useState(undefined)
-  const [shouldActiveButtom, setShouldActiveButton] = useState(true)
+  const [shouldActiveButton, setShouldActiveButton] = useState(true)
   // const [pairId, setPairId] = useState()
   const [totalValue, setTotalValue] = useState()
   const [loaderButton, setLoaderButton] = useState()
@@ -32,7 +32,7 @@ function SwapView(props) {
   })
   const [valueError, setValueError] = useState()
   const actions = useActions()
-  const idForClickeableElement = useKeyActionAsClick(shouldActiveButtom)
+  const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -180,7 +180,7 @@ function SwapView(props) {
   }
 
   const startSwap = async (e) => {
-    e.preventDefault()
+    e && e.preventDefault()
     setLoaderButton(true)
     await swap()
     actions.confirmationModalToggle()
