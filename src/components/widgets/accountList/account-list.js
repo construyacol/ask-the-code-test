@@ -10,6 +10,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 import '../../wallets/views/wallet_views.css'
 import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history, mainListLoader } = props
@@ -23,6 +24,9 @@ function AccountList(props) {
     className: 'accountItem',
     default: -1
   })
+  const isDesktop = window.innerWidth > 900
+  // 97 keyCode for A
+  const idForClickableElement = useKeyActionAsClick(true, 'main-accounts-add-button', 97)
 
   useEffect(() => {
     // actions.cleanCurrentSection()
@@ -91,7 +95,10 @@ function AccountList(props) {
   }
   const isWithdrawListStyle = {
     // marginBottom: '40px'
-  }  
+  }
+
+  let mainButtonText = isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'
+  mainButtonText = isDesktop ? `[A] ${mainButtonText}` : mainButtonText
 
   return (
     <>
@@ -127,7 +134,8 @@ function AccountList(props) {
       {
         (!props.loader) &&
         <AddNewItem
-          label={`${isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
+          id={idForClickableElement}
+          label={mainButtonText}
           type="primary"
           handleClick={createNewWallet}
         />

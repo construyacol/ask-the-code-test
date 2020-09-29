@@ -25,6 +25,12 @@ export default function useNavigationKeyActions(config) {
     }, [items, loader])
 
     useEffect(() => {
+        if(modalRestriction && (isModalRenderShowing || isModalVisible)) {
+            setCurrentSelection(-1)
+        }
+    }, [isModalRenderShowing, isModalVisible])
+
+    useEffect(() => {
         if (!isModalRenderShowing && !isModalVisible && !window.onkeyup && items && items.length > 0) {
             window.onkeyup = (event) => {
                 if (isModalVisible) return

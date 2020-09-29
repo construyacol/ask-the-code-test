@@ -58,11 +58,11 @@ export const AddNewItem = props => {
   // label define el texto que llevará el botton para agregar
   // handleClick define el evento que se accionara al dar click en el boton
 
-  const { label, type, handleClick, clases } = props
+  const { label, type, handleClick, clases, id } = props
 
 
   return (
-    <div className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
+    <div id={id} className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
       <div className="BbackgroundAddNew"></div>
       <div className={`AddNewItem ${type}`}>
         <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>

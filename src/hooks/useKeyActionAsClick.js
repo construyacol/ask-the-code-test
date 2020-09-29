@@ -16,8 +16,8 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
     }
 
     useEffect(() => {
-        if(!window.onkeyup) {
-            window.onkeyup = (event) => {
+        if(!document.onkeypress) {
+            document.onkeypress = (event) => {
                 if (event.keyCode === keyCode && !event.srcElement.tagName.includes('INPUT')) {
                     if(!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible) {
                         event.preventDefault()
@@ -29,9 +29,9 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
         }
 
         return () => {
-            window.onkeyup = false
+            document.onkeypress = false
         }
-    }, [window.onkeyup, isModalVisible, isModalRenderVisible, isConfirmationModalVisible, shouldHandleAction])
+    }, [document.onkeypress, isModalVisible, isModalRenderVisible, isConfirmationModalVisible, shouldHandleAction])
 
     return elementId
 }
