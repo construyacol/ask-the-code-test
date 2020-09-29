@@ -29,6 +29,7 @@ import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
 import localForage from 'localforage'
 import { ReferralComponentAsSkeleton } from '../referrals/referralsComponent';
+import useBlockScroll from '../../hooks/useBlockScroll';
 
 
 
@@ -55,7 +56,7 @@ const TAB_TITLE = {
 
 
 function DashBoardContainer(props) {
-
+  useBlockScroll()
 
   // const proofSocketNotify = () => {
   //   const { wallets } = props
