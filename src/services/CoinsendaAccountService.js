@@ -34,7 +34,8 @@ export class AccountService extends WebService {
             }
             const toNormalize = await normalizeUser(userWithOutW)
             await this.dispatch(updateNormalizedDataAction(toNormalize))
-            return this.dispatch(resetModelData({ wallets: [] }))
+            await this.dispatch(resetModelData({ wallets: [] }))
+            return
         }
 
         const balanceList = availableWallets.map(wallet => {
@@ -71,13 +72,13 @@ export class AccountService extends WebService {
                 ...balanceList
             ]
         }
-        
+
         let userWallets = await normalizeUser(onlyBalances ? updatedOnlyBalances : updatedUser)
-        
+
         if(await this.isCached(onlyBalances ? `balances` : `wallets`, wallets)) {
             return userWallets
         }
-        
+
         await this.dispatch(updateNormalizedDataAction(userWallets))
         return userWallets
     }
