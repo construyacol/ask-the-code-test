@@ -8,6 +8,7 @@ import availableWalletCreator from '../../hooks/availableWalletCreator'
 
 
 import './buttons.css'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 export const ButtonSuccess = (props) => {
   const {
@@ -93,34 +94,41 @@ export const AddNewItem2 = props => {
   )
 }
 
+export const ButtonPrincipalMenu = ({
+  clave,
+  path,
+  text,
+  icon,
+  subfix,
+  keyCode,
+  ...props
+}) => {
+  const elementId = useKeyActionAsClick(true, `${clave}-section-button`, keyCode)
+  const isDesktop = window.innerWidth > 900
 
-export class ButtonPrincipalMenu extends Component {
-
-  activarItem = (event) => {
+  const activarItem = (event) => {
     event.currentTarget.blur()
-    this.props.activarItem(this.props.clave, this.props.clave)
+    props.activarItem(clave, clave)
   }
 
-  render() {
-    return (
-      <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.path === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
-        <div className={`text ${this.props.path === this.props.clave ? 'activate' : ''}`}>
-          <div className="iconButtCont">
-            <IconSwitch icon={this.props.icon} size={18} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
-            <PopNotification notifier={this.props.clave} />
-          </div>
-          <p className="itemText fuente">{this.props.text}</p>
+  const buttonText = isDesktop ? `${text} [${subfix}]` : text
+  return (
+    <Link id={elementId} to={`/${clave}`} className={`itemMenu ${path === clave ? 'activo' : ''}`} onClick={activarItem}>
+      <div className={`text ${path === clave ? 'activate' : ''}`}>
+        <div className="iconButtCont">
+          <IconSwitch icon={icon} size={18} color={`${path === clave ? "#14B3F0" : "#d6d6d6"}`} />
+          <PopNotification notifier={clave} />
         </div>
+        <p className="itemText fuente">{buttonText}</p>
+      </div>
 
-        <div className="indicatorCont">
-          <div className={`indicator ${this.props.path === this.props.clave ? 'activate' : ''}`}>
-            <div className={`indicatorSon ${this.props.path === this.props.clave ? 'activate' : ''}`}></div>
-          </div>
+      <div className="indicatorCont">
+        <div className={`indicator ${path === clave ? 'activate' : ''}`}>
+          <div className={`indicatorSon ${path === clave ? 'activate' : ''}`}></div>
         </div>
-      </Link>
-    )
-  }
-
+      </div>
+    </Link>
+  )
 }
 
 

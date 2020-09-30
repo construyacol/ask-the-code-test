@@ -8,26 +8,52 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
     const isModalRenderVisible = useSelector(state => state.ui.modal.render)
     const isConfirmationModalVisible = useSelector(state => state.ui.modal_confirmation.visible)
 
-    const doClick = () => {
-        const clickeableElement = document.getElementById(elementId)
-        if(clickeableElement) {
+    const doClick = (id) => {
+        const clickeableElement = document.getElementById(id)
+        if (clickeableElement) {
             clickeableElement.click && clickeableElement.click()
         }
     }
 
-    useEffect(() => {
-        if(!document.onkeypress) {
-            document.onkeypress = (event) => {
-                if (event.keyCode === keyCode && !event.srcElement.tagName.includes('INPUT')) {
-                    if(!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                        return shouldHandleAction && doClick()
+    const manageKeyActions = (async (elementId, keyCode) => {
+        try {
+            if(!window.KEY_CODES_META) {
+                window.KEY_CODES_META = {}
+            }
+            window.KEY_CODES_META[elementId] = keyCode
+        } catch (error) {
+        }
+    })
+
+    const handleKeyAction = async () => {
+        document.onkeypress = (event) => {
+            if (!event.srcElement.tagName.includes('INPUT')) {
+                if (!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible) {
+                    if (window.KEY_CODES_META) {
+                        Object.keys(window.KEY_CODES_META).map(id => {
+                            if (window.KEY_CODES_META[id] === event.keyCode) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                                if (id === ID_FOR_CLICKEABLE_ELEMENTS) {
+                                    return shouldHandleAction && doClick(id)
+                                }
+                                return doClick(id)
+                            }
+                        })
                     }
                 }
             }
         }
+    }
 
+    useEffect(() => {
+        manageKeyActions(elementId, keyCode)
+    }, [elementId, keyCode])
+
+    useEffect(() => {
+        if (!document.onkeypress) {
+            handleKeyAction()
+        }
         return () => {
             document.onkeypress = false
         }

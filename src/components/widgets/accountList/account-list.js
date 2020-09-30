@@ -98,7 +98,7 @@ function AccountList(props) {
   }
 
   let mainButtonText = isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'
-  mainButtonText = isDesktop ? `[A] ${mainButtonText}` : mainButtonText
+  mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText
 
   return (
     <>
