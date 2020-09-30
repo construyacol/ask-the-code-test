@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
+import useNavigationKeyActions from '../../../../hooks/useNavigationKeyActions'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
-import ItemLayout from '../../../widgets/items/itemLayout'
+import NewItemsLayout from '../../../widgets/items/new-items-layout'
 import './views.css'
 
-const MethodView = props =>{
+const MethodView = props => {
 
-  const{
+  const {
     items,
     select_method,
     item_active,
@@ -15,13 +16,19 @@ const MethodView = props =>{
     withdraw
   } = props
 
-  let movil_viewport = window.innerWidth<768
-  
+  let movil_viewport = window.innerWidth < 768
+  const [setCurrentSelection] = useNavigationKeyActions({
+    items,
+    loader: false,
+    className: 'pay-method-item-',
+    modalRestriction: false,
+  })
+
   useEffect(() => {
     select_method("Transferencia bancaria", "bankaccount")
   }, [])
 
-  return(
+  return (
     <div id="DLsteps" className="DLsteps method">
 
       <div className="DLcontains">
@@ -29,12 +36,21 @@ const MethodView = props =>{
         <p className="fuente DLstitles" >{subtitle ? subtitle : 'Subtitle:'}</p>
       </div>
 
-      <div className={`${!movil_viewport ? 'DLItemSelectionContainers' :  'ItemSelectionContainerMovil'}`}>
-        <div className={`${!movil_viewport ? (!withdraw ? 'DLcontainerItems' : 'DLcontainerItems DLcontainerItems2') :  'containerItems'} chooseMethod`}>
+      <div className={`${!movil_viewport ? 'DLItemSelectionContainers' : 'ItemSelectionContainerMovil'}`}>
+        <div className={`${!movil_viewport ? (!withdraw ? 'DLcontainerItems' : 'DLcontainerItems DLcontainerItems2') : 'containerItems'} chooseMethod`}>
           {
-            items.map(item=>{
-              if(withdraw && item.code === 'debit'){return false}
-              return <ItemLayout actualizarEstado={select_method} actives={item_active === item.code && true } primarySelect={movil_viewport} {...item} key={item.id}/>
+            items.filter(item => (!withdraw && item.code !== 'debit')).map((item, index) => {
+              return <NewItemsLayout
+                setCurrentSelection={setCurrentSelection}
+                focusedId={`pay-method-item-${index}`}
+                number={index}
+                handleClick={siguiente}
+                actualizarEstado={select_method} 
+                actives={item_active === item.code && true} 
+                primarySelect={movil_viewport} 
+                {...item} 
+                key={item.id} 
+              />
             })
           }
         </div>
