@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 const DEFAULT_ARGS = {
     modalRestriction: true,
-    next: 37,
-    prev: 39,
+    prev: 37,
+    next: 39,
     default: 0,
     originalLength: false,
 }
@@ -38,12 +38,12 @@ export default function useNavigationKeyActions(config) {
                 const currentSelectionIsDownZero = currentSelection < 0
                 let elementId = 0
                 let el = null
-                if (event.keyCode === valuesAsProps.next) {
+                if (event.keyCode === valuesAsProps.prev) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     el = document.getElementById(`${className}${Math.max(0, elementId)}`)
                     el && el.focus()
                 }
-                if (event.keyCode === valuesAsProps.prev || (event.keyCode === 13 && currentSelectionIsDownZero)) {
+                if (event.keyCode === valuesAsProps.next || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     el = document.getElementById(`${className}${Math.min(length, elementId)}`)
                     el && el.focus()
@@ -55,7 +55,12 @@ export default function useNavigationKeyActions(config) {
         }
     }, [window.onkeyup, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
 
-    return [setCurrentSelection]
+    const _setCurrentSelection = (newSelection) => {
+        if(currentSelection !== newSelection) {
+            setCurrentSelection(newSelection)
+        }
+    }
+    return [_setCurrentSelection]
 }
 
 export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, modalRestriction = true) {
@@ -89,5 +94,10 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
         }
     }, [isModalVisible])
 
-    return [isSelected]
+    const setFocus = () => {
+        const element = document.getElementById(props.focusedId)
+        element && element.focus() 
+    }
+
+    return [isSelected, setFocus]
 }

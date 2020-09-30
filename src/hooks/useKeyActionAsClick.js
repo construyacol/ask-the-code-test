@@ -7,6 +7,7 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
     const isModalVisible = useSelector(state => state.form.isModalVisible)
     const isModalRenderVisible = useSelector(state => state.ui.modal.render)
     const isConfirmationModalVisible = useSelector(state => state.ui.modal_confirmation.visible)
+    const isOtherModalVisible = useSelector(state => state.ui.otherModal)
 
     const doClick = (id) => {
         const clickeableElement = document.getElementById(id)
@@ -28,7 +29,7 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
     const handleKeyAction = async () => {
         document.onkeypress = (event) => {
             if (!event.srcElement.tagName.includes('INPUT')) {
-                if (!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible) {
+                if (!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible) {
                     if (window.KEY_CODES_META) {
                         Object.keys(window.KEY_CODES_META).map(id => {
                             if (window.KEY_CODES_META[id] === event.keyCode) {
@@ -57,7 +58,7 @@ export default function useKeyActionAsClick(shouldHandleAction = true, elementId
         return () => {
             document.onkeypress = false
         }
-    }, [document.onkeypress, isModalVisible, isModalRenderVisible, isConfirmationModalVisible, shouldHandleAction])
+    }, [document.onkeypress, isModalVisible, isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction])
 
     return elementId
 }

@@ -3,6 +3,7 @@ import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions'
 import { InputKeyActionHandler } from '../accountList/styles'
 import IconSwitch from '../icons/iconSwitch'
 
+let timerId;
 function NewItemsLayout(props) {
     const { 
         type,
@@ -16,31 +17,43 @@ function NewItemsLayout(props) {
         currency_type,
         pair_id,
         actualizarEstado,
-        handleClick
+        handleClick,
+        specialMode = false
     } = props
-    
-    const doSelectionForItem = () => {
-        actualizarEstado && actualizarEstado(name, code, currency_type, pair_id)
-    }
 
-    const [isSelected] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: handleClick }, false)
+    const doSelectionForItem = () => {
+        if(timerId) {
+            clearTimeout(timerId)
+        }
+        timerId = setTimeout(() => {
+            actualizarEstado && actualizarEstado(name, code, currency_type, pair_id)
+        }, 100)
+    }
+    
+    const _handleClick = specialMode ? doSelectionForItem : handleClick
+    const [isSelected, setFocus] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: _handleClick }, false)
 
     useEffect(() => {
-        if(isSelected){
-            doSelectionForItem()
-        }
-    }, [isSelected])
+        specialMode && actives && setFocus()
+    }, [])
 
+    useEffect(() => {
+        if(!specialMode && isSelected && !actives) {
+            doSelectionForItem(false)
+        }
+    }, [isSelected, actives])
+
+    const _activated = specialMode ? isSelected : actives
     return (
         <div id={`${primarySelect ? 'primarySelect' : ''}`} className={`${type === 'payment_method' ? 'ILtuvieja' : ''} `}>
             <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
-            <div className={`item ${actives ? 'itemSelection' : ''}`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
+            <div className={`item ${_activated ? 'itemSelection' : ''}`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
 
                 {
                     !format ?
                         (
                             (type === "coins" || type === "payment_method" || type === "service_mode") ?
-                                actives ?
+                                _activated ?
                                     <div title={name} id={code}>
                                         {
                                             type === 'bank' &&
@@ -54,7 +67,7 @@ function NewItemsLayout(props) {
                                         <img className="itemSobre" src={require(`./assets/${type}/${code}2.png`)} width="60" alt="" id={code} title={name} />
                                     </div>
                                 :
-                                <img className={`banquis ${actives ? 'itemVisible' : ''}`} src={require(`./assets/${type}/${code}.png`)} alt="" id={code} title={name} width="85" />
+                                <img className={`banquis ${_activated ? 'itemVisible' : ''}`} src={require(`./assets/${type}/${code}.png`)} alt="" id={code} title={name} width="85" />
                         )
                         :
                         <IconSwitch
@@ -92,4 +105,4 @@ function NewItemsLayout(props) {
 
 }
 
-export default NewItemsLayout
+export default React.memo(NewItemsLayout)
