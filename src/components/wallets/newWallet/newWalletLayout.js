@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './newWallet.css'
 import { InputButton, ButtonSuccess } from '../../widgets/buttons/buttons'
 import InputForm from '../../widgets/inputs'
@@ -6,6 +6,7 @@ import ItemSelectionContainer from '../../widgets/items/ItemSelectionContainer'
 import CopyContainer from '../../widgets/copy/copyContainer'
 import {SimpleLoader} from '../../widgets/loaders'
 import availableWalletCreator from '../../hooks/availableWalletCreator'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 const NewWalletLayout = props =>{
 
@@ -23,6 +24,18 @@ const NewWalletLayout = props =>{
   } = props
 
   const [ availableCurrencies ] = availableWalletCreator()
+
+  useEffect(() => {
+    window.onkeypress = (event) => {
+      if(event.keyCode === 13) {
+        const el = document.getElementById('add-new-wallet-button')
+        el && el.click()
+      }
+    }
+    return () => {
+      window.onkeypress = false
+    }
+  }, [window.onkeypress])
 
   return(
     <div className="containerFormWallet newWallet">
@@ -57,7 +70,7 @@ const NewWalletLayout = props =>{
                   items={availableCurrencies}
                   clearItem={clearCurrency}
                 />
-                <InputButton label="Crear Billetera" type="primary" active={name && currency}/>
+                <InputButton id="add-new-wallet-button" label="Crear Billetera" type="primary" active={name && currency}/>
               </form>
               </>
               :
@@ -111,7 +124,7 @@ const NewWalletLayout = props =>{
                   </div>
 
                   <div className="nWcta" >
-                    <ButtonSuccess toggleModal={props.finalizar}>Finalizar</ButtonSuccess>
+                    <ButtonSuccess id="add-new-wallet-button" toggleModal={props.finalizar}>Finalizar</ButtonSuccess>
                   </div>
 
                 </section>

@@ -183,7 +183,7 @@ export const InputButton = (props) => {
     <div className="InputButton" >
       {
         props.active ?
-          <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
+          <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
           :
           <div className="botonForm desactivado fuente" style={{ width: props.ancho }}  >
             {props.label}
