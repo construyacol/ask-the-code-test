@@ -83,7 +83,7 @@ const MenuPrincipalLayout = (props) => {
               {
                 menuPrincipal.map((item) => {
                   if (item.clave !== 'security' && verification_state !== 'accepted') { return false }
-                  return <ButtonPrincipalMenu activarItem={props.activarItem} {...item} key={item.id} />
+                  return <ButtonPrincipalMenu activarItem={props.activarItem} path={props.path} {...item} key={item.id} />
                 })
               }
             </section>
