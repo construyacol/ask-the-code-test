@@ -33,6 +33,7 @@ function SwapView(props) {
   const [valueError, setValueError] = useState()
   const actions = useActions()
   const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
+  const idForClickeableElementPairSelector = useKeyActionAsClick(true, 'show-pairs-button', 112, false)
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -224,6 +225,7 @@ function SwapView(props) {
 
   const { short_name, loader } = props
   const { secondary_coin, secondary_value } = currentPair
+  const showSubfix = window.innerWidth > 900
 
   const shouldActiveInput = (active && secondary_coin) && (availableBalance > 0 && value > 0)
 
@@ -248,6 +250,7 @@ function SwapView(props) {
         disabled={loader}
         customError={valueError}
         autoFocus={true}
+        autoComplete="off"
         SuffixComponent={({id}) => <AvailableBalance
           id={id}
           handleAction={handleMaxAvailable}
@@ -273,8 +276,11 @@ function SwapView(props) {
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => <PairSelect
+          id = {idForClickeableElementPairSelector}
           selectPair={selectPair}
           secondaryCoin={secondary_coin}
+          showSubfix={showSubfix}
+
         />}
       />
 
@@ -294,11 +300,12 @@ function SwapView(props) {
   )
 }
 
-const PairSelect = ({ selectPair, secondaryCoin }) => (
-  <div className="coinBalance2 fuente2" onClick={() => selectPair(false)} >
+const PairSelect = ({ showSubfix, selectPair, secondaryCoin, id }) => (
+  <div id={id} className="coinBalance2 fuente2" onClick={() => selectPair(false)} >
     <div className="coinB2">
       <i className="fas fa-angle-down"></i>
       <p>{secondaryCoin}</p>
+      {showSubfix && <span className="subfix-pairs-button">[P]</span>}
       {
         secondaryCoin &&
         <img src={require(`../../../assets/coins/${secondaryCoin}.png`)} alt="" width="30" />

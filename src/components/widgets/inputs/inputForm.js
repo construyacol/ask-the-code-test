@@ -24,7 +24,8 @@ const InputForm = (props) => {
     isControlled,
     autoFocus,
     customError,
-    setMaxWithActionKey
+    setMaxWithActionKey,
+    autoComplete = "off"
   } = props
 
   if (skeleton) {
@@ -41,11 +42,11 @@ const InputForm = (props) => {
   const [inputState, setInputState, changeState] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
-  const validate = (e) => {
+  const validate = (e, specialArg) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
-    e.persist()
+    e.persist && e.persist()
     setInputState(name, e)
-    handleChange(name, e.target.value, changeState)
+    handleChange(name, e.target.value, changeState, specialArg)
   }
 
   useEffect(() => {
@@ -63,8 +64,7 @@ const InputForm = (props) => {
     if(customError) {
       changeState('bad')
     } else {
-      setInputState(name, { target: { value } })
-      handleChange(name, value, changeState, true)
+      validate({ target: { value } }, true)
     }
   }, [customError, value])
 
@@ -87,11 +87,12 @@ const InputForm = (props) => {
     type,
     readOnly,
     placeholder,
-    onChange: validate,
+    onChange: (e) => validate(e),
     name,
     disabled,
     autoFocus,
-    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : null
+    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : null,
+    autoComplete
   }
 
   if (isControlled) {

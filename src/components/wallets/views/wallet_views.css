@@ -175,6 +175,11 @@
   color: #484848;
 }
 
+.subfix-pairs-button {
+  margin-left: -6px;
+  /* font-size: 15px; */
+}
+
 .WalletContainer{
   border-bottom: 1px solid #8080808f;
   width: 100%;

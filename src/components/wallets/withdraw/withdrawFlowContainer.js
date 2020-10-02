@@ -8,7 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
+import { withdrawProvidersByType, matchItem, number_format, debounce } from '../../../utils'
 import actions from '../../../actions'
 import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import withCoinsendaServices from '../../withCoinsendaServices'
@@ -354,11 +354,13 @@ class WithdrawFlow extends Component {
   }
 
 
+  updateFormDebounced = debounce(this.props.action.UpdateForm, 100)
+
   updateAmountOnState = (amount) => {
     this.setState({
       amount: amount,
     }, () => {
-      this.props.action.UpdateForm('withdraw', { amount: amount })
+      this.updateFormDebounced('withdraw', { amount: amount })
     })
   }
 

@@ -5,6 +5,7 @@ import IconSwitch from '../icons/iconSwitch'
 import { navigation_components } from '../../api/ui/api.json'
 
 import './detailContainer.css'
+import { useModalState } from '../../../hooks/useModalState'
 
 // TODO: refactor this component
 function ContentTab(props) {
@@ -13,6 +14,7 @@ function ContentTab(props) {
     const forceStatePathnameIndex = useRef({ currentIndex: 0 })
     const forceCurrentWallet = useRef(current_wallet)
     const [haveMenu, setHaveMenu] = useState(false)
+    const modalState = useModalState()
 
     const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets
     const { params } = current_section
@@ -34,7 +36,14 @@ function ContentTab(props) {
 
             const haveBalances = wallets[forceCurrentWallet.current] && (wallets[forceCurrentWallet.current].count > 0 ||
                 wallets[forceCurrentWallet.current].available > 0)
+            const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
+            const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
+            const [ generalModal ] = modalState
 
+            if(generalModal) return 
+
+            if(isFromInputWithValue) return
+            
             if (event.keyCode === 37) {
                 if (condition && haveBalances) goPrev()
             }
@@ -42,12 +51,11 @@ function ContentTab(props) {
                 if (condition && haveBalances) goNext()
             }
             if (event.keyCode === 8) {
-                if (event.srcElement.tagName.includes('INPUT') && !event.srcElement.value) {
+                if (isFromInputWithNoValue) {
                     event.stopPropagation()
                     event.preventDefault()
                     return event.srcElement.blur()
                 }
-                if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value) return
                 if (condition) exit()
             }
         }

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 // import AddressValidator from 'wallet-address-validator'
 // import useError from './errorHandle'
-import { useSelector, useDispatch } from "react-redux"
-import { useParams } from "react-router-dom"
+import { debounce } from '../../utils'
 import { formatToCurrency } from '../../utils/convert_currency'
 import WithdrawViewState from './withdrawStateHandle'
 
@@ -78,7 +77,7 @@ export default () => {
           let available = await formatToCurrency(current_wallet.available, current_wallet.currency)
           if(value.isGreaterThanOrEqualTo(min_amount) && value.isLessThanOrEqualTo(available)){
             setInputState('good')
-            return e.target.value = value.toNumber()
+            return e.target.value
           }else{
             setInputState('bad')
           }
@@ -86,6 +85,8 @@ export default () => {
         default:
       }
   }
+
+  const debouncedValidateState = debounce(validateState, 100)
 
   return [ inputState, validateState, setInputState ]
 }
