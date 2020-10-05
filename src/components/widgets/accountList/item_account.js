@@ -162,7 +162,8 @@ const ItemAccount = props => {
     actions,
     account_type,
     focusedId: props.focusedId,
-    isStatic: props.isStatic
+    isStatic: props.isStatic,
+    history: props.history
   }
 
   const isWallet = account_type === 'wallets'

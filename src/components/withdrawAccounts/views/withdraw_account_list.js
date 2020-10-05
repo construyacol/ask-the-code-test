@@ -18,8 +18,8 @@ function WithdrawAccountList(props) {
     loader: false,
     className: 'withdrawAccountItem',
     modalRestriction: false,
-    next: 38,
-    prev: 40,
+    next: 40,
+    prev: 38,
     default: 1,
     originalLength: true
   })
