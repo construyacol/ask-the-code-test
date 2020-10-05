@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import InputForm from '../../widgets/inputs/inputForm'
-import { mensaje, formatNumber } from '../../../utils'
+import { mensaje, formatNumber, debounce } from '../../../utils'
 import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'
 import usePrevious from '../../hooks/usePreviousValue'
 import useWindowSize from '../../../hooks/useWindowSize'
@@ -73,15 +73,17 @@ function SwapView(props) {
     callToShouldActiveButton()
   }, [value, currentPair, isReady])
 
-  useEffect(() => {
+  const setMessage = async () => {
     if (currentPair && currentPair.secondary_coin) {
       const conditionForText = currentPair.secondary_coin === minAmountByOrder.currencyCode
-      let actualValue = (conditionForText ? totalValue : value) || ''
-      actualValue = new BigNumber(actualValue.replace(/,/g, ''))
-      if (actualValue.isLessThan(minAmountByOrder.minAmount)) {
+      let actualValue = value
+      actualValue = new BigNumber(String(actualValue).replace(/,/g, ''))
+      const minValueForCripto = await getMinValueForCrypto(minAmountByOrder.minAmount)
+      if (actualValue.isLessThan(conditionForText ? minValueForCripto : minAmountByOrder.minAmount)) {
         let text = ''
         if (conditionForText) {
-          text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+          // text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+          text = `(${minValueForCripto})`
         } else {
           text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
         }
@@ -92,6 +94,12 @@ function SwapView(props) {
         setValueError(null)
       }
     }
+  } 
+
+  const debounceSetMessage = debounce(setMessage, 100)
+
+  useEffect(() => {
+    debounceSetMessage()
   }, [totalValue, value, currentPair])
 
   const callToSetTotalValue = async () => {
@@ -189,6 +197,11 @@ function SwapView(props) {
     setLoaderButton(false)
   }
 
+  const getMinValueForCrypto = async (minValueInSecondaryCoin) => {
+    const { pair_id, secondary_coin } = currentPair
+    const totalValue = await convertCurrencies(secondary_coin, minValueInSecondaryCoin, pair_id)
+    return totalValue
+  }
 
   const swap = async () => {
     const { secondary_coin, pair_id } = currentPair
