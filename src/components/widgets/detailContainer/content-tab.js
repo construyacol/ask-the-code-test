@@ -128,7 +128,7 @@ function ContentTab(props) {
                                 )
                             }) : (
 
-                                <NavLink to={getLink('deposit')} className="menuItem active">
+                                <NavLink to={'#'} className="menuItem active">
                                     <div className={`menuMovilIcon active`} >
                                         <IconSwitch size={20} icon={'deposit'} color="#14b3f0" />
                                     </div>
