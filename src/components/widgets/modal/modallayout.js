@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { ButtonModalClose, ButtonModalBack } from '../buttons/buttons'
 import { useActions } from '../../../hooks/useActions'
 
@@ -15,15 +15,16 @@ const ModalLayout = (props) => {
     isAppLoaded
   } = props
   const actions = useActions()
-  const el = window
+  const isModalRenderShowing = useSelector(state => state.ui.modal.render)
   
   const volver = () => {
+    if(step === 1) return
     const { uiAnimation } = props
     if (uiAnimation) { return actions.FlowAnimationLayoutAction('backV', 'back', props.current) }
     actions.ReduceStep(props.current)
   }
   
-  const salir = async () => {
+  const salir = async (callback) => {
     const { current } = props
     actions.CleanForm('deposit')
     actions.CleanForm('withdraw')
@@ -33,7 +34,6 @@ const ModalLayout = (props) => {
   
   const salirTicket = async () => {
     const { current } = props
-
     actions.ModalView('modalView')
     actions.CleanForm(current)
     
@@ -41,18 +41,22 @@ const ModalLayout = (props) => {
   }
 
   useEffect(() => {
-    el.onkeydown = (event) => {
-      // esc
-      if (event.keyCode === 27) {
-        // console.log('ESC was pressed');
-        salir()
-        // event.preventDefault();
+    const timeId = setTimeout(() => {
+      window.onkeydown = (event) => {
+        if (event.keyCode === 27) {
+          if(!isModalRenderShowing) {
+            (current === "ticket") ? salirTicket() : salir()
+          } else {
+            actions.renderModal(null)
+          }
+        }
       }
-    }
+    }, 0);
     return () => {
-      el.onkeydown = () => null
+      clearTimeout(timeId)
+      window.onkeydown = false
     }
-  }, [el.onkeydown])
+  }, [window.onkeydown, current, isModalRenderShowing])
 
   return (
     <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>

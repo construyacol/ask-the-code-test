@@ -1,8 +1,10 @@
 import styled, { css } from 'styled-components'
 
-
-
-
+export const InputKeyActionHandler = styled.input`
+  width: 0;
+  height: 0;
+  opacity: 0;
+`
 
 export const AccountListContainer = styled.section`
   width: 100%;
@@ -165,7 +167,11 @@ export const AccountLayout = styled.div`
   }
 `
 
-
+const selected = css`
+  -webkit-box-shadow: 0px 0px 1px 3px #54e783;
+  -moz-box-shadow: 0px 0px 1px 3px #54e783;
+  box-shadow: 0px 0px 1px 3px #54e783;
+`
 
 export const ItemAccountL = styled.div`
   color:white !important;
@@ -240,7 +246,7 @@ export const ItemAccountL = styled.div`
     transform: scale(1.01);
   }
 
-
+  ${props => props.isSelected ? selected : ''}
 
   &.loader:hover{
     box-shadow: 0px !important;

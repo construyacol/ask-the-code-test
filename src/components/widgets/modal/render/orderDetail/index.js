@@ -24,7 +24,7 @@ const OrderSupervisor = () => {
   const { isMovilViewport } = useViewport()
 
   const cerrar = (e, forceClose) => {
-    if (e.target.dataset.close_modal || forceClose) {
+    if (e && (e.target.dataset.close_modal || forceClose)) {
       actions.isAppLoading(false)
       actions.renderModal(null)
       history.goBack()
@@ -40,7 +40,7 @@ const OrderSupervisor = () => {
       }
     }
     return () => {
-      el.onkeydown = () => null
+      el.onkeydown = false
     }
   }, [el.onkeydown])
 

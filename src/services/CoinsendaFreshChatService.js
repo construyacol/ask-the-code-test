@@ -4,7 +4,7 @@ import { REFERRALS_URL } from "../const/const";
 export class FreshChatService extends WebService {
 
     async freshChatInitUser() {
-
+      if(!window.fcWidget) return
       await window.fcWidget.init({
         token: "86e166f6-5421-4aaf-bdf6-746ac7a54525",
         host: "https://wchat.freshchat.com",

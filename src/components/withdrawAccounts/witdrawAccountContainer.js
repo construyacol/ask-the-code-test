@@ -50,7 +50,7 @@ function WitdrawAccountContainer(props) {
                     <AccountListSkeletonLoader />
                     :
                     (isAppLoaded && withdraw_accounts) &&
-                    <AccountList {...routeProps} isWithdrawView data={data} />
+                    <AccountList {...routeProps} isWithdrawView />
                 }
               </>
             )} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import InputValidate from '../../hooks/inputValidate'
 import styled from 'styled-components'
 import SkeletonAnimation from '../loaders/skeleton'
@@ -22,7 +22,10 @@ const InputForm = (props) => {
     readOnly = false,
     value = '',
     isControlled,
-    customError
+    autoFocus,
+    customError,
+    setMaxWithActionKey,
+    autoComplete = "off"
   } = props
 
   if (skeleton) {
@@ -39,11 +42,11 @@ const InputForm = (props) => {
   const [inputState, setInputState, changeState] = InputValidate(state)
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
-  const validate = (e) => {
+  const validate = (e, specialArg) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
-    e.persist()
+    e.persist && e.persist()
     setInputState(name, e)
-    handleChange(name, e.target.value, changeState)
+    handleChange(name, e.target.value, changeState, specialArg)
   }
 
   useEffect(() => {
@@ -61,21 +64,35 @@ const InputForm = (props) => {
     if(customError) {
       changeState('bad')
     } else {
-      setInputState(name, { target: { value } })
-      handleChange(name, value, changeState, true)
+      validate({ target: { value } }, true)
     }
   }, [customError, value])
 
   let movil = window.innerWidth < 768
+  const subfixId = 'set-max-available'
+
+  const setMaxWithActionKeyFn = (e) => {
+    if (e.keyCode === 77) {
+      e.preventDefault()
+      const toClickElement = document.getElementById(subfixId)
+      if(toClickElement) {
+        document.getElementsByName(name)[0].blur()
+        toClickElement.click()
+      }
+    }
+  }
 
   const inputProps = {
     className: `inputElement ${name} ${movil ? 'movil' : ''}`,
     type,
     readOnly,
     placeholder,
-    onChange: validate,
+    onChange: (e) => validate(e),
     name,
-    disabled
+    disabled,
+    autoFocus,
+    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : null,
+    autoComplete
   }
 
   if (isControlled) {
@@ -92,7 +109,7 @@ const InputForm = (props) => {
         {
           SuffixComponent &&
           <SuffixComponentContainer>
-            <SuffixComponent />
+            <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
         }
       </ContainerInputComponent>

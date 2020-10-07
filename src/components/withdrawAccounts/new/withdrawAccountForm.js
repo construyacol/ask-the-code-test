@@ -294,6 +294,7 @@ class WithdrawAccountForm extends Component {
         step={step}
         select_withdraw_way={this.select_withdraw_way}
         cleanSearch={this.cleanSearch}
+        initPrevKeyActions={this.props.initPrevKeyActions}
         search={search}
         final_step_create_account={this.final_step_create_account}
         {...this.state}
@@ -305,7 +306,7 @@ class WithdrawAccountForm extends Component {
 const selectWithdrawProviders = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
-    return _withdrawProviders.map(w_id => {
+    return _withdrawProviders && _withdrawProviders.map(w_id => {
       return withdrawProviders[w_id]
     })
   }

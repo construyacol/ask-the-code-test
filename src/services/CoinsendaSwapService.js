@@ -22,12 +22,14 @@ export class SwapService extends WebService {
         this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
         const pairs = await this.Get(`${SWAP_URL}pairs`)
         if (!pairs) { return }
-        console.log('||||||||| pairs', pairs)
-        // alert('pairs')
+        
+        if(await this.isCached('available_pairs', pairs)) {
+            return pairs
+        }
 
         this.dispatch(getAllPairsAction(pairs))
         let updatedUser = {
-            ...this.user,
+            id: this.user.id,
             available_pairs: [
                 ...pairs
             ]
@@ -50,9 +52,13 @@ export class SwapService extends WebService {
         if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
         const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
         if (!pairs) return
-
         if (currencies) {
             const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
+
+            if(this.isCached('getPairsByCountry_', localCurrencies, false) && this.globalState.modelData.pairs.currentPair) {
+                return
+            }
+
             await this.dispatch(loadLocalPairsAction(localCurrencies))
 
             // TODO: Evaluate this
@@ -200,7 +206,7 @@ export class SwapService extends WebService {
         if (updateList) { await updateList(swapsAsArray) }
 
         let updatedUser = {
-            ...user,
+            id: user.id,
             swaps: [
                 ...swapsAsArray
             ]
@@ -232,29 +238,12 @@ export class SwapService extends WebService {
 
         if (!swaps || swaps === 465) { return false }
 
+        if(await this.isCached('swaps', swaps)) {
+            return swaps
+        } 
+
         let swapResult = [...swaps]
-        // const result = swaps.map((swap) => {
-        //     return {
-        //         account_id: swap.account_from,
-        //         account_to: swap.account_to,
-        //         amount: swap.bought,
-        //         amount_neto: swap.bought,
-        //         pair_id: swap.pair_id,
-        //         comment: "",
-        //         action_price: swap.action_price,
-        //         currency: swap.to_spend_currency,
-        //         currency_type: wallets[swap.account_from] && wallets[swap.account_from].currency_type,
-        //         cost: "",
-        //         deposit_provider_id: "",
-        //         expiration_date: new Date(),
-        //         id: swap.id,
-        //         state: swap.state === 'rejected' ? 'canceled' : swap.state,
-        //         bought: swap.bought,
-        //         currency_bought: swap.to_buy_currency,
-        //         spent: swap.spent,
-        //         type_order: "swap"
-        //     }
-        // })
+
         swapResult = this.parseActivty(swaps, 'swaps', accountId)
         await this.dispatch(normalized_list(swapResult, 'swaps'))
         await this.updateActivityState(accountId, 'swaps', swapResult)

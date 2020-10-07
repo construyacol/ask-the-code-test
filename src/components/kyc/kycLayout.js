@@ -7,10 +7,9 @@ import './kyc.css'
 
 const KycLayout = (props) =>{
 
- const { globalStep, validate_personal_kyc, validate_financial_kyc, identity_success } = props
+ const { globalStep, validate_personal_kyc, validate_financial_kyc, identity_success, showSuccess } = props
  // console.log('||||||||||||| KycBasicContainer init_state - - - ', init_state)
  // let level = user.verification_level
-
  // console.log( '||||||||||||||||||||||||||||||||||| CURRENT FORM =>', props)
   return(
     <section className="KycLayoutMom">
@@ -26,14 +25,16 @@ const KycLayout = (props) =>{
             <div></div>
           }
 
-              <SuccessComponentScreen {...props}
-                title="Has completado de forma exitosa el proceso de verificación básica"
-                cta_text="¿Quieres continuar con el proceso de verifiación avanzada?"
-                confetti={(globalStep === 0 || globalStep === 1) ? true : false}
-                cta_secondary={true}
-                cta_primary_text='Continuar verificación'
-                user_name={props.user.name}
-              />
+          { showSuccess ? (
+            <SuccessComponentScreen {...props}
+              title="Has completado de forma exitosa el proceso de verificación básica"
+              cta_text="¿Quieres continuar con el proceso de verifiación avanzada?"
+              confetti={(globalStep === 0 || globalStep === 1) ? true : false}
+              cta_secondary={true}
+              cta_primary_text='Continuar verificación'
+              user_name={props.user.name}
+            />
+          ) : <div />}
 
           <div className="KycLayout" >
             {

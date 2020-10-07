@@ -1,5 +1,0 @@
-add_done_swap
-update_activity_state
-normalized_list
-get_verification_state
-update_pending_activity

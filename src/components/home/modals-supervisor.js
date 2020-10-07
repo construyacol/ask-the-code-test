@@ -60,7 +60,10 @@ function ModalsSupervisor(props) {
                         <Route path="/" component={SocketNotify} />
                         :
                         <>
-                            <Route exact strict path="/wallets/swap/:account_id" component={PairList} />
+                            <Route exact strict 
+                                path="/wallets/swap/:account_id" 
+                                render={(renderProps) => (<PairList {...renderProps} />)} 
+                            />
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                         </>
                 }

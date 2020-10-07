@@ -29,6 +29,7 @@ import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
 import localForage from 'localforage'
 import { ReferralComponentAsSkeleton } from '../referrals/referralsComponent';
+import useBlockScroll from '../../hooks/useBlockScroll';
 
 
 
@@ -55,7 +56,7 @@ const TAB_TITLE = {
 
 
 function DashBoardContainer(props) {
-
+  useBlockScroll()
 
   // const proofSocketNotify = () => {
   //   const { wallets } = props
@@ -164,7 +165,7 @@ function DashBoardContainer(props) {
           )} />
           <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
             <Switch>
-              <Route path="/wallets" component={WalletContainer} />
+              <Route path="/wallets" render={(renderProps) => <WalletContainer {...renderProps} />} />
               <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
               <Route path="/security" component={SecurityCenter} />
               <Route path="/referral" component={ReferralComponent} />

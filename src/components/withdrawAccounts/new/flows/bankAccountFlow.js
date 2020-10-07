@@ -60,25 +60,35 @@ class BankAccountFlow extends Component {
         account_type,
         account_number,
         city,
-        finalizar
+        finalizar,
+        action,
+        current,
+        withdraw_flow,
+        initPrevKeyActions,
+        bank_name
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
-        // event.preventDefault();
+        if(step === 2 && !withdraw_flow) return 
+        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
+        event.preventDefault()
+        action.ReduceStep(current)
+        if(step === 2 && withdraw_flow) initPrevKeyActions()
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault();
         if (step === 6 && city) {
-          return final_step_create_account(event)
+          final_step_create_account(event)
         }
-        if (step === 3 && search.length === 1) {
-          return handleSubmit(event)
+        if (step === 3 && search.length === 1 && bank_name) {
+          handleSubmit(event)
         }
         if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
-          return handleSubmit(event)
+          handleSubmit(event)
         }
-        if (step === 5 && (account_type && account_number)) {
-          return handleSubmit(event)
+        if (step === 5 && (account_type && account_number !== '')) {
+          handleSubmit(event)
         }
         if (step === 2) {
           siguiente()
@@ -88,19 +98,16 @@ class BankAccountFlow extends Component {
         }
         // event.preventDefault();
       }
-      // esc
-      if (event.keyCode === 27) {
-        // event.preventDefault();
-      }
     }
   }
 
-  componentWillUnmount() {
-    document.onkeydown = () => null
+  componentDidUpdate() {
+    this.keyActions()
   }
 
-
-
+  componentWillUnmount() {
+    document.onkeydown = false
+  }
 
   initComponent = async () => {
 
@@ -233,6 +240,7 @@ class BankAccountFlow extends Component {
                   :
                   <ItemSelectionContainer
                     type="banks"
+                    autoFocus={true}
                     items={banks}
                     format="svg"
                     itemSelect={bank_name}
@@ -243,7 +251,7 @@ class BankAccountFlow extends Component {
               }
 
               <div id="bankChooseButton">
-                <InputButton label="Continuar" type="primary" active={search.length === 1} />
+                <InputButton label="Continuar" type="primary" active={search.length === 1 && bank_name !== ''} />
               </div>
 
             </form>
@@ -286,6 +294,7 @@ class BankAccountFlow extends Component {
                           this.props.id_type && (this.props.user.id_type !== this.props.id_type) &&
                           <InputForm
                             type="text"
+                            autoFocus={true}
                             label="Escribe el número de documento de identidad"
                             placeholder="Ej. 1123321..."
                             name="id_number"
@@ -334,6 +343,7 @@ class BankAccountFlow extends Component {
                       label="Escribe el número de cuenta"
                       placeholder="Ej. 1123321..."
                       name="account_number"
+                      autoFocus={true}
                       actualizarEstado={actualizarEstado}
                       active={account_type && account_number}
                       value={account_number}
@@ -393,7 +403,7 @@ const selectWithdrawProviders = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
     const withdraw_providers_list = []
-    _withdrawProviders.map((wp) => {
+    _withdrawProviders && _withdrawProviders.map((wp) => {
       if (withdrawProviders[wp].provider_type !== 'bank') { return false }
       return withdraw_providers_list.push(withdrawProviders[wp])
     })
@@ -406,7 +416,8 @@ function mapStateToProps(state) {
 
   return {
     withdraw_providers_list: selectWithdrawProviders(state),
-    user: user
+    user: user,
+    current: state.form.current
   }
 
 }

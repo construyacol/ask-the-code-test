@@ -9,15 +9,27 @@ import withListCreator from '../../withListCreator'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 import '../../wallets/views/wallet_views.css'
+import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 function AccountList(props) {
-  const { isWalletsView, isWithdrawView, actions, history } = props
+  const { isWalletsView, isWithdrawView, actions, history, mainListLoader } = props
+  const items = props.items || []
   const label = `Obteniendo tus ${isWalletsView ? 'Billeteras' : 'Cuentas de retiro'}`
   const [coinsendaService] = useCoinsendaServices()
   const [isVerified, setIsVerified] = useState(false)
+  const [setCurrentSelection] = useNavigationKeyActions({
+    items, 
+    loader: mainListLoader,
+    className: 'accountItem',
+    default: -1
+  })
+  const isDesktop = window.innerWidth > 900
+  // 97 keyCode for A
+  const idForClickableElement = useKeyActionAsClick(true, 'main-accounts-add-button', 97)
 
   useEffect(() => {
-    actions.cleanCurrentSection()
+    // actions.cleanCurrentSection()
     const verified = coinsendaService.getUserVerificationStatus('level_1')
     setIsVerified(verified)
   }, [])
@@ -77,8 +89,6 @@ function AccountList(props) {
       svg: "verified"
     })
   }
-
-  const items = props.items || []
   const isHugeContainer = items > 10
   const styleForHugeContainer = {
     // height: 'auto',
@@ -87,6 +97,9 @@ function AccountList(props) {
     // marginBottom: '40px'
   }
 
+  let mainButtonText = isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'
+  mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText
+
   return (
     <>
       {
@@ -94,12 +107,15 @@ function AccountList(props) {
           <AccountListContainer style={isHugeContainer ? { ...styleForHugeContainer, ...isWithdrawListStyle } : isWithdrawListStyle} className="AccountListContainer">
             {
               items.map((account, id) => {
-                if (!account.visible) { return null }
+                if (!account || !account.visible) { return null }
                 return <ItemAccount
                   key={id}
+                  setCurrentSelection={setCurrentSelection}
+                  number={id}
+                  focusedId={`accountItem${id}`}
                   account={account}
                   account_type={isWalletsView ? 'wallets' : 'withdraw_accounts'}
-                  {...props}
+                  loader={props.loader}
                 />
               })
             }
@@ -118,7 +134,8 @@ function AccountList(props) {
       {
         (!props.loader) &&
         <AddNewItem
-          label={`${isWithdrawView ? 'Añadir nueva cuenta de retiro' : 'Añadir nueva billetera'}`}
+          id={idForClickableElement}
+          label={mainButtonText}
           type="primary"
           handleClick={createNewWallet}
         />

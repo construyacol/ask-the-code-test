@@ -1,19 +1,16 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 
 import './detailContainer.css'
 
-class detailContainerLayout extends Component {
-  render() {
-    const { current_wallet, pathname, primary_path, style, customClass = '' } = this.props
+const detailContainerLayout = (props) => {
+  const { current_wallet, pathname, primary_path, style, customClass = '' } = props
 
-    return (
-      <div style={style ? style : {}} className={`${customClass} contenido ${(primary_path && current_wallet) ? 'DCcurrent_wallet' : ''} ${primary_path} ${pathname}`}>
-        {this.props.children}
-      </div>
-    )
-
-  }
+  return (
+    <div style={style ? style : {}} className={`${customClass} contenido ${(primary_path && current_wallet) ? 'DCcurrent_wallet' : ''} ${primary_path} ${pathname}`}>
+      {props.children}
+    </div>
+  )
 }
 
 function mapStateToProps(state, props) {

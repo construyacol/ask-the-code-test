@@ -21,6 +21,9 @@ export class IndetityService extends WebService {
         const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`
         const secondResponse = await this.Get(finalUrlSecond)
 
+        // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
+        //     return true
+        // }
 
         let country_object = await addIndexToRootObject(secondResponse.countries)
         let country = await objectToArray(country_object)

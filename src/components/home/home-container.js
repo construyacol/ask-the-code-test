@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import HomeLayout from './homeLayout'
 import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
@@ -10,6 +10,7 @@ import withHandleError from '../withHandleError'
 import ModalsSupervisor from './modals-supervisor'
 import { doLogout } from '../utils'
 
+
 const BuildedHome = (props) => (
   <>
     <MenuPrincipalContainer {...props} />
@@ -18,8 +19,7 @@ const BuildedHome = (props) => (
   </>
 )
 
-function HomeContainer(props) {
-
+const HomeContainer = (props) => {
   return (
     <HomeLayout>
       <Route
@@ -30,7 +30,6 @@ function HomeContainer(props) {
         render={renderProps => (<BuildedHome {...renderProps} logOut={doLogout} />)} />
     </HomeLayout>
   )
-
 }
 
 HomeContainer.propTypes = {
@@ -39,7 +38,6 @@ HomeContainer.propTypes = {
 }
 
 function mapStateToProps({ isLoading }) {
-
   return {
     loader: isLoading.loader
   }

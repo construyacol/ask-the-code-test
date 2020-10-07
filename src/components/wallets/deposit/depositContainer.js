@@ -62,11 +62,12 @@ class DepositContainer extends Component {
       // backspace
       if ((event.keyCode === 8 || event.keyCode === 46) && this.props.step > 1) {
         if (this.props.step === 4) return
+        event.preventDefault()
         this.props.action.ReduceStep(this.props.current)
-        // event.preventDefault();
       }
       // enter
       if (event.keyCode === 13) {
+        event.preventDefault()
         if (this.props.step === 3 && !this.props.buttonActive) {
           return
         }
@@ -76,20 +77,23 @@ class DepositContainer extends Component {
         if (this.state.amount < (this.state.minAmount || 20000)) {
           return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${globalServices.number_format(this.state.minAmount || 20000)}`, 'error')
         }
-        if (this.props.step === 4 && !this.props.finalButton && document.getElementById('pre-finalizar-button')) {
+        if (this.props.step === 4 && !this.state.finalButton && document.getElementById('pre-finalizar-button')) {
           return document.getElementById('pre-finalizar-button').click()
         }
-        if (this.props.step === 4 || this.state.final) {
+        if ((this.props.step === 4 || this.state.final) && !this.state.finalButton) {
           return this.finalizar()
         }
-        this.siguiente()
+        if(![3, 4].includes(this.props.step)) {
+          this.siguiente()
+        }
         // event.preventDefault();
       }
     }
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
+    this.props.history.push(window.location.pathname)
   }
 
   componentDidUpdate(prevProps) {

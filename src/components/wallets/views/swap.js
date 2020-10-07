@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import BigNumber from 'bignumber.js'
 import InputForm from '../../widgets/inputs/inputForm'
-import { mensaje, formatNumber } from '../../../utils'
+import { mensaje, formatNumber, debounce } from '../../../utils'
 import convertCurrencies, { formatToCurrency } from '../../../utils/convert_currency'
 import usePrevious from '../../hooks/usePreviousValue'
 import useWindowSize from '../../../hooks/useWindowSize'
@@ -13,6 +13,7 @@ import { usePairSelector } from '../../../hooks/usePairSelector'
 import { useActions } from '../../../hooks/useActions'
 import { AvailableBalance, OperationForm } from './withdrawCripto'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 
@@ -21,6 +22,7 @@ function SwapView(props) {
   const [coinsendaServices] = useCoinsendaServices()
   const [value, setValue] = useState(undefined)
   const [active, setActive] = useState(undefined)
+  const [shouldActiveButton, setShouldActiveButton] = useState(true)
   // const [pairId, setPairId] = useState()
   const [totalValue, setTotalValue] = useState()
   const [loaderButton, setLoaderButton] = useState()
@@ -30,6 +32,8 @@ function SwapView(props) {
   })
   const [valueError, setValueError] = useState()
   const actions = useActions()
+  const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
+  const idForClickeableElementPairSelector = useKeyActionAsClick(true, 'show-pairs-button', 112, false)
 
   const { currentPair } = props
   const { currentWallet, availableBalance, currencyPairs } = useWalletInfo()
@@ -69,15 +73,17 @@ function SwapView(props) {
     callToShouldActiveButton()
   }, [value, currentPair, isReady])
 
-  useEffect(() => {
+  const setMessage = async () => {
     if (currentPair && currentPair.secondary_coin) {
       const conditionForText = currentPair.secondary_coin === minAmountByOrder.currencyCode
-      let actualValue = (conditionForText ? totalValue : value) || ''
-      actualValue = new BigNumber(actualValue.replace(/,/g, ''))
-      if (actualValue.isLessThan(minAmountByOrder.minAmount)) {
+      let actualValue = value
+      actualValue = new BigNumber(String(actualValue).replace(/,/g, ''))
+      const minValueForCripto = await getMinValueForCrypto(minAmountByOrder.minAmount)
+      if (actualValue.isLessThan(conditionForText ? minValueForCripto : minAmountByOrder.minAmount)) {
         let text = ''
         if (conditionForText) {
-          text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+          // text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
+          text = `(${minValueForCripto})`
         } else {
           text = `(${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
         }
@@ -88,6 +94,12 @@ function SwapView(props) {
         setValueError(null)
       }
     }
+  } 
+
+  const debounceSetMessage = debounce(setMessage, 100)
+
+  useEffect(() => {
+    debounceSetMessage()
   }, [totalValue, value, currentPair])
 
   const callToSetTotalValue = async () => {
@@ -162,6 +174,7 @@ function SwapView(props) {
     const { pair_id } = currentPair
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, pair_id, value)
     actions.isAppLoading(false)
+    setShouldActiveButton(true)
     if (!newSwap) {
       return handleError('No se ha podio hacer el cambio')
     }
@@ -176,13 +189,19 @@ function SwapView(props) {
   }
 
   const startSwap = async (e) => {
-    e.preventDefault()
+    e && e.preventDefault()
     setLoaderButton(true)
     await swap()
     actions.confirmationModalToggle()
+    setShouldActiveButton(false)
     setLoaderButton(false)
   }
 
+  const getMinValueForCrypto = async (minValueInSecondaryCoin) => {
+    const { pair_id, secondary_coin } = currentPair
+    const totalValue = await convertCurrencies(secondary_coin, minValueInSecondaryCoin, pair_id)
+    return totalValue
+  }
 
   const swap = async () => {
     const { secondary_coin, pair_id } = currentPair
@@ -219,6 +238,7 @@ function SwapView(props) {
 
   const { short_name, loader } = props
   const { secondary_coin, secondary_value } = currentPair
+  const showSubfix = window.innerWidth > 900
 
   const shouldActiveInput = (active && secondary_coin) && (availableBalance > 0 && value > 0)
 
@@ -229,8 +249,7 @@ function SwapView(props) {
   }
 
   return (
-    <SwapForm isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`} onSubmit={startSwap}>
-
+    <SwapForm onSubmit={(e) => e.preventDefault()} isMovilViewport={isMovilViewport} id="swapForm" className={`${isMovilViewport ? 'movil' : ''}`}>
 
       <InputForm
         classes="fuente2"
@@ -239,10 +258,14 @@ function SwapView(props) {
         name="sell-amount"
         value={value}
         handleChange={handleChangeSellAmount}
+        setMaxWithActionKey={true}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
         customError={valueError}
-        SuffixComponent={() => <AvailableBalance
+        autoFocus={true}
+        autoComplete="off"
+        SuffixComponent={({id}) => <AvailableBalance
+          id={id}
           handleAction={handleMaxAvailable}
           amount={isFiat ? formatNumber(availableBalance) : availableBalance} />}
       />
@@ -266,8 +289,11 @@ function SwapView(props) {
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => <PairSelect
+          id = {idForClickeableElementPairSelector}
           selectPair={selectPair}
           secondaryCoin={secondary_coin}
+          showSubfix={showSubfix}
+
         />}
       />
 
@@ -276,6 +302,8 @@ function SwapView(props) {
       </div>
 
       <ControlButton
+        id={idForClickeableElement}
+        handleAction={startSwap}
         loader={loaderButton || loader}
         formValidate={shouldActiveInput && totalValue && totalValue !== '0' && !valueError}
         label="Cambiar"
@@ -285,11 +313,12 @@ function SwapView(props) {
   )
 }
 
-const PairSelect = ({ selectPair, secondaryCoin }) => (
-  <div className="coinBalance2 fuente2" onClick={() => selectPair(false)} >
+const PairSelect = ({ showSubfix, selectPair, secondaryCoin, id }) => (
+  <div id={id} className="coinBalance2 fuente2" onClick={() => selectPair(false)} >
     <div className="coinB2">
       <i className="fas fa-angle-down"></i>
       <p>{secondaryCoin}</p>
+      {showSubfix && <span className="subfix-pairs-button">[P]</span>}
       {
         secondaryCoin &&
         <img src={require(`../../../assets/coins/${secondaryCoin}.png`)} alt="" width="30" />

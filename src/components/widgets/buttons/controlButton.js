@@ -1,27 +1,50 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import styled from 'styled-components'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
-import styled from 'styled-components'
 import { LoaderContainer } from '../loaders'
 
-const  ControlButton = ({loader, formValidate, label, handleAction}) => {
-  return(
-    <ControlsContainer className={`${loader ? 'loader' : ''}`}>
-        {
-          loader &&
-          <LoaderContainer>
-            <SimpleLoader loader={2} />
-          </LoaderContainer>
+export const KeyActionComponent = ({ action, isFiat, currentWallet }) => {
+  const isModalVisible = useSelector(state => state.form.isModalVisible)
+  const route = useHistory()
+
+  useEffect(() => {
+    if (!window.onkeydown) {
+      window.onkeydown = (event) => {
+        if(!route.location.pathname.includes(currentWallet.id)) return
+        if (!isModalVisible && event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
+          if(!isFiat) return
+          if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
+          action(event)
         }
-        <InputButton
-          label={label}
-          type="primary"
-          active={formValidate}
-          handleAction={(e) => {
-            e.currentTarget.blur()
-            handleAction && handleAction()
-          }}
-        />
+      }
+    }
+  }, [window.onkeydown, isModalVisible, route, currentWallet])
+
+  return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
+}
+
+const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
+  return (
+    <ControlsContainer className={`${loader ? 'loader' : ''}`}>
+      {
+        loader &&
+        <LoaderContainer>
+          <SimpleLoader loader={2} />
+        </LoaderContainer>
+      }
+      <InputButton
+        label={label}
+        type="primary"
+        id={id}
+        active={formValidate}
+        handleAction={(e) => {
+          e.currentTarget.blur()
+          handleAction && handleAction()
+        }}
+      />
     </ControlsContainer>
   )
 }
@@ -31,18 +54,18 @@ export const InputButton = (props) => {
   // Este es el cta por default
   //clase large => "width:200px !important"
 
-  return(
-      <InputButtonCont>
+  return (
+    <InputButtonCont>
       {
         props.active ?
-        <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.handleAction} />
-        :
-        // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
+          <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.handleAction} />
+          :
+          // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
           <DisabledButton>
             {props.label}
           </DisabledButton>
       }
-      </InputButtonCont>
+    </InputButtonCont>
   )
 }
 

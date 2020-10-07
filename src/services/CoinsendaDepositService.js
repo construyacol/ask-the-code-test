@@ -15,7 +15,6 @@ const {
     update_item_state
 } = actions
 
-
 export class DepositService extends WebService {
     async fetchDepositProviders() {
         this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO))
@@ -24,6 +23,10 @@ export class DepositService extends WebService {
         const response = await this.Get(finalUrl)
         if (!response) return;
 
+        let updateState = true
+        if(await this.isCached('deposit_providers', response)) {
+            updateState = false
+        }
 
         const result = response.reduce((result, item) => {
             result.push({
@@ -38,16 +41,15 @@ export class DepositService extends WebService {
             return result
         }, [])
 
-
         const finalData = {
-            ...this.user,
+            id: this.user.id,
             deposit_providers: [
                 ...result,
             ]
         }
 
         const normalizedData = await normalizeUser(finalData)
-        this.dispatch(updateNormalizedDataAction(normalizedData))
+        updateState && this.dispatch(updateNormalizedDataAction(normalizedData))
         return normalizedData.entities.deposit_providers
     }
 
@@ -210,19 +212,17 @@ export class DepositService extends WebService {
         const deposits = await this.Get(finalUrl)
         if (!deposits || deposits === 465) { return false }
 
+        if(await this.isCached('deposits', deposits)) {
+            return deposits
+        }        
+
         let remodeled_deposits = await deposits.map(item => {
             let new_item = {
                 ...item,
                 type_order: "deposit",
-                // paymentProof:item.paymentProof && item.paymentProof.proof_of_payment
             }
             return new_item
         })
-
-        // const { storage: { activity_for_account } } = this.globalState
-        //
-
-
         remodeled_deposits = this.parseActivty(remodeled_deposits, 'deposits', account_id)
 
         await this.dispatch(normalized_list(remodeled_deposits, 'deposits'))
@@ -230,9 +230,4 @@ export class DepositService extends WebService {
         return deposits
 
     }
-
-
-
-
-
 }

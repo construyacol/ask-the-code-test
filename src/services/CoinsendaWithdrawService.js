@@ -27,9 +27,10 @@ export class WithdrawService extends WebService {
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
+        
         if (!result.length) {
           let userWithOutWA = {
-              ...user,
+              id: user.id,
               withdraw_accounts: []
           }
           // TODO: create function to normalize user
@@ -104,10 +105,14 @@ export class WithdrawService extends WebService {
         withdrawAccounts.reverse()
 
         const updatedUser = {
-            ...user,
+            id: user.id,
             withdraw_accounts: [
                 ...withdrawAccounts
             ]
+        }
+
+        if(await this.isCached('withdraw_accounts', result)) {
+            return withdrawAccounts
         }
 
         const normalizedUser = await normalizeUser(updatedUser)
@@ -150,9 +155,13 @@ export class WithdrawService extends WebService {
         const withdrawProviders = await this.Get(finalUrl)
 
         if (!withdrawProviders) return;
+        
+        if(await this.isCached('withdrawProviders', withdrawProviders)) {
+            return withdrawProviders
+        }
 
         const updatedUser = {
-            ...user,
+            id: user.id,
             withdrawProviders: [
                 ...withdrawProviders
             ]
@@ -296,6 +305,10 @@ export class WithdrawService extends WebService {
 
         if (withdraws && withdraws.length < 1) { return false }
 
+        if(await this.isCached('withdraws', withdraws)) {
+            return withdraws
+        }
+
         let withdraws_remodeled = []
         for (let withdraw of withdraws) {
           let state
@@ -379,15 +392,6 @@ export class WithdrawService extends WebService {
         return response
     }
 
-
-
-
-
-
-
-
-
-
     async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {
         const skip = page * 10
 
@@ -424,6 +428,10 @@ export class WithdrawService extends WebService {
                 withdraw_proof: withdraw.proof,
             }
         })
+
+        if(await this.isCached(type, res)) {
+            return finalResult
+        } 
 
         if (finalResult.length > 0) {
             await this.dispatch(normalized_list(finalResult, type))

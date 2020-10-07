@@ -1,6 +1,6 @@
 import React from 'react'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
-import ControlButton from '../../widgets/buttons/controlButton'
+import ControlButton, { KeyActionComponent } from '../../widgets/buttons/controlButton'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 
 
@@ -29,9 +29,10 @@ const FiatView = props => {
   }
 
   return (
-    <section className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
+    <section id="" className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
 
       <div className="contIcontSwitch">
+        <KeyActionComponent action={handleSubmit} currentWallet={current_wallet} isFiat={current_wallet.currency_type === 'fiat'} />
         <IconSwitch {...atributos} />
       </div>
 

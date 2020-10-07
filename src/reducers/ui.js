@@ -17,10 +17,14 @@ import {
   DEFAULT_VIDEO_STATE,
   CLEAN_ITEM_NOTIFICATIONS,
   SOCKET_NOTIFY,
-  SET_RENDER_MODAL
+  SET_RENDER_MODAL,
+  UPDATE_LOADERS
 } from '../actions/action_types'
 
 const initialState = {
+  loaders: {
+    mainList: true
+  },
   modal:{
     render:null
   },
@@ -305,7 +309,14 @@ const ui = (state = initialState, action)=>{
           sell:ex === 'sell' ? true : false,
         }
       }
-
+    case UPDATE_LOADERS:
+      return {
+        ...state,
+        loaders: {
+          ...state.loaders,
+          ...action.payload
+        }
+      }
     default:
       return state
   }

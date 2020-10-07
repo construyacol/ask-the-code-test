@@ -8,22 +8,18 @@ const OtherModalLayout = props =>{
     // close_modal,
     on_click
   } = props
-  const el = window
 
   useEffect(() => {
-    el.onkeydown = (event) => {
-      // esc
+    window.onkeyup = (event) => {
       if (event.keyCode === 27) {
-        // console.log('ESC was pressed');
-        // on_click && on_click({target:{dataset:{close_modal:true}}})
         on_click && on_click()
-        // event.preventDefault();
+        event.preventDefault();
       }
     }
     return () => {
-      el.onkeydown = () => null
+      window.onkeyup = false
     }
-  }, [el.onkeydown])
+  }, [window.onkeyup])
 
   return(
     <section className={`Modal aparecer`}>

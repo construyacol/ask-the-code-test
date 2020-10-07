@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
-import { Switch, Route } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import DepositView from './views/deposit'
 import ActivityView from './views/activity'
 // import WithdrawView from './views/withdraw'
@@ -13,12 +13,17 @@ import AccountList from '../widgets/accountList/account-list'
 import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
-
+// import { useActions } from '../../hooks/useActions'
+// import KeyActionsInfo from '../widgets/modal/render/keyActionsInfo'
 
 
 function WalletContainer(props) {
 
+  // const actionDispatch = useActions()
+
+
   useEffect(() => {
+    // actionDispatch.renderModal(KeyActionsInfo)
     const path = props.match.path.replace('/', '')
     props.action.CurrentForm(path)
     return () => {
@@ -28,28 +33,26 @@ function WalletContainer(props) {
   }, [])
 
   return (
-    <Switch>
-      <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
-        <DetailContainerLayout
-          {...props}
-          {...routeProps}
-        >
-          <Route strict path="/:primary_path/:path/:account_id" component={(renderProps) => (
-            <WalletDetail wallets={props.wallets} {...renderProps} />
-          )} />
-          {
-            !props.isAppLoaded ?
-              <SimpleLoader />
-              :
-              <>
-                <Route exact path="/:primary_path" component={() =>(<AccountList {...routeProps} isWalletsView data={props.wallets} />)} />
-                <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
-                <Route exact path="/:primary_path/:path/:account_id" component={SwitchView} />
-              </>
-          }
-        </DetailContainerLayout>
-      )} />
-    </Switch>
+    <Route path={["/:primary_path/:path/:account_id/", "/:primary_path"]} render={routeProps => (
+      <DetailContainerLayout
+        {...props}
+        {...routeProps}
+      >
+        <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
+          <WalletDetail wallets={props.wallets} match={match} />
+        )} />
+        {
+          !props.isAppLoaded ?
+            <SimpleLoader />
+            :
+            <>
+              <Route exact path="/:primary_path" render={() => (<AccountList {...routeProps} isWalletsView />)} />
+              <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
+              <Route exact path="/:primary_path/:path/:account_id" render={() => <SwitchView {...routeProps} />} />
+            </>
+        }
+      </DetailContainerLayout>
+    )} />
   )
 
 }
@@ -66,6 +69,7 @@ export const WalletDetail = props => {
         key={params.account_id}
         account={wallets[params.account_id]}
         account_type={params.primary_path}
+        isStatic={true}
       />
     </section>
   )
@@ -82,7 +86,6 @@ const SwitchView = props => {
 
   return Views[params.path]
 }
-
 
 WalletContainer.propTypes = {
   isAppLoaded: PropTypes.bool,

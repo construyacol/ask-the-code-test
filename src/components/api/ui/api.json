@@ -52,6 +52,8 @@
       "clave":"wallets",
       "active":true,
       "visible":true,
+      "subfix": "B",
+      "keyCode": 98,      
       "id":"2"
     },
     {
@@ -60,6 +62,8 @@
       "clave":"withdraw_accounts",
       "active":true,
       "visible":true,
+      "subfix": "C",
+      "keyCode": 99,
       "id":"3"
     },
     {
@@ -68,6 +72,8 @@
       "clave":"referral",
       "active":true,
       "visible":true,
+      "subfix": "R",
+      "keyCode": 114,
       "id":"4"
     },
     {
@@ -76,6 +82,8 @@
       "clave":"security",
       "active":true,
       "visible":true,
+      "subfix": "S",
+      "keyCode": 115,
       "id":"5"
     }
   ],

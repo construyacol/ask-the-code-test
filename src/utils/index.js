@@ -140,28 +140,43 @@ export const normalized_list = (activity_list, activity_type) => {
     }
 
     let user_update = {
-      ...user,
+      id: user.id,
       [activity_type]: {
         ...list
       }
-    }
+    }    
 
     let normalizedUser = await normalizeUser(user_update)
     await dispatch(updateNormalizedDataAction(normalizedUser))
-
-
   }
 }
 
+export function deepEqual(object1, object2) {
+  const keys1 = Object.keys(object1);
+  const keys2 = Object.keys(object2);
 
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
 
+  for (const key of keys1) {
+    const val1 = object1[key];
+    const val2 = object2[key];
+    const areObjects = isObject(val1) && isObject(val2);
+    if (
+      areObjects && !deepEqual(val1, val2) ||
+      !areObjects && val1 !== val2
+    ) {
+      return false;
+    }
+  }
 
+  return true;
+}
 
-
-
-
-
-
+function isObject(object) {
+  return object != null && typeof object === 'object';
+}
 
 export const desNormalizedList = async (normalizedList, indices) => {
   // Recibimos como parametros el objeto con la info normalizada y la lista de indices
@@ -649,6 +664,20 @@ export function setInputFilter(textbox, inputFilter) {
       }
     });
   });
+}
+
+export function debounce(func, wait) {
+	let timeout;
+	return function() {
+		const context = this, args = arguments;
+		const later = function() {
+			timeout = null
+			func.apply(context, args)
+    }
+    
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+	}
 }
 
 export default handleKeyPress

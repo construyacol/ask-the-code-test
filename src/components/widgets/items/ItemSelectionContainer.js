@@ -149,6 +149,7 @@ class ItemSelectionContainer extends Component {
 
             <InputForm
               type="text"
+              autoFocus={this.props.autoFocus}
               label={label}
               placeholder={this.state.placeholder}
               name="currency"
@@ -169,7 +170,7 @@ class ItemSelectionContainer extends Component {
                     search.length < 2 ?
                       // validamos si dentro de la busqueda hay una sola coincidencia, si la hay actualizamos el estado y la autoseleccionamos
                       search.map(item => {
-                        return <ItemLayout actualizarEstado={this.seleccionarItem} actives={true} {...item} key={item.id} format={this.props.format} />
+                        return <ItemLayout itemType={this.props.type} actualizarEstado={this.seleccionarItem} actives={true} {...item} key={item.id} format={this.props.format} />
                       })
                       :
                       //Si hay mas de 1 coincidencia, solo mostramos los items inactivos resultantes de la busqueda

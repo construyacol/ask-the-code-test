@@ -8,7 +8,7 @@ import { SimpleLoader } from '../../widgets/loaders'
 import WithdrawAccountForm from '../../withdrawAccounts/new/withdrawAccountForm'
 import { ButtonModalBack } from '../../widgets/buttons/buttons'
 import FinalTicket from '../../withdrawAccounts/new/views/finalTicket'
-import { withdrawProvidersByType, matchItem, number_format } from '../../../utils'
+import { withdrawProvidersByType, matchItem, number_format, debounce } from '../../../utils'
 import actions from '../../../actions'
 import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import withCoinsendaServices from '../../withCoinsendaServices'
@@ -41,6 +41,10 @@ class WithdrawFlow extends Component {
     this.props.action.CurrentForm('withdraw')
     this.init_config()
     this.props.history.push(`?form=withdraw_amount`)
+    this.keyActions() 
+  }
+
+  keyActions() {
     document.onkeydown = (event) => {
       // backspace
       const {
@@ -57,18 +61,21 @@ class WithdrawFlow extends Component {
       } = this.props
 
       if (event.keyCode === 8 || event.keyCode === 46) {
+        if (event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         // if(finish_step) return
+        event.preventDefault()
         if (step === 1 && show_list_accounts) {
+          this.props.action.renderModal(null)
           return this.backAmount()
         }
         if (step >= 2 && !need_new_acount && finish_step) {
           return this.cancelWithdrawOrder()
         }
-        // event.preventDefault();
       }
-      // enter
+
       if (event.keyCode === 13) {
-        // console.log('ENTER was pressed');
+        event.preventDefault()
+
         if (step === 1 && !show_list_accounts) {
           if (!amount) {
             return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
@@ -81,13 +88,13 @@ class WithdrawFlow extends Component {
         if (step >= 2 && !need_new_acount && finish_step) {
           this.confirmar()
         }
-        // event.preventDefault();
       }
     }
   }
 
   componentWillUnmount() {
-    document.onkeydown = () => null
+    document.onkeydown = false
+    this.props.history.push(window.location.pathname)
   }
 
   updateTimes = 0
@@ -138,7 +145,7 @@ class WithdrawFlow extends Component {
     if (!have_withdraw_accounts) { this.setState({ need_new_acount: true }) }
     let available_providers = []
 
-    withdrawProviders.map(provider => {
+    withdrawProviders && withdrawProviders.map(provider => {
       if (
         provider.country === country &&
         provider.currency_type === currency_type &&
@@ -181,12 +188,12 @@ class WithdrawFlow extends Component {
     let update_list = []
     let w_account_list = withdraw_account_list || this.props.withdraw_account_list
 
-    w_account_list.map(withdraw_account => {
+    w_account_list && w_account_list.map(withdraw_account => {
       if (withdraw_account.currency_type === 'crypto') { return false }
       let plaza_type
       let provider_type = withdraw_account.provider_type
 
-      if (providers_served[provider_type].provider.name === withdraw_account.provider_name) { plaza_type = 'same_bank' }
+      if (providers_served[provider_type].provider && providers_served[provider_type].provider.name === withdraw_account.provider_name) { plaza_type = 'same_bank' }
       if (!plaza_type) { plaza_type = providers_served[provider_type].info_needed.city[withdraw_account.city.value].plaza_type }
 
       let new_withdraw_account = {
@@ -196,7 +203,7 @@ class WithdrawFlow extends Component {
       }
       return update_list.push(new_withdraw_account)
     })
-
+    
     return update_list
   }
 
@@ -226,25 +233,20 @@ class WithdrawFlow extends Component {
       min_amount
     } = this.state
 
-    // console.log('providers_served', providers_served)
     let withdraw_account_list = await this.props.coinsendaServices.fetchWithdrawAccounts()
-    // console.log(' =====> this.props.withdraw_account_list', this.props.withdraw_account_list)
-    // console.log(' =====> withdraw_account_list', withdraw_account_list)
-    // return alert('que paja')
-    let withdraw_account_list_update = await this.get_cost_struct(null, withdraw_account_list)
-    await this.setState({ withdraw_account_list_update })
-    let new_account_update = await matchItem(withdraw_account_list_update, { primary: new_account.id }, 'id')
+
+    let withdraw_account_list_update = this.get_cost_struct(null, withdraw_account_list)
+    this.setState({ withdraw_account_list_update })
+    let new_account_update = matchItem(withdraw_account_list_update, { primary: new_account.id }, 'id')
     let min_amount_withdraw = parseFloat(min_amount) + parseFloat(new_account_update[0].cost)
 
 
     if (parseFloat(amount) < min_amount_withdraw) {
 
       setTimeout(async () => {
-        // console.log('________________________________________new_account_and_withdraw', new_account)
-
         this.props.action.addNotification('withdraw_accounts', { account_id: new_account.id }, 1)
         this.props.toastMessage('Nueva cuenta de retiro creada', 'success')
-        // await this.setState({addNotification:false})
+        this.props.action.CleanForm('bank')
       }, 500)
 
       await this.setState({ show_list_accounts: false, need_new_acount: null })
@@ -352,11 +354,13 @@ class WithdrawFlow extends Component {
   }
 
 
+  updateFormDebounced = debounce(this.props.action.UpdateForm, 100)
+
   updateAmountOnState = (amount) => {
     this.setState({
       amount: amount,
     }, () => {
-      this.props.action.UpdateForm('withdraw', { amount: amount })
+      this.updateFormDebounced('withdraw', { amount: amount })
     })
   }
 
@@ -476,7 +480,7 @@ class WithdrawFlow extends Component {
     const { new_order } = this.state
 
     await this.props.action.toggleModal()
-    await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws?form=withdraw_success`)
+    await this.props.history.push(`/wallets/activity/${this.props.account_id}/withdraws`)
 
     this.props.action.CleanForm('deposit')
     this.props.action.CleanForm('withdraw')
@@ -491,7 +495,7 @@ class WithdrawFlow extends Component {
     }
     setTimeout(async () => {
       await this.props.coinsendaServices.manageBalance(this.props.account_id, 'reduce', new_order.amount)
-    }, 2000)
+    }, 1000)
   }
 
   handleError = msg => {
@@ -611,6 +615,7 @@ class WithdrawFlow extends Component {
             (step >= 2 && need_new_acount && !finish_step) &&
             <WithdrawAccountForm
               withdraw_flow={true}
+              initPrevKeyActions={() => this.keyActions()}
               withdraw_flow_action={this.new_account_and_withdraw}
               toastMessage={this.props.toastMessage}
             />
@@ -648,9 +653,9 @@ class WithdrawFlow extends Component {
 const selectWithdrawProvidersList = createSelector(
   [state => state.modelData.user.withdrawProviders, state => state.modelData.withdrawProviders],
   (_withdrawProviders, withdrawProviders) => {
-    return _withdrawProviders.map((id_prov) => {
+    return _withdrawProviders ? _withdrawProviders.map((id_prov) => {
       return withdrawProviders[id_prov]
-    })
+    }) : []
   }
 )
 
@@ -658,7 +663,7 @@ const selectWithdrawAccountList = createSelector(
   [state => state.modelData.user.withdraw_accounts, state => state.modelData.withdraw_accounts],
   (_withdraw_accounts, withdraw_accounts) => {
     const withdraw_account_list = []
-    _withdraw_accounts.map(account_id => {
+    _withdraw_accounts && _withdraw_accounts.map(account_id => {
       if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) { return false }
       return withdraw_account_list.push(withdraw_accounts[account_id])
     })

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import PopNotification from '../notifications'
 import IconSwitch from '../icons/iconSwitch'
@@ -8,14 +8,16 @@ import availableWalletCreator from '../../hooks/availableWalletCreator'
 
 
 import './buttons.css'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 export const ButtonSuccess = (props) => {
   const {
-    cta_secondary
+    cta_secondary,
+    id
   } = props
-
+  const _id = id || (cta_secondary ? 'secondary' : 'pre-finalizar-button')
   return (
-    <div id={`${cta_secondary ? 'secondary' : 'pre-finalizar-button'}`} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
+    <div id={_id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
       {props.children}
     </div>
   )
@@ -57,16 +59,16 @@ export const AddNewItem = props => {
   // label define el texto que llevará el botton para agregar
   // handleClick define el evento que se accionara al dar click en el boton
 
-  const { label, type, handleClick, clases } = props
+  const { label, type, handleClick, clases, id } = props
 
 
   return (
-    <section className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
+    <div id={id} className={`AddNewItemContainer ${clases}`} onClick={handleClick}>
       <div className="BbackgroundAddNew"></div>
       <div className={`AddNewItem ${type}`}>
         <p className=" fuente" ><i className="fas fa-plus"></i>{!label ? 'AÑADIR NUEVO' : label}</p>
       </div>
-    </section>
+    </div>
   )
 }
 
@@ -77,7 +79,7 @@ export const AddNewItem2 = props => {
   // handleClick define el evento que se accionara al dar click en el boton
 
   // const theme = useContext(CAccountAllowedContext);
-  const { label, type, handleClick, clases } = props
+  const { label, handleClick, clases } = props
   const [availableCurrencies] = availableWalletCreator()
   // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
 
@@ -92,33 +94,41 @@ export const AddNewItem2 = props => {
   )
 }
 
+export const ButtonPrincipalMenu = ({
+  clave,
+  path,
+  text,
+  icon,
+  subfix,
+  keyCode,
+  ...props
+}) => {
+  const elementId = useKeyActionAsClick(true, `${clave}-section-button`, keyCode)
+  const isDesktop = window.innerWidth > 900
 
-export class ButtonPrincipalMenu extends Component {
-
-  activarItem = () => {
-    this.props.activarItem(this.props.clave, this.props.clave)
+  const activarItem = (event) => {
+    event.currentTarget.blur()
+    props.activarItem(clave, clave)
   }
 
-  render() {
-    return (
-      <Link to={`/${this.props.clave}`} className={`itemMenu ${this.props.path === this.props.clave ? 'activo' : ''}`} onClick={this.activarItem}>
-        <div className={`text ${this.props.path === this.props.clave ? 'activate' : ''}`}>
-          <div className="iconButtCont">
-            <IconSwitch icon={this.props.icon} size={18} color={`${this.props.path === this.props.clave ? "#14B3F0" : "#d6d6d6"}`} />
-            <PopNotification notifier={this.props.clave} />
-          </div>
-          <p className="itemText fuente">{this.props.text}</p>
+  const buttonText = isDesktop ? `${text} [${subfix}]` : text
+  return (
+    <Link id={elementId} to={`/${clave}`} className={`itemMenu ${path === clave ? 'activo' : ''}`} onClick={activarItem}>
+      <div className={`text ${path === clave ? 'activate' : ''}`}>
+        <div className="iconButtCont">
+          <IconSwitch icon={icon} size={18} color={`${path === clave ? "#14B3F0" : "#d6d6d6"}`} />
+          <PopNotification notifier={clave} />
         </div>
+        <p className="itemText fuente">{buttonText}</p>
+      </div>
 
-        <div className="indicatorCont">
-          <div className={`indicator ${this.props.path === this.props.clave ? 'activate' : ''}`}>
-            <div className={`indicatorSon ${this.props.path === this.props.clave ? 'activate' : ''}`}></div>
-          </div>
+      <div className="indicatorCont">
+        <div className={`indicator ${path === clave ? 'activate' : ''}`}>
+          <div className={`indicatorSon ${path === clave ? 'activate' : ''}`}></div>
         </div>
-      </Link>
-    )
-  }
-
+      </div>
+    </Link>
+  )
 }
 
 
@@ -173,7 +183,7 @@ export const InputButton = (props) => {
     <div className="InputButton" >
       {
         props.active ?
-          <input className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
+          <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
           :
           <div className="botonForm desactivado fuente" style={{ width: props.ancho }}  >
             {props.label}
@@ -192,13 +202,13 @@ export const ButtonForms = (props) => {
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // siguiente: evento a enlazar el boton
 
-  const { clases, id, loader } = props
+  const { clases, id, loader, _id } = props
 
   return (
     <div className={`contButton ${clases}`} id={`${id}`}>
       {
         props.active ?
-          <div id="botonForm" className={`botonForm swap ${loader ? 'loader' : ''} ${props.type} fuente`} onClick={loader ? null : props.siguiente}>
+          <div id={_id} className={`botonForm swap ${loader ? 'loader' : ''} ${props.type} fuente`} onClick={loader ? null : props.siguiente}>
             {
               !loader ?
                 props.children

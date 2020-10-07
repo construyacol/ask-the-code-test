@@ -11,19 +11,18 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
   const actions = useActions()
 
   const cerrar = (e) => {
-    if (!e || e.target.dataset && e.target.dataset.close_modal) {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
       actions.renderModal(null)
       if (cancelAction) {
         cancelAction()
       }
     }
-
   }
 
   return (
     <OtherModalLayout on_click={cerrar} >
       <Layout>
-        <CloseButton onClick={cerrar}>
+        <CloseButton onClick={() => cerrar()}>
           <i className="fas fa-times"></i>
         </CloseButton>
         <TopSection>

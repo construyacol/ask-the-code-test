@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { SimpleLoader } from '../../../widgets/loaders'
 import { ButtonSuccess, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
 import './flows.css'
@@ -161,7 +161,13 @@ const Success = (props) =>{
   } = props
 
   // console.log('|||||||||||||| °°°°° MODALSUCCESS', atributos)
-
+    useEffect(() => {
+      window.onkeydown = false
+      setTimeout(() => {
+        window.onkeydown = false
+        return false
+      }, 500)
+    }, [window.onkeydown, finalizar, finalButton])
 
     return(
       <div id="DLstep2" className={`DLstep ${(step === 4 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>

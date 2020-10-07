@@ -12,6 +12,7 @@ const Kyc = (props) => {
   const [financial_success, setFinancial_success] = useState()
   const [identity_success, setIdentity_success] = useState(false)
   const [ toastMessage ] = useToastMesssage()
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const validate_personal_kyc = async () => {
 
@@ -71,6 +72,7 @@ const Kyc = (props) => {
     props.action.IncreaseStep('kyc_global_step')
     props.action.success_sound()
     props.action.isAppLoading(false)
+    setShowSuccess(true)
     // setTimeout(()=>{
     // props.action.isAppLoading(false)
     // props.action.ReduceStep('kyc_basic')
@@ -119,6 +121,7 @@ const Kyc = (props) => {
     await props.coinsendaServices.updateUser(user_update)
     props.action.isAppLoading(false)
     setIdentity_success(true)
+    setShowSuccess(true)
     return true
   }
 
@@ -133,7 +136,7 @@ const Kyc = (props) => {
     }
 
     let res = await props.coinsendaServices.updateLevelProfile(config, user)
-    console.log('°°°°|||| send_files', res)
+    
     if (!res) {
       // await props.action.ReduceStep('kyc_basic', 1)
       props.action.isAppLoading(false)
@@ -160,16 +163,19 @@ const Kyc = (props) => {
     // console.log('||||||||||| VALIDATE_IDENTITY_kyc', user_update)
     await props.coinsendaServices.updateUser(user_update)
     props.action.isAppLoading(false)
+    setShowSuccess(true)
 
 
   }
 
   const siguiente = () => {
     props.action.IncreaseStep('kyc_global_step')
+    setShowSuccess(false)
   }
 
   const exit = () => {
     props.action.toggleModal(false)
+    setShowSuccess(false)
   }
 
   return (
@@ -178,6 +184,7 @@ const Kyc = (props) => {
       validate_identity_kyc={validate_identity_kyc}
       validate_financial_kyc={validate_financial_kyc}
       siguiente={siguiente}
+      showSuccess={showSuccess}
       exit={exit}
       {...props}
       {...{

@@ -17,12 +17,20 @@ const OtherModalLayoutPairs = props =>{
         // event.preventDefault();
       }
     }
-    return () => document.onkeydown = () => null
+    return () => {
+      document.onkeydown = false
+    }
   }, [])
+
+  const closeModal = (e) => {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+      close_modal && close_modal()
+    }
+  }
   
   return(
     <section className={`Modal aparecer`}>
-      <div className={`modalCont2 ConfirmationModal`}>
+      <div className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={closeModal ? closeModal : null}>
         <div className={`PairList ${classes === '2auth' ? 'auth' : classes}`}>
           <div className="PairListtitle">
             <h1 className="fuente">{title}</h1>

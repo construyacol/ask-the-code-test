@@ -294,14 +294,13 @@ class ActivityList extends Component {
   }
 }
 
-const getWallet = (state, props) => {
-  const { params } = props.match
+const isCriptoWallet = (state, { params }) => {
   return state.modelData.wallets[params.account_id] === 'crypto'
 }
 
 const selectCurrentList = createSelector(
   state => state.currencies,
-  getWallet,
+  isCriptoWallet,
   (_, props) => props.isWithdraws,
   (currencies, isCryptoWallet, isWithdraws) => {
     let currency_list
@@ -323,7 +322,8 @@ const selectCurrentList = createSelector(
 function mapStateToProps(state, props) {
 
   const { user } = state.modelData
-  const { params } = props.match
+  const { isWithdraws, match } = props
+  const { params } = match
   // const { current_wallet } = props
   const { currentFilter } = state.ui.current_section.params
   const { activity_for_account } = state.storage
@@ -331,7 +331,7 @@ function mapStateToProps(state, props) {
 
   let pending_activity = activity_for_account[params.account_id] && activity_for_account[params.account_id][pending_index]
 
-  if (props.isWithdraws) {
+  if (isWithdraws) {
     pending_activity = {}
   }
 
@@ -345,7 +345,7 @@ function mapStateToProps(state, props) {
     user: user,
     // current_activity_account:activity_for_account[current_wallet.id],
     // activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][params.tx_path],
-    currencies: selectCurrentList(state, props),
+    currencies: selectCurrentList(state, { params, isWithdraws}),
     ...pending_activity
   }
 }

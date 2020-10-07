@@ -45,17 +45,22 @@ class KycBasicContainer extends Component {
     // }
     document.onkeydown = (event) => {
       if (event.keyCode === 8 || event.keyCode === 46) {
+        if (this.props.step === 1) return
+        if (event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
         if (this.props.step === 1 || this.props.step === 11) return
+        event.preventDefault()
         this.props.action.ReduceStep('kyc_basic')
-        // event.preventDefault();
       }
       if (event.keyCode === 13) {
+        event.preventDefault()
         this.handleSubmit(event)
-        // event.preventDefault();
       }
     }
   }
 
+  componentWillUnmount() {
+    document.onkeydown = false
+  }
 
   componentDidUpdate(prevProps, nextState) {
 
@@ -313,7 +318,6 @@ class KycBasicContainer extends Component {
       await this.props.action.IncreaseStep('kyc_basic')
 
       if (this.props.step > kyc_data_basic.length) {
-        console.log(this.state)
         return this.props.validate_personal_kyc("personal")
       }
 
@@ -328,6 +332,13 @@ class KycBasicContainer extends Component {
     const { step } = this.props
     const value = arre[(step - 1)]
     const { current_item, data_state } = this.state
+
+    if (!String(value).trim()) {
+      return this.setState({
+        message: 'No se permiten valores vacíos',
+        colorMessage: "#ff1100"
+      })
+    }
 
     // check birthday
     if (current_item === modelFormData.birthday.name && value) {
@@ -406,7 +417,6 @@ class KycBasicContainer extends Component {
     // Cerramos la sección de la listas al enfocarnos en el input phone
     const { open_sect, ui_type, kyc_data_basic } = this.state
     const { step } = this.props
-
     if (ui_type === 'select') {
       setTimeout(() => {
         this.setState({ show_hide_section: true })
@@ -465,7 +475,7 @@ class KycBasicContainer extends Component {
 
     setTimeout(() => {
       this.setState({ open_sect: false })
-    }, 250)
+    }, 100)
 
   }
 
@@ -474,12 +484,12 @@ class KycBasicContainer extends Component {
   render() {
     // console.log('P R O P S - -   K Y C', this.props)
     // console.log('|||E S T A D O - -   K Y C', this.state)
-    const { open_sect, data_state, ui_type, current_item, current_search, kyc_data_basic, show_hide_section } = this.state
+    let { open_sect, data_state, ui_type, current_item, current_search, kyc_data_basic, show_hide_section } = this.state
     const { step } = this.props
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
     // console.log('|||current_search', current_search && current_search.length, current_search )
-
+    open_sect = open_sect && ui_type !== 'text'
 
     return (
 
@@ -504,7 +514,7 @@ class KycBasicContainer extends Component {
                 handleSubmit={this.handleSubmit}
                 kyc={kyc_data_basic}
                 step={this.props.step}
-                state={this.state}
+                state={{ ...this.state, open_sect }}
                 toggleSection={this.toggleSection}
                 _onFocus={this._onFocus}
                 search_results={ui_type === 'phone' ? (data_state.country_prefix ? data_state.country_prefix : null) :
