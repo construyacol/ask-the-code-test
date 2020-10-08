@@ -30,7 +30,7 @@ class ConfirmationModal extends Component {
     const {
       cancelCallback
     } = this.props.modal_confirmation
-    if(typeof cancelCallback === 'function') {
+    if (typeof cancelCallback === 'function') {
       cancelCallback()
     }
     this.props.action.confirmationModalToggle()
@@ -46,7 +46,6 @@ class ConfirmationModal extends Component {
       // backspace
       if (event.keyCode === 8 || event.keyCode === 46) {
         this.cancelarClick()
-        // event.preventDefault();
       }
       // enter
       if (event.keyCode === 13) {
@@ -56,8 +55,9 @@ class ConfirmationModal extends Component {
       // esc
       if (event.keyCode === 27) {
         this.cancelarClick()
-        // event.preventDefault();
-    }
+        event.preventDefault()
+        event.stopPropagation()
+      }
     }
   }
 
@@ -119,9 +119,6 @@ function mapDispatchToProps(dispatch) {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal)
-// ConfirmationModal
-
-
 
 
 export const StandardTicket = props => {

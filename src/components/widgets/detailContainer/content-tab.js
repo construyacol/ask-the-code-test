@@ -59,7 +59,7 @@ function ContentTab(props) {
                 if (condition) exit()
             }
         }
-    }, [document.onkeydown, primary_path, current_wallet])
+    }, [document.onkeyup, primary_path, current_wallet])
 
     useEffect(() => {
         if (forceStatePathnameIndex.current.pathname !== pathname) {
