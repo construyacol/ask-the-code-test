@@ -666,6 +666,12 @@ export function setInputFilter(textbox, inputFilter) {
   });
 }
 
+/**
+ * Function para hacer debounce
+ * 
+ * @param {Function} func function target
+ * @param {Number} wait timer representado en ms's
+ */
 export function debounce(func, wait) {
 	let timeout;
 	return function() {
