@@ -40,9 +40,9 @@ const MenuPrincipalLayout = (props) => {
   useEffect(()=>{
     if(props.user.name){
       const { name } = props.user
-      let patt1 = /[A-Z]/g;
+      let patt1 = /^.|\s./g;
       let result = name.match(patt1);
-      setAcronym(result.toString().replace(',', ' '))
+      setAcronym(result.toString().replace(/,/g, ' ').toUpperCase())
     }
   }, [])
 

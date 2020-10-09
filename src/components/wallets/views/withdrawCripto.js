@@ -8,10 +8,9 @@ import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
-import QrScanner from '../../qr-scanner'
 import { useToastMesssage } from '../../../hooks/useToastMessage'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-
+import AddressBookCTA from '../../widgets/modal/render/addressBook'
 
 
 export const CriptoSupervisor = props => {
@@ -165,8 +164,8 @@ export const CriptoView = () => {
 
   const showQrScanner = async () => {
     renderModal(null)
-    const Element = () => (<QrScanner onScan={setAddressValue} />)
-    actions.renderModal(Element)
+    const Element = await import('../../qr-scanner')
+    actions.renderModal(Element.default)
   }
 
   useEffect(() => {
@@ -204,6 +203,7 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
+        AuxComponent={() => <AddressBookCTA/>}
       />
 
       <InputForm
@@ -233,6 +233,10 @@ export const CriptoView = () => {
   )
 
 }
+
+
+
+
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
   const isMovil = window.innerWidth < 768

@@ -14,7 +14,7 @@ export default () => {
   // const params = useParams()
   // const { account_id } = params
   // const { wallets, withdrawProviders } = globalState.modelData
-  const [ { current_wallet, withdrawProviders } ]  = WithdrawViewState()
+    const [ { current_wallet, withdrawProviders } ]  = WithdrawViewState()
 
   const validateState = async(inputName, e) => {
       if(!e.target.value || e.target.value.length === 0){return setInputState(null)}
@@ -53,6 +53,8 @@ export default () => {
       //     }
       //     break
         case 'address':
+        // case: si encontramos @ al inicio de la linea: ^@
+
           let AddressValidator
           AddressValidator = await import('wallet-address-validator')
 

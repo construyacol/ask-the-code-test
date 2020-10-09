@@ -5,7 +5,8 @@ import IconSwitch from '../icons/iconSwitch'
 
 let timerId;
 function NewItemsLayout(props) {
-    const { 
+
+    const {
         type,
         actives,
         name,
@@ -29,7 +30,6 @@ function NewItemsLayout(props) {
             actualizarEstado && actualizarEstado(name, code, currency_type, pair_id)
         }, 100)
     }
-    
     const _handleClick = specialMode ? doSelectionForItem : handleClick
     const [isSelected, setFocus] = useItemsInteractions(props, { suprKeyAction: () => false, enterKeyAction: _handleClick }, false)
 
@@ -91,7 +91,7 @@ function NewItemsLayout(props) {
             </div>
             {
                 (placeholder && !primarySelect) &&
-                <div className="dimeloPuti">
+                <div className="placeHoldCont">
                     {
                         placeholder.map(item => {
                             return <p className="ILplaceholder fuente" key={item.id}>{item.name}</p>

@@ -66,7 +66,7 @@ function ItemLayout(props) {
       </div>
       {
         (placeholder && !primarySelect) &&
-        <div className="dimeloPuti">
+        <div className="placeHoldCont">
           {
             placeholder.map(item => {
               return <p className="ILplaceholder fuente" key={item.id}>{item.name}</p>
