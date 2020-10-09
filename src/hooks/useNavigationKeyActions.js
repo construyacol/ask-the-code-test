@@ -9,6 +9,26 @@ const DEFAULT_ARGS = {
     originalLength: false,
 }
 
+/**
+ * useNavigationKeyActions simula la navegacion entre un grupo de objetos en el DOM.
+ *
+ * @param {Object} config representa la configuracion y datos del hook
+ * @param {Array} config.items items representativos entre los cuales se navegara por medio de key event
+ * @param {Boolean} config.loader indentifica cuando el componente esta listo para ejecutar la accion de navegar
+ * @param {String} config.className clase que identificara los elementos navegables
+ * @param {Boolean} config.modalRestriction restringe el uso de esta funcion en modales, por defecto es true
+ * @param {Event.keyCode|Number} config.prev representa el keyCode a ser referenciendo como previo o anterior, 
+ * por defecto es 37
+ * @param {Event.keyCode|Number} config.next representa el keyCode a ser referenciendo siguiente, 
+ * por defecto es 39
+ * @param {Number} config.default numero del elemento a seleccionar por default, por defecto es el Elmento 0
+ * @return _setCurrentSelection
+ * 
+ * @example 
+ * const setCurrentElement = useNavigationKeyActions({ items: [...n], loader: subscription(), className: "my-classname-" }) 
+ * @see useItemsInteractions
+ * @see window.onkeyup
+ */
 export default function useNavigationKeyActions(config) {
     const valuesAsProps = { ...DEFAULT_ARGS, ...config }
     const { modalRestriction, className, loader, items } = valuesAsProps
@@ -63,7 +83,30 @@ export default function useNavigationKeyActions(config) {
     return [_setCurrentSelection]
 }
 
-export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, modalRestriction = true) {
+
+/**
+ * useItemsInteractions contiene toda las interacciones del elemento, como seleccionarlo como puntero actual hasta
+ * las acciones que presenta cuando el seleccionado.
+ *
+ * @param {Object} props properties heredadas del componente que usara este hook
+ * @param {Function} props.setCurrentSelection function retornada de useNavigationKeyActions usada para seleccionar
+ * el elemento como puntero actual
+ * @param {Number} props.number number index del elemento en el array
+ * @param {String} props.focusedId id referencial del elemento en el DOM
+ * 
+ * @param {Object} keyActions restringe el uso de esta funcion en modales, por defecto es true
+ * @param {Function} keyActions.suprKeyAction accion al presionar la tecla suprimir
+ * @param {Function} keyActions.enterKeyAction accion al presionar la tecla enter
+ * @param {Boolean} modalRestriction restringe este hook en modales
+ * @return {[Boolean, Function]} [isSelected, setFocus]
+ * 
+ * @example 
+ * const setCurrentElement = useItemsInteractions(props, {...}, false) 
+ * @see useNavigationKeyActions
+ * @see Element.onkeydown
+ */
+export function useItemsInteractions(props, keyActions, modalRestriction = true) {
+    const { suprKeyAction, enterKeyAction } = keyActions
     const [isSelected, setIsSelected] = useState(false)
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
 
