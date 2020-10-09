@@ -31,18 +31,17 @@ const OrderSupervisor = () => {
     }
   }
   
-  const el = window
   useEffect(() => {
-    el.onkeydown = (event) => {
+    document.onkeyup = (event) => {
       if (event.keyCode === 27) {
         cerrar(event, true)
         // event.preventDefault();
       }
     }
     return () => {
-      el.onkeydown = false
+      document.onkeyup = false
     }
-  }, [el.onkeydown])
+  }, [document.onkeyup])
 
   return (
     <OtherModalLayout on_click={cerrar}>

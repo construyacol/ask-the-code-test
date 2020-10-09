@@ -9,7 +9,8 @@ export default function useKeyActionAsClick(
     elementId = ID_FOR_CLICKEABLE_ELEMENTS,
     keyCode = 13,
     preventFromInput = true,
-    eventName = 'onkeypress') {
+    eventName = 'onkeypress',
+    activeOnOpenModal = false) {
     const isModalVisible = useSelector(state => state.form.isModalVisible)
     const isModalRenderVisible = useSelector(state => state.ui.modal.render)
     const isConfirmationModalVisible = useSelector(state => state.ui.modal_confirmation.visible)
@@ -36,7 +37,8 @@ export default function useKeyActionAsClick(
     })
 
     const onKeyEventFn = (event) => {
-        if (!isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible) {
+        const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
+        if (isNotModalOpened || activeOnOpenModal) {
             if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
                 Object.keys(window.KEY_CODES_META[eventName]).map(id => {
                     if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {

@@ -19,7 +19,7 @@ const MenuPrincipalLayout = (props) => {
   const [acronym,
     setAcronym] = useState()
   const actions = useActions()
-  const idForLogoutButton = useKeyActionAsClick(true, 'logout-button', 27, true, 'onkeydown')
+  const idForLogoutButton = useKeyActionAsClick(true, 'logout-button', 27, false, 'onkeydown')
   const logoutButtonText = window.innerWidth > 900
     ? 'Cerrar sesión [ESC]'
     : 'Cerrar sesión'

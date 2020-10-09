@@ -6,6 +6,7 @@ import { navigation_components } from '../../api/ui/api.json'
 
 import './detailContainer.css'
 import { useModalState } from '../../../hooks/useModalState'
+import { debounce } from '../../../utils'
 
 // TODO: refactor this component
 function ContentTab(props) {
@@ -14,7 +15,7 @@ function ContentTab(props) {
     const forceStatePathnameIndex = useRef({ currentIndex: 0 })
     const forceCurrentWallet = useRef(current_wallet)
     const [haveMenu, setHaveMenu] = useState(false)
-    const modalState = useModalState()
+    const someModalIsOpened = useModalState()
 
     const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets
     const { params } = current_section
@@ -27,21 +28,17 @@ function ContentTab(props) {
     // }, [title, path])
 
     useEffect(() => {
-        document.onkeyup = (event) => {
+        const handleOnKeyUp = (event) => {
             const condition =
                 forceCurrentWallet.current &&
-                !document.onkeydown &&
                 window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
                 !window.location.href.includes('?')
-
+    
             const haveBalances = wallets[forceCurrentWallet.current] && (wallets[forceCurrentWallet.current].count > 0 ||
                 wallets[forceCurrentWallet.current].available > 0)
             const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
             const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
-            const [ generalModal ] = modalState
-
-            if(generalModal) return 
-
+    
             if(isFromInputWithValue) return
             
             if (event.keyCode === 37) {
@@ -59,7 +56,10 @@ function ContentTab(props) {
                 if (condition) exit()
             }
         }
-    }, [document.onkeyup, primary_path, current_wallet])
+        if(!document.onkeyup) {
+            document.onkeyup = debounce(handleOnKeyUp, 100)
+        }
+    }, [document.onkeyup, primary_path, current_wallet, someModalIsOpened])
 
     useEffect(() => {
         if (forceStatePathnameIndex.current.pathname !== pathname) {

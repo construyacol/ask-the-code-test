@@ -513,17 +513,6 @@ export const InputKycBasic = (props) => {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
 export const InputCountry = (props) => {
 
   const {

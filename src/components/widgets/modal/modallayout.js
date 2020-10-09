@@ -41,22 +41,19 @@ const ModalLayout = (props) => {
   }
 
   useEffect(() => {
-    const timeId = setTimeout(() => {
-      window.onkeydown = (event) => {
-        if (event.keyCode === 27) {
-          if(!isModalRenderShowing) {
-            (current === "ticket") ? salirTicket() : salir()
-          } else {
-            actions.renderModal(null)
-          }
+    document.onkeyup = (event) => {
+      if (event.keyCode === 27) {
+        if(!isModalRenderShowing) {
+          (current === "ticket") ? salirTicket() : salir()
+        } else {
+          actions.renderModal(null)
         }
       }
-    }, 0);
-    return () => {
-      clearTimeout(timeId)
-      window.onkeydown = false
     }
-  }, [window.onkeydown, current, isModalRenderShowing])
+    return () => {
+      document.onkeyup = false
+    }
+  }, [document.onkeyup, current, isModalRenderShowing])
 
   return (
     <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>
