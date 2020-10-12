@@ -79,8 +79,15 @@ export default function useKeyActionAsClick(
             if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
                 Object.keys(window.KEY_CODES_META[eventName]).map(id => {
                     if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {
+                        const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
+                        const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
                         if (window.KEY_CODES_META[eventName][id].preventFromInput && event.srcElement.tagName.includes('INPUT')) {
-                            return false
+                            if(isFromInputWithValue) return false
+                            if (isFromInputWithNoValue) {
+                                event.stopPropagation()
+                                event.preventDefault()
+                                return event.srcElement.blur()
+                            }
                         }
                         event.preventDefault()
                         event.stopPropagation()
