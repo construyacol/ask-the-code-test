@@ -44,6 +44,16 @@ const OrderSupervisor = () => {
     }
   }, [el.onkeydown])
 
+  const closeAll = () => {
+    actions.isAppLoading(false)
+    actions.renderModal(null)
+    return null
+  }
+
+  if (!currentOrder) {
+    cerrar()
+  }
+
   return (
     <OtherModalLayout on_click={cerrar}>
       {
@@ -54,10 +64,10 @@ const OrderSupervisor = () => {
       }
 
       {
-        currentOrder.state === 'accepted' || currentOrder.state === 'rejected' || currentOrder.state === 'canceled' ?
+        ['accepted', 'rejected', 'canceled'].includes(currentOrder.state) ?
           <OrderDetail />
           :
-          <InProcessOrder />
+          <InProcessOrder onErrorCatch={closeAll} />
       }
     </OtherModalLayout>
   )
@@ -83,8 +93,6 @@ const OrderDetail = () => {
   const { isMovilViewport } = useViewport()
 
   if (!currentOrder) { return null }
-
-
 
   const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :
