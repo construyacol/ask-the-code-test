@@ -20,7 +20,7 @@ const MethodView = props => {
   const [setCurrentSelection] = useNavigationKeyActions({
     items,
     loader: false,
-    className: 'pay-method-item-',
+    uniqueIdForElement: 'pay-method-item-',
     modalRestriction: false,
   })
 

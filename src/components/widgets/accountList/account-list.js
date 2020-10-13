@@ -21,7 +21,7 @@ function AccountList(props) {
   const [setCurrentSelection] = useNavigationKeyActions({
     items, 
     loader: mainListLoader,
-    className: 'accountItem',
+    uniqueIdForElement: 'accountItem',
     default: -1
   })
   const isDesktop = window.innerWidth > 900

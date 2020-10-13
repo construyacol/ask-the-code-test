@@ -15,7 +15,7 @@ export const PairList = (props) => {
   const [setCurrentSelection] = useNavigationKeyActions({
     items: allPairs,
     loader: props.loader,
-    className: 'pair-item-',
+    uniqueIdForElement: 'pair-item-',
     modalRestriction: false,
     default: -1
   })

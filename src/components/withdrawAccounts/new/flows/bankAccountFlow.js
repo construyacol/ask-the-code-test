@@ -285,6 +285,7 @@ class BankAccountFlow extends Component {
                           placeholder="ej. Cédula de ciudadanía, Pasaporte etc"
                           name='id_type'
                           elements={this.state.id_types}
+                          selected={this.props.id_type}
                           label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
                           actualizarEstado={actualizarEstado}
                           active={(this.props.id_type && this.props.user.id_type === this.props.id_type) || (id_type && id_number)}
@@ -335,6 +336,7 @@ class BankAccountFlow extends Component {
                       label="Elige el tipo de cuenta:"
                       actualizarEstado={actualizarEstado}
                       name='account_type'
+                      selected={account_type}
                       active={account_type && account_number}
                     />
 

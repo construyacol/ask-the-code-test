@@ -10,7 +10,7 @@ const OtherModalLayoutPairs = props =>{
   } = props
 
   useEffect(() => {
-    document.onkeydown = (event) => {
+    document.onkeyup = (event) => {
       // esc
       if (event.keyCode === 27) {
         close_modal && close_modal()
@@ -18,7 +18,7 @@ const OtherModalLayoutPairs = props =>{
       }
     }
     return () => {
-      document.onkeydown = false
+      document.onkeyup = false
     }
   }, [])
 

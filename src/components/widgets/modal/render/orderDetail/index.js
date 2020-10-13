@@ -30,7 +30,7 @@ const OrderSupervisor = () => {
       history.goBack()
     }
   }
-
+  
   useEffect(() => {
     document.onkeyup = (event) => {
       if (event.keyCode === 27) {
@@ -45,8 +45,9 @@ const OrderSupervisor = () => {
   }, [document.onkeyup])
 
   const closeAll = () => {
-    actions.renderModal(null)
+    document.onkeyup = false
     actions.isAppLoading(false)
+    actions.renderModal(null)
     return <div></div>
   }
 

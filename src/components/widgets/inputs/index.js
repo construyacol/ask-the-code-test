@@ -64,6 +64,7 @@ export const InputForm = (props) => {
           onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
           disabled={disabled}
           autoFocus={autoFocus}
+          autoComplete="off"
         />
         {
           address &&
@@ -512,17 +513,6 @@ export const InputKycBasic = (props) => {
   )
 
 }
-
-
-
-
-
-
-
-
-
-
-
 
 export const InputCountry = (props) => {
 
