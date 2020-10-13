@@ -30,28 +30,29 @@ const OrderSupervisor = () => {
       history.goBack()
     }
   }
-  
-  const el = window
+
   useEffect(() => {
-    el.onkeydown = (event) => {
+    document.onkeyup = (event) => {
       if (event.keyCode === 27) {
         cerrar(event, true)
         // event.preventDefault();
       }
     }
+
     return () => {
-      el.onkeydown = false
+      document.onkeyup = false
     }
-  }, [el.onkeydown])
+  }, [document.onkeyup])
 
   const closeAll = () => {
-    actions.isAppLoading(false)
     actions.renderModal(null)
-    return null
+    actions.isAppLoading(false)
+    return <div></div>
   }
 
-  if (!currentOrder) {
-    cerrar()
+  if (!currentOrder || !currentOrder.state) {
+    closeAll()
+    return <div></div>
   }
 
   return (
