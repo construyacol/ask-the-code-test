@@ -45,14 +45,12 @@ const OrderSupervisor = () => {
   }, [document.onkeyup])
 
   const closeAll = () => {
-    document.onkeyup = false
-    actions.isAppLoading(false)
     actions.renderModal(null)
     return <div></div>
   }
 
   if (!currentOrder || !currentOrder.state) {
-    closeAll()
+    actions.renderModal(null)
     return <div></div>
   }
 

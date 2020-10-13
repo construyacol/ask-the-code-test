@@ -9,13 +9,14 @@ import { debounce } from '../../../utils'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 // TODO: refactor this component
+let timerId
 function ContentTab(props) {
     const navState = useRef({
         current: '',
         next: '',
         prev: ''
     })
-    
+
     const { title, current_section, current_wallet, pathname, primary_path, wallets } = props
     const { params } = current_section
     const tabRef = useRef()
@@ -64,8 +65,18 @@ function ContentTab(props) {
             }
         }
 
-        if (!document.onkeyup) {
-            document.onkeyup = debounce(handleOnKeyUp, 100)
+        const setEvent = () => {
+            if (!document.onkeyup) {
+                document.onkeyup = debounce(handleOnKeyUp, 100)
+                clearInterval(timerId)
+            }
+        }
+        setEvent()
+        timerId = setInterval(setEvent, 1000)
+        return () => {
+            if (timerId) {
+                clearInterval(timerId)
+            }
         }
     }, [document.onkeyup, navState])
 
