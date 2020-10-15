@@ -78,9 +78,7 @@ export default function useKeyActionAsClick(
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
 
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
-            let doBreak = false
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
-                if(doBreak) return
                 if (!window.KEY_CODES_META[eventName][id].activeOnOpenModal && !isNotModalOpened) return false
                 if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {
                     const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
@@ -106,6 +104,7 @@ export default function useKeyActionAsClick(
     }
 
     const handleKeyAction = async () => {
+        if(eventName === 'onkeyup') {debugger}
         window[eventName] = debounce(onKeyEventFn, 100)
     }
 
@@ -114,9 +113,7 @@ export default function useKeyActionAsClick(
     }, [elementId, keyCode])
 
     useEffect(() => {
-        if (!window[eventName]) {
-            handleKeyAction()
-        }
+        handleKeyAction()
         return () => {
             window[eventName] = false
         }

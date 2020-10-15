@@ -51,7 +51,7 @@ export default function useNavigationKeyActions(config) {
     }, [isModalRenderShowing, isModalVisible])
 
     useEffect(() => {
-        if (!isModalRenderShowing && !isModalVisible && !window.onkeyup && items && items.length > 0) {  
+        if (!isModalRenderShowing && !isModalVisible && items && items.length > 0) {  
             window.onkeyup = (event) => {
                 if (isModalVisible) return
                 const length = valuesAsProps.originalLength ? items.length : items.length - 1
@@ -70,7 +70,7 @@ export default function useNavigationKeyActions(config) {
             }
         }
         return () => {
-            window.onkeyup = false
+            //window.onkeyup = false
         }
     }, [window.onkeyup, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
 

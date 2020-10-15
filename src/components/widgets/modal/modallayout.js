@@ -21,8 +21,6 @@ const ModalLayout = (props) => {
 
   useEffect(() => {
     setActiveKeyEvent(isModalRenderShowing ? true : false)
-    console.log(activeKeyEvent)
-    debugger
   }, [isModalRenderShowing])
 
   const idForCloseButton = useKeyActionAsClick(activeKeyEvent, 'modal-close-button', 27, false, 'onkeyup', true)
@@ -50,16 +48,6 @@ const ModalLayout = (props) => {
     return actions.toggleModal()
   }
 
-  // useEffect(() => {
-  //   document.onkeyup = (event) => {
-  //     if (event.keyCode === 27) {
-  //       
-  //     }
-  //   }
-  //   return () => {
-  //     document.onkeyup = false
-  //   }
-  // }, [document.onkeyup, current, isModalRenderShowing])
   const conditionForCloseButton =
     !activeKeyEvent && (!loader && isAppLoaded) &&
     (modalView === 'modalView' || (current === 'withdraw' && modalView === 'modalSuccess'))

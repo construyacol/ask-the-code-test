@@ -3,10 +3,9 @@ import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import IconSwitch from '../icons/iconSwitch'
 import { navigation_components } from '../../api/ui/api.json'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 import './detailContainer.css'
-import { debounce } from '../../../utils'
-import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 // TODO: refactor this component
 function ContentTab(props) {
@@ -15,7 +14,7 @@ function ContentTab(props) {
         next: '',
         prev: ''
     })
-    
+
     const { title, current_section, current_wallet, pathname, primary_path, wallets } = props
     const { params } = current_section
     const tabRef = useRef()
@@ -52,24 +51,6 @@ function ContentTab(props) {
     // }, [title, path])
 
     useEffect(() => {
-        const handleOnKeyUp = (event) => {
-            const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
-            if (isFromInputWithValue) return
-
-            if (event.keyCode === 37) {
-                goPrev()
-            }
-            if (event.keyCode === 39) {
-                goNext()
-            }
-        }
-
-        if (!document.onkeyup) {
-            document.onkeyup = debounce(handleOnKeyUp, 100)
-        }
-    }, [document.onkeyup, navState])
-
-    useEffect(() => {
         const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 ||
             wallets[current_wallet].available > 0)
 
@@ -93,10 +74,20 @@ function ContentTab(props) {
         el && el.click()
     }
 
-    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, true, 'onkeyup', false)
+    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, true, 'onkeyup')
+    const idNext = useKeyActionAsClick(true, 'id-next-button', 39, true, 'onkeyup')
+    const idPrev = useKeyActionAsClick(true, 'id-prev-button', 37, true, 'onkeyup')
+
+    const controlProps = {
+        goNext,
+        goPrev,
+        idNext,
+        idPrev
+    }
 
     return (
         <div className="subMenu" ref={tabRef}>
+            <HiddenButtons {...controlProps} />
             <div className="menuContainer">
                 <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                     {
@@ -155,6 +146,13 @@ function ContentTab(props) {
 
     )
 }
+
+const HiddenButtons = ({ goNext, goPrev, idNext, idPrev}) => (
+    <div style={{ width: 0, height: 0, opacity: 0 }}>
+        <button id={idPrev} onClick={goPrev}>goPrev</button>
+        <button id={idNext} onClick={goNext}>goNext</button>
+    </div>
+)
 
 
 const MovilMenu = ({ primary_path }) => {
