@@ -61,13 +61,12 @@ export default function useNavigationKeyActions(config) {
                 if (event.keyCode === valuesAsProps.prev) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.max(0, elementId)}`)
-                    el && el.focus()
                 }
                 if (event.keyCode === valuesAsProps.next || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.min(length, elementId)}`)
-                    el && el.focus()
                 }        
+                el && el.focus()
             }
         }
         return () => {

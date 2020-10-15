@@ -78,7 +78,9 @@ export default function useKeyActionAsClick(
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
 
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
+            let doBreak = false
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
+                if(doBreak) return
                 if (!window.KEY_CODES_META[eventName][id].activeOnOpenModal && !isNotModalOpened) return false
                 if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {
                     const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
@@ -91,6 +93,7 @@ export default function useKeyActionAsClick(
                             return event.srcElement.blur()
                         }
                     }
+                    // doBreak = true
                     event.preventDefault()
                     event.stopPropagation()
                     if (id === ID_FOR_CLICKEABLE_ELEMENTS) {

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { ButtonModalClose, ButtonModalBack } from '../buttons/buttons'
 import { useActions } from '../../../hooks/useActions'
 
 import './modal.css'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 const ModalLayout = (props) => {
   const {
@@ -16,14 +17,23 @@ const ModalLayout = (props) => {
   } = props
   const actions = useActions()
   const isModalRenderShowing = useSelector(state => state.ui.modal.render)
-  
+  const [activeKeyEvent, setActiveKeyEvent] = useState(false)
+
+  useEffect(() => {
+    setActiveKeyEvent(isModalRenderShowing ? true : false)
+    console.log(activeKeyEvent)
+    debugger
+  }, [isModalRenderShowing])
+
+  const idForCloseButton = useKeyActionAsClick(activeKeyEvent, 'modal-close-button', 27, false, 'onkeyup', true)
+
   const volver = () => {
-    if(step === 1) return
+    if (step === 1) return
     const { uiAnimation } = props
     if (uiAnimation) { return actions.FlowAnimationLayoutAction('backV', 'back', props.current) }
     actions.ReduceStep(props.current)
   }
-  
+
   const salir = async (callback) => {
     const { current } = props
     actions.CleanForm('deposit')
@@ -31,29 +41,41 @@ const ModalLayout = (props) => {
     actions.CleanForm('bank')
     actions.CleanForm(current)
   }
-  
+
   const salirTicket = async () => {
     const { current } = props
     actions.ModalView('modalView')
     actions.CleanForm(current)
-    
+
     return actions.toggleModal()
   }
 
-  useEffect(() => {
-    document.onkeyup = (event) => {
-      if (event.keyCode === 27) {
-        if(!isModalRenderShowing) {
-          (current === "ticket") ? salirTicket() : salir()
-        } else {
-          actions.renderModal(null)
-        }
-      }
+  // useEffect(() => {
+  //   document.onkeyup = (event) => {
+  //     if (event.keyCode === 27) {
+  //       
+  //     }
+  //   }
+  //   return () => {
+  //     document.onkeyup = false
+  //   }
+  // }, [document.onkeyup, current, isModalRenderShowing])
+  const conditionForCloseButton =
+    !activeKeyEvent && (!loader && isAppLoaded) &&
+    (modalView === 'modalView' || (current === 'withdraw' && modalView === 'modalSuccess'))
+
+  const buttonCloseProps = current === "ticket" ?
+    {
+      color: 'white',
+      toggleModal: salirTicket
+    } : {
+      toggleModal: salir
     }
-    return () => {
-      document.onkeyup = false
-    }
-  }, [document.onkeyup, current, isModalRenderShowing])
+
+  const conditionForBackButton =
+    (current === 'bank' && step > 2 && !loader && modalView === "modalView") ||
+    (current !== 'bank' && step > 1 && !loader && modalView === "modalView") ||
+    (step > 1 && current === "ticket")
 
   return (
     <section className={`Modal ${isAppLoaded ? 'aparecer' : 'show_loader_app'}`}>
@@ -61,8 +83,8 @@ const ModalLayout = (props) => {
         {children}
 
         {
-          (!loader && modalView === "modalView" && isAppLoaded) &&
-          <ButtonModalClose toggleModal={salir}>
+          conditionForCloseButton &&
+          <ButtonModalClose id={idForCloseButton} {...buttonCloseProps}>
             {window.innerWidth > 768 &&
               'Salir'
             }
@@ -70,36 +92,16 @@ const ModalLayout = (props) => {
         }
 
         {
-          (!loader && current === "ticket" && isAppLoaded) &&
-          <ButtonModalClose
-            color="white"
-            toggleModal={salirTicket}>
-            {window.innerWidth > 768 &&
-              'Salir'
-            }
-          </ButtonModalClose>
-        }
-
-        {
-          (step > 1 && current === "ticket") &&
+          conditionForBackButton &&
           <ButtonModalBack
-            color="white"
+            color={(step > 1 && current === "ticket") && "white"}
             volver={volver}>
             {window.innerWidth > 768 &&
               'volver'
             }
           </ButtonModalBack>
         }
-
-        {
-          ((current === 'bank' && step > 2 && !loader && modalView === "modalView") || (current !== 'bank' && step > 1 && !loader && modalView === "modalView")) &&
-          <ButtonModalBack volver={volver}>
-            {window.innerWidth > 768 &&
-              'volver'
-            }
-          </ButtonModalBack>
-        }
-
+        
       </div>
     </section>
   )

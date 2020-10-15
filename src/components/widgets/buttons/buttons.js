@@ -149,11 +149,12 @@ export const ButtonPrincipalMenu = ({
 export const ButtonModalClose = (props) => {
   const {
     toggleModal,
-    color
+    color,
+    id
   } = props
 
   return (
-    <div className="closeModalButtonCont" onClick={toggleModal} style={{ color: color ? color : 'gray' }}>
+    <div id={id} className="closeModalButtonCont" onClick={toggleModal} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-times" ></i>
       {props.children}
     </div>

@@ -31,7 +31,7 @@ function ModalsSupervisor(props) {
         isSocketNotification,
         RenderModal
     } = props
-    const [ toastMessage ] = useToastMesssage()
+    const [toastMessage] = useToastMesssage()
 
     return (
         <>
@@ -60,9 +60,9 @@ function ModalsSupervisor(props) {
                         <Route path="/" component={SocketNotify} />
                         :
                         <>
-                            <Route exact strict 
-                                path="/wallets/swap/:account_id" 
-                                render={(renderProps) => (<PairList {...renderProps} />)} 
+                            <Route exact strict
+                                path="/wallets/swap/:account_id"
+                                render={(renderProps) => (<PairList {...renderProps} />)}
                             />
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                         </>
@@ -75,12 +75,12 @@ function ModalsSupervisor(props) {
                 />
             </ModalContainer>
 
-            <ModalContainer condition={RenderModal}>
-              {
+            {
                 RenderModal &&
-                React.createElement(RenderModal)
-              }
-            </ModalContainer>
+                <ModalContainer condition={RenderModal}>
+                    {React.createElement(RenderModal)}
+                </ModalContainer>
+            }
 
         </>
     )
@@ -107,7 +107,7 @@ function mapStateToProps({ ui, form, isLoading }) {
         modalConfirmation: ui.modal_confirmation.visible,
         otherModal: ui.otherModal,
         isSocketNotification: ui.notifications.socket_notify,
-        RenderModal:ui.modal.render
+        RenderModal: ui.modal.render
     }
 }
 
