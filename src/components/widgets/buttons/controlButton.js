@@ -1,30 +1,8 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import React from 'react'
 import styled from 'styled-components'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
 import { LoaderContainer } from '../loaders'
-
-export const KeyActionComponent = ({ action, isFiat, currentWallet }) => {
-  const isModalVisible = useSelector(state => state.form.isModalVisible)
-  const route = useHistory()
-
-  useEffect(() => {
-    if (!window.onkeydown) {
-      window.onkeydown = (event) => {
-        if(!route.location.pathname.includes(currentWallet.id)) return
-        if (!isModalVisible && event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
-          if(!isFiat) return
-          if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
-          action(event)
-        }
-      }
-    }
-  }, [window.onkeydown, isModalVisible, route, currentWallet])
-
-  return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
-}
 
 const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
   return (

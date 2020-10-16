@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component } from 'react'
 import './inputStyles.css'
 import { number_format } from '../../../utils'
 import { SimpleLoader } from '../loaders'
@@ -7,6 +7,7 @@ import Environtment from '../../../environment'
 import NumberInput from './numberInput'
 import MaskedInput from 'react-text-mask'
 import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 const autoCorrectedDatePipe = createAutoCorrectedDatePipe('dd/mm/yyyy')
 const { CountryUrl } = Environtment
@@ -526,17 +527,7 @@ export const InputCountry = (props) => {
     loader
   } = props
 
-  // console.log('|||||||||||||||||||||||||||||||||||||||| InputCountryPrefix ====>', loader)
-  useEffect(() => {
-    window.onkeydown = (event) => {
-      if (event.keyCode === 13) {
-        country_match && document.getElementById('next') && document.getElementById('next').click()
-      }
-    }
-    return () => {
-      window.onkeydown = false
-    }
-  }, [window.onkeydown])
+  const idNextButton = useKeyActionAsClick(true, 'id-next-subfix-button', 13, false, 'onkeydown')
 
   return (
     <div id="kycPrime" className="containerInputComponent3">
@@ -585,7 +576,7 @@ export const InputCountry = (props) => {
           <div className="InputProgressed" style={{ width: country_match ? '100%' : '0' }} ></div>
         </div>
 
-        <i id="next" className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
+        <i id={idNextButton} className={`fas fa-arrow-right arrowcito2 ${country_match ? 'aparecer' : ''}`} onClick={country_match ? handleSubmit : null} ></i>
 
       </div>
       <div className="InputContainerT" >

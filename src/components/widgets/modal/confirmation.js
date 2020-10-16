@@ -42,15 +42,18 @@ class ConfirmationModal extends Component {
   }
 
   keyActions() {
-    document.onkeydown = (event) => {
+    document.onkeyup = (event) => {
       // backspace
       if (event.keyCode === 8 || event.keyCode === 46) {
         this.cancelarClick()
+        event.preventDefault()
+        event.stopPropagation()
       }
       // enter
       if (event.keyCode === 13) {
-        event.preventDefault()
         this.handleClick()
+        event.preventDefault()
+        event.stopPropagation()
       }
       // esc
       if (event.keyCode === 27) {
@@ -62,7 +65,7 @@ class ConfirmationModal extends Component {
   }
 
   componentWillUnmount() {
-    document.onkeydown = false
+    document.onkeyup = false
   }
 
 

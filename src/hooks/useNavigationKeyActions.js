@@ -27,7 +27,7 @@ const DEFAULT_ARGS = {
  * @example 
  * const setCurrentElement = useNavigationKeyActions({ items: [...n], loader: subscription(), uniqueIdForElement: "my-uniqueIdForElement-" }) 
  * @see useItemsInteractions
- * @see window.onkeyup
+ * @see window.onkeydown
  */
 export default function useNavigationKeyActions(config) {
     const valuesAsProps = { ...DEFAULT_ARGS, ...config }
@@ -45,19 +45,19 @@ export default function useNavigationKeyActions(config) {
     }, [items, loader])
 
     useEffect(() => {
-        if(modalRestriction && (isModalRenderShowing || isModalVisible)) {
+        if (modalRestriction && (isModalRenderShowing || isModalVisible)) {
             setCurrentSelection(-1)
         }
     }, [isModalRenderShowing, isModalVisible])
 
     useEffect(() => {
-        if (!isModalRenderShowing && !isModalVisible && items && items.length > 0) {  
-            window.onkeyup = (event) => {
+        window.onkeydown = (event) => {
+            if (!isModalRenderShowing && !isModalVisible && items && items.length > 0) {
                 if (isModalVisible) return
                 const length = valuesAsProps.originalLength ? items.length : items.length - 1
                 const currentSelectionIsDownZero = currentSelection < 0
                 let elementId = 0
-                let el = null        
+                let el = null
                 if (event.keyCode === valuesAsProps.prev) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.max(0, elementId)}`)
@@ -65,17 +65,17 @@ export default function useNavigationKeyActions(config) {
                 if (event.keyCode === valuesAsProps.next || (event.keyCode === 13 && currentSelectionIsDownZero)) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.min(length, elementId)}`)
-                }        
+                }
                 el && el.focus()
             }
         }
         return () => {
-            //window.onkeyup = false
+            //window.onkeydown = false
         }
-    }, [window.onkeyup, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
+    }, [window.onkeydown, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
 
     const _setCurrentSelection = (newSelection) => {
-        if(currentSelection !== newSelection) {
+        if (currentSelection !== newSelection) {
             setCurrentSelection(newSelection)
         }
     }
@@ -138,7 +138,7 @@ export function useItemsInteractions(props, keyActions, modalRestriction = true)
 
     const setFocus = () => {
         const element = document.getElementById(props.focusedId)
-        element && element.focus() 
+        element && element.focus()
     }
 
     return [isSelected, setFocus]

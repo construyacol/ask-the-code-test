@@ -76,7 +76,7 @@ export default function useKeyActionAsClick(
      */
     const onKeyEventFn = (event) => {
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
-
+        
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
                 if (!window.KEY_CODES_META[eventName][id].activeOnOpenModal && !isNotModalOpened) return false
@@ -84,6 +84,7 @@ export default function useKeyActionAsClick(
                     const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
                     const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
                     if (window.KEY_CODES_META[eventName][id].preventFromInput && event.srcElement.tagName.includes('INPUT')) {
+
                         if (isFromInputWithValue) return false
                         if (isFromInputWithNoValue) {
                             event.stopPropagation()
@@ -91,20 +92,20 @@ export default function useKeyActionAsClick(
                             return event.srcElement.blur()
                         }
                     }
-                    // doBreak = true
                     event.preventDefault()
                     event.stopPropagation()
-                    if (id === ID_FOR_CLICKEABLE_ELEMENTS) {
-                        return shouldHandleAction && doClick(id)
+                    if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
+                        doClick(id)
+                    } else {
+                        doClick(id)
                     }
-                    return doClick(id)
+                    return false
                 }
             })
         }
     }
 
     const handleKeyAction = async () => {
-        if(eventName === 'onkeyup') {debugger}
         window[eventName] = debounce(onKeyEventFn, 100)
     }
 
@@ -115,7 +116,7 @@ export default function useKeyActionAsClick(
     useEffect(() => {
         handleKeyAction()
         return () => {
-            window[eventName] = false
+            // window[eventName] = false
         }
     }, [window[eventName], isModalVisible, isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction])
 

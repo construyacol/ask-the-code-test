@@ -74,9 +74,9 @@ function ContentTab(props) {
         el && el.click()
     }
 
-    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, true, 'onkeyup')
-    const idNext = useKeyActionAsClick(true, 'id-next-button', 39, true, 'onkeyup')
-    const idPrev = useKeyActionAsClick(true, 'id-prev-button', 37, true, 'onkeyup')
+    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, haveMenu, 'onkeyup')
+    const idNext = useKeyActionAsClick(true, 'id-next-button', 39, haveMenu, 'onkeyup')
+    const idPrev = useKeyActionAsClick(true, 'id-prev-button', 37, haveMenu, 'onkeyup')
 
     const controlProps = {
         goNext,
@@ -87,7 +87,7 @@ function ContentTab(props) {
 
     return (
         <div className="subMenu" ref={tabRef}>
-            <HiddenButtons {...controlProps} />
+            {haveMenu && <HiddenButtons {...controlProps} />}
             <div className="menuContainer">
                 <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                     {
