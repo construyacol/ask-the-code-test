@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActions } from '../../../../hooks/useActions'
 import OtherModalLayout from '../otherModalLayout'
 import backImg from './map.png'
 import { InputContainer } from '../../inputs/inputForm'
-import { FiSearch } from "react-icons/fi";
-// import testingComponent from '../../../key-actions-documentation'
+import { FiSearch } from "react-icons/fi"
+import { Icon, Front, Top, CubeObject } from '../../shared-styles'
+
+
+
 
 const withdrawAccounts = [
     {
@@ -36,11 +39,11 @@ const withdrawAccounts = [
       "visible": true,
       "info": {
           "label": "bitcoin_testnet",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQveej8ugK2ohQ",
+          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
           "country": "colombia"
       },
       "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1527",
+      "id": "5f3bc94880d885001f4e1526",
       "created_at": "2020-08-18T12:27:52.861Z",
       "updated_at": "2020-10-06T14:08:42.856Z"
     },
@@ -53,12 +56,12 @@ const withdrawAccounts = [
       "provider_type": "bitcoin_testnet",
       "visible": true,
       "info": {
-          "label": "Bitfinex colombia",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ud9f8gK2ohQ",
+          "label": "Wallet bitcoin tesnet ssa",
+          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
           "country": "colombia"
       },
       "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1528",
+      "id": "5f3bc94880d885001f4e1526",
       "created_at": "2020-08-18T12:27:52.861Z",
       "updated_at": "2020-10-06T14:08:42.856Z"
     },
@@ -71,12 +74,12 @@ const withdrawAccounts = [
       "provider_type": "bitcoin_testnet",
       "visible": true,
       "info": {
-          "label": "wallet andres fel gar ex",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQs0d9j8ugK2ohQ",
+          "label": "bitcoin_testnet",
+          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
           "country": "colombia"
       },
       "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1529",
+      "id": "5f3bc94880d885001f4e1526",
       "created_at": "2020-08-18T12:27:52.861Z",
       "updated_at": "2020-10-06T14:08:42.856Z"
     }
@@ -111,7 +114,7 @@ const AddressBookComponent = props => {
   const [ recentList, setRecentList ] = useState()
 
   return(
-    <Content>
+    <Content id="ContentWAList" className={``}>
       {
         recentList &&
         <ListContainer className="fuente" data-title="Reciente">
@@ -130,7 +133,7 @@ const AddressBookComponent = props => {
 }
 
 
-const ItemList = ({ item:{info:{ address, label }} }) => {
+const ItemList = ({ item:{ id, info:{ address, label }} }) => {
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -138,24 +141,107 @@ const ItemList = ({ item:{info:{ address, label }} }) => {
     return result.toString().replace(/,/g, '').toUpperCase()
   }
 
+  const [ deleting, setDeleting ] = useState('')
+  const deleteItem = payload => {
+    setDeleting(payload)
+    const element = document.getElementById('ContentWAList')
+    element.classList.add(payload)
+    payload === 'unrotate' && element.classList.remove('rotate')
+  }
+
+
   return(
-    <ItemListContainer>
-      <AcronymContainer>
-        <p className="fuente">
-          {getAcronym()}
-        </p>
-      </AcronymContainer>
-      <ItemTextContainer>
-        <p className="fuente label">{label}</p>
-        <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
-          <Address className="fuente2 withdrawAddress" >{address}</Address>
-        </AddressContainer>
-      </ItemTextContainer>
-    </ItemListContainer>
+    <CubeObject className={`${deleting}`}>
+      <Front>
+        <ItemListContainer>
+          <AcronymContainer>
+            <p className="fuente">
+              {getAcronym()}
+            </p>
+            <Icon className="fas fa-trash-alt tooltip" onClick={() => deleteItem('rotate')}>
+              <span className="tooltiptext fuente">Eliminar</span>
+            </Icon>
+          </AcronymContainer>
+          <ItemTextContainer>
+            <p className="fuente label">{label}</p>
+            <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
+              <Address className="fuente2 withdrawAddress" >{address}</Address>
+            </AddressContainer>
+          </ItemTextContainer>
+        </ItemListContainer>
+      </Front>
+      <Top>
+        <DeleteComponent
+          handleAction={deleteItem}
+        />
+      </Top>
+    </CubeObject>
+  )
+
+}
+
+
+const DeleteComponent = ({ handleAction }) => {
+  return(
+    <DeleteContainer>
+      <p className="fuente confirmText">¿Estás seguro que deseas eliminar esta cuenta de retiro?</p>
+      <DeleteControls>
+        <p className="fuente cancel" onClick={()=>handleAction('unrotate')}>Cancelar</p>
+        <p className="fuente delete" >Eliminar</p>
+      </DeleteControls>
+    </DeleteContainer>
   )
 }
 
+const DeleteControls = styled.div`
+  display: grid;
+  width: 100%;
+  max-width: 200px;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 15px;
+
+  .delete{
+    background: red;
+    color: white;
+    font-weight: bold;
+  }
+
+  .cancel{
+    color: gray;
+  }
+
+  p{
+    cursor: pointer;
+    border-radius: 3px;
+    display: grid;
+    align-items: center;
+    text-align: center;
+    padding: 0 12px;
+  }
+`
+
+
+const DeleteContainer = styled.div`
+  width: 100%;
+  height: calc(100% - 20px);
+  padding: 10px 0;
+  display: grid;
+  justify-items: center;
+  grid-template-columns: 1fr;
+
+  p{
+    max-width: 70%
+    font-size: 13px;
+    color: black;
+    margin: 0;
+    text-align: center;
+  }
+`
+
+
+
 const AcronymContainer = styled.div`
+
   width: 45px;
   height: 45px;
   background: #0198FF;
@@ -165,6 +251,9 @@ const AcronymContainer = styled.div`
   align-items: center;
   justify-content: center;
   transition: .3s;
+  position: relative;
+  transition: .3s;
+
   p{
     color: white;
     font-weight: bold;
@@ -173,6 +262,10 @@ const AcronymContainer = styled.div`
     text-overflow: ellipsis;
     overflow: hidden;
     max-width: 40px;
+  }
+
+  ${Icon}{
+    display: none;
   }
 `
 
@@ -189,8 +282,22 @@ const ItemListContainer = styled.div`
       .label{
         color: #b48728;
       }
+      ${AcronymContainer}::after{
+          content: '';
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: rgb(255, 255, 255, 0.9);
+          top:0;
+          left:0;
+          transition: .3s;
+      }
+      ${Icon}{
+        position: absolute;
+        display: initial;
+        z-index: 11;
+      }
     }
-
 `
 
 const Address = styled.p`
@@ -258,16 +365,28 @@ const ItemTextContainer = styled.div`
   }
 `
 
-
-
-
-
 const Content = styled.div`
+
   width: calc(100% - 30px);
   height: calc(100% - 85px);
   padding: 65px 15px 20px
   background: white;
   border-radius: 6px;
+  position: relative;
+
+  &.rotate::after{
+    content: '';
+    position: absolute;
+    z-index: 10;
+    background: rgb(255, 255, 255, 0.9);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    backdrop-filter: blur(1px);
+    border-radius: 6px;
+    opacity: .8;
+  }
 `
 
 const ListContainer = styled.div`
@@ -320,6 +439,7 @@ const InputContainers = styled.div`
   justify-self: center;
   bottom: -35px;
   width: 100%;
+  z-index: 2;
 `
 
 const Input = styled(InputContainer)`
