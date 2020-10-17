@@ -10,102 +10,73 @@ import IconSwitch from '../icons/iconSwitch'
 import SwapVIewConfirm from './swapViewConfirmation'
 
 import './modal.css'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
-class ConfirmationModal extends Component {
+function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
+  const idCancelButton = useKeyActionAsClick(true, 'cancel-confirm-modal', 8, true, 'onkeyup', true)
+  const idAcceptButton = useKeyActionAsClick(true, 'accept-confirm-modal', 13, true, 'onkeyup', true)
 
-  handleClick = () => {
+  const handleClick = () => {
     const {
-      action,
       payload,
       code
-    } = this.props.modal_confirmation
+    } = modal_confirmation
 
     // Ejecutamos la acción desde redux, para eliminar wallet pasandole como parametro el id del wallet
-    action(payload, code)
-    this.props.action.confirmationModalToggle()
-    this.props.action.confirmationModalPayload(null)
+    modal_confirmation.action(payload, code)
+    action.confirmationModalToggle()
+    action.confirmationModalPayload(null)
   }
 
-  cancelarClick = () => {
+  const cancelarClick = () => {
     const {
       cancelCallback
-    } = this.props.modal_confirmation
+    } = modal_confirmation
     if (typeof cancelCallback === 'function') {
       cancelCallback()
     }
-    this.props.action.confirmationModalToggle()
-    this.props.action.confirmationModalPayload(null)
+    action.confirmationModalToggle()
+    action.confirmationModalPayload(null)
   }
 
-  componentDidMount() {
-    this.keyActions()
-  }
+  const {
+    type
+  } = modal_confirmation
 
-  keyActions() {
-    document.onkeyup = (event) => {
-      // backspace
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        this.cancelarClick()
-        event.preventDefault()
-        event.stopPropagation()
+  const props = { 
+    idCancelButton,
+    idAcceptButton,
+    modal_confirmation, 
+    loader, 
+    action, 
+    ...rest }
+
+  return (
+    <>
+      {
+        loader ?
+          <SimpleLoader />
+          :
+          <section className={`Modal aparecer`}>
+            {
+              type === 'swap' ?
+                <SwapVIewConfirm
+                  cancelarClick={cancelarClick}
+                  handleClick={handleClick}
+                  {...props}
+                />
+                :
+                <StandardTicket
+                  cancelarClick={cancelarClick}
+                  handleClick={handleClick}
+                  {...props}
+                />
+            }
+          </section>
       }
-      // enter
-      if (event.keyCode === 13) {
-        this.handleClick()
-        event.preventDefault()
-        event.stopPropagation()
-      }
-      // esc
-      if (event.keyCode === 27) {
-        this.cancelarClick()
-        event.preventDefault()
-        event.stopPropagation()
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    document.onkeyup = false
-  }
-
-
-  render() {
-    const {
-      loader
-    } = this.props
-
-    const {
-      type
-    } = this.props.modal_confirmation
-
-    return (
-      <>
-        {
-          loader ?
-            <SimpleLoader />
-            :
-            <section className={`Modal aparecer`}>
-              {
-                type === 'swap' ?
-                  <SwapVIewConfirm
-                    cancelarClick={this.cancelarClick}
-                    handleClick={this.handleClick}
-                    {...this.props}
-                  />
-                  :
-                  <StandardTicket
-                    cancelarClick={this.cancelarClick}
-                    handleClick={this.handleClick}
-                    {...this.props}
-                  />
-              }
-            </section>
-        }
-      </>
-    )
-  }
+    </>
+  )
 }
-
 
 function mapStateToProps(state, props) {
   return {
@@ -126,7 +97,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal)
 
 export const StandardTicket = props => {
 
-  const { cancelarClick, handleClick } = props
+  const { cancelarClick, handleClick, idAcceptButton, idCancelButton } = props
 
   const {
     title,
@@ -173,6 +144,7 @@ export const StandardTicket = props => {
             {
               txtSecondary &&
               <ButtonForms
+                _id={idCancelButton}
                 type="secundary"
                 active={true}
                 siguiente={cancelarClick}
@@ -181,6 +153,7 @@ export const StandardTicket = props => {
             }
 
             <ButtonForms
+              _id={idAcceptButton}
               type="primary"
               active={true}
               siguiente={handleClick}

@@ -11,7 +11,7 @@ import {
 const SwapVIewConfirm = props => {
 
 
-  const { cancelarClick, handleClick } = props
+  const { cancelarClick, handleClick, idCancelButton, idAcceptButton } = props
 
   const {
     title,
@@ -58,7 +58,7 @@ const SwapVIewConfirm = props => {
   // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
 
-    <div className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
+    <div id={idCancelButton} className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
       <h1 className="bigCounter fuente2">{counter}</h1>
       <div className="LayoutSocketNotify swing-in-bottom-bck">
         <div className="msgSwapDisclamer" ><p className="fuente">La cotización se actualizará cada 20 segundos.</p></div>
@@ -100,7 +100,7 @@ const SwapVIewConfirm = props => {
 
             </div>
 
-            <Buttons.ButtonNofity className="swap" buttonAction={handleClick} >
+            <Buttons.ButtonNofity id={idAcceptButton} className="swap" buttonAction={handleClick} >
               <p id="ButtonNofityText" className="fuente">Confirmar Intercambio</p>
             </Buttons.ButtonNofity>
           </div>

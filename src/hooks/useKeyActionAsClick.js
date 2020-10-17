@@ -38,12 +38,14 @@ export default function useKeyActionAsClick(
 
     /**
      * Busca el elemento por el Id y hace 'Click' si existe
-     * 
+     *
      * @param {String} id id referencial del elemento en el DOM actual
      */
-    const doClick = (id) => {
+    const doClick = (id, event) => {
         const clickeableElement = document.getElementById(id)
         if (clickeableElement) {
+            event.preventDefault()
+            event.stopPropagation()
             clickeableElement.click && clickeableElement.click()
         }
     }
@@ -79,25 +81,23 @@ export default function useKeyActionAsClick(
         
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
+                if(!document.getElementById(id)) return false
                 if (!window.KEY_CODES_META[eventName][id].activeOnOpenModal && !isNotModalOpened) return false
                 if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {
-                    const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
                     const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
+                    const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
                     if (window.KEY_CODES_META[eventName][id].preventFromInput && event.srcElement.tagName.includes('INPUT')) {
-
                         if (isFromInputWithValue) return false
                         if (isFromInputWithNoValue) {
                             event.stopPropagation()
                             event.preventDefault()
-                            return event.srcElement.blur()
+                            return false // event.srcElement.blur()
                         }
                     }
-                    event.preventDefault()
-                    event.stopPropagation()
                     if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
-                        doClick(id)
+                        doClick(id, event)
                     } else {
-                        doClick(id)
+                        doClick(id, event)
                     }
                     return false
                 }

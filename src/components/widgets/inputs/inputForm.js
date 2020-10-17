@@ -72,6 +72,7 @@ const InputForm = (props) => {
   const subfixId = 'set-max-available'
 
   const setMaxWithActionKeyFn = (e) => {
+    uxForInput(e)
     if (e.keyCode === 77) {
       e.preventDefault()
       const toClickElement = document.getElementById(subfixId)
@@ -79,6 +80,14 @@ const InputForm = (props) => {
         document.getElementsByName(name)[0].blur()
         toClickElement.click()
       }
+    }
+  }
+
+  const uxForInput = (e) => {
+    if(e.keyCode === 8 && e.currentTarget.value === '') {
+      e.currentTarget.blur()
+      e.stopPropagation()
+      return false
     }
   }
 
@@ -91,7 +100,7 @@ const InputForm = (props) => {
     name,
     disabled,
     autoFocus,
-    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : null,
+    onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
     autoComplete
   }
 

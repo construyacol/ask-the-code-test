@@ -74,7 +74,7 @@ function ContentTab(props) {
         el && el.click()
     }
 
-    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, haveMenu, 'onkeyup')
+    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, true, 'onkeyup')
     const idNext = useKeyActionAsClick(true, 'id-next-button', 39, haveMenu, 'onkeyup')
     const idPrev = useKeyActionAsClick(true, 'id-prev-button', 37, haveMenu, 'onkeyup')
 
