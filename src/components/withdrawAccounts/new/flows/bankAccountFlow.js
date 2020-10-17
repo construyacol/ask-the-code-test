@@ -68,13 +68,6 @@ class BankAccountFlow extends Component {
         bank_name
       } = this.props
 
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        if(step === 2 && !withdraw_flow) return 
-        if(event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
-        event.preventDefault()
-        action.ReduceStep(current)
-        if(step === 2 && withdraw_flow) initPrevKeyActions()
-      }
       // enter
       if (event.keyCode === 13) {
         event.preventDefault();

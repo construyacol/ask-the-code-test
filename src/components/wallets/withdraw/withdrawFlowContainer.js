@@ -60,19 +60,6 @@ class WithdrawFlow extends Component {
         available
       } = this.props
 
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        if (event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
-        // if(finish_step) return
-        event.preventDefault()
-        if (step === 1 && show_list_accounts) {
-          this.props.action.renderModal(null)
-          return this.backAmount()
-        }
-        if (step >= 2 && !need_new_acount && finish_step) {
-          return this.cancelWithdrawOrder()
-        }
-      }
-
       if (event.keyCode === 13) {
         event.preventDefault()
 

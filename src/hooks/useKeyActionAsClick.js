@@ -77,22 +77,28 @@ export default function useKeyActionAsClick(
      * @returns doClick fn | boolean
      */
     const onKeyEventFn = (event) => {
+        // verifica que no este algun modal abierto
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
         
+        // si existe el KEY_CODES_META y el Evento actual
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
+            // recorre los eventos guardados
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
-                if(!document.getElementById(id)) return false
-                if (!window.KEY_CODES_META[eventName][id].activeOnOpenModal && !isNotModalOpened) return false
-                if (window.KEY_CODES_META[eventName][id].keyCode === event.keyCode) {
-                    const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
-                    const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
-                    if (window.KEY_CODES_META[eventName][id].preventFromInput && event.srcElement.tagName.includes('INPUT')) {
-                        if (isFromInputWithValue) return false
-                        if (isFromInputWithNoValue) {
-                            event.stopPropagation()
-                            event.preventDefault()
-                            return false // event.srcElement.blur()
-                        }
+                // busca el elemento a Clickear
+                const element = document.getElementById(id)
+                if(!element) return false
+                const keyCodeData = window.KEY_CODES_META[eventName][id]
+                if (!keyCodeData.activeOnOpenModal && !isNotModalOpened) return false
+                if (keyCodeData.keyCode === event.keyCode) {
+                    const isFromInputElement = event.srcElement.tagName.includes('INPUT')
+                    const isFromInputWithValue = isFromInputElement && event.srcElement.value
+                    const isFromInputWithNoValue = isFromInputElement && !event.srcElement.value
+                    if (keyCodeData.preventFromInput && isFromInputWithValue) return false
+                    if (keyCodeData.preventFromInput && isFromInputWithNoValue) {
+                        event.stopPropagation()
+                        event.preventDefault()
+                        if(keyCodeData.activeOnOpenModal) event.srcElement.blur()
+                        return false
                     }
                     if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
                         doClick(id, event)

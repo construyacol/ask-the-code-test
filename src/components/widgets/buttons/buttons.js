@@ -165,11 +165,12 @@ export const ButtonModalBack = (props) => {
 
   const {
     volver,
-    color
+    color,
+    id = 'modal-backstep-button'
   } = props
 
   return (
-    <div className="closeModalButtonBack" onClick={volver} style={{ color: color ? color : 'gray' }}>
+    <div id={id} className="closeModalButtonBack" onClick={volver} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-arrow-left"></i>
       {props.children}
     </div>

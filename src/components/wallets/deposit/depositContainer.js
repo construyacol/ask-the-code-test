@@ -59,12 +59,7 @@ class DepositContainer extends Component {
 
   keyActions() {
     document.onkeydown = (event) => {
-      // backspace
-      if ((event.keyCode === 8 || event.keyCode === 46) && this.props.step > 1) {
-        if (this.props.step === 4) return
-        event.preventDefault()
-        this.props.action.ReduceStep(this.props.current)
-      }
+     
       // enter
       if (event.keyCode === 13) {
         event.preventDefault()

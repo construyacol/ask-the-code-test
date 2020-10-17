@@ -44,13 +44,7 @@ class KycBasicContainer extends Component {
     this.props.history.push(`?form=personal_names`)
     // }
     document.onkeydown = (event) => {
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        if (this.props.step === 1) return
-        if (event.srcElement.tagName.includes('INPUT') && event.srcElement.value !== '') return
-        if (this.props.step === 1 || this.props.step === 11) return
-        event.preventDefault()
-        this.props.action.ReduceStep('kyc_basic')
-      }
+
       if (event.keyCode === 13) {
         event.preventDefault()
         this.handleSubmit(event)
