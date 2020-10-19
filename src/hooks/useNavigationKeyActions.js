@@ -66,11 +66,15 @@ export default function useNavigationKeyActions(config) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.min(length, elementId)}`)
                 }
-                el && el.focus()
+                if(el) {
+                    el.focus()
+                    // event.preventDefault()
+                    // event.stopPropagation()
+                }
             }
         }
         return () => {
-            //window.onkeydown = false
+            window.onkeydown = false
         }
     }, [window.onkeydown, isModalVisible, items, loader, isModalRenderShowing, currentSelection])
 
@@ -129,8 +133,9 @@ export function useItemsInteractions(props, keyActions, modalRestriction = true)
                     suprKeyAction(() => element.focus())
                 }
                 if (event.keyCode === 13) {
-                    event.stopPropagation()
                     enterKeyAction()
+                    event.stopPropagation()
+                    event.preventDefault()
                 }
             }
         }

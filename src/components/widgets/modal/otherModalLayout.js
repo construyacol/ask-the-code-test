@@ -7,9 +7,11 @@ const OtherModalLayout = props =>{
   const {
     children,
     // close_modal,
-    on_click
+    on_click,
+    onkeydown,
+    id = 'render-modal-close-button'
   } = props
-  const idForCloseButton = useKeyActionAsClick(true, 'render-modal-close-button', 27, false, 'onkeyup', true)
+  const idForCloseButton = useKeyActionAsClick(true, id, 27, false, onkeydown ? 'onkeydown' : 'onkeyup', true)
 
   return(
     <section className={`Modal aparecer`}>

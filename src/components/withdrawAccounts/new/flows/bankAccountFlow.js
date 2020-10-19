@@ -302,12 +302,6 @@ class BankAccountFlow extends Component {
               {
                 step === 6 &&
                 <form
-                  onKeyPress={(e) =>{
-                    if (e.keyCode === 13) { 
-                      e.preventDefault();
-                      return false;
-                    }
-                  }}
                   className="formAccountFlow city"
                   onSubmit={final_step_create_account}
                 >

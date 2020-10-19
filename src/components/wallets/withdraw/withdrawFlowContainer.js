@@ -15,6 +15,7 @@ import withCoinsendaServices from '../../withCoinsendaServices'
 import { createSelector } from 'reselect'
 
 import './withdrawFlow.css'
+import withKeyActions from '../../withKeyActions'
 
 class WithdrawFlow extends Component {
   // Withdraw FIAT COMPONENT
@@ -41,46 +42,9 @@ class WithdrawFlow extends Component {
     this.props.action.CurrentForm('withdraw')
     this.init_config()
     this.props.history.push(`?form=withdraw_amount`)
-    this.keyActions() 
-  }
-
-  keyActions() {
-    document.onkeydown = (event) => {
-      // backspace
-      const {
-        show_list_accounts,
-        amount,
-        need_new_acount,
-        finish_step,
-        min_amount
-      } = this.state
-
-      const {
-        step,
-        available
-      } = this.props
-
-      if (event.keyCode === 13) {
-        event.preventDefault()
-
-        if (step === 1 && !show_list_accounts) {
-          if (!amount) {
-            return this.props.toastMessage('Ingrese un monto válido para avanzar', 'error')
-          }
-          if (amount && !(parseFloat(amount) >= parseFloat(min_amount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0)) {
-            return
-          }
-          return this.siguiente()
-        }
-        if (step >= 2 && !need_new_acount && finish_step) {
-          this.confirmar()
-        }
-      }
-    }
   }
 
   componentWillUnmount() {
-    document.onkeydown = false
     this.props.history.push(window.location.pathname)
   }
 
@@ -531,7 +495,8 @@ class WithdrawFlow extends Component {
     const {
       currency,
       available,
-      step
+      step,
+      idAccept
     } = this.props
 
     const {
@@ -554,6 +519,7 @@ class WithdrawFlow extends Component {
             (step === 1 && !show_list_accounts) &&
             <ViewAmountComponent
               currency={currency}
+              mainCtaId={idAccept}
               amount={amount}
               updateAmountOnState={this.updateAmountOnState}
               operation_type="withdraw"
@@ -709,4 +675,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(WithdrawFlow))
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(withKeyActions(WithdrawFlow, 'onkeyup')))
