@@ -56,18 +56,18 @@ const WithdrawViewState = () => {
     activity_for_account
   } = storage
 
-  const current_wallet = wallets[account_id]
+  const current_wallet = account_id && wallets[account_id]
 
   return [
     {
       user,
       current_wallet,
-      balance: balances[current_wallet.id],
+      balance: current_wallet && balances[current_wallet.id],
       withdrawProviders,
       withdraw_accounts,
       active_trade_operation,
       loader,
-      withdraws: activity_for_account[account_id] && activity_for_account[account_id].withdraws
+      withdraws: account_id && activity_for_account[account_id] && activity_for_account[account_id].withdraws
     },
     actions,
     dispatch

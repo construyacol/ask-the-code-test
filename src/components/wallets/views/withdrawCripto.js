@@ -72,6 +72,7 @@ export const CriptoView = () => {
       renderModal
     }, dispatch] = WithdrawViewState()
 
+
   const actions = useActions()
   const [toastMessage] = useToastMesssage()
 
@@ -203,7 +204,7 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={() => <AddressBookCTA/>}
+        AuxComponent={() => <AddressBookCTA provider_type={current_wallet.currency.currency}/>}
       />
 
       <InputForm

@@ -16,6 +16,17 @@ export const SentryCaptureException = error => {
 
 }
 
+export const setAnimation = (className, containerId, time) => {
+  const element = document.getElementById(containerId)
+  element.classList.add(className)
+  return new Promise((resolve, reject) => {
+    setTimeout(()=>{
+      resolve()
+      setTimeout(()=>{element.classList.remove(className)}, time+1)
+    }, time)
+  })
+}
+
 // simulate_click(document.getElementById(`${match[0].value}`), 'click');
 export const simulate_click = (el, etype) =>{
   // Función para simular click sobre el elemento (path country)
@@ -144,7 +155,7 @@ export const normalized_list = (activity_list, activity_type) => {
       [activity_type]: {
         ...list
       }
-    }    
+    }
 
     let normalizedUser = await normalizeUser(user_update)
     await dispatch(updateNormalizedDataAction(normalizedUser))
@@ -674,7 +685,7 @@ export function debounce(func, wait) {
 			timeout = null
 			func.apply(context, args)
     }
-    
+
 		clearTimeout(timeout);
 		timeout = setTimeout(later, wait);
 	}

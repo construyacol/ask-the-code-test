@@ -38,9 +38,9 @@ function ModalsSupervisor(props) {
             <ModalContainer condition={isModalVisible}>
                 <ModalLayout modalView={modalView} loader={loader} >
                     <Route exact strict path="/wallets" component={NewWallet} />
-                    <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
+                    {/* <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
                         return <TicketContainer {...renderProps} toastMessage={toastMessage} />
-                    }} />
+                    }} /> */}
                     <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
                     <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
                         return <DepositContainer {...renderProps} toastMessage={toastMessage} />
@@ -60,9 +60,9 @@ function ModalsSupervisor(props) {
                         <Route path="/" component={SocketNotify} />
                         :
                         <>
-                            <Route exact strict 
-                                path="/wallets/swap/:account_id" 
-                                render={(renderProps) => (<PairList {...renderProps} />)} 
+                            <Route exact strict
+                                path="/wallets/swap/:account_id"
+                                render={(renderProps) => (<PairList {...renderProps} />)}
                             />
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                         </>
@@ -78,7 +78,12 @@ function ModalsSupervisor(props) {
             <ModalContainer condition={RenderModal}>
               {
                 RenderModal &&
-                React.createElement(RenderModal)
+                <Route path={[
+                  "/:primary_path/:path/:account_id/:tx_path/:order_id",
+                  "/:primary_path/:path/:account_id",
+                  "/"
+                ]} component={RenderModal} />
+                // React.createElement(RenderModal)
               }
             </ModalContainer>
 

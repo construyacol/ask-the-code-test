@@ -3,91 +3,99 @@ import styled from 'styled-components'
 import { useActions } from '../../../../hooks/useActions'
 import OtherModalLayout from '../otherModalLayout'
 import backImg from './map.png'
+import InputForm from '../../inputs/inputForm'
 import { InputContainer } from '../../inputs/inputForm'
 import { FiSearch } from "react-icons/fi"
 import { Icon, Front, Top, CubeObject } from '../../shared-styles'
+import { createSelector } from 'reselect'
+import { useSelector } from "react-redux"
+import ControlButton from '../../buttons/controlButton'
+import { setAnimation } from '../../../../utils'
+import IconSwitch from '../../icons/iconSwitch'
+import WithdrawViewState from '../../../hooks/withdrawStateHandle'
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
-
-
-
-const withdrawAccounts = [
-    {
-      "userId": "5ecdad2dcdfb7400e187066b",
-      "currency": {
-          "currency": "bitcoin_testnet",
-          "is_token": false
-      },
-      "provider_type": "bitcoin_testnet",
-      "visible": true,
-      "info": {
-          "label": "bitcoin_testnet",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
-          "country": "colombia"
-      },
-      "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1526",
-      "created_at": "2020-08-18T12:27:52.861Z",
-      "updated_at": "2020-10-06T14:08:42.856Z"
-    },
-    {
-      "userId": "5ecdad2dcdfb7400e187066b",
-      "currency": {
-          "currency": "bitcoin_testnet",
-          "is_token": false
-      },
-      "provider_type": "bitcoin_testnet",
-      "visible": true,
-      "info": {
-          "label": "bitcoin_testnet",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
-          "country": "colombia"
-      },
-      "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1526",
-      "created_at": "2020-08-18T12:27:52.861Z",
-      "updated_at": "2020-10-06T14:08:42.856Z"
-    },
-    {
-      "userId": "5ecdad2dcdfb7400e187066b",
-      "currency": {
-          "currency": "bitcoin_testnet",
-          "is_token": false
-      },
-      "provider_type": "bitcoin_testnet",
-      "visible": true,
-      "info": {
-          "label": "Wallet bitcoin tesnet ssa",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
-          "country": "colombia"
-      },
-      "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1526",
-      "created_at": "2020-08-18T12:27:52.861Z",
-      "updated_at": "2020-10-06T14:08:42.856Z"
-    },
-    {
-      "userId": "5ecdad2dcdfb7400e187066b",
-      "currency": {
-          "currency": "bitcoin_testnet",
-          "is_token": false
-      },
-      "provider_type": "bitcoin_testnet",
-      "visible": true,
-      "info": {
-          "label": "bitcoin_testnet",
-          "address": "36mViVHvqC7Jxsd8u4ZBevCDQj8ugK2ohQssa",
-          "country": "colombia"
-      },
-      "used_counter": 2,
-      "id": "5f3bc94880d885001f4e1526",
-      "created_at": "2020-08-18T12:27:52.861Z",
-      "updated_at": "2020-10-06T14:08:42.856Z"
+const selectWithdrawAccounts = createSelector(
+  ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
+  (_, provider_type) => provider_type,
+  (withdraw_accounts, provider_type) => {
+  let res = []
+    for (const [_, withdraw_account] of Object.entries(withdraw_accounts)) {
+      withdraw_account.provider_type === provider_type && res.push(withdraw_account)
     }
-]
+    return res
+  }
+)
 
-const AddressBook = props => {
+
+const NewAccount = ({ provider_type }) => {
+
+  return(
+    <NewAccountContainer>
+      <ProviderTypeIcon>
+        <IconSwitch icon={provider_type} size={45}/>
+        <p className="fuente">{provider_type}</p>
+      </ProviderTypeIcon>
+      <Form>
+          <InputForm
+            classes="fuente"
+            type="text"
+            name="name-account"
+            label="Nombre de la cuenta"
+            autoFocus={true}
+            autoComplete="off"
+          />
+
+          <InputForm
+            classes="fuente2"
+            type="text"
+            name="address-account"
+            label={`Dirección ${provider_type}`}
+            autoComplete="off"
+          />
+      <ControlButtonContainer bottom={0}>
+        <ControlButton
+          label="Crear"
+          formValidate={false}
+        />
+      </ControlButtonContainer>
+      </Form>
+    </NewAccountContainer>
+  )
+}
+
+const Form = styled.form`
+  position: relative;
+
+`
+
+const ProviderTypeIcon = styled.div`
+    height: 100px;
+    justify-self:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+`
+
+const NewAccountContainer = styled.div`
+  display: grid;
+  height: 100%;
+  grid-template-rows: auto 1fr;
+  row-gap: 10px;
+
+  .labelText{
+    font-size: 15px;
+  }
+`
+
+const AddressBook = () => {
 
   const actions = useActions()
+  const [{ current_wallet }] = WithdrawViewState()
+  const provider_type = current_wallet.currency.currency
+  const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
+  const [ view, setView ] = useState('addressList')
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -95,43 +103,142 @@ const AddressBook = props => {
     }
   }
 
-  const handleAction = () => {
-
+  const switchView = async(payload) => {
+    await setAnimation('disappear', 'mainContainerAB', 150)
+    setView(payload)
+    await setAnimation('appear', 'mainContainerAB', 150)
   }
 
   return(
     <OtherModalLayout on_click={cerrar} >
       <ContainerLayout>
-        <HeaderComponent/>
-        <AddressBookComponent/>
+        <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
+        <Content id="mainContent">
+          <Container id="mainContainerAB" className={`${view}`}>
+          {
+            view === 'addressList' ?
+              <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
+            :
+            view === 'newAccount' &&
+              <NewAccount provider_type={provider_type}/>
+          }
+         </Container>
+        </Content>
       </ContainerLayout>
     </OtherModalLayout>
   )
 }
 
-const AddressBookComponent = props => {
+const HeaderComponent = ({ provider_type, view, switchView }) => {
+
+  const getTittle = view => {
+    switch (view) {
+      case 'newAccount':
+        return `Creando nueva cuenta`
+      default:
+        return `Agenda ${provider_type}`
+    }
+  }
+
+  const goBack = () => {
+    return switchView('addressList')
+  }
+
+  return(
+    <Header>
+      <section>
+        <WindowControl state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
+          <div>
+            <MdKeyboardArrowLeft size={27} color="white"/>
+          </div>
+        </WindowControl>
+        <p className="fuente titleHead">{getTittle(view)}</p>
+      </section>
+    </Header>
+  )
+}
+
+const WindowControl = styled.div`
+  div{
+    width: 35px;
+    height: 35px;
+    background: rgb(255, 255, 255, .3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+  }
+  overflow: hidden;
+  width: 0;
+  transition: .2s;
+  width: ${props => props.state === 'open' ? '45px' : '0px'};
+  opacity: ${props => props.state === 'open' ? '1' : '0'};
+  cursor:pointer;
+
+`
+
+const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
 
   const [ recentList, setRecentList ] = useState()
 
+  useEffect(()=>{
+    setTimeout(()=>{
+      let element = document.getElementById('listContainer')
+      element && element.classList.add('appear')
+    }, 100)
+  }, [])
+
   return(
-    <Content id="ContentWAList" className={``}>
-      {
+    <>
+      <InputContainers>
+        <Input height={52}>
+          <IconContainer>
+            <FiSearch size={25} color="#cecece"/>
+          </IconContainer>
+          <input
+            type="text"
+            className="inputElement"
+            placeholder="Buscar dirección"
+          />
+        </Input>
+      </InputContainers>
+      {/* {
         recentList &&
         <ListContainer className="fuente" data-title="Reciente">
           <p>proof</p>
         </ListContainer>
-      }
-      <ListContainer className="fuente" data-title="Direcciones">
+      } */}
+      <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
         {
           withdrawAccounts.map((item, index) => {
             return <ItemList key={index} item={item}/>
           })
         }
       </ListContainer>
-    </Content>
+      <ControlButtonContainer bottom={25}>
+        <ControlButton
+          label="Crear nueva cuenta"
+          formValidate
+          handleAction={() => switchView('newAccount')}
+        />
+      </ControlButtonContainer>
+    </>
   )
 }
 
+
+
+const ControlButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  left: 0;
+  display: grid;
+  bottom: ${props => `${props.bottom}px`}
+
+  #controlsContainer{
+    transform: scale(.95);
+  }
+`
 
 const ItemList = ({ item:{ id, info:{ address, label }} }) => {
 
@@ -144,8 +251,8 @@ const ItemList = ({ item:{ id, info:{ address, label }} }) => {
   const [ deleting, setDeleting ] = useState('')
   const deleteItem = payload => {
     setDeleting(payload)
-    const element = document.getElementById('ContentWAList')
-    element.classList.add(payload)
+    const element = document.getElementById('mainContent')
+    element && element.classList.add(payload)
     payload === 'unrotate' && element.classList.remove('rotate')
   }
 
@@ -158,9 +265,6 @@ const ItemList = ({ item:{ id, info:{ address, label }} }) => {
             <p className="fuente">
               {getAcronym()}
             </p>
-            <Icon className="fas fa-trash-alt tooltip" onClick={() => deleteItem('rotate')}>
-              <span className="tooltiptext fuente">Eliminar</span>
-            </Icon>
           </AcronymContainer>
           <ItemTextContainer>
             <p className="fuente label">{label}</p>
@@ -168,6 +272,11 @@ const ItemList = ({ item:{ id, info:{ address, label }} }) => {
               <Address className="fuente2 withdrawAddress" >{address}</Address>
             </AddressContainer>
           </ItemTextContainer>
+          <DeleteButton>
+            <Icon className="fas fa-trash-alt tooltip" onClick={() => deleteItem('rotate')}>
+              <span className="tooltiptext fuente">Eliminar</span>
+            </Icon>
+          </DeleteButton>
         </ItemListContainer>
       </Front>
       <Top>
@@ -179,6 +288,16 @@ const ItemList = ({ item:{ id, info:{ address, label }} }) => {
   )
 
 }
+
+const DeleteButton = styled.div`
+  border-radius: 50%;
+  position: absolute;
+  align-self: center;
+  transition: .15s;
+  right: 0;
+  display: grid;
+  opacity: 0;
+`
 
 
 const DeleteComponent = ({ handleAction }) => {
@@ -263,10 +382,6 @@ const AcronymContainer = styled.div`
     overflow: hidden;
     max-width: 40px;
   }
-
-  ${Icon}{
-    display: none;
-  }
 `
 
 const ItemListContainer = styled.div`
@@ -278,24 +393,14 @@ const ItemListContainer = styled.div`
     grid-template-columns: auto 1fr;
     column-gap: 15px;
     cursor: pointer;
+    transition: .2s;
+    opacity: .7;
+    position: relative;
     &:hover{
-      .label{
-        color: #b48728;
-      }
-      ${AcronymContainer}::after{
-          content: '';
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: rgb(255, 255, 255, 0.9);
-          top:0;
-          left:0;
-          transition: .3s;
-      }
-      ${Icon}{
-        position: absolute;
-        display: initial;
-        z-index: 11;
+      opacity: 1;
+      ${DeleteButton}{
+        right: 10px;
+        opacity: 1;
       }
     }
 `
@@ -365,27 +470,58 @@ const ItemTextContainer = styled.div`
   }
 `
 
+const Container = styled.div`
+  width: calc(100% - 30px);
+  height: calc(100% - 40px);
+  padding: 20px 15px;
+  transition:.15s;
+
+  &.addressList{
+    padding-top: 65px;
+    height: calc(100% - 85px);
+  }
+
+  &.newAccount{
+    padding: 35px 25px 25px;
+    width: calc(100% - 50px);
+    height: calc(100% - 60px);
+  }
+
+  &.disappear{
+    transform: translateY(22px);
+    opacity: 0;
+  }
+
+  &.appear{
+    transform: translateY(0px);
+    opacity: 1;
+  }
+
+`
+
 const Content = styled.div`
 
-  width: calc(100% - 30px);
-  height: calc(100% - 85px);
-  padding: 65px 15px 20px
+  width: 100%;
+  height: 100%;
   background: white;
   border-radius: 6px;
   position: relative;
+
+
 
   &.rotate::after{
     content: '';
     position: absolute;
     z-index: 10;
-    background: rgb(255, 255, 255, 0.9);
+    background: rgb(255, 255, 255, 0.85);
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    backdrop-filter: blur(1px);
+    backdrop-filter: blur(2px);
     border-radius: 6px;
     opacity: .8;
+    transition: .3s;
   }
 `
 
@@ -396,6 +532,27 @@ const ListContainer = styled.div`
   padding-top:25px;
   display: grid;
   grid-template-columns: 1fr;
+  opacity: 0;
+  transition: .15s;
+
+  &.appear{
+    opacity: 1;
+  }
+
+  ${'' /* animation-name: appear;
+  animation-delay: .15s;
+  animation-duration: .15s;
+  opacity: 0;
+
+  @keyframes appear{
+    0%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  } */}
+
   &::after{
     content: attr(data-title);
     position: absolute;
@@ -405,26 +562,6 @@ const ListContainer = styled.div`
     font-weight: bold;
   }
 `
-
-const HeaderComponent = props => {
-  return(
-    <Header>
-      <p className="fuente titleHead">Agenda</p>
-      <InputContainers>
-        <Input>
-          <IconContainer>
-            <FiSearch size={25} color="#cecece"/>
-          </IconContainer>
-          <input
-            type="text"
-            className="inputElement"
-            placeholder="Buscar dirección"
-          />
-        </Input>
-      </InputContainers>
-    </Header>
-  )
-}
 
 const IconContainer = styled.div`
   position: absolute;
@@ -437,16 +574,32 @@ const InputContainers = styled.div`
   justify-items: center;
   position: absolute;
   justify-self: center;
-  bottom: -35px;
+  top: -15px;
   width: 100%;
   z-index: 2;
+  left: 0;
 `
 
 const Input = styled(InputContainer)`
+  position: relative;
   max-width: 350px;
+  height: ${props => `${props.height}px` || 'auto'};
+  overflow: visible;
+
+  ${IconContainer} ~ input {
+    padding-left: 45px;
+  }
+
   input{
     font-size: 14px;
-    padding-left: 45px;
+  }
+
+  label{
+    position: absolute;
+    top: -25px;
+    left: 0;
+    font-size: 15px;
+    color: #383838;
   }
 `
 
@@ -457,10 +610,11 @@ const ContainerLayout = styled.div`
   max-height: 650px;
   display: grid;
   grid-template-rows: 80px 1fr;
+  transform-style: preserve-3d;
 `
 
 const Header = styled.div`
-  ${'' /* background: #0198FF; */}
+
   width: 97%;
   height: 100%;
   justify-self: center;
@@ -469,12 +623,27 @@ const Header = styled.div`
   position: relative;
   display: grid;
   align-items: center;
-  .titleHead{
+
+  section{
+    display: flex;
+    align-items: center;
     margin:0 0 0 15px;
+  }
+
+  p{
     font-size: 22px;
     color: white;
     font-weight: bold;
   }
+
+  p.appear{
+    opacity: 1;
+  }
+
+  p.disappear{
+    opacity: 0;
+  }
+
   background-image: url(${backImg});
         background-size: cover;
         background-repeat: no-repeat;
@@ -484,14 +653,15 @@ const Header = styled.div`
 
 
 
-const AddressBookCTA = props => {
+const AddressBookCTA = ({ provider_type }) => {
 
   const actions = useActions()
 
   const openAddressBook = async() => {
     // const Element = await import('../../../key-actions-documentation')
     // actions.renderModal(Element.default)
-    actions.renderModal(AddressBook)
+    const element = () => <AddressBook provider_type={provider_type}/>
+    actions.renderModal(element)
   }
 
   return(

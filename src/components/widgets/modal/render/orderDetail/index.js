@@ -30,7 +30,7 @@ const OrderSupervisor = () => {
       history.goBack()
     }
   }
-  
+
   const el = window
   useEffect(() => {
     el.onkeydown = (event) => {
