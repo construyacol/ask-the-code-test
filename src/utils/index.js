@@ -678,7 +678,7 @@ export function debounce(func, wait) {
 		const context = this, args = arguments;
 		const later = function() {
 			timeout = null
-			func.apply(context, args)
+			func.apply(context, [...args, () => clearTimeout(timeout)])
     }
     
 		clearTimeout(timeout);

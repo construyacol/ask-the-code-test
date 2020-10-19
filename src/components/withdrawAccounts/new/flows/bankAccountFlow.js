@@ -13,6 +13,7 @@ import actions from '../../../../actions'
 import { serveBankOrCityList, addIndexToRootObject, objectToArray } from '../../../../utils'
 import MVList from '../../../widgets/itemSettings/modal_views/listView'
 import { createSelector } from 'reselect'
+import withKeyActions from '../../../withKeyActions'
 
 // const dropDawnElements = [
 //   {name:'ahorro'},
@@ -43,64 +44,7 @@ class BankAccountFlow extends Component {
         value: "bank"
       }
     })
-    this.keyActions()
-  }
-
-  keyActions() {
-    document.onkeydown = (event) => {
-      const {
-        step,
-        handleSubmit,
-        final_step_create_account,
-        search,
-        siguiente,
-        id_type,
-        user,
-        id_number,
-        account_type,
-        account_number,
-        city,
-        finalizar,
-        action,
-        current,
-        withdraw_flow,
-        initPrevKeyActions,
-        bank_name
-      } = this.props
-
-      // enter
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        if (step === 6 && city) {
-          final_step_create_account(event)
-        }
-        if (step === 3 && search.length === 1 && bank_name) {
-          handleSubmit(event)
-        }
-        if (step === 4 && ((id_type && user.id_type === id_type) || (id_type && id_number))) {
-          handleSubmit(event)
-        }
-        if (step === 5 && (account_type && account_number !== '')) {
-          handleSubmit(event)
-        }
-        if (step === 2) {
-          siguiente()
-        }
-        if (step === 7) {
-          finalizar()
-        }
-        // event.preventDefault();
-      }
-    }
-  }
-
-  componentDidUpdate() {
-    this.keyActions()
-  }
-
-  componentWillUnmount() {
-    document.onkeydown = false
-  }
+  } 
 
   initComponent = async () => {
 
@@ -186,7 +130,8 @@ class BankAccountFlow extends Component {
       final_step_create_account,
       id_type,
       id_number,
-      user
+      user,
+      idAccept
     } = this.props
 
     const {
@@ -209,7 +154,7 @@ class BankAccountFlow extends Component {
             <p className="nBtextInit fuente"> Al añadir una cuenta bancaria para realizar tus retiros de pesos colombianos <strong>(COP)</strong>  por primera vez, tarda en promedio <strong>2 horas habiles</strong> a partir de su inscripción, para que esta sea aprobada por la entidad bancaria, una vez tu cuenta haya sido aprobada, tus retiros serán casi inmediatos</p>
 
             <div id="bankChooseButton">
-              <ButtonForms type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
+              <ButtonForms _id={idAccept} type="primary" active={true} siguiente={siguiente}>OK, comencemos</ButtonForms>
             </div>
 
           </div>
@@ -244,7 +189,7 @@ class BankAccountFlow extends Component {
               }
 
               <div id="bankChooseButton">
-                <InputButton label="Continuar" type="primary" active={search.length === 1 && bank_name !== ''} />
+                <InputButton id={idAccept} preventSubmit={true} label="Continuar" type="primary" active={search.length === 1 && bank_name !== ''} />
               </div>
 
             </form>
@@ -306,7 +251,7 @@ class BankAccountFlow extends Component {
                     </div>
 
                     <div id="bankChooseButton" className="contbuttonAccount">
-                      <InputButton label="Continuar" type="primary"
+                      <InputButton id={idAccept} preventSubmit={true} label="Continuar" type="primary"
                         active={(id_type && user.id_type === id_type) || (id_type && id_number)}
                       />
                     </div>
@@ -348,7 +293,7 @@ class BankAccountFlow extends Component {
 
                   </div>
                   <div id="bankChooseButton" className="contbuttonAccount">
-                    <InputButton label="Continuar" type="primary" active={account_type && account_number} />
+                    <InputButton id={idAccept} preventSubmit={true} label="Continuar" type="primary" active={account_type && account_number} />
                   </div>
 
                 </form>
@@ -357,6 +302,12 @@ class BankAccountFlow extends Component {
               {
                 step === 6 &&
                 <form
+                  onKeyPress={(e) =>{
+                    if (e.keyCode === 13) { 
+                      e.preventDefault();
+                      return false;
+                    }
+                  }}
                   className="formAccountFlow city"
                   onSubmit={final_step_create_account}
                 >
@@ -373,7 +324,7 @@ class BankAccountFlow extends Component {
                   </div>
                   <div className="momContbuttonAccount">
                     <div id="bankChooseButton" className="contbuttonAccount">
-                      <InputButton label="Crear cuenta" type="primary" active={city} />
+                      <InputButton id={idAccept} preventSubmit={true} label="Crear cuenta" type="primary" active={city} />
                     </div>
                   </div>
 
@@ -417,4 +368,4 @@ function mapStateToProps(state) {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BankAccountFlow)
+export default connect(mapStateToProps, mapDispatchToProps)(withKeyActions(BankAccountFlow))

@@ -183,6 +183,8 @@ export const InputButton = (props) => {
 
   return (
     <div className="InputButton" >
+      {props.preventSubmit && 
+      <input style={{ opacity: 0, width: 0, height: 0, display: 'none' }} type="submit" disabled={true} />}
       {
         props.active ?
           <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />

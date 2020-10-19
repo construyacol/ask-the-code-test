@@ -76,14 +76,16 @@ export default function useKeyActionAsClick(
      * @param {Event} event evento de tipo keyEvent
      * @returns doClick fn | boolean
      */
-    const onKeyEventFn = (event) => {
+    const onKeyEventFn = (event, _doBreak) => {
         // verifica que no este algun modal abierto
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
         
         // si existe el KEY_CODES_META y el Evento actual
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
             // recorre los eventos guardados
+            let doBrake = false
             Object.keys(window.KEY_CODES_META[eventName]).map(id => {
+                if(doBrake) return typeof _doBreak === 'function' && _doBreak()
                 // busca el elemento a Clickear
                 const element = document.getElementById(id)
                 if(!element) return false
@@ -102,8 +104,10 @@ export default function useKeyActionAsClick(
                     }
                     if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
                         doClick(id, event)
+                        doBrake = true
                     } else {
                         doClick(id, event)
+                        doBrake = true
                     }
                     return false
                 }
