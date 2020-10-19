@@ -15,9 +15,9 @@ export const ButtonSuccess = (props) => {
     cta_secondary,
     id
   } = props
-  const _id = id || (cta_secondary ? 'secondary' : 'pre-finalizar-button')
+
   return (
-    <div id={_id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
+    <div id={id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
       {props.children}
     </div>
   )
@@ -235,13 +235,13 @@ export const PaymentConfirButton = (props) => {
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // Siguiente: evento a enlazar el boton
 
-  const { clases, label, type, cenVert, siguiente } = props
+  const { clases, label, type, cenVert, siguiente, id } = props
 
   return (
-    <div className={`contButton ${clases}`} id={`ALconfirmButton`} data-is_confirm_deposit>
+    <div className={`ALconfirmButton contButton ${clases}`} data-is_confirm_deposit>
       {
         props.active ?
-          <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
+          <div id={id} className={`paymentConfirButton botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
             <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
               <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
               <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>

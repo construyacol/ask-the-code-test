@@ -1,51 +1,21 @@
-import React, { Component, Fragment } from 'react'
+import React, { useEffect, useState } from 'react'
 import IconSwitch from '../../../widgets/icons/iconSwitch'
 import { ButtonSuccess } from '../../../widgets/buttons/buttons'
 
 import '../../../widgets/ticket/ticket.css'
 import './finalTicket.css'
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
 
-class FinalTicket extends Component {
+function FinalTicket(props) {
+  const [current_ticket, setCurrentTicket] = useState(null)
+  const idCancelButton = useKeyActionAsClick(true, 'cancel-button-ticket', 8, false, 'onkeyup', true)
+  const idFinalizarButton = useKeyActionAsClick(true, 'finalizar-button-ticket', 13, false, 'onkeyup', true)
 
-  // ticket  //Objetito con los parametros a mostrar en el componente
-  // finishAction,  //Metodo que se asignara al call to action primario
-  // cta_primary_label  //Texto del cta primary
-  // cta_secondary,  // boolean para definir si el ticket tiene call to action secundario
-  // cta_secondary_label  // Texto del cta secondary
-  // cta_secondary_action: //Metodo asignado para el cta secondary  ej:cancelar - volver etc...
-
-  state = {
-    current_ticket: null
-  }
-
-  componentDidMount() {
-    this.composeMethod()
-    this.keyActions()
-  }
-
-  keyActions() {
-    setTimeout(() => {
-      window.onkeydown = false
-    }, 0)
-    document.onkeydown = (event) => {
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        document.getElementById('cancel') && document.getElementById('cancel').click()
-      }
-      if (event.keyCode === 13) {
-        document.getElementById('pre-finalizar-button') && document.getElementById('pre-finalizar-button').click()
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    document.onkeydown = false
-  }
-
-  composeMethod = async () => {
+  const composeMethod = async () => {
     const {
       ticket,
       ticket_type
-    } = this.props
+    } = props
 
     let new_ticket = []
 
@@ -90,73 +60,67 @@ class FinalTicket extends Component {
             id: 5
           }
         ]
-        return this.setState({ current_ticket: new_ticket })
+        return setCurrentTicket(new_ticket)
       default:
-        return this.setState({ current_ticket: ticket })
+        return setCurrentTicket(ticket)
     }
   }
 
-  render() {
-    const {
-      finishAction,
-      cta_primary_label,
-      cta_secondary,
-      cta_secondary_label,
-      cta_secondary_action
-    } = this.props
+  useEffect(() => {
+    composeMethod()
+  }, [])
 
-    // const {
-    //   state
-    // } = ticket
+  const {
+    finishAction,
+    cta_primary_label,
+    cta_secondary,
+    cta_secondary_label,
+    cta_secondary_action
+  } = props
 
-    const atributos = {
-      icon: "success",
-      size: 75,
-      color: "white"
-    }
-
-    const {
-      current_ticket
-    } = this.state
-
-    return (
-      <div className="finalTicket TicketDetail">
-        {
-          current_ticket &&
-          <Fragment>
-
-            <div className="finalTicket ticketHeader">
-              <IconSwitch
-                {...atributos}
-              />
-              <h1 className="fuente finalTicket TicketTitle">Operación exitosa</h1>
-            </div>
-
-            <div className="finalTicket contenidoTicket">
-              {
-                current_ticket.map(ticket => {
-                  return (<ItemTicket key={ticket.id} {...ticket} />)
-                })
-              }
-            </div>
-
-            {/* cta_primary_label */}
-            {/* cta_secondary */}
-            {/* cta_secondary_label */}
-            {/* cta_secondary_action */}
-            <div className="nWcta2" style={{ gridTemplateColumns: cta_secondary ? 'repeat(2, 1fr)' : '1fr', width: cta_secondary ? '400px' : 'auto' }}>
-              {
-                cta_secondary &&
-                <ButtonSuccess id='cancel' cta_secondary={true} toggleModal={cta_secondary_action}>{cta_secondary_label ? cta_secondary_label : 'Cancelar'}</ButtonSuccess>
-              }
-              <ButtonSuccess toggleModal={finishAction}>{cta_primary_label ? cta_primary_label : 'Finalizar'}</ButtonSuccess>
-            </div>
-
-          </Fragment>
-        }
-      </div>
-    )
+  const atributos = {
+    icon: "success",
+    size: 75,
+    color: "white"
   }
+
+  return (
+    <div className="finalTicket TicketDetail">
+      {
+        current_ticket &&
+        <>
+          <div className="finalTicket ticketHeader">
+            <IconSwitch
+              {...atributos}
+            />
+            <h1 className="fuente finalTicket TicketTitle">Operación exitosa</h1>
+          </div>
+
+          <div className="finalTicket contenidoTicket">
+            {
+              current_ticket.map(ticket => {
+                return (<ItemTicket key={ticket.id} {...ticket} />)
+              })
+            }
+          </div>
+
+          {/* cta_primary_label */}
+          {/* cta_secondary */}
+          {/* cta_secondary_label */}
+          {/* cta_secondary_action */}
+          <div className="nWcta2" style={{ gridTemplateColumns: cta_secondary ? 'repeat(2, 1fr)' : '1fr', width: cta_secondary ? '400px' : 'auto' }}>
+            {
+              cta_secondary &&
+              <ButtonSuccess id={idCancelButton} cta_secondary={true} toggleModal={cta_secondary_action}>{cta_secondary_label ? cta_secondary_label : 'Cancelar'}</ButtonSuccess>
+            }
+            <ButtonSuccess id={idFinalizarButton} toggleModal={finishAction}>{cta_primary_label ? cta_primary_label : 'Finalizar'}</ButtonSuccess>
+          </div>
+
+        </>
+      }
+    </div>
+  )
+
 }
 
 export default FinalTicket

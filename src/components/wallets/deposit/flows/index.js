@@ -21,12 +21,13 @@ export const TransferFlow = (props) => {
     buttonActive,
     update_service_mode,
     service_mode,
-    create_deposit_order
+    create_deposit_order,
+    idForAcceptButtonInDepositView
   } = props
 
 
 
-  return(
+  return (
     <section className="DepositLayout" >
       {/* {
         (step === 3 && deposit_way === "bankaccount") &&
@@ -54,22 +55,23 @@ export const TransferFlow = (props) => {
 
       {
         (step === 3 && deposit_way === "bankaccount") &&
-          <ModalityView
-            title="Haré la transferencia"
-            subtitle="Por medio de:"
-            items={service_modes}
-            update_service_mode={update_service_mode}
-            service_mode={service_mode}
-            buttonActive={buttonActive}
-            deposit_service={deposit_service}
-            create_deposit_order={create_deposit_order}
-          />
+        <ModalityView
+          title="Haré la transferencia"
+          subtitle="Por medio de:"
+          items={service_modes}
+          update_service_mode={update_service_mode}
+          service_mode={service_mode}
+          buttonActive={buttonActive}
+          deposit_service={deposit_service}
+          create_deposit_order={create_deposit_order}
+        />
       }
 
       {
         (step === 4 && deposit_way === "bankaccount") &&
 
         <Success
+          idForAcceptButtonInDepositView={idForAcceptButtonInDepositView}
           {...props}
         />
       }
@@ -104,29 +106,31 @@ export const CashFlow = (props) => {
     update_local_state,
     buttonActive,
     create_deposit_order,
+    idForAcceptButtonInDepositView
   } = props
 
-  return(
+  return (
     <section className="DepositLayout" >
-        {
-          (step === 3 && deposit_way === "cash") &&
-          <ModalityView
-            title="Haré el deposito por:"
-            items={cash_payment}
-            update_service_mode={update_local_state}
-            service_mode={short_bank_name}
-            buttonActive={buttonActive}
-            deposit_service={deposit_service}
-            create_deposit_order={create_deposit_order}
-          />
-        }
+      {
+        (step === 3 && deposit_way === "cash") &&
+        <ModalityView
+          title="Haré el deposito por:"
+          items={cash_payment}
+          update_service_mode={update_local_state}
+          service_mode={short_bank_name}
+          buttonActive={buttonActive}
+          deposit_service={deposit_service}
+          create_deposit_order={create_deposit_order}
+        />
+      }
 
-        {
-          (step === 4 && deposit_way === "cash") &&
-                <Success
-                  {...props}
-                />
-        }
+      {
+        (step === 4 && deposit_way === "cash") &&
+        <Success
+          idForAcceptButtonInDepositView={idForAcceptButtonInDepositView}
+          {...props}
+        />
+      }
     </section>
   )
 }
@@ -144,11 +148,7 @@ export const CashFlow = (props) => {
 
 
 
-const Success = (props) =>{
-
-
-
-
+const Success = (props) => {
   const {
     loader,
     deposit_way,
@@ -157,30 +157,24 @@ const Success = (props) =>{
     final,
     finalButton,
     step,
-    new_ticket
+    new_ticket,
+    idForAcceptButtonInDepositView
   } = props
 
   // console.log('|||||||||||||| °°°°° MODALSUCCESS', atributos)
-    useEffect(() => {
-      window.onkeydown = false
-      setTimeout(() => {
-        window.onkeydown = false
-        return false
-      }, 500)
-    }, [window.onkeydown, finalizar, finalButton])
 
-    return(
-      <div id="DLstep2" className={`DLstep ${(step === 4 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
-        {
-          loader ?
+  return (
+    <div id="DLstep2" className={`DLstep ${(step === 4 || (step === 4 && deposit_way === "cash")) ? 'DLstep2' : ''}`}>
+      {
+        loader ?
           <Fragment>
-              <div></div>
+            <div></div>
             <SimpleLoader
               label={`Creando orden de deposito`}
             />
           </Fragment>
 
-              :
+          :
 
           // <section className={`stepFinish ${final ? 'cambiarGrid': ''}`}>
           <Fragment>
@@ -196,27 +190,27 @@ const Success = (props) =>{
                   <g fill="none" stroke="white" strokeWidth="3">
                     <circle cx="36" cy="36" r="35"></circle>
                     <path className="check" d="M17.417,37.778l9.93,9.909l25.444-25.393"></path>
-                   </g>
+                  </g>
                 </svg>
               </div>
               <p className="titleWhite fuente"> Operación Exitosa</p>
             </div>
 
 
-        <div className="asaras">
-             <div style={{marginTop: '-20%', zIndex: 999}} className={`${final ? 'apareces1': ''} nWbody2 Fbody2 FlowCont fuente DLmessage`}>
+            <div className="asaras">
+              <div style={{ marginTop: '-20%', zIndex: 999 }} className={`${final ? 'apareces1' : ''} nWbody2 Fbody2 FlowCont fuente DLmessage`}>
                 <div className="FolowTexts" >
                   <p className="fuente Fimportant" >¡IMPORTANTE!</p>
                   <p className="Ftexto fuente ">Una vez realizado el deposito bancario debes confirmar la transacción con una fotografía del <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la orden de pago</p>
-                  <img className="tocatoca" src={proof} alt="" width="34%"/>
+                  <img className="tocatoca" src={proof} alt="" width="34%" />
                 </div>
-             </div>
+              </div>
 
 
-          <div className={`nWbody2 DLbody2 Fbody2 eya fuente ${final ? 'desaparece1' : ''}`}>
-              <div className="nBitemSuccesss">
-                <p className="fuente" >Debes depositar por:</p>
-                <div className="fuente" >
+              <div className={`nWbody2 DLbody2 Fbody2 eya fuente ${final ? 'desaparece1' : ''}`}>
+                <div className="nBitemSuccesss">
+                  <p className="fuente" >Debes depositar por:</p>
+                  <div className="fuente" >
                     <div className="DLicontainer" >
 
                       {/* <img className="DLimg2" src={require(`../../../widgets/items/assets/${deposit_way === 'cash' ? 'remittance' : 'bank'}/${short_bank_name}.png`)} alt="" width="30"/> */}
@@ -224,28 +218,28 @@ const Success = (props) =>{
                       <IconSwitch icon={deposit_service.toLowerCase()} size={25} />
 
                     </div>
+                  </div>
                 </div>
-              </div>
 
-              {
-                new_ticket &&
-                <TicketDetail ticket={new_ticket} only_detail={true} type_order="deposit" />
-              }
-          </div>
-        </div>
+                {
+                  new_ticket &&
+                  <TicketDetail id={idForAcceptButtonInDepositView} ticket={new_ticket} only_detail={true} type_order="deposit" />
+                }
+              </div>
+            </div>
 
             <div id="nWcta" className="nWcta" >
               {
                 finalButton ?
-                <ButtonSuccess2 toggleModal={finalizar}>Finalizar</ButtonSuccess2>
-                :
-                <ButtonSuccess toggleModal={finalizar}>Finalizar</ButtonSuccess>
+                  <ButtonSuccess2 id={idForAcceptButtonInDepositView} toggleModal={finalizar}>Finalizar</ButtonSuccess2>
+                  :
+                  <ButtonSuccess id={idForAcceptButtonInDepositView} toggleModal={finalizar}>Finalizar</ButtonSuccess>
               }
             </div>
-            </Fragment>
-          // </section>
-        }
+          </Fragment>
+        // </section>
+      }
 
-      </div>
-    )
+    </div>
+  )
 }

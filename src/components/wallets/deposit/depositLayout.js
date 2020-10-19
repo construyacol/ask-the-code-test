@@ -8,6 +8,7 @@ import { TransferFlow, CashFlow } from './flows'
 import ItemWallet from '../../widgets/accountList/items'
 import MethodView from '../../withdrawAccounts/new/views/1method'
 import ViewAmountComponent from '../views/viewAmount'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 const DepositLayout = (props) => {
@@ -34,6 +35,8 @@ const DepositLayout = (props) => {
     coins,
     deposit_providers
   } = props
+  const idForAcceptButtonInDepositView =
+    useKeyActionAsClick(true, 'accept-deposit-view-modal', 13, false, 'onkeyup', true)
 
   // console.log('|||||||||||| deposit Layout ===> ', currency)
 
@@ -56,7 +59,7 @@ const DepositLayout = (props) => {
               }
             </div>
           </div>
-          <ButtonForms type="primary" active={buttonActive} siguiente={primerDeposito}>Continuar</ButtonForms>
+          <ButtonForms _id={idForAcceptButtonInDepositView} type="primary" active={buttonActive} siguiente={primerDeposito}>Continuar</ButtonForms>
         </div>
       }
 
@@ -107,6 +110,7 @@ const DepositLayout = (props) => {
               :
               <ViewAmountComponent
                 currency={currency}
+                mainCtaId={idForAcceptButtonInDepositView}
                 amount={amount}
                 updateAmountOnState={updateAmountOnState}
                 operation_type="deposit"
@@ -127,6 +131,7 @@ const DepositLayout = (props) => {
           select_method={select_deposit_way}
           item_active={deposit_way}
           siguiente={siguiente}
+          idForAcceptButtonInDepositView={idForAcceptButtonInDepositView}
         />
 
       }
@@ -136,6 +141,7 @@ const DepositLayout = (props) => {
       {
         deposit_way === "bankaccount" &&
         <TransferFlow
+          idForAcceptButtonInDepositView={idForAcceptButtonInDepositView}
           {...props}
         />
       }
@@ -156,6 +162,7 @@ const DepositLayout = (props) => {
       {
         deposit_way === "cash" &&
         <CashFlow
+          idForAcceptButtonInDepositView={idForAcceptButtonInDepositView}
           {...props}
         />
       }

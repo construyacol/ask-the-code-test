@@ -1,4 +1,4 @@
-.itemMenu{
+.itemMenu {
   width: calc(100% - 28px);
   height: 48px;
   padding: 0 14px;
@@ -8,13 +8,13 @@
   color: #d6d6d6;
   text-decoration: none;
   font-size: 15px !important;
-  cursor:pointer;
+  cursor: pointer;
   transition: .3s;
   border-left: 2px solid transparent;
   opacity: 1;
 }
 
-.iconButtCont{
+.iconButtCont {
   position: relative;
 }
 
@@ -24,12 +24,12 @@
   left: 5px;
 }
 
-.itemText{
+.itemText {
   margin-left: 10px;
   font-size: 16px;
 }
 
-.indicatorCont{
+.indicatorCont {
   border-radius: 50%;
   height: 20px;
   width: 20px;
@@ -38,10 +38,10 @@
 
 
 
-.indicator{
+.indicator {
   background: #224F65;
   transform: scale(0);
-  transition:    .3s;
+  transition: .3s;
   height: 20px;
   width: 20px;
   border-radius: 50%;
@@ -50,7 +50,7 @@
   justify-content: center;
 }
 
-.indicatorSon{
+.indicatorSon {
   transition: .5s;
   height: 10px;
   width: 10px;
@@ -59,63 +59,65 @@
   transform: scale(0);
 }
 
-.itemMenu:hover .indicatorSon{
+.itemMenu:hover .indicatorSon {
   transform: scale(.5);
 }
 
-.itemMenu:hover .indicator{
+.itemMenu:hover .indicator {
   transform: scale(.5);
 }
 
 
-.itemMenu:hover{
+.itemMenu:hover {
   opacity: 1;
 }
 
-.text{
+.text {
   display: flex;
   align-items: center;
 }
 
-.closeModalButtonCont, .closeModalButtonBack{
+.closeModalButtonCont,
+.closeModalButtonBack {
   height: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  grid-template-rows:repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   width: 60px;
   position: absolute;
   right: 5px;
   top: 0px;
-  cursor:pointer;
+  cursor: pointer;
   /*color: gray;*/
   transition: .1s;
 }
-.closeModalButtonBack{
+
+.closeModalButtonBack {
   left: 5px !important;
   right: inherit !important;
 }
 
 
-.closeModalButtonCont:hover{
-transform: scale(1.1);
+.closeModalButtonCont:hover {
+  transform: scale(1.1);
 }
 
-.closeModalButtonBack:hover{
-transform: scale(1.1);
+.closeModalButtonBack:hover {
+  transform: scale(1.1);
 }
 
-.closeModalButtonBack p{
-    margin: 0 !important;
+.closeModalButtonBack p {
+  margin: 0 !important;
 }
 
-.closeModalButtonCont p{
-    margin: 0 !important;
+.closeModalButtonCont p {
+  margin: 0 !important;
 }
 
 
-.activo{
+.activo {
   background: #192026;
   color: #14B3F0 !important;
   border-left: 2px solid #14B3F0 !important;
@@ -123,48 +125,49 @@ transform: scale(1.1);
 
 
 .itemMenu.activate {
-    color: #14B3F0 !important;
-    border-left: 2px solid #14B3F0 !important;
+  color: #14B3F0 !important;
+  border-left: 2px solid #14B3F0 !important;
 }
+
 .itemMenu.activo {
   opacity: 1;
 }
 
 
-.indicatorSon.activate{
+.indicatorSon.activate {
   transform: scale(0.8);
 }
 
-.indicator.activate{
+.indicator.activate {
   transform: scale(0.8);
 }
 
-.CMControls{
+.CMControls {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.primary{
+.primary {
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
-.secundary{
+.secundary {
   background: white;
-  border:2px solid #3A7BD5;
+  border: 2px solid #3A7BD5;
   color: #3A7BD5 !important;
   font-weight: bold;
   /*width: calc(170px - 2px);*/
   /*height: calc(50px - 2px);*/
 }
 
-.desactivado{
+.desactivado {
   background: #8080807d;
   color: white;
   opacity: 0.4;
 }
 
-.AddNewItemContainer.confirmed{
+.AddNewItemContainer.confirmed {
   border: none !important;
   animation-name: buttonConf;
   animation-duration: 1s;
@@ -172,26 +175,29 @@ transform: scale(1.1);
   animation-timing-function: ease-in-out;
 }
 
-.AddNewItemContainer p, .AddNewItemContainer i{
+.AddNewItemContainer p,
+.AddNewItemContainer i {
   color: white !important;
 }
 
 
 
-@keyframes buttonConf{
-  0%{
+@keyframes buttonConf {
+  0% {
     opacity: 1;
   }
-  50%{
+
+  50% {
     opacity: .6;
   }
-  100%{
+
+  100% {
     opacity: 1;
   }
 }
 
 
-.filtrear{
+.filtrear {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -214,16 +220,15 @@ transform: scale(1.1);
   animation-timing-function: ease-in-out;
 }*/
 
-@keyframes llenarhuevos{
-  50%{
-  }
+@keyframes llenarhuevos {
+  50% {}
 
-  100%{
+  100% {
     width: 100%;
   }
 }
 
-.sucky{
+.sucky {
   position: relative;
   background: #d2d2d2;
   color: #909090 !important;
@@ -232,32 +237,32 @@ transform: scale(1.1);
 }
 
 
-.suck{
+.suck {
   position: relative;
   background: #FFFFFF;
   color: #129A8E !important;
   font-weight: bold;
   font-size: 20px;
-  -webkit-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
--moz-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
-box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
+  -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.24);
+  box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.24);
 }
 
-#secondary{
+#secondary {
   border: 2px solid white !important;
 }
 
-.botonForm.secondary{
+.botonForm.secondary {
   background: transparent;
   color: white !important;
   transform: scale(0.95);
 }
 
-.cenVert .botonForm{
+.cenVert .botonForm {
   width: 200px !important;
 }
 
-.SelectCountryButton{
+.SelectCountryButton {
   cursor: pointer;
   display: grid;
   grid-template-columns: auto 1fr;
@@ -267,46 +272,46 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   padding: 0 12px;
 }
 
-.SelectCountryButton.rigth{
+.SelectCountryButton.rigth {
   border-right: 1px solid #c5c5c5;
 }
 
-.SelectCountryButton.left{
+.SelectCountryButton.left {
   border-left: 1px solid #c5c5c5;
 }
 
-.SelectCountryButton.bottom{
+.SelectCountryButton.bottom {
   border-bottom: 1px solid #c5c5c5;
 }
 
-.SelectCountryButton.top{
+.SelectCountryButton.top {
   border-top: 1px solid #c5c5c5;
 }
 
-.countryTextSelect{
- display: grid;
- width: auto;
- transition: .3s;
- grid-template-columns: auto 1fr;
- grid-column-gap: 7px;
+.countryTextSelect {
+  display: grid;
+  width: auto;
+  transition: .3s;
+  grid-template-columns: auto 1fr;
+  grid-column-gap: 7px;
 }
 
-.SelectCountryButton:hover .contTextCountryButton{
+.SelectCountryButton:hover .contTextCountryButton {
   width: 90px;
 }
 
-.countryTextSelect:hover p{
-  color:#14B3F0 !important;
+.countryTextSelect:hover p {
+  color: #14B3F0 !important;
   /*color: #37ED7D;*/
 }
 
-.contTextCountryButton{
+.contTextCountryButton {
   width: 0;
   transition: .3s;
   overflow: hidden;
 }
 
-.contTextCountryButton p{
+.contTextCountryButton p {
   margin: 0;
   width: 90px;
   color: white;
@@ -314,17 +319,17 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   text-align: center;
 }
 
-.SelectCountryButton i{
+.SelectCountryButton i {
   color: white;
 }
 
-.SelectCountryButton:hover i{
-  color:#14B3F0 !important;
+.SelectCountryButton:hover i {
+  color: #14B3F0 !important;
   /*color: #37ED7D !important;*/
 }
 
 
-.contButton{
+.contButton {
   justify-self: center;
   display: grid;
   justify-items: center;
@@ -334,7 +339,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 }
 
 
-.contButton.loader{
+.contButton.loader {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -343,13 +348,13 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 }
 
 
-.botonForm{
+.botonForm {
   max-width: 300px;
   width: auto;
   /*height: 30px !important;*/
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   border-radius: 6px;
   color: white;
   cursor: pointer;
@@ -360,78 +365,78 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   /*box-sizing: initial !important;*/
 }
 
-.botonForm.swap .lds-roller{
+.botonForm.swap .lds-roller {
   align-self: center;
   justify-self: center;
 }
 
-.botonForm.swap{
- position: relative;
+.botonForm.swap {
+  position: relative;
 }
 
 
-.botonForm.loader{
+.botonForm.loader {
   opacity: 0.6;
 }
 
 
 .botonForm.swap .lds-roller div:after {
-    background: white;
+  background: white;
 }
 
 
 
-.botonForm2 p{
-    margin: 0 !important;
+.botonForm2 p {
+  margin: 0 !important;
 }
 
 
-.botonForm p{
-    margin: 0 !important;
+.botonForm p {
+  margin: 0 !important;
 }
 
-.step1{
+.step1 {
   display: grid;
   height: 100%;
 }
 
 
-.InputButton{
+.InputButton {
   align-self: flex-end;
   justify-self: center;
 }
 
-.ItemSelected{
+.ItemSelected {
   height: 100px;
   width: 450px;
 }
 
-.large{
+.large {
   width: 200px !important;
-  align-self:center !important;
+  align-self: center !important;
 }
 
-.ItemSelectedButton{
+.ItemSelectedButton {
   width: 430px;
   height: 45px;
   position: relative;
-  border-radius:6px;
+  border-radius: 6px;
   transition: .3s;
   padding: 0 10px;
   display: flex;
   align-items: center;
   color: #3A7BD5;
-  border:1px solid #50667a61;
+  border: 1px solid #50667a61;
 }
 
 
-.ItemSelectedButton i{
+.ItemSelectedButton i {
   display: grid;
   align-items: center;
 }
 
 
-.itemClose{
+.itemClose {
   position: absolute;
   font-size: 20px;
   color: #3A7BD5;
@@ -444,34 +449,34 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   transform: scale(1);
 }
 
-.itemClose:hover{
+.itemClose:hover {
   transform: scale(1.1);
 }
 
 
-.buttonsP{
+.buttonsP {
   margin: 15px 0;
   text-align: center;
   transition: .3s;
   color: #50667a;
 }
 
-.buttonActivated{
- border:1px solid #00D2FF !important;
+.buttonActivated {
+  border: 1px solid #00D2FF !important;
 }
 
-.AddNewItem p{
- margin: 0 !important;
- text-align: center;
- font-size: 17px;
+.AddNewItem p {
+  margin: 0 !important;
+  text-align: center;
+  font-size: 17px;
 }
 
-.AddNewItem i{
+.AddNewItem i {
   margin-right: 7px !important;
 }
 
 
-.AddNewItem{
+.AddNewItem {
   position: relative;
   z-index: 3;
   font-size: 20px;
@@ -488,7 +493,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   justify-content: center;
 }
 
-.BbackgroundAddNew{
+.BbackgroundAddNew {
   display: none;
   width: 100%;
   height: 100%;
@@ -498,13 +503,13 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 }
 
 
-.AddNewItem.primary{
+.AddNewItem.primary {
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
 
 
-.AddNewItemContainer{
+.AddNewItemContainer {
   width: calc(100% - (19vw - 30px));
   height: 80px;
   /*position: fixed;*/
@@ -527,49 +532,52 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-#ALconfirmButton:hover .ALbuttonTextSpan{
+.ALconfirmButton:hover .ALbuttonTextSpan {
   transform: translateX(0px);
   font-weight: bold;
   color: #1cb179 !important;
 }
-#ALconfirmButton:hover .confirmIcon{
+
+.ALconfirmButton:hover .confirmIcon {
   transform: translateY(0px);
   opacity: 1 !important;
 }
 
-#ALconfirmButton:hover .botonForm {
-    border: 2px solid #1cb179 !important;
+.ALconfirmButton:hover .botonForm {
+  border: 2px solid #1cb179 !important;
 }
+
 /*
-#ALconfirmButton .botonForm {
+.ALconfirmButton .botonForm {
     border: 2px;
 }*/
 
-.TicketDetail .botonForm{
+.TicketDetail .botonForm {
   border: 2px solid #1cb179 !important;
   font-weight: bold;
 }
 
-.TicketDetail .ALbuttonTextSpan{
+.TicketDetail .ALbuttonTextSpan {
   font-size: 16px !important;
   color: #1cb179 !important;
 }
 
-.TicketDetail #confirmIcon{
+.TicketDetail #confirmIcon {
   font-size: 16px !important;
 }
-.TicketDetail .confirmButton>div{
+
+.TicketDetail .confirmButton>div {
   height: 55px !important;
 }
 
-.TicketDetail .confirmButton{
+.TicketDetail .confirmButton {
   height: 60px !important;
 }
 
 
 
 
-.confirmButton>div{
+.confirmButton>div {
   /*width: 100px;*/
   padding: 0 15px !important;
   font-size: 14px !important;
@@ -578,12 +586,12 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   color: gray;
 }
 
-.ItemList:hover .confirmButton>div{
+.ItemList:hover .confirmButton>div {
   border: 2px solid #1cb179 !important;
 }
 
 
-.ItemList:hover .confirmButton{
+.ItemList:hover .confirmButton {
   animation-name: rotaloPerro2;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
@@ -591,7 +599,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 }
 
 
-.confirmButton{
+.confirmButton {
   margin: 0 !important;
   height: 50px;
   display: flex;
@@ -603,13 +611,13 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-.ALbuttonActive .ALbuttonTextSpan{
+.ALbuttonActive .ALbuttonTextSpan {
   font-weight: bold;
   color: #1cb179 !important;
 }
 
 
-.ALbuttonActive>div{
+.ALbuttonActive>div {
   padding: 0 15px !important;
   font-size: 14px !important;
   height: 45px;
@@ -620,7 +628,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-.ALbuttonActive{
+.ALbuttonActive {
   animation-name: rotaloPerro;
   animation-duration: 4s;
   animation-iteration-count: infinite;
@@ -634,66 +642,77 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   transform-origin: center;
 }
 
-@keyframes rotaloPerro{
-  0%{
+@keyframes rotaloPerro {
+  0% {
     transform: rotate(0deg);
   }
-  79%{
+
+  79% {
     transform: rotate(0deg);
   }
-  80%{
+
+  80% {
     transform: rotate(3deg);
   }
-  85%{
+
+  85% {
     transform: rotate(-3deg);
   }
-  90%{
+
+  90% {
     transform: rotate(3deg);
   }
-  95%{
+
+  95% {
     transform: rotate(-3deg);
   }
-  100%{
+
+  100% {
     transform: rotate(0deg);
   }
 }
 
 
 
-@keyframes rotaloPerro2{
-  0%{
+@keyframes rotaloPerro2 {
+  0% {
     transform: rotate(0deg);
   }
-  18%{
+
+  18% {
     transform: rotate(1deg);
   }
-  36%{
+
+  36% {
     transform: rotate(-1deg);
   }
-  52%{
+
+  52% {
     transform: rotate(1deg);
   }
-  70%{
+
+  70% {
     transform: rotate(-1deg);
   }
-  100%{
+
+  100% {
     transform: rotate(0deg);
   }
 }
 
 
 
-.ALbuttonText{
+.ALbuttonText {
   position: relative;
   display: flex;
 }
 
-#ALbuttonText{
+#ALbuttonText {
   color: gray !important;
-      width: 100%;
+  width: 100%;
 }
 
-#confirmIcon{
+#confirmIcon {
   color: #1cb179 !important;
   margin-left: 7px;
   display: flex;
@@ -701,7 +720,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 }
 
-.ALbuttonTextSpan{
+.ALbuttonTextSpan {
   transition: .3s;
   transform: translateX(15%);
   display: flex;
@@ -710,7 +729,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-.confirmIcon{
+.confirmIcon {
   transition: .3s;
   transform: translateY(12px);
   opacity: 0 !important;
@@ -720,32 +739,33 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-.ItemList:hover .ALbuttonTextSpan{
+.ItemList:hover .ALbuttonTextSpan {
   color: #1cb179 !important;
   font-weight: bold;
 }
 
 
-#subItemSC .secundary{
-  border: 1px solid #19aced !important;
-  color:#249ce5 !important;
-}
-
-
-
-#ClassicView .secundary{
+#subItemSC .secundary {
   border: 1px solid #19aced !important;
   color: #249ce5 !important;
 }
 
-#ClassicView .botonForm{
+
+
+#ClassicView .secundary {
+  border: 1px solid #19aced !important;
+  color: #249ce5 !important;
+}
+
+#ClassicView .botonForm {
   min-width: 126px !important;
   padding: 0 !important;
   overflow: hidden;
   position: relative;
 }
 
-#ClassicView .ClassicViewText, #subItemSC .botonForm {
+#ClassicView .ClassicViewText,
+#subItemSC .botonForm {
   display: block;
   min-width: 100px !important;
   max-width: 126px !important;
@@ -755,13 +775,13 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   text-align: center;
 }
 
-#ClassicView:hover .ClassicTextCont{
+#ClassicView:hover .ClassicTextCont {
   top: -100% !important;
 }
 
 
 
-.ClassicTextCont{
+.ClassicTextCont {
   display: grid;
   top: 0;
   grid-template-rows: repeat(2, 1fr);
@@ -771,12 +791,12 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   width: 100%;
 }
 
-.ClassicViewText i{
+.ClassicViewText i {
   margin-left: 7px;
 }
 
 
-.ClassicViewText{
+.ClassicViewText {
   /*height: 100%;*/
   align-self: center;
   display: flex;
@@ -785,7 +805,7 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
 
 
 
-.ButtonNofity{
+.ButtonNofity {
   padding: 8px 15px 8px 15px;
   background: #e6e6e6;
   display: grid;
@@ -798,23 +818,23 @@ box-shadow: 0px 0px 35px 0px rgba(0,0,0,0.24);
   align-self: center;
   margin-bottom: 20px;
   justify-items: center;
-  cursor:pointer;
+  cursor: pointer;
   transition: .15s;
 }
 
 
-.ButtonNofity:hover{
+.ButtonNofity:hover {
   background: #11998e;
   /*background: linear-gradient(to right, #11998e, #38da75);*/
 }
 
-.ButtonNofity.swap{
+.ButtonNofity.swap {
   background: #0276c7;
   /*background: linear-gradient(to right, #11998e, #38da75);*/
 }
 
 
-.ButtonNofity.swap p{
+.ButtonNofity.swap p {
   color: white !important;
 }
 

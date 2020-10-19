@@ -346,8 +346,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
           :
           state === 'pending' ?
             <PaymentConfirButton
-              id="ALconfirmButton"
-              clases={` ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton'}`}
+              clases={`ALconfirmButton ${lastPendingOrderId ? 'ALbuttonActive' : 'confirmButton'}`}
               active={true}
               type="primary"
               label="Confirmar"
@@ -548,7 +547,7 @@ export const Order = styled.div`
   }
 
 
-  :hover #ALconfirmButton>div{
+  :hover .ALconfirmButton>div{
     border: 2px solid #1cb179 !important;
     .ALbuttonTextSpan{
       color: #1cb179 !important;
