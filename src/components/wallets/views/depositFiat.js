@@ -34,13 +34,12 @@ const DepositFiat = (props) => {
   }, [])
 
   const fiat_deposit = async (e) => {
-    e.preventDefault()
     await dispatch(FiatDeposit(current_wallet.currency.currency || 'usd'))
     dispatch(toggleModal())
   }
 
   return (
-    <DepositForm className="DepositView itemWalletView" onSubmit={fiat_deposit}>
+    <DepositForm className="DepositView itemWalletView">
 
       <div className="contIcontSwitch">
         <IconSwitch {...atributos} />
@@ -57,6 +56,7 @@ const DepositFiat = (props) => {
 
       <ControlButton
         id={idForMainButton}
+        handleAction={fiat_deposit}
         loader={!deposit_providers}
         formValidate
         label="Realizar un deposito"

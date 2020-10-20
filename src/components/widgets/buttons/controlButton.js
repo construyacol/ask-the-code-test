@@ -20,7 +20,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
         active={formValidate}
         handleAction={(e) => {
           e.currentTarget.blur()
-          handleAction && handleAction()
+          handleAction && handleAction(e)
         }}
       />
     </ControlsContainer>
