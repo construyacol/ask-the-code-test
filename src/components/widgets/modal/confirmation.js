@@ -13,8 +13,9 @@ import './modal.css'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
-  const idCancelButton = useKeyActionAsClick(true, 'cancel-confirm-modal', 8, true, 'onkeyup', true)
-  const idAcceptButton = useKeyActionAsClick(true, 'accept-confirm-modal', 13, true, 'onkeyup', true)
+  const idCancelButton = useKeyActionAsClick(true, 'cancel-confirm-modal', 8, false, 'onkeyup', true)
+  const idCloseButton = useKeyActionAsClick(true, 'close-confirm-modal', 27, false, 'onkeyup', true)
+  const idAcceptButton = useKeyActionAsClick(true, 'accept-confirm-modal', 13, false, 'onkeyup', true)
 
   const handleClick = () => {
     const {
@@ -43,13 +44,17 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
     type
   } = modal_confirmation
 
-  const props = { 
+  const props = {
     idCancelButton,
     idAcceptButton,
-    modal_confirmation, 
-    loader, 
-    action, 
-    ...rest }
+    idCloseButton,
+    cancelarClick,
+    handleClick,
+    modal_confirmation,
+    loader,
+    action,
+    ...rest
+  }
 
   return (
     <>
@@ -61,14 +66,10 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
             {
               type === 'swap' ?
                 <SwapVIewConfirm
-                  cancelarClick={cancelarClick}
-                  handleClick={handleClick}
                   {...props}
                 />
                 :
                 <StandardTicket
-                  cancelarClick={cancelarClick}
-                  handleClick={handleClick}
                   {...props}
                 />
             }
@@ -97,7 +98,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal)
 
 export const StandardTicket = props => {
 
-  const { cancelarClick, handleClick, idAcceptButton, idCancelButton } = props
+  const { cancelarClick, handleClick, idAcceptButton, idCancelButton, idCloseButton } = props
 
   const {
     title,
@@ -122,7 +123,7 @@ export const StandardTicket = props => {
   }
 
   return (
-    <div className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
+    <div id={idCloseButton} className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
 
       <div className={`Mconfirmar ${type}`}>
         <div className="titleConfirmed">

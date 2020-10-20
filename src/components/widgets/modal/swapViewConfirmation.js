@@ -11,7 +11,7 @@ import {
 const SwapVIewConfirm = props => {
 
 
-  const { cancelarClick, handleClick, idCancelButton, idAcceptButton } = props
+  const { cancelarClick, handleClick, idCancelButton, idAcceptButton, idCloseButton } = props
 
   const {
     title,
@@ -63,7 +63,7 @@ const SwapVIewConfirm = props => {
       <div className="LayoutSocketNotify swing-in-bottom-bck">
         <div className="msgSwapDisclamer" ><p className="fuente">La cotización se actualizará cada 20 segundos.</p></div>
         <div className={`socketContent ${type}`}>
-          <div className="close_modal_btn" onClick={cancelarClick}><i className="fas fa-times"></i></div>
+          <div className="close_modal_btn" id={idCloseButton} onClick={cancelarClick}><i className="fas fa-times"></i></div>
 
           <div className="topSection swap">
             <h3 className="fuente swapTitleConfir">{title}</h3>

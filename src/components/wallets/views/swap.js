@@ -32,7 +32,7 @@ function SwapView(props) {
   })
   const [valueError, setValueError] = useState()
   const actions = useActions()
-  const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
+  const idForClickeableElement = useKeyActionAsClick(true, 'make-swap-button', 13, false)
   const idForClickeableElementPairSelector = useKeyActionAsClick(true, 'show-pairs-button', 112, false)
 
   const { currentPair } = props

@@ -62,8 +62,12 @@ export default function useNavigationKeyActions(config) {
                     elementId = currentSelectionIsDownZero ? length : (currentSelection - 1)
                     el = document.getElementById(`${uniqueIdForElement}${Math.max(0, elementId)}`)
                 }
-                if (event.keyCode === valuesAsProps.next || (event.keyCode === 13 && currentSelectionIsDownZero)) {
+                if (event.keyCode === valuesAsProps.next) {
                     elementId = currentSelectionIsDownZero ? 0 : (currentSelection + 1)
+                    el = document.getElementById(`${uniqueIdForElement}${Math.min(length, elementId)}`)
+                }
+                if(event.keyCode === 13){
+                    elementId = currentSelectionIsDownZero ? 0 : currentSelection
                     el = document.getElementById(`${uniqueIdForElement}${Math.min(length, elementId)}`)
                 }
                 if(el) {

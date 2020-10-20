@@ -82,14 +82,25 @@ export default function useKeyActionAsClick(
         
         // si existe el KEY_CODES_META y el Evento actual
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
-            // recorre los eventos guardados
+            // puntero para romper la ejecucion
             let doBrake = false
-            Object.keys(window.KEY_CODES_META[eventName]).map(id => {
+
+            // seleccionamos los id que coincidan con el keyCode
+            const keyCodesIds = Object.keys(window.KEY_CODES_META[eventName]).filter(item =>{
+                return window.KEY_CODES_META[eventName][item].keyCode === event.keyCode
+            })
+
+            // recorremos los ids
+            keyCodesIds.map(id => {
+                // si ya se encontro el id que buscamos detenemos el timer
                 if(doBrake) return typeof _doBreak === 'function' && _doBreak()
-                // busca el elemento a Clickear
+
+                // busca el elemento a Clickear, si no existe saltamos al siguiente id
                 const element = document.getElementById(id)
                 if(!element) return false
+
                 const keyCodeData = window.KEY_CODES_META[eventName][id]
+
                 if (!keyCodeData.activeOnOpenModal && !isNotModalOpened) return false
                 if (keyCodeData.keyCode === event.keyCode) {
                     const isFromInputElement = event.srcElement.tagName.includes('INPUT')
