@@ -21,13 +21,13 @@ import {
 
 export class WithdrawService extends WebService {
 
-    async fetchWithdrawAccounts() {
+    async fetchWithdrawAccounts(query = '{"where":{"visible":true}}') {
         const { user } = this.globalState.modelData
         await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
-        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
+        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter=${query}`
 
         const result = await this.Get(finalUrl)
-        
+
         if (!result.length) {
           let userWithOutWA = {
               id: user.id,
@@ -155,7 +155,7 @@ export class WithdrawService extends WebService {
         const withdrawProviders = await this.Get(finalUrl)
 
         if (!withdrawProviders) return;
-        
+
         if(await this.isCached('withdrawProviders', withdrawProviders)) {
             return withdrawProviders
         }
@@ -431,7 +431,7 @@ export class WithdrawService extends WebService {
 
         if(await this.isCached(type, res)) {
             return finalResult
-        } 
+        }
 
         if (finalResult.length > 0) {
             await this.dispatch(normalized_list(finalResult, type))

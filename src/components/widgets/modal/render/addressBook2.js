@@ -16,8 +16,21 @@ import WithdrawViewState from '../../../hooks/withdrawStateHandle'
 import { MdKeyboardArrowLeft } from "react-icons/md"
 import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
 import { useToastMesssage } from '../../../../hooks/useToastMessage'
-import PopNotification from '../../notifications'
 
+
+const GlobalStateContext = React.createContext({
+  state:{},
+  setState:() => null
+})
+
+const ProviderWrapper = ({ state, children }) => {
+
+  return(
+    <GlobalStateContext.Provider value={state}>
+      {children}
+    </GlobalStateContext.Provider>
+  )
+}
 
 const selectWithdrawAccounts = createSelector(
   ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
@@ -39,7 +52,7 @@ const AddressBook = () => {
   const provider_type = current_wallet.currency.currency
   const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
   const [ view, setView ] = useState('addressList')
-  const [ globalState, setGlobalState ] = useState({idNewAccount:null})
+  const [ state, setState ] = useState()
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -55,6 +68,7 @@ const AddressBook = () => {
 
 
   return(
+    <ProviderWrapper state={{state, setState}}>
       <OtherModalLayout on_click={cerrar} >
         <ContainerLayout>
           <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
@@ -62,10 +76,10 @@ const AddressBook = () => {
             <Container id="mainContainerAB">
               {
                 (view === 'addressList' && withdrawAccounts.length) ?
-                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} globalState={globalState}/>
+                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
                 :
                 view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView} setGlobalState={setGlobalState}/>
+                  <NewAccount provider_type={provider_type} switchView={switchView}/>
                 :
                   <div>Empty State</div>
               }
@@ -73,17 +87,19 @@ const AddressBook = () => {
           </Content>
         </ContainerLayout>
       </OtherModalLayout>
+    </ProviderWrapper>
   )
 }
 
 
 
-const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
+const NewAccount = ({ provider_type, switchView }) => {
 
   const [ addressState, setAddressState ] = useState()
   const [ addressValue, setAddressValue ] = useState()
   const [ nameState, setNameState ] = useState()
   const [ loader, setLoader ] = useState()
+  const [ newIdACcount, setNewIdACcount ] = useState()
 
 
   const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
@@ -93,7 +109,9 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
 
   const handleSubmit = async(e) => {
     e && e.preventDefault()
-
+    return setNewIdACcount({
+      newIdACcount:'idAccount#Number'
+    })
     setLoader(true)
     const form = new FormData(document.getElementById('newAccount'))
     const label = form.get('name-account')
@@ -106,6 +124,7 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
         toastMessage('No se pudo ocultar la cuenta anónima', 'error')
         return setLoader(false)
       }
+
     }else if(thisAccountExist && thisAccountExist.info.label !== provider_type){
       toastMessage('Esta cuenta de retiro ya existe', 'error')
       return setLoader(false)
@@ -123,9 +142,7 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
       toastMessage('No se pudo crear la cuenta', 'error')
       return setLoader(false)
     }
-    // idNewAccount
-    setGlobalState({idNewAccount:newWithdrawAccount.id})
-    console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
+    // console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
     toastMessage('¡La cuenta ha sido creada con éxito!', 'success')
     await coinsendaServices.fetchWithdrawAccounts()
     switchView('addressList')
@@ -134,6 +151,7 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
 
   return(
       <NewAccountContainer>
+        <PropComponent/>
         <ProviderTypeIcon>
           <IconSwitch icon={provider_type} size={45}/>
           <p className="fuente">{provider_type}</p>
@@ -168,8 +186,8 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
         <ControlButtonContainer bottom={0}>
           <ControlButton
             label="Crear"
-            formValidate={addressState === 'good' && nameState === 'good'}
-            // formValidate
+            // formValidate={addressState === 'good' && nameState === 'good'}
+            formValidate
             // handleAction={handleSubmit}
             loader={loader}
           />
@@ -179,6 +197,15 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
   )
 }
 
+const PropComponent = () => {
+
+  const idContext = useContext(GlobalStateContext)
+  useEffect(()=>{
+    console.log('|||||||||||||||||| idContext', idContext)
+  }, [idContext])
+
+  return null
+}
 
 
 const Form = styled.form`
@@ -259,7 +286,7 @@ const WindowControl = styled.div`
 
 `
 
-const AddressBookComponent = ({ withdrawAccounts, switchView, globalState }) => {
+const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
 
   const [ recentList, setRecentList ] = useState()
 
@@ -269,7 +296,6 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, globalState }) => 
   //     element && element.classList.add('appear')
   //   }, 100)
   // }, [])
-
 
 
   return(
@@ -293,7 +319,7 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, globalState }) => 
         <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
           {
             withdrawAccounts.map((item, index) => {
-              return <ItemList key={index} item={item} globalState={globalState}/>
+              return <ItemList key={index} item={item}/>
             })
           }
         </ListContainer>
@@ -331,7 +357,7 @@ const ControlButtonContainer = styled.div`
   }
 `
 
-const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
+const ItemList = ({ item:{ id, info:{ address, label }} }) => {
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -349,7 +375,7 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
 
 
   return(
-    <CubeObject id={id} className={`${deleting}`}>
+    <CubeObject className={`${deleting}`}>
       <Front>
         <ItemListContainer>
           <AcronymContainer>
@@ -358,10 +384,7 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
             </p>
           </AcronymContainer>
           <ItemTextContainer>
-            <div>
-              <p className="fuente label">{label}</p>
-              {(globalState && globalState.idNewAccount) && globalState.idNewAccount === id && <NewElement className="fuente">Nuevo</NewElement>}
-            </div>
+            <p className="fuente label">{label}</p>
             <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
               <Address className="fuente2 withdrawAddress" >{address}</Address>
             </AddressContainer>
@@ -382,33 +405,6 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
   )
 
 }
-
-const NewElement = styled.p`
-  font-size: 12px;
-  color: white;
-  background: red;
-  margin-left: 10px !important;
-  padding: 4px 5px;
-  border-radius: 4px;
-  font-weight: bold;
-  ${'' /* transform: scale(0); */}
-  animation-name: nuevo;
-  animation-duration: .3s;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
-
-  @keyframes nuevo{
-    0%{
-      transform: scale(0);
-    }
-    65%{
-      transform: scale(1.1);
-    }
-    100%{
-      transform: scale(1);
-    }
-  }
-`
 
 const DeleteButton = styled.div`
   border-radius: 50%;
@@ -559,11 +555,6 @@ const ItemTextContainer = styled.div`
     align-items: center;
     max-height: 40px;
     align-content: center;
-
-    >div{
-      display: flex;
-    }
-
   .label{
     white-space: nowrap;
     text-overflow: ellipsis;

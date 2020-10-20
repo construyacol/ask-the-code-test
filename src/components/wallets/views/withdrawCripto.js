@@ -15,7 +15,6 @@ import AddressBookCTA from '../../widgets/modal/render/addressBook'
 
 export const CriptoSupervisor = props => {
 
-
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState()
   // const [ { current_wallet } ] = WithdrawViewState()
   // const withdrawProviders = {}

@@ -22,17 +22,16 @@ class PopNotification extends Component {
     switch (type) {
       case "new":
         return(
-
-          <div className={`PopNotification newPop ${notifier} ${((extra && item_type) && extra[item_type] === id ) ? 'Visible' : 'Invi'}`}>
+          <span className={`PopNotification newPop ${notifier} ${((extra && item_type) && extra[item_type] === id ) ? 'Visible' : 'Invi'}`}>
           {/* <div className={`PopNotification newPop ${(extra && (extra.account_id === id || extra.order_id === id)) ? 'Visible' : 'Invi'}`}> */}
             <p className="fuente2" >Nuevo</p>
-          </div>
+          </span>
         )
       default:
         return(
-          <div className={`PopNotification ${notification>0 ? 'Visible' : 'Invi'}`}>
+          <span className={`PopNotification ${notification>0 ? 'Visible' : 'Invi'}`}>
             <p className="fuente2" >{notification}</p>
-          </div>
+          </span>
         )
 
     }

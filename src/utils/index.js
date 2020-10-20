@@ -678,6 +678,9 @@ export function setInputFilter(textbox, inputFilter) {
 }
 
 export function debounce(func, wait) {
+//Previene over flows. Si el usuario en 1 seg da x cantidad de clicks solo ejecuta el último click
+// Esto surgió porque, podía darse, presionar muchas teclas a la vez en cuestión de milisegundos
+// Entonces, limite que solo reconozca la última acción en 100ms
 	let timeout;
 	return function() {
 		const context = this, args = arguments;

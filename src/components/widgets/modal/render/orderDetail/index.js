@@ -384,7 +384,7 @@ const TopSection = styled.section`
 
 export const Layout = styled.div`
     width: 100%;
-    max-width: 600px;
+    max-width: 550px;
     height: auto;
     min-height:650px;
     background: white;

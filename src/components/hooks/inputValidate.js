@@ -52,7 +52,16 @@ export default () => {
       //       setInputState(null)
       //     }
       //     break
+        case 'name-account':
+
+          if(e.target.value.length > 4){
+            setInputState('good')
+          }
+
+          break;
+
         case 'address':
+        case 'address-account':
         // case: si encontramos @ al inicio de la linea: ^@
 
           let AddressValidator

@@ -5,7 +5,7 @@ import { rotate90HorizontalBck, rotate0HorizontalBck } from './animations'
 export const Face = styled.div`
   display: block;
   position: absolute;
-  width: 100%;
+  width: 358px;
   height: 80px;
 `
 
@@ -15,6 +15,7 @@ export const Front = styled(Face)`
 export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);
+  opacity: 0;
 `
 
 export const CubeObject = styled.div`
@@ -24,11 +25,19 @@ export const CubeObject = styled.div`
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   &.rotate{
-    animation: ${rotate90HorizontalBck} .4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: ${rotate90HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     z-index: 99;
+    ${Top}{
+      transition: .3s;
+      opacity: 1;
+    }
   }
   &.unrotate{
-    animation: ${rotate0HorizontalBck} .4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: ${rotate0HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    ${Top}{
+      transition: .3s;
+      opacity: 0;
+    }
   }
 `
 
