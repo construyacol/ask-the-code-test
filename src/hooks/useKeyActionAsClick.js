@@ -17,9 +17,9 @@ const ID_FOR_CLICKEABLE_ELEMENTS = 'main-clickeable-element'
  * @param {Boolean} activeOnOpenModal Si quieres que los evento se ejecuten incluso con un modal true para que esto suceda,
  * por defecto false
  * @return the element ID o elementId
- * 
- * @example 
- * const elementId = useKeyActionAsClick(true, 'MY_ELEMENT_ID', 32, true, 'onkeyup', true) 
+ *
+ * @example
+ * const elementId = useKeyActionAsClick(true, 'MY_ELEMENT_ID', 32, true, 'onkeyup', true)
  * @see window.onkeypress
  * @see window.onkeyup
  * @see window.onkeydown
@@ -51,8 +51,8 @@ export default function useKeyActionAsClick(
     }
 
     /**
-     * Guarda los id y condiciones a ejecutar al momento de indentificar el evento 
-     * 
+     * Guarda los id y condiciones a ejecutar al momento de indentificar el evento
+     *
      * @param {String} elementId id referencial del elemento en el DOM actual
      * @param {Event.keyCode|Number} elementId keycode a referenciar al ID
      */
@@ -72,14 +72,14 @@ export default function useKeyActionAsClick(
 
     /**
      * Evento "eventName" a ejecutar
-     * 
+     *
      * @param {Event} event evento de tipo keyEvent
      * @returns doClick fn | boolean
      */
     const onKeyEventFn = (event, _doBreak) => {
         // verifica que no este algun modal abierto
         const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
-        
+
         // si existe el KEY_CODES_META y el Evento actual
         if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
             // recorre los eventos guardados

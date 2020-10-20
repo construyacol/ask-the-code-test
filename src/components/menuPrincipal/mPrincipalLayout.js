@@ -9,6 +9,7 @@ import MovilMenuComponent from './movilMenu'
 import {useActions} from '../../hooks/useActions'
 import {doLogout} from '../utils'
 import useKeyActionAsClick from '../../hooks/useKeyActionAsClick'
+import KeyActionsProofComponent from '../keyActionsProof'
 
 // TODO: remove all window ref from components, may be the cause of future
 // issues
@@ -87,17 +88,20 @@ const MenuPrincipalLayout = (props) => {
       <div className="menuItems">
         {window.innerWidth > 768
           ? <section className="section1">
-              {menuPrincipal.map((item) => {
-                if (item.clave !== 'security' && verification_state !== 'accepted') {
-                  return false
-                }
-                return <ButtonPrincipalMenu
-                  activarItem={props.activarItem}
-                  path={props.path}
-                  {...item}
-                  key={item.id}/>
-              })
-}
+              {
+                menuPrincipal.map((item) => {
+                  if (item.clave !== 'security' && verification_state !== 'accepted') {
+                    return false
+                  }
+                  return <ButtonPrincipalMenu
+                    activarItem={props.activarItem}
+                    path={props.path}
+                    {...item}
+                    key={item.id}/>
+                })
+              }
+              <br/>
+            <div onClick={()=>{actions.renderModal(KeyActionsProofComponent)}}>OPEN PROOF</div>
             </section>
           : <section className="section1">
             <MovilMenuComponent
