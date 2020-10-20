@@ -4,13 +4,20 @@ import OtherModalLayout from '../widgets/modal/otherModalLayout'
 import useKeyActionAsClick from '../../hooks/useKeyActionAsClick'
 import useNavigationKeyActions, { useItemsInteractions } from '../../hooks/useNavigationKeyActions';
 import {useActions} from '../../hooks/useActions'
+import { InputKeyActionHandler } from '../widgets/accountList/styles';
 // import TestingComponent from './doc'
 
 const list = new Array(10).fill({'name':'Test '})
 
 const KeyActionsProofComponent = props => {
 
-  const exitId = useKeyActionAsClick(true, 'close-modal', 69, true, 'onkeyup', true)
+  /**
+   * a partir de varios commits la accion close modal la hereda los contenedores de modales
+   * Ver OtherModalLayout, y props. Al tener ambos 27[esc] como keyCode solo tomara el del padre o orden superior,
+   * Ya agregue una validacion a OtherModalLayout para que puedas usarlo en esta prueba
+   * 
+   */
+  const exitId = useKeyActionAsClick(true, 'close-modal', 27, true, 'onkeyup', true)
   const backId = useKeyActionAsClick(true, 'backAsClick', 8, true, 'onkeyup', true)
   const [ step, setStep ] = useState(1)
   const actions = useActions()
@@ -70,7 +77,13 @@ const StepView = ({ step, nextStep }) => {
   const [setCurrentSelection] = useNavigationKeyActions({
     items:list,
     loader:false,
-    className:'test-item-',
+    /**
+     * a partir de varios commits atras, className cambia a uniqueIdForElement,
+     * elimine la opcion de default
+     * no es necesario desde varios commits atras ya que useItemsInteractions
+     * tiene la opcion de seleccionar con setFocus, y es mas controlable
+     */
+    uniqueIdForElement:'test-item-',
     modalRestriction: false,
     default:0,
     next:40,
@@ -115,7 +128,12 @@ const Item = (props) => {
       true)
 
   return(
-    <ItemContainer className={`${isSelected ? 'isSelected' : ''}`} id={props.focusedId} onClick={handleAction}>
+    <ItemContainer className={`${isSelected ? 'isSelected' : ''}`} onClick={handleAction}>
+      {/**
+       * aqui necesitamos un handler, un componente helper para actuar como puntero en este caso esta: InputKeyActionHandler
+       * y reservamos el id (focusedId) para este elemento
+       */}
+       <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
       <p>{`${props.number}: ${props.name} ${props.number}`}</p>
     </ItemContainer>
   )
