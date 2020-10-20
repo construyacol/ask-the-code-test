@@ -568,6 +568,7 @@ class WithdrawFlow extends Component {
             (step >= 2 && need_new_acount && !finish_step) &&
             <WithdrawAccountForm
               withdraw_flow={true}
+              eventName="onkeydown"
               initPrevKeyActions={() => this.keyActions()}
               withdraw_flow_action={this.new_account_and_withdraw}
               toastMessage={this.props.toastMessage}
@@ -675,4 +676,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(withKeyActions(WithdrawFlow, 'onkeyup')))
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(withKeyActions(WithdrawFlow)))

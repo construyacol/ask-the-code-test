@@ -87,7 +87,7 @@ function ContentTab(props) {
 
     return (
         <div className="subMenu" ref={tabRef}>
-            {haveMenu && <HiddenButtons {...controlProps} />}
+            {haveMenu && pathname && <HiddenButtons {...controlProps} />}
             <div className="menuContainer">
                 <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                     {

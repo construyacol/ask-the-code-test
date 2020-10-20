@@ -294,7 +294,7 @@ export const ButtonNofity = props => {
 
 
   return (
-    <div className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
+    <div id={props.id} className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
       {props.children}
     </div>
   )
