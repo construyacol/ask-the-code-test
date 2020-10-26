@@ -8,7 +8,7 @@ import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
-import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useToastMessage from '../../../hooks/useToastMessage'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 import AddressBookCTA from '../../widgets/modal/render/addressBook'
 
@@ -73,7 +73,7 @@ export const CriptoView = () => {
 
 
   const actions = useActions()
-  const [toastMessage] = useToastMesssage()
+  const [toastMessage] = useToastMessage()
 
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()

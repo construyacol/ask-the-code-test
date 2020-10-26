@@ -15,9 +15,9 @@ import IconSwitch from '../../icons/iconSwitch'
 import WithdrawViewState from '../../../hooks/withdrawStateHandle'
 import { MdKeyboardArrowLeft } from "react-icons/md"
 import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
-import { useToastMesssage } from '../../../../hooks/useToastMessage'
+import useToastMessage from '../../../../hooks/useToastMessage'
 import PopNotification from '../../notifications'
-
+import SimpleLoader from '../../loaders'
 
 const selectWithdrawAccounts = createSelector(
   ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
@@ -39,7 +39,6 @@ const AddressBook = () => {
   const provider_type = current_wallet.currency.currency
   const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
   const [ view, setView ] = useState('addressList')
-  const [ globalState, setGlobalState ] = useState({idNewAccount:null})
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -53,7 +52,6 @@ const AddressBook = () => {
     await setAnimation('appear', 'mainContainerAB', 150)
   }
 
-
   return(
       <OtherModalLayout on_click={cerrar} >
         <ContainerLayout>
@@ -62,12 +60,12 @@ const AddressBook = () => {
             <Container id="mainContainerAB">
               {
                 (view === 'addressList' && withdrawAccounts.length) ?
-                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} globalState={globalState}/>
+                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
                 :
                 view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView} setGlobalState={setGlobalState}/>
+                  <NewAccount provider_type={provider_type} switchView={switchView}/>
                 :
-                  <div>Empty State</div>
+                  <div onClick={()=>switchView('newAccount')}>Empty State</div>
               }
            </Container>
           </Content>
@@ -78,7 +76,7 @@ const AddressBook = () => {
 
 
 
-const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
+const NewAccount = ({ provider_type, switchView }) => {
 
   const [ addressState, setAddressState ] = useState()
   const [ addressValue, setAddressValue ] = useState()
@@ -88,7 +86,7 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
 
   const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
   const [{ withdraw_accounts, current_wallet }] = WithdrawViewState()
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
 
 
   const handleSubmit = async(e) => {
@@ -124,12 +122,15 @@ const NewAccount = ({ provider_type, switchView, setGlobalState }) => {
       return setLoader(false)
     }
     // idNewAccount
-    setGlobalState({idNewAccount:newWithdrawAccount.id})
-    console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
-    toastMessage('¡La cuenta ha sido creada con éxito!', 'success')
+    // console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
+    await toastMessage('¡La cuenta ha sido creada con éxito!', 'success')
     await coinsendaServices.fetchWithdrawAccounts()
-    switchView('addressList')
-    return dispatch(actions.success_sound())
+    await dispatch(actions.success_sound())
+    await switchView('addressList')
+    let idNewAccount = document.getElementById(newWithdrawAccount.id)
+    idNewAccount.classList.add('shower')
+
+
   }
 
   return(
@@ -259,7 +260,7 @@ const WindowControl = styled.div`
 
 `
 
-const AddressBookComponent = ({ withdrawAccounts, switchView, globalState }) => {
+const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
 
   const [ recentList, setRecentList ] = useState()
 
@@ -293,7 +294,7 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, globalState }) => 
         <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
           {
             withdrawAccounts.map((item, index) => {
-              return <ItemList key={index} item={item} globalState={globalState}/>
+              return <ItemList key={index} item={item}/>
             })
           }
         </ListContainer>
@@ -331,7 +332,7 @@ const ControlButtonContainer = styled.div`
   }
 `
 
-const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
+const ItemList = ({ item:{ id, info:{ address, label }}}) => {
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -340,16 +341,40 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
   }
 
   const [ deleting, setDeleting ] = useState('')
-  const deleteItem = payload => {
-    setDeleting(payload)
+  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
+  const [ toastMessage ] = useToastMessage()
+
+
+  const deleteItem = async e => {
+
+    if(!e.target.dataset.action){return}
+    if(e.target.dataset.action === 'close'){
+      return setDeleting('unrotate')
+    }else if(e.target.dataset.action === 'open'){
+      return setDeleting('rotate')
+    }else if(e.target.dataset.action === 'delete'){
+      const loaderDeleteItem = document.getElementById(`loader_${id}`)
+      loaderDeleteItem.classList.add('deleting')
+      const deletedAccount = await coinsendaServices.deleteAccount(id)
+      if(!deletedAccount){
+        loaderDeleteItem.classList.remove('deleting')
+        return toastMessage(':( La cuenta no ha podido ser eliminada', 'error')
+      }
+      await coinsendaServices.fetchWithdrawAccounts()
+      loaderDeleteItem.classList.remove('deleting')
+      setDeleting('unrotate')
+      return toastMessage('¡La cuenta ha sido eliminada con éxito!', 'success')
+    }
+
     // const element = document.getElementById('mainContent')
     // element && element.classList.add(payload)
     // payload === 'unrotate' && element.classList.remove('rotate')
   }
 
+  // await dispatch(actions.success_sound())
 
   return(
-    <CubeObject id={id} className={`${deleting}`}>
+    <CubeObject className={`${deleting}`}>
       <Front>
         <ItemListContainer>
           <AcronymContainer>
@@ -360,14 +385,14 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
           <ItemTextContainer>
             <div>
               <p className="fuente label">{label}</p>
-              {(globalState && globalState.idNewAccount) && globalState.idNewAccount === id && <NewElement className="fuente">Nuevo</NewElement>}
+              <NewElement id={id} className="fuente">Nuevo</NewElement>
             </div>
             <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
               <Address className="fuente2 withdrawAddress" >{address}</Address>
             </AddressContainer>
           </ItemTextContainer>
           <DeleteButton>
-            <Icon className="fas fa-trash-alt tooltip" onClick={() => deleteItem('rotate')}>
+            <Icon className="fas fa-trash-alt tooltip" data-action="open" onClick={deleteItem}>
               <span className="tooltiptext fuente">Eliminar</span>
             </Icon>
           </DeleteButton>
@@ -375,6 +400,7 @@ const ItemList = ({ item:{ id, info:{ address, label }}, globalState }) => {
       </Front>
       <Top>
         <DeleteComponent
+          itemId={id}
           handleAction={deleteItem}
         />
       </Top>
@@ -396,6 +422,10 @@ const NewElement = styled.p`
   animation-duration: .3s;
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
+  display: none;
+  &.shower{
+    display: block;
+  }
 
   @keyframes nuevo{
     0%{
@@ -421,17 +451,36 @@ const DeleteButton = styled.div`
 `
 
 
-const DeleteComponent = ({ handleAction }) => {
+const DeleteComponent = ({ handleAction, itemId }) => {
   return(
     <DeleteContainer>
+      <LoaderDeleteItem id={`loader_${itemId}`}><SimpleLoader loader={2} color="#0198FF" justify="center" /></LoaderDeleteItem>
       <p className="fuente confirmText">¿Estás seguro que deseas eliminar esta cuenta de retiro?</p>
       <DeleteControls>
-        <p className="fuente cancel" onClick={()=>handleAction('unrotate')}>Cancelar</p>
-        <p className="fuente delete" >Eliminar</p>
+        {/* <p className="fuente cancel"  onClick={()=>handleAction('unrotate')}>Cancelar</p> */}
+        <p className="fuente cancel" data-action="close" onClick={handleAction}>Cancelar</p>
+        <p className="fuente delete" data-action="delete" onClick={handleAction}>Eliminar</p>
       </DeleteControls>
     </DeleteContainer>
   )
 }
+
+const LoaderDeleteItem = styled.div`
+  background: #ffffffe8;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+  display: none;
+
+  &.deleting{
+    display: grid;
+  }
+`
 
 const DeleteControls = styled.div`
   display: grid;
@@ -468,6 +517,7 @@ const DeleteContainer = styled.div`
   display: grid;
   justify-items: center;
   grid-template-columns: 1fr;
+  position: relative;
 
   p{
     max-width: 70%
@@ -515,7 +565,7 @@ const ItemListContainer = styled.div`
     column-gap: 15px;
     cursor: pointer;
     transition: .2s;
-    opacity: .7;
+    opacity: .9;
     position: relative;
     &:hover{
       opacity: 1;

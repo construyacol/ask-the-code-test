@@ -15,7 +15,7 @@ import ToastContainers from './widgets/toast/ToastContainer'
 import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
-import { useToastMesssage } from '../hooks/useToastMessage';
+import useToastMessage from '../hooks/useToastMessage';
 
 history.listen((location) => {
   if(location && location.pathname !== '/') {
@@ -27,7 +27,7 @@ function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
   const [ tryRestoreSession ] = SessionRestore()
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
 
   const initComponent = async () => {
     // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)

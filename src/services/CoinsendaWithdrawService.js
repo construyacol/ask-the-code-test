@@ -128,7 +128,7 @@ export class WithdrawService extends WebService {
         const body = {
             "data": {
                 "withdraw_account_id": `${accountId}`,
-                "country": withdraw_accounts[accountId].info.country,
+                "country": withdraw_accounts[accountId] && withdraw_accounts[accountId].info.country,
                 "visible": false
             }
         }

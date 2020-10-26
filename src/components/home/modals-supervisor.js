@@ -18,7 +18,7 @@ import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
 import PropTypes from 'prop-types'
 import SocketNotify from '../sockets/socket_notify/socketNotify'
 import withHandleError from '../withHandleError'
-import { useToastMesssage } from '../../hooks/useToastMessage.js'
+import useToastMessage from '../../hooks/useToastMessage.js'
 
 function ModalsSupervisor(props) {
     const {
@@ -31,7 +31,7 @@ function ModalsSupervisor(props) {
         isSocketNotification,
         RenderModal
     } = props
-    const [ toastMessage ] = useToastMesssage()
+    const [ toastMessage ] = useToastMessage()
 
     return (
         <>

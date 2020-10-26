@@ -2,7 +2,7 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify';
 import { toast_sound } from './../actions/soundActions'
 
-export function useToastMesssage() {
+export default function() {
     const dispatch = useDispatch()
 
     const toastMessage = (msg, type, position) => {
@@ -10,7 +10,7 @@ export function useToastMesssage() {
         setTimeout(() => {
             dispatch(toast_sound())
         }, 300)
-        
+
         toast(msg, {
             position: toast.POSITION[!position ? 'BOTTOM_RIGHT' : position],
             pauseOnFocusLoss: false,

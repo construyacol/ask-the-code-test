@@ -7,14 +7,14 @@ import SimpleLoader from '../../../loaders'
 import { MdContentCopy } from "react-icons/md";
 import { BsUpload } from "react-icons/bs";
 import { copy } from '../../../../../utils'
-import { useToastMesssage } from '../../../../../hooks/useToastMessage'
+import useToastMessage from '../../../../../hooks/useToastMessage'
 
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
 
   const [ activeSection, setActiveSection ] = useState(true)
   const { coinsendaServices, actions } = UseTxState()
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
 
   const subirImg = async({base64}) => {
     setImgSrc(base64)
