@@ -10,7 +10,6 @@ export const Face = styled.div`
 `
 
 export const Front = styled(Face)`
-  transform: rotateY(0deg) translateZ(40px);
 `
 export const Top = styled(Face)`
   background: #fbfbfb;
@@ -26,10 +25,12 @@ export const CubeObject = styled.div`
   transform-style: preserve-3d;
   &.rotate{
     animation: ${rotate90HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    z-index: 99;
     ${Top}{
       transition: .3s;
       opacity: 1;
+    }
+    ${Front}{
+      transform: rotateY(0deg) translateZ(40px);
     }
   }
   &.unrotate{
@@ -37,6 +38,9 @@ export const CubeObject = styled.div`
     ${Top}{
       transition: .3s;
       opacity: 0;
+    }
+    ${Front}{
+      transform: rotateY(0deg) translateZ(40px);
     }
   }
 `

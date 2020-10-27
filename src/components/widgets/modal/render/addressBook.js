@@ -76,6 +76,7 @@ const AddressBook = () => {
 
 
 
+
 const NewAccount = ({ provider_type, switchView }) => {
 
   const [ addressState, setAddressState ] = useState()
@@ -271,10 +272,9 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
   //   }, 100)
   // }, [])
 
-
-
   return(
     <>
+      <Blocker id="blocker"/>
       <InputContainers>
         <Input height={52}>
           <IconContainer>
@@ -311,6 +311,24 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
   )
 }
 
+
+const Blocker = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 99;
+  border-radius: 6px;
+  backdrop-filter: blur(1px);
+  display: none;
+
+  &.deleting{
+   display: block;
+  }
+
+`
+
+
 const Title = styled.p`
   font-weight: bold;
   margin-top: 55px;
@@ -344,34 +362,48 @@ const ItemList = ({ item:{ id, info:{ address, label }}}) => {
   const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
   const [ toastMessage ] = useToastMessage()
 
+  const setDeletingState = payload => {
+    setDeleting(payload)
+    setTimeout(()=>{setDeleting('')}, 300)
+  }
+
 
   const deleteItem = async e => {
 
     if(!e.target.dataset.action){return}
-    if(e.target.dataset.action === 'close'){
-      return setDeleting('unrotate')
-    }else if(e.target.dataset.action === 'open'){
+
+    const blockerActive = document.getElementById(`blocker`);
+    switch (e.target.dataset.action) {
+      case 'open':
+        blockerActive.classList.add('deleting')
       return setDeleting('rotate')
-    }else if(e.target.dataset.action === 'delete'){
-      const loaderDeleteItem = document.getElementById(`loader_${id}`)
-      loaderDeleteItem.classList.add('deleting')
-      const deletedAccount = await coinsendaServices.deleteAccount(id)
-      if(!deletedAccount){
+
+      case 'close':
+        blockerActive.classList.remove('deleting')
+      return setDeletingState('unrotate')
+
+      case 'delete':
+        const loaderDeleteItem = document.getElementById(`loader_${id}`)
+        loaderDeleteItem.classList.add('deleting')
+        const deletedAccount = await coinsendaServices.deleteAccount(id)
+        if(!deletedAccount){
+          loaderDeleteItem.classList.remove('deleting')
+          blockerActive.classList.remove('deleting')
+          return toastMessage(':( La cuenta no ha podido ser eliminada', 'error')
+        }
+        await coinsendaServices.fetchWithdrawAccounts()
         loaderDeleteItem.classList.remove('deleting')
-        return toastMessage(':( La cuenta no ha podido ser eliminada', 'error')
-      }
-      await coinsendaServices.fetchWithdrawAccounts()
-      loaderDeleteItem.classList.remove('deleting')
-      setDeleting('unrotate')
-      return toastMessage('¡La cuenta ha sido eliminada con éxito!', 'success')
+        blockerActive.classList.remove('deleting')
+        setDeletingState('unrotate')
+        dispatch(actions.success_sound())
+        return toastMessage('¡La cuenta ha sido eliminada con éxito!', 'success')
+      default:
+        return setDeletingState('unrotate')
+
     }
 
-    // const element = document.getElementById('mainContent')
-    // element && element.classList.add(payload)
-    // payload === 'unrotate' && element.classList.remove('rotate')
   }
 
-  // await dispatch(actions.success_sound())
 
   return(
     <CubeObject className={`${deleting}`}>
@@ -676,7 +708,7 @@ const Content = styled.div`
 
 
 
-  &.rotate::after{
+  ${'' /* &.deleting::after{
     content: '';
     position: absolute;
     z-index: 10;
@@ -689,13 +721,14 @@ const Content = styled.div`
     border-radius: 6px;
     opacity: .8;
     transition: .3s;
-  }
+  } */}
 `
 
 const ListContainerWrapper = styled.div`
   overflow-x: hidden;
   padding: 0 20px;
   height: 375px;
+  position: relative;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -703,6 +736,30 @@ const ListContainerWrapper = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #b1b1b1;
+  }
+
+  &::after{
+    content: "";
+    width: 100%;
+    height: 15px;
+    position: fixed;
+    top: 167px;
+    left: 0;
+    background: linear-gradient(to bottom,white,white,transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  &::before{
+    content: "";
+    width: 100%;
+    height: 15px;
+    position: fixed;
+    bottom: 95px;
+    left: 0;
+    background: linear-gradient(to top,white,white,transparent);
+    z-index: 2;
+    pointer-events: none;
   }
 `
 
