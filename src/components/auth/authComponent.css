@@ -10,6 +10,7 @@
 @font-face {
   font-family: Museo;
   src: url('./MuseoSans_500.otf');
+  font-display: swap;
 }
 
 .fuenteMuseo {

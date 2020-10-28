@@ -1,23 +1,22 @@
-import React from 'react';
-// import {render} from 'react-dom';
+import React, { Suspense } from 'react';
+import {render} from 'react-dom';
 // import { hydrate, render } from "react-dom";
-import { render } from 'react-snapshot';
+// import { render } from 'react-snapshot';
 import './basic-style.css';
 import './index.css';
 import './new-mobile-style.css';
 import * as serviceWorker from './serviceWorker';
 import { createStore, applyMiddleware } from 'redux'
-import RootContainer from './components/Root'
 // import RootContainer from './root'
 import reducer from './reducers'
 import logger from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import thunk from 'redux-thunk'
+// import thunk from 'redux-thunk'
 import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
 import { Provider } from 'react-redux'
 import { mainService } from './services/MainService';
-import { updateLocalForagePersistState } from './components/hooks/sessionRestore';
+// import { updateLocalForagePersistState } from './components/hooks/sessionRestore';
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
@@ -30,7 +29,7 @@ const store = createStore(
   composeWithDevTools(
     applyMiddleware(
       logger,
-      thunk,
+      // thunk,
       loadedSoundsMiddleware
     )
   )
@@ -41,15 +40,18 @@ store.subscribe(() => {
   if (store.getState().modelData.authData.userToken) {
     mainService.setGlobalState(store.getState())
   }
-  window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData)
+  // window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData)
 });
 
-const home = document.getElementById('home-container')
+const LazyRoot = React.lazy(() => import('./components/Root'))
+
 render(
-  <Provider store={store}>
-    <RootContainer />
-  </Provider>
-  , home
+  <Suspense fallback={<div>Loading...</div>}>
+    <Provider store={store}>
+      <LazyRoot />
+    </Provider>
+  </Suspense>
+  , document.getElementById('home-container')
 );
 
 // const rootElement = document.getElementById('home-container')

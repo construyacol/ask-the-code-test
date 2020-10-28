@@ -27,7 +27,7 @@ class MenuPrincipalContainer extends Component {
     this.props.action.current_section_params({ show_menu_principal: false })
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.requestAnimationFrame(() => {
       scroller.scrollTo('firstInsideContainer', {
         offset: 0,

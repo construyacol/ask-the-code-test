@@ -3,7 +3,7 @@ export class WebService {
       // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
         try {
             const response = await fetch(url, params)
-            const finalResponse = response.json()
+            const finalResponse = await response.json()
             // console.log('get res ::', response)
             if (!response.ok && response.status === 465) {
                 if(finalResponse.error.message.includes('Invalid signature')) {

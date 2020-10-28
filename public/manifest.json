@@ -6,6 +6,11 @@
       "src": "./icon_solid.png",
       "sizes": "196x196",
       "type": "image/png"
+    },
+    {
+      "src": "./icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ],
   "start_url": "./",
@@ -20,5 +25,18 @@
       "id": "io.coinsenda.coinsenda"
     }
   ],
+  "shortcuts": [{
+    "name": "Mis Billeteras",
+    "short_name": "Billeteras",
+    "description": "Ir a Mis Billeteras",
+    "url": "/wallets",
+    "icons": [
+      {
+        "src": "./icon_solid.png",
+        "sizes": "196x196",
+        "type": "image/png"
+      }
+    ]
+  }],
   "prefer_related_applications":false
 }

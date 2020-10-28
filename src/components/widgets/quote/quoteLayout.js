@@ -117,12 +117,12 @@ const SkeletonLoader = () => {
         <PricesContainer className={`${movil ? 'movilPrices' : 'desktopPrices'} prices skeleton`}>
           <div className="buy" style={{display: `${movil ? 'none' : 'grid'}`}}>
             <p className="fuente skeleton"></p>
-            <h1 className="fuente2 Qprice skeleton"></h1>
+            <h1 className="fuente2 Qprice skeleton"> </h1>
           </div>
 
           <div className="buy" style={{display: 'grid'}}>
             <p className="fuente skeleton"></p>
-            <h1 className="fuente2 Qprice skeleton"></h1>
+            <h1 className="fuente2 Qprice skeleton"> </h1>
           </div>
         </PricesContainer>
         <CoinList className="coinList">

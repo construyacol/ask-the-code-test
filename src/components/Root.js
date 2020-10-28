@@ -6,9 +6,9 @@ import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import actions from '../actions';
-import LoaderAplication from './widgets/loaders/loader_app'
+// import LoaderAplication from './widgets/loaders/loader_app'
 import HomeContainer from './home/home-container'
-import { isValidToken } from "./utils"
+// import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
 import SocketsComponent from './sockets/sockets'
 import ToastContainers from './widgets/toast/ToastContainer'
@@ -16,9 +16,10 @@ import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
 import { useToastMesssage } from '../hooks/useToastMessage';
+const LazyLoader = React.lazy(() => import('./widgets/loaders/loader_app'))
 
 history.listen((location) => {
-  if(location && location.pathname !== '/') {
+  if (location && location.pathname !== '/') {
     return localForage.setItem('previousRoute', location.pathname)
   }
 })
@@ -26,8 +27,8 @@ history.listen((location) => {
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
-  const [ tryRestoreSession ] = SessionRestore()
-  const [ toastMessage ] = useToastMesssage()
+  const [tryRestoreSession] = SessionRestore()
+  const [toastMessage] = useToastMesssage()
 
   const initComponent = async () => {
     // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)
@@ -40,7 +41,7 @@ function RootContainer(props) {
       history.push('/')
     }
 
-    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCthbmRyZXNAZ21haWwuY29tIiwibGFuZ3VhZ2UiOiJlcyIsImlzcyI6IjVlNzk0NzE3NjRkY2RiMDE2YTM2OWNkOCIsInVzciI6IjVlY2VhYThlY2RmYjc0MDBlMTg3MDY4NiIsImp0aSI6InRzeFRwOWlRVGd3VXhEMm45SVIxbFlnb3BCUEk4YnpXNmZvMFd6M3hQTjBINVRsM3RwbHhPd05xYkE0RkJlT1ciLCJhdWQiOiJ0cmFuc2FjdGlvbixhdXRoLGlkZW50aXR5LGluZm8sZGVwb3NpdCxhY2NvdW50LHdpdGhkcmF3LHN3YXAiLCJtZXRhZGF0YSI6IntcImNsaWVudElkXCI6XCI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDhcIixcInRoaXJkX3BhcnR5XCI6XCJ0cnVlXCIsXCJ1aWRcIjpcIjVmNzk4YzhmMTIwODljMDBkMWMxNDNiYlwiLFwidG9rZW5cIjpcImQ5YjZiMWJkYTM3NjIwYzA3MTRjZWFiMWRkODQyM2QwYTdlNDc4ZGJiNzJiYWUxNWZlYzRjZTBmYTZiNTI2MTAxZDhlZWE0MTRmOTgyN2ZlMTg2ZDc2NjU5NDkwMmU2MzJiYzc1ZmI4ZDZjMDBkZTg3NWRmZjk3NmVjYjY3OWJlXCJ9IiwiaWF0IjoxNjAzNzI5NTM2LCJleHAiOjE2MDM3NDAzMzZ9.5fECOMW4tpB9JQXDBniqyQQxYnD_1XfED34rUkKpBs18E_uAb8R887P2uruo27oVq5VSfmgohXhH7gMrrVsIMA'
+    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCtkb3VnbGFzQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDgiLCJ1c3IiOiI1ZWNkYWQyZGNkZmI3NDAwZTE4NzA2NmIiLCJqdGkiOiI3eE1aVnpESndvNUFHQ0xHbURFMEplYUVNNlNuYmJ2TFJ3VndYZjc5Ym1lN0piOUJkQzVkUjRZRFZnYUFGT0g5IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxpbmZvLGRlcG9zaXQsYWNjb3VudCx3aXRoZHJhdyxzd2FwIiwibWV0YWRhdGEiOiJ7fSIsImlhdCI6MTYwMzg0NTk4MCwiZXhwIjoxNjAzODU2NzgwfQ.IgvbPiIcv71FPTsnXLyURP6xoAC5r5WANGLRvwWshOpkTMn5YsvCeiK0xDYsXxFS49LgO_ha0obEQdpqsS310Q'
 
     // const created_at = await localForage.getItem('created_at')
     // const userToken = await localForage.getItem('user_token')
@@ -61,10 +62,10 @@ function RootContainer(props) {
     // En este punto el token es valido
     // aqui se verifica que el origen del mensaje sea del Landing
 
-    const parent = window.parent;
-    if(parent) {
-      parent.postMessage('loadedAndLogged', '*');
-    }
+    // const parent = window.parent;
+    // if (parent) {
+    //   parent.postMessage('loadedAndLogged', '*');
+    // }
 
     history.push('/')
   }
@@ -78,17 +79,18 @@ function RootContainer(props) {
     <Router
       history={history}
     >
-
-      <SocketsComponent toastMessage={toastMessage} />
-      {/* <CoinsendaSocket /> */}
-      <ToastContainers />
-      <Switch>
-        <Route path="/" render={() => (
-          !isAppLoaded ?
-          <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} />
-          :
-          <HomeContainer />)} />
-      </Switch>
+      {!isAppLoaded ? (
+        <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
+      ) : (
+          <>
+            <SocketsComponent toastMessage={toastMessage} />
+            {/* <CoinsendaSocket /> */}
+            <ToastContainers />
+            <Switch>
+              <Route path="/" render={() => <HomeContainer />} />
+            </Switch>
+          </>
+        )}
     </Router>
   )
 
@@ -96,7 +98,7 @@ function RootContainer(props) {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    actions: bindActionCreators(actions , dispatch)
+    actions: bindActionCreators(actions, dispatch)
   }
 }
 

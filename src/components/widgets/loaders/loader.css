@@ -63,6 +63,7 @@
 @font-face {
   font-family: Museos;
   src: url('../../../assets/fonts/MuseoSans_500.otf');
+  font-display: swap;
 }
 
 :root{
