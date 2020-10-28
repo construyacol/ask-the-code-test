@@ -10,7 +10,7 @@ import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
 import useToastMessage from '../../../hooks/useToastMessage'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-import AddressBookCTA from '../../widgets/modal/render/addressBook'
+import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
 
 
 export const CriptoSupervisor = props => {
@@ -203,7 +203,7 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={() => <AddressBookCTA provider_type={current_wallet.currency.currency}/>}
+        AuxComponent={AddressBookCTA}
       />
 
       <InputForm

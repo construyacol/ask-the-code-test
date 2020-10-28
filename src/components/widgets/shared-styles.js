@@ -2,6 +2,18 @@ import styled from 'styled-components'
 import { rotate90HorizontalBck, rotate0HorizontalBck } from './animations'
 
 
+export const ControlButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  left: 0;
+  display: grid;
+  bottom: ${props => `${props.bottom}px`}
+
+  #controlsContainer{
+    transform: scale(.95);
+  }
+`
+
 export const Face = styled.div`
   display: block;
   position: absolute;
