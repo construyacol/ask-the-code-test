@@ -36,6 +36,7 @@ const AddressBook = () => {
 
   const actions = useActions()
   const [{ current_wallet }] = WithdrawViewState()
+  if(!current_wallet){return actions.renderModal(null)}
   const provider_type = current_wallet.currency.currency
   const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
   const [ view, setView ] = useState('addressList')
@@ -263,14 +264,36 @@ const WindowControl = styled.div`
 
 const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
 
-  const [ recentList, setRecentList ] = useState()
+  const [ searchList, setSearchList ] = useState([])
+  const [ searchValue, setSearchValue ] = useState()
 
-  // useEffect(()=>{
-  //   setTimeout(()=>{
-  //     let element = document.getElementById('listContainer')
-  //     element && element.classList.add('appear')
-  //   }, 100)
-  // }, [])
+  const handleSearch = e => {
+
+    const value = e && e.target.value || searchValue
+    console.log(e && !e.target.value.length)
+
+    if(e && !e.target.value.length){
+      setSearchList([])
+      return setSearchValue('')
+    }
+
+    const result = withdrawAccounts.filter(withdrawAccount => withdrawAccount.info.label.includes(value) || withdrawAccount.info.address.includes(value));
+    const condition = value.length > 1 && result.length < withdrawAccounts.length
+    if(condition){
+      setSearchValue(value)
+      setSearchList(result)
+    }else{
+      setSearchList([])
+      setSearchValue('')
+    }
+    // console.log(result, condition)
+  }
+
+  useEffect(()=>{
+    if(searchValue){
+      handleSearch()
+    }
+  }, [withdrawAccounts])
 
   return(
     <>
@@ -281,21 +304,29 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
             <FiSearch size={25} color="#cecece"/>
           </IconContainer>
           <input
+            id="searchInput"
             type="text"
             className="inputElement"
             placeholder="Buscar dirección"
+            onChange={handleSearch}
+            autocomplete="off"
           />
         </Input>
       </InputContainers>
 
 
-      <Title className="fuente">Direcciones</Title>
+      <Title className="fuente">{searchList.length ? `Resultado de la busqueda [${searchList.length}]:` : 'Direcciones'}</Title>
       <ListContainerWrapper>
         <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
           {
-            withdrawAccounts.map((item, index) => {
-              return <ItemList key={index} item={item}/>
-            })
+            searchList.length ?
+              searchList.map((item, index) => {
+                return <ItemList key={index} item={item}/>
+              })
+            :
+              withdrawAccounts.map((item, index) => {
+                return <ItemList key={index} item={item}/>
+              })
           }
         </ListContainer>
      </ListContainerWrapper>
@@ -373,13 +404,17 @@ const ItemList = ({ item:{ id, info:{ address, label }}}) => {
     if(!e.target.dataset.action){return}
 
     const blockerActive = document.getElementById(`blocker`);
+    const searchInput = document.getElementById(`searchInput`);
+
     switch (e.target.dataset.action) {
       case 'open':
         blockerActive.classList.add('deleting')
+        searchInput.setAttribute('disabled', true)
       return setDeleting('rotate')
 
       case 'close':
         blockerActive.classList.remove('deleting')
+        searchInput.removeAttribute('disabled')
       return setDeletingState('unrotate')
 
       case 'delete':
@@ -392,6 +427,7 @@ const ItemList = ({ item:{ id, info:{ address, label }}}) => {
           return toastMessage(':( La cuenta no ha podido ser eliminada', 'error')
         }
         await coinsendaServices.fetchWithdrawAccounts()
+        searchInput.removeAttribute('disabled')
         loaderDeleteItem.classList.remove('deleting')
         blockerActive.classList.remove('deleting')
         setDeletingState('unrotate')
