@@ -19,10 +19,11 @@ const selectWithdrawProviderByType = createSelector(
 
 const selectWithdrawAccountsByAddress = createSelector(
   state => state.modelData.withdraw_accounts,
-  withdraw_accounts => {
+  (_, current_wallet) => current_wallet,
+  (withdraw_accounts, current_wallet) => {
     let result = {}
-    for (let w_account_id in withdraw_accounts) {
-      if (withdraw_accounts[w_account_id].info.address) {
+    for (let w_account_id in withdraw_accounts) { 
+      if ((current_wallet && current_wallet.currency.currency ===  withdraw_accounts[w_account_id].provider_type) &&  withdraw_accounts[w_account_id].info.address) {
         result = {
           ...result,
           [withdraw_accounts[w_account_id].info.address]: withdraw_accounts[w_account_id]
@@ -38,7 +39,6 @@ const WithdrawViewState = () => {
   const dispatch = useDispatch();
   const { modelData, ui, isLoading, storage } = useSelector(state => state)
   const withdrawProviders = useSelector(state => selectWithdrawProviderByType(state))
-  const withdraw_accounts = useSelector(state => selectWithdrawAccountsByAddress(state))
   const { account_id } = useParams()
   const { active_trade_operation } = ui.current_section.params
 
@@ -48,6 +48,8 @@ const WithdrawViewState = () => {
     user
   } = modelData
 
+  const withdraw_accounts = useSelector(state => selectWithdrawAccountsByAddress(state, wallets[account_id]))
+
   const {
     loader
   } = isLoading
@@ -56,18 +58,18 @@ const WithdrawViewState = () => {
     activity_for_account
   } = storage
 
-  const current_wallet = wallets[account_id]
+  const current_wallet = account_id && wallets[account_id]
 
   return [
     {
       user,
       current_wallet,
-      balance: balances[current_wallet.id],
+      balance: current_wallet && balances[current_wallet.id],
       withdrawProviders,
       withdraw_accounts,
       active_trade_operation,
       loader,
-      withdraws: activity_for_account[account_id] && activity_for_account[account_id].withdraws
+      withdraws: account_id && activity_for_account[account_id] && activity_for_account[account_id].withdraws
     },
     actions,
     dispatch

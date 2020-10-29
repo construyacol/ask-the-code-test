@@ -14,7 +14,6 @@ import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 // import { useActions } from '../../hooks/useActions'
-// import KeyActionsInfo from '../widgets/modal/render/keyActionsInfo'
 
 
 function WalletContainer(props) {
@@ -23,7 +22,6 @@ function WalletContainer(props) {
 
 
   useEffect(() => {
-    // actionDispatch.renderModal(KeyActionsInfo)
     const path = props.match.path.replace('/', '')
     props.action.CurrentForm(path)
     return () => {

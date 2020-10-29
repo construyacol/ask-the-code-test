@@ -28,7 +28,7 @@ export const KeyActionComponent = ({ action, isFiat, currentWallet }) => {
 
 const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
   return (
-    <ControlsContainer className={`${loader ? 'loader' : ''}`}>
+    <ControlsContainer id="controlsContainer" className={`${loader ? 'loader' : ''}`}>
       {
         loader &&
         <LoaderContainer>

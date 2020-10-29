@@ -68,6 +68,7 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
     const isModalVisible = modalRestriction && useSelector(state => state.form.isModalVisible)
 
     useEffect(() => {
+      // console.log('||||||||||||||||||||||||||||||||||||||||| useItemsInteractions', props)
         const element = document.getElementById(props.focusedId)
         if (element) {
             element.onfocus = () => {
@@ -96,7 +97,7 @@ export function useItemsInteractions(props, { suprKeyAction, enterKeyAction }, m
 
     const setFocus = () => {
         const element = document.getElementById(props.focusedId)
-        element && element.focus() 
+        element && element.focus()
     }
 
     return [isSelected, setFocus]

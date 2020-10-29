@@ -4,14 +4,14 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import actions from '../../actions'
 import { useState } from 'react'
-import { useToastMesssage } from '../../hooks/useToastMessage'
+import useToastMessage from '../../hooks/useToastMessage'
 import withCoinsendaServices from '../withCoinsendaServices'
 
 const Kyc = (props) => {
   const [reset, setReset] = useState()
   const [financial_success, setFinancial_success] = useState()
   const [identity_success, setIdentity_success] = useState(false)
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
   const [showSuccess, setShowSuccess] = useState(false)
 
   const validate_personal_kyc = async () => {
@@ -38,7 +38,7 @@ const Kyc = (props) => {
 
 
     props.action.isAppLoading(true)
-    
+
     let res = await props.coinsendaServices.updateLevelProfile(config, user)
     if (!res) {
       await props.action.ReduceStep('kyc_basic', 1)
@@ -136,7 +136,7 @@ const Kyc = (props) => {
     }
 
     let res = await props.coinsendaServices.updateLevelProfile(config, user)
-    
+
     if (!res) {
       // await props.action.ReduceStep('kyc_basic', 1)
       props.action.isAppLoading(false)

@@ -22,6 +22,8 @@ import {
 
 
 export const renderModal = (payload) => {
+  // Para que el render modal pueda acceder a los parametros de la ruta, debe estár precedido de una redirección push del history y el render component debe ser
+  // llamado con un import dinamico tal como está aplicado en el order_item de activityList, acceder tambien a los parametros de la ruta envolviendo el renderModal del modals-supervisor en un Hoc que sería lo ideal.
   return {
     type: SET_RENDER_MODAL,
     payload: payload

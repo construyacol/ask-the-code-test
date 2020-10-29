@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import { LoaderContainer } from '../loaders'
-import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions' 
+import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions'
 
 import {
   ACta,
@@ -23,7 +23,7 @@ import {
 
 import './item_wallet.css'
 import { withRouter } from 'react-router'
-import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useToastMessage from '../../../hooks/useToastMessage'
 import { useActions } from '../../../hooks/useActions'
 
 const ItemAccount = props => {
@@ -36,7 +36,7 @@ const ItemAccount = props => {
 
   const [coinsendaServices] = useCoinsendaServices()
   const actions = useActions()
-  const [toastMessage] = useToastMesssage()
+  const [toastMessage] = useToastMessage()
   const [account_state, set_account_state] = useState()
   const [loader, set_loader] = useState()
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(false)

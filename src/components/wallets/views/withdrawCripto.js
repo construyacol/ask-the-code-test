@@ -8,14 +8,12 @@ import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
 import { MAIN_COLOR } from '../../referrals/shareStyles'
 import { useActions } from '../../../hooks/useActions'
-import QrScanner from '../../qr-scanner'
-import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useToastMessage from '../../../hooks/useToastMessage'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-
+import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
 
 
 export const CriptoSupervisor = props => {
-
 
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState()
   // const [ { current_wallet } ] = WithdrawViewState()
@@ -25,7 +23,7 @@ export const CriptoSupervisor = props => {
     <>
       {
         Object.keys(withdrawProviders).length === 0 ?
-          <CriptoViewLoader />
+           <CriptoViewLoader />
           :
           !withdrawProviders[current_wallet.currency.currency] ?
             <WithOutProvider current_wallet={current_wallet} />
@@ -73,8 +71,9 @@ export const CriptoView = () => {
       renderModal
     }, dispatch] = WithdrawViewState()
 
+
   const actions = useActions()
-  const [toastMessage] = useToastMesssage()
+  const [toastMessage] = useToastMessage()
 
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
@@ -165,8 +164,8 @@ export const CriptoView = () => {
 
   const showQrScanner = async () => {
     renderModal(null)
-    const Element = () => (<QrScanner onScan={setAddressValue} />)
-    actions.renderModal(Element)
+    const Element = await import('../../qr-scanner')
+    actions.renderModal(Element.default)
   }
 
   useEffect(() => {
@@ -179,6 +178,25 @@ export const CriptoView = () => {
     }
   }, [active_trade_operation, amountState, addressState])
 
+
+  const handleChangeAddress = (_, value) => {
+    setAddressValue(value)
+  }
+
+  const [ addressToAdd, setAddressToAdd ] = useState()
+
+  useEffect(()=>{
+    setAddressToAdd()
+    if(addressState === 'good'){
+      const provider_type = current_wallet.currency.currency
+      if(!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)){
+        // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
+        setAddressToAdd(addressValue)
+      }
+    }
+  }, [addressState, withdraw_accounts, addressValue])
+
+
   return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={e => e.preventDefault()} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
@@ -188,7 +206,7 @@ export const CriptoView = () => {
         name="address"
         handleStatus={setAddressState}
         isControlled
-        handleChange={(_, value) => setAddressValue(value)}
+        handleChange={handleChangeAddress}
         value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
         disabled={loader}
@@ -204,6 +222,7 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
+        AuxComponent={() => <AddressBookCTA addressToAdd={addressToAdd} />}
       />
 
       <InputForm
@@ -233,6 +252,10 @@ export const CriptoView = () => {
   )
 
 }
+
+
+
+
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
   const isMovil = window.innerWidth < 768

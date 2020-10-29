@@ -25,7 +25,8 @@ const InputForm = (props) => {
     autoFocus,
     customError,
     setMaxWithActionKey,
-    autoComplete = "off"
+    autoComplete = "off",
+    AuxComponent
   } = props
 
   if (skeleton) {
@@ -112,6 +113,11 @@ const InputForm = (props) => {
             <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
         }
+
+        {
+          AuxComponent &&
+          <AuxComponent/>
+        }
       </ContainerInputComponent>
       {customError && (
         <ErrorText className="fuente">{customError.text}</ErrorText>
@@ -141,7 +147,7 @@ const SuffixComponentContainer = styled.div`
   align-items: center;
 `
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
   width: 100%;
   height: 45px;
   border: 1px solid #50667a61;
@@ -188,7 +194,7 @@ const InputContainer = styled.div`
   }
 `
 
-const ContainerInputComponent = styled.div`
+export const ContainerInputComponent = styled.div`
   height: 100px;
   width: 100%;
   position: relative;

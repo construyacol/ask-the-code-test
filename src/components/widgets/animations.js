@@ -3,6 +3,29 @@ import styled, { keyframes } from 'styled-components'
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
+export const rotate90HorizontalBck = keyframes`
+  0% {
+    -webkit-transform: rotateX(0);
+            transform: rotateX(0);
+  }
+  100% {
+    -webkit-transform: rotateX(-90deg);
+            transform: rotateX(-90deg);
+  }
+`;
+
+export const rotate0HorizontalBck = keyframes`
+  0% {
+    -webkit-transform: rotateX(-90deg);
+            transform: rotateX(-90deg);
+  }
+  100% {
+    -webkit-transform: rotateX(0);
+    transform: rotateX(0);
+  }
+`;
+
+
 export const getOutAnimationKeyboard = keyframes`
     0% {
       -webkit-transform: translateY(0) rotateX(0) scale(1);

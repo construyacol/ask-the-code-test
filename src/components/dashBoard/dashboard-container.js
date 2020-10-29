@@ -111,11 +111,11 @@ function DashBoardContainer(props) {
 
 
 
-  // useEffect(()=>{
-  //   if(props.currentPair){
-  //     // updateCurrentPair()
-  //   }
-  // }, [props.currentPair])
+  useEffect(()=>{
+    if(props.currentPair){
+      process.env.NODE_ENV === 'production' && updateCurrentPair()
+    }
+  }, [props.currentPair])
 
   useEffect(() => {
     onMount()
@@ -155,7 +155,7 @@ function DashBoardContainer(props) {
             right: 0,
             zIndex: 10
       }}>
-        
+
       </div>
       <Element id="containerElement" className="dashBoardLayout">
         <QuoteContainer />
