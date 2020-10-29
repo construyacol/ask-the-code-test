@@ -6,6 +6,7 @@ import actions from '../../../actions'
 import CropperIMG from './Cropper/CropperIMG'
 import './styles.css'
 import getCroppedImg from './Cropper/do-img-crop'
+import withKeyActions from '../../withKeyActions'
 
 
 class CropImg extends React.Component {
@@ -18,34 +19,6 @@ class CropImg extends React.Component {
     croppedAreaPixels: null,
     imgRotation: 0,
     croppedImage: null
-  }
-
-  componentDidMount() {
-    this.keyEvents()
-  }
-
-  componentDidUpdate() {
-    this.keyEvents()  
-  }
-
-  keyEvents() {
-    document.onkeydown = (event) => {
-
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        this.cancelCroppedImg()
-        // event.preventDefault();
-      }
-      // enter
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        this.showCroppedImage()
-        // event.preventDefault();
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    document.onkeydown = false
   }
 
   onCropChange = crop => {
@@ -139,6 +112,7 @@ class CropImg extends React.Component {
             <div className="ImgCropcontrols">
 
               <ButtonForms
+                _id={this.props.idCancel}
                 active={true}
                 type="secundary"
                 siguiente={this.cancelCroppedImg}
@@ -146,6 +120,7 @@ class CropImg extends React.Component {
               {/* <img src={this.state.croppedImage} alt="" width="40"/> */}
 
               <ButtonForms
+                _id={this.props.idAccept}
                 active={true}
                 type="primary"
                 siguiente={this.showCroppedImage}
@@ -168,4 +143,4 @@ function mapDispatchToProps(dispatch) {
 
 
 
-export default connect(null, mapDispatchToProps)(CropImg)
+export default connect(null, mapDispatchToProps)(withKeyActions(CropImg))

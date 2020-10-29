@@ -21,7 +21,7 @@ const ModalityView = props => {
   const [setCurrentSelection] = useNavigationKeyActions({
     items,
     loader: false,
-    className: 'modality-item-',
+    uniqueIdForElement: 'modality-item-',
     modalRestriction: false,
   })
 

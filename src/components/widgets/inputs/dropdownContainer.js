@@ -10,6 +10,16 @@ class DropDownContainer extends Component{
     placeHolder:this.props.placeholder
   }
 
+  componentDidMount() {
+    if(this.props.selected && this.props.elements) {
+      const indexOfSelectedElement = this.props.elements.findIndex(element => element.value === this.props.selected)
+
+      this.setState({
+        placeHolder: this.props.elements[indexOfSelectedElement].ui_name
+      })
+    }
+  }
+
   abrir = (e) =>{
     this.setState({
       open:!this.state.open
@@ -25,7 +35,7 @@ class DropDownContainer extends Component{
     }
 
     this.setState({
-      placeHolder:event.target.dataset.ui_name
+      placeHolder: event.target.dataset.ui_name
     })
 
     this.props.actualizarEstado(estado)

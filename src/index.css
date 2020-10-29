@@ -229,7 +229,7 @@
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
   }
 
-  .AccountListContainer > div:last-child {
+  .AccountListContainer>div:last-child {
     /* padding-bottom: 80px; */
   }
 
@@ -634,7 +634,7 @@
 
 @media only screen and (max-width: 768px) {
 
-  .menuItem p{
+  .menuItem p {
     font-size: 13px !important;
   }
 
@@ -1705,7 +1705,7 @@
     width: 100%;
   }
 
-  #paymentConfirButton {
+  .paymentConfirButton {
     padding: 0 5px !important;
   }
 

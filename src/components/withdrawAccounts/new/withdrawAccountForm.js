@@ -151,7 +151,7 @@ class WithdrawAccountForm extends Component {
       let maxLength = 50
       if (name && name === 'id_number') {
         truncateString = true
-        if(this.state.id_type === 'pasaporte') {
+        if (this.state.id_type === 'pasaporte') {
           if (value && !/^[a-zA-Z0-9]{1,20}$/g.test(value)) return
         } else if (this.state.id_type === 'nit') {
           maxLength = 11
@@ -272,7 +272,8 @@ class WithdrawAccountForm extends Component {
       step,
       search,
       withdraw_flow,
-      withdraw_flow_action
+      withdraw_flow_action,
+      eventName = 'onkeyup'
     } = this.props
 
     // console.log('R E N D E R I Z A N D O', step)
@@ -297,6 +298,7 @@ class WithdrawAccountForm extends Component {
         initPrevKeyActions={this.props.initPrevKeyActions}
         search={search}
         final_step_create_account={this.final_step_create_account}
+        eventName={eventName}
         {...this.state}
       />
     )

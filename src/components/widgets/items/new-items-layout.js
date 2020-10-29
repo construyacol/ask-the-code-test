@@ -50,7 +50,7 @@ function NewItemsLayout(props) {
             <div className={`item ${_activated ? 'itemSelection' : ''}`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
 
                 {
-                    !format ?
+                    !format && code && type ?
                         (
                             (type === "coins" || type === "payment_method" || type === "service_mode") ?
                                 _activated ?

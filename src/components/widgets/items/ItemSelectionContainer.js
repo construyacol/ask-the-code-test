@@ -10,6 +10,7 @@ import SimpleLoader from '../loaders'
 import withCoinsendaServices from '../../withCoinsendaServices'
 
 import './items.css'
+import { debounce } from '../../../utils'
 
 class ItemSelectionContainer extends Component {
 
@@ -47,11 +48,8 @@ class ItemSelectionContainer extends Component {
     })
   }
 
-  actualizar = async (event) => {
-
-    const value = event.target.value
-    // console.log('ACTUALIZANDO ESTADOOOOOOO - - - -- - - -- - ', value)
-    await this.buscarItemStore(value)
+  buscarResultados = (value) => {
+    this.buscarItemStore(value)
     let coincidencia = { name: "", code: "" }
 
     //si tenemos una coincidencia con el valor buscado, extraemos el nombre de la coincidencia y actualizamos el estado del formulario
@@ -78,15 +76,19 @@ class ItemSelectionContainer extends Component {
       }
     }
 
-    this.props.actualizarEstado(estado)
-    // console.log('esta es la coincidencia', coincidencia)
-    // console.log('VALOR BOOLEANO COINCIDENCIA', !coincidencia ? false : true)
+    this.props.actualizarEstado(estado)  
+  }
+
+  actualizar = (event) => {
+    const value = event.target.value
+    const debounceFinder = debounce(this.buscarResultados, 250)
+    debounceFinder(value)     
   }
 
 
-  buscarItemStore = async (item_name, isEqual) => {
+  buscarItemStore = (item_name, isEqual) => {
     // console.log('buscarItemStore',item_name, this.props.current, this.state.items)
-    await this.props.action.Search(item_name, this.props.current, this.state.items, isEqual)
+    this.props.action.Search(item_name, this.props.current, this.state.items, isEqual)
     this.props.update_control_form(item_name)
   }
 

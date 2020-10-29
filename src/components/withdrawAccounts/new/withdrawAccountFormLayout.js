@@ -16,7 +16,8 @@ const WithdrawAccountFormLayout = props =>{
     select_withdraw_way,
     withdraw_way,
     ticket,
-    finalizar
+    finalizar,
+    eventName
    } = props
 
   // console.log
@@ -45,6 +46,7 @@ const WithdrawAccountFormLayout = props =>{
       {
         (step >= 2 && withdraw_way === 'bankaccount') &&
         <BankAccountFlow
+          eventName={eventName}
           {...props}
         />
       }

@@ -33,6 +33,7 @@ function ModalsSupervisor(props) {
     } = props
     const [ toastMessage ] = useToastMessage()
 
+
     return (
         <>
             <ModalContainer condition={isModalVisible}>
@@ -76,17 +77,16 @@ function ModalsSupervisor(props) {
             </ModalContainer>
 
             <ModalContainer condition={RenderModal}>
-              {
-                RenderModal &&
-                <Route path={[
-                  "/:primary_path/:path/:account_id/:tx_path/:order_id",
-                  "/:primary_path/:path/:account_id",
-                  "/"
-                ]} component={RenderModal} />
-                // React.createElement(RenderModal)
-              }
+               {
+                  RenderModal &&
+                  <Route path={[
+                    "/:primary_path/:path/:account_id/:tx_path/:order_id",
+                    "/:primary_path/:path/:account_id",
+                    "/"
+                  ]} component={RenderModal} />
+                  // React.createElement(RenderModal)
+               }
             </ModalContainer>
-
         </>
     )
 
@@ -112,7 +112,7 @@ function mapStateToProps({ ui, form, isLoading }) {
         modalConfirmation: ui.modal_confirmation.visible,
         otherModal: ui.otherModal,
         isSocketNotification: ui.notifications.socket_notify,
-        RenderModal:ui.modal.render
+        RenderModal: ui.modal.render
     }
 }
 

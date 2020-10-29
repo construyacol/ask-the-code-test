@@ -20,7 +20,7 @@ const MethodView = props => {
   const [setCurrentSelection] = useNavigationKeyActions({
     items,
     loader: false,
-    className: 'pay-method-item-',
+    uniqueIdForElement: 'pay-method-item-',
     modalRestriction: false,
   })
 
@@ -56,7 +56,7 @@ const MethodView = props => {
         </div>
       </div>
 
-      <ButtonForms type="primary" active={item_active ? true : false} siguiente={siguiente}>Continuar</ButtonForms>
+      <ButtonForms _id={props.idForAcceptButtonInDepositView} type="primary" active={item_active ? true : false} siguiente={siguiente}>Continuar</ButtonForms>
 
     </div>
   )

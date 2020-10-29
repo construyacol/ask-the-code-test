@@ -78,10 +78,9 @@ export const CriptoView = () => {
   const [addressState, setAddressState] = useState()
   const [addressValue, setAddressValue] = useState()
   const [amountState, setAmountState] = useState()
-  const [shouldActiveButton, setShouldActiveButton] = useState(true)
   const isValidForm = useRef(false)
   let movil_viewport = window.innerWidth < 768
-  const idForClickeableElement = useKeyActionAsClick(shouldActiveButton)
+  const idForClickeableElement = useKeyActionAsClick(true, 'main-deposit-crypto-button', 13, false, 'onkeyup')
 
 
   const setTowFaTokenMethod = async (twoFaToken) => {
