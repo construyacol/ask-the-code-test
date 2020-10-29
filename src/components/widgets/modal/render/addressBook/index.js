@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActions } from '../../../../../hooks/useActions'
 import OtherModalLayout from '../../otherModalLayout'
@@ -28,7 +28,7 @@ const selectWithdrawAccounts = createSelector(
 )
 
 
-const AddressBook = () => {
+const AddressBook = ({ addressToAdd }) => {
 
   const actions = useActions()
   const [{ current_wallet }] = WithdrawViewState()
@@ -49,6 +49,14 @@ const AddressBook = () => {
     await setAnimation('appear', 'mainContainerAB', 150)
   }
 
+  useEffect(()=>{
+    if(addressToAdd){
+      switchView('newAccount')
+    }
+  }, [addressToAdd])
+
+
+
   return(
       <OtherModalLayout on_click={cerrar} >
         <ContainerLayout>
@@ -60,7 +68,7 @@ const AddressBook = () => {
                   <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
                 :
                 view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView}/>
+                  <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd}/>
                 :
                   <EmptyState switchView={switchView}></EmptyState>
               }

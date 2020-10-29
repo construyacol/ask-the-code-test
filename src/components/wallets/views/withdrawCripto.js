@@ -23,7 +23,7 @@ export const CriptoSupervisor = props => {
     <>
       {
         Object.keys(withdrawProviders).length === 0 ?
-          <CriptoViewLoader />
+           <CriptoViewLoader />
           :
           !withdrawProviders[current_wallet.currency.currency] ?
             <WithOutProvider current_wallet={current_wallet} />
@@ -178,6 +178,25 @@ export const CriptoView = () => {
     }
   }, [active_trade_operation, amountState, addressState])
 
+
+  const handleChangeAddress = (_, value) => {
+    setAddressValue(value)
+  }
+
+  const [ addressToAdd, setAddressToAdd ] = useState()
+
+  useEffect(()=>{
+    setAddressToAdd()
+    if(addressState === 'good'){
+      const provider_type = current_wallet.currency.currency
+      if(!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)){
+        // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
+        setAddressToAdd(addressValue)
+      }
+    }
+  }, [addressState, withdraw_accounts, addressValue])
+
+
   return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={e => e.preventDefault()} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
@@ -187,7 +206,7 @@ export const CriptoView = () => {
         name="address"
         handleStatus={setAddressState}
         isControlled
-        handleChange={(_, value) => setAddressValue(value)}
+        handleChange={handleChangeAddress}
         value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
         disabled={loader}
@@ -203,7 +222,7 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={AddressBookCTA}
+        AuxComponent={() => <AddressBookCTA addressToAdd={addressToAdd} />}
       />
 
       <InputForm

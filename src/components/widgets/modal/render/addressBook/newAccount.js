@@ -9,10 +9,10 @@ import { ControlButtonContainer } from '../../../shared-styles'
 import ControlButton from '../../../buttons/controlButton'
 
 
-const NewAccount = ({ provider_type, switchView }) => {
+const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
 
   const [ addressState, setAddressState ] = useState()
-  const [ addressValue, setAddressValue ] = useState()
+  const [ addressValue, setAddressValue ] = useState(addressToAdd)
   const [ nameState, setNameState ] = useState()
   const [ loader, setLoader ] = useState()
 
@@ -55,15 +55,13 @@ const NewAccount = ({ provider_type, switchView }) => {
       return setLoader(false)
     }
     // idNewAccount
-    // console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
     await toastMessage('¡La cuenta ha sido creada con éxito!', 'success')
     await coinsendaServices.fetchWithdrawAccounts()
     await dispatch(actions.success_sound())
     await switchView('addressList')
     let idNewAccount = document.getElementById(newWithdrawAccount.id)
     idNewAccount.classList.add('shower')
-
-
+    setAddressValue()
   }
 
   return(
