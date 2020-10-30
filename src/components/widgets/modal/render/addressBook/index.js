@@ -58,7 +58,7 @@ const AddressBook = ({ addressToAdd }) => {
 
 
   return(
-      <OtherModalLayout on_click={cerrar} >
+      <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar} >
         <ContainerLayout>
           <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
           <Content id="mainContent">
