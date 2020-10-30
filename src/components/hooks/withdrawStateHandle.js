@@ -22,7 +22,7 @@ const selectWithdrawAccountsByAddress = createSelector(
   (_, current_wallet) => current_wallet,
   (withdraw_accounts, current_wallet) => {
     let result = {}
-    for (let w_account_id in withdraw_accounts) { 
+    for (let w_account_id in withdraw_accounts) {
       if ((current_wallet && current_wallet.currency.currency ===  withdraw_accounts[w_account_id].provider_type) &&  withdraw_accounts[w_account_id].info.address) {
         result = {
           ...result,
@@ -39,7 +39,7 @@ const WithdrawViewState = () => {
   const dispatch = useDispatch();
   const { modelData, ui, isLoading, storage } = useSelector(state => state)
   const withdrawProviders = useSelector(state => selectWithdrawProviderByType(state))
-  const { account_id } = useParams()
+  const { account_id, path } = useParams()
   const { active_trade_operation } = ui.current_section.params
 
   const {
@@ -63,6 +63,7 @@ const WithdrawViewState = () => {
   return [
     {
       user,
+      path,
       current_wallet,
       balance: current_wallet && balances[current_wallet.id],
       withdrawProviders,

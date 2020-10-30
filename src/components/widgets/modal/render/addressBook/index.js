@@ -30,7 +30,7 @@ const selectWithdrawAccounts = createSelector(
 
 const AddressBook = ({ addressToAdd }) => {
   const actions = useActions()
-  const [{ current_wallet }] = WithdrawViewState()
+  const [{ current_wallet, path }] = WithdrawViewState()
   const provider_type = current_wallet && current_wallet.currency.currency
   const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
   const [view, setView] = useState('addressList')
@@ -53,8 +53,8 @@ const AddressBook = ({ addressToAdd }) => {
     }
   }, [addressToAdd])
 
-  if (!current_wallet) {
-    actions.renderModal(null)
+  if (!current_wallet || path !== 'withdraw') {
+    cerrar()
     return <></>
   }
 
