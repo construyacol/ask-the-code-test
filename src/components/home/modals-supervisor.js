@@ -31,7 +31,7 @@ function ModalsSupervisor(props) {
         isSocketNotification,
         RenderModal
     } = props
-    const [ toastMessage ] = useToastMessage()
+    const [toastMessage] = useToastMessage()
 
 
     return (
@@ -77,15 +77,15 @@ function ModalsSupervisor(props) {
             </ModalContainer>
 
             <ModalContainer condition={RenderModal}>
-               {
-                  RenderModal &&
-                  <Route path={[
-                    "/:primary_path/:path/:account_id/:tx_path/:order_id",
-                    "/:primary_path/:path/:account_id",
-                    "/"
-                  ]} component={RenderModal} />
-                  // React.createElement(RenderModal)
-               }
+                {
+                    RenderModal &&
+                    <Route path={[
+                        "/:primary_path/:path/:account_id/:tx_path/:order_id",
+                        "/:primary_path/:path/:account_id",
+                        "/"
+                    ]} component={() => React.createElement(RenderModal)} />
+                    // React.createElement(RenderModal)
+                }
             </ModalContainer>
         </>
     )

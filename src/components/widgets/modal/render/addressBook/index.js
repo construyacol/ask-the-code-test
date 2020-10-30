@@ -19,7 +19,7 @@ const selectWithdrawAccounts = createSelector(
   ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
   (_, provider_type) => provider_type,
   (withdraw_accounts, provider_type) => {
-  let res = []
+    let res = []
     for (const [_, withdraw_account] of Object.entries(withdraw_accounts)) {
       (withdraw_account.provider_type === provider_type && withdraw_account.account_name.value !== provider_type) && res.push(withdraw_account)
     }
@@ -29,13 +29,11 @@ const selectWithdrawAccounts = createSelector(
 
 
 const AddressBook = ({ addressToAdd }) => {
-
   const actions = useActions()
   const [{ current_wallet }] = WithdrawViewState()
-  if(!current_wallet){return actions.renderModal(null)}
-  const provider_type = current_wallet.currency.currency
+  const provider_type = current_wallet && current_wallet.currency.currency
   const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
-  const [ view, setView ] = useState('addressList')
+  const [view, setView] = useState('addressList')
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -43,39 +41,42 @@ const AddressBook = ({ addressToAdd }) => {
     }
   }
 
-  const switchView = async(payload) => {
+  const switchView = async (payload) => {
     await setAnimation('disappear', 'mainContainerAB', 150)
     setView(payload)
     await setAnimation('appear', 'mainContainerAB', 150)
   }
 
-  useEffect(()=>{
-    if(addressToAdd){
+  useEffect(() => {
+    if (addressToAdd) {
       switchView('newAccount')
     }
   }, [addressToAdd])
 
+  if (!current_wallet) {
+    actions.renderModal(null)
+    return <></>
+  }
 
-
-  return(
-      <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar} >
-        <ContainerLayout>
-          <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
-          <Content id="mainContent">
-            <Container id="mainContainerAB">
-              {
-                (view === 'addressList' && withdrawAccounts.length) ?
-                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
+  return (
+    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar} >
+      <ContainerLayout>
+        <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
+        <Content id="mainContent">
+          <Container id="mainContainerAB">
+            {
+              (view === 'addressList' && withdrawAccounts.length) ?
+                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} />
                 :
                 view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd}/>
-                :
+                  <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd} />
+                  :
                   <EmptyState switchView={switchView}></EmptyState>
-              }
-           </Container>
-          </Content>
-        </ContainerLayout>
-      </OtherModalLayout>
+            }
+          </Container>
+        </Content>
+      </ContainerLayout>
+    </OtherModalLayout>
   )
 }
 
