@@ -133,6 +133,7 @@ class ViewAmountComponent extends Component {
             </div>
 
             <ButtonForms
+              _id={this.props.mainCtaId}
               type="primary"
               active={
                 operation_type === 'deposit' ?

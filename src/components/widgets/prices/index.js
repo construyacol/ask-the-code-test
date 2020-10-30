@@ -5,6 +5,7 @@ import { useActions } from '../../../hooks/useActions'
 import PricesModalContent from '../../PricesModalContent/prices-modal-content'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import { device } from '../../../const/const'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 const PricesModal = () => {
@@ -19,23 +20,12 @@ const PricesModal = () => {
     }
   }
 
-  useEffect(() => {
-    document.onkeydown = (event) => {
-      // esc
-      if (event.keyCode === 27) {
-        closeModal()
-        // event.preventDefault();
-      }
-    }
-    return () => {
-      document.onkeydown = false
-    }
-  }, [document.onkeydown])
+  const idCloseModalButton = useKeyActionAsClick(true, 'close-prices-modal-button', 27, false, 'onkeyup', true)
 
   return(
     <OtherModalLayout on_click={closeModal}>
       <MainContainer>
-        <CloseButton onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton>
+        <CloseButton id={idCloseModalButton} onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton>
         <PricesModalContent changePair={actions.searchCurrentPairAction} currentPair={currentPair} pairs={pairs} />
       </MainContainer>
     </OtherModalLayout>

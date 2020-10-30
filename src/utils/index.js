@@ -677,6 +677,12 @@ export function setInputFilter(textbox, inputFilter) {
   });
 }
 
+/**
+ * Function para hacer debounce
+ * 
+ * @param {Function} func function target
+ * @param {Number} wait timer representado en ms's
+ */
 export function debounce(func, wait) {
 //Previene over flows. Si el usuario en 1 seg da x cantidad de clicks solo ejecuta el último click
 // Esto surgió porque, podía darse, presionar muchas teclas a la vez en cuestión de milisegundos
@@ -686,7 +692,7 @@ export function debounce(func, wait) {
 		const context = this, args = arguments;
 		const later = function() {
 			timeout = null
-			func.apply(context, args)
+			func.apply(context, [...args, () => clearTimeout(timeout)])
     }
 
 		clearTimeout(timeout);

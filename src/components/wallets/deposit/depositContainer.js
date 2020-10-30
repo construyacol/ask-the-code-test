@@ -54,45 +54,9 @@ class DepositContainer extends Component {
     // })
     const currentDepositProvider = deposit_providers && deposit_providers[this.props.current_wallet.dep_prov[0]]
     this.setState({ currentDepositProvider })
-    this.keyActions()
-  }
-
-  keyActions() {
-    document.onkeydown = (event) => {
-      // backspace
-      if ((event.keyCode === 8 || event.keyCode === 46) && this.props.step > 1) {
-        if (this.props.step === 4) return
-        event.preventDefault()
-        this.props.action.ReduceStep(this.props.current)
-      }
-      // enter
-      if (event.keyCode === 13) {
-        event.preventDefault()
-        if (this.props.step === 3 && !this.props.buttonActive) {
-          return
-        }
-        if (this.props.step === 3) {
-          return this.create_deposit_order()
-        }
-        if (this.state.amount < (this.state.minAmount || 20000)) {
-          return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${globalServices.number_format(this.state.minAmount || 20000)}`, 'error')
-        }
-        if (this.props.step === 4 && !this.state.finalButton && document.getElementById('pre-finalizar-button')) {
-          return document.getElementById('pre-finalizar-button').click()
-        }
-        if ((this.props.step === 4 || this.state.final) && !this.state.finalButton) {
-          return this.finalizar()
-        }
-        if(![3, 4].includes(this.props.step)) {
-          this.siguiente()
-        }
-        // event.preventDefault();
-      }
-    }
   }
 
   componentWillUnmount() {
-    document.onkeydown = false
     this.props.history.push(window.location.pathname)
   }
 

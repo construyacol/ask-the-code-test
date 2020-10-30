@@ -8,6 +8,7 @@ import CopyContainer from '../../widgets/copy/copyContainer'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import ControlButton from '../../widgets/buttons/controlButton'
 import { skeleton } from '../../widgets/loaders/skeleton'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 const CriptoSupervisor = props => {
   const [, { current_wallet, modelData: { deposit_providers } }] = useCoinsendaServices()
@@ -57,7 +58,7 @@ const AddDepositProviderCripto = () => {
     },
     dispatch
   ] = useCoinsendaServices()
-
+  const idForMainButton = useKeyActionAsClick(true, 'main-button-deposit', 13, true)
 
   const movil_viewport = window.innerWidth < 768
 
@@ -76,7 +77,7 @@ const AddDepositProviderCripto = () => {
   }
 
   return (
-    <DepositForm className="DepositView" onSubmit={createDepositProvider}>
+    <DepositForm className="DepositView">
       <div className="contIcontSwitch">
         <IconSwitch {...atributos} />
       </div>
@@ -85,6 +86,8 @@ const AddDepositProviderCripto = () => {
 
       <div className="contButtons deposit">
         <ControlButton
+          id={idForMainButton}
+          handleAction={createDepositProvider}
           loader={loader}
           formValidate
           label="Crear dirección de deposito"

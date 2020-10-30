@@ -3,22 +3,48 @@ import { NavLink, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import IconSwitch from '../icons/iconSwitch'
 import { navigation_components } from '../../api/ui/api.json'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
+import { debounce } from '../../../utils'
 
 import './detailContainer.css'
-import { useModalState } from '../../../hooks/useModalState'
 
 // TODO: refactor this component
+let timerId
 function ContentTab(props) {
-    const { title, current_section, current_wallet, pathname, primary_path, wallets, history } = props
-    const tabRef = useRef()
-    const forceStatePathnameIndex = useRef({ currentIndex: 0 })
-    const forceCurrentWallet = useRef(current_wallet)
-    const [haveMenu, setHaveMenu] = useState(false)
-    const modalState = useModalState()
+    const navState = useRef({
+        current: '',
+        next: '',
+        prev: ''
+    })
 
-    const { items_menu } = navigation_components[primary_path] ? navigation_components[primary_path] : navigation_components.wallets
+    const { title, current_section, current_wallet, pathname, primary_path, wallets } = props
     const { params } = current_section
+    const tabRef = useRef()
+
+    const [haveMenu, setHaveMenu] = useState(false)
+    const [menuItems, setMenuItems] = useState(navigation_components.wallets.items_menu)
+
     const movil_viewport = window.innerWidth < 768
+
+    useEffect(() => {
+        if (primary_path && navigation_components[primary_path]) {
+            setMenuItems(navigation_components[primary_path].items_menu)
+        }
+    }, [primary_path])
+
+    useEffect(() => {
+        if (menuItems && pathname) {
+            const currentIndex = menuItems.findIndex(item => item.link === pathname)
+            const current = menuItems[currentIndex].link
+            const next = menuItems[currentIndex + 1] && menuItems[currentIndex + 1].link
+            const prev = menuItems[currentIndex - 1] && menuItems[currentIndex - 1].link
+            navState.current = {
+                current,
+                next,
+                prev
+            }
+        }
+    }, [pathname])
 
     // useEffect(() => {
     //     window.requestAnimationFrame(() => {
@@ -27,97 +53,85 @@ function ContentTab(props) {
     // }, [title, path])
 
     useEffect(() => {
-        document.onkeyup = (event) => {
-            const condition =
-                forceCurrentWallet.current &&
-                !document.onkeydown &&
-                window.location.href.includes(forceStatePathnameIndex.current.pathname) &&
-                !window.location.href.includes('?')
-
-            const haveBalances = wallets[forceCurrentWallet.current] && (wallets[forceCurrentWallet.current].count > 0 ||
-                wallets[forceCurrentWallet.current].available > 0)
-            const isFromInputWithNoValue = event.srcElement.tagName.includes('INPUT') && !event.srcElement.value
+        const handleOnKeyUp = (event) => {
             const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
-            const [ generalModal ] = modalState
+            if (isFromInputWithValue) return
 
-            if(generalModal) return 
-
-            if(isFromInputWithValue) return
-            
             if (event.keyCode === 37) {
-                if (condition && haveBalances) goPrev()
+                goPrev()
             }
             if (event.keyCode === 39) {
-                if (condition && haveBalances) goNext()
-            }
-            if (event.keyCode === 8) {
-                if (isFromInputWithNoValue) {
-                    event.stopPropagation()
-                    event.preventDefault()
-                    return event.srcElement.blur()
-                }
-                if (condition) exit()
+                goNext()
             }
         }
-    }, [document.onkeydown, primary_path, current_wallet])
+
+        const setEvent = () => {
+            if (!document.onkeyup) {
+                document.onkeyup = debounce(handleOnKeyUp, 100)
+                clearInterval(timerId)
+            }
+        }
+        setEvent()
+        timerId = setInterval(setEvent, 1000)
+        return () => {
+            if (timerId) {
+                clearInterval(timerId)
+            }
+        }
+    }, [document.onkeyup, navState])
 
     useEffect(() => {
-        if (forceStatePathnameIndex.current.pathname !== pathname) {
-            const currentIndex = items_menu.findIndex(item => item.link === pathname)
-            forceStatePathnameIndex.current = { pathname, currentIndex }
-        }
-
-        if (forceCurrentWallet.current !== current_wallet) {
-            forceCurrentWallet.current = current_wallet
-        }
-
         const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 ||
             wallets[current_wallet].available > 0)
 
-        const condition = primary_path === 'wallets' ? haveBalances && items_menu : items_menu
+        const condition = primary_path === 'wallets' ? haveBalances && menuItems : menuItems
 
-        setHaveMenu(condition ? items_menu.length > 0 : false)
+        setHaveMenu(condition ? menuItems.length > 0 : false)
 
-    }, [current_wallet, items_menu, pathname, primary_path])
+    }, [current_wallet, menuItems, primary_path, wallets])
 
     const getLink = (link) => {
-        return `/${primary_path}/${link}/${forceCurrentWallet.current}${link === 'activity' ? `/${params.currentFilter}` : ''}`
+        return `/${primary_path}/${link}/${current_wallet}${link === 'activity' ? `/${params.currentFilter}` : ''}`
     }
 
     const goPrev = () => {
-        if (forceStatePathnameIndex.current.currentIndex === 0) return
-        if (!items_menu[forceStatePathnameIndex.current.currentIndex - 1]) return
-        const link = getLink(items_menu[forceStatePathnameIndex.current.currentIndex - 1].link)
-        history.push(link)
+        const el = document.getElementById(`${navState.current.prev}-menu-button`)
+        el && el.click()
     }
 
     const goNext = () => {
-        if (forceStatePathnameIndex.current.currentIndex === (items_menu.length - 1)) return
-        if (!items_menu[forceStatePathnameIndex.current.currentIndex + 1]) return
-        const link = getLink(items_menu[forceStatePathnameIndex.current.currentIndex + 1].link)
-        history.push(link)
+        const el = document.getElementById(`${navState.current.next}-menu-button`)
+        el && el.click()
     }
 
-    const exit = () => {
-        history.push(`/${primary_path}`)
+    const backButtonId = useKeyActionAsClick(true, 'back-button-content-tab', 8, true, 'onkeyup')
+    const idNext = useKeyActionAsClick(true, 'id-next-button', 39, haveMenu, 'onkeyup')
+    const idPrev = useKeyActionAsClick(true, 'id-prev-button', 37, haveMenu, 'onkeyup')
+
+    const controlProps = {
+        goNext,
+        goPrev,
+        idNext,
+        idPrev
     }
 
     return (
         <div className="subMenu" ref={tabRef}>
+            {haveMenu && pathname && <HiddenButtons {...controlProps} />}
             <div className="menuContainer">
                 <div className="itemsMenu fuente" style={{ display: !pathname ? 'none' : 'grid' }}>
                     {
                         haveMenu ?
-                            items_menu.map(item => {
+                            menuItems.map((item, index) => {
                                 // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
                                 if ((item.link === 'activity' || item.link === 'withdraw' || item.link === 'swap') && primary_path === 'wallets' && wallets[current_wallet] && wallets[current_wallet].count === 0) {
                                     return null
                                 }
                                 return (
-                                    <NavLink to={getLink(item.link)}
-                                        // onClick={this.to_sub_section}
-                                        id={item.link}
-                                        key={item.id}
+                                    <NavLink
+                                        key={index}
+                                        id={`${item.link}-menu-button`}
+                                        to={getLink(item.link)}
                                         className={`menuItem ${pathname === item.link ? 'active' : ''}`}
                                     >
                                         <div className={`menuMovilIcon ${pathname === item.link ? 'active' : ''}`} >
@@ -140,7 +154,7 @@ function ContentTab(props) {
 
                 {
                     (!movil_viewport) &&
-                    <Link to={primary_path === 'wallets' ? "/wallets" : "/withdraw_accounts"} className="DCBack" style={{ display: (pathname) ? '' : 'none' }} >
+                    <Link id={backButtonId} to={primary_path === 'wallets' ? "/wallets" : "/withdraw_accounts"} className="DCBack" style={{ display: (pathname) ? '' : 'none' }} >
                         <i className="fas fa-arrow-left"></i>
                         <p>Volver</p>
                     </Link>
@@ -162,6 +176,13 @@ function ContentTab(props) {
 
     )
 }
+
+const HiddenButtons = ({ goNext, goPrev, idNext, idPrev}) => (
+    <div style={{ width: 0, height: 0, opacity: 0 }}>
+        <button id={idPrev} onClick={goPrev}>goPrev</button>
+        <button id={idNext} onClick={goNext}>goNext</button>
+    </div>
+)
 
 
 const MovilMenu = ({ primary_path }) => {
@@ -207,11 +228,10 @@ const MovilMenu = ({ primary_path }) => {
 function mapStateToProps(state, props) {
     let account_opts = {}
     if (props.match) {
-        const { path, primary_path, account_id } = props.match.params
+        const { path, account_id } = props.match.params
         account_opts = {
             current_wallet: account_id,
-            pathname: path,
-            primary_path
+            pathname: path
         }
     }
 

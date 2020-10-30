@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { ButtonForms } from '../../../widgets/buttons/buttons'
 import Marco from '../../../widgets/marco'
 import { ACCEPT_FILE_TYPE_ADVANCE_KYC } from '../../../../const/const'
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
 
 const KycDashBoard = props => {
 
@@ -27,14 +28,7 @@ const KycDashBoard = props => {
     newback
   } = base64
 
-  useEffect(() => {
-    document.onkeydown = (event) => {
-      if(event.keyCode === 13 && document.getElementById('subir-fotos')) {
-        !fileloader && document.getElementById('subir-fotos').click()
-      }
-    }
-    return () => document.onkeydown = false
-  }, [document.onkeydown])
+  const idUploadPic = useKeyActionAsClick(!fileloader, 'upload-pic-button', 13, true, 'onkeyup', true)
 
   return (
     <div className="KycDashBoard">
@@ -111,7 +105,7 @@ const KycDashBoard = props => {
             step < 4 ?
 
               <div className="contButtonUpload">
-                <input id="subir-fotos" type="file" accept={ACCEPT_FILE_TYPE_ADVANCE_KYC.join()} onChange={goFileLoader} />
+                <input id={!fileloader && idUploadPic} type="file" accept={ACCEPT_FILE_TYPE_ADVANCE_KYC.join()} onChange={goFileLoader} />
                 <ButtonForms
                   active={true}
                   type="primary"

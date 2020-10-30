@@ -18,6 +18,7 @@ import { device } from '../../../../../const/const'
 
 import moment from 'moment'
 import 'moment/locale/es'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 moment.locale('es')
 
 const orderModel = {
@@ -30,9 +31,10 @@ const orderModel = {
 
 
 
-const InProcessOrder = () => {
-
+const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState()
+
+  if(!currentOrder || !currentOrder.currency) return onErrorCatch()
 
   return (
     <>
@@ -256,15 +258,7 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
 const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 
   const { currentOrder } = UseTxState()
-
-  useEffect(() => {
-    document.onkeydown = (event) => {
-      if(event.keyCode === 13 && document.getElementById('TFileUpload')) {
-        document.getElementById('TFileUpload').click()
-      }
-    }
-    return () => document.onkeydown = false
-  }, [document.onkeydown])
+  const idForFileUpload = useKeyActionAsClick(true, 'TFileUpload', 13, true, 'onkeyup', true)
 
   return (
     <UploadContainer className={`${imgSrc || currentOrder.state === 'confirmed' ? 'loaded' : 'unload'}`}>
@@ -282,7 +276,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
                 </UploadMiddle>
 
                 <Buttom >
-                  <input id="TFileUpload" type="file" accept="image/png,image/jpeg" onChange={goFileLoader} />
+                  <input id={idForFileUpload} type="file" accept="image/png,image/jpeg" onChange={goFileLoader} />
                   <Text style={{ color: "white" }} className="fuente">Subir comprobante</Text>
                 </Buttom>
               </Fragment>

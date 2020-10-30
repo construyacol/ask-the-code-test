@@ -15,6 +15,7 @@ import { CloseButton } from '../../../shared-styles'
 
 import moment from 'moment'
 import 'moment/locale/es'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 moment.locale('es')
 
 
@@ -31,33 +32,45 @@ const OrderSupervisor = () => {
     }
   }
 
-  const el = window
+  const idForCloseModal = useKeyActionAsClick(true, 'close-modal-button-orders', 27, true, 'onkeyup', true)
+
   useEffect(() => {
-    el.onkeydown = (event) => {
+    document.onkeyup = (event) => {
       if (event.keyCode === 27) {
         cerrar(event, true)
         // event.preventDefault();
       }
     }
+
     return () => {
-      el.onkeydown = false
+      document.onkeyup = false
     }
-  }, [el.onkeydown])
+  }, [document.onkeyup])
+
+  const closeAll = () => {
+    actions.renderModal(null)
+    return <div></div>
+  }
+
+  if (!currentOrder || !currentOrder.state) {
+    actions.renderModal(null)
+    return <div></div>
+  }
 
   return (
-    <OtherModalLayout on_click={cerrar}>
+    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar}>
       {
         isMovilViewport &&
-        <CloseButton data-close_modal={true}>
+        <CloseButton id={idForCloseModal} data-close_modal={true}>
           <i className="fas fa-times"></i>
         </CloseButton>
       }
 
       {
-        currentOrder.state === 'accepted' || currentOrder.state === 'rejected' || currentOrder.state === 'canceled' ?
+        ['accepted', 'rejected', 'canceled'].includes(currentOrder.state) ?
           <OrderDetail />
           :
-          <InProcessOrder />
+          <InProcessOrder onErrorCatch={closeAll} />
       }
     </OtherModalLayout>
   )
@@ -83,8 +96,6 @@ const OrderDetail = () => {
   const { isMovilViewport } = useViewport()
 
   if (!currentOrder) { return null }
-
-
 
   const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :

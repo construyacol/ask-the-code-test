@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import HomeLayout from './homeLayout'
 import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
