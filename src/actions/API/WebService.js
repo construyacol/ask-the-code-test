@@ -1,3 +1,5 @@
+import { COINSENDA_URL } from "../../const/const";
+
 export class WebService {
     async doFetch(url, params) {
       // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
@@ -7,7 +9,7 @@ export class WebService {
             // console.log('get res ::', response)
             if (!response.ok && response.status === 465) {
                 if(finalResponse.error.message.includes('Invalid signature')) {
-                    window.location.href = 'https://auth1.devsertec.com/signin?clientId=5e79471764dcdb016a369cd8'
+                    window.location.href = COINSENDA_URL
                 }
                 throw response.status
             }
