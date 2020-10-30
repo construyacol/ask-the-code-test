@@ -1,5 +1,5 @@
 import { WebService } from "../actions/API/WebService";
-import { resetModelData, updateNormalizedDataAction, manageBalanceAction } from "../actions/dataModelActions";
+import { resetModelData, updateNormalizedDataAction } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
 import {
     ACCOUNT_URL,
@@ -8,7 +8,6 @@ import {
     DELETE_WALLET_URL,
     loadLabels,
 } from "../const/const";
-import { appLoadLabelAction } from "../actions/loader";
 import initialAccounts from '../components/api/accountInitialEnvironment.json'
 import { serve_orders, matchItem } from "../utils";
 import update_activity, { pending_activity } from "../actions/storage";
@@ -17,7 +16,7 @@ import { current_section_params } from "../actions/uiActions";
 export class AccountService extends WebService {
 
     async getWalletsByUser(onlyBalances = false, lastActionDetail) {
-        this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES))
+        this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES)
         const user = this.user
         const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
         const wallets = await this.Get(accountUrl)
@@ -159,7 +158,7 @@ export class AccountService extends WebService {
 
     // async getBalancesByAccount() {
     //     const user = this.user
-    //     this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
+    //     this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BALANCES)
     //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
 
     //     const headers = this.getHeaders(user.userToken)

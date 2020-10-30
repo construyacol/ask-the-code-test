@@ -1,5 +1,4 @@
 import localForage from 'localforage'
-import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
 import { TransactionService } from "./CoinsendaTransactionService";
 import { ReferralService } from "./CoinsendaReferralService";
 import { WithdrawService } from "./CoinsendaWithdrawService";
@@ -11,10 +10,10 @@ import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
 
 import userSource from '../components/api'
-import { deepEqual } from "../utils";
+import { debounce, deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import isAppLoading, { isAppLoaded } from "../actions/loader";
+import isAppLoading, { appLoadLabelAction, isAppLoaded } from "../actions/loader";
 import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
 import { updateLoadersAction } from '../actions/uiActions';
@@ -213,7 +212,7 @@ export class MainService extends inheritances {
     }
 
     async isCached(path, newData, doStateValidation = true) {
-        return false
+        // return false
         const localState = this.globalState.modelData
         const cached = await localForage.getItem('CACHED_DATA')
         if (cached && cached[path]) {
@@ -230,6 +229,10 @@ export class MainService extends inheritances {
             await localForage.setItem('CACHED_DATA', { ...cached, [path]: newData })
         }
         return false
+    }
+
+    updateLoadInfo(info) {
+        return debounce(this.dispatch(appLoadLabelAction(info)), 500)
     }
 }
 

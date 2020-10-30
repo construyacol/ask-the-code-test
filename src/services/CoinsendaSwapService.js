@@ -9,21 +9,18 @@ import loadLocalPairsAction, {
     loadLocalCurrencyAction,
     update_item_state
 } from "../actions/dataModelActions";
-import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
-
-
 
 export class SwapService extends WebService {
 
     async fetchAllPairs() {
 
-        this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES))
+        this.updateLoadInfo(loadLabels.IMPORTANDO_PARES)
         const pairs = await this.Get(`${SWAP_URL}pairs`)
         if (!pairs) { return }
-        
-        if(await this.isCached('available_pairs', pairs)) {
+
+        if (await this.isCached('available_pairs', pairs)) {
             return pairs
         }
 
@@ -55,7 +52,7 @@ export class SwapService extends WebService {
         if (currencies) {
             const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
 
-            if(this.isCached('getPairsByCountry_', localCurrencies, false) && this.globalState.modelData.pairs.currentPair) {
+            if (this.isCached('getPairsByCountry_', localCurrencies, false) && this.globalState.modelData.pairs.currentPair) {
                 return
             }
 
@@ -95,10 +92,10 @@ export class SwapService extends WebService {
             query = `{"where": {"primary_currency.currency": "${primary}"}}`
         }
         if (!primary && secondary) {
-            query = `{"where": {"secondary_currency.currency": "${secondary}"}}`     
+            query = `{"where": {"secondary_currency.currency": "${secondary}"}}`
         }
         query && (res = await this.pairsRequest(query))
-        if(res) {
+        if (res) {
             if (all) { return res }
             return res[0]
         }
@@ -238,9 +235,9 @@ export class SwapService extends WebService {
 
         if (!swaps || swaps === 465) { return false }
 
-        if(await this.isCached('swaps', swaps)) {
+        if (await this.isCached('swaps', swaps)) {
             return swaps
-        } 
+        }
 
         let swapResult = [...swaps]
 

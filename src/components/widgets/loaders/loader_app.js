@@ -27,20 +27,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const { isTabletOrMovilViewport } = useViewport()
 
   const registerColors = () => {
-    if ((window && window.CSS) && window.CSS.registerProperty) {
-      window.CSS.registerProperty({
-        name: '--primary',
-        syntax: '<color>',
-        inherits: true,
-        initialValue: '#014c7d',
-      });
-      window.CSS.registerProperty({
-        name: '--secondary',
-        syntax: '<color>',
-        inherits: true,
-        initialValue: '#0198ff',
-      });
-    }
   }
 
 

@@ -1,6 +1,5 @@
 import { WebService } from "../actions/API/WebService";
 import { UPDATE_DEPOSIT_URL, NEW_DEPOSIT_URL, loadLabels, DEPOSITS_URL, GET_DEPOSIT_BY_USERS_URL, SUBSCRIBE_TO_DEPOSITS_URL } from "../const/const";
-import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import {
@@ -17,14 +16,14 @@ const {
 
 export class DepositService extends WebService {
     async fetchDepositProviders() {
-        this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO))
+        this.updateLoadInfo(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
 
         const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`
         const response = await this.Get(finalUrl)
         if (!response) return;
 
         let updateState = true
-        if(await this.isCached('deposit_providers', response)) {
+        if (await this.isCached('deposit_providers', response)) {
             updateState = false
         }
 
@@ -155,7 +154,7 @@ export class DepositService extends WebService {
                 country
             }
         }
-        
+
         const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`
         const deposit_prov = await this.Post(finalUrl, body, user.userToken)
         if (deposit_prov === 465 || !deposit_prov) { return }
@@ -167,7 +166,7 @@ export class DepositService extends WebService {
     }
 
     async createAndInsertDepositProvider(account) {
-        if(!account) return
+        if (!account) return
         const dep_prov_id = await this.createDepositProvider(account.id, account.country)
         const deposit_providers = await this.fetchDepositProviders()
         if (!dep_prov_id) { return }
@@ -212,9 +211,9 @@ export class DepositService extends WebService {
         const deposits = await this.Get(finalUrl)
         if (!deposits || deposits === 465) { return false }
 
-        if(await this.isCached('deposits', deposits)) {
+        if (await this.isCached('deposits', deposits)) {
             return deposits
-        }        
+        }
 
         let remodeled_deposits = await deposits.map(item => {
             let new_item = {

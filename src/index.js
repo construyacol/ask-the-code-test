@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import {render} from 'react-dom';
+import { render } from 'react-dom';
 // import { hydrate, render } from "react-dom";
 // import { render } from 'react-snapshot';
 import './basic-style.css';
@@ -11,11 +11,12 @@ import { createStore, applyMiddleware } from 'redux'
 import reducer from './reducers'
 import logger from 'redux-logger'
 import { composeWithDevTools } from 'redux-devtools-extension'
-// import thunk from 'redux-thunk'
+import thunk from 'redux-thunk'
 import soundsMiddleware from 'redux-sounds'
 import soundData from './sounds'
 import { Provider } from 'react-redux'
 import { mainService } from './services/MainService';
+import LoaderAplicationTiny from './components/widgets/loaders/loader-application-tiny';
 // import { updateLocalForagePersistState } from './components/hooks/sessionRestore';
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
@@ -23,18 +24,33 @@ import { mainService } from './services/MainService';
 // document.body.appendChild(script);
 const loadedSoundsMiddleware = soundsMiddleware(soundData)
 
-const store = createStore(
-  reducer,
-  {},
-  composeWithDevTools(
-    applyMiddleware(
-      logger,
-      // thunk,
-      loadedSoundsMiddleware
+let store;
+if (process.env.NODE_ENV === 'production') {
+  store = createStore(
+    reducer,
+    {},
+    composeWithDevTools(
+      applyMiddleware(
+        thunk,
+        loadedSoundsMiddleware
+      )
     )
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
-  // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
+} else {
+  store = createStore(
+    reducer,
+    {},
+    composeWithDevTools(
+      applyMiddleware(
+        logger,
+        thunk,
+        loadedSoundsMiddleware
+      )
+    )
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+}
 
 store.subscribe(() => {
   if (store.getState().modelData.authData.userToken) {
@@ -46,13 +62,21 @@ store.subscribe(() => {
 const LazyRoot = React.lazy(() => import('./components/Root'))
 
 render(
-  <Suspense fallback={<div>Loading...</div>}>
+  <Suspense fallback={<LoaderAplicationTiny />}>
     <Provider store={store}>
       <LazyRoot />
     </Provider>
   </Suspense>
   , document.getElementById('home-container')
 );
+
+const noLogsOnProduction = () => {
+  console.log = () => null
+}
+
+if (process.env.NODE_ENV === 'production') {
+  noLogsOnProduction()
+}
 
 // const rootElement = document.getElementById('home-container')
 // if (rootElement.hasChildNodes()) {
@@ -68,11 +92,3 @@ serviceWorker.register();
 // serviceWorker.unregister();
 
 export default store
-
-// const logger = ({getState, dispatch}) => next => action => {
-//   console.log('estado anterior', getState())
-//   console.log('Acción', action)
-//   const value = next(action)
-//   console.log('este es mi nuevo estado', getState())
-//   return value
-// }

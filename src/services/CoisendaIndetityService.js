@@ -10,7 +10,7 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
     async fetchCompleteUserData(userCountry, profile = {}) {
-        await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION))
+        this.updateLoadInfo(loadLabels.CARGANDO_TU_INFORMACION)
         const user = this.user;
 
         const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`

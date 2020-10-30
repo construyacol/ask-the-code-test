@@ -1,5 +1,4 @@
 import { WebService } from "../actions/API/WebService";
-import { appLoadLabelAction } from "../actions/loader";
 import {
     loadLabels,
     GET_WITHDRAW_BY_USER_URL,
@@ -18,25 +17,24 @@ import {
     normalized_list
 } from '../utils'
 
-
 export class WithdrawService extends WebService {
 
     async fetchWithdrawAccounts() {
         const { user } = this.globalState.modelData
-        await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO))
+        this.updateLoadInfo(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO)
         const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
 
         const result = await this.Get(finalUrl)
-        
+
         if (!result.length) {
-          let userWithOutWA = {
-              id: user.id,
-              withdraw_accounts: []
-          }
-          // TODO: create function to normalize user
-          const toNormalize = await normalizeUser(userWithOutWA)
-          await this.dispatch(updateNormalizedDataAction(toNormalize))
-          return this.dispatch(resetModelData({ withdraw_accounts: [] }))
+            let userWithOutWA = {
+                id: user.id,
+                withdraw_accounts: []
+            }
+            // TODO: create function to normalize user
+            const toNormalize = await normalizeUser(userWithOutWA)
+            await this.dispatch(updateNormalizedDataAction(toNormalize))
+            return this.dispatch(resetModelData({ withdraw_accounts: [] }))
         }
         if (!result || result === 465 || !this.withdrawProviders) { return false }
         const providersServed = await this.withdrawProvidersByType
@@ -111,7 +109,7 @@ export class WithdrawService extends WebService {
             ]
         }
 
-        if(await this.isCached('withdraw_accounts', result)) {
+        if (await this.isCached('withdraw_accounts', result)) {
             return withdrawAccounts
         }
 
@@ -148,15 +146,15 @@ export class WithdrawService extends WebService {
     }
 
     async fetchWithdrawProviders() {
-        await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_RETIRO))
+        this.updateLoadInfo(loadLabels.OBTENIENDO_PROVEEDORES_DE_RETIRO)
         const user = this.user
         const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`
 
         const withdrawProviders = await this.Get(finalUrl)
 
         if (!withdrawProviders) return;
-        
-        if(await this.isCached('withdrawProviders', withdrawProviders)) {
+
+        if (await this.isCached('withdrawProviders', withdrawProviders)) {
             return withdrawProviders
         }
 
@@ -177,8 +175,8 @@ export class WithdrawService extends WebService {
 
 
     async addWithdrawOrder(body, twoFaToken) {
-        if(twoFaToken){
-          body.data.twofa_token = twoFaToken
+        if (twoFaToken) {
+            body.data.twofa_token = twoFaToken
         }
         // console.log(body)
 
@@ -191,7 +189,7 @@ export class WithdrawService extends WebService {
     }
 
     // async fetchWithdrawByUser(user) {
-    //     await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_REGISTROS_DE_RETIROS))
+    //     this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_REGISTROS_DE_RETIROS)
     //
     //     const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdraws?country=${user.country}`
     //     const response = await this.Get(finalUrl)
@@ -305,51 +303,51 @@ export class WithdrawService extends WebService {
 
         if (withdraws && withdraws.length < 1) { return false }
 
-        if(await this.isCached('withdraws', withdraws)) {
+        if (await this.isCached('withdraws', withdraws)) {
             return withdraws
         }
 
         let withdraws_remodeled = []
         for (let withdraw of withdraws) {
-          let state
-          if(withdraw.currency_type === 'fiat'){
-            state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
-          }
-          if(withdraw.currency_type === 'crypto'){
-            state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
-          }
+            let state
+            if (withdraw.currency_type === 'fiat') {
+                state = withdraw.state === 'accepted' && !withdraw.sent ? 'confirmed' : withdraw.state
+            }
+            if (withdraw.currency_type === 'crypto') {
+                state = withdraw.state === 'accepted' && !withdraw.proof ? 'confirmed' : withdraw.state
+            }
 
-          // let new_withdraw = {
-          //   ...withdraw,
-          //   account_id:withdraw.account_id,
-          //   amount:withdraw.amount,
-          //   amount_neto:withdraw.amount_neto,
-          //   comment:"",
-          //   country:withdraw.country,
-          //   currency:withdraw.currency,
-          //   currency_type:withdraw.currency_type,
-          //   cost:withdraw.cost,
-          //   cost_struct:withdraw.cost_struct,
-          //   deposit_provider_id:"",
-          //   expiration_date:new Date(),
-          //   id:withdraw.id,
-          //   state,
-          //   unique_id:withdraw.id,
-          //   userId:withdraw.userId,
-          //   withdraw_account:withdraw.withdraw_account_id,
-          //   withdraw_provider:withdraw.withdraw_provider_id,
-          //   type_order:"withdraw",
-          //   withdraw_proof:withdraw.proof,
-          //   created_at:withdraw.created_at,
-          // }
-          let new_withdraw = {
-            ...withdraw,
-            state
-          }
+            // let new_withdraw = {
+            //   ...withdraw,
+            //   account_id:withdraw.account_id,
+            //   amount:withdraw.amount,
+            //   amount_neto:withdraw.amount_neto,
+            //   comment:"",
+            //   country:withdraw.country,
+            //   currency:withdraw.currency,
+            //   currency_type:withdraw.currency_type,
+            //   cost:withdraw.cost,
+            //   cost_struct:withdraw.cost_struct,
+            //   deposit_provider_id:"",
+            //   expiration_date:new Date(),
+            //   id:withdraw.id,
+            //   state,
+            //   unique_id:withdraw.id,
+            //   userId:withdraw.userId,
+            //   withdraw_account:withdraw.withdraw_account_id,
+            //   withdraw_provider:withdraw.withdraw_provider_id,
+            //   type_order:"withdraw",
+            //   withdraw_proof:withdraw.proof,
+            //   created_at:withdraw.created_at,
+            // }
+            let new_withdraw = {
+                ...withdraw,
+                state
+            }
 
-          if(new_withdraw.state !== 'pending'){
-            withdraws_remodeled.push(new_withdraw)
-          }
+            if (new_withdraw.state !== 'pending') {
+                withdraws_remodeled.push(new_withdraw)
+            }
         }
 
         withdraws_remodeled = this.parseActivty(withdraws_remodeled, 'withdraws', account_id)
@@ -429,9 +427,9 @@ export class WithdrawService extends WebService {
             }
         })
 
-        if(await this.isCached(type, res)) {
+        if (await this.isCached(type, res)) {
             return finalResult
-        } 
+        }
 
         if (finalResult.length > 0) {
             await this.dispatch(normalized_list(finalResult, type))
