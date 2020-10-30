@@ -31,9 +31,10 @@ const orderModel = {
 
 
 
-const InProcessOrder = () => {
-
+const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState()
+
+  if(!currentOrder || !currentOrder.currency) return onErrorCatch()
 
   return (
     <>

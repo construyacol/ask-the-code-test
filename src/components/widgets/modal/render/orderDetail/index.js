@@ -31,8 +31,31 @@ const OrderSupervisor = () => {
       history.goBack()
     }
   }
-  
+
   const idForCloseModal = useKeyActionAsClick(true, 'close-modal-button-orders', 27, true, 'onkeyup', true)
+
+  useEffect(() => {
+    document.onkeyup = (event) => {
+      if (event.keyCode === 27) {
+        cerrar(event, true)
+        // event.preventDefault();
+      }
+    }
+
+    return () => {
+      document.onkeyup = false
+    }
+  }, [document.onkeyup])
+
+  const closeAll = () => {
+    actions.renderModal(null)
+    return <div></div>
+  }
+
+  if (!currentOrder || !currentOrder.state) {
+    actions.renderModal(null)
+    return <div></div>
+  }
 
   return (
     <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar}>
@@ -44,10 +67,10 @@ const OrderSupervisor = () => {
       }
 
       {
-        currentOrder.state === 'accepted' || currentOrder.state === 'rejected' || currentOrder.state === 'canceled' ?
+        ['accepted', 'rejected', 'canceled'].includes(currentOrder.state) ?
           <OrderDetail />
           :
-          <InProcessOrder />
+          <InProcessOrder onErrorCatch={closeAll} />
       }
     </OtherModalLayout>
   )
@@ -73,8 +96,6 @@ const OrderDetail = () => {
   const { isMovilViewport } = useViewport()
 
   if (!currentOrder) { return null }
-
-
 
   const { state } = currentOrder
   const TitleText = tx_path === 'deposits' ? 'Deposito' :

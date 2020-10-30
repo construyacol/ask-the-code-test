@@ -4,10 +4,12 @@ import { connect } from 'react-redux'
 import IconSwitch from '../icons/iconSwitch'
 import { navigation_components } from '../../api/ui/api.json'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
+import { debounce } from '../../../utils'
 
 import './detailContainer.css'
 
 // TODO: refactor this component
+let timerId
 function ContentTab(props) {
     const navState = useRef({
         current: '',
@@ -49,6 +51,34 @@ function ContentTab(props) {
     //         tabRef.current.scrollIntoView({ block: "start", behavior: "smooth" })
     //     })
     // }, [title, path])
+
+    useEffect(() => {
+        const handleOnKeyUp = (event) => {
+            const isFromInputWithValue = event.srcElement.tagName.includes('INPUT') && event.srcElement.value
+            if (isFromInputWithValue) return
+
+            if (event.keyCode === 37) {
+                goPrev()
+            }
+            if (event.keyCode === 39) {
+                goNext()
+            }
+        }
+
+        const setEvent = () => {
+            if (!document.onkeyup) {
+                document.onkeyup = debounce(handleOnKeyUp, 100)
+                clearInterval(timerId)
+            }
+        }
+        setEvent()
+        timerId = setInterval(setEvent, 1000)
+        return () => {
+            if (timerId) {
+                clearInterval(timerId)
+            }
+        }
+    }, [document.onkeyup, navState])
 
     useEffect(() => {
         const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 ||
