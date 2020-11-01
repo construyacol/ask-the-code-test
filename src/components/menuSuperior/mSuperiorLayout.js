@@ -7,9 +7,8 @@ import { Link } from 'react-router-dom'
 // import MenuLoggedOut from './menuLoggedOut'
 import Coinsenda from '../widgets/icons/logos/coinsenda'
 import PricesComponent from '../Prices/PricesComponent'
-import {useActions} from '../../hooks/useActions'
+import { useActions } from '../../hooks/useActions'
 //import { genIconPath } from '../../utils'
-
 
 const MenuSuperiorLayout = (props) => {
 
@@ -32,9 +31,9 @@ const MenuSuperiorLayout = (props) => {
     match
   } = props
 
-  const showPrices = async() => {
+  const showPrices = async () => {
     const PricesModal = await import('../widgets/prices')
-    if(!PricesModal){return}
+    if (!PricesModal) { return }
     actions.renderModal(PricesModal.default)
   }
 
@@ -58,7 +57,7 @@ const MenuSuperiorLayout = (props) => {
               <Coinsenda size={30} color="white" />
             </div>
             <div className="contItemLogo">
-              <Link to={`/${primary_path === 'referral' ? 'wallets' : primary_path}`} className="DCBack" style={{ display: view === 'detail' ? '' : 'none' }} onClick={back_method}>
+              <Link to={`/${primary_path === 'referral' ? 'wallets' : primary_path}`} className="DCBack" aria-label="back" style={{ display: view === 'detail' ? '' : 'none' }} onClick={back_method}>
                 <i className="fas fa-arrow-left"></i>
               </Link>
             </div>
@@ -106,12 +105,12 @@ const MenuSuperiorLayout = (props) => {
           <div className="capsuleMenu2">
             {
               !currentPair ?
-                  <div className="cagando" >
-                    <SimpleLoader
-                      color="green"
-                      grid="Msuperior"
-                    />
-                  </div>
+                <div className="cagando" >
+                  <SimpleLoader
+                    color="green"
+                    grid="Msuperior"
+                  />
+                </div>
                 :
                 <>
                   <img className="itemFuera" src={require(`./assets/${currency.includes('testnet') ? 'bitcoin' : currency}.png`)} width={currency === 'usd' ? 32 : 22} alt="" id={currency} title={currency} />

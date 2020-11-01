@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react'
+import loadable from '@loadable/component'
 import { coins } from '../../api/ui/api.json'
 import ItemLayout from '../items/itemLayout'
 // import Slider from './slide'
-import ChartCoin from '../chartCoin/chartCoin.js'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { skeleton } from '../loaders/skeleton'
+
+const LazyChart = loadable(() => import('../chartCoin/chartCoin'))
 
 const QuoteLayout = props => {
 
@@ -33,7 +35,7 @@ const QuoteLayout = props => {
   return(
      <QuoteLayoutCont>
 
-         <ChartCoin/>
+         <LazyChart/>
 
           {
             !props.currentPair ?

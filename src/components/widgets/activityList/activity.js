@@ -9,10 +9,6 @@ import actions from '../../../actions'
 // import SimpleLoader from '../loaders'
 import InifiniteScrollComponent from './infiniteScroll'
 
-
-
-
-
 import './activity_view.css'
 import withCoinsendaServices from '../../withCoinsendaServices'
 import { createSelector } from 'reselect'

@@ -4,7 +4,7 @@ import Compressor from 'compressorjs';
 import * as Sentry from '@sentry/browser';
 import { updateNormalizedDataAction } from '../actions/dataModelActions'
 import * as normalizr_services from '../schemas'
-import store from '..'
+import { store } from '..'
 
 const {
   normalizeUser

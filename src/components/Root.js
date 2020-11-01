@@ -2,21 +2,21 @@ import React, { useEffect } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import localForage from 'localforage'
 import jwt from 'jsonwebtoken'
+import loadable from '@loadable/component'
 import { connect, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import actions from '../actions';
-// import LoaderAplication from './widgets/loaders/loader_app'
-import HomeContainer from './home/home-container'
 // import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
-import SocketsComponent from './sockets/sockets'
 import ToastContainers from './widgets/toast/ToastContainer'
+import HomeContainer from './home/home-container'
 import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
 import { useToastMesssage } from '../hooks/useToastMessage';
-const LazyLoader = React.lazy(() => import('./widgets/loaders/loader_app'))
+
+const LazyLoader = loadable(() => import('./widgets/loaders/loader_app'))
+const LazySocket = loadable(() => import('./sockets/sockets'))
 
 history.listen((location) => {
   if (location && location.pathname !== '/') {
@@ -41,7 +41,7 @@ function RootContainer(props) {
       history.push('/')
     }
 
-    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCtkb3VnbGFzQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDgiLCJ1c3IiOiI1ZWNkYWQyZGNkZmI3NDAwZTE4NzA2NmIiLCJqdGkiOiJHU2NMMzFsT1lkd1lmQWh6dEx6MjN0M3plVWYyNkE2ME83SW1iUXFuak9lQVFraHpmRmZZdGNOaG50dDhmZ3BaIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxpbmZvLGRlcG9zaXQsYWNjb3VudCx3aXRoZHJhdyxzd2FwIiwibWV0YWRhdGEiOiJ7fSIsImlhdCI6MTYwNDAxODI4MCwiZXhwIjoxNjA0MDI5MDgwfQ.v7rFvuhEtSFwM6uDwM9neyUyTJYLgEsSeR_eJoWSm5iPG4ZGp7ZzBYlP3z48UG2u6JG0h-uKv6TiN7C-MTbVWQ'
+    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCtkb3VnbGFzQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDgiLCJ1c3IiOiI1ZWNkYWQyZGNkZmI3NDAwZTE4NzA2NmIiLCJqdGkiOiIyc2ZNdHhvazNzMnBzSzBNMFJzcUt4OEZXdU00VmVEam9qb2pGRmU2MjZtSkJmbDNKSVBCdGRqTVVCNWZiQTB0IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxpbmZvLGRlcG9zaXQsYWNjb3VudCx3aXRoZHJhdyxzd2FwIiwibWV0YWRhdGEiOiJ7fSIsImlhdCI6MTYwNDIzNDc1OSwiZXhwIjoxNjA0MjQ1NTU5fQ.L7NVT22VFBNNZPsXbpeCRbioqZVB3WfJ1LTpJYcASsVfbYF2289F1cTVOcQainuir5N99xhgIG0K2E2R6cIxJQ'
 
     // const created_at = await localForage.getItem('created_at')
     // const userToken = await localForage.getItem('user_token')
@@ -83,7 +83,7 @@ function RootContainer(props) {
         <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
       ) : (
           <>
-            <SocketsComponent toastMessage={toastMessage} />
+            <LazySocket toastMessage={toastMessage} />
             {/* <CoinsendaSocket /> */}
             <ToastContainers />
             <Switch>

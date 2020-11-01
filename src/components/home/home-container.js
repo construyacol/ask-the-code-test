@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import HomeLayout from './homeLayout'
+import loadable from '@loadable/component'
 import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
 import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
 import DashBoardContainer from '../dashBoard/dashboard-container'
@@ -7,9 +8,9 @@ import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import withHandleError from '../withHandleError'
-import ModalsSupervisor from './modals-supervisor'
 import { doLogout } from '../utils'
 
+const ModalsSupervisor = loadable(() => import('./modals-supervisor'))
 
 const BuildedHome = (props) => (
   <>
@@ -24,7 +25,7 @@ const HomeContainer = (props) => {
     <HomeLayout>
       <Route
         path={["/:primary_path/:path/:account_id/:tx_path/:order_id", "/"]}
-        render={renderProps => (<ModalsSupervisor {...renderProps}  />)} />
+        render={renderProps => (<ModalsSupervisor {...renderProps} />)} />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={renderProps => (<BuildedHome {...renderProps} logOut={doLogout} />)} />

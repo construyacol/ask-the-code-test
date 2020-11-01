@@ -1,4 +1,4 @@
-import store from '..'
+import { store } from '..'
 import { currencyFormatByCoin } from "../const/const";
 
 

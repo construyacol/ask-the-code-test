@@ -3,17 +3,17 @@
   "name": "Coinsenda",
   "icons": [
     {
-      "src": "./icon_solid.png",
+      "src": "./icon_solid.webp",
       "sizes": "196x196",
-      "type": "image/png"
+      "type": "image/webp"
     },
     {
-      "src": "./icon.png",
+      "src": "./icon.webp",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "start_url": "/",
+  "start_url": "/wallets",
   "scope":"/",
   "display": "standalone",
   "theme_color": "#0066AA",
@@ -32,9 +32,9 @@
     "url": "/wallets",
     "icons": [
       {
-        "src": "./icon_solid.png",
+        "src": "./icon_solid.webp",
         "sizes": "196x196",
-        "type": "image/png"
+        "type": "image/webp"
       }
     ]
   }],

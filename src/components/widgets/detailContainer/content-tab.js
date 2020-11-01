@@ -140,7 +140,7 @@ function ContentTab(props) {
 
                 {
                     (!movil_viewport) &&
-                    <Link to={primary_path === 'wallets' ? "/wallets" : "/withdraw_accounts"} className="DCBack" style={{ display: (pathname) ? '' : 'none' }} >
+                    <Link to={primary_path === 'wallets' ? "/wallets" : "/withdraw_accounts"} className="DCBack" aria-label="back" style={{ display: (pathname) ? '' : 'none' }} >
                         <i className="fas fa-arrow-left"></i>
                         <p>Volver</p>
                     </Link>

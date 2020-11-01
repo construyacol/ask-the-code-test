@@ -12,7 +12,7 @@ import { connect } from 'react-redux'
 import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
 import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
-import FreshChat from '../../services/freshChat'
+// import FreshChat from '../../services/freshChat'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import SimpleLoader from '../widgets/loaders'
 import ItemAccount from '../widgets/accountList/item_account'
@@ -27,20 +27,12 @@ import './dashboard.css'
 import { bindActionCreators } from 'redux';
 import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
-import localForage from 'localforage'
 import { ReferralComponentAsSkeleton } from '../referrals/referralsComponent';
 import useBlockScroll from '../../hooks/useBlockScroll';
-
-
 
 const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
 const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
 const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
-// const Test = React.lazy(() => {
-//   return new Promise(resolve => {
-//     setTimeout(() => resolve(import('../referrals/referralsComponent')), 3000);
-//   });
-// });
 
 let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
 
@@ -50,10 +42,6 @@ const TAB_TITLE = {
   referral: 'Mis Referidos',
   withdraw_accounts: 'Mis Cuentas de retiro'
 }
-
-
-
-
 
 function DashBoardContainer(props) {
   useBlockScroll()
@@ -74,16 +62,13 @@ function DashBoardContainer(props) {
   //   }, 1000)
   // }
 
-
-  const updateCurrentPair = async () => {
-    clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
-    UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
-      let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
-      props.action.update_current_pair(query, 'currentPair')
-    }, 20000)
-  }
-
-
+  // const updateCurrentPair = async () => {
+  //   clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
+  //   UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
+  //     let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
+  //     props.action.update_current_pair(query, 'currentPair')
+  //   }, 20000)
+  // }
 
   const onMount = async () => {
     hotjar.initialize(1688041, 6);
@@ -99,8 +84,6 @@ function DashBoardContainer(props) {
     scrollSpy.update();
   }
 
-
-
   const onUnmount = () => {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
     Events.scrollEvent.remove("begin");
@@ -108,8 +91,6 @@ function DashBoardContainer(props) {
     // const { userName } = JSON.parse(localStorage.getItem('user'));
 
   }
-
-
 
   // useEffect(()=>{
   //   if(props.currentPair){
@@ -142,20 +123,16 @@ function DashBoardContainer(props) {
     return onUnmount
   }, [])
 
-
-
-
-
   return (
     <>
       <div id="scrollArea" style={{
-            position: 'absolute',
-            height: '100vh',
-            width: '10px',
-            right: 0,
-            zIndex: 10
+        position: 'absolute',
+        height: '100vh',
+        width: '10px',
+        right: 0,
+        zIndex: 10
       }}>
-        
+
       </div>
       <Element id="containerElement" className="dashBoardLayout">
         <QuoteContainer />
@@ -200,9 +177,6 @@ DashBoardContainer.propTypes = {
   token: PropTypes.string,
   user: PropTypes.object
 }
-
-
-
 
 function mapStateToProps(state, props) {
 
