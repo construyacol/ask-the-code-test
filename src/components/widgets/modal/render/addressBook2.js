@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { useActions } from '../../../../hooks/useActions'
 import OtherModalLayout from '../otherModalLayout'
-import backImg from './map.png'
+import backImg from './map.webp'
 import InputForm from '../../inputs/inputForm'
 import { InputContainer } from '../../inputs/inputForm'
 import { FiSearch } from "react-icons/fi"

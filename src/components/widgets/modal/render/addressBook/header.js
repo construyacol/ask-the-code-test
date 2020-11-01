@@ -1,7 +1,7 @@
 import React from 'react'
 import { MdKeyboardArrowLeft } from "react-icons/md"
 import styled from 'styled-components'
-import backImg from '../../../../../assets/map.png'
+import backImg from '../../../../../assets/map.webp'
 
 const HeaderComponent = ({ provider_type, view, switchView }) => {
 
