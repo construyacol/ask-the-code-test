@@ -19,10 +19,10 @@ import {
 
 export class WithdrawService extends WebService {
 
-    async fetchWithdrawAccounts() {
+    async fetchWithdrawAccounts(query = '{"where":{"visible":true}}') {
         const { user } = this.globalState.modelData
         this.updateLoadInfo(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO)
-        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter={"where":{"visible":true}}`
+        const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter=${query}`
 
         const result = await this.Get(finalUrl)
 
@@ -126,7 +126,7 @@ export class WithdrawService extends WebService {
         const body = {
             "data": {
                 "withdraw_account_id": `${accountId}`,
-                "country": withdraw_accounts[accountId].info.country,
+                "country": withdraw_accounts[accountId] && withdraw_accounts[accountId].info.country,
                 "visible": false
             }
         }

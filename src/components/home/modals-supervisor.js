@@ -18,7 +18,7 @@ import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
 import PropTypes from 'prop-types'
 import SocketNotify from '../sockets/socket_notify/socketNotify'
 import withHandleError from '../withHandleError'
-import { useToastMesssage } from '../../hooks/useToastMessage.js'
+import useToastMessage from '../../hooks/useToastMessage.js'
 
 function ModalsSupervisor(props) {
     const {
@@ -31,16 +31,17 @@ function ModalsSupervisor(props) {
         isSocketNotification,
         RenderModal
     } = props
-    const [ toastMessage ] = useToastMesssage()
+    const [ toastMessage ] = useToastMessage()
+
 
     return (
         <>
             <ModalContainer condition={isModalVisible}>
                 <ModalLayout modalView={modalView} loader={loader} >
                     <Route exact strict path="/wallets" component={NewWallet} />
-                    <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
+                    {/* <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
                         return <TicketContainer {...renderProps} toastMessage={toastMessage} />
-                    }} />
+                    }} /> */}
                     <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
                     <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
                         return <DepositContainer {...renderProps} toastMessage={toastMessage} />
@@ -60,9 +61,9 @@ function ModalsSupervisor(props) {
                         <Route path="/" component={SocketNotify} />
                         :
                         <>
-                            <Route exact strict 
-                                path="/wallets/swap/:account_id" 
-                                render={(renderProps) => (<PairList {...renderProps} />)} 
+                            <Route exact strict
+                                path="/wallets/swap/:account_id"
+                                render={(renderProps) => (<PairList {...renderProps} />)}
                             />
                             <Route exact path={["/security", "/settings"]} component={ModalSettingsView} />
                         </>
@@ -76,12 +77,16 @@ function ModalsSupervisor(props) {
             </ModalContainer>
 
             <ModalContainer condition={RenderModal}>
-              {
-                RenderModal &&
-                React.createElement(RenderModal)
-              }
+               {
+                  RenderModal &&
+                  <Route path={[
+                    "/:primary_path/:path/:account_id/:tx_path/:order_id",
+                    "/:primary_path/:path/:account_id",
+                    "/"
+                  ]} component={RenderModal} />
+                  // React.createElement(RenderModal)
+               }
             </ModalContainer>
-
         </>
     )
 
@@ -107,7 +112,7 @@ function mapStateToProps({ ui, form, isLoading }) {
         modalConfirmation: ui.modal_confirmation.visible,
         otherModal: ui.otherModal,
         isSocketNotification: ui.notifications.socket_notify,
-        RenderModal:ui.modal.render
+        RenderModal: ui.modal.render
     }
 }
 

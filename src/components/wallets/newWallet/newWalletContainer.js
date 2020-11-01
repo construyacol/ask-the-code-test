@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'
 import actions from '../../../actions'
 import { matchItem } from '../../../utils'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useToastMessage from '../../../hooks/useToastMessage'
 
 
 
@@ -19,7 +19,7 @@ const NewWallet = props => {
   const [ address ] = useState()
   const [ short_currency_name, setShortCurrencyName ] = useState()
   const [ coinsendaServices ] = useCoinsendaServices()
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
 
   const update_control_form = (searchMatch) => {
     // if (!searchMatch || props.search.length > 1) {

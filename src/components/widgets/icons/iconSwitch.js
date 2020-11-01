@@ -40,7 +40,7 @@ import {
   Touch,
   Upload, EtherAccount,
   ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut,
+  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut, NewAccount,
   QRCode,
   AuthFactor,
   Accepeted,
@@ -105,6 +105,8 @@ class IconSwitch extends Component {
     const { icon } = props
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case 'newAccount':
+        return <NewAccount {...props} />
       case 'twofa':
         return <AuthFactor {...props} />
       case 'qr':

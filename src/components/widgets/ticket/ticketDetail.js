@@ -118,8 +118,8 @@ class TicketDetail extends Component {
         {
           ((state === 'pending') && !only_detail && currency_type === 'fiat' && type_order !== 'swaps') ?
             <PaymentConfirButton
-              id="ALconfirmButton"
-              clases="laReputas"
+              id={this.props.id}
+              clases="laReputas ALconfirmButton"
               active={true}
               type="primary"
               siguiente={paymentProof}
@@ -128,7 +128,7 @@ class TicketDetail extends Component {
             :
             (state) &&
             <div id="nWcta" className="nWcta" >
-              <ButtonSuccess cta_secondary toggleModal={this.salirTicket}>Cerrar</ButtonSuccess>
+              <ButtonSuccess id={this.props.id} cta_secondary toggleModal={this.salirTicket}>Cerrar</ButtonSuccess>
             </div>
 
         }

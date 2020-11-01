@@ -11,7 +11,7 @@ import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 
 
 import './wallet_views.css'
-import { useToastMesssage } from '../../../hooks/useToastMessage'
+import useToastMessage from '../../../hooks/useToastMessage'
 
 
 
@@ -20,7 +20,7 @@ const ActivityView = props => {
   const { params } = props.match
   const [ loader, setLoader ] = useState(false)
   const [coinsendaServices] = useCoinsendaServices()
-  const [ toastMessage ] = useToastMesssage()
+  const [ toastMessage ] = useToastMessage()
 
 
 

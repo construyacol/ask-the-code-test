@@ -1,34 +1,12 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
+import React from 'react'
 import styled from 'styled-components'
 // import { InputButton } from './buttons'
 import SimpleLoader from '../loaders'
 import { LoaderContainer } from '../loaders'
 
-export const KeyActionComponent = ({ action, isFiat, currentWallet }) => {
-  const isModalVisible = useSelector(state => state.form.isModalVisible)
-  const route = useHistory()
-
-  useEffect(() => {
-    if (!window.onkeydown) {
-      window.onkeydown = (event) => {
-        if(!route.location.pathname.includes(currentWallet.id)) return
-        if (!isModalVisible && event.keyCode === 13 && !event.srcElement.tagName.includes('INPUT')) {
-          if(!isFiat) return
-          if (['activity', 'swap'].some(item => window.location.href.includes(item))) return
-          action(event)
-        }
-      }
-    }
-  }, [window.onkeydown, isModalVisible, route, currentWallet])
-
-  return (<div style={{ width: 0, height: 0, opacity: 0 }} />)
-}
-
 const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
   return (
-    <ControlsContainer className={`${loader ? 'loader' : ''}`}>
+    <ControlsContainer id="controlsContainer" className={`${loader ? 'loader' : ''}`}>
       {
         loader &&
         <LoaderContainer>
@@ -42,7 +20,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
         active={formValidate}
         handleAction={(e) => {
           e.currentTarget.blur()
-          handleAction && handleAction()
+          handleAction && handleAction(e)
         }}
       />
     </ControlsContainer>
@@ -56,9 +34,10 @@ export const InputButton = (props) => {
 
   return (
     <InputButtonCont>
+      <input style={{ opacity: 0, width: 0, height: 0, display: 'none' }} type="submit" disabled={true} />
       {
         props.active ?
-          <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.handleAction} />
+          <input id={props.id} className={`botonForm ${props.type} fuente `} type="button" value={props.label} onClick={props.handleAction} />
           :
           // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
           <DisabledButton>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 import './modal.css'
 
 const OtherModalLayoutPairs = props =>{
@@ -9,18 +10,8 @@ const OtherModalLayoutPairs = props =>{
     classes
   } = props
 
-  useEffect(() => {
-    document.onkeydown = (event) => {
-      // esc
-      if (event.keyCode === 27) {
-        close_modal && close_modal()
-        // event.preventDefault();
-      }
-    }
-    return () => {
-      document.onkeydown = false
-    }
-  }, [])
+  const idForCloseModal = useKeyActionAsClick(true, 'close-modal-button-orders', 27, true, 'onkeyup', true)
+
 
   const closeModal = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -34,7 +25,7 @@ const OtherModalLayoutPairs = props =>{
         <div className={`PairList ${classes === '2auth' ? 'auth' : classes}`}>
           <div className="PairListtitle">
             <h1 className="fuente">{title}</h1>
-            <i className="fas fa-times" onClick={close_modal}></i>
+            <i className="fas fa-times" id={idForCloseModal} onClick={close_modal}></i>
           </div>
           {children}
         </div>

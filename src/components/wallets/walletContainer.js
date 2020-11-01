@@ -10,7 +10,6 @@ import AccountList from '../widgets/accountList/account-list'
 import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
-// import KeyActionsInfo from '../widgets/modal/render/keyActionsInfo'
 
 const LazyWithdrawView = loadable(() => import('./views/withdraw'))
 const LazySwapView = loadable(() => import('./views/swap'))
@@ -20,7 +19,6 @@ const LazyDepositView = loadable(() => import('./views/deposit'))
 function WalletContainer(props) {
   // const actionDispatch = useActions()
   useEffect(() => {
-    // actionDispatch.renderModal(KeyActionsInfo)
     const path = props.match.path.replace('/', '')
     props.action.CurrentForm(path)
     return () => {

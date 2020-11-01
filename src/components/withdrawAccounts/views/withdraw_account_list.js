@@ -16,7 +16,7 @@ function WithdrawAccountList(props) {
   const [setCurrentSelection] = useNavigationKeyActions({
     items: withdrawAccounts,
     loader: false,
-    className: 'withdrawAccountItem',
+    uniqueIdForElement: 'withdrawAccountItem',
     modalRestriction: false,
     next: 40,
     prev: 38,

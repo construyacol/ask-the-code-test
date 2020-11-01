@@ -2,7 +2,7 @@ import React from 'react'
 import { Medal } from '../icons'
 import { ButtonForms } from '../buttons/buttons.js'
 import ConfettiComponent from './confetti'
-import { useEffect } from 'react'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
 
 const SuccessComponentScreen = props => {
@@ -17,20 +17,8 @@ const SuccessComponentScreen = props => {
     cta_text,
     classes
   } = props
-
-  useEffect(() => {
-    document.onkeydown = (event) => {
-      if (event.keyCode === 8 || event.keyCode === 46) {
-        if (cta_secondary) exit()
-      }
-      if (event.keyCode === 13) {
-        siguiente()
-      }
-    }
-    return () => {
-      document.onkeydown = false
-    }
-  }, [document.onkeydown])
+  const idForExitButton = useKeyActionAsClick(cta_secondary, 'exit-button-success', 8, false, 'onkeyup', true)
+  const idForContinueButton = useKeyActionAsClick(true, 'continue-button-success', 13, false, 'onkeyup', true)
 
   return (
     <div className="KycLayoutBasicWin" id="callese">
@@ -43,7 +31,7 @@ const SuccessComponentScreen = props => {
           {
             (window.innerWidth > 350 && cta_secondary) &&
             <ButtonForms
-              _id='cancel'
+              _id={idForExitButton}
               active={true}
               type="secundary"
               siguiente={cta_secondary ? exit : null}
@@ -53,7 +41,7 @@ const SuccessComponentScreen = props => {
                 </ButtonForms>
           }
           <ButtonForms
-            _id='accept'
+            _id={idForContinueButton}
             active={true}
             type="primary"
             siguiente={siguiente}

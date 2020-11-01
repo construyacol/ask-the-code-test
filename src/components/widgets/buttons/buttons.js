@@ -15,9 +15,9 @@ export const ButtonSuccess = (props) => {
     cta_secondary,
     id
   } = props
-  const _id = id || (cta_secondary ? 'secondary' : 'pre-finalizar-button')
+
   return (
-    <div id={_id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
+    <div id={id} className={`botonForm suck fuente ${cta_secondary ? 'secondary' : ''}`} onClick={props.toggleModal} title="finalizar">
       {props.children}
     </div>
   )
@@ -149,11 +149,12 @@ export const ButtonPrincipalMenu = ({
 export const ButtonModalClose = (props) => {
   const {
     toggleModal,
-    color
+    color,
+    id
   } = props
 
   return (
-    <div className="closeModalButtonCont" onClick={toggleModal} style={{ color: color ? color : 'gray' }}>
+    <div id={id} className="closeModalButtonCont" onClick={toggleModal} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-times" ></i>
       {props.children}
     </div>
@@ -164,11 +165,12 @@ export const ButtonModalBack = (props) => {
 
   const {
     volver,
-    color
+    color,
+    id = 'modal-backstep-button'
   } = props
 
   return (
-    <div className="closeModalButtonBack" onClick={volver} style={{ color: color ? color : 'gray' }}>
+    <div id={id} className="closeModalButtonBack" onClick={volver} style={{ color: color ? color : 'gray' }}>
       <i className="fas fa-arrow-left"></i>
       {props.children}
     </div>
@@ -181,6 +183,8 @@ export const InputButton = (props) => {
 
   return (
     <div className="InputButton" >
+      {props.preventSubmit && 
+      <input style={{ opacity: 0, width: 0, height: 0, display: 'none' }} type="submit" disabled={true} />}
       {
         props.active ?
           <input id={props.id} className={`botonForm ${props.type} fuente `} type="submit" value={props.label} onClick={props.action} />
@@ -233,13 +237,13 @@ export const PaymentConfirButton = (props) => {
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // Siguiente: evento a enlazar el boton
 
-  const { clases, label, type, cenVert, siguiente } = props
+  const { clases, label, type, cenVert, siguiente, id } = props
 
   return (
-    <div className={`contButton ${clases}`} id={`ALconfirmButton`} data-is_confirm_deposit>
+    <div className={`ALconfirmButton contButton ${clases}`} data-is_confirm_deposit>
       {
         props.active ?
-          <div id="paymentConfirButton" className={`botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
+          <div id={id} className={`paymentConfirButton botonForm ${type} fuente`} onClick={siguiente} data-is_confirm_deposit>
             <p id="ALbuttonText" className="ALbuttonText" data-is_confirm_deposit>
               <span className="ALbuttonTextSpan fuente" data-is_confirm_deposit>{label}</span>
               <i id="confirmIcon" className="confirmIcon fas fa-arrow-alt-circle-up" data-is_confirm_deposit></i>
@@ -290,7 +294,7 @@ export const ButtonNofity = props => {
 
 
   return (
-    <div className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
+    <div id={props.id} className={`ButtonNofity fuente ${props.className}`} onClick={handleAction}>
       {props.children}
     </div>
   )

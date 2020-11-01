@@ -13,7 +13,7 @@ import HomeContainer from './home/home-container'
 import { doLogout } from './utils'
 import { history } from '../const/const';
 import SessionRestore from './hooks/sessionRestore'
-import { useToastMesssage } from '../hooks/useToastMessage';
+import useToastMessage from '../hooks/useToastMessage';
 
 const LazyLoader = loadable(() => import('./widgets/loaders/loader_app'))
 const LazySocket = loadable(() => import('./sockets/sockets'))
@@ -27,8 +27,8 @@ history.listen((location) => {
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded)
-  const [tryRestoreSession] = SessionRestore()
-  const [toastMessage] = useToastMesssage()
+  const [ tryRestoreSession ] = SessionRestore()
+  const [ toastMessage ] = useToastMessage()
 
   const initComponent = async () => {
     // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)

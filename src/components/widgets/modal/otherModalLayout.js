@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 import './modal.css'
 
 const OtherModalLayout = props =>{
@@ -6,24 +7,15 @@ const OtherModalLayout = props =>{
   const {
     children,
     // close_modal,
-    on_click
+    on_click,
+    onkeydown,
+    id = 'render-modal-close-button'
   } = props
-
-  useEffect(() => {
-    window.onkeyup = (event) => {
-      if (event.keyCode === 27) {
-        on_click && on_click()
-        event.preventDefault();
-      }
-    }
-    return () => {
-      window.onkeyup = false
-    }
-  }, [window.onkeyup])
+  const idForCloseButton = on_click && useKeyActionAsClick(true, id, 27, false, onkeydown ? 'onkeydown' : 'onkeyup', true)
 
   return(
     <section className={`Modal aparecer`}>
-      <div className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={on_click ? on_click : null}>
+      <div id={idForCloseButton} className={`modalCont3 ConfirmationModal socketNotifyPers`} data-close_modal={true} onClick={on_click ? on_click : null}>
         {children}
       </div>
     </section>

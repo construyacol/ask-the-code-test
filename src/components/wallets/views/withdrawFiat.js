@@ -1,18 +1,16 @@
 import React from 'react'
+import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 import WithdrawViewState from '../../hooks/withdrawStateHandle'
-import ControlButton, { KeyActionComponent } from '../../widgets/buttons/controlButton'
+import ControlButton from '../../widgets/buttons/controlButton'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 
-
-
 const FiatView = props => {
-
-
   const [
     { active_trade_operation, current_wallet, loader },
     { current_section_params, toggleModal },
     dispatch
   ] = WithdrawViewState()
+  const idForMainButton = useKeyActionAsClick(true, 'main-button-withdraw', 13, true)
 
   let movil_viewport = window.innerWidth < 768
 
@@ -32,7 +30,6 @@ const FiatView = props => {
     <section id="" className={`DepositView itemWalletView ${movil_viewport ? 'movil' : ''} withdrawView`}>
 
       <div className="contIcontSwitch">
-        <KeyActionComponent action={handleSubmit} currentWallet={current_wallet} isFiat={current_wallet.currency_type === 'fiat'} />
         <IconSwitch {...atributos} />
       </div>
 
@@ -49,6 +46,7 @@ const FiatView = props => {
       <ControlButton
         loader={loader}
         // loader={loader || Object.keys(withdraw_accounts).length === 0}
+        id={idForMainButton}
         formValidate={!active_trade_operation}
         label="Realizar un retiro"
         handleAction={handleSubmit}

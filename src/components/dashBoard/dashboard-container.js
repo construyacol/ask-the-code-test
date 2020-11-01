@@ -62,13 +62,13 @@ function DashBoardContainer(props) {
   //   }, 1000)
   // }
 
-  // const updateCurrentPair = async () => {
-  //   clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
-  //   UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
-  //     let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
-  //     props.action.update_current_pair(query, 'currentPair')
-  //   }, 20000)
-  // }
+  const updateCurrentPair = async () => {
+    clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
+    UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
+      let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
+      props.action.update_current_pair(query, 'currentPair')
+    }, 20000)
+  }
 
   const onMount = async () => {
     hotjar.initialize(1688041, 6);
@@ -92,11 +92,13 @@ function DashBoardContainer(props) {
 
   }
 
-  // useEffect(()=>{
-  //   if(props.currentPair){
-  //     // updateCurrentPair()
-  //   }
-  // }, [props.currentPair])
+
+
+  useEffect(()=>{
+    if(props.currentPair){
+      process.env.NODE_ENV === 'production' && updateCurrentPair()
+    }
+  }, [props.currentPair])
 
   useEffect(() => {
     onMount()

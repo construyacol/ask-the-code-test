@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './newWallet.css'
 import { InputButton, ButtonSuccess } from '../../widgets/buttons/buttons'
 import InputForm from '../../widgets/inputs'
@@ -24,18 +24,7 @@ const NewWalletLayout = props =>{
   } = props
 
   const [ availableCurrencies ] = availableWalletCreator()
-
-  useEffect(() => {
-    window.onkeypress = (event) => {
-      if(event.keyCode === 13) {
-        const el = document.getElementById('add-new-wallet-button')
-        el && el.click()
-      }
-    }
-    return () => {
-      window.onkeypress = false
-    }
-  }, [window.onkeypress])
+  const idForNewWalletButton = useKeyActionAsClick(true, 'add-new-wallet-button', 13, false, 'onkeypress', true)
 
   return(
     <div className="containerFormWallet newWallet">
@@ -70,7 +59,7 @@ const NewWalletLayout = props =>{
                   items={availableCurrencies}
                   clearItem={clearCurrency}
                 />
-                <InputButton id="add-new-wallet-button" label="Crear Billetera" type="primary" active={name && currency}/>
+                <InputButton id={idForNewWalletButton} label="Crear Billetera" type="primary" active={name && currency}/>
               </form>
               </>
               :
