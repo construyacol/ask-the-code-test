@@ -1,12 +1,12 @@
 import React from 'react'
-import HomeLayout from './homeLayout'
 import loadable from '@loadable/component'
-import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
-import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
-import DashBoardContainer from '../dashBoard/dashboard-container'
 import { connect } from 'react-redux'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import HomeLayout from './homeLayout'
+import MenuPrincipalContainer from '../menuPrincipal/menu-principal-container'
+import MenuSuperiorContainer from '../menuSuperior/menuSuperiorContainer'
+import DashBoardContainer from '../dashBoard/dashboard-container'
 import withHandleError from '../withHandleError'
 import { doLogout } from '../utils'
 
@@ -20,7 +20,7 @@ const BuildedHome = (props) => (
   </>
 )
 
-const HomeContainer = (props) => {
+const HomeContainer = () => {
   return (
     <HomeLayout>
       <Route

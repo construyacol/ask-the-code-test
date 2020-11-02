@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react'
 import loadable from '@loadable/component'
 import { coins } from '../../api/ui/api.json'
-import ItemLayout from '../items/itemLayout'
 // import Slider from './slide'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { skeleton } from '../loaders/skeleton'
 
 const LazyChart = loadable(() => import('../chartCoin/chartCoin'))
+const ItemLayout = loadable(() => import('../items/itemLayout'))
 
 const QuoteLayout = props => {
 

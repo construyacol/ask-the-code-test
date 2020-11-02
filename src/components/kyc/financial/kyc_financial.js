@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import IconSwitch from '../../widgets/icons/iconSwitch'
+import loadable from '@loadable/component'
 import { ButtonForms } from '../../widgets/buttons/buttons.js'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,8 +13,9 @@ import { img_compressor } from '../../../utils'
 import { ACCEPT_FILE_TYPE } from '../../../const/const'
 import withCoinsendaServices from '../../withCoinsendaServices'
 
-class KycFinancialComponent extends Component {
+const IconSwitch = loadable(() => import('../../widgets/icons/iconSwitch'))
 
+class KycFinancialComponent extends Component {
 
   state = {
     current_name:null,

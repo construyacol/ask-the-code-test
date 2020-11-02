@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import IconSwitch from '../icons/iconSwitch'
-import backcard from '../../../assets/wallet_coins/back.png'
+import backcard from '../../../assets/wallet_coins/back.webp'
 import './item_wallet.css'
 
 

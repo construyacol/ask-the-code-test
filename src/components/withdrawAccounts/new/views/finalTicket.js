@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import IconSwitch from '../../../widgets/icons/iconSwitch'
+import loadable from '@loadable/component'
 import { ButtonSuccess } from '../../../widgets/buttons/buttons'
-
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
 import '../../../widgets/ticket/ticket.css'
 import './finalTicket.css'
-import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
+
+const IconSwitch = loadable(() => import('../../../widgets/icons/iconSwitch'))
+
 
 function FinalTicket(props) {
   const [current_ticket, setCurrentTicket] = useState(null)

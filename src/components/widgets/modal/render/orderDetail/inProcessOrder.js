@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useState, Fragment } from 'react'
 import styled from 'styled-components'
 import { AiOutlineUpload } from 'react-icons/ai';
 import PaymentProofComponent, { PaymentProof } from './paymentProof'
 import UseTxState from '../../../../hooks/useTxState'
 import SimpleLoader from '../../../loaders'
-import QRCode from 'qrcode'
 import { readFile, img_compressor } from '../../../../../utils'
 import OrderStatus from './orderStatus'
 import DetailGenerator from './detailGenerator'
@@ -14,19 +13,19 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import ConfirmationCounter from './confirmationCounter'
 import useViewport from '../../../../../hooks/useWindowSize'
 import { device } from '../../../../../const/const'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 
 
 import moment from 'moment'
 import 'moment/locale/es'
-import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 moment.locale('es')
 
-const orderModel = {
-  "created_at": new Date(),
-  "updated_at": new Date(),
-  "state": "pending",
-  "currency_type": "fiat"
-}
+// const orderModel = {
+//   "created_at": new Date(),
+//   "updated_at": new Date(),
+//   "state": "pending",
+//   "currency_type": "fiat"
+// }
 
 
 
@@ -34,7 +33,7 @@ const orderModel = {
 const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState()
 
-  if(!currentOrder || !currentOrder.currency) return onErrorCatch()
+  if (!currentOrder || !currentOrder.currency) return onErrorCatch()
 
   return (
     <>

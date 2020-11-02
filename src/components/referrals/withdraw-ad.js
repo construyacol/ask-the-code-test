@@ -1,8 +1,10 @@
 import React from 'react'
+import loadable from '@loadable/component'
 import NumberBox from './number-box'
 import styled from 'styled-components'
 import { device } from '../../const/const'
-import IconSwitch from '../widgets/icons/iconSwitch'
+
+const IconSwitch = loadable(() => import('../widgets/icons/iconSwitch'))
 
 const WithdrawAd = ({loading}) => {
     const Icon = () => (<IconSwitch icon={'colombia'} />)

@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react'
+import loadable from '@loadable/component'
 import {ButtonPrincipalMenu} from '../widgets/buttons/buttons'
 import logo from '../../assets/logo.png'
-import userPic from '../../assets/picture.jpg'
 import {menuPrincipal} from '../api/ui/api.json'
 import ScoresComponent from '../widgets/scores'
-import IconSwitch from '../widgets/icons/iconSwitch'
 import MovilMenuComponent from './movilMenu'
 import {useActions} from '../../hooks/useActions'
 import {doLogout} from '../utils'
 import useKeyActionAsClick from '../../hooks/useKeyActionAsClick'
-import KeyActionsProofComponent from '../keyActionsProof'
+
+const IconSwitch = loadable(() => import('../widgets/icons/iconSwitch'))
 
 // TODO: remove all window ref from components, may be the cause of future
 // issues

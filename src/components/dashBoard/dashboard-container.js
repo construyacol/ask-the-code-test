@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react'
-import { hotjar } from 'react-hotjar';
+import loadable from '@loadable/component'
+// import { hotjar } from 'react-hotjar';
 import {
   Element,
   Events,
@@ -9,13 +10,9 @@ import { Route, Switch } from 'react-router-dom'
 import WalletContainer from '../wallets/walletContainer'
 import QuoteContainer from '../widgets/quote/quoteContainer'
 import { connect } from 'react-redux'
-import PanelAlertContainer from '../widgets/panelAlert/panelAlertContainer'
-import VideoPlayer from '../widgets/video_player/videoPlayer'
 import PropTypes from 'prop-types'
 // import FreshChat from '../../services/freshChat'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
-import SimpleLoader from '../widgets/loaders'
-import ItemAccount from '../widgets/accountList/item_account'
 import { AccountListContainer } from '../widgets/accountList/styles'
 
 import {
@@ -23,16 +20,22 @@ import {
   SecurityLayoutLoader
 } from '../securityCenter/styles'
 
-import './dashboard.css'
 import { bindActionCreators } from 'redux';
 import actions from '../../actions';
 import ContentTab from '../widgets/detailContainer/content-tab';
 import { ReferralComponentAsSkeleton } from '../referrals/referralsComponent';
 import useBlockScroll from '../../hooks/useBlockScroll';
+import withCoinsendaServices from '../withCoinsendaServices';
+import './dashboard.css'
 
-const WitdrawAccountContainer = React.lazy(() => import('../withdrawAccounts/witdrawAccountContainer'))
-const SecurityCenter = React.lazy(() => import('../securityCenter/securityCenter'))
-const ReferralComponent = React.lazy(() => import('../referrals/referralsComponent'))
+const WitdrawAccountContainer = loadable(() => import('../withdrawAccounts/witdrawAccountContainer'))
+const SecurityCenter = loadable(() => import('../securityCenter/securityCenter'))
+const ReferralComponent = loadable(() => import('../referrals/referralsComponent'))
+
+const PanelAlertContainer = loadable(() => import('../widgets/panelAlert/panelAlertContainer'))
+const VideoPlayer = loadable(() => import('../widgets/video_player/videoPlayer'))
+const ItemAccount = loadable(() => import('../widgets/accountList/item_account'))
+const SimpleLoader = loadable(() => import('../widgets/loaders'))
 
 let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0
 
@@ -66,12 +69,12 @@ function DashBoardContainer(props) {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID)
     UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
       let query = `{"where":{"buy_pair":"${props.currentPair && props.currentPair.buy_pair}"}}`
-      props.action.update_current_pair(query, 'currentPair')
+      props.coinsendaServices.updateCurrentPair(query, 'currentPair')
     }, 20000)
   }
 
   const onMount = async () => {
-    hotjar.initialize(1688041, 6);
+    // hotjar.initialize(1688041, 6);
     // await props.action.freshchat_init_user(props.user)
     // await FreshChat.user_update(props.user)
     // const verification_state = await props.coinsendaServices.getVerificationState()
@@ -94,8 +97,8 @@ function DashBoardContainer(props) {
 
 
 
-  useEffect(()=>{
-    if(props.currentPair){
+  useEffect(() => {
+    if (props.currentPair) {
       process.env.NODE_ENV === 'production' && updateCurrentPair()
     }
   }, [props.currentPair])
@@ -200,7 +203,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashBoardContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(DashBoardContainer))
 
 const LazyLoaderPage = ({ path }) => {
 

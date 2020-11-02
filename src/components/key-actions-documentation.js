@@ -81,7 +81,7 @@ const TestItem = (props) => {
     // si esta seleccionado el elemento aplicamos estilos o otra condicion
     return (
         <li style={isSelected ? { color: 'red', fontSize: 14 } : {}}>
-            <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+            <InputKeyActionHandler aria-label="itemFromList" name="itemFromList" autoComplete="off" id={props.focusedId} />
             {props.name}
         </li>
     )

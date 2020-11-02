@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react'
-import IconSwitch from '../icons/iconSwitch'
+import loadable from '@loadable/component'
+import './items.css'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
 
 function ItemLayout(props) {
   const doSelectionForItem = () => {
@@ -22,7 +25,7 @@ function ItemLayout(props) {
   const { type, actives, name, code, placeholder, primarySelect, format, itemType } = props
   return (
     <div id={`${primarySelect ? 'primarySelect' : ''}`} className={`${type === 'payment_method' ? 'ILtuvieja' : ''} `}>
-      <div className={`item ${actives ? 'itemSelection' : ''}`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
+      <div className={`${actives ? 'itemSelection' : ''} item`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
 
         {
           !format ?

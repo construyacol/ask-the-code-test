@@ -1,14 +1,14 @@
 import React from 'react'
-import './mSuperior.css'
-import SimpleLoader from '../widgets/loaders'
-// import coin from '../../assets/btc.png'
-// import { SelectCountryButton } from '../widgets/buttons/buttons'
+import loadable from '@loadable/component'
 import { Link } from 'react-router-dom'
+// import { SelectCountryButton } from '../widgets/buttons/buttons'
 // import MenuLoggedOut from './menuLoggedOut'
-import Coinsenda from '../widgets/icons/logos/coinsenda'
-import PricesComponent from '../Prices/PricesComponent'
 import { useActions } from '../../hooks/useActions'
-//import { genIconPath } from '../../utils'
+import './mSuperior.css'
+
+const Coinsenda = loadable(() => import('../widgets/icons/logos/coinsenda'))
+const SimpleLoader = loadable(() => import('../widgets/loaders'))
+const PricesComponent = loadable(() => import('../Prices/PricesComponent'))
 
 const MenuSuperiorLayout = (props) => {
 

@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import loadable from '@loadable/component'
 import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions'
 import { InputKeyActionHandler } from '../accountList/styles'
-import IconSwitch from '../icons/iconSwitch'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
 
 let timerId;
 function NewItemsLayout(props) {
@@ -46,7 +48,7 @@ function NewItemsLayout(props) {
     const _activated = specialMode ? isSelected : actives
     return (
         <div id={`${primarySelect ? 'primarySelect' : ''}`} className={`${type === 'payment_method' ? 'ILtuvieja' : ''} `}>
-            <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+            <InputKeyActionHandler aria-label="itemFromList" name="itemFromList" autoComplete="off" id={props.focusedId} />
             <div className={`item ${_activated ? 'itemSelection' : ''}`} onClick={(!actives) || itemType === 'banks' ? doSelectionForItem : null}>
 
                 {

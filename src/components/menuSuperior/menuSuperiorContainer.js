@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
-import MenuSuperiorLayout from './mSuperiorLayout'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import actions from '../../actions'
-import { formatToCurrency } from '../../utils/convert_currency'
 import Headroom from 'headroom.js'
 import { withRouter } from "react-router";
 import PropTypes from 'prop-types'
+import { formatToCurrency } from '../../utils/convert_currency'
+import actions from '../../actions'
 import withCoinsendaServices from '../withCoinsendaServices'
+import MenuSuperiorLayout from './mSuperiorLayout'
 
 class MenuSuperiorContainer extends Component {
 

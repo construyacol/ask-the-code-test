@@ -12,10 +12,10 @@ class KycAvancedContainer extends Component {
   state = {
     kyc_success: false,
     front: this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
-    back: "./docs/back.png",
+    back: "./docs/back.webp",
     selfie: this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
     newfront: this.props.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
-    newback: "./docs/back.png",
+    newback: "./docs/back.webp",
     newselfie: this.props.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
     id_type: this.props.user.id_type,
     dashboard: window.innerWidth > 768 ? true : false,

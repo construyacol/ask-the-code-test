@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import IconSwitch from '../icons/iconSwitch'
+import loadable from '@loadable/component'
 import ActiveItem from '../items/active_item'
 import LimitTermometer from '../limitTermometer/limitTermometer'
 import { number_format, mensaje } from '../../../utils'
-
-import './account_item.css'
 import { InputKeyActionHandler } from '../accountList/styles'
 import { useItemsInteractions } from '../../../hooks/useNavigationKeyActions'
+
+import './account_item.css'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
 
 function AccountItemList(props) {
   const [amountCharge,] = useState(0)
@@ -89,7 +91,7 @@ function AccountItemList(props) {
       onClick={need_more_amount === 'need_more' ? showRequireActionMessage : handleClick}
       className={`AccountItemList ${isSelected && 'item-selected'} ${preferential_account} ${addElement ? 'addElement' : 'noAddElement'} ${need_more_amount}`} >
       <div className={`backgroundAccount ${need_more_amount}`}>
-      <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+      <InputKeyActionHandler aria-label="itemFromList" name="itemFromList" autoComplete="off" id={props.focusedId} />
       </div>
 
       <div className={`limitComp ${need_more_amount}`} style={{ display: addElement ? 'none' : 'block' }}>

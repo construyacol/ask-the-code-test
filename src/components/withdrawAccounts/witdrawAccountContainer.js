@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react'
+import loadable from '@loadable/component'
 import { connect } from 'react-redux'
 import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { navigation_components } from '../api/ui/api.json'
 import { Router, Route } from 'react-router-dom'
-import AccountList from '../widgets/accountList/account-list'
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 import { AccountListSkeletonLoader } from '../dashBoard/dashboard-container'
 import { WalletDetail } from '../wallets/walletContainer'
-import withdrawActivity from '../wallets/views/withdraw-activity'
+
+const AccountList = loadable(() => import('../widgets/accountList/account-list'))
+const WithdrawActivity = loadable(() => import('../wallets/views/withdraw-activity'))
 
 function WitdrawAccountContainer(props) {
 
@@ -54,7 +56,7 @@ function WitdrawAccountContainer(props) {
                 }
               </>
             )} />
-            <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} component={withdrawActivity} />
+            <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} component={WithdrawActivity} />
           </>
         </DetailContainerLayout>
       )} />

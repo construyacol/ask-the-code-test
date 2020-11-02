@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { SimpleLoader } from '../../../widgets/loaders'
 import { ButtonSuccess, ButtonSuccess2 } from '../../../widgets/buttons/buttons'
 import './flows.css'

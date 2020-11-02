@@ -52,12 +52,12 @@
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:dev:local": "cross-env NODE_ENV='local' npm start",
     "start:build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw && serve ./build -s -l 5000",
-    "build": "cross-env NODE_ENV='production' react-scripts build && npm run build-sw && node ./scripts/preloads.js",
+    "build": "cross-env NODE_ENV='production' react-scripts build && npm run build-sw",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap"
+    "postbuild": "react-snap && node ./scripts/preloads.js"
   },
   "reactSnap": {
     "source": "build",
@@ -76,6 +76,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@node-minify/clean-css": "^6.1.0",
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",

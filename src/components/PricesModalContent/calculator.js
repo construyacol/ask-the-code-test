@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import loadable from '@loadable/component'
 import convertCurrencies from '../../utils/convert_currency'
-import NumberInput from '../widgets/inputs/numberInput';
+
+const NumberInput = loadable(() => import('../widgets/inputs/numberInput'))
 
 export default (props) => {
 

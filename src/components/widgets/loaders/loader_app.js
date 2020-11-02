@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
+import loadable from '@loadable/component'
 import { bindActionCreators } from 'redux'
 import localForage from 'localforage'
 import actions from '../../../actions'
-import SelectCountry from '../maps/select_country/select_country'
-import Coinsenda from '../icons/logos/coinsenda.js'
-import IconSwitch from '../icons/iconSwitch'
-import './loader.css'
 import { withRouter } from 'react-router'
 import usePrevious from '../../hooks/usePreviousValue'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
@@ -14,6 +11,12 @@ import withHandleError from '../../withHandleError'
 import { doLogout } from '../../utils'
 import KeyActionsInfo from '../modal/render/keyActionsInfo'
 import useViewport from '../../../hooks/useWindowSize'
+import './loader.css'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
+const Coinsenda = loadable(() => import('../icons/logos/coinsenda'))
+const SelectCountry = loadable(() => import('../maps/select_country/select_country'))
+
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
 
@@ -166,7 +169,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
             />
           </div>
           :
-          <div className={`LoaderContainer loaderLayout ${anim}`}>
+          <div className={`LoaderContainer loaderLayout`}>
             <IconSwitch icon={country} size={60} />
 
             <div className="logotypes">

@@ -1,24 +1,26 @@
 import React from 'react'
+import loadable from '@loadable/component'
 import ModalContainer from '../widgets/modal/modalContainer.js'
 import ModalLayout from '../widgets/modal/modallayout'
-import NewWallet from '../wallets/newWallet/newWalletContainer'
-import WithdrawAccountForm from '../withdrawAccounts/new/withdrawAccountForm'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import DepositContainer from '../wallets/deposit/depositContainer'
 import actions from '../../actions'
-import Kyc from '../kyc/kyc_container'
 import { Route } from 'react-router-dom'
-import ConfirmationModal from '../widgets/modal/confirmation'
-import PairList from "../wallets/views/swap_pair_list"
-import TicketContainer from '../widgets/ticket/ticketContainer'
-import ModalSettingsView from '../widgets/itemSettings/modal_views'
-import WithdrawFlow from '../wallets/withdraw/withdrawFlowContainer'
-import TwoFactorActivate from '../widgets/twoFactorActivate/2fa'
 import PropTypes from 'prop-types'
-import SocketNotify from '../sockets/socket_notify/socketNotify'
 import withHandleError from '../withHandleError'
 import useToastMessage from '../../hooks/useToastMessage.js'
+
+const SocketNotify = loadable(() => import('../sockets/socket_notify/socketNotify'))
+const TwoFactorActivate = loadable(() => import('../widgets/twoFactorActivate/2fa'))
+const WithdrawFlow = loadable(() => import('../wallets/withdraw/withdrawFlowContainer'))
+const ModalSettingsView = loadable(() => import('../widgets/itemSettings/modal_views'))
+const TicketContainer = loadable(() => import('../widgets/ticket/ticketContainer'))
+const PairList = loadable(() => import('../wallets/views/swap_pair_list'))
+const ConfirmationModal = loadable(() => import('../widgets/modal/confirmation'))
+const Kyc = loadable(() => import('../kyc/kyc_container'))
+const DepositContainer = loadable(() => import('../wallets/deposit/depositContainer'))
+const WithdrawAccountForm = loadable(() => import('../withdrawAccounts/new/withdrawAccountForm'))
+const NewWallet = loadable(() => import('../wallets/newWallet/newWalletContainer'))
 
 function ModalsSupervisor(props) {
     const {

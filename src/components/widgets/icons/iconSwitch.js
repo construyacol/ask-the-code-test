@@ -1,106 +1,108 @@
 import React, { Component } from 'react'
-import './icons.css'
-import Coinsenda from './logos/coinsenda'
-import BancoBogota from './logos/bancoBogota'
-import Bbva from './logos/bbva'
+import loadable from '@loadable/component'
 import Usa from '../../../assets/svg/usa.svg'
+import './icons.css'
 
-import {
-  Email,
-  IconDefault,
-  Person,
-  Verify1,
-  Identification,
-  Security2,
-  Swap,
-  Send,
-  World,
-  Bitcoin2,
-  Phone,
-  Currency,
-  Finger,
-  Success,
-  Cop,
-  Deposit,
-  DepositCrypto,
-  Withdraw2,
-  Root,
-  Add,
-  ArrowRight,
-  Percentage,
-  Tag,
-  Activity,
-  Wallet,
-  Maintence,
-  Good,
-  Blockchain,
-  Peru,
-  Errors,
-  Financial,
-  Touch,
-  Upload, EtherAccount,
-  ReferralPerson, Team, Comillas, Account, Ux, Dash, Litecoin, Youtube, Twitter, Whatsapp, Telegram, Zammad,
-  Verified, WithdrawAccount, Referral, Medal, Confirming, Search, Ethereum, HoursAtention, AboutYou, PaymenthMethod, DollarSymbol, LogOut, NewAccount,
-  QRCode,
-  AuthFactor,
-  Accepeted,
-  SwapCamera,
-  Handshake
- } from './'
+// import { BancaMia } from './logos/bancamia'
+// import { BancoGnb } from './logos/banco_gnb'
+// import { Scotia } from './logos/scotia_bank'
 
- import {
-   Davivienda,
-   Bancolombia
- } from './logos'
+const getExportByName = componentName => exportObject => ({ default: exportObject[componentName] });
 
-
- import { BankAgrario } from './logos/banco_agrario'
- import { BancajaSocial } from './logos/bancaja_social'
- // import { BancaMia } from './logos/bancamia'
- import { BankColpatria } from './logos/banco_colpatria'
- import { BancoFalabella } from './logos/banco_falabella'
- import { BancoFinandina } from './logos/banco_finandina'
- // import { BancoGnb } from './logos/banco_gnb'
- import { BankItau } from './logos/banco_itau'
- import { BancOccidente } from './logos/banco_occidente'
- import { BankPichincha } from './logos/banco_pichincha'
- import { BancoSantander } from './logos/banco_santander'
- import { Bancoomeva } from './logos/bancoomeva'
- import { Nequi } from './logos/nequi'
- // import { Scotia } from './logos/scotia_bank'
- import { AvVillas } from './logos/banco_av_villas'
- import { CitiBank } from './logos/banco_citibank'
- import { CompartirBank } from './logos/banco_compartir'
- import { CoopCentral } from './logos/banco_coopcentral'
- import { Corpbanca } from './logos/banco_corpbanca'
- import { GnbBank } from './logos/banco_sudameris'
- import { MultiBank } from './logos/banco_multibank'
- import { PopularBank } from './logos/banco_popular'
- import { BankProcredit } from './logos/banco_procredit'
-
-
-
-
- import {
-   Ecuador,
-   Chile,
-   Argentina
- } from './flags'
-
-
-// banco_de_bogota
-
- // const atributos ={
- //   icon:name,
- //   size:40,
- //   color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
- //   viewBox:{`${viewBox ? viewBox : '0 0 512 512' }`},
- //   clases:"marginLef"
- //   colorStroke:"red"
- // }
+const Email = loadable(() => import('./').then(getExportByName('Email')))
+const IconDefault = loadable(() => import('./').then(getExportByName('IconDefault')))
+const Person = loadable(() => import('./').then(getExportByName('Person')))
+const Verify1 = loadable(() => import('./').then(getExportByName('Verify1')))
+const Identification = loadable(() => import('./').then(getExportByName('Identification')))
+const Security2 = loadable(() => import('./').then(getExportByName('Security2')))
+const Swap = loadable(() => import('./').then(getExportByName('Swap')))
+const Send = loadable(() => import('./').then(getExportByName('Send')))
+const World = loadable(() => import('./').then(getExportByName('World')))
+const Bitcoin2 = loadable(() => import('./').then(getExportByName('Bitcoin2')))
+const Phone = loadable(() => import('./').then(getExportByName('Phone')))
+const Currency = loadable(() => import('./').then(getExportByName('Currency')))
+const Finger = loadable(() => import('./').then(getExportByName('Finger')))
+const Success = loadable(() => import('./').then(getExportByName('Success')))
+const Cop = loadable(() => import('./').then(getExportByName('Cop')))
+const Deposit = loadable(() => import('./').then(getExportByName('Deposit')))
+const DepositCrypto = loadable(() => import('./').then(getExportByName('DepositCrypto')))
+const Withdraw2 = loadable(() => import('./').then(getExportByName('Withdraw2')))
+const Root = loadable(() => import('./').then(getExportByName('Root')))
+const Add = loadable(() => import('./').then(getExportByName('Add')))
+const ArrowRight = loadable(() => import('./').then(getExportByName('ArrowRight')))
+const Percentage = loadable(() => import('./').then(getExportByName('Percentage')))
+const Tag = loadable(() => import('./').then(getExportByName('Tag')))
+const Activity = loadable(() => import('./').then(getExportByName('Activity')))
+const Wallet = loadable(() => import('./').then(getExportByName('Wallet')))
+const Maintence = loadable(() => import('./').then(getExportByName('Maintence')))
+const Good = loadable(() => import('./').then(getExportByName('Good')))
+const Blockchain = loadable(() => import('./').then(getExportByName('Blockchain')))
+const Peru = loadable(() => import('./').then(getExportByName('Peru')))
+const Errors = loadable(() => import('./').then(getExportByName('Errors')))
+const Financial = loadable(() => import('./').then(getExportByName('Financial')))
+const Touch = loadable(() => import('./').then(getExportByName('Touch')))
+const Upload = loadable(() => import('./').then(getExportByName('Upload')))
+const EtherAccount = loadable(() => import('./').then(getExportByName('EtherAccount')))
+const ReferralPerson = loadable(() => import('./').then(getExportByName('ReferralPerson')))
+const Team = loadable(() => import('./').then(getExportByName('Team')))
+const Comillas = loadable(() => import('./').then(getExportByName('Comillas')))
+const Account = loadable(() => import('./').then(getExportByName('Account')))
+const Cardano = loadable(() => import('./').then(getExportByName('Cardano')))
+const Ux = loadable(() => import('./').then(getExportByName('Ux')))
+const Dash = loadable(() => import('./').then(getExportByName('Dash')))
+const Litecoin = loadable(() => import('./').then(getExportByName('Litecoin')))
+const Youtube = loadable(() => import('./').then(getExportByName('Youtube')))
+const Twitter = loadable(() => import('./').then(getExportByName('Twitter')))
+const Whatsapp = loadable(() => import('./').then(getExportByName('Whatsapp')))
+const Telegram = loadable(() => import('./').then(getExportByName('Telegram')))
+const Zammad = loadable(() => import('./').then(getExportByName('Zammad')))
+const Verified = loadable(() => import('./').then(getExportByName('Verified')))
+const WithdrawAccount = loadable(() => import('./').then(getExportByName('WithdrawAccount')))
+const Medal = loadable(() => import('./').then(getExportByName('Medal')))
+const Confirming = loadable(() => import('./').then(getExportByName('Confirming')))
+const Accepeted = loadable(() => import('./').then(getExportByName('Accepeted')))
+const SwapCamera = loadable(() => import('./').then(getExportByName('SwapCamera')))
+const Handshake = loadable(() => import('./').then(getExportByName('Handshake')))
+const Search = loadable(() => import('./').then(getExportByName('Search')))
+const Ethereum = loadable(() => import('./').then(getExportByName('Ethereum')))
+const HoursAtention = loadable(() => import('./').then(getExportByName('HoursAtention')))
+const AboutYou = loadable(() => import('./').then(getExportByName('AboutYou')))
+const PaymenthMethod = loadable(() => import('./').then(getExportByName('PaymenthMethod')))
+const DollarSymbol = loadable(() => import('./').then(getExportByName('DollarSymbol')))
+const LogOut = loadable(() => import('./').then(getExportByName('LogOut')))
+const NewAccount = loadable(() => import('./').then(getExportByName('NewAccount')))
+const QRCode = loadable(() => import('./').then(getExportByName('QRCode')))
+const AuthFactor = loadable(() => import('./').then(getExportByName('AuthFactor')))
+const Ecuador = loadable(() => import('./flags').then(getExportByName('Ecuador')))
+const Chile = loadable(() => import('./flags').then(getExportByName('Chile')))
+const Argentina = loadable(() => import('./flags').then(getExportByName('Argentina')))
+const BankAgrario = loadable(() => import('./logos/banco_agrario'))
+const BancajaSocial = loadable(() => import('./logos/bancaja_social'))
+const BankColpatria = loadable(() => import('./logos/banco_colpatria'))
+const BancoFalabella = loadable(() => import('./logos/banco_falabella'))
+const BancoFinandina = loadable(() => import('./logos/banco_finandina'))
+const BankItau = loadable(() => import('./logos/banco_itau'))
+const BancOccidente = loadable(() => import('./logos/banco_occidente'))
+const BankPichincha = loadable(() => import('./logos/banco_pichincha'))
+const BancoSantander = loadable(() => import('./logos/banco_santander'))
+const Bancoomeva = loadable(() => import('./logos/bancoomeva'))
+const Nequi = loadable(() => import('./logos/nequi'))
+const AvVillas = loadable(() => import('./logos/banco_av_villas'))
+const CitiBank = loadable(() => import('./logos/banco_citibank'))
+const CompartirBank = loadable(() => import('./logos/banco_compartir'))
+const CoopCentral = loadable(() => import('./logos/banco_coopcentral'))
+const Corpbanca = loadable(() => import('./logos/banco_corpbanca'))
+const GnbBank = loadable(() => import('./logos/banco_sudameris'))
+const MultiBank = loadable(() => import('./logos/banco_multibank'))
+const PopularBank = loadable(() => import('./logos/banco_popular'))
+const BankProcredit = loadable(() => import('./logos/banco_procredit'))
+const Davivienda = loadable(() => import('./logos').then(getExportByName('Davivienda')))
+const Bancolombia = loadable(() => import('./logos').then(getExportByName('Bancolombia')))
+const Coinsenda = loadable(() => import('./logos/coinsenda'))
+const BancoBogota = loadable(() => import('./logos/bancoBogota'))
+const Bbva = loadable(() => import('./logos/bbva'))
 
 class IconSwitch extends Component {
-
   switcher = props => {
     const { icon } = props
     // console.log('||||||||||||||| props ICON SWICH::', props)
@@ -112,11 +114,13 @@ class IconSwitch extends Component {
       case 'qr':
         return <QRCode {...props} />
       case 'usd':
-        return <img src={Usa} alt="" width={`${props.size}px`} height={`${props.size}px`}/>
+        return <img src={Usa} alt="" width={`${props.size}px`} height={`${props.size}px`} />
       case 'logout':
         return <LogOut {...props} />
       case 'ethereum':
         return <Ethereum {...props} />
+      case 'cardano':
+        return <Cardano {...props} />
       case 'ethereum_account':
         return <EtherAccount {...props} />
       case 'argentina':
@@ -140,7 +144,7 @@ class IconSwitch extends Component {
       case 'dash':
         return <Dash {...props} />
       case 'ux':
-      return <Ux {...props} />
+        return <Ux {...props} />
       case 'account':
         return <Account {...props} />
       case 'comillas':
@@ -160,7 +164,7 @@ class IconSwitch extends Component {
       case 'accepted':
         return <Medal {...props} />
       case 'accepted2':
-        return <Accepeted {...props}/>
+        return <Accepeted {...props} />
       case 'email':
         return <Email {...props} />
       case 'coinsenda':
@@ -232,8 +236,8 @@ class IconSwitch extends Component {
       case 'davivienda':
       case 'banco_davivienda':
         return <Davivienda {...props} />
-        case 'bancolombia':
-        case 'banco_bancolombia':
+      case 'bancolombia':
+      case 'banco_bancolombia':
         return <Bancolombia {...props} />
       case 'banco_de_bogota':
         return <BancoBogota {...props} />
@@ -312,18 +316,28 @@ class IconSwitch extends Component {
     }
   }
 
+  render() {
 
-  render(){
-
-    const{
+    const {
       animOn,
-      className
+      className,
+      withoutwrapper = false
     } = this.props
 
-    return(
-        <div className={`iconSty ${animOn ? 'animOn' : '' } ${className}`}>
-          <this.switcher {...this.props} />
-        </div>
+    if (withoutwrapper) {
+      const props = {...this.props}
+      props.withoutwrapper = ""
+      return (
+        <>
+          {React.createElement(this.switcher, props)}
+        </>
+      )
+    }
+
+    return (
+      <div className={`iconSty ${animOn ? 'animOn' : ''} ${className}`}>
+        {React.createElement(this.switcher, this.props)}
+      </div>
     )
   }
 

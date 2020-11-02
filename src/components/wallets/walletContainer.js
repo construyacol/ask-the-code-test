@@ -5,16 +5,15 @@ import actions from '../../actions'
 import { bindActionCreators } from 'redux'
 import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
 import { Route } from 'react-router-dom'
-import ActivityView from './views/activity'
-import AccountList from '../widgets/accountList/account-list'
 import ItemAccount from '../widgets/accountList/item_account'
 import SimpleLoader from '../widgets/loaders'
 import PropTypes from 'prop-types'
 
 const LazyWithdrawView = loadable(() => import('./views/withdraw'))
+const LazyAccountList = loadable(() => import('../widgets/accountList/account-list'))
 const LazySwapView = loadable(() => import('./views/swap'))
 const LazyDepositView = loadable(() => import('./views/deposit'))
-
+const LazyActivityView = loadable(() => import('./views/activity'))
 
 function WalletContainer(props) {
   // const actionDispatch = useActions()
@@ -41,8 +40,8 @@ function WalletContainer(props) {
             <SimpleLoader />
             :
             <>
-              <Route exact path="/:primary_path" render={() => (<AccountList {...routeProps} isWalletsView />)} />
-              <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={ActivityView} />
+              <Route exact path="/:primary_path" render={() => (<LazyAccountList {...routeProps} isWalletsView />)} />
+              <Route strict path="/:primary_path/:path/:account_id/:tx_path" component={LazyActivityView} />
               <Route exact path="/:primary_path/:path/:account_id" render={() => <SwitchView {...routeProps} />} />
             </>
         }

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import MenuPrincipalLayout from './mPrincipalLayout'
 import { connect } from 'react-redux'
-import actions from '../../actions'
 import { bindActionCreators } from 'redux'
-import './mPrincipal.css'
 import { scroller } from 'react-scroll'
 import PropTypes from 'prop-types'
+import actions from '../../actions'
 import withCoinsendaServices from '../withCoinsendaServices'
+import './mPrincipal.css'
 
 
 class MenuPrincipalContainer extends Component {

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import styled, { css } from 'styled-components'
 import { Title, ReferralBox, Divider, MAIN_COLOR, skeletonStyle } from './shareStyles'
 import { device } from '../../const/const'
-import { copy } from '../../utils'
 import CopyContainer from '../widgets/copy/copyContainer'
 
 const SECTION_TITLE = "Link de referidos"

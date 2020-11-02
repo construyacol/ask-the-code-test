@@ -133,7 +133,7 @@ const Item = (props) => {
        * aqui necesitamos un handler, un componente helper para actuar como puntero en este caso esta: InputKeyActionHandler
        * y reservamos el id (focusedId) para este elemento
        */}
-       <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+       <InputKeyActionHandler aria-label="itemFromList" name="itemFromList" autoComplete="off" id={props.focusedId} />
       <p>{`${props.number}: ${props.name} ${props.number}`}</p>
     </ItemContainer>
   )

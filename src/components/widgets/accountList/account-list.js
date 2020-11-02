@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import loadable from '@loadable/component'
 import SimpleLoader from '../loaders'
 import ItemAccount from './item_account'
 import { AddNewItem } from '../buttons/buttons'
-import IconSwitch from '../icons/iconSwitch'
 import PropTypes from 'prop-types'
 import { AccountListContainer } from './styles'
 import withListCreator from '../../withListCreator'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-
-import '../../wallets/views/wallet_views.css'
 import useNavigationKeyActions from '../../../hooks/useNavigationKeyActions'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
+
+import '../../wallets/views/wallet_views.css'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
 
 function AccountList(props) {
   const { isWalletsView, isWithdrawView, actions, history, mainListLoader } = props

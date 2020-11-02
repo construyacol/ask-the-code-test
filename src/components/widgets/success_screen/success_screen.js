@@ -1,9 +1,10 @@
 import React from 'react'
-import { Medal } from '../icons'
+import loadable from '@loadable/component'
 import { ButtonForms } from '../buttons/buttons.js'
 import ConfettiComponent from './confetti'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
 
 const SuccessComponentScreen = props => {
   const {
@@ -23,7 +24,7 @@ const SuccessComponentScreen = props => {
   return (
     <div className="KycLayoutBasicWin" id="callese">
       <h1 className="fuente KycTitles" >Genial {user_name}</h1>
-      <Medal size={window.innerWidth > 768 ? 190 : 150} />
+      <IconSwitch withoutwrapper={true} icon="accepted" size={window.innerWidth > 768 ? 190 : 150} />
       <p className={`KycParra1 ${classes} fuente`} >{title}</p>
       <p className="fuente continueKyc">{cta_text}</p>
       <div className="Kyccontrols">

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
-import './inputStyles.css'
+import loadable from '@loadable/component'
 import { number_format } from '../../../utils'
 import { SimpleLoader } from '../loaders'
-import IconSwitch from '../icons/iconSwitch'
 import Environtment from '../../../environment'
-import NumberInput from './numberInput'
 import MaskedInput from 'react-text-mask'
 import createAutoCorrectedDatePipe from 'text-mask-addons/dist/createAutoCorrectedDatePipe'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
+import './inputStyles.css'
+
+const IconSwitch = loadable(() => import('../icons/iconSwitch'))
+const NumberInput = loadable(() => import('./numberInput'))
 
 const autoCorrectedDatePipe = createAutoCorrectedDatePipe('dd/mm/yyyy')
 const { CountryUrl } = Environtment

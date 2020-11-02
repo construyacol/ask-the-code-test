@@ -8,7 +8,6 @@ import { bindActionCreators } from 'redux';
 import actions from '../actions';
 // import { isValidToken } from "./utils"
 import withHandleError from './withHandleError';
-import ToastContainers from './widgets/toast/ToastContainer'
 import HomeContainer from './home/home-container'
 import { doLogout } from './utils'
 import { history } from '../const/const';
@@ -17,6 +16,7 @@ import useToastMessage from '../hooks/useToastMessage';
 
 const LazyLoader = loadable(() => import('./widgets/loaders/loader_app'))
 const LazySocket = loadable(() => import('./sockets/sockets'))
+const LazyToast = loadable(() => import('./widgets/toast/ToastContainer'))
 
 history.listen((location) => {
   if (location && location.pathname !== '/') {
@@ -41,7 +41,7 @@ function RootContainer(props) {
       history.push('/')
     }
 
-    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCtkb3VnbGFzQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDgiLCJ1c3IiOiI1ZWNkYWQyZGNkZmI3NDAwZTE4NzA2NmIiLCJqdGkiOiIyc2ZNdHhvazNzMnBzSzBNMFJzcUt4OEZXdU00VmVEam9qb2pGRmU2MjZtSkJmbDNKSVBCdGRqTVVCNWZiQTB0IiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxpbmZvLGRlcG9zaXQsYWNjb3VudCx3aXRoZHJhdyxzd2FwIiwibWV0YWRhdGEiOiJ7fSIsImlhdCI6MTYwNDIzNDc1OSwiZXhwIjoxNjA0MjQ1NTU5fQ.L7NVT22VFBNNZPsXbpeCRbioqZVB3WfJ1LTpJYcASsVfbYF2289F1cTVOcQainuir5N99xhgIG0K2E2R6cIxJQ'
+    const userToken = 'eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNvbnN0cnV5YWNvbCtkb3VnbGFzQGdtYWlsLmNvbSIsImxhbmd1YWdlIjoiZXMiLCJpc3MiOiI1ZTc5NDcxNzY0ZGNkYjAxNmEzNjljZDgiLCJ1c3IiOiI1ZWNkYWQyZGNkZmI3NDAwZTE4NzA2NmIiLCJqdGkiOiJGdnZmRzd1ZGZ1TWVTUWdkSlZqM29jS0FMOXJzMGpuYlk0RzRnNWNmZHNYVUVYdjNkczdoTEMwMzByNGtaa2NHIiwiYXVkIjoidHJhbnNhY3Rpb24sYXV0aCxpZGVudGl0eSxpbmZvLGRlcG9zaXQsYWNjb3VudCx3aXRoZHJhdyxzd2FwIiwibWV0YWRhdGEiOiJ7fSIsImlhdCI6MTYwNDMxNzMyNywiZXhwIjoxNjA0MzI4MTI3fQ.x9XCRg1doYzP8RkYDI0En8rCIf5GbjTwxMlUIT4iXwbqJj1NstT8IXw5K6JRtZyNmo5cdbfhwoPLZrK_EocYtA'
 
     // const created_at = await localForage.getItem('created_at')
     // const userToken = await localForage.getItem('user_token')
@@ -85,10 +85,8 @@ function RootContainer(props) {
           <>
             <LazySocket toastMessage={toastMessage} />
             {/* <CoinsendaSocket /> */}
-            <ToastContainers />
-            <Switch>
-              <Route path="/" render={() => <HomeContainer />} />
-            </Switch>
+            <LazyToast />
+            <Route path="/" render={() => <HomeContainer />} />
           </>
         )}
     </Router>
