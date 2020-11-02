@@ -6,7 +6,7 @@ const Coinsenda = loadable(() => import('../icons/logos/coinsenda'))
 
 function LoaderAplicationTiny() {
     return (
-        <div className={`LoaderAplication withOutContry`}>
+        <div className={`_LoaderAplication withOutContry`}>
 
             <div className={`LoaderContainer loaderLayout`}>
                 <div style={{
@@ -20,7 +20,7 @@ function LoaderAplicationTiny() {
                 <p className="fuente">Iniciando</p>
             </div>
             <div className="KycprogressBar loader">
-                <div className="kycPropgressed" style={{ width: 2 }}></div>
+                <div className="_kycPropgressed" style={{ width: 2 }}></div>
             </div>
         </div>
 

@@ -358,7 +358,12 @@ grid-template-rows: repeat(2, calc(100vh - 160px));
   width: 20%;
   transition: .3s;
   background: linear-gradient(to right, #129A8E , #37ED7D);
+}
 
+._kycPropgressed{
+  height: 100%;
+  width: 20%;
+  background: linear-gradient(to right, #129A8E , #37ED7D);
 }
 
 .tuVieja{

@@ -180,7 +180,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
           </div>
       }
       <div className="KycprogressBar loader">
-        <div className="kycPropgressed" style={{ width: `${progressBarWidth}%` }}></div>
+        <div className="_kycPropgressed" style={{ width: `${progressBarWidth}%` }}></div>
       </div>
     </div>
 

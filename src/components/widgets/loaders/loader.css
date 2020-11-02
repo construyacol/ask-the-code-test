@@ -79,6 +79,15 @@
   align-items: center;
 }
 
+._LoaderAplication {
+  width: 100vw;
+  height: 100vh;
+  background-image: linear-gradient(to bottom right, var(--primary), var(--secondary));
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
 
 .LoaderAplication.withOutContry {
   --primary: #e0e0e0;

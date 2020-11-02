@@ -60,7 +60,7 @@ const MenuPrincipalLayout = (props) => {
 
       <div className="userInfo">
         <div className="logo">
-          <img src={logo} alt="" width="110"/>
+          <img src={logo} alt="" width="110" height="28" />
           <i className="fas fa-arrow-left" onClick={close_menu_principal}></i>
         </div>
 
