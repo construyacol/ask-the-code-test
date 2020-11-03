@@ -1,4 +1,4 @@
-.itemSecurityCenter{
+.itemSecurityCenter {
   width: 100%;
   height: auto;
   border: 1px solid transparent;
@@ -6,7 +6,7 @@
   border-bottom-color: #d5d5d6;
 }
 
-.subItemSecurityCenter{
+.subItemSecurityCenter {
   height: 150px;
   display: grid;
   grid-template-columns: 12vw 1fr;
@@ -14,12 +14,13 @@
   position: relative;
 }
 
-.subItemSecurityCenter div, .subItemSecurityCenter p{
+.subItemSecurityCenter div,
+.subItemSecurityCenter p {
   /*border: 1px solid red;*/
   margin: 0 !important;
 }
 
-.contentSubItem{
+.contentSubItem {
   display: grid;
   grid-template-columns: 1fr 250px;
   border: 1px solid transparent;
@@ -27,150 +28,137 @@
   /*border-top-color: #d5d5d6;*/
 }
 
-.contCtaMovilSec{
+.contCtaMovilSec {
   position: absolute;
   right: 0;
   height: 100%;
   width: 40px;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
-.contCtaMovilSec i{
+.contCtaMovilSec i {
   /*color: gray;*/
   font-size: 18px;
 }
 
-
-
-.contentSubItem.last{
+.contentSubItem.last {
   border-bottom-color: transparent;
-
 }
 
-.SCdesc{
+.SCdesc {
   font-size: 15px;
 }
 
-
-.rotateGono{
+.rotateGono {
   animation-name: rotateLoader;
-  animation-duration: .65s;
+  animation-duration: 0.65s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in;
 }
 
-@keyframes rotateLoader{
-  0%{
+@keyframes rotateLoader {
+  0% {
     transform: rotate(0deg);
   }
-  100%{
+  100% {
     transform: rotate(357deg);
   }
 }
 
-
-
-
-
-.contentSubItem p{
+.contentSubItem p {
   /*margin: 15px 10px !important;*/
   margin: 0 10px !important;
 }
 
-.SCverification{
+.SCverification {
   align-self: center;
   /*color: #59B200;*/
   font-size: 15px;
 }
 
-.SCverification i{
+.SCverification i {
   margin-right: 10px;
 }
 
-
-.SCtitle{
+.SCtitle {
   display: flex;
   align-items: center;
   color: gray;
   font-size: 25px;
 }
 
-.SCtitle p{
+.SCtitle p {
   margin: 0 !important;
   color: gray;
 }
 
-.contentSubText.available{
+.contentSubText.available {
   opacity: 1 !important;
 }
 
+.SCcta {
+  align-self: center;
+}
 
-
-.SCcta{
-    align-self: center;
-  }
-
-.SCcta #subItemSC, .SCcta #ClassicView{
+.SCcta #subItemSC,
+.SCcta #ClassicView {
   transform: scale(0.9);
 }
 
-
-
-.SCcta.send .botonForm.primary{
-  background: #59B200 !important;
+.SCcta.send .botonForm.primary {
+  background: #59b200 !important;
   opacity: 0.4;
 }
 
-.SCcta.confirmed, .SCcta.rejected{
+.SCcta.confirmed,
+.SCcta.rejected {
   border-color: transparent !important;
 }
 
-.contentSubItem.confir, .SCcta.confirmed{
+.contentSubItem.confir,
+.SCcta.confirmed {
   animation-name: SCconfirmed;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 
-@keyframes SCconfirmed{
-  0%{
-    opacity: .8
+@keyframes SCconfirmed {
+  0% {
+    opacity: 0.8;
   }
-  50%{
-    opacity: .4
+  50% {
+    opacity: 0.4;
   }
-  100%{
-    opacity: .8
+  100% {
+    opacity: 0.8;
   }
 }
 
-
-.anim-flow{
-
+.anim-flow {
   animation-name: animFlow;
   animation-duration: 1s;
   animation-iteration-count: infinite;
 }
 
-@keyframes animFlow{
-  0%{
+@keyframes animFlow {
+  0% {
     transform: translateX(0);
   }
-  50%{
+  50% {
     transform: translateX(5px);
   }
-  100%{
+  100% {
     transform: translateX(0);
   }
 }
 
-.loaderScontainer .lds-roller div:after{
+.loaderScontainer .lds-roller div:after {
   background: green !important;
 }
 
-
-.enviarNero{
+.enviarNero {
   margin-right: 10px;
   font-size: 18px;
   animation-name: enviarNero;
@@ -178,62 +166,61 @@
   animation-iteration-count: infinite;
 }
 
-@keyframes enviarNero{
-  0%{
+@keyframes enviarNero {
+  0% {
     transform: translateY(0px);
     opacity: 0;
   }
-  50%{
-    opacity: 1
+  50% {
+    opacity: 1;
   }
-  100%{
+  100% {
     transform: translateY(40px);
-    opacity: 0
+    opacity: 0;
   }
 }
 
-
-.loaderScontainer{
+.loaderScontainer {
   position: relative;
-  width: 30px
+  width: 30px;
 }
-.confirmedIndentSc{
+.confirmedIndentSc {
   display: flex;
-  color: green ;
+  color: green;
 }
 
-.confirmedIndentSc .lds-roller{
+.confirmedIndentSc .lds-roller {
   transform: scale(0.3);
   height: auto !important;
   width: auto !important;
 }
 
-.contentSubText{
+.contentSubText {
   color: gray;
   display: grid;
   align-items: center;
   padding-left: 20px;
 }
 
-.SCimgItem{
+.SCimgItem {
   display: grid;
   align-items: center;
   justify-items: center;
   position: relative;
 }
 
-.ScimgClassicView{
+.ScimgClassicView {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.ScimgClassicView.classic_view svg{
-    margin-right: 10px;
-    transform: scale(0.7);
+.ScimgClassicView.classic_view svg {
+  margin-right: 10px;
+  transform: scale(0.7);
 }
 
-.SCimgItemCont{
+.SCimgItemCont {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -244,19 +231,19 @@
   border: 1px solid #d5d5d6;
   z-index: 1;
   box-shadow: 1px 1px 1px 1px grey;
-  transform: scale(.94);
+  transform: scale(0.94);
 }
 
-.SCimgItemCont.first{
+.SCimgItemCont.first {
   transform: scale(1.1);
 }
 
-.SCimgItemCont.active{
+.SCimgItemCont.active {
   border: 2px solid #1babec;
-      box-shadow: none;
+  box-shadow: none;
 }
 
-.SCconector{
+.SCconector {
   position: absolute;
   width: 7px;
   background: #d5d5d6;
@@ -264,24 +251,19 @@
   bottom: -40%;
 }
 
-.SCconector.active{
-  background: linear-gradient(to bottom, #00D2FF, #3A7BD5);
+.SCconector.active {
+  background: linear-gradient(to bottom, #00d2ff, #3a7bd5);
 }
 
-.SCconector.last{
+.SCconector.last {
   display: none;
 }
 
-.SCUnverify{
+.SCUnverify {
   /*color:red !important;*/
 }
 
-
-
-
-
-
-.SecurityCenter{
+.SecurityCenter {
   width: 100%;
   height: 100%;
 }

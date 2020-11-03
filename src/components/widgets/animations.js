@@ -1,5 +1,4 @@
-import styled, { keyframes } from 'styled-components'
-
+import styled, { keyframes } from "styled-components";
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
@@ -25,7 +24,6 @@ export const rotate0HorizontalBck = keyframes`
   }
 `;
 
-
 export const getOutAnimationKeyboard = keyframes`
     0% {
       -webkit-transform: translateY(0) rotateX(0) scale(1);
@@ -42,7 +40,6 @@ export const getOutAnimationKeyboard = keyframes`
       opacity: 1;
     }
 `;
-
 
 export const getOutAnimation = keyframes`
   0%{
@@ -84,7 +81,6 @@ export const keyBoardAnimation = keyframes`
   opacity: 1;
 }
 `;
-
 
 export const swing_in_bottom_bck = keyframes`
   0% {
@@ -129,7 +125,6 @@ export const deletedOrderAnim = keyframes`
   }
 `;
 
-
 export const newOrderStyleAnim = keyframes`
   0%{
     opacity: 0;
@@ -158,9 +153,6 @@ export const containerDepositAnim = keyframes`
   }
 `;
 
-
-
-
 export const socketIconContainerIntro = keyframes`
   0% {
     transform: translateY(15px) scale(0);
@@ -171,8 +163,7 @@ export const socketIconContainerIntro = keyframes`
   100% {
     transform: translateY(15px) scale(1);
   }
-`
-
+`;
 
 export const backTopSection = keyframes`
   0% {
@@ -195,4 +186,4 @@ export const backTopSection = keyframes`
     left:0%;
     top:0%;
   }
-`
+`;

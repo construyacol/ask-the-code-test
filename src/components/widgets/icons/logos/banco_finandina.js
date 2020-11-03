@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancoFinandina = props => {
-
-  return(
-    <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPwAAADECAMAAACMXLyVAAAC/VBMVEUAAADXQE/0x8fcUWTYWGfi
+export const BancoFinandina = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPwAAADECAMAAACMXLyVAAAC/VBMVEUAAADXQE/0x8fcUWTYWGfi
 f4TSID3VK0X33tr64d351dTsqK31wsD74974vcH2ys352tbJBB/EHDbYLUjigY3pr7D60dHLDSzG
 Fi7IIT3XSGDbTWLbVGfZVmjZXGzge4XjipLspKm7CCLNJj/OMUrMNUnWNk/WO1TFO1DPO1DklZ7y
 mqT/29vIDyrHK0LcZHHhaHnbdoXfjpTqq7DFACHFCCTBECrGEi69FC/CJT/TJj/IL0bdO0zPP1XH
@@ -102,9 +103,10 @@ L1GvAd0xMiU3PJh0skChI0QiKHhxMGDc6sBfwqjiM8Z0b25x6DOVDTbSeFxuIQibbQRg3t0jDmVS
 xR9YDrpnldGsJN2zBfn8E9jJI/OAF2y5KKWK/+Ip0D0DZwxvJYvXyBNNSbY5HzwEvOCh5XaK+OE9
 8Bhp3pIjOfsTHQfzpRFdWPft85Uu2gK8Y+A3c9raFFm1ITURXaQKI2pjL72/tUf+x1s/e3DpuKlT
 xw3o4r1NmzavXQe85umRK14ZMGDq0gFdfD3gsde3zB8CWCwWi8VisVgsFovFYrFYLBaL1Rf9CxbL
-LcMAdUKPAAAAAElFTkSuQmCC" alt=""/>
-  )
+LcMAdUKPAAAAAElFTkSuQmCC"
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BancoFinandina
+export default BancoFinandina;

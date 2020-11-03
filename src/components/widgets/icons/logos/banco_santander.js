@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancoSantander = props => {
-
-  return(
-    <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbkAAAF+CAMAAAAoZ5QWAAAArlBMVEUAAAD/AADqHSX/JDPrHSXp
+export const BancoSantander = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbkAAAF+CAMAAAAoZ5QWAAAArlBMVEUAAAD/AADqHSX/JDPrHSXp
     GifpFybqHSXqHSXqHCTqHSTsHSXqHiPgHx/qHSXrHSXqHSXqHCXqHSXrHCXqHSXqHSXqHSLqHCXq
     HSTqHSTqHCXqHCTqHSXqHCTqHibvICDqHSTqHSTqHSTrHSXqHSXsHCXrHSXqHiTqHSTrHSTqHSXq
     HCXrHCTqHSXqHSXrHSTqHCXqHSXqHSTqHSXqHSXrHSXrHSXrHCXpHCXqHSUfTtUQAAAAOXRSTlMA
@@ -82,9 +83,10 @@ export const BancoSantander = props => {
     61yi7Waifel0Z4l3OYmtMzJK3u0kUFoUZ9c3tmxrJ5nGV+OeqbLzbbeZj/JbacuYVXrutMNApao4
     HPuPtpxE0uA0PL89aZnqvKphbVPvl+U7S51Rbnid29q611QnKLbCh+Sq3h/JdqZBpdzYegs/qXXD
     3rfAVQeZQbU169buNp36dlXKZ68PW4NotLRX/Z/mv8X9n2x7NHXk0xJCCCGEEEIIIYQQQgghhBBC
-    CCGEEEIIIYQQQgghhBBCiAv0AzovbpLenqklAAAAAElFTkSuQmCC" alt=""/>
-  )
+    CCGEEEIIIYQQQgghhBBCiAv0AzovbpLenqklAAAAAElFTkSuQmCC"
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BancoSantander
+export default BancoSantander;

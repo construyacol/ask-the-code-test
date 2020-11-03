@@ -1,25 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { useActions } from '../../../../../hooks/useActions'
-import styled from 'styled-components'
-import AddressBook from './'
-
+import React, { useState, useEffect } from "react";
+import { useActions } from "../../../../../hooks/useActions";
+import styled from "styled-components";
+import AddressBook from "./";
 
 const AddressBookCTA = ({ addressToAdd }) => {
+  const actions = useActions();
 
-  const actions = useActions()
+  const openAddressBook = async () => {
+    actions.renderModal(() => <AddressBook addressToAdd={addressToAdd} />);
+  };
 
-  const openAddressBook = async() => {
-    actions.renderModal(() => <AddressBook addressToAdd={addressToAdd}/>)
-  }
-
-  return(
+  return (
     <AddressBookContainer>
-      <p onClick={openAddressBook} className="fuente">{addressToAdd ? `+ Agregar cuenta de retiro` : 'Gestionar direcciones >>'}</p>
+      <p onClick={openAddressBook} className="fuente">
+        {addressToAdd
+          ? `+ Agregar cuenta de retiro`
+          : "Gestionar direcciones >>"}
+      </p>
     </AddressBookContainer>
-  )
-}
+  );
+};
 
-export default AddressBookCTA
+export default AddressBookCTA;
 
 const AddressBookContainer = styled.div`
   position: absolute;
@@ -28,14 +30,14 @@ const AddressBookContainer = styled.div`
   bottom: -35px;
   cursor: pointer;
   display: flex;
-  
-  p{
+
+  p {
     margin: 0;
     font-size: 14px;
     color: #b48728;
     font-weight: bold;
   }
-  p:hover{
+  p:hover {
     text-decoration: underline;
   }
-`
+`;

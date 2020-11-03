@@ -1,31 +1,24 @@
-import {
-  LOADER,
-  IS_APP_LOADED,
-  APP_LOAD_LABEL
-} from './action_types'
-
+import { LOADER, IS_APP_LOADED, APP_LOAD_LABEL } from "./action_types";
 
 export const isAppLoading = (payload) => {
   return {
     type: LOADER,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 export const isAppLoaded = (payload) => {
   return {
     type: IS_APP_LOADED,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 export const appLoadLabelAction = (payload) => {
   return {
     type: APP_LOAD_LABEL,
-    payload
-  }
-}
+    payload,
+  };
+};
 
-
-
-export default isAppLoading
+export default isAppLoading;

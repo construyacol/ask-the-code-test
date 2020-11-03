@@ -1,59 +1,59 @@
-import React, { useState, useEffect } from 'react'
-import DetailContainerLayout from '../widgets/detailContainer/detailContainerLayout'
-import { connect } from 'react-redux'
-import ShareSection from './share-section'
-import sleep from '../../utils/sleep'
-import styled from 'styled-components'
-import ReferralCounter from './referral-counter'
-import BalanceSelect from './balance-select'
-import WithdrawAd from './withdraw-ad'
-import { device } from '../../const/const'
-import CreateCode from './create-code'
-import { FONT_COLOR, skeletonStyle } from './shareStyles'
-import { scroller } from 'react-scroll'
-import { useCoinsendaServices } from '../../services/useCoinsendaServices'
+import React, { useState, useEffect } from "react";
+import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
+import { connect } from "react-redux";
+import ShareSection from "./share-section";
+import sleep from "../../utils/sleep";
+import styled from "styled-components";
+import ReferralCounter from "./referral-counter";
+import BalanceSelect from "./balance-select";
+import WithdrawAd from "./withdraw-ad";
+import { device } from "../../const/const";
+import CreateCode from "./create-code";
+import { FONT_COLOR, skeletonStyle } from "./shareStyles";
+import { scroller } from "react-scroll";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 
-const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`
+const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`;
 
 const ReferralComponent = (props) => {
-  const { user } = props
+  const { user } = props;
 
-  const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false)
-  const [haveReferraLink, setHaveReferralLink] = useState(true)
-  const [referralLink, setReferralLink] = useState('')
-  const [loading] = useState(props.setSkeleton ? true : false)
+  const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
+  const [haveReferraLink, setHaveReferralLink] = useState(true);
+  const [referralLink, setReferralLink] = useState("");
+  const [loading] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)
-  const [ coinsendaServices ] = useCoinsendaServices()
+  const [coinsendaServices] = useCoinsendaServices();
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
-      scroller.scrollTo('firstInsideContainer', {
+      scroller.scrollTo("firstInsideContainer", {
         offset: 0,
         duration: 0,
         smooth: true,
-        containerId: 'containerElement'
-      })
-    })
+        containerId: "containerElement",
+      });
+    });
 
     // The code below is for test purpose on view skeleton UI
     // setTimeout(() => setLoading(false), 3000)
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (user && user.referral) {
-      setReferralLink(REFERRAL_LINK(user.referral.ref_code))
+      setReferralLink(REFERRAL_LINK(user.referral.ref_code));
     }
-  }, [user])
+  }, [user]);
 
-  const createLink = async code => {
-    const res = await coinsendaServices.setReferralCode(code)
+  const createLink = async (code) => {
+    const res = await coinsendaServices.setReferralCode(code);
 
-    if (!res) return
+    if (!res) return;
 
-    setWasReferralCodeCreated(true)
-    await sleep(300)
-    setHaveReferralLink(true)
-  }
+    setWasReferralCodeCreated(true);
+    await sleep(300);
+    setHaveReferralLink(true);
+  };
 
   return (
     <DetailContainerLayout
@@ -65,11 +65,14 @@ const ReferralComponent = (props) => {
         <CreateCode
           createLink={createLink}
           wasReferralCodeCreated={wasReferralCodeCreated}
-         />
+        />
       ) : (
         <ReferralGrid>
-          <FirstText className={`${loading === true ? 'skeleton' : '' }`} >
-            <p>Invita amigos con tu link de referido y gana el <strong>0.05%</strong> de comisión sobre todas sus operaciones.</p>
+          <FirstText className={`${loading === true ? "skeleton" : ""}`}>
+            <p>
+              Invita amigos con tu link de referido y gana el{" "}
+              <strong>0.05%</strong> de comisión sobre todas sus operaciones.
+            </p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
           <ReferralCounter loading={loading ? loading.toString() : null} />
@@ -78,9 +81,8 @@ const ReferralComponent = (props) => {
         </ReferralGrid>
       )}
     </DetailContainerLayout>
-  )
-
-}
+  );
+};
 
 const FirstText = styled.div`
   grid-area: top;
@@ -88,8 +90,8 @@ const FirstText = styled.div`
   color: black;
   font-weight: 100;
 
-  &.skeleton{
-    p{
+  &.skeleton {
+    p {
       ${skeletonStyle}
       width: fit-content;
       height: 18px;
@@ -102,7 +104,7 @@ const FirstText = styled.div`
   @media ${device.tabletL} {
     display: none;
   }
-`
+`;
 
 const ReferralGrid = styled.div`
   transform: scale(.96);
@@ -134,14 +136,14 @@ const ReferralGrid = styled.div`
 `;
 
 function mapStateToProps(state, props) {
-
-  const { user } = state.modelData
+  const { user } = state.modelData;
   return {
-    user: user
-  }
-
+    user: user,
+  };
 }
 
-export const ReferralComponentAsSkeleton = () => (<ReferralComponent setSkeleton={true} />)
+export const ReferralComponentAsSkeleton = () => (
+  <ReferralComponent setSkeleton={true} />
+);
 
-export default connect(mapStateToProps)(ReferralComponent)
+export default connect(mapStateToProps)(ReferralComponent);

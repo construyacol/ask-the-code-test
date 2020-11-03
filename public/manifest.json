@@ -20,7 +20,7 @@
     }
   ],
   "start_url": "/wallets",
-  "scope":"/",
+  "scope": "/",
   "display": "standalone",
   "theme_color": "#0066AA",
   "background_color": "#ffffff",
@@ -31,18 +31,20 @@
       "id": "io.coinsenda.coinsenda"
     }
   ],
-  "shortcuts": [{
-    "name": "Mis Billeteras",
-    "short_name": "Billeteras",
-    "description": "Ir a Mis Billeteras",
-    "url": "/wallets",
-    "icons": [
-      {
-        "src": "./icon_solid.webp",
-        "sizes": "196x196",
-        "type": "image/webp"
-      }
-    ]
-  }],
-  "prefer_related_applications":false
+  "shortcuts": [
+    {
+      "name": "Mis Billeteras",
+      "short_name": "Billeteras",
+      "description": "Ir a Mis Billeteras",
+      "url": "/wallets",
+      "icons": [
+        {
+          "src": "./icon_solid.webp",
+          "sizes": "196x196",
+          "type": "image/webp"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false
 }

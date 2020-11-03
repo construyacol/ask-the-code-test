@@ -1,6 +1,4 @@
-import styled, { keyframes, css } from 'styled-components'
-
-
+import styled, { keyframes, css } from "styled-components";
 
 export const skeleton = keyframes`
     0%{
@@ -18,12 +16,12 @@ export const OnlySkeletonAnimation = css`
   animation-name: ${skeleton};
   animation-duration: 1s;
   animation-iteration-count: infinite;
-  opacity: .5;
-`
+  opacity: 0.5;
+`;
 
 const SkeletonAnimation = styled.div`
-  &.skeleton{
+  &.skeleton {
     ${OnlySkeletonAnimation}
   }
-`
-export default SkeletonAnimation
+`;
+export default SkeletonAnimation;

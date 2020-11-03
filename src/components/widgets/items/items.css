@@ -1,13 +1,12 @@
-
-.item div{
+.item div {
   position: relative;
 }
 
-.item.itemSelection p{
+.item.itemSelection p {
   color: #14b3f0;
 }
 
-.item:hover p{
+.item:hover p {
   color: #14b3f0 !important;
 }
 
@@ -15,15 +14,15 @@
   width: 7px;
 }
 
-.placeHoldCont{
+.placeHoldCont {
   margin-top: 25px;
 }
 
-.ILtuvieja{
+.ILtuvieja {
   height: 210px !important;
 }
 
-.ILplaceholder{
+.ILplaceholder {
   margin: 6px 0 !important;
   font-size: 12px;
   color: #808080a8;
@@ -33,171 +32,159 @@
   background: #475a681f;
 }
 
-.ItemSelectionContainers{
+.ItemSelectionContainers {
   display: grid;
   justify-items: center;
   grid-template-rows: 110px 1fr;
 }
 
-.containerItems{
+.containerItems {
   display: grid;
   height: auto;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2 1fr);
   padding: 15px;
-  grid-gap:20px;
-  justify-items:center;
+  grid-gap: 20px;
+  justify-items: center;
   /*align-items: center;*/
 }
 
-.item:hover{
+.item:hover {
   transform: scale(1.1) !important;
-  -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  background: linear-gradient(to bottom left, #2B3742, #060809);
-  color: #1CA8EB;
+  -webkit-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to bottom left, #2b3742, #060809);
+  color: #1ca8eb;
   border: 1px solid #455869;
 }
 
-.itemSelection{
+.itemSelection {
   transform: scale(1.1) !important;
-  -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  box-shadow: 0px 0px 20px -1px rgba(0,0,0,0.6);
-  background: linear-gradient(to bottom left, #2B3742, #060809);
-  color: #1CA8EB;
+  -webkit-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  -moz-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(to bottom left, #2b3742, #060809);
+  color: #1ca8eb;
   border: 1px solid #455869;
 }
 
-.item{
+.item {
   transform: scale(1);
-    border: 1px solid #22293333;
-    border-radius: 7px;
-    transition:.4s;
-    height: 140px;
-    cursor:pointer;
-    display: grid;
-    align-items: center;
-    justify-items:center;
-    -webkit-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
-    -moz-box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
-    box-shadow: 0px 0px 20px -1px rgba(0,0,0,0);
-    grid-template-rows: 1fr 36px;
-    width: 170px;
-    margin-bottom: 7px;
+  border: 1px solid #22293333;
+  border-radius: 7px;
+  transition: 0.4s;
+  height: 140px;
+  cursor: pointer;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  -webkit-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0);
+  box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0);
+  grid-template-rows: 1fr 36px;
+  width: 170px;
+  margin-bottom: 7px;
 }
 
-.item:hover .banquis{
+.item:hover .banquis {
   opacity: 1;
 }
-.banquis{
-  transition: .2s;
+.banquis {
+  transition: 0.2s;
   opacity: 0.3;
 }
 
-.itemVisible{
+.itemVisible {
   opacity: 1 !important;
 }
 
-.banquis:hover{
+.banquis:hover {
   opacity: 1;
 }
 
-.itemSobre{
+.itemSobre {
   display: none !important;
 }
 
-.itemSobre.activaos{
+.itemSobre.activaos {
   display: initial !important;
-
 }
 
-.itemFuera{
+.itemFuera {
   display: initial;
 }
 
-.fuerActive{
+.fuerActive {
   display: none;
 }
 
-.item:hover .itemSobre{
-display: initial !important;
+.item:hover .itemSobre {
+  display: initial !important;
 }
 
-.item:hover .itemFuera{
-display: none;
+.item:hover .itemFuera {
+  display: none;
 }
 
-
-.item p{
+.item p {
   margin: 0 0 14px 0 !important;
 }
-
-
-
 
 /*.AccountItemList:hover .bigEgg{
   animation-name: bigEgg;
 }*/
 
-.bigEgg{
-  animation-duration: .2s;
+.bigEgg {
+  animation-duration: 0.2s;
   /*animation-delay: .17s;*/
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-
-@keyframes bigEgg{
-  0%{
+@keyframes bigEgg {
+  0% {
     transform: scale(0);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
 
-
-.egg{
-  animation-duration: .3s;
+.egg {
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-
-@keyframes egg{
-  0%{
+@keyframes egg {
+  0% {
     transform: scale(0);
   }
-  60%{
+  60% {
     transform: scale(1.5);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
 
-@keyframes egg2{
-  0%{
+@keyframes egg2 {
+  0% {
     transform: scale(1);
   }
-  60%{
+  60% {
     transform: scale(1.5);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }
 
-
-
-
-
-.active_account{
+.active_account {
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   width: 25px;
   height: 25px;
   position: relative;
@@ -206,7 +193,7 @@ display: none;
   transform: scale(0.8);
 }
 
-.bigEgg{
+.bigEgg {
   position: absolute;
   justify-self: center;
   align-self: center;
@@ -217,102 +204,51 @@ display: none;
   transform: scale(0);
 }
 
-.egg{
+.egg {
   width: 60%;
   height: 60%;
   /*background: linear-gradient(to right, #11998e, #38ef7d) !important;*/
   border-radius: 50%;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*Vista item wallet*/
 
-
-
-
 @media only screen and (max-width: 600px) {
-
-
-  #primarySelectText{
+  #primarySelectText {
     text-align: left !important;
   }
 
-  .primarySelectText{
+  .primarySelectText {
     justify-self: flex-start;
   }
 
-  .chooseMethod{
+  .chooseMethod {
     grid-template-rows: repeat(3, 1fr) !important;
     grid-template-columns: 1fr !important;
   }
 
-  #primarySelect{
+  #primarySelect {
     width: 90%;
     height: 100% !important;
   }
 
-  #primarySelect .item{
+  #primarySelect .item {
     width: 100%;
     grid-template-rows: 1fr;
     grid-template-columns: minmax(90px, 30%) 1fr;
     grid-column-gap: 10px;
   }
 
-  #ILplaceholder2{
+  #ILplaceholder2 {
     margin-bottom: 4px !important;
     font-size: 12px;
     color: #808080a8;
-    transition: .2s;
+    transition: 0.2s;
   }
 
-  .itemSelection #ILplaceholder2{
+  .itemSelection #ILplaceholder2 {
     color: #cacaca;
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

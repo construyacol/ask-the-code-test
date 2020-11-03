@@ -1,36 +1,48 @@
-import React, { useEffect } from 'react'
-import OtherModalLayout from '../modal/otherModalLayout'
-import styled from 'styled-components'
-import { useActions } from '../../../hooks/useActions'
-import PricesModalContent from '../../PricesModalContent/prices-modal-content'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import { device } from '../../../const/const'
-import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-
+import React, { useEffect } from "react";
+import OtherModalLayout from "../modal/otherModalLayout";
+import styled from "styled-components";
+import { useActions } from "../../../hooks/useActions";
+import PricesModalContent from "../../PricesModalContent/prices-modal-content";
+import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
+import { device } from "../../../const/const";
+import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 
 const PricesModal = () => {
-  const actions = useActions()
+  const actions = useActions();
   const [, state] = useCoinsendaServices();
-  const currentPair = state.modelData.pairs.currentPair
-  const pairs = state.modelData.pairs.local_collections
+  const currentPair = state.modelData.pairs.currentPair;
+  const pairs = state.modelData.pairs.local_collections;
 
   const closeModal = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
-      actions.renderModal(null)
+      actions.renderModal(null);
     }
-  }
+  };
 
-  const idCloseModalButton = useKeyActionAsClick(true, 'close-prices-modal-button', 27, false, 'onkeyup', true)
+  const idCloseModalButton = useKeyActionAsClick(
+    true,
+    "close-prices-modal-button",
+    27,
+    false,
+    "onkeyup",
+    true
+  );
 
-  return(
+  return (
     <OtherModalLayout on_click={closeModal}>
       <MainContainer>
-        <CloseButton id={idCloseModalButton} onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton>
-        <PricesModalContent changePair={actions.searchCurrentPairAction} currentPair={currentPair} pairs={pairs} />
+        <CloseButton id={idCloseModalButton} onClick={() => closeModal()}>
+          <i className="far fa-times-circle"></i>
+        </CloseButton>
+        <PricesModalContent
+          changePair={actions.searchCurrentPairAction}
+          currentPair={currentPair}
+          pairs={pairs}
+        />
       </MainContainer>
     </OtherModalLayout>
-  )
-}
+  );
+};
 
 const CloseButton = styled.div`
   cursor: pointer;
@@ -41,7 +53,7 @@ const CloseButton = styled.div`
   font-size: 2em;
   transition: all 500ms ease;
   color: #4a4a4a;
-`
+`;
 
 const MainContainer = styled.div`
   width: 90%;
@@ -54,6 +66,6 @@ const MainContainer = styled.div`
     height: 100%;
     position: absolute;
   }
-`
+`;
 
-export default PricesModal
+export default PricesModal;

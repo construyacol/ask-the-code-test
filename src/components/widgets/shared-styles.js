@@ -1,33 +1,29 @@
-import styled from 'styled-components'
-import { rotate90HorizontalBck, rotate0HorizontalBck } from './animations'
-
+import styled from "styled-components";
+import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 
 export const ControlButtonContainer = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
   display: grid;
-  bottom: ${props => `${props.bottom}px`}
-
-  #controlsContainer{
-    transform: scale(.95);
+  bottom: ${(props) => `${props.bottom}px`} #controlsContainer {
+    transform: scale(0.95);
   }
-`
+`;
 
 export const Face = styled.div`
   display: block;
   position: absolute;
   width: 358px;
   height: 80px;
-`
+`;
 
-export const Front = styled(Face)`
-`
+export const Front = styled(Face)``;
 export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);
   opacity: 0;
-`
+`;
 
 export const CubeObject = styled.div`
   position: relative;
@@ -35,29 +31,29 @@ export const CubeObject = styled.div`
   height: 80px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
-  &.rotate{
-    animation: ${rotate90HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    ${Top}{
-      transition: .3s;
+  &.rotate {
+    animation: ${rotate90HorizontalBck} 0.3s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    ${Top} {
+      transition: 0.3s;
       opacity: 1;
     }
-    ${Front}{
+    ${Front} {
       transform: rotateY(0deg) translateZ(40px);
     }
   }
-  &.unrotate{
-    animation: ${rotate0HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    ${Top}{
-      transition: .3s;
+  &.unrotate {
+    animation: ${rotate0HorizontalBck} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      both;
+    ${Top} {
+      transition: 0.3s;
       opacity: 0;
     }
-    ${Front}{
+    ${Front} {
       transform: rotateY(0deg) translateZ(40px);
     }
   }
-`
-
-
+`;
 
 export const CloseButton = styled.div`
   position: absolute;
@@ -72,36 +68,35 @@ export const CloseButton = styled.div`
   align-items: center;
   justify-items: center;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 
-  :hover{
+  :hover {
     transform: scale(1.1);
   }
 
-  ::after{
+  ::after {
     content: "";
     width: 100%;
     height: 100%;
     position: absolute;
   }
 
-  i{
+  i {
     color: gray;
   }
-`
+`;
 
 export const Icon = styled.i`
-
   font-weight: 400;
   position: relative;
   color: black;
   font-size: 16px;
 
-  &:hover{
+  &:hover {
     color: black;
   }
 
-  span{
+  span {
     visibility: hidden;
     width: 60px;
     background-color: black;
@@ -116,5 +111,4 @@ export const Icon = styled.i`
     left: 50%;
     margin-left: -30px;
   }
-
-`
+`;

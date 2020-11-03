@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancoGnb = props => {
-
-  return(
-        <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAACyCAMAAABGBcKAAAAAe1BMVEUAAACNxz+Oxz+m21aNxz+Q
+export const BancoGnb = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAACyCAMAAABGBcKAAAAAe1BMVEUAAACNxz+Oxz+m21aNxz+Q
         zUSY0UePyUCNyD6PyUCNxz6QykKOyD+Nxz6OyECMxz6Nxz6NyD6Nxz6Mxz6OyD6Nxz6Nxz6Nxz+N
         xz+Nxz6OyUCNxz6OyEGNxz6RykONxz6OyECOxz+PyUCNxz+UzEOMxz6Mxz6Nxz6Mxj6vZwOtAAAA
         KHRSTlMAWIUFiRINKm02+B9gn0S7fXXm7UrUy9+wpzHDJfIamVFnPo8X2bWTvBNF5QAAD4pJREFU
@@ -78,9 +79,10 @@ export const BancoGnb = props => {
         8tLaBm4jUprhlbV19KhXw+iFtSuGeWK6yetqV8aCezzoBq+q/e5gCSKiSV5TOz2wx65efiVtud8k
         RPLklFiMGRLVaSVpzMto50FXCz1aNpR487ruyYsf81fRbvEocUYDv1VbpoX7J/v93v3EwuPY6bn4
         /JCuW3jRr9QOLY5/FLbNf5/2h4F/nmP2VO1y8ygH/Ahc3zwNE/9P/gAk/FueGo8DEgAAAABJRU5E
-        rkJggg==" alt=""/>
-  )
+        rkJggg=="
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BancoGnb
+export default BancoGnb;

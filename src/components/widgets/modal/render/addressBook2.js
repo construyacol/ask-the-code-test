@@ -1,188 +1,200 @@
-import React, { useState, useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import { useActions } from '../../../../hooks/useActions'
-import OtherModalLayout from '../otherModalLayout'
-import backImg from './map.webp'
-import InputForm from '../../inputs/inputForm'
-import { InputContainer } from '../../inputs/inputForm'
-import { FiSearch } from "react-icons/fi"
-import { Icon, Front, Top, CubeObject } from '../../shared-styles'
-import { createSelector } from 'reselect'
-import { useSelector } from "react-redux"
-import ControlButton from '../../buttons/controlButton'
-import { setAnimation } from '../../../../utils'
-import IconSwitch from '../../icons/iconSwitch'
-import WithdrawViewState from '../../../hooks/withdrawStateHandle'
-import { MdKeyboardArrowLeft } from "react-icons/md"
-import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
-import { useToastMesssage } from '../../../../hooks/useToastMessage'
-
+import React, { useState, useEffect, useContext } from "react";
+import styled from "styled-components";
+import { useActions } from "../../../../hooks/useActions";
+import OtherModalLayout from "../otherModalLayout";
+import backImg from "./map.webp";
+import InputForm from "../../inputs/inputForm";
+import { InputContainer } from "../../inputs/inputForm";
+import { FiSearch } from "react-icons/fi";
+import { Icon, Front, Top, CubeObject } from "../../shared-styles";
+import { createSelector } from "reselect";
+import { useSelector } from "react-redux";
+import ControlButton from "../../buttons/controlButton";
+import { setAnimation } from "../../../../utils";
+import IconSwitch from "../../icons/iconSwitch";
+import WithdrawViewState from "../../../hooks/withdrawStateHandle";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import { useToastMesssage } from "../../../../hooks/useToastMessage";
 
 const GlobalStateContext = React.createContext({
-  state:{},
-  setState:() => null
-})
+  state: {},
+  setState: () => null,
+});
 
 const ProviderWrapper = ({ state, children }) => {
-
-  return(
+  return (
     <GlobalStateContext.Provider value={state}>
       {children}
     </GlobalStateContext.Provider>
-  )
-}
+  );
+};
 
 const selectWithdrawAccounts = createSelector(
   ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
   (_, provider_type) => provider_type,
   (withdraw_accounts, provider_type) => {
-  let res = []
+    let res = [];
     for (const [_, withdraw_account] of Object.entries(withdraw_accounts)) {
-      (withdraw_account.provider_type === provider_type && withdraw_account.account_name.value !== provider_type) && res.push(withdraw_account)
+      withdraw_account.provider_type === provider_type &&
+        withdraw_account.account_name.value !== provider_type &&
+        res.push(withdraw_account);
     }
-    return res
+    return res;
   }
-)
-
+);
 
 const AddressBook = () => {
-
-  const actions = useActions()
-  const [{ current_wallet }] = WithdrawViewState()
-  const provider_type = current_wallet.currency.currency
-  const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
-  const [ view, setView ] = useState('addressList')
-  const [ state, setState ] = useState()
+  const actions = useActions();
+  const [{ current_wallet }] = WithdrawViewState();
+  const provider_type = current_wallet.currency.currency;
+  const withdrawAccounts = useSelector((state) =>
+    selectWithdrawAccounts(state, provider_type)
+  );
+  const [view, setView] = useState("addressList");
+  const [state, setState] = useState();
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
-      actions.renderModal(null)
+      actions.renderModal(null);
     }
-  }
+  };
 
-  const switchView = async(payload) => {
-    await setAnimation('disappear', 'mainContainerAB', 150)
-    setView(payload)
-    await setAnimation('appear', 'mainContainerAB', 150)
-  }
+  const switchView = async (payload) => {
+    await setAnimation("disappear", "mainContainerAB", 150);
+    setView(payload);
+    await setAnimation("appear", "mainContainerAB", 150);
+  };
 
-
-  return(
-    <ProviderWrapper state={{state, setState}}>
-      <OtherModalLayout on_click={cerrar} >
+  return (
+    <ProviderWrapper state={{ state, setState }}>
+      <OtherModalLayout on_click={cerrar}>
         <ContainerLayout>
-          <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
+          <HeaderComponent
+            provider_type={provider_type}
+            view={view}
+            switchView={switchView}
+          />
           <Content id="mainContent">
             <Container id="mainContainerAB">
-              {
-                (view === 'addressList' && withdrawAccounts.length) ?
-                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
-                :
-                view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView}/>
-                :
-                  <div>Empty State</div>
-              }
-           </Container>
+              {view === "addressList" && withdrawAccounts.length ? (
+                <AddressBookComponent
+                  withdrawAccounts={withdrawAccounts}
+                  switchView={switchView}
+                />
+              ) : view === "newAccount" ? (
+                <NewAccount
+                  provider_type={provider_type}
+                  switchView={switchView}
+                />
+              ) : (
+                <div>Empty State</div>
+              )}
+            </Container>
           </Content>
         </ContainerLayout>
       </OtherModalLayout>
     </ProviderWrapper>
-  )
-}
-
-
+  );
+};
 
 const NewAccount = ({ provider_type, switchView }) => {
+  const [addressState, setAddressState] = useState();
+  const [addressValue, setAddressValue] = useState();
+  const [nameState, setNameState] = useState();
+  const [loader, setLoader] = useState();
+  const [newIdACcount, setNewIdACcount] = useState();
 
-  const [ addressState, setAddressState ] = useState()
-  const [ addressValue, setAddressValue ] = useState()
-  const [ nameState, setNameState ] = useState()
-  const [ loader, setLoader ] = useState()
-  const [ newIdACcount, setNewIdACcount ] = useState()
+  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices();
+  const [{ withdraw_accounts, current_wallet }] = WithdrawViewState();
+  const [toastMessage] = useToastMesssage();
 
-
-  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
-  const [{ withdraw_accounts, current_wallet }] = WithdrawViewState()
-  const [ toastMessage ] = useToastMesssage()
-
-
-  const handleSubmit = async(e) => {
-    e && e.preventDefault()
+  const handleSubmit = async (e) => {
+    e && e.preventDefault();
     return setNewIdACcount({
-      newIdACcount:'idAccount#Number'
-    })
-    setLoader(true)
-    const form = new FormData(document.getElementById('newAccount'))
-    const label = form.get('name-account')
-    const address = form.get('address-account')
-    const thisAccountExist = withdraw_accounts[address]
-    if(thisAccountExist && thisAccountExist.info.label === provider_type){
+      newIdACcount: "idAccount#Number",
+    });
+    setLoader(true);
+    const form = new FormData(document.getElementById("newAccount"));
+    const label = form.get("name-account");
+    const address = form.get("address-account");
+    const thisAccountExist = withdraw_accounts[address];
+    if (thisAccountExist && thisAccountExist.info.label === provider_type) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
-      const hideAccount = await coinsendaServices.deleteAccount(thisAccountExist.id)
-      if(!hideAccount){
-        toastMessage('No se pudo ocultar la cuenta anónima', 'error')
-        return setLoader(false)
+      const hideAccount = await coinsendaServices.deleteAccount(
+        thisAccountExist.id
+      );
+      if (!hideAccount) {
+        toastMessage("No se pudo ocultar la cuenta anónima", "error");
+        return setLoader(false);
       }
-
-    }else if(thisAccountExist && thisAccountExist.info.label !== provider_type){
-      toastMessage('Esta cuenta de retiro ya existe', 'error')
-      return setLoader(false)
+    } else if (
+      thisAccountExist &&
+      thisAccountExist.info.label !== provider_type
+    ) {
+      toastMessage("Esta cuenta de retiro ya existe", "error");
+      return setLoader(false);
     }
 
-    const newWithdrawAccount = await coinsendaServices.addNewWithdrawAccount({
-      currency:current_wallet.currency,
-      provider_type:provider_type,
-      label,
-      address,
-      country:current_wallet.country
-    }, 'cripto')
+    const newWithdrawAccount = await coinsendaServices.addNewWithdrawAccount(
+      {
+        currency: current_wallet.currency,
+        provider_type: provider_type,
+        label,
+        address,
+        country: current_wallet.country,
+      },
+      "cripto"
+    );
 
-    if(!newWithdrawAccount){
-      toastMessage('No se pudo crear la cuenta', 'error')
-      return setLoader(false)
+    if (!newWithdrawAccount) {
+      toastMessage("No se pudo crear la cuenta", "error");
+      return setLoader(false);
     }
     // console.log('||||||||||||||||||| newWithdrawAccount::', newWithdrawAccount)
-    toastMessage('¡La cuenta ha sido creada con éxito!', 'success')
-    await coinsendaServices.fetchWithdrawAccounts()
-    switchView('addressList')
-    return dispatch(actions.success_sound())
-  }
+    toastMessage("¡La cuenta ha sido creada con éxito!", "success");
+    await coinsendaServices.fetchWithdrawAccounts();
+    switchView("addressList");
+    return dispatch(actions.success_sound());
+  };
 
-  return(
-      <NewAccountContainer>
-        <PropComponent/>
-        <ProviderTypeIcon>
-          <IconSwitch icon={provider_type} size={45}/>
-          <p className="fuente">{provider_type}</p>
-        </ProviderTypeIcon>
-        {/* <Form onSubmit={e => e.preventDefault()}> */}
-        <Form id="newAccount" onSubmit={handleSubmit}>
-            <InputForm
-              classes="fuente"
-              type="text"
-              name="name-account"
-              label="Nombre de la cuenta"
-              autoFocus={true}
-              autoComplete="off"
-              handleStatus={setNameState}
-            />
+  return (
+    <NewAccountContainer>
+      <PropComponent />
+      <ProviderTypeIcon>
+        <IconSwitch icon={provider_type} size={45} />
+        <p className="fuente">{provider_type}</p>
+      </ProviderTypeIcon>
+      {/* <Form onSubmit={e => e.preventDefault()}> */}
+      <Form id="newAccount" onSubmit={handleSubmit}>
+        <InputForm
+          classes="fuente"
+          type="text"
+          name="name-account"
+          label="Nombre de la cuenta"
+          autoFocus={true}
+          autoComplete="off"
+          handleStatus={setNameState}
+        />
 
-            <InputForm
-              classes="fuente2"
-              type="text"
-              name="address-account"
-              label={`Dirección ${provider_type}`}
-              handleStatus={setAddressState}
-              autoComplete="off"
-              isControlled
-              handleChange={(_, value) => setAddressValue(value)}
-              value={addressValue}
-              SuffixComponent={()=> <IconSwitch
-                icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
-                color={`${addressState === 'good' ? 'green' : 'gray'}`}
-                size={`${addressState === 'good' ? 22 : 25}`} />}
+        <InputForm
+          classes="fuente2"
+          type="text"
+          name="address-account"
+          label={`Dirección ${provider_type}`}
+          handleStatus={setAddressState}
+          autoComplete="off"
+          isControlled
+          handleChange={(_, value) => setAddressValue(value)}
+          value={addressValue}
+          SuffixComponent={() => (
+            <IconSwitch
+              icon={`${addressState === "good" ? "verify" : "wallet"}`}
+              color={`${addressState === "good" ? "green" : "gray"}`}
+              size={`${addressState === "good" ? 22 : 25}`}
             />
+          )}
+        />
         <ControlButtonContainer bottom={0}>
           <ControlButton
             label="Crear"
@@ -192,86 +204,85 @@ const NewAccount = ({ provider_type, switchView }) => {
             loader={loader}
           />
         </ControlButtonContainer>
-        </Form>
-      </NewAccountContainer>
-  )
-}
+      </Form>
+    </NewAccountContainer>
+  );
+};
 
 const PropComponent = () => {
+  const idContext = useContext(GlobalStateContext);
+  useEffect(() => {
+    console.log("|||||||||||||||||| idContext", idContext);
+  }, [idContext]);
 
-  const idContext = useContext(GlobalStateContext)
-  useEffect(()=>{
-    console.log('|||||||||||||||||| idContext', idContext)
-  }, [idContext])
-
-  return null
-}
-
+  return null;
+};
 
 const Form = styled.form`
   position: relative;
-`
+`;
 
 const ProviderTypeIcon = styled.div`
-    height: 100px;
-    justify-self:center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
+  height: 100px;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const NewAccountContainer = styled.div`
-
   display: grid;
   grid-template-rows: auto 1fr;
   row-gap: 10px;
   padding: 40px 22px;
   height: calc(100% - 80px);
 
-  .labelText{
+  .labelText {
     font-size: 15px;
   }
 
-  input{
+  input {
     font-size: 14px;
   }
-`
+`;
 
 const HeaderComponent = ({ provider_type, view, switchView }) => {
-
-  const getTittle = view => {
+  const getTittle = (view) => {
     switch (view) {
-      case 'newAccount':
-        return `Creando nueva cuenta`
+      case "newAccount":
+        return `Creando nueva cuenta`;
       default:
-        return `Agenda ${provider_type}`
+        return `Agenda ${provider_type}`;
     }
-  }
+  };
 
   const goBack = () => {
-    return switchView('addressList')
-  }
+    return switchView("addressList");
+  };
 
-  return(
+  return (
     <Header>
       <section>
-        <WindowControl state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
+        <WindowControl
+          state={`${view === "addressList" ? "close" : "open"}`}
+          onClick={goBack}
+        >
           <div>
-            <MdKeyboardArrowLeft size={27} color="white"/>
+            <MdKeyboardArrowLeft size={27} color="white" />
           </div>
         </WindowControl>
         <p className="fuente titleHead">{getTittle(view)}</p>
       </section>
     </Header>
-  )
-}
+  );
+};
 
 const WindowControl = styled.div`
-  div{
+  div {
     width: 35px;
     height: 35px;
-    background: rgb(255, 255, 255, .3);
+    background: rgb(255, 255, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -279,16 +290,14 @@ const WindowControl = styled.div`
   }
   overflow: hidden;
   width: 0;
-  transition: .2s;
-  width: ${props => props.state === 'open' ? '45px' : '0px'};
-  opacity: ${props => props.state === 'open' ? '1' : '0'};
-  cursor:pointer;
-
-`
+  transition: 0.2s;
+  width: ${(props) => (props.state === "open" ? "45px" : "0px")};
+  opacity: ${(props) => (props.state === "open" ? "1" : "0")};
+  cursor: pointer;
+`;
 
 const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
-
-  const [ recentList, setRecentList ] = useState()
+  const [recentList, setRecentList] = useState();
 
   // useEffect(()=>{
   //   setTimeout(()=>{
@@ -297,13 +306,12 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
   //   }, 100)
   // }, [])
 
-
-  return(
+  return (
     <>
       <InputContainers>
         <Input height={52}>
           <IconContainer>
-            <FiSearch size={25} color="#cecece"/>
+            <FiSearch size={25} color="#cecece" />
           </IconContainer>
           <input
             type="text"
@@ -313,121 +321,124 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
         </Input>
       </InputContainers>
 
-
       <Title className="fuente">Direcciones</Title>
       <ListContainerWrapper>
-        <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
-          {
-            withdrawAccounts.map((item, index) => {
-              return <ItemList key={index} item={item}/>
-            })
-          }
+        <ListContainer
+          id="listContainer"
+          className="fuente"
+          data-title="Direcciones"
+        >
+          {withdrawAccounts.map((item, index) => {
+            return <ItemList key={index} item={item} />;
+          })}
         </ListContainer>
-     </ListContainerWrapper>
+      </ListContainerWrapper>
 
       <ControlButtonContainer bottom={25}>
         <ControlButton
           label="Crear nueva cuenta"
           formValidate
-          handleAction={() => switchView('newAccount')}
+          handleAction={() => switchView("newAccount")}
         />
       </ControlButtonContainer>
     </>
-  )
-}
+  );
+};
 
 const Title = styled.p`
   font-weight: bold;
   margin-top: 55px;
   margin-bottom: 20px;
   padding-left: 20px;
-`
-
-
+`;
 
 const ControlButtonContainer = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
   display: grid;
-  bottom: ${props => `${props.bottom}px`}
-
-  #controlsContainer{
-    transform: scale(.95);
+  bottom: ${(props) => `${props.bottom}px`} #controlsContainer {
+    transform: scale(0.95);
   }
-`
+`;
 
-const ItemList = ({ item:{ id, info:{ address, label }} }) => {
-
+const ItemList = ({
+  item: {
+    id,
+    info: { address, label },
+  },
+}) => {
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
     let result = label.match(patt1);
-    return result.toString().replace(/,/g, '').toUpperCase()
-  }
+    return result.toString().replace(/,/g, "").toUpperCase();
+  };
 
-  const [ deleting, setDeleting ] = useState('')
-  const deleteItem = payload => {
-    setDeleting(payload)
+  const [deleting, setDeleting] = useState("");
+  const deleteItem = (payload) => {
+    setDeleting(payload);
     // const element = document.getElementById('mainContent')
     // element && element.classList.add(payload)
     // payload === 'unrotate' && element.classList.remove('rotate')
-  }
+  };
 
-
-  return(
+  return (
     <CubeObject className={`${deleting}`}>
       <Front>
         <ItemListContainer>
           <AcronymContainer>
-            <p className="fuente">
-              {getAcronym()}
-            </p>
+            <p className="fuente">{getAcronym()}</p>
           </AcronymContainer>
           <ItemTextContainer>
             <p className="fuente label">{label}</p>
-            <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
-              <Address className="fuente2 withdrawAddress" >{address}</Address>
+            <AddressContainer
+              data-final-address={address.match(/..........$/g).toString()}
+            >
+              <Address className="fuente2 withdrawAddress">{address}</Address>
             </AddressContainer>
           </ItemTextContainer>
           <DeleteButton>
-            <Icon className="fas fa-trash-alt tooltip" onClick={() => deleteItem('rotate')}>
+            <Icon
+              className="fas fa-trash-alt tooltip"
+              onClick={() => deleteItem("rotate")}
+            >
               <span className="tooltiptext fuente">Eliminar</span>
             </Icon>
           </DeleteButton>
         </ItemListContainer>
       </Front>
       <Top>
-        <DeleteComponent
-          handleAction={deleteItem}
-        />
+        <DeleteComponent handleAction={deleteItem} />
       </Top>
     </CubeObject>
-  )
-
-}
+  );
+};
 
 const DeleteButton = styled.div`
   border-radius: 50%;
   position: absolute;
   align-self: center;
-  transition: .15s;
+  transition: 0.15s;
   right: 0;
   display: grid;
   opacity: 0;
-`
-
+`;
 
 const DeleteComponent = ({ handleAction }) => {
-  return(
+  return (
     <DeleteContainer>
-      <p className="fuente confirmText">¿Estás seguro que deseas eliminar esta cuenta de retiro?</p>
+      <p className="fuente confirmText">
+        ¿Estás seguro que deseas eliminar esta cuenta de retiro?
+      </p>
       <DeleteControls>
-        <p className="fuente cancel" onClick={()=>handleAction('unrotate')}>Cancelar</p>
-        <p className="fuente delete" >Eliminar</p>
+        <p className="fuente cancel" onClick={() => handleAction("unrotate")}>
+          Cancelar
+        </p>
+        <p className="fuente delete">Eliminar</p>
       </DeleteControls>
     </DeleteContainer>
-  )
-}
+  );
+};
 
 const DeleteControls = styled.div`
   display: grid;
@@ -436,17 +447,17 @@ const DeleteControls = styled.div`
   grid-template-columns: 1fr 1fr;
   column-gap: 15px;
 
-  .delete{
+  .delete {
     background: red;
     color: white;
     font-weight: bold;
   }
 
-  .cancel{
+  .cancel {
     color: gray;
   }
 
-  p{
+  p {
     cursor: pointer;
     border-radius: 3px;
     display: grid;
@@ -454,8 +465,7 @@ const DeleteControls = styled.div`
     text-align: center;
     padding: 0 12px;
   }
-`
-
+`;
 
 const DeleteContainer = styled.div`
   width: 100%;
@@ -472,25 +482,22 @@ const DeleteContainer = styled.div`
     margin: 0;
     text-align: center;
   }
-`
-
-
+`;
 
 const AcronymContainer = styled.div`
-
   width: 45px;
   height: 45px;
-  background: #0198FF;
+  background: #0198ff;
   border-radius: 50%;
   align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: .3s;
+  transition: 0.3s;
   position: relative;
-  transition: .3s;
+  transition: 0.3s;
 
-  p{
+  p {
     color: white;
     font-weight: bold;
     font-size: 14px;
@@ -499,78 +506,78 @@ const AcronymContainer = styled.div`
     overflow: hidden;
     max-width: 40px;
   }
-`
+`;
 
 const ItemListContainer = styled.div`
-    align-items: center;
-    width: 100%;
-    height: 80px;
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: auto 1fr;
-    column-gap: 15px;
-    cursor: pointer;
-    transition: .2s;
-    opacity: .7;
-    position: relative;
-    &:hover{
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: auto 1fr;
+  column-gap: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+  opacity: 0.7;
+  position: relative;
+  &:hover {
+    opacity: 1;
+    ${DeleteButton} {
+      right: 10px;
       opacity: 1;
-      ${DeleteButton}{
-        right: 10px;
-        opacity: 1;
-      }
     }
-`
+  }
+`;
 
 const Address = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-`
+`;
 
 const AddressContainer = styled.div`
   position: relative;
   width: 150px;
   cursor: pointer;
 
-  &::after{
-    content:attr(data-final-address);
+  &::after {
+    content: attr(data-final-address);
     position: absolute;
     left: 100%;
-    top:0;
+    top: 0;
     font-size: 12px;
     color: gray;
   }
-  &:hover{
+  &:hover {
     width: auto;
   }
-  &:hover::after{
+  &:hover::after {
     display: none;
   }
-`
+`;
 
 const ItemTextContainer = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    align-items: center;
-    max-height: 40px;
-    align-content: center;
-  .label{
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  max-height: 40px;
+  align-content: center;
+  .label {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
     width: auto;
     max-width: 200px;
   }
-  p{
+  p {
     margin: 0;
-    &.withdrawAddress{
+    &.withdrawAddress {
       font-size: 12px;
       color: gray;
       padding-left: 14px;
       position: relative;
-      &::before{
-        content: '- ';
+      &::before {
+        content: "- ";
         position: absolute;
         color: white;
         width: 6px;
@@ -585,40 +592,34 @@ const ItemTextContainer = styled.div`
       }
     }
   }
-`
+`;
 
 const Container = styled.div`
-
   width: calc(100% - 2px);
   height: calc(100% - 2px);
   padding: 1px;
-  transition:.15s;
+  transition: 0.15s;
 
-  &.disappear{
+  &.disappear {
     transform: translateY(22px);
     opacity: 0;
   }
 
-  &.appear{
+  &.appear {
     transform: translateY(0px);
     opacity: 1;
   }
-
-`
-
+`;
 
 const Content = styled.div`
-
   width: 100%;
   height: 100%;
   background: white;
   border-radius: 6px;
   position: relative;
 
-
-
-  &.rotate::after{
-    content: '';
+  &.rotate::after {
+    content: "";
     position: absolute;
     z-index: 10;
     background: rgb(255, 255, 255, 0.85);
@@ -628,10 +629,10 @@ const Content = styled.div`
     left: 0;
     backdrop-filter: blur(2px);
     border-radius: 6px;
-    opacity: .8;
-    transition: .3s;
+    opacity: 0.8;
+    transition: 0.3s;
   }
-`
+`;
 
 const ListContainerWrapper = styled.div`
   overflow-x: hidden;
@@ -645,22 +646,21 @@ const ListContainerWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #b1b1b1;
   }
-`
+`;
 
 const ListContainer = styled.div`
-
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
   opacity: 1;
-  transition: .15s;
-`
+  transition: 0.15s;
+`;
 
 const IconContainer = styled.div`
   position: absolute;
   align-self: center;
   left: 10px;
-`
+`;
 
 const InputContainers = styled.div`
   display: grid;
@@ -671,30 +671,30 @@ const InputContainers = styled.div`
   width: 100%;
   z-index: 2;
   left: 0;
-`
+`;
 
 const Input = styled(InputContainer)`
   position: relative;
   max-width: 350px;
-  height: ${props => `${props.height}px` || 'auto'};
+  height: ${(props) => `${props.height}px` || "auto"};
   overflow: visible;
 
   ${IconContainer} ~ input {
     padding-left: 45px;
   }
 
-  input{
+  input {
     font-size: 14px;
   }
 
-  label{
+  label {
     position: absolute;
     top: -25px;
     left: 0;
     font-size: 15px;
     color: #383838;
   }
-`
+`;
 
 const ContainerLayout = styled.div`
   width: 100%;
@@ -703,10 +703,9 @@ const ContainerLayout = styled.div`
   display: grid;
   grid-template-rows: 80px 1fr;
   transform-style: preserve-3d;
-`
+`;
 
 const Header = styled.div`
-
   width: 97%;
   height: 100%;
   justify-self: center;
@@ -716,54 +715,53 @@ const Header = styled.div`
   display: grid;
   align-items: center;
 
-  section{
+  section {
     display: flex;
     align-items: center;
-    margin:0 0 0 15px;
+    margin: 0 0 0 15px;
   }
 
-  p{
+  p {
     font-size: 22px;
     color: white;
     font-weight: bold;
   }
 
-  p.appear{
+  p.appear {
     opacity: 1;
   }
 
-  p.disappear{
+  p.disappear {
     opacity: 0;
   }
 
   background-image: url(${backImg});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-`
-
-
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+`;
 
 const AddressBookCTA = ({ provider_type }) => {
+  const actions = useActions();
 
-  const actions = useActions()
-
-  const openAddressBook = async() => {
+  const openAddressBook = async () => {
     // const Element = await import('../../../key-actions-documentation')
     // actions.renderModal(Element.default)
-    const element = () => <AddressBook provider_type={provider_type}/>
-    actions.renderModal(element)
-  }
+    const element = () => <AddressBook provider_type={provider_type} />;
+    actions.renderModal(element);
+  };
 
-  return(
+  return (
     <AddressBookContainer>
-      <p onClick={openAddressBook} className="fuente">Gestionar direcciones >> </p>
+      <p onClick={openAddressBook} className="fuente">
+        Gestionar direcciones >>{" "}
+      </p>
     </AddressBookContainer>
-  )
-}
+  );
+};
 
-export default AddressBookCTA
+export default AddressBookCTA;
 
 const AddressBookContainer = styled.div`
   position: absolute;
@@ -771,13 +769,13 @@ const AddressBookContainer = styled.div`
   right: 0;
   bottom: -35px;
   cursor: pointer;
-  p{
+  p {
     margin: 0;
     font-size: 14px;
     color: #b48728;
     font-weight: bold;
   }
-  p:hover{
+  p:hover {
     text-decoration: underline;
   }
-`
+`;

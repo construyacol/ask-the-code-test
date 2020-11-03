@@ -1,19 +1,18 @@
-.SliderComponent{
+.SliderComponent {
   /*height: 300px !important;*/
   max-width: 300px !important;
   height: 100%;
   width: 100vw;
 }
 
-.SliderComponentItem>div{
+.SliderComponentItem > div {
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   transform: scale(0.9);
 }
 
-
-.SliderComponent .item{
-  background: linear-gradient(to bottom left, #2B3742, #060809);
+.SliderComponent .item {
+  background: linear-gradient(to bottom left, #2b3742, #060809);
   color: wheat;
 }

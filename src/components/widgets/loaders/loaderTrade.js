@@ -1,26 +1,18 @@
-import React from 'react'
-import SimpleLoader from './'
+import React from "react";
+import SimpleLoader from "./";
 
-const LoaderTrade = props => {
+const LoaderTrade = (props) => {
+  const { label } = props;
 
-  const { label } = props
-
-  return(
+  return (
     <div className="LoaderTrade">
       <div className="LoaderTradeContent">
         <div className="LoaderTradeBack opaci"></div>
 
-        <SimpleLoader
-          label={label}
-        />
-
+        <SimpleLoader label={label} />
       </div>
     </div>
-  )
+  );
+};
 
-
-}
-
-
-
-export default LoaderTrade
+export default LoaderTrade;

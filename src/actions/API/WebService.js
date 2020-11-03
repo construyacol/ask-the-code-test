@@ -1,70 +1,72 @@
 import { COINSENDA_URL } from "../../const/const";
 
 export class WebService {
-    async doFetch(url, params) {
-      // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
-        try {
-            const response = await fetch(url, params)
-            const finalResponse = await response.json()
-            // console.log('get res ::', response)
-            if (!response.ok && response.status === 465) {
-                if(finalResponse.error.message.includes('Invalid signature')) {
-                    window.location.href = COINSENDA_URL
-                }
-                throw response.status
-            }
-
-            return await finalResponse;
-        } catch (_) {
-            // TODO: return an action to get feedback about errors
-            console.log(_, _.response)
-            return false;
+  async doFetch(url, params) {
+    // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
+    try {
+      const response = await fetch(url, params);
+      const finalResponse = await response.json();
+      // console.log('get res ::', response)
+      if (!response.ok && response.status === 465) {
+        if (finalResponse.error.message.includes("Invalid signature")) {
+          window.location.href = COINSENDA_URL;
         }
-    }
+        throw response.status;
+      }
 
-    Get(url) {
-        const headers = {
-            'Authorization': `Bearer ${this.token}`,
-        }
-        return this.doFetch(url, {
-            method: `GET`,
-            headers
-        })
+      return await finalResponse;
+    } catch (_) {
+      // TODO: return an action to get feedback about errors
+      console.log(_, _.response);
+      return false;
     }
+  }
 
-    GetWithOutHeaders(url){
-        return this.doFetch(url, {
-            method: `GET`
-        })
-    }
+  Get(url) {
+    const headers = {
+      Authorization: `Bearer ${this.token}`,
+    };
+    return this.doFetch(url, {
+      method: `GET`,
+      headers,
+    });
+  }
 
-    getHeaders(token) {
-        return {
-            'Authorization': `Bearer ${token}`,
-        }
-    }
+  GetWithOutHeaders(url) {
+    return this.doFetch(url, {
+      method: `GET`,
+    });
+  }
 
-    isEmpty(data) {
-        return !data || (data && data.lenght === 0)
-    }
+  getHeaders(token) {
+    return {
+      Authorization: `Bearer ${token}`,
+    };
+  }
 
-    Post(url, body, withAuth = true) {
-        const params = {
-            method: `POST`,
-            headers: withAuth ? {
-                Accept: `*/*`,
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.token}`
-            } : {},
-            body: JSON.stringify(body)
-        }
+  isEmpty(data) {
+    return !data || (data && data.lenght === 0);
+  }
 
-        return this.doFetch(url, params)
-    }
+  Post(url, body, withAuth = true) {
+    const params = {
+      method: `POST`,
+      headers: withAuth
+        ? {
+            Accept: `*/*`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${this.token}`,
+          }
+        : {},
+      body: JSON.stringify(body),
+    };
 
-    Delete(url) {
-        return this.doFetch(url, {
-            method: 'DELETE'
-        })
-    }
+    return this.doFetch(url, params);
+  }
+
+  Delete(url) {
+    return this.doFetch(url, {
+      method: "DELETE",
+    });
+  }
 }

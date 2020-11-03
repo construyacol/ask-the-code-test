@@ -1,4 +1,4 @@
-.nWcta2{
+.nWcta2 {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -8,29 +8,27 @@
   justify-self: center;
 }
 
-
 .finalTicket.ticketHeader {
-    display: grid;
-    grid-template-columns: 1fr;
-    border-bottom: 2px solid white;
-    grid-template-rows: repeat(2, 1fr);
-    justify-items: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  border-bottom: 2px solid white;
+  grid-template-rows: repeat(2, 1fr);
+  justify-items: center;
 }
 
 .finalTicket.TicketTitle {
-    color: white;
-    margin: 0 !important;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
+  color: white;
+  margin: 0 !important;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
 }
 
-
-.fuenteTicket .iconSty{
- margin-left: 10px;
+.fuenteTicket .iconSty {
+  margin-left: 10px;
 }
 
-.fuenteTicket{
+.fuenteTicket {
   color: white;
   display: flex;
 }

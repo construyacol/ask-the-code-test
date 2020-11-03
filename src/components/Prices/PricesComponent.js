@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import currencyLabels from './currency-labels';
+import React from "react";
+import styled from "styled-components";
+import currencyLabels from "./currency-labels";
 
 const PricesComponent = ({ change, data }) => {
   let { currencyLabel, buyPrice, sellPrice } = data;
@@ -8,26 +8,35 @@ const PricesComponent = ({ change, data }) => {
 
   return (
     <PricesStyled>
-      <ExchangeBox {...{ change, price: sellPrice, type: 'sell', currencyLabel }} />
+      <ExchangeBox
+        {...{ change, price: sellPrice, type: "sell", currencyLabel }}
+      />
       <PricesDividerStyled />
-      <ExchangeBox {...{ change, price: buyPrice, type: 'buy', currencyLabel }} />
+      <ExchangeBox
+        {...{ change, price: buyPrice, type: "buy", currencyLabel }}
+      />
     </PricesStyled>
-  )
-
-}
+  );
+};
 
 const ExchangeBox = ({ change, price, type, currencyLabel }) => (
   <ExchangeBoxStyled>
     <label>
-      TE {type === 'buy' ? 'COMPRAMOS' : 'VENDEMOS'} <label className="strong">{currencyLabel}</label> A<br />
-      <label className='root-content-numbers' style={change ? { color: '#1FE47B' } : {}}>${price}</label>
+      TE {type === "buy" ? "COMPRAMOS" : "VENDEMOS"}{" "}
+      <label className="strong">{currencyLabel}</label> A<br />
+      <label
+        className="root-content-numbers"
+        style={change ? { color: "#1FE47B" } : {}}
+      >
+        ${price}
+      </label>
     </label>
   </ExchangeBoxStyled>
-)
+);
 
 const ExchangeBoxStyled = styled.div`
   display: flex;
-  font-family: 'Raleway';
+  font-family: "Raleway";
   && .root-content-numbers {
     font-weight: bold;
     font-size: 21px;
@@ -43,7 +52,7 @@ const ExchangeBoxStyled = styled.div`
   && .strong {
     font-weight: bold;
     color: #ffffff;
-    font-family: 'Raleway'
+    font-family: "Raleway";
   }
   @media (max-width: 900px) {
     transform: scale(1.2);
@@ -74,7 +83,7 @@ const ExchangeBoxStyled = styled.div`
     left: 22%;
     transform: scale(1.1);
   }
-`
+`;
 
 const PricesStyled = styled.div`
   display: flex;
@@ -103,11 +112,11 @@ const PricesDividerStyled = styled.div`
   @media (max-width: 900px) {
     height: 25px;
     width: 1px;
-    transform: rotate(0deg)
+    transform: rotate(0deg);
   }
   @media (max-width: 370px) {
     margin: 0 1.5em;
   }
 `;
 
-export default PricesComponent
+export default PricesComponent;

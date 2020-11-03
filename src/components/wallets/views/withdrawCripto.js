@@ -1,59 +1,49 @@
-import React, { useState, useEffect, useRef } from 'react'
-import WithdrawViewState from '../../hooks/withdrawStateHandle'
-import IconSwitch from '../../widgets/icons/iconSwitch'
-import InputForm from '../../widgets/inputs/inputForm'
-import ControlButton from '../../widgets/buttons/controlButton'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
-import styled from 'styled-components'
-import { MAIN_COLOR } from '../../referrals/shareStyles'
-import { useActions } from '../../../hooks/useActions'
-import useToastMessage from '../../../hooks/useToastMessage'
-import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
+import React, { useState, useEffect, useRef } from "react";
+import WithdrawViewState from "../../hooks/withdrawStateHandle";
+import IconSwitch from "../../widgets/icons/iconSwitch";
+import InputForm from "../../widgets/inputs/inputForm";
+import ControlButton from "../../widgets/buttons/controlButton";
+import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
+import Withdraw2FaModal from "../../widgets/modal/render/withdraw2FAModal";
+import styled from "styled-components";
+import { MAIN_COLOR } from "../../referrals/shareStyles";
+import { useActions } from "../../../hooks/useActions";
+import useToastMessage from "../../../hooks/useToastMessage";
+import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import AddressBookCTA from "../../widgets/modal/render/addressBook/ctas";
 
-
-export const CriptoSupervisor = props => {
-
-  const [{ current_wallet, withdrawProviders }] = WithdrawViewState()
+export const CriptoSupervisor = (props) => {
+  const [{ current_wallet, withdrawProviders }] = WithdrawViewState();
   // const [ { current_wallet } ] = WithdrawViewState()
   // const withdrawProviders = {}
 
   return (
     <>
-      {
-        Object.keys(withdrawProviders).length === 0 ?
-           <CriptoViewLoader />
-          :
-          !withdrawProviders[current_wallet.currency.currency] ?
-            <WithOutProvider current_wallet={current_wallet} />
-            :
-            <CriptoView />
-      }
+      {Object.keys(withdrawProviders).length === 0 ? (
+        <CriptoViewLoader />
+      ) : !withdrawProviders[current_wallet.currency.currency] ? (
+        <WithOutProvider current_wallet={current_wallet} />
+      ) : (
+        <CriptoView />
+      )}
     </>
-  )
-}
-
-
-
-
+  );
+};
 
 const WithOutProvider = ({ current_wallet }) => {
   return (
     <section className="maintanceW">
       <IconSwitch icon="maintence" size={130} color="#989898" />
-      <p className="fuente" >
-        Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, ten paciencia...
+      <p className="fuente">
+        Los retiros de {current_wallet.currency.currency} estan fuera de
+        servicio temporalmente, ten paciencia...
       </p>
     </section>
-  )
-}
-
-
+  );
+};
 
 export const CriptoView = () => {
-
-  const [coinsendaServices] = useCoinsendaServices()
+  const [coinsendaServices] = useCoinsendaServices();
   const [
     {
       current_wallet,
@@ -62,142 +52,171 @@ export const CriptoView = () => {
       active_trade_operation,
       loader,
       balance,
-      user
+      user,
     },
     {
       confirmationModalToggle,
       confirmationModalPayload,
       isAppLoading,
-      renderModal
-    }, dispatch] = WithdrawViewState()
+      renderModal,
+    },
+    dispatch,
+  ] = WithdrawViewState();
 
+  const actions = useActions();
+  const [toastMessage] = useToastMessage();
 
-  const actions = useActions()
-  const [toastMessage] = useToastMessage()
-
-  const [addressState, setAddressState] = useState()
-  const [addressValue, setAddressValue] = useState()
-  const [amountState, setAmountState] = useState()
-  const isValidForm = useRef(false)
-  let movil_viewport = window.innerWidth < 768
-  const idForClickeableElement = useKeyActionAsClick(true, 'main-deposit-crypto-button', 13, false, 'onkeyup')
-
+  const [addressState, setAddressState] = useState();
+  const [addressValue, setAddressValue] = useState();
+  const [amountState, setAmountState] = useState();
+  const isValidForm = useRef(false);
+  let movil_viewport = window.innerWidth < 768;
+  const idForClickeableElement = useKeyActionAsClick(
+    true,
+    "main-deposit-crypto-button",
+    13,
+    false,
+    "onkeyup"
+  );
 
   const setTowFaTokenMethod = async (twoFaToken) => {
-    dispatch(renderModal(null))
-    finish_withdraw(twoFaToken)
-  }
+    dispatch(renderModal(null));
+    finish_withdraw(twoFaToken);
+  };
 
   const finish_withdraw = async (twoFaToken) => {
-
-    const form = new FormData(document.getElementById('withdrawForm'))
-    const amount = form.get('amount')
-    const address = form.get('address')
+    const form = new FormData(document.getElementById("withdrawForm"));
+    const amount = form.get("amount");
+    const address = form.get("address");
 
     if (user.security_center.authenticator.withdraw && !twoFaToken) {
-      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />))
+      return dispatch(
+        renderModal(() => (
+          <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />
+        ))
+      );
     }
 
-    dispatch(isAppLoading(true))
-    let withdraw_account = withdraw_accounts[address]
+    dispatch(isAppLoading(true));
+    let withdraw_account = withdraw_accounts[address];
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
-      withdraw_account = await coinsendaServices.addNewWithdrawAccount({
-        currency: current_wallet.currency,
-        provider_type: current_wallet.currency.currency,
-        label: current_wallet.currency.currency,
-        address: address,
-        country: current_wallet.country
-      }, 'cripto')
-      await coinsendaServices.fetchWithdrawAccounts()
+      withdraw_account = await coinsendaServices.addNewWithdrawAccount(
+        {
+          currency: current_wallet.currency,
+          provider_type: current_wallet.currency.currency,
+          label: current_wallet.currency.currency,
+          address: address,
+          country: current_wallet.country,
+        },
+        "cripto"
+      );
+      await coinsendaServices.fetchWithdrawAccounts();
     }
 
-    const withdraw = await coinsendaServices.addWithdrawOrder({
-      "data": {
-        amount,
-        "account_id": current_wallet.id,
-        "withdraw_provider_id": withdrawProviders[current_wallet.currency.currency].id,
-        "withdraw_account_id": withdraw_account.id,
-        "country": user.country
-      }
-    }, twoFaToken)
+    const withdraw = await coinsendaServices.addWithdrawOrder(
+      {
+        data: {
+          amount,
+          account_id: current_wallet.id,
+          withdraw_provider_id:
+            withdrawProviders[current_wallet.currency.currency].id,
+          withdraw_account_id: withdraw_account.id,
+          country: user.country,
+        },
+      },
+      twoFaToken
+    );
 
     if (!withdraw) {
-      dispatch(isAppLoading(false))
+      dispatch(isAppLoading(false));
       if (twoFaToken) {
-        return toastMessage('Al parecer el codigo 2Fa es incorrecto...', 'error')
+        return toastMessage(
+          "Al parecer el codigo 2Fa es incorrecto...",
+          "error"
+        );
       }
-      return toastMessage('No se ha podido crear la orden de retiro', 'error')
+      return toastMessage("No se ha podido crear la orden de retiro", "error");
     }
-
-  }
+  };
 
   const handleSubmit = (e) => {
-    e && e.preventDefault()
-    e && e.stopPropagation()
+    e && e.preventDefault();
+    e && e.stopPropagation();
 
-    const form = new FormData(document.getElementById('withdrawForm'))
-    const amount = form.get('amount')
+    const form = new FormData(document.getElementById("withdrawForm"));
+    const amount = form.get("amount");
 
-    dispatch(confirmationModalToggle())
+    dispatch(confirmationModalToggle());
     window.requestAnimationFrame(() => {
-      dispatch(confirmationModalPayload({
-        title: "Esto es importante, estas a punto de...",
-        description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
-        txtPrimary: "Confirmar Retiro",
-        txtSecondary: "Cancelar",
-        action: (finish_withdraw),
-        img: "withdraw"
-      }))
-    })
-  }
+      dispatch(
+        confirmationModalPayload({
+          title: "Esto es importante, estas a punto de...",
+          description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
+          txtPrimary: "Confirmar Retiro",
+          txtSecondary: "Cancelar",
+          action: finish_withdraw,
+          img: "withdraw",
+        })
+      );
+    });
+  };
 
   const handleMaxAvailable = (e) => {
     // TODO: no se debe manajar valores deirecto del DOM
-    let amount = document.getElementsByName('amount')[0]
-    amount.value = balance.available
+    let amount = document.getElementsByName("amount")[0];
+    amount.value = balance.available;
     if (amount.value > 0) {
-      setAmountState('good')
+      setAmountState("good");
     }
-  }
+  };
 
   const showQrScanner = async () => {
-    renderModal(null)
-    const Element = await import('../../qr-scanner')
-    actions.renderModal(Element.default)
-  }
+    renderModal(null);
+    const Element = await import("../../qr-scanner");
+    actions.renderModal(Element.default);
+  };
 
   useEffect(() => {
-    const condition = !active_trade_operation && (amountState === 'good' && addressState === 'good')
+    const condition =
+      !active_trade_operation &&
+      amountState === "good" &&
+      addressState === "good";
     if (isValidForm.current !== condition) {
-      isValidForm.current = condition
+      isValidForm.current = condition;
     }
-    if (addressState === 'good') {
-      document.getElementsByName('amount')[0].focus()
+    if (addressState === "good") {
+      document.getElementsByName("amount")[0].focus();
     }
-  }, [active_trade_operation, amountState, addressState])
-
+  }, [active_trade_operation, amountState, addressState]);
 
   const handleChangeAddress = (_, value) => {
-    setAddressValue(value)
-  }
+    setAddressValue(value);
+  };
 
-  const [ addressToAdd, setAddressToAdd ] = useState()
+  const [addressToAdd, setAddressToAdd] = useState();
 
-  useEffect(()=>{
-    setAddressToAdd()
-    if(addressState === 'good'){
-      const provider_type = current_wallet.currency.currency
-      if(!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)){
+  useEffect(() => {
+    setAddressToAdd();
+    if (addressState === "good") {
+      const provider_type = current_wallet.currency.currency;
+      if (
+        !withdraw_accounts[addressValue] ||
+        (withdraw_accounts[addressValue] &&
+          withdraw_accounts[addressValue].info.label === provider_type)
+      ) {
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
-        setAddressToAdd(addressValue)
+        setAddressToAdd(addressValue);
       }
     }
-  }, [addressState, withdraw_accounts, addressValue])
-
+  }, [addressState, withdraw_accounts, addressValue]);
 
   return (
-    <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={e => e.preventDefault()} >
+    <WithdrawForm
+      id="withdrawForm"
+      className={`${movil_viewport ? "movil" : ""}`}
+      onSubmit={(e) => e.preventDefault()}
+    >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
@@ -210,61 +229,76 @@ export const CriptoView = () => {
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
         disabled={loader}
         autoFocus={true}
-        SuffixComponent={() => <IconsContainer>
-          <IconSwitch
-            icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
-            color={`${addressState === 'good' ? 'green' : 'gray'}`}
-            size={`${addressState === 'good' ? 22 : 25}`} />
-          <IconSwitch
-            onClick={showQrScanner}
-            icon="qr"
-            color="gray"
-            size={25} />
-        </IconsContainer>}
+        SuffixComponent={() => (
+          <IconsContainer>
+            <IconSwitch
+              icon={`${addressState === "good" ? "verify" : "wallet"}`}
+              color={`${addressState === "good" ? "green" : "gray"}`}
+              size={`${addressState === "good" ? 22 : 25}`}
+            />
+            <IconSwitch
+              onClick={showQrScanner}
+              icon="qr"
+              color="gray"
+              size={25}
+            />
+          </IconsContainer>
+        )}
         AuxComponent={() => <AddressBookCTA addressToAdd={addressToAdd} />}
       />
 
       <InputForm
         type="text"
-        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+        placeholder={`${
+          withdrawProviders[current_wallet.currency.currency].provider
+            .min_amount
+        }`}
         name="amount"
         handleStatus={setAmountState}
         label={`Ingresa la cantidad de retiro`}
         disabled={loader}
         state={amountState}
         setMaxWithActionKey={true}
-        SuffixComponent={({id}) => <AvailableBalance
-          id={id}
-          handleAction={handleMaxAvailable}
-          amount={balance.available} />}
-      // PrefixComponent
+        SuffixComponent={({ id }) => (
+          <AvailableBalance
+            id={id}
+            handleAction={handleMaxAvailable}
+            amount={balance.available}
+          />
+        )}
+        // PrefixComponent
       />
       <ControlButton
         id={idForClickeableElement}
         loader={loader}
         handleAction={handleSubmit}
-        formValidate={!active_trade_operation && (amountState === 'good' && addressState === 'good')}
+        formValidate={
+          !active_trade_operation &&
+          amountState === "good" &&
+          addressState === "good"
+        }
         label="Enviar"
       />
       {/* </form> */}
     </WithdrawForm>
-  )
-
-}
-
-
-
-
+  );
+};
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
-  const isMovil = window.innerWidth < 768
+  const isMovil = window.innerWidth < 768;
 
   return (
     <BalanceContainer>
-      <p id={id} className={`fuente2 ${isMovil ? 'movil' : ''}`} onClick={handleAction} >{isMovil ? 'Disponible:' : 'Disponible [M]:'} {amount}</p>
+      <p
+        id={id}
+        className={`fuente2 ${isMovil ? "movil" : ""}`}
+        onClick={handleAction}
+      >
+        {isMovil ? "Disponible:" : "Disponible [M]:"} {amount}
+      </p>
     </BalanceContainer>
-  )
-}
+  );
+};
 
 const IconsContainer = styled.div`
   display: flex;
@@ -275,12 +309,12 @@ const IconsContainer = styled.div`
     cursor: pointer;
     transition: all 300ms ease;
     &:hover {
-      >svg {
+      > svg {
         fill: ${MAIN_COLOR} !important;
       }
     }
   }
-`
+`;
 
 export const OperationForm = styled.form`
   width: calc(95% - 50px);
@@ -293,16 +327,16 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
-`
+`;
 
 export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 40% 1fr 1fr;
-  @media (max-width: 768px){
-      height: calc(100% - 40px);
-      width: 100%;
-      grid-template-rows: 1fr 1fr 1fr;
-    }
-`
+  @media (max-width: 768px) {
+    height: calc(100% - 40px);
+    width: 100%;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+`;
 
 const BalanceContainer = styled.div`
   cursor: pointer;
@@ -313,35 +347,30 @@ const BalanceContainer = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  transition: .15s;
+  transition: 0.15s;
   transform: scale(1);
   max-height: 47px;
   align-self: self-end;
   width: max-content;
 
-  .movil{
+  .movil {
     font-size: 11px;
   }
 
-  &:hover{
+  &:hover {
     transform: scale(1.005);
     color: #b48728;
   }
-`
+`;
 
 const CriptoViewLoader = () => {
-
   return (
     <>
       <WithdrawForm>
         <InputForm skeleton />
         <InputForm skeleton />
-        <ControlButton
-          formValidate={false}
-          label="Enviar"
-        />
+        <ControlButton formValidate={false} label="Enviar" />
       </WithdrawForm>
     </>
-  )
-
-}
+  );
+};

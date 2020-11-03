@@ -1,251 +1,291 @@
 import { WebService } from "../actions/API/WebService";
-import { ADD_NEW_SWAP, loadLabels, SWAP_URL, PAIRS_URL, GET_SWAPS_BY_USERS_URL } from "../const/const";
+import {
+  ADD_NEW_SWAP,
+  loadLabels,
+  SWAP_URL,
+  PAIRS_URL,
+  GET_SWAPS_BY_USERS_URL,
+} from "../const/const";
 import { desNormalizedList, normalized_list } from "../utils";
 import normalizeUser from "../schemas";
 import loadLocalPairsAction, {
-    updateNormalizedDataAction,
-    getAllPairsAction,
-    searchCurrentPairAction,
-    loadLocalCurrencyAction,
-    update_item_state
+  updateNormalizedDataAction,
+  getAllPairsAction,
+  searchCurrentPairAction,
+  loadLocalCurrencyAction,
+  update_item_state,
 } from "../actions/dataModelActions";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
 
 export class SwapService extends WebService {
-
-    async fetchAllPairs() {
-
-        this.updateLoadInfo(loadLabels.IMPORTANDO_PARES)
-        const pairs = await this.Get(`${SWAP_URL}pairs`)
-        if (!pairs) { return }
-
-        if (await this.isCached('available_pairs', pairs)) {
-            return pairs
-        }
-
-        this.dispatch(getAllPairsAction(pairs))
-        let updatedUser = {
-            id: this.user.id,
-            available_pairs: [
-                ...pairs
-            ]
-        }
-
-        let dataNormalized = await normalizeUser(updatedUser)
-        this.dispatch(updateNormalizedDataAction(dataNormalized))
-        return dataNormalized
+  async fetchAllPairs() {
+    this.updateLoadInfo(loadLabels.IMPORTANDO_PARES);
+    const pairs = await this.Get(`${SWAP_URL}pairs`);
+    if (!pairs) {
+      return;
     }
 
-    pairsRequest(query) {
-        const requestCompleteUrl = `${PAIRS_URL}${query}`
-        return this.Get(requestCompleteUrl)
+    if (await this.isCached("available_pairs", pairs)) {
+      return pairs;
     }
 
-    async getPairsByCountry(country, currencies) {
+    this.dispatch(getAllPairsAction(pairs));
+    let updatedUser = {
+      id: this.user.id,
+      available_pairs: [...pairs],
+    };
 
-        const localCurrency = await this.getLocalCurrency(country)
+    let dataNormalized = await normalizeUser(updatedUser);
+    this.dispatch(updateNormalizedDataAction(dataNormalized));
+    return dataNormalized;
+  }
 
-        if (!localCurrency) { return console.log('No se ha encontrado país en getPairsByCountry') }
-        const pairs = await this.pairsRequest(`{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`)
-        if (!pairs) return
-        if (currencies) {
-            const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies)
+  pairsRequest(query) {
+    const requestCompleteUrl = `${PAIRS_URL}${query}`;
+    return this.Get(requestCompleteUrl);
+  }
 
-            if (this.isCached('getPairsByCountry_', localCurrencies, false) && this.globalState.modelData.pairs.currentPair) {
-                return
-            }
+  async getPairsByCountry(country, currencies) {
+    const localCurrency = await this.getLocalCurrency(country);
 
-            await this.dispatch(loadLocalPairsAction(localCurrencies))
+    if (!localCurrency) {
+      return console.log("No se ha encontrado país en getPairsByCountry");
+    }
+    const pairs = await this.pairsRequest(
+      `{"where": {"secondary_currency.currency": "${localCurrency.currency}"}}`
+    );
+    if (!pairs) return;
+    if (currencies) {
+      const localCurrencies = await this.addSymbolToLocalCollections(
+        pairs,
+        localCurrency.currency,
+        currencies
+      );
 
-            // TODO: Evaluate this
-            // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
+      if (
+        this.isCached("getPairsByCountry_", localCurrencies, false) &&
+        this.globalState.modelData.pairs.currentPair
+      ) {
+        return;
+      }
 
-            this.dispatch(searchCurrentPairAction(`BTC/${localCurrency.currency.toUpperCase()}`, 'pair'))
+      await this.dispatch(loadLocalPairsAction(localCurrencies));
 
-            this.dispatch(loadLocalCurrencyAction(localCurrency))
-        }
+      // TODO: Evaluate this
+      // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
+
+      this.dispatch(
+        searchCurrentPairAction(
+          `BTC/${localCurrency.currency.toUpperCase()}`,
+          "pair"
+        )
+      );
+
+      this.dispatch(loadLocalCurrencyAction(localCurrency));
+    }
+  }
+
+  async getPairs(primary, secondary, all) {
+    if (!primary && !secondary) return;
+
+    if (primary || secondary) {
+      const query = !secondary
+        ? `{"where": {"primary_currency.currency": "${primary}"}}`
+        : `{"where": {"secondary_currency.currency": "${secondary}"}}`;
+      const response = await this.pairsRequest(query);
+      if (this.isEmpty(response)) return;
+      if (all) {
+        return response;
+      }
+      return response[0];
+    }
+    const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`;
+    const response = await this.pairsRequest(query);
+    if (this.isEmpty(response)) return;
+    return response[0];
+  }
+
+  async _getPairs(primary, secondary, all) {
+    if (!primary || !secondary) {
+      return false;
+    }
+    let res, query;
+    if (primary && !secondary) {
+      query = `{"where": {"primary_currency.currency": "${primary}"}}`;
+    }
+    if (!primary && secondary) {
+      query = `{"where": {"secondary_currency.currency": "${secondary}"}}`;
+    }
+    query && (res = await this.pairsRequest(query));
+    if (res) {
+      if (all) {
+        return res;
+      }
+      return res[0];
     }
 
-    async getPairs(primary, secondary, all) {
-        if (!primary && !secondary) return
+    query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`;
+    res = await this.pairsRequest(query);
+    if (this.isEmpty(res)) return;
+    return res[0];
+  }
 
-        if (primary || secondary) {
-            const query = !secondary ?
-                `{"where": {"primary_currency.currency": "${primary}"}}` :
-                `{"where": {"secondary_currency.currency": "${secondary}"}}`
-            const response = await this.pairsRequest(query)
-            if (this.isEmpty(response)) return
-            if (all) { return response }
-            return response[0]
-        }
-        const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
-        const response = await this.pairsRequest(query)
-        if (this.isEmpty(response)) return
-        return response[0]
+  // TODO: review this fn:getDefaultPair
+  async getDefaultPair(currentWallet, localCurrency, currentPair) {
+    if ((currentPair && currentPair.pair_id) || !currentWallet) {
+      return false;
     }
 
-    async _getPairs(primary, secondary, all) {
-        if (!primary || !secondary) { return false }
-        let res, query
-        if (primary && !secondary) {
-            query = `{"where": {"primary_currency.currency": "${primary}"}}`
-        }
-        if (!primary && secondary) {
-            query = `{"where": {"secondary_currency.currency": "${secondary}"}}`
-        }
-        query && (res = await this.pairsRequest(query))
-        if (res) {
-            if (all) { return res }
-            return res[0]
-        }
+    const currency = currentWallet.currency.currency;
 
-        query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`
-        res = await this.pairsRequest(query)
-        if (this.isEmpty(res)) return
-        return res[0]
+    let pair = await this._getPairs(currency, localCurrency);
+    !pair && (pair = await this._getPairs("bitcoin", currency));
+    !pair && (pair = await this._getPairs(currency));
+    !pair && (pair = await this._getPairs(null, currency));
+
+    let pair_id = pair.id;
+
+    const data = await convertCurrencies(currentWallet.currency, "1", pair_id);
+
+    if (data) {
+      const { to_spend_currency } = data;
+      return this.dispatch(
+        pairsForAccount(currentWallet.id, {
+          current_pair: {
+            pair_id,
+            currency: to_spend_currency.currency,
+            currency_value: data.want_to_spend,
+          },
+        })
+      );
+    }
+  }
+
+  async loadPairs(currentWallet, localCurrency, currentPair) {
+    if ((currentPair && currentPair.pair_id) || !currentWallet) {
+      return false;
+    }
+    const currency = currentWallet.currency.currency;
+
+    // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
+    let pair = await this.getPairs(currency, localCurrency);
+    !pair && (pair = await this.getPairs("bitcoin", currency));
+    !pair && (pair = await this.getPairs(currency));
+    !pair && (pair = await this.getPairs(null, currency));
+
+    if (!pair) {
+      return false;
     }
 
-    // TODO: review this fn:getDefaultPair
-    async getDefaultPair(currentWallet, localCurrency, currentPair) {
-        if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
+    const pairId = pair.id;
+    const data = await convertCurrencies(currentWallet.currency, "1", pairId);
 
-        const currency = currentWallet.currency.currency
+    if (data) {
+      const { to_spend_currency } = data;
+      return this.dispatch(
+        pairsForAccount(currentWallet.id, {
+          current_pair: {
+            pair_id: pairId,
+            currency: to_spend_currency.currency,
+            currency_value: data.want_to_spend,
+          },
+        })
+      );
+    }
+  }
 
-        let pair = await this._getPairs(currency, localCurrency)
-        !pair && (pair = await this._getPairs('bitcoin', currency))
-        !pair && (pair = await this._getPairs(currency))
-        !pair && (pair = await this._getPairs(null, currency))
+  async addNewSwap(accountId, pairId, value) {
+    const user = this.user;
 
+    const body = {
+      // "access_token":user.userToken,
+      data: {
+        want_to_spend: value.toString(),
+        pair_id: pairId,
+        account_from: accountId,
+        country: user.country,
+      },
+    };
 
-        let pair_id = pair.id
+    const result = await this.Post(ADD_NEW_SWAP, body, user.userToken);
 
-        const data = await convertCurrencies(currentWallet.currency, '1', pair_id)
-
-        if (data) {
-            const { to_spend_currency } = data
-            return this.dispatch(pairsForAccount(currentWallet.id, {
-                current_pair: {
-                    pair_id,
-                    currency: to_spend_currency.currency,
-                    currency_value: data.want_to_spend
-                }
-            }))
-        }
+    if (!result || result === 465) {
+      return false;
     }
 
-    async loadPairs(currentWallet, localCurrency, currentPair) {
-        if ((currentPair && currentPair.pair_id) || !currentWallet) { return false }
-        const currency = currentWallet.currency.currency
+    const { data } = result;
 
-        // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
-        let pair = await this.getPairs(currency, localCurrency)
-        !pair && (pair = await this.getPairs('bitcoin', currency))
-        !pair && (pair = await this.getPairs(currency))
-        !pair && (pair = await this.getPairs(null, currency))
+    return data;
+  }
 
-        if (!pair) { return false }
+  async completeSwap(swaps, user, completeSwap, updateList) {
+    let newSwap = {
+      ...swaps[completeSwap.id],
+      state: "accepted",
+    };
 
-        const pairId = pair.id
-        const data = await convertCurrencies(currentWallet.currency, '1', pairId)
+    let updatedSwaps = {
+      ...swaps,
+      [newSwap.id]: {
+        ...newSwap,
+      },
+    };
 
-        if (data) {
-            const { to_spend_currency } = data
-            return this.dispatch(pairsForAccount(currentWallet.id, {
-                current_pair: {
-                    pair_id: pairId,
-                    currency: to_spend_currency.currency,
-                    currency_value: data.want_to_spend
-                }
-            }))
-        }
+    let swapsAsArray = await desNormalizedList(updatedSwaps, user.swaps);
+
+    if (updateList) {
+      await updateList(swapsAsArray);
     }
 
-    async addNewSwap(accountId, pairId, value) {
-        const user = this.user
+    let updatedUser = {
+      id: user.id,
+      swaps: [...swapsAsArray],
+    };
 
-        const body = {
-            // "access_token":user.userToken,
-            "data": {
-                "want_to_spend": value.toString(),
-                "pair_id": pairId,
-                "account_from": accountId,
-                "country": user.country
-            }
-        }
+    let normalizedUser = await normalizeUser(updatedUser);
+    await this.dispatch(updateNormalizedDataAction(normalizedUser));
+    return normalizedUser;
+  }
 
-        const result = await this.Post(ADD_NEW_SWAP, body, user.userToken)
-
-        if (!result || result === 465) { return false }
-
-        const {
-            data
-        } = result
-
-        return data
+  async updateCurrentPair(query, currentPair) {
+    const result = await this.Get(`${PAIRS_URL}${query}`);
+    if (!result || result === 465) {
+      return;
     }
 
-    async completeSwap(swaps, user, completeSwap, updateList) {
-        let newSwap = {
-            ...swaps[completeSwap.id],
-            state: "accepted"
-        }
+    if (currentPair) {
+      this.dispatch(
+        update_item_state({ currentPair: { ...result[0] } }, "pairs")
+      );
+    } else {
+      this.dispatch(
+        update_item_state({ [result[0].id]: { ...result[0] } }, "all_pairs")
+      );
+    }
+  }
 
-        let updatedSwaps = {
-            ...swaps,
-            [newSwap.id]: {
-                ...newSwap
-            }
-        }
+  async get_swaps(accountId, limit = 20, skip = 0) {
+    const user = this.user;
+    let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`;
 
-        let swapsAsArray = await desNormalizedList(updatedSwaps, user.swaps)
+    let swaps = await this.Get(finalUrl);
 
-        if (updateList) { await updateList(swapsAsArray) }
-
-        let updatedUser = {
-            id: user.id,
-            swaps: [
-                ...swapsAsArray
-            ]
-        }
-
-        let normalizedUser = await normalizeUser(updatedUser)
-        await this.dispatch(updateNormalizedDataAction(normalizedUser))
-        return normalizedUser
+    if (!swaps || swaps === 465) {
+      return false;
     }
 
-    async updateCurrentPair(query, currentPair) {
-        const result = await this.Get(`${PAIRS_URL}${query}`)
-        if (!result || result === 465) { return }
-
-        if (currentPair) {
-            this.dispatch(update_item_state({ currentPair: { ...result[0] } }, 'pairs'))
-        } else {
-            this.dispatch(update_item_state({ [result[0].id]: { ...result[0] } }, 'all_pairs'))
-        }
+    if (await this.isCached("swaps", swaps)) {
+      return swaps;
     }
 
-    async get_swaps(accountId, limit = 20, skip = 0) {
-        const user = this.user
-        let filter = `{"where":{"or":[{"account_to":"${accountId}"}, {"account_from":"${accountId}"} ] }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`
-        const finalUrl = `${GET_SWAPS_BY_USERS_URL}/${user.id}/swaps?country=${user.country}&filter=${filter}`
+    let swapResult = [...swaps];
 
+    swapResult = this.parseActivty(swaps, "swaps", accountId);
+    await this.dispatch(normalized_list(swapResult, "swaps"));
+    await this.updateActivityState(accountId, "swaps", swapResult);
 
-        let swaps = await this.Get(finalUrl)
-
-        if (!swaps || swaps === 465) { return false }
-
-        if (await this.isCached('swaps', swaps)) {
-            return swaps
-        }
-
-        let swapResult = [...swaps]
-
-        swapResult = this.parseActivty(swaps, 'swaps', accountId)
-        await this.dispatch(normalized_list(swapResult, 'swaps'))
-        await this.updateActivityState(accountId, 'swaps', swapResult)
-
-        return swaps
-    }
-
+    return swaps;
+  }
 }

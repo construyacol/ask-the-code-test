@@ -1,56 +1,55 @@
-
-.mapLoader{
+.mapLoader {
   position: absolute;
-  justify-self:center;
-  align-self:center;
+  justify-self: center;
+  align-self: center;
 }
 
-.available_country:hover{
+.available_country:hover {
   /*fill: orange;*/
-    fill: orange !important;
-    cursor: pointer;
+  fill: orange !important;
+  cursor: pointer;
 }
 
-#map path:hover{
-  fill:#dadada;
+#map path:hover {
+  fill: #dadada;
 }
 
-        path.active{
-          fill: orange;
-          /*fill: #1babec;*/
-        }
-        .background {
-          fill: none;
-          pointer-events: all;
-        }
-        .feature {
-          fill: #ccc;
-          cursor: pointer;
-        }
+path.active {
+  fill: orange;
+  /*fill: #1babec;*/
+}
+.background {
+  fill: none;
+  pointer-events: all;
+}
+.feature {
+  fill: #ccc;
+  cursor: pointer;
+}
 
-        /*.feature.active {
+/*.feature.active {
           fill: orange;
         }*/
-        #map-holder {
-          width: 100vw;
-          height: 100vh;
-        }
+#map-holder {
+  width: 100vw;
+  height: 100vh;
+}
 
-        .mesh {
-          fill: none;
-          stroke: #fff;
-          stroke-linecap: round;
-          stroke-linejoin: round;
-        }
+.mesh {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
-        #map-holder{
-        position: relative;
-        height: 100%;
-        /*width: 100%;*/
-        width: 100vw;
-        max-width: 700px;
-        overflow: hidden;
-        display: grid;
-        align-items: center;
-        justify-items: center;
-        }
+#map-holder {
+  position: relative;
+  height: 100%;
+  /*width: 100%;*/
+  width: 100vw;
+  max-width: 700px;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}

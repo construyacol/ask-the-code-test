@@ -1,4 +1,4 @@
-.scores{
+.scores {
   width: 100%;
   height: 85px;
   display: flex;
@@ -7,24 +7,24 @@
   overflow: hidden;
 }
 
-.barra{
+.barra {
   height: 5px;
   background: white;
-  border-radius:6px;
+  border-radius: 6px;
   width: 87%;
   position: relative;
-  background: #3A4B5A;
+  background: #3a4b5a;
 }
 
-.progresado{
+.progresado {
   border-radius: 6px;
   /* background: linear-gradient(to bottom right, #B3FFAB, #0191F4); */
-  background: #0198FF;
+  background: #0198ff;
   height: 100%;
   transition: 3s;
 }
 
-.levelBar{
+.levelBar {
   position: absolute;
   top: -30px;
   width: 100%;
@@ -32,85 +32,71 @@
   align-items: center;
 }
 
-.score, .level{
+.score,
+.level {
   position: absolute;
   font-size: 12px !important;
   right: 0;
   margin: 0;
-  color: #14B3F0 ;
+  color: #14b3f0;
 }
 
-#score.rejected{
+#score.rejected {
   border: none !important;
   /*color: red !important;*/
   color: #ff6c6c !important;
 }
 
-.score{
+.score {
   top: -22px;
   position: initial !important;
   margin-left: 6px !important;
 }
 
-#score{
+#score {
   margin-left: 6px !important;
 }
 
-.level{
+.level {
   width: 100%;
   bottom: -25px;
   color: white;
 }
 
-.level span{
+.level span {
   margin-left: 4px;
 }
 
-.stars{
+.stars {
   position: absolute;
   right: 0;
   color: white;
   bottom: -25px;
 }
 
-.star_icon{
+.star_icon {
   font-size: 12px;
   color: #ffca00;
   margin: 0 2px;
 }
 
-
-
-.rejected_anim{
+.rejected_anim {
   animation-name: rejected_anim;
   animation-duration: 1s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-@keyframes rejected_anim{
-  0%{
+@keyframes rejected_anim {
+  0% {
     opacity: 1;
   }
-  50%{
+  50% {
     opacity: 0.4;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

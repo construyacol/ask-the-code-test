@@ -1,20 +1,19 @@
-import React, { Fragment, Component } from 'react'
-import ItemList from './viewItem'
-import OrderItem from './order_item'
+import React, { Fragment, Component } from "react";
+import ItemList from "./viewItem";
+import OrderItem from "./order_item";
 // import { serve_orders, ticketModalView } from '../../../services'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import actions from '../../../actions'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import actions from "../../../actions";
 // import OrderDetail from '../modal/render/orderDetail'
 // import SimpleLoader from '../loaders'
-import InifiniteScrollComponent from './infiniteScroll'
+import InifiniteScrollComponent from "./infiniteScroll";
 
-import './activity_view.css'
-import withCoinsendaServices from '../../withCoinsendaServices'
-import { createSelector } from 'reselect'
+import "./activity_view.css";
+import withCoinsendaServices from "../../withCoinsendaServices";
+import { createSelector } from "reselect";
 
 class ActivityList extends Component {
-
   state = {
     activity: null,
     expandible: 90,
@@ -23,8 +22,8 @@ class ActivityList extends Component {
     current_order_loader: null,
     deleting: null,
     deleted: null,
-    scrollLoader: null
-  }
+    scrollLoader: null,
+  };
 
   // componentDidMount(){
   //   this.props.action.CurrentForm('ticket')
@@ -33,38 +32,32 @@ class ActivityList extends Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.tx_path !== prevProps.tx_path) {
-      this.contraer()
+      this.contraer();
     }
   }
 
-  setLoader = scrollLoader => {
-    this.setState({ scrollLoader })
-  }
+  setLoader = (scrollLoader) => {
+    this.setState({ scrollLoader });
+  };
 
   expandir = () => {
-    const {
-      expandidoMax
-    } = this.props
+    const { expandidoMax } = this.props;
 
     this.setState({
       expandible: expandidoMax,
-      expandido: true
-    })
-  }
-
-
+      expandido: true,
+    });
+  };
 
   contraer = () => {
     this.setState({
       expandible: 90,
-      expandido: false
-    })
-  }
-
-
+      expandido: false,
+    });
+  };
 
   delete_order_confirmation = (id) => {
-    this.props.action.confirmationModalToggle()
+    this.props.action.confirmationModalToggle();
     this.props.action.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
       description: "Eliminar esta orden, ¿Estas seguro de hacer esto?",
@@ -72,79 +65,82 @@ class ActivityList extends Component {
       txtSecondary: "Cancelar",
       payload: id,
       action: this.delete_order,
-      img: "deleteticket"
-    })
-  }
+      img: "deleteticket",
+    });
+  };
 
   delete_order = async (id) => {
-
     const {
       tx_path,
       // user
-    } = this.props
+    } = this.props;
 
     // this.props.action.isAppLoading(true)
     await this.setState({
       current_order_loader: id,
-      deleting: true
-    })
+      deleting: true,
+    });
 
-    let deleted = tx_path === 'deposits' && await this.props.coinsendaServices.deleteDeposit(id)
+    let deleted =
+      tx_path === "deposits" &&
+      (await this.props.coinsendaServices.deleteDeposit(id));
 
     if (!deleted) {
       // await this.setState({deleting:false, current_order_loader:0})
-      return false
+      return false;
     }
 
     // await this.setState({deleting:false,deleted:true})
 
-    console.log('|||||||||||||||||||||||||||||||||||||||||||||| DELETE__ORDER :', deleted, id)
-
+    console.log(
+      "|||||||||||||||||||||||||||||||||||||||||||||| DELETE__ORDER :",
+      deleted,
+      id
+    );
 
     // this.setState({
     //   // expandidoMax:(this.props.expandidoMax - 100),
     //   expandible:this.state.expandido ? (this.props.expandidoMax) : '90px'
     // });
 
-    await this.setState({ deleting: false, current_order_loader: 0 })
-    this.props.action.isAppLoading(false)
+    await this.setState({ deleting: false, current_order_loader: 0 });
+    this.props.action.isAppLoading(false);
     // this.setState({deleted:true})
     // this.props.action.mensaje('Orden eliminada con éxito', 'success')
-
-  }
+  };
 
   confirmPayment = async (props) => {
+    const { ticket } = props;
 
-    const {
-      ticket
-    } = props
+    const { primary_path, account_id, path, tx_path } = this.props.match.params;
+    this.props.history.push(
+      `/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`
+    );
 
-
-    const { primary_path, account_id, path, tx_path } = this.props.match.params
-    this.props.history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`)
-
-    this.props.action.toggleModal()
+    this.props.action.toggleModal();
     setTimeout(() => {
-      this.props.action.IncreaseStep('ticket')
-    }, 170)
+      this.props.action.IncreaseStep("ticket");
+    }, 170);
 
     setTimeout(() => {
       let inputFile = document.getElementById("TFileUpload");
-      if (!inputFile) { return false }
-      inputFile.click()
-    }, 740)
+      if (!inputFile) {
+        return false;
+      }
+      inputFile.click();
+    }, 740);
 
-    this.props.history.push('?form=upload_deposit_payment_proof')
-
-  }
-
-
+    this.props.history.push("?form=upload_deposit_payment_proof");
+  };
 
   verTicket = async (ticket) => {
-
-    const { primary_path, account_id, path, tx_path } = this.props.match.params
-    this.props.history.push(`/${primary_path}/${path}/${account_id}/${this.props.isWithdraws ? "withdraws" : tx_path}/${ticket.id}`)
-    this.props.action.cleanNotificationItem('wallets', 'order_id')
+    const { primary_path, account_id, path, tx_path } = this.props.match.params;
+    this.props.history.push(
+      `/${primary_path}/${path}/${account_id}/${
+        this.props.isWithdraws ? "withdraws" : tx_path
+      }/${ticket.id}`
+    );
+    this.props.action.cleanNotificationItem("wallets", "order_id");
 
     // const{
     //   state
@@ -154,21 +150,16 @@ class ActivityList extends Component {
     //   current_form
     // } = this.props
 
-    this.props.action.toggleModal()
+    this.props.action.toggleModal();
     // console.log('||||||||||||||||||| ======> Ticket ACTIVITY ==> ',  ticket)
-
-  }
+  };
 
   // openOrder = async(order) => {
   //   const OrderDetail = await import('../modal/render/orderDetail')
   //   this.props.action.renderModal(()=><OrderDetail.default order={order}/>)
   // }
 
-
-
-
   render() {
-
     const {
       newDepositStyle,
       loader,
@@ -179,8 +170,8 @@ class ActivityList extends Component {
       expandidoMax,
       lastPending,
       currencies,
-      tx_path
-    } = this.props
+      tx_path,
+    } = this.props;
 
     const {
       expandible,
@@ -188,8 +179,8 @@ class ActivityList extends Component {
       // filter,
       current_order_loader,
       deleting,
-      deleted
-    } = this.state
+      deleted,
+    } = this.state;
 
     // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
     // let OrderRender
@@ -197,74 +188,134 @@ class ActivityList extends Component {
 
     return (
       <Fragment>
-        {
-          tx_path !== 'swaps' &&
-          <section className="ALpendingMom" style={{ display: pending ? 'block' : 'none' }}>
-            <p className="ALtext fuente" style={{ display: (pending) ? 'block' : 'none' }}>Pendiente </p>
-            <div className="ALpendingCont" style={{ height: `${expandible}px` }}>
+        {tx_path !== "swaps" && (
+          <section
+            className="ALpendingMom"
+            style={{ display: pending ? "block" : "none" }}
+          >
+            <p
+              className="ALtext fuente"
+              style={{ display: pending ? "block" : "none" }}
+            >
+              Pendiente{" "}
+            </p>
+            <div
+              className="ALpendingCont"
+              style={{ height: `${expandible}px` }}
+            >
               <div className="ALlist" style={{ height: `${expandidoMax}px` }}>
-                {
-                  activity &&
+                {activity &&
                   activity.map((item, indx) => {
-                    if ((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected') || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')) { return null }
-                    if (item.state === 'pending' && item.currency_type === 'crypto') { return null }
-                    if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws') {
-                      return <OrderItem
-                        order={{ ...item }}
-                        handleAction={this.verTicket}
-                        key={indx}
-                      />
+                    if (
+                      item.state === "accepted" ||
+                      item.state === "canceled" ||
+                      item.state === "rejected" ||
+                      (tx_path === "withdraws" &&
+                        item.state === "pending" &&
+                        item.currency_type !== "crypto")
+                    ) {
+                      return null;
+                    }
+                    if (
+                      item.state === "pending" &&
+                      item.currency_type === "crypto"
+                    ) {
+                      return null;
+                    }
+                    if (
+                      this.props.tx_path === "deposits" ||
+                      this.props.tx_path === "withdraws"
+                    ) {
+                      return (
+                        <OrderItem
+                          order={{ ...item }}
+                          handleAction={this.verTicket}
+                          key={indx}
+                        />
+                      );
                     } else {
-                      return <ItemList key={item.id}
-                        confirmPayment={this.confirmPayment}
-                        lastPendingId={lastPending}
-                        newDepositStyle={newDepositStyle}
-                        verTicket={this.verTicket}
-                        delete_order={this.delete_order_confirmation}
-                        ticket={item}
-                        loader={loader}
-                        current_order_loader={current_order_loader}
-                        deleting={deleting}
-                        deleted={deleted}
-                        currencies={currencies}
-                        {...this.props}
-                      />
+                      return (
+                        <ItemList
+                          key={item.id}
+                          confirmPayment={this.confirmPayment}
+                          lastPendingId={lastPending}
+                          newDepositStyle={newDepositStyle}
+                          verTicket={this.verTicket}
+                          delete_order={this.delete_order_confirmation}
+                          ticket={item}
+                          loader={loader}
+                          current_order_loader={current_order_loader}
+                          deleting={deleting}
+                          deleted={deleted}
+                          currencies={currencies}
+                          {...this.props}
+                        />
+                      );
                     }
 
                     // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
-
-                  })
-                }
+                  })}
               </div>
             </div>
-            <p className="ALverTodo" onClick={this.expandir} style={{ display: ((expandidoMax / 100) < 2 || expandido) ? 'none' : 'block' }}>
+            <p
+              className="ALverTodo"
+              onClick={this.expandir}
+              style={{
+                display: expandidoMax / 100 < 2 || expandido ? "none" : "block",
+              }}
+            >
               {/* <p className="ALverTodo" onClick={this.expandir} style={{display:expandido ? 'none' : 'block'}}> */}
               Ver todo
-              <span>+{(expandidoMax / 100) - 1}</span>
+              <span>+{expandidoMax / 100 - 1}</span>
               <i className="fas fa-angle-down"></i>
             </p>
-            <p className="ALverTodo" onClick={this.contraer} style={{ display: (expandidoMax / 100) < 2 || !expandido ? 'none' : 'block' }}>Reducir
-            <i className="fas fa-angle-up"></i>
+            <p
+              className="ALverTodo"
+              onClick={this.contraer}
+              style={{
+                display:
+                  expandidoMax / 100 < 2 || !expandido ? "none" : "block",
+              }}
+            >
+              Reducir
+              <i className="fas fa-angle-up"></i>
             </p>
           </section>
-        }
+        )}
 
-        <section className={`ALactivity ${(pending && tx_path !== 'swaps') ? 'ALactivityPending' : ''}`}>
+        <section
+          className={`ALactivity ${
+            pending && tx_path !== "swaps" ? "ALactivityPending" : ""
+          }`}
+        >
           {/* <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p> */}
           <p className="ALtext fuente">Actividad</p>
           <div className="ALlistAll">
-            {
-              activity.map((item, index) => {
-                if ((item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected') && tx_path !== 'swaps') { return false }
-                if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps') {
-                  return <OrderItem
+            {activity.map((item, index) => {
+              if (
+                item.state !== "accepted" &&
+                item.state !== "canceled" &&
+                item.state !== "rejected" &&
+                tx_path !== "swaps"
+              ) {
+                return false;
+              }
+              if (
+                this.props.tx_path === "deposits" ||
+                this.props.tx_path === "withdraws" ||
+                this.props.tx_path === "swaps"
+              ) {
+                return (
+                  <OrderItem
                     index={index}
                     // handleAction={this.openOrder}
                     order={item}
                     key={index}
                   />
-                } else {
-                  return (<ItemList
+                );
+              } else {
+                return (
+                  <ItemList
                     key={item.id}
                     confirmPayment={this.confirmPayment}
                     verTicket={this.verTicket}
@@ -273,10 +324,10 @@ class ActivityList extends Component {
                     short_name={short_name}
                     notifier_type="wallets"
                     {...this.props}
-                  />)
-                }
-              })
-            }
+                  />
+                );
+              }
+            })}
           </div>
 
           <InifiniteScrollComponent
@@ -285,50 +336,50 @@ class ActivityList extends Component {
           />
         </section>
       </Fragment>
-
-    )
+    );
   }
 }
 
 const isCriptoWallet = (state, { params }) => {
-  return state.modelData.wallets[params.account_id] === 'crypto'
-}
+  return state.modelData.wallets[params.account_id] === "crypto";
+};
 
 const selectCurrentList = createSelector(
-  state => state.currencies,
+  (state) => state.currencies,
   isCriptoWallet,
   (_, props) => props.isWithdraws,
   (currencies, isCryptoWallet, isWithdraws) => {
-    let currency_list
+    let currency_list;
     if (!isWithdraws && currencies && isCryptoWallet) {
-      currencies.map(currency => {
-        return currency_list = {
+      currencies.map((currency) => {
+        return (currency_list = {
           ...currency_list,
           [currency.currency]: {
-            ...currency
-          }
-        }
-      })
+            ...currency,
+          },
+        });
+      });
     }
 
-    return currency_list
+    return currency_list;
   }
-)
+);
 
 function mapStateToProps(state, props) {
-
-  const { user } = state.modelData
-  const { isWithdraws, match } = props
-  const { params } = match
+  const { user } = state.modelData;
+  const { isWithdraws, match } = props;
+  const { params } = match;
   // const { current_wallet } = props
-  const { currentFilter } = state.ui.current_section.params
-  const { activity_for_account } = state.storage
-  let pending_index = `pending_${params.tx_path}`
+  const { currentFilter } = state.ui.current_section.params;
+  const { activity_for_account } = state.storage;
+  let pending_index = `pending_${params.tx_path}`;
 
-  let pending_activity = activity_for_account[params.account_id] && activity_for_account[params.account_id][pending_index]
+  let pending_activity =
+    activity_for_account[params.account_id] &&
+    activity_for_account[params.account_id][pending_index];
 
   if (isWithdraws) {
-    pending_activity = {}
+    pending_activity = {};
   }
 
   return {
@@ -341,17 +392,18 @@ function mapStateToProps(state, props) {
     user: user,
     // current_activity_account:activity_for_account[current_wallet.id],
     // activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][params.tx_path],
-    currencies: selectCurrentList(state, { params, isWithdraws}),
-    ...pending_activity
-  }
+    currencies: selectCurrentList(state, { params, isWithdraws }),
+    ...pending_activity,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    action: bindActionCreators(actions, dispatch)
-  }
+    action: bindActionCreators(actions, dispatch),
+  };
 }
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(withCoinsendaServices(ActivityList))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withCoinsendaServices(ActivityList));

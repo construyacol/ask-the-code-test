@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BankPichincha = props => {
-
-  return(
-        <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADVCAMAAAAsJe+TAAADAFBMVEUAAAD/9cT36FT/9cH/9rr/
+export const BankPichincha = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAADVCAMAAAAsJe+TAAADAFBMVEUAAAD/9cT36FT/9cH/9rr/
   +rP/9dD/9tL26Wz+8Ij+9qj89K/99cD99cb46Wf77nf/+8z/883++dr67F3/8H348H7+64D/8JP/
   8pj/8J7/8KP/873/8tj/+tz+5mr/63H69Y3/9r7//cD/+df93RgaLVX43hf/3CD63xL/3BD53Bz6
   3RX53hv/3RX+3Rb/3RT73Rn72hn34Bby4Bz93Bv74BP73xb/2BMhJ1n92xq7tCb84g8XMVYaLlP8
@@ -45,9 +46,10 @@ export const BankPichincha = props => {
   n1q9fHn7hiEh8fEJCR4/NM4hUs2YIiTbWOWPzcjUe02c6C+pK5PJJBKJVsjj8RxzSOIZWRGSnQpV
   O5I2OqiZv7PDpElqsVjs6uqg5+WQy6q4wiR72eYplXfuI89m+imJ/v5CPl+l5OeQdVPaWJPsV9Kq
   fLFSs2JjY729ly1b1iiHLNq3rxL5m0ra2pTIk0MKWhUkCCGEEEIIIYQQQgghxHXfAbMoMIHKlAM6
-  AAAAAElFTkSuQmCC" alt=""/>
-  )
+  AAAAAElFTkSuQmCC"
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BankPichincha
+export default BankPichincha;

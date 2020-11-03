@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react'
-import InputValidate from '../../hooks/inputValidate'
-import styled from 'styled-components'
-import SkeletonAnimation from '../loaders/skeleton'
-
-
+import React, { useEffect } from "react";
+import InputValidate from "../../hooks/inputValidate";
+import styled from "styled-components";
+import SkeletonAnimation from "../loaders/skeleton";
 
 const InputForm = (props) => {
-
   const {
     type,
     placeholder,
@@ -20,14 +17,14 @@ const InputForm = (props) => {
     skeleton,
     handleChange = () => null,
     readOnly = false,
-    value = '',
+    value = "",
     isControlled,
     autoFocus,
     customError,
     setMaxWithActionKey,
     autoComplete = "off",
-    AuxComponent
-  } = props
+    AuxComponent,
+  } = props;
 
   if (skeleton) {
     return (
@@ -37,63 +34,63 @@ const InputForm = (props) => {
           <InputContainer className="skeleton" />
         </ContainerInputComponent>
       </InputLayout>
-    )
+    );
   }
 
-  const [inputState, setInputState, changeState] = InputValidate(state)
+  const [inputState, setInputState, changeState] = InputValidate(state);
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
   const validate = (e, specialArg) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
-    e.persist && e.persist()
-    setInputState(name, e)
-    handleChange(name, e.target.value, changeState, specialArg)
-  }
+    e.persist && e.persist();
+    setInputState(name, e);
+    handleChange(name, e.target.value, changeState, specialArg);
+  };
 
   useEffect(() => {
     // setIcon(GetIcon(name, inputState))
     if (handleStatus) {
-      handleStatus(inputState)
+      handleStatus(inputState);
     }
-  }, [inputState])
+  }, [inputState]);
 
   useEffect(() => {
-    state && changeState(state)
-  }, [state])
+    state && changeState(state);
+  }, [state]);
 
   useEffect(() => {
-    if(customError) {
-      changeState('bad')
+    if (customError) {
+      changeState("bad");
     } else {
-      validate({ target: { value } }, true)
+      validate({ target: { value } }, true);
     }
-  }, [customError, value])
+  }, [customError, value]);
 
-  let movil = window.innerWidth < 768
-  const subfixId = 'set-max-available'
+  let movil = window.innerWidth < 768;
+  const subfixId = "set-max-available";
 
   const setMaxWithActionKeyFn = (e) => {
-    uxForInput(e)
+    uxForInput(e);
     if (e.keyCode === 77) {
-      e.preventDefault()
-      const toClickElement = document.getElementById(subfixId)
-      if(toClickElement) {
-        document.getElementsByName(name)[0].blur()
-        toClickElement.click()
+      e.preventDefault();
+      const toClickElement = document.getElementById(subfixId);
+      if (toClickElement) {
+        document.getElementsByName(name)[0].blur();
+        toClickElement.click();
       }
     }
-  }
+  };
 
   const uxForInput = (e) => {
-    if(e.keyCode === 8 && e.currentTarget.value === '') {
-      e.currentTarget.blur()
-      e.stopPropagation()
-      return false
+    if (e.keyCode === 8 && e.currentTarget.value === "") {
+      e.currentTarget.blur();
+      e.stopPropagation();
+      return false;
     }
-  }
+  };
 
   const inputProps = {
-    className: `inputElement ${name} ${movil ? 'movil' : ''}`,
+    className: `inputElement ${name} ${movil ? "movil" : ""}`,
     type,
     readOnly,
     placeholder,
@@ -102,50 +99,48 @@ const InputForm = (props) => {
     disabled,
     autoFocus,
     onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
-    autoComplete
-  }
+    autoComplete,
+  };
 
   if (isControlled) {
-    inputProps.value = value
+    inputProps.value = value;
   }
 
   return (
     <InputLayout>
       <ContainerInputComponent>
-        <p className="labelText fuente" style={{ display: !props.label ? 'none' : 'initial' }}>{props.label}</p>
+        <p
+          className="labelText fuente"
+          style={{ display: !props.label ? "none" : "initial" }}
+        >
+          {props.label}
+        </p>
         <InputContainer className={`${inputState}`}>
-          <input {...inputProps}/>
+          <input {...inputProps} />
         </InputContainer>
-        {
-          SuffixComponent &&
+        {SuffixComponent && (
           <SuffixComponentContainer>
             <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
-        }
+        )}
 
-        {
-          AuxComponent &&
-          <AuxComponent/>
-        }
+        {AuxComponent && <AuxComponent />}
       </ContainerInputComponent>
       {customError && (
         <ErrorText className="fuente">{customError.text}</ErrorText>
       )}
     </InputLayout>
-
-  )
-}
+  );
+};
 
 const ErrorText = styled.div`
   opacity: 0.7;
   color: red;
   font-size: 14px;
   margin-top: 10px;
-`
+`;
 
-const InputLayout = styled(SkeletonAnimation)`
-
-`
+const InputLayout = styled(SkeletonAnimation)``;
 
 const SuffixComponentContainer = styled.div`
   position: absolute;
@@ -154,7 +149,7 @@ const SuffixComponentContainer = styled.div`
   bottom: 0;
   display: grid;
   align-items: center;
-`
+`;
 
 export const InputContainer = styled.div`
   width: 100%;
@@ -164,11 +159,11 @@ export const InputContainer = styled.div`
   overflow: hidden;
   display: grid;
   position: relative;
-  -webkit-transition: .5s;
-  transition: .5s;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
   background: white;
 
-  .movil{
+  .movil {
     display: block;
     margin-left: 10px;
     max-width: 210px;
@@ -178,20 +173,22 @@ export const InputContainer = styled.div`
     white-space: nowrap;
   }
 
-  &.good{
-    border: 1px solid #00D2FF;
+  &.good {
+    border: 1px solid #00d2ff;
   }
 
   &.good input {
-    color: #3A7BD5;
+    color: #3a7bd5;
   }
 
-  .amount, .buy-amount, .sell-amount{
-    font-family: 'Tomorrow', sans-serif;
+  .amount,
+  .buy-amount,
+  .sell-amount {
+    font-family: "Tomorrow", sans-serif;
   }
 
-  &.skeleton::before{
-    content:'';
+  &.skeleton::before {
+    content: "";
     background: #bfbfbf;
     width: 100%;
     border-radius: 3px;
@@ -201,7 +198,7 @@ export const InputContainer = styled.div`
     left: 15px;
     position: absolute;
   }
-`
+`;
 
 export const ContainerInputComponent = styled.div`
   height: 100px;
@@ -210,15 +207,14 @@ export const ContainerInputComponent = styled.div`
   display: grid;
   align-items: center;
 
-  p.skeleton{
+  p.skeleton {
     background: #bfbfbf;
     width: 100%;
     height: 15px;
     max-width: 400px;
     border-radius: 3px;
   }
-`
-
+`;
 
 // const GetIcon = (itemName, itemStatus) => {
 //
@@ -243,6 +239,4 @@ export const ContainerInputComponent = styled.div`
 //   }
 // }
 
-
-
-export default InputForm
+export default InputForm;

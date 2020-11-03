@@ -1,264 +1,288 @@
 import { WebService } from "../actions/API/WebService";
-import { resetModelData, updateNormalizedDataAction } from "../actions/dataModelActions";
+import {
+  resetModelData,
+  updateNormalizedDataAction,
+} from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
 import {
-    ACCOUNT_URL,
-    DEPOSITS_URL,
-    CREATE_WALLET_URL,
-    DELETE_WALLET_URL,
-    loadLabels,
+  ACCOUNT_URL,
+  DEPOSITS_URL,
+  CREATE_WALLET_URL,
+  DELETE_WALLET_URL,
+  loadLabels,
 } from "../const/const";
-import initialAccounts from '../components/api/accountInitialEnvironment.json'
+import initialAccounts from "../components/api/accountInitialEnvironment.json";
 import { serve_orders, matchItem } from "../utils";
 import update_activity, { pending_activity } from "../actions/storage";
 import { current_section_params } from "../actions/uiActions";
 
 export class AccountService extends WebService {
-
-    async getWalletsByUser(onlyBalances = false, lastActionDetail) {
-        this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES)
-        const user = this.user
-        const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
-        const wallets = await this.Get(accountUrl)
-        if (!wallets || wallets === 404) { return false }
-
-        const availableWallets = wallets.filter(wallet => {
-            return (wallet.visible && wallet.currency.currency !== 'usd') ? wallet : false
-        })
-
-        if (!availableWallets.length) {
-            let userWithOutW = {
-                id: user.id,
-                wallets: []
-            }
-            const toNormalize = await normalizeUser(userWithOutW)
-            await this.dispatch(updateNormalizedDataAction(toNormalize))
-            await this.dispatch(resetModelData({ wallets: [] }))
-            return
-        }
-
-        const balanceList = availableWallets.map(wallet => {
-            let newWallet = {
-                id: wallet.id,
-                currency: wallet.currency.currency,
-                reserved: wallet.reserved,
-                available: wallet.available,
-                total: parseFloat(wallet.reserved) + parseFloat(wallet.available),
-                lastAction: null,
-                actionAmount: 0
-            }
-
-            if(lastActionDetail && wallet.id === lastActionDetail.id) {
-                newWallet = { ...newWallet, ...lastActionDetail }
-            }
-
-            return newWallet
-        })
-
-        let updatedUser = {
-            id: user.id,
-            wallets: [
-                ...availableWallets
-            ],
-            balances: [
-                ...balanceList
-            ]
-        }
-
-        const updatedOnlyBalances = {
-            id: user.id,
-            balances: [
-                ...balanceList
-            ]
-        }
-
-        let userWallets = await normalizeUser(onlyBalances ? updatedOnlyBalances : updatedUser)
-
-        if(await this.isCached(onlyBalances ? `balances` : `wallets`, wallets)) {
-            return userWallets
-        }
-
-        await this.dispatch(updateNormalizedDataAction(userWallets))
-        return userWallets
+  async getWalletsByUser(onlyBalances = false, lastActionDetail) {
+    this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES);
+    const user = this.user;
+    const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
+    const wallets = await this.Get(accountUrl);
+    if (!wallets || wallets === 404) {
+      return false;
     }
 
-    async createInitialEnvironmentAccount() {
-        const { accounts } = initialAccounts
-        for (let body of accounts) {
-            // TODO: assign currency by country
-            body.data.country = this.user.country
-            body.data.name = `Mi Billetera ${body.data.currency.currency}`
-            const wallets = await this.createWallet(body)
-            if (!wallets) { return }
-            await this.getWalletsByUser()
-            const { account } = wallets
-            const dep_prov = await this.createAndInsertDepositProvider(account)
-            if (!dep_prov) { return }
-            // console.log(account)
-        }
+    const availableWallets = wallets.filter((wallet) => {
+      return wallet.visible && wallet.currency.currency !== "usd"
+        ? wallet
+        : false;
+    });
+
+    if (!availableWallets.length) {
+      let userWithOutW = {
+        id: user.id,
+        wallets: [],
+      };
+      const toNormalize = await normalizeUser(userWithOutW);
+      await this.dispatch(updateNormalizedDataAction(toNormalize));
+      await this.dispatch(resetModelData({ wallets: [] }));
+      return;
     }
 
+    const balanceList = availableWallets.map((wallet) => {
+      let newWallet = {
+        id: wallet.id,
+        currency: wallet.currency.currency,
+        reserved: wallet.reserved,
+        available: wallet.available,
+        total: parseFloat(wallet.reserved) + parseFloat(wallet.available),
+        lastAction: null,
+        actionAmount: 0,
+      };
 
-    async getWalletById(walletId) {
-        const user = this.user
-        const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`
-        const headers = this.getHeaders(user.userToken)
+      if (lastActionDetail && wallet.id === lastActionDetail.id) {
+        newWallet = { ...newWallet, ...lastActionDetail };
+      }
 
-        const [wallets] = await this.Get(accountUrl, headers)
-        if (this.isEmpty(wallets)) return
+      return newWallet;
+    });
 
-        const depositProvders = wallets.dep_prov;
-        let depositProviderDetails = [{}]
+    let updatedUser = {
+      id: user.id,
+      wallets: [...availableWallets],
+      balances: [...balanceList],
+    };
 
-        if (depositProvders.length > 0) {
+    const updatedOnlyBalances = {
+      id: user.id,
+      balances: [...balanceList],
+    };
 
-            let providerId = await depositProvders.slice(-1)[0]
+    let userWallets = await normalizeUser(
+      onlyBalances ? updatedOnlyBalances : updatedUser
+    );
 
-            const depositProviderUrl = `${DEPOSITS_URL}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${providerId}"}}`
-
-            depositProviderDetails = await this.Get(depositProviderUrl, headers)
-        }
-
-        const result = {
-            ...wallets,
-            depositProvider: { ...depositProviderDetails[0] }
-        }
-
-        return result
+    if (await this.isCached(onlyBalances ? `balances` : `wallets`, wallets)) {
+      return userWallets;
     }
 
-    async createWallet(body) {
-        return this.Post(CREATE_WALLET_URL, body, this.user.userToken)
+    await this.dispatch(updateNormalizedDataAction(userWallets));
+    return userWallets;
+  }
+
+  async createInitialEnvironmentAccount() {
+    const { accounts } = initialAccounts;
+    for (let body of accounts) {
+      // TODO: assign currency by country
+      body.data.country = this.user.country;
+      body.data.name = `Mi Billetera ${body.data.currency.currency}`;
+      const wallets = await this.createWallet(body);
+      if (!wallets) {
+        return;
+      }
+      await this.getWalletsByUser();
+      const { account } = wallets;
+      const dep_prov = await this.createAndInsertDepositProvider(account);
+      if (!dep_prov) {
+        return;
+      }
+      // console.log(account)
+    }
+  }
+
+  async getWalletById(walletId) {
+    const user = this.user;
+    const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`;
+    const headers = this.getHeaders(user.userToken);
+
+    const [wallets] = await this.Get(accountUrl, headers);
+    if (this.isEmpty(wallets)) return;
+
+    const depositProvders = wallets.dep_prov;
+    let depositProviderDetails = [{}];
+
+    if (depositProvders.length > 0) {
+      let providerId = await depositProvders.slice(-1)[0];
+
+      const depositProviderUrl = `${DEPOSITS_URL}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${providerId}"}}`;
+
+      depositProviderDetails = await this.Get(depositProviderUrl, headers);
     }
 
-    async deleteWallet(account) {
-        const { id, country } = account
-        const user = this.user
+    const result = {
+      ...wallets,
+      depositProvider: { ...depositProviderDetails[0] },
+    };
 
-        const body = {
-            data: {
-                account_id: id,
-                country,
-                visible: false
-            }
-        }
-        const deleteAccount = await this.Post(DELETE_WALLET_URL, body, user.userToken)
+    return result;
+  }
 
-        if (!deleteAccount || deleteAccount === 404 || deleteAccount === 465) { return false }
-        return deleteAccount
+  async createWallet(body) {
+    return this.Post(CREATE_WALLET_URL, body, this.user.userToken);
+  }
+
+  async deleteWallet(account) {
+    const { id, country } = account;
+    const user = this.user;
+
+    const body = {
+      data: {
+        account_id: id,
+        country,
+        visible: false,
+      },
+    };
+    const deleteAccount = await this.Post(
+      DELETE_WALLET_URL,
+      body,
+      user.userToken
+    );
+
+    if (!deleteAccount || deleteAccount === 404 || deleteAccount === 465) {
+      return false;
+    }
+    return deleteAccount;
+  }
+
+  async manageBalance(id, lastAction, actionAmount) {
+    await this.getWalletsByUser(true, {
+      id,
+      lastAction,
+      actionAmount,
+    });
+  }
+
+  // async getBalancesByAccount() {
+  //     const user = this.user
+  //     this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BALANCES)
+  //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
+
+  //     const headers = this.getHeaders(user.userToken)
+
+  //     const balances = await this.Get(accountUrl, headers)
+
+  //     if (this.isEmpty(balances)) return
+
+  //     const balanceList = balances.map(balanceItem => ({
+  //         id: balanceItem.id,
+  //         currency: balanceItem.currency.currency,
+  //         reserved: balanceItem.reserved,
+  //         available: balanceItem.available,
+  //         total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),
+  //         lastAction: null,
+  //         actionAmount: 0
+  //     }))
+
+  //     const updatedUser = {
+  //         ...user,
+  //         balances: [
+  //             ...balanceList
+  //         ]
+  //     }
+
+  //     const userBalances = await normalizeUser(updatedUser)
+  //     await this.dispatch(updateNormalizedDataAction(userBalances))
+  // }
+
+  async countOfAccountTransactions(account_id) {
+    const response = await this.Get(
+      `${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`
+    );
+    return response;
+  }
+
+  async updatePendingActivity(accountId, type, activityList) {
+    const { modelData, ui } = this.globalState;
+
+    if (!modelData.wallets) return;
+
+    const fallbackCurrentWallet = ui.current_section.params.current_wallet;
+    const fallbackActivityType = ui.current_section.params.currentFilter;
+    const currentWallet = modelData.wallets[accountId] || fallbackCurrentWallet;
+
+    if (!currentWallet) return;
+
+    const activityType = type || fallbackActivityType;
+
+    if (!activityList && currentWallet) {
+      activityList = await serve_orders(currentWallet.id, activityType);
+      if (!activityList) return;
     }
 
-    async manageBalance(id, lastAction, actionAmount) {
-        await this.getWalletsByUser(true, {
-            id,
-            lastAction,
-            actionAmount
-        })
+    const isWithdraws = activityType === "withdraws";
+    let pendingData;
+    const filterActivitiesByStatus = async (primary) =>
+      await matchItem(activityList, { primary }, "state", true);
+
+    // If activity is equal to withdraws filter, always set up as 0 value
+    const pending = isWithdraws ? 0 : await filterActivitiesByStatus("pending");
+    const confirmed = await filterActivitiesByStatus("confirmed");
+    // const rejected = await filterActivitiesByStatus('rejected')
+
+    const expandidoMax =
+      ((pending.length || 0) + (confirmed.length || 0)) * 100;
+
+    if (pending) {
+      pendingData = {
+        pending: true,
+        lastPending:
+          activityType === "withdrawals"
+            ? confirmed[0] && confirmed[0].id
+            : pending[0].id,
+      };
+      // } else if (rejected) {
+      //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
+    } else if (confirmed) {
+      pendingData = {
+        pending: true,
+        lastPending: confirmed[0] && confirmed[0].id,
+      };
     }
 
-    // async getBalancesByAccount() {
-    //     const user = this.user
-    //     this.updateLoadInfo(loadLabels.OBTENIENDO_TUS_BALANCES)
-    //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
+    let finalResult = {
+      ...pendingData,
+      expandidoMax,
+      account_id: currentWallet.id,
+      activity_type: activityType,
+    };
 
-    //     const headers = this.getHeaders(user.userToken)
+    this.dispatch(pending_activity(finalResult));
+  }
 
-    //     const balances = await this.Get(accountUrl, headers)
-
-    //     if (this.isEmpty(balances)) return
-
-    //     const balanceList = balances.map(balanceItem => ({
-    //         id: balanceItem.id,
-    //         currency: balanceItem.currency.currency,
-    //         reserved: balanceItem.reserved,
-    //         available: balanceItem.available,
-    //         total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),
-    //         lastAction: null,
-    //         actionAmount: 0
-    //     }))
-
-    //     const updatedUser = {
-    //         ...user,
-    //         balances: [
-    //             ...balanceList
-    //         ]
-    //     }
-
-    //     const userBalances = await normalizeUser(updatedUser)
-    //     await this.dispatch(updateNormalizedDataAction(userBalances))
-    // }
-
-    async countOfAccountTransactions(account_id) {
-        const response = await this.Get(`${ACCOUNT_URL}/${this.user.id}/transactions/count?where={"account_id": "${account_id}"}`)
-        return response
+  async updateActivityState(accountId, type, activities) {
+    if (!activities) {
+      activities = await serve_orders(accountId, type);
     }
 
-    async updatePendingActivity(accountId, type, activityList) {
-        const { modelData, ui } = this.globalState
+    await this.dispatch(current_section_params({ currentFilter: type }));
+    await this.dispatch(update_activity(accountId, type, activities));
+    await this.updatePendingActivity(accountId, type, activities);
+  }
 
-        if (!modelData.wallets) return;
+  async getFiatAccountByUserId() {
+    const user = this.user;
+    const filter = `filter={"where": {"currency_type": "fiat"}}`;
+    const URL = `${ACCOUNT_URL}/${user.id}/accounts?country=${user.country}&${filter}`;
 
-        const fallbackCurrentWallet = ui.current_section.params.current_wallet
-        const fallbackActivityType = ui.current_section.params.currentFilter
-        const currentWallet = modelData.wallets[accountId] || fallbackCurrentWallet
+    const response = await this.Get(URL);
 
-        if (!currentWallet) return;
-
-        const activityType = type || fallbackActivityType
-
-        if (!activityList && currentWallet) {
-            activityList = await serve_orders(currentWallet.id, activityType)
-            if (!activityList) return;
-        }
-
-        const isWithdraws = activityType === 'withdraws'
-        let pendingData
-        const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
-
-        // If activity is equal to withdraws filter, always set up as 0 value
-        const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
-        const confirmed = await filterActivitiesByStatus('confirmed')
-        // const rejected = await filterActivitiesByStatus('rejected')
-
-        const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100
-
-        if (pending) {
-            pendingData = { pending: true, lastPending: (activityType === 'withdrawals') ? (confirmed[0] && confirmed[0].id) : pending[0].id }
-            // } else if (rejected) {
-            //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
-        } else if (confirmed) {
-            pendingData = { pending: true, lastPending: confirmed[0] && confirmed[0].id }
-        }
-
-        let finalResult = {
-            ...pendingData,
-            expandidoMax,
-            account_id: currentWallet.id,
-            activity_type: activityType
-        }
-
-        this.dispatch(pending_activity(finalResult))
-
+    if (!response || response.length < 1) {
+      return false;
     }
-
-    async updateActivityState(accountId, type, activities) {
-        if (!activities) {
-            activities = await serve_orders(accountId, type)
-        }
-
-        await this.dispatch(current_section_params({ currentFilter: type }))
-        await this.dispatch(update_activity(accountId, type, activities))
-        await this.updatePendingActivity(accountId, type, activities)
-    }
-
-    async getFiatAccountByUserId() {
-        const user = this.user
-        const filter = `filter={"where": {"currency_type": "fiat"}}`
-        const URL = `${ACCOUNT_URL}/${user.id}/accounts?country=${user.country}&${filter}`
-
-        const response = await this.Get(URL)
-
-        if (!response || response.length < 1) { return false }
-        return response
-    }
+    return response;
+  }
 }

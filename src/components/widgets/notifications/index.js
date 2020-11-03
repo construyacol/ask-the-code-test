@@ -1,62 +1,58 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 // import { bindActionCreators } from 'redux'
 
-import './noti.css'
+import "./noti.css";
 
 // @param:type
 // new // relaciona el id de extra y si coincide con el elemento de la sección agrega etiqueta "new"
 
 class PopNotification extends Component {
-
-  notification_render = () =>{
-    const {
-      type,
-      notification,
-      extra,
-      id,
-      item_type,
-      notifier
-    } = this.props
+  notification_render = () => {
+    const { type, notification, extra, id, item_type, notifier } = this.props;
 
     switch (type) {
       case "new":
-        return(
-          <span className={`PopNotification newPop ${notifier} ${((extra && item_type) && extra[item_type] === id ) ? 'Visible' : 'Invi'}`}>
-          {/* <div className={`PopNotification newPop ${(extra && (extra.account_id === id || extra.order_id === id)) ? 'Visible' : 'Invi'}`}> */}
-            <p className="fuente2" >Nuevo</p>
+        return (
+          <span
+            className={`PopNotification newPop ${notifier} ${
+              extra && item_type && extra[item_type] === id ? "Visible" : "Invi"
+            }`}
+          >
+            {/* <div className={`PopNotification newPop ${(extra && (extra.account_id === id || extra.order_id === id)) ? 'Visible' : 'Invi'}`}> */}
+            <p className="fuente2">Nuevo</p>
           </span>
-        )
+        );
       default:
-        return(
-          <span className={`PopNotification ${notification>0 ? 'Visible' : 'Invi'}`}>
-            <p className="fuente2" >{notification}</p>
+        return (
+          <span
+            className={`PopNotification ${
+              notification > 0 ? "Visible" : "Invi"
+            }`}
+          >
+            <p className="fuente2">{notification}</p>
           </span>
-        )
-
+        );
     }
+  };
 
+  render() {
+    return <this.notification_render />;
   }
-
-
-  render(){
-    return(
-      <this.notification_render/>
-    )
-  }
-
 }
 
-function mapStateToProps(state, props){
+function mapStateToProps(state, props) {
   // console.log('|||||||| PopNotification', props)
-  const{
-    notifier
-  } = props
+  const { notifier } = props;
 
-  return{
-    notification:state.ui.notifications[notifier] && state.ui.notifications[notifier].amount,
-    extra:state.ui.notifications[notifier] && state.ui.notifications[notifier].extra,
-  }
+  return {
+    notification:
+      state.ui.notifications[notifier] &&
+      state.ui.notifications[notifier].amount,
+    extra:
+      state.ui.notifications[notifier] &&
+      state.ui.notifications[notifier].extra,
+  };
 }
 
-export default connect(mapStateToProps) (PopNotification)
+export default connect(mapStateToProps)(PopNotification);

@@ -1,36 +1,35 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 // import { useWindowSize } from 'react-use'
-import Confetti from 'react-confetti'
+import Confetti from "react-confetti";
 
 class ConfettiComponent extends Component {
   // const { width, height } = useWindowSize()
 
   state = {
-    width:null,
-    height:null
-  }
+    width: null,
+    height: null,
+  };
 
-  componentDidMount(){
+  componentDidMount() {
     let intViewportWidth = window.innerWidth;
     let intViewportHeight = window.innerHeight;
 
-    this.setState({width:intViewportWidth, height:intViewportHeight})
+    this.setState({ width: intViewportWidth, height: intViewportHeight });
   }
 
-  render(){
-    const { width, height } = this.state
+  render() {
+    const { width, height } = this.state;
     let style = {
-      position:'absolute',
-      top:'0px',
-      left:'-40px',
-      width:width,
-      height:height,
-      zIndex:-1
-    }
+      position: "absolute",
+      top: "0px",
+      left: "-40px",
+      width: width,
+      height: height,
+      zIndex: -1,
+    };
     return (
       <div style={style}>
-        {
-          (width && height) &&
+        {width && height && (
           <Confetti
             width={width}
             height={height}
@@ -39,13 +38,10 @@ class ConfettiComponent extends Component {
             recycle={true}
             opacity={0.6}
           />
-        }
+        )}
       </div>
-
-
-    )
+    );
   }
-
 }
 
-export default ConfettiComponent
+export default ConfettiComponent;
