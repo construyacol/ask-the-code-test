@@ -5,12 +5,12 @@ import AddressBook from './'
 import { atentionAnimation } from '../../../animations'
 
 
-const AddressBookCTA = ({ addressToAdd }) => {
+const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
 
   const actions = useActions()
 
   const openAddressBook = async() => {
-    actions.renderModal(() => <AddressBook addressToAdd={addressToAdd}/>)
+    actions.renderModal(() => <AddressBook setAddressValue={setAddressValue} addressToAdd={addressToAdd}/>)
   }
 
   return(

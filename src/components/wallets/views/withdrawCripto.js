@@ -221,7 +221,11 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={() => <AddressBookCTA addressToAdd={addressToAdd} />}
+        AuxComponent={[
+          ()=><AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />,
+          () => <SearchComponent/>
+        ]
+        }
       />
 
       <InputForm
@@ -253,8 +257,23 @@ export const CriptoView = () => {
 }
 
 
+const SearchComponent = props => {
+  return (
+    <ShowAlert>
 
+    </ShowAlert>
+  )
+}
 
+const ShowAlert = styled.section`
+  width: 100%;
+  height: 120px;
+  background: white;
+  position: absolute;
+  top: 105px;
+  left: 0;
+  z-index: 2;
+`
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
   const isMovil = window.innerWidth < 768

@@ -109,6 +109,12 @@ const InputForm = (props) => {
     inputProps.value = value
   }
 
+  // useEffect(()=>{
+    // AuxComponent && Object.keys(AuxComponent)
+    // console.log('°°°||||||||||||||||||||||||||||||||| withdrawCripto::: ', AuxComponent )
+  // })
+
+
   return (
     <InputLayout>
       <ContainerInputComponent>
@@ -124,9 +130,15 @@ const InputForm = (props) => {
         }
 
         {
-          AuxComponent &&
-          <AuxComponent/>
+           AuxComponent && AuxComponent.length && AuxComponent.map((AuxComponentSingle, idItem) => {
+             return <AuxComponentSingle key={idItem}/>
+           })
+           // :
+           // <AuxComponent/>
         }
+
+
+
       </ContainerInputComponent>
       {customError && (
         <ErrorText className="fuente">{customError.text}</ErrorText>

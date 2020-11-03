@@ -28,7 +28,7 @@ const selectWithdrawAccounts = createSelector(
 )
 
 
-const AddressBook = ({ addressToAdd }) => {
+const AddressBook = ({ addressToAdd, setAddressValue }) => {
   const actions = useActions()
   const [{ current_wallet, path }] = WithdrawViewState()
   const provider_type = current_wallet && current_wallet.currency.currency
@@ -66,7 +66,7 @@ const AddressBook = ({ addressToAdd }) => {
           <Container id="mainContainerAB">
             {
               (view === 'addressList' && withdrawAccounts.length) ?
-                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} />
+                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} setAddressValue={setAddressValue} />
                 :
                 view === 'newAccount' ?
                   <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd} />
