@@ -64,6 +64,12 @@ export default () => {
         case 'address-account':
         // case: si encontramos @ al inicio de la linea: ^@
 
+          if(inputName === 'address' && e.target.value.match(/^@/g)){
+            // console.log('activando sistema de tags')
+            return
+          }
+
+
           let AddressValidator
           AddressValidator = await import('wallet-address-validator')
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActions } from '../../../../../hooks/useActions'
 import OtherModalLayout from '../../otherModalLayout'
-import { createSelector } from 'reselect'
 import { useSelector } from "react-redux"
 import { setAnimation } from '../../../../../utils'
 import WithdrawViewState from '../../../../hooks/withdrawStateHandle'
@@ -12,27 +11,16 @@ import EmptyState from './emptyState'
 import NewAccount from './newAccount'
 import AddressBookComponent from './addressBookList'
 import HeaderComponent from './header'
+import { swing_in_bottom_bck } from '../../../animations'
+import  selectWithdrawAccountsByProviderType from '../../../../selectors'
 
 
 
-const selectWithdrawAccounts = createSelector(
-  ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
-  (_, provider_type) => provider_type,
-  (withdraw_accounts, provider_type) => {
-    let res = []
-    for (const [_, withdraw_account] of Object.entries(withdraw_accounts)) {
-      (withdraw_account.provider_type === provider_type && withdraw_account.account_name.value !== provider_type) && res.push(withdraw_account)
-    }
-    return res
-  }
-)
-
-
-const AddressBook = ({ addressToAdd }) => {
+const AddressBook = ({ addressToAdd, setAddressValue }) => {
   const actions = useActions()
-  const [{ current_wallet }] = WithdrawViewState()
+  const [{ current_wallet, path }] = WithdrawViewState()
   const provider_type = current_wallet && current_wallet.currency.currency
-  const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
+  const withdrawAccounts = useSelector(state => selectWithdrawAccountsByProviderType(state, provider_type))
   const [view, setView] = useState('addressList')
 
   const cerrar = (e) => {
@@ -53,20 +41,24 @@ const AddressBook = ({ addressToAdd }) => {
     }
   }, [addressToAdd])
 
-  if (!current_wallet) {
-    actions.renderModal(null)
+  if (!current_wallet || path !== 'withdraw') {
+    cerrar()
     return <></>
   }
 
+  useEffect(()=>{
+    setAnimation('appear', 'containerLayout', 1000)
+  }, [])
+
   return (
     <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar} >
-      <ContainerLayout>
+      <ContainerLayout id="containerLayout">
         <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
         <Content id="mainContent">
           <Container id="mainContainerAB">
             {
               (view === 'addressList' && withdrawAccounts.length) ?
-                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} />
+                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} setAddressValue={setAddressValue} />
                 :
                 view === 'newAccount' ?
                   <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd} />
@@ -123,4 +115,10 @@ const ContainerLayout = styled.div`
   display: grid;
   grid-template-rows: 80px 1fr;
   transform-style: preserve-3d;
+
+  &.appear{
+    -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+  }
+
 `

@@ -4,13 +4,11 @@ import useToastMessage from '../../../../../hooks/useToastMessage'
 import { Icon, Front, Top, CubeObject } from '../../../shared-styles'
 import styled from 'styled-components'
 import SimpleLoader from '../../../loaders'
+import { useActions } from '../../../../../hooks/useActions'
 
 
 
-
-
-
-export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
+export const ItemList = ({ item:{ id, info:{ address, label }}, setAddressValue }) => {
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -19,8 +17,10 @@ export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
   }
 
   const [ deleting, setDeleting ] = useState('')
-  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
+  const [coinsendaServices, _] = useCoinsendaServices()
   const [ toastMessage ] = useToastMessage()
+  const actions = useActions()
+
 
   const setDeletingState = payload => {
     setDeleting(payload)
@@ -60,7 +60,7 @@ export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
         loaderDeleteItem.classList.remove('deleting')
         blockerActive.classList.remove('deleting')
         setDeletingState('unrotate')
-        dispatch(actions.success_sound())
+        actions.success_sound()
         return toastMessage('¡La cuenta ha sido eliminada con éxito!', 'success')
       default:
         return setDeletingState('unrotate')
@@ -69,12 +69,19 @@ export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
 
   }
 
+  const handleClick = (e) => {
+    // console.log(e.target.dataset && e.target.dataset.delete)
+    if(e.target.dataset && e.target.dataset.delete){return}
+    setAddressValue(address)
+    actions.renderModal(null)
+  }
+
 
   return(
-    <CubeObject className={`${deleting}`}>
-      <Front>
-        <ItemListContainer>
-          <AcronymContainer>
+    <ItemContainer id="cubeContainer" className={`${deleting}`}>
+      <Front id="frontCube" onClick={handleClick}>
+        <ItemListContainer id="itemListContainer">
+          <AcronymContainer id="acronymContainer">
             <p className="fuente">
               {getAcronym()}
             </p>
@@ -89,7 +96,7 @@ export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
             </AddressContainer>
           </ItemTextContainer>
           <DeleteButton>
-            <Icon className="fas fa-trash-alt tooltip" data-action="open" onClick={deleteItem}>
+            <Icon className="fas fa-trash-alt tooltip" data-action="open" data-delete onClick={deleteItem}>
               <span className="tooltiptext fuente">Eliminar</span>
             </Icon>
           </DeleteButton>
@@ -101,12 +108,27 @@ export const ItemList = ({ item:{ id, info:{ address, label }}}) => {
           handleAction={deleteItem}
         />
       </Top>
-    </CubeObject>
+    </ItemContainer>
   )
 
 }
 
 
+const ItemContainer = styled(CubeObject)`
+  position: relative;
+
+  ${'' /* &::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: red;
+  } */}
+
+
+`
 
 const DeleteComponent = ({ handleAction, itemId }) => {
   return(
@@ -191,7 +213,7 @@ const DeleteContainer = styled.div`
 
 
 
-const Address = styled.p`
+export const Address = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -332,7 +354,7 @@ const NewElement = styled.p`
 
 
 
-const AddressContainer = styled.div`
+export const AddressContainer = styled.div`
   position: relative;
   width: 150px;
   cursor: pointer;

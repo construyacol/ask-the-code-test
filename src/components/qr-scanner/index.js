@@ -22,6 +22,7 @@ const QrScanner = (props) => {
     }
 
     const handleScan = data => {
+      console.log('|||||||||||||||||||||||||| handleScan :', data)
         if (data) {
             if (data.indexOf('?') > -1) {
                 data = data.slice(0, data.indexOf('?'))

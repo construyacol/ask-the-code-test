@@ -1,16 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react'
-import WithdrawViewState from '../../hooks/withdrawStateHandle'
-import IconSwitch from '../../widgets/icons/iconSwitch'
-import InputForm from '../../widgets/inputs/inputForm'
-import ControlButton from '../../widgets/buttons/controlButton'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
+import WithdrawViewState from '../../../hooks/withdrawStateHandle'
+import IconSwitch from '../../../widgets/icons/iconSwitch'
+import InputForm from '../../../widgets/inputs/inputForm'
+import ControlButton from '../../../widgets/buttons/controlButton'
+import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
+import Withdraw2FaModal from '../../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
-import { MAIN_COLOR } from '../../referrals/shareStyles'
-import { useActions } from '../../../hooks/useActions'
-import useToastMessage from '../../../hooks/useToastMessage'
-import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
+import { MAIN_COLOR } from '../../../referrals/shareStyles'
+import { useActions } from '../../../../hooks/useActions'
+import useToastMessage from '../../../../hooks/useToastMessage'
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
+import AddressBookCTA from '../../../widgets/modal/render/addressBook/ctas'
+import { AiOutlineClose } from "react-icons/ai";
+import WithOutProvider from './withOutProvider'
+import CriptoViewLoader from './skeleton'
+import AddressTagList from './addressTagList'
+import TagItem from './tagItem'
 
 
 export const CriptoSupervisor = props => {
@@ -38,16 +43,7 @@ export const CriptoSupervisor = props => {
 
 
 
-const WithOutProvider = ({ current_wallet }) => {
-  return (
-    <section className="maintanceW">
-      <IconSwitch icon="maintence" size={130} color="#989898" />
-      <p className="fuente" >
-        Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, ten paciencia...
-      </p>
-    </section>
-  )
-}
+
 
 
 
@@ -163,8 +159,8 @@ export const CriptoView = () => {
 
   const showQrScanner = async () => {
     renderModal(null)
-    const Element = await import('../../qr-scanner')
-    actions.renderModal(Element.default)
+    const Element = await import('../../../qr-scanner')
+    actions.renderModal(() => <Element.default onScan={setAddressValue}/>)
   }
 
   useEffect(() => {
@@ -182,12 +178,30 @@ export const CriptoView = () => {
     setAddressValue(value)
   }
 
+
+
+
+
+
   const [ addressToAdd, setAddressToAdd ] = useState()
+  const [ tagWithdrawAccount, setTagWithdrawAccount ] = useState()
+
+  const deleteTag = () => {
+    setTagWithdrawAccount(null)
+    setAddressValue("")
+  }
 
   useEffect(()=>{
+    // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd()
+    const provider_type = current_wallet.currency.currency
+
+    if(withdraw_accounts[addressValue] && (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type)){
+      // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
+      setTagWithdrawAccount(withdraw_accounts[addressValue])
+    }
+
     if(addressState === 'good'){
-      const provider_type = current_wallet.currency.currency
       if(!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)){
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
         setAddressToAdd(addressValue)
@@ -196,22 +210,24 @@ export const CriptoView = () => {
   }, [addressState, withdraw_accounts, addressValue])
 
 
+
   return (
     <WithdrawForm id="withdrawForm" className={`${movil_viewport ? 'movil' : ''}`} onSubmit={e => e.preventDefault()} >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
-        placeholder="Dirección de retiro"
+        placeholder={"Escribe @ para ver tu lista de direcciones..."}
         name="address"
         handleStatus={setAddressState}
         isControlled
         handleChange={handleChangeAddress}
         value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
-        disabled={loader}
+        disabled={loader || tagWithdrawAccount}
         autoFocus={true}
         SuffixComponent={() => <IconsContainer>
           <IconSwitch
+            className="superImposed"
             icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
             color={`${addressState === 'good' ? 'green' : 'gray'}`}
             size={`${addressState === 'good' ? 22 : 25}`} />
@@ -221,7 +237,13 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={() => <AddressBookCTA addressToAdd={addressToAdd} />}
+        AuxComponent={
+          [
+            ()=> <AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />,
+            () => <AddressTagList show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue} />,
+            () => <TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>
+          ]
+        }
       />
 
       <InputForm
@@ -251,6 +273,25 @@ export const CriptoView = () => {
   )
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -328,20 +369,3 @@ const BalanceContainer = styled.div`
     color: #b48728;
   }
 `
-
-const CriptoViewLoader = () => {
-
-  return (
-    <>
-      <WithdrawForm>
-        <InputForm skeleton />
-        <InputForm skeleton />
-        <ControlButton
-          formValidate={false}
-          label="Enviar"
-        />
-      </WithdrawForm>
-    </>
-  )
-
-}

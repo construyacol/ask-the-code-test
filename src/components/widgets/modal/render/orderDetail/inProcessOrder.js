@@ -170,7 +170,7 @@ const FiatDespoitOrder = ({ order }) => {
       const data = e.target.files[0]
       if (data.type !== 'image/png' && data.type !== 'image/jpeg') { return alert('formato no permitido') }
       const file = await img_compressor(data, 0.25)
-      // console.log('result compresor', file.size)
+      console.log('result compresor', file.size)
       const imageDataUrl = await readFile(file)
       setImgSrc(imageDataUrl)
       actions.isAppLoading(true)

@@ -7,6 +7,8 @@ import IconSwitch from '../../../icons/iconSwitch'
 import InputForm from '../../../inputs/inputForm'
 import { ControlButtonContainer } from '../../../shared-styles'
 import ControlButton from '../../../buttons/controlButton'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
+
 
 
 const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
@@ -16,15 +18,14 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
   const [ nameState, setNameState ] = useState()
   const [ loader, setLoader ] = useState()
 
-
   const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices()
   const [{ withdraw_accounts, current_wallet }] = WithdrawViewState()
   const [ toastMessage ] = useToastMessage()
+  const idForCreateAccount = useKeyActionAsClick(true, 'accept-confirm-modal', 13, false, 'onkeyup', true)
 
 
   const handleSubmit = async(e) => {
     e && e.preventDefault()
-
     setLoader(true)
     const form = new FormData(document.getElementById('newAccount'))
     const label = form.get('name-account')
@@ -70,7 +71,6 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           <IconSwitch icon={provider_type} size={45}/>
           <p className="fuente">{provider_type}</p>
         </ProviderTypeIcon>
-        {/* <Form onSubmit={e => e.preventDefault()}> */}
         <Form id="newAccount" onSubmit={handleSubmit}>
             <InputForm
               classes="fuente"
@@ -101,9 +101,9 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           <ControlButton
             label="Crear"
             formValidate={addressState === 'good' && nameState === 'good'}
-            // formValidate
-            // handleAction={handleSubmit}
+            handleAction={handleSubmit}
             loader={loader}
+            id={idForCreateAccount}
           />
         </ControlButtonContainer>
         </Form>

@@ -8,7 +8,7 @@ import { InputContainer } from '../../../inputs/inputForm'
 
 
 
-const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
+const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue }) => {
 
   const [ searchList, setSearchList ] = useState([])
   const [ searchValue, setSearchValue ] = useState()
@@ -65,11 +65,11 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
           {
             searchList.length ?
               searchList.map((item, index) => {
-                return <ItemList key={index} item={item}/>
+                return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
               })
             :
               withdrawAccounts.map((item, index) => {
-                return <ItemList key={index} item={item}/>
+                return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
               })
           }
         </ListContainer>

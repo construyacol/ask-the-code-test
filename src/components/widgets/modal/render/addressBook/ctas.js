@@ -2,18 +2,19 @@ import React, { useState, useEffect } from 'react'
 import { useActions } from '../../../../../hooks/useActions'
 import styled from 'styled-components'
 import AddressBook from './'
+import { atentionAnimation } from '../../../animations'
 
 
-const AddressBookCTA = ({ addressToAdd }) => {
+const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
 
   const actions = useActions()
 
   const openAddressBook = async() => {
-    actions.renderModal(() => <AddressBook addressToAdd={addressToAdd}/>)
+    actions.renderModal(() => <AddressBook setAddressValue={setAddressValue} addressToAdd={addressToAdd}/>)
   }
 
   return(
-    <AddressBookContainer>
+    <AddressBookContainer className={`${addressToAdd ? 'addressToAdd' : ''} `}>
       <p onClick={openAddressBook} className="fuente">{addressToAdd ? `+ Agregar cuenta de retiro` : 'Gestionar direcciones >>'}</p>
     </AddressBookContainer>
   )
@@ -28,7 +29,7 @@ const AddressBookContainer = styled.div`
   bottom: -35px;
   cursor: pointer;
   display: flex;
-  
+
   p{
     margin: 0;
     font-size: 14px;
@@ -37,5 +38,24 @@ const AddressBookContainer = styled.div`
   }
   p:hover{
     text-decoration: underline;
+  }
+
+  &.addressToAdd{
+    animation: ${atentionAnimation} 1s forwards, blurs 1s linear 1s infinite;
+  }
+
+  @keyframes blurs{
+    0%{
+      text-shadow: 0px 1px 8px rgba(255, 173, 0, 0);
+      transform: scale(1);
+    }
+    50%{
+      text-shadow: 0px 1px 8px rgba(255, 173, 0, .7);
+      transform: scale(1.03);
+    }
+    100%{
+      transform: scale(1);
+      text-shadow: 0px 1px 8px rgba(255, 173, 0, 0);
+    }
   }
 `
