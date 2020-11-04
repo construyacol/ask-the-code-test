@@ -11,7 +11,7 @@ import { useActions } from '../../../hooks/useActions'
 import useToastMessage from '../../../hooks/useToastMessage'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
 import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
-
+import { AiOutlineClose } from "react-icons/ai";
 
 export const CriptoSupervisor = props => {
 
@@ -182,18 +182,41 @@ export const CriptoView = () => {
     setAddressValue(value)
   }
 
+
+
+
+
+
   const [ addressToAdd, setAddressToAdd ] = useState()
+  const [ tagWithdrawAccount, setTagWithdrawAccount ] = useState()
+
+  const deleteTag = () => {
+    setTagWithdrawAccount(null)
+    setAddressValue("")
+  }
 
   useEffect(()=>{
+    // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd()
+    const provider_type = current_wallet.currency.currency
+
+    if(withdraw_accounts[addressValue] && (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type)){
+      // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
+      setTagWithdrawAccount(withdraw_accounts[addressValue])
+    }
+
     if(addressState === 'good'){
-      const provider_type = current_wallet.currency.currency
       if(!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)){
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
         setAddressToAdd(addressValue)
       }
+
+
     }
   }, [addressState, withdraw_accounts, addressValue])
+
+
+
 
 
   return (
@@ -208,10 +231,11 @@ export const CriptoView = () => {
         handleChange={handleChangeAddress}
         value={addressValue}
         label={`Ingresa la dirección ${current_wallet.currency.currency}`}
-        disabled={loader}
+        disabled={loader || tagWithdrawAccount}
         autoFocus={true}
         SuffixComponent={() => <IconsContainer>
           <IconSwitch
+            className="superImposed"
             icon={`${addressState === 'good' ? 'verify' : 'wallet'}`}
             color={`${addressState === 'good' ? 'green' : 'gray'}`}
             size={`${addressState === 'good' ? 22 : 25}`} />
@@ -221,10 +245,12 @@ export const CriptoView = () => {
             color="gray"
             size={25} />
         </IconsContainer>}
-        AuxComponent={[
-          ()=><AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />,
-          () => <SearchComponent/>
-        ]
+        AuxComponent={
+          [
+            ()=> <AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />,
+            () => <SearchComponent/>,
+            () => <TagComponent withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>
+          ]
         }
       />
 
@@ -265,14 +291,189 @@ const SearchComponent = props => {
   )
 }
 
+const TagComponent = ({ withdrawAccount, deleteTag }) => {
+
+  // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
+
+  if(!withdrawAccount){return null}
+
+  const address = withdrawAccount.info.address
+
+  return(
+    <>
+      <TagBlocker/>
+      <TagContainer >
+        <LabelTextCont>
+          <p className="fuente label_">{withdrawAccount.info.label}</p>
+          <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
+            <Address className="fuente2 address_">{address}</Address>
+          </AddressContainer>
+        </LabelTextCont>
+        <DeleteButton onClick={deleteTag}>
+          <AiOutlineClose size={16} color="white" />
+        </DeleteButton>
+      </TagContainer>
+    </>
+  )
+
+}
+
+
+export const Address = styled.p`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 13px;
+`
+
+
+
+
+const LabelTextCont = styled.div`
+  height: 60px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  position: relative;
+  transition: .3s;
+  top: 0;
+
+  p{
+    line-height: 30px;
+    transition: .15s;
+  }
+
+  .address_{
+    opacity: 0;
+    font-size: 13px;
+  }
+`
+
+const DeleteButton = styled.div`
+  width: 18px;
+  height: 18px;
+  background: gray;
+  justify-self: center;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: .15s;
+  transform: scale(1);
+  cursor: pointer;
+  position: relative;
+  top: 6px;
+
+  &:hover{
+    transform: scale(1.1);
+  }
+`
+
+const TagBlocker = styled.section`
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  width: calc(100% - 2px);
+  height: 40px;
+  left: 2px;
+  ${'' /* background: rgb(255 255 255 / 51%); */}
+  background: linear-gradient(to right, rgb(255 255 255), rgb(255 255 255), transparent);
+  backdrop-filter: blur(1px);
+`
+
+export const AddressContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width:200px;
+  cursor: pointer;
+
+  &::after{
+    transition: .15s;
+    content: attr(data-final-address);
+    position: absolute;
+    right: -75px;
+    top: 0;
+    color: #505050;
+    font-size: 13px;
+    line-height: 30px;
+    opacity: 0;
+  }
+
+  @media (max-width: 768px){
+    max-width:100px;
+    }
+`
+
+const TagContainer = styled.div`
+
+  overflow: hidden;
+  position: absolute;
+  bottom: 9px;
+  left: 12px;
+  height: 30px;
+  background: #d8d8d8;
+  border-radius: 4px;
+  display: grid;
+  width: auto;
+  grid-template-columns: minmax(210px, 275px) 38px;
+  cursor: pointer;
+
+  @media (max-width: 768px){
+    grid-template-columns: minmax(90px, 180px) 38px;
+  }
+
+  &:hover{
+    ${LabelTextCont}{
+      top: -30px;
+      .label_{
+        opacity: 0;
+      }
+
+      .address_, ${AddressContainer}::after{
+        opacity: 1;
+      }
+    }
+  }
+
+  &.disappear{
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  &.appear{
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+
+
+  ${'' /* &::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 40px;
+    background: rgb(255 255 255 / 51%);
+    backdrop-filter: blur(1px);
+  } */}
+
+  p{
+    margin: 0;
+    padding-left: 15px;
+    color: #505050;
+  }
+`
+
+
 const ShowAlert = styled.section`
   width: 100%;
   height: 120px;
   background: white;
   position: absolute;
-  top: 105px;
+  ${'' /* top: 105px; */}
+  top: 205px;
   left: 0;
   z-index: 2;
+  display: none;
 `
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {

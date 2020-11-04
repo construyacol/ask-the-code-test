@@ -213,7 +213,7 @@ const DeleteContainer = styled.div`
 
 
 
-const Address = styled.p`
+export const Address = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -354,7 +354,7 @@ const NewElement = styled.p`
 
 
 
-const AddressContainer = styled.div`
+export const AddressContainer = styled.div`
   position: relative;
   width: 150px;
   cursor: pointer;
