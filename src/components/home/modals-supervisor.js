@@ -83,7 +83,7 @@ function ModalsSupervisor(props) {
                         "/:primary_path/:path/:account_id/:tx_path/:order_id",
                         "/:primary_path/:path/:account_id",
                         "/"
-                    ]} component={() => React.createElement(RenderModal)} />
+                    ]} render={() => React.createElement(RenderModal)} />
                     // React.createElement(RenderModal)
                 }
             </ModalContainer>
