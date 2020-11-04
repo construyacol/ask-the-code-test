@@ -1,17 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
-import WithdrawViewState from '../../hooks/withdrawStateHandle'
-import IconSwitch from '../../widgets/icons/iconSwitch'
-import InputForm from '../../widgets/inputs/inputForm'
-import ControlButton from '../../widgets/buttons/controlButton'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import Withdraw2FaModal from '../../widgets/modal/render/withdraw2FAModal'
+import WithdrawViewState from '../../../hooks/withdrawStateHandle'
+import IconSwitch from '../../../widgets/icons/iconSwitch'
+import InputForm from '../../../widgets/inputs/inputForm'
+import ControlButton from '../../../widgets/buttons/controlButton'
+import { useCoinsendaServices } from '../../../../services/useCoinsendaServices'
+import Withdraw2FaModal from '../../../widgets/modal/render/withdraw2FAModal'
 import styled from 'styled-components'
-import { MAIN_COLOR } from '../../referrals/shareStyles'
-import { useActions } from '../../../hooks/useActions'
-import useToastMessage from '../../../hooks/useToastMessage'
-import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
-import AddressBookCTA from '../../widgets/modal/render/addressBook/ctas'
+import { MAIN_COLOR } from '../../../referrals/shareStyles'
+import { useActions } from '../../../../hooks/useActions'
+import useToastMessage from '../../../../hooks/useToastMessage'
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick'
+import AddressBookCTA from '../../../widgets/modal/render/addressBook/ctas'
 import { AiOutlineClose } from "react-icons/ai";
+import WithOutProvider from './withOutProvider'
+import CriptoViewLoader from './skeleton'
+import AddressTagList from './addressTagList'
+import TagItem from './tagItem'
+
 
 export const CriptoSupervisor = props => {
 
@@ -38,16 +43,7 @@ export const CriptoSupervisor = props => {
 
 
 
-const WithOutProvider = ({ current_wallet }) => {
-  return (
-    <section className="maintanceW">
-      <IconSwitch icon="maintence" size={130} color="#989898" />
-      <p className="fuente" >
-        Los retiros de {current_wallet.currency.currency} estan fuera de servicio temporalmente, ten paciencia...
-      </p>
-    </section>
-  )
-}
+
 
 
 
@@ -163,8 +159,8 @@ export const CriptoView = () => {
 
   const showQrScanner = async () => {
     renderModal(null)
-    const Element = await import('../../qr-scanner')
-    actions.renderModal(Element.default)
+    const Element = await import('../../../qr-scanner')
+    actions.renderModal(() => <Element.default onScan={setAddressValue}/>)
   }
 
   useEffect(() => {
@@ -210,12 +206,8 @@ export const CriptoView = () => {
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
         setAddressToAdd(addressValue)
       }
-
-
     }
   }, [addressState, withdraw_accounts, addressValue])
-
-
 
 
 
@@ -224,7 +216,7 @@ export const CriptoView = () => {
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
-        placeholder="Dirección de retiro"
+        placeholder={"Escribe @ para ver tu lista de direcciones..."}
         name="address"
         handleStatus={setAddressState}
         isControlled
@@ -248,8 +240,8 @@ export const CriptoView = () => {
         AuxComponent={
           [
             ()=> <AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />,
-            () => <SearchComponent/>,
-            () => <TagComponent withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>
+            () => <AddressTagList show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue} />,
+            () => <TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>
           ]
         }
       />
@@ -283,198 +275,27 @@ export const CriptoView = () => {
 }
 
 
-const SearchComponent = props => {
-  return (
-    <ShowAlert>
-
-    </ShowAlert>
-  )
-}
-
-const TagComponent = ({ withdrawAccount, deleteTag }) => {
-
-  // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
-
-  if(!withdrawAccount){return null}
-
-  const address = withdrawAccount.info.address
-
-  return(
-    <>
-      <TagBlocker/>
-      <TagContainer >
-        <LabelTextCont>
-          <p className="fuente label_">{withdrawAccount.info.label}</p>
-          <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
-            <Address className="fuente2 address_">{address}</Address>
-          </AddressContainer>
-        </LabelTextCont>
-        <DeleteButton onClick={deleteTag}>
-          <AiOutlineClose size={16} color="white" />
-        </DeleteButton>
-      </TagContainer>
-    </>
-  )
-
-}
-
-
-export const Address = styled.p`
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  font-size: 13px;
-`
 
 
 
 
-const LabelTextCont = styled.div`
-  height: 60px;
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  position: relative;
-  transition: .3s;
-  top: 0;
-
-  p{
-    line-height: 30px;
-    transition: .15s;
-  }
-
-  .address_{
-    opacity: 0;
-    font-size: 13px;
-  }
-`
-
-const DeleteButton = styled.div`
-  width: 18px;
-  height: 18px;
-  background: gray;
-  justify-self: center;
-  border-radius: 3px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: .15s;
-  transform: scale(1);
-  cursor: pointer;
-  position: relative;
-  top: 6px;
-
-  &:hover{
-    transform: scale(1.1);
-  }
-`
-
-const TagBlocker = styled.section`
-  content: '';
-  position: absolute;
-  bottom: 5px;
-  width: calc(100% - 2px);
-  height: 40px;
-  left: 2px;
-  ${'' /* background: rgb(255 255 255 / 51%); */}
-  background: linear-gradient(to right, rgb(255 255 255), rgb(255 255 255), transparent);
-  backdrop-filter: blur(1px);
-`
-
-export const AddressContainer = styled.div`
-  position: relative;
-  width: 100%;
-  max-width:200px;
-  cursor: pointer;
-
-  &::after{
-    transition: .15s;
-    content: attr(data-final-address);
-    position: absolute;
-    right: -75px;
-    top: 0;
-    color: #505050;
-    font-size: 13px;
-    line-height: 30px;
-    opacity: 0;
-  }
-
-  @media (max-width: 768px){
-    max-width:100px;
-    }
-`
-
-const TagContainer = styled.div`
-
-  overflow: hidden;
-  position: absolute;
-  bottom: 9px;
-  left: 12px;
-  height: 30px;
-  background: #d8d8d8;
-  border-radius: 4px;
-  display: grid;
-  width: auto;
-  grid-template-columns: minmax(210px, 275px) 38px;
-  cursor: pointer;
-
-  @media (max-width: 768px){
-    grid-template-columns: minmax(90px, 180px) 38px;
-  }
-
-  &:hover{
-    ${LabelTextCont}{
-      top: -30px;
-      .label_{
-        opacity: 0;
-      }
-
-      .address_, ${AddressContainer}::after{
-        opacity: 1;
-      }
-    }
-  }
-
-  &.disappear{
-    transform: translateY(10px);
-    opacity: 0;
-  }
-
-  &.appear{
-    transform: translateY(0);
-    opacity: 1;
-  }
 
 
 
-  ${'' /* &::after{
-    content: '';
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 40px;
-    background: rgb(255 255 255 / 51%);
-    backdrop-filter: blur(1px);
-  } */}
-
-  p{
-    margin: 0;
-    padding-left: 15px;
-    color: #505050;
-  }
-`
 
 
-const ShowAlert = styled.section`
-  width: 100%;
-  height: 120px;
-  background: white;
-  position: absolute;
-  ${'' /* top: 105px; */}
-  top: 205px;
-  left: 0;
-  z-index: 2;
-  display: none;
-`
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
   const isMovil = window.innerWidth < 768
@@ -548,20 +369,3 @@ const BalanceContainer = styled.div`
     color: #b48728;
   }
 `
-
-const CriptoViewLoader = () => {
-
-  return (
-    <>
-      <WithdrawForm>
-        <InputForm skeleton />
-        <InputForm skeleton />
-        <ControlButton
-          formValidate={false}
-          label="Enviar"
-        />
-      </WithdrawForm>
-    </>
-  )
-
-}

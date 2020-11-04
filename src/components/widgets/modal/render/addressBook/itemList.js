@@ -78,10 +78,10 @@ export const ItemList = ({ item:{ id, info:{ address, label }}, setAddressValue 
 
 
   return(
-    <ItemContainer className={`${deleting}`}>
-      <Front onClick={handleClick}>
-        <ItemListContainer>
-          <AcronymContainer>
+    <ItemContainer id="cubeContainer" className={`${deleting}`}>
+      <Front id="frontCube" onClick={handleClick}>
+        <ItemListContainer id="itemListContainer">
+          <AcronymContainer id="acronymContainer">
             <p className="fuente">
               {getAcronym()}
             </p>
