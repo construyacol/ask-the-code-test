@@ -11,6 +11,8 @@ import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";
 import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
+import { hotjar } from "react-hotjar";
+
 import "./loader.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -94,8 +96,9 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   };
 
   const redirectURL = async (isSessionRestored) => {
-    coinsendaServices.freshChatInitUser();
-    coinsendaServices.initPushNotificator();
+    await coinsendaServices.freshChatInitUser();
+    hotjar.initialize(1688041, 6);
+    // coinsendaServices.initPushNotificator();
 
     const verificationStatus = await coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {

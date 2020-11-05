@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect } from "react";
 import loadable from "@loadable/component";
-// import { hotjar } from 'react-hotjar';
 import { Element, Events, scrollSpy } from "react-scroll";
 import { Route, Switch } from "react-router-dom";
 import WalletContainer from "../wallets/walletContainer";
@@ -81,7 +80,6 @@ function DashBoardContainer(props) {
   };
 
   const onMount = async () => {
-    // hotjar.initialize(1688041, 6);
     // await props.action.freshchat_init_user(props.user)
     // await FreshChat.user_update(props.user)
     // const verification_state = await props.coinsendaServices.getVerificationState()

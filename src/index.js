@@ -11,7 +11,6 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import LoaderAplicationTiny from "./components/widgets/loaders/loader-application-tiny";
 import { _createStore } from "./store";
-// import { updateLocalForagePersistState } from './components/hooks/sessionRestore';
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
