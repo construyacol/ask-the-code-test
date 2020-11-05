@@ -3,10 +3,16 @@ import { useActions } from '../../../../../hooks/useActions'
 import styled from 'styled-components'
 import AddressBook from './'
 import { atentionAnimation } from '../../../animations'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
+import useViewport from  '../../../../../hooks/useWindowSize'
+
+
 
 
 const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
 
+  const idForCreateNewAccount = useKeyActionAsClick(true, 'open-address-book', 65, false, 'onkeyup')
+  const { isMovilViewport } = useViewport()
   const actions = useActions()
 
   const openAddressBook = async() => {
@@ -14,8 +20,8 @@ const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
   }
 
   return(
-    <AddressBookContainer className={`${addressToAdd ? 'addressToAdd' : ''} `}>
-      <p onClick={openAddressBook} className="fuente">{addressToAdd ? `+ Agregar cuenta de retiro` : 'Gestionar direcciones >>'}</p>
+    <AddressBookContainer className={`${addressToAdd ? 'addressToAdd' : ''} `} id={idForCreateNewAccount} onClick={openAddressBook}>
+      <p className="fuente">{!isMovilViewport && '[A] '}{addressToAdd ? `+ Agregar cuenta de retiro` : 'Gestionar direcciones >>'}</p>
     </AddressBookContainer>
   )
 }

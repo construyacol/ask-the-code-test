@@ -5,6 +5,9 @@ import { ItemList } from './itemList'
 import { ControlButtonContainer } from '../../../shared-styles'
 import ControlButton from '../../../buttons/controlButton'
 import { InputContainer } from '../../../inputs/inputForm'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
+import useViewport from  '../../../../../hooks/useWindowSize'
+
 
 
 
@@ -12,6 +15,8 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
 
   const [ searchList, setSearchList ] = useState([])
   const [ searchValue, setSearchValue ] = useState()
+  const idForCreateNewAccount = useKeyActionAsClick(true, 'create-new-account2', 65, false, 'onkeyup', true)
+  const { isMovilViewport } = useViewport()
 
   const handleSearch = e => {
 
@@ -77,9 +82,10 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
 
       <ControlButtonContainer bottom={25}>
         <ControlButton
-          label="Crear nueva cuenta"
+          label={`Crear nueva cuenta ${!isMovilViewport && '[A]'}`}
           formValidate
           handleAction={() => switchView('newAccount')}
+          id={idForCreateNewAccount}
         />
       </ControlButtonContainer>
     </>
