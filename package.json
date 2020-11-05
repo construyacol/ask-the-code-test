@@ -51,13 +51,13 @@
     "start": "react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:dev:local": "cross-env NODE_ENV='local' npm start",
-    "start:build": "cross-env NODE_ENV='production' react-scripts build && npm run build-sw && npm run postbuild && serve ./build -s -l 5000",
+    "start:build": "cross-env NODE_ENV='production' react-scripts build && npm run build-sw && serve ./build -s -l 5000",
     "build": "cross-env NODE_ENV='production' react-scripts build && npm run build-sw",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap && node ./scripts/preloads.js"
+    "postbuild": "node ./scripts/preloads.js"
   },
   "reactSnap": {
     "source": "build",
