@@ -2,7 +2,17 @@ import React from "react";
 import loadable from "@loadable/component";
 import "./loader.css";
 
-const Coinsenda = loadable(() => import("../icons/logos/coinsenda"));
+const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
+  fallback: (
+    <div
+      style={{
+        height: 50,
+        width: 50,
+        display: "block",
+      }}
+    />
+  ),
+});
 
 function LoaderAplicationTiny() {
   return (
@@ -10,8 +20,9 @@ function LoaderAplicationTiny() {
       <div className={`LoaderContainer loaderLayout`}>
         <div
           style={{
-            height: 60,
-            width: 60,
+            height: 70,
+            width: 200,
+            display: "grid",
           }}
         />
 

@@ -48,7 +48,7 @@
     "wallet-address-validator": "^0.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:dev:local": "cross-env NODE_ENV='local' npm start",
     "start:build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw && serve ./build -s -l 5000",
@@ -57,14 +57,15 @@
     "deploy": "node deploy.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "react-snap && node ./scripts/preloads.js"
+    "postbuild": "cross-env REACT_APP_SNAP_ENV='snap' react-snap && node ./scripts/preloads.js"
   },
   "reactSnap": {
     "source": "build",
     "minifyHtml": {
       "collapseWhitespace": true,
       "removeComments": true
-    }
+    },
+    "inlineCss": true
   },
   "eslintConfig": {
     "extends": "react-app"

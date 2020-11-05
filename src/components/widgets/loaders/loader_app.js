@@ -13,8 +13,28 @@ import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
 import "./loader.css";
 
-const IconSwitch = loadable(() => import("../icons/iconSwitch"));
-const Coinsenda = loadable(() => import("../icons/logos/coinsenda"));
+const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
+  fallback: (
+    <div
+      style={{
+        height: 77,
+        width: 200,
+        display: "grid",
+      }}
+    />
+  ),
+});
+const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
+  fallback: (
+    <div
+      style={{
+        height: 50,
+        width: 50,
+        display: "block",
+      }}
+    />
+  ),
+});
 const SelectCountry = loadable(() =>
   import("../maps/select_country/select_country")
 );
@@ -181,7 +201,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
         </div>
       ) : (
         <div className={`LoaderContainer loaderLayout`}>
-          <IconSwitch icon={country} size={60} />
+          <IconSwitch className="Loader__icon" icon={country} size={60} />
 
           <div className="logotypes">
             <Coinsenda size={50} color="white" />
@@ -192,7 +212,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       )}
       <div className="KycprogressBar loader">
         <div
-          className="_kycPropgressed"
+          className="kycPropgressed"
           style={{ width: `${progressBarWidth}%` }}
         ></div>
       </div>

@@ -17,9 +17,12 @@ import { _createStore } from "./store";
 // script.async = true;
 // document.body.appendChild(script);
 
-const LazyRoot = loadable(() => import("./components/Root"), {
-  fallback: <LoaderAplicationTiny />,
-});
+const LazyRoot = loadable(
+  () => import(/* webpackPrefetch: true */ "./components/Root"),
+  {
+    fallback: <LoaderAplicationTiny />,
+  }
+);
 
 export const store = _createStore();
 

@@ -104,6 +104,8 @@
   /* background: linear-gradient(to bottom right, #014c7d, #0198ff) !important; */
   /* background: linear-gradient(to right, #129A8E , #37ED7D); */
   background: white !important;
+  position: fixed;
+  height: 6px;
 }
 
 .LoaderContainer {
@@ -115,11 +117,15 @@
   /*grid-row-gap: 10px;*/
 }
 
+.LoaderContainer .iconSty {
+  height: 60px !important;
+}
+
 .KycprogressBar.loader {
   height: 6px;
   top: 0;
   width: 100%;
-  position: absolute;
+  position: fixed;
 }
 
 .LoaderContainer .lds-ellipsis {
