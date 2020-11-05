@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from "styled-components";
+import { InputKeyActionHandler } from '../../components/widgets/accountList/styles';
+import ModalLayout from '../../components/widgets/modal/modallayout';
 import { device } from '../../const/const';
 import { useActions } from '../../hooks/useActions';
 import useNavigationKeyActions, { useItemsInteractions } from '../../hooks/useNavigationKeyActions';
-import { InputKeyActionHandler } from '..//widgets/accountList/styles';
-import ModalLayout from '../widgets/modal/modallayout';
+
 /**
 * @param items los items a representar como objetos navegables
 */
@@ -20,9 +21,9 @@ export default function TestingComponent() {
     const [setCurrentSelection] = useNavigationKeyActions({
         items,
         loader: false, // si queremos que los items se sincronicen con el loader del app, pasamos el loader como parametro
-        className: 'test-item-', // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
+        uniqueIdForElement: 'test-item-', // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
         modalRestriction: false, // como usaremos useNavigationKeyActions en un modal no es necesario restringir
-        default: 0, // no queremos que marque alguno como default
+        default: 0, // seleccionado como default 
         next: 40, //arrows right and left, si no funcion entonces verificar que no este en uso el keyEvent
         prev: 38
     })
