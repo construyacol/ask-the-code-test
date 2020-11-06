@@ -11,7 +11,7 @@ async function prettify() {
   });
   var splitted = formattedCode.split(/\r?\n/);
   var hrefs = [];
-  splitted.map((line) => {
+  splitted.map((line, index) => {
     if (line.includes("/static/js")) {
       const start = line.indexOf("/static/js");
       const end = line.indexOf('.js">');
@@ -19,6 +19,15 @@ async function prettify() {
         href: line.slice(start, end + 3),
         type: "script",
       });
+    }
+    if (line.includes("window.reactSnap = !0;")) {
+      if (splitted[index - 1].includes("<script>")) {
+        splitted[index - 1] = " ";
+      }
+      if (splitted[index + 1].includes("</script>")) {
+        splitted[index + 1] = " ";
+      }
+      splitted[index] = " ";
     }
     if (line.includes("/static/css")) {
       const start = line.indexOf("/static/css");

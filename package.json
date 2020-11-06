@@ -57,7 +57,7 @@
     "deploy": "node deploy.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "cross-env REACT_APP_SNAP_ENV='snap' react-snap && node ./scripts/preloads.js"
+    "postbuild": "cross-env react-snap && node ./scripts/preloads.js"
   },
   "reactSnap": {
     "source": "build",

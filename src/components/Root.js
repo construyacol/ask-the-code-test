@@ -80,12 +80,12 @@ function RootContainer(props) {
 
   useEffect(() => {
     initComponent();
-    console.log(process.env);
   }, []);
 
   return (
     <Router history={history}>
-      {!isAppLoaded || process.env.REACT_APP_SNAP_ENV ? (
+      {!isAppLoaded ||
+      (window.reactSnap && process.env.NODE_ENV === "production") ? (
         <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
       ) : (
         <>
