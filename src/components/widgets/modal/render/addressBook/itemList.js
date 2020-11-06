@@ -5,10 +5,13 @@ import { Icon, Front, Top, CubeObject } from '../../../shared-styles'
 import styled from 'styled-components'
 import SimpleLoader from '../../../loaders'
 import { useActions } from '../../../../../hooks/useActions'
+import { InputKeyActionHandler } from '../../../accountList/styles';
+import { useItemsInteractions } from '../../../../../hooks/useNavigationKeyActions';
 
 
+export const ItemList = (props) => {
 
-export const ItemList = ({ item:{ id, info:{ address, label }}, setAddressValue }) => {
+  const { item:{ id, info:{ address, label }}, setAddressValue } = props
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -20,6 +23,11 @@ export const ItemList = ({ item:{ id, info:{ address, label }}, setAddressValue 
   const [coinsendaServices, _] = useCoinsendaServices()
   const [ toastMessage ] = useToastMessage()
   const actions = useActions()
+  const [isSelected, setFocus] = useItemsInteractions(
+      props,
+      { suprKeyAction: () => false, enterKeyAction: () => false },
+      false)
+
 
 
   const setDeletingState = payload => {
@@ -77,38 +85,48 @@ export const ItemList = ({ item:{ id, info:{ address, label }}, setAddressValue 
   }
 
 
+
+
+
+
+console.log('|||||||||||||||||| isSelected', isSelected)
+
   return(
-    <ItemContainer id="cubeContainer" className={`${deleting}`}>
-      <Front id="frontCube" onClick={handleClick}>
-        <ItemListContainer id="itemListContainer">
-          <AcronymContainer id="acronymContainer">
-            <p className="fuente">
-              {getAcronym()}
-            </p>
-          </AcronymContainer>
-          <ItemTextContainer>
-            <div>
-              <p className="fuente label">{label}</p>
-              <NewElement id={id} className="fuente">Nuevo</NewElement>
-            </div>
-            <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
-              <Address className="fuente2 withdrawAddress" >{address}</Address>
-            </AddressContainer>
-          </ItemTextContainer>
-          <DeleteButton>
-            <Icon className="fas fa-trash-alt tooltip" data-action="open" data-delete onClick={deleteItem}>
-              <span className="tooltiptext fuente">Eliminar</span>
-            </Icon>
-          </DeleteButton>
-        </ItemListContainer>
-      </Front>
-      <Top>
-        <DeleteComponent
-          itemId={id}
-          handleAction={deleteItem}
-        />
-      </Top>
-    </ItemContainer>
+    <li style={isSelected ? { color: 'red', fontSize: 14 } : {}}>
+        <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+        {label}
+    </li>
+    // <ItemContainer id="cubeContainer" className={`${deleting}`}>
+    //   <Front id="frontCube" onClick={handleClick} >
+    //     <ItemListContainer id="itemListContainer">
+    //       <AcronymContainer id="acronymContainer">
+    //         <p className="fuente">
+    //           {getAcronym()}
+    //         </p>
+    //       </AcronymContainer>
+    //       <ItemTextContainer>
+    //         <div>
+    //           <p className="fuente label">{label}</p>
+    //           <NewElement id={id} className="fuente">Nuevo</NewElement>
+    //         </div>
+    //         <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
+    //           <Address className="fuente2 withdrawAddress" >{address}</Address>
+    //         </AddressContainer>
+    //       </ItemTextContainer>
+    //       <DeleteButton>
+    //         <Icon className="fas fa-trash-alt tooltip" data-action="open" data-delete onClick={deleteItem}>
+    //           <span className="tooltiptext fuente">Eliminar</span>
+    //         </Icon>
+    //       </DeleteButton>
+    //     </ItemListContainer>
+    //   </Front>
+    //   <Top>
+    //     <DeleteComponent
+    //       itemId={id}
+    //       handleAction={deleteItem}
+    //     />
+    //   </Top>
+    // </ItemContainer>
   )
 
 }

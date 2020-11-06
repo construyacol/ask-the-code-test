@@ -7,7 +7,7 @@ import ControlButton from '../../../buttons/controlButton'
 import { InputContainer } from '../../../inputs/inputForm'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 import useViewport from  '../../../../../hooks/useWindowSize'
-
+import useNavigationKeyActions from '../../../../../hooks/useNavigationKeyActions';
 
 
 
@@ -17,6 +17,26 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
   const [ searchValue, setSearchValue ] = useState()
   const idForCreateNewAccount = useKeyActionAsClick(true, 'create-new-account2', 65, false, 'onkeyup', true)
   const { isMovilViewport } = useViewport()
+
+  // const [setCurrentSelection] = useNavigationKeyActions({
+  //   items:withdrawAccounts,
+  //   loader:false,
+  //   uniqueIdForElement:'test-item-',
+  //   modalRestriction: false,
+  //   next:40,
+  //   prev:38
+  // })
+
+  const [setCurrentSelection] = useNavigationKeyActions({
+      items:withdrawAccounts,
+      loader: false, // si queremos que los items se sincronicen con el loader del app, pasamos el loader como parametro
+      uniqueIdForElement: 'test-item-', // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
+      modalRestriction: false, // como usaremos useNavigationKeyActions en un modal no es necesario restringir
+      default: 0, // seleccionado como default
+      next: 40, //arrows right and left, si no funcion entonces verificar que no este en uso el keyEvent
+      prev: 38
+  })
+
 
   const handleSearch = e => {
 
@@ -67,15 +87,33 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
       <Title className="fuente">{searchList.length ? `Resultado de la busqueda [${searchList.length}]:` : 'Direcciones'}</Title>
       <ListContainerWrapper>
         <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
-          {
+          {/* {
             searchList.length ?
               searchList.map((item, index) => {
                 return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
               })
             :
               withdrawAccounts.map((item, index) => {
-                return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
+                return <ItemList
+                  key={index}
+                  item={item}
+                  setAddressValue={setAddressValue}
+                  setCurrentSelection={setCurrentSelection}
+                  focusedId={`test-item-${index}`}
+                />
               })
+          } */}
+
+          {
+            withdrawAccounts.map((item, index) => {
+              return <ItemList
+                key={index}
+                item={item}
+                setAddressValue={setAddressValue}
+                setCurrentSelection={setCurrentSelection}
+                focusedId={`test-item-${index}`}
+              />
+            })
           }
         </ListContainer>
      </ListContainerWrapper>
