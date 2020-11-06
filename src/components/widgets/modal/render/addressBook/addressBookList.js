@@ -109,6 +109,8 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
               return <ItemList
                 key={index}
                 item={item}
+                // falto el number
+                number={index}
                 setAddressValue={setAddressValue}
                 setCurrentSelection={setCurrentSelection}
                 focusedId={`test-item-${index}`}

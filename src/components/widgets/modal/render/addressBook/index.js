@@ -51,7 +51,9 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
   }, [])
 
   return (
-    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={cerrar} >
+    // Dato de onkeydown y otros events.
+    // No pueden ser reutilizados, lo puse en false(onkeydown), porque estaba siendo utilizado por el useNavigationKeyActions 
+    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={false} on_click={cerrar} >
       <ContainerLayout id="containerLayout">
         <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
         <Content id="mainContent">
