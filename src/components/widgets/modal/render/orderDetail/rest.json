@@ -52,7 +52,7 @@
       "pending":{
         "fiat":{
           "title":"Orden pendiente de confirmación",
-          "description":"Sube una fotografía o captura del compbrante de pago para continuar..."
+          "description":"Sube una fotografía o captura del comprobante de pago para continuar..."
         }
       },
       "confirmed":{

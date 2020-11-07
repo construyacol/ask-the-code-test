@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useActions } from '../../../../../hooks/useActions'
 import OtherModalLayout from '../../otherModalLayout'
-import { createSelector } from 'reselect'
 import { useSelector } from "react-redux"
 import { setAnimation } from '../../../../../utils'
 import WithdrawViewState from '../../../../hooks/withdrawStateHandle'
@@ -12,30 +11,19 @@ import EmptyState from './emptyState'
 import NewAccount from './newAccount'
 import AddressBookComponent from './addressBookList'
 import HeaderComponent from './header'
+import { swing_in_bottom_bck } from '../../../animations'
+import  selectWithdrawAccountsByProviderType from '../../../../selectors'
+import { IconBackContainer } from '../../../shared-styles'
+import { AiOutlineClose } from "react-icons/ai"
 
 
-
-const selectWithdrawAccounts = createSelector(
-  ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
-  (_, provider_type) => provider_type,
-  (withdraw_accounts, provider_type) => {
-  let res = []
-    for (const [_, withdraw_account] of Object.entries(withdraw_accounts)) {
-      (withdraw_account.provider_type === provider_type && withdraw_account.account_name.value !== provider_type) && res.push(withdraw_account)
-    }
-    return res
-  }
-)
-
-
-const AddressBook = ({ addressToAdd }) => {
+const AddressBook = ({ addressToAdd, setAddressValue }) => {
 
   const actions = useActions()
-  const [{ current_wallet }] = WithdrawViewState()
-  if(!current_wallet){return actions.renderModal(null)}
-  const provider_type = current_wallet.currency.currency
-  const withdrawAccounts = useSelector(state => selectWithdrawAccounts(state, provider_type))
-  const [ view, setView ] = useState('addressList')
+  const [{ current_wallet, path }] = WithdrawViewState()
+  const provider_type = current_wallet && current_wallet.currency.currency
+  const withdrawAccounts = useSelector(state => selectWithdrawAccountsByProviderType(state, provider_type))
+  const [view, setView] = useState('addressList')
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -43,39 +31,57 @@ const AddressBook = ({ addressToAdd }) => {
     }
   }
 
-  const switchView = async(payload) => {
+  const switchView = async (payload) => {
     await setAnimation('disappear', 'mainContainerAB', 150)
     setView(payload)
     await setAnimation('appear', 'mainContainerAB', 150)
   }
 
-  useEffect(()=>{
-    if(addressToAdd){
+  useEffect(() => {
+    if (addressToAdd) {
       switchView('newAccount')
     }
   }, [addressToAdd])
 
+  if (!current_wallet || path !== 'withdraw') {
+    cerrar()
+    return <></>
+  }
 
+  useEffect(()=>{
+    const appearTransition = async() => {
+      await setAnimation('appear', 'containerLayout', 700)
+      const element = document.getElementById('containerLayout')
+      element && element.classList.add('keepOpacity')
+    }
 
-  return(
-      <OtherModalLayout on_click={cerrar} >
-        <ContainerLayout>
-          <HeaderComponent provider_type={provider_type} view={view} switchView={switchView}/>
-          <Content id="mainContent">
-            <Container id="mainContainerAB">
-              {
-                (view === 'addressList' && withdrawAccounts.length) ?
-                  <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView}/>
+    appearTransition()
+  }, [])
+
+  return (
+    // Dato de onkeydown y otros events.
+    // No pueden ser reutilizados, lo puse en false(onkeydown), porque estaba siendo utilizado por el useNavigationKeyActions
+    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={false} on_click={cerrar} >
+      <ContainerLayout id="containerLayout">
+        <IconClose color="dark" opacity=".9" size="30px" onClick={() => actions.renderModal(null)}>
+          <AiOutlineClose color="white" size={20} />
+        </IconClose>
+        <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
+        <Content id="mainContent">
+          <Container id="mainContainerAB">
+            {
+              (view === 'addressList' && withdrawAccounts.length) ?
+                <AddressBookComponent withdrawAccounts={withdrawAccounts} switchView={switchView} setAddressValue={setAddressValue} />
                 :
                 view === 'newAccount' ?
-                  <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd}/>
-                :
+                  <NewAccount provider_type={provider_type} switchView={switchView} addressToAdd={addressToAdd} />
+                  :
                   <EmptyState switchView={switchView}></EmptyState>
-              }
-           </Container>
-          </Content>
-        </ContainerLayout>
-      </OtherModalLayout>
+            }
+          </Container>
+        </Content>
+      </ContainerLayout>
+    </OtherModalLayout>
   )
 }
 
@@ -83,7 +89,13 @@ export default AddressBook
 
 
 
-
+const IconClose = styled(IconBackContainer)`
+  z-index: 2;
+  right: 5px;
+  top: -36px;
+  position: absolute;
+  cursor: pointer;
+`
 
 
 const Container = styled.div`
@@ -122,4 +134,17 @@ const ContainerLayout = styled.div`
   display: grid;
   grid-template-rows: 80px 1fr;
   transform-style: preserve-3d;
+  opacity: 0;
+
+  &.appear{
+    -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+  }
+
+  &.keepOpacity{
+    opacity: 1;
+  }
+
+  }
+
 `

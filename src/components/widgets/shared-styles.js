@@ -2,6 +2,18 @@ import styled from 'styled-components'
 import { rotate90HorizontalBck, rotate0HorizontalBck } from './animations'
 
 
+
+
+export const IconBackContainer = styled.div`
+  width: ${props => props.size || '35px'};
+  height:  ${props => props.size || '35px'};
+  background: ${props => props.color === 'dark' ? `rgb(50, 50, 50, ${props.opacity || '.3'})` : `rgb(255, 255, 255, ${props.opacity || '.3'})` };
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+`
+
 export const ControlButtonContainer = styled.div`
   position: absolute;
   width: 100%;
@@ -17,12 +29,13 @@ export const ControlButtonContainer = styled.div`
 export const Face = styled.div`
   display: block;
   position: absolute;
-  width: 358px;
+  ${'' /* width: 358px; */}
+  width: 100%;
   height: 80px;
 `
 
-export const Front = styled(Face)`
-`
+export const Front = styled(Face)``
+
 export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);
@@ -35,6 +48,7 @@ export const CubeObject = styled.div`
   height: 80px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+
   &.rotate{
     animation: ${rotate90HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     ${Top}{

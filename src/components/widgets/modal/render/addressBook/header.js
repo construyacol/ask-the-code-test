@@ -2,8 +2,15 @@ import React from 'react'
 import { MdKeyboardArrowLeft } from "react-icons/md"
 import styled from 'styled-components'
 import backImg from '../../../../../assets/map.png'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
+import { IconBackContainer } from '../../../shared-styles' 
+
+
 
 const HeaderComponent = ({ provider_type, view, switchView }) => {
+
+  const idForBack = useKeyActionAsClick(true, 'back-step-ca', 8, true, 'onkeyup', true)
+
 
   const getTittle = view => {
     switch (view) {
@@ -21,10 +28,10 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
   return(
     <Header>
       <section>
-        <WindowControl state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
-          <div>
+        <WindowControl id={idForBack} state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
+          <IconBackContainer>
             <MdKeyboardArrowLeft size={27} color="white"/>
-          </div>
+          </IconBackContainer>
         </WindowControl>
         <p className="fuente titleHead">{getTittle(view)}</p>
       </section>
@@ -35,16 +42,9 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
 export default HeaderComponent
 
 
+
+
 const WindowControl = styled.div`
-  div{
-    width: 35px;
-    height: 35px;
-    background: rgb(255, 255, 255, .3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-  }
   overflow: hidden;
   width: 0;
   transition: .2s;

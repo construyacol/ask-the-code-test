@@ -54,7 +54,7 @@ export default () => {
       //     break
         case 'name-account':
 
-          if(e.target.value.length > 4){
+          if(e.target.value.length > 2){
             setInputState('good')
           }
 
@@ -63,6 +63,12 @@ export default () => {
         case 'address':
         case 'address-account':
         // case: si encontramos @ al inicio de la linea: ^@
+
+          if(inputName === 'address' && e.target.value.match(/^@/g)){
+            // console.log('activando sistema de tags')
+            return
+          }
+
 
           let AddressValidator
           AddressValidator = await import('wallet-address-validator')

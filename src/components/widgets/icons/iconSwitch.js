@@ -321,7 +321,7 @@ class IconSwitch extends Component {
     } = this.props
 
     return(
-        <div className={`iconSty ${animOn ? 'animOn' : '' } ${className}`}>
+        <div className={`iconSty ${animOn ? 'animOn' : '' } ${className || ''}`}>
           <this.switcher {...this.props} />
         </div>
     )

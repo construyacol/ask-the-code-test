@@ -9,7 +9,6 @@ import MovilMenuComponent from './movilMenu'
 import {useActions} from '../../hooks/useActions'
 import {doLogout} from '../utils'
 import useKeyActionAsClick from '../../hooks/useKeyActionAsClick'
-import KeyActionsProofComponent from '../keyActionsProof'
 
 // TODO: remove all window ref from components, may be the cause of future
 // issues
