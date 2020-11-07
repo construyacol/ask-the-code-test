@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useCoinsendaServices } from '../../../../../services/useCoinsendaServices'
 import useToastMessage from '../../../../../hooks/useToastMessage'
 import { Icon, Front, Top, CubeObject } from '../../../shared-styles'
@@ -7,6 +7,7 @@ import SimpleLoader from '../../../loaders'
 import { useActions } from '../../../../../hooks/useActions'
 import { InputKeyActionHandler } from '../../../accountList/styles';
 import { useItemsInteractions } from '../../../../../hooks/useNavigationKeyActions';
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 
 
 export const ItemList = (props) => {
@@ -25,9 +26,8 @@ export const ItemList = (props) => {
   const actions = useActions()
   const [isSelected, setFocus] = useItemsInteractions(
       props,
-      { suprKeyAction: () => false, enterKeyAction: () => false },
+      { suprKeyAction: () => null, enterKeyAction: () => handleClick() },
       false)
-
 
 
   const setDeletingState = payload => {
@@ -35,11 +35,9 @@ export const ItemList = (props) => {
     setTimeout(()=>{setDeleting('')}, 300)
   }
 
-
   const deleteItem = async e => {
 
     if(!e.target.dataset.action){return}
-
     const blockerActive = document.getElementById(`blocker`);
     const searchInput = document.getElementById(`searchInput`);
 
@@ -78,8 +76,7 @@ export const ItemList = (props) => {
   }
 
   const handleClick = (e) => {
-    // console.log(e.target.dataset && e.target.dataset.delete)
-    if(e.target.dataset && e.target.dataset.delete){return}
+    if((e && e.target) && (e.target.dataset && e.target.dataset.delete)){return}
     setAddressValue(address)
     actions.renderModal(null)
   }
@@ -87,76 +84,85 @@ export const ItemList = (props) => {
 
 
 
-
-
-console.log('|||||||||||||||||| isSelected', isSelected)
-
   return(
-    <li style={isSelected ? { color: 'red', fontSize: 14 } : {}}>
-        <InputKeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
-        {label}
-    </li>
-    // <ItemContainer id="cubeContainer" className={`${deleting}`}>
-    //   <Front id="frontCube" onClick={handleClick} >
-    //     <ItemListContainer id="itemListContainer">
-    //       <AcronymContainer id="acronymContainer">
-    //         <p className="fuente">
-    //           {getAcronym()}
-    //         </p>
-    //       </AcronymContainer>
-    //       <ItemTextContainer>
-    //         <div>
-    //           <p className="fuente label">{label}</p>
-    //           <NewElement id={id} className="fuente">Nuevo</NewElement>
-    //         </div>
-    //         <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
-    //           <Address className="fuente2 withdrawAddress" >{address}</Address>
-    //         </AddressContainer>
-    //       </ItemTextContainer>
-    //       <DeleteButton>
-    //         <Icon className="fas fa-trash-alt tooltip" data-action="open" data-delete onClick={deleteItem}>
-    //           <span className="tooltiptext fuente">Eliminar</span>
-    //         </Icon>
-    //       </DeleteButton>
-    //     </ItemListContainer>
-    //   </Front>
-    //   <Top>
-    //     <DeleteComponent
-    //       itemId={id}
-    //       handleAction={deleteItem}
-    //     />
-    //   </Top>
-    // </ItemContainer>
+    <ItemContainer id="cubeContainer" className={`${deleting} ${isSelected && 'isSelected'}`}>
+      <KeyActionHandler name="itemFromList" autoComplete="off" id={props.focusedId} />
+      <FrontCont id="frontCube" onClick={handleClick}>
+        <ItemListContainer id="itemListContainer" >
+          <AcronymContainer id="acronymContainer">
+            <p className="fuente">
+              {getAcronym()}
+            </p>
+          </AcronymContainer>
+          <ItemTextContainer>
+            <div>
+              <p className="fuente label">{label}</p>
+              <NewElement id={id} className="fuente">Nuevo</NewElement>
+            </div>
+            <AddressContainer data-final-address={address.match(/..........$/g).toString()}>
+              <Address className="fuente2 withdrawAddress" >{address}</Address>
+            </AddressContainer>
+          </ItemTextContainer>
+          <DeleteButton>
+            <Icon className="fas fa-trash-alt tooltip" data-action="open" data-delete onClick={deleteItem}>
+              <span className="tooltiptext fuente">Eliminar</span>
+            </Icon>
+          </DeleteButton>
+        </ItemListContainer>
+      </FrontCont>
+      <Top>
+        <DeleteComponent
+          itemId={id}
+          handleAction={deleteItem}
+        />
+      </Top>
+    </ItemContainer>
   )
 
 }
 
 
+const FrontCont = styled(Front)`
+  width: calc(100% - 40px);
+`
+
+
+const KeyActionHandler = styled(InputKeyActionHandler)`
+  position: absolute;
+`
+
 const ItemContainer = styled(CubeObject)`
   position: relative;
+  padding: 0 20px;
+  width: calc(100% - 40px);
+  transition: .3s;
 
-  ${'' /* &::after{
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: red;
-  } */}
+  &:hover{
+    background: #ececec;
+  }
 
+  ${ItemListContainer}{
+    &.isSelected{
+      opacity: 1;
+      color: #0198ff;
+      ${'' /* background: #ececec; */}
+    }
+  }
 
 `
 
 const DeleteComponent = ({ handleAction, itemId }) => {
+
+    const idForDeleteItem = useKeyActionAsClick(true, 'delete-item-account', 80, true, 'onkeyup', true)
+
   return(
     <DeleteContainer>
       <LoaderDeleteItem id={`loader_${itemId}`}><SimpleLoader loader={2} color="#0198FF" justify="center" /></LoaderDeleteItem>
       <p className="fuente confirmText">¿Estás seguro que deseas eliminar esta cuenta de retiro?</p>
       <DeleteControls>
         {/* <p className="fuente cancel"  onClick={()=>handleAction('unrotate')}>Cancelar</p> */}
-        <p className="fuente cancel" data-action="close" onClick={handleAction}>Cancelar</p>
-        <p className="fuente delete" data-action="delete" onClick={handleAction}>Eliminar</p>
+        <p  className="fuente cancel" data-action="close" onClick={handleAction}>Cancelar</p>
+        <p id={idForDeleteItem} className="fuente delete" data-action="delete" onClick={handleAction}>Eliminar</p>
       </DeleteControls>
     </DeleteContainer>
   )
@@ -258,15 +264,18 @@ const ItemListContainer = styled.div`
     column-gap: 15px;
     cursor: pointer;
     transition: .2s;
-    opacity: .9;
+    opacity: .8;
     position: relative;
     &:hover{
       opacity: 1;
+      color: #0198ff;
       ${DeleteButton}{
         right: 10px;
         opacity: 1;
       }
     }
+
+
 `
 
 

@@ -54,7 +54,7 @@ export default () => {
       //     break
         case 'name-account':
 
-          if(e.target.value.length > 4){
+          if(e.target.value.length > 2){
             setInputState('good')
           }
 

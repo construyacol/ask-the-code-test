@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import  selectWithdrawAccountsByProviderType from '../../../selectors'
 import styled from 'styled-components'
 import { ItemList } from '../../../widgets/modal/render/addressBook/itemList'
+import useNavigationKeyActions from '../../../../hooks/useNavigationKeyActions';
 
 
 
@@ -16,6 +17,15 @@ const AddressTagList = ({show, addressValue, setAddressValue}) => {
   const withdrawAccounts = useSelector(state => selectWithdrawAccountsByProviderType(state, provider_type))
 
   const [ searchList, setSearchList ] = useState([])
+
+  // const [setCurrentSelection] = useNavigationKeyActions({
+  //     items:withdrawAccounts,
+  //     loader: false, // si queremos que los items se sincronicen con el loader del app, pasamos el loader como parametro
+  //     uniqueIdForElement: 'account-item-', // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
+  //     modalRestriction: false, // como usaremos useNavigationKeyActions en un modal no es necesario restringir
+  //     next: 40, //arrows right and left, si no funcion entonces verificar que no este en uso el keyEvent
+  //     prev: 38
+  // })
 
   useEffect(()=>{
       const value = addressValue.replace(/@/g, '')
@@ -53,11 +63,23 @@ const AddressTagList = ({show, addressValue, setAddressValue}) => {
         {
           searchList.length ?
             searchList.map((item, index) => {
-              return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
+              return <ItemList
+                key={index}
+                item={item}
+                setAddressValue={setAddressValue}
+              />
             })
           :
             withdrawAccounts.map((item, index) => {
-              return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
+              return <ItemList
+                key={index}
+                item={item}
+                setAddressValue={setAddressValue}
+                // number={index}
+                // setCurrentSelection={setCurrentSelection}
+                // focusedId={`account-item-${index}`}
+
+              />
             })
         }
       </SearchComponentContainer>
@@ -81,6 +103,7 @@ const SearchComponentWrapper = styled.section`
   background: white;
   border-radius: 4px;
   box-shadow: 5px 5px 9px -3px rgba(0,0,0,0.15);
+
   &::-webkit-scrollbar {
     width: 4px;
   }
@@ -116,12 +139,6 @@ const SearchComponentContainer = styled.div`
   }
 
   #frontCube{
-    padding: 0 20px;
-    width: calc(100% - 40px);
-    transition: .3s;
-    :hover{
-      background: #ececec;
-    }
     #acronymContainer{
       transform: scale(.9);
     }

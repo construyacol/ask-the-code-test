@@ -9,7 +9,6 @@ import MovilMenuComponent from './movilMenu'
 import {useActions} from '../../hooks/useActions'
 import {doLogout} from '../utils'
 import useKeyActionAsClick from '../../hooks/useKeyActionAsClick'
-import TestingComponent from '../../documentation/keyActionsProof/doc'
 
 // TODO: remove all window ref from components, may be the cause of future
 // issues
@@ -26,8 +25,6 @@ const MenuPrincipalLayout = (props) => {
     : 'Cerrar sesión'
 
   const logOut = () => {
-    actions.renderModal(() => <TestingComponent/>)
-    return
     actions.confirmationModalToggle()
     actions.confirmationModalPayload({
       title: "Estás a punto de cerrar sesión...",

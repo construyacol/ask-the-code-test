@@ -15,17 +15,8 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
 
   const [ searchList, setSearchList ] = useState([])
   const [ searchValue, setSearchValue ] = useState()
-  const idForCreateNewAccount = useKeyActionAsClick(true, 'create-new-account2', 65, false, 'onkeyup', true)
+  const idForCreateNewAccount = useKeyActionAsClick(true, 'create-new-account2', 65, true, 'onkeyup', true)
   const { isMovilViewport } = useViewport()
-
-  // const [setCurrentSelection] = useNavigationKeyActions({
-  //   items:withdrawAccounts,
-  //   loader:false,
-  //   uniqueIdForElement:'test-item-',
-  //   modalRestriction: false,
-  //   next:40,
-  //   prev:38
-  // })
 
   const [setCurrentSelection] = useNavigationKeyActions({
       items:withdrawAccounts,
@@ -87,7 +78,7 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
       <Title className="fuente">{searchList.length ? `Resultado de la busqueda [${searchList.length}]:` : 'Direcciones'}</Title>
       <ListContainerWrapper>
         <ListContainer id="listContainer" className="fuente" data-title="Direcciones">
-          {/* {
+          {
             searchList.length ?
               searchList.map((item, index) => {
                 return <ItemList key={index} item={item} setAddressValue={setAddressValue}/>
@@ -97,25 +88,12 @@ const AddressBookComponent = ({ withdrawAccounts, switchView, setAddressValue })
                 return <ItemList
                   key={index}
                   item={item}
+                  number={index}
                   setAddressValue={setAddressValue}
                   setCurrentSelection={setCurrentSelection}
                   focusedId={`test-item-${index}`}
                 />
               })
-          } */}
-
-          {
-            withdrawAccounts.map((item, index) => {
-              return <ItemList
-                key={index}
-                item={item}
-                // falto el number
-                number={index}
-                setAddressValue={setAddressValue}
-                setCurrentSelection={setCurrentSelection}
-                focusedId={`test-item-${index}`}
-              />
-            })
           }
         </ListContainer>
      </ListContainerWrapper>
@@ -206,7 +184,7 @@ const Title = styled.p`
 
 const ListContainerWrapper = styled.div`
   overflow-x: hidden;
-  padding: 0 20px;
+  ${'' /* padding: 0 20px; */}
   height: 375px;
   position: relative;
 

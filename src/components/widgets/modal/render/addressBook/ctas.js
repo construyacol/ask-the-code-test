@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { useActions } from '../../../../../hooks/useActions'
 import styled from 'styled-components'
 import AddressBook from './'
-import { atentionAnimation } from '../../../animations'
+import { getAtention } from '../../../animations'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 import useViewport from  '../../../../../hooks/useWindowSize'
 
 
 
-
 const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
 
-  const idForCreateNewAccount = useKeyActionAsClick(true, 'open-address-book', 65, false, 'onkeyup')
+  const idForCreateNewAccount = useKeyActionAsClick(true, 'open-address-book', 65, true, 'onkeyup')
   const { isMovilViewport } = useViewport()
   const actions = useActions()
 
@@ -32,7 +31,7 @@ const AddressBookContainer = styled.div`
   position: absolute;
   height: 25px;
   right: 0;
-  bottom: -35px;
+  bottom: -40px;
   cursor: pointer;
   display: flex;
 
@@ -42,12 +41,40 @@ const AddressBookContainer = styled.div`
     color: #b48728;
     font-weight: bold;
   }
+
   p:hover{
     text-decoration: underline;
   }
 
   &.addressToAdd{
-    animation: ${atentionAnimation} 1s forwards, blurs 1s linear 1s infinite;
+
+    &:hover{
+      transform: scale(1.05);
+    }
+
+    &:active{
+      transition: .15s;
+      transform: scale(.98);
+    }
+
+    transform: scale(1);
+    transition: .3s;
+    border: 1px solid #0198ff;
+    border-radius: 6px;
+    height: 35px;
+    bottom: -45px;
+    padding: 0 10px;
+
+    p{
+      color: #0198ff;
+      font-weight: bold;
+      line-height: 35px;
+    }
+    p:hover{
+      text-decoration:none;
+    }
+
+    ${'' /* animation: ${getAtention} 4s ease-in-out infinite; */}
   }
 
   @keyframes blurs{

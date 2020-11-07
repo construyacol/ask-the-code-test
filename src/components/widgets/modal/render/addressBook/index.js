@@ -13,10 +13,12 @@ import AddressBookComponent from './addressBookList'
 import HeaderComponent from './header'
 import { swing_in_bottom_bck } from '../../../animations'
 import  selectWithdrawAccountsByProviderType from '../../../../selectors'
-
+import { IconBackContainer } from '../../../shared-styles'
+import { AiOutlineClose } from "react-icons/ai"
 
 
 const AddressBook = ({ addressToAdd, setAddressValue }) => {
+
   const actions = useActions()
   const [{ current_wallet, path }] = WithdrawViewState()
   const provider_type = current_wallet && current_wallet.currency.currency
@@ -47,14 +49,23 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
   }
 
   useEffect(()=>{
-    setAnimation('appear', 'containerLayout', 1000)
+    const appearTransition = async() => {
+      await setAnimation('appear', 'containerLayout', 700)
+      const element = document.getElementById('containerLayout')
+      element && element.classList.add('keepOpacity')
+    }
+
+    appearTransition()
   }, [])
 
   return (
     // Dato de onkeydown y otros events.
-    // No pueden ser reutilizados, lo puse en false(onkeydown), porque estaba siendo utilizado por el useNavigationKeyActions 
+    // No pueden ser reutilizados, lo puse en false(onkeydown), porque estaba siendo utilizado por el useNavigationKeyActions
     <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={false} on_click={cerrar} >
       <ContainerLayout id="containerLayout">
+        <IconClose color="dark" opacity=".9" size="30px" onClick={() => actions.renderModal(null)}>
+          <AiOutlineClose color="white" size={20} />
+        </IconClose>
         <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
         <Content id="mainContent">
           <Container id="mainContainerAB">
@@ -78,7 +89,13 @@ export default AddressBook
 
 
 
-
+const IconClose = styled(IconBackContainer)`
+  z-index: 2;
+  right: 5px;
+  top: -36px;
+  position: absolute;
+  cursor: pointer;
+`
 
 
 const Container = styled.div`
@@ -117,10 +134,17 @@ const ContainerLayout = styled.div`
   display: grid;
   grid-template-rows: 80px 1fr;
   transform-style: preserve-3d;
+  opacity: 0;
 
   &.appear{
     -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+  }
+
+  &.keepOpacity{
+    opacity: 1;
+  }
+
   }
 
 `

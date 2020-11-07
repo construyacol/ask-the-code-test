@@ -3,6 +3,37 @@ import styled, { keyframes } from 'styled-components'
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
+export const getAtention = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+
+  79% {
+    transform: rotate(0deg);
+  }
+
+  80% {
+    transform: rotate(2deg);
+  }
+
+  85% {
+    transform: rotate(-2deg);
+  }
+
+  90% {
+    transform: rotate(1deg);
+  }
+
+  95% {
+    transform: rotate(-1deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+`;
+
+
 
 export const atentionAnimation = keyframes`
   0%,

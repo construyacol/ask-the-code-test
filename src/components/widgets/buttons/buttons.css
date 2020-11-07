@@ -592,7 +592,7 @@
 
 
 .ItemList:hover .confirmButton {
-  animation-name: rotaloPerro2;
+  animation-name: callToActionAtention;
   animation-duration: 1.2s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
@@ -629,7 +629,7 @@
 
 
 .ALbuttonActive {
-  animation-name: rotaloPerro;
+  animation-name: callToAction;
   animation-duration: 4s;
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
@@ -642,7 +642,7 @@
   transform-origin: center;
 }
 
-@keyframes rotaloPerro {
+@keyframes callToAction {
   0% {
     transform: rotate(0deg);
   }
@@ -674,7 +674,7 @@
 
 
 
-@keyframes rotaloPerro2 {
+@keyframes callToActionAtention {
   0% {
     transform: rotate(0deg);
   }

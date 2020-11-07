@@ -3,7 +3,7 @@ import { MdKeyboardArrowLeft } from "react-icons/md"
 import styled from 'styled-components'
 import backImg from '../../../../../assets/map.png'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
-
+import { IconBackContainer } from '../../../shared-styles' 
 
 
 
@@ -29,9 +29,9 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
     <Header>
       <section>
         <WindowControl id={idForBack} state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
-          <div>
+          <IconBackContainer>
             <MdKeyboardArrowLeft size={27} color="white"/>
-          </div>
+          </IconBackContainer>
         </WindowControl>
         <p className="fuente titleHead">{getTittle(view)}</p>
       </section>
@@ -42,16 +42,9 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
 export default HeaderComponent
 
 
+
+
 const WindowControl = styled.div`
-  div{
-    width: 35px;
-    height: 35px;
-    background: rgb(255, 255, 255, .3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 4px;
-  }
   overflow: hidden;
   width: 0;
   transition: .2s;
