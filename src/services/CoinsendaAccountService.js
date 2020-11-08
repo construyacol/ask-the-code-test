@@ -196,28 +196,27 @@ export class AccountService extends WebService {
 
     async updatePendingActivity(accountId, type, activityList) {
         const { modelData, ui } = this.globalState
-
         if (!modelData.wallets) return;
 
-        const fallbackCurrentWallet = ui.current_section.params.current_wallet
+        // const fallbackCurrentWallet = ui.current_section.params.current_wallet
         const fallbackActivityType = ui.current_section.params.currentFilter
-        const currentWallet = modelData.wallets[accountId] || fallbackCurrentWallet
+        const currentAccount = modelData.withdraw_accounts[accountId] || modelData.wallets[accountId]
 
-        if (!currentWallet) return;
+        if (!currentAccount) return;
 
         const activityType = type || fallbackActivityType
 
-        if (!activityList && currentWallet) {
-            activityList = await serve_orders(currentWallet.id, activityType)
+        if (!activityList && currentAccount) {
+            activityList = await serve_orders(currentAccount.id, activityType)
             if (!activityList) return;
         }
 
-        const isWithdraws = activityType === 'withdraws'
+        // const isWithdraws = activityType === 'withdraws'
         let pendingData
         const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, 'state', true)
 
         // If activity is equal to withdraws filter, always set up as 0 value
-        const pending = isWithdraws ? 0 : await filterActivitiesByStatus('pending')
+        const pending = await filterActivitiesByStatus('pending')
         const confirmed = await filterActivitiesByStatus('confirmed')
         // const rejected = await filterActivitiesByStatus('rejected')
 
@@ -234,7 +233,7 @@ export class AccountService extends WebService {
         let finalResult = {
             ...pendingData,
             expandidoMax,
-            account_id: currentWallet.id,
+            account_id: currentAccount.id,
             activity_type: activityType
         }
 
@@ -243,6 +242,7 @@ export class AccountService extends WebService {
     }
 
     async updateActivityState(accountId, type, activities) {
+
         if (!activities) {
             activities = await serve_orders(accountId, type)
         }

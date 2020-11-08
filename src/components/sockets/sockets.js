@@ -174,31 +174,8 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === 'accepted' && currentWithdraw.currency_type === 'fiat') {
 
-      let new_order = this.state.currentWithdraw
-
-      let new_withdraw = {
-        account_id: new_order.account_id,
-        amount: new_order.amount,
-        amount_neto: new_order.amount_neto,
-        comment: "",
-        country: new_order.country,
-        currency: new_order.currency,
-        currency_type: new_order.currency_type,
-        cost: new_order.cost,
-        cost_struct: new_order.cost_struct,
-        deposit_provider_id: "",
-        expiration_date: new Date(),
-        id: new_order.id,
-        state: "confirmed",
-        sent: false,
-        unique_id: new_order.id,
-        userId: new_order.userId,
-        withdraw_account: new_order.withdraw_account_id,
-        withdraw_provider: new_order.withdraw_provider_id,
-        type_order: "withdraw",
-      }
-
-      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw)
+      let new_withdraw = this.state.currentWithdraw
+      await this.props.coinsendaServices.addItemToState('withdraws', {...new_withdraw, state:'confirmed'})
       await this.props.coinsendaServices.updateActivityState(new_withdraw.account_id, 'withdraws')
       this.props.action.add_new_transaction_animation()
     }
