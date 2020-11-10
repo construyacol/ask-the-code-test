@@ -14,6 +14,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai';
 import ConfirmationCounter from './confirmationCounter'
 import useViewport from '../../../../../hooks/useWindowSize'
 import { device } from '../../../../../const/const'
+import { IconClose } from '../../../shared-styles'
 
 
 import moment from 'moment'
@@ -59,7 +60,10 @@ const CryptoDespoitOrder = ({ order }) => {
 
   return (
     <InProcessOrderContainer>
-
+      <IconClose
+        theme="dark"
+        size={20}
+      />
       <OrderContainer>
 
         <TopSection>
@@ -183,6 +187,10 @@ const FiatDespoitOrder = ({ order }) => {
   return (
     <InProcessOrderContainer>
 
+      <IconClose
+        theme="dark"
+        size={20}
+      />
 
       <OrderContainer onDragOver={dragOver}>
 
@@ -658,6 +666,9 @@ const OrderContainer = styled.div`
   grid-template-rows: auto 1fr auto;
   row-gap:30px;
   position: relative;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+
   @media ${device.tablet} {
     grid-template-rows: auto auto 1fr auto;
   }
@@ -682,13 +693,13 @@ const InProcessOrderContainer = styled.section`
     padding: 30px 40px;
   }
 
+  position: relative;
   width: 1000px;
   height: auto;
   min-height: 750px;
   background: white;
   display: grid;
   border-radius: 6px;
-  overflow: hidden;
   box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.1);
   grid-template-columns: 1fr 400px;
 

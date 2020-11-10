@@ -13,8 +13,7 @@ import AddressBookComponent from './addressBookList'
 import HeaderComponent from './header'
 import { swing_in_bottom_bck } from '../../../animations'
 import  selectWithdrawAccountsByProviderType from '../../../../selectors'
-import { IconBackContainer } from '../../../shared-styles'
-import { AiOutlineClose } from "react-icons/ai"
+import { IconClose } from '../../../shared-styles'
 
 
 const AddressBook = ({ addressToAdd, setAddressValue }) => {
@@ -63,9 +62,11 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
     // No pueden ser reutilizados, lo puse en false(onkeydown), porque estaba siendo utilizado por el useNavigationKeyActions
     <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={false} on_click={cerrar} >
       <ContainerLayout id="containerLayout">
-        <IconClose color="dark" opacity=".9" size="30px" onClick={() => actions.renderModal(null)}>
-          <AiOutlineClose color="white" size={20} />
-        </IconClose>
+        <IconClose
+          handleAction={() => actions.renderModal(null)}
+          theme="dark"
+          size={20}
+        />
         <HeaderComponent provider_type={provider_type} view={view} switchView={switchView} />
         <Content id="mainContent">
           <Container id="mainContainerAB">
@@ -89,13 +90,7 @@ export default AddressBook
 
 
 
-const IconClose = styled(IconBackContainer)`
-  z-index: 2;
-  right: 5px;
-  top: -36px;
-  position: absolute;
-  cursor: pointer;
-`
+
 
 
 const Container = styled.div`
