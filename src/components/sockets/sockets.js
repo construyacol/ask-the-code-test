@@ -55,6 +55,7 @@ class SocketsComponent extends Component {
             })
 
             socket.on(`/deposit/${user.id}`, async (deposit) => {
+
               if (deposit.state === 'pending' && deposit.currency_type === 'crypto') {
                 await this.setState({ currentDeposit: deposit })
               } else {
@@ -110,6 +111,8 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
+    // console.log(withdraw)
+    // debugger
 
     if (withdraw.proof) {
 
