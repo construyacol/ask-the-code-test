@@ -88,21 +88,20 @@ export const CriptoView = () => {
 
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
-    const address = form.get('address')
 
     if (user.security_center.authenticator.withdraw && !twoFaToken) {
       return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />))
     }
 
     dispatch(isAppLoading(true))
-    let withdraw_account = withdraw_accounts[address]
+    let withdraw_account = withdraw_accounts[addressValue]
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({
         currency: current_wallet.currency,
         provider_type: current_wallet.currency.currency,
         label: current_wallet.currency.currency,
-        address: address,
+        address: addressValue,
         country: current_wallet.country
       }, 'cripto')
       await coinsendaServices.fetchWithdrawAccounts()

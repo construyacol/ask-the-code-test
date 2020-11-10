@@ -145,6 +145,9 @@ const OrderStatusContainer = styled.div`
   grid-template-rows: auto 1fr;
   row-gap:25px;
   padding: 30px 40px;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+
   @media ${device.tablet} {
     grid-template-rows: 1fr;
     padding: 25px 20px;

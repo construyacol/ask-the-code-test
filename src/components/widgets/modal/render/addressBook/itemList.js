@@ -138,7 +138,7 @@ const ItemContainer = styled(CubeObject)`
   transition: .3s;
 
   &:hover{
-    background: #ececec;
+    ${'' /* background: #ececec; */}
   }
 
   ${ItemListContainer}{

@@ -60,18 +60,18 @@ function DashBoardContainer(props) {
 
   // const proofSocketNotify = () => {
   //   const { wallets } = props
-  //   const account_id = '5ed5a8fe5dea880032d2eb9d'
+  //   const account_id = '5f7995a466db980032411256'
   //
   //   setTimeout(()=>{
   //     let currency = {
   //       currency:'bitcoin_testnet',
   //       is_token:false
   //     }
-  //     props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
+  //     // props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
   //     props.action.socket_notify({account_id, currency, amount:0.15}, 'deposits')
-  //     props.action.other_modal_toggle()
-  //     props.action.success_sound()
-  //   }, 1000)
+  //     props.action.toggleOtherModal()
+  //     // props.action.success_sound()
+  //   }, 2000)
   // }
 
 

@@ -55,6 +55,7 @@ class SocketsComponent extends Component {
             })
 
             socket.on(`/deposit/${user.id}`, async (deposit) => {
+
               if (deposit.state === 'pending' && deposit.currency_type === 'crypto') {
                 await this.setState({ currentDeposit: deposit })
               } else {
@@ -110,33 +111,33 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
+    // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw)
+    // debugger
 
     if (withdraw.proof) {
-
       if (!this.props.withdraws || (this.props.withdraws && !this.props.withdraws[withdraw.id])) {
+        // Si no hay ordenes de retiro, ó si las hay, pero no está este retiro dentro de las ordenes disponibles en el estado
         let cWithdraw = await this.props.coinsendaServices.getOrderById(withdraw.id, 'withdraws')
         await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id)
+        // entonces consulte las ultimas ordenes de retiro de esta cuenta y actualiza el estado
         await this.setState({currentWithdraw:cWithdraw})
       }
-
-      // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, this.state.currentWithdraw)
-
+      // Teniendo la orden de retiro en el estado, agrégue la prueba de pago y actualice el estado a: "aceptado" en el modelo de la orden de retiro
       if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
         await this.props.action.update_item_state({ [withdraw.id]: { ...this.props.withdraws[withdraw.id], proof: withdraw.proof, sent: true, state: "accepted" } }, 'withdraws')
         await this.props.coinsendaServices.updateActivityState(this.props.withdraws[withdraw.id].account_id, 'withdraws')
         this.props.action.addNotification('wallets', { account_id: this.props.withdraws[withdraw.id].account_id, order_id: withdraw.id }, 1)
         // this.props.coinsendaServices.showNotification('Retiro exitoso', 'Retiro enviado con éxito')
         this.props.action.success_sound()
-        if((this.state.currentWithdraw.currency_type === 'fiat' && !this.props.isModalActive) && !this.props.isRenderModalActive){
+        if(!this.props.isModalActive && !this.props.isRenderModalActive){
           await this.props.action.socket_notify(this.props.withdraws[withdraw.id], 'withdraws')
           this.props.action.toggleOtherModal()
         }
-
       }
-      // await this.props.action.get_account_id_by_withdraw_id(withdraw.id)
     }
 
     if (withdraw.state === 'pending' && withdraw.currency_type === 'crypto') {
+      // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
       let res = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, 'confirmed')
       if (!res) {
         this.props.action.isAppLoading(false)
@@ -149,17 +150,14 @@ class SocketsComponent extends Component {
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
 
     if (withdraw.state === 'confirmed' && currentWithdraw.currency_type === 'crypto') {
-      // console.log('========> RESPUESTA ENDPOINT RETIRO', new_withdraw_model
-
+      // Añade esta orden de retiro crypto confirmado al estado
+      // actualiza la actividad de la cuenta a la que corresponde este retiro y actualiza el balance
       let new_withdraw_model = {
         id: currentWithdraw.id,
         account_id: currentWithdraw.account_id,
         ...currentWithdraw,
         state: "confirmed"
       }
-
-      // console.log('°°=°=°=°==°=°=°=°=°=°==°=°=°=°=°=°=°=°==°=°=°==°=°=°=°  WITHDRAW CONFIRMED ==>', this.props.user)
-
       await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw_model)
       await this.props.coinsendaServices.updateActivityState(new_withdraw_model.account_id, 'withdraws')
       await this.props.coinsendaServices.manageBalance(new_withdraw_model.account_id, 'reduce', new_withdraw_model.amount)
@@ -173,44 +171,26 @@ class SocketsComponent extends Component {
 
 
     if (withdraw.state === 'accepted' && currentWithdraw.currency_type === 'fiat') {
-
-      let new_order = this.state.currentWithdraw
-
-      let new_withdraw = {
-        account_id: new_order.account_id,
-        amount: new_order.amount,
-        amount_neto: new_order.amount_neto,
-        comment: "",
-        country: new_order.country,
-        currency: new_order.currency,
-        currency_type: new_order.currency_type,
-        cost: new_order.cost,
-        cost_struct: new_order.cost_struct,
-        deposit_provider_id: "",
-        expiration_date: new Date(),
-        id: new_order.id,
-        state: "confirmed",
-        sent: false,
-        unique_id: new_order.id,
-        userId: new_order.userId,
-        withdraw_account: new_order.withdraw_account_id,
-        withdraw_provider: new_order.withdraw_provider_id,
-        type_order: "withdraw",
-      }
-
-      await this.props.coinsendaServices.addItemToState('withdraws', new_withdraw)
+      let new_withdraw = this.state.currentWithdraw
+      await this.props.coinsendaServices.addItemToState('withdraws', {...new_withdraw, state:'confirmed'})
       await this.props.coinsendaServices.updateActivityState(new_withdraw.account_id, 'withdraws')
       this.props.action.add_new_transaction_animation()
-    }
-
-
-    if (withdraw.state === 'accepted' && currentWithdraw.currency_type === 'fiat') {
+      // alert('withdraw accepted')
       //update used_counter of withdraw account relation
+
       if(this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]){
         let withdraw_account = this.props.withdraw_accounts[currentWithdraw.withdraw_account_id]
-        this.props.action.update_item_state({ [currentWithdraw.withdraw_account_id]: { ...withdraw_account, used_counter:++withdraw_account.used_counter, inscribed:true } }, 'withdraw_accounts') //actualiza el movimiento operacional de la wallet
+        //actualiza el movimiento operacional de la cuenta de retiro
+        this.props.action.update_item_state({ [currentWithdraw.withdraw_account_id]: { ...withdraw_account, used_counter:++withdraw_account.used_counter, inscribed:true } }, 'withdraw_accounts')
       }
     }
+
+
+
+
+
+
+
 
 
 
@@ -236,6 +216,9 @@ class SocketsComponent extends Component {
 
 
   }
+
+
+
 
   deposit_mangagement = async deposit => {
 

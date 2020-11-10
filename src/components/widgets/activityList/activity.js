@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react'
-import ItemList from './viewItem'
+// import ItemList from './viewItem'
 import OrderItem from './order_item'
 // import { serve_orders, ticketModalView } from '../../../services'
 import { connect } from 'react-redux'
@@ -210,30 +210,38 @@ class ActivityList extends Component {
                 {
                   activity &&
                   activity.map((item, indx) => {
-                    if ((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected') || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')) { return null }
-                    if (item.state === 'pending' && item.currency_type === 'crypto') { return null }
-                    if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws') {
-                      return <OrderItem
-                        order={{ ...item }}
-                        handleAction={this.verTicket}
-                        key={indx}
-                      />
-                    } else {
-                      return <ItemList key={item.id}
-                        confirmPayment={this.confirmPayment}
-                        lastPendingId={lastPending}
-                        newDepositStyle={newDepositStyle}
-                        verTicket={this.verTicket}
-                        delete_order={this.delete_order_confirmation}
-                        ticket={item}
-                        loader={loader}
-                        current_order_loader={current_order_loader}
-                        deleting={deleting}
-                        deleted={deleted}
-                        currencies={currencies}
-                        {...this.props}
-                      />
-                    }
+                    // Si la orden esta en accepted, canceled, rejected ó es un retiro pendiente
+                    if ((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected')) { return null }
+                    // if ((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected') || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')) { return null }
+                    // if (item.state === 'pending' && item.currency_type === 'crypto') { return null }
+                    return <OrderItem
+                      order={{ ...item }}
+                      handleAction={this.verTicket}
+                      key={indx}
+                    />
+
+                    // if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws') {
+                    //   return <OrderItem
+                    //     order={{ ...item }}
+                    //     handleAction={this.verTicket}
+                    //     key={indx}
+                    //   />
+                    // } else {
+                    //   return <ItemList key={item.id}
+                    //     confirmPayment={this.confirmPayment}
+                    //     lastPendingId={lastPending}
+                    //     newDepositStyle={newDepositStyle}
+                    //     verTicket={this.verTicket}
+                    //     delete_order={this.delete_order_confirmation}
+                    //     ticket={item}
+                    //     loader={loader}
+                    //     current_order_loader={current_order_loader}
+                    //     deleting={deleting}
+                    //     deleted={deleted}
+                    //     currencies={currencies}
+                    //     {...this.props}
+                    //   />
+                    // }
 
                     // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
 
@@ -260,25 +268,30 @@ class ActivityList extends Component {
             {
               activity.map((item, index) => {
                 if ((item.state !== 'accepted' && item.state !== 'canceled' && item.state !== 'rejected') && tx_path !== 'swaps') { return false }
-                if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps') {
-                  return <OrderItem
-                    index={index}
-                    // handleAction={this.openOrder}
-                    order={item}
-                    key={index}
-                  />
-                } else {
-                  return (<ItemList
-                    key={item.id}
-                    confirmPayment={this.confirmPayment}
-                    verTicket={this.verTicket}
-                    delete_order={this.delete_order_confirmation}
-                    ticket={item}
-                    short_name={short_name}
-                    notifier_type="wallets"
-                    {...this.props}
-                  />)
-                }
+                return <OrderItem
+                  index={index}
+                  order={item}
+                  key={index}
+                />
+
+                // if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps') {
+                //   return <OrderItem
+                //     index={index}
+                //     order={item}
+                //     key={index}
+                //   />
+                // } else {
+                //   return (<ItemList
+                //     key={item.id}
+                //     confirmPayment={this.confirmPayment}
+                //     verTicket={this.verTicket}
+                //     delete_order={this.delete_order_confirmation}
+                //     ticket={item}
+                //     short_name={short_name}
+                //     notifier_type="wallets"
+                //     {...this.props}
+                //   />)
+                // }
               })
             }
           </div>

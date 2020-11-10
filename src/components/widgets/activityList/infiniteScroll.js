@@ -9,14 +9,15 @@ export default ({ loader, setLoader }) => {
 
   const [ show, setElement ] = useObserver()
   const [ coinsendaServices, { storage:{ activity_for_account } }] = useCoinsendaServices()
-  const { tx_path, account_id } = useParams()
+  const { tx_path, account_id, primary_path } = useParams()
   const [ availableActivity, setAvailableActivity ] = useState(true)
   // const params = useParams()
 
   const getActivity = async() => {
     setLoader(true)
-    const method = `get_${tx_path}`
+    const method = primary_path === 'withdraw_accounts' ? 'get_withdraws_by_withdraw_account'  : `get_${tx_path}`
     const skip = activity_for_account && activity_for_account[account_id] && activity_for_account[account_id][tx_path] && activity_for_account[account_id][tx_path].length
+
     let activity = []
     if(skip > 10){
       activity = await coinsendaServices[method](account_id, 15, skip)

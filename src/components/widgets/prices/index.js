@@ -6,6 +6,7 @@ import PricesModalContent from '../../PricesModalContent/prices-modal-content'
 import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
 import { device } from '../../../const/const'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
+import { IconClose } from '../shared-styles'
 
 
 const PricesModal = () => {
@@ -25,7 +26,11 @@ const PricesModal = () => {
   return(
     <OtherModalLayout on_click={closeModal}>
       <MainContainer>
-        <CloseButton id={idCloseModalButton} onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton>
+        <IconClose
+          theme="dark"
+          size={20}
+        />
+        {/* <CloseButton id={idCloseModalButton} onClick={() => closeModal()}><i className="far fa-times-circle"></i></CloseButton> */}
         <PricesModalContent changePair={actions.searchCurrentPairAction} currentPair={currentPair} pairs={pairs} />
       </MainContainer>
     </OtherModalLayout>

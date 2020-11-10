@@ -136,6 +136,9 @@ const SearchComponentContainer = styled.div`
 
   #cubeContainer{
     margin: 12px 0;
+    :hover{
+      background: #ececec;
+    }
   }
 
   #frontCube{

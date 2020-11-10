@@ -6,8 +6,9 @@ import { ButtonForms } from '../buttons/buttons'
 // import proof from '../../../assets/deletewallet.png'
 import SimpleLoader from '../loaders'
 import IconSwitch from '../icons/iconSwitch'
-// import styled from 'styled-components'
+import styled from 'styled-components'
 import SwapVIewConfirm from './swapViewConfirmation'
+import { IconClose } from '../shared-styles'
 
 import './modal.css'
 import useKeyActionAsClick from '../../../hooks/useKeyActionAsClick'
@@ -126,11 +127,17 @@ export const StandardTicket = props => {
     <div id={idCloseButton} className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
 
       <div className={`Mconfirmar ${type}`}>
+
+        <IconClose
+          theme="dark"
+          size={20}
+        />
+
         <div className="titleConfirmed">
           <h1 className="fuente" >{title}</h1>
         </div>
 
-        <>
+        <Wrapper>
           {
             img ?
               <img className="itemFuera" src={require(`../../../assets/${img}.png`)} width="80" alt="" id={img} title={img} />
@@ -160,7 +167,7 @@ export const StandardTicket = props => {
               siguiente={handleClick}
             >{txtPrimary}</ButtonForms>
           </div>
-        </>
+        </Wrapper>
       </div>
 
     </div>
@@ -169,6 +176,21 @@ export const StandardTicket = props => {
 
 }
 
+
+const Wrapper = styled.section`
+  width: 100%;
+  height: auto;
+  background: white;
+  display: grid;
+  grid-row-gap: 50px;
+  padding: 30px 0;
+  border-radius: 6px;
+
+  p{
+    max-width: 450px;
+    justify-self:center;
+  }
+`
 
 
 

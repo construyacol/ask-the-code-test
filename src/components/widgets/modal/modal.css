@@ -144,11 +144,11 @@
   align-items: center;
   max-width: 550px;
   width: calc(97% - 60px);
-  min-height: 350px;
   height: auto;
-  background: white;
+  /* background: white; */
   border-radius: 7px;
-  padding: 100px 30px 10px 30px;
+  /* padding: 100px 30px 10px 30px; */
+  padding:70px 0px;
   display: grid;
   grid-row-gap: 50px;
   /* grid-template-rows: minmax(25px, 130px) 1fr 100px; */
@@ -161,16 +161,21 @@
 
 
  .titleConfirmed{
+   background-image: url('../../../assets/map.png');
+   background-size: contain;
+   background-repeat: no-repeat;
+   background-position: bottom;
+   background-attachment: fixed;
    border-top-right-radius: 7px;
    border-top-left-radius: 7px;
    display: grid;
    align-items: center;
    justify-items:center;
-   width: 100%;
+   width: 98%;
    height: 70px;
    position: absolute;
    top: 0;
-   background: linear-gradient(to bottom right, #0175c3, #039aff);
+   /* background: linear-gradient(to bottom right, #0175c3, #039aff); */
  }
 
 

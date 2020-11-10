@@ -6,7 +6,7 @@ import OtherModalLayout from '../../widgets/modal/otherModalLayout'
 import IconSwitch from '../../widgets/icons/iconSwitch'
 import { ButtonNofity } from '../../widgets/buttons/buttons'
 import { formatToCurrency } from '../../../utils/convert_currency'
-
+import { IconClose } from '../../widgets/shared-styles'
 import './socketNotify.css'
 import { createSelector } from 'reselect'
 
@@ -19,7 +19,8 @@ const SocketNotify = props => {
 
   const [formatCurrency, setFormatCurrency] = useState(null)
   const { item_type, title } = props.socket_notify
-  let ui_text = `${item_type === 'deposits' ? 'deposito' : item_type === 'withdraws' ? 'retiro' : ''}`
+  let txType = `${item_type === 'deposits' ? 'deposito' : 'retiro'}`;
+  let fallBackTitle = `${item_type === 'deposits' ? 'Nuevo deposito aprobado' : item_type === 'withdraws' ? 'Nuevo retiro enviado' : ''}`
 
   useEffect(() => {
 
@@ -35,32 +36,25 @@ const SocketNotify = props => {
     setFormatCurrency(resul)
   }
 
-  // const modal_click = e => {
-  //   const { target } = e
-  //   if(target.dataset.close_modal){
-  //     props.action.socket_notify(null)
-  //     props.action.toggleOtherModal()
-  //   }
-  // }
-
-  const close_modal = () => {
-    props.action.socket_notify(null)
-    props.action.toggleOtherModal()
+  const closeModal = e => {
+    const { target } = e
+    if(target && target.dataset.close_modal){
+      props.action.socket_notify(null)
+      props.action.toggleOtherModal()
+    }
   }
 
 
 
   return (
-    // <OtherModalLayout on_click={modal_click}>
-    <OtherModalLayout>
-      {
+    <OtherModalLayout on_click={closeModal}>
+      {/* {
         item_type === 'deposits' ?
           <OrderNotifyView
             title={`${title ? title : `Nuevo ${ui_text} aprobado.`}`}
             button_tittle={`Ver ${ui_text}`}
             item_type={item_type}
             formatCurrency={formatCurrency}
-            close_modal={close_modal}
             {...props} />
 
           :
@@ -71,10 +65,22 @@ const SocketNotify = props => {
             button_tittle={`Ver ${ui_text}.`}
             item_type={item_type}
             formatCurrency={formatCurrency}
-            close_modal={close_modal}
             {...props} />
 
+      } */}
+
+      {
+        ['deposits', 'withdraws'].includes(item_type) &&
+        <OrderNotifyView
+          title={title || fallBackTitle}
+          button_tittle={`Ver ${txType}.`}
+          item_type={item_type}
+          formatCurrency={formatCurrency}
+          {...props} />
       }
+
+
+
     </OtherModalLayout>
   )
 }
@@ -98,7 +104,7 @@ const SocketNotify = props => {
 
 const OrderNotifyView = props => {
 
-  const { socket_notify, formatCurrency, currencies, close_modal, title, button_tittle } = props
+  const { socket_notify, formatCurrency, currencies, title, button_tittle } = props
 
   const {
     item_type,
@@ -115,12 +121,14 @@ const OrderNotifyView = props => {
     props.history.push(`/wallets/activity/${wallet_id}/${item_type}`)
   }
 
-  console.log('item_type', item_type)
+  // console.log('item_type', item_type)
 
   return (
     <LayoutSocketNotify>
-      <div className="close_modal_btn" onClick={close_modal}><i className="fas fa-times"></i></div>
-
+      <IconClose
+        theme="dark"
+        size={20}
+      />
       <div className="topSection">
         <div className="contBackTopSection">
           <div className="backTopSection animate" />
