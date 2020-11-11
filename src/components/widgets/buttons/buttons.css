@@ -152,6 +152,15 @@
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
+
+@media only screen and (max-width: 768px) {
+  .CMControls {
+    display: grid;
+  }
+}
+
+
+
 .secundary {
   background: white;
   border: 2px solid #3A7BD5;
