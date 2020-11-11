@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { debounce } from "../utils";
 
-const ID_FOR_CLICKEABLE_ELEMENTS = 'main-clickeable-element'
+const ID_FOR_CLICKEABLE_ELEMENTS = "main-clickeable-element";
 
 /**
  * useKeyActionAsClick mimifica la accion "click" con algunas condiciones para los componentes indentificados con id devuelto.
@@ -25,121 +25,145 @@ const ID_FOR_CLICKEABLE_ELEMENTS = 'main-clickeable-element'
  * @see window.onkeydown
  */
 export default function useKeyActionAsClick(
-    shouldHandleAction = true,
-    elementId = ID_FOR_CLICKEABLE_ELEMENTS,
-    keyCode = 13,
-    preventFromInput = true,
-    eventName = 'onkeypress',
-    activeOnOpenModal = false) {
-    const isModalVisible = useSelector(state => state.form.isModalVisible)
-    const isModalRenderVisible = useSelector(state => state.ui.modal.render)
-    const isConfirmationModalVisible = useSelector(state => state.ui.modal_confirmation.visible)
-    const isOtherModalVisible = useSelector(state => state.ui.otherModal)
+  shouldHandleAction = true,
+  elementId = ID_FOR_CLICKEABLE_ELEMENTS,
+  keyCode = 13,
+  preventFromInput = true,
+  eventName = "onkeypress",
+  activeOnOpenModal = false
+) {
+  // this is for mobile
+  return elementId;
 
-    /**
-     * Busca el elemento por el Id y hace 'Click' si existe
-     *
-     * @param {String} id id referencial del elemento en el DOM actual
-     */
-    const doClick = (id, event) => {
-        const clickeableElement = document.getElementById(id)
-        if (clickeableElement) {
-            event.preventDefault()
-            event.stopPropagation()
-            clickeableElement.click && clickeableElement.click()
-        }
+  const isModalVisible = useSelector((state) => state.form.isModalVisible);
+  const isModalRenderVisible = useSelector((state) => state.ui.modal.render);
+  const isConfirmationModalVisible = useSelector(
+    (state) => state.ui.modal_confirmation.visible
+  );
+  const isOtherModalVisible = useSelector((state) => state.ui.otherModal);
+
+  /**
+   * Busca el elemento por el Id y hace 'Click' si existe
+   *
+   * @param {String} id id referencial del elemento en el DOM actual
+   */
+  const doClick = (id, event) => {
+    const clickeableElement = document.getElementById(id);
+    if (clickeableElement) {
+      event.preventDefault();
+      event.stopPropagation();
+      clickeableElement.click && clickeableElement.click();
     }
+  };
 
-    /**
-     * Guarda los id y condiciones a ejecutar al momento de indentificar el evento
-     *
-     * @param {String} elementId id referencial del elemento en el DOM actual
-     * @param {Event.keyCode|Number} elementId keycode a referenciar al ID
-     */
-    const manageKeyActions = (elementId, keyCode) => {
-        if (!window.KEY_CODES_META) {
-            window.KEY_CODES_META = {}
-        }
-        if (!window.KEY_CODES_META[eventName]) {
-            window.KEY_CODES_META[eventName] = {}
-        }
-        window.KEY_CODES_META[eventName][elementId] = {
-            keyCode,
-            preventFromInput,
-            activeOnOpenModal
-        }
+  /**
+   * Guarda los id y condiciones a ejecutar al momento de indentificar el evento
+   *
+   * @param {String} elementId id referencial del elemento en el DOM actual
+   * @param {Event.keyCode|Number} elementId keycode a referenciar al ID
+   */
+  const manageKeyActions = (elementId, keyCode) => {
+    if (!window.KEY_CODES_META) {
+      window.KEY_CODES_META = {};
     }
-
-    /**
-     * Evento "eventName" a ejecutar
-     *
-     * @param {Event} event evento de tipo keyEvent
-     * @returns doClick fn | boolean
-     */
-    const onKeyEventFn = (event, _doBreak) => {
-        // verifica que no este algun modal abierto
-        const isNotModalOpened = !isModalVisible && !isModalRenderVisible && !isConfirmationModalVisible && !isOtherModalVisible
-
-        // si existe el KEY_CODES_META y el Evento actual
-        if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
-            // puntero para romper la ejecucion
-            let doBrake = false
-
-            // seleccionamos los id que coincidan con el keyCode
-            const keyCodesIds = Object.keys(window.KEY_CODES_META[eventName]).filter(item =>{
-                return window.KEY_CODES_META[eventName][item].keyCode === event.keyCode
-            })
-
-            // recorremos los ids
-            keyCodesIds.map(id => {
-                // si ya se encontro el id que buscamos detenemos el timer
-                if(doBrake) return typeof _doBreak === 'function' && _doBreak()
-
-                // busca el elemento a Clickear, si no existe saltamos al siguiente id
-                const element = document.getElementById(id)
-                if(!element) return false
-
-                const keyCodeData = window.KEY_CODES_META[eventName][id]
-
-                if (!keyCodeData.activeOnOpenModal && !isNotModalOpened) return false
-                if (keyCodeData.keyCode === event.keyCode) {
-                    const isFromInputElement = event.srcElement.tagName.includes('INPUT')
-                    const isFromInputWithValue = isFromInputElement && event.srcElement.value
-                    const isFromInputWithNoValue = isFromInputElement && !event.srcElement.value
-                    if (keyCodeData.preventFromInput && isFromInputWithValue) return false
-                    if (keyCodeData.preventFromInput && isFromInputWithNoValue) {
-                        event.stopPropagation()
-                        event.preventDefault()
-                        if(keyCodeData.activeOnOpenModal) event.srcElement.blur()
-                        return false
-                    }
-                    if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
-                        doClick(id, event)
-                        doBrake = true
-                    } else {
-                        doClick(id, event)
-                        doBrake = true
-                    }
-                    return false
-                }
-            })
-        }
+    if (!window.KEY_CODES_META[eventName]) {
+      window.KEY_CODES_META[eventName] = {};
     }
+    window.KEY_CODES_META[eventName][elementId] = {
+      keyCode,
+      preventFromInput,
+      activeOnOpenModal,
+    };
+  };
 
-    const handleKeyAction = async () => {
-        window[eventName] = debounce(onKeyEventFn, 100)
-    }
+  /**
+   * Evento "eventName" a ejecutar
+   *
+   * @param {Event} event evento de tipo keyEvent
+   * @returns doClick fn | boolean
+   */
+  const onKeyEventFn = (event, _doBreak) => {
+    // verifica que no este algun modal abierto
+    const isNotModalOpened =
+      !isModalVisible &&
+      !isModalRenderVisible &&
+      !isConfirmationModalVisible &&
+      !isOtherModalVisible;
 
-    useEffect(() => {
-        manageKeyActions(elementId, keyCode)
-    }, [elementId, keyCode])
+    // si existe el KEY_CODES_META y el Evento actual
+    if (window.KEY_CODES_META && window.KEY_CODES_META[eventName]) {
+      // puntero para romper la ejecucion
+      let doBrake = false;
 
-    useEffect(() => {
-        handleKeyAction()
-        return () => {
-            // window[eventName] = false
+      // seleccionamos los id que coincidan con el keyCode
+      const keyCodesIds = Object.keys(window.KEY_CODES_META[eventName]).filter(
+        (item) => {
+          return (
+            window.KEY_CODES_META[eventName][item].keyCode === event.keyCode
+          );
         }
-    }, [window[eventName], isModalVisible, isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction])
+      );
 
-    return elementId
+      // recorremos los ids
+      keyCodesIds.map((id) => {
+        // si ya se encontro el id que buscamos detenemos el timer
+        if (doBrake) return typeof _doBreak === "function" && _doBreak();
+
+        // busca el elemento a Clickear, si no existe saltamos al siguiente id
+        const element = document.getElementById(id);
+        if (!element) return false;
+
+        const keyCodeData = window.KEY_CODES_META[eventName][id];
+
+        if (!keyCodeData.activeOnOpenModal && !isNotModalOpened) return false;
+        if (keyCodeData.keyCode === event.keyCode) {
+          const isFromInputElement = event.srcElement.tagName.includes("INPUT");
+          const isFromInputWithValue =
+            isFromInputElement && event.srcElement.value;
+          const isFromInputWithNoValue =
+            isFromInputElement && !event.srcElement.value;
+          if (keyCodeData.preventFromInput && isFromInputWithValue)
+            return false;
+          if (keyCodeData.preventFromInput && isFromInputWithNoValue) {
+            event.stopPropagation();
+            event.preventDefault();
+            if (keyCodeData.activeOnOpenModal) event.srcElement.blur();
+            return false;
+          }
+          if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
+            doClick(id, event);
+            doBrake = true;
+          } else {
+            doClick(id, event);
+            doBrake = true;
+          }
+          return false;
+        }
+      });
+    }
+  };
+
+  const handleKeyAction = async () => {
+    window[eventName] = debounce(onKeyEventFn, 100);
+  };
+
+  useEffect(() => {
+    manageKeyActions(elementId, keyCode);
+  }, [elementId, keyCode]);
+
+  useEffect(() => {
+    handleKeyAction();
+    return () => {
+      // window[eventName] = false
+    };
+  }, [
+    window[eventName],
+    isModalVisible,
+    isModalRenderVisible,
+    isConfirmationModalVisible,
+    isOtherModalVisible,
+    shouldHandleAction,
+  ]);
+
+  return elementId;
 }
