@@ -3,6 +3,7 @@ import loadable from "@loadable/component";
 import SimpleLoader from "../../widgets/loaders";
 import { payment_method } from "../../api/ui/api.json";
 import "./newAccount.css";
+import "../../wallets/newWallet/newWallet.css";
 
 const BankAccountFlow = loadable(() => import("./flows/bankAccountFlow"));
 const MethodView = loadable(() => import("./views/1method"));

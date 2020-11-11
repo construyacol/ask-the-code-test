@@ -8,7 +8,7 @@ import { navigation_components } from "../api/ui/api.json";
 import { Router, Route } from "react-router-dom";
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from "prop-types";
-import { AccountListSkeletonLoader } from "../dashBoard/dashboard-container";
+import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
 import { WalletDetail } from "../wallets/walletContainer";
 
 const AccountList = loadable(() =>

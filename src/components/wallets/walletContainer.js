@@ -8,10 +8,14 @@ import { Route } from "react-router-dom";
 import ItemAccount from "../widgets/accountList/item_account";
 import SimpleLoader from "../widgets/loaders";
 import PropTypes from "prop-types";
+import "./views/wallet_views.css";
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"));
-const LazyAccountList = loadable(() =>
-  import("../widgets/accountList/account-list")
+const LazyAccountList = loadable(
+  () => import("../widgets/accountList/account-list"),
+  {
+    fallback: <SimpleLoader color="blue" label={"Cargando pagina..."} />,
+  }
 );
 const LazySwapView = loadable(() => import("./views/swap"));
 const LazyDepositView = loadable(() => import("./views/deposit"));
