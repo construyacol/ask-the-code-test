@@ -239,7 +239,7 @@ export class MainService extends inheritances {
   }
 
   async isCached(path, newData, doStateValidation = true) {
-    // return false
+    return false;
     const localState = this.globalState.modelData;
     const cached = await localForage.getItem("CACHED_DATA");
     if (cached && cached[path]) {

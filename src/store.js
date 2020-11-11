@@ -2,13 +2,14 @@ import { applyMiddleware } from "redux";
 import { createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import logger from "redux-logger";
-// import soundsMiddleware from 'redux-sounds';
+import soundsMiddleware from "redux-sounds";
 import thunk from "redux-thunk";
 import reducer from "./reducers";
 import { mainService } from "./services/MainService";
-// import soundData from './sounds';
+import soundData from "./sounds";
+import { updateLocalForagePersistState } from "./components/hooks/sessionRestore";
 
-// const loadedSoundsMiddleware = soundsMiddleware(soundData)
+const loadedSoundsMiddleware = soundsMiddleware(soundData);
 
 export function _createStore() {
   // Grab the state from a global variable injected into the server-generated HTML
@@ -22,21 +23,14 @@ export function _createStore() {
     store = createStore(
       reducer,
       preloadedState || {},
-      applyMiddleware(
-        thunk
-        // loadedSoundsMiddleware
-      )
+      applyMiddleware(thunk, loadedSoundsMiddleware)
     );
   } else {
     store = createStore(
       reducer,
       {},
       composeWithDevTools(
-        applyMiddleware(
-          logger,
-          thunk
-          // loadedSoundsMiddleware
-        )
+        applyMiddleware(logger, thunk, loadedSoundsMiddleware)
       )
     );
   }
@@ -50,7 +44,9 @@ export function _createStore() {
     if (store.getState().modelData.authData.userToken) {
       mainService.setGlobalState(store.getState());
     }
-    // window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData)
+    window.onbeforeunload = updateLocalForagePersistState(
+      store.getState().modelData
+    );
   });
   return store;
 }
