@@ -1,6 +1,8 @@
 import styled, { css } from "styled-components";
 
-export const InputKeyActionHandler = styled.div`
+export const InputKeyActionHandler = styled[
+  `${window.innerWidth > 900 ? "input" : "div"}`
+]`
   width: 0;
   height: 0;
   opacity: 0;

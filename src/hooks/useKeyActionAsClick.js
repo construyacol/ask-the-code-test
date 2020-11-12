@@ -32,9 +32,6 @@ export default function useKeyActionAsClick(
   eventName = "onkeypress",
   activeOnOpenModal = false
 ) {
-  // this is for mobile
-  return elementId;
-
   const isModalVisible = useSelector((state) => state.form.isModalVisible);
   const isModalRenderVisible = useSelector((state) => state.ui.modal.render);
   const isConfirmationModalVisible = useSelector(
@@ -152,7 +149,16 @@ export default function useKeyActionAsClick(
   }, [elementId, keyCode]);
 
   useEffect(() => {
-    handleKeyAction();
+    // this is for mobile
+    if (window.innerWidth < 900) {
+      window.KEY_CODES_META = null;
+      window.onkeydown = null;
+      window.onkeyup = null;
+      window.onkeypress = null;
+      return () => null;
+    } else {
+      handleKeyAction();
+    }
     return () => {
       // window[eventName] = false
     };

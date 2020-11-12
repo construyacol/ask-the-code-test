@@ -30,9 +30,6 @@ const DEFAULT_ARGS = {
  * @see window.onkeydown
  */
 export default function useNavigationKeyActions(config) {
-  // this is for mobile
-  return [() => null];
-
   const valuesAsProps = { ...DEFAULT_ARGS, ...config };
   const { modalRestriction, uniqueIdForElement, loader, items } = valuesAsProps;
   const [currentSelection, setCurrentSelection] = useState(-1);
@@ -58,47 +55,57 @@ export default function useNavigationKeyActions(config) {
   }, [isModalRenderShowing, isModalVisible]);
 
   useEffect(() => {
-    window.onkeydown = (event) => {
-      if (
-        !isModalRenderShowing &&
-        !isModalVisible &&
-        items &&
-        items.length > 0
-      ) {
-        if (isModalVisible) return;
-        const length = valuesAsProps.originalLength
-          ? items.length
-          : items.length - 1;
-        const currentSelectionIsDownZero = currentSelection < 0;
-        let elementId = 0;
-        let el = null;
-        if (event.keyCode === valuesAsProps.prev) {
-          elementId = currentSelectionIsDownZero
-            ? length
-            : currentSelection - 1;
-          el = document.getElementById(
-            `${uniqueIdForElement}${Math.max(0, elementId)}`
-          );
+    // this is for mobile
+    if (window.innerWidth < 900) {
+      window.KEY_CODES_META = null;
+      window.onkeydown = null;
+      window.onkeyup = null;
+      window.onkeypress = null;
+      return () => null;
+    } else {
+      window.onkeydown = (event) => {
+        if (
+          !isModalRenderShowing &&
+          !isModalVisible &&
+          items &&
+          items.length > 0
+        ) {
+          if (isModalVisible) return;
+          const length = valuesAsProps.originalLength
+            ? items.length
+            : items.length - 1;
+          const currentSelectionIsDownZero = currentSelection < 0;
+          let elementId = 0;
+          let el = null;
+          if (event.keyCode === valuesAsProps.prev) {
+            elementId = currentSelectionIsDownZero
+              ? length
+              : currentSelection - 1;
+            el = document.getElementById(
+              `${uniqueIdForElement}${Math.max(0, elementId)}`
+            );
+          }
+          if (event.keyCode === valuesAsProps.next) {
+            elementId = currentSelectionIsDownZero ? 0 : currentSelection + 1;
+            el = document.getElementById(
+              `${uniqueIdForElement}${Math.min(length, elementId)}`
+            );
+          }
+          if (event.keyCode === 13) {
+            elementId = currentSelectionIsDownZero ? 0 : currentSelection;
+            el = document.getElementById(
+              `${uniqueIdForElement}${Math.min(length, elementId)}`
+            );
+          }
+          if (el) {
+            el.focus();
+            // event.preventDefault()
+            // event.stopPropagation()
+          }
         }
-        if (event.keyCode === valuesAsProps.next) {
-          elementId = currentSelectionIsDownZero ? 0 : currentSelection + 1;
-          el = document.getElementById(
-            `${uniqueIdForElement}${Math.min(length, elementId)}`
-          );
-        }
-        if (event.keyCode === 13) {
-          elementId = currentSelectionIsDownZero ? 0 : currentSelection;
-          el = document.getElementById(
-            `${uniqueIdForElement}${Math.min(length, elementId)}`
-          );
-        }
-        if (el) {
-          el.focus();
-          // event.preventDefault()
-          // event.stopPropagation()
-        }
-      }
-    };
+      };
+    }
+
     return () => {
       window.onkeydown = false;
     };
@@ -145,40 +152,45 @@ export function useItemsInteractions(
   keyActions,
   modalRestriction = true
 ) {
-  // this is for mobile
-  return [false, () => null];
-
   const { suprKeyAction, enterKeyAction } = keyActions;
   const [isSelected, setIsSelected] = useState(false);
   const isModalVisible =
     modalRestriction && useSelector((state) => state.form.isModalVisible);
 
   useEffect(() => {
-    // console.log('||||||||||||||||||||||||||||||||||||||||| useItemsInteractions', props)
-    const element = document.getElementById(props.focusedId);
-    if (element) {
-      element.onfocus = () => {
-        setIsSelected(true);
-        props.setCurrentSelection(props.number);
-      };
+    // this is for mobile
+    if (window.innerWidth < 900) {
+      window.KEY_CODES_META = null;
+      window.onkeydown = null;
+      window.onkeyup = null;
+      window.onkeypress = null;
+      return () => null;
+    } else {
+      const element = document.getElementById(props.focusedId);
+      if (element) {
+        element.onfocus = () => {
+          setIsSelected(true);
+          props.setCurrentSelection(props.number);
+        };
 
-      element.onblur = () => {
-        setIsSelected(false);
-      };
+        element.onblur = () => {
+          setIsSelected(false);
+        };
 
-      element.onkeydown = (event) => {
-        element.blur();
-        if (isModalVisible) return;
-        if (event.keyCode === 46) {
-          event.stopPropagation();
-          suprKeyAction(() => element.focus());
-        }
-        if (event.keyCode === 13) {
-          enterKeyAction();
-          event.stopPropagation();
-          event.preventDefault();
-        }
-      };
+        element.onkeydown = (event) => {
+          element.blur();
+          if (isModalVisible) return;
+          if (event.keyCode === 46) {
+            event.stopPropagation();
+            suprKeyAction(() => element.focus());
+          }
+          if (event.keyCode === 13) {
+            enterKeyAction();
+            event.stopPropagation();
+            event.preventDefault();
+          }
+        };
+      }
     }
   }, [isModalVisible]);
 
