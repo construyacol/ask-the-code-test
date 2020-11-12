@@ -3,6 +3,7 @@ import IconSwitch from '../icons/iconSwitch'
 import { connect } from 'react-redux'
 import { IconClose } from '../shared-styles'
 import styled from 'styled-components'
+import OtherModalLayout from './otherModalLayout'
 
 import {
   DownCounter,
@@ -59,7 +60,8 @@ const SwapVIewConfirm = props => {
   // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
 
-    <div id={idCancelButton} className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={_cancelarClick ? _cancelarClick : null}>
+    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={_cancelarClick ? _cancelarClick : null}>
+
       <h1 className="bigCounter fuente2">{counter}</h1>
       <div className="LayoutSocketNotify swing-in-bottom-bck">
         <div className={`socketContent ${type}`}>
@@ -112,7 +114,8 @@ const SwapVIewConfirm = props => {
         <MsgSwapDisclamer><p id="swapDisclamerText" className="fuente">La cotización se actualizará cada 20 segundos.</p></MsgSwapDisclamer>
 
       </div>
-    </div>
+    </OtherModalLayout>
+
   )
 
 }
