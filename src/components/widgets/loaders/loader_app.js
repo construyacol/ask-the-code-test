@@ -24,7 +24,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const { authData } = reduxState.modelData
   const { appLoadLabel } = reduxState.isLoading
   const previousLoadLabel = usePrevious(appLoadLabel)
-  const { isTabletOrMovilViewport } = useViewport()
+  const { isTabletOrMovilViewport, isMovilViewport } = useViewport()
 
   const registerColors = () => {
     if ((window && window.CSS) && window.CSS.registerProperty) {
@@ -98,7 +98,9 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const redirectURL = async (isSessionRestored) => {
     coinsendaServices.freshChatInitUser()
-    coinsendaServices.initPushNotificator()
+    if(!isMovilViewport){
+      coinsendaServices.initPushNotificator()
+    }
 
     const verificationStatus = await coinsendaServices.getVerificationState()
     if (verificationStatus !== 'accepted') {

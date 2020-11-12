@@ -5,13 +5,14 @@ import { swing_in_bottom_bck, socketIconContainerIntro, backTopSection } from '.
 import AuthReq from '../../itemSettings/modal_views/authreq'
 import IconSwitch from '../../icons/iconSwitch'
 import { useActions } from '../../../../hooks/useActions'
+import { IconClose } from '../../shared-styles'
 
 const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
 
   const actions = useActions()
 
-  const cerrar = (e) => {
-    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+  const cerrar = (e, forcedClose) => {
+    if (forcedClose || (!e || (e.target.dataset && e.target.dataset.close_modal))) {
       actions.renderModal(null)
       if (cancelAction) {
         cancelAction()
@@ -22,9 +23,10 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
   return (
     <OtherModalLayout on_click={cerrar} >
       <Layout>
-        <CloseButton onClick={() => cerrar()}>
-          <i className="fas fa-times"></i>
-        </CloseButton>
+        <IconClose
+          theme="dark"
+          size={20}
+        />
         <TopSection>
           <Title className="fuente">Autenticación de retiro</Title>
           <CircleIconContainer>
@@ -45,7 +47,7 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
               />
             </AutContainer>
           </Description>
-          <ButtonCont onClick={cerrar}>
+          <ButtonCont onClick={()=> cerrar(false, true)}>
             Cancelar
             </ButtonCont>
         </BottomSection>

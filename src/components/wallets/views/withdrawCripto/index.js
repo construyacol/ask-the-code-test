@@ -63,9 +63,8 @@ export const CriptoView = () => {
     {
       confirmationModalToggle,
       confirmationModalPayload,
-      isAppLoading,
-      renderModal
-    }, dispatch] = WithdrawViewState()
+      isAppLoading
+    }] = WithdrawViewState()
 
 
   const actions = useActions()
@@ -80,7 +79,7 @@ export const CriptoView = () => {
 
 
   const setTowFaTokenMethod = async (twoFaToken) => {
-    dispatch(renderModal(null))
+    actions.renderModal(null)
     finish_withdraw(twoFaToken)
   }
 
@@ -90,10 +89,10 @@ export const CriptoView = () => {
     const amount = form.get('amount')
 
     if (user.security_center.authenticator.withdraw && !twoFaToken) {
-      return dispatch(renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />))
+      return actions.renderModal(() => <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />)
     }
 
-    dispatch(isAppLoading(true))
+    actions.isAppLoading(true)
     let withdraw_account = withdraw_accounts[addressValue]
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
@@ -118,7 +117,7 @@ export const CriptoView = () => {
     }, twoFaToken)
 
     if (!withdraw) {
-      dispatch(isAppLoading(false))
+      actions.isAppLoading(false)
       if (twoFaToken) {
         return toastMessage('Al parecer el codigo 2Fa es incorrecto...', 'error')
       }
@@ -134,16 +133,16 @@ export const CriptoView = () => {
     const form = new FormData(document.getElementById('withdrawForm'))
     const amount = form.get('amount')
 
-    dispatch(confirmationModalToggle())
+    actions.confirmationModalToggle()
     window.requestAnimationFrame(() => {
-      dispatch(confirmationModalPayload({
+      actions.confirmationModalPayload({
         title: "Esto es importante, estas a punto de...",
         description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
         txtPrimary: "Confirmar Retiro",
         txtSecondary: "Cancelar",
         action: (finish_withdraw),
         img: "withdraw"
-      }))
+      })
     })
   }
 
@@ -157,7 +156,7 @@ export const CriptoView = () => {
   }
 
   const showQrScanner = async () => {
-    renderModal(null)
+    actions.renderModal(null)
     const Element = await import('../../../qr-scanner')
     actions.renderModal(() => <Element.default onScan={setAddressValue}/>)
   }

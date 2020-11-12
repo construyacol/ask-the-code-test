@@ -94,7 +94,6 @@
 }
 
 .PairList{
-  overflow: hidden;
   border-radius: 7px;
   width: 90%;
   max-width: 700px;
@@ -116,7 +115,8 @@
   justify-content: center;
   position: relative;
   background: linear-gradient(to bottom right, #0175c3, #039aff);
-
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
 }
 
 .PairListtitle img{

@@ -51,6 +51,11 @@ export const IconCloseModal = styled(IconBackContainer)`
   &:active{
     transform: scale(.97);
   }
+
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 15px;
+  }
 `
 
 export const ControlButtonContainer = styled.div`

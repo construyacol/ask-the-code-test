@@ -63,18 +63,20 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
         loader ?
           <SimpleLoader />
           :
-          <section className={`Modal aparecer`}>
+          <>
             {
               type === 'swap' ?
                 <SwapVIewConfirm
                   {...props}
                 />
                 :
-                <StandardTicket
-                  {...props}
-                />
+                <section className={`Modal aparecer`}>
+                  <StandardTicket
+                    {...props}
+                  />
+               </section>
             }
-          </section>
+          </>
       }
     </>
   )
