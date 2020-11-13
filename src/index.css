@@ -588,13 +588,13 @@
     max-height: initial !important;
   }
 
-  <<<<<<< HEAD ======= .PairList.auth {
+  .PairList.auth {
     width: 100% !important;
     max-height: 550px !important;
     transform: scale(0.93) !important;
   }
 
-  >>>>>>>prettify .nWcta2 {
+  .nWcta2 {
     grid-template-columns: 1fr !important;
     width: auto !important;
   }

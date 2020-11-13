@@ -7,12 +7,10 @@ import actions from "../../../actions";
 import { ButtonNofity } from "../../widgets/buttons/buttons";
 import { formatToCurrency } from "../../../utils/convert_currency";
 
-import "./socketNotify.css";
+import { IconClose } from "../../widgets/shared-styles";
+import OtherModalLayout from "../../widgets/modal/otherModalLayout";
 
 const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
-const OtherModalLayout = loadable(() =>
-  import("../../widgets/modal/otherModalLayout")
-);
 
 const SocketNotify = (props) => {
   const [formatCurrency, setFormatCurrency] = useState(null);

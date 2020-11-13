@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 import IconSwitch from "../icons/iconSwitch";
 
 import { DownCounter, Buttons } from "../../";
+import OtherModalLayout from "./otherModalLayout";
+import { IconClose } from "../shared-styles";
 
 const SwapVIewConfirm = (props) => {
   const {

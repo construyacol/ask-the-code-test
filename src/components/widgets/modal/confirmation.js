@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
@@ -11,6 +12,7 @@ import SwapVIewConfirm from "./swapViewConfirmation";
 
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { IconClose } from "../shared-styles";
 
 function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
   const idCancelButton = useKeyActionAsClick(

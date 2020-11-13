@@ -49,7 +49,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const { authData } = reduxState.modelData;
   const { appLoadLabel } = reduxState.isLoading;
   const previousLoadLabel = usePrevious(appLoadLabel);
-  const { isTabletOrMovilViewport } = useViewport();
+  const { isTabletOrMovilViewport, isMovilViewport } = useViewport();
 
   const registerColors = () => {};
 

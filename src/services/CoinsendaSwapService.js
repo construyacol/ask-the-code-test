@@ -17,6 +17,7 @@ import loadLocalPairsAction, {
 } from "../actions/dataModelActions";
 import convertCurrencies from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
+import { appLoadLabelAction } from "../actions/loader";
 
 export class SwapService extends WebService {
   async fetchAllPairs() {
