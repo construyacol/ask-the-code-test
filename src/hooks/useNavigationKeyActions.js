@@ -156,6 +156,8 @@ export function useItemsInteractions(
   const [isSelected, setIsSelected] = useState(false);
   const isModalVisible =
     modalRestriction && useSelector((state) => state.form.isModalVisible);
+  const isModalRenderShowing =
+    modalRestriction && useSelector((state) => state.ui.modal.render);
 
   useEffect(() => {
     // this is for mobile
@@ -179,7 +181,7 @@ export function useItemsInteractions(
 
         element.onkeydown = (event) => {
           element.blur();
-          if (isModalVisible) return;
+          if (isModalVisible || isModalRenderShowing) return;
           if (event.keyCode === 46) {
             event.stopPropagation();
             suprKeyAction(() => element.focus());

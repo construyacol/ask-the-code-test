@@ -10,6 +10,8 @@ import { formatToCurrency } from "../../../utils/convert_currency";
 import { IconClose } from "../../widgets/shared-styles";
 import OtherModalLayout from "../../widgets/modal/otherModalLayout";
 
+import "./socketNotify.css";
+
 const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
 
 const SocketNotify = (props) => {

@@ -6,6 +6,7 @@ import { hydrate, render } from "react-dom";
 import "./basic-style.css";
 import "./index.css";
 import "./new-mobile-style.css";
+import "./components/widgets/ticket/ticket.css";
 import "./components/sockets/socket_notify/socketNotify.css";
 import * as serviceWorker from "./serviceWorker";
 // import RootContainer from './root'
