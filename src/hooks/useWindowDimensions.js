@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { debounce } from "../utils";
 
 function getWindowDimensions() {
   const { innerWidth: width, innerHeight: height } = window;
@@ -18,7 +19,7 @@ export default function useWindowDimensions() {
       setWindowDimensions(getWindowDimensions());
     }
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", debounce(handleResize, 500));
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 

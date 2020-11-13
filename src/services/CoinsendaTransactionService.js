@@ -1,4 +1,5 @@
 import { WebService } from "../actions/API/WebService";
+import { appLoadLabelAction } from "../actions/loader";
 import { updateAllCurrenciesAction } from "../actions/dataModelActions";
 import {
   loadLabels,
@@ -14,7 +15,9 @@ import { coins } from "../components/api/ui/api.json";
 
 export class TransactionService extends WebService {
   async fetchAllCurrencies() {
-    this.updateLoadInfo(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS);
+    await this.dispatch(
+      appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS)
+    );
 
     const response = await this.Get(CURRENCIES_URL);
     let new_currencies = [];

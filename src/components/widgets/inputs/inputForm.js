@@ -106,6 +106,13 @@ const InputForm = (props) => {
     inputProps.value = value;
   }
 
+  // useEffect(()=>{
+  //   // AuxComponent && Object.keys(AuxComponent)
+  //   if(name === 'address'){
+  //     console.log('°°°||||||||||||||||||||||||||||||||| withdrawCripto::: ', AuxComponent)
+  //   }
+  // })
+
   return (
     <InputLayout>
       <ContainerInputComponent>
@@ -124,7 +131,7 @@ const InputForm = (props) => {
           </SuffixComponentContainer>
         )}
 
-        {AuxComponent && <AuxComponent />}
+        {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
       </ContainerInputComponent>
       {customError && (
         <ErrorText className="fuente">{customError.text}</ErrorText>
@@ -133,6 +140,16 @@ const InputForm = (props) => {
   );
 };
 
+const AuxComponentContainer = ({ AuxComponent }) =>
+  typeof AuxComponent === "function" ? (
+    <AuxComponent />
+  ) : (
+    typeof AuxComponent === "object" &&
+    AuxComponent.map((SingleAuxComponent, idItem) => {
+      return <SingleAuxComponent key={idItem} />;
+    })
+  );
+
 const ErrorText = styled.div`
   opacity: 0.7;
   color: red;
@@ -140,7 +157,12 @@ const ErrorText = styled.div`
   margin-top: 10px;
 `;
 
-const InputLayout = styled(SkeletonAnimation)``;
+const InputLayout = styled(SkeletonAnimation)`
+  .superImposed {
+    position: relative;
+    z-index: 2;
+  }
+`;
 
 const SuffixComponentContainer = styled.div`
   position: absolute;

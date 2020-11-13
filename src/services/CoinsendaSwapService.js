@@ -20,7 +20,7 @@ import { pairsForAccount } from "../actions/uiActions";
 
 export class SwapService extends WebService {
   async fetchAllPairs() {
-    this.updateLoadInfo(loadLabels.IMPORTANDO_PARES);
+    this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES));
     const pairs = await this.Get(`${SWAP_URL}pairs`);
     if (!pairs) {
       return;

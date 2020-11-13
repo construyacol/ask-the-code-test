@@ -64,6 +64,8 @@ const DetailGenerator = ({ order, title, TitleSuffix }) => {
         return ["Impuesto:", order.tax];
       case "cost":
         return ["Costo:", order.cost];
+      case "sent":
+        return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
 
       case "withdraw_provider":
       case "withdraw_account":
@@ -94,7 +96,6 @@ const DetailGenerator = ({ order, title, TitleSuffix }) => {
       case "withdraw_proof":
       case "requestedFundsOrigin":
       case "proof":
-      case "sent":
       case "comment":
         return;
       default:

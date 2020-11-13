@@ -47,7 +47,7 @@ const WithdrawViewState = () => {
   const withdrawProviders = useSelector((state) =>
     selectWithdrawProviderByType(state)
   );
-  const { account_id } = useParams();
+  const { account_id, path } = useParams();
   const { active_trade_operation } = ui.current_section.params;
 
   const { wallets, balances, user } = modelData;
@@ -65,6 +65,7 @@ const WithdrawViewState = () => {
   return [
     {
       user,
+      path,
       current_wallet,
       balance: current_wallet && balances[current_wallet.id],
       withdrawProviders,

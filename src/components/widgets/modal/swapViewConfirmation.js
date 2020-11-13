@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import IconSwitch from "../icons/iconSwitch";
-import { connect } from "react-redux";
 
 import { DownCounter, Buttons } from "../../";
 
@@ -61,27 +60,16 @@ const SwapVIewConfirm = (props) => {
   // handleSwap
   // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
-    <div
-      id={idCancelButton}
-      className={`modalCont2 ConfirmationModal`}
-      data-close_modal={true}
-      onClick={_cancelarClick ? _cancelarClick : null}
+    <OtherModalLayout
+      id="close-button-with-OtherModalLayout"
+      onkeydown={true}
+      on_click={_cancelarClick ? _cancelarClick : null}
     >
       <h1 className="bigCounter fuente2">{counter}</h1>
       <div className="LayoutSocketNotify swing-in-bottom-bck">
-        <div className="msgSwapDisclamer">
-          <p className="fuente">
-            La cotización se actualizará cada 20 segundos.
-          </p>
-        </div>
         <div className={`socketContent ${type}`}>
-          <div
-            className="close_modal_btn"
-            id={idCloseButton}
-            onClick={cancelarClick}
-          >
-            <i className="fas fa-times"></i>
-          </div>
+          {/* <div className="close_modal_btn" id={idCloseButton} onClick={cancelarClick}><i className="fas fa-times"></i></div> */}
+          <IconClose theme="dark" size={20} />
 
           <div className="topSection swap">
             <h3 className="fuente swapTitleConfir">{title}</h3>
@@ -125,9 +113,51 @@ const SwapVIewConfirm = (props) => {
             </Buttons.ButtonNofity>
           </div>
         </div>
+        <MsgSwapDisclamer>
+          <p id="swapDisclamerText" className="fuente">
+            La cotización se actualizará cada 20 segundos.
+          </p>
+        </MsgSwapDisclamer>
       </div>
-    </div>
+    </OtherModalLayout>
   );
 };
 
 export default SwapVIewConfirm;
+
+const MsgSwapDisclamer = styled.div`
+  padding: 15px 26px;
+  background: black;
+  position: absolute;
+  bottom: -90px;
+  width: 100%;
+  border-radius: 7px;
+  max-width: 350px;
+  animation: msgSwapDisclamera;
+  animation-duration: 6s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+
+  @keyframes msgSwapDisclamera {
+    0% {
+      opacity: 0;
+    }
+    30% {
+      opacity: 1;
+    }
+
+    80% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
+  #swapDisclamerText {
+    margin: 0;
+    color: white;
+    font-size: 14px;
+  }
+`;

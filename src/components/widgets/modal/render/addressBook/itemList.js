@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCoinsendaServices } from "../../../../../services/useCoinsendaServices";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { Icon, Front, Top, CubeObject } from "../../../shared-styles";
 import styled from "styled-components";
 import SimpleLoader from "../../../loaders";
+import { useActions } from "../../../../../hooks/useActions";
+import { InputKeyActionHandler } from "../../../accountList/styles";
+import { useItemsInteractions } from "../../../../../hooks/useNavigationKeyActions";
+import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 
-export const ItemList = ({
-  item: {
-    id,
-    info: { address, label },
-  },
-}) => {
+export const ItemList = (props) => {
+  const {
+    item: {
+      id,
+      info: { address, label },
+    },
+    setAddressValue,
+  } = props;
+
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
     let result = label.match(patt1);
@@ -18,8 +25,14 @@ export const ItemList = ({
   };
 
   const [deleting, setDeleting] = useState("");
-  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices();
+  const [coinsendaServices, _] = useCoinsendaServices();
   const [toastMessage] = useToastMessage();
+  const actions = useActions();
+  const [isSelected, setFocus] = useItemsInteractions(
+    props,
+    { suprKeyAction: () => null, enterKeyAction: () => handleClick() },
+    false
+  );
 
   const setDeletingState = (payload) => {
     setDeleting(payload);
@@ -32,7 +45,6 @@ export const ItemList = ({
     if (!e.target.dataset.action) {
       return;
     }
-
     const blockerActive = document.getElementById(`blocker`);
     const searchInput = document.getElementById(`searchInput`);
 
@@ -64,7 +76,7 @@ export const ItemList = ({
         loaderDeleteItem.classList.remove("deleting");
         blockerActive.classList.remove("deleting");
         setDeletingState("unrotate");
-        dispatch(actions.success_sound());
+        actions.success_sound();
         return toastMessage(
           "¡La cuenta ha sido eliminada con éxito!",
           "success"
@@ -74,11 +86,27 @@ export const ItemList = ({
     }
   };
 
+  const handleClick = (e) => {
+    if (e && e.target && e.target.dataset && e.target.dataset.delete) {
+      return;
+    }
+    setAddressValue(address);
+    actions.renderModal(null);
+  };
+
   return (
-    <CubeObject className={`${deleting}`}>
-      <Front>
-        <ItemListContainer>
-          <AcronymContainer>
+    <ItemContainer
+      id="cubeContainer"
+      className={`${deleting} ${isSelected && "isSelected"}`}
+    >
+      <KeyActionHandler
+        name="itemFromList"
+        autoComplete="off"
+        id={props.focusedId}
+      />
+      <FrontCont id="frontCube" onClick={handleClick}>
+        <ItemListContainer id="itemListContainer">
+          <AcronymContainer id="acronymContainer">
             <p className="fuente">{getAcronym()}</p>
           </AcronymContainer>
           <ItemTextContainer>
@@ -98,21 +126,58 @@ export const ItemList = ({
             <Icon
               className="fas fa-trash-alt tooltip"
               data-action="open"
+              data-delete
               onClick={deleteItem}
             >
               <span className="tooltiptext fuente">Eliminar</span>
             </Icon>
           </DeleteButton>
         </ItemListContainer>
-      </Front>
+      </FrontCont>
       <Top>
         <DeleteComponent itemId={id} handleAction={deleteItem} />
       </Top>
-    </CubeObject>
+    </ItemContainer>
   );
 };
 
+const FrontCont = styled(Front)`
+  width: calc(100% - 40px);
+`;
+
+const KeyActionHandler = styled(InputKeyActionHandler)`
+  position: absolute;
+`;
+
+const ItemContainer = styled(CubeObject)`
+  position: relative;
+  padding: 0 20px;
+  width: calc(100% - 40px);
+  transition: 0.3s;
+
+  &:hover {
+    ${"" /* background: #ececec; */}
+  }
+
+  ${ItemListContainer} {
+    &.isSelected {
+      opacity: 1;
+      color: #0198ff;
+      ${"" /* background: #ececec; */}
+    }
+  }
+`;
+
 const DeleteComponent = ({ handleAction, itemId }) => {
+  const idForDeleteItem = useKeyActionAsClick(
+    true,
+    "delete-item-account",
+    80,
+    true,
+    "onkeyup",
+    true
+  );
+
   return (
     <DeleteContainer>
       <LoaderDeleteItem id={`loader_${itemId}`}>
@@ -127,6 +192,7 @@ const DeleteComponent = ({ handleAction, itemId }) => {
           Cancelar
         </p>
         <p
+          id={idForDeleteItem}
           className="fuente delete"
           data-action="delete"
           onClick={handleAction}
@@ -200,7 +266,7 @@ const DeleteContainer = styled.div`
   }
 `;
 
-const Address = styled.p`
+export const Address = styled.p`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -226,10 +292,11 @@ const ItemListContainer = styled.div`
   column-gap: 15px;
   cursor: pointer;
   transition: 0.2s;
-  opacity: 0.9;
+  opacity: 0.8;
   position: relative;
   &:hover {
     opacity: 1;
+    color: #0198ff;
     ${DeleteButton} {
       right: 10px;
       opacity: 1;
@@ -335,7 +402,7 @@ const NewElement = styled.p`
   }
 `;
 
-const AddressContainer = styled.div`
+export const AddressContainer = styled.div`
   position: relative;
   width: 150px;
   cursor: pointer;

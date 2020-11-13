@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from "react";
 import loadable from "@loadable/component";
+// import { hotjar } from "react-hotjar";
 import { Element, Events, scrollSpy } from "react-scroll";
 import { Route, Switch } from "react-router-dom";
 import WalletContainer from "../wallets/walletContainer";
@@ -55,18 +56,18 @@ function DashBoardContainer(props) {
 
   // const proofSocketNotify = () => {
   //   const { wallets } = props
-  //   const account_id = '5ed5a8fe5dea880032d2eb9d'
+  //   const account_id = '5f7995a466db980032411256'
   //
   //   setTimeout(()=>{
   //     let currency = {
   //       currency:'bitcoin_testnet',
   //       is_token:false
   //     }
-  //     props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
+  //     // props.action.update_item_state({ [wallets[account_id].id]: { ...wallets[account_id], count:1 } }, 'wallets')
   //     props.action.socket_notify({account_id, currency, amount:0.15}, 'deposits')
-  //     props.action.other_modal_toggle()
-  //     props.action.success_sound()
-  //   }, 1000)
+  //     props.action.toggleOtherModal()
+  //     // props.action.success_sound()
+  //   }, 2000)
   // }
 
   const updateCurrentPair = async () => {
@@ -76,6 +77,7 @@ function DashBoardContainer(props) {
         props.currentPair && props.currentPair.buy_pair
       }"}}`;
       props.coinsendaServices.updateCurrentPair(query, "currentPair");
+      // props.action.update_current_pair(query, "currentPair");
     }, 20000);
   };
 

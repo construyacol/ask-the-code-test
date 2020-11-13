@@ -13,13 +13,16 @@ export default ({ loader, setLoader }) => {
       storage: { activity_for_account },
     },
   ] = useCoinsendaServices();
-  const { tx_path, account_id } = useParams();
+  const { tx_path, account_id, primary_path } = useParams();
   const [availableActivity, setAvailableActivity] = useState(true);
   // const params = useParams()
 
   const getActivity = async () => {
     setLoader(true);
-    const method = `get_${tx_path}`;
+    const method =
+      primary_path === "withdraw_accounts"
+        ? "get_withdraws_by_withdraw_account"
+        : `get_${tx_path}`;
     const skip =
       activity_for_account &&
       activity_for_account[account_id] &&

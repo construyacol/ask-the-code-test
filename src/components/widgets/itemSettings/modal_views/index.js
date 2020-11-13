@@ -181,8 +181,6 @@ export class ModalSettingsView extends Component {
     };
     let movil_viewport = window.innerWidth < 768;
 
-    console.log(" || |||| ModalSettingSwitch - -- - ", code);
-
     return (
       <OtherModalLayoutPairs
         title={title}

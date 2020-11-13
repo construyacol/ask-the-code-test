@@ -5,10 +5,36 @@ import { ItemList } from "./itemList";
 import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import { InputContainer } from "../../../inputs/inputForm";
+import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import useViewport from "../../../../../hooks/useWindowSize";
+import useNavigationKeyActions from "../../../../../hooks/useNavigationKeyActions";
 
-const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
+const AddressBookComponent = ({
+  withdrawAccounts,
+  switchView,
+  setAddressValue,
+}) => {
   const [searchList, setSearchList] = useState([]);
   const [searchValue, setSearchValue] = useState();
+  const idForCreateNewAccount = useKeyActionAsClick(
+    true,
+    "create-new-account2",
+    65,
+    true,
+    "onkeyup",
+    true
+  );
+  const { isMovilViewport } = useViewport();
+
+  const [setCurrentSelection] = useNavigationKeyActions({
+    items: withdrawAccounts,
+    loader: false, // si queremos que los items se sincronicen con el loader del app, pasamos el loader como parametro
+    uniqueIdForElement: "test-item-", // el uniqueIdForElement tiene que ser unico para ca instancia de useNavigationKeyActions
+    modalRestriction: false, // como usaremos useNavigationKeyActions en un modal no es necesario restringir
+    default: 0, // seleccionado como default
+    next: 40, //arrows right and left, si no funcion entonces verificar que no este en uso el keyEvent
+    prev: 38,
+  });
 
   const handleSearch = (e) => {
     const value = (e && e.target.value) || searchValue;
@@ -74,19 +100,35 @@ const AddressBookComponent = ({ withdrawAccounts, switchView }) => {
         >
           {searchList.length
             ? searchList.map((item, index) => {
-                return <ItemList key={index} item={item} />;
+                return (
+                  <ItemList
+                    key={index}
+                    item={item}
+                    setAddressValue={setAddressValue}
+                  />
+                );
               })
             : withdrawAccounts.map((item, index) => {
-                return <ItemList key={index} item={item} />;
+                return (
+                  <ItemList
+                    key={index}
+                    item={item}
+                    number={index}
+                    setAddressValue={setAddressValue}
+                    setCurrentSelection={setCurrentSelection}
+                    focusedId={`test-item-${index}`}
+                  />
+                );
               })}
         </ListContainer>
       </ListContainerWrapper>
 
       <ControlButtonContainer bottom={25}>
         <ControlButton
-          label="Crear nueva cuenta"
+          label={`Crear nueva cuenta ${!isMovilViewport && "[A]"}`}
           formValidate
           handleAction={() => switchView("newAccount")}
+          id={idForCreateNewAccount}
         />
       </ControlButtonContainer>
     </>
@@ -159,7 +201,7 @@ const Title = styled.p`
 
 const ListContainerWrapper = styled.div`
   overflow-x: hidden;
-  padding: 0 20px;
+  ${"" /* padding: 0 20px; */}
   height: 375px;
   position: relative;
 

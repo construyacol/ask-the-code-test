@@ -139,7 +139,7 @@ function ModalsSupervisor(props) {
                 "/:primary_path/:path/:account_id",
                 "/",
               ]}
-              component={RenderModal}
+              render={() => React.createElement(RenderModal)}
             />
           )
           // React.createElement(RenderModal)

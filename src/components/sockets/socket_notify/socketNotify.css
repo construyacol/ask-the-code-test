@@ -1,6 +1,6 @@
 .LayoutSocketNotify {
   width: 100%;
-  max-width: 410px;
+  max-width: 390px;
   height: 460px;
   background: white;
   display: grid;
@@ -30,43 +30,6 @@
   opacity: 0;
   -webkit-animation-fill-mode: forwards;
   animation-fill-mode: forwards;
-}
-
-.msgSwapDisclamer {
-  padding: 15px 26px;
-  background: black;
-  position: absolute;
-  top: -70px;
-  width: 100%;
-  border-radius: 7px;
-  max-width: 350px;
-  animation: msgSwapDisclamera;
-  animation-duration: 6s;
-  animation-fill-mode: forwards;
-  opacity: 0;
-}
-
-@keyframes msgSwapDisclamera {
-  0% {
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-
-  80% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-.msgSwapDisclamer p {
-  margin: 0 !important;
-  color: white !important;
-  font-size: 14px;
 }
 
 .bigCounter {

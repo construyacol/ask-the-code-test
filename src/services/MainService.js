@@ -1,4 +1,5 @@
 import localForage from "localforage";
+import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
 import { TransactionService } from "./CoinsendaTransactionService";
 import { ReferralService } from "./CoinsendaReferralService";
 import { WithdrawService } from "./CoinsendaWithdrawService";
@@ -10,7 +11,7 @@ import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
 
 import userSource from "../components/api";
-import { debounce, deepEqual } from "../utils";
+import { deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading, {
@@ -259,10 +260,6 @@ export class MainService extends inheritances {
       await localForage.setItem("CACHED_DATA", { ...cached, [path]: newData });
     }
     return false;
-  }
-
-  updateLoadInfo(info) {
-    return debounce(this.dispatch(appLoadLabelAction(info)), 500);
   }
 }
 

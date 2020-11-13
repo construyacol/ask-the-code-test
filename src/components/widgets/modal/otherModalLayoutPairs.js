@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
+import { IconClose } from "../shared-styles";
 
 const OtherModalLayoutPairs = (props) => {
   const { children, title, close_modal, classes } = props;
@@ -28,13 +29,9 @@ const OtherModalLayoutPairs = (props) => {
         onClick={closeModal ? closeModal : null}
       >
         <div className={`PairList ${classes === "2auth" ? "auth" : classes}`}>
+          <IconClose theme="dark" size={20} />
           <div className="PairListtitle">
             <h1 className="fuente">{title}</h1>
-            <i
-              className="fas fa-times"
-              id={idForCloseModal}
-              onClick={close_modal}
-            ></i>
           </div>
           {children}
         </div>

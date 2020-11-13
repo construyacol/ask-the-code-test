@@ -7,6 +7,7 @@ import {
   GET_DEPOSIT_BY_USERS_URL,
   SUBSCRIBE_TO_DEPOSITS_URL,
 } from "../const/const";
+import { appLoadLabelAction } from "../actions/loader";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { success_sound } from "../actions/soundActions";
@@ -17,7 +18,9 @@ const { update_item_state } = actions;
 
 export class DepositService extends WebService {
   async fetchDepositProviders() {
-    this.updateLoadInfo(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO);
+    this.dispatch(
+      appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
+    );
 
     const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`;
     const response = await this.Get(finalUrl);
@@ -27,6 +30,7 @@ export class DepositService extends WebService {
     if (await this.isCached("deposit_providers", response)) {
       updateState = false;
     }
+    const { data } = result;
 
     const result = response.reduce((result, item) => {
       result.push({

@@ -116,18 +116,24 @@ const ActivityView = (props) => {
   useEffect(() => {
     if (!props.order_list || !props.order_list.length) {
       // console.log(props.order_list, props[params.tx_path])
-      // debugger
       const init_activity = async () => {
         setLoader(true);
-        let method = `get_${params.tx_path}`;
-        let activity_list = await coinsendaServices[method](params.account_id);
-
-        if (!activity_list.length) {
-          toastMessage(
-            `Esta billetera no tiene ${getTxPath(params.tx_path)}`,
-            "error"
+        if (params.primary_path === "withdraw_accounts") {
+          await coinsendaServices.get_withdraws_by_withdraw_account(
+            params.account_id
           );
-          get_activity(method);
+        } else {
+          let method = `get_${params.tx_path}`;
+          let activity_list = await coinsendaServices[method](
+            params.account_id
+          );
+          if (!activity_list.length) {
+            toastMessage(
+              `Esta billetera no tiene ${getTxPath(params.tx_path)}`,
+              "error"
+            );
+            get_activity(method);
+          }
         }
         setLoader(false);
       };
@@ -148,7 +154,7 @@ const ActivityView = (props) => {
 
   return (
     <div className="ActivityView">
-      <ActivityFilters />
+      <ActivityFilters view={params.primary_path} />
       {loader || !props.order_list ? (
         <LoaderView />
       ) : (

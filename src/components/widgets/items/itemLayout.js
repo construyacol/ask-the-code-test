@@ -31,7 +31,7 @@ function ItemLayout(props) {
       className={`${type === "payment_method" ? "ILtuvieja" : ""} `}
     >
       <div
-        className={`${actives ? "itemSelection" : ""} item`}
+        className={`item ${actives ? "itemSelection" : ""}`}
         onClick={!actives || itemType === "banks" ? doSelectionForItem : null}
       >
         {!format ? (

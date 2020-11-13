@@ -116,9 +116,10 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   };
 
   const redirectURL = async (isSessionRestored) => {
-    await coinsendaServices.freshChatInitUser();
-    hotjar.initialize(1688041, 6);
-    // coinsendaServices.initPushNotificator();
+    coinsendaServices.freshChatInitUser();
+    if (!isMovilViewport) {
+      coinsendaServices.initPushNotificator();
+    }
 
     const verificationStatus = await coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {

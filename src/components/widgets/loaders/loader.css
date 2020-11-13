@@ -19,7 +19,6 @@
     opacity: 0;
     transform: translateY(5px);
   }
-
   100% {
     opacity: 1;
     transform: translateY(0px);
@@ -38,7 +37,6 @@
     opacity: 0;
     transform: translateY(-5px);
   }
-
   0% {
     opacity: 1;
     transform: translateY(0px);
@@ -162,7 +160,6 @@
 .grillaComun {
   height: 64px;
 }
-
 .Msuperior {
   height: 7vh;
   padding-bottom: 17px;
@@ -181,7 +178,6 @@
 .azulito {
   background: #0198ff;
 }
-
 .verdecito {
   background: #37ed7d;
 }

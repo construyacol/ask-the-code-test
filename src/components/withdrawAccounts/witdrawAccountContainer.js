@@ -1,25 +1,20 @@
 import React, { useEffect } from "react";
-import loadable from "@loadable/component";
 import { connect } from "react-redux";
 import actions from "../../actions";
 import { bindActionCreators } from "redux";
 import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { navigation_components } from "../api/ui/api.json";
 import { Router, Route } from "react-router-dom";
+import AccountList from "../widgets/accountList/account-list";
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from "prop-types";
-import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
+import { AccountListSkeletonLoader } from "../dashBoard/dashboard-container";
 import { WalletDetail } from "../wallets/walletContainer";
-
-const AccountList = loadable(() =>
-  import("../widgets/accountList/account-list")
-);
-const WithdrawActivity = loadable(() =>
-  import("../wallets/views/withdraw-activity")
-);
+import ActivityView from "../wallets/views/activity";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+import { useSelector } from "react-redux";
 
 function WitdrawAccountContainer(props) {
-  // userWallets, lo utilozamos para hacer validación de la respuesta del API
   const title = "Mis Cuentas de retiro";
 
   useEffect(() => {
@@ -29,8 +24,6 @@ function WitdrawAccountContainer(props) {
 
   const { items_menu } = navigation_components.wallets;
   const { withdraw_accounts, isAppLoaded, data, history } = props;
-
-  // console.log('||||||||||||||||||||||||||||||||| withdraw_accounts ', withdraw_accounts)
 
   return (
     <Router history={history}>
@@ -46,33 +39,32 @@ function WitdrawAccountContainer(props) {
             <Route
               strict
               path="/:primary_path/:path/:account_id/:tx_path"
-              component={(renderProps) => (
+              render={(renderProps) => (
                 <WalletDetail wallets={data} {...renderProps} />
               )}
             />
-            <>
-              <Route
-                exact
-                path="/:primary_path"
-                component={() => (
-                  <>
-                    {!withdraw_accounts ? (
-                      <AccountListSkeletonLoader />
-                    ) : (
-                      isAppLoaded &&
-                      withdraw_accounts && (
-                        <AccountList {...routeProps} isWithdrawView />
-                      )
-                    )}
-                  </>
-                )}
-              />
-              <Route
-                strict
-                path={["/:primary_path/:path/:account_id/:tx_path"]}
-                component={WithdrawActivity}
-              />
-            </>
+            <Route
+              exact
+              path="/:primary_path"
+              render={() => (
+                <>
+                  {!withdraw_accounts ? (
+                    <AccountListSkeletonLoader />
+                  ) : (
+                    isAppLoaded &&
+                    withdraw_accounts && (
+                      <AccountList {...routeProps} isWithdrawView />
+                    )
+                  )}
+                </>
+              )}
+            />
+            <Route
+              strict
+              path={["/:primary_path/:path/:account_id/:tx_path"]}
+              component={ActivityWrapperView}
+            />
+            {/* <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} render={(renderProps) => <ActivityWrapperView {...renderProps}/>} /> */}
           </DetailContainerLayout>
         )}
       />
@@ -113,3 +105,31 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(WitdrawAccountContainer);
+
+const ActivityWrapperView = (props) => {
+  const { params } = props.match;
+  const activity = useSelector(
+    (state) => state.storage.activity_for_account[params.account_id]
+  );
+  const withdraws = useSelector((state) => state.modelData.withdraws);
+  const [coinsendaServices] = useCoinsendaServices();
+
+  useEffect(() => {
+    if (activity) {
+      let result = [];
+      Object.entries(withdraws).filter((item) => {
+        return (
+          item[1].withdraw_account_id === params.account_id &&
+          result.push(item[1])
+        );
+      });
+      coinsendaServices.updateActivityState(
+        params.account_id,
+        "withdraws",
+        result
+      );
+    }
+  }, []);
+
+  return <ActivityView {...props} />;
+};

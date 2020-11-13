@@ -3,8 +3,20 @@ import styled from "styled-components";
 import ControlButton from "../../../buttons/controlButton";
 import IconSwitch from "../../../icons/iconSwitch";
 import { ControlButtonContainer } from "../../../shared-styles";
+import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import useViewport from "../../../../../hooks/useWindowSize";
 
 const EmptyState = ({ switchView }) => {
+  const idForOpenAddressBook = useKeyActionAsClick(
+    true,
+    "create-new-account",
+    65,
+    false,
+    "onkeyup",
+    true
+  );
+  const { isMovilViewport } = useViewport();
+
   return (
     <EmptyStateContainer>
       <p className="fuente">
@@ -13,9 +25,10 @@ const EmptyState = ({ switchView }) => {
       <IconSwitch size={200} icon="newAccount" />
       <ControlButtonContainer bottom={50}>
         <ControlButton
-          label="Crear nueva cuenta"
+          label={`Crear nueva cuenta ${!isMovilViewport && "[A]"}`}
           formValidate
           handleAction={() => switchView("newAccount")}
+          id={idForOpenAddressBook}
         />
       </ControlButtonContainer>
     </EmptyStateContainer>

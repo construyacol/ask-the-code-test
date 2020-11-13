@@ -557,16 +557,17 @@
     font-size: 18px !important;
   }
 
-  .CMControls {
-    display: block !important;
-  }
-
   .Mconfirmar {
     position: absolute !important;
     width: 100vw !important;
     left: 0;
     bottom: 0;
-    padding: 100px 0 10px 0 !important;
+    padding: 70px 0 0 !important;
+  }
+
+  .titleConfirmed {
+    background-size: cover !important;
+    background-position: left !important;
   }
 
   .PairListItems {
@@ -587,7 +588,13 @@
     max-height: initial !important;
   }
 
-  .nWcta2 {
+  <<<<<<< HEAD ======= .PairList.auth {
+    width: 100% !important;
+    max-height: 550px !important;
+    transform: scale(0.93) !important;
+  }
+
+  >>>>>>>prettify .nWcta2 {
     grid-template-columns: 1fr !important;
     width: auto !important;
   }

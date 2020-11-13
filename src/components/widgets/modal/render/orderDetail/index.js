@@ -15,11 +15,11 @@ import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import UseTxState from "../../../../hooks/useTxState";
 import InProcessOrder from "./inProcessOrder";
 import { PaymentProof } from "./paymentProof";
-import { CloseButton } from "../../../shared-styles";
+import { IconClose } from "../../../shared-styles";
+// import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 
 import moment from "moment";
 import "moment/locale/es";
-import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 moment.locale("es");
 
 const OrderSupervisor = () => {
@@ -27,34 +27,28 @@ const OrderSupervisor = () => {
   const { isMovilViewport } = useViewport();
 
   const cerrar = (e, forceClose) => {
+    console.log("|||||| OrderSupervisor close ", e && e.target.dataset);
     if (e && (e.target.dataset.close_modal || forceClose)) {
       actions.isAppLoading(false);
       actions.renderModal(null);
-      history.goBack();
+      // history.goBack()
     }
   };
 
-  const idForCloseModal = useKeyActionAsClick(
-    true,
-    "close-modal-button-orders",
-    27,
-    true,
-    "onkeyup",
-    true
-  );
+  // const idForCloseModal = useKeyActionAsClick(true, 'close-modal-button-orders', 27, true, 'onkeyup', true)
 
-  useEffect(() => {
-    document.onkeyup = (event) => {
-      if (event.keyCode === 27) {
-        cerrar(event, true);
-        // event.preventDefault();
-      }
-    };
-
-    return () => {
-      document.onkeyup = false;
-    };
-  }, [document.onkeyup]);
+  // useEffect(() => {
+  //   document.onkeyup = (event) => {
+  //     if (event.keyCode === 27) {
+  //       cerrar(event, true)
+  //       // event.preventDefault();
+  //     }
+  //   }
+  //
+  //   return () => {
+  //     document.onkeyup = false
+  //   }
+  // }, [document.onkeyup])
 
   const closeAll = () => {
     actions.renderModal(null);
@@ -72,12 +66,6 @@ const OrderSupervisor = () => {
       onkeydown={true}
       on_click={cerrar}
     >
-      {isMovilViewport && (
-        <CloseButton id={idForCloseModal} data-close_modal={true}>
-          <i className="fas fa-times"></i>
-        </CloseButton>
-      )}
-
       {["accepted", "rejected", "canceled"].includes(currentOrder.state) ? (
         <OrderDetail />
       ) : (
@@ -146,6 +134,8 @@ const OrderDetail = () => {
 
   return (
     <Layout className="layout3">
+      <IconClose theme="dark" size={20} />
+
       <TopSection state={currentOrder.state}>
         <TitleContainer>
           <OrderIcon className={`fa ${tx_path}`} />

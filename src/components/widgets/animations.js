@@ -2,6 +2,66 @@ import styled, { keyframes } from "styled-components";
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
+export const getAtention = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+
+  79% {
+    transform: rotate(0deg);
+  }
+
+  80% {
+    transform: rotate(2deg);
+  }
+
+  85% {
+    transform: rotate(-2deg);
+  }
+
+  90% {
+    transform: rotate(1deg);
+  }
+
+  95% {
+    transform: rotate(-1deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+`;
+
+export const atentionAnimation = keyframes`
+  0%,
+  100% {
+    -webkit-transform: translateX(0%);
+            transform: translateX(0%);
+    -webkit-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+  }
+  15% {
+    -webkit-transform: translateX(-7px) rotate(-4deg);
+            transform: translateX(-7px) rotate(-4deg);
+  }
+  30% {
+    -webkit-transform: translateX(7px) rotate(4deg);
+            transform: translateX(7px) rotate(4deg);
+  }
+  45% {
+    -webkit-transform: translateX(-7px) rotate(-3deg);
+            transform: translateX(-7px) rotate(-3deg);
+  }
+  60% {
+    -webkit-transform: translateX(4px) rotate(2deg);
+            transform: translateX(4px) rotate(2deg);
+  }
+  75% {
+    -webkit-transform: translateX(-2px) rotate(-1deg);
+            transform: translateX(-2px) rotate(-1deg);
+  }
+`;
+
 export const rotate90HorizontalBck = keyframes`
   0% {
     -webkit-transform: rotateX(0);

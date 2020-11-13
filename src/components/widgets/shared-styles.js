@@ -1,5 +1,67 @@
+import React from "react";
 import styled from "styled-components";
 import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
+import { AiOutlineClose } from "react-icons/ai";
+
+export const IconClose = ({ theme, opacity, size, id }) => {
+  // @params
+  // theme => dark/ligth
+
+  return (
+    <IconCloseModal
+      id={id || "IconCloseModal"}
+      color={`${theme === "dark" && "dark"}`}
+      opacity={opacity}
+      size={size + 10}
+      data-close_modal
+    >
+      <AiOutlineClose
+        color={`${theme === "dark" ? "white" : "gray"}`}
+        size={size}
+      />
+    </IconCloseModal>
+  );
+};
+
+export const IconBackContainer = styled.div`
+  width: ${(props) => (props.size && `${props.size}px`) || "35px"};
+  height: ${(props) => (props.size && `${props.size}px`) || "35px"};
+  background: ${(props) =>
+    props.color === "dark"
+      ? `rgb(0, 0, 0, ${props.opacity || ".4"})`
+      : `rgb(255, 255, 255, ${props.opacity || ".3"})`};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+`;
+export const IconCloseModal = styled(IconBackContainer)`
+  z-index: 2;
+  right: 5px;
+  top: -38px;
+  position: absolute;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &::after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+  }
+  &:hover {
+    transform: scale(1.1);
+  }
+  &:active {
+    transform: scale(0.97);
+  }
+
+  @media (max-width: 768px) {
+    top: 10px;
+    right: 15px;
+  }
+`;
 
 export const ControlButtonContainer = styled.div`
   position: absolute;
@@ -14,11 +76,13 @@ export const ControlButtonContainer = styled.div`
 export const Face = styled.div`
   display: block;
   position: absolute;
-  width: 358px;
+  ${"" /* width: 358px; */}
+  width: 100%;
   height: 80px;
 `;
 
 export const Front = styled(Face)``;
+
 export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);

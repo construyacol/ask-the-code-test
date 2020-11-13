@@ -75,13 +75,15 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
       {loader ? (
         <SimpleLoader />
       ) : (
-        <section className={`Modal aparecer`}>
+        <>
           {type === "swap" ? (
             <SwapVIewConfirm {...props} />
           ) : (
-            <StandardTicket {...props} />
+            <section className={`Modal aparecer`}>
+              <StandardTicket {...props} />
+            </section>
           )}
-        </section>
+        </>
       )}
     </>
   );
@@ -141,11 +143,13 @@ export const StandardTicket = (props) => {
       onClick={_cancelarClick ? _cancelarClick : null}
     >
       <div className={`Mconfirmar ${type}`}>
+        <IconClose theme="dark" size={20} />
+
         <div className="titleConfirmed">
           <h1 className="fuente">{title}</h1>
         </div>
 
-        <>
+        <Wrapper>
           {img ? (
             <img
               className="itemFuera"
@@ -184,11 +188,26 @@ export const StandardTicket = (props) => {
               {txtPrimary}
             </ButtonForms>
           </div>
-        </>
+        </Wrapper>
       </div>
     </div>
   );
 };
+
+const Wrapper = styled.section`
+  width: 100%;
+  height: auto;
+  background: white;
+  display: grid;
+  grid-row-gap: 50px;
+  padding: 30px 0;
+  border-radius: 6px;
+
+  p {
+    max-width: 450px;
+    justify-self: center;
+  }
+`;
 
 // export const ConfirmSwapComponent = ({ from, spent, to, bought, type, description }) => {
 //
