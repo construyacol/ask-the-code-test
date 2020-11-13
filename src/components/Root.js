@@ -6,7 +6,6 @@ import loadable from "@loadable/component";
 import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../actions";
-import { isValidToken } from "./utils";
 import withHandleError from "./withHandleError";
 import HomeContainer from "./home/home-container";
 import { doLogout, isValidToken } from "./utils";
