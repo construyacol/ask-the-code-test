@@ -1,35 +1,33 @@
-.BalanceComponent{
-    width: 100%;
-    height: 100%;
-    /*height: 100px;*/
-    position: relative;
-    z-index: 1;
+.BalanceComponent {
+  width: 100%;
+  height: 100%;
+  /*height: 100px;*/
+  position: relative;
+  z-index: 1;
 }
 
-.BalanceComponent.wallet{
+.BalanceComponent.wallet {
   display: grid;
   grid-template-rows: 25px;
   grid-template-columns: 60px;
-  grid-template-areas: "balanceTitle balanceTitle"
-                       "displayCont displayCont";
+  grid-template-areas:
+    "balanceTitle balanceTitle"
+    "displayCont displayCont";
   /*align-items: center;*/
 }
 
-.title.balanceTitle{
-    font-weight: normal !important;
-    font-size: 14px;
+.title.balanceTitle {
+  font-weight: normal !important;
+  font-size: 14px;
 }
 
-
-.balanceTitle{
+.balanceTitle {
   grid-area: balanceTitle;
   /*background: red;*/
   align-self: center;
 }
 
-
-
-.displayCont{
+.displayCont {
   display: grid;
   align-items: center;
   /*background: green;*/
@@ -37,72 +35,59 @@
   /*padding: 0 10px;*/
 }
 
-.displayCont p{
+.displayCont p {
   font-size: 36px;
   margin: 0;
   display: flex;
 }
 
-.textin.reduce{
+.textin.reduce {
   color: #c70d00;
 }
 
-.textin.add{
+.textin.add {
   color: #00ff61;
 }
 
-.itt.In{
+.itt.In {
   animation-name: inScene;
-  animation-duration: .25s;
+  animation-duration: 0.25s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
   opacity: 0;
 }
 
-@keyframes inScene{
-  0%{
+@keyframes inScene {
+  0% {
     transform: translateY(4px);
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 
-.itt.Out{
+.itt.Out {
   animation-name: outScene;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-@keyframes outScene{
-  0%{
+@keyframes outScene {
+  0% {
     transform: translateY(0);
     opacity: 1;
   }
-  80%{
+  80% {
     opacity: 0;
     transform: translateY(-4px);
   }
-  100%{
+  100% {
     opacity: 0;
     transform: translateY(4px);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

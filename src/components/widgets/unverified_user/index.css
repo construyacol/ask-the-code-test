@@ -1,4 +1,4 @@
-.UnverifiedComponent{
+.UnverifiedComponent {
   width: calc(95% - 50px);
   max-width: calc(700px - 50px);
   height: calc(100% - 50px);
@@ -11,7 +11,7 @@
   grid-template-columns: 1fr !important;
 }
 
-.UnverifiedComponent p{
+.UnverifiedComponent p {
   text-align: center;
   margin: 0 !important;
   color: #6b6b6b;
@@ -19,38 +19,38 @@
   justify-self: center;
 }
 
-.UnverifiedComponentIcon{
+.UnverifiedComponentIcon {
   display: grid;
   align-items: center;
   justify-items: center;
 }
 
-.UnverifiedComponentIconButtons{
+.UnverifiedComponentIconButtons {
   align-self: center;
   justify-items: center;
 }
 
-.UnverifiedComponentIconButtons.rejected{
+.UnverifiedComponentIconButtons.rejected {
   border: none !important;
   opacity: 1 !important;
 }
 
-.UnverifiedComponentIconButtons.confirmed{
+.UnverifiedComponentIconButtons.confirmed {
   animation-name: buttonConfirmed;
   animation-duration: 1s;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
   animation-iteration-count: infinite;
   border: none !important;
 }
 
-@keyframes buttonConfirmed{
-  0%{
-    opacity:1;
+@keyframes buttonConfirmed {
+  0% {
+    opacity: 1;
   }
-  50%{
-    opacity:.4;
+  50% {
+    opacity: 0.4;
   }
-  100%{
-    opacity:1;
+  100% {
+    opacity: 1;
   }
 }

@@ -1,56 +1,34 @@
-import React from 'react'
-import IconSwitch from '../icons/iconSwitch'
-import CopyContainer from '../copy/copyContainer'
+import React from "react";
+import IconSwitch from "../icons/iconSwitch";
+import CopyContainer from "../copy/copyContainer";
 
-const ItemTicket = payload => {
+const ItemTicket = (payload) => {
+  const { ui_name, value, icon, copy, url_explorer } = payload;
 
-  const {
-    ui_name,
-    value,
-    icon,
-    copy,
-    url_explorer
-  } = payload
-
-
-  return(
+  return (
     <div className="TicketDetailItem">
-      <p className="fuente TicketItemTitle" >{ui_name}</p>
+      <p className="fuente TicketItemTitle">{ui_name}</p>
       <span className="fuentePrin fuenteTicket value">
-        {
-          copy ?
-          <CopyContainer
-            valueToCopy={value}
-            color="white"
-            max_width="200"
-          />
-          :
+        {copy ? (
+          <CopyContainer valueToCopy={value} color="white" max_width="200" />
+        ) : (
           <p>{value}</p>
-        }
-        {
-          icon &&
-        <IconSwitch
-          icon={icon}
-          size={20}
-          color="white"
-        />
-        }
-        {
-          url_explorer &&
-          <a href={`${url_explorer}/tx/${value}`} target="_blank" className="explorerBlock copy tooltip" rel="noopener noreferrer">
-            <IconSwitch
-              icon="arrow_right"
-              size={20}
-              color="white"
-            />
+        )}
+        {icon && <IconSwitch icon={icon} size={20} color="white" />}
+        {url_explorer && (
+          <a
+            href={`${url_explorer}/tx/${value}`}
+            target="_blank"
+            className="explorerBlock copy tooltip"
+            rel="noopener noreferrer"
+          >
+            <IconSwitch icon="arrow_right" size={20} color="white" />
             <span className=" p tooltiptext fuente"> Explorador </span>
           </a>
-
-        }
+        )}
       </span>
     </div>
-  )
+  );
+};
 
-}
-
-export default ItemTicket
+export default ItemTicket;

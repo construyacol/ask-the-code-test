@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react'
-import WithdrawViewState from '../../../hooks/withdrawStateHandle'
-import { useSelector } from "react-redux"
-import  selectWithdrawAccountsByProviderType from '../../../selectors'
-import styled from 'styled-components'
-import { ItemList } from '../../../widgets/modal/render/addressBook/itemList'
-import useNavigationKeyActions from '../../../../hooks/useNavigationKeyActions';
+import React, { useState, useEffect } from "react";
+import WithdrawViewState from "../../../hooks/withdrawStateHandle";
+import { useSelector } from "react-redux";
+import selectWithdrawAccountsByProviderType from "../../../selectors";
+import styled from "styled-components";
+import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
+import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
 
+const AddressTagList = ({ show, addressValue, setAddressValue }) => {
+  if (!show) {
+    return null;
+  }
 
+  const [{ current_wallet }] = WithdrawViewState();
+  const provider_type = current_wallet && current_wallet.currency.currency;
+  const withdrawAccounts = useSelector((state) =>
+    selectWithdrawAccountsByProviderType(state, provider_type)
+  );
 
-const AddressTagList = ({show, addressValue, setAddressValue}) => {
-
-  if(!show){return null}
-
-  const [{ current_wallet }] = WithdrawViewState()
-  const provider_type = current_wallet && current_wallet.currency.currency
-  const withdrawAccounts = useSelector(state => selectWithdrawAccountsByProviderType(state, provider_type))
-
-  const [ searchList, setSearchList ] = useState([])
+  const [searchList, setSearchList] = useState([]);
 
   // const [setCurrentSelection] = useNavigationKeyActions({
   //     items:withdrawAccounts,
@@ -27,69 +28,73 @@ const AddressTagList = ({show, addressValue, setAddressValue}) => {
   //     prev: 38
   // })
 
-  useEffect(()=>{
-      const value = addressValue.replace(/@/g, '')
-      const result = withdrawAccounts.filter(withdrawAccount => withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()))
-      if(result.length < withdrawAccounts.length){
-        setSearchList(result)
-      }
-  }, [addressValue])
+  useEffect(() => {
+    const value = addressValue.replace(/@/g, "");
+    const result = withdrawAccounts.filter((withdrawAccount) =>
+      withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase())
+    );
+    if (result.length < withdrawAccounts.length) {
+      setSearchList(result);
+    }
+  }, [addressValue]);
 
-  useEffect(()=>{
-    if(searchList.length === 1){
-      setAddressValue(searchList[0].info.address)
+  useEffect(() => {
+    if (searchList.length === 1) {
+      setAddressValue(searchList[0].info.address);
       // console.log(searchList, searchList.length)
     }
-  }, [searchList])
+  }, [searchList]);
 
   const handleEventClick = (e) => {
-    if(e.target && e.target.classList && !e.target.classList.contains('search-component')){
-      setAddressValue('')
+    if (
+      e.target &&
+      e.target.classList &&
+      !e.target.classList.contains("search-component")
+    ) {
+      setAddressValue("");
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(!withdrawAccounts.length){return}
-    const WIN = window
-    WIN.addEventListener('click', handleEventClick)
-    return () => WIN.removeEventListener('click', handleEventClick)
-  }, [])
-
-
+  useEffect(() => {
+    if (!withdrawAccounts.length) {
+      return;
+    }
+    const WIN = window;
+    WIN.addEventListener("click", handleEventClick);
+    return () => WIN.removeEventListener("click", handleEventClick);
+  }, []);
 
   return (
     <SearchComponentWrapper>
       <SearchComponentContainer className="search-component">
-        {
-          searchList.length ?
-            searchList.map((item, index) => {
-              return <ItemList
-                key={index}
-                item={item}
-                setAddressValue={setAddressValue}
-              />
+        {searchList.length
+          ? searchList.map((item, index) => {
+              return (
+                <ItemList
+                  key={index}
+                  item={item}
+                  setAddressValue={setAddressValue}
+                />
+              );
             })
-          :
-            withdrawAccounts.map((item, index) => {
-              return <ItemList
-                key={index}
-                item={item}
-                setAddressValue={setAddressValue}
-                // number={index}
-                // setCurrentSelection={setCurrentSelection}
-                // focusedId={`account-item-${index}`}
-
-              />
-            })
-        }
+          : withdrawAccounts.map((item, index) => {
+              return (
+                <ItemList
+                  key={index}
+                  item={item}
+                  setAddressValue={setAddressValue}
+                  // number={index}
+                  // setCurrentSelection={setCurrentSelection}
+                  // focusedId={`account-item-${index}`}
+                />
+              );
+            })}
       </SearchComponentContainer>
     </SearchComponentWrapper>
-  )
-}
+  );
+};
 
-
-export default AddressTagList
-
+export default AddressTagList;
 
 const SearchComponentWrapper = styled.section`
   width: 100%;
@@ -110,17 +115,14 @@ const SearchComponentWrapper = styled.section`
   &::-webkit-scrollbar-thumb {
     background: #b1b1b1;
   }
-`
-
-
-
+`;
 
 const SearchComponentContainer = styled.div`
   height: auto;
   width: 100%;
   position: relative;
 
-  ${'' /* &::after{
+  ${"" /* &::after{
     content: '';
     top: 0;
     position: absolute;
@@ -130,24 +132,24 @@ const SearchComponentContainer = styled.div`
     background: gray;
   } */}
 
-  #cubeContainer, #frontCube, #itemListContainer{
+  #cubeContainer, #frontCube, #itemListContainer {
     height: 60px;
   }
 
-  #cubeContainer{
+  #cubeContainer {
     margin: 12px 0;
-    :hover{
+    :hover {
       background: #ececec;
     }
   }
 
-  #frontCube{
-    #acronymContainer{
-      transform: scale(.9);
+  #frontCube {
+    #acronymContainer {
+      transform: scale(0.9);
     }
   }
 
-  i{
+  i {
     display: none;
   }
-`
+`;

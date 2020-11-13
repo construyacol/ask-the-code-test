@@ -43,7 +43,6 @@
   align-items: center;
 }
 
-
 .contMsg {
   display: grid;
   grid-template-columns: 1fr;
@@ -115,10 +114,9 @@
   position: relative;
 }
 
-
 .nBcontBank {
   animation-name: entrys;
-  animation-duration: .4s;
+  animation-duration: 0.4s;
   /* Duración total de la animación */
   animation-fill-mode: forwards;
   /* la animación se queda en como termina la animación, es decir en el 100%*/

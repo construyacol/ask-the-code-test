@@ -22,6 +22,6 @@
 }
 
 .legals ul li:before {
-  content: '✓';
+  content: "✓";
   margin-right: 8px;
 }

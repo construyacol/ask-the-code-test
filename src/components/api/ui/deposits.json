@@ -5,16 +5,16 @@
     "amount_neto": "0.33",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "bitcoin",
-        "is_token": false
+    "currency": {
+      "currency": "bitcoin",
+      "is_token": false
     },
     "currency_type": "crypto",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "5s2726896be6497dfc0e47b",
-    "info":"",
+    "info": "",
     "state": "accepted",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -24,16 +24,16 @@
     "amount_neto": "4000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "4s2726896be6497dfc0e37b",
-    "info":"",
+    "info": "",
     "state": "accepted",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -43,16 +43,16 @@
     "amount_neto": "4000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "4s2726896be6497dfc0e38b",
-    "info":"",
+    "info": "",
     "state": "accepted",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -62,16 +62,16 @@
     "amount_neto": "4000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "8f2726896be6497dfc0e38b",
-    "info":"",
+    "info": "",
     "state": "pending",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -81,16 +81,16 @@
     "amount_neto": "4000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "8f2726896be6497dfc0e38c",
-    "info":"",
+    "info": "",
     "state": "pending",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -100,16 +100,16 @@
     "amount_neto": "140000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "9g2726896be6497dfc0e58c",
-    "info":"",
+    "info": "",
     "state": "accepted",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -119,16 +119,16 @@
     "amount_neto": "140000000",
     "comment": "Hola Boludo, por favor vuelve a subir tu comprobante de pago, recuerda que las esquinas deben ser visibles, la imagen debe estar en buena resolución e incluir el texto 'Coinsenda + Fecha Actual' ",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "9g3826896be6497dfc0e59c",
-    "info":"",
+    "info": "",
     "state": "rejected",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -138,16 +138,16 @@
     "amount_neto": "140000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "10h4926896be6497dfc0e60c",
-    "info":"",
+    "info": "",
     "state": "canceled",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -157,16 +157,16 @@
     "amount_neto": "140000000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "11h4926896be6497dfc0e61c",
-    "info":"",
+    "info": "",
     "state": "confirmed",
     "userId": "5bea1f01ba84493018b7528c"
   },
@@ -176,16 +176,16 @@
     "amount_neto": "20000",
     "comment": "",
     "cost_id": "Otros medios",
-    "currency":{
-        "currency": "cop",
-        "is_token": false
+    "currency": {
+      "currency": "cop",
+      "is_token": false
     },
     "currency_type": "fiat",
     "deposit_cost": "0",
     "deposit_provider_id": "5c0d57120fcccc1c74575e50",
     "expiration_date": "2019-01-03T07:47:21.037Z",
     "id": "12h4926896be6497dfc0e62c",
-    "info":"",
+    "info": "",
     "state": "canceled",
     "userId": "5bea1f01ba84493018b7528c"
   }

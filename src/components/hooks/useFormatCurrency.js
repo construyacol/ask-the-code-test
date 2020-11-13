@@ -1,24 +1,26 @@
-import { useEffect, useState } from 'react'
-import { formatToCurrency } from '../../utils/convert_currency'
+import { useEffect, useState } from "react";
+import { formatToCurrency } from "../../utils/convert_currency";
 
 export const useFormatCurrency = (objetive_amount, currency) => {
+  const [amount, setAmount] = useState(objetive_amount);
+  const amountCurrency = currency;
 
-  const [ amount, setAmount ] = useState(objetive_amount)
-  const amountCurrency = currency
+  const formating = async (objetive_amount, currency) => {
+    // console.log('||||||||| FORMATING CURRENCY', objetive_amount, currency)
+    let amount_converted = await formatToCurrency(
+      objetive_amount,
+      currency,
+      true
+    );
+    setAmount(amount_converted);
+    return amount_converted;
+  };
 
-    const formating = async(objetive_amount, currency) => {
-      // console.log('||||||||| FORMATING CURRENCY', objetive_amount, currency)
-      let amount_converted = await formatToCurrency(objetive_amount, currency, true)
-      setAmount(amount_converted)
-      return amount_converted
+  useEffect(() => {
+    if (amount && amountCurrency) {
+      formating(amount, amountCurrency);
     }
+  }, []);
 
-    useEffect(()=>{
-      if(amount && amountCurrency){
-        formating(amount, amountCurrency)
-      }
-    }, [])
-
-  return [amount, formating]
-
-}
+  return [amount, formating];
+};

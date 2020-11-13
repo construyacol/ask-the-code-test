@@ -1,7 +1,4 @@
-
-import styled from 'styled-components'
-
-
+import styled from "styled-components";
 
 export const ItemSecurity = styled.div`
   height: 150px;
@@ -100,13 +97,13 @@ export const ItemSecurity = styled.div`
   .contentSubItem.last {
     border-bottom-color: transparent;
   }
-`
+`;
 
 export const SecurityLayoutLoader = styled.section`
-    width: 100%;
-    height: auto;
-    border: 1px solid transparent;
-    border-top-color: #d5d5d6;
-    border-bottom-color: #d5d5d6;
-    padding: 20px 0px;
-`
+  width: 100%;
+  height: auto;
+  border: 1px solid transparent;
+  border-top-color: #d5d5d6;
+  border-bottom-color: #d5d5d6;
+  padding: 20px 0px;
+`;

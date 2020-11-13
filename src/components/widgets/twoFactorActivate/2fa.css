@@ -1,4 +1,4 @@
-.TwoFactorActivate{
+.TwoFactorActivate {
   width: 100%;
   height: 100%;
   position: relative;
@@ -10,11 +10,11 @@
   opacity: 0;
 }*/
 
-.TwoFactorActivate.desaparecer{
+.TwoFactorActivate.desaparecer {
   transform: translateY(30px);
 }
 
-.TLayout{
+.TLayout {
   width: 100%;
   height: 100%;
   max-width: 800px;
@@ -22,43 +22,42 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 25% 1fr;
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.layer1{
+.layer1 {
   z-index: 1;
-
 }
 
-.layer2{
+.layer2 {
   z-index: 2;
 }
 
-.header2fa{
+.header2fa {
   display: grid;
 }
 
-.header2fa h3{
+.header2fa h3 {
   text-align: center;
   color: #00bfff;
   font-size: 25px;
 }
 
-.body2fa{
+.body2fa {
   height: 100%;
   /*background: white;*/
 }
 
-.bodySon{
+.bodySon {
   width: 100%;
   height: 50%;
-  transition: .32s;
+  transition: 0.32s;
   display: grid;
   align-items: center;
   justify-items: center;
 }
 
-.footer2fa{
+.footer2fa {
   width: 100%;
   min-height: 50%;
   height: auto;
@@ -66,68 +65,66 @@
   position: relative;
 }
 
-.footer2fa .AuthInputComp{
-  justify-self:center;
+.footer2fa .AuthInputComp {
+  justify-self: center;
 }
 
-.footer2faText{
+.footer2faText {
   position: relative;
   height: 100px;
   display: grid;
 }
 
-.footer2faTextDes span{
+.footer2faTextDes span {
   font-size: 22px !important;
 }
 
-.footer2faTextDes p{
+.footer2faTextDes p {
   width: 80%;
   max-width: 650px;
   font-size: 16px;
 }
 
-.footer2faTextDes{
+.footer2faTextDes {
   position: absolute;
   overflow: hidden;
-  transition: .3s;
+  transition: 0.3s;
   height: 0;
   width: 100%;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
-.footer2faTextDes.desp{
+.footer2faTextDes.desp {
   animation-name: despAnim;
-  animation-duration: .4s;
+  animation-duration: 0.4s;
   /*animation-delay: 1s; */
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-@keyframes despAnim{
-  0%{
+@keyframes despAnim {
+  0% {
     height: 0;
   }
-  60%{
+  60% {
     height: 0;
   }
-  100%{
+  100% {
     height: 110px;
   }
 }
 
-.footer2faTextDes.pleg{
+.footer2faTextDes.pleg {
   animation-name: despAnim;
   animation-duration: 1s;
   animation-direction: reverse;
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-
-
-.header2fa .iconSty{
+.header2fa .iconSty {
   justify-content: center !important;
 }
 
@@ -137,7 +134,7 @@
   text-align: center;
 }
 
-.secretCode{
+.secretCode {
   color: #1babec !important;
   text-decoration: underline;
   height: 80px;
@@ -145,22 +142,9 @@
   margin-top: 10px !important;
 }
 
-
-
-.footer2fa #authReq{
+.footer2fa #authReq {
   position: relative !important;
   margin-top: 20px;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

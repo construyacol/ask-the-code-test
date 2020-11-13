@@ -1,61 +1,63 @@
-import React from 'react'
-import { MdKeyboardArrowLeft } from "react-icons/md"
-import styled from 'styled-components'
-import backImg from '../../../../../assets/map.png'
-import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
-import { IconBackContainer } from '../../../shared-styles' 
-
-
+import React from "react";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import styled from "styled-components";
+import backImg from "../../../../../assets/map.png";
+import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import { IconBackContainer } from "../../../shared-styles";
 
 const HeaderComponent = ({ provider_type, view, switchView }) => {
+  const idForBack = useKeyActionAsClick(
+    true,
+    "back-step-ca",
+    8,
+    true,
+    "onkeyup",
+    true
+  );
 
-  const idForBack = useKeyActionAsClick(true, 'back-step-ca', 8, true, 'onkeyup', true)
-
-
-  const getTittle = view => {
+  const getTittle = (view) => {
     switch (view) {
-      case 'newAccount':
-        return `Creando nueva cuenta`
+      case "newAccount":
+        return `Creando nueva cuenta`;
       default:
-        return `Agenda ${provider_type}`
+        return `Agenda ${provider_type}`;
     }
-  }
+  };
 
   const goBack = () => {
-    return switchView('addressList')
-  }
+    return switchView("addressList");
+  };
 
-  return(
+  return (
     <Header>
       <section>
-        <WindowControl id={idForBack} state={`${view === 'addressList' ? 'close' : 'open'}`} onClick={goBack}>
+        <WindowControl
+          id={idForBack}
+          state={`${view === "addressList" ? "close" : "open"}`}
+          onClick={goBack}
+        >
           <IconBackContainer>
-            <MdKeyboardArrowLeft size={27} color="white"/>
+            <MdKeyboardArrowLeft size={27} color="white" />
           </IconBackContainer>
         </WindowControl>
         <p className="fuente titleHead">{getTittle(view)}</p>
       </section>
     </Header>
-  )
-}
+  );
+};
 
-export default HeaderComponent
-
-
-
+export default HeaderComponent;
 
 const WindowControl = styled.div`
   overflow: hidden;
   width: 0;
-  transition: .2s;
-  width: ${props => props.state === 'open' ? '45px' : '0px'};
-  opacity: ${props => props.state === 'open' ? '1' : '0'};
-  cursor:pointer;
-
-`
+  transition: 0.2s;
+  width: ${(props) => (props.state === "open" ? "45px" : "0px")};
+  opacity: ${(props) => (props.state === "open" ? "1" : "0")};
+  cursor: pointer;
+`;
 
 const Header = styled.div`
-
   width: 97%;
   height: 100%;
   justify-self: center;
@@ -65,29 +67,29 @@ const Header = styled.div`
   display: grid;
   align-items: center;
 
-  section{
+  section {
     display: flex;
     align-items: center;
-    margin:0 0 0 15px;
+    margin: 0 0 0 15px;
   }
 
-  p{
+  p {
     font-size: 22px;
     color: white;
     font-weight: bold;
   }
 
-  p.appear{
+  p.appear {
     opacity: 1;
   }
 
-  p.disappear{
+  p.disappear {
     opacity: 0;
   }
 
   background-image: url(${backImg});
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-attachment: fixed;
-`
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+`;

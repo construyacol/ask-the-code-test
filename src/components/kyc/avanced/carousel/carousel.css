@@ -1,9 +1,9 @@
-.SimpleSlider{
+.SimpleSlider {
   /*height: 100%;*/
   position: relative;
 }
 
-.SimpleSliderItem{
+.SimpleSliderItem {
   display: grid !important;
   align-items: center;
   justify-items: center;
@@ -14,25 +14,24 @@
   max-width: 26vw;
 }
 
-.TitleSlider{
-  margin-bottom:  0 !important;
+.TitleSlider {
+  margin-bottom: 0 !important;
   font-weight: bold;
   text-align: center;
   color: #464646;
   margin-top: 5vh;
 }
 
-.SimpleSliderItem h1{
+.SimpleSliderItem h1 {
   color: #464646;
   margin-top: 3px !important;
 }
 
-.slick-slider{
+.slick-slider {
   height: 100%;
 }
 
-
-.SimpleSliderItem p{
+.SimpleSliderItem p {
   /* margin: 7px 30px; */
   text-align: center;
   max-width: 600px;

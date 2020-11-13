@@ -1,12 +1,12 @@
-.DLsteps{
-    display: grid;
-    height: 100%;
-    justify-items:center;
-    align-items: center;
-    perspective: 900px;
-    transform-style: preserve-3d;
+.DLsteps {
+  display: grid;
+  height: 100%;
+  justify-items: center;
+  align-items: center;
+  perspective: 900px;
+  transform-style: preserve-3d;
 }
-.DLcontains{
+.DLcontains {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: repeat(2, 1fr);
@@ -14,48 +14,48 @@
   justify-items: center;
 }
 
-.DLcontains>p{
-    margin-bottom: 0 !important;
+.DLcontains > p {
+  margin-bottom: 0 !important;
 }
 
-.DLtitles2{
+.DLtitles2 {
   color: #00bfff;
   font-size: 25px;
   font-weight: bold;
 }
-.DLstitles{
-    font-size: 20px;
-    color: #50667a;
-    font-weight: 400;
-    text-align: center;
+.DLstitles {
+  font-size: 20px;
+  color: #50667a;
+  font-weight: 400;
+  text-align: center;
 }
 
-.DLcontainerItems.DLcontainerItems2{
+.DLcontainerItems.DLcontainerItems2 {
   grid-template-columns: repeat(2, 1fr) !important;
   min-width: 600px;
 }
 
-.DLcontainerItems{
-    display: grid;
-    height: auto;
-    grid-template-columns: repeat(3, 1fr);
-    /*grid-template-rows: repeat(2 1fr);*/
-    padding: 15px;
-    grid-gap: 40px;
-    align-items: center;
-    justify-items: center;
+.DLcontainerItems {
+  display: grid;
+  height: auto;
+  grid-template-columns: repeat(3, 1fr);
+  /*grid-template-rows: repeat(2 1fr);*/
+  padding: 15px;
+  grid-gap: 40px;
+  align-items: center;
+  justify-items: center;
 }
 
-.DLcontainerItems>.ILtuvieja>.item{
+.DLcontainerItems > .ILtuvieja > .item {
   height: 160px !important;
   width: 200px !important;
 }
 
-.DLcontainerItems>div>.item{
+.DLcontainerItems > div > .item {
   height: 160px !important;
   width: 200px !important;
 }
 
-.DLcontainerItems>.item>div>img{
-    width: 65px !important
+.DLcontainerItems > .item > div > img {
+  width: 65px !important;
 }

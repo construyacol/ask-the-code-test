@@ -1,35 +1,31 @@
-import {
-  LOADER,
-  IS_APP_LOADED,
-  APP_LOAD_LABEL
-} from '../actions/action_types'
+import { LOADER, IS_APP_LOADED, APP_LOAD_LABEL } from "../actions/action_types";
 
 const initialState = {
-  loader:false,
-  isAppLoaded:false,
-  appLoadLabel:"Iniciando"
-}
+  loader: false,
+  isAppLoaded: false,
+  appLoadLabel: "Iniciando",
+};
 
 const isLoading = (state = initialState, action) => {
   switch (action.type) {
     case LOADER:
       return {
         ...state,
-        loader: action.payload
-      }
+        loader: action.payload,
+      };
     case IS_APP_LOADED:
-      return{
+      return {
         ...state,
-        isAppLoaded:action.payload
-      }
+        isAppLoaded: action.payload,
+      };
     case APP_LOAD_LABEL:
-      return{
+      return {
         ...state,
-        appLoadLabel:action.payload
-      }
+        appLoadLabel: action.payload,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default isLoading
+export default isLoading;

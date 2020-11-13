@@ -1,10 +1,11 @@
-import React from 'react'
-import './icons.css'
+import React from "react";
+import "./icons.css";
 
-
-export function Bancolombia(props){
-  return(
-    <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdgAAAF/CAMAAADdHij9AAADAFBMVEUAAAD8+OP6897999T79+L/
+export function Bancolombia(props) {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdgAAAF/CAMAAADdHij9AAADAFBMVEUAAAD8+OP6897999T79+L/
 +7b75eb/+a798Zf/9qX26YPy4nT/1NfU7fzr/v/m/P//yMwJNF/v3Wvt0CkFM2LlzTkWP2ZlhqT/
 9J/15XyDor377Y4OOGHmz0SzPEjUJjno0DXkzT4sUXU4XoDmlJu4JDTs2mLgh4/MJzogR22/V2H9
 vcDf9v/EIzPq2F8QRX/q0D1yk67r1VP/963qzyurIzHm0Uy5SlUKOWq/JTWxLTpWeZfQIjTVfITK
@@ -393,17 +394,17 @@ Zzgo+VDMVYPJEDZjz3K8nOPCETE6OxWk43pPwws3L87XNzZzBDYfUVSZpKpZ1y1uPNXw52bcHrxt
 ek8gO/XM/Fq14NUSFTEvq8gGAKyzWQfVuZlgbkbPanjh4pHF8flGUTXRNKLl9y4ur0wG3b17W0PH
 3X7v0sx4qOg6OZdk01zWIB3XBxo+5c6x62fmRkPhcKNRDT82Ozl1/QNBD9J+0DGn3Hnv1SMP3U+a
 WrrhgcAX3Dc65rjTrrlgevrRR6cvuAbXpWCx9pOOOeboo48+JoAaKFCgQIECBQoUKFCgQIEC9ZB+
-B1ND1sLgfEx5AAAAAElFTkSuQmCC" alt=""/>
-  )
+B1ND1sLgfEx5AAAAAElFTkSuQmCC"
+      alt=""
+    />
+  );
 }
 
-
-
-export function Davivienda(props){
-
-  return(
-
-    <img width={props.size}   src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAEVCAMAAACBo000AAABYlBMVEUAAAAjHx8iHiAiHyAiHx8j
+export function Davivienda(props) {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVAAAAEVCAMAAACBo000AAABYlBMVEUAAAAjHx8iHiAiHyAiHx8j
 Hx8jHSEiHh8jHyAjHx8jHyAjHyAjHiAjHx8jHiAjHyAjHyAjHyAjHyAiHyEjHiAjHyEjHyD0mADj
 BRgjHyD/4AAAesBYFx0BdrgiJSoVRGA0KxxyFBwgKjMrHSC6ChlnFR0OU3wXPlVAGx+LEBsaNkhS
 OhgiIiY4HB+DEhx8EhwEbaocLzwsJR+joiWVDxvcBhjECBlnRhXVhQQHZJqVYA7WBxgGaaNKGR7R
@@ -531,9 +532,10 @@ Lq/FI7jRUt5o5uXBfa82DjLt8EiSk314h3TvTRIjURL8PvTg452WCTo1bJLXjhbl4KR5dCrrlD8v
 5Mpo4XihU6UDkuB19worxzsswQfkP2MVg9Kkw8/zLp8dnN1u97l4v0OYtARt3TVNctIIKKlcQz3K
 963/r/Lnh/WDMk1cr0Xs7pBFySI4vbzb1RqbA2d3ubXxLR5xvOq5cQI35rVSOci1H3M4bKpqtVo9
 bz/pUChojzqUFVCcNtXHfBW8Z7agRfDydvTGufyOSUk0Q8nOJga1lHV4/byWtS4Xz/u9Dqdz0uKZ
-CJiBNJlMJpPJZDKZTCaTyWQymUy6/QYDAW63BIURVQAAAABJRU5ErkJggg==" alt=""/>
-  )
+CJiBNJlMJpPJZDKZTCaTyWQymUy6/QYDAW63BIURVQAAAABJRU5ErkJggg=="
+      alt=""
+    />
+  );
 }
 
-
-export default Davivienda
+export default Davivienda;

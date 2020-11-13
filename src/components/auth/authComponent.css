@@ -1,34 +1,31 @@
-
-.fuente{
-  font-family: 'Raleway', sans-serif;
+.fuente {
+  font-family: "Raleway", sans-serif;
 }
 
-.fuente2{
-  font-family: 'Inconsolata', monospace;
+.fuente2 {
+  font-family: "Inconsolata", monospace;
 }
 
 @font-face {
   font-family: Museo;
-  src: url('./MuseoSans_500.otf');
+  src: url("./MuseoSans_500.otf");
 }
 
 .fuenteMuseo {
   font-family: Museo;
 }
 
-.AuthComponent{
+.AuthComponent {
   width: calc(100vw - 30px);
   height: calc(100vh - 30px);
   padding: 15px;
   background: linear-gradient(to bottom right, #014c7d, #0198ff);
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
-
-
-.AuthC{
+.AuthC {
   width: calc(100% - 30px);
   height: calc(100% - 50px);
   padding: 25px 15px;
@@ -39,14 +36,14 @@
   align-self: start;
   display: grid;
   grid-template-rows: 50px 1fr;
-  -webkit-box-shadow: 4px 3px 25px -8px rgba(0,0,0,0.75);
-  -moz-box-shadow: 4px 3px 25px -8px rgba(0,0,0,0.75);
-  box-shadow: 4px 3px 25px -8px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 4px 3px 25px -8px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 4px 3px 25px -8px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 3px 25px -8px rgba(0, 0, 0, 0.75);
   grid-row-gap: 14px;
-  justify-items:center;
+  justify-items: center;
 }
 
-.AuthContainer{
+.AuthContainer {
   display: grid;
   width: 100%;
   max-width: 600px;
@@ -56,7 +53,7 @@
   grid-row-gap: 20px;
 }
 
-.logotype{
+.logotype {
   display: flex;
   justify-self: center;
   align-items: center;
@@ -64,7 +61,7 @@
   align-self: flex-end;
 }
 
-.logotype h1{
+.logotype h1 {
   color: white;
   display: flex;
   align-items: center;
@@ -74,13 +71,12 @@
   font-weight: 600;
 }
 
-
-.footerText{
+.footerText {
   display: grid;
   align-items: self-end;
 }
 
-.footerText p{
+.footerText p {
   margin: 0 !important;
   font-weight: normal;
   font-size: 12px;
@@ -88,16 +84,16 @@
   text-align: center;
 }
 
-.AuthTitle p{
+.AuthTitle p {
   color: #0066aa;
   font-size: 18px;
   text-align: center;
   /*margin: 25px 0 0 0;*/
-  margin: 0 ;
+  margin: 0;
   align-self: end;
 }
 
-.AuthTitle{
+.AuthTitle {
   position: relative;
   display: grid;
   /*grid-template-rows: repeat(2, 1fr);*/
@@ -106,7 +102,7 @@
   max-width: 430px;
 }
 
-.AuthPanel{
+.AuthPanel {
   display: grid;
   /*grid-template-rows: 40% 1fr;*/
   grid-row-gap: 5px;
@@ -114,31 +110,28 @@
   align-items: center;
 }
 
-.AuthContT{
+.AuthContT {
   position: relative;
   align-self: end;
   display: grid;
   justify-items: center;
 }
 
-.titleToggle{
+.titleToggle {
   height: 200%;
   display: grid;
   grid-template-rows: repeat(2, 1fr);
-  transition: .3s;
-  cursor:pointer;
-
+  transition: 0.3s;
+  cursor: pointer;
 }
 
-
-
-.textTitleToggle{
+.textTitleToggle {
   height: 30px;
   overflow: hidden;
   width: 100%;
 }
 
-.Authr{
+.Authr {
   margin: 20px 0 0 0;
   /*border-color: azure;*/
   border-color: #f0ffff8a;
@@ -147,17 +140,17 @@
   width: 100%;
 }
 
-.AlertMsg p{
+.AlertMsg p {
   font-size: 13px;
   color: #50667a;
-  margin: 0 ;
+  margin: 0;
 }
 
-.AlertMsg img{
+.AlertMsg img {
   box-shadow: 1px 1px 3px #88888861;
 }
 
-.AlertMsg{
+.AlertMsg {
   display: grid;
   justify-items: center;
   align-items: center;
@@ -165,23 +158,23 @@
   align-self: center;
 }
 
-.AlertMsg b{
+.AlertMsg b {
   color: #000000b5;
 }
 
-.AuthPanel>form{
+.AuthPanel > form {
   display: grid;
   justify-items: center;
   /*align-items: center;*/
   height: 160px;
 }
 
-.AuthPanel .containerInputComponent{
+.AuthPanel .containerInputComponent {
   height: 60px;
   max-width: 380px;
 }
 
-.AuthPanel .inputElement{
+.AuthPanel .inputElement {
   padding: 0 10px 0 50px;
   width: calc(100% - 60px);
   font-size: 14px !important;
@@ -204,23 +197,24 @@
   align-items: center;
 }
 
-.AuthControls .InputButton, .AuthControls .botonForm{
+.AuthControls .InputButton,
+.AuthControls .botonForm {
   max-width: 380px;
   width: 100%;
-  align-self:center;
+  align-self: center;
 }
 
-.AuthControls .botonForm{
+.AuthControls .botonForm {
   padding: 18px 0;
 }
 
-.AuthControls{
+.AuthControls {
   display: grid;
   grid-row-gap: 14px;
-  justify-items:center;
+  justify-items: center;
 }
 
-.Authstatus{
+.Authstatus {
   position: absolute;
   bottom: -12px;
   margin: 0;
@@ -228,106 +222,98 @@
   color: #50667a;
   cursor: pointer;
   opacity: 0;
-  transition: .15s;
+  transition: 0.15s;
   justify-self: center;
 }
 
-.Authstatus.visibles{
+.Authstatus.visibles {
   bottom: -17px;
   opacity: 1;
 }
 
-
-
-
-.Authstatus:hover{
-  color:#b48728 !important;
+.Authstatus:hover {
+  color: #b48728 !important;
 }
 
-
-.TextNav{
+.TextNav {
   text-align: center;
   font-size: 12px;
   margin: 0;
   align-self: center;
 }
 
-.Navigation{
+.Navigation {
   cursor: pointer;
 }
 
-.Navigation:hover{
-  color:#b48728 !important;
+.Navigation:hover {
+  color: #b48728 !important;
 }
 
-
-
-.TextNav{
-  color:#50667a;
-  transition: .2s;
+.TextNav {
+  color: #50667a;
+  transition: 0.2s;
 }
 
-.inputContainer.bad{
+.inputContainer.bad {
   border: 1px solid red;
 }
 
-.inputContainer.bad input{
+.inputContainer.bad input {
   color: red;
 }
 
-.inputContainer.good{
-  border: 1px solid #00D2FF;
+.inputContainer.good {
+  border: 1px solid #00d2ff;
 }
 
-.inputContainer.good input{
+.inputContainer.good input {
   color: green;
 }
 
-
-.AuthNavTitle{
+.AuthNavTitle {
   position: relative;
   display: grid;
 }
 
-.iconContAuth{
+.iconContAuth {
   position: absolute;
   left: 0;
   bottom: 0;
-  transition: .15s;
+  transition: 0.15s;
   transform: scale(1);
 }
 
-.iconContAuth:hover{
+.iconContAuth:hover {
   transform: scale(1.3);
 }
 
-
-.AuthControls span{
+.AuthControls span {
   display: grid;
 }
 
-.InputButtonCont{
+.InputButtonCont {
   width: 100%;
   max-width: 380px;
   position: relative;
 }
 
-.InputButtonCont.loader .InputButton{
-  opacity:.2;
+.InputButtonCont.loader .InputButton {
+  opacity: 0.2;
 }
 
-.loadingAuth{
+.loadingAuth {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 2;
   display: grid;
-  justify-items:center;
+  justify-items: center;
   align-items: center;
-  transform: scale(.75);
+  transform: scale(0.75);
 }
 
-.Auth2fa{
+.Auth2fa {
   display: grid;
   width: 100%;
   height: 100%;
@@ -337,37 +323,30 @@
   grid-row-gap: 20px;
 }
 
-.contAuthReq{
+.contAuthReq {
   position: relative;
   width: 100%;
   height: 100%;
   max-width: 380px;
 }
 
-.contAuthReq input{
- font-size: 14px;
+.contAuthReq input {
+  font-size: 14px;
 }
 
-.contAuthReq p{
+.contAuthReq p {
   text-align: center;
   margin-top: 10px !important;
   font-size: 16px !important;
 }
 
-
-.contAuthReq .labelText{
+.contAuthReq .labelText {
   margin-bottom: 25px !important;
 }
 
-
-
-
-
-
-
 /*COMPONENTE DE ANIMACIÓN DEL LAYER*/
 
-.AuthSwitchComponent{
+.AuthSwitchComponent {
   width: 100%;
   height: 100%;
   /*transition: .3s;*/
@@ -375,49 +354,43 @@
   align-items: center;
 }
 
-
-.AuthSwitchComponent.in{
+.AuthSwitchComponent.in {
   animation-name: authSwitchAnim;
-  animation-duration: .15s;
+  animation-duration: 0.15s;
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-
-@keyframes authSwitchAnim{
-  0%{
+@keyframes authSwitchAnim {
+  0% {
     opacity: 0;
     transform: translateY(5px);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 
-.AuthSwitchComponent.out{
+.AuthSwitchComponent.out {
   animation-name: authSwitchAnimOut;
-  animation-duration: .15s;
+  animation-duration: 0.15s;
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-
-@keyframes authSwitchAnimOut{
-  100%{
+@keyframes authSwitchAnimOut {
+  100% {
     opacity: 0;
     transform: translateY(-5px);
   }
-  0%{
+  0% {
     opacity: 1;
     transform: translateY(0px);
   }
 }
 
-
-
-
-.SocialAuth p{
+.SocialAuth p {
   font-size: 14px;
   height: 40px;
   display: grid;
@@ -426,7 +399,7 @@
   margin: 0;
 }
 
-.SocialAuth .socialAuthButton{
+.SocialAuth .socialAuthButton {
   position: absolute;
   align-self: center;
   right: 0;
@@ -437,9 +410,7 @@
   margin-left: 30px;
 }*/
 
-
-
-.SocialAuth{
+.SocialAuth {
   width: 100%;
   max-width: 380px;
   align-items: center;
@@ -447,77 +418,55 @@
   z-index: -1;
 }
 
-
-
-
-
-
-
-
-
-
-
 /*Componente RecoveryAccountComponent*/
 
-.formRecoveryAccount.reset_pass{
-    grid-row-gap: 5px;
+.formRecoveryAccount.reset_pass {
+  grid-row-gap: 5px;
 }
 
-.actionSuccessIcon{
+.actionSuccessIcon {
   width: 100%;
   height: 60px;
   display: grid;
-  justify-items:center;
+  justify-items: center;
 }
 
-.successText{
+.successText {
   color: green;
 }
 
-.contIconRec.reset_pass{
-    height: 10px !important;
+.contIconRec.reset_pass {
+  height: 10px !important;
 }
 
-.contIconRec.reset_pass svg{
-    top: -6vh;
+.contIconRec.reset_pass svg {
+  top: -6vh;
 }
 
-.contIconRec{
+.contIconRec {
   width: 100%;
   height: 60px;
   position: relative;
   display: grid;
 }
 
-.contIconRec svg{
+.contIconRec svg {
   position: absolute;
-  justify-self:center;
+  justify-self: center;
   align-self: center;
   margin-right: 20px;
 }
 
-.formRecoveryAccount{
+.formRecoveryAccount {
   grid-row-gap: 15px;
 }
 
-
-.backMovil{
+.backMovil {
   display: none;
 }
 
-
-
-
-
-
-
-
-
-
-
 @media screen and (max-height: 850px) and (max-width: 768px) {
-
-  .AuthComponent{
+  .AuthComponent {
     overflow-y: scroll;
     width: calc(100vw - 20px);
     height: calc(100vh - 20px);
@@ -526,66 +475,45 @@
     background: #e4e4e4;
   }
 
-  .backMovil{
+  .backMovil {
     display: initial;
     width: 100%;
     height: 35%;
     position: absolute;
     z-index: 0;
-    background: linear-gradient(to bottom right, #014c7d, #0198ff);;
+    background: linear-gradient(to bottom right, #014c7d, #0198ff);
     top: 0;
   }
 
-  .AuthContainer{
+  .AuthContainer {
     grid-template-rows: 10vh 1fr 30px;
     grid-row-gap: 3px;
     position: relative;
     z-index: 2;
   }
 
-  .Auth2fa{
+  .Auth2fa {
     max-height: 200px;
   }
 
-  .AuthSwitchComponent{
+  .AuthSwitchComponent {
     align-items: center;
     display: grid;
   }
 
-  .AuthC{
+  .AuthC {
     align-self: center;
   }
-
 }
 
-
-@media screen and (max-height: 750px){
-
-  .footerText{
+@media screen and (max-height: 750px) {
+  .footerText {
     display: none;
   }
 
-  .AuthContainer{
+  .AuthContainer {
     grid-template-rows: 12vh 1fr;
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

@@ -1,87 +1,72 @@
-.FlowAnimationLayout{
+.FlowAnimationLayout {
   position: absolute;
   width: 100%;
   height: 100%;
   display: grid;
 }
 
-.backV{
+.backV {
   animation-direction: reverse;
 }
 
-
-.nextV, .backV{
+.nextV,
+.backV {
   animation-name: Vertical;
-  animation-duration: .3s;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-@keyframes Vertical{
-  0%{
+@keyframes Vertical {
+  0% {
     transform: translateY(0vh);
     opacity: 1;
   }
-  40%{
+  40% {
     opacity: 0;
     transform: translateY(-7vh);
   }
-  50%{
+  50% {
     transform: translateY(7vh);
   }
-  70%{
+  70% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
-
 }
 
-
-.backH{
+.backH {
   animation-direction: reverse;
 }
 
-
-.nextH, .backH{
+.nextH,
+.backH {
   animation-name: Horizontal;
-  animation-duration: .3s;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-@keyframes Horizontal{
-  0%{
+@keyframes Horizontal {
+  0% {
     transform: translateX(0vh);
     opacity: 1;
   }
-  45%{
+  45% {
     opacity: 0;
     transform: translateX(-7vh);
   }
-  50%{
+  50% {
     opacity: 0;
     transform: translateX(7vh);
   }
-  100%{
+  100% {
     opacity: 1;
     transform: translateX(0);
   }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

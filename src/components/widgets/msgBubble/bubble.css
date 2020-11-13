@@ -1,17 +1,17 @@
-#floatSupportContainer{
+#floatSupportContainer {
   width: 100px;
   height: 300px;
-  transition: .3s;
+  transition: 0.3s;
   /*background: red;*/
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   grid-row-gap: 10px;
   position: absolute;
   bottom: 0;
 }
 
-#floatSupportMask{
+#floatSupportMask {
   width: 100px;
   height: 100px;
   overflow: hidden;
@@ -20,62 +20,58 @@
   bottom: 20px;
   right: 20px;
   display: grid;
-  transition: .4s;
+  transition: 0.4s;
 }
 
-#floatSupportMask:hover{
+#floatSupportMask:hover {
   height: 350px;
 }
 
-#floatSupportMask:hover .second{
+#floatSupportMask:hover .second {
   opacity: 1;
 }
 
-
-
-.floatSupport{
+.floatSupport {
   width: 70px;
   height: 70px;
   background: white;
   border-radius: 50%;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   border: 1px solid gray;
   cursor: pointer;
-  transition: .25s;
+  transition: 0.25s;
 }
 
-.floatSupport.second{
+.floatSupport.second {
   border: 1px solid transparent;
   opacity: 0;
-  transition: .1s;
+  transition: 0.1s;
 }
 
-.floatSupport.second:hover{
+.floatSupport.second:hover {
   border: 1px solid #1ea4ff !important;
 }
 
-#bubbleIcon{
+#bubbleIcon {
   color: gray;
   font-size: 25px;
-  transition: .25s;
+  transition: 0.25s;
 }
 
-
-#floatSupportContainer:hover .floatSupport{
+#floatSupportContainer:hover .floatSupport {
   border: 1px solid transparent;
 }
 
-#floatSupportContainer:hover #bubbleIcon{
-  color:#1ea4ff;
+#floatSupportContainer:hover #bubbleIcon {
+  color: #1ea4ff;
 }
 
-.floatSupport:hover{
+.floatSupport:hover {
   border: 1px solid white;
 }
 
-
-.floatSupport:hover #bubbleIcon{
-  color:#1ea4ff;
+.floatSupport:hover #bubbleIcon {
+  color: #1ea4ff;
 }

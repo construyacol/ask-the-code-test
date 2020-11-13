@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
 export default function useViewport() {
-    const [width, setWidth] = useState(window.innerWidth);
+  const [width, setWidth] = useState(window.innerWidth);
 
-    useEffect(() => {
-        const handleWindowResize = () => setWidth(window.innerWidth);
-        window.addEventListener("resize", handleWindowResize);
-        return () => window.removeEventListener("resize", handleWindowResize);
-    }, []);
+  useEffect(() => {
+    const handleWindowResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleWindowResize);
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
 
-    const isMovilViewport = width < 768
-    const isTabletOrMovilViewport = width < 900
+  const isMovilViewport = width < 768;
+  const isTabletOrMovilViewport = width < 900;
 
-    return { width, isMovilViewport, isTabletOrMovilViewport };
+  return { width, isMovilViewport, isTabletOrMovilViewport };
 }

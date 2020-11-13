@@ -1,33 +1,31 @@
-.centerItem img{
+.centerItem img {
   border-radius: 50%;
 }
 
-.span_text_itemView{
+.span_text_itemView {
   font-size: 17px;
   color: #50667a;
 }
 
-
-.span_text_itemView.ultimate{
+.span_text_itemView.ultimate {
   text-align: left !important;
   padding: 0 20px;
 }
 
-.itemActiveListView .bigEgg{
+.itemActiveListView .bigEgg {
   animation-name: bigEgg !important;
 }
 
-.itemActiveListView .egg{
+.itemActiveListView .egg {
   animation-name: egg2 !important;
 }
 
-
-.optionsLIV .active_account{
+.optionsLIV .active_account {
   opacity: 0.3;
-  transition: .1s;
+  transition: 0.1s;
 }
 
-.optionsLIV{
+.optionsLIV {
   display: grid;
   position: relative;
   width: 100%;
@@ -37,26 +35,26 @@
   color: gray;
 }
 
-.controlDespegableLIV{
+.controlDespegableLIV {
   max-width: 150px;
   height: auto;
   position: relative;
   display: grid;
   right: 10px;
-  transition: .3s;
+  transition: 0.3s;
   width: auto;
 }
 
-.itemActiveListView .active_account{
+.itemActiveListView .active_account {
   opacity: 1 !important;
 }
 
-.span_text_itemView img{
+.span_text_itemView img {
   margin-right: 10px;
   border-radius: 50%;
 }
 
-.span_text_itemView{
+.span_text_itemView {
   display: flex;
   align-items: center;
 }
@@ -64,14 +62,15 @@
 /*.ItemlistViewart:hover .forrillo{
   width: 50px;
 }*/
-.forrillo{
+.forrillo {
   width: 50px !important;
 }
 
-.sinForri, .forrillo{
+.sinForri,
+.forrillo {
   overflow: hidden;
   width: 0;
-  transition: .3s;
+  transition: 0.3s;
   /*width: 50px;*/
   position: relative;
   align-self: center;

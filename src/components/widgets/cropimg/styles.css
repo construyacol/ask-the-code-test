@@ -19,14 +19,12 @@ body {
   bottom: 80px;
 }*/
 
-
 .App {
   display: grid;
   grid-template-rows: 1fr 60px 80px;
   height: 90%;
-  row-gap:30px;
+  row-gap: 30px;
 }
-
 
 /* this media query must be relocated on future */
 @media (max-width: 900px) {

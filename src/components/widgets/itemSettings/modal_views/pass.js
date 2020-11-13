@@ -1,79 +1,59 @@
-import React, { Component, Fragment } from 'react'
-import InputForm from '../../inputs'
+import React, { Component, Fragment } from "react";
+import InputForm from "../../inputs";
 
 class PassView extends Component {
-
   state = {
-    status:"",
-    pass1:"",
-    pass2:""
-  }
+    status: "",
+    pass1: "",
+    pass2: "",
+  };
 
-  actualizarEstado = async(p) =>{
-
-    const { name, value } = p.target
+  actualizarEstado = async (p) => {
+    const { name, value } = p.target;
 
     await this.setState({
-      [name]:value
-    })
+      [name]: value,
+    });
 
+    const { pass1, pass2 } = this.state;
 
-    const{
-      pass1,
-      pass2
-    } = this.state
+    console.log("actualizarEstado", this.state.status);
 
+    if (name !== "pass1" && pass2.length === pass1.length && pass2 !== pass1) {
+      await this.props.update_state({
+        buttonActive: false,
+      });
 
+      return this.setState({
+        status: "Las contraseñas no coinciden",
+      });
+    }
 
-  console.log('actualizarEstado', this.state.status)
+    if (name !== "pass1" && pass2.length === pass1.length && pass2 === pass1) {
+      await this.props.update_state({
+        buttonActive: true,
+      });
 
-  if(name !== 'pass1'  && pass2.length === pass1.length && pass2 !== pass1){
-    await this.props.update_state({
-      buttonActive:false
-    })
+      return this.setState({
+        status: "",
+      });
+    }
+
+    this.props.update_state({
+      buttonActive: false,
+    });
 
     return this.setState({
-      status:"Las contraseñas no coinciden"
-    })
+      status: "",
+    });
+  };
 
-  }
+  render() {
+    const { buttonActive } = this.props;
 
+    const { status } = this.state;
 
-  if(name !== 'pass1'  && pass2.length === pass1.length && pass2 === pass1){
-    await this.props.update_state({
-      buttonActive:true
-    })
-
-    return this.setState({
-      status:""
-    })
-  }
-
-  this.props.update_state({
-    buttonActive:false
-  })
-
-  return this.setState({
-    status:""
-  })
-
-
-  }
-
-
-  render(){
-
-    const {
-      buttonActive
-    } = this.props
-
-
-    const{
-      status
-    } = this.state
-
-
-    return(
+    return (
       <Fragment>
         <InputForm
           type="password"
@@ -96,8 +76,8 @@ class PassView extends Component {
           // value={name}
         />
       </Fragment>
-    )
+    );
   }
 }
 
-export default PassView
+export default PassView;

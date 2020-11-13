@@ -1,8 +1,8 @@
 {
-  "accounts":[
+  "accounts": [
     {
       "data": {
-        "name":null,
+        "name": null,
         "country": null,
         "enabled": true,
         "currency": {
@@ -13,7 +13,7 @@
     },
     {
       "data": {
-        "name":null,
+        "name": null,
         "country": null,
         "enabled": true,
         "currency": {

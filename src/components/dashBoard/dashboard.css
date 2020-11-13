@@ -1,4 +1,4 @@
-.dashBoardLayout{
+.dashBoardLayout {
   min-height: 100vh;
   /*padding-top: 6vh;*/
   /*margin-top: 15px;*/
@@ -19,28 +19,27 @@
   overflow-y: hidden !important;
 }
 
-.sectionFixedPrice{
+.sectionFixedPrice {
   height: 38vh;
   padding-top: 7vh;
-  background: linear-gradient(to bottom right, #0198FF, #0066AA);
+  background: linear-gradient(to bottom right, #0198ff, #0066aa);
 }
 
-.element{
+.element {
   position: relative;
-top: 200px;
-height: 200px;
-overflow: scroll;
-/* margin-bottom: 100px; */
-margin-left: 19vw;
-padding: 20px;
+  top: 200px;
+  height: 200px;
+  overflow: scroll;
+  /* margin-bottom: 100px; */
+  margin-left: 19vw;
+  padding: 20px;
 }
 
-.epale{
+.epale {
   margin-top: 100px;
-    position: absolute;
-    z-index: 30;
+  position: absolute;
+  z-index: 30;
 }
-
 
 .notification-awesome {
   background-color: #685dc3;
@@ -72,18 +71,16 @@ padding: 20px;
   }
 }
 
-
-
-.TouchMe{
- width: 50px;
- height: 50px;
- border-radius: 50%;
- background: black;
- cursor: pointer;
-     margin: 100px 0 0 900px;
+.TouchMe {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: black;
+  cursor: pointer;
+  margin: 100px 0 0 900px;
 }
 
-.containerSection{
+.containerSection {
   /*padding-top: 8vh;*/
   /*padding-left: 20px;*/
   /*padding-right: 20px;*/

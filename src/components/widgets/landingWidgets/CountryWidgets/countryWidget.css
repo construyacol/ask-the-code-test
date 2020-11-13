@@ -1,4 +1,4 @@
-#CountryWidgetComponent{
+#CountryWidgetComponent {
   width: 100%;
   height: 100%;
   display: grid;
@@ -7,49 +7,48 @@
   position: relative;
 }
 
-#CountryWidgetComponent div{
+#CountryWidgetComponent div {
   /*border: 1px solid red;*/
   display: grid;
 }
 
-#CountrySelector{
+#CountrySelector {
   position: absolute;
   z-index: 3;
   border-radius: 10px;
 }
 
-.countryGraphPriceLoader{
+.countryGraphPriceLoader {
   margin-bottom: 10vh;
 }
 
-#CountrySelectorButton{
+#CountrySelectorButton {
   position: absolute;
   width: 110px;
   height: 85px;
-  align-self:flex-start;
-  justify-self:center;
+  align-self: flex-start;
+  justify-self: center;
   top: -20px;
   display: grid;
   grid-template-rows: 1fr auto;
   z-index: 3;
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 4px;
   padding: 7px;
   cursor: pointer;
 }
 
-.CountrySelectorButtonimg img{
-    position: absolute;
-    justify-self:center;
-    align-self: center;
+.CountrySelectorButtonimg img {
+  position: absolute;
+  justify-self: center;
+  align-self: center;
 }
 
-#CountrySelectorButton:hover p{
+#CountrySelectorButton:hover p {
   color: #23a6ff;
 }
 
-
-#CountrySelectorButton p{
+#CountrySelectorButton p {
   text-align: center;
   margin-bottom: 10px;
   color: gray;
@@ -57,48 +56,47 @@
   align-items: center;
   /*grid-template-columns: auto auto;*/
   grid-template-columns: auto;
-  justify-items:center;
+  justify-items: center;
   margin: 0 0 10px 0;
 }
 
-#CountrySelectorButton i{
+#CountrySelectorButton i {
   font-size: 17px;
   margin-left: 0px;
 }
 
-.CountrySelectorButtonimg{
+.CountrySelectorButtonimg {
   display: grid;
   position: relative;
 }
 
-
-.countryQuotePrice{
+.countryQuotePrice {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-.countryQuotePrice div{
+.countryQuotePrice div {
   display: grid;
   align-items: center;
   justify-items: center;
 }
 
-.cQuote h1{
+.cQuote h1 {
   font-size: 37px;
   color: #3e3e3e;
 }
 
-.cQuote span{
+.cQuote span {
   margin-left: 10px;
 }
 
-.cQuote p{
+.cQuote p {
   margin: 0;
   color: #00bf49;
   font-weight: 400;
 }
 
-.cQuote{
+.cQuote {
   height: 100%;
   max-height: 90px;
   align-self: center;
@@ -106,76 +104,42 @@
   font-weight: bold !important;
 }
 
-
-
-.quoteMovil{
+.quoteMovil {
   display: grid;
   grid-template-rows: 1fr 30px;
   grid-row-gap: 5px;
 }
 
-.controlQuoteMovil{
+.controlQuoteMovil {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
 }
 
-.controlQItem{
+.controlQItem {
   margin: 0;
   padding-bottom: 5px;
   opacity: 0.4;
-  transition: .3s;
+  transition: 0.3s;
 }
 
-.controlQItem.active{
+.controlQItem.active {
   border-bottom: 1px solid gray;
   opacity: 1;
 }
 
-
-
-
-
-
-
-
-
-
-
 @media only screen and (max-width: 768px) {
-
-
-  #CountrySelectorButton{
+  #CountrySelectorButton {
     top: -40px;
   }
 
-  .countryQuotePrice{
+  .countryQuotePrice {
     grid-template-columns: 1fr !important;
   }
 
-
-  .countryQuotePrice div{
+  .countryQuotePrice div {
     align-items: flex-end;
   }
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

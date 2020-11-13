@@ -1,26 +1,24 @@
-import React, { Component } from 'react'
-import CopyContainer from '../widgets/copy/copyContainer'
-
+import React, { Component } from "react";
+import CopyContainer from "../widgets/copy/copyContainer";
 
 class ReferralLinkShare extends Component {
-
-  componentDidMount(){
-      this.facebook_init()
+  componentDidMount() {
+    this.facebook_init();
   }
 
+  facebook_init = () => {
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  };
 
-  facebook_init = () =>{
-    (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'))
-  }
-
-  render(){
-
+  render() {
     // let netWorks = [
     //   // {
     //   //   icon:"fab fa-facebook-f",
@@ -41,13 +39,12 @@ class ReferralLinkShare extends Component {
     //   // }
     // ]
 
-    let twitter_text = "Amigos, este es mi link de referidos de Coinsenda:"
+    let twitter_text = "Amigos, este es mi link de referidos de Coinsenda:";
 
-    const { referralLink } = this.props
+    const { referralLink } = this.props;
 
-    return(
+    return (
       <div className="contReferralLink">
-
         <div className="ReferralLink">
           <i className="refeico fas fa-share-alt"></i>
           <CopyContainer
@@ -59,24 +56,37 @@ class ReferralLinkShare extends Component {
 
         <div className="buttonsReferralShare fuente">
           {/* BOTON FACEBOOK */}
-          <div className='element1Ref' >
-            <a className="tranquilo_fb fb-share-button" alt="" href={referralLink}
+          <div className="element1Ref">
+            <a
+              className="tranquilo_fb fb-share-button"
+              alt=""
+              href={referralLink}
               data-href={referralLink}
               target="_blank"
               rel="noopener noreferrer"
-              data-layout="button_count">
-            </a>
+              data-layout="button_count"
+            ></a>
             <i className="fab fa-facebook-f"></i>
             <p className="fuente">Compartir</p>
           </div>
 
           {/* BOTON TWITTER */}
-          <a className={`element1Ref`} href={`https://twitter.com/intent/tweet?text=${twitter_text}&url=${referralLink}`} target="_blank" rel="noopener noreferrer">
+          <a
+            className={`element1Ref`}
+            href={`https://twitter.com/intent/tweet?text=${twitter_text}&url=${referralLink}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <i className="fab fa-twitter"></i>
             <p className="fuente">Twittear</p>
           </a>
 
-          <a className={`element1Ref`} href={`https://wa.me/?text='Hola, te invito a registrarte en Coinsenda con mi link de referido: ${referralLink}'`} target="_blank" rel="noopener noreferrer">
+          <a
+            className={`element1Ref`}
+            href={`https://wa.me/?text='Hola, te invito a registrarte en Coinsenda con mi link de referido: ${referralLink}'`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <i className="fab fa-whatsapp"></i>
             <p className="fuente">Whatsapp</p>
           </a>
@@ -92,14 +102,10 @@ class ReferralLinkShare extends Component {
             })
           } */}
         </div>
-
-
       </div>
-    )
+    );
   }
-
 }
-
 
 // const ShareElement = props => {
 //
@@ -118,5 +124,4 @@ class ReferralLinkShare extends Component {
 //
 // }
 
-
-export default ReferralLinkShare
+export default ReferralLinkShare;

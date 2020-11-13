@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import IconSwitch from '../icons/iconSwitch'
-import { connect } from 'react-redux'
-import { IconClose } from '../shared-styles'
-import styled from 'styled-components'
-import OtherModalLayout from './otherModalLayout'
+import React, { useState, useEffect } from "react";
+import IconSwitch from "../icons/iconSwitch";
+import { connect } from "react-redux";
+import { IconClose } from "../shared-styles";
+import styled from "styled-components";
+import OtherModalLayout from "./otherModalLayout";
 
-import {
-  DownCounter,
-  Buttons
-} from '../../'
+import { DownCounter, Buttons } from "../../";
 
-const SwapVIewConfirm = props => {
-
-
-  const { cancelarClick, handleClick, idCancelButton, idAcceptButton, idCloseButton } = props
+const SwapVIewConfirm = (props) => {
+  const {
+    cancelarClick,
+    handleClick,
+    idCancelButton,
+    idAcceptButton,
+    idCloseButton,
+  } = props;
 
   const {
     title,
@@ -23,35 +24,39 @@ const SwapVIewConfirm = props => {
     // img,
     // svg,
     type,
-    from, spent, to, bought, handleSwap
-  } = props.modal_confirmation
+    from,
+    spent,
+    to,
+    bought,
+    handleSwap,
+  } = props.modal_confirmation;
 
-  const [counter, setCounter] = useState(20)
-
+  const [counter, setCounter] = useState(20);
 
   useEffect(() => {
     const SwapCounter = setInterval(async () => {
-      clearInterval(SwapCounter)
+      clearInterval(SwapCounter);
       if (counter === 1) {
-        handleSwap()
+        handleSwap();
       }
 
       if (counter === 0) {
-        setCounter(20)
+        setCounter(20);
       } else {
-        setCounter(counter - 1)
+        setCounter(counter - 1);
       }
-    }, 1000)
+    }, 1000);
 
-    return (() => { clearInterval(SwapCounter) })
-
-  }, [counter])
+    return () => {
+      clearInterval(SwapCounter);
+    };
+  }, [counter]);
 
   const _cancelarClick = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
-      cancelarClick()
+      cancelarClick();
     }
-  }
+  };
 
   // useEffect(()=>{
   //   formatToCurrency
@@ -59,17 +64,16 @@ const SwapVIewConfirm = props => {
   // handleSwap
   // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
-
-    <OtherModalLayout id="close-button-with-OtherModalLayout" onkeydown={true} on_click={_cancelarClick ? _cancelarClick : null}>
-
+    <OtherModalLayout
+      id="close-button-with-OtherModalLayout"
+      onkeydown={true}
+      on_click={_cancelarClick ? _cancelarClick : null}
+    >
       <h1 className="bigCounter fuente2">{counter}</h1>
       <div className="LayoutSocketNotify swing-in-bottom-bck">
         <div className={`socketContent ${type}`}>
           {/* <div className="close_modal_btn" id={idCloseButton} onClick={cancelarClick}><i className="fas fa-times"></i></div> */}
-          <IconClose
-            theme="dark"
-            size={20}
-          />
+          <IconClose theme="dark" size={20} />
 
           <div className="topSection swap">
             <h3 className="fuente swapTitleConfir">{title}</h3>
@@ -84,61 +88,61 @@ const SwapVIewConfirm = props => {
 
           <div className={`bottomSection ${type}`}>
             <div className="swapdescriptionText">
-
-              <article id="Swapdescription" className="fuente" >
-                Gastarás la cantidad de: <label className="fuente2">- {spent} {from}</label>, para adquirir la cantidad de:
-            </article>
-
-              <article className="depositAmount swap">
-                <IconSwitch
-                  icon={to}
-                  size={35}
-                />
-                <article id="order_amount" className="fuente2 swap">
-                  {/* {formatCurrency}  */}
-                  {/* {description} */}
-                + {bought}
-                  <span className={to}>
-                    {to}
-                  </span>
-                </article>
+              <article id="Swapdescription" className="fuente">
+                Gastarás la cantidad de:{" "}
+                <label className="fuente2">
+                  - {spent} {from}
+                </label>
+                , para adquirir la cantidad de:
               </article>
 
+              <article className="depositAmount swap">
+                <IconSwitch icon={to} size={35} />
+                <article id="order_amount" className="fuente2 swap">
+                  {/* {formatCurrency}  */}
+                  {/* {description} */}+ {bought}
+                  <span className={to}>{to}</span>
+                </article>
+              </article>
             </div>
 
-            <Buttons.ButtonNofity id={idAcceptButton} className="swap" buttonAction={handleClick} >
-              <p id="ButtonNofityText" className="fuente">Confirmar Intercambio</p>
+            <Buttons.ButtonNofity
+              id={idAcceptButton}
+              className="swap"
+              buttonAction={handleClick}
+            >
+              <p id="ButtonNofityText" className="fuente">
+                Confirmar Intercambio
+              </p>
             </Buttons.ButtonNofity>
           </div>
         </div>
-        <MsgSwapDisclamer><p id="swapDisclamerText" className="fuente">La cotización se actualizará cada 20 segundos.</p></MsgSwapDisclamer>
-
+        <MsgSwapDisclamer>
+          <p id="swapDisclamerText" className="fuente">
+            La cotización se actualizará cada 20 segundos.
+          </p>
+        </MsgSwapDisclamer>
       </div>
     </OtherModalLayout>
+  );
+};
 
-  )
-
-}
-
-export default SwapVIewConfirm
-
+export default SwapVIewConfirm;
 
 const MsgSwapDisclamer = styled.div`
+  padding: 15px 26px;
+  background: black;
+  position: absolute;
+  bottom: -90px;
+  width: 100%;
+  border-radius: 7px;
+  max-width: 350px;
+  animation: msgSwapDisclamera;
+  animation-duration: 6s;
+  animation-fill-mode: forwards;
+  opacity: 1;
 
-    padding: 15px 26px;
-    background: black;
-    position: absolute;
-    bottom: -90px;
-    width: 100%;
-    border-radius: 7px;
-    max-width: 350px;
-    animation: msgSwapDisclamera;
-    animation-duration: 6s;
-    animation-fill-mode: forwards;
-    opacity: 1;
-
-
-  @keyframes msgSwapDisclamera{
+  @keyframes msgSwapDisclamera {
     0% {
       opacity: 0;
     }
@@ -155,9 +159,9 @@ const MsgSwapDisclamer = styled.div`
     }
   }
 
-   #swapDisclamerText{
+  #swapDisclamerText {
     margin: 0;
     color: white;
     font-size: 14px;
   }
-`
+`;
