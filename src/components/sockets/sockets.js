@@ -14,10 +14,14 @@ class SocketsComponent extends Component {
     currentSwap: null,
     currentDeposit: null,
     currentWithdraw: null,
+    isUpdated: false,
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.loggedIn !== prevProps.loggedIn) {
+    if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
+      this.setState({
+        isUpdated: true,
+      });
       if (this.props.loggedIn) {
         const socket = io(SocketUrl);
         const { user } = this.props;
@@ -95,16 +99,21 @@ class SocketsComponent extends Component {
   }
 
   withdraw_mangagement = async (withdraw) => {
+    // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw)
+    // debugger
+
     if (withdraw.proof) {
       if (
         !this.props.withdraws ||
         (this.props.withdraws && !this.props.withdraws[withdraw.id])
       ) {
+        // Si no hay ordenes de retiro, ó si las hay, pero no está este retiro dentro de las ordenes disponibles en el estado
         let cWithdraw = await this.props.coinsendaServices.getOrderById(
           withdraw.id,
           "withdraws"
         );
         await this.props.coinsendaServices.get_withdraws(cWithdraw.account_id);
+        // entonces consulte las ultimas ordenes de retiro de esta cuenta y actualiza el estado
         await this.setState({ currentWithdraw: cWithdraw });
       }
       // Teniendo la orden de retiro en el estado, agrégue la prueba de pago y actualice el estado a: "aceptado" en el modelo de la orden de retiro
