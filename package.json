@@ -49,7 +49,7 @@
   "scripts": {
     "start": "react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
-    "start:dev:local": "cross-env NODE_ENV='local' npm start",
+    "start:dev:local": "cross-env REACT_APP_LOCAL_CONFIG=local npm run start:dev",
     "start:build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw && serve ./build -s -l 5000",
     "build": "cross-env NODE_ENV='production' react-scripts build && react-snapshot && npm run build-sw",
     "build-sw": "node ./src/sw.js",
