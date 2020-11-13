@@ -1,90 +1,93 @@
-import React from 'react'
-import styled from 'styled-components'
-import { rotate90HorizontalBck, rotate0HorizontalBck } from './animations'
-import { AiOutlineClose } from "react-icons/ai"
+import React from "react";
+import styled from "styled-components";
+import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
+import { AiOutlineClose } from "react-icons/ai";
 
 export const IconClose = ({ theme, opacity, size, id }) => {
-// @params
-// theme => dark/ligth
+  // @params
+  // theme => dark/ligth
 
-  return(
+  return (
     <IconCloseModal
-      id={id || 'IconCloseModal'}
-      color={`${theme === 'dark' && 'dark'}`}
+      id={id || "IconCloseModal"}
+      color={`${theme === "dark" && "dark"}`}
       opacity={opacity}
-      size={size+10}
+      size={size + 10}
       data-close_modal
-      >
-      <AiOutlineClose color={`${theme === 'dark' ? 'white' : 'gray'}`} size={size} />
+    >
+      <AiOutlineClose
+        color={`${theme === "dark" ? "white" : "gray"}`}
+        size={size}
+      />
     </IconCloseModal>
-  )
-
-}
+  );
+};
 
 export const IconBackContainer = styled.div`
-  width: ${props => props.size && `${props.size}px` || '35px'};
-  height:  ${props => props.size && `${props.size}px` || '35px'};
-  background: ${props => props.color === 'dark' ? `rgb(0, 0, 0, ${props.opacity || '.4'})` : `rgb(255, 255, 255, ${props.opacity || '.3'})` };
+  width: ${(props) => (props.size && `${props.size}px`) || "35px"};
+  height: ${(props) => (props.size && `${props.size}px`) || "35px"};
+  background: ${(props) =>
+    props.color === "dark"
+      ? `rgb(0, 0, 0, ${props.opacity || ".4"})`
+      : `rgb(255, 255, 255, ${props.opacity || ".3"})`};
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-`
+`;
 export const IconCloseModal = styled(IconBackContainer)`
   z-index: 2;
   right: 5px;
   top: -38px;
   position: absolute;
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
 
-  &::after{
-    content: '';
+  &::after {
+    content: "";
     width: 100%;
     height: 100%;
     position: absolute;
     z-index: 3;
   }
-  &:hover{
+  &:hover {
     transform: scale(1.1);
   }
-  &:active{
-    transform: scale(.97);
+  &:active {
+    transform: scale(0.97);
   }
 
   @media (max-width: 768px) {
     top: 10px;
     right: 15px;
   }
-`
+`;
 
 export const ControlButtonContainer = styled.div`
   position: absolute;
   width: 100%;
   left: 0;
   display: grid;
-  bottom: ${props => `${props.bottom}px`}
-
-  #controlsContainer{
-    transform: scale(.95);
+  bottom: ${(props) => `${props.bottom}px`} #controlsContainer {
+    transform: scale(0.95);
   }
-`
+`;
 
 export const Face = styled.div`
   display: block;
   position: absolute;
-  ${'' /* width: 358px; */}
+  ${"" /* width: 358px; */}
   width: 100%;
   height: 80px;
-`
+`;
 
-export const Front = styled(Face)``
+export const Front = styled(Face)``;
 
 export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);
   opacity: 0;
-`
+`;
 
 export const CubeObject = styled.div`
   position: relative;
@@ -93,29 +96,29 @@ export const CubeObject = styled.div`
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
 
-  &.rotate{
-    animation: ${rotate90HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    ${Top}{
-      transition: .3s;
+  &.rotate {
+    animation: ${rotate90HorizontalBck} 0.3s
+      cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    ${Top} {
+      transition: 0.3s;
       opacity: 1;
     }
-    ${Front}{
+    ${Front} {
       transform: rotateY(0deg) translateZ(40px);
     }
   }
-  &.unrotate{
-    animation: ${rotate0HorizontalBck} .3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-    ${Top}{
-      transition: .3s;
+  &.unrotate {
+    animation: ${rotate0HorizontalBck} 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      both;
+    ${Top} {
+      transition: 0.3s;
       opacity: 0;
     }
-    ${Front}{
+    ${Front} {
       transform: rotateY(0deg) translateZ(40px);
     }
   }
-`
-
-
+`;
 
 export const CloseButton = styled.div`
   position: absolute;
@@ -130,36 +133,35 @@ export const CloseButton = styled.div`
   align-items: center;
   justify-items: center;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
 
-  :hover{
+  :hover {
     transform: scale(1.1);
   }
 
-  ::after{
+  ::after {
     content: "";
     width: 100%;
     height: 100%;
     position: absolute;
   }
 
-  i{
+  i {
     color: gray;
   }
-`
+`;
 
 export const Icon = styled.i`
-
   font-weight: 400;
   position: relative;
   color: black;
   font-size: 16px;
 
-  &:hover{
+  &:hover {
     color: black;
   }
 
-  span{
+  span {
     visibility: hidden;
     width: 60px;
     background-color: black;
@@ -174,5 +176,4 @@ export const Icon = styled.i`
     left: 50%;
     margin-left: -30px;
   }
-
-`
+`;

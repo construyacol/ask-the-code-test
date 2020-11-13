@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import error_travolta from '../../../assets/error.png'
-import errorIcon from '../../../assets/erroricon.png'
+import React, { Component } from "react";
+import error_travolta from "../../../assets/error.png";
+import errorIcon from "../../../assets/erroricon.png";
 // import * as Sentry from '@sentry/browser';
-import './handleError.css'
+import "./handleError.css";
 
 // Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
 
@@ -37,4 +37,4 @@ class HandleError extends Component {
   }
 }
 
-export default HandleError
+export default HandleError;

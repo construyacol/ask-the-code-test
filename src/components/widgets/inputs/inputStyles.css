@@ -8,7 +8,7 @@
   display: -ms-grid;
   display: grid;
   position: relative;
-  transition: .5s;
+  transition: 0.5s;
   background: white;
 }
 
@@ -25,11 +25,10 @@
   color: #50667a4d;
 }
 
-
 .inputCountryLoader {
   position: absolute;
   z-index: 2;
-  opacity: .8;
+  opacity: 0.8;
   background: white;
   width: 100%;
   height: 100%;
@@ -40,12 +39,11 @@
 
 .InputFormCoin input,
 .read_only {
-  font-family: 'Tomorrow', sans-serif;
+  font-family: "Tomorrow", sans-serif;
 }
 
-
 .AuthLoader {
-  transform: scale(.8);
+  transform: scale(0.8);
 }
 
 .inputElement.Verify {
@@ -119,7 +117,7 @@
   /*display: grid;*/
   display: flex;
   align-items: center;
-  transition: .15s;
+  transition: 0.15s;
   transform: scale(1);
   /*grid-template-columns: 1fr;*/
 }
@@ -138,14 +136,15 @@
   display: grid;
   align-items: center;
   padding-bottom: 7px;
-  height: calc(100% - 7px)
+  height: calc(100% - 7px);
 }
 
 .PhoneamEsta_icon.anim {
-  animation: flip-2-hor-bottom-fwd .7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+  animation: flip-2-hor-bottom-fwd 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
 }
 
-.inputContainer3>form {
+.inputContainer3 > form {
   height: 100% !important;
   display: grid;
   align-items: center;
@@ -173,7 +172,7 @@
 .inputComponentPhone {
   height: 50%;
   width: 0%;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .inputComponentPhone p {
@@ -201,7 +200,7 @@
   background: #f4f4f4;
   border-radius: 6px;
   margin: 0 10px !important;
-  transition: .15s;
+  transition: 0.15s;
   opacity: 0;
 }
 
@@ -210,7 +209,7 @@ form#phone {
   display: grid;
   grid-template-rows: 1fr;
   grid-template-columns: auto 1fr;
-  transition: .3s;
+  transition: 0.3s;
   position: relative;
 }
 
@@ -224,16 +223,16 @@ form#phone {
 
 .PhoneamEsta_icon {
   color: #50667a;
-  transition: .2s;
+  transition: 0.2s;
 }
 
 .PhoneamEsta:hover .PhoneamEsta_icon,
 .PhoneamEsta:hover .PhoneamEsta_p {
-  color: #e8b342 !important
+  color: #e8b342 !important;
 }
 
 .PhoneamEsta {
-  transition: .3s;
+  transition: 0.3s;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -263,7 +262,7 @@ form#phone {
 }
 
 .PhoneamEsta_p {
-  transition: .2s;
+  transition: 0.2s;
   margin: 0 0 0 12px;
   font-size: 18px;
   color: #50667a;
@@ -307,9 +306,9 @@ form#phone {
 }
 
 .InputProgressed {
-  transition: .3s;
+  transition: 0.3s;
   height: 100%;
-  background: linear-gradient(to right, #00D2FF, #3A7BD5);
+  background: linear-gradient(to right, #00d2ff, #3a7bd5);
 }
 
 .blocker {
@@ -324,7 +323,7 @@ form#phone {
   position: absolute;
   right: 15px;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
   margin-top: 5px;
 }
 
@@ -333,11 +332,11 @@ form#phone {
 }
 
 .cerratelo:active {
-  transform: scale(.7);
+  transform: scale(0.7);
 }
 
 .ctaInputKyc {
-  transition: .3s;
+  transition: 0.3s;
   position: absolute;
   height: calc(100% - 7px);
   right: 0;
@@ -377,17 +376,17 @@ form#phone {
   -moz-backface-visibility: hidden;
   backface-visibility: hidden;
   font-size: 35px;
-  color: #0066AA;
+  color: #0066aa;
 }
 
 .ctaInputKyc.openPhone {
-  animation: flip-horizontal-bck 0.7s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+  animation: flip-horizontal-bck 0.7s cubic-bezier(0.455, 0.03, 0.515, 0.955)
+    both;
 }
 
-
-
 @keyframes flip-horizontal-bck {
-  0% {}
+  0% {
+  }
 
   50% {
     transform: translateZ(0) rotateX(0);
@@ -398,12 +397,9 @@ form#phone {
   }
 }
 
-
-
-
 .arrowcito,
 .arrowcito2 {
-  color: #0066AA;
+  color: #0066aa;
   font-size: 33px;
   position: absolute;
   right: 15px;
@@ -414,7 +410,7 @@ form#phone {
   opacity: 0;
   margin-bottom: 5px;
   font-size: 26px;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .arrowcito2:hover {
@@ -422,14 +418,14 @@ form#phone {
 }
 
 .arrowcito2:active {
-  transform: scale(.8);
+  transform: scale(0.8);
 }
 
 .InputCarous {
   height: auto;
   width: 100%;
   position: absolute;
-  transition: .3s;
+  transition: 0.3s;
   top: 0;
   /* top: -40px; */
 }
@@ -448,7 +444,7 @@ form#phone {
   border-radius: 6px;
   display: grid;
   position: relative;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .inputElement,
@@ -461,14 +457,13 @@ form#phone {
   border: 1px solid transparent;
   outline: 0;
   font-size: 16px;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .inputElement3.phone.openS {
   width: calc(20% - 30px);
   opacity: 0;
 }
-
 
 .inputElement3.phone {
   padding: 0 15px;
@@ -483,9 +478,7 @@ form#phone {
   padding: 0 15px;
   font-size: 20px !important;
   width: calc(100% - 30px);
-
 }
-
 
 .inputElement3::placeholder {
   color: #50667a4d !important;
@@ -519,7 +512,7 @@ form#phone {
 }
 
 .inputElement2 {
-  color: #3A7BD5;
+  color: #3a7bd5;
   width: calc(100% - 70px);
   /*height: 100%;*/
   height: 90px;
@@ -528,13 +521,13 @@ form#phone {
   border: 1px solid transparent;
   outline: 0;
   font-size: 90px;
-  transition: .5s;
+  transition: 0.5s;
   text-align: center;
   border-bottom: 1px solid #3a7bd5;
 }
 
 .inputElement2::placeholder {
-  color: #3A7BD5;
+  color: #3a7bd5;
   /*font-size: 90px;*/
   position: absolute;
   text-align: center;
@@ -545,7 +538,7 @@ form#phone {
 }
 
 .signoPesos {
-  color: #3A7BD5;
+  color: #3a7bd5;
   /*font-size: 90px;*/
   position: absolute;
   text-align: center;
@@ -574,8 +567,8 @@ form#phone {
 }
 
 .containerInputComponent2.openS {
-  transition: .6s;
-  transform: scale(.9) translateX(10px);
+  transition: 0.6s;
+  transform: scale(0.9) translateX(10px);
 }
 
 .containerInputComponent,
@@ -595,7 +588,7 @@ form#phone {
 }
 
 .containerInputComponent2 {
-  transition: .4s;
+  transition: 0.4s;
   grid-template-rows: 40px 1fr 20px !important;
   grid-gap: 10px !important;
   height: 150px !important;
@@ -617,9 +610,6 @@ form#phone {
   height: 150px !important;
 }
 
-
-
-
 .InputContainerT {
   position: relative;
   display: grid;
@@ -637,9 +627,8 @@ form#phone {
 .InputStep {
   position: absolute;
   right: 0;
-  color: #0066AA;
+  color: #0066aa;
 }
-
 
 .labelText,
 .labelText2,
@@ -689,28 +678,27 @@ form#phone {
 }
 
 .inputContainer.inputActivado {
-  border: 1px solid #00D2FF;
+  border: 1px solid #00d2ff;
 }
 
 .inputContainer3.inputActivado {
-  border: 1px solid #00D2FF;
+  border: 1px solid #00d2ff;
 }
 
 .inputElement.inputActivado {
-  color: #3A7BD5;
+  color: #3a7bd5;
 }
 
 .inputContainer2.inputActivado {
-  border: 1px solid #00D2FF;
+  border: 1px solid #00d2ff;
 }
 
 .inputElement2.inputActivado {
-  color: #3A7BD5;
+  color: #3a7bd5;
 }
 
-
 .InputDropDown.activeText {
-  color: #3A7BD5;
+  color: #3a7bd5;
 }
 
 .InputDropDown {
@@ -739,7 +727,7 @@ form#phone {
   overflow: hidden;
   border: 1px solid transparent;
   /*border: 1px solid #50667a61;*/
-  transition: .2s;
+  transition: 0.2s;
   height: 0px;
   cursor: pointer;
 }
@@ -755,7 +743,7 @@ form#phone {
 
 .InputDesplegable p {
   cursor: pointer;
-  transition: .2s;
+  transition: 0.2s;
   margin: 0;
   height: 45px;
   border-bottom: 1px solid #50667a61;

@@ -1,35 +1,34 @@
 {
-  "panel_new":[
+  "panel_new": [
     {
-      "id":1,
-      "media_type":"video",
-      "src_img":"https://i.ibb.co/Tv8j0Dz/2.jpg",
-      "icon":"youtube",
-      "social_network":"Youtube",
-      "title":"Coinsenda como patrocinador oficial del Cripto Latin Fest",
-      "description":"Entrevista con Papa Bitcoin",
-      "link":"https://www.youtube.com/watch?v=oUwxqg90Zc4"
+      "id": 1,
+      "media_type": "video",
+      "src_img": "https://i.ibb.co/Tv8j0Dz/2.jpg",
+      "icon": "youtube",
+      "social_network": "Youtube",
+      "title": "Coinsenda como patrocinador oficial del Cripto Latin Fest",
+      "description": "Entrevista con Papa Bitcoin",
+      "link": "https://www.youtube.com/watch?v=oUwxqg90Zc4"
     },
     {
-      "id":2,
-      "media_type":"img",
-      "src_img":"https://i.ibb.co/Z2vF2T9/1.jpg",
-      "icon":"twitter",
-      "social_network":"Twitter",
-      "title":"Coinsenda patrocinador del Cripto Latin Fest",
-      "description":"Somos la única empresa del sector Cripto en Colombia en tener implementado un sistema de prevención contra lavado de activos.",
-      "link":"https://twitter.com/coin_senda/status/1130300983702110208"
+      "id": 2,
+      "media_type": "img",
+      "src_img": "https://i.ibb.co/Z2vF2T9/1.jpg",
+      "icon": "twitter",
+      "social_network": "Twitter",
+      "title": "Coinsenda patrocinador del Cripto Latin Fest",
+      "description": "Somos la única empresa del sector Cripto en Colombia en tener implementado un sistema de prevención contra lavado de activos.",
+      "link": "https://twitter.com/coin_senda/status/1130300983702110208"
     },
     {
-      "id":3,
-      "media_type":"img",
-      "src_img":"https://i.ibb.co/BVrgRmL/3.jpg",
-      "icon":"twitter",
-      "social_network":"Twitter",
-      "title":"Coinsenda como patrocinador oficial del Cripto Latin Fest",
-      "description":"CEO de coinsenda.",
-      "link":"https://twitter.com/coin_senda/status/1130300983702110208"
+      "id": 3,
+      "media_type": "img",
+      "src_img": "https://i.ibb.co/BVrgRmL/3.jpg",
+      "icon": "twitter",
+      "social_network": "Twitter",
+      "title": "Coinsenda como patrocinador oficial del Cripto Latin Fest",
+      "description": "CEO de coinsenda.",
+      "link": "https://twitter.com/coin_senda/status/1130300983702110208"
     }
-
   ]
 }

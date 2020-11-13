@@ -1,85 +1,82 @@
-export const ApiGetRequest = async(url, header) => {
-
+export const ApiGetRequest = async (url, header) => {
   let parametros = {
-              method: 'GET',
-              headers: header,
-             };
+    method: "GET",
+    headers: header,
+  };
 
-  let response
+  let response;
   try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
+    response = await fetch(url, parametros);
+  } catch (error) {
     // si no tenemos conexión con el API nos retornara esto:
-    return false
+    return false;
   }
-  if(!response.ok){return response.status}
-  const data = await response.json()
-  return data
-}
+  if (!response.ok) {
+    return response.status;
+  }
+  const data = await response.json();
+  return data;
+};
 
-
-export const ApiPostRequest = async(url, body, token) => {
-
+export const ApiPostRequest = async (url, body, token) => {
   let myHeaders = {
-    Accept: '*/*',
-    'Content-Type': 'application/json',
-    'Authorization':token && `Bearer ${token}`
-  }
+    Accept: "*/*",
+    "Content-Type": "application/json",
+    Authorization: token && `Bearer ${token}`,
+  };
 
   let parametros = {
-               method: 'POST',
-               headers: myHeaders,
-               body:JSON.stringify(body)
-             }
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify(body),
+  };
 
-  let response
+  let response;
   try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
+    response = await fetch(url, parametros);
+  } catch (error) {
     // si no tenemos conexión con el API nos retornara esto:
-    return false
+    return false;
   }
 
   // console.log('|||||||||| °°°°STATUS GOOD°°°°|||||||', response)
   // Si el error esta en los datos de la petición, retornamos el estatus 465
-  if(!response.ok){return response.status}
-  const data = await response.json()
-  return data
-}
+  if (!response.ok) {
+    return response.status;
+  }
+  const data = await response.json();
+  return data;
+};
 
-
-export const ApiDelete = async(url) => {
-
+export const ApiDelete = async (url) => {
   let parametros = {
-          method: 'DELETE'
-        }
-  let response
+    method: "DELETE",
+  };
+  let response;
 
   try {
-    response = await fetch(url, parametros)
-  }
-  catch(error) {
+    response = await fetch(url, parametros);
+  } catch (error) {
     // si no tenemos conexión con el API nos retornara esto:
-    return false
+    return false;
   }
   // Si el error esta en los datos de la petición, retornamos el estatus 465
-  if(!response.ok){return response.status}
-  const delete_success = await response.json()
-  return delete_success
-}
+  if (!response.ok) {
+    return response.status;
+  }
+  const delete_success = await response.json();
+  return delete_success;
+};
 
-
-export const generate_headers = (token, getState) =>{
-  if(!token){
-    const { authData } = getState().modelData
-      token = authData.userToken
+export const generate_headers = (token, getState) => {
+  if (!token) {
+    const { authData } = getState().modelData;
+    token = authData.userToken;
   }
 
   let myHeaders = {
-    'Authorization': `Bearer ${token}`,
-  }
+    Authorization: `Bearer ${token}`,
+  };
 
-  return myHeaders
-}
+  return myHeaders;
+};

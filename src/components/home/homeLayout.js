@@ -1,7 +1,7 @@
-import React from 'react'
-import './home.css'
-import { useSelector } from 'react-redux'
-import { createSelector } from 'reselect'
+import React from "react";
+import "./home.css";
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 
 // const selectIsSomeModalRendered = createSelector(
 //   state => state.ui,
@@ -17,10 +17,10 @@ const HomeLayout = (props) => {
 
   return (
     <div className={`HomeLayout`}>
-    {/* <div className={`HomeLayout ${isSomeModalRendered ? 'conFirmationM' : ''}`}> */}
+      {/* <div className={`HomeLayout ${isSomeModalRendered ? 'conFirmationM' : ''}`}> */}
       {props.children}
     </div>
-  )
-}
+  );
+};
 
-export default HomeLayout
+export default HomeLayout;

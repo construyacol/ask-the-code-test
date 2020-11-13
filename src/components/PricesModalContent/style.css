@@ -21,7 +21,11 @@
 
 .general-buttom {
   font-weight: bold;
-  background: linear-gradient(90deg, rgb(56, 239, 125) 0%, rgb(17, 153, 142) 100%);
+  background: linear-gradient(
+    90deg,
+    rgb(56, 239, 125) 0%,
+    rgb(17, 153, 142) 100%
+  );
   padding: 16px 10px;
   cursor: pointer;
   border-radius: 6px;
@@ -40,13 +44,11 @@
   justify-content: space-between;
 }
 
-
 .pair-list-container {
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
-
 
 .pair-prices {
   display: grid;
@@ -65,9 +67,8 @@
 .amount_price {
   margin: 0 !important;
   font-size: 28px !important;
-  font-family: Tomorrow,sans-serif;
+  font-family: Tomorrow, sans-serif;
 }
-
 
 .price-container {
   text-align: center;
@@ -109,10 +110,9 @@
   row-gap: 10px;
 }
 
-.pair-list>div>img:first-child {
+.pair-list > div > img:first-child {
   height: 38px;
 }
-
 
 .base-item-content {
   width: 100%;
@@ -131,20 +131,19 @@
   border-right: 1px solid transparent;
   border-bottom: 1px solid transparent;
   box-shadow: rgba(0, 0, 0, 0) 2px 17px 34px;
-  transition: .3s;
+  transition: 0.3s;
   grid-template-columns: auto 1fr auto;
   column-gap: 18px;
 }
 
 .item-content-active {
   height: 100px;
-  border-top: 7px solid #04D499;
+  border-top: 7px solid #04d499;
   box-shadow: rgba(0, 0, 0, 0.09) 2px 17px 34px;
-  border-left: 1px solid #EBEBEB;
-  border-right: 1px solid #EBEBEB;
-  border-bottom: 1px solid #EBEBEB;
+  border-left: 1px solid #ebebeb;
+  border-right: 1px solid #ebebeb;
+  border-bottom: 1px solid #ebebeb;
 }
-
 
 .highcharts-credits {
   display: none !important;
@@ -178,7 +177,6 @@ g.highcharts-scrollbar {
   align-items: center;
   border: 1px solid #dedede;
   border-radius: 4px;
-
 }
 
 .item-content-calc-number img {
@@ -187,7 +185,7 @@ g.highcharts-scrollbar {
   margin-right: 8px;
 }
 
-.item-content-calc-number input[type=number] {
+.item-content-calc-number input[type="number"] {
   height: 28px;
   padding-left: 10px;
   width: 65%;
@@ -195,7 +193,7 @@ g.highcharts-scrollbar {
   border: 0;
 }
 
-.item-content-calc-number input[type=text] {
+.item-content-calc-number input[type="text"] {
   height: 28px;
   width: 65%;
   padding-left: 10px;
@@ -218,16 +216,16 @@ g.highcharts-scrollbar {
   background-repeat: no-repeat;
 }
 
-.exchange-arrows>img {
+.exchange-arrows > img {
   height: 20px;
 }
 
 .exchange-label {
-  color: #181D2B;
+  color: #181d2b;
   margin-left: 10px;
-  font-family: 'Raleway';
+  font-family: "Raleway";
   font-weight: bold;
-  font-size: 34px
+  font-size: 34px;
 }
 
 #overlay {
@@ -273,7 +271,7 @@ g.highcharts-scrollbar {
     border-radius: 4px;
   }
 
-  .prices-cta .header-login-button>label {
+  .prices-cta .header-login-button > label {
     font-size: 14px;
   }
 
@@ -282,7 +280,7 @@ g.highcharts-scrollbar {
   }
 
   .exchange-label {
-    font-size: 40px
+    font-size: 40px;
   }
 
   .prices-main-container {
@@ -354,7 +352,7 @@ g.highcharts-scrollbar {
     margin: 10% 0;
   }
 
-  .prices-exchange-pair .exchange-text-box>label {
+  .prices-exchange-pair .exchange-text-box > label {
     font-size: 14px;
     line-height: 30px;
   }
@@ -363,7 +361,7 @@ g.highcharts-scrollbar {
     background-color: #0e0e0e;
   }
 
-  .prices-exchange-pair .exchange-text-box>label>.strong {
+  .prices-exchange-pair .exchange-text-box > label > .strong {
     color: #0e0e0e;
   }
 
@@ -381,7 +379,7 @@ g.highcharts-scrollbar {
     font-size: 22px;
   }
 
-  .prices-exchange-pair .exchange-text-box>label {
+  .prices-exchange-pair .exchange-text-box > label {
     font-size: 10px;
     line-height: 28px;
   }

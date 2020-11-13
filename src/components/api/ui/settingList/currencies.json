@@ -1,29 +1,29 @@
 {
-  "currencies":[
+  "currencies": [
     {
-      "name":"Pesos Colombanos",
-      "code":"cop",
-      "id":"1"
+      "name": "Pesos Colombanos",
+      "code": "cop",
+      "id": "1"
     },
     {
-      "name":"Pesos Argentinos",
-      "code":"ars",
-      "id":"2"
+      "name": "Pesos Argentinos",
+      "code": "ars",
+      "id": "2"
     },
     {
-      "name":"Pesos Chilenos",
-      "code":"clp",
-      "id":"3"
+      "name": "Pesos Chilenos",
+      "code": "clp",
+      "id": "3"
     },
     {
-      "name":"Uruguay",
-      "code":"uyu",
-      "id":"4"
+      "name": "Uruguay",
+      "code": "uyu",
+      "id": "4"
     },
     {
-      "name":"Peru",
-      "code":"pen",
-      "id":"5"
+      "name": "Peru",
+      "code": "pen",
+      "id": "5"
     }
   ]
 }

@@ -1,4 +1,4 @@
-.Modal{
+.Modal {
   /*width: calc(100vw - 40px);*/
   margin: 0 auto;
   position: fixed;
@@ -14,48 +14,45 @@
   opacity: 0;
   z-index: 4;
   backdrop-filter: blur(0px);
-  transition: .3s;
+  transition: 0.3s;
 }
 
-
-
-.ConfirmationModal{
+.ConfirmationModal {
   background: black;
   background: linear-gradient(to bottom right, #00000099, #000000f0);
 }
 
-.local_loader{
+.local_loader {
   position: absolute;
   align-self: center;
   justify-self: center;
 }
 
-.local_loader_container{
-  width:100%;
+.local_loader_container {
+  width: 100%;
   height: 100%;
   background: #ffffffc2;
   position: absolute;
   display: grid;
 }
 
-.show_loader_app{
+.show_loader_app {
   opacity: 1;
 }
 
-
-.Modal.aparecer{
+.Modal.aparecer {
   animation-name: aparece;
-  animation-duration: .4s;
+  animation-duration: 0.4s;
   animation-fill-mode: forwards;
   animation-timing-function: ease;
   backdrop-filter: blur(2px);
 }
 
-@keyframes aparece{
-  0%{
+@keyframes aparece {
+  0% {
     opacity: 0;
   }
-  100%{
+  100% {
     opacity: 1;
   }
 }
@@ -79,48 +76,48 @@
   font-size: 30px;
 }
 
-.modalView{
+.modalView {
   background: white;
   opacity: 0.95;
 }
 
-.modalSuccess{
-  background: linear-gradient(to bottom right, #129A8E, #37ED7D);
+.modalSuccess {
+  background: linear-gradient(to bottom right, #129a8e, #37ed7d);
 }
 
-.badView{
+.badView {
   background: linear-gradient(to bottom right, #e93b28, #ff5441);
 }
 
-.pendingView{
-  background: linear-gradient(to bottom right, #FDC830, #F37335);
+.pendingView {
+  background: linear-gradient(to bottom right, #fdc830, #f37335);
 }
 
-.rejectedView{
-  background: linear-gradient(to bottom right, #FDC830, #ff2e2e);
+.rejectedView {
+  background: linear-gradient(to bottom right, #fdc830, #ff2e2e);
 }
 
-.confirmedView{
-  background: linear-gradient(to bottom right, #FDC830, #1cb179);
+.confirmedView {
+  background: linear-gradient(to bottom right, #fdc830, #1cb179);
 }
 
-
-.modalCont, .modalCont2, .modalCont3{
+.modalCont,
+.modalCont2,
+.modalCont3 {
   position: relative;
   height: calc(100% - 80px);
   padding: 40px;
-
 }
 
-
-.modalCont2, .modalCont3{
+.modalCont2,
+.modalCont3 {
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
 @media only screen and (max-width: 768px) {
-  .modalCont3{
+  .modalCont3 {
     padding: 20px 10px;
     width: calc(100% - 20px);
     height: calc(100% - 40px);
@@ -128,17 +125,16 @@
 }
 
 @media only screen and (max-height: 900px) {
-  .modalCont3{
+  .modalCont3 {
     overflow-y: scroll;
     overflow-x: hidden;
   }
-  .modalCont3 .layout3{
+  .modalCont3 .layout3 {
     margin: 70px 0;
   }
 }
 
-
-.Mconfirmar{
+.Mconfirmar {
   position: relative;
   justify-items: center;
   align-items: center;
@@ -148,38 +144,36 @@
   /* background: white; */
   border-radius: 7px;
   /* padding: 100px 30px 10px 30px; */
-  padding:70px 0px;
+  padding: 70px 0px;
   display: grid;
   grid-row-gap: 50px;
   /* grid-template-rows: minmax(25px, 130px) 1fr 100px; */
   /*grid-template-rows: repeat(auto-fill, minmax(80px, 1fr));*/
- }
+}
 
- .Mconfirmar.swap{
-   /* padding: 100px 30px 40px 30px !important; */
- }
+.Mconfirmar.swap {
+  /* padding: 100px 30px 40px 30px !important; */
+}
 
+.titleConfirmed {
+  background-image: url("../../../assets/map.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-attachment: fixed;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  width: 98%;
+  height: 70px;
+  position: absolute;
+  top: 0;
+  /* background: linear-gradient(to bottom right, #0175c3, #039aff); */
+}
 
- .titleConfirmed{
-   background-image: url('../../../assets/map.png');
-   background-size: contain;
-   background-repeat: no-repeat;
-   background-position: bottom;
-   background-attachment: fixed;
-   border-top-right-radius: 7px;
-   border-top-left-radius: 7px;
-   display: grid;
-   align-items: center;
-   justify-items:center;
-   width: 98%;
-   height: 70px;
-   position: absolute;
-   top: 0;
-   /* background: linear-gradient(to bottom right, #0175c3, #039aff); */
- }
-
-
-.titleConfirmed h1{
+.titleConfirmed h1 {
   text-align: center;
   color: white;
   font-size: 22px;
@@ -189,7 +183,7 @@
   justify-content: center;
 }
 
-.modalCont2 p{
+.modalCont2 p {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -201,14 +195,14 @@
   color: #4a4a4a;
 }
 
-
-.PairList.auth, .PairList.withdraw{
+.PairList.auth,
+.PairList.withdraw {
   max-width: 550px;
   max-height: 550px;
-  transform: scale(.9);
+  transform: scale(0.9);
 }
 
-.PairListtitle{
+.PairListtitle {
   background: #0080d7;
   display: flex;
   align-items: center;
@@ -218,10 +212,7 @@
   background: linear-gradient(to bottom right, #0175c3, #039aff);
 }
 
-
-
-
-.otherModal{
+.otherModal {
   overflow: hidden;
   border-radius: 7px;
   width: 90%;
@@ -237,16 +228,11 @@
   position: relative;
 }
 
-
-
-
-
-.Mconfirmar img{
+.Mconfirmar img {
   justify-self: center;
 }
 
-
-.textSwaPcON{
+.textSwaPcON {
   justify-items: center;
   height: auto;
   text-align: center;
@@ -264,7 +250,7 @@
   padding: 5px;
 }
 
-.confirSwap div{
+.confirSwap div {
   position: relative;
   display: grid;
   justify-items: center;
@@ -272,14 +258,13 @@
   grid-row-gap: 16px;
 }
 
-.confirSwap p{
+.confirSwap p {
   grid-column: 1 / 4;
   margin-bottom: 20px !important;
   font-size: 16px;
 }
 
-
-.confirSwap{
+.confirSwap {
   grid-row-gap: 30px;
   width: 100%;
   height: 100%;
@@ -290,26 +275,14 @@
   justify-items: center;
 }
 
-.textRed{
-  color:red;
+.textRed {
+  color: red;
   border: 1px solid red;
- }
+}
 
-.textGreen{
+.textGreen {
   color: #2fa08c;
   border: 1px solid #2fa08c;
- }
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 /**/

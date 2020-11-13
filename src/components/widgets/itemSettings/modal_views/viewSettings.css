@@ -1,32 +1,32 @@
-.PhoneView{
-    width: calc(100% - 40px);
-    height: calc(100% - 105px);
-    position: absolute;
-    top: 65px;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    grid-template-rows: 150px 1fr 80px;
-    padding: 20px;
+.PhoneView {
+  width: calc(100% - 40px);
+  height: calc(100% - 105px);
+  position: absolute;
+  top: 65px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: 150px 1fr 80px;
+  padding: 20px;
 }
 
-.SuccessOtherView{
-      grid-template-rows: 250px 1fr 80px;
+.SuccessOtherView {
+  grid-template-rows: 250px 1fr 80px;
 }
 
-
-.contenidoView, .controlesView{
+.contenidoView,
+.controlesView {
   width: 100%;
   height: 100%;
 }
 
-.contenidoView{
-    display: grid;
-    justify-items:center;
-    position: relative;
+.contenidoView {
+  display: grid;
+  justify-items: center;
+  position: relative;
 }
 
-.successMessage{
+.successMessage {
   width: 100%;
   height: 100%;
   position: absolute;
@@ -34,41 +34,41 @@
   z-index: 1;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
-#successOperation{
+#successOperation {
   justify-self: center;
-  margin:0 !important;
+  margin: 0 !important;
   font-size: 22px;
   color: #59b200;
 }
 
 .contenidoView .labelText {
-  font-family: fa5-proxima-nova,"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: fa5-proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
   margin: 0 0 15px 0 !important;
   font-size: 17px;
 }
 
-.desaparece{
-  transition: .3s;
+.desaparece {
+  transition: 0.3s;
   transform: translateX(15px);
   opacity: 0;
 }
 
-.phoneView .containerInputComponent{
-      margin-top: 4vh;
-      height: 140px;
-      grid-template-rows: 30px 1fr 30px;
+.phoneView .containerInputComponent {
+  margin-top: 4vh;
+  height: 140px;
+  grid-template-rows: 30px 1fr 30px;
 }
 
-.PassView .containerInputComponent{
-      margin-top: 0;
-      grid-template-rows: 1fr;
-      height: 70px;
+.PassView .containerInputComponent {
+  margin-top: 0;
+  grid-template-rows: 1fr;
+  height: 70px;
 }
 
-.PassView{
+.PassView {
   width: calc(100% - 40px);
   height: calc(100% - 105px);
   position: absolute;
@@ -80,7 +80,7 @@
   padding: 20px;
 }
 
-.MVList{
+.MVList {
   width: calc(100% - 40px);
   height: calc(100% - 105px);
   position: absolute;
@@ -96,19 +96,17 @@
     grid-template-rows: 30px 1fr 30px;
 }*/
 
-#authReq{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ffffffc4;
-    z-index: 2;
-    display: grid;
-    justify-items: center;
+#authReq {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #ffffffc4;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
 }
 
-
-
-.contListItemMV{
+.contListItemMV {
   width: 100%;
   height: 100%;
   max-height: 350px;
@@ -121,25 +119,24 @@
   grid-row-gap: 10px;
 }
 
-
-.ItemlistViewart.itemActiveListView{
+.ItemlistViewart.itemActiveListView {
   grid-template-columns: 1fr;
-  background: linear-gradient(to bottom left, #2B3742, #060809);
+  background: linear-gradient(to bottom left, #2b3742, #060809);
   border-radius: 6px;
   border: 1px solid #38ef7d;
 }
-.ItemlistViewart.itemActiveListView:hover{
+.ItemlistViewart.itemActiveListView:hover {
   grid-template-columns: 1fr;
-  background: linear-gradient(to bottom left, #2B3742, #060809);
+  background: linear-gradient(to bottom left, #2b3742, #060809);
   border-radius: 6px;
   border: 1px solid #38ef7d;
 }
 
-.ItemlistViewart.itemActiveListView span{
-    color: #38ef7d;
+.ItemlistViewart.itemActiveListView span {
+  color: #38ef7d;
 }
 
-.ItemlistViewart{
+.ItemlistViewart {
   width: calc(100% - 62px);
   height: 100%;
   display: grid;
@@ -150,25 +147,22 @@
   padding: 0 30px;
 }
 
-
-.ItemlistViewart:hover{
+.ItemlistViewart:hover {
   background: #f9f9f9;
   /*border: 1px solid #38ef7d;*/
   border-radius: 6px;
 }
 
-
-.ItemlistViewart span{
+.ItemlistViewart span {
   margin: 0 !important;
   text-align: center;
 }
 
-.centerItem{
+.centerItem {
   display: grid;
   justify-items: center;
   align-items: center;
-  }
-
+}
 
 .contListItemMV::-webkit-scrollbar {
   width: 0px;
@@ -177,7 +171,7 @@
   background: #475a6836;
 }
 
-.findbar{
+.findbar {
   position: absolute;
   width: 100%;
   height: 60px;
@@ -186,29 +180,12 @@
   left: 0px;
 }
 
-.findbar .containerInputComponent{
-    height: auto !important;
+.findbar .containerInputComponent {
+  height: auto !important;
 }
 
-.contListItemMV.ultimate{
+.contListItemMV.ultimate {
   max-height: 65vh;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

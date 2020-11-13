@@ -1,28 +1,25 @@
-
-.PopNotification p{
+.PopNotification p {
   margin: 0 !important;
   color: white !important;
   font-size: 14px;
 }
 
-.PopNotification.Invi{
+.PopNotification.Invi {
   display: none;
 }
 
-.PopNotification.Visible{
+.PopNotification.Visible {
   display: grid;
 }
 
-
-.PopNotification.Visible{
+.PopNotification.Visible {
   animation-name: notifier;
-  animation-duration: .5s;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
 }
 
-
-.PopNotification.newPop{
+.PopNotification.newPop {
   height: 22px;
   width: auto !important;
   border-radius: 10% !important;
@@ -30,17 +27,15 @@
   max-width: 50px !important;
 }
 
-.walletTitleCont .PopNotification, .PopNotification.withdraw_accounts{
+.walletTitleCont .PopNotification,
+.PopNotification.withdraw_accounts {
   position: absolute;
   top: 0;
   right: 0;
   z-index: 3;
 }
 
-
-
-
-.PopNotification{
+.PopNotification {
   margin: 0 6px;
   width: 22px;
   height: 22px;
@@ -48,19 +43,18 @@
   background: red;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   transform: scale(0);
 }
 
-
-@keyframes notifier{
-  0%{
+@keyframes notifier {
+  0% {
     transform: scale(0);
   }
-  70%{
+  70% {
     transform: scale(1);
   }
-  100%{
-    transform: scale(.85);
+  100% {
+    transform: scale(0.85);
   }
 }

@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import CriptoSupervisor from './depositCripto'
-import { useCoinsendaServices } from '../../../services/useCoinsendaServices'
-import DepositFiat from './depositFiat'
-
+import React, { useEffect, useState } from "react";
+import CriptoSupervisor from "./depositCripto";
+import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
+import DepositFiat from "./depositFiat";
 
 const DepositView = () => {
+  const [, { current_wallet }] = useCoinsendaServices();
 
-  const [ , { current_wallet } ] = useCoinsendaServices()
-
-  return(
+  return (
     <>
-      {
-        current_wallet.currency_type === 'crypto' ?
-        <CriptoSupervisor/>
-        :
-        <DepositFiat/>
-      }
+      {current_wallet.currency_type === "crypto" ? (
+        <CriptoSupervisor />
+      ) : (
+        <DepositFiat />
+      )}
     </>
-  )
+  );
+};
 
-}
-
-export default DepositView
+export default DepositView;

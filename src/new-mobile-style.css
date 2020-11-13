@@ -1,560 +1,562 @@
 .contenido {
-    position: relative;
-    background: #F9F9FB;
-    padding-top: 3vh;
-    padding-bottom: 8vh;
-    /* min-height: calc(100vh - 130px); */
-    min-height: calc(100vh - 25vh);
-    /*height: 100%;*/
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
-    width: calc(100% - 30px)
+  position: relative;
+  background: #f9f9fb;
+  padding-top: 3vh;
+  padding-bottom: 8vh;
+  /* min-height: calc(100vh - 130px); */
+  min-height: calc(100vh - 25vh);
+  /*height: 100%;*/
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: calc(100% - 30px);
 }
 
 .nBtextInit {
-    font-size: 18px !important;
+  font-size: 18px !important;
 }
 
 .finalTicket.TicketDetail {
-    display: grid;
-    grid-template-rows: 20vh 1fr 70px;
-    width: 100%;
-    max-height: calc(100vh - 80px);
-    height: calc(100vh - 80px);
-    max-width: 650px;
-    border-radius: 6px;
-    overflow: hidden;
-    border: 1px solid transparent;
-    transition: .25s;
-    align-self: baseline;
-    justify-self: center;
+  display: grid;
+  grid-template-rows: 20vh 1fr 70px;
+  width: 100%;
+  max-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
+  max-width: 650px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: 0.25s;
+  align-self: baseline;
+  justify-self: center;
 }
 
 .DCcurrent_wallet {
-    grid-template-rows: 220px 1fr;
-    grid-row-gap: 12px;
+  grid-template-rows: 220px 1fr;
+  grid-row-gap: 12px;
 }
 
-.step1>form {
-    display: grid;
-    grid-template-rows: 15vh 1fr 15vh;
-    grid-row-gap: 10px;
+.step1 > form {
+  display: grid;
+  grid-template-rows: 15vh 1fr 15vh;
+  grid-row-gap: 10px;
 }
 
 .ItemSelectionContainer {
-    /*height: calc(100% - 55px);*/
-    /*align-items: center;*/
-    height: 348px;
-    width: 610px;
-    overflow-y: scroll;
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
+  /*height: calc(100% - 55px);*/
+  /*align-items: center;*/
+  height: 348px;
+  width: 610px;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr;
 }
 
 .formAccountFlow.grid-disable {
-    grid-template-rows: 1fr 15vh;
-    width: 100%;
-    max-width: 650px;
+  grid-template-rows: 1fr 15vh;
+  width: 100%;
+  max-width: 650px;
 }
 
 .contenido.withdraw_accounts {
-    /* min-height: 100%; */
-    grid-row-gap: 12px;    
+  /* min-height: 100%; */
+  grid-row-gap: 12px;
 }
 
 @media screen and (max-width: 900px) {
-    .referral-layout {
-        padding: 0 !important;
-    }
+  .referral-layout {
+    padding: 0 !important;
+  }
 }
 
-
 @media screen and (min-width: 1366px) {
-    .TicketDetail {
-        height: 85vh !important;
-        grid-template-rows: 18vh 1fr 70px;
-    }
+  .TicketDetail {
+    height: 85vh !important;
+    grid-template-rows: 18vh 1fr 70px;
+  }
 
-    .contenidoTicket {
-        overflow: overlay;
-    }
+  .contenidoTicket {
+    overflow: overlay;
+  }
 }
 
 @media screen and (max-height: 600px) {
-    .TicketDetail .ticketHeader svg {
-        display: none;
-    }
+  .TicketDetail .ticketHeader svg {
+    display: none;
+  }
 }
 
 @media screen and (min-height: 800px) {
-    .TicketDetail {
-        height: 90vh !important;
-    }
+  .TicketDetail {
+    height: 90vh !important;
+  }
 
-    .contenidoTicket {
-        overflow: overlay;
-    }
-    .asaras .TicketDetail {
-        grid-template-rows: 1fr !important;
-        height: 100% !important;
-        overflow: overlay !important;
-    }
+  .contenidoTicket {
+    overflow: overlay;
+  }
+  .asaras .TicketDetail {
+    grid-template-rows: 1fr !important;
+    height: 100% !important;
+    overflow: overlay !important;
+  }
 
-    .asaras .TicketDetail .contenidoTicket {
-        padding: 0 !important;
-        overflow: unset !important;
-    }
+  .asaras .TicketDetail .contenidoTicket {
+    padding: 0 !important;
+    overflow: unset !important;
+  }
 
-    .FlowCont {
-        top: unset !important;
-    }
+  .FlowCont {
+    top: unset !important;
+  }
 }
 
 @media screen and (max-height: 800px) and (min-width: 1366px) {
-
-  .contenido.withdraw_accounts.activity{
+  .contenido.withdraw_accounts.activity {
     grid-row-gap: 16px;
   }
 
-  .DepositView, #swapForm, .DCcurrent_wallet form, .contenido.withdraw_accounts.activity{
+  .DepositView,
+  #swapForm,
+  .DCcurrent_wallet form,
+  .contenido.withdraw_accounts.activity {
     /* transform: scale(.9); */
   }
 
-    .asaras .TicketDetail {
-        grid-template-rows: 1fr !important;
-        height: 100% !important;
-        overflow: overlay !important;
-    }
+  .asaras .TicketDetail {
+    grid-template-rows: 1fr !important;
+    height: 100% !important;
+    overflow: overlay !important;
+  }
 
-    .asaras .TicketDetail .contenidoTicket {
-        padding: 0 !important;
-        overflow: unset !important;
-    }
+  .asaras .TicketDetail .contenidoTicket {
+    padding: 0 !important;
+    overflow: unset !important;
+  }
 
-    .FolowTexts {
-        top: unset !important;
-    }
+  .FolowTexts {
+    top: unset !important;
+  }
 
-    .FolowTexts img {
-        width: 20%;
-        margin-top: 0;
-    }
+  .FolowTexts img {
+    width: 20%;
+    margin-top: 0;
+  }
 
-    .FlowCont {
-        top: unset;
-    }
+  .FlowCont {
+    top: unset;
+  }
 
-    .FolowTexts .Fimportant {
-        margin-top: 45px;
-    }
+  .FolowTexts .Fimportant {
+    margin-top: 45px;
+  }
 }
 
 @media screen and (max-height: 800px) and (max-width: 1366px) {
-    .FolowTexts {
-        top: unset !important;
-    }
+  .FolowTexts {
+    top: unset !important;
+  }
 
-    .FolowTexts img {
-        width: 25%;
-        margin-top: 0;
-    }
+  .FolowTexts img {
+    width: 25%;
+    margin-top: 0;
+  }
 
-    .FlowCont {
-        top: unset;
-    }
+  .FlowCont {
+    top: unset;
+  }
 
-    .FolowTexts .Fimportant {
-        margin-top: 100px;
-    }
+  .FolowTexts .Fimportant {
+    margin-top: 100px;
+  }
 
-    .DCcurrent_wallet {
-      /* padding: 0 !important; */
-      grid-template-rows: 30% 70%;
-      max-height: calc(100vh - 15vh);
-      transform: scale(.9) translateY(22px);
-    }
+  .DCcurrent_wallet {
+    /* padding: 0 !important; */
+    grid-template-rows: 30% 70%;
+    max-height: calc(100vh - 15vh);
+    transform: scale(0.9) translateY(22px);
+  }
 
-    .asaras .TicketDetail {
-        grid-template-rows: 1fr !important;
-        height: 100%;
-        overflow: overlay !important;
-    }
+  .asaras .TicketDetail {
+    grid-template-rows: 1fr !important;
+    height: 100%;
+    overflow: overlay !important;
+  }
 
-    .asaras .TicketDetail .contenidoTicket {
-        padding: 0 !important;
-        overflow: unset !important;
-    }
+  .asaras .TicketDetail .contenidoTicket {
+    padding: 0 !important;
+    overflow: unset !important;
+  }
 
-    .asaras {
-        transform: none !important;
-        overflow: hidden;
-    }
+  .asaras {
+    transform: none !important;
+    overflow: hidden;
+  }
 
-    .nBitemSuccesss {
-        display: flex !important;
-    }
+  .nBitemSuccesss {
+    display: flex !important;
+  }
 
-    .NWithdrawAccountFlow .containerItems {
-        transform: scale(1) !important;
-    }
+  .NWithdrawAccountFlow .containerItems {
+    transform: scale(1) !important;
+  }
 
-    .TicketDetail {
-        grid-template-rows: 80px 1fr 70px !important;
-        transform: scale(.9);
-    }
+  .TicketDetail {
+    grid-template-rows: 80px 1fr 70px !important;
+    transform: scale(0.9);
+  }
 
-    .smartContainer,
-    .ticketSlide,
-    .ticketSlide .TicketDetail {
-        max-height: 100vh !important;
-        height: 100vh !important;
-    }
+  .smartContainer,
+  .ticketSlide,
+  .ticketSlide .TicketDetail {
+    max-height: 100vh !important;
+    height: 100vh !important;
+  }
 
-    .nBtextInit {
-        font-size: 18px !important;
-    }
+  .nBtextInit {
+    font-size: 18px !important;
+  }
 
-    .contenido.activity {
-        grid-template-rows: 200px 400px;
-    }
+  .contenido.activity {
+    grid-template-rows: 200px 400px;
+  }
 
-    .ALlistAll {
-        padding-bottom: 50px !important;
-    }
+  .ALlistAll {
+    padding-bottom: 50px !important;
+  }
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
-    .contenido {
-        /* padding-top: 0 !important; */
-        padding-bottom: 95px;
-        width: auto;
-        min-height: calc(100vh - (25px + 90px + 120px)) !important;
-    }
+  .contenido {
+    /* padding-top: 0 !important; */
+    padding-bottom: 95px;
+    width: auto;
+    min-height: calc(100vh - (25px + 90px + 120px)) !important;
+  }
 
-    .ALlistAll {
-        padding-bottom: 50px !important;
-    }
+  .ALlistAll {
+    padding-bottom: 50px !important;
+  }
 
-    .contenido.activity {
-        grid-row-gap: 30px;
-        grid-template-rows: 190px 30vh;
-    }
+  .contenido.activity {
+    grid-row-gap: 30px;
+    grid-template-rows: 190px 30vh;
+  }
 
-    .containerSection {
-        grid-template-rows: 7vh 1fr !important;
-    }
+  .containerSection {
+    grid-template-rows: 7vh 1fr !important;
+  }
 
-    .dashBoardLayout {
-        grid-template-rows: 1fr !important;
-    }
+  .dashBoardLayout {
+    grid-template-rows: 1fr !important;
+  }
 
-    #qrDesposit {
-        width: 180px;
-        height: 180px;
-    }
+  #qrDesposit {
+    width: 180px;
+    height: 180px;
+  }
 
-    .nWcta2 {
-        display: flex !important;
-        justify-content: space-evenly;
-        width: 90% !important;
-    }
+  .nWcta2 {
+    display: flex !important;
+    justify-content: space-evenly;
+    width: 90% !important;
+  }
 
-    .TicketDetailItem span {
-        white-space: nowrap;
-    }
+  .TicketDetailItem span {
+    white-space: nowrap;
+  }
 
-    .TicketDetailItem>p {
-        white-space: pre-wrap;
-        width: 50%;
-        text-align: left;
-    }
+  .TicketDetailItem > p {
+    white-space: pre-wrap;
+    width: 50%;
+    text-align: left;
+  }
 
-    .ticketHeader>img {
-        display: none;
-    }
+  .ticketHeader > img {
+    display: none;
+  }
 
-    .ticketHeader {
-        grid-template-rows: unset !important;
-    }
+  .ticketHeader {
+    grid-template-rows: unset !important;
+  }
 
-    .finalTicket.TicketDetail {
-        max-height: calc(100vh - 40px) !important;
-        grid-template-rows: 80px 1fr 60px !important;
-        align-self: center !important;
-    }
+  .finalTicket.TicketDetail {
+    max-height: calc(100vh - 40px) !important;
+    grid-template-rows: 80px 1fr 60px !important;
+    align-self: center !important;
+  }
 
-    .contenido.DCcurrent_wallet {
-        align-items: center !important;
-    }
+  .contenido.DCcurrent_wallet {
+    align-items: center !important;
+  }
 
-    .contenido.wallets {
-        align-items: start;
-    }
+  .contenido.wallets {
+    align-items: start;
+  }
 
-    .ticketHeader .iconSty {
-        display: none !important;
-    }
+  .ticketHeader .iconSty {
+    display: none !important;
+  }
 
-    .DCcurrent_wallet {
-        transform: unset;
-    }
+  .DCcurrent_wallet {
+    transform: unset;
+  }
 
-    .textFinancial {
-        margin: 0 !important;
-    }
+  .textFinancial {
+    margin: 0 !important;
+  }
 
-    .ticketSlide .TicketDetail,
-    .TicketDetail {
-        max-height: calc(100vh - 40px) !important;
-        transform: none;
-        grid-template-rows: 80px 1fr 60px !important;
-    }
+  .ticketSlide .TicketDetail,
+  .TicketDetail {
+    max-height: calc(100vh - 40px) !important;
+    transform: none;
+    grid-template-rows: 80px 1fr 60px !important;
+  }
 
-    .NWithdrawAccountFlow {
-        grid-template-rows: 10vh 70vh 15vh !important;
-    }
+  .NWithdrawAccountFlow {
+    grid-template-rows: 10vh 70vh 15vh !important;
+  }
 
-    .step1>form {
-        grid-template-rows: 15vh 60vh 15vh;
-    }
+  .step1 > form {
+    grid-template-rows: 15vh 60vh 15vh;
+  }
 
-    .buttonsP {
-        font-size: 14px;
-    }
+  .buttonsP {
+    font-size: 14px;
+  }
 
-    .formAccountFlow.grid-disable {
-        grid-template-rows: auto 25vh !important;
-        font-size: 14px;
-    }
+  .formAccountFlow.grid-disable {
+    grid-template-rows: auto 25vh !important;
+    font-size: 14px;
+  }
 
-    .contListCities {
-        overflow: hidden;
-    }
+  .contListCities {
+    overflow: hidden;
+  }
 
-    .formAccountFlow.city {
-        grid-template-rows: 75% auto;
-    }
+  .formAccountFlow.city {
+    grid-template-rows: 75% auto;
+  }
 
-    .nBstep1 p {
-        font-size: 18px !important;
-    }
+  .nBstep1 p {
+    font-size: 18px !important;
+  }
 
-    .step2 {
-        overflow: scroll;
-    }
+  .step2 {
+    overflow: scroll;
+  }
 
-    .contListItemMV {
-        grid-template-rows: none !important;
-        grid-auto-rows: 10vh;
-        padding: 0 !important;
-        margin-top: 60px;
-    }
+  .contListItemMV {
+    grid-template-rows: none !important;
+    grid-auto-rows: 10vh;
+    padding: 0 !important;
+    margin-top: 60px;
+  }
 
-    .prices h1 {
-        font-size: 26px;
-    }
+  .prices h1 {
+    font-size: 26px;
+  }
 
-    .contListCities {
-        display: grid;
-        width: 90% !important;
-        grid-template-rows: 55px auto;
-        grid-row-gap: 10px;
-    }
+  .contListCities {
+    display: grid;
+    width: 90% !important;
+    grid-template-rows: 55px auto;
+    grid-row-gap: 10px;
+  }
 
-    .contListItemMV {
-        max-height: calc(100% - 60px) !important;
-    }
+  .contListItemMV {
+    max-height: calc(100% - 60px) !important;
+  }
 
-    .ticketHeader,
-    .contenidoTicket,
-    .nWcta2 {
-        width: inherit;
-    }
+  .ticketHeader,
+  .contenidoTicket,
+  .nWcta2 {
+    width: inherit;
+  }
 
-    .contenidoTicket {
-        min-height: 250px;
-    }
+  .contenidoTicket {
+    min-height: 250px;
+  }
 
-    .nWbody2 .contenidoTicket {
-        height: 75vh;
-        min-height: unset !important;
-    }
+  .nWbody2 .contenidoTicket {
+    height: 75vh;
+    min-height: unset !important;
+  }
 
-    .asaras {
-        transform: none !important;
-    }
+  .asaras {
+    transform: none !important;
+  }
 
-    .ALif2.movil {
-        min-width: 85px !important;
-    }
+  .ALif2.movil {
+    min-width: 85px !important;
+  }
 
-    .nWbody2 {
-        margin-top: 0 !important;
-    }
+  .nWbody2 {
+    margin-top: 0 !important;
+  }
 
-    .TicketDetail .botonForm {
-        width: 100%;
-    }
+  .TicketDetail .botonForm {
+    width: 100%;
+  }
 
-    .secretCode {
-        font-size: 20px !important;
-    }
+  .secretCode {
+    font-size: 20px !important;
+  }
 
-    .footer2faText {
-        height: 110px !important;
-    }
+  .footer2faText {
+    height: 110px !important;
+  }
 
-    .KycFinancialComponent {
-        grid-template-rows: auto auto 260px 150px !important;
-        grid-row-gap: 8px !important;
-    }
+  .KycFinancialComponent {
+    grid-template-rows: auto auto 260px 150px !important;
+    grid-row-gap: 8px !important;
+  }
 
-    .FinancialUploadImg {
-        grid-template-rows: 150px !important;
-    }
+  .FinancialUploadImg {
+    grid-template-rows: 150px !important;
+  }
 
-    .loaderImgComponent {
-        height: 150px !important;
-    }
+  .loaderImgComponent {
+    height: 150px !important;
+  }
 
-    .panelImgFinancial {
-        grid-template-rows: 1fr 70px !important;
-        grid-template-columns: 1fr !important;
-    }
+  .panelImgFinancial {
+    grid-template-rows: 1fr 70px !important;
+    grid-template-columns: 1fr !important;
+  }
 
-    .KycFinancialComponent {
-        width: calc(100% - 30px) !important;
-    }
+  .KycFinancialComponent {
+    width: calc(100% - 30px) !important;
+  }
 
-    .WithdrawView,
-    .SwapView,
-    .DepositView {
-        grid-template-rows: 1fr 1fr 1fr !important;
-        min-height: 220px !important;
-        transform: none !important;
-        height: calc(100% - 100px) !important;
-    }
+  .WithdrawView,
+  .SwapView,
+  .DepositView {
+    grid-template-rows: 1fr 1fr 1fr !important;
+    min-height: 220px !important;
+    transform: none !important;
+    height: calc(100% - 100px) !important;
+  }
 
-    .SwapView {
-        grid-template-rows: 1fr 110px 1fr !important;
-        min-height: 220px !important;
-        transform: none !important;
-        height: calc(100% - 60px) !important;
-    }
+  .SwapView {
+    grid-template-rows: 1fr 110px 1fr !important;
+    min-height: 220px !important;
+    transform: none !important;
+    height: calc(100% - 60px) !important;
+  }
 
-    .itemWalletView.movil {
-        padding: 20px 10px;
-    }
+  .itemWalletView.movil {
+    padding: 20px 10px;
+  }
 
-    #DLsteps,
-    .DLstep.modality,
-    .DLstep {
-        grid-template-rows: 100px 1fr 60px !important;
-        max-height: calc(100vh - 40px) !important;
-        grid-row-gap: 10px;
-        width: 100%;
-    }
+  #DLsteps,
+  .DLstep.modality,
+  .DLstep {
+    grid-template-rows: 100px 1fr 60px !important;
+    max-height: calc(100vh - 40px) !important;
+    grid-row-gap: 10px;
+    width: 100%;
+  }
 
-    #botonForm {
-        width: 90% !important;
-    }
-
+  #botonForm {
+    width: 90% !important;
+  }
 }
 
 @media only screen and (max-width: 768px) {
-    .DCcurrent_wallet {
-        grid-template-rows: 190px 1fr;
-        padding-top: 45px;
-        min-height: calc(100vh - 145px);
-    }
+  .DCcurrent_wallet {
+    grid-template-rows: 190px 1fr;
+    padding-top: 45px;
+    min-height: calc(100vh - 145px);
+  }
 
-    .DCcurrent_wallet.wallets.deposit, .DCcurrent_wallet.wallets.withdraw, .DCcurrent_wallet.wallets.swap{
-      padding: 40px 30px 20px 30px !important;
-      height: calc(100vh - 160px) !important;
-    }
+  .DCcurrent_wallet.wallets.deposit,
+  .DCcurrent_wallet.wallets.withdraw,
+  .DCcurrent_wallet.wallets.swap {
+    padding: 40px 30px 20px 30px !important;
+    height: calc(100vh - 160px) !important;
+  }
 
-    .withdrawView{
-      height: calc(100% - 40px) !important;
-      max-height: none !important;
-    }
+  .withdrawView {
+    height: calc(100% - 40px) !important;
+    max-height: none !important;
+  }
 }
 
 @media only screen and (max-width: 600px) {
-    .nWbody2 .contenidoTicket {
-        height: 65vh;
-    }
+  .nWbody2 .contenidoTicket {
+    height: 65vh;
+  }
 }
 
 @media only screen and (max-height: 700px) {
-    .contListItemMV {
-        max-height: calc(100% - 60px) !important;
-    }
+  .contListItemMV {
+    max-height: calc(100% - 60px) !important;
+  }
 
-    .contListItemMV {
-        grid-template-rows: none !important;
-        grid-auto-rows: 10vh;
-        padding: 0 !important;
-        margin-top: 60px;
-    }
+  .contListItemMV {
+    grid-template-rows: none !important;
+    grid-auto-rows: 10vh;
+    padding: 0 !important;
+    margin-top: 60px;
+  }
 }
 
 @media only screen and (max-height: 570px) {
-    .containerItems {
-        transform: scale(.8) translateX(-20px) translateY(-20px) !important;
-    }
+  .containerItems {
+    transform: scale(0.8) translateX(-20px) translateY(-20px) !important;
+  }
 
-    .DepositLayout .containerItems {
-        transform: none !important;
-    }
+  .DepositLayout .containerItems {
+    transform: none !important;
+  }
 
-    .NWithdrawAccountFlow .containerItems {
-        transform: scale(.8) translateX(-20px) translateY(-12%) !important;
-    }
+  .NWithdrawAccountFlow .containerItems {
+    transform: scale(0.8) translateX(-20px) translateY(-12%) !important;
+  }
 
-    .NWithdrawAccountFlow {
-        grid-template-rows: 10vh 70vh 15vh !important;
-    }
+  .NWithdrawAccountFlow {
+    grid-template-rows: 10vh 70vh 15vh !important;
+  }
 
-    .step1>form {
-        grid-template-rows: 10vh 60vh 15vh;
-    }
+  .step1 > form {
+    grid-template-rows: 10vh 60vh 15vh;
+  }
 
-    .nBcontBank>div {
-        transform: scale(.7);
-    }
+  .nBcontBank > div {
+    transform: scale(0.7);
+  }
 
-    .nBcontBank {
-        margin: 0;
-    }
+  .nBcontBank {
+    margin: 0;
+  }
 
-    .nBtextInit {
-        font-size: 18px;
-    }
+  .nBtextInit {
+    font-size: 18px;
+  }
 
-    .KycLayout {
-        grid-template-rows: 35px 1fr auto !important;
-    }
+  .KycLayout {
+    grid-template-rows: 35px 1fr auto !important;
+  }
 }
 
 @media only screen and (max-height: 568px) {
-    .KycFinancialComponent {
-        grid-template-rows: auto auto 200px 100px !important;
-        grid-row-gap: 0 !important;
-    }
+  .KycFinancialComponent {
+    grid-template-rows: auto auto 200px 100px !important;
+    grid-row-gap: 0 !important;
+  }
 
-    .FinancialUploadImg {
-        grid-template-rows: 100px !important;
-    }
+  .FinancialUploadImg {
+    grid-template-rows: 100px !important;
+  }
 
-    .loaderImgComponent {
-        height: 100px !important;
-    }
+  .loaderImgComponent {
+    height: 100px !important;
+  }
 
-    #botonForm {
-        width: 70% !important;
-    }
+  #botonForm {
+    width: 70% !important;
+  }
 }

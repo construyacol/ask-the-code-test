@@ -1,5 +1,5 @@
-#ItemWallet{
-  color:white !important;
+#ItemWallet {
+  color: white !important;
   position: relative;
   width: 100%;
   height: 155px;
@@ -13,18 +13,18 @@
   /*grid-template-rows: repeat(auto-fill, minmax(20px, 1fr)) !important;*/
   grid-template-rows: 35px 20px 25px 20px 1fr;
   transform: scale(1);
-  transition: .2s;
+  transition: 0.2s;
   cursor: pointer;
   grid-row-gap: 3px;
-  -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
-  -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
-  box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.04);
+  -webkit-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.04);
+  -moz-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.04);
   overflow: hidden;
   transform-origin: top;
   /*grid-area: wallet !important;*/
 }
 
-.retweetCont{
+.retweetCont {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -33,33 +33,32 @@
   margin-bottom: 10px;
 }
 
-#ItemWallet.cryptoWallet{
+#ItemWallet.cryptoWallet {
   grid-template-rows: 35px 25px 1fr;
 }
 
-.contWalleins{
+.contWalleins {
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   width: calc(100% - 30px) !important;
   transform-style: preserve-3d;
   perspective: 2000px;
 }
 
-
-.WIwalletDeleting{
-  transition:.3s !important;
+.WIwalletDeleting {
+  transition: 0.3s !important;
   transform: scale(0.9);
   opacity: 0.7;
 }
 
-#WalletList2{
+#WalletList2 {
   color: #6b6b6b !important;
   max-width: 500px !important;
   font-size: 16px !important;
 }
 
-.withdraw_accounts_screen{
+.withdraw_accounts_screen {
   background: #f1f1f1;
   padding: 40px;
   width: calc(100% - 80px);
@@ -72,125 +71,126 @@
   justify-items: center;
 }
 
-.withdraw_accounts_screen_cont{
+.withdraw_accounts_screen_cont {
   display: grid;
   align-items: center;
   justify-items: center;
   grid-row-gap: 80px;
 }
 
-.WIitemDeleted{
+.WIitemDeleted {
   animation-name: WItemDeleted;
-  animation-duration: .3s;
+  animation-duration: 0.3s;
   /*animation-delay: .12s;*/
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
   animation-fill-mode: forwards;
   transform: rotateY(0deg);
 }
 
-@keyframes WItemDeleted{
-  0%{
+@keyframes WItemDeleted {
+  0% {
     transform: rotateX(0deg);
   }
 
-  100%{
+  100% {
     transform: rotateX(90deg);
   }
 }
 
-.WIwalletDeleted{
+.WIwalletDeleted {
   opacity: 0.5;
   animation-name: walletDeleted;
-  animation-duration: .4s;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
   animation-fill-mode: forwards;
 }
 
-@keyframes walletDeleted{
-  0%{
+@keyframes walletDeleted {
+  0% {
     transform: scale(0.9);
   }
-  50%{
+  50% {
     opacity: 0.5;
   }
-  100%{
+  100% {
     opacity: 0;
     transform: scale(0.5);
     /*transform: rotateX(0deg);*/
   }
 }
 
-.ICControls{
+.ICControls {
   grid-area: controls !important;
   height: 100%;
   grid-template-columns: 1fr;
-  justify-items:center;
+  justify-items: center;
 }
 
-.ICwalletContainer{
+.ICwalletContainer {
   width: 100%;
   display: flex;
   justify-content: center;
   row-gap: 10px;
 }
 
-.ICwalletContainer.ICMovil .ICControls{
+.ICwalletContainer.ICMovil .ICControls {
   width: 100%;
   height: 55px;
 }
 
-.ICControlContainer{
+.ICControlContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
   max-width: 180px;
 }
 
-
-
-.ICwalletContainer.ICMovil{
+.ICwalletContainer.ICMovil {
   display: grid;
   max-height: 270px;
   /*max-width: 255px;*/
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  grid-template-areas: "wallet wallet wallet"
-                       "wallet wallet wallet"
-                       "controls controls controls"
+  grid-template-areas:
+    "wallet wallet wallet"
+    "wallet wallet wallet"
+    "controls controls controls";
 }
 
 /*.ICMovil #ItemWallet{
   justify-self:center !important;
 }*/
 
-.ICwalletContainer.ICDesktop{
+.ICwalletContainer.ICDesktop {
   display: grid;
   max-width: 350px;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
-  grid-template-areas: "wallet wallet controls"
-                       "wallet wallet controls"
-                       "wallet wallet controls"
+  grid-template-areas:
+    "wallet wallet controls"
+    "wallet wallet controls"
+    "wallet wallet controls";
 }
 
-.eraseN{
+.eraseN {
   bottom: 10px;
-  align-self:flex-end;
+  align-self: flex-end;
   margin-bottom: 20px;
 }
 
-.ItemWCta.noVisible, .ItemBarra.noVisible{
+.ItemWCta.noVisible,
+.ItemBarra.noVisible {
   display: none !important;
 }
 
-.ItemBarra{
+.ItemBarra {
   width: 30px;
   height: 100%;
   background: #0000009e;
   position: absolute;
   z-index: 5;
   display: grid;
-  transition: .3s;
+  transition: 0.3s;
   right: -40px;
   grid-template-rows: 30px 30px 1fr;
   align-items: center;
@@ -198,38 +198,38 @@
   background: linear-gradient(to bottom, #0000006e, #000000b0);
 }
 
-.ICitemControl p{
+.ICitemControl p {
   margin: 0 !important;
   color: black;
   font-size: 14px;
   text-align: center;
 }
 
-.ICitemControl i{
+.ICitemControl i {
   justify-self: center;
   color: black;
 }
 
-.ICitemControl{
+.ICitemControl {
   display: grid;
   cursor: pointer;
   background: white;
   border: 1px solid black;
   padding: 5px;
   border-radius: 5px;
-  transition: .3s;
+  transition: 0.3s;
   transform: scale(0.7);
   opacity: 0.4;
   width: 65px;
   align-items: center;
 }
 
-.ICitemControl:hover{
+.ICitemControl:hover {
   transform: scale(0.8);
   opacity: 0.6;
 }
 
-.tooltiptext2{
+.tooltiptext2 {
   top: -25% !important;
   left: -230% !important;
   visibility: hidden;
@@ -245,29 +245,27 @@
   margin-left: -30px;
 }
 
-.tooltip:hover .tooltiptext2{
+.tooltip:hover .tooltiptext2 {
   visibility: visible !important;
 }
 
-
-
-.Ideposit:hover{
+.Ideposit:hover {
   color: #00ff00;
 }
 
-.IRetiro:hover{
+.IRetiro:hover {
   color: #ff6161;
 }
 
-.IdeleteButton.tooltip{
+.IdeleteButton.tooltip {
   position: absolute;
 }
 
-#ItemWallet:hover .IdeleteButton{
+#ItemWallet:hover .IdeleteButton {
   opacity: 1;
 }
 
-.IdeleteButton{
+.IdeleteButton {
   /*position: absolute;*/
   right: 7px;
   font-size: 18px;
@@ -275,57 +273,56 @@
   font-weight: 400 !important;
   /*top: 10px;*/
   z-index: 5;
-  transition: .3s;
+  transition: 0.3s;
   transform: scale(1);
 }
 
-.ItemBarraI, .ItemBarraI2{
+.ItemBarraI,
+.ItemBarraI2 {
   position: relative;
 }
 
-.ItemBarra.withdraw{
-    grid-template-rows: 1fr !important;
+.ItemBarra.withdraw {
+  grid-template-rows: 1fr !important;
 }
 
-.ItemBarraI.noVisible{
+.ItemBarraI.noVisible {
   display: none;
 }
 
-.ItemWCta{
+.ItemWCta {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 4;
 }
 
-
-
-#ItemWallet:hover{
-  -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.2);
-  -moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.2);
-  box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.2);
-    transform: scale(1.01);
+#ItemWallet:hover {
+  -webkit-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.2);
+  transform: scale(1.01);
 }
 
-#ItemWallet>p{
-    margin: 0 !important;
+#ItemWallet > p {
+  margin: 0 !important;
 }
 
-#ItemWallet>div>p{
-    margin: 0 ;
+#ItemWallet > div > p {
+  margin: 0;
 }
 
-#ItemWallet>h1{
+#ItemWallet > h1 {
   margin: 0 !important;
   font-size: 18px;
 }
 
-.contSuscribed{
+.contSuscribed {
   display: flex;
   align-items: center;
 }
 
-.contSuscribed i{
+.contSuscribed i {
   color: #00ff60;
   margin: 0 6px;
 }
@@ -334,8 +331,8 @@
   background: white !important;
 }
 
-.contLoader2{
-  transform: scale(.5);
+.contLoader2 {
+  transform: scale(0.5);
   width: 40px;
   position: relative;
   display: block;
@@ -343,50 +340,45 @@
   left: -10px;
 }
 
-.contLoader2 .lds-roller{
+.contLoader2 .lds-roller {
   width: inherit !important;
   height: inherit !important;
 }
 
-
-.ItemWalletLink{
+.ItemWalletLink {
   width: 100%;
   text-decoration: none;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-    /*text-shadow: 1px 1px #656565;*/
+  /*text-shadow: 1px 1px #656565;*/
 }
-.IWLittleTitle{
+.IWLittleTitle {
   font-size: 14px !important;
   /*margin-bottom: 20px;*/
 }
 
-#ItemWallet.NoInscribed{
+#ItemWallet.NoInscribed {
   background: gray;
   opacity: 0.7;
 }
 
-
-.IWBalance{
+.IWBalance {
   font-size: 20px;
 }
 
-#backCard{
+#backCard {
   opacity: 0.12;
   z-index: 2;
 }
 
-
-
-
-#imgCurrency{
+#imgCurrency {
   right: -70px;
   z-index: 1;
 }
 
-.iconBank{
+.iconBank {
   position: absolute;
   /*align-self: center;*/
   top: 10px;
@@ -394,16 +386,16 @@
   z-index: 1;
 }
 
-.IWText{
+.IWText {
   position: relative;
   z-index: 3;
 }
 
-.IWText.titu{
+.IWText.titu {
   display: flex !important;
 }
 
-.tobe_continue{
+.tobe_continue {
   display: block;
   margin-left: 2px;
   max-width: 240px;
@@ -412,98 +404,101 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.IWaddressConainer{
+.IWaddressConainer {
   display: flex;
   position: relative;
   z-index: 3;
   align-items: center;
 }
 
-.IWcurrencyText{
+.IWcurrencyText {
   font-size: 15px;
 }
 
-.ItemWallet.usd, .ItemWallet.cop, .ItemWallet2.usd, .ItemWallet2.cop {
+.ItemWallet.usd,
+.ItemWallet.cop,
+.ItemWallet2.usd,
+.ItemWallet2.cop {
   background: linear-gradient(to right, #11998e, #38ef7d);
 }
 
-.ItemWallet.bitcoin, .ItemWallet.bitcoin_testnet, .ItemWallet2.bitcoin, .ItemWallet2.bitcoin_testnet{
-  background: linear-gradient(to right, #F9A847, #CF7507);
+.ItemWallet.bitcoin,
+.ItemWallet.bitcoin_testnet,
+.ItemWallet2.bitcoin,
+.ItemWallet2.bitcoin_testnet {
+  background: linear-gradient(to right, #f9a847, #cf7507);
 }
 
-.ItemWallet.ethereum, .ItemWallet2.ethereum{
-  background: linear-gradient(to right, #8C8C8C, #141414);
+.ItemWallet.ethereum,
+.ItemWallet2.ethereum {
+  background: linear-gradient(to right, #8c8c8c, #141414);
 }
 
-.ItemWallet.dash, .ItemWallet2.dash{
-  background: linear-gradient(to right, #2C8FE0, #155A93);
+.ItemWallet.dash,
+.ItemWallet2.dash {
+  background: linear-gradient(to right, #2c8fe0, #155a93);
 }
 
-.ItemWallet.vchain, .ItemWallet2.vchain{
-  background: linear-gradient(to right, #A477D0, #5136AB);
+.ItemWallet.vchain,
+.ItemWallet2.vchain {
+  background: linear-gradient(to right, #a477d0, #5136ab);
 }
 
-.ItemWallet img, .ItemWallet2 img{
-    position: absolute;
-    align-self: center;
+.ItemWallet img,
+.ItemWallet2 img {
+  position: absolute;
+  align-self: center;
 }
 
-.ItemWallet, .ItemWallet2{
+.ItemWallet,
+.ItemWallet2 {
   background: #80808036;
   position: relative;
 }
 
-.ItemWallet:hover .ItemBarra{
+.ItemWallet:hover .ItemBarra {
   right: 0 !important;
 }
 
-.ItemWallet.litecoin, .ItemWallet2.litecoin{
+.ItemWallet.litecoin,
+.ItemWallet2.litecoin {
   background: linear-gradient(to right, #bfbfbf, #a0a0a0);
 }
 
-
-
-.iconBank2{
+.iconBank2 {
   position: absolute;
   right: -50px;
   align-self: center;
 }
 
-.iconBank2Cont{
+.iconBank2Cont {
   width: 100%;
   height: 100%;
   position: relative;
   display: grid;
-  transition: .1s;
+  transition: 0.1s;
   opacity: 0;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-.iconBank2Cont.ON{
+.iconBank2Cont.ON {
   transition: 1s;
   opacity: 1 !important;
 }
 
-
-
-
-
-
-.ItemTemplate #ItemWallet{
+.ItemTemplate #ItemWallet {
   width: 270px !important;
-  -webkit-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
--moz-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
-box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 56px 3px rgba(0, 0, 0, 0.25);
   transform: scale(1.01);
 }
 
-.iconBank2Cont img{
+.iconBank2Cont img {
   position: relative !important;
 }
 
-
-
-.ItemTemplate{
+.ItemTemplate {
   /*width: 370px;*/
   /*height: 240px;*/
   border-radius: 6px;
@@ -511,49 +506,51 @@ box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
   position: relative;
   z-index: 2;
   width: 270px !important;
-  transform: perspective(1000px) rotateX(-0deg) rotateY(0deg) scale3d(1.1, 1.1, 1.1);
-  transition:.4s;
+  transform: perspective(1000px) rotateX(-0deg) rotateY(0deg)
+    scale3d(1.1, 1.1, 1.1);
+  transition: 0.4s;
 }
 
-
-.ItemTemplate.animate{
+.ItemTemplate.animate {
   animation-name: logo;
   animation-duration: 7s;
   animation-iteration-count: infinite;
   animation-timing-function: ease;
 }
 
-@keyframes logo{
-  0%{
-    transform: perspective(1000px) rotateX(-14deg) rotateY(14deg) scale3d(1.1, 1.1, 1.1);
+@keyframes logo {
+  0% {
+    transform: perspective(1000px) rotateX(-14deg) rotateY(14deg)
+      scale3d(1.1, 1.1, 1.1);
   }
 
-  50%{
-    transform: perspective(1000px) rotateX(14deg) rotateY(-14deg) scale3d(1.1, 1.1, 1.1);
+  50% {
+    transform: perspective(1000px) rotateX(14deg) rotateY(-14deg)
+      scale3d(1.1, 1.1, 1.1);
   }
 
-  100%{
-    transform: perspective(1000px) rotateX(-14deg) rotateY(14deg) scale3d(1.1, 1.1, 1.1);
+  100% {
+    transform: perspective(1000px) rotateX(-14deg) rotateY(14deg)
+      scale3d(1.1, 1.1, 1.1);
   }
 }
 
-
-.CurrencyCardList{
+.CurrencyCardList {
   transform: perspective(1000px);
 }
 
-.textCurrencyList{
+.textCurrencyList {
   display: grid;
   grid-template-rows: auto auto;
   align-items: center;
   grid-row-gap: 5px;
 }
 
-.textCurrencyList p{
+.textCurrencyList p {
   font-size: 18px !important;
 }
 
-.currencyStatus{
+.currencyStatus {
   opacity: 0;
   transition: 200ms;
   width: 100%;
@@ -561,219 +558,37 @@ box-shadow: 0px 0px 56px 3px rgba(0,0,0,0.25);
   overflow: hidden;
 }
 
-.currencyStatus.active{
-  transition: .4s;
+.currencyStatus.active {
+  transition: 0.4s;
   height: 25px;
   opacity: 1;
 }
 
-.currencyStatus p{
+.currencyStatus p {
   font-size: 15px !important;
 }
 
-.implementedCurrency i{
+.implementedCurrency i {
   margin-right: 5px;
 }
 
-.implementedCurrency{
-  color:#00d451 !important;
+.implementedCurrency {
+  color: #00d451 !important;
 }
 
-.implementedCurrency.No{
-  color:gray !important;
+.implementedCurrency.No {
+  color: gray !important;
 }
 
-
-
-
-.contIconsTem{
+.contIconsTem {
   position: absolute;
   right: 0;
   width: 150px;
-  transition: .3s;
+  transition: 0.3s;
   display: grid;
   grid-template-rows: repeat(auto-fill, 185px);
   /*top: 0%;*/
   /*top: -100%;*/
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

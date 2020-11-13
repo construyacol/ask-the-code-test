@@ -1,5 +1,4 @@
-
-.selectCountry{
+.selectCountry {
   position: relative;
   width: 100%;
   height: 100%;
@@ -10,44 +9,41 @@
   /*background: #c1c1c1;*/
 }
 
-.SamericaContainer{
+.SamericaContainer {
   position: relative;
   width: 100%;
   height: 100%;
   /*transform: scale(0);*/
 }
 
-
-.LoaderAppTittle{
+.LoaderAppTittle {
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
 }
 
-
-
-.enableMap{
+.enableMap {
   /*opacity: 0;*/
   animation-name: enableMap;
   animation-duration: 1s;
   /*animation-delay: .4s;*/
   animation-fill-mode: forwards;
-  animation-timing-function: cubic-bezier(1,1,1,1);
+  animation-timing-function: cubic-bezier(1, 1, 1, 1);
 }
 
-@keyframes enableMap{
-  0%{
+@keyframes enableMap {
+  0% {
     opacity: 0;
     transform: scale(0);
   }
-  50%{
+  50% {
     opacity: 1;
     transform: scale(0);
   }
-  80%{
+  80% {
     transform: scale(1.2);
   }
-  100%{
+  100% {
     transform: scale(1);
   }
 }

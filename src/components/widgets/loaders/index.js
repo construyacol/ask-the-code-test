@@ -1,32 +1,68 @@
-import React, { Fragment } from 'react'
-import styled from 'styled-components'
-import './loader.css'
+import React, { Fragment } from "react";
+import styled from "styled-components";
+import "./loader.css";
 
 export const SimpleLoader = (props) => {
-  const { label, color, grid, loader, justify } = props
-  return(
+  const { label, color, grid, loader, justify } = props;
+  return (
     <Fragment>
-      {
-        !loader ?
-        <div className={`SimpleLoader ${grid === 'Msuperior' ? 'Msuperior' : 'grillaComun'}`}>
+      {!loader ? (
+        <div
+          className={`SimpleLoader ${
+            grid === "Msuperior" ? "Msuperior" : "grillaComun"
+          }`}
+        >
           <div className="lds-ellipsis">
-            <div className={`${color === 'white' ? 'blanquito' : color === 'green' ? 'verdecito' : 'azulito' }`}></div>
-            <div className={`${color === 'white' ? 'blanquito' : color === 'green' ? 'verdecito' : 'azulito' }`}></div>
-            <div className={`${color === 'white' ? 'blanquito' : color === 'green' ? 'verdecito' : 'azulito' }`}></div>
-            <div className={`${color === 'white' ? 'blanquito' : color === 'green' ? 'verdecito' : 'azulito' }`}></div>
+            <div
+              className={`${
+                color === "white"
+                  ? "blanquito"
+                  : color === "green"
+                  ? "verdecito"
+                  : "azulito"
+              }`}
+            ></div>
+            <div
+              className={`${
+                color === "white"
+                  ? "blanquito"
+                  : color === "green"
+                  ? "verdecito"
+                  : "azulito"
+              }`}
+            ></div>
+            <div
+              className={`${
+                color === "white"
+                  ? "blanquito"
+                  : color === "green"
+                  ? "verdecito"
+                  : "azulito"
+              }`}
+            ></div>
+            <div
+              className={`${
+                color === "white"
+                  ? "blanquito"
+                  : color === "green"
+                  ? "verdecito"
+                  : "azulito"
+              }`}
+            ></div>
           </div>
-          {
-            label &&
-            <p className={`fuente simpleType ${color === 'white' ? 'blanquitoText' : 'azulitoText'}`} >{label}</p>
-          }
-        </div>
-        :
-        loader === 2 &&
-          <RollerLoader
-            justify={justify}
-            color={color}
-            className="lds-roller"
+          {label && (
+            <p
+              className={`fuente simpleType ${
+                color === "white" ? "blanquitoText" : "azulitoText"
+              }`}
             >
+              {label}
+            </p>
+          )}
+        </div>
+      ) : (
+        loader === 2 && (
+          <RollerLoader justify={justify} color={color} className="lds-roller">
             <div></div>
             <div></div>
             <div></div>
@@ -36,12 +72,13 @@ export const SimpleLoader = (props) => {
             <div></div>
             <div></div>
           </RollerLoader>
-      }
+        )
+      )}
     </Fragment>
-  )
-}
+  );
+};
 
-export default SimpleLoader
+export default SimpleLoader;
 
 const RollerLoader = styled.div`
   display: inline-block;
@@ -50,7 +87,7 @@ const RollerLoader = styled.div`
   height: 64px;
   -webkit-transform: scale(0.5);
   transform: scale(0.5);
-  justify-self: ${props => props.justify || 'end'};
+  justify-self: ${(props) => props.justify || "end"};
   align-self: center;
 
   &.lds-roller div {
@@ -64,7 +101,7 @@ const RollerLoader = styled.div`
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: ${props => props.color || '#ff8660'} ;
+    background: ${(props) => props.color || "#ff8660"};
     margin: -3px 0 0 -3px;
   }
   &.lds-roller div:nth-child(1) {
@@ -131,8 +168,7 @@ const RollerLoader = styled.div`
       transform: rotate(360deg);
     }
   }
-
-`
+`;
 
 export const LoaderContainer = styled.div`
   position: absolute;
@@ -144,12 +180,12 @@ export const LoaderContainer = styled.div`
   max-width: 300px;
   z-index: 3;
 
-  .lds-roller{
+  .lds-roller {
     justify-self: center !important;
     z-index: 1;
   }
 
   .lds-roller div:after {
     background: #014c7d;
-}
-`
+  }
+`;

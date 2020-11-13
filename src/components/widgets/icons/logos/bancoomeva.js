@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const Bancoomeva = props => {
-
-  return(
-    <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPkAAAFFCAMAAAAZ7rsYAAAAclBMVEUAAAAAjVLiARTkHh3tclXo
+export const Bancoomeva = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPkAAAFFCAMAAAAZ7rsYAAAAclBMVEUAAAAAjVLiARTkHh3tclXo
     SzXD4s+Ey6kAmmXwim330b3Y69+v2sL64M/mPCsAll3zpYkAoG0LrH5XuZGZ0bX0s5rqWELtZEoK
     pnUss4j1w6vyl3ptwp3vfWEAlV1Dqn8ss4htwp0AjFHiARQxuZIIo3LVfRTDAAAAInRSTlMA39/D
     i6scXN9yIgYwELXfVt/ViUZGnZXVszRmcn7DnX4znMdoPAAACmVJREFUeNrs2UFqAzEQRNGqjSRw
@@ -54,9 +55,10 @@ export const Bancoomeva = props => {
     bW2YWVul0cwof0SaabVV2syMcmmHRrlmM6P8EWm0E6g/CnIrb6yGjjcN0PGmydDxpkodbzKzvUkX
     Q8ebFuh40+QAz8M8RWUup40CTbRbf3v1F4GeY2AWdmk2NNF0hSaaVKCJps2R/tY4wic00SRDS4wu
     5l2W3xmgJUazkWt54wq8M76zAO+Mb5yhvVWqVMlVqJJvWMkrVXJhJV+xkkN7awMrOe/DtyRJkiRJ
-    kiRJkiRJ/psPMXk/fQnJ2+n75xcYA+3CQr8/ZQAAAABJRU5ErkJggg==" alt=""/>
-  )
+    kiRJkiRJ/psPMXk/fQnJ2+n75xcYA+3CQr8/ZQAAAABJRU5ErkJggg=="
+      alt=""
+    />
+  );
+};
 
-}
-
-export default Bancoomeva
+export default Bancoomeva;

@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancOccidente = props => {
-
-  return(
-        <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa4AAAIsCAMAAACdu73mAAACK1BMVEUAAADh9f3Y7v1Ehbas0O+Y
+export const BancOccidente = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAa4AAAIsCAMAAACdu73mAAACK1BMVEUAAADh9f3Y7v1Ehbas0O+Y
         vNzI5PuUu9vs9Pa12Pfc5e9PiLXQ7P4vgbtllsJtqtNwpdPB3PPE3/xXndJmj7RKjsGAqMpBga9f
         nc4+hLy95/5QjsFpq+COuOLU7v6cweFyo81cj7yKt99ck8Z0osi40uyav9okdKypxNg/hrhKfKeg
         v98xe682frCWts4+grSKw+8adLkag8Ymgr9cmMSFueSw6f6qxNevz+tQm9RqncWo1vsodKY6isG9
@@ -104,9 +105,10 @@ export const BancOccidente = props => {
         /uKtoEZj3kpq7S/eiqj1F29ltPIXb4W09BdvhbT0F2+ltPAXb+XU+Iu3ghqNeSuptb94K6LWX7yV
         0cpfvBXS0l+8FdLSX7yV0sJfvJVT4y/eCmo05q2kntw+/fD89eT9L96K6O7lt8PZl1cT3opoZ/fi
         zexsPuWtjHb2f3+f/pzzVkg7w8uvx499K6Wbuxd39gdK6fo93pIkSZIkSZIkSZIkSZIkSZIkSZIk
-        SZIkhfQHPJZQOeJa1dIAAAAASUVORK5CYII=" alt=""/>
-  )
+        SZIkhfQHPJZQOeJa1dIAAAAASUVORK5CYII="
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BancOccidente
+export default BancOccidente;

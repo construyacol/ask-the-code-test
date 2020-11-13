@@ -1,4 +1,4 @@
-.imgDashFramework{
+.imgDashFramework {
   /*border: 1px solid black;*/
   position: relative;
   display: grid;
@@ -9,74 +9,71 @@
   justify-self: center;
 }
 
-
-.corner{
+.corner {
   width: 30px;
   height: 30px;
   position: absolute;
 }
 
-.top_left{
+.top_left {
   border-top: 2px solid;
   border-left: 2px solid;
   top: 0;
   left: 0;
 }
 
-.top_right{
+.top_right {
   border-top: 2px solid;
   border-right: 2px solid;
   top: 0;
   right: 0;
 }
 
-.imgDashFramework2{
+.imgDashFramework2 {
   min-width: 230px;
   height: 150px;
   position: relative;
   display: grid;
   align-items: center;
-  justify-items:center;
+  justify-items: center;
   width: 0;
   /*opacity: 0.75;*/
 }
 
-
-
-.corner2{
+.corner2 {
   width: 15px;
-height: 15px;
-position: absolute;
+  height: 15px;
+  position: absolute;
 }
 
-.reds{
+.reds {
   border-color: red !important;
   color: red !important;
 }
 
-.bottom_right{
+.bottom_right {
   border-bottom: 2px solid;
   border-right: 2px solid;
   bottom: 0;
   right: 0;
 }
 
-.bottom_left{
+.bottom_left {
   border-bottom: 2px solid;
   border-left: 2px solid;
   bottom: 0;
   left: 0;
 }
 
-.green{
-  border-color: #129A8E;
+.green {
+  border-color: #129a8e;
   color: green !important;
 }
-.MarcoPolo{
-  opacity: 0.5
+.MarcoPolo {
+  opacity: 0.5;
 }
 
-.textMarc{
+.textMarc {
   position: absolute;
   justify-self: center;
   bottom: -17px;
@@ -85,10 +82,7 @@ position: absolute;
   font-size: 14px;
 }
 
-
-
-
-.IconMarco{
+.IconMarco {
   position: absolute;
   font-size: 25px;
   right: 17px;

@@ -11,57 +11,50 @@ import {
   FIAT_DEPOSIT,
   UPDATE_KYC_PICTURE,
   CLEAN_SEARCH,
-  TO_STEP
-} from './action_types'
-
+  TO_STEP,
+} from "./action_types";
 
 export const ToStep = (payload, explicitStep) => {
   return {
-    type:TO_STEP,
-    payload:payload,
-    step:explicitStep
-  }
-}
-
+    type: TO_STEP,
+    payload: payload,
+    step: explicitStep,
+  };
+};
 
 export const IncreaseStep = (payload, explicitStep) => {
   return {
-    type:INCREASE_STEP,
-    payload:payload,
-    step:explicitStep
-  }
-}
+    type: INCREASE_STEP,
+    payload: payload,
+    step: explicitStep,
+  };
+};
 
 export const FiatDeposit = (short_currency_name) => {
   return {
-    type:FIAT_DEPOSIT,
-    payload:{
-      type_currency:'fiat',
-      short_currency_name:short_currency_name,
-      currency:short_currency_name
-    }
-  }
-}
+    type: FIAT_DEPOSIT,
+    payload: {
+      type_currency: "fiat",
+      short_currency_name: short_currency_name,
+      currency: short_currency_name,
+    },
+  };
+};
 
 export const ReduceStep = (payload, explicitStep) => {
   return {
-    type:REDUCE_STEP,
-    payload:payload,
-    step:explicitStep
-  }
-}
-
+    type: REDUCE_STEP,
+    payload: payload,
+    step: explicitStep,
+  };
+};
 
 export const cleanSearch = (payload) => {
   return {
-    type:CLEAN_SEARCH,
-    payload:payload
-  }
-}
-
-
-
-
+    type: CLEAN_SEARCH,
+    payload: payload,
+  };
+};
 
 // View for CurrentForm
 // "deposit"
@@ -72,23 +65,23 @@ export const cleanSearch = (payload) => {
 
 export const CurrentForm = (payload) => {
   return {
-    type:CURRENT_FORM,
-    payload:payload
-  }
-}
+    type: CURRENT_FORM,
+    payload: payload,
+  };
+};
 
 export const CleanForm = (form) => {
   return {
-    type:CLEAN_FORM,
-    payload:form
-  }
-}
+    type: CLEAN_FORM,
+    payload: form,
+  };
+};
 
 export const toggleModal = () => {
   return {
-    type:TOGGLE_MODAL
-  }
-}
+    type: TOGGLE_MODAL,
+  };
+};
 
 // modalSuccess
 // modalView
@@ -99,100 +92,99 @@ export const toggleModal = () => {
 
 export const ModalView = (view) => {
   return {
-    type:MODAL_VIEW,
-    payload:view,
+    type: MODAL_VIEW,
+    payload: view,
     meta: {
       sound: {
-        play :(view === 'pendingView' || view === 'confirmedView' ) ? 'ticket' :
-        view === 'badView' ? 'ticket_canceled' :
-        view === 'rejectedView' ? 'ticket_rejected' : ''
-      }
-    }
-  }
-}
+        play:
+          view === "pendingView" || view === "confirmedView"
+            ? "ticket"
+            : view === "badView"
+            ? "ticket_canceled"
+            : view === "rejectedView"
+            ? "ticket_rejected"
+            : "",
+      },
+    },
+  };
+};
 
 export const Search = (query, type, items, isEqual = false) => {
   return {
-    type:SEARCH_ITEM,
-    payload:{
-      query:query,
+    type: SEARCH_ITEM,
+    payload: {
+      query: query,
     },
-    tipos:type,
-    items:items,
-    isEqual
-  }
-}
+    tipos: type,
+    items: items,
+    isEqual,
+  };
+};
 
 export const UpdateFormControl = (form, value) => {
   return {
-    type:UPDATE_FORM_CONTROL,
-    payload:{form, value}
-  }
-}
+    type: UPDATE_FORM_CONTROL,
+    payload: { form, value },
+  };
+};
 
-export const UpdatePicKyc = (payload) =>{
-  return{
-    type:UPDATE_KYC_PICTURE,
-    payload:payload
-  }
-}
+export const UpdatePicKyc = (payload) => {
+  return {
+    type: UPDATE_KYC_PICTURE,
+    payload: payload,
+  };
+};
 
 export const UpdateForm = (form, state) => {
-
   switch (form) {
-
-    case 'ticket':
+    case "ticket":
       return {
-        type:UPDATE_FORM,
-        form:form,
-        payload:{
-          ...state
-        }
-      }
+        type: UPDATE_FORM,
+        form: form,
+        payload: {
+          ...state,
+        },
+      };
 
-
-    case 'wallet':
-
+    case "wallet":
       return {
-        type:UPDATE_FORM,
-        form:form,
-        payload:{
-          id:"",
+        type: UPDATE_FORM,
+        form: form,
+        payload: {
+          id: "",
           address: "",
           name: state.name,
           currency: state.currency,
           short_currency_name: state.short_currency_name,
-          type: "wallet"
-        }
-      }
+          type: "wallet",
+        },
+      };
 
-
-    case 'bank':
-
+    case "bank":
       return {
-        type:UPDATE_FORM,
-        form:form,
-        payload:{
-          ...state
-        }
-      }
+        type: UPDATE_FORM,
+        form: form,
+        payload: {
+          ...state,
+        },
+      };
 
-    case 'deposit':
+    case "deposit":
       return {
-        type:UPDATE_FORM,
-        form:form,
-        payload:{
-              type_currency:state.type_currency,
-              currency:state.currency,
-              short_currency_name:state.short_currency_name,
-              short_bank_name:state.short_bank_name,
-              amount:state.amount,
-              deposit_way:state.deposit_way,
-              deposit_service:state.deposit_service,
-              service_mode:state.service_mode,
-              cost_id:state.cost_id
-        }
-      }
+        type: UPDATE_FORM,
+        form: form,
+        payload: {
+          type_currency: state.type_currency,
+          currency: state.currency,
+          short_currency_name: state.short_currency_name,
+          short_bank_name: state.short_bank_name,
+          amount: state.amount,
+          deposit_way: state.deposit_way,
+          deposit_service: state.deposit_service,
+          service_mode: state.service_mode,
+          cost_id: state.cost_id,
+        },
+      };
 
     // case 'kyc_basic':
     //   return {
@@ -211,17 +203,14 @@ export const UpdateForm = (form, state) => {
     //   }
 
     default:
-    return {
-      type:UPDATE_FORM,
-      form:form,
-      payload:{
-        ...state
-      }
-    }
-
+      return {
+        type: UPDATE_FORM,
+        form: form,
+        payload: {
+          ...state,
+        },
+      };
   }
+};
 
-}
-
-
-export default UpdateFormControl
+export default UpdateFormControl;

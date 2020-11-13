@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancoFalabella = props => {
-
-  return(
-    <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZIAAAGOCAMAAACKSHUoAAACClBMVEUAAAAAeTcAeTe9vQDI0wAA
+export const BancoFalabella = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZIAAAGOCAMAAACKSHUoAAACClBMVEUAAAAAeTcAeTe9vQDI0wAA
     eTcAezYAgAAAejgAejcAcTUAejYAeTcAeTcAeTcAeDcAeDYAejcAeTbD0gAAaEwAeTfI0wAAeTfJ
     1gAAeTcAejfJ0wAAeTcAeTbI0wAAeDcAeTUAeTYAeTfI0wAAeDYAeTfI1AAAeTcAeTfI0wAAejcA
     eTfJ0gDMzADI0wAAeTfI1AAAeTbI0wDJ1ADJ0wAAeDfJ0wDI0wAAeTfI1ADI0wDJ0wDI0wAAeTcA
@@ -83,8 +84,10 @@ export const BancoFalabella = props => {
     lusTcBSW7kzmr/VzaP1h8YJh6c6ym9W/Y3qzy6T8Gwsr5Gv6ZvfWitKkOAKPO6RG65R6iygVdn5D
     cBx9bqnjhLOLcrvCjnUif22pxWqUjEEga48qcf58OXQWjNfHeNsgiEcbuWqRTX/yKnSxPljRaw/b
     6WM5Tjh6wTWXv+UKTvOs57viqZFp1qfuGuFIlDHv74Z3j4OD25ldf3pur1HBSpHxOmrv7ofT0KlP
-    Ji3briq2XZ5M6s6dWnpZeVlrEgIAAAAAAAAAALD3E18j77F0H7TMAAAAAElFTkSuQmCC" alt=""/>
-  )
-}
+    Ji3briq2XZ5M6s6dWnpZeVlrEgIAAAAAAAAAALD3E18j77F0H7TMAAAAAElFTkSuQmCC"
+      alt=""
+    />
+  );
+};
 
-export default BancoFalabella
+export default BancoFalabella;

@@ -9,7 +9,7 @@
   text-decoration: none;
   font-size: 15px !important;
   cursor: pointer;
-  transition: .3s;
+  transition: 0.3s;
   border-left: 2px solid transparent;
   opacity: 1;
 }
@@ -35,13 +35,10 @@
   width: 20px;
 }
 
-
-
-
 .indicator {
-  background: #224F65;
+  background: #224f65;
   transform: scale(0);
-  transition: .3s;
+  transition: 0.3s;
   height: 20px;
   width: 20px;
   border-radius: 50%;
@@ -51,22 +48,21 @@
 }
 
 .indicatorSon {
-  transition: .5s;
+  transition: 0.5s;
   height: 10px;
   width: 10px;
-  background: linear-gradient(to bottom, #377FD7, #00D2FF);
+  background: linear-gradient(to bottom, #377fd7, #00d2ff);
   border-radius: 50%;
   transform: scale(0);
 }
 
 .itemMenu:hover .indicatorSon {
-  transform: scale(.5);
+  transform: scale(0.5);
 }
 
 .itemMenu:hover .indicator {
-  transform: scale(.5);
+  transform: scale(0.5);
 }
-
 
 .itemMenu:hover {
   opacity: 1;
@@ -91,14 +87,13 @@
   top: 0px;
   cursor: pointer;
   /*color: gray;*/
-  transition: .1s;
+  transition: 0.1s;
 }
 
 .closeModalButtonBack {
   left: 5px !important;
   right: inherit !important;
 }
-
 
 .closeModalButtonCont:hover {
   transform: scale(1.1);
@@ -116,23 +111,20 @@
   margin: 0 !important;
 }
 
-
 .activo {
   background: #192026;
-  color: #14B3F0 !important;
-  border-left: 2px solid #14B3F0 !important;
+  color: #14b3f0 !important;
+  border-left: 2px solid #14b3f0 !important;
 }
 
-
 .itemMenu.activate {
-  color: #14B3F0 !important;
-  border-left: 2px solid #14B3F0 !important;
+  color: #14b3f0 !important;
+  border-left: 2px solid #14b3f0 !important;
 }
 
 .itemMenu.activo {
   opacity: 1;
 }
-
 
 .indicatorSon.activate {
   transform: scale(0.8);
@@ -152,19 +144,16 @@
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
-
 @media only screen and (max-width: 768px) {
   .CMControls {
     display: grid;
   }
 }
 
-
-
 .secundary {
   background: white;
-  border: 2px solid #3A7BD5;
-  color: #3A7BD5 !important;
+  border: 2px solid #3a7bd5;
+  color: #3a7bd5 !important;
   font-weight: bold;
   /*width: calc(170px - 2px);*/
   /*height: calc(50px - 2px);*/
@@ -189,22 +178,19 @@
   color: white !important;
 }
 
-
-
 @keyframes buttonConf {
   0% {
     opacity: 1;
   }
 
   50% {
-    opacity: .6;
+    opacity: 0.6;
   }
 
   100% {
     opacity: 1;
   }
 }
-
 
 .filtrear {
   position: absolute;
@@ -214,7 +200,7 @@
   width: 0%;
   /*background: linear-gradient(to right, #32d0c2, #00ff62);*/
   background: #9a9a9a;
-  transition: .3s;
+  transition: 0.3s;
   animation-name: llenarhuevos;
   animation-duration: 7s;
   animation-fill-mode: forwards;
@@ -230,7 +216,8 @@
 }*/
 
 @keyframes llenarhuevos {
-  50% {}
+  50% {
+  }
 
   100% {
     width: 100%;
@@ -245,11 +232,10 @@
   overflow: hidden;
 }
 
-
 .suck {
   position: relative;
-  background: #FFFFFF;
-  color: #129A8E !important;
+  background: #ffffff;
+  color: #129a8e !important;
   font-weight: bold;
   font-size: 20px;
   -webkit-box-shadow: 0px 0px 35px 0px rgba(0, 0, 0, 0.24);
@@ -300,7 +286,7 @@
 .countryTextSelect {
   display: grid;
   width: auto;
-  transition: .3s;
+  transition: 0.3s;
   grid-template-columns: auto 1fr;
   grid-column-gap: 7px;
 }
@@ -310,13 +296,13 @@
 }
 
 .countryTextSelect:hover p {
-  color: #14B3F0 !important;
+  color: #14b3f0 !important;
   /*color: #37ED7D;*/
 }
 
 .contTextCountryButton {
   width: 0;
-  transition: .3s;
+  transition: 0.3s;
   overflow: hidden;
 }
 
@@ -333,10 +319,9 @@
 }
 
 .SelectCountryButton:hover i {
-  color: #14B3F0 !important;
+  color: #14b3f0 !important;
   /*color: #37ED7D !important;*/
 }
-
 
 .contButton {
   justify-self: center;
@@ -347,7 +332,6 @@
   align-self: center;
 }
 
-
 .contButton.loader {
   position: absolute;
   width: 100%;
@@ -355,7 +339,6 @@
   background: white;
   opacity: 0.3;
 }
-
 
 .botonForm {
   max-width: 300px;
@@ -370,7 +353,7 @@
   border-style: none !important;
   font-size: 17px !important;
   padding: 18px 25px;
-  transition: .2s;
+  transition: 0.2s;
   /*box-sizing: initial !important;*/
 }
 
@@ -383,22 +366,17 @@
   position: relative;
 }
 
-
 .botonForm.loader {
   opacity: 0.6;
 }
-
 
 .botonForm.swap .lds-roller div:after {
   background: white;
 }
 
-
-
 .botonForm2 p {
   margin: 0 !important;
 }
-
 
 .botonForm p {
   margin: 0 !important;
@@ -408,7 +386,6 @@
   display: grid;
   height: 100%;
 }
-
 
 .InputButton {
   align-self: flex-end;
@@ -430,31 +407,29 @@
   height: 45px;
   position: relative;
   border-radius: 6px;
-  transition: .3s;
+  transition: 0.3s;
   padding: 0 10px;
   display: flex;
   align-items: center;
-  color: #3A7BD5;
+  color: #3a7bd5;
   border: 1px solid #50667a61;
 }
-
 
 .ItemSelectedButton i {
   display: grid;
   align-items: center;
 }
 
-
 .itemClose {
   position: absolute;
   font-size: 20px;
-  color: #3A7BD5;
+  color: #3a7bd5;
   right: 20px;
   height: 100%;
   display: flex;
   align-items: center;
   cursor: pointer;
-  transition: .1s;
+  transition: 0.1s;
   transform: scale(1);
 }
 
@@ -462,16 +437,15 @@
   transform: scale(1.1);
 }
 
-
 .buttonsP {
   margin: 15px 0;
   text-align: center;
-  transition: .3s;
+  transition: 0.3s;
   color: #50667a;
 }
 
 .buttonActivated {
-  border: 1px solid #00D2FF !important;
+  border: 1px solid #00d2ff !important;
 }
 
 .AddNewItem p {
@@ -483,7 +457,6 @@
 .AddNewItem i {
   margin-right: 7px !important;
 }
-
 
 .AddNewItem {
   position: relative;
@@ -511,12 +484,9 @@
   background: linear-gradient(to bottom, transparent, #f9f9fb9e, #f9f9fb9e);
 }
 
-
 .AddNewItem.primary {
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
-
-
 
 .AddNewItemContainer {
   width: calc(100% - (19vw - 30px));
@@ -529,17 +499,9 @@
 
   position: absolute;
   bottom: 10px;
-
 }
 
-
-
-
-
-
 /*Payment Confirmation Button  - - - -- - -- - - - - -- - - - -*/
-
-
 
 .ALconfirmButton:hover .ALbuttonTextSpan {
   transform: translateX(0px);
@@ -575,7 +537,7 @@
   font-size: 16px !important;
 }
 
-.TicketDetail .confirmButton>div {
+.TicketDetail .confirmButton > div {
   height: 55px !important;
 }
 
@@ -583,10 +545,7 @@
   height: 60px !important;
 }
 
-
-
-
-.confirmButton>div {
+.confirmButton > div {
   /*width: 100px;*/
   padding: 0 15px !important;
   font-size: 14px !important;
@@ -595,10 +554,9 @@
   color: gray;
 }
 
-.ItemList:hover .confirmButton>div {
+.ItemList:hover .confirmButton > div {
   border: 2px solid #1cb179 !important;
 }
-
 
 .ItemList:hover .confirmButton {
   animation-name: callToActionAtention;
@@ -606,7 +564,6 @@
   animation-iteration-count: infinite;
   animation-timing-function: ease-in-out;
 }
-
 
 .confirmButton {
   margin: 0 !important;
@@ -618,15 +575,12 @@
   transform-origin: center;
 }
 
-
-
 .ALbuttonActive .ALbuttonTextSpan {
   font-weight: bold;
   color: #1cb179 !important;
 }
 
-
-.ALbuttonActive>div {
+.ALbuttonActive > div {
   padding: 0 15px !important;
   font-size: 14px !important;
   height: 45px;
@@ -634,8 +588,6 @@
   color: gray;
   border: 2px solid #1cb179 !important;
 }
-
-
 
 .ALbuttonActive {
   animation-name: callToAction;
@@ -681,8 +633,6 @@
   }
 }
 
-
-
 @keyframes callToActionAtention {
   0% {
     transform: rotate(0deg);
@@ -709,8 +659,6 @@
   }
 }
 
-
-
 .ALbuttonText {
   position: relative;
   display: flex;
@@ -726,40 +674,30 @@
   margin-left: 7px;
   display: flex;
   align-items: center;
-
 }
 
 .ALbuttonTextSpan {
-  transition: .3s;
+  transition: 0.3s;
   transform: translateX(15%);
   display: flex;
   align-items: center;
 }
 
-
-
 .confirmIcon {
-  transition: .3s;
+  transition: 0.3s;
   transform: translateY(12px);
   opacity: 0 !important;
 }
-
-
-
-
 
 .ItemList:hover .ALbuttonTextSpan {
   color: #1cb179 !important;
   font-weight: bold;
 }
 
-
 #subItemSC .secundary {
   border: 1px solid #19aced !important;
   color: #249ce5 !important;
 }
-
-
 
 #ClassicView .secundary {
   border: 1px solid #19aced !important;
@@ -788,15 +726,13 @@
   top: -100% !important;
 }
 
-
-
 .ClassicTextCont {
   display: grid;
   top: 0;
   grid-template-rows: repeat(2, 1fr);
   height: 200%;
   position: absolute;
-  transition: .15s;
+  transition: 0.15s;
   width: 100%;
 }
 
@@ -804,15 +740,12 @@
   margin-left: 7px;
 }
 
-
 .ClassicViewText {
   /*height: 100%;*/
   align-self: center;
   display: flex;
   align-items: center;
 }
-
-
 
 .ButtonNofity {
   padding: 8px 15px 8px 15px;
@@ -828,9 +761,8 @@
   margin-bottom: 20px;
   justify-items: center;
   cursor: pointer;
-  transition: .15s;
+  transition: 0.15s;
 }
-
 
 .ButtonNofity:hover {
   background: #11998e;
@@ -842,38 +774,8 @@
   /*background: linear-gradient(to right, #11998e, #38da75);*/
 }
 
-
 .ButtonNofity.swap p {
   color: white !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /**/

@@ -1,21 +1,19 @@
-import {
-  LOGGED_IN
-} from '../actions/action_types'
+import { LOGGED_IN } from "../actions/action_types";
 
 const initialState = {
-  loggedIn:false
-}
+  loggedIn: false,
+};
 
 const auth = (state = initialState, action) => {
   switch (action.type) {
     case LOGGED_IN:
       return {
         ...state,
-        loggedIn: action.payload
-      }
+        loggedIn: action.payload,
+      };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default auth
+export default auth;

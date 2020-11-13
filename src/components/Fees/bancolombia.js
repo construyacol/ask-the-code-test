@@ -1,11 +1,11 @@
-import React from 'react'
-import Col from 'react-bootstrap/lib/Col'
-import Table from 'react-bootstrap/lib/Table'
+import React from "react";
+import Col from "react-bootstrap/lib/Col";
+import Table from "react-bootstrap/lib/Table";
 
-export default props => {
+export default (props) => {
   return (
     <React.Fragment>
-      <p name="bancolombia" > &nbsp; </p>
+      <p name="bancolombia"> &nbsp; </p>
       <Col md={12}>
         <h3>Tarifas de uso / Límites de depósitos y retiros</h3>
       </Col>
@@ -14,7 +14,8 @@ export default props => {
       </Col>
       <Col md={12}>
         <h4>
-          Para depositar y retirar, ¿Cuál es el mínimo y máximo por cuenta bancaria en una operación?
+          Para depositar y retirar, ¿Cuál es el mínimo y máximo por cuenta
+          bancaria en una operación?
         </h4>
         <Table responsive bordered striped>
           <tbody>
@@ -60,7 +61,9 @@ export default props => {
         <Table responsive bordered striped>
           <tbody>
             <tr>
-              <td className="text-center">Incluye todos los depósitos en efectivo</td>
+              <td className="text-center">
+                Incluye todos los depósitos en efectivo
+              </td>
               <td className="text-center">$13.000 </td>
             </tr>
           </tbody>
@@ -88,10 +91,14 @@ export default props => {
       <Col md={12}>
         <h4>Inscripción Cuentas Bancarias</h4>
         <p>
-          La inscripción de las cuentas, por políticas directas del banco, deben realizarse en el horario de lunes a viernes de 6:00 AM a 8:00 PM y sábados de 6:00 AM a 2:00 PM (Días hábiles).
+          La inscripción de las cuentas, por políticas directas del banco, deben
+          realizarse en el horario de lunes a viernes de 6:00 AM a 8:00 PM y
+          sábados de 6:00 AM a 2:00 PM (Días hábiles).
         </p>
         <p>
-          Las inscripciones que se hagan en este rango son aprobadas en dos horas. Si se hace fuera de ese horario quedan para el día hábil siguiente.
+          Las inscripciones que se hagan en este rango son aprobadas en dos
+          horas. Si se hace fuera de ese horario quedan para el día hábil
+          siguiente.
         </p>
       </Col>
 
@@ -108,7 +115,6 @@ export default props => {
           </tbody>
         </Table>
       </Col>
-
     </React.Fragment>
-  )
-}
+  );
+};

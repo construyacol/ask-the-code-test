@@ -1,17 +1,17 @@
-.WFC.DepositLayout{
+.WFC.DepositLayout {
   position: relative;
 }
 
-.WA .DLcontain{
+.WA .DLcontain {
   max-height: 90px;
   grid-row-gap: 20px;
 }
 
-.WA .DLcontain>p{
+.WA .DLcontain > p {
   margin: 0 !important;
 }
 
-.WA{
+.WA {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -20,8 +20,7 @@
   overflow-y: scroll;
 }
 
-
-.WA .closeModalButtonBack{
+.WA .closeModalButtonBack {
   position: absolute;
   top: -40px !important;
   left: -35px !important;

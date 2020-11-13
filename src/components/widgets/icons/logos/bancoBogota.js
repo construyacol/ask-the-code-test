@@ -1,10 +1,11 @@
-import React from 'react'
-import '../icons.css'
+import React from "react";
+import "../icons.css";
 
-export const BancoBogota = props => {
-
-  return(
-          <img width={props.size} src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPIAAADfCAMAAAD7hH5+AAACPVBMVEUAAAD96t3748796NT53b77
+export const BancoBogota = (props) => {
+  return (
+    <img
+      width={props.size}
+      src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPIAAADfCAMAAAD7hH5+AAACPVBMVEUAAAD96t3748796NT53b77
       5cfrbXL565zjHy734TH44U7qUFr55Wb653T78bL330P45lnsXmPznKPsTU/0uKf62x/jNkHlQkvs
       dlrsfnz74Dv56YPtkoDnKzvvO0r44Cj0zijz5jvvl5D46I3+1gT31Q3svV7ouDny0Dzz4h3zmiTx
       y1b4urbqdjPyp0P2r2Xtr5XyfCTZKjvtyHT2vRHzwzDkXjby4RLwICjJMErIT2PesRP5WBTtGyT/
@@ -129,9 +130,10 @@ export const BancoBogota = props => {
       bxf7GtDDSngH+ZgpIJA/UfJ3frw38tAGGKG2WX6I4y04DrJbfbbroR3B0FD3Pauq5DZOfpqVyBI1
       P/TsQ5zQKFC3W5X4+bS0cnefJIwle3dstk7aS2oaJ+bT5OhDlIVsljK7no00baJHJc8JNu4WBIkl
       4c1EJWnX7q5N3lO6JFATSZJkZsF1V1tDV82mfWbwiMgTFm1d2x/iiWiLLbbYYosttthiiy222OJ/
-      zX+RP89dyAUmaQAAAABJRU5ErkJggg==" alt=""/>
-  )
+      zX+RP89dyAUmaQAAAABJRU5ErkJggg=="
+      alt=""
+    />
+  );
+};
 
-}
-
-export default BancoBogota
+export default BancoBogota;
