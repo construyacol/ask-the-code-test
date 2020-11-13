@@ -7,6 +7,7 @@ import DetailContainerLayout from "../widgets/detailContainer/detailContainerLay
 import { Route } from "react-router-dom";
 import ItemAccount from "../widgets/accountList/item_account";
 import SimpleLoader from "../widgets/loaders";
+import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
 import "./views/wallet_views.css";
 
@@ -19,7 +20,6 @@ const LazyAccountList = loadable(
 );
 const LazySwapView = loadable(() => import("./views/swap"));
 const LazyDepositView = loadable(() => import("./views/deposit"));
-const LazyActivityView = loadable(() => import("./views/activity"));
 
 function WalletContainer(props) {
   // const actionDispatch = useActions()
@@ -56,7 +56,7 @@ function WalletContainer(props) {
               <Route
                 strict
                 path="/:primary_path/:path/:account_id/:tx_path"
-                component={LazyActivityView}
+                component={ActivityView}
               />
               <Route
                 exact

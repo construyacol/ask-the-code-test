@@ -28,6 +28,7 @@ export default ({ loader, setLoader }) => {
       activity_for_account[account_id] &&
       activity_for_account[account_id][tx_path] &&
       activity_for_account[account_id][tx_path].length;
+
     let activity = [];
     if (skip > 10) {
       activity = await coinsendaServices[method](account_id, 15, skip);

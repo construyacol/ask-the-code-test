@@ -30,7 +30,6 @@ export class DepositService extends WebService {
     if (await this.isCached("deposit_providers", response)) {
       updateState = false;
     }
-    const { data } = result;
 
     const result = response.reduce((result, item) => {
       result.push({

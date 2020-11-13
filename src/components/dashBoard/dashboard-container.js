@@ -76,8 +76,8 @@ function DashBoardContainer(props) {
       let query = `{"where":{"buy_pair":"${
         props.currentPair && props.currentPair.buy_pair
       }"}}`;
-      props.coinsendaServices.updateCurrentPair(query, "currentPair");
-      // props.action.update_current_pair(query, "currentPair");
+      // props.coinsendaServices.updateCurrentPair(query, "currentPair");
+      props.action.update_current_pair(query, "currentPair");
     }, 20000);
   };
 

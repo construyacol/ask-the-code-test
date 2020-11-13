@@ -42,8 +42,8 @@ function RootContainer(props) {
       history.push("/");
     }
 
-    const created_at = await localForage.getItem("created_at");
     const userToken = await localForage.getItem("user_token");
+    const created_at = await localForage.getItem("created_at");
     if (!created_at || !userToken) {
       return doLogout();
     }

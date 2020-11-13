@@ -1,4 +1,5 @@
 import { WebService } from "../actions/API/WebService";
+import { appLoadLabelAction } from "../actions/loader";
 import {
   loadLabels,
   GET_WITHDRAW_BY_USER_URL,
@@ -17,7 +18,6 @@ import {
 import normalizeUser from "../schemas";
 
 import { normalized_list } from "../utils";
-import { appLoadLabelAction } from "../actions/loader";
 
 export class WithdrawService extends WebService {
   async fetchWithdrawAccounts(query = '{"where":{"visible":true}}') {
