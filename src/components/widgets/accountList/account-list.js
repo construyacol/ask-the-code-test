@@ -179,12 +179,12 @@ const AccountsNotFound = ({ account_type }) => {
   return (
     <div className="withdraw_accounts_screen">
       <div className="withdraw_accounts_screen_cont">
-        <IconSwitch icon="withdraw_account" size={110} color="#989898" />
         <p id="WalletList2" className="fuente">
           {account_type === "withdraw_accounts"
             ? "Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local."
             : "Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos"}
         </p>
+        <IconSwitch size={350} icon="newAccount" />
       </div>
     </div>
   );
