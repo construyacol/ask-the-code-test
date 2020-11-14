@@ -68,7 +68,8 @@ export const ControlButtonContainer = styled.div`
   width: 100%;
   left: 0;
   display: grid;
-  bottom: ${(props) => `${props.bottom}px`} #controlsContainer {
+  bottom: ${(props) => `${props.bottom}px`};
+  #controlsContainer {
     transform: scale(0.95);
   }
 `;

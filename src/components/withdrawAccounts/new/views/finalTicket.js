@@ -5,9 +5,10 @@ import { ButtonSuccess } from "../../../widgets/buttons/buttons";
 import "../../../widgets/ticket/ticket.css";
 import "./finalTicket.css";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
+import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 
 function FinalTicket(props) {
-  const [current_ticket, setCurrentTicket] = useState(null);
+  // const [current_ticket, setCurrentTicket] = useState(null);
   const idCancelButton = useKeyActionAsClick(
     true,
     "cancel-button-ticket",
@@ -25,60 +26,60 @@ function FinalTicket(props) {
     true
   );
 
-  const composeMethod = async () => {
-    const { ticket, ticket_type } = props;
+  // const composeMethod = async () => {
+  //   const { ticket, ticket_type } = props;
+  //
+  //   let new_ticket = [];
+  //
+  //   switch (ticket_type) {
+  //     case "withdraw_form":
+  //       new_ticket = [
+  //         {
+  //           ui_name: "Propietario:",
+  //           value: ticket.info.name,
+  //           id: 6,
+  //         },
+  //         {
+  //           ui_name: "No. id propietario:",
+  //           value: ticket.info.id_number,
+  //           id: 7,
+  //         },
+  //         {
+  //           ui_name: "Estado:",
+  //           value: ticket.inscribed ? "Inscrita" : "Inscripción pendiente",
+  //           id: 1,
+  //         },
+  //         {
+  //           ui_name: "No. de cuenta:",
+  //           value: ticket.info.account_number,
+  //           id: 2,
+  //         },
+  //         {
+  //           ui_name: "Tipo de cuenta:",
+  //           value: ticket.info.account_type,
+  //           id: 3,
+  //         },
+  //         {
+  //           ui_name: "Entidad bancaria:",
+  //           value: ticket.info.bank_name,
+  //           id: 4,
+  //           icon: ticket.info.bank_name,
+  //         },
+  //         {
+  //           ui_name: "Ciudad:",
+  //           value: ticket.info.city,
+  //           id: 5,
+  //         },
+  //       ];
+  //       return setCurrentTicket(new_ticket);
+  //     default:
+  //       return setCurrentTicket(ticket);
+  //   }
+  // };
 
-    let new_ticket = [];
-
-    switch (ticket_type) {
-      case "withdraw_form":
-        new_ticket = [
-          {
-            ui_name: "Propietario:",
-            value: ticket.info.name,
-            id: 6,
-          },
-          {
-            ui_name: "No. id propietario:",
-            value: ticket.info.id_number,
-            id: 7,
-          },
-          {
-            ui_name: "Estado:",
-            value: ticket.inscribed ? "Inscrita" : "Inscripción pendiente",
-            id: 1,
-          },
-          {
-            ui_name: "No. de cuenta:",
-            value: ticket.info.account_number,
-            id: 2,
-          },
-          {
-            ui_name: "Tipo de cuenta:",
-            value: ticket.info.account_type,
-            id: 3,
-          },
-          {
-            ui_name: "Entidad bancaria:",
-            value: ticket.info.bank_name,
-            id: 4,
-            icon: ticket.info.bank_name,
-          },
-          {
-            ui_name: "Ciudad:",
-            value: ticket.info.city,
-            id: 5,
-          },
-        ];
-        return setCurrentTicket(new_ticket);
-      default:
-        return setCurrentTicket(ticket);
-    }
-  };
-
-  useEffect(() => {
-    composeMethod();
-  }, []);
+  // useEffect(() => {
+  //   composeMethod();
+  // }, []);
 
   const {
     finishAction,
@@ -86,6 +87,7 @@ function FinalTicket(props) {
     cta_secondary,
     cta_secondary_label,
     cta_secondary_action,
+    ticket
   } = props;
 
   const atributos = {
@@ -94,9 +96,11 @@ function FinalTicket(props) {
     color: "white",
   };
 
+
+
+
   return (
     <div className="finalTicket TicketDetail">
-      {current_ticket && (
         <>
           <div className="finalTicket ticketHeader">
             <IconSwitch {...atributos} />
@@ -106,15 +110,13 @@ function FinalTicket(props) {
           </div>
 
           <div className="finalTicket contenidoTicket">
-            {current_ticket.map((ticket) => {
-              return <ItemTicket key={ticket.id} {...ticket} />;
-            })}
+            <DetailGenerator
+              title="Detalle del retiro"
+              order={ticket}
+              theme="darkTheme"
+            />
           </div>
 
-          {/* cta_primary_label */}
-          {/* cta_secondary */}
-          {/* cta_secondary_label */}
-          {/* cta_secondary_action */}
           <div
             className="nWcta2"
             style={{
@@ -136,7 +138,6 @@ function FinalTicket(props) {
             </ButtonSuccess>
           </div>
         </>
-      )}
     </div>
   );
 }

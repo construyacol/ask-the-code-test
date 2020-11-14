@@ -203,6 +203,7 @@ const Wrapper = styled.section`
   grid-row-gap: 50px;
   padding: 30px 0;
   border-radius: 6px;
+  justify-items:center;
 
   p {
     max-width: 450px;

@@ -421,7 +421,24 @@
   top: 0 !important;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 768px) {
+
+  .DLcontain2 {
+    width: 80%;
+  }
+
   .menuItem p {
     font-size: 13px !important;
   }
@@ -753,9 +770,9 @@
 
   .ImgCropcontrols {
     display: grid !important;
-    height: auto !important;
     position: absolute;
-    bottom: 10px !important;
+    height: auto !important;
+    bottom: 25px !important;
     grid-row-gap: 7px;
   }
 
@@ -1298,16 +1315,8 @@
     width: 100% !important;
   }
 
-  .crop-container {
-    height: calc(100vh - 100px) !important;
-  }
-
   .ItemSelectedButton {
     width: calc(100% - 20px) !important;
-  }
-
-  .inputElement2 {
-    font-size: 70px !important;
   }
 
   .DLtitle2 {

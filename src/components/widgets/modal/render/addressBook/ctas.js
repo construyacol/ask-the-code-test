@@ -33,7 +33,7 @@ const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
       onClick={openAddressBook}
     >
       <p className="fuente">
-        {!isMovilViewport && "[A] "}
+        {!isMovilViewport ? "[A] " : ""}
         {addressToAdd
           ? `+ Agregar cuenta de retiro`
           : "Gestionar direcciones >>"}
