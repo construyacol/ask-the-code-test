@@ -453,7 +453,7 @@ class WithdrawFlow extends Component {
     await this.props.action.ModalView("modalSuccess");
 
     this.setState({
-      ticket: new_order_model,
+      ticket: data
     });
   };
 
@@ -580,7 +580,7 @@ class WithdrawFlow extends Component {
       ticket_label_loader,
       color_loader,
       min_amount,
-      withdraw_account_list_update,
+      withdraw_account_list_update
     } = this.state;
 
     return (

@@ -37,6 +37,22 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
     setImgSrc(null);
   };
 
+  useEffect(()=>{
+    let element = document.getElementById("close-button-with-OtherModalLayout")
+    if(activeSection){
+      if(element){
+        element.scrollTo(0, 0);
+        element.classList.add('inactive')
+      }
+    }
+    return () => {
+      if(element){
+        element.classList.remove('inactive')
+      }
+    }
+  }, [activeSection])
+
+
   return (
     <OverflowContainer>
       <Container className={`${activeSection ? "activated" : ""}`}>
@@ -72,6 +88,10 @@ const OverflowContainer = styled.section`
   z-index: 3;
   display: grid;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: 100vh;
+  }
 `;
 
 const Container = styled.div`

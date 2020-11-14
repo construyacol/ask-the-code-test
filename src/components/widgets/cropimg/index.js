@@ -94,16 +94,6 @@ class CropImg extends React.Component {
       <div className="App">
         {this.state.imageSrc && (
           <Fragment>
-            {/* <Cropper
-                minZoom={minZoom}
-                image={this.state.imageSrc}
-                crop={this.state.crop}
-                zoom={this.state.zoom}
-                aspect={this.state.aspect}
-                onCropChange={this.onCropChange}
-                onCropComplete={this.onCropComplete}
-                onZoomChange={this.onZoomChange}
-              /> */}
             <CropperIMG
               onCropComplete={this.onCropComplete}
               image={this.state.imageSrc}
