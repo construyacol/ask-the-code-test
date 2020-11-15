@@ -11,6 +11,8 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import "../../wallets/views/wallet_views.css";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import useViewport from '../../../hooks/useWindowSize'
+
 
 function AccountList(props) {
   const {
@@ -61,8 +63,7 @@ function AccountList(props) {
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
       title: "Estamos trabajando en esto...",
-      description:
-        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
+      description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary: "Entendido",
       action: false,
       svg: "verified",
@@ -70,21 +71,24 @@ function AccountList(props) {
   };
 
   const goToVerification = async () => {
-    const verificationState = props.verificationState;
-
-    if (verificationState === "confirmed" || verificationState === "pending") {
-      await actions.ToStep("globalStep", 2);
-    }
-
-    if (verificationState === "rejected") {
-      await actions.ToStep("globalStep", 0);
-    }
-
-    await history.push(`/security`);
-    setTimeout(() => {
-      actions.toggleModal();
-    }, 0);
+    actions.confirmationModalToggle();
+    actions.confirmationModalPayload(null);
+    // const verificationState = props.verificationState;
+    //
+    // if (verificationState === "confirmed" || verificationState === "pending") {
+    //   await actions.ToStep("globalStep", 2);
+    // }
+    //
+    // if (verificationState === "rejected") {
+    //   await actions.ToStep("globalStep", 0);
+    // }
+    //
+    // await history.push(`/security`);
+    // setTimeout(() => {
+    //   actions.toggleModal();
+    // }, 0);
   };
+
 
   const callToValidate = () => {
     const message = isWalletsView
@@ -93,12 +97,10 @@ function AccountList(props) {
 
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
-      title: "Aún no estas listo para esto...",
-      description: `Debes completar el nivel de verificación avanzada para poder agregar ${message}`,
-      txtPrimary: "Verificarme",
-      txtSecondary: "Cancelar",
-      payload: "account_id",
-      action: goToVerification,
+      title: "Estamos trabajando en esto...",
+      description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
+      txtPrimary: "Entendido",
+      action: false,
       svg: "verified",
     });
   };
@@ -176,6 +178,9 @@ AccountList.propTypes = {
 };
 
 const AccountsNotFound = ({ account_type }) => {
+
+  const { isMovilViewport } = useViewport()
+
   return (
     <div className="withdraw_accounts_screen">
       <div className="withdraw_accounts_screen_cont">
@@ -184,7 +189,7 @@ const AccountsNotFound = ({ account_type }) => {
             ? "Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local."
             : "Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos"}
         </p>
-        <IconSwitch size={350} icon="newAccount" />
+        <IconSwitch size={isMovilViewport ? 230 : 330} icon="newAccount" />
       </div>
     </div>
   );
