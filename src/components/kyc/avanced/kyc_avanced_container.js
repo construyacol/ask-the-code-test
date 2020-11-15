@@ -14,7 +14,7 @@ class KycAvancedContainer extends Component {
       this.props.user.id_type === "pasaporte"
         ? "./docs/front_passport.png"
         : "./docs/front.png",
-    back: "./docs/back.webp",
+    back: "./docs/back.png",
     selfie:
       this.props.user.id_type === "pasaporte"
         ? "./docs/selfie_passport.png"
@@ -23,7 +23,7 @@ class KycAvancedContainer extends Component {
       this.props.user.id_type === "pasaporte"
         ? "./docs/front_passport.png"
         : "./docs/front.png",
-    newback: "./docs/back.webp",
+    newback: "./docs/back.png",
     newselfie:
       this.props.user.id_type === "pasaporte"
         ? "./docs/selfie_passport.png"

@@ -21,7 +21,6 @@ const KycDashBoard = (props) => {
   } = props;
 
   const { newfront, newselfie, newback } = base64;
-
   const idUploadPic = useKeyActionAsClick(
     !fileloader,
     "upload-pic-button",
@@ -173,7 +172,7 @@ const KycDashBoard = (props) => {
           {step < 4 ? (
             <div className="contButtonUpload">
               <input
-                id={!fileloader && idUploadPic}
+                id={!fileloader ? idUploadPic : ""}
                 type="file"
                 accept={ACCEPT_FILE_TYPE_ADVANCE_KYC.join()}
                 onChange={goFileLoader}

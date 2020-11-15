@@ -10,14 +10,15 @@ import SimpleLoader from "../widgets/loaders";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
 import "./views/wallet_views.css";
+import AccountList from "../widgets/accountList/account-list";
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"));
-const LazyAccountList = loadable(
-  () => import("../widgets/accountList/account-list"),
-  {
-    fallback: <SimpleLoader color="blue" label={"Cargando pagina..."} />,
-  }
-);
+// const LazyAccountList = loadable(
+//   () => import("../widgets/accountList/account-list"),
+//   {
+//     fallback: <SimpleLoader color="blue" label={"Cargando pagina..."} />,
+//   }
+// );
 const LazySwapView = loadable(() => import("./views/swap"));
 const LazyDepositView = loadable(() => import("./views/deposit"));
 
@@ -51,7 +52,7 @@ function WalletContainer(props) {
               <Route
                 exact
                 path="/:primary_path"
-                render={() => <LazyAccountList {...routeProps} isWalletsView />}
+                render={() => <AccountList {...routeProps} isWalletsView />}
               />
               <Route
                 strict
