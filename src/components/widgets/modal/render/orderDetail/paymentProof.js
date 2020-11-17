@@ -8,6 +8,8 @@ import { MdContentCopy } from "react-icons/md";
 import { BsUpload } from "react-icons/bs";
 import { copy } from "../../../../../utils";
 import useToastMessage from "../../../../../hooks/useToastMessage";
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
   const [activeSection, setActiveSection] = useState(true);
@@ -33,6 +35,21 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
     setActiveSection(null);
     setImgSrc(null);
   };
+
+  useEffect(() => {
+    let element = document.getElementById("close-button-with-OtherModalLayout");
+    if (activeSection) {
+      if (element) {
+        element.scrollTo(0, 0);
+        element.classList.add("inactive");
+      }
+    }
+    return () => {
+      if (element) {
+        element.classList.remove("inactive");
+      }
+    };
+  }, [activeSection]);
 
   return (
     <OverflowContainer>
@@ -69,6 +86,10 @@ const OverflowContainer = styled.section`
   z-index: 3;
   display: grid;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    height: 100vh;
+  }
 `;
 
 const Container = styled.div`
@@ -215,7 +236,9 @@ export const PaymentProof = ({ payload }) => {
 
         {imgProof && (
           <ProofContainer>
-            <img src={imgProof} width="auto" height="90%" alt="" />
+            <Zoom>
+              <img src={imgProof} width="100%" height="90px" alt="" />
+            </Zoom>
             {currentOrder.currency_type === "crypto" && (
               <HoverProof>
                 <IconContainer
@@ -236,13 +259,14 @@ export const PaymentProof = ({ payload }) => {
           </ProofContainer>
         )}
       </PaymentProofContainer>
-      {imgProof && (
-        <FiatPaymentProofZoom state={currentOrder.state}>
-          <ProofCont>
-            <img src={imgProof} width="100%" alt="" />
-          </ProofCont>
-        </FiatPaymentProofZoom>
-      )}
+
+      {/* {imgProof && (
+      <FiatPaymentProofZoom state={currentOrder.state}>
+        <ProofCont>
+          <img src={imgProof} width="100%" alt="" />
+        </ProofCont>
+      </FiatPaymentProofZoom>
+    )} */}
     </>
   );
 };
@@ -273,8 +297,8 @@ const FiatPaymentProofZoom = styled.div`
 `;
 
 const PaymentProofContainer = styled.div`
-  width: 100%;
-  height: 80%;
+  width: 100px;
+  height: 100px;
   border-radius: 4px;
   align-self: center;
   display: grid;
@@ -293,6 +317,7 @@ const PaymentProofContainer = styled.div`
   &.accepted,
   &.confirmed {
     background: #206f65;
+    padding: 0 5px;
   }
   &.rejected,
   &.canceled {
@@ -337,6 +362,9 @@ const ProofContainer = styled.div`
 
   :hover ${HoverProof} {
     opacity: 1;
+  }
+  button {
+    cursor: pointer;
   }
 `;
 

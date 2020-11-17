@@ -42,8 +42,9 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
 
   const handleClick = () => {
     const { payload, code } = modal_confirmation;
-
-    // Ejecutamos la acción desde redux, para eliminar wallet pasandole como parametro el id del wallet
+    if (!modal_confirmation.action) {
+      return cancelarClick();
+    }
     modal_confirmation.action(payload, code);
     action.confirmationModalToggle();
     action.confirmationModalPayload(null);
@@ -204,6 +205,7 @@ const Wrapper = styled.section`
   grid-row-gap: 50px;
   padding: 30px 0;
   border-radius: 6px;
+  justify-items: center;
 
   p {
     max-width: 450px;

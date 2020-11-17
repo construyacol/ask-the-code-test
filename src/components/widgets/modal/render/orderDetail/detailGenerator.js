@@ -10,7 +10,7 @@ import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
-const DetailGenerator = ({ order, title, TitleSuffix }) => {
+const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const [orders, setOrders] = useState([]);
   const { deposit_providers, tx_path } = UseTxState();
   const [, formatCurrency] = useFormatCurrency();
@@ -202,7 +202,7 @@ const DetailGenerator = ({ order, title, TitleSuffix }) => {
   // console.log(order, orders)
 
   return (
-    <Container className={`${title ? "withTitle" : ""}`}>
+    <Container className={`${title ? "withTitle" : ""} ${theme}`}>
       {title && (
         <TitleContainer
           className={`${TitleSuffix ? "titleSuffix" : ""} ${order.state}`}
@@ -349,6 +349,12 @@ const Container = styled.section`
 
   ${Text}, ${MiddleSection} {
     color: gray;
+  }
+
+  &.darkTheme {
+    p {
+      color: white;
+    }
   }
 `;
 

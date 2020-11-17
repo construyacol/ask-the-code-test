@@ -9,6 +9,7 @@ import withListCreator from "../../withListCreator";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import useViewport from "../../../hooks/useWindowSize";
 
 import "../../wallets/views/wallet_views.css";
 
@@ -72,20 +73,22 @@ function AccountList(props) {
   };
 
   const goToVerification = async () => {
-    const verificationState = props.verificationState;
-
-    if (verificationState === "confirmed" || verificationState === "pending") {
-      await actions.ToStep("globalStep", 2);
-    }
-
-    if (verificationState === "rejected") {
-      await actions.ToStep("globalStep", 0);
-    }
-
-    await history.push(`/security`);
-    setTimeout(() => {
-      actions.toggleModal();
-    }, 0);
+    actions.confirmationModalToggle();
+    actions.confirmationModalPayload(null);
+    // const verificationState = props.verificationState;
+    //
+    // if (verificationState === "confirmed" || verificationState === "pending") {
+    //   await actions.ToStep("globalStep", 2);
+    // }
+    //
+    // if (verificationState === "rejected") {
+    //   await actions.ToStep("globalStep", 0);
+    // }
+    //
+    // await history.push(`/security`);
+    // setTimeout(() => {
+    //   actions.toggleModal();
+    // }, 0);
   };
 
   const callToValidate = () => {
@@ -95,12 +98,11 @@ function AccountList(props) {
 
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
-      title: "Aún no estas listo para esto...",
-      description: `Debes completar el nivel de verificación avanzada para poder agregar ${message}`,
-      txtPrimary: "Verificarme",
-      txtSecondary: "Cancelar",
-      payload: "account_id",
-      action: goToVerification,
+      title: "Estamos trabajando en esto...",
+      description:
+        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
+      txtPrimary: "Entendido",
+      action: false,
       svg: "verified",
     });
   };
@@ -178,15 +180,17 @@ AccountList.propTypes = {
 };
 
 const AccountsNotFound = ({ account_type }) => {
+  const { isMovilViewport } = useViewport();
+
   return (
     <div className="withdraw_accounts_screen">
       <div className="withdraw_accounts_screen_cont">
-        <IconSwitch icon="withdraw_account" size={110} color="#989898" />
         <p id="WalletList2" className="fuente">
           {account_type === "withdraw_accounts"
             ? "Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local."
             : "Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos"}
         </p>
+        <IconSwitch size={isMovilViewport ? 230 : 330} icon="newAccount" />
       </div>
     </div>
   );

@@ -254,7 +254,6 @@ export class SwapService extends WebService {
     if (!result || result === 465) {
       return;
     }
-
     if (currentPair) {
       this.dispatch(
         update_item_state({ currentPair: { ...result[0] } }, "pairs")

@@ -17,6 +17,10 @@
   transition: 0.3s;
 }
 
+#close-button-with-OtherModalLayout.inactive {
+  overflow-y: hidden;
+}
+
 .ConfirmationModal {
   background: black;
   background: linear-gradient(to bottom right, #00000099, #000000f0);

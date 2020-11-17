@@ -7,7 +7,8 @@ import WalletContainer from "../wallets/walletContainer";
 import QuoteContainer from "../widgets/quote/quoteContainer";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-// import FreshChat from '../../services/freshChat'
+// import FreshChat from "../../services/freshChat";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
 import ContentTab from "../widgets/detailContainer/content-tab";
@@ -53,6 +54,7 @@ const TAB_TITLE = {
 
 function DashBoardContainer(props) {
   useBlockScroll();
+  const [coinsendaServices] = useCoinsendaServices();
 
   // const proofSocketNotify = () => {
   //   const { wallets } = props
@@ -71,13 +73,13 @@ function DashBoardContainer(props) {
   // }
 
   const updateCurrentPair = async () => {
+    // console.log('||||||||||||||||| updateCurrentPair ', props)
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID);
     UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
       let query = `{"where":{"buy_pair":"${
         props.currentPair && props.currentPair.buy_pair
       }"}}`;
-      // props.coinsendaServices.updateCurrentPair(query, "currentPair");
-      props.action.update_current_pair(query, "currentPair");
+      coinsendaServices.updateCurrentPair(query, "currentPair");
     }, 20000);
   };
 

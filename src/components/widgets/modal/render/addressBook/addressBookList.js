@@ -125,7 +125,7 @@ const AddressBookComponent = ({
 
       <ControlButtonContainer bottom={25}>
         <ControlButton
-          label={`Crear nueva cuenta ${!isMovilViewport && "[A]"}`}
+          label={`Crear nueva cuenta ${!isMovilViewport ? "[A]" : ""}`}
           formValidate
           handleAction={() => switchView("newAccount")}
           id={idForCreateNewAccount}

@@ -27,7 +27,6 @@ const OrderSupervisor = () => {
   const { isMovilViewport } = useViewport();
 
   const cerrar = (e, forceClose) => {
-    console.log("|||||| OrderSupervisor close ", e && e.target.dataset);
     if (e && (e.target.dataset.close_modal || forceClose)) {
       actions.isAppLoading(false);
       actions.renderModal(null);
