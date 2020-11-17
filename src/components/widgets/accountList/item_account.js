@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { LoaderContainer } from "../loaders";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
+import BalanceComponent from "../balance/balance";
+import PopNotification from "../notifications";
+import SimpleLoader from "../loaders";
 
 import {
   ACta,
@@ -23,9 +26,6 @@ import { useActions } from "../../../hooks/useActions";
 import "./item_wallet.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
-const SimpleLoader = loadable(() => import("../loaders"));
-const PopNotification = loadable(() => import("../notifications"));
-const BalanceComponent = loadable(() => import("../balance/balance"));
 
 const ItemAccount = (props) => {
   if (props.loader || !props.account) {

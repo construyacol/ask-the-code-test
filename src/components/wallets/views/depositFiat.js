@@ -12,7 +12,8 @@ const DepositFiat = (props) => {
     true,
     "main-button-deposit",
     13,
-    true
+    true,
+    "onkeyup"
   );
   const [
     ,

@@ -18,7 +18,10 @@ import { LazyLoaderPage } from "./dashboard-skeletons";
 import "./dashboard.css";
 
 const WitdrawAccountContainer = loadable(
-  () => import("../withdrawAccounts/witdrawAccountContainer"),
+  () =>
+    import(
+      /* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"
+    ),
   {
     fallback: <LazyLoaderPage path={"withdraw_accounts"} />,
   }

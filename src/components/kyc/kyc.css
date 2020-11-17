@@ -183,9 +183,6 @@
   width: 100%;
 }
 
-.puto1 {
-}
-
 .containerKycAvanced {
   display: grid;
   width: 100%;
@@ -232,6 +229,7 @@
 }
 
 .KycDashContainer.fileloader {
+  height: 100%;
   top: -100% !important;
   background: #ffffffd1;
   z-index: 3;

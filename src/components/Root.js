@@ -16,8 +16,12 @@ import useToastMessage from "../hooks/useToastMessage";
 const LazyLoader = loadable(() =>
   import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app")
 );
-const LazySocket = loadable(() => import("./sockets/sockets"));
-const LazyToast = loadable(() => import("./widgets/toast/ToastContainer"));
+const LazySocket = loadable(() =>
+  import(/* webpackPrefetch: true */ "./sockets/sockets")
+);
+const LazyToast = loadable(() =>
+  import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer")
+);
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {

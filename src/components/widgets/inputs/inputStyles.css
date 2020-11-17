@@ -413,6 +413,11 @@ form#phone {
   transition: 0.3s;
 }
 
+.aparecer {
+  transition: 0.2s;
+  opacity: 1;
+}
+
 .arrowcito2:hover {
   transform: scale(1.15);
 }

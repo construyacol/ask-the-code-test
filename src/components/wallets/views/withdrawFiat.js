@@ -14,7 +14,8 @@ const FiatView = (props) => {
     true,
     "main-button-withdraw",
     13,
-    true
+    true,
+    "onkeyup"
   );
 
   let movil_viewport = window.innerWidth < 768;
