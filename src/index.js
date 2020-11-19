@@ -9,6 +9,7 @@ import "./new-mobile-style.css";
 import "./components/widgets/ticket/ticket.css";
 import "./components/sockets/socket_notify/socketNotify.css";
 import "./components/withdrawAccounts/new/views/views.css";
+import "./components/wallets/newWallet/newWallet.css";
 import * as serviceWorker from "./serviceWorker";
 // import RootContainer from './root'
 import { Provider } from "react-redux";
