@@ -191,6 +191,7 @@ class KycAvancedContainer extends Component {
         ...this.state.base64,
         [name]: base64,
       },
+      imageSrc: null,
     });
 
     await this.props.action.UpdateForm("kyc_avanced", this.state);
