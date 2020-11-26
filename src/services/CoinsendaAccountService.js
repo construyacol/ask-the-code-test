@@ -215,8 +215,7 @@ export class AccountService extends WebService {
 
     // const fallbackCurrentWallet = ui.current_section.params.current_wallet
     const fallbackActivityType = ui.current_section.params.currentFilter;
-    const currentAccount =
-      modelData.withdraw_accounts[accountId] || modelData.wallets[accountId];
+    const currentAccount = (modelData.withdraw_accounts && modelData.withdraw_accounts[accountId]) || (modelData.wallets && modelData.wallets[accountId]);
 
     if (!currentAccount) return;
 
