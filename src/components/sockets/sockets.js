@@ -354,15 +354,17 @@ class SocketsComponent extends Component {
       return;
     }
 
+
+
+
+
     if (deposit.state === "accepted") {
       let cDeposit = await this.props.coinsendaServices.getOrderById(
         deposit.id,
         "deposits"
       );
-      if (
-        !this.props.deposits ||
-        (this.props.deposits && !this.props.deposits[deposit.id])
-      ) {
+
+      if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
       }
 
@@ -411,6 +413,13 @@ class SocketsComponent extends Component {
         }, 1500);
       }
     }
+
+
+
+
+
+
+
 
     if (deposit.state === "rejected" || deposit.state === "canceled") {
       if (this.props.deposits[deposit.id].state === "canceled") {
@@ -471,9 +480,16 @@ class SocketsComponent extends Component {
     }
   };
 
+
+
+
+
+
+
   swap_management = async (swap) => {
     // console.log('||||||||||||||||||||||||||||| ===========> SOCKET SWAP => ', swap.state, '  ==>  ', swap)
     // debugger
+
 
     if (swap.state === "pending") {
       // await this.props.action.current_section_params({ active_trade_operation: true })
@@ -494,6 +510,32 @@ class SocketsComponent extends Component {
       );
       this.props.action.add_new_transaction_animation();
     }
+
+
+
+    if(swap.state === 'rejected' || swap.state === 'canceled'){
+
+      setTimeout(async () => {
+        this.props.action.update_item_state(
+          {
+            [this.state.currentSwap.id]: {
+              ...this.props.swaps[this.state.currentSwap.id],
+              state: swap.state,
+              bought: swap.bought,
+              activeTrade: false
+            },
+          },
+          "swaps"
+        );
+        this.props.coinsendaServices.updateActivityState(this.state.currentSwap.account_from, "swaps");
+        this.props.action.ticket_rejected();
+        return this.props.toastMessage("El intercambio no se pudo realizar, contacta con soporte", "error");
+      }, 2500);
+
+    }
+
+
+
 
     if (swap.state === "accepted" && this.state.currentSwap.state !== "done") {
       const { currentSwap } = this.state;
@@ -544,10 +586,7 @@ class SocketsComponent extends Component {
             "Nuevo intercambio realizado",
             "success"
           );
-          this.props.coinsendaServices.updateActivityState(
-            currentSwap.account_from,
-            "swaps"
-          );
+          this.props.coinsendaServices.updateActivityState(currentSwap.account_from, "swaps");
         }, 2000);
       }, 5500);
 
@@ -569,6 +608,8 @@ class SocketsComponent extends Component {
         );
       }
     }
+
+
 
     if (swap.status === "error") {
       this.props.toastMessage(
