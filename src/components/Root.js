@@ -40,14 +40,17 @@ function RootContainer(props) {
       history.push("/");
     }
 
+
+    // const userToken = JSON.parse(localForage.getItem('user_token'));
+    // const created_at = JSON.parse(localForage.getItem('created_at'));
     const userToken = await localForage.getItem("user_token");
     const created_at = await localForage.getItem("created_at");
     if (!created_at || !userToken) {
       return doLogout();
     }
-
     const availableToken = isValidToken(created_at);
     if (!availableToken) {
+      toastMessage(`Su sessión ha caducado`, "error");
       return doLogout();
     }
     const userData = jwt.decode(userToken);

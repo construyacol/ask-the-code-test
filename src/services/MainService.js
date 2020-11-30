@@ -165,8 +165,7 @@ export class MainService extends inheritances {
   async getOrderById(orderId, orderType) {
     const apiUrl = GET_URLS[orderType] || GET_URLS.swaps;
     const filter = `{"where":{"id":"${orderId}"}}`;
-    const finalUrl = `${apiUrl}users/${this.user.id}/${orderType}?country=${this.user.country}&filter=${filter}`;
-
+    const finalUrl = `${apiUrl}/${this.user.id}/${orderType}?country=${this.user.country}&filter=${filter}`;
     const order = await this.Get(finalUrl);
 
     if (!order || order.length < 1) {
@@ -238,26 +237,27 @@ export class MainService extends inheritances {
 
   async isCached(path, newData, doStateValidation = true) {
     return false;
-    const localState = this.globalState.modelData;
-    const cached = await localForage.getItem("CACHED_DATA");
-    if (cached && cached[path]) {
-      if (deepEqual(cached[path], newData)) {
-        const existInState = localState[path];
-        if (doStateValidation && !existInState) {
-          return false;
-        }
-        return true;
-      } else {
-        await localForage.setItem("CACHED_DATA", {
-          ...cached,
-          [path]: newData,
-        });
-      }
-    } else {
-      await localForage.setItem("CACHED_DATA", { ...cached, [path]: newData });
-    }
-    return false;
+    // const localState = this.globalState.modelData;
+    // const cached = await localForage.getItem("CACHED_DATA");
+    // if (cached && cached[path]) {
+    //   if (deepEqual(cached[path], newData)) {
+    //     const existInState = localState[path];
+    //     if (doStateValidation && !existInState) {
+    //       return false;
+    //     }
+    //     return true;
+    //   } else {
+    //     await localForage.setItem("CACHED_DATA", {
+    //       ...cached,
+    //       [path]: newData,
+    //     });
+    //   }
+    // } else {
+    //   await localForage.setItem("CACHED_DATA", { ...cached, [path]: newData });
+    // }
+    // return false;
   }
+
 }
 
 // preserve for future aplication
