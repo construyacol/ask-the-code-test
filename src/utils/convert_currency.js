@@ -1,12 +1,7 @@
 import store from "..";
 import { currencyFormatByCoin } from "../const/const";
 
-export const formatToCurrency = (
-  n,
-  short_currency,
-  toFormat,
-  delete_surplus_decimals = true
-) => {
+export const formatToCurrency = (n, short_currency, toFormat, delete_surplus_decimals = true) => {
   const amount = String(n).slice();
   const currency = short_currency.is_token
     ? short_currency.contract_data.token_name

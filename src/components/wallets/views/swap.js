@@ -16,10 +16,14 @@ import { useActions } from "../../../hooks/useActions";
 import { AvailableBalance, OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import UseSwapInfo from '../../hooks/useSwapInfo'
+
+
 
 function SwapView(props) {
 
   const [coinsendaServices] = useCoinsendaServices();
+  const [{ current_wallet }] = UseSwapInfo()
   const [value, setValue] = useState(undefined);
   const [active, setActive] = useState(undefined);
   // const [shouldActiveButton, setShouldActiveButton] = useState(true);
@@ -133,12 +137,10 @@ function SwapView(props) {
     // }
   };
   //
-  const handleChangeSellAmount = async () => {}
-  //   name,
-  //   newValue,
-  //   setInputState,
-  //   isOnlyTypingValidation = false
-  // ) => {
+  const handleChangeSellAmount = async (name, newValue, setInputState, isOnlyTypingValidation = false) => {
+
+  // console.log(newValue)
+
   //   if (!currentPair.secondary_value) return;
   //   if (newValue === "") return setValue(undefined);
   //   newValue = String(newValue)
@@ -191,7 +193,7 @@ function SwapView(props) {
   //       : formatedValue.toString();
   //     setValue(formatedValue.toString());
   //   });
-  // };
+  };
   //
   // const handleError = (msg) => {
   //   mensaje(msg, "error");
@@ -228,7 +230,7 @@ function SwapView(props) {
   //   }
   //   return totalValue.want_to_spend;
   // };
-  //
+
   const startSwap = async (e) => {
     // e && e.preventDefault();
     // setLoaderButton(true);
@@ -237,6 +239,7 @@ function SwapView(props) {
     // setShouldActiveButton(false);
     // setLoaderButton(false);
   };
+
   //
   // const getMinValueForCrypto = async (minValueInSecondaryCoin) => {
   //   const { pair_id, secondary_coin } = currentPair;
@@ -278,11 +281,12 @@ function SwapView(props) {
   // };
   //
   const handleMaxAvailable = (e) => {
-  //   window.requestAnimationFrame(() => {
-  //     const amount = document.getElementsByName("sell-amount")[0];
-  //     amount.value = isFiat ? formatNumber(availableBalance) : availableBalance;
-  //     setValue(availableBalance);
-  //   });
+    window.requestAnimationFrame(async() => {
+      const amount = document.getElementsByName("sell-amount")[0];
+      let amountValue = await formatToCurrency(availableBalance, current_wallet.currency);
+      amount.value = amountValue.toFormat();
+      setValue(availableBalance);
+    });
   };
   //
   const { short_name, loader } = props;
@@ -426,7 +430,7 @@ const SwapViewLoader = () => {
 };
 
 function mapStateToProps(state, props) {
-  const { pairsForAccount } = state.ui.current_section.params;
+  const { pairsForAccount } = state.storage;
   const { wallets, all_pairs } = state.modelData;
   const { params } = props.match;
   const current_wallet = wallets[params.account_id];

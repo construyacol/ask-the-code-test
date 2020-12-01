@@ -163,38 +163,38 @@ export class SwapService extends WebService {
     }
   }
 
-  async loadPairs(currentWallet, localCurrency, currentPair) {
-    if ((currentPair && currentPair.pair_id) || !currentWallet) {
-      return false;
-    }
-    const currency = currentWallet.currency.currency;
-
-    // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
-    let pair = await this.getPairs(currency, localCurrency);
-    !pair && (pair = await this.getPairs("bitcoin", currency));
-    !pair && (pair = await this.getPairs(currency));
-    !pair && (pair = await this.getPairs(null, currency));
-
-    if (!pair) {
-      return false;
-    }
-
-    const pairId = pair.id;
-    const data = await convertCurrencies(currentWallet.currency, "1", pairId);
-
-    if (data) {
-      const { to_spend_currency } = data;
-      return this.dispatch(
-        pairsForAccount(currentWallet.id, {
-          current_pair: {
-            pair_id: pairId,
-            currency: to_spend_currency.currency,
-            currency_value: data.want_to_spend,
-          },
-        })
-      );
-    }
-  }
+  // async loadPairs(currentWallet, localCurrency, currentPair) {
+  //   if ((currentPair && currentPair.pair_id) || !currentWallet) {
+  //     return false;
+  //   }
+  //   const currency = currentWallet.currency.currency;
+  //
+  //   // buscamos los pares, por defecto primero buscara el par de la moneda de la cuenta actual cotizando en la moneda fiat local, si no, buscara la cotización en bitcoin, si no la que encuentre ya sea como moneda primaria o secundaria
+  //   let pair = await this.getPairs(currency, localCurrency);
+  //   !pair && (pair = await this.getPairs("bitcoin", currency));
+  //   !pair && (pair = await this.getPairs(currency));
+  //   !pair && (pair = await this.getPairs(null, currency));
+  //
+  //   if (!pair) {
+  //     return false;
+  //   }
+  //
+  //   const pairId = pair.id;
+  //   const data = await convertCurrencies(currentWallet.currency, "1", pairId);
+  //
+  //   if (data) {
+  //     const { to_spend_currency } = data;
+  //     return this.dispatch(
+  //       pairsForAccount(currentWallet.id, {
+  //         current_pair: {
+  //           pair_id: pairId,
+  //           currency: to_spend_currency.currency,
+  //           currency_value: data.want_to_spend,
+  //         },
+  //       })
+  //     );
+  //   }
+  // }
 
   async addNewSwap(accountId, pairId, value) {
     const user = this.user;

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { debounce } from "../../utils";
 import { formatToCurrency } from "../../utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle";
+import UseSwapInfo from "./useSwapInfo";
+
 
 export default () => {
   const [inputState, setInputState] = useState();
@@ -13,45 +15,21 @@ export default () => {
   // const { account_id } = params
   // const { wallets, withdrawProviders } = globalState.modelData
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState();
+  const [{ currentPair }] = UseSwapInfo();
+  let value
+  let min_amount
+  let available
+
+
+  // const getMinAmount
+
 
   const validateState = async (inputName, e) => {
     if (!e.target.value || e.target.value.length === 0) {
       return setInputState(null);
     }
     switch (inputName) {
-      //   case 'email':
-      //     let minRegex = /@/
-      //     let emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
-      //     if (emailRegex.test(value.replace(/^\s+|\s+$|\s+(?=\s)/g, "")) && value.length>8) {
-      //       setInputState('good')
-      //     }else if(minRegex.test(value)){
-      //       setInputState('bad')
-      //     }else{
-      //       setInputState(null)
-      //     }
-      //   break
-      //   case 'password':
-      //     if(value.length > 6){
-      //       setInputState('good')
-      //     }else{
-      //       setInputState(null)
-      //     }
-      //   break
-      //   case 'password2':
-      //     const form = new FormData(document.getElementById('authForm'))
-      //     const password = form.get('password')
-      //     let password2 = value
-      //     if(password2.length > 6 && password2 === password){
-      //       return setInputState('good')
-      //     }
-      //     if(password2.length > 6 && password2 !== password){
-      //       // dispatch(handleError({response:{data:{error:'Las contraseñas no coinciden'}}}))
-      //       // setHandleError('Las contraseñas no coinciden')
-      //       setInputState('bad')
-      //     }else{
-      //       setInputState(null)
-      //     }
-      //     break
+
       case "name-account":
         if (e.target.value.length > 2) {
           setInputState("good");
@@ -61,8 +39,7 @@ export default () => {
 
       case "address":
       case "address-account":
-        // case: si encontramos @ al inicio de la linea: ^@
-
+        // case: `address` si encontramos @ al inicio de la linea: ^@
         if (inputName === "address" && e.target.value.match(/^@/g)) {
           // console.log('activando sistema de tags')
           return;
@@ -91,31 +68,58 @@ export default () => {
         break;
 
       case "amount":
-        let value = await formatToCurrency(
-          e.target.value,
+      // Retiro cripto
+
+        value = await formatToCurrency(
+          e.target.value.toString().replace(/,/g, ""),
           current_wallet.currency
         );
+
         if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {
           return (e.target.value = null);
         }
-        let min_amount = await formatToCurrency(
-          withdrawProviders[current_wallet.currency.currency].provider
-            .min_amount,
-          current_wallet.currency
-        );
-        let available = await formatToCurrency(
-          current_wallet.available,
-          current_wallet.currency
-        );
-        if (
-          value.isGreaterThanOrEqualTo(min_amount) &&
-          value.isLessThanOrEqualTo(available)
-        ) {
+
+         min_amount = await formatToCurrency(withdrawProviders[current_wallet.currency.currency].provider.min_amount, current_wallet.currency);
+         available = await formatToCurrency(current_wallet.available, current_wallet.currency);
+
+        if (value.isGreaterThanOrEqualTo(min_amount) && value.isLessThanOrEqualTo(available)) {
           setInputState("good");
-          return e.target.value;
         } else {
           setInputState("bad");
         }
+        return e.target.value;
+
+
+
+      case "sell-amount":
+
+        value = await formatToCurrency(
+          e.target.value.toString().replace(/,/g, ""),
+          current_wallet.currency
+        );
+
+        if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {
+          return (e.target.value = null);
+        }
+        if(!currentPair){
+          console.log('No se puede acceder a currentPair')
+          return (e.target.value = null);
+        }
+
+        // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "sell-amount" si la moneda que se gasta (current_wallet) es la secondary_currency
+         const isSecondaryCurrency = current_wallet.currency.currency === currentPair.secondary_currency.currency
+         min_amount = await formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_order.min_amount : '0', current_wallet.currency);
+         available = await formatToCurrency(current_wallet.available, current_wallet.currency);
+
+        const min_amount_validation = isSecondaryCurrency ? value.isGreaterThanOrEqualTo(min_amount) : value.isGreaterThan(min_amount);
+
+        if (min_amount_validation && value.isLessThanOrEqualTo(available)) {
+          setInputState("good");
+        } else {
+          setInputState("bad");
+        }
+        return e.target.value = current_wallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
+
         break;
       default:
     }

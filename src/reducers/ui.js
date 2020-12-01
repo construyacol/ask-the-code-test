@@ -4,7 +4,6 @@ import {
   CONFIRMATION_MODAL_PAYLOAD,
   SECTION_VIEW_TO,
   CURRENT_SECTION_PARAMS,
-  PAIRS_FOR_ACCOUNT,
   OTHER_MODAL,
   CURRENT_SECTION_CLEAN,
   FLOW_ANIMATION_LAYOUT,
@@ -227,27 +226,6 @@ const ui = (state = initialState, action) => {
               state.current_section.params.show_menu_principal,
             active_trade_operation:
               state.current_section.params.active_trade_operation,
-          },
-        },
-      };
-
-    case PAIRS_FOR_ACCOUNT:
-      // console.log('PAIRS_FOR_ACCOUNT', action.payload)
-      return {
-        ...state,
-        current_section: {
-          ...state.current_section,
-          params: {
-            ...state.current_section.params,
-            pairsForAccount: {
-              ...state.current_section.params.pairsForAccount,
-              [action.payload.wallet_id]: {
-                ...state.current_section.params.pairsForAccount[
-                  action.payload.wallet_id
-                ],
-                ...action.payload.data,
-              },
-            },
           },
         },
       };
