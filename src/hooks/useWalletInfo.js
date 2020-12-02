@@ -11,7 +11,7 @@ const selectCurrentPair = createSelector(
     if(currentPair && currentPair.pair_id){
       return {
         ...all_pairs[currentPair.pair_id],
-        secondary_coin:pairsForAccount[account_id].current_pair.currency
+        boughtCurrency:pairsForAccount[account_id].current_pair.currency
       }
     }
     return null;

@@ -21,7 +21,8 @@ export default () => {
   let value
   let min_amount
   let available
-
+  let minAmountValidation
+  let availableAmountValidation
 
   // const getMinAmount
 
@@ -32,12 +33,15 @@ export default () => {
     }
     switch (inputName) {
 
+
       case "name-account":
         if (e.target.value.length > 2) {
           setInputState("good");
         }
 
         break;
+
+
 
       case "address":
       case "address-account":
@@ -69,35 +73,64 @@ export default () => {
         e.target.value = finalValue;
         break;
 
+
+
+
+
+
       case "amount": // Retiro cripto
-      case "sell-amount": // Swap input spend
+      case "spend-amount": // Swap input spend
 
         value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentWallet.currency);
 
         if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {
+          setCustomError(null)
+          setInputState("bad");
           return e.target.value = null;
         }
 
-        if(inputName === 'sell-amount' && !currentPair){
+        if(inputName === 'spend-amount' && !currentPair){
             console.log('No se puede acceder a currentPair')
           return (e.target.value = null);
         }
 
          min_amount = getMinAmount(inputName)
          available = formatToCurrency(availableBalance, currentWallet.currency);
-         const minAmountValidation = getMinAmountValidation(inputName, value, min_amount)
-         const availableAmountValidation = value.isLessThanOrEqualTo(available)
+         minAmountValidation = getMinAmountValidation(inputName, value, min_amount)
+         availableAmountValidation = value.isLessThanOrEqualTo(available)
 
         if (minAmountValidation && availableAmountValidation) {
           setCustomError(null)
           setInputState("good");
-          // alert(customError)
+          // return e.target.value = value.toFormat();
         } else {
           setInputState("bad");
           ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
         }
         return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
-        break;
+        // return e.target.value;
+
+
+
+
+
+        case 'bought-amount':
+          const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
+          if(!isSecondaryCurrency){return value}
+          value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentPair.secondary_currency);
+          min_amount = getMinAmount(inputName)
+          minAmountValidation = getMinAmountValidation(inputName, value, min_amount)
+          // console.log('Moneda secundaria comprada', currentPair.boughtCurrency, 'Cantidad comprada', value.toFormat(), ' Cantidad Mínima:', min_amount.toFormat(), minAmountValidation)
+          if (minAmountValidation) {
+            setCustomError(null)
+            setInputState("good");
+            // return e.target.value = value.toFormat();
+          } else {
+            setInputState("bad");
+            ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
+          }
+          return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
+        return
       default:
     }
   };
@@ -106,7 +139,7 @@ export default () => {
     if(value.length > 1){
       let errMsg = ""
       switch (inputName) {
-        case 'sell-amount': //Swap input
+        case 'spend-amount': //Swap input
           const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
           errMsg =
           // (!minAmountValidation) ? `El monto mínimo para recibir es: ${currentPair.exchange.min_order.min_amount}` :
@@ -118,6 +151,10 @@ export default () => {
           (!minAmountValidation) ? `El monto mínimo es: ${min_amount}` :
            !availableAmountValidation && `El monto supera el valor disponible en la cuenta`;
           return setCustomError(errMsg)
+        case 'bought-amount':
+          errMsg =
+          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency.currency}`
+          return setCustomError(errMsg)
         default:
       }
     }else{
@@ -128,14 +165,17 @@ export default () => {
 
   const getMinAmount = (inputName) => {
     switch (inputName) {
-      case 'sell-amount':
-      // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "sell-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
+      case 'spend-amount':
+      // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
         const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
         return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_order.min_amount : '0', currentWallet.currency);
         break;
       case 'amount':
         return formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
+      case 'bought-amount':
+      // return formatToCurrency(currentPair.exchange.min_order.min_amount, currentWallet.currency);
+        return formatToCurrency('20000', currentWallet.currency);
       default:
         return
     }
@@ -143,10 +183,11 @@ export default () => {
 
   const getMinAmountValidation = (inputName, value, min_amount) => {
     switch (inputName) {
-      case 'sell-amount':
+      case 'spend-amount':
         const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
         return isSecondaryCurrency ? value.isGreaterThanOrEqualTo(min_amount) : value.isGreaterThan(min_amount);
       case 'amount':
+      case 'bought-amount':
         return value.isGreaterThanOrEqualTo(min_amount)
       default:
     }

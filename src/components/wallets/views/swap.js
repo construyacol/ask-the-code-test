@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import BigNumber from "bignumber.js";
 import InputForm from "../../widgets/inputs/inputForm";
-import { mensaje, formatNumber, debounce } from "../../../utils";
 import convertCurrencies, { formatToCurrency} from "../../../utils/convert_currency";
+import { formatNumber } from "../../../utils";
 import usePrevious from "../../hooks/usePreviousValue";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
@@ -15,7 +15,7 @@ import { AvailableBalance, OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import UseSwapInfo from '../../hooks/useSwapInfo'
-
+import useToastMessage from '../../../hooks/useToastMessage'
 
 
 function SwapView(props) {
@@ -27,6 +27,8 @@ function SwapView(props) {
   // // const [pairId, setPairId] = useState()
   const [valueToReceive, setValueToReceive] = useState();
   const [loaderButton, setLoaderButton] = useState();
+  const [ exchangeEnabled, setExchangeEnabled ] = useState()
+  const [ toastMessage ] = useToastMessage()
   // const [minAmountByOrder, setMinAmountByOrder] = useState({
   //   minAmount: 0,
   //   currencyCode: "",
@@ -56,251 +58,113 @@ function SwapView(props) {
 
 
   const callToSetReceiveValue = async () => {
-    const valueToReceive = value ? await getReceiveValue() : undefined;
-    // setValueToReceive(valueToReceive);
+    const _valueToReceive = value ? await getReceiveValue() : undefined;
+    if(!_valueToReceive){return}
+    if (isNaN(_valueToReceive.toNumber()) || _valueToReceive.toNumber() === "NaN") {
+      return setValueToReceive(0);
+    }
+    setValueToReceive(_valueToReceive.toFormat());
   };
 
 
   const getReceiveValue = async () => {
     const { id } = currentPair;
     if (value === undefined) return undefined;
-    // coinsendaServices
-
-    // const valueToReceive = await convertCurrencies(
-    //   currentWallet.currency,
-    //   value,
-    //   id
-    // );
-    // if (!valueToReceive) {
-    //   return false;
-    // }
-    // console.log('||||||||||||| getReceiveValue: ', valueToReceive)
-    // return valueToReceive.want_to_spend;
+    const result = await coinsendaServices.convertCurrencies(value, currentWallet.currency, id)
+    if(!result){return console.log('No se pudo calcular la cantidad a recibir')}
+    const { data } = result
+    const { data: { want_to_spend, to_spend_currency } } = result
+    const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
+    return formatValue
   };
 
+  const handleStateSpendInput = (state) => {
+    // listener de estado del input de la moneda gastada: "Pago con:" solo se valida si la moneda gastada es la moneda secundaria del par,
+    // ya que ya viene validada con el monto mínimo expresado en la misma dentro del modelo pair.exchange...min_amount
+    const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
+    if(isSecondaryCurrency){
+      setExchangeEnabled(state)
+    }
+  }
 
-  // useEffect(() => {
-  //   callToSetTotalValue();
-  //   callToShouldActiveButton();
-  // }, [value, currentPair, isReady]);
-
-  // useEffect(() => {
-  //   if (currentPair && currentPair.pair_id) {
-  //     const _minAmountByOrder =
-  //       props.all_pairs[currentPair.pair_id].exchange.min_order;
-  //     setMinAmountByOrder({
-  //       currencyCode: _minAmountByOrder.currency.currency,
-  //       minAmount: _minAmountByOrder.min_amount,
-  //     });
-  //   } else {
-  //     setMinAmountByOrder({
-  //       minAmount: 0,
-  //       currencyCode: "",
-  //     });
-  //   }
-  //   if (value && prevCurrentPair && prevCurrentPair.current_pair) {
-  //     if (
-  //       prevCurrentPair.current_pair.secondary_coin !==
-  //       currentPair.secondary_coin
-  //     ) {
-  //       swap();
-  //     }
-  //   }
-  // }, [currentPair]);
-  //
-
-  //
-  // const setMessage = async () => {
-  //   if (currentPair && currentPair.secondary_coin) {
-  //     const conditionForText =
-  //       currentPair.secondary_coin === minAmountByOrder.currencyCode;
-  //     let actualValue = value;
-  //     actualValue = new BigNumber(String(actualValue).replace(/,/g, ""));
-  //     const minValueForCripto = await getMinValueForCrypto(
-  //       minAmountByOrder.minAmount
-  //     );
-  //     if (
-  //       actualValue.isLessThan(
-  //         conditionForText ? minValueForCripto : minAmountByOrder.minAmount
-  //       )
-  //     ) {
-  //       let text = "";
-  //       if (conditionForText) {
-  //         // text = `a recibir (${minAmountByOrder.minAmount} ${minAmountByOrder.currencyCode.toUpperCase()})`
-  //         text = `(${minValueForCripto})`;
-  //       } else {
-  //         text = `(${
-  //           minAmountByOrder.minAmount
-  //         } ${minAmountByOrder.currencyCode.toUpperCase()})`;
-  //       }
-  //       setValueError({
-  //         text: `El monto mínimo para pagar es: ${text}`,
-  //       });
-  //     } else {
-  //       setValueError(null);
-  //     }
-  //   }
-  // };
-  //
-  // const debounceSetMessage = debounce(setMessage, 100);
-  //
-  // useEffect(() => {
-  //   debounceSetMessage();
-  // }, [valueToReceive, value, currentPair]);
-  //
+  const handleStateBoughtInput = (state) => {
+    const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
+    if(isSecondaryCurrency){
+      setExchangeEnabled(state)
+    }
+  }
 
 
-  // const callToShouldActiveButton = async () => {
-  //   const formatValue = await formatToCurrency(value, currentWallet.currency);
-  //   setActive(formatValue.isLessThanOrEqualTo(availableBalance));
-  // };
-  //
-  const handleChangeBuyAmount = (name, newValue, setInputState) => {
-    // if (newValue !== "" && newValue !== "0" && !valueError && active) {
-    //   setInputState("good");
-    // } else {
-    //   setInputState("bad");
-    // }
+  const handleChangeSpendAmount = async (name, newValue) => {
+    setValue(newValue.toString().replace(/,/g, ""))
   };
-  //
-  const handleChangeSellAmount = async (name, newValue, setInputState, isOnlyTypingValidation = false) => {
 
-  setValue(newValue.toString().replace(/,/g, ""))
-
-  // console.log('|||||||||||||||| newValue::', newValue.toString().replace(/,/g, ""))
-
-  //   if (!currentPair.secondary_value) return;
-  //   if (newValue === "") return setValue(undefined);
-  //   newValue = String(newValue)
-  //     .replace(/[^0-9,.]/g, "")
-  //     .replace(/,/g, "");
-  //
-  //   const formatedValue = await formatToCurrency(
-  //     newValue,
-  //     currentWallet.currency
-  //   );
-  //   const isGood =
-  //     formatedValue.isGreaterThan(0) &&
-  //     formatedValue.isLessThanOrEqualTo(availableBalance);
-  //
-  //   setInputState(isGood ? "good" : "bad");
-  //
-  //   if (isOnlyTypingValidation) return;
-  //
-  //   const valueAfterDot = newValue.split(".");
-  //
-  //   // limit to only one "."
-  //   if (valueAfterDot.length > 2) {
-  //     document.getElementsByName(name)[0].value = valueAfterDot[0] + ".";
-  //     return;
-  //   }
-  //
-  //   let shouldSetElement = true;
-  //   if (valueAfterDot[1] === "" || RegExp("^[0]+$").test(valueAfterDot[1])) {
-  //     shouldSetElement = false;
-  //   }
-  //
-  //   const element = shouldSetElement ? document.getElementsByName(name)[0] : {};
-  //
-  //   if (
-  //     isNaN(formatedValue) ||
-  //     formatedValue === "NaN" ||
-  //     formatedValue.toNumber() === 0
-  //   ) {
-  //     return window.requestAnimationFrame(() => {
-  //       if (formatedValue.toNumber() === 0) {
-  //         setValue(0);
-  //       }
-  //       element.value = isFiat ? formatNumber(newValue) : newValue;
-  //     });
-  //   }
-  //
-  //   window.requestAnimationFrame(() => {
-  //     element.value = isFiat
-  //       ? formatNumber(formatedValue.toString())
-  //       : formatedValue.toString();
-  //     setValue(formatedValue.toString());
-  //   });
+  const handleError = (msg) => {
+    toastMessage(msg, "error");
   };
-  //
-  // const handleError = (msg) => {
-  //   mensaje(msg, "error");
-  // };
-  //
-  // const confirmSwap = async () => {
-  //   actions.isAppLoading(true);
-  //   if (!props.order_list) {
-  //     await coinsendaServices.get_swaps(currentWallet.id);
-  //   }
-  //   const { pair_id } = currentPair;
-  //   const newSwap = await coinsendaServices.addNewSwap(
-  //     currentWallet.id,
-  //     pair_id,
-  //     value
-  //   );
-  //   actions.isAppLoading(false);
-  //   setShouldActiveButton(true);
-  //   if (!newSwap) {
-  //     return handleError("No se ha podio hacer el cambio");
-  //   }
-  // };
-  //
+
+  const confirmSwap = async () => {
+    actions.isAppLoading(true);
+    if (!props.order_list) {
+      await coinsendaServices.get_swaps(currentWallet.id);
+    }
+    console.log('||||||||||| confirmSwap: ', value)
+    const { id } = currentPair;
+    const newSwap = await coinsendaServices.addNewSwap(
+      currentWallet.id,
+      id,
+      value
+    );
+    actions.isAppLoading(false);
+    if (!newSwap) {
+      return handleError("No se ha podio hacer el cambio");
+    }
+  };
 
 
   const startSwap = async (e) => {
-    // e && e.preventDefault();
-    // setLoaderButton(true);
-    // await swap();
-    // actions.confirmationModalToggle();
-    // setShouldActiveButton(false);
-    // setLoaderButton(false);
+    e && e.preventDefault();
+    setLoaderButton(true);
+    await swap();
+    actions.confirmationModalToggle();
+    setLoaderButton(false);
   };
 
-  //
-  // const getMinValueForCrypto = async (minValueInSecondaryCoin) => {
-  //   const { pair_id, secondary_coin } = currentPair;
-  //   const valueToReceive = await convertCurrencies(
-  //     secondary_coin,
-  //     minValueInSecondaryCoin,
-  //     pair_id
-  //   );
-  //   return valueToReceive;
-  // };
-  //
-  // const swap = async () => {
-  //   const { secondary_coin, pair_id } = currentPair;
-  //   let query = `{"where":{"id":"${pair_id}"}}`;
-  //   await coinsendaServices.updateCurrentPair(query);
-  //
-  //   const spent_currency_amount = await formatToCurrency(
-  //     value,
-  //     currentWallet.currency,
-  //     true
-  //   );
-  //   const secureTotalValue = await ||||| ||(value);
-  //
-  //   actions.confirmationModalPayload({
-  //     title: "Confirmando Intercambio",
-  //     txtPrimary: "Confirmar Intercambio",
-  //     txtSecondary: "Cancelar",
-  //     payload: "aa",
-  //     action: confirmSwap,
-  //     img: "swap",
-  //     type: "swap",
-  //     from: currentWallet.currency.currency,
-  //     to: secondary_coin,
-  //     handleSwap: swap,
-  //     spent: spent_currency_amount,
-  //     bought: secureTotalValue,
-  //     pair_id,
-  //   });
-  // };
-  //
+
+  const swap = async () => {
+    const { boughtCurrency, id } = currentPair;
+    let query = `{"where":{"id":"${id}"}}`;
+    await coinsendaServices.updateCurrentPair(query);
+
+    const spent_currency_amount = await formatToCurrency(
+      value,
+      currentWallet.currency
+    );
+
+    const secureTotalValue = await getReceiveValue(value);
+
+    actions.confirmationModalPayload({
+      title: "Confirmando Intercambio",
+      txtPrimary: "Confirmar Intercambio",
+      txtSecondary: "Cancelar",
+      payload: "aa",
+      action: confirmSwap,
+      img: "swap",
+      type: "swap",
+      from: currentWallet.currency.currency,
+      to: boughtCurrency,
+      handleSwap: swap,
+      spent: spent_currency_amount.toFormat(),
+      bought: secureTotalValue.toFormat(),
+      id,
+    });
+  };
+
 
   const handleMaxAvailable = (e) => {
     window.requestAnimationFrame(async() => {
-      const amount = document.getElementsByName("sell-amount")[0];
-      let amountValue = await formatToCurrency(availableBalance, currentWallet.currency);
+      const amount = document.getElementsByName("spend-amount")[0];
+      let amountValue = formatToCurrency(availableBalance, currentWallet.currency);
       amount.value = amountValue.toFormat();
       setValue(availableBalance);
     });
@@ -309,11 +173,11 @@ function SwapView(props) {
   const { short_name, loader } = props;
   // const shouldActiveInput = active && secondary_coin && availableBalance > 0 && value > 0;
 
-  if ((!currentPair || currentPair && !currentPair.secondary_coin) || !currentWallet) {
+  if ((!currentPair || currentPair && !currentPair.boughtCurrency) || !currentWallet) {
     return <SwapViewLoader />;
   }
-
-  const { secondary_coin, secondary_value } = currentPair;
+  // console.log('|||||||||||||| valueToReceive :', valueToReceive, !valueToReceive)
+  const { boughtCurrency, secondary_value } = currentPair;
 
   return (
     <SwapForm
@@ -326,9 +190,10 @@ function SwapView(props) {
         classes="fuente2"
         type="text"
         placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
-        name="sell-amount"
+        name="spend-amount"
         value={value}
-        handleChange={handleChangeSellAmount}
+        handleChange={handleChangeSpendAmount}
+        handleStatus={handleStateSpendInput}
         setMaxWithActionKey={true}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
@@ -353,9 +218,10 @@ function SwapView(props) {
         classes="fuente2"
         type="text"
         placeholder="0"
-        name="buy-amount"
+        name="bought-amount"
         value={valueToReceive}
-        handleChange={handleChangeBuyAmount}
+        handleStatus={handleStateBoughtInput}
+        state={exchangeEnabled}
         isControlled={true}
         label={`Recibo:`}
         disabled={loader}
@@ -364,28 +230,26 @@ function SwapView(props) {
           <PairSelect
             id={idForClickeableElementPairSelector}
             selectPair={selectPair}
-            secondaryCoin={secondary_coin}
+            secondaryCoin={boughtCurrency}
           />
         )}
       />
 
-      {/* <div>
+      <div>
         <CoinPrice>
           1 {short_name} ={" "}
           {!secondary_value ? "Sin Cotización" : secondary_value}{" "}
-          {secondary_coin}
+          {boughtCurrency}
         </CoinPrice>
-      </div> */}
+      </div>
 
-      {/* <ControlButton
+      <ControlButton
         id={idForClickeableElement}
         handleAction={startSwap}
         loader={loaderButton || loader}
-        formValidate={
-          shouldActiveInput && valueToReceive && valueToReceive !== "0"
-        }
+        formValidate={(exchangeEnabled === 'good' && valueToReceive) ? true : false}
         label="Cambiar"
-      /> */}
+      />
     </SwapForm>
   );
 }
@@ -450,21 +314,6 @@ function mapStateToProps(state, props) {
   const { wallets, all_pairs } = state.modelData;
   const { params } = props.match;
   const current_wallet = wallets[params.account_id];
-
-  // const currentPair = {
-  //   pair_id:
-  //     current_wallet &&
-  //     pairsForAccount[current_wallet.id] &&
-  //     pairsForAccount[current_wallet.id].current_pair.pair_id,
-  //   secondary_coin:
-  //     current_wallet &&
-  //     pairsForAccount[current_wallet.id] &&
-  //     pairsForAccount[current_wallet.id].current_pair.currency,
-  //   secondary_value:
-  //     current_wallet &&
-  //     pairsForAccount[current_wallet.id] &&
-  //     pairsForAccount[current_wallet.id].current_pair.currency_value,
-  // };
 
   return {
     loader: state.isLoading.loader,

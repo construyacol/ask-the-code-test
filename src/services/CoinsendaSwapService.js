@@ -5,6 +5,7 @@ import {
   SWAP_URL,
   PAIRS_URL,
   GET_SWAPS_BY_USERS_URL,
+  SWAP_CONVERT_CURRENCIES
 } from "../const/const";
 import { desNormalizedList, normalized_list } from "../utils";
 import normalizeUser from "../schemas";
@@ -89,10 +90,21 @@ export class SwapService extends WebService {
 
 
 
-  async convertCurrencies(currency, pair_id) {
-    const data = await convertCurrencies(currency, "1", pair_id);
-    console.log(data)
-    return data
+  async convertCurrencies(want_to_spend, to_spend_currency, pair_id) {
+    // const data = await convertCurrencies(currency, "1", pair_id);
+    // console.log(data)
+    // return data
+    const user = this.user
+    const body = {
+      data:{
+        to_spend_currency,
+        want_to_spend,
+        pair_id,
+        "country":user.country
+      }
+    }
+    const result = await this.Post(SWAP_CONVERT_CURRENCIES, body, user.userToken);
+    return result
   }
 
 

@@ -39,12 +39,13 @@ const InputForm = (props) => {
 
   const [inputState, setInputState, changeState, customError] = InputValidate();
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
+  // console.log('|||||||||||||||||||| inputState:', inputState)
 
-  const validate = (e, specialArg) => {
+  const validate = (e) => {
     // if(errorState && resetErrorState){resetErrorState(null)}
     e.persist && e.persist();
     setInputState(name, e);
-    handleChange(name, e.target.value, changeState, specialArg);
+    handleChange(name, e.target.value, inputState);
   };
 
   useEffect(() => {
@@ -55,6 +56,7 @@ const InputForm = (props) => {
   }, [inputState]);
 
   useEffect(() => {
+    // console.log('|||||||||||||| InputForm', state)
     state && changeState(state);
   }, [state]);
 
@@ -64,7 +66,7 @@ const InputForm = (props) => {
     // } else {
     //   validate({ target: { value } }, true);
     // }
-    validate({ target: { value } }, true);
+    validate({ target: { value } });
   }, [value]);
 
   let movil = window.innerWidth < 768;
@@ -200,8 +202,8 @@ export const InputContainer = styled.div`
   }
 
   .amount,
-  .buy-amount,
-  .sell-amount {
+  .spend-amount,
+  .bought-amount {
     font-family: "Tomorrow", sans-serif;
   }
 

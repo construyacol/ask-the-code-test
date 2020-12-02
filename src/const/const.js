@@ -52,6 +52,8 @@ export const UPDATE_DEPOSIT_URL = `${DepositApiUrl}deposits/add-update-deposit`;
 export const NEW_DEPOSIT_URL = `${DepositApiUrl}deposits/add-new-deposit`;
 export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subscribe-to-new-deposits`;
 
+
+export const SWAP_CONVERT_CURRENCIES = `${SwapApiUrl}swaps/convert-currencies`;
 export const SWAP_URL = `${SwapApiUrl}`;
 export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`;
