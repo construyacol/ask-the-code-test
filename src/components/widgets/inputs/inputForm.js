@@ -9,8 +9,8 @@ const InputForm = (props) => {
     placeholder,
     name,
     handleStatus,
-    errorState,
-    resetErrorState,
+    // errorState,
+    // resetErrorState,
     disabled,
     SuffixComponent,
     state,
@@ -20,7 +20,7 @@ const InputForm = (props) => {
     value = "",
     isControlled,
     autoFocus,
-    customError,
+    // customError,
     setMaxWithActionKey,
     autoComplete = "off",
     AuxComponent,
@@ -37,7 +37,7 @@ const InputForm = (props) => {
     );
   }
 
-  const [inputState, setInputState, changeState] = InputValidate(state);
+  const [inputState, setInputState, changeState, customError] = InputValidate();
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
 
   const validate = (e, specialArg) => {
@@ -59,12 +59,13 @@ const InputForm = (props) => {
   }, [state]);
 
   useEffect(() => {
-    if (customError) {
-      changeState("bad");
-    } else {
-      validate({ target: { value } }, true);
-    }
-  }, [customError, value]);
+    // if (customError) {
+    //   changeState("bad");
+    // } else {
+    //   validate({ target: { value } }, true);
+    // }
+    validate({ target: { value } }, true);
+  }, [value]);
 
   let movil = window.innerWidth < 768;
   const subfixId = "set-max-available";
@@ -106,13 +107,6 @@ const InputForm = (props) => {
     inputProps.value = value;
   }
 
-  // useEffect(()=>{
-  //   // AuxComponent && Object.keys(AuxComponent)
-  //   if(name === 'address'){
-  //     console.log('°°°||||||||||||||||||||||||||||||||| withdrawCripto::: ', AuxComponent)
-  //   }
-  // })
-
   return (
     <InputLayout>
       <ContainerInputComponent>
@@ -131,11 +125,10 @@ const InputForm = (props) => {
           </SuffixComponentContainer>
         )}
 
-        {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
+      {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
+      {/* <ErrorText className="fuente2">esto que puej</ErrorText> */}
+      {customError && <ErrorTexts className="fuente2">{customError}</ErrorTexts>}
       </ContainerInputComponent>
-      {customError && (
-        <ErrorText className="fuente">{customError.text}</ErrorText>
-      )}
     </InputLayout>
   );
 };
@@ -150,11 +143,14 @@ const AuxComponentContainer = ({ AuxComponent }) =>
     })
   );
 
-const ErrorText = styled.div`
+const ErrorTexts = styled.div`
   opacity: 0.7;
   color: red;
   font-size: 14px;
   margin-top: 10px;
+  position: absolute;
+  left: 0;
+  bottom: -25px;
 `;
 
 const InputLayout = styled(SkeletonAnimation)`

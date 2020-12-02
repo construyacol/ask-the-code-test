@@ -17,6 +17,7 @@ import CriptoViewLoader from "./skeleton";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 
+
 export const CriptoSupervisor = (props) => {
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState();
   // const [ { current_wallet } ] = WithdrawViewState()
@@ -56,6 +57,7 @@ export const CriptoView = () => {
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState();
   const [amountState, setAmountState] = useState();
+  const [amountValue, setAmountValue] = useState();
   const isValidForm = useRef(false);
   let movil_viewport = window.innerWidth < 768;
   const idForClickeableElement = useKeyActionAsClick(
@@ -65,6 +67,10 @@ export const CriptoView = () => {
     false,
     "onkeyup"
   );
+
+  const handleChangeAmount = (name, newValue) => {
+    setAmountValue(newValue)
+  }
 
   const setTowFaTokenMethod = async (twoFaToken) => {
     actions.renderModal(null);
@@ -147,7 +153,8 @@ export const CriptoView = () => {
   const handleMaxAvailable = (e) => {
     // TODO: no se debe manajar valores deirecto del DOM
     let amount = document.getElementsByName("amount")[0];
-    amount.value = balance.available;
+    amount.value = balance.available
+    setAmountValue(balance.available)
     if (amount.value > 0) {
       setAmountState("good");
     }
@@ -275,10 +282,12 @@ export const CriptoView = () => {
         }`}
         name="amount"
         handleStatus={setAmountState}
+        handleChange={handleChangeAmount}
         label={`Ingresa la cantidad de retiro`}
         disabled={loader}
         state={amountState}
         setMaxWithActionKey={true}
+        value={amountValue}
         SuffixComponent={({ id }) => (
           <AvailableBalance
             id={id}
