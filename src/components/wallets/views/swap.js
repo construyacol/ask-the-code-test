@@ -25,8 +25,8 @@ function SwapView(props) {
   const [active, setActive] = useState(undefined);
   // const [shouldActiveButton, setShouldActiveButton] = useState(true);
   // // const [pairId, setPairId] = useState()
-  const [valueToReceive, setValueToReceive] = useState();
-  const [loaderButton, setLoaderButton] = useState();
+  const [ valueToReceive, setValueToReceive ] = useState();
+  const [ loaderButton, setLoaderButton ] = useState();
   const [ exchangeEnabled, setExchangeEnabled ] = useState()
   const [ toastMessage ] = useToastMessage()
   // const [minAmountByOrder, setMinAmountByOrder] = useState({
@@ -49,17 +49,20 @@ function SwapView(props) {
   useEffect(() => {
     selectPair(true);
     const { local_currency } = props;
-    coinsendaServices.getDefaultPair(currentWallet, local_currency, currentPair);
+    if(!currentPair){
+      coinsendaServices.getDefaultPair(currentWallet, local_currency, currentPair);
+    }
   }, []);
 
   useEffect(() => {
     callToSetReceiveValue()
-  }, [value])
+  }, [value, currentPair])
 
 
   const callToSetReceiveValue = async () => {
     const _valueToReceive = value ? await getReceiveValue() : undefined;
     if(!_valueToReceive){return}
+    // console.log('||||||||||||||||||| _valueToReceive', _valueToReceive.toFormat(), _valueToReceive.toNumber())
     if (isNaN(_valueToReceive.toNumber()) || _valueToReceive.toNumber() === "NaN") {
       return setValueToReceive(0);
     }
@@ -73,6 +76,7 @@ function SwapView(props) {
     const result = await coinsendaServices.convertCurrencies(value, currentWallet.currency, id)
     if(!result){return console.log('No se pudo calcular la cantidad a recibir')}
     const { data } = result
+    console.log('||||||||||||||||||| convertCurrencies API: ', value, typeof value, data)
     const { data: { want_to_spend, to_spend_currency } } = result
     const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
     return formatValue

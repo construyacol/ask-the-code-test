@@ -81,8 +81,9 @@ export default () => {
       case "amount": // Retiro cripto
       case "spend-amount": // Swap input spend
 
+      // console.log('||||||| inputName ', e.target.value.replace(/[^0-9.,]/g, ""))
+        if(e.target.value.match(/[^0-9.,]/g)){return e.target.value = e.target.value.replace(/[^0-9.,]/g, "")}
         value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentWallet.currency);
-
         if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {
           setCustomError(null)
           setInputState("bad");
@@ -184,8 +185,8 @@ export default () => {
       case 'amount':
         return formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
       case 'bought-amount':
-      // return formatToCurrency(currentPair.exchange.min_order.min_amount, currentWallet.currency);
-        return formatToCurrency('20000', currentWallet.currency);
+      return formatToCurrency(currentPair.exchange.min_order.min_amount, currentWallet.currency);
+        // return formatToCurrency('20000', currentWallet.currency);
       default:
         return
     }

@@ -55,6 +55,7 @@ export const PairList = (props) => {
     >
       <div className="PairListFind"></div>
       <div className="PairListItems">
+
         {allPairs && !loader ? (
           allPairs.map((pair, index) => {
             return (
@@ -70,7 +71,7 @@ export const PairList = (props) => {
                 }
                 actualizarEstado={selectQuote}
                 {...pair}
-                key={pair.id}
+                key={index}
                 specialMode={true}
               />
             );
@@ -80,6 +81,7 @@ export const PairList = (props) => {
             <SimpleLoader label={loaderMsg} />
           </div>
         )}
+
       </div>
     </OtherModalLayoutPairs>
   );
