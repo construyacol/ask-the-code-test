@@ -133,16 +133,13 @@ function SwapView(props) {
 
   const swap = async () => {
     const { boughtCurrency, id } = currentPair;
-    let query = `{"where":{"id":"${id}"}}`;
-    await coinsendaServices.updateCurrentPair(query);
-
     const spent_currency_amount = await formatToCurrency(
       value,
       currentWallet.currency
     );
-
+    let query = `{"where":{"id":"${id}"}}`;
+    await coinsendaServices.updateCurrentPair(query);
     const secureTotalValue = await getReceiveValue(value);
-
     actions.confirmationModalPayload({
       title: "Confirmando Intercambio",
       txtPrimary: "Confirmar Intercambio",

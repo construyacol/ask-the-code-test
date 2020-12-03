@@ -117,11 +117,13 @@ export default () => {
         case 'bought-amount':
           const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
           if(!isSecondaryCurrency){return value}
+          // Validamos que la cantidad gastada spend-amount no supere el monto disponible en la cuenta
+          availableAmountValidation = await availableSpendAmountValidation()
           value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentPair.secondary_currency);
           min_amount = getMinAmount(inputName)
           minAmountValidation = getMinAmountValidation(inputName, value, min_amount)
           // console.log('Moneda secundaria comprada', currentPair.boughtCurrency, 'Cantidad comprada', value.toFormat(), ' Cantidad Mínima:', min_amount.toFormat(), minAmountValidation)
-          if (minAmountValidation) {
+          if (minAmountValidation && availableAmountValidation) {
             setCustomError(null)
             setInputState("good");
             // return e.target.value = value.toFormat();
@@ -134,6 +136,15 @@ export default () => {
       default:
     }
   };
+
+
+  const availableSpendAmountValidation = async() => {
+    const spend_amount = new FormData(document.getElementById("swapForm")).get("spend-amount");
+    const spend_amount_value = await formatToCurrency(spend_amount.toString().replace(/,/g, ""), currentWallet.currency);
+    const available = formatToCurrency(availableBalance, currentWallet.currency);
+    const availableAmountValidation = spend_amount_value.isLessThanOrEqualTo(available)
+    return availableAmountValidation
+  }
 
   const ErrorMsgValidate = (inputName, value, min_amount, minAmountValidation, availableAmountValidation) => {
     if(value.length > 1){
@@ -170,7 +181,6 @@ export default () => {
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
         const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
         return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_order.min_amount : '0', currentWallet.currency);
-        break;
       case 'amount':
         return formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
       case 'bought-amount':
