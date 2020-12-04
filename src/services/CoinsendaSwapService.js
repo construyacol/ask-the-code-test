@@ -17,7 +17,7 @@ import loadLocalPairsAction, {
   update_item_state,
 } from "../actions/dataModelActions";
 import { appLoadLabelAction } from "../actions/loader";
-import convertCurrencies from "../utils/convert_currency";
+import convertCurrencies, { _convertCurrencies } from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
 
 export class SwapService extends WebService {
@@ -91,20 +91,23 @@ export class SwapService extends WebService {
 
 
   async convertCurrencies(want_to_spend, to_spend_currency, pair_id) {
-    // const data = await convertCurrencies(currency, "1", pair_id);
-    // console.log(data)
-    // return data
-    const user = this.user
-    const body = {
-      data:{
-        to_spend_currency,
-        want_to_spend,
-        pair_id,
-        "country":user.country
-      }
-    }
-    const result = await this.Post(SWAP_CONVERT_CURRENCIES, body, user.userToken);
-    return result
+
+    const data = await _convertCurrencies(to_spend_currency, want_to_spend, pair_id);
+    // return console.log('||||||||||||||||||||||||||| convertCurrencies : ', data)
+    return { data }
+    // console.log('||||||||||||||| convertCurrencies: ', data)
+
+    // const user = this.user
+    // const body = {
+    //   data:{
+    //     to_spend_currency,
+    //     want_to_spend,
+    //     pair_id,
+    //     "country":user.country
+    //   }
+    // }
+    // const result = await this.Post(SWAP_CONVERT_CURRENCIES, body, user.userToken);
+    // return result
   }
 
 

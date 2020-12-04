@@ -14,7 +14,6 @@ import { useActions } from "../../../hooks/useActions";
 import { AvailableBalance, OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import UseSwapInfo from '../../hooks/useSwapInfo'
 import useToastMessage from '../../../hooks/useToastMessage'
 
 
@@ -76,7 +75,6 @@ function SwapView(props) {
     const result = await coinsendaServices.convertCurrencies(value, currentWallet.currency, id)
     if(!result){return console.log('No se pudo calcular la cantidad a recibir')}
     const { data } = result
-    console.log('||||||||||||||||||| convertCurrencies API: ', value, typeof value, data)
     const { data: { want_to_spend, to_spend_currency } } = result
     const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
     return formatValue
@@ -224,7 +222,7 @@ function SwapView(props) {
         handleStatus={handleStateBoughtInput}
         state={exchangeEnabled}
         isControlled={true}
-        label={`Recibo:`}
+        label={`Recibo aproximadamente:`}
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => (

@@ -15,8 +15,8 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
 
   useEffect(() => {
     prevBalance.current = balance;
-    let current_amount = formatToCurrency(balance.available, currency, true);
-    set_current_amount(current_amount);
+    let current_amount = formatToCurrency(balance.available, currency);
+    set_current_amount(current_amount.toFormat());
   }, []);
 
   useEffect(() => {
@@ -35,18 +35,18 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
 
     if (actionAmount) {
       // el actionAmount es la cantidad a reducir o sumar de la operación, solo con fines de dar feedback visual al usuario, no es indispensable para su funcionalidad
-      const actionAmountFormat = formatToCurrency(actionAmount, currency, true);
+      const actionAmountFormat = formatToCurrency(actionAmount, currency);
       await play_animation("Out");
       setActionType(lastAction);
-      set_current_amount(actionAmountFormat);
+      set_current_amount(actionAmountFormat.toFormat());
       await play_animation("In");
     }
 
     actionAmount && (await sleep(500));
     actionAmount && (await play_animation("Out"));
-    const availableAmount = formatToCurrency(available, currency, true);
+    const availableAmount = formatToCurrency(available, currency);
     setActionType("");
-    set_current_amount(availableAmount);
+    set_current_amount(availableAmount.toFormat());
     actionAmount && (await play_animation("In"));
   };
 
