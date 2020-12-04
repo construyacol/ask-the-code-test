@@ -27,10 +27,7 @@ function useCurrencyPrices(currentPair) {
     currentPair.buy_price,
     currentPair.secondary_currency
   );
-  const [sellPrice, setSellPrice] = FormatCurrency(
-    currentPair.sell_price,
-    currentPair.secondary_currency
-  );
+  const [sellPrice, setSellPrice] = FormatCurrency(currentPair.sell_price, currentPair.secondary_currency);
 
   useEffect(() => {
     if (currentPair) {

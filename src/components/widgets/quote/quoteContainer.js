@@ -28,14 +28,9 @@ class QuoteContainer extends Component {
     if (!currentPair) {
       return false;
     }
-    let buy_price = await formatToCurrency(
-      currentPair.buy_price,
-      currentPair.secondary_currency
-    );
-    let sell_price = await formatToCurrency(
-      currentPair.sell_price,
-      currentPair.secondary_currency
-    );
+    let buy_price = await formatToCurrency(currentPair.buy_price, currentPair.secondary_currency);
+    let sell_price = await formatToCurrency(currentPair.sell_price, currentPair.secondary_currency);
+    
     this.setState({
       buy_price:buy_price.toFormat(),
       sell_price:sell_price.toFormat(),

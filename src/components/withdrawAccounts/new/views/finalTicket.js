@@ -2,29 +2,15 @@ import React, { useEffect, useState } from "react";
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import { ButtonSuccess } from "../../../widgets/buttons/buttons";
 
-import "../../../widgets/ticket/ticket.css";
+import "./ticket.css";
 import "./finalTicket.css";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 
 function FinalTicket(props) {
   // const [current_ticket, setCurrentTicket] = useState(null);
-  const idCancelButton = useKeyActionAsClick(
-    true,
-    "cancel-button-ticket",
-    8,
-    false,
-    "onkeyup",
-    true
-  );
-  const idFinalizarButton = useKeyActionAsClick(
-    true,
-    "finalizar-button-ticket",
-    13,
-    false,
-    "onkeyup",
-    true
-  );
+  const idCancelButton = useKeyActionAsClick(true, "cancel-button-ticket", 8, false, "onkeyup", true);
+  const idFinalizarButton = useKeyActionAsClick(true, "finalizar-button-ticket", 13,false, "onkeyup", true);
 
   // const composeMethod = async () => {
   //   const { ticket, ticket_type } = props;
