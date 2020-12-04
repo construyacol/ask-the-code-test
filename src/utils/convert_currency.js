@@ -54,7 +54,7 @@ const convertCurrencies = async (currency, amount_spend, pair_id) => {
     objetive_data.to_spend_currency = objetive_pair_instance.secondary_currency;
     //Formateo según la moneda a la que necesito transformar
     let want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.secondary_currency, false);
-    objetive_data.want_to_spend = await want_to_spend.multipliedBy(objetive_pair_instance.sell_price).div("1").toFormat();
+    objetive_data.want_to_spend = await want_to_spend.multipliedBy(objetive_pair_instance.sell_price).toFormat();
   } else {
     //Es una compra
     data.want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.secondary_currency);
