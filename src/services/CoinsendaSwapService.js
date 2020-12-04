@@ -92,7 +92,7 @@ export class SwapService extends WebService {
 
   async convertCurrencies(want_to_spend, to_spend_currency, pair_id) {
 
-    const data = await convertCurrencies(to_spend_currency, want_to_spend, pair_id);
+    const data = await _convertCurrencies(to_spend_currency, want_to_spend, pair_id);
     // return console.log('||||||||||||||||||||||||||| convertCurrencies : ', data)
     return { data }
     // console.log('||||||||||||||| convertCurrencies: ', data)

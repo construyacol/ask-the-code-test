@@ -1,11 +1,20 @@
+import { useState, useEffect } from "react";
 import { matchItem } from "../utils";
-import { useState } from "react";
 import { useCoinsendaServices } from "../services/useCoinsendaServices";
+import { useSelector } from "react-redux";
+
+
 
 export function usePairSelector(props) {
   const { currentWallet, currencyPairs } = props;
   const [isReady, setIsReady] = useState(false);
   const [coinsendaServices] = useCoinsendaServices();
+  const { currencies } = useSelector((state) => state.modelData);
+
+  // useEffect(()=>{
+  //     selectPair(true)
+  // }, [props.currencies])
+
   const selectPair = async (initial) => {
     setIsReady(false);
     let currency = currentWallet && currentWallet.currency.currency;
@@ -38,7 +47,6 @@ export function usePairSelector(props) {
   };
 
   const createListPairs = async (allPairs, currency) => {
-    const { currencies } = props;
 
     if (!currencies) return false;
 
