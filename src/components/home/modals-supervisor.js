@@ -41,24 +41,10 @@ function ModalsSupervisor(props) {
           {/* <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
                         return <TicketContainer {...renderProps} toastMessage={toastMessage} />
                     }} /> */}
-          <Route
-            exact
-            strict
-            path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id"
-            component={TicketContainer}
-          />
-          <Route
-            strict
-            path="/wallets/deposit/:account_id"
-            render={(renderProps) => {
-              return (
-                <DepositContainer
-                  {...renderProps}
-                  toastMessage={toastMessage}
-                />
-              );
-            }}
-          />
+          <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+          <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
+            return (<DepositContainer {...renderProps} toastMessage={toastMessage} />);
+          }}/>
           <Route
             strict
             path="/wallets/withdraw/:account_id"

@@ -1,10 +1,12 @@
 import {
   UPDATE_ACTIVITY,
   UPDATE_PENDING_ACTIVITY,
+  PAIRS_FOR_ACCOUNT
 } from "../actions/action_types";
 
 const initialState = {
   activity_for_account: "",
+  pairsForAccount:""
 };
 
 const storage = (state = initialState, action) => {
@@ -40,6 +42,19 @@ const storage = (state = initialState, action) => {
           },
         },
       };
+    case PAIRS_FOR_ACCOUNT:
+
+    return{
+      ...state,
+      pairsForAccount: {
+        ...state.pairsForAccount,
+        [action.payload.wallet_id]: {
+          ...state.pairsForAccount[action.payload.wallet_id],
+          ...action.payload.data
+        },
+      }
+    }
+
     default:
       return state;
   }

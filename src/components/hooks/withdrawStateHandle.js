@@ -10,8 +10,7 @@ const selectWithdrawProviderByType = createSelector(
     for (let provider_id in withdrawProviders) {
       result = {
         ...result,
-        [withdrawProviders[provider_id].provider_type]:
-          withdrawProviders[provider_id],
+        [withdrawProviders[provider_id].provider_type]:withdrawProviders[provider_id]
       };
     }
     return result;
@@ -24,16 +23,10 @@ const selectWithdrawAccountsByAddress = createSelector(
   (withdraw_accounts, current_wallet) => {
     let result = {};
     for (let w_account_id in withdraw_accounts) {
-      if (
-        current_wallet &&
-        current_wallet.currency.currency ===
-          withdraw_accounts[w_account_id].provider_type &&
-        withdraw_accounts[w_account_id].info.address
-      ) {
+      if (current_wallet && current_wallet.currency.currency === withdraw_accounts[w_account_id].provider_type && withdraw_accounts[w_account_id].info.address) {
         result = {
           ...result,
-          [withdraw_accounts[w_account_id].info.address]:
-            withdraw_accounts[w_account_id],
+          [withdraw_accounts[w_account_id].info.address]: withdraw_accounts[w_account_id]
         };
       }
     }

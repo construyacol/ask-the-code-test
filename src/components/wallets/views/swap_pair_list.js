@@ -29,7 +29,6 @@ export const PairList = (props) => {
   const selectQuote = async (name, code, type_currency, pair_id) => {
     const { currentWallet } = props;
     props.action.isAppLoading(true);
-    setLoaderMsg("Ajustando nave nodriza...");
     const data = await convertCurrencies(currentWallet.currency, "1", pair_id);
 
     props.action.isAppLoading(false);
@@ -56,6 +55,7 @@ export const PairList = (props) => {
     >
       <div className="PairListFind"></div>
       <div className="PairListItems">
+
         {allPairs && !loader ? (
           allPairs.map((pair, index) => {
             return (
@@ -71,7 +71,7 @@ export const PairList = (props) => {
                 }
                 actualizarEstado={selectQuote}
                 {...pair}
-                key={pair.id}
+                key={index}
                 specialMode={true}
               />
             );
@@ -81,6 +81,7 @@ export const PairList = (props) => {
             <SimpleLoader label={loaderMsg} />
           </div>
         )}
+
       </div>
     </OtherModalLayoutPairs>
   );
@@ -98,13 +99,11 @@ function mapStateToProps(state, props) {
   const currentWallet = wallets[params.account_id];
   const { id, currency } = currentWallet;
   const currentPair =
-    state.ui.current_section.params.pairsForAccount[id] &&
-    state.ui.current_section.params.pairsForAccount[id].current_pair;
+    state.storage.pairsForAccount[id] &&
+    state.storage.pairsForAccount[id].current_pair;
   const allPairs =
-    state.ui.current_section.params.pairsForAccount[currency.currency] &&
-    state.ui.current_section.params.pairsForAccount[currency.currency]
-      .all_pairs;
-
+    state.storage.pairsForAccount[currency.currency] &&
+    state.storage.pairsForAccount[currency.currency].all_pairs;
   return {
     currentWallet,
     allPairs,

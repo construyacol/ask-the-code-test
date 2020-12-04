@@ -9,11 +9,10 @@ export const useFormatCurrency = (objetive_amount, currency) => {
     // console.log('||||||||| FORMATING CURRENCY', objetive_amount, currency)
     let amount_converted = await formatToCurrency(
       objetive_amount,
-      currency,
-      true
+      currency
     );
-    setAmount(amount_converted);
-    return amount_converted;
+    setAmount(amount_converted.toFormat());
+    return amount_converted.toFormat();
   };
 
   useEffect(() => {

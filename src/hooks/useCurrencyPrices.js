@@ -7,8 +7,8 @@ export const FormatCurrency = (objetive_amount, currency) => {
   const [amountCurrency] = useState(currency);
   const formating = async (objetive_amount, currency) => {
     // console.log('||||||||| FORMATING CURRENCY', objetive_amount, currency)
-    let amount_converted = formatToCurrency(objetive_amount, currency, true);
-    setAmount(amount_converted);
+    let amount_converted = formatToCurrency(objetive_amount, currency);
+    setAmount(amount_converted.toFormat());
   };
 
   useEffect(() => {

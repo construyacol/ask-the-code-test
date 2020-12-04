@@ -34,22 +34,21 @@ const SwapVIewConfirm = (props) => {
   const [counter, setCounter] = useState(20);
 
   useEffect(() => {
+
     const SwapCounter = setInterval(async () => {
       clearInterval(SwapCounter);
       if (counter === 1) {
         handleSwap();
       }
-
       if (counter === 0) {
         setCounter(20);
-      } else {
+      }
+      else {
         setCounter(counter - 1);
       }
     }, 1000);
 
-    return () => {
-      clearInterval(SwapCounter);
-    };
+    return () => {clearInterval(SwapCounter)};
   }, [counter]);
 
   const _cancelarClick = (e) => {
