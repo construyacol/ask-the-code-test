@@ -99,7 +99,7 @@ export const currencyFormatByCoin = {
   }),
   cop: BigNumber.clone({
     ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 3,
+    DECIMAL_PLACES: 0,
   }),
   bitcoin_fee: BigNumber.clone({
     ROUNDING_MODE: BigNumber.ROUND_UP,

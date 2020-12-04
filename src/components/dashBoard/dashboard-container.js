@@ -72,7 +72,6 @@ function DashBoardContainer(props) {
   // }
 
   const updateCurrentPair = async () => {
-    // console.log('||||||||||||||||| updateCurrentPair ', props)
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID);
     UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
       let query = `{"where":{"buy_pair":"${

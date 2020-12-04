@@ -29,6 +29,18 @@ const selectCurrentWallet = createSelector(
   }
 );
 
+const selectWalletCurrencyShortName = createSelector(
+  (state) => state.modelData.currencies,
+  (_, currentWallet) => currentWallet,
+  (currencies, currentWallet) => {
+    for (let currency of currencies) {
+      if(currency.currency.includes(currentWallet.currency.currency)){
+        return currency.symbol
+      }
+    }
+  }
+);
+
 
 
 export function useWalletInfo() {
@@ -38,6 +50,7 @@ export function useWalletInfo() {
   const { account_id } = useParams();
   const currentPair = useSelector((state) => selectCurrentPair(state, account_id));
   const currentWallet = useSelector((state) => selectCurrentWallet(state, account_id));
+  const WalletCurrencyShortName = useSelector((state) => selectWalletCurrencyShortName(state, currentWallet));
 
   const defaultValue = {
     currentWallet: null,
@@ -54,16 +67,10 @@ export function useWalletInfo() {
   // let _currentPair = null
   let currencyPairs = null;
   if (pairsForAccount && pairsForAccount[currentWallet.id]) {
-    // _currentPair = {
-    //     pair_id: pairsForAccount[currentWallet.id].current_pair.pair_id,
-    //     secondary_coin: pairsForAccount[currentWallet.id].current_pair.currency,
-    //     secondary_value: pairsForAccount[currentWallet.id].current_pair.currency_value,
-    //     extended: pairsForAccount[currentWallet.id].current_pair
-    // }
     currencyPairs =
       pairsForAccount[currentWallet.currency.currency] &&
       pairsForAccount[currentWallet.currency.currency].all_pairs;
   }
 
-  return { ...defaultValue, currentWallet, availableBalance, currencyPairs, currentPair };
+  return { ...defaultValue, currentWallet, availableBalance, currencyPairs, currentPair, WalletCurrencyShortName };
 }

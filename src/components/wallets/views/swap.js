@@ -28,6 +28,7 @@ function SwapView(props) {
   const [ loaderButton, setLoaderButton ] = useState();
   const [ exchangeEnabled, setExchangeEnabled ] = useState()
   const [ toastMessage ] = useToastMessage()
+  const [ valueForOne, setValueForOne ] = useState()
   // const [minAmountByOrder, setMinAmountByOrder] = useState({
   //   minAmount: 0,
   //   currencyCode: "",
@@ -38,11 +39,13 @@ function SwapView(props) {
   const idForClickeableElementPairSelector = useKeyActionAsClick(true, "show-pairs-button", 112, false);
 
   // const { currentPair } = props;
-  const { currentWallet, availableBalance, currencyPairs, currentPair } = useWalletInfo();
+  const { currentWallet, availableBalance, currencyPairs, currentPair, WalletCurrencyShortName } = useWalletInfo();
   // const prevCurrentPair = usePrevious(currentPair);
   const { isMovilViewport } = useWindowSize();
   const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
+
+
 
 
   useEffect(() => {
@@ -56,6 +59,21 @@ function SwapView(props) {
   useEffect(() => {
     callToSetReceiveValue()
   }, [value, currentPair])
+
+  useEffect(()=>{
+    callToSetValueForOne()
+  }, [currentPair])
+
+
+  const callToSetValueForOne = async() => {
+    if(!currentPair){return}
+    const { id } = currentPair;
+    const _valueForOne =  await coinsendaServices.convertCurrencies('1', currentWallet.currency, id)
+    const { data: { want_to_spend, to_spend_currency } } = _valueForOne
+    const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
+    setValueForOne(formatValue.toFormat())
+  }
+
 
 
   const callToSetReceiveValue = async () => {
@@ -74,11 +92,10 @@ function SwapView(props) {
     if (value === undefined) return undefined;
     const result = await coinsendaServices.convertCurrencies(value, currentWallet.currency, id)
     if(!result){return console.log('No se pudo calcular la cantidad a recibir')}
-    const { data } = result
     const { data: { want_to_spend, to_spend_currency } } = result
     const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
     return formatValue
-  };
+  }
 
   const handleStateSpendInput = (state) => {
     // listener de estado del input de la moneda gastada: "Pago con:" solo se valida si la moneda gastada es la moneda secundaria del par,
@@ -110,13 +127,8 @@ function SwapView(props) {
     if (!props.order_list) {
       await coinsendaServices.get_swaps(currentWallet.id);
     }
-    console.log('||||||||||| confirmSwap: ', value)
     const { id } = currentPair;
-    const newSwap = await coinsendaServices.addNewSwap(
-      currentWallet.id,
-      id,
-      value
-    );
+    const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, value);
     actions.isAppLoading(false);
     if (!newSwap) {
       return handleError("No se ha podio hacer el cambio");
@@ -176,7 +188,7 @@ function SwapView(props) {
     return <SwapViewLoader />;
   }
   // console.log('|||||||||||||| valueToReceive :', valueToReceive, !valueToReceive)
-  const { boughtCurrency, secondary_value } = currentPair;
+  const { boughtCurrency } = currentPair;
 
   return (
     <SwapForm
@@ -235,9 +247,9 @@ function SwapView(props) {
       />
 
       <div>
-        <CoinPrice>
-          1 {short_name} ={" "}
-          {!secondary_value ? "Sin Cotización" : secondary_value}{" "}
+        <CoinPrice className="fuente2">
+          1 {WalletCurrencyShortName} ={" "}
+          {!valueForOne ? "Sin Cotización" : valueForOne}{" "}
           {boughtCurrency}
         </CoinPrice>
       </div>
@@ -319,7 +331,6 @@ function mapStateToProps(state, props) {
     all_pairs,
     short_name: state.ui.current_section.params.short_name,
     local_currency: state.modelData.pairs.localCurrency,
-    currencies: state.modelData.currencies,
     order_list:
       state.storage.activity_for_account[current_wallet.id] &&
       state.storage.activity_for_account[current_wallet.id].swaps,
