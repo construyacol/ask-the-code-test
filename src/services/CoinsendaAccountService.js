@@ -92,20 +92,20 @@ export class AccountService extends WebService {
     const { accounts } = initialAccounts;
     for (let body of accounts) {
       // TODO: assign currency by country
-      body.data.country = this.user.country;
-      body.data.name = `Mi Billetera ${body.data.currency.currency}`;
-      const wallets = await this.createWallet(body);
-      if (!wallets) {
-        return;
-      }
-      await this.getWalletsByUser();
-      const { account } = wallets;
-      const dep_prov = await this.createAndInsertDepositProvider(account);
-      if (!dep_prov) {
-        return;
-      }
-      // console.log(account)
+      await this.createAccountAndInsertDepositProvider(body)
     }
+  }
+
+  async createAccountAndInsertDepositProvider(body) {
+    body.data.country = this.user.country;
+    body.data.name = `Mi Billetera ${body.data.currency.currency}`;
+    const newAccount = await this.createWallet(body);
+    if (!newAccount) {return}
+    await this.getWalletsByUser();
+    const { account } = newAccount;
+    const dep_prov = await this.createAndInsertDepositProvider(account);
+    if (!dep_prov) {return}
+    return newAccount
   }
 
   async getWalletById(walletId) {

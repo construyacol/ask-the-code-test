@@ -4,7 +4,7 @@ import BigNumber from "bignumber.js";
 import InputForm from "../../widgets/inputs/inputForm";
 import convertCurrencies, { formatToCurrency} from "../../../utils/convert_currency";
 import { formatNumber } from "../../../utils";
-import usePrevious from "../../hooks/usePreviousValue";
+// import usePrevious from "../../hooks/usePreviousValue";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import styled from "styled-components";
@@ -15,6 +15,7 @@ import { AvailableBalance, OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
+// import UseTxState from "../../hooks/useTxState";
 
 
 function SwapView(props) {
@@ -29,6 +30,8 @@ function SwapView(props) {
   const [ exchangeEnabled, setExchangeEnabled ] = useState()
   const [ toastMessage ] = useToastMessage()
   const [ valueForOne, setValueForOne ] = useState()
+  // const { currencies } = UseTxState()
+
   // const [minAmountByOrder, setMinAmountByOrder] = useState({
   //   minAmount: 0,
   //   currencyCode: "",
@@ -42,7 +45,7 @@ function SwapView(props) {
   const { currentWallet, availableBalance, currencyPairs, currentPair, WalletCurrencyShortName } = useWalletInfo();
   // const prevCurrentPair = usePrevious(currentPair);
   const { isMovilViewport } = useWindowSize();
-  const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
+  const { selectPair, isReady, currencies } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
 
 
@@ -128,12 +131,39 @@ function SwapView(props) {
       await coinsendaServices.get_swaps(currentWallet.id);
     }
     const { id } = currentPair;
+    const boughtCurrency = props.pairsForAccount[currentWallet.id] && props.pairsForAccount[currentWallet.id].current_pair.currency //Localizamos la moneda comprada
+    const thisAccountToExist = await getAccountToExist(boughtCurrency) //verificamos que haya una cuenta para la moneda comprada existente
+    if(!thisAccountToExist){
+      const newAccount = await createAccount(boughtCurrency);
+    }
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, value);
-    actions.isAppLoading(false);
     if (!newSwap) {
+      actions.isAppLoading(false);
       return handleError("No se ha podio hacer el cambio");
     }
   };
+
+  const createAccount = async(boughtCurrency) => {
+    const res = await coinsendaServices.createAccountAndInsertDepositProvider({
+      data: {
+        name: `Mi billetera ${currencies[boughtCurrency].currency}`,
+        enabled: true,
+        currency:{
+          currency:currencies[boughtCurrency].currency,
+          is_token:currencies[boughtCurrency].is_token
+        },
+      }
+    });
+    return res
+  }
+
+  const getAccountToExist = async(boughtCurrency) => {
+    for (var [ , wallet] of Object.entries(props.wallets)) {
+      if(wallet.currency.currency === boughtCurrency){
+        return wallet
+      }
+    }
+  }
 
 
   const startSwap = async (e) => {
@@ -319,11 +349,14 @@ const SwapViewLoader = () => {
 
 function mapStateToProps(state, props) {
   const { pairsForAccount } = state.storage;
-  const { wallets, all_pairs } = state.modelData;
+  const { wallets, all_pairs, user } = state.modelData;
   const { params } = props.match;
   const current_wallet = wallets[params.account_id];
 
   return {
+    user,
+    wallets,
+    pairsForAccount,
     loader: state.isLoading.loader,
     all_pairs,
     short_name: state.ui.current_section.params.short_name,
@@ -332,5 +365,6 @@ function mapStateToProps(state, props) {
       state.storage.activity_for_account[current_wallet.id] &&
       state.storage.activity_for_account[current_wallet.id].swaps,
   };
+
 }
 export default connect(mapStateToProps)(SwapView);
