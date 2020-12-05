@@ -11,7 +11,7 @@ import Kyc from "../kyc/kyc_container";
 import { Route } from "react-router-dom";
 import ConfirmationModal from "../widgets/modal/confirmation";
 import PairList from "../wallets/views/swap_pair_list";
-import TicketContainer from "../widgets/ticket/ticketContainer";
+// import TicketContainer from "../widgets/ticket/ticketContainer";
 import ModalSettingsView from "../widgets/itemSettings/modal_views";
 import WithdrawFlow from "../wallets/withdraw/withdrawFlowContainer";
 import TwoFactorActivate from "../widgets/twoFactorActivate/2fa";
@@ -41,7 +41,7 @@ function ModalsSupervisor(props) {
           {/* <Route exact strict path="/wallets/activity/:account_id/:tx_path/:order_id" render={(renderProps) => {
                         return <TicketContainer {...renderProps} toastMessage={toastMessage} />
                     }} /> */}
-          <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} />
+          {/* <Route exact strict path="/withdraw_accounts/activity/:account_id/:tx_path/:order_id" component={TicketContainer} /> */}
           <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
             return (<DepositContainer {...renderProps} toastMessage={toastMessage} />);
           }}/>

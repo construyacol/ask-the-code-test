@@ -30,8 +30,8 @@ const SocketNotify = (props) => {
   }, [props.socket_notify]);
 
   const formatToCurrencies = async (amount, currency) => {
-    let resul = await formatToCurrency(amount, currency, true);
-    setFormatCurrency(resul);
+    let resul = await formatToCurrency(amount, currency);
+    setFormatCurrency(resul.toFormat());
   };
 
   const closeModal = (e) => {

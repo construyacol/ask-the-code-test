@@ -7,7 +7,6 @@ import {
 import "./flows.css";
 import { service_modes, cash_payment } from "../../../api/ui/api.json";
 import proof from "../../../../assets/proof.png";
-import TicketDetail from "../../../widgets/ticket/ticketDetail";
 import ModalityView from "../views/modality";
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";

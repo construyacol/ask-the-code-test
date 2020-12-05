@@ -6,7 +6,7 @@ import { convertToObjectWithCustomIndex } from "../../utils";
 import { useHistory } from "react-router-dom";
 import { createSelector } from "reselect";
 
-const selectWithConvertToObjectWithCustomIndex = createSelector(
+export const selectWithConvertToObjectWithCustomIndex = createSelector(
   ({ modelData }) => modelData.currencies,
   (currencies) =>
     currencies && convertToObjectWithCustomIndex(currencies, "currency")

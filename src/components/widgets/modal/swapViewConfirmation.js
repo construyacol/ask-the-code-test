@@ -57,11 +57,6 @@ const SwapVIewConfirm = (props) => {
     }
   };
 
-  // useEffect(()=>{
-  //   formatToCurrency
-  // }, [])
-  // handleSwap
-  // console.log('|||||||||||||||||||||  SwapVIewConfirm  ==> ', props)
   return (
     <OtherModalLayout
       id="close-button-with-OtherModalLayout"
