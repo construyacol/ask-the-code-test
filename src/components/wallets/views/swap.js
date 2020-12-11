@@ -42,13 +42,18 @@ function SwapView(props) {
   const idForClickeableElementPairSelector = useKeyActionAsClick(true, "show-pairs-button", 112, false);
 
   // const { currentPair } = props;
-  const { currentWallet, availableBalance, currencyPairs, currentPair, WalletCurrencyShortName } = useWalletInfo();
+  const {
+    currentWallet,
+    availableBalance,
+    currencyPairs,
+    currentPair,
+    WalletCurrencyShortName,
+    currencies
+  } = useWalletInfo();
   // const prevCurrentPair = usePrevious(currentPair);
   const { isMovilViewport } = useWindowSize();
-  const { selectPair, isReady, currencies } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
+  const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
-
-
 
 
   useEffect(() => {

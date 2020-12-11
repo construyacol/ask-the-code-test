@@ -339,8 +339,11 @@ const WithdrawOrder = ({ order }) => {
 };
 
 const PanelLeft = (order) => {
-  const { currencies, tx_path } = UseTxState(order.id);
 
+  const { currencies, tx_path } = UseTxState(order.id);
+  const totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
+  const confirmations = Number(order.confirmations)
+  
   return (
     <>
       {order.currency_type === "crypto" &&
@@ -348,8 +351,8 @@ const PanelLeft = (order) => {
       tx_path === "deposits" ? (
         <Confrimations className="fuente2">
           <p>
-            {order.confirmations}
-            <span>/{currencies[order.currency.currency].confirmations}</span>
+            {confirmations > totalConfirmations ? `+${totalConfirmations}` : confirmations}
+            <span>/{totalConfirmations}</span>
           </p>
         </Confrimations>
       ) : (

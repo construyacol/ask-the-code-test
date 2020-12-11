@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { createSelector } from "reselect";
+import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
+
+
 
 const selectCurrentPair = createSelector(
   (state) => state.storage.pairsForAccount,
@@ -51,12 +54,14 @@ export function useWalletInfo() {
   const currentPair = useSelector((state) => selectCurrentPair(state, account_id));
   const currentWallet = useSelector((state) => selectCurrentWallet(state, account_id));
   const WalletCurrencyShortName = useSelector((state) => selectWalletCurrencyShortName(state, currentWallet));
+  const currenciesByCurrencyIndex = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
 
   const defaultValue = {
     currentWallet: null,
     availableBalance: null,
     currentPair: null,
     currencyPairs: null,
+    currencies:null
   };
 
   if (!balances || !wallets || !account_id) {
@@ -72,5 +77,13 @@ export function useWalletInfo() {
       pairsForAccount[currentWallet.currency.currency].all_pairs;
   }
 
-  return { ...defaultValue, currentWallet, availableBalance, currencyPairs, currentPair, WalletCurrencyShortName };
+  return {
+    ...defaultValue,
+    currentWallet,
+    availableBalance,
+    currencyPairs,
+    currentPair,
+    WalletCurrencyShortName,
+    currencies:currenciesByCurrencyIndex
+   };
 }

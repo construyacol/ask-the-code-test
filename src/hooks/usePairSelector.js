@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { matchItem } from "../utils";
 import { useCoinsendaServices } from "../services/useCoinsendaServices";
 import { useSelector } from "react-redux";
-import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
 
 
 export function usePairSelector(props) {
@@ -10,7 +9,6 @@ export function usePairSelector(props) {
   const [isReady, setIsReady] = useState(false);
   const [coinsendaServices] = useCoinsendaServices();
   const { currencies } = useSelector((state) => state.modelData);
-  const currenciesByCurrencyIndex = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
 
   // useEffect(()=>{
   //     selectPair(true)
@@ -72,5 +70,5 @@ export function usePairSelector(props) {
       };
     });
   };
-  return { selectPair, isReady, currencies:currenciesByCurrencyIndex };
+  return { selectPair, isReady };
 }
