@@ -65,6 +65,7 @@ const UseTxState = (current_order_id) => {
   const new_order_style = useSelector(
     (state) => state.ui.current_section.params.new_order_style
   );
+
   // const { tx_path, order_id } = params
 
   // verificar esta funcion

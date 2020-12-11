@@ -11,6 +11,7 @@ import InifiniteScrollComponent from "./infiniteScroll";
 
 import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
+
 import { createSelector } from "reselect";
 
 class ActivityList extends Component {
@@ -92,12 +93,6 @@ class ActivityList extends Component {
 
     // await this.setState({deleting:false,deleted:true})
 
-    console.log(
-      "|||||||||||||||||||||||||||||||||||||||||||||| DELETE__ORDER :",
-      deleted,
-      id
-    );
-
     // this.setState({
     //   // expandidoMax:(this.props.expandidoMax - 100),
     //   expandible:this.state.expandido ? (this.props.expandidoMax) : '90px'
@@ -133,31 +128,6 @@ class ActivityList extends Component {
     this.props.history.push("?form=upload_deposit_payment_proof");
   };
 
-  verTicket = async (ticket) => {
-    const { primary_path, account_id, path, tx_path } = this.props.match.params;
-    this.props.history.push(
-      `/${primary_path}/${path}/${account_id}/${
-        this.props.isWithdraws ? "withdraws" : tx_path
-      }/${ticket.id}`
-    );
-    this.props.action.cleanNotificationItem("wallets", "order_id");
-
-    // const{
-    //   state
-    // } = ticket
-
-    // const{
-    //   current_form
-    // } = this.props
-
-    this.props.action.toggleModal();
-    // console.log('||||||||||||||||||| ======> Ticket ACTIVITY ==> ',  ticket)
-  };
-
-  // openOrder = async(order) => {
-  //   const OrderDetail = await import('../modal/render/orderDetail')
-  //   this.props.action.renderModal(()=><OrderDetail.default order={order}/>)
-  // }
 
   render() {
     const {
@@ -182,7 +152,7 @@ class ActivityList extends Component {
       deleted,
     } = this.state;
 
-    // console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
+    console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
     // let OrderRender
     // OrderItem
 
@@ -219,7 +189,6 @@ class ActivityList extends Component {
                     return (
                       <OrderItem
                         order={{ ...item }}
-                        handleAction={this.verTicket}
                         key={indx}
                       />
                     );
@@ -294,7 +263,11 @@ class ActivityList extends Component {
               ) {
                 return false;
               }
-              return <OrderItem index={index} order={item} key={index} />;
+              return <OrderItem
+                      index={index}
+                      order={item}
+                      key={index}
+                    />;
 
               // if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps') {
               //   return <OrderItem
