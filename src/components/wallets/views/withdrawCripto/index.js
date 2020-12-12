@@ -59,14 +59,9 @@ export const CriptoView = () => {
   const [amountState, setAmountState] = useState();
   const [amountValue, setAmountValue] = useState();
   const isValidForm = useRef(false);
+
   let movil_viewport = window.innerWidth < 768;
-  const idForClickeableElement = useKeyActionAsClick(
-    true,
-    "main-deposit-crypto-button",
-    13,
-    false,
-    "onkeyup"
-  );
+  const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
 
   const handleChangeAmount = (name, newValue) => {
     setAmountValue(newValue)
@@ -91,8 +86,7 @@ export const CriptoView = () => {
     let withdraw_account = withdraw_accounts[addressValue];
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
-      withdraw_account = await coinsendaServices.addNewWithdrawAccount(
-        {
+      withdraw_account = await coinsendaServices.addNewWithdrawAccount({
           currency: current_wallet.currency,
           provider_type: current_wallet.currency.currency,
           label: current_wallet.currency.currency,
@@ -151,7 +145,7 @@ export const CriptoView = () => {
   };
 
   const handleMaxAvailable = (e) => {
-    // TODO: no se debe manajar valores deirecto del DOM
+    // TODO: no se debe manejar valores directo del DOM
     let amount = document.getElementsByName("amount")[0];
     amount.value = balance.available
     setAmountValue(balance.available)
@@ -167,10 +161,7 @@ export const CriptoView = () => {
   };
 
   useEffect(() => {
-    const condition =
-      !active_trade_operation &&
-      amountState === "good" &&
-      addressState === "good";
+    const condition = !active_trade_operation && amountState === "good" && addressState === "good";
     if (isValidForm.current !== condition) {
       isValidForm.current = condition;
     }
@@ -196,21 +187,15 @@ export const CriptoView = () => {
     setAddressToAdd();
     const provider_type = current_wallet.currency.currency;
 
-    if (
-      withdraw_accounts[addressValue] &&
-      withdraw_accounts[addressValue] &&
-      withdraw_accounts[addressValue].info.label !== provider_type
-    ) {
+    if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
       setTagWithdrawAccount(withdraw_accounts[addressValue]);
+    }else{
+      setTagWithdrawAccount(null)
     }
 
     if (addressState === "good") {
-      if (
-        !withdraw_accounts[addressValue] ||
-        (withdraw_accounts[addressValue] &&
-          withdraw_accounts[addressValue].info.label === provider_type)
-      ) {
+      if (!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)) {
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
         setAddressToAdd(addressValue);
       }
@@ -252,34 +237,13 @@ export const CriptoView = () => {
           </IconsContainer>
         )}
         AuxComponent={[
-          () => (
-            <AddressBookCTA
-              setAddressValue={setAddressValue}
-              addressToAdd={addressToAdd}
-            />
-          ),
-          () => (
-            <AddressTagList
-              show={addressValue && addressValue.match(/^@/g)}
-              addressValue={addressValue}
-              setAddressValue={setAddressValue}
-            />
-          ),
-          () => (
-            <TagItem
-              withdrawAccount={tagWithdrawAccount}
-              deleteTag={deleteTag}
-            />
-          ),
+          () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
+          () => (<AddressTagList show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
+          () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
         ]}
       />
 
-      <InputForm
-        type="text"
-        placeholder={`${
-          withdrawProviders[current_wallet.currency.currency].provider
-            .min_amount
-        }`}
+      <InputForm type="text" placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
         name="amount"
         handleStatus={setAmountState}
         handleChange={handleChangeAmount}
