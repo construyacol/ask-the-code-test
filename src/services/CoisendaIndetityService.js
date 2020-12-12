@@ -147,6 +147,8 @@ export class IndetityService extends WebService {
       },
     };
 
+    console.log('||||||||||||||||||||||| updateLevelProfile : ', body)
+
     return this.Post(INDETITY_UPDATE_PROFILE_URL, body, user.userToken);
   }
 
