@@ -40,30 +40,7 @@ class KycAvancedContainer extends Component {
     base64: { ...this.props.base64 },
   };
 
-  // componentWillReceiveProps(nextProps){
-  // const { reset, step } = nextProps
-  // if(reset){
-  //   this.setState({
-  //       animation:false,
-  //       animation2:false,
-  //       prevState:1
-  //     })
-  // }
-  // if(step === 2){
-  //   setTimeout(()=>{this.setState({animation:true})},1)
-  //   setTimeout(()=>{this.setState({animation2:true})},300)
-  // }
-  // if(nextProps.user !== this.props.user){
-  //   this.setState({
-  //     front:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
-  //     selfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
-  //     newfront:nextProps.user.id_type === 'pasaporte' ? "./docs/front_passport.png" : "./docs/front.png",
-  //     newselfie:nextProps.user.id_type === 'pasaporte' ? "./docs/selfie_passport.png" : "./docs/selfie.png",
-  //     id_type:nextProps.user.id_type
-  //   })
-  // }
-  // // console.log('||||| ----- componentWillReceiveProps', nextProps)
-  // }
+
 
   async componentDidMount() {
     await this.props.action.CurrentForm("kyc_advance");
@@ -77,7 +54,7 @@ class KycAvancedContainer extends Component {
     document.onkeydown = false;
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, state) {
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
     if (
       prevProps.step === this.props.step &&
@@ -267,12 +244,20 @@ class KycAvancedContainer extends Component {
       (newfront && newback && newselfie) ||
       (newfront && newselfie && this.props.user.id_type === "pasaporte")
     ) {
-      let finish_kyc_advanced = await this.props.validate_identity_kyc(
-        this.state
-      );
+      let finish_kyc_advanced = await this.props.validate_identity_kyc(this.state);
       if (finish_kyc_advanced) {
         return this.setState({ kyc_success: true });
+      }else{
+        await this.setState({
+          base64: {
+            newfront:null,
+            newback:null,
+            newselfie:null
+          },
+        })
+        this.props.action.UpdateForm("kyc_avanced", this.state);
       }
+
     }
   };
 
@@ -281,6 +266,8 @@ class KycAvancedContainer extends Component {
   };
 
   render() {
+
+
     return (
       <KycAvancedLayout
         stepChange={this.stepChange}

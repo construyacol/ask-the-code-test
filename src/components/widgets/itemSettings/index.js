@@ -19,7 +19,6 @@ class ItemSettingsInit extends Component {
     const { phone } = user.settings;
     const { name, other_state } = item;
 
-    console.log("CODE SWITCH", name, item, this.props.action);
     // debugger
 
     switch (name) {
