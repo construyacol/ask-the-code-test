@@ -34,7 +34,7 @@ const KycDashBoard = (props) => {
   return (
     <div className="KycDashBoard">
       <div className="imgDashContainer">
-        <p className={`fuente ${step > 3 ? "tuVieja" : ""}`}>
+        <p className={`fuente ${step > 3 ? "topThree" : ""}`}>
           {step === 1
             ? "1.Frente del documento"
             : step === 2
@@ -173,7 +173,7 @@ const KycDashBoard = (props) => {
           {step < 4 ? (
             <div className="contButtonUpload">
               <input
-                id={!fileloader && idUploadPic}
+                id={!fileloader ? idUploadPic : ""}
                 type="file"
                 accept={ACCEPT_FILE_TYPE_ADVANCE_KYC.join()}
                 onChange={goFileLoader}
