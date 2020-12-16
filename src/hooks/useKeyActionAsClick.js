@@ -66,11 +66,7 @@ export default function useKeyActionAsClick(
     if (!window.KEY_CODES_META[eventName]) {
       window.KEY_CODES_META[eventName] = {};
     }
-    window.KEY_CODES_META[eventName][elementId] = {
-      keyCode,
-      preventFromInput,
-      activeOnOpenModal,
-    };
+    window.KEY_CODES_META[eventName][elementId] = { keyCode, preventFromInput, activeOnOpenModal };
   };
 
   /**
@@ -115,16 +111,17 @@ export default function useKeyActionAsClick(
         if (!keyCodeData.activeOnOpenModal && !isNotModalOpened) return false;
         if (keyCodeData.keyCode === event.keyCode) {
           const isFromInputElement = event.srcElement.tagName.includes("INPUT");
-          const isFromInputWithValue =
-            isFromInputElement && event.srcElement.value;
-          const isFromInputWithNoValue =
-            isFromInputElement && !event.srcElement.value;
-          if (keyCodeData.preventFromInput && isFromInputWithValue)
+          const isFromInputWithValue = isFromInputElement && event.srcElement.value;
+          const isFromInputWithNoValue = isFromInputElement && !event.srcElement.value;
+          if (keyCodeData.preventFromInput && isFromInputWithValue) {
             return false;
-          if (keyCodeData.preventFromInput && isFromInputWithNoValue) {
+          }
+          if (keyCodeData.preventFromInput && isFromInputWithNoValue && keyCodeData.keyCode === 8) {
             event.stopPropagation();
             event.preventDefault();
-            if (keyCodeData.activeOnOpenModal) event.srcElement.blur();
+            if (keyCodeData.activeOnOpenModal) {
+              event.srcElement.blur();
+            }
             return false;
           }
           if (id === ID_FOR_CLICKEABLE_ELEMENTS && shouldHandleAction) {
