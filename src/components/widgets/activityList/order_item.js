@@ -341,8 +341,14 @@ const WithdrawOrder = ({ order }) => {
 const PanelLeft = (order) => {
 
   const { currencies, tx_path } = UseTxState(order.id);
-  const totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
-  const confirmations = Number(order.confirmations)
+
+  let totalConfirmations
+  let confirmations
+
+  if(order.currency) {
+    totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
+    confirmations = Number(order.confirmations)
+  }
   
   return (
     <>
