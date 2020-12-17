@@ -152,7 +152,6 @@ class ActivityList extends Component {
       deleted,
     } = this.state;
 
-    console.log('|||||||||||| ____________________________________________ACTIVITY LIST! ', this.props)
     // let OrderRender
     // OrderItem
 
