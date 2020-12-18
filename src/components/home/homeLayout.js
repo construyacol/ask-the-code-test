@@ -1,7 +1,5 @@
 import React from "react";
 import "./home.css";
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
 
 // const selectIsSomeModalRendered = createSelector(
 //   state => state.ui,

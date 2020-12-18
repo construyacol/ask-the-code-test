@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import IconSwitch from "../../../widgets/icons/iconSwitch";
+import loadable from "@loadable/component";
 import { ButtonSuccess } from "../../../widgets/buttons/buttons";
-
-import "./ticket.css";
-import "./finalTicket.css";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import "./finalTicket.css";
+
+const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 function FinalTicket(props) {
   // const [current_ticket, setCurrentTicket] = useState(null);
@@ -73,7 +73,7 @@ function FinalTicket(props) {
     cta_secondary,
     cta_secondary_label,
     cta_secondary_action,
-    ticket
+    ticket,
   } = props;
 
   const atributos = {
@@ -82,48 +82,43 @@ function FinalTicket(props) {
     color: "white",
   };
 
-
-
-
   return (
     <div className="finalTicket TicketDetail">
-        <>
-          <div className="finalTicket ticketHeader">
-            <IconSwitch {...atributos} />
-            <h1 className="fuente finalTicket TicketTitle">
-              Operación exitosa
-            </h1>
-          </div>
+      <>
+        <div className="finalTicket ticketHeader">
+          <IconSwitch {...atributos} />
+          <h1 className="fuente finalTicket TicketTitle">Operación exitosa</h1>
+        </div>
 
-          <div className="finalTicket contenidoTicket">
-            <DetailGenerator
-              title="Detalle del retiro"
-              order={ticket}
-              theme="darkTheme"
-            />
-          </div>
+        <div className="finalTicket contenidoTicket">
+          <DetailGenerator
+            title="Detalle del retiro"
+            order={ticket}
+            theme="darkTheme"
+          />
+        </div>
 
-          <div
-            className="nWcta2"
-            style={{
-              gridTemplateColumns: cta_secondary ? "repeat(2, 1fr)" : "1fr",
-              width: cta_secondary ? "400px" : "auto",
-            }}
-          >
-            {cta_secondary && (
-              <ButtonSuccess
-                id={idCancelButton}
-                cta_secondary={true}
-                toggleModal={cta_secondary_action}
-              >
-                {cta_secondary_label ? cta_secondary_label : "Cancelar"}
-              </ButtonSuccess>
-            )}
-            <ButtonSuccess id={idFinalizarButton} toggleModal={finishAction}>
-              {cta_primary_label ? cta_primary_label : "Finalizar"}
+        <div
+          className="nWcta2"
+          style={{
+            gridTemplateColumns: cta_secondary ? "repeat(2, 1fr)" : "1fr",
+            width: cta_secondary ? "400px" : "auto",
+          }}
+        >
+          {cta_secondary && (
+            <ButtonSuccess
+              id={idCancelButton}
+              cta_secondary={true}
+              toggleModal={cta_secondary_action}
+            >
+              {cta_secondary_label ? cta_secondary_label : "Cancelar"}
             </ButtonSuccess>
-          </div>
-        </>
+          )}
+          <ButtonSuccess id={idFinalizarButton} toggleModal={finishAction}>
+            {cta_primary_label ? cta_primary_label : "Finalizar"}
+          </ButtonSuccess>
+        </div>
+      </>
     </div>
   );
 }

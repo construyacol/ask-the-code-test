@@ -1,12 +1,16 @@
 import React, { Fragment } from "react";
-import "./newAccount.css";
-// import bank from '../../../assets/bank.png'
+import loadable from "@loadable/component";
 import SimpleLoader from "../../widgets/loaders";
-import MethodView from "./views/1method";
 import { payment_method } from "../../api/ui/api.json";
 import BankAccountFlow from "./flows/bankAccountFlow";
-import RemittanceAccountFlow from "./flows/remittanceAccountFlow";
-import FinalTicket from "./views/finalTicket";
+import "./newAccount.css";
+import "../../wallets/newWallet/newWallet.css";
+
+const MethodView = loadable(() => import("./views/1method"));
+const FinalTicket = loadable(() => import("./views/finalTicket"));
+const RemittanceAccountFlow = loadable(() =>
+  import("./flows/remittanceAccountFlow")
+);
 
 const WithdrawAccountFormLayout = (props) => {
   const {

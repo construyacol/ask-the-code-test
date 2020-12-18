@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import IconSwitch from "../icons/iconSwitch";
-import { connect } from "react-redux";
-import { IconClose } from "../shared-styles";
 import styled from "styled-components";
-import OtherModalLayout from "./otherModalLayout";
+import IconSwitch from "../icons/iconSwitch";
 
 import { DownCounter, Buttons } from "../../";
+import OtherModalLayout from "./otherModalLayout";
+import { IconClose } from "../shared-styles";
 
 const SwapVIewConfirm = (props) => {
   const {

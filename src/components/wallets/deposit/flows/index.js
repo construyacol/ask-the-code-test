@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { SimpleLoader } from "../../../widgets/loaders";
 import {
   ButtonSuccess,
@@ -10,8 +10,6 @@ import proof from "../../../../assets/proof.png";
 import ModalityView from "../views/modality";
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
-
-
 
 // {/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
 
@@ -125,7 +123,7 @@ const Success = (props) => {
     step,
     new_ticket,
     idForAcceptButtonInDepositView,
-    deposit_order
+    deposit_order,
   } = props;
 
   // console.log('|||||||||||||| °°°°° MODALSUCCESS', deposit_order, props)
@@ -211,11 +209,7 @@ const Success = (props) => {
                 </div>
 
                 {new_ticket && (
-                  <DetailGenerator
-                    order={deposit_order}
-                    theme="darkTheme"
-                  />
-
+                  <DetailGenerator order={deposit_order} theme="darkTheme" />
                 )}
               </div>
             </div>

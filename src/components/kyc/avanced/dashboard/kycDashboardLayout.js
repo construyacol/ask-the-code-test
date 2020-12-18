@@ -21,7 +21,6 @@ const KycDashBoard = (props) => {
   } = props;
 
   const { newfront, newselfie, newback } = base64;
-
   const idUploadPic = useKeyActionAsClick(
     !fileloader,
     "upload-pic-button",

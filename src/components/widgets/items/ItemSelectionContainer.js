@@ -8,9 +8,9 @@ import actions from "../../../actions";
 import { bindActionCreators } from "redux";
 import SimpleLoader from "../loaders";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import { debounce } from "../../../utils";
 
 import "./items.css";
-import { debounce } from "../../../utils";
 
 class ItemSelectionContainer extends Component {
   state = {

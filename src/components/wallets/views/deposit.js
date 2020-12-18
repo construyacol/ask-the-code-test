@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CriptoSupervisor from "./depositCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import DepositFiat from "./depositFiat";

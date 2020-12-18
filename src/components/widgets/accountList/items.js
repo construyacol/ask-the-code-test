@@ -1,17 +1,19 @@
 import React, { Component, Fragment } from "react";
-import "./item_wallet.css";
-import backcard from "../../../assets/wallet_coins/back.png";
-import Imgcop from "../../../assets/wallet_coins/cop2.png";
-import { withRouter } from "react-router";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import actions from "../../../actions";
-import IconSwitch from "../icons/iconSwitch";
-import PopNotification from "../notifications";
-import BalanceComponent from "../balance/balance";
-import SimpleLoader from "../loaders";
+import loadable from "@loadable/component";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import backcard from "../../../assets/wallet_coins/back.webp";
+import Imgcop from "../../../assets/wallet_coins/cop2.png";
+import actions from "../../../actions";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import "./item_wallet.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
+const SimpleLoader = loadable(() => import("../loaders"));
+const BalanceComponent = loadable(() => import("../balance/balance"));
+const PopNotification = loadable(() => import("../notifications"));
 
 export class ItemWallet extends Component {
   state = {

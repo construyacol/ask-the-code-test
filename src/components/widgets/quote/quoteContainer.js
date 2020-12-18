@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import QuoteLayout from "./quoteLayout";
 import { connect } from "react-redux";
-import SimpleLoader from "../loaders";
 import actions from "../../../actions";
 import { bindActionCreators } from "redux";
 import { formatToCurrency } from "../../../utils/convert_currency";
@@ -54,8 +53,6 @@ class QuoteContainer extends Component {
   };
 
   render() {
-    const { currentPair } = this.props;
-
     return (
       <div className="sectionFixedPrice">
         <QuoteLayout

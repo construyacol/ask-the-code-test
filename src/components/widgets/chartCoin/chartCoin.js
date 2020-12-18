@@ -12,7 +12,7 @@ import "./chartCoin.css";
 import useChartData from "../../../hooks/useChartData";
 let chart;
 
-const ChartCoin = (props) => {
+const ChartCoin = () => {
   const [lastPrices, setLastPrices] = useState();
   const [loader, setLoader] = useState();
   const { isMovilViewport } = useViewport();

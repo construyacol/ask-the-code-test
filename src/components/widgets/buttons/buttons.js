@@ -1,13 +1,15 @@
 import React from "react";
+import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
-import PopNotification from "../notifications";
-import IconSwitch from "../icons/iconSwitch";
-import SimpleLoader from "../loaders";
 // import { Link as ScrollTo } from "react-scroll";
 import availableWalletCreator from "../../hooks/availableWalletCreator";
+import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 
 import "./buttons.css";
-import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
+const SimpleLoader = loadable(() => import("../loaders"));
+const PopNotification = loadable(() => import("../notifications"));
 
 export const ButtonSuccess = (props) => {
   const { cta_secondary, id } = props;

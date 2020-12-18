@@ -136,7 +136,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
-  background: black;
+  background: transparent;
 }
 
 /*@font-face {
@@ -189,6 +189,7 @@ code {
 @font-face {
   font-family: Museo;
   src: url("./assets/fonts/MuseoSans_500.otf");
+  font-display: swap;
 }
 
 .fuenteMuseo {

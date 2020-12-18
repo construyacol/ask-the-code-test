@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import IconSwitch from "../icons/iconSwitch";
+import loadable from "@loadable/component";
+import "./items.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 function ItemLayout(props) {
   const doSelectionForItem = () => {

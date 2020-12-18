@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import styled from "styled-components";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
@@ -6,12 +7,12 @@ import { ButtonForms } from "../buttons/buttons";
 // import proof from '../../../assets/deletewallet.png'
 import SimpleLoader from "../loaders";
 import IconSwitch from "../icons/iconSwitch";
-import styled from "styled-components";
+// import styled from 'styled-components'
 import SwapVIewConfirm from "./swapViewConfirmation";
-import { IconClose } from "../shared-styles";
 
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { IconClose } from "../shared-styles";
 
 function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
   const idCancelButton = useKeyActionAsClick(
@@ -41,7 +42,9 @@ function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
 
   const handleClick = () => {
     const { payload, code } = modal_confirmation;
-    if(!modal_confirmation.action){return cancelarClick()}
+    if (!modal_confirmation.action) {
+      return cancelarClick();
+    }
     modal_confirmation.action(payload, code);
     action.confirmationModalToggle();
     action.confirmationModalPayload(null);
@@ -202,7 +205,7 @@ const Wrapper = styled.section`
   grid-row-gap: 50px;
   padding: 30px 0;
   border-radius: 6px;
-  justify-items:center;
+  justify-items: center;
 
   p {
     max-width: 450px;

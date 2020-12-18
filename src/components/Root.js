@@ -1,21 +1,27 @@
 import React, { useEffect } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import localForage from "localforage";
 import jwt from "jsonwebtoken";
+import loadable from "@loadable/component";
 import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-
 import actions from "../actions";
-import LoaderAplication from "./widgets/loaders/loader_app";
-import HomeContainer from "./home/home-container";
-import { isValidToken } from "./utils";
 import withHandleError from "./withHandleError";
-import SocketsComponent from "./sockets/sockets";
-import ToastContainers from "./widgets/toast/ToastContainer";
-import { doLogout } from "./utils";
+import HomeContainer from "./home/home-container";
+import { doLogout, isValidToken } from "./utils";
 import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
+
+const LazyLoader = loadable(() =>
+  import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app")
+);
+const LazySocket = loadable(() =>
+  import(/* webpackPrefetch: true */ "./sockets/sockets")
+);
+const LazyToast = loadable(() =>
+  import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer")
+);
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -82,24 +88,17 @@ function RootContainer(props) {
 
   return (
     <Router history={history}>
-      <SocketsComponent toastMessage={toastMessage} />
-      {/* <CoinsendaSocket /> */}
-      <ToastContainers />
-      <Switch>
-        <Route
-          path="/"
-          render={() =>
-            !isAppLoaded ? (
-              <LoaderAplication
-                tryRestoreSession={tryRestoreSession}
-                history={history}
-              />
-            ) : (
-              <HomeContainer />
-            )
-          }
-        />
-      </Switch>
+      {!isAppLoaded ||
+      (window.reactSnap && process.env.NODE_ENV === "production") ? (
+        <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
+      ) : (
+        <>
+          <LazySocket toastMessage={toastMessage} />
+          {/* <CoinsendaSocket /> */}
+          <LazyToast />
+          <Route path="/" render={() => <HomeContainer />} />
+        </>
+      )}
     </Router>
   );
 }

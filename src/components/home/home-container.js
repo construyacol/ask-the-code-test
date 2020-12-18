@@ -1,14 +1,16 @@
 import React from "react";
+import loadable from "@loadable/component";
+import { connect } from "react-redux";
+import { Route } from "react-router-dom";
+import PropTypes from "prop-types";
 import HomeLayout from "./homeLayout";
 import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
 import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
 import DashBoardContainer from "../dashBoard/dashboard-container";
-import { connect } from "react-redux";
-import { Route } from "react-router-dom";
-import PropTypes from "prop-types";
 import withHandleError from "../withHandleError";
-import ModalsSupervisor from "./modals-supervisor";
 import { doLogout } from "../utils";
+
+const ModalsSupervisor = loadable(() => import("./modals-supervisor"));
 
 const BuildedHome = (props) => (
   <>
@@ -18,7 +20,7 @@ const BuildedHome = (props) => (
   </>
 );
 
-const HomeContainer = (props) => {
+const HomeContainer = () => {
   return (
     <HomeLayout>
       <Route

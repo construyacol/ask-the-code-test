@@ -1,6 +1,5 @@
 let Environment;
 
-
 if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   Environment = {
     ApiUrl: "http://localhost:3001/api/",
@@ -13,7 +12,6 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     SwapApiUrl: "http://localhost:4008/api/",
     CountryUrl: "https://info1.devsertec.com/",
   };
-
 } else if (process.env.NODE_ENV === "development") {
   Environment = {
     ApiUrl: "https://tx1.devsertec.com/api/",
@@ -39,6 +37,5 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     CountryUrl: "https://info1.devsertec.com/",
   };
 }
-
 
 export default Environment;

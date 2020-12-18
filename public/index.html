@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="es" class="notranslate" translate="no">
+<html lang="en">
   <head>
-
-    <meta charset="utf-8">
-    <meta name="google" content="notranslate">
-    <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"> -->
-    <link rel="shortcut icon" href="./icon.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
-
-
+    <meta charset="utf-8" />
+    <meta name="google" content="notranslate" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="shortcut icon" href="./icon.webp" />
+    <link rel="apple-touch-icon" href="./icon.webp" />
+    <link rel="manifest" href="./manifest.json" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Coinsenda. Compra y Vende bitcoins con tu Moneda Nacional desde Colombia..."
+    />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -20,20 +26,56 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <!-- META DATA IOS -->
-    <meta name="apple-mobile-web-app-tittle" content="Coinsenda">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="./icon.png">
-    <link rel="manifest" href="./manifest.json">
-    <link href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns" crossorigin="anonymous">
+    <meta name="apple-mobile-web-app-tittle" content="Coinsenda" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <!-- preload -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap"
+      rel="preload"
+      as="style"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway&display=swap"
+      rel="preload"
+      as="style"
+    />
+    <link
+      rel="preload"
+      as="style"
+      href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+      integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+      crossorigin="anonymous"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Tomorrow&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+      integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+      crossorigin="anonymous"
+    />
 
     <title>Coinsenda</title>
-
-
   </head>
+
   <body>
+    <noscript
+      >Necesitas habilitar Javascript para correr esta aplicación.</noscript
+    >
+    <script>
+      window.reactSnap = true;
+    </script>
     <div id="home-container"></div>
     <div id="modal-container"></div>
     <div id="toast-container"></div>
@@ -49,5 +91,4 @@
       function initialize(i,t){var e;i.getElementById(t)?initFreshChat():((e=i.createElement("script")).id=t,e.async=!0,e.src="https://wchat.freshchat.com/js/widget.js",e.onload=initFreshChat,i.head.appendChild(e))}function initiateCall(){initialize(document,"freshchat-js-sdk")}window.addEventListener?window.addEventListener("load",initiateCall,!1):window.attachEvent("load",initiateCall,!1);
     </script> -->
   </body>
-
 </html>

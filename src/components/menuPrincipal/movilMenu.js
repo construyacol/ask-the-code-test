@@ -1,10 +1,8 @@
 import React from "react";
-import IconSwitch from "../widgets/icons/iconSwitch";
 import useViewport from "../../hooks/useWindowSize";
 import "./mPrincipal.css";
 
 const MovilMenuComponent = (props) => {
-  const { navigateTo } = props;
   const { isMovilViewport } = useViewport();
 
   return (

@@ -36,7 +36,7 @@ class DepositContainer extends Component {
     new_ticket: null,
     deposit_provider_list: null,
     currentDepositProvider: null,
-    deposit_order:null
+    deposit_order: null,
   };
 
   componentDidMount() {
@@ -468,7 +468,7 @@ class DepositContainer extends Component {
 
     this.setState({
       new_ticket: new_deposit,
-      deposit_order:response
+      deposit_order: response,
     });
     return this.props.action.current_section_params({
       currentFilter: "deposits",

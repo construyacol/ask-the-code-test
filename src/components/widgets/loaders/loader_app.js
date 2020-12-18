@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import loadable from "@loadable/component";
 import { bindActionCreators } from "redux";
 import localForage from "localforage";
 import actions from "../../../actions";
-import SelectCountry from "../maps/select_country/select_country";
-import Coinsenda from "../icons/logos/coinsenda.js";
-import IconSwitch from "../icons/iconSwitch";
-import "./loader.css";
 import { withRouter } from "react-router";
 import usePrevious from "../../hooks/usePreviousValue";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
@@ -14,6 +11,35 @@ import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";
 import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
+import { hotjar } from "react-hotjar";
+
+import "./loader.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
+  fallback: (
+    <div
+      style={{
+        height: 77,
+        width: 200,
+        display: "grid",
+      }}
+    />
+  ),
+});
+const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
+  fallback: (
+    <div
+      style={{
+        height: 50,
+        width: 50,
+        display: "block",
+      }}
+    />
+  ),
+});
+const SelectCountry = loadable(() =>
+  import("../maps/select_country/select_country")
+);
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
   const [country, setCountry] = useState("colombia");
@@ -25,22 +51,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const previousLoadLabel = usePrevious(appLoadLabel);
   const { isTabletOrMovilViewport, isMovilViewport } = useViewport();
 
-  const registerColors = () => {
-    if (window && window.CSS && window.CSS.registerProperty) {
-      window.CSS.registerProperty({
-        name: "--primary",
-        syntax: "<color>",
-        inherits: true,
-        initialValue: "#014c7d",
-      });
-      window.CSS.registerProperty({
-        name: "--secondary",
-        syntax: "<color>",
-        inherits: true,
-        initialValue: "#0198ff",
-      });
-    }
-  };
+  const registerColors = () => {};
 
   const initComponent = async (newCountry) => {
     const { userToken } = authData;
@@ -193,8 +204,8 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
           <SelectCountry select_country={selectCountry} />
         </div>
       ) : (
-        <div className={`LoaderContainer loaderLayout ${anim}`}>
-          <IconSwitch icon={country} size={60} />
+        <div className={`LoaderContainer loaderLayout`}>
+          <IconSwitch className="Loader__icon" icon={country} size={60} />
 
           <div className="logotypes">
             <Coinsenda size={50} color="white" />

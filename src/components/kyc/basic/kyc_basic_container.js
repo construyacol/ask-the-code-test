@@ -16,6 +16,7 @@ import {
 // import SimpleLoader from '../../widgets/loaders'
 import ItemListKycBasic from "./itemList";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import KycSkeleton from './skeleton'
 
 const modelFormData = kyc.kyc_basic.natural;
 
@@ -552,16 +553,7 @@ class KycBasicContainer extends Component {
           !step ||
           this.props.step > this.state.kyc_data_basic.length ? (
             // <SimpleLoader/>
-            <div className="KycLayout">
-              <p className="fuente KycTitle KycTitless loader"></p>
-              <div id="kycPrime" className="containerInputComponent2">
-                <div className="inputLabelsCont loader"></div>
-                <div className="inputContainer3 loader">
-                  <p></p>
-                </div>
-                <div className="InputContainerT loader"></div>
-              </div>
-            </div>
+            <KycSkeleton/>
           ) : (
             <div className="KycLayout">
               <p className="fuente KycTitle KycTitless">Verificación Básica</p>
