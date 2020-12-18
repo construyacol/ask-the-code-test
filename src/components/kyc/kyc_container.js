@@ -94,7 +94,6 @@ const Kyc = (props) => {
       info_type: "identity",
       verification_level: "level_1",
     };
-    config.info = ""
     props.action.isAppLoading(true);
     let res = await props.coinsendaServices.updateLevelProfile(config, user);
     // console.log('||||||||||| VALIDATE_RES', res)
