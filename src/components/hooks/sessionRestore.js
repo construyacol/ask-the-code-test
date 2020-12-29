@@ -4,7 +4,8 @@ import { useActions } from "../../hooks/useActions";
 export const updateLocalForagePersistState = (modelData) => () => {
   const { user, wallets, balances } = modelData;
   if (user && wallets && balances) {
-    return localForage.setItem("sessionState", JSON.stringify(modelData));
+    localForage.setItem("sessionState", JSON.stringify(modelData));
+    return null
   }
 };
 

@@ -13,7 +13,7 @@ import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import { AiOutlineClose } from "react-icons/ai";
 import WithOutProvider from "./withOutProvider";
-import CriptoViewLoader from "./skeleton";
+import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 
@@ -26,7 +26,7 @@ export const CriptoSupervisor = (props) => {
   return (
     <>
       {Object.keys(withdrawProviders).length === 0 ? (
-        <CriptoViewLoader />
+        <SkeletonWithdrawView />
       ) : !withdrawProviders[current_wallet.currency.currency] ? (
         <WithOutProvider current_wallet={current_wallet} />
       ) : (

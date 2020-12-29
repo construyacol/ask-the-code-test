@@ -3,7 +3,6 @@ import loadable from "@loadable/component";
 // import { hotjar } from "react-hotjar";
 import { Element, Events, scrollSpy } from "react-scroll";
 import { Route, Switch } from "react-router-dom";
-import WalletContainer from "../wallets/walletContainer";
 import QuoteContainer from "../widgets/quote/quoteContainer";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -17,11 +16,16 @@ import withCoinsendaServices from "../withCoinsendaServices";
 import { LazyLoaderPage } from "./dashboard-skeletons";
 import "./dashboard.css";
 
+const WalletsContainerComponent = loadable(
+  ()=> import("../wallets/walletContainer"),
+  {
+    fallback:<LazyLoaderPage path={"withdraw_accounts"} />
+  }
+)
+
+
 const WitdrawAccountContainer = loadable(
-  () =>
-    import(
-      /* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"
-    ),
+  () => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"),
   {
     fallback: <LazyLoaderPage path={"withdraw_accounts"} />,
   }
@@ -165,8 +169,9 @@ function DashBoardContainer(props) {
             <Switch>
               <Route
                 path="/wallets"
-                render={(renderProps) => <WalletContainer {...renderProps} />}
+                component={WalletsContainerComponent}
               />
+
               <Route
                 path="/withdraw_accounts"
                 component={WitdrawAccountContainer}

@@ -12,10 +12,9 @@ const ItemAccount = loadable(() =>
 const SimpleLoader = loadable(() => import("../widgets/loaders"));
 
 export const LazyLoaderPage = ({ path }) => {
-  const title =
-    path === "withdraw_accounts" ? "Cuentas de retiro" : "Cargando...";
+  const title = path === "withdraw_accounts" ? "Cuentas de retiro" : "Cargando...";
   const LoaderScreen =
-    path === "withdraw_accounts"
+      path === "withdraw_accounts"
       ? AccountListSkeletonLoader
       : path === "referral"
       ? ReferralComponentAsSkeleton

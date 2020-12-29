@@ -10,15 +10,17 @@ import SimpleLoader from "../widgets/loaders";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
 import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
+import { SkeletonDepositView } from './views/depositCripto'
+import { SkeletonSwapView } from './views/swap'
+import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
+
 import "./views/wallet_views.css";
 
-const LazyWithdrawView = loadable(() => import("./views/withdraw"));
-const LazyAccountList = loadable(
-  () => import("../widgets/accountList/account-list"),
-  { fallback: <AccountListSkeletonLoader /> }
-);
-const LazySwapView = loadable(() => import("./views/swap"));
-const LazyDepositView = loadable(() => import("./views/deposit"));
+const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
+const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
+const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
+const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
+
 
 function WalletContainer(props) {
   // const actionDispatch = useActions()
@@ -92,11 +94,12 @@ export const WalletDetail = (props) => {
 const SwitchView = (props) => {
   const { params } = props.match;
   const Views = {
+    // deposit: <SkeletonDepositView {...props} />,
     deposit: <LazyDepositView {...props} />,
     withdraw: <LazyWithdrawView {...props} />,
+    // withdraw: <SkeletonWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
   };
-
   return Views[params.path];
 };
 

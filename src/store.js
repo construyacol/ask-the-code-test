@@ -44,9 +44,9 @@ export function _createStore() {
     if (store.getState().modelData.authData.userToken) {
       mainService.setGlobalState(store.getState());
     }
-    window.onbeforeunload = updateLocalForagePersistState(
-      store.getState().modelData
-    );
+    window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData);
   });
+
   return store;
+
 }
