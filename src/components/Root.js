@@ -13,15 +13,9 @@ import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 
-const LazyLoader = loadable(() =>
-  import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app")
-);
-const LazySocket = loadable(() =>
-  import(/* webpackPrefetch: true */ "./sockets/sockets")
-);
-const LazyToast = loadable(() =>
-  import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer")
-);
+const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
+const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
+const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -88,8 +82,7 @@ function RootContainer(props) {
 
   return (
     <Router history={history}>
-      {!isAppLoaded ||
-      (window.reactSnap && process.env.NODE_ENV === "production") ? (
+      {!isAppLoaded || (window.reactSnap && process.env.NODE_ENV === "production") ? (
         <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
       ) : (
         <>

@@ -10,7 +10,7 @@ import ControlButton from "../../widgets/buttons/controlButton";
 import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
-import DepositWithdrawFiatSkeleton from './depositWithdrawFiatSkeleton'
+import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
 
 
 const CriptoSupervisor = (props) => {

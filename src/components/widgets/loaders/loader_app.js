@@ -37,9 +37,8 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
     />
   ),
 });
-const SelectCountry = loadable(() =>
-  import("../maps/select_country/select_country")
-);
+
+const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
   const [country, setCountry] = useState("colombia");

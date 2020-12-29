@@ -2,8 +2,8 @@ import React from "react";
 import InputForm from "../../../widgets/inputs/inputForm";
 import { WithdrawForm } from "./";
 import ControlButton from "../../../widgets/buttons/controlButton";
-import DepositWithdrawFiatSkeleton from '../depositWithdrawFiatSkeleton'
 import { useWalletInfo } from "../../../../hooks/useWalletInfo";
+import DepositWithdrawFiatSkeleton from '../skeleton/depositWithdrawFiatSkeleton'
 
 
 const SkeletonWithdrawView = () => {

@@ -1,7 +1,7 @@
 import localForage from "localforage";
 import { useActions } from "../../hooks/useActions";
 
-export const updateLocalForagePersistState = (modelData) => () => {
+export const updateLocalForagePersistState = (modelData) => async() => {
   const { user, wallets, balances } = modelData;
   if (user && wallets && balances) {
     localForage.setItem("sessionState", JSON.stringify(modelData));
@@ -15,11 +15,9 @@ const SessionRestore = () => {
   const tryRestoreSession = async (userToken) => {
     const SESSION = await localForage.getItem("sessionState");
     const SESSION_STATE = JSON.parse(SESSION);
-    if (
-      !SESSION_STATE ||
-      (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)
-    ) {
+    if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) {
       await localForage.setItem("CACHED_DATA", {});
+      await localForage.setItem("sessionState", {});
       return false;
     }
     await actions.appLoadLabelAction("Restaurando datos");

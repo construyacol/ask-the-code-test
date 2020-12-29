@@ -10,30 +10,19 @@ import PropTypes from "prop-types";
 import withHandleError from "../withHandleError";
 import useToastMessage from "../../hooks/useToastMessage.js";
 import KycSkeleton from '../kyc/basic/skeleton'
+import DWFiatFlowSkeleton from "../wallets/views/skeleton/dWFiatFlowSkeleton"
 
-const SocketNotify = loadable(() =>
-  import("../sockets/socket_notify/socketNotify")
-);
-const TwoFactorActivate = loadable(() =>
-  import("../widgets/twoFactorActivate/2fa")
-);
-const WithdrawFlow = loadable(() =>
-  import("../wallets/withdraw/withdrawFlowContainer")
-);
-const ModalSettingsView = loadable(() =>
-  import("../widgets/itemSettings/modal_views")
-);
-
+const SocketNotify = loadable(() => import("../sockets/socket_notify/socketNotify"));
+const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2fa"));
+const WithdrawFlow = loadable(() => import("../wallets/withdraw/withdrawFlowContainer"), { fallback: <DWFiatFlowSkeleton/> });
+const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_views"));
 const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
 const ConfirmationModal = loadable(() => import("../widgets/modal/confirmation"));
-const Kyc = loadable(() => import("../kyc/kyc_container"), {
-  fallback:(
-   <KycSkeleton/>
-  )
-});
-const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"));
+const Kyc = loadable(() => import("../kyc/kyc_container"), { fallback:<KycSkeleton/> } );
+const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"));
 const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"));
+
 
 function ModalsSupervisor(props) {
   const {
@@ -53,18 +42,20 @@ function ModalsSupervisor(props) {
       <ModalContainer condition={isModalVisible}>
         <ModalLayout modalView={modalView} loader={loader}>
           <Route exact strict path="/wallets" component={NewWallet} />
+
           <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
             return (<DepositContainer {...renderProps} toastMessage={toastMessage} />);
+            // return (<DWFiatFlowSkeleton/>);
           }}/>
+
           <Route
-            strict
-            path="/wallets/withdraw/:account_id"
-            render={(renderProps) => {
+            strict path="/wallets/withdraw/:account_id" render={(renderProps) => {
               return (
                 <WithdrawFlow {...renderProps} toastMessage={toastMessage} />
               );
             }}
           />
+
           <Route
             exact
             path="/withdraw_accounts"
