@@ -11,6 +11,8 @@ import withHandleError from "../withHandleError";
 import useToastMessage from "../../hooks/useToastMessage.js";
 import KycSkeleton from '../kyc/basic/skeleton'
 import DWFiatFlowSkeleton from "../wallets/views/skeleton/dWFiatFlowSkeleton"
+import WithdrawAccountFlowSkeleton from '../withdrawAccounts/skeleton'
+import NewWalletSkeleton from '../wallets/newWallet/skeleton'
 
 const SocketNotify = loadable(() => import("../sockets/socket_notify/socketNotify"));
 const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2fa"));
@@ -20,8 +22,8 @@ const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
 const ConfirmationModal = loadable(() => import("../widgets/modal/confirmation"));
 const Kyc = loadable(() => import("../kyc/kyc_container"), { fallback:<KycSkeleton/> } );
 const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"), { fallback: <DWFiatFlowSkeleton/> });
-const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"));
-const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"));
+const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"), { fallback: <WithdrawAccountFlowSkeleton/> });
+const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"), { fallback: <NewWalletSkeleton/> });
 
 
 function ModalsSupervisor(props) {
@@ -41,11 +43,11 @@ function ModalsSupervisor(props) {
     <>
       <ModalContainer condition={isModalVisible}>
         <ModalLayout modalView={modalView} loader={loader}>
+
           <Route exact strict path="/wallets" component={NewWallet} />
 
           <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
             return (<DepositContainer {...renderProps} toastMessage={toastMessage} />);
-            // return (<DWFiatFlowSkeleton/>);
           }}/>
 
           <Route
@@ -57,24 +59,20 @@ function ModalsSupervisor(props) {
           />
 
           <Route
-            exact
-            path="/withdraw_accounts"
-            render={(renderProps) => {
+            exact path="/withdraw_accounts" render={(renderProps) => {
               return (
-                <WithdrawAccountForm
-                  {...renderProps}
-                  toastMessage={toastMessage}
-                />
+                <WithdrawAccountForm {...renderProps} toastMessage={toastMessage}/>
               );
             }}
           />
+
           <Route
-            exact
-            path="/security"
-            component={current === "2auth" ? TwoFactorActivate : Kyc}
+            exact path="/security" component={current === "2auth" ? TwoFactorActivate : Kyc}
           />
+
         </ModalLayout>
       </ModalContainer>
+
       <ModalContainer condition={otherModal}>
         {isSocketNotification ? (
           <Route path="/" component={SocketNotify} />

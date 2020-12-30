@@ -7,6 +7,7 @@ import CopyContainer from "../../widgets/copy/copyContainer";
 import { SimpleLoader } from "../../widgets/loaders";
 import availableWalletCreator from "../../hooks/availableWalletCreator";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import NewWalletSkeleton from './skeleton'
 
 const NewWalletLayout = (props) => {
   const {
@@ -23,14 +24,7 @@ const NewWalletLayout = (props) => {
   } = props;
 
   const [availableCurrencies] = availableWalletCreator();
-  const idForNewWalletButton = useKeyActionAsClick(
-    true,
-    "add-new-wallet-button",
-    13,
-    false,
-    "onkeypress",
-    true
-  );
+  const idForNewWalletButton = useKeyActionAsClick(true, "add-new-wallet-button", 13, false, "onkeypress", true);
 
   return (
     <div className="containerFormWallet newWallet">
@@ -69,7 +63,7 @@ const NewWalletLayout = (props) => {
               </form>
             </>
           ) : (
-            <SimpleLoader />
+            <NewWalletSkeleton />
           )}
         </div>
       )}
