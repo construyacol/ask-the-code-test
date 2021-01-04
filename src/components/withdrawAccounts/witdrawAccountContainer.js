@@ -8,7 +8,7 @@ import { Router, Route } from "react-router-dom";
 import AccountList from "../widgets/accountList/account-list";
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from "prop-types";
-import { AccountListSkeletonLoader } from "../dashBoard/dashboard-container";
+import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
 import { WalletDetail } from "../wallets/walletContainer";
 import ActivityView from "../wallets/views/activity";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";

@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { connect } from "react-redux";
 import ShareSection from "./share-section";
-import { useActions } from "../../hooks/useActions";
 import sleep from "../../utils/sleep";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import ReferralCounter from "./referral-counter";
 import BalanceSelect from "./balance-select";
 import WithdrawAd from "./withdraw-ad";
@@ -19,11 +18,10 @@ const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`;
 const ReferralComponent = (props) => {
   const { user } = props;
 
-  const actions = useActions();
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   const [haveReferraLink, setHaveReferralLink] = useState(true);
   const [referralLink, setReferralLink] = useState("");
-  const [loading, setLoading] = useState(props.setSkeleton ? true : false);
+  const [loading] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)
   const [coinsendaServices] = useCoinsendaServices();
 

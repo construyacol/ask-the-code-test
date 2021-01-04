@@ -155,6 +155,7 @@ const Item = (props) => {
        * y reservamos el id (focusedId) para este elemento
        */}
       <InputKeyActionHandler
+        aria-label="itemFromList"
         name="itemFromList"
         autoComplete="off"
         id={props.focusedId}

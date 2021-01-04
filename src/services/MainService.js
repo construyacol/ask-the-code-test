@@ -14,7 +14,10 @@ import userSource from "../components/api";
 import { deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import isAppLoading, { isAppLoaded } from "../actions/loader";
+import isAppLoading, {
+  appLoadLabelAction,
+  isAppLoaded,
+} from "../actions/loader";
 import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
 import { updateLoadersAction } from "../actions/uiActions";

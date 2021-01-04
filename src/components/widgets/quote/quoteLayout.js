@@ -1,11 +1,13 @@
 import React, { Fragment } from "react";
+import loadable from "@loadable/component";
 import { coins } from "../../api/ui/api.json";
-import ItemLayout from "../items/itemLayout";
 // import Slider from './slide'
-import ChartCoin from "../chartCoin/chartCoin.js";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { skeleton } from "../loaders/skeleton";
+
+const LazyChart = loadable(() => import("../chartCoin/chartCoin"));
+const ItemLayout = loadable(() => import("../items/itemLayout"));
 
 const QuoteLayout = (props) => {
   // console.log('S T A T E - - - Q U O T E - - - - L A Y O U T - - - C O N T A I N E R:::', props)
@@ -35,7 +37,7 @@ const QuoteLayout = (props) => {
 
   return (
     <QuoteLayoutCont>
-      <ChartCoin />
+      <LazyChart />
 
       {!props.currentPair ? (
         <SkeletonLoader />
@@ -180,12 +182,12 @@ const SkeletonLoader = () => {
       >
         <div className="buy" style={{ display: `${movil ? "none" : "grid"}` }}>
           <p className="fuente skeleton"></p>
-          <h1 className="fuente2 Qprice skeleton"></h1>
+          <h1 className="fuente2 Qprice skeleton"> </h1>
         </div>
 
         <div className="buy" style={{ display: "grid" }}>
           <p className="fuente skeleton"></p>
-          <h1 className="fuente2 Qprice skeleton"></h1>
+          <h1 className="fuente2 Qprice skeleton"> </h1>
         </div>
       </PricesContainer>
       <CoinList className="coinList">

@@ -14,10 +14,14 @@ class SocketsComponent extends Component {
     currentSwap: null,
     currentDeposit: null,
     currentWithdraw: null,
+    isUpdated: false,
   };
 
   componentDidUpdate(prevProps) {
-    if (this.props.loggedIn !== prevProps.loggedIn) {
+    if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
+      this.setState({
+        isUpdated: true,
+      });
       if (this.props.loggedIn) {
         const socket = io(SocketUrl);
         const { user } = this.props;

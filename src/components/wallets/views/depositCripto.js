@@ -9,20 +9,18 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import ControlButton from "../../widgets/buttons/controlButton";
 import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { useWalletInfo } from "../../../hooks/useWalletInfo";
+import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
+
 
 const CriptoSupervisor = (props) => {
-  const [
-    ,
-    {
-      current_wallet,
-      modelData: { deposit_providers },
-    },
-  ] = useCoinsendaServices();
+
+  const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
 
   return (
     <>
       {!deposit_providers || Object.keys(deposit_providers).length === 0 ? (
-        <LoaderView />
+        <SkeletonDepositView/>
       ) : current_wallet.dep_prov.length < 1 ? (
         <AddDepositProviderCripto />
       ) : (
@@ -32,17 +30,28 @@ const CriptoSupervisor = (props) => {
   );
 };
 
-const LoaderView = () => {
+export const SkeletonDepositView = () => {
+
+  const { currentWallet } = useWalletInfo();
+
   return (
-    <DepositForm className="skeleton">
-      <section className="contAddress">
-        <p id="soloAd2" className="fuente title soloAd2"></p>
-        <p className="fuente soloAd"></p>
-        <div className="qrContainer">{/* <QrProtector visible/> */}</div>
-        <p className="fuente title dirDep"></p>
-        <p className="verifyAddress"></p>
-      </section>
-    </DepositForm>
+    <>
+
+    {
+      currentWallet.currency_type === 'crypto' ?
+        <DepositForm className="skeleton">
+          <section className="contAddress">
+            <p id="soloAd2" className="fuente title soloAd2"></p>
+            <p className="fuente soloAd"></p>
+            <div className="qrContainer">{/* <QrProtector visible/> */}</div>
+            <p className="fuente title dirDep"></p>
+            <p className="verifyAddress"></p>
+          </section>
+        </DepositForm>
+        :
+        <DepositWithdrawFiatSkeleton/>
+      }
+    </>
   );
 };
 
@@ -204,10 +213,12 @@ const QrProtector = ({ visible, invalid }) => (
   </div>
 );
 
-const DepositForm = styled(OperationForm)`
+export const DepositForm = styled(OperationForm)`
   .qrContainer {
     transform: scale(0.9);
   }
+
+
 
   @media (max-width: 768px) {
     width: 100%;
@@ -250,6 +261,19 @@ const DepositForm = styled(OperationForm)`
   &.skeleton .qrContainer {
     background: #bfbfbf;
     border-radius: 6px;
+  }
+
+  &.skeleton p span{
+    background: #bfbfbf;
+    color: #bfbfbf;
+    line-height: 1.6em;
+  }
+
+  &.skeleton .skeletonDepositIcon{
+    width: 90px;
+    height: 100px;
+    border-radius: 6px;
+    background: #bfbfbf;
   }
 
   &.skeleton {

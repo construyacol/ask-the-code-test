@@ -17,7 +17,7 @@
   transition: 0.3s;
 }
 
-#close-button-with-OtherModalLayout.inactive{
+#close-button-with-OtherModalLayout.inactive {
   overflow-y: hidden;
 }
 
@@ -160,7 +160,7 @@
 }
 
 .titleConfirmed {
-  background-image: url("../../../assets/map.png");
+  background-image: url("../../../assets/map.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: bottom;

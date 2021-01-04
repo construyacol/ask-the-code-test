@@ -8,7 +8,6 @@ import {
   skeletonStyle,
 } from "./shareStyles";
 import { device } from "../../const/const";
-import { copy } from "../../utils";
 import CopyContainer from "../widgets/copy/copyContainer";
 
 const SECTION_TITLE = "Link de referidos";

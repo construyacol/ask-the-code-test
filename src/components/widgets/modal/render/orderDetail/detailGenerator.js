@@ -351,12 +351,11 @@ const Container = styled.section`
     color: gray;
   }
 
-  &.darkTheme{
+  &.darkTheme {
     p {
-      color: white
+      color: white;
     }
   }
-
 `;
 
 //

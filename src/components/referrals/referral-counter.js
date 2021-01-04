@@ -1,13 +1,17 @@
 import React from "react";
+import loadable from "@loadable/component";
 import NumberBox from "./number-box";
-import { Handshake } from "../widgets/icons";
+
+const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 const ReferralCounter = ({ loading }) => {
   return (
     <NumberBox
       loading={loading}
       textCss="grid-area: mid-right;"
-      Icon={Handshake}
+      Icon={(props) => (
+        <IconSwitch {...props} withoutwrapper={true} icon="referral" />
+      )}
       quantity={"500 R"}
       definition="Referidos"
       highlight

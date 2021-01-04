@@ -1,4 +1,5 @@
 import React from "react";
+import loadable from "@loadable/component";
 import styled, { css } from "styled-components";
 import {
   ReferralBox,
@@ -7,14 +8,15 @@ import {
   Title,
   skeletonStyle,
 } from "./shareStyles";
-import * as Icons from "../widgets/icons";
 import { device } from "../../const/const";
+
+const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 const SECTION_TITLE = "Saldo disponible";
 const ITEMS = [
-  { name: "Ethereum", icon: "Ethereum", coinCode: "ETH", mockBalance: 0.00136 },
-  { name: "Bitcoin", icon: "Bitcoin2", coinCode: "BTC", mockBalance: 0.00136 },
-  { name: "Cardano", icon: "Cardano", coinCode: "ADA", mockBalance: 0.00136 },
+  { name: "Ethereum", icon: "ethereum", coinCode: "ETH", mockBalance: 0.00136 },
+  { name: "Bitcoin", icon: "bitcoin", coinCode: "BTC", mockBalance: 0.00136 },
+  { name: "Cardano", icon: "cardano", coinCode: "ADA", mockBalance: 0.00136 },
 ];
 
 const BalanceSelect = ({ loading }) => {
@@ -23,9 +25,13 @@ const BalanceSelect = ({ loading }) => {
       <Title loading={loading}>{SECTION_TITLE}</Title>
       <SelectConainer loading={loading}>
         {ITEMS.map((item, index) => {
-          const Icon = Icons[item.icon];
           return (
-            <ItemComponent item={item} Icon={Icon} index={index} key={index} />
+            <ItemComponent
+              item={item}
+              icon={item.icon}
+              index={index}
+              key={index}
+            />
           );
         })}
       </SelectConainer>
@@ -33,13 +39,12 @@ const BalanceSelect = ({ loading }) => {
   );
 };
 
-const ItemComponent = ({ item, Icon, index }) => {
-  Icon = Icon || <div />;
+const ItemComponent = ({ item, icon, index }) => {
   return (
     <SelectItem key={index}>
       <MainButton>
         <IconContainer>
-          <Icon />
+          {icon ? <IconSwitch withoutwrapper={true} icon={icon} /> : <div />}
         </IconContainer>
         <p>{item.name}</p>
         <PriceContainer>

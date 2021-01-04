@@ -1,11 +1,13 @@
 import React, { useRef, useEffect, useState } from "react";
+import loadable from "@loadable/component";
 import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import IconSwitch from "../icons/iconSwitch";
 import { navigation_components } from "../../api/ui/api.json";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 
 import "./detailContainer.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 // TODO: refactor this component
 function ContentTab(props) {

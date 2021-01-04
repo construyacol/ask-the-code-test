@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import loadable from "@loadable/component";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import { InputKeyActionHandler } from "../accountList/styles";
-import IconSwitch from "../icons/iconSwitch";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 let timerId;
 function NewItemsLayout(props) {
@@ -53,6 +55,7 @@ function NewItemsLayout(props) {
       className={`${type === "payment_method" ? "ILtuvieja" : ""} `}
     >
       <InputKeyActionHandler
+        aria-label="itemFromList"
         name="itemFromList"
         autoComplete="off"
         id={props.focusedId}

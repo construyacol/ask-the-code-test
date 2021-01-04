@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-// import styled, { css } from 'styled-components'
-import backcard from "../../../assets/wallet_coins/back.png";
-import IconSwitch from "../icons/iconSwitch";
-import PopNotification from "../notifications";
-import SimpleLoader from "../loaders";
-import BalanceComponent from "../balance/balance";
+import loadable from "@loadable/component";
+import backcard from "../../../assets/wallet_coins/back.webp";
 import { connect } from "react-redux";
-// import { bindActionCreators } from 'redux'
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { LoaderContainer } from "../loaders";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
+import BalanceComponent from "../balance/balance";
+import PopNotification from "../notifications";
+import SimpleLoader from "../loaders";
 
 import {
   ACta,
@@ -22,10 +20,12 @@ import {
   InputKeyActionHandler,
 } from "./styles";
 
-import "./item_wallet.css";
 import { withRouter } from "react-router";
 import useToastMessage from "../../../hooks/useToastMessage";
 import { useActions } from "../../../hooks/useActions";
+import "./item_wallet.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 const ItemAccount = (props) => {
   if (props.loader || !props.account) {
@@ -211,6 +211,7 @@ const ItemAccount = (props) => {
       className={`AccountLayout  ${shouldHaveDeleteClassName && account_state}`}
     >
       <InputKeyActionHandler
+        aria-label="itemFromList"
         name="itemFromList"
         autoComplete="off"
         id={props.focusedId}

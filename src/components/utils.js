@@ -12,5 +12,6 @@ export function isValidToken(createAt) {
 export const doLogout = async () => {
   await localForage.removeItem("user_token");
   await localForage.removeItem("created_at");
+  if (window.reactSnap && process.env.NODE_ENV === "production") return;
   window.location.href = COINSENDA_URL;
 };

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import loadable from "@loadable/component";
 import { connect } from "react-redux";
 import actions from "../../../actions";
 import { bindActionCreators } from "redux";
-import IconSwitch from "../icons/iconSwitch";
 import "./scores.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 class ScoresComponent extends Component {
   state = {

@@ -1,23 +1,29 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import loadable from "@loadable/component";
 import actions from "../../actions";
 import { bindActionCreators } from "redux";
 import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { Route } from "react-router-dom";
-import DepositView from "./views/deposit";
-import ActivityView from "./views/activity";
-// import WithdrawView from './views/withdraw'
-import WithdrawView from "./views/withdraw";
-import SwapView from "./views/swap";
-import AccountList from "../widgets/accountList/account-list";
 import ItemAccount from "../widgets/accountList/item_account";
 import SimpleLoader from "../widgets/loaders";
+import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
-// import { useActions } from '../../hooks/useActions'
+import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
+import { SkeletonDepositView } from './views/depositCripto'
+import { SkeletonSwapView } from './views/swap'
+import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
+
+import "./views/wallet_views.css";
+
+const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
+const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
+const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
+const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
+
 
 function WalletContainer(props) {
   // const actionDispatch = useActions()
-
   useEffect(() => {
     const path = props.match.path.replace("/", "");
     props.action.CurrentForm(path);
@@ -46,7 +52,7 @@ function WalletContainer(props) {
               <Route
                 exact
                 path="/:primary_path"
-                render={() => <AccountList {...routeProps} isWalletsView />}
+                render={() => <LazyAccountList {...routeProps} isWalletsView />}
               />
               <Route
                 strict
@@ -88,11 +94,12 @@ export const WalletDetail = (props) => {
 const SwitchView = (props) => {
   const { params } = props.match;
   const Views = {
-    deposit: <DepositView {...props} />,
-    withdraw: <WithdrawView {...props} />,
-    swap: <SwapView {...props} />,
+    // deposit: <SkeletonDepositView {...props} />,
+    deposit: <LazyDepositView {...props} />,
+    withdraw: <LazyWithdrawView {...props} />,
+    // withdraw: <SkeletonWithdrawView {...props} />,
+    swap: <LazySwapView {...props} />,
   };
-
   return Views[params.path];
 };
 

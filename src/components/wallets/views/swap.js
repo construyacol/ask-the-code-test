@@ -217,7 +217,7 @@ function SwapView(props) {
   // const shouldActiveInput = active && secondary_coin && availableBalance > 0 && value > 0;
 
   if ((!currentPair || currentPair && !currentPair.boughtCurrency) || !currentWallet) {
-    return <SwapViewLoader />;
+    return <SkeletonSwapView />;
   }
   // console.log('|||||||||||||| valueToReceive :', valueToReceive, !valueToReceive)
   const { boughtCurrency } = currentPair;
@@ -340,7 +340,7 @@ const SwapForm = styled(OperationForm)`
   }
 `;
 
-const SwapViewLoader = () => {
+export const SkeletonSwapView = () => {
   return (
     <SwapForm>
       <InputForm skeleton />

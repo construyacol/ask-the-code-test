@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from "react";
+import loadable from "@loadable/component";
 import SimpleLoader from "../loaders";
 import ItemAccount from "./item_account";
 import { AddNewItem } from "../buttons/buttons";
-import IconSwitch from "../icons/iconSwitch";
 import PropTypes from "prop-types";
 import { AccountListContainer } from "./styles";
 import withListCreator from "../../withListCreator";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
-
-import "../../wallets/views/wallet_views.css";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import useViewport from '../../../hooks/useWindowSize'
+import useViewport from "../../../hooks/useWindowSize";
 
+import "../../wallets/views/wallet_views.css";
+
+const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 function AccountList(props) {
   const {
@@ -63,7 +64,8 @@ function AccountList(props) {
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
       title: "Estamos trabajando en esto...",
-      description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
+      description:
+        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary: "Entendido",
       action: false,
       svg: "verified",
@@ -89,7 +91,6 @@ function AccountList(props) {
     // }, 0);
   };
 
-
   const callToValidate = () => {
     const message = isWalletsView
       ? "billeteras crypto/fiat."
@@ -98,7 +99,8 @@ function AccountList(props) {
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
       title: "Estamos trabajando en esto...",
-      description: "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
+      description:
+        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
       txtPrimary: "Entendido",
       action: false,
       svg: "verified",
@@ -178,8 +180,7 @@ AccountList.propTypes = {
 };
 
 const AccountsNotFound = ({ account_type }) => {
-
-  const { isMovilViewport } = useViewport()
+  const { isMovilViewport } = useViewport();
 
   return (
     <div className="withdraw_accounts_screen">

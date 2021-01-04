@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import loadable from "@loadable/component";
 import { bindActionCreators } from "redux";
+import { createSelector } from "reselect";
 import actions from "../../../actions";
-import OtherModalLayout from "../../widgets/modal/otherModalLayout";
-import IconSwitch from "../../widgets/icons/iconSwitch";
 import { ButtonNofity } from "../../widgets/buttons/buttons";
 import { formatToCurrency } from "../../../utils/convert_currency";
+
 import { IconClose } from "../../widgets/shared-styles";
+import OtherModalLayout from "../../widgets/modal/otherModalLayout";
+
 import "./socketNotify.css";
-import { createSelector } from "reselect";
+
+const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
 
 const SocketNotify = (props) => {
   const [formatCurrency, setFormatCurrency] = useState(null);
