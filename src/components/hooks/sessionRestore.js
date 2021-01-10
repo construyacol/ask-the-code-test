@@ -14,7 +14,7 @@ const SessionRestore = () => {
 
   const tryRestoreSession = async (userToken) => {
     const SESSION = await localForage.getItem("sessionState");
-    const SESSION_STATE = Object.keys(SESSION).length && JSON.parse(SESSION);
+    const SESSION_STATE = SESSION && Object.keys(SESSION).length && JSON.parse(SESSION);
     if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) {
       await localForage.setItem("CACHED_DATA", {});
       await localForage.setItem("sessionState", {});

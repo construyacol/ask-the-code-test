@@ -35,11 +35,11 @@ const KycDashBoard = (props) => {
       <div className="imgDashContainer">
         <p className={`fuente ${step > 3 ? "topThree" : ""}`}>
           {step === 1
-            ? "1.Frente del documento"
+            ? "1. Frente del documento"
             : step === 2
-            ? "2.Revés del documento"
+            ? "2. Revés del documento"
             : step === 3 || step === 4
-            ? "3.Selfie con documento y texto"
+            ? "3. Selfie con documento y texto"
             : "¡Lo hiciste muy Bien!"}
         </p>
         {/* pasaporte */}

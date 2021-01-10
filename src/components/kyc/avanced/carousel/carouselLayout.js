@@ -56,7 +56,7 @@ export default class SimpleSlider extends Component {
               <img src={oscuro} alt="" width="80%" />
             </Marco>
             <p className="fuente">
-              la imagen no debe estar oscura, procure tomarla con iluminación
+              La imagen no debe estar oscura, procure tomarla con iluminación
               natural
             </p>
           </div>
