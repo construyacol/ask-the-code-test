@@ -507,16 +507,10 @@ export const InputKycBasic = (props) => {
       <div className={`inputContainer3 ${state.active ? "inputActivado" : ""}`}>
         {kyc.map((item) => {
           const isDateInput = state.ui_type === "date";
-          const classNames = `inputElement3 ${
-            state.active ? "inputActivado" : ""
-          } ${state.ui_type === "phone" ? "phone" : ""}`;
+          const classNames = `inputElement3 ${state.active ? "inputActivado" : ""} ${state.ui_type === "phone" ? "phone" : ""}`;
           return (
             step === item.id && (
-              <form
-                onSubmit={handleSubmit}
-                key={item.id}
-                id={`${state.ui_type === "phone" ? "phone" : ""}`}
-              >
+              <form onSubmit={handleSubmit} key={item.id} id={`${state.ui_type === "phone" ? "phone" : ""}`}>
                 {state.ui_type === "phone" && (
                   <InputCountryPrefix
                     open={state.open_sect}
@@ -528,18 +522,7 @@ export const InputKycBasic = (props) => {
 
                 {isDateInput && (
                   <MaskedInput
-                    mask={[
-                      /\d/,
-                      /\d/,
-                      "/",
-                      /\d/,
-                      /\d/,
-                      "/",
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                      /\d/,
-                    ]}
+                    mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/,]}
                     className={classNames}
                     placeholder={item.placeholder}
                     guide={true}
@@ -556,10 +539,7 @@ export const InputKycBasic = (props) => {
                 {search_result && state.ui_type === "select" ? (
                   <p className={`search_result_kyc openS`}>
                     {search_result.name}
-                    <i
-                      className="fas fa-times cerratelo"
-                      onClick={clean_search_result}
-                    ></i>
+                    <i className="fas fa-times cerratelo"  onClick={clean_search_result} ></i>
                   </p>
                 ) : (
                   !isDateInput && (
@@ -587,7 +567,6 @@ export const InputKycBasic = (props) => {
                           : ""
                       }
                       onFocus={_onFocus}
-                      // // onKeyPress={props.name === "account_number" ? props.handleKeyPress : null}
                     />
                   )
                 )}

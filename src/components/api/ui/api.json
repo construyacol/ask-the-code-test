@@ -441,7 +441,7 @@
           "name": "surname",
           "label": "Apellidos Completos",
           "placeholder": "Ej: Sanchez Correa",
-          "message": "Tus apellidos deben coincidir con los de tu documento.",
+          "message": "Tus apellidos deben coincidir con los de tu documento de identidad.",
           "errmessage": "Escribe tus Apellidos completos."
         },
         "birthday": {
@@ -455,7 +455,7 @@
           "name": "phone",
           "label": "Número de Celular",
           "placeholder": "Número de Celular",
-          "message": "Escribe el número de celular más el indicativo ej '+57 - 315...'",
+          "message": "Escribe el número de celular y selecciona el indicativo ej '+57 - 315...'",
           "errmessage": "Oh!!, Al parecer no estas haciendo las cosas bien"
         },
         "address": {

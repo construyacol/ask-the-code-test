@@ -116,10 +116,7 @@ class KycBasicContainer extends Component {
     }
     this.props.history.push(route);
 
-    if (
-      this.props.step === 10 &&
-      this.state.data_state.id_type &&
-      (this.state.data_state.id_type[0].code === "cedula_ciudadania" ||
+    if (this.props.step === 10 && this.state.data_state.id_type && (this.state.data_state.id_type[0].code === "cedula_ciudadania" ||
         this.state.data_state.id_type[0].code === "cedula_extranjeria")
     ) {
       const updateState = async () => {
@@ -213,7 +210,7 @@ class KycBasicContainer extends Component {
         current_item: current_item.name,
       });
 
-      // console.log('||||||||||||||||||||||||this.props', this.props, '||||||||||||||||||||||| this.state:', this.state)
+      // console.log('||||||||||||||||||||||| this.state:', this.state)
       this.props.action.isAppLoading(false);
     }
   };
@@ -228,6 +225,7 @@ class KycBasicContainer extends Component {
   update = async ({ target }) => {
     target.preventDefault && target.preventDefault();
     target.persist && target.persist();
+    console.log('|||||||||||||||| update func : ', target.value)
     const { name, value } = target;
     const { ui_type } = this.state;
 
@@ -236,15 +234,8 @@ class KycBasicContainer extends Component {
       name === modelFormData.name.name ||
       name === modelFormData.surname.name
     ) {
-      if (
-        value &&
-        !/(^[ñÑáÁéÉíÍóÓúÚA]?|^\b)(?!.*?\s{2})[ñÑáÁéÉíÍóÓúÚA-Za-z ]{1,25}(\s?)$/g.test(
-          value
-        )
-      )
-        return;
-    }
-
+      if (value && !/(^[ñÑáÁéÉíÍóÓúÚA]?|^\b)(?!.*?\s{2})[ñÑáÁéÉíÍóÓúÚA-Za-z ]{1,25}(\s?)$/g.test(value)) return;}
+      
     if (name === modelFormData.phone.name) {
       if (value && !/^[0-9]{1,14}$/g.test(value)) return;
     }
@@ -351,6 +342,8 @@ class KycBasicContainer extends Component {
       if (this.props.step > kyc_data_basic.length) {
         return this.props.validate_personal_kyc("personal");
       }
+
+      this._onFocus()
 
       return this.validateActive();
     }
@@ -520,14 +513,14 @@ class KycBasicContainer extends Component {
     }
 
     await this.update(body);
-
-    setTimeout(() => {
-      this.setState({ open_sect: false });
-    }, 100);
+    // alert()
+    // setTimeout(() => {
+    //   this.setState({ open_sect: false });
+    // }, 100);
   };
 
   render() {
-    // console.log('P R O P S - -   K Y C', this.props)
+    // console.log('P R O P S - -   K Y C', this.state)
     // console.log('|||E S T A D O - -   K Y C', this.state)
     let {
       open_sect,
@@ -542,7 +535,9 @@ class KycBasicContainer extends Component {
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
     // console.log('|||current_search', current_search && current_search.length, current_search )
-    open_sect = open_sect && ui_type !== "text";
+    open_sect = open_sect && ui_type !== "text" || current_item === 'nationality';
+
+    // console.log('|||||||||||||||||||||||||||||| expandibleKycPanel ', open_sect, ui_type)
 
     return (
       <>
@@ -578,20 +573,10 @@ class KycBasicContainer extends Component {
                 }
                 clean_search_result={this.clean_search_result}
               />
-              <div
-                id="expandibleKycPanel"
-                className="expandibleKycPanel"
-                style={{
-                  height: open_sect ? "65vh" : "0",
-                  opacity: open_sect ? "1" : "0",
-                }}
-              >
+              <div id="expandibleKycPanel" className="expandibleKycPanel" style={{height: open_sect ? "65vh" : "0", opacity: open_sect ? "1" : "0"}}>
+
                 {show_hide_section && (
-                  <div
-                    className={`contexpandibleKycPanel ${
-                      open_sect ? "openSec" : ""
-                    }`}
-                  >
+                  <div className={`contexpandibleKycPanel ${open_sect ? "openSec" : ""}`}>
                     {current_search && (
                       <div className="contCountryList">
                         {current_search.map((item) => {
@@ -610,15 +595,11 @@ class KycBasicContainer extends Component {
                         })}
                       </div>
                     )}
+
                     {(ui_type === "select" || ui_type === "phone") &&
                       !current_search && (
                         <div className="contCountryList">
-                          {this.state.select_list[
-                            current_item === "phone" ||
-                            current_item === "nationality"
-                              ? "countries"
-                              : current_item
-                          ].map((item) => {
+                          { this.state.select_list[current_item === "phone" || current_item === "nationality" ? "countries" : current_item].map((item) => {
                             return (
                               <ItemListKycBasic
                                 key={item.id}
