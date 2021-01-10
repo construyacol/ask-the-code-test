@@ -483,8 +483,8 @@ export const InputKycBasic = (props) => {
     clean_search_result,
   } = props;
 
-  let search_result = search_results && search_results[0];
-  // console.log('InputKycBasic  S T A T E:::', props)
+  let search_result = Array.isArray(search_results) && search_results[0];
+  
   return (
     <div
       id="kycPrime"
@@ -561,11 +561,7 @@ export const InputKycBasic = (props) => {
                       }
                       onChange={update}
                       name={item.name}
-                      value={
-                        state.ui_type !== "select"
-                          ? state.data_state[item.name]
-                          : ""
-                      }
+                      value={state.data_state[item.name]}
                       onFocus={_onFocus}
                     />
                   )

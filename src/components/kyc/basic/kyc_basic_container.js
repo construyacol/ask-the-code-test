@@ -42,7 +42,9 @@ const modelFormData = kyc.kyc_basic.natural;
 // }
 
 class KycBasicContainer extends Component {
-  state = {};
+  state = {
+    select_values:{}
+  };
 
   async componentDidMount() {
     await this.init_component();
@@ -225,7 +227,7 @@ class KycBasicContainer extends Component {
   update = async ({ target }) => {
     target.preventDefault && target.preventDefault();
     target.persist && target.persist();
-    console.log('|||||||||||||||| update func : ', target.value)
+    // console.log('|||||||||||||||| update func : ', target.value)
     const { name, value } = target;
     const { ui_type } = this.state;
 
@@ -235,7 +237,7 @@ class KycBasicContainer extends Component {
       name === modelFormData.surname.name
     ) {
       if (value && !/(^[ñÑáÁéÉíÍóÓúÚA]?|^\b)(?!.*?\s{2})[ñÑáÁéÉíÍóÓúÚA-Za-z ]{1,25}(\s?)$/g.test(value)) return;}
-      
+
     if (name === modelFormData.phone.name) {
       if (value && !/^[0-9]{1,14}$/g.test(value)) return;
     }
@@ -258,24 +260,26 @@ class KycBasicContainer extends Component {
     }
     // Check strings end
 
-    let new_value = value;
-    if (
-      name === "country_prefix" ||
-      name === "country" ||
-      ui_type === "select"
-    ) {
-      new_value = await this.matchList(target);
-      if (!new_value) {
-        return false;
+    if (name === "country_prefix" || name === "country" || ui_type === "select") {
+      let select_value = await this.matchList(target)
+      if(select_value){
+        console.log('||||||||||||||| Update Function: ', select_value, this.state.data_state)
+        this.setState({
+          data_state: {
+            ...this.state.data_state,
+            [name]: select_value
+          }
+        });
+        return setTimeout(() => {
+          this.setState({ open_sect: false });
+        }, 300);
       }
-      // console.log(new_value, target)
-      // if(new_value){debugger}
     }
 
     await this.setState({
       data_state: {
         ...this.state.data_state,
-        [name]: value ? capitalizeString(new_value) : "",
+        [name]: value ? capitalizeString(value) : "",
       },
     });
     // if(new_value){
@@ -315,13 +319,9 @@ class KycBasicContainer extends Component {
     let arre = await objectToArray(this.state.data_state);
     const { step } = this.props;
     if (arre[step - 1]) {
-      this.setState({
+      return this.setState({
         active: true,
       });
-
-      return setTimeout(() => {
-        this.setState({ open_sect: false });
-      }, 250);
     }
     return this.unAvailableActive();
   };
@@ -460,7 +460,9 @@ class KycBasicContainer extends Component {
     // Cerramos la sección de la listas al enfocarnos en el input phone
     const { open_sect, ui_type, kyc_data_basic } = this.state;
     const { step } = this.props;
-    if (ui_type === "select") {
+    const selectHasNotValue = Array.isArray(this.state.data_state[kyc_data_basic[step - 1].name])
+
+    if (ui_type === "select" && !selectHasNotValue) {
       setTimeout(() => {
         this.setState({ show_hide_section: true });
       }, 300);
@@ -535,7 +537,7 @@ class KycBasicContainer extends Component {
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
     // console.log('|||current_search', current_search && current_search.length, current_search )
-    open_sect = open_sect && ui_type !== "text" || current_item === 'nationality';
+    open_sect = open_sect && ui_type !== "text";
 
     // console.log('|||||||||||||||||||||||||||||| expandibleKycPanel ', open_sect, ui_type)
 

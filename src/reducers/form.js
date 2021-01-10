@@ -17,7 +17,7 @@ import {
 
 const initialState = {
   form_kyc_basic: {
-    step: 8,
+    step: 1,
   },
   form_kyc_financial: {
     step: 1,
