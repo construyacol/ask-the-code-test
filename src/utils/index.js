@@ -28,6 +28,7 @@ export const setAnimation = (className, containerId, time) => {
 // simulate_click(document.getElementById(`${match[0].value}`), 'click');
 export const simulate_click = (el, etype) => {
   // Función para simular click sobre el elemento (path country)
+  if(!el){return}
   if (el.fireEvent) {
     el.fireEvent("on" + etype);
   } else {

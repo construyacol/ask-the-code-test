@@ -89,18 +89,13 @@ class SelectCountry extends Component {
                 update_country={this.update_country}
                 reset_data={this.reset_data}
                 loader={loader}
-                disabled={disabled}
+                // disabled={disabled}
                 handleSubmit={this.new_country_selected}
                 active={country_match ? true : null}
               />
             </div>
-            <div
-              className={`SamericaContainer ${!disabled ? "enableMap" : ""}`}
-            >
-              <div
-                className="blocker"
-                style={{ display: country_match ? "initial" : "none" }}
-              ></div>
+            <div className={`SamericaContainer ${!disabled ? "enableMap" : ""}`} >
+              <div className="blocker" style={{ display: country_match ? "initial" : "none" }} ></div>
               <SAmerica
                 width={900}
                 height={768}
