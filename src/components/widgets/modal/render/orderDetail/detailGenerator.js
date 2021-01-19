@@ -67,6 +67,9 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       case "sent":
         return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
 
+
+      case "need_referral_process":
+      case "referral":
       case "withdraw_provider":
       case "withdraw_account":
       case "metadata":
