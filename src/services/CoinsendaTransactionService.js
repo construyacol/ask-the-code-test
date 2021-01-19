@@ -206,11 +206,7 @@ export class TransactionService extends WebService {
       },
     };
 
-    const response = await this.Post(
-      ADD_PROFILE_URL,
-      body,
-      this.authData.userToken
-    );
+    const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken);
     if (!response) {
       return false;
     }

@@ -41,7 +41,7 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
 const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
-  const [country, setCountry] = useState("colombia");
+  const [country, setCountry] = useState("international");
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [anim, setAnim] = useState("in");
   const [coinsendaServices, reduxState] = useCoinsendaServices();
@@ -55,12 +55,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const initComponent = async (newCountry) => {
     const { userToken } = authData;
 
-    const isSessionRestored = await tryRestoreSession(userToken);
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true);
-      coinsendaServices.postLoader(doLogout);
-      return redirectURL(isSessionRestored);
-    }
+    // const isSessionRestored = await tryRestoreSession(userToken);
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true);
+    //   coinsendaServices.postLoader(doLogout);
+    //   return redirectURL(isSessionRestored);
+    // }
 
     if (!userToken) return;
 
@@ -72,10 +72,8 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       profile = await coinsendaServices.addNewProfile(newCountry);
     }
 
-    if (
-      !profile ||
-      (!profile.countries[country] && !profile.countries[newCountry])
-    ) {
+
+    if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) {
       return false;
     }
 
@@ -91,20 +89,17 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     }
 
     // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
-    if (!res.countries[userCountry]) {
-      prepareCountrySelection();
-      return false;
-    }
+    // if (res.res.country !== userCountry) {
+    //   prepareCountrySelection();
+    //   return false;
+    // }
     await animation("out");
     await setCountry(userCountry);
     await animation("in");
 
     await coinsendaServices.loadFirstEschema();
 
-    const user = await coinsendaServices.fetchCompleteUserData(
-      userCountry,
-      profile
-    );
+    const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
     if (!user) {
       return false;
     }
@@ -167,7 +162,8 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const selectCountry = async (newCountry) => {
     actions.isAppLoading(true);
-    await initComponent(newCountry);
+    await initComponent('international');
+    // await initComponent(newCountry);
     actions.isAppLoading(false);
   };
 
