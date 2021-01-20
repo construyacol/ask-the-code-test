@@ -110,7 +110,7 @@ const InputForm = (props) => {
   }
 
   return (
-    <InputLayout>
+    <InputLayout className={`${props.className || ''}`}>
       <ContainerInputComponent>
         <p
           className="labelText fuente"
@@ -182,6 +182,19 @@ export const InputContainer = styled.div`
   -webkit-transition: 0.5s;
   transition: 0.5s;
   background: white;
+
+  .inputElement, .inputElement3 {
+    color: #50667a;
+    width: calc(100% - 20px);
+    height: 100%;
+    background: 0 0;
+    padding: 0 10px;
+    border: 1px solid transparent;
+    outline: 0;
+    font-size: 16px;
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
+  }
 
   .movil {
     display: block;

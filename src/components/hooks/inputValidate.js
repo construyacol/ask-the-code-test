@@ -33,14 +33,23 @@ export default () => {
     }
     switch (inputName) {
 
-
       case "name-account":
         if (e.target.value.length > 2) {
           setInputState("good");
         }
-
         break;
 
+        case 'ref_code':
+          const { value } = e.target
+          let min_length = value.length > 5;
+          let max_length = value.length < 21;
+          let alphanumeric = /^[a-z0-9]+$/i.test(value);
+          if(min_length && max_length && alphanumeric){
+            setInputState('good')
+          }else{
+            setInputState('bad')
+          }
+          return
 
 
       case "address":

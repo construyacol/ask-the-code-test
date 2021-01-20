@@ -25,30 +25,12 @@ const WalletsContainerComponent = loadable(
 
 
 const WitdrawAccountContainer = loadable(
-  () => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"),
-  {
-    fallback: <LazyLoaderPage path={"withdraw_accounts"} />,
-  }
-);
-const SecurityCenter = loadable(
-  () => import("../securityCenter/securityCenter"),
-  {
-    fallback: <LazyLoaderPage path={"security"} />,
-  }
-);
-const ReferralComponent = loadable(
-  () => import("../referrals/referralsComponent"),
-  {
-    fallback: <LazyLoaderPage path={"referral"} />,
-  }
-);
+  () => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
+const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
+const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
 
-const PanelAlertContainer = loadable(() =>
-  import("../widgets/panelAlert/panelAlertContainer")
-);
-const VideoPlayer = loadable(() =>
-  import("../widgets/video_player/videoPlayer")
-);
+const PanelAlertContainer = loadable(() => import("../widgets/panelAlert/panelAlertContainer"));
+const VideoPlayer = loadable(() =>  import("../widgets/video_player/videoPlayer"));
 
 let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0;
 

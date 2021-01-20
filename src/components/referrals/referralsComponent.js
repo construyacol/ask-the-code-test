@@ -19,7 +19,7 @@ const ReferralComponent = (props) => {
   const { user } = props;
 
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
-  const [haveReferraLink, setHaveReferralLink] = useState(true);
+  const [haveReferraLink, setHaveReferralLink] = useState(false);
   const [referralLink, setReferralLink] = useState("");
   const [loading] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)

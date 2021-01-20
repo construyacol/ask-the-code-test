@@ -6,7 +6,7 @@ function CreateCode(props) {
   return (
     <Container>
       <Text>
-        ¡Invita amigos y gana!
+        ¡Invita amigos y gána!
         <p>
           Por cada amigo que se registre con tu link de referido ganas el 0.5%
           de todas las operaciones de compra y venta que tu amigo realice.
@@ -42,7 +42,6 @@ const Text = styled.div`
     color: #3c3c3c;
     font-weight: bold;
     text-align: center;
-    margin-top: 1em;
     p {
         font-size: 14px;
         color: gray;

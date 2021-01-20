@@ -36,6 +36,7 @@ const selectWalletCurrencyShortName = createSelector(
   (state) => state.modelData.currencies,
   (_, currentWallet) => currentWallet,
   (currencies, currentWallet) => {
+    if(!currentWallet){return}
     for (let currency of currencies) {
       if(currency.currency.includes(currentWallet.currency.currency)){
         return currency.symbol

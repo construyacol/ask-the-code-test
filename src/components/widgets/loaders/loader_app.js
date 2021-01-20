@@ -55,12 +55,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const initComponent = async (newCountry) => {
     const { userToken } = authData;
 
-    // const isSessionRestored = await tryRestoreSession(userToken);
-    // if (isSessionRestored) {
-    //   await actions.isLoggedInAction(true);
-    //   coinsendaServices.postLoader(doLogout);
-    //   return redirectURL(isSessionRestored);
-    // }
+    const isSessionRestored = await tryRestoreSession(userToken);
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true);
+      coinsendaServices.postLoader(doLogout);
+      return redirectURL(isSessionRestored);
+    }
 
     if (!userToken) return;
 
@@ -100,6 +100,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     await coinsendaServices.loadFirstEschema();
 
     const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
+
     if (!user) {
       return false;
     }
