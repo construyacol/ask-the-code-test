@@ -39,17 +39,16 @@ export default () => {
         }
         break;
 
-        case 'ref_code':
-          const { value } = e.target
-          let min_length = value.length > 5;
-          let max_length = value.length < 21;
-          let alphanumeric = /^[a-z0-9]+$/i.test(value);
-          if(min_length && max_length && alphanumeric){
-            setInputState('good')
-          }else{
-            setInputState('bad')
-          }
-          return
+      case 'ref_code':
+        let min_length = e.target.value.length > 5;
+        let max_length = e.target.value.length < 21;
+        let alphanumeric = /^[a-z0-9]+$/i.test(value);
+        if(min_length && max_length && alphanumeric){
+          setInputState('good')
+        }else{
+          setInputState('bad')
+        }
+        break;
 
 
       case "address":

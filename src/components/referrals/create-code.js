@@ -13,9 +13,8 @@ function CreateCode(props) {
         </p>
       </Text>
 
-      <FormContainer hide={props.wasReferralCodeCreated}>
-        <CreateReferralLink createLink={props.createLink} {...props} />
-      </FormContainer>
+        <CreateReferralLink {...props} />
+        
     </Container>
   );
 }

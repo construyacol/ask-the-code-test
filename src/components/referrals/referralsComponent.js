@@ -16,8 +16,8 @@ import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`;
 
 const ReferralComponent = (props) => {
-  const { user } = props;
 
+  const { user } = props;
   const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   const [haveReferraLink, setHaveReferralLink] = useState(false);
   const [referralLink, setReferralLink] = useState("");
@@ -46,9 +46,9 @@ const ReferralComponent = (props) => {
   }, [user]);
 
   const createLink = async (code) => {
-    const res = await coinsendaServices.setReferralCode(code);
+    // const res = await coinsendaServices.setReferralCode(code);
 
-    if (!res) return;
+    // if (!res) return;
 
     setWasReferralCodeCreated(true);
     await sleep(300);
@@ -62,10 +62,7 @@ const ReferralComponent = (props) => {
       {...props}
     >
       {!haveReferraLink ? (
-        <CreateCode
-          createLink={createLink}
-          wasReferralCodeCreated={wasReferralCodeCreated}
-        />
+        <CreateCode wasReferralCodeCreated={wasReferralCodeCreated}/>
       ) : (
         <ReferralGrid>
           <FirstText className={`${loading === true ? "skeleton" : ""}`}>
