@@ -47,7 +47,8 @@ export class IndetityService extends WebService {
       levels: country[0].levels,
       country: userCountry
     };
-
+    // console.log('|||||||||||| updatedUser: ', updatedUser)
+    // debugger
 
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
 

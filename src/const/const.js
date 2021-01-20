@@ -65,6 +65,8 @@ export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidato
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`;
 
 export const REFERRALS_URL = `${ApiUrl}referrals`;
+export const GET_REFERRAL_URL = `${ApiUrl}`;
+
 
 export const GET_CHART_DATA_URL = `${CountryUrl}api/cryptoCompares/get-daily-historical-data`;
 

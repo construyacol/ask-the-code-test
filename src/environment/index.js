@@ -11,6 +11,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "http://localhost:4005/api/",
     SwapApiUrl: "http://localhost:4008/api/",
     CountryUrl: "https://info1.devsertec.com/",
+    BASE_URL:"https://devsertec.com/"
   };
 } else if (process.env.NODE_ENV === "development") {
   Environment = {
@@ -23,6 +24,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "https://withdraw1.devsertec.com/api/",
     SwapApiUrl: "https://swap1.devsertec.com/api/",
     CountryUrl: "https://info1.devsertec.com/",
+    BASE_URL:"https://devsertec.com/"
   };
 } else {
   Environment = {
@@ -35,6 +37,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "https://withdraw1.devsertec.com/api/",
     SwapApiUrl: "https://swap1.devsertec.com/api/",
     CountryUrl: "https://info1.devsertec.com/",
+    BASE_URL:"https://www.coinsenda.com/"
   };
 }
 

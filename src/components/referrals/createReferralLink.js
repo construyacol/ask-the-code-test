@@ -6,16 +6,16 @@ import React, { useState } from "react";
 import InputForm from "../widgets/inputs/inputForm";
 import ControlButton from "../widgets/buttons/controlButton";
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
-import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+// import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import useToastMessage from "../../hooks/useToastMessage";
 
 import styled from 'styled-components'
 
-const CreateReferralLink = () => {
+const CreateReferralLink = (props) => {
 
   const [ toastMessage ] = useToastMessage();
   const [ loader, setLoader ] = useState(false)
-  const [coinsendaServices] = useCoinsendaServices();
+  // const [coinsendaServices] = useCoinsendaServices();
   const [ isValidCode, setIsValidCode ] = useState('bad')
   const idForClickeableElement = useKeyActionAsClick(true, "create-referral-button", 13, false, "onkeyup");
 
@@ -23,7 +23,7 @@ const CreateReferralLink = () => {
     setLoader(true)
     const form = new FormData(document.getElementById('refCodeForm'))
     let ref_code = form.get('ref_code')
-    const res = await coinsendaServices.setReferralCode(ref_code);
+    const res = await props.coinsendaServices.setReferralCode(ref_code.toLowerCase());
     toastMessage(
       `${!res ? 'No se pudo crear el link de referido' : 'Link de referido creado satisfactoriamente'}`,
       `${!res ? 'error' : 'success'}`

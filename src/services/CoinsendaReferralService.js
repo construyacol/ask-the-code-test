@@ -1,5 +1,5 @@
 import { WebService } from "../actions/API/WebService";
-import { REFERRALS_URL } from "../const/const";
+import { REFERRALS_URL, GET_REFERRAL_URL } from "../const/const";
 
 export class ReferralService extends WebService {
 
@@ -15,8 +15,7 @@ export class ReferralService extends WebService {
     };
 
     const finalUrl = `${REFERRALS_URL}/set-ref-code`;
-    let res = true;
-    // let res = await this.Post(finalUrl, body);
+    let res = await this.Post(finalUrl, body);
     if(!res){return false}
 
     let updatedUser = {
@@ -26,22 +25,28 @@ export class ReferralService extends WebService {
         }
     }
 
-    await this.dispatch(this.updateUser(updatedUser))
+    this.updateUser(updatedUser)
     return true;
   }
 
   async getReferralCode() {
     const user = this.user;
 
-    const finalUrl = `${REFERRALS_URL}?filter={"where":{"userId":"${user.id}"}}`;
-    let response = await this.Get(finalUrl);
+    const finalUrl = `${GET_REFERRAL_URL}/users/${user.id}/referral`;
+    // const finalUrl = `${GET_REFERRAL_URL}?filter={"where":{"userId":"${user.id}"}}`;
+    let referralData = await this.Get(finalUrl);
+    if(!referralData){ return }
 
     let updatedUser = {
       ...user,
-      referral: response[0],
+      referral:{
+        ref_code:referralData.ref_code,
+        referred_by:referralData.referred_by,
+        referreds:referralData.referreds
+      }
     };
 
-    await this.dispatch(this.updateUser(updatedUser));
-    return response && response[0];
+    this.updateUser(updatedUser)
+    return true;
   }
 }
