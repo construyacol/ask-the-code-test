@@ -12,16 +12,23 @@ import CreateCode from "./create-code";
 import { FONT_COLOR, skeletonStyle } from "./shareStyles";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+import Environment from '../../environment'
 
-const REFERRAL_LINK = (refCode) => `https://coinsenda.com/ref_code?=${refCode}`;
+const {
+  BASE_URL
+} = Environment
+
+
+const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=${refCode}`;
 
 const ReferralComponent = (props) => {
-  const { user } = props;
 
-  const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
-  const [haveReferraLink, setHaveReferralLink] = useState(true);
+  const { user } = props;
+  // const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
+  // const [haveReferraLink, setHaveReferralLink] = useState(false);
   const [referralLink, setReferralLink] = useState("");
-  const [loading] = useState(props.setSkeleton ? true : false);
+  const [ loading, setLoading ] = useState(true);
+  // const [ loading ] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)
   const [coinsendaServices] = useCoinsendaServices();
 
@@ -40,20 +47,21 @@ const ReferralComponent = (props) => {
   }, []);
 
   useEffect(() => {
-    if (user && user.referral) {
+    if (user && user.referral && user.referral.ref_code) {
       setReferralLink(REFERRAL_LINK(user.referral.ref_code));
     }
   }, [user]);
 
-  const createLink = async (code) => {
-    const res = await coinsendaServices.setReferralCode(code);
+  useEffect(()=>{
+    const getRef = async() => {
+      await coinsendaServices.getReferralCode()
+      setLoading(false)
+    }
 
-    if (!res) return;
+    getRef()
+  }, [])
 
-    setWasReferralCodeCreated(true);
-    await sleep(300);
-    setHaveReferralLink(true);
-  };
+
 
   return (
     <DetailContainerLayout
@@ -61,11 +69,8 @@ const ReferralComponent = (props) => {
       customClass="referral-layout"
       {...props}
     >
-      {!haveReferraLink ? (
-        <CreateCode
-          createLink={createLink}
-          wasReferralCodeCreated={wasReferralCodeCreated}
-        />
+      {!referralLink && !loading ? (
+        <CreateCode coinsendaServices={coinsendaServices}/>
       ) : (
         <ReferralGrid>
           <FirstText className={`${loading === true ? "skeleton" : ""}`}>
@@ -75,7 +80,7 @@ const ReferralComponent = (props) => {
             </p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
-          <ReferralCounter loading={loading ? loading.toString() : null} />
+          <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
           <BalanceSelect loading={loading ? loading.toString() : null} />
           <WithdrawAd loading={loading ? loading.toString() : null} />
         </ReferralGrid>

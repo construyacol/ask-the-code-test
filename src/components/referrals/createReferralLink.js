@@ -1,63 +1,102 @@
-import React, { Component, Fragment } from "react";
-import btcoin from "../../assets/btc.webp";
-import person2 from "../../assets/person2.png";
-import person1 from "../../assets/person1.png";
-import gift from "../../assets/gift.png";
-import InputForm from "../widgets/inputs";
-import { ButtonForms } from "../widgets/buttons/buttons";
+import React, { useState } from "react";
+// import btcoin from "../../assets/btc.webp";
+// import person2 from "../../assets/person2.png";
+// import person1 from "../../assets/person1.png";
+// import gift from "../../assets/gift.png";
+import InputForm from "../widgets/inputs/inputForm";
+import ControlButton from "../widgets/buttons/controlButton";
+import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
+// import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+import useToastMessage from "../../hooks/useToastMessage";
 
-class CreateReferralLink extends Component {
-  state = {
-    createLink: false,
+import styled from 'styled-components'
+
+const CreateReferralLink = (props) => {
+
+  const [ toastMessage ] = useToastMessage();
+  const [ loader, setLoader ] = useState(false)
+  // const [coinsendaServices] = useCoinsendaServices();
+  const [ isValidCode, setIsValidCode ] = useState('bad')
+  const idForClickeableElement = useKeyActionAsClick(true, "create-referral-button", 13, false, "onkeyup");
+
+  const setRefCode = async() => {
+    setLoader(true)
+    const form = new FormData(document.getElementById('refCodeForm'))
+    let ref_code = form.get('ref_code')
+    const res = await props.coinsendaServices.setReferralCode(ref_code.toLowerCase());
+    toastMessage(
+      `${!res ? 'No se pudo crear el link de referido' : 'Link de referido creado satisfactoriamente'}`,
+      `${!res ? 'error' : 'success'}`
+    )
+    setLoader(false)
   };
 
-  creatingLink = async (e) => {
-    const { value } = e.target;
-    let res = await this.refCodeIsValid(value);
-    return this.setState({ createLink: res, ref_code: res ? value : null });
-  };
 
-  refCodeIsValid = (ref_code) => {
-    let min_length = ref_code.length > 5;
-    let max_length = ref_code.length < 21;
-    let alphanumeric = /^[a-z0-9]+$/i.test(ref_code);
-    return min_length && max_length && alphanumeric;
-  };
-
-  send_ref_code = () => {
-    return this.props.createLink(this.state.ref_code);
-  };
-
-  render() {
-    const { createLink } = this.state;
-
+  //   <div className="referralImg">
+  //   <img id="btcAward" src={btcoin} alt="" height="200px" />
+  //   <img id="person1" src={person1} alt="" height="200px" />
+  //   <img id="person2" src={person2} alt="" height="200px" />
+  //   <img id="gift" className="jello-horizontal" src={gift} alt="" height="200px"/>
+  // </div>
     return (
-      <Fragment>
-        <div className="referralImg">
-          <img id="btcAward" src={btcoin} alt="" />
-          <img id="person1" src={person1} alt="" />
-          <img id="person2" src={person2} alt="" />
-          <img id="gift" className="jello-horizontal" src={gift} alt="" />
-        </div>
-
-        <div className="formControl">
+      <RefCodeForm
+        id="refCodeForm"
+        >
           <InputForm
-            placeholder={`Ej. minuevocodigoreferido`}
-            actualizarEstado={this.creatingLink}
-            active={createLink}
+            className="setRefCode"
+            type="text"
+            placeholder={`Ej. miCodigoReferido`}
+            name="ref_code"
+            autoFocus
+            handleStatus={setIsValidCode}
+            // handleChange={handleChangeAmount}
+            label={`Crea tu link de referido`}
+            // disabled={loader}
+            // state={amountState}
+            // value={amountValue}
+            // SuffixComponent={({ id }) => (
+            //   <AvailableBalance
+            //     id={id}
+            //     handleAction={handleMaxAvailable}
+            //     amount={balance.available}
+            //   />
+            // )}
+            // PrefixComponent
           />
 
-          <ButtonForms
-            siguiente={this.send_ref_code}
-            type="primary"
-            active={createLink}
-          >
-            Crear link
-          </ButtonForms>
-        </div>
-      </Fragment>
+        <ControlButton
+          id={idForClickeableElement}
+          handleAction={setRefCode}
+          loader={loader}
+          formValidate={isValidCode === 'good'}
+          label="Crear link de referido"
+        />
+      </RefCodeForm>
     );
-  }
 }
 
 export default CreateReferralLink;
+
+const RefCodeForm = styled.form`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  justify-items:center;
+
+  .setRefCode{
+    width: 100%;
+    max-width: 550px;
+  }
+`
+
+const InputContainer = styled.section`
+  width: 100%;
+  display: grid;
+  align-items: center;
+  justify-items:center;
+
+  .setRefCode{
+    width: 100%;
+    max-width: 550px;
+  }
+`

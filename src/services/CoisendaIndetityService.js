@@ -15,13 +15,13 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
+
+
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
     const user = this.user;
 
-    const finalUrlFirst = `${INDETITY_URL}?country=${
-      userCountry || user.country
-    }`;
+    const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
 
     const firstResponse = await this.Get(finalUrlFirst);
     if (!firstResponse) {
@@ -44,14 +44,13 @@ export class IndetityService extends WebService {
       userToken: this.authData.userToken,
       restore_id: profile.restore_id || user.restore_id,
       id: secondResponse.userId,
-      country: country[0].value,
       verification_level: country[0].verification_level,
       verification_error: country[0].errors && country[0].errors[0],
       levels: country[0].levels,
+      country: userCountry
     };
-    const transactionSecurity = await this.userHasTransactionSecurity(
-      updatedUser.id
-    );
+
+    const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
 
     if (transactionSecurity) {
       const { transaction_security_id, scopes } = transactionSecurity;
@@ -86,14 +85,16 @@ export class IndetityService extends WebService {
       updatedUser = {
         ...updatedUser,
         ...thirdResponse[0].personal,
-        person_type: thirdResponse[0].person_type,
+        operation_country:thirdResponse[0].personal && thirdResponse[0].personal.country,
+        country: userCountry,
+        person_type: thirdResponse[0].person_type
       };
     }
 
     let normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
 
-    return normalizedUser;
+    return updatedUser;
   }
 
   async updateUser(newUser) {

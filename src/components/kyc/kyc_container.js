@@ -64,7 +64,9 @@ const Kyc = (props) => {
           basic: "confirmed",
         },
       },
+      country:user.country
     };
+
     await props.coinsendaServices.updateUser(user_update);
     // setTimeout(()=>{
     // user_update()

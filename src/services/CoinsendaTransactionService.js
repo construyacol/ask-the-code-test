@@ -9,6 +9,7 @@ import {
   GET_PROFILE_URL,
   ADD_PROFILE_URL,
   TWO_FACTOR_URL,
+  TWO_FACTOR_BASE_URL
 } from "../const/const";
 import { matchItem } from "../utils";
 import { coins } from "../components/api/ui/api.json";
@@ -58,11 +59,13 @@ export class TransactionService extends WebService {
   }
 
   async userHasTransactionSecurity(userId) {
-    const url = `${TWO_FACTOR_URL}?filter={"where": {"userId": "${userId}"}}`;
+    const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
     if (!response || response === 465 || (response && !response.length)) {
       return false;
     }
+
+
     const withdrawScope = "withdraw:withdraws:addNewWithdraw::*";
     return {
       transaction_security_id: response[0].id,
@@ -206,11 +209,7 @@ export class TransactionService extends WebService {
       },
     };
 
-    const response = await this.Post(
-      ADD_PROFILE_URL,
-      body,
-      this.authData.userToken
-    );
+    const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken);
     if (!response) {
       return false;
     }

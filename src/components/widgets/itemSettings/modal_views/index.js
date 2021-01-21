@@ -16,6 +16,7 @@ import withCoinsendaServices from "../../../withCoinsendaServices";
 // import ItemLayout from '../../widgets/items/itemLayout'
 
 export class ModalSettingsView extends Component {
+
   state = {
     buttonActive: false,
     auth: this.props.params.authenticator.auth,
@@ -200,7 +201,7 @@ export class ModalSettingsView extends Component {
             <this.view_switch {...params} />
           ) : (
             <Fragment>
-              <IconSwitch {...atributos} animOn={animOn} />
+              <IconSwitch {...atributos} animon={animOn || 'false'} />
               {success ? (
                 <div className="contenidoView">
                   <p id="successOperation" className="fuente">
