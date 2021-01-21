@@ -15,6 +15,8 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 
 export class IndetityService extends WebService {
+
+
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
     const user = this.user;
@@ -47,8 +49,6 @@ export class IndetityService extends WebService {
       levels: country[0].levels,
       country: userCountry
     };
-    // console.log('|||||||||||| updatedUser: ', updatedUser)
-    // debugger
 
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
 
@@ -86,16 +86,16 @@ export class IndetityService extends WebService {
       updatedUser = {
         ...updatedUser,
         ...thirdResponse[0].personal,
+        operation_country:thirdResponse[0].personal && thirdResponse[0].personal.country,
         country: userCountry,
         person_type: thirdResponse[0].person_type
       };
     }
 
-
     let normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
 
-    return normalizedUser;
+    return updatedUser;
   }
 
   async updateUser(newUser) {

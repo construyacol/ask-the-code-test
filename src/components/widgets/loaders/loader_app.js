@@ -41,7 +41,9 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
 const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
 function LoaderAplication({ actions, history, tryRestoreSession }) {
+
   const [country, setCountry] = useState("international");
+  const [ countryImg, setCountryImg ] = useState("international")
   const [progressBarWidth, setProgressBarWidth] = useState(0);
   const [anim, setAnim] = useState("in");
   const [coinsendaServices, reduxState] = useCoinsendaServices();
@@ -50,10 +52,16 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   const previousLoadLabel = usePrevious(appLoadLabel);
   const { isTabletOrMovilViewport, isMovilViewport } = useViewport();
 
-  const registerColors = () => {};
+  // const registerColors = () => {};
 
   const initComponent = async (newCountry) => {
     const { userToken } = authData;
+
+    const opCountry = await localForage.getItem("OpCountry");
+
+    if(opCountry){
+      setCountryImg(opCountry)
+    }
 
     const isSessionRestored = await tryRestoreSession(userToken);
     if (isSessionRestored) {
@@ -71,6 +79,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       }
       profile = await coinsendaServices.addNewProfile(newCountry);
     }
+    console.log('||||||| profile: ', profile)
 
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) {
@@ -83,6 +92,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     const userCountry = newCountry ? newCountry : country;
 
     const res = await coinsendaServices.countryValidators();
+    console.log('||||||| countryValidators: ', res)
     if (!res) {
       prepareCountrySelection();
       return doLogout();
@@ -100,6 +110,11 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     await coinsendaServices.loadFirstEschema();
 
     const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
+
+    if(user.operation_country){
+      localForage.setItem("OpCountry", user.operation_country)
+    }
+    console.log('||||||| fetchCompleteUserData: ', user)
 
     if (!user) {
       return false;
@@ -144,11 +159,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
           (keysModalShowed.showed && keysModalShowed.showed < 2))
       ) {
         actions.renderModal(KeyActionsInfo);
-        localForage.setItem(
-          "keysModalShow",
-          JSON.stringify({
-            showed: keysModalShowed ? keysModalShowed.showed + 1 : 0,
-          })
+        localForage.setItem("keysModalShow", JSON.stringify({showed: keysModalShowed ? keysModalShowed.showed + 1 : 0})
         );
       }
     }
@@ -177,9 +188,9 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     });
   };
 
-  useEffect(() => {
-    registerColors();
-  }, []);
+  // useEffect(() => {
+  //   registerColors();
+  // }, []);
 
   useEffect(() => {
     if (authData.userToken) {
@@ -201,7 +212,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
         </div>
       ) : (
         <div className={`LoaderContainer loaderLayout`}>
-          <IconSwitch className="Loader__icon" icon={country} size={60} />
+          <IconSwitch className="Loader__icon" icon={countryImg} size={60} />
 
           <div className="logotypes">
             <Coinsenda size={50} color="white" />

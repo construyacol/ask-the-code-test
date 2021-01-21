@@ -11,6 +11,8 @@ const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
 
+
+const International = loadable(() => import("./").then(getExportByName("International")));
 const Email = loadable(() => import("./").then(getExportByName("Email")));
 const IconDefault = loadable(() =>
   import("./").then(getExportByName("IconDefault"))
@@ -160,7 +162,10 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
+
     switch (icon) {
+      case "international":
+        return <International {...props} />;
       case "newAccount":
         return <NewAccount {...props} />;
       case "twofa":
