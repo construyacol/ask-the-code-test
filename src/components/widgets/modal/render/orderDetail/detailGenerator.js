@@ -62,11 +62,9 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         return ["Costo:", order.cost];
       case "sent":
         return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
-        
-      case "tax":
+
       case "fee":
-      case "need_referral_process":
-      case "referral":
+      case "tax":
       case "withdraw_provider":
       case "withdraw_account":
       case "metadata":
@@ -141,13 +139,13 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
         setOrders([
           ...depositProviderInfo,
-          [
-            "Comisión:",
-            `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${
-              order.fee
-            }`,
-          ],
-          ["Impuesto:", `~ ${order.tax}`],
+          // [
+          //   "Comisión:",
+          //   `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${
+          //     order.fee
+          //   }`,
+          // ],
+          // ["Impuesto:", `~ ${order.tax}`],
           ["Cantidad acreditada:", `~ $${amount}`],
           ["Total a depositar:", `~ $${amount_neto}`],
         ]);
