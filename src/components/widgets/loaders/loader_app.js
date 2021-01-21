@@ -79,7 +79,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       }
       profile = await coinsendaServices.addNewProfile(newCountry);
     }
-    console.log('||||||| profile: ', profile)
 
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) {
@@ -92,7 +91,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     const userCountry = newCountry ? newCountry : country;
 
     const res = await coinsendaServices.countryValidators();
-    console.log('||||||| countryValidators: ', res)
     if (!res) {
       prepareCountrySelection();
       return doLogout();
@@ -114,7 +112,6 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if(user.operation_country){
       localForage.setItem("OpCountry", user.operation_country)
     }
-    console.log('||||||| fetchCompleteUserData: ', user)
 
     if (!user) {
       return false;
