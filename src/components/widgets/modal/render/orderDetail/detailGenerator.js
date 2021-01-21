@@ -58,16 +58,13 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         ];
       case "confirmations":
         return ["Confirmations:", order.confirmations];
-      case "fee":
-        return ["Comisión:", order.fee];
-      case "tax":
-        return ["Impuesto:", order.tax];
       case "cost":
         return ["Costo:", order.cost];
       case "sent":
         return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
-
-
+        
+      case "tax":
+      case "fee":
       case "need_referral_process":
       case "referral":
       case "withdraw_provider":

@@ -19,29 +19,21 @@ export function _createStore() {
   delete window.__PRELOADED_STATE__;
 
   let store;
-  // if (process.env.NODE_ENV === "production") {
-  //   store = createStore(
-  //     reducer,
-  //     preloadedState || {},
-  //     applyMiddleware(thunk, loadedSoundsMiddleware)
-  //   );
-  // } else {
-  //   store = createStore(
-  //     reducer,
-  //     {},
-  //     composeWithDevTools(
-  //       applyMiddleware(logger, thunk, loadedSoundsMiddleware)
-  //     )
-  //   );
-  // }
-
-  store = createStore(
-    reducer,
-    {},
-    composeWithDevTools(
-      applyMiddleware(logger, thunk, loadedSoundsMiddleware)
-    )
-  );
+  if (process.env.NODE_ENV === "production") {
+    store = createStore(
+      reducer,
+      preloadedState || {},
+      applyMiddleware(thunk, loadedSoundsMiddleware)
+    );
+  } else {
+    store = createStore(
+      reducer,
+      {},
+      composeWithDevTools(
+        applyMiddleware(logger, thunk, loadedSoundsMiddleware)
+      )
+    );
+  }
 
   // Tell react-snap how to save Redux state
   window.snapSaveState = () => ({
