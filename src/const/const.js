@@ -25,6 +25,7 @@ export const loadLabels = {
   OBTENIENDO_PROVEEDORES_DE_DEPOSITO: "Obteniendo proveedores de deposito",
 };
 
+
 export const ACCOUNT_URL = `${AccountApiUrl}users`;
 export const CREATE_WALLET_URL = `${AccountApiUrl}accounts/add-new-account`;
 export const DELETE_WALLET_URL = `${AccountApiUrl}accounts/update-visibility`;
@@ -36,6 +37,8 @@ export const CURRENCIES_URL_ALT = `${ApiUrl}currencies`;
 export const GET_PROFILE_URL = `${ApiUrl}users`;
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`;
 export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`;
+export const TWO_FACTOR_BASE_URL = `${ApiUrl}`;
+
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`;
 export const GET_WITHDRAW_BY_USER_URL = `${WithdrawApiUrl}users`;

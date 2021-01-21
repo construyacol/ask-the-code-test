@@ -52,7 +52,6 @@ export class IndetityService extends WebService {
 
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
 
-
     if (transactionSecurity) {
       const { transaction_security_id, scopes } = transactionSecurity;
       updatedUser.security_center.txSecurityId = transaction_security_id;

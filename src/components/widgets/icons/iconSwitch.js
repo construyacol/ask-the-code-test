@@ -383,7 +383,7 @@ class IconSwitch extends Component {
   };
 
   render() {
-    const { animOn, className, withoutwrapper = false } = this.props;
+    const { animon, className, withoutwrapper = false } = this.props;
 
     if (withoutwrapper) {
       const props = { ...this.props };
@@ -392,7 +392,7 @@ class IconSwitch extends Component {
     }
 
     return (
-      <div className={`iconSty ${animOn ? "animOn" : ""} ${className}`}>
+      <div className={`iconSty ${animon ? "animOn" : ""} ${className}`}>
         {React.createElement(this.switcher, this.props)}
       </div>
     );

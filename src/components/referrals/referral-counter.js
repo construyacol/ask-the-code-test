@@ -10,8 +10,7 @@ const ReferralCounter = ({ loading, referral}) => {
 
   useEffect(()=>{
     if(referral && referral.referreds && referral.referreds){
-      setReferreds(2)
-      // setReferreds(referral.referreds.length)
+      setReferreds(referral.referreds.length)
     }
   }, [referral && referral.referreds && referral.referreds])
 
