@@ -191,8 +191,6 @@ export class WithdrawService extends WebService {
     // console.log(body)
 
     const response = await this.Post(NEW_WITHDRAW_URL, body);
-    console.log(body, response)
-    debugger
     if (!response || response === 465) {
       return false;
     }
