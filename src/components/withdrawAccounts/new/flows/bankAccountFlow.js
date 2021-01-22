@@ -293,7 +293,7 @@ class BankAccountFlow extends Component {
                 }}>
                   <div className="contForminputsAccount">
                     <DropDownContainer
-                      placeholder="ej. Cuenta Corriente"
+                      placeholder="Tipo de cuenta"
                       elements={this.state.account_types}
                       label="Elige el tipo de cuenta:"
                       actualizarEstado={actualizarEstado}
