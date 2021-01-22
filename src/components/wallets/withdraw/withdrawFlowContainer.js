@@ -113,7 +113,6 @@ class WithdrawFlow extends Component {
     withdrawProviders &&
       withdrawProviders.map((provider) => {
         if (
-          provider.country === country &&
           provider.currency_type === currency_type &&
           provider.enabled
         ) {
@@ -122,6 +121,8 @@ class WithdrawFlow extends Component {
 
         return false;
       });
+
+      // console.log('||||||||||||||||||||| available_providers', available_providers)
 
     if (available_providers.length < 1) {
       return false;
@@ -144,6 +145,7 @@ class WithdrawFlow extends Component {
 
     this.setState({ withdraw_account_list_update });
 
+
     this.setState({
       withdrawProviders: available_providers,
       min_amount: parseInt(available_providers[0].provider.min_amount),
@@ -152,42 +154,36 @@ class WithdrawFlow extends Component {
 
   get_cost_struct = (available_providers, withdraw_account_list) => {
     // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
-    let providers_served = withdrawProvidersByType(
-      available_providers || this.props.withdrawProviders
-    );
+    let providers_served = withdrawProvidersByType(available_providers || this.props.withdrawProviders);
 
     let update_list = [];
     let w_account_list =
       withdraw_account_list || this.props.withdraw_account_list;
 
-    w_account_list &&
-      w_account_list.map((withdraw_account) => {
+    w_account_list && w_account_list.map((withdraw_account) => {
         if (withdraw_account.currency_type === "crypto") {
           return false;
         }
         let plaza_type;
         let provider_type = withdraw_account.provider_type;
 
-        if (
-          providers_served[provider_type].provider &&
-          providers_served[provider_type].provider.name ===
-            withdraw_account.provider_name
-        ) {
+        if (providers_served[provider_type].provider && providers_served[provider_type].provider.name === withdraw_account.provider_name) {
           plaza_type = "same_bank";
         }
-        if (!plaza_type) {
-          plaza_type =
-            providers_served[provider_type].info_needed.city[
-              withdraw_account.city.value
-            ].plaza_type;
-        }
+        // if (!plaza_type) {
+        //   plaza_type =
+        //     providers_served[provider_type].info_needed.city[
+        //       withdraw_account.city.value
+        //     ].plaza_type;
+        // }
+
 
         let new_withdraw_account = {
           ...withdraw_account,
           cost_struct:
             providers_served[provider_type].provider.costs[plaza_type],
           cost:
-            providers_served[provider_type].provider.costs[plaza_type].fixed,
+            (providers_served[provider_type].provider.costs[plaza_type] && providers_served[provider_type].provider.costs[plaza_type].fixed),
         };
         return update_list.push(new_withdraw_account);
       });
@@ -393,11 +389,11 @@ class WithdrawFlow extends Component {
         value: withdraw_account.account_number.value,
         id: 3,
       },
-      {
-        ui_name: `Ciudad:`,
-        value: withdraw_account.city.ui_name,
-        id: 4,
-      },
+      // {
+      //   ui_name: `Ciudad:`,
+      //   value: withdraw_account.city.ui_name,
+      //   id: 4,
+      // },
       {
         ui_name: "Propietario de la cuenta:",
         value: `${withdraw_account.name} ${withdraw_account.surname}`,
@@ -527,7 +523,6 @@ class WithdrawFlow extends Component {
     const { step } = this.props;
 
     const { need_new_acount } = this.state;
-
     if (step === 1 && !need_new_acount) {
       return this.setState({ show_list_accounts: true });
     }
@@ -569,6 +564,10 @@ class WithdrawFlow extends Component {
 
   render() {
     const { currency, available, step, idAccept } = this.props;
+
+    // console.log('|||||||||||||| show_list_accounts: ', this.state.show_list_accounts)
+    // console.log('|||||||||||||| withdrawProviders: ', this.props.withdrawProviders)
+
 
     const {
       amount,
@@ -684,21 +683,20 @@ const selectWithdrawAccountList = createSelector(
     const withdraw_account_list = [];
     _withdraw_accounts &&
       _withdraw_accounts.map((account_id) => {
-        if (
-          withdraw_accounts[account_id].currency_type !== "fiat" ||
-          !withdraw_accounts[account_id].visible
-        ) {
+        if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) {
           return false;
         }
         return withdraw_account_list.push(withdraw_accounts[account_id]);
       });
+
     return {
-      withdraw_account_list:
-        withdraw_account_list.length > 0 && withdraw_account_list,
+      withdraw_account_list: withdraw_account_list.length > 0 && withdraw_account_list,
       have_withdraw_accounts: withdraw_account_list.length > 0,
     };
   }
 );
+
+
 
 function mapStateToProps(state, props) {
   const { params } = props.match;

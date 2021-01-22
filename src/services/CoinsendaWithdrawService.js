@@ -20,7 +20,9 @@ import normalizeUser from "../schemas";
 import { normalized_list } from "../utils";
 
 export class WithdrawService extends WebService {
+
   async fetchWithdrawAccounts(query = '{"where":{"visible":true}}') {
+
     const { user } = this.globalState.modelData;
     await this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO)
@@ -28,6 +30,7 @@ export class WithdrawService extends WebService {
     const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter=${query}`;
 
     const result = await this.Get(finalUrl);
+
 
     if (!result.length) {
       let userWithOutWA = {
@@ -44,6 +47,10 @@ export class WithdrawService extends WebService {
     }
     const providersServed = await this.withdrawProvidersByType;
 
+
+
+
+
     const withdrawAccounts = await result.map((account) => {
       const aux = providersServed[account.provider_type];
       if (aux.currency_type === "fiat") {
@@ -51,27 +58,23 @@ export class WithdrawService extends WebService {
           id: account.id,
           account_number: {
             ui_name: aux.info_needed.account_number.ui_name,
-            value: account.info.account_number,
+            value: account.info.info_needed.account_number,
           },
           account_type: {
             ui_name:
-              aux.info_needed.account_type[account.info.account_type].ui_name,
-            value: account.info.account_type,
+              aux.info_needed.account_type[account.info.info_needed.account_type].ui_name,
+            value: account.info.info_needed.account_type,
           },
           bank_name: {
-            ui_name: aux.info_needed.bank_name[account.info.bank_name].ui_name,
-            value: account.info.bank_name,
+            ui_name: aux.info_needed.bank_name[account.info.info_needed.bank_name].ui_name,
+            value: account.info.info_needed.bank_name,
           },
-          city: {
-            ui_name: aux.info_needed.city[account.info.city].ui_name,
-            value: account.info.city,
-          },
-          provider_name: account.info.bank_name,
+          provider_name: account.info.info_needed.bank_name,
           used_counter: account.used_counter,
-          email: account.info.email,
-          id_number: account.info.id_number,
-          name: account.info.name,
-          surname: account.info.surname,
+          email: account.info.info_needed.email,
+          id_number: account.info.info_needed.id_number,
+          name: account.info.info_needed.name,
+          surname: account.info.info_needed.surname,
           inscribed: account.used_counter > 0 ? true : false,
           visible: account.visible,
           provider_type: account.provider_type,
@@ -188,8 +191,8 @@ export class WithdrawService extends WebService {
     // console.log(body)
 
     const response = await this.Post(NEW_WITHDRAW_URL, body);
-    // console.log(body, response)
-    // debugger
+    console.log(body, response)
+    debugger
     if (!response || response === 465) {
       return false;
     }
@@ -223,22 +226,25 @@ export class WithdrawService extends WebService {
               ...payload,
             },
           }
-        : {
-            data: {
-              currency: currency,
-              provider_type: provider_type,
-              name: name,
-              surname: surname,
-              id_number: id_number || user.id_number,
-              id_type: id_type,
-              bank_name: short_name,
-              account_number: account_number,
-              account_type: account_type,
-              city: city,
-              email: user.email || "default@coinsendaDepositApiUrl.com",
-              label: short_name,
-              country: user.country,
-            },
+        :
+          {
+            "data": {
+              "currency": currency,
+              "info_needed":{
+                "label":short_name,
+                name,
+                surname,
+                id_type,
+                id_number: id_number || user.id_number,
+                bank_name:short_name,
+                account_number,
+                account_type,
+                "country":"colombia",
+                "email":user.email || "default@coinsendaDepositApiUrl.com",
+              },
+              "country": user.country,
+              provider_type
+            }
           };
 
     const response = await this.Post(

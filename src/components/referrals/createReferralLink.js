@@ -8,13 +8,18 @@ import ControlButton from "../widgets/buttons/controlButton";
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
 // import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import useToastMessage from "../../hooks/useToastMessage";
-
 import styled from 'styled-components'
+import referralImg from './assets/referral.png'
+import { device } from '../../const/const'
+import IconSwitch from '../widgets/icons/iconSwitch'
+import useViewport from "../../hooks/useWindowSize";
+
 
 const CreateReferralLink = (props) => {
 
   const [ toastMessage ] = useToastMessage();
   const [ loader, setLoader ] = useState(false)
+  const { isMovilViewport } = useViewport();
   // const [coinsendaServices] = useCoinsendaServices();
   const [ isValidCode, setIsValidCode ] = useState('bad')
   const idForClickeableElement = useKeyActionAsClick(true, "create-referral-button", 13, false, "onkeyup");
@@ -42,6 +47,7 @@ const CreateReferralLink = (props) => {
       <RefCodeForm
         id="refCodeForm"
         >
+          <IconSwitch size={isMovilViewport ? 230 : 330} icon="createRefCode" />
           <InputForm
             className="setRefCode"
             type="text"
@@ -64,29 +70,78 @@ const CreateReferralLink = (props) => {
             // PrefixComponent
           />
 
-        <ControlButton
-          id={idForClickeableElement}
-          handleAction={setRefCode}
-          loader={loader}
-          formValidate={isValidCode === 'good'}
-          label="Crear link de referido"
-        />
+        <ButtonContainer id="ButtonContainer">
+          <ControlButton
+            id={idForClickeableElement}
+            handleAction={setRefCode}
+            loader={loader}
+            formValidate={isValidCode === 'good'}
+            label="Crear link de referido"
+          />
+        </ButtonContainer>
+
       </RefCodeForm>
     );
 }
 
 export default CreateReferralLink;
 
+
+const ButtonContainer = styled.div`
+  position: absolute;
+  height: 85px;
+  bottom: 10px;
+  display: grid;
+  align-items: center;
+
+    #controlsContainer{
+      height: auto;
+      padding: 12px 20px;
+    }
+
+    .botonForm, .disabledButton{
+      height: 59px;
+      padding: 0;
+    }
+    .disabledButton{
+      height: 59px;
+      padding: 0;
+    }
+`
+
 const RefCodeForm = styled.form`
   width: 100%;
   height: 100%;
   display: grid;
   justify-items:center;
+  grid-row-gap:30px;
+
+  img{
+    align-self: center;
+  }
+
+  @media ${device.tabletL}{
+    img{
+      height: 200px;
+    }
+  }
 
   .setRefCode{
-    width: 100%;
+    width: 90%;
     max-width: 550px;
+    align-self: baseline;
   }
+
+  ${'' /* #controlsContainer{
+    height: 85px;
+    position: absolute;
+    bottom: 10px;
+  }
+
+   */}
+
+
+
 `
 
 const InputContainer = styled.section`

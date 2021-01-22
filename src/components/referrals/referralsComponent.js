@@ -66,7 +66,7 @@ const ReferralComponent = (props) => {
   return (
     <DetailContainerLayout
       title="Referidos"
-      customClass="referral-layout"
+      customClass={`${referralLink ? 'referral-layout' : ''}`}
       {...props}
     >
       {!referralLink && !loading ? (

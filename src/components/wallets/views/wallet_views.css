@@ -172,6 +172,10 @@
   color: #484848;
 }
 
+p#WalletList2{
+  max-width: 1000px;
+}
+
 .subfix-pairs-button {
   margin-left: -6px;
   /* font-size: 15px; */
