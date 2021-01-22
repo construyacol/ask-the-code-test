@@ -221,7 +221,13 @@ export class WithdrawService extends WebService {
       type === "cripto"
         ? {
             data: {
-              ...payload,
+              currency,
+              info_needed:{
+                ...payload,
+                country:"colombia"
+              },
+              "country": user.country,
+              provider_type
             },
           }
         :

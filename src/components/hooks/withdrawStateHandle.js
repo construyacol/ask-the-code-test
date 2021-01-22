@@ -23,10 +23,11 @@ const selectWithdrawAccountsByAddress = createSelector(
   (withdraw_accounts, current_wallet) => {
     let result = {};
     for (let w_account_id in withdraw_accounts) {
-      if (current_wallet && current_wallet.currency.currency === withdraw_accounts[w_account_id].provider_type && withdraw_accounts[w_account_id].info.address) {
+      let address = withdraw_accounts[w_account_id].info.info_needed && withdraw_accounts[w_account_id].info.info_needed.address
+      if (current_wallet && current_wallet.currency.currency === withdraw_accounts[w_account_id].provider_type && address) {
         result = {
           ...result,
-          [withdraw_accounts[w_account_id].info.address]: withdraw_accounts[w_account_id]
+          [address]: withdraw_accounts[w_account_id]
         };
       }
     }
@@ -37,16 +38,13 @@ const selectWithdrawAccountsByAddress = createSelector(
 const WithdrawViewState = () => {
   const dispatch = useDispatch();
   const { modelData, ui, isLoading, storage } = useSelector((state) => state);
-  const withdrawProviders = useSelector((state) =>
-    selectWithdrawProviderByType(state)
-  );
+  const withdrawProviders = useSelector((state) => selectWithdrawProviderByType(state));
   const { account_id, path } = useParams();
   const { active_trade_operation } = ui.current_section.params;
 
   const { wallets, balances, user } = modelData;
 
-  const withdraw_accounts = useSelector((state) =>
-    selectWithdrawAccountsByAddress(state, wallets[account_id])
+  const withdraw_accounts = useSelector((state) => selectWithdrawAccountsByAddress(state, wallets[account_id])
   );
 
   const { loader } = isLoading;
