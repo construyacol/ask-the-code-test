@@ -114,9 +114,9 @@ const DollarSymbol = loadable(() =>
   import("./").then(getExportByName("DollarSymbol"))
 );
 const LogOut = loadable(() => import("./").then(getExportByName("LogOut")));
-const NewAccount = loadable(() =>
-  import("./").then(getExportByName("NewAccount"))
-);
+const NewAccount = loadable(() => import("./").then(getExportByName("NewAccount")));
+const CreateRefCode = loadable(() => import("./").then(getExportByName("CreateRefCode")));
+
 const QRCode = loadable(() => import("./").then(getExportByName("QRCode")));
 const AuthFactor = loadable(() =>
   import("./").then(getExportByName("AuthFactor"))
@@ -166,6 +166,8 @@ class IconSwitch extends Component {
     switch (icon) {
       case "international":
         return <International {...props} />;
+      case "createRefCode":
+        return <CreateRefCode {...props} />;
       case "newAccount":
         return <NewAccount {...props} />;
       case "twofa":

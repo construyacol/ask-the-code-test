@@ -50,7 +50,7 @@ export const InputButton = (props) => {
         />
       ) : (
         // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
-        <DisabledButton>{props.label}</DisabledButton>
+        <DisabledButton className="disabledButton" >{props.label}</DisabledButton>
       )}
     </InputButtonCont>
   );

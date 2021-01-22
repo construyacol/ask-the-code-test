@@ -51,15 +51,18 @@ class BankAccountFlow extends Component {
 
     this.setState({ loader: true });
 
+
     let res = withdraw_providers_list;
     if (!res) {
       return false;
     }
+
     let bank_list = res && res[0].info_needed.bank_name;
-    let city_list = res && res[0].info_needed.city;
+    // let city_list = res && res[0].info_needed.city;
+
 
     let serve_bank_list = await serveBankOrCityList(bank_list, "bank");
-    let serve_city_list = await serveBankOrCityList(city_list, "city");
+    // let serve_city_list = await serveBankOrCityList(city_list, "city");
 
     let id_types_object = await addIndexToRootObject(
       res && res[0].info_needed.id_type
@@ -80,7 +83,7 @@ class BankAccountFlow extends Component {
 
     this.setState({
       banks: serve_bank_list,
-      cities: serve_city_list,
+      // cities: serve_city_list,
       id_types: id_type_list, //tipos de documentos disponibles para indicar con el que se abrio la cuenta de retiro
       account_types: account_type_list, //tipos de cuentas bancarias disponibles
       loader: false,
@@ -284,10 +287,13 @@ class BankAccountFlow extends Component {
               )}
 
               {step === 5 && (
-                <form className="formAccountFlow" onSubmit={handleSubmit}>
+                <form className="formAccountFlow" onSubmit={async(e) => {
+                  await handleSubmit(e)
+                  final_step_create_account(e)
+                }}>
                   <div className="contForminputsAccount">
                     <DropDownContainer
-                      placeholder="ej. Cuenta Corriente"
+                      placeholder="Tipo de cuenta"
                       elements={this.state.account_types}
                       label="Elige el tipo de cuenta:"
                       actualizarEstado={actualizarEstado}
@@ -321,7 +327,7 @@ class BankAccountFlow extends Component {
                 </form>
               )}
 
-              {step === 6 && (
+              {/* {step === 6 && (
                 <form
                   className="formAccountFlow city"
                   onSubmit={final_step_create_account}
@@ -351,7 +357,7 @@ class BankAccountFlow extends Component {
                     </div>
                   </div>
                 </form>
-              )}
+              )} */}
             </div>
           </div>
         )}

@@ -4,19 +4,20 @@ import { AiOutlineClose } from "react-icons/ai";
 
 const TagItem = ({ withdrawAccount, deleteTag }) => {
   // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
+  // debugger
 
   if (!withdrawAccount) {
     return null;
   }
 
-  const address = withdrawAccount.info.address;
+  const address = withdrawAccount.info.info_needed && withdrawAccount.info.info_needed.address;
 
   return (
     <>
       <TagBlocker />
       <TagContainer>
         <LabelTextCont>
-          <p className="fuente label_">{withdrawAccount.info.label}</p>
+          <p className="fuente label_">{withdrawAccount.info.info_needed && withdrawAccount.info.info_needed.label}</p>
           <AddressContainer
             data-final-address={address.match(/..........$/g).toString()}
           >

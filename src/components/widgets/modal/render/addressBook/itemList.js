@@ -10,13 +10,19 @@ import { useItemsInteractions } from "../../../../../hooks/useNavigationKeyActio
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 
 export const ItemList = (props) => {
+
   const {
     item: {
       id,
-      info: { address, label },
+      info,
     },
     setAddressValue,
   } = props;
+
+  if(!info.info_needed){return null}
+
+  const { info_needed: { address, label } } = info
+
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
