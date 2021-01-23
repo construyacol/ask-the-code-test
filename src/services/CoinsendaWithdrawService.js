@@ -251,6 +251,8 @@ export class WithdrawService extends WebService {
             }
           };
 
+          console.log('|||||||||||||||||||||||||| addNewWithdrawAccount: ', body)
+
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,
       body,
