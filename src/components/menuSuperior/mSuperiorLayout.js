@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useActions } from "../../hooks/useActions";
 import "./mSuperior.css";
 
+import DeployProof from '../../deployProof'
+
 const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
 const SimpleLoader = loadable(() => import("../widgets/loaders"));
 const PricesComponent = loadable(() => import("../Prices/PricesComponent"));
@@ -80,7 +82,8 @@ const MenuSuperiorLayout = (props) => {
             <div className="capsuleMenu1">
               {window.innerWidth > 768 ? (
                 <div className="itemSup closeSesi" onClick={showPrices}>
-                  <p>Ver precios</p>
+                  {/* <p>Ver precios</p> */}
+                  <DeployProof/>
                   <i className="fas fa-tags"></i>
                 </div>
               ) : (
