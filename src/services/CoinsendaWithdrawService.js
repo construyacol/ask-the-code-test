@@ -31,8 +31,6 @@ export class WithdrawService extends WebService {
 
     const result = await this.Get(finalUrl);
 
-    console.log('|||||||| fetchWithdrawAccounts: ', finalUrl, result)
-    debugger
 
     if (!result.length) {
       let userWithOutWA = {
@@ -255,7 +253,6 @@ export class WithdrawService extends WebService {
             }
           };
 
-          console.log('|||||||||||||||||||||||||| addNewWithdrawAccount: ', body)
 
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,
