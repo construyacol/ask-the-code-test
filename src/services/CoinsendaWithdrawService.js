@@ -31,6 +31,8 @@ export class WithdrawService extends WebService {
 
     const result = await this.Get(finalUrl);
 
+    console.log('|||||||| fetchWithdrawAccounts: ', finalUrl, result)
+    debugger
 
     if (!result.length) {
       let userWithOutWA = {
@@ -49,10 +51,11 @@ export class WithdrawService extends WebService {
 
 
 
-
-
     const withdrawAccounts = await result.map((account) => {
       const aux = providersServed[account.provider_type];
+
+
+
       if (aux.currency_type === "fiat") {
         return {
           id: account.id,
