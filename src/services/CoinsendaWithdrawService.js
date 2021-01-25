@@ -44,12 +44,13 @@ export class WithdrawService extends WebService {
       await this.dispatch(updateNormalizedDataAction(toNormalize));
       return this.dispatch(resetModelData({ withdraw_accounts: [] }));
     }
+
     if (!result || result === 465 || !this.withdrawProviders) {
       return false;
     }
+
+
     const providersServed = await this.withdrawProvidersByType;
-
-
 
     const withdrawAccounts = await result.map((account) => {
       const aux = providersServed[account.provider_type];
@@ -61,23 +62,23 @@ export class WithdrawService extends WebService {
           id: account.id,
           account_number: {
             ui_name: aux.info_needed.account_number.ui_name,
-            value: account.info.info_needed.account_number,
+            value: account.info.account_number,
           },
           account_type: {
             ui_name:
-              aux.info_needed.account_type[account.info.info_needed.account_type].ui_name,
-            value: account.info.info_needed.account_type,
+              aux.info_needed.account_type[account.info.account_type].ui_name,
+            value: account.info.account_type,
           },
           bank_name: {
-            ui_name: aux.info_needed.bank_name[account.info.info_needed.bank_name].ui_name,
-            value: account.info.info_needed.bank_name,
+            ui_name: aux.info_needed.bank_name[account.info.bank_name].ui_name,
+            value: account.info.bank_name,
           },
-          provider_name: account.info.info_needed.bank_name,
+          provider_name: account.info.bank_name,
           used_counter: account.used_counter,
-          email: account.info.info_needed.email,
-          id_number: account.info.info_needed.id_number,
-          name: account.info.info_needed.name,
-          surname: account.info.info_needed.surname,
+          email: account.info.email,
+          id_number: account.info.id_number,
+          name: account.info.name,
+          surname: account.info.surname,
           inscribed: account.used_counter > 0 ? true : false,
           visible: account.visible,
           provider_type: account.provider_type,
@@ -114,6 +115,7 @@ export class WithdrawService extends WebService {
 
     withdrawAccounts.reverse();
 
+
     const updatedUser = {
       id: user.id,
       withdraw_accounts: [...withdrawAccounts],
@@ -125,6 +127,7 @@ export class WithdrawService extends WebService {
 
     const normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
+
     return withdrawAccounts;
   }
 
@@ -134,9 +137,7 @@ export class WithdrawService extends WebService {
     const body = {
       data: {
         withdraw_account_id: `${accountId}`,
-        country:
-          withdraw_accounts[accountId] &&
-          withdraw_accounts[accountId].info.country,
+        country:user.country,
         visible: false,
       },
     };
@@ -324,7 +325,6 @@ export class WithdrawService extends WebService {
       "withdraws",
       account_id
     );
-    // debugger
     await this.dispatch(normalized_list(withdraws_remodeled, "withdraws"));
     await this.updateActivityState(
       account_id,

@@ -187,7 +187,7 @@ export const CriptoView = () => {
     setAddressToAdd();
     const provider_type = current_wallet.currency.currency;
 
-    if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.info_needed.label !== provider_type) {
+    if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
       setTagWithdrawAccount(withdraw_accounts[addressValue]);
     }else{
@@ -195,7 +195,7 @@ export const CriptoView = () => {
     }
 
     if (addressState === "good") {
-      if (!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.info_needed.label === provider_type)) {
+      if (!withdraw_accounts[addressValue] || (withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label === provider_type)) {
         // Si la cuenta no existe, o si existe pero es una cuenta anónima entonces esta cuenta puede ser agregada
         setAddressToAdd(addressValue);
       }
