@@ -19,9 +19,7 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
   const actions = useActions();
   const [{ current_wallet, path }] = WithdrawViewState();
   const provider_type = current_wallet && current_wallet.currency.currency;
-  const withdrawAccounts = useSelector((state) =>
-    selectWithdrawAccountsByProviderType(state, provider_type)
-  );
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByProviderType(state, provider_type));
   const [view, setView] = useState("addressList");
 
   const cerrar = (e) => {
@@ -56,6 +54,7 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
 
     appearTransition();
   }, []);
+
 
   return (
     // Dato de onkeydown y otros events.

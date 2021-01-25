@@ -23,7 +23,7 @@ const selectWithdrawAccountsByAddress = createSelector(
   (withdraw_accounts, current_wallet) => {
     let result = {};
     for (let w_account_id in withdraw_accounts) {
-      let address = withdraw_accounts[w_account_id].info.info_needed && withdraw_accounts[w_account_id].info.info_needed.address
+      let address = withdraw_accounts[w_account_id].info && withdraw_accounts[w_account_id].info.address
       if (current_wallet && current_wallet.currency.currency === withdraw_accounts[w_account_id].provider_type && address) {
         result = {
           ...result,

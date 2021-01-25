@@ -30,7 +30,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
 
   useEffect(() => {
     const value = addressValue.replace(/@/g, "");
-    const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount.info.info_needed && withdrawAccount.info.info_needed.label.toLowerCase().includes(value.toLowerCase()) );
+    const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount.info.label && withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()) );
     if (result.length < withdrawAccounts.length) {
       setSearchList(result);
     }
@@ -38,7 +38,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
 
   useEffect(() => {
     if (searchList.length === 1) {
-      setAddressValue(searchList[0].info.info_needed.address);
+      setAddressValue(searchList[0].info.address);
       // console.log(searchList, searchList.length)
     }
   }, [searchList]);

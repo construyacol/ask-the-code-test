@@ -10,14 +10,14 @@ const TagItem = ({ withdrawAccount, deleteTag }) => {
     return null;
   }
 
-  const address = withdrawAccount.info.info_needed && withdrawAccount.info.info_needed.address;
+  const address = withdrawAccount.info && withdrawAccount.info.address;
 
   return (
     <>
       <TagBlocker />
       <TagContainer>
         <LabelTextCont>
-          <p className="fuente label_">{withdrawAccount.info.info_needed && withdrawAccount.info.info_needed.label}</p>
+          <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
           <AddressContainer
             data-final-address={address.match(/..........$/g).toString()}
           >

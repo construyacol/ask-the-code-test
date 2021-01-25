@@ -14,15 +14,12 @@ export const ItemList = (props) => {
   const {
     item: {
       id,
-      info,
+      info : { address, label }
     },
     setAddressValue,
   } = props;
 
-  if(!info.info_needed){return null}
-
-  const { info_needed: { address, label } } = info
-
+  if(!address || !label){return null}
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
