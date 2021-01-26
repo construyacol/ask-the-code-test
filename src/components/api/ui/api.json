@@ -462,7 +462,7 @@
           "name": "address",
           "label": "Dirección de residencia",
           "placeholder": "Escribe la dirección de tu domicilio",
-          "message": "Escribe de forma clara tu dirección de residencia",
+          "message": "Escribe de forma completa tu dirección de residencia",
           "errmessage": "Oh!!, debes ingresar los datos correctamente"
         },
         "city": {

@@ -206,6 +206,10 @@ p#WalletList2{
   color: #b48728;
 }
 
+.soloAd span{
+  text-transform: capitalize;
+}
+
 .soloAd2 {
   font-size: 16px !important;
   text-align: left;

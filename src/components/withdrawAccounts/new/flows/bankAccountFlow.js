@@ -148,12 +148,14 @@ class BankAccountFlow extends Component {
             </div>
             <p className="nBtextInit fuente">
               {" "}
-              Al añadir una cuenta bancaria para realizar tus retiros de pesos
+              Al añadir una cuenta bancaria para realizar tus retiros de moneda local por primera vez, el tiempo promedio que tarda para inscribirse son 2 horas hábiles a partir del momento en que se realizó el proceso. Tener tu cuenta inscrita previamente puede hacer que tus retiros en moneda local se ejecuten más rápido.
+
+              {/* Al añadir una cuenta bancaria para realizar tus retiros de pesos
               colombianos <strong>(COP)</strong> por primera vez, tarda en
               promedio <strong>2 horas habiles</strong> a partir de su
               inscripción, para que esta sea aprobada por la entidad bancaria,
               una vez tu cuenta haya sido aprobada, tus retiros serán casi
-              inmediatos
+              inmediatos */}
             </p>
 
             <div id="bankChooseButton">
@@ -174,7 +176,7 @@ class BankAccountFlow extends Component {
             <form onSubmit={handleSubmit} className="NWithdrawAccountFlow">
               <div className="titleAccountFlow">
                 <h1 className="DLtitles2">Elige la entidad bancaria</h1>
-                <p className="fuente DLstitles">asociada a la cuenta:</p>
+                <p className="fuente DLstitles">de la cuenta que quieres agregar:</p>
               </div>
               {loader ? (
                 <SimpleLoader label="Cargando..." />
@@ -231,7 +233,7 @@ class BankAccountFlow extends Component {
                   >
                     <div className="contInfoIdType">
                       <p className="nBtextInit fuente">
-                        Es de vital importancia que esta cuenta{" "}
+                        Es de vital importancia que esta cuenta del{" "}
                         <strong>{bank_name}</strong> sea de tu propiedad{" "}
                         <strong>{name}</strong>, de lo contrario se invalidarán
                         las transacciones y es posible que tus fondos queden

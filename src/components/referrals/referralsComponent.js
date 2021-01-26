@@ -76,7 +76,7 @@ const ReferralComponent = (props) => {
           <FirstText className={`${loading === true ? "skeleton" : ""}`}>
             <p>
               Invita amigos con tu link de referido y gana el{" "}
-              <strong>0.05%</strong> de comisión sobre todas sus operaciones.
+              <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones.
             </p>
           </FirstText>
           <ShareSection loading={loading} referralLink={referralLink} />
