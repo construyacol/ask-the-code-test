@@ -94,7 +94,7 @@ const AddDepositProviderCripto = () => {
       </div>
 
       <p className="fuente">
-        Esta Billetera aún no tiene dirección de deposito, creala ahora e inicia
+        Esta Billetera aún no tiene dirección de depósito, creala ahora e inicia
         operaciones con esta cuenta.
       </p>
 
@@ -104,7 +104,7 @@ const AddDepositProviderCripto = () => {
           handleAction={createDepositProvider}
           loader={loader}
           formValidate
-          label="Crear dirección de deposito"
+          label="Crear dirección de depósito"
         />
       </div>
     </DepositForm>
@@ -174,7 +174,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo {current_wallet.currency.currency} a esta Billetera. El
+          Envía solo <span>{current_wallet.currency.currency}</span> a esta Billetera. El
           envío de cualquier otra moneda a esta dirección puede resultar en la
           pérdida de su depósito.{" "}
         </p>
@@ -185,7 +185,7 @@ const CriptoView = () => {
             <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
           )}
         </div>
-        <p className="fuente title dirDep">Dirección de deposito:</p>
+        <p className="fuente title dirDep">Dirección de depósito:</p>
         <div className="fuente address">
           <CopyContainer
             valueToCopy={

@@ -2,7 +2,7 @@
   "accounts": [
     {
       "data": {
-        "name": null,
+        "name": "Mi Billetera Bitcoin",
         "country": null,
         "enabled": true,
         "currency": {
@@ -13,7 +13,7 @@
     },
     {
       "data": {
-        "name": null,
+        "name": "Mi Billetera COP",
         "country": null,
         "enabled": true,
         "currency": {

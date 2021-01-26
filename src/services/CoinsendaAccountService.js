@@ -98,7 +98,6 @@ export class AccountService extends WebService {
 
   async createAccountAndInsertDepositProvider(body) {
     body.data.country = this.user.country;
-    body.data.name = `Mi Billetera ${body.data.currency.currency}`;
     const newAccount = await this.createWallet(body);
     if (!newAccount) {return}
     await this.getWalletsByUser();

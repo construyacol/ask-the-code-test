@@ -386,7 +386,7 @@ const WithdrawAccount = (props) => {
             <i className="far fa-check-circle"></i>
           )}
           <p className="IWText fuente IWLittleTitle">
-            {inscribed ? "inscrita" : "Inscribiendo"}
+            {inscribed ? "inscrita" : "En proceso"}
           </p>
         </div>
         <p
