@@ -82,7 +82,7 @@ const ReferralComponent = (props) => {
           <ShareSection loading={loading} referralLink={referralLink} />
           <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
           <BalanceSelect loading={loading ? loading.toString() : null} />
-          <WithdrawAd loading={loading ? loading.toString() : null} />
+          {/* <WithdrawAd loading={loading ? loading.toString() : null} /> */}
         </ReferralGrid>
       )}
     </DetailContainerLayout>

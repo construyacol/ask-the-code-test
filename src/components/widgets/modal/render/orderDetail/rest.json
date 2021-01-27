@@ -2,25 +2,25 @@
   "deposits": {
     "created": {
       "completed": false,
-      "ui_text": "Deposito creado"
+      "ui_text": "Depósito creado"
     },
     "pending": {
       "completed": false,
       "ui_text": {
-        "crypto": "Deposito agregado en blockchain",
-        "fiat": "Confirmando deposito"
+        "crypto": "Depósito agregado en blockchain",
+        "fiat": "Confirmando depósito"
       }
     },
     "confirmed": {
       "completed": false,
       "ui_text": {
         "crypto": "Confirmando en blockchain",
-        "fiat": "Aceptando prueba de deposito"
+        "fiat": "Aceptando prueba de depósito"
       }
     },
     "accepted": {
       "completed": false,
-      "ui_text": "Deposito aceptado"
+      "ui_text": "Depósito aceptado"
     }
   },
   "withdraws": {
@@ -57,11 +57,11 @@
       },
       "confirmed": {
         "fiat": {
-          "title": "Tu deposito está en revisión",
+          "title": "Tu depósito está en revisión",
           "description": "Estamos verificando el comprobante de pago..."
         },
         "crypto": {
-          "title": "Tu deposito está siendo confirmado",
+          "title": "Tu depósito está siendo confirmado",
           "description": "Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
         }
       }
