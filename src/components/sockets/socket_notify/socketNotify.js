@@ -17,10 +17,10 @@ const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
 const SocketNotify = (props) => {
   const [formatCurrency, setFormatCurrency] = useState(null);
   const { item_type, title } = props.socket_notify;
-  let txType = `${item_type === "deposits" ? "deposito" : "retiro"}`;
+  let txType = `${item_type === "deposits" ? "depósito" : "retiro"}`;
   let fallBackTitle = `${
     item_type === "deposits"
-      ? "Nuevo deposito aprobado"
+      ? "Nuevo depósito aprobado"
       : item_type === "withdraws"
       ? "Nuevo retiro enviado"
       : ""

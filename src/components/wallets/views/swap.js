@@ -266,7 +266,7 @@ function SwapView(props) {
         handleStatus={handleStateBoughtInput}
         state={exchangeEnabled}
         isControlled={true}
-        label={`Recibo aproximadamente:`}
+        label={`Recibo apróximadamente:`}
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => (
@@ -282,7 +282,9 @@ function SwapView(props) {
         <CoinPrice className="fuente2">
           1 {WalletCurrencyShortName} ={" "}
           {!valueForOne ? "Sin Cotización" : valueForOne}{" "}
-          {boughtCurrency}
+          <span style={{textTransform:"capitalize"}}>
+            {boughtCurrency}
+          </span>
         </CoinPrice>
       </div>
 

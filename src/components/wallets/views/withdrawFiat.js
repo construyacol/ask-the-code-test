@@ -50,8 +50,8 @@ const FiatView = (props) => {
           </p>
         ) : (
           <p className="fuente">
-            Gestiona y realiza retiros en tu moneda local (
-            {current_wallet.currency.currency}), desde coinsenda a tu cuenta
+            Gestiona y realiza retiros en tu moneda local <span style={{textTransform:"capitalize"}}>(
+            {current_wallet.currency.currency})</span>, desde Coinsenda a tu cuenta
             bancaria.
           </p>
         )}

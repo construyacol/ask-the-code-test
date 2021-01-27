@@ -247,7 +247,7 @@ export const CriptoView = () => {
         name="amount"
         handleStatus={setAmountState}
         handleChange={handleChangeAmount}
-        label={`Ingresa la cantidad de retiro`}
+        label={`Ingresa la cantidad del retiro`}
         disabled={loader}
         state={amountState}
         setMaxWithActionKey={true}

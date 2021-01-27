@@ -194,11 +194,10 @@ const Success = (props) => {
                   final ? "desaparece1" : ""
                 }`}
               >
-                <div className="nBitemSuccesss">
+                {/* <div className="nBitemSuccesss">
                   <p className="fuente">Debes depositar por:</p>
                   <div className="fuente">
                     <div className="DLicontainer">
-                      {/* <img className="DLimg2" src={require(`../../../widgets/items/assets/${deposit_way === 'cash' ? 'remittance' : 'bank'}/${short_bank_name}.png`)} alt="" width="30"/> */}
                       {deposit_service}
                       <IconSwitch
                         icon={deposit_service.toLowerCase()}
@@ -206,7 +205,7 @@ const Success = (props) => {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 {new_ticket && (
                   <DetailGenerator order={deposit_order} theme="darkTheme" />
