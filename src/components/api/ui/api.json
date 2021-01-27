@@ -303,15 +303,15 @@
       "placeholder": [
         {
           "id": 1,
-          "name": "Sucursal Fisica"
+          "name": "Sucursal Física"
         },
         {
           "id": 2,
-          "name": "Cajero Automatico"
+          "name": "Cajero Automático"
         },
         {
           "id": 3,
-          "name": "Transferencia por App"
+          "name": "Transferencia por APP"
         }
       ]
     },

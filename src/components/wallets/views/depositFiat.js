@@ -57,7 +57,7 @@ const DepositFiat = (props) => {
           </p>
         ) : (
           <p className="fuente">
-            La mejor manera de iniciar operaciones en coinsenda es realizando un
+            La mejor manera de iniciar operaciones en Coinsenda es realizando un
             deposito.
           </p>
         )}

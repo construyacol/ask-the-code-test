@@ -84,7 +84,7 @@ const SwapVIewConfirm = (props) => {
               <article id="Swapdescription" className="fuente">
                 Gastarás la cantidad de:{" "}
                 <label className="fuente2">
-                  - {spent} {from}
+                  - {spent} <span style={{textTransform:"capitalize"}}>{from}</span>
                 </label>
                 , para adquirir la cantidad de:
               </article>
