@@ -240,7 +240,7 @@ export class WithdrawService extends WebService {
                 "label":short_name,
                 name,
                 surname,
-                id_type,
+                id_type:user.id_type,
                 id_number: id_number || user.id_number,
                 bank_name:short_name,
                 account_number,
