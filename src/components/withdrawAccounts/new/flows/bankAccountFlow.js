@@ -134,7 +134,7 @@ class BankAccountFlow extends Component {
 
     const { banks, cities, loader } = this.state;
 
-    // console.log('|||||| Modelito cities::', cities)
+    console.log('|||||| step::', step)
 
     return (
       <Fragment>
@@ -206,7 +206,7 @@ class BankAccountFlow extends Component {
           </div>
         )}
 
-        {(step === 4 || step === 5 || step === 6) && (
+        {(step === 4 || step === 5) && (
           <div className="step2">
             <div
               id="contMsg"
@@ -225,7 +225,8 @@ class BankAccountFlow extends Component {
                   name={bank_name}
                 />
               </div>
-              {step === 4 && (
+
+              {/* {step === 4 && (
                 <Fragment>
                   <form
                     className="formAccountFlow grid-disable"
@@ -286,9 +287,9 @@ class BankAccountFlow extends Component {
                     </div>
                   </form>
                 </Fragment>
-              )}
+              )} */}
 
-              {step === 5 && (
+              {step === 4 && (
                 <form className="formAccountFlow" onSubmit={async(e) => {
                   await handleSubmit(e)
                   final_step_create_account(e)

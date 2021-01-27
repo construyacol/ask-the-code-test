@@ -49,7 +49,7 @@ const WithdrawAccountFormLayout = (props) => {
         <RemittanceAccountFlow {...props} />
       )}
 
-      {step === 7 && (
+      {step === 6 && (
         <Fragment>
           {!ticket ? (
             <SimpleLoader label={`Creando Cuenta de retiro`} />
