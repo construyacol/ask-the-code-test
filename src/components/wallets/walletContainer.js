@@ -38,11 +38,8 @@ function WalletContainer(props) {
       path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
       render={(routeProps) => (
         <DetailContainerLayout {...props} {...routeProps}>
-          <Route
-            strict
-            path="/:primary_path/:path/:account_id"
-            render={({ match }) => (
-              <WalletDetail wallets={props.wallets} match={match} />
+          <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
+            <WalletDetail wallets={props.wallets} match={match} />
             )}
           />
           {!props.isAppLoaded ? (

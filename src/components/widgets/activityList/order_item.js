@@ -108,7 +108,7 @@ const getState = ({ state, currency_type }, tx_path) => {
     : state === "rejected" && "Rechazado";
 };
 
-const DepositOrder = ({ order }) => {
+export const DepositOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
 
   const {
@@ -349,7 +349,7 @@ const PanelLeft = (order) => {
     totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
     confirmations = Number(order.confirmations)
   }
-  
+
   return (
     <>
       {order.currency_type === "crypto" &&

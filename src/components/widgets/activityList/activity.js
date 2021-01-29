@@ -245,12 +245,7 @@ class ActivityList extends Component {
           </section>
         )}
 
-        <section
-          className={`ALactivity ${
-            pending && tx_path !== "swaps" ? "ALactivityPending" : ""
-          }`}
-        >
-          {/* <p className="ALtext fuente" style={{marginBottom:swap_done_out ? '115px' : '15px', transition:swap_done_out ? '1s' : '.01s'}}>Actividad</p> */}
+        <section className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
           <p className="ALtext fuente">Actividad</p>
           <div className="ALlistAll">
             {activity.map((item, index) => {
@@ -260,32 +255,13 @@ class ActivityList extends Component {
                 item.state !== "rejected" &&
                 tx_path !== "swaps"
               ) {
-                return false;
+                return null;
               }
               return <OrderItem
                       index={index}
                       order={item}
                       key={index}
                     />;
-
-              // if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws' || this.props.tx_path === 'swaps') {
-              //   return <OrderItem
-              //     index={index}
-              //     order={item}
-              //     key={index}
-              //   />
-              // } else {
-              //   return (<ItemList
-              //     key={item.id}
-              //     confirmPayment={this.confirmPayment}
-              //     verTicket={this.verTicket}
-              //     delete_order={this.delete_order_confirmation}
-              //     ticket={item}
-              //     short_name={short_name}
-              //     notifier_type="wallets"
-              //     {...this.props}
-              //   />)
-              // }
             })}
           </div>
 

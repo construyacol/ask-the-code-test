@@ -200,14 +200,9 @@ export class MainService extends inheritances {
   }
 
   parseActivty(activity, activityType, accountId) {
-    const {
-      storage: { activity_for_account },
-    } = this.globalState;
-    if (
-      activity_for_account &&
-      activity_for_account[accountId] &&
-      activity_for_account[accountId][activityType]
-    ) {
+    const { storage: { activity_for_account }} = this.globalState;
+
+    if (activity_for_account && activity_for_account[accountId] && activity_for_account[accountId][activityType]) {
       activity = [
         ...activity_for_account[accountId][activityType],
         ...activity,
