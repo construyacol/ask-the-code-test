@@ -47,7 +47,6 @@ const CreateReferralLink = (props) => {
       <RefCodeForm
         id="refCodeForm"
         >
-          <IconSwitch size={isMovilViewport ? 230 : 330} icon="createRefCode" />
           <InputForm
             className="setRefCode"
             type="text"
@@ -69,6 +68,9 @@ const CreateReferralLink = (props) => {
             // )}
             // PrefixComponent
           />
+          {/* <img src={referralImg} height="375px" alt=""/> */}
+          {/* <IconSwitch size={isMovilViewport ? 230 : 375} icon="createRefCode" /> */}
+          <IconSwitch size={375} icon="createRefCode" />
 
         <ButtonContainer id="ButtonContainer">
           <ControlButton
@@ -93,6 +95,7 @@ const ButtonContainer = styled.div`
   bottom: 10px;
   display: grid;
   align-items: center;
+  justify-self:center;
 
     #controlsContainer{
       height: auto;
@@ -107,6 +110,13 @@ const ButtonContainer = styled.div`
       height: 59px;
       padding: 0;
     }
+
+    @media ${device.tabletL} {
+      width: 100%;
+      bottom: 0;
+    }
+
+
 `
 
 const RefCodeForm = styled.form`
@@ -114,17 +124,48 @@ const RefCodeForm = styled.form`
   height: 100%;
   display: grid;
   justify-items:center;
-  grid-row-gap:30px;
+
+
 
   img{
     align-self: center;
   }
 
   @media ${device.tabletL}{
+
+  }
+
+  @media ${device.laptopM} {
+    grid-row-gap:10px;
     img{
       height: 200px;
+      width: 200px;
     }
   }
+
+  @media only screen and (max-width: 900px) {
+    grid-row-gap:35px;
+    img{
+      height: 270px;
+      width: 270px;
+    }
+  }
+
+  @media only screen and (min-width: 1550px) {
+    grid-row-gap:50px;
+    img{
+      height: 370px;
+      width: 370px;
+    }
+  }
+
+  ${'' /* @media ${device.laptopL} {
+    grid-row-gap:50px;
+    img{
+      height: 370px;
+    }
+  } */}
+
 
   .setRefCode{
     width: 90%;

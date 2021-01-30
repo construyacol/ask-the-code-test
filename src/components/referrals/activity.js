@@ -3,13 +3,19 @@ import styled from 'styled-components'
 import { LoaderView, DepositOrder } from "../widgets/activityList/order_item";
 import UseActivity from '../hooks/useActivity'
 import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
+import emptyImg from './assets/referrals.png'
 // import OrderItem from "../widgets/activityList/order_item";
 // import { useParams } from "react-router-dom";
+import useViewport from '../../hooks/useWindowSize'
+
+
+
 
 const ReferralActivity = ({ coinsendaServices }) => {
 
   const [ loader, setLoader ] = useState(true)
   const { activityList, setActivityList } = UseActivity()
+
 
   useEffect(() => {
 
@@ -18,12 +24,12 @@ const ReferralActivity = ({ coinsendaServices }) => {
       !res && setActivityList(false)
     }
 
-  if(activityList && !activityList.length){
-    LoadActivity()
-  }else{
-    setLoader(false)
-  }
-//
+    if(activityList && !activityList.length){
+      LoadActivity()
+    }else{
+      setLoader(false)
+    }
+
   }, [activityList])
 
 
@@ -47,11 +53,14 @@ export default ReferralActivity
 
 const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
 
+  const { isMovilViewport } = useViewport()
+
   return(
     <>
         {
           !activity ?
           <EmptyStateList
+            isMovilViewport={isMovilViewport}
             label="Aún no tienes comisiones acreditadas de tus referidos, compárte el link de referido y empieza a recibir tus comisiones..."
           />
           :
@@ -60,15 +69,19 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
           :
           <ComponentsContainer>
             {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
-
-              <ActivityGrid title={`${activity ? 'Comisiones de referidos' : ''}`}>
+              <ActivityGrid
+                title={`${activity ? 'Comisiones de referidos' : ''}`}
+                className={`${isMovilViewport ? 'isMovil' : ''}`}
+                >
                 {
                   activity && activity.map((item, index) => {
-                    return <DepositOrder
-                            index={index}
-                            order={item}
-                            key={index}
-                          />;
+                    return <OrderItem key={index}>
+                              <DepositOrder
+                                index={index}
+                                order={item}
+                                key={index}
+                              />
+                          </OrderItem>
                   })
                 }
               <InifiniteScrollComponent
@@ -84,6 +97,14 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
 
 }
 
+const OrderItem = styled.div`
+  transition: 0.1s;
+  perspective: 2000px;
+  opacity: 1;
+  width: 100%;
+  max-width: 800px;
+`
+
 
 const AuxComponentContainer = ({ AuxComponent }) =>
   typeof AuxComponent === "function" ? (
@@ -95,11 +116,13 @@ const AuxComponentContainer = ({ AuxComponent }) =>
     })
   );
 
-const EmptyStateList = ({ label }) => {
+const EmptyStateList = ({ label, isMovilViewport }) => {
+
 
   return(
     <EmptyStateGrid>
-      <EmptyStateCont>
+      <EmptyStateCont className={`${isMovilViewport ? 'isMovil' : ''}`}>
+        <img src={emptyImg} width="110px" alt=""/>
         <p className="fuente">{label}</p>
       </EmptyStateCont>
     </EmptyStateGrid>
@@ -108,7 +131,20 @@ const EmptyStateList = ({ label }) => {
 }
 
 const EmptyStateCont = styled.div`
+  display: grid;
+  justify-items: center;
+  padding: 50px 100px;
 
+  &.isMovil{
+    padding: 0;
+    p{
+      padding: 0 20px;
+    }
+  }
+
+  p{
+    text-align: center;
+  }
 `
 
 const EmptyStateGrid = styled.section`
@@ -133,6 +169,7 @@ const ActivityGrid = styled.div`
   justify-items:center;
   position: relative;
 
+
   &::after{
     content:attr(title);
     position: absolute;
@@ -140,10 +177,16 @@ const ActivityGrid = styled.div`
     left: 0;
   }
 
-  .accepted{
+  ${'' /* .accepted{
     width: 100%;
     max-width: 750px;
-  }
+  } */}
+
+  ${'' /* &.isMovil{
+    .accepted{
+      width: calc(100% - 50px);
+    }
+  } */}
 
   div.shower>div{
     ${'' /* width: 100%; */}

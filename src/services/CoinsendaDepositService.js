@@ -236,6 +236,7 @@ export class DepositService extends WebService {
     const user = this.user;
     let filter = `{"where":{"info.is_referral":"true"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
+    // const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter={"limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
 
     let deposits = await this.processDepositList(finalUrl)
     if(!deposits){return false}

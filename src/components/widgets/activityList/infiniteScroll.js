@@ -32,6 +32,7 @@ export default ({ loader, setLoader, activityLength }) => {
     if (skip > 10) {
       activity = await coinsendaServices[method](account_id, 15, skip);
     }
+    console.log('||||||||||||||||| activity : ', activity)
     setLoader(false);
     if (!activity.length) {
       setAvailableActivity(false);

@@ -16,7 +16,7 @@ import Environment from '../../environment'
 import { useObserver } from "../hooks/useObserver";
 import ReferralActivity from './activity'
 import { Route } from "react-router-dom";
-
+import useViewport from '../../hooks/useWindowSize'
 
 const {
   BASE_URL
@@ -27,6 +27,7 @@ const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=${refCode}`;
 
 const ReferralComponent = (props) => {
 
+  const { isMovilViewport } = useViewport()
   const { user } = props;
   // const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   // const [haveReferraLink, setHaveReferralLink] = useState(false);
@@ -69,35 +70,47 @@ const ReferralComponent = (props) => {
 
   return (
     <Route path="/:primary_path" render={(routeProps) => (
-        <ContainerProof>
+        <ContainerProof >
           {!referralLink && !loading ? (
             <CreateCode coinsendaServices={coinsendaServices}/>
           ) : (
-            <ReferralGrid id="referralGrid">
+            <ReferralGrid id="referralGrid" className={`${isMovilViewport ? 'isMovil' : ''}`}>
 
-              <PanelLeft className="fuente">
+              <PanelLeft className={`fuente ${isMovilViewport ? 'isMovil' : ''}`}>
                 <FirstText className={`${loading === true ? "skeleton" : ""}`}>
                   <p>
-                    Invita amigos con tu link de referido y gana el{" "}
-                    <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones.
+                    {/* Invita amigos con tu link de referido y gana el{" "}
+                    <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones. */}
+                    Gána el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.
+
                   </p>
                 </FirstText>
                 <ShareContainer>
                   <ShareSection loading={loading} referralLink={referralLink} />
                   <ShowShareSectionSticky ref={setElement} />
                 </ShareContainer>
-                <ReferralActivity coinsendaServices={coinsendaServices}/>
+                {
+                  isMovilViewport &&
+                  <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
+                }
+
+                <ReferralActivity
+                  coinsendaServices={coinsendaServices}
+                />
               </PanelLeft>
 
-              <PanelRight>
-                <PanelSticky>
+              {
+                !isMovilViewport &&
+                <PanelRight>
+                  <PanelSticky>
                     <ShareSectionContainer className={`${show === false ? 'aparecer' : show === true && 'desaparecer'}`}>
                       <ShareSection loading={loading} referralLink={referralLink} />
                     </ShareSectionContainer>
 
-                  <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
-                </PanelSticky>
-              </PanelRight>
+                    <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
+                  </PanelSticky>
+                </PanelRight>
+              }
 
             </ReferralGrid>
           )}
@@ -120,7 +133,7 @@ const ShareContainer = styled.div`
 const ContainerProof = styled.div`
   width: 100%;
   height: auto;
-  min-height: calc(100vh - 14vh)
+  min-height: calc(100vh - 14vh);
 `
 
 const ShareSectionContainer = styled.div`
@@ -172,12 +185,17 @@ const PanelLeft = styled.section`
   section section{
     justify-items:center;
   }
+
+  &.isMovil{
+    width: 100%;
+    padding: 0;
+  }
 `
 
 const FirstText = styled.div`
   ${'' /* grid-area: top; */}
   font-size: 16px;
-  color: black;
+  color: #6b6b6b;
   font-weight: 100;
 
   &.skeleton {
@@ -206,18 +224,7 @@ const ReferralGrid = styled.div`
   width: calc(100% - 100px);
 
 
-  ${'' /* transform: scale(.96);
-  padding: 0 10%;
-  padding-top: 100px;
-  width: 80%;
-  height: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr 1.5fr;
-  grid-template-rows: 0.35fr 0.5fr 1.5fr;
-  gap: 0px 8%;
-  grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
-  color: ${FONT_COLOR};
-  font-family: 'Raleway', sans-serif; */}
+  ${'' /* font-family: 'Raleway', sans-serif; */}
   transition; all 500ms ease;
   @media ${device.laptopL} {
     width: 90%;
@@ -225,12 +232,18 @@ const ReferralGrid = styled.div`
   }
   @media ${device.tabletL} {
     ${'' /* height: calc(100vh - 100px);
-    min-height: 700px;
+    min-height: 700px;Container
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 90vw;
     padding: 0 0vw; */}
+  }
+
+  &.isMovil{
+    grid-template-columns: 1fr;
+    padding: 30px 0 0;
+    margin: auto;
   }
 `;
 
