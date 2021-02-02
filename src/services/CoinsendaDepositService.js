@@ -235,9 +235,8 @@ export class DepositService extends WebService {
     // @params:
     const user = this.user;
     let filter = `{"where":{"info.is_referral":"true"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
-    const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
     // const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter={"limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
-
+    const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
     let deposits = await this.processDepositList(finalUrl)
     if(!deposits){return false}
     await this.dispatch(normalized_list(deposits, "deposits"));
@@ -256,7 +255,10 @@ export class DepositService extends WebService {
     let remodeled_deposits = await deposits.map((item, index) => {
       let new_item = {
         ...item,
-        type_order: "deposit"
+        type_order: "deposit",
+        // info:{
+        //   is_referral:true
+        // }
       };
       return new_item;
     });

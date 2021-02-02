@@ -50,7 +50,7 @@ const ShareSection = ({ referralLink, loading }) => {
   }, []);
 
   return (
-    <StyledShareSection>
+    <StyledShareSection className="fuente">
       <Title loading={loading ? "true" : ""}>{SECTION_TITLE}</Title>
 
       <MidSection className={`${loading ? "skeleton" : ""}`} loading={loading ? "true" : ""}>

@@ -162,6 +162,14 @@ const PanelSticky = styled.div`
   display: grid;
   justify-items:center;
   row-gap:25px;
+
+  .skeleton{
+     opacity: 0;
+
+     p{
+       opacity: 0;
+     }
+  }
 `
 
 
@@ -229,15 +237,17 @@ const ReferralGrid = styled.div`
   @media ${device.laptopL} {
     width: 90%;
     padding: 0 5%;
-  }
-  @media ${device.tabletL} {
-    ${'' /* height: calc(100vh - 100px);
-    min-height: 700px;Container
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 90vw;
-    padding: 0 0vw; */}
+    ${'' /* padding: 50px 5%; */}
+    height: calc(100% - 100px);
+    grid-template-columns: 1fr 340px;
+    column-gap: 35px;
+
+    ${PanelLeft}{
+      width: 100%;
+      padding: 50px 0 0;
+      row-gap:0;
+    }
+
   }
 
   &.isMovil{

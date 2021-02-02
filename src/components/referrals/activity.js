@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { LoaderView, DepositOrder } from "../widgets/activityList/order_item";
 import UseActivity from '../hooks/useActivity'
 import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
-import emptyImg from './assets/referrals.png'
 // import OrderItem from "../widgets/activityList/order_item";
 // import { useParams } from "react-router-dom";
 import useViewport from '../../hooks/useWindowSize'
-
+import { device } from "../../const/const";
+import IconSwitch from '../widgets/icons/iconSwitch'
 
 
 
@@ -122,13 +122,15 @@ const EmptyStateList = ({ label, isMovilViewport }) => {
   return(
     <EmptyStateGrid>
       <EmptyStateCont className={`${isMovilViewport ? 'isMovil' : ''}`}>
-        <img src={emptyImg} width="110px" alt=""/>
+        <IconSwitch size={110} icon="referralEmptyState" />
         <p className="fuente">{label}</p>
       </EmptyStateCont>
     </EmptyStateGrid>
   )
 
 }
+
+
 
 const EmptyStateCont = styled.div`
   display: grid;
@@ -145,6 +147,11 @@ const EmptyStateCont = styled.div`
   p{
     text-align: center;
   }
+
+  @media ${device.laptopL} {
+    padding: 15px 50px;
+  }
+
 `
 
 const EmptyStateGrid = styled.section`

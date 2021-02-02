@@ -172,6 +172,8 @@
   color: #484848;
 }
 
+
+
 p#WalletList2{
   max-width: 1000px;
 }
@@ -420,5 +422,11 @@ p#WalletList2{
   }
 }
 
-.s {
+
+
+@media only screen and (max-width: 1400px) {
+  .withdraw_accounts_screen_cont .iconSty img {
+    width: 260px;
+    height: 260px;
+  }
 }

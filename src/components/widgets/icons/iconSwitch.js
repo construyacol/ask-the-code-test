@@ -88,6 +88,9 @@ const Verified = loadable(() => import("./").then(getExportByName("Verified")));
 const WithdrawAccount = loadable(() =>
   import("./").then(getExportByName("WithdrawAccount"))
 );
+
+
+const ReferralEmptyState = loadable(() => import("./").then(getExportByName("ReferralEmptyState")));
 const Medal = loadable(() => import("./").then(getExportByName("Medal")));
 const Confirming = loadable(() =>
   import("./").then(getExportByName("Confirming"))
@@ -164,6 +167,9 @@ class IconSwitch extends Component {
     // console.log('||||||||||||||| props ICON SWICH::', props)
 
     switch (icon) {
+
+      case "referralEmptyState":
+        return <ReferralEmptyState {...props} />;
       case "international":
         return <International {...props} />;
       case "createRefCode":
