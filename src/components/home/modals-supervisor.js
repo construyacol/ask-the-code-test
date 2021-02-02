@@ -68,6 +68,7 @@ function ModalsSupervisor(props) {
 
           <Route
             exact path="/security" component={current === "2auth" ? TwoFactorActivate : Kyc}
+
           />
 
         </ModalLayout>

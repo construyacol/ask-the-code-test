@@ -271,14 +271,14 @@ export class WithdrawService extends WebService {
 
   async get_withdraws(account_id, limit = 20, skip = 0) {
     const user = this.user;
-    let filter = `{"where":{"account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    let filter = `{"where":{"account_id":"${account_id}", "state":{"inq":["confirmed", "accepted"]} }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
     return this.processListWithdraw(url_withdraw, account_id);
   }
 
   async get_withdraws_by_withdraw_account(account_id, limit = 20, skip = 0) {
     const user = this.user;
-    let filter = `{"where":{"withdraw_account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    let filter = `{"where":{"withdraw_account_id":"${account_id}", "state":{"inq":["confirmed", "accepted"]}}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
     return this.processListWithdraw(url_withdraw, account_id);
   }

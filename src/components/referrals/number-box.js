@@ -11,7 +11,7 @@ import { device } from "../../const/const";
 
 const NumberBox = (props) => {
   return (
-    <StyledShareSection {...props} radius="10px">
+    <StyledShareSection {...props} radius="10px" height="125px">
       <Icon>
         <props.Icon color={MAIN_COLOR} />
       </Icon>
@@ -38,7 +38,7 @@ const NumberBox = (props) => {
 
 const BottomText = styled.div`
   width: 100%;
-  heigh: 30px;
+  height: 30px;
   text: white;
   background: #c9c9c9;
   position: absolute;
@@ -140,12 +140,12 @@ const Ribbon = styled.div`
 `;
 
 const StyledShareSection = styled(ReferralBox)`
-  ${(props) => props.css && css(props.css)}
+  max-width: 400px;
+  width: calc(100% - 40px);
+  transform: scale(.96);
+  align-self: flex-start;
   color: #919191;
-  width: unset;
-  align-self: ${(props) => (props.center ? "center" : "end")};
   display: flex;
-  position: relative;
   ${(props) =>
     props.withRibbon
       ? css`

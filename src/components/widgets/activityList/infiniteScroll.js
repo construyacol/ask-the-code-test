@@ -5,25 +5,24 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { useParams } from "react-router-dom";
 import { LoaderItem } from "./order_item";
 
-export default ({ loader, setLoader }) => {
+export default ({ loader, setLoader, activityLength }) => {
   const [show, setElement] = useObserver();
-  const [
-    coinsendaServices,
-    {
-      storage: { activity_for_account },
-    },
-  ] = useCoinsendaServices();
+  const [ coinsendaServices, {storage: { activity_for_account }} ] = useCoinsendaServices();
   const { tx_path, account_id, primary_path } = useParams();
   const [availableActivity, setAvailableActivity] = useState(true);
   // const params = useParams()
 
   const getActivity = async () => {
+
     setLoader(true);
     const method =
       primary_path === "withdraw_accounts"
-        ? "get_withdraws_by_withdraw_account"
-        : `get_${tx_path}`;
-    const skip =
+      ? "get_withdraws_by_withdraw_account"
+       : primary_path === 'referral'
+        ? "get_referral_deposits"
+      : `get_${tx_path}`;
+
+    const skip = activityLength ||
       activity_for_account &&
       activity_for_account[account_id] &&
       activity_for_account[account_id][tx_path] &&
@@ -33,6 +32,7 @@ export default ({ loader, setLoader }) => {
     if (skip > 10) {
       activity = await coinsendaServices[method](account_id, 15, skip);
     }
+    console.log('||||||||||||||||| activity : ', activity)
     setLoader(false);
     if (!activity.length) {
       setAvailableActivity(false);

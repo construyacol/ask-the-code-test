@@ -13,6 +13,10 @@ import { FONT_COLOR, skeletonStyle } from "./shareStyles";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import Environment from '../../environment'
+import { useObserver } from "../hooks/useObserver";
+import ReferralActivity from './activity'
+import { Route } from "react-router-dom";
+import useViewport from '../../hooks/useWindowSize'
 
 const {
   BASE_URL
@@ -23,6 +27,7 @@ const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=${refCode}`;
 
 const ReferralComponent = (props) => {
 
+  const { isMovilViewport } = useViewport()
   const { user } = props;
   // const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   // const [haveReferraLink, setHaveReferralLink] = useState(false);
@@ -30,7 +35,8 @@ const ReferralComponent = (props) => {
   const [ loading, setLoading ] = useState(true);
   // const [ loading ] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)
-  const [coinsendaServices] = useCoinsendaServices();
+  const [ coinsendaServices ] = useCoinsendaServices();
+  const [show, setElement] = useObserver();
 
   useEffect(() => {
     window.requestAnimationFrame(() => {
@@ -57,42 +63,147 @@ const ReferralComponent = (props) => {
       await coinsendaServices.getReferralCode()
       setLoading(false)
     }
-
     getRef()
   }, [])
 
 
 
   return (
-    <DetailContainerLayout
-      title="Referidos"
-      customClass={`${referralLink ? 'referral-layout' : ''}`}
-      {...props}
-    >
-      {!referralLink && !loading ? (
-        <CreateCode coinsendaServices={coinsendaServices}/>
-      ) : (
-        <ReferralGrid>
-          <FirstText className={`${loading === true ? "skeleton" : ""}`}>
-            <p>
-              Invita amigos con tu link de referido y gana el{" "}
-              <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones.
-            </p>
-          </FirstText>
-          <ShareSection loading={loading} referralLink={referralLink} />
-          <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
-          <BalanceSelect loading={loading ? loading.toString() : null} />
-          {/* <WithdrawAd loading={loading ? loading.toString() : null} /> */}
-        </ReferralGrid>
-      )}
-    </DetailContainerLayout>
+    <Route path="/:primary_path" render={(routeProps) => (
+        <ContainerProof >
+          {!referralLink && !loading ? (
+            <CreateCode coinsendaServices={coinsendaServices}/>
+          ) : (
+            <ReferralGrid id="referralGrid" className={`${isMovilViewport ? 'isMovil' : ''}`}>
+
+              <PanelLeft className={`fuente ${isMovilViewport ? 'isMovil' : ''}`}>
+                <FirstText className={`${loading === true ? "skeleton" : ""}`}>
+                  <p>
+                    {/* Invita amigos con tu link de referido y gana el{" "}
+                    <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones. */}
+                    Gána el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.
+
+                  </p>
+                </FirstText>
+                <ShareContainer>
+                  <ShareSection loading={loading} referralLink={referralLink} />
+                  <ShowShareSectionSticky ref={setElement} />
+                </ShareContainer>
+                {
+                  isMovilViewport &&
+                  <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
+                }
+
+                <ReferralActivity
+                  coinsendaServices={coinsendaServices}
+                />
+              </PanelLeft>
+
+              {
+                !isMovilViewport &&
+                <PanelRight>
+                  <PanelSticky>
+                    <ShareSectionContainer className={`${show === false ? 'aparecer' : show === true && 'desaparecer'}`}>
+                      <ShareSection loading={loading} referralLink={referralLink} />
+                    </ShareSectionContainer>
+
+                    <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
+                  </PanelSticky>
+                </PanelRight>
+              }
+
+            </ReferralGrid>
+          )}
+      </ContainerProof>
+    )}
+   />
   );
 };
 
+
+{/* <ShareSectionContainer/> */}
+{/* <BalanceSelect loading={loading ? loading.toString() : null} /> */}
+{/* <WithdrawAd loading={loading ? loading.toString() : null} /> */}
+
+
+const ShareContainer = styled.div`
+  position: relative;
+`
+
+const ContainerProof = styled.div`
+  width: 100%;
+  height: auto;
+  min-height: calc(100vh - 14vh);
+`
+
+const ShareSectionContainer = styled.div`
+  width: 100%;
+  transition: .3s;
+  height: 0;
+
+  &.aparecer{
+    height: 125px;
+  }
+`
+
+
+const ShowShareSectionSticky = styled.div`
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  top: 0;
+`
+
+const PanelSticky = styled.div`
+  position: sticky;
+  width: 100%;
+  max-height: 350px;
+  top: 140px;
+  display: grid;
+  justify-items:center;
+  row-gap:25px;
+
+  .skeleton{
+     opacity: 0;
+
+     p{
+       opacity: 0;
+     }
+  }
+`
+
+
+
+const PanelRight = styled.section`
+  display: grid;
+  grid-template-columns: 1fr;
+  position: relative;
+`
+
+const PanelLeft = styled.section`
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  color: gray;
+  row-gap: 40px;
+  padding: 0 90px;
+  width: calc(100% - 180px);
+
+  section section{
+    justify-items:center;
+  }
+
+  &.isMovil{
+    width: 100%;
+    padding: 0;
+  }
+`
+
 const FirstText = styled.div`
-  grid-area: top;
+  ${'' /* grid-area: top; */}
   font-size: 16px;
-  color: black;
+  color: #6b6b6b;
   font-weight: 100;
 
   &.skeleton {
@@ -112,31 +223,37 @@ const FirstText = styled.div`
 `;
 
 const ReferralGrid = styled.div`
-  transform: scale(.96);
-  padding: 0 10%;
-  padding-top: 100px;
-  width: 80%;
-  height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr 1.5fr;
-  grid-template-rows: 0.35fr 0.5fr 1.5fr;
-  gap: 0px 8%;
-  grid-template-areas: "top top top top" "mid-left mid-left mid-left mid-right" "bottom-left bottom-left bottom-left bottom-right";
+  grid-template-columns: 1fr 400px;
+  column-gap: 50px;
   color: ${FONT_COLOR};
-  font-family: 'Raleway', sans-serif;
+  padding: 100px 50px 50px;
+  height: calc(100% - 150px);
+  width: calc(100% - 100px);
+
+
+  ${'' /* font-family: 'Raleway', sans-serif; */}
   transition; all 500ms ease;
   @media ${device.laptopL} {
     width: 90%;
     padding: 0 5%;
+    ${'' /* padding: 50px 5%; */}
+    height: calc(100% - 100px);
+    grid-template-columns: 1fr 340px;
+    column-gap: 35px;
+
+    ${PanelLeft}{
+      width: 100%;
+      padding: 50px 0 0;
+      row-gap:0;
+    }
+
   }
-  @media ${device.tabletL} {
-    height: calc(100vh - 100px);
-    min-height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 90vw;
-    padding: 0 0vw;
+
+  &.isMovil{
+    grid-template-columns: 1fr;
+    padding: 30px 0 0;
+    margin: auto;
   }
 `;
 

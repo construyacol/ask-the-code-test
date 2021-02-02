@@ -181,9 +181,7 @@ function mapStateToProps(state, props) {
   const { params } = props.match;
 
   return {
-    order_list:
-      activity_for_account[params.account_id] &&
-      activity_for_account[params.account_id][params.tx_path],
+    order_list:activity_for_account[params.account_id] && activity_for_account[params.account_id][params.tx_path],
     activity_for_account,
     swaps,
     withdraws,

@@ -16,8 +16,12 @@ import { normalized_list } from "../utils";
 
 const { update_item_state } = actions;
 
+
+
 export class DepositService extends WebService {
+
   async fetchDepositProviders() {
+
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
     );
@@ -188,13 +192,7 @@ export class DepositService extends WebService {
   }
 
   async getDepositByAccountId(accountId, filter) {
-    const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${
-      this.user.id
-    }/deposits?country=${
-      this.user.country
-    }&filter={"where":{"account_id":"${accountId}"${
-      filter ? `, ${filter}` : ""
-    }}}`;
+    const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"${filter ? `, ${filter}` : ""}}}`;
     const deposit = await this.Get(finalUrl);
     // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
     return deposit;
@@ -219,36 +217,54 @@ export class DepositService extends WebService {
   async get_deposits(account_id, limit = 20, skip = 0) {
     // @params:
     // account_id
-
     const user = this.user;
-
     let filter = `{"where":{"account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
 
-    const deposits = await this.Get(finalUrl);
-    if (!deposits || deposits === 465) {
+    let deposits = await this.processDepositList(finalUrl)
+    if(!deposits){return false}
+
+    deposits = this.parseActivty(deposits, "deposits", account_id);
+    await this.dispatch(normalized_list(deposits, "deposits"));
+    await this.updateActivityState(account_id, "deposits", deposits);
+
+    return deposits;
+  }
+
+  async get_referral_deposits(account_id, limit = 11, skip = 0) {
+    // @params:
+    const user = this.user;
+    let filter = `{"where":{"info.is_referral":"true"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    // const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter={"limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
+    let deposits = await this.processDepositList(finalUrl)
+    if(!deposits){return false}
+    await this.dispatch(normalized_list(deposits, "deposits"));
+    return deposits
+  }
+
+
+
+  async processDepositList(url){
+
+    const deposits = await this.Get(url);
+    if ((!deposits || deposits === 465) || (deposits && !deposits.length)) {
       return false;
     }
 
-    if (await this.isCached("deposits", deposits)) {
-      return deposits;
-    }
-
-    let remodeled_deposits = await deposits.map((item) => {
+    let remodeled_deposits = await deposits.map((item, index) => {
       let new_item = {
         ...item,
         type_order: "deposit",
+        // info:{
+        //   is_referral:true
+        // }
       };
       return new_item;
     });
-    remodeled_deposits = this.parseActivty(
-      remodeled_deposits,
-      "deposits",
-      account_id
-    );
 
-    await this.dispatch(normalized_list(remodeled_deposits, "deposits"));
-    await this.updateActivityState(account_id, "deposits", remodeled_deposits);
-    return deposits;
+    return remodeled_deposits
+
   }
+
 }

@@ -108,8 +108,9 @@ const getState = ({ state, currency_type }, tx_path) => {
     : state === "rejected" && "Rechazado";
 };
 
-const DepositOrder = ({ order }) => {
-  const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
+export const DepositOrder = ({ order }) => {
+
+  const { new_order_style, tx_path = 'deposits', lastPendingOrderId } = UseTxState(order.id);
 
   const {
     state,
@@ -122,9 +123,7 @@ const DepositOrder = ({ order }) => {
 
   return (
     <Order
-      className={`${state} ${currency_type} ${
-        new_order_style ? "newOrderStyle" : ""
-      } ${orderState}`}
+      className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState}`}
     >
       <DataContainer
         className={`align_first ${state} ${currency_type} ${tx_path}`}
@@ -349,7 +348,7 @@ const PanelLeft = (order) => {
     totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
     confirmations = Number(order.confirmations)
   }
-  
+
   return (
     <>
       {order.currency_type === "crypto" &&

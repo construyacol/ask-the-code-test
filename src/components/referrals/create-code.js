@@ -1,6 +1,7 @@
 import React from "react";
 import CreateReferralLink from "./createReferralLink";
 import styled, { css } from "styled-components";
+import { device } from "../../const/const";
 
 
 
@@ -9,8 +10,7 @@ function CreateCode(props) {
     <Container id="container">
       <Text>
         <p>
-          Por cada amigo que se registre con tu link de referido ganas el 0.5%
-          de todas las operaciones de compra y venta que tu amigo realice.
+          Gána el<span className="fuente2">0.5% </span> de todas las operaciones de compra y venta que tus referidos realicen.
         </p>
       </Text>
         <CreateReferralLink {...props} />
@@ -21,15 +21,27 @@ function CreateCode(props) {
 
 
 const Container = styled.div`
+  margin:auto;
   width: 100%;
   max-width: 1000px;
-  height: 100%;
   display: grid;
   align-items: center;
   justify-items: center;
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
   grid-row-gap: 15px;
+  justify-self: center;
+  align-self: center;
+  padding: 50px;
+  height: calc(100% - 100px);
+
+
+
+  @media ${device.tabletL} {
+    padding: 50px 25px;
+    width: calc(100% - 50px);
+  }
+
 `;
 
 // const FormContainer = styled.div`
@@ -51,12 +63,16 @@ const Container = styled.div`
 const Text = styled.div`
     font-family: 'Raleway', sans-serif !important;
     font-size: 22px;
-    color: #3c3c3c;
+    color: #6b6b6b;
     font-weight: bold;
     text-align: center;
+    span{
+      font-weight: bold;
+      margin: 0 7px;
+    }
     p {
         font-size: 16px;
-        color: gray;
+        color: #6b6b6b;
         font-weight: 100;
         max-width: 1100px;
         margin-top: 2em;

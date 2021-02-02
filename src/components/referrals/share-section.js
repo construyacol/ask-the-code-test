@@ -50,13 +50,10 @@ const ShareSection = ({ referralLink, loading }) => {
   }, []);
 
   return (
-    <StyledShareSection>
+    <StyledShareSection className="fuente">
       <Title loading={loading ? "true" : ""}>{SECTION_TITLE}</Title>
 
-      <MidSection
-        className={`${loading ? "skeleton" : ""}`}
-        loading={loading ? "true" : ""}
-      >
+      <MidSection className={`${loading ? "skeleton" : ""}`} loading={loading ? "true" : ""}>
         <LinkIcon>
           <i className="fas fa-link" />
         </LinkIcon>
@@ -204,7 +201,8 @@ const MidSection = styled(ReferralBox)`
 `;
 
 const StyledShareSection = styled.div`
-  grid-area: mid-left;
+  min-height: 155px;
+  transform: scale(.96);
   display: flex;
   flex-direction: column;
   > div {
