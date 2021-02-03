@@ -190,11 +190,11 @@ export default () => {
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
         const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
-        return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_order.min_amount : '0', currentWallet.currency);
+        return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
       case 'amount':
         return formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
       case 'bought-amount':
-      return formatToCurrency(currentPair.exchange.min_order.min_amount, currentWallet.currency);
+      return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentWallet.currency);
         // return formatToCurrency('20000', currentWallet.currency);
       default:
         return
