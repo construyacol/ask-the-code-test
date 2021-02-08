@@ -335,8 +335,7 @@ const WithdrawAccount = (props) => {
     focusedId,
     isStatic,
   } = props;
-  const { bank_name, id, account_number, inscribed, used_counter } = account;
-
+  const { bank_name, id, account_number, inscribed, used_counter, state } = account;
   return (
     <WithdrawAccountL
       id={`hoverable${focusedId}`}
@@ -378,15 +377,19 @@ const WithdrawAccount = (props) => {
       <p className="IWText fuente2 IWLittleTitle">No. {account_number.value}</p>
       <>
         <div className="contSuscribed">
-          {!inscribed ? (
+          {state === 'in_progress' ? (
             <div className="contLoader2">
               <SimpleLoader color="white" loader={2} />
             </div>
-          ) : (
+          ) : state === 'complete' && (
             <i className="far fa-check-circle"></i>
           )}
           <p className="IWText fuente IWLittleTitle">
-            {inscribed ? "inscrita" : "En proceso"}
+            {
+              state === 'pending' ? 'Pendiente' :
+              state === 'in_progress' ? 'En proceso' :
+              state === 'complete' && 'Inscrita'
+            }
           </p>
         </div>
         <p
