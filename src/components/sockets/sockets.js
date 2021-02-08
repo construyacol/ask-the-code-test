@@ -70,37 +70,52 @@ class SocketsComponent extends Component {
                 await this.setState({ currentWithdraw: withdraw });
               }
               this.withdraw_mangagement(withdraw);
-
-              // if(withdraw.state === 'accepted' && this.state.currentWithdraw.id === withdraw.id){
-              //
-              // setTimeout(async()=>{
-              //   console.log('||||||||||||||||||| __________________________________withdraw ===> ', withdraw.id)
-              //   let withdraw_array = await objectToArray(this.props.withdrawals)
-              //   let search_by = {
-              //     name:"id",
-              //     id:withdraw.id
-              //   }
-              //   let replace_prop = {
-              //     name:"state",
-              //     state:"accepted"
-              //   }
-              //   await this.props.action.edit_array_element(search_by, replace_prop, withdraw_array, true, 'withdrawals')
-              //   // await this.props.coinsendaServices.fetchWithdrawByUser(this.props.user)
-              //   await this.props.coinsendaServices.updateActivityState(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
-              //   await this.props.action.update_pending_activity(this.props.withdrawals[withdraw.id].account_id, 'withdrawals')
-              //   this.props.action.success_sound()
-              // }, 3000)
-              // }
             });
+
+            socket.on(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
+
+              if (withdrawAccount.state === "pending") {
+                await this.setState({currentWithdrawAccount: withdrawAccount });
+              }
+              this.withdraw_account_mangagement(withdrawAccount);
+            });
+
+
+
+
           });
         });
       }
     }
   }
 
+
+  withdraw_account_mangagement = async(withdrawAccount) => {
+
+      const { currentWithdrawAccount } = this.state
+
+
+      if(!this.props.withdraw_accounts[withdrawAccount.id]){return}
+
+      if(withdrawAccount.state === 'in_progress' || withdrawAccount.state === 'complete'){
+        this.props.action.update_item_state({
+          [withdrawAccount.id]: {
+            ...this.props.withdraw_accounts[withdrawAccount.id],
+            ...withdrawAccount
+          }
+        }, "withdraw_accounts");
+
+        if(withdrawAccount.state === 'complete'){
+          this.props.toastMessage("Nueva cuenta de retiro inscrita", "success");
+          this.props.action.success_sound();
+        }
+
+      }
+
+  }
+
   withdraw_mangagement = async (withdraw) => {
     // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw)
-    // debugger
 
     if (withdraw.proof) {
       if (

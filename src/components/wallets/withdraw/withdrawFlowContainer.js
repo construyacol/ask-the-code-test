@@ -683,7 +683,7 @@ const selectWithdrawAccountList = createSelector(
     const withdraw_account_list = [];
     _withdraw_accounts &&
       _withdraw_accounts.map((account_id) => {
-        if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) {
+        if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state !== 'complete') {
           return false;
         }
         return withdraw_account_list.push(withdraw_accounts[account_id]);

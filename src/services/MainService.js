@@ -146,7 +146,7 @@ export class MainService extends inheritances {
       restoreBalancesAndWallets && (await this.getWalletsByUser());
       let pairs = await this.fetchAllPairs();
       if (!pairs) {
-        return callback();
+        // return callback();
       }
       const currencies = await this.fetchAllCurrencies();
       if (!currencies) throw currencies;
