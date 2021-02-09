@@ -341,7 +341,7 @@ const WithdrawAccount = (props) => {
       id={`hoverable${focusedId}`}
       isSelected={isSelected}
       className={`withdrawAccount ${shouldHaveDeleteClassName && "deleted"}`}
-      inscribed={account.inscribed}
+      inscribed={account.state === 'complete'}
     >
       {!isStatic && actions && (
         <>
@@ -388,7 +388,7 @@ const WithdrawAccount = (props) => {
             {
               state === 'pending' ? 'Pendiente' :
               state === 'in_progress' ? 'En proceso' :
-              state === 'complete' && 'Inscrita'
+              state === 'complete' ? 'Inscrita' : 'Rechazada'
             }
           </p>
         </div>
