@@ -52,18 +52,22 @@ const ReferralComponent = (props) => {
     // setTimeout(() => setLoading(false), 3000)
   }, []);
 
+  const getRef = async() => {
+    await coinsendaServices.getReferralCode()
+    setLoading(false)
+  }
+
   useEffect(() => {
     if (user && user.referral && user.referral.ref_code) {
       setReferralLink(REFERRAL_LINK(user.referral.ref_code));
+      setLoading(false)
     }
   }, [user]);
 
   useEffect(()=>{
-    const getRef = async() => {
-      await coinsendaServices.getReferralCode()
-      setLoading(false)
+    if (user && user.referral && !user.referral.referred_by) {
+      getRef()
     }
-    getRef()
   }, [])
 
 
@@ -103,10 +107,9 @@ const ReferralComponent = (props) => {
                 !isMovilViewport &&
                 <PanelRight>
                   <PanelSticky>
-                    <ShareSectionContainer className={`${show === false ? 'aparecer' : show === true && 'desaparecer'}`}>
-                      <ShareSection loading={loading} referralLink={referralLink} />
-                    </ShareSectionContainer>
-
+                      <ShareSectionContainer className={`${show === false ? 'aparecer' : show === true && 'desaparecer'}`}>
+                          <ShareSection loading={loading} referralLink={referralLink} />
+                      </ShareSectionContainer>
                     <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
                   </PanelSticky>
                 </PanelRight>
@@ -140,9 +143,16 @@ const ShareSectionContainer = styled.div`
   width: 100%;
   transition: .3s;
   height: 0;
+  opacity: 0;
 
   &.aparecer{
     height: 125px;
+  }
+
+  &.unappear{
+    p{
+      opacity: 0;
+    }
   }
 `
 

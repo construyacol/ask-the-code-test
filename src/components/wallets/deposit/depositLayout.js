@@ -13,7 +13,7 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 const DepositLayout = (props) => {
   const {
     siguiente,
-    currency,
+    currency = 'cop',
     amount,
     deposit_way,
     step,
@@ -46,7 +46,7 @@ const DepositLayout = (props) => {
 
   return (
     <section className="DepositLayout">
-      {!short_currency_name && step === 1 && (
+      {/* {!short_currency_name && step === 1 && (
         <div className="DLstep">
           <p className="fuente DLtitle">
             ¿En que moneda deseas hacer el deposito?
@@ -81,15 +81,13 @@ const DepositLayout = (props) => {
             Continuar
           </ButtonForms>
         </div>
-      )}
+      )} */}
 
-      {type_currency === "crypto" && step === 1 && (
-        // step === 1 &&
+      {/* {type_currency === "crypto" && step === 1 && (
         <Fragment>{loader && <SimpleLoader label={msgLoader} />}</Fragment>
       )}
 
       {
-        // step === 1 && wallets_list.length>0 &&
         type_currency === "crypto" && step === 1 && wallets_list.length > 0 && (
           <section className="DLwallet_list_container">
             <p className="DLtitle2">
@@ -102,17 +100,15 @@ const DepositLayout = (props) => {
                     key={wallet.id}
                     deposit={deposit}
                     deposit_providers={deposit_providers}
-                    // delete_wallet={this.delete_wallet_confirmation}
                     wallet={wallet}
                     walletDetail={deposit}
-                    // history={this.props.history}
                   />
                 );
               })}
             </div>
           </section>
         )
-      }
+      } */}
 
       {type_currency === "fiat" && step === 1 && (
         <Fragment>
