@@ -6,7 +6,7 @@ import { chartOptions } from "../../const/const";
 
 function ChartComponent(props) {
   const [chartData, setChartData] = useState([]);
-  const [unparsedData, _, name] = useChartData();
+  const [unparsedData, , name] = useChartData();
 
   const parseChartData = async () => {
     if (!unparsedData) return;

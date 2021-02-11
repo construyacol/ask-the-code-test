@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import OtherModalLayout from "../../otherModalLayout";
 import styled from "styled-components";
 import {
   swing_in_bottom_bck,
-  socketIconContainerIntro,
+  // socketIconContainerIntro,
   backTopSection,
 } from "../../../animations";
 import { orderStateColors, device } from "../../../../../const/const";
 import IconSwitch from "../../../icons/iconSwitch";
-import { useActions } from "../../../../../hooks/useActions";
+// import { useActions } from "../../../../../hooks/useActions";
 import useViewport from "../../../../../hooks/useWindowSize";
 import DetailGenerator from "./detailGenerator";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
@@ -23,8 +23,8 @@ import "moment/locale/es";
 moment.locale("es");
 
 const OrderSupervisor = () => {
-  const { actions, history, currentOrder } = UseTxState();
-  const { isMovilViewport } = useViewport();
+  const { actions, currentOrder } = UseTxState();
+  // const { isMovilViewport } = useViewport();
 
   const cerrar = (e, forceClose) => {
     if (e && (e.target.dataset.close_modal || forceClose)) {
@@ -89,13 +89,13 @@ export const getState = (state) => {
 };
 
 const OrderDetail = () => {
-  const actions = useActions();
+  // const actions = useActions();
   const {
     tx_path,
-    currencies,
+    // currencies,
     currentOrder,
-    primary_path,
-    history,
+    // primary_path,
+    // history,
   } = UseTxState();
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
   const { isMovilViewport } = useViewport();

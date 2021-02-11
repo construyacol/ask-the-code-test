@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 // import { CAccountAllowedContext } from '../context'
 import { convertToObjectWithCustomIndex } from "../../utils";

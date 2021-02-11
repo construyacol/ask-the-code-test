@@ -10,7 +10,7 @@ import NewItemsLayout from "../../widgets/items/new-items-layout";
 
 export const PairList = (props) => {
   const [allPairs, setAllPairs] = useState(null);
-  const [loaderMsg, setLoaderMsg] = useState("Cargando Pares");
+  const [loaderMsg] = useState("Cargando Pares");
 
   const [setCurrentSelection] = useNavigationKeyActions({
     items: allPairs,

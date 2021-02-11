@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { InputFormAuth } from "../../inputs";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 
@@ -7,7 +7,7 @@ import "./viewSettings.css";
 const AuthReq = (props) => {
   const [buttonActive, setButtonActive] = useState();
   const [loader, setLoader] = useState();
-  const [verifying, setVerifying] = useState();
+  // const [verifying, setVerifying] = useState();
   const [status, setStatus] = useState();
   const [error, setError] = useState();
   const [valueState, setValueState] = useState();

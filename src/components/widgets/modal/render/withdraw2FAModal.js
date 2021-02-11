@@ -74,26 +74,26 @@ const ContBackTopSection = styled.div`
   overflow: hidden;
 `;
 
-const CloseButton = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 35px;
-  height: 35px;
-  background: white;
-  border-radius: 50%;
-  z-index: 2;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  cursor: pointer;
-  -webkit-transition: 0.15s;
-  transition: 0.15s;
-
-  i {
-    color: gray;
-  }
-`;
+// const CloseButton = styled.div`
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+//   width: 35px;
+//   height: 35px;
+//   background: white;
+//   border-radius: 50%;
+//   z-index: 2;
+//   display: grid;
+//   align-items: center;
+//   justify-items: center;
+//   cursor: pointer;
+//   -webkit-transition: 0.15s;
+//   transition: 0.15s;
+//
+//   i {
+//     color: gray;
+//   }
+// `;
 
 const AutContainer = styled.div`
   width: 100%;

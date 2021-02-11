@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import loadable from "@loadable/component";
 import { ButtonSuccess } from "../../../widgets/buttons/buttons";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
@@ -125,16 +125,16 @@ function FinalTicket(props) {
 
 export default FinalTicket;
 
-const ItemTicket = (payload) => {
-  const { ui_name, value, icon } = payload;
-
-  return (
-    <div className="TicketDetailItem">
-      <p className="fuente TicketItemTitle">{ui_name}</p>
-      <span className="fuentePrin fuenteTicket">
-        {value}
-        {icon && <IconSwitch icon={icon} size={20} color="white" />}
-      </span>
-    </div>
-  );
-};
+// const ItemTicket = (payload) => {
+//   const { ui_name, value, icon } = payload;
+//
+//   return (
+//     <div className="TicketDetailItem">
+//       <p className="fuente TicketItemTitle">{ui_name}</p>
+//       <span className="fuentePrin fuenteTicket">
+//         {value}
+//         {icon && <IconSwitch icon={icon} size={20} color="white" />}
+//       </span>
+//     </div>
+//   );
+// };

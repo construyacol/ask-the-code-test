@@ -1,6 +1,6 @@
 import React from "react";
 import CreateReferralLink from "./createReferralLink";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { device } from "../../const/const";
 
 

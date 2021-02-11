@@ -11,7 +11,7 @@ import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";
 import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
-import { hotjar } from "react-hotjar";
+// import { hotjar } from "react-hotjar";
 
 import "./loader.css";
 
@@ -63,12 +63,12 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       setCountryImg(opCountry)
     }
 
-    // const isSessionRestored = await tryRestoreSession(userToken);
-    // if (isSessionRestored) {
-    //   await actions.isLoggedInAction(true);
-    //   coinsendaServices.postLoader(doLogout);
-    //   return redirectURL(isSessionRestored);
-    // }
+    const isSessionRestored = await tryRestoreSession(userToken);
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true);
+      coinsendaServices.postLoader(doLogout);
+      return redirectURL(isSessionRestored);
+    }
 
     if (!userToken) return;
 

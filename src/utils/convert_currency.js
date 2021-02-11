@@ -82,7 +82,7 @@ export const _convertCurrencies = async (currency, amount_spend, pair_id) => {
   let objetive_data = Object.assign({}, data);
 
   objetive_data.pair_id = objetive_pair_instance.id;
-  if (to_spend_currency == primary_objetive_currency){
+  if (to_spend_currency === primary_objetive_currency){
     // Es una venta
     data.want_to_spend = await formatToCurrency(data.want_to_spend, objetive_pair_instance.primary_currency);
 

@@ -1,5 +1,5 @@
-import styled, { keyframes } from "styled-components";
-import { skeleton } from "./loaders/skeleton";
+import { keyframes } from "styled-components";
+// import { skeleton } from "./loaders/skeleton";
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 

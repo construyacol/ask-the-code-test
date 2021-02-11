@@ -12,17 +12,17 @@ import CopyContainer from "../widgets/copy/copyContainer";
 
 const SECTION_TITLE = "Link de referidos";
 const TWITTER_TEXT = "Amigos, este es mi link de referidos de Coinsenda:";
-const FACEBOOK_INIT = () => {
-  (function (d, s, id) {
-    var js,
-      fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s);
-    js.id = id;
-    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
-    fjs.parentNode.insertBefore(js, fjs);
-  })(document, "script", "facebook-jssdk");
-};
+// const FACEBOOK_INIT = () => {
+//   (function (d, s, id) {
+//     var js,
+//       fjs = d.getElementsByTagName(s)[0];
+//     if (d.getElementById(id)) return;
+//     js = d.createElement(s);
+//     js.id = id;
+//     js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+//     fjs.parentNode.insertBefore(js, fjs);
+//   })(document, "script", "facebook-jssdk");
+// };
 
 const ShareSection = ({ referralLink, loading }) => {
   const shareOnTwitter = () => {

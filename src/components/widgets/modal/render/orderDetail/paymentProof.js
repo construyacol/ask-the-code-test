@@ -64,20 +64,20 @@ const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
   );
 };
 
-const CropEdit = styled.div`
-  width: 100%;
-  height: 50px;
-  background: #f5f5f5;
-  border-radius: 4px;
-  box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.1);
-`;
+// const CropEdit = styled.div`
+//   width: 100%;
+//   height: 50px;
+//   background: #f5f5f5;
+//   border-radius: 4px;
+//   box-shadow: 0px 0px 5px 3px rgba(0, 0, 0, 0.1);
+// `;
 
-const ImgContainer = styled.div`
-  width: 100%;
-  max-width: 550px;
-  background: rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
-`;
+// const ImgContainer = styled.div`
+//   width: 100%;
+//   max-width: 550px;
+//   background: rgba(255, 255, 255, 0.4);
+//   border-radius: 6px;
+// `;
 
 const OverflowContainer = styled.section`
   width: 100%;
@@ -135,7 +135,7 @@ export default PaymentProofComponent;
 export const PaymentProof = ({ payload }) => {
   // console.log('PaymentProof', payload)
   const {
-    primary_path,
+    // primary_path,
     coinsendaServices,
     actions,
     currencies,
@@ -198,7 +198,7 @@ export const PaymentProof = ({ payload }) => {
         if (!PP) {
           return;
         }
-        const { proof_of_payment } = PP.paymentProof;
+        // const { proof_of_payment } = PP.paymentProof;
 
         let updateOrder = {
           [PP.id]: { ...PP },
@@ -271,18 +271,18 @@ export const PaymentProof = ({ payload }) => {
   );
 };
 
-const ProofCont = styled.div`
-  width: 90%;
-  height: 90%;
-  justify-self: center;
-  align-self: center;
-  display: grid;
-  align-items: center;
-  overflow: hidden;
-  img {
-    border-radius: 4px;
-  }
-`;
+// const ProofCont = styled.div`
+//   width: 90%;
+//   height: 90%;
+//   justify-self: center;
+//   align-self: center;
+//   display: grid;
+//   align-items: center;
+//   overflow: hidden;
+//   img {
+//     border-radius: 4px;
+//   }
+// `;
 
 const FiatPaymentProofZoom = styled.div`
   position: absolute;
@@ -352,6 +352,22 @@ const LoaderContainer = styled.div`
   z-index: 1;
 `;
 
+
+
+const HoverProof = styled.div`
+  position: absolute;
+  height: 100%;
+  width: calc(100% - 20px);
+  top: 0;
+  transition: 0.15s !important;
+  align-items: baseline;
+  display: grid;
+  padding: 0 10px;
+  justify-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  transform: translateX(100%);
+`;
+
 const ProofContainer = styled.div`
   width: 100%;
   height: 100%;
@@ -366,20 +382,6 @@ const ProofContainer = styled.div`
   button {
     cursor: pointer;
   }
-`;
-
-const HoverProof = styled.div`
-  position: absolute;
-  height: 100%;
-  width: calc(100% - 20px);
-  top: 0;
-  transition: 0.15s !important;
-  align-items: baseline;
-  display: grid;
-  padding: 0 10px;
-  justify-items: center;
-  grid-template-columns: repeat(2, 1fr);
-  transform: translateX(100%);
 `;
 
 const IconContainer = styled.div`

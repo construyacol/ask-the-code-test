@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 import InputForm from "../../widgets/inputs/inputForm";
-import convertCurrencies, { formatToCurrency} from "../../../utils/convert_currency";
+import { formatToCurrency} from "../../../utils/convert_currency";
 import { formatNumber } from "../../../utils";
 // import usePrevious from "../../hooks/usePreviousValue";
 import useWindowSize from "../../../hooks/useWindowSize";
@@ -22,7 +22,7 @@ function SwapView(props) {
 
   const [coinsendaServices] = useCoinsendaServices();
   const [value, setValue] = useState(undefined);
-  const [active, setActive] = useState(undefined);
+  // const [active, setActive] = useState(undefined);
   // const [shouldActiveButton, setShouldActiveButton] = useState(true);
   // // const [pairId, setPairId] = useState()
   const [ valueToReceive, setValueToReceive ] = useState();
@@ -52,7 +52,7 @@ function SwapView(props) {
   } = useWalletInfo();
   // const prevCurrentPair = usePrevious(currentPair);
   const { isMovilViewport } = useWindowSize();
-  const { selectPair, isReady } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
+  const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
 
 
@@ -139,7 +139,7 @@ function SwapView(props) {
     const boughtCurrency = props.pairsForAccount[currentWallet.id] && props.pairsForAccount[currentWallet.id].current_pair.currency //Localizamos la moneda comprada
     const thisAccountToExist = await getAccountToExist(boughtCurrency) //verificamos que haya una cuenta para la moneda comprada existente
     if(!thisAccountToExist){
-      const newAccount = await createAccount(boughtCurrency);
+      await createAccount(boughtCurrency);
     }
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, value);
     if (!newSwap) {
@@ -213,10 +213,10 @@ function SwapView(props) {
     });
   };
 
-  const { short_name, loader } = props;
+  const { loader } = props;
   // const shouldActiveInput = active && secondary_coin && availableBalance > 0 && value > 0;
 
-  if ((!currentPair || currentPair && !currentPair.boughtCurrency) || !currentWallet) {
+  if ((!currentPair || (currentPair && !currentPair.boughtCurrency)) || !currentWallet) {
     return <SkeletonSwapView />;
   }
   // console.log('|||||||||||||| valueToReceive :', valueToReceive, !valueToReceive)

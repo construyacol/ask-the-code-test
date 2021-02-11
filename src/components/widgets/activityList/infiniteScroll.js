@@ -22,11 +22,7 @@ export default ({ loader, setLoader, activityLength }) => {
         ? "get_referral_deposits"
       : `get_${tx_path}`;
 
-    const skip = activityLength ||
-      activity_for_account &&
-      activity_for_account[account_id] &&
-      activity_for_account[account_id][tx_path] &&
-      activity_for_account[account_id][tx_path].length;
+    const skip = activityLength || (activity_for_account && activity_for_account[account_id] && activity_for_account[account_id][tx_path] && activity_for_account[account_id][tx_path].length);
 
     let activity = [];
     if (skip > 10) {

@@ -131,29 +131,17 @@ class ActivityList extends Component {
 
   render() {
     const {
-      newDepositStyle,
-      loader,
-      short_name,
-      // currentFilter,
       activity,
       pending,
       expandidoMax,
-      lastPending,
-      currencies,
       tx_path,
     } = this.props;
 
     const {
       expandible,
       expandido,
-      // filter,
-      current_order_loader,
-      deleting,
-      deleted,
     } = this.state;
 
-    // let OrderRender
-    // OrderItem
 
     return (
       <Fragment>

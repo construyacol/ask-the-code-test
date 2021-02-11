@@ -8,7 +8,7 @@ import "./flows.css";
 import { service_modes, cash_payment } from "../../../api/ui/api.json";
 import proof from "../../../../assets/proof.png";
 import ModalityView from "../views/modality";
-import IconSwitch from "../../../widgets/icons/iconSwitch";
+// import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 
 // {/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
@@ -116,7 +116,7 @@ const Success = (props) => {
   const {
     loader,
     deposit_way,
-    deposit_service,
+    // deposit_service,
     finalizar,
     final,
     finalButton,

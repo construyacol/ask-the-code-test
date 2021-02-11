@@ -154,17 +154,10 @@ export class TransactionService extends WebService {
   }
 
   async addSymbolToLocalCollections(pairs, localCurrency, currencies) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     return pairs.reduce((result, value) => {
-      const secondaryShortName = matchItem(
-        currencies,
-        { primary: localCurrency },
-        "currency"
-      );
-      const primaryShortName = matchItem(
-        currencies,
-        { primary: value.primary_currency.currency },
-        "currency"
-      );
+      const secondaryShortName = matchItem(currencies, { primary: localCurrency }, "currency");
+      const primaryShortName = matchItem(currencies, { primary: value.primary_currency.currency }, "currency");
       if (secondaryShortName && primaryShortName) {
         result.push({
           ...value,

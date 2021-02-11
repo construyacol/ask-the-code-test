@@ -9,17 +9,17 @@ import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
 // import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import useToastMessage from "../../hooks/useToastMessage";
 import styled from 'styled-components'
-import referralImg from './assets/referral.png'
+// import referralImg from './assets/referral.png'
 import { device } from '../../const/const'
 import IconSwitch from '../widgets/icons/iconSwitch'
-import useViewport from "../../hooks/useWindowSize";
+// import useViewport from "../../hooks/useWindowSize";
 
 
 const CreateReferralLink = (props) => {
 
   const [ toastMessage ] = useToastMessage();
   const [ loader, setLoader ] = useState(false)
-  const { isMovilViewport } = useViewport();
+  // const { isMovilViewport } = useViewport();
   // const [coinsendaServices] = useCoinsendaServices();
   const [ isValidCode, setIsValidCode ] = useState('bad')
   const idForClickeableElement = useKeyActionAsClick(true, "create-referral-button", 13, false, "onkeyup");
@@ -185,14 +185,14 @@ const RefCodeForm = styled.form`
 
 `
 
-const InputContainer = styled.section`
-  width: 100%;
-  display: grid;
-  align-items: center;
-  justify-items:center;
-
-  .setRefCode{
-    width: 100%;
-    max-width: 550px;
-  }
-`
+// const InputContainer = styled.section`
+//   width: 100%;
+//   display: grid;
+//   align-items: center;
+//   justify-items:center;
+//
+//   .setRefCode{
+//     width: 100%;
+//     max-width: 550px;
+//   }
+// `

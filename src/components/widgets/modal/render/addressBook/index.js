@@ -5,8 +5,6 @@ import OtherModalLayout from "../../otherModalLayout";
 import { useSelector } from "react-redux";
 import { setAnimation } from "../../../../../utils";
 import WithdrawViewState from "../../../../hooks/withdrawStateHandle";
-import PopNotification from "../../../notifications";
-import AddressBookCTA from "./ctas";
 import EmptyState from "./emptyState";
 import NewAccount from "./newAccount";
 import AddressBookComponent from "./addressBookList";
