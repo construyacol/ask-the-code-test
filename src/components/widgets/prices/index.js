@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import OtherModalLayout from "../modal/otherModalLayout";
 import styled from "styled-components";
 import { useActions } from "../../../hooks/useActions";
 import PricesModalContent from "../../PricesModalContent/prices-modal-content";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { device } from "../../../const/const";
-import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+// import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { IconClose } from "../shared-styles";
 
 const PricesModal = () => {
@@ -20,14 +20,14 @@ const PricesModal = () => {
     }
   };
 
-  const idCloseModalButton = useKeyActionAsClick(
-    true,
-    "close-prices-modal-button",
-    27,
-    false,
-    "onkeyup",
-    true
-  );
+  // const idCloseModalButton = useKeyActionAsClick(
+  //   true,
+  //   "close-prices-modal-button",
+  //   27,
+  //   false,
+  //   "onkeyup",
+  //   true
+  // );
 
   return (
     <OtherModalLayout on_click={closeModal}>
@@ -44,16 +44,16 @@ const PricesModal = () => {
   );
 };
 
-const CloseButton = styled.div`
-  cursor: pointer;
-  border-radius: 50%;
-  position: absolute;
-  right: 1em;
-  top: 1em;
-  font-size: 2em;
-  transition: all 500ms ease;
-  color: #4a4a4a;
-`;
+// const CloseButton = styled.div`
+//   cursor: pointer;
+//   border-radius: 50%;
+//   position: absolute;
+//   right: 1em;
+//   top: 1em;
+//   font-size: 2em;
+//   transition: all 500ms ease;
+//   color: #4a4a4a;
+// `;
 
 const MainContainer = styled.div`
   width: 90%;

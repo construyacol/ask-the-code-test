@@ -10,9 +10,9 @@ const SwapVIewConfirm = (props) => {
   const {
     cancelarClick,
     handleClick,
-    idCancelButton,
+    // idCancelButton,
     idAcceptButton,
-    idCloseButton,
+    // idCloseButton,
   } = props;
 
   const {

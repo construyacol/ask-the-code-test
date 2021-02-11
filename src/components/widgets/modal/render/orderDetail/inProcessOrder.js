@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 import { AiOutlineUpload } from "react-icons/ai";
 import PaymentProofComponent, { PaymentProof } from "./paymentProof";
 import UseTxState from "../../../../hooks/useTxState";
 import SimpleLoader from "../../../loaders";
-import QRCode from "qrcode";
+// import QRCode from "qrcode";
 import { readFile, img_compressor } from "../../../../../utils";
 import OrderStatus from "./orderStatus";
 import DetailGenerator from "./detailGenerator";
@@ -21,12 +21,12 @@ import "moment/locale/es";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 moment.locale("es");
 
-const orderModel = {
-  created_at: new Date(),
-  updated_at: new Date(),
-  state: "pending",
-  currency_type: "fiat",
-};
+// const orderModel = {
+//   created_at: new Date(),
+//   updated_at: new Date(),
+//   state: "pending",
+//   currency_type: "fiat",
+// };
 
 const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState();
@@ -47,7 +47,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
 export default InProcessOrder;
 
 const CryptoDespoitOrder = ({ order }) => {
-  const { actions, tx_path, currencies } = UseTxState();
+  const { tx_path, currencies } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
 
   return (
@@ -336,70 +336,70 @@ const DropZoneContainer = styled.section`
   }
 `;
 
-const ImgContainer = styled.div`
-  width: 80px;
-  height: 55px;
-  position: relative;
-  border: 3px solid #0198ff;
-  border-radius: 4px;
-  background: white;
-  display: grid;
-  align-items: center;
-  &.loader::after {
-    content: "";
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.8);
-  }
-  .lds-roller {
-    z-index: 2;
-  }
-`;
+// const ImgContainer = styled.div`
+//   width: 80px;
+//   height: 55px;
+//   position: relative;
+//   border: 3px solid #0198ff;
+//   border-radius: 4px;
+//   background: white;
+//   display: grid;
+//   align-items: center;
+//   &.loader::after {
+//     content: "";
+//     width: 100%;
+//     position: absolute;
+//     height: 100%;
+//     background: rgba(255, 255, 255, 0.8);
+//   }
+//   .lds-roller {
+//     z-index: 2;
+//   }
+// `;
 
-const Img = styled.img`
-  width: 80px;
-  height: 55px;
-  border-radius: 3px;
-`;
+// const Img = styled.img`
+//   width: 80px;
+//   height: 55px;
+//   border-radius: 3px;
+// `;
 
-const ProgressBar = styled.span`
-  height: 4px;
-  width: 100%;
-  background: #c5c5c5;
-  transition: 0.3s;
-  position: relative;
-  ::after {
-    content: "";
-    width: ${(props) => props.progresed};
-    background: #0198ff;
-    height: 100%;
-    position: absolute;
-    transition: 3s;
-    left: 0;
-    top: 0;
-  }
-`;
+// const ProgressBar = styled.span`
+//   height: 4px;
+//   width: 100%;
+//   background: #c5c5c5;
+//   transition: 0.3s;
+//   position: relative;
+//   ::after {
+//     content: "";
+//     width: ${(props) => props.progresed};
+//     background: #0198ff;
+//     height: 100%;
+//     position: absolute;
+//     transition: 3s;
+//     left: 0;
+//     top: 0;
+//   }
+// `;
 
 export const Text = styled.p`
   margin: 0;
 `;
 
-const PaymentTitle = styled(Text)`
-  text-align: center;
-  font-size: 14px;
-  color: gray;
-`;
+// const PaymentTitle = styled(Text)`
+//   text-align: center;
+//   font-size: 14px;
+//   color: gray;
+// `;
 
-const PaymentProofDetail = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-rows: auto auto auto;
-  row-gap: 10px;
-  justify-items: center;
-  align-items: center;
-  padding-top: 40px;
-`;
+// const PaymentProofDetail = styled.div`
+//   width: 100%;
+//   display: grid;
+//   grid-template-rows: auto auto auto;
+//   row-gap: 10px;
+//   justify-items: center;
+//   align-items: center;
+//   padding-top: 40px;
+// `;
 
 const Buttom = styled.div`
   width: 320px;
@@ -527,14 +527,14 @@ const Currency = styled(Text)`
   text-transform: uppercase;
 `;
 
-const Icon = styled.span`
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: #c3c3c3;
-  grid-area: icon;
-  ${"" /* box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.1); */}
-`;
+// const Icon = styled.span`
+//   width: 35px;
+//   height: 35px;
+//   border-radius: 50%;
+//   background: #c3c3c3;
+//   grid-area: icon;
+//   ${"" /* box-shadow: 0px 0px 5px 3px rgba(0,0,0,0.1); */}
+// `;
 
 const MiddleSection = styled(Section)`
   background: white;
@@ -575,14 +575,14 @@ const TopSection = styled(Section)`
   }
 `;
 
-const Container = styled.section`
-  width: 100vw;
-  height: 100vh;
-  background: #000000ba;
-  display: grid;
-  align-items: center;
-  justify-items: center;
-`;
+// const Container = styled.section`
+//   width: 100vw;
+//   height: 100vh;
+//   background: #000000ba;
+//   display: grid;
+//   align-items: center;
+//   justify-items: center;
+// `;
 
 const OrderContainer = styled.div`
   background: #eeeeee;

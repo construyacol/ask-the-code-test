@@ -55,7 +55,7 @@ export default class ConfirmationCounter extends Component {
   render() {
     const { confirmations, total_confirmations } = this.props;
 
-    const { color } = this.state;
+    // const { color } = this.state;
 
     return (
       <AbsoluteContainer2>
@@ -137,13 +137,13 @@ const TextContainer = styled.div`
   }
 `;
 
-const CounterText = styled.article`
-  color: ${(props) => (props.color ? `${props.color} !important` : "red")};
-  font-size: 40px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  align-self: center !important;
-`;
+// const CounterText = styled.article`
+//   color: ${(props) => (props.color ? `${props.color} !important` : "red")};
+//   font-size: 40px !important;
+//   margin: 0 !important;
+//   padding: 0 !important;
+//   align-self: center !important;
+// `;
 
 const ContCanvasConfirmation = styled.section`
   width: 100%;

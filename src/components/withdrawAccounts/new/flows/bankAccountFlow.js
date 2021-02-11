@@ -15,7 +15,7 @@ import {
   addIndexToRootObject,
   objectToArray,
 } from "../../../../utils";
-import MVList from "../../../widgets/itemSettings/modal_views/listView";
+// import MVList from "../../../widgets/itemSettings/modal_views/listView";
 import { createSelector } from "reselect";
 import withKeyActions from "../../../withKeyActions";
 
@@ -124,15 +124,15 @@ class BankAccountFlow extends Component {
       search,
       name,
       actualizarEstado,
-      city,
+      // city,
       final_step_create_account,
-      id_type,
-      id_number,
-      user,
+      // id_type,
+      // id_number,
+      // user,
       idAccept,
     } = this.props;
 
-    const { banks, cities, loader } = this.state;
+    const { banks, loader } = this.state;
 
     console.log('|||||| step::', step)
 

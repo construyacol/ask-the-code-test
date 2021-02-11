@@ -253,14 +253,14 @@ const Text = styled.p`
   font-size: 14px;
 `;
 
-const TotalAmountContainer = styled.div`
-  width: 100%;
-  height: 50px;
-  margin-top: 10px;
-  border-top: 1px solid #bfbfbf;
-  display: flex;
-  justify-content: space-between;
-`;
+// const TotalAmountContainer = styled.div`
+//   width: 100%;
+//   height: 50px;
+//   margin-top: 10px;
+//   border-top: 1px solid #bfbfbf;
+//   display: flex;
+//   justify-content: space-between;
+// `;
 
 const TitleContainer = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 // import SimpleLoader from '../../widgets/loaders'
 import ActivityList from "../../widgets/activityList/activity";
-import { scroller } from "react-scroll";
+// import { scroller } from "react-scroll";
 import ActivityFilters from "../../widgets/activityList/filters";
 import { LoaderView } from "../../widgets/activityList/order_item";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";

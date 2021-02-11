@@ -5,7 +5,7 @@ import {
   SWAP_URL,
   PAIRS_URL,
   GET_SWAPS_BY_USERS_URL,
-  SWAP_CONVERT_CURRENCIES
+  // SWAP_CONVERT_CURRENCIES
 } from "../const/const";
 import { desNormalizedList, normalized_list } from "../utils";
 import normalizeUser from "../schemas";

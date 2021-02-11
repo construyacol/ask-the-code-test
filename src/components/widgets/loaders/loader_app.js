@@ -11,7 +11,7 @@ import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";
 import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
-import { hotjar } from "react-hotjar";
+// import { hotjar } from "react-hotjar";
 
 import "./loader.css";
 

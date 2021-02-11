@@ -11,7 +11,7 @@ import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
-import { AiOutlineClose } from "react-icons/ai";
+// import { AiOutlineClose } from "react-icons/ai";
 import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
@@ -48,7 +48,7 @@ export const CriptoView = () => {
       balance,
       user,
     },
-    { confirmationModalToggle, confirmationModalPayload, isAppLoading },
+    // { confirmationModalToggle, confirmationModalPayload, isAppLoading },
   ] = WithdrawViewState();
 
   const actions = useActions();

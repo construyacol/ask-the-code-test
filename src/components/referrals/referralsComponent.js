@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
+// import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { connect } from "react-redux";
 import ShareSection from "./share-section";
-import sleep from "../../utils/sleep";
+// import sleep from "../../utils/sleep";
 import styled from "styled-components";
 import ReferralCounter from "./referral-counter";
-import BalanceSelect from "./balance-select";
-import WithdrawAd from "./withdraw-ad";
+// import BalanceSelect from "./balance-select";
+// import WithdrawAd from "./withdraw-ad";
 import { device } from "../../const/const";
 import CreateCode from "./create-code";
 import { FONT_COLOR, skeletonStyle } from "./shareStyles";
@@ -123,10 +123,6 @@ const ReferralComponent = (props) => {
   );
 };
 
-
-{/* <ShareSectionContainer/> */}
-{/* <BalanceSelect loading={loading ? loading.toString() : null} /> */}
-{/* <WithdrawAd loading={loading ? loading.toString() : null} /> */}
 
 
 const ShareContainer = styled.div`

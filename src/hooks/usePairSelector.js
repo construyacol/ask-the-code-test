@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { matchItem } from "../utils";
 import { useCoinsendaServices } from "../services/useCoinsendaServices";
 import { useSelector } from "react-redux";

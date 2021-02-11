@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
 import { IconClose } from "../shared-styles";

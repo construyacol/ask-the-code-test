@@ -1,5 +1,5 @@
-import localForage from "localforage";
-import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
+// import localForage from "localforage";
+// import { HistoricalPriceService } from "../actions/API/HistoricalPricesService";
 import { TransactionService } from "./CoinsendaTransactionService";
 import { ReferralService } from "./CoinsendaReferralService";
 import { WithdrawService } from "./CoinsendaWithdrawService";
@@ -11,11 +11,11 @@ import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
 
 import userSource from "../components/api";
-import { deepEqual } from "../utils";
+// import { deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading, {
-  appLoadLabelAction,
+  // appLoadLabelAction,
   isAppLoaded,
 } from "../actions/loader";
 import sleep from "../utils/sleep";
@@ -155,7 +155,7 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-      
+
       this.dispatch(
         updateLoadersAction({
           mainList: false,

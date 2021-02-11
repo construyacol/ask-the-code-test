@@ -100,7 +100,7 @@ class WithdrawFlow extends Component {
   init_config = () => {
     const {
       currency_type,
-      country,
+      // country,
       withdrawProviders,
       have_withdraw_accounts,
     } = this.props;
@@ -363,82 +363,82 @@ class WithdrawFlow extends Component {
   };
 
   create_order = async ({ data }) => {
-    const {
-      account_from,
-      withdraw_account,
-      withdraw_provider,
-    } = this.props.withdraw_order;
+    // const {
+    //   account_from,
+    //   withdraw_account,
+    //   withdraw_provider,
+    // } = this.props.withdraw_order;
 
     // return console.log('_______________________________________________CREATE ORDER SUCCESS ====>', data)
 
-    let new_order_model = [
-      {
-        ui_name: "El Retiro proviene desde:",
-        value: `${account_from.name} - ${account_from.currency.currency}`,
-        id: 1,
-        icon: account_from.currency.currency,
-      },
-      {
-        ui_name: "Los fondos se recibirán en:",
-        value: withdraw_account.bank_name.ui_name,
-        id: 2,
-        icon: withdraw_account.bank_name.value,
-      },
-      {
-        ui_name: `${withdraw_account.account_number.ui_name}:`,
-        value: withdraw_account.account_number.value,
-        id: 3,
-      },
-      // {
-      //   ui_name: `Ciudad:`,
-      //   value: withdraw_account.city.ui_name,
-      //   id: 4,
-      // },
-      {
-        ui_name: "Propietario de la cuenta:",
-        value: `${withdraw_account.name} ${withdraw_account.surname}`,
-        id: 5,
-      },
-      {
-        ui_name: "Retiro realizado a travez de:",
-        value:
-          withdraw_provider.info_needed.bank_name[
-            withdraw_provider.provider.name
-          ].ui_name,
-        id: 6,
-        icon: withdraw_provider.provider.name,
-      },
-      {
-        ui_name: "Cantidad a retirar:",
-        value:
-          account_from.currency_type === "fiat"
-            ? `$ ${number_format(data.amount)} ${
-                account_from.currency.currency
-              }`
-            : data.withdraw_info.amount,
-        icon: account_from.currency.currency,
-        id: 7,
-      },
-      {
-        ui_name: "Costo Bancario:",
-        value: `$ ${number_format(data.cost)} ${
-          account_from.currency.currency
-        }`,
-        icon: account_from.currency.currency,
-        id: 8,
-      },
-      {
-        ui_name: "Total recibido:",
-        value:
-          account_from.currency_type === "fiat"
-            ? `$ ${number_format(data.amount_neto)} ${
-                account_from.currency.currency
-              }`
-            : data.withdraw_info.amount_neto,
-        icon: account_from.currency.currency,
-        id: 9,
-      },
-    ];
+    // let new_order_model = [
+    //   {
+    //     ui_name: "El Retiro proviene desde:",
+    //     value: `${account_from.name} - ${account_from.currency.currency}`,
+    //     id: 1,
+    //     icon: account_from.currency.currency,
+    //   },
+    //   {
+    //     ui_name: "Los fondos se recibirán en:",
+    //     value: withdraw_account.bank_name.ui_name,
+    //     id: 2,
+    //     icon: withdraw_account.bank_name.value,
+    //   },
+    //   {
+    //     ui_name: `${withdraw_account.account_number.ui_name}:`,
+    //     value: withdraw_account.account_number.value,
+    //     id: 3,
+    //   },
+    //   // {
+    //   //   ui_name: `Ciudad:`,
+    //   //   value: withdraw_account.city.ui_name,
+    //   //   id: 4,
+    //   // },
+    //   {
+    //     ui_name: "Propietario de la cuenta:",
+    //     value: `${withdraw_account.name} ${withdraw_account.surname}`,
+    //     id: 5,
+    //   },
+    //   {
+    //     ui_name: "Retiro realizado a travez de:",
+    //     value:
+    //       withdraw_provider.info_needed.bank_name[
+    //         withdraw_provider.provider.name
+    //       ].ui_name,
+    //     id: 6,
+    //     icon: withdraw_provider.provider.name,
+    //   },
+    //   {
+    //     ui_name: "Cantidad a retirar:",
+    //     value:
+    //       account_from.currency_type === "fiat"
+    //         ? `$ ${number_format(data.amount)} ${
+    //             account_from.currency.currency
+    //           }`
+    //         : data.withdraw_info.amount,
+    //     icon: account_from.currency.currency,
+    //     id: 7,
+    //   },
+    //   {
+    //     ui_name: "Costo Bancario:",
+    //     value: `$ ${number_format(data.cost)} ${
+    //       account_from.currency.currency
+    //     }`,
+    //     icon: account_from.currency.currency,
+    //     id: 8,
+    //   },
+    //   {
+    //     ui_name: "Total recibido:",
+    //     value:
+    //       account_from.currency_type === "fiat"
+    //         ? `$ ${number_format(data.amount_neto)} ${
+    //             account_from.currency.currency
+    //           }`
+    //         : data.withdraw_info.amount_neto,
+    //     icon: account_from.currency.currency,
+    //     id: 9,
+    //   },
+    // ];
 
     // console.log(this.props.withdraw_order)
     // console.log('new_order_model', new_order_model)

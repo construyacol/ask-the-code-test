@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useActions } from "../../../../../hooks/useActions";
 import styled from "styled-components";
 import AddressBook from "./";
-import { getAtention } from "../../../animations";
+// import { getAtention } from "../../../animations";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../../../hooks/useWindowSize";
 

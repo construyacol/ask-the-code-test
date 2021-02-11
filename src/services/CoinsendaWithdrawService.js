@@ -130,7 +130,7 @@ export class WithdrawService extends WebService {
   }
 
   async deleteAccount(accountId) {
-    const { withdraw_accounts } = this.globalState.modelData;
+    // const { withdraw_accounts } = this.globalState.modelData;
     const user = this.user;
     const body = {
       data: {
@@ -211,11 +211,9 @@ export class WithdrawService extends WebService {
       name,
       surname,
       id_number,
-      id_type,
       short_name,
       account_number,
       account_type,
-      city,
       currency,
     } = payload;
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { createSelector } from "reselect";
 
 
@@ -19,7 +19,7 @@ const selectActivityList = createSelector(
 
 const UseActivity = () => {
 
-  const { primary_path } = useParams();
+  // const { primary_path } = useParams();
   const activity = useSelector((state) => selectActivityList(state));
   const [ activityList, setActivityList ] = useState([])
 

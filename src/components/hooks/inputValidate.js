@@ -1,7 +1,7 @@
 import { useState } from "react";
 // import AddressValidator from 'wallet-address-validator'
 // import useError from './errorHandle'
-import { debounce } from "../../utils";
+// import { debounce } from "../../utils";
 import { formatToCurrency } from "../../utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle";
 import { useWalletInfo }  from "../../hooks/useWalletInfo";
@@ -142,7 +142,7 @@ export default () => {
             ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
           }
           return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
-        return
+        // return
       default:
     }
   };
@@ -213,7 +213,7 @@ export default () => {
     }
   }
 
-  const debouncedValidateState = debounce(validateState, 100);
+  // const debouncedValidateState = debounce(validateState, 100);
 
   return [inputState, validateState, setInputState, customError];
 };

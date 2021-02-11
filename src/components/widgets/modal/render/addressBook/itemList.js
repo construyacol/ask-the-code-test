@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useCoinsendaServices } from "../../../../../services/useCoinsendaServices";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { Icon, Front, Top, CubeObject } from "../../../shared-styles";
@@ -28,10 +28,10 @@ export const ItemList = (props) => {
   };
 
   const [deleting, setDeleting] = useState("");
-  const [coinsendaServices, _] = useCoinsendaServices();
+  const [coinsendaServices] = useCoinsendaServices();
   const [toastMessage] = useToastMessage();
   const actions = useActions();
-  const [isSelected, setFocus] = useItemsInteractions(
+  const [isSelected] = useItemsInteractions(
     props,
     { suprKeyAction: () => null, enterKeyAction: () => handleClick() },
     false
@@ -152,24 +152,7 @@ const KeyActionHandler = styled(InputKeyActionHandler)`
   position: absolute;
 `;
 
-const ItemContainer = styled(CubeObject)`
-  position: relative;
-  padding: 0 20px;
-  width: calc(100% - 40px);
-  transition: 0.3s;
 
-  &:hover {
-    ${"" /* background: #ececec; */}
-  }
-
-  ${ItemListContainer} {
-    &.isSelected {
-      opacity: 1;
-      color: #0198ff;
-      ${"" /* background: #ececec; */}
-    }
-  }
-`;
 
 const DeleteComponent = ({ handleAction, itemId }) => {
   const idForDeleteItem = useKeyActionAsClick(
@@ -423,5 +406,24 @@ export const AddressContainer = styled.div`
   }
   &:hover::after {
     display: none;
+  }
+`;
+
+
+const ItemContainer = styled(CubeObject)`
+  position: relative;
+  padding: 0 20px;
+  width: calc(100% - 40px);
+  transition: 0.3s;
+
+  &:hover {
+    ${"" /* background: #ececec; */}
+  }
+
+  ${ItemListContainer} {
+    &.isSelected {
+      opacity: 1;
+      color: #0198ff;
+    }
   }
 `;

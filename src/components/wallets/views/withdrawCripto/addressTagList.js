@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import selectWithdrawAccountsByProviderType from "../../../selectors";
 import styled from "styled-components";
 import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
-import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
+// import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
 
 const AddressTagList = ({ show, addressValue, setAddressValue }) => {
   if (!show) {

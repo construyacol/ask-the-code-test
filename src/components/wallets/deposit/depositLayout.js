@@ -1,11 +1,11 @@
 import React, { Fragment } from "react";
 // import ItemSelectionContainer from '../../widgets/items/ItemSelectionContainer'
 import { payment_method } from "../../api/ui/api.json";
-import ItemLayout from "../../widgets/items/itemLayout";
+// import ItemLayout from "../../widgets/items/itemLayout";
 import { SimpleLoader } from "../../widgets/loaders";
-import { ButtonForms } from "../../widgets/buttons/buttons";
+// import { ButtonForms } from "../../widgets/buttons/buttons";
 import { TransferFlow, CashFlow } from "./flows";
-import ItemWallet from "../../widgets/accountList/items";
+// import ItemWallet from "../../widgets/accountList/items";
 import MethodView from "../../withdrawAccounts/new/views/1method";
 import ViewAmountComponent from "../views/viewAmount";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
@@ -17,21 +17,11 @@ const DepositLayout = (props) => {
     amount,
     deposit_way,
     step,
-    buttonActive,
-    select_currency,
-    itemActive,
-    short_currency_name,
     type_currency,
-    primerDeposito,
     loader,
     updateAmountOnState,
     select_deposit_way,
-    wallets_list,
-    deposit,
-    msgLoader,
     minAmount,
-    coins,
-    deposit_providers,
   } = props;
   const idForAcceptButtonInDepositView = useKeyActionAsClick(
     true,

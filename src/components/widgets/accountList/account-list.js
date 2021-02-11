@@ -20,7 +20,6 @@ function AccountList(props) {
     isWalletsView,
     isWithdrawView,
     actions,
-    history,
     mainListLoader,
   } = props;
   const items = props.items || [];
@@ -72,29 +71,29 @@ function AccountList(props) {
     });
   };
 
-  const goToVerification = async () => {
-    actions.confirmationModalToggle();
-    actions.confirmationModalPayload(null);
-    // const verificationState = props.verificationState;
-    //
-    // if (verificationState === "confirmed" || verificationState === "pending") {
-    //   await actions.ToStep("globalStep", 2);
-    // }
-    //
-    // if (verificationState === "rejected") {
-    //   await actions.ToStep("globalStep", 0);
-    // }
-    //
-    // await history.push(`/security`);
-    // setTimeout(() => {
-    //   actions.toggleModal();
-    // }, 0);
-  };
+  // const goToVerification = async () => {
+  //   actions.confirmationModalToggle();
+  //   actions.confirmationModalPayload(null);
+  //   // const verificationState = props.verificationState;
+  //   //
+  //   // if (verificationState === "confirmed" || verificationState === "pending") {
+  //   //   await actions.ToStep("globalStep", 2);
+  //   // }
+  //   //
+  //   // if (verificationState === "rejected") {
+  //   //   await actions.ToStep("globalStep", 0);
+  //   // }
+  //   //
+  //   // await history.push(`/security`);
+  //   // setTimeout(() => {
+  //   //   actions.toggleModal();
+  //   // }, 0);
+  // };
 
   const callToValidate = () => {
-    const message = isWalletsView
-      ? "billeteras crypto/fiat."
-      : "cuentas de retiro fiat.";
+    // const message = isWalletsView
+    //   ? "billeteras crypto/fiat."
+    //   : "cuentas de retiro fiat.";
 
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({

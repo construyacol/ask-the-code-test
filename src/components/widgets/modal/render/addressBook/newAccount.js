@@ -15,7 +15,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
   const [nameState, setNameState] = useState();
   const [loader, setLoader] = useState();
 
-  const [coinsendaServices, _, actions, dispatch] = useCoinsendaServices();
+  const [coinsendaServices, , actions, dispatch] = useCoinsendaServices();
   const [{ withdraw_accounts, current_wallet }] = WithdrawViewState();
   const [toastMessage] = useToastMessage();
   const idForCreateAccount = useKeyActionAsClick(
