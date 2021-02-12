@@ -59,23 +59,21 @@ export class IndetityService extends WebService {
       updatedUser.security_center.authenticator.withdraw = scopes.withdraw;
     }
 
+    if((profile.countries[country[0].value] !== 'level_0')){
     // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
-    let kyc_personal = country[0].levels && country[0].levels.personal;
-    let kyc_identity = country[0].levels && country[0].levels.identity;
-    let kyc_financial = country[0].levels && country[0].levels.financial;
-
-    if (kyc_personal) {
-      updatedUser.security_center.kyc.basic = kyc_personal;
+      let kyc_personal = country[0].levels && country[0].levels.personal;
+      let kyc_identity = country[0].levels && country[0].levels.identity;
+      let kyc_financial = country[0].levels && country[0].levels.financial;
+      if (kyc_personal) {
+        updatedUser.security_center.kyc.basic = kyc_personal;
+      }
+      if (kyc_identity) {
+        updatedUser.security_center.kyc.advanced = kyc_identity;
+      }
+      if (kyc_financial) {
+        updatedUser.security_center.kyc.financial = kyc_financial;
+      }
     }
-
-    if (kyc_identity) {
-      updatedUser.security_center.kyc.advanced = kyc_identity;
-    }
-
-    if (kyc_financial) {
-      updatedUser.security_center.kyc.financial = kyc_financial;
-    }
-    // }
 
     const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
     let thirdResponse = await this.Get(finalUrlThird);
