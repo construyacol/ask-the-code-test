@@ -73,7 +73,6 @@ class SocketsComponent extends Component {
             });
 
             socket.on(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
-
               if (withdrawAccount.state === "pending") {
                 await this.setState({currentWithdrawAccount: withdrawAccount });
               }
@@ -81,7 +80,12 @@ class SocketsComponent extends Component {
             });
 
 
-
+            // socket.on(`/status/${user.id}`, async (withdrawAccount) => {
+            //   if (withdrawAccount.state === "pending") {
+            //     await this.setState({currentWithdrawAccount: withdrawAccount });
+            //   }
+            //   this.withdraw_account_mangagement(withdrawAccount);
+            // });
 
           });
         });

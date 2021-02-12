@@ -60,8 +60,8 @@ const ReferralComponent = (props) => {
   useEffect(() => {
     if (user && user.referral && user.referral.ref_code) {
       setReferralLink(REFERRAL_LINK(user.referral.ref_code));
-      setLoading(false)
     }
+    setLoading(false)
   }, [user]);
 
   useEffect(()=>{
@@ -69,7 +69,6 @@ const ReferralComponent = (props) => {
       getRef()
     }
   }, [])
-
 
 
   return (
