@@ -140,7 +140,6 @@ const Kyc = (props) => {
     };
 
     let res = await props.coinsendaServices.updateLevelProfile(config, user);
-    debugger
     if (!res) {
       // await props.action.ReduceStep('kyc_basic', 1)
       props.action.isAppLoading(false);

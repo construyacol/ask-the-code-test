@@ -62,6 +62,7 @@ export class IndetityService extends WebService {
 
     const identityConfirmed = updatedUser.levels && updatedUser.levels.identity === 'confirmed' && updatedUser.levels.personal === 'confirmed'
     const identityAccepted = updatedUser.levels && updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
+    const identityRejected = updatedUser.levels && updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
 
     if((profile.countries[country[0].value] !== 'level_0') || identityConfirmed){
       let kyc_personal = country[0].levels && country[0].levels.personal;
@@ -79,6 +80,9 @@ export class IndetityService extends WebService {
     }else if(profile.countries[country[0].value] === 'level_0' && identityAccepted){
       updatedUser.security_center.kyc.basic = 'confirmed';
       updatedUser.security_center.kyc.advanced = 'confirmed';
+    }else if(identityRejected){
+      updatedUser.security_center.kyc.basic = 'rejected';
+      updatedUser.security_center.kyc.advanced = 'rejected';
     }
 
 
