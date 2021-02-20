@@ -89,11 +89,11 @@ const initialState = {
   videos: {
     kyc_basic: {
       play: false,
-      url: "https://www.youtube.com/watch?v=oUwxqg90Zc4&showinfo=0",
+      url: "https://youtu.be/46UXYIPPMoc",
     },
     kyc_advanced: {
       play: false,
-      url: "https://www.youtube.com/watch?v=qeMFqkcPYcg",
+      url: "https://youtu.be/FlqYiJz4ApM",
     },
   },
   verification_state: null,
