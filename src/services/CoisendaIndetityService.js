@@ -59,8 +59,11 @@ export class IndetityService extends WebService {
       updatedUser.security_center.authenticator.withdraw = scopes.withdraw;
     }
 
-    if((profile.countries[country[0].value] !== 'level_0')){
-    // if((profile.countries[country[0].value] !== 'level_0') && (updatedUser.verification_level !== 'level_0')){
+
+    const identityConfirmed = updatedUser.levels && updatedUser.levels.identity === 'confirmed' && updatedUser.levels.personal === 'confirmed'
+    const identityAccepted = updatedUser.levels && updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
+
+    if((profile.countries[country[0].value] !== 'level_0') || identityConfirmed){
       let kyc_personal = country[0].levels && country[0].levels.personal;
       let kyc_identity = country[0].levels && country[0].levels.identity;
       let kyc_financial = country[0].levels && country[0].levels.financial;
@@ -73,7 +76,12 @@ export class IndetityService extends WebService {
       if (kyc_financial) {
         updatedUser.security_center.kyc.financial = kyc_financial;
       }
+    }else if(profile.countries[country[0].value] === 'level_0' && identityAccepted){
+      updatedUser.security_center.kyc.basic = 'confirmed';
+      updatedUser.security_center.kyc.advanced = 'confirmed';
     }
+
+
 
     const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
     let thirdResponse = await this.Get(finalUrlThird);
