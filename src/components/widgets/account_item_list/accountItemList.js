@@ -54,7 +54,7 @@ function AccountItemList(props) {
 
   const handleClick = action ? action : createOrder;
   const [isSelected] = useItemsInteractions(
-    props,
+    {...props, uniqid: props.account.id},
     { suprKeyAction: () => false, enterKeyAction: handleClick },
     false
   );

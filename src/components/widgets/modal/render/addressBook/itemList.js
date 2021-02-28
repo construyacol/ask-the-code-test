@@ -32,7 +32,7 @@ export const ItemList = (props) => {
   const [toastMessage] = useToastMessage();
   const actions = useActions();
   const [isSelected] = useItemsInteractions(
-    props,
+    {...props, uniqid: id},
     { suprKeyAction: () => null, enterKeyAction: () => handleClick() },
     false
   );
