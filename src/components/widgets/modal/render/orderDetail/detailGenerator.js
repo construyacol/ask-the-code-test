@@ -51,11 +51,11 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           "Cantidad:",
           await formatCurrency(order.amount, order.currency),
         ];
-      case "amount_neto":
-        return [
-          "Cantidad neta:",
-          await formatCurrency(order.amount_neto, order.currency),
-        ];
+      // case "amount_neto":
+      //   return [
+      //     "Cantidad neta:",
+      //     await formatCurrency(order.amount_neto, order.currency),
+      //   ];
       case "confirmations":
         return ["Confirmations:", order.confirmations];
       case "cost":
@@ -64,6 +64,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
 
       case "referral":
+      case "amount_neto":
       case "to_buy_symbol":
       case "to_spend_symbol":
       case "need_referral_process":
@@ -152,7 +153,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           // ],
           // ["Impuesto:", `~ ${order.tax}`],
           ["Cantidad acreditada:", `~ $${amount}`],
-          ["Total a depositar:", `~ $${amount_neto}`],
+          ["Total a depositar:", `~ $${amount}`],
         ]);
         break;
       case "crypto":
