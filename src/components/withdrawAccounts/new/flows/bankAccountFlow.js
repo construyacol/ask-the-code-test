@@ -80,6 +80,7 @@ class BankAccountFlow extends Component {
     await this.props.actualizarEstado({
       target: { name: "currency", value: res[0].currency },
     });
+    console.log('|||||||||||||||||||||||||||||||||||||||||||serve_bank_list', serve_bank_list)
 
     this.setState({
       banks: serve_bank_list,

@@ -151,6 +151,7 @@ const GnbBank = loadable(() => import("./logos/banco_sudameris"));
 const MultiBank = loadable(() => import("./logos/banco_multibank"));
 const PopularBank = loadable(() => import("./logos/banco_popular"));
 const BankProcredit = loadable(() => import("./logos/banco_procredit"));
+const BankColteFinanciera = loadable(() => import("./logos/coltefinanciera"));
 const Davivienda = loadable(() =>
   import("./logos").then(getExportByName("Davivienda"))
 );
@@ -377,11 +378,12 @@ class IconSwitch extends Component {
         return <PopularBank {...props} />;
       case "banco_procredit":
         return <BankProcredit {...props} />;
+      case "banco_coltefinanciera":
+        return <BankColteFinanciera {...props} />;
       case "banco_financiera_juriscoop":
       case "banco_cootrafa_cooperativa_financiera":
       case "banco_cooperativa_financiera_antioquia":
       case "banco_confiar_cooperativa_financiera":
-      case "banco_coltefinanciera":
         return <Account {...props} />;
       case "swap-camera":
         return <SwapCamera {...props} />;
