@@ -151,6 +151,12 @@ const GnbBank = loadable(() => import("./logos/banco_sudameris"));
 const MultiBank = loadable(() => import("./logos/banco_multibank"));
 const PopularBank = loadable(() => import("./logos/banco_popular"));
 const BankProcredit = loadable(() => import("./logos/banco_procredit"));
+const BankCoopFinAnt = loadable(() => import("./logos/banco_cooperativa_financiera_antioquia"));
+const BankCoopCotrafa = loadable(() => import("./logos/banco_cooperativa_cotrafa"));
+const BankColteFinanciera = loadable(() => import("./logos/coltefinanciera"));
+const BankCooConfiar = loadable(() => import("./logos/banco_cooperativa_confiar"));
+const BankJurisCoop = loadable(() => import("./logos/banco_juriscoop"));
+
 const Davivienda = loadable(() =>
   import("./logos").then(getExportByName("Davivienda"))
 );
@@ -377,12 +383,17 @@ class IconSwitch extends Component {
         return <PopularBank {...props} />;
       case "banco_procredit":
         return <BankProcredit {...props} />;
-      case "banco_financiera_juriscoop":
-      case "banco_cootrafa_cooperativa_financiera":
       case "banco_cooperativa_financiera_antioquia":
-      case "banco_confiar_cooperativa_financiera":
+        return <BankCoopFinAnt {...props} />;
+      case "banco_cootrafa_cooperativa_financiera":
+        return <BankCoopCotrafa {...props} />;
       case "banco_coltefinanciera":
-        return <Account {...props} />;
+        return <BankColteFinanciera {...props} />;
+      case "banco_confiar_cooperativa_financiera":
+        return <BankCooConfiar {...props} />;
+      case "banco_financiera_juriscoop":
+        return <BankJurisCoop {...props} />;
+        // return <Account {...props} />;
       case "swap-camera":
         return <SwapCamera {...props} />;
       default:
