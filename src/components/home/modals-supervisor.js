@@ -13,13 +13,14 @@ import KycSkeleton from '../kyc/basic/skeleton'
 import DWFiatFlowSkeleton from "../wallets/views/skeleton/dWFiatFlowSkeleton"
 import WithdrawAccountFlowSkeleton from '../withdrawAccounts/skeleton'
 import NewWalletSkeleton from '../wallets/newWallet/skeleton'
+import ConfirmationModal from '../widgets/modal/confirmation'
+
 
 const SocketNotify = loadable(() => import("../sockets/socket_notify/socketNotify"));
 const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2fa"));
 const WithdrawFlow = loadable(() => import("../wallets/withdraw/withdrawFlowContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_views"));
 const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
-const ConfirmationModal = loadable(() => import("../widgets/modal/confirmation"));
 const Kyc = loadable(() => import("../kyc/kyc_container"), { fallback:<KycSkeleton/> } );
 const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"), { fallback: <WithdrawAccountFlowSkeleton/> });
