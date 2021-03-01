@@ -33,7 +33,7 @@ function NewItemsLayout(props) {
   };
   const _handleClick = specialMode ? doSelectionForItem : handleClick;
   const [isSelected, setFocus] = useItemsInteractions(
-    props,
+    {...props, uniqid: pair_id},
     { suprKeyAction: () => false, enterKeyAction: _handleClick },
     false
   );

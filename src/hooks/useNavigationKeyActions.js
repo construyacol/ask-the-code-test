@@ -194,7 +194,7 @@ export function useItemsInteractions(
         };
       }
     }
-  }, [isModalVisible]);
+  }, [isModalVisible, props.uniqid]);
 
   const setFocus = () => {
     const element = document.getElementById(props.focusedId);

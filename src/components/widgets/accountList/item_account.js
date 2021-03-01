@@ -183,7 +183,7 @@ const ItemAccount = (props) => {
     });
   };
 
-  const [isSelected] = useItemsInteractions(props, {
+  const [isSelected] = useItemsInteractions({...props, uniqid: props.account.id}, {
     suprKeyAction: delete_account_confirmation,
     enterKeyAction: () => account_detail(account_type),
   });
