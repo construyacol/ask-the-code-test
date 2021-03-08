@@ -19,12 +19,12 @@ const IconDefault = loadable(() =>
 );
 const Person = loadable(() => import("./").then(getExportByName("Person")));
 const Verify1 = loadable(() => import("./").then(getExportByName("Verify1")));
-const Identification = loadable(() =>
-  import("./").then(getExportByName("Identification"))
-);
-const Security2 = loadable(() =>
-  import("./").then(getExportByName("Security2"))
-);
+const Identification = loadable(() => import("./").then(getExportByName("Identification")));
+const PageNotFound = loadable(() => import("./").then(getExportByName("PageNotFound")));
+
+
+
+const Security2 = loadable(() => import("./").then(getExportByName("Security2")));
 const Swap = loadable(() => import("./").then(getExportByName("Swap")));
 const Send = loadable(() => import("./").then(getExportByName("Send")));
 const World = loadable(() => import("./").then(getExportByName("World")));
@@ -173,7 +173,9 @@ class IconSwitch extends Component {
     // console.log('||||||||||||||| props ICON SWICH::', props)
 
     switch (icon) {
-
+      
+      case "PageNotFound":
+        return <PageNotFound {...props} />;
       case "referralEmptyState":
         return <ReferralEmptyState {...props} />;
       case "international":

@@ -69,16 +69,17 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       coinsendaServices.postLoader(doLogout);
       return redirectURL(isSessionRestored);
     }
-
     if (!userToken) return;
 
     let profile = await coinsendaServices.fetchUserProfile();
+
     if (!profile) {
       if (!newCountry) {
         return setCountry(null);
       }
       profile = await coinsendaServices.addNewProfile(newCountry);
     }
+
 
 
     if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) {
