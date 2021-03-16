@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import error_travolta from "../../../assets/error.png";
 import errorIcon from "../../../assets/erroricon.png";
+import IconSwitch from '../icons/iconSwitch'
 // import * as Sentry from '@sentry/browser';
 import "./handleError.css";
 
@@ -23,11 +24,13 @@ class HandleError extends Component {
       // Puedes renderizar cualquier interfaz de repuesto
       return (
         <div className="HandleError">
-          <img src={errorIcon} alt="" width="70" />
           <h1 className="fuente">ERROR</h1>
           <p className="fuente">Ha ocurrido un error, intentalo más tarde...</p>
           <div className="contImgError">
-            <img src={error_travolta} alt="" width="100%" />
+            <IconSwitch
+              icon="errorState"
+              width="100%"
+            />
           </div>
         </div>
       );

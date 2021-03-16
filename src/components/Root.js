@@ -102,8 +102,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withHandleError(
-  connect(() => ({}), mapDispatchToProps)(RootContainer)
-);
+export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
 
 //
