@@ -58,7 +58,7 @@ function ContentTab(props) {
   useEffect(() => {
     const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 || wallets[current_wallet].available > 0);
     const condition = primary_path === "wallets" ? haveBalances && menuItems : menuItems;
-    setHaveMenu(condition ? menuItems.length > 0 : false);
+    setHaveMenu(condition ? menuItems.length > 0 : pathname !== 'deposit' ? true : false);
   }, [current_wallet, menuItems, primary_path, wallets]);
 
   const getLink = (link) => {
@@ -91,7 +91,7 @@ function ContentTab(props) {
         >
           {haveMenu ? (
             menuItems.map((item, index) => {
-              // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', item)
+              // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', menuItems)
               if (
                 (item.link === "activity" ||
                   item.link === "withdraw" ||
