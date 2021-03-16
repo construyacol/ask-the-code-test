@@ -34,6 +34,8 @@ function RootContainer(props) {
     const params = new URLSearchParams(history.location.search);
 
     if (params.has("token")) {
+      console.log('|||||||||||||||||||||||||||      |||||||||||||||| params.has:::', params.get("token"))
+      // debugger
       await localForage.setItem("user_token", params.get("token"));
       await localForage.setItem("created_at", new Date());
 
@@ -45,6 +47,9 @@ function RootContainer(props) {
     // const created_at = JSON.parse(localForage.getItem('created_at'));
     const userToken = await localForage.getItem("user_token");
     const created_at = await localForage.getItem("created_at");
+    // console.log('|||||||||||||||||||||||||||||||||||||||      |||| userToken:::', userToken)
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||| created_at:::', created_at)
+    // debugger
     if (!created_at || !userToken) {
       return doLogout();
     }

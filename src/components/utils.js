@@ -2,7 +2,7 @@ import localForage from "localforage";
 import { COINSENDA_URL } from "../const/const";
 
 export function isValidToken(createAt) {
-  if(typeof createAt === 'string'){return}
+  if(typeof createAt === 'string' || !createAt){return}
   const initialDate = createAt.getTime();
   var endDate = new Date().getTime();
   var diff = (endDate - initialDate) / (1000 * 60);
