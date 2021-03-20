@@ -60,6 +60,10 @@ export class IndetityService extends WebService {
     }
 
 
+    if(country[0].levels && country[0].levels.personal){
+      updatedUser.security_center.kyc.basic = country[0].levels && country[0].levels.personal
+    }
+
     const identityConfirmed = updatedUser.levels && updatedUser.levels.identity === 'confirmed' && updatedUser.levels.personal === 'confirmed'
     const identityAccepted = updatedUser.levels && updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
     const identityRejected = updatedUser.levels && updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'

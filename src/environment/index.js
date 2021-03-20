@@ -5,39 +5,39 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     ApiUrl: "http://localhost:3001/api/",
     SocketUrl: "http://localhost:3001/",
     IdentityApIUrl: "http://localhost:3002/api/",
-    CountryApIUrl: "https://info1.devsertec.com/api/",
+    CountryApIUrl: "https://info1.bitsenda.com/api/",
     AccountApiUrl: "http://localhost:4007/api/",
     DepositApiUrl: "http://localhost:4006/api/",
     WithdrawApiUrl: "http://localhost:4005/api/",
     SwapApiUrl: "http://localhost:4008/api/",
-    CountryUrl: "https://info1.devsertec.com/",
-    BASE_URL:"https://devsertec.com/"
+    CountryUrl: "https://info1.bitsenda.com/",
+    BASE_URL:"https://bitsenda.com/"
   };
 } else if (process.env.NODE_ENV === "development") {
   Environment = {
-    ApiUrl: "https://tx1.devsertec.com/api/",
-    SocketUrl: "https://tx1.devsertec.com/",
-    IdentityApIUrl: "https://identity1.devsertec.com/api/",
-    CountryApIUrl: "https://info1.devsertec.com/api/",
-    AccountApiUrl: "https://account1.devsertec.com/api/",
-    DepositApiUrl: "https://deposit1.devsertec.com/api/",
-    WithdrawApiUrl: "https://withdraw1.devsertec.com/api/",
-    SwapApiUrl: "https://swap1.devsertec.com/api/",
-    CountryUrl: "https://info1.devsertec.com/",
-    BASE_URL:"https://devsertec.com/"
+    ApiUrl: "https://tx.bitsenda.com/api/",
+    SocketUrl: "https://tx.bitsenda.com/",
+    IdentityApIUrl: "https://identity.bitsenda.com/api/",
+    CountryApIUrl: "https://info.bitsenda.com/api/",
+    AccountApiUrl: "https://account.bitsenda.com/api/",
+    DepositApiUrl: "https://deposit.bitsenda.com/api/",
+    WithdrawApiUrl: "https://withdraw.bitsenda.com/api/",
+    SwapApiUrl: "https://swap.bitsenda.com/api/",
+    CountryUrl: "https://info.bitsenda.com/",
+    BASE_URL:"https://bitsenda.com/"
   };
 } else {
   Environment = {
-    ApiUrl: "https://tx1.devsertec.com/api/",
-    SocketUrl: "https://tx1.devsertec.com/",
-    IdentityApIUrl: "https://identity1.devsertec.com/api/",
-    CountryApIUrl: "https://info1.devsertec.com/api/",
-    AccountApiUrl: "https://account1.devsertec.com/api/",
-    DepositApiUrl: "https://deposit1.devsertec.com/api/",
-    WithdrawApiUrl: "https://withdraw1.devsertec.com/api/",
-    SwapApiUrl: "https://swap1.devsertec.com/api/",
-    CountryUrl: "https://info1.devsertec.com/",
-    BASE_URL:"https://www.coinsenda.com/"
+    ApiUrl: "https://tx.bitsenda.com/api/",
+    SocketUrl: "https://tx.bitsenda.com/",
+    IdentityApIUrl: "https://identity.bitsenda.com/api/",
+    CountryApIUrl: "https://info.bitsenda.com/api/",
+    AccountApiUrl: "https://account.bitsenda.com/api/",
+    DepositApiUrl: "https://deposit.bitsenda.com/api/",
+    WithdrawApiUrl: "https://withdraw.bitsenda.com/api/",
+    SwapApiUrl: "https://swap.bitsenda.com/api/",
+    CountryUrl: "https://info.bitsenda.com/",
+    BASE_URL:"https://bitsenda.com/"
   };
 }
 
