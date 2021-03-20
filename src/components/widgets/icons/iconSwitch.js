@@ -119,9 +119,7 @@ const NewAccount = loadable(() => import("./").then(getExportByName("NewAccount"
 const CreateRefCode = loadable(() => import("./").then(getExportByName("CreateRefCode")));
 
 const QRCode = loadable(() => import("./").then(getExportByName("QRCode")));
-const AuthFactor = loadable(() =>
-  import("./").then(getExportByName("AuthFactor"))
-);
+const AuthFactor = loadable(() => import("./").then(getExportByName("AuthFactor")));
 const Ecuador = loadable(() =>
   import("./flags").then(getExportByName("Ecuador"))
 );
