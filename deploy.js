@@ -3,7 +3,7 @@ const keys = getKeys("./build");
 
 const deploySetup = {
   staging: {
-    bucket: "app.devsertec.com",
+    bucket: "app.bitsenda.com",
   },
   prod: {
     bucket: "app.coinsenda.com",
