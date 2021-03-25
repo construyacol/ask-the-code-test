@@ -28,16 +28,16 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   };
 } else {
   Environment = {
-    ApiUrl: "https://tx.bitsenda.com/api/",
-    SocketUrl: "https://tx.bitsenda.com/",
-    IdentityApIUrl: "https://identity.bitsenda.com/api/",
-    CountryApIUrl: "https://info.bitsenda.com/api/",
-    AccountApiUrl: "https://account.bitsenda.com/api/",
-    DepositApiUrl: "https://deposit.bitsenda.com/api/",
-    WithdrawApiUrl: "https://withdraw.bitsenda.com/api/",
-    SwapApiUrl: "https://swap.bitsenda.com/api/",
-    CountryUrl: "https://info.bitsenda.com/",
-    BASE_URL:"https://bitsenda.com/"
+    ApiUrl: "https://tx.coinsenda.com/api/",
+    SocketUrl: "https://tx.coinsenda.com/",
+    IdentityApIUrl: "https://identity.coinsenda.com/api/",
+    CountryApIUrl: "https://info.coinsenda.com/api/",
+    AccountApiUrl: "https://account.coinsenda.com/api/",
+    DepositApiUrl: "https://deposit.coinsenda.com/api/",
+    WithdrawApiUrl: "https://withdraw.coinsenda.com/api/",
+    SwapApiUrl: "https://swap.coinsenda.com/api/",
+    CountryUrl: "https://info.coinsenda.com/",
+    BASE_URL:"https://coinsenda.com/"
   };
 }
 
