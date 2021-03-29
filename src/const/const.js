@@ -10,6 +10,7 @@ const {
   SwapApiUrl,
   IdentityApIUrl,
   CountryUrl,
+  BASE_URL
 } = Enviroment;
 
 export const loadLabels = {
@@ -80,10 +81,7 @@ export const GET_URLS = {
 };
 
 export const history = createBrowserHistory();
-export const COINSENDA_URL =
-  process.env.NODE_ENV === "development"
-    ? "https://devsertec.com/"
-    : "https://www.coinsenda.com/";
+export const COINSENDA_URL = BASE_URL
 
 export const currencyFormatByCoin = {
   bitcoin: BigNumber.clone({
