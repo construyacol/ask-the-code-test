@@ -13,7 +13,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     CountryUrl: "https://info1.bitsenda.com/",
     BASE_URL:"https://bitsenda.com/"
   };
-} else if (process.env.NODE_ENV === "development") {
+} else if (process.env.NODE_ENV === "development" || process.env.REACT_APP_BUILD_CONFIG === 'development') {
   Environment = {
     ApiUrl: "https://tx.bitsenda.com/api/",
     SocketUrl: "https://tx.bitsenda.com/",
@@ -40,5 +40,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     BASE_URL:"https://coinsenda.com/"
   };
 }
+
+
 
 export default Environment;
