@@ -56,8 +56,7 @@
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
     "build": "react-scripts build && npm run build-sw",
-    "build:prod": "cross-env NODE_ENV='production' && npm run build",
-    "build:staging": "cross-env NODE_ENV='development' && npm run build",
+    "build:staging": "cross-env REACT_APP_BUILD_CONFIG='development' && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "postbuild": "cross-env react-snap && node ./scripts/preloads.js"
