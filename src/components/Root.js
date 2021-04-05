@@ -12,8 +12,9 @@ import { doLogout, isValidToken } from "./utils";
 import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
+import LoaderAplication from './widgets/loaders/loader_app'
 
-const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
+// const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 
@@ -85,10 +86,11 @@ function RootContainer(props) {
     initComponent();
   }, []);
 
+
   return (
     <Router history={history}>
-      {!isAppLoaded || (window.reactSnap && process.env.NODE_ENV === "production") ? (
-        <LazyLoader tryRestoreSession={tryRestoreSession} history={history} />
+      {!isAppLoaded ? (
+        <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} />
       ) : (
         <>
           <LazySocket toastMessage={toastMessage} />

@@ -55,19 +55,20 @@
     "start:build": "npm run build && serve ./build -s -l 5000",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
-    "build": "react-scripts build && npm run build-sw",
+    "build": "react-scripts build && npm run build-sw && react-snapshot",
     "build:staging": "cross-env REACT_APP_BUILD_CONFIG='development' npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "cross-env react-snap && node ./scripts/preloads.js"
+    "postbuild": "node ./scripts/preloads.js && ./rename_build_statics.sh"
   },
-  "reactSnap": {
-    "source": "build",
-    "minifyHtml": {
-      "collapseWhitespace": true,
-      "removeComments": true
-    },
-    "inlineCss": true
+  "reactSnapshot": {
+    "include": [
+      "/wallets",
+      "/withdraw_accounts",
+      "/referral",
+      "/security"
+    ],
+    "snapshotDelay": 300
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -84,7 +85,6 @@
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",
     "prettier": "2.1.2",
-    "react-snap": "^1.23.0",
     "react-snapshot": "^1.3.0",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
