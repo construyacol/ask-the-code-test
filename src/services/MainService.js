@@ -69,6 +69,7 @@ const inheritances = aggregation(
 );
 
 export class MainService extends inheritances {
+  
   token;
   globalState;
   dispatch;

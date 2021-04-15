@@ -72,7 +72,7 @@ function RootContainer(props) {
     });
 
     // En este punto el token es valido
-    // aqui se verifica que el origen del mensaje sea del Landing
+    // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para la recuperación de sesiones previas
 
     const parent = window.parent;
     if (parent) {
