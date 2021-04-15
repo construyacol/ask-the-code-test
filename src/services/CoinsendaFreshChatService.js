@@ -1,5 +1,4 @@
 import { WebService } from "../actions/API/WebService";
-// import { REFERRALS_URL } from "../const/const";
 
 export class FreshChatService extends WebService {
   async freshChatInitUser() {
@@ -13,7 +12,7 @@ export class FreshChatService extends WebService {
     });
 
     window.fcWidget.user.get((resp) => {
-      var status = resp && resp.status;
+      let status = resp && resp.status;
 
       if (status !== 200) {
         // Si el usuario no existe y recibimos los datos del mismo desde el dashboard, enviamos esta información a freshChat
@@ -29,7 +28,7 @@ export class FreshChatService extends WebService {
         }
         window.fcWidget.on("user:created", (resp) => {
           // El usuario se crea cuando inicia el chat
-          var status = resp && resp.status,
+          let status = resp && resp.status,
             data = resp && resp.data;
           if (status === 200) {
             if (data.restoreId) {

@@ -112,6 +112,14 @@ function cleanBucket(bucket) {
           Body: fs.createReadStream(file.relative),
           ACL: "bucket-owner-full-control",
         };
+        if (
+          file.key.match('wallets') ||
+          file.key.match('withdraw_accounts') ||
+          file.key.match('referral') ||
+          file.key.match('security')
+        ){
+          s3upload.ContentType = "text/html";
+        }
         if (file.key.match(/html$/)) {
           s3upload.ContentType = "text/html";
           s3upload.ContentLanguage = "html";

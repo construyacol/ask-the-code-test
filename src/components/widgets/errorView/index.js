@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import error_travolta from "../../../assets/error.png";
-import errorIcon from "../../../assets/erroricon.png";
+// import error_travolta from "../../../assets/error.png";
+// import errorIcon from "../../../assets/erroricon.png";
 import IconSwitch from '../icons/iconSwitch'
 // import * as Sentry from '@sentry/browser';
 import "./handleError.css";
