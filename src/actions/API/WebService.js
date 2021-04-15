@@ -1,4 +1,6 @@
 import { COINSENDA_URL } from "../../const/const";
+import { doLogout } from '../../components/utils'
+
 
 export class WebService {
   async doFetch(url, params) {
@@ -9,7 +11,8 @@ export class WebService {
       // console.log('get res ::', response)
       if (!response.ok && response.status === 465) {
         if (finalResponse.error.message.includes("Invalid signature")) {
-          window.location.href = COINSENDA_URL;
+          // TODO: this rutine send the refresh token or logout
+          doLogout()
         }
         throw response.status;
       }
