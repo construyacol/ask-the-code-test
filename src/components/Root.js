@@ -31,34 +31,15 @@ function RootContainer(props) {
   const [toastMessage] = useToastMessage();
 
   const initComponent = async () => {
-    // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)
     const params = new URLSearchParams(history.location.search);
-
     if (params.has("token")) {
-      console.log('|||||||||||||||||||||||||||      |||||||||||||||| params.has:::', params.get("token"))
-      // debugger
       await localForage.setItem("user_token", params.get("token"));
-      await localForage.setItem("created_at", new Date());
-
       history.push("/");
     }
 
-
-    // const userToken = JSON.parse(localForage.getItem('user_token'));
-    // const created_at = JSON.parse(localForage.getItem('created_at'));
     const userToken = await localForage.getItem("user_token");
-    const created_at = await localForage.getItem("created_at");
-    // console.log('|||||||||||||||||||||||||||||||||||||||      |||| userToken:::', userToken)
-    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||| created_at:::', created_at)
-    // debugger
-    if (!created_at || !userToken) {
-      return doLogout();
-    }
-    const availableToken = isValidToken(created_at);
-    if (!availableToken) {
-      toastMessage(`Su sessión ha caducado`, "error");
-      return doLogout();
-    }
+    if (!userToken) {return doLogout()}
+    // TODO: is valid token
     const userData = jwt.decode(userToken);
     if (!userData) {
       return doLogout();

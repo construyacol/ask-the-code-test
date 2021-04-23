@@ -40,7 +40,7 @@ const noLogsOnProduction = () => {
 
 if (process.env.NODE_ENV === "production") {
   serviceWorker.register();
-  noLogsOnProduction();
+  // noLogsOnProduction();
 }
 
 if (window && window.CSS && window.CSS.registerProperty) {

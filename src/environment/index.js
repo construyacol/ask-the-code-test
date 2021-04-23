@@ -41,7 +41,6 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   };
 }
 
-console.log('||||||||||||||||||||||||||||||| REACT_APP_BUILD_CONFIG', Environment.BASE_URL)
 
 
 

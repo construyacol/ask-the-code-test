@@ -1,17 +1,20 @@
 import { COINSENDA_URL } from "../../const/const";
-import { doLogout } from '../../components/utils'
+import { doLogout, handleError, verifyToken } from '../../components/utils'
 
 
 export class WebService {
+
+
+
+
   async doFetch(url, params) {
-    // console.log('|||||||||||||||||||||| GET SERVICE:: ', url, params.headers)
     try {
+      verifyToken(this.token)
       const response = await fetch(url, params);
       const finalResponse = await response.json();
-      // console.log('get res ::', response)
       if (!response.ok && response.status === 465) {
         if (finalResponse.error.message.includes("Invalid signature")) {
-          // TODO: this rutine send the refresh token or logout
+          // TODO: add refresh_token flow to get a new jwt
           doLogout()
         }
         throw response.status;
@@ -19,8 +22,7 @@ export class WebService {
 
       return await finalResponse;
     } catch (_) {
-      // TODO: return an action to get feedback about errors
-      console.log(_, _.response);
+      handleError(_)
       return false;
     }
   }
