@@ -1,15 +1,12 @@
 import { COINSENDA_URL } from "../../const/const";
-import { doLogout, handleError, verifyToken } from '../../components/utils'
+import { doLogout, handleError, verifyUserToken } from '../../components/utils'
 
 
 export class WebService {
 
-
-
-
   async doFetch(url, params) {
     try {
-      verifyToken(this.token)
+      verifyUserToken(this.token)
       const response = await fetch(url, params);
       const finalResponse = await response.json();
       if (!response.ok && response.status === 465) {
@@ -19,7 +16,6 @@ export class WebService {
         }
         throw response.status;
       }
-
       return await finalResponse;
     } catch (_) {
       handleError(_)

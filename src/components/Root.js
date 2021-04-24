@@ -8,11 +8,16 @@ import { bindActionCreators } from "redux";
 import actions from "../actions";
 import withHandleError from "./withHandleError";
 import HomeContainer from "./home/home-container";
-import { doLogout, isValidToken } from "./utils";
 import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
+import {
+  doLogout,
+  isValidToken,
+  registerUserToken,
+  getUserToken
+} from "./utils";
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
@@ -33,18 +38,14 @@ function RootContainer(props) {
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
     if (params.has("token")) {
-      await localForage.setItem("user_token", params.get("token"));
+      await registerUserToken(params.get("token"))
       history.push("/");
     }
 
-    const userToken = await localForage.getItem("user_token");
-    if (!userToken) {return doLogout()}
-    // TODO: is valid token
-    const userData = jwt.decode(userToken);
-    if (!userData) {
-      return doLogout();
-    }
-    const { usr, email } = userData;
+    const userData = await getUserToken();
+    console.log('|||||||||||||| userData', userData)
+    if(!userData){return}
+    const { userToken, decodedToken:{ usr, email } } = userData
 
     props.actions.setAuthData({
       userToken,
