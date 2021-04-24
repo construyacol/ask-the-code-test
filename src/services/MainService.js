@@ -69,7 +69,7 @@ const inheritances = aggregation(
 );
 
 export class MainService extends inheritances {
-  
+
   token;
   globalState;
   dispatch;
@@ -99,6 +99,11 @@ export class MainService extends inheritances {
 
   setGlobalState(newValue) {
     return (this.globalState = newValue);
+  }
+
+  async getAuthToken() {
+    console.log('OBTENIENDO NUEVO TOKEN | REFRESH TOKEN : getAuthToken()')
+    return true
   }
 
   async loadFirstEschema() {

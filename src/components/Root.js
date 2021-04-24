@@ -15,7 +15,7 @@ import LoaderAplication from './widgets/loaders/loader_app'
 import {
   doLogout,
   isValidToken,
-  registerUserToken,
+  saveUserToken,
   getUserToken
 } from "./utils";
 
@@ -38,19 +38,19 @@ function RootContainer(props) {
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
     if (params.has("token")) {
-      await registerUserToken(params.get("token"))
+      await saveUserToken(params.get("token"))
       history.push("/");
     }
 
     const userData = await getUserToken();
-    console.log('|||||||||||||| userData', userData)
     if(!userData){return}
+    console.log('|||||||||||||| userData', userData)
     const { userToken, decodedToken:{ usr, email } } = userData
 
     props.actions.setAuthData({
       userToken,
       userEmail: email,
-      userId: usr,
+      userId: usr
     });
 
     // En este punto el token es valido
@@ -70,6 +70,7 @@ function RootContainer(props) {
 
 
   return (
+    // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
       {!isAppLoaded ? (
         <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} />
