@@ -110,9 +110,8 @@ export class AccountService extends WebService {
   async getWalletById(walletId) {
     const user = this.user;
     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`;
-    const headers = this.getHeaders(user.userToken);
 
-    const [wallets] = await this.Get(accountUrl, headers);
+    const [wallets] = await this.Get(accountUrl);
     if (this.isEmpty(wallets)) return;
 
     const depositProvders = wallets.dep_prov;
@@ -123,7 +122,7 @@ export class AccountService extends WebService {
 
       const depositProviderUrl = `${DEPOSITS_URL}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${providerId}"}}`;
 
-      depositProviderDetails = await this.Get(depositProviderUrl, headers);
+      depositProviderDetails = await this.Get(depositProviderUrl);
     }
 
     const result = {
@@ -174,7 +173,6 @@ export class AccountService extends WebService {
   //     this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BALANCES))
   //     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`
 
-  //     const headers = this.getHeaders(user.userToken)
 
   //     const balances = await this.Get(accountUrl, headers)
 

@@ -1,6 +1,12 @@
 import { COINSENDA_URL, GET_JWT_URL, GET_CLIENT_ID } from "../../const/const";
-import { doLogout, handleError, verifyUserToken, saveUserToken } from '../../components/utils'
 import { setAuthData } from "../auth";
+import {
+  doLogout,
+  handleError,
+  verifyUserToken,
+  saveUserToken,
+  getToken
+} from '../../components/utils'
 
 
 export class WebService {
@@ -62,9 +68,10 @@ export class WebService {
   }
 
 
-  Get(url) {
+  async Get(url) {
+    const userToken = await getToken()
     let headers = {
-      Authorization: `Bearer ${this.token}`,
+      Authorization: `Bearer ${userToken}`,
     };
     return this.doFetch(url, {
       method: `GET`,
@@ -73,25 +80,19 @@ export class WebService {
   }
 
 
-
-  getHeaders(token) {
-    return {
-      Authorization: `Bearer ${token}`,
-    };
-  }
-
   isEmpty(data) {
     return !data || (data && data.lenght === 0);
   }
 
-  Post(url, body, withAuth = true) {
+  async Post(url, body, withAuth = true) {
+    const userToken = await getToken()
     let params = {
       method: `POST`,
       headers: withAuth
         ? {
             Accept: `*/*`,
             "Content-Type": "application/json",
-            Authorization: `Bearer ${this.token}`,
+            Authorization: `Bearer ${userToken}`,
           }
         : {},
       body: JSON.stringify(body),

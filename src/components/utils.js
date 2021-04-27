@@ -21,10 +21,14 @@ export const saveUserToken = async(userToken, refreshToken) => {
 }
 
 
+export const getToken = async() => {
+  return await localForage.getItem("user_token");
+}
+
 export const getUserToken = async() => {
   try {
     await validateExpTime()
-    const userToken = await localForage.getItem("user_token");
+    const userToken = await getToken();
     const refreshToken = await localForage.getItem("refresh_token");
     let decodedToken = await verifyUserToken(userToken)
     return {
@@ -39,15 +43,39 @@ export const getUserToken = async() => {
 
 
 
+
+export const verifyUserToken = async(userToken) => {
+  let publicKey = await getPublicKey()
+  let JWToken = userToken || await getToken();
+  let pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
+  let res = jwt.verify(JWToken, pemPublicKey);
+  console.log('--------  TOKEN VERIFICADO  --------')
+  return res
+}
+
+
+export const getExpTimeData = async() => {
+
+  let createdAt = await localForage.getItem('created_at');
+  let jwtExpTime = await localForage.getItem('jwt_expiration_time');
+  let registerDate = new Date(createdAt).getTime();
+  var currentDate = new Date().getTime();
+  var currentTime = (currentDate - registerDate) / (1000);
+
+  return {
+    jwtExpTime,
+    currentTime,
+    REFRESH_TOKEN_EXP_TIME
+  }
+
+}
+
+
 export const validateExpTime = async() => {
 
-    let createdAt = await localForage.getItem('created_at');
-    let jwtExpTime = await localForage.getItem('jwt_expiration_time');
-    if(jwtExpTime && createdAt){
-      const registerDate = new Date(createdAt).getTime();
-      var currentDate = new Date().getTime();
-      var currentTime = (currentDate - registerDate) / (1000);
+    const { jwtExpTime, currentTime } = await getExpTimeData()
 
+    if(jwtExpTime && currentTime){
       console.log('Tiempo transcurrido en sesión:', `${currentTime} segs`)
       console.log('Vigencia user token:', `${jwtExpTime+60}(${jwtExpTime}) segs`)
       console.log('Vigencia refresh token:', `${REFRESH_TOKEN_EXP_TIME} segs`)
@@ -57,7 +85,7 @@ export const validateExpTime = async() => {
         console.log('::::::::: -- El userToken sigue vigente hasta el momento')
         return true
       }else if(currentTime>=jwtExpTime && currentTime<=REFRESH_TOKEN_EXP_TIME){ // Si ha transcurrido mas de 4 min y menos de 150 min se debe de pedir nuevo token
-        console.log('::::::::: -- El userToken caducó pero el refreshToken sigue vigente, getJWToken()')
+        console.log('::::::::: -- El userToken caducó pero el refreshToken sigue vigente, getToken()')
         const refreshToken = await localForage.getItem("refresh_token");
         return await mainService.getJWToken(refreshToken)
       }else{
@@ -67,20 +95,6 @@ export const validateExpTime = async() => {
     }
     throw new Error('No hay token almacenado')
 }
-
-
-
-
-export const verifyUserToken = async(userToken) => {
-  let publicKey = await getPublicKey()
-  let JWToken = userToken || await localForage.getItem("user_token");
-  let pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
-  let res = jwt.verify(JWToken, pemPublicKey);
-  console.log('--------  TOKEN VERIFICADO  --------')
-  return res
-}
-
-
 
 
 
