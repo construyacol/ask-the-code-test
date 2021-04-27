@@ -15,6 +15,7 @@ const SessionRestore = () => {
   const actions = useActions();
 
   const tryRestoreSession = async (userToken) => {
+    
     const {
       currentTime,
       REFRESH_TOKEN_EXP_TIME

@@ -111,11 +111,13 @@ const getPublicKey = async() => {
 }
 
 export const doLogout = async (queryString) => {
+
   await localForage.removeItem("user_token");
   await localForage.removeItem("refresh_token");
   await localForage.removeItem("jwt_expiration_time");
   await localForage.removeItem("created_at");
   await localForage.removeItem("public_key");
+  await localForage.removeItem("sessionState");
 
   window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
 };
@@ -128,8 +130,6 @@ export const handleError = async(err) => {
       return doLogout('?message=Tu session ha caducado')
     case 'TokenExpiredError':
       console.log('|||||||||||||||| El token ha expirado:', err)
-      // return doLogout('?message=El token ha expirado')
-
       const refreshToken = await localForage.getItem("refresh_token");
       return await mainService.getJWToken(refreshToken)
     case 465:
@@ -137,6 +137,6 @@ export const handleError = async(err) => {
       return
     default:
       console.log('handleError: ', err)
-      return doLogout('?message=Por favor iniciar sessión.')
+      return doLogout('?message=Por favor inicia sessión.')
   }
 }
