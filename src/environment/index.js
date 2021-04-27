@@ -11,7 +11,11 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "http://localhost:4005/api/",
     SwapApiUrl: "http://localhost:4008/api/",
     CountryUrl: "https://info1.bitsenda.com/",
-    BASE_URL:"https://bitsenda.com/"
+    BASE_URL:"https://bitsenda.com/",
+    Oauth: {
+      url: "https://auth.bitsenda.com/",
+      clientId: "6067f5a9bdd72d00d1076365"
+    }
   };
 } else if (process.env.NODE_ENV === "development" || process.env.REACT_APP_BUILD_CONFIG === 'development') {
   Environment = {
@@ -24,7 +28,11 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "https://withdraw.bitsenda.com/api/",
     SwapApiUrl: "https://swap.bitsenda.com/api/",
     CountryUrl: "https://info.bitsenda.com/",
-    BASE_URL:"https://bitsenda.com/"
+    BASE_URL:"https://bitsenda.com/",
+    Oauth: {
+      url: "https://auth.bitsenda.com/",
+      clientId: "6067f5a9bdd72d00d1076365"
+    }
   };
 } else {
   Environment = {
@@ -37,7 +45,11 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "https://withdraw.coinsenda.com/api/",
     SwapApiUrl: "https://swap.coinsenda.com/api/",
     CountryUrl: "https://info.coinsenda.com/",
-    BASE_URL:"https://coinsenda.com/"
+    BASE_URL:"https://coinsenda.com/",
+    Oauth: {
+      url: "https://auth.bitsenda.com/",
+      clientId: "6067f5a9bdd72d00d1076365"
+    }
   };
 }
 

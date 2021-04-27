@@ -283,7 +283,7 @@ export class WithdrawService extends WebService {
 
   async processListWithdraw(url_withdraw, account_id) {
     const withdraws = await this.Get(url_withdraw);
-    if (withdraws && withdraws.length < 1) {
+    if (!withdraws || (withdraws && withdraws.length < 1)) {
       return false;
     }
     if (await this.isCached("withdraws", withdraws)) {

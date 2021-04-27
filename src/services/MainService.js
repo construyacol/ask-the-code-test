@@ -9,9 +9,7 @@ import { SwapService } from "./CoinsendaSwapService";
 import { AccountService } from "./CoinsendaAccountService";
 import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
-
 import userSource from "../components/api";
-// import { deepEqual } from "../utils";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading, {
@@ -22,6 +20,7 @@ import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
 import { updateLoadersAction } from "../actions/uiActions";
 // import { observable, decorate, computed, action } from "mobx"
+
 
 const aggregation = (baseClass, ...mixins) => {
   let base = class _Combined extends baseClass {
@@ -101,10 +100,9 @@ export class MainService extends inheritances {
     return (this.globalState = newValue);
   }
 
-  async getAuthToken() {
-    console.log('OBTENIENDO NUEVO TOKEN | REFRESH TOKEN : getAuthToken()')
-    return true
-  }
+
+
+
 
   async loadFirstEschema() {
     const dataNormalized = await normalizeUser(userSource);

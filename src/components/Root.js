@@ -12,9 +12,9 @@ import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
+import useValidateTokenExp from './hooks/useValidateTokenExp'
 import {
   doLogout,
-  isValidToken,
   saveUserToken,
   getUserToken
 } from "./utils";
@@ -32,26 +32,31 @@ history.listen((location) => {
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
+  const authData = useSelector(({ modelData:{ authData } }) => authData);
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
+  useValidateTokenExp()
+
 
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
-    if (params.has("token")) {
-      await saveUserToken(params.get("token"))
+
+    if (params.has("token") && params.has("refresh_token")) {
+      await saveUserToken(params.get("token"), params.get("refresh_token"))
       history.push("/");
     }
 
     const userData = await getUserToken();
+    console.log('userData', userData)
     if(!userData){return}
-    console.log('|||||||||||||| userData', userData)
-    const { userToken, decodedToken:{ usr, email } } = userData
-
-    props.actions.setAuthData({
-      userToken,
-      userEmail: email,
-      userId: usr
-    });
+    const { userToken, refreshToken, decodedToken } = userData
+    if(!Object.keys(authData).length){
+      props.actions.setAuthData({
+        userToken,
+        userEmail: decodedToken.email,
+        userId: decodedToken.usr
+      });
+    }
 
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para la recuperación de sesiones previas

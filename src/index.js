@@ -38,9 +38,12 @@ const noLogsOnProduction = () => {
   console.log = () => null;
 };
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production" && process.env.REACT_APP_BUILD_CONFIG !== 'development') {
+  noLogsOnProduction();
+}
+
+if(process.env.NODE_ENV === "production"){
   serviceWorker.register();
-  // noLogsOnProduction();
 }
 
 if (window && window.CSS && window.CSS.registerProperty) {
