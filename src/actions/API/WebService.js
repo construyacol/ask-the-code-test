@@ -1,7 +1,7 @@
-import { COINSENDA_URL, GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
+import { GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
 import {
-  doLogout,
+  // doLogout,
   handleError,
   verifyUserToken,
   saveUserToken,

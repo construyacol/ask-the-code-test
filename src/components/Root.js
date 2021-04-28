@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Router, Route } from "react-router-dom";
 import localForage from "localforage";
-import jwt from "jsonwebtoken";
 import loadable from "@loadable/component";
 import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -14,7 +13,7 @@ import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
 import useValidateTokenExp from './hooks/useValidateTokenExp'
 import {
-  doLogout,
+  // doLogout,
   saveUserToken,
   getUserToken
 } from "./utils";
@@ -49,7 +48,7 @@ function RootContainer(props) {
     const userData = await getUserToken();
     console.log('userData', userData)
     if(!userData){return}
-    const { userToken, refreshToken, decodedToken } = userData
+    const { userToken, decodedToken } = userData
     if(!Object.keys(authData).length){
       props.actions.setAuthData({
         userToken,

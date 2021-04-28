@@ -23,7 +23,7 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 export const getToken = async() => {
   let userToken = await localForage.getItem("user_token");
-  if(!userToken){throw new Error('No hay token de usuaruio')}
+  if(!userToken){throw new Error('No hay token de usuario')}
   let decodedToken = await jwt.decode(userToken);
   return {
     userToken,
@@ -53,7 +53,7 @@ export const getUserToken = async() => {
 
 export const verifyUserToken = async(_jwToken) => {
   let publicKey = await getPublicKey()
-  const { userToken } = await getToken()
+  let userToken = await localForage.getItem("user_token");
   let JWToken = _jwToken ||  userToken
   let pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
   let res = jwt.verify(JWToken, pemPublicKey);
