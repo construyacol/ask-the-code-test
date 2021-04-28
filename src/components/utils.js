@@ -23,6 +23,7 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 export const getToken = async() => {
   let userToken = await localForage.getItem("user_token");
+  if(!userToken){throw new Error('No hay token de usuaruio')}
   let decodedToken = await jwt.decode(userToken);
   return {
     userToken,
@@ -34,7 +35,7 @@ export const getToken = async() => {
 export const getUserToken = async() => {
   try {
     await validateExpTime()
-    const { userToken } = await getToken()
+    let userToken = await localForage.getItem("user_token");
     const refreshToken = await localForage.getItem("refresh_token");
     let decodedToken = await verifyUserToken(userToken)
     return {

@@ -35,7 +35,7 @@ export class WebService {
     try {
       const response = await fetch(url, {method: `GET`});
       const finalResponse = await response.json();
-      return await finalResponse;
+      return finalResponse;
     } catch (_) {
       handleError(_)
       return false;
