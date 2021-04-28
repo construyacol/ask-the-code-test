@@ -22,13 +22,19 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 
 export const getToken = async() => {
-  return await localForage.getItem("user_token");
+  let userToken = await localForage.getItem("user_token");
+  let decodedToken = await jwt.decode(userToken);
+  return {
+    userToken,
+    ...decodedToken
+  }
+
 }
 
 export const getUserToken = async() => {
   try {
     await validateExpTime()
-    const userToken = await getToken();
+    const { userToken } = await getToken()
     const refreshToken = await localForage.getItem("refresh_token");
     let decodedToken = await verifyUserToken(userToken)
     return {
@@ -44,9 +50,10 @@ export const getUserToken = async() => {
 
 
 
-export const verifyUserToken = async(userToken) => {
+export const verifyUserToken = async(_jwToken) => {
   let publicKey = await getPublicKey()
-  let JWToken = userToken || await getToken();
+  const { userToken } = await getToken()
+  let JWToken = _jwToken ||  userToken
   let pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
   let res = jwt.verify(JWToken, pemPublicKey);
   console.log('--------  TOKEN VERIFICADO  --------')
@@ -85,7 +92,7 @@ export const validateExpTime = async() => {
         console.log('::::::::: -- El userToken sigue vigente hasta el momento')
         return true
       }else if(currentTime>=jwtExpTime && currentTime<=REFRESH_TOKEN_EXP_TIME){ // Si ha transcurrido mas de 4 min y menos de 150 min se debe de pedir nuevo token
-        console.log('::::::::: -- El userToken caducó pero el refreshToken sigue vigente, getToken()')
+        console.log('::::::::: -- El userToken caducó pero el refreshToken sigue vigente, getJWToken()')
         const refreshToken = await localForage.getItem("refresh_token");
         return await mainService.getJWToken(refreshToken)
       }else{
@@ -111,14 +118,13 @@ const getPublicKey = async() => {
 }
 
 export const doLogout = async (queryString) => {
-
   await localForage.removeItem("user_token");
   await localForage.removeItem("refresh_token");
   await localForage.removeItem("jwt_expiration_time");
   await localForage.removeItem("created_at");
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
-
+  mainService.destroySesion()
   window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
 };
 
@@ -128,15 +134,16 @@ export const handleError = async(err) => {
     case 'JsonWebTokenError':
         console.log('JsonWebTokenError: ', err)
       return doLogout('?message=Tu session ha caducado')
+      // return
     case 'TokenExpiredError':
-      console.log('|||||||||||||||| El token ha expirado:', err)
-      const refreshToken = await localForage.getItem("refresh_token");
+        console.log('|||||||||||||||| El token ha expirado:', err)
+        const refreshToken = await localForage.getItem("refresh_token");
       return await mainService.getJWToken(refreshToken)
     case 465:
         console.log('__error__', err)
       return
     default:
-      console.log('handleError: ', err)
+        console.log('handleError: ', err)
       return doLogout('?message=Por favor inicia sessión.')
   }
 }

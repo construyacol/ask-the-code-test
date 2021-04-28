@@ -28,9 +28,9 @@ export const loadLabels = {
 };
 
 export const REFRESH_TOKEN_EXP_TIME = 43200
+export const DESTROY_SESSION_URL = `${Oauth.url}auth/oauth/destroy/session`;
 export const GET_JWT_URL = `${Oauth.url}auth/oauth/grant/refresh-token`;
 export const GET_PUBLIC_KEY_URL = `${Oauth.url}auth/applications/get-public-key`;
-export const GET_CLIENT_ID = Oauth.clientId
 
 export const ACCOUNT_URL = `${AccountApiUrl}users`;
 export const CREATE_WALLET_URL = `${AccountApiUrl}accounts/add-new-account`;

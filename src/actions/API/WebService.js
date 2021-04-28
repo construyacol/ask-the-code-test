@@ -1,4 +1,4 @@
-import { COINSENDA_URL, GET_JWT_URL, GET_CLIENT_ID } from "../../const/const";
+import { COINSENDA_URL, GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
 import {
   doLogout,
@@ -42,12 +42,16 @@ export class WebService {
     }
   }
 
+
+
   async getJWToken(refreshToken) {
+
+    const { auth_client_id } = await getToken()
 
     const params = {
       method: `POST`,
       headers: {
-          client_id: GET_CLIENT_ID,
+          client_id: auth_client_id,
           "Content-Type": "application/json",
           Authorization: `Bearer ${refreshToken}`,
       }
@@ -67,9 +71,8 @@ export class WebService {
     return {...userData, decodedToken }
   }
 
-
   async Get(url) {
-    const userToken = await getToken()
+    const { userToken } = await getToken()
     let headers = {
       Authorization: `Bearer ${userToken}`,
     };
@@ -84,8 +87,22 @@ export class WebService {
     return !data || (data && data.lenght === 0);
   }
 
+
+  async destroySesion(url) {
+    const { userToken } = await getToken()
+      let body = {
+        data:{
+          destroy_all:false,
+          jwt:userToken
+        }
+      }
+      let res = await this.Post(DESTROY_SESSION_URL, body )
+      console.log('|||||||||||||||||||||||||||||||||| destroySesion:  ', res)
+  }
+
+
   async Post(url, body, withAuth = true) {
-    const userToken = await getToken()
+    const { userToken } = await getToken()
     let params = {
       method: `POST`,
       headers: withAuth
