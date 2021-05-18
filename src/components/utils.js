@@ -102,7 +102,7 @@ export const validateExpTime = async() => {
         throw new Error('El token ha caducado')
       }
     }
-    throw new Error('No hay token almacenado')
+    throw new Error('No hay token y/o refresh_token almacenado')
 }
 
 
