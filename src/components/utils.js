@@ -23,6 +23,7 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 export const getToken = async() => {
   let userToken = await localForage.getItem("user_token");
+  // console.log('||||||||||||||||| userToken =======> ', userToken)
   if(!userToken){throw new Error('No hay token de usuario')}
   let decodedToken = await jwt.decode(userToken);
   return {
@@ -144,7 +145,7 @@ export const handleError = async(err) => {
         console.log('__error__', err)
       return
     default:
-        console.log('handleError: ', err)
-      return doLogout('?message=Por favor inicia sessión.')
+        return console.log('handleError: ', err)
+      // return doLogout('?message=Por favor inicia sessión.')
   }
 }
