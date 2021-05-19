@@ -157,8 +157,7 @@ class WithdrawFlow extends Component {
     let providers_served = withdrawProvidersByType(available_providers || this.props.withdrawProviders);
 
     let update_list = [];
-    let w_account_list =
-      withdraw_account_list || this.props.withdraw_account_list;
+    let w_account_list =  withdraw_account_list || this.props.withdraw_account_list;
 
     w_account_list && w_account_list.map((withdraw_account) => {
         if (withdraw_account.currency_type === "crypto") {
@@ -169,14 +168,9 @@ class WithdrawFlow extends Component {
 
         if (providers_served[provider_type].provider && providers_served[provider_type].provider.name === withdraw_account.provider_name) {
           plaza_type = "same_bank";
+        }else{
+          plaza_type = 'pp'
         }
-        // if (!plaza_type) {
-        //   plaza_type =
-        //     providers_served[provider_type].info_needed.city[
-        //       withdraw_account.city.value
-        //     ].plaza_type;
-        // }
-
 
         let new_withdraw_account = {
           ...withdraw_account,
@@ -206,26 +200,14 @@ class WithdrawFlow extends Component {
 
     let withdraw_account_list = await this.props.coinsendaServices.fetchWithdrawAccounts();
 
-    let withdraw_account_list_update = this.get_cost_struct(
-      null,
-      withdraw_account_list
-    );
+    let withdraw_account_list_update = this.get_cost_struct(null, withdraw_account_list);
     this.setState({ withdraw_account_list_update });
-    let new_account_update = matchItem(
-      withdraw_account_list_update,
-      { primary: new_account.id },
-      "id"
-    );
-    let min_amount_withdraw =
-      parseFloat(min_amount) + parseFloat(new_account_update[0].cost);
+    let new_account_update = matchItem(withdraw_account_list_update, { primary: new_account.id }, "id");
+    let min_amount_withdraw = parseFloat(min_amount) + parseFloat(new_account_update[0].cost);
 
     if (parseFloat(amount) < min_amount_withdraw) {
       setTimeout(async () => {
-        this.props.action.addNotification(
-          "withdraw_accounts",
-          { account_id: new_account.id },
-          1
-        );
+        this.props.action.addNotification("withdraw_accounts", { account_id: new_account.id }, 1);
         this.props.toastMessage("Nueva cuenta de retiro creada", "success");
         this.props.action.CleanForm("bank");
       }, 500);
@@ -233,12 +215,7 @@ class WithdrawFlow extends Component {
       await this.setState({ show_list_accounts: false, need_new_acount: null });
       await this.volver(1);
       await this.props.action.isAppLoading(false);
-      return this.props.toastMessage(
-        `Minimo de retiro por esta cuenta es de: $${number_format(
-          min_amount_withdraw
-        )}`,
-        "error"
-      );
+      return this.props.toastMessage(`Minimo de retiro por esta cuenta es de: $${number_format(min_amount_withdraw)}`, "error");
     }
 
     await this.setState({ addNotification: true });
@@ -363,87 +340,6 @@ class WithdrawFlow extends Component {
   };
 
   create_order = async ({ data }) => {
-    // const {
-    //   account_from,
-    //   withdraw_account,
-    //   withdraw_provider,
-    // } = this.props.withdraw_order;
-
-    // return console.log('_______________________________________________CREATE ORDER SUCCESS ====>', data)
-
-    // let new_order_model = [
-    //   {
-    //     ui_name: "El Retiro proviene desde:",
-    //     value: `${account_from.name} - ${account_from.currency.currency}`,
-    //     id: 1,
-    //     icon: account_from.currency.currency,
-    //   },
-    //   {
-    //     ui_name: "Los fondos se recibirán en:",
-    //     value: withdraw_account.bank_name.ui_name,
-    //     id: 2,
-    //     icon: withdraw_account.bank_name.value,
-    //   },
-    //   {
-    //     ui_name: `${withdraw_account.account_number.ui_name}:`,
-    //     value: withdraw_account.account_number.value,
-    //     id: 3,
-    //   },
-    //   // {
-    //   //   ui_name: `Ciudad:`,
-    //   //   value: withdraw_account.city.ui_name,
-    //   //   id: 4,
-    //   // },
-    //   {
-    //     ui_name: "Propietario de la cuenta:",
-    //     value: `${withdraw_account.name} ${withdraw_account.surname}`,
-    //     id: 5,
-    //   },
-    //   {
-    //     ui_name: "Retiro realizado a travez de:",
-    //     value:
-    //       withdraw_provider.info_needed.bank_name[
-    //         withdraw_provider.provider.name
-    //       ].ui_name,
-    //     id: 6,
-    //     icon: withdraw_provider.provider.name,
-    //   },
-    //   {
-    //     ui_name: "Cantidad a retirar:",
-    //     value:
-    //       account_from.currency_type === "fiat"
-    //         ? `$ ${number_format(data.amount)} ${
-    //             account_from.currency.currency
-    //           }`
-    //         : data.withdraw_info.amount,
-    //     icon: account_from.currency.currency,
-    //     id: 7,
-    //   },
-    //   {
-    //     ui_name: "Costo Bancario:",
-    //     value: `$ ${number_format(data.cost)} ${
-    //       account_from.currency.currency
-    //     }`,
-    //     icon: account_from.currency.currency,
-    //     id: 8,
-    //   },
-    //   {
-    //     ui_name: "Total recibido:",
-    //     value:
-    //       account_from.currency_type === "fiat"
-    //         ? `$ ${number_format(data.amount_neto)} ${
-    //             account_from.currency.currency
-    //           }`
-    //         : data.withdraw_info.amount_neto,
-    //     icon: account_from.currency.currency,
-    //     id: 9,
-    //   },
-    // ];
-
-    // console.log(this.props.withdraw_order)
-    // console.log('new_order_model', new_order_model)
-    // console.log('|||||||NEW   ORDER ----', data)
-    // alert('ojala')
 
     this.props.action.success_sound();
     await this.props.action.ModalView("modalSuccess");
@@ -473,7 +369,7 @@ class WithdrawFlow extends Component {
         limit_supered_component: false,
         need_new_acount: true,
       });
-      // await this.props.action.ModalView('modalView')
+      this.props.action.ModalView('modalView')
       this.props.action.FlowAnimationLayoutAction(
         "backV",
         "back",
@@ -582,6 +478,8 @@ class WithdrawFlow extends Component {
       withdraw_account_list_update,
     } = this.state;
 
+    console.log('|||||||||||||||||||| show_list_accounts   ======>  ', show_list_accounts, withdrawProviders)
+
     return (
       <section className="WFC DepositLayout">
         <FlowAnimationLayout>
@@ -681,9 +579,9 @@ const selectWithdrawAccountList = createSelector(
   ],
   (_withdraw_accounts, withdraw_accounts) => {
     const withdraw_account_list = [];
-    _withdraw_accounts &&
-      _withdraw_accounts.map((account_id) => {
-        if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state !== 'complete') {
+    _withdraw_accounts && _withdraw_accounts.map((account_id) => {
+      if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) {
+        // if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state !== 'complete') {
           return false;
         }
         return withdraw_account_list.push(withdraw_accounts[account_id]);

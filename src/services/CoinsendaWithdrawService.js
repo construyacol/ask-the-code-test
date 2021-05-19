@@ -31,7 +31,6 @@ export class WithdrawService extends WebService {
 
     const result = await this.Get(finalUrl);
 
-
     if (!result.length) {
       let userWithOutWA = {
         id: user.id,

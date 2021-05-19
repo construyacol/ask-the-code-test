@@ -102,7 +102,7 @@ export const validateExpTime = async() => {
         throw new Error('El token ha caducado')
       }
     }
-    throw new Error('No hay token y/o refresh_token almacenado')
+    throw Error('No hay token y/o refresh_token almacenado')
 }
 
 
@@ -132,11 +132,10 @@ export const doLogout = async (queryString) => {
 
 export const handleError = async(err) => {
 // TODO: add handle sentry here
-  switch (err.name || err) {
+  switch (err.name || err.message) {
     case 'JsonWebTokenError':
         console.log('JsonWebTokenError: ', err)
       return doLogout('?message=Tu session ha caducado')
-      // return
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
         const refreshToken = await localForage.getItem("refresh_token");
@@ -145,7 +144,9 @@ export const handleError = async(err) => {
         console.log('__error__', err)
       return
     default:
+      if(err.message === 'No hay token y/o refresh_token almacenado'){
+        return doLogout('?message=No tienes credenciales, inicia sesión')
+      }
         return console.log('handleError: ', err)
-      // return doLogout('?message=Por favor inicia sessión.')
   }
 }
