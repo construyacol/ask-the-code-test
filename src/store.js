@@ -23,7 +23,7 @@ export function _createStore() {
     store = createStore(
       reducer,
       preloadedState || {},
-      applyMiddleware(thunk, loadedSoundsMiddleware)
+      applyMiddleware(logger, thunk, loadedSoundsMiddleware)
     );
   } else {
     store = createStore(

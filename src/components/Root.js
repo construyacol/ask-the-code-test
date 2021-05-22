@@ -41,6 +41,7 @@ function RootContainer(props) {
     const params = new URLSearchParams(history.location.search);
 
     if (params.has("token") && params.has("refresh_token")) {
+      await localForage.setItem("sessionState", {});
       await saveUserToken(params.get("token"), params.get("refresh_token"))
       history.push("/");
     }

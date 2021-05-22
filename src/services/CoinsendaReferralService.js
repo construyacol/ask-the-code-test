@@ -32,7 +32,7 @@ export class ReferralService extends WebService {
   async getReferralCode() {
     const user = this.user;
 
-    const finalUrl = `${GET_REFERRAL_URL}/users/${user.id}/referral`;
+    const finalUrl = `${GET_REFERRAL_URL}/${user.id}/referral`;
     // const finalUrl = `${GET_REFERRAL_URL}?filter={"where":{"userId":"${user.id}"}}`;
     let referralData = await this.Get(finalUrl);
     if(!referralData){ return }
