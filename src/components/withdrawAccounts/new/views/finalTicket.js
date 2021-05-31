@@ -12,61 +12,6 @@ function FinalTicket(props) {
   const idCancelButton = useKeyActionAsClick(true, "cancel-button-ticket", 8, false, "onkeyup", true);
   const idFinalizarButton = useKeyActionAsClick(true, "finalizar-button-ticket", 13,false, "onkeyup", true);
 
-  // const composeMethod = async () => {
-  //   const { ticket, ticket_type } = props;
-  //
-  //   let new_ticket = [];
-  //
-  //   switch (ticket_type) {
-  //     case "withdraw_form":
-  //       new_ticket = [
-  //         {
-  //           ui_name: "Propietario:",
-  //           value: ticket.info.name,
-  //           id: 6,
-  //         },
-  //         {
-  //           ui_name: "No. id propietario:",
-  //           value: ticket.info.id_number,
-  //           id: 7,
-  //         },
-  //         {
-  //           ui_name: "Estado:",
-  //           value: ticket.inscribed ? "Inscrita" : "Inscripción pendiente",
-  //           id: 1,
-  //         },
-  //         {
-  //           ui_name: "No. de cuenta:",
-  //           value: ticket.info.account_number,
-  //           id: 2,
-  //         },
-  //         {
-  //           ui_name: "Tipo de cuenta:",
-  //           value: ticket.info.account_type,
-  //           id: 3,
-  //         },
-  //         {
-  //           ui_name: "Entidad bancaria:",
-  //           value: ticket.info.bank_name,
-  //           id: 4,
-  //           icon: ticket.info.bank_name,
-  //         },
-  //         {
-  //           ui_name: "Ciudad:",
-  //           value: ticket.info.city,
-  //           id: 5,
-  //         },
-  //       ];
-  //       return setCurrentTicket(new_ticket);
-  //     default:
-  //       return setCurrentTicket(ticket);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   composeMethod();
-  // }, []);
-
   const {
     finishAction,
     cta_primary_label,

@@ -55,19 +55,14 @@ function WithdrawAccountList(props) {
     let providers_served = await withdrawProvidersByType(withdrawProviders);
 
     let final_withdraw_accounts = await withdraw_accounts.map((wa) => {
-      let provider_max_amount =
-        providers_served[wa.provider_type].provider.max_amount;
-      let limit = (amount * 100) / provider_max_amount;
+    let provider_max_amount = providers_served[wa.provider_type].provider.max_amount;
+    let limit = (amount * 100) / provider_max_amount;
 
       return {
         ...wa,
         orders: find_units(parseInt(limit)),
         percent: parseInt(limit),
-        limit:
-          parseFloat(amount) >=
-            parseFloat(
-              providers_served[wa.provider_type].provider.max_amount
-            ) && true,
+        limit: parseFloat(amount) >= parseFloat(providers_served[wa.provider_type].provider.max_amount) && true,
       };
     });
     // ------------------------------------------------------------------------
@@ -75,7 +70,6 @@ function WithdrawAccountList(props) {
     // transaccional del proveedor de retiro, definiendolas como cuentas preferenciales porque tienen un menor costo transaccional
 
     let preferential_accounts = [];
-
     await withdrawProviders.map(async (withdraw_provider) => {
       if (withdraw_provider.currency_type !== "fiat") {
         return false;
@@ -129,6 +123,8 @@ function WithdrawAccountList(props) {
     }
   };
 
+  console.log('|||||||||||||| withdrawAccounts ===> ', withdrawAccounts)
+
   return (
     <section className="WithdrawAccountList">
       <div className="seccionPrinWA">
@@ -171,7 +167,6 @@ const selectWithdrawAccountList = createSelector(
   (_, props) => props,
   (withdraw_accounts, user, props) => {
     const { currency_type, inherit_account_list } = props;
-
     let withdraw_account_list = inherit_account_list;
     if (!withdraw_account_list) {
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta

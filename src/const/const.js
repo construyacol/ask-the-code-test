@@ -10,6 +10,7 @@ const {
   SwapApiUrl,
   IdentityApIUrl,
   CountryUrl,
+  Oauth,
   BASE_URL
 } = Enviroment;
 
@@ -26,6 +27,10 @@ export const loadLabels = {
   OBTENIENDO_PROVEEDORES_DE_DEPOSITO: "Obteniendo proveedores de deposito",
 };
 
+export const REFRESH_TOKEN_EXP_TIME = 43200
+export const DESTROY_SESSION_URL = `${Oauth.url}auth/oauth/destroy/session`;
+export const GET_JWT_URL = `${Oauth.url}auth/oauth/grant/refresh-token`;
+export const GET_PUBLIC_KEY_URL = `${Oauth.url}auth/applications/get-public-key`;
 
 export const ACCOUNT_URL = `${AccountApiUrl}users`;
 export const CREATE_WALLET_URL = `${AccountApiUrl}accounts/add-new-account`;
@@ -69,7 +74,7 @@ export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidato
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`;
 
 export const REFERRALS_URL = `${ApiUrl}referrals`;
-export const GET_REFERRAL_URL = `${ApiUrl}`;
+export const GET_REFERRAL_URL = `${ApiUrl}users`;
 
 
 export const GET_CHART_DATA_URL = `${CountryUrl}api/cryptoCompares/get-daily-historical-data`;

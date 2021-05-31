@@ -101,6 +101,11 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       case "requestedFundsOrigin":
       case "proof":
       case "comment":
+      case "provider_type":
+      case "visible":
+      case "inscribed":
+      case "inscriptions":
+      case "used_counter":
         return;
       default:
         return itemText;

@@ -31,7 +31,6 @@ export class WithdrawService extends WebService {
 
     const result = await this.Get(finalUrl);
 
-
     if (!result.length) {
       let userWithOutWA = {
         id: user.id,
@@ -283,7 +282,7 @@ export class WithdrawService extends WebService {
 
   async processListWithdraw(url_withdraw, account_id) {
     const withdraws = await this.Get(url_withdraw);
-    if (withdraws && withdraws.length < 1) {
+    if (!withdraws || (withdraws && withdraws.length < 1)) {
       return false;
     }
     if (await this.isCached("withdraws", withdraws)) {

@@ -69,6 +69,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
       coinsendaServices.postLoader(doLogout);
       return redirectURL(isSessionRestored);
     }
+
     if (!userToken) return;
 
     let profile = await coinsendaServices.fetchUserProfile();

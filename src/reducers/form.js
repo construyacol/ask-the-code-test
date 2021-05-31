@@ -121,7 +121,7 @@ const forms = (state = initialState, action) => {
             ...state,
             form_bank: {
               ...state.form_bank,
-              step: state.form_bank.step - 1,
+              step: action.step || state.form_bank.step - 1,
             },
           };
         case "wallets":

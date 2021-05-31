@@ -1,18 +1,22 @@
 import React, { useEffect } from "react";
 import { Router, Route } from "react-router-dom";
 import localForage from "localforage";
-import jwt from "jsonwebtoken";
 import loadable from "@loadable/component";
 import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../actions";
 import withHandleError from "./withHandleError";
 import HomeContainer from "./home/home-container";
-import { doLogout, isValidToken } from "./utils";
 import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
+import useValidateTokenExp from './hooks/useValidateTokenExp'
+import {
+  // doLogout,
+  saveUserToken,
+  getUserToken
+} from "./utils";
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
@@ -27,52 +31,37 @@ history.listen((location) => {
 function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
+  const authData = useSelector(({ modelData:{ authData } }) => authData);
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
+  useValidateTokenExp()
 
   const initComponent = async () => {
-    // return console.log('|||||||||||||||||||||||||||||||||| HISTORY?::', history)
     const params = new URLSearchParams(history.location.search);
 
-    if (params.has("token")) {
-      console.log('|||||||||||||||||||||||||||      |||||||||||||||| params.has:::', params.get("token"))
-      // debugger
-      await localForage.setItem("user_token", params.get("token"));
-      await localForage.setItem("created_at", new Date());
-
+    if (params.has("token") && params.has("refresh_token")) {
+      await localForage.setItem("sessionState", {});
+      await saveUserToken(params.get("token"), params.get("refresh_token"))
       history.push("/");
     }
 
-
-    // const userToken = JSON.parse(localForage.getItem('user_token'));
-    // const created_at = JSON.parse(localForage.getItem('created_at'));
-    const userToken = await localForage.getItem("user_token");
-    const created_at = await localForage.getItem("created_at");
-    // console.log('|||||||||||||||||||||||||||||||||||||||      |||| userToken:::', userToken)
-    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||| created_at:::', created_at)
-    // debugger
-    if (!created_at || !userToken) {
-      return doLogout();
+    const userData = await getUserToken();
+    // console.log('userData', userData)
+    if(!userData){return}
+    const { userToken, decodedToken } = userData
+    if(decodedToken.email.includes('_testing')){
+      return console.log('userToken ==> ', userToken)
     }
-    const availableToken = isValidToken(created_at);
-    if (!availableToken) {
-      toastMessage(`Su sessión ha caducado`, "error");
-      return doLogout();
+    if(!Object.keys(authData).length){
+      props.actions.setAuthData({
+        userToken,
+        userEmail: decodedToken.email,
+        userId: decodedToken.usr
+      });
     }
-    const userData = jwt.decode(userToken);
-    if (!userData) {
-      return doLogout();
-    }
-    const { usr, email } = userData;
-
-    props.actions.setAuthData({
-      userToken,
-      userEmail: email,
-      userId: usr,
-    });
 
     // En este punto el token es valido
-    // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para la recuperación de sesiones previas
+    // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
 
     const parent = window.parent;
     if (parent) {
@@ -88,6 +77,7 @@ function RootContainer(props) {
 
 
   return (
+    // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
       {!isAppLoaded ? (
         <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} />
@@ -110,5 +100,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
-
-//
