@@ -36,7 +36,6 @@ function RootContainer(props) {
   const [toastMessage] = useToastMessage();
   useValidateTokenExp()
 
-
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
 
@@ -47,9 +46,12 @@ function RootContainer(props) {
     }
 
     const userData = await getUserToken();
-    console.log('userData', userData)
+    // console.log('userData', userData)
     if(!userData){return}
     const { userToken, decodedToken } = userData
+    if(decodedToken.email.includes('_testing')){
+      return console.log('userToken ==> ', userToken)
+    }
     if(!Object.keys(authData).length){
       props.actions.setAuthData({
         userToken,
@@ -98,5 +100,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
-
-//
