@@ -186,7 +186,7 @@ class WithdrawFlow extends Component {
   };
 
   new_account_and_withdraw = async (new_account) => {
-    // console.log('=======> new_account', new_account)
+    console.log('=======> new_account', new_account)
 
     const { withdrawProviders, form_withdraw } = this.props;
 
@@ -202,7 +202,10 @@ class WithdrawFlow extends Component {
 
     let withdraw_account_list_update = this.get_cost_struct(null, withdraw_account_list);
     this.setState({ withdraw_account_list_update });
-    let new_account_update = matchItem(withdraw_account_list_update, { primary: new_account.id }, "id");
+    let new_account_update = await matchItem(withdraw_account_list_update, { primary: new_account.id }, "id");
+
+    console.log('=======> new account_update', new_account_update)
+
     let min_amount_withdraw = parseFloat(min_amount) + parseFloat(new_account_update[0].cost);
 
     if (parseFloat(amount) < min_amount_withdraw) {
