@@ -57,13 +57,13 @@ class CropImg extends React.Component {
   // }
 
   showCroppedImage = async (img, cropArea, rotation) => {
+
     await this.props.action.isAppLoading(true);
     const croppedImage = await getCroppedImg(
       this.state.imageSrc,
       this.state.croppedAreaPixels,
       this.state.imgRotation
     );
-    // return console.log('showCroppedImage', croppedImage)
     if (!croppedImage) {
       return this.props.action.isAppLoading(false);
     }

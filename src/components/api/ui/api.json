@@ -432,7 +432,7 @@
       "natural": {
         "name": {
           "name": "name",
-          "label": "Nombres Completos",
+          "label": "Nombres Completos (sin apellidos)",
           "placeholder": "Ej: Carlos Julio",
           "message": "Los nombres deben coincidir con los de tu documento de identidad",
           "errmessage": "Escribe tus dos o más nombres completos, ojo solo los nombres."

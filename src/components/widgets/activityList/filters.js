@@ -6,11 +6,12 @@ import { current_section_params } from "../../../actions/uiActions";
 const ActivityFilters = (props) => {
   const { currentFilter } = props;
 
-  const [filter, setFilter] = useState(true);
+  // const [filter, setFilter] = useState(true);
+  let filter = true
 
-  const toggleFilter = () => {
-    setFilter(!filter);
-  };
+  // const toggleFilter = () => {
+  //   setFilter(!filter);
+  // };
 
   const filterChange = async (e) => {
     let value = e.target.id;
@@ -29,10 +30,6 @@ const ActivityFilters = (props) => {
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}
       >
-        {/* <p id="activity" className={`ALitemFill ${currentFilter === 'all' ? 'ALactive' : ''}`} onClick={filterChange}>
-          <i id="activity" className="fas fa-globe-africa"></i>
-          Todo
-        </p> */}
 
         {props.view !== "withdraw_accounts" && (
           <p
@@ -74,7 +71,6 @@ const ActivityFilters = (props) => {
         className={` ALif2 ALitemFill ${filter ? "ALactive" : ""} ${
           movil_viewport ? "movil" : ""
         }`}
-        onClick={movil_viewport ? null : toggleFilter}
       >
         <div className="ALif2ItemAll" style={{ top: filter ? "-100%" : "0%" }}>
           <div className="ALif2Item currentFill">
@@ -90,7 +86,7 @@ const ActivityFilters = (props) => {
             {movil_viewport ? (
               <p>{currentFilter && currentFilter.toUpperCase()}</p>
             ) : (
-              <p>VER</p>
+              <p>Filtros</p>
             )}
           </div>
         </div>

@@ -8,6 +8,7 @@ import { img_compressor } from "../../../utils";
 import withCoinsendaServices from "../../withCoinsendaServices";
 
 class KycAvancedContainer extends Component {
+
   state = {
     kyc_success: false,
     front:
@@ -129,7 +130,13 @@ class KycAvancedContainer extends Component {
       // return console.log('||||||||||IMG AFTER', file)
       const imageDataUrl = await readFile(file);
       this.props.action.isAppLoading(false);
-      // console.log('|||||||| goFileLoader url', imageDataUrl)
+      // console.log('|||||||||||||| goFileLoader url', imageDataUrl)
+
+      await this.subirImg({
+        urlImg:imageDataUrl,
+        base64:imageDataUrl,
+      })
+
       this.setState({
         imageSrc: imageDataUrl,
         fileloader: !this.state.fileloader,
@@ -137,21 +144,20 @@ class KycAvancedContainer extends Component {
     }
   };
 
+
   subirImg = (img) => {
     this.props.action.isAppLoading(true);
-
     const { urlImg, base64 } = img;
     // simulamos llamado del endpoint para guardar imagen
-    setTimeout(() => {
+    // setTimeout(() => {
       this.props.action.isAppLoading(false);
       this.setState({
         fileloader: !this.state.fileloader,
       });
 
       this.updateLocalImg(urlImg, base64);
-
       this.props.toastMessage("¡Imagen cargada con éxito!", "success");
-    }, 2000);
+    // }, 2000);
   };
 
   updateLocalImg = async (img, base64) => {
@@ -163,7 +169,7 @@ class KycAvancedContainer extends Component {
         : "newselfie";
     // this.props.action.UpdatePicKyc({[name]:img})
     await this.setState({
-      [name]: img,
+      [name]: base64,
       base64: {
         ...this.state.base64,
         [name]: base64,
@@ -266,6 +272,7 @@ class KycAvancedContainer extends Component {
   };
 
   render() {
+    console.log('||||||||||||||||||| KYC ADVANCED ==> this state ==> ', this.state)
 
 
     return (

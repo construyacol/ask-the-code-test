@@ -37,7 +37,9 @@ const convertCurrencies = async (currency, amount_spend, pair_id) => {
     pair_id: pair_id,
   };
 
-  let objetive_pair_instance = store.getState().modelData.all_pairs[pair_id];
+  let objetive_pair_instance = store.getState().modelData.all_pairs && store.getState().modelData.all_pairs[pair_id];
+
+  if(!objetive_pair_instance){return}
 
   let to_spend_currency = extractCurrencies([data.to_spend_currency]);
   let primary_objetive_currency = extractCurrencies([

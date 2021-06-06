@@ -696,6 +696,7 @@
   /*padding: 0 12px;*/
   overflow: hidden;
   background: linear-gradient(to right, #8080801a, #8080801a, white);
+  justify-content: flex-end;
 }
 
 .ALfiltrosView {
@@ -733,7 +734,7 @@
   justify-content: center;
   height: 35px !important;
   position: absolute;
-  right: 0;
+  left: 0;
   margin: 0 !important;
   color: gray !important;
   z-index: 1;
