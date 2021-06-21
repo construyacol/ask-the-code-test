@@ -1,12 +1,12 @@
 import React from "react";
 import KycDashBoard from "./dashboard/kycDashboardLayout";
 import SimpleSlider from "./carousel/carouselLayout";
-import CropImg from "../../widgets/cropimg";
+// import CropImg from "../../widgets/cropimg";
 import SimpleLoader from "../../widgets/loaders";
 import SuccessComponentScreen from "../../widgets/success_screen/success_screen";
 import "../kyc.css";
 
-const KycAvancedLayout = (props) => {
+const KycAdvancedLayout = (props) => {
   const {
     dashboard,
     fileloader,
@@ -57,12 +57,13 @@ const KycAvancedLayout = (props) => {
             )}
 
             <div
-              className={`KycDashContainer ${fileloader ? "fileloader" : ""}`}
+              className={`KycDashContainer`}
+              // className={`KycDashContainer ${fileloader ? "fileloader" : ""}`}
             >
               <KycDashBoard {...props} />
-              <div className="ssoa">
+              {/* <div className="ssoa">
                 <CropImg {...props} />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -82,4 +83,4 @@ const KycAvancedLayout = (props) => {
   );
 };
 
-export default KycAvancedLayout;
+export default KycAdvancedLayout;

@@ -42,6 +42,7 @@ class ItemSettings extends Component {
   };
 
   update_items = async (items) => {
+
     const { update_state } = this.props;
 
     let resul = [];
@@ -58,6 +59,12 @@ class ItemSettings extends Component {
     });
     return resul;
   };
+
+//   componentDidUpdate(prevProps) {
+//   if (prevProps.user.levels !== this.props.user.levels) {
+//     this.initItem();
+//   }
+// }
 
   render() {
     const { item_action, update_state } = this.props;

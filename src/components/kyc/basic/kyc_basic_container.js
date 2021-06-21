@@ -199,8 +199,8 @@ class KycBasicContainer extends Component {
       // let name_section = kyc_data_basic[this.props.step-1].name
       // console.log('this.props!!!!!!!', this.props, 'kyc_data_basic', kyc_data_basic)
       // console.log('this.props!!!!!!!', new_init_state)
-      let current_item = kyc_data_basic[this.props.step - 1];
-
+      // let current_item = kyc_data_basic[this.props.step - 1];
+      let current_item = kyc_data_basic[0];
       await this.setState({
         data_state: new_init_state,
         message: current_item.message,

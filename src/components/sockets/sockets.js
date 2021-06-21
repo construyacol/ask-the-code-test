@@ -50,6 +50,7 @@ class SocketsComponent extends Component {
               this.swap_management(swap);
             });
 
+
             socket.on(`/deposit/${user.id}`, async (deposit) => {
               if (
                 deposit.state === "pending" &&
@@ -80,18 +81,20 @@ class SocketsComponent extends Component {
             });
 
 
-            // socket.on(`/status/${user.id}`, async (withdrawAccount) => {
-            //   if (withdrawAccount.state === "pending") {
-            //     await this.setState({currentWithdrawAccount: withdrawAccount });
-            //   }
-            //   this.withdraw_account_mangagement(withdrawAccount);
-            // });
+            socket.on(`/status/${user.id}`, async (status) => {
+              if(status.countries){
+                this.status_management(status)
+              }
+            });
 
           });
         });
       }
     }
   }
+
+
+
 
 
   withdraw_account_mangagement = async(withdrawAccount) => {
@@ -641,6 +644,43 @@ class SocketsComponent extends Component {
       // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
     }
   };
+
+
+  status_management = async(status) => {
+
+    this.props.action.isAppLoading(true);
+
+    const { countries:{ international } } = status
+
+    let userUpdate = {
+      ...this.props.user,
+      verification_level:international.verification_level,
+      verification_error:international.errors && international.errors[0],
+      levels:international.levels,
+      security_center:{
+        ...this.props.user.security_center,
+        kyc:{
+          advanced:international.levels.identity,
+          basic:international.levels.personal,
+          financial:international.levels.financial
+        }
+      }
+    }
+    await this.props.coinsendaServices.updateUser(userUpdate)
+    setTimeout(()=>{
+      this.props.action.isAppLoading(false);
+    }, 100)
+    console.log(international.levels)
+    if(
+    international.levels.identity === 'rejected' &&
+    international.levels.personal === 'rejected'
+    ){
+      this.props.action.CleanForm("kyc_basic");
+      this.props.action.CleanForm("kyc_advanced");
+      this.props.action.ToStep("globalStep", 0)
+    }
+
+  }
 
   render() {
     return null;

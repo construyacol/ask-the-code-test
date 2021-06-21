@@ -106,7 +106,6 @@ const data = (state = initialState, action) => {
       };
 
     case UPDATE_NORMALIZED_STATE:
-      // Actualizamos lista de billeteras de usuario, de momento estoy sirviendo toda la data normalizado para hecer pruebas
       models = action.payload.entities;
       user_id = action.payload.result;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import KycBasicContainer from "./basic/kyc_basic_container";
-import KycAvancedContainer from "./avanced/kyc_avanced_container";
+import KycAdvancedContainer from "./advanced/kyc_advanced_container";
 import KycFinancialComponent from "./financial/kyc_financial";
 import SuccessComponentScreen from "../widgets/success_screen/success_screen";
 import "./kyc.css";
@@ -57,7 +57,7 @@ const KycLayout = (props) => {
             <p className="fuente KycTitle">Verificación Avanzada</p>
           )}
 
-          {globalStep === 2 && <KycAvancedContainer {...props} />}
+          {globalStep === 2 && <KycAdvancedContainer {...props} />}
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import KycAvancedLayout from "./kyc_avanced_layout";
+import KycAdvancedLayout from "./kyc_advanced_layout";
 import { readFile } from "../../../utils";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -7,7 +7,7 @@ import actions from "../../../actions";
 import { img_compressor } from "../../../utils";
 import withCoinsendaServices from "../../withCoinsendaServices";
 
-class KycAvancedContainer extends Component {
+class KycAdvancedContainer extends Component {
 
   state = {
     kyc_success: false,
@@ -44,8 +44,8 @@ class KycAvancedContainer extends Component {
 
 
   async componentDidMount() {
-    await this.props.action.CurrentForm("kyc_advance");
-    if (this.props.current === "kyc_advance") {
+    await this.props.action.CurrentForm("kyc_advanced");
+    if (this.props.current === "kyc_advanced") {
       this.props.action.isAppLoading(false);
       this.props.history.push(`?form=identity_front_upload`);
     }
@@ -59,7 +59,7 @@ class KycAvancedContainer extends Component {
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
     if (
       prevProps.step === this.props.step &&
-      this.props.current === "kyc_advance"
+      this.props.current === "kyc_advanced"
     ) {
       return;
     }
@@ -177,7 +177,7 @@ class KycAvancedContainer extends Component {
       imageSrc: null,
     });
 
-    await this.props.action.UpdateForm("kyc_avanced", this.state);
+    await this.props.action.UpdateForm("kyc_advanced", this.state);
 
     if (this.props.step <= 3) {
       return setTimeout(() => {
@@ -203,11 +203,11 @@ class KycAvancedContainer extends Component {
     // const currentStep = step.target.title
     if (this.props.user.id_type === "pasaporte" && this.props.step === 1) {
       this.setState({ prevState: 3 });
-      return this.props.action.IncreaseStep("kyc_avanced", 3);
+      return this.props.action.IncreaseStep("kyc_advanced", 3);
     }
 
     const prevStep = this.props.step;
-    await this.props.action.IncreaseStep("kyc_avanced");
+    await this.props.action.IncreaseStep("kyc_advanced");
     const currentStep = this.props.step;
 
     // console.log(`DEBUGEANDO ANDO::::::-----____----- CURRENT: ${currentStep} -- PREVSTEP: ${prevStep}`)
@@ -261,7 +261,7 @@ class KycAvancedContainer extends Component {
             newselfie:null
           },
         })
-        this.props.action.UpdateForm("kyc_avanced", this.state);
+        this.props.action.UpdateForm("kyc_advanced", this.state);
       }
 
     }
@@ -276,7 +276,7 @@ class KycAvancedContainer extends Component {
 
 
     return (
-      <KycAvancedLayout
+      <KycAdvancedLayout
         stepChange={this.stepChange}
         goFileLoader={this.goFileLoader}
         continuar={this.continuar}
@@ -295,8 +295,8 @@ function mapStateToProps(state, props) {
   const { current } = state.form;
   return {
     loader: state.isLoading.loader,
-    step: state.form.form_kyc_avanced.step,
-    base64: state.form.form_kyc_avanced.base64,
+    step: state.form.form_kyc_advanced.step,
+    base64: state.form.form_kyc_advanced.base64,
     user: user,
     current,
   };
@@ -311,4 +311,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withCoinsendaServices(KycAvancedContainer));
+)(withCoinsendaServices(KycAdvancedContainer));

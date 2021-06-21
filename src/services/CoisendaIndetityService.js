@@ -111,9 +111,9 @@ export class IndetityService extends WebService {
     return updatedUser;
   }
 
-  async updateUser(newUser) {
-    newUser = await normalizeUser(newUser);
-    return this.dispatch(updateNormalizedDataAction(newUser));
+  async updateUser(userData) {
+    const _userUpdate = await normalizeUser(userData);
+    return this.dispatch(updateNormalizedDataAction(_userUpdate));
   }
 
   async getVerificationState() {

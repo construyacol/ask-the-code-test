@@ -22,7 +22,7 @@ const initialState = {
   form_kyc_financial: {
     step: 1,
   },
-  form_kyc_avanced: {
+  form_kyc_advanced: {
     newback: null,
     newfront: null,
     newselfie: null,
@@ -101,8 +101,8 @@ const forms = (state = initialState, action) => {
     case UPDATE_KYC_PICTURE:
       return {
         ...state,
-        form_kyc_avanced: {
-          ...state.form_kyc_avanced,
+        form_kyc_advanced: {
+          ...state.form_kyc_advanced,
           ...action.payload,
         },
       };
@@ -218,12 +218,12 @@ const forms = (state = initialState, action) => {
             ...state,
             globalStep: action.step ? action.step : state.globalStep + 1,
           };
-        // case 'kyc_avanced':
+        // case 'kyc_advanced':
         //     return {
         //       ...state,
-        //       form_kyc_avanced:{
-        //         ...state.form_kyc_avanced,
-        //             step:state.form_kyc_avanced.step + 1
+        //       form_kyc_advanced:{
+        //         ...state.form_kyc_advanced,
+        //             step:state.form_kyc_advanced.step + 1
         //           }
         //     }
         default:

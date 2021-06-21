@@ -112,7 +112,7 @@ function mapStateToProps(state) {
   const steped =
     current === "wallets"
       ? `form_wallet`
-      : current === "kyc_advance"
+      : current === "kyc_advanced"
       ? "form_kyc_basic"
       : `form_${current}`;
 
