@@ -50,6 +50,7 @@ class SocketsComponent extends Component {
               this.swap_management(swap);
             });
 
+
             socket.on(`/deposit/${user.id}`, async (deposit) => {
               if (
                 deposit.state === "pending" &&
@@ -80,18 +81,20 @@ class SocketsComponent extends Component {
             });
 
 
-            // socket.on(`/status/${user.id}`, async (withdrawAccount) => {
-            //   if (withdrawAccount.state === "pending") {
-            //     await this.setState({currentWithdrawAccount: withdrawAccount });
-            //   }
-            //   this.withdraw_account_mangagement(withdrawAccount);
-            // });
+            socket.on(`/status/${user.id}`, async (status) => {
+              if(status.countries){
+                this.status_management(status)
+              }
+            });
 
           });
         });
       }
     }
   }
+
+
+
 
 
   withdraw_account_mangagement = async(withdrawAccount) => {
@@ -641,6 +644,11 @@ class SocketsComponent extends Component {
       // this.props.action.current_section_params({swap_socket_channel:this.state.currentSwap})
     }
   };
+
+
+  status_management = async(status) => {
+    this.props.coinsendaServices.updateUserStatus(status)
+  }
 
   render() {
     return null;

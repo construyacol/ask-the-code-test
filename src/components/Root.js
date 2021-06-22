@@ -49,9 +49,9 @@ function RootContainer(props) {
     // console.log('userData', userData)
     if(!userData){return}
     const { userToken, decodedToken } = userData
-    if(decodedToken.email.includes('_testing')){
-      return console.log('userToken ==> ', userToken)
-    }
+    // if(decodedToken.email.includes('_testing')){
+    //   return console.log('userToken ==> ', userToken)
+    // }
     if(!Object.keys(authData).length){
       props.actions.setAuthData({
         userToken,

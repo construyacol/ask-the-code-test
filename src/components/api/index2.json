@@ -31,7 +31,7 @@
       "birthday": "new Date()",
       "gender": "male"
     },
-    "avanced": {
+    "advanced": {
       "id_user": "asd8989d9e",
       "createdAt": "new Date()",
       "status": true,
