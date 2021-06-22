@@ -647,39 +647,7 @@ class SocketsComponent extends Component {
 
 
   status_management = async(status) => {
-
-    this.props.action.isAppLoading(true);
-
-    const { countries:{ international } } = status
-
-    let userUpdate = {
-      ...this.props.user,
-      verification_level:international.verification_level,
-      verification_error:international.errors && international.errors[0],
-      levels:international.levels,
-      security_center:{
-        ...this.props.user.security_center,
-        kyc:{
-          advanced:international.levels.identity,
-          basic:international.levels.personal,
-          financial:international.levels.financial
-        }
-      }
-    }
-    await this.props.coinsendaServices.updateUser(userUpdate)
-    setTimeout(()=>{
-      this.props.action.isAppLoading(false);
-    }, 100)
-    console.log(international.levels)
-    if(
-    international.levels.identity === 'rejected' &&
-    international.levels.personal === 'rejected'
-    ){
-      this.props.action.CleanForm("kyc_basic");
-      this.props.action.CleanForm("kyc_advanced");
-      this.props.action.ToStep("globalStep", 0)
-    }
-
+    this.props.coinsendaServices.updateUserStatus(status)
   }
 
   render() {

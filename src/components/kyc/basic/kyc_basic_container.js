@@ -20,26 +20,6 @@ import KycSkeleton from './skeleton'
 
 const modelFormData = kyc.kyc_basic.natural;
 
-// nuevo metodo para ejecutar animaciones complejas, para esto debemos crear un objeto con propiedades booleanas que haga las veces de diversos disparadores de metodos donde vayan activando y desactivando (true/false) de forma sincrona distintos eventos en el DOM (añadir/quitar => clases || styles)...
-//
-// ej: stack:{
-//    anim1:true,
-//    anim2:false,
-//    anim3:true
-// }
-//
-// method = (sub_section) => {
-//    await dom_animation_dispatch({stack:{...state.stack, anim1:true}}, 300)    //dom_animation_dispatch({state}, {time to ejecution})
-// }
-//
-// dom_animation_dispatch = (state, time) => {
-//    new Promise(resolve, err) =>{
-//      setTimeOut(async()=>{
-// 	     await this.setState({state})
-//        resolve(true)
-//     	}, time)
-//    }
-// }
 
 class KycBasicContainer extends Component {
   state = {

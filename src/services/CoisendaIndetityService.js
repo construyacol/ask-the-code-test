@@ -13,9 +13,63 @@ import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
+import { CleanForm, ToStep } from "../actions/formActions";
+
 
 export class IndetityService extends WebService {
 
+
+  async getStatus(status) {
+    if(status){return status}
+    try {
+      const user = this.user;
+      const statusUrl = `${INDENTITY_USERS_URL}/${user.id}/status`;
+      const status = await this.Get(statusUrl);
+      return status
+    } catch (e) {
+      console.log('getStatus', e)
+      return e
+    }
+  }
+
+  async updateUserStatus(status) {
+
+    const user = this.user;
+    const _status = await this.getStatus(status)
+    if(!_status) return;
+    this.setIsAppLoading(true)
+    const { countries:{ international } } = _status
+
+    let userUpdate = {
+      ...user,
+      verification_level:international.verification_level,
+      verification_error:international.errors && international.errors[0],
+      levels:international.levels,
+      security_center:{
+        ...user.security_center,
+        kyc:{
+          advanced:international.levels.identity,
+          basic:international.levels.personal,
+          financial:international.levels.financial
+        }
+      }
+    }
+    // console.log('||||||||||||||| getUserStatus:: ', userUpdate)
+    await this.updateUser(userUpdate)
+
+    setTimeout(()=>{
+      this.setIsAppLoading(false);
+    }, 100)
+
+    if(
+    international.levels.identity === 'rejected' &&
+    international.levels.personal === 'rejected'
+    ){
+      this.dispatch(CleanForm("kyc_basic"))
+      this.dispatch(CleanForm("kyc_advanced"))
+      this.dispatch(ToStep("globalStep", 0))
+    }
+  }
 
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));

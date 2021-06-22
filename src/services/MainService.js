@@ -134,12 +134,7 @@ export class MainService extends inheritances {
     const wallets = await this.getWalletsByUser();
     const verificationStatus = await this.getVerificationState();
 
-    // console.log('|||||||||||||||| wallets :::: ', wallets)
-    // console.log('|||||||||||||||| verificationStatus :::: ', verificationStatus)
-    // debugger
-
     if (!wallets && verificationStatus === "accepted") {
-    // if (verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
     this.postLoader(callback, false);
@@ -165,7 +160,9 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-
+      if(this.user.levels.identity === 'confirmed' && this.user.levels.personal === 'confirmed'){
+        await this.updateUserStatus()
+      }
       this.dispatch(
         updateLoadersAction({
           mainList: false,
