@@ -9,7 +9,7 @@ import "../kyc.css";
 const KycAdvancedLayout = (props) => {
   const {
     dashboard,
-    fileloader,
+    // fileloader,
     onBoarding,
     continuar,
     topOnBoarding,
