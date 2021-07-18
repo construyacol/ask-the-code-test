@@ -44,11 +44,13 @@
     "reselect": "^4.0.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
+    "source-map-explorer": "^2.5.2",
     "styled-components": "^4.4.1",
     "text-mask-addons": "^3.8.0",
     "wallet-address-validator": "^0.2.4"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "cross-env react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:local": "cross-env REACT_APP_LOCAL_CONFIG=local npm run start:dev",
