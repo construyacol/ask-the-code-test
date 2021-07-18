@@ -170,7 +170,7 @@ export class MainService extends inheritances {
       );
     } catch (error) {
       await sleep(5000);
-      this.postLoader(callback);
+      // this.postLoader(callback);
     }
   }
 

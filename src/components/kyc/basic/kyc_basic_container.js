@@ -516,7 +516,7 @@ class KycBasicContainer extends Component {
     const { step } = this.props;
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
-    // console.log('|||current_search', current_search && current_search.length, current_search )
+    console.log('||||||||||||||||||||| current_search', current_search && current_search.length, current_search )
     open_sect = open_sect && ui_type !== "text";
 
     // console.log('|||||||||||||||||||||||||||||| expandibleKycPanel ', open_sect, ui_type)
@@ -559,7 +559,7 @@ class KycBasicContainer extends Component {
 
                 {show_hide_section && (
                   <div className={`contexpandibleKycPanel ${open_sect ? "openSec" : ""}`}>
-                    {current_search && (
+                    {current_search && current_search.length && (
                       <div className="contCountryList">
                         {current_search.map((item) => {
                           return (
