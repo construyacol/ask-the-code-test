@@ -1,5 +1,45 @@
 let Environment;
 
+export const getHostName = () => {
+  const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+  const nodeList = {
+    development:'bitsenda',
+    staging:'bitsenda',
+    pre_prod:'cryptosenda',
+    production:'coinsenda'
+  }
+  return nodeList[hostId]
+}
+
+// export const getBaseUrl = (prefix) => {
+//   // let { hostname } = window.location
+//   let _prefix = prefix ? `${prefix}.` : ''
+//   // let BASE_URL = hostname.includes('localhost') ? `https://${_prefix}${getHostName()}.com` : `https://${_prefix}${hostname}`
+//   const BASE_URL = `https://${_prefix}${getHostName()}.com`
+//   console.log('|||||| BASE_URL', BASE_URL)
+//   return BASE_URL
+// }
+
+
+Environment = {
+  ApiUrl: `https://tx.${getHostName()}.com/api/`,
+  SocketUrl: `https://tx.${getHostName()}.com/`,
+  IdentityApIUrl: `https://identity.${getHostName()}.com/api/`,
+  CountryApIUrl: `https://info.${getHostName()}.com/api/`,
+  AccountApiUrl: `https://account.${getHostName()}.com/api/`,
+  DepositApiUrl: `https://deposit.${getHostName()}.com/api/`,
+  WithdrawApiUrl: `https://withdraw.${getHostName()}.com/api/`,
+  SwapApiUrl: `https://swap.${getHostName()}.com/api/`,
+  CountryUrl: `https://info.${getHostName()}.com/`,
+  BASE_URL:`https://${getHostName()}.com/`,
+  Oauth: {
+    url: `https://auth.${getHostName()}.com/`
+  }
+};
+
+
+
+
 if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   Environment = {
     ApiUrl: "http://localhost:3001/api/",
@@ -17,43 +57,8 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
       clientId: "6067f5a9bdd72d00d1076365"
     }
   };
-} else if (process.env.NODE_ENV === "development" || process.env.REACT_APP_BUILD_CONFIG === 'development') {
-  Environment = {
-    ApiUrl: "https://tx.bitsenda.com/api/",
-    SocketUrl: "https://tx.bitsenda.com/",
-    IdentityApIUrl: "https://identity.bitsenda.com/api/",
-    CountryApIUrl: "https://info.bitsenda.com/api/",
-    AccountApiUrl: "https://account.bitsenda.com/api/",
-    DepositApiUrl: "https://deposit.bitsenda.com/api/",
-    WithdrawApiUrl: "https://withdraw.bitsenda.com/api/",
-    SwapApiUrl: "https://swap.bitsenda.com/api/",
-    CountryUrl: "https://info.bitsenda.com/",
-    BASE_URL:"https://bitsenda.com/",
-    Oauth: {
-      url: "https://auth.bitsenda.com/",
-      clientId: "6067f5a9bdd72d00d1076365"
-    }
-  };
-} else {
-  Environment = {
-    ApiUrl: "https://tx.coinsenda.com/api/",
-    SocketUrl: "https://tx.coinsenda.com/",
-    IdentityApIUrl: "https://identity.coinsenda.com/api/",
-    CountryApIUrl: "https://info.coinsenda.com/api/",
-    AccountApiUrl: "https://account.coinsenda.com/api/",
-    DepositApiUrl: "https://deposit.coinsenda.com/api/",
-    WithdrawApiUrl: "https://withdraw.coinsenda.com/api/",
-    SwapApiUrl: "https://swap.coinsenda.com/api/",
-    CountryUrl: "https://info.coinsenda.com/",
-    BASE_URL:"https://coinsenda.com/",
-    Oauth: {
-      url: "https://auth.bitsenda.com/",
-      clientId: "6067f5a9bdd72d00d1076365"
-    }
-  };
-}
+} 
 
-
-
+console.log('||||||||||||| Environment ====>|', Environment)
 
 export default Environment;

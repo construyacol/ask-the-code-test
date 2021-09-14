@@ -5,9 +5,12 @@ const deploySetup = {
   staging: {
     bucket: "app.bitsenda.com",
   },
-  prod: {
-    bucket: "app.coinsenda.com",
+  pre_prod: {
+    bucket: "app.cryptosenda.com",
   },
+  prod: {
+    bucket: "app.coinsenda.com"
+  }
 };
 
 const setupEntries = Object.keys(deploySetup);
