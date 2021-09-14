@@ -2,7 +2,6 @@ import React from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { SelectCountryButton } from '../widgets/buttons/buttons'
-// import MenuLoggedOut from './menuLoggedOut'
 import { useActions } from "../../hooks/useActions";
 import "./mSuperior.css";
 
@@ -108,7 +107,7 @@ const MenuSuperiorLayout = (props) => {
               } */}
             </div>
           ) : (
-            <div className="loggedInFalse">{/* <MenuLoggedOut/> */}</div>
+            <div className="loggedInFalse"></div>
           )}
 
           <div className="capsuleMenu2">
