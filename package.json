@@ -51,7 +51,7 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start":"cross-env react-scripts start",
+    "start":"PORT=2998 cross-env react-scripts start",
     "start:dev":"cross-env NODE_ENV='development' npm start",
     "start:local":"cross-env REACT_APP_LOCAL_CONFIG=local npm run start:dev",
     "start:build":"npm run build && serve ./build -s -l 5000",
