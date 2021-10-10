@@ -53,8 +53,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     CountryUrl: "https://info1.bitsenda.com/",
     BASE_URL:"https://bitsenda.com/",
     Oauth: {
-      url: "https://auth.bitsenda.com/",
-      clientId: "6067f5a9bdd72d00d1076365"
+      url: "http://127.0.0.1:3000/"
     }
   };
 } 
