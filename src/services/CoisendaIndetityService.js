@@ -20,13 +20,11 @@ export class IndetityService extends WebService {
 
 
   async getStatus(status) {
-    if(status){return status}
+    // if(status){return status} 
     try {
       const user = this.user;
       const statusUrl = `${INDENTITY_USERS_URL}/${user.id}/status`;
       const status = await this.Get(statusUrl);
-      // console.log('|||||| status', status)
-      // debugger
       return status
     } catch (e) {
       console.log('getStatus', e)
@@ -41,7 +39,6 @@ export class IndetityService extends WebService {
     if(!_status) return;
     this.setIsAppLoading(true)
     const { countries:{ international } } = _status
-
     let userUpdate = {
       ...user,
       verification_level:international.verification_level,

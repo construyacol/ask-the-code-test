@@ -95,7 +95,7 @@ export class FreshChatService extends WebService {
   //
   isLoaded() {
     return new Promise(async (resolve, reject) => {
-      if (window.fcWidget.isLoaded() === true) {
+      if (window.fcWidget && window.fcWidget.isLoaded() === true) {
         return resolve(true);
       } else {
         this.tryLoad(resolve);
