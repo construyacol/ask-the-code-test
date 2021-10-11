@@ -35,6 +35,8 @@ const Kyc = (props) => {
       verification_level: "level_1",
     };
 
+    config.info.birthday = new Date(config.info.birthday).getTime() 
+
     props.action.isAppLoading(true);
 
     let res = await props.coinsendaServices.updateLevelProfile(config, user);
