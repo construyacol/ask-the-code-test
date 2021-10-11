@@ -6,6 +6,11 @@ import actions from "../../actions";
 import { useState } from "react";
 import useToastMessage from "../../hooks/useToastMessage";
 import withCoinsendaServices from "../withCoinsendaServices";
+import BigNumber from "bignumber.js";
+// import moment from "moment";
+// import "moment/locale/es";
+// moment.locale("es");
+
 
 const Kyc = (props) => {
   const [reset, setReset] = useState();
@@ -18,24 +23,26 @@ const Kyc = (props) => {
     const { form_kyc_basic, user } = props;
     const { data_state } = form_kyc_basic;
 
+
     let config = {
       info: {
-        name: data_state.name,
-        surname: data_state.surname,
+        name: data_state.name.trim(),
+        surname: data_state.surname.trim(),
         birthday: data_state.birthday,
-        address: data_state.address,
+        address: data_state.address.trim(),
         phone: `+${data_state.country_prefix[0].prefix[0]}${data_state.phone}`,
-        city: data_state.city,
-        country: data_state.country[0].code,
-        id_type: data_state.id_type[0].code,
-        id_number: data_state.id_number,
-        nationality: data_state.nationality[0].code,
+        city: data_state.city.trim(),
+        country: data_state.country[0].code && data_state.country[0].code.trim(),
+        id_type: data_state.id_type[0].code && data_state.id_type[0].code.trim(),
+        id_number: data_state.id_number.trim(),
+        nationality: data_state.nationality[0].code && data_state.nationality[0].code.trim(),
       },
       info_type: "personal",
       verification_level: "level_1",
     };
-
-    config.info.birthday = new Date(config.info.birthday).getTime() 
+    
+    const _timeStamp = new Date(config.info.birthday).getTime()
+    config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
 
     props.action.isAppLoading(true);
 

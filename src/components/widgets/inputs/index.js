@@ -485,6 +485,8 @@ export const InputKycBasic = (props) => {
 
   let search_result = Array.isArray(search_results) && search_results[0];
   
+
+
   return (
     <div
       id="kycPrime"
@@ -507,6 +509,9 @@ export const InputKycBasic = (props) => {
       <div className={`inputContainer3 ${state.active ? "inputActivado" : ""}`}>
         {kyc.map((item) => {
           const isDateInput = state.ui_type === "date";
+          if(isDateInput){
+            console.log('|||||||||||| isDateInput ====> ', state)
+          }
           const classNames = `inputElement3 ${state.active ? "inputActivado" : ""} ${state.ui_type === "phone" ? "phone" : ""}`;
           return (
             step === item.id && (
@@ -520,7 +525,7 @@ export const InputKycBasic = (props) => {
                   />
                 )}
 
-                {isDateInput && (
+                {/* {isDateInput && (
                   <MaskedInput
                     mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/,]}
                     className={classNames}
@@ -534,7 +539,7 @@ export const InputKycBasic = (props) => {
                       update(e);
                     }}
                   />
-                )}
+                )} */}
 
                 {search_result && state.ui_type === "select" ? (
                   <p className={`search_result_kyc openS`}>
@@ -542,7 +547,7 @@ export const InputKycBasic = (props) => {
                     <i className="fas fa-times cerratelo"  onClick={clean_search_result} ></i>
                   </p>
                 ) : (
-                  !isDateInput && (
+                  (
                     <input
                       key={item.id}
                       autoFocus={true}
