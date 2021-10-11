@@ -345,8 +345,12 @@ class KycBasicContainer extends Component {
 
     // check birthday
     if (current_item === modelFormData.birthday.name && value) {
-      const birthday = moment(value, "DD/MM/YYYY");
+
+      const birthday = moment(value, "YYYY/MM/DD");
       const isValidBirthDay = birthday.isBefore(moment().subtract(18, "years"));
+      // console.log('birthday checking ', value, isValidBirthDay)
+      // debugger
+      
       if (!isValidBirthDay) {
         return this.setState({
           message: "El registro solo es válido para personas mayores de edad",
@@ -516,7 +520,7 @@ class KycBasicContainer extends Component {
     const { step } = this.props;
     // console.log('|||E S T A D O - -   K Y C', this.props.select_list)
     // console.log('F I N D B A R     K Y C', ui_type, kyc_data_basic[step-1].name, data_state, data_state[kyc_data_basic[step-1].name])
-    console.log('||||||||||||||||||||| current_search', current_search && current_search.length, current_search )
+    // console.log('||||||||||||||||||||| current_search', current_search && current_search.length, current_search )
     open_sect = open_sect && ui_type !== "text";
 
     // console.log('|||||||||||||||||||||||||||||| expandibleKycPanel ', open_sect, ui_type)
