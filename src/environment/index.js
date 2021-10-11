@@ -45,7 +45,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     ApiUrl: "http://localhost:3001/api/",
     SocketUrl: "http://localhost:3001/",
     IdentityApIUrl: "http://localhost:3002/api/",
-    CountryApIUrl: "https://info1.bitsenda.com/api/",
+    CountryApIUrl: "http://localhost:3010/api/",
     AccountApiUrl: "http://localhost:4007/api/",
     DepositApiUrl: "http://localhost:4006/api/",
     WithdrawApiUrl: "http://localhost:4005/api/",
