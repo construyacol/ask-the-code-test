@@ -81,7 +81,7 @@ class SocketsComponent extends Component {
             });
 
 
-            socket.on(`/status/${user.id}`, async (status) => {
+            socket.on(`/profile/${user.id}`, async (status) => {
               if(status.countries){
                 this.status_management(status)
               }
