@@ -25,6 +25,8 @@ export class IndetityService extends WebService {
       const user = this.user;
       const statusUrl = `${INDENTITY_USERS_URL}/${user.id}/status`;
       const status = await this.Get(statusUrl);
+      // console.log('|||||| status', status)
+      // debugger
       return status
     } catch (e) {
       console.log('getStatus', e)
