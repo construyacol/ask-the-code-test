@@ -167,7 +167,7 @@ class ActivityList extends Component {
                     if (
                       item.state === "accepted" ||
                       item.state === "canceled" ||
-                      item.state === "rejected"
+                      item.state === "rejected" 
                     ) {
                       return null;
                     }
@@ -219,14 +219,7 @@ class ActivityList extends Component {
               <span>+{expandidoMax / 100 - 1}</span>
               <i className="fas fa-angle-down"></i>
             </p>
-            <p
-              className="ALverTodo"
-              onClick={this.contraer}
-              style={{
-                display:
-                  expandidoMax / 100 < 2 || !expandido ? "none" : "block",
-              }}
-            >
+            <p className="ALverTodo" onClick={this.contraer} style={{display:expandidoMax / 100 < 2 || !expandido ? "none" : "block"}}>
               Reducir
               <i className="fas fa-angle-up"></i>
             </p>

@@ -225,16 +225,16 @@ export class AccountService extends WebService {
 
     // const isWithdraws = activityType === 'withdraws'
     let pendingData;
-    const filterActivitiesByStatus = async (primary) =>
-      await matchItem(activityList, { primary }, "state", true);
+    const filterActivitiesByStatus = async (primary) => await matchItem(activityList, { primary }, "state", true);
 
     // If activity is equal to withdraws filter, always set up as 0 value
-    const pending = await filterActivitiesByStatus("pending");
+    let pending = await filterActivitiesByStatus("pending");
     const confirmed = await filterActivitiesByStatus("confirmed");
     // const rejected = await filterActivitiesByStatus('rejected')
-
-    const expandidoMax =
-      ((pending.length || 0) + (confirmed.length || 0)) * 100;
+    if(currentAccount.currency_type === 'crypto'){
+      pending = 0
+    }
+    const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100;
 
     if (pending) {
       pendingData = {
