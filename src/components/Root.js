@@ -44,10 +44,8 @@ function RootContainer(props) {
       await saveUserToken(params.get("token"), params.get("refresh_token"))
       history.push("/");
     }
-
     const userData = await getUserToken();
-    // console.log('userData', userData)
-    if(!userData){return}
+    if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('_testing')){
     //   return console.log('userToken ==> ', userToken)
@@ -64,8 +62,11 @@ function RootContainer(props) {
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
 
     const parent = window.parent;
-    if (parent) {
+    if(parent){
       parent.postMessage("loadedAndLogged", "*");
+      if(params.has("recovery")){
+        return console.log('<========   Recuperando sesión   =======>')
+      }
     }
 
     history.push("/");
@@ -84,7 +85,6 @@ function RootContainer(props) {
       ) : (
         <>
           <LazySocket toastMessage={toastMessage} />
-          {/* <CoinsendaSocket /> */}
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>

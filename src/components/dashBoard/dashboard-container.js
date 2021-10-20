@@ -16,16 +16,14 @@ import withCoinsendaServices from "../withCoinsendaServices";
 import { LazyLoaderPage } from "./dashboard-skeletons";
 import "./dashboard.css";
 
-const WalletsContainerComponent = loadable(
-  ()=> import("../wallets/walletContainer"),
+const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"),
   {
     fallback:<LazyLoaderPage path={"withdraw_accounts"} />
   }
 )
 
 
-const WitdrawAccountContainer = loadable(
-  () => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
+const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
 

@@ -86,7 +86,7 @@ const ActivityView = (props) => {
         }
       }
     }
-
+ 
     if (method !== "get_swaps") {
       if (
         activity_for_account[account_id] &&
@@ -124,9 +124,7 @@ const ActivityView = (props) => {
           );
         } else {
           let method = `get_${params.tx_path}`;
-          let activity_list = await coinsendaServices[method](
-            params.account_id
-          );
+          let activity_list = await coinsendaServices[method](params.account_id);
           if (!activity_list.length) {
             toastMessage(
               `Esta billetera no tiene ${getTxPath(params.tx_path)}`,

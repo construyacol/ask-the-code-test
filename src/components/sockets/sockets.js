@@ -8,7 +8,6 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 const { SocketUrl } = Environtment;
-
 class SocketsComponent extends Component {
   state = {
     currentSwap: null,
@@ -32,9 +31,18 @@ class SocketsComponent extends Component {
           }
         };
 
-        let intervalID = setInterval(tryReconnect, 2000);
-        socket.on("disconnect", async function () {
+        // setInterval(tryReconnect, 30000);
+        let intervalID = setInterval(tryReconnect, 30000);
+        socket.on("disconnect", async function (reason) {
           intervalID = setInterval(tryReconnect, 2000);
+        });
+
+        socket.on("connect_error", (reason) => {
+          console.log('|||||||||||||||||||||||||  connect_error ===>', reason)
+          debugger
+          setTimeout(() => {
+            socket.connect();
+          }, 1000);
         });
 
         socket.on("connect", () => {
@@ -67,6 +75,8 @@ class SocketsComponent extends Component {
             });
 
             socket.on(`/withdraw/${user.id}`, async (withdraw) => {
+              console.log(withdraw)
+              debugger
               if (withdraw.state === "pending") {
                 await this.setState({ currentWithdraw: withdraw });
               }
@@ -79,7 +89,6 @@ class SocketsComponent extends Component {
               }
               this.withdraw_account_mangagement(withdrawAccount);
             });
-
 
             socket.on(`/profile/${user.id}`, async (status) => {
               if(status.countries){
@@ -647,7 +656,10 @@ class SocketsComponent extends Component {
 
 
   status_management = async(status) => {
-    this.props.coinsendaServices.updateUserStatus(status)
+    await this.props.coinsendaServices.updateUserStatus(status)
+    if(status.countries.international === 'level_1'){
+      this.props.coinsendaServices.init()
+    }
   }
 
   render() {

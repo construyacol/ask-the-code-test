@@ -23,9 +23,10 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 export const getToken = async() => {
   let userToken = await localForage.getItem("user_token");
-  // console.log('||||||||||||||||| userToken =======> ', userToken)
+  console.log('||||||||||||||||| userToken =======> ', userToken)
   if(!userToken){throw new Error('No hay token de usuario')}
   let decodedToken = await jwt.decode(userToken);
+  console.log('||||||||||||||||| decodedToken =======> ', decodedToken)
   return {
     userToken,
     ...decodedToken
@@ -148,5 +149,6 @@ export const handleError = async(err) => {
         return doLogout('?message=No tienes credenciales, inicia sesión')
       }
         return console.log('handleError: ', err)
+        // return doLogout()
   }
 }

@@ -13,7 +13,7 @@ import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
 import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
-
+ 
 import "./views/wallet_views.css";
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });

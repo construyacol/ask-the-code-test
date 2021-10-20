@@ -33,7 +33,6 @@ const App = () => (
 
 render(<App />, rootElement);
 
-
 const noLogsOnProduction = () => {
   console.log = () => null;
 };

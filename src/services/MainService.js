@@ -133,7 +133,6 @@ export class MainService extends inheritances {
     }
     const wallets = await this.getWalletsByUser();
     const verificationStatus = await this.getVerificationState();
-
     if (!wallets && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
