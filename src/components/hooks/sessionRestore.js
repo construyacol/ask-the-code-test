@@ -8,7 +8,7 @@ export const updateLocalForagePersistState = (modelData) => async() => {
   if (user && wallets && balances) {
     localForage.setItem("sessionState", JSON.stringify(modelData));
     return null
-  }
+  } 
 };
 
 const SessionRestore = () => {
