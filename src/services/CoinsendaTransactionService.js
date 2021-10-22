@@ -29,13 +29,13 @@ export class TransactionService extends WebService {
       return coins;
     }
 
-    let updateState = true;
-    if (
-      this.isCached("fetchAllCurrencies_", response, false) &&
-      this.globalState.modelData.currencies
-    ) {
-      updateState = false;
-    }
+    // let updateState = true;
+    // if (
+    //   this.isCached("fetchAllCurrencies_", response, false) &&
+    //   this.globalState.modelData.currencies
+    // ) {
+    //   updateState = false;
+    // }
 
     const currencies = response.reduce((result, currency) => {
       const split = currency.node_url && currency.node_url.split("api");
@@ -53,8 +53,8 @@ export class TransactionService extends WebService {
       });
       return result;
     }, []);
-    // console.log('GET CURRENCIES, ', currencies)
-    updateState && (await this.dispatch(updateAllCurrenciesAction(currencies)));
+    // updateState && (await this.dispatch(updateAllCurrenciesAction(currencies)));
+    await this.dispatch(updateAllCurrenciesAction(currencies))
     return currencies;
   }
 

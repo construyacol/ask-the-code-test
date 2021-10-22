@@ -9,6 +9,7 @@ import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
 import DashBoardContainer from "../dashBoard/dashboard-container";
 import withHandleError from "../withHandleError";
 import { doLogout } from "../utils";
+import useBeforeUnload from '../../hooks/useBeforeUnload'
 
 const ModalsSupervisor = loadable(() => import("./modals-supervisor"));
 
@@ -21,6 +22,7 @@ const BuildedHome = (props) => (
 );
 
 const HomeContainer = () => {
+  useBeforeUnload()
   return (
     <HomeLayout>
       <Route

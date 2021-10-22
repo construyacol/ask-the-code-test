@@ -44,12 +44,12 @@ export function _createStore() {
     if (store.getState().modelData.authData.userToken) {
       mainService.setGlobalState(store.getState());
     }
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault()
-      updateLocalForagePersistState(store.getState().modelData)
-      return null
-    });
-    // window.onbeforeunload = updateLocalForagePersistState(store.getState().modelData);
+    // window.addEventListener("onbeforeunload", async(e) => {
+    //   // e.preventDefault()
+    //   await updateLocalForagePersistState(store.getState().modelData)
+    //   return undefined
+    // });
+    // window.onbeforeunload = (e) => updateLocalForagePersistState(store.getState().modelData, e);
   });
 
   return store;

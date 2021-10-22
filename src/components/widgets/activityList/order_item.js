@@ -344,7 +344,7 @@ const PanelLeft = (order) => {
   let totalConfirmations
   let confirmations
 
-  if(order.currency) {
+  if(order.currency && Object.keys(currencies).length) {
     totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
     confirmations = Number(order.confirmations)
   }

@@ -12,6 +12,8 @@ import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
 import useValidateTokenExp from './hooks/useValidateTokenExp'
+import { store } from '../'
+import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import {
   // doLogout,
   saveUserToken,
@@ -24,6 +26,7 @@ const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/t
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
+    updateLocalForagePersistState(store.getState().modelData)
     return localForage.setItem("previousRoute", location.pathname);
   }
 });
@@ -45,6 +48,7 @@ function RootContainer(props) {
       history.push("/");
     }
     const userData = await getUserToken();
+
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('_testing')){
@@ -60,7 +64,6 @@ function RootContainer(props) {
 
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
-
     const parent = window.parent;
     if(parent){
       parent.postMessage("loadedAndLogged", "*");
