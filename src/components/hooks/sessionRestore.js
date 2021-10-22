@@ -3,11 +3,10 @@ import { useActions } from "../../hooks/useActions";
 import { getExpTimeData } from '../utils'
 
 
-export const updateLocalForagePersistState = (modelData) => async() => {
+export const updateLocalForagePersistState = (modelData) => {
   const { user, wallets, balances } = modelData;
   if (user && wallets && balances) {
-    localForage.setItem("sessionState", JSON.stringify(modelData));
-    return null
+    return localForage.setItem("sessionState", JSON.stringify(modelData));
   } 
 };
 
