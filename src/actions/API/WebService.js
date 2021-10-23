@@ -46,7 +46,9 @@ export class WebService {
 
   async getJWToken(refreshToken) {
 
-    const { auth_client_id } = await getToken()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { auth_client_id } = tokenData
 
     const params = {
       method: `POST`,
@@ -58,7 +60,12 @@ export class WebService {
     };
 
     const response = await fetch(GET_JWT_URL, params);
-    if(!response){throw new Error('No se pudo obtener el nuevo jwt')}
+    
+    if(!response){
+      console.log('||||||| getJWToken ===> ', response)
+      debugger
+      throw new Error('No se pudo obtener el nuevo jwt')
+    }
     const res = await response.json()
     const { data:{ jwt, refresh_token } } = res
     const decodedToken = await saveUserToken(jwt, refresh_token)
@@ -72,7 +79,9 @@ export class WebService {
   }
 
   async Get(url) {
-    const { userToken } = await getToken()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
     let headers = {
       Authorization: `Bearer ${userToken}`,
     };
@@ -89,7 +98,11 @@ export class WebService {
 
 
   async destroySesion(url) {
-    const { userToken } = await getToken()
+    
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
+
       let body = {
         data:{
           destroy_all:false,
@@ -102,7 +115,9 @@ export class WebService {
 
 
   async Post(url, body, withAuth = true) {
-    const { userToken } = await getToken()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
     let params = {
       method: `POST`,
       headers: withAuth
