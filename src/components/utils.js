@@ -5,7 +5,6 @@ import KeyEncoder from 'key-encoder'
 import { mainService } from '../services/MainService'
 
 let _keyEncoder = new KeyEncoder('secp256k1');
-
 export const saveUserToken = async(userToken, refreshToken) => {
   try {
     let decodeJwt = await verifyUserToken(userToken)
@@ -22,16 +21,28 @@ export const saveUserToken = async(userToken, refreshToken) => {
 
 
 export const getToken = async() => {
-  let userToken = await localForage.getItem("user_token");
-  // console.log('||||||||||||||||| userToken =======> ', userToken)
-  if(!userToken){throw new Error('No hay token de usuario')}
-  let decodedToken = await jwt.decode(userToken);
-  // console.log('||||||||||||||||| decodedToken =======> ', decodedToken)
-  return {
-    userToken,
-    ...decodedToken
+  try {
+    let userToken = await localForage.getItem("user_token");
+    let decodedToken = await jwt.decode(userToken);
+    return {
+      userToken,
+      ...decodedToken
+    }
+  } catch (err) {
+    console.log('from getToken ==> ', err)
+    handleError(err)
   }
+  // let userToken = await localForage.getItem("user_token");
+  // if(!userToken){throw Error('notFindUserToken')}
+  // let decodedToken = await jwt.decode(userToken);
+  // return {
+  //   userToken,
+  //   ...decodedToken
+  // }
+}
 
+export const verifyTokensValidity = () => {
+  setInterval(() => {getUserToken()}, 20000)
 }
 
 export const getUserToken = async() => {
@@ -46,7 +57,8 @@ export const getUserToken = async() => {
       decodedToken
     }
   } catch (err) {
-    return handleError(err)
+    err.source = 'Error dispatched from getUserToken function'
+    return handleError(err, doLogout)
   }
 }
 
@@ -65,19 +77,16 @@ export const verifyUserToken = async(_jwToken) => {
 
 
 export const getExpTimeData = async() => {
-
   let createdAt = await localForage.getItem('created_at');
   let jwtExpTime = await localForage.getItem('jwt_expiration_time');
   let registerDate = new Date(createdAt).getTime();
   var currentDate = new Date().getTime();
   var currentTime = (currentDate - registerDate) / (1000);
-
   return {
     jwtExpTime,
     currentTime,
     REFRESH_TOKEN_EXP_TIME
   }
-
 }
 
 
@@ -85,12 +94,13 @@ export const validateExpTime = async() => {
 
     const { jwtExpTime, currentTime } = await getExpTimeData()
 
+
     if(jwtExpTime && currentTime){
       console.log('Tiempo transcurrido en sesión:', `${currentTime} segs`)
-      console.log('Vigencia user token:', `${jwtExpTime+60}(${jwtExpTime}) segs`)
+      // console.log('Vigencia user token:', `${jwtExpTime+60}(${jwtExpTime}) segs`)
+      console.log('Vigencia user token:', `${jwtExpTime}(${jwtExpTime}) segs`)
       console.log('Vigencia refresh token:', `${REFRESH_TOKEN_EXP_TIME} segs`)
-
-
+ 
       if(currentTime<=jwtExpTime){ //Si ha transcurrido menos de 4 minutos, el token actual sigue vigente
         console.log('::::::::: -- El userToken sigue vigente hasta el momento')
         return true
@@ -121,20 +131,27 @@ const getPublicKey = async() => {
 }
 
 export const doLogout = async (queryString) => {
+  // mainService.destroySesion()
   await localForage.removeItem("user_token");
   await localForage.removeItem("refresh_token");
   await localForage.removeItem("jwt_expiration_time");
   await localForage.removeItem("created_at");
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
-  mainService.destroySesion()
-  window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
+  // window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
 };
 
-export const handleError = async(err) => {
+export const handleError = async(err, callback) => {
+
+  // console.log(err)
+  // console.log(callback)
+  // debugger
+
 // TODO: add handle sentry here
   switch (err.name || err.message) {
-    case 'JsonWebTokenError':
+    // case 'notFindUserToken':
+        // return console.log('<=========== notFindUserToken ===========>')
+    case 'JsonWebTokenError': 
         console.log('JsonWebTokenError: ', err)
       return doLogout('?message=Tu session ha caducado')
     case 'TokenExpiredError':
@@ -145,10 +162,14 @@ export const handleError = async(err) => {
         console.log('__error__', err)
       return
     default:
+      console.log('handleError: ', err)
       if(err.message === 'No hay token y/o refresh_token almacenado'){
         return doLogout('?message=No tienes credenciales, inicia sesión')
       }
-        return console.log('handleError: ', err)
+      callback && callback()
         // return doLogout()
   }
 }
+
+
+// https://app.bitsenda.com/?token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiI2MTQyNjk2OTQ0NjlmNDAwYzE2ZGU3MGYiLCJhdXRoX2NsaWVudF9pZCI6IjYxM2ZmZDU0YzhkNzZjMDBhOWY2MjZkYyIsImlzcyI6IjYxM2ZmZDU0YzhkNzZjMDBhOWY2MjZjYiIsImF1ZCI6ImF1dGgsaWRlbnRpdHksbm90aWZpY2F0aW9uLHRyYW5zYWN0aW9uLGluZm8sYWNjb3VudCxkZXBvc2l0LHdpdGhkcmF3LHN3YXAiLCJlbWFpbCI6ImNvbnN0cnV5YWNvbEBnbWFpbC5jb20iLCJsYW5ndWFnZSI6ImVzIiwibWV0YWRhdGEiOiJ7XCJjbGllbnRJZFwiOlwiNjEzZmZkNTRjOGQ3NmMwMGE5ZjYyNmRjXCIsXCJhY2Nlc3NfdG9rZW5cIjpcInZWSlRpc3NQSU5TcVZnb0JLOXg3bXROMEdFR0E4S1NuYWxyVkRlMEZ3N2NyOGo1TDhoWlNxVTBOeENZS1gzRlhcIixcInVzZXItaWRcIjpcIjYxNDI2OTY5NDQ2OWY0MDBjMTZkZTcwZlwiLFwiZW5jcnlwdGVkX2RhdGFcIjpcIjRiYWIwY2Y3ZDcyNjBmMDdmM2EyZTZkNzZmZjRjZjVhOmY1ZTJmNDIxMzE2MjQxNjJlYzQyZjdkNWZmXCIsXCJ0aGlyZF9wYXJ0eVwiOmZhbHNlfSIsImp0aSI6IjYxNzM3NThkY2FjZGUwMDBjZjdmNGU0OCIsImlhdCI6MTYzNDk1NjY4NSwiZXhwIjoxNjM0OTU2OTg1fQ.uKY7rM42MGPf5-CwS115W2fkkvG0SZVuO6H-XOkYC9ZBttFvDDW9QTk1R-n15lqvymjagGQj46Cv8wViwF62fQ&refresh_token=Kufi8k4K9DVJfJE9ptVS8xEdK69JnFx96DkB45fiy32zeNK5aK67wzRDbGxYZXLV

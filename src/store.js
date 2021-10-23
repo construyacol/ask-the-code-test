@@ -30,7 +30,7 @@ export function _createStore() {
       reducer,
       {},
       composeWithDevTools(
-        applyMiddleware(logger, thunk, loadedSoundsMiddleware)
+        applyMiddleware(thunk, loadedSoundsMiddleware)
       )
     );
   }

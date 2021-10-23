@@ -11,11 +11,12 @@ import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
-import useValidateTokenExp from './hooks/useValidateTokenExp'
+// import useValidateTokenExp from './hooks/useValidateTokenExp'
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import {
   // doLogout,
+  verifyTokensValidity,
   saveUserToken,
   getUserToken
 } from "./utils";
@@ -37,7 +38,7 @@ function RootContainer(props) {
   const authData = useSelector(({ modelData:{ authData } }) => authData);
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
-  useValidateTokenExp()
+  // useValidateTokenExp()
 
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
@@ -48,7 +49,7 @@ function RootContainer(props) {
       history.push("/");
     }
     const userData = await getUserToken();
-
+    
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('_testing')){
@@ -62,6 +63,7 @@ function RootContainer(props) {
       });
     }
 
+    verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
     const parent = window.parent;
