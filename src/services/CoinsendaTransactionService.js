@@ -82,11 +82,7 @@ export class TransactionService extends WebService {
         country: this.user.country,
       },
     };
-    const response = await this.Post(
-      `${TWO_FACTOR_URL}/get-new-2fa-secret-code`,
-      body,
-      user.userToken
-    );
+    const response = await this.Post(`${TWO_FACTOR_URL}/get-new-2fa-secret-code`, body);
     if (response === 465 || !response) {
       return false;
     }
@@ -104,11 +100,7 @@ export class TransactionService extends WebService {
         twofa_token,
       },
     };
-    const response = await this.Post(
-      `${TWO_FACTOR_URL}/add-new-transaction-security`,
-      body,
-      user.userToken
-    );
+    const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body);
     if (response === 465 || !response) {
       return false;
     }
@@ -132,10 +124,7 @@ export class TransactionService extends WebService {
       },
     };
 
-    const res = await this.Post(
-      `${TWO_FACTOR_URL}/disable-transaction-security`,
-      body
-    );
+    const res = await this.Post(`${TWO_FACTOR_URL}/disable-transaction-security`, body);
     return res;
   }
 
@@ -146,7 +135,7 @@ export class TransactionService extends WebService {
         restore_id,
       },
     };
-    const response = await this.Post(ADD_RESTORE_ID_URL, body, user.userToken);
+    const response = await this.Post(ADD_RESTORE_ID_URL, body);
     if (response === 465 || !response) {
       return false;
     }
@@ -202,7 +191,7 @@ export class TransactionService extends WebService {
       },
     };
 
-    const response = await this.Post(ADD_PROFILE_URL, body, this.authData.userToken);
+    const response = await this.Post(ADD_PROFILE_URL, body);
     if (!response) {
       return false;
     }

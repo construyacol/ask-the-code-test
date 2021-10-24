@@ -106,7 +106,7 @@ export class WebService {
 
       let body = {
         data:{
-          destroy_all:false,
+          destroy_all:false, 
           jwt:userToken
         }
       }

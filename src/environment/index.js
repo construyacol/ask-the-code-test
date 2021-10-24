@@ -7,8 +7,8 @@ export const getHostName = () => {
     pre_prod:'cryptosenda',
     production:'coinsenda'
   }
-  return nodeList[hostId]
-// return "cryptosenda"
+  // return nodeList[hostId]
+return "cryptosenda"
 }
 
 // export const getBaseUrl = (prefix) => {

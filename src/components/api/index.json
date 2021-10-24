@@ -1,12 +1,10 @@
 {
   "id": null,
   "username": null,
-  "userToken": null,
   "name": null,
   "surname": null,
   "id_number": null,
   "email": null,
-  "cover": "https://i.ibb.co/ZYTrBnC/erick-profile.jpg",
   "role": null,
   "country": null,
   "referral": {},

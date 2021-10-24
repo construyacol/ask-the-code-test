@@ -50,7 +50,6 @@ class SocketsComponent extends Component {
         socket.on("connect", () => {
           clearInterval(intervalID);
           const body = { body: { access_token: userToken } };
-          // console.log('authentication user.userToken', user.userToken)
           // console.log('authentication userToken', userToken)
           // debugger
           socket.emit("authentication", body);

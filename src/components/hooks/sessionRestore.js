@@ -22,7 +22,7 @@ const SessionRestore = () => {
 
     const SESSION = await localForage.getItem("sessionState");
     const SESSION_STATE = SESSION && Object.keys(SESSION).length && JSON.parse(SESSION);
-    // if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.user.userToken !== userToken)) {
+    // if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.authData.userToken !== userToken)) {
     if (!SESSION_STATE || currentTime > REFRESH_TOKEN_EXP_TIME) {
       await localForage.setItem("CACHED_DATA", {});
       await localForage.setItem("sessionState", {});

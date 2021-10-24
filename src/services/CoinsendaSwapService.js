@@ -106,7 +106,7 @@ export class SwapService extends WebService {
     //     "country":user.country
     //   }
     // }
-    // const result = await this.Post(SWAP_CONVERT_CURRENCIES, body, user.userToken);
+    // const result = await this.Post(SWAP_CONVERT_CURRENCIES, body);
     // return result
   }
 
@@ -191,7 +191,6 @@ export class SwapService extends WebService {
     const user = this.user;
 
     const body = {
-      // "access_token":user.userToken,
       data: {
         want_to_spend: value.toString(),
         pair_id: pairId,
@@ -200,7 +199,7 @@ export class SwapService extends WebService {
       },
     };
 
-    const result = await this.Post(ADD_NEW_SWAP, body, user.userToken);
+    const result = await this.Post(ADD_NEW_SWAP, body);
 
     if (!result || result === 465) {
       return false;
