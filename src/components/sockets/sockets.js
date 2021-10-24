@@ -7,6 +7,7 @@ import Environtment from "../../environment";
 // import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
+import { getToken } from '../utils'
 const { SocketUrl } = Environtment;
 class SocketsComponent extends Component {
   state = {
@@ -16,7 +17,7 @@ class SocketsComponent extends Component {
     isUpdated: false,
   };
 
-  componentDidUpdate(prevProps) {
+ async componentDidUpdate(prevProps) {
     if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
       this.setState({
         isUpdated: true,
@@ -24,11 +25,12 @@ class SocketsComponent extends Component {
       if (this.props.loggedIn) {
         const socket = io(SocketUrl);
         const { user } = this.props;
+        const { userToken } = await getToken()
 
         let tryReconnect = () => {
           if (socket.connected === false) {
             socket.connect();
-          }
+          } 
         };
 
         // setInterval(tryReconnect, 30000);
@@ -47,7 +49,10 @@ class SocketsComponent extends Component {
 
         socket.on("connect", () => {
           clearInterval(intervalID);
-          const body = { body: { access_token: user.userToken } };
+          const body = { body: { access_token: userToken } };
+          // console.log('authentication user.userToken', user.userToken)
+          // console.log('authentication userToken', userToken)
+          // debugger
           socket.emit("authentication", body);
 
           socket.on("authenticated", () => {
