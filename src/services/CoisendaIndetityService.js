@@ -94,7 +94,7 @@ export class IndetityService extends WebService {
     let updatedUser = {
       ...userDefaultState,
       email: this.authData.userEmail,
-      userToken: this.authData.userToken,
+      // userToken: this.authData.userToken,
       restore_id: profile.restore_id || user.restore_id,
       id: secondResponse.userId,
       verification_level: country[0].verification_level,
@@ -213,7 +213,7 @@ export class IndetityService extends WebService {
       },
     };
 
-    return this.Post(INDETITY_UPDATE_PROFILE_URL, body, user.userToken);
+    return this.Post(INDETITY_UPDATE_PROFILE_URL, body);
   }
 
   getCountryList() {

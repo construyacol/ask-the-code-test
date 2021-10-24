@@ -141,8 +141,7 @@ export class WithdrawService extends WebService {
 
     const deleteAccount = await this.Post(
       DELETE_WITHDRAW_ACCOUNT_URL,
-      body,
-      user.userToken
+      body
     );
 
     return deleteAccount;
@@ -253,8 +252,7 @@ export class WithdrawService extends WebService {
 
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,
-      body,
-      user.userToken
+      body
     );
 
     if (!response || response === 465) {

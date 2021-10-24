@@ -134,7 +134,7 @@ export class AccountService extends WebService {
   }
 
   async createWallet(body) {
-    return this.Post(CREATE_WALLET_URL, body, this.user.userToken);
+    return this.Post(CREATE_WALLET_URL, body);
   }
 
   async deleteWallet(account) {
@@ -150,8 +150,7 @@ export class AccountService extends WebService {
     };
     const deleteAccount = await this.Post(
       DELETE_WALLET_URL,
-      body,
-      user.userToken
+      body
     );
 
     if (!deleteAccount || deleteAccount === 404 || deleteAccount === 465) {

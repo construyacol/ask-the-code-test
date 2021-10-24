@@ -60,6 +60,7 @@ export class WebService {
     };
 
     const response = await fetch(GET_JWT_URL, params);
+
     
     if(!response){
       console.log('||||||| getJWToken ===> ', response)
@@ -105,7 +106,7 @@ export class WebService {
 
       let body = {
         data:{
-          destroy_all:false,
+          destroy_all:false, 
           jwt:userToken
         }
       }

@@ -62,7 +62,6 @@ export class DepositService extends WebService {
     const user = this.user;
 
     const body = {
-      // "access_token":user.userToken,
       data: {
         country: user.country,
         deposit_id: order_id,
@@ -74,7 +73,7 @@ export class DepositService extends WebService {
         },
       },
     };
-    return await this.Post(UPDATE_DEPOSIT_URL, body, user.userToken, true);
+    return await this.Post(UPDATE_DEPOSIT_URL, body);
   }
 
   async createDeposit(
@@ -88,7 +87,6 @@ export class DepositService extends WebService {
     depositProviderId
   ) {
     const body = {
-      // "access_token":user.userToken,
       data: {
         currency: currency,
         amount: amount,
@@ -104,7 +102,7 @@ export class DepositService extends WebService {
     // console.log(body)
     // debugger
 
-    const result = await this.Post(NEW_DEPOSIT_URL, body, user.userToken);
+    const result = await this.Post(NEW_DEPOSIT_URL, body);
     if (result === 465 || !result) {
       return false;
     }
@@ -124,7 +122,7 @@ export class DepositService extends WebService {
       },
     };
 
-    return this.Post(UPDATE_DEPOSIT_URL, body, user.userToken);
+    return this.Post(UPDATE_DEPOSIT_URL, body);
   }
 
   async validateAddress(address) {
@@ -159,7 +157,7 @@ export class DepositService extends WebService {
     };
 
     const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`;
-    const deposit_prov = await this.Post(finalUrl, body, user.userToken);
+    const deposit_prov = await this.Post(finalUrl, body);
     if (deposit_prov === 465 || !deposit_prov) {
       return;
     }
@@ -209,8 +207,6 @@ export class DepositService extends WebService {
     return await this.Post(
       SUBSCRIBE_TO_DEPOSITS_URL,
       body,
-      user.userToken,
-      true
     );
   }
 

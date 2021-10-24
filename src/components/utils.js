@@ -131,7 +131,6 @@ const getPublicKey = async() => {
 }
 
 export const doLogout = async (queryString) => {
-  return
   // mainService.destroySesion()
   await localForage.removeItem("user_token");
   await localForage.removeItem("refresh_token");
