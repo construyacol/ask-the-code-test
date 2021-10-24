@@ -113,7 +113,7 @@ export const validateExpTime = async() => {
         throw new Error('El token ha caducado')
       }
     }
-    throw Error('No hay token y/o refresh_token almacenado')
+    throw Error('No hay token y/o refresh_token almacenado, o ingresaste un JWT expirado')
 }
 
 
@@ -131,6 +131,7 @@ const getPublicKey = async() => {
 }
 
 export const doLogout = async (queryString) => {
+  return
   // mainService.destroySesion()
   await localForage.removeItem("user_token");
   await localForage.removeItem("refresh_token");
@@ -138,7 +139,7 @@ export const doLogout = async (queryString) => {
   await localForage.removeItem("created_at");
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
-  // window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
+  window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
 };
 
 export const handleError = async(err, callback) => {
@@ -171,5 +172,3 @@ export const handleError = async(err, callback) => {
   }
 }
 
-
-// https://app.bitsenda.com/?token=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiI2MTQyNjk2OTQ0NjlmNDAwYzE2ZGU3MGYiLCJhdXRoX2NsaWVudF9pZCI6IjYxM2ZmZDU0YzhkNzZjMDBhOWY2MjZkYyIsImlzcyI6IjYxM2ZmZDU0YzhkNzZjMDBhOWY2MjZjYiIsImF1ZCI6ImF1dGgsaWRlbnRpdHksbm90aWZpY2F0aW9uLHRyYW5zYWN0aW9uLGluZm8sYWNjb3VudCxkZXBvc2l0LHdpdGhkcmF3LHN3YXAiLCJlbWFpbCI6ImNvbnN0cnV5YWNvbEBnbWFpbC5jb20iLCJsYW5ndWFnZSI6ImVzIiwibWV0YWRhdGEiOiJ7XCJjbGllbnRJZFwiOlwiNjEzZmZkNTRjOGQ3NmMwMGE5ZjYyNmRjXCIsXCJhY2Nlc3NfdG9rZW5cIjpcInZWSlRpc3NQSU5TcVZnb0JLOXg3bXROMEdFR0E4S1NuYWxyVkRlMEZ3N2NyOGo1TDhoWlNxVTBOeENZS1gzRlhcIixcInVzZXItaWRcIjpcIjYxNDI2OTY5NDQ2OWY0MDBjMTZkZTcwZlwiLFwiZW5jcnlwdGVkX2RhdGFcIjpcIjRiYWIwY2Y3ZDcyNjBmMDdmM2EyZTZkNzZmZjRjZjVhOmY1ZTJmNDIxMzE2MjQxNjJlYzQyZjdkNWZmXCIsXCJ0aGlyZF9wYXJ0eVwiOmZhbHNlfSIsImp0aSI6IjYxNzM3NThkY2FjZGUwMDBjZjdmNGU0OCIsImlhdCI6MTYzNDk1NjY4NSwiZXhwIjoxNjM0OTU2OTg1fQ.uKY7rM42MGPf5-CwS115W2fkkvG0SZVuO6H-XOkYC9ZBttFvDDW9QTk1R-n15lqvymjagGQj46Cv8wViwF62fQ&refresh_token=Kufi8k4K9DVJfJE9ptVS8xEdK69JnFx96DkB45fiy32zeNK5aK67wzRDbGxYZXLV

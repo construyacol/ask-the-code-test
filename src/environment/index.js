@@ -1,5 +1,4 @@
 let Environment;
-
 export const getHostName = () => {
   const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   const nodeList = {
@@ -8,8 +7,8 @@ export const getHostName = () => {
     pre_prod:'cryptosenda',
     production:'coinsenda'
   }
-  return nodeList[hostId]
-  // return "cryptosenda"
+  // return nodeList[hostId]
+  return "cryptosenda"
 }
 
 // export const getBaseUrl = (prefix) => {
