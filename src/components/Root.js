@@ -45,7 +45,8 @@ function RootContainer(props) {
 
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
-      await saveUserToken(params.get("token"), params.get("refresh_token"))
+      const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
+      if(!decodeJwt){return}
       history.push("/");
     }
     const userData = await getUserToken();

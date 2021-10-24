@@ -7,7 +7,7 @@ import thunk from "redux-thunk";
 import reducer from "./reducers";
 import { mainService } from "./services/MainService";
 import soundData from "./sounds";
-import { updateLocalForagePersistState } from "./components/hooks/sessionRestore";
+// import { updateLocalForagePersistState } from "./components/hooks/sessionRestore";
 
 const loadedSoundsMiddleware = soundsMiddleware(soundData);
 
