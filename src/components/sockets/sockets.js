@@ -9,6 +9,8 @@ import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
 const { SocketUrl } = Environtment;
+
+
 class SocketsComponent extends Component {
   state = {
     currentSwap: null,
@@ -17,7 +19,39 @@ class SocketsComponent extends Component {
     isUpdated: false,
   };
 
+//   async testSocketExecuted(depositMock) {
+//     // console.log('======================================== ______ testSocketExecuted: ', depositMock)
+//     if (depositMock.state === "pending" && depositMock.currency_type === "crypto") {
+//       await this.setState({ currentDeposit: depositMock });
+//     } else {
+//       this.deposit_mangagement(depositMock);
+//     }
+//    }
+//   async testDeposit() {
+//     let depositMock = {}
+//     let confirmations = 1
+//     setInterval(()=>{
+//     // setTimeout(()=>{
+//       if(confirmations < 7){
+//         depositMock = {
+//           confirmations: confirmations,
+//           id: "617621370b0a1b0048ae9cae"
+//         }
+//         this.testSocketExecuted(depositMock)
+//         confirmations++
+//       }
+//     }, 5000)
+//   }
+
+//  componentDidMount(){
+//    setTimeout(()=> {
+//      this.testDeposit()
+//    }, 5000)
+//  }
+
  async componentDidUpdate(prevProps) {
+
+
     if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
       this.setState({
         isUpdated: true,
@@ -55,6 +89,7 @@ class SocketsComponent extends Component {
           socket.emit("authentication", body);
 
           socket.on("authenticated", () => {
+
             socket.on(`/swap/${user.id}`, async (swap) => {
               if (swap.state === "pending") {
                 await this.setState({ currentSwap: swap });
@@ -64,23 +99,17 @@ class SocketsComponent extends Component {
 
 
             socket.on(`/deposit/${user.id}`, async (deposit) => {
-              if (
-                deposit.state === "pending" &&
-                deposit.currency_type === "crypto"
-              ) {
+              if (deposit.state === "pending" && deposit.currency_type === "crypto") {
                 await this.setState({ currentDeposit: deposit });
               } else {
                 this.deposit_mangagement(deposit);
               }
-
-              // if(deposit.state === 'rejected' || deposit.state === 'canceled'){
-              //   this.deposit_mangagement(deposit)
-              // }
             });
+
+
 
             socket.on(`/withdraw/${user.id}`, async (withdraw) => {
               console.log(withdraw)
-              // debugger
               if (withdraw.state === "pending") {
                 await this.setState({ currentWithdraw: withdraw });
               }
@@ -293,8 +322,6 @@ class SocketsComponent extends Component {
   };
 
   deposit_mangagement = async (deposit) => {
-    // console.log('|||||||| _______________________________________DEPOSIT SOCKET', deposit)
-    // debugger
 
     if (deposit.state === "pending" && deposit.currency_type === "fiat") {
       await this.props.coinsendaServices.addItemToState("deposits", {
@@ -307,28 +334,20 @@ class SocketsComponent extends Component {
       );
     }
 
-    // if(deposit.state === 'confirmed' && (this.state.currentDeposit && this.state.currentDeposit.currency_type === 'crypto')){
+    // if(deposit.state === 'confirmed' && && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === "confirmed") {
-      if (
-        !this.props.deposits ||
-        (this.props.deposits && !this.props.deposits[deposit.id])
-      ) {
+      if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+
         // si el deposito no está en el estado, es porque es de tipo cripto...
-        let cDeposit = await this.props.coinsendaServices.getDepositById(
-          deposit.id
-        );
-        if (
-          this.props.activity_for_account[cDeposit.account_id] &&
-          this.props.activity_for_account[cDeposit.account_id].deposits
-        ) {
+        let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
+        // console.log('|||||||| _______________________________________DEPOSIT cDeposit', deposit.id)
+        
+        if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
           await this.props.coinsendaServices.addItemToState("deposits", {
             ...cDeposit,
             type_order: "deposit",
           });
-          await this.props.coinsendaServices.updateActivityState(
-            cDeposit.account_id,
-            "deposits"
-          );
+          await this.props.coinsendaServices.updateActivityState(cDeposit.account_id, "deposits");
         } else {
           await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
         }
@@ -341,11 +360,7 @@ class SocketsComponent extends Component {
           },
           "wallets"
         ); //actualiza el movimiento operacional de la wallet
-        this.props.action.addNotification(
-          "wallets",
-          { account_id: cDeposit.account_id, order_id: cDeposit.id },
-          1
-        );
+        this.props.action.addNotification("wallets", { account_id: cDeposit.account_id, order_id: cDeposit.id }, 1);
         // this.props.coinsendaServices.showNotification('Deposito Cripto', 'Nuevo deposito detectado')
         await this.props.action.socket_notify(
           { ...cDeposit, state: "confirmed" },
@@ -360,15 +375,11 @@ class SocketsComponent extends Component {
       }
     }
 
+
     if (deposit.confirmations) {
-      if (
-        !this.props.deposits ||
-        (this.props.deposits && !this.props.deposits[deposit.id])
-      ) {
-        let cDeposit = await this.props.coinsendaServices.getOrderById(
-          deposit.id,
-          "deposits"
-        );
+
+      if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+        let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, "deposits");
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
         // console.log('=============> DEPOSIT SOCKET ', cDeposit)
       }
@@ -379,14 +390,12 @@ class SocketsComponent extends Component {
             [deposit.id]: {
               ...this.props.deposits[deposit.id],
               confirmations: deposit.confirmations,
+              state:deposit.confirmations > 5 ? 'accepted' : 'confirmed'
             },
           },
           "deposits"
         );
-        await this.props.coinsendaServices.updateActivityState(
-          this.props.deposits[deposit.id].account_id,
-          "deposits"
-        );
+        await this.props.coinsendaServices.updateActivityState(this.props.deposits[deposit.id].account_id, "deposits");
       }
       return;
     }
@@ -542,12 +551,9 @@ class SocketsComponent extends Component {
         "swaps"
       );
       this.props.action.isAppLoading(false);
-      await this.props.history.push(
-        `/wallets/activity/${new_swap.account_from}/swaps`
-      );
+      await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`);
       this.props.action.add_new_transaction_animation();
     }
-
 
 
     if(swap.state === 'rejected' || swap.state === 'canceled'){
