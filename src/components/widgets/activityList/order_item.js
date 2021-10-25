@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import styled from "styled-components";
 import UseTxState from "../../hooks/useTxState";
 import { PaymentConfirButton } from "../buttons/buttons";
@@ -58,6 +58,7 @@ const OrderItem = ({ order }) => {
 
   return (
     <OrderContainer
+      id={`${order.id}`}
       className={`${new_order_style ? "newOrderContainer" : ""} ${orderState}`}
       onClick={orderState ? null : orderDetail}
     >
@@ -121,9 +122,15 @@ export const DepositOrder = ({ order }) => {
     currency_type,
   } = order;
 
+  useLayoutEffect(()=>{
+    if(currency_type === 'crypto' && state === 'pending' && document.getElementById(id)){
+      document.getElementById(id).style.display = "none"
+    }
+  }, [])
+
   return (
     <Order
-      className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState}`}
+      className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
       <DataContainer
         className={`align_first ${state} ${currency_type} ${tx_path}`}

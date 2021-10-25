@@ -230,9 +230,11 @@ export class AccountService extends WebService {
     let pending = await filterActivitiesByStatus("pending");
     const confirmed = await filterActivitiesByStatus("confirmed");
     // const rejected = await filterActivitiesByStatus('rejected')
-    if(currentAccount.currency_type === 'crypto'){
+    
+    if(currentAccount.currency_type === 'crypto' && type !== 'swaps'){
       pending = 0
     }
+
     const expandidoMax = ((pending.length || 0) + (confirmed.length || 0)) * 100;
 
     if (pending) {
@@ -243,8 +245,6 @@ export class AccountService extends WebService {
             ? confirmed[0] && confirmed[0].id
             : pending[0].id,
       };
-      // } else if (rejected) {
-      //   pendingData = { pending: true, lastPending: rejected[0] && rejected[0].id }
     } else if (confirmed) {
       pendingData = {
         pending: true,
@@ -266,6 +266,7 @@ export class AccountService extends WebService {
     if (!activities) {
       activities = await serve_orders(accountId, type);
     }
+    
 
     await this.dispatch(current_section_params({ currentFilter: type }));
     await this.dispatch(update_activity(accountId, type, activities));
