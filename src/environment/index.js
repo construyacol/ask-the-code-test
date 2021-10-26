@@ -1,4 +1,7 @@
+import { CDN_PATH_ASSETS } from '../const/const'
 let Environment;
+
+
 export const getHostName = () => {
   const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   const nodeList = {
@@ -9,6 +12,16 @@ export const getHostName = () => {
   }
   return nodeList[hostId]
 // return "cryptosenda"
+}
+
+
+export const getCdnPath = (target) => {
+
+  const nodeList = {
+    ...CDN_PATH_ASSETS
+  }
+
+  return `https://${getHostName()}.com/${nodeList[target]}`
 }
 
 // export const getBaseUrl = (prefix) => {
