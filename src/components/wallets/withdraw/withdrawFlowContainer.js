@@ -259,7 +259,7 @@ class WithdrawFlow extends Component {
       need_new_acount: false,
     });
     this.props.action.FlowAnimationLayoutAction("nextV", "next", "withdraw");
-    await this.props.coinsendaServices.get_withdraws(this.props.account_id);
+    // await this.props.coinsendaServices.get_withdraws(this.props.account_id);
 
     const { withdraw_account, withdraw_provider } = state_data;
 

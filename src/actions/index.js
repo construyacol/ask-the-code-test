@@ -6,7 +6,6 @@ import * as ui_actions from "./uiActions";
 import * as sounds from "./soundActions";
 import * as auth from "./auth";
 import * as storage from "./storage";
-import { freshchat_init_user } from "../services/freshChat";
 
 const actions = {
   ...isAppLoading,
@@ -16,8 +15,7 @@ const actions = {
   ...ui_actions,
   ...sounds,
   ...auth,
-  ...storage,
-  freshchat_init_user,
+  ...storage
 };
 
 export default actions;

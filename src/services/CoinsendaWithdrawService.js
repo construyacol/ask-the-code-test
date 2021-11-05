@@ -246,7 +246,7 @@ export class WithdrawService extends WebService {
               },
               "country": user.country,
               provider_type
-            }
+            } 
           };
 
 
@@ -257,19 +257,30 @@ export class WithdrawService extends WebService {
 
     if (!response || response === 465) {
       return false;
-    }
+    } 
 
     const { data } = response;
 
     return data;
-  }
+  } 
+  
+   // async get_deposits(account_id, limit = 20, skip = 0) {
+  //   // @params:
+  //   // account_id
+  //   const user = this.user;
+  //   let filter = `{"where":{"account_id":"${account_id}"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+  //   const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
 
-  async get_withdraws(account_id, limit = 20, skip = 0) {
-    const user = this.user;
-    let filter = `{"where":{"account_id":"${account_id}", "state":{"inq":["confirmed", "accepted"]} }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
-    const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
-    return this.processListWithdraw(url_withdraw, account_id);
-  }
+  //   let deposits = await this.processDepositList(finalUrl)
+  //   if(!deposits){return false}
+
+  //   deposits = this.parseActivty(deposits, "deposits", account_id);
+  //   await this.dispatch(normalized_list(deposits, "deposits"));
+  //   await this.updateActivityState(account_id, "deposits", deposits);
+
+  //   return deposits;
+  // }
+
 
   async get_withdraws_by_withdraw_account(account_id, limit = 20, skip = 0) {
     const user = this.user;
@@ -278,14 +289,25 @@ export class WithdrawService extends WebService {
     return this.processListWithdraw(url_withdraw, account_id);
   }
 
+
+  
+  async get_withdraws(account_id, limit = 20, skip = 0) {
+    const user = this.user;
+    let filter = `{"where":{"account_id":"${account_id}", "state":{"inq":["confirmed", "accepted", "rejected"]} }, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
+    return this.processListWithdraw(url_withdraw, account_id);
+  }
+
+
   async processListWithdraw(url_withdraw, account_id) {
     const withdraws = await this.Get(url_withdraw);
     if (!withdraws || (withdraws && withdraws.length < 1)) {
       return false;
     }
-    if (await this.isCached("withdraws", withdraws)) {
-      return withdraws;
-    }
+    // if (await this.isCached("withdraws", withdraws)) {
+    //   return withdraws;
+    // }
+
     let withdraws_remodeled = [];
     for (let withdraw of withdraws) {
       let state;

@@ -3,7 +3,8 @@ import SimpleLoader from "../../loaders";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../../actions";
-import SAmerica from "../sAmerica";
+// import SAmerica from "../sAmerica";
+import AmericaMap from '../AmericaMap'
 import { InputCountry } from "../../inputs";
 import { matchItem } from "../../../../utils";
 import { simulate_click } from "../../../../utils";
@@ -42,13 +43,16 @@ class SelectCountry extends Component {
 
   update_country = async (e, without_click) => {
     // alert('update country')
-    const { value } = e.target;
+    let value = e.target && e.target.value 
     const { available_country_list } = this.state;
+    console.log('update_country', value)
+    if(!value){return}
     let match = await matchItem(
       available_country_list,
       { primary: value },
       "value"
     );
+
     if (match && match.length === 1) {
       //Si hay una coincidencia con la busqueda simulamos el click en el país de coincidencia
       this.setState({ country_match: match[0] });
@@ -59,11 +63,9 @@ class SelectCountry extends Component {
     }
   };
 
+
   reset_data = () => {
-    simulate_click(
-      document.getElementById(`${this.state.country_match.value}`),
-      "click"
-    );
+    simulate_click(document.getElementById(`${this.state.country_match.value}`), "click");
     this.setState({ country_match: null });
   };
 
@@ -96,13 +98,23 @@ class SelectCountry extends Component {
             </div>
             <div className={`SamericaContainer ${!disabled ? "enableMap" : ""}`} >
               <div className="blocker" style={{ display: country_match ? "initial" : "none" }} ></div>
-              <SAmerica
+              <AmericaMap
+                width={900}
+                height={768}
+                actionLoader={this.action_loader}
+                availableCountries={available_countries}
+                setSelectedCountry={this.update_country}
+                selectedCountry={this.state.country_match}
+              />
+
+              {/* <SAmerica
                 width={900}
                 height={768}
                 action_loader={this.action_loader}
                 available_countries={available_countries}
                 select_country_component={this.update_country}
-              />
+              /> */}
+
             </div>
             <p></p>
           </div>

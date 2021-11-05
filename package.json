@@ -9,9 +9,7 @@
     "bignumber.js": "^8.1.1",
     "chart.js": "^2.8.0",
     "compressorjs": "^1.0.5",
-    "d3": "4.9.1",
     "headroom.js": "0.9.4",
-    "highcharts": "^8.1.0",
     "intersection-observer": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
     "key-encoder": "^2.0.3",
@@ -62,7 +60,8 @@
     "build:pre_prod": "cross-env REACT_APP_BUILD_CONFIG='pre_prod' npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "node ./scripts/preloads.js && ./rename_build_statics.sh"
+    "cdn":"./postbuild.sh",
+    "postbuild": "node ./scripts/preloads.js && ./postbuild.sh"
   },
   "reactSnapshot": {
     "include": [

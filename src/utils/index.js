@@ -641,10 +641,14 @@ export const serve_orders = async (account_id, filter) => {
 
 
   if (filter !== "swaps" && account_id) {
-    indices.map((id) => {
-      // if(!list[id].account_id){return false}
-      list[id].account_id === account_id && new_array.push(list[id]);
-    });
+    for (const item of indices) {
+      if(list[item].account_id === account_id){
+        new_array = [
+          ...new_array,
+          list[item]
+        ]
+      }
+    }
   }
 
   if (!account_id) {

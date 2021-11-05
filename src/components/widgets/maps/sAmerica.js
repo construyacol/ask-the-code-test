@@ -133,6 +133,7 @@ class SAmerica extends Component {
       },
     });
     this.initiateZoom();
+    console.log('||||||||||||  reset ===> ', this.state)
   };
 
   // Function that calculates zoom/pan limits and sets zoom to default value
