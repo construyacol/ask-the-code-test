@@ -19,45 +19,45 @@ class SocketsComponent extends Component {
     isUpdated: false,
   };
 
-  // async testSocketExecuted(orderMock) {
-  //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
-  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
-  //     await this.setState({ currentDeposit: orderMock });
-  //   } else {
-  //     this.deposit_mangagement(orderMock);
-  //   }
-  //  }
+  async testSocketExecuted(orderMock) {
+    console.log('======================================== ______ testSocketExecuted: ', orderMock)
+    if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
+      await this.setState({ currentDeposit: orderMock });
+    } else {
+      this.deposit_mangagement(orderMock);
+    }
+   }
 
-//   async testSocket() {
+  async testSocket() {
 
-//     let orderMock = {
-//       id:"61846c0267e372004414b13e",
-//       state:"rejected"
-//     }
+    let orderMock = {
+      id:"6184c0ad67e372004414b152",
+      state:"rejected"
+    }
 
-//     this.withdraw_mangagement(orderMock);
+    this.withdraw_mangagement(orderMock);
 
-//     // this.testSocketExecuted()
-//     // let confirmations = 1
-//     // setInterval(()=>{
-//     //   if(confirmations < 7){
-//     //     orderMock = {
-//     //       confirmations: confirmations,
-//     //       id: "617621370b0a1b0048ae9cae"
-//     //     }
-//     //     this.testSocketExecuted(orderMock)
-//     //     confirmations++
-//     //   }
-//     // }, 5000)
-//   }
+    // this.testSocketExecuted()
+    // let confirmations = 1
+    // setInterval(()=>{
+    //   if(confirmations < 7){
+    //     orderMock = {
+    //       confirmations: confirmations,
+    //       id: "617621370b0a1b0048ae9cae"
+    //     }
+    //     this.testSocketExecuted(orderMock)
+    //     confirmations++
+    //   }
+    // }, 5000)
+  }
 
-//  componentDidMount(){
-//   //  setTimeout(()=> {
-//     //  this.testSocket()
-//     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
-//     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
-//   //  }, 7000)
-//  }
+ componentDidMount(){
+   setTimeout(()=> {
+     this.testSocket()
+    // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
+    // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
+   }, 7000)
+ }
 
  async componentDidUpdate(prevProps) {
 
