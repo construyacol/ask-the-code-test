@@ -266,7 +266,6 @@ export class AccountService extends WebService {
     if (!activities) {
       activities = await serve_orders(accountId, type);
     }
-    
 
     await this.dispatch(current_section_params({ currentFilter: type }));
     await this.dispatch(update_activity(accountId, type, activities));

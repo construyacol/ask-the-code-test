@@ -19,34 +19,44 @@ class SocketsComponent extends Component {
     isUpdated: false,
   };
 
-//   async testSocketExecuted(depositMock) {
-//     // console.log('======================================== ______ testSocketExecuted: ', depositMock)
-//     if (depositMock.state === "pending" && depositMock.currency_type === "crypto") {
-//       await this.setState({ currentDeposit: depositMock });
-//     } else {
-//       this.deposit_mangagement(depositMock);
+  // async testSocketExecuted(orderMock) {
+  //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
+  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
+  //     await this.setState({ currentDeposit: orderMock });
+  //   } else {
+  //     this.deposit_mangagement(orderMock);
+  //   }
+  //  }
+
+//   async testSocket() {
+
+//     let orderMock = {
+//       id:"61846c0267e372004414b13e",
+//       state:"rejected"
 //     }
-//    }
-//   async testDeposit() {
-//     let depositMock = {}
-//     let confirmations = 1
-//     setInterval(()=>{
-//     // setTimeout(()=>{
-//       if(confirmations < 7){
-//         depositMock = {
-//           confirmations: confirmations,
-//           id: "617621370b0a1b0048ae9cae"
-//         }
-//         this.testSocketExecuted(depositMock)
-//         confirmations++
-//       }
-//     }, 5000)
+
+//     this.withdraw_mangagement(orderMock);
+
+//     // this.testSocketExecuted()
+//     // let confirmations = 1
+//     // setInterval(()=>{
+//     //   if(confirmations < 7){
+//     //     orderMock = {
+//     //       confirmations: confirmations,
+//     //       id: "617621370b0a1b0048ae9cae"
+//     //     }
+//     //     this.testSocketExecuted(orderMock)
+//     //     confirmations++
+//     //   }
+//     // }, 5000)
 //   }
 
 //  componentDidMount(){
-//    setTimeout(()=> {
-//      this.testDeposit()
-//    }, 5000)
+//   //  setTimeout(()=> {
+//     //  this.testSocket()
+//     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
+//     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
+//   //  }, 7000)
 //  }
 
  async componentDidUpdate(prevProps) {
@@ -162,7 +172,7 @@ class SocketsComponent extends Component {
   }
 
   withdraw_mangagement = async (withdraw) => {
-    // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw)
+
 
     if (withdraw.proof) {
       if (
@@ -231,6 +241,8 @@ class SocketsComponent extends Component {
     }
 
     const { currentWithdraw } = this.state;
+    console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
+    // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
 
     if (
@@ -299,6 +311,35 @@ class SocketsComponent extends Component {
           "withdraw_accounts"
         );
       }
+    }
+
+
+    if (withdraw.state === "rejected" || withdraw.state === "canceled") {
+      
+      // await this.props.coinsendaServices.get_withdraws(this.props.withdraws[withdraw.id].account_id)
+      setTimeout(async () => {
+        await this.props.action.update_item_state(
+          { 
+            [withdraw.id]: {
+              ...this.props.withdraws[withdraw.id],
+              state: withdraw.state,
+            },
+          },
+          "withdraws"
+        );
+
+        await this.props.coinsendaServices.updateActivityState(
+          this.props.withdraws[withdraw.id].account_id,
+          "withdraws"
+        );
+
+        await this.props.coinsendaServices.getWalletsByUser(true)
+
+      }, 500);
+
+      this.props.action.exit_sound();
+      let state = withdraw.state === "canceled" ? "cancelado" : "rechazado";
+      this.props.toastMessage(`Retiro ${state}`, "error");
     }
 
     // if(withdraw.metadata && !withdraw.state){

@@ -9,7 +9,6 @@
     "bignumber.js": "^8.1.1",
     "chart.js": "^2.8.0",
     "compressorjs": "^1.0.5",
-    "d3": "4.9.1",
     "headroom.js": "0.9.4",
     "intersection-observer": "^0.7.0",
     "jsonwebtoken": "^8.5.1",
