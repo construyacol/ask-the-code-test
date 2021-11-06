@@ -3,8 +3,15 @@ import { useActions } from "../../hooks/useActions";
 import { getExpTimeData } from '../utils'
 
 
-export const updateLocalForagePersistState = (modelData) => {
+export const updateLocalForagePersistState = (payload) => {
+  let modelData = JSON.parse(JSON.stringify(payload))
   const { user, wallets, balances } = modelData;
+  delete modelData.withdraws
+  delete modelData.deposits
+  delete modelData.swaps
+  modelData.user.withdraws = []
+  modelData.user.swaps = []
+  modelData.user.deposits = []
   if (user && wallets && balances) {
     return localForage.setItem("sessionState", JSON.stringify(modelData));
   } 

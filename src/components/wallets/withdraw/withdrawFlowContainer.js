@@ -295,7 +295,7 @@ class WithdrawFlow extends Component {
         "backV",
         "back",
         "withdraw",
-        1
+        1 
       );
       this.props.action.isAppLoading(false);
       return this.handleError("La orden no ha podido ser creada");
@@ -386,9 +386,6 @@ class WithdrawFlow extends Component {
     const { new_order } = this.state;
 
     await this.props.action.toggleModal();
-    await this.props.history.push(
-      `/wallets/activity/${this.props.account_id}/withdraws`
-    );
 
     this.props.action.CleanForm("deposit");
     this.props.action.CleanForm("withdraw");

@@ -31,7 +31,7 @@ class SocketsComponent extends Component {
   async testSocket() {
 
     let orderMock = {
-      id:"6184c0ad67e372004414b152",
+      id:"6184c8f067e372004414b156",
       state:"rejected"
     }
 
@@ -53,7 +53,7 @@ class SocketsComponent extends Component {
 
  componentDidMount(){
    setTimeout(()=> {
-     this.testSocket()
+    //  this.testSocket()
     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
    }, 7000)
@@ -282,11 +282,12 @@ class SocketsComponent extends Component {
       withdraw.state === "accepted" &&
       currentWithdraw.currency_type === "fiat"
     ) {
-      let new_withdraw = this.state.currentWithdraw;
+  
+      let new_withdraw = {...this.state.currentWithdraw};
       await this.props.coinsendaServices.addItemToState("withdraws", {
         ...new_withdraw,
         state: "confirmed",
-      });
+      }); 
       await this.props.coinsendaServices.updateActivityState(
         new_withdraw.account_id,
         "withdraws"
@@ -311,6 +312,9 @@ class SocketsComponent extends Component {
           "withdraw_accounts"
         );
       }
+
+      this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
+
     }
 
 
@@ -337,7 +341,7 @@ class SocketsComponent extends Component {
 
       }, 500);
 
-      this.props.action.exit_sound();
+      // this.props.action.exit_sound();
       let state = withdraw.state === "canceled" ? "cancelado" : "rechazado";
       this.props.toastMessage(`Retiro ${state}`, "error");
     }
