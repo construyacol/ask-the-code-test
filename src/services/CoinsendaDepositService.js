@@ -58,23 +58,7 @@ export class DepositService extends WebService {
     return normalizedData.entities.deposit_providers;
   }
 
-  async confirmDepositOrder(order_id, base64image) {
-    const user = this.user;
 
-    const body = {
-      data: {
-        country: user.country,
-        deposit_id: order_id,
-        state: "confirmed",
-        // "account_id": account_id,
-        proof_of_payment: {
-          type: "image",
-          proof: base64image,
-        },
-      },
-    };
-    return await this.Post(UPDATE_DEPOSIT_URL, body);
-  }
 
   async createDeposit(
     currency,
@@ -111,19 +95,37 @@ export class DepositService extends WebService {
     return data;
   }
 
-  async deleteDeposit(depositId) {
+
+  async confirmDepositOrder(order_id, base64image) {
     const user = this.user;
 
     const body = {
       data: {
         country: user.country,
-        deposit_id: depositId,
-        state: "canceled",
+        deposit_id: order_id,
+        state: "confirmed",
+        // "account_id": account_id,
+        proof_of_payment: {
+          type: "image",
+          proof: base64image,
+        },
       },
     };
+    return await this.Post(UPDATE_DEPOSIT_URL, body);
+  }
 
+  async addUpdateDeposit(deposit_id, state) {
+    const user = this.user;
+    const body = {
+      data: { 
+        country: user.country,
+        deposit_id,
+        state,
+      },
+    };
     return this.Post(UPDATE_DEPOSIT_URL, body);
   }
+
 
   async validateAddress(address) {
     const user = this.user;

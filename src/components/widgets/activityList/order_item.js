@@ -65,7 +65,7 @@ const OrderItem = ({ order }) => {
       {tx_path === "deposits" ? (
         <DepositOrder order={{ ...order, orderState, setOrderState }} />
       ) : tx_path === "withdraws" ? (
-        <WithdrawOrder order={{ ...order }} />
+        <WithdrawOrder order={{ ...order, setOrderState }} />
       ) : tx_path === "swaps" ? (
         <SwapOrder order={{ ...order }} setOrderState={setOrderState} />
       ) : (
@@ -117,7 +117,7 @@ export const DepositOrder = ({ order }) => {
     state,
     created_at,
     id,
-    setOrderState,
+    setOrderState, 
     orderState,
     currency_type,
   } = order;
@@ -128,14 +128,18 @@ export const DepositOrder = ({ order }) => {
     }
   }, [])
 
+
+
   return (
     <Order
       className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
-      <DataContainer
-        className={`align_first ${state} ${currency_type} ${tx_path}`}
-      >
-        <DeleteButton {...order} setOrderState={setOrderState} />
+      <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
+        {
+          state === 'pending' &&
+            <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateDeposit" />
+        }
+
         <PanelLeft {...order} />
         <OrderIcon className="fas fa-arrow-down" />
         <TypeOrderText className="fuente">
@@ -299,7 +303,7 @@ const SwapOrder = ({ order, setOrderState }) => {
 const WithdrawOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
 
-  const { state, created_at, id, currency_type } = order;
+  const { state, created_at, id, currency_type, sent, setOrderState } = order;
 
   return (
     <Order
@@ -308,6 +312,10 @@ const WithdrawOrder = ({ order }) => {
       }`}
     >
       <DataContainer className={`align_first ${state} ${currency_type}`}>
+        {/* {
+          ((currency_type === 'fiat' && state === 'confirmed') && !sent) &&
+            <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateWithdraw" />
+        } */}
         <PanelLeft {...order} />
         <OrderIcon className="fas fa-arrow-up" />
         <TypeOrderText className="fuente">
@@ -441,10 +449,14 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
   );
 };
 
-const DeleteButton = ({ state, id, setOrderState }) => {
+const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
+  
+  // @param
+  // deleteAction - addUpdateWithdraw | addUpdateDeposit 
+
   const { actions, coinsendaServices } = UseTxState(id);
 
-  const deleteDeposit = () => {
+  const deleteOrder = () => {
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
@@ -452,28 +464,23 @@ const DeleteButton = ({ state, id, setOrderState }) => {
       txtPrimary: "Continuar",
       txtSecondary: "Cancelar",
       payload: id,
-      action: delete_order,
+      action: (async() => { 
+        setOrderState("deleting");
+        let deleted = await coinsendaServices[deleteAction](id, 'rejected');
+        if (!deleted) {
+          return false;
+        }
+        setOrderState("deleted");
+      }),
       img: "deleteticket",
     });
-    // setTimeout(()=>{setOrderState('deleted')}, 1000)
   };
 
-  const delete_order = async (id) => {
-    setOrderState("deleting");
-
-    let deleted = await coinsendaServices.deleteDeposit(id);
-    if (!deleted) {
-      return false;
-    }
-    setOrderState("deleted");
-  };
 
   return (
-    <>
-      {state === "pending" && (
         <div
           className="tooltip deleteOrder"
-          onClick={deleteDeposit}
+          onClick={deleteOrder}
           data-is_deletion_action={true}
         >
           <div id="Aldelete" data-is_deletion_action={true}>
@@ -486,8 +493,6 @@ const DeleteButton = ({ state, id, setOrderState }) => {
             Cancelar
           </span>
         </div>
-      )}
-    </>
   );
 };
 

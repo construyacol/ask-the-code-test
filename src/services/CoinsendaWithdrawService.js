@@ -6,7 +6,6 @@ import {
   WITHDRAW_PROVIDERS_URL,
   UPDATE_WITHDRAW_URL,
   NEW_WITHDRAW_URL,
-  DELETE_WITHDRAW_URL,
   NEW_WITHDRAW_ACCOUNT_URL,
   GET_WITHDRAWS_BY_ACCOUNT_ID,
   DELETE_WITHDRAW_ACCOUNT_URL,
@@ -188,19 +187,16 @@ export class WithdrawService extends WebService {
     if (twoFaToken) {
       body.data.twofa_token = twoFaToken;
     }
-    // console.log(body)
-
     const response = await this.Post(NEW_WITHDRAW_URL, body);
     if (!response || response === 465) {
       return false;
     }
-
     return response;
   }
 
-  async deleteWithdrawOrder(orderId) {
-    return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
-  }
+  // async deleteWithdrawOrder(orderId) {
+  //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
+  // }
 
   async addNewWithdrawAccount(payload, type) {
     const user = this.user;
@@ -331,7 +327,7 @@ export class WithdrawService extends WebService {
 
       if (new_withdraw.state !== "pending") {
         withdraws_remodeled.push(new_withdraw);
-      }
+      } 
     }
 
     withdraws_remodeled = this.parseActivty(
@@ -348,16 +344,16 @@ export class WithdrawService extends WebService {
     return withdraws_remodeled;
   }
 
-  async addUpdateWithdraw(withdrawId, state) {
+
+  async addUpdateWithdraw(withdraw_id, state) {
     const body = {
       data: {
-        withdraw_id: withdrawId,
-        state: state,
+        withdraw_id, 
+        state,
         country: this.user.country,
       },
     };
     const response = await this.Post(UPDATE_WITHDRAW_URL, body);
-
     return response;
   }
 
