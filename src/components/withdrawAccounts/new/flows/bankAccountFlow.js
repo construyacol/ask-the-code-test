@@ -14,7 +14,7 @@ import {
   serveBankOrCityList,
   addIndexToRootObject,
   objectToArray,
-} from "../../../../utils";
+} from "../../../../utils"; 
 import { doLogout } from '../../../utils'
 // import MVList from "../../../widgets/itemSettings/modal_views/listView";
 import { createSelector } from "reselect";
@@ -54,6 +54,7 @@ class BankAccountFlow extends Component {
     this.setState({ loader: true });
 
     let res = withdraw_providers_list;
+    // console.log('withdraw_providers_list', withdraw_providers_list)
     if (!res || (res && !res.length)) {
       return doLogout('?message=Vuelve a iniciar session');
     }
@@ -64,7 +65,7 @@ class BankAccountFlow extends Component {
 
     let serve_bank_list = await serveBankOrCityList(bank_list, "bank");
     // let serve_city_list = await serveBankOrCityList(city_list, "city");
-
+    console.log('============================================================== serve_bank_list', serve_bank_list)
     let id_types_object = await addIndexToRootObject(
       res && res[0].info_needed.id_type
     );
@@ -81,7 +82,7 @@ class BankAccountFlow extends Component {
     await this.props.actualizarEstado({
       target: { name: "currency", value: res[0].currency },
     });
-    console.log('|||||||||||||||||||||||||||||||||||||||||||serve_bank_list', serve_bank_list)
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||serve_bank_list', serve_bank_list)
 
     this.setState({
       banks: serve_bank_list,
@@ -94,7 +95,21 @@ class BankAccountFlow extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
-      // console.log('|||||_________________user? ', this.props.user.id_type, this.props.id_type)
+      if(this.props.short_name && this.props.withdraw_providers_list && this.props.withdraw_providers_list[0]){
+        const { info_needed } = this.props.withdraw_providers_list && this.props.withdraw_providers_list[0]
+        const shortName = this.props.short_name
+        const accountTypes = info_needed.bank_name[shortName] && info_needed.bank_name[shortName].compatible_account_types.map((accountId)=>{
+          return info_needed.account_type[accountId]
+        })
+        if(accountTypes){
+          this.setState({
+            account_types:accountTypes
+          })
+        }
+        // console.log('accountTypes',  accountTypes)
+        console.log('===================================0 CHANGES ',  info_needed.bank_name)
+      }
+
     }
   }
 
@@ -228,69 +243,6 @@ class BankAccountFlow extends Component {
                 />
               </div>
 
-              {/* {step === 4 && (
-                <Fragment>
-                  <form
-                    className="formAccountFlow grid-disable"
-                    onSubmit={handleSubmit}
-                  >
-                    <div className="contInfoIdType">
-                      <p className="nBtextInit fuente">
-                        Es de vital importancia que esta cuenta del{" "}
-                        <strong>{bank_name}</strong> sea de tu propiedad{" "}
-                        <strong>{name}</strong>, de lo contrario se invalidarán
-                        las transacciones y es posible que tus fondos queden
-                        congelados hasta nuevo aviso.
-                      </p>
-                      <div className="contForminputsAccount">
-                        <DropDownContainer
-                          placeholder="ej. Cédula de ciudadanía, Pasaporte etc"
-                          name="id_type"
-                          elements={this.state.id_types}
-                          selected={this.props.id_type}
-                          label="Elige el tipo de documento con el cual abriste la cuenta bancaria:"
-                          actualizarEstado={actualizarEstado}
-                          active={
-                            (this.props.id_type &&
-                              this.props.user.id_type === this.props.id_type) ||
-                            (id_type && id_number)
-                          }
-                        />
-
-                        {this.props.id_type &&
-                          this.props.user.id_type !== this.props.id_type && (
-                            <InputForm
-                              type="text"
-                              autoFocus={true}
-                              label="Escribe el número de documento de identidad"
-                              placeholder="Ej. 1123321..."
-                              name="id_number"
-                              actualizarEstado={actualizarEstado}
-                              active={id_type && id_number}
-                              value={id_number}
-                              handleKeyPress={handleKeyPress}
-                              status={statusInput}
-                            />
-                          )}
-                      </div>
-                    </div>
-
-                    <div id="bankChooseButton" className="contbuttonAccount">
-                      <InputButton
-                        id={idAccept}
-                        preventSubmit={true}
-                        label="Continuar"
-                        type="primary"
-                        active={
-                          (id_type && user.id_type === id_type) ||
-                          (id_type && id_number)
-                        }
-                      />
-                    </div>
-                  </form>
-                </Fragment>
-              )} */}
-
               {step === 4 && (
                 <form className="formAccountFlow" onSubmit={async(e) => {
                   await handleSubmit(e)
@@ -332,37 +284,6 @@ class BankAccountFlow extends Component {
                 </form>
               )}
 
-              {/* {step === 6 && (
-                <form
-                  className="formAccountFlow city"
-                  onSubmit={final_step_create_account}
-                >
-                  <div className="contListCities">
-                    <p className="fuente labelText">
-                      ¿desde que ciudad abriste esta cuenta bancaria?
-                    </p>
-                    <MVList
-                      list={cities}
-                      noIcon={true}
-                      theme="classic"
-                      actualizarEstado={this.update_city}
-                      current_item={city}
-                      name_item="city"
-                    />
-                  </div>
-                  <div className="momContbuttonAccount">
-                    <div id="bankChooseButton" className="contbuttonAccount">
-                      <InputButton
-                        id={idAccept}
-                        preventSubmit={true}
-                        label="Crear cuenta"
-                        type="primary"
-                        active={city}
-                      />
-                    </div>
-                  </div>
-                </form>
-              )} */}
             </div>
           </div>
         )}
