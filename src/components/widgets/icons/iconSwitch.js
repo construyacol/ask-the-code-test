@@ -313,7 +313,8 @@ class IconSwitch extends Component {
       case "add_account":
         return <Add {...props} />;
       case "davivienda":
-      case "banco_davivienda":
+      case "daviplata":
+      case "banco_davivienda_sa":
         return <Davivienda {...props} />;
       case "bancolombia":
       case "banco_bancolombia":
@@ -321,7 +322,7 @@ class IconSwitch extends Component {
       case "banco_de_bogota":
         return <BancoBogota {...props} />;
       case "bbva":
-      case "banco_bbva":
+      case "bbva_colombia":
         return <Bbva {...props} />;
       case "arrow_right":
         return <ArrowRight {...props} />;
@@ -342,39 +343,40 @@ class IconSwitch extends Component {
         return <Blockchain {...props} />;
       case "banco_agrario":
         return <BankAgrario {...props} />;
-      case "banco_caja_social":
+      case "banco_caja_social_bcsc_sa":
         return <BancajaSocial {...props} />;
-      case "banco_colpatria":
+      case "scotiabank_colpatria_sa":
         return <BankColpatria {...props} />;
-      case "banco_falabella":
+      case "banco_falabella_sa":
         return <BancoFalabella {...props} />;
-      case "banco_finandina":
+      case "banco_finandina_sa":
         return <BancoFinandina {...props} />;
-      case "banco_itau_corpbanca":
+      case "itau":
+      case "itau_antes_corpbanca":
         return <BankItau {...props} />;
       case "banco_de_occidente":
         return <BancOccidente {...props} />;
       case "banco_pichincha":
         return <BankPichincha {...props} />;
-      case "banco_santander":
+      case "banco_santander_de_negocios_co":
         return <BancoSantander {...props} />;
-      case "banco_bancoomeva":
+      case "bancoomeva":
         return <Bancoomeva {...props} />;
-      case "banco_nequi":
+      case "nequi":
         return <Nequi {...props} />;
       case "banco_av_villas":
         return <AvVillas {...props} />;
       case "bank":
         return <DollarSymbol {...props} />;
-      case "banco_citibank":
+      case "citibank":
         return <CitiBank {...props} />;
       case "banco_compartir":
         return <CompartirBank {...props} />;
-      case "banco_coopcentral":
+      case "banco_cooperativo_coopcentral":
         return <CoopCentral {...props} />;
       case "banco_corpbanca":
         return <Corpbanca {...props} />;
-      case "banco_sudameris":
+      case "banco_gnb_sudameris":
         return <GnbBank {...props} />;
       case "banco_multibank":
         return <MultiBank {...props} />;
@@ -382,15 +384,15 @@ class IconSwitch extends Component {
         return <PopularBank {...props} />;
       case "banco_procredit":
         return <BankProcredit {...props} />;
-      case "banco_cooperativa_financiera_antioquia":
+      case "cooperativa_financiera_de_anti":
         return <BankCoopFinAnt {...props} />;
-      case "banco_cootrafa_cooperativa_financiera":
+      case "cootrafa_cooperativa_financier":
         return <BankCoopCotrafa {...props} />;
-      case "banco_coltefinanciera":
+      case "coltefinanciera_sa":
         return <BankColteFinanciera {...props} />;
-      case "banco_confiar_cooperativa_financiera":
+      case "confiar":
         return <BankCooConfiar {...props} />;
-      case "banco_financiera_juriscoop":
+      case "financiera_juriscoop_sa_comp":
         return <BankJurisCoop {...props} />;
         // return <Account {...props} />;
       case "swap-camera":

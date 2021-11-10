@@ -358,9 +358,9 @@ export const serveBankOrCityList = (list, type) => {
       let new_item = {
         ...list[indice],
         code: indice,
-        id: indices,
+        id: indices, 
         type: type,
-        name: list[indice].ui_name,
+        name: list[indice].ui_name.toLowerCase(),
         selection: false,
       };
       indices++;
