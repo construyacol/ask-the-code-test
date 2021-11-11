@@ -143,10 +143,10 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         }
         // console.log('deposit_providers', order)
         const amount = await formatCurrency(order.amount, order.currency);
-        const amount_neto = await formatCurrency(
-          order.amount_neto,
-          order.currency
-        );
+        // const amount_neto = await formatCurrency(
+        //   order.amount_neto,
+        //   order.currency
+        // );
 
         setOrders([
           ...depositProviderInfo,

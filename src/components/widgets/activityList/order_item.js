@@ -316,7 +316,8 @@ const SwapOrder = ({ order, setOrderState }) => {
 const WithdrawOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
 
-  const { state, created_at, id, currency_type, sent, setOrderState } = order;
+  // const { state, created_at, id, currency_type, sent, setOrderState } = order;
+  const { state, created_at, id, currency_type } = order;
 
   return (
     <Order

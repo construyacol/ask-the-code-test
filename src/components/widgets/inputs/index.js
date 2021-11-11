@@ -3,15 +3,15 @@ import loadable from "@loadable/component";
 import { number_format } from "../../../utils";
 import { SimpleLoader } from "../loaders";
 import Environtment from "../../../environment";
-import MaskedInput from "react-text-mask";
-import createAutoCorrectedDatePipe from "text-mask-addons/dist/createAutoCorrectedDatePipe";
+// import MaskedInput from "react-text-mask";
+// import createAutoCorrectedDatePipe from "text-mask-addons/dist/createAutoCorrectedDatePipe";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./inputStyles.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 const NumberInput = loadable(() => import("./numberInput"));
 
-const autoCorrectedDatePipe = createAutoCorrectedDatePipe("dd/mm/yyyy");
+// const autoCorrectedDatePipe = createAutoCorrectedDatePipe("dd/mm/yyyy");
 const { CountryUrl } = Environtment;
 
 export const InputFormConverter = (props) => {

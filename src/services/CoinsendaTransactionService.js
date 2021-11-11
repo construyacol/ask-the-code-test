@@ -76,7 +76,6 @@ export class TransactionService extends WebService {
   }
 
   async getNew2faSecretCode() {
-    const user = this.user;
     const body = {
       data: {
         country: this.user.country,
@@ -91,7 +90,6 @@ export class TransactionService extends WebService {
   }
 
   async addNewTransactionSecurity(twofa_token) {
-    const user = this.user;
     const body = {
       data: {
         country: this.user.country,
@@ -129,7 +127,6 @@ export class TransactionService extends WebService {
   }
 
   async addRestoreId(restore_id) {
-    const user = this.user;
     const body = {
       data: {
         restore_id,

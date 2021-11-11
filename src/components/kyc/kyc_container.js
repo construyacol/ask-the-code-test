@@ -47,14 +47,14 @@ const Kyc = (props) => {
     props.action.isAppLoading(true);
 
     let res = await props.coinsendaServices.updateLevelProfile(config, user);
+
     if (!res) {
-      await props.action.ReduceStep("kyc_basic", 1);
       props.action.isAppLoading(false);
       toastMessage(
         "No puedes verificarte en este momento, intenta más tarde",
-        "error"
-      );
-      return props.action.ReduceStep("kyc_global_step", 1);
+        "error" 
+        );
+      return props.action.CleanForm("kyc_basic");
     }
     const { data } = res;
     const { personal } = data;
@@ -103,8 +103,8 @@ const Kyc = (props) => {
       verification_level: "level_1",
     };
     props.action.isAppLoading(true);
+
     let res = await props.coinsendaServices.updateLevelProfile(config, user);
-    // console.log('||||||||||| VALIDATE_RES', res)
     if (!res) {
       await props.action.ReduceStep("kyc_advanced", 1);
       await setReset(true);
@@ -114,6 +114,15 @@ const Kyc = (props) => {
         "error"
       );
     }
+
+    // if (!res) {
+    //   props.action.isAppLoading(false);
+    //   toastMessage(
+    //     "No puedes verificarte en este momento, intenta más tarde",
+    //     "error" 
+    //     );
+    //   return props.action.CleanForm("kyc_advanced");
+    // }
 
     let user_update = {
       ...user,

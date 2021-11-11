@@ -149,7 +149,6 @@ export class DepositService extends WebService {
   }
 
   async createDepositProvider(account_id, country) {
-    const user = this.user;
 
     let body = {
       data: {
