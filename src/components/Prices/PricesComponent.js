@@ -22,7 +22,7 @@ const PricesComponent = ({ change, data }) => {
 const ExchangeBox = ({ change, price, type, currencyLabel }) => (
   <ExchangeBoxStyled>
     <label>
-      TE {type === "buy" ? "COMPRAMOS" : "VENDEMOS"}{" "}
+      TE {type === "buy" ? "VENDEMOS" : "COMPRAMOS"}{" "}
       <label className="strong">{currencyLabel}</label> A<br />
       <label
         className="root-content-numbers"
