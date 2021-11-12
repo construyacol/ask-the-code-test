@@ -57,7 +57,7 @@ const OrderItem = ({ order }) => {
   };
 
   const isLocked = order.locked
-  console.log('||||||||||||||||||||||  ORDER DETAIL ===> ', order)
+  // console.log('||||||||||||||||||||||  ORDER DETAIL ===> ', order)
 
   return (
     <OrderContainer

@@ -6,7 +6,7 @@ import { PaymentProof } from "./paymentProof";
 import UseTxState from "../../../../hooks/useTxState";
 import SimpleLoader from "../../../loaders";
 // import QRCode from "qrcode";
-import { readFile, img_compressor } from "../../../../../utils";
+import { readFile, img_compressor, includesAnyImageMime } from "../../../../../utils";
 import OrderStatus from "./orderStatus";
 import DetailGenerator from "./detailGenerator";
 import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
@@ -22,7 +22,7 @@ import moment from "moment";
 import "moment/locale/es";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 moment.locale("es");
-
+ 
 // const orderModel = {
 //   created_at: new Date(),
 //   updated_at: new Date(),
@@ -127,28 +127,26 @@ const FiatDespoitOrder = ({ order }) => {
     if (e.target.files && e.target.files.length > 0) {
       setOnDrag(false);
       const data = e.target.files[0];
-      if (data.type !== "image/png" && data.type !== "image/jpeg") {
-        return alert("formato no permitido");
-      }
       const file = await img_compressor(data, 0.25);
-      console.log("result compresor", file.size);
-      const imageDataUrl = await readFile(file);
-      setImgSrc(imageDataUrl);
+      const dataBase64 = await readFile(file);
+      const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
+      if(!isAnImage){
+        return alert('Solo se aceptan imagenes')
+      }
+      setImgSrc(dataBase64);
       actions.isAppLoading(true);
-
 
       // cropImgOFf
       // activate oncomment line ><167
       let confirmation = await coinsendaServices.confirmDepositOrder(
         order.id,
-        imageDataUrl
+        dataBase64
       );
       if (!confirmation || !confirmation.data) {
         actions.isAppLoading(false);
         toastMessage("El deposito No se ha confirmado", "error");
         setImgSrc(null);
       }
-
     }
   };
 

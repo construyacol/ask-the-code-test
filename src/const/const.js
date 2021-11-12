@@ -14,6 +14,13 @@ const {
   BASE_URL
 } = Enviroment;
 
+
+export const IMAGE_MIME_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/jpg"
+];
+
 export const loadLabels = {
   IMPORTANDO_PARES: "Importando pares",
   OBTENIENDO_TUS_BILLETERAS_Y_BALANCES: "Obteniendo tus billeteras y balances",

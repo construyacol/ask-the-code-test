@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import KycAdvancedLayout from "./kyc_advanced_layout";
-import { readFile } from "../../../utils";
+import { readFile, img_compressor, includesAnyImageMime } from "../../../utils";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
-import { img_compressor } from "../../../utils";
 import withCoinsendaServices from "../../withCoinsendaServices";
 
 class KycAdvancedContainer extends Component {
@@ -123,14 +122,15 @@ class KycAdvancedContainer extends Component {
 
   goFileLoader = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      // console.log('|||||||| goFileLoader', e.target.files)
       this.props.action.isAppLoading(true);
-      // console.log('||||||||||IMG BEFORE', e.target.files[0])
       const file = await img_compressor(e.target.files[0]);
-      // return console.log('||||||||||IMG AFTER', file)
       const imageDataUrl = await readFile(file);
+      const isAnImage = includesAnyImageMime(imageDataUrl.split(",")[1])
+      if(!isAnImage){
+        this.props.action.isAppLoading(false);
+        return alert('Solo se aceptan imagenes')
+      }
       this.props.action.isAppLoading(false);
-      // console.log('|||||||||||||| goFileLoader url', imageDataUrl)
 
       await this.subirImg({
         urlImg:imageDataUrl,
@@ -273,7 +273,7 @@ class KycAdvancedContainer extends Component {
 
   render() {
     console.log('||||||||||||||||||| KYC ADVANCED ==> this state ==> ', this.state)
-
+ 
 
     return (
       <KycAdvancedLayout
