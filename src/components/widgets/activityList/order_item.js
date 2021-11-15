@@ -56,10 +56,13 @@ const OrderItem = ({ order }) => {
     }
   };
 
+  const isLocked = order.locked
+  // console.log('||||||||||||||||||||||  ORDER DETAIL ===> ', order)
+
   return (
     <OrderContainer
       id={`${order.id}`}
-      className={`${new_order_style ? "newOrderContainer" : ""} ${orderState}`}
+      className={`${new_order_style ? "newOrderContainer" : ""} ${orderState || ''} ${isLocked ? 'isLocked' : ''}`}
       onClick={orderState ? null : orderDetail}
     >
       {tx_path === "deposits" ? (
@@ -166,11 +169,16 @@ export const DepositOrder = ({ order }) => {
       </DataContainer>
 
       <DataContainer className="align_last">
-        <PanelRight
-          order={order}
-          tx_path={tx_path}
-          lastPendingOrderId={lastPendingOrderId}
-        />
+        {
+          order.locked ?
+          <h5>Bloqueado</h5>
+          :
+          <PanelRight
+            order={order}
+            tx_path={tx_path}
+            lastPendingOrderId={lastPendingOrderId}
+          />
+        }
       </DataContainer>
     </Order>
   );
@@ -290,11 +298,16 @@ const SwapOrder = ({ order, setOrderState }) => {
       </DataContainer>
 
       <DataContainer className={`align_last ${tx_path}`}>
-        <PanelRight
-          order={currentOrder}
-          tx_path={tx_path}
-          lastPendingOrderId={lastPendingOrderId}
-        />
+        {
+          order.locked ?
+          <h5>Bloqueado</h5>
+          :
+          <PanelRight
+            order={order}
+            tx_path={tx_path}
+            lastPendingOrderId={lastPendingOrderId}
+          />
+        }
       </DataContainer>
     </Order>
   );
@@ -303,7 +316,8 @@ const SwapOrder = ({ order, setOrderState }) => {
 const WithdrawOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
 
-  const { state, created_at, id, currency_type, sent, setOrderState } = order;
+  // const { state, created_at, id, currency_type, sent, setOrderState } = order;
+  const { state, created_at, id, currency_type } = order;
 
   return (
     <Order
@@ -342,11 +356,16 @@ const WithdrawOrder = ({ order }) => {
       </DataContainer>
 
       <DataContainer className="align_last">
-        <PanelRight
-          order={order}
-          tx_path={tx_path}
-          lastPendingOrderId={lastPendingOrderId}
+      {
+          order.locked ?
+          <h5>Bloqueado</h5>
+          :
+          <PanelRight
+            order={order}
+            tx_path={tx_path}
+            lastPendingOrderId={lastPendingOrderId}
         />
+        }
       </DataContainer>
     </Order>
   );
@@ -921,6 +940,12 @@ export const OrderContainer = styled.div`
     transform: scale(1) translateY(0px);
     opacity: 1 !important;
   } */}
+
+  &.isLocked{
+    pointer-events: none;
+    filter: grayscale(1);
+    opacity: .5;
+  }
 
   &.newOrderContainer {
     animation-name: ${containerDepositAnim};

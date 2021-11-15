@@ -146,7 +146,7 @@ const MenuSuperiorLayout = (props) => {
                           display: item_quote.buy || !movil ? "flex" : "none",
                         }}
                       >
-                        {compra}
+                        {venta}
                         <span>
                           <code className="monto">${sell_price}</code>
                           <i
@@ -161,7 +161,7 @@ const MenuSuperiorLayout = (props) => {
                           display: item_quote.sell || !movil ? "flex" : "none",
                         }}
                       >
-                        {venta}
+                        {compra}
                         <span>
                           <code className="monto">${buy_price}</code>
                           <i

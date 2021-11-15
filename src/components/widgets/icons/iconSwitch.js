@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import loadable from "@loadable/component";
 import Usa from "../../../assets/svg/usa.svg";
 import "./icons.css";
-
+ 
 // import { BancaMia } from './logos/bancamia'
 // import { BancoGnb } from './logos/banco_gnb'
 // import { Scotia } from './logos/scotia_bank'
@@ -12,11 +12,28 @@ const getExportByName = (componentName) => (exportObject) => ({
 });
 
 
+
+const RappiPay = loadable(() => import("./").then(getExportByName("RappiPay")));
+const Movii = loadable(() => import("./").then(getExportByName("Movii")));
+const LuloBank = loadable(() => import("./").then(getExportByName("LuloBank")));
+const Iris = loadable(() => import("./").then(getExportByName("Iris")));
+const GirosYFinanzas = loadable(() => import("./").then(getExportByName("GirosYFinanzas")));
+const MiBanco = loadable(() => import("./").then(getExportByName("MiBanco")));
+const Coofinep = loadable(() => import("./").then(getExportByName("Coofinep")));
+const Bancoldex = loadable(() => import("./").then(getExportByName("Bancoldex")));
+const BancoW = loadable(() => import("./").then(getExportByName("BancoW")));
+const BSerFinanza = loadable(() => import("./").then(getExportByName("BSerFinanza")));
+const BMundoMujer = loadable(() => import("./").then(getExportByName("BMundoMujer")));
+const JPMorgan = loadable(() => import("./").then(getExportByName("JPMorgan")));
+const CrediFinanciera = loadable(() => import("./").then(getExportByName("CrediFinanciera")));
+const Bancamia = loadable(() => import("./").then(getExportByName("Bancamia")));
+
+
+
+
 const International = loadable(() => import("./").then(getExportByName("International")));
 const Email = loadable(() => import("./").then(getExportByName("Email")));
-const IconDefault = loadable(() =>
-  import("./").then(getExportByName("IconDefault"))
-);
+const IconDefault = loadable(() => import("./").then(getExportByName("IconDefault")));
 const Person = loadable(() => import("./").then(getExportByName("Person")));
 const Verify1 = loadable(() => import("./").then(getExportByName("Verify1")));
 const Identification = loadable(() => import("./").then(getExportByName("Identification")));
@@ -33,17 +50,11 @@ const Finger = loadable(() => import("./").then(getExportByName("Finger")));
 const Success = loadable(() => import("./").then(getExportByName("Success")));
 const Cop = loadable(() => import("./").then(getExportByName("Cop")));
 const Deposit = loadable(() => import("./").then(getExportByName("Deposit")));
-const DepositCrypto = loadable(() =>
-  import("./").then(getExportByName("DepositCrypto"))
-);
-const Withdraw2 = loadable(() =>
-  import("./").then(getExportByName("Withdraw2"))
-);
+const DepositCrypto = loadable(() => import("./").then(getExportByName("DepositCrypto")));
+const Withdraw2 = loadable(() => import("./").then(getExportByName("Withdraw2")));
 const Root = loadable(() => import("./").then(getExportByName("Root")));
 const Add = loadable(() => import("./").then(getExportByName("Add")));
-const ArrowRight = loadable(() =>
-  import("./").then(getExportByName("ArrowRight"))
-);
+const ArrowRight = loadable(() => import("./").then(getExportByName("ArrowRight")));
 const Percentage = loadable(() =>
   import("./").then(getExportByName("Percentage"))
 );
@@ -96,9 +107,7 @@ const Confirming = loadable(() =>
 const Accepeted = loadable(() =>
   import("./").then(getExportByName("Accepeted"))
 );
-const SwapCamera = loadable(() =>
-  import("./").then(getExportByName("SwapCamera"))
-);
+const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera")));
 const Handshake = loadable(() =>
   import("./").then(getExportByName("Handshake"))
 );
@@ -153,22 +162,46 @@ const BankColteFinanciera = loadable(() => import("./logos/coltefinanciera"));
 const BankCooConfiar = loadable(() => import("./logos/banco_cooperativa_confiar"));
 const BankJurisCoop = loadable(() => import("./logos/banco_juriscoop"));
 
-const Davivienda = loadable(() =>
-  import("./logos").then(getExportByName("Davivienda"))
-);
-const Bancolombia = loadable(() =>
-  import("./logos").then(getExportByName("Bancolombia"))
-);
+const Davivienda = loadable(() => import("./logos").then(getExportByName("Davivienda")));
+const Bancolombia = loadable(() => import("./logos").then(getExportByName("Bancolombia")));
 const Coinsenda = loadable(() => import("./logos/coinsenda"));
 const BancoBogota = loadable(() => import("./logos/bancoBogota"));
 const Bbva = loadable(() => import("./logos/bbva"));
+
 
 class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
-
     switch (icon) {
+      case "rappipay":
+        return <RappiPay {...props} height={"30px"} />;
+      case "movii":
+        return <Movii {...props} height={"30px"} />;
+      case "lulo_bank_sa":
+        return <LuloBank {...props} height={"30px"} />;
+      case "iris":
+        return <Iris {...props} height={"30px"} />;
+      case "giros_y_finanzas_cf":
+        return <GirosYFinanzas {...props} height={"30px"} />;
+      case "mibanco_sa":
+        return <MiBanco {...props} height={"30px"} />;
+      case "coofinep_cooperativa_financier":
+        return <Coofinep {...props} height={"30px"} />;
+      case "bancoldex_sa":
+        return <Bancoldex {...props} height={"30px"} />;
+      case "banco_w_sa":
+        return <BancoW {...props} height={"30px"} />;
+      case "banco_serfinanza_sa":
+        return <BSerFinanza {...props} height={"30px"} />;
+      case "banco_mundo_mujer":
+        return <BMundoMujer {...props} height={"30px"} />;
+      case "banco_jp_morgan_colombia_sa":
+        return <JPMorgan {...props} height={"30px"} />;
+      case "banco_credifinanciera_sa":
+        return <CrediFinanciera {...props} height={"30px"} />;
+      case "bancamia_sa":
+        return <Bancamia {...props} height={"30px"} />;
       case "errorState":
         return <ErrorState {...props} />;
       case "pageNotFound":

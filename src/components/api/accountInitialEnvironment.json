@@ -2,22 +2,22 @@
   "accounts": [
     {
       "data": {
-        "name": "Mi Billetera Bitcoin",
+        "name": "Mi Billetera COP",
         "country": null,
         "enabled": true,
         "currency": {
-          "currency": "bitcoin",
+          "currency": "cop",
           "is_token": false
         }
       }
     },
     {
       "data": {
-        "name": "Mi Billetera COP",
+        "name": "Mi Billetera Bitcoin",
         "country": null,
         "enabled": true,
         "currency": {
-          "currency": "cop",
+          "currency": "bitcoin",
           "is_token": false
         }
       }

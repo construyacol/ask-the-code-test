@@ -16,7 +16,7 @@ const useBeforeUnload = () => {
                     ctrlKeyDown = false;
                 }
 
-            } else if ((e.which || e.keyCode) == 17) {
+            } else if ((e.which || e.keyCode) === 17) {
                 // Pressing  only Ctrl
                 ctrlKeyDown = true;
             }

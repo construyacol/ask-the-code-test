@@ -139,7 +139,7 @@ export class AccountService extends WebService {
 
   async deleteWallet(account) {
     const { id, country } = account;
-    const user = this.user;
+    // const user = this.user;
 
     const body = {
       data: {

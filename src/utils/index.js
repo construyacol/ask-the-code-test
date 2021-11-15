@@ -5,6 +5,8 @@ import * as Sentry from "@sentry/browser";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import * as normalizr_services from "../schemas";
 import { store } from "..";
+import imageType from 'image-type'
+import { IMAGE_MIME_TYPES } from '../const/const'
 
 const { normalizeUser } = normalizr_services;
 
@@ -596,6 +598,7 @@ export const readFile = (file) => {
   });
 };
 
+ 
 export const serve_activity_list = async (
   get_list,
   data_user,
@@ -726,3 +729,24 @@ export function debounce(func, wait) {
 }
 
 export default handleKeyPress;
+
+
+export function includesAnyImageMime(value){
+
+  let allowed_img_mimes = IMAGE_MIME_TYPES;
+
+  if (typeof(value) != "string" && !(value instanceof String)) return false;
+
+  let image_buffer = Buffer.from(value, 'base64');
+  let image_info = imageType(image_buffer);
+  if(!image_info) return false;
+
+  let found = allowed_img_mimes.find((allowed_img_mime) => {
+    return allowed_img_mime === image_info.mime;
+  });
+
+  if (!found) return false;
+
+  return image_info;
+}
+

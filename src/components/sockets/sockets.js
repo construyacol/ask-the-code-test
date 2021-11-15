@@ -714,6 +714,7 @@ class SocketsComponent extends Component {
     await this.props.coinsendaServices.updateUserStatus(status)
     if(status.countries.international === 'level_1'){
       this.props.coinsendaServices.init()
+      this.props.history.push(`/wallets`);
     }
   }
 

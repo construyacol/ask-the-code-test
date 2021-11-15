@@ -1,11 +1,12 @@
 import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 import { AiOutlineUpload } from "react-icons/ai";
-import PaymentProofComponent, { PaymentProof } from "./paymentProof";
+// import PaymentProofComponent, { PaymentProof } from "./paymentProof";
+import { PaymentProof } from "./paymentProof";
 import UseTxState from "../../../../hooks/useTxState";
 import SimpleLoader from "../../../loaders";
 // import QRCode from "qrcode";
-import { readFile, img_compressor } from "../../../../../utils";
+import { readFile, img_compressor, includesAnyImageMime } from "../../../../../utils";
 import OrderStatus from "./orderStatus";
 import DetailGenerator from "./detailGenerator";
 import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
@@ -15,12 +16,13 @@ import ConfirmationCounter from "./confirmationCounter";
 import useViewport from "../../../../../hooks/useWindowSize";
 import { device } from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
+import useToastMessage from "../../../../../hooks/useToastMessage";
 
 import moment from "moment";
 import "moment/locale/es";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 moment.locale("es");
-
+ 
 // const orderModel = {
 //   created_at: new Date(),
 //   updated_at: new Date(),
@@ -103,8 +105,9 @@ const CryptoDespoitOrder = ({ order }) => {
 const FiatDespoitOrder = ({ order }) => {
   const [onDrag, setOnDrag] = useState(false);
   const [imgSrc, setImgSrc] = useState(false);
-  const { actions, tx_path } = UseTxState();
+  const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
+  const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
     event.preventDefault();
@@ -124,14 +127,26 @@ const FiatDespoitOrder = ({ order }) => {
     if (e.target.files && e.target.files.length > 0) {
       setOnDrag(false);
       const data = e.target.files[0];
-      if (data.type !== "image/png" && data.type !== "image/jpeg") {
-        return alert("formato no permitido");
-      }
       const file = await img_compressor(data, 0.25);
-      console.log("result compresor", file.size);
-      const imageDataUrl = await readFile(file);
-      setImgSrc(imageDataUrl);
+      const dataBase64 = await readFile(file);
+      const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
+      if(!isAnImage){
+        return alert('Solo se aceptan imagenes')
+      }
+      setImgSrc(dataBase64);
       actions.isAppLoading(true);
+
+      // cropImgOFf
+      // activate oncomment line ><167
+      let confirmation = await coinsendaServices.confirmDepositOrder(
+        order.id,
+        dataBase64
+      );
+      if (!confirmation || !confirmation.data) {
+        actions.isAppLoading(false);
+        toastMessage("El deposito No se ha confirmado", "error");
+        setImgSrc(null);
+      }
     }
   };
 
@@ -147,14 +162,14 @@ const FiatDespoitOrder = ({ order }) => {
             dragLeave={dragLeave}
             goFileLoader={goFileLoader}
           />
-        )}
-        {imgSrc && order.state === "pending" && (
+        )} 
+        {/* {imgSrc && order.state === "pending" && (
           <PaymentProofComponent
-            order_id={order.id}
+            order_id={order.id} 
             imgSrc={imgSrc}
             setImgSrc={setImgSrc}
           />
-        )}
+        )} */}
 
         <TopSection>
           <IconSwitch
@@ -204,9 +219,11 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
       <input
         id="TFileUpload"
         type="file"
-        accept="image/png,image/jpeg"
+        // accept="image/png,image/jpeg"
         onChange={goFileLoader}
         onDragLeave={dragLeave}
+        capture="user" 
+        accept="image/*"
       />
       <UploadComponent
         unButtom
