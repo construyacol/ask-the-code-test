@@ -95,7 +95,7 @@ const TwoFactorActivate = (props) => {
             <div className="body2fa">
               <div className="bodySon">
                 <p className="fuente">
-                  Abre Google Authenticator y escanea el codigo QR
+                  Abre Google Authenticator y escanea el código QR
                 </p>
                 {qr && !loader ? (
                   <img src={qr} alt="" width="200px" />
@@ -128,7 +128,7 @@ const TwoFactorActivate = (props) => {
                   >
                     <p className="fuente">
                       Recuerda que en caso de pérdida de tu dispositivo movil,
-                      solo podrás reactivar el 2FA con el codigo secreto{" "}
+                      solo podrás reactivar el 2FA con el código secreto{" "}
                       <span className={`secretCode fuente2`}>
                         {private_key}
                       </span>{" "}
@@ -140,7 +140,7 @@ const TwoFactorActivate = (props) => {
                       inputFocus ? "desaparecer" : "aparecer"
                     }`}
                   >
-                    Ó ingresa el codigo secreto manualmente
+                    Ó ingresa el código secreto manualmente
                   </p>
                   <p
                     className={`fuente2 secretCode ${

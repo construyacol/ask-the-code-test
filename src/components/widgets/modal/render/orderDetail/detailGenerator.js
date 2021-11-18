@@ -120,7 +120,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           const depositProvider = deposit_providers[order.deposit_provider_id];
           depositProviderInfo = [
             [
-              "Entidad de deposito:",
+              "Entidad de depósito:",
               `${depositProvider.depositAccount.ui_name}`,
             ],
             [
@@ -174,7 +174,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           ],
           ["Costo de operación:", order.cost],
           [
-            "Total deposito:",
+            "Total depósito:",
             await formatCurrency(order.amount_neto, order.currency),
           ],
         ]);
