@@ -129,6 +129,7 @@ class WithdrawAccountForm extends Component {
 
   actualizarEstado = async (event) => {
     event.persist && event.persist();
+    
     if (event.target && event.target.short_name) {
       this.setState({ short_name: event.target.short_name });
     }
@@ -136,7 +137,7 @@ class WithdrawAccountForm extends Component {
     const name = event.target.name;
     let value = event.target.value;
     // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
-    // console.log('|||||| ESTADO ACTUAL:::', this.state)
+    console.log('|||||||||||||||||||||||||||||||||||||||||||  actualizarEstado  ===>', event.target, this.state)
 
     window.requestAnimationFrame(() => {
       let truncateString = false;
@@ -159,6 +160,14 @@ class WithdrawAccountForm extends Component {
         maxLength = 20;
       }
 
+      if (this.state.short_name === 'nequi') {
+        maxLength = 10
+      }
+
+      if(this.state.bank_name === 'bancolombia'){
+        maxLength = 11
+      }
+
       if (truncateString && value.length > maxLength) {
         value = value.slice(0, maxLength);
       }
@@ -171,6 +180,8 @@ class WithdrawAccountForm extends Component {
       this.update_control_form(value);
       this.update_form();
     });
+    
+    
   };
 
   update_form = () => {

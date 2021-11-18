@@ -486,7 +486,6 @@ export const InputKycBasic = (props) => {
   let search_result = Array.isArray(search_results) && search_results[0];
   
 
-
   return (
     <div
       id="kycPrime"
@@ -509,8 +508,15 @@ export const InputKycBasic = (props) => {
       <div className={`inputContainer3 ${state.active ? "inputActivado" : ""}`}>
         {kyc.map((item) => {
           const isDateInput = state.ui_type === "date";
+          let inputProps = {}
           if(isDateInput){
             console.log('|||||||||||| isDateInput ====> ', state)
+            inputProps = {
+              min:"1940-01-01",
+              max:"2003-12-12",
+              pattern:/\d{4}-\d{2}-\d{2}/,
+              autoFocus:true
+            }
           }
           const classNames = `inputElement3 ${state.active ? "inputActivado" : ""} ${state.ui_type === "phone" ? "phone" : ""}`;
           return (
@@ -541,6 +547,11 @@ export const InputKycBasic = (props) => {
                   />
                 )} */}
 
+                {/* cuando se confirma deposito, consulto tx security si hay scope para confirmación de deposito */}
+                {/* type biometric user id */}
+                {/* identity service  */}
+                {/* biometric data */}
+
                 {search_result && state.ui_type === "select" ? (
                   <p className={`search_result_kyc openS`}>
                     {search_result.name}
@@ -568,6 +579,7 @@ export const InputKycBasic = (props) => {
                       name={item.name}
                       value={state.data_state[item.name]}
                       onFocus={_onFocus}
+                      {...inputProps}
                     />
                   )
                 )}
