@@ -44,7 +44,7 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
         <BottomSection>
           <Description>
             <p className="fuente">
-              Digita el código <span className="fuente2">2fa</span> para
+              Digita el código <span className="fuente2">2FA</span> para
               continuar.
             </p>
             <AutContainer>

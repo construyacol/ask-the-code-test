@@ -16,7 +16,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const [, formatCurrency] = useFormatCurrency();
 
   const formatOrderText = async (itemText) => {
-    // console.log(itemText)
+    console.log(itemText, tx_path)
     switch (itemText[0]) {
       case "to_spend_currency":
         return ["Moneda gastada:", itemText[1].currency];
@@ -59,7 +59,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       case "confirmations":
         return ["Confirmations:", order.confirmations];
       case "cost":
-        return ["Costo:", order.cost];
+        return [`Costo ${tx_path === 'withdraws' ? 'retiro' : 'depósito'}:`, order.cost];
       case "sent":
         return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
 

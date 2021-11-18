@@ -92,7 +92,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           autoComplete="off"
           handleStatus={setNameState}
         />
-
+ 
         <InputForm
           classes="fuente2"
           type="text"
@@ -154,4 +154,7 @@ const ProviderTypeIcon = styled.div`
 
 const Form = styled.form`
   position: relative;
+  .inputElement.address-account{
+    font-size:13px;
+  }
 `;
