@@ -68,7 +68,7 @@ export class IndetityService extends WebService {
       this.dispatch(CleanForm("kyc_advanced"))
       this.dispatch(ToStep("globalStep", 0))
     }
-  }
+  } 
 
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
@@ -104,6 +104,8 @@ export class IndetityService extends WebService {
     };
 
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
+    console.log(transactionSecurity)
+    debugger
 
     if (transactionSecurity) {
       const { transaction_security_id, scopes } = transactionSecurity;

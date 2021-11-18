@@ -75,7 +75,7 @@ class BankAccountFlow extends Component {
       res && res[0].info_needed.account_type
     );
     let account_type_list = await objectToArray(account_type_object);
-    // console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| withdraw_providers_list |', res[0])
+    console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| account_type_list |', account_type_list)
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : VIRGIN BANK', bank_list)
 
@@ -96,18 +96,19 @@ class BankAccountFlow extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       if(this.props.short_name && this.props.withdraw_providers_list && this.props.withdraw_providers_list[0]){
-        const { info_needed } = this.props.withdraw_providers_list && this.props.withdraw_providers_list[0]
+        const info_needed = {...this.props.withdraw_providers_list && this.props.withdraw_providers_list[0].info_needed}
         const shortName = this.props.short_name
         const accountTypes = info_needed.bank_name[shortName] && info_needed.bank_name[shortName].compatible_account_types.map((accountId)=>{
           return info_needed.account_type[accountId]
         })
+        console.log('===================================0 accountTypes ',  accountTypes, info_needed)
         if(accountTypes){
           this.setState({
             account_types:accountTypes
           })
         }
         // console.log('accountTypes',  accountTypes)
-        console.log('===================================0 CHANGES ',  info_needed.bank_name)
+        // console.log('===================================0 CHANGES ',  info_needed.bank_name)
       }
 
     }
@@ -243,7 +244,7 @@ class BankAccountFlow extends Component {
                 />
               </div>
 
-              {step === 4 && (
+              {step === 4 && ( 
                 <form className="formAccountFlow" onSubmit={async(e) => {
                   await handleSubmit(e)
                   final_step_create_account(e)

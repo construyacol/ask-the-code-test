@@ -410,7 +410,7 @@ class SocketsComponent extends Component {
         await this.props.action.socket_notify(
           { ...cDeposit, state: "confirmed" },
           "deposits",
-          "Nuevo deposito detectado"
+          "Nuevo depósito detectado"
         );
         this.props.action.toggleOtherModal();
         this.props.action.success_sound();
@@ -537,7 +537,7 @@ class SocketsComponent extends Component {
       }, 500);
       this.props.action.exit_sound();
       let state = deposit.state === "canceled" ? "cancelado" : "rechazado";
-      this.props.toastMessage(`Deposito ${state}`, "error");
+      this.props.toastMessage(`Depósito ${state}`, "error");
       // }, 2000)
     }
 
@@ -566,7 +566,7 @@ class SocketsComponent extends Component {
         // this.props.history.push('?form=deposit_confirmed_success')
         this.props.action.isAppLoading(false);
         this.props.action.success_sound();
-        this.props.toastMessage("Deposito confirmado con exito", "success");
+        this.props.toastMessage("Depósito confirmado con exito", "success");
       }
     }
   };

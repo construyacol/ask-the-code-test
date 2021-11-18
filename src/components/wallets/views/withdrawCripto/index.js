@@ -116,7 +116,7 @@ export const CriptoView = () => {
       actions.isAppLoading(false);
       if (twoFaToken) {
         return toastMessage(
-          "Al parecer el codigo 2Fa es incorrecto...",
+          "Al parecer el código 2Fa es incorrecto...",
           "error"
         );
       }

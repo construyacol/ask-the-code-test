@@ -92,7 +92,7 @@ export const CashFlow = (props) => {
     <section className="DepositLayout">
       {step === 3 && deposit_way === "cash" && (
         <ModalityView
-          title="Haré el deposito por:"
+          title="Haré el depósito por:"
           items={cash_payment}
           update_service_mode={update_local_state}
           service_mode={short_bank_name}
@@ -139,7 +139,7 @@ const Success = (props) => {
         loader ? (
           <Fragment>
             <div></div>
-            <SimpleLoader label={`Creando orden de deposito`} />
+            <SimpleLoader label={`Creando orden de depósito`} />
           </Fragment>
         ) : (
           // <section className={`stepFinish ${final ? 'cambiarGrid': ''}`}>
@@ -180,7 +180,7 @@ const Success = (props) => {
                 <div className="FolowTexts">
                   <p className="fuente Fimportant">¡IMPORTANTE!</p>
                   <p className="Ftexto fuente ">
-                    Una vez realizado el deposito bancario debes confirmar la
+                    Una vez realizado el depósito bancario debes confirmar la
                     transacción con una fotografía del{" "}
                     <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la
                     orden de pago

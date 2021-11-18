@@ -28,10 +28,19 @@ class DropDownContainer extends Component {
   };
 
   selectItem = (event) => {
+    console.log('_________________________________________________________selectItem', this.state.elements, event.target.dataset)
+
+    let value
+    if(!event.target.dataset.value){  
+      if(event.target.dataset.ui_name === "Cuenta corriente") value = "cuenta_corriente";
+      if(event.target.dataset.ui_name === "Cuenta de ahorros") value = "cuenta_ahorro";
+      if(event.target.dataset.ui_name === "Depósito electrónico") value = "deposito_electronico";
+    }
+
     const estado = {
       target: {
         name: this.props.name,
-        value: event.target.dataset.value,
+        value: event.target.dataset.value || value,
       },
     };
 

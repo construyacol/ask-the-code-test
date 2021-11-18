@@ -144,7 +144,7 @@ const FiatDespoitOrder = ({ order }) => {
       );
       if (!confirmation || !confirmation.data) {
         actions.isAppLoading(false);
-        toastMessage("El deposito No se ha confirmado", "error");
+        toastMessage("El depósito No se ha confirmado", "error");
         setImgSrc(null);
       }
     }
@@ -295,7 +295,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
 };
 
 const getTitle = (tx_path) => {
-  return tx_path === "deposits" ? "Deposito" : "Retiro";
+  return tx_path === "deposits" ? "Depósito" : "Retiro";
 };
 
 const GetIcon = ({ order }) => {

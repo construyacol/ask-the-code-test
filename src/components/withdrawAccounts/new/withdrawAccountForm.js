@@ -99,7 +99,19 @@ class WithdrawAccountForm extends Component {
 
   crearCuenta = async () => {
     // simulación Endpoint Crear wallet
+    const { withdraw_accounts } = this.props
     this.props.action.isAppLoading(true);
+
+    if(withdraw_accounts){
+      // validate if withdraw account already exist 
+      const result = Object.values(withdraw_accounts).filter(WAccount => WAccount.info.bank_name === this.state.bank_name && WAccount.info.account_number === this.state.account_number)
+      if(result.length){
+        this.props.action.ReduceStep(this.props.current, 2);
+        this.props.toastMessage("La cuenta de retiro ya existe", "error")
+        return this.props.action.isAppLoading(false)
+      }
+    }
+
     let res = await this.props.coinsendaServices.addNewWithdrawAccount(
       this.state
     );
@@ -129,6 +141,7 @@ class WithdrawAccountForm extends Component {
 
   actualizarEstado = async (event) => {
     event.persist && event.persist();
+    
     if (event.target && event.target.short_name) {
       this.setState({ short_name: event.target.short_name });
     }
@@ -136,7 +149,7 @@ class WithdrawAccountForm extends Component {
     const name = event.target.name;
     let value = event.target.value;
     // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
-    // console.log('|||||| ESTADO ACTUAL:::', this.state)
+    console.log('|||||||||||||||||||||||||||||||||||||||||||  actualizarEstado  ===>', event.target, this.state)
 
     window.requestAnimationFrame(() => {
       let truncateString = false;
@@ -159,6 +172,14 @@ class WithdrawAccountForm extends Component {
         maxLength = 20;
       }
 
+      if (this.state.short_name === 'nequi') {
+        maxLength = 10
+      }
+
+      if(this.state.bank_name === 'bancolombia'){
+        maxLength = 11
+      }
+
       if (truncateString && value.length > maxLength) {
         value = value.slice(0, maxLength);
       }
@@ -171,6 +192,8 @@ class WithdrawAccountForm extends Component {
       this.update_control_form(value);
       this.update_form();
     });
+    
+    
   };
 
   update_form = () => {
@@ -313,7 +336,7 @@ const selectWithdrawProviders = createSelector(
 function mapStateToProps(state, props) {
   // console.log('R E N D E R I Z A N D O ssssssss', props)
   const { withdraw_flow } = props;
-  const { user } = state.modelData;
+  const { user, withdraw_accounts } = state.modelData;
 
   return {
     search: state.form.search_bank,
@@ -326,6 +349,7 @@ function mapStateToProps(state, props) {
       ? state.form.form_withdraw.step
       : state.form.form_bank.step,
     user: user,
+    withdraw_accounts
   };
 }
 

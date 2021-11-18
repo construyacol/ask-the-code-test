@@ -102,7 +102,7 @@ const Faq = (props) => {
         <p>
           Indicar el monto – Escoger el medio de pago que desees utilizar –
           Validar que has leído los términos y condiciones de la pagina web y
-          confirmar el deposito una vez hayas realizado el pago.
+          confirmar el depósito una vez hayas realizado el pago.
         </p>
         <p>
           Luego de ser verificado tu pago, la plataforma habilitara tus tokens

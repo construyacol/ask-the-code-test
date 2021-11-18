@@ -377,7 +377,7 @@ class DepositContainer extends Component {
       this.props.action.isAppLoading(false);
       this.props.action.ReduceStep(this.props.current);
       return this.props.toastMessage()(
-        "No se ha podido crear la orden de deposito",
+        "No se ha podido crear la orden de depósito",
         "error"
       );
     }
@@ -411,12 +411,12 @@ class DepositContainer extends Component {
     // return console.log('DEPOSIT INFO RESPONSE', response, new_deposit_model)
     let new_deposit = [
       {
-        ui_name: "Id deposito:",
+        ui_name: "Id depósito:",
         value: new_deposit_model.id,
         id: 1,
       },
       {
-        ui_name: "Cantidad deposito:",
+        ui_name: "Cantidad depósito:",
         value: `$ ${this.props.services.number_format(
           new_deposit_model.amount
         )} ${new_deposit_model.currency.currency}`,
@@ -424,14 +424,14 @@ class DepositContainer extends Component {
         id: 2,
       },
       {
-        ui_name: "Costo deposito:",
+        ui_name: "Costo depósito:",
         value: `$ ${this.props.services.number_format(
           new_deposit_model.cost
         )} ${new_deposit_model.currency.currency}`,
         id: 3,
       },
       {
-        ui_name: "Total deposito:",
+        ui_name: "Total depósito:",
         value: `$ ${this.props.services.number_format(
           new_deposit_model.amount_neto
         )} ${new_deposit_model.currency.currency}`,
