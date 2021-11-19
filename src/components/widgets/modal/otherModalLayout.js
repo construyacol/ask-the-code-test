@@ -10,9 +10,8 @@ const OtherModalLayout = (props) => {
     onkeydown,
     id = "render-modal-close-button",
   } = props;
-  const idForCloseButton =
-    on_click &&
-    useKeyActionAsClick(
+
+  const idForCloseButton = useKeyActionAsClick(
       true,
       id,
       27,
@@ -24,7 +23,7 @@ const OtherModalLayout = (props) => {
   return (
     <section className={`Modal aparecer`}>
       <div
-        id={idForCloseButton}
+        id={on_click ? idForCloseButton : ''}
         className={`modalCont3 ConfirmationModal socketNotifyPers`}
         data-close_modal={true}
         onClick={on_click ? on_click : null}

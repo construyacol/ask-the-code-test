@@ -148,7 +148,7 @@ const Blocker = styled.div`
   display: none;
 
   &.deleting {
-    display: block;
+    ${'' /* display: block; */}
   }
 `;
 

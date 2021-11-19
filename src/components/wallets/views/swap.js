@@ -16,6 +16,7 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
 // import UseTxState from "../../hooks/useTxState";
+import { getCdnPath } from '../../../environment'
 
 
 function SwapView(props) {
@@ -315,7 +316,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id }) => {
           {showSubfix && <span className="subfix-pairs-button">[P]</span>}
           {secondaryCoin && (
             <img
-              src={require(`../../../assets/coins/${secondaryCoin}.png`)}
+              src={`${getCdnPath('assets')}coins/${secondaryCoin}.png`}
               alt=""
               width="30"
             />

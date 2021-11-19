@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import WithdrawViewState from "../../../hooks/withdrawStateHandle";
 import { useSelector } from "react-redux";
@@ -7,15 +8,13 @@ import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
 // import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
 
 const AddressTagList = ({ show, addressValue, setAddressValue }) => {
-  if (!show) {
-    return null;
-  }
+
+
 
   const [{ current_wallet }] = WithdrawViewState();
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const provider_type = current_wallet && current_wallet.currency.currency;
-  const withdrawAccounts = useSelector((state) =>
-    selectWithdrawAccountsByProviderType(state, provider_type)
-  );
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByProviderType(state, provider_type));
 
   const [searchList, setSearchList] = useState([]);
 
@@ -29,6 +28,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
   // })
 
   useEffect(() => {
+    if(!withdrawAccounts || !addressValue)return ;
     const value = addressValue.replace(/@/g, "");
     const result = withdrawAccounts.filter((withdrawAccount) => withdrawAccount.info.label && withdrawAccount.info.label.toLowerCase().includes(value.toLowerCase()) );
     if (result.length < withdrawAccounts.length) {
@@ -39,16 +39,15 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
   useEffect(() => {
     if (searchList.length === 1) {
       setAddressValue(searchList[0].info.address);
-      // console.log(searchList, searchList.length)
+      console.log(searchList, searchList.length)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchList]);
 
   const handleEventClick = (e) => {
-    if (
-      e.target &&
-      e.target.classList &&
-      !e.target.classList.contains("search-component")
-    ) {
+    console.log('|||||||||||||||||||||||||| handleEventClick ===> ', e.target.classList, show, addressValue)
+    e.stopPropagation()
+    if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress')) {
       setAddressValue("");
     }
   };
@@ -61,6 +60,12 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
     WIN.addEventListener("click", handleEventClick);
     return () => WIN.removeEventListener("click", handleEventClick);
   }, []);
+
+  if (!show) {
+    return null;
+  }
+
+  console.log('|||||||||||||||||||||||||||  withdrawAccounts ===> ', withdrawAccounts)
 
   return (
     <SearchComponentWrapper>

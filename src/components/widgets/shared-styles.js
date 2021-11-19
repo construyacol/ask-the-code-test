@@ -88,6 +88,7 @@ export const Top = styled(Face)`
   background: #fbfbfb;
   transform: rotateX(90deg) translateZ(40px);
   opacity: 0;
+  left: 0;
 `;
 
 export const CubeObject = styled.div`

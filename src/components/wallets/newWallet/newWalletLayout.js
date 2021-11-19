@@ -5,9 +5,11 @@ import InputForm from "../../widgets/inputs";
 import ItemSelectionContainer from "../../widgets/items/ItemSelectionContainer";
 import CopyContainer from "../../widgets/copy/copyContainer";
 import { SimpleLoader } from "../../widgets/loaders";
-import availableWalletCreator from "../../hooks/availableWalletCreator";
+import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import NewWalletSkeleton from './skeleton'
+import { getCdnPath } from '../../../environment'
+ 
 
 const NewWalletLayout = (props) => {
   const {
@@ -23,7 +25,7 @@ const NewWalletLayout = (props) => {
     clearCurrency,
   } = props;
 
-  const [availableCurrencies] = availableWalletCreator();
+  const [availableCurrencies] = useAvailableWalletCreator();
   const idForNewWalletButton = useKeyActionAsClick(true, "add-new-wallet-button", 13, false, "onkeypress", true);
 
   return (
@@ -100,7 +102,7 @@ const NewWalletLayout = (props) => {
                     {short_currency_name !== "" && (
                       <img
                         className="itemFuera"
-                        src={require(`../../../assets/coins/${short_currency_name}.png`)}
+                        src={`${getCdnPath('assets')}coins/${short_currency_name}.png`}
                         width="30"
                         alt=""
                       />

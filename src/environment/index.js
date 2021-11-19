@@ -21,7 +21,7 @@ export const getCdnPath = (target) => {
     ...CDN_PATH_ASSETS
   }
 
-  return `https://${getHostName()}.com/${nodeList[target]}`
+  return `https://app.${getHostName()}.com/${nodeList[target]}`
 }
 
 // export const getBaseUrl = (prefix) => {

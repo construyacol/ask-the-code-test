@@ -33,10 +33,11 @@ export default function useNavigationKeyActions(config) {
   const valuesAsProps = { ...DEFAULT_ARGS, ...config };
   const { modalRestriction, uniqueIdForElement, loader, items } = valuesAsProps;
   const [currentSelection, setCurrentSelection] = useState(-1);
-  const isModalVisible =
-    modalRestriction && useSelector((state) => state.form.isModalVisible);
-  const isModalRenderShowing =
-    modalRestriction && useSelector((state) => state.ui.modal.render);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  let isModalVisible = modalRestriction && useSelector((state) => state.form.isModalVisible);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  let isModalRenderShowing = modalRestriction && useSelector((state) => state.ui.modal.render);
 
   useEffect(() => {
     if (items && items.length > 0 && !loader) {
@@ -46,12 +47,14 @@ export default function useNavigationKeyActions(config) {
       );
       el && el.focus();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items, loader]);
 
   useEffect(() => {
     if (modalRestriction && (isModalRenderShowing || isModalVisible)) {
       setCurrentSelection(-1);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalRenderShowing, isModalVisible]);
 
   useEffect(() => {
@@ -109,6 +112,8 @@ export default function useNavigationKeyActions(config) {
     return () => {
       window.onkeydown = false;
     };
+    
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     window.onkeydown,
     isModalVisible,
@@ -154,10 +159,10 @@ export function useItemsInteractions(
 ) {
   const { suprKeyAction, enterKeyAction } = keyActions;
   const [isSelected, setIsSelected] = useState(false);
-  const isModalVisible =
-    modalRestriction && useSelector((state) => state.form.isModalVisible);
-  const isModalRenderShowing =
-    modalRestriction && useSelector((state) => state.ui.modal.render);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const isModalVisible = modalRestriction && useSelector((state) => state.form.isModalVisible);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const isModalRenderShowing = modalRestriction && useSelector((state) => state.ui.modal.render);
 
   useEffect(() => {
     // this is for mobile

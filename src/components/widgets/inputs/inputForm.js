@@ -26,17 +26,6 @@ const InputForm = (props) => {
     AuxComponent,
   } = props;
 
-  if (skeleton) {
-    return (
-      <InputLayout className="skeleton">
-        <ContainerInputComponent>
-          <p className="skeleton"></p>
-          <InputContainer className="skeleton" />
-        </ContainerInputComponent>
-      </InputLayout>
-    );
-  }
-
   const [inputState, setInputState, changeState, customError] = InputValidate();
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
   // console.log('|||||||||||||||||||| inputState:', inputState)
@@ -53,11 +42,13 @@ const InputForm = (props) => {
     if (handleStatus) {
       handleStatus(inputState);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputState]);
 
   useEffect(() => {
     // console.log('|||||||||||||| InputForm', state)
     state && changeState(state);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   useEffect(() => {
@@ -67,6 +58,7 @@ const InputForm = (props) => {
     //   validate({ target: { value } }, true);
     // }
     validate({ target: { value } });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   let movil = window.innerWidth < 768;
@@ -104,6 +96,17 @@ const InputForm = (props) => {
     onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
     autoComplete,
   };
+
+  if (skeleton) {
+    return (
+      <InputLayout className="skeleton">
+        <ContainerInputComponent>
+          <p className="skeleton"></p>
+          <InputContainer className="skeleton" />
+        </ContainerInputComponent>
+      </InputLayout>
+    );
+  }
 
   if (isControlled) {
     inputProps.value = value;

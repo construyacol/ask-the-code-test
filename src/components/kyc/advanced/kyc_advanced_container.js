@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import { getCdnPath } from '../../../environment'
 
 class KycAdvancedContainer extends Component {
 
@@ -12,22 +13,22 @@ class KycAdvancedContainer extends Component {
     kyc_success: false,
     front:
       this.props.user.id_type === "pasaporte"
-        ? "./docs/front_passport.png"
-        : "./docs/front.png",
-    back: "./docs/back.png",
+        ? `${getCdnPath('assets')}kyc_identity/front_passport.png`
+        : `${getCdnPath('assets')}kyc_identity/front.png`,
+    back: `${getCdnPath('assets')}kyc_identity/back.png`,
     selfie:
       this.props.user.id_type === "pasaporte"
-        ? "./docs/selfie_passport.png"
-        : "./docs/selfie.png",
+        ? `${getCdnPath('assets')}kyc_identity/selfie_passport.png`
+        : `${getCdnPath('assets')}kyc_identity/selfie.png`,
     newfront:
       this.props.user.id_type === "pasaporte"
-        ? "./docs/front_passport.png"
-        : "./docs/front.png",
-    newback: "./docs/back.png",
+        ? `${getCdnPath('assets')}kyc_identity/front_passport.png`
+        : `${getCdnPath('assets')}kyc_identity/front.png`,
+    newback: `${getCdnPath('assets')}kyc_identity/back.png`,
     newselfie:
       this.props.user.id_type === "pasaporte"
-        ? "./docs/selfie_passport.png"
-        : "./docs/selfie.png",
+        ? `${getCdnPath('assets')}kyc_identity/selfie_passport.png`
+        : `${getCdnPath('assets')}kyc_identity/selfie.png`,
     id_type: this.props.user.id_type,
     dashboard: window.innerWidth > 768 ? true : false,
     fileloader: false,
@@ -272,7 +273,7 @@ class KycAdvancedContainer extends Component {
   };
 
   render() {
-    console.log('||||||||||||||||||| KYC ADVANCED ==> this state ==> ', this.state)
+    console.log('||||||||||||||||||| KYC ADVANCED ==> getCdnPath ==> ', `${getCdnPath('assets')}kyc_identity/back.png`)
  
 
     return (
