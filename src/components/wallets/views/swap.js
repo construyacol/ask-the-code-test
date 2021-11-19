@@ -67,10 +67,12 @@ function SwapView(props) {
 
   useEffect(() => {
     callToSetReceiveValue()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
 
   useEffect(()=>{
     callToSetValueForOne()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair])
 
 
@@ -316,7 +318,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id }) => {
           {showSubfix && <span className="subfix-pairs-button">[P]</span>}
           {secondaryCoin && (
             <img
-              src={`${getCdnPath('assets')}coins/${secondaryCoin}.png`}
+              src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${secondaryCoin}.png`}`}
               alt=""
               width="30"
             />

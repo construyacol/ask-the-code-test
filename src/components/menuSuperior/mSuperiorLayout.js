@@ -3,6 +3,7 @@ import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { useActions } from "../../hooks/useActions";
+import { getCdnPath } from '../../environment'
 import "./mSuperior.css";
 
 
@@ -119,9 +120,7 @@ const MenuSuperiorLayout = (props) => {
               <>
                 <img
                   className="itemFuera"
-                  src={require(`./assets/${
-                    currency.includes("testnet") ? "bitcoin" : currency
-                  }.png`)}
+                  src={`${getCdnPath('assets')}coins/m_superior/${currency.includes("testnet") ? "bitcoin" : currency}.png`}
                   width={currency === "usd" ? 32 : 22}
                   alt=""
                   id={currency}

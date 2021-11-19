@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import convertCurrencies from "../../utils/convert_currency";
+import { getCdnPath } from '../../environment'
 
 const NumberInput = loadable(() => import("../widgets/inputs/numberInput"));
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (props) => {
   const { currentPair } = props;
   const [convertedCurrency, setConvertedCurrency] = useState();
@@ -41,7 +43,7 @@ export default (props) => {
   return (
     <div className="root-content-items-calc">
       <CalculatorInput
-        iconPath={require(`../../assets/prices-modal/ic_cop.svg`)}
+        iconPath={`${getCdnPath('assets')}prices-modal/ic_cop.svg`}
         type="text"
         useCustomInput
         value={amount}
@@ -53,17 +55,17 @@ export default (props) => {
       <div
         className="exchange-arrows"
         style={{
-          backgroundImage: `url(${require(`../../assets/prices-modal/ellipse.svg`)})`,
+          backgroundImage: `url(${getCdnPath('assets')}prices-modal/ellipse.svg)`,
         }}
-      >
+      > 
         <img
-          src={require(`../../assets/prices-modal/exchange_arrows.png`)}
+          src={`${getCdnPath('assets')}prices-modal/exchange_arrows.png`}
           style={{ margin: "0.5em 1em" }}
           alt=""
         />
       </div>
       <CalculatorInput
-        iconPath={require(`../../assets/prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`)}
+        iconPath={`${getCdnPath('assets')}prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`}
         type="text"
         defaultValue={convertedCurrency && convertedCurrency.want_to_spend}
         readOnly

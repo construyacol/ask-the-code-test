@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import loadable from "@loadable/component";
-import backcard from "../../../assets/wallet_coins/back.webp";
+// import backcard from "../../../assets/wallet_coins/back.webp";
 import { connect } from "react-redux";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { LoaderContainer } from "../loaders";
@@ -8,6 +8,7 @@ import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import BalanceComponent from "../balance/balance";
 import PopNotification from "../notifications";
 import SimpleLoader from "../loaders";
+import { getCdnPath } from '../../../environment'
 
 import {
   ACta,
@@ -306,7 +307,7 @@ const Wallet = (props) => {
           />
         </>
       )}
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
+      <img src={`${getCdnPath('assets')}wallet_coins/back.webp`} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconWallet">
         <IconSwitch icon={icon} size={195} />
       </div>
@@ -370,7 +371,7 @@ const WithdrawAccount = (props) => {
           />
         </>
       )}
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
+      <img src={`${getCdnPath('assets')}wallet_coins/back.webp`} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
         <IconSwitch
           icon={account.bank_name && account.bank_name.value}
