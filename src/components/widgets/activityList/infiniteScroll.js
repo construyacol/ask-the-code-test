@@ -5,6 +5,7 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { useParams } from "react-router-dom";
 import { LoaderItem } from "./order_item";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default ({ loader, setLoader, activityLength }) => {
   const [show, setElement] = useObserver();
   const [ coinsendaServices, {storage: { activity_for_account }} ] = useCoinsendaServices();
@@ -39,6 +40,7 @@ export default ({ loader, setLoader, activityLength }) => {
     if (show && availableActivity) {
       getActivity();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [show]);
 
   return (

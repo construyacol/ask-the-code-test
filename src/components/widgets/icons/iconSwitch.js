@@ -1,17 +1,11 @@
 import React, { Component } from "react";
 import loadable from "@loadable/component";
-import Usa from "../../../assets/svg/usa.svg";
+import { getCdnPath } from '../../../environment'
 import "./icons.css";
  
-// import { BancaMia } from './logos/bancamia'
-// import { BancoGnb } from './logos/banco_gnb'
-// import { Scotia } from './logos/scotia_bank'
-
 const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
-
-
 
 const RappiPay = loadable(() => import("./").then(getExportByName("RappiPay")));
 const Movii = loadable(() => import("./").then(getExportByName("Movii")));
@@ -27,9 +21,6 @@ const BMundoMujer = loadable(() => import("./").then(getExportByName("BMundoMuje
 const JPMorgan = loadable(() => import("./").then(getExportByName("JPMorgan")));
 const CrediFinanciera = loadable(() => import("./").then(getExportByName("CrediFinanciera")));
 const Bancamia = loadable(() => import("./").then(getExportByName("Bancamia")));
-
-
-
 
 const International = loadable(() => import("./").then(getExportByName("International")));
 const Email = loadable(() => import("./").then(getExportByName("Email")));
@@ -221,7 +212,7 @@ class IconSwitch extends Component {
       case "usd":
         return (
           <img
-            src={Usa}
+            src={`${getCdnPath('assets')}couns/uss.svg`}
             alt=""
             width={`${props.size}px`}
             height={`${props.size}px`}

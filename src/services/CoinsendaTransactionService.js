@@ -141,6 +141,7 @@ export class TransactionService extends WebService {
 
   async addSymbolToLocalCollections(pairs, localCurrency, currencies) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line array-callback-return
     return pairs.reduce((result, value) => {
       const secondaryShortName = matchItem(currencies, { primary: localCurrency }, "currency");
       const primaryShortName = matchItem(currencies, { primary: value.primary_currency.currency }, "currency");

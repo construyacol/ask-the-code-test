@@ -1,9 +1,10 @@
 import React from "react";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import styled from "styled-components";
-import backImg from "../../../../../assets/map.webp";
+// import backImg from "../../../../../assets/map.webp";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { IconBackContainer } from "../../../shared-styles";
+import { getCdnPath } from '../../../../../environment'
 
 const HeaderComponent = ({ provider_type, view, switchView }) => {
   const idForBack = useKeyActionAsClick(
@@ -29,7 +30,7 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
   };
 
   return (
-    <Header>
+    <Header backgroundImage={`${getCdnPath('assets')}map.webp`}>
       <section>
         <WindowControl
           id={idForBack}
@@ -87,7 +88,7 @@ const Header = styled.div`
     opacity: 0;
   }
 
-  background-image: url(${backImg});
+  background-image: url(${props => props.backgroundImage});
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

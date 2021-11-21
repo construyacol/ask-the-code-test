@@ -17,6 +17,7 @@ const SwapAnimation = (props) => {
         setToCoin(to);
       }, 1000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   // manejar un estado donde me cambie el atributo icon en 90 grados para aparecer el siguiente simbolo vectorizado en la animación

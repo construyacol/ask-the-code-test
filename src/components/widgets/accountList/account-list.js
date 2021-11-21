@@ -46,6 +46,7 @@ function AccountList(props) {
     // actions.cleanCurrentSection()
     const verified = coinsendaService.getUserVerificationStatus("level_1");
     setIsVerified(verified);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const createNewWallet = () => {

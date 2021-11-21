@@ -28,6 +28,7 @@ const OrderStatus = ({ order, movil }) => {
     }
     // console.log(orders, api[tx_path])
     setOrderState(Object.entries(orders));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder.state]);
 
   // console.log('|||||||||||||||| OrderSupervisor ::', order)

@@ -18,7 +18,7 @@ const Slider = (props) => {
 
   useEffect(() => {
     setSlider(document.getElementById("Rj45#_SendaSlider"));
-  }, [!slider]);
+  }, [slider]);
 
   useEffect(() => {
     if (slider && slider.childNodes) {
@@ -109,6 +109,7 @@ const Controls = ({
 
   useEffect(() => {
     if (autoSwap) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       autoSwapInterval = setInterval(() => {
         clearInterval(autoSwapInterval);
         next(true);

@@ -98,6 +98,7 @@ export default function useKeyActionAsClick(
       );
 
       // recorremos los ids
+      // eslint-disable-next-line array-callback-return
       keyCodesIds.map((id) => {
         // si ya se encontro el id que buscamos detenemos el timer
         if (doBrake) return typeof _doBreak === "function" && _doBreak();
@@ -143,6 +144,7 @@ export default function useKeyActionAsClick(
 
   useEffect(() => {
     manageKeyActions(elementId, keyCode);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elementId, keyCode]);
 
   useEffect(() => {
@@ -159,14 +161,8 @@ export default function useKeyActionAsClick(
     return () => {
       // window[eventName] = false
     };
-  }, [
-    window[eventName],
-    isModalVisible,
-    isModalRenderVisible,
-    isConfirmationModalVisible,
-    isOtherModalVisible,
-    shouldHandleAction,
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window[eventName], isModalVisible, isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction ]);
 
   return elementId;
 }

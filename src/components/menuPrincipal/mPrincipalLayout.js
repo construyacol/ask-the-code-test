@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import loadable from "@loadable/component";
 import { ButtonPrincipalMenu } from "../widgets/buttons/buttons";
-import logo from "../../assets/logo.png";
 import { menuPrincipal } from "../api/ui/api.json";
 import ScoresComponent from "../widgets/scores";
 import MovilMenuComponent from "./movilMenu";
 import { useActions } from "../../hooks/useActions";
 import { doLogout } from "../utils";
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
+// import logo from "../../assets/logo.png";
+import { getCdnPath } from '../../environment'
+
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
@@ -54,6 +56,7 @@ const MenuPrincipalLayout = (props) => {
       let result = name.match(patt1);
       setAcronym(result.toString().replace(/,/g, " ").toUpperCase());
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -67,7 +70,7 @@ const MenuPrincipalLayout = (props) => {
 
       <div className="userInfo">
         <div className="logo">
-          <img src={logo} alt="" width="110" height="28" />
+          <img src={`${getCdnPath('assets')}logo.png`} alt="" width="110" height="28" />
           <i className="fas fa-arrow-left" onClick={close_menu_principal}></i>
         </div>
 

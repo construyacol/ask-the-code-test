@@ -134,6 +134,7 @@ const NewWallet = (props) => {
 
   useEffect(() => {
     return () => props.action.CurrentForm("wallets");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let states = {

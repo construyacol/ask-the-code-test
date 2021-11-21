@@ -16,6 +16,7 @@ export const useFormatCurrency = (objetive_amount, currency) => {
     if (amount && amountCurrency) {
       formating(amount, amountCurrency);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return [amount, formating];

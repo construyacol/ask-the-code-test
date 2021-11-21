@@ -137,6 +137,7 @@ const ActivityView = (props) => {
       };
       init_activity();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.tx_path]);
 
   // useEffect(() => {

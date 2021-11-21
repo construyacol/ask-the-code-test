@@ -12,6 +12,7 @@ const ReferralCounter = ({ loading, referral}) => {
     if(referral && referral.referreds && referral.referreds){
       setReferreds(referral.referreds.length)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [referral && referral.referreds && referral.referreds])
 
   return (

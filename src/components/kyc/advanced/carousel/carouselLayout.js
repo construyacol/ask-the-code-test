@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import "./carousel.css";
 import Marco from "../../../widgets/marco";
 import { ButtonForms } from "../../../widgets/buttons/buttons";
-import perspective from "../../../../assets/docs/perspective.png";
-import borroso from "../../../../assets/docs/borroso.png";
-import oscuro from "../../../../assets/docs/oscuro.png";
-import gris from "../../../../assets/docs/gris.png";
-import sinmarc from "../../../../assets/docs/sinmarc.png";
 import Slider from "../../../widgets/slider";
+import { getCdnPath } from '../../../../environment'
+import "./carousel.css";
 
 export default class SimpleSlider extends Component {
   render() {
@@ -30,7 +26,7 @@ export default class SimpleSlider extends Component {
           <div className="SimpleSliderItem">
             <h1 className="fuente">Plana</h1>
             <Marco>
-              <img src={perspective} alt="" width="80%" />
+              <img src={`${getCdnPath('assets')}kyc_identity/examples/perspective.png`} alt="" width="80%" />
             </Marco>
             <p className="fuente">
               La fotografía del documento debe ser recta, no puede tener
@@ -41,7 +37,7 @@ export default class SimpleSlider extends Component {
           <div className="SimpleSliderItem">
             <h1 className="fuente">Legible</h1>
             <Marco>
-              <img src={borroso} alt="" width="80%" />
+              <img src={`${getCdnPath('assets')}kyc_identity/examples/borroso.png`} alt="" width="80%" />
             </Marco>
             <p className="fuente">
               Asegúrese, que la identificación este totalmente visible y
@@ -53,7 +49,7 @@ export default class SimpleSlider extends Component {
           <div className="SimpleSliderItem">
             <h1 className="fuente">Iluminada</h1>
             <Marco>
-              <img src={oscuro} alt="" width="80%" />
+              <img src={`${getCdnPath('assets')}kyc_identity/examples/oscuro.png`} alt="" width="80%" />
             </Marco>
             <p className="fuente">
               La imagen no debe estar oscura, procure tomarla con iluminación
@@ -64,7 +60,7 @@ export default class SimpleSlider extends Component {
           <div className="SimpleSliderItem">
             <h1 className="fuente">A color</h1>
             <Marco>
-              <img src={gris} alt="" width="80%" />
+              <img src={`${getCdnPath('assets')}kyc_identity/examples/gris.png`} alt="" width="80%" />
             </Marco>
             <p className="fuente">La imagen no debe estar a blanco y negro</p>
           </div>
@@ -72,7 +68,7 @@ export default class SimpleSlider extends Component {
           <div className="SimpleSliderItem">
             <h1 className="fuente">Entera</h1>
             <Marco>
-              <img src={sinmarc} alt="" width="100%" />
+              <img src={`${getCdnPath('assets')}kyc_identity/examples/sinmarc.png`} alt="" width="100%" />
             </Marco>
             <p className="fuente">
               Asegúrese, que las 4 esquinas del documento se vean completamente

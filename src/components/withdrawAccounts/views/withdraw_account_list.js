@@ -26,6 +26,7 @@ function WithdrawAccountList(props) {
 
   useEffect(() => {
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const find_units = (amount) => {

@@ -31,6 +31,7 @@ const SecurityCenter = (props) => {
     return () => {
       actions.default_video_state();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // console.log('SECURITY_CENTER::::', this.props)

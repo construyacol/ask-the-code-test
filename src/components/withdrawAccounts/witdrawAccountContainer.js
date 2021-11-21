@@ -20,6 +20,7 @@ function WitdrawAccountContainer(props) {
   useEffect(() => {
     props.action.cleanCurrentSection();
     props.action.CurrentForm("bank");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { items_menu } = navigation_components.wallets;
@@ -129,6 +130,7 @@ const ActivityWrapperView = (props) => {
         result
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <ActivityView {...props} />;

@@ -199,6 +199,7 @@ export function useItemsInteractions(
         };
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible, props.uniqid]);
 
   const setFocus = () => {

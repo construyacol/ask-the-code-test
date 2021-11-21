@@ -149,7 +149,9 @@ export const StandardTicket = (props) => {
       <div className={`Mconfirmar ${type}`}>
         <IconClose theme="dark" size={20} />
 
-        <div className="titleConfirmed">
+        <div className="titleConfirmed"
+          style={{backgroundImage:`url(${getCdnPath('assets')}map.webp`}}
+        >
           <h1 className="fuente">{title}</h1>
         </div>
 

@@ -195,12 +195,14 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if (authData.userToken) {
       initComponent();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authData.userToken]);
 
   useEffect(() => {
     if (previousLoadLabel !== appLoadLabel) {
       setProgressBarWidth(progressBarWidth + 33);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appLoadLabel]);
 
   return (

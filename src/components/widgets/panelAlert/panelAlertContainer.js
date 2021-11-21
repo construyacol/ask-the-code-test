@@ -18,12 +18,14 @@ const PanelAlertContainer = (props) => {
     background: "white",
     action: null,
   });
+  const { user } = props 
 
   useEffect(() => {
     if (props.history.location.pathname === "/security") {
       validate_state();
     }
-  }, [props.user]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const validate_state = async () => {
     const verification_state = await coinsendaServices.getVerificationState();

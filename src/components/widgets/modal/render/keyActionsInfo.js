@@ -27,6 +27,7 @@ const KeyActionsInfo = ({ callback, isWithdraw2fa, cancelAction }) => {
     setTimeout(() => {
       actions.renderModal(null);
     }, 6000);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

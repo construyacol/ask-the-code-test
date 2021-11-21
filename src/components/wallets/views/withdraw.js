@@ -12,6 +12,7 @@ const WithdrawView = () => {
     if (!withdraws) {
       coinsendaServices.get_withdraws(current_wallet.id);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

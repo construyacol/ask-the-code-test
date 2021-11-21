@@ -75,6 +75,7 @@ const TwoFactorActivate = (props) => {
       setLoader(false);
     };
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

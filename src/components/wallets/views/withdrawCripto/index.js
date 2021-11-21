@@ -157,7 +157,8 @@ export const CriptoView = () => {
   const showQrScanner = async () => {
     actions.renderModal(null);
     const Element = await import("../../../qr-scanner");
-    actions.renderModal(() => <Element.default onScan={setAddressValue} />);
+    const RenderComponent = Element.default
+    actions.renderModal(() => <RenderComponent onScan={setAddressValue} />);
   };
 
   useEffect(() => {
@@ -200,6 +201,7 @@ export const CriptoView = () => {
         setAddressToAdd(addressValue);
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
   return (

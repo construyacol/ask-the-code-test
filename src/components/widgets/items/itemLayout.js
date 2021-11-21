@@ -28,7 +28,7 @@ function ItemLayout(props) {
     itemType,
   } = props;
 
-  console.log('|||||||||||||||  ItemLayout ==> ', type,)
+  console.log('|||||||||||||||  ItemLayout ==> ', type)
 
   return (
     <div

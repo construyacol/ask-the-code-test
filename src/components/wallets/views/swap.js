@@ -63,6 +63,7 @@ function SwapView(props) {
     if(!currentPair){
       coinsendaServices.getDefaultPair(currentWallet, local_currency, currentPair);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

@@ -160,10 +160,10 @@
 }
 
 .titleConfirmed {
-  background-image: url("../../../assets/map.webp");
+  /* background-image: url("../../../assets/map.webp"); */
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: bottom;
+  background-position: bottom; 
   background-attachment: fixed;
   border-top-right-radius: 7px;
   border-top-left-radius: 7px;

@@ -30,6 +30,7 @@ const ReferralActivity = ({ coinsendaServices }) => {
       setLoader(false)
     }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activityList])
 
 

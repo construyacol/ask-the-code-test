@@ -5,7 +5,8 @@ import DropDownContainer from "../../../widgets/inputs/dropdownContainer";
 import { ButtonForms } from "../../../widgets/buttons/buttons";
 import ItemSelectionContainer from "../../../widgets/items/ItemSelectionContainer";
 import ItemLayout from "../../../widgets/items/itemLayout";
-import bank from "../../../../assets/bank.png";
+// import bank from "../../../../assets/bank.png";
+import { getCdnPath } from '../../../../environment'
 import SimpleLoader from "../../../widgets/loaders";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -159,7 +160,7 @@ class BankAccountFlow extends Component {
         {step === 2 && (
           <div className="nBstep1 fuente">
             <div className="titleNewAccount">
-              <img src={bank} alt="" height="70" />
+              <img src={`${getCdnPath('assets')}bank.png`} alt="" height="70" />
               <p>
                 Genial <strong>{name}</strong>
               </p>

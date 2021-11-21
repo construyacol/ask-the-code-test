@@ -210,12 +210,14 @@ export const PaymentProof = ({ payload }) => {
     } else {
       getPaymentProof(currentOrder);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (imgProof !== payload) {
       setImgProof(payload);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payload]);
 
   const openBlockchain = () => {

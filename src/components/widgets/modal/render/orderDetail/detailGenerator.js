@@ -206,6 +206,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       setOrders(transOrders);
     };
     init();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deposit_providers]);
 
   // console.log(order, orders)
