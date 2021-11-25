@@ -52,6 +52,7 @@ const OrderItem = ({ order }) => {
     const Element = await import("../modal/render/orderDetail/index.js");
     const OrderDetail = Element.default
     await actions.renderModal(() => <OrderDetail/>);
+    
     if (target.dataset && target.dataset.is_confirm_deposit) {
       confirmPayment();
     }

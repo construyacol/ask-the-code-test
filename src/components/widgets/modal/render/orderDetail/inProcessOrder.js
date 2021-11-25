@@ -120,7 +120,7 @@ const FiatDespoitOrder = ({ order }) => {
     event.preventDefault();
     if (onDrag) {
       setOnDrag(!onDrag);
-    }
+    } 
   };
 
   const goFileLoader = async (e) => {
@@ -135,6 +135,13 @@ const FiatDespoitOrder = ({ order }) => {
       }
       setImgSrc(dataBase64);
       actions.isAppLoading(true);
+
+
+      const Element = await import("../../../../BiometricIdentity");
+      if(!Element) return;
+      const FormsComponent = Element.default
+      actions.renderModal(() => <FormsComponent/>);
+      return
 
       // cropImgOFf
       // activate oncomment line ><167

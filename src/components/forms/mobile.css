@@ -1,0 +1,6 @@
+@media only screen and (max-width: 400px) {
+  h1.titleContainer__h1{
+    font-size: 22px;
+    text-align: center;
+  }
+}

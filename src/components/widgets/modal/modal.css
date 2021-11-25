@@ -17,6 +17,12 @@
   transition: 0.3s;
 }
 
+.fullScreen #IconCloseModal{
+  z-index: 3;
+  top: 15px;
+  right: 15px;
+}
+
 #close-button-with-OtherModalLayout.inactive {
   overflow-y: hidden;
 }
