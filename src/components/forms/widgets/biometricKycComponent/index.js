@@ -4,12 +4,16 @@ import useValidations from '../../hooks/useInputValidations'
 import { getDisplaySize } from './utils'
 import loadable from '@loadable/component'
 import styled from 'styled-components'
-// import StatusIndicator from '../biometricStatus'
+import StatusIndicator from '../biometricStatus'
 import { Scanner } from './scanner'
 import Captures from './captures'
+import { getCdnPath } from '../../../../environment'
+import loadDynamicScript from '../../../../utils/loadDynamicScript'
 import './styles.css'
 
-const modelsPath = '/models'
+
+// const modelsPath = '/models'
+const modelsPath = `${getCdnPath('tensor')}/`
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
 
@@ -25,7 +29,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
-  const faceApi = useRef(window.faceapi)
+  const faceApi = useRef(null)
   const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
 
   const stageManager = useStage(
@@ -45,7 +49,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   
   const setupFaceApi = async() => {
     setLoading(true)
-    if(!faceApi.current){alert('No está cargando las librerías')}
+    if(!window.faceapi) return alert('No están cargando las librerías');
+    faceApi.current = window.faceapi
     await faceApi.current.nets.tinyFaceDetector.loadFromUri(modelsPath)
     await faceApi.current.nets.faceLandmark68Net.loadFromUri(modelsPath)
     await faceApi.current.nets.faceRecognitionNet.loadFromUri(modelsPath)
@@ -69,13 +74,16 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     if (navigator.getUserMedia) {     
       navigator.getUserMedia({video: true}, handleVideo, videoError);
       videoEl.current.addEventListener('play', () => {
-        console.log('el streaming a comenzado')
+        console.log('el streaming a comenzado', faceApi.current)
         const canvas = faceApi.current.createCanvasFromMedia(videoEl.current)
         canvas.style.display = 'none'
         canvas.id = "faceApiCanvas"
         document.querySelector('#videoContainer').append(canvas)
         faceApi.current.matchDimensions(canvas, getDisplaySize())
         setLoading(false)
+        // setTimeout(()=>{
+        //  console.log('videoEl.current: ', videoEl.current.srcObject.getTracks()[0].stop())
+        // }, 5000)
       })
     }
   }
@@ -136,9 +144,13 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
 
   useEffect(()=>{
-    console.log('developerMood', developerMood)
-    setupFaceApi()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    loadDynamicScript(setupFaceApi, `${getCdnPath('faceApi')}`, 'faceApi')
+    return () => {
+      videoEl.current?.pause();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      videoEl.current?.srcObject?.getTracks()[0].stop()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -157,7 +169,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   }
 
     return(
-      <>
+      <Layout>
         { 
           !boardingAgreement &&
             <DynamicLoadComponent
@@ -166,16 +178,16 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
               handleAction={() => {
                 setBoardingAgreement(true)
               }}
-            />
+            /> 
         }
 
         { developerMood &&<Captures state={state}/> }
 
-        <ContentContainer>
-          {/* <StatusIndicator 
+        <ContentContainer id="faceApiContainer">
+          <StatusIndicator 
             data={state[stageData?.key]}
-          /> */}
-          <h3 className="FRecTitle">Reconocimiento Facial</h3>
+          />
+          <h3 className="FRecTitle fuente">Reconocimiento Facial</h3>
           <VideoContainer id="videoContainer">            
             { loading && <div className="biometricLoaderContainer"></div>}
             { !developerMood && <Scanner className="FRecScanner"/>}
@@ -185,16 +197,27 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
             <Indicator className={`${currentStage === 0 ? 'active' : ''}`}/>
             <Indicator className={`${currentStage === 1 ? 'active' : ''}`}/>
           </IndicatorStage>
-          <h1>{stageData?.uiName}</h1>
-          <p>Mantén tu cabeza erguida y asegurate que tu rostro encaje dentro del circulo</p>
+          <h1 className="fuente">{stageData?.uiName}</h1>
+          <p className="fuente">Mantén tu cabeza erguida y asegurate que tu rostro encaje dentro del circulo</p>
         </ContentContainer>
-      </>
+      </Layout>
     )
 } 
 
 
 export default BiometricKycComponent
 
+
+const Layout = styled.div`
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    background: #fffffffa;
+    position: absolute;
+    justify-items: center;
+    top: 0;
+    left: 0;
+`
 
 
 const Indicator = styled.div`
@@ -233,6 +256,11 @@ const ContentContainer = styled.div`
   grid-template-rows: auto 1fr auto auto auto;
   height: calc(100vh - 80px);
   padding: 40px 0;
+
+  .FRecTitle{
+    color:#0198ff;
+    font-weight:bold;
+  }
   p{
     text-align:center;
     color:gray;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import loadable from '@loadable/component'
+// import loadable from '@loadable/component'
 import OtherModalLayout from "../widgets/modal/otherModalLayout";
 import { IconClose } from "../widgets/shared-styles";
 import { useActions } from '../../hooks/useActions'

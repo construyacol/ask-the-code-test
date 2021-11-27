@@ -8,13 +8,14 @@ import reducer from "./reducers";
 import { mainService } from "./services/MainService";
 import soundData from "./sounds";
 // import { updateLocalForagePersistState } from "./components/hooks/sessionRestore";
-
+// 
 const loadedSoundsMiddleware = soundsMiddleware(soundData);
-
+ 
 export function _createStore() {
   // Grab the state from a global variable injected into the server-generated HTML
   const preloadedState = window.__PRELOADED_STATE__;
-
+  // console.log(soundData)
+// debugger
   // Allow the passed state to be garbage-collected
   delete window.__PRELOADED_STATE__;
 

@@ -228,8 +228,8 @@ export const ACCEPT_FILE_TYPE_ADVANCE_KYC = ["image/jpeg", "image/png"];
 
 export const CDN_PATH_ASSETS = {
   highstock:'cdn/libs/highstock.js',
-  three:'cdn/libs/three.min.js',
-  vanta:'cdn/libs/vanta.waves.min.js',
   d3:'cdn/libs/d3.js',
-  assets:'cdn/assets/'
+  faceApi:"cdn/libs/faceApi.js",
+  assets:'cdn/assets/',
+  tensor:'cdn/tensor/models'
 }

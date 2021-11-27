@@ -57,6 +57,7 @@
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
     "build": "react-scripts build && npm run build-sw && react-snapshot",
+    "build:staging:serve": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build && serve ./build -s -l 5000",
     "build:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build",
     "build:pre_prod": "cross-env REACT_APP_BUILD_CONFIG='pre_prod' npm run build",
     "test": "react-scripts test",
