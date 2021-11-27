@@ -61,16 +61,20 @@ export class TransactionService extends WebService {
   async userHasTransactionSecurity(userId) {
     const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
-    console.log('||||||||||||  userHasTransactionSecurity ==> ', response)
-    debugger
+    // console.log('||||||||||||  userHasTransactionSecurity ==> ', response)
+    // debugger
     if (!response || response === 465 || (response && !response.length)) {
       return false;
     } 
     const withdrawScope = "withdraw:withdraws:addNewWithdraw::*";
+    const depositScope = "deposit:deposits:addUpdateDeposit::confirmed";
+
+
     return {
       transaction_security_id: response[0].id,
       scopes: {
         withdraw: response[0].scopes[withdrawScope],
+        deposit: response[0].scopes[depositScope]
       },
     };
   }

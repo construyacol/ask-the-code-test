@@ -81,9 +81,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
         document.querySelector('#videoContainer').append(canvas)
         faceApi.current.matchDimensions(canvas, getDisplaySize())
         setLoading(false)
-        // setTimeout(()=>{
-        //  console.log('videoEl.current: ', videoEl.current.srcObject.getTracks()[0].stop())
-        // }, 5000)
       })
     }
   }

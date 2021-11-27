@@ -12,6 +12,11 @@ export const useFormatCurrency = (objetive_amount, currency) => {
     return amount_converted.toFormat();
   };
 
+  const toBigNumber = async(objetive_amount, currency) => {
+    let amount = await formatToCurrency(objetive_amount, currency);
+    return amount
+  }
+
   useEffect(() => {
     if (amount && amountCurrency) {
       formating(amount, amountCurrency);
@@ -19,5 +24,5 @@ export const useFormatCurrency = (objetive_amount, currency) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return [amount, formating];
+  return [amount, formating, toBigNumber];
 };

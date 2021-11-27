@@ -104,13 +104,15 @@ export class IndetityService extends WebService {
     };
  
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
-    console.log(transactionSecurity)
+    // console.log(transactionSecurity)
+    // debugger
 
     if (transactionSecurity) {
       const { transaction_security_id, scopes } = transactionSecurity;
       updatedUser.security_center.txSecurityId = transaction_security_id;
-      updatedUser.security_center.authenticator.auth = true;
+      updatedUser.security_center.authenticator.auth = scopes.withdraw && true;
       updatedUser.security_center.authenticator.withdraw = scopes.withdraw;
+      updatedUser.security_center.needBiometric = scopes.deposit;
     }
 
 
