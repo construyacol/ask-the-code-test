@@ -1,18 +1,4 @@
-// import new_transaction from "./success.mp3";
-// import success from "./success2.mp3";
-// import exit from "./exit.mp3";
-// import good_action from "./good.mp3";
-// import toast from "./toast.mp3";
-// import confirm from "./good.mp3";
-// import ticket from "./good.mp3";
-// import ticket_rejected from "./rejected.mp3";
-// import ticket_canceled from "./canceled.mp3";
-// import add_coin from "./coin.mp3";
-// import notification from "./notification.mp3";
 import { getCdnPath } from '../environment'
-
-
-
 
 export const soundData = {
   notification: {
