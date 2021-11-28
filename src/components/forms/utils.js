@@ -3,6 +3,8 @@ import {
   INFO_URL_API 
 } from './const'
 import formStructure from './config.js'
+import { mainService } from "../../services/MainService";
+
 // import countryValidators from './apiRes'
 
 export const getBody = (body, { stages: { nationality } }) => {
@@ -166,14 +168,15 @@ const createStage = (source, modelated, index) => {
   delete _source.ui_type
   
   Object.keys(_source).map(async key => {
-    if(key.match("uiName") || key.match("uiType")){
+    // TODO: refactor to for -- in
+    // if(key.match("uiName") || key.match("uiType")){
       stage = {
         key:index,
         ...stage,
         ...modelated,
         [key]:_source[key]
       }
-    }
+    // }
     if(stage[key] === 'select'){
       let selectSource = source
       if(stage.key === 'nationality'){
@@ -182,6 +185,7 @@ const createStage = (source, modelated, index) => {
       stage.selectList = generateSelectList(selectSource)
     }
   })
+  
   return stage
 }
 
@@ -208,34 +212,44 @@ const getNationalityList = async() => {
   return countrySource
 }
 
-export const getApiStages = async(config) => {
-  // const { personType, level, formName } = config
-  // return countryValidators?.res?.levels[level][formName][personType]
-  return {
-    smile:{
-      ui_name: "Soríe",
-      ui_type: "img"
-    },
-    surprised:{
-      ui_name: "Abre la boca y levanta las cejas",
-      ui_type: "img"
+
+const getBiometricStages = async() => {
+  let stages = {}
+  const res = await mainService.getUserBiometric()
+  if(!res) return;
+  for (const keyChallenge in res.challenge) { 
+    stages = {
+      ...stages,
+      [keyChallenge]:{
+        key:keyChallenge,
+        solved:res.solved,
+        biometricId:res.id,
+        ui_type: "img",
+        ui_name: keyChallenge === "smile" ? "Soríe" : "Abre la boca y levanta las cejas"
+      }
     }
   }
+  return stages
+}
+
+const dataService = {
+  biometric:getBiometricStages
 }
 
 
 export const initStages = async(config) => {
 
-  const apiStages = await getApiStages(config)
+  const apiStages = await dataService[config.formName]()
   const sourceStages = Object.keys(apiStages)
   let stages = {} 
 
-  for (const stage of sourceStages) {
+  for (const stage of sourceStages) { 
     stages = {
       ...stages,
       [stage]:createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
+
 
   return {
     ...formStructure(config.formName),

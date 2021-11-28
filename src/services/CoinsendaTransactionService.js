@@ -61,8 +61,6 @@ export class TransactionService extends WebService {
   async userHasTransactionSecurity(userId) {
     const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
-    // console.log('||||||||||||  userHasTransactionSecurity ==> ', response)
-    // debugger
     if (!response || response === 465 || (response && !response.length)) {
       return false;
     } 

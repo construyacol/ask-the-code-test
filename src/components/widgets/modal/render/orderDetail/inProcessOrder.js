@@ -109,7 +109,7 @@ const FiatDespoitOrder = ({ order }) => {
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
-  const [ depositAmount, , toBigNumber ] = useFormatCurrency()
+  const [ , , toBigNumber ] = useFormatCurrency()
   const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
@@ -149,7 +149,6 @@ const FiatDespoitOrder = ({ order }) => {
         const FormsComponent = Element.default
         return actions.renderModal(() => <FormsComponent/>);
       }
-      // console.log('coinsendaServices', user.security_center.needBiometric)
 
       // cropImgOFf
       // activate oncomment line ><167

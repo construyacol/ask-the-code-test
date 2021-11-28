@@ -9,11 +9,12 @@ import { Scanner } from './scanner'
 import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
 import loadDynamicScript from '../../../../utils/loadDynamicScript'
+import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import './styles.css'
 
 
-// const modelsPath = '/models'
-const modelsPath = `${getCdnPath('tensor')}/`
+const modelsPath = '/models'
+// const modelsPath = `${getCdnPath('tensor')}/`
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
 
@@ -24,12 +25,13 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   const [ loading, setLoading ] = useState(false)
   const [ cameraAvailable, setCameraAvailable ] = useState()
   const [ boardingAgreement, setBoardingAgreement ] = useState(false)
+  const [ coinsendaServices ] = useCoinsendaServices();
   
   const validations = useValidations()
 
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
-  const faceApi = useRef(null)
+  const faceApi = useRef(window.faceapi)
   const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
 
   const stageManager = useStage(
@@ -141,6 +143,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
 
   useEffect(()=>{
+    // setupFaceApi()
     loadDynamicScript(setupFaceApi, `${getCdnPath('faceApi')}`, 'faceApi')
     return () => {
       videoEl.current?.pause();

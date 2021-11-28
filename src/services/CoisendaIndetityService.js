@@ -70,6 +70,14 @@ export class IndetityService extends WebService {
     }
   } 
 
+  async getUserBiometric() {
+    const user = this.user;
+    const url = `${INDENTITY_USERS_URL}/${user.id}/biometric?country=${user.country}`;
+    const res = await this.Get(url);
+    console.log('||||||||||||||  getUserBiometric ==> ', res)
+    return res
+  }
+
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
     const user = this.user;
