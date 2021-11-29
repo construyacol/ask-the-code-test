@@ -17,7 +17,7 @@ const modelsPath = '/models'
 // const modelsPath = `${getCdnPath('tensor')}/`
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
-
+ 
 const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
   const { dataForm } = handleDataForm
@@ -121,8 +121,18 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
             return { ...prevState, [stageData?.key]: _value ? _value : prevState[stageData?.key] }
           })
           clearInterval(intervalDetection.current)
-          setTimeout(()=>nextStage(), 1500)
           counter++
+
+          const res = await coinsendaServices.addNewBiometricData({
+            file:_value.split(',')[1],
+            biometric_id:stageData.biometricId,
+            challenge_name:stageData.key
+          })
+
+          console.log(res)
+          debugger
+
+          setTimeout(()=>nextStage(), 1500)
         }else{
           console.log('Detectando...')
           if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');

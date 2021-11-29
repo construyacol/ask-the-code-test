@@ -6,6 +6,7 @@ import {
   INDENTITY_USERS_URL,
   INDETITY_COUNTRY_VALIDATORS_URL,
   INDETITY_UPDATE_PROFILE_URL,
+  INDENTITY_ADD_BIOMETRIC_DATA_URL
 } from "../const/const";
 import userDefaultState from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
@@ -69,6 +70,32 @@ export class IndetityService extends WebService {
       this.dispatch(ToStep("globalStep", 0))
     }
   } 
+
+
+  async addNewBiometricData(config) {
+
+    const { file, biometric_id, challenge_name } = config
+    const user = this.user    
+
+    const body = {
+      "data": {
+        "country": user.country,
+        biometric_id,
+        "pose":challenge_name,
+        challenge_name,
+        file
+      }
+    }
+
+    console.log('|||||||||||||||||||||  addNewBiometricData  =>  ', body)
+    console.log('|||||||||||||||||||||  INDENTITY_ADD_BIOMETRIC_DATA_URL  =>  ', INDENTITY_ADD_BIOMETRIC_DATA_URL)
+    
+    const res = await this.Post2(INDENTITY_ADD_BIOMETRIC_DATA_URL, body);
+    return res
+    // https://identity.bitsenda.com/api/biometricDatas/add-new-biometric-data
+    // debugger
+  }
+
 
   async getUserBiometric() {
     const user = this.user;

@@ -76,6 +76,7 @@ export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`;
 
 export const INDETITY_URL = `${IdentityApIUrl}countryvalidators/findOne`;
 export const INDENTITY_USERS_URL = `${IdentityApIUrl}users`;
+export const INDENTITY_ADD_BIOMETRIC_DATA_URL = `${IdentityApIUrl}biometricDatas/add-new-biometric-data`;
 export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidators`;
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`;
 
