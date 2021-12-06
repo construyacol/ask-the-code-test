@@ -14,12 +14,16 @@ const {
   BASE_URL
 } = Enviroment;
 
-
 export const IMAGE_MIME_TYPES = [
   "image/png",
   "image/jpeg",
   "image/jpg"
 ];
+
+export let TRANSACTION_SECURITY = {
+  "2fa":null,
+  "biometric":null
+}
 
 export const loadLabels = {
   IMPORTANDO_PARES: "Importando pares",

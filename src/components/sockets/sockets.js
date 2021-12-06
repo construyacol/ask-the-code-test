@@ -117,7 +117,6 @@ class SocketsComponent extends Component {
             });
 
 
-
             socket.on(`/withdraw/${user.id}`, async (withdraw) => {
               console.log(withdraw)
               if (withdraw.state === "pending") {

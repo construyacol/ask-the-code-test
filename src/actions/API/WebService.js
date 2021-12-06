@@ -115,28 +115,6 @@ export class WebService {
   }
 
 
-
-  async Post2(url, body, withAuth = true) {
-    const tokenData = await getToken()
-    if(!tokenData){return}
-    const { userToken } = tokenData
-    let params = {
-      method: `POST`,
-      mode: 'no-cors',
-      headers: withAuth
-        ? {
-            Accept: `*/*`,
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userToken}`,
-          }
-        : {},
-      body: JSON.stringify(body),
-    };
-
-    return this.doFetch(url, params);
-  }
-
-
   async Post(url, body, withAuth = true) {
     const tokenData = await getToken()
     if(!tokenData){return}

@@ -15,7 +15,7 @@ const smile = (detections, data) => {
 const surprised = (detections, data) => {
   let frame
   console.log('|||||| detections surprised' , detections?.expressions?.surprised)
-  if(detections?.expressions?.surprised > 0.95 && !data.state[data.key]){
+  if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
     frame = getFrame()
   }
   return [ frame ]

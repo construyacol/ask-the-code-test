@@ -10,6 +10,8 @@ import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
 import loadDynamicScript from '../../../../utils/loadDynamicScript'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import useSocket from '../../../hooks/useSocket'
+import { useSelector } from "react-redux";
 import './styles.css'
 
 
@@ -20,13 +22,13 @@ const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent')
  
 const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
+  const modelData = useSelector((state) => state.modelData);
   const { dataForm } = handleDataForm
   const { state, setState } = handleState
   const [ loading, setLoading ] = useState(false)
   const [ cameraAvailable, setCameraAvailable ] = useState()
   const [ boardingAgreement, setBoardingAgreement ] = useState(false)
   const [ coinsendaServices ] = useCoinsendaServices();
-  
   const validations = useValidations()
 
   const videoEl = useRef(null);
@@ -48,6 +50,17 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     finalStage
   } = stageManager
 
+
+  const getBiometricData = async(biometricData) => {
+    if(stageData.key === biometricData.challenge_name){
+      setTimeout(()=>nextStage(), 1500)
+      console.log('|||||||||||||||  biometricData ===>', biometricData)
+      console.log('|||||||||||||||  stageData ===>', stageData)
+      debugger
+    }
+  }
+
+  useSocket(`/biometric_data/${modelData.user.id}`, getBiometricData)
   
   const setupFaceApi = async() => {
     setLoading(true)
@@ -122,17 +135,13 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
           })
           clearInterval(intervalDetection.current)
           counter++
-
           const res = await coinsendaServices.addNewBiometricData({
             file:_value.split(',')[1],
             biometric_id:stageData.biometricId,
             challenge_name:stageData.key
           })
-
-          console.log(res)
-          debugger
-
-          setTimeout(()=>nextStage(), 1500)
+          console.log('|||||||||||||||  res ==> ', res)
+          // setTimeout(()=>nextStage(), 1500)
         }else{
           console.log('Detectando...')
           if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');
@@ -163,6 +172,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  
 
    if(finalStage){
     // Render success Stage

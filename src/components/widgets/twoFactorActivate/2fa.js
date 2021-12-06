@@ -33,26 +33,12 @@ const TwoFactorActivate = (props) => {
   const handleBlur = () => {
     setInputFocus(false);
   };
-
-  const success_event = async (payload) => {
+ 
+  const success_event = async (transactionSecurity) => {
     props.action.isAppLoading(true);
     setSuccess_screen(true);
-    const { transaction_security_id, scopes } = payload;
-    let user_update = {
-      ...props.user,
-      security_center: {
-        ...props.user.security_center,
-        txSecurityId: transaction_security_id,
-        authenticator: {
-          ...props.user.security_center.authenticator,
-          auth: true,
-          withdraw: scopes.withdraw,
-        },
-      },
-    };
-    await coinsendaServices.updateUser(user_update);
-    props.action.isAppLoading(false);
     setTimeout(() => {
+      props.action.isAppLoading(false);
       setSwitch_to_success(true);
     }, 500);
   };
@@ -156,6 +142,7 @@ const TwoFactorActivate = (props) => {
                   handleBlur={handleBlur}
                   authenticated={success_event}
                   disabled={loader}
+                  {...props}
                 />
               </div>
             </div>

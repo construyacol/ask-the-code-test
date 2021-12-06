@@ -9,7 +9,8 @@ import {
   GET_PROFILE_URL,
   ADD_PROFILE_URL,
   TWO_FACTOR_URL,
-  TWO_FACTOR_BASE_URL
+  TWO_FACTOR_BASE_URL,
+  TRANSACTION_SECURITY
 } from "../const/const";
 import { matchItem } from "../utils";
 import { coins } from "../components/api/ui/api.json";
@@ -59,22 +60,24 @@ export class TransactionService extends WebService {
   }
 
   async userHasTransactionSecurity(userId) {
+
     const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
+
     if (!response || response === 465 || (response && !response.length)) {
       return false;
-    } 
-    const withdrawScope = "withdraw:withdraws:addNewWithdraw::*";
-    const depositScope = "deposit:deposits:addUpdateDeposit::confirmed";
+    }
 
+    for (const scope of response) {
+      TRANSACTION_SECURITY[scope.type] = {
+        enabled:scope.enabled,
+        id:scope.id
+      }
+    }
+    console.log(TRANSACTION_SECURITY, response)
+    
+    return TRANSACTION_SECURITY
 
-    return {
-      transaction_security_id: response[0].id,
-      scopes: {
-        withdraw: response[0].scopes[withdrawScope],
-        deposit: response[0].scopes[depositScope]
-      },
-    };
   }
 
   async getNew2faSecretCode() {
@@ -91,40 +94,85 @@ export class TransactionService extends WebService {
     return response;
   }
 
-  async addNewTransactionSecurity(twofa_token) {
+  async addNewTransactionSecurity(type, twofa_token) {
     const body = {
       data: {
         country: this.user.country,
         enabled: true,
-        type: "2fa",
+        type,
         twofa_token,
       },
     };
     const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body);
+    // console.log('response', response)
+    // console.log('body', body)
+    // debugger
     if (response === 465 || !response) {
       return false;
     }
-    const withdrawScope = "withdraw:withdraws:addNewWithdraw::*";
-    const { data } = response;
-    return {
-      transaction_security_id: data.id,
-      scopes: {
-        withdraw: data.scopes[withdrawScope],
-      },
+
+    const { data } = response
+    let user = JSON.parse(JSON.stringify(this.user))
+
+    TRANSACTION_SECURITY[data.type] = {
+      enabled:data.enabled,
+      id:data.id
+    }
+
+    let updatedUser = {
+      ...user,
+      security_center: {
+          ...user.security_center,
+        transactionSecurity:TRANSACTION_SECURITY,
+        authenticator: {
+          ...user.security_center.authenticator,
+          auth: TRANSACTION_SECURITY["2fa"]?.enabled,
+          withdraw: TRANSACTION_SECURITY["2fa"]?.enabled
+        },
+      }
     };
+    await this.updateUser(updatedUser)
+    // console.log('TRANSACTION_SECURITY', TRANSACTION_SECURITY)
+    // console.log('updatedUser', updatedUser.security_center)
+    // debugger
+    return TRANSACTION_SECURITY
   }
 
-  async disable2fa(token) {
+  async disableTransactionSecutiry(type, token) {
     // const { transaction_security_id } = await this.userHasTransactionSecurity(this.user.id)
+    let user = this.user
+    const transactionSecurity = JSON.parse(JSON.stringify(user.security_center.transactionSecurity))
+
     const body = {
       data: {
-        transaction_security_id: this.user.security_center.txSecurityId,
-        country: this.user.country || "colombia",
+        transaction_security_id: transactionSecurity[type].id,
+        country: user.country || "international",
         twofa_token: token,
       },
     };
-
+    
     const res = await this.Post(`${TWO_FACTOR_URL}/disable-transaction-security`, body);
+    
+    if(!res) return;
+    
+    transactionSecurity[type].enabled = false
+    
+    let updatedUser = {
+      ...user,
+      security_center: {
+        ...user.security_center,
+        transactionSecurity,
+        authenticator: {
+          ...user.security_center.authenticator,
+          auth: transactionSecurity[type].enabled,
+          withdraw: transactionSecurity[type].enabled 
+        },
+      }
+    };
+
+    
+    await this.updateUser(updatedUser)
+
     return res;
   }
 
