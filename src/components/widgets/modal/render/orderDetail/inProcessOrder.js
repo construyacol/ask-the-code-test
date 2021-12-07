@@ -142,8 +142,7 @@ const FiatDespoitOrder = ({ order }) => {
       const { user } = coinsendaServices.globalState.modelData
       const orderAmount = await toBigNumber(order.amount, order.currency)
       const limitAmount = await toBigNumber('500000', order.currency)
-
-      if(user.security_center.needBiometric && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
+      if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
         const Element = await import("../../../../BiometricIdentity");
         if(!Element) return;
         const FormsComponent = Element.default

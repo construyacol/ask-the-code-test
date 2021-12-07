@@ -11,7 +11,7 @@ import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useActions } from "../../hooks/useActions";
 
 const SecurityCenter = (props) => {
-  const [coinsendaServices] = useCoinsendaServices();
+  const [coinsendaServices, globalState] = useCoinsendaServices();
   const actions = useActions();
 
   const validate_state = () => {
@@ -34,7 +34,14 @@ const SecurityCenter = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // console.log('SECURITY_CENTER::::', this.props)
+  useEffect(()=>{
+    actions.isAppLoading(true);
+    setTimeout(()=>{
+      actions.isAppLoading(false);
+    }, 100)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalState.modelData.user.security_center])
+
   return (
     <Fragment>
       <DetailContainerLayout title="Centro de seguridad" {...props}>

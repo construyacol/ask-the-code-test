@@ -95,9 +95,13 @@ export class TransactionService extends WebService {
   }
 
   async addNewTransactionSecurity(type, twofa_token) {
+
+    let user = JSON.parse(JSON.stringify(this.user))
+    const transactionSecurity = JSON.parse(JSON.stringify(user.security_center.transactionSecurity))
+
     const body = {
       data: {
-        country: this.user.country,
+        country: user.country,
         enabled: true,
         type,
         twofa_token,
@@ -112,9 +116,8 @@ export class TransactionService extends WebService {
     }
 
     const { data } = response
-    let user = JSON.parse(JSON.stringify(this.user))
 
-    TRANSACTION_SECURITY[data.type] = {
+    transactionSecurity[data.type] = {
       enabled:data.enabled,
       id:data.id
     }
@@ -123,11 +126,11 @@ export class TransactionService extends WebService {
       ...user,
       security_center: {
           ...user.security_center,
-        transactionSecurity:TRANSACTION_SECURITY,
+        transactionSecurity,
         authenticator: {
           ...user.security_center.authenticator,
-          auth: TRANSACTION_SECURITY["2fa"]?.enabled,
-          withdraw: TRANSACTION_SECURITY["2fa"]?.enabled
+          auth: transactionSecurity[type]?.enabled,
+          withdraw: transactionSecurity[type]?.enabled
         },
       }
     };
@@ -135,7 +138,7 @@ export class TransactionService extends WebService {
     // console.log('TRANSACTION_SECURITY', TRANSACTION_SECURITY)
     // console.log('updatedUser', updatedUser.security_center)
     // debugger
-    return TRANSACTION_SECURITY
+    return transactionSecurity
   }
 
   async disableTransactionSecutiry(type, token) {
@@ -146,10 +149,13 @@ export class TransactionService extends WebService {
     const body = {
       data: {
         transaction_security_id: transactionSecurity[type].id,
-        country: user.country || "international",
-        twofa_token: token,
-      },
+        country: user.country || "international"
+      }
     };
+
+    if(token){
+      body.data.twofa_token = token
+    }
     
     const res = await this.Post(`${TWO_FACTOR_URL}/disable-transaction-security`, body);
     

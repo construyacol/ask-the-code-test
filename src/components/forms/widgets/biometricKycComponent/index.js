@@ -35,6 +35,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   let intervalDetection = useRef(null);
   const faceApi = useRef(window.faceapi)
   const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
+  const [ biometricData ] = useSocket(`/biometric_data/${modelData.user.id}`)
 
   const stageManager = useStage(
     // create the form stages
@@ -50,7 +51,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     setStageData
   } = stageManager
 
-  const [ biometricData ] =  useSocket(`/biometric_data/${modelData.user.id}`)
 
   const setupFaceApi = async() => {
     setLoading(true)
@@ -78,6 +78,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
     if (navigator.getUserMedia) {     
       navigator.getUserMedia({video: true}, handleVideo, videoError);
+      if(!videoEl.current?.addEventListener) return;
       videoEl.current.addEventListener('play', () => {
         console.log('el streaming a comenzado', faceApi.current)
         const canvas = faceApi.current.createCanvasFromMedia(videoEl.current)
@@ -165,6 +166,14 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [biometricData])
+
+
+  useEffect(()=>{
+    if(finalStage){
+      const disableTransactionSecutiry = async() => await coinsendaServices.disableTransactionSecutiry("biometric")
+      disableTransactionSecutiry()
+    }
+  }, [finalStage])
 
   useEffect(()=>{
     // setupFaceApi()

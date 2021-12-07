@@ -143,7 +143,6 @@ export class IndetityService extends WebService {
       updatedUser.security_center.transactionSecurity = transactionSecurity
       updatedUser.security_center.authenticator.auth = transactionSecurity["2fa"]?.enabled
       updatedUser.security_center.authenticator.withdraw = transactionSecurity["2fa"]?.enabled;
-      updatedUser.security_center.needBiometric = transactionSecurity?.biometric?.enabled;
     }
     console.log(updatedUser)
 

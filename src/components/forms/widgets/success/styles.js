@@ -7,7 +7,9 @@ export const LayoutContainer = styled.section`
     grid-template-rows: auto auto auto 1fr;
     justify-items: center;
     padding: 50px 20px;
-
+    position: absolute;
+    background: white;
+    
     h1{
         margin-bottom:10vh;
     }

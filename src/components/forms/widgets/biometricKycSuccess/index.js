@@ -9,11 +9,11 @@ const PersonalKycSuccess = ({ handleDataForm:{ setDataForm }, handleState:{ stat
     return(
         <LayoutContainer>
             <ConfettiComponent/>
-            <h1>Genial {state?.name?.toLowerCase()}</h1>
+            <h1 style={{fontSize:"2em"}} >Genial {state?.name?.toLowerCase()}</h1>
             <Medal size={150} />
             <p>Has completado tu verificación biométrica</p>
             <ControlContainer>
-                <Button>Finalizar</Button>
+                <Button data-close_modal>Finalizar</Button>
             </ControlContainer>
         </LayoutContainer>
     )

@@ -128,8 +128,7 @@ class KycBasicContainer extends Component {
     const { form_kyc_basic_state } = this.props;
     // console.log(form_kyc_basic_state, modelFormData)
     let verification_state = await this.props.coinsendaServices.getVerificationState();
-
-    if (!verification_state || verification_state === "rejected") {
+    if (!verification_state || (verification_state === "rejected" || verification_state === "pending")) {
       // if(user.verification_level !== 'level_0'){
       this.props.action.isAppLoading(true);
       const { user } = this.props;
