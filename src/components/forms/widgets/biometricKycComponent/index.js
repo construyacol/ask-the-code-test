@@ -45,23 +45,13 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   const {
     stageData,
     currentStage,
-    stageController,
     nextStage,
-    finalStage
+    finalStage,
+    setStageData
   } = stageManager
 
+  const [ biometricData ] =  useSocket(`/biometric_data/${modelData.user.id}`)
 
-  const getBiometricData = async(biometricData) => {
-    if(stageData.key === biometricData.challenge_name){
-      setTimeout(()=>nextStage(), 1500)
-      console.log('|||||||||||||||  biometricData ===>', biometricData)
-      console.log('|||||||||||||||  stageData ===>', stageData)
-      debugger
-    }
-  }
-
-  useSocket(`/biometric_data/${modelData.user.id}`, getBiometricData)
-  
   const setupFaceApi = async() => {
     setLoading(true)
     if(!window.faceapi) return alert('No están cargando las librerías');
@@ -124,7 +114,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
         if(detections?.length){
 
           console.log('validations', stageData?.key)
-          if(scanner && !scanner?.classList?.value?.includes('scanning'))scanner.classList.add('scanning');
+          if(scanner && !scanner?.classList?.value?.includes('scanning')) scanner.classList.add('scanning');
           if(!validations[stageData?.key]){return}
 
           const [ _value ] = validations[stageData.key](detections[0], {...stageData, state, dataForm});
@@ -140,8 +130,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
             biometric_id:stageData.biometricId,
             challenge_name:stageData.key
           })
-          console.log('|||||||||||||||  res ==> ', res)
-          // setTimeout(()=>nextStage(), 1500)
+          console.log('|||||||||||||||  addNewBiometricData res ==> ', res)
         }else{
           console.log('Detectando...')
           if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');
@@ -150,16 +139,32 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     }, intervalTime)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     const canvas = document.querySelector('#faceApiCanvas')
-    const _stageData = dataForm.stages[stageController[currentStage]]
-    if((boardingAgreement && canvas) && (stageData === _stageData && !state[_stageData?.key]) && !finalStage){
+    if((boardingAgreement && canvas) && (!stageData?.solved && !finalStage)){
       initDetections(canvas, 600)
     }
+    console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
     return () => clearInterval(intervalDetection.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData, boardingAgreement, loading])
 
+
+
+  useEffect( () => {
+    if(biometricData?.challenge_name === stageData.key){
+      console.log('|||||||||||||  biometricData ==> ', biometricData)
+      if(biometricData.state === 'accepted'){
+        setStageData(prevState => { return {...prevState, solved:true} })
+        setTimeout(()=> nextStage(), 1500)
+      }else if(biometricData.state === 'rejected'){
+        setState(prevState => { return { ...prevState, [stageData?.key]: '' } })
+        const canvas = document.querySelector('#faceApiCanvas')
+        initDetections(canvas, 600)
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [biometricData])
 
   useEffect(()=>{
     // setupFaceApi()
@@ -205,7 +210,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
         <ContentContainer id="faceApiContainer">
           <StatusIndicator 
-            data={state[stageData?.key]}
+            data={stageData?.solved}
           />
           <h3 className="FRecTitle fuente">Reconocimiento Facial</h3>
           <VideoContainer id="videoContainer">            

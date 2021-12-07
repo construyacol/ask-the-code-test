@@ -6,7 +6,8 @@ import {
 const smile = (detections, data) => {
   let frame
   console.log('|||||| detections smile' , detections?.expressions?.happy)
-  if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
+  // if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
+  if(detections?.expressions?.happy > 0.97){
     frame = getFrame()
   }
   return [ frame ]
@@ -15,7 +16,8 @@ const smile = (detections, data) => {
 const surprised = (detections, data) => {
   let frame
   console.log('|||||| detections surprised' , detections?.expressions?.surprised)
-  if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
+  // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
+  if(detections?.expressions?.surprised > 0.7){
     frame = getFrame()
   }
   return [ frame ]

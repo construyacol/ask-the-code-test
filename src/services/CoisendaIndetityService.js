@@ -79,7 +79,7 @@ export class IndetityService extends WebService {
 
     const body = {
       "data": {
-        "country": user.country,
+        "country": user.country, 
         biometric_id,
         "pose":challenge_name,
         challenge_name,

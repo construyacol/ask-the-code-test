@@ -225,7 +225,7 @@ const getBiometricStages = async() => {
         solved:res.solved,
         biometricId:res.id,
         ui_type: "img",
-        ui_name: keyChallenge === "smile" ? "Soríe" : "Abre la boca y levanta las cejas"
+        ui_name: keyChallenge === "smile" ? "Sonríe" : "Abre la boca y levanta las cejas"
       }
     }
   }

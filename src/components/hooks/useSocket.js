@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import Environtment from "../../environment";
 // import { useSelector } from "react-redux";
@@ -9,6 +9,7 @@ export default function useSocket (channel, callback) {
 
     const { SocketUrl } = Environtment;
     const socket = io(SocketUrl);
+    const [ socketData, setSocketData ] = useState()
     
     const startConnect = async() => {
         const { userToken } = await getToken()
@@ -19,10 +20,16 @@ export default function useSocket (channel, callback) {
     useEffect(()=>{
         socket.on("connect", startConnect)
         socket.on("authenticated", () => {
-            socket.on(channel, callback);
+            socket.on(channel, (data) => {
+                setSocketData(prevState => {
+                    return { ...prevState, ...data}
+                })
+            });
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    return [ socketData ]
 
 }
 
