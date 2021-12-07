@@ -165,6 +165,7 @@ const CriptoView = () => {
       };
       validateAddress();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deposit_providers]);
 
   return (

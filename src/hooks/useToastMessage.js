@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { toast_sound } from "./../actions/soundActions";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default function () {
   const dispatch = useDispatch();
 

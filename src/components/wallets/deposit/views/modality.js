@@ -25,6 +25,7 @@ const ModalityView = (props) => {
 
   useEffect(() => {
     update_service_mode("Sucursal virtual", "app");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

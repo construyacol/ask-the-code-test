@@ -68,6 +68,7 @@ const ReferralComponent = (props) => {
     if (user && user.referral && !user.referral.referred_by) {
       getRef()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

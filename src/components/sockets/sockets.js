@@ -107,6 +107,11 @@ class SocketsComponent extends Component {
               this.swap_management(swap);
             });
 
+            // socket.on(`/biometric_data/${user.id}`, async (biometric) => {
+            //   console.log('biometric_data', biometric)
+            //   debugger
+            // });
+
 
             socket.on(`/deposit/${user.id}`, async (deposit) => {
               if (deposit.state === "pending" && deposit.currency_type === "crypto") {
@@ -115,7 +120,6 @@ class SocketsComponent extends Component {
                 this.deposit_mangagement(deposit);
               }
             });
-
 
 
             socket.on(`/withdraw/${user.id}`, async (withdraw) => {

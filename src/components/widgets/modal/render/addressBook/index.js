@@ -38,10 +38,7 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
     }
   }, [addressToAdd]);
 
-  if (!current_wallet || path !== "withdraw") {
-    cerrar();
-    return <></>;
-  }
+
 
   useEffect(() => {
     const appearTransition = async () => {
@@ -52,6 +49,11 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
 
     appearTransition();
   }, []);
+
+  if (!current_wallet || path !== "withdraw") {
+    cerrar();
+    return <></>;
+  }
 
 
   return (

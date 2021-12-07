@@ -2,7 +2,7 @@ import React from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { Link as ScrollTo } from "react-scroll";
-import availableWalletCreator from "../../hooks/availableWalletCreator";
+import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 
 import "./buttons.css";
@@ -82,7 +82,7 @@ export const AddNewItem2 = (props) => {
 
   // const theme = useContext(CAccountAllowedContext);
   const { label, handleClick, clases } = props;
-  const [availableCurrencies] = availableWalletCreator();
+  const [availableCurrencies] = useAvailableWalletCreator();
   // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
 
   return (
@@ -356,6 +356,7 @@ export const ButtonNofity = (props) => {
   );
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default {
   ButtonPrincipalMenu,
   ButtonNofity,

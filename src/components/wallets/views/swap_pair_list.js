@@ -24,6 +24,7 @@ export const PairList = (props) => {
 
   useEffect(() => {
     !allPairs && props.allPairs && setAllPairs(props.allPairs);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.allPairs]);
 
   const selectQuote = async (name, code, type_currency, pair_id) => {

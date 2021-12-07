@@ -4,12 +4,14 @@ import {
   ButtonSuccess,
   ButtonSuccess2,
 } from "../../../widgets/buttons/buttons";
-import "./flows.css";
 import { service_modes, cash_payment } from "../../../api/ui/api.json";
-import proof from "../../../../assets/proof.png";
+// import proof from "../../../../assets/proof.png";
 import ModalityView from "../views/modality";
 // import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import { getCdnPath } from '../../../../environment'
+
+import "./flows.css";
 
 // {/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
 
@@ -185,7 +187,7 @@ const Success = (props) => {
                     <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la
                     orden de pago
                   </p>
-                  <img className="tocatoca" src={proof} alt="" width="34%" />
+                  <img className="tocatoca" src={`${getCdnPath('assets')}proof.png`} alt="" width="34%" />
                 </div>
               </div>
 

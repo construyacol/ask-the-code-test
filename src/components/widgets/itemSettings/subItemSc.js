@@ -79,7 +79,7 @@ class SubItemSC extends Component {
     // contentSubItem // last
 
     // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
-    // console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem)
+    console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem.name, this.props)
 
     return (
       <div
@@ -139,7 +139,7 @@ class SubItemSC extends Component {
         </div>
 
         <div
-          className={`contentSubItem ${totalIndex === index ? "last" : ""}  ${
+          className={`contentSubItem  ${this.props.subItem.name} ${totalIndex === index ? "last" : ""}  ${
             other_state === "confirmed" ? "confir" : ""
           }`}
         >
@@ -244,7 +244,7 @@ class SubItemSC extends Component {
           <div
             className={`SCcta ${other_state}`}
             style={{
-              display: classic_view || (tree && !treeButton) ? "none" : "grid",
+              display: (classic_view || (tree && !treeButton)) || this.props.subItem.name === 'withdraw'  ? "none" : "grid",
             }}
           >
             <ButtonForms

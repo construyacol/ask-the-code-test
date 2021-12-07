@@ -261,6 +261,16 @@ g.highcharts-scrollbar {
 }
 
 @media (max-width: 900px) {
+
+  .pair-prices{
+    column-gap: 10px;
+  }
+    
+  .price-container.buy{
+    border-left: 1px solid gray;
+    padding-left: 10px;
+  }
+
   .prices-cta {
     font-size: 14px;
     width: 220px;
@@ -295,6 +305,7 @@ g.highcharts-scrollbar {
   .cta-pair {
     display: flex;
     flex-direction: column;
+    row-gap: 20px;
   }
 
   .pair-list {
@@ -323,14 +334,14 @@ g.highcharts-scrollbar {
     width: unset;
     display: flex;
     flex-direction: column;
-    padding: 5em 20px 20px 20px;
+    padding: 3em 5px;
     max-height: 812px;
     min-height: 530px;
-    height: calc(100vh - (8em));
+    height: calc(100vh - (6em));
   }
 
   .amount_price {
-    font-size: 24px;
+    font-size: 24px !important;
   }
 
   .max-width {
@@ -407,6 +418,11 @@ g.highcharts-scrollbar {
   .root-content-items-calc {
     margin: 6% 0;
   }
+
+  .pair-prices{
+    border-left: 1px solid gray;
+  }
+
 }
 
 @media (max-height: 667px) {

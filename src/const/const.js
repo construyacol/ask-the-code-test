@@ -14,12 +14,16 @@ const {
   BASE_URL
 } = Enviroment;
 
-
 export const IMAGE_MIME_TYPES = [
   "image/png",
   "image/jpeg",
   "image/jpg"
 ];
+
+export let TRANSACTION_SECURITY = {
+  "2fa":null,
+  "biometric":null
+}
 
 export const loadLabels = {
   IMPORTANDO_PARES: "Importando pares",
@@ -76,6 +80,7 @@ export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`;
 
 export const INDETITY_URL = `${IdentityApIUrl}countryvalidators/findOne`;
 export const INDENTITY_USERS_URL = `${IdentityApIUrl}users`;
+export const INDENTITY_ADD_BIOMETRIC_DATA_URL = `${IdentityApIUrl}biometricDatas/add-new-biometric-data`;
 export const INDETITY_COUNTRY_VALIDATORS_URL = `${IdentityApIUrl}countryvalidators`;
 export const INDETITY_UPDATE_PROFILE_URL = `${IdentityApIUrl}profiles/add-new-profile`;
 
@@ -228,8 +233,8 @@ export const ACCEPT_FILE_TYPE_ADVANCE_KYC = ["image/jpeg", "image/png"];
 
 export const CDN_PATH_ASSETS = {
   highstock:'cdn/libs/highstock.js',
-  three:'cdn/libs/three.min.js',
-  vanta:'cdn/libs/vanta.waves.min.js',
   d3:'cdn/libs/d3.js',
-  assets:'cdn/assets/'
+  faceApi:"cdn/libs/faceApi.js",
+  assets:'cdn/assets/',
+  tensor:'cdn/tensor/models'
 }

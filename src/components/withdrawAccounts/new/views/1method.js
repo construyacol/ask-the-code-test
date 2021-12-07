@@ -25,6 +25,7 @@ const MethodView = (props) => {
 
   useEffect(() => {
     select_method("Transferencia bancaria", "bankaccount");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

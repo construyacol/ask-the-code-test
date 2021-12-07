@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import loadable from "@loadable/component";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import { InputKeyActionHandler } from "../accountList/styles";
+import { getCdnPath } from '../../../environment'
+
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -40,15 +42,20 @@ function NewItemsLayout(props) {
 
   useEffect(() => {
     specialMode && actives && setFocus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (!specialMode && isSelected && !actives) {
       doSelectionForItem(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSelected, actives]);
 
   const _activated = specialMode ? isSelected : actives;
+
+  console.log('|||||||||||||||||||   NewItemsLayout =====> ', type, code)
+
   return (
     <div
       id={`${primarySelect ? "primarySelect" : ""}`}
@@ -70,17 +77,9 @@ function NewItemsLayout(props) {
           type === "service_mode" ? (
             _activated ? (
               <div title={name} id={code}>
-                {type === "bank" && (
-                  <img
-                    className="itemSobre activaos"
-                    src={require(`./assets/bank/${code}.png`)}
-                    alt=""
-                    width="60"
-                  />
-                )}
                 <img
                   className="itemSobre activaos"
-                  src={require(`./assets/${type}/${code}2.png`)}
+                  src={`${getCdnPath('assets')}${type}/${code}2.png`}
                   alt=""
                   width="60"
                 />
@@ -89,7 +88,7 @@ function NewItemsLayout(props) {
               <div title={name} id={code}>
                 <img
                   className="itemFuera"
-                  src={require(`./assets/${type}/${code}.png`)}
+                  src={`${getCdnPath('assets')}${type}/${code}.png`}
                   width="60"
                   alt=""
                   id={code}
@@ -97,7 +96,7 @@ function NewItemsLayout(props) {
                 />
                 <img
                   className="itemSobre"
-                  src={require(`./assets/${type}/${code}2.png`)}
+                  src={`${getCdnPath('assets')}${type}/${code}2.png`}
                   width="60"
                   alt=""
                   id={code}
@@ -108,7 +107,7 @@ function NewItemsLayout(props) {
           ) : (
             <img
               className={`banquis ${_activated ? "itemVisible" : ""}`}
-              src={require(`./assets/${type}/${code}.png`)}
+              src={`${getCdnPath('assets')}${type}/${code}.png`}
               alt=""
               id={code}
               title={name}

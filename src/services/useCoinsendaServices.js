@@ -17,6 +17,7 @@ export const useCoinsendaServices = () => {
 
   useEffect(() => {
     mainService.setGlobalState(reduxState);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reduxState.modelData]);
 
   return [

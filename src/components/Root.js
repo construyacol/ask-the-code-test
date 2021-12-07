@@ -81,6 +81,7 @@ function RootContainer(props) {
 
   useEffect(() => {
     initComponent();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 

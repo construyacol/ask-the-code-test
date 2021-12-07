@@ -48,17 +48,15 @@ const KycDashBoard = (props) => {
           <div className={`imgDashContainerD ${animation ? "imgDCAnim" : ""}`}>
             <div className={`imgDashSon`}>
               <img
-                className={`imgDashItem ${id_type} ${
-                  animation2 ? "frontImg" : ""
-                }`}
-                src={require(`${front}`)}
+                className={`imgDashItem ${id_type} ${animation2 ? "frontImg" : ""}`}
+                src={front}
                 style={{ opacity: prevState === 1 ? "1" : "0", zIndex: 2 }}
                 alt=""
                 width="100%"
               />
               <img
                 className={`imgDashItem ${animation2 ? "backImg" : "backInit"}`}
-                src={require(`${back}`)}
+                src={back}
                 style={{
                   opacity: prevState > 2 || id_type === "pasaporte" ? "0" : "1",
                   zIndex: 1,
@@ -68,7 +66,7 @@ const KycDashBoard = (props) => {
               />
               <img
                 className="imgDashItem"
-                src={require(`${selfie}`)}
+                src={selfie}
                 style={{ opacity: prevState > 2 ? "1" : "0" }}
                 alt=""
                 width="100%"
@@ -92,7 +90,7 @@ const KycDashBoard = (props) => {
             {!newfront ? (
               <img
                 className={`imgDashItem ${id_type}`}
-                src={require(`${front}`)}
+                src={front}
                 alt=""
                 width="80"
                 title="1"
@@ -119,7 +117,7 @@ const KycDashBoard = (props) => {
               {!newback ? (
                 <img
                   className="imgDashItem"
-                  src={require(`${back}`)}
+                  src={back}
                   alt=""
                   width="80"
                   title="2"
@@ -148,7 +146,7 @@ const KycDashBoard = (props) => {
             {!newselfie ? (
               <img
                 className="imgDashItem"
-                src={require(`${selfie}`)}
+                src={selfie}
                 alt=""
                 width="80"
                 title="3"

@@ -10,13 +10,13 @@ import {
   addIndexToRootObject,
   converToInitState,
 } from "../../../utils";
-import images from "../../../assets/pictures.png";
-import pdf from "../../../assets/pdf.png";
 import SimpleLoader from "../../widgets/loaders";
 import SuccessComponentScreen from "../../widgets/success_screen/success_screen";
 import { img_compressor } from "../../../utils";
 import { ACCEPT_FILE_TYPE } from "../../../const/const";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import { getCdnPath } from '../../../environment'
+
 
 const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
 
@@ -225,8 +225,8 @@ class KycFinancialComponent extends Component {
                             src={
                               data_state[item.value].type === "image/jpeg" ||
                               data_state[item.value].type === "image/png"
-                                ? images
-                                : pdf
+                                ? `${getCdnPath('assets')}pictures.png`
+                                : `${getCdnPath('assets')}pdf.png`
                             }
                             alt=""
                             width="30px"

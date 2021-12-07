@@ -1,0 +1,36 @@
+.selectedItemTag{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: grid;
+    align-items: center;
+    border-radius: 6px;
+    top: 0;
+}
+.selectedItemTag .selectedItemTag__title{
+    width: fit-content;
+    display: flex;
+    background: #eae2d9;
+    margin: 0 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+.selectedItemTag .selectedItemTag__title p{
+    margin: 0;
+}
+.selectedItemTag .selectedItemTag__title .selectedItemTag__closeButton{
+    padding-left: 10px;
+    color: gray;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.inputNumberFont{
+    font-family: 'Montserrat', sans-serif;
+}
+
+.inputNumberFont>input{
+    font-family: 'Montserrat', sans-serif;
+}

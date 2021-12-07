@@ -17,6 +17,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
     prevBalance.current = balance;
     let current_amount = formatToCurrency(balance.available, currency);
     set_current_amount(current_amount.toFormat());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
       prevBalance.current = balance;
       exec_operation(balance);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [balance]);
 
   const exec_operation = async (balance) => {

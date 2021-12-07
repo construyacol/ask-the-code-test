@@ -7,6 +7,7 @@ import WithdrawViewState from "./withdrawStateHandle";
 import { useWalletInfo }  from "../../hooks/useWalletInfo";
 
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();

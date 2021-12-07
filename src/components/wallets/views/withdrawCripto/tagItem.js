@@ -15,7 +15,7 @@ const TagItem = ({ withdrawAccount, deleteTag }) => {
   return (
     <>
       <TagBlocker />
-      <TagContainer>
+      <TagContainer id="tagAddress">
         <LabelTextCont>
           <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
           <AddressContainer

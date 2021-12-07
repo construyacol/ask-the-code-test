@@ -49,8 +49,10 @@ const OrderItem = ({ order }) => {
     );
     actions.cleanNotificationItem("wallets", "order_id");
 
-    const OrderDetail = await import("../modal/render/orderDetail/index.js");
-    await actions.renderModal(() => <OrderDetail.default />);
+    const Element = await import("../modal/render/orderDetail/index.js");
+    const OrderDetail = Element.default
+    await actions.renderModal(() => <OrderDetail/>);
+    
     if (target.dataset && target.dataset.is_confirm_deposit) {
       confirmPayment();
     }
@@ -129,6 +131,7 @@ export const DepositOrder = ({ order }) => {
     if(currency_type === 'crypto' && state === 'pending' && document.getElementById(id)){
       document.getElementById(id).style.display = "none"
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 
@@ -212,6 +215,7 @@ const SwapOrder = ({ order, setOrderState }) => {
     } else {
       setOrderState();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder]);
 
   const { created_at, id, currency_type } = order;

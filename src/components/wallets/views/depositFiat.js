@@ -36,6 +36,7 @@ const DepositFiat = (props) => {
 
   useEffect(() => {
     dispatch(FiatDeposit(current_wallet.currency.currency || "usd"));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fiat_deposit = async (e) => {

@@ -4,6 +4,8 @@ import "./style.css";
 import ChartComponent from "./chart";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import useCurrencyPrices from "../../hooks/useCurrencyPrices";
+import { getCdnPath } from '../../environment'
+
 
 const FIRST_CRITERIA = ["BTC/COP", "BTC/USD", "BTC/"];
 
@@ -49,7 +51,7 @@ export default function PricesModalContent(props) {
                 onClick={isDesktop ? () => null : () => setShowSelect(true)}
               >
                 <img
-                  src={require(`../../assets/prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`)}
+                  src={`${getCdnPath('assets')}prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`}
                   alt=""
                 />
                 <label className="exchange-label">{currentPair.buy_pair}</label>
@@ -57,7 +59,7 @@ export default function PricesModalContent(props) {
                   <img
                     style={{ transform: `rotate(${showSelect ? -90 : 90}deg)` }}
                     className="arrow-down"
-                    src={require(`../../assets/prices-modal/ic_arrow_right_desabled.svg`)}
+                    src={`${getCdnPath('assets')}prices-modal/ic_arrow_right_desabled.svg`}
                     alt=""
                   />
                 )}
@@ -141,7 +143,7 @@ const PairsSelect = ({
           >
             <img
               className={`${!rule ? "img-disable" : "img-enable"}`}
-              src={require(`../../assets/prices-modal/coin_assets/${pair.primary_currency.currency}.svg`)}
+              src={`${getCdnPath('assets')}prices-modal/coin_assets/${pair.primary_currency.currency}.svg`}
               alt=""
             />
             <div className="base-item-text-cont">
@@ -156,9 +158,7 @@ const PairsSelect = ({
                       opacity: "0.5",
                     }
               }
-              src={require(`../../assets/prices-modal/${
-                rule ? "ic_select" : "ic_arrow_right_desabled"
-              }.svg`)}
+              src={`${getCdnPath('assets')}prices-modal/${rule ? "ic_select" : "ic_arrow_right_desabled"}.svg`}
               alt=""
             />
           </div>

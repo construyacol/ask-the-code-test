@@ -96,6 +96,27 @@
     grid-template-rows: 30px 1fr 30px;
 }*/
 
+.PairList.auth {
+  border-radius: 7px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 700px;
+  height: 75%;
+  background: white;
+  position: absolute;
+  z-index: 99;
+  display: grid;
+  grid-template-rows: 65px 60px 1fr;
+  position: relative;
+  max-width: 550px;
+  max-height: 550px;
+  transform: scale(0.9);
+}
+
+.PairListtitle h1, .PairListtitle i{
+  color: white;
+}
+
 #authReq {
   position: absolute;
   width: 100%;

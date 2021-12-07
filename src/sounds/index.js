@@ -1,51 +1,50 @@
-import new_transaction from "./success.mp3";
-import success from "./success2.mp3";
-import exit from "./exit.mp3";
-import good_action from "./good.mp3";
-import toast from "./toast.mp3";
-import confirm from "./good.mp3";
-import ticket from "./good.mp3";
-import ticket_rejected from "./rejected.mp3";
-import ticket_canceled from "./canceled.mp3";
-import add_coin from "./coin.mp3";
-import notification from "./notification.mp3";
+import { getCdnPath } from '../environment'
 
 export const soundData = {
-  notification,
+  notification: {
+    src: [`${getCdnPath('assets')}sounds/notification.mp3`],
+    volume: 0.2,
+  },
   new_transaction: {
-    src: [new_transaction],
+    src: [`${getCdnPath('assets')}sounds/success.mp3`],
     volume: 0.2,
   },
   confirm_transaction: {
-    src: [confirm],
+    src: [`${getCdnPath('assets')}sounds/good.mp3`],
     volume: 1,
   },
   ticket: {
-    src: [ticket],
-    volume: 0.5,
+    src: [`${getCdnPath('assets')}sounds/good.mp3`],
+    volume: 0.4,
   },
   ticket_rejected: {
-    src: [ticket_rejected],
-    volume: 0.5,
+    src: [`${getCdnPath('assets')}sounds/rejected.mp3`],
+    volume: 0.4,
   },
   ticket_canceled: {
-    src: [ticket_canceled],
+    src: [`${getCdnPath('assets')}sounds/canceled.mp3`],
     volume: 0.6,
   },
   success: {
-    src: [success],
+    src: [`${getCdnPath('assets')}sounds/success2.mp3`],
     volume: 0.2,
   },
   exit: {
-    src: [exit],
+    src: [`${getCdnPath('assets')}sounds/exit.mp3`],
     volume: 0.2,
   },
   toast: {
-    src: [toast],
-    volume: 0.8,
+    src: [`${getCdnPath('assets')}sounds/toast.mp3`],
+    volume: 0.4,
   },
-  good_action,
-  add_coin,
+  good_action: {
+    src: [`${getCdnPath('assets')}sounds/good.mp3`],
+    volume: 0.4,
+  },
+  add_coin: {
+    src: [`${getCdnPath('assets')}sounds/coin.mp3`],
+    volume: 0.4,
+  }
 };
 
 export default soundData;

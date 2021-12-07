@@ -66,6 +66,7 @@ const AddressBookComponent = ({
     if (searchValue) {
       handleSearch();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withdrawAccounts]);
 
   return (
@@ -148,7 +149,7 @@ const Blocker = styled.div`
   display: none;
 
   &.deleting {
-    display: block;
+    ${'' /* display: block; */}
   }
 `;
 

@@ -48,6 +48,7 @@ const SwapVIewConfirm = (props) => {
     }, 1000);
 
     return () => {clearInterval(SwapCounter)};
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [counter]);
 
   const _cancelarClick = (e) => {

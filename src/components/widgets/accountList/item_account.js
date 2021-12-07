@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import loadable from "@loadable/component";
-import backcard from "../../../assets/wallet_coins/back.webp";
+// import backcard from "../../../assets/wallet_coins/back.webp";
 import { connect } from "react-redux";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { LoaderContainer } from "../loaders";
@@ -8,6 +8,7 @@ import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import BalanceComponent from "../balance/balance";
 import PopNotification from "../notifications";
 import SimpleLoader from "../loaders";
+import { getCdnPath } from '../../../environment'
 
 import {
   ACta,
@@ -28,9 +29,7 @@ import "./item_wallet.css";
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 const ItemAccount = (props) => {
-  if (props.loader || !props.account) {
-    return <LoaderAccount />;
-  }
+
 
   const [coinsendaServices] = useCoinsendaServices();
   const actions = useActions();
@@ -46,9 +45,39 @@ const ItemAccount = (props) => {
 
   useEffect(() => {
     setShouldHaveDeleteClassName(
-      id_wallet_action === props.account.id && account_state
+      id_wallet_action === props?.account?.id && account_state
     );
-  }, [account_state, props.account.id]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account_state, props?.account?.id]);
+
+
+  const delete_account_confirmation = (cancelCallback) => {
+    actions.confirmationModalToggle();
+    actions.confirmationModalPayload({
+      title: "Esto es importante, estas a punto de...",
+      description:
+        "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
+      txtPrimary: "Eliminar",
+      txtSecondary: "Cancelar",
+      // payload:props.account.id,
+      action: delete_account,
+      img: "deletewallet",
+      cancelCallback,
+      // code:props.account_type
+    });
+  };
+
+  const [isSelected] = useItemsInteractions({...props, uniqid: props?.account?.id}, {
+    // eslint-disable-next-line no-use-before-define
+    suprKeyAction: delete_account_confirmation,
+    enterKeyAction: () => account_detail(account_type),
+  });
+
+
+
+  if (props.loader || !props.account) {
+    return <LoaderAccount />;
+  }
 
   const getAccountTransactions = async () => {
     set_loader(true);
@@ -110,6 +139,7 @@ const ItemAccount = (props) => {
     );
   };
 
+
   const delete_account = async () => {
     set_account_state("deleting");
     set_id_wallet_action(props.account.id);
@@ -167,26 +197,7 @@ const ItemAccount = (props) => {
     toastMessage(msg, success ? "success" : "error");
   };
 
-  const delete_account_confirmation = (cancelCallback) => {
-    actions.confirmationModalToggle();
-    actions.confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
-      description:
-        "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
-      txtPrimary: "Eliminar",
-      txtSecondary: "Cancelar",
-      // payload:props.account.id,
-      action: delete_account,
-      img: "deletewallet",
-      cancelCallback,
-      // code:props.account_type
-    });
-  };
 
-  const [isSelected] = useItemsInteractions({...props, uniqid: props.account.id}, {
-    suprKeyAction: delete_account_confirmation,
-    enterKeyAction: () => account_detail(account_type),
-  });
 
   const toProps = {
     loaderAccount: loader,
@@ -205,6 +216,8 @@ const ItemAccount = (props) => {
   };
 
   const isWallet = account_type === "wallets";
+
+ 
 
   return (
     <AccountLayout
@@ -294,7 +307,7 @@ const Wallet = (props) => {
           />
         </>
       )}
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
+      <img src={`${getCdnPath('assets')}wallet_coins/back.webp`} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconWallet">
         <IconSwitch icon={icon} size={195} />
       </div>
@@ -358,7 +371,7 @@ const WithdrawAccount = (props) => {
           />
         </>
       )}
-      <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
+      <img src={`${getCdnPath('assets')}wallet_coins/back.webp`} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
         <IconSwitch
           icon={account.bank_name && account.bank_name.value}

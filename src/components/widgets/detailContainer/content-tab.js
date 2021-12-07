@@ -47,6 +47,7 @@ function ContentTab(props) {
       const prev = menuItems[currentIndex - 1] && menuItems[currentIndex - 1].link;
       navState.current = { current, next, prev };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   // useEffect(() => {
@@ -59,6 +60,7 @@ function ContentTab(props) {
     const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 || wallets[current_wallet].available > 0);
     const condition = primary_path === "wallets" ? haveBalances && menuItems : menuItems;
     setHaveMenu(condition ? menuItems.length > 0 : pathname !== 'deposit' ? true : false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current_wallet, menuItems, primary_path, wallets]);
 
   const getLink = (link) => {

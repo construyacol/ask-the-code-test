@@ -6,6 +6,7 @@ import {
   INDENTITY_USERS_URL,
   INDETITY_COUNTRY_VALIDATORS_URL,
   INDETITY_UPDATE_PROFILE_URL,
+  INDENTITY_ADD_BIOMETRIC_DATA_URL
 } from "../const/const";
 import userDefaultState from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
@@ -70,6 +71,36 @@ export class IndetityService extends WebService {
     }
   } 
 
+
+  async addNewBiometricData(config) {
+
+    const { file, biometric_id, challenge_name } = config
+    const user = this.user    
+
+    const body = {
+      "data": {
+        "country": user.country, 
+        biometric_id,
+        "pose":challenge_name,
+        challenge_name,
+        file
+      }
+    }
+    // console.log('|||||||||||||||||||||  addNewBiometricData  =>  ', body)
+    // console.log('|||||||||||||||||||||  INDENTITY_ADD_BIOMETRIC_DATA_URL  =>  ', INDENTITY_ADD_BIOMETRIC_DATA_URL)
+    const res = await this.Post(INDENTITY_ADD_BIOMETRIC_DATA_URL, body);
+    return res
+  }
+
+
+  async getUserBiometric() {
+    const user = this.user;
+    const url = `${INDENTITY_USERS_URL}/${user.id}/biometric?country=${user.country}`;
+    const res = await this.Get(url);
+    console.log('||||||||||||||  getUserBiometric ==> ', res)
+    return res
+  }
+
   async fetchCompleteUserData(userCountry, profile = {}) {
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
     const user = this.user;
@@ -102,18 +133,18 @@ export class IndetityService extends WebService {
       levels: country[0].levels,
       country: userCountry
     };
-
+  
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
+
     console.log(transactionSecurity)
-    debugger
+    // debugger
 
-    if (transactionSecurity) {
-      const { transaction_security_id, scopes } = transactionSecurity;
-      updatedUser.security_center.txSecurityId = transaction_security_id;
-      updatedUser.security_center.authenticator.auth = true;
-      updatedUser.security_center.authenticator.withdraw = scopes.withdraw;
+    if (transactionSecurity["2fa"] || transactionSecurity.biometric) {
+      updatedUser.security_center.transactionSecurity = transactionSecurity
+      updatedUser.security_center.authenticator.auth = transactionSecurity["2fa"]?.enabled
+      updatedUser.security_center.authenticator.withdraw = transactionSecurity["2fa"]?.enabled;
     }
-
+    console.log(updatedUser)
 
     if(country[0].levels && country[0].levels.personal){
       updatedUser.security_center.kyc.basic = country[0].levels && country[0].levels.personal

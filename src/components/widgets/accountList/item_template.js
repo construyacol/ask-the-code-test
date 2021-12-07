@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import IconSwitch from "../icons/iconSwitch";
-import backcard from "../../../assets/wallet_coins/back.webp";
+// import backcard from "../../../assets/wallet_coins/back.webp";
+import { getCdnPath } from '../../../environment'
 import "./item_wallet.css";
 
 const ItemTemplate = (props) => {
@@ -13,7 +14,7 @@ const ItemTemplate = (props) => {
           id="ItemWallet"
           className={`  ItemWallet2 ${props.currency.red.toLowerCase()} cryptoWallet`}
         >
-          <img src={backcard} id="backCard" alt="" width="100%" height="100%" />
+          <img src={`${getCdnPath('assets')}wallet_coins/back.webp`}id="backCard" alt="" width="100%" height="100%" />
           <div
             className="contIconsTem"
             style={{

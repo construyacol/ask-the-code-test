@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
-import backcard from "../../../assets/wallet_coins/back.webp";
-import Imgcop from "../../../assets/wallet_coins/cop2.png";
+// import backcard from "../../../assets/wallet_coins/back.webp";
+// import Imgcop from "../../../assets/wallet_coins/cop2.png";
 import actions from "../../../actions";
 import withCoinsendaServices from "../../withCoinsendaServices";
+import { getCdnPath } from '../../../environment'
 import "./item_wallet.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -247,7 +248,7 @@ export class ItemWallet extends Component {
             </div>
 
             <img
-              src={backcard}
+              src={`${getCdnPath('assets')}wallet_coins/back.webp`}
               id="backCard"
               alt=""
               width="100%"
@@ -260,13 +261,13 @@ export class ItemWallet extends Component {
             ) : (
               <img
                 id="imgCurrency"
-                src={require(`../../../assets/wallet_coins/${
+                src={`${getCdnPath('assets')}wallet_coins/${
                   currency.currency === "cop"
                     ? "fiat"
                     : currency.currency === "usd"
                     ? "fiat"
                     : currency.currency
-                }.png`)}
+                }.png`}
                 alt=""
                 height="100%"
               />
@@ -283,7 +284,7 @@ export class ItemWallet extends Component {
             </h1>
             <p className="IWText fuente IWcurrencyText tobe_continue">
               {currency.currency === "cop" && (
-                <img src={Imgcop} id="Imgfiat" alt="" height="20" />
+                <img src={`${getCdnPath('assets')}wallet_coins/cop2.png`} id="Imgfiat" alt="" height="20" />
               )}
 
               {currency.currency === "cop"

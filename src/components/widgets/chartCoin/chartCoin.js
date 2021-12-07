@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import useViewport from "../../../hooks/useWindowSize";
 import moment from "moment";
 import "moment/locale/es";
+import { getCdnPath } from '../../../environment'
 // import localForage from 'localforage'
 
 import "./chartCoin.css";
@@ -38,12 +39,14 @@ const ChartCoin = () => {
 
   useEffect(() => {
     getPrices();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unparsedData]);
 
   useEffect(() => {
     if (!isMovilViewport) {
       init_component();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -55,6 +58,7 @@ const ChartCoin = () => {
         setLoader(false);
       }, 2000);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chart, lastPrices]);
 
   const init_component = async () => {
@@ -161,7 +165,9 @@ const ChartCoin = () => {
   return (
     <div className="chartCoin">
       <div className="contChartCoin">
-        <div className="contChartCoinImg"></div>
+        <div className="contChartCoinImg"
+          style={{backgroundImage:`url(${getCdnPath('assets')}map.webp`}}
+        ></div>
         <canvas
           id="myChart"
           className={`${loader ? "skeleton" : ""}`}

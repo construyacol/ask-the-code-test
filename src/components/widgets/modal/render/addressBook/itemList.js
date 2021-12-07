@@ -19,7 +19,6 @@ export const ItemList = (props) => {
     setAddressValue,
   } = props;
 
-  if(!address || !label){return null}
 
   const getAcronym = () => {
     let patt1 = /^.|\s./g;
@@ -37,6 +36,9 @@ export const ItemList = (props) => {
     false
   );
 
+  if(!address || !label){return null}
+
+  
   const setDeletingState = (payload) => {
     setDeleting(payload);
     setTimeout(() => {
@@ -137,7 +139,7 @@ export const ItemList = (props) => {
           </DeleteButton>
         </ItemListContainer>
       </FrontCont>
-      <Top>
+      <Top id="faceTop">
         <DeleteComponent itemId={id} handleAction={deleteItem} />
       </Top>
     </ItemContainer>

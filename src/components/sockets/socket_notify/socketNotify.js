@@ -9,6 +9,7 @@ import { formatToCurrency } from "../../../utils/convert_currency";
 
 import { IconClose } from "../../widgets/shared-styles";
 import OtherModalLayout from "../../widgets/modal/otherModalLayout";
+import { getCdnPath } from '../../../environment'
 
 import "./socketNotify.css";
 
@@ -113,7 +114,12 @@ const OrderNotifyView = (props) => {
       <IconClose theme="dark" size={20} />
       <div className="topSection">
         <div className="contBackTopSection">
-          <div className="backTopSection animate" />
+          <div className="backTopSection animate"
+          // {`${getCdnPath('assets')}coins/${secondary_coin}.png`}
+            style={{
+              backgroundImage:`url(${getCdnPath('assets')}wallet_coins/back.webp)`
+            }}
+            />
         </div>
         <div className="socketIconContainer in">
           <div className="wavExpansive in"></div>

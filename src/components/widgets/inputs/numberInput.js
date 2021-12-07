@@ -67,6 +67,7 @@ export default function NumberInput(props) {
     if (props.value === props.max_available) {
       handleChange({ target: { value: props.value } });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.value]);
 
   return (

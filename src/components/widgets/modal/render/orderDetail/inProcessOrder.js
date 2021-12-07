@@ -17,6 +17,8 @@ import useViewport from "../../../../../hooks/useWindowSize";
 import { device } from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
+import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
+
 
 import moment from "moment";
 import "moment/locale/es";
@@ -107,6 +109,7 @@ const FiatDespoitOrder = ({ order }) => {
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
+  const [ , , toBigNumber ] = useFormatCurrency()
   const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
@@ -120,7 +123,7 @@ const FiatDespoitOrder = ({ order }) => {
     event.preventDefault();
     if (onDrag) {
       setOnDrag(!onDrag);
-    }
+    } 
   };
 
   const goFileLoader = async (e) => {
@@ -135,6 +138,16 @@ const FiatDespoitOrder = ({ order }) => {
       }
       setImgSrc(dataBase64);
       actions.isAppLoading(true);
+
+      const { user } = coinsendaServices.globalState.modelData
+      const orderAmount = await toBigNumber(order.amount, order.currency)
+      const limitAmount = await toBigNumber('500000', order.currency)
+      if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
+        const Element = await import("../../../../BiometricIdentity");
+        if(!Element) return;
+        const FormsComponent = Element.default
+        return actions.renderModal(() => <FormsComponent/>);
+      }
 
       // cropImgOFf
       // activate oncomment line ><167

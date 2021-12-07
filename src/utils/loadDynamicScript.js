@@ -6,7 +6,7 @@ function loadDynamicScript(callback, url, id) {
     script.type = 'text/javascript'
     script.src = url
     script.id = id
-    script.async = true
+    script.async = true 
     script.defer = true
     document.body.appendChild(script)
 

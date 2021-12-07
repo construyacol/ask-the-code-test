@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputFormAuth } from "../../inputs";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import { updateLocalForagePersistState } from '../../../hooks/sessionRestore'
 
 import "./viewSettings.css";
 
@@ -12,7 +13,7 @@ const AuthReq = (props) => {
   const [error, setError] = useState();
   const [valueState, setValueState] = useState();
   const [desaparecer, setDesaparecer] = useState();
-  const [coinsendaServices] = useCoinsendaServices();
+  const [ coinsendaServices, globalState ,actions ] = useCoinsendaServices();
 
   const success = (value, res) => {
     setButtonActive(true);
@@ -23,8 +24,13 @@ const AuthReq = (props) => {
     return ok_auth(res);
   };
 
+  useEffect(()=>{
+    updateLocalForagePersistState(globalState.modelData)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [globalState?.modelData?.user])
+
   const actualizarEstado = async (p) => {
-    const { value } = p.target;
+    const { value } = p.target; 
 
     if (value.length > 5) {
       setLoader(true);
@@ -36,17 +42,22 @@ const AuthReq = (props) => {
       }
 
       let res;
+      actions.isAppLoading(true);
+
       if (props.isTryToDisable2fa) {
-        res = await coinsendaServices.disable2fa(value);
+        res = await coinsendaServices.disableTransactionSecutiry("2fa", value);
       } else {
-        res = await coinsendaServices.addNewTransactionSecurity(value);
+        res = await coinsendaServices.addNewTransactionSecurity("2fa", value);
       }
+
+      actions.isAppLoading(false);
 
       if (!res) {
         setStatus("El código de verificación es incorrecto");
         setError(true);
         return setLoader(false);
       }
+
 
       return success(value, res);
     }
@@ -69,6 +80,9 @@ const AuthReq = (props) => {
   };
 
   const { label, handleFocus, handleBlur, disabled } = props;
+
+  // console.log(props)
+  // debugger
 
   return (
     <div id="authReq" className={`${desaparecer ? "desaparece" : ""}`}>

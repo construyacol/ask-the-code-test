@@ -24,6 +24,7 @@ export default function useChartData() {
 
   useEffect(() => {
     getData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [requestBody]);
 
   useEffect(() => {

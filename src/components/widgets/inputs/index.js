@@ -6,6 +6,7 @@ import Environtment from "../../../environment";
 // import MaskedInput from "react-text-mask";
 // import createAutoCorrectedDatePipe from "text-mask-addons/dist/createAutoCorrectedDatePipe";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { getCdnPath } from '../../../environment'
 import "./inputStyles.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -225,7 +226,7 @@ export class ReadReceiveCoin extends Component {
                   <p>{secondary_coin}</p>
                   {secondary_coin && (
                     <img
-                      src={require(`../../../assets/coins/${secondary_coin}.png`)}
+                      src={`${getCdnPath('assets')}coins/${secondary_coin}.png`}
                       alt=""
                       width="30"
                     />
@@ -305,7 +306,7 @@ export const InputFormCoin = (props) => {
             </p>
             {coin && (
               <img
-                src={require(`../../../assets/coins/${coin}.png`)}
+                src={`${getCdnPath('assets')}coins/${coin}.png`}
                 alt=""
                 width="30"
               />

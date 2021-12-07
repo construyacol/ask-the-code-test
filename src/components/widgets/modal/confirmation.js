@@ -9,6 +9,7 @@ import SimpleLoader from "../loaders";
 import IconSwitch from "../icons/iconSwitch";
 // import styled from 'styled-components'
 import SwapVIewConfirm from "./swapViewConfirmation";
+import { getCdnPath } from '../../../environment'
 
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
@@ -148,7 +149,9 @@ export const StandardTicket = (props) => {
       <div className={`Mconfirmar ${type}`}>
         <IconClose theme="dark" size={20} />
 
-        <div className="titleConfirmed">
+        <div className="titleConfirmed"
+          style={{backgroundImage:`url(${getCdnPath('assets')}map.webp`}}
+        >
           <h1 className="fuente">{title}</h1>
         </div>
 
@@ -156,7 +159,7 @@ export const StandardTicket = (props) => {
           {img ? (
             <img
               className="itemFuera"
-              src={require(`../../../assets/${img}.png`)}
+              src={`${getCdnPath('assets')}${img}.png`}
               width="80"
               alt=""
               id={img}

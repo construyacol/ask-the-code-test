@@ -56,18 +56,6 @@
           "tree": false,
           "available": false,
           "type": "identity"
-        },
-        {
-          "id": 4,
-          "name": "kyc_financial",
-          "label": "Financiera",
-          "description": "Adjunta los soportes de tu actividad económica y origen de los fondos para realizar operaciones con montos superiores a los $49.000.000 de pesos colombianos al mes.",
-          "verify": false,
-          "cta_primary": "Verificar",
-          "cta_secondary": "Verificado",
-          "tree": false,
-          "available": false,
-          "type": "identity"
         }
       ]
     },
