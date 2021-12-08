@@ -173,6 +173,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
       const disableTransactionSecutiry = async() => await coinsendaServices.disableTransactionSecutiry("biometric")
       disableTransactionSecutiry()
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finalStage])
 
   useEffect(()=>{

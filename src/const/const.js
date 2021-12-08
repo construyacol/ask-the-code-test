@@ -25,6 +25,8 @@ export let TRANSACTION_SECURITY = {
   "biometric":null
 }
 
+export const BIOMETRIC_FIAT_LITMIT_AMOUNT = "500000"
+
 export const loadLabels = {
   IMPORTANDO_PARES: "Importando pares",
   OBTENIENDO_TUS_BILLETERAS_Y_BALANCES: "Obteniendo tus billeteras y balances",

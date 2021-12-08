@@ -49,6 +49,8 @@ export const PairList = (props) => {
 
   const { currentWallet, currentPair, loader } = props;
 
+  console.log('|||||||||||||||  allPairs  ==> ', allPairs)
+
   return (
     <OtherModalLayoutPairs
       title={`Convertir ${currentWallet.currency.currency} a:`}
@@ -59,6 +61,7 @@ export const PairList = (props) => {
 
         {allPairs && !loader ? (
           allPairs.map((pair, index) => {
+            if(!pair) return null;
             return (
               <NewItemsLayout
                 setCurrentSelection={setCurrentSelection}

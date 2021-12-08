@@ -14,7 +14,7 @@ import IconSwitch from "../../../icons/iconSwitch";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import ConfirmationCounter from "./confirmationCounter";
 import useViewport from "../../../../../hooks/useWindowSize";
-import { device } from "../../../../../const/const";
+import { device, BIOMETRIC_FIAT_LITMIT_AMOUNT } from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
@@ -141,7 +141,7 @@ const FiatDespoitOrder = ({ order }) => {
 
       const { user } = coinsendaServices.globalState.modelData
       const orderAmount = await toBigNumber(order.amount, order.currency)
-      const limitAmount = await toBigNumber('500000', order.currency)
+      const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
       if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
         const Element = await import("../../../../BiometricIdentity");
         if(!Element) return;
