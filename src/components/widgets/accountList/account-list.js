@@ -10,8 +10,9 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../hooks/useWindowSize";
-
+import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import "../../wallets/views/wallet_views.css";
+
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -41,6 +42,10 @@ function AccountList(props) {
     "main-accounts-add-button",
     97
   );
+
+  const [availableCurrencies] = useAvailableWalletCreator();
+
+  console.log('|||||||  availableCurrencies  => ', availableCurrencies)
 
   useEffect(() => {
     // actions.cleanCurrentSection()
@@ -119,6 +124,9 @@ function AccountList(props) {
     : "Añadir nueva billetera";
   mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText;
 
+  const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
+  
+
   return (
     <>
       {items && items.length > 0 ? (
@@ -162,8 +170,8 @@ function AccountList(props) {
         <AddNewItem
           id={idForClickableElement}
           label={mainButtonText}
-          type="primary"
-          handleClick={createNewWallet}
+          type={`${isBottonAvailable ? "primary" : "disabled"}`}
+          handleClick={isBottonAvailable ? createNewWallet : null}
         />
       )}
     </>

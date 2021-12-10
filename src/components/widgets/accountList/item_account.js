@@ -52,6 +52,7 @@ const ItemAccount = (props) => {
 
 
   const delete_account_confirmation = (cancelCallback) => {
+    if(props.account_type === 'wallets') return;
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
       title: "Esto es importante, estas a punto de...",
@@ -489,7 +490,7 @@ const OptionsAccount = (props) => {
         </>
       )}
 
-      <BarIconCont
+      {/* <BarIconCont
         className="retweetCont"
         account_type={account_type}
         onClick={props.delete_account}
@@ -497,7 +498,7 @@ const OptionsAccount = (props) => {
         <Icon className="fas fa-trash-alt IdeleteButton tooltip">
           <span className="tooltiptext2 fuente">Borrar</span>
         </Icon>
-      </BarIconCont>
+      </BarIconCont> */}
     </OptionsLayout>
   );
 };

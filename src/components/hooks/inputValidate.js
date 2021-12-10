@@ -6,7 +6,6 @@ import { formatToCurrency } from "../../utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle";
 import { useWalletInfo }  from "../../hooks/useWalletInfo";
 
-
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const [ inputState, setInputState ] = useState();
@@ -164,7 +163,6 @@ export default () => {
         case 'spend-amount': //Swap input
           const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
           errMsg =
-          // (!minAmountValidation) ? `El monto mínimo para recibir es: ${currentPair.exchange.min_order.min_amount}` :
           (!minAmountValidation && isSecondaryCurrency) ? `El monto mínimo es: ${min_amount}` :
            !availableAmountValidation && `El monto supera el valor disponible en la cuenta`;
           return setCustomError(errMsg)
@@ -186,16 +184,21 @@ export default () => {
 
 
   const getMinAmount = (inputName) => {
-    switch (inputName) {
+
+    switch (inputName) { 
       case 'spend-amount':
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
         const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
         return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
       case 'amount':
-        return formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
+        const providerMinAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
+        const costAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.costs?.medium_priority?.fixed, currentWallet.currency)
+        const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
+        return withdrawMinAmount
       case 'bought-amount':
-      return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentWallet.currency);
+        console.log('|||||||||||||    bought-amount  ===> ', currentPair.exchange.min_operation.min_amount)
+      return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
         // return formatToCurrency('20000', currentWallet.currency);
       default:
         return

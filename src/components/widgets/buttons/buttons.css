@@ -488,6 +488,10 @@
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
+.AddNewItem.disabled {
+  background: #dedede;
+}
+
 .AddNewItemContainer {
   width: calc(100% - (19vw - 30px));
   height: 80px;

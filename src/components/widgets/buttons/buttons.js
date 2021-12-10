@@ -83,13 +83,11 @@ export const AddNewItem2 = (props) => {
   // const theme = useContext(CAccountAllowedContext);
   const { label, handleClick, clases } = props;
   const [availableCurrencies] = useAvailableWalletCreator();
-  // console.log('|||||||||||||||||||              |||||||||||||||| availableCurrencies', availableCurrencies)
 
   return (
     <section
       className={`AddNewItemContainer ${clases}`}
-      onClick={
-        availableCurrencies && availableCurrencies.length ? handleClick : null
+      onClick={        availableCurrencies && availableCurrencies.length ? handleClick : null
       }
     >
       <div className="BbackgroundAddNew"></div>

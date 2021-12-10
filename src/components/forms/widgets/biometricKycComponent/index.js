@@ -65,6 +65,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
   const handleVideo = stream => {
     setCameraAvailable(true)
+    if(!videoEl.current) return;
     videoEl.current.srcObject = stream;
   }
 
