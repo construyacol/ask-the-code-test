@@ -537,6 +537,7 @@ class SocketsComponent extends Component {
           this.props.deposits[deposit.id].account_id,
           "deposits"
         );
+        await this.props.coinsendaServices.getWalletsByUser(true)
         // await this.props.action.update_pending_activity(this.props.deposits[deposit.id].account_id, 'deposits')
       }, 500);
       this.props.action.exit_sound();
