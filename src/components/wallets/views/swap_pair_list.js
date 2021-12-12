@@ -38,7 +38,7 @@ export const PairList = (props) => {
     if (data) {
       const { to_spend_currency, pair_id } = data;
       await props.action.pairsForAccount(currentWallet.id, {
-        current_pair: {
+        current_pair: { 
           pair_id: pair_id,
           currency: to_spend_currency.currency,
           currency_value: data.want_to_spend,
