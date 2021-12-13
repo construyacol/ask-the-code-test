@@ -66,11 +66,15 @@ function WithdrawAccountList(props) {
         limit: parseFloat(amount) >= parseFloat(providers_served[wa.provider_type].provider.max_amount) && true,
       };
     });
+
+   
+
     // ------------------------------------------------------------------------
     // Este Fragmento de codigo sirve para detectar si hay cuentas de retiro que operen sobre la misma red bancaria o
     // transaccional del proveedor de retiro, definiendolas como cuentas preferenciales porque tienen un menor costo transaccional
 
     let preferential_accounts = [];
+
     await withdrawProviders.map(async (withdraw_provider) => {
       if (withdraw_provider.currency_type !== "fiat") {
         return false;
@@ -124,7 +128,6 @@ function WithdrawAccountList(props) {
     }
   };
 
-  console.log('|||||||||||||| withdrawAccounts ===> ', withdrawAccounts)
 
   return (
     <section className="WithdrawAccountList">

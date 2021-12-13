@@ -166,7 +166,7 @@ class WithdrawFlow extends Component {
         let plaza_type;
         let provider_type = withdraw_account.provider_type;
 
-        if (providers_served[provider_type].provider && providers_served[provider_type].provider.name === withdraw_account.provider_name) {
+        if (providers_served[provider_type]?.provider?.name.includes(withdraw_account.provider_name)) {
           plaza_type = "same_bank";
         }else{
           plaza_type = 'pp'
@@ -174,10 +174,8 @@ class WithdrawFlow extends Component {
 
         let new_withdraw_account = {
           ...withdraw_account,
-          cost_struct:
-            providers_served[provider_type].provider.costs[plaza_type],
-          cost:
-            (providers_served[provider_type].provider.costs[plaza_type] && providers_served[provider_type].provider.costs[plaza_type].fixed),
+          cost_struct:providers_served[provider_type].provider.costs[plaza_type],
+          cost:(providers_served[provider_type].provider.costs[plaza_type] && providers_served[provider_type].provider.costs[plaza_type].fixed),
         };
         return update_list.push(new_withdraw_account);
       });
@@ -493,6 +491,7 @@ class WithdrawFlow extends Component {
               available={available}
               handleSubmit={this.siguiente}
               min_amount={min_amount}
+              {...this.props}
             />
           )}
 

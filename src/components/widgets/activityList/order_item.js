@@ -489,7 +489,7 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
       payload: id,
       action: (async() => { 
         setOrderState("deleting");
-        let deleted = await coinsendaServices[deleteAction](id, 'rejected');
+        let deleted = await coinsendaServices[deleteAction](id, 'canceled');
         if (!deleted) {
           return false;
         }

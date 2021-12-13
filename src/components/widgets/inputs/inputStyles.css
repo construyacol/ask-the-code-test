@@ -88,6 +88,7 @@
 
 .coinB2 p {
   margin: 0 10px !important;
+  text-transform: capitalize;
 }
 
 .coinB2 i {
