@@ -43,7 +43,7 @@ class ViewAmountComponent extends Component {
       }
     });
 
-    if(!wProvider) return this.state.minAmount;
+    if(!wProvider || !withdraw_account_list) return this.state.minAmount;
     
     // minAmount = new BigNumber(wProvider.provider.min_amount)
     minAmount = wProvider.provider.min_amount
@@ -72,8 +72,6 @@ class ViewAmountComponent extends Component {
     const { currency } = this.props;
     let ui_currency_name = get_ui_name_currency(currency);
     const minAmount = await this.getMinAmount()
-
-
     this.setState({
       ui_currency_name,
       minAmount

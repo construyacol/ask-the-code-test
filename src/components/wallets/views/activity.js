@@ -119,9 +119,7 @@ const ActivityView = (props) => {
       const init_activity = async () => {
         setLoader(true);
         if (params.primary_path === "withdraw_accounts") {
-          await coinsendaServices.get_withdraws_by_withdraw_account(
-            params.account_id
-          );
+          await coinsendaServices.get_withdraws_by_withdraw_account(params.account_id);
         } else {
           let method = `get_${params.tx_path}`;
           let activity_list = await coinsendaServices[method](params.account_id);

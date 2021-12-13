@@ -75,19 +75,23 @@ function WithdrawAccountList(props) {
 
     let preferential_accounts = [];
 
-    await withdrawProviders.map(async (withdraw_provider) => {
-      if (withdraw_provider.currency_type !== "fiat") {
-        return false;
+
+
+    let wProvider
+    // let minAmount
+    // let cost
+
+    await withdrawProviders.forEach(_wProvider => {
+      if(_wProvider.provider_type === 'bank'){
+        wProvider = _wProvider
       }
+    });
 
-      let result = await matchItem(
-        final_withdraw_accounts,
-        { primary: withdraw_provider.provider.name },
-        "provider_name"
-      );
+    if(!wProvider || !final_withdraw_accounts) return this.state.minAmount;
 
-      if (result && result.length > 0) {
-        preferential_accounts.push(...result);
+    await final_withdraw_accounts.forEach(_wAccount => {
+      if(wProvider.name.includes(_wAccount?.bank_name?.value)){
+        preferential_accounts.push(_wAccount)
       }
     });
 
@@ -106,8 +110,7 @@ function WithdrawAccountList(props) {
         }
       });
 
-      let preferential_account_id = await preferential_accounts.map(
-        (p_account) => {
+      let preferential_account_id = await preferential_accounts.map((p_account) => {
           return p_account.id;
         }
       );
@@ -140,7 +143,7 @@ function WithdrawAccountList(props) {
           addElement={true}
         />
       </div>
-
+ 
       <div className="listWA">
         {withdrawAccounts ? (
           withdrawAccounts.map((account, id) => {
@@ -175,9 +178,7 @@ const selectWithdrawAccountList = createSelector(
     if (!withdraw_account_list) {
       // si no hay una lista heredada del componente padre entonces ejecute su propia consulta
       user.withdraw_accounts.map((account_id) => {
-        if (
-          withdraw_accounts[account_id].currency_type !== currency_type ||
-          !withdraw_accounts[account_id].visible
+        if (withdraw_accounts[account_id].currency_type !== currency_type || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state === "rejected"
         ) {
           return false;
         }

@@ -143,6 +143,9 @@ class WithdrawFlow extends Component {
       withdraw_account_list_update = this.get_cost_struct(available_providers);
     }
 
+
+
+
     this.setState({ withdraw_account_list_update });
 
 
@@ -153,9 +156,8 @@ class WithdrawFlow extends Component {
   };
 
   get_cost_struct = (available_providers, withdraw_account_list) => {
-    // console.log('||||||| ======> get_cost_struct', available_providers, withdraw_account_list)
     let providers_served = withdrawProvidersByType(available_providers || this.props.withdrawProviders);
-
+    // console.log('withdraw_account_list_update', withdraw_account_list_update)
     let update_list = [];
     let w_account_list =  withdraw_account_list || this.props.withdraw_account_list;
 
@@ -579,7 +581,7 @@ const selectWithdrawAccountList = createSelector(
   (_withdraw_accounts, withdraw_accounts) => {
     const withdraw_account_list = [];
     _withdraw_accounts && _withdraw_accounts.map((account_id) => {
-      if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible) {
+      if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state === "rejected") {
         // if (withdraw_accounts[account_id].currency_type !== "fiat" || !withdraw_accounts[account_id].visible || withdraw_accounts[account_id].state !== 'complete') {
           return false;
         }
