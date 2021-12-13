@@ -109,21 +109,25 @@ function SwapView(props) {
     return formatValue
   }
 
-  const handleStateSpendInput = (state) => {
-    // listener de estado del input de la moneda gastada: "Pago con:" solo se valida si la moneda gastada es la moneda secundaria del par,
-    // ya que ya viene validada con el monto mínimo expresado en la misma dentro del modelo pair.exchange...min_amount
-    const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
-    if(isSecondaryCurrency){
-      setExchangeEnabled(state)
-    }
+  const handleStatus = state => {
+    setExchangeEnabled(state)
   }
 
-  const handleStateBoughtInput = (state) => {
-    const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
-    if(isSecondaryCurrency){
-      setExchangeEnabled(state)
-    }
-  }
+  // const handleStateSpendInput = (state) => {
+  //   // listener de estado del input de la moneda gastada: "Pago con:" solo se valida si la moneda gastada es la moneda secundaria del par,
+  //   // ya que ya viene validada con el monto mínimo expresado en la misma dentro del modelo pair.exchange...min_amount
+  //   const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
+  //   if(isSecondaryCurrency){
+  //     setExchangeEnabled(state)
+  //   }
+  // }
+
+  // const handleStateBoughtInput = (state) => {
+  //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
+  //   if(isSecondaryCurrency){
+  //     setExchangeEnabled(state)
+  //   }
+  // }
 
 
   const handleChangeSpendAmount = async (name, newValue) => {
@@ -240,7 +244,7 @@ function SwapView(props) {
         name="spend-amount"
         value={value}
         handleChange={handleChangeSpendAmount}
-        handleStatus={handleStateSpendInput}
+        handleStatus={handleStatus}
         setMaxWithActionKey={true}
         label={`Pago con: ${currentWallet.currency.currency}`}
         disabled={loader}
@@ -267,7 +271,6 @@ function SwapView(props) {
         placeholder="0"
         name="bought-amount"
         value={valueToReceive}
-        handleStatus={handleStateBoughtInput}
         state={exchangeEnabled}
         isControlled={true}
         label={`Recibo apróximadamente:`}

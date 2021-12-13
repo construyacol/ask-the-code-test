@@ -50,7 +50,9 @@ export function usePairSelector(props) {
     if (!currencies) return false;
 
     let name = null;
-    return allPairs.map((pair) => {
+    let result = []
+
+    await allPairs.forEach(async(pair) => {
       if (pair.primary_currency.currency === currency) {
         name = pair.secondary_currency.currency;
       }
@@ -61,14 +63,17 @@ export function usePairSelector(props) {
 
       if (!name) return false;
 
-      const match = matchItem(currencies, { primary: name }, "view");
+      const match = await matchItem(currencies, { primary: name }, "view");
       if (!match) return false;
 
-      return {
+      result.push({
         ...match,
         pair_id: pair.id,
-      };
-    });
+      })
+    })
+
+    return result
   };
+
   return { selectPair, isReady };
 }

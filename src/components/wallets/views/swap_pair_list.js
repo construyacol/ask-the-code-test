@@ -38,7 +38,7 @@ export const PairList = (props) => {
     if (data) {
       const { to_spend_currency, pair_id } = data;
       await props.action.pairsForAccount(currentWallet.id, {
-        current_pair: {
+        current_pair: { 
           pair_id: pair_id,
           currency: to_spend_currency.currency,
           currency_value: data.want_to_spend,
@@ -48,6 +48,8 @@ export const PairList = (props) => {
   };
 
   const { currentWallet, currentPair, loader } = props;
+
+  console.log('|||||||||||||||  allPairs  ==> ', allPairs)
 
   return (
     <OtherModalLayoutPairs
@@ -59,6 +61,7 @@ export const PairList = (props) => {
 
         {allPairs && !loader ? (
           allPairs.map((pair, index) => {
+            if(!pair) return null;
             return (
               <NewItemsLayout
                 setCurrentSelection={setCurrentSelection}

@@ -48,6 +48,7 @@ export class WithdrawService extends WebService {
 
     const providersServed = await this.withdrawProvidersByType;
 
+
     const withdrawAccounts = await result.map((account) => {
       const aux = providersServed[account.provider_type];
 

@@ -7,6 +7,7 @@ import {
   number_format,
   get_ui_name_currency,
 } from "../../../utils";
+// import BigNumber from "bignumber.js";
 
 import "../deposit/deposit.css";
 
@@ -28,13 +29,54 @@ class ViewAmountComponent extends Component {
 
   componentWillUnmount() {}
 
-  init_config = () => {
-    const { currency } = this.props;
+  getMinAmount = async() => {
+    
+    const { withdrawProviders, withdraw_account_list } = this.props
 
+    let wProvider
+    let minAmount
+    let cost
+
+    await withdrawProviders.forEach(_wProvider => {
+      if(_wProvider.provider_type === 'bank'){
+        wProvider = _wProvider
+      }
+    });
+
+    if(!wProvider) return this.state.minAmount;
+    
+    // minAmount = new BigNumber(wProvider.provider.min_amount)
+    minAmount = wProvider.provider.min_amount
+
+    await withdraw_account_list.forEach(_wAccount => {
+      if(wProvider.name.includes(_wAccount?.bank_name?.value)){
+        // wProviderName validar el nombre del withdraw provider y el withdraw account
+        cost = wProvider.provider.costs.same_bank.fixed
+      }
+    });
+
+    if(!cost){
+      cost = wProvider.provider.costs.pp.fixed
+    }
+
+    const final = parseInt(minAmount) + parseInt(cost)
+
+
+    // return minAmount.plus(cost).toFormat()
+    return final
+    // withdrawProviders
+    // 
+  }
+
+  init_config = async() => {
+    const { currency } = this.props;
     let ui_currency_name = get_ui_name_currency(currency);
+    const minAmount = await this.getMinAmount()
+
 
     this.setState({
       ui_currency_name,
+      minAmount
     });
   };
 
@@ -67,7 +109,6 @@ class ViewAmountComponent extends Component {
 
     // let moneda =
 
-    // console.log('|||||||||Currency y short', currency)
 
     const atributos = {
       icon: currency,
@@ -109,23 +150,12 @@ class ViewAmountComponent extends Component {
                   className="fuente2 DLstitle DLcop DLcop2"
                   onClick={this.load_amount}
                 >
-                  {operation_type === "deposit"
-                    ? `Cantidad minima: $ ${number_format(
-                        minAmount
-                      )} ${currency.toUpperCase()}`
-                    : operation_type === "withdraw" &&
-                      parseFloat(available) > minAmount
-                    ? `Disponible: ~$${number_format(
-                        available
-                      )} ${currency.toUpperCase()}`
-                    : `Disponible: ~$${number_format(
-                        available
-                      )} ${currency.toUpperCase()} | Minima: ~$${number_format(
-                        minAmount
-                      )} ${currency.toUpperCase()}`}
+                  {operation_type === "deposit" ? `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`
+                    : operation_type === "withdraw" && parseFloat(available) > minAmount ? `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`
+                    : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`}
                 </p>
-                <p className="fuente DLstitle DLcop">{ui_currency_name}</p>
                 <p className="textStatus">{statusInput}</p>
+                <p className="fuente DLstitle DLcop">{ui_currency_name}</p>
               </div>
             </div>
 
@@ -133,13 +163,8 @@ class ViewAmountComponent extends Component {
               _id={this.props.mainCtaId}
               type="primary"
               active={
-                operation_type === "deposit"
-                  ? parseFloat(amount) >= parseFloat(minAmount)
-                    ? true
-                    : false
-                  : parseFloat(amount) >= parseFloat(minAmount) &&
-                    parseFloat(amount) <= parseFloat(available) &&
-                    parseFloat(amount) > 0
+                operation_type === "deposit" ? parseFloat(amount) >= parseFloat(minAmount) ? true : false
+                  : parseFloat(amount) >= parseFloat(minAmount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0
                   ? true
                   : false
               }
