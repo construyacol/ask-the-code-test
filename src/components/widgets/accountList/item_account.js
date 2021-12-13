@@ -445,9 +445,9 @@ const OptionsAccount = (props) => {
     }
   };
 
-  // console.log('|||||||||||||||||||||| OptionsAccount ===========================> ', props.account, props.account.count)
-
+  
   const { account_type } = props;
+  console.log('|||||||||||||||||||||| account_type ===========================> ', account_type)
 
   return (
     // <div className={`ItemBarra ${account_type} ${(current_view === 'detail') ? 'noVisible' : ''}`} >
@@ -489,16 +489,18 @@ const OptionsAccount = (props) => {
           <div></div>
         </>
       )}
-
-      {/* <BarIconCont
-        className="retweetCont"
-        account_type={account_type}
-        onClick={props.delete_account}
-      >
-        <Icon className="fas fa-trash-alt IdeleteButton tooltip">
-          <span className="tooltiptext2 fuente">Borrar</span>
-        </Icon>
-      </BarIconCont> */}
+      {
+        account_type !== 'wallets' &&
+          <BarIconCont
+            className="retweetCont"
+            account_type={account_type}
+            onClick={props.delete_account}
+          >
+            <Icon className="fas fa-trash-alt IdeleteButton tooltip">
+              <span className="tooltiptext2 fuente">Borrar</span>
+            </Icon>
+          </BarIconCont>
+      }
     </OptionsLayout>
   );
 };

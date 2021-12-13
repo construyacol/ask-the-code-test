@@ -7,7 +7,7 @@ import {
   number_format,
   get_ui_name_currency,
 } from "../../../utils";
-import BigNumber from "bignumber.js";
+// import BigNumber from "bignumber.js";
 
 import "../deposit/deposit.css";
 
