@@ -132,6 +132,9 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
             biometric_id:stageData.biometricId,
             challenge_name:stageData.key
           })
+          if(res?.data === false){
+            challengeIsSolved()
+          }
           console.log('|||||||||||||||  addNewBiometricData res ==> ', res)
         }else{
           console.log('Detectando...')
@@ -151,10 +154,13 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData, boardingAgreement, loading])
 
+  const challengeIsSolved = () => {
+    setStageData(prevState => { return {...prevState, solved:true} })
+    setTimeout(()=> nextStage(), 1500)
+  }
 
  
   useEffect( () => {
-    
     if(biometricData){
       console.log('---------------------------------------------------- biometricData  ==> ', biometricData)
       debugger
@@ -163,8 +169,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     if(biometricData?.challenge_name === stageData.key){
       console.log('|||||||||||||  biometricData ==> ', biometricData)
       if(biometricData.state === 'accepted'){
-        setStageData(prevState => { return {...prevState, solved:true} })
-        setTimeout(()=> nextStage(), 1500)
+        challengeIsSolved()
       }else if(biometricData.state === 'rejected'){
         setState(prevState => { return { ...prevState, [stageData?.key]: '' } })
         const canvas = document.querySelector('#faceApiCanvas')

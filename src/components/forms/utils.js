@@ -240,6 +240,7 @@ const dataService = {
 export const initStages = async(config) => {
 
   const apiStages = await dataService[config.formName]()
+  if(!apiStages) return;
   const sourceStages = Object.keys(apiStages)
   let stages = {} 
 
