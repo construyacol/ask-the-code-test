@@ -152,8 +152,14 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
   }, [stageData, boardingAgreement, loading])
 
 
-
+ 
   useEffect( () => {
+    
+    if(biometricData){
+      console.log('---------------------------------------------------- biometricData  ==> ', biometricData)
+      debugger
+    }
+
     if(biometricData?.challenge_name === stageData.key){
       console.log('|||||||||||||  biometricData ==> ', biometricData)
       if(biometricData.state === 'accepted'){

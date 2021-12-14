@@ -37,16 +37,17 @@ class ViewAmountComponent extends Component {
     let minAmount
     let cost
 
+    if(!withdrawProviders) return this.state.minAmount;
+
     await withdrawProviders.forEach(_wProvider => {
       if(_wProvider.provider_type === 'bank'){
         wProvider = _wProvider
       }
     });
 
-    if(!wProvider || !withdraw_account_list) return this.state.minAmount;
-    
-    // minAmount = new BigNumber(wProvider.provider.min_amount)
     minAmount = wProvider.provider.min_amount
+    // minAmount = new BigNumber(wProvider.provider.min_amount)
+    if(!wProvider || !withdraw_account_list) return minAmount;
 
     await withdraw_account_list.forEach(_wAccount => {
       if(wProvider.name.includes(_wAccount?.bank_name?.value)){

@@ -33,7 +33,7 @@ history.listen((location) => {
   }
 });
 
-function RootContainer(props) {
+function RootContainer(props) { 
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
   const authData = useSelector(({ modelData:{ authData } }) => authData);
@@ -50,6 +50,7 @@ function RootContainer(props) {
       if(!decodeJwt){return}
       history.push("/");
     }
+
     const userData = await getUserToken();
     
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
@@ -68,6 +69,14 @@ function RootContainer(props) {
     verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
+
+    if(params.has('face_recognition')){
+      const Element = await import("./BiometricIdentity");
+      if(!Element) return;
+      const FormsComponent = Element.default
+      props.actions.renderModal(() => <FormsComponent/>);
+    }
+
     const parent = window.parent;
     if(parent){
       parent.postMessage("loadedAndLogged", "*");

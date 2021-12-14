@@ -3,13 +3,15 @@ import { useEffect, useState } from "react"
 import styled from "styled-components"
 import QRCode from 'qrcode'
 import { Button } from './styles'
-import { getCdnPath } from '../../../../environment'
-
+import { getHostName } from '../../../../environment'
+import { getUserToken } from '../../../utils'
+import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 
 
 const ContinueFromMobile = ({ cameraAvailable, setContinueFromMobile }) => {
 
     const [ qrCode, setQrCode ] = useState()
+    const [ coinsendaServices ] = useCoinsendaServices();
 
     const generateQR = async text => {
         try {
@@ -20,9 +22,17 @@ const ContinueFromMobile = ({ cameraAvailable, setContinueFromMobile }) => {
         }
       }
 
+    const createUri = async() => {
+        const { refreshToken } = await getUserToken()
+        const { userToken } = await coinsendaServices.getJWToken(refreshToken)
+        const uri = `https://app.${getHostName()}.com?token=${userToken}&refresh_token=${refreshToken}&face_recognition`
+        generateQR(uri)
+    }
+
         
       useEffect(()=>{
-        generateQR('chupate esta')
+        createUri()
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [])
 
     return(
@@ -37,8 +47,8 @@ const ContinueFromMobile = ({ cameraAvailable, setContinueFromMobile }) => {
             <h1 >Reconocimiento Facial</h1>
             <h3>Ahora confirmaremos tu identidad, sigue las instrucciones que aparecen en pantalla</h3>
             <ImagesContainer>
-                <img className="FRscanner" src={`${getCdnPath('assets')}scanner.png`} alt="" width={200} />
-                <img className="FRQR" src={qrCode} alt="" width={150} />
+                {/* <img className="FRscanner" src={`${getCdnPath('assets')}scanner.png`} alt="" width={200} /> */}
+                <img className="FRQR" src={qrCode} alt="" width={280} />
             </ImagesContainer>
             <p>Escanea el código QR desde tu celular y continúa el proceso de verificación.</p>
             <Button className={`center-end ${!cameraAvailable ? 'disabled' : ''}`} disabled={!cameraAvailable} onClick={() => setContinueFromMobile(false)} >Regresar</Button>
