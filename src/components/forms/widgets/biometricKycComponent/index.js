@@ -48,7 +48,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     currentStage,
     nextStage,
     finalStage,
-    setStageData
+    setStageData,
+    stageController
   } = stageManager
 
 
@@ -149,7 +150,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     if((boardingAgreement && canvas) && (!stageData?.solved && !finalStage)){
       initDetections(canvas, 600)
     }
-    console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
     return () => clearInterval(intervalDetection.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData, boardingAgreement, loading])
@@ -159,15 +160,23 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     setTimeout(()=> nextStage(), 1500)
   }
 
+  const tryToSolveChallenge = async() => {
+      const userBiometric = await coinsendaServices.getUserBiometric()
+      if(!userBiometric?.solved) return;
+      nextStage(stageController.length+1)
+      // await coinsendaServices.fetchCompleteUserData()
+  }
+
  
   useEffect( () => {
-    if(biometricData){
-      console.log('---------------------------------------------------- biometricData  ==> ', biometricData)
-      debugger
+
+    console.log('|||||||||||||  biometricData ==> ', biometricData)
+    if(biometricData?.state === 'accepted' && !cameraAvailable){
+      console.log('cameraAvailable', cameraAvailable)
+      tryToSolveChallenge()
     }
 
-    if(biometricData?.challenge_name === stageData.key){
-      console.log('|||||||||||||  biometricData ==> ', biometricData)
+    if(biometricData?.challenge_name === stageData?.key){
       if(biometricData.state === 'accepted'){
         challengeIsSolved()
       }else if(biometricData.state === 'rejected'){

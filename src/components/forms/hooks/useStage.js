@@ -9,10 +9,10 @@ const useStage = (stageController, stages, defaultStage = 0) => {
   const [ currentStage, setCurrentStage ] = useState(defaultStage)
   const [ stageData, setStageData ] = useState(stages[stageController[currentStage]])
 
-  const nextStage = () => {
+  const nextStage = (steps = 1) => {
     // add ref or className on Json file Source to management the DOM components, e.x buttons states...
     if(currentStage >= stageController.length){return}
-      setCurrentStage(prevState => prevState+1)
+      setCurrentStage(prevState => prevState+steps)
   }
 
   const prevStage = () => {
