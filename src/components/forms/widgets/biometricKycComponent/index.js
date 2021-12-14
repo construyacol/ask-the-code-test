@@ -48,7 +48,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     currentStage,
     nextStage,
     finalStage,
-    setStageData
+    setStageData,
+    stageController
   } = stageManager
 
 
@@ -132,6 +133,9 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
             biometric_id:stageData.biometricId,
             challenge_name:stageData.key
           })
+          if(res?.data === false){
+            challengeIsSolved()
+          }
           console.log('|||||||||||||||  addNewBiometricData res ==> ', res)
         }else{
           console.log('Detectando...')
@@ -146,19 +150,35 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     if((boardingAgreement && canvas) && (!stageData?.solved && !finalStage)){
       initDetections(canvas, 600)
     }
-    console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
     return () => clearInterval(intervalDetection.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData, boardingAgreement, loading])
 
+  const challengeIsSolved = () => {
+    setStageData(prevState => { return {...prevState, solved:true} })
+    setTimeout(()=> nextStage(), 1500)
+  }
 
+  const tryToSolveChallenge = async() => {
+      const userBiometric = await coinsendaServices.getUserBiometric()
+      if(!userBiometric?.solved) return;
+      nextStage(stageController.length+1)
+      // await coinsendaServices.fetchCompleteUserData()
+  }
 
+ 
   useEffect( () => {
-    if(biometricData?.challenge_name === stageData.key){
-      console.log('|||||||||||||  biometricData ==> ', biometricData)
+
+    console.log('|||||||||||||  biometricData ==> ', biometricData)
+    if(biometricData?.state === 'accepted' && !cameraAvailable){
+      console.log('cameraAvailable', cameraAvailable)
+      tryToSolveChallenge()
+    }
+
+    if(biometricData?.challenge_name === stageData?.key){
       if(biometricData.state === 'accepted'){
-        setStageData(prevState => { return {...prevState, solved:true} })
-        setTimeout(()=> nextStage(), 1500)
+        challengeIsSolved()
       }else if(biometricData.state === 'rejected'){
         setState(prevState => { return { ...prevState, [stageData?.key]: '' } })
         const canvas = document.querySelector('#faceApiCanvas')

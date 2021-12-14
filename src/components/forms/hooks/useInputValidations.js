@@ -17,7 +17,7 @@ const surprised = (detections, data) => {
   let frame
   console.log('|||||| detections surprised' , detections?.expressions?.surprised)
   // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
-  if(detections?.expressions?.surprised > 0.7){
+  if(detections?.expressions?.surprised > 0.5){
     frame = getFrame()
   }
   return [ frame ]
