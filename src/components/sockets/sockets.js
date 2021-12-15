@@ -372,6 +372,9 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async (deposit) => {
 
+    // console.log('|||||||||||   deposit_mangagement   ==> ', deposit)
+    // debugger
+
     if (deposit.state === "pending" && deposit.currency_type === "fiat") {
       await this.props.coinsendaServices.addItemToState("deposits", {
         ...deposit,
@@ -389,8 +392,11 @@ class SocketsComponent extends Component {
 
         // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
-        // console.log('|||||||| _______________________________________DEPOSIT cDeposit', deposit.id)
+
         
+        console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
+        if(cDeposit?.info?.is_referral) return;
+
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
           await this.props.coinsendaServices.addItemToState("deposits", {
             ...cDeposit,
@@ -426,7 +432,7 @@ class SocketsComponent extends Component {
 
 
     if (deposit.confirmations) {
-
+      alert('deposit.confirmations')
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, "deposits");
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
@@ -460,10 +466,13 @@ class SocketsComponent extends Component {
       );
 
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+        alert('consultando deposito')
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
+        alert('Agregando deposito al estado')
+
         this.props.action.update_item_state(
           {
             [cDeposit.account_id]: {
@@ -721,6 +730,8 @@ class SocketsComponent extends Component {
     }
     await this.props.coinsendaServices.updateUserStatus(status)
     if(status.countries.international === 'level_1'){
+      console.log('|||||||||||  status_management')
+      debugger
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }

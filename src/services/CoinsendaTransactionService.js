@@ -97,7 +97,7 @@ export class TransactionService extends WebService {
   async addNewTransactionSecurity(type, twofa_token) {
 
     let user = JSON.parse(JSON.stringify(this.user))
-    const transactionSecurity = JSON.parse(JSON.stringify(user.security_center.transactionSecurity))
+    const transactionSecurity = JSON.parse(JSON.stringify(user?.security_center?.transactionSecurity))
 
     const body = {
       data: {
@@ -106,11 +106,11 @@ export class TransactionService extends WebService {
         type,
         twofa_token,
       },
-    };
+    }; 
+
     const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body);
     // console.log('response', response)
     // console.log('body', body)
-    // debugger
     if (response === 465 || !response) {
       return false;
     }

@@ -7,6 +7,7 @@ export const updateLocalForagePersistState = (payload) => {
   let modelData = JSON.parse(JSON.stringify(payload))
   const { user, wallets, balances } = modelData;
   if (user && wallets && balances) {
+  // alert('updateLocalForagePersistState')
   delete modelData.withdraws
   delete modelData.deposits
   delete modelData.swaps

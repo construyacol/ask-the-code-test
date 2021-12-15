@@ -42,7 +42,9 @@ const SecurityCenter = (props) => {
     }, 100)
     updateLocalForagePersistState(globalState.modelData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalState.modelData.user.security_center])
+  }, [globalState?.modelData?.user?.security_center])
+
+
 
   return (
     <Fragment>
