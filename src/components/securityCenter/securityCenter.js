@@ -9,6 +9,7 @@ import ItemSettingsInit from "../widgets/itemSettings/";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useActions } from "../../hooks/useActions";
+import { updateLocalForagePersistState } from '../hooks/sessionRestore'
 
 const SecurityCenter = (props) => {
   const [coinsendaServices, globalState] = useCoinsendaServices();
@@ -39,7 +40,8 @@ const SecurityCenter = (props) => {
     setTimeout(()=>{
       actions.isAppLoading(false);
     }, 100)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    updateLocalForagePersistState(globalState.modelData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [globalState.modelData.user.security_center])
 
   return (

@@ -716,12 +716,17 @@ class SocketsComponent extends Component {
 
 
   status_management = async(status) => {
+    if(this.props.formModal){
+     await this.props.action.toggleModal(false);
+    }
     await this.props.coinsendaServices.updateUserStatus(status)
     if(status.countries.international === 'level_1'){
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }
   }
+
+  
 
   render() {
     return null;
@@ -740,7 +745,7 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     swaps,
   } = state.modelData;
-  const { ui } = state;
+  const { ui, form } = state;
 
   return {
     loggedIn,
@@ -753,6 +758,7 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     isModalActive: ui.otherModal,
     isRenderModalActive: ui.modal.render,
+    formModal:form.isModalVisible
   };
 };
 
