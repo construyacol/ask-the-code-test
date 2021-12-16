@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { InputFormAuth } from "../../inputs";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
-import { updateLocalForagePersistState } from '../../../hooks/sessionRestore'
-
 import "./viewSettings.css";
 
 const AuthReq = (props) => {
@@ -13,7 +11,7 @@ const AuthReq = (props) => {
   const [error, setError] = useState();
   const [valueState, setValueState] = useState();
   const [desaparecer, setDesaparecer] = useState();
-  const [ coinsendaServices, globalState ,actions ] = useCoinsendaServices();
+  const [ coinsendaServices ,actions ] = useCoinsendaServices();
 
   const success = (value, res) => {
     setButtonActive(true);
@@ -24,10 +22,6 @@ const AuthReq = (props) => {
     return ok_auth(res);
   };
 
-  useEffect(()=>{
-    updateLocalForagePersistState(globalState.modelData)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [globalState?.modelData?.user])
 
   const actualizarEstado = async (p) => {
     const { value } = p.target; 
@@ -43,7 +37,6 @@ const AuthReq = (props) => {
 
       let res;
       actions.isAppLoading(true);
-
       if (props.isTryToDisable2fa) {
         res = await coinsendaServices.disableTransactionSecutiry("2fa", value);
       } else {

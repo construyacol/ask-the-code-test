@@ -7,9 +7,9 @@ import styled from "styled-components";
 import ReferralCounter from "./referral-counter";
 // import BalanceSelect from "./balance-select";
 // import WithdrawAd from "./withdraw-ad";
-import { device } from "../../const/const";
+import { device, FONT_COLOR } from "../../const/const";
 import CreateCode from "./create-code";
-import { FONT_COLOR, skeletonStyle } from "./shareStyles";
+import { skeletonStyle } from "./shareStyles";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import Environment from '../../environment'
@@ -143,6 +143,7 @@ const ShareSectionContainer = styled.div`
 
   &.aparecer{
     height: 125px;
+    opacity:1;
   }
 
   &.unappear{

@@ -16,7 +16,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const [, formatCurrency] = useFormatCurrency();
 
   const formatOrderText = async (itemText) => {
-    console.log(itemText, tx_path)
+    // console.log(itemText, tx_path)
     switch (itemText[0]) {
       case "to_spend_currency":
         return ["Moneda gastada:", itemText[1].currency];

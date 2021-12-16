@@ -93,7 +93,6 @@ function RootContainer(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   return (
     // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>

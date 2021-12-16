@@ -14,6 +14,11 @@ const {
   BASE_URL
 } = Enviroment;
 
+
+export const MAIN_COLOR = "#0e95f8";
+export const FONT_COLOR = "#939393";
+
+
 export const IMAGE_MIME_TYPES = [
   "image/png",
   "image/jpeg",

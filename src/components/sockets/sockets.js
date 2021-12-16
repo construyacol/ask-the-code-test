@@ -372,6 +372,9 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async (deposit) => {
 
+    // console.log('|||||||||||   deposit_mangagement   ==> ', deposit)
+    // debugger
+
     if (deposit.state === "pending" && deposit.currency_type === "fiat") {
       await this.props.coinsendaServices.addItemToState("deposits", {
         ...deposit,
@@ -389,8 +392,11 @@ class SocketsComponent extends Component {
 
         // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
-        // console.log('|||||||| _______________________________________DEPOSIT cDeposit', deposit.id)
+
         
+        console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
+        if(cDeposit?.info?.is_referral) return;
+
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
           await this.props.coinsendaServices.addItemToState("deposits", {
             ...cDeposit,
@@ -426,7 +432,6 @@ class SocketsComponent extends Component {
 
 
     if (deposit.confirmations) {
-
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, "deposits");
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
@@ -459,12 +464,20 @@ class SocketsComponent extends Component {
         "deposits"
       );
 
-      if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
-      }
+        if (cDeposit?.info?.is_referral && this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
+          await this.props.coinsendaServices.addItemToState("deposits", {
+            ...cDeposit,
+            type_order: "deposit",
+          });
+        } else if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+          await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
+        }
+
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
+
         this.props.action.update_item_state(
+          //actualiza el movimiento operacional de la wallet
           {
             [cDeposit.account_id]: {
               ...this.props.wallets[cDeposit.account_id],
@@ -472,7 +485,8 @@ class SocketsComponent extends Component {
             },
           },
           "wallets"
-        ); //actualiza el movimiento operacional de la wallet
+        ); 
+        
         this.props.action.addNotification(
           "wallets",
           {
@@ -716,12 +730,19 @@ class SocketsComponent extends Component {
 
 
   status_management = async(status) => {
+    if(this.props.formModal){
+     await this.props.action.toggleModal(false);
+    }
     await this.props.coinsendaServices.updateUserStatus(status)
     if(status.countries.international === 'level_1'){
+      console.log('|||||||||||  status_management')
+      debugger
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }
   }
+
+  
 
   render() {
     return null;
@@ -740,7 +761,7 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     swaps,
   } = state.modelData;
-  const { ui } = state;
+  const { ui, form } = state;
 
   return {
     loggedIn,
@@ -753,6 +774,7 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     isModalActive: ui.otherModal,
     isRenderModalActive: ui.modal.render,
+    formModal:form.isModalVisible
   };
 };
 

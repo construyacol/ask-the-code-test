@@ -19,18 +19,20 @@ export default ({ loader, setLoader, activityLength }) => {
     const method =
       primary_path === "withdraw_accounts"
       ? "get_withdraws_by_withdraw_account"
-       : primary_path === 'referral'
-        ? "get_referral_deposits"
+      : primary_path === 'referral'
+      ? "get_referral_deposits"
       : `get_${tx_path}`;
 
-    const skip = activityLength || (activity_for_account && activity_for_account[account_id] && activity_for_account[account_id][tx_path] && activity_for_account[account_id][tx_path].length);
-
-    let activity = [];
-    if (skip > 10) {
-      activity = await coinsendaServices[method](account_id, 15, skip);
-    }
-    console.log('||||||||||||||||| activity : ', activity)
-    setLoader(false);
+      
+      const skip = activityLength || (activity_for_account && activity_for_account[account_id] && activity_for_account[account_id][tx_path] && activity_for_account[account_id][tx_path].length);
+  
+      console.log('||||||||||||||  getActivity ==> ', method, skip)
+      
+      let activity = [];
+      if (skip > 10) {
+        activity = await coinsendaServices[method](account_id, 15, skip);
+      }
+      setLoader(false);
     if (!activity.length) {
       setAvailableActivity(false);
     }

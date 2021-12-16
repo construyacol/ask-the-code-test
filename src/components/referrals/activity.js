@@ -14,22 +14,21 @@ import IconSwitch from '../widgets/icons/iconSwitch'
 const ReferralActivity = ({ coinsendaServices }) => {
 
   const [ loader, setLoader ] = useState(true)
-  const { activityList, setActivityList } = UseActivity()
+  const { activityList, setActivityList } = UseActivity([])
 
+
+  const LoadActivity = async() => {
+    const res = await coinsendaServices.get_referral_deposits();
+    console.log('||||||||||  LoadActivity ', res)
+    if(!res) setActivityList(false);
+  }
 
   useEffect(() => {
-
-    const LoadActivity = async() => {
-      const res = await coinsendaServices.get_referral_deposits();
-      !res && setActivityList(false)
-    }
-
     if(activityList && !activityList.length){
       LoadActivity()
     }else{
       setLoader(false)
     }
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activityList])
 

@@ -4,8 +4,7 @@ import OtherModalLayout from "../widgets/modal/otherModalLayout";
 import { useActions } from "../../hooks/useActions";
 import useToastMessage from "../../hooks/useToastMessage";
 import styled from "styled-components";
-import { device } from "../../const/const";
-import { MAIN_COLOR } from "../referrals/shareStyles";
+import { device, MAIN_COLOR } from "../../const/const";
 import IconSwitch from "../widgets/icons/iconSwitch";
 import { CloseButton } from "../widgets/shared-styles";
 

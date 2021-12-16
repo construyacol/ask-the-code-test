@@ -6,14 +6,15 @@ import { getExpTimeData } from '../utils'
 export const updateLocalForagePersistState = (payload) => {
   let modelData = JSON.parse(JSON.stringify(payload))
   const { user, wallets, balances } = modelData;
+  if (user && wallets && balances) {
+  // alert('updateLocalForagePersistState')
   delete modelData.withdraws
   delete modelData.deposits
   delete modelData.swaps
   modelData.user.withdraws = []
   modelData.user.swaps = []
   modelData.user.deposits = []
-  if (user && wallets && balances) {
-    return localForage.setItem("sessionState", JSON.stringify(modelData));
+  return localForage.setItem("sessionState", JSON.stringify(modelData));
   } 
 };
 
