@@ -465,15 +465,20 @@ class SocketsComponent extends Component {
         "deposits"
       );
 
-      if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-        alert('consultando deposito')
-        await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
-      }
+        if (cDeposit?.info?.is_referral && this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
+          await this.props.coinsendaServices.addItemToState("deposits", {
+            ...cDeposit,
+            type_order: "deposit",
+          });
+        } else if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
+          await this.props.coinsendaServices.get_deposits(cDeposit.account_id);
+        }
+
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
-        alert('Agregando deposito al estado')
 
         this.props.action.update_item_state(
+          //actualiza el movimiento operacional de la wallet
           {
             [cDeposit.account_id]: {
               ...this.props.wallets[cDeposit.account_id],
@@ -481,7 +486,8 @@ class SocketsComponent extends Component {
             },
           },
           "wallets"
-        ); //actualiza el movimiento operacional de la wallet
+        ); 
+        
         this.props.action.addNotification(
           "wallets",
           {
