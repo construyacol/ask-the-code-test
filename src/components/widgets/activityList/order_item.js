@@ -10,6 +10,7 @@ import PopNotification from "../notifications";
 import SwapAnimation from "../swapAnimation/swapAnimation";
 import SimpleLoader from "../loaders";
 import useViewport from "../../../hooks/useWindowSize";
+import { RibbonContDeposit } from '../../referrals/shareStyles'
 
 import {
   gotoTx,
@@ -117,7 +118,7 @@ const getState = ({ state, currency_type }, tx_path) => {
 export const DepositOrder = ({ order }) => {
 
   const { new_order_style, tx_path = 'deposits', lastPendingOrderId } = UseTxState(order.id);
-
+  
   const {
     state,
     created_at,
@@ -140,6 +141,15 @@ export const DepositOrder = ({ order }) => {
     <Order
       className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
+
+      {
+        (order?.info?.is_referral) &&
+            <RibbonContDeposit className="tooltip">
+              <p>R</p>
+              <span className="tooltiptext">Referido</span>
+            </RibbonContDeposit>
+      }
+
       <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
         {
           state === 'pending' &&

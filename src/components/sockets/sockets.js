@@ -432,7 +432,6 @@ class SocketsComponent extends Component {
 
 
     if (deposit.confirmations) {
-      alert('deposit.confirmations')
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         let cDeposit = await this.props.coinsendaServices.getOrderById(deposit.id, "deposits");
         await this.props.coinsendaServices.get_deposits(cDeposit.account_id);

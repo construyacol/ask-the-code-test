@@ -231,9 +231,10 @@ export class DepositService extends WebService {
   async get_referral_deposits(account_id, limit = 11, skip = 0) {
     // @params:
     const user = this.user;
-    let filter = `{"where":{"info.is_referral":"true"}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+    let filter = `{"where":{"info.is_referral":true}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     // const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter={"limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
     const finalUrl = `${DEPOSITS_URL}users/${user.id}/deposits?country=${user.country}&filter=${filter}`;
+    console.log('finalUrl', finalUrl)
     let deposits = await this.processDepositList(finalUrl)
     if(!deposits){return false}
     await this.dispatch(normalized_list(deposits, "deposits"));

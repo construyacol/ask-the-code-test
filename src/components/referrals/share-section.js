@@ -4,10 +4,9 @@ import {
   Title,
   ReferralBox,
   Divider,
-  MAIN_COLOR,
   skeletonStyle,
 } from "./shareStyles";
-import { device } from "../../const/const";
+import { device, MAIN_COLOR } from "../../const/const";
 import CopyContainer from "../widgets/copy/copyContainer";
 
 const SECTION_TITLE = "Link de referidos";

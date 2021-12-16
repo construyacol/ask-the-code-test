@@ -14,9 +14,10 @@ import DetailGenerator from "./detailGenerator";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import UseTxState from "../../../../hooks/useTxState";
 import InProcessOrder from "./inProcessOrder";
-import { PaymentProof } from "./paymentProof";
 import { IconClose } from "../../../shared-styles";
+import GetInfoComponentToRender from './infoComponent'
 // import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
+import { UploadTextMiddle, UploadMiddle } from './inProcessOrder'
 
 import moment from "moment";
 import "moment/locale/es";
@@ -100,6 +101,10 @@ const OrderDetail = () => {
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
   const { isMovilViewport } = useViewport();
 
+
+  console.log('currentOrder', currentOrder)
+  // debugger
+
   if (!currentOrder) {
     return null;
   }
@@ -131,8 +136,11 @@ const OrderDetail = () => {
       ? "#ff8660"
       : "red";
 
+      const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(state)
+
+
   return (
-    <Layout className="layout3">
+    <Layout className={`layout3 ${(tx_path !== 'swaps' && (isMovilViewport && ConsolidatedOrder)) ? 'mobileInfoStyles' : ''}`} >
       <IconClose theme="dark" size={20} />
 
       <TopSection state={currentOrder.state}>
@@ -177,35 +185,45 @@ const OrderDetail = () => {
   );
 };
 
-const BottomSection = ({ colorState }) => {
+
+
+
+export const BottomSection = ({ colorState }) => {
   const { currentOrder, tx_path, currencies } = UseTxState();
   const [amount] = useFormatCurrency(
     currentOrder.amount || currentOrder.bought,
     currentOrder.currency
   );
-  const textTotal =
-    tx_path === "swaps" && currentOrder.state === "accepted"
-      ? "Saldo adquirido:"
-      : currentOrder.state === "accepted"
-      ? "Saldo acreditado:"
-      : "Saldo SIN acreditar:";
+  const { isMovilViewport } = useViewport();
+
+  // const textTotal =
+  //   tx_path === "swaps" && currentOrder.state === "accepted"
+  //     ? "Saldo adquirido:"
+  //     : currentOrder.state === "accepted"
+  //     ? "Saldo acreditado:"
+  //     : "Saldo SIN acreditar:";
   const currency =
     tx_path === "swaps"
       ? currencies[currentOrder.to_buy_currency.currency]
       : currencies[currentOrder.currency.currency];
-  const isFiatWithdraw =
-    tx_path === "withdraws" && currentOrder.currency_type === "fiat";
+      
+  const InfoComponent = GetInfoComponentToRender({...currentOrder, tx_path})
+  const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(currentOrder.state)
 
   return (
     <BottomSectionContainer>
-      <TitleBottom>
-        <hr />
-        {tx_path !== "swaps" && <p className="fuente">Comprobante de pago</p>}
-      </TitleBottom>
-      <Container>
-        {tx_path === "swaps" || isFiatWithdraw ? <div></div> : <PaymentProof />}
+
+    <UploadMiddle className={`titleSection payment fuente ${tx_path}`}>
+       {/* Title gets from GetInfoComponentToRender */}
+      <UploadTextMiddle id="titleInfoComponent" className={`titleSection ${ConsolidatedOrder ? 'consolidatedStyle' : ''}`}/>
+      <hr />
+    </UploadMiddle>
+
+
+      <Container consolidatedOrder={ConsolidatedOrder || ''} isMovilViewport={isMovilViewport || ''}>
+        <InfoComponent/>
         <TotalAmount color={colorState} className={`${currentOrder.state}`}>
-          <p className="fuente saldo">{textTotal}</p>
+          <p className="fuente saldo">Cantidad</p>
           <p className="fuente2 amount">
             {currentOrder.currency_type === "fiat" && "$ "}
             {amount}{" "}
@@ -250,33 +268,15 @@ const TotalAmount = styled.div`
 `;
 
 const Container = styled.div`
-  width: calc(100% - 60px);
-  padding: 0 30px;
+  width: ${props => !props.consolidatedOrder ? '100%' : 'calc(100% - 60px)'};
+  padding: ${props => !props.consolidatedOrder ? '0' : '0 30px'};
   height: 100%;
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: ${props => props.isMovilViewport ? '1fr' : 'auto 1fr'};
+  grid-template-rows: ${props => props.isMovilViewport ? 'auto auto' : '1fr'};
 `;
 
-const TitleBottom = styled.div`
-  display: grid;
-  position: relative;
-  justify-items: center;
-  hr {
-    width: 98%;
-    opacity: 0.35;
-  }
-  p {
-    color: gray;
-    margin: 0;
-    background-color: white;
-    position: absolute;
-    left: 20px;
-    padding: 0 10px;
-    align-self: self-end;
-    font-size: 14px;
-    font-weight: bold;
-  }
-`;
+
 
 const BottomSectionContainer = styled.section`
   height: calc(200px - 40px);
@@ -427,6 +427,10 @@ export const Layout = styled.div`
   border-radius: 11px;
   position: relative;
   grid-template-rows: 115px 1fr auto;
+
+  &.mobileInfoStyles{
+    grid-template-rows: 115px 1fr 300px;
+  }
 
   -webkit-animation: ${swing_in_bottom_bck} 1s
     cubic-bezier(0.175, 0.885, 0.32, 1.275) both;

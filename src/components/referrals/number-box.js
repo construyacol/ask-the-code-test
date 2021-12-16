@@ -4,10 +4,12 @@ import {
   ReferralBox,
   Divider,
   Number,
-  MAIN_COLOR,
   skeletonStyle,
+  RibbonContainer,
+  Ribbon,
+  Icon
 } from "./shareStyles";
-import { device } from "../../const/const";
+import { device, MAIN_COLOR } from "../../const/const";
 
 const NumberBox = (props) => {
   return (
@@ -25,7 +27,7 @@ const NumberBox = (props) => {
       </Counter>
 
       {props.highlight && (
-        <RibbonContainer>
+        <RibbonContainer className="RibbonContainer">
           <Ribbon />
         </RibbonContainer>
       )}
@@ -58,38 +60,7 @@ const BottomText = styled.div`
   }
 `;
 
-const Icon = styled.div`
-  min-width: 70px;
-  width: 70px;
-  height: 70px;
-  > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-  }
-  img,
-  svg {
-    width: 55%;
-    height: 55%;
-  }
-  img {
-    box-shadow: 3px 4px 10px -5px rgba(0, 0, 0, 0.54);
-    border-radius: 50%;
-  }
-  font-size: 30px;
-  border: 1.5px solid ${MAIN_COLOR};
-  border-radius: 50%;
-  background-color: #ebf7fe;
-  color: ${MAIN_COLOR};
-  @media ${device.laptopL} {
-    min-width: 60px;
-    width: 60px;
-    height: 60px;
-    font-size: 26px;
-  }
-`;
+
 const Counter = styled.div`
   flex-direction: column;
   width: 80%;
@@ -113,31 +84,7 @@ const Counter = styled.div`
   }
 `;
 
-const RibbonContainer = styled.div`
-  height: 100%;
-  display: block !important;
-`;
-const Ribbon = styled.div`
-  width: 24px;
-  height: 20px;
-  background: ${MAIN_COLOR};
-  position: relative;
-  border-radius: 4px 4px 0 0;
-  top: -1px;
-  &:after {
-    content: "";
-    position: absolute;
-    height: 0;
-    width: 0;
-    border-left: 12px solid ${MAIN_COLOR};
-    border-right: 12px solid ${MAIN_COLOR};
-    border-bottom: 10px solid transparent;
-    bottom: -9px;
-  }
-  @media ${device.tabletL} {
-    display: none;
-  }
-`;
+
 
 const StyledShareSection = styled(ReferralBox)`
   max-width: 400px;

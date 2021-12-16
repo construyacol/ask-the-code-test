@@ -18,7 +18,7 @@ import { device, BIOMETRIC_FIAT_LITMIT_AMOUNT } from "../../../../../const/const
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
-
+import { BottomSection } from './'
 
 import moment from "moment";
 import "moment/locale/es";
@@ -40,9 +40,9 @@ const InProcessOrder = ({ onErrorCatch }) => {
   return (
     <>
       {currentOrder.currency_type === "fiat" ? (
-        <FiatDespoitOrder order={currentOrder} />
+        <FiatOrder order={currentOrder} />
       ) : (
-        <CryptoDespoitOrder order={currentOrder} />
+        <CryptoOrder order={currentOrder} />
       )}
     </>
   );
@@ -50,7 +50,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
 
 export default InProcessOrder;
 
-const CryptoDespoitOrder = ({ order }) => {
+const CryptoOrder = ({ order }) => {
   const { tx_path, currencies } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
 
@@ -86,17 +86,20 @@ const CryptoDespoitOrder = ({ order }) => {
           />
         </MiddleSection>
 
-        <BottomSection className={`crypto`}>
-          <UploadComponent />
-          {tx_path === "deposits" && (
-            <ConfirmationCounter
-              confirmations={order.confirmations}
-              total_confirmations={
-                currencies[order.currency.currency].confirmations
-              }
-            />
-          )}
-        </BottomSection>
+        {
+          tx_path === "deposits" ? (
+            <BottomSectionContainer className={`crypto`}>
+              <UploadComponent />
+              <ConfirmationCounter
+                confirmations={order.confirmations}
+                total_confirmations={
+                  currencies[order.currency.currency].confirmations
+                }
+              />
+            </BottomSectionContainer>)
+          :
+            <BottomSection colorState={"gray"}/>
+        }
       </OrderContainer>
 
       {!isTabletOrMovilViewport && <OrderStatus order={order} />}
@@ -104,7 +107,7 @@ const CryptoDespoitOrder = ({ order }) => {
   );
 };
 
-const FiatDespoitOrder = ({ order }) => {
+const FiatOrder = ({ order }) => {
   const [onDrag, setOnDrag] = useState(false);
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
@@ -164,7 +167,9 @@ const FiatDespoitOrder = ({ order }) => {
     }
   };
 
-  // console.log('|||||||||||||||| FiatOrderDespoit ::', currencies)
+  console.log('|||||||||||||||| FiatOrderDespoit ::', tx_path)
+  // debugger
+
 
   return (
     <InProcessOrderContainer>
@@ -213,13 +218,19 @@ const FiatDespoitOrder = ({ order }) => {
           />
         </MiddleSection>
 
-        <BottomSection>
-          <UploadComponent
-            imgSrc={imgSrc}
-            goFileLoader={goFileLoader}
-            setImgSrc={setImgSrc}
-          />
-        </BottomSection>
+        {
+          tx_path === "deposits" ? (
+          <BottomSectionContainer>
+            <UploadComponent
+              imgSrc={imgSrc}
+              goFileLoader={goFileLoader}
+              setImgSrc={setImgSrc}
+            />
+          </BottomSectionContainer>)
+          :
+          <BottomSection colorState={"gray"}/>
+        }
+
       </OrderContainer>
 
       {!isTabletOrMovilViewport && <OrderStatus order={order} />}
@@ -247,7 +258,7 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
   );
 };
 
-const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc }) => {
+const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => {
   const { currentOrder } = UseTxState();
   const idForFileUpload = useKeyActionAsClick(
     true,
@@ -445,7 +456,7 @@ const Buttom = styled.div`
   position: relative;
 `;
 
-const UploadTextMiddle = styled(Text)`
+export const UploadTextMiddle = styled(Text)`
   z-index: 2;
   font-size: 12px;
   width: 150px;
@@ -460,9 +471,14 @@ const UploadTextMiddle = styled(Text)`
     align-self: center;
     justify-self: baseline;
   }
+
+  &.consolidatedStyle{
+    background:white;
+    margin-left:20px;
+  }
 `;
 
-const UploadMiddle = styled.div`
+export const UploadMiddle = styled.div`
   font-size: 14px;
   position: relative;
   display: grid;
@@ -482,6 +498,9 @@ const UploadMiddle = styled.div`
     hr{
       border-top: 1px solid;
       color: #c5c5c5;
+      position: absolute;
+      width: 80%;
+      right: 0;
     }
   }
   &.payment{
@@ -489,6 +508,12 @@ const UploadMiddle = styled.div`
       padding-left: 0 !important;
     }
     position: relative !important;
+  }
+
+  &.swaps{
+    hr{
+      width: 98%;
+    }
   }
 }
 `;
@@ -517,7 +542,7 @@ const UploadContainer = styled.section`
 
 export const Section = styled.div``;
 
-const BottomSection = styled(Section)`
+const BottomSectionContainer = styled(Section)`
   height: auto;
   display: grid;
   justify-items: center;

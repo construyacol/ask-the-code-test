@@ -6,7 +6,6 @@ import ControlButton from "../../../widgets/buttons/controlButton";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import styled from "styled-components";
-import { MAIN_COLOR } from "../../../referrals/shareStyles";
 import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
@@ -16,6 +15,8 @@ import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
+import { MAIN_COLOR } from "../../../../const/const";
+
 
 
 export const CriptoSupervisor = (props) => {
