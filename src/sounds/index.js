@@ -1,6 +1,7 @@
 import { getCdnPath } from '../environment'
+import { ENVIRONMENT_VAR } from '../const/const'
 
-export const soundData = {
+let soundData = ENVIRONMENT_VAR === 'development' ? {} :{
   notification: {
     src: [`${getCdnPath('assets')}sounds/notification.mp3`],
     volume: 0.2,
