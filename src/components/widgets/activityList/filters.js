@@ -1,70 +1,55 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { current_section_params } from "../../../actions/uiActions";
+import SelectList from '../selectList'
+import { WALLET_FILTER_LIST, WITHDRAW_ACCOUNT_FILTER_LIST } from '../../../const/const'
+
 
 const ActivityFilters = (props) => {
+  
   const { currentFilter } = props;
 
   // const [filter, setFilter] = useState(true);
   let filter = true
-
+  const FilterElement = useRef()
   // const toggleFilter = () => {
   //   setFilter(!filter);
   // };
 
   const filterChange = async (e) => {
-    let value = e.target.id;
+    let value = e.value;
     const { primary_path, account_id, path } = props.match.params;
     await props.dispatch(current_section_params({ currentFilter: value }));
     props.history.push(`/${primary_path}/${path}/${account_id}/${value}`);
-    // console.log('||||||||||||| FILTER CHANGE ==>', value, '= ||| = ',this.props)
   };
 
+  useEffect(() => {
+    const subMenuHeight = document.querySelector('.subMenu').clientHeight
+    const supMenuHeight = document.querySelector('.MenuSuperiorLayout').clientHeight
+    const totalHeight = subMenuHeight + supMenuHeight + 10
+    FilterElement.current.style.top = totalHeight
+  }, [])
+
+
   let movil_viewport = window.innerWidth < 768;
-  // console.log('FILTERS COMPONENT =================> currentFilter ::', currentFilter, props)
+
+  const selectListData = props.view !== "withdraw_accounts" ? WALLET_FILTER_LIST : WITHDRAW_ACCOUNT_FILTER_LIST
+  
 
   return (
-    <section className="ALFilterSect">
+    <section ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'relativePos' : 'stickyPos'}`}>
       <div
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}
       >
 
-        {props.view !== "withdraw_accounts" && (
-          <p
-            id="deposits"
-            className={`ALitemFill ${
-              currentFilter === "deposits" ? "ALactive" : ""
-            }`}
-            onClick={filterChange}
-          >
-            <i id="deposits" className="fas fa-arrow-down"></i>
-            {!movil_viewport && "Depositos"}
-          </p>
-        )}
-        <p
-          id="withdraws"
-          className={`ALitemFill ${
-            currentFilter === "withdraws" ? "ALactive" : ""
-          }`}
-          onClick={filterChange}
-        >
-          <i id="withdraws" className="fas fa-arrow-up"></i>
-          {!movil_viewport && "Retiros"}
-        </p>
-        {props.view !== "withdraw_accounts" && (
-          <p
-            id="swaps"
-            className={`ALitemFill ${
-              currentFilter === "swaps" ? "ALactive" : ""
-            }`}
-            onClick={filterChange}
-          >
-            <i id="swaps" className="fas fa-retweet"></i>
-            {!movil_viewport && "Cambios"}
-          </p>
-        )}
+        <SelectList
+          actionHandle={filterChange}
+          list={selectListData}
+          selectedItem={currentFilter}
+        />
+      
       </div>
 
       <div
@@ -83,11 +68,7 @@ const ActivityFilters = (props) => {
             style={{ fontSize: movil_viewport ? "12px" : "14px" }}
           >
             <i className="fas fa-filter"></i>
-            {movil_viewport ? (
-              <p>{currentFilter && currentFilter.toUpperCase()}</p>
-            ) : (
-              <p>Filtros</p>
-            )}
+            <p className="fuente">Historial de:</p>
           </div>
         </div>
       </div>
