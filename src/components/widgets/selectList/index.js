@@ -6,7 +6,7 @@ import { Container } from './dropDownFilter/styles'
 const SelectList = ({ actionHandle, list, selectedItem }) => {
 
   // @param {Object} list {[key]:{name:ui_name, value:value}} ej: { deposits:{ name:"Depósitos", value:"deposits" } }
-  // @param {String} selectedItem 
+  // @param {String} selectedItem ej: selectedItem = deposits
 
   return(
     <Container>

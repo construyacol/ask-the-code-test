@@ -12,11 +12,14 @@ import loadDynamicScript from '../../../../utils/loadDynamicScript'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import useSocket from '../../../hooks/useSocket'
 import { useSelector } from "react-redux";
+import { ENVIRONMENT_VAR } from '../../../../const/const'
+
 import './styles.css'
 
 
-const modelsPath = '/models'
-// const modelsPath = `${getCdnPath('tensor')}/`
+const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
+
+
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
  
@@ -208,6 +211,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  console.log('modelsPath', modelsPath)
   
 
    if(finalStage){
