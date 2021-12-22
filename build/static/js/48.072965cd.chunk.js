@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[48],{452:function(n,t,e){},563:function(n,t,e){},665:function(n,t,e){"use strict";e.r(t);var s=e(2),a=e(27),c=e(99),o=e(98),i=e(70),r=(e(563),e(452),e(14));class p extends s.Component{render(){return Object(r.jsx)("div",{className:"toastContainer",children:Object(r.jsx)(i.ToastContainer,{})})}}t.default=Object(o.b)(null,(function(n){return{action:Object(a.bindActionCreators)(c.a,n)}}))(p)}}]);
+//# sourceMappingURL=48.072965cd.chunk.js.map

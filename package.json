@@ -50,19 +50,18 @@
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "PORT=2998 cross-env react-scripts start",
+    "start": "node ./scripts/copyFaceApiModelsOnLocal && PORT=2998 cross-env react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
     "start:local": "cross-env REACT_APP_LOCAL_CONFIG=local npm run start:dev",
     "start:build": "npm run build && serve ./build -s -l 5000",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
-    "build": "react-scripts build && npm run build-sw && react-snapshot",
+    "build": "node ./scripts/removeFaceApiModelsFromLocal && react-scripts build && npm run build-sw && react-snapshot",
     "build:staging:serve": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build && serve ./build -s -l 5000",
     "build:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build",
     "build:pre_prod": "cross-env REACT_APP_BUILD_CONFIG='pre_prod' npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cdn": "./postbuild.sh",
     "postbuild": "node ./scripts/preloads.js && ./postbuild.sh"
   },
   "reactSnapshot": {
@@ -85,6 +84,7 @@
   ],
   "devDependencies": {
     "@node-minify/clean-css": "^6.1.0",
+    "pwd-fs": "^2.2.0",
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",

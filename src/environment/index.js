@@ -10,6 +10,9 @@ export const getHostName = () => {
     pre_prod:'cryptosenda',
     production:'coinsenda'
   }
+  
+  console.log('||||||||||||| hostId ====>|', hostId, nodeList[hostId])
+
   return nodeList[hostId]
   // return "cryptosenda"
 }
@@ -70,7 +73,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     }
   };
 } 
-
 console.log('||||||||||||| Environment ====>|', Environment)
+
 
 export default Environment;
