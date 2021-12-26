@@ -249,14 +249,10 @@ class DepositContainer extends Component {
   updateAmountOnState = async (amount) => {
     // let amountw = await this.props.services.number_format(amount)
     // verificamos que no supere el monto maximo permitido por el preveedor
-    const maxDepositAmount =
-      this.state.currentDepositProvider &&
-      this.state.currentDepositProvider.provider.max_amount;
+    const maxDepositAmount = this.state.currentDepositProvider && this.state.currentDepositProvider.provider.max_amount;
     const decimalAmount = new BigNumber(amount);
-    if (!amount || decimalAmount.isLessThan(maxDepositAmount)) {
-      await this.setState({
-        amount: amount,
-      });
+    if (!amount || decimalAmount.isLessThan(maxDepositAmount || '1000000000')) {
+      await this.setState({amount});
     }
     // this.props.action.UpdateFormControl('deposit', (!amount) ? false : (amount<20000) ? false : true)
   };

@@ -7,7 +7,7 @@ const useBeforeUnload = () => {
     const history = useHistory()
     useEffect(()=>{
         window.addEventListener("keydown", async(e) => {
-            console.log('||||||||||||||  useBeforeUnload ==>', e.keyCode === 116)
+            // console.log('||||||||||||||  useBeforeUnload ==>', e.keyCode === 116)
             if (e.keyCode === 116 || (e.keyCode === 82 && ctrlKeyDown)) {
                 // Pressing F5 or Ctrl+R
                 if(window.location.pathname.split("/").length>2){
