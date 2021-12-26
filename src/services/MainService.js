@@ -136,7 +136,7 @@ export class MainService extends inheritances {
     if (!wallets && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
-    this.postLoader(callback, false);
+    // this.postLoader(callback, false);
     return;
   }
 
