@@ -38,6 +38,7 @@ export class WithdrawService extends WebService {
       // TODO: create function to normalize user
       const toNormalize = await normalizeUser(userWithOutWA);
       await this.dispatch(updateNormalizedDataAction(toNormalize));
+      document.querySelector('#home-container')?.classList?.add('wA')
       return this.dispatch(resetModelData({ withdraw_accounts: [] }));
     }
 
@@ -118,13 +119,13 @@ export class WithdrawService extends WebService {
       withdraw_accounts: [...withdrawAccounts],
     };
 
-    if (await this.isCached("withdraw_accounts", result)) {
-      return withdrawAccounts;
-    }
+    // if (await this.isCached("withdraw_accounts", result)) {
+    //   return withdrawAccounts;
+    // }
 
     const normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
-
+    document.querySelector('#home-container')?.classList?.add('wA')
     return withdrawAccounts;
   }
 

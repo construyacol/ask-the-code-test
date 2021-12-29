@@ -237,9 +237,10 @@ export const InputButton = (props) => {
     </div>
   );
 };
-
+ 
 export const ButtonForms = (props) => {
   // SimpleLoader
+
 
   // Propiedades componente:
   // active: true/false, define si el boton esta o no disponible(available)
@@ -253,7 +254,7 @@ export const ButtonForms = (props) => {
       {props.active ? (
         <div
           id={_id}
-          className={`botonForm swap ${loader ? "loader" : ""} ${
+          className={`continue-withdraw-button botonForm swap ${loader ? "loader" : ""} ${
             props.type
           } fuente`}
           onClick={loader ? null : props.siguiente}

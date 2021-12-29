@@ -45,7 +45,8 @@ class ViewAmountComponent extends Component {
       }
     });
 
-    minAmount = wProvider.provider.min_amount
+    minAmount = wProvider?.provider?.min_amount || '50000' 
+
     // minAmount = new BigNumber(wProvider.provider.min_amount)
     if(!wProvider || !withdraw_account_list) return minAmount;
 
@@ -116,6 +117,7 @@ class ViewAmountComponent extends Component {
       // color:`${classic_view ? '#989898'  : !verify ? '#989898'  : '#1babec'}`,
     };
 
+
     // operation_type="withdraw"
 
     // console.log('|||||||||||||||| VIEW AMOUNT =======> ', currency)
@@ -162,12 +164,13 @@ class ViewAmountComponent extends Component {
             <ButtonForms
               _id={this.props.mainCtaId}
               type="primary"
-              active={
-                operation_type === "deposit" ? parseFloat(amount) >= parseFloat(minAmount) ? true : false
+              active={ 
+                this.props?.withdrawProviders?.length && (operation_type === "deposit" ? parseFloat(amount) >= parseFloat(minAmount) ? true : false
                   : parseFloat(amount) >= parseFloat(minAmount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0
                   ? true
-                  : false
+                  : false)
               }
+              // active={this.props?.withdrawProviders?.length}
               siguiente={handleSubmit}
             >
               Continuar

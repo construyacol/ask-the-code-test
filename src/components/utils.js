@@ -153,6 +153,7 @@ export const handleError = async(err, callback) => {
         // return console.log('<=========== notFindUserToken ===========>')
     case 'JsonWebTokenError': 
         console.log('JsonWebTokenError: ', err)
+        // debugger
       return doLogout('?message=Tu session ha caducado')
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
