@@ -16,7 +16,7 @@ import {
   addIndexToRootObject,
   objectToArray,
 } from "../../../../utils"; 
-import { doLogout } from '../../../utils'
+// import { doLogout } from '../../../utils'
 // import MVList from "../../../widgets/itemSettings/modal_views/listView";
 import { createSelector } from "reselect";
 import withKeyActions from "../../../withKeyActions";
