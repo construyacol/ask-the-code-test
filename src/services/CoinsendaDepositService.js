@@ -31,9 +31,9 @@ export class DepositService extends WebService {
     if (!response) return;
 
     let updateState = true;
-    if (await this.isCached("deposit_providers", response)) {
-      updateState = false;
-    }
+    // if (await this.isCached("deposit_providers", response)) {
+    //   updateState = false;
+    // }
 
     const result = response.reduce((result, item) => {
       result.push({
@@ -55,6 +55,8 @@ export class DepositService extends WebService {
 
     const normalizedData = await normalizeUser(finalData);
     updateState && this.dispatch(updateNormalizedDataAction(normalizedData));
+    document.querySelector('#home-container')?.classList?.add('dP')
+
     return normalizedData.entities.deposit_providers;
   }
 

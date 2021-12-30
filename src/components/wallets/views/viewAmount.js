@@ -119,8 +119,7 @@ class ViewAmountComponent extends Component {
 
 
     // operation_type="withdraw"
-
-    // console.log('|||||||||||||||| VIEW AMOUNT =======> ', currency)
+    const buttonValidation = operation_type === "withdraw" ? this.props?.withdrawProviders?.length : true 
 
     // console.log('||||||||||| VIEW  AMOUNT  ||||||||||', parseFloat(available) > minAmount, parseFloat(available), minAmount, typeof(parseFloat(available)), typeof(minAmount))
     return (
@@ -165,12 +164,11 @@ class ViewAmountComponent extends Component {
               _id={this.props.mainCtaId}
               type="primary"
               active={ 
-                this.props?.withdrawProviders?.length && (operation_type === "deposit" ? parseFloat(amount) >= parseFloat(minAmount) ? true : false
+                buttonValidation && (operation_type === "deposit" ? parseFloat(amount) >= parseFloat(minAmount) ? true : false
                   : parseFloat(amount) >= parseFloat(minAmount) && parseFloat(amount) <= parseFloat(available) && parseFloat(amount) > 0
                   ? true
                   : false)
               }
-              // active={this.props?.withdrawProviders?.length}
               siguiente={handleSubmit}
             >
               Continuar
