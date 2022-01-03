@@ -6,6 +6,15 @@
   border-bottom-color: #d5d5d6;
 }
 
+.securityCenterDetail_.contenido{
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.itemSecurityCenter[name=email]{
+  display: none;
+}
+
 .subItemSecurityCenter {
   height: 150px;
   display: grid;
