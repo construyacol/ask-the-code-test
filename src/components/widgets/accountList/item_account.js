@@ -279,13 +279,12 @@ const Wallet = (props) => {
       ? "ethereum_account"
       : account.currency.currency;
 
+
   return (
     <WalletLayout
       id={`hoverable${focusedId}`}
       isSelected={isSelected}
-      className={`walletLayout ${props.loaderAccount ? "loading" : ""} ${
-        currency.currency
-      } ${shouldHaveDeleteClassName && "deleted"}`}
+      className={`walletLayout ${props.loaderAccount ? "loading" : ""} ${currency.currency} ${shouldHaveDeleteClassName && "deleted"}`}
       wallet
       inscribed
     >
@@ -300,6 +299,7 @@ const Wallet = (props) => {
           <AccountCta
             handleAction={props.handleAction}
             payload={props.account_type}
+            className={`clickeable ${currency?.currency}`}
           />
           <OptionsAccount
             account_detail={props.handleAction}
@@ -350,6 +350,7 @@ const WithdrawAccount = (props) => {
     isStatic,
   } = props;
   const { bank_name, id, account_number, inscribed, used_counter, state } = account;
+
   return (
     <WithdrawAccountL
       id={`hoverable${focusedId}`}
@@ -511,7 +512,7 @@ const AccountCta = (props) => {
   };
 
   return (
-    <ACta onClick={handleAction}></ACta>
+    <ACta className={props.className} onClick={handleAction}></ACta>
     //<div className={`ItemWCta ${(current_view === 'detail' || type === 'withdraw') ? 'noVisible' : ''}`} onClick={this.wallet_detail} ></div>
   );
 };

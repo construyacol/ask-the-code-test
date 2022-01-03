@@ -80,12 +80,13 @@ class SocketsComponent extends Component {
         // setInterval(tryReconnect, 30000);
         let intervalID = setInterval(tryReconnect, 30000);
         socket.on("disconnect", async function (reason) {
+          console.log(' ============ SOCKET discconect', reason)
+          debugger
           intervalID = setInterval(tryReconnect, 2000);
         });
 
         socket.on("connect_error", (reason) => {
           console.log('|||||||||||||||||||||||||  connect_error ===>', reason)
-          debugger
           setTimeout(() => {
             socket.connect();
           }, 1000);
@@ -99,7 +100,7 @@ class SocketsComponent extends Component {
           socket.emit("authentication", body);
 
           socket.on("authenticated", () => {
-
+            document.querySelector('#home-container')?.classList?.add('socket-authenticated')
             socket.on(`/swap/${user.id}`, async (swap) => {
               if (swap.state === "pending") {
                 await this.setState({ currentSwap: swap });
@@ -372,7 +373,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async (deposit) => {
 
-    // console.log('|||||||||||   deposit_mangagement   ==> ', deposit)
+    console.log('|||||||||||||||||||||||||||| |  DEPOSIT_MANAGEMENT   ==> ', deposit)
     // debugger
 
     if (deposit.state === "pending" && deposit.currency_type === "fiat") {

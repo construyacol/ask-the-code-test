@@ -5,6 +5,9 @@
 /tmp
 /out-tsc
 
+# public
+/public/models
+
 # dependencies
 /node_modules
 

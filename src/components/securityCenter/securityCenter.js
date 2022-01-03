@@ -18,7 +18,7 @@ const SecurityCenter = (props) => {
   const validate_state = () => {
     if (props.verification_state !== "accepted") {
       scroller.scrollTo("firstInsideContainer", {
-        offset: 220,
+        offset: -50,
         duration: 1,
         smooth: true,
         containerId: "containerElement",
@@ -45,10 +45,10 @@ const SecurityCenter = (props) => {
   }, [globalState?.modelData?.user?.security_center])
 
 
-
+ 
   return (
     <Fragment>
-      <DetailContainerLayout title="Centro de seguridad" {...props}>
+      <DetailContainerLayout customClass="securityCenterDetail_" title="Centro de seguridad" {...props}>
         {props.loader ? (
           <SimpleLoader label="Obteniendo configuraciones" />
         ) : (

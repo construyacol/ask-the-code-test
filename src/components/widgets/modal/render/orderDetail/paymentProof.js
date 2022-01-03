@@ -228,7 +228,7 @@ export const PaymentProof = ({ payload }) => {
   return (
     <>
       <PaymentProofContainer
-        className={`${currentOrder.currency_type} ${currentOrder.state}`}
+        className={`paymentProofCont ${currentOrder.currency_type} ${currentOrder.state}`}
       >
         {(!imgProof || loader) && (
           <LoaderContainer>

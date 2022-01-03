@@ -11,8 +11,6 @@ export const getHostName = () => {
     production:'coinsenda'
   }
   
-  console.log('||||||||||||| hostId ====>|', hostId, nodeList[hostId])
-
   return nodeList[hostId]
   // return "cryptosenda"
 }

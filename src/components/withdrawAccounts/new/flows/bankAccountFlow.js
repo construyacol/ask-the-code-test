@@ -16,7 +16,7 @@ import {
   addIndexToRootObject,
   objectToArray,
 } from "../../../../utils"; 
-import { doLogout } from '../../../utils'
+// import { doLogout } from '../../../utils'
 // import MVList from "../../../widgets/itemSettings/modal_views/listView";
 import { createSelector } from "reselect";
 import withKeyActions from "../../../withKeyActions";
@@ -57,7 +57,8 @@ class BankAccountFlow extends Component {
     let res = withdraw_providers_list;
     // console.log('withdraw_providers_list', withdraw_providers_list)
     if (!res || (res && !res.length)) {
-      return doLogout('?message=Vuelve a iniciar session');
+      return
+      // return doLogout('?message=Vuelve a iniciar session');
     }
 
     let bank_list = res && res[0].info_needed.bank_name;

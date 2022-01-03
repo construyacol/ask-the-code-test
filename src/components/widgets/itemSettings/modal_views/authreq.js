@@ -11,7 +11,7 @@ const AuthReq = (props) => {
   const [error, setError] = useState();
   const [valueState, setValueState] = useState();
   const [desaparecer, setDesaparecer] = useState();
-  const [ coinsendaServices ,actions ] = useCoinsendaServices();
+  const [ coinsendaServices, ,actions ] = useCoinsendaServices();
 
   const success = (value, res) => {
     setButtonActive(true);

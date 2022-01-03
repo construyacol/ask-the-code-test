@@ -27,8 +27,7 @@ const ReferralInfo = () => {
     const { tx_path, order_id } = useParams();
     const modelData = useSelector(({ modelData }) => modelData);
     const { withdraw_account_id } = modelData[tx_path][order_id]
-    const withdrawAccount = modelData.withdraw_accounts[withdraw_account_id]
-    console.log('|||||||||||  WithdrawFiatInfo ==> ', withdrawAccount)
+    const withdrawAccount = modelData?.withdraw_accounts && modelData?.withdraw_accounts[withdraw_account_id]
 
     return(
         <WithdrawAccountCont className={`${!withdrawAccount ? 'unAvalaible' : ''}`}>

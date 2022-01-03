@@ -17,6 +17,7 @@ class MenuPrincipalContainer extends Component {
         duration: this.props.path === link ? 500 : 0,
         smooth: true,
         containerId: "containerElement",
+        offset: -50
       });
     });
   };
