@@ -53,7 +53,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
   };
 
   useEffect(() => {
-    if (!withdrawAccounts.length) {
+    if (!withdrawAccounts?.length) {
       return;
     }
     const WIN = window;

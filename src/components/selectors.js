@@ -6,6 +6,7 @@ const selectWithdrawAccountsByProviderType = createSelector(
   (_, provider_type) => provider_type,
   (withdraw_accounts, provider_type) => {
     let res = [];
+    if(!withdraw_accounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
       withdraw_account.provider_type === provider_type &&
