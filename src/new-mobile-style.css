@@ -1,7 +1,7 @@
 .contenido {
   position: relative;
   background: #f9f9fb;
-  padding-top: 3vh;
+  padding-top: 90px;
   padding-bottom: 8vh;
   /* min-height: calc(100vh - 130px); */
   min-height: calc(100vh - 25vh);

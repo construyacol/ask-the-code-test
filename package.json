@@ -7,7 +7,6 @@
     "@sentry/browser": "^5.4.0",
     "aws-sdk": "^2.605.0",
     "bignumber.js": "^8.1.1",
-    "chart.js": "^2.8.0",
     "compressorjs": "^1.0.5",
     "headroom.js": "0.9.4",
     "image-type": "^4.1.0",

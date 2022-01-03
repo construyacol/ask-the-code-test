@@ -3,7 +3,7 @@ import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { useActions } from "../../hooks/useActions";
-import { getCdnPath } from '../../environment'
+// import { getCdnPath } from '../../environment'
 import "./mSuperior.css";
 
 
@@ -17,7 +17,7 @@ const MenuSuperiorLayout = (props) => {
   const actions = useActions();
 
   const {
-    headRoomClass,
+    // headRoomClass,
     item_quote,
     movil,
     currentPair,
@@ -26,7 +26,7 @@ const MenuSuperiorLayout = (props) => {
     mouseOver,
     // openSelectCountry,
     loggedIn,
-    toggle_menu,
+    // toggle_menu,
     back_method,
     match,
   } = props;
@@ -73,13 +73,13 @@ const MenuSuperiorLayout = (props) => {
           </div>
         </div>
         <div
-          className={`containerMenuSuperior ${headRoomClass}`}
+          className={`containerMenuSuperior`}
           id="mSuperior"
           onMouseOver={mouseOver}
         >
           {loggedIn ? (
             <div className="capsuleMenu1">
-              {window.innerWidth > 768 ? (
+              {/* {window.innerWidth > 768 ? (
                 <div className="itemSup closeSesi" onClick={showPrices}>
                   <p>Ver precios</p>
                   <i className="fas fa-tags"></i>
@@ -97,21 +97,80 @@ const MenuSuperiorLayout = (props) => {
                     <i className="fas fa-tags"></i>
                   </div>
                 </>
-              )}
+              )} */}
+              {!currentPair ? (
+              <div className="cagando">
+                <SimpleLoader color="green" grid="Msuperior" />
+              </div>
+            ) : (
+              <>
+                {/* <img
+                  className="itemFuera"
+                  src={`${getCdnPath('assets')}coins/m_superior/${currency.includes("testnet") ? "bitcoin" : currency}.png`}
+                  width={currency === "usd" ? 32 : 22}
+                  alt=""
+                  id={currency}
+                  title={currency}
+                /> */}
 
-              {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
-              <div className="itemSup"><i className="fas fa-bell"></i></div> */}
+<div className="itemSup closeSesi" onClick={showPrices}>
+                    <p>Ver precios</p>
+                    <i className="fas fa-tags"></i>
+                  </div>
 
-              {/* {
-                window.innerWidth>768 &&
-                <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
-              } */}
+                <div className={`cotization ${movil ? "movil" : "desktop"}`}>
+                  {!movil ? (
+                    <PricesComponent
+                      change={true}
+                      data={{
+                        currencyLabel: currency,
+                        buyPrice: buy_price,
+                        sellPrice: sell_price,
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <p
+                        className={`buy ${movil ? "movil" : "desktop"}`}
+                        style={{
+                          display: item_quote.buy || !movil ? "flex" : "none",
+                        }}
+                      >
+                        {venta}
+                        <span>
+                          <code className="monto">${sell_price}</code>
+                          <i
+                            className="Qventa fas fa-angle-double-up"
+                            style={{ display: movil ? "initial" : "none" }}
+                          ></i>
+                        </span>
+                      </p>
+                      <p
+                        className={`sell ${movil ? "movil" : "desktop"}`}
+                        style={{
+                          display: item_quote.sell || !movil ? "flex" : "none",
+                        }}
+                      >
+                        {compra}
+                        <span>
+                          <code className="monto">${buy_price}</code>
+                          <i
+                            className="Qventa fas fa-angle-double-down"
+                            style={{ display: movil ? "initial" : "none" }}
+                          ></i>
+                        </span>
+                      </p>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
             </div>
           ) : (
             <div className="loggedInFalse"></div>
           )}
 
-          <div className="capsuleMenu2">
+          {/* <div className="capsuleMenu2">
             {!currentPair ? (
               <div className="cagando">
                 <SimpleLoader color="green" grid="Msuperior" />
@@ -174,7 +233,7 @@ const MenuSuperiorLayout = (props) => {
                 </div>
               </>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

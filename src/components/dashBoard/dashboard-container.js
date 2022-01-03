@@ -3,7 +3,6 @@ import loadable from "@loadable/component";
 // import { hotjar } from "react-hotjar";
 import { Element, Events, scrollSpy } from "react-scroll";
 import { Route, Switch } from "react-router-dom";
-import QuoteContainer from "../widgets/quote/quoteContainer";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 // import FreshChat from "../../services/freshChat";
@@ -15,6 +14,7 @@ import useBlockScroll from "../../hooks/useBlockScroll";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { LazyLoaderPage } from "./dashboard-skeletons";
 import "./dashboard.css";
+import '../widgets/items/items.css'
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"),
   {
@@ -134,7 +134,7 @@ function DashBoardContainer(props) {
         }}
       ></div>
       <Element id="containerElement" className="dashBoardLayout">
-        <QuoteContainer />
+        {/* <QuoteContainer /> */}
         <div className="containerSection" name="firstInsideContainer">
           <Route
             path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
