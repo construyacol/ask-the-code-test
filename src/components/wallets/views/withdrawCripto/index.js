@@ -205,6 +205,9 @@ export const CriptoView = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
+  // console.log('|||||||||||||||||||||||||||  addressState ===> ', addressState)
+
+
   return (
     <WithdrawForm
       id="withdrawForm"
@@ -241,7 +244,7 @@ export const CriptoView = () => {
         )}
         AuxComponent={[
           () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
-          () => (<AddressTagList show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
+          () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
           () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
         ]}
       />

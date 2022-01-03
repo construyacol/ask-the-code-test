@@ -55,6 +55,7 @@ export default () => {
       case "address-account":
         // case: `address` si encontramos @ al inicio de la linea: ^@
         if (inputName === "address" && e.target.value.match(/^@/g)) {
+          setInputState(null)
           // console.log('activando sistema de tags')
           return;
         }

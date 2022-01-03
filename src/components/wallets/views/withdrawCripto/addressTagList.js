@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
 // import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
 
-const AddressTagList = ({ show, addressValue, setAddressValue }) => {
+const AddressTagList = ({ show, addressValue, setAddressValue, addressState }) => {
 
 
 
@@ -47,7 +47,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
   const handleEventClick = (e) => {
     console.log('|||||||||||||||||||||||||| handleEventClick ===> ', e.target.classList, show, addressValue)
     e.stopPropagation()
-    if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress')) {
+    if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress') && !addressState) {
       setAddressValue("");
     }
   };
@@ -65,10 +65,10 @@ const AddressTagList = ({ show, addressValue, setAddressValue }) => {
     return null;
   }
 
-  console.log('|||||||||||||||||||||||||||  withdrawAccounts ===> ', withdrawAccounts)
+  // console.log('|||||||||||||||||||||||||||  withdrawAccounts ===> ', tagWithdrawAccount, withdrawAccounts)
 
   return (
-    <SearchComponentWrapper>
+    <SearchComponentWrapper id="addressTagList">
       <SearchComponentContainer className="search-component">
         {searchList.length
           ? searchList.map((item, index) => {
