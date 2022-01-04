@@ -86,8 +86,11 @@
   position: relative;
 }
 
+.pricesButton_{
+ min-width: 120px;
+}
+
 .itemSup {
-  min-width: 120px;
   width: auto;
   height: 100%;
   display: flex;
@@ -98,6 +101,11 @@
   cursor: pointer;
   color: white;
   font-size: 18px;
+}
+
+.burgerMen{
+  position: absolute;
+  right: 40px;
 }
 
 .itemSup p {
@@ -234,7 +242,6 @@
 
 .cotization {
   display: grid;
-  width: 100%;
   display: grid;
   justify-items: center;
   width: 100%;

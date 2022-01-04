@@ -79,52 +79,27 @@ const MenuSuperiorLayout = (props) => {
         >
           {loggedIn ? (
             <div className="capsuleMenu1">
-              {/* {window.innerWidth > 768 ? (
-                <div className="itemSup closeSesi" onClick={showPrices}>
+              {window.innerWidth > 768 ? (
+                <div className="itemSup closeSesi pricesButton_" onClick={showPrices}>
                   <p>Ver precios</p>
                   <i className="fas fa-tags"></i>
                 </div>
               ) : (
                 <>
                   <div
-                    className="itemSup closeSesi burgerMen"
+                    className="itemSup burgerMen"
                     onClick={toggle_menu}
                   >
                     <i className="fas fa-bars"></i>
                   </div>
-                  <div className="itemSup closeSesi" onClick={showPrices}>
-                    <p>Ver precios</p>
-                    <i className="fas fa-tags"></i>
-                  </div>
                 </>
-              )} */}
+              )}
               {!currentPair ? (
               <div className="cagando">
                 <SimpleLoader color="green" grid="Msuperior" />
               </div>
             ) : (
               <>
-                {/* <img
-                  className="itemFuera"
-                  src={`${getCdnPath('assets')}coins/m_superior/${currency.includes("testnet") ? "bitcoin" : currency}.png`}
-                  width={currency === "usd" ? 32 : 22}
-                  alt=""
-                  id={currency}
-                  title={currency}
-                /> */}
-                
-                
-                  <>
-                    <div className="itemSup closeSesi" onClick={showPrices}>
-                      <p>Ver precios</p>
-                      <i className="fas fa-tags"></i>
-                    </div>
-                    <div
-                    className="itemSup closeSesi burgerMen"
-                    onClick={toggle_menu}
-                    /> 
-                  </>
-
                 <div className={`cotization ${movil ? "movil" : "desktop"}`}>
                   {!movil ? (
                     <PricesComponent

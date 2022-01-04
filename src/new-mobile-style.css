@@ -466,6 +466,11 @@
 }
 
 @media only screen and (max-width: 768px) {
+
+  .cotization{
+    width: 100vw;
+  }
+
   .DCcurrent_wallet {
     grid-template-rows: 190px 1fr;
     padding-top: 75px !important;
