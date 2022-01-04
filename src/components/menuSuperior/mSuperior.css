@@ -211,6 +211,11 @@
   justify-self: left;
 }
 
+.buy.movil, .sell.movil{
+  margin: 0;
+  color: aliceblue;
+}
+
 .buy.movil {
   justify-self: center;
 }

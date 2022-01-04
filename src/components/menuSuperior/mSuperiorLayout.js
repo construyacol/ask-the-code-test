@@ -112,11 +112,20 @@ const MenuSuperiorLayout = (props) => {
                   id={currency}
                   title={currency}
                 /> */}
-
-<div className="itemSup closeSesi" onClick={showPrices}>
-                    <p>Ver precios</p>
-                    <i className="fas fa-tags"></i>
-                  </div>
+                
+                {
+                  !movil &&
+                  <>
+                    <div className="itemSup closeSesi" onClick={showPrices}>
+                      <p>Ver precios</p>
+                      <i className="fas fa-tags"></i>
+                    </div>
+                    <div
+                      className="itemSup closeSesi burgerMen"
+                      onClick={null}
+                    ></div> 
+                  </>
+                }  
 
                 <div className={`cotization ${movil ? "movil" : "desktop"}`}>
                   {!movil ? (
