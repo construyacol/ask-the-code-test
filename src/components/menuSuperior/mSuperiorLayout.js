@@ -26,7 +26,7 @@ const MenuSuperiorLayout = (props) => {
     mouseOver,
     // openSelectCountry,
     loggedIn,
-    // toggle_menu,
+    toggle_menu,
     back_method,
     match,
   } = props;
@@ -113,19 +113,17 @@ const MenuSuperiorLayout = (props) => {
                   title={currency}
                 /> */}
                 
-                {
-                  !movil &&
+                
                   <>
                     <div className="itemSup closeSesi" onClick={showPrices}>
                       <p>Ver precios</p>
                       <i className="fas fa-tags"></i>
                     </div>
                     <div
-                      className="itemSup closeSesi burgerMen"
-                      onClick={null}
-                    ></div> 
+                    className="itemSup closeSesi burgerMen"
+                    onClick={toggle_menu}
+                    /> 
                   </>
-                }  
 
                 <div className={`cotization ${movil ? "movil" : "desktop"}`}>
                   {!movil ? (
