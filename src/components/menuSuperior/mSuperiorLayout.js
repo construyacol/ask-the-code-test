@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { SelectCountryButton } from '../widgets/buttons/buttons'
 import { useActions } from "../../hooks/useActions";
-import { getCdnPath } from '../../environment'
+// import { getCdnPath } from '../../environment'
 import "./mSuperior.css";
 
 
@@ -17,8 +17,8 @@ const MenuSuperiorLayout = (props) => {
   const actions = useActions();
 
   const {
-    headRoomClass,
-    item_quote,
+    // headRoomClass,
+    // item_quote,
     movil,
     currentPair,
     sell_price,
@@ -30,6 +30,8 @@ const MenuSuperiorLayout = (props) => {
     back_method,
     match,
   } = props;
+
+  const [ itemQuote, setItemQuote ] = useState({buy:true, sell:false})
 
   const showPrices = async () => {
     const PricesModal = await import("../widgets/prices");
@@ -48,6 +50,9 @@ const MenuSuperiorLayout = (props) => {
   let currency = currentPair
     ? currentPair.primary_currency.currency
     : "coinsenda";
+
+    console.log('||||||||||||||||||||  itemQuote ==> ', itemQuote)
+    // debugger
 
   return (
     <section className={`MenuSuperiorLayout fuente `}>
@@ -73,45 +78,84 @@ const MenuSuperiorLayout = (props) => {
           </div>
         </div>
         <div
-          className={`containerMenuSuperior ${headRoomClass}`}
+          className={`containerMenuSuperior`}
           id="mSuperior"
           onMouseOver={mouseOver}
         >
           {loggedIn ? (
             <div className="capsuleMenu1">
               {window.innerWidth > 768 ? (
-                <div className="itemSup closeSesi" onClick={showPrices}>
+                <div className="itemSup closeSesi pricesButton_" onClick={showPrices}>
                   <p>Ver precios</p>
                   <i className="fas fa-tags"></i>
                 </div>
               ) : (
                 <>
                   <div
-                    className="itemSup closeSesi burgerMen"
+                    className="itemSup burgerMen"
                     onClick={toggle_menu}
                   >
                     <i className="fas fa-bars"></i>
                   </div>
-                  <div className="itemSup closeSesi" onClick={showPrices}>
-                    <p>Ver precios</p>
-                    <i className="fas fa-tags"></i>
-                  </div>
                 </>
               )}
-
-              {/* <div className="itemSup"><i className="far fa-question-circle"></i></div>
-              <div className="itemSup"><i className="fas fa-bell"></i></div> */}
-
-              {/* {
-                window.innerWidth>768 &&
-                <SelectCountryButton bar="rigth" handleClick={openSelectCountry} />
-              } */}
+              {!currentPair ? (
+              <div className="cagando">
+                <SimpleLoader color="green" grid="Msuperior" />
+              </div>
+            ) : (
+              <>
+                <div className={`cotization ${movil ? "movil" : "desktop"}`}>
+                  {!movil ? (
+                    <PricesComponent
+                      change={true}
+                      data={{
+                        currencyLabel: currency,
+                        buyPrice: buy_price,
+                        sellPrice: sell_price,
+                      }}
+                    />
+                  ) : (
+                    <>
+                      <p
+                        className={`buy ${movil ? "movil" : "desktop"}`}
+                        style={{display: itemQuote.buy || !movil ? "flex" : "none"}}
+                        onClick={() => setItemQuote(prevState => { return { buy:!prevState.buy, sell:!prevState.sell }}) }
+                      >
+                        {venta}
+                        <span>
+                          <code className="monto">${sell_price}</code>
+                          <i
+                            className="Qventa fas fa-angle-double-up"
+                            style={{ display: movil ? "initial" : "none" }}
+                          ></i>
+                        </span>
+                      </p>
+                      <p
+                        className={`sell ${movil ? "movil" : "desktop"}`}
+                        style={{ display: itemQuote.sell || !movil ? "flex" : "none" }}
+                        onClick={() => setItemQuote(prevState => { return { buy:!prevState.buy, sell:!prevState.sell }}) }
+                      >
+                        {compra}
+                        <span>
+                          <code className="monto">${buy_price}</code>
+                          <i
+                            className="Qventa fas fa-angle-double-down"
+                            style={{ display: movil ? "initial" : "none" }}
+                          ></i>
+                        </span>
+                      </p>
+                    </>
+                  )}
+                </div>
+              </>
+            )}
             </div>
           ) : (
             <div className="loggedInFalse"></div>
           )}
 
-          <div className="capsuleMenu2">
+          {/* <div className="capsuleMenu2">
             {!currentPair ? (
               <div className="cagando">
                 <SimpleLoader color="green" grid="Msuperior" />
@@ -174,7 +218,7 @@ const MenuSuperiorLayout = (props) => {
                 </div>
               </>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

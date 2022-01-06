@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Headroom from "headroom.js";
+// import Headroom from "headroom.js";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { formatToCurrency } from "../../utils/convert_currency";
@@ -39,7 +39,7 @@ class MenuSuperiorContainer extends Component {
   };
 
   mouseOver = () => {
-    this.setState({ headRoomClass: "pinned" });
+    // this.setState({ headRoomClass: "pinned" });
     // this.props.action.HeadRoom('pinned')
   };
 
@@ -78,22 +78,22 @@ class MenuSuperiorContainer extends Component {
   async componentDidMount() {
     this._isMounted = true;
     // this.setState({headRoomClass:'unpinned'})
-    let menuSuperior = document.getElementById("mSuperior");
-    let detonador = document.getElementById("containerElement");
-    const headroom = new Headroom(menuSuperior, {
-      offset: 100,
-      tolerance: 10,
-      scroller: detonador,
-      onUnpin: () => {
-        this.setState({ headRoomClass: "unpinned" });
-        // this.props.action.HeadRoom('unpinned')
-      },
-      onPin: () => {
-        this.setState({ headRoomClass: "pinned" });
-        // this.props.action.HeadRoom('pinned')
-      },
-    });
-    await headroom.init();
+    // let menuSuperior = document.getElementById("mSuperior");
+    // let detonador = document.getElementById("containerElement");
+    // const headroom = new Headroom(menuSuperior, {
+    //   offset: 100,
+    //   tolerance: 10,
+    //   scroller: detonador,
+    //   onUnpin: () => {
+    //     this.setState({ headRoomClass: "unpinned" });
+    //     // this.props.action.HeadRoom('unpinned')
+    //   },
+    //   onPin: () => {
+    //     this.setState({ headRoomClass: "pinned" });
+    //     // this.props.action.HeadRoom('pinned')
+    //   },
+    // });
+    // await headroom.init();
 
     if (!this.props.currentPair) {
       // this.props.action.getPairsByCountry(this.props.user.country)

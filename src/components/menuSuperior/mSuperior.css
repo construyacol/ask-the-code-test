@@ -86,8 +86,11 @@
   position: relative;
 }
 
+.pricesButton_{
+ min-width: 120px;
+}
+
 .itemSup {
-  min-width: 40px;
   width: auto;
   height: 100%;
   display: flex;
@@ -98,6 +101,11 @@
   cursor: pointer;
   color: white;
   font-size: 18px;
+}
+
+.burgerMen{
+  position: absolute;
+  right: 40px;
 }
 
 .itemSup p {
@@ -211,9 +219,23 @@
   justify-self: left;
 }
 
-.buy.movil {
-  justify-self: center;
+.buy.movil, .sell.movil{
+  margin: 0;
+  color: aliceblue;
 }
+
+.buy.movil{
+  justify-self: center;
+  position: relative;
+}
+
+.buy.movil::after{
+  width: 100%;
+  content: '';
+  height: 100%;
+  position: absolute;
+}
+
 
 .sell.movil {
   justify-self: center;
@@ -223,17 +245,18 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.cotization.movil {
-  grid-template-columns: 1fr;
-}
-
 .cotization {
   display: grid;
-  width: 100%;
   display: grid;
   justify-items: center;
   width: 100%;
   column-gap: 30px;
+}
+
+
+.cotization.movil {
+  grid-template-columns: 1fr;
+  width: 100vw;
 }
 
 .headerFirstSection a {

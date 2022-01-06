@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Chart from "chart.js";
+// import Chart from "chart.js";
 import { connect } from "react-redux";
 import actions from "../../../actions";
 import { bindActionCreators } from "redux";
@@ -82,84 +82,84 @@ const ChartCoin = () => {
     //   gradientFill = 'rgb(43, 55, 66, 0.3)'
     // }
 
-    chart = new Chart(ctx, {
-      type: "line",
-      data: {
-        datasets: [
-          {
-            label: "Precio",
-            data: new Array(45).fill(8000),
-            backgroundColor: gradientFill,
-            fill: true,
-            // backgroundColor: `${this.props.landingView ? gradientFill : 'rgb(43, 55, 66, 0.35)'}`,
-            // borderColor: 'rgb(4, 205, 252)',
-            borderColor: gradientStroke,
-            pointBorderColor: gradientStroke,
-            pointBackgroundColor: gradientStroke,
-            pointHoverBackgroundColor: gradientStroke,
-            pointHoverBorderColor: gradientStroke,
-            borderWidth: 1,
-            steppedLine: "middle",
-          },
-        ],
-        labels: new Array(45).fill(8000),
-      },
-      options: {
-        animation: {
-          duration: 0, // general animation time
-        },
-        hover: {
-          animationDuration: 300, // duration of animations when hovering an item
-        },
-        responsiveAnimationDuration: 0, // animation duration after a resize
-        layout: {
-          padding: {
-            left: -5,
-            right: 0,
-            top: 0,
-            bottom: -30,
-          },
-        },
-        tooltips: {
-          enabled: true,
-        },
-        elements: {
-          line: {
-            tension: 0,
-          },
-        },
-        legend: {
-          display: false,
-        },
-        scales: {
-          xAxes: [
-            {
-              stacked: true,
-              gridLines: {
-                display: false,
-              },
-              ticks: {
-                callback: function (value, index, values) {
-                  return "";
-                },
-              },
-            },
-          ],
-          yAxes: [
-            {
-              gridLines: {
-                display: false,
-              },
-              ticks: {
-                callback: function (value, index, values) {
-                  return "";
-                },
-              },
-            },
-          ],
-        },
-      },
-    });
+    // chart = new Chart(ctx, {
+    //   type: "line",
+    //   data: {
+    //     datasets: [
+    //       {
+    //         label: "Precio",
+    //         data: new Array(45).fill(8000),
+    //         backgroundColor: gradientFill,
+    //         fill: true,
+    //         // backgroundColor: `${this.props.landingView ? gradientFill : 'rgb(43, 55, 66, 0.35)'}`,
+    //         // borderColor: 'rgb(4, 205, 252)',
+    //         borderColor: gradientStroke,
+    //         pointBorderColor: gradientStroke,
+    //         pointBackgroundColor: gradientStroke,
+    //         pointHoverBackgroundColor: gradientStroke,
+    //         pointHoverBorderColor: gradientStroke,
+    //         borderWidth: 1,
+    //         steppedLine: "middle",
+    //       },
+    //     ],
+    //     labels: new Array(45).fill(8000),
+    //   },
+    //   options: {
+    //     animation: {
+    //       duration: 0, // general animation time
+    //     },
+    //     hover: {
+    //       animationDuration: 300, // duration of animations when hovering an item
+    //     },
+    //     responsiveAnimationDuration: 0, // animation duration after a resize
+    //     layout: {
+    //       padding: {
+    //         left: -5,
+    //         right: 0,
+    //         top: 0,
+    //         bottom: -30,
+    //       },
+    //     },
+    //     tooltips: {
+    //       enabled: true,
+    //     },
+    //     elements: {
+    //       line: {
+    //         tension: 0,
+    //       },
+    //     },
+    //     legend: {
+    //       display: false,
+    //     },
+    //     scales: {
+    //       xAxes: [
+    //         {
+    //           stacked: true,
+    //           gridLines: {
+    //             display: false,
+    //           },
+    //           ticks: {
+    //             callback: function (value, index, values) {
+    //               return "";
+    //             },
+    //           },
+    //         },
+    //       ],
+    //       yAxes: [
+    //         {
+    //           gridLines: {
+    //             display: false,
+    //           },
+    //           ticks: {
+    //             callback: function (value, index, values) {
+    //               return "";
+    //             },
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   },
+    // });
   };
 
   return (

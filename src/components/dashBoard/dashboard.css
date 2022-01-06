@@ -6,7 +6,7 @@
   display: grid;
   grid-template-columns: 1fr;
   /* fixed grid for 2 childs elements */
-  grid-template-rows: 45vh 1fr;
+  grid-template-rows: 1fr;
   height: 100vh;
   /*height: 300vh;*/
   position: relative;

@@ -1,7 +1,7 @@
 .contenido {
   position: relative;
   background: #f9f9fb;
-  padding-top: 3vh;
+  padding-top: 90px;
   padding-bottom: 8vh;
   /* min-height: calc(100vh - 130px); */
   min-height: calc(100vh - 25vh);
@@ -466,16 +466,18 @@
 }
 
 @media only screen and (max-width: 768px) {
+
+
   .DCcurrent_wallet {
     grid-template-rows: 190px 1fr;
-    padding-top: 45px;
+    padding-top: 75px !important;
     min-height: calc(100vh - 145px);
   }
 
   .DCcurrent_wallet.wallets.deposit,
   .DCcurrent_wallet.wallets.withdraw,
   .DCcurrent_wallet.wallets.swap {
-    padding: 40px 30px 20px 30px !important;
+    padding: 40px 30px 20px 30px ;
     height: calc(100vh - 160px) !important;
   }
 
