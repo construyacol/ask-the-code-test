@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { SelectCountryButton } from '../widgets/buttons/buttons'
@@ -18,7 +18,7 @@ const MenuSuperiorLayout = (props) => {
 
   const {
     // headRoomClass,
-    item_quote,
+    // item_quote,
     movil,
     currentPair,
     sell_price,
@@ -30,6 +30,8 @@ const MenuSuperiorLayout = (props) => {
     back_method,
     match,
   } = props;
+
+  const [ itemQuote, setItemQuote ] = useState({buy:true, sell:false})
 
   const showPrices = async () => {
     const PricesModal = await import("../widgets/prices");
@@ -48,6 +50,9 @@ const MenuSuperiorLayout = (props) => {
   let currency = currentPair
     ? currentPair.primary_currency.currency
     : "coinsenda";
+
+    console.log('||||||||||||||||||||  itemQuote ==> ', itemQuote)
+    // debugger
 
   return (
     <section className={`MenuSuperiorLayout fuente `}>
@@ -114,9 +119,8 @@ const MenuSuperiorLayout = (props) => {
                     <>
                       <p
                         className={`buy ${movil ? "movil" : "desktop"}`}
-                        style={{
-                          display: item_quote.buy || !movil ? "flex" : "none",
-                        }}
+                        style={{display: itemQuote.buy || !movil ? "flex" : "none"}}
+                        onClick={() => setItemQuote(prevState => { return { buy:!prevState.buy, sell:!prevState.sell }}) }
                       >
                         {venta}
                         <span>
@@ -129,9 +133,8 @@ const MenuSuperiorLayout = (props) => {
                       </p>
                       <p
                         className={`sell ${movil ? "movil" : "desktop"}`}
-                        style={{
-                          display: item_quote.sell || !movil ? "flex" : "none",
-                        }}
+                        style={{ display: itemQuote.sell || !movil ? "flex" : "none" }}
+                        onClick={() => setItemQuote(prevState => { return { buy:!prevState.buy, sell:!prevState.sell }}) }
                       >
                         {compra}
                         <span>

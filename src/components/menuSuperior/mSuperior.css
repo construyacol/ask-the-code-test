@@ -224,9 +224,18 @@
   color: aliceblue;
 }
 
-.buy.movil {
+.buy.movil{
   justify-self: center;
+  position: relative;
 }
+
+.buy.movil::after{
+  width: 100%;
+  content: '';
+  height: 100%;
+  position: absolute;
+}
+
 
 .sell.movil {
   justify-self: center;
@@ -236,16 +245,18 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
-.cotization.movil {
-  grid-template-columns: 1fr;
-}
-
 .cotization {
   display: grid;
   display: grid;
   justify-items: center;
   width: 100%;
   column-gap: 30px;
+}
+
+
+.cotization.movil {
+  grid-template-columns: 1fr;
+  width: 100vw;
 }
 
 .headerFirstSection a {
