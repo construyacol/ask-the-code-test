@@ -234,7 +234,9 @@ const getBiometricStages = async() => {
 
 const getOnBoardingStages = async() => {
   return {
-    "welcome":{}
+    "firstStage":{},
+    "secondStage":{},
+    "thirdStage":{}
   }
 }
 

@@ -62,6 +62,7 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 
 
   useEffect(() => {
+    console.log('currentStage', currentStage)
     if(currentStage >= stageController.length){
       setLoading(true)
       // onSubmit(setLoading, 3000)
@@ -74,28 +75,27 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 
 //   if(loading){return <KycSkeleton/>}
 
-//   if(!loading && finalStage){
-//     // Render success Stage
-//     return (
-//       <DynamicLoadComponent
-//             component={dataForm?.successStage?.component}
-//             handleDataForm={handleDataForm}
-//             handleState={handleState}
-//       />
-//     )
-//   }
+  if(!loading && finalStage){
+    // Render success Stage
+    return (
+      <div>FINAL</div>
+      // <DynamicLoadComponent
+      //       component={dataForm?.successStage?.component}
+      //       handleDataForm={handleDataForm}
+      //       handleState={handleState}
+      // />
+    )
+  }
+
+  console.log('stageData', stageData)
 
   return(
       <Layout>
             <Content>
                 <img src={isoType} width={27} alt="isoType"/>
                 <DynamicLoadComponent
-                    component="onBoardingComponent/welcome.js"
-                    list={stageData?.selectList}
-                    name={stageData?.key}
-                    state={state}
-                    handleAction={onChange}
-                // pass useCallBack to inherited functions to this component
+                    component={`onBoardingComponent/${stageData?.key}.js`}
+                    nextStage={nextStage}
                 />
                 
             </Content>

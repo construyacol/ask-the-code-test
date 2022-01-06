@@ -30,24 +30,15 @@ const OnBoardingComponent = props => {
       init()
     }, []) 
 
-    const cerrar = (e, forceClose) => {
-        if (e && (e.target.dataset.close_modal || forceClose)) {
-          actions.isAppLoading(false);
-          actions.renderModal(null);
-          // history.goBack()
-        }
-    };
+   
 
     return(
       <Router history={history}>
           <Route path="/"> 
               <OtherModalLayout
-                id="close-button-with-OtherModalLayout"
                 className="fullScreen"
-                onkeydown={true}
-                on_click={cerrar}
+                disable
             >
-                <IconClose theme="dark" size={20} />
                   {
                     dataForm ?
                       <FormComponent

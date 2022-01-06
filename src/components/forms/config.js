@@ -24,8 +24,14 @@ let stages = {
   },
   biometric:{},
   onBoarding:{
-    "welcome":{
-      key:"welcome"
+    "firstStage":{
+      key:"firstStage"
+    },
+    "secondStage":{
+      key:"secondStage"
+    },
+    "thirdStage":{
+      key:"thirdStage"
     }
   }
 
