@@ -13,7 +13,10 @@ import { useCoinsendaServices } from "../../../../services/useCoinsendaServices"
 import useSocket from '../../../hooks/useSocket'
 import { useSelector } from "react-redux";
 import { ENVIRONMENT_VAR } from '../../../../const/const'
-
+import {
+  Layout,
+  ContentContainer
+} from '../sharedStyles'
 import './styles.css'
 
 
@@ -243,7 +246,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
         { developerMood &&<Captures state={state}/> }
 
-        <ContentContainer id="faceApiContainer">
+        <ContentContainers id="faceApiContainer">
           <StatusIndicator 
             data={stageData?.solved}
           />
@@ -259,7 +262,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
           </IndicatorStage>
           <h1 className="fuente">{stageData?.uiName}</h1>
           <p className="fuente">Mantén tu cabeza erguida y asegurate que tu rostro encaje dentro del circulo</p>
-        </ContentContainer>
+        </ContentContainers>
       </Layout>
     )
 } 
@@ -268,16 +271,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 export default BiometricKycComponent
 
 
-const Layout = styled.div`
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    background: #fffffffa;
-    position: absolute;
-    justify-items: center;
-    top: 0;
-    left: 0;
-`
+
 
 
 const Indicator = styled.div`
@@ -305,17 +299,7 @@ const VideoContainer = styled.div`
   clip-path: circle(37% at 50% 50%);
 `
 
-const ContentContainer = styled.div`
-
-  position:relative;
-  width:100vw;
-  height:auto;
-  max-width:800px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto auto auto;
-  height: calc(100vh - 80px);
-  padding: 40px 0;
+const ContentContainers = styled(ContentContainer)`
 
   .FRecTitle{
     color:#0198ff;

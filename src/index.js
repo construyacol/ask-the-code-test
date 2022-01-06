@@ -1,6 +1,6 @@
 import React from "react";
 // import { render } from 'react-dom';
-import loadable from "@loadable/component";
+// import loadable from "@loadable/component";
 // import { hydrate, render } from "react-dom";
 import { render } from 'react-snapshot';
 import "./basic-style.css";
@@ -10,24 +10,25 @@ import "./components/sockets/socket_notify/socketNotify.css";
 import "./components/withdrawAccounts/new/views/ticket.css";
 import "./components/withdrawAccounts/new/views/views.css";
 import "./components/wallets/newWallet/newWallet.css";
-import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./serviceWorker"; 
 // import RootContainer from './root'
 import { Provider } from "react-redux";
-import LoaderAplicationTiny from "./components/widgets/loaders/loader-application-tiny";
+// import LoaderAplicationTiny from "./components/widgets/loaders/loader-application-tiny";
 import { _createStore } from "./store";
+import OnBoardingComponent from './components/onBoarding'
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
 // document.body.appendChild(script);
-
-const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
+import RootContainer from "./components/Root"
+// const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
 
 export const store = _createStore();
 
 const rootElement = document.getElementById("home-container");
 const App = () => (
   <Provider store={store}>
-    <LazyRoot />
+    <OnBoardingComponent/>
   </Provider>
 );
 

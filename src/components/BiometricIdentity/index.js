@@ -11,7 +11,6 @@ const FormsComponent = props => {
 
     const actions = useActions();
 
-    const formName = 'biometric'
     const [ dataForm, setDataForm ] = useState()
     
     const init = async() => {
@@ -19,7 +18,7 @@ const FormsComponent = props => {
         {
           personType:'natural',
           level:'level_1',
-          formName
+          formName: 'biometric'
         }
       )
       setDataForm(_dataForm)
@@ -27,7 +26,7 @@ const FormsComponent = props => {
   
     useEffect(()=> { 
       init()
-    }, [])
+    }, []) 
 
     const cerrar = (e, forceClose) => {
         if (e && (e.target.dataset.close_modal || forceClose)) {

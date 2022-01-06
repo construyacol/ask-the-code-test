@@ -7,7 +7,7 @@ const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
  const initialize = async() => {
    if(!component){return}
    const loadedComponent = await import(`./widgets/${component}`)
-     setRenderComponent(loadedComponent)
+   setRenderComponent(loadedComponent)
  }
 
   useEffect(()=>{
@@ -21,7 +21,7 @@ const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
 
   return(
     <>
-      {/* eslint-disable-next-line react/jsx-pascal-case */}
+      {/* // eslint-disable-next-line react/jsx-pascal-case */}
       { RenderComponent && <RenderComponent.default {...props} /> }
     </>
   )

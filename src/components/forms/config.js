@@ -22,7 +22,12 @@ let stages = {
       }
     }
   },
-  biometric:{}
+  biometric:{},
+  onBoarding:{
+    "welcome":{
+      key:"welcome"
+    }
+  }
 
 } 
 
@@ -51,12 +56,16 @@ const successStage = {
   },
   personal:{
     component:"personalKycSuccess"
-  }
+  },
+  onBoarding:{
+    component:"biometricKycSuccess"
+  },
 }
 
 const wrapperComponent = {
   biometric:"biometricKycComponent",
-  personal:"personalKycComponent"
+  personal:"personalKycComponent",
+  onBoarding:"onBoardingComponent"
 }
 
 const formStructure = formName => {

@@ -1,6 +1,6 @@
 import { 
   LABEL_COLOR, 
-  INFO_URL_API 
+  INFO_URL_API  
 } from './const'
 import formStructure from './config.js'
 import { mainService } from "../../services/MainService";
@@ -232,8 +232,15 @@ const getBiometricStages = async() => {
   return stages
 }
 
+const getOnBoardingStages = async() => {
+  return {
+    "welcome":{}
+  }
+}
+
 const dataService = {
-  biometric:getBiometricStages
+  biometric:getBiometricStages,
+  onBoarding:getOnBoardingStages
 }
 
 
