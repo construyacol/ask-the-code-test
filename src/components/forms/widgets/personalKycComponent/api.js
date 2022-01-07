@@ -1,3 +1,4 @@
+
 const countryValidators = {
     res:{
         levels:{
@@ -15,4 +16,8 @@ const countryValidators = {
     }
 }
 
-export default countryValidators
+
+export const ApiGetPersonalStages = (config) => {
+    const { personType, level, formName } = config
+    return countryValidators?.res?.levels[level][formName][personType]
+  }

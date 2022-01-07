@@ -4,6 +4,9 @@ import {
 } from './const'
 import formStructure from './config.js'
 import { mainService } from "../../services/MainService";
+import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
+import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
+
 
 // import countryValidators from './apiRes'
 
@@ -213,7 +216,7 @@ const getNationalityList = async() => {
 }
 
 
-const getBiometricStages = async() => {
+const ApiGetBiometricStages = async() => {
   let stages = {}
   const res = await mainService.getUserBiometric()
   if(!res) return;
@@ -231,24 +234,21 @@ const getBiometricStages = async() => {
   }
   return stages
 }
+ 
 
-const getOnBoardingStages = async() => {
-  return {
-    "firstStage":{},
-    "secondStage":{},
-    "thirdStage":{}
-  }
-}
+
+
 
 const dataService = {
-  biometric:getBiometricStages,
-  onBoarding:getOnBoardingStages
+  biometric:ApiGetBiometricStages,
+  onBoarding:ApiGetOnBoardingStages,
+  personal:ApiGetPersonalStages
 }
 
 
 export const initStages = async(config) => {
 
-  const apiStages = await dataService[config.formName]()
+  const apiStages = await dataService[config.formName](config)
   if(!apiStages) return;
   const sourceStages = Object.keys(apiStages)
   let stages = {} 

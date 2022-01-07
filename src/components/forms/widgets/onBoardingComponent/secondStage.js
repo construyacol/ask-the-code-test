@@ -8,23 +8,25 @@ import {
     show,
     hide
 } from './utils'
+import party from './assets/party.png'
 
 
 const Welcome = props => {
 
     const executeAnimations = async() => {
-        await show('.onBoardingCont__', 5000)
+        await show('.onBoardingCont__', 4500)
         await hide('.onBoardingCont__', 500)
         props.nextStage()
     }
 
     useEffect(() => {
         executeAnimations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return(
-        <Container className="onBoardingCont__">
-            <h1 className="fuente flip-in-ver-right">🎉</h1>
+        <Container className="onBoardingCont__" rowGap={15}>
+            <img className="flip-in-ver-right" src={party} width={55} alt="party"/>
             <CopyContainer>
                 <p className="fuente">
                     Gracias por elegir <span>Coinsenda</span>, el intercambio de criptomonedas más seguro y confiable

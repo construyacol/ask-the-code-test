@@ -15,20 +15,24 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 // import LoaderAplicationTiny from "./components/widgets/loaders/loader-application-tiny";
 import { _createStore } from "./store";
-import OnBoardingComponent from './components/onBoarding'
 // const script = document.createElement("script");
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
 // document.body.appendChild(script);
-import RootContainer from "./components/Root"
+// import RootContainer from "./components/Root"
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
+
+// import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
+import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
+
+
 
 export const store = _createStore();
 
 const rootElement = document.getElementById("home-container");
 const App = () => (
   <Provider store={store}>
-    <OnBoardingComponent/>
+    <PersonalKyc/>
   </Provider>
 );
 

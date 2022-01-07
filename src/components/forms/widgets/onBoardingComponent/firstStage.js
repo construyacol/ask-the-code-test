@@ -8,25 +8,29 @@ import {
     show,
     hide
 } from './utils'
+import hand from './assets/hand.png'
 
 
 const Welcome = props => {
 
     const executeAnimations = async() => {
-        await show('.onBoardingCont__', 4000)
+        await show('.onBoardingCont__', 3000)
         await hide('.onBoardingCont__', 500)
         props.nextStage()
     }
 
     useEffect(() => {
         executeAnimations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return(
-        <Container className="onBoardingCont__">
+        <Container className="onBoardingCont__" rowGap={5}>
             <h1 className="fuente">Hola</h1>
             <HandContainer>
-                <Hand>👋</Hand>
+                <Hand>
+                    <img src={hand} width={55} alt="hand"/>
+                </Hand>
                 <WelcomeText>
                     <p className="fuente">
                         Bienvenido(a)
@@ -80,6 +84,8 @@ const WelcomeText = styled.div`
 
 const HandContainer = styled.div`
     display:flex;
+    align-items:center;
+    column-gap: 5px;
 `
 
 
@@ -103,7 +109,7 @@ const handAnimation = keyframes`
 `;
 
 
-export const Hand = styled.span`
+export const Hand = styled.div`
     animation: ${handAnimation} .5s .3s linear forwards;
     transform-origin: center;
 `

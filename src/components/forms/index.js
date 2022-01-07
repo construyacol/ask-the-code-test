@@ -15,7 +15,6 @@ const FormComponent = ({ handleDataForm }) => {
     // eslint-disable-next-line 
   }, [handleDataForm?.dataForm?.wrapperComponent])
 
-  console.log('|||||||||||||  getInitialState ==> ', handleDataForm.dataForm.wrapperComponent)
   
   return( 
         <DynamicLoadComponent

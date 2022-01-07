@@ -1,41 +1,15 @@
+import { 
+  ONBOARDING_COMPONENTS,
+  ONBOARDING_STAGES
+} from './widgets/onBoardingComponent/api'
 
 
 let stages = {
-  personal:{
-    "name":{
-      uiName:"Nombres completos",
-      key:"name",
-      uiType:"text",
-      "settings":{
-        defaultMessage:"Los nombres deben coincidir con los de tu documento de identidad",
-        successPattern:/[a-zA-Z ]{3,40}/g,
-        label:"Nombres completos (sin apellidos):",
-        placeholder:"Ej: Juan josé ",
-        queryParams:{
-          form:'personal_names'
-        },
-        errors:[
-          { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
-        ],
-        AuxComponent:null,
-        MainComponent:null
-      }
-    }
-  },
+  personal:{},
   biometric:{},
-  onBoarding:{
-    "firstStage":{
-      key:"firstStage"
-    },
-    "secondStage":{
-      key:"secondStage"
-    },
-    "thirdStage":{
-      key:"thirdStage"
-    }
-  }
-
+  ...ONBOARDING_STAGES
 } 
+
 
 const defaultState = {
   // biometric:{
@@ -56,6 +30,7 @@ const handleError = {
   }
 }
 
+
 const successStage = {
   biometric:{
     component:"biometricKycSuccess"
@@ -63,15 +38,14 @@ const successStage = {
   personal:{
     component:"personalKycSuccess"
   },
-  onBoarding:{
-    component:"biometricKycSuccess"
-  },
+  ...ONBOARDING_COMPONENTS['successStage']
 }
+
 
 const wrapperComponent = {
   biometric:"biometricKycComponent",
   personal:"personalKycComponent",
-  onBoarding:"onBoardingComponent"
+  ...ONBOARDING_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {

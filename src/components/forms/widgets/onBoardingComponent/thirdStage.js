@@ -1,20 +1,20 @@
 import { useEffect } from 'react'
 import styled, { keyframes } from 'styled-components'
 import {
-    Container
+    Container,
+    Button
 } from '../sharedStyles'
 
 import {
-    show,
-    hide
+    show
 } from './utils'
+import nerdFace from './assets/nerdFace.png'
 
 
 const Welcome = props => {
 
     const executeAnimations = async() => {
         await show('.onBoardingCont__', 6000)
-        // await hide('.onBoardingCont__', 500)
         // props.nextStage()
     }
 
@@ -23,19 +23,24 @@ const Welcome = props => {
     }, [])
 
     return(
-        <Container className="onBoardingCont__">
-            <h1 className="fuente flip-in-ver-right">🤓</h1>
-            <CopyContainer>
-                <p className="fuente">
-                    Antes de iniciar tu experiencia en <span>Coinsenda</span>, queremos conocerte un poco más...
-                </p>
-            </CopyContainer>
-        </Container>
+        <>
+            <Container className="onBoardingCont__" rowGap={15}>
+                {/* <h1 className="fuente flip-in-ver-right">🤓</h1> */}
+                <img className="flip-in-ver-right" src={nerdFace} width={55} alt="party"/>
+                <CopyContainer>
+                    <p className="fuente">
+                        Antes de iniciar tu experiencia en <span>Coinsenda</span>, te pediremos algunos datos para conocerte un poco más...
+                    </p>
+                </CopyContainer>
+            </Container>
+            <Button className='fuente'>Comencemos</Button>
+        </>
     )
 
 }
 
 export default Welcome
+
 
 
 const CopyContainer = styled.div`

@@ -2,6 +2,43 @@ import styled, { keyframes } from "styled-components";
 
 
 
+
+export const showButton = keyframes`
+    0% {
+      filter: grayscale(1) blur(1px);
+        opacity:.1;
+    }
+    20% {
+      filter: grayscale(1) blur(0px);
+      opacity:.1;
+    }
+    90% {
+      filter: grayscale(1) blur(0px);
+      opacity:.1;
+    }
+   
+    100%{
+      filter: grayscale(0) blur(0px);
+        opacity:1;
+    }
+`;
+
+export const Button = styled.button`
+  background: #0198ff;
+  width:270px;
+  height:60px;
+  border-radius:4px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor:pointer;
+  position:absolute;
+  bottom:40px;
+  opacity:.1;
+  filter: grayscale(1) blur(1px);
+  animation: ${showButton} 3s 1s linear forwards;
+`
+
 export const showWelcome = keyframes`
     0% {
         transform: translateY(50px);
@@ -23,17 +60,18 @@ export const showWelcome = keyframes`
 export const hideWelcome = keyframes`
     0% {
         transform: translateY(0px);
-        filter:blur(0px);
+        filter:blur(0px) grayscale(0.2);
         opacity:1;
+        
     }
     60% {
         transform: translateY(5px);
-        filter:blur(3px);
+        filter:blur(3px) grayscale(1);
         opacity:1;
     }
     100%{
         transform: translateY(-70px);
-        filter:blur(5px);
+        filter:blur(5px) grayscale(1);
         opacity:0;
     }
 `;
@@ -73,18 +111,18 @@ export const Container = styled.div`
         animation: ${hideWelcome} .5s linear forwards;
     }
 
+    row-gap: ${props => props.rowGap ? `${props.rowGap}px` : 0};
+
     perspective: 500px;
     perspective-origin: calc(50% + 120px) 50%;
 
     .flip-in-ver-right {
-	    ${'' /* animation: ${flipInVerRight} 0.5s .4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; */}
-        animation: ${tiltInFwdTl} 0.6s .35s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+        animation: ${tiltInFwdTl} 0.6s .25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     
     }
     display: grid;
     align-items: center;
     justify-items: center;
-    row-gap: 15px;
     transform: translateY(50px);
     opacity:0;
 
@@ -135,7 +173,7 @@ export const Content = styled.section`
     margin: auto;
     top: 30px;
     left: 40px;
-    ${'' /* left: 0px;
-    right:0; */}
+    left: 0px;
+    right:0;
   }
 `
