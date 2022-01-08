@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import FormComponent from '../../' 
 import { initStages } from '../../utils'
-// import loadable from '@loadable/component'
+import loadable from '@loadable/component'
+import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 
 
 const PersonalKyc = () => {
 
-//   const KycSkeleton = loadable(() => import('./components/forms/widgets/personalKycComponent/skeleton'))
+  const KycSkeleton = loadable(() => import('./skeleton.js'))
   const [ dataForm, setDataForm ] = useState()
-  
+
   const init = async() => {
     const _dataForm = await initStages({
       personType:'natural',
@@ -24,14 +25,14 @@ const PersonalKyc = () => {
 
 
   return(
-    <>
+    <OtherModalLayout>
         {
           dataForm ?
             <FormComponent handleDataForm={{dataForm, setDataForm}}/>
             :
-            <h1>Skeleton</h1>
+            <KycSkeleton/>
         }
-    </>
+    </OtherModalLayout>
    
   )
 

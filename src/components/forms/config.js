@@ -3,13 +3,17 @@ import {
   ONBOARDING_STAGES
 } from './widgets/onBoardingComponent/api'
 
+import { 
+  PERSONAL_COMPONENTS,
+  PERSONAL_STAGES
+} from './widgets/personalKycComponent/api'
+
 
 let stages = {
-  personal:{},
   biometric:{},
+  ...PERSONAL_STAGES,
   ...ONBOARDING_STAGES
 } 
-
 
 const defaultState = {
   // biometric:{
@@ -22,12 +26,12 @@ const defaultState = {
 }
 
 const handleError = {
-  personal:{
-    defaultErrorMessage:"Hubo un error en la toma de datos...",
-    errors:{
-      name:""
-    }
-  }
+  // personal:{
+  //   defaultErrorMessage:"Hubo un error en la toma de datos...",
+  //   errors:{
+  //     name:""
+  //   }
+  // }
 }
 
 
@@ -35,16 +39,14 @@ const successStage = {
   biometric:{
     component:"biometricKycSuccess"
   },
-  personal:{
-    component:"personalKycSuccess"
-  },
+  ...PERSONAL_COMPONENTS['successStage'],
   ...ONBOARDING_COMPONENTS['successStage']
 }
 
 
 const wrapperComponent = {
   biometric:"biometricKycComponent",
-  personal:"personalKycComponent",
+  ...PERSONAL_COMPONENTS['wrapperComponent'],
   ...ONBOARDING_COMPONENTS['wrapperComponent']
 }
 

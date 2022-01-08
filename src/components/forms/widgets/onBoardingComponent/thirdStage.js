@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import {
     Container,
     Button
@@ -33,7 +33,7 @@ const Welcome = props => {
                     </p>
                 </CopyContainer>
             </Container>
-            <Button className='fuente'>Comencemos</Button>
+            <Button className='fuente' onClick={() => props.nextStage()}>Comencemos</Button>
         </>
     )
 

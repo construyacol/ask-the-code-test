@@ -3,26 +3,31 @@ import {
     getFrame
   } from './utils'
   
-  export const smile = (detections, data) => {
-    let frame
-    console.log('|||||| detections smile' , detections?.expressions?.happy)
-    // if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
-    if(detections?.expressions?.happy > 0.97){
-      frame = getFrame()
-    }
-    return [ frame ]
+const smile = (detections, data) => {
+  let frame
+  console.log('|||||| detections smile' , detections?.expressions?.happy)
+  // if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
+  if(detections?.expressions?.happy > 0.97){
+    frame = getFrame()
   }
+  return [ frame ]
+}
   
-  export const surprised = (detections, data) => {
-    let frame
-    console.log('|||||| detections surprised' , detections?.expressions?.surprised)
-    // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
-    if(detections?.expressions?.surprised > 0.5){
-      frame = getFrame()
-    }
-    return [ frame ]
+const surprised = (detections, data) => {
+  let frame
+  // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
+  if(detections?.expressions?.surprised > 0.5){
+    frame = getFrame()
   }
+  return [ frame ]
+}
 
+const biometricValidations = {
+  smile,
+  surprised
+}
+
+export default biometricValidations
 
 
 // // Incline la cabeza hacia el hombro derecho

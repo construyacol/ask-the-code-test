@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 // import loadable from '@loadable/component'
-import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
+// import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 // import { useActions } from '../../hooks/useActions'
 
 import FormComponent from '../../' 
@@ -29,16 +29,16 @@ const OnBoardingComponent = props => {
    
 
     return(
-      <OtherModalLayout className="fullScreen" disable>
+      <>
         {
           dataForm ?
             <FormComponent
               handleDataForm={{dataForm, setDataForm}}
             />
           :
-            <h1>Skeleton</h1>
+            <p>Cargando...</p>
         }
-      </OtherModalLayout>
+      </>
     )
 
 }

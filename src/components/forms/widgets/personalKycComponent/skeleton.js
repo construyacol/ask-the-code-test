@@ -11,7 +11,7 @@ import {
 
 
 const KycSkeleton = () => (
-      <Layout>
+      <Layout background="white">
         <MainContainer>
           <TitleContainer className="skeleton">
             <h1 className="titleContainer__h1">This is a awesome title</h1>

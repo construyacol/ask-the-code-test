@@ -10,6 +10,7 @@ import loadable from '@loadable/component'
 // import LabelComponent from './labelComponent'
 // import KycSkeleton from './skeleton'
 import isoType from './assets/isoType.png'
+import PersonalKyc from '../personalKycComponent/init'
 
 import {
     Layout,
@@ -37,7 +38,7 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
     nextStage,
     finalStage,
     stageData,
-    setStageStatus
+    currentStage
   } = stageManager
 
 
@@ -45,25 +46,30 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
   if(!loading && finalStage){
     // Render success Stage
     return (
-      <div>FINAL</div>
-      // <DynamicLoadComponent
-      //       component={dataForm?.successStage?.component}
-      //       handleDataForm={handleDataForm}
-      //       handleState={handleState}
-      // />
+      <PersonalKyc>
+
+      {/* <DynamicLoadComponent
+            component={'personalKycComponent'}
+            handleDataForm={handleDataForm}
+            handleState={handleState}
+      /> */}
+      </PersonalKyc>
     )
   }
 
-  console.log('stageData', stageData)
+  console.log('stageData', currentStage, finalStage)
 
   return(
       <Layout>
             <Content>
                 <img src={isoType} width={27} alt="isoType"/>
+                {
+                  stageData &&
                 <DynamicLoadComponent
                     component={`onBoardingComponent/${stageData?.key}.js`}
                     nextStage={nextStage}
                 />
+                }
             </Content>
       </Layout>
   )

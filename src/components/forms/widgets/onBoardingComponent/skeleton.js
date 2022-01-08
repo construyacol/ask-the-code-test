@@ -1,7 +1,7 @@
-const BiometricKycComponent = props => {
+const onBoardingComponent = props => {
     return(
-        <p>Cargando Face recognition...</p>
+        <p>Cargando...</p>
     )
 }
 
-export default BiometricKycComponent
+export default onBoardingComponent

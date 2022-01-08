@@ -5,7 +5,7 @@ import { getInitialState } from './utils'
 import './mobile.css'
 import './global.css'
 
-const FormComponent = ({ handleDataForm }) => {
+const FormComponent = ({ handleDataForm, ...props }) => {
   
   const FormSkeleton = loadable(() => import(`./widgets/${handleDataForm.dataForm.wrapperComponent || 'personalKycComponent'}/skeleton`))
   const [ state, setState ] = useState()
@@ -22,6 +22,7 @@ const FormComponent = ({ handleDataForm }) => {
           Fallback={() => <FormSkeleton/>}
           handleDataForm={handleDataForm}
           handleState={{setState, state}}
+          {...props}
         />
   )
 }

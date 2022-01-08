@@ -22,7 +22,7 @@ import { _createStore } from "./store";
 // import RootContainer from "./components/Root"
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
 
-// import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
+import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
 import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
 
 
@@ -32,7 +32,7 @@ export const store = _createStore();
 const rootElement = document.getElementById("home-container");
 const App = () => (
   <Provider store={store}>
-    <PersonalKyc/>
+    <OnBoardingComponent/>
   </Provider>
 );
 

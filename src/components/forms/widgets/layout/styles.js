@@ -5,6 +5,10 @@ export const Wrapper = styled.div`
   display: grid;
   height: auto;
   min-height: 100vh;
+  width:100vw;
+  position:absolute;
+  top:0;
+  left:0;
   &.infoPanel{
     grid-template-columns: auto 1fr;
   }
