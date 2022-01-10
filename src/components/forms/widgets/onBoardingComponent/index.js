@@ -16,23 +16,20 @@ import {
     Layout,
     Content
   } from '../sharedStyles'
+
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
-
 const OnBoardingContainer = ({ handleDataForm, handleState }) => {
-
 
   const { dataForm } = handleDataForm
   // const { state, setState } = handleState
   const [ loading, setLoading ] = useState(false)
   // const validations = useValidations()
 
-
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
-
 
   const {
     nextStage,
@@ -45,21 +42,13 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 //   if(loading){return <KycSkeleton/>}
   if(!loading && finalStage){
     // Render success Stage
-    return (
-      <PersonalKyc>
-
-      {/* <DynamicLoadComponent
-            component={'personalKycComponent'}
-            handleDataForm={handleDataForm}
-            handleState={handleState}
-      /> */}
-      </PersonalKyc>
-    )
+      return <PersonalKyc/>
   }
 
   console.log('stageData', currentStage, finalStage)
 
   return(
+    <>
       <Layout>
             <Content>
                 <img src={isoType} width={27} alt="isoType"/>
@@ -72,6 +61,7 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
                 }
             </Content>
       </Layout>
+    </>
   )
 }
 export default OnBoardingContainer

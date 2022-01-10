@@ -240,7 +240,10 @@ export class IndetityService extends WebService {
   }
 
 
-  updateLevelProfile(config, user) {
+  updateLevelProfile(config) {
+    
+    const user = this.user
+
     let body = {
       data: {
         country: user.country,

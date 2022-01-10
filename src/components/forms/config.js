@@ -5,9 +5,9 @@ import {
 
 import { 
   PERSONAL_COMPONENTS,
-  PERSONAL_STAGES
+  PERSONAL_STAGES,
+  PERSONAL_DEFAULT_STATE
 } from './widgets/personalKycComponent/api'
-
 
 let stages = {
   biometric:{},
@@ -16,13 +16,11 @@ let stages = {
 } 
 
 const defaultState = {
+  ...PERSONAL_DEFAULT_STATE
   // biometric:{
   //   smile:"",
   //   surprised:""
   // },
-  // personal:{
-  //   name:"Andres"
-  // }
 }
 
 const handleError = {
@@ -39,7 +37,6 @@ const successStage = {
   biometric:{
     component:"biometricKycSuccess"
   },
-  ...PERSONAL_COMPONENTS['successStage'],
   ...ONBOARDING_COMPONENTS['successStage']
 }
 

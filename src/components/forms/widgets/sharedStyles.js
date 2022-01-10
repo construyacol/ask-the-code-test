@@ -36,7 +36,11 @@ export const Button = styled.button`
   bottom:40px;
   opacity:.1;
   filter: grayscale(1) blur(1px);
-  animation: ${showButton} 3s 1s linear forwards;
+
+  &.showButton{
+    animation: ${showButton} .8s linear forwards;
+  }
+
 `
 
 export const showWelcome = keyframes`
@@ -141,11 +145,12 @@ export const Layout = styled.div`
     display: grid;
     width: 100vw;
     height: 100vh;
-    background: #fffffffa;
+    background: #ffffffff;
     position: absolute;
     justify-items: center;
     top: 0;
     left: 0;
+    z-index:1000;
 `
 
 export const ContentContainer = styled.div`

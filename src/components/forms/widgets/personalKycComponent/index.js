@@ -8,6 +8,10 @@ import { getBody } from './utils'
 import { BackButtom, NextButtom } from './buttons'
 import LabelComponent from './labelComponent'
 import KycSkeleton from './skeleton'
+import { ApiPostPersonalKyc } from './api'
+import useToast from '../../../../hooks/useToastMessage'
+import SuccessComponent from './success'
+
 
 import {
   MainContainer,
@@ -17,7 +21,7 @@ import {
 
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
-const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
+const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
 
   const pathName = handleDataForm?.dataForm?.wrapperComponent
   // console.log('pathName', pathName)
@@ -25,6 +29,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
   const { state, setState } = handleState
   const validations = useValidations(pathName)
   const [ loading, setLoading ] = useState(false)
+  const [ toastMessage ] = useToast()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -54,7 +59,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
-    if(!validations[stageData?.key]){return}
+    if(!validations || !validations[stageData?.key]){return}
     const [ _value, _status ] = validations[stageData.key](e.target.value, {...stageData, state, dataForm});
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
@@ -67,44 +72,39 @@ const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
   // load state  by default
   useEffect(() => {
     let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
-    if(state[stageData?.key] && inputElement){
+    if(state[stageData?.key] && inputElement && validations){
       onChange({target:{value:state[stageData.key]}});
       inputElement.value = state[stageData.key]
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state[stageData?.key]])
+  }, [state[stageData?.key], validations])
+
 
   useEffect(() => {
     if(currentStage >= stageController.length){
-      setLoading(true)
-      const body = getBody(state, dataForm)
-      setTimeout(() => {
-        // prevStage()
-        setLoading(false)
-      }, 3000)
-      // onSubmit(setLoading, 3000)
-      console.log('||| BODY: ',body)
+      const execPost = async() => {
+        let res = await ApiPostPersonalKyc(getBody(state, dataForm), { setLoading, prevStage, toastMessage })
+        if(!res) return;
+        actions.IncreaseStep("kyc_global_step", 2);
+      }
+      execPost()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
-
 
 
   if(loading){return <KycSkeleton/>}
 
   if(!loading && finalStage){
     // Render success Stage
-    return <div>FINAL</div>
-    // return (
-    //   <DynamicLoadComponent
-    //         component={dataForm?.successStage?.component}
-    //         handleDataForm={handleDataForm}
-    //         handleState={handleState}
-    //   />
-    // )
+    return (
+      <SuccessComponent
+        closeModal={closeModal}
+      />
+    )
   }
 
-  console.log('stageData', stageData)
+  // console.log('dataForm', dataForm)
   // debugger
 
   return(
@@ -147,7 +147,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
               AuxComponent={[
                 stageData?.settings?.auxComponent, 
                 () => <NextButtom onClick={nextStep} disabled={(currentStage >= stageController.length) || stageStatus !== 'success'} />
-                ]}
+              ]}
             />
           </StickyGroup>
 
@@ -164,6 +164,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, formName }) => {
       </Layout>
   )
 }
+
 export default PersonalKycComponent
 
 

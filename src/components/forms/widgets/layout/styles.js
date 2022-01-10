@@ -9,6 +9,7 @@ export const Wrapper = styled.div`
   position:absolute;
   top:0;
   left:0;
+  z-index:99;
   &.infoPanel{
     grid-template-columns: auto 1fr;
   }

@@ -1,5 +1,7 @@
+import { mainService } from "../../../../services/MainService";
+import BigNumber from "bignumber.js";
 
-const countryValidators = {
+const testCountryValidators = {
     res:{
         levels:{
             level_1:{
@@ -266,18 +268,81 @@ const STAGES = {
     }
 
 
-export const ApiGetPersonalStages = (config) => {
+export const ApiGetPersonalStages = async(config) => {
     const { personType, level, formName } = config
+    let countryValidators = await mainService.countryValidators()
+    if(!countryValidators) return;
     return countryValidators?.res?.levels[level][formName][personType]
+}
+
+
+
+export const ApiPostPersonalKyc = async(body, tools) => {
+
+  const { setLoading, prevStage, toastMessage } = tools
+  let config = {
+    info: { ...body },
+    info_type: "personal",
+    verification_level: "level_1",
+  };
+
+  const _timeStamp = new Date(config.info.birthday).getTime()
+  config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
+
+  setLoading(true)
+  let res = await mainService.updateLevelProfile(config);
+  // res = true
+  // let res = true
+  if(!res) {
+    toastMessage('No ha sido posible completar la verificación.', 'error')
+    prevStage();
   }
+  setLoading(false)
+
+  const { user } = mainService.globalState.modelData
+  const { data:{ personal } } = res;
+
+  let user_update = {
+    ...user,
+    ...personal,
+    levels: {
+      ...user.levels,
+      personal: "confirmed",
+    },
+    security_center: {
+      ...user.security_center,
+      kyc: {
+        ...user.security_center.kyc,
+        basic: "confirmed",
+      },
+    },
+    country:user.country
+  };
+
+  await mainService.updateUser(user_update);
+  
+  return res
+}
+
+
+export const PERSONAL_DEFAULT_STATE = {
+  personal:{
+    address: "cra 45 - 88",
+    birthday: "1992-11-18",
+    city: "cali",
+    country: "colombia",
+    id_number: "1116256754",
+    id_type: "cedula_ciudadania",
+    name: "Andres felipe",
+    nationality: "colombia",
+    phone: "57 3145698999",
+    meta_phone: "colombia",
+    surname: "Garcia garcia"
+  }
+}
 
   
 export const PERSONAL_COMPONENTS = {
-    successStage:{
-        personal:{
-        component:"personalKycSuccess",
-        }
-    },
     wrapperComponent:{
         personal:'personalKycComponent'
     }

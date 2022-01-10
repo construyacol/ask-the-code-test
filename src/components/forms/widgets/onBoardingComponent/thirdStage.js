@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
+import { useSelector } from "react-redux";
+
 import {
     Container,
     Button
@@ -10,9 +12,9 @@ import {
 } from './utils'
 import nerdFace from './assets/nerdFace.png'
 
-
 const Welcome = props => {
 
+    const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
     const executeAnimations = async() => {
         await show('.onBoardingCont__', 6000)
         // props.nextStage()
@@ -33,7 +35,11 @@ const Welcome = props => {
                     </p>
                 </CopyContainer>
             </Container>
-            <Button className='fuente' onClick={() => props.nextStage()}>Comencemos</Button>
+            <Button 
+                onClick={() => props.nextStage()} 
+                disabled={!isAppLoaded} 
+                className={`fuente ${isAppLoaded ? 'showButton' : ''}`}
+            >Comencemos</Button>
         </>
     )
 

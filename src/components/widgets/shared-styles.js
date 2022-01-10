@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 import { AiOutlineClose } from "react-icons/ai";
 
-export const IconClose = ({ theme, opacity, size, id }) => {
+export const IconClose = ({ theme, opacity, size, id, ...props }) => {
   // @params
   // theme => dark/ligth
 
@@ -14,6 +14,7 @@ export const IconClose = ({ theme, opacity, size, id }) => {
       opacity={opacity}
       size={size + 10}
       data-close_modal
+      {...props}
     >
       <AiOutlineClose
         color={`${theme === "dark" ? "white" : "gray"}`}
@@ -36,9 +37,9 @@ export const IconBackContainer = styled.div`
   border-radius: 4px;
 `;
 export const IconCloseModal = styled(IconBackContainer)`
-  z-index: 2;
-  right: 5px;
-  top: -38px;
+  z-index: 999;
+  right: ${props => props.right ? `${props.right}px` : '5px'};
+  top: ${props => props.top ? `${props.top}px` : '-38px'};
   position: absolute;
   cursor: pointer;
   transition: 0.2s;

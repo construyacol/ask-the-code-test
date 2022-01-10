@@ -19,11 +19,11 @@ import { _createStore } from "./store";
 // script.src = "https://scrollmagic.io/docs/plugins_debug.addIndicators.js";
 // script.async = true;
 // document.body.appendChild(script);
-// import RootContainer from "./components/Root"
+import RootContainer from "./components/Root"
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
 
-import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
-import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
+// import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
+// import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
 
 
 
@@ -32,7 +32,7 @@ export const store = _createStore();
 const rootElement = document.getElementById("home-container");
 const App = () => (
   <Provider store={store}>
-    <OnBoardingComponent/>
+    <RootContainer/>
   </Provider>
 );
 
@@ -52,15 +52,15 @@ if(process.env.NODE_ENV === "production"){
 
 if (window && window.CSS && window.CSS.registerProperty) {
   window.CSS.registerProperty({
-    name: "--primary",
+    name: "--primary_deg",
     syntax: "<color>",
     inherits: true,
-    initialValue: "#014c7d",
+    initialValue: "#ffffff",
   });
   window.CSS.registerProperty({
-    name: "--secondary",
+    name: "--secondary_deg",
     syntax: "<color>",
     inherits: true,
-    initialValue: "#0198ff",
+    initialValue: "#ffffff",
   });
 }
