@@ -14,19 +14,6 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
 
     const [ showKycComponent, setShowKycComponent ] = useState()
 
-    // const goToAdvancedKyc = async(callback) => {
-    //   const dataForm = await initStages({
-    //     personType:'natural',
-    //     level:'level_1',
-    //     kycType:'identity',
-    //   })
-    //   callback(() => {
-    //     return {
-    //       ...dataForm
-    //     }
-    //   })
-    // }
-
     if(showKycComponent){
         return (
             <Layout background="white">

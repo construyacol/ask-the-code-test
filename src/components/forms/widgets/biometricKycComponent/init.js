@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react'
 // import loadable from '@loadable/component'
-import OtherModalLayout from "../widgets/modal/otherModalLayout";
-import { IconClose } from "../widgets/shared-styles";
-import { useActions } from '../../hooks/useActions'
-import { initStages } from '../forms/utils'
-import FormComponent from '../forms' 
-
+import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
+import { IconClose } from "../../../widgets/shared-styles";
+import { useActions } from '../../../../hooks/useActions'
+import { initStages } from '../../utils'
+import FormComponent from '../../' 
+import { useSelector } from "react-redux";
+import { Layout } from '../sharedStyles'
 
 const FormsComponent = props => {
 
     const actions = useActions();
+    const { userId } = useSelector(({ modelData:{ authData } }) => authData);
+
 
     const [ dataForm, setDataForm ] = useState()
     
     const init = async() => {
       const _dataForm = await initStages(
         {
-          personType:'natural',
-          level:'level_1',
           formName: 'biometric'
         }
       )
@@ -25,10 +26,12 @@ const FormsComponent = props => {
     }
   
     useEffect(()=> { 
-      init()
-    }, []) 
+      if(userId){
+        init()
+      }
+    }, [userId]) 
 
-    const cerrar = (e, forceClose) => {
+    const closeModal = (e, forceClose) => {
         if (e && (e.target.dataset.close_modal || forceClose)) {
           actions.isAppLoading(false);
           actions.renderModal(null);
@@ -41,7 +44,7 @@ const FormsComponent = props => {
             id="close-button-with-OtherModalLayout"
             className="fullScreen"
             onkeydown={true}
-            on_click={cerrar}
+            on_click={closeModal}
         >
             <IconClose theme="dark" size={20} />
               {
@@ -50,11 +53,10 @@ const FormsComponent = props => {
                     handleDataForm={{dataForm, setDataForm}}
                   />
                 :
-                  <h1>Skeleton</h1>
+                  <Layout/>
               }
         </OtherModalLayout>
     )
-
 }
 
 export default FormsComponent

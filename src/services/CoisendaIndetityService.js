@@ -94,8 +94,8 @@ export class IndetityService extends WebService {
 
 
   async getUserBiometric() {
-    const user = this.user;
-    const url = `${INDENTITY_USERS_URL}/${user.id}/biometric?country=${user.country}`;
+    const { userId } = this.authData;
+    const url = `${INDENTITY_USERS_URL}/${userId}/biometric?country='international'`;
     const res = await this.Get(url);
     console.log('||||||||||||||  getUserBiometric ==> ', res)
     return res

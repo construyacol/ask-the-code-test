@@ -75,7 +75,6 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     if (!userToken) return;
 
     let profile = await coinsendaServices.fetchUserProfile();
-
     if (!profile) {
       setShowOnBoarding(true)
       profile = await coinsendaServices.addNewProfile(country);

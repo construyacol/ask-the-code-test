@@ -72,18 +72,20 @@ function RootContainer(props) {
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
 
-    if(params.has('face_recognition')){
-      const Element = await import("./BiometricIdentity");
-      if(!Element) return;
-      const FormsComponent = Element.default
-      props.actions.renderModal(() => <FormsComponent/>);
-    }
+    
     const parent = window.parent;
     if(parent){
       parent.postMessage("loadedAndLogged", "*");
       if(params.has("recovery")){
         return console.log('<========   Recuperando sesión   =======>')
       }
+    }
+ 
+    if(params.has('face_recognition')){
+      const Element = await import("./forms/widgets/biometricKycComponent/init");
+      if(!Element) return;
+      const FormsComponent = Element.default
+      props.actions.renderModal(() => <FormsComponent/>);
     }
     history.push("/");
   };

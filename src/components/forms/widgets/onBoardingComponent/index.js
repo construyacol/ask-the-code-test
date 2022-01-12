@@ -22,7 +22,7 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 
   const { dataForm } = handleDataForm
   // const { state, setState } = handleState
-  const [ loading, setLoading ] = useState(false)
+  const [ loading ] = useState(false)
   // const validations = useValidations()
 
   const stageManager = useStage(

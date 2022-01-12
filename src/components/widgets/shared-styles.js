@@ -37,7 +37,7 @@ export const IconBackContainer = styled.div`
   border-radius: 4px;
 `;
 export const IconCloseModal = styled(IconBackContainer)`
-  z-index: 999;
+  z-index: 9999;
   right: ${props => props.right ? `${props.right}px` : '5px'};
   top: ${props => props.top ? `${props.top}px` : '-38px'};
   position: absolute;

@@ -3,9 +3,9 @@ import {
 } from './const'
 
 import formStructure from './config.js'
-import { mainService } from "../../services/MainService";
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
+import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 
 
 // import countryValidators from './apiRes'
@@ -127,30 +127,7 @@ const getNationalityList = async() => {
   return countrySource
 }
 
-
-const ApiGetBiometricStages = async() => {
-  let stages = {}
-  const res = await mainService.getUserBiometric()
-  if(!res) return;
-  for (const keyChallenge in res.challenge) { 
-    stages = {
-      ...stages,
-      [keyChallenge]:{
-        key:keyChallenge,
-        solved:res.solved,
-        biometricId:res.id,
-        ui_type: "img",
-        ui_name: keyChallenge === "smile" ? "Sonríe" : "Abre la boca y levanta las cejas"
-      }
-    }
-  }
-  return stages
-}
  
-
-
-
-
 const dataService = {
   biometric:ApiGetBiometricStages,
   onBoarding:ApiGetOnBoardingStages,

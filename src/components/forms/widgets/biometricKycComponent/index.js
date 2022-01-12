@@ -4,7 +4,7 @@ import useValidations from '../../hooks/useInputValidations'
 import { getDisplaySize } from './utils'
 import loadable from '@loadable/component'
 import styled from 'styled-components'
-import StatusIndicator from '../biometricStatus'
+import StatusIndicator from './biometricStatus'
 import { Scanner } from './scanner'
 import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
@@ -30,18 +30,19 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
   const modelData = useSelector((state) => state.modelData);
   const { dataForm } = handleDataForm
+  const pathName = dataForm?.wrapperComponent
   const { state, setState } = handleState
   const [ loading, setLoading ] = useState(false)
   const [ cameraAvailable, setCameraAvailable ] = useState()
   const [ boardingAgreement, setBoardingAgreement ] = useState(false)
   const [ coinsendaServices ] = useCoinsendaServices();
-  const validations = useValidations()
+  const validations = useValidations(pathName)
 
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
   const faceApi = useRef(window.faceapi)
   const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
-  const [ biometricData ] = useSocket(`/biometric_data/${modelData.user.id}`)
+  const [ biometricData ] = useSocket(`/biometric_data/${modelData.authData.userId}`)
 
   const stageManager = useStage(
     // create the form stages
@@ -57,7 +58,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     setStageData,
     stageController
   } = stageManager
-
 
   const setupFaceApi = async() => {
     setLoading(true)
@@ -214,7 +214,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('modelsPath', modelsPath)
+  console.log('||||||||||||||||||||||||||||||||||||||||  validations', validations)
   
 
    if(finalStage){
@@ -223,7 +223,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
       <>
         { developerMood && <Captures state={state}/> }
         <DynamicLoadComponent
-              component={dataForm?.successStage?.component}
+              component={`${dataForm?.wrapperComponent}/success`}
               handleDataForm={handleDataForm}
               handleState={handleState}
         />
@@ -236,7 +236,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
         { 
           !boardingAgreement &&
             <DynamicLoadComponent
-              component="onBoardingAgreement"
+              component="biometricKycComponent/onBoardingAgreement"
               cameraAvailable={cameraAvailable}
               handleAction={() => {
                 setBoardingAgreement(true)

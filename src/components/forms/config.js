@@ -9,8 +9,13 @@ import {
   PERSONAL_DEFAULT_STATE
 } from './widgets/personalKycComponent/api'
 
+import { 
+  BIOMETRIC_COMPONENTS,
+  BIOMETRIC_STAGES
+} from './widgets/biometricKycComponent/api'
+
 let stages = {
-  biometric:{},
+  ...BIOMETRIC_STAGES,
   ...PERSONAL_STAGES,
   ...ONBOARDING_STAGES
 } 
@@ -33,16 +38,8 @@ const handleError = {
 }
 
 
-const successStage = {
-  biometric:{
-    component:"biometricKycSuccess"
-  },
-  ...ONBOARDING_COMPONENTS['successStage']
-}
-
-
 const wrapperComponent = {
-  biometric:"biometricKycComponent",
+  ...BIOMETRIC_COMPONENTS['wrapperComponent'],
   ...PERSONAL_COMPONENTS['wrapperComponent'],
   ...ONBOARDING_COMPONENTS['wrapperComponent']
 }
@@ -51,7 +48,7 @@ const formStructure = formName => {
   return {
     wrapperComponent:wrapperComponent[formName],
     handleError:handleError[formName],
-    successStage:successStage[formName],
+    successStage:null,
     defaultState:defaultState[formName],
     stages:stages[formName]
   }
