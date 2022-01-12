@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import KycDashBoard from "./dashboard/kycDashboardLayout";
 import SimpleSlider from "./carousel/carouselLayout";
 // import CropImg from "../../widgets/cropimg";
 import SimpleLoader from "../../widgets/loaders";
-import SuccessComponentScreen from "../../widgets/success_screen/success_screen";
+// import SuccessComponentScreen from "../../widgets/success_screen/success_screen";
 import "../kyc.css";
 
 const KycAdvancedLayout = (props) => {
+
   const {
     dashboard,
     // fileloader,
@@ -19,9 +20,21 @@ const KycAdvancedLayout = (props) => {
     finish,
   } = props;
 
+  const callKycSuccess = async() => {
+    await finish()
+    const Element = await import("../../forms/widgets/identityKycComponent/success");
+    const IdentityKycComponent = Element.default
+    return props.action.renderModal(() => <IdentityKycComponent  closeModal={() => props.action.renderModal(null)} />); 
+  }
+
+  useEffect(() => {
+    if(kyc_success) callKycSuccess();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [kyc_success])
+
+
   return (
     <div className="KycAvancedLayout">
-      {!kyc_success ? (
         <div
           className={`containerKycAvanced ${
             dashboard && step < 5 ? "desktop" : ""
@@ -61,24 +74,9 @@ const KycAdvancedLayout = (props) => {
               // className={`KycDashContainer ${fileloader ? "fileloader" : ""}`}
             >
               <KycDashBoard {...props} />
-              {/* <div className="ssoa">
-                <CropImg {...props} />
-              </div> */}
             </div>
           </div>
         </div>
-      ) : (
-        <SuccessComponentScreen
-          {...props}
-          confetti={true}
-          cta_secondary={false}
-          title="!Lo has hecho muy bien!, tus documentos han sido enviados exitosamente y nuestro sistema se encuentra verificándolos."
-          classes="long_msg"
-          cta_primary_text="Finalizar"
-          siguiente={finish}
-          user_name={props.user.name}
-        />
-      )}
     </div>
   );
 };

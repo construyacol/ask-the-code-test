@@ -265,12 +265,12 @@ class KycAdvancedContainer extends Component {
         })
         this.props.action.UpdateForm("kyc_advanced", this.state);
       }
-
     }
   };
 
   finish = () => {
     this.props.action.toggleModal();
+    this.props.action.renderModal(null);
   };
 
   render() {
