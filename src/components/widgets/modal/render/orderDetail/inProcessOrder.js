@@ -149,8 +149,8 @@ const FiatOrder = ({ order }) => {
       if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
         const Element = await import("../../../../forms/widgets/biometricKycComponent/init");
         if(!Element) return;
-        const FormsComponent = Element.default
-        return actions.renderModal(() => <FormsComponent/>);
+        const BiometricKyc = Element.default
+        return actions.renderModal(() => <BiometricKyc orderData={{order, paymentProof:dataBase64}} />);
       }
 
       // cropImgOFf

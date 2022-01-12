@@ -1,11 +1,26 @@
-import React from "react"
+import React, { useEffect } from "react"
 import ConfettiComponent from '../success/confetti'
 import { Medal } from '../success/icons'
 import { LayoutContainer, ControlContainer } from '../success/styles'
 import { Button } from './styles'
 import Layout from '../layout'
+// import { useActions } from '../../../../hooks/useActions'
 
-const PersonalKycSuccess = ({ handleDataForm:{ setDataForm }, handleState:{ state, setState } }) => {
+const PersonalKycSuccess = ({ handleState:{ state }, ...props }) => {
+    
+    // const actions = useActions();
+
+    const tryConfirmDeposit = () => {
+        if(!props.orderData) return;
+        const { orderData:{ order, paymentProof } , coinsendaServices } = props
+        coinsendaServices.confirmDepositOrder(order.id, paymentProof);
+    }
+
+    useEffect(() => {
+      tryConfirmDeposit()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
 
     return(
         <Layout background="white">

@@ -8,7 +8,7 @@ import FormComponent from '../../'
 import { useSelector } from "react-redux";
 import { Layout } from '../sharedStyles'
 
-const FormsComponent = props => {
+const BiometricKyc = props => {
 
     const actions = useActions();
     const { userId } = useSelector(({ modelData:{ authData } }) => authData);
@@ -51,6 +51,7 @@ const FormsComponent = props => {
                 dataForm ?
                   <FormComponent
                     handleDataForm={{dataForm, setDataForm}}
+                    {...props}
                   />
                 :
                   <Layout/>
@@ -59,4 +60,4 @@ const FormsComponent = props => {
     )
 }
 
-export default FormsComponent
+export default BiometricKyc

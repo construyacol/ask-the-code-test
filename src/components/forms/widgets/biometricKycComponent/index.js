@@ -26,7 +26,7 @@ const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
  
-const BiometricKycComponent = ({ handleDataForm, handleState }) => {
+const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const modelData = useSelector((state) => state.modelData);
   const { dataForm } = handleDataForm
@@ -58,6 +58,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     setStageData,
     stageController
   } = stageManager
+
+  // const finalStage = true
 
   const setupFaceApi = async() => {
     setLoading(true)
@@ -214,7 +216,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('||||||||||||||||||||||||||||||||||||||||  validations', validations)
+  // console.log('||||||||||||||||||||||||||||||||||||||||  BiometricKyc PROPS', props)
   
 
    if(finalStage){
@@ -226,6 +228,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
               component={`${dataForm?.wrapperComponent}/success`}
               handleDataForm={handleDataForm}
               handleState={handleState}
+              coinsendaServices={coinsendaServices}
+              {...props}
         />
       </>
     )

@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 
 export const Button = styled.button`
+      min-height: 60px;
       cursor:pointer;
       width: auto;
       min-width:230px;

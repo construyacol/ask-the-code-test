@@ -151,6 +151,9 @@ export const Layout = styled.div`
     top: 0;
     left: 0;
     z-index:1000;
+  @media screen and (max-height: 900px){
+    height: 140vh;
+  }
 `
 
 export const ContentContainer = styled.div`

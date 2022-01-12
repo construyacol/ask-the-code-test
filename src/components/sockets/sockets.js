@@ -8,6 +8,7 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
+let statusCounter = 0
 const { SocketUrl } = Environtment;
 
 
@@ -729,15 +730,14 @@ class SocketsComponent extends Component {
     }
   };
 
-
   status_management = async(status) => {
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
     }
     await this.props.coinsendaServices.updateUserStatus(status)
-    if(status.countries.international === 'level_1'){
+    if(status.countries.international === 'level_1' && statusCounter < 1){
+      statusCounter++
       console.log('|||||||||||  status_management')
-      debugger
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }
