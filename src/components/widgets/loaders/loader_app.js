@@ -16,7 +16,7 @@ import useViewport from "../../../hooks/useWindowSize";
 // import isoType from '../../forms/widgets/onBoardingComponent/assets/isoType.png'
 
 import "./loader.css";
-
+ 
 // const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
 //   fallback: (
 //     <div
@@ -78,6 +78,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     if (!profile) {
       setShowOnBoarding(true)
       profile = await coinsendaServices.addNewProfile(country);
+      document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
 
     if (!profile || (!profile.countries[country])) return false;

@@ -268,6 +268,8 @@ const STAGES = {
     }
 
 
+console.log(testCountryValidators)
+
 export const ApiGetPersonalStages = async(config) => {
     const { personType, level, formName } = config
     let countryValidators = await mainService.countryValidators()

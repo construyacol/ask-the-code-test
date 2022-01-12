@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 // import useValidations from '../../hooks/useInputValidations'
 // import Layout from '../layout'
 import useStage from '../../hooks/useStage'

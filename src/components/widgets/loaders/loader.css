@@ -104,6 +104,13 @@
   --secondary_deg: #0198ff;
 }
 
+
+.LoaderAplication.withUser.withOnboarding{
+  --primary_deg: #ffffff;
+  --secondary_deg: #ffffff;
+}
+
+
 .kycPropgressed {
   height: 6px;
   width: 20%;

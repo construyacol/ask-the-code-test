@@ -84,10 +84,12 @@ function RootContainer(props) {
     if(params.has('face_recognition')){
       const Element = await import("./forms/widgets/biometricKycComponent/init");
       if(!Element) return;
-      const FormsComponent = Element.default
-      props.actions.renderModal(() => <FormsComponent/>);
+      const BiometricKyc = Element.default
+      props.actions.renderModal(() => <BiometricKyc/>);
     }
+
     history.push("/");
+    
   };
 
   useEffect(() => {
