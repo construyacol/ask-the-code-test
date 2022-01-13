@@ -128,9 +128,8 @@ class ViewAmountComponent extends Component {
           <Fragment>
             <div className="DLcontain">
               <p className="fuente DLtitle2">
-                Quiero {operation_type === "deposit" ? "depositar" : "retirar"}
+                Escribe la cantidad de {operation_type === "deposit" ? "deposito" : "retiro"}
               </p>
-              <p className="fuente DLstitle">La cantidad de</p>
             </div>
 
             <div className="DLcontain2">
@@ -156,7 +155,7 @@ class ViewAmountComponent extends Component {
                     : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`}
                 </p>
                 <p className="textStatus">{statusInput}</p>
-                <p className="fuente DLstitle DLcop">{ui_currency_name}</p>
+              {/* <p className="fuente DLstitle DLcop">{ui_currency_name}</p> */}
               </div>
             </div>
 
