@@ -42,7 +42,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
       {currentOrder.currency_type === "fiat" ? (
         <FiatOrder order={currentOrder} />
       ) : (
-        <CryptoOrder order={currentOrder} />
+        <CryptoOrder order={currentOrder} tx_path />
       )}
     </>
   );
@@ -98,7 +98,7 @@ const CryptoOrder = ({ order }) => {
               />
             </BottomSectionContainer>)
           :
-            <BottomSection colorState={"gray"}/>
+            <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
         }
       </OrderContainer>
 
@@ -228,7 +228,7 @@ const FiatOrder = ({ order }) => {
             />
           </BottomSectionContainer>)
           :
-          <BottomSection colorState={"gray"}/>
+          <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
         }
 
       </OrderContainer>

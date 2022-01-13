@@ -35,24 +35,20 @@ const OrderItem = ({ order }) => {
 
   const orderDetail = async (e) => {
     e.preventDefault();
-    if (!order) {
-      return;
-    }
+
+    if(!order) return;
+
     const target = e.target;
-    if (target.dataset && target.dataset.is_deletion_action) {
-      return;
-    }
+    if (target.dataset && target?.dataset?.is_deletion_action) return;
 
     const { tx_path, account_id, primary_path, path } = txState;
 
-    history.push(
-      `/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`
-    );
+    history.push(`/${primary_path}/${path}/${account_id}/${tx_path}/${order.id}`);
     actions.cleanNotificationItem("wallets", "order_id");
 
     const Element = await import("../modal/render/orderDetail/index.js");
-    const OrderDetail = Element.default
-    await actions.renderModal(() => <OrderDetail/>);
+    const OrderSupervisor = Element.default
+    await actions.renderModal(() => <OrderSupervisor/>);
     
     if (target.dataset && target.dataset.is_confirm_deposit) {
       confirmPayment();

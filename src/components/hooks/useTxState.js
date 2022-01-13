@@ -18,9 +18,9 @@ const selectCurrentOrder = createSelector(
   (_, current_order_id, params) => params,
   (modelData, current_order_id, params) => {
     const { tx_path, order_id } = params;
-    return (
-      modelData[tx_path] && modelData[tx_path][order_id || current_order_id]
-    );
+    // console.log('selectCurrentOrder', modelData['deposits'])
+    // debugger
+    return (modelData[tx_path] && modelData[tx_path][order_id || current_order_id]);
   }
 );
 

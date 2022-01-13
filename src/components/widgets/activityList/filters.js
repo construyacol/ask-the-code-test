@@ -43,16 +43,18 @@ const ActivityFilters = (props) => {
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}
       >
-
+        <div className="ALif2Item" style={{ fontSize: movil_viewport ? "12px" : "14px" }}>
+            <i className="fas fa-filter"></i>
+            <p className="fuente">Historial de:</p>
+        </div>
         <SelectList
-          actionHandle={filterChange}
-          list={selectListData}
-          selectedItem={currentFilter}
+        actionHandle={filterChange}
+        list={selectListData}
+        selectedItem={currentFilter}
         />
-      
       </div>
 
-      <div
+      {/* <div
         className={` ALif2 ALitemFill ${filter ? "ALactive" : ""} ${
           movil_viewport ? "movil" : ""
         }`}
@@ -63,15 +65,9 @@ const ActivityFilters = (props) => {
             <p>{currentFilter && currentFilter.toUpperCase()}</p>
           </div>
 
-          <div
-            className="ALif2Item"
-            style={{ fontSize: movil_viewport ? "12px" : "14px" }}
-          >
-            <i className="fas fa-filter"></i>
-            <p className="fuente">Historial de:</p>
-          </div>
+          
         </div>
-      </div>
+      </div> */}
     </section>
   );
 };

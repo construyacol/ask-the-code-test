@@ -8,8 +8,9 @@ import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
 import useViewport from '../../hooks/useWindowSize'
 import { device } from "../../const/const";
 import IconSwitch from '../widgets/icons/iconSwitch'
-
-
+import { OrderContainer } from '../widgets/activityList/order_item'
+import { useActions } from "../../hooks/useActions";
+import OtherModalLayout from "../widgets/modal/otherModalLayout";
 
 const ReferralActivity = ({ coinsendaServices }) => {
 
@@ -51,9 +52,32 @@ const ReferralActivity = ({ coinsendaServices }) => {
 export default ReferralActivity
 
 
+
 const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
 
   const { isMovilViewport } = useViewport()
+  const actions = useActions();
+
+  const closeModal = (e, forceClose) => {
+    if (e && (e.target.dataset.close_modal || forceClose)) {
+      actions.isAppLoading(false);
+      actions.renderModal(null);
+      // history.goBack()
+    }
+  };
+
+  const orderDetail = async(order) => {
+    const Elements = await import("../widgets/modal/render/orderDetail/index.js");
+    const { OrderDetail } = Elements
+    await actions.renderModal(() => (
+        <OtherModalLayout
+        // id="close-button-with-OtherModalLayout"
+        on_click={closeModal}
+      >
+        <OrderDetail currentOrder={order} tx_path={'deposits'}/>
+      </OtherModalLayout>
+    ))
+  }
 
   return(
     <>
@@ -75,13 +99,19 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
                 >
                 {
                   activity && activity.map((item, index) => {
-                    return <OrderItem key={index}>
-                              <DepositOrder
-                                index={index}
-                                order={item}
-                                key={index}
-                              />
-                          </OrderItem>
+                    return (
+                      <OrderContainer
+                      id={`${item.id}`}
+                      onClick={() => orderDetail(item)}
+                      key={index}
+                    >
+                      <DepositOrder
+                        index={index}
+                        order={item}
+                        key={index}
+                      />
+                    </OrderContainer>
+                    )
                   })
                 }
               <InifiniteScrollComponent
@@ -96,14 +126,6 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
   )
 
 }
-
-const OrderItem = styled.div`
-  transition: 0.1s;
-  perspective: 2000px;
-  opacity: 1;
-  width: 100%;
-  max-width: 800px;
-`
 
 
 const AuxComponentContainer = ({ AuxComponent }) =>
