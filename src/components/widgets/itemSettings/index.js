@@ -23,10 +23,12 @@ class ItemSettingsInit extends Component {
 
     switch (name) {
       case "kyc_basic":
-        await this.props.action.ToStep("globalStep", 0);
-        await this.props.action.CurrentForm("kyc_basic");
-        return this.props.action.toggleModal();
-
+        // await this.props.action.ToStep("globalStep", 0);
+        // await this.props.action.CurrentForm("kyc_basic");
+        // return this.props.action.toggleModal();
+        const Element = await import("../../forms/widgets/personalKycComponent/init");
+        const PersonalKycComponent = Element.default
+      return this.props.action.renderModal(() => <PersonalKycComponent/>); 
       case "kyc_financial":
         await this.props.action.CurrentForm("kyc_basic");
         await this.props.action.ToStep("globalStep", 3);

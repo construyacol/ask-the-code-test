@@ -55,8 +55,7 @@ export const TransferFlow = (props) => {
 
       {step === 3 && deposit_way === "bankaccount" && (
         <ModalityView
-          title="Haré la transferencia"
-          subtitle="Por medio de:"
+          title="Elige el medio de pago"
           items={service_modes}
           update_service_mode={update_service_mode}
           service_mode={service_mode}

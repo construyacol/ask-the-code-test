@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
-import { useHistory } from "react-router-dom";
 import { getQuery } from '../utils'
+import { history } from 'const/const'
 
 const useStage = (stageController, stages, defaultStage = 0) => {
 
-  const history = useHistory()
   const [ stageStatus, setStageStatus ] = useState()
   const [ currentStage, setCurrentStage ] = useState(defaultStage)
   const [ stageData, setStageData ] = useState(stages[stageController[currentStage]])
@@ -24,7 +23,7 @@ const useStage = (stageController, stages, defaultStage = 0) => {
   useEffect(()=>{
     if(stageData?.settings?.queryParams){
       let query = getQuery(stageData.settings.queryParams)
-      history.push(query)
+      history?.push(query)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData])

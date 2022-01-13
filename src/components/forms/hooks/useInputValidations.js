@@ -1,45 +1,27 @@
+import { useState, useEffect } from 'react'
+// import * as biometricValidations from '../widgets/biometricKycComponent/validations';
 
-import {
-  getFrame
-} from '../widgets/biometricKycComponent/utils'
+const useValidations = (pathName) => {
 
-const smile = (detections, data) => {
-  let frame
-  console.log('|||||| detections smile' , detections?.expressions?.happy)
-  // if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
-  if(detections?.expressions?.happy > 0.97){
-    frame = getFrame()
+  const [ validations, setValidations ] = useState()
+  
+  const getValidations = async() => {
+    let vals = {}
+    try {
+      vals = await import(`../widgets/${pathName}/validations`);
+    } catch (error) {
+      console.log(error)
+    }
+    setValidations(vals?.default)
   }
-  return [ frame ]
-}
 
-const surprised = (detections, data) => {
-  let frame
-  console.log('|||||| detections surprised' , detections?.expressions?.surprised)
-  // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
-  if(detections?.expressions?.surprised > 0.5){
-    frame = getFrame()
-  }
-  return [ frame ]
-}
+  useEffect(() => {
+    getValidations()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-// // Incline la cabeza hacia el hombro derecho
-// if(detections[0].angle.roll > 0.6 && !document.querySelector('.tiltHead.right').src){
-//   console.log('Incline la cabeza hacia la derecha => ', detections[0].angle.roll)
-//   emitFrame('.tiltHead.right')
-// }
+  return validations
 
-// // Incline la cabeza hacia la izquierda
-// if(detections[0].angle.roll < -0.5 && !document.querySelector('.tiltHead.left').src){
-//   console.log('Incline la cabeza hacia la derecha => ', detections[0].angle.roll)
-//   emitFrame('.tiltHead.left')
-// }
-
-const useValidations = () => {
-  return {
-    smile,
-    surprised
-  }
 }
 
 export default useValidations

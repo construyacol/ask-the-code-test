@@ -5,7 +5,7 @@ import { getInitialState } from './utils'
 import './mobile.css'
 import './global.css'
 
-const FormComponent = ({ handleDataForm }) => {
+const FormComponent = ({ handleDataForm, ...props }) => {
   
   const FormSkeleton = loadable(() => import(`./widgets/${handleDataForm.dataForm.wrapperComponent || 'personalKycComponent'}/skeleton`))
   const [ state, setState ] = useState()
@@ -14,8 +14,6 @@ const FormComponent = ({ handleDataForm }) => {
     setState(getInitialState(handleDataForm.dataForm))
     // eslint-disable-next-line 
   }, [handleDataForm?.dataForm?.wrapperComponent])
-
-  console.log('|||||||||||||  getInitialState ==> ', handleDataForm.dataForm.wrapperComponent)
   
   return( 
         <DynamicLoadComponent
@@ -23,6 +21,7 @@ const FormComponent = ({ handleDataForm }) => {
           Fallback={() => <FormSkeleton/>}
           handleDataForm={handleDataForm}
           handleState={{setState, state}}
+          {...props}
         />
   )
 }

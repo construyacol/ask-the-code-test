@@ -1,6 +1,21 @@
-import styled from "styled-components"
+import styled, { keyframes }  from "styled-components"
+
+
+
+export const showAnim = keyframes`
+    0% {
+        transform: translateY(50px);
+        opacity:0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity:1;
+    }
+`;
+
 
 export const LayoutContainer = styled.section`
+    
     display: grid;
     width: calc(100vw - 40px);
     height: calc(100vh - 100px);
@@ -9,9 +24,14 @@ export const LayoutContainer = styled.section`
     padding: 50px 20px;
     position: absolute;
     background: white;
+    transform: translateY(50px);
+    opacity:0;
     
     h1{
         margin-bottom:10vh;
+        margin-top:0;
+        font-size: 2em;
+        color:var(--primary);
     }
 
     &>p{ 
@@ -20,6 +40,10 @@ export const LayoutContainer = styled.section`
         max-width: 500px;
         text-align: center;
         font-weight: 500;
+    }
+
+    &.show{
+        animation: ${showAnim} .3s linear forwards;
     }
 
     @media (max-width: 768px) {
@@ -34,12 +58,15 @@ export const LayoutContainer = styled.section`
 `
 
 export const ControlContainer = styled.div`
+
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     margin-bottom: 30px;
     p{
         margin-bottom:40px;
-        font-size:18px;
+        color: gray;
+        font-size: 16px;
     }
+
 `

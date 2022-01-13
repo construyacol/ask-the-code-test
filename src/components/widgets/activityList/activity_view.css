@@ -695,7 +695,7 @@
   align-items: center;
   /*padding: 0 12px;*/
   background: linear-gradient(to right, #e7e7e7b0, #f1f1f1b0, white);
-  justify-content: flex-end;
+  justify-content: flex-start;
   backdrop-filter: blur(7px);
 }
 
@@ -768,6 +768,10 @@
   width: 100px;
   justify-items: center;
   justify-content: center;
+  color: gray;
+  column-gap: 10px;
+  margin-right: 10px;
+  margin-left: 15px;
 }
 
 .ALif2ItemAll {

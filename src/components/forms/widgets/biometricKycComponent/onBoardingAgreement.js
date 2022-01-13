@@ -3,8 +3,8 @@ import styled from "styled-components"
 // import FRecognition from '../../../../assets/recognition.gif'
 import { getCdnPath } from '../../../../environment'
 import UseWindowDimensions from '../../hooks/useWindowDimensions'
-import ContinueFromMobile from '../biometricKycComponent/continueFromMobile'
-import { Button } from '../biometricKycComponent/styles'
+import ContinueFromMobile from './continueFromMobile'
+import { Button } from './styles'
 
 
 const OnBoardingAgreement = ({ handleAction, cameraAvailable }) => {

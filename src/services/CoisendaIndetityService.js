@@ -94,8 +94,8 @@ export class IndetityService extends WebService {
 
 
   async getUserBiometric() {
-    const user = this.user;
-    const url = `${INDENTITY_USERS_URL}/${user.id}/biometric?country=${user.country}`;
+    const { userId } = this.authData;
+    const url = `${INDENTITY_USERS_URL}/${userId}/biometric?country='international'`;
     const res = await this.Get(url);
     console.log('||||||||||||||  getUserBiometric ==> ', res)
     return res
@@ -240,7 +240,10 @@ export class IndetityService extends WebService {
   }
 
 
-  updateLevelProfile(config, user) {
+  updateLevelProfile(config) {
+    
+    const user = this.user
+
     let body = {
       data: {
         country: user.country,

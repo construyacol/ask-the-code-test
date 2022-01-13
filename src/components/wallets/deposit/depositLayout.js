@@ -120,8 +120,7 @@ const DepositLayout = (props) => {
 
       {type_currency === "fiat" && step === 2 && (
         <MethodView
-          title="Utilizando la siguiente"
-          subtitle="forma de pago"
+          title="Elige el tipo de transacción"
           items={payment_method}
           select_method={select_deposit_way}
           item_active={deposit_way}

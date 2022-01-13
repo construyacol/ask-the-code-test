@@ -17,6 +17,7 @@ import {
 import ItemListKycBasic from "./itemList";
 import withCoinsendaServices from "../../withCoinsendaServices";
 import KycSkeleton from './skeleton'
+import { history } from '../../../const/const'
 
 const modelFormData = kyc.kyc_basic.natural;
 
@@ -29,7 +30,7 @@ class KycBasicContainer extends Component {
   async componentDidMount() {
     await this.init_component();
     // if(this.props.current === 'kyc_basic'){
-    this.props.history.push(`?form=personal_names`);
+    history.push(`?form=personal_names`);
     // }
     document.onkeydown = (event) => {
       if (event.keyCode === 13) {
@@ -96,7 +97,7 @@ class KycBasicContainer extends Component {
     if (this.props.step === 11) {
       route = `?form=personal_success`;
     }
-    this.props.history.push(route);
+    history.push(route);
 
     if (this.props.step === 10 && this.state.data_state.id_type && (this.state.data_state.id_type[0].code === "cedula_ciudadania" ||
         this.state.data_state.id_type[0].code === "cedula_extranjeria")

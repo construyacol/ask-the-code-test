@@ -120,7 +120,7 @@ function AccountList(props) {
   };
 
   let mainButtonText = isWithdrawView
-    ? "Añadir nueva cuenta de retiro"
+    ? "Añadir nueva cuenta bancaria"
     : "Añadir nueva billetera";
   mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText;
 

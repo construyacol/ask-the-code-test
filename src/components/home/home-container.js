@@ -1,5 +1,5 @@
 import React from "react";
-import loadable from "@loadable/component";
+// import loadable from "@loadable/component";
 import { connect } from "react-redux";
 import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -11,7 +11,6 @@ import withHandleError from "../withHandleError";
 import { doLogout } from "../utils";
 import useBeforeUnload from '../../hooks/useBeforeUnload'
 
-const ModalsSupervisor = loadable(() => import("./modals-supervisor"));
 
 const BuildedHome = (props) => (
   <>
@@ -25,10 +24,6 @@ const HomeContainer = () => {
   useBeforeUnload()
   return (
     <HomeLayout>
-      <Route
-        path={["/:primary_path/:path/:account_id/:tx_path/:order_id", "/"]}
-        render={(renderProps) => <ModalsSupervisor {...renderProps} />}
-      />
       <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={(renderProps) => (

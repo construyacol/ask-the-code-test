@@ -24,7 +24,9 @@ import "moment/locale/es";
 moment.locale("es");
 
 const OrderSupervisor = () => {
-  const { actions, currentOrder } = UseTxState();
+
+  const { actions, currentOrder, tx_path } = UseTxState();
+
   // const { isMovilViewport } = useViewport();
 
   const cerrar = (e, forceClose) => {
@@ -66,11 +68,10 @@ const OrderSupervisor = () => {
       onkeydown={true}
       on_click={cerrar}
     >
-      {["accepted", "rejected", "canceled"].includes(currentOrder.state) ? (
-        <OrderDetail />
-      ) : (
-        <InProcessOrder onErrorCatch={closeAll} />
-      )}
+      {["accepted", "rejected", "canceled"].includes(currentOrder.state) ? 
+      <OrderDetail currentOrder={currentOrder} tx_path={tx_path}/>
+      :
+      (<InProcessOrder onErrorCatch={closeAll}/>)}
     </OtherModalLayout>
   );
 };
@@ -89,26 +90,22 @@ export const getState = (state) => {
     : "Cancelado";
 };
 
-const OrderDetail = () => {
+export const OrderDetail = ({ currentOrder, tx_path }) => {
   // const actions = useActions();
-  const {
-    tx_path,
+  // const {
+    // tx_path,
     // currencies,
-    currentOrder,
+    // currentOrder,
     // primary_path,
     // history,
-  } = UseTxState();
+  // } = UseTxState();
   // console.log(currentOrder, currentOrder.id, tx_path, primary_path)
   const { isMovilViewport } = useViewport();
 
-
-  console.log('currentOrder', currentOrder)
+  // console.log('currentOrder', currentOrder)
   // debugger
 
-  if (!currentOrder) {
-    return null;
-  }
-
+  if(!currentOrder) return null;
   const { state } = currentOrder;
   const TitleText =
     tx_path === "deposits"
@@ -180,7 +177,7 @@ const OrderDetail = () => {
         title={`Detalle del ${TitleText}`}
       />
 
-      <BottomSection colorState={colorState} />
+      <BottomSection colorState={colorState} currentOrder={currentOrder} tx_path={tx_path} />
     </Layout>
   );
 };
@@ -188,8 +185,9 @@ const OrderDetail = () => {
 
 
 
-export const BottomSection = ({ colorState }) => {
-  const { currentOrder, tx_path, currencies } = UseTxState();
+export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
+  const { currencies } = UseTxState();
+
   const [amount] = useFormatCurrency(
     currentOrder.amount || currentOrder.bought,
     currentOrder.currency

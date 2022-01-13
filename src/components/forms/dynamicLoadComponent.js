@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useEffect, useState } from 'react'
 
 const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
@@ -7,7 +8,7 @@ const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
  const initialize = async() => {
    if(!component){return}
    const loadedComponent = await import(`./widgets/${component}`)
-     setRenderComponent(loadedComponent)
+   setRenderComponent(loadedComponent)
  }
 
   useEffect(()=>{
@@ -21,7 +22,6 @@ const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
 
   return(
     <>
-      {/* eslint-disable-next-line react/jsx-pascal-case */}
       { RenderComponent && <RenderComponent.default {...props} /> }
     </>
   )

@@ -69,7 +69,6 @@ function ModalsSupervisor(props) {
 
           <Route
             exact path="/security" component={current === "2auth" ? TwoFactorActivate : Kyc}
-
           />
 
         </ModalLayout>
@@ -105,7 +104,7 @@ function ModalsSupervisor(props) {
               path={[
                 "/:primary_path/:path/:account_id/:tx_path/:order_id",
                 "/:primary_path/:path/:account_id",
-                "/",
+                "/"
               ]}
               render={() => React.createElement(RenderModal)}
             />

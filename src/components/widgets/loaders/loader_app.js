@@ -12,20 +12,22 @@ import { doLogout } from "../../utils";
 import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";
+// import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
+// import isoType from '../../forms/widgets/onBoardingComponent/assets/isoType.png'
 
 import "./loader.css";
-
-const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
-  fallback: (
-    <div
-      style={{
-        height: 77,
-        width: 200,
-        display: "grid",
-      }}
-    />
-  ),
-});
+ 
+// const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
+//   fallback: (
+//     <div
+//       style={{
+//         height: 77,
+//         width: 200,
+//         display: "grid",
+//       }}
+//     />
+//   ),
+// });
 const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
   fallback: (
     <div
@@ -38,30 +40,30 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
   ),
 });
 
-const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
+// const OnBoardingComponent = loadable(() => import("../../forms/widgets/onBoardingComponent/init"));
+// const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
-function LoaderAplication({ actions, history, tryRestoreSession }) {
+function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoarding }) {
 
-  const [country, setCountry] = useState("international");
-  const [ countryImg, setCountryImg ] = useState("international")
+  const [country] = useState("international");
+  // const [ countryImg, setCountryImg ] = useState("international")
   const [progressBarWidth, setProgressBarWidth] = useState(0);
-  const [anim, setAnim] = useState("in");
+  // const [anim, setAnim] = useState("in");
   const [coinsendaServices, reduxState] = useCoinsendaServices();
   const { authData } = reduxState.modelData;
   const { appLoadLabel } = reduxState.isLoading;
   const previousLoadLabel = usePrevious(appLoadLabel);
   const { isTabletOrMovilViewport, isMovilViewport } = useViewport();
 
-  // const registerColors = () => {};
 
-  const initComponent = async (newCountry) => {
+  const initComponent = async () => {
+
     const { userToken } = authData;
+    // const opCountry = await localForage.getItem("OpCountry");
 
-    const opCountry = await localForage.getItem("OpCountry");
-
-    if(opCountry){
-      setCountryImg(opCountry)
-    }
+    // if(opCountry){
+    //   setCountryImg(opCountry)
+    // }
 
     // const isSessionRestored = await tryRestoreSession(userToken);
     // if (isSessionRestored) {
@@ -73,47 +75,20 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     if (!userToken) return;
 
     let profile = await coinsendaServices.fetchUserProfile();
-
-    if (!profile) {
-      if (!newCountry) {
-        return setCountry(null);
-      }
-      profile = await coinsendaServices.addNewProfile(newCountry);
+      if (!profile) {
+      setShowOnBoarding(true)
+      profile = await coinsendaServices.addNewProfile(country);
+      document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
 
+    if (!profile || (!profile.countries[country])) return false;
+    if (!country) return false;
 
+    document.querySelector('.LoaderAplication')?.classList?.add('withUser')
 
-    if (!profile || (!profile.countries[country] && !profile.countries[newCountry])) {
-      return false;
-    }
-
-    if (!country && !newCountry) {
-      return false;
-    }
-    const userCountry = newCountry ? newCountry : country;
-
-    const res = await coinsendaServices.countryValidators();
-    if (!res) {
-      prepareCountrySelection();
-      return doLogout();
-    }
-
-    // Verificamos que el país sea valido, si no, retornamos al componente para seleccionar país
-    // if (res.res.country !== userCountry) {
-    //   prepareCountrySelection();
-    //   return false;
-    // }
-    await animation("out");
-    await setCountry(userCountry);
-    await animation("in");
-
+    const userCountry = country;
     await coinsendaServices.loadFirstEschema();
- 
     const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
-
-    if(user.operation_country){
-      localForage.setItem("OpCountry", user.operation_country)
-    }
 
     if (!user) {
       return false;
@@ -126,9 +101,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
 
   const redirectURL = async (isSessionRestored) => {
     coinsendaServices.freshChatInitUser();
-    if (!isMovilViewport) {
-      coinsendaServices.initPushNotificator();
-    }
+    if (!isMovilViewport) coinsendaServices.initPushNotificator();
 
     const verificationStatus = await coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {
@@ -164,32 +137,7 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
     }
   };
 
-  const prepareCountrySelection = async () => {
-    await animation("out");
-    setCountry(null);
-    setProgressBarWidth(0);
-    await animation("in");
-  };
 
-  const selectCountry = async (newCountry) => {
-    actions.isAppLoading(true);
-    await initComponent('international');
-    // await initComponent(newCountry);
-    actions.isAppLoading(false);
-  };
-
-  const animation = async (animation) => {
-    return new Promise(async (resolve) => {
-      setAnim(animation);
-      setTimeout(() => {
-        return resolve(true);
-      }, 300);
-    });
-  };
-
-  // useEffect(() => {
-  //   registerColors();
-  // }, []);
 
   useEffect(() => {
     if (authData.userToken) {
@@ -206,22 +154,14 @@ function LoaderAplication({ actions, history, tryRestoreSession }) {
   }, [appLoadLabel]);
 
   return (
-    <div className={`LoaderAplication ${!country ? "withOutContry" : ""}`}>
-      {!country ? (
-        <div className={`LoaderAplication loaderLayout ${anim}`}>
-          <SelectCountry select_country={selectCountry} />
-        </div>
-      ) : (
+    <div className={`LoaderAplication`}>
         <div className={`LoaderContainer loaderLayout`}>
-          <IconSwitch className="Loader__icon" icon={countryImg} size={60} />
-
           <div className="logotypes">
-            <Coinsenda size={50} color="white" />
+            <Coinsenda size={45} color="white" />
             <h1 className="fuente">Coinsenda</h1>
           </div>
           <p className="fuente">{appLoadLabel}</p>
         </div>
-      )}
       <div className="KycprogressBar loader">
         <div
           className="kycPropgressed"

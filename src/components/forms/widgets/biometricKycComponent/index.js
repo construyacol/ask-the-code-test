@@ -4,7 +4,7 @@ import useValidations from '../../hooks/useInputValidations'
 import { getDisplaySize } from './utils'
 import loadable from '@loadable/component'
 import styled from 'styled-components'
-import StatusIndicator from '../biometricStatus'
+import StatusIndicator from './biometricStatus'
 import { Scanner } from './scanner'
 import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
@@ -13,7 +13,10 @@ import { useCoinsendaServices } from "../../../../services/useCoinsendaServices"
 import useSocket from '../../../hooks/useSocket'
 import { useSelector } from "react-redux";
 import { ENVIRONMENT_VAR } from '../../../../const/const'
-
+import {
+  Layout,
+  ContentContainer
+} from '../sharedStyles'
 import './styles.css'
 
 
@@ -23,22 +26,23 @@ const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
  
-const BiometricKycComponent = ({ handleDataForm, handleState }) => {
+const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const modelData = useSelector((state) => state.modelData);
   const { dataForm } = handleDataForm
+  const pathName = dataForm?.wrapperComponent
   const { state, setState } = handleState
   const [ loading, setLoading ] = useState(false)
   const [ cameraAvailable, setCameraAvailable ] = useState()
   const [ boardingAgreement, setBoardingAgreement ] = useState(false)
   const [ coinsendaServices ] = useCoinsendaServices();
-  const validations = useValidations()
+  const validations = useValidations(pathName)
 
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
   const faceApi = useRef(window.faceapi)
   const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
-  const [ biometricData ] = useSocket(`/biometric_data/${modelData.user.id}`)
+  const [ biometricData ] = useSocket(`/biometric_data/${modelData.authData.userId}`)
 
   const stageManager = useStage(
     // create the form stages
@@ -55,6 +59,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     stageController
   } = stageManager
 
+  // const finalStage = true
 
   const setupFaceApi = async() => {
     setLoading(true)
@@ -211,7 +216,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log('modelsPath', modelsPath)
+  // console.log('||||||||||||||||||||||||||||||||||||||||  BiometricKyc PROPS', props)
   
 
    if(finalStage){
@@ -220,9 +225,11 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
       <>
         { developerMood && <Captures state={state}/> }
         <DynamicLoadComponent
-              component={dataForm?.successStage?.component}
+              component={`${dataForm?.wrapperComponent}/success`}
               handleDataForm={handleDataForm}
               handleState={handleState}
+              coinsendaServices={coinsendaServices}
+              {...props}
         />
       </>
     )
@@ -233,7 +240,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
         { 
           !boardingAgreement &&
             <DynamicLoadComponent
-              component="onBoardingAgreement"
+              component="biometricKycComponent/onBoardingAgreement"
               cameraAvailable={cameraAvailable}
               handleAction={() => {
                 setBoardingAgreement(true)
@@ -243,7 +250,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 
         { developerMood &&<Captures state={state}/> }
 
-        <ContentContainer id="faceApiContainer">
+        <ContentContainers id="faceApiContainer">
           <StatusIndicator 
             data={stageData?.solved}
           />
@@ -259,7 +266,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
           </IndicatorStage>
           <h1 className="fuente">{stageData?.uiName}</h1>
           <p className="fuente">Mantén tu cabeza erguida y asegurate que tu rostro encaje dentro del circulo</p>
-        </ContentContainer>
+        </ContentContainers>
       </Layout>
     )
 } 
@@ -268,16 +275,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState }) => {
 export default BiometricKycComponent
 
 
-const Layout = styled.div`
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    background: #fffffffa;
-    position: absolute;
-    justify-items: center;
-    top: 0;
-    left: 0;
-`
+
 
 
 const Indicator = styled.div`
@@ -305,17 +303,7 @@ const VideoContainer = styled.div`
   clip-path: circle(37% at 50% 50%);
 `
 
-const ContentContainer = styled.div`
-
-  position:relative;
-  width:100vw;
-  height:auto;
-  max-width:800px;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto auto auto;
-  height: calc(100vh - 80px);
-  padding: 40px 0;
+const ContentContainers = styled(ContentContainer)`
 
   .FRecTitle{
     color:#0198ff;

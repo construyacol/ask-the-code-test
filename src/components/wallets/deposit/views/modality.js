@@ -12,7 +12,7 @@ const ModalityView = (props) => {
     deposit_service,
     create_deposit_order,
     title,
-    subtitle,
+    // subtitle,
   } = props;
   let movil_viewport = window.innerWidth < 768;
 
@@ -30,11 +30,10 @@ const ModalityView = (props) => {
 
   return (
     <div className="DLstep modality">
-      <div className="DLcontain">
+      <div className="DLcontain" style={{alignSelf: "baseline", marginTop: "15px"}}>
         <p className="fuente DLtitle2">
-          {title} {deposit_service ? deposit_service : ""}
+          {title}
         </p>
-        <p className="fuente DLstitle">{subtitle}</p>
       </div>
 
       <div
@@ -71,7 +70,7 @@ const ModalityView = (props) => {
         active={buttonActive}
         siguiente={create_deposit_order}
       >
-        CREAR ORDEN
+        Crear orden
       </ButtonForms>
     </div>
   );

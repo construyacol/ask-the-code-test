@@ -128,8 +128,9 @@
 
 .KycLayoutMom {
   overflow: hidden;
-  width: 100%;
-  height: 100%;
+  width: calc(100% - 60px);
+  height: calc(100% - 60px);
+  padding: 30px;
 }
 
 .Kyccontrols {
@@ -328,7 +329,7 @@
 }
 
 .kycPropgressed {
-  height: 100%;
+  height: 6px;
   width: 20%;
   transition: 0.3s;
   background: linear-gradient(to right, #129a8e, #37ed7d);

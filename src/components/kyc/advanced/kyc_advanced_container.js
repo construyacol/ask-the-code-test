@@ -6,6 +6,7 @@ import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import withCoinsendaServices from "../../withCoinsendaServices";
 import { getCdnPath } from '../../../environment'
+import { history } from '../../../const/const'
 
 class KycAdvancedContainer extends Component {
 
@@ -47,7 +48,7 @@ class KycAdvancedContainer extends Component {
     await this.props.action.CurrentForm("kyc_advanced");
     if (this.props.current === "kyc_advanced") {
       this.props.action.isAppLoading(false);
-      this.props.history.push(`?form=identity_front_upload`);
+      history.push(`?form=identity_front_upload`);
     }
   }
 
@@ -118,7 +119,7 @@ class KycAdvancedContainer extends Component {
     if (this.props.step === 4) {
       route = `?form=identity_files_uploaded_success`;
     }
-    this.props.history.push(route);
+    history.push(route);
   }
 
   goFileLoader = async (e) => {
@@ -264,12 +265,12 @@ class KycAdvancedContainer extends Component {
         })
         this.props.action.UpdateForm("kyc_advanced", this.state);
       }
-
     }
   };
 
   finish = () => {
     this.props.action.toggleModal();
+    this.props.action.renderModal(null);
   };
 
   render() {

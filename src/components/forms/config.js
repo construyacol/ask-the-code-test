@@ -1,69 +1,54 @@
+import { 
+  ONBOARDING_COMPONENTS,
+  ONBOARDING_STAGES
+} from './widgets/onBoardingComponent/api'
 
+import { 
+  PERSONAL_COMPONENTS,
+  PERSONAL_STAGES,
+  PERSONAL_DEFAULT_STATE
+} from './widgets/personalKycComponent/api'
+
+import { 
+  BIOMETRIC_COMPONENTS,
+  BIOMETRIC_STAGES
+} from './widgets/biometricKycComponent/api'
 
 let stages = {
-  personal:{
-    "name":{
-      uiName:"Nombres completos",
-      key:"name",
-      uiType:"text",
-      "settings":{
-        defaultMessage:"Los nombres deben coincidir con los de tu documento de identidad",
-        successPattern:/[a-zA-Z ]{3,40}/g,
-        label:"Nombres completos (sin apellidos):",
-        placeholder:"Ej: Juan josé ",
-        queryParams:{
-          form:'personal_names'
-        },
-        errors:[
-          { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
-        ],
-        AuxComponent:null,
-        MainComponent:null
-      }
-    }
-  },
-  biometric:{}
-
+  ...BIOMETRIC_STAGES,
+  ...PERSONAL_STAGES,
+  ...ONBOARDING_STAGES
 } 
 
 const defaultState = {
+  ...PERSONAL_DEFAULT_STATE
   // biometric:{
   //   smile:"",
   //   surprised:""
   // },
-  // personal:{
-  //   name:"Andres"
-  // }
 }
 
 const handleError = {
-  personal:{
-    defaultErrorMessage:"Hubo un error en la toma de datos...",
-    errors:{
-      name:""
-    }
-  }
+  // personal:{
+  //   defaultErrorMessage:"Hubo un error en la toma de datos...",
+  //   errors:{
+  //     name:""
+  //   }
+  // }
 }
 
-const successStage = {
-  biometric:{
-    component:"biometricKycSuccess"
-  },
-  personal:{
-    component:"personalKycSuccess"
-  }
-}
 
 const wrapperComponent = {
-  biometric:"biometricKycComponent",
-  personal:"personalKycComponent"
+  ...BIOMETRIC_COMPONENTS['wrapperComponent'],
+  ...PERSONAL_COMPONENTS['wrapperComponent'],
+  ...ONBOARDING_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {
   return {
     wrapperComponent:wrapperComponent[formName],
     handleError:handleError[formName],
-    successStage:successStage[formName],
+    successStage:null,
     defaultState:defaultState[formName],
     stages:stages[formName]
   }

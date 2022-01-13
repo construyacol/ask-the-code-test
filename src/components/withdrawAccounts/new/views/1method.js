@@ -11,7 +11,7 @@ const MethodView = (props) => {
     item_active,
     siguiente,
     title,
-    subtitle,
+    // subtitle,
     withdraw,
   } = props;
 
@@ -30,9 +30,8 @@ const MethodView = (props) => {
 
   return (
     <div id="DLsteps" className="DLsteps method">
-      <div className="DLcontains">
-        <p className="fuente DLtitles2">{title ? title : "Title"}</p>
-        <p className="fuente DLstitles">{subtitle ? subtitle : "Subtitle:"}</p>
+      <div className="DLcontains" style={{ alignSelf:"baseline", marginTop:'15px' }}>
+        <p className="fuente DLtitle2">{title ? title : "Title"}</p>
       </div>
 
       <div

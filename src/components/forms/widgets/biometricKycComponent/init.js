@@ -1,35 +1,37 @@
 import { useEffect, useState } from 'react'
 // import loadable from '@loadable/component'
-import OtherModalLayout from "../widgets/modal/otherModalLayout";
-import { IconClose } from "../widgets/shared-styles";
-import { useActions } from '../../hooks/useActions'
-import { initStages } from '../forms/utils'
-import FormComponent from '../forms' 
+import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
+import { IconClose } from "../../../widgets/shared-styles";
+import { useActions } from '../../../../hooks/useActions'
+import { initStages } from '../../utils'
+import FormComponent from '../../' 
+import { useSelector } from "react-redux";
+import { Layout } from '../sharedStyles'
 
-
-const FormsComponent = props => {
+const BiometricKyc = props => {
 
     const actions = useActions();
+    const { userId } = useSelector(({ modelData:{ authData } }) => authData);
 
-    const formName = 'biometric'
+
     const [ dataForm, setDataForm ] = useState()
     
     const init = async() => {
       const _dataForm = await initStages(
         {
-          personType:'natural',
-          level:'level_1',
-          formName
+          formName: 'biometric'
         }
       )
       setDataForm(_dataForm)
     }
   
     useEffect(()=> { 
-      init()
-    }, [])
+      if(userId){
+        init()
+      }
+    }, [userId]) 
 
-    const cerrar = (e, forceClose) => {
+    const closeModal = (e, forceClose) => {
         if (e && (e.target.dataset.close_modal || forceClose)) {
           actions.isAppLoading(false);
           actions.renderModal(null);
@@ -42,20 +44,20 @@ const FormsComponent = props => {
             id="close-button-with-OtherModalLayout"
             className="fullScreen"
             onkeydown={true}
-            on_click={cerrar}
+            on_click={closeModal}
         >
             <IconClose theme="dark" size={20} />
               {
                 dataForm ?
                   <FormComponent
                     handleDataForm={{dataForm, setDataForm}}
+                    {...props}
                   />
                 :
-                  <h1>Skeleton</h1>
+                  <Layout/>
               }
         </OtherModalLayout>
     )
-
 }
 
-export default FormsComponent
+export default BiometricKyc

@@ -42,7 +42,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
       {currentOrder.currency_type === "fiat" ? (
         <FiatOrder order={currentOrder} />
       ) : (
-        <CryptoOrder order={currentOrder} />
+        <CryptoOrder order={currentOrder} tx_path />
       )}
     </>
   );
@@ -98,7 +98,7 @@ const CryptoOrder = ({ order }) => {
               />
             </BottomSectionContainer>)
           :
-            <BottomSection colorState={"gray"}/>
+            <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
         }
       </OrderContainer>
 
@@ -147,10 +147,10 @@ const FiatOrder = ({ order }) => {
       const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
       
       if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
-        const Element = await import("../../../../BiometricIdentity");
+        const Element = await import("../../../../forms/widgets/biometricKycComponent/init");
         if(!Element) return;
-        const FormsComponent = Element.default
-        return actions.renderModal(() => <FormsComponent/>);
+        const BiometricKyc = Element.default
+        return actions.renderModal(() => <BiometricKyc orderData={{order, paymentProof:dataBase64}} />);
       }
 
       // cropImgOFf
@@ -228,7 +228,7 @@ const FiatOrder = ({ order }) => {
             />
           </BottomSectionContainer>)
           :
-          <BottomSection colorState={"gray"}/>
+          <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
         }
 
       </OrderContainer>
