@@ -106,7 +106,7 @@ class ViewAmountComponent extends Component {
       handleSubmit,
     } = this.props;
 
-    const { statusInput, ui_currency_name, minAmount } = this.state;
+    const { statusInput, minAmount } = this.state;
 
     // let moneda =
 
