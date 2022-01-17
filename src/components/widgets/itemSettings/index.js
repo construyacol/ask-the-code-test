@@ -30,11 +30,15 @@ class ItemSettingsInit extends Component {
         const PersonalKycComponent = Element.default
       return this.props.action.renderModal(() => <PersonalKycComponent/>); 
       case "kyc_financial":
+        
         await this.props.action.CurrentForm("kyc_basic");
         await this.props.action.ToStep("globalStep", 3);
-        return this.props.action.toggleModal();
+        const Element2 = await import("../../kyc/kyc_container");
+        const IdentityKycComponent = Element2.default
+        return this.props.action.renderModal(() => <IdentityKycComponent/>); 
+      // return this.props.action.toggleModal();
 
-      case "kyc_advanced":
+      case "kyc_advanced": 
         await this.props.action.CurrentForm("kyc_basic");
         await this.props.action.ToStep("globalStep", 2);
         return this.props.action.toggleModal();

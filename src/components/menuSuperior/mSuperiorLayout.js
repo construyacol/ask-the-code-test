@@ -51,7 +51,7 @@ const MenuSuperiorLayout = (props) => {
     ? currentPair.primary_currency.currency
     : "coinsenda";
 
-    console.log('||||||||||||||||||||  itemQuote ==> ', itemQuote)
+    // console.log('||||||||||||||||||||  itemQuote ==> ', itemQuote)
     // debugger
 
   return (

@@ -267,10 +267,11 @@ class KycAdvancedContainer extends Component {
       }
     }
   };
-
+  
   finish = () => {
-    this.props.action.toggleModal();
-    this.props.action.renderModal(null);
+    if(this.props.isModalVisible){
+      this.props.action.toggleModal();
+    }
   };
 
   render() {
@@ -294,13 +295,14 @@ class KycAdvancedContainer extends Component {
 
 function mapStateToProps(state, props) {
   const { user } = state.modelData;
-  const { current } = state.form;
+  const { current, isModalVisible } = state.form;
   return {
     loader: state.isLoading.loader,
     step: state.form.form_kyc_advanced.step,
     base64: state.form.form_kyc_advanced.base64,
     user: user,
     current,
+    isModalVisible
   };
 }
 

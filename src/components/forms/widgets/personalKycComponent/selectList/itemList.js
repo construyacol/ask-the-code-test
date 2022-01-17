@@ -10,7 +10,7 @@ const ItemList = ({ item, onClick }) => {
   const imgSrc = item?.img || item?.flag
 
   return(
-    <ItemListGrid className="itemListGrid" onClick={onClick} ref={element}>
+    <ItemListGrid className={`itemListGrid ${item?.value || ''}`} onClick={onClick} ref={element}>
       <div className="itemList__icon" >
       {
           imgSrc &&

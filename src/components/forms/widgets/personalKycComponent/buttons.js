@@ -15,6 +15,7 @@ export const BackButtom = ({ onClick, disabled }) => {
     )
 }
 
+
 // export const BackButtom = ({ onClick, disabled }) => {
 //     return(
 //         <Portal target={document.querySelector("#buttonModule__")}>
@@ -28,7 +29,7 @@ export const BackButtom = ({ onClick, disabled }) => {
 
 export const NextButtom = ({ onClick, disabled }) => {
     return(
-        <IconNextContainer onClick={onClick} disabled={disabled || ''} width="35px">
+        <IconNextContainer className="personal_nextButtom_" onClick={onClick} disabled={disabled || ''} width="35px">
                 <FiArrowRight size={35} color="#06a" />
         </IconNextContainer>
     )

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import useValidations from '../../hooks/useInputValidations'
+// import useValidations from '../../hooks/useInputValidations'
+import validations from './validations'
 import Layout from '../layout'
 import useStage from '../../hooks/useStage'
 import loadable from '@loadable/component'
@@ -12,7 +13,6 @@ import { ApiPostPersonalKyc } from './api'
 import useToast from '../../../../hooks/useToastMessage'
 import SuccessComponent from './success'
 
-
 import {
   MainContainer,
   StickyGroup,
@@ -23,11 +23,8 @@ const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent')
 
 const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
 
-  const pathName = handleDataForm?.dataForm?.wrapperComponent
-  // console.log('pathName', pathName)
   const { dataForm } = handleDataForm
   const { state, setState } = handleState
-  const validations = useValidations(pathName)
   const [ loading, setLoading ] = useState(false)
   const [ toastMessage ] = useToast()
   const stageManager = useStage(
@@ -59,8 +56,9 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
-    if(!validations || !validations[stageData?.key]){return}
     const [ _value, _status ] = validations[stageData.key](e.target.value, {...stageData, state, dataForm});
+    // console.log('|||||||||||||  RETURN  _value ==> ', _value)
+    // debugger
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
     setState(prevState => {
@@ -72,12 +70,13 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   // load state  by default
   useEffect(() => {
     let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
-    if(state[stageData?.key] && inputElement && validations){
+    // except metada because is not include on state
+    if(!stageData?.key?.includes('meta') && inputElement){
       onChange({target:{value:state[stageData.key]}});
       inputElement.value = state[stageData.key]
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state[stageData?.key], validations])
+  }, [state[stageData?.key]])
 
 
   useEffect(() => {
@@ -104,8 +103,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     )
   }
 
-  // console.log('dataForm', dataForm)
-  // debugger
+  // console.log('dataForm', state, dataForm)
 
   return(
       <Layout background="white" >

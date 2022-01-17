@@ -93,7 +93,7 @@ export const CashFlow = (props) => {
     <section className="DepositLayout">
       {step === 3 && deposit_way === "cash" && (
         <ModalityView
-          title="Haré el depósito por:"
+          title="Elige el medio de pago:"
           items={cash_payment}
           update_service_mode={update_local_state}
           service_mode={short_bank_name}

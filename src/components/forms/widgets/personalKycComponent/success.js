@@ -10,7 +10,6 @@ import loadable from '@loadable/component'
 const Kyc = loadable(() => import('../../../kyc/kyc_container'))
 
 const SuccessComponent = ({ closeModal, state, ...props }) => {
-// const SuccessComponent = ({ handleDataForm:{ setDataForm }, handleState:{ state, setState } }) => {
 
     const [ showKycComponent, setShowKycComponent ] = useState()
 
@@ -28,7 +27,7 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
                 <ConfettiComponent/>
                 <h1>Genial {state?.name?.toLowerCase()}</h1>
                 <Medal size={145} />
-                <p>Has completado tu verificación básica</p>
+                <p className="personalSuccess">Has completado tu verificación básica</p>
                 <ControlContainer>
                     <p>¿Deseas continuar con el proceso de verificación avanzada?</p>
                     <Buttons>
@@ -70,15 +69,3 @@ const PrimaryButton = styled(Button)`
     background: linear-gradient(132deg, rgba(53,171,252,1) 0%, rgba(15,134,215,1) 100%);
     color:white;
 `
-
-
-// const SuccessComponent = props => {
-//     return(
-//       <Layout background="white">
-//         <h1>SuccessComponent</h1>
-//       </Layout>
-//     )
-// }
-
-
-// export default SuccessComponent
