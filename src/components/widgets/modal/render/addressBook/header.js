@@ -49,7 +49,7 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
 
 export default HeaderComponent;
 
-const WindowControl = styled.div`
+export const WindowControl = styled.div`
   overflow: hidden;
   width: 0;
   transition: 0.2s;
@@ -58,7 +58,7 @@ const WindowControl = styled.div`
   cursor: pointer;
 `;
 
-const Header = styled.div`
+export const Header = styled.div`
   width: 97%;
   height: 100%;
   justify-self: center;

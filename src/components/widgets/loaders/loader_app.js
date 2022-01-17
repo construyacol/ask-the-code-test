@@ -59,18 +59,13 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const initComponent = async () => {
 
     const { userToken } = authData;
-    // const opCountry = await localForage.getItem("OpCountry");
-
-    // if(opCountry){
-    //   setCountryImg(opCountry)
-    // }
-
-    // const isSessionRestored = await tryRestoreSession(userToken);
-    // if (isSessionRestored) {
-    //   await actions.isLoggedInAction(true);
-    //   coinsendaServices.postLoader(doLogout);
-    //   return redirectURL(isSessionRestored);
-    // }
+ 
+    const isSessionRestored = await tryRestoreSession(userToken);
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true);
+      coinsendaServices.postLoader(doLogout);
+      return redirectURL(isSessionRestored);
+    }
 
     if (!userToken) return;
 

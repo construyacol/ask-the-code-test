@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import styled from "styled-components";
 import { OperationForm } from "./withdrawCripto";
 import IconSwitch from "../../widgets/icons/iconSwitch";
 import ControlButton from "../../widgets/buttons/controlButton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { useActions } from '../../../hooks/useActions'
+
+
 
 const DepositFiat = (props) => {
   const movil_viewport = window.innerWidth < 768;
+  const [ loader, setLoader ] = useState(false)
   const idForMainButton = useKeyActionAsClick(
     true,
     "main-button-deposit",
@@ -28,6 +32,8 @@ const DepositFiat = (props) => {
     dispatch,
   ] = useCoinsendaServices();
 
+  const actions = useActions()
+ 
   const atributos = {
     icon: "deposit",
     size: movil_viewport ? 80 : 100,
@@ -40,10 +46,16 @@ const DepositFiat = (props) => {
   }, []);
 
   const fiat_deposit = async (e) => {
-    await dispatch(FiatDeposit(current_wallet.currency.currency || "usd"));
-    dispatch(toggleModal());
-  };
+    setLoader(true)
+    const Element = await import('../../forms/widgets/fiatDeposit/init')
+    const FiatDepositComponent = Element.default
+    actions.renderModal(() => <FiatDepositComponent/>)
+    setLoader(false)
 
+    // await dispatch(FiatDeposit(current_wallet.currency.currency || "usd"));
+    // dispatch(toggleModal());
+  };
+ 
   return (
     <DepositForm className="DepositView itemWalletView">
       <div className="contIcontSwitch">
@@ -66,7 +78,7 @@ const DepositFiat = (props) => {
       <ControlButton
         id={idForMainButton}
         handleAction={fiat_deposit}
-        loader={!deposit_providers}
+        loader={loader || !deposit_providers}
         formValidate
         label="Realizar un deposito"
       />
@@ -82,3 +94,5 @@ const DepositForm = styled(OperationForm)`
 `;
 
 export default DepositFiat;
+
+

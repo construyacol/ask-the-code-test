@@ -342,13 +342,14 @@ export const InputFormCoin = (props) => {
 
 export class InputDepositForm extends Component {
   state = {
-    placeHolder: window.innerWidth > 768 ? "Escribe la cantidad" : "Cantidad",
+    placeHolder: (window.innerWidth > 768 && this.props.classNames !== 'without-adapt') ? "Escribe la cantidad" : "Cantidad",
     finalValue: "",
   };
 
   componentDidMount() {
+    const { value, service } = this.props
     this.setState({
-      finalValue: this.state.placeHolder,
+      finalValue: value ? service(value) : this.state.placeHolder,
     });
   }
 
@@ -368,24 +369,22 @@ export class InputDepositForm extends Component {
   }
 
   render() {
-    const { actualizar, handleKeyPress, value, name, autoFocus } = this.props;
+    const { actualizar, handleKeyPress, value, name, autoFocus, classNames } = this.props;
     const { finalValue } = this.state;
     const style = {
       fontSize:
-        finalValue.length < 10
-          ? "90px"
-          : finalValue.length < 15
-          ? "60px"
-          : "40px",
+        finalValue.length < 8 ? "50px"
+        : finalValue.length < 12 ? "40px"
+        : "30px"
     };
 
     return (
-      <div className="containerInputComponent with-adapt">
+      <div className={`containerInputComponent with-adapt ${classNames || ''}`}>
         <input
-          className={`inputElement2 signoPesos fuente2 width-adapt-child`}
+          className={`inp2_ inputElement2 signoPesos fuente2 width-adapt-child`}
           type="text"
           style={style}
-          placeholder={`$ ${finalValue}`}
+          placeholder={`$ ${this.state.placeHolder}`}
           onChange={actualizar}
           name={name}
           autoFocus={autoFocus}

@@ -5,7 +5,7 @@ import OtherModalLayout from "../../otherModalLayout";
 import { useSelector } from "react-redux";
 import { setAnimation } from "../../../../../utils";
 import WithdrawViewState from "../../../../hooks/withdrawStateHandle";
-import EmptyState from "./emptyState";
+import EmptyState from "./emptyState"; 
 import NewAccount from "./newAccount";
 import AddressBookComponent from "./addressBookList";
 import HeaderComponent from "./header";
@@ -118,7 +118,7 @@ const Container = styled.div`
   }
 `;
 
-const Content = styled.div`
+export const Content = styled.div`
   width: 100%;
   height: 100%;
   background: white;
@@ -126,7 +126,7 @@ const Content = styled.div`
   position: relative;
 `;
 
-const ContainerLayout = styled.div`
+export const ContainerLayout = styled.div`
   width: 100%;
   max-width: 400px;
   height: 650px;

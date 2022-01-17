@@ -1,4 +1,9 @@
 import { 
+  FIAT_DEPOSIT_COMPONENTS,
+  FIAT_DEPOSIT_STAGES
+} from './widgets/fiatDeposit/api'
+
+import { 
   ONBOARDING_COMPONENTS,
   ONBOARDING_STAGES
 } from './widgets/onBoardingComponent/api'
@@ -17,7 +22,8 @@ import {
 let stages = {
   ...BIOMETRIC_STAGES,
   ...PERSONAL_STAGES,
-  ...ONBOARDING_STAGES
+  ...ONBOARDING_STAGES,
+  ...FIAT_DEPOSIT_STAGES
 } 
 
 const defaultState = {
@@ -41,7 +47,8 @@ const handleError = {
 const wrapperComponent = {
   ...BIOMETRIC_COMPONENTS['wrapperComponent'],
   ...PERSONAL_COMPONENTS['wrapperComponent'],
-  ...ONBOARDING_COMPONENTS['wrapperComponent']
+  ...ONBOARDING_COMPONENTS['wrapperComponent'],
+  ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {

@@ -6,6 +6,7 @@ import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
+import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 
 
 // import countryValidators from './apiRes'
@@ -131,7 +132,8 @@ const getNationalityList = async() => {
 const dataService = {
   biometric:ApiGetBiometricStages,
   onBoarding:ApiGetOnBoardingStages,
-  personal:ApiGetPersonalStages
+  personal:ApiGetPersonalStages,
+  fiatDeposit:ApiGetOnFiatDepositStages
 }
 
 
@@ -140,6 +142,7 @@ export const initStages = async(config) => {
   const apiStages = await dataService[config.formName](config)
   if(!apiStages) return;
   const sourceStages = Object.keys(apiStages)
+  
   let stages = {} 
 
   for (const stage of sourceStages) { 
@@ -149,7 +152,7 @@ export const initStages = async(config) => {
     }
   } 
 
-
+  
   return {
     ...formStructure(config.formName),
     stages

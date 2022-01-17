@@ -543,6 +543,10 @@ form#phone {
   font-size: 40px;
 }
 
+.inp2_{
+  height: 60px;
+}
+
 .signoPesos {
   color: #3a7bd5;
   /*font-size: 90px;*/
@@ -766,4 +770,8 @@ form#phone {
 .with-adapt {
   width: 58vw;
   max-width: 600px;
+}
+
+.without-adapt{
+  width: 100%;
 }
