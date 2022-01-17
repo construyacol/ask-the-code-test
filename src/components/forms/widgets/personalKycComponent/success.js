@@ -32,7 +32,7 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
                     <p>¿Deseas continuar con el proceso de verificación avanzada?</p>
                     <Buttons>
                         <SecondaryButton onClick={closeModal}>Lo haré despues</SecondaryButton>
-                        <PrimaryButton onClick={() => setShowKycComponent(true)}>Continuar</PrimaryButton>
+                        <PrimaryButton className="continue_to_identity_kyc" onClick={() => setShowKycComponent(true)}>Continuar</PrimaryButton>
                     </Buttons>
                 </ControlContainer>
             </LayoutContainer>
