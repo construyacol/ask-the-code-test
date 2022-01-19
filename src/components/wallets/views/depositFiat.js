@@ -28,7 +28,7 @@ const DepositFiat = (props) => {
       },
       modelData: { deposit_providers },
     },
-    { toggleModal, FiatDeposit },
+    { FiatDeposit },
     dispatch,
   ] = useCoinsendaServices();
 
@@ -50,10 +50,10 @@ const DepositFiat = (props) => {
     const Element = await import('../../forms/widgets/fiatDeposit/init')
     const FiatDepositComponent = Element.default
     actions.renderModal(() => <FiatDepositComponent/>)
-    setLoader(false)
-
+    
     // await dispatch(FiatDeposit(current_wallet.currency.currency || "usd"));
     // dispatch(toggleModal());
+    setLoader(false)
   };
  
   return (

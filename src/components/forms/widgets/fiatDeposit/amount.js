@@ -1,14 +1,18 @@
 // import ViewAmountComponent from '../../../wallets/views/viewAmount'
-import { useState } from 'react';
+// import { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import { InputDepositForm } from "../../../widgets/inputs";
-import { ButtonForms } from "../../../widgets/buttons/buttons";
+// import { ButtonForms } from "../../../widgets/buttons/buttons";
+import ControlButton from "../../../widgets/buttons/controlButton";
+
+import { AmountLayout } from './styles'
 import {
     handleKeyPress,
     number_format,
     // get_ui_name_currency,
   } from "../../../../utils";
+
 
 const AmountComponent = ({ nextStage, stageData, handleState:{ state, setState } }) => {
 
@@ -22,9 +26,10 @@ const AmountComponent = ({ nextStage, stageData, handleState:{ state, setState }
         setState(prevState => { return { ...prevState, [stageData?.key]: "20000" } })
     }
 
+    console.log('state', state)
 
     return(
-        <Layout>
+        <AmountLayout className="amountLayout">
             <Title className="fuente">Escribe la cantidad de depósito</Title>
             <Content>
                 <IconSwitch icon="cop" size={45} />
@@ -36,17 +41,17 @@ const AmountComponent = ({ nextStage, stageData, handleState:{ state, setState }
                     name="amount"
                     handleKeyPress={handleKeyPress}
                     service={number_format}
-              />
+              /> 
               <MinAmount className="fuente2" onClick={loadMinAmount}>Cantidad mínima: $20.000</MinAmount>
             </Content>
-            <ButtonForms
-              type="primary"
-              active={parseFloat(state[stageData?.key]) >= parseFloat("20000")}
-              siguiente={() => nextStage()}
-            >
-              Continuar
-            </ButtonForms>
-        </Layout>
+
+            <ControlButton
+                handleAction={() => nextStage()}
+                // loader={true}
+                formValidate={parseFloat(state[stageData?.key]) >= parseFloat("20000")}
+                label="Continuar"
+            />
+        </AmountLayout>
     )
 }
 
@@ -55,6 +60,9 @@ export default AmountComponent
 
 const MinAmount = styled.p`
     color:gray;
+    margin: 0;
+    align-self: baseline;
+    cursor:pointer;
 `
 
 const Content = styled.section`
@@ -70,23 +78,9 @@ const Content = styled.section`
     
 `
 
-const Title = styled.p`
+export const Title = styled.h3`
     margin:0;
+    color:gray;
 `
 
-const Layout = styled.div`
-    grid-row-gap: 10px;
-    display: grid;
-    height: 100%;
-    justify-items: center;
-    align-items: center;
-    perspective: 900px;3
-    transform-style: preserve-3d; 
-    text-align: center;
-    width: calc(100% - 40px);
-    padding: 0 20px;
 
-    .botonForm{
-        width:220px;
-    }
-`

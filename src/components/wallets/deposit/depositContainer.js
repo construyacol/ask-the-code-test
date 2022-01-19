@@ -11,7 +11,7 @@ import { SavePayment } from "../../widgets/toast/messages";
 import { withRouter } from "react-router";
 import BigNumber from "bignumber.js";
 import withCoinsendaServices from "../../withCoinsendaServices";
-
+ 
 class DepositContainer extends Component {
   state = {
     type_currency: this.props.type_currency,
@@ -342,9 +342,9 @@ class DepositContainer extends Component {
   };
 
   create_deposit_order = async () => {
-    const { current_wallet, user, deposit_providers } = this.props;
+    const { current_wallet, deposit_providers } = this.props;
 
-    const { amount, cost_id, deposit_service, service_mode } = this.state;
+    const { amount, cost_id, } = this.state;
 
     const deposit_provider =
       deposit_providers && deposit_providers[current_wallet.dep_prov[0]];
@@ -358,16 +358,13 @@ class DepositContainer extends Component {
       );
     }
 
-    let response = await this.props.coinsendaServices.createDeposit(
-      current_wallet && current_wallet.currency,
+    let response = await this.props.coinsendaServices.createDeposit({
+      currency:current_wallet && current_wallet.currency,
       amount,
-      current_wallet.id,
+      account_id:current_wallet.id,
       cost_id,
-      deposit_service,
-      user,
-      service_mode,
-      deposit_provider.id
-    );
+      deposit_provider_id:deposit_provider.id
+    });
 
     if (!response) {
       this.props.action.isAppLoading(false);

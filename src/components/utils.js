@@ -154,8 +154,8 @@ export const handleError = async(err, callback) => {
     case 'JsonWebTokenError': 
         console.log('JsonWebTokenError: ', err)
         // debugger
-      // return doLogout('?message=Tu session ha caducado')
-      return
+      return doLogout('?message=Tu session ha caducado')
+      // return
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
         const refreshToken = await localForage.getItem("refresh_token");
@@ -166,9 +166,9 @@ export const handleError = async(err, callback) => {
     default:
       console.log('handleError: ', err)
       if(err.message === 'No hay token y/o refresh_token almacenado'){
-        // return doLogout('?message=No tienes credenciales, inicia sesión')
+        return doLogout('?message=No tienes credenciales, inicia sesión')
       }
-      // callback && callback()
+      callback && callback()
         // return doLogout()
   }
 }

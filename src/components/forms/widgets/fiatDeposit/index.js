@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useState } from 'react'
 import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 import { useActions } from '../../../../hooks/useActions'
 import { ContainerLayout, Content } from '../../../widgets/modal/render/addressBook'
@@ -8,15 +8,22 @@ import useStage from '../../hooks/useStage'
 import { getCdnPath } from '../../../../environment'
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import loadable from '@loadable/component'
-
-
+import { ApiPostCreateDeposit } from './api'
+import FiatDepositSuccess from './success'
+import { useParams  } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
 const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...props }) => {
 
-
   const actions = useActions()
+  const [ loader, setLoader ] = useState()
+  const params = useParams()
+  const account = useSelector((state) => state?.modelData?.wallets[params?.account_id]);
+  const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[account?.dep_prov[0]]);
+  const [ newOrder, setNewOrder ] = useState()
+
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -39,6 +46,29 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
     // setStageStatus
   } = stageManager
 
+  const submitForm = async() => {
+    const { state } = handleState
+    const new_order = await ApiPostCreateDeposit({
+      account_id: account?.id,
+      amount: state.amount,
+      comment: "",
+      cost_id: state.costId,
+      currency: account?.currency,
+      deposit_provider_id: account?.dep_prov[0],
+    }, {setLoader, nextStage})
+    if(!new_order) return;
+    setNewOrder(new_order)
+  } 
+
+  if(finalStage){
+    return <FiatDepositSuccess 
+      closeModal={closeModal} 
+      actions={actions}
+      params={params}
+      depositProvData={depositProvider?.provider}
+      new_ticket={newOrder}
+    />
+  }
 
   return(
     <OtherModalLayout
@@ -52,7 +82,7 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
           handleAction={() => actions.renderModal(null)}
           theme="dark"
           size={20}
-        />
+        /> 
         
         <HeaderComponent 
           prevStage={prevStage}
@@ -60,12 +90,19 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
         />
 
         <Content id="mainContent">
+        {
+          stageData &&
           <DynamicLoadComponent
               component={`fiatDeposit/${stageData?.key}.js`}
               nextStage={nextStage}
               handleState={handleState}
               stageData={stageData}
+              loader={loader}
+              setLoader={setLoader}
+              submitForm={submitForm}
+              Fallback={() => (<p>Cargando...</p>)}
           />
+        }
         </Content>
     </ContainerLayout>
 

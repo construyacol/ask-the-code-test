@@ -1,6 +1,7 @@
 import { 
   FIAT_DEPOSIT_COMPONENTS,
-  FIAT_DEPOSIT_STAGES
+  FIAT_DEPOSIT_STAGES,
+  FIAT_DEPOSIT_DEFAULT_STATE
 } from './widgets/fiatDeposit/api'
 
 import { 
@@ -27,7 +28,8 @@ let stages = {
 } 
 
 const defaultState = {
-  ...PERSONAL_DEFAULT_STATE
+  ...PERSONAL_DEFAULT_STATE,
+  ...FIAT_DEPOSIT_DEFAULT_STATE
   // biometric:{
   //   smile:"",
   //   surprised:""
