@@ -20,7 +20,6 @@ export class TransactionService extends WebService {
     await this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS)
     );
- 
     const response = await this.Get(`${CURRENCIES_URL}{"where": {"enabled": true}}`);
     let new_currencies = [];
 
@@ -213,12 +212,14 @@ export class TransactionService extends WebService {
   }
 
   async getLocalCurrency(country) {
-    const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`);
 
+    const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`);
+  
     if (this.isEmpty(countryCurrency)) return;
 
     const localCurrencyId = countryCurrency.currency_id;
     let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`);
+    
     if (this.isEmpty(localCurrencyData)) return;
     localCurrencyData = localCurrencyData[0];
 

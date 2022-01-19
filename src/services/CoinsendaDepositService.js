@@ -25,7 +25,6 @@ export class DepositService extends WebService {
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
     );
-
     const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`;
     const response = await this.Get(finalUrl);
     if (!response) return;

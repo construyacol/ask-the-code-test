@@ -36,7 +36,7 @@ function ModalsSupervisor(props) {
     modalView,
     loader,
     isSocketNotification,
-    RenderModal,
+    RenderModal, 
   } = props;
   const [toastMessage] = useToastMessage();
 

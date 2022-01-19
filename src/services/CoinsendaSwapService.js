@@ -54,16 +54,16 @@ export class SwapService extends WebService {
     if (!localCurrency) {
       return console.log("No se ha encontrado país en getPairsByCountry");
     }
+
+    
     const pairs = await this.pairsRequest(`{"where": {"visible":true, "secondary_currency.currency": "${localCurrency.currency}"}}`);
     if (!pairs) return;
 
 
+
     if (currencies) {
-      const localCurrencies = await this.addSymbolToLocalCollections(
-        pairs,
-        localCurrency.currency,
-        currencies
-      );
+      // console.log(pairs, localCurrency.currency, currencies)
+      const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies);
 
       if (
         this.isCached("getPairsByCountry_", localCurrencies, false) &&
@@ -72,7 +72,6 @@ export class SwapService extends WebService {
         return;
       }
 
-      console.log(localCurrencies)
       await this.dispatch(loadLocalPairsAction(localCurrencies));
 
       // TODO: Evaluate this
