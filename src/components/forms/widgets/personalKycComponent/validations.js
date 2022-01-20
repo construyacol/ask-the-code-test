@@ -60,14 +60,16 @@ const meta_phone = (value, data) => {
 }
 
 const selectListValidator = (value, data) => {
+
   validateLabelMsg(value, data)
   //accepts only letters, spaces and underscore
   let _value = value.replace(/[^a-zA-Z _]/g, '')
   // Find and match the value with  select list key value
   let result = Object.keys(data?.selectList).filter(itemList => itemList.includes(value.toLowerCase()))
+  console.log('|||||||||||||  VALIDATOR result ', result)
   // If it meets the pattern and matches 1 result from the entire list, the search was successful
   let status = (_value.match(data?.settings?.successPattern) && result.length === 1) && 'success';
-  if(result.length === 1){
+  if(result.length === 1 && value){
     _value = result[0]
     addItemTag(data.key, data?.selectList[result[0]]?.uiName)
     // console.log('|||||||||||||||| country validation ==> ', _value)

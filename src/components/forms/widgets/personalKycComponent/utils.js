@@ -6,16 +6,19 @@ export const removeItemTag = (e, itemKey, callback) => {
     if(!e?.target?.className?.includes){return}
     if(e.target?.className?.includes("selectedItemTag__closeButton")){
       e.stopPropagation()
-      document.querySelector(".selectedItemTag").remove()
+      // console.log('removeItemTag', itemKey, document.querySelector("#selectedItemTag").remove())
       if(itemKey){
         document.querySelector(`[name="${itemKey}"]`).value = ""
         document.querySelector(`[name="${itemKey}"]`).focus()
       }
-      callback && callback({target:{value:""}});
+      if(callback){
+        callback({target:{value:""}});
+      }
+      return document.querySelector("#selectedItemTag").remove();
     }
-  }
+}
   
-export const debugItemTag = itemKey => {
+export const debugItemTag = itemKey => { 
     const anyTagExist = document.querySelector(`.selectedItemTag`)
     const currentItemTag = document.querySelector(`.selectedItemTag._${itemKey}`)
     if(anyTagExist && !currentItemTag){

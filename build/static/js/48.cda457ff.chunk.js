@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[48],{446:function(n,t,i){"use strict";i.r(t),i.d(t,"Wrapper",(function(){return o}));var e,a=i(5);const o=i(6).b.div(e||(e=Object(a.a)(["\n  grid-template-columns: 1fr;\n  display: grid;\n  height: auto;\n  min-height: 100vh;\n  width:100vw;\n  position:absolute;\n  top:0;\n  left:0;\n  z-index:99;\n  &.infoPanel{\n    grid-template-columns: auto 1fr;\n  }\n"])))}}]);
+//# sourceMappingURL=48.cda457ff.chunk.js.map

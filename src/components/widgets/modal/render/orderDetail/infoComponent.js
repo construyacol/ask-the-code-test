@@ -106,7 +106,6 @@ const ReferralInfo = () => {
     const { tx_path, info } = order
     const targetKey = info?.is_referral ? 'is_referral' : order?.currency_type
 
-
     const toRender = {
       "deposits":{
         "is_referral":{

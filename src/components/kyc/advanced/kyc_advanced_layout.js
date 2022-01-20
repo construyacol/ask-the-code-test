@@ -21,10 +21,12 @@ const KycAdvancedLayout = (props) => {
   } = props;
 
   const callKycSuccess = async() => {
-    await finish()
     const Element = await import("../../forms/widgets/identityKycComponent/success");
-    const IdentityKycComponent = Element.default
-    return props.action.renderModal(() => <IdentityKycComponent  closeModal={() => props.action.renderModal(null)} />); 
+    const IdentityKycSuccessComponent = Element.default
+    props.action.renderModal(() => <IdentityKycSuccessComponent  closeModal={() => {
+      props.action.renderModal(null)
+      finish()
+    }} />); 
   }
 
   useEffect(() => {

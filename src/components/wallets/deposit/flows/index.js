@@ -10,8 +10,11 @@ import ModalityView from "../views/modality";
 // import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 import { getCdnPath } from '../../../../environment'
+import { BankDataContainer } from '../../../forms/widgets/fiatDeposit/success'
+
 
 import "./flows.css";
+import "../deposit.css"
 
 // {/* ---------------------------------------------------------FLUJO TRANSFERENCIA BANCARIA.-------------------------------------------------------------------- */}
 
@@ -93,7 +96,7 @@ export const CashFlow = (props) => {
     <section className="DepositLayout">
       {step === 3 && deposit_way === "cash" && (
         <ModalityView
-          title="Haré el depósito por:"
+          title="Elige el medio de pago:"
           items={cash_payment}
           update_service_mode={update_local_state}
           service_mode={short_bank_name}
@@ -113,7 +116,7 @@ export const CashFlow = (props) => {
   );
 };
 
-const Success = (props) => {
+export const Success = (props) => {
   const {
     loader,
     deposit_way,
@@ -123,11 +126,12 @@ const Success = (props) => {
     finalButton,
     step,
     new_ticket,
-    idForAcceptButtonInDepositView,
-    deposit_order,
+    // idForAcceptButtonInDepositView,
+    depositProvData
   } = props;
 
-  // console.log('|||||||||||||| °°°°° MODALSUCCESS', deposit_order, props)
+  // console.log('|||||||||||||| °°°°° new_ticket', new_ticket)
+// debugger
 
   return (
     <div
@@ -190,26 +194,15 @@ const Success = (props) => {
                 </div>
               </div>
 
-              <div
-                className={`nWbody2 DLbody2 Fbody2 eya fuente ${
-                  final ? "desaparece1" : ""
-                }`}
-              >
-                {/* <div className="nBitemSuccesss">
-                  <p className="fuente">Debes depositar por:</p>
-                  <div className="fuente">
-                    <div className="DLicontainer">
-                      {deposit_service}
-                      <IconSwitch
-                        icon={deposit_service.toLowerCase()}
-                        size={25}
-                      />
-                    </div>
-                  </div>
-                </div> */}
+              <div className={`bodyTcket nWbody2 Fbody2 eya fuente ${final ? "desaparece1" : ""}`}>
+
+                {
+                  depositProvData &&
+                  <BankDataContainer depositProvData={depositProvData} />
+                }
 
                 {new_ticket && (
-                  <DetailGenerator order={deposit_order} theme="darkTheme" />
+                  <DetailGenerator order={new_ticket} theme="darkTheme" />
                 )}
               </div>
             </div>
@@ -217,14 +210,16 @@ const Success = (props) => {
             <div id="nWcta" className="nWcta">
               {finalButton ? (
                 <ButtonSuccess2
-                  id={idForAcceptButtonInDepositView}
+                  // id={idForAcceptButtonInDepositView}
+                  id="accept-deposit-view-modal"
                   toggleModal={finalizar}
                 >
                   Finalizar
                 </ButtonSuccess2>
               ) : (
                 <ButtonSuccess
-                  id={idForAcceptButtonInDepositView}
+                  // id={idForAcceptButtonInDepositView}
+                  id="accept-deposit-view-modal"
                   toggleModal={finalizar}
                 >
                   Finalizar
@@ -238,3 +233,4 @@ const Success = (props) => {
     </div>
   );
 };
+

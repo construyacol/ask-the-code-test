@@ -9,7 +9,7 @@ const ModalityView = (props) => {
     update_service_mode,
     service_mode,
     buttonActive,
-    deposit_service,
+    // deposit_service,
     create_deposit_order,
     title,
     // subtitle,

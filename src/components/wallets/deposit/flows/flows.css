@@ -131,3 +131,23 @@
   transform-style: preserve-3d;
   /*transform: rotateY(90deg);*/
 }
+
+
+.bodyTcket{
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.bodyTcket .darkTheme{
+  padding: 20px 0;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+
+  .bodyTcket{
+    padding: 0 20px;
+    width: calc(100% - 80px);
+  }
+
+}

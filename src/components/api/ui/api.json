@@ -298,7 +298,7 @@
       "id": 1,
       "type": "payment_method",
       "code": "bankaccount",
-      "cost_id": "Otros medios",
+      "cost_id": "otros_medios",
       "name": "Transferencia bancaria",
       "placeholder": [
         {
@@ -328,7 +328,7 @@
         },
         {
           "id": 2,
-          "name": "Cajero multifuncional (solo efectivo)"
+          "name": "Cajero multifuncional"
         },
         {
           "id": 3,

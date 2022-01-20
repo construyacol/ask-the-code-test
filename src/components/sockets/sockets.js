@@ -82,7 +82,6 @@ class SocketsComponent extends Component {
         let intervalID = setInterval(tryReconnect, 30000);
         socket.on("disconnect", async function (reason) {
           console.log(' ============ SOCKET discconect', reason)
-          debugger
           intervalID = setInterval(tryReconnect, 2000);
         });
 

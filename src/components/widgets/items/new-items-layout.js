@@ -23,6 +23,8 @@ function NewItemsLayout(props) {
     actualizarEstado,
     handleClick,
     specialMode = false,
+    classNames,
+    cost_id
   } = props;
 
   const doSelectionForItem = () => {
@@ -30,7 +32,7 @@ function NewItemsLayout(props) {
       clearTimeout(timerId);
     }
     timerId = setTimeout(() => {
-      actualizarEstado && actualizarEstado(name, code, currency_type, pair_id);
+      actualizarEstado && actualizarEstado(name, code, currency_type, pair_id, cost_id);
     }, 100);
   };
   const _handleClick = specialMode ? doSelectionForItem : handleClick;
@@ -54,12 +56,11 @@ function NewItemsLayout(props) {
 
   const _activated = specialMode ? isSelected : actives;
 
-  console.log('|||||||||||||||||||   NewItemsLayout =====> ', type, code)
 
   return (
     <div
       id={`${primarySelect ? "primarySelect" : ""}`}
-      className={`${type === "payment_method" ? "ILtuvieja" : ""} `}
+      className={`${classNames} ${type === "payment_method" ? "ILtuvieja" : ""} `}
     >
       <InputKeyActionHandler
         aria-label="itemFromList"
@@ -119,11 +120,11 @@ function NewItemsLayout(props) {
         )}
         {primarySelect ? (
           <div id="primarySelectText" className="primarySelectText">
-            <p title={name}>{name}</p>
+            <p className="title-deposit-fiat_ fuente" title={name}>{name}</p>
             {placeholder &&
               placeholder.map((item) => {
                 return (
-                  <p id="ILplaceholder2" className="fuente" key={item.id}>
+                  <p className="fuente item-type-tx" key={item.id}>
                     {item.name}
                   </p>
                 );

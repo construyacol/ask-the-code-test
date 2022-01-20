@@ -27,6 +27,15 @@
   height: 210px !important;
 }
 
+.mobileView.ILtuvieja{
+  height: auto !important;
+}
+
+.mobileView input{
+  position: absolute;
+}
+
+
 .ILplaceholder {
   margin: 6px 0 !important;
   font-size: 12px;
@@ -91,6 +100,18 @@
   width: 170px;
   margin-bottom: 7px;
 }
+
+.mobileView .item{
+  width: 100%;
+    grid-template-rows: 1fr;
+    grid-template-columns: minmax(90px, 30%) 1fr;
+    grid-column-gap: 10px;
+}
+
+.mobileView .placeHoldCont{
+  display: none;
+}
+
 
 .item:hover .banquis {
   opacity: 1;
@@ -232,10 +253,6 @@
     grid-template-columns: 1fr !important;
   }
 
-  #primarySelect {
-    width: 90%;
-    height: 100% !important;
-  }
 
   #primarySelect .item {
     width: 100%;
@@ -257,4 +274,24 @@
   }
 }
 
-/**/
+
+
+.mobileView .item-type-tx{
+  font-size: 13px;
+  color:gray;
+  text-align: left !important;
+  margin-bottom: 5px !important;
+}
+
+.mobileView .title-deposit-fiat_{
+  text-align: left !important;
+  font-weight: 600;
+}
+
+.mobileView .primarySelectText{
+  justify-self: left;
+}
+
+.mobileView .itemSelection{
+  transform: scale(1.05) !important;
+}

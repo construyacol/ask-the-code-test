@@ -13,9 +13,18 @@ import useHeight from '../../../hooks/useHeight'
 const SelectList = ({ list, name, state, handleAction }) => {
 
   let [ height ] = useHeight(list)
-  const currentItemTag = document.querySelector(`.selectedItemTag._${name}`)
   const [ searchList, setSearchList ] = useState(list || {})
-
+  const [ currentItemTagExist, setCurrentItemTagExist ] = useState(null)
+  // console.log('state - SelectList:  ', state, currentItemTagExist)
+  
+  useEffect(() => {
+    if(Object.keys(searchList).length === 1 && state[name]){
+      setCurrentItemTagExist(true)
+    }else{
+      setCurrentItemTagExist(null)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
 
   useEffect(() => {
     if(list){
@@ -27,13 +36,16 @@ const SelectList = ({ list, name, state, handleAction }) => {
 
   let isMovilHeight = document.body.clientWidth < 768 ? `25vh` : `0px`
   
+  // console.log('currentItemTagExist', state[name], Object.keys(searchList).length)
+
+
   return(
     <SelectListMain
       id="selectListMain"
-      height={(list && !currentItemTag) ? height : isMovilHeight}
+      height={(list && !currentItemTagExist) ? height : isMovilHeight}
       >
       {
-        (list && !currentItemTag) &&
+        (list && !currentItemTagExist) &&
         <ListContainer>
           {
             Object.keys(searchList).map((itemKey, id) => {

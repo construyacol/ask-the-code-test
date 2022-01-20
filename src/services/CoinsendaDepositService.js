@@ -25,7 +25,6 @@ export class DepositService extends WebService {
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
     );
-
     const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`;
     const response = await this.Get(finalUrl);
     if (!response) return;
@@ -62,31 +61,22 @@ export class DepositService extends WebService {
 
 
 
-  async createDeposit(
-    currency,
-    amount,
-    accountId,
-    costId,
-    depositService,
-    user,
-    serviceMode,
-    depositProviderId
-  ) {
+  async createDeposit(payload) {
+
+    const user = this.user
+    const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
     const body = {
       data: {
-        currency: currency,
-        amount: amount,
-        cost_id: costId,
-        deposit_provider_id: depositProviderId,
-        info: { depositService, serviceMode },
+        currency,
+        amount,
+        cost_id,
+        deposit_provider_id,
         comment: "",
-        account_id: accountId,
+        account_id,
         country: user.country,
       },
     };
 
-    // console.log(body)
-    // debugger
 
     const result = await this.Post(NEW_DEPOSIT_URL, body);
     if (result === 465 || !result) {

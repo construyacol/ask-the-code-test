@@ -22,8 +22,10 @@ const MethodView = (props) => {
     uniqueIdForElement: "pay-method-item-",
     modalRestriction: false,
   });
+  
 
   useEffect(() => {
+    console.log('|||||||||||||  MethodView ===> ', items)
     select_method("Transferencia bancaria", "bankaccount");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

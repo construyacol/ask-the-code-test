@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[49],{493:function(a,t,e){"use strict";e.r(t);var c=e(2),n=e(476),s=e(455),o=e(1);t.default=a=>{const[t,e]=Object(c.useState)();return Object(c.useEffect)((()=>{(async()=>{const a=await Object(s.c)({formName:"onBoarding"});e(a)})()}),[]),Object(o.jsx)(o.Fragment,{children:t?Object(o.jsx)(n.a,{handleDataForm:{dataForm:t,setDataForm:e}}):Object(o.jsx)("p",{children:"Cargando..."})})}}}]);
+//# sourceMappingURL=49.7d448a80.chunk.js.map

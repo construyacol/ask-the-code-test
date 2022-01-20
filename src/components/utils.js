@@ -155,6 +155,7 @@ export const handleError = async(err, callback) => {
         console.log('JsonWebTokenError: ', err)
         // debugger
       return doLogout('?message=Tu session ha caducado')
+      // return
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
         const refreshToken = await localForage.getItem("refresh_token");
