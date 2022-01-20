@@ -56,9 +56,9 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
-    const [ _value, _status ] = validations[stageData.key](e.target.value, {...stageData, state, dataForm});
-    // console.log('|||||||||||||  RETURN  _value ==> ', _value)
-    // debugger
+    // if(!validations[stageData.key]) return;
+
+    const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
     setState(prevState => {
@@ -71,7 +71,8 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   useEffect(() => {
     let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
     // except metada because is not include on state
-    if(!stageData?.key?.includes('meta') && inputElement){
+    if(inputElement && state[stageData.key]){
+      // if(!stageData?.key?.includes('meta') && inputElement && state[stageData.key]){
       onChange({target:{value:state[stageData.key]}});
       inputElement.value = state[stageData.key]
     }

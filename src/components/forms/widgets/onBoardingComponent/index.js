@@ -49,7 +49,7 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 
   return(
     <>
-      <Layout>
+      <Layout className="_onBoardingLayout___">
             <Content>
                 <img src={isoType} width={27} alt="isoType"/>
                 {
