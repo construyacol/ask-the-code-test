@@ -10,6 +10,7 @@ import withCoinsendaServices from "../withCoinsendaServices";
 import MenuSuperiorLayout from "./mSuperiorLayout";
 
 class MenuSuperiorContainer extends Component {
+  
   _isMounted = false;
 
   state = {

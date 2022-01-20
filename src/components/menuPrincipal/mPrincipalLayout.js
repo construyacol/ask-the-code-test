@@ -124,6 +124,8 @@ const MenuPrincipalLayout = (props) => {
             <MovilMenuComponent
               openSelectCountry={openSelectCountry}
               navigateTo={navigateTo}
+              actions={actions}
+              {...props}
             />
           </section>
         )}

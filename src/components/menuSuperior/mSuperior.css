@@ -133,6 +133,10 @@
   cursor: pointer;
 }
 
+.burgerMen i{
+  font-size: 22px;
+}
+
 .closeSesi {
   margin-left: 20px;
 }

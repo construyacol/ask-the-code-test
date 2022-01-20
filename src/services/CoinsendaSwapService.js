@@ -62,9 +62,9 @@ export class SwapService extends WebService {
 
 
     if (currencies) {
-      // console.log(pairs, localCurrency.currency, currencies)
       const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies);
-
+      // console.log(localCurrencies)
+      // debugger
       if (
         this.isCached("getPairsByCountry_", localCurrencies, false) &&
         this.globalState.modelData.pairs.currentPair

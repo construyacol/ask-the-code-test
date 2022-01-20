@@ -211,6 +211,7 @@ export const Success = (props) => {
               {finalButton ? (
                 <ButtonSuccess2
                   // id={idForAcceptButtonInDepositView}
+                  id="accept-deposit-view-modal"
                   toggleModal={finalizar}
                 >
                   Finalizar
@@ -218,6 +219,7 @@ export const Success = (props) => {
               ) : (
                 <ButtonSuccess
                   // id={idForAcceptButtonInDepositView}
+                  id="accept-deposit-view-modal"
                   toggleModal={finalizar}
                 >
                   Finalizar

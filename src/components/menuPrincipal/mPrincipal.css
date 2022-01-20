@@ -175,6 +175,11 @@
   margin-left: 10px;
 }
 
+.menuMovilItemTexts.active i {
+  color: white !important;
+  margin-left: 10px;
+}
+
 .menuMovilItems {
   height: 45px;
   min-height: 50px;

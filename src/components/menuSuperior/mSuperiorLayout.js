@@ -16,7 +16,7 @@ const MenuSuperiorLayout = (props) => {
   let venta = "Te vendemos a:";
   const actions = useActions();
 
-  const {
+  const { 
     // headRoomClass,
     // item_quote,
     movil,
@@ -32,7 +32,7 @@ const MenuSuperiorLayout = (props) => {
   } = props;
 
   const [ itemQuote, setItemQuote ] = useState({buy:true, sell:false})
-
+ 
   const showPrices = async () => {
     const PricesModal = await import("../widgets/prices");
     if (!PricesModal) {
