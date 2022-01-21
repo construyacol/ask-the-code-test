@@ -40,7 +40,7 @@ function RootContainer(props) {
   const authData = useSelector(({ modelData:{ authData } }) => authData);
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
-  const [ showOnBoarding, setShowOnBoarding ] = useState(true)
+  const [ showOnBoarding, setShowOnBoarding ] = useState(false)
   // useValidateTokenExp()
 
   const initComponent = async () => {
