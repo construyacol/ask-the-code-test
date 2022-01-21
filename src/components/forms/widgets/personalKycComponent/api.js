@@ -328,18 +328,18 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
 
 export const PERSONAL_DEFAULT_STATE = {
-  personal:{
-    address: "cra 45 - 88",
-    birthday: "1992-11-18",
-    city: "cali",
-    country: "colombia",
-    id_number: "1116256754",
-    id_type: "cedula_ciudadania",
-    name: "Andres felipe",
-    nationality: "colombia",
-    phone: "57 3145698999",
-    meta_phone: "colombia",
-    surname: "Garcia garcia"
+  personal:{ 
+    meta_phone: "colombia"
+    // address: "cra 45 - 88",
+    // birthday: "1992-11-18",
+    // city: "cali",
+    // country: "colombia",
+    // id_number: "1116256754",
+    // id_type: "cedula_ciudadania",
+    // name: "Andres felipe",
+    // nationality: "colombia",
+    // phone: "57 3145698999",
+    // surname: "Garcia garcia"
   }
 }
 
