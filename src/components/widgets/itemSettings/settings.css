@@ -1,3 +1,4 @@
+
 .itemSecurityCenter {
   width: 100%;
   height: auto;
@@ -16,7 +17,7 @@
 }
 
 .subItemSecurityCenter {
-  height: 150px;
+  height: 120px;
   display: grid;
   grid-template-columns: 12vw 1fr;
   margin: 15px 0;
@@ -78,13 +79,16 @@
 
 .contentSubItem p {
   /*margin: 15px 10px !important;*/
-  margin: 0 10px !important;
+  margin: 0;
 }
 
 .SCverification {
   align-self: center;
   /*color: #59B200;*/
   font-size: 15px;
+  height: 30px;
+  display: flex;
+  align-items: center;
 }
 
 .SCverification i {
@@ -275,4 +279,9 @@
 .SecurityCenter {
   width: 100%;
   height: 100%;
+}
+
+
+.SCtitle.tittle__success{
+  color: var(--primary) !important;
 }

@@ -5,7 +5,7 @@ import {
 } from '../sharedStyles'
 
 import {
-    show,
+    show, 
     hide
 } from './utils'
 import hand from './assets/hand.png'
@@ -26,14 +26,14 @@ const Welcome = props => {
 
     return(
         <Container className="onBoardingCont__" rowGap={5}>
-            <h1 className="fuente">Hola</h1>
+            <h2 className="fuente">Bienvenido a</h2>
             <HandContainer>
                 <Hand>
                     <img src={hand} width={55} alt="hand"/>
                 </Hand>
                 <WelcomeText>
                     <p className="fuente">
-                        Bienvenido(a)
+                        Coinsenda
                     </p>
                 </WelcomeText>
             </HandContainer>
@@ -50,7 +50,7 @@ const welcomeAnimation = keyframes`
         width: 0px;
     }
     100%{
-        width: 245px;
+        width: 300px;
     }
 `;
 
@@ -74,7 +74,8 @@ const WelcomeText = styled.div`
     }
 
     p{
-        font-size: 35px;
+        font-size: 50px;
+        font-weight:bold;
         margin: 0;
         color:#0198ff;
     }

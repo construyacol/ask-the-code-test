@@ -153,13 +153,13 @@ export const handleError = async(err, callback) => {
         // return console.log('<=========== notFindUserToken ===========>')
     case 'JsonWebTokenError': 
         console.log('JsonWebTokenError: ', err)
-        // debugger
       return doLogout('?message=Tu session ha caducado')
       // return
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
         const refreshToken = await localForage.getItem("refresh_token");
       return await mainService.getJWToken(refreshToken)
+      // return
     case 465:
         console.log('__error__', err)
       return
@@ -169,7 +169,6 @@ export const handleError = async(err, callback) => {
         return doLogout('?message=No tienes credenciales, inicia sesión')
       }
       callback && callback()
-        // return doLogout()
   }
 }
 

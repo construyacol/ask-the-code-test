@@ -16,7 +16,7 @@ const {
 
 
 export const MAIN_COLOR = "#0e95f8";
-export const FONT_COLOR = "#939393";
+export const FONT_COLOR = "#50667a";
   
 export const ENVIRONMENT_VAR = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 

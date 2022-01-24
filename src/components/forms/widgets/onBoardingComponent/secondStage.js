@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
 import {
     Container
 } from '../sharedStyles'
+
+import { CopyContainer } from './styles'
 
 import {
     show,
@@ -14,7 +15,7 @@ import party from './assets/party.png'
 const Welcome = props => {
 
     const executeAnimations = async() => {
-        await show('.onBoardingCont__', 4500)
+        await show('.onBoardingCont__', 6000)
         await hide('.onBoardingCont__', 500)
         props.nextStage()
     }
@@ -29,7 +30,7 @@ const Welcome = props => {
             <img className="flip-in-ver-right" src={party} width={55} alt="party"/>
             <CopyContainer>
                 <p className="fuente">
-                    Gracias por elegir <span>Coinsenda</span>, el intercambio de criptomonedas más seguro y confiable
+                    Aquí <span>tu</span> eres lo más importante, por eso te brindamos el intercambio más seguro y confiable para tus operaciones
                 </p>
             </CopyContainer>
         </Container>
@@ -43,23 +44,7 @@ export default Welcome
 
 
 
-const CopyContainer = styled.div`
-    display:flex;
-    p{
-        font-size: 1em;
-        text-align: center;
-        max-width: 520px;
-        line-height: 25px;
-        font-size: 1em;
-        color:#4e4e4e;
-    }
 
-    p > span{
-        font-size: 1em;
-        font-weight: bolder;
-        color: #0198ff;
-    }
-`
 
 
 

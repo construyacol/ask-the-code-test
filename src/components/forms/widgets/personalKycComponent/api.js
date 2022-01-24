@@ -188,12 +188,12 @@ const STAGES = {
         uiType:"select",
         selectList:{},
         "settings":{
-          defaultMessage:"Elige el país desde el que operarás tu cuenta",
+          defaultMessage:"Elige el país de residencia actual",
           successPattern:/[a-zA-Z _]{1,40}/g,
           errors:[
             { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
           ],
-          label:"País de operación:",
+          label:"País:",
           placeholder:"Ej: Juan josé ",
           queryParams:{
             form:'personal_country'

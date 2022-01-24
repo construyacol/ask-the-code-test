@@ -98,6 +98,7 @@ class ItemSettings extends Component {
                 lastVerify={lastVerify}
                 nextVerify={current_item[index] && current_item[index].verify}
                 update_state={update_state}
+                {...this.props}
               />
             );
           })}

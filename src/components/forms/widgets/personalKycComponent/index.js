@@ -121,7 +121,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 
         <MainContainer>
           <TitleContainer id="titleContainer__">
-            <h1 className="titleContainer__h1 fuente">Verificación básica</h1>
+            <h1 className="titleContainer__h1 fuente">Verificación inicial</h1>
           </TitleContainer>
           <StickyGroup background="white" id="stickyGroup__" >
             <LabelComponent 

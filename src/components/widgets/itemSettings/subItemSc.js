@@ -4,7 +4,7 @@ import { ButtonForms } from "../buttons/buttons";
 // import { bindActionCreators } from 'redux'
 // import actions from '../../../actions'
 import IconSwitch from "../icons/iconSwitch";
-import SimpleLoader from "../loaders";
+import SimpleLoader from "../loaders"; 
 
 class SubItemSC extends Component {
   // state = {
@@ -25,7 +25,12 @@ class SubItemSC extends Component {
   };
 
   componentDidMount() {
-    // aqui leeremos exclusivamente un estado para kyc advance, y saber si se encuentra rechazado, pendiente o no verificado
+    if(this?.props?.user?.levels?.personal === 'accepted'){
+      console.log(document.querySelector('.kyc_basic .SCtitle')?.classList?.add('tittle__success'))
+    }
+    if(this?.props?.user?.levels?.identity === 'accepted'){
+      console.log(document.querySelector('.kyc_advanced .SCtitle')?.classList?.add('tittle__success'))
+    }
   }
 
   // componentWillReceiveProps(props){
@@ -146,7 +151,7 @@ class SubItemSC extends Component {
           <div
             className={`contentSubText ${available ? "available" : ""} fuente`}
             style={{
-              gridTemplateRows: tree ? "70px 1fr" : "60px 20px 1fr",
+              gridTemplateRows: tree ? "70px 1fr" : "60px 40px 1fr",
               opacity:
                 (verify && available) ||
                 other_state === "confirmed" ||
@@ -162,26 +167,41 @@ class SubItemSC extends Component {
               style={{
                 color:
                   classic_view && verify
-                    ? "#1fa4e9"
+                    ? "#0198ff"
                     : classic_view
                     ? "gray"
                     : verify && tree
-                    ? "#1fa4e9"
+                    ? "#0198ff"
                     : other_state === "send"
-                    ? "#545454"
+                    ? "red"
                     : "gray",
               }}
             >
-              <div
-                className={`ScimgClassicView ${
-                  classic_view ? "classic_view" : ""
-                }`}
-                style={{ display: classic_view ? "flex" : "none" }}
-              >
+              <div className={`ScimgClassicView ${classic_view ? "classic_view" : ""}`} style={{ display: classic_view ? "flex" : "none" }}>
                 <IconSwitch {...atributos} />
               </div>
               {label}
             </div>
+
+            {
+              description &&
+              <p
+                className="fuente SCdesc"
+                style={{
+                  alignSelf: tree ? "flex-start" : "center",
+                  color:
+                    other_state === "send"
+                      ? "#545454"
+                      : other_state === "rejected"
+                      ? "#a90000"
+                      : "gray",
+                }}
+              >
+                {other_state === "send" && (<i className="enviarNero fas fa-angle-double-down"></i>)}
+                {description}
+              </p>
+            }
+
 
             <div
               className="SCverification"
@@ -199,7 +219,7 @@ class SubItemSC extends Component {
               {verify ? (
                 <Fragment>
                   <i className="fas fa-check"></i>
-                  {`Verificado y/o Habilitado con éxito`}
+                  {`Completado con éxito`}
                 </Fragment>
               ) : other_state === "confirmed" ? (
                 <div className="confirmedIndentSc">
@@ -221,23 +241,7 @@ class SubItemSC extends Component {
               )}
             </div>
 
-            <p
-              className="fuente SCdesc"
-              style={{
-                alignSelf: tree ? "flex-start" : "center",
-                color:
-                  other_state === "send"
-                    ? "#545454"
-                    : other_state === "rejected"
-                    ? "#a90000"
-                    : "gray",
-              }}
-            >
-              {other_state === "send" && (
-                <i className="enviarNero fas fa-angle-double-down"></i>
-              )}
-              {description}
-            </p>
+            
           </div>
 
           {/* Call to action de security_center *************************************************************************************************************************************** */}

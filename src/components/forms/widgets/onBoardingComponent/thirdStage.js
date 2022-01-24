@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import styled from 'styled-components'
 import { useSelector } from "react-redux";
+
+import { CopyContainer } from './styles'
 
 import {
     Container,
@@ -31,7 +32,7 @@ const Welcome = props => {
                 <img className="flip-in-ver-right" src={nerdFace} width={55} alt="party"/>
                 <CopyContainer>
                     <p className="fuente">
-                        Antes de iniciar tu experiencia en <span>Coinsenda</span>, te pediremos algunos datos para conocerte un poco más...
+                        Para brindarte una experiencia segura dentro <span>Coinsenda</span>, te pediremos algunos datos
                     </p>
                 </CopyContainer>
             </Container>
@@ -46,26 +47,5 @@ const Welcome = props => {
 }
 
 export default Welcome
-
-
-
-const CopyContainer = styled.div`
-    display:flex;
-    p{
-        font-size: 1em;
-        text-align: center;
-        max-width: 520px;
-        line-height: 25px;
-        font-size: 1em;
-        color:#4e4e4e;
-    }
-
-    p > span{
-        font-size: 1em;
-        font-weight: bolder;
-        color: #0198ff;
-    }
-`
-
 
 
