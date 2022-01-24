@@ -55,7 +55,7 @@ const CreateReferralLink = (props) => {
             autoFocus
             handleStatus={setIsValidCode}
             // handleChange={handleChangeAmount}
-            label={`Crea tu link de referido`}
+            label={`Crea tu código de referido`}
             // disabled={loader}
             // state={amountState}
             // value={amountValue}

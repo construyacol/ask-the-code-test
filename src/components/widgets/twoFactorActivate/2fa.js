@@ -82,7 +82,7 @@ const TwoFactorActivate = (props) => {
             <div className="body2fa">
               <div className="bodySon">
                 <p className="fuente">
-                  Abre Google Authenticator y escanea el código QR
+                  Abre Google Authenticator y escanea el código QR ó ingresa el código secreto manualmente.
                 </p>
                 {qr && !loader ? (
                   <img src={qr} alt="" width="200px" />
@@ -97,7 +97,7 @@ const TwoFactorActivate = (props) => {
           <div className="TLayout layer2">
             <div className="header2fa">
               <h3 className="fuente">
-                Habilitar <span className="fuente2">2FA</span>
+                Habilitar segundo factor de autenticación <span className="fuente2">2FA</span>
               </h3>
               <IconSwitch icon="2auth" size={75} color="#1babec" />
             </div>
@@ -122,13 +122,7 @@ const TwoFactorActivate = (props) => {
                       escribelo en papel y guardalo, es tu responsabilidad
                     </p>
                   </div>
-                  <p
-                    className={`fuente ${
-                      inputFocus ? "desaparecer" : "aparecer"
-                    }`}
-                  >
-                    Ó ingresa el código secreto manualmente
-                  </p>
+                  
                   <p
                     className={`fuente2 secretCode ${
                       private_key ? "" : "skeleton text"

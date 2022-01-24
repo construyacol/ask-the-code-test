@@ -22,7 +22,7 @@ const ReferralCounter = ({ loading, referral}) => {
       Icon={(props) => (
         <IconSwitch {...props} withoutwrapper={true} icon="referral" />
       )}
-      quantity={`${referreds} R`}
+      quantity={`${referreds}`}
       definition="Referidos"
       highlight={referreds > 0}
       responsive={true}

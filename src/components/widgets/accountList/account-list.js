@@ -120,7 +120,7 @@ function AccountList(props) {
   };
 
   let mainButtonText = isWithdrawView
-    ? "Añadir nueva cuenta bancaria"
+    ? "Añadir nueva cuenta de retiro"
     : "Añadir nueva billetera";
   mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText;
 
@@ -195,7 +195,7 @@ const AccountsNotFound = ({ account_type }) => {
       <div className="withdraw_accounts_screen_cont">
         <p id="WalletList2" className="fuente">
           {account_type === "withdraw_accounts"
-            ? "Aún no tienes cuentas de retiro agregadas, añade y gestiona retiros en tu moneda local."
+            ? "Aún no tienes cuentas de retiro agregadas, crea multiples cuentas y gestiona retiros en tu moneda local."
             : "Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos"}
         </p>
         <IconSwitch size={isMovilViewport ? 230 : 330} icon="newAccount" />

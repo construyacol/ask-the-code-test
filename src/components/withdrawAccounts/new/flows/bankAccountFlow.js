@@ -167,15 +167,8 @@ class BankAccountFlow extends Component {
               </p>
             </div>
             <p className="nBtextInit fuente">
-              {" "}
-              Al añadir una cuenta bancaria para realizar tus retiros de moneda local por primera vez, el tiempo promedio que tarda para inscribirse son 2 horas hábiles a partir del momento en que se realizó el proceso. Tener tu cuenta inscrita previamente puede hacer que tus retiros en moneda local se ejecuten más rápido.
-
-              {/* Al añadir una cuenta bancaria para realizar tus retiros de pesos
-              colombianos <strong>(COP)</strong> por primera vez, tarda en
-              promedio <strong>2 horas habiles</strong> a partir de su
-              inscripción, para que esta sea aprobada por la entidad bancaria,
-              una vez tu cuenta haya sido aprobada, tus retiros serán casi
-              inmediatos */}
+            {/* Al añadir una cuenta para realizar retiros en tu moneda local, el tiempo promedio de inscripción de cuentas bancarias es de 2 horas hábiles. */}
+              El tiempo promedio de inscripción de cuentas bancarias es de 2 horas hábiles.
             </p>
 
             <div id="bankChooseButton">

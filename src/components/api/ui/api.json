@@ -56,7 +56,7 @@
       "id": "2"
     },
     {
-      "text": "Cuentas Bancarias",
+      "text": "Cuentas de retiro",
       "icon": "withdraw_accounts",
       "clave": "withdraw_accounts",
       "active": true,

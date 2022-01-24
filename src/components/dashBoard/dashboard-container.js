@@ -35,8 +35,8 @@ let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0;
 const TAB_TITLE = {
   security: "Centro de seguridad",
   wallets: "Mis billeteras",
-  referral: "Invita amigos y gana",
-  withdraw_accounts: "Mis Cuentas de retiro",
+  referral: "Referidos",
+  withdraw_accounts: "Cuentas de retiro",
 };
 
 function DashBoardContainer(props) {
