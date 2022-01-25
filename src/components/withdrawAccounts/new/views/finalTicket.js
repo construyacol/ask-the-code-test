@@ -2,10 +2,22 @@ import React from "react";
 import loadable from "@loadable/component";
 import { ButtonSuccess } from "../../../widgets/buttons/buttons";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
-import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import { 
+  BankData,
+  TitleContainer,
+  CorpAccountContainer,
+  IconContainer,
+  DetailAccountProv
+} from '../../../forms/widgets/fiatDeposit/success'
+// import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+
+
 import "./finalTicket.css";
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
+
+
+
 
 function FinalTicket(props) {
   // const [current_ticket, setCurrentTicket] = useState(null);
@@ -18,7 +30,7 @@ function FinalTicket(props) {
     cta_secondary,
     cta_secondary_label,
     cta_secondary_action,
-    ticket,
+    wAccount,
   } = props;
 
   const atributos = {
@@ -27,20 +39,53 @@ function FinalTicket(props) {
     color: "white",
   };
 
+  
+  const parseUiName = (text) => {
+
+    if(typeof text !== 'string') return text;
+    
+    const finalText = text?.split("_")?.join(" ")
+    const capitalizeText = finalText?.replace(text?.charAt(0), text?.charAt(0)?.toUpperCase())
+    return capitalizeText
+  }
+
+
+
   return (
-    <div className="finalTicket TicketDetail">
+    <div className="finalTicket TicketDetail _wAccountSuccess">
       <>
-        <div className="finalTicket ticketHeader">
+        <div className="finalTicket ticketHeader wAccountSuccess">
           <IconSwitch {...atributos} />
-          <h1 className="fuente finalTicket TicketTitle">Operación exitosa</h1>
+          <h1 className="fuente finalTicket TicketTitle">Cuenta de retiro creada exitosamente</h1>
         </div>
 
-        <div className="finalTicket contenidoTicket">
-          <DetailGenerator
+        <div className="finalTicket contenidoTicket wAccountSuccess">
+
+        <BankData>
+
+          <TitleContainer className="__titleCont">
+          <p className="fuente">{props.title || 'Datos de tu cuenta de retiro'}</p>
+          <div className="__line__"/>
+          </TitleContainer>
+
+          <CorpAccountContainer className="corpAccountContainer">
+                <IconContainer className="_corpAccIcon">
+                    <IconSwitch size={45} icon={'bancolombia'} />
+                </IconContainer>
+                <DetailAccountProv> 
+                    <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name)}</h3>
+                    <p className="fuente">{wAccount?.info?.account_type === 'cuenta_ahorro' ? 'Cuenta de ahorro' : "Cuenta corriente"}</p>
+                    <p className="fuente">Número de cuenta:</p>
+                    <p className="fuente2">{wAccount?.info?.account_number}</p>
+                </DetailAccountProv>
+            </CorpAccountContainer>
+        </BankData>
+
+          {/* <DetailGenerator
             title="Detalle del retiro"
             order={ticket}
             theme="darkTheme"
-          />
+          /> */}
         </div>
 
         <div

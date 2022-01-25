@@ -351,6 +351,10 @@
 
 .DLcontain > p {
   margin-bottom: 0 !important;
+  color: var(--primary);
+    font-size: 25px;
+    font-weight: bold;
+    max-width: 500px;
 }
 
 .DLsteps.method {

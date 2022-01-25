@@ -185,10 +185,7 @@ export const Success = (props) => {
                 <div className="FolowTexts">
                   <p className="fuente Fimportant">¡IMPORTANTE!</p>
                   <p className="Ftexto fuente ">
-                    Una vez realizado el depósito bancario debes confirmar la
-                    transacción con una fotografía del{" "}
-                    <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la
-                    orden de pago
+                    Una vez realizada la consignación, debes confirmar el depósito subiendo una fotografía del <strong> DESPRENDIBLE DE PAGO </strong>
                   </p>
                   <img className="tocatoca" src={`${getCdnPath('assets')}proof.png`} alt="" width="34%" />
                 </div>
@@ -198,7 +195,17 @@ export const Success = (props) => {
 
                 {
                   depositProvData &&
-                  <BankDataContainer depositProvData={depositProvData} />
+                  <BankDataContainer accountData={{
+                      title:"Realice el deposito a:",
+                      bankUiName:depositProvData?.name,
+                      accountType:depositProvData?.account?.type?.type,
+                      accountIdUiName:depositProvData?.account?.account_id?.ui_name,
+                      accountId:depositProvData?.account?.account_id?.account_id,
+                      bussinesNameUiName:depositProvData?.account?.bussines_name?.ui_name,
+                      bussinesName:depositProvData?.account?.bussines_name?.bussines_name,
+                      nitUiName:depositProvData?.account?.nit?.ui_name,
+                      nit:depositProvData?.account?.nit?.nit
+                  }} />
                 }
 
                 {new_ticket && (

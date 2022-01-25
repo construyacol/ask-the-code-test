@@ -56,27 +56,38 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
 export default FiatDepositSuccess
 
 
-export const BankDataContainer = ({ depositProvData }) => {
+export const BankDataContainer = ({accountData:{ 
+        title,
+        bankUiName,
+        accountType,
+        accountIdUiName,
+        accountId,
+        bussinesNameUiName,
+        bussinesName,
+        nitUiName,
+        nit 
+    }}) => {
 
+    
     const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
     return(
         <BankData>
             <TitleContainer >
-                <p className="fuente">Realice el deposito a:</p>
+                <p className="fuente">{title}</p>
                 <div className="__line__"/>
             </TitleContainer>
 
             <CorpAccountContainer className="corpAccountContainer">
                 <IconContainer className="_corpAccIcon">
-                    <IconSwitch size={45} icon={depositProvData?.name} />
+                    <IconSwitch size={45} icon={bankUiName} />
                 </IconContainer>
                 <DetailAccountProv>
-                    <h3 className="fuente">{depositProvData?.ui_name}</h3>
-                    <p className="fuente">{depositProvData?.account?.type?.type}</p>
-                    <p className="fuente">{depositProvData?.account?.account_id?.ui_name}: <span className="fuente2">{depositProvData?.account?.account_id?.account_id}</span></p>
-                    <p className="fuente bussines_name"><span className="bussines_name_span">{depositProvData?.account?.bussines_name?.ui_name}:</span>{depositProvData?.account?.bussines_name?.bussines_name}</p>
-                    <p className="fuente nit">{depositProvData?.account?.nit?.ui_name}: <span className="fuente2">{depositProvData?.account?.nit?.nit}</span></p>
+                    <h3 className="fuente">{bankUiName}</h3>
+                    <p className="fuente">{accountType}</p>
+                    <p className="fuente">{accountIdUiName}: <span className="fuente2">{accountId}</span></p>
+                    <p className="fuente bussines_name"><span className="bussines_name_span">{bussinesNameUiName}:</span>{bussinesName}</p>
+                    <p className="fuente nit">{nitUiName}: <span className="fuente2">{nit}</span></p>
                 </DetailAccountProv>
             </CorpAccountContainer>
 
@@ -89,7 +100,7 @@ export const BankDataContainer = ({ depositProvData }) => {
 }
 
 
-const DetailAccountProv = styled.div`
+export const DetailAccountProv = styled.div`
     display:grid;
     grid-template-columns: 1fr;
     color:white;
@@ -97,7 +108,8 @@ const DetailAccountProv = styled.div`
         font-size:14px;
     }
     h3{
-        margin:0;
+        text-transform:capitalize;
+        margin: 0 0 10px 0;
     }
     p{
         margin:5px 0;
@@ -106,7 +118,8 @@ const DetailAccountProv = styled.div`
 `
 
 
-const BankData = styled.div`
+export const BankData = styled.div`
+    width:100%;
     @media (max-width: 768px) {
 
         ${DetailAccountProv}{
@@ -128,7 +141,7 @@ const BankData = styled.div`
     }
 `
 
-const TitleContainer = styled.div`
+export const TitleContainer = styled.div`
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 20px;
@@ -144,14 +157,14 @@ const TitleContainer = styled.div`
 
 
 
-const CorpAccountContainer = styled.div`
+export const CorpAccountContainer = styled.div`
     display:grid;
     grid-template-columns:auto 1fr;
     column-gap:20px;
     width:auto;
     align-items:center;
 `
-const IconContainer = styled.div`
+export const IconContainer = styled.div`
     width:110px;
     height:110px;
     background:#e6e6e6;

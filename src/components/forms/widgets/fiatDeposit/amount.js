@@ -63,6 +63,7 @@ const MinAmount = styled.p`
     margin: 0;
     align-self: baseline;
     cursor:pointer;
+    justify-self:end;
 `
 
 const Content = styled.section`
@@ -80,7 +81,7 @@ const Content = styled.section`
 
 export const Title = styled.h3`
     margin:0;
-    color:gray;
+    color:var(--primary);
 `
 
 

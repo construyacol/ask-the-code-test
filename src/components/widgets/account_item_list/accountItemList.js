@@ -216,7 +216,7 @@ function AccountItemList(props) {
         </>
       ) : (
         <>
-          <p className="AILadd fuente">Añadir nueva cuenta de retiro</p>
+          <p className="AILadd fuente">Añade una nueva cuenta de retiro</p>
           <div className="poisonEve">
             <IconSwitch icon="withdraw2" size={60} color="gray" />
           </div>

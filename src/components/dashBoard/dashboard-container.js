@@ -34,7 +34,7 @@ let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0;
 
 const TAB_TITLE = {
   security: "Centro de seguridad",
-  wallets: "Mis billeteras",
+  wallets: "Billeteras",
   referral: "Referidos",
   withdraw_accounts: "Cuentas de retiro",
 };

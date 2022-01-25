@@ -142,7 +142,6 @@ class BankAccountFlow extends Component {
       bank_name,
       step,
       search,
-      name,
       actualizarEstado,
       // city,
       final_step_create_account,
@@ -162,13 +161,12 @@ class BankAccountFlow extends Component {
           <div className="nBstep1 fuente">
             <div className="titleNewAccount">
               <img src={`${getCdnPath('assets')}bank.png`} alt="" height="70" />
-              <p>
-                Genial <strong>{name}</strong>
+              <p style={{ fontWeight:'bold' }}>
+                Crea una cuenta de retiro
               </p>
             </div>
             <p className="nBtextInit fuente">
-            {/* Al añadir una cuenta para realizar retiros en tu moneda local, el tiempo promedio de inscripción de cuentas bancarias es de 2 horas hábiles. */}
-              El tiempo promedio de inscripción de cuentas bancarias es de 2 horas hábiles.
+            Son las cuentas a las que envías dinero desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
             </p>
 
             <div id="bankChooseButton">
@@ -188,8 +186,7 @@ class BankAccountFlow extends Component {
           <div className="step1">
             <form onSubmit={handleSubmit} className="NWithdrawAccountFlow">
               <div className="titleAccountFlow">
-                <h1 className="DLtitles2">Elige la entidad bancaria</h1>
-                <p className="fuente DLstitles">de la cuenta que quieres agregar:</p>
+                <h1 className="DLtitles2 fuente">Elige la entidad de la cuenta que quieres agregar</h1>
               </div>
               {loader ? (
                 <SimpleLoader label="Cargando..." />
@@ -257,7 +254,7 @@ class BankAccountFlow extends Component {
 
                     <InputForm
                       type="text"
-                      label="Escribe el número de cuenta"
+                      label="Escribe el número de tu cuenta"
                       placeholder="Ej. 1123321..."
                       name="account_number"
                       autoFocus={true}

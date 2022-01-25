@@ -506,8 +506,7 @@ class WithdrawFlow extends Component {
                 </ButtonModalBack>
 
                 <div className="DLcontain">
-                  <p className="fuente DLtitle2">Elige la cuenta </p>
-                  <p className="fuente DLstitle">que recibirá los fondos:</p>
+                  <p className="fuente DLtitle2">Elige la cuenta donde recibirás tu retiro</p>
                 </div>
                 <WithdrawAccountList
                   currency_type="fiat"

@@ -128,7 +128,7 @@ class ViewAmountComponent extends Component {
           <Fragment>
             <div className="DLcontain">
               <p className="fuente DLtitle2">
-                Escribe la cantidad de {operation_type === "deposit" ? "deposito" : "retiro"}
+                Escribe la cantidad a {operation_type === "deposit" ? "depositar" : "retirar"}
               </p>
             </div>
 
@@ -142,6 +142,7 @@ class ViewAmountComponent extends Component {
                 name="amount"
                 handleKeyPress={this.handleKeyPress}
                 service={number_format}
+                minAmountLabel={minAmount && `Retiro Minimo: ~$${number_format(minAmount)} ${currency.toUpperCase()}`}
               />
 
               <div className="DLstatus">
@@ -151,7 +152,7 @@ class ViewAmountComponent extends Component {
                   onClick={this.load_amount}
                 >
                   {operation_type === "deposit" ? `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`
-                    : operation_type === "withdraw" && parseFloat(available) > minAmount ? `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`
+                    : operation_type === "withdraw" && parseFloat(available) > minAmount ? `Disponible: ~$${number_format(available)} ${currency.toUpperCase()}`
                     : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`}
                 </p>
                 <p className="textStatus">{statusInput}</p>

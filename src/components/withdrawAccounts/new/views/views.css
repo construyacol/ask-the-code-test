@@ -19,9 +19,11 @@
 }
 
 .DLtitles2 {
-  color: #00bfff;
+  color: var(--primary);
   font-size: 25px;
   font-weight: bold;
+  max-width: 500px;
+  text-align: center;
 }
 .DLstitles {
   font-size: 20px;
