@@ -5,6 +5,9 @@ import UseTxState from "../../../../hooks/useTxState";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { getState } from "./";
 import { device, ORDER_TYPE_UI_NAME } from "../../../../../const/const";
+import { selectWithConvertToObjectWithCustomIndex } from "../../../../hooks/useTxState.js"
+import { useSelector } from "react-redux";
+
 // import { useParams } from "react-router-dom";
 
 import moment from "moment";
@@ -15,6 +18,11 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const [orders, setOrders] = useState([]);
   const { deposit_providers, tx_path, path } = UseTxState();
   const [, formatCurrency] = useFormatCurrency();
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+  const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
+
+
+
   // const params = useParams();
   // console.log('||||||||||||  DetailGenerator ===> ', params, tx_path, path)
   // debugger
@@ -196,34 +204,31 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
 
 
-  const formatDeposit = async(order) => {
-    if(!order) return "";
+  const formatDepositOrder = async(order) => {
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Id de depósito:", order?.id],
       ["Estado:", getState(order?.state)],
-      ["Cantidad depositada:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
-      ["Costo de depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
-      ["Cantidad acreditada:", `${await formatCurrency(order?.amount, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
+      ["Cantidad depositada:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
+      ["Costo de depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+      ["Cantidad acreditada:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
   }
 
-  const formatWithdraw = async(order) => {
-    if(!order) return "";
+  const formatWithdrawOrder = async(order) => {
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Id del retiro:", order?.id],
       ["Estado:", getState(order?.state)],
-      ["Total del retiro:", `${await formatCurrency(order?.amount, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
-      ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
-      ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${order?.currency?.currency?.toUpperCase()}`],
+      ["Total del retiro:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+      ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+      ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
   }
 
-  const formatSwaps = async(order) => {
-    if(!order) return "";
+  const formatSwapsOrder = async(order) => {
     let parsedOrder = [
       ["Id del intercambio:", order?.id],
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
@@ -236,18 +241,16 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
 
   const ORDER_DETAIL_BY_TYPE = {
-    deposits:formatDeposit,
-    withdraws:formatWithdraw,
-    swaps:formatSwaps,
-    deposit:formatDeposit,
-    withdraw:formatWithdraw
+    deposits:formatDepositOrder,
+    withdraws:formatWithdrawOrder,
+    swaps:formatSwapsOrder,
+    deposit:formatDepositOrder,
+    withdraw:formatWithdrawOrder
   }
 
   const formatOrder = async(order) => {
     let parsedOrder = []
-
-    console.log(ORDER_DETAIL_BY_TYPE, orderType, order)
-
+    if(!order) return "";
     parsedOrder = await ORDER_DETAIL_BY_TYPE[orderType](order)
     return parsedOrder
   }

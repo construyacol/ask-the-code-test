@@ -180,14 +180,16 @@ function SwapView(props) {
 
 
   const swap = async () => {
-    const { boughtCurrency, id } = currentPair;
+
+    const { secondary_currency, id } = currentPair;
     const spent_currency_amount = await formatToCurrency( value, currentWallet.currency);
     let query = `{"where":{"id":"${id}"}}`;
     await coinsendaServices.updateCurrentPair(query);
-    const secureTotalValue = await getReceiveValue(value);
 
-    console.log('currentPair', currentPair)
-    debugger
+    const secureTotalValue = await getReceiveValue(value);
+    const from = currencies ? currencies[currentWallet.currency.currency]?.symbol.toUpperCase() : currentWallet.currency.currency.toUpperCase()
+    const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
+    const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
 
     actions.confirmationModalPayload({
       title: "Confirmación de cambio",
@@ -197,11 +199,11 @@ function SwapView(props) {
       action: confirmSwap,
       img: "swap",
       type: "swap",
-      from: currentWallet.currency.currency,
-      to: boughtCurrency,
+      from,
+      to,
       handleSwap: swap,
-      spent: `$ ${spent_currency_amount.toFormat()}`,
-      bought: secureTotalValue.toFormat(),
+      spent: `${isFiat ? '$' : ''} ${spent_currency_amount.toFormat()}`,
+      bought: `${secureTotalValue.toFormat()}`,
       id,
     });
   };
@@ -278,6 +280,7 @@ function SwapView(props) {
             id={idForClickeableElementPairSelector}
             selectPair={selectPair}
             secondaryCoin={boughtCurrency}
+            currencies={currencies}
           />
         )}
       />
@@ -299,9 +302,12 @@ function SwapView(props) {
   );
 }
 
-const PairSelect = ({ selectPair, secondaryCoin, id }) => {
+const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
 
   const showSubfix = window.innerWidth > 900;
+
+
+  const boughtCurrencySymbol = currencies ? currencies[secondaryCoin]?.symbol : secondaryCoin
 
   return(
     <div
@@ -311,9 +317,9 @@ const PairSelect = ({ selectPair, secondaryCoin, id }) => {
       >
         <div className="coinB2">
           <i className="fas fa-angle-down"></i>
-          <p>{secondaryCoin}</p>
+          <p>{boughtCurrencySymbol || '...'}</p>
           {showSubfix && <span className="subfix-pairs-button">[P]</span>}
-          {secondaryCoin && (
+          { boughtCurrencySymbol  && (
             <img
               src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${secondaryCoin}.png`}`}
               alt=""

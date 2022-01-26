@@ -164,7 +164,7 @@ class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
-    switch (icon) {
+    switch (icon?.toLowerCase()) {
       case "rappipay":
         return <RappiPay {...props} height={"30px"} />;
       case "movii":
@@ -318,6 +318,8 @@ class IconSwitch extends Component {
       case "success":
         return <Success {...props} />;
       case "bitcoin":
+      case "btc":
+      case "btct":
       case "bitcoin_testnet":
         return <Bitcoin2 {...props} />;
       case "cop":
