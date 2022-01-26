@@ -169,14 +169,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
         setOrders([
           ...depositProviderInfo,
-          // [
-          //   "Comisión:",
-          //   `${order.fee_struct && `${order.fee_struct.percent}%`} ~ ${
-          //     order.fee
-          //   }`,
-          // ],
-          // ["Impuesto:", `~ ${order.tax}`],
-          ["Total a depositar:", `~ $${amountNeto}`],
+          ["Total a depositar:", `$${amountNeto}`],
         ]);
         break;
       case "crypto":
