@@ -459,7 +459,7 @@ class WithdrawFlow extends Component {
   };
 
   render() {
-    const { currency, available, step, idAccept } = this.props;
+    const { currency, available, step, idAccept, withdraw_order:{withdraw_account} } = this.props;
 
     // console.log('|||||||||||||| show_list_accounts: ', this.state.show_list_accounts)
     // console.log('|||||||||||||| withdrawProviders: ', this.props.withdrawProviders)
@@ -478,7 +478,6 @@ class WithdrawFlow extends Component {
       withdraw_account_list_update,
     } = this.state;
 
-    console.log('|||||||||||||||||||| show_list_accounts   ======>  ', show_list_accounts, withdrawProviders)
 
     return (
       <section className="WFC DepositLayout">
@@ -540,10 +539,12 @@ class WithdrawFlow extends Component {
                   label={ticket_label_loader}
                   color={color_loader}
                 />
-              ) : (
-                <FinalTicket
+              ) : ( 
+                <FinalTicket 
                   finishAction={this.confirmar}
-                  ticket={ticket}
+                  wAccount={withdraw_account}
+                  order={ticket}
+                  title={"Retiro creado exitosamente"}
                   cta_primary_label="Confirmar"
                   cta_secondary={true}
                   cta_secondary_label="Cancelar"

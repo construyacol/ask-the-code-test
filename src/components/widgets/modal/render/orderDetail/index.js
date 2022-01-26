@@ -6,7 +6,7 @@ import {
   // socketIconContainerIntro,
   backTopSection,
 } from "../../../animations";
-import { orderStateColors, device } from "../../../../../const/const";
+import { orderStateColors, device, ORDER_TYPE_UI_NAME, TOTAL_ORDER_AMOUNT_COPYS } from "../../../../../const/const";
 import IconSwitch from "../../../icons/iconSwitch";
 // import { useActions } from "../../../../../hooks/useActions";
 import useViewport from "../../../../../hooks/useWindowSize";
@@ -90,6 +90,11 @@ export const getState = (state) => {
     : "Cancelado";
 };
 
+
+const orderTypeUiName = (orderType) => {
+  return ORDER_TYPE_UI_NAME[orderType]?.ui_name || orderType
+}
+
 export const OrderDetail = ({ currentOrder, tx_path }) => {
   // const actions = useActions();
   // const {
@@ -107,12 +112,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 
   if(!currentOrder) return null;
   const { state } = currentOrder;
-  const TitleText =
-    tx_path === "deposits"
-      ? "Deposito"
-      : tx_path === "withdraws"
-      ? "Retiro"
-      : tx_path === "swaps" && "Intercambio";
+  const TitleText = orderTypeUiName(tx_path)
 
   const textState =
     state === "accepted"
@@ -174,7 +174,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 
       <DetailGenerator
         order={currentOrder}
-        title={`Detalle del ${TitleText}`}
+        title={`Resumen del ${TitleText}`}
       />
 
       <BottomSection colorState={colorState} currentOrder={currentOrder} tx_path={tx_path} />
@@ -183,6 +183,13 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
 };
 
 
+
+
+const getAmountTitle = (orderType, order) => {
+  const select =  TOTAL_ORDER_AMOUNT_COPYS[orderType]
+  const uiName = select && (select[order?.state] || select?.ui_name) 
+  return uiName || "Cantidad"
+}
 
 
 export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
@@ -200,7 +207,10 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
   //     : currentOrder.state === "accepted"
   //     ? "Saldo acreditado:"
   //     : "Saldo SIN acreditar:";
-  const currency =
+
+  const amountTitle = getAmountTitle(tx_path, currentOrder)
+
+  const currency = 
     tx_path === "swaps"
       ? currencies[currentOrder.to_buy_currency.currency]
       : currencies[currentOrder.currency.currency];
@@ -221,7 +231,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
       <Container consolidatedOrder={ConsolidatedOrder || ''} isMovilViewport={isMovilViewport || ''}>
         <InfoComponent/>
         <TotalAmount color={colorState} className={`${currentOrder.state}`}>
-          <p className="fuente saldo">Cantidad</p>
+          <p className="fuente saldo">{amountTitle}</p>
           <p className="fuente2 amount">
             {currentOrder.currency_type === "fiat" && "$ "}
             {amount}{" "}

@@ -153,7 +153,7 @@ class ViewAmountComponent extends Component {
                 >
                   {operation_type === "deposit" ? `Cantidad minima: $ ${number_format(minAmount)} ${currency.toUpperCase()}`
                     : operation_type === "withdraw" && parseFloat(available) > minAmount ? `Disponible: ~$${number_format(available)} ${currency.toUpperCase()}`
-                    : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()} | Minima: ~$${number_format(minAmount)} ${currency.toUpperCase()}`}
+                    : `Disponible: ~$${number_format(available)} ${currency.toUpperCase()}`}
                 </p>
                 <p className="textStatus">{statusInput}</p>
               {/* <p className="fuente DLstitle DLcop">{ui_currency_name}</p> */}

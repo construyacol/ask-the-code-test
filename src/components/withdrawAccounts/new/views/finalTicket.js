@@ -9,7 +9,7 @@ import {
   IconContainer,
   DetailAccountProv
 } from '../../../forms/widgets/fiatDeposit/success'
-// import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 
 
 import "./finalTicket.css";
@@ -31,6 +31,8 @@ function FinalTicket(props) {
     cta_secondary_label,
     cta_secondary_action,
     wAccount,
+    order,
+    title
   } = props;
 
   const atributos = {
@@ -56,7 +58,7 @@ function FinalTicket(props) {
       <>
         <div className="finalTicket ticketHeader wAccountSuccess">
           <IconSwitch {...atributos} />
-          <h1 className="fuente finalTicket TicketTitle">Cuenta de retiro creada exitosamente</h1>
+          <h1 className="fuente finalTicket TicketTitle">{`${title || "Cuenta de retiro creada exitosamente"}`}</h1>
         </div>
 
         <div className="finalTicket contenidoTicket wAccountSuccess">
@@ -64,13 +66,13 @@ function FinalTicket(props) {
         <BankData>
 
           <TitleContainer className="__titleCont">
-          <p className="fuente">{props.title || 'Datos de tu cuenta de retiro'}</p>
-          <div className="__line__"/>
+           <p className="fuente">{'Datos de tu cuenta de retiro'}</p>
+           <div className="__line__"/>
           </TitleContainer>
 
           <CorpAccountContainer className="corpAccountContainer">
                 <IconContainer className="_corpAccIcon">
-                    <IconSwitch size={45} icon={'bancolombia'} />
+                    <IconSwitch size={45} icon={wAccount?.info?.bank_name} />
                 </IconContainer>
                 <DetailAccountProv> 
                     <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name)}</h3>
@@ -79,13 +81,24 @@ function FinalTicket(props) {
                     <p className="fuente2">{wAccount?.info?.account_number}</p>
                 </DetailAccountProv>
             </CorpAccountContainer>
-        </BankData>
 
-          {/* <DetailGenerator
-            title="Detalle del retiro"
-            order={ticket}
-            theme="darkTheme"
-          /> */}
+            {
+              order &&
+              <>
+              {/* <TitleContainer className="__titleCont">
+              <p className="fuente">{'Datos de tu retiro'}</p>
+              <div className="__line__"/>
+              </TitleContainer> */}
+              <DetailGenerator
+                title="Detalle del retiro"
+                order={order}
+                theme="darkTheme"
+              />
+              </>
+            }
+
+        </BankData>
+       
         </div>
 
         <div

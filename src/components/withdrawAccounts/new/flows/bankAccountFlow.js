@@ -166,7 +166,7 @@ class BankAccountFlow extends Component {
               </p>
             </div>
             <p className="nBtextInit fuente">
-            Son las cuentas a las que envías dinero desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
+            Son las cuentas a las que envías COP desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
             </p>
 
             <div id="bankChooseButton">

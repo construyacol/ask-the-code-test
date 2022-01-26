@@ -419,7 +419,7 @@ const PanelLeft = (order) => {
 
 const getTypeOrder = (tx_path) => {
   return tx_path === "deposits"
-    ? "Deposito"
+    ? "Depósito"
     : tx_path === "withdraws"
     ? "Retiro"
     : tx_path === "swaps" && "Intercambio";

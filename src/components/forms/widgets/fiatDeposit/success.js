@@ -28,8 +28,6 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
         }
     }
 
-    console.log('depositProvData', depositProvData)
-
 
     return(
         <OtherModalLayout
@@ -51,7 +49,7 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
       </SuccessModalCont>
     </OtherModalLayout>
     )
-}
+} 
 
 export default FiatDepositSuccess
 
@@ -65,11 +63,14 @@ export const BankDataContainer = ({accountData:{
         bussinesNameUiName,
         bussinesName,
         nitUiName,
-        nit 
+        nit,
+        dvUiName,
+        dv
     }}) => {
 
     
     const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
+
 
     return(
         <BankData>
@@ -84,15 +85,16 @@ export const BankDataContainer = ({accountData:{
                 </IconContainer>
                 <DetailAccountProv>
                     <h3 className="fuente">{bankUiName}</h3>
-                    <p className="fuente">{accountType}</p>
-                    <p className="fuente">{accountIdUiName}: <span className="fuente2">{accountId}</span></p>
-                    <p className="fuente bussines_name"><span className="bussines_name_span">{bussinesNameUiName}:</span>{bussinesName}</p>
-                    <p className="fuente nit">{nitUiName}: <span className="fuente2">{nit}</span></p>
+                    <p className="fuente bold"> <strong>{accountType}</strong></p>
+                    <p className="fuente bold"><strong>{accountIdUiName}:</strong> <span className="fuente2">{accountId}</span></p>
+                    <p className="fuente"> <strong> {bussinesNameUiName}: </strong> {bussinesName}</p>
+                    <p className="fuente"><strong> {nitUiName}:</strong> <span className="fuente2">{nit}</span></p>
+                    <p className="fuente"><strong>{dvUiName}:</strong> <span className="fuente2">{dv}</span></p>
                 </DetailAccountProv>
             </CorpAccountContainer>
 
             <TitleContainer >
-                <p className="fuente">Datos de la orden</p>
+                <p className="fuente">Datos del depósito</p>
                 <div className="__line__"/>
             </TitleContainer>
         </BankData>
@@ -147,6 +149,12 @@ export const TitleContainer = styled.div`
     column-gap: 20px;
     color:white;
     width: 100%;
+
+    p{
+        font-size: 18px;
+        font-weight: bold;
+    }
+
     .__line__{
         border-bottom: 1px solid white;
         height: 2px;

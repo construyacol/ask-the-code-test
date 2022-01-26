@@ -63,7 +63,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const setupFaceApi = async() => {
     setLoading(true)
-    if(!window.faceapi) return alert('No están cargando las librerías');
+    if(!window.faceapi) return alert('No están cargando las librerías FACE_API');
     faceApi.current = window.faceapi
     await faceApi.current.nets.tinyFaceDetector.loadFromUri(modelsPath)
     await faceApi.current.nets.faceLandmark68Net.loadFromUri(modelsPath)

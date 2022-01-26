@@ -342,7 +342,7 @@ export const InputFormCoin = (props) => {
 
 export class InputDepositForm extends Component {
   state = {
-    placeHolder: (window.innerWidth > 768 && this.props.classNames !== 'without-adapt') ? "Escribe la cantidad" : "Cantidad",
+    placeHolder: (window.innerWidth > 768 && this.props.classNames !== 'without-adapt') ? "0" : "0",
     finalValue: "",
   };
 

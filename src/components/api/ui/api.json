@@ -303,7 +303,7 @@
       "placeholder": [
         {
           "id": 1,
-          "name": "Sucursal Física"
+          "name": "Sucursal Virtual"
         },
         {
           "id": 2,
@@ -311,7 +311,7 @@
         },
         {
           "id": 3,
-          "name": "Transferencia por APP"
+          "name": "Sucursal Física"
         }
       ]
     },

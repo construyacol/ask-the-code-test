@@ -30,7 +30,7 @@ const AmountComponent = ({ nextStage, stageData, handleState:{ state, setState }
 
     return(
         <AmountLayout className="amountLayout">
-            <Title className="fuente">Escribe la cantidad de depósito</Title>
+            <Title className="fuente">Escribe la cantidad a depositar</Title>
             <Content>
                 <IconSwitch icon="cop" size={45} />
                 <InputDepositForm
@@ -82,6 +82,7 @@ const Content = styled.section`
 export const Title = styled.h3`
     margin:0;
     color:var(--primary);
+    font-size:1.3em;
 `
 
 

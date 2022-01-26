@@ -15,10 +15,52 @@ const {
 } = Enviroment;
 
 
+
 export const MAIN_COLOR = "#0e95f8";
 export const FONT_COLOR = "#50667a";
   
 export const ENVIRONMENT_VAR = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+
+
+export const ORDER_TYPE_UI_NAME = {
+  deposits:{
+    ui_name:"Depósito", 
+    value:"deposits"
+  }, 
+  withdraws: {
+    ui_name:"Retiro", 
+    value:"withdraws"
+  }, 
+  swaps:{
+    ui_name:"Intercambio", 
+    value:"swaps"
+  }
+}
+
+
+export const TOTAL_ORDER_AMOUNT_COPYS = {
+  withdraws:{
+    accepted:"Total recibido",
+    rejected:"Saldo sin debitar",
+    canceled:"Saldo sin debitar",
+    ui_name:"Total a recibir"
+  },
+  deposits:{
+    accepted:"Total acreditado",
+    canceled:"Saldo sin acreditar",
+    rejected:"Saldo sin acreditar",
+    ui_name:"Total depositado"
+  },
+  swaps:{
+    ui_name:"Total adquirido"
+  },
+  deposit:{
+    ui_name:"Flujo depósito?"
+  },
+  withdraw:{
+    ui_name:"Total para retirar ?"
+  }
+}
 
 export const WALLET_FILTER_LIST = { 
   deposits:{

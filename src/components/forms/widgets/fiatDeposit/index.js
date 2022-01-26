@@ -128,7 +128,7 @@ const HeaderComponent = ({ prevStage, currentStage }) => {
           <MdKeyboardArrowLeft size={27} color="white" />
         </IconBackContainer>
       </WindowControl>
-      <p className="fuente titleHead">Deposito COP</p>
+      <p className="fuente titleHead">Depósito COP</p>
     </section>
   </Header>
   )

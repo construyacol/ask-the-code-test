@@ -14,6 +14,7 @@
   border-bottom: 2px solid white;
   grid-template-rows: repeat(2, 1fr);
   justify-items: center;
+  row-gap:20px;
 }
 
 .finalTicket.TicketTitle {
