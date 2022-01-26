@@ -17,41 +17,32 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
 // import UseTxState from "../../hooks/useTxState";
 import { getCdnPath } from '../../../environment'
+import { useFormatCurrency } from "../../hooks/useFormatCurrency";
+
 
 
 function SwapView(props) {
 
   const [coinsendaServices] = useCoinsendaServices();
   const [value, setValue] = useState(undefined);
-  // const [active, setActive] = useState(undefined);
-  // const [shouldActiveButton, setShouldActiveButton] = useState(true);
-  // // const [pairId, setPairId] = useState()
+  const [, formatCurrency] = useFormatCurrency();
   const [ valueToReceive, setValueToReceive ] = useState();
   const [ loaderButton, setLoaderButton ] = useState();
   const [ exchangeEnabled, setExchangeEnabled ] = useState()
   const [ toastMessage ] = useToastMessage()
-  const [ valueForOne, setValueForOne ] = useState()
-  // const { currencies } = UseTxState()
-
-  // const [minAmountByOrder, setMinAmountByOrder] = useState({
-  //   minAmount: 0,
-  //   currencyCode: "",
-  // });
-  // const [valueError, setValueError] = useState();
+  const [ valueForOnePrimaryCurrency, setValueForOnePrimaryCurrency ] = useState()
+ 
   const actions = useActions();
   const idForClickeableElement = useKeyActionAsClick(true, "make-swap-button", 13, false);
   const idForClickeableElementPairSelector = useKeyActionAsClick(true, "show-pairs-button", 112, false);
 
-  // const { currentPair } = props;
   const {
     currentWallet,
     availableBalance,
     currencyPairs,
     currentPair,
-    WalletCurrencyShortName,
     currencies
   } = useWalletInfo();
-  // const prevCurrentPair = usePrevious(currentPair);
   const { isMovilViewport } = useWindowSize();
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
@@ -71,20 +62,20 @@ function SwapView(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
 
-  useEffect(()=>{
-    callToSetValueForOne()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPair])
 
-
-  const callToSetValueForOne = async() => {
-    if(!currentPair){return}
-    const { id } = currentPair;
-    const _valueForOne =  await coinsendaServices.convertCurrencies('1', currentWallet.currency, id)
-    const { data: { want_to_spend, to_spend_currency } } = _valueForOne
-    const formatValue = formatToCurrency(want_to_spend, to_spend_currency);
-    setValueForOne(formatValue.toFormat())
+  const getValueForOnePrimaryCurrency = async() => {  
+    const { sell_price, secondary_currency, primary_currency } = currentPair;
+    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(sell_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`
+    setValueForOnePrimaryCurrency(finalString)
   }
+
+
+  useEffect(() => {
+    if(currentPair && currencies){
+      getValueForOnePrimaryCurrency()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPair, currencies])
 
 
 
@@ -194,9 +185,13 @@ function SwapView(props) {
     let query = `{"where":{"id":"${id}"}}`;
     await coinsendaServices.updateCurrentPair(query);
     const secureTotalValue = await getReceiveValue(value);
+
+    console.log('currentPair', currentPair)
+    debugger
+
     actions.confirmationModalPayload({
-      title: "Confirmando Intercambio",
-      txtPrimary: "Confirmar Intercambio",
+      title: "Confirmación de cambio",
+      txtPrimary: "Confirmar cambio",
       txtSecondary: "Cancelar",
       payload: "aa",
       action: confirmSwap,
@@ -205,7 +200,7 @@ function SwapView(props) {
       from: currentWallet.currency.currency,
       to: boughtCurrency,
       handleSwap: swap,
-      spent: spent_currency_amount.toFormat(),
+      spent: `$ ${spent_currency_amount.toFormat()}`,
       bought: secureTotalValue.toFormat(),
       id,
     });
@@ -227,8 +222,10 @@ function SwapView(props) {
   if ((!currentPair || (currentPair && !currentPair.boughtCurrency)) || !currentWallet) {
     return <SkeletonSwapView />;
   }
-  // console.log('|||||||||||||| valueToReceive :', valueToReceive, !valueToReceive)
   const { boughtCurrency } = currentPair;
+
+
+
 
   return (
     <SwapForm
@@ -246,7 +243,7 @@ function SwapView(props) {
         handleChange={handleChangeSpendAmount}
         handleStatus={handleStatus}
         setMaxWithActionKey={true}
-        label={`Pago con: ${currentWallet.currency.currency}`}
+        label={`Pago con ${currentWallet?.currency?.currency?.toUpperCase()}`}
         disabled={loader}
         autoFocus={true}
         autoComplete="off"
@@ -273,7 +270,7 @@ function SwapView(props) {
         value={valueToReceive}
         state={exchangeEnabled}
         isControlled={true}
-        label={`Recibo apróximadamente:`}
+        label={`Recibo apróximadamente`}
         disabled={loader}
         readOnly={true}
         SuffixComponent={() => (
@@ -287,11 +284,7 @@ function SwapView(props) {
 
       <div>
         <CoinPrice className="fuente2">
-          1 {WalletCurrencyShortName} ={" "}
-          {!valueForOne ? "Sin Cotización" : valueForOne}{" "}
-          <span style={{textTransform:"capitalize"}}>
-            {boughtCurrency}
-          </span>
+          {valueForOnePrimaryCurrency}
         </CoinPrice>
       </div>
 
@@ -300,7 +293,7 @@ function SwapView(props) {
         handleAction={startSwap}
         loader={loaderButton || loader}
         formValidate={(exchangeEnabled === 'good' && valueToReceive) ? true : false}
-        label="Cambiar"
+        label="Realizar cambio"
       />
     </SwapForm>
   );

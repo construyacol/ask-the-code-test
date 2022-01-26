@@ -53,7 +53,7 @@ export const PairList = (props) => {
 
   return (
     <OtherModalLayoutPairs
-      title={`Convertir ${currentWallet.currency.currency} a:`}
+      title={`Cambiar ${currentWallet?.currency?.currency?.toUpperCase()} a:`}
       close_modal={closeModal}
     >
       <div className="PairListFind"></div>
