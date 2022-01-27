@@ -195,10 +195,13 @@ const getAmountTitle = (orderType, order) => {
 export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
   const { currencies } = UseTxState();
 
+  const _amount =  (tx_path.includes("withdraw") && currentOrder?.amount_neto) ? currentOrder?.amount_neto : currentOrder?.amount
   const [amount] = useFormatCurrency(
-    currentOrder.amount || currentOrder.bought,
-    currentOrder.currency
+    _amount || currentOrder.bought,
+    currentOrder.currency || currentOrder?.to_buy_currency
   );
+
+
   const { isMovilViewport } = useViewport();
 
   // const textTotal =

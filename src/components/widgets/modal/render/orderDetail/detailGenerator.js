@@ -7,7 +7,7 @@ import { getState } from "./";
 import { device, ORDER_TYPE_UI_NAME } from "../../../../../const/const";
 import { selectWithConvertToObjectWithCustomIndex } from "../../../../hooks/useTxState.js"
 import { useSelector } from "react-redux";
-
+import { getHostName } from '../../../../../environment'
 // import { useParams } from "react-router-dom";
 
 import moment from "moment";
@@ -24,10 +24,9 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
 
   // const params = useParams();
-  // console.log('||||||||||||  DetailGenerator ===> ', params, tx_path, path)
-  // debugger
-  const orderType = tx_path || path || 'withdraw'
-
+  const orderType = tx_path || path || (window.location.pathname.includes("referral") && "deposits") || "withdraw"
+  // const orderType = tx_path || path || "withdraw"
+  
 
   // const formatOrderText = async (itemText) => {
   //   switch (itemText[0]) {
@@ -135,7 +134,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
           // debugger
           depositProviderInfo = [
             [
-              "Entidad de depósito:",
+              "Entidad del depósito:",
               `${depositProvider.depositAccount.ui_name}`,
             ],
             [
@@ -182,7 +181,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         break;
       case "crypto":
         setOrders([
-          ["Número de orden:", order.id],
+          ["ID:", order.id],
           ["Estado:", getState(order.state)],
           ["Divisa:", `${order.currency.currency}`],
           ["Orden creada en:", moment(order.created_at).format("LL")],
@@ -207,10 +206,10 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const formatDepositOrder = async(order) => {
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
-      ["Id de depósito:", order?.id],
+      ["ID del depósito:", order?.id],
       ["Estado:", getState(order?.state)],
       ["Cantidad depositada:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
-      ["Costo de depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+      ["Costo del depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
       ["Cantidad acreditada:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
@@ -219,7 +218,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const formatWithdrawOrder = async(order) => {
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
-      ["Id del retiro:", order?.id],
+      ["ID del retiro:", order?.id],
       ["Estado:", getState(order?.state)],
       ["Total del retiro:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
       ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
@@ -230,7 +229,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
   const formatSwapsOrder = async(order) => {
     let parsedOrder = [
-      ["Id del intercambio:", order?.id],
+      ["ID del intercambio:", order?.id],
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Estado:", getState(order?.state)],
       ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.currency?.toUpperCase()}`],
@@ -310,7 +309,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
               </ItemContainer>
             );
           })
-        : new Array(10).fill("1").map((item, indx) => {
+        : new Array(7).fill("1").map((item, indx) => {
             return (
               <ItemContainer className="skeleton" key={indx}>
                 <LeftText>skeleton --</LeftText>
@@ -319,14 +318,32 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
               </ItemContainer>
             );
           })}
+          { 
+            (orderType === 'swaps' && order?.referral && ["accepted"].includes(order?.state)) &&
+              <ReferralSwapCopy order={order} currencies={currencies}/>
+          }
     </Container>
   );
 };
-
+// currencies
 export default DetailGenerator;
 
 
+const ReferralSwapCopy = ({ order, currencies }) => {
 
+  return(
+      <p className="fuente referalBySwap" style={{fontSize: "12px", color:"gray"}}>
+        Quién te refirió obtuvo el &nbsp;  
+        <span className="fuente2"> 
+          {order?.referral?.total_percentage}%&nbsp;
+          ({order?.referral?.compra_de_referidos?.amount} {currencies && currencies[order?.referral?.compra_de_referidos?.short_currency?.currency]?.symbol})
+          </span> de este intercambio. <a href={`https://${getHostName()}.com/docs/incentives`} target="_blank"  rel="noreferrer" alt="">Aprende cómo hacerlo</a>
+      </p>
+  )
+
+}
+
+getHostName()
 
 export const DataOrderHeader = styled.div`
     display: grid;
@@ -440,6 +457,22 @@ const Container = styled.section`
   grid-template-rows: repeat(auto-fill, 20px);
   row-gap: 7px;
   padding: 25px 35px;
+  position:relative;
+
+  .referalBySwap{
+    font-size: 12px;
+    color: gray;
+    width: calc(100% - 100px);
+    max-width: calc(500px - 100px);
+    text-align: justify;
+    justify-self: center;
+    padding: 0 50px 0 15px;
+    position: absolute;
+    font-size: 13px;
+    color: gray;
+    left: 20px;
+    bottom: -20px;
+  }
 
   @media ${device.tablet} {
     padding: 25px 20px;

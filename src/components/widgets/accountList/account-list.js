@@ -120,8 +120,8 @@ function AccountList(props) {
   };
 
   let mainButtonText = isWithdrawView
-    ? "Añadir nueva cuenta de retiro"
-    : "Añadir nueva billetera";
+    ? "Crear nueva cuenta de retiro"
+    : "Crear nueva billetera";
   mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText;
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false

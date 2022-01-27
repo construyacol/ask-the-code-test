@@ -9,6 +9,9 @@ import BalanceComponent from "../balance/balance";
 import PopNotification from "../notifications";
 import SimpleLoader from "../loaders";
 import { getCdnPath } from '../../../environment'
+import { selectWithConvertToObjectWithCustomIndex } from "../../hooks/useTxState.js"
+import { useSelector } from "react-redux";
+
 
 import {
   ACta,
@@ -271,6 +274,8 @@ const Wallet = (props) => {
     focusedId,
     isStatic,
   } = props;
+
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const { name, id, currency } = account;
   const icon =
     account.currency.currency === "cop"
@@ -278,6 +283,8 @@ const Wallet = (props) => {
       : account.currency.currency === "ethereum"
       ? "ethereum_account"
       : account.currency.currency;
+
+  const currencySymbol = currencies && currencies[currency?.currency]?.symbol
 
 
   return (
@@ -324,7 +331,7 @@ const Wallet = (props) => {
         />
       </div>
       <p className="IWText fuente IWcurrencyText tobe_continue">
-        {currency.currency}
+        {currencySymbol}
       </p>
       <>
         {balances ? (

@@ -171,7 +171,7 @@ export const Success = (props) => {
                   </g>
                 </svg>
               </div>
-              <p className="titleWhite fuente"> Operación Exitosa</p>
+              <p className="titleWhite fuente">Depósito creado exitósamente</p>
             </div>
 
             <div className="asaras">

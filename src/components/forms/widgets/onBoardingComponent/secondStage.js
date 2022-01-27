@@ -30,7 +30,7 @@ const Welcome = props => {
             <img className="flip-in-ver-right" src={party} width={55} alt="party"/>
             <CopyContainer>
                 <p className="fuente">
-                    Aquí <span>tu</span> eres lo más importante, por eso te brindamos el intercambio más seguro y confiable para tus operaciones
+                    Aquí <span>tú</span> eres lo más importante, por eso te brindamos el intercambio más seguro y confiable para tus operaciones
                 </p>
             </CopyContainer>
         </Container>

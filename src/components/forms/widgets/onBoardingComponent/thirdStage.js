@@ -32,7 +32,7 @@ const Welcome = props => {
                 <img className="flip-in-ver-right" src={nerdFace} width={55} alt="party"/>
                 <CopyContainer>
                     <p className="fuente">
-                        Para brindarte una experiencia segura dentro <span>Coinsenda</span>, te pediremos algunos datos
+                        Para brindarte una experiencia segura dentro de <span>Coinsenda</span>, te pediremos algunos datos
                     </p>
                 </CopyContainer>
             </Container>

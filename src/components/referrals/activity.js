@@ -82,10 +82,10 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
   return(
     <>
         {
-          !activity ?
+          !activity ? 
           <EmptyStateList
             isMovilViewport={isMovilViewport}
-            label="Aún no tienes comisiones acreditadas, compárte el link de referido y empieza a recibir incentivos..."
+            label="Aún no tienes comisiones acreditadas, compárte tu link de referido y empieza a recibir incentivos."
           />
           :
           (activity && activity.length < 1) ?

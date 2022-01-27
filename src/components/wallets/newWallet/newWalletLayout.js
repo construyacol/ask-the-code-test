@@ -93,7 +93,7 @@ const NewWalletLayout = (props) => {
                     </g>
                   </svg>
                 </div>
-                <p className="titleWhite fuente"> Operación Exitosa</p>
+                <p className="titleWhite fuente"> Billetera creada exitósamente</p>
               </div>
 
               <div className="nWbody fuente">
