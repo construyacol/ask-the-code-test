@@ -194,13 +194,10 @@ export default () => {
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount':
-        // convertir el monto en btc a la moneda de la cuenta actual
         let minAmount = new BigNumber(0)
         if(currentWallet.currency.currency.includes('bitcoin')){
           minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
         }else{ 
-          // const bitcoinCurrency = await currencyPairs.find(currency => currency.currency === 'bitcoin')
-          // if(!bitcoinCurrency) return minAmount;
           const converted = await _convertCurrencies(currentPair.exchange.min_operation.currency, currentPair.exchange.min_operation.min_amount, currentPair.id);
           const { want_to_spend } = converted
           minAmount = want_to_spend

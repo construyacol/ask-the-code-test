@@ -76,7 +76,7 @@ function FinalTicket(props) {
                 </IconContainer>
                 <DetailAccountProv> 
                     <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name)}</h3>
-                    <p className="fuente">{wAccount?.info?.account_type === 'cuenta_ahorro' ? 'Cuenta de ahorro' : "Cuenta corriente"}</p>
+                    <p className="fuente">{wAccount?.info?.account_type === 'cuenta_ahorro' ? 'Cuenta de ahorros' : "Cuenta corriente"}</p>
                     <p className="fuente">Número de cuenta:</p>
                     <p className="fuente2">{wAccount?.info?.account_number}</p>
                 </DetailAccountProv>

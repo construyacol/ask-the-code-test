@@ -78,7 +78,7 @@ const CreateReferralLink = (props) => {
             handleAction={setRefCode}
             loader={loader}
             formValidate={isValidCode === 'good'}
-            label="Crear link de referido"
+            label="Crear código de referido"
           />
         </ButtonContainer>
 

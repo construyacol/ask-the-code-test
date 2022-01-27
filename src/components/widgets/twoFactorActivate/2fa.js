@@ -81,7 +81,7 @@ const TwoFactorActivate = (props) => {
             <div className="header2fa"></div>
             <div className="body2fa">
               <div className="bodySon">
-                <p className="fuente">
+                <p className="fuente" style={{maxWidth:"500px"}}>
                   Abre Google Authenticator y escanea el código QR ó ingresa el código secreto manualmente.
                 </p>
                 {qr && !loader ? (

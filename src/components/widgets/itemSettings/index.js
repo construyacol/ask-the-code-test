@@ -47,7 +47,7 @@ class ItemSettingsInit extends Component {
         if (other_state === "to_disable") {
           await this.props.action.current_section_params({
             settings: {
-              title: "Deshabilitando 2AUTH",
+              title: "Deshabilitando segundo factor",
               description: `Desactivarás la segunda capa de seguridad en todos los servicios activos.`,
               txtPrimary: "Desactivar",
               txtSecondary: "Cancelar",

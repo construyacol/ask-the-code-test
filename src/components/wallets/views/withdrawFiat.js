@@ -50,7 +50,7 @@ const FiatView = (props) => {
           </p>
         ) : (
           <p className="fuente">
-            Retira <span style={{textTransform:"capitalize"}}>{current_wallet.currency.currency}</span> y recibe el saldo en cualquiera de tus cuentas.
+            Retira <span>{current_wallet?.currency?.currency?.toUpperCase()}</span> y recibe el saldo en cualquiera de tus cuentas de retiro.
           </p>
         )}
       </div>
