@@ -182,7 +182,7 @@ export const Success = (props) => {
                 } nWbody2 Fbody2 FlowCont fuente DLmessage`}
               >
                 <div className="FolowTexts">
-                  <p className="fuente Fimportant">¡IMPORTANTE!</p>
+                  <p className="fuente Fimportant">IMPORTANTE!</p>
                   <p className="Ftexto fuente ">
                     Una vez realizada la consignación, debes confirmar el depósito subiendo una fotografía del <strong> COMPROBANTE DE PAGO </strong>
                   </p>

@@ -50,7 +50,7 @@ const CreateReferralLink = (props) => {
           <InputForm
             className="setRefCode"
             type="text"
-            placeholder={`Ej. miCodigoReferido`}
+            placeholder={`Ej: miCodigoReferido`}
             name="ref_code"
             autoFocus
             handleStatus={setIsValidCode}

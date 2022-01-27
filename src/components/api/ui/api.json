@@ -303,15 +303,15 @@
       "placeholder": [
         {
           "id": 1,
-          "name": "Sucursal Virtual o APP"
+          "name": "Sucursal virtual o APP"
         },
         {
           "id": 2,
-          "name": "Cajero Automático"
+          "name": "Cajero automático"
         },
         {
           "id": 3,
-          "name": "Sucursal Física"
+          "name": "Sucursal física"
         }
       ]
     },
@@ -324,7 +324,7 @@
       "placeholder": [
         {
           "id": 1,
-          "name": "Corresponsal Bancario"
+          "name": "Corresponsal bancario"
         },
         {
           "id": 2,
@@ -332,7 +332,7 @@
         },
         {
           "id": 3,
-          "name": "Sucursal fisica (solo efectivo)"
+          "name": "Sucursal física (solo efectivo)"
         }
       ]
     }

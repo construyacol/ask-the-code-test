@@ -27,7 +27,7 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
                 <ConfettiComponent/>
                 <h1>Genial {state?.name?.toLowerCase()}</h1>
                 <Medal size={145} />
-                <p className="personalSuccess">Has completado tu verificación básica</p>
+                <p className="personalSuccess">Has completado tu verificación inicial</p>
                 <ControlContainer>
                     <p>¿Deseas continuar con el proceso de verificación avanzada?</p>
                     <Buttons>

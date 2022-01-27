@@ -6,7 +6,7 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import * as normalizr_services from "../schemas";
 import { store } from "..";
 import imageType from 'image-type'
-import { IMAGE_MIME_TYPES } from '../const/const'
+import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
 
 const { normalizeUser } = normalizr_services;
 
@@ -348,15 +348,34 @@ export const addIndexToRootObject = (list) => {
   });
 };
 
+
 export const serveBankOrCityList = (list, type) => {
   return new Promise(async (resolve, reject) => {
     let new_list = [];
     let indices = 0;
 
+    // PRIORITY_ENTITIES
+    let priorityEntities = []
+
     await Object.keys(list).forEach((indice) => {
+
       if (indice === "ui_name" || indice === "ui_type") {
         return false;
       }
+
+      if(PRIORITY_ENTITIES.includes(indice)){
+        let priotityItem = {
+          ...list[indice],
+          code: indice,
+          id: indices, 
+          type: type,
+          name: list[indice].ui_name.toLowerCase(),
+          selection: false,
+        };
+      indices++;
+      return priorityEntities.push(priotityItem)
+      }
+
       let new_item = {
         ...list[indice],
         code: indice,
@@ -367,9 +386,15 @@ export const serveBankOrCityList = (list, type) => {
       };
       indices++;
       new_list.push(new_item);
+
     });
 
-    return resolve(new_list);
+    // console.log('|||||||| list ==> ', Object.keys(list).length)
+    // console.log('|||||||| new_list ==> ', new_list.length, new_list)
+    // console.log('|||||||| PRIORITY_ENTITIES ==> ', priorityEntities)
+    // debugger
+
+    return resolve([...priorityEntities, ...new_list]);
   });
 };
 

@@ -238,7 +238,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
           <p className="fuente2 amount">
             {currentOrder.currency_type === "fiat" && "$ "}
             {amount}{" "}
-            {currency && <span className="fuente">{currency.code}</span>}
+            {currency && <span className="fuente">{currency?.code?.toUpperCase()}</span>}
           </p>
         </TotalAmount>
       </Container>

@@ -65,7 +65,7 @@ class ScoresComponent extends Component {
         : 0;
 
     let message = !basic
-      ? "Completa la verificación básica"
+      ? "Completa la verificación inicial"
       : basic === "rejected" && advanced === "rejected"
       ? "Tu verificación ha sido RECHAZADA."
       : basic === "confirmed" && !advanced

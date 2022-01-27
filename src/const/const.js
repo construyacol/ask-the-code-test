@@ -84,6 +84,16 @@ export const WITHDRAW_ACCOUNT_FILTER_LIST = {
   }
 }
 
+export const PRIORITY_ENTITIES = [
+  "bancolombia",
+  "bbva_colombia",
+  "banco_davivienda_sa",
+  "nequi",
+  "banco_falabella_sa"
+]
+
+
+
 export const IMAGE_MIME_TYPES = [
   "image/png",
   "image/jpeg",

@@ -193,7 +193,7 @@ export default () => {
         const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
         return withdrawMinAmount
       case 'spend-amount':
-      // case 'bought-amount':
+      // case 'bought-amount': 
         let minAmount = new BigNumber(0)
         if(currentWallet.currency.currency.includes('bitcoin')){
           minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
@@ -202,7 +202,7 @@ export default () => {
           const { want_to_spend } = converted
           minAmount = want_to_spend
         }
-
+        
       return minAmount
       default:
         return

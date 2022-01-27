@@ -67,7 +67,8 @@ class BankAccountFlow extends Component {
 
     let serve_bank_list = await serveBankOrCityList(bank_list, "bank");
     // let serve_city_list = await serveBankOrCityList(city_list, "city");
-    console.log('============================================================== serve_bank_list', serve_bank_list)
+    // console.log('============================================================== serve_bank_list', serve_bank_list)
+
     let id_types_object = await addIndexToRootObject(
       res && res[0].info_needed.id_type
     );
@@ -255,7 +256,7 @@ class BankAccountFlow extends Component {
                     <InputForm
                       type="text"
                       label="Escribe el número de tu cuenta"
-                      placeholder="Ej. 1123321..."
+                      placeholder="Ej: 1123321..."
                       name="account_number"
                       autoFocus={true}
                       actualizarEstado={actualizarEstado}

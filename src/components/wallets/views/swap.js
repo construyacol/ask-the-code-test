@@ -192,7 +192,7 @@ function SwapView(props) {
     const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
 
     actions.confirmationModalPayload({
-      title: "Confirmación de cambio",
+      title: "Confirmación de intercambio",
       txtPrimary: "Confirmar cambio",
       txtSecondary: "Cancelar",
       payload: "aa",
@@ -296,7 +296,7 @@ function SwapView(props) {
         handleAction={startSwap}
         loader={loaderButton || loader}
         formValidate={(exchangeEnabled === 'good' && valueToReceive) ? true : false}
-        label="Realizar cambio"
+        label="Realizar intercambio"
       />
     </SwapForm>
   );
