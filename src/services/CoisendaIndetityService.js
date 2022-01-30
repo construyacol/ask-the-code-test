@@ -109,12 +109,15 @@ export class IndetityService extends WebService {
     const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
 
     const firstResponse = await this.Get(finalUrlFirst);
+
     if (!firstResponse) {
       return false;
     }
 
     const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
     const secondResponse = await this.Get(finalUrlSecond);
+    debugger
+
 
     // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
     //     return true

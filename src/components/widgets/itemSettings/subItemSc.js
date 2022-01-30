@@ -57,7 +57,7 @@ class SubItemSC extends Component {
       cta_secondary,
       verify,
       tree,
-      available,
+      available, 
       treeButton,
       classic_view,
       other_state,
@@ -84,7 +84,8 @@ class SubItemSC extends Component {
     // contentSubItem // last
 
     // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
-    console.log('||||||||||||||||||||||||||||||||||   SubItemSC', this.props.subItem.name, this.props)
+
+    console.log('||||||||||||||||||||||||||||||||||   SubItemSC', label)
 
     return (
       <div
@@ -173,7 +174,7 @@ class SubItemSC extends Component {
                     : verify && tree
                     ? "#0198ff"
                     : other_state === "send"
-                    ? "red"
+                    ? "gray"
                     : "gray",
               }}
             >
@@ -236,7 +237,7 @@ class SubItemSC extends Component {
               ) : (
                 <Fragment>
                   <i className="SCUnverify fas fa-times"></i>
-                  {`${label} sin ${cta_primary}`}
+                  {`${label === 'Inicial' ? 'Verificación inicial sin completar' : label === 'Avanzada' ? 'Verificación avanzada sin completar' : `${label} sin ${cta_primary}`}`}
                 </Fragment>
               )}
             </div>
