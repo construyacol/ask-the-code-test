@@ -183,18 +183,18 @@ const STAGES = {
         }
       },
       "country":{
-        // uiName:"País",
+        uiName:"País",
         key:"country",
         uiType:"select",
         selectList:{},
         "settings":{
-          // defaultMessage:"Elige el país de residencia actual",
+          defaultMessage:"Elige el país de residencia actual",
           successPattern:/[a-zA-Z _]{1,40}/g,
           errors:[
             { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
           ],
-          label:"País:",
-          placeholder:"Ej: Juan josé ",
+          label:"País",
+          placeholder:"",
           queryParams:{
             form:'personal_country'
           },

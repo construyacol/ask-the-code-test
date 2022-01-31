@@ -104,7 +104,8 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     )
   }
 
-  // console.log('dataForm', state, dataForm)
+  console.log('___________________________________________dataForm', stageData)
+
 
   return(
       <Layout background="white" >
