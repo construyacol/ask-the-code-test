@@ -39,7 +39,7 @@ export const DropDown = styled.div`
   display: grid;
   align-items: center;
   position: relative;
-  background: #ececec;
+  background: #e6e6e6;
   transition:.3s;
   border-radius:3px;
 

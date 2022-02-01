@@ -23,8 +23,8 @@ import "moment/locale/es";
 moment.locale("es");
 
 const confirmPayment = async () => {
-  const TFileUpload = document.getElementById("TFileUpload");
-  TFileUpload && TFileUpload.click();
+  // const TFileUpload = document.getElementById("TFileUpload");
+  // TFileUpload && TFileUpload.click();
 };
 
 const OrderItem = ({ order }) => {

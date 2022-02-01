@@ -95,7 +95,7 @@ const createStage = (source, modelated, index) => {
     // }
     if(stage[key] === 'select'){
       let selectSource = source
-      if(stage.key === 'nationality'){
+      if(['nationality', 'country'].includes(stage.key)){
         selectSource = await getNationalityList()
       }
       stage.selectList = generateSelectList(selectSource)

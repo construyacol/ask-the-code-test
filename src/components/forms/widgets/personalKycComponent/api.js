@@ -248,7 +248,7 @@ const STAGES = {
         }
       },
       "phone":{
-        // uiName:"Número de celular",
+        uiName:"Número de teléfono",
         key:"phone",
         uiType:"text",
         "settings":{
@@ -293,13 +293,12 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
   setLoading(true)
   let res = await mainService.updateLevelProfile(config);
-  // res = true
-  // let res = true
+  setLoading(false)
+  
   if(!res) {
     toastMessage('No ha sido posible completar la verificación.', 'error')
-    prevStage();
+    return prevStage();
   }
-  setLoading(false)
 
   const { user } = mainService.globalState.modelData
   const { data:{ personal } } = res;

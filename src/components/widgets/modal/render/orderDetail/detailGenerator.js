@@ -125,13 +125,12 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   // };
 
   const inProcesOrder = async (order) => {
+    const isPending = order.state === 'pending'
     switch (order.currency_type) {
       case "fiat":
         let depositProviderInfo = [];
         if (deposit_providers && deposit_providers[order.deposit_provider_id]) {
           const depositProvider = deposit_providers[order.deposit_provider_id];
-          // console.log('depositProvider',  )
-          // debugger
           depositProviderInfo = [
             [
               "Entidad del depósito:",
@@ -158,7 +157,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
               `${depositProvider.depositAccount.account.dv.dv}`,
             ],
             [
-              `Cantidad acreditada`,
+              `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
               `${await formatCurrency(order.amount, order.currency)} ${order.currency?.currency?.toUpperCase()}`,
             ],
             [
@@ -204,13 +203,14 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
 
   const formatDepositOrder = async(order) => {
+    const isPending = order.state === 'pending'
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["ID del depósito:", order?.id],
       ["Estado:", getState(order?.state)],
-      ["Cantidad depositada:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
+      [`Cantidad ${isPending ? 'por depositar' : 'depositada'}:`, `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
       ["Costo del depósito:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
-      ["Cantidad acreditada:", `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+      [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
     ]
     return parsedOrder 
   }
