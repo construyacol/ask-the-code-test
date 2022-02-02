@@ -43,9 +43,7 @@ function FinalTicket(props) {
 
   
   const parseUiName = (text) => {
-
     if(typeof text !== 'string') return text;
-    
     const finalText = text?.split("_")?.join(" ")
     const capitalizeText = finalText?.replace(text?.charAt(0), text?.charAt(0)?.toUpperCase())
     return capitalizeText
@@ -77,7 +75,7 @@ function FinalTicket(props) {
                 <DetailAccountProv> 
                     <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name || wAccount?.info?.label)}</h3>
                     <p className="fuente">{parseUiName(isEFecty ? wAccount?.info?.id_type : wAccount?.info?.account_type)}</p>
-                    <p className="fuente"> Número de { isEFecty ? 'documento:' : 'cuenta:'}</p>
+                    { !isEFecty &&  <p className="fuente"> Número de cuenta:</p>}
                     <p className="fuente2">{wAccount?.info?.account_number || wAccount?.info?.id_number}</p>
                 </DetailAccountProv>
             </CorpAccountContainer>

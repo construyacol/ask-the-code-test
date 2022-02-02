@@ -330,6 +330,7 @@ class IconSwitch extends Component {
       case "bitcoin_testnet":
         return <Bitcoin2 {...props} />;
       case "cop":
+      case "COP":
       case "colombia":
         return <Cop {...props} />;
       case "peru":
