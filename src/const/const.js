@@ -89,7 +89,8 @@ export const PRIORITY_ENTITIES = [
   "bbva_colombia",
   "banco_davivienda_sa",
   "nequi",
-  "banco_falabella_sa"
+  "banco_falabella_sa",
+  "efecty"
 ]
 
 

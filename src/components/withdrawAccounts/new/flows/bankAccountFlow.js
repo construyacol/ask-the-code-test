@@ -36,7 +36,7 @@ class BankAccountFlow extends Component {
     banks: null,
     cities: null,
     loader: false,
-  };
+  }; 
 
   componentDidMount() {
     this.initComponent();
@@ -50,7 +50,7 @@ class BankAccountFlow extends Component {
 
   initComponent = async () => {
 
-    const { withdraw_providers_list } = this.props;
+    const { withdraw_providers_list, withdrawProviders } = this.props;
 
     this.setState({ loader: true });
 
@@ -61,7 +61,12 @@ class BankAccountFlow extends Component {
       // return doLogout('?message=Vuelve a iniciar session');
     }
 
-    let bank_list = res && res[0].info_needed.bank_name;
+    const efectyProvider = withdrawProviders?.find(wP => wP?.name === 'efecty');
+    let bank_list = res && {...res[0].info_needed.bank_name};
+
+    if(efectyProvider){
+      bank_list = {"efecty":{...efectyProvider, ui_name:efectyProvider?.provider.ui_name}, ...bank_list}
+    }
     // let city_list = res && res[0].info_needed.city;
 
 
@@ -154,7 +159,7 @@ class BankAccountFlow extends Component {
 
     const { banks, loader } = this.state;
 
-    console.log('|||||| step::', step)
+    console.log('|||||| step::', bank_name)
 
     return (
       <Fragment>

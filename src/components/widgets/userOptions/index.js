@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 let profilePic = "https://i.ibb.co/ncF7TsR/image.png";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (props) => {
   const [switchState, setSwitchState] = useState(false);
   const { logOut } = props;

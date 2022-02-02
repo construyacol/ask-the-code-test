@@ -1,2 +1,0 @@
-(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[21],{474:function(n,a,c){"use strict";c.r(a);var e=c(1);a.default=n=>Object(e.jsx)("p",{children:"Cargando Face recognition..."})}}]);
-//# sourceMappingURL=21.3acf59da.chunk.js.map

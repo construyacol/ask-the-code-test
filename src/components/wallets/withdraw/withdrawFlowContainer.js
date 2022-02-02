@@ -174,6 +174,12 @@ class WithdrawFlow extends Component {
           plaza_type = 'pp'
         }
 
+        // if(provider_type === 'efecty_network'){
+        //   // plaza_type = 
+        //   console.log('EFECTY COSTS ==> ', this.state)
+        //   debugger
+        // }
+
         let new_withdraw_account = {
           ...withdraw_account,
           cost_struct:providers_served[provider_type].provider.costs[plaza_type],
@@ -238,6 +244,8 @@ class WithdrawFlow extends Component {
   new_withdraw_order = async (state_data, limit, limit_supered) => {
     // validar que el limite maximo es permitido por el provider
 
+    // console.log('new_withdraw_order', limit, limit_supered, state_data)
+
     if (
       this.props.user.security_center.authenticator.withdraw &&
       !this.state.twoFaToken
@@ -271,6 +279,7 @@ class WithdrawFlow extends Component {
       withdraw_account: withdraw_account,
       withdraw_provider: withdraw_provider,
     });
+
     let res = await this.props.coinsendaServices.addWithdrawOrder(
       {
         data: {
@@ -509,7 +518,7 @@ class WithdrawFlow extends Component {
                 </div>
                 <WithdrawAccountList
                   currency_type="fiat"
-                  withdraw_flow={true}
+                  withdraw_flow={true} 
                   new_withdraw_order={this.new_withdraw_order}
                   new_account_method={this.new_acount}
                   back={this.volver}

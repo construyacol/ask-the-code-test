@@ -77,25 +77,6 @@ function AccountList(props) {
     });
   };
 
-  // const goToVerification = async () => {
-  //   actions.confirmationModalToggle();
-  //   actions.confirmationModalPayload(null);
-  //   // const verificationState = props.verificationState;
-  //   //
-  //   // if (verificationState === "confirmed" || verificationState === "pending") {
-  //   //   await actions.ToStep("globalStep", 2);
-  //   // }
-  //   //
-  //   // if (verificationState === "rejected") {
-  //   //   await actions.ToStep("globalStep", 0);
-  //   // }
-  //   //
-  //   // await history.push(`/security`);
-  //   // setTimeout(() => {
-  //   //   actions.toggleModal();
-  //   // }, 0);
-  // };
-
   const callToValidate = () => {
     // const message = isWalletsView
     //   ? "billeteras crypto/fiat."
@@ -196,7 +177,7 @@ const AccountsNotFound = ({ account_type }) => {
         <p id="WalletList2" className="fuente">
           {account_type === "withdraw_accounts"
             ? "Aún no tienes cuentas de retiro agregadas, crea multiples cuentas y gestiona retiros en tu moneda local."
-            : "Aún no tienes billeteras agregadas, añade y gestiona Billeteras de Bitcoin, Ethereum, etc... para que puedas hacer retiros y depositos"}
+            : "Aún no tienes billeteras agregadas, crea y gestiona Billeteras de BTC y COP para que puedas hacer depósitos, intercambios y retiros."}
         </p>
         <IconSwitch size={isMovilViewport ? 230 : 330} icon="newAccount" />
       </div>

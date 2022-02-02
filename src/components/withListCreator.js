@@ -26,9 +26,7 @@ export default function withListCreator(AsComponent) {
   return React.memo(function (props) {
     const loader = useSelector((state) => state.isLoading.loader);
     const mainListLoader = useSelector((state) => state.ui.loaders.mainList);
-    const items = useSelector((state) =>
-      specialListCreatorSelector(state.modelData, props.isWithdrawView)
-    );
+    const items = useSelector((state) => specialListCreatorSelector(state.modelData, props.isWithdrawView));
     const actions = useActions();
     const toProps = {
       verificationState: true,

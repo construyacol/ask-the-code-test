@@ -208,7 +208,7 @@ const ItemAccount = (props) => {
     handleAction: account_detail,
     set_account_state,
     shouldHaveDeleteClassName:
-      shouldHaveDeleteClassName && account_state === "deleted",
+    shouldHaveDeleteClassName && account_state === "deleted",
     delete_account: delete_account_confirmation,
     account: props.account,
     balances: props.balances,
@@ -356,8 +356,9 @@ const WithdrawAccount = (props) => {
     focusedId,
     isStatic,
   } = props;
-  const { bank_name, id, account_number, inscribed, used_counter, state } = account;
-
+  const { bank_name, id, account_number, inscribed, used_counter, state, provider_type } = account;
+  const isEfecty = provider_type === 'efecty_network'
+  console.log('Withdraw Account', account)
   return (
     <WithdrawAccountL
       id={`hoverable${focusedId}`}
@@ -383,7 +384,7 @@ const WithdrawAccount = (props) => {
       <img src={`${getCdnPath('assets')}wallet_coins/back.webp`} id="backCard" alt="" width="100%" height="100%" />
       <div className="iconBank">
         <IconSwitch
-          icon={account.bank_name && account.bank_name.value}
+          icon={(account.bank_name && account.bank_name.value)}
           size={100}
         />
       </div>
@@ -396,6 +397,11 @@ const WithdrawAccount = (props) => {
           type="new"
         />
       </h1>
+      {/* account_type */}
+      {
+        isEfecty &&
+        <p className="fuente">{account?.account_type?.ui_name}</p>
+      }
       <p className="IWText fuente2 IWLittleTitle">No. {account_number.value}</p>
       <>
         <div className="contSuscribed">

@@ -46,6 +46,7 @@ class ViewAmountComponent extends Component {
     });
 
     minAmount = wProvider?.provider?.min_amount || '50000' 
+    // minAmount = '10000' 
 
     // minAmount = new BigNumber(wProvider.provider.min_amount)
     if(!wProvider || !withdraw_account_list) return minAmount;

@@ -51,8 +51,8 @@ function FinalTicket(props) {
     return capitalizeText
   }
 
-
-
+  console.log('||||||||||||||||||||||||||||||_____________________________wAccount', wAccount)
+  const isEFecty = wAccount?.provider_type === 'efecty_network'
   return (
     <div className="finalTicket TicketDetail _wAccountSuccess">
       <>
@@ -72,13 +72,13 @@ function FinalTicket(props) {
 
           <CorpAccountContainer className="corpAccountContainer">
                 <IconContainer className="_corpAccIcon">
-                    <IconSwitch size={45} icon={wAccount?.info?.bank_name} />
+                    <IconSwitch size={45} icon={wAccount?.info?.bank_name || wAccount?.info?.label} />
                 </IconContainer>
                 <DetailAccountProv> 
-                    <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name)}</h3>
-                    <p className="fuente">{wAccount?.info?.account_type === 'cuenta_ahorro' ? 'Cuenta de ahorros' : "Cuenta corriente"}</p>
-                    <p className="fuente">Número de cuenta:</p>
-                    <p className="fuente2">{wAccount?.info?.account_number}</p>
+                    <h3 className="fuente">{parseUiName(wAccount?.info?.bank_name || wAccount?.info?.label)}</h3>
+                    <p className="fuente">{parseUiName(isEFecty ? wAccount?.info?.id_type : wAccount?.info?.account_type)}</p>
+                    <p className="fuente"> Número de { isEFecty ? 'documento:' : 'cuenta:'}</p>
+                    <p className="fuente2">{wAccount?.info?.account_number || wAccount?.info?.id_number}</p>
                 </DetailAccountProv>
             </CorpAccountContainer>
 

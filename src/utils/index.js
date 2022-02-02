@@ -354,7 +354,6 @@ export const serveBankOrCityList = (list, type) => {
     let new_list = [];
     let indices = 0;
 
-    // PRIORITY_ENTITIES
     let priorityEntities = []
 
     await Object.keys(list).forEach((indice) => {
@@ -362,6 +361,7 @@ export const serveBankOrCityList = (list, type) => {
       if (indice === "ui_name" || indice === "ui_type") {
         return false;
       }
+
 
       if(PRIORITY_ENTITIES.includes(indice)){
         let priotityItem = {
@@ -372,8 +372,8 @@ export const serveBankOrCityList = (list, type) => {
           name: list[indice].ui_name.toLowerCase(),
           selection: false,
         };
-      indices++;
-      return priorityEntities.push(priotityItem)
+        indices++;
+        return priorityEntities.push(priotityItem)
       }
 
       let new_item = {
