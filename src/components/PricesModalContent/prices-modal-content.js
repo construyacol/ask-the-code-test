@@ -5,11 +5,15 @@ import ChartComponent from "./chart";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import useCurrencyPrices from "../../hooks/useCurrencyPrices";
 import { getCdnPath } from '../../environment'
+// import { useSelector } from "react-redux";
+// import { selectWithConvertToObjectWithCustomIndex } from '../hooks/useTxState'
 
 
 const FIRST_CRITERIA = ["BTC/COP", "BTC/USD", "BTC/"];
 
 export default function PricesModalContent(props) {
+
+  // const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const [isDesktop, width, height] = useWindowDimensions();
   const [showSelect, setShowSelect] = useState(false);
   const overlayRef = useRef();
@@ -79,7 +83,7 @@ export default function PricesModalContent(props) {
             {isDesktop && <PairsSelect {...props} />}
             <CalculatorComponent currentPair={currentPair} />
           </div>
-        </div>
+        </div> 
       </div>
       {!isDesktop && (
         <PairsSelect

@@ -52,7 +52,7 @@ const MenuPrincipalLayout = (props) => {
   useEffect(() => {
     if (props.user.name) {
       const { name } = props.user;
-      let patt1 = /^.|\s./g;
+      let patt1 = /^.|\s./g; 
       let result = name.match(patt1);
       setAcronym(result.toString().replace(/,/g, " ").toUpperCase());
     }
@@ -70,7 +70,7 @@ const MenuPrincipalLayout = (props) => {
 
       <div className="userInfo">
         <div className="logo">
-          <img src={`${getCdnPath('assets')}logo.png`} alt="" width="110" height="28" />
+          <img src={`${getCdnPath('assets')}logo.svg`} width={146} height={41} alt="logo" loading="lazy"/>
           <i className="fas fa-arrow-left" onClick={close_menu_principal}></i>
         </div>
 

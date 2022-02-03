@@ -82,13 +82,14 @@ const ReferralComponent = (props) => {
 
               <PanelLeft className={`fuente ${isMovilViewport ? 'isMovil' : ''}`}>
                 <FirstText className={`${loading === true ? "skeleton" : ""}`}>
-                  <p>
-                    {/* Invita amigos con tu link de referido y gana el{" "}
-                    <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones. */}
-                    Recibe el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.
-
-                  </p>
+                  <p>Recibe el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.</p>
+                  <RefCode>
+                    <p className="ref__code_title">Código de referido:</p>
+                    <p className="refCode__p fuente2">{user?.referral?.ref_code}</p>
+                  </RefCode>
                 </FirstText>
+
+
                 <ShareContainer>
                   <ShareSection loading={loading} referralLink={referralLink} />
                   <ShowShareSectionSticky ref={setElement} />
@@ -124,6 +125,24 @@ const ReferralComponent = (props) => {
 };
 
 
+
+const RefCode = styled.div`
+  display:grid;
+  grid-template-rows:auto auto;
+  grid-template-columns:1fr;
+  
+  .ref__code_title{
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom: 0px;
+  }
+  
+  .refCode__p{
+    margin:0;
+    font-size:35px;
+  }
+
+`
 
 const ShareContainer = styled.div`
   position: relative;
@@ -193,7 +212,7 @@ const PanelLeft = styled.section`
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr;
   color: gray;
-  row-gap: 40px;
+  row-gap: 20px;
   padding: 0 90px;
   width: calc(100% - 180px);
 

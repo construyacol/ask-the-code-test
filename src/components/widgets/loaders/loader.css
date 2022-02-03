@@ -94,8 +94,10 @@
 } 
 
 .LoaderAplication.withUser{
-  --primary_deg: #014c7d;
-  --secondary_deg: #0198ff;
+  /* --primary_deg: #014c7d;
+  --secondary_deg: #0198ff; */
+  --primary_deg: #0097fd;
+  --secondary_deg: #0078ca;
 }
 
 

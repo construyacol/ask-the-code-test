@@ -48,7 +48,7 @@
         {
           "id": 3,
           "name": "kyc_advanced",
-          "label": "Avanzada",
+          "label": "Intermedia",
           "description": "Adjunta foto tipo selfie con documento y papel en mano donde se vea la fecha actual",
           "verify": false,
           "cta_primary": "Verificar",

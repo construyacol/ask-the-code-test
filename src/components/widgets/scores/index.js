@@ -65,15 +65,15 @@ class ScoresComponent extends Component {
         : 0;
 
     let message = !basic
-      ? "Completa la verificación inicial"
+      ? "Verifica tu cuenta y comienza a operar"
       : basic === "rejected" && advanced === "rejected"
       ? "Tu verificación ha sido RECHAZADA."
       : basic === "confirmed" && !advanced
-      ? "Completa la verificación avanzada"
+      ? "Completa la verificación intermedia"
       : basic === "confirmed" && advanced === "confirmed"
       ? "Estamos verificando tu identidad"
       : basic === "accepted" && advanced === "accepted"
-      ? "Eres un miembro de confianza.."
+      ? " Tu cuenta está verificada"
       : financial === "confirmed"
       ? "Estamos verificando tus datos financieros"
       : "";
