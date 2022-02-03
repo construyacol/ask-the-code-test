@@ -5,6 +5,7 @@ import IconSwitch from "../../../icons/iconSwitch";
 import { ControlButtonContainer } from "../../../shared-styles";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../../../hooks/useWindowSize";
+import { useSelector } from "react-redux";
 
 const EmptyState = ({ switchView }) => {
   const idForOpenAddressBook = useKeyActionAsClick(
@@ -16,6 +17,7 @@ const EmptyState = ({ switchView }) => {
     true
   );
   const { isMovilViewport } = useViewport();
+  const { keyActions } = useSelector((state) => state.ui);
 
   return (
     <EmptyStateContainer>
@@ -25,7 +27,7 @@ const EmptyState = ({ switchView }) => {
       <IconSwitch size={200} icon="newAccount" />
       <ControlButtonContainer bottom={50}>
         <ControlButton
-          label={`Crear nueva cuenta ${!isMovilViewport && "[A]"}`}
+          label={`Crear nueva cuenta ${(!isMovilViewport && keyActions) && "[A]"}`}
           formValidate
           handleAction={() => switchView("newAccount")}
           id={idForOpenAddressBook}

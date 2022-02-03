@@ -182,7 +182,7 @@ class BankAccountFlow extends Component {
                 active={true}
                 siguiente={siguiente}
               >
-                OK, comencemos
+                Comencemos
               </ButtonForms>
             </div>
           </div>

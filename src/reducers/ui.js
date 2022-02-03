@@ -17,6 +17,7 @@ import {
   SOCKET_NOTIFY,
   SET_RENDER_MODAL,
   UPDATE_LOADERS,
+  UPDATE_UI_REDUCER
 } from "../actions/action_types";
 
 const initialState = {
@@ -97,6 +98,7 @@ const initialState = {
     },
   },
   verification_state: null,
+  keyActions:false
 };
 
 const ui = (state = initialState, action) => {
@@ -117,7 +119,13 @@ const ui = (state = initialState, action) => {
           },
         },
       };
-
+      
+    case UPDATE_UI_REDUCER:
+      if(typeof action.payload !== 'object') return state;
+      return {
+        ...state,
+        ...action.payload
+      };
     case SET_RENDER_MODAL:
       return {
         ...state,

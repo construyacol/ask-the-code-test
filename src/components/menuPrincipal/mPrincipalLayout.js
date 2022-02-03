@@ -58,6 +58,7 @@ const MenuPrincipalLayout = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+// keyActions
 
   return (
     <section
@@ -102,12 +103,7 @@ const MenuPrincipalLayout = (props) => {
         {window.innerWidth > 768 ? (
           <section className="section1">
             {menuPrincipal.map((item) => {
-              if (
-                item.clave !== "security" &&
-                verification_state !== "accepted"
-              ) {
-                return false;
-              }
+              if (item.clave !== "security" && verification_state !== "accepted") { return false }
               return (
                 <ButtonPrincipalMenu
                   activarItem={props.activarItem}

@@ -237,7 +237,7 @@ class SubItemSC extends Component {
               ) : (
                 <Fragment>
                   <i className="SCUnverify fas fa-times"></i>
-                  {`${label === 'Inicial' ? 'Verificación inicial sin completar' : label === 'Avanzada' ? 'Verificación avanzada sin completar' : `${label} sin ${cta_primary}`}`}
+                  {`${label === 'Inicial' ? 'Verificación inicial sin completar' : label === 'Intermedia' ? 'Verificación intermedia sin completar' : `${label} sin ${cta_primary}`}`}
                 </Fragment>
               )}
             </div>

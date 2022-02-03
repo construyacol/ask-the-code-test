@@ -18,6 +18,7 @@ import {
   SOCKET_NOTIFY,
   SET_RENDER_MODAL,
   UPDATE_LOADERS,
+  UPDATE_UI_REDUCER
 } from "./action_types";
 
 export const renderModal = (payload) => {
@@ -44,6 +45,17 @@ export const verificationStateAction = (payload) => {
     payload,
   };
 };
+
+export const updateUiReducer = (payload) => {
+  // @param => payload:object
+  return {
+    type: UPDATE_UI_REDUCER,
+    payload,
+  };
+};
+
+
+
 
 export const play_video = (payload) => {
   return {

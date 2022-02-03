@@ -42,7 +42,7 @@ const KycLayout = (props) => {
           <SuccessComponentScreen
             {...props}
             title="Has completado de forma exitosa el proceso de verificación inicial"
-            cta_text="¿Quieres continuar con el proceso de verifiación avanzada?"
+            cta_text="¿Quieres continuar con el proceso de verifiación intermedia?"
             confetti={globalStep === 0 || globalStep === 1 ? true : false}
             cta_secondary={true}
             cta_primary_text="Continuar verificación"
@@ -54,7 +54,7 @@ const KycLayout = (props) => {
 
         <div className="KycLayout">
           {!identity_success && (
-            <p className="fuente KycTitle">Verificación Avanzada</p>
+            <p className="fuente KycTitle">Verificación Intermedia</p>
           )}
 
           {globalStep === 2 && <KycAdvancedContainer {...props} />}

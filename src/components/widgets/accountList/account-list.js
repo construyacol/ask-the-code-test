@@ -11,6 +11,7 @@ import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../hooks/useWindowSize";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import { useSelector } from "react-redux";
 import "../../wallets/views/wallet_views.css";
 
 
@@ -29,6 +30,7 @@ function AccountList(props) {
   }`;
   const [coinsendaService] = useCoinsendaServices();
   const [isVerified, setIsVerified] = useState(false);
+  const { keyActions } = useSelector((state) => state.ui);
   const [setCurrentSelection] = useNavigationKeyActions({
     items,
     loader: mainListLoader,
@@ -103,7 +105,7 @@ function AccountList(props) {
   let mainButtonText = isWithdrawView
     ? "Crear nueva cuenta de retiro"
     : "Crear nueva billetera";
-  mainButtonText = isDesktop ? `${mainButtonText} [A]` : mainButtonText;
+  mainButtonText = isDesktop ? `${mainButtonText} ${keyActions ? '[A]' : ''}` : mainButtonText;
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
   

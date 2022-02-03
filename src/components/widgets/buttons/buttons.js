@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 // import { Link as ScrollTo } from "react-scroll";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { useSelector } from "react-redux";
 
 import "./buttons.css";
 
@@ -117,19 +118,24 @@ export const ButtonPrincipalMenu = ({
   keyCode,
   ...props
 }) => {
+
+
+  const { keyActions } = useSelector((state) => state.ui);
+
   const elementId = useKeyActionAsClick(
     true,
     `${clave}-section-button`,
     keyCode
   );
   const isDesktop = window.innerWidth > 900;
+// keyActions
 
   const activarItem = (event) => {
     event.currentTarget.blur();
     props.activarItem(clave, clave);
   };
 
-  const buttonText = isDesktop ? `${text} [${subfix}]` : text;
+  const buttonText = isDesktop ? `${text} ${keyActions ? `[${subfix}]` : ''}` : text;
   return (
     <Link
       id={elementId}
