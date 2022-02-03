@@ -139,6 +139,13 @@ export const StandardTicket = (props) => {
     }
   };
 
+  const renderDescription = (toRender) => {
+    if(typeof toRender === 'function') {
+      const ComponentRender = toRender
+      return <ComponentRender/>
+    };
+  }
+
   return (
     <div
       id={idCloseButton}
@@ -168,10 +175,13 @@ export const StandardTicket = (props) => {
           ) : (
             svg && <IconSwitch {...atributos} />
           )}
-
-          <p className="fuente" style={{ alignSelf: "start" }}>
-            {description}
-          </p>
+          
+          {
+            typeof description === 'string' ?
+            <p className="fuente" style={{ alignSelf: "start" }}>{description}</p>
+          : 
+            renderDescription(description)
+          }
 
           <div className="CMControls">
             {txtSecondary && (

@@ -131,7 +131,7 @@ function NewItemsLayout(props) {
               })}
           </div>
         ) : (
-          <p title={name}>{name}</p>
+          <p title={name}>{(code && code?.toUpperCase()) || name}</p>
         )}
       </div>
       {placeholder && !primarySelect && (

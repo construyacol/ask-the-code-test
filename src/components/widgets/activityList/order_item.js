@@ -489,9 +489,9 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
   const deleteOrder = () => {
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
-      description: "Cancelar esta orden, ¿Estas seguro de hacer esto?",
-      txtPrimary: "Continuar",
+      title: "Esto es importante, vas a...",
+      description: "Cancelar esta orden, ¿Estás seguro de hacer esto?",
+      txtPrimary: "Sí, continuar",
       txtSecondary: "Cancelar",
       payload: id,
       action: (async() => { 

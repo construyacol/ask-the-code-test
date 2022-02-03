@@ -227,6 +227,7 @@ function SwapView(props) {
   const { boughtCurrency } = currentPair;
 
 
+  const spentCurrencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
 
 
   return (
@@ -245,7 +246,7 @@ function SwapView(props) {
         handleChange={handleChangeSpendAmount}
         handleStatus={handleStatus}
         setMaxWithActionKey={true}
-        label={`Pago con ${currentWallet?.currency?.currency?.toUpperCase()}`}
+        label={`Pago con ${spentCurrencySymbol}`}
         disabled={loader}
         autoFocus={true}
         autoComplete="off"
@@ -308,6 +309,8 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
 
 
   const boughtCurrencySymbol = currencies ? currencies[secondaryCoin]?.symbol : secondaryCoin
+
+
 
   return(
     <div

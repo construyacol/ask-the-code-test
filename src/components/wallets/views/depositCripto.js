@@ -177,7 +177,7 @@ const CriptoView = () => {
         <p className="fuente soloAd">
           Envía solo <span>{current_wallet.currency.currency}</span> a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
-          pérdida de su depósito.{" "}
+          pérdida de tu depósito.{" "}
         </p>
 
         <div className="qrContainer">

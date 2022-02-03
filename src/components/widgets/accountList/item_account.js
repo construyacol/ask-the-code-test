@@ -58,10 +58,10 @@ const ItemAccount = (props) => {
     if(props.account_type === 'wallets') return;
     actions.confirmationModalToggle();
     actions.confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
+      title: "Confirmando eliminación de cuenta",
       description:
-        "Eliminar una cuenta, una vez hecho esto, no podrás recuperar los datos asociados a esta.",
-      txtPrimary: "Eliminar",
+        "Al eliminar una cuenta de retiro no podrás recuperar los datos asociados a esta. ¿Estás seguro de hacerlo?",
+      txtPrimary: "Sí, eliminar cuenta",
       txtSecondary: "Cancelar",
       // payload:props.account.id,
       action: delete_account,

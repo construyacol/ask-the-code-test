@@ -10,13 +10,14 @@ import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
-// import { AiOutlineClose } from "react-icons/ai";
+// import { AiOutlineClose } from "react-icons/ai"; 
 import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 import { MAIN_COLOR } from "../../../../const/const";
-
+import { useSelector } from "react-redux";
+import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
 
 
 export const CriptoSupervisor = (props) => {
@@ -38,6 +39,9 @@ export const CriptoSupervisor = (props) => {
 };
 
 export const CriptoView = () => {
+
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+
   const [coinsendaServices] = useCoinsendaServices();
   const [
     {
@@ -131,12 +135,13 @@ export const CriptoView = () => {
 
     const form = new FormData(document.getElementById("withdrawForm"));
     const amount = form.get("amount");
+    const cSymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
 
     actions.confirmationModalToggle();
     window.requestAnimationFrame(() => {
       actions.confirmationModalPayload({
-        title: "Esto es importante, estas a punto de...",
-        description: `Hacer un retiro de ${amount} ${current_wallet.currency.currency}, una vez confirmado el retiro, este es irreversible, si deseas continuar la operación click en "Confirmar Retiro"`,
+        title: "Confirmación de retiro",
+        description: () => <p style={{display:'initial'}}>¿Estás seguro deseas realizar un retiro de <span style={{fontWeight:"bold"}} className="fuente2">{amount} {cSymbol}</span>?, una vez confirmado el retiro, este es irreversible </p>,
         txtPrimary: "Confirmar Retiro",
         txtSecondary: "Cancelar",
         action: finish_withdraw,
@@ -207,6 +212,7 @@ export const CriptoView = () => {
 
   // console.log('|||||||||||||||||||||||||||  addressState ===> ', addressState)
 
+  const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
 
   return (
     <WithdrawForm
@@ -223,7 +229,7 @@ export const CriptoView = () => {
         isControlled
         handleChange={handleChangeAddress}
         value={addressValue}
-        label={`Ingresa la dirección ${current_wallet.currency.currency}`}
+        label={`Ingresa la dirección ${currencySymbol}`}
         disabled={loader || tagWithdrawAccount}
         autoFocus={true}
         SuffixComponent={() => (
