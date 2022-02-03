@@ -54,43 +54,25 @@ Environment = {
 
 
 
-// if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
-//   Environment = {
-//     ApiUrl: "http://localhost:3001/api/",
-//     SocketUrl: "http://localhost:3001/",
-//     IdentityApIUrl: "http://localhost:3002/api/",
-//     CountryApIUrl: "http://localhost:3010/api/",
-//     AccountApiUrl: "http://localhost:4007/api/",
-//     DepositApiUrl: "http://localhost:4006/api/",
-//     WithdrawApiUrl: "http://localhost:4005/api/",
-//     SwapApiUrl: "http://localhost:4008/api/",
-//     CountryUrl: "http://localhost:3010/",
-//     BASE_URL:"https://bitsenda.com/",
-//     Oauth: {
-//       url: "http://127.0.0.1:3000/"
-//     }
-//   };
-// } 
-
-const localUrl = "http://192.168.0.137"
-
 if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   Environment = {
-    ApiUrl: `${localUrl}:3001/api/`,
-    SocketUrl: `${localUrl}:3001/`,
-    IdentityApIUrl: `${localUrl}:3002/api/`,
-    CountryApIUrl: `${localUrl}:3010/api/`,
-    AccountApiUrl: `${localUrl}:4007/api/`,
-    DepositApiUrl: `${localUrl}:4006/api/`,
-    WithdrawApiUrl: `https://withdraw.${getHostName()}.com/api/`,
-    SwapApiUrl: `${localUrl}:4008/api/`,
-    CountryUrl: `${localUrl}:3010/api/`,
-    BASE_URL:`${localUrl}/`,
+    ApiUrl: "http://localhost:3001/api/",
+    SocketUrl: "http://localhost:3001/",
+    IdentityApIUrl: "http://localhost:3002/api/",
+    CountryApIUrl: "http://localhost:3010/api/",
+    AccountApiUrl: "http://localhost:4007/api/",
+    DepositApiUrl: "http://localhost:4006/api/",
+    WithdrawApiUrl: "http://localhost:4005/api/",
+    SwapApiUrl: "http://localhost:4008/api/",
+    CountryUrl: "http://localhost:3010/",
+    BASE_URL:"https://bitsenda.com/",
     Oauth: {
-      url: "http://192.168.0.137:3000/"
+      url: "http://127.0.0.1:3000/"
     }
   };
 } 
+
+
 
 console.log('Environment', Environment)
 
