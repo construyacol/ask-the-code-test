@@ -52,13 +52,9 @@ const SecurityCenter = (props) => {
         {props.loader ? (
           <SimpleLoader label="Obteniendo configuraciones" />
         ) : (
-          security_center && <ItemSettingsInit data={security_center} />
+          security_center && <ItemSettingsInit user={props.user} data={security_center} />
         )}
 
-        {/* {
-          security_center &&
-          <ItemSettingsInit data={security_center} />
-        } */}
       </DetailContainerLayout>
     </Fragment>
   );

@@ -112,6 +112,10 @@
   padding-bottom: 30px;
 }
 
+.wAccountSuccess{
+  align-items: baseline;
+}
+
 .TicketmsgPayment {
   margin-top: 20px;
   text-align: center;
@@ -176,6 +180,10 @@
   border-bottom: 2px solid white;
   grid-template-rows: repeat(2, 1fr);
   justify-items: center;
+}
+
+.ticketHeader.wAccountSuccess{
+  border-bottom: none !important;
 }
 
 .TicketTitle {
@@ -272,6 +280,12 @@
   padding: 3px 5px;
   font-size: 9px !important;
 }
+
+
+.__titleCont{
+  margin-bottom: 60px;
+}
+
 
 /* - - - - - CONFIRMATIONCOUNTER- - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 

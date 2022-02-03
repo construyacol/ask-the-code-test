@@ -279,7 +279,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
         <Fragment>
           <AiOutlineUpload size={45} color="gray" />
           <UploadText className="fuente">
-            {title || "Arrastra el archivo que quieres subir"}
+            {title || "Arrastra el comprobante que quieres subir"}
           </UploadText>
           {!unButtom && (
             <Fragment>

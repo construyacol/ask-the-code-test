@@ -83,18 +83,18 @@ const SwapVIewConfirm = (props) => {
           <div className={`bottomSection ${type}`}>
             <div className="swapdescriptionText">
               <article id="Swapdescription" className="fuente">
-                Gastarás la cantidad de:{" "}
+                Pagarás&nbsp;
                 <label className="fuente2">
-                  - {spent} <span style={{textTransform:"capitalize"}}>{from}</span>
+                   {spent} <span style={{textTransform:"capitalize"}}>{from}</span>
                 </label>
-                , para adquirir la cantidad de:
+                , para recibir la cantidad apróximada de:
               </article>
 
               <article className="depositAmount swap">
                 <IconSwitch icon={to} size={35} />
                 <article id="order_amount" className="fuente2 swap">
                   {/* {formatCurrency}  */}
-                  {/* {description} */}+ {bought}
+                  {/* {description} */} {bought}
                   <span className={to}>{to}</span>
                 </article>
               </article>

@@ -205,7 +205,7 @@ export class ModalSettingsView extends Component {
               {success ? (
                 <div className="contenidoView">
                   <p id="successOperation" className="fuente">
-                    Operación Exitosa
+                    Segundo factor deshabilitado exitosamente
                   </p>
                 </div>
               ) : (

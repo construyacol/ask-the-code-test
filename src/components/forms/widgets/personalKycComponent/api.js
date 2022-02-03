@@ -78,13 +78,13 @@ const testCountryValidators = {
 
 const STAGES = {
       "id_type":{
-        uiName:"Tipo de documento:",
+        // uiName:"Tipo de documento:",
         key:"id_type",
         uiType:"text",
         "settings":{
           defaultMessage:"Elige el documento de identidad con el cual verificarás tu cuenta.",
           successPattern:/[a-zA-Z ]{3,40}/g,
-          label:"Tipo de documento:",
+          // label:"Tipo de documento:",
           placeholder:"Elije tu documento de identidad",
           selectList:{},
           queryParams:{
@@ -96,13 +96,13 @@ const STAGES = {
         }
       },
       "city":{
-        uiName:"Ciudad de residencia",
+        // uiName:"Ciudad de residencia",
         key:"city",
         uiType:"text",
         "settings":{
           defaultMessage:"Escribe la ciudad en la que resides actualmente",
           successPattern:/[a-zA-Z ]{3,40}/g,
-          label:"Ciudad de residencia:",
+          // label:"Ciudad de residencia:",
           placeholder:"Elije tu ciudad actual",
           queryParams:{
             form:'personal_residence_city'
@@ -113,13 +113,13 @@ const STAGES = {
         }
       },
       "address":{
-        uiName:"Dirección de residencia:",
+        // uiName:"Dirección de residencia:",
         key:"address",
         uiType:"text",
         "settings":{
           defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
           successPattern:/[a-zA-Z ]{3,40}/g,
-          label:"Dirección de residencia:",
+          // label:"Dirección de residencia:",
           placeholder:"Escribe la dirección",
           queryParams:{
             form:'personal_address'
@@ -130,7 +130,7 @@ const STAGES = {
         }
       },
       "surname":{
-        uiName:"Apellidos completos",
+        // uiName:"Apellidos completos",
         key:"surname",
         uiType:"text",
         "settings":{
@@ -147,13 +147,13 @@ const STAGES = {
         }
       },
       "name":{
-        uiName:"Nombres completos",
+        // uiName:"Nombres completos",
         key:"name",
         uiType:"text",
         "settings":{
           defaultMessage:"Los nombres deben coincidir con los de tu documento de identidad",
           successPattern:/[a-zA-Z ]{3,40}/g,
-          label:"Nombres completos (sin apellidos):",
+          label:"Nombres completos (Sin apellidos):",
           placeholder:"Ej: Juan josé ",
           queryParams:{
             form:'personal_names'
@@ -166,7 +166,7 @@ const STAGES = {
         }
       },
       "nationality":{
-        uiName:"Nacionalidad del documento:",
+        // uiName:"Nacionalidad del documento:",
         key:"nationality",
         uiType:"select",
         "settings":{
@@ -175,7 +175,7 @@ const STAGES = {
           errors:[
             { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
           ],
-          label:"Nacionalidad del documento:",
+          // label:"Nacionalidad del documento:",
           placeholder:"Ej: pasaporte",
           queryParams:{
             form:'personal_country'
@@ -188,13 +188,13 @@ const STAGES = {
         uiType:"select",
         selectList:{},
         "settings":{
-          defaultMessage:"Elige el país desde el que operarás tu cuenta",
+          defaultMessage:"Elige el país de residencia actual",
           successPattern:/[a-zA-Z _]{1,40}/g,
           errors:[
             { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
           ],
-          label:"País de operación:",
-          placeholder:"Ej: Juan josé ",
+          label:"País",
+          placeholder:"",
           queryParams:{
             form:'personal_country'
           },
@@ -203,7 +203,7 @@ const STAGES = {
         }
       },
       "birthday":{
-        uiName:"Fecha de nacimiento",
+        // uiName:"Fecha de nacimiento",
         key:"birthday",
         uiType:"date",
         "settings":{
@@ -222,7 +222,7 @@ const STAGES = {
         }
       },
       "id_number":{
-        uiName:"Número de documento",
+        // uiName:"Número de documento",
         key:"id_number",
         uiType:"text",
         "settings":{
@@ -231,7 +231,7 @@ const STAGES = {
            pasaporte:/[0-9A-Z]{5,15}/g,
            others:/[0-9]{5,15}/g
           },
-          label:"Número de documento",
+          // label:"Número de documento",
           placeholder:"Dígita el número del documento que elegíste",
           queryParams:{
             form:'personal_number_id'
@@ -248,13 +248,13 @@ const STAGES = {
         }
       },
       "phone":{
-        uiName:"Número de celular",
+        uiName:"Número de teléfono",
         key:"phone",
         uiType:"text",
         "settings":{
           defaultMessage:"Digíta tu número de celular",
           successPattern:/[0-9]{5,40}/g,
-          label:"Número de celular:",
+          // label:"Número de celular:",
           queryParams:{
             form:'personal_phone'
           },
@@ -293,13 +293,12 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
   setLoading(true)
   let res = await mainService.updateLevelProfile(config);
-  // res = true
-  // let res = true
+  setLoading(false)
+  
   if(!res) {
     toastMessage('No ha sido posible completar la verificación.', 'error')
-    prevStage();
+    return prevStage();
   }
-  setLoading(false)
 
   const { user } = mainService.globalState.modelData
   const { data:{ personal } } = res;
@@ -328,19 +327,19 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
 
 export const PERSONAL_DEFAULT_STATE = {
-  // personal:{
-  //   address: "cra 45 - 88",
-  //   birthday: "1992-11-18",
-  //   city: "cali",
-  //   country: "colombia",
-  //   id_number: "1116256754",
-  //   id_type: "cedula_ciudadania",
-  //   name: "Andres felipe",
-  //   nationality: "colombia",
-  //   phone: "57 3145698999",
-  //   meta_phone: "colombia",
-  //   surname: "Garcia garcia"
-  // }
+  personal:{ 
+    meta_phone: "colombia"
+    // address: "cra 45 - 88",
+    // birthday: "1992-11-18",
+    // city: "cali",
+    // country: "colombia",
+    // id_number: "1116256754",
+    // id_type: "cedula_ciudadania",
+    // name: "Andres felipe",
+    // nationality: "colombia",
+    // phone: "57 3145698999",
+    // surname: "Garcia garcia"
+  }
 }
 
   

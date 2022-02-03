@@ -11,6 +11,7 @@ import "./account_item.css";
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 function AccountItemList(props) {
+
   const [amountCharge] = useState(0);
   const [preferencialAcc, setPreferencialAcc] = useState(null);
 
@@ -42,13 +43,14 @@ function AccountItemList(props) {
     let state_data = {
       withdraw_provider: account.withdraw_provider,
       withdraw_account: account.id,
+      orders:account?.orders
     };
 
     props.new_withdraw_order(state_data, limit, limit_supered);
   };
 
-  const showRequireActionMessage = () => {
-    return mensaje("Fondos insuficientes", "error");
+  const showRequireActionMessage = (amountValidation) => {
+    return mensaje(`${amountValidation === 'amount_exceeds_limits' ? 'Límite de retiro superado' : 'Fondos insuficientes'}`, "error");
   };
 
   const { account, addElement, action, amount } = props;
@@ -83,31 +85,32 @@ function AccountItemList(props) {
 
   let withdraw_amount = parseFloat(amount);
   let withdraw_min_amount;
+  let withdraw_max_amount = parseFloat(account?.provider_max_amount);
+
 
   if (account && account.cost && account.provider_min_amount) {
-    withdraw_min_amount =
-      parseFloat(account.cost) + parseFloat(account.provider_min_amount);
+    withdraw_min_amount = parseFloat(account.cost) + parseFloat(account.provider_min_amount);
   }
 
-  let need_more_amount =
-    withdraw_amount < withdraw_min_amount
-      ? "need_more"
-      : withdraw_amount >= withdraw_min_amount && "satisfy";
+  let need_more_amount = withdraw_amount < withdraw_min_amount ? "need_more" : 
+                         withdraw_amount > withdraw_max_amount ? "amount_exceeds_limits" : "satisfy";
+
+  let classNameStyle = ["need_more", "amount_exceeds_limits"].includes(need_more_amount) ? 'need_more' : need_more_amount
 
   return (
     <div
       onClick={
-        need_more_amount === "need_more"
-          ? showRequireActionMessage
+        ["need_more", "amount_exceeds_limits"].includes(need_more_amount)
+          ? () => showRequireActionMessage(need_more_amount)
           : handleClick
       }
       className={`AccountItemList ${
         isSelected && "item-selected"
       } ${preferential_account} ${
         addElement ? "addElement" : "noAddElement"
-      } ${need_more_amount}`}
+      } ${classNameStyle}`}
     >
-      <div className={`backgroundAccount ${need_more_amount}`}>
+      <div className={`backgroundAccount ${classNameStyle}`}>
         <InputKeyActionHandler
           aria-label="itemFromList"
           name="itemFromList"
@@ -117,7 +120,7 @@ function AccountItemList(props) {
       </div>
 
       <div
-        className={`limitComp ${need_more_amount}`}
+        className={`limitComp ${classNameStyle}`}
         style={{ display: addElement ? "none" : "block" }}
       >
         <LimitTermometer
@@ -132,10 +135,10 @@ function AccountItemList(props) {
         <div
           className={`logoAIL ${
             addElement ? "addElement" : "noAddElement"
-          } ${need_more_amount}`}
+          } ${classNameStyle}`}
         >
           <div
-            className={`backLogoAil ${currency_type} ${need_more_amount}`}
+            className={`backLogoAil ${currency_type} ${classNameStyle}`}
           ></div>
           <IconSwitch {...atributos} />
         </div>
@@ -145,7 +148,7 @@ function AccountItemList(props) {
         <>
           <div className="infoAIL">
             <div
-              className={`infoAILItem ${preferential_account} ${need_more_amount}`}
+              className={`infoAILItem ${preferential_account} ${classNameStyle}`}
             >
               {preferential_account && (
                 <IconSwitch
@@ -155,12 +158,12 @@ function AccountItemList(props) {
                 />
               )}
               <p
-                className={`infoAILItem name ${preferential_account} ${need_more_amount}`}
+                className={`infoAILItem name ${preferential_account} ${classNameStyle}`}
               >
                 {account.bank_name.ui_name}
                 {account.cost ? (
-                  <span className={`costStyle fuente2  ${need_more_amount}`}>
-                    | ~${number_format(account.cost)}
+                  <span className={`costStyle fuente2  ${classNameStyle}`}>
+                    | ${number_format(account.cost)}
                   </span>
                 ) : (
                   ""
@@ -168,31 +171,38 @@ function AccountItemList(props) {
               </p>
             </div>
 
-            <p className={`infoAILItem account_type ${need_more_amount}`}>
-              {need_more_amount === "need_more"
-                ? "Fondos insuficientes"
-                : account.account_type.ui_name}
+            <p className={`infoAILItem account_type ${classNameStyle}`}>
+              {
+                need_more_amount === "need_more"
+                ? "Fondos insuficientes" : 
+                need_more_amount === 'amount_exceeds_limits' 
+                ? "Los fondos exceden el límite de retiro"
+                : account.account_type.ui_name
+                }
             </p>
 
             <div className="AILAnumber">
               <IconSwitch icon="root" size={16} color="#5999f1" />
               <span
-                className={`infoAILItem account_number fuente2 ${need_more_amount}`}
+                className={`infoAILItem account_number fuente2 ${classNameStyle}`}
               >
-                {need_more_amount === "need_more"
-                  ? `Cantidad minima: $${number_format(withdraw_min_amount)}`
+                {
+                  need_more_amount === "need_more"
+                  ? `Cantidad minima de retiro: $${number_format(withdraw_min_amount)}` :
+                  need_more_amount === "amount_exceeds_limits"
+                  ? `Cantidad máxima de retiro: $${number_format(withdraw_max_amount)}`
                   : `No.: ${account.account_number.value}`}
               </span>
             </div>
           </div>
 
-          <div className={`optionsALI ${preferencialAcc} ${need_more_amount}`}>
+          <div className={`optionsALI ${preferencialAcc} ${classNameStyle}`}>
             {/* <p style={{color:account.inscribed ? 'green' : 'red'}}>{account.inscribed ? 'Inscrita' : 'NoInscrita'}</p> */}
             {/* <p style={{color:account.visible ? 'green' : 'red'}}>{account.visible ? 'Visible' : 'InVisible'}</p> */}
             {/* <p>{account.limit ? 'Limite Alcanzado' : 'soportado'} {account.provider_max_amount}</p> */}
 
             <div className="controlDespegable">
-              <div className={`forroDesp ${need_more_amount}`}>
+              <div className={`forroDesp ${classNameStyle}`}>
                 <div className="contDesp">
                   <IconSwitch
                     icon="arrow_right"
@@ -207,7 +217,7 @@ function AccountItemList(props) {
                 <ActiveItem
                   Anim2={true}
                   color={`${
-                    need_more_amount === "need_more" ? "red" : "green"
+                    classNameStyle === "need_more" ? "red" : "green"
                   }`}
                 />
               </div>
@@ -216,7 +226,7 @@ function AccountItemList(props) {
         </>
       ) : (
         <>
-          <p className="AILadd fuente">Añadir nueva cuenta de retiro</p>
+          <p className="AILadd fuente">Añade una nueva cuenta de retiro</p>
           <div className="poisonEve">
             <IconSwitch icon="withdraw2" size={60} color="gray" />
           </div>

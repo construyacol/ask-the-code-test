@@ -101,6 +101,8 @@ class WithdrawAccountForm extends Component {
     // simulación Endpoint Crear wallet
     const { withdraw_accounts } = this.props
     this.props.action.isAppLoading(true);
+    let res
+    let payload = this.state
 
     if(withdraw_accounts){
       // validate if withdraw account already exist 
@@ -112,13 +114,30 @@ class WithdrawAccountForm extends Component {
       }
     }
 
-    let res = await this.props.coinsendaServices.addNewWithdrawAccount(
-      this.state
-    );
+    if(this.state.bank_name === 'efecty'){
+      const { user } = this.props
+      payload = {
+        ...payload,
+        info_needed:{
+          id_number:user?.id_number,
+          id_type:user?.id_type,
+          name:user?.name,
+          surname:user?.surname,
+          phone:user?.phone,
+          label:"Efecty"
+        },
+        provider_type:"efecty_network"
+      }
+    }
+
+    res = await this.props.coinsendaServices.addNewWithdrawAccount(payload);
+
     if (!res) {
       this.props.action.ReduceStep(this.props.current, 2);
       this.props.toastMessage("No es posible crear la cuenta ahora.", "error");
-      return this.props.action.isAppLoading(false);
+      this.props.action.isAppLoading(false);
+      this.cleanSearch()
+      return 
     }
 
     await this.props.coinsendaServices.fetchWithdrawAccounts();
@@ -204,7 +223,12 @@ class WithdrawAccountForm extends Component {
   siguiente = async () => {
     // this.props.action.UpdateFormControl('bank',false)
     // this.update_form(this.state)
-
+    if(this.state.bank_name === 'efecty'){
+      this.props.action.IncreaseStep(this.props.current);
+      this.props.action.IncreaseStep(this.props.current);
+      this.props.action.IncreaseStep(this.props.current);
+      return this.crearCuenta();
+    }
     if (this.props.step === 1) {
       await this.cleanSearch();
     }
@@ -313,6 +337,7 @@ class WithdrawAccountForm extends Component {
         final_step_create_account={this.final_step_create_account}
         eventName={eventName}
         {...this.state}
+        {...this.props}
       />
     );
   }

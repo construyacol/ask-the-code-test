@@ -27,7 +27,7 @@ export class WithdrawService extends WebService {
       appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO)
     );
     const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter=${query}`;
-
+      
     const result = await this.Get(finalUrl);
 
     if (!result.length) {
@@ -48,30 +48,57 @@ export class WithdrawService extends WebService {
 
 
     const providersServed = await this.withdrawProvidersByType;
-
+    
+  
 
     const withdrawAccounts = await result.map((account) => {
-      const aux = providersServed[account.provider_type];
-
-
+    const aux = providersServed[account.provider_type];
+    let providerData = {}
 
       if (aux.currency_type === "fiat") {
+
+        if(aux.provider_type === 'bank'){
+          providerData = {
+            account_number:{
+              ui_name:aux.info_needed?.account_number?.ui_name,
+              value:account.info.account_number
+            },
+            account_type:{
+              ui_name:aux.info_needed?.account_type[account.info.account_type]?.ui_name,
+              value:account.info.account_type
+            },
+            bank_name:{
+              ui_name:aux.info_needed.bank_name[account.info.bank_name].ui_name,
+              value:account.info.bank_name
+            }
+          }
+
+        }else if(aux.provider_type === 'efecty_network'){
+          providerData = {
+            account_number:{
+              ui_name:aux.info_needed?.id_number?.ui_name,
+              value:account.info.id_number
+            },
+            account_type:{
+              ui_name:account.info.id_type === 'cedula_ciudadania' ? 'Cédula de ciudadanía' : account.info.id_type,
+              value:account.info.id_type
+            },
+            bank_name:{
+              ui_name:aux.provider.ui_name,
+              value:aux?.name
+            }
+          }
+        }
+
+        // if(['efecty_network'].includes(aux.provider_type)){
+        //   console.log('aux', aux)
+        //   console.log('providerData', providerData)
+        // }
+
+
         return {
           id: account.id,
-          account_number: {
-            ui_name: aux.info_needed.account_number.ui_name,
-            value: account.info.account_number,
-          },
-          account_type: {
-            ui_name:
-              aux.info_needed.account_type[account.info.account_type].ui_name,
-            value: account.info.account_type,
-          },
-          bank_name: {
-            ui_name: aux.info_needed.bank_name[account.info.bank_name].ui_name,
-            value: account.info.bank_name,
-          },
-          provider_name: account.info.bank_name,
+          provider_name: account.info.bank_name || aux?.name,
           used_counter: account.used_counter,
           email: account.info.email,
           id_number: account.info.id_number,
@@ -84,6 +111,7 @@ export class WithdrawService extends WebService {
           provider_min_amount: aux.provider.min_amount,
           currency_type: aux && aux.currency_type,
           withdraw_provider: aux.id,
+          ...providerData,
           ...account,
         };
       } else {
@@ -213,7 +241,7 @@ export class WithdrawService extends WebService {
       currency,
     } = payload;
 
-    const body =
+    let body =
       type === "cripto"
         ? {
             data: {
@@ -246,7 +274,12 @@ export class WithdrawService extends WebService {
               provider_type
             } 
           };
-
+    
+    if(payload.bank_name === 'efecty'){
+      body.data.info_needed = payload.info_needed
+    }
+    // console.log('||||||||  payload ===> ', payload)
+    // console.log('||||||||  body ===> ', body)
 
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,

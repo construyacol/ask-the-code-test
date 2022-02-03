@@ -6,12 +6,15 @@ import IconSwitch from "../../widgets/icons/iconSwitch";
 import ControlButton from "../../widgets/buttons/controlButton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useActions } from '../../../hooks/useActions'
+import { useSelector } from "react-redux";
 
 
 
 const DepositFiat = (props) => {
   const movil_viewport = window.innerWidth < 768;
   const [ loader, setLoader ] = useState(false)
+  const { localCurrency } = useSelector((state) => state?.modelData?.pairs);
+
   const idForMainButton = useKeyActionAsClick(
     true,
     "main-button-deposit",
@@ -70,7 +73,7 @@ const DepositFiat = (props) => {
           </p>
         ) : (
           <p className="fuente">
-            Realiza y gestiona depósitos en tu moneda local.
+            Deposita {localCurrency?.toUpperCase()} y cambialo por Bitcoin
           </p>
         )}
       </div>
@@ -80,7 +83,7 @@ const DepositFiat = (props) => {
         handleAction={fiat_deposit}
         loader={loader || !deposit_providers}
         formValidate
-        label="Realizar un deposito"
+        label="Realizar un depósito"
       />
     </DepositForm>
   );

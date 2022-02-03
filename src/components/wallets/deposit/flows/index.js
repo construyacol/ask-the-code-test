@@ -130,8 +130,7 @@ export const Success = (props) => {
     depositProvData
   } = props;
 
-  // console.log('|||||||||||||| °°°°° new_ticket', new_ticket)
-// debugger
+  // console.log('|||||||||||||| °°°°° depositProvData', depositProvData)
 
   return (
     <div
@@ -172,7 +171,7 @@ export const Success = (props) => {
                   </g>
                 </svg>
               </div>
-              <p className="titleWhite fuente"> Operación Exitosa</p>
+              <p className="titleWhite fuente">Depósito creado exitosamente</p>
             </div>
 
             <div className="asaras">
@@ -183,12 +182,9 @@ export const Success = (props) => {
                 } nWbody2 Fbody2 FlowCont fuente DLmessage`}
               >
                 <div className="FolowTexts">
-                  <p className="fuente Fimportant">¡IMPORTANTE!</p>
+                  <p className="fuente Fimportant">IMPORTANTE!</p>
                   <p className="Ftexto fuente ">
-                    Una vez realizado el depósito bancario debes confirmar la
-                    transacción con una fotografía del{" "}
-                    <strong> DESPRENDIBLE DE PAGO </strong>y adjuntarlas en la
-                    orden de pago
+                    Una vez realizada la consignación, debes confirmar el depósito subiendo una fotografía del <strong> COMPROBANTE DE PAGO </strong>
                   </p>
                   <img className="tocatoca" src={`${getCdnPath('assets')}proof.png`} alt="" width="34%" />
                 </div>
@@ -197,8 +193,20 @@ export const Success = (props) => {
               <div className={`bodyTcket nWbody2 Fbody2 eya fuente ${final ? "desaparece1" : ""}`}>
 
                 {
-                  depositProvData &&
-                  <BankDataContainer depositProvData={depositProvData} />
+                  depositProvData && 
+                  <BankDataContainer accountData={{
+                      title:"Datos para hacer el depósito",
+                      bankUiName:depositProvData?.name,
+                      accountType:depositProvData?.account?.type?.type,
+                      accountIdUiName:depositProvData?.account?.account_id?.ui_name,
+                      accountId:depositProvData?.account?.account_id?.account_id,
+                      bussinesNameUiName:depositProvData?.account?.bussines_name?.ui_name,
+                      bussinesName:depositProvData?.account?.bussines_name?.bussines_name,
+                      nitUiName:depositProvData?.account?.nit?.ui_name,
+                      nit:depositProvData?.account?.nit?.nit,
+                      dvUiName:depositProvData?.account?.dv?.ui_name,
+                      dv:depositProvData?.account?.dv?.dv
+                  }} />
                 }
 
                 {new_ticket && (

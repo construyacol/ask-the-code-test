@@ -11,7 +11,6 @@ import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
-// import useValidateTokenExp from './hooks/useValidateTokenExp'
 import FreshChat from '../services/FreshChat' 
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
@@ -41,7 +40,6 @@ function RootContainer(props) {
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
-  // useValidateTokenExp()
 
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);

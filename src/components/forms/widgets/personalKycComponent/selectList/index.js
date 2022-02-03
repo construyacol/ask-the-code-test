@@ -24,7 +24,9 @@ const SelectList = ({ list, name, state, handleAction }) => {
       setCurrentItemTagExist(null)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state])
+  }, [state, name])
+
+
 
   useEffect(() => {
     if(list){
@@ -36,8 +38,6 @@ const SelectList = ({ list, name, state, handleAction }) => {
 
   let isMovilHeight = document.body.clientWidth < 768 ? `25vh` : `0px`
   
-  // console.log('currentItemTagExist', state[name], Object.keys(searchList).length)
-
 
   return(
     <SelectListMain
@@ -67,12 +67,12 @@ export default SelectList
 
 
 const filterElement = (list, query) => {
-    let result = {}
-    Object.keys(list).filter(itemList => {
-      if(itemList.includes(query?.toLowerCase())){
-        return result = { ...result, [itemList]:list[itemList] }
-      }
-      return itemList
-    })
+  let result = {}
+  Object.keys(list).filter(itemList => {
+    if(itemList.includes(query?.toLowerCase())){
+      return result = { ...result, [itemList]:list[itemList] }
+    }
+    return itemList
+  })
     return Object.keys(result).length ? result : list
 }

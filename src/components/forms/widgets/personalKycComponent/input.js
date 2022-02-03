@@ -39,8 +39,8 @@ const InputComponent = props => {
       const inputTarget = name.includes('meta') ? '.prefixInputContainer' : '.inputContainer__'
       const _inputContainer =  document.querySelector(inputTarget)
       _inputContainer?.addEventListener("click", removeItem)
-      return () => _inputContainer.removeEventListener("click", removeItem)
-    }
+      return () => _inputContainer?.removeEventListener("click", removeItem)
+    } 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, name])
   

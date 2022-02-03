@@ -57,12 +57,6 @@
   font-display: swap;
 }
 
-:root {
-  --primary_deg: #ffffff;
-  --secondary_deg: #ffffff;
-  --primary: #0198ff;
-}
-
 .LoaderAplication {
   transition: --primary_deg 0.2s, --secondary_deg 0.2s;
   width: 100vw;

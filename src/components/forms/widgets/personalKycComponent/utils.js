@@ -3,10 +3,10 @@ import {
 } from './const'
 
 export const removeItemTag = (e, itemKey, callback) => {
+
     if(!e?.target?.className?.includes){return}
     if(e.target?.className?.includes("selectedItemTag__closeButton")){
       e.stopPropagation()
-      // console.log('removeItemTag', itemKey, document.querySelector("#selectedItemTag").remove())
       if(itemKey){
         document.querySelector(`[name="${itemKey}"]`).value = ""
         document.querySelector(`[name="${itemKey}"]`).focus()

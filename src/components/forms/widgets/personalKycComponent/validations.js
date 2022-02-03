@@ -51,8 +51,8 @@ const meta_phone = (value, data) => {
   let result = Object.keys(data?.selectList).filter(countryItem => countryItem.includes(value.toLowerCase()))
   // If it meets the pattern and matches 1 result from the entire list, the search was successful
   let status = (_value.match(data.settings.successPattern) && result.length === 1) && 'success';
-  if(result.length === 1){
-    _value = result[0]
+  if(result.length === 1 && value){
+    _value = result && result[0]
     addItemTag(data.key, data?.selectList[result[0]]?.uiName, ".prefixInputContainer")
   }
   // console.log('||||||||||| metadata phone ==> ', value, data)
@@ -66,14 +66,12 @@ const selectListValidator = (value, data) => {
   let _value = value.replace(/[^a-zA-Z _]/g, '')
   // Find and match the value with  select list key value
   let result = Object.keys(data?.selectList).filter(itemList => itemList.includes(value.toLowerCase()))
-  console.log('|||||||||||||  VALIDATOR result ', result)
+  // console.log('|||||||||||||  VALIDATOR result ', result)
   // If it meets the pattern and matches 1 result from the entire list, the search was successful
   let status = (_value.match(data?.settings?.successPattern) && result.length === 1) && 'success';
-  if(result.length === 1 && value){
-    _value = result[0]
+  if(result?.length === 1 && value){
+    _value = result && result[0]
     addItemTag(data.key, data?.selectList[result[0]]?.uiName)
-    // console.log('|||||||||||||||| country validation ==> ', _value)
-    // console.log('||||| addItemTag ==> ', data.key, document.querySelector(`.selectedItemTag._${data.key}`))
   }
   return [ _value, status ]
 } 

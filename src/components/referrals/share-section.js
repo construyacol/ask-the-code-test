@@ -65,10 +65,10 @@ const ShareSection = ({ referralLink, loading }) => {
           <p>Compartir en:</p>
           <Divider height="65%" />
           <ShareButtons loading={loading ? "true" : ""}>
-            <IconBox onClick={shareOnFacebook}>
+            <IconBox className="socialReferralIcon_" onClick={shareOnFacebook}>
               <i className="fab fa-facebook-square" />
             </IconBox>
-            <IconBox onClick={shareOnTwitter}>
+            <IconBox className="socialReferralIcon_" onClick={shareOnTwitter}>
               <i className="fab fa-twitter" />
             </IconBox>
           </ShareButtons>
@@ -223,11 +223,13 @@ const IconBox = styled(ReferralBox)`
   width: 44px;
   justify-content: center;
   border-radius: 10px;
-  transition: all 500ms ease;
+  transition: all 300ms ease;
+  border: 0.5px solid ${MAIN_COLOR};
+  color: ${MAIN_COLOR};
+  cursor: pointer;
   &:hover {
-    cursor: pointer;
-    color: ${MAIN_COLOR};
-    border: 0.5px solid ${MAIN_COLOR};
+    color: white;
+    background:${MAIN_COLOR};
   }
   @media ${device.laptopL} {
     height: 40px;

@@ -85,7 +85,7 @@ const ReferralComponent = (props) => {
                   <p>
                     {/* Invita amigos con tu link de referido y gana el{" "}
                     <strong className="fuente2">0.5%</strong> de comisión sobre todas sus operaciones. */}
-                    Gána el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.
+                    Recibe el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.
 
                   </p>
                 </FirstText>

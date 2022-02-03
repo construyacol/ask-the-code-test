@@ -2,7 +2,6 @@ import styled, { keyframes } from "styled-components";
 
 
 
-
 export const showButton = keyframes`
     0% {
       filter: grayscale(1) blur(1px);
@@ -25,12 +24,13 @@ export const showButton = keyframes`
 
 export const Button = styled.button`
   background: #0198ff;
+  font-size: 17px;
+  font-weight: bold;
   width:270px;
   height:60px;
-  border-radius:4px;
+  border-radius:5px;
   border: none;
   color: white;
-  font-size: 16px;
   cursor:pointer;
   position:absolute;
   bottom:40px;
@@ -130,10 +130,11 @@ export const Container = styled.div`
     transform: translateY(50px);
     opacity:0;
 
-    h1{
-        color: #0198ff;
-        font-size: 45px;
+    h1, h2{
+        color: #50667a;
+        font-size: 30px;
         margin: 0;
+        font-weight:300;
     }
     span{
         font-size:45px;

@@ -174,6 +174,12 @@ class WithdrawFlow extends Component {
           plaza_type = 'pp'
         }
 
+        // if(provider_type === 'efecty_network'){
+        //   // plaza_type = 
+        //   console.log('EFECTY COSTS ==> ', this.state)
+        //   debugger
+        // }
+
         let new_withdraw_account = {
           ...withdraw_account,
           cost_struct:providers_served[provider_type].provider.costs[plaza_type],
@@ -238,6 +244,8 @@ class WithdrawFlow extends Component {
   new_withdraw_order = async (state_data, limit, limit_supered) => {
     // validar que el limite maximo es permitido por el provider
 
+    // console.log('new_withdraw_order', limit, limit_supered, state_data)
+
     if (
       this.props.user.security_center.authenticator.withdraw &&
       !this.state.twoFaToken
@@ -271,6 +279,7 @@ class WithdrawFlow extends Component {
       withdraw_account: withdraw_account,
       withdraw_provider: withdraw_provider,
     });
+
     let res = await this.props.coinsendaServices.addWithdrawOrder(
       {
         data: {
@@ -459,7 +468,7 @@ class WithdrawFlow extends Component {
   };
 
   render() {
-    const { currency, available, step, idAccept } = this.props;
+    const { currency, available, step, idAccept, withdraw_order:{withdraw_account} } = this.props;
 
     // console.log('|||||||||||||| show_list_accounts: ', this.state.show_list_accounts)
     // console.log('|||||||||||||| withdrawProviders: ', this.props.withdrawProviders)
@@ -478,7 +487,6 @@ class WithdrawFlow extends Component {
       withdraw_account_list_update,
     } = this.state;
 
-    console.log('|||||||||||||||||||| show_list_accounts   ======>  ', show_list_accounts, withdrawProviders)
 
     return (
       <section className="WFC DepositLayout">
@@ -506,12 +514,11 @@ class WithdrawFlow extends Component {
                 </ButtonModalBack>
 
                 <div className="DLcontain">
-                  <p className="fuente DLtitle2">Elige la cuenta </p>
-                  <p className="fuente DLstitle">que recibirá los fondos:</p>
+                  <p className="fuente DLtitle2">Elige la cuenta donde recibirás tu retiro</p>
                 </div>
                 <WithdrawAccountList
                   currency_type="fiat"
-                  withdraw_flow={true}
+                  withdraw_flow={true} 
                   new_withdraw_order={this.new_withdraw_order}
                   new_account_method={this.new_acount}
                   back={this.volver}
@@ -541,10 +548,12 @@ class WithdrawFlow extends Component {
                   label={ticket_label_loader}
                   color={color_loader}
                 />
-              ) : (
-                <FinalTicket
+              ) : ( 
+                <FinalTicket 
                   finishAction={this.confirmar}
-                  ticket={ticket}
+                  wAccount={withdraw_account}
+                  order={ticket}
+                  title={"Retiro creado exitosamente"}
                   cta_primary_label="Confirmar"
                   cta_secondary={true}
                   cta_secondary_label="Cancelar"

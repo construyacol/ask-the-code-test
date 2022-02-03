@@ -106,7 +106,7 @@ export class FreshChatService extends WebService {
   tryLoad(resolve) {
     let intervalLoad = setInterval(() => {
       console.log("No Cargado");
-      if (window.fcWidget.isLoaded() === true) {
+      if (window.fcWidget?.isLoaded() === true) {
         clearInterval(intervalLoad);
         console.log("_________ load success");
         return resolve(true);

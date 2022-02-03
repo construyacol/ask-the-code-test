@@ -115,7 +115,7 @@ const ReferralInfo = () => {
       },
       "withdraws":{
         "fiat":{
-            "title":"Info cuenta de retiro",
+            "title":"Información cuenta de retiro",
             "component":WithdrawFiatInfo
         }
       },

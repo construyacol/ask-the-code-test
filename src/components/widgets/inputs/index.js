@@ -342,7 +342,7 @@ export const InputFormCoin = (props) => {
 
 export class InputDepositForm extends Component {
   state = {
-    placeHolder: (window.innerWidth > 768 && this.props.classNames !== 'without-adapt') ? "Escribe la cantidad" : "Cantidad",
+    placeHolder: (window.innerWidth > 768 && this.props.classNames !== 'without-adapt') ? "0" : "0",
     finalValue: "",
   };
 
@@ -369,7 +369,7 @@ export class InputDepositForm extends Component {
   }
 
   render() {
-    const { actualizar, handleKeyPress, value, name, autoFocus, classNames } = this.props;
+    const { actualizar, handleKeyPress, value, name, autoFocus, classNames, minAmountLabel } = this.props;
     const { finalValue } = this.state;
     const style = {
       fontSize:
@@ -377,6 +377,8 @@ export class InputDepositForm extends Component {
         : finalValue.length < 12 ? "40px"
         : "30px"
     };
+
+    console.log('finalValue ==> ', value)
 
     return (
       <div className={`containerInputComponent with-adapt ${classNames || ''}`}>
@@ -391,6 +393,10 @@ export class InputDepositForm extends Component {
           value={value ? `$ ${finalValue}` : ""}
           onKeyPress={handleKeyPress}
         />
+        {
+          (minAmountLabel && value) &&
+          <p className="__minAmountLabel fuente2">{minAmountLabel}</p>
+        }
       </div>
     );
   }

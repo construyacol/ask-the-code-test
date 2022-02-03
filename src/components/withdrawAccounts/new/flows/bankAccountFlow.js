@@ -36,7 +36,7 @@ class BankAccountFlow extends Component {
     banks: null,
     cities: null,
     loader: false,
-  };
+  }; 
 
   componentDidMount() {
     this.initComponent();
@@ -50,7 +50,7 @@ class BankAccountFlow extends Component {
 
   initComponent = async () => {
 
-    const { withdraw_providers_list } = this.props;
+    const { withdraw_providers_list, withdrawProviders } = this.props;
 
     this.setState({ loader: true });
 
@@ -61,13 +61,19 @@ class BankAccountFlow extends Component {
       // return doLogout('?message=Vuelve a iniciar session');
     }
 
-    let bank_list = res && res[0].info_needed.bank_name;
+    const efectyProvider = withdrawProviders?.find(wP => wP?.name === 'efecty');
+    let bank_list = res && {...res[0].info_needed.bank_name};
+
+    if(efectyProvider){
+      bank_list = {"efecty":{...efectyProvider, ui_name:efectyProvider?.provider.ui_name}, ...bank_list}
+    }
     // let city_list = res && res[0].info_needed.city;
 
 
     let serve_bank_list = await serveBankOrCityList(bank_list, "bank");
     // let serve_city_list = await serveBankOrCityList(city_list, "city");
-    console.log('============================================================== serve_bank_list', serve_bank_list)
+    // console.log('============================================================== serve_bank_list', serve_bank_list)
+
     let id_types_object = await addIndexToRootObject(
       res && res[0].info_needed.id_type
     );
@@ -142,7 +148,6 @@ class BankAccountFlow extends Component {
       bank_name,
       step,
       search,
-      name,
       actualizarEstado,
       // city,
       final_step_create_account,
@@ -154,7 +159,7 @@ class BankAccountFlow extends Component {
 
     const { banks, loader } = this.state;
 
-    console.log('|||||| step::', step)
+    console.log('|||||| step::', bank_name)
 
     return (
       <Fragment>
@@ -162,20 +167,12 @@ class BankAccountFlow extends Component {
           <div className="nBstep1 fuente">
             <div className="titleNewAccount">
               <img src={`${getCdnPath('assets')}bank.png`} alt="" height="70" />
-              <p>
-                Genial <strong>{name}</strong>
+              <p style={{ fontWeight:'bold' }}>
+                Crea una cuenta de retiro
               </p>
             </div>
             <p className="nBtextInit fuente">
-              {" "}
-              Al añadir una cuenta bancaria para realizar tus retiros de moneda local por primera vez, el tiempo promedio que tarda para inscribirse son 2 horas hábiles a partir del momento en que se realizó el proceso. Tener tu cuenta inscrita previamente puede hacer que tus retiros en moneda local se ejecuten más rápido.
-
-              {/* Al añadir una cuenta bancaria para realizar tus retiros de pesos
-              colombianos <strong>(COP)</strong> por primera vez, tarda en
-              promedio <strong>2 horas habiles</strong> a partir de su
-              inscripción, para que esta sea aprobada por la entidad bancaria,
-              una vez tu cuenta haya sido aprobada, tus retiros serán casi
-              inmediatos */}
+            Son las cuentas a las que envías COP desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
             </p>
 
             <div id="bankChooseButton">
@@ -195,8 +192,7 @@ class BankAccountFlow extends Component {
           <div className="step1">
             <form onSubmit={handleSubmit} className="NWithdrawAccountFlow">
               <div className="titleAccountFlow">
-                <h1 className="DLtitles2">Elige la entidad bancaria</h1>
-                <p className="fuente DLstitles">de la cuenta que quieres agregar:</p>
+                <h1 className="DLtitles2 fuente">Elige la entidad de la cuenta que quieres agregar</h1>
               </div>
               {loader ? (
                 <SimpleLoader label="Cargando..." />
@@ -264,8 +260,8 @@ class BankAccountFlow extends Component {
 
                     <InputForm
                       type="text"
-                      label="Escribe el número de cuenta"
-                      placeholder="Ej. 1123321..."
+                      label="Escribe el número de tu cuenta"
+                      placeholder="Ej: 1123321..."
                       name="account_number"
                       autoFocus={true}
                       actualizarEstado={actualizarEstado}

@@ -56,7 +56,7 @@ const WithdrawAccountFormLayout = (props) => {
           ) : (
             <FinalTicket
               finishAction={finalizar}
-              ticket={ticket}
+              wAccount={ticket}
               ticket_type="withdraw_form"
             />
           )}

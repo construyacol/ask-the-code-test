@@ -7,10 +7,15 @@ import convertCurrencies from "../../../utils/convert_currency";
 import OtherModalLayoutPairs from "../../widgets/modal/otherModalLayoutPairs";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import NewItemsLayout from "../../widgets/items/new-items-layout";
+import { useSelector } from "react-redux";
+import { selectWithConvertToObjectWithCustomIndex } from '../../hooks/useTxState.js'
+
+
 
 export const PairList = (props) => {
   const [allPairs, setAllPairs] = useState(null);
   const [loaderMsg] = useState("Cargando Pares");
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
 
   const [setCurrentSelection] = useNavigationKeyActions({
     items: allPairs,
@@ -51,9 +56,11 @@ export const PairList = (props) => {
 
   console.log('|||||||||||||||  allPairs  ==> ', allPairs)
 
+  const currencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
+
   return (
     <OtherModalLayoutPairs
-      title={`Convertir ${currentWallet.currency.currency} a:`}
+      title={`Cambiar ${currencySymbol} a:`}
       close_modal={closeModal}
     >
       <div className="PairListFind"></div>

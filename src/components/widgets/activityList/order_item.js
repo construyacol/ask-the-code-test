@@ -23,8 +23,8 @@ import "moment/locale/es";
 moment.locale("es");
 
 const confirmPayment = async () => {
-  const TFileUpload = document.getElementById("TFileUpload");
-  TFileUpload && TFileUpload.click();
+  // const TFileUpload = document.getElementById("TFileUpload");
+  // TFileUpload && TFileUpload.click();
 };
 
 const OrderItem = ({ order }) => {
@@ -419,7 +419,7 @@ const PanelLeft = (order) => {
 
 const getTypeOrder = (tx_path) => {
   return tx_path === "deposits"
-    ? "Deposito"
+    ? "Depósito"
     : tx_path === "withdraws"
     ? "Retiro"
     : tx_path === "swaps" && "Intercambio";

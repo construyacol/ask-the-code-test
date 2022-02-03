@@ -20,7 +20,7 @@
 
 .finalTicket.TicketDetail {
   display: grid;
-  grid-template-rows: 20vh 1fr 70px;
+  grid-template-rows: 140px 1fr 70px;
   width: 100%;
   max-height: calc(100vh - 80px);
   height: calc(100vh - 80px);
@@ -216,7 +216,7 @@
   }
 
   .nBtextInit {
-    font-size: 18px !important;
+    font-size: 20px !important;
   }
 
   .contenido.activity {
@@ -286,6 +286,12 @@
     max-height: calc(100vh - 40px) !important;
     grid-template-rows: 80px 1fr 60px !important;
     align-self: center !important;
+    padding: 0 20px;
+    width: calc(100vw - 40px) !important;
+  }
+
+  .finalTicket.TicketTitle{
+    text-align: center;
   }
 
   .contenido.DCcurrent_wallet {
@@ -467,6 +473,10 @@
 
 @media only screen and (max-width: 768px) {
 
+
+.inputElement2::placeholder {
+  font-size: 30px;
+}
 
   .DCcurrent_wallet {
     grid-template-rows: 190px 1fr;

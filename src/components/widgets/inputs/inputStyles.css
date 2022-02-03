@@ -534,13 +534,13 @@ form#phone {
 
 .inputElement2::placeholder {
   color: #3a7bd5;
-  /*font-size: 90px;*/
   position: absolute;
   text-align: center;
   width: 100%;
   max-width: 650px;
   overflow: hidden;
-  font-size: 40px;
+  font-size: 50px;
+  bottom: 10px;
 }
 
 .inp2_{
@@ -618,6 +618,13 @@ form#phone {
   grid-template-rows: 40px 1fr 20px !important;
   grid-gap: 15px !important;
   height: 150px !important;
+}
+
+
+.__minAmountLabel{
+  position: absolute;
+  bottom: -35px;
+  color: #ff3e3e;
 }
 
 .InputContainerT {

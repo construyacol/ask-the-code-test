@@ -412,7 +412,7 @@
 
 .IWcurrencyText {
   font-size: 15px;
-  text-transform: capitalize;
+  font-weight: bold;
 }
 
 .ItemWallet.usd,
@@ -592,3 +592,8 @@
 }
 
 /**/
+
+
+.walletLayout.cop .iconWallet{
+  opacity: 0.8;
+}

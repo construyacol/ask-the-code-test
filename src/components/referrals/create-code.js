@@ -10,7 +10,7 @@ function CreateCode(props) {
     <Container id="container">
       <Text>
         <p>
-          Gána el<span className="fuente2">0.5% </span> de todas las operaciones de compra y venta que tus referidos realicen.
+          Recibe el<span className="fuente2">0.5% </span> de todas las operaciones de compra y venta que tus referidos realicen.
         </p>
       </Text>
         <CreateReferralLink {...props} />

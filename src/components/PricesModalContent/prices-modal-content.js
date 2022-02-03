@@ -98,12 +98,12 @@ const PairPrices = ({ currentPair }) => {
   return (
     <div className="pair-prices">
       <div className="price-container sell">
-        <p className="font price">Te compramos {currencyLabel} a</p>
+        <p className="fuente price">Te compramos {currencyLabel} a</p>
         <p className="numberFont amount_price">{sellPrice}</p>
       </div>
       
       <div className="price-container buy">
-        <p className="font price">Te vendemos {currencyLabel} a</p>
+        <p className="fuente price">Te vendemos {currencyLabel} a</p>
         <p className="numberFont amount_price">{buyPrice}</p>
       </div>
     </div>
@@ -147,7 +147,7 @@ const PairsSelect = ({
               alt=""
             />
             <div className="base-item-text-cont">
-              <h2 className="font">{pair.primary_currency.currency}</h2>
+              <h2 className="fuente">{pair.primary_currency.currency}</h2>
               <p className="numberFont">{pair.buy_pair}</p>
             </div>
             <img

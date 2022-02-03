@@ -50,12 +50,12 @@ const CreateReferralLink = (props) => {
           <InputForm
             className="setRefCode"
             type="text"
-            placeholder={`Ej. miCodigoReferido`}
+            placeholder={`Ej: miCodigoReferido`}
             name="ref_code"
             autoFocus
             handleStatus={setIsValidCode}
             // handleChange={handleChangeAmount}
-            label={`Crea tu link de referido`}
+            label={`Crea tu código de referido`}
             // disabled={loader}
             // state={amountState}
             // value={amountValue}
@@ -78,7 +78,7 @@ const CreateReferralLink = (props) => {
             handleAction={setRefCode}
             loader={loader}
             formValidate={isValidCode === 'good'}
-            label="Crear link de referido"
+            label="Crear código de referido"
           />
         </ButtonContainer>
 

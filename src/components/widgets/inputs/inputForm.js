@@ -115,7 +115,7 @@ const InputForm = (props) => {
   return (
     <InputLayout className={`${props.className || ''}`}>
       <ContainerInputComponent>
-        <p className="labelText fuente" style={{ textTransform:"capitalize", display: !props.label ? "none" : "initial" }} >
+        <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
           {props.label}
         </p>
         <InputContainer className={`${inputState}`}>

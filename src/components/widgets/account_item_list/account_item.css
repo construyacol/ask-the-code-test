@@ -85,19 +85,19 @@
   transition: 0.1s;
 }
 
-.addElement:hover p,
+.addElement p,
 .addElement.item-selected p {
-  color: #00bfff !important;
+  color: var(--primary) !important;
 }
 
-.addElement:hover svg,
+.addElement svg,
 .addElement.item-selected svg {
-  fill: #00bfff !important;
+  fill: var(--primary) !important;
 }
 
 .item-selected .logoAIL .iconSty {
   opacity: 1;
-  color: #00bfff !important;
+  color: var(--primary) !important;
 }
 
 /*noAddElement*/
@@ -190,6 +190,10 @@
   opacity: 0.4;
   transition: 0.3s;
   position: absolute;
+}
+
+.addElement .logoAIL .iconSty{
+  opacity: 1;
 }
 
 .contLogoAIL {
@@ -426,3 +430,5 @@
 }
 
 /**/
+
+

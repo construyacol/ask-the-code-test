@@ -7,6 +7,9 @@ const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
 
+
+
+const Efecty = loadable(() => import("./").then(getExportByName("Efecty")));
 const RappiPay = loadable(() => import("./").then(getExportByName("RappiPay")));
 const Movii = loadable(() => import("./").then(getExportByName("Movii")));
 const LuloBank = loadable(() => import("./").then(getExportByName("LuloBank")));
@@ -165,6 +168,9 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "Efecty":
+      case "efecty":
+        return <Efecty {...props} height={"30px"} />;
       case "rappipay":
         return <RappiPay {...props} height={"30px"} />;
       case "movii":
@@ -318,6 +324,9 @@ class IconSwitch extends Component {
       case "success":
         return <Success {...props} />;
       case "bitcoin":
+      case "btc":
+      case "BTCT":
+      case "BTC":
       case "bitcoin_testnet":
         return <Bitcoin2 {...props} />;
       case "cop":

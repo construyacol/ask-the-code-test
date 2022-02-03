@@ -8,14 +8,14 @@
       "completed": false,
       "ui_text": {
         "crypto": "Depósito agregado en blockchain",
-        "fiat": "Confirmando depósito"
+        "fiat": "Comprobante de depósito"
       }
     },
     "confirmed": {
       "completed": false,
       "ui_text": {
         "crypto": "Confirmando en blockchain",
-        "fiat": "Aceptando prueba de depósito"
+        "fiat": "Confirmando depósito"
       }
     },
     "accepted": {
@@ -52,7 +52,7 @@
       "pending": {
         "fiat": {
           "title": "Orden pendiente de confirmación",
-          "description": "Sube una fotografía o captura del comprobante de pago para continuar..."
+          "description": "Sube una fotografía o captura del comprobante de pago para continuar"
         }
       },
       "confirmed": {
@@ -62,7 +62,7 @@
         },
         "crypto": {
           "title": "Tu depósito está siendo confirmado",
-          "description": "Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda..."
+          "description": "Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda"
         }
       }
     },
@@ -76,7 +76,7 @@
       "confirmed": {
         "fiat": {
           "title": "Estamos procesando tu retiro.",
-          "description": "Pronto podrás disponer de tu dinero..."
+          "description": "Pronto podrás disponer de tu dinero"
         },
         "crypto": {
           "title": "Tu retiro está siendo procesado",

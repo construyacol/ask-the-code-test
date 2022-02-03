@@ -1,3 +1,13 @@
+:root {
+  --primary_deg: #ffffff;
+  --secondary_deg: #ffffff;
+  --primary: #0198ff;
+  --paragraph_color:#50667a; 
+}
+
+
+
+
 @media screen and (max-height: 800px) and (max-width: 1366px) {
   .cotization.desktop {
     transform: scale(0.9);
@@ -1117,7 +1127,7 @@
   }
 
   .SCverification {
-    display: none;
+    display: none !important;
   }
 
   .contentSubItem p {
@@ -1223,7 +1233,6 @@
   }
 
   .TwoFactorActivate p {
-    font-size: 14px !important;
     width: 100% !important;
   }
 
