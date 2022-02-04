@@ -8,7 +8,7 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
-let statusCounter = 0
+// let statusCounter = 0
 const { SocketUrl } = Environtment;
 
 
@@ -744,12 +744,12 @@ class SocketsComponent extends Component {
      await this.props.action.toggleModal(false);
     }
     await this.props.coinsendaServices.updateUserStatus(status)
-    if(status.countries.international === 'level_1' && statusCounter < 1){
-      statusCounter++
-      console.log('|||||||||||  status_management')
-      this.props.coinsendaServices.init()
-      this.props.history.push(`/wallets`);
-    }
+    // if(status.countries.international === 'level_1' && statusCounter < 1){
+      // statusCounter++
+      // console.log('|||||||||||  status_management')
+      // this.props.coinsendaServices.init()
+      // this.props.history.push(`/wallets`);
+    // }
   }
 
   
