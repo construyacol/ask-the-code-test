@@ -93,15 +93,7 @@ function ContentTab(props) {
         >
           {haveMenu ? (
             menuItems.map((item, index) => {
-              // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', menuItems)
-              if (
-                (item.link === "activity" ||
-                  item.link === "withdraw" ||
-                  item.link === "swap") &&
-                primary_path === "wallets" &&
-                wallets[current_wallet] &&
-                wallets[current_wallet].count === 0
-              ) {
+              if ((item.link === "activity" || item.link === "withdraw" || item.link === "swap") && primary_path === "wallets" && (wallets[current_wallet] && wallets[current_wallet].count < 1)) {
                 return null;
               }
               return (

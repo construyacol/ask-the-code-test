@@ -385,6 +385,16 @@ class SocketsComponent extends Component {
         deposit.account_id,
         "deposits"
       );
+
+      this.props.action.update_item_state(
+        {
+          [deposit.account_id]: {
+            ...this.props.wallets[deposit.account_id],
+            count: 1,
+          },
+        },
+        "wallets"
+      );
     }
 
     // if(deposit.state === 'confirmed' && && this.state.currentDeposit.currency_type === 'crypto')){
