@@ -56,8 +56,8 @@ export class IndetityService extends WebService {
     }
     // console.log('||||||||||||||| getUserStatus:: ', userUpdate)
     await this.updateUser(userUpdate)
-    console.log('||||||||||||||| getUserStatus:: ', international)
-    debugger
+    // console.log('||||||||||||||| getUserStatus:: ', international)
+    // debugger
     setTimeout(()=>{
       this.setIsAppLoading(false);
     }, 100)

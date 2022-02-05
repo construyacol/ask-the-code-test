@@ -172,12 +172,7 @@
     margin-top: 100px;
   }
 
-  .DCcurrent_wallet {
-    /* padding: 0 !important; */
-    grid-template-rows: 30% 70%;
-    max-height: calc(100vh - 15vh);
-    transform: scale(0.9) translateY(22px);
-  }
+
 
   .asaras .TicketDetail {
     grid-template-rows: 1fr !important;
@@ -219,6 +214,17 @@
     font-size: 20px !important;
   }
 
+  .contenido.wallets{
+    padding-top: 55px;
+  }
+
+  .DCcurrent_wallet {
+    grid-template-rows: 30% 70%;
+    max-height: calc(100vh - 15vh);
+    transform: scale(0.95) translateY(22px);
+    padding: 35px 15px 0px !important;
+  }
+
   .contenido.activity {
     grid-template-rows: 200px 400px;
   }
@@ -226,6 +232,30 @@
   .ALlistAll {
     padding-bottom: 50px !important;
   }
+
+  .securityCenterDetail_.contenido{
+    padding: 30px 15px 20px !important;
+  }
+
+  .KycAvancedLayout{
+    margin-top: 20px !important;
+  }
+
+  .contenido.withdraw_accounts{
+    padding-top: 55px;
+  }
+
+  #DLstep2{
+    grid-template-rows: 100px 1fr 100px !important;
+  }
+
+  .WalletContainer{
+    border-bottom: 1px solid transparent !important;
+  }
+
+
+
+
 }
 
 @media screen and (max-height: 830px) and (max-width: 900px) {
