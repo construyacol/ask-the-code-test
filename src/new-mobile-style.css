@@ -152,6 +152,8 @@
   .FolowTexts .Fimportant {
     margin-top: 45px;
   }
+
+
 }
 
 @media screen and (max-height: 800px) and (max-width: 1366px) {
@@ -188,6 +190,14 @@
   .asaras {
     transform: none !important;
     overflow: hidden;
+  }
+
+  #DLstep2 .asaras{
+    overflow: scroll;
+  }
+
+  .shoyPaymentProof{
+    overflow: initial !important;
   }
 
   .nBitemSuccesss {
@@ -504,9 +514,9 @@
 @media only screen and (max-width: 768px) {
 
 
-.inputElement2::placeholder {
-  font-size: 30px;
-}
+  .inputElement2::placeholder {
+    font-size: 30px;
+  }
 
   .DCcurrent_wallet {
     grid-template-rows: 190px 1fr;
@@ -525,6 +535,15 @@
     height: calc(100% - 40px) !important;
     max-height: none !important;
   }
+
+  .securityCenterDetail_.contenido{
+    padding: 80px 15px 20px !important;
+  }
+
+  .contenido.wallets, .contenido.withdraw_accounts{
+    padding-top: 80px;
+  }
+
 }
 
 @media only screen and (max-width: 600px) {
