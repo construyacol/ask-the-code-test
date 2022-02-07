@@ -27,9 +27,9 @@ export const BackButtom = ({ onClick, disabled }) => {
 // }
 
 
-export const NextButtom = ({ onClick, disabled }) => {
+export const NextButtom = ({ onClick, disabled, id }) => {
     return(
-        <IconNextContainer className="personal_nextButtom_" onClick={onClick} disabled={disabled || ''} width="35px">
+        <IconNextContainer id={`${id || ''}`} className="personal_nextButtom_" onClick={onClick} disabled={disabled || ''} width="35px">
                 <FiArrowRight size={35} color="#06a" />
         </IconNextContainer>
     )
