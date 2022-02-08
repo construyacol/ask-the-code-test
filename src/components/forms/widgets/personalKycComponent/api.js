@@ -288,6 +288,10 @@ export const ApiPostPersonalKyc = async(body, tools) => {
     verification_level: "level_1",
   };
 
+  console.log('ApiPostPersonalKyc', typeof config.info.birthday, config.info.birthday)
+  // debugger
+  // return 
+
   const _timeStamp = new Date(config.info.birthday).getTime()
   config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
 
@@ -328,17 +332,17 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
 export const PERSONAL_DEFAULT_STATE = {
   personal:{ 
-    meta_phone: "colombia"
-    // address: "cra 45 - 88",
-    // birthday: "1992-11-18",
-    // city: "cali",
-    // country: "colombia",
-    // id_number: "1116256754",
-    // id_type: "cedula_ciudadania",
-    // name: "Andres felipe",
-    // nationality: "colombia",
-    // phone: "57 3145698999",
-    // surname: "Garcia garcia"
+    meta_phone: "colombia",
+    address: "cra 45 - 88",
+    birthday: "1992-11-18",
+    city: "cali",
+    country: "colombia", 
+    id_number: "1116256754",
+    id_type: "cedula_ciudadania",
+    name: "Andres felipe",
+    nationality: "colombia",
+    phone: "57 3145698999",
+    surname: "Garcia garcia"
   }
 }
 

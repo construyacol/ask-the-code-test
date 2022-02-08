@@ -514,6 +514,8 @@
 @media only screen and (max-width: 768px) {
 
 
+
+
   .inputElement2::placeholder {
     font-size: 30px;
   }
@@ -542,6 +544,16 @@
 
   .contenido.wallets, .contenido.withdraw_accounts{
     padding-top: 80px;
+  }
+
+  .KycLayoutMom{
+    width: calc(100% - 10px) !important;
+    height: calc(100%) !important;
+    padding: 5px !important;
+  }
+
+  [name="2auth"] .contentSubItem{
+    width: 250px;
   }
 
 }
