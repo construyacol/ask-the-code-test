@@ -18,46 +18,61 @@ class SocketsComponent extends Component {
     currentDeposit: null,
     currentWithdraw: null,
     isUpdated: false,
+    statusUpdate:0
   };
 
-//   async testSocketExecuted(orderMock) {
-//     console.log('======================================== ______ testSocketExecuted: ', orderMock)
-//     if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
-//       await this.setState({ currentDeposit: orderMock });
-//     } else {
-//       this.deposit_mangagement(orderMock);
-//     }
-//    }
+  // async testSocketExecuted(orderMock) {
+  //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
+  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
+  //     await this.setState({ currentDeposit: orderMock });
+  //   } else {
+  //     this.deposit_mangagement(orderMock);
+  //   }
+  // }
 
-//   async testSocket() {
+  // async testSocket() {
 
-//     let orderMock = {
-//       id:"6184c8f067e372004414b156",
-//       state:"rejected"
-//     }
+  //   // let orderMock = {
+  //   //   id:"6184c8f067e372004414b156",
+  //   //   state:"rejected"
+  //   // }
 
-//     this.withdraw_mangagement(orderMock);
+  //   // this.withdraw_mangagement(orderMock);
 
-//     // this.testSocketExecuted()
-//     // let confirmations = 1
-//     // setInterval(()=>{
-//     //   if(confirmations < 7){
-//     //     orderMock = {
-//     //       confirmations: confirmations,
-//     //       id: "617621370b0a1b0048ae9cae"
-//     //     }
-//     //     this.testSocketExecuted(orderMock)
-//     //     confirmations++
-//     //   }
-//     // }, 5000)
-//   }
+  //   // this.testSocketExecuted()
+  //   // let confirmations = 1
+  //   // setInterval(()=>{
+  //   //   if(confirmations < 7){
+  //   //     orderMock = {
+  //   //       confirmations: confirmations,
+  //   //       id: "617621370b0a1b0048ae9cae"
+  //   //     }
+  //   //     this.testSocketExecuted(orderMock)
+  //   //     confirmations++
+  //   //   }
+  //   // }, 5000)
+
+  //   // let statusMock = {
+  //   //   countries:{
+  //   //     international: "level_1"
+  //   //   },
+  //   //   id: "620403008a485b0067ed919b",
+  //   //   updated_at: "2022-02-09T18:09:28.614Z",
+  //   //   userId: "620402efbe929e0042d9de6c"
+  //   // }
+
+  //   // for (let index = 0; index < 2; index++) {
+  //     // this.status_management(statusMock);
+  //   // }
+
+  // }
 
 //  componentDidMount(){
 //    setTimeout(()=> {
-//     //  this.testSocket()
+//      this.testSocket()
 //     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
 //     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
-//    }, 7000)
+//    }, 5000)
 //  }
 
  async componentDidUpdate(prevProps) {
@@ -739,17 +754,23 @@ class SocketsComponent extends Component {
     }
   };
 
+
+
   status_management = async(status) => {
+
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
     }
+
     await this.props.coinsendaServices.updateUserStatus(status)
-    // if(status.countries.international === 'level_1' && statusCounter < 1){
-      // statusCounter++
-      // console.log('|||||||||||  status_management')
-      // this.props.coinsendaServices.init()
-      // this.props.history.push(`/wallets`);
-    // }
+
+    if(status.countries.international === 'level_1' && this.state.statusUpdate < 1){
+    await this.setState({ statusUpdate:this.state.statusUpdate+1 })
+      this.props.coinsendaServices.init()
+      this.props.history.push(`/wallets`);
+    }
+    
+
   }
 
   
