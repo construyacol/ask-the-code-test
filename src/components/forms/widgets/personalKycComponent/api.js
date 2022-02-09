@@ -288,13 +288,10 @@ export const ApiPostPersonalKyc = async(body, tools) => {
     verification_level: "level_1",
   };
 
-  // console.log('ApiPostPersonalKyc', typeof config.info.birthday, config.info.birthday)
-  // debugger
-  // return 
   
-  const _timeStamp = new Date(config.info.birthday).getTime()
+  const _timeStamp = new Date(`${config.info.birthday}T00:00:00`).getTime()
   config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
-
+  // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
   setLoading(true)
   let res = await mainService.updateLevelProfile(config);
   setLoading(false)
