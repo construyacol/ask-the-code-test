@@ -11,6 +11,7 @@ const MaskDateComponent = (props) => {
         <MaskedInput
             mask={[/\d/, /\d/, "/", /\d/, /\d/, "/", /\d/, /\d/, /\d/, /\d/,]}
             placeholder="Día / Mes / año"
+            id="birthdayMaskedInput"
             guide={true}
             autoFocus={true}
             pipe={autoCorrectedDatePipe}

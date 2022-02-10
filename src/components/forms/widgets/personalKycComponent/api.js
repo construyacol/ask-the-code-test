@@ -303,9 +303,6 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 
   const timeStampDate = parseDateToTimeStamp(config.info.birthday)
   config.info.birthday = timeStampDate
-
-  console.log(config)
-  debugger
   // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
   setLoading(true)
   let res = await mainService.updateLevelProfile(config);
