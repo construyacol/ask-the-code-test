@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import loadable from '@loadable/component'
 import { removeItemTag, debugItemTag } from './utils'
 import styled from 'styled-components'
-
+import MaskDateComponent from './maskDateComponent'
 import {
     InputContainer,
     LabelText,
@@ -26,6 +26,7 @@ const InputComponent = props => {
     // placeholder
     // label
   } = props
+
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
   const inputName = name?.includes('meta') ? '' : name
@@ -76,7 +77,15 @@ const InputComponent = props => {
           props.AuxComponent && 
           <AuxComponentContainer {...props} />
         }
-        <input {...inputProps} />
+        {
+          type === 'date' ?
+          <MaskDateComponent {...inputProps}/>
+          :
+          <input {...inputProps} />
+        }
+
+        {/* <input {...inputProps} /> */}
+
         { 
           progressBar &&
           <ProgressBarComponent {...progressBar}/>

@@ -1,5 +1,10 @@
 import { mainService } from "../../../../services/MainService";
-import BigNumber from "bignumber.js";
+import { 
+  formatMaskDate, 
+  parseDateToTimeStamp 
+} from './utils'
+
+
 
 const testCountryValidators = {
     res:{
@@ -279,18 +284,28 @@ export const ApiGetPersonalStages = async(config) => {
 
 
 
+
 export const ApiPostPersonalKyc = async(body, tools) => {
 
   const { setLoading, prevStage, toastMessage } = tools
-  
+
   let config = {
     info: { ...body },
     info_type: "personal",
     verification_level: "level_1",
   };
-  
-  const _timeStamp = new Date(`${config.info.birthday}T00:00:00`).getTime()
-  config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
+
+
+  const isMaskBirthday = config.info.birthday.includes('/') 
+  if(isMaskBirthday){
+    config.info.birthday = formatMaskDate(config.info.birthday) 
+  }
+
+  const timeStampDate = parseDateToTimeStamp(config.info.birthday)
+  config.info.birthday = timeStampDate
+
+  console.log(config)
+  debugger
   // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
   setLoading(true)
   let res = await mainService.updateLevelProfile(config);
@@ -327,11 +342,13 @@ export const ApiPostPersonalKyc = async(body, tools) => {
 }
 
 
+// typeof date.getMonth === 'function'
+
 export const PERSONAL_DEFAULT_STATE = {
   personal:{ 
     meta_phone: "colombia",
     // address: "cra 45 - 88",
-    // birthday: "1992-11-18",
+    // birthday: parseTimeStampToDate("722059200"),
     // city: "cali",
     // country: "colombia", 
     // id_number: "1116256754",

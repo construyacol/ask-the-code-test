@@ -5,17 +5,22 @@
     parseOnlyNumbers,
     addItemTag,
     writeOnLabel,
-    parseAlphanumeric
+    parseAlphanumeric,
+    formatMaskDate
   } from './utils'
   
 
 
 const birthday = (value, data) => {
-  let birthYear = new Date(data.state?.birthday)?.getFullYear() || new Date().getFullYear()
+
+  const isMaskInput = data.state?.birthday?.includes('/') 
+  let parseBirth = isMaskInput ? formatMaskDate(data.state?.birthday) : data.state?.birthday
+  let birthYear = new Date(parseBirth)?.getFullYear() || new Date().getFullYear()
   let currentYear = new Date().getFullYear()
   let age = currentYear - birthYear 
-  let status = (age >= 18 && age < 100) && 'success' 
-  let _value = value
+  let _value = value ? value : null
+  let status = ((age >= 18 && age < 100) && _value) && 'success' 
+
   const datePick = document.querySelector('[name="birthday"]')
   const targetLabel = `.label_text__${data.key}`
   if(status === 'success'){

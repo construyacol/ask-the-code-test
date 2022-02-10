@@ -71,7 +71,6 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
     // if(!validations[stageData.key]) return;
-
     const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
@@ -92,6 +91,8 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
+
+  
 
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     )
   }
 
-  console.log('___________________________________________dataForm', stageData)
+  console.log('___________________________________________dataForm', state)
 
 
   return(
