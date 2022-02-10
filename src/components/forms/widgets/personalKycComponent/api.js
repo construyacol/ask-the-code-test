@@ -282,12 +282,12 @@ export const ApiGetPersonalStages = async(config) => {
 export const ApiPostPersonalKyc = async(body, tools) => {
 
   const { setLoading, prevStage, toastMessage } = tools
+  
   let config = {
     info: { ...body },
     info_type: "personal",
     verification_level: "level_1",
   };
-
   
   const _timeStamp = new Date(`${config.info.birthday}T00:00:00`).getTime()
   config.info.birthday = BigNumber(_timeStamp).div(1000).toString()
