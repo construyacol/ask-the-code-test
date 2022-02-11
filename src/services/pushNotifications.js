@@ -3,7 +3,7 @@ import { WebService } from "../actions/API/WebService";
 export class PushNotificationService extends WebService {
   async initPushNotificator(item, payload) {
     if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-      return alert("Tu browser no soporta notificaciones");
+      return console.log("Tu browser no soporta notificaciones");
     }
 
     if (!("PushManager" in window)) {

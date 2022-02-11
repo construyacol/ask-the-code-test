@@ -255,7 +255,9 @@ export const CriptoView = () => {
         ]}
       />
 
-      <InputForm type="text" placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+      <InputForm 
+        type="number" 
+        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
         name="amount"
         handleStatus={setAmountState}
         handleChange={handleChangeAmount}
@@ -290,7 +292,9 @@ export const CriptoView = () => {
 };
 
 export const AvailableBalance = ({ handleAction, amount, id }) => {
+  const { keyActions } = useSelector((state) => state.ui);
   const isMovil = window.innerWidth < 768;
+
 
   return (
     <BalanceContainer>
@@ -299,7 +303,7 @@ export const AvailableBalance = ({ handleAction, amount, id }) => {
         className={`fuente2 ${isMovil ? "movil" : ""}`}
         onClick={handleAction}
       >
-        {isMovil ? "Disponible:" : "Disponible [M]:"} {amount}
+        {isMovil ? "Disponible:" : `Disponible${keyActions ? '[M]' : ''}:`} {amount}
       </p>
     </BalanceContainer>
   );

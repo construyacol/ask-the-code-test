@@ -57,7 +57,7 @@ function ContentTab(props) {
   // }, [title, path])
 
   useEffect(() => {
-    const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 || wallets[current_wallet].available > 0);
+    const haveBalances = wallets[current_wallet] && (wallets[current_wallet]?.count > 0 || wallets[current_wallet]?.available > 0);
     const condition = primary_path === "wallets" ? haveBalances && menuItems : menuItems;
     setHaveMenu(condition ? menuItems.length > 0 : pathname !== 'deposit' ? true : false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -77,7 +77,7 @@ function ContentTab(props) {
     el && el.click();
   };
 
-  const backButtonId = useKeyActionAsClick(true, "back-button-content-tab", 8, true, "onkeyup");
+  // const backButtonId = useKeyActionAsClick(true, "back-button-content-tab", 8, true, "onkeyup");
   const idNext = useKeyActionAsClick(true, "id-next-button", 39, true, "onkeyup");
   const idPrev = useKeyActionAsClick(true, "id-prev-button", 37, true, "onkeyup");
 
@@ -93,15 +93,7 @@ function ContentTab(props) {
         >
           {haveMenu ? (
             menuItems.map((item, index) => {
-              // console.log('||||||||||||||||| |||||||||||||||| ||||||||||||||| |||||||||||||| |||||||||||||     ContentTab', menuItems)
-              if (
-                (item.link === "activity" ||
-                  item.link === "withdraw" ||
-                  item.link === "swap") &&
-                primary_path === "wallets" &&
-                wallets[current_wallet] &&
-                wallets[current_wallet].count === 0
-              ) {
+              if ((item.link === "activity" || item.link === "withdraw" || item.link === "swap") && primary_path === "wallets" && (wallets[current_wallet] && wallets[current_wallet].count < 1)) {
                 return null;
               }
               return (
@@ -136,13 +128,13 @@ function ContentTab(props) {
 
         {!movil_viewport && (
           <Link
-            id={backButtonId}
+            // id={backButtonId}
             to={primary_path === "wallets" ? "/wallets" : "/withdraw_accounts"}
             className="DCBack"
             style={{ display: pathname ? "" : "none" }}
           >
             <i className="fas fa-arrow-left"></i>
-            <p>Volver</p>
+            <p className="fuente">Volver</p>
           </Link>
         )}
 

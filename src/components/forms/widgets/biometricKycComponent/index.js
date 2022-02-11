@@ -12,8 +12,9 @@ import loadDynamicScript from '../../../../utils/loadDynamicScript'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import useSocket from '../../../hooks/useSocket'
 import { useSelector } from "react-redux";
-import { ENVIRONMENT_VAR } from '../../../../const/const'
-import {
+import { ENVIRONMENT_VAR, device } from '../../../../const/const'
+
+import { 
   Layout,
   ContentContainer
 } from '../sharedStyles'
@@ -217,8 +218,8 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
   }, [])
 
   // console.log('||||||||||||||||||||||||||||||||||||||||  BiometricKyc PROPS', props)
-  
 
+  
    if(finalStage){
     // Render success Stage
     return (
@@ -236,7 +237,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
   }
 
     return(
-      <Layout>
+      <Layout className="faceApiLayout__">
         { 
           !boardingAgreement &&
             <DynamicLoadComponent
@@ -275,9 +276,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 export default BiometricKycComponent
 
 
-
-
-
 const Indicator = styled.div`
   width:7px;
   height:12px;
@@ -301,6 +299,15 @@ const IndicatorStage = styled.div`
 const VideoContainer = styled.div`
   position: relative;
   clip-path: circle(37% at 50% 50%);
+
+  @media ${device.laptopM} {
+    max-height: 300px;
+    clip-path: none;
+    width: fit-content;
+    justify-self: center;
+    overflow: hidden;
+    border-radius: 15px;
+  }
 `
 
 const ContentContainers = styled(ContentContainer)`
@@ -330,22 +337,31 @@ const ContentContainers = styled(ContentContainer)`
       font-size:15px;
     }
   }
+
+  @media ${device.laptopM} {
+    padding: 10px 0;
+    height: calc(100vh - 20px);
+  }
+
   @media (max-width: 768px) {
-  ${VideoContainer}{
-    clip-path: circle(29% at 50% 50%);
+    ${VideoContainer}{
+      clip-path: circle(29% at 50% 50%);
+    }
+
+    padding: 30px 20px;
+    width:calc(100vw - 40px);
+    height: calc(100vh - 60px);
+
+    p{
+      font-size:1em;
+    }
+    h1{
+      font-size:2em;
+    }
+
   }
 
-  padding: 30px 20px;
-  width:calc(100vw - 40px);
 
-  p{
-    font-size:1em;
-  }
-  h1{
-    font-size:2em;
-  }
-
-}
 `
 
 // Pitch: 'Rotate head' 

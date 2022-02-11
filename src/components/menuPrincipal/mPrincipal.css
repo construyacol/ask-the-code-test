@@ -61,7 +61,8 @@
 
 .userName {
   color: #14b3f0;
-}
+  text-transform: capitalize;
+} 
 
 .logo {
   width: calc(100% - 22px);

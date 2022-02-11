@@ -95,7 +95,7 @@ function mapDispatchToProps(dispatch) {
   return {
     action: bindActionCreators(actions, dispatch),
   };
-}
+} 
 
 function mapStateToProps(state, props) {
   const path = props.match.params.primary_path;

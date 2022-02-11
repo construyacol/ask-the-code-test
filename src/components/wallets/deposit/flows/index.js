@@ -174,12 +174,10 @@ export const Success = (props) => {
               <p className="titleWhite fuente">Depósito creado exitosamente</p>
             </div>
 
-            <div className="asaras">
+            <div className={`asaras ${final ? 'shoyPaymentProof' : ''}`}>
               <div
                 style={{ marginTop: "-20%", zIndex: 999 }}
-                className={`${
-                  final ? "apareces1" : ""
-                } nWbody2 Fbody2 FlowCont fuente DLmessage`}
+                className={`${final ? "apareces1" : ""} nWbody2 Fbody2 FlowCont fuente DLmessage`}
               >
                 <div className="FolowTexts">
                   <p className="fuente Fimportant">IMPORTANTE!</p>

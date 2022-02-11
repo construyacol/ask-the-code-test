@@ -187,6 +187,10 @@ export const currencyFormatByCoin = {
     ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
     DECIMAL_PLACES: 8,
   }),
+  litecoin: BigNumber.clone({
+    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+    DECIMAL_PLACES: 8,
+  }),
   bitcoin_testnet: BigNumber.clone({
     ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
     DECIMAL_PLACES: 8,
@@ -244,6 +248,7 @@ export const device = {
   tablet: `(max-width: ${size.tablet})`,
   tabletL: `(max-width: ${size.tabletL})`,
   laptop: `(max-width: ${size.laptop})`,
+  laptopM: `(max-width: ${size.laptopM})`,
   laptopL: `(max-width: ${size.laptopL})`,
   desktop: `(max-width: ${size.desktop})`,
   desktopL: `(max-width: ${size.desktop})`,

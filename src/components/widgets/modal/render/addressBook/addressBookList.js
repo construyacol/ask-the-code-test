@@ -8,6 +8,8 @@ import { InputContainer } from "../../../inputs/inputForm";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../../../hooks/useWindowSize";
 import useNavigationKeyActions from "../../../../../hooks/useNavigationKeyActions";
+import { useSelector } from "react-redux";
+
 
 const AddressBookComponent = ({
   withdrawAccounts,
@@ -25,6 +27,7 @@ const AddressBookComponent = ({
     true
   );
   const { isMovilViewport } = useViewport();
+  const { keyActions } = useSelector((state) => state.ui);
 
   const [setCurrentSelection] = useNavigationKeyActions({
     items: withdrawAccounts,
@@ -68,6 +71,7 @@ const AddressBookComponent = ({
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withdrawAccounts]);
+
 
   return (
     <>
@@ -126,7 +130,7 @@ const AddressBookComponent = ({
 
       <ControlButtonContainer bottom={25}>
         <ControlButton
-          label={`Crear nueva cuenta ${!isMovilViewport ? "[A]" : ""}`}
+          label={`Crear nueva cuenta ${(!isMovilViewport && keyActions) ? "[A]" : ""}`}
           formValidate
           handleAction={() => switchView("newAccount")}
           id={idForCreateNewAccount}

@@ -73,7 +73,7 @@
 }
 
 .coinBalance2 {
-  right: 10px !important;
+  right: 7px !important;
 }
 
 .ReadReceiveCoinLoader {
@@ -87,7 +87,7 @@
 }
 
 .coinB2 p {
-  margin: 0 10px !important;
+  margin: 0 3px 0 7px !important;
   text-transform: capitalize;
 }
 
@@ -99,7 +99,7 @@
   display: flex;
   align-items: center;
   width: auto;
-  min-width: 100px;
+  min-width: 70px;
   position: relative;
   height: 60%;
   border-left: 1px solid gray;

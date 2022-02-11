@@ -15,6 +15,8 @@ import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGen
 import "./finalTicket.css";
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
+const EfectyDisclaimer = loadable(() => import("../../../widgets/efectyDisclaimer"));
+
 
 
 
@@ -80,13 +82,11 @@ function FinalTicket(props) {
                 </DetailAccountProv>
             </CorpAccountContainer>
 
+            {(isEFecty && !order) && <EfectyDisclaimer/>}
+
             {
               order &&
               <>
-              {/* <TitleContainer className="__titleCont">
-              <p className="fuente">{'Datos de tu retiro'}</p>
-              <div className="__line__"/>
-              </TitleContainer> */}
               <DetailGenerator
                 title="Detalle del retiro"
                 order={order}

@@ -208,7 +208,7 @@ class ItemSettingsInit extends Component {
           verify: kyc.basic === "accepted",
           description:
             kyc.basic === "confirmed" && !kyc.advanced
-              ? "Continúa con la identificación avanzada para dar inicio a la verificación de tus datos."
+              ? "Continúa con la identificación intermedia para dar inicio a la verificación de tus datos."
               : kyc.basic === "confirmed" && kyc.advanced === "confirmed"
               ? "El sistema esta verificando tus datos..."
               : kyc.basic === "rejected" && kyc.advanced === "rejected"

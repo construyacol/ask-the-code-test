@@ -13,7 +13,7 @@ const PersonalKycSuccess = (props) => {
                 <ConfettiComponent/>
                 <h1 style={{fontSize:"2em"}} >Genial {props?.state?.name?.toLowerCase()}</h1>
                 <Medal size={150} />
-                <p className="identitySuccess">Has completado tu verificación avanzada</p>
+                <p className="identitySuccess">Has completado tu verificación intermedia</p>
                 <ControlContainer onClick={props.closeModal}>
                     <Button data-close_modal>Finalizar</Button>
                 </ControlContainer>

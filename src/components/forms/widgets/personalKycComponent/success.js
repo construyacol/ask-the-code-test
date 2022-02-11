@@ -29,7 +29,7 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
                 <Medal size={145} />
                 <p className="personalSuccess">Has completado tu verificación inicial</p>
                 <ControlContainer>
-                    <p>¿Deseas continuar con el proceso de verificación avanzada?</p>
+                    <p>¿Deseas continuar con el proceso de verificación intermedia?</p>
                     <Buttons>
                         <SecondaryButton onClick={closeModal}>Lo haré despues</SecondaryButton>
                         <PrimaryButton className="continue_to_identity_kyc" onClick={() => setShowKycComponent(true)}>Continuar</PrimaryButton>

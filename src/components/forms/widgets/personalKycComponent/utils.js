@@ -1,6 +1,41 @@
+import BigNumber from "bignumber.js";
+// import moment from 'moment'
+// import 'moment/locale/es'
 import { 
   LABEL_COLOR
 } from './const'
+
+const isIsoDate = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
+const isMaskDate = /[0-9]{2}[/][0-9]{2}[/][0-9]{4}/g
+
+export const parseTimeStampToDate = (timeStamp) => {
+  if(timeStamp.includes("-")) return timeStamp;
+  let date = new Date(new BigNumber(timeStamp).multipliedBy(1000).toNumber()).toISOString()
+  const isoDate = date.match(isIsoDate)
+  return isoDate && isoDate[0]
+}
+
+
+export const parseDateToTimeStamp = date => {
+  const timeStamp = new Date(`${date}T00:00:00`).getTime()
+  return BigNumber(timeStamp).div(1000).toString()
+}
+
+
+const checkMaskDate = date => {
+  if(!date)return;
+  return date.match(isMaskDate)
+}
+
+export const formatMaskDate = date => {
+  if(!checkMaskDate(date))return date;
+  let _date = date.split("/")
+  const day = _date[0]
+  const month = _date[1]
+  const year = _date[2]
+  return `${year}-${month}-${day}`
+}
+
 
 export const removeItemTag = (e, itemKey, callback) => {
 

@@ -5,6 +5,8 @@ import AddressBook from "./";
 // import { getAtention } from "../../../animations";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../../../hooks/useWindowSize";
+import { useSelector } from "react-redux";
+
 
 const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
   const idForCreateNewAccount = useKeyActionAsClick(
@@ -16,6 +18,7 @@ const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
   );
   const { isMovilViewport } = useViewport();
   const actions = useActions();
+  const { keyActions } = useSelector((state) => state.ui);
 
   const openAddressBook = async () => {
     actions.renderModal(() => (
@@ -33,7 +36,7 @@ const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
       onClick={openAddressBook}
     >
       <p className="fuente">
-        {!isMovilViewport ? "[A] " : ""}
+        {!isMovilViewport && keyActions ? "[A] " : ""}
         {addressToAdd
           ? `+ Agregar cuenta de retiro`
           : "Gestionar direcciones >>"}

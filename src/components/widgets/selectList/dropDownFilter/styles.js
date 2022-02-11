@@ -5,6 +5,9 @@ import styled from 'styled-components'
 export const Container = styled.div`
   width:100vw;
   max-width:200px;
+  @media (max-width:768px) {
+    max-width:150px;
+  }
 `
 
 export const DropDownList = styled.ul`
@@ -16,7 +19,7 @@ export const DropDownList = styled.ul`
   height: auto;
   top: 38px;
   background: white;
-  border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px; 
   border-bottom-right-radius: 4px;
   background: #ececec;
   z-index: 5;

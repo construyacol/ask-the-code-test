@@ -18,6 +18,7 @@ import useToastMessage from '../../../hooks/useToastMessage'
 // import UseTxState from "../../hooks/useTxState";
 import { getCdnPath } from '../../../environment'
 import { useFormatCurrency } from "../../hooks/useFormatCurrency";
+import { useSelector } from "react-redux";
 
 
 
@@ -306,6 +307,7 @@ function SwapView(props) {
 const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
 
   const showSubfix = window.innerWidth > 900;
+  const { keyActions } = useSelector((state) => state.ui);
 
 
   const boughtCurrencySymbol = currencies ? currencies[secondaryCoin]?.symbol : secondaryCoin
@@ -321,7 +323,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
         <div className="coinB2">
           <i className="fas fa-angle-down"></i>
           <p>{boughtCurrencySymbol || '...'}</p>
-          {showSubfix && <span className="subfix-pairs-button">[P]</span>}
+          {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
           { boughtCurrencySymbol  && (
             <img
               src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${secondaryCoin}.png`}`}

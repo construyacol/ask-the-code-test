@@ -12,12 +12,14 @@ import KycSkeleton from './skeleton'
 import { ApiPostPersonalKyc } from './api'
 import useToast from '../../../../hooks/useToastMessage'
 import SuccessComponent from './success'
+import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick';
 
 import {
   MainContainer,
   StickyGroup,
   TitleContainer,
 } from './styles.js'
+
 
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
@@ -32,6 +34,18 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
+
+  
+
+  const idNextStageKyc = useKeyActionAsClick(
+    true,
+    "next-stage-kyc",
+    13,
+    false,
+    "onkeypress",
+    true
+  );
+
 
   const {
     prevStage,
@@ -57,7 +71,6 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
     // if(!validations[stageData.key]) return;
-
     const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
     e.target.value = _value
     //// applies to update state through an effect when it comes from a default state
@@ -78,6 +91,8 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
+
+  
 
 
   useEffect(() => {
@@ -104,7 +119,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     )
   }
 
-  console.log('___________________________________________dataForm', stageData)
+  console.log('___________________________________________dataForm', state)
 
 
   return(
@@ -146,7 +161,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
               progressBar={{start:currentStage+1, end:stageController.length, showSteps:true}}
               AuxComponent={[
                 stageData?.settings?.auxComponent, 
-                () => <NextButtom onClick={nextStep} disabled={(currentStage >= stageController.length) || stageStatus !== 'success'} />
+                () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController.length) || stageStatus !== 'success'} />
               ]}
             />
           </StickyGroup>
@@ -166,7 +181,5 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 }
 
 export default PersonalKycComponent
-
-
 
 

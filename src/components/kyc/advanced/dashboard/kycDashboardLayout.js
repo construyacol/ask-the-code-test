@@ -39,7 +39,7 @@ const KycDashBoard = (props) => {
             : step === 2
             ? "2. Revés del documento"
             : step === 3 || step === 4
-            ? "3. Selfie con documento y texto"
+            ? "3. Selfie con documento"
             : "¡Lo hiciste muy Bien!"}
         </p>
         {/* pasaporte */}
