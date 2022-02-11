@@ -187,6 +187,10 @@ export const currencyFormatByCoin = {
     ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
     DECIMAL_PLACES: 8,
   }),
+  litecoin: BigNumber.clone({
+    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+    DECIMAL_PLACES: 8,
+  }),
   bitcoin_testnet: BigNumber.clone({
     ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
     DECIMAL_PLACES: 8,
