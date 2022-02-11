@@ -17,7 +17,7 @@ import isAppLoading, {
   isAppLoaded,
 } from "../actions/loader";
 import sleep from "../utils/sleep";
-import { GET_URLS, GET_CHART_DATA_URL } from "../const/const";
+import { GET_URLS, GET_CHART_DATA_URL, history } from "../const/const";
 import { updateLoadersAction } from "../actions/uiActions";
 // import { observable, decorate, computed, action } from "mobx"
 
@@ -127,6 +127,16 @@ export class MainService extends inheritances {
     return this.dispatch(isAppLoading(value));
   }
 
+  async checkAndUpdateUserStatus() {
+    if(this.user?.levels?.identity === 'confirmed' && this.user?.levels?.personal === 'confirmed'){
+      await this.updateUserStatus()
+      if(["accepted"].includes(this.user.levels.identity)){
+        this.init()
+        history.push("/wallets")
+      }
+    }
+  }
+
   async init(callback) {
     while (!this.user) {
       await sleep(2000);
@@ -139,7 +149,7 @@ export class MainService extends inheritances {
     this.postLoader(callback, false);
     return;
   }
-
+ 
   async postLoader(callback, restoreBalancesAndWallets = true) {
     try {
       this.dispatch(
@@ -159,9 +169,7 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-      if(this.user.levels.identity === 'confirmed' && this.user.levels.personal === 'confirmed'){
-        await this.updateUserStatus()
-      }
+      this.checkAndUpdateUserStatus()
       this.dispatch(
         updateLoadersAction({
           mainList: false,

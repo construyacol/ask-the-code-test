@@ -57,7 +57,7 @@ function ContentTab(props) {
   // }, [title, path])
 
   useEffect(() => {
-    const haveBalances = wallets[current_wallet] && (wallets[current_wallet].count > 0 || wallets[current_wallet].available > 0);
+    const haveBalances = wallets[current_wallet] && (wallets[current_wallet]?.count > 0 || wallets[current_wallet]?.available > 0);
     const condition = primary_path === "wallets" ? haveBalances && menuItems : menuItems;
     setHaveMenu(condition ? menuItems.length > 0 : pathname !== 'deposit' ? true : false);
   // eslint-disable-next-line react-hooks/exhaustive-deps

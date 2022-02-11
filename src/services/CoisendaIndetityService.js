@@ -70,6 +70,7 @@ export class IndetityService extends WebService {
       this.dispatch(CleanForm("kyc_advanced"))
       this.dispatch(ToStep("globalStep", 0))
     }
+
   } 
 
 
@@ -116,7 +117,6 @@ export class IndetityService extends WebService {
 
     const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
     const secondResponse = await this.Get(finalUrlSecond);
-    debugger
 
 
     // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
