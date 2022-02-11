@@ -13,8 +13,6 @@ const OnBoardingAgreement = ({ handleAction, cameraAvailable }) => {
     const [ continueFromMobile, setContinueFromMobile ] = useState(false)
     const [ isDesktopDevice ] = UseWindowDimensions()
     
-    console.log('||||||| isDesktopDevice ==> ', isDesktopDevice)
-    console.log('||||||| cameraAvailable ==> ', cameraAvailable)
     
     return(
         <Layout className="boarding_layout__">

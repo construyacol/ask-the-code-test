@@ -255,7 +255,9 @@ export const CriptoView = () => {
         ]}
       />
 
-      <InputForm type="text" placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+      <InputForm 
+        type="number" 
+        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
         name="amount"
         handleStatus={setAmountState}
         handleChange={handleChangeAmount}

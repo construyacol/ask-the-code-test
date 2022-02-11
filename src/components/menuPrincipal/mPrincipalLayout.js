@@ -9,6 +9,7 @@ import { doLogout } from "../utils";
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
 // import logo from "../../assets/logo.png";
 import { getCdnPath } from '../../environment'
+import { useSelector } from "react-redux";
 
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
@@ -33,8 +34,9 @@ const MenuPrincipalLayout = (props) => {
     true,
     "onkeyup"
   );
-  const logoutButtonText =
-    window.innerWidth > 900 ? "Cerrar sesión [ESC]" : "Cerrar sesión";
+
+  const { keyActions } = useSelector((state) => state.ui);
+  const logoutButtonText = window.innerWidth > 900 ? `Cerrar sesión ${keyActions ? '[ESC]' : ''}` : "Cerrar sesión";
 
   const logOut = () => {
     actions.confirmationModalToggle();

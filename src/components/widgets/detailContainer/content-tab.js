@@ -77,7 +77,7 @@ function ContentTab(props) {
     el && el.click();
   };
 
-  const backButtonId = useKeyActionAsClick(true, "back-button-content-tab", 8, true, "onkeyup");
+  // const backButtonId = useKeyActionAsClick(true, "back-button-content-tab", 8, true, "onkeyup");
   const idNext = useKeyActionAsClick(true, "id-next-button", 39, true, "onkeyup");
   const idPrev = useKeyActionAsClick(true, "id-prev-button", 37, true, "onkeyup");
 
@@ -128,13 +128,13 @@ function ContentTab(props) {
 
         {!movil_viewport && (
           <Link
-            id={backButtonId}
+            // id={backButtonId}
             to={primary_path === "wallets" ? "/wallets" : "/withdraw_accounts"}
             className="DCBack"
             style={{ display: pathname ? "" : "none" }}
           >
             <i className="fas fa-arrow-left"></i>
-            <p>Volver</p>
+            <p className="fuente">Volver</p>
           </Link>
         )}
 

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
   const idForCreateNewAccount = useKeyActionAsClick(
-    true,
+    true, 
     "open-address-book",
     65,
     true,
