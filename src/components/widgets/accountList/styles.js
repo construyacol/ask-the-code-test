@@ -12,14 +12,16 @@ export const AccountListContainer = styled.section`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, 280px);
   justify-items: center;
   grid-template-rows: repeat(auto-fill, 200px);
   row-gap: 20px;
   column-gap: 20px;
+  column-gap: 25px;
   align-items: center;
   @media screen and (max-height: 830px) and (max-width: 900px) {
     height: 100%;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
 `;
 

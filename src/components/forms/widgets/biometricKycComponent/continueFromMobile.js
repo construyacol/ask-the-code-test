@@ -6,6 +6,7 @@ import { Button } from './styles'
 import { getHostName } from '../../../../environment'
 import { getUserToken } from '../../../utils'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import { device } from '../../../../const/const'
 
 
 const ContinueFromMobile = ({ cameraAvailable, setContinueFromMobile }) => {
@@ -44,13 +45,13 @@ const ContinueFromMobile = ({ cameraAvailable, setContinueFromMobile }) => {
                 <a href="https://support.google.com/chrome/answer/2693767?hl=es-419&co=GENIE.Platform%3DDesktop" target="_blank"  rel="noreferrer" alt="">¿Necesitas ayuda?</a>
             </CameraStatus>
         }
-            <h1 >Reconocimiento Facial</h1>
-            <h3>Ahora confirmaremos tu identidad, sigue las instrucciones que aparecen en pantalla</h3>
+            <h1 className="fuente">Reconocimiento Facial</h1>
+            <h3 className="fuente">Ahora confirmaremos tu identidad, sigue las instrucciones que aparecen en pantalla</h3>
             <ImagesContainer>
                 {/* <img className="FRscanner" src={`${getCdnPath('assets')}scanner.png`} alt="" width={200} /> */}
                 <img className="FRQR" src={qrCode} alt="" width={280} />
             </ImagesContainer>
-            <p>Escanea el código QR desde tu celular y continúa el proceso de verificación.</p>
+            <p className="fuente">Escanea el código QR desde tu celular y continúa el proceso de verificación.</p>
             <Button className={`center-end ${!cameraAvailable ? 'disabled' : ''}`} disabled={!cameraAvailable} onClick={() => setContinueFromMobile(false)} >Regresar</Button>
         </CameraNotAvailableContainer>
     )
@@ -63,6 +64,12 @@ const ImagesContainer = styled.div`
     display: flex;
     align-items: center; 
     justify-content: center;
+
+    @media ${device.laptopM} {
+        img{
+            width:200px;
+        }
+    }
 `
 
 
@@ -79,10 +86,17 @@ const CameraNotAvailableContainer = styled.div`
     h1, p{
         text-align:center;
     }
+
+    @media ${device.laptopM} {
+        padding:35px 0;
+        grid-template-rows: auto auto auto auto auto;
+        height: calc(100vh - 70px);
+    }
+
     @media (max-width: 768px) {
         padding: 60px 30px;
-        min-height: calc(100vh - 120px);
-        grid-template-rows: 100px auto auto auto auto;
+        height: calc(100vh - 120px);
+        grid-template-rows: auto auto auto auto auto;
         .FRscanner{
             display:none;
         }
@@ -96,6 +110,8 @@ const CameraNotAvailableContainer = styled.div`
             width:180px;
         }
     }
+
+    
 `
 
 

@@ -34,12 +34,17 @@ const Container = styled.div`
   align-self: center;
   padding: 50px;
   height: calc(100% - 100px);
-
+  padding: 100px 0 0;
+  height: calc(100% - 100px);
 
 
   @media ${device.tabletL} {
     padding: 50px 25px;
     width: calc(100% - 50px);
+  }
+
+  @media ${device.laptopM} {
+    padding: 50px;
   }
 
 `;

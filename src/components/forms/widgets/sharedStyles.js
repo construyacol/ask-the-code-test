@@ -153,7 +153,6 @@ export const Layout = styled.div`
     left: 0;
     z-index:1000;
   @media screen and (max-height: 900px){
-    height: 140vh;
   }
 `
 

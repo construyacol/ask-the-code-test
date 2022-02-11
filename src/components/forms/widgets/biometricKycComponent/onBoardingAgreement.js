@@ -5,6 +5,7 @@ import { getCdnPath } from '../../../../environment'
 import UseWindowDimensions from '../../hooks/useWindowDimensions'
 import ContinueFromMobile from './continueFromMobile'
 import { Button } from './styles'
+import { device } from '../../../../const/const'
 
 
 const OnBoardingAgreement = ({ handleAction, cameraAvailable }) => {
@@ -16,7 +17,7 @@ const OnBoardingAgreement = ({ handleAction, cameraAvailable }) => {
     console.log('||||||| cameraAvailable ==> ', cameraAvailable)
     
     return(
-        <Layout>
+        <Layout className="boarding_layout__">
         {
             continueFromMobile || cameraAvailable === false ?
             <ContinueFromMobile
@@ -24,13 +25,13 @@ const OnBoardingAgreement = ({ handleAction, cameraAvailable }) => {
                 setContinueFromMobile={setContinueFromMobile}
             />
             :
-            <OnBoardingContainer>
-                <h1 >Reconocimiento Facial</h1>
+            <OnBoardingContainer className="boarding_init__">
+                <h1 className="fuente">Reconocimiento Facial</h1>
                 <img src={`${getCdnPath('assets')}recognition.gif`}  alt="" width={250} height={200} />
                 <Content>
-                    <h3>Ahora confirmaremos tu identidad, sigue las instrucciones que aparecen en pantalla</h3>
-                    <h4>Recomendaciones importantes:</h4>
-                    <ul>
+                    <h3 className="fuente">Ahora confirmaremos tu identidad, sigue las instrucciones que aparecen en pantalla</h3>
+                    <h4 className="fuente">Recomendaciones importantes:</h4>
+                    <ul className="fuente">
                         <li>
                             <p>Evita usar articulos en tu rostro(sombreros, gafas, gorras etc...).</p>
                         </li>
@@ -93,6 +94,18 @@ const Content = styled.div`
         height: 20px;
     }
 
+    @media ${device.tablet} {
+         width: calc(100vw - 30px);
+         padding: 0 15px;
+         ul{
+             width:calc(100vw - 30px);
+             padding: 0 15px;
+             li{
+                 padding:0
+             }
+         }
+    }
+
 `
 
 
@@ -138,6 +151,20 @@ const OnBoardingContainer = styled.div`
         height:auto;
     }
   }
+
+    @media ${device.laptopM} {
+        padding: 30px 0;
+        height: calc(100vh - 60px);
+        > img{
+            display:none;
+        }
+    }
+
+    @media ${device.tablet} {
+        > img{
+            display:initial;
+        }
+    }
 `
 
 
@@ -152,8 +179,6 @@ const Layout = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-start;
-
-
 `
 
 

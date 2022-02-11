@@ -248,6 +248,7 @@ export const device = {
   tablet: `(max-width: ${size.tablet})`,
   tabletL: `(max-width: ${size.tabletL})`,
   laptop: `(max-width: ${size.laptop})`,
+  laptopM: `(max-width: ${size.laptopM})`,
   laptopL: `(max-width: ${size.laptopL})`,
   desktop: `(max-width: ${size.desktop})`,
   desktopL: `(max-width: ${size.desktop})`,

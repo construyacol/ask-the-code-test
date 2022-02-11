@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled, { keyframes } from 'styled-components'
 import { AiOutlineScan } from 'react-icons/ai';
 import { BsCheck } from 'react-icons/bs';
+import { device } from '../../../../const/const'
 
 
 const StatusIndicator = ({ data }) => {
@@ -72,6 +73,10 @@ const StatusIndicator = ({ data }) => {
          animation: ${approve} .6s linear forwards;
       }
 
+      @media ${device.laptopM} {
+        top: 40px;
+        right: 180px;
+      }
      
 
     @media (max-width: 768px) {

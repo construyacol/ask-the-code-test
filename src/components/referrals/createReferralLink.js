@@ -124,6 +124,7 @@ const RefCodeForm = styled.form`
   height: 100%;
   display: grid;
   justify-items:center;
+  grid-template-rows: auto 1fr;
 
 
 
@@ -152,7 +153,6 @@ const RefCodeForm = styled.form`
   }
 
   @media only screen and (min-width: 1550px) {
-    grid-row-gap:50px;
     img{
       height: 370px;
       width: 370px;
