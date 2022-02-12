@@ -64,8 +64,13 @@ function SwapView(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
 
+
+  const currentPairId = currentPair?.id
+
   const setDefaultValue = () => {
     let spendInput = document.querySelector('[name="spend-amount"]');
+    console.log(currentPair)
+    debugger
     if(spendInput && value){
       spendInput.value = null
       setValue("0");
@@ -74,7 +79,7 @@ function SwapView(props) {
   
   useEffect(() => {
     setDefaultValue()
-  }, [currentPair])
+  }, [currentPairId])
 
 
   async function getValueForOnePrimaryCurrency() {
