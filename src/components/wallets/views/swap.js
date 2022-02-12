@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 // import BigNumber from "bignumber.js";
@@ -63,11 +64,23 @@ function SwapView(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
 
+  const setDefaultValue = () => {
+    let spendInput = document.querySelector('[name="spend-amount"]');
+    if(spendInput && value){
+      spendInput.value = null
+      setValue("0");
+    }
+  }
+  
+  useEffect(() => {
+    setDefaultValue()
+  }, [currentPair])
 
-  const getValueForOnePrimaryCurrency = async() => {  
+
+  async function getValueForOnePrimaryCurrency() {
     const { sell_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(sell_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`
-    setValueForOnePrimaryCurrency(finalString)
+    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(sell_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
+    setValueForOnePrimaryCurrency(finalString);
   }
 
 
