@@ -195,7 +195,8 @@ export default () => {
       case 'spend-amount':
       // case 'bought-amount': 
         let minAmount = new BigNumber(0)
-        if(currentWallet.currency.currency.includes('bitcoin')){
+        const minOperationCurrency = currentPair.exchange.min_operation.currency.currency
+        if([minOperationCurrency].includes(currentWallet.currency.currency)){
           minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
         }else{ 
           const converted = await _convertCurrencies(currentPair.exchange.min_operation.currency, currentPair.exchange.min_operation.min_amount, currentPair.id);
