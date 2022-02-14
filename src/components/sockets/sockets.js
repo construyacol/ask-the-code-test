@@ -720,6 +720,7 @@ class SocketsComponent extends Component {
             "success"
           );
           this.props.coinsendaServices.updateActivityState(currentSwap.account_from, "swaps");
+          this.props.coinsendaServices.updateActivityState(currentSwap.account_to, "swaps");
         }, 2000);
       }, 5500);
 
