@@ -439,7 +439,7 @@
 
 .buttonsP {
   margin: 15px 0;
-  text-align: center;
+  text-align: left;
   transition: 0.3s;
   color: #50667a;
 }
