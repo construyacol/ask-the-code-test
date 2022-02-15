@@ -148,7 +148,7 @@ const TopSectionStatus = styled.div`
 
 const SubTitle = styled(Text)`
   font-size: 13px;
-  color: gray;
+  color: var(--paragraph_color);
 `;
 
 const StatusContainer = styled.div`
@@ -252,7 +252,7 @@ const Skeleton = styled.div`
 
 const StatusTitle = styled(Text)`
   font-size: 14px;
-  color: ${(props) => (props.active === "true" ? "#0198FF" : "gray")};
+  color: ${(props) => (props.active === "true" ? "#0198FF" : "var(--paragraph_color)")};
 `;
 
 const DateStatusText = styled(Text)`

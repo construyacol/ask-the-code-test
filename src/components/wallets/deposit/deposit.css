@@ -54,18 +54,18 @@
 }
 
 .DLtitle {
-  color: #50667a;
+  color: var(--paragraph_color);
   font-size: 19px;
 }
 
 .DLtitle2 {
-  color: gray;
+  color: var(--paragraph_color);
   font-size: 23px;
 }
 
 .DLstitle {
   font-size: 20px;
-  color: #50667a;
+  color: var(--paragraph_color);
   font-weight: 400;
   text-align: center;
 }
@@ -351,7 +351,7 @@
 
 .DLcontain > p {
   margin-bottom: 0 !important;
-  color: var(--primary);
+  color: var(--title1);
     font-size: 25px;
     font-weight: bold;
     max-width: 500px;

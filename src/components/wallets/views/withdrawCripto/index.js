@@ -352,7 +352,7 @@ const BalanceContainer = styled.div`
   position: absolute;
   display: flex;
   right: 5px;
-  color: gray;
+  color: var(--paragraph_color);
   height: 100%;
   display: flex;
   align-items: center;

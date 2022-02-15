@@ -23,7 +23,8 @@ const FiatView = (props) => {
   const atributos = {
     icon: "withdraw2",
     size: movil_viewport ? 80 : 100,
-    color: "#989898",
+    color: "var(--paragraph_color)",
+    opacity:0.7
   };
 
   const handleSubmit = (e) => {

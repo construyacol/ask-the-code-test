@@ -110,7 +110,7 @@ function ContentTab(props) {
                       pathname === item.link ? "active" : ""
                     }`}
                   >
-                    <IconSwitch size={20} icon={item.link} color="#14b3f0" />
+                    <IconSwitch size={20} icon={item.link} color="var(--primary)" />
                   </div>
                   <p>{item.title}</p>
                 </NavLink>
@@ -119,7 +119,7 @@ function ContentTab(props) {
           ) : (
             <NavLink to={"#"} className="menuItem active">
               <div className={`menuMovilIcon active`}>
-                <IconSwitch size={20} icon={"deposit"} color="#14b3f0" />
+                <IconSwitch size={20} icon={"deposit"} color="var(--primary)" />
               </div>
               <p>Depositar</p>
             </NavLink>
@@ -197,7 +197,7 @@ const MovilMenu = ({ primary_path }) => {
             <IconSwitch
               size={20}
               icon={itemMenu.key}
-              color={`${isActive ? "#14b3f0" : "gray"}`}
+              color={`${isActive ? "var(--primary)" : "var(--paragraph_color)"}`}
             />
             <div className={`menuMovilIcon ${isActive ? "active" : ""}`}>
               <p className="fuente">{itemMenu.ui_text}</p>

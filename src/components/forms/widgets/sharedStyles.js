@@ -131,7 +131,7 @@ export const Container = styled.div`
     opacity:0;
 
     h1, h2{
-        color: #50667a;
+        color: var(--paragraph_color);
         font-size: 30px;
         margin: 0;
         font-weight:300;

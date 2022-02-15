@@ -255,7 +255,7 @@ function SwapView(props) {
       className={`${isMovilViewport ? "movil" : ""}`}
     >
       <InputForm
-        classes="fuente2"
+        classes="fuente2" 
         type="text"
         placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
         name="spend-amount"
@@ -354,7 +354,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
 ;
 
 const CoinPrice = styled.p`
-  color: gray;
+  color: var(--paragraph_color);
   margin: 0;
   position: absolute;
   @media only screen and (max-width: 768px) {

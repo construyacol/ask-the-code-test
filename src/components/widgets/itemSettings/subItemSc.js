@@ -69,7 +69,7 @@ class SubItemSC extends Component {
     const atributos = {
       icon: icon ? icon : name,
       size: 40,
-      color: `${color ? color : !verify ? "#989898" : "#1babec"}`,
+      color: `${color ? color : !verify ? "var(--paragraph_color)" : "#1babec"}`,
     };
 
     // if(this.state.type==='identity'){console.log(type, name, this.state)}
@@ -106,12 +106,12 @@ class SubItemSC extends Component {
             {other_state === "send" ? (
               <i
                 className="enviarNero fas fa-angle-double-down"
-                style={{ color: "gray" }}
+                style={{ color: "var(--paragraph_color)" }}
               ></i>
             ) : other_state === "confirmed" ? (
               <i
                 className="fas fa-spinner rotateGono"
-                style={{ color: "#bbbbbb" }}
+                style={{ color: "var(--paragraph_color)" }}
               ></i>
             ) : verify ? (
               <i className="fas fa-check" style={{ color: "#59B200" }}></i>
@@ -119,7 +119,7 @@ class SubItemSC extends Component {
               available && (
                 <i
                   className="fas fa-chevron-right anim-flow"
-                  style={{ color: "gray", fontSize: "20px" }}
+                  style={{ color: "var(--paragraph_color)", fontSize: "20px" }}
                 ></i>
               )
             )}
@@ -170,12 +170,12 @@ class SubItemSC extends Component {
                   classic_view && verify
                     ? "#0198ff"
                     : classic_view
-                    ? "gray"
+                    ? "var(--paragraph_color)"
                     : verify && tree
                     ? "#0198ff"
                     : other_state === "send"
-                    ? "gray"
-                    : "gray",
+                    ? "var(--paragraph_color)"
+                    : "var(--paragraph_color)"
               }}
             >
               <div className={`ScimgClassicView ${classic_view ? "classic_view" : ""}`} style={{ display: classic_view ? "flex" : "none" }}>
@@ -192,10 +192,10 @@ class SubItemSC extends Component {
                   alignSelf: tree ? "flex-start" : "center",
                   color:
                     other_state === "send"
-                      ? "#545454"
+                      ? "var(--paragraph_color)"
                       : other_state === "rejected"
                       ? "#a90000"
-                      : "gray",
+                      : "var(--paragraph_color)",
                 }}
               >
                 {other_state === "send" && (<i className="enviarNero fas fa-angle-double-down"></i>)}
@@ -210,7 +210,7 @@ class SubItemSC extends Component {
                 color: verify
                   ? "#59B200"
                   : other_state === "confirmed"
-                  ? "gray"
+                  ? "var(--paragraph_color)"
                   : other_state === "send"
                   ? "#59B200"
                   : "#540000",

@@ -103,7 +103,7 @@ export const ReferralBox = styled.div`
         `}
 `;
 export const Title = styled.p`
-  color: gray;
+  color: var(--paragraph_color);
 
   ${(props) =>
     props.loading &&
@@ -131,6 +131,7 @@ export const Number = styled.p`
   font-family: "Tomorrow", sans-serif;
   font-weight: 600;
   margin: 0;
+  color:var(--paragraph_color);
   font-size: ${(props) => (props.fontSize ? props.fontSize : "36px")};
   @media ${device.laptopL} {
     font-size: ${(props) =>

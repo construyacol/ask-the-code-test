@@ -59,7 +59,7 @@ export default AmountComponent
 
 
 const MinAmount = styled.p`
-    color:gray;
+    color:var(--paragraph_color);
     margin: 0;
     align-self: baseline;
     cursor:pointer;
@@ -81,7 +81,7 @@ const Content = styled.section`
 
 export const Title = styled.h3`
     margin:0;
-    color:var(--primary);
+    color:var(--title1);
     font-size:1.3em;
 `
 

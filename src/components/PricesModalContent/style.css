@@ -230,7 +230,7 @@ g.highcharts-scrollbar {
 }
 
 .exchange-label {
-  color: #181d2b;
+  color: var(--title2);
   margin-left: 10px;
   font-family: "Raleway";
   font-weight: bold;
@@ -359,7 +359,7 @@ g.highcharts-scrollbar {
 
   .prices-exchange-pair {
     position: relative;
-    color: #0e0e0e;
+    color: var(--paragraph_color);
     height: 25%;
     z-index: 1;
   }
@@ -382,7 +382,7 @@ g.highcharts-scrollbar {
   }
 
   .prices-exchange-pair .exchange-text-box > label > .strong {
-    color: #0e0e0e;
+    color: var(--paragraph_color);
   }
 
   .pair-prices .price {
@@ -471,9 +471,12 @@ g.highcharts-scrollbar {
     height: 65px;
     width: 85%;
   }
+
   .item-content-active {
     height: 90px;
   }
+
+
 
   .root-content-items-calc {
     margin: 0 !important;
@@ -482,4 +485,17 @@ g.highcharts-scrollbar {
   .pair-list {
     height: auto !important;
   }
+}
+
+
+.pair-prices p{
+  color: var(--paragraph_color);
+}
+
+.base-item-text-cont h2, .base-item-text-cont p{
+  color:var(--paragraph_color);
+}
+
+.item-content-active h2, .item-content-active p {
+  color: var(--title2);
 }

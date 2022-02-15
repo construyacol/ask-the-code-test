@@ -46,12 +46,12 @@
   align-self: center;
   text-align: center;
   width: calc(100% - 10%);
-  color: #4a4a4a;
+  color: var(--paragraph_color);
   line-height: 1.4;
 }
 
 #Swapdescription label {
-  color: #949494;
+  color: var(--title2);
 }
 
 .socketContent.swap {
@@ -61,7 +61,7 @@
 
 #ButtonNofityText {
   font-size: 16px;
-  color: gray;
+  color: var(--paragraph_color);
   margin: 0px !important;
   padding: 0px !important;
   align-self: center;
@@ -262,7 +262,7 @@
 
 .bottomSection.swap h3 {
   margin-top: 60px;
-  color: #464646;
+  color: var(--paragraph_color);
 }
 
 .depositAmount {
@@ -329,7 +329,7 @@
 }
 
 .close_modal_btn i {
-  color: gray;
+  color: var(--paragraph_color);
   font-size: 17px;
 }
 

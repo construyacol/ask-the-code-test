@@ -19,7 +19,7 @@
 }
 
 .DLtitles2 {
-  color: var(--primary);
+  color: var(--title1);
   font-size: 25px;
   font-weight: bold;
   max-width: 500px;
@@ -27,7 +27,7 @@
 }
 .DLstitles {
   font-size: 20px;
-  color: #50667a;
+  color: var(--paragraph_color);
   font-weight: 400;
   text-align: center;
 }

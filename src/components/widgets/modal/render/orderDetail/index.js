@@ -124,6 +124,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
       : state === "rejected"
       ? "Rechazado"
       : "Cancelado";
+
   const colorState =
     state === "accepted"
       ? "#1cb179"
@@ -132,7 +133,6 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
       : state === "pending"
       ? "#ff8660"
       : "red";
-
       const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(state)
 
 
@@ -220,7 +220,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
       
   const InfoComponent = GetInfoComponentToRender({...currentOrder, tx_path})
   const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(currentOrder.state)
-
+// var(--paragraph_color)
   return (
     <BottomSectionContainer>
 
@@ -260,7 +260,7 @@ const TotalAmount = styled.div`
   }
 
   p {
-    color: ${(props) => props.color};
+    color: ${(props) => props.color ? props.color : 'var(--paragraph_color)'};
     margin: 0;
     text-align: right;
   }
@@ -414,8 +414,7 @@ const Title = styled.h3`
 `;
 
 const TopSection = styled.section`
-  background: ${(props) =>
-    props.state ? orderStateColors[props.state] : "gray"};
+  background: ${(props) => props.state ? orderStateColors[props.state] : "var(--paragraph_color)"};
   width: 100%;
   height: 100%;
   display: grid;

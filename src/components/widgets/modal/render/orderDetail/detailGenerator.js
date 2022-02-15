@@ -332,7 +332,7 @@ export default DetailGenerator;
 const ReferralSwapCopy = ({ order, currencies }) => {
 
   return(
-      <p className="fuente referalBySwap" style={{fontSize: "12px", color:"gray"}}>
+      <p className="fuente referalBySwap" style={{fontSize: "12px", color:"var(--paragraph_color)"}}>
         Quién te refirió obtuvo el &nbsp;  
         <span className="fuente2"> 
           {order?.referral?.total_percentage}%&nbsp;
@@ -349,7 +349,7 @@ export const DataOrderHeader = styled.div`
     display: grid;
     grid-template-columns: auto 1fr;
     column-gap: 20px;
-    color:gray;
+    color:var(--paragraph_color);
     width: 100%;
 
     p{
@@ -441,7 +441,7 @@ const ItemContainer = styled.div`
     align-items: center;
     ${RightText}, ${LeftText} {
       font-size: 18px;
-      color: #383838;
+      color: var(--paragraph_color);
     }
     ${RightText} {
       font-size: 20px;
@@ -461,7 +461,6 @@ const Container = styled.section`
 
   .referalBySwap{
     font-size: 12px;
-    color: gray;
     width: calc(100% - 100px);
     max-width: calc(500px - 100px);
     text-align: justify;
@@ -469,7 +468,7 @@ const Container = styled.section`
     padding: 0 50px 0 15px;
     position: absolute;
     font-size: 13px;
-    color: gray;
+    color: var(--paragraph_color);
     left: 20px;
     bottom: -20px;
   }
@@ -490,7 +489,7 @@ const Container = styled.section`
   }
 
   ${Text}, ${MiddleSection} {
-    color: gray;
+    color: var(--paragraph_color);
   }
 
   &.darkTheme {

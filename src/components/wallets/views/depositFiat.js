@@ -40,7 +40,8 @@ const DepositFiat = (props) => {
   const atributos = {
     icon: "deposit",
     size: movil_viewport ? 80 : 100,
-    color: "#989898",
+    color: "var(--paragraph_color)",
+    opacity:"0.7  "
   };
 
   useEffect(() => {

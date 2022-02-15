@@ -184,7 +184,7 @@ export const InputContainer = styled.div`
   background: white;
 
   .inputElement, .inputElement3 {
-    color: #50667a;
+    color: var(--paragraph_color);
     width: calc(100% - 20px);
     height: 100%;
     background: 0 0;
@@ -194,6 +194,11 @@ export const InputContainer = styled.div`
     font-size: 16px;
     -webkit-transition: 0.5s;
     transition: 0.5s;
+  }
+
+
+  .inputElement::-webkit-input-placeholder{
+    color: var(--paragraph_color);
   }
 
   .movil {
@@ -241,7 +246,7 @@ export const ContainerInputComponent = styled.div`
   align-items: center;
 
   p.skeleton {
-    background: #bfbfbf;
+    background: #bfbfbf; 
     width: 100%;
     height: 15px;
     max-width: 400px;

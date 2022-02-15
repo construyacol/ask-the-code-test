@@ -29,7 +29,7 @@
 }
 
 .nBtextInit {
-  color: #656565 !important;
+  color: var(--paragraph_color) !important;
   font-size: 18px;
   max-width: 500px;
   text-align: center;
@@ -152,5 +152,5 @@
   justify-self: center;
   align-self: center;
   font-size: 30px;
-  color: var(--primary);
+  color: var(--title1);
 }
