@@ -169,7 +169,7 @@ const DeleteComponent = ({ handleAction, itemId }) => {
   return (
     <DeleteContainer>
       <LoaderDeleteItem id={`loader_${itemId}`}>
-        <SimpleLoader loader={2} color="#0198FF" justify="center" />
+        <SimpleLoader loader={2} color="var(--primary)" justify="center" />
       </LoaderDeleteItem>
       <p className="fuente confirmText">
         ¿Estás seguro que deseas eliminar esta cuenta de retiro?
@@ -223,7 +223,7 @@ const DeleteControls = styled.div`
   }
 
   .cancel {
-    color: gray;
+    color: var(--paragraph_color);
   }
 
   p {
@@ -284,7 +284,7 @@ const ItemListContainer = styled.div`
   position: relative;
   &:hover {
     opacity: 1;
-    color: #0198ff;
+    color: var(--primary);
     ${DeleteButton} {
       right: 10px;
       opacity: 1;
@@ -295,7 +295,7 @@ const ItemListContainer = styled.div`
 const AcronymContainer = styled.div`
   width: 45px;
   height: 45px;
-  background: #0198ff;
+  background: var(--primary);
   border-radius: 50%;
   align-self: center;
   display: flex;
@@ -338,7 +338,7 @@ const ItemTextContainer = styled.div`
     margin: 0;
     &.withdrawAddress {
       font-size: 12px;
-      color: gray;
+      color: var(--paragraph_colorf);
       padding-left: 14px;
       position: relative;
       &::before {
@@ -401,7 +401,7 @@ export const AddressContainer = styled.div`
     left: 100%;
     top: 0;
     font-size: 12px;
-    color: gray;
+    color: var(--paragraph_color);
   }
   &:hover {
     width: auto;
@@ -425,7 +425,7 @@ const ItemContainer = styled(CubeObject)`
   ${ItemListContainer} {
     &.isSelected {
       opacity: 1;
-      color: #0198ff;
+      color: var(--primary);
     }
   }
 `;

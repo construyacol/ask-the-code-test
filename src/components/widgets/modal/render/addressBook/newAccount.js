@@ -106,7 +106,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           SuffixComponent={() => (
             <IconSwitch
               icon={`${addressState === "good" ? "verify" : "wallet"}`}
-              color={`${addressState === "good" ? "green" : "gray"}`}
+              color={`${addressState === "good" ? "green" : "var(--paragraph_color)"}`}
               size={`${addressState === "good" ? 22 : 25}`}
             />
           )}
@@ -150,6 +150,9 @@ const ProviderTypeIcon = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  p{
+    color:var(--paragraph_color);
+  }
 `;
 
 const Form = styled.form`
