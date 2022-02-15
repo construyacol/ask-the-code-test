@@ -68,7 +68,7 @@ const Container = styled.div`
 const Text = styled.div`
     font-family: 'Raleway', sans-serif !important;
     font-size: 22px;
-    color: #6b6b6b;
+    color: var(--paragraph_color);
     font-weight: bold;
     text-align: center;
     span{
@@ -77,7 +77,7 @@ const Text = styled.div`
     }
     p {
         font-size: 16px;
-        color: #6b6b6b;
+        color: var(--paragraph_color);
         font-weight: 100;
         max-width: 1100px;
         margin-top: 2em;

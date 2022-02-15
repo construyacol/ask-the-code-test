@@ -65,6 +65,7 @@ const Counter = styled.div`
   flex-direction: column;
   width: 80%;
   align-items: start !important;
+  color: var(--paragraph_color)
 
   ${(props) =>
     props.loading &&
@@ -91,7 +92,7 @@ const StyledShareSection = styled(ReferralBox)`
   width: calc(100% - 40px);
   transform: scale(.96);
   align-self: flex-start;
-  color: #919191;
+  color:var(--paragraph_color);
   display: flex;
   ${(props) =>
     props.withRibbon

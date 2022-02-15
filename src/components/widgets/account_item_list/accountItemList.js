@@ -163,7 +163,7 @@ function AccountItemList(props) {
                 {account.bank_name.ui_name}
                 {account.cost ? (
                   <span className={`costStyle fuente2  ${classNameStyle}`}>
-                    | ${number_format(account.cost)}
+                    | costo: ${number_format(account.cost)}
                   </span>
                 ) : (
                   ""

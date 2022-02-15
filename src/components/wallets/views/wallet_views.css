@@ -85,6 +85,10 @@
   display: grid;
 }
 
+.contIcontSwitchCont p{
+  color:var(--paragraph_color);
+}
+
 .active_trade_operation {
   color: #b3b3b3;
 }
@@ -229,7 +233,7 @@ p#WalletList2{
 
 .contAddress p {
   margin: 0 !important;
-  color: #6b6b6b;
+  color: var(--paragraph_color);
 }
 
 .address {
@@ -299,7 +303,6 @@ p#WalletList2{
 .DepositView p {
   text-align: center;
   margin: 0 !important;
-  color: #6b6b6b;
   max-width: 400px;
   justify-self: center;
 }
@@ -342,7 +345,7 @@ p#WalletList2{
 .middleSection i {
   position: absolute;
   bottom: -15px;
-  color: #868686;
+  color: var(--paragraph_color);
 }
 
 .SwapView {

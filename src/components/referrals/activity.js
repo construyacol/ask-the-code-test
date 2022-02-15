@@ -168,6 +168,7 @@ const EmptyStateCont = styled.div`
 
   p{
     text-align: center;
+    color:var(--paragraph_color);
   }
 
   @media ${device.laptopL} {
@@ -204,6 +205,7 @@ const ActivityGrid = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+    color: var(--paragraph_color)
   }
 
   ${'' /* .accepted{

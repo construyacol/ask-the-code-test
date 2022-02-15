@@ -133,6 +133,9 @@ const BottomSection = styled.div`
   justify-content: flex-end;
   align-items: center;
   margin-top: 10px;
+  p{
+    color:var(--paragraph_color)
+  }
   @media ${device.laptopL} {
     font-size: 14px;
   }

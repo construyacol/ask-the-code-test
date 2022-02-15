@@ -85,7 +85,7 @@ const ReferralComponent = (props) => {
                   <p>Recibe el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.</p>
                   <RefCode>
                     <p className="ref__code_title">Código de referido:</p>
-                    <p className="refCode__p fuente2">{user?.referral?.ref_code}</p>
+                    <p className="refCode__p fuente">{user?.referral?.ref_code}</p>
                   </RefCode>
                 </FirstText>
 
@@ -138,8 +138,8 @@ const RefCode = styled.div`
   }
   
   .refCode__p{
-    margin:0;
-    font-size:35px;
+    margin:10px 0 0;
+    font-size:30px;
   }
 
 `
@@ -229,7 +229,7 @@ const PanelLeft = styled.section`
 const FirstText = styled.div`
   ${'' /* grid-area: top; */}
   font-size: 16px;
-  color: #6b6b6b;
+  color: var(--paragraph_color);
   font-weight: 100;
 
   &.skeleton {

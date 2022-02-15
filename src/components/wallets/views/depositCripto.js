@@ -77,7 +77,7 @@ const AddDepositProviderCripto = () => {
   const atributos = {
     icon: "deposit_crypto",
     size: movil_viewport ? 80 : 100,
-    color: "#989898",
+    color: "var(--paragraph_color)",
   };
 
   const createDepositProvider = async (e) => {

@@ -28,7 +28,7 @@ export const DropDownList = styled.ul`
   .itemFilter{
     margin: 20px 15px;
     font-size: 14px;
-    color: gray;
+    color: var(--paragraph_color);
     cursor: pointer;
   }
   .itemFilter:hover{

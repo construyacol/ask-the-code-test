@@ -14,7 +14,7 @@
 .DCsubItem {
   border-bottom: 2px solid transparent;
   width: 90px;
-  color: #696969;
+  color: var(--paragraph_color)
 }
 
 .noTamoActivos {
@@ -22,8 +22,8 @@
 }
 
 .DCsubItem.DCactive {
-  border-bottom: 2px solid #14b3f0;
-  color: #14b3f0 !important;
+  border-bottom: 2px solid var(--primary);
+  color: var(--primary) !important;
 }
 
 .DCBack p {
@@ -36,7 +36,7 @@
   max-width: 70px;
   display: flex;
   align-items: center;
-  color: #696969;
+  color: var(--paragraph_color);
   z-index: 2;
 }
 
@@ -56,7 +56,7 @@
   position: absolute;
   justify-self: center;
   align-self: center;
-  color: #696969;
+  color: var(--paragraph_color);
   width: 100%;
   height: 100%;
   display: grid;
@@ -95,11 +95,11 @@
 .menuItem.movil p,
 .menuItem.active p {
   grid-template-rows: 1fr auto;
-  color: #14b3f0;
+  color: var(--primary);
 }
 
 .menuItem:hover p {
-  color: #14b3f0;
+  color: var(--primary);
 }
 
 .menuMovilIcon {
@@ -121,7 +121,7 @@
 }
 
 .menuMovilItem:hover {
-  color: #14b3f0 !important;
+  color: var(--primary) !important;
   transition: 0.3s;
 }
 
@@ -132,8 +132,8 @@
 }
 
 .menuMovilItem.active {
-  border-bottom: 2px solid #14b3f0;
-  color: #14b3f0 !important;
+  border-bottom: 2px solid var(--primary);
+  color: var(--primary) !important;
 }
 
 .DCTitle > p {
@@ -149,13 +149,13 @@
 
 .subMenu a {
   text-decoration: none;
-  color: gray;
+  color: var(--paragraph_color);
 }
 
 .itemsMenu > div {
   width: 100px;
   height: 100%;
-  background: gray;
+  background: var(--paragraph_color);
 }
 
 .itemsMenu {

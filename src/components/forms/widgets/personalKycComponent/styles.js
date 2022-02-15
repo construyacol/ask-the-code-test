@@ -49,7 +49,7 @@ export const LabelContainer = styled.div`
   margin-bottom: 0px;
   position:relative;
   display:flex;
-  color: #50667a;
+  color: var(--paragraph_color);
 `
 
 export const StickyGroup = styled.div`
@@ -77,7 +77,7 @@ export const TitleContainer = styled.div`
     margin: 50px 0 80px;
     text-align: center;
     font-size: 35px;
-    color: #06a;
+    color: var(--title1);
     font-weight: 400;
   }
 
@@ -144,7 +144,7 @@ export const LabelText = styled.p`
   bottom: -30px;
   margin: 0;
   font-size: 14px;
-  color: rgb(80, 102, 122);
+  color: var(--paragraph_color);
 
   &.skeleton{
     background:#d1d4d7;

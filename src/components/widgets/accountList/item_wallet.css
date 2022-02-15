@@ -53,7 +53,7 @@
 }
 
 #WalletList2 {
-  color: #6b6b6b !important;
+  color: var(--paragraph_color) !important;
   font-size: 17px !important;
 }
 

@@ -31,7 +31,7 @@ export const LayoutContainer = styled.section`
         margin-bottom:10vh;
         margin-top:0;
         font-size: 2em;
-        color:var(--primary);
+        color:var(--title1);
     }
 
     &>p{ 
@@ -40,6 +40,7 @@ export const LayoutContainer = styled.section`
         max-width: 500px;
         text-align: center;
         font-weight: 500;
+        color:var(--paragraph_color)
     }
 
     &.show{
@@ -65,7 +66,7 @@ export const ControlContainer = styled.div`
     margin-bottom: 30px;
     p{
         margin-bottom:40px;
-        color: gray;
+        color: var(--paragraph_color);
         font-size: 16px;
     }
 

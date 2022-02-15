@@ -18,12 +18,12 @@
   margin-bottom: 0 !important;
   font-weight: bold;
   text-align: center;
-  color: #464646;
+  color: var(--paragraph_color);
   margin-top: 5vh;
 }
 
 .SimpleSliderItem h1 {
-  color: #464646;
+  color: var(--paragraph_color);
   margin-top: 3px !important;
 }
 
@@ -36,5 +36,5 @@
   text-align: center;
   max-width: 600px;
   font-weight: bold;
-  color: gray;
+  color: var(--paragraph_color);
 }

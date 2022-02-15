@@ -93,8 +93,8 @@ const ReferralInfo = () => {
     }
     p{
       text-transform: capitalize;
-      color:gray;
       margin:0;
+      color:var(--paragraph_color);
     }
   `
 

@@ -89,6 +89,7 @@
 .coinB2 p {
   margin: 0 3px 0 7px !important;
   text-transform: capitalize;
+  color: var(--paragraph_color);
 }
 
 .coinB2 i {
@@ -651,7 +652,7 @@ form#phone {
 .labelText2,
 .labelText3 {
   text-align: center;
-  color: #50667a;
+  color: var(--paragraph_color);
   margin: 15px 0;
 }
 

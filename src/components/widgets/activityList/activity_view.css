@@ -806,7 +806,7 @@
 }
 
 .ALfiltros P {
-  color: gray;
+  color: var(--paragraph_color);
 }
 
 .ConfirmedTxT {
@@ -841,6 +841,6 @@
 
 .ALtext {
   /*transition: .3s;*/
-  color: gray;
+  color: var(--paragraph_color);
   /*margin: 15px 0 !important;*/
 }

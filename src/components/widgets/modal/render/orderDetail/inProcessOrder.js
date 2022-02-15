@@ -98,7 +98,7 @@ const CryptoOrder = ({ order }) => {
               />
             </BottomSectionContainer>)
           :
-            <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
+            <BottomSection colorState={"var(--paragraph_color)"} currentOrder={order} tx_path={tx_path} />
         }
       </OrderContainer>
 
@@ -228,7 +228,7 @@ const FiatOrder = ({ order }) => {
             />
           </BottomSectionContainer>)
           :
-          <BottomSection colorState={"gray"} currentOrder={order} tx_path={tx_path} />
+          <BottomSection colorState={"var(--paragraph_color)"} currentOrder={order} tx_path={tx_path} />
         }
 
       </OrderContainer>
@@ -277,7 +277,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
     >
       {!imgSrc && currentOrder.state !== "confirmed" ? (
         <Fragment>
-          <AiOutlineUpload size={45} color="gray" />
+          <AiOutlineUpload size={45} color="var(--paragraph_color)" />
           <UploadText className="fuente">
             {title || "Arrastra el comprobante que quieres subir"}
           </UploadText>
@@ -462,7 +462,7 @@ export const UploadTextMiddle = styled(Text)`
   width: 150px;
   background: #eeeeee;
   text-align: center;
-  color: gray;
+  color: var(--paragraph_color);
 
   &.titleSection {
     font-size: 15px;
@@ -497,7 +497,7 @@ export const UploadMiddle = styled.div`
     align-self: start;
     hr{
       border-top: 1px solid;
-      color: #c5c5c5;
+      color: #d4d4d4;
       position: absolute;
       width: 80%;
       right: 0;
@@ -520,7 +520,7 @@ export const UploadMiddle = styled.div`
 
 const UploadText = styled(Text)`
   font-size: 16px;
-  color: gray;
+  color: var(--paragraph_color);
 `;
 
 const UploadContainer = styled.section`
@@ -558,7 +558,7 @@ const DateIdContainter = styled.div`
   grid-area: dateIdContainter;
   ${Text} {
     font-size: 12px;
-    color: gray;
+    color: var(--paragraph_color);
   }
 `;
 
