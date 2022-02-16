@@ -136,6 +136,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
       const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(state)
 
 
+
   return (
     <Layout className={`layout3 ${(tx_path !== 'swaps' && (isMovilViewport && ConsolidatedOrder)) ? 'mobileInfoStyles' : ''}`} >
       <IconClose theme="dark" size={20} />
@@ -147,7 +148,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
             className="TitleIconOrder"
             size={28}
             icon={
-              (currentOrder.currency && currentOrder.currency.currency) || "cop"
+              (currentOrder?.currency?.currency || currentOrder?.to_buy_currency?.currency) || "cop"
             }
           />
           <Title className="fuente">{TitleText}</Title>

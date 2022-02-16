@@ -24,7 +24,7 @@
 }
 
 .step1.newWallet h1 {
-  color: #2699fa;
+  color: var(--title1);
 }
 
 .step2 {

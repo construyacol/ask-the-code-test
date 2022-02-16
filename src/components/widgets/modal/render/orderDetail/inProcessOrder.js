@@ -54,6 +54,7 @@ const CryptoOrder = ({ order }) => {
   const { tx_path, currencies } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
 
+
   return (
     <InProcessOrderContainer>
       <IconClose theme="dark" size={20} />
