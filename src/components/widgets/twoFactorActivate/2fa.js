@@ -99,7 +99,7 @@ const TwoFactorActivate = (props) => {
               <h3 className="fuente">
                 Habilitar segundo factor de autenticación <span className="fuente2">2FA</span>
               </h3>
-              <IconSwitch icon="2auth" size={75} color="#1babec" />
+              <IconSwitch icon="twofa" size={75} color="var(--primary)" />
             </div>
             <div className="body2fa">
               <div

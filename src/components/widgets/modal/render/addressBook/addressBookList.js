@@ -193,7 +193,7 @@ const Input = styled(InputContainer)`
     top: -25px;
     left: 0;
     font-size: 15px;
-    color: #383838;
+    color: var(--paragraph_color);
   }
 `;
 

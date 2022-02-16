@@ -39,7 +39,7 @@
 
 .header2fa h3 {
   text-align: center;
-  color: #00bfff;
+  color: var(--title1);
   font-size: 25px;
 }
 
@@ -130,12 +130,12 @@
 
 .TwoFactorActivate p {
   margin: 0;
-  color: gray;
+  color: var(--paragraph_color);
   text-align: center;
 }
 
 .secretCode {
-  color: #1babec !important;
+  color: var(--primary) !important;
   text-decoration: underline;
   height: 80px;
   font-size: 25px;

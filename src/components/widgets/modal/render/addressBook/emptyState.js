@@ -27,7 +27,7 @@ const EmptyState = ({ switchView }) => {
       <IconSwitch size={200} icon="newAccount" />
       <ControlButtonContainer bottom={50}>
         <ControlButton
-          label={`Crear nueva cuenta ${(!isMovilViewport && keyActions) && "[A]"}`}
+          label={`Crear nueva cuenta ${(!isMovilViewport && keyActions) ? "[A]" : ""}`}
           formValidate
           handleAction={() => switchView("newAccount")}
           id={idForOpenAddressBook}
@@ -53,6 +53,6 @@ const EmptyStateContainer = styled.section`
   p {
     max-width: 300px;
     text-align: center;
-    color: dimgrey;
+    color: var(--paragraph_color);
   }
 `;

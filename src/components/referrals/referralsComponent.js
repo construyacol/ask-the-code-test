@@ -152,6 +152,7 @@ const ContainerProof = styled.div`
   width: 100%;
   height: auto;
   min-height: calc(100vh - 14vh);
+  background: #f9f9fb;
 `
 
 const ShareSectionContainer = styled.div`
