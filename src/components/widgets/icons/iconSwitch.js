@@ -247,6 +247,8 @@ class IconSwitch extends Component {
       case "twitter":
         return <Twitter {...props} />;
       case "litecoin":
+      case "LTC":
+      case "ltc":
         return <Litecoin {...props} />;
       case "youtube":
         return <Youtube {...props} />;
