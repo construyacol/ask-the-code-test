@@ -16,7 +16,8 @@ import "../../wallets/views/wallet_views.css";
 
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
-const NewWalletComponent = loadable(() => import("../../wallets/newWallet"));
+// const NewWalletComponent = loadable(() => import("../../wallets/newWallet"));
+const NewWalletComponent = loadable(() => import("../../forms/widgets/newWallet/init"));
 
 function AccountList(props) {
   const {

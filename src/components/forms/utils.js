@@ -7,6 +7,7 @@ import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
+import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 
 
 // import countryValidators from './apiRes'
@@ -133,7 +134,8 @@ const dataService = {
   biometric:ApiGetBiometricStages,
   onBoarding:ApiGetOnBoardingStages,
   personal:ApiGetPersonalStages,
-  fiatDeposit:ApiGetOnFiatDepositStages
+  fiatDeposit:ApiGetOnFiatDepositStages,
+  newWallet:ApiGetNewWalletStages
 }
 
 

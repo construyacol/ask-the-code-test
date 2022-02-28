@@ -133,7 +133,18 @@ export class AccountService extends WebService {
     return result;
   }
 
-  async createWallet(body) {
+  async createWallet(walletInfo) {
+
+    const body = {
+        data: {
+            name: `Mi billetera ${walletInfo?.currency}`,
+            description: "description",
+            country: this?.user?.country,
+            enabled: true,
+            currency: walletInfo.short_currency
+        }
+    };
+
     return this.Post(CREATE_WALLET_URL, body);
   }
 

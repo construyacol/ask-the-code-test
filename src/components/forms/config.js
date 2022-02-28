@@ -9,6 +9,12 @@ import {
   ONBOARDING_STAGES
 } from './widgets/onBoardingComponent/api'
 
+
+import { 
+  NEW_WALLET_COMPONENTS,
+  NEW_WALLET_STAGES
+} from './widgets/newWallet/api'
+
 import { 
   PERSONAL_COMPONENTS,
   PERSONAL_STAGES,
@@ -24,7 +30,8 @@ let stages = {
   ...BIOMETRIC_STAGES,
   ...PERSONAL_STAGES,
   ...ONBOARDING_STAGES,
-  ...FIAT_DEPOSIT_STAGES
+  ...FIAT_DEPOSIT_STAGES,
+  ...NEW_WALLET_STAGES
 } 
 
 const defaultState = {
@@ -50,7 +57,8 @@ const wrapperComponent = {
   ...BIOMETRIC_COMPONENTS['wrapperComponent'],
   ...PERSONAL_COMPONENTS['wrapperComponent'],
   ...ONBOARDING_COMPONENTS['wrapperComponent'],
-  ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent']
+  ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent'],
+  ...NEW_WALLET_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {

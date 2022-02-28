@@ -10,14 +10,13 @@ const TagItem = ({ item, deleteTag }) => {
     return null;
   }
 
-  // const address = item.info && item.info.address;
 
   return (
     <>
       <TagBlocker />
       <TagContainer id="tagAddress">
         <LabelTextCont>
-          <p className="fuente label_">{item.name}</p>
+          <p className="fuente label_">{item?.currency}</p>
         </LabelTextCont>
         <DeleteButton onClick={deleteTag}>
           <AiOutlineClose size={16} color="white" />
@@ -56,7 +55,28 @@ export const Address = styled.p`
   font-size: 13px;
 `;
 
+export const AddressContainer = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  cursor: pointer;
 
+  &::after {
+    transition: 0.15s;
+    content: attr(data-final-address);
+    position: absolute;
+    right: -75px;
+    top: 0;
+    color: #505050;
+    font-size: 13px;
+    line-height: 30px;
+    opacity: 0;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100px;
+  }
+`;
 
 const LabelTextCont = styled.div`
   height: 60px;
@@ -94,6 +114,19 @@ const TagContainer = styled.div`
     grid-template-columns: minmax(90px, 180px) 38px;
   }
 
+  ${'' /* &:hover {
+    ${LabelTextCont} {
+      top: -30px;
+      .label_ {
+        opacity: 0;
+      }
+
+      .address_,
+      ${AddressContainer}::after {
+        opacity: 1;
+      }
+    }
+  } */}
 
   &.disappear {
     transform: translateY(10px);

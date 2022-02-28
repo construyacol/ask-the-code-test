@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import DynamicLoadComponent from './dynamicLoadComponent'
-import loadable from '@loadable/component'
+// import loadable from '@loadable/component'
 import { getInitialState } from './utils'
 import './mobile.css'
 import './global.css'
 
-const FormComponent = ({ handleDataForm, ...props }) => {
+const FormComponent = ({ handleDataForm, Fallback, ...props }) => {
   
-  const FormSkeleton = loadable(() => import(`./widgets/${handleDataForm.dataForm.wrapperComponent || 'personalKycComponent'}/skeleton`))
+  // const FormSkeleton = loadable(() => import(`./widgets/${handleDataForm.dataForm.wrapperComponent || 'personalKycComponent'}/skeleton`))
   const [ state, setState ] = useState()
 
   useEffect(()=>{
@@ -18,7 +18,7 @@ const FormComponent = ({ handleDataForm, ...props }) => {
   return( 
         <DynamicLoadComponent
           component={handleDataForm?.dataForm?.wrapperComponent}
-          Fallback={() => <FormSkeleton/>}
+          Fallback={Fallback}
           handleDataForm={handleDataForm}
           handleState={{setState, state}}
           {...props}
