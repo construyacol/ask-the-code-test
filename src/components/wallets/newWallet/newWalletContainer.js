@@ -8,7 +8,7 @@ import { matchItem } from "../../../utils";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useToastMessage from "../../../hooks/useToastMessage";
 
-const NewWallet = (props) => {
+const NewWallet = (props) => { 
   const [name, setName] = useState();
   const [currency, setCurrency] = useState(
     props.search.length && props.search[0].currency

@@ -64,7 +64,6 @@
 }
 
 .item:hover {
-  transform: scale(1.1) !important;
   -webkit-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
   box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
@@ -74,7 +73,6 @@
 }
 
 .itemSelection {
-  transform: scale(1.1) !important;
   -webkit-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
   -moz-box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
   box-shadow: 0px 0px 20px -1px rgba(0, 0, 0, 0.6);
@@ -293,5 +291,5 @@
 }
 
 .mobileView .itemSelection{
-  transform: scale(1.05) !important;
+  transform: scale(1.01) !important;
 }

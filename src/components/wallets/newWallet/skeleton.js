@@ -8,9 +8,8 @@ import { OnlySkeletonAnimation } from '../../widgets/loaders/skeleton'
 const NewWalletSkeleton = () => {
   return(
       <Container>
-        <H1 className="skeleton">Nueva Billetera</H1>
+        <H1 className="skeleton">Crea una Billetera</H1>
         <FormContainer>
-          <InputForm skeleton />
           <InputForm skeleton />
           <OptionsContainer className="skeleton">
             <Option/>
@@ -24,7 +23,7 @@ const NewWalletSkeleton = () => {
 export default NewWalletSkeleton
 
 
-const Option = styled.div`
+export const Option = styled.div`
   height: 142px;
   width: 172px;
   border: 1px solid #bfbfbf;
@@ -57,7 +56,7 @@ const Option = styled.div`
   }
 `
 
-const OptionsContainer = styled.div`
+export const OptionsContainer = styled.div`
   display: grid;
   height: auto;
   grid-template-columns: repeat(3, 1fr);

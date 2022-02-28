@@ -2,28 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
 
-const 
-TagItem = ({ withdrawAccount, deleteTag }) => {
-  // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
+const TagItem = ({ item, deleteTag }) => {
+  // console.log('||||||||||||||||||||| item : ', item)
   // debugger
 
-  if (!withdrawAccount) {
+  if (!item) {
     return null;
   }
 
-  const address = withdrawAccount.info && withdrawAccount.info.address;
+  // const address = item.info && item.info.address;
 
   return (
     <>
       <TagBlocker />
       <TagContainer id="tagAddress">
         <LabelTextCont>
-          <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
-          <AddressContainer
-            data-final-address={address.match(/..........$/g).toString()}
-          >
-            <Address className="fuente2 address_">{address}</Address>
-          </AddressContainer>
+          <p className="fuente label_">{item.name}</p>
         </LabelTextCont>
         <DeleteButton onClick={deleteTag}>
           <AiOutlineClose size={16} color="white" />
@@ -62,28 +56,7 @@ export const Address = styled.p`
   font-size: 13px;
 `;
 
-export const AddressContainer = styled.div`
-  position: relative;
-  width: 100%;
-  max-width: 200px;
-  cursor: pointer;
 
-  &::after {
-    transition: 0.15s;
-    content: attr(data-final-address);
-    position: absolute;
-    right: -75px;
-    top: 0;
-    color: #505050;
-    font-size: 13px;
-    line-height: 30px;
-    opacity: 0;
-  }
-
-  @media (max-width: 768px) {
-    max-width: 100px;
-  }
-`;
 
 const LabelTextCont = styled.div`
   height: 60px;
@@ -121,19 +94,6 @@ const TagContainer = styled.div`
     grid-template-columns: minmax(90px, 180px) 38px;
   }
 
-  &:hover {
-    ${LabelTextCont} {
-      top: -30px;
-      .label_ {
-        opacity: 0;
-      }
-
-      .address_,
-      ${AddressContainer}::after {
-        opacity: 1;
-      }
-    }
-  }
 
   &.disappear {
     transform: translateY(10px);

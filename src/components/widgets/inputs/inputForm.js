@@ -239,7 +239,8 @@ export const InputContainer = styled.div`
 `;
 
 export const ContainerInputComponent = styled.div`
-  height: 100px;
+  min-height:100px;
+  height:auto;
   width: 100%;
   position: relative;
   display: grid;

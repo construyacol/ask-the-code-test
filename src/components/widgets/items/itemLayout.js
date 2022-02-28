@@ -28,12 +28,12 @@ function ItemLayout(props) {
     itemType,
   } = props;
 
-  console.log('|||||||||||||||  ItemLayout ==> ', type)
+  // console.log('|||||||||||||||  ItemLayout ==> ', type)
 
   return (
     <div
       id={`${primarySelect ? "primarySelect" : ""}`}
-      className={`${type === "payment_method" ? "ILtuvieja" : ""} `}
+      className={`${type === "payment_method" ? "ILtuvieja" : ""} __itemContainerL__`}
     >
       <div
         className={`item ${actives ? "itemSelection" : ""}`}
