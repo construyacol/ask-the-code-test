@@ -106,7 +106,7 @@ const ControlsContainer = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    align-self:end;
+    ${'' /* align-self:end; */}
   }
 `;
 

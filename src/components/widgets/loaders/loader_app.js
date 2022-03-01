@@ -60,11 +60,11 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
 
     const { userToken } = authData;
     const isSessionRestored = await tryRestoreSession(userToken);
-    // if (isSessionRestored) {
-    //   await actions.isLoggedInAction(true);
-    //   coinsendaServices.postLoader(doLogout);
-    //   return redirectURL(isSessionRestored);
-    // }
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true);
+      coinsendaServices.postLoader(doLogout);
+      return redirectURL(isSessionRestored);
+    }
 
     if (!userToken) return;
 
