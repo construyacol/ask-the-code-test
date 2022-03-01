@@ -1,7 +1,6 @@
 import { useState } from 'react'
-import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 import { useActions } from '../../../../hooks/useActions'
-import { ContainerLayout, Content } from '../../../widgets/modal/render/addressBook'
+import { Content } from '../../../widgets/modal/render/addressBook'
 import { Header, WindowControl } from '../../../widgets/modal/render/addressBook/header'
 import { IconClose, IconBackContainer } from "../../../widgets/shared-styles";
 import useStage from '../../hooks/useStage'
@@ -12,6 +11,22 @@ import { ApiPostCreateDeposit } from './api'
 import FiatDepositSuccess from './success'
 import { useParams  } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { DepositSkeleton } from './amount'
+import { ContainerLayout } from '../../../widgets/modal/render/addressBook'
+
+
+// import IconSwitch from "../../../widgets/icons/iconSwitch";
+// import { AmountLayout } from './styles'
+// import { 
+//   Content as ContentAmount, 
+//   Title,
+//   IconSkeleton
+// } from './amount'
+// import { InputDepositForm } from "../../../widgets/inputs";
+// import ControlButton from "../../../widgets/buttons/controlButton";
+
+
+
 
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
@@ -30,11 +45,7 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
     dataForm.stages
   )
 
-  const closeModal = (e) => {
-    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
-      actions.renderModal(null);
-    }
-  };
+
 
   const {
     finalStage,
@@ -62,7 +73,7 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
 
   if(finalStage){
     return <FiatDepositSuccess 
-      closeModal={closeModal} 
+      closeModal={props.closeModal} 
       actions={actions}
       params={params}
       depositProvData={depositProvider?.provider}
@@ -71,66 +82,56 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
   }
 
   return(
-    <OtherModalLayout
-      id="close-button-with-OtherModalLayout"
-      onkeydown={false}
-      on_click={closeModal}
-    >
-
-    <ContainerLayout className="appear">
-       <IconClose
-          handleAction={() => actions.renderModal(null)}
-          theme="dark"
-          size={20}
-        /> 
-        
-        <HeaderComponent 
-          prevStage={prevStage}
-          currentStage={currentStage}
-        />
-
-        <Content id="mainContent">
-        {
-          stageData &&
-          <DynamicLoadComponent
-              component={`fiatDeposit/${stageData?.key}.js`}
-              nextStage={nextStage}
-              handleState={handleState}
-              stageData={stageData}
-              loader={loader}
-              setLoader={setLoader}
-              submitForm={submitForm}
-              Fallback={() => (<p>Cargando...</p>)}
+        <ContainerLayout className="appear">
+          <IconClose
+            theme="dark"
+            size={20}
+          /> 
+          <HeaderComponent 
+            prevStage={prevStage}
+            currentStage={currentStage}
           />
-        }
-        </Content>
-    </ContainerLayout>
-
-    </OtherModalLayout>
+          <Content id="mainContent">
+          {
+            stageData &&
+            <DynamicLoadComponent
+                component={`fiatDeposit/${stageData?.key}.js`}
+                nextStage={nextStage}
+                handleState={handleState}
+                stageData={stageData}
+                loader={loader}
+                setLoader={setLoader}
+                submitForm={submitForm}
+                Fallback={DepositSkeleton}
+            />
+          }
+          </Content>
+        </ContainerLayout>
   )
-
 }
 
 export default FiatDepositComponent
 
 
-const HeaderComponent = ({ prevStage, currentStage }) => {
+export const HeaderComponent = ({ prevStage, currentStage }) => {
 
   return(
     <Header backgroundImage={`${getCdnPath('assets')}map.webp`}>
-    <section>
-      <WindowControl
-        // id={idForBack}
-        state={`${currentStage < 1 ? "close" : "open"}`}
-        onClick={() => prevStage()}
-      >
-        <IconBackContainer>
-          <MdKeyboardArrowLeft size={27} color="white" />
-        </IconBackContainer>
-      </WindowControl>
-      <p className="fuente titleHead">Depósito COP</p>
-    </section>
-  </Header>
+      <section>
+        <WindowControl
+          // id={idForBack}
+          state={`${currentStage < 1 ? "close" : "open"}`}
+          onClick={() => prevStage()}
+        >
+          <IconBackContainer>
+            <MdKeyboardArrowLeft size={27} color="white" />
+          </IconBackContainer>
+        </WindowControl>
+        <p className="fuente titleHead">Depósito COP</p>
+      </section>
+    </Header>
   )
 
 }
+
+

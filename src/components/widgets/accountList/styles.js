@@ -23,6 +23,10 @@ export const AccountListContainer = styled.section`
     height: 100%;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
+
+  @media screen and (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 export const ACta = styled.div`

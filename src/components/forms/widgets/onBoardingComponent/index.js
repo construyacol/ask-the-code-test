@@ -54,10 +54,10 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
                 <img src={isoType} width={27} alt="isoType"/>
                 {
                   stageData &&
-                <DynamicLoadComponent
-                    component={`onBoardingComponent/${stageData?.key}.js`}
-                    nextStage={nextStage}
-                />
+                  <DynamicLoadComponent
+                      component={`onBoardingComponent/${stageData?.key}.js`}
+                      nextStage={nextStage}
+                  />
                 }
             </Content>
       </Layout>

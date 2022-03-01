@@ -6,7 +6,6 @@ import {
 } from './styles'
 
 
-
 const WalletSkeleton = props => {
 
   return(

@@ -531,6 +531,7 @@
   .DCcurrent_wallet.wallets.swap {
     padding: 40px 30px 20px 30px ;
     height: calc(100vh - 160px) !important;
+    width: calc(100vw - 60px);
   }
 
   .withdrawView {

@@ -10,7 +10,6 @@ const TagItem = ({ item, deleteTag }) => {
     return null;
   }
 
-
   return (
     <>
       <TagBlocker />

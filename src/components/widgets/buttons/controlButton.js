@@ -104,6 +104,10 @@ const ControlsContainer = styled.div`
     height: 100%;
     position: absolute;
   }
+
+  @media screen and (max-width: 768px) {
+    align-self:end;
+  }
 `;
 
 export default ControlButton;

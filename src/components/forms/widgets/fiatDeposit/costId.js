@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { Title } from './amount'
 import { payment_method } from "../../../api/ui/api.json";
@@ -5,6 +6,9 @@ import NewItemsLayout from "../../../widgets/items/new-items-layout";
 import { CostIdLayout } from './styles'
 // import { ButtonForms } from "../../../widgets/buttons/buttons";
 import ControlButton from "../../../widgets/buttons/controlButton";
+import {
+    show
+} from '../onBoardingComponent/utils'
 
 
 const CostIdComponent = ({ loader, submitForm, nextStage, stageData, handleState:{ state, setState } }) => {
@@ -12,6 +16,15 @@ const CostIdComponent = ({ loader, submitForm, nextStage, stageData, handleState
     const select_method = (name, code, currency_type, pair_id, cost_id) => {
         setState(prevState => { return { ...prevState, [stageData?.key]: cost_id } })
     }
+
+    const executeAnimations = async() => {
+        await show('._costIdLayout')
+    }
+
+    useEffect(() => {
+        executeAnimations()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
 
     return(
