@@ -167,9 +167,9 @@ function SwapView(props) {
   const createAccount = async(boughtCurrency) => {
     const res = await coinsendaServices.createAccountAndInsertDepositProvider({
       data: {
-        name: `Mi billetera ${currencies[boughtCurrency].currency}`,
+        currency:currencies[boughtCurrency].currency,
         enabled: true,
-        currency:{
+        short_currency:{
           currency:currencies[boughtCurrency].currency,
           is_token:currencies[boughtCurrency].is_token
         },
