@@ -70,7 +70,7 @@
 
 .text {
   display: flex;
-  align-items: center;
+  align-items: center; 
 }
 
 .closeModalButtonCont,
@@ -105,6 +105,15 @@
 
 .closeModalButtonBack p {
   margin: 0 !important;
+}
+
+.closeModalButtonBack::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .closeModalButtonCont p {
