@@ -40,7 +40,7 @@ function RootContainer(props) {
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
   
-  const [ showOnBoarding, setShowOnBoarding ] = useState(false)
+  const [ showOnBoarding, setShowOnBoarding ] = useState(true)
 
   const initComponent = async () => {
     const params = new URLSearchParams(history.location.search);
