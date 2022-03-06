@@ -365,7 +365,8 @@ const CoinPrice = styled.p`
 const SwapForm = styled(OperationForm)`
   grid-template-rows: 1fr ${(props) => (!props.isMovilViewport ? "30px" : "")} 1fr 20px 1fr;
   @media (max-width: 768px) {
-    width: 100% !important;
+    padding: 20px 0px;
+    width: 100%;
   }
 `;
 

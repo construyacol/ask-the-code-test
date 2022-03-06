@@ -224,6 +224,9 @@ export const DepositForm = styled(OperationForm)`
   @media (max-width: 768px) {
     width: 100%;
     height: calc(100% - 40px);
+    padding: 20px 0;
+    background: transparent;
+
 
     .qrContainer {
       transform: scale(0.8);

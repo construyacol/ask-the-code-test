@@ -989,9 +989,7 @@
   .DepositView {
     max-height: 300px;
     grid-template-rows: 40% 25% 1fr !important;
-    /*padding: 10px !important;*/
-    width: calc(100% - 20px) !important;
-    height: calc(100% - 20px) !important;
+    width: calc(100% - 50px) !important;
   }
 
   .contWalleins.detail {

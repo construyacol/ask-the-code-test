@@ -699,6 +699,8 @@
   backdrop-filter: blur(7px);
 }
 
+
+
 .ALfiltrosView {
   margin-right: 10px;
 }
@@ -843,4 +845,11 @@
   /*transition: .3s;*/
   color: var(--paragraph_color);
   /*margin: 15px 0 !important;*/
+}
+
+
+@media screen and (max-width:768px) {
+  .ALfiltros{
+    justify-content: space-between;
+  }
 }
