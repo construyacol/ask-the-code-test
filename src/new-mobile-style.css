@@ -524,7 +524,7 @@
   .DCcurrent_wallet.wallets.deposit,
   .DCcurrent_wallet.wallets.withdraw,
   .DCcurrent_wallet.wallets.swap {
-    padding: 40px 30px 20px 30px ;
+    padding: 40px 30px 20px 30px !important;
     height: calc(100vh - 160px) !important;
     width: calc(100vw - 60px);
   }

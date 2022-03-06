@@ -25,7 +25,7 @@ export const AccountListContainer = styled.section`
   }
 
   @media screen and (max-width: 768px) {
-    width: auto;
+    ${'' /* width: auto; */}
   }
 `;
 
