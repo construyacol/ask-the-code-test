@@ -124,10 +124,7 @@ const ActivityView = (props) => {
           let method = `get_${params.tx_path}`;
           let activity_list = await coinsendaServices[method](params.account_id);
           if (!activity_list.length) {
-            toastMessage(
-              `Esta billetera no tiene ${getTxPath(params.tx_path)}`,
-              "error"
-            );
+            // toastMessage(`Esta billetera no tiene ${getTxPath(params.tx_path)}`, "error");
             get_activity(method);
           }
         }
@@ -189,10 +186,10 @@ function mapStateToProps(state, props) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ActivityView);
 
-const getTxPath = (tx_path) => {
-  return tx_path === "swaps"
-    ? "Intercambios"
-    : tx_path === "deposits"
-    ? "Depositos"
-    : "Retiros";
-};
+// const getTxPath = (tx_path) => {
+//   return tx_path === "swaps"
+//     ? "Intercambios"
+//     : tx_path === "deposits"
+//     ? "Depositos"
+//     : "Retiros";
+// };

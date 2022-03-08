@@ -51,6 +51,7 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node ./scripts/copyFaceApiModelsOnLocal && PORT=2998 cross-env react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
+    "start:dev_prod": "cross-env NODE_ENV='development' REACT_APP_BUILD_CONFIG='pre_prod' npm start",
     "start:local": "cross-env REACT_APP_LOCAL_CONFIG=local npm run start:dev",
     "start:build": "npm run build && serve ./build -s -l 5000",
     "build-sw": "node ./src/sw.js",

@@ -233,7 +233,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Estado:", getState(order?.state)],
       ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.currency?.toUpperCase()}`],
-      ["Cantidad adquirida:", `${await formatCurrency(order?.bought, order?.to_buy_currency)} ${order?.to_buy_symbol?.toUpperCase()}`],
+      ["Cantidad adquirida:", `${order?.bought ? await formatCurrency(order?.bought, order?.to_buy_currency) : '0'} ${order?.to_buy_symbol?.toUpperCase()}`],
     ]
     return parsedOrder 
   }

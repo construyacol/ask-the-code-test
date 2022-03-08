@@ -25,7 +25,7 @@ export const AccountListContainer = styled.section`
   }
 
   @media screen and (max-width: 768px) {
-    ${'' /* width: auto; */}
+    width: auto;
   }
 `;
 
@@ -156,6 +156,10 @@ export const AccountLayout = styled.div`
       opacity: 0;
       transform: scale(0.5);
     }
+  }
+
+  @media screen and (max-width:768px) {
+    width: 100% !important;
   }
 
   @media screen and (max-height: 800px) and (max-width: 1366px) {

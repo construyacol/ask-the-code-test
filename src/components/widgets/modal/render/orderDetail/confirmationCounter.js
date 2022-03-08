@@ -4,7 +4,7 @@ import styled from "styled-components";
 export default class ConfirmationCounter extends Component {
   state = {
     ctx: null,
-    total: 6,
+    total: this?.props?.total_confirmations || 6,
     loader: true,
     color: "#159e8c",
   };
