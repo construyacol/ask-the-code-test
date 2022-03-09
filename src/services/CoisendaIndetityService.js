@@ -54,11 +54,11 @@ export class IndetityService extends WebService {
         }
       }
     }
-    // console.log('||||||||||||||| getUserStatus:: ', userUpdate)
+    console.log('||||||||||||||| getUserStatus:: ', userUpdate, international)
     await this.updateUser(userUpdate)
     // console.log('||||||||||||||| getUserStatus:: ', international)
     // debugger
-    setTimeout(()=>{
+    setTimeout(() => {
       this.setIsAppLoading(false);
     }, 100)
 

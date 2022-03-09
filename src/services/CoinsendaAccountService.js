@@ -26,6 +26,9 @@ export class AccountService extends WebService {
     const user = this.user;
     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
     const wallets = await this.Get(accountUrl);
+    
+    // console.log('||||||||||||||||  getWalletsByUser ==> ', wallets)
+    
     if (!wallets || wallets === 404) {
       return false;
     }
@@ -90,6 +93,8 @@ export class AccountService extends WebService {
 
   async createInitialEnvironmentAccount() {
     const { accounts } = initialAccounts;
+    console.log('accounts', accounts)
+    debugger
     for (let body of accounts) {
       // TODO: assign currency by country
       await this.createAccountAndInsertDepositProvider(body)

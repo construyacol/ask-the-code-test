@@ -767,16 +767,13 @@ class SocketsComponent extends Component {
 
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
-    }
-
+    } 
     await this.props.coinsendaServices.updateUserStatus(status)
-
     if(status.countries.international === 'level_1' && this.state.statusUpdate < 1){
-    await this.setState({ statusUpdate:this.state.statusUpdate+1 })
+      await this.setState({ statusUpdate:this.state.statusUpdate+1 })
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }
-    
 
   }
 
