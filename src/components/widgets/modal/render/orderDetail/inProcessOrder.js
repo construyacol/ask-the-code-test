@@ -14,7 +14,10 @@ import IconSwitch from "../../../icons/iconSwitch";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import ConfirmationCounter from "./confirmationCounter";
 import useViewport from "../../../../../hooks/useWindowSize";
-import { device, BIOMETRIC_FIAT_LITMIT_AMOUNT } from "../../../../../const/const";
+import {
+   device, 
+  //  BIOMETRIC_FIAT_LITMIT_AMOUNT 
+} from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
@@ -144,10 +147,10 @@ const FiatOrder = ({ order }) => {
       actions.isAppLoading(true);
 
       const { user } = coinsendaServices.globalState.modelData
-      const orderAmount = await toBigNumber(order.amount, order.currency)
-      const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
+      // const orderAmount = await toBigNumber(order.amount, order.currency) 
+      // const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
       
-      if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
+      if(user.security_center?.transactionSecurity?.biometric?.enabled){
         const Element = await import("../../../../forms/widgets/biometricKycComponent/init");
         if(!Element) return;
         const BiometricKyc = Element.default

@@ -4,15 +4,16 @@ import { bindActionCreators } from "redux";
 import actions from "../../actions";
 import io from "socket.io-client";
 import Environtment from "../../environment";
-// import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
+// import { objectToArray } from '../../services'
 // let statusCounter = 0
+
 const { SocketUrl } = Environtment;
 
-
 class SocketsComponent extends Component {
+  
   state = {
     currentSwap: null,
     currentDeposit: null,
