@@ -21,7 +21,6 @@ export const FONT_COLOR = "#50667a";
   
 export const ENVIRONMENT_VAR = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 
-
 export const ORDER_TYPE_UI_NAME = {
   deposits:{
     ui_name:"Depósito", 

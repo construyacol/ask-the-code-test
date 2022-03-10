@@ -20,7 +20,7 @@ import {
 } from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
-import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
+// import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { BottomSection } from './'
 
 import moment from "moment";
@@ -116,7 +116,7 @@ const FiatOrder = ({ order }) => {
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
-  const [ , , toBigNumber ] = useFormatCurrency()
+  // const [ , , toBigNumber ] = useFormatCurrency()
   const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {

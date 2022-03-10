@@ -57,32 +57,31 @@ const StatusIndicator = ({ data }) => {
     `;
   
   const StatusContainer = styled.div`
-      width: 60px;
-      height: 60px;
-      position: absolute;
-      border-radius: 50%;
-      background: white;
-      border: 2px solid #cfcfcf;
-      top:175px;
-      right:200px;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &.approve{
-         animation: ${approve} .6s linear forwards;
-      }
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #cfcfcf;
+    top:175px;
+    right:200px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      @media ${device.laptopM} {
-        top: 40px;
-        right: 180px;
-      }
-     
+    &.approve{
+        animation: ${approve} .6s linear forwards;
+    }
+
+    @media ${device.laptopM} {
+      top: 40px;
+      right: 180px;
+    }
 
     @media (max-width: 768px) {
-      top: 380px;
+      top: 100px;
       right: 0;
-      left: 50px;
     }
   `
 

@@ -345,7 +345,7 @@ const ContentContainers = styled(ContentContainer)`
 
   @media (max-width: 768px) {
     ${VideoContainer}{
-      clip-path: circle(29% at 50% 50%);
+      ${'' /* clip-path: circle(29% at 50% 50%); */}
     }
 
     padding: 30px 20px;
