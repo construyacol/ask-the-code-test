@@ -85,6 +85,10 @@
   grid-template-rows: auto 1fr;
 }
 
+.menuItem.is_safari{
+  grid-template-rows: 1fr 1fr;
+}
+
 .menuItem p {
   margin: 0;
   font-size: 15px;
@@ -95,6 +99,8 @@
 .menuItem.movil {
   grid-template-rows: 1fr auto;
 }
+
+
 
 .menuItem.movil p,
 .menuItem.active p {
@@ -130,6 +136,12 @@
 }
 
 .menuItem:hover .menuMovilIcon {
+  height: 30px;
+  opacity: 1;
+  transform: scale(1);
+}
+
+.menuMovilIcon.is_safari{
   height: 30px;
   opacity: 1;
   transform: scale(1);

@@ -10,6 +10,16 @@ import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
 
 const { normalizeUser } = normalizr_services;
 
+
+export const isSafari = () => {
+  if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+    return 'is_safari'
+  }else{
+    return ''
+  }
+}
+
+
 export const SentryCaptureException = (error) => {
   Sentry.captureException(error);
 };

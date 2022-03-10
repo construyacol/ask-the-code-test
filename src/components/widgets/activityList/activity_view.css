@@ -491,6 +491,10 @@
   justify-items: center;
 }
 
+.ALlistAll.is_safari{
+  min-height: -webkit-fit-content;
+}
+
 .ALlist {
   display: grid;
   grid-template-rows: repeat(auto-fill, 80px);

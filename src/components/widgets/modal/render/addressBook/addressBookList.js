@@ -9,7 +9,7 @@ import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../../../hooks/useWindowSize";
 import useNavigationKeyActions from "../../../../../hooks/useNavigationKeyActions";
 import { useSelector } from "react-redux";
-
+import { isSafari } from '../../../../../utils'
 
 const AddressBookComponent = ({
   withdrawAccounts,
@@ -91,13 +91,13 @@ const AddressBookComponent = ({
           />
         </Input>
       </InputContainers>
-
+ 
       <Title className="fuente">
         {searchList.length
           ? `Resultado de la busqueda [${searchList.length}]:`
           : "Direcciones"}
       </Title>
-      <ListContainerWrapper>
+      <ListContainerWrapper className={`${isSafari()}`}>
         <ListContainer
           id="listContainer"
           className="fuente"
@@ -240,6 +240,14 @@ const ListContainerWrapper = styled.div`
     background: linear-gradient(to top, white, white, transparent);
     z-index: 2;
     pointer-events: none;
+  }
+  &.is_safari{
+    &::before {
+      display:none;
+    }
+    &::after {
+      display:none;
+    }
   }
 `;
 

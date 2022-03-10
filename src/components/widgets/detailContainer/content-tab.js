@@ -4,6 +4,7 @@ import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { navigation_components } from "../../api/ui/api.json";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { isSafari } from '../../../utils'
 
 import "./detailContainer.css";
 
@@ -102,16 +103,16 @@ function ContentTab(props) {
                   key={index}
                   id={`${item.link}-menu-button`}
                   to={getLink(item.link)}
-                  className={`menuItem ${
+                  className={`menuItem ${isSafari()} ${
                     pathname === item.link ? "active" : ""
                   }`}
                 >
                   <div
-                    className={`menuMovilIcon ${
+                    className={`menuMovilIcon ${isSafari()}  ${
                       pathname === item.link ? "active" : ""
                     }`}
                   >
-                    <IconSwitch size={20} icon={item.link} color="var(--primary)" />
+                    <IconSwitch size={20} icon={item.link} color={`${(isSafari() && pathname === item.link) ? 'var(--primary)' : isSafari() ? 'gray' : 'var(--primary)'}`} />
                   </div>
                   <p>{item.title}</p>
                 </NavLink>
@@ -200,7 +201,7 @@ const MovilMenu = ({ primary_path, verification_state }) => {
         const isActive = primary_path === itemMenu.key;
         return (
           <Link
-            to={`/${itemMenu.key}`}
+            to={`/${itemMenu.key}`} 
             className={`menuItem movil ${isActive ? "active" : ""}`}
             key={indx}
           >

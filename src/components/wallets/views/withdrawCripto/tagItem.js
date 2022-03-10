@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
+import { isSafari } from '../../../../utils'
 
-const 
-TagItem = ({ withdrawAccount, deleteTag }) => {
+
+const TagItem = ({ withdrawAccount, deleteTag }) => {
   // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
   // debugger
 
@@ -15,7 +16,7 @@ TagItem = ({ withdrawAccount, deleteTag }) => {
 
   return (
     <>
-      <TagBlocker />
+      <TagBlocker className={`${isSafari()}`}/>
       <TagContainer id="tagAddress">
         <LabelTextCont>
           <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
@@ -162,4 +163,7 @@ const TagBlocker = styled.section`
   ${"" /* background: rgb(255 255 255 / 51%); */}
   background: linear-gradient(to right, rgb(255 255 255), rgb(255 255 255), transparent);
   backdrop-filter: blur(1px);
+  &.is_safari{
+    background:white;
+  }
 `;

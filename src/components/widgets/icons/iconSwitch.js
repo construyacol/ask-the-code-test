@@ -76,6 +76,8 @@ const ReferralPerson = loadable(() =>
   import("./").then(getExportByName("ReferralPerson"))
 );
 const Team = loadable(() => import("./").then(getExportByName("Team")));
+const Uala = loadable(() => import("./").then(getExportByName("Uala")));
+
 const Comillas = loadable(() => import("./").then(getExportByName("Comillas")));
 const Account = loadable(() => import("./").then(getExportByName("Account")));
 const Cardano = loadable(() => import("./").then(getExportByName("Cardano")));
@@ -168,6 +170,8 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "ualá":
+        return <Uala {...props} height={"30px"} />;
       case "Efecty":
       case "efecty":
         return <Efecty {...props} height={"30px"} />;
