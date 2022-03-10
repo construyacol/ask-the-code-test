@@ -65,8 +65,12 @@
 }
 
 .DCTitle.movil {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr;
 }
+
+.DCTitle.movil.accepted{
+  grid-template-columns: repeat(4, 1fr);
+} 
 
 .menuMovilItem.active .iconSty {
   align-self: flex-end;

@@ -24,6 +24,7 @@ function ContentTab(props) {
     pathname,
     primary_path,
     wallets,
+    verification_state
   } = props;
 
   const { params } = current_section;
@@ -139,11 +140,11 @@ function ContentTab(props) {
         )}
 
         <div
-          className={`DCTitle ${primary_path} ${movil_viewport ? "movil" : ""}`}
+          className={`DCTitle ${primary_path} ${movil_viewport ? "movil" : ""} ${verification_state}`}
           style={{ display: pathname ? "none" : "" }}
         >
           {movil_viewport ? (
-            <MovilMenu primary_path={primary_path} />
+            <MovilMenu primary_path={primary_path} {...props} />
           ) : (
             <p className="fuente">{title}</p>
           )}
@@ -164,29 +165,38 @@ const HiddenButtons = ({ goNext, goPrev, idNext, idPrev }) => (
   </div>
 );
 
-const MovilMenu = ({ primary_path }) => {
-  const dataMenu = [
-    {
-      key: "wallets",
-      ui_text: "Billeteras",
-    },
-    {
-      key: "withdraw_accounts",
-      ui_text: "Ctas retiros",
-    },
-    {
-      key: "referral",
-      ui_text: "Referidos",
-    },
+const MovilMenu = ({ primary_path, verification_state }) => {
+
+  const [ menuItems, setMenuItems ] = useState([
     {
       key: "security",
       ui_text: "Seguridad",
     },
-  ];
+  ])
+
+  useEffect(() => {
+    if(verification_state === 'accepted'){
+      let verificatedMenu = [
+        {
+          key: "wallets",
+          ui_text: "Billeteras",
+        },
+        {
+          key: "withdraw_accounts",
+          ui_text: "Ctas retiros",
+        },
+        {
+          key: "referral",
+          ui_text: "Referidos",
+        }
+      ];
+      setMenuItems(prevState => [...verificatedMenu, ...prevState])
+    }
+  }, [verification_state])
 
   return (
     <>
-      {dataMenu.map((itemMenu, indx) => {
+      {menuItems.map((itemMenu, indx) => {
         const isActive = primary_path === itemMenu.key;
         return (
           <Link
@@ -219,8 +229,11 @@ function mapStateToProps(state, props) {
     };
   }
 
+  const { verification_state } = state?.ui
+
   return {
     current_section: state.ui.current_section,
+    verification_state,
     path: props.match.params.path || null,
     wallets: state.modelData.wallets,
     ...account_opts,

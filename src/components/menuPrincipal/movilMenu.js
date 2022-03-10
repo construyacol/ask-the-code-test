@@ -26,7 +26,7 @@ const MovilMenuComponent = (props) => {
               <i className="fas fa-arrow-right"></i>
           </div>
 
-          <div className="menuMovilItems inactive">
+          {/* <div className="menuMovilItems inactive">
             <p className="menuMovilItemTexts fuente">
               <i className="far fa-question-circle"></i> Ayuda
             </p>
@@ -38,7 +38,7 @@ const MovilMenuComponent = (props) => {
               <i className="fas fa-bell"></i>Notificaciones
             </p>
             <i className="fas fa-arrow-right"></i>
-          </div>
+          </div> */}
         </>
       )}
 

@@ -93,8 +93,6 @@ export class AccountService extends WebService {
 
   async createInitialEnvironmentAccount() {
     const { accounts } = initialAccounts;
-    console.log('accounts', accounts)
-    debugger
     for (let body of accounts) {
       // TODO: assign currency by country
       await this.createAccountAndInsertDepositProvider(body)
