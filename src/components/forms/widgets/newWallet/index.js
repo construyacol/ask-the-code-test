@@ -11,6 +11,8 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 import TagItem from './tagItem'
 import WalletSkeleton from './skeleton'
 import { history } from '../../../../const/const'
+import { capitalizeWord } from '../../../../utils'
+
 
 import {
   ListContainer,
@@ -63,7 +65,7 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   }
 
   const handleChange = (inputName, query) => {
-      searchMatch(query?.toLowerCase())
+      searchMatch(query?.toLowerCase()) 
   }
 
   const loadDefaultState = () => {
@@ -85,16 +87,21 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   const createWallet = async () => {
 
       setLoader(true)
-      const newWallet = await coinsendaServices.createWallet(matchItem);
+      
+      const newWallet = await coinsendaServices.createWallet({...matchItem, currency:capitalizeWord(matchItem?.currency)});
+    //   capitalizeWord()
       if (!newWallet) {
         setLoader(false)
         return toastMessage("Error al crear la billetera...", "error");
       }
       await coinsendaServices.getWalletsByUser();
       const { account } = newWallet;
-      const dep_prov = await coinsendaServices.createAndInsertDepositProvider(
-        account
-      );
+      console.log(account)
+      debugger
+      const dep_prov = await coinsendaServices.createAndInsertDepositProvider(account);
+
+
+
       if (!dep_prov) {
         setLoader(false)
         return toastMessage("Error al crear el proveedor de deposito de la billetera...", "error");
