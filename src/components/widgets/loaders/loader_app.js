@@ -9,7 +9,7 @@ import usePrevious from "../../hooks/usePreviousValue";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";
-import KeyActionsInfo from "../modal/render/keyActionsInfo";
+// import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
@@ -53,7 +53,10 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const { authData } = reduxState.modelData;
   const { appLoadLabel } = reduxState.isLoading;
   const previousLoadLabel = usePrevious(appLoadLabel);
-  const { isTabletOrMovilViewport, isMovilViewport } = useViewport();
+  const { 
+    // isTabletOrMovilViewport, 
+    isMovilViewport 
+  } = useViewport();
 
 
   const initComponent = async () => {
@@ -111,25 +114,25 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     } else {
       await history.push("/wallets");
     }
-    showKeyActionModal(verificationStatus);
+    // showKeyActionModal(verificationStatus);
     return actions.isAppLoaded(true);
   };
 
-  const showKeyActionModal = async (verificationStatus) => {
-    if (verificationStatus === "accepted") {
-      const toParse = await localForage.getItem("keysModalShow");
-      const keysModalShowed = JSON.parse(toParse);
-      if (
-        !isTabletOrMovilViewport &&
-        (!keysModalShowed ||
-          (keysModalShowed.showed && keysModalShowed.showed < 2))
-      ) {
-        actions.renderModal(KeyActionsInfo);
-        localForage.setItem("keysModalShow", JSON.stringify({showed: keysModalShowed ? keysModalShowed.showed + 1 : 0})
-        );
-      }
-    }
-  };
+  // const showKeyActionModal = async (verificationStatus) => {
+  //   if (verificationStatus === "accepted") {
+  //     const toParse = await localForage.getItem("keysModalShow");
+  //     const keysModalShowed = JSON.parse(toParse);
+  //     if (
+  //       !isTabletOrMovilViewport &&
+  //       (!keysModalShowed ||
+  //         (keysModalShowed.showed && keysModalShowed.showed < 2))
+  //     ) {
+  //       actions.renderModal(KeyActionsInfo);
+  //       localForage.setItem("keysModalShow", JSON.stringify({showed: keysModalShowed ? keysModalShowed.showed + 1 : 0})
+  //       );
+  //     }
+  //   }
+  // };
 
 
 
