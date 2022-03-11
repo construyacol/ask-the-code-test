@@ -19,6 +19,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const { deposit_providers, tx_path, path } = UseTxState();
   const [, formatCurrency] = useFormatCurrency();
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+  const { withdraw_accounts } = useSelector((state) => state.modelData)
   const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
 
 
@@ -224,6 +225,11 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
       ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
+    if(order?.currency_type === 'crypto'){
+      parsedOrder.push(
+        ["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value],
+      )
+    }
     return parsedOrder 
   }
 
@@ -233,7 +239,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Estado:", getState(order?.state)],
       ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.currency?.toUpperCase()}`],
-      ["Cantidad adquirida:", `${await formatCurrency(order?.bought, order?.to_buy_currency)} ${order?.to_buy_symbol?.toUpperCase()}`],
+      ["Cantidad adquirida:", `${order?.bought ? await formatCurrency(order?.bought, order?.to_buy_currency) : '0'} ${order?.to_buy_symbol?.toUpperCase()}`],
     ]
     return parsedOrder 
   }

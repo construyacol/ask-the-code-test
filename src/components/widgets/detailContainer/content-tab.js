@@ -4,6 +4,7 @@ import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { navigation_components } from "../../api/ui/api.json";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import { isSafari } from '../../../utils'
 
 import "./detailContainer.css";
 
@@ -24,6 +25,7 @@ function ContentTab(props) {
     pathname,
     primary_path,
     wallets,
+    verification_state
   } = props;
 
   const { params } = current_section;
@@ -101,16 +103,16 @@ function ContentTab(props) {
                   key={index}
                   id={`${item.link}-menu-button`}
                   to={getLink(item.link)}
-                  className={`menuItem ${
+                  className={`menuItem ${isSafari()} ${
                     pathname === item.link ? "active" : ""
                   }`}
                 >
                   <div
-                    className={`menuMovilIcon ${
+                    className={`menuMovilIcon ${isSafari()}  ${
                       pathname === item.link ? "active" : ""
                     }`}
                   >
-                    <IconSwitch size={20} icon={item.link} color="var(--primary)" />
+                    <IconSwitch size={20} icon={item.link} color={`${(isSafari() && pathname === item.link) ? 'var(--primary)' : isSafari() ? 'gray' : 'var(--primary)'}`} />
                   </div>
                   <p>{item.title}</p>
                 </NavLink>
@@ -139,11 +141,11 @@ function ContentTab(props) {
         )}
 
         <div
-          className={`DCTitle ${primary_path} ${movil_viewport ? "movil" : ""}`}
+          className={`DCTitle ${primary_path} ${movil_viewport ? "movil" : ""} ${verification_state}`}
           style={{ display: pathname ? "none" : "" }}
         >
           {movil_viewport ? (
-            <MovilMenu primary_path={primary_path} />
+            <MovilMenu primary_path={primary_path} {...props} />
           ) : (
             <p className="fuente">{title}</p>
           )}
@@ -164,33 +166,42 @@ const HiddenButtons = ({ goNext, goPrev, idNext, idPrev }) => (
   </div>
 );
 
-const MovilMenu = ({ primary_path }) => {
-  const dataMenu = [
-    {
-      key: "wallets",
-      ui_text: "Billeteras",
-    },
-    {
-      key: "withdraw_accounts",
-      ui_text: "Ctas retiros",
-    },
-    {
-      key: "referral",
-      ui_text: "Referidos",
-    },
+const MovilMenu = ({ primary_path, verification_state }) => {
+
+  const [ menuItems, setMenuItems ] = useState([
     {
       key: "security",
       ui_text: "Seguridad",
     },
-  ];
+  ])
+
+  useEffect(() => {
+    if(verification_state === 'accepted'){
+      let verificatedMenu = [
+        {
+          key: "wallets",
+          ui_text: "Billeteras",
+        },
+        {
+          key: "withdraw_accounts",
+          ui_text: "Ctas retiros",
+        },
+        {
+          key: "referral",
+          ui_text: "Referidos",
+        }
+      ];
+      setMenuItems(prevState => [...verificatedMenu, ...prevState])
+    }
+  }, [verification_state])
 
   return (
     <>
-      {dataMenu.map((itemMenu, indx) => {
+      {menuItems.map((itemMenu, indx) => {
         const isActive = primary_path === itemMenu.key;
         return (
           <Link
-            to={`/${itemMenu.key}`}
+            to={`/${itemMenu.key}`} 
             className={`menuItem movil ${isActive ? "active" : ""}`}
             key={indx}
           >
@@ -219,8 +230,11 @@ function mapStateToProps(state, props) {
     };
   }
 
+  const { verification_state } = state?.ui
+
   return {
     current_section: state.ui.current_section,
+    verification_state,
     path: props.match.params.path || null,
     wallets: state.modelData.wallets,
     ...account_opts,

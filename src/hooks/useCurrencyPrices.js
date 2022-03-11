@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import currencyLabels from "../components/Prices/currency-labels";
+// import currencyLabels from "../components/Prices/currency-labels";
 import { formatToCurrency } from "../utils/convert_currency";
+import useCurrencies from './useCurrencies'
 
 export const FormatCurrency = (objetive_amount, currency) => {
   const [amount, setAmount] = useState(objetive_amount);
@@ -22,18 +23,21 @@ export const FormatCurrency = (objetive_amount, currency) => {
 };
 
 function useCurrencyPrices(currentPair) {
-  const [currencyLabel, setCurrencyLabel] = useState(currencyLabels["bitcoin"]);
+
+  const currencies = useCurrencies()
+  const [currencyLabel, setCurrencyLabel] = useState(currencies["bitcoin"]?.symbol);
   const [buyPrice, setBuyPrice] = FormatCurrency(
     currentPair.buy_price,
     currentPair.secondary_currency
   );
+
   const [sellPrice, setSellPrice] = FormatCurrency(currentPair.sell_price, currentPair.secondary_currency);
 
   useEffect(() => {
     if (currentPair) {
       setBuyPrice(currentPair.buy_price, currentPair.secondary_currency);
       setSellPrice(currentPair.sell_price, currentPair.secondary_currency);
-      setCurrencyLabel(currencyLabels[currentPair.primary_currency.currency]);
+      setCurrencyLabel(currencies[currentPair.primary_currency.currency]?.symbol);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair]);

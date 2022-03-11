@@ -134,7 +134,7 @@ class BankAccountFlow extends Component {
 
     this.props.actualizarEstado(body);
   };
-
+ 
   render() {
     const {
       statusInput,

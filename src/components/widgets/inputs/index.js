@@ -7,6 +7,7 @@ import Environtment from "../../../environment";
 // import createAutoCorrectedDatePipe from "text-mask-addons/dist/createAutoCorrectedDatePipe";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { getCdnPath } from '../../../environment'
+import { InputAmountSkeleton } from '../../forms/widgets/fiatDeposit/amount'
 import "./inputStyles.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -369,7 +370,7 @@ export class InputDepositForm extends Component {
   }
 
   render() {
-    const { actualizar, handleKeyPress, value, name, autoFocus, classNames, minAmountLabel } = this.props;
+    const { actualizar, handleKeyPress, value, name, autoFocus, classNames, minAmountLabel, skeleton } = this.props;
     const { finalValue } = this.state;
     const style = {
       fontSize:
@@ -381,22 +382,29 @@ export class InputDepositForm extends Component {
     console.log('finalValue ==> ', value)
 
     return (
-      <div className={`containerInputComponent with-adapt ${classNames || ''}`}>
-        <input
-          className={`inp2_ inputElement2 signoPesos fuente2 width-adapt-child`}
-          type="text"
-          style={style}
-          placeholder={`$ ${this.state.placeHolder}`}
-          onChange={actualizar}
-          name={name}
-          autoFocus={autoFocus}
-          value={value ? `$ ${finalValue}` : ""}
-          onKeyPress={handleKeyPress}
-        />
-        {
-          (minAmountLabel && value) &&
-          <p className="__minAmountLabel fuente2">{minAmountLabel}</p>
-        }
+      <div className={`containerInputComponent with-adapt ${classNames || ''} ${skeleton ? 'skeleton' : ''}`}>
+      {
+        skeleton ?
+          <InputAmountSkeleton/>
+        :
+          <>
+            <input
+              className={`inp2_ inputElement2 signoPesos fuente2 width-adapt-child`}
+              type="text"
+              style={style}
+              placeholder={`$ ${this.state.placeHolder}`}
+              onChange={actualizar}
+              name={name}
+              autoFocus={autoFocus}
+              value={value ? `$ ${finalValue}` : ""}
+              onKeyPress={handleKeyPress}
+            />
+            {
+              (minAmountLabel && value) &&
+              <p className="__minAmountLabel fuente2">{minAmountLabel}</p>
+            }
+          </>
+      }
       </div>
     );
   }

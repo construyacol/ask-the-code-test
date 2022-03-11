@@ -433,3 +433,9 @@ p#WalletList2{
     height: 260px;
   }
 }
+
+@media screen and (max-width:768px) {
+  .WithdrawView, .SwapView, .DepositView, #swapForm{
+    background-color: transparent;
+  }
+}

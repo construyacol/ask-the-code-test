@@ -26,6 +26,9 @@ export class AccountService extends WebService {
     const user = this.user;
     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
     const wallets = await this.Get(accountUrl);
+    
+    // console.log('||||||||||||||||  getWalletsByUser ==> ', wallets)
+    
     if (!wallets || wallets === 404) {
       return false;
     }
@@ -98,7 +101,7 @@ export class AccountService extends WebService {
 
   async createAccountAndInsertDepositProvider(body) {
     body.data.country = this.user.country;
-    const newAccount = await this.createWallet(body);
+    const newAccount = await this.createWallet(body?.data);
     if (!newAccount) {return}
     await this.getWalletsByUser();
     const { account } = newAccount;
@@ -133,7 +136,18 @@ export class AccountService extends WebService {
     return result;
   }
 
-  async createWallet(body) {
+  async createWallet(walletInfo) {
+
+    const body = {
+        data: {
+            name: `Mi billetera ${walletInfo?.currency}`,
+            description: "description",
+            country: this?.user?.country,
+            enabled: true,
+            currency: walletInfo.short_currency
+        }
+    };
+
     return this.Post(CREATE_WALLET_URL, body);
   }
 

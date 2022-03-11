@@ -6,7 +6,7 @@ import { IconClose } from "../../../widgets/shared-styles";
 import { useActions } from '../../../../hooks/useActions'
 import KycSkeleton from './skeleton.js'
 import Layout from '../layout'
-
+  
 const PersonalKyc = () => {
 
   // const KycSkeleton = loadable(() => import('./skeleton.js'))
@@ -42,7 +42,12 @@ const PersonalKyc = () => {
       />
         {
           dataForm ?
-            <FormComponent actions={actions} closeModal={closeModal} handleDataForm={{dataForm, setDataForm}}/>
+            <FormComponent 
+              actions={actions} 
+              closeModal={closeModal} 
+              handleDataForm={{dataForm, setDataForm}}
+              Fallback={KycSkeleton}  
+            />
             :
             <KycSkeleton/>
         }

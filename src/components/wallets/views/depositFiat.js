@@ -74,7 +74,7 @@ const DepositFiat = (props) => {
           </p>
         ) : (
           <p className="fuente">
-            Deposita {localCurrency?.toUpperCase()} y cambialo por Bitcoin
+            Deposita {localCurrency?.toUpperCase()} y cambialo por Crypto
           </p>
         )}
       </div>

@@ -2,10 +2,10 @@
   "accounts": [
     {
       "data": {
-        "name": "Mi Billetera COP",
         "country": null,
         "enabled": true,
-        "currency": {
+        "currency":"COP",
+        "short_currency": {
           "currency": "cop",
           "is_token": false
         }
@@ -13,10 +13,10 @@
     },
     {
       "data": {
-        "name": "Mi Billetera Bitcoin",
         "country": null,
         "enabled": true,
-        "currency": {
+        "currency":"Bitcoin",
+        "short_currency": {
           "currency": "bitcoin",
           "is_token": false
         }

@@ -622,6 +622,12 @@ form#phone {
 }
 
 
+.containerInputComponent.skeleton{
+  border-bottom: 1px solid #bfbfbf;
+  max-width: 300px;
+  place-content: center;
+}
+
 .__minAmountLabel{
   position: absolute;
   bottom: -35px;

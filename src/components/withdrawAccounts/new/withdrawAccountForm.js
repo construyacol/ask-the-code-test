@@ -220,7 +220,7 @@ class WithdrawAccountForm extends Component {
     this.props.action.UpdateForm("bank", this.state);
   };
 
-  siguiente = async () => {
+  siguiente = async () => { 
     // this.props.action.UpdateFormControl('bank',false)
     // this.update_form(this.state)
     if(this.state.bank_name === 'efecty'){
@@ -242,14 +242,29 @@ class WithdrawAccountForm extends Component {
   };
 
   cleanSearch = () => {
-    this.setState({
+    this.setState({ 
       bank_name: "",
     });
     this.props.action.UpdateFormControl("bank", false);
     this.props.action.cleanSearch("bank");
   };
 
+  clearState = (e) => {
+    if(e?.target?.id === 'modal-backstep-button' && this.state.bank_name === 'efecty'){
+      // this.setState({bank_name:""})
+      // this.update_form()
+      this.props.action.CleanForm("bank");
+      this.props.action.CleanForm("withdraw");
+  }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.clearState);
+}
+
   componentDidMount() {
+    document.addEventListener('click', this.clearState)
+
     setTimeout(() => {
       this.props.history.push(`?form=wa_terms`);
     }, 100);
@@ -264,6 +279,7 @@ class WithdrawAccountForm extends Component {
   }
 
   componentDidUpdate(prevProps) {
+
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
     if (prevProps.step === this.props.step) {
       return;

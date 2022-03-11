@@ -3,6 +3,7 @@ import loadable from '@loadable/component'
 import { removeItemTag, debugItemTag } from './utils'
 import styled from 'styled-components'
 import MaskDateComponent from './maskDateComponent'
+import { isSafari } from '../../../../utils'
 import {
     InputContainer,
     LabelText,
@@ -77,8 +78,9 @@ const InputComponent = props => {
           props.AuxComponent && 
           <AuxComponentContainer {...props} />
         }
+
         {
-          type === 'date' ?
+          type === 'date' && isSafari() !== 'is_safari' ?
           <MaskDateComponent {...inputProps}/>
           :
           <input {...inputProps} />

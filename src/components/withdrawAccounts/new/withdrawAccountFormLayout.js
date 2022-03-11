@@ -4,7 +4,7 @@ import SimpleLoader from "../../widgets/loaders";
 import { payment_method } from "../../api/ui/api.json";
 import BankAccountFlow from "./flows/bankAccountFlow";
 import "./newAccount.css";
-import "../../wallets/newWallet/newWallet.css";
+import "./newWallet.css";
 
 const MethodView = loadable(() => import("./views/1method"));
 const FinalTicket = loadable(() => import("./views/finalTicket"));

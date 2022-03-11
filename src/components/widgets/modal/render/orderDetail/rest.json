@@ -62,7 +62,7 @@
         },
         "crypto": {
           "title": "Tu depósito está siendo confirmado",
-          "description": "Alcanzando 6 confirmaciones en blockchain tu saldo será acreditado en coinsenda"
+          "description": "Alcanzando las confirmaciones necesarias en blockchain tu saldo será acreditado en coinsenda"
         }
       }
     },

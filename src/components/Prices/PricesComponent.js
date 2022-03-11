@@ -1,29 +1,32 @@
 import React from "react";
 import styled from "styled-components";
-import currencyLabels from "./currency-labels";
+// import currencyLabels from "./currency-labels";
+import useCurrencies from '../../hooks/useCurrencies'
 
 const PricesComponent = ({ change, data }) => {
   let { currencyLabel, buyPrice, sellPrice } = data;
-  currencyLabel = currencyLabels[currencyLabel];
+  const currencies = useCurrencies()
+  let currencySymbol = currencies[currencyLabel]?.symbol;
+
 
   return (
     <PricesStyled>
       <ExchangeBox
-        {...{ change, price: sellPrice, type: "sell", currencyLabel }}
+        {...{ change, price: sellPrice, type: "sell", currencySymbol }}
       />
       <PricesDividerStyled />
       <ExchangeBox
-        {...{ change, price: buyPrice, type: "buy", currencyLabel }}
+        {...{ change, price: buyPrice, type: "buy", currencySymbol }}
       />
     </PricesStyled>
   );
 };
 
-const ExchangeBox = ({ change, price, type, currencyLabel }) => (
+const ExchangeBox = ({ change, price, type, currencySymbol }) => (
   <ExchangeBoxStyled>
     <label>
       TE {type === "buy" ? "VENDEMOS" : "COMPRAMOS"}{" "}
-      <label className="strong">{currencyLabel}</label> A<br />
+      <label className="strong">{currencySymbol}</label> A<br />
       <label
         className="root-content-numbers"
         style={change ? { color: "#1FE47B" } : {}}

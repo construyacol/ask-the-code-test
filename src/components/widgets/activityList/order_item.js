@@ -400,7 +400,7 @@ const PanelLeft = (order) => {
       order.state === "confirmed" &&
       tx_path === "deposits" ? (
         <Confrimations className="fuente2">
-          <p>
+          <p className="withConfirmations">
             {confirmations > totalConfirmations ? `+${totalConfirmations}` : confirmations}
             <span>/{totalConfirmations}</span>
           </p>
@@ -536,6 +536,15 @@ const Confrimations = styled.div`
     justify-content: space-between;
     width: 35px;
   }
+    .withConfirmations{
+      width: auto;
+      margin-right: 10px;
+    }
+
+  @media ${device.tablet} {
+
+  }
+
 `;
 
 const Icon = styled.i`

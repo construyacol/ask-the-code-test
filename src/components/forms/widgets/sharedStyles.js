@@ -80,6 +80,35 @@ export const hideWelcome = keyframes`
     }
 `;
 
+export const hideStage = keyframes`
+    0% {
+        transform: translateY(0px);
+        filter:blur(0px) grayscale(0.2);
+        opacity:1;
+        
+    }
+    100%{
+        transform: translateY(-15px);
+        filter:blur(1px);
+        opacity:0;
+    }
+`;
+
+
+export const showStage = keyframes`
+    0% {
+        transform: translateY(10px);
+        filter:blur(1px);
+        opacity:0;
+    }
+    100%{
+        transform: translateY(0px);
+        filter:blur(0px);
+        opacity:1;
+    }
+`;
+
+
 
 export const flipInVerRight = keyframes`
   0% {

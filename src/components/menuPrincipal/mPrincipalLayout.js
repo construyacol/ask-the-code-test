@@ -101,7 +101,7 @@ const MenuPrincipalLayout = (props) => {
         <ScoresComponent />
       </div>
 
-      <div className="menuItems">
+      <div className={`menuItems ${window.innerWidth < 768 ? 'movil' : ''}`}>
         {window.innerWidth > 768 ? (
           <section className="section1">
             {menuPrincipal.map((item) => {

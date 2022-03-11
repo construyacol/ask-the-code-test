@@ -4,15 +4,16 @@ import { bindActionCreators } from "redux";
 import actions from "../../actions";
 import io from "socket.io-client";
 import Environtment from "../../environment";
-// import { objectToArray } from '../../services'
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
+// import { objectToArray } from '../../services'
 // let statusCounter = 0
+
 const { SocketUrl } = Environtment;
 
-
 class SocketsComponent extends Component {
+  
   state = {
     currentSwap: null,
     currentDeposit: null,
@@ -21,51 +22,52 @@ class SocketsComponent extends Component {
     statusUpdate:0
   };
 
-  // async testSocketExecuted(orderMock) {
-  //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
-  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
-  //     await this.setState({ currentDeposit: orderMock });
-  //   } else {
-  //     this.deposit_mangagement(orderMock);
-  //   }
-  // }
+//   async testSocketExecuted(orderMock) {
+//     console.log('======================================== ______ testSocketExecuted: ', orderMock)
+//     if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
+//       await this.setState({ currentDeposit: orderMock });
+//     } else {
+//       this.deposit_mangagement(orderMock);
+//     }
+//   }
 
-  // async testSocket() {
+//   async testSocket() {
 
-  //   // let orderMock = {
-  //   //   id:"6184c8f067e372004414b156",
-  //   //   state:"rejected"
-  //   // }
+//     let orderMock = {
+//       id:"6184c8f067e372004414b156",
+//       state:"rejected"
+//     }
 
-  //   // this.withdraw_mangagement(orderMock);
+//     // this.withdraw_mangagement(orderMock);
+//     // this.testSocketExecuted()
 
-  //   // this.testSocketExecuted()
-  //   // let confirmations = 1
-  //   // setInterval(()=>{
-  //   //   if(confirmations < 7){
-  //   //     orderMock = {
-  //   //       confirmations: confirmations,
-  //   //       id: "617621370b0a1b0048ae9cae"
-  //   //     }
-  //   //     this.testSocketExecuted(orderMock)
-  //   //     confirmations++
-  //   //   }
-  //   // }, 5000)
 
-  //   // let statusMock = {
-  //   //   countries:{
-  //   //     international: "level_1"
-  //   //   },
-  //   //   id: "620403008a485b0067ed919b",
-  //   //   updated_at: "2022-02-09T18:09:28.614Z",
-  //   //   userId: "620402efbe929e0042d9de6c"
-  //   // }
+//     // let confirmations = 1
+//     // setInterval(()=>{
+//     //   if(confirmations < 7){
+//     //     orderMock = {
+//     //       confirmations: confirmations,
+//     //       id: "617621370b0a1b0048ae9cae"
+//     //     }
+//     //     this.testSocketExecuted(orderMock)
+//     //     confirmations++
+//     //   }
+//     // }, 5000)
 
-  //   // for (let index = 0; index < 2; index++) {
-  //     // this.status_management(statusMock);
-  //   // }
+//     // let statusMock = {
+//     //   countries:{
+//     //     international: "level_1"
+//     //   },
+//     //   id: "620403008a485b0067ed919b",
+//     //   updated_at: "2022-02-09T18:09:28.614Z",
+//     //   userId: "620402efbe929e0042d9de6c"
+//     // }
 
-  // }
+//     // for (let index = 0; index < 2; index++) {
+//       // this.status_management(statusMock);
+//     // }
+
+//   }
 
 //  componentDidMount(){
 //    setTimeout(()=> {
@@ -455,7 +457,7 @@ class SocketsComponent extends Component {
         }, 1500);
       }
     }
-
+  
 
     if (deposit.confirmations) {
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
@@ -465,12 +467,17 @@ class SocketsComponent extends Component {
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
+
+        const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
+        const currency = await this.props.currencies?.find(currency => currency?.currency === walletAccount?.currency?.currency)
+        console.log('Finding  ==> ', currency, deposit.confirmations > (currency?.confirmations || 6))
+
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
               ...this.props.deposits[deposit.id],
               confirmations: deposit.confirmations,
-              state:deposit.confirmations > 5 ? 'accepted' : 'confirmed'
+              state:deposit.confirmations > (currency?.confirmations || 6) ? 'accepted' : 'confirmed'
             },
           },
           "deposits"
@@ -761,16 +768,13 @@ class SocketsComponent extends Component {
 
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
-    }
-
+    } 
     await this.props.coinsendaServices.updateUserStatus(status)
-
     if(status.countries.international === 'level_1' && this.state.statusUpdate < 1){
-    await this.setState({ statusUpdate:this.state.statusUpdate+1 })
+      await this.setState({ statusUpdate:this.state.statusUpdate+1 })
       this.props.coinsendaServices.init()
       this.props.history.push(`/wallets`);
     }
-    
 
   }
 
@@ -792,6 +796,7 @@ const mapStateToProps = (state, props) => {
     wallets,
     withdraw_accounts,
     swaps,
+    currencies
   } = state.modelData;
   const { ui, form } = state;
 
@@ -806,7 +811,8 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     isModalActive: ui.otherModal,
     isRenderModalActive: ui.modal.render,
-    formModal:form.isModalVisible
+    formModal:form.isModalVisible,
+    currencies
   };
 };
 

@@ -8,6 +8,7 @@ import actions from "../../../actions";
 // import OrderDetail from '../modal/render/orderDetail'
 // import SimpleLoader from '../loaders'
 import InifiniteScrollComponent from "./infiniteScroll";
+import { isSafari } from '../../../utils'
 
 import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
@@ -228,7 +229,7 @@ class ActivityList extends Component {
 
         <section className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
           <p className="ALtext fuente">Actividad</p>
-          <div className="ALlistAll">
+          <div className={`ALlistAll ${isSafari()}`}>
             {activity.map((item, index) => {
               if (
                 item.state !== "accepted" &&

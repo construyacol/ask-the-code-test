@@ -795,6 +795,15 @@
     width: 100vw !important;
   }
 
+  .TicketDetail#_wAccount{
+    padding: 20px;
+    width: calc(100vw- 40px) !important;
+    height: calc(100vh - 40px) !important;
+  }
+
+
+  
+
   #ALbuttonText {
     width: auto !important;
   }
@@ -989,9 +998,7 @@
   .DepositView {
     max-height: 300px;
     grid-template-rows: 40% 25% 1fr !important;
-    /*padding: 10px !important;*/
-    width: calc(100% - 20px) !important;
-    height: calc(100% - 20px) !important;
+    width: calc(100% - 50px) !important;
   }
 
   .contWalleins.detail {
@@ -1305,8 +1312,8 @@
     width: 60% !important;
   }
 
-  .ItemSelectionContainers {
-    width: 100% !important;
+  .NWithdrawAccountFlow .containerItems {
+    height: 348px !important;
   }
 
   .ItemSelectedButton {

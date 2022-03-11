@@ -338,7 +338,7 @@ const ItemTextContainer = styled.div`
     margin: 0;
     &.withdrawAddress {
       font-size: 12px;
-      color: var(--paragraph_colorf);
+      color: var(--paragraph_color);
       padding-left: 14px;
       position: relative;
       &::before {

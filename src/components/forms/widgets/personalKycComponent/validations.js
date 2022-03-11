@@ -28,7 +28,7 @@ const birthday = (value, data) => {
     writeOnLabel(targetLabel, data.settings.defaultMessage)
   }else{
     if(age < 18){
-      writeOnLabel(targetLabel, 'Debes de ser mayor de edad(+17) para continuar', 'error')
+      writeOnLabel(targetLabel, 'Debes de ser mayor de edad(+18) para continuar', 'error')
     }
     if(age > 100){
       writeOnLabel(targetLabel, 'Has superado los límites de longevidad humana', 'error')

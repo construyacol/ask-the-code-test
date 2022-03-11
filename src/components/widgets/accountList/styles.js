@@ -23,6 +23,10 @@ export const AccountListContainer = styled.section`
     height: 100%;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
+
+  @media screen and (max-width: 768px) {
+    width: auto;
+  }
 `;
 
 export const ACta = styled.div`
@@ -154,6 +158,10 @@ export const AccountLayout = styled.div`
     }
   }
 
+  @media screen and (max-width:768px) {
+    width: 100% !important;
+  }
+
   @media screen and (max-height: 800px) and (max-width: 1366px) {
     transform: scale(0.9);
   }
@@ -176,13 +184,14 @@ export const ItemAccountL = styled.div`
   height: 155px;
   max-width: 255px;
   border-radius: 6px;
-  padding: 15px;
+  padding: 15px; 
   display: grid;
   transform: scale(1);
   transition: 0.2s;
   cursor: pointer;
   grid-row-gap: 3px;
   overflow: hidden;
+  overflow: -webkit-paged-y;
   transform-origin: top;
   grid-template-rows: ${(props) =>
     props.wallet ? "35px 25px 1fr" : "35px 20px 25px 20px 1fr"};

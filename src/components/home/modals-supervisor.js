@@ -12,7 +12,7 @@ import useToastMessage from "../../hooks/useToastMessage.js";
 import KycSkeleton from '../kyc/basic/skeleton'
 import DWFiatFlowSkeleton from "../wallets/views/skeleton/dWFiatFlowSkeleton"
 import WithdrawAccountFlowSkeleton from '../withdrawAccounts/skeleton'
-import NewWalletSkeleton from '../wallets/newWallet/skeleton'
+// import NewWalletSkeleton from '../wallets/newWallet/skeleton'
 import ConfirmationModal from '../widgets/modal/confirmation'
 
 
@@ -24,7 +24,7 @@ const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
 const Kyc = loadable(() => import("../kyc/kyc_container"), { fallback:<KycSkeleton/> } );
 const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"), { fallback: <WithdrawAccountFlowSkeleton/> });
-const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"), { fallback: <NewWalletSkeleton/> });
+// const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"), { fallback: <NewWalletSkeleton/> });
 
 
 function ModalsSupervisor(props) {
@@ -45,7 +45,7 @@ function ModalsSupervisor(props) {
       <ModalContainer condition={isModalVisible}>
         <ModalLayout modalView={modalView} loader={loader}>
 
-          <Route exact strict path="/wallets" component={NewWallet} />
+          {/* <Route exact strict path="/wallets" component={NewWallet} /> */}
 
           <Route strict path="/wallets/deposit/:account_id" render={(renderProps) => {
             return (<DepositContainer {...renderProps} toastMessage={toastMessage} />);

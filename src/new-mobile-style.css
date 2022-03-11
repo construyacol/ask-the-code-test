@@ -118,12 +118,6 @@
     grid-row-gap: 16px;
   }
 
-  .DepositView,
-  #swapForm,
-  .DCcurrent_wallet form,
-  .contenido.withdraw_accounts.activity {
-    /* transform: scale(.9); */
-  }
 
   .asaras .TicketDetail {
     grid-template-rows: 1fr !important;
@@ -513,8 +507,9 @@
 
 @media only screen and (max-width: 768px) {
 
-
-
+  .DCcurrent_wallet #controlsContainer{
+    align-self: end;
+  }
 
   .inputElement2::placeholder {
     font-size: 30px;
@@ -529,13 +524,15 @@
   .DCcurrent_wallet.wallets.deposit,
   .DCcurrent_wallet.wallets.withdraw,
   .DCcurrent_wallet.wallets.swap {
-    padding: 40px 30px 20px 30px ;
+    /* padding: 40px 30px 20px 30px !important; */
     height: calc(100vh - 160px) !important;
+    width: calc(100vw - 30px);
   }
 
   .withdrawView {
-    height: calc(100% - 40px) !important;
+    height: calc(100% - 60px) !important;
     max-height: none !important;
+    width: calc(100% - 20px) !important;
   }
 
   .securityCenterDetail_.contenido{

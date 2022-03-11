@@ -18,7 +18,7 @@ const OnBoardingComponent = props => {
           formName: 'onBoarding'
         }
       )
-      setDataForm(_dataForm)
+      setDataForm(_dataForm) 
     }
   
     useEffect(()=> { 

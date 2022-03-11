@@ -143,10 +143,6 @@ export const doLogout = async (queryString) => {
 
 export const handleError = async(err, callback) => {
 
-  // console.log(err)
-  // console.log(callback)
-  // debugger
-
 // TODO: add handle sentry here
   switch (err.name || err.message) {
     // case 'notFindUserToken':

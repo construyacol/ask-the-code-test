@@ -1,30 +1,21 @@
 import React from "react";
 import styled from "styled-components";
 import { AiOutlineClose } from "react-icons/ai";
-import { isSafari } from '../../../../utils'
 
-
-const TagItem = ({ withdrawAccount, deleteTag }) => {
-  // console.log('||||||||||||||||||||| withdrawAccount : ', withdrawAccount)
+const TagItem = ({ item, deleteTag }) => {
+  // console.log('||||||||||||||||||||| item : ', item)
   // debugger
 
-  if (!withdrawAccount) {
+  if (!item) {
     return null;
   }
 
-  const address = withdrawAccount.info && withdrawAccount.info.address;
-
   return (
     <>
-      <TagBlocker className={`${isSafari()}`}/>
+      <TagBlocker />
       <TagContainer id="tagAddress">
         <LabelTextCont>
-          <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
-          <AddressContainer
-            data-final-address={address.match(/..........$/g).toString()}
-          >
-            <Address className="fuente2 address_">{address}</Address>
-          </AddressContainer>
+          <p className="fuente label_">{item?.currency}</p>
         </LabelTextCont>
         <DeleteButton onClick={deleteTag}>
           <AiOutlineClose size={16} color="white" />
@@ -122,7 +113,7 @@ const TagContainer = styled.div`
     grid-template-columns: minmax(90px, 180px) 38px;
   }
 
-  &:hover {
+  ${'' /* &:hover {
     ${LabelTextCont} {
       top: -30px;
       .label_ {
@@ -134,7 +125,7 @@ const TagContainer = styled.div`
         opacity: 1;
       }
     }
-  }
+  } */}
 
   &.disappear {
     transform: translateY(10px);
@@ -163,7 +154,4 @@ const TagBlocker = styled.section`
   ${"" /* background: rgb(255 255 255 / 51%); */}
   background: linear-gradient(to right, rgb(255 255 255), rgb(255 255 255), transparent);
   backdrop-filter: blur(1px);
-  &.is_safari{
-    background:white;
-  }
 `;

@@ -1,4 +1,8 @@
 import styled from 'styled-components'
+import {
+    hideStage,
+    showStage
+} from '../sharedStyles'
 
 
 const Layout = styled.div`
@@ -20,10 +24,24 @@ const Layout = styled.div`
 
 export const AmountLayout = styled(Layout)`
     grid-template-rows: 120px 1fr 120px;
+    &.hide_{
+        animation: ${hideStage} .3s linear forwards;
+    }
+
+    &.show_{
+        animation: ${showStage} .3s linear forwards;
+    }
 `
 
 export const CostIdLayout = styled(Layout)`
     grid-template-rows: 120px 1fr 120px;
+    opacity:0;
+    &.hide_{
+        animation: ${hideStage} .2s linear forwards;
+    }
+    &.show_{
+        animation: ${showStage} .3s linear forwards;
+    }
 
     @media (max-width: 768px) {
         ._costIdContent{

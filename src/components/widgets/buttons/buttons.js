@@ -65,7 +65,7 @@ export const AddNewItem = (props) => {
       className={`AddNewItemContainer ${clases}`}
       onClick={handleClick}
     >
-      <div className="BbackgroundAddNew"></div>
+      {/* <div className="BbackgroundAddNew"></div> */}
       <div className={`AddNewItem ${type}`}>
         <p className=" fuente">
           <i className="fas fa-plus"></i>

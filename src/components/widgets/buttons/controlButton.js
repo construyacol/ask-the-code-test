@@ -50,7 +50,7 @@ export const InputButton = (props) => {
         />
       ) : (
         // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
-        <DisabledButton className="disabledButton" >{props.label}</DisabledButton>
+        <DisabledButton className="disabledButton fuente" >{props.label}</DisabledButton>
       )}
     </InputButtonCont>
   );
@@ -103,6 +103,10 @@ const ControlsContainer = styled.div`
     width: 100%;
     height: 100%;
     position: absolute;
+  }
+
+  @media screen and (max-width: 768px) {
+    ${'' /* align-self:end; */}
   }
 `;
 

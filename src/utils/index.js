@@ -10,6 +10,16 @@ import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
 
 const { normalizeUser } = normalizr_services;
 
+
+export const isSafari = () => {
+  if (navigator.userAgent.search("Safari") >= 0 && navigator.userAgent.search("Chrome") < 0) {
+    return 'is_safari'
+  }else{
+    return ''
+  }
+}
+
+
 export const SentryCaptureException = (error) => {
   Sentry.captureException(error);
 };
@@ -131,6 +141,11 @@ export const capitalizarPalabras = (val) => {
     .map((v) => v[0] && v[0].toUpperCase() + v.substr(1))
     .join(" ");
 };
+
+export const capitalizeWord = (word) => {
+  const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+  return capitalizedWord
+}
 
 export const capitalizeString = (string) => {
   if (typeof string !== "string") {

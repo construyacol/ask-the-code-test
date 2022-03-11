@@ -47,6 +47,10 @@ const Container = styled.div`
     padding: 50px;
   }
 
+  @media ${device.tablet} {
+    padding: 50px 25px;
+  }
+
 `;
 
 // const FormContainer = styled.div`

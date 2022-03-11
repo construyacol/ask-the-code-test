@@ -303,4 +303,12 @@
   color: white;
 }
 
+
+@media screen and (max-width:768px) {
+  .capsuleMenu1 {
+    padding-right: 0px;
+  }
+}
+
+
 /**/
