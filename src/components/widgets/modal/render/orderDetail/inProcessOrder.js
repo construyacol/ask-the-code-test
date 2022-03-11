@@ -16,11 +16,11 @@ import ConfirmationCounter from "./confirmationCounter";
 import useViewport from "../../../../../hooks/useWindowSize";
 import {
    device, 
-  //  BIOMETRIC_FIAT_LITMIT_AMOUNT 
+   BIOMETRIC_FIAT_LITMIT_AMOUNT 
 } from "../../../../../const/const";
 import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
-// import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
+import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { BottomSection } from './'
 
 import moment from "moment";
@@ -116,7 +116,7 @@ const FiatOrder = ({ order }) => {
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
-  // const [ , , toBigNumber ] = useFormatCurrency()
+  const [ , , toBigNumber ] = useFormatCurrency()
   const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
@@ -147,22 +147,18 @@ const FiatOrder = ({ order }) => {
       actions.isAppLoading(true);
 
       const { user } = coinsendaServices.globalState.modelData
-      // const orderAmount = await toBigNumber(order.amount, order.currency) 
-      // const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
-      
-      if(user.security_center?.transactionSecurity?.biometric?.enabled){
+      const orderAmount = await toBigNumber(order.amount, order.currency) 
+      const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
+
+      if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
         const Element = await import("../../../../forms/widgets/biometricKycComponent/init");
         if(!Element) return;
         const BiometricKyc = Element.default
         return actions.renderModal(() => <BiometricKyc orderData={{order, paymentProof:dataBase64}} />);
       }
 
-      // cropImgOFf
-      // activate oncomment line ><167
-      let confirmation = await coinsendaServices.confirmDepositOrder(
-        order.id,
-        dataBase64
-      );
+      let confirmation = await coinsendaServices.confirmDepositOrder(order.id, dataBase64); 
+
       if (!confirmation || !confirmation.data) {
         actions.isAppLoading(false);
         toastMessage("El depósito No se ha confirmado", "error");

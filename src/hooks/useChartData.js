@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useCoinsendaServices } from "../services/useCoinsendaServices";
-import currencyLabels from "../components/Prices/currency-labels";
+// import currencyLabels from "../components/Prices/currency-labels";
 import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
 import { useSelector } from "react-redux";
 
@@ -31,12 +31,6 @@ export default function useChartData() {
   useEffect(() => {
     const currentPair = modelData.pairs.currentPair;
     if (currentPair && currencies) {
-      // const currencyTo = currentPair.primary_currency.currency.includes("usd") ? currentPair.secondary_currency.currency : "usd";
-      // const settings = {
-      //   currency_from: currencyLabels[currentPair.primary_currency.currency],
-      //   currency_to: currencyLabels[currencyTo],
-      //   amount_days: 45,
-      // };
       const primaryCur = currentPair.primary_currency.currency
       const secondaryCur = currentPair.secondary_currency.currency
       const settings = {

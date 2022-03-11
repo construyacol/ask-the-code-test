@@ -19,6 +19,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   const { deposit_providers, tx_path, path } = UseTxState();
   const [, formatCurrency] = useFormatCurrency();
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+  const { withdraw_accounts } = useSelector((state) => state.modelData)
   const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
 
 
@@ -216,6 +217,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   }
 
   const formatWithdrawOrder = async(order) => {
+
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["ID del retiro:", order?.id],
@@ -224,6 +226,10 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
       ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
+    if(order?.currency_type === 'crypto'){
+      parsedOrder.push(["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value])
+    }
+
     return parsedOrder 
   }
 
