@@ -15,7 +15,6 @@ const {
 } = Enviroment;
 
 
-
 export const MAIN_COLOR = "#0e95f8";
 export const FONT_COLOR = "#50667a";
   
@@ -91,8 +90,6 @@ export const PRIORITY_ENTITIES = [
   "banco_falabella_sa",
   "efecty"
 ]
-
-
 
 export const IMAGE_MIME_TYPES = [
   "image/png",
@@ -254,10 +251,10 @@ export const device = {
 };
 
 export const currencyLabels = {
-  usd: "USD",
-  bitcoin: "BTC",
-  cop: "COP",
-  bitcoin_testnet: "BTCT",
+  usd: {symbol:"USD"},
+  bitcoin: {bitcoin:"USD"},
+  cop: {cop:"USD"}, 
+  bitcoin_testnet: {bitcoin_testnet:"USD"}
 };
 
 export const orderStateColors = {
