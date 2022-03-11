@@ -87,17 +87,13 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   const createWallet = async () => {
 
       setLoader(true)
-      
       const newWallet = await coinsendaServices.createWallet({...matchItem, currency:capitalizeWord(matchItem?.currency)});
-    //   capitalizeWord()
       if (!newWallet) {
         setLoader(false)
         return toastMessage("Error al crear la billetera...", "error");
       }
       await coinsendaServices.getWalletsByUser();
       const { account } = newWallet;
-      console.log(account)
-      debugger
       const dep_prov = await coinsendaServices.createAndInsertDepositProvider(account);
 
 
