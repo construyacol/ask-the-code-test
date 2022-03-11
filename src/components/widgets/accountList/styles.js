@@ -349,6 +349,7 @@ export const WalletLayout = styled(ItemAccountL)`
 
   &.litecoin {
     background: linear-gradient(to right, #bfbfbf, #a0a0a0);
+    background: linear-gradient(to right,#4974b4,#244372);
   }
 
   .IWcurrencyText {

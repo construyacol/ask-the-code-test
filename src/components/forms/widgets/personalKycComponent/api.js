@@ -284,7 +284,7 @@ export const ApiGetPersonalStages = async(config) => {
 
 
 
-
+ 
 export const ApiPostPersonalKyc = async(body, tools) => {
 
   const { setLoading, prevStage, toastMessage } = tools
@@ -295,11 +295,13 @@ export const ApiPostPersonalKyc = async(body, tools) => {
     verification_level: "level_1",
   };
 
-
   const isMaskBirthday = config.info.birthday.includes('/') 
   if(isMaskBirthday){
     config.info.birthday = formatMaskDate(config.info.birthday) 
   }
+
+  console.log('||||||||  isMaskBirthday  =====> ', isMaskBirthday)
+  console.log('||||||||  birthday  =====> ', config.info.birthday)
 
   const timeStampDate = parseDateToTimeStamp(config.info.birthday)
   config.info.birthday = timeStampDate

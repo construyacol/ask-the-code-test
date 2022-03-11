@@ -217,7 +217,6 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   }
 
   const formatWithdrawOrder = async(order) => {
-
     let parsedOrder = [
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["ID del retiro:", order?.id],
@@ -227,9 +226,10 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
       ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
     if(order?.currency_type === 'crypto'){
-      parsedOrder.push(["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value])
+      parsedOrder.push(
+        ["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value],
+      )
     }
-
     return parsedOrder 
   }
 
