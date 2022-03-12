@@ -12,7 +12,7 @@ export const getHostName = () => {
   }
   
   return nodeList[hostId]
-  // return "cryptosenda"
+  // return "coinsenda"
 }
 
 
@@ -74,7 +74,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
 
 
 
-console.log('Environment', Environment)
+// console.log('Environment', Environment)
 
 
 
