@@ -18,11 +18,11 @@ export function _createStore() {
   delete window.__PRELOADED_STATE__;
 
   let store;
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" || process.env.REACT_APP_BUILD_CONFIG === "pre_prod") {
     store = createStore(
       reducer,
       preloadedState || {},
-      applyMiddleware(logger, thunk, loadedSoundsMiddleware)
+      applyMiddleware(thunk, loadedSoundsMiddleware)
     );
   } else {
     store = createStore(
