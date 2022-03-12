@@ -14,7 +14,6 @@ const {
   BASE_URL
 } = Enviroment;
 
-
 export const MAIN_COLOR = "#0e95f8";
 export const FONT_COLOR = "#50667a";
   
@@ -256,6 +255,13 @@ export const currencyLabels = {
   cop: {cop:"USD"}, 
   bitcoin_testnet: {bitcoin_testnet:"USD"}
 };
+
+export const BLOCKCHAIN_EXPLORER_URL = {
+  bitcoin:"https://blockstream.info/",
+  bitcoin_testnet:"https://blockstream.info/",
+  litecoin:"https://live.blockcypher.com/ltc/block/"
+}
+
 
 export const orderStateColors = {
   accepted: "linear-gradient(to bottom right, #11998e, #48c778);",
