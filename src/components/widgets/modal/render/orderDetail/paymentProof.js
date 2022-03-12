@@ -157,16 +157,16 @@ export const PaymentProof = ({ payload }) => {
       setImgProof(
         currentOrder.currency_type === "fiat"
           ? `data:image/png;base64, ${proof_of_payment.raw}`
-          : await QRCode.toDataURL(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}tx/${proof_of_payment.proof}`)
+          : await QRCode.toDataURL(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${proof_of_payment.proof}`)
       );
       if (currentOrder.currency_type === "crypto") {
         setTxId(proof_of_payment.proof);
-        setUrlExplorer(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}tx/${proof_of_payment.proof}`);
+        setUrlExplorer(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${proof_of_payment.proof}`);
       }
     } else if (currentOrder.proof) {
-      setImgProof(await QRCode.toDataURL(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}tx/${currentOrder.proof}`));
+      setImgProof(await QRCode.toDataURL(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${currentOrder.proof}`));
       setTxId(currentOrder.proof);
-      setUrlExplorer(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}tx/${currentOrder.proof}`);
+      setUrlExplorer(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${currentOrder.proof}`);
     }
   };
 

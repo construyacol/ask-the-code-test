@@ -257,9 +257,9 @@ export const currencyLabels = {
 };
 
 export const BLOCKCHAIN_EXPLORER_URL = {
-  bitcoin:"https://blockstream.info/",
-  bitcoin_testnet:"https://blockstream.info/",
-  litecoin:"https://live.blockcypher.com/ltc/block/"
+  bitcoin:"https://blockstream.info/tx/",
+  bitcoin_testnet:"https://blockstream.info/tx/",
+  litecoin:"https://blockchair.com/es/litecoin/transaction/"
 }
 
 
