@@ -42,7 +42,7 @@ const noLogsOnProduction = () => {
   console.log = () => null;
 };
 
-if (process.env.NODE_ENV === "production" && process.env.REACT_APP_BUILD_CONFIG !== 'development') {
+if (process.env.NODE_ENV === "production" || process.env.REACT_APP_BUILD_CONFIG === "pre_prod") {
   noLogsOnProduction();
 }
 

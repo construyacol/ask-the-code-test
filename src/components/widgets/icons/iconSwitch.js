@@ -84,6 +84,7 @@ const Cardano = loadable(() => import("./").then(getExportByName("Cardano")));
 const Ux = loadable(() => import("./").then(getExportByName("Ux")));
 const Dash = loadable(() => import("./").then(getExportByName("Dash")));
 const Litecoin = loadable(() => import("./").then(getExportByName("Litecoin")));
+const Pactual = loadable(() => import("./").then(getExportByName("Pactual")));
 const Youtube = loadable(() => import("./").then(getExportByName("Youtube")));
 const Twitter = loadable(() => import("./").then(getExportByName("Twitter")));
 const Whatsapp = loadable(() => import("./").then(getExportByName("Whatsapp")));
@@ -170,6 +171,8 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "banco_btg_pactual":
+        return <Pactual {...props} height={"30px"} />;
       case "ualá":
         return <Uala {...props} height={"30px"} />;
       case "Efecty":
