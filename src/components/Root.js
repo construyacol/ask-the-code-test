@@ -11,7 +11,7 @@ import { history } from "../const/const";
 import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
-// import FreshChat from '../services/FreshChat' 
+import FreshChat from '../services/FreshChat' 
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import {
@@ -122,7 +122,7 @@ function RootContainer(props) {
       ) : (
         <>
           <LazySocket toastMessage={toastMessage} />
-          {/* <FreshChat/> */}
+          <FreshChat/>
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>
