@@ -63,7 +63,8 @@ export const debugItemTag = itemKey => {
 
 
 export const getBody = (body, { stages: { nationality } }) => {
-    const prefix = nationality?.selectList[body?.meta_phone].prefix[0]
+    console.log('|||||||||||||||||  select List =====> ', nationality?.selectList, body?.meta_phone)
+    const prefix = nationality?.selectList[body?.meta_phone]?.prefix ? nationality?.selectList[body?.meta_phone]?.prefix[0] : ''
     const _body = {...body}
     delete _body.meta_phone
     _body.phone = `${prefix} ${body.phone}`

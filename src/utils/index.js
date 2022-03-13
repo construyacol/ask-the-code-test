@@ -289,8 +289,13 @@ function getProps(obj, path) {
   return parent[name];
 }
 
+
+
 export const convertToObjectWithCustomIndex = (matriz, customIndex) => {
   // @param matriz: arrray | object
+  // array to object
+  // let arrayToObject = await array.reduce((a, v) => ({ ...a, [v?.code]: v}), {}) 
+
   let MATRIZ = matriz;
   let OBJECT_RESULT = {};
   let INDEX;

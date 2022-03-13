@@ -79,6 +79,9 @@ export class AccountService extends WebService {
       balances: [...balanceList],
     };
 
+    // console.log('updatedOnlyBalances', updatedOnlyBalances)
+    // debugger
+
     let userWallets = await normalizeUser(
       onlyBalances ? updatedOnlyBalances : updatedUser
     );
@@ -140,7 +143,7 @@ export class AccountService extends WebService {
 
     const body = {
         data: {
-            name: `Mi billetera ${walletInfo?.currency}`,
+            name: `Mi Billetera ${walletInfo?.currency}`,
             description: "description",
             country: this?.user?.country,
             enabled: true,
