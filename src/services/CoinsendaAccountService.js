@@ -17,6 +17,9 @@ import initialAccounts from "../components/api/accountInitialEnvironment.json";
 import { serve_orders, matchItem } from "../utils";
 import update_activity, { pending_activity } from "../actions/storage";
 import { current_section_params } from "../actions/uiActions";
+import BigNumber from 'bignumber.js'
+
+
 
 export class AccountService extends WebService {
   async getWalletsByUser(onlyBalances = false, lastActionDetail) {
@@ -49,14 +52,16 @@ export class AccountService extends WebService {
       await this.dispatch(resetModelData({ wallets: [] }));
       return;
     }
-
+ 
+    
     const balanceList = availableWallets.map((wallet) => {
+      let availableBalance = Number(wallet.available).toFixed(BigNumber(wallet.available).dp())
       let newWallet = {
         id: wallet.id,
         currency: wallet.currency.currency,
         reserved: wallet.reserved,
-        available: wallet.available,
-        total: parseFloat(wallet.reserved) + parseFloat(wallet.available),
+        available:availableBalance,
+        total: parseFloat(wallet.reserved) + parseFloat(availableBalance),
         lastAction: null,
         actionAmount: 0,
       };
@@ -79,8 +84,7 @@ export class AccountService extends WebService {
       balances: [...balanceList],
     };
 
-    // console.log('updatedOnlyBalances', updatedOnlyBalances)
-    // debugger
+
 
     let userWallets = await normalizeUser(
       onlyBalances ? updatedOnlyBalances : updatedUser
