@@ -20,8 +20,16 @@ import { current_section_params } from "../actions/uiActions";
 import BigNumber from 'bignumber.js'
 
 
-
 export class AccountService extends WebService {
+
+
+  async userHasWallets(){
+    const user = this.user;
+    const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
+    const wallets = await this.Get(accountUrl);
+    return wallets
+  }
+
   async getWalletsByUser(onlyBalances = false, lastActionDetail) {
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES)
@@ -30,7 +38,6 @@ export class AccountService extends WebService {
     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
     const wallets = await this.Get(accountUrl);
     
-    // console.log('||||||||||||||||  getWalletsByUser ==> ', wallets)
     
     if (!wallets || wallets === 404) {
       return false;
@@ -95,6 +102,7 @@ export class AccountService extends WebService {
     }
 
     await this.dispatch(updateNormalizedDataAction(userWallets));
+
     return userWallets;
   }
 
