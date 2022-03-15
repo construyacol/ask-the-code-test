@@ -140,7 +140,7 @@ const STAGES = {
         uiType:"text",
         "settings":{
           defaultMessage:"Tus apellidos deben coincidir con los de tu documento de identidad.",
-          successPattern:/[a-zA-Z ]{3,40}/g,
+          successPattern:/[a-zA-Z\u00f1\u00d1 ]{3,40}/g,
           label:"Apellidos completos:",
           placeholder:"Ej: Sanchez buitrago",
           queryParams:{
@@ -164,7 +164,7 @@ const STAGES = {
             form:'personal_names'
           },
           errors:[
-            { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
+            { pattern:/[^a-zA-Z\u00f1\u00d1 ]{1,30}/g, message:'Solo se permiten letras...'}
           ],
           AuxComponent:null,
           MainComponent:null

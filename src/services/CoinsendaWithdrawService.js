@@ -193,6 +193,9 @@ export class WithdrawService extends WebService {
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_RETIRO)
     );
     const user = this.user;
+    
+    if(user.verification_level === 'level_0') return ;
+
     const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`;
 
     const withdrawProviders = await this.Get(finalUrl);
