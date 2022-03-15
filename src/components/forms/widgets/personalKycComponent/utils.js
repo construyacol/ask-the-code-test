@@ -73,7 +73,7 @@ export const getBody = (body, { stages: { nationality } }) => {
 
 
 export const parseOnlyLetters = (value) => {
-  return value.replace(/[^a-zA-Z ]/g, '')
+  return value.replace(/[^a-zA-Z\u00f1\u00d1 ]/g, '')
 }
 
 export const parseOnlyNumbers = (value) => {
