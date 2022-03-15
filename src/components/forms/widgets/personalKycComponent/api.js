@@ -147,7 +147,7 @@ const STAGES = {
             form:'personal_surnames'
           },
           errors:[
-            { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
+            { pattern:/[^a-zA-Z\u00f1\u00d1 ]{1,30}/g, message:'Solo se permiten letras...'}
           ],
         }
       },
