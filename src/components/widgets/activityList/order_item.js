@@ -11,6 +11,7 @@ import SwapAnimation from "../swapAnimation/swapAnimation";
 import SimpleLoader from "../loaders";
 import useViewport from "../../../hooks/useWindowSize";
 import { RibbonContDeposit } from '../../referrals/shareStyles'
+import BigNumber from 'bignumber.js'
 
 import {
   gotoTx,
@@ -434,7 +435,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
       {tx_path === "swaps" ? (
         <>
           <AmountText className={`fuente2 amount swaps`}>
-            + {order.bought || "--"}
+            + {order.bought ? Number(order.bought).toFixed(BigNumber(order.bought).dp()) : "--"}
           </AmountText>
           <IconSwitch
             className={`currency_bought`}
@@ -442,7 +443,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
             size={16}
           />
           <AmountText className={`fuente2 amount_spent`}>
-            - {order.spent || "--"}
+            - {order.spent ? Number(order.spent).toFixed(BigNumber(order.spent).dp()) : "--"}
           </AmountText>
           <IconSwitch
             className={`currency_spent`}

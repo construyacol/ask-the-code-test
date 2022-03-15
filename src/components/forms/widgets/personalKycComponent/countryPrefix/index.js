@@ -23,7 +23,7 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
     const [ activeStage, setActiveStage ] = useState(false)
     // assign it to input only if it is metadata
     const inputName = name.includes('meta') ? name : `meta_${name}`
-    const [ countryData, setCountryData ] = useState(dataForm?.stages?.nationality?.selectList[state[inputName]])
+    const [ countryData, setCountryData ] = useState(dataForm?.stages?.country?.selectList[state[inputName]])
     
     const toggleActivation = e => {
         e.stopPropagation()
@@ -55,15 +55,16 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
     }, [activeStage])
 
     useEffect(()=>{
-        const _countryData = dataForm?.stages?.nationality?.selectList[state[inputName]] 
+        const _countryData = dataForm?.stages?.country?.selectList[state[inputName]] 
         setCountryData(_countryData)
         if(_countryData){
             setActiveStage(false)
         }
     }, [state[inputName]])
 
-
     const prefix = countryData?.prefix || "+ --";
+
+    console.log('|||||||||||||||||||||||||  countryData ==> ', dataForm?.stages?.country)
 
     return(
         <PrefixContainer 

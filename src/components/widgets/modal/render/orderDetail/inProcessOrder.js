@@ -22,7 +22,6 @@ import { IconClose } from "../../../shared-styles";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { BottomSection } from './'
-
 import moment from "moment";
 import "moment/locale/es";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
@@ -37,7 +36,7 @@ moment.locale("es");
 
 const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState();
-
+  
   if (!currentOrder || !currentOrder.currency) return onErrorCatch();
 
   return (
@@ -45,7 +44,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
       {currentOrder.currency_type === "fiat" ? (
         <FiatOrder order={currentOrder} />
       ) : (
-        <CryptoOrder order={currentOrder} tx_path />
+        <CryptoOrder order={currentOrder} />
       )}
     </>
   );
@@ -93,12 +92,10 @@ const CryptoOrder = ({ order }) => {
         {
           tx_path === "deposits" ? (
             <BottomSectionContainer className={`crypto`}>
-              <UploadComponent />
+              <UploadComponent title="TX ID - Confirmaciones" />
               <ConfirmationCounter
                 confirmations={order.confirmations}
-                total_confirmations={
-                  currencies[order.currency.currency].confirmations
-                }
+                total_confirmations={currencies[order.currency.currency].confirmations}
               />
             </BottomSectionContainer>)
           :
@@ -308,7 +305,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
         <Fragment>
           <UploadMiddle className="titleSection payment fuente">
             <UploadTextMiddle className="titleSection">
-              Comprobante de pago
+               {title || 'Comprobante de pago'}
             </UploadTextMiddle>
             <hr />
           </UploadMiddle>

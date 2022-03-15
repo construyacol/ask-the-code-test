@@ -97,8 +97,9 @@ const createStage = (source, modelated, index) => {
     if(stage[key] === 'select'){
       let selectSource = source
       if(['nationality', 'country'].includes(stage.key)){
-        selectSource = await getNationalityList()
+        selectSource = await getNationalityList(selectSource)
       }
+
       stage.selectList = generateSelectList(selectSource)
     }
   })
@@ -107,26 +108,43 @@ const createStage = (source, modelated, index) => {
 }
 
 
-const getNationalityList = async() => {
+const getNationalityList = async(selectList) => {
   // TODO : fix compatibility of country lists 
   const response = await fetch(`${INFO_URL_API}/api/countrys`);
   const res  = await response.json()
   if(!res){return}
+  
   let countrySource = {}
+  let _selectList = JSON.parse(JSON.stringify(selectList))
+  delete _selectList?.ui_name
+  delete _selectList?.ui_type  
+
   for (const country of res) {
-    // console.log('country', country)
     country.code = country.code.split(" ").join("_")
     country.currencySymbol = country.currency_symbol
     delete country.currency_symbol
-    countrySource = {
-      ...countrySource,
-      [country.code]:{
-        ...country,
-        flag:`${INFO_URL_API}${country.flag}` 
+   
+    let countryKey = _selectList[country?.code] && country?.code
+    let countryUiName = _selectList[country?.code]?.ui_name
+
+    // 16 country no match
+    //  if(!countryKey){
+    //    console.log('currenciesNotMatch :', country?.code)
+    //  }
+
+    if(countryKey){
+      countrySource = {
+        ...countrySource,
+        [countryKey]:{
+          ...country,
+          name:countryUiName,
+          flag:`${INFO_URL_API}${country.flag}` 
+        }
       }
-    }
+      delete _selectList[country?.code]
+    } 
   }
-  return countrySource
+  return {...countrySource, ..._selectList}
 }
 
  

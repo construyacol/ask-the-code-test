@@ -157,7 +157,7 @@ const STAGES = {
         uiType:"text",
         "settings":{
           defaultMessage:"Los nombres deben coincidir con los de tu documento de identidad",
-          successPattern:/[a-zA-Z ]{3,40}/g,
+          successPattern:/[a-zA-Z\u00f1\u00d1 ]{3,40}/g,
           label:"Nombres completos (Sin apellidos):",
           placeholder:"Ej: Juan josé ",
           queryParams:{

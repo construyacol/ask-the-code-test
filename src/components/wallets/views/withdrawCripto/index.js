@@ -267,7 +267,7 @@ export const CriptoView = () => {
         setMaxWithActionKey={true}
         value={amountValue}
         SuffixComponent={({ id }) => (
-          <AvailableBalance
+          <AvailableBalance 
             id={id}
             handleAction={handleMaxAvailable}
             amount={balance.available}
@@ -294,7 +294,6 @@ export const CriptoView = () => {
 export const AvailableBalance = ({ handleAction, amount, id }) => {
   const { keyActions } = useSelector((state) => state.ui);
   const isMovil = window.innerWidth < 768;
-
 
   return (
     <BalanceContainer>

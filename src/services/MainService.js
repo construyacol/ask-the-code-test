@@ -137,18 +137,24 @@ export class MainService extends inheritances {
     }
   }
 
+  
+
   async init(callback) {
+
     while (!this.user) {
       await sleep(2000);
     }
-    const wallets = await this.getWalletsByUser();
+
+    const userWallets = await this.userHasWallets();
+    const withOutWallets = userWallets?.length < 1
     const verificationStatus = await this.getVerificationState();
-    // console.log('verificationStatus ', verificationStatus)
-    // console.log('wallets ', wallets)
-    // debugger
-    if (!wallets && verificationStatus === "accepted") {
+
+    if (withOutWallets && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
+
+    await this.getWalletsByUser()
+
     this.postLoader(callback, false);
     return;
   }

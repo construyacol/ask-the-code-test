@@ -130,7 +130,7 @@ const Container = styled.div`
     }
   }
 `;
-
+ 
 export default PaymentProofComponent;
 
 export const PaymentProof = ({ payload }) => {
@@ -147,6 +147,10 @@ export const PaymentProof = ({ payload }) => {
   const [imgProof, setImgProof] = useState(payload);
   const [txId, setTxId] = useState();
   const [urlExplorer, setUrlExplorer] = useState();
+  let orderDate = new Date(currentOrder?.created_at)
+  let showFromDate = new Date('2022-03-12T00:00:00')
+  let showPaymentProof = currentOrder.currency_type === "crypto" || (orderDate > showFromDate && currentOrder.currency_type === "fiat")
+
 
   const getPaymentProof = async (currentOrder) => {
     // alert('getpayment')
@@ -177,12 +181,11 @@ export const PaymentProof = ({ payload }) => {
       tx_path === "deposits"
     ) {
       const getData = async () => {
-        const PP = await coinsendaServices.getDepositById(currentOrder.id);
+        const PP = showPaymentProof && await coinsendaServices.getDepositById(currentOrder.id);
         if (!PP) {
           return;
         }
         // const { proof_of_payment } = PP.paymentProof;
-
         let updateOrder = {
           [PP.id]: { ...PP },
         };
@@ -206,20 +209,24 @@ export const PaymentProof = ({ payload }) => {
   const openBlockchain = () => {
     window.open(urlExplorer, "_blank");
   };
-
-  // console.log('Payment Proof ==> ', currentOrder.currency_type)
+ 
   return (
     <>
       <PaymentProofContainer
         className={`paymentProofCont ${currentOrder.currency_type} ${currentOrder.state}`}
-      >
-        {(!imgProof || loader) && (
+      > 
+        {
+          !showPaymentProof && <p className="orderLimitDate" >No disponible</p>
+        }
+
+        {
+          (showPaymentProof && (!imgProof || loader)) && (
           <LoaderContainer>
             <SimpleLoader loader={2} justify="center" color="#206f65" />
           </LoaderContainer>
         )}
-
-        {imgProof && (
+        
+        {(showPaymentProof && imgProof) && (
           <ProofContainer>
             <Zoom>
               <img src={imgProof} width="100%" height="90px" alt="" />
@@ -293,6 +300,11 @@ const PaymentProofContainer = styled.div`
   max-width: 110px;
   position: relative;
   justify-self: start;
+
+  .orderLimitDate{
+    color:white;
+    text-align:center;
+  }
 
   img {
     border-radius: 3px;

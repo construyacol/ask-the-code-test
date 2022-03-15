@@ -367,13 +367,17 @@ class WithdrawFlow extends Component {
       color_loader: "white",
       ticket_label_loader: "Confirmando orden de retiro",
     });
-
     // return console.log('________________________________________CONFIRMAR ORDEN DE RETIRO', this.state)
+    
+    let withdrawInfo = await this.props.coinsendaServices.getWithdrawById(this.state.new_order.id)
+    let res
 
-    let res = await this.props.coinsendaServices.addUpdateWithdraw(
-      this.state.new_order.id,
-      "confirmed"
-    );
+    if(withdrawInfo?.state === 'pending'){
+      res = await this.props.coinsendaServices.addUpdateWithdraw(
+        this.state.new_order.id,
+        "confirmed"
+      );
+    }
 
     if (!res || res === 465) {
       this.setState({

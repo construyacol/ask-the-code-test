@@ -99,31 +99,38 @@ const ReferralInfo = () => {
   `
 
 
+
+  export const toRender = {
+    "deposits":{
+      "is_referral":{
+          "title":"Depósito por referido",
+          "component":ReferralInfo
+      },
+      "crypto":{
+        "title":"TX ID Información"
+      }        
+    },
+    "withdraws":{
+      "fiat":{
+          "title":"Información cuenta de retiro",
+          "component":WithdrawFiatInfo
+      },
+      "crypto":{
+        "title":"TX ID Información"
+      }
+    },
+    "swaps":{
+      "title":"",
+      "component":() => (<div></div>)
+    }
+  }
+
   
   
   const GetInfoComponentToRender = (order) => {
   
     const { tx_path, info } = order
     const targetKey = info?.is_referral ? 'is_referral' : order?.currency_type
-
-    const toRender = {
-      "deposits":{
-        "is_referral":{
-            "title":"Depósito por referido",
-            "component":ReferralInfo
-        }        
-      },
-      "withdraws":{
-        "fiat":{
-            "title":"Información cuenta de retiro",
-            "component":WithdrawFiatInfo
-        }
-      },
-      "swaps":{
-        "title":"",
-        "component":() => (<div></div>)
-      }
-    }
     
     useEffect(()=> {
        const title = tx_path === 'swaps' ? '' : toRender[tx_path][targetKey]?.title || 'Comprobante de pago'

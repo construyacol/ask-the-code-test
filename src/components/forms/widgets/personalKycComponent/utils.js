@@ -63,7 +63,8 @@ export const debugItemTag = itemKey => {
 
 
 export const getBody = (body, { stages: { nationality } }) => {
-    const prefix = nationality?.selectList[body?.meta_phone].prefix[0]
+    console.log('|||||||||||||||||  select List =====> ', nationality?.selectList, body?.meta_phone)
+    const prefix = nationality?.selectList[body?.meta_phone]?.prefix ? nationality?.selectList[body?.meta_phone]?.prefix[0] : ''
     const _body = {...body}
     delete _body.meta_phone
     _body.phone = `${prefix} ${body.phone}`
@@ -72,7 +73,7 @@ export const getBody = (body, { stages: { nationality } }) => {
 
 
 export const parseOnlyLetters = (value) => {
-  return value.replace(/[^a-zA-Z ]/g, '')
+  return value.replace(/[^a-zA-Z\u00f1\u00d1 ]/g, '')
 }
 
 export const parseOnlyNumbers = (value) => {
