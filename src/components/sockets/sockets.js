@@ -18,60 +18,72 @@ class SocketsComponent extends Component {
     currentSwap: null,
     currentDeposit: null,
     currentWithdraw: null,
-    isUpdated: false,
-    statusUpdate:0
+    isUpdated: false
   };
 
-//   async testSocketExecuted(orderMock) {
-//     console.log('======================================== ______ testSocketExecuted: ', orderMock)
-//     if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
-//       await this.setState({ currentDeposit: orderMock });
-//     } else {
-//       this.deposit_mangagement(orderMock);
-//     }
-//   }
+  // async testSocketExecuted(orderMock) {
+  //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
+  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
+  //     await this.setState({ currentDeposit: orderMock });
+  //   } else {
+  //     this.deposit_mangagement(orderMock);
+  //   }
+  // }
 
-//   async testSocket() {
+  // async testSocket() {
 
-//     let orderMock = {
-//       id:"6184c8f067e372004414b156",
-//       state:"rejected"
-//     }
+  //   let profileMock = {
+  //     id:"6184c8f067e372004414b156",
+  //     countries:{
+  //       international:"level_1"
+  //     } 
+  //   }
+    
+  //   setTimeout(()=>{
+  //     this.profile_management(profileMock)
+  //   }, 3000)
 
-//     // this.withdraw_mangagement(orderMock);
-//     // this.testSocketExecuted()
+
+  //   // let orderMock = {
+  //   //   id:"6184c8f067e372004414b156",
+  //   //   state:"rejected"
+  //   // }
+
+  //   // this.withdraw_mangagement(orderMock);
+  //   // this.testSocketExecuted()
 
 
-//     // let confirmations = 1
-//     // setInterval(()=>{
-//     //   if(confirmations < 7){
-//     //     orderMock = {
-//     //       confirmations: confirmations,
-//     //       id: "617621370b0a1b0048ae9cae"
-//     //     }
-//     //     this.testSocketExecuted(orderMock)
-//     //     confirmations++
-//     //   }
-//     // }, 5000)
+  //   // let confirmations = 1
+  //   // setInterval(()=>{
+  //   //   if(confirmations < 7){
+  //   //     orderMock = {
+  //   //       confirmations: confirmations,
+  //   //       id: "617621370b0a1b0048ae9cae"
+  //   //     }
+  //   //     this.testSocketExecuted(orderMock)
+  //   //     confirmations++
+  //   //   }
+  //   // }, 5000)
 
-//     // let statusMock = {
-//     //   countries:{
-//     //     international: "level_1"
-//     //   },
-//     //   id: "620403008a485b0067ed919b",
-//     //   updated_at: "2022-02-09T18:09:28.614Z",
-//     //   userId: "620402efbe929e0042d9de6c"
-//     // }
+  //   // let statusMock = {
+  //   //   countries:{
+  //   //     international: "level_1"
+  //   //   },
+  //   //   id: "620403008a485b0067ed919b",
+  //   //   updated_at: "2022-02-09T18:09:28.614Z",
+  //   //   userId: "620402efbe929e0042d9de6c"
+  //   // }
 
-//     // for (let index = 0; index < 2; index++) {
-//       // this.status_management(statusMock);
-//     // }
+  //   // for (let index = 0; index < 2; index++) {
+  //     // this.status_management(statusMock);
+  //   // }
 
-//   }
+  // }
 
 //  componentDidMount(){
 //    setTimeout(()=> {
 //      this.testSocket()
+
 //     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
 //     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
 //    }, 5000)
@@ -155,9 +167,9 @@ class SocketsComponent extends Component {
               this.withdraw_account_mangagement(withdrawAccount);
             });
 
-            socket.on(`/profile/${user.id}`, async (status) => {
-              if(status.countries){
-                this.status_management(status)
+            socket.on(`/profile/${user.id}`, async (profile) => {
+              if(profile.countries){
+                this.profile_management(profile)
               }
             });
 
@@ -249,17 +261,22 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
-      let res = await this.props.coinsendaServices.addUpdateWithdraw(
-        withdraw.id,
-        "confirmed"
+      debounce(
+        {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
+        async() => {
+          let res = await this.props.coinsendaServices.addUpdateWithdraw(
+            withdraw.id,
+            "confirmed"
+          );
+          if (!res) {
+            this.props.action.isAppLoading(false);
+            return this.props.toastMessage(
+              "No se ha podido crear la orden de retiro",
+              "error"
+            );
+          }
+        }
       );
-      if (!res) {
-        this.props.action.isAppLoading(false);
-        return this.props.toastMessage(
-          "No se ha podido crear la orden de retiro",
-          "error"
-        );
-      }
     }
 
     const { currentWithdraw } = this.state;
@@ -764,25 +781,44 @@ class SocketsComponent extends Component {
 
 
 
-  status_management = async(status) => {
+  profile_management = async(profile) => {
 
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
     } 
-    await this.props.coinsendaServices.updateUserStatus(status)
-    if(status.countries.international === 'level_1' && this.state.statusUpdate < 1){
-      await this.setState({ statusUpdate:this.state.statusUpdate+1 })
-      this.props.coinsendaServices.init()
-      this.props.history.push(`/wallets`);
-    }
 
+    await this.props.coinsendaServices.updateUserStatus(profile)
+    
+    if(profile.countries.international === 'level_1'){
+      debounce(
+        {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
+        () => {
+          this.props.coinsendaServices.init()
+          this.props.history.push(`/wallets`);
+        }
+      );
+    }
   }
 
-  
 
   render() {
     return null;
   }
+}
+
+
+
+const debounce = (objectData, callback, timeExect = 1000) => {
+  // @objectData => Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
+  if(!Object.entries(objectData).length)return ;
+  const [ dataKey, dataValue ] = Object.entries(objectData)[0]
+  let storageData = localStorage.getItem(dataKey);
+  if(storageData === dataValue)return ;
+  localStorage.setItem(dataKey, dataValue);
+  setTimeout(() => {
+    callback()
+    localStorage.removeItem(dataKey);
+  }, timeExect)
 }
 
 const mapStateToProps = (state, props) => {
