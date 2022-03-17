@@ -14,8 +14,14 @@ import { getCdnPath } from '../../../environment'
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { IconClose } from "../shared-styles";
+import { useSelector } from "react-redux";
+
+
 
 function ConfirmationModal({ modal_confirmation, loader, action, ...rest }) {
+
+
+
   const idCancelButton = useKeyActionAsClick(
     true,
     "cancel-confirm-modal",
@@ -108,7 +114,12 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfirmationModal);
 
+
+
 export const StandardTicket = (props) => {
+
+  const { osDevice } = useSelector((state) => state?.ui);
+
   const {
     cancelarClick,
     handleClick,
@@ -153,7 +164,7 @@ export const StandardTicket = (props) => {
       data-close_modal={true}
       onClick={_cancelarClick ? _cancelarClick : null}
     >
-      <div className={`Mconfirmar ${type}`}>
+      <div className={`Mconfirmar ${type} ${osDevice}`}>
         <IconClose theme="dark" size={20} />
 
         <div className="titleConfirmed"

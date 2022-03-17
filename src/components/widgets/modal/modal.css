@@ -22,6 +22,19 @@
   right: 15px;
 }
 
+.Mconfirmar.{
+  position: fixed !important;
+  bottom: 15px;
+}
+
+
+.Mconfirmar.ioSystem{
+    position: fixed !important;
+    bottom: 15px;
+    
+}
+
+
 #close-button-with-OtherModalLayout.inactive {
   overflow-y: hidden;
 }

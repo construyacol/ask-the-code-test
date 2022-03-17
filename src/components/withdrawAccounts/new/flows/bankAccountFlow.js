@@ -155,6 +155,7 @@ class BankAccountFlow extends Component {
       // id_number,
       // user,
       idAccept,
+      osDevice
     } = this.props;
 
     const { banks, loader } = this.state;
@@ -171,11 +172,12 @@ class BankAccountFlow extends Component {
                 Crea una cuenta de retiro
               </p>
             </div>
+
             <p className="nBtextInit fuente">
-            Son las cuentas a las que envías COP desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
+               Son las cuentas a las que envías COP desde Coinsenda. Por ejemplo: Tu cuenta bancaria.
             </p>
 
-            <div id="bankChooseButton">
+            <div id="bankChooseButton" className={`${osDevice}`}>
               <ButtonForms
                 _id={idAccept}
                 type="primary"
@@ -209,7 +211,7 @@ class BankAccountFlow extends Component {
                 />
               )}
 
-              <div id="bankChooseButton">
+              <div id="bankChooseButton" className={`${osDevice}`}>
                 <InputButton
                   id={idAccept}
                   preventSubmit={true}
@@ -271,7 +273,7 @@ class BankAccountFlow extends Component {
                       status={statusInput}
                     />
                   </div>
-                  <div id="bankChooseButton" className="contbuttonAccount">
+                  <div id="bankChooseButton" className={`contbuttonAccount ${osDevice}`}>
                     <InputButton
                       id={idAccept}
                       preventSubmit={true}
@@ -317,11 +319,13 @@ const selectWithdrawProviders = createSelector(
 
 function mapStateToProps(state) {
   const { user } = state.modelData;
+  const { osDevice } = state.ui
 
   return {
     withdraw_providers_list: selectWithdrawProviders(state),
     user: user,
     current: state.form.current,
+    osDevice
   };
 }
 

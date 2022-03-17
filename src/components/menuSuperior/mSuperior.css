@@ -65,6 +65,12 @@
   width: calc(100% - 19vw);
   right: 0;
 }
+
+
+.containerMenuSuperior.ioSystem{
+  height: 60px;
+}
+
 /*.headroom--unpinned{
   top: -100%;
 }*/

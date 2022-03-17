@@ -35,17 +35,19 @@ export class DepositService extends WebService {
     // }
 
     const result = response.reduce((result, item) => {
+      // TODO:// Reportar por sentry cuando un deposit provider no tenga deposit account
       result.push({
         ...item,
         provider: {
-          ...item.depositAccount,
+          ...item?.depositAccount,
           account: {
-            ...item.depositAccount.account,
+            ...item?.depositAccount?.account,
           },
         },
       });
       return result;
-    }, []);
+    }
+    , []);
 
     const finalData = {
       id: this.user.id,

@@ -3,12 +3,18 @@ import styled from "styled-components";
 // import { InputButton } from './buttons'
 import SimpleLoader from "../loaders";
 import { LoaderContainer } from "../loaders";
+import { useSelector } from "react-redux";
 
+
+// osDevice
 const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
+
+  const { osDevice } = useSelector((state) => state?.ui);
+
   return (
     <ControlsContainer
       id="controlsContainer"
-      className={`${loader ? "loader" : ""}`}
+      className={`${loader ? "loader" : ""} ${osDevice}`}
     >
       {loader && (
         <LoaderContainer>
@@ -96,6 +102,11 @@ const ControlsContainer = styled.div`
   max-width: 300px;
   justify-self: center;
   align-self: center;
+
+  &.ioSystem{
+    position: fixed;
+    bottom: 15px;
+  }
 
   &.loader::after {
     content: "";

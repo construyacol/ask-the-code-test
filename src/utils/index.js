@@ -20,6 +20,16 @@ export const isSafari = () => {
 }
 
 
+export const osDevice = () => {
+  var userAgent = window.navigator.userAgent;
+  if((/iP(hone|od|ad)/.test(userAgent))){
+     return 'ioSystem'
+   }
+  
+   return ''
+}
+
+
 export const SentryCaptureException = (error) => {
   Sentry.captureException(error);
 };
@@ -748,6 +758,22 @@ export function setInputFilter(textbox, inputFilter) {
     });
   });
 }
+
+
+export const funcDebounce = (objectData, callback, timeExect = 1000) => {
+  // @objectData => Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
+  if(!Object.entries(objectData).length)return ;
+  const [ dataKey, dataValue ] = Object.entries(objectData)[0]
+  let storageData = localStorage.getItem(dataKey);
+  if(storageData === dataValue)return ;
+  localStorage.setItem(dataKey, dataValue);
+  setTimeout(() => {
+    callback()
+    localStorage.removeItem(dataKey);
+  }, timeExect)
+}
+
+
 
 /**
  * Function para hacer debounce

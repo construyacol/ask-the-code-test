@@ -133,9 +133,11 @@ function DashBoardContainer(props) {
           zIndex: 10,
         }}
       ></div>
+
+
       <Element id="containerElement" className="dashBoardLayout">
         {/* <QuoteContainer /> */}
-        <div className="containerSection" name="firstInsideContainer">
+        <div className={`containerSection ${props?.osDevice}`} name="firstInsideContainer">
           <Route
             path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
             render={(routeProps) => ( <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />)}
@@ -179,6 +181,7 @@ DashBoardContainer.propTypes = {
 function mapStateToProps(state, props) {
   const { user, wallets, all_pairs } = state.modelData;
   const { currentPair } = state.modelData.pairs;
+  const { osDevice } = state.ui
 
   return {
     user,
@@ -186,6 +189,7 @@ function mapStateToProps(state, props) {
     currentPair,
     wallets,
     all_pairs,
+    osDevice
   };
 }
 

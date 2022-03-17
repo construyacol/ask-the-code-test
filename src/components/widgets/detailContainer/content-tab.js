@@ -25,7 +25,8 @@ function ContentTab(props) {
     pathname,
     primary_path,
     wallets,
-    verification_state
+    verification_state,
+    osDevice
   } = props;
 
   const { params } = current_section;
@@ -86,7 +87,7 @@ function ContentTab(props) {
   const controlProps = { goNext, goPrev, idNext, idPrev };
 
   return (
-    <div className="subMenu" ref={tabRef}>
+    <div className={`subMenu ${osDevice}`} ref={tabRef}>
       {haveMenu && pathname && <HiddenButtons {...controlProps} />}
       <div className="menuContainer">
         <div
@@ -230,13 +231,14 @@ function mapStateToProps(state, props) {
     };
   }
 
-  const { verification_state } = state?.ui
+  const { verification_state, osDevice } = state?.ui
 
   return {
     current_section: state.ui.current_section,
     verification_state,
     path: props.match.params.path || null,
     wallets: state.modelData.wallets,
+    osDevice,
     ...account_opts,
   };
 }

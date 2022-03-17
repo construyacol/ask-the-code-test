@@ -10,6 +10,7 @@ import {
   DetailAccountProv
 } from '../../../forms/widgets/fiatDeposit/success'
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import { useSelector } from "react-redux";
 
 
 import "./finalTicket.css";
@@ -25,6 +26,7 @@ function FinalTicket(props) {
   // const [current_ticket, setCurrentTicket] = useState(null);
   const idCancelButton = useKeyActionAsClick(true, "cancel-button-ticket", 8, false, "onkeyup", true);
   const idFinalizarButton = useKeyActionAsClick(true, "finalizar-button-ticket", 13,false, "onkeyup", true);
+  const { osDevice } = useSelector((state) => state.ui);
 
   const {
     finishAction,
@@ -100,7 +102,7 @@ function FinalTicket(props) {
         </div>
 
         <div
-          className="nWcta2"
+          className={`nWcta2 ${osDevice}`}
           style={{
             gridTemplateColumns: cta_secondary ? "repeat(2, 1fr)" : "1fr",
             width: cta_secondary ? "400px" : "auto",

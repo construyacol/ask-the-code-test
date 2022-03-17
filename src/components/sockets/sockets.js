@@ -7,6 +7,7 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
+import { funcDebounce } from '../../utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 
@@ -261,7 +262,7 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
-      debounce(
+      funcDebounce(
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
         async() => {
           let res = await this.props.coinsendaServices.addUpdateWithdraw(
@@ -790,7 +791,7 @@ class SocketsComponent extends Component {
     await this.props.coinsendaServices.updateUserStatus(profile)
     
     if(profile.countries.international === 'level_1'){
-      debounce(
+      funcDebounce(
         {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
         () => {
           this.props.coinsendaServices.init()
@@ -808,18 +809,6 @@ class SocketsComponent extends Component {
 
 
 
-const debounce = (objectData, callback, timeExect = 1000) => {
-  // @objectData => Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
-  if(!Object.entries(objectData).length)return ;
-  const [ dataKey, dataValue ] = Object.entries(objectData)[0]
-  let storageData = localStorage.getItem(dataKey);
-  if(storageData === dataValue)return ;
-  localStorage.setItem(dataKey, dataValue);
-  setTimeout(() => {
-    callback()
-    localStorage.removeItem(dataKey);
-  }, timeExect)
-}
 
 const mapStateToProps = (state, props) => {
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)

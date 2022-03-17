@@ -335,6 +335,9 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
+
+
+
 `;
 
 export const WithdrawForm = styled(OperationForm)`

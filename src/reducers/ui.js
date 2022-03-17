@@ -17,8 +17,11 @@ import {
   SOCKET_NOTIFY,
   SET_RENDER_MODAL,
   UPDATE_LOADERS,
-  UPDATE_UI_REDUCER
+  UPDATE_UI_REDUCER,
 } from "../actions/action_types";
+
+import { osDevice } from '../utils'
+
 
 const initialState = {
   loaders: {
@@ -98,11 +101,12 @@ const initialState = {
     },
   },
   verification_state: null,
-  keyActions:false
+  keyActions:false,
+  osDevice:osDevice()
 };
 
 const ui = (state = initialState, action) => {
-  switch (action.type) {
+  switch (action.type) { 
     // payload,
     // amount
     case ADD_NOTIFICATION:
