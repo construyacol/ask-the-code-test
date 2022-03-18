@@ -30,7 +30,10 @@ export const osDevice = () => {
 }
 
 
-export const SentryCaptureException = (error) => {
+export const SentryCaptureException = (error, extra_data) => {
+  Sentry.configureScope((scope) => {
+    scope.setExtra("extra_data", extra_data);
+  });
   Sentry.captureException(error);
 };
 
@@ -760,18 +763,48 @@ export function setInputFilter(textbox, inputFilter) {
 }
 
 
-export const funcDebounce = (objectData, callback, timeExect = 1000) => {
-  // @objectData => Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
+
+/**
+ * Function para hacer request debounce  
+ *
+ * @param {Object} objectData Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
+ * @param {Function} callback Función callback a ejecutar
+ * @param {Boolean} waitRes Si espera async/await del callback, por defecto es false
+ * @param {Number} timeExect Tiempo de espera para la ejecución del callback
+ */
+
+export const funcDebounce = (
+  objectData, 
+  callback, 
+  waitRes = false, 
+  timeExect = 1000
+) => {
+
   if(!Object.entries(objectData).length)return ;
   const [ dataKey, dataValue ] = Object.entries(objectData)[0]
   let storageData = localStorage.getItem(dataKey);
   if(storageData === dataValue)return ;
   localStorage.setItem(dataKey, dataValue);
+
+  if(waitRes){
+    return new Promise(async (resolve, reject) => {
+      setTimeout(async() => {
+        const res = await callback()
+        localStorage.removeItem(dataKey);
+        return resolve(res)
+      }, timeExect)
+    });
+  }
+
   setTimeout(() => {
     callback()
     localStorage.removeItem(dataKey);
   }, timeExect)
+  
 }
+
+
+
 
 
 

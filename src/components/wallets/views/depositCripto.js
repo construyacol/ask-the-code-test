@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { OperationForm } from "./withdrawCripto";
 import QRCode from "qrcode";
-import { SentryCaptureException } from "../../../utils";
+// import { SentryCaptureException } from "../../../utils";
 import IconSwitch from "../../widgets/icons/iconSwitch";
 import CopyContainer from "../../widgets/copy/copyContainer";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
@@ -157,7 +157,7 @@ const CriptoView = () => {
         if (!validateAddress) {
           // sentry call emit error
           const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`;
-          SentryCaptureException(errorMsg);
+          // SentryCaptureException(errorMsg);
           setQrError(true);
           return console.log(errorMsg);
         }

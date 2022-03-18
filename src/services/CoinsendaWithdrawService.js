@@ -15,6 +15,7 @@ import {
   resetModelData,
 } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
+import { SentryCaptureException } from '../utils'
 
 import { normalized_list } from "../utils";
 
@@ -215,13 +216,16 @@ export class WithdrawService extends WebService {
     this.withdrawProviders = withdrawProviders;
     return withdrawProviders;
   }
-
+ 
   async addWithdrawOrder(body, twoFaToken) {
-    if (twoFaToken) {
+    if(twoFaToken){
       body.data.twofa_token = twoFaToken;
     }
     const response = await this.Post(NEW_WITHDRAW_URL, body);
     if (!response || response === 465) {
+      if(!body.data.twofa_token){
+        SentryCaptureException({message:"Dont send twofa_token"}, body)
+      }
       return false;
     }
     return response;
