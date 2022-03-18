@@ -14,6 +14,7 @@ import LoaderAplication from './widgets/loaders/loader_app'
 import FreshChat from '../services/FreshChat' 
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
+import hotJar from '../services/Hotjar'
 import {
   // doLogout,
   verifyTokensValidity,
@@ -93,6 +94,7 @@ function RootContainer(props) {
 
   useEffect(() => {
     initComponent();
+    hotJar()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
