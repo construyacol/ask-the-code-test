@@ -185,9 +185,6 @@ export class IndetityService extends WebService {
       updatedUser.security_center.kyc.advanced = 'rejected';
     }
 
-    updatedUser.security_center.kyc.basic = "accepted";
-    updatedUser.security_center.kyc.advanced = "accepted";
-
     const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
     let thirdResponse = await this.Get(finalUrlThird);
 
