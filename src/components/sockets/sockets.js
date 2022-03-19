@@ -271,7 +271,9 @@ class SocketsComponent extends Component {
               "error"
             );
           }
-        }
+        },
+        false,
+        3000
       );
     }
 
@@ -788,7 +790,9 @@ class SocketsComponent extends Component {
         () => {
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
-        }
+        },
+        false,
+        3000
       );
     }
   }

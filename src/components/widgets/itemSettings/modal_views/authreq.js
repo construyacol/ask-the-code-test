@@ -42,7 +42,8 @@ const AuthReq = (props) => {
           async() => {
             res = await coinsendaServices.disableTransactionSecutiry("2fa", value)
           },
-          true
+          true,
+          1500
         );   
       } else {
         await funcDebounce(
@@ -50,7 +51,8 @@ const AuthReq = (props) => {
           async() => {
             res = await coinsendaServices.addNewTransactionSecurity("2fa", value)
           },
-          true
+          true,
+          1500
         );   
       }
 
