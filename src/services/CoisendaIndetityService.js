@@ -163,6 +163,7 @@ export class IndetityService extends WebService {
     const identityAccepted = updatedUser.levels && updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
     const identityRejected = updatedUser.levels && updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
 
+    
     if((profile.countries[country[0].value] !== 'level_0') || identityConfirmed){
       let kyc_personal = country[0].levels && country[0].levels.personal;
       let kyc_identity = country[0].levels && country[0].levels.identity;
@@ -184,7 +185,8 @@ export class IndetityService extends WebService {
       updatedUser.security_center.kyc.advanced = 'rejected';
     }
 
-
+    updatedUser.security_center.kyc.basic = "accepted";
+    updatedUser.security_center.kyc.advanced = "accepted";
 
     const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
     let thirdResponse = await this.Get(finalUrlThird);
