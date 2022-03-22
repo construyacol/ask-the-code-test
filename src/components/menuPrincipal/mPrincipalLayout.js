@@ -35,7 +35,7 @@ const MenuPrincipalLayout = (props) => {
     "onkeyup"
   );
 
-  const { keyActions } = useSelector((state) => state.ui);
+  const { keyActions, osDevice  } = useSelector((state) => state.ui);
   const logoutButtonText = window.innerWidth > 900 ? `Cerrar sesión ${keyActions ? '[ESC]' : ''}` : "Cerrar sesión";
 
   const logOut = () => {
@@ -127,10 +127,10 @@ const MenuPrincipalLayout = (props) => {
             />
           </section>
         )}
-        <section className={`section2 movil`}>
+        <section className={`section2 movil ${osDevice}`}>
           <div
             id={idForLogoutButton}
-            className="menuMovilItems close"
+            className={`menuMovilItems close`}
             onClick={logOut}
           >
             <p className="menuMovilItemTexts close fuente">

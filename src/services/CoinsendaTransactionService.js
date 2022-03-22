@@ -28,15 +28,6 @@ export class TransactionService extends WebService {
       this.dispatch(updateAllCurrenciesAction(new_currencies));
       return coins;
     }
-
-    // let updateState = true;
-    // if (
-    //   this.isCached("fetchAllCurrencies_", response, false) &&
-    //   this.globalState.modelData.currencies
-    // ) {
-    //   updateState = false;
-    // }
-
     const currencies = response.reduce((result, currency) => {
       const split = currency.node_url && currency.node_url.split("api");
       result.push({
@@ -94,50 +85,44 @@ export class TransactionService extends WebService {
   }
 
   async addNewTransactionSecurity(type, twofa_token) {
-
     let user = JSON.parse(JSON.stringify(this.user))
-    const transactionSecurity = JSON.parse(JSON.stringify(user?.security_center?.transactionSecurity))
-
-    const body = {
-      data: {
-        country: user.country,
-        enabled: true,
-        type,
-        twofa_token,
-      },
-    }; 
-
-    const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body);
-    // console.log('response', response)
-    // console.log('body', body)
-    if (response === 465 || !response) {
-      return false;
-    }
-
-    const { data } = response
-
-    transactionSecurity[data.type] = {
-      enabled:data.enabled,
-      id:data.id
-    }
-
-    let updatedUser = {
-      ...user,
-      security_center: {
-          ...user.security_center,
-        transactionSecurity,
-        authenticator: {
-          ...user.security_center.authenticator,
-          auth: transactionSecurity[type]?.enabled,
-          withdraw: transactionSecurity[type]?.enabled
-        },
-      }
-    };
-    await this.updateUser(updatedUser)
-    // console.log('TRANSACTION_SECURITY', TRANSACTION_SECURITY)
-    // console.log('updatedUser', updatedUser.security_center)
-    // debugger
-    return transactionSecurity
+        const transactionSecurity = JSON.parse(JSON.stringify(user?.security_center?.transactionSecurity))
+    
+        const body = {
+          data: {
+            country: user.country,
+            enabled: true,
+            type,
+            twofa_token,
+          },
+        }; 
+    
+        const response = await this.Post(`${TWO_FACTOR_URL}/add-new-transaction-security`, body);
+        if (response === 465 || !response) {
+          return false;
+        }
+    
+        const { data } = response
+    
+        transactionSecurity[data.type] = {
+          enabled:data.enabled,
+          id:data.id
+        }
+    
+        let updatedUser = {
+          ...user,
+          security_center: {
+              ...user.security_center,
+            transactionSecurity,
+            authenticator: {
+              ...user.security_center.authenticator,
+              auth: transactionSecurity[type]?.enabled,
+              withdraw: transactionSecurity[type]?.enabled
+            },
+          }
+        };
+        await this.updateUser(updatedUser)
+        return transactionSecurity
   }
 
   async disableTransactionSecutiry(type, token) {

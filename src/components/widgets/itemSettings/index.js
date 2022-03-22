@@ -230,7 +230,7 @@ class ItemSettingsInit extends Component {
         return {
           classic_view: movil_viewport,
           available:
-            kyc.basic === "confirmed" || kyc.advanced === "accepted"
+            kyc.basic === "confirmed" || kyc.advanced === "accepted" || kyc.advanced === "rejected"
               ? true
               : null,
           verify: kyc.advanced === "accepted",
@@ -295,7 +295,7 @@ class ItemSettingsInit extends Component {
             );
           })}
       </section>
-    );
+    ); 
   }
 }
 

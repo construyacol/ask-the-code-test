@@ -7,6 +7,7 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
+import { funcDebounce } from '../../utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 
@@ -30,63 +31,58 @@ class SocketsComponent extends Component {
   //   }
   // }
 
-  // async testSocket() {
+//   async testSocket() {
 
-  //   let profileMock = {
-  //     id:"6184c8f067e372004414b156",
-  //     countries:{
-  //       international:"level_1"
-  //     } 
-  //   }
+//     let profileMock = {
+//       id:"6184c8f067e372004414b156",
+//       countries:{
+//         international:"level_1"
+//       } 
+//     }
     
-  //   setTimeout(()=>{
-  //     this.profile_management(profileMock)
-  //   }, 3000)
+//     setTimeout(()=>{
+//       this.profile_management(profileMock)
+//     }, 3000)
 
 
-  //   // let orderMock = {
-  //   //   id:"6184c8f067e372004414b156",
-  //   //   state:"rejected"
-  //   // }
+//     // let orderMock = {
+//     //   id:"6184c8f067e372004414b156",
+//     //   state:"rejected"
+//     // }
 
-  //   // this.withdraw_mangagement(orderMock);
-  //   // this.testSocketExecuted()
+//     // this.withdraw_mangagement(orderMock);
+//     // this.testSocketExecuted()
 
 
-  //   // let confirmations = 1
-  //   // setInterval(()=>{
-  //   //   if(confirmations < 7){
-  //   //     orderMock = {
-  //   //       confirmations: confirmations,
-  //   //       id: "617621370b0a1b0048ae9cae"
-  //   //     }
-  //   //     this.testSocketExecuted(orderMock)
-  //   //     confirmations++
-  //   //   }
-  //   // }, 5000)
+//     // let confirmations = 1
+//     // setInterval(()=>{
+//     //   if(confirmations < 7){
+//     //     orderMock = {
+//     //       confirmations: confirmations,
+//     //       id: "617621370b0a1b0048ae9cae"
+//     //     }
+//     //     this.testSocketExecuted(orderMock)
+//     //     confirmations++
+//     //   }
+//     // }, 5000)
 
-  //   // let statusMock = {
-  //   //   countries:{
-  //   //     international: "level_1"
-  //   //   },
-  //   //   id: "620403008a485b0067ed919b",
-  //   //   updated_at: "2022-02-09T18:09:28.614Z",
-  //   //   userId: "620402efbe929e0042d9de6c"
-  //   // }
+//     // let statusMock = {
+//     //   countries:{
+//     //     international: "level_1"
+//     //   },
+//     //   id: "620403008a485b0067ed919b",
+//     //   updated_at: "2022-02-09T18:09:28.614Z",
+//     //   userId: "620402efbe929e0042d9de6c"
+//     // }
 
-  //   // for (let index = 0; index < 2; index++) {
-  //     // this.status_management(statusMock);
-  //   // }
+//     // for (let index = 0; index < 2; index++) {
+//       // this.status_management(statusMock);
+//     // }
 
-  // }
+//   }
 
 //  componentDidMount(){
-//    setTimeout(()=> {
-//      this.testSocket()
-
-//     // this.props.coinsendaServices.get_deposits('61845def4c9f0d003e7d6db8', 20, this.props.user.deposits.length)
-//     // console.log('deposits', this.props.user.deposits, this.props.user.deposits.length)
-//    }, 5000)
+//     this.testSocket()
 //  }
 
  async componentDidUpdate(prevProps) {
@@ -261,7 +257,7 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
-      debounce(
+      funcDebounce(
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
         async() => {
           let res = await this.props.coinsendaServices.addUpdateWithdraw(
@@ -275,7 +271,9 @@ class SocketsComponent extends Component {
               "error"
             );
           }
-        }
+        },
+        false,
+        3000
       );
     }
 
@@ -779,23 +777,22 @@ class SocketsComponent extends Component {
     }
   };
 
-
+  
 
   profile_management = async(profile) => {
-
     if(this.props.formModal){
      await this.props.action.toggleModal(false);
     } 
-
     await this.props.coinsendaServices.updateUserStatus(profile)
-    
     if(profile.countries.international === 'level_1'){
-      debounce(
+      funcDebounce(
         {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
         () => {
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
-        }
+        },
+        false,
+        3000
       );
     }
   }
@@ -808,18 +805,6 @@ class SocketsComponent extends Component {
 
 
 
-const debounce = (objectData, callback, timeExect = 1000) => {
-  // @objectData => Objeto con clave|valor, donde la clave referencia el espacio en local storage 0y el valor es una cadena que permite hacer la comparación de un identificador permitiendo una única ejecución
-  if(!Object.entries(objectData).length)return ;
-  const [ dataKey, dataValue ] = Object.entries(objectData)[0]
-  let storageData = localStorage.getItem(dataKey);
-  if(storageData === dataValue)return ;
-  localStorage.setItem(dataKey, dataValue);
-  setTimeout(() => {
-    callback()
-    localStorage.removeItem(dataKey);
-  }, timeExect)
-}
 
 const mapStateToProps = (state, props) => {
   // console.log('||||||||||||||||||||||||||||||||||||||||||||| ======>>> props Sockets ==> ', props)

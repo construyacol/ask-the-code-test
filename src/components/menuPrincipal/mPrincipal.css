@@ -127,8 +127,16 @@
 }
 
 .menuItems.movil{
-  padding: 30px 0 45px 0;
-  height: calc(100% - 75px);
+  padding: 30px 0;
+  height: calc(100% - 60px);
+}
+
+.section2.movil.ioSystem{
+    position: absolute;
+    bottom: 110px;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .mPverify {

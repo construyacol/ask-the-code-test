@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { InputFormAuth } from "../../inputs";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import { funcDebounce } from "../../../../utils";
 import "./viewSettings.css";
 
 const AuthReq = (props) => {
@@ -30,28 +31,37 @@ const AuthReq = (props) => {
       setLoader(true);
       setButtonActive(false);
       setStatus("Verificando...");
-
       if (props.isWithdraw2fa) {
         return ok_auth(value);
       }
-
-      let res;
+      let res; 
       actions.isAppLoading(true);
       if (props.isTryToDisable2fa) {
-        res = await coinsendaServices.disableTransactionSecutiry("2fa", value);
+        await funcDebounce(
+          {'storageDisable2FA':`${value}_disabled`}, 
+          async() => {
+            res = await coinsendaServices.disableTransactionSecutiry("2fa", value)
+          },
+          true,
+          1500
+        );   
       } else {
-        res = await coinsendaServices.addNewTransactionSecurity("2fa", value);
+        await funcDebounce(
+          {'storageEnable2FA':`${value}_enabled`}, 
+          async() => {
+            res = await coinsendaServices.addNewTransactionSecurity("2fa", value)
+          },
+          true,
+          1500
+        );   
       }
 
       actions.isAppLoading(false);
-
       if (!res) {
         setStatus("El código de verificación es incorrecto");
         setError(true);
         return setLoader(false);
       }
-
-
       return success(value, res);
     }
 

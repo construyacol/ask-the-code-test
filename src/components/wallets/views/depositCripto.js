@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { OperationForm } from "./withdrawCripto";
 import QRCode from "qrcode";
-import { SentryCaptureException } from "../../../utils";
+// import { SentryCaptureException } from "../../../utils";
 import IconSwitch from "../../widgets/icons/iconSwitch";
 import CopyContainer from "../../widgets/copy/copyContainer";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
@@ -119,6 +119,7 @@ const CriptoView = () => {
     {
       current_wallet,
       modelData: { deposit_providers },
+      ui:{ osDevice } 
     },
   ] = useCoinsendaServices();
   const [qrState, setQrState] = useState(true);
@@ -129,7 +130,7 @@ const CriptoView = () => {
     clearInterval(INTERVAL);
     let i = 0;
     INTERVAL = setInterval(async () => {
-      if (i >= 3) {
+      if (i >= 5) {
         return clearInterval(INTERVAL);
       }
       const res = await coinsendaServices.subscribeToNewDeposits(provider_id);
@@ -139,6 +140,7 @@ const CriptoView = () => {
   };
 
   useEffect(() => {
+    
     if (deposit_providers) {
       const validateAddress = async () => {
         const provider = deposit_providers[current_wallet.dep_prov[0]];
@@ -155,7 +157,7 @@ const CriptoView = () => {
         if (!validateAddress) {
           // sentry call emit error
           const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`;
-          SentryCaptureException(errorMsg);
+          // SentryCaptureException(errorMsg);
           setQrError(true);
           return console.log(errorMsg);
         }
@@ -170,7 +172,7 @@ const CriptoView = () => {
 
   return (
     <DepositForm>
-      <section className="contAddress">
+      <section className={`contAddress ${osDevice}`}>
         <p id="soloAd2" className="fuente title soloAd2">
           Importante:
         </p>
@@ -217,6 +219,10 @@ const QrProtector = ({ visible, invalid }) => (
 export const DepositForm = styled(OperationForm)`
   .qrContainer {
     transform: scale(0.9);
+  }
+
+  .ioSystem{
+    padding-bottom: 150px;
   }
 
 

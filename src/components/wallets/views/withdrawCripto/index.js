@@ -85,7 +85,7 @@ export const CriptoView = () => {
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />
       ));
-    }
+    } 
 
     actions.isAppLoading(true);
     let withdraw_account = withdraw_accounts[addressValue];
@@ -108,8 +108,7 @@ export const CriptoView = () => {
         data: {
           amount,
           account_id: current_wallet.id,
-          withdraw_provider_id:
-            withdrawProviders[current_wallet.currency.currency].id,
+          withdraw_provider_id:withdrawProviders[current_wallet.currency.currency].id,
           withdraw_account_id: withdraw_account.id,
           country: user.country,
         },
@@ -335,6 +334,9 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
+
+
+
 `;
 
 export const WithdrawForm = styled(OperationForm)`

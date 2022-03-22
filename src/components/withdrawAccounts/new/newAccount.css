@@ -28,6 +28,12 @@
   align-self: flex-end;
 }
 
+
+#bankChooseButton.ioSystem{
+  position: fixed;
+  bottom: 70px;
+}
+
 .nBtextInit {
   color: var(--paragraph_color) !important;
   font-size: 18px;
