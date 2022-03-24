@@ -143,7 +143,7 @@ export const PaymentProof = ({ payload }) => {
     currentOrder,
     loader,
     tx_path,
-  } = UseTxState();
+  } = UseTxState(); 
   const [imgProof, setImgProof] = useState(payload);
   const [txId, setTxId] = useState();
   const [urlExplorer, setUrlExplorer] = useState();
@@ -175,11 +175,7 @@ export const PaymentProof = ({ payload }) => {
   };
 
   useEffect(() => {
-    if (
-      !currentOrder.paymentProof &&
-      currentOrder.state !== "pending" &&
-      tx_path === "deposits"
-    ) {
+    if (!currentOrder.paymentProof && currentOrder.state !== "pending" && tx_path === "deposits") {
       const getData = async () => {
         const PP = showPaymentProof && await coinsendaServices.getDepositById(currentOrder.id);
         if (!PP) {
@@ -193,6 +189,7 @@ export const PaymentProof = ({ payload }) => {
         getPaymentProof(PP);
       };
       getData();
+
     } else {
       getPaymentProof(currentOrder);
     }
