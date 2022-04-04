@@ -44,8 +44,8 @@ function RootContainer(props) {
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
 
   const initComponent = async () => {
-    const params = new URLSearchParams(history.location.search);
 
+    const params = new URLSearchParams(history.location.search);
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))

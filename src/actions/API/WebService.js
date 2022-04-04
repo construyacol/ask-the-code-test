@@ -1,5 +1,7 @@
 import { GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
+import { SentryCaptureException } from '../../utils'
+import { getExpTimeData } from '../../components/utils'
 import {
   // doLogout,
   handleError,
@@ -9,7 +11,7 @@ import {
 } from '../../components/utils'
 
 
-export class WebService {
+export class WebService { 
 
   async doFetch(url, params) {
     try {
@@ -18,6 +20,12 @@ export class WebService {
       const finalResponse = await response.json();
       if (!response.ok && response.status === 465) {
         if (finalResponse.error.message.includes("Invalid signature")) {
+          const { jwtExpTime, currentTime } = await getExpTimeData()
+          SentryCaptureException(finalResponse?.error, {
+            currentTime,
+            jwtExpTime,
+            url
+          })
           // TODO: add refresh_token flow to get a new jwt
           // doLogout('?message=Invalid signature')
         }

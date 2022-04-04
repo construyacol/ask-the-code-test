@@ -1,12 +1,14 @@
 import { toast } from "react-toastify";
 import { kyc } from "../components/api/ui/api.json";
 import Compressor from "compressorjs";
-import * as Sentry from "@sentry/browser";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import * as normalizr_services from "../schemas";
 import { store } from "..";
 import imageType from 'image-type'
 import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
+import * as Sentry from "@sentry/react";
+
+
 
 const { normalizeUser } = normalizr_services;
 
@@ -36,6 +38,7 @@ export const SentryCaptureException = (error, extra_data) => {
   });
   Sentry.captureException(error);
 };
+
 
 export const setAnimation = (className, containerId, time) => {
   const element = document.getElementById(containerId);
