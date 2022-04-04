@@ -1,7 +1,8 @@
 import { mainService } from "../../../../services/MainService";
 import { 
   formatMaskDate, 
-  parseDateToTimeStamp 
+  parseDateToTimeStamp ,
+  // parseTimeStampToDate
 } from './utils'
 
 
@@ -348,6 +349,7 @@ export const PERSONAL_DEFAULT_STATE = {
     meta_phone: "colombia",
     // address: "cra 45 - 88",
     // birthday: parseTimeStampToDate("722059200"),
+    // birthday: "18/11/2002",
     // city: "cali",
     // country: "colombia", 
     // id_number: "1116256754",
@@ -359,6 +361,18 @@ export const PERSONAL_DEFAULT_STATE = {
   }
 }
 
+
+// const handleError = {
+//   identity:{},
+//   financial:{},
+//   personal:{
+//     defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
+//     // errors:{
+//     //   country:"Ingresa un país de operación válido...",
+//     //   name:"Solo ingresa nombres sin apellidos..."
+//     // }
+//   }
+// }
   
 export const PERSONAL_COMPONENTS = {
     wrapperComponent:{
