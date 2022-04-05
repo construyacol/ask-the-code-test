@@ -16,7 +16,6 @@ export class WebService {
   async doFetch(url, params) {
     try {
       await verifyUserToken()
-      await validateExpTime()
       const response = await fetch(url, params);
       const finalResponse = await response.json(); 
       if (!response.ok && response.status === 465) {
@@ -89,6 +88,7 @@ export class WebService {
   }
 
   async Get(url) {
+    await validateExpTime()
     const tokenData = await getToken()
     if(!tokenData){return}
     const { userToken } = tokenData
@@ -125,7 +125,8 @@ export class WebService {
 
 
   async Post(url, body, withAuth = true) {
-    const tokenData = await getToken()
+    await validateExpTime()
+    const tokenData = await getToken() 
     if(!tokenData){return}
     const { userToken } = tokenData
     let params = {
