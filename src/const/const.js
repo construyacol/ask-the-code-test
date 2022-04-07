@@ -152,10 +152,11 @@ export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subsc
 
 export const SWAP_CONVERT_CURRENCIES = `${SwapApiUrl}swaps/convert-currencies`; 
 export const SWAP_URL = `${SwapApiUrl}`;
-export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
+export const POST_PAIRS_URL = `${SwapApiUrl}pairs/get-all-pairs-for-public`;
+// export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`;
 export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`;
-
+ 
 export const INDETITY_URL = `${IdentityApIUrl}countryvalidators/findOne`;
 export const INDENTITY_USERS_URL = `${IdentityApIUrl}users`;
 export const INDENTITY_ADD_BIOMETRIC_DATA_URL = `${IdentityApIUrl}biometricDatas/add-new-biometric-data`;

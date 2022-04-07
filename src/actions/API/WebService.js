@@ -137,7 +137,10 @@ export class WebService {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           }
-        : {},
+        : {
+          Accept: `*/*`,
+          "Content-Type": "application/json"
+        },
       body: JSON.stringify(body),
     };
 
