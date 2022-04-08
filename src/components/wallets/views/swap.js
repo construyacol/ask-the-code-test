@@ -200,8 +200,9 @@ function SwapView(props) {
 
     const { secondary_currency, id } = currentPair;
     const spent_currency_amount = await formatToCurrency( value, currentWallet.currency);
-    let query = `{"where":{"id":"${id}"}}`;
-    await coinsendaServices.updateCurrentPair(query);
+    // let query = `{"where":{"id":"${id}"}}`;
+    // await coinsendaServices.updateCurrentPair(query);
+    await coinsendaServices.updateCurrentPair({id});
 
     const secureTotalValue = await getReceiveValue(value);
     const from = currencies ? currencies[currentWallet.currency.currency]?.symbol.toUpperCase() : currentWallet.currency.currency.toUpperCase()

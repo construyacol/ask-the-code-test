@@ -2,8 +2,9 @@ import { WebService } from "../actions/API/WebService";
 import {
   ADD_NEW_SWAP,
   loadLabels,
-  SWAP_URL,
-  PAIRS_URL,
+  // SWAP_URL,
+  // PAIRS_URL,
+  POST_PAIRS_URL,
   GET_SWAPS_BY_USERS_URL,
   // SWAP_CONVERT_CURRENCIES
 } from "../const/const";
@@ -23,29 +24,37 @@ import { pairsForAccount } from "../actions/uiActions";
 export class SwapService extends WebService {
   async fetchAllPairs() {
     this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES));
-    const pairs = await this.Get(`${SWAP_URL}pairs?filter={"where": {"visible": true}}`);
+    const pairs = await this.pairsRequest({"visible":true});
+    // const pairs = await this.Get(`${SWAP_URL}pairs?filter={"where": {"visible": true}}`);
     if (!pairs) { 
       return;
     }
-
-    if (await this.isCached("available_pairs", pairs)) {
-      return pairs;
-    }
-
-    this.dispatch(getAllPairsAction(pairs));
+    // if (await this.isCached("available_pairs", pairs)) {
+    //   return pairs;
+    // }
+    this.dispatch(getAllPairsAction(pairs?.data));
     let updatedUser = {
       id: this.user.id,
-      available_pairs: [...pairs],
+      available_pairs: [...pairs?.data],
     };
-
     let dataNormalized = await normalizeUser(updatedUser);
     this.dispatch(updateNormalizedDataAction(dataNormalized));
     return dataNormalized;
   }
 
   pairsRequest(query) {
-    const requestCompleteUrl = `${PAIRS_URL}${query}`;
-    return this.Get(requestCompleteUrl);
+    // const requestCompleteUrl = `${PAIRS_URL}${query}`;
+    // return this.Get(requestCompleteUrl);
+
+    const body = {
+      data:{
+        filter:{
+          where:query
+        }
+      }
+    }
+    return this.Post(POST_PAIRS_URL, body, false);
+
   } 
 
   async getPairsByCountry(country, currencies) {
@@ -56,13 +65,13 @@ export class SwapService extends WebService {
     }
 
     
-    const pairs = await this.pairsRequest(`{"where": {"visible":true, "secondary_currency.currency": "${localCurrency.currency}"}}`);
+    const pairs = await this.pairsRequest({"visible":true, "secondary_currency.currency": `${localCurrency.currency}`});
     if (!pairs) return;
 
 
 
     if (currencies) {
-      const localCurrencies = await this.addSymbolToLocalCollections(pairs, localCurrency.currency, currencies);
+      const localCurrencies = await this.addSymbolToLocalCollections(pairs?.data, localCurrency.currency, currencies);
       // console.log(localCurrencies)
       // debugger
       if (
@@ -110,25 +119,22 @@ export class SwapService extends WebService {
     // return result
   }
 
-
   async getPairs(primary, secondary, all) {
     if (!primary && !secondary) return;
 
     if (primary || secondary) {
-      const query = !secondary
-        ? `{"where": {"primary_currency.currency": "${primary}"}}`
-        : `{"where": {"secondary_currency.currency": "${secondary}"}}`;
+      const query = !secondary ? {"primary_currency.currency": `${primary}`} : {"secondary_currency.currency": `${secondary}`};
       const response = await this.pairsRequest(query);
       if (this.isEmpty(response)) return;
       if (all) {
-        return response;
+        return response?.data;
       }
-      return response[0];
+      return response?.data[0];
     }
-    const query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`;
+    const query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
     const response = await this.pairsRequest(query);
     if (this.isEmpty(response)) return;
-    return response[0];
+    return response?.data[0];
   }
 
   async _getPairs(primary, secondary, all) {
@@ -137,23 +143,23 @@ export class SwapService extends WebService {
     }
     let res, query;
     if (primary && !secondary) {
-      query = `{"where": {"primary_currency.currency": "${primary}"}}`;
+      query = {"primary_currency.currency": `${primary}`};
     }
     if (!primary && secondary) {
-      query = `{"where": {"secondary_currency.currency": "${secondary}"}}`;
+      query = {"secondary_currency.currency": `${secondary}`};
     }
     query && (res = await this.pairsRequest(query));
     if (res) {
       if (all) {
-        return res;
+        return res?.data;
       }
-      return res[0];
+      return res?.data[0];
     }
 
-    query = `{"where": {"primary_currency.currency": "${primary}", "secondary_currency.currency": "${secondary}"}}`;
+    query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
     res = await this.pairsRequest(query);
     if (this.isEmpty(res)) return;
-    return res[0];
+    return res?.data[0];
   }
 
   // TODO: review this fn:getDefaultPair
@@ -237,20 +243,28 @@ export class SwapService extends WebService {
     let normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
     return normalizedUser;
-  }
-
+  } 
+ 
   async updateCurrentPair(query, currentPair) {
-    const result = await this.Get(`${PAIRS_URL}${query}`);
+    const body = {
+      data:{
+        filter:{
+          where:query
+        }
+      }
+    }
+    const result = await this.Post(POST_PAIRS_URL, body, false);
+    // const result = await this.Get(`${PAIRS_URL}${query}`);
     if (!result || result === 465) {
       return;
     }
     if (currentPair) {
       this.dispatch(
-        update_item_state({ currentPair: { ...result[0] } }, "pairs")
+        update_item_state({ currentPair: { ...result?.data[0] } }, "pairs")
       );
     } else {
       this.dispatch(
-        update_item_state({ [result[0].id]: { ...result[0] } }, "all_pairs")
+        update_item_state({ [result?.data[0]?.id]: { ...result?.data[0] } }, "all_pairs")
       );
     }
   }
