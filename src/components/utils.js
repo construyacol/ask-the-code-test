@@ -8,11 +8,13 @@ let _keyEncoder = new KeyEncoder('secp256k1');
 export const saveUserToken = async(userToken, refreshToken) => {
   try {
     let decodeJwt = await verifyUserToken(userToken)
-    let jwtExpTime = (decodeJwt.exp - 60) - decodeJwt.iat
+    // let jwtExpTime = (decodeJwt.exp - 60) - decodeJwt.iat
+    // let jwtExpTime = decodeJwt.exp
     await localForage.setItem("user_token", userToken);
     await localForage.setItem("refresh_token", refreshToken);
-    await localForage.setItem("jwt_expiration_time", jwtExpTime);
-    await localForage.setItem('created_at', Date());
+    await localForage.setItem("jwt_expiration_time", decodeJwt.exp);
+    await localForage.setItem('created_at', decodeJwt.iat);
+    await localForage.setItem('created_at_refresh_token', ((new Date().getTime() / 1000) + REFRESH_TOKEN_EXP_TIME));
     return decodeJwt
   } catch (err) {
     handleError(err)
@@ -43,7 +45,7 @@ export const getToken = async() => {
 
 export const verifyTokensValidity = () => {
   setInterval(() => {getUserToken()}, 20000)
-}
+} 
 
 export const getUserToken = async() => {
   try {
@@ -63,8 +65,6 @@ export const getUserToken = async() => {
 }
 
 
-
-
 export const verifyUserToken = async(_jwToken) => {
   let publicKey = await getPublicKey()
   let userToken = await localForage.getItem("user_token");
@@ -77,34 +77,44 @@ export const verifyUserToken = async(_jwToken) => {
 
 
 export const getExpTimeData = async() => {
-  let createdAt = await localForage.getItem('created_at');
+  // let createdAt = await localForage.getItem('created_at');
   let jwtExpTime = await localForage.getItem('jwt_expiration_time');
-  let registerDate = new Date(createdAt).getTime();
+  // let registerDate = new Date(createdAt).getTime();
   var currentDate = new Date().getTime();
-  var currentTime = (currentDate - registerDate) / (1000);
+  const refreshTokenCreateAt = await localForage.getItem('created_at_refresh_token');
+  // var currentTime = (currentDate - registerDate) / (1000);
+  var currentTime = (currentDate) / (1000);
   return {
     jwtExpTime,
     currentTime,
+    refreshTokenCreateAt,
     REFRESH_TOKEN_EXP_TIME
   }
-}
+} 
 
-
+ 
 export const validateExpTime = async() => {
 
-    const { jwtExpTime, currentTime } = await getExpTimeData()
-
+    const { jwtExpTime, currentTime, refreshTokenCreateAt } = await getExpTimeData()
 
     if(jwtExpTime && currentTime){
-      console.log('Tiempo transcurrido en sesión:', `${currentTime} segs`)
+      console.log('Tiempo transcurrido en sesión:', `${currentTime} segs`, new Date(currentTime*1000))
       // console.log('Vigencia user token:', `${jwtExpTime+60}(${jwtExpTime}) segs`)
-      console.log('Vigencia user token:', `${jwtExpTime}(${jwtExpTime}) segs`)
-      console.log('Vigencia refresh token:', `${REFRESH_TOKEN_EXP_TIME} segs`)
- 
+      console.log('Vigencia user token:', `${jwtExpTime}(${jwtExpTime}) segs`, new Date(jwtExpTime*1000))
+      console.log('refreshTokenCreateAt:', `${refreshTokenCreateAt} segs`, new Date(jwtExpTime*1000))
+      // console.log('Vigencia refresh token:', `${REFRESH_TOKEN_EXP_TIME} segs`)
+
+      let userToken = await localForage.getItem("user_token");
+      const refreshToken = await localForage.getItem("refresh_token");
+      // new Date(1649554119*1000)
+      console.log('userToken', userToken)
+      console.log('refreshToken', refreshToken)
+      
+       
       if(currentTime<=jwtExpTime){ //Si ha transcurrido menos de 4 minutos, el token actual sigue vigente
         console.log('::::::::: -- El userToken sigue vigente hasta el momento')
         return true
-      }else if(currentTime>=jwtExpTime && currentTime<=REFRESH_TOKEN_EXP_TIME){ // Si ha transcurrido mas de 4 min y menos de 150 min se debe de pedir nuevo token
+      }else if(currentTime<=refreshTokenCreateAt){ // Si ha transcurrido mas de 4 min y menos de 12 horas se debe de pedir nuevo token
         console.log('::::::::: -- El userToken caducó pero el refreshToken sigue vigente, getJWToken()')
         const refreshToken = await localForage.getItem("refresh_token");
         return await mainService.getJWToken(refreshToken)
