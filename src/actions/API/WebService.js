@@ -32,8 +32,9 @@ export class WebService {
         throw response.status;
       }
       return await finalResponse;
-    } catch (_) {
-      handleError(_)
+    } catch (err) {
+      handleError(err)
+      SentryCaptureException(err, {url, params})
       return false;
     }
   }
@@ -68,16 +69,14 @@ export class WebService {
     };
 
     const response = await fetch(GET_JWT_URL, params);
+    if(!response)return ;
 
-    
-    if(!response){
-      console.log('||||||| getJWToken ===> ', response)
-      debugger
-      throw new Error('No se pudo obtener el nuevo jwt')
-    }
     const res = await response.json()
+    if(!res?.data || (res?.data && !res?.data?.jwt))throw new Error('No se pudo obtener el nuevo jwt')
+
     const { data:{ jwt, refresh_token } } = res
     const decodedToken = await saveUserToken(jwt, refresh_token)
+
     let userData = {
         userToken:jwt,
         userEmail: decodedToken.email,
@@ -87,7 +86,8 @@ export class WebService {
     return {...userData, decodedToken }
   }
 
-  async Get(url) {
+  async Get(url) { 
+    // La función getUserToken() integra los metodos validateExpTime, getToken
     await validateExpTime()
     const tokenData = await getToken()
     if(!tokenData){return}
@@ -125,6 +125,7 @@ export class WebService {
 
 
   async Post(url, body, withAuth = true) {
+    // La función getUserToken() integra los metodos validateExpTime, getToken
     await validateExpTime()
     const tokenData = await getToken() 
     if(!tokenData){return}
