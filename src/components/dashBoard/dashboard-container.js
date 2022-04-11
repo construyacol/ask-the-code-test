@@ -90,7 +90,7 @@ function DashBoardContainer(props) {
   useEffect(() => {
     if (props.currentPair) {
       process.env.NODE_ENV === "production" && updateCurrentPair();
-      // updateCurrentPair()
+  // updateCurrentPair()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.currentPair]);

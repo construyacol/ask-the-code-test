@@ -42,8 +42,15 @@ export const getToken = async() => {
 }
 
 export const verifyTokensValidity = () => {
-  // setInterval(() => {getUserToken()}, 20000)
+  // setInterval(logs_, 20000)
 } 
+
+// const logs_ = async() => {
+  //   const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
+  //   console.log('Tiempo transcurrido en sesión:', new Date(currentTime*1000))
+  //   console.log('Vigencia user token:', new Date(jwtExpTime*1000))
+  //   console.log('refreshTokenExpirationTime:', new Date(refreshTokenExpirationTime*1000))
+// }
 
 export const getUserToken = async() => {
   try {
@@ -87,19 +94,26 @@ export const getExpTimeData = async() => {
   }
 } 
 
+
  
 export const validateExpTime = async() => {
-  const { refreshTokenExpirationTime, currentTime } = await getExpTimeData()
+
+  const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
   const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
   const refreshToken = await localForage.getItem(STORAGE_KEYS.refresh_token);
   const publicKey = await getPublicKey()
   const JWToken = userToken
   const pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
 
+  console.log('Tiempo transcurrido en sesión:', new Date(currentTime*1000))
+  console.log('Vigencia user token:', new Date(jwtExpTime*1000))
+  console.log('refreshTokenExpirationTime:', new Date(refreshTokenExpirationTime*1000))
+
   return new Promise((resolve, reject) => {
-    jwt.verify(JWToken, pemPublicKey, function(err, _) {
+    jwt.verify(JWToken, pemPublicKey, async function(err, _) {
       if (err) {
         if(currentTime <= refreshTokenExpirationTime) {
+          console.log('JWT EXPIRED ==> OBTENIENDO NUEVO REFRESH TOKEN')
           await mainService.getJWToken(refreshToken)
           resolve(true)
           return;
@@ -115,6 +129,7 @@ export const validateExpTime = async() => {
       resolve(true)
     });
   })
+
 }
 
 
