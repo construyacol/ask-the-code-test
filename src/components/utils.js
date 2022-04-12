@@ -170,7 +170,7 @@ export const handleError = async(err, callback) => {
       // return
     case 'TokenExpiredError':
         console.log('|||||||||||||||| El token ha expirado:', err)
-      return
+        return doLogout('?message=Vuelve a iniciar sesión')
     case 465:
         console.log('__error__', err)
       return

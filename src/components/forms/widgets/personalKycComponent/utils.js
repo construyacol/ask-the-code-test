@@ -15,16 +15,28 @@ export const parseTimeStampToDate = (timeStamp) => {
   return isoDate && isoDate[0]
 }
 
-
 export const parseDateToTimeStamp = date => {
-  const timeStamp = new Date(`${date}T00:00:00`).getTime()
+  const { year, month, day } = formatJsonUTFDate(date)
+  const timeStamp = new Date(year, month, day).getTime()
   return BigNumber(timeStamp).div(1000).toString()
 }
-
 
 const checkMaskDate = date => {
   if(!date)return;
   return date.match(isMaskDate)
+}
+  
+export const formatJsonUTFDate = date => {
+  if(!date?.match(isIsoDate))return date
+  let _date = date.split("-")
+  const year = _date[0]
+  const month = (parseInt(_date[1]) - 1)
+  const day = _date[2]
+  return {
+    day,
+    month,
+    year
+  }
 }
 
 export const formatMaskDate = date => {

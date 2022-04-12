@@ -301,10 +301,9 @@ export const ApiPostPersonalKyc = async(body, tools) => {
     config.info.birthday = formatMaskDate(config.info.birthday) 
   }
 
-  console.log('||||||||  isMaskBirthday  =====> ', isMaskBirthday)
-  console.log('||||||||  birthday  =====> ', config.info.birthday)
-
-  const timeStampDate = parseDateToTimeStamp(config.info.birthday)
+  const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
+  console.log('timeStampDate', config.info.birthday)
+  console.log('timeStampDate', timeStampDate)
   config.info.birthday = timeStampDate
   // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
   setLoading(true)
@@ -349,7 +348,7 @@ export const PERSONAL_DEFAULT_STATE = {
     meta_phone: "colombia",
     // address: "cra 45 - 88",
     // birthday: parseTimeStampToDate("722059200"),
-    // birthday: "18/11/2002",
+    // birthday: "18/11/1992",
     // city: "cali",
     // country: "colombia", 
     // id_number: "1116256754",

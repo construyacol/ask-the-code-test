@@ -119,7 +119,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     )
   }
 
-  console.log('___________________________________________dataForm', state)
+// console.log('___________________________________________dataForm', state)
 
 
   return(

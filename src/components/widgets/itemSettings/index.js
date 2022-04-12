@@ -227,12 +227,14 @@ class ItemSettingsInit extends Component {
         };
 
       case "kyc_advanced":
+
+        let identityValidation = ["confirmed", "accepted"].includes(kyc.basic) || 
+        (["accepted"].includes(kyc.basic) && ["rejected"].includes(kyc.advanced))
+
         return {
           classic_view: movil_viewport,
-          available:
-            kyc.basic === "confirmed" || kyc.advanced === "accepted" || kyc.advanced === "rejected"
-              ? true
-              : null,
+          // available: kyc.basic === "confirmed" || kyc.advanced === "accepted" || kyc.advanced === "rejected" ? true : null,
+          available:identityValidation,
           verify: kyc.advanced === "accepted",
           other_state: kyc.advanced,
           description:
