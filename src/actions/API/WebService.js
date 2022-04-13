@@ -14,13 +14,13 @@ import {
 export class WebService { 
 
   async doFetch(url, params) {
+    const { jwtExpTime, currentTime } = await getExpTimeData()
     try {
       await verifyUserToken()
       const response = await fetch(url, params);
       const finalResponse = await response.json(); 
       if (!response.ok && response.status === 465) {
         if (finalResponse.error.message.includes("Invalid signature")) {
-          const { jwtExpTime, currentTime } = await getExpTimeData()
           SentryCaptureException(finalResponse?.error, {
             currentTime,
             jwtExpTime,
@@ -34,7 +34,12 @@ export class WebService {
       return await finalResponse;
     } catch (err) {
       handleError(err)
-      SentryCaptureException(err, {url, params})
+      SentryCaptureException(err, {
+        url, 
+        params,
+        currentTime,
+        jwtExpTime
+      })
       return false;
     }
   }
