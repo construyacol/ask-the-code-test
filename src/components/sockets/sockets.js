@@ -431,12 +431,11 @@ class SocketsComponent extends Component {
 
     // if(deposit.state === 'confirmed' && && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === "confirmed") {
+      // console.log('||||||| SOCKET RESPONSE  ===>', deposit)
+      sessionStorage.removeItem(`depositOrder_${deposit?.id}`)
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-
         // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
-
-        
         console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
         if(cDeposit?.info?.is_referral) return;
 

@@ -790,7 +790,7 @@ export const funcDebounce = (
   localStorage.setItem(dataKey, dataValue);
 
   if(waitRes){
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve) => {
       setTimeout(async() => {
         const res = await callback()
         localStorage.removeItem(dataKey);
