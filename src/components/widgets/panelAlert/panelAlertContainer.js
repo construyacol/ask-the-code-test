@@ -4,11 +4,15 @@ import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import IconSwitch from "../icons/iconSwitch";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
-// import FreshChat from '../../../services/freshChat'
-
+import useViewport from '../../../hooks/useWindowSize'
 import "./panelAlert.css";
 
+ 
+
+
+
 const PanelAlertContainer = (props) => {
+  const { isMovilViewport } = useViewport()
   const [coinsendaServices] = useCoinsendaServices();
   const [state, setState] = useState({
     visible: false,
@@ -26,6 +30,19 @@ const PanelAlertContainer = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+
+  const openConfirmedDisclaimer = () => {
+    props.action.confirmationModalToggle();
+    props.action.confirmationModalPayload({
+      title: "Verificación de identidad",
+      description: "Las verificaciones de identidad actualmente se procesan en mínutos de forma automática, en los casos en los que la información cargada presente problemas, la verificación pasará a revisarse de forma manual en un plazo máximo de 72 horas hábiles.",
+      txtPrimary: "Entendido",
+      action: null,
+      svg: "identity",
+    });
+  }
+
 
   const validate_state = async () => {
     const verification_state = await coinsendaServices.getVerificationState();
@@ -46,11 +63,11 @@ const PanelAlertContainer = (props) => {
       return setState({
         visible: true,
         message:
-          "Nuestro sistema esta verificando tus documentos, en breve podrás operar en Coinsenda",
+          "Hemos recibido tus documentos. Una vez verificada tu cuenta podrás empezar a operar.",
         icon: "verified",
-        ctaText: null,
+        ctaText: 'Saber más...',
         background: "linear-gradient(to bottom right, #00D2FF, #3A7BD5)",
-        action: null,
+        action: openConfirmedDisclaimer,
       });
     }
     if (verification_state === "rejected") {
@@ -105,18 +122,24 @@ const PanelAlertContainer = (props) => {
 
   const { visible, message, ctaText, icon, background, action } = state;
 
+
   return (
+    
     <div
       className={`PanelAlertContainer ${visible && "visible"}`}
       id="PanelAlertContainer"
-      style={{ background: background }}
+      style={{ 
+        background: background, 
+        gridTemplateColumns: `${isMovilViewport ? '1fr' : '30px 1fr' }`,
+        padding: `${isMovilViewport ? '10px 30px 20px 10px ' : '0 20px' }`
+      }}
     >
-      <i className="fas fa-times" onClick={close}></i>
+      { !isMovilViewport && <i className="fas fa-times" onClick={close}></i>}
       <div className="alertContainer fuente">
-        <IconSwitch icon={icon} size={25} color="white" />
-        <div className="alertContainerText">
+        { !isMovilViewport && <IconSwitch icon={icon} size={25} color="white" />} 
+        <div className={`alertContainerText ${isMovilViewport ? 'isMobile' : ''}`}>
           <p>{message}</p>
-          {ctaText && <div onClick={action}>{ctaText}</div>}
+          {ctaText && <div onClick={action} className={'_hiperLink isMobile'}>{ctaText}</div>}
         </div>
       </div>
     </div>

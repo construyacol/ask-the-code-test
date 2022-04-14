@@ -9,6 +9,7 @@ import withCoinsendaServices from "../../withCoinsendaServices";
 import { createSelector } from "reselect";
 
 class WithdrawAccountForm extends Component {
+
   state = {
     name: this.props.user.name,
     surname: this.props.user.surname,
@@ -22,7 +23,7 @@ class WithdrawAccountForm extends Component {
     provider_type: "",
     id_number: "",
     city: "medellin",
-    email: this.props.user.email,
+    // email: this.props.user.email,
     currency: null,
     ticket: null,
   };

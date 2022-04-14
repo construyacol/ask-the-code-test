@@ -210,7 +210,7 @@ class ItemSettingsInit extends Component {
             kyc.basic === "confirmed" && !kyc.advanced
               ? "Continúa con la identificación intermedia para dar inicio a la verificación de tus datos."
               : kyc.basic === "confirmed" && kyc.advanced === "confirmed"
-              ? "El sistema esta verificando tus datos..."
+              ? ""
               : kyc.basic === "rejected" && kyc.advanced === "rejected"
               ? user.verification_error ||
                 "¡Vaya!, al parecer los datos no se han podido verificar, vuelve a intentarlo"
@@ -223,7 +223,7 @@ class ItemSettingsInit extends Component {
               ? "send"
               : kyc.advanced === "rejected"
               ? "rejected"
-              : null,
+              : null, 
         };
 
       case "kyc_advanced":
@@ -239,7 +239,7 @@ class ItemSettingsInit extends Component {
           other_state: kyc.advanced,
           description:
             kyc.basic === "confirmed" && kyc.advanced === "confirmed"
-              ? "El sistema esta verificando tus datos..."
+              ? ""
               : kyc.advanced === "rejected" && "",
         };
 

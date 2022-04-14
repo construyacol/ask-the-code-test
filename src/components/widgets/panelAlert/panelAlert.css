@@ -37,6 +37,17 @@
   cursor: pointer;
 }
 
+.alertContainerText.isMobile{
+  grid-template-columns: 1fr;
+  row-gap: 10px;
+}
+
+._hiperLink.isMobile{
+  color: yellow;
+  font-weight: 700;
+}
+
+
 .alertContainerText:hover {
   color: yellow;
 }
