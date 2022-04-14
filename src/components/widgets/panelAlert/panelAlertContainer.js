@@ -63,7 +63,7 @@ const PanelAlertContainer = (props) => {
       return setState({
         visible: true,
         message:
-          "Hemos recibido tus documentos. Una vez verificada la cuenta podrás empezar a operar.",
+          "Hemos recibido tus documentos. Una vez verificada tu cuenta podrás empezar a operar.",
         icon: "verified",
         ctaText: 'Saber más...',
         background: "linear-gradient(to bottom right, #00D2FF, #3A7BD5)",
