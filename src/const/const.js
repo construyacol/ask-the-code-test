@@ -116,7 +116,7 @@ export const loadLabels = {
   OBTENIENDO_PROVEEDORES_DE_DEPOSITO: "Obteniendo proveedores de deposito",
 };
 
-export const REFRESH_TOKEN_EXP_TIME = 43200
+export const REFRESH_TOKEN_EXP_TIME = 43000
 export const DESTROY_SESSION_URL = `${Oauth.url}auth/oauth/destroy/session`;
 export const GET_JWT_URL = `${Oauth.url}auth/oauth/grant/refresh-token`;
 export const GET_PUBLIC_KEY_URL = `${Oauth.url}auth/applications/get-public-key`;

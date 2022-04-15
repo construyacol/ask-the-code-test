@@ -96,7 +96,7 @@ export const getExpTimeData = async() => {
 
 
  
-export const validateExpTime = async() => {
+export const validateExpTime = async() => { 
 
   const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
   const userToken = await localForage.getItem(STORAGE_KEYS.user_token);

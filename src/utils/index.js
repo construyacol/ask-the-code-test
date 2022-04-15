@@ -778,7 +778,7 @@ export function setInputFilter(textbox, inputFilter) {
 
 export const funcDebounce = (
   objectData, 
-  callback, 
+  callback,  
   waitRes = false, 
   timeExect = 1000
 ) => {
@@ -792,18 +792,18 @@ export const funcDebounce = (
   if(waitRes){
     return new Promise(async (resolve, reject) => {
       setTimeout(async() => {
-        const res = await callback()
         localStorage.removeItem(dataKey);
-        return resolve(res)
       }, timeExect)
+      const res = await callback()
+      return resolve(res)
     });
   }
 
   setTimeout(() => {
-    callback()
     localStorage.removeItem(dataKey);
   }, timeExect)
   
+  return callback()
 }
 
 

@@ -39,11 +39,22 @@ class SocketsComponent extends Component {
 //         international:"level_1"
 //       } 
 //     }
-    
+
 //     setTimeout(()=>{
 //       this.profile_management(profileMock)
-//     }, 3000)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//     }, 4000)
 
+//     this.profile_management(profileMock)
+   
 
 //     // let orderMock = {
 //     //   id:"6184c8f067e372004414b156",
@@ -273,7 +284,7 @@ class SocketsComponent extends Component {
           }
         },
         false,
-        3000
+        8000
       );
     }
 
@@ -785,14 +796,14 @@ class SocketsComponent extends Component {
     } 
     await this.props.coinsendaServices.updateUserStatus(profile)
     if(profile.countries.international === 'level_1'){
-      funcDebounce(
+      funcDebounce( 
         {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
         () => {
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
         },
         false,
-        3000
+        8000
       );
     }
   }
