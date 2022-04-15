@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useSelector } from "react-redux";
 import { useCoinsendaServices } from "./useCoinsendaServices";
-// import { funcDebounce } from '../utils'
 // Utils
 import loadDynamicScript from '../utils/loadDynamicScript'
 

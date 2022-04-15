@@ -14,7 +14,7 @@ import {
 export class WebService { 
 
   async doFetch(url, params) {
-    const { jwtExpTime, currentTime } = await getExpTimeData()
+    const { jwtExpTime, currentTime, refreshTokenExpirationTime } = await getExpTimeData()
     try {
       await verifyUserToken()
       const response = await fetch(url, params);
@@ -24,6 +24,7 @@ export class WebService {
           SentryCaptureException(finalResponse?.error, {
             currentTime,
             jwtExpTime,
+            refreshTokenExpirationTime,
             url
           })
           // TODO: add refresh_token flow to get a new jwt
