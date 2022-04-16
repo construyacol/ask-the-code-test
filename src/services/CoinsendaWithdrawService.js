@@ -405,7 +405,7 @@ export class WithdrawService extends WebService {
   async addUpdateWithdraw(withdraw_id, state) {
     const body = {
       data: {
-        withdraw_id, 
+        withdraw_id:withdraw_id, 
         state,
         country: this.user.country,
       },

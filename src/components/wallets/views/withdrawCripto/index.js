@@ -15,7 +15,7 @@ import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
-import { MAIN_COLOR } from "../../../../const/const";
+import { MAIN_COLOR, history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
 
@@ -63,6 +63,8 @@ export const CriptoView = () => {
   const [addressValue, setAddressValue] = useState();
   const [amountState, setAmountState] = useState();
   const [amountValue, setAmountValue] = useState();
+  const [addressToAdd, setAddressToAdd] = useState();
+  const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
   const isValidForm = useRef(false);
 
   let movil_viewport = window.innerWidth < 768;
@@ -73,11 +75,11 @@ export const CriptoView = () => {
   }
 
   const setTowFaTokenMethod = async (twoFaToken) => {
-    actions.renderModal(null);
     finish_withdraw(twoFaToken);
+    actions.renderModal(null);
   };
 
-  const finish_withdraw = async (twoFaToken) => {
+  const finish_withdraw = async (twoFaToken = null) => {
     const form = new FormData(document.getElementById("withdrawForm"));
     const amount = form.get("amount");
 
@@ -103,6 +105,7 @@ export const CriptoView = () => {
       await coinsendaServices.fetchWithdrawAccounts();
     }
 
+    sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id );
     const withdraw = await coinsendaServices.addWithdrawOrder(
       {
         data: {
@@ -116,37 +119,70 @@ export const CriptoView = () => {
       twoFaToken
     );
 
+
+    setTimeout(async() => {
+      if(sessionStorage.getItem(`withdrawInProcessFrom${current_wallet?.id}`)){
+        sessionStorage.removeItem(`withdrawInProcessFrom${current_wallet?.id}`)
+        actions.isAppLoading(false);
+        await coinsendaServices.addUpdateWithdraw(
+          withdraw?.data?.id,
+          "confirmed"
+        );
+        await coinsendaServices.get_withdraws(current_wallet?.id)
+        await coinsendaServices.updateActivityState(current_wallet?.account_id, "withdraws");
+        await coinsendaServices.getWalletsByUser(true);
+        history.push(`/wallets/activity/${current_wallet.id}/withdraws`);
+      }
+    }, 5000)   
+
+
     if (!withdraw) {
       actions.isAppLoading(false);
       if (twoFaToken) {
         return toastMessage(
-          "Al parecer el código 2Fa es incorrecto...",
+          "El código 2Fa es incorrecto...",
           "error"
         );
       }
-      return toastMessage("No se ha podido crear la orden de retiro", "error");
+      // return toastMessage("No se ha podido crear la orden de retiro", "error");
     }
+
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e && e.preventDefault();
     e && e.stopPropagation();
 
     const form = new FormData(document.getElementById("withdrawForm"));
     const amount = form.get("amount");
-    const cSymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
+    const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
+    actions.isAppLoading(true);
+    const Element = await import("./withdrawConfirmation/");
+    actions.isAppLoading(false);
+    if(!Element) return; 
+    const WithdrawConfirmation = Element.default
+    actions.renderModal(() => 
+      <WithdrawConfirmation 
+        amount={amount}
+        currencySymbol={currencySymbol}
+        addressValue={addressValue}
+        tagWithdrawAccount={tagWithdrawAccount}
+        current_wallet={current_wallet}
+        withdrawProvider={withdrawProviders[current_wallet?.currency?.currency]}
+        handleAction={finish_withdraw}
+      />);
 
-    actions.confirmationModalToggle();
-    window.requestAnimationFrame(() => {
-      actions.confirmationModalPayload({
-        title: "Confirmación de retiro",
-        description: () => <p style={{display:'initial'}}>¿Estás seguro deseas realizar un retiro de <span style={{fontWeight:"bold"}} className="fuente2">{amount} {cSymbol}</span>?, una vez confirmado el retiro, este es irreversible </p>,
-        txtPrimary: "Confirmar Retiro",
-        txtSecondary: "Cancelar",
-        action: finish_withdraw,
-        img: "withdraw",
-      });
-    });
+    // actions.confirmationModalToggle();
+    // window.requestAnimationFrame(() => {
+    //   actions.confirmationModalPayload({
+    //     title: "Confirmación de retiro",
+    //     description: () => <p style={{display:'initial'}}>¿Estás seguro deseas realizar un retiro de <span style={{fontWeight:"bold"}} className="fuente2">{amount} {cSymbol}</span>?, una vez confirmado el retiro, este es irreversible </p>,
+    //     txtPrimary: "Confirmar Retiro",
+    //     txtSecondary: "Cancelar",
+    //     action: finish_withdraw,
+    //     img: "withdraw",
+    //   });
+    // });
   };
 
   const handleMaxAvailable = (e) => {
@@ -180,8 +216,7 @@ export const CriptoView = () => {
     setAddressValue(value);
   };
 
-  const [addressToAdd, setAddressToAdd] = useState();
-  const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
+
 
   const deleteTag = () => {
     setTagWithdrawAccount(null);

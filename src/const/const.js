@@ -329,3 +329,34 @@ export const CDN_PATH_ASSETS = {
   assets:'cdn/assets/',
   tensor:'cdn/tensor/models'
 }
+
+
+export const COLOR_FEES = {
+  low_priority:{
+      color:"#FF4A4A"
+  },
+  medium_priority:{
+      color:"#FF9900"
+  },
+  high_priority:{
+      color:"#05EC00"
+  }
+}
+
+export const WITHDRAW_PRIORITY_FEE = {
+  low_priority:{
+      ui_name:"Baja",
+      ui_color:COLOR_FEES?.low_priority?.color,
+      value:"low_priority"
+  },
+  medium_priority:{
+      ui_name:"Media",
+      ui_color:COLOR_FEES?.medium_priority?.color,
+      value:"medium_priority"
+  },
+  high_priority:{
+      ui_name:"Alta",
+      ui_color:COLOR_FEES?.high_priority?.color,
+      value:"high_priority"
+  }
+}

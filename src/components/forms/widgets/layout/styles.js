@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { show } from '../../../widgets/animations'
 
 export const Wrapper = styled.div`
   grid-template-columns: 1fr;
@@ -10,9 +11,18 @@ export const Wrapper = styled.div`
   top:0;
   left:0;
   z-index:99;
+  backdrop-filter: blur(2px);
+  background: linear-gradient(to bottom right, #00000099, #000000f0);
+  
   &.infoPanel{
     grid-template-columns: auto 1fr;
   }
+
+
+  animation-name: ${show};
+  animation-duration: 0.5s;
+  animation-iteration-count: forwards;
+
 `
 
 // export const MainContainer = styled.div`
