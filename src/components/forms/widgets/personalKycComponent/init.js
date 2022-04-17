@@ -32,7 +32,9 @@ const PersonalKyc = () => {
   }, [])
 
   return(
-    <Layout>
+    <Layout
+      background="white"
+    >
       <IconClose 
         theme="dark" 
         top={15} 

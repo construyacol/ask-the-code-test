@@ -18,10 +18,11 @@ export const Wrapper = styled.div`
     grid-template-columns: auto 1fr;
   }
 
-
-  animation-name: ${show};
-  animation-duration: 0.5s;
-  animation-iteration-count: forwards;
+  &._show{
+    animation-name: ${show};
+    animation-duration: 0.5s;
+    animation-iteration-count: forwards;
+  }
 
 `
 

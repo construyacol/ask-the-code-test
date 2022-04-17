@@ -66,6 +66,7 @@ export default function WithdrawConfirmation({
     return(
         <Layout 
             closeControls={isMovilViewport}
+            className="_show"
         >
             <LayoutContainer className="swing-in-bottom-bck">
                 <HeaderContainer>

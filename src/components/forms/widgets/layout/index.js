@@ -3,8 +3,8 @@ import { Wrapper } from './styles'
 import { IconClose } from "../../../widgets/shared-styles";
 import { useActions } from '../../../../hooks/useActions'
 
-const Layout = ({ children, background, closeControls }) => {
-
+const Layout = ({ children, background, closeControls, className }) => {
+  
   const actions = useActions();
   const closeModal = (e, forceClose) => {
     if ((e && e.target?.dataset?.close_modal) || forceClose) {
@@ -23,6 +23,7 @@ const Layout = ({ children, background, closeControls }) => {
       style={{background}}
       onClick={closeModal}
       data-close_modal={true}
+      className={`${className}`}
     >
       {
         closeControls &&
