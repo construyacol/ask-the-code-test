@@ -36,7 +36,7 @@ export default function WithdrawConfirmation({
         setLoader(true)
         await handleAction()
         setLoader(false)
-        actions.renderModal(null)
+        // actions.renderModal(null)
     }
 
     const closeModal = () => {

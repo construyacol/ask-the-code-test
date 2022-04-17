@@ -83,7 +83,9 @@ export const CriptoView = () => {
     const form = new FormData(document.getElementById("withdrawForm"));
     const amount = form.get("amount");
 
-    if (user.security_center.authenticator.withdraw && !twoFaToken) {
+    const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
+    if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
+    // if (user.security_center.authenticator.withdraw && !twoFaToken) {
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />
       ));
@@ -118,6 +120,8 @@ export const CriptoView = () => {
       },
       twoFaToken
     );
+
+    await actions.renderModal(null)
 
 
     setTimeout(async() => {

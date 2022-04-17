@@ -388,16 +388,13 @@ export class WithdrawService extends WebService {
 
 
   async getWithdrawById(id) {
-
     let withdraw
     let finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${this.user.id}/withdraws?country=${this.user.country}&filter={"where": {"id":"${id}"} }`;
-
     try {
       withdraw = await this.Get(finalUrl);
     } catch (error) {
       return false
     }
-
     return withdraw[0];
   }
  

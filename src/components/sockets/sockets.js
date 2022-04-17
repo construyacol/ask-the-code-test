@@ -214,8 +214,6 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
-
-
     if (withdraw.proof) {
       if (
         !this.props.withdraws ||
@@ -294,7 +292,6 @@ class SocketsComponent extends Component {
     console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
     // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
-
     if (
       withdraw.state === "confirmed" &&
       currentWithdraw.currency_type === "crypto"
@@ -364,7 +361,6 @@ class SocketsComponent extends Component {
       }
 
       this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
-
     }
 
 
