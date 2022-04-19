@@ -3,6 +3,17 @@ import { keyframes } from "styled-components";
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
+
+export const show = keyframes`
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`
+
+
 export const getAtention = keyframes`
   0% {
     transform: rotate(0deg);
@@ -162,7 +173,7 @@ export const swing_in_bottom_bck = keyframes`
 `;
 
 export const gotoTx = keyframes`
-  0% {
+  0% { 
     transform: translateX(0);
   }
   50% {

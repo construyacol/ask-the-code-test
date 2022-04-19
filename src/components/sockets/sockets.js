@@ -214,7 +214,6 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
-
     if (withdraw.proof) {
       if (
         !this.props.withdraws ||
@@ -268,6 +267,7 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
+      sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
       funcDebounce(
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
         async() => {
@@ -275,10 +275,10 @@ class SocketsComponent extends Component {
             withdraw.id,
             "confirmed"
           );
+          this.props.action.isAppLoading(false);
           if (!res) {
-            this.props.action.isAppLoading(false);
             return this.props.toastMessage(
-              "No se ha podido crear la orden de retiro",
+              "Error al confirmar la orden",
               "error"
             );
           }
@@ -292,7 +292,6 @@ class SocketsComponent extends Component {
     console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
     // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
-
     if (
       withdraw.state === "confirmed" &&
       currentWithdraw.currency_type === "crypto"
@@ -362,7 +361,6 @@ class SocketsComponent extends Component {
       }
 
       this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
-
     }
 
 

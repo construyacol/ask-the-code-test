@@ -6,6 +6,31 @@ import { LoaderContainer } from "../loaders";
 import { useSelector } from "react-redux";
 
 
+
+
+export const SecondaryButton = ({ handleAction, label }) => {
+  return(
+      <ButtonContaniner onClick={handleAction}>
+          <p className="fuente">
+              {label}
+          </p>
+      </ButtonContaniner>
+  )
+}
+
+const ButtonContaniner = styled.div`
+  width:auto;
+  min-width: 120px;
+  text-align: center;
+  cursor:pointer;
+  p{
+      color:var(--title1);
+      font-weight:bold;
+      font-size:15px;
+  }
+`
+
+
 // osDevice
 const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
 

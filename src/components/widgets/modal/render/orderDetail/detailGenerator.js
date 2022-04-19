@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
+// import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
 import UseTxState from "../../../../hooks/useTxState";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { getState } from "./";
@@ -8,7 +8,9 @@ import { device, ORDER_TYPE_UI_NAME } from "../../../../../const/const";
 import { selectWithConvertToObjectWithCustomIndex } from "../../../../hooks/useTxState.js"
 import { useSelector } from "react-redux";
 import { getHostName } from '../../../../../environment'
+import DetailTemplateComponent from '../../../detailTemplate'
 // import { useParams } from "react-router-dom";
+import { MiddleSection } from '../../../detailTemplate'
 
 import moment from "moment";
 import "moment/locale/es";
@@ -251,7 +253,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
     swaps:formatSwapsOrder,
     deposit:formatDepositOrder,
     withdraw:formatWithdrawOrder
-  }
+  } 
 
   const formatOrder = async(order) => {
     let parsedOrder = []
@@ -301,29 +303,14 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
          
       }
 
-      {orders && orders.length
-        ? orders.map((item, indx) => {
-            return (
-              <ItemContainer
-                key={indx}
-                className={`${orders.length === indx + 1 &&  order.state && tx_path === "deposits" && order.state
-                }`}
-              >
-                <LeftText className="fuente">{item[0]}</LeftText>
-                <MiddleSection />
-                <RightText className="fuente2">{item[1]}</RightText>
-              </ItemContainer>
-            );
-          })
-        : new Array(7).fill("1").map((item, indx) => {
-            return (
-              <ItemContainer className="skeleton" key={indx}>
-                <LeftText>skeleton --</LeftText>
-                <MiddleSection />
-                <RightText>skeleton -------- </RightText>
-              </ItemContainer>
-            );
-          })}
+      <DetailTemplateComponent
+        items={orders}
+        // items={[]}
+        tx_path={tx_path}
+        order={order}
+      />
+
+
           { 
             (orderType === 'swaps' && order?.referral && ["accepted"].includes(order?.state)) &&
               <ReferralSwapCopy order={order} currencies={currencies}/>
@@ -349,7 +336,6 @@ const ReferralSwapCopy = ({ order, currencies }) => {
 
 }
 
-getHostName()
 
 export const DataOrderHeader = styled.div`
     display: grid;
@@ -404,57 +390,9 @@ const Title = styled(Text)`
   font-size: 17px;
   font-weight: bold;
 `;
-const RightText = styled(Text)`
-  text-align: right;
-  padding-left: 15px;
-  text-transform: capitalize;
-  white-space: nowrap;
-  max-width: 350px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-const LeftText = styled(Text)`
-  text-align: left;
-  padding-right: 15px;
-  font-weight: bold;
-`;
-const MiddleSection = styled.span`
-  border-bottom: 1px dotted;
-  opacity: 0.15;
-`;
 
-const ItemContainer = styled.div`
-  width: 100%;
-  height: 20px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
 
-  &.skeleton {
-    ${OnlySkeletonAnimation}
-    ${RightText}, ${LeftText} {
-      background: gray;
-      height: 16px;
-      border-radius: 3px;
-      opacity: 0.5;
-    }
-  }
 
-  &.pending,
-  &.confirmed {
-    height: 50px;
-    margin-top: 10px;
-    border-top: 1px solid #bfbfbf;
-    align-items: center;
-    ${RightText}, ${LeftText} {
-      font-size: 18px;
-      color: var(--paragraph_color);
-    }
-    ${RightText} {
-      font-size: 20px;
-      font-weight: bold;
-    }
-  }
-`;
 
 const Container = styled.section`
   width: calc(100% - 70px);
