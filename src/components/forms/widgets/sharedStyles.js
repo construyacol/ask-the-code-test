@@ -177,7 +177,6 @@ export const Layout = styled.div`
     height: 100vh;
     background: #ffffffff;
     position: absolute;
-    justify-items: center;
     top: 0;
     left: 0;
     z-index:1000;

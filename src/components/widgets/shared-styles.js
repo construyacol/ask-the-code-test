@@ -3,6 +3,152 @@ import styled from "styled-components";
 import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 import { AiOutlineClose } from "react-icons/ai";
 
+
+
+
+
+export const DropZoneContainer = styled.section`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 3;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  ${"" /* border: 5px solid #0198FF; */}
+
+  &.dottedBorder{
+    border: 5px dotted var(--primary);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 1);
+  }
+
+  svg {
+    fill: #0198ff;
+  }
+  p {
+    color: #0198ff;
+  }
+`;
+
+
+export const UploadContainer = styled.section`
+  display: grid;
+  justify-items: center;
+  row-gap: 12px;
+  width: 100%;
+  min-height: 170px;
+  height: auto;
+  &.unButton{
+    min-height: 100px;
+  }
+
+  &.loaded { 
+    grid-template-rows: auto 1fr;
+  }
+  &.unload {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    grid-template-rows: repeat(4, auto);
+  }
+`;
+
+export const UploadText = styled.p`
+  margin:0;
+  font-size: 16px;
+  color: var(--paragraph_color);
+`;
+
+export const UploadTextMiddle = styled.p`
+  margin:0;
+  z-index: 2;
+  font-size: 12px;
+  width: 150px;
+  background: ${props => props.background ? props.background : '#eeeeee' };
+  text-align: center;
+  color: var(--paragraph_color);
+
+  &.titleSection {
+    font-size: 15px;
+    width: auto;
+    padding: 0 20px;
+    align-self: center;
+    justify-self: baseline;
+  }
+
+  &.consolidatedStyle{
+    background:white;
+    margin-left:20px;
+  }
+`;
+
+
+export const Buttom = styled.div`
+  width: 320px;
+  height: 45px;
+  border-radius: 6px;
+  border: 2px solid #0198ff;
+  background: #0198ff;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  cursor: pointer;
+  position: relative;
+
+  input[type="file"]{
+    position: absolute;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+`;
+
+export const UploadMiddle = styled.div`
+  font-size: 14px;
+  position: relative;
+  display: grid;
+  width: 100%;
+  justify-items: center;
+  max-width: 320px;
+  hr{
+    position: absolute;
+    width: 100%;
+    align-self: center;
+  }
+
+  &.titleSection{
+    max-width: inherit;
+    position: absolute;
+    align-self: start;
+    hr{
+      border-top: 1px solid;
+      color: #d4d4d4;
+      position: absolute;
+      width: 80%;
+      right: 0;
+    }
+  }
+  &.payment{
+    p{
+      padding-left: 0 !important;
+    }
+    position: relative !important;
+  }
+
+  &.swaps{
+    hr{
+      width: 98%;
+    }
+  }
+}
+`;
+
+
+
 export const IconClose = ({ theme, opacity, size, id, ...props }) => {
   // @params
   // theme => dark/ligth

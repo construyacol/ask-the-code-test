@@ -58,7 +58,9 @@ const FreshChat = (props) => {
 
   useEffect(() => {
     if(user?.email){
-      loadDynamicScript(init, 'https://wchat.freshchat.com/js/widget.js', 'freshchat')
+      if(process.env.NODE_ENV !== 'development'){
+        loadDynamicScript(init, 'https://wchat.freshchat.com/js/widget.js', 'freshchat')
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.email])
