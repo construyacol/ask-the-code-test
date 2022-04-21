@@ -105,6 +105,17 @@ export const Buttom = styled.div`
     cursor: pointer;
   }
 
+  &.loader{
+    ::after{
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: #ffffffcf;
+      top: 0;
+    }
+  }
+
 `;
 
 export const UploadMiddle = styled.div`

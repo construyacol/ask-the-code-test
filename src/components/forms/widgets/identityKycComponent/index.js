@@ -15,6 +15,7 @@ import {
   DropZoneContainer
 } from '../../../widgets/shared-styles'
 import useViewport from '../../../../hooks/useWindowSize'
+import SimpleLoader, { LoaderContainer } from "../../../widgets/loaders";
 // import { getAcronym } from '../../../../utils'
 // import useValidations from '../../hooks/useInputValidations'
 import useStage from '../../hooks/useStage'
@@ -26,6 +27,7 @@ import useStage from '../../hooks/useStage'
 // import KycSkeleton from './skeleton'
 // import isoType from './assets/isoType.png'
 // import PersonalKyc from '../personalKycComponent/init'
+import { img_compressor, readFile } from '../../../../utils'
 
 import {
     Layout
@@ -40,9 +42,29 @@ import {
 // const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 
+  const { dataForm } = handleDataForm
+  const stageManager = useStage(
+    // create the form stages
+    Object.keys(dataForm?.handleError?.errors || dataForm.stages),
+    dataForm.stages
+  )
+
+  const {
+    // nextStage,
+    // finalStage,
+    stageData,
+    // currentStage
+  } = stageManager
+
   const { isMovilViewport } = useViewport()
   const [ onDrag, setOnDrag ] = useState()
   const [ imgSrc ] = useState()
+  const [ loader, setLoader ] = useState(false)
+
+  const { 
+    state, 
+    setState 
+  } = handleState
   
   const dragLeave = (event) => {
     event.preventDefault();
@@ -60,40 +82,37 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 
   const goFileLoader = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
+
       setOnDrag(false);
-      // const data = e.target.files[0];
-      // const file = await img_compressor(data, 0.25);
-      // const dataBase64 = await readFile(file);
+      setLoader(true)
+      const data = e.target.files[0];
+      const file = await img_compressor(data, 0.25);
+      const dataBase64 = await readFile(file);
+
+      setTimeout(() => {
+        setState(prevState => {
+          return { ...prevState, [stageData?.key]: {
+            name:file?.name,
+            size:file?.size,
+            type:file?.type,
+            img:dataBase64
+          }}
+        })
+        setLoader(false)
+      }, 3000)
+
+      
       // const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
       // if(!isAnImage){
-        // return alert('Solo se aceptan imagenes')
+      // return alert('Solo se aceptan imagenes')
       // }
       // setImgSrc(dataBase64);
       // actions.isAppLoading(true);
     }
   };
 
-  const { dataForm } = handleDataForm
-  const { 
-    state, 
-    // setState 
-  } = handleState
-  // const [ loading ] = useState(false)
+ 
 //   // const validations = useValidations()
-
-  const stageManager = useStage(
-    // create the form stages
-    Object.keys(dataForm?.handleError?.errors || dataForm.stages),
-    dataForm.stages
-  )
-
-  const {
-    // nextStage,
-    // finalStage,
-    stageData,
-    // currentStage
-  } = stageManager
-
 
 // //   if(loading){return <KycSkeleton/>}
 //   if(!loading && finalStage){
@@ -102,6 +121,9 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 //   }
   // console.log('currentStage', currentStage)
   const { stages } = dataForm
+
+  console.log('|||||||||  IdentityKycComponent  ==> ', state)
+
 
   return( 
     <>
@@ -118,6 +140,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
               !isMovilViewport &&
                 <UploadComponent
                   goFileLoader={goFileLoader}
+                  loader={loader}
                 />
             }
 
@@ -134,13 +157,15 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
             stages={stages}
             state={state}
             stageData={stageData}
+            loader={loader}
           />
 
           {
             isMovilViewport &&
               <MobileContralContainer>
                 <CallToAction
-                  handleAction={goFileLoader}
+                  goFileLoader={goFileLoader}
+                  loader={loader}
                 />
               </MobileContralContainer>
           }
@@ -153,20 +178,87 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 export default IdentityKycComponent
 
 
-const MobileContralContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 80px;
-  align-items: center;
-  place-content: center;
-`
+
+
+
+
+
+
+
+const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
+  return (
+    <DropZoneContainer className="dottedBorder">
+      <input
+        id="TFileUpload"
+        type="file"
+        // accept="image/png,image/jpeg"
+        onChange={goFileLoader}
+        onDragLeave={dragLeave}
+        capture="user" 
+        accept="image/*"
+      />
+      <UploadComponent
+        unButtom
+        title="Suelta aquí el archivo que quieres subir..."
+      />
+    </DropZoneContainer>
+  );
+};
+
+
+const UploadComponent = props => {
+
+  return(
+    <UploadContainer className={`${props.unButtom ? 'unButton' : ''}`}>
+        <AiOutlineUpload size={45} color="var(--paragraph_color)" />
+        <UploadText className="fuente">
+            {props.title || "Arrastra el comprobante que quieres subir"}
+        </UploadText>
+        {
+          !props.unButtom &&
+          <>
+            <UploadMiddle>
+                <UploadTextMiddle className="fuente" background={"#F9F9F9"}>
+                  o selecciona un archivo
+                </UploadTextMiddle>
+                <hr />
+            </UploadMiddle>
+            
+            <CallToAction
+              {...props}
+            />
+          </>
+        }
+    </UploadContainer>
+  )
+}
+
+const CallToAction = props => {
+  return(
+      <Buttom className={`${props.loader ? 'loader' : ''}`}>
+        {
+          props.loader ?
+            <LoaderContainer>
+            <SimpleLoader loader={2} />
+          </LoaderContainer>
+          :
+          <input
+            // id={idForFileUpload}
+            type="file"
+            accept="image/png,image/jpeg"
+            onChange={props.goFileLoader}
+          />
+        }
+        
+        <p style={{ color: "white", margin:"0" }} className="fuente">
+          Subir documento
+        </p>
+      </Buttom>
+  )
+}
 
 const StageListComponent = ({ stages, stageData, state }) => {
 
-  console.log('StageListComponent', stages, stageData)
-  console.log('List', Object.keys(stages))
-  
-  // AiOutlineFileImage
   return(
     <StageList className="item_">
       {
@@ -187,7 +279,7 @@ const StageListComponent = ({ stages, stageData, state }) => {
               </IconContainer>
               
               <p className={`fuente _title ${stageState}`}>{stages[stageKey]?.uiName}</p>
-              {state[stageKey] && <p className="fuente2 _size">Size</p>}
+              {state[stageKey] && <p className="fuente2 _size">{state[stageData?.key]?.size} KB</p>}
 
               <ControlContainer className="item__">
                 { isCurrentEl && <CurrentStageIndicator/>}
@@ -200,6 +292,14 @@ const StageListComponent = ({ stages, stageData, state }) => {
   )
 }
 
+
+const MobileContralContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 80px;
+  align-items: center;
+  place-content: center;
+`
 
 const CurrentStageIndicator = styled.div`
   width:12px;
@@ -282,7 +382,7 @@ const StageListItemContainer = styled.div`
   }
 
   ._size{
-    font-size:13px;
+    font-size:11px;
     color:gray;
     align-self: flex-start;
     padding-top: 2px;
@@ -322,71 +422,6 @@ const StageList = styled.div`
 `
 
 
-const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
-  return (
-    <DropZoneContainer className="dottedBorder">
-      <input
-        id="TFileUpload"
-        type="file"
-        // accept="image/png,image/jpeg"
-        onChange={goFileLoader}
-        onDragLeave={dragLeave}
-        capture="user" 
-        accept="image/*"
-      />
-      <UploadComponent
-        unButtom
-        title="Suelta aquí el archivo que quieres subir..."
-      />
-    </DropZoneContainer>
-  );
-};
-
-
-const UploadComponent = props => {
-
-  return(
-    <UploadContainer className={`${props.unButtom ? 'unButton' : ''}`}>
-        <AiOutlineUpload size={45} color="var(--paragraph_color)" />
-        <UploadText className="fuente">
-            {props.title || "Arrastra el comprobante que quieres subir"}
-        </UploadText>
-
-        {
-          !props.unButtom &&
-          <>
-            <UploadMiddle>
-                <UploadTextMiddle className="fuente" background={"#F9F9F9"}>
-                  o selecciona un archivo
-                </UploadTextMiddle>
-                <hr />
-            </UploadMiddle>
-            
-            <CallToAction
-              handleAction={props.goFileLoader}
-            />
-          </>
-        }
-    </UploadContainer>
-  )
-
-}
-
-const CallToAction = props => {
-  return(
-      <Buttom>
-        <input
-          // id={idForFileUpload}
-          type="file"
-          accept="image/png,image/jpeg"
-          onChange={props.handleAction}
-        />
-        <p style={{ color: "white", margin:"0" }} className="fuente">
-          Subir comprobante
-        </p>
-      </Buttom>
-  )
-}
 
 
 

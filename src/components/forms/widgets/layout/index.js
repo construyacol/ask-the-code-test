@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Wrapper } from './styles'
 import { IconClose } from "../../../widgets/shared-styles";
 import { useActions } from '../../../../hooks/useActions'
