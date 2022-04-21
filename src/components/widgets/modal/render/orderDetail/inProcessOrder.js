@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlineUpload } from "react-icons/ai";
 // import PaymentProofComponent, { PaymentProof } from "./paymentProof";
@@ -18,6 +18,7 @@ import {
    device, 
    BIOMETRIC_FIAT_LITMIT_AMOUNT 
 } from "../../../../../const/const";
+
 import { 
   IconClose, 
   UploadContainer,
@@ -122,7 +123,7 @@ const FiatOrder = ({ order }) => {
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
   const [ , , toBigNumber ] = useFormatCurrency()
-  const [toastMessage] = useToastMessage();
+  // const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
     event.preventDefault();
@@ -161,19 +162,37 @@ const FiatOrder = ({ order }) => {
         const BiometricKyc = Element.default
         return actions.renderModal(() => <BiometricKyc orderData={{order, paymentProof:dataBase64}} />);
       }
-
-      let confirmation = await coinsendaServices.confirmDepositOrder(order.id, dataBase64); 
-
-      if (!confirmation || !confirmation.data) {
-        actions.isAppLoading(false);
-        toastMessage("El depósito No se ha confirmado", "error");
-        setImgSrc(null);
-      }
+      sessionStorage.setItem(`depositOrder_${order?.id}`, JSON.stringify({orderId:order.id, paymentProof:dataBase64}));
+      await coinsendaServices.confirmDepositOrder(order.id, dataBase64); 
+      // let confirmation = await coinsendaServices.confirmDepositOrder(order.id, dataBase64); 
+      setTimeout(async() => {
+        if(sessionStorage.getItem(`depositOrder_${order?.id}`)){
+          sessionStorage.removeItem(`depositOrder_${order?.id}`)
+          await coinsendaServices.get_deposits(order?.account_id)
+          await coinsendaServices.updateActivityState(order?.account_id, "deposits");
+          actions.isAppLoading(false);
+        }
+      }, 5000)   
+      // if (!confirmation || !confirmation?.data) {
+      //   actions.isAppLoading(false);
+      //   setImgSrc(null);
+      //   toastMessage("El depósito No se ha confirmado", "error");
+      // }
     }
   };
 
-  console.log('|||||||||||||||| FiatOrderDespoit ::', tx_path)
+  // console.log('|||||||||||||||| FiatOrderDespoit ::', tx_path)
   // debugger
+
+  useEffect(() => {
+    let thisIsAnOrderInProcess = JSON.parse(sessionStorage.getItem(`depositOrder_${order?.id}`))
+    if(thisIsAnOrderInProcess){
+      const { paymentProof } = thisIsAnOrderInProcess
+      setImgSrc(paymentProof);
+      actions.isAppLoading(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
 
   return (

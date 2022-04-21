@@ -114,6 +114,9 @@ const HoursAtention = loadable(() =>
   import("./").then(getExportByName("HoursAtention"))
 );
 const AboutYou = loadable(() => import("./").then(getExportByName("AboutYou")));
+const WithdrawConfirm = loadable(() => import("./").then(getExportByName("WithdrawConfirm")));
+
+
 const PaymenthMethod = loadable(() =>
   import("./").then(getExportByName("PaymenthMethod"))
 );
@@ -165,12 +168,14 @@ const Coinsenda = loadable(() => import("./logos/coinsenda"));
 const BancoBogota = loadable(() => import("./logos/bancoBogota"));
 const Bbva = loadable(() => import("./logos/bbva"));
 
-
 class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      
+      case "withdrawConfirm":
+        return <WithdrawConfirm {...props} />;
       case "banco_btg_pactual":
         return <Pactual {...props} height={"30px"} />;
       case "ualá":

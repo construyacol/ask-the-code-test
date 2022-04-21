@@ -45,7 +45,7 @@ const AddressTagList = ({ show, addressValue, setAddressValue, addressState }) =
   }, [searchList]);
 
   const handleEventClick = (e) => {
-    console.log('|||||||||||||||||||||||||| handleEventClick ===> ', e.target.classList, show, addressValue)
+    // console.log('|||||||||||||||||||||||||| handleEventClick ===> ', e.target.classList, show, addressValue)
     e.stopPropagation()
     if ((e.target.classList && !e.target.classList.contains("search-component")) && !document.querySelector('#tagAddress') && !addressState) {
       setAddressValue("");

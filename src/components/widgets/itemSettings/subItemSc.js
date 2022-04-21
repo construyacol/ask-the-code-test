@@ -4,7 +4,7 @@ import { ButtonForms } from "../buttons/buttons";
 // import { bindActionCreators } from 'redux'
 // import actions from '../../../actions'
 import IconSwitch from "../icons/iconSwitch";
-import SimpleLoader from "../loaders"; 
+// import SimpleLoader from "../loaders"; 
 
 class SubItemSC extends Component {
   // state = {
@@ -108,12 +108,7 @@ class SubItemSC extends Component {
                 className="enviarNero fas fa-angle-double-down"
                 style={{ color: "var(--paragraph_color)" }}
               ></i>
-            ) : other_state === "confirmed" ? (
-              <i
-                className="fas fa-spinner rotateGono"
-                style={{ color: "var(--paragraph_color)" }}
-              ></i>
-            ) : verify ? (
+            ) : (verify || other_state === "confirmed") ? (
               <i className="fas fa-check" style={{ color: "#59B200" }}></i>
             ) : (
               available && (
@@ -209,9 +204,7 @@ class SubItemSC extends Component {
               style={{
                 color: verify
                   ? "#59B200"
-                  : other_state === "confirmed"
-                  ? "var(--paragraph_color)"
-                  : other_state === "send"
+                  : (other_state === "send" || other_state === "confirmed")
                   ? "#59B200"
                   : "#540000",
                 display: tree ? "none" : "visible",
@@ -222,14 +215,8 @@ class SubItemSC extends Component {
                   <i className="fas fa-check"></i>
                   {`Completado con éxito`}
                 </Fragment>
-              ) : other_state === "confirmed" ? (
-                <div className="confirmedIndentSc">
-                  <div className="loaderScontainer">
-                    <SimpleLoader loader={2} />
-                  </div>
-                  {`verificando...`}
-                </div>
-              ) : other_state === "send" ? (
+              ) 
+                 : (other_state === "confirmed" || other_state === "send") ? (
                 <Fragment>
                   <i className="SCUnverify fas fa-share"></i>
                   {`Información enviada`}
@@ -268,9 +255,7 @@ class SubItemSC extends Component {
               // siguiente={(verify)? null : this.actionHandle}
             >
               {`${
-                other_state === "confirmed"
-                  ? "Verificando"
-                  : other_state === "send"
+                   (other_state === "send" || other_state === "confirmed")
                   ? "Enviado"
                   : verify
                   ? cta_secondary

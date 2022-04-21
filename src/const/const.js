@@ -116,7 +116,7 @@ export const loadLabels = {
   OBTENIENDO_PROVEEDORES_DE_DEPOSITO: "Obteniendo proveedores de deposito",
 };
 
-export const REFRESH_TOKEN_EXP_TIME = 43200
+export const REFRESH_TOKEN_EXP_TIME = 43000
 export const DESTROY_SESSION_URL = `${Oauth.url}auth/oauth/destroy/session`;
 export const GET_JWT_URL = `${Oauth.url}auth/oauth/grant/refresh-token`;
 export const GET_PUBLIC_KEY_URL = `${Oauth.url}auth/applications/get-public-key`;
@@ -152,10 +152,11 @@ export const SUBSCRIBE_TO_DEPOSITS_URL = `${DepositApiUrl}depositProviders/subsc
 
 export const SWAP_CONVERT_CURRENCIES = `${SwapApiUrl}swaps/convert-currencies`; 
 export const SWAP_URL = `${SwapApiUrl}`;
-export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
+export const POST_PAIRS_URL = `${SwapApiUrl}pairs/get-all-pairs-for-public`;
+// export const PAIRS_URL = `${SwapApiUrl}pairs?filter=`;
 export const ADD_NEW_SWAP = `${SwapApiUrl}swaps/add-new-swap`;
 export const GET_SWAPS_BY_USERS_URL = `${SwapApiUrl}users`;
-
+ 
 export const INDETITY_URL = `${IdentityApIUrl}countryvalidators/findOne`;
 export const INDENTITY_USERS_URL = `${IdentityApIUrl}users`;
 export const INDENTITY_ADD_BIOMETRIC_DATA_URL = `${IdentityApIUrl}biometricDatas/add-new-biometric-data`;
@@ -327,4 +328,35 @@ export const CDN_PATH_ASSETS = {
   faceApi:"cdn/libs/faceApi.js",
   assets:'cdn/assets/',
   tensor:'cdn/tensor/models'
+}
+
+
+export const COLOR_FEES = {
+  low_priority:{
+      color:"#FF4A4A"
+  },
+  medium_priority:{
+      color:"#FF9900"
+  },
+  high_priority:{
+      color:"#05EC00"
+  }
+}
+
+export const WITHDRAW_PRIORITY_FEE = {
+  low_priority:{
+      ui_name:"Baja",
+      ui_color:COLOR_FEES?.low_priority?.color,
+      value:"low_priority"
+  },
+  medium_priority:{
+      ui_name:"Media",
+      ui_color:COLOR_FEES?.medium_priority?.color,
+      value:"medium_priority"
+  },
+  high_priority:{
+      ui_name:"Alta",
+      ui_color:COLOR_FEES?.high_priority?.color,
+      value:"high_priority"
+  }
 }

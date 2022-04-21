@@ -241,7 +241,7 @@ export class WithdrawService extends WebService {
       provider_type,
       name,
       surname,
-      id_number,
+      id_number, 
       short_name,
       account_number,
       account_type,
@@ -388,16 +388,13 @@ export class WithdrawService extends WebService {
 
 
   async getWithdrawById(id) {
-
     let withdraw
     let finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${this.user.id}/withdraws?country=${this.user.country}&filter={"where": {"id":"${id}"} }`;
-
     try {
       withdraw = await this.Get(finalUrl);
     } catch (error) {
       return false
     }
-
     return withdraw[0];
   }
  
@@ -405,7 +402,7 @@ export class WithdrawService extends WebService {
   async addUpdateWithdraw(withdraw_id, state) {
     const body = {
       data: {
-        withdraw_id, 
+        withdraw_id:withdraw_id, 
         state,
         country: this.user.country,
       },

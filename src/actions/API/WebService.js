@@ -1,7 +1,7 @@
 import { GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
 import { SentryCaptureException } from '../../utils'
-import { getExpTimeData } from '../../components/utils'
+import { getExpTimeData, validateExpTime } from '../../components/utils'
 import {
   // doLogout,
   handleError,
@@ -14,16 +14,17 @@ import {
 export class WebService { 
 
   async doFetch(url, params) {
+    const { jwtExpTime, currentTime, refreshTokenExpirationTime } = await getExpTimeData()
     try {
       await verifyUserToken()
       const response = await fetch(url, params);
-      const finalResponse = await response.json();
+      const finalResponse = await response.json(); 
       if (!response.ok && response.status === 465) {
         if (finalResponse.error.message.includes("Invalid signature")) {
-          const { jwtExpTime, currentTime } = await getExpTimeData()
           SentryCaptureException(finalResponse?.error, {
             currentTime,
             jwtExpTime,
+            refreshTokenExpirationTime,
             url
           })
           // TODO: add refresh_token flow to get a new jwt
@@ -32,8 +33,14 @@ export class WebService {
         throw response.status;
       }
       return await finalResponse;
-    } catch (_) {
-      handleError(_)
+    } catch (err) {
+      handleError(err)
+      SentryCaptureException(err, {
+        url, 
+        params,
+        currentTime,
+        jwtExpTime
+      })
       return false;
     }
   }
@@ -68,16 +75,14 @@ export class WebService {
     };
 
     const response = await fetch(GET_JWT_URL, params);
+    if(!response)return ;
 
-    
-    if(!response){
-      console.log('||||||| getJWToken ===> ', response)
-      debugger
-      throw new Error('No se pudo obtener el nuevo jwt')
-    }
     const res = await response.json()
+    if(!res?.data || (res?.data && !res?.data?.jwt))throw new Error('No se pudo obtener el nuevo jwt')
+
     const { data:{ jwt, refresh_token } } = res
     const decodedToken = await saveUserToken(jwt, refresh_token)
+
     let userData = {
         userToken:jwt,
         userEmail: decodedToken.email,
@@ -87,7 +92,9 @@ export class WebService {
     return {...userData, decodedToken }
   }
 
-  async Get(url) {
+  async Get(url) { 
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
     const tokenData = await getToken()
     if(!tokenData){return}
     const { userToken } = tokenData
@@ -124,7 +131,9 @@ export class WebService {
 
 
   async Post(url, body, withAuth = true) {
-    const tokenData = await getToken()
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
+    const tokenData = await getToken() 
     if(!tokenData){return}
     const { userToken } = tokenData
     let params = {
@@ -135,7 +144,10 @@ export class WebService {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
           }
-        : {},
+        : {
+          Accept: `*/*`,
+          "Content-Type": "application/json"
+        },
       body: JSON.stringify(body),
     };
 

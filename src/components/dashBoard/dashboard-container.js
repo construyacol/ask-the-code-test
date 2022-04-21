@@ -62,10 +62,8 @@ function DashBoardContainer(props) {
   const updateCurrentPair = async () => {
     clearInterval(UPDATE_CURRENT_PAIR_INTERVAL_ID);
     UPDATE_CURRENT_PAIR_INTERVAL_ID = setInterval(() => {
-      let query = `{"where":{"buy_pair":"${
-        props.currentPair && props.currentPair.buy_pair
-      }"}}`;
-      coinsendaServices.updateCurrentPair(query, "currentPair");
+      // let query = `{"where":{"buy_pair":"${props.currentPair?.buy_pair}"}}`;
+      coinsendaServices.updateCurrentPair({buy_pair:`${props.currentPair?.buy_pair}`}, "currentPair");
     }, 20000);
   };
 
@@ -92,6 +90,7 @@ function DashBoardContainer(props) {
   useEffect(() => {
     if (props.currentPair) {
       process.env.NODE_ENV === "production" && updateCurrentPair();
+  // updateCurrentPair()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.currentPair]);

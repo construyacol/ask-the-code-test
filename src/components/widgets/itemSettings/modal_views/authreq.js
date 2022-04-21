@@ -36,14 +36,14 @@ const AuthReq = (props) => {
       }
       let res; 
       actions.isAppLoading(true);
-      if (props.isTryToDisable2fa) {
+      if (props.isTryToDisable2fa) { 
         await funcDebounce(
           {'storageDisable2FA':`${value}_disabled`}, 
           async() => {
             res = await coinsendaServices.disableTransactionSecutiry("2fa", value)
           },
           true,
-          1500
+          5000
         );   
       } else {
         await funcDebounce(
@@ -52,7 +52,7 @@ const AuthReq = (props) => {
             res = await coinsendaServices.addNewTransactionSecurity("2fa", value)
           },
           true,
-          1500
+          5000
         );   
       }
 

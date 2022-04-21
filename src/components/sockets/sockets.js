@@ -39,11 +39,22 @@ class SocketsComponent extends Component {
 //         international:"level_1"
 //       } 
 //     }
-    
+
 //     setTimeout(()=>{
 //       this.profile_management(profileMock)
-//     }, 3000)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//       this.profile_management(profileMock)
+//     }, 4000)
 
+//     this.profile_management(profileMock)
+   
 
 //     // let orderMock = {
 //     //   id:"6184c8f067e372004414b156",
@@ -203,7 +214,6 @@ class SocketsComponent extends Component {
 
   withdraw_mangagement = async (withdraw) => {
 
-
     if (withdraw.proof) {
       if (
         !this.props.withdraws ||
@@ -257,6 +267,7 @@ class SocketsComponent extends Component {
 
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
+      sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
       funcDebounce(
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
         async() => {
@@ -264,16 +275,16 @@ class SocketsComponent extends Component {
             withdraw.id,
             "confirmed"
           );
+          this.props.action.isAppLoading(false);
           if (!res) {
-            this.props.action.isAppLoading(false);
             return this.props.toastMessage(
-              "No se ha podido crear la orden de retiro",
+              "Error al confirmar la orden",
               "error"
             );
           }
         },
         false,
-        3000
+        8000
       );
     }
 
@@ -281,7 +292,6 @@ class SocketsComponent extends Component {
     console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
     // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
-
     if (
       withdraw.state === "confirmed" &&
       currentWithdraw.currency_type === "crypto"
@@ -351,7 +361,6 @@ class SocketsComponent extends Component {
       }
 
       this.props.history.push(`/wallets/activity/${new_withdraw.account_id}/withdraws`);
-
     }
 
 
@@ -431,12 +440,11 @@ class SocketsComponent extends Component {
 
     // if(deposit.state === 'confirmed' && && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === "confirmed") {
+      // console.log('||||||| SOCKET RESPONSE  ===>', deposit)
+      sessionStorage.removeItem(`depositOrder_${deposit?.id}`)
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
-
         // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
-
-        
         console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
         if(cDeposit?.info?.is_referral) return;
 
@@ -785,14 +793,14 @@ class SocketsComponent extends Component {
     } 
     await this.props.coinsendaServices.updateUserStatus(profile)
     if(profile.countries.international === 'level_1'){
-      funcDebounce(
+      funcDebounce( 
         {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
         () => {
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
         },
         false,
-        3000
+        8000
       );
     }
   }
