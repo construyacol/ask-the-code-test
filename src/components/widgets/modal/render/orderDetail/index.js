@@ -14,10 +14,16 @@ import DetailGenerator from "./detailGenerator";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import UseTxState from "../../../../hooks/useTxState";
 import InProcessOrder from "./inProcessOrder";
-import { IconClose } from "../../../shared-styles";
+import { 
+  IconClose,
+  UploadMiddle,
+  UploadTextMiddle
+} from "../../../shared-styles";
 import GetInfoComponentToRender from './infoComponent'
 // import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
-import { UploadTextMiddle, UploadMiddle } from './inProcessOrder'
+// import { UploadTextMiddle, UploadMiddle } from './inProcessOrder'
+
+
 
 import moment from "moment";
 import "moment/locale/es";

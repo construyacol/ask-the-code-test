@@ -13,10 +13,6 @@ const Layout = ({ children, background, closeControls, className }) => {
     }
   };
 
-  useEffect(() => {
-    // document.querySelector("#home-container")
-  }, [])
-
   return(
     <Wrapper 
       id="mainLayout" 

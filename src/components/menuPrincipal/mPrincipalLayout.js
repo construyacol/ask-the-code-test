@@ -6,14 +6,14 @@ import ScoresComponent from "../widgets/scores";
 import MovilMenuComponent from "./movilMenu";
 import { useActions } from "../../hooks/useActions";
 import { doLogout } from "../utils";
+import { getAcronym } from '../../utils'
 import useKeyActionAsClick from "../../hooks/useKeyActionAsClick";
 // import logo from "../../assets/logo.png";
 import { getCdnPath } from '../../environment'
 import { useSelector } from "react-redux";
-
+// import useAcronym from '../../hooks/useAcronym'
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
-
 // TODO: remove all window ref from components, may be the cause of future
 // issues
 const MenuPrincipalLayout = (props) => {
@@ -25,7 +25,7 @@ const MenuPrincipalLayout = (props) => {
     navigateTo,
   } = props;
 
-  const [acronym, setAcronym] = useState();
+  // const [acronym, setAcronym] = useAcronym();
   const actions = useActions();
   const idForLogoutButton = useKeyActionAsClick(
     true,
@@ -50,17 +50,7 @@ const MenuPrincipalLayout = (props) => {
       type: "select_country",
     });
   };
-
-  useEffect(() => {
-    if (props.user.name) {
-      const { name } = props.user;
-      let patt1 = /^.|\s./g; 
-      let result = name.match(patt1);
-      setAcronym(result.toString().replace(/,/g, " ").toUpperCase());
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-// keyActions
+ 
 
   return (
     <section
@@ -80,10 +70,10 @@ const MenuPrincipalLayout = (props) => {
         <div className="perfilPiCont">
           <div className={`perfilPic ${verification_state}`}>
             <div className="fuente">
-              {!acronym ? (
+              {!props?.user?.name ? (
                 <IconSwitch icon="coinsenda" size={40} color="white" />
               ) : (
-                <p className="fuente">{acronym}</p>
+                <p className="fuente">{getAcronym(props?.user?.name)}</p>
               )}
             </div>
           </div>

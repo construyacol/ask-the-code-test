@@ -806,11 +806,6 @@ export const funcDebounce = (
   return callback()
 }
 
-
-
-
-
-
 /**
  * Function para hacer debounce
  *
@@ -834,6 +829,18 @@ export function debounce(func, wait) {
     timeout = setTimeout(later, wait);
   };
 }
+
+
+
+
+export const getAcronym = (_string) => {
+  if(typeof _string !== 'string') return _string;
+  let patt1 = /^.|\s./g; 
+  let result = _string.match(patt1);
+  return result.toString().replace(/,/g, " ").toUpperCase();
+}
+
+
 
 export default handleKeyPress;
 

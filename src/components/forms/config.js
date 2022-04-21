@@ -9,6 +9,11 @@ import {
   ONBOARDING_STAGES
 } from './widgets/onBoardingComponent/api'
 
+import { 
+  IDENTITY_COMPONENTS,
+  IDENTITY_STAGES
+} from './widgets/identityKycComponent/api'
+
 
 import { 
   NEW_WALLET_COMPONENTS,
@@ -31,7 +36,8 @@ let stages = {
   ...PERSONAL_STAGES,
   ...ONBOARDING_STAGES,
   ...FIAT_DEPOSIT_STAGES,
-  ...NEW_WALLET_STAGES
+  ...NEW_WALLET_STAGES,
+  ...IDENTITY_STAGES
 } 
 
 const defaultState = {
@@ -58,7 +64,8 @@ const wrapperComponent = {
   ...PERSONAL_COMPONENTS['wrapperComponent'],
   ...ONBOARDING_COMPONENTS['wrapperComponent'],
   ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent'],
-  ...NEW_WALLET_COMPONENTS['wrapperComponent']
+  ...NEW_WALLET_COMPONENTS['wrapperComponent'],
+  ...IDENTITY_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {
