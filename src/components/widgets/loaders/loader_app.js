@@ -68,9 +68,9 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     //   coinsendaServices.postLoader(doLogout);
     //   return redirectURL(isSessionRestored);
     // }
-
-    if (!userToken) return;
  
+    if (!userToken) return;
+   
     let profile = await coinsendaServices.fetchUserProfile();
       if (!profile) {
       setShowOnBoarding(true)

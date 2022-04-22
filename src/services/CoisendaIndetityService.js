@@ -20,58 +20,58 @@ import { CleanForm, ToStep } from "../actions/formActions";
 export class IndetityService extends WebService {
 
 
-  async getStatus(status) {
-    // if(status){return status} 
-    try {
-      const user = this.user;
-      const statusUrl = `${INDENTITY_USERS_URL}/${user.id}/status`;
-      const status = await this.Get(statusUrl);
-      return status
-    } catch (e) {
-      console.log('getStatus', e)
-      return e
-    }
-  }
+  // async getStatus(status) {
+  //   // if(status){return status} 
+  //   try {
+  //     const user = this.user;
+  //     const statusUrl = `${INDENTITY_USERS_URL}/${user.id}/status`;
+  //     const status = await this.Get(statusUrl);
+  //     return status
+  //   } catch (e) {
+  //     console.log('getStatus', e)
+  //     return e
+  //   }
+  // }
 
-  async updateUserStatus(status) {
+  // async updateUserStatus(status) {
 
-    const user = this.user;
-    const _status = await this.getStatus(status)
-    if(!_status) return;
-    this.setIsAppLoading(true)
-    const { countries:{ international } } = _status
-    let userUpdate = {
-      ...user,
-      verification_level:international.verification_level,
-      verification_error:international.errors && international.errors[0],
-      levels:international.levels,
-      security_center:{
-        ...user.security_center,
-        kyc:{
-          advanced:international.levels.identity,
-          basic:international.levels.personal,
-          financial:international.levels.financial
-        }
-      }
-    }
-    console.log('||||||||||||||| getUserStatus:: ', userUpdate, international)
-    await this.updateUser(userUpdate)
-    // console.log('||||||||||||||| getUserStatus:: ', international)
-    // debugger
-    setTimeout(() => {
-      this.setIsAppLoading(false);
-    }, 100)
+  //   const user = this.user;
+  //   const _status = await this.getStatus(status)
+  //   if(!_status) return;
+  //   this.setIsAppLoading(true)
+  //   const { countries:{ international } } = _status
+  //   let userUpdate = {
+  //     ...user,
+  //     verification_level:international.verification_level,
+  //     verification_error:international.errors && international.errors[0],
+  //     levels:international.levels,
+  //     security_center:{
+  //       ...user.security_center,
+  //       kyc:{
+  //         advanced:international.levels.identity,
+  //         basic:international.levels.personal,
+  //         financial:international.levels.financial
+  //       }
+  //     }
+  //   }
+  //   console.log('||||||||||||||| getUserStatus:: ', userUpdate, international)
+  //   await this.updateUser(userUpdate)
+  //   // console.log('||||||||||||||| getUserStatus:: ', international)
+  //   // debugger
+  //   setTimeout(() => {
+  //     this.setIsAppLoading(false);
+  //   }, 100)
 
-    if(
-    international.levels.identity === 'rejected' &&
-    international.levels.personal === 'rejected'
-    ){
-      this.dispatch(CleanForm("kyc_basic"))
-      this.dispatch(CleanForm("kyc_advanced"))
-      this.dispatch(ToStep("globalStep", 0))
-    }
+  //   if(
+  //   international.levels.identity === 'rejected' &&
+  //   international.levels.personal === 'rejected'
+  //   ){
+  //     this.dispatch(CleanForm("kyc_basic"))
+  //     this.dispatch(CleanForm("kyc_advanced"))
+  //     this.dispatch(ToStep("globalStep", 0))
+  //   }
 
-  } 
+  // } 
 
 
   async addNewBiometricData(config) {
@@ -108,9 +108,9 @@ export class IndetityService extends WebService {
     const user = this.user;
 
     const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
-
     const firstResponse = await this.Get(finalUrlFirst);
 
+    return
     if (!firstResponse) {
       return false;
     }

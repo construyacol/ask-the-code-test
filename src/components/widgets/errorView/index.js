@@ -6,10 +6,6 @@ import IconSwitch from '../icons/iconSwitch'
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import "./handleError.css";
-
-
-// Sentry.init({dsn: "https://5cae2e853bb1487cbd40c223556d3760@sentry.io/1478048"});
-
 class HandleError extends Component {
   constructor(props) {
     super(props);
@@ -21,16 +17,18 @@ class HandleError extends Component {
     // Actualiza el estado para que el siguiente renderizado muestre la interfaz de repuesto
     return { hasError: true };
   }
-
+ 
   componentDidMount(){
-    Sentry.init({
-      dsn: "https://bb17fc53b9d74ba1a3e514982bbbb28b@o269316.ingest.sentry.io/6258790",
-      integrations: [new BrowserTracing()],
-      // Set tracesSampleRate to 1.0 to capture 100%
-      // of transactions for performance monitoring.
-      // We recommend adjusting this value in production
-      // tracesSampleRate: 1.0,
-    }); 
+    if(process.env.NODE_ENV !== 'development'){
+      Sentry.init({
+        dsn: "https://bb17fc53b9d74ba1a3e514982bbbb28b@o269316.ingest.sentry.io/6258790",
+        integrations: [new BrowserTracing()],
+        // Set tracesSampleRate to 1.0 to capture 100%
+        // of transactions for performance monitoring.
+        // We recommend adjusting this value in production
+        // tracesSampleRate: 1.0,
+      }); 
+    }
   }
 
   render() {
@@ -41,10 +39,10 @@ class HandleError extends Component {
           <h1 className="fuente">ERROR</h1>
           <p className="fuente">Ha ocurrido un error, intentalo más tarde...</p>
           <div className="contImgError">
-            <IconSwitch
+            {/* <IconSwitch
               icon="errorState"
               width="100%"
-            />
+            /> */}
           </div>
         </div>
       );

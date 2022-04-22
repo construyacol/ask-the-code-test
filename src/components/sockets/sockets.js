@@ -789,9 +789,9 @@ class SocketsComponent extends Component {
 
   profile_management = async(profile) => {
     if(this.props.formModal){
-     await this.props.action.toggleModal(false);
+     await this.props.action.toggleModal(false); 
     } 
-    await this.props.coinsendaServices.updateUserStatus(profile)
+    // await this.props.coinsendaServices.updateUserStatus(profile)
     if(profile.countries.international === 'level_1'){
       funcDebounce( 
         {'storageProfile':`${profile.id}_${profile.countries.international}`}, 

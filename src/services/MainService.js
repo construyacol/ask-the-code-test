@@ -127,15 +127,15 @@ export class MainService extends inheritances {
     return this.dispatch(isAppLoading(value));
   }
 
-  async checkAndUpdateUserStatus() {
-    if(this.user?.levels?.identity === 'confirmed' && this.user?.levels?.personal === 'confirmed'){
-      await this.updateUserStatus()
-      if(["accepted"].includes(this.user.levels.identity)){
-        this.init()
-        history.push("/wallets")
-      }
-    }
-  }
+  // async checkAndUpdateUserStatus() {
+  //   if(this.user?.levels?.identity === 'confirmed' && this.user?.levels?.personal === 'confirmed'){
+  //     // await this.updateUserStatus()
+  //     if(["accepted"].includes(this.user.levels.identity)){
+  //       this.init()
+  //       history.push("/wallets")
+  //     }
+  //   }
+  // }
 
   
 
@@ -178,7 +178,7 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-      this.checkAndUpdateUserStatus()
+      // this.checkAndUpdateUserStatus()
       this.dispatch(
         updateLoadersAction({
           mainList: false,

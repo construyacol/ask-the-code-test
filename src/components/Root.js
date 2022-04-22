@@ -17,7 +17,7 @@ import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
 import {
   // doLogout,
-  verifyTokensValidity,
+  // verifyTokensValidity,
   saveUserToken,
   getUserToken
 } from "./utils";
@@ -68,7 +68,7 @@ function RootContainer(props) {
       });
     }
 
-    verifyTokensValidity()
+    // verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
 
@@ -102,12 +102,14 @@ function RootContainer(props) {
     if(showOnBoarding){ 
       const initOnBoarding = async() => {
         // const Element = await import("./forms/widgets/onBoardingComponent/init");
-        const Element = await import("./forms/widgets/identityKycComponent/init");
-        // const Element = await import("./forms/widgets/personalKycComponent/init");
+        // const Element = await import("./forms/widgets/identityKycComponent/init");
+        const Element = await import("./forms/widgets/personalKycComponent/init");
         const OnBoardingComponent = Element.default
         return props.actions.renderModal(() => <OnBoardingComponent/>); 
       }
-      initOnBoarding()
+      setTimeout(() => {
+        initOnBoarding()
+      }, 1000)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOnBoarding])

@@ -20,22 +20,13 @@ import { _createStore } from "./store";
 // script.async = true;
 // document.body.appendChild(script);
 import RootContainer from "./components/Root" 
-import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
 
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
 // import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
 
 
-Sentry.init({
-  dsn: "https://bb17fc53b9d74ba1a3e514982bbbb28b@o269316.ingest.sentry.io/6258790",
-  integrations: [new BrowserTracing()],
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  // tracesSampleRate: 1.0,
-});
+
 
 
 
