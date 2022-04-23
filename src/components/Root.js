@@ -41,7 +41,7 @@ function RootContainer(props) {
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
   
-  const [ showOnBoarding, setShowOnBoarding ] = useState(false)
+  const [ showOnBoarding, setShowOnBoarding ] = useState(true)
 
   const initComponent = async () => {
 
@@ -102,8 +102,9 @@ function RootContainer(props) {
     if(showOnBoarding){ 
       const initOnBoarding = async() => {
         // const Element = await import("./forms/widgets/onBoardingComponent/init");
-        const Element = await import("./forms/widgets/identityKycComponent/init");
-        // const Element = await import("./forms/widgets/personalKycComponent/init");
+        // const Element = await import("./forms/widgets/identityKycComponent/init");
+      // const Element = await import("./forms/widgets/personalKycComponent/init");
+        const Element = await import("./forms/widgets/locationComponent/init");
         const OnBoardingComponent = Element.default
         return props.actions.renderModal(() => <OnBoardingComponent/>); 
       }

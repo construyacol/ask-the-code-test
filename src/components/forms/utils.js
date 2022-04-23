@@ -5,6 +5,7 @@ import {
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
+import { ApiGetLocationStages } from './widgets/locationComponent/api'
 import { ApiGetIdentityStages } from './widgets/identityKycComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
@@ -155,7 +156,8 @@ const dataService = {
   personal:ApiGetPersonalStages,
   identity:ApiGetIdentityStages, 
   fiatDeposit:ApiGetOnFiatDepositStages,
-  newWallet:ApiGetNewWalletStages
+  newWallet:ApiGetNewWalletStages,
+  location:ApiGetLocationStages
 }
 
 

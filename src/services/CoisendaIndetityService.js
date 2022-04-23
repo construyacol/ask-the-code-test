@@ -6,7 +6,8 @@ import {
   INDENTITY_USERS_URL,
   INDETITY_COUNTRY_VALIDATORS_URL,
   INDETITY_UPDATE_PROFILE_URL,
-  INDENTITY_ADD_BIOMETRIC_DATA_URL
+  INDENTITY_ADD_BIOMETRIC_DATA_URL,
+  fileTest
 } from "../const/const";
 import userDefaultState from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
@@ -27,12 +28,12 @@ export class IndetityService extends WebService {
 
     const { userId } = this.authData;
 
-    const body = {
-      "data": {
-        "country":"international", 
-      }
-    }
-    const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
+    // const body = {
+    //   "data": {
+    //     "country":"international", 
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
 
     // 0: "location"
     // 1: "identity"
@@ -91,13 +92,24 @@ export class IndetityService extends WebService {
     // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
 
     // verificación intermedia files needed ================
+    // const body = {
+    //   "data": {
+    //     "country":"international",
+    //     "identity_id":"62634b1bb249f90043fbd3a3",
+    //     "files_needed":{
+    //        "selfie":fileTest,
+    //        "id_front":fileTest
+    //     }
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}identities/add-files-to-identity`, body);
 
-
+    // GET IDENTITY
+    // let url = `${IdentityApIUrl}users/${userId}/identities`;
 
     // const res = await this.Get(url);
-
-    console.log('||||||||||||||  testEndpoint  ==> ', res)
-    debugger
+    // console.log('|||||||||||||||||||||||||||  testEndpoint  ==> ', res)
+    // debugger
   }
 
   

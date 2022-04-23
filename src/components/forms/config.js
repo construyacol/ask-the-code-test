@@ -27,6 +27,12 @@ import {
 } from './widgets/personalKycComponent/api'
 
 import { 
+  LOCATION_DEFAULT_STATE,
+  LOCATION_COMPONENTS,
+  LOCATION_STAGES
+} from './widgets/locationComponent/api'
+
+import { 
   BIOMETRIC_COMPONENTS,
   BIOMETRIC_STAGES
 } from './widgets/biometricKycComponent/api'
@@ -37,12 +43,14 @@ let stages = {
   ...ONBOARDING_STAGES,
   ...FIAT_DEPOSIT_STAGES,
   ...NEW_WALLET_STAGES,
-  ...IDENTITY_STAGES
+  ...IDENTITY_STAGES,
+  ...LOCATION_STAGES
 } 
 
 const defaultState = {
   ...PERSONAL_DEFAULT_STATE,
-  ...FIAT_DEPOSIT_DEFAULT_STATE
+  ...FIAT_DEPOSIT_DEFAULT_STATE,
+  ...LOCATION_DEFAULT_STATE
   // biometric:{
   //   smile:"",
   //   surprised:""
@@ -65,7 +73,8 @@ const wrapperComponent = {
   ...ONBOARDING_COMPONENTS['wrapperComponent'],
   ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent'],
   ...NEW_WALLET_COMPONENTS['wrapperComponent'],
-  ...IDENTITY_COMPONENTS['wrapperComponent']
+  ...IDENTITY_COMPONENTS['wrapperComponent'],
+  ...LOCATION_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {
