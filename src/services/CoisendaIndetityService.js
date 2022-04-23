@@ -16,8 +16,94 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { CleanForm, ToStep } from "../actions/formActions";
 
+const {
+  IdentityApIUrl
+} = Environment
 
 export class IndetityService extends WebService {
+
+
+  async proofEndpoints() {
+
+    const { userId } = this.authData;
+
+    const body = {
+      "data": {
+        "country":"international", 
+      }
+    }
+    const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
+
+    // 0: "location"
+    // 1: "identity"
+    // 2: "regulation"
+
+    // let url = `${IdentityApIUrl}users/${userId}/biometric`;
+    // let url = `${IdentityApIUrl}users/${userId}/userLevel`;
+
+    // FORM INPUTS LOCATION
+    // let url = `${IdentityApIUrl}countries`;
+    // let query = '{"where":{"country":"colombia"}}'
+    // let url = `${IdentityApIUrl}provinces?filter=${query}`;
+    // let query = '{"where":{"province":"valle del cauca"}}'
+    // let url = `${IdentityApIUrl}citys?filter=${query}`;
+    // let url = `${IdentityApIUrl}citys`;
+
+    // FORM INPUTS IDENTITY
+    // let url = `${IdentityApIUrl}countries`;
+    // let query = '{"where":{"nationality":"colombia"}}'
+    // let url = `${IdentityApIUrl}documents?filter=${query}`;
+
+    // console.log('proofEndpoints', res)
+
+    // CREATE LOCATION
+    // verificación básica
+    // const body = {
+    //   "data": {
+    //     "location_country":"colombia", 
+    //     "province":"risaralda", 
+    //     "city":"pereira", 
+    //     "address":"avenida siempre viva", 
+    //     "country":"international"
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}locations/add-new-location`, body);
+
+    // GET LOCATION
+    // let url = `${IdentityApIUrl}users/${userId}/location`;
+
+
+    // CREATE IDENTITY
+
+    // verificación intermedia info needed ================
+    // const body = {
+    //   "data": {
+    //     "country":"international",
+    //     "document_id":"62617223fd01c5004332e4bc",
+    //     "info_needed":{
+    //       "name":"Andres",
+    //       "surname":"Guevara Garcia",
+    //       "birthday":"937303200",
+    //       "id_number":"1116589656"
+    //     }
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
+
+    // verificación intermedia files needed ================
+
+
+
+    // const res = await this.Get(url);
+
+    console.log('||||||||||||||  testEndpoint  ==> ', res)
+    debugger
+  }
+
+  
+
+
+
 
 
   // async getStatus(status) {

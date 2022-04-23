@@ -67,7 +67,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     //   await actions.isLoggedInAction(true);
     //   coinsendaServices.postLoader(doLogout);
     //   return redirectURL(isSessionRestored);
-    // }
+    // } 
  
     if (!userToken) return;
    
@@ -83,17 +83,18 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
 
-    const userCountry = country;
+    // const userCountry = country;
     await coinsendaServices.loadFirstEschema();
-    const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
-
-    if (!user) {
-      return false;
-    }
-
-    await actions.isLoggedInAction(true);
-    await coinsendaServices.init(doLogout);
-    return redirectURL();
+    coinsendaServices.proofEndpoints();
+    
+    return 
+    // const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
+    // if (!user) {
+    //   return false;
+    // }
+    // await actions.isLoggedInAction(true);
+    // await coinsendaServices.init(doLogout);
+    // return redirectURL();
   };
 
   const redirectURL = async (isSessionRestored) => {
