@@ -85,16 +85,14 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
 
     // const userCountry = country;
     await coinsendaServices.loadFirstEschema();
-    coinsendaServices.proofEndpoints();
-    
-    return 
-    // const user = await coinsendaServices.fetchCompleteUserData(userCountry, profile);
-    // if (!user) {
-    //   return false;
-    // }
-    // await actions.isLoggedInAction(true);
-    // await coinsendaServices.init(doLogout);
-    // return redirectURL();
+    // coinsendaServices.proofEndpoints();
+    const user = await coinsendaServices.fetchCompleteUserData();
+    if (!user) {
+      return false;
+    }
+    await actions.isLoggedInAction(true);
+    await coinsendaServices.init(doLogout);
+    return redirectURL();
   };
 
   const redirectURL = async (isSessionRestored) => {

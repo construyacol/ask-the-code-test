@@ -9,7 +9,7 @@ import {
   INDENTITY_ADD_BIOMETRIC_DATA_URL,
   fileTest
 } from "../const/const";
-import userDefaultState from "../components/api";
+import userDefaultModel from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
@@ -55,7 +55,6 @@ export class IndetityService extends WebService {
     // let query = '{"where":{"nationality":"colombia"}}'
     // let url = `${IdentityApIUrl}documents?filter=${query}`;
 
-    // console.log('proofEndpoints', res)
 
     // CREATE LOCATION
     // verificación básica
@@ -72,7 +71,6 @@ export class IndetityService extends WebService {
 
     // GET LOCATION
     // let url = `${IdentityApIUrl}users/${userId}/location`;
-
 
     // CREATE IDENTITY
 
@@ -112,10 +110,6 @@ export class IndetityService extends WebService {
     // debugger
   }
 
-  
-
-
-
 
 
   // async getStatus(status) {
@@ -126,50 +120,26 @@ export class IndetityService extends WebService {
   //     const status = await this.Get(statusUrl);
   //     return status
   //   } catch (e) {
-  //     console.log('getStatus', e)
   //     return e
   //   }
   // }
 
-  // async updateUserStatus(status) {
-
-  //   const user = this.user;
-  //   const _status = await this.getStatus(status)
-  //   if(!_status) return;
-  //   this.setIsAppLoading(true)
-  //   const { countries:{ international } } = _status
-  //   let userUpdate = {
-  //     ...user,
-  //     verification_level:international.verification_level,
-  //     verification_error:international.errors && international.errors[0],
-  //     levels:international.levels,
-  //     security_center:{
-  //       ...user.security_center,
-  //       kyc:{
-  //         advanced:international.levels.identity,
-  //         basic:international.levels.personal,
-  //         financial:international.levels.financial
-  //       }
-  //     }
-  //   }
-  //   console.log('||||||||||||||| getUserStatus:: ', userUpdate, international)
-  //   await this.updateUser(userUpdate)
-  //   // console.log('||||||||||||||| getUserStatus:: ', international)
-  //   // debugger
-  //   setTimeout(() => {
-  //     this.setIsAppLoading(false);
-  //   }, 100)
-
-  //   if(
-  //   international.levels.identity === 'rejected' &&
-  //   international.levels.personal === 'rejected'
-  //   ){
-  //     this.dispatch(CleanForm("kyc_basic"))
-  //     this.dispatch(CleanForm("kyc_advanced"))
-  //     this.dispatch(ToStep("globalStep", 0))
-  //   }
-
-  // } 
+  async updateUserStatus(status) {
+    const _user = await this.fetchCompleteUserData()
+    if(!_user) return;
+    this.setIsAppLoading(true);
+    await this.updateUser(_user)
+    if(
+      _user.levels.identity === 'rejected' &&
+      _user.levels.personal === 'rejected'
+    ){
+      this.dispatch(CleanForm("kyc_basic"))
+      this.dispatch(CleanForm("kyc_advanced"))
+      this.dispatch(ToStep("globalStep", 0))
+    }
+    setTimeout(() => this.setIsAppLoading(false), 100)
+    // this.setIsAppLoading(false)
+  } 
 
 
   async addNewBiometricData(config) {
@@ -201,46 +171,49 @@ export class IndetityService extends WebService {
     return res
   }
 
-  async fetchCompleteUserData(userCountry, profile = {}) {
+  async fetchCompleteUserData() {
+
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
-    const user = this.user;
-
-    const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
-    const firstResponse = await this.Get(finalUrlFirst);
-
-    return
-    if (!firstResponse) {
-      return false;
-    }
-
-    const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
-    const secondResponse = await this.Get(finalUrlSecond);
-
-
+    // const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
+    // const firstResponse = await this.Get(finalUrlFirst);
+    let profile = await this.fetchUserProfile();
+    const userLocation = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/location`)
+    const userIdentities = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/identities`)
+    const kycIdentity = userIdentities?.length && userIdentities[0]
+    // const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
+    // const secondResponse = await this.Get(finalUrlSecond);
     // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
     //     return true
     // }
+    // let country_object = await addIndexToRootObject(secondResponse.countries);
+    // let country = await objectToArray(country_object);
+    const userLevels = profile?.countries?.international
 
-    let country_object = await addIndexToRootObject(secondResponse.countries);
-    let country = await objectToArray(country_object);
-
-    let updatedUser = {
-      ...userDefaultState,
-      email: this.authData.userEmail,
-      // userToken: this.authData.userToken,
-      restore_id: profile.restore_id || user.restore_id,
-      id: secondResponse.userId,
-      verification_level: country[0].verification_level,
-      verification_error: country[0].errors && country[0].errors[0],
-      levels: country[0].levels,
-      country: userCountry
-    };
   
+    let updatedUser = {
+      ...userDefaultModel,
+      identities:userIdentities,
+      location:userLocation,
+      email: this.authData.userEmail,
+      restore_id: profile?.restore_id,
+      id: this.authData.userId,
+      verification_level: userLevels[userLevels?.length - 1],
+      verification_error: kycIdentity?.errors[0],
+      id_number:kycIdentity?.document_info?.id_number,
+      name:kycIdentity?.document_info?.name,
+      surname:kycIdentity?.document_info?.surname,
+      levels: {
+        personal:kycIdentity?.info_state,
+        identity:kycIdentity?.file_state
+      },
+      country:userLocation?.country
+    };
+
+    updatedUser.security_center.kyc.basic = updatedUser?.levels?.personal
+    updatedUser.security_center.kyc.advanced = updatedUser?.levels?.identity
+
     const transactionSecurity = await this.userHasTransactionSecurity(updatedUser.id);
-
-    console.log(transactionSecurity)
-    // debugger
-
+    
     if (transactionSecurity["2fa"] || transactionSecurity.biometric) {
       updatedUser.security_center.transactionSecurity = transactionSecurity
       updatedUser.security_center.authenticator.auth = transactionSecurity["2fa"]?.enabled
@@ -251,31 +224,26 @@ export class IndetityService extends WebService {
         "biometric":{}
       }
     }
-    console.log(updatedUser)
 
-    if(country[0].levels && country[0].levels.personal){
-      updatedUser.security_center.kyc.basic = country[0].levels && country[0].levels.personal
-    }
-
-    const identityConfirmed = updatedUser.levels && updatedUser.levels.identity === 'confirmed' && updatedUser.levels.personal === 'confirmed'
-    const identityAccepted = updatedUser.levels && updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
-    const identityRejected = updatedUser.levels && updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
-
+    // const identityConfirmed = updatedUser.levels && updatedUser.levels.identity === 'confirmed' && updatedUser.levels.personal === 'confirmed'
+    const identityAccepted = updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
+    const identityRejected = updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
     
-    if((profile.countries[country[0].value] !== 'level_0') || identityConfirmed){
-      let kyc_personal = country[0].levels && country[0].levels.personal;
-      let kyc_identity = country[0].levels && country[0].levels.identity;
-      let kyc_financial = country[0].levels && country[0].levels.financial;
-      if (kyc_personal) {
-        updatedUser.security_center.kyc.basic = kyc_personal;
-      }
-      if (kyc_identity) {
-        updatedUser.security_center.kyc.advanced = kyc_identity;
-      }
-      if (kyc_financial) {
-        updatedUser.security_center.kyc.financial = kyc_financial;
-      }
-    }else if(profile.countries[country[0].value] === 'level_0' && identityAccepted){
+    // if((updatedUser?.verification_level !== 'level_0') || identityConfirmed){
+    //   // let kyc_personal = country[0].levels && country[0].levels.personal;
+    //   // let kyc_identity = country[0].levels && country[0].levels.identity;
+    //   // let kyc_financial = country[0].levels && country[0].levels.financial;
+    //   // if (kyc_personal) {
+    //   //   updatedUser.security_center.kyc.basic = kyc_personal;
+    //   // }
+    //   // if (kyc_identity) {
+    //   //   updatedUser.security_center.kyc.advanced = kyc_identity;
+    //   // }
+    //   // if (kyc_financial) {
+    //   //   updatedUser.security_center.kyc.financial = kyc_financial;
+    //   // }
+    // }else 
+    if(updatedUser?.verification_level === 'level_0' && identityAccepted){
       updatedUser.security_center.kyc.basic = 'confirmed';
       updatedUser.security_center.kyc.advanced = 'confirmed';
     }else if(identityRejected){
@@ -283,20 +251,25 @@ export class IndetityService extends WebService {
       updatedUser.security_center.kyc.advanced = 'rejected';
     }
 
+    console.log('userLocation', userLocation)
+    console.log('userIdentity', kycIdentity)
+    console.log('tx profile', profile)
+    console.log('updatedUser', updatedUser)
+    // debugger
 
-    const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
-    let thirdResponse = await this.Get(finalUrlThird);
+    // const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
+    // let thirdResponse = await this.Get(finalUrlThird);
 
-    if (thirdResponse && thirdResponse.length > 0) {
-      // Agregamos la información al modelo usuario (updatedUser)
-      updatedUser = {
-        ...updatedUser,
-        ...thirdResponse[0].personal,
-        operation_country:thirdResponse[0].personal && thirdResponse[0].personal.country,
-        country: userCountry,
-        person_type: thirdResponse[0].person_type
-      };
-    }
+    // if (thirdResponse && thirdResponse.length > 0) {
+    //   // Agregamos la información al modelo usuario (updatedUser)
+    //   updatedUser = {
+    //     ...updatedUser,
+    //     ...thirdResponse[0].personal,
+    //     operation_country:thirdResponse[0].personal && thirdResponse[0].personal.country,
+    //     country: userCountry,
+    //     person_type: thirdResponse[0].person_type
+    //   };
+    // }
 
     let normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));

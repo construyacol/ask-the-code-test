@@ -15,7 +15,6 @@ const PersonalKyc = () => {
       formName:'location',
     })
     console.log(_dataForm)
-    debugger
     setDataForm(_dataForm)
   }
 
