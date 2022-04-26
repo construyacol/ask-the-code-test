@@ -81,7 +81,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     // if (!country) return false;
     // const userCountry = country;
 
-    // return coinsendaServices.proofEndpoints();
+  coinsendaServices.proofEndpoints();
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
     await coinsendaServices.loadFirstEschema();

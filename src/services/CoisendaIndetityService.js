@@ -113,7 +113,7 @@ export class IndetityService extends WebService {
     // const body = {
     //   "data": {
     //     "country":"international",
-    //     "identity_id":"62634b1bb249f90043fbd3a3",
+    //     "identity_id":"62682ecd2807b700429d0acc",
     //     "files_needed":{
     //        "selfie":fileTest,
     //        "id_front":fileTest
@@ -246,10 +246,8 @@ export class IndetityService extends WebService {
       country:location?.country
     };
 
-    if(updatedUser?.contact){
-      updatedUser.contact.state = 'accepted'
-    }
 
+    // updatedUser.identity.info_state = "rejected"
     updatedUser.security_center.kyc.basic = updatedUser?.levels?.personal
     updatedUser.security_center.kyc.advanced = updatedUser?.levels?.identity
 
@@ -328,20 +326,37 @@ export class IndetityService extends WebService {
 
   async getVerificationState() {
     const user = this.user;
+    let state = 'pending'
+    // if(!user?.identity)return state;
+    // const { file_state, info_state } = user?.identity
+    // if([info_state, file_state].includes("rejected")){
+    //     return "rejected"
+    // }else if(info_state === file_state){
+    //     state = info_state
+    // }
+    // return state
     if(
       !user ||
       !user?.contact || 
       user?.location?.state !== "accepted" || 
       !user?.identity
-    ) return null;
-
-    const { advanced, basic } = user.security_center.kyc;
-    let status = "pending";
-    if (advanced === basic) {
-      status = !advanced ? null : advanced;
+    ) return state;
+    
+    const { file_state, info_state } = user?.identity
+    if([info_state, file_state].includes("rejected")){
+        return "rejected"
+    }else if(info_state === file_state){
+        state = info_state
     }
-    await this.dispatch(verificationStateAction(status));
-    return status;
+    await this.dispatch(verificationStateAction(state));
+    return state
+    // const { advanced, basic } = user.security_center.kyc;
+    // let status = "pending";
+    // if (advanced === basic) {
+    //   status = !advanced ? null : advanced;
+    // }
+    // await this.dispatch(verificationStateAction(status));
+    // return status;
   }
 
 

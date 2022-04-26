@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components'
 import IconSwitch from "../../icons/iconSwitch";
 import { ButtonForms } from "../../buttons/buttons";
 import { useSelector } from "react-redux";
+import { LoaderContainer } from "../../loaders";
+import SimpleLoader from "../../loaders";
+
 
 export default function KycItemComponent() {
 
@@ -54,9 +57,10 @@ const _levels = {
     },
     identity:{
         uiName:"Identidad",
-        pending:"",
-        confirmed:"Hemos recibido tus datos de identidad, en las próximas 72 horas te estaremos contactando...",
-        accepted:"Identidad accepted"
+        pending:"Envía y verifica tus datos de identidad.",
+        confirmed:"Estamos verificando tu identidad, este proceso puede tardar hasta 72 horas hábiles.",
+        accepted:"Identidad accepted",
+        rejected:"Ocurrió un error, vuelve a enviar tus datos de identidad.",
     }
 }
 
@@ -65,6 +69,7 @@ const getColor = state => {
         pending:"lightgrey",
         confirmed:"var(--title1)",
         accepted:"var(--primary)",
+        rejected:"rgb(84, 0, 0)"
     }
     return colors[state]
 }
@@ -79,11 +84,14 @@ const StatusComponent = props => {
     const [ levels ] = useState(_levels)
 
     const getIdentityState = () => {
-        if(!user?.identity)return null;
         let state = 'pending'
+        if(!user?.identity)return state;
         const { file_state, info_state } = user?.identity
-        if(file_state === info_state){
-            state = file_state || info_state
+
+        if([info_state, file_state].includes("rejected")){
+            return "rejected"
+        }else if(info_state === file_state){
+            state = info_state
         }
         return state
     }
@@ -91,7 +99,7 @@ const StatusComponent = props => {
     const getState = key => {
         let states = {
             contact:user[key] ? 'accepted' : 'pending',
-            location:user[key]?.state,
+            location:user[key]?.state || 'pending',
             identity:getIdentityState
         }
         return typeof states[key] === 'function' ? states[key]() : states[key]
@@ -108,8 +116,10 @@ const StatusComponent = props => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    let errorMessage = user[currentStage]?.errors[0]
-    console.log(levels, currentStage, levels[currentStage][getState(currentStage)])
+    console.log('currentStage', currentStage, getState(currentStage), levels[currentStage][getState(currentStage)])
+
+    let errorMessage = user[currentStage]?.errors && user[currentStage]?.errors[0]
+    // console.log(levels, currentStage, levels[currentStage][getState(currentStage)])
     return(
         <StatusContainer>
             <LevelOneCont>
@@ -124,23 +134,29 @@ const StatusComponent = props => {
                             let showConnector = (key + 1) < Object.keys(levels).length 
 
                             return(
-                                <>
+                                <Fragment key={key}>
                                     <Level 
-                                        key={key} 
-                                        className={`${getState(item)}`}
-                                        title={`${item === currentStage ? levels[currentStage]?.uiName : ''}`}
+                                        className={`${item === currentStage ? '_current' : ''} ${getState(item)}`}
+                                        title={`${levels[item]?.uiName || ''}`}
                                     >
-                                        <IconSwitch 
-                                            icon={item} 
-                                            size={20}
-                                            color={getColor(levels[item]?.state)}
-                                        />
+                                    {
+                                        getState(item) === 'confirmed' ?
+                                            <LoaderContainer>
+                                                <SimpleLoader loader={2} />
+                                            </LoaderContainer>
+                                        :
+                                            <IconSwitch 
+                                                icon={item} 
+                                                size={20}
+                                                color={getColor(levels[item]?.state)}
+                                            />
+                                    }
                                     </Level>
                                     {
                                         showConnector &&
                                         <hr className={`${getState(item)}`}/>
                                     }
-                                </>
+                                </Fragment>
                             )
                         })
                     }
@@ -165,19 +181,50 @@ const Level = styled.div`
     position:relative;
     display:grid;
     place-items: center;
-    &::after{
+    .lds-roller{
+        transform:scale(.35);
+    }
+    :hover{
+        cursor:pointer;
+        ::after{
+            content: attr(title);
+            position: absolute;
+            bottom: -25px;
+            font-family: "Raleway",sans-serif;
+            font-size: 13px;
+            color:var(--title1);
+        }
+    }
+    &._current::after{
         content: attr(title);
         position: absolute;
         bottom: -25px;
         font-family: "Raleway",sans-serif;
-        font-size: 14px;
+        font-size: 13px;
         color:var(--title1);
     }
 
     &.pending{
         filter:blur(1px);
-        pointer-events:none;
+        &._current{
+            filter:blur(0px);
+            border: 2px solid var(--primary);
+        }
+        .iconSty{
+            filter:grayscale(1);
+        }
     }
+
+    &.rejected{
+        .iconSty{
+            filter: sepia(1);
+        }
+    }
+
+    &.rejected{
+        border: 2px solid rgb(155 0 0);
+    }
+
     &.accepted{
         border: 2px solid var(--primary);
     }
@@ -227,13 +274,16 @@ const Text = styled.p`
 
 const LabelMessage = styled(Text)`
     &.confirmed,
-    &.pending,
     &.accepted,
     &.rejected
     {
         color:${props => getColor(props.state)};
     }
-    
+    &.pending{
+        color:var(--paragraph_color);
+    }
+
+
 `
 
 const LevelOneCont = styled.div`

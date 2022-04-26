@@ -167,13 +167,25 @@ const Bancolombia = loadable(() => import("./logos").then(getExportByName("Banco
 const Coinsenda = loadable(() => import("./logos/coinsenda"));
 const BancoBogota = loadable(() => import("./logos/bancoBogota"));
 const Bbva = loadable(() => import("./logos/bbva"));
+ 
+
+const Contact = loadable(() => import("./").then(getExportByName("Contact")));
+const FingerPrint = loadable(() => import("./").then(getExportByName("FingerPrint")));
+const Location = loadable(() => import("./").then(getExportByName("Location")));
+
+
 
 class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
-      
+      case "location":
+        return <Location {...props} />;
+      case "identity":
+        return <FingerPrint {...props} />;
+      case "contact":
+        return <Contact {...props} />;
       case "withdrawConfirm":
         return <WithdrawConfirm {...props} />;
       case "banco_btg_pactual":
