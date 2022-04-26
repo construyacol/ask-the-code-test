@@ -12,7 +12,8 @@ import { useActions } from "../../hooks/useActions";
 import { updateLocalForagePersistState } from '../hooks/sessionRestore'
 
 const SecurityCenter = (props) => {
-  const [coinsendaServices, globalState] = useCoinsendaServices();
+  // eslint-disable-next-line no-unused-vars
+  const [_, globalState] = useCoinsendaServices();
   const actions = useActions();
 
   const validate_state = () => {
@@ -23,7 +24,7 @@ const SecurityCenter = (props) => {
         smooth: true,
         containerId: "containerElement",
       });
-      coinsendaServices.freshChatShowTags(["verify"], "article");
+      // coinsendaServices.freshChatShowTags(["verify"], "article");
     }
   };
 

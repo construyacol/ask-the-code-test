@@ -72,20 +72,19 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     if (!userToken) return;
    
     let profile = await coinsendaServices.fetchUserProfile();
-      if (!profile) {
+    if (!profile) {
       setShowOnBoarding(true)
       profile = await coinsendaServices.addNewProfile(country);
       document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
+    // if (!profile || (!profile.countries[country])) return false;
+    // if (!country) return false;
+    // const userCountry = country;
 
-    if (!profile || (!profile.countries[country])) return false;
-    if (!country) return false;
+    // return coinsendaServices.proofEndpoints();
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
-
-    // const userCountry = country;
     await coinsendaServices.loadFirstEschema();
-    // coinsendaServices.proofEndpoints();
     const user = await coinsendaServices.fetchCompleteUserData();
     if (!user) {
       return false;
@@ -96,7 +95,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   };
 
   const redirectURL = async (isSessionRestored) => {
-    coinsendaServices.freshChatInitUser();
+    // coinsendaServices.freshChatInitUser();
     if (!isMovilViewport) coinsendaServices.initPushNotificator();
 
     const verificationStatus = await coinsendaServices.getVerificationState();

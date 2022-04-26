@@ -27,8 +27,8 @@ const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true *
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
 
-const PanelAlertContainer = loadable(() => import("../widgets/panelAlert/panelAlertContainer"));
-const VideoPlayer = loadable(() =>  import("../widgets/video_player/videoPlayer"));
+// const PanelAlertContainer = loadable(() => import("../widgets/panelAlert/panelAlertContainer"));
+// const VideoPlayer = loadable(() =>  import("../widgets/video_player/videoPlayer"));
 
 let UPDATE_CURRENT_PAIR_INTERVAL_ID = 0;
 
@@ -70,7 +70,6 @@ function DashBoardContainer(props) {
   const onMount = async () => {
     // await props.action.freshchat_init_user(props.user)
     // await FreshChat.user_update(props.user)
-    // const verification_state = await props.coinsendaServices.getVerificationState()
     // if (verification_state === 'accepted') {
     //   FreshChat.track('user login verified')
     // }
@@ -150,12 +149,12 @@ function DashBoardContainer(props) {
             </Switch>
           </Suspense>
 
-          {props.primary_path === "security" && (
+          {/* {props.primary_path === "security" && (
             <>
               <PanelAlertContainer history={props.history} />
               <VideoPlayer />
             </>
-          )}
+          )} */}
         </div>
       </Element>
     </>

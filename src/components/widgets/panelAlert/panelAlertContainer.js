@@ -114,7 +114,7 @@ const PanelAlertContainer = (props) => {
       !verification_state ||
       (verification_state !== "confirmed" && verification_state !== "accepted")
     ) {
-      coinsendaServices.freshChatTrack("need help to verification");
+      // coinsendaServices.freshChatTrack("need help to verification");
     }
     // console.log('AYuda para verificación', (props.user.levels && props.user.levels.personal !== 'confirmed'), props.user)
     return setState({ ...state, visible: false });

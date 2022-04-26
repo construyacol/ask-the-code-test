@@ -25,6 +25,7 @@ const MenuPrincipalLayout = (props) => {
     navigateTo,
   } = props;
 
+
   // const [acronym, setAcronym] = useAcronym();
   const actions = useActions();
   const idForLogoutButton = useKeyActionAsClick(

@@ -16,12 +16,15 @@ import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { CleanForm, ToStep } from "../actions/formActions";
+import userSource from "../components/api";
 
 const {
   IdentityApIUrl
 } = Environment
 
 export class IndetityService extends WebService {
+
+
 
 
   async proofEndpoints() {
@@ -33,6 +36,7 @@ export class IndetityService extends WebService {
     //     "country":"international", 
     //   }
     // }
+
     // const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
 
     // 0: "location"
@@ -56,6 +60,22 @@ export class IndetityService extends WebService {
     // let url = `${IdentityApIUrl}documents?filter=${query}`;
 
 
+
+    // CREATE CONTACT
+    // Contacto / telefóno
+    // const body = {
+    //   "data": {
+    //     "phone":"57 315-708-1125", 
+    //     "country":"international"
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}contacts/add-new-contact`, body);
+
+    // GET CONTACT
+    // let url = `${IdentityApIUrl}users/${userId}/contact?country=international`;
+
+
+
     // CREATE LOCATION
     // verificación básica
     // const body = {
@@ -70,7 +90,7 @@ export class IndetityService extends WebService {
     // const res = await this.Post(`${IdentityApIUrl}locations/add-new-location`, body);
 
     // GET LOCATION
-    // let url = `${IdentityApIUrl}users/${userId}/location`;
+    // let url = `${IdentityApIUrl}users/${userId}/location?country=international`;
 
     // CREATE IDENTITY
 
@@ -87,7 +107,7 @@ export class IndetityService extends WebService {
     //     }
     //   }
     // }
-    // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
+    // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity?country=international`, body);
 
     // verificación intermedia files needed ================
     // const body = {
@@ -140,8 +160,7 @@ export class IndetityService extends WebService {
     setTimeout(() => this.setIsAppLoading(false), 100)
     // this.setIsAppLoading(false)
   } 
-
-
+  
   async addNewBiometricData(config) {
 
     const { file, biometric_id, challenge_name } = config
@@ -156,12 +175,9 @@ export class IndetityService extends WebService {
         file
       }
     }
-    // console.log('|||||||||||||||||||||  addNewBiometricData  =>  ', body)
-    // console.log('|||||||||||||||||||||  INDENTITY_ADD_BIOMETRIC_DATA_URL  =>  ', INDENTITY_ADD_BIOMETRIC_DATA_URL)
     const res = await this.Post(INDENTITY_ADD_BIOMETRIC_DATA_URL, body);
     return res
   }
-
 
   async getUserBiometric() {
     const { userId } = this.authData;
@@ -171,15 +187,31 @@ export class IndetityService extends WebService {
     return res
   }
 
+
+  async loadFirstEschema() {
+    const dataNormalized = await normalizeUser(userSource);
+    this.dispatch(updateNormalizedDataAction(dataNormalized));
+  }
+
+
   async fetchCompleteUserData() {
 
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
     // const finalUrlFirst = `${INDETITY_URL}?country=${userCountry || user.country}`;
     // const firstResponse = await this.Get(finalUrlFirst);
+ 
+    // Contacto telefónico
+    // Residencia
+    // Identidad
+
+
+
     let profile = await this.fetchUserProfile();
-    const userLocation = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/location`)
-    const userIdentities = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/identities`)
-    const kycIdentity = userIdentities?.length && userIdentities[0]
+    let contact = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/contact?country=international`)
+    let location = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/location?country=international`)
+    let identities = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/identities?country=international`)
+    let identity = identities && identities[0]
+    
     // const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
     // const secondResponse = await this.Get(finalUrlSecond);
     // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
@@ -192,22 +224,31 @@ export class IndetityService extends WebService {
   
     let updatedUser = {
       ...userDefaultModel,
-      identities:userIdentities,
-      location:userLocation,
+      // ...
+      location,
+      contact,
+      identity,
+      // ...
+      identities,
+      // ...
       email: this.authData.userEmail,
       restore_id: profile?.restore_id,
       id: this.authData.userId,
-      verification_level: userLevels[userLevels?.length - 1],
-      verification_error: kycIdentity?.errors[0],
-      id_number:kycIdentity?.document_info?.id_number,
-      name:kycIdentity?.document_info?.name,
-      surname:kycIdentity?.document_info?.surname,
+      verification_level: typeof userLevels === 'string' ? userLevels : userLevels[userLevels?.length - 1],
+      verification_error: identity?.errors[0],
+      id_number:identity?.document_info?.id_number,
+      name:identity?.document_info?.name,
+      surname:identity?.document_info?.surname,
       levels: {
-        personal:kycIdentity?.info_state,
-        identity:kycIdentity?.file_state
+        personal:identity?.info_state,
+        identity:identity?.file_state
       },
-      country:userLocation?.country
+      country:location?.country
     };
+
+    if(updatedUser?.contact){
+      updatedUser.contact.state = 'accepted'
+    }
 
     updatedUser.security_center.kyc.basic = updatedUser?.levels?.personal
     updatedUser.security_center.kyc.advanced = updatedUser?.levels?.identity
@@ -251,8 +292,8 @@ export class IndetityService extends WebService {
       updatedUser.security_center.kyc.advanced = 'rejected';
     }
 
-    console.log('userLocation', userLocation)
-    console.log('userIdentity', kycIdentity)
+    console.log('location', location)
+    console.log('userIdentity', identity)
     console.log('tx profile', profile)
     console.log('updatedUser', updatedUser)
     // debugger
@@ -282,11 +323,18 @@ export class IndetityService extends WebService {
     return this.dispatch(updateNormalizedDataAction(_userUpdate));
   }
 
+
+  
+
   async getVerificationState() {
     const user = this.user;
-    if (!user) {
-      return false;
-    }
+    if(
+      !user ||
+      !user?.contact || 
+      user?.location?.state !== "accepted" || 
+      !user?.identity
+    ) return null;
+
     const { advanced, basic } = user.security_center.kyc;
     let status = "pending";
     if (advanced === basic) {
@@ -295,6 +343,7 @@ export class IndetityService extends WebService {
     await this.dispatch(verificationStateAction(status));
     return status;
   }
+
 
 
   async countryValidators() {
@@ -316,9 +365,7 @@ export class IndetityService extends WebService {
 
 
   updateLevelProfile(config) {
-    
     const user = this.user
-
     let body = {
       data: {
         country: user.country,
@@ -328,7 +375,6 @@ export class IndetityService extends WebService {
         info: config.info,
       },
     };
-
     return this.Post(INDETITY_UPDATE_PROFILE_URL, body);
   }
 
@@ -336,21 +382,21 @@ export class IndetityService extends WebService {
     return this.Get(`${Environment.CountryApIUrl}countrys`);
   }
 
-  async userVerificationStatus(level) {
-    const user = this.user;
-    const { advanced, basic, financial } = user.security_center.kyc;
+  // async userVerificationStatus(level) {
+  //   const user = this.user;
+  //   const { advanced, basic, financial } = user.security_center.kyc;
 
-    switch (level) {
-      case "level_1":
-        return advanced === "accepted" && basic === "accepted";
-      case "level_2":
-        return (
-          advanced === "accepted" &&
-          basic === "accepted" &&
-          financial === "accepted"
-        );
-      default:
-        return false;
-    }
-  }
+  //   switch (level) {
+  //     case "level_1":
+  //       return advanced === "accepted" && basic === "accepted";
+  //     case "level_2":
+  //       return (
+  //         advanced === "accepted" &&
+  //         basic === "accepted" &&
+  //         financial === "accepted"
+  //       );
+  //     default:
+  //       return false;
+  //   }
+  // }
 }
