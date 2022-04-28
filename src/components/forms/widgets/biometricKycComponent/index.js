@@ -312,6 +312,8 @@ const VideoContainer = styled.div`
 
 const ContentContainers = styled(ContentContainer)`
 
+  justify-self:center;
+
   .FRecTitle{
     color:#0198ff;
     font-weight:bold;

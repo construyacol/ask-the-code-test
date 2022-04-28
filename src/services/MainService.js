@@ -143,14 +143,11 @@ export class MainService extends inheritances {
 
     const userWallets = await this.userHasWallets();
     const withOutWallets = userWallets?.length < 1
-    const verificationStatus = await this.getVerificationState();
-
+    const verificationStatus = this.getVerificationState();
     if (withOutWallets && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
-
     await this.getWalletsByUser()
-
     this.postLoader(callback, false);
     return;
   }

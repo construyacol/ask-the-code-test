@@ -22,8 +22,6 @@ class ItemSettingsInit extends Component {
     const { phone } = user.settings;
     const { name, other_state } = item;
 
-    console.log('ItemSettingsInit', item)
-    debugger
 
     switch (name) {
       case "kyc_basic":
@@ -184,7 +182,6 @@ class ItemSettingsInit extends Component {
           classic_view: movil_viewport,
         };
       case "identity":
-        // let verificationState = await mainService.getVerificationState()
         return {
           available: true,
           verify: this.props.verification_state === 'accepted' ? true : false,

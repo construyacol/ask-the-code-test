@@ -174,7 +174,7 @@ class SocketsComponent extends Component {
               this.withdraw_account_mangagement(withdrawAccount);
             });
 
-            socket.on(`/profile/${user.id}`, async (profile) => {
+            socket.on(`/identities/${user.id}`, async (profile) => {
               if(profile.countries){
                 this.profile_management(profile)
               }
@@ -788,6 +788,8 @@ class SocketsComponent extends Component {
   
 
   profile_management = async(profile) => {
+    console.log(profile)
+    debugger
     if(this.props.formModal){
      await this.props.action.toggleModal(false); 
     } 

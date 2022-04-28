@@ -5,9 +5,21 @@ import { ButtonForms } from "../../buttons/buttons";
 import { useSelector } from "react-redux";
 import { LoaderContainer } from "../../loaders";
 import SimpleLoader from "../../loaders";
-
+import { mainService } from '../../../../services/MainService'
+import { useActions } from '../../../../hooks/useActions'
 
 export default function KycItemComponent() {
+
+    const actions = useActions()
+
+    // hacer getNexLevel
+
+
+    const openModalKyc = async() => {
+        const Element = await import("../../../forms/widgets/locationComponent/init")
+        // eslint-disable-next-line react/jsx-pascal-case
+        actions.renderModal(() => <Element.default/>)
+    }
 
     const atributos = {
         icon: "identity",
@@ -27,14 +39,17 @@ export default function KycItemComponent() {
                     <StatusComponent></StatusComponent>   
                 </InfoContainer>
                 <ButtonContainer>
-                    <ButtonForms
-                        id="subItemSC"
-                        type={"primary"}
-                        active={true}
-                        siguiente={null}
-                        >
-                        Verificar
-                    </ButtonForms>
+                {
+                    mainService.getVerificationState() !== 'accepted' &&
+                        <ButtonForms
+                            id="subItemSC"
+                            type={"primary"}
+                            active={true}
+                            siguiente={openModalKyc}
+                            >
+                            Verificar
+                        </ButtonForms>
+                }
                 </ButtonContainer>
             </Container>
         </Layout>
@@ -59,7 +74,7 @@ const _levels = {
         uiName:"Identidad",
         pending:"Envía y verifica tus datos de identidad.",
         confirmed:"Estamos verificando tu identidad, este proceso puede tardar hasta 72 horas hábiles.",
-        accepted:"Identidad accepted",
+        accepted:"Tu cuenta está verificada.",
         rejected:"Ocurrió un error, vuelve a enviar tus datos de identidad.",
     }
 }
@@ -122,7 +137,15 @@ const StatusComponent = props => {
     // console.log(levels, currentStage, levels[currentStage][getState(currentStage)])
     return(
         <StatusContainer>
+            
+            <LabelMessage 
+                state={getState(currentStage)} 
+                className={`fuente ${getState(currentStage)}`}>
+                {errorMessage || (currentStage && levels[currentStage][getState(currentStage)])}
+            </LabelMessage>
+
             <LevelOneCont>
+
                 <LevelTitle>
                     <Text className="fuente2">Nivel 1</Text>
                 </LevelTitle>
@@ -161,11 +184,7 @@ const StatusComponent = props => {
                         })
                     }
                 </LevelsContainer>
-                <LabelMessage 
-                    state={getState(currentStage)} 
-                    className={`fuente ${getState(currentStage)}`}>
-                    {errorMessage || (currentStage && levels[currentStage][getState(currentStage)])}
-                </LabelMessage>
+                
             </LevelOneCont>
         </StatusContainer>
     )
@@ -194,6 +213,14 @@ const Level = styled.div`
             font-size: 13px;
             color:var(--title1);
         }
+        &.pending{
+            &::after{
+                content:"";
+            }
+            &._current::after{
+                content: attr(title);
+            }
+        }
     }
     &._current::after{
         content: attr(title);
@@ -206,13 +233,17 @@ const Level = styled.div`
 
     &.pending{
         filter:blur(1px);
-        &._current{
-            filter:blur(0px);
-            border: 2px solid var(--primary);
-        }
         .iconSty{
             filter:grayscale(1);
         }
+        &._current{
+            filter:blur(0px);
+            border: 2px solid var(--primary);
+            .iconSty{
+                filter:grayscale(0);
+            }
+        }
+        
     }
 
     &.rejected{
@@ -290,7 +321,7 @@ const LevelOneCont = styled.div`
     width:auto;
     max-width:300px;
     display: grid;
-    grid-template-rows: auto minmax(85px, 1fr) 35px;
+    grid-template-rows: auto minmax(85px, 1fr);
     row-gap:10px;
     position:relative;
 
@@ -306,9 +337,10 @@ const LevelOneCont = styled.div`
 
 
 const StatusContainer = styled.div`
-    height:140px;
+    height:auto;
     display:grid;
     padding-top:10px;
+    row-gap:17px;
 `
 
 

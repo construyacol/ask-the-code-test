@@ -27,15 +27,13 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 
   const { dataForm } = handleDataForm
   const { state, setState } = handleState
-  const [ loading, setLoading ] = useState(false)
+  const [ loading, setLoading ] = useState(true)
   const [ toastMessage ] = useToast()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
-
-  
 
   const idNextStageKyc = useKeyActionAsClick(
     true,
@@ -46,7 +44,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     true
   );
 
-
+  
   const {
     prevStage,
     nextStage,

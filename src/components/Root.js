@@ -71,7 +71,6 @@ function RootContainer(props) {
     // verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
-
     
     const parent = window.parent;
     if(parent){

@@ -2,12 +2,13 @@ import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
 import {
   loadLabels,
-  INDETITY_URL,
+  // INDETITY_URL,
   INDENTITY_USERS_URL,
   INDETITY_COUNTRY_VALIDATORS_URL,
   INDETITY_UPDATE_PROFILE_URL,
   INDENTITY_ADD_BIOMETRIC_DATA_URL,
-  fileTest
+  fileTest,
+  selfietest
 } from "../const/const";
 import userDefaultModel from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
@@ -71,13 +72,12 @@ export class IndetityService extends WebService {
     // }
     // const res = await this.Post(`${IdentityApIUrl}contacts/add-new-contact`, body);
 
-    // GET CONTACT
+    // // GET CONTACT
     // let url = `${IdentityApIUrl}users/${userId}/contact?country=international`;
 
 
 
     // CREATE LOCATION
-    // verificación básica
     // const body = {
     //   "data": {
     //     "location_country":"colombia", 
@@ -92,7 +92,10 @@ export class IndetityService extends WebService {
     // GET LOCATION
     // let url = `${IdentityApIUrl}users/${userId}/location?country=international`;
 
-    // CREATE IDENTITY
+
+
+
+    // CREATE INFO IDENTITY
 
     // verificación intermedia info needed ================
     // const body = {
@@ -100,27 +103,52 @@ export class IndetityService extends WebService {
     //     "country":"international",
     //     "document_id":"62617223fd01c5004332e4bc",
     //     "info_needed":{
-    //       "name":"Andres",
-    //       "surname":"Guevara Garcia",
+    //       "name":"Felipe",
+    //       "surname":"Garcia Martinez",
     //       "birthday":"937303200",
     //       "id_number":"1116589656"
     //     }
     //   }
     // }
-    // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity?country=international`, body);
+    // const res = await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
 
+
+    // UPDATE INFO IDENTITY
+    
+    // const body = {
+    //   "data": {
+    //     "country":"international",
+    //     "identity_id":"62699aa771047f0041280afa",
+    //     "info_needed":{
+    //       "name":"Felipe",
+    //       "surname":"Garcia Martinez",
+    //       "birthday":"937303200",
+    //       "id_number":"1116589656"
+    //     }
+    //   }
+    // }
+    // const res = await this.Post(`${IdentityApIUrl}identities/add-info-to-identity`, body);
+
+
+
+
+
+    // ADD / UPDATE FILES TO IDENTITY
     // verificación intermedia files needed ================
     // const body = {
     //   "data": {
     //     "country":"international",
-    //     "identity_id":"62682ecd2807b700429d0acc",
+    //     "identity_id":"62699e1671047f0041280b1d",
     //     "files_needed":{
-    //        "selfie":fileTest,
+    //        "selfie":selfietest,
     //        "id_front":fileTest
     //     }
     //   }
     // }
     // const res = await this.Post(`${IdentityApIUrl}identities/add-files-to-identity`, body);
+
+
+
 
     // GET IDENTITY
     // let url = `${IdentityApIUrl}users/${userId}/identities`;
@@ -234,7 +262,7 @@ export class IndetityService extends WebService {
       email: this.authData.userEmail,
       restore_id: profile?.restore_id,
       id: this.authData.userId,
-      verification_level: typeof userLevels === 'string' ? userLevels : userLevels[userLevels?.length - 1],
+      verification_level: typeof userLevels === 'string' ? userLevels : (userLevels && userLevels[userLevels?.length - 1]),
       verification_error: identity?.errors[0],
       id_number:identity?.document_info?.id_number,
       name:identity?.document_info?.name,
@@ -243,7 +271,7 @@ export class IndetityService extends WebService {
         personal:identity?.info_state,
         identity:identity?.file_state
       },
-      country:location?.country
+      country:"international"
     };
 
 
@@ -324,7 +352,7 @@ export class IndetityService extends WebService {
 
   
 
-  async getVerificationState() {
+  getVerificationState() {
     const user = this.user;
     let state = 'pending'
     // if(!user?.identity)return state;
@@ -348,7 +376,7 @@ export class IndetityService extends WebService {
     }else if(info_state === file_state){
         state = info_state
     }
-    await this.dispatch(verificationStateAction(state));
+    this.dispatch(verificationStateAction(state));
     return state
     // const { advanced, basic } = user.security_center.kyc;
     // let status = "pending";

@@ -81,7 +81,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     // if (!country) return false;
     // const userCountry = country;
 
-  coinsendaServices.proofEndpoints();
+    coinsendaServices.proofEndpoints();
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
     await coinsendaServices.loadFirstEschema();
@@ -98,7 +98,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     // coinsendaServices.freshChatInitUser();
     if (!isMovilViewport) coinsendaServices.initPushNotificator();
 
-    const verificationStatus = await coinsendaServices.getVerificationState();
+    const verificationStatus = coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {
       await actions.addNotification("security", null, 1);
       await history.push("/security");
