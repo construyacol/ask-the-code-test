@@ -1,4 +1,4 @@
-import { Wrapper as Layout } from '../layout/styles'
+import { Wrapper as Layout } from '../../layout/styles'
 import {
   MainContainer,
   TitleContainer,

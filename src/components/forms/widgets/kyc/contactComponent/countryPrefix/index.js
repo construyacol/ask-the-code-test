@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-
+// import { mainService } from '../../../../../services/MainService'
+import { getSelectList } from '../../../../utils'
 // import InputComponent from '../personalKycComponent/input'
 import { IoIosArrowDown } from 'react-icons/io'
 
 import {
     PrefixContainer
-} from './styles'
+} from './styles' 
 
 import {
     setMetaPhoneData,
@@ -17,19 +18,25 @@ import {
     removeParentConfig
 } from './methods'
 
- 
 const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
 
     const [ activeStage, setActiveStage ] = useState(false)
+    const [ selectList, setselectList ] = useState(false)
     // assign it to input only if it is metadata
     const inputName = name.includes('meta') ? name : `meta_${name}`
-    const [ countryData, setCountryData ] = useState(dataForm?.stages?.country?.selectList[state[inputName]])
+    const [ countryData, setCountryData ] = useState({})
+    // const [ countryData, setCountryData ] = useState(dataForm?.stages?.country?.selectList[state[inputName]])
     
     const toggleActivation = e => {
         e.stopPropagation()
         if(e.target?.dataset?.action){
           setActiveStage(prevState => !prevState)
         }
+    }
+
+    const getPrefixSelectList = async() => {
+        const _selectList = await getSelectList('country')
+        setselectList(_selectList)
     }
 
     useEffect(() => {
@@ -44,7 +51,7 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
 
     useEffect(()=>{
         if(activeStage){
-            setMetaPhoneData(setStageData, dataForm)
+            setMetaPhoneData(setStageData, dataForm, selectList)
             extendContainer()
             inputFocus(inputName, 500)
         }
@@ -55,16 +62,26 @@ const CountryPrefix = ({ dataForm, setStageData, name, state, ...props }) => {
     }, [activeStage])
 
     useEffect(()=>{
-        const _countryData = dataForm?.stages?.country?.selectList[state[inputName]] 
-        setCountryData(_countryData)
-        if(_countryData){
-            setActiveStage(false)
+        if(selectList){
+            const _countryData = selectList[state[inputName]] 
+            setCountryData(_countryData)
+            if(_countryData){
+                setActiveStage(false)
+            }
         }
-    }, [state[inputName]])
+    }, [state[inputName], selectList])
+
+    
+
+    useEffect(() => {
+        if(!selectList){
+            getPrefixSelectList()
+        }
+    }, [selectList])
 
     const prefix = countryData?.prefix || "+ --";
 
-    console.log('|||||||||||||||||||||||||  countryData ==> ', dataForm?.stages?.country)
+    // console.log('|||||||||||||||||||||||||  countryData  dataForm ==> ', dataForm)
 
     return(
         <PrefixContainer 

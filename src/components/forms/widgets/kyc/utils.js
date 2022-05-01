@@ -3,7 +3,15 @@ import BigNumber from "bignumber.js";
 // import 'moment/locale/es'
 import { 
   LABEL_COLOR
-} from './const'
+} from './locationComponent/const'
+import {
+  NEXT_SELECT_LIST
+} from '../../const'
+
+import {
+  // createSelectList,
+  getSelectList
+} from '../../utils'
 
 const isIsoDate = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
 const isMaskDate = /[0-9]{2}[/][0-9]{2}[/][0-9]{4}/g
@@ -134,7 +142,7 @@ const generateItemTag = (itemKey, uiTagName) => {
   const itemTag = document.createElement("div")
   itemTag.className = `selectedItemTag__title`
   const uiNameElement = document.createElement("p")
-  uiNameElement.innerHTML = uiTagName
+  uiNameElement.innerHTML = uiTagName?.toLowerCase()
   const closeButtom = document.createElement("p")
   closeButtom.innerHTML = "x"
   closeButtom.className = "selectedItemTag__closeButton"
@@ -143,4 +151,44 @@ const generateItemTag = (itemKey, uiTagName) => {
   itemTag.appendChild(closeButtom)
   itemTagContainer.appendChild(itemTag)
   return itemTagContainer
+}
+
+export const getNextSelectList = async ({
+  state,
+  stageData,
+  setDataForm
+}) => {
+  const currentList = stageData?.key
+  if(!NEXT_SELECT_LIST[currentList])return;
+  const nextStageName = NEXT_SELECT_LIST[currentList]
+  const selectList = await getSelectList(nextStageName, state[stageData?.key])
+  if(!selectList || (selectList && !Object.keys(selectList)?.length)){
+    return setDataForm(prevState => {
+      return { 
+        ...prevState,
+        stages:{
+          ...prevState.stages,
+          [nextStageName]:{
+            ...prevState.stages[nextStageName],
+            uiType:'text',
+            selectList:null
+          }
+        } 
+      }
+    })
+  }
+  setDataForm(prevState => {
+    return { 
+      ...prevState,
+      stages:{
+        ...prevState.stages,
+        [nextStageName]:{
+          ...prevState.stages[nextStageName],
+          uiType:'select',
+          selectList
+        }
+      } 
+    }
+  })
+  return selectList
 }

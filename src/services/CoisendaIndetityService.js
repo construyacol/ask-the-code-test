@@ -10,6 +10,7 @@ import {
   fileTest,
   selfietest
 } from "../const/const";
+import { LEVELS_INFO } from '../const/levels'
 import userDefaultModel from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
@@ -19,6 +20,7 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { CleanForm, ToStep } from "../actions/formActions";
 import userSource from "../components/api";
 
+
 const {
   IdentityApIUrl
 } = Environment
@@ -26,6 +28,100 @@ const {
 export class IndetityService extends WebService {
 
 
+  async getNextLevel() {
+    const body = {
+      "data": {
+        "country":"international", 
+      }
+    }
+    const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
+    if(res){
+      const { data:{ requirements, name } } = res
+      let _requirements = []
+      for (let i = 0; i < requirements?.length; i++) {
+        if(requirements[i] !== 'regulation'){
+          _requirements.push(requirements[i])
+        }
+      }
+      return {
+        levelName:name,
+        requirements:_requirements
+      }
+    }
+    return
+  }
+ 
+
+  async createRequirementLevel() {
+    let res = await this.getNextLevel()
+    const user = this.user
+    // let _LEVELS_INFO = structuredClone(LEVELS_INFO)
+    if(res){
+        let requirements = []
+        let levels = {}
+        res.requirements.forEach(requeriment => {
+            if(!user[requeriment]){
+              requirements.push(requeriment)
+            }
+            if(res?.levelName === 'level_1'){
+                levels = {
+                    ...levels,
+                    [requeriment]:LEVELS_INFO[res?.levelName][requeriment]
+                }
+            }else{
+              levels = LEVELS_INFO?.level_1
+            }
+        });
+        return {
+          levels,
+          requirements
+        }
+    }
+  }
+
+
+
+
+
+  async createContact({ phone }) {
+    const body = {
+      "data": {
+        phone, 
+        "country":this.user.country
+      }
+    }
+    return await this.Post(`${IdentityApIUrl}contacts/add-new-contact`, body);
+  }
+
+    async getCountryList() {
+      let url = `${IdentityApIUrl}countries`;
+      return await this.Get(url);
+    }
+
+    async getProvinceList(country) {
+      let query = `?filter={"where":{"country":"${country}"}}`
+      let url = `${IdentityApIUrl}provinces${query}`;
+      return await this.Get(url);
+    }
+
+    async getCityList(province) {
+      let query = `{"where":{"province":"${province}"}}`
+      let url = `${IdentityApIUrl}citys?filter=${query}`;
+      return await this.Get(url);
+    }
+
+    async createLocation(_body) {
+      let body = {
+        data:{
+          ..._body?.data,
+          country:this.user.country
+        }
+      }
+      return await this.Post(`${IdentityApIUrl}locations/add-new-location`, body);
+    }
+
+
+    
 
 
   async proofEndpoints() {
@@ -262,8 +358,8 @@ export class IndetityService extends WebService {
       email: this.authData.userEmail,
       restore_id: profile?.restore_id,
       id: this.authData.userId,
-      verification_level: typeof userLevels === 'string' ? userLevels : (userLevels && userLevels[userLevels?.length - 1]),
-      verification_error: identity?.errors[0],
+      verification_level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
+      verification_error: identity?.errors?.length && identity?.errors[0],
       id_number:identity?.document_info?.id_number,
       name:identity?.document_info?.name,
       surname:identity?.document_info?.surname,
@@ -421,9 +517,9 @@ export class IndetityService extends WebService {
     return this.Post(INDETITY_UPDATE_PROFILE_URL, body);
   }
 
-  getCountryList() {
-    return this.Get(`${Environment.CountryApIUrl}countrys`);
-  }
+  // getCountryList() {
+  //   return this.Get(`${Environment.CountryApIUrl}countrys`);
+  // }
 
   // async userVerificationStatus(level) {
   //   const user = this.user;

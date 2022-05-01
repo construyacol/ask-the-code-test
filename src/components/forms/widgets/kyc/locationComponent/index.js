@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react'
-// import useValidations from '../../hooks/useInputValidations'
-import validations from './validations'
-import useStage from '../../hooks/useStage'
+import validations from '../validations'
+import useStage from '../../../hooks/useStage'
 import loadable from '@loadable/component'
-import InputComponent from './input'
-import { getBody } from './utils'
+import InputComponent from '../InputComponent'
+import { getNextSelectList } from '../utils'
 import { BackButtom, NextButtom } from './buttons'
 import LabelComponent from './labelComponent'
 import KycSkeleton from './skeleton'
 import { ApiPostLocation } from './api'
-import useToast from '../../../../hooks/useToastMessage'
-import SuccessComponent from './success'
-import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick';
-import { Wrapper as Layout } from '../layout/styles'
+// import useToast from '../../../../hooks/useToastMessage'
+// import SuccessComponent from './success'
+import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
+import { Wrapper as Layout } from '../../layout/styles'
+// import { mainService } from "../../../../services/MainService";
 
 import {
   MainContainer,
@@ -21,14 +21,14 @@ import {
 } from './styles.js'
 
 
-const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
+const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
-const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
+const LocationComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
 
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   const { state, setState } = handleState
-  const [ loading, setLoading ] = useState(true)
-  const [ toastMessage ] = useToast()
+  const [ loading, setLoading ] = useState(false)
+  // const [ toastMessage ] = useToast()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -43,7 +43,6 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
     "onkeypress",
     true
   );
-
   
   const {
     prevStage,
@@ -58,13 +57,30 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   } = stageManager
 
 
-  const nextStep = () => {
+  const nextStep = async() => {
     if(stageStatus !== 'success'){return}
-    nextStage()
     setStageStatus(null)
     document.querySelector(`[name="${stageData?.key}"]`).value = ""
     document.querySelector(".label_text__" + stageData?.key).style.color = 'gray'
+    setLoading(true)
+    nextStage()
+    // await getNextSelectList(stageData?.key)
+    await getNextSelectList({
+      state,
+      stageData,
+      setDataForm
+    })
+    setLoading(false)
   }
+
+  const prevStep = () => {
+    setState(prevState => {
+      return { ...prevState, [stageData?.key]: "" }
+    })
+    return prevStage()
+  }
+
+  // console.log('dataForm', dataForm)
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
@@ -90,20 +106,36 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
 
-  
+
 
 
   useEffect(() => {
     if(currentStage >= stageController.length){
-      // const execPost = async() => {
-      //   let res = await ApiPostLocation(getBody(state, dataForm), { setLoading, prevStage, toastMessage })
-      //   if(!res) return;
-      //   actions.IncreaseStep("kyc_global_step", 2);
-      // }
-      // execPost()
+      const execPost = async() => {
+        setLoading(true)
+        let res = await ApiPostLocation(state)
+        setLoading(false)
+        if(!res)return prevStage();
+        const requirementComponent = res
+        console.log('requirementComponent', requirementComponent)
+        debugger
+        // const Element = await import(`../${requirementComponent}Component/init`)
+        // const NextFormStage = Element.default 
+        // actions.renderModal(() => <NextFormStage/>)
+      }
+      execPost()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
+
+
+
+
+
+
+
+
+
 
 
   if(loading){return <KycSkeleton/>}
@@ -111,14 +143,11 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   if(!loading && finalStage){
     // Render success Stage
     return (
-      <SuccessComponent
+      <KycSkeleton
         closeModal={closeModal}
       />
     )
   }
-
-// console.log('___________________________________________dataForm', state)
-
 
   return(
       <Layout style={{background:"white"}}>
@@ -143,7 +172,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
               stages={dataForm?.stages}
               currentStage={currentStage}
               >
-              <BackButtom onClick={prevStage} disabled={currentStage <= 0}/>
+              <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
             </LabelComponent>
             <InputComponent
               onChange={onChange} 
@@ -165,7 +194,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
           </StickyGroup>
 
           <DynamicLoadComponent
-            component="personalKycComponent/selectList"
+            component="kyc/selectList"
             list={stageData?.selectList}
             name={stageData?.key}
             state={state}
@@ -178,6 +207,6 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
   )
 }
 
-export default PersonalKycComponent
+export default LocationComponent
 
 

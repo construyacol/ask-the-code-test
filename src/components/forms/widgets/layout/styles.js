@@ -14,6 +14,10 @@ export const Wrapper = styled.div`
   backdrop-filter: blur(2px);
   background: linear-gradient(to bottom right, #00000099, #000000f0);
   
+  .selectedItemTag__title p{
+    text-transform:capitalize;    
+  }
+
   &.infoPanel{
     grid-template-columns: auto 1fr;
   }

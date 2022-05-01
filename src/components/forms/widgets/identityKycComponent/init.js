@@ -13,8 +13,6 @@ const IdentityKycComponent = props => {
     const init = async() => {
       const _dataForm = await initStages(
         {
-          personType:'legal',
-          level:'level_1',
           formName: 'identity'
         }
       )

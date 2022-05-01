@@ -36,6 +36,11 @@ export const ItemListGrid = styled.div`
   cursor: pointer;
   transition: .15s;
   height: 60px;
+
+  .itemListUiName{
+    text-transform:capitalize;
+  }
+
   .itemList__icon{
     display: flex;
     align-items: center;

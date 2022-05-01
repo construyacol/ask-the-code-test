@@ -17,7 +17,7 @@ const ItemList = ({ item, onClick }) => {
            <img alt="" src={show ? imgSrc : ''} width={35} height={35}></img>
       }
       </div>
-      <p className="fuente countryName" >{item?.uiName}</p>
+      <p className="fuente itemListUiName" >{item?.uiName?.toLowerCase()}</p>
     </ItemListGrid>
   )
 }

@@ -1,4 +1,4 @@
-// import { mainService } from "../../../../services/MainService";
+import { mainService } from "../../../../../services/MainService";
 // import { 
 //   formatMaskDate, 
 //   parseDateToTimeStamp,
@@ -8,7 +8,7 @@
 const LOCATION_INFO_NEEDED = {
   "location_country":{
     ui_name:"País",
-    ui_type:"text",
+    ui_type:"select",
   },
   "province":{
     ui_name:"Provincia",
@@ -25,12 +25,12 @@ const LOCATION_INFO_NEEDED = {
 }
 
 const STAGES = {
-    "nationality":{
-      // uiName:"Nacionalidad del documento:",
-      key:"nationality",
+    "location_country":{
+      uiName:"País de residencia:",
+      key:"location_country",
       uiType:"select",
       "settings":{
-        defaultMessage:"Selecciona la nacionalidad de tu documento de identidad",
+        defaultMessage:"Selecciona el país de residencia actual",
         successPattern:/[a-zA-Z _]{1,40}/g,
         errors:[
           { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
@@ -41,14 +41,48 @@ const STAGES = {
           form:'personal_country'
         }
       }
-    }
+    },
+    "address":{
+      // uiName:"Dirección de residencia:",
+      key:"address",
+      uiType:"text",
+      "settings":{
+        defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
+        successPattern:/[a-zA-Z ]{3,40}/g,
+        // label:"Dirección de residencia:",
+        placeholder:"Escribe la dirección",
+        queryParams:{
+          form:'personal_address'
+        },
+        errors:[
+          { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
+        ],
+      }
+    },
 }
 
 export const ApiGetLocationStages = async(config) => {
     return LOCATION_INFO_NEEDED
 }
 
-export const ApiPostLocation = async(body, tools) => {}
+
+export const ApiPostLocation = async(payload) => {
+  const res = await mainService.createLocation({data:payload})
+  if(!res)return ;
+  await mainService.fetchCompleteUserData()
+  const reqData = await mainService.createRequirementLevel()
+  if(reqData){
+    const { requirements } = reqData
+    return requirements[0]
+  }
+  return res
+}
+
+
+
+
+
+
 
 // typeof date.getMonth === 'function'
 
@@ -70,7 +104,7 @@ export const LOCATION_DEFAULT_STATE = {
   
 export const LOCATION_COMPONENTS = {
     wrapperComponent:{
-        location:'locationComponent'
+        location:'kyc/locationComponent'
     }
 }
 

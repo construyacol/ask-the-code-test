@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import FormComponent from '../../' 
-import { initStages } from '../../utils'
-import { useActions } from '../../../../hooks/useActions'
+import FormComponent from '../../../' 
+import { initStages } from '../../../utils'
+import { useActions } from '../../../../../hooks/useActions'
 import KycSkeleton from './skeleton.js'
-import Layout from '../layout'
+import Layout from '../../layout'
   
-const PersonalKyc = () => {
+const KycComponent = () => {
 
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
 
   const init = async() => {
     const _dataForm = await initStages({
-      formName:'location',
+      formName:'contact',
     })
-    console.log(_dataForm)
     setDataForm(_dataForm)
   }
 
@@ -44,8 +43,7 @@ const PersonalKyc = () => {
         }
     </Layout>
   )
-
 }
 
 
-export default PersonalKyc
+export default KycComponent

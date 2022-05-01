@@ -30,7 +30,13 @@ import {
   LOCATION_DEFAULT_STATE,
   LOCATION_COMPONENTS,
   LOCATION_STAGES
-} from './widgets/locationComponent/api'
+} from './widgets/kyc/locationComponent/api'
+
+import { 
+  CONTACT_DEFAULT_STATE,
+  CONTACT_COMPONENTS,
+  CONTACT_STAGES
+} from './widgets/kyc/contactComponent/api'
 
 import { 
   BIOMETRIC_COMPONENTS,
@@ -44,17 +50,15 @@ let stages = {
   ...FIAT_DEPOSIT_STAGES,
   ...NEW_WALLET_STAGES,
   ...IDENTITY_STAGES,
-  ...LOCATION_STAGES
+  ...LOCATION_STAGES,
+  ...CONTACT_STAGES
 } 
 
 const defaultState = {
   ...PERSONAL_DEFAULT_STATE,
   ...FIAT_DEPOSIT_DEFAULT_STATE,
-  ...LOCATION_DEFAULT_STATE
-  // biometric:{
-  //   smile:"",
-  //   surprised:""
-  // },
+  ...LOCATION_DEFAULT_STATE,
+  ...CONTACT_DEFAULT_STATE
 }
 
 const handleError = {
@@ -74,7 +78,8 @@ const wrapperComponent = {
   ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent'],
   ...NEW_WALLET_COMPONENTS['wrapperComponent'],
   ...IDENTITY_COMPONENTS['wrapperComponent'],
-  ...LOCATION_COMPONENTS['wrapperComponent']
+  ...LOCATION_COMPONENTS['wrapperComponent'],
+  ...CONTACT_COMPONENTS['wrapperComponent']
 }
 
 const formStructure = formName => {

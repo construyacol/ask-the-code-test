@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import ConfettiComponent from '../success/confetti'
+import ConfettiComponent from '../../success/confetti'
 import styled from 'styled-components'
-import { Medal } from '../success/icons'
-import { LayoutContainer, ControlContainer } from '../success/styles'
+import { Medal } from '../../success/icons'
+import { LayoutContainer, ControlContainer } from '../../success/styles'
 // import { initStages } from '../../utils'
-import Layout from '../layout'
-import loadable from '@loadable/component'
+import Layout from '../../layout'
+// import loadable from '@loadable/component'
 
-const Kyc = loadable(() => import('../../../kyc/kyc_container'))
 
 const SuccessComponent = ({ closeModal, state, ...props }) => {
 
@@ -16,7 +15,6 @@ const SuccessComponent = ({ closeModal, state, ...props }) => {
     if(showKycComponent){
         return (
             <Layout background="white">
-                <Kyc/>
             </Layout>
         )
     }

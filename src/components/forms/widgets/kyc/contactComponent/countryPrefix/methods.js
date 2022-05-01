@@ -1,10 +1,10 @@
 
 
-export const setMetaPhoneData = (setState, dataForm) => {
+export const setMetaPhoneData = (setState, dataForm, selectList) => {
     setState(prevState => {
         return {
             ...prevState,
-            selectList:dataForm?.stages?.nationality?.selectList,
+            selectList:selectList,
             uiType:"select",
             key:"meta_phone",
             uiName:"Define el prefijo",
@@ -42,7 +42,7 @@ export const extendContainer = () => {
     const prefixContainer = document.querySelector(`.prefixContainer_`)
     prefixContainer.style.width = 'calc(100% - 32px)'
     prefixContainer.style.borderRight = '1px solid transparent'
-      // const inputElement = prefixContainer?.childNodes[2]?.childNodes[0]
+    // const inputElement = prefixContainer?.childNodes[2]?.childNodes[0]
     // setTimeout(() => inputElement?.focus(), 250)
 }
 

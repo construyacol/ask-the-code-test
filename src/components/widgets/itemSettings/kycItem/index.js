@@ -7,16 +7,24 @@ import { LoaderContainer } from "../../loaders";
 import SimpleLoader from "../../loaders";
 import { mainService } from '../../../../services/MainService'
 import { useActions } from '../../../../hooks/useActions'
+// import { LEVELS_INFO } from '../../../../const/levels'
+
 
 export default function KycItemComponent() {
 
     const actions = useActions()
+    // NECESITO TENER habilitado algo para consultar los requerimientos de cada uno de los niveles
 
-    // hacer getNexLevel
+    const [ levels, setLevels ] = useState()
+    const [ requirements, setRequeriments ] = useState()
 
+    const user = useSelector(({ modelData:{ user } }) => user);
 
     const openModalKyc = async() => {
-        const Element = await import("../../../forms/widgets/locationComponent/init")
+        // const Element = await import("../../../forms/widgets/identityKycComponent/init")
+        const currentRequirement = requirements[0]
+        const Element = await import(`../../../forms/widgets/kyc/${currentRequirement}Component/init`)
+        // const Element = await import(`../../../forms/widgets/kyc/locationComponent/init`)
         // eslint-disable-next-line react/jsx-pascal-case
         actions.renderModal(() => <Element.default/>)
     }
@@ -27,6 +35,17 @@ export default function KycItemComponent() {
         color: "#1babec",
     };
 
+    const init = async() => {
+        const res = await mainService.createRequirementLevel()
+        if(!res)return ;
+        setLevels(res.levels)
+        setRequeriments(res.requirements)
+    }
+
+    useEffect(() => {
+        init()
+    }, [user])
+
     return(
         <Layout>
             <Container>
@@ -36,11 +55,15 @@ export default function KycItemComponent() {
                 <InfoContainer>
                     <Title className='fuente'>Verificación de identidad</Title>   
                     <Description className='fuente'>La verificación de identidad es obligatoria para cumplir con las normativas vigentes</Description>   
-                    <StatusComponent></StatusComponent>   
+                    <StatusComponent
+                        levelName={"Nivel 1"}
+                        levels={levels}
+                        user={user}
+                    />   
                 </InfoContainer>
                 <ButtonContainer>
                 {
-                    mainService.getVerificationState() !== 'accepted' &&
+                    (mainService.getVerificationState() !== 'accepted' && requirements) &&
                         <ButtonForms
                             id="subItemSC"
                             type={"primary"}
@@ -57,27 +80,7 @@ export default function KycItemComponent() {
 }
 
 
-const _levels = {
-    location:{
-        uiName:"Residencia",
-        pending:"",
-        confirmed:"",
-        accepted:"Residencia accepted"
-    },
-    contact:{
-        uiName:"Contacto",
-        pending:"",
-        confirmed:"",
-        accepted:" Contacto accepted" 
-    },
-    identity:{
-        uiName:"Identidad",
-        pending:"Envía y verifica tus datos de identidad.",
-        confirmed:"Estamos verificando tu identidad, este proceso puede tardar hasta 72 horas hábiles.",
-        accepted:"Tu cuenta está verificada.",
-        rejected:"Ocurrió un error, vuelve a enviar tus datos de identidad.",
-    }
-}
+
 
 const getColor = state => {
     const colors = {
@@ -92,96 +95,95 @@ const getColor = state => {
 
 
 
-const StatusComponent = props => {
+const StatusComponent = ({ levels, user, levelName }) => {
 
-    const user = useSelector(({ modelData:{ user } }) => user);
     const [ currentStage, setCurrentStage ] = useState('identity')
-    const [ levels ] = useState(_levels)
 
-    const getIdentityState = () => {
-        let state = 'pending'
-        if(!user?.identity)return state;
-        const { file_state, info_state } = user?.identity
+    // const getIdentityState = () => {
+    //     let state = 'pending'
+    //     if(!user?.identity)return state;
+    //     const { file_state, info_state } = user?.identity
 
-        if([info_state, file_state].includes("rejected")){
-            return "rejected"
-        }else if(info_state === file_state){
-            state = info_state
-        }
-        return state
-    }
+    //     if([info_state, file_state].includes("rejected")){
+    //         return "rejected"
+    //     }else if(info_state === file_state){
+    //         state = info_state
+    //     }
+    //     return state
+    // }
 
     const getState = key => {
         let states = {
             contact:user[key] ? 'accepted' : 'pending',
             location:user[key]?.state || 'pending',
-            identity:getIdentityState
+            // identity:getIdentityState
+            identity:mainService.getVerificationState
         }
         return typeof states[key] === 'function' ? states[key]() : states[key]
     }
 
     useEffect(() => {
-        // POST ==> GET NEX LEVEL
-        for (const level of Object.keys(levels)) {
-            if(getState(level) !== 'accepted'){
-                setCurrentStage(level)
-                break;
+        if(levels){
+            for (const level of Object.keys(levels)) {
+                if(getState(level) !== 'accepted'){
+                    setCurrentStage(level)
+                    break;
+                }
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    console.log('currentStage', currentStage, getState(currentStage), levels[currentStage][getState(currentStage)])
+    }, [levels])
 
     let errorMessage = user[currentStage]?.errors && user[currentStage]?.errors[0]
-    // console.log(levels, currentStage, levels[currentStage][getState(currentStage)])
+    
+    if(!levels){return null}
+
     return(
         <StatusContainer>
             
             <LabelMessage 
                 state={getState(currentStage)} 
                 className={`fuente ${getState(currentStage)}`}>
-                {errorMessage || (currentStage && levels[currentStage][getState(currentStage)])}
+                {errorMessage || ((currentStage && levels) && levels[currentStage][getState(currentStage)])}
             </LabelMessage>
 
             <LevelOneCont>
 
                 <LevelTitle>
-                    <Text className="fuente2">Nivel 1</Text>
+                    <Text className="fuente2">{levelName}</Text>
                 </LevelTitle>
 
                 <LevelsContainer>
                     {
-                        Object.keys(levels).map((item, key) => {
-
-                            let showConnector = (key + 1) < Object.keys(levels).length 
-
-                            return(
-                                <Fragment key={key}>
-                                    <Level 
-                                        className={`${item === currentStage ? '_current' : ''} ${getState(item)}`}
-                                        title={`${levels[item]?.uiName || ''}`}
-                                    >
-                                    {
-                                        getState(item) === 'confirmed' ?
-                                            <LoaderContainer>
-                                                <SimpleLoader loader={2} />
-                                            </LoaderContainer>
-                                        :
-                                            <IconSwitch 
-                                                icon={item} 
-                                                size={20}
-                                                color={getColor(levels[item]?.state)}
-                                            />
-                                    }
-                                    </Level>
-                                    {
-                                        showConnector &&
-                                        <hr className={`${getState(item)}`}/>
-                                    }
-                                </Fragment>
-                            )
-                        })
+                        levels &&
+                            Object.keys(levels).map((item, key) => {
+                                let showConnector = (key + 1) < Object.keys(levels).length 
+                                return(
+                                    <Fragment key={key}>
+                                        <Level 
+                                            className={`${item === currentStage ? '_current' : ''} ${getState(item)}`}
+                                            title={`${levels[item]?.uiName || ''}`}
+                                        >
+                                        {
+                                            getState(item) === 'confirmed' ?
+                                                <LoaderContainer>
+                                                    <SimpleLoader loader={2} />
+                                                </LoaderContainer>
+                                            :
+                                                <IconSwitch 
+                                                    icon={item} 
+                                                    size={20}
+                                                    color={getColor(levels[item]?.state)}
+                                                />
+                                        }
+                                        </Level>
+                                        {
+                                            showConnector &&
+                                            <hr className={`${getState(item)}`}/>
+                                        }
+                                    </Fragment>
+                                )
+                            })
                     }
                 </LevelsContainer>
                 

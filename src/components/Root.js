@@ -100,10 +100,10 @@ function RootContainer(props) {
   useEffect(() => {
     if(showOnBoarding){ 
       const initOnBoarding = async() => {
-        // const Element = await import("./forms/widgets/onBoardingComponent/init");
+        const Element = await import("./forms/widgets/onBoardingComponent/init");
         // const Element = await import("./forms/widgets/identityKycComponent/init");
       // const Element = await import("./forms/widgets/personalKycComponent/init");
-        const Element = await import("./forms/widgets/locationComponent/init");
+        // const Element = await import("./forms/widgets/kyc/locationComponent/init");
         const OnBoardingComponent = Element.default
         return props.actions.renderModal(() => <OnBoardingComponent/>); 
       }

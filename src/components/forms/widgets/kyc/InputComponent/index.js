@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 import loadable from '@loadable/component'
-import { removeItemTag, debugItemTag } from './utils'
+import { removeItemTag, debugItemTag } from '../utils'
 import styled from 'styled-components'
-import MaskDateComponent from './maskDateComponent'
-import { isSafari } from '../../../../utils'
+import MaskDateComponent from '../MaskDateComponent'
+import { isSafari } from '../../../../../utils'
 import {
     InputContainer,
     LabelText,
     // ButtonModule
-  } from './styles.js'
+  } from '../contactComponent/styles.js'
 
 
-const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
+const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
 
 const InputComponent = props => {
@@ -85,8 +85,6 @@ const InputComponent = props => {
           :
           <input {...inputProps} />
         }
-
-        {/* <input {...inputProps} /> */}
 
         { 
           progressBar &&

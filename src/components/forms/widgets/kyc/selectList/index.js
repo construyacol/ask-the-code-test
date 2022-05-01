@@ -11,7 +11,7 @@ import useHeight from '../../../hooks/useHeight'
  
 
 const SelectList = ({ list, name, state, handleAction }) => {
-
+  
   let [ height ] = useHeight(list)
   const [ searchList, setSearchList ] = useState(list || {})
   const [ currentItemTagExist, setCurrentItemTagExist ] = useState(null)
@@ -27,7 +27,6 @@ const SelectList = ({ list, name, state, handleAction }) => {
   }, [state, name])
 
 
-
   useEffect(() => {
     if(list){
       const itemList = filterElement(list, state[name])
@@ -35,6 +34,9 @@ const SelectList = ({ list, name, state, handleAction }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[name], list])
+
+  // console.log('searchList state', state)
+
 
   let isMovilHeight = document.body.clientWidth < 768 ? `25vh` : `0px`
   
@@ -67,12 +69,20 @@ export default SelectList
 
 
 const filterElement = (list, query) => {
-  let result = {}
-  Object.keys(list).filter(itemList => {
-    if(itemList.includes(query?.toLowerCase())){
-      return result = { ...result, [itemList]:list[itemList] }
-    }
-    return itemList
-  })
+    let result = {}
+    Object.keys(list).forEach(itemList => {
+      if(itemList.includes(query?.toLowerCase())){
+        return result = { ...result, [itemList]:list[itemList] }
+      }
+    })
+  
+    Object.keys(result).forEach(itemList => {
+      if(itemList === query?.toLowerCase()){
+        result = { itemList }
+      }
+    })
+
     return Object.keys(result).length ? result : list
+
+
 }

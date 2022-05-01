@@ -24,12 +24,29 @@ export const IDENTITY_STAGES = {
   identity:STAGES
 }
 
+const IDENTITY_INFO_NEEDED = {
+  "rut":{
+    ui_name:"RUT",
+    ui_type:"attach",
+  },
+  "commerce":{
+    ui_name:"Cámara de comercio",
+    ui_type:"attach",
+  },
+  "document_front":{
+    ui_name:"Frente del documento",
+    ui_type:"attach",
+  }
+}
+
 
 export const ApiGetIdentityStages = async(config) => {
-  const { personType, level, formName } = config
-  let countryValidators = await mainService.countryValidators()
-  if(!countryValidators) return;
-  return countryValidators?.res?.levels[level][formName][personType]
+
+  // const { personType, level, formName } = config
+  // let countryValidators = await mainService.countryValidators()
+  // if(!countryValidators) return;
+  // return countryValidators?.res?.levels[level][formName][personType]
+  return IDENTITY_INFO_NEEDED
 }
 
 
