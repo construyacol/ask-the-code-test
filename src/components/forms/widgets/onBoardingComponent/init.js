@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 // import loadable from '@loadable/component'
 // import { useActions } from '../../hooks/useActions'
+import Layout from '../layout'
 
 import FormComponent from '../../' 
 import { initStages } from '../../utils'
@@ -27,7 +28,7 @@ const OnBoardingComponent = props => {
    
 
     return(
-      <>
+      <Layout closeControls>
         {
           dataForm ?
             <FormComponent
@@ -36,7 +37,7 @@ const OnBoardingComponent = props => {
           :
             <p>Cargando...</p>
         }
-      </>
+      </Layout>
     )
 
 }

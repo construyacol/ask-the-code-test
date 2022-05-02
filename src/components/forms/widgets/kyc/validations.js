@@ -132,6 +132,8 @@ const selectListValidator = (value, data) => {
   }
 
   const identityValidation = {
+    nationality:selectListValidator,
+    id_type:selectListValidator,
     name:textInputValidator,
     surname:textInputValidator,
     birthday,

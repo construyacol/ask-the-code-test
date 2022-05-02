@@ -13,12 +13,13 @@ import { ApiPostLocation } from './api'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 import { Wrapper as Layout } from '../../layout/styles'
 // import { mainService } from "../../../../services/MainService";
+import { initStages } from '../../../utils'
 
 import {
   MainContainer,
   StickyGroup,
   TitleContainer,
-} from './styles.js'
+} from '../styles'
 
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
@@ -116,12 +117,10 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
         let res = await ApiPostLocation(state)
         setLoading(false)
         if(!res)return prevStage();
-        const requirementComponent = res
-        console.log('requirementComponent', requirementComponent)
-        debugger
-        // const Element = await import(`../${requirementComponent}Component/init`)
-        // const NextFormStage = Element.default 
-        // actions.renderModal(() => <NextFormStage/>)
+        const _dataForm = await initStages({
+          formName:'identity',
+        })
+        setDataForm(_dataForm)
       }
       execPost()
     }

@@ -10,12 +10,6 @@ import {
 } from './widgets/onBoardingComponent/api'
 
 import { 
-  IDENTITY_COMPONENTS,
-  IDENTITY_STAGES
-} from './widgets/identityKycComponent/api'
-
-
-import { 
   NEW_WALLET_COMPONENTS,
   NEW_WALLET_STAGES
 } from './widgets/newWallet/api'
@@ -31,6 +25,17 @@ import {
   LOCATION_COMPONENTS,
   LOCATION_STAGES
 } from './widgets/kyc/locationComponent/api'
+
+import { 
+  IDENTITY_DEFAULT_STATE,
+  IDENTITY_COMPONENTS,
+  IDENTITY_STAGES
+} from './widgets/kyc/identityComponent/api'
+
+// import { 
+//   IDENTITY_COMPONENTS,
+//   IDENTITY_STAGES
+// } from './widgets/identityKycComponent/api'
 
 import { 
   CONTACT_DEFAULT_STATE,
@@ -57,6 +62,7 @@ let stages = {
 const defaultState = {
   ...PERSONAL_DEFAULT_STATE,
   ...FIAT_DEPOSIT_DEFAULT_STATE,
+  ...IDENTITY_DEFAULT_STATE,
   ...LOCATION_DEFAULT_STATE,
   ...CONTACT_DEFAULT_STATE
 }

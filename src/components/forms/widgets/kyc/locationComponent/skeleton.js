@@ -7,7 +7,7 @@ import {
   TitleLabelContainer,
   InputContainer,
   LabelText,
-} from './styles.js'
+} from '../styles'
 
 
 const KycSkeleton = () => (

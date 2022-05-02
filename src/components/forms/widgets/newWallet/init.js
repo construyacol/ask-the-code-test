@@ -22,7 +22,7 @@ const NewWalletComponent = props => {
       if (e && (e.target.dataset.close_modal || forceClose)) {
         actions.renderModal(null);
       }
-  }
+    }
     
     const init = async() => {
       const _dataForm = await initStages(

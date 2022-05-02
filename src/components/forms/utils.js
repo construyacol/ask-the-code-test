@@ -9,7 +9,7 @@ import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
-import { ApiGetIdentityStages } from './widgets/identityKycComponent/api'
+import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
@@ -73,23 +73,22 @@ export const generateSelectList = (objectList) => {
     selectList[key].value = key
     delete selectList[key]?.ui_name
     delete selectList[key]?.name
-    delete selectList[key]?.id
+    // delete selectList[key]?.id
     delete selectList[key]?.code
   })
   return selectList
 }
 
 export const getSelectList = async(listKey, payload) => {
-  let list
+  let list 
   let res = await mainService[API_FETCH_SELECT_LIST[listKey]] && await mainService[API_FETCH_SELECT_LIST[listKey]](payload)
   if(!res){return}
   list = await createSelectList(res)
   return generateSelectList(list)
 }
 
-const createStage = async(source, modelated, index) => {
-  
-  const _source = structuredClone(source);
+export const createStage = async(source, modelated, index) => {
+  let _source = typeof source === 'object' ? structuredClone(source) : {...source};
   let stage = {}
 
   _source.uiName = _source.ui_name
@@ -159,7 +158,11 @@ export const initStages = async(config) => {
   
   let stages = {} 
 
+
   for (const stage of sourceStages) { 
+    // console.log('apiStages', apiStages, stage)
+    // console.log('formStructure', formStructure(config.formName))
+    // debugger
     stages = {
       ...stages,
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)

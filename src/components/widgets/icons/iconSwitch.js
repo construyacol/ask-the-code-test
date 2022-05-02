@@ -28,7 +28,7 @@ const Bancamia = loadable(() => import("./").then(getExportByName("Bancamia")));
 const International = loadable(() => import("./").then(getExportByName("International")));
 const Email = loadable(() => import("./").then(getExportByName("Email")));
 const IconDefault = loadable(() => import("./").then(getExportByName("IconDefault")));
-const Person = loadable(() => import("./").then(getExportByName("Person")));
+// const Person = loadable(() => import("./").then(getExportByName("Person")));
 const Verify1 = loadable(() => import("./").then(getExportByName("Verify1")));
 const Identification = loadable(() => import("./").then(getExportByName("Identification")));
 const PageNotFound = loadable(() => import("./").then(getExportByName("PageNotFound")));
@@ -184,6 +184,8 @@ class IconSwitch extends Component {
         return <Location {...props} />;
       case "identity":
         return <FingerPrint {...props} />;
+    // case "identity":
+    // return <Person {...props} />;
       case "contact":
         return <Contact {...props} />;
       case "withdrawConfirm":
@@ -318,8 +320,7 @@ class IconSwitch extends Component {
       case "rejected":
       case "error":
         return <Errors {...props} />;
-      case "identity":
-        return <Person {...props} />;
+      
       case "kyc_basic":
         return <Verify1 {...props} />;
       case "kyc_advanced":

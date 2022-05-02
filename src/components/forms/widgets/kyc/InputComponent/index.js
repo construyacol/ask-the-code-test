@@ -8,7 +8,7 @@ import {
     InputContainer,
     LabelText,
     // ButtonModule
-  } from '../contactComponent/styles.js'
+  } from '../styles'
 
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))

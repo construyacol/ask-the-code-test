@@ -3,11 +3,12 @@ import styled from 'styled-components'
 import IconSwitch from "../../icons/iconSwitch";
 import { ButtonForms } from "../../buttons/buttons";
 import { useSelector } from "react-redux";
-import { LoaderContainer } from "../../loaders";
-import SimpleLoader from "../../loaders";
+import SimpleLoader, { LoaderContainer } from "../../loaders";
+import { OnlySkeletonAnimation } from "../../loaders/skeleton";
 import { mainService } from '../../../../services/MainService'
 import { useActions } from '../../../../hooks/useActions'
 // import { LEVELS_INFO } from '../../../../const/levels'
+// import { funcDebounce } from "../../../../utils";
 
 
 export default function KycItemComponent() {
@@ -16,12 +17,11 @@ export default function KycItemComponent() {
     // NECESITO TENER habilitado algo para consultar los requerimientos de cada uno de los niveles
 
     const [ levels, setLevels ] = useState()
-    const [ requirements, setRequeriments ] = useState()
+    const [ requirements, setRequeriments ] = useState([])
 
     const user = useSelector(({ modelData:{ user } }) => user);
 
     const openModalKyc = async() => {
-        // const Element = await import("../../../forms/widgets/identityKycComponent/init")
         const currentRequirement = requirements[0]
         const Element = await import(`../../../forms/widgets/kyc/${currentRequirement}Component/init`)
         // const Element = await import(`../../../forms/widgets/kyc/locationComponent/init`)
@@ -36,7 +36,8 @@ export default function KycItemComponent() {
     };
 
     const init = async() => {
-        const res = await mainService.createRequirementLevel()
+        // TODO: ADD debounce func
+        let res = await mainService.createRequirementLevel()
         if(!res)return ;
         setLevels(res.levels)
         setRequeriments(res.requirements)
@@ -45,6 +46,7 @@ export default function KycItemComponent() {
     useEffect(() => {
         init()
     }, [user])
+
 
     return(
         <Layout>
@@ -63,7 +65,7 @@ export default function KycItemComponent() {
                 </InfoContainer>
                 <ButtonContainer>
                 {
-                    (mainService.getVerificationState() !== 'accepted' && requirements) &&
+                    (requirements?.length > 0 && mainService.getVerificationState() !== 'accepted') &&
                         <ButtonForms
                             id="subItemSC"
                             type={"primary"}
@@ -98,26 +100,27 @@ const getColor = state => {
 const StatusComponent = ({ levels, user, levelName }) => {
 
     const [ currentStage, setCurrentStage ] = useState('identity')
+    // console.log('||||||  VerificationState ==> ', mainService.getVerificationState())
 
-    // const getIdentityState = () => {
-    //     let state = 'pending'
-    //     if(!user?.identity)return state;
-    //     const { file_state, info_state } = user?.identity
+    const getIdentityState = () => {
+        let state = 'pending'
+        if(!user?.identity)return state;
+        const { file_state, info_state } = user?.identity
 
-    //     if([info_state, file_state].includes("rejected")){
-    //         return "rejected"
-    //     }else if(info_state === file_state){
-    //         state = info_state
-    //     }
-    //     return state
-    // }
+        if([info_state, file_state].includes("rejected")){
+            return "rejected"
+        }else if(info_state === file_state){
+            state = info_state
+        }
+        return state
+    }
 
     const getState = key => {
         let states = {
             contact:user[key] ? 'accepted' : 'pending',
             location:user[key]?.state || 'pending',
-            // identity:getIdentityState
-            identity:mainService.getVerificationState
+            identity:getIdentityState
+            // identity:mainService.getVerificationState
         }
         return typeof states[key] === 'function' ? states[key]() : states[key]
     }
@@ -135,8 +138,7 @@ const StatusComponent = ({ levels, user, levelName }) => {
     }, [levels])
 
     let errorMessage = user[currentStage]?.errors && user[currentStage]?.errors[0]
-    
-    if(!levels){return null}
+    if(!levels){return <StatusSkeleton/>}
 
     return(
         <StatusContainer>
@@ -148,9 +150,8 @@ const StatusComponent = ({ levels, user, levelName }) => {
             </LabelMessage>
 
             <LevelOneCont>
-
                 <LevelTitle>
-                    <Text className="fuente2">{levelName}</Text>
+                    <Text className={`fuente2`}>{levelName}</Text>
                 </LevelTitle>
 
                 <LevelsContainer>
@@ -158,6 +159,7 @@ const StatusComponent = ({ levels, user, levelName }) => {
                         levels &&
                             Object.keys(levels).map((item, key) => {
                                 let showConnector = (key + 1) < Object.keys(levels).length 
+                                console.log('--------------------------- ', item, getState(item))
                                 return(
                                     <Fragment key={key}>
                                         <Level 
@@ -187,6 +189,42 @@ const StatusComponent = ({ levels, user, levelName }) => {
                     }
                 </LevelsContainer>
                 
+            </LevelOneCont>
+        </StatusContainer>
+    )
+}
+
+
+const StatusSkeleton = () => {
+
+    const levels = new Array(3).fill({})
+
+    return(
+        <StatusContainer>
+            <LabelMessage className="skeleton">
+                This awesome status message 
+            </LabelMessage>
+            <LevelOneCont>
+                <LevelTitle>
+                    <Text className="skeleton">level1</Text>
+                </LevelTitle>
+
+                <LevelsContainer>
+                    {
+                        levels.map((item, key) => {
+                            let showConnector = (key + 1) < Object.keys(levels).length 
+                            return(
+                                <Fragment key={key}>
+                                    <Level className='_current confirmed skeleton'/>
+                                    {
+                                        showConnector &&
+                                        <hr className="pending"/>
+                                    }
+                                </Fragment>
+                            )
+                        })
+                    }
+                </LevelsContainer>
             </LevelOneCont>
         </StatusContainer>
     )
@@ -262,6 +300,17 @@ const Level = styled.div`
         border: 2px solid var(--primary);
     }
 
+    &.skeleton{
+        ::after{
+            content: "sss";
+            align-self: center;
+            bottom: auto;
+            background: rgb(202, 202, 202);
+            color:rgb(202, 202, 202);
+            border-radius: 2px;
+        }
+    }
+
 `
 
 const LevelsContainer = styled.div`
@@ -306,6 +355,7 @@ const Text = styled.p`
 
 
 const LabelMessage = styled(Text)`
+    font-size:15px;
     &.confirmed,
     &.accepted,
     &.rejected
@@ -315,8 +365,6 @@ const LabelMessage = styled(Text)`
     &.pending{
         color:var(--paragraph_color);
     }
-
-
 `
 
 const LevelOneCont = styled.div`
@@ -343,6 +391,16 @@ const StatusContainer = styled.div`
     display:grid;
     padding-top:10px;
     row-gap:17px;
+
+    .skeleton{
+        ${OnlySkeletonAnimation}
+    }
+
+    p.skeleton{
+        width: fit-content;
+        background:rgb(202, 202, 202);
+        color:rgb(202, 202, 202);
+    }
 `
 
 

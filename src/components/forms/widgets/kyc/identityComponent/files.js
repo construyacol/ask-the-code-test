@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { FcOpenedFolder } from 'react-icons/fc'
 import { AiOutlineUpload } from "react-icons/ai";
@@ -13,36 +13,41 @@ import {
   UploadTextMiddle,
   Buttom,
   DropZoneContainer
-} from '../../../widgets/shared-styles'
-import useViewport from '../../../../hooks/useWindowSize'
-import SimpleLoader, { LoaderContainer } from "../../../widgets/loaders";
+} from '../../../../widgets/shared-styles'
+import useViewport from '../../../../../hooks/useWindowSize'
+import SimpleLoader, { LoaderContainer } from "../../../../widgets/loaders";
 // import { getAcronym } from '../../../../utils'
 // import useValidations from '../../hooks/useInputValidations'
-import useStage from '../../hooks/useStage'
+import useStage from '../../../hooks/useStage'
 // import loadable from '@loadable/component'
 // import InputComponent from './input'
 // import { getBody } from '../../utils'
 // import { BackButtom, NextButtom } from './buttons'
 // import LabelComponent from './labelComponent'
-// import KycSkeleton from './skeleton'
+import KycSkeleton from './skeleton'
 // import isoType from './assets/isoType.png'
 // import PersonalKyc from '../personalKycComponent/init'
-import { img_compressor, readFile } from '../../../../utils'
+import { img_compressor, readFile } from '../../../../../utils'
+import { ApiPostIdentityFiles } from './api'
+// import { useSelector } from "react-redux";
+import IdentityKycSuccess from './success'
 
 import {
     Layout
-  } from '../sharedStyles'
+  } from '../../sharedStyles'
 
 import { 
-  MainContainer,
+  FilesContainer,
   Header
-} from './styles'
+} from '../styles'
 
 
 // const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 
   const { dataForm } = handleDataForm
+  // const user = useSelector(({ modelData:{ user } }) => user);
+
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -50,16 +55,18 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
   )
 
   const {
-    // nextStage,
-    // finalStage,
+    prevStage,
+    nextStage,
+    finalStage,
+    stageController,
     stageData,
-    // currentStage
+    currentStage
   } = stageManager
 
   const { isMovilViewport } = useViewport()
   const [ onDrag, setOnDrag ] = useState()
   const [ imgSrc ] = useState()
-  const [ loader, setLoader ] = useState(false)
+  const [ loading, setLoading ] = useState(false)
 
   const { 
     state, 
@@ -84,7 +91,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
     if (e.target.files && e.target.files.length > 0) {
 
       setOnDrag(false);
-      setLoader(true)
       const data = e.target.files[0];
       const file = await img_compressor(data, 0.25);
       const dataBase64 = await readFile(file);
@@ -98,8 +104,8 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
             img:dataBase64
           }}
         })
-        setLoader(false)
-      }, 3000)
+        nextStage(true)
+      }, 500)
 
       
       // const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
@@ -111,14 +117,29 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
     }
   };
 
+
+  useEffect(() => {
+    if(currentStage >= stageController.length){
+      const execPost = async() => {
+        setLoading(true)
+        let res = await ApiPostIdentityFiles({state})
+        setLoading(false) 
+        if(!res)return prevStage();
+        nextStage()
+      }
+      execPost()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStage])
+
  
 //   // const validations = useValidations()
 
-// //   if(loading){return <KycSkeleton/>}
-//   if(!loading && finalStage){
-//     // Render success Stage
-//       return <PersonalKyc/>
-//   }
+  if(loading){return <KycSkeleton/>}
+  if(!loading && finalStage){
+    // Render success Stage
+      return <IdentityKycSuccess/>
+  }
   // console.log('currentStage', currentStage)
   const { stages } = dataForm
 
@@ -128,7 +149,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
   return( 
     <>
       <Layout className="_identityKycLayout">
-        <MainContainer>
+        <FilesContainer>
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
             <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> {stageData?.settings?.label || 'Sube tus documentos'}</h3>
@@ -140,7 +161,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
               !isMovilViewport &&
                 <UploadComponent
                   goFileLoader={goFileLoader}
-                  loader={loader}
+                  loading={loading}
                 />
             }
 
@@ -157,7 +178,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
             stages={stages}
             state={state}
             stageData={stageData}
-            loader={loader}
+            loading={loading}
           />
 
           {
@@ -165,22 +186,17 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
               <MobileContralContainer>
                 <CallToAction
                   goFileLoader={goFileLoader}
-                  loader={loader}
+                  loading={loading}
                 />
               </MobileContralContainer>
           }
-        </MainContainer>
+        </FilesContainer>
       </Layout>
     </>
   )
 }
 
 export default IdentityKycComponent
-
-
-
-
-
 
 
 
@@ -235,9 +251,9 @@ const UploadComponent = props => {
 
 const CallToAction = props => {
   return(
-      <Buttom className={`${props.loader ? 'loader' : ''}`}>
+      <Buttom className={`${props.loading ? 'loader' : ''}`}>
         {
-          props.loader ?
+          props.loading ?
             <LoaderContainer>
             <SimpleLoader loader={2} />
           </LoaderContainer>
@@ -265,12 +281,12 @@ const StageListComponent = ({ stages, stageData, state }) => {
         Object.keys(stages).map((stageKey, index) => {
 
           const isCurrentEl = stageData?.key === stageKey
-          const isCurrentElColor = stageData?.key === stageKey ? "var(--primary)" : "var(--paragraph_color)"
           const stageState = state[stageKey] ? 'complete' : 'incomplete'
+          const isCurrentElColor = (stageData?.key === stageKey || stageState === 'complete')  ? "var(--primary)" : "var(--paragraph_color)"
 
           return(
             <StageListItemContainer key={index} className={`${isCurrentEl ? 'current' : ''} ${stageState}`}>
-              <IconContainer >
+              <IconContainer className={`${stageState}`}>
                 {/* <span>{getAcronym(stages[stageKey]?.key)}</span> */}
                 <IoFileTray
                   size={18} 
@@ -279,7 +295,7 @@ const StageListComponent = ({ stages, stageData, state }) => {
               </IconContainer>
               
               <p className={`fuente _title ${stageState}`}>{stages[stageKey]?.uiName}</p>
-              {state[stageKey] && <p className="fuente2 _size">{state[stageData?.key]?.size} KB</p>}
+              {state[stageKey] && <p className="fuente2 _size">{state[stageKey]?.size} KB</p>}
 
               <ControlContainer className="item__">
                 { isCurrentEl && <CurrentStageIndicator/>}
@@ -317,7 +333,7 @@ const IconContainer = styled.div`
   border: 2px solid #e9e9e9;
 
   &.complete{
-    background: #0198ff54;
+    background: #0198ff14;
     border: 1px solid var(--primary);
   }
 
@@ -349,9 +365,16 @@ const StageListItemContainer = styled.div`
   transition:.2s;
   opacity:.2;
   
-  &.current, &.complete:hover{
+  &.current{
     background:#f1f1f1;
     opacity:1;
+  }
+
+  &.complete{
+    opacity:1;
+    p{
+      color:var(--primary);
+    }
   }
 
   &.incomplete{

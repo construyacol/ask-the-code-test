@@ -3,16 +3,18 @@ import validations from '../validations'
 import useStage from '../../../hooks/useStage'
 import loadable from '@loadable/component'
 import InputComponent from '../InputComponent'
-// import { getBody } from './utils'
+import { getNextSelectList } from '../utils'
 import { BackButtom, NextButtom } from './buttons'
 import LabelComponent from './labelComponent'
 import KycSkeleton from './skeleton'
-import { ApiPostContact } from './api'
-// import useToast from '../../../../../hooks/useToastMessage'
+import { ApiPostIdentityInfo } from './api'
+// import useToast from '../../../../hooks/useToastMessage'
 // import SuccessComponent from './success'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 import { Wrapper as Layout } from '../../layout/styles'
+import { createInfoStages } from './identityUtils'
 import { initStages } from '../../../utils'
+// import { useSelector } from "react-redux";
 
 import {
   MainContainer,
@@ -21,12 +23,13 @@ import {
 } from '../styles'
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
-
-const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
+const InfoComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
 
   const { dataForm, setDataForm } = handleDataForm
   const { state, setState } = handleState
   const [ loading, setLoading ] = useState(false)
+  // const user = useSelector(({ modelData:{ user } }) => user);
+
   // const [ toastMessage ] = useToast()
   const stageManager = useStage(
     // create the form stages
@@ -42,7 +45,7 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
     "onkeypress",
     true
   );
-
+  
   const {
     prevStage,
     nextStage,
@@ -55,14 +58,37 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
     setStageStatus
   } = stageManager
 
-
-  const nextStep = () => {
+  const nextStep = async() => {
     if(stageStatus !== 'success'){return}
-    nextStage()
     setStageStatus(null)
     document.querySelector(`[name="${stageData?.key}"]`).value = ""
     document.querySelector(".label_text__" + stageData?.key).style.color = 'gray'
+    setLoading(true)
+    if(currentStage >= (stageController.length - 1)){
+      await createInfoStages({
+        stageData,
+        dataForm,
+        setDataForm,
+        state
+      })
+    }
+    nextStage()
+    await getNextSelectList({
+      state,
+      stageData,
+      setDataForm
+    })
+    setLoading(false)
   }
+
+  const prevStep = () => {
+    setState(prevState => {
+      return { ...prevState, [stageData?.key]: "" }
+    })
+    return prevStage()
+  }
+
+  // console.log('dataForm', dataForm)
 
   const onChange = (e) => {
     e.target.preventDefault && e.target.preventDefault();
@@ -88,30 +114,31 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
 
-  
-
 
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
+        const documents = dataForm?.stages?.id_type?.selectList
+        const idDocument = state?.id_type
+        const document = (documents && idDocument) && documents[idDocument]
+        if(!document)return prevStage();
         setLoading(true)
-        let res = await ApiPostContact(state)
+        let res = await ApiPostIdentityInfo({document, ...state}, {setDataForm})
         setLoading(false)
         if(!res)return prevStage();
         const _dataForm = await initStages({
-          formName:'location',
+          formName:'identity',
         })
         return setDataForm(_dataForm)
-        // const requirementComponent = res
-        // const Element = await import(`../${requirementComponent}Component/init`)
-        // // eslint-disable-next-line react/jsx-pascal-case
-        // actions.renderModal(() => <Element.default/>)
       }
       execPost()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
+  // console.log('||||||||||||||||||||||||||||||||| dataForm ==> ', dataForm)
+  
+  // console.log('||||||||||||||||||||||||||||||||| state ==> ', state)
 
   if(loading){return <KycSkeleton/>}
 
@@ -119,13 +146,10 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
     // Render success Stage
     return (
       <KycSkeleton
-        // closeModal={closeModal}
+        closeModal={closeModal}
       />
     )
   }
-
-// console.log('___________________________________________dataForm', state, stageData)
-
 
   return(
       <Layout style={{background:"white"}}>
@@ -150,7 +174,7 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
               stages={dataForm?.stages}
               currentStage={currentStage}
               >
-              <BackButtom onClick={prevStage} disabled={currentStage <= 0}/>
+              <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
             </LabelComponent>
             <InputComponent
               onChange={onChange} 
@@ -185,6 +209,6 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
   )
 }
 
-export default ContactKycComponent
+export default InfoComponent
 
 

@@ -1,11 +1,11 @@
 import React from "react"
-import ConfettiComponent from '../success/confetti'
-import { Medal } from '../success/icons'
-import { LayoutContainer, ControlContainer } from '../success/styles'
-import { Button } from '../biometricKycComponent/styles'
-import Layout from '../layout'
+import ConfettiComponent from '../../success/confetti'
+import { Medal } from '../../success/icons'
+import { LayoutContainer, ControlContainer } from '../../success/styles'
+import { Button } from '../../biometricKycComponent/styles'
+import Layout from '../../layout'
 
-const PersonalKycSuccess = (props) => {
+const IdentityKycSuccess = (props) => {
 // const PersonalKycSuccess = ({ handleDataForm:{ setDataForm }, handleState:{ state, setState } }) => {
     return(
         <Layout background="white">
@@ -22,5 +22,5 @@ const PersonalKycSuccess = (props) => {
     )
 }
 
-export default PersonalKycSuccess
+export default IdentityKycSuccess
 

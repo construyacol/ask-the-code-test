@@ -7,8 +7,8 @@ import {
   INDETITY_COUNTRY_VALIDATORS_URL,
   INDETITY_UPDATE_PROFILE_URL,
   INDENTITY_ADD_BIOMETRIC_DATA_URL,
-  fileTest,
-  selfietest
+  // fileTest,
+  // selfietest
 } from "../const/const";
 import { LEVELS_INFO } from '../const/levels'
 import userDefaultModel from "../components/api";
@@ -33,7 +33,7 @@ export class IndetityService extends WebService {
       "data": {
         "country":"international", 
       }
-    }
+    } 
     const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
     if(res){
       const { data:{ requirements, name } } = res
@@ -53,19 +53,27 @@ export class IndetityService extends WebService {
  
 
   async createRequirementLevel() {
-    let res = await this.getNextLevel()
+    // let res = await this.getNextLevel()
+    let res = {
+      levelName:"level_1",
+      requirements:[
+        "contact",
+        "location",
+        "identity"
+      ]
+    }
     const user = this.user
-    // let _LEVELS_INFO = structuredClone(LEVELS_INFO)
     if(res){
         let requirements = []
         let levels = {}
         res.requirements.forEach(requeriment => {
-            if(!user[requeriment]){
+            if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
               requirements.push(requeriment)
             }
+
             if(res?.levelName === 'level_1'){
                 levels = {
-                    ...levels,
+                    ...levels, 
                     [requeriment]:LEVELS_INFO[res?.levelName][requeriment]
                 }
             }else{
@@ -78,10 +86,6 @@ export class IndetityService extends WebService {
         }
     }
   }
-
-
-
-
 
   async createContact({ phone }) {
     const body = {
@@ -110,6 +114,37 @@ export class IndetityService extends WebService {
       return await this.Get(url);
     }
 
+    async getDocumentList(nationality) {
+      if(!nationality)return ;
+      let query = `?filter={"where":{"nationality":"${nationality}"}}`
+      let url = `${IdentityApIUrl}documents${query}`;
+      const res = await this.Get(url);
+      const finalResponse = []
+      if(res?.length){
+        res.forEach(idItem => {
+          finalResponse.push({
+            ...idItem,
+            code:idItem.id_type,
+            name:idItem.id_type
+          })
+        })
+      }
+      return finalResponse
+    }
+
+    // TODO: Create util method from create querys
+    // ==> getOneDocument(filter) {
+    // if(typeof filter !== 'object')return;
+    // let key = Object.keys(filter)[0]
+    // let query = `?filter={"where":{"${key}":"${filter[key]}"}}`
+
+    async getOneDocument({ id_type, nationality }) {
+      let query = `?filter={"where":{"id_type":"${id_type}", "nationality":"${nationality}"}}`
+      let url = `${IdentityApIUrl}documents/findOne${query}`;
+      return await this.Get(url);
+    }
+
+    
     async createLocation(_body) {
       let body = {
         data:{
@@ -121,12 +156,64 @@ export class IndetityService extends WebService {
     }
 
 
+    async createIdentity(payload) {
+      const {
+        document_id,
+        info_needed
+      } = payload
+      const body = {
+        data: {
+          country:this.user.country,
+          document_id,
+          info_needed
+        }
+      }
+      return await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
+    }
+
+    async updateInfoIdentity(payload) {
+      const {
+        identity_id,
+        info_needed
+      } = payload
+      const body = {
+        data: {
+          country:this.user.country,
+          identity_id,
+          info_needed
+        }
+      }
+      return await this.Post(`${IdentityApIUrl}identities/add-info-to-identity`, body);
+    }
+
+
+    async addFilesToIdentity(payload) {
+      
+      const user = this.user
+      const {
+        identity_id,
+        files_needed
+      } = payload
+
+      const body = {
+        data: {
+          country:user?.country,
+          identity_id,
+          files_needed
+        }
+      }
+      return await this.Post(`${IdentityApIUrl}identities/add-files-to-identity`, body);
+    }
+
+
+
     
+
 
 
   async proofEndpoints() {
 
-    const { userId } = this.authData;
+    // const { userId } = this.authData;
 
     // const body = {
     //   "data": {
@@ -234,7 +321,7 @@ export class IndetityService extends WebService {
     // const body = {
     //   "data": {
     //     "country":"international",
-    //     "identity_id":"62699e1671047f0041280b1d",
+    //     "identity_id":"62705c0ec0e168004c564442",
     //     "files_needed":{
     //        "selfie":selfietest,
     //        "id_front":fileTest

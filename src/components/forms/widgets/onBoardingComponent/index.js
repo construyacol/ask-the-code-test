@@ -8,9 +8,11 @@ import loadable from '@loadable/component'
 // import { getBody } from '../../utils'
 // import { BackButtom, NextButtom } from './buttons'
 // import LabelComponent from './labelComponent'
-// import KycSkeleton from './skeleton'
+import KycSkeleton from './skeleton'
 import isoType from './assets/isoType.png'
-import PersonalKyc from '../personalKycComponent/init'
+// import PersonalKyc from '../personalKycComponent/init'
+// import { IconClose } from "../../../widgets/shared-styles";
+// import { useActions } from '../../../../hooks/useActions'
 
 import {
     Layout,
@@ -20,10 +22,11 @@ import {
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 const OnBoardingContainer = ({ handleDataForm, handleState }) => {
 
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   // const { state, setState } = handleState
-  const [ loading ] = useState(false)
+  const [ loading, setLoading ] = useState(false)
   // const validations = useValidations()
+    // const actions = useActions();
 
   const stageManager = useStage(
     // create the form stages
@@ -39,11 +42,12 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
   } = stageManager
 
 
-//   if(loading){return <KycSkeleton/>}
-  if(!loading && finalStage){
-    // Render success Stage
-      return <PersonalKyc/>
-  }
+  if(loading){return <KycSkeleton/>}
+  // if(!loading && finalStage){
+  //   // Render success Stage
+  //     return <PersonalKyc/>
+  // }
+  
 
   console.log('stageData', currentStage, finalStage)
 
@@ -57,6 +61,8 @@ const OnBoardingContainer = ({ handleDataForm, handleState }) => {
                   <DynamicLoadComponent
                       component={`onBoardingComponent/${stageData?.key}.js`}
                       nextStage={nextStage}
+                      setDataForm={setDataForm}
+                      setLoading={setLoading}
                   />
                 }
             </Content>

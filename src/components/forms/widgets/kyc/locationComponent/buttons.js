@@ -4,7 +4,7 @@ import { FiArrowRight, FiArrowLeft } from 'react-icons/fi'
 import { 
     IconBackContainer,
     IconNextContainer 
-} from './styles'
+} from '../styles'
 
 
 export const BackButtom = ({ onClick, disabled }) => {

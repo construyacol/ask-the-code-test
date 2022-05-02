@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import error_travolta from "../../../assets/error.png";
 // import errorIcon from "../../../assets/erroricon.png";
-import IconSwitch from '../icons/iconSwitch'
+// import IconSwitch from '../icons/iconSwitch'
 // import * as Sentry from '@sentry/browser';
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";

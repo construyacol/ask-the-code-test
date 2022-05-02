@@ -3,7 +3,7 @@ import {
   LabelContainer,
   TitleLabelContainer,
   Titles
-} from './styles'
+} from '../styles'
 
 
 const LabelComponent = ({ children, currentStage, stages, stageController }) => (
