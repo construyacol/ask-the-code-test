@@ -1,6 +1,7 @@
 import { 
-  COUNTRY_URL_API,
-  API_FETCH_SELECT_LIST
+  // COUNTRY_URL_API,
+  API_FETCH_SELECT_LIST,
+  INFO_URL_API
 } from './const'
 
 import { mainService } from '../../services/MainService'
@@ -112,7 +113,7 @@ export const createStage = async(source, modelated, index) => {
   return stage
 }
 
-
+ 
 export const createSelectList = async(list) => {
   let selectList = {}
   for (const item of list) {
@@ -129,7 +130,7 @@ export const createSelectList = async(list) => {
         }
       }
       if(item.flag){
-        selectList[item?.code].flag = `${COUNTRY_URL_API?.replace("/api/", "")}${item.flag}` 
+        selectList[item?.code].flag = `${INFO_URL_API?.replace("/api/", "")}${item.flag}` 
       }
       
     } 

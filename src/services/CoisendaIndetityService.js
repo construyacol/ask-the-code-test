@@ -228,6 +228,7 @@ export class IndetityService extends WebService {
     // 2: "regulation"
 
     // let url = `${IdentityApIUrl}users/${userId}/biometric`;
+    // this.getNextLevel()
     // let url = `${IdentityApIUrl}users/${userId}/userLevel`;
 
     // FORM INPUTS LOCATION
