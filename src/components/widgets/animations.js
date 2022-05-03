@@ -1,8 +1,44 @@
-import { keyframes } from "styled-components";
+import { keyframes, css } from "styled-components";
 // import { skeleton } from "./loaders/skeleton";
 
 // use: animation: swing-in-bottom-bck 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 
+export const callToAction = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+
+  79% { 
+    transform: rotate(0deg);
+  }
+
+  80% {
+    transform: rotate(3deg);
+  }
+
+  85% {
+    transform: rotate(-3deg);
+  }
+
+  90% {
+    transform: rotate(3deg);
+  }
+
+  95% {
+    transform: rotate(-3deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+`
+export const callToActionAnimation = css`
+  animation-name: ${callToAction};
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  transform-origin: center;
+`;
 
 export const show = keyframes`
   0% {

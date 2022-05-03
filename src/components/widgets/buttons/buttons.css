@@ -341,6 +341,7 @@
   align-self: center;
 }
 
+
 .contButton.loader {
   position: absolute;
   width: 100%;
@@ -613,6 +614,16 @@
   align-items: center;
   /*border: 2px solid #ff764b;*/
   border-radius: 6px;
+  transform-origin: center;
+}
+
+
+
+.contButton.callToAction{
+  animation-name: callToAction;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
   transform-origin: center;
 }
 

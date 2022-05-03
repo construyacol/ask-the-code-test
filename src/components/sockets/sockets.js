@@ -33,27 +33,25 @@ class SocketsComponent extends Component {
 
 //   async testSocket() {
 
-//     let profileMock = {
+//     let identityMock = {
 //       id:"6184c8f067e372004414b156",
-//       countries:{
-//         international:"level_1"
-//       } 
+//       file_state:"accepted"
 //     }
 
-//     setTimeout(()=>{
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//       this.profile_management(profileMock)
-//     }, 4000)
+//     // setTimeout(()=>{
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//       // this.identity_management(identityMock)
+//     // }, 4000)
 
-//     this.profile_management(profileMock)
+//     this.identity_management(identityMock)
    
 
 //     // let orderMock = {
@@ -174,9 +172,9 @@ class SocketsComponent extends Component {
               this.withdraw_account_mangagement(withdrawAccount);
             });
 
-            socket.on(`/identities/${user.id}`, async (profile) => {
-              if(profile.countries){
-                this.profile_management(profile)
+            socket.on(`/identity/${user.id}`, async (identity) => {
+              if(identity.file_state){
+                this.identity_management(identity)
               }
             });
 
@@ -787,24 +785,31 @@ class SocketsComponent extends Component {
 
   
 
-  profile_management = async(profile) => {
-    console.log(profile)
-    debugger
-    if(this.props.formModal){
-     await this.props.action.toggleModal(false); 
-    } 
-    await this.props.coinsendaServices.updateUserStatus(profile)
-    if(profile.countries.international === 'level_1'){
-      funcDebounce( 
-        {'storageProfile':`${profile.id}_${profile.countries.international}`}, 
-        () => {
-          this.props.coinsendaServices.init()
-          this.props.history.push(`/wallets`);
-        },
-        false,
-        8000
-      );
-    }
+  identity_management = async(identity) => {
+
+    
+    funcDebounce( 
+      {'storageidentity':`${identity.id}`}, 
+      async() => {
+        await this.props.coinsendaServices.updateUserStatus(identity)
+      },
+      false,
+      3000
+    );
+
+    if(["accepted"].includes(identity.file_state)){
+    funcDebounce( 
+      {storageIdentityState:`${identity.file_state}_${identity.id}`}, 
+      async() => {
+        await this.props.coinsendaServices.updateUserStatus(identity)
+        this.props.coinsendaServices.init()
+        this.props.history.push(`/wallets`);
+      },
+      false,
+      4000
+    );
+  }
+
   }
 
 

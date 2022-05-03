@@ -24,7 +24,7 @@ import useStage from '../../../hooks/useStage'
 // import { getBody } from '../../utils'
 // import { BackButtom, NextButtom } from './buttons'
 // import LabelComponent from './labelComponent'
-import KycSkeleton from './skeleton'
+// import KycSkeleton from './skeleton'
 // import isoType from './assets/isoType.png'
 // import PersonalKyc from '../personalKycComponent/init'
 import { img_compressor, readFile } from '../../../../../utils'
@@ -89,7 +89,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
 
   const goFileLoader = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-
+      setLoading(true)
       setOnDrag(false);
       const data = e.target.files[0];
       const file = await img_compressor(data, 0.25);
@@ -105,6 +105,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
           }}
         })
         nextStage(true)
+        setLoading(false)
       }, 500)
 
       
@@ -135,7 +136,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
  
 //   // const validations = useValidations()
 
-  if(loading){return <KycSkeleton/>}
+  // if(loading){return <KycSkeleton/>}
   if(!loading && finalStage){
     // Render success Stage
       return <IdentityKycSuccess/>

@@ -246,7 +246,7 @@ export const InputButton = (props) => {
  
 export const ButtonForms = (props) => {
   // SimpleLoader
-
+ 
 
   // Propiedades componente:
   // active: true/false, define si el boton esta o no disponible(available)

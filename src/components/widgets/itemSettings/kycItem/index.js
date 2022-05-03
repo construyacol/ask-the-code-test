@@ -7,6 +7,8 @@ import SimpleLoader, { LoaderContainer } from "../../loaders";
 import { OnlySkeletonAnimation } from "../../loaders/skeleton";
 import { mainService } from '../../../../services/MainService'
 import { useActions } from '../../../../hooks/useActions'
+import useViewport from '../../../../hooks/useWindowSize'
+
 // import { LEVELS_INFO } from '../../../../const/levels'
 // import { funcDebounce } from "../../../../utils";
 
@@ -18,6 +20,7 @@ export default function KycItemComponent() {
 
     const [ levels, setLevels ] = useState()
     const [ requirements, setRequeriments ] = useState([])
+    const { isMovilViewport } = useViewport()
 
     const user = useSelector(({ modelData:{ user } }) => user);
 
@@ -31,7 +34,7 @@ export default function KycItemComponent() {
 
     const atributos = {
         icon: "identity",
-        size: 40,
+        size: isMovilViewport ? 30 : 40,
         color: "#1babec",
     };
 
@@ -47,13 +50,16 @@ export default function KycItemComponent() {
         init()
     }, [user])
 
-
+    
     return(
         <Layout>
             <Container>
-                <IconContainer>
-                    <IconSwitch {...atributos} />
-                </IconContainer>
+                {
+                    !isMovilViewport &&
+                    <IconContainer>
+                        <IconSwitch {...atributos} />
+                    </IconContainer>
+                }
                 <InfoContainer>
                     <Title className='fuente'>Verificación de identidad</Title>   
                     <Description className='fuente'>La verificación de identidad es obligatoria para cumplir con las normativas vigentes</Description>   
@@ -71,6 +77,7 @@ export default function KycItemComponent() {
                             type={"primary"}
                             active={true}
                             siguiente={openModalKyc}
+                            clases="callToAction"
                             >
                             Verificar
                         </ButtonForms>
@@ -401,6 +408,9 @@ const StatusContainer = styled.div`
         background:rgb(202, 202, 202);
         color:rgb(202, 202, 202);
     }
+    @media (max-width: 768px) {
+        place-items:center;
+    }
 `
 
 
@@ -414,6 +424,9 @@ const Title = styled(Text)`
 `
 const Description = styled(Text)`
     font-size:15px;
+    @media (max-width: 768px) {
+        display:none;
+    }
 `
 
 
@@ -433,6 +446,11 @@ const InfoContainer = styled.div`
     align-items: center;
     grid-template-rows: 50px 30px 1fr;
     row-gap: 7px;
+    @media (max-width: 768px) {
+        row-gap: 15px;
+        text-align: center;
+        grid-template-rows: 50px 1fr;
+    }
 `
 
 const IconContainer = styled.div`
@@ -443,10 +461,13 @@ const IconContainer = styled.div`
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    border: 1px solid #d5d5d6;
     border: 2px solid var(--primary);
     z-index: 1;
     place-self: center;
+    @media (max-width: 768px) {
+        background: transparent;
+        border: none;
+    }
 `
 
 const Container = styled.div`
@@ -454,6 +475,12 @@ const Container = styled.div`
     display:grid;
     margin:15px 0;
     column-gap: 20px;
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        grid-template-rows:1fr auto;
+        row-gap:3.5rem;
+        column-gap: 10px;
+    }
 `
 
 const Layout = styled.div`
@@ -464,4 +491,7 @@ const Layout = styled.div`
     min-height: calc(190px - 40px);
     padding: 20px 0px;
     display:grid;
+    @media (max-width: 768px) {
+    padding: 0px 0px 20px;
+    }
 `
