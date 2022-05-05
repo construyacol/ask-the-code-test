@@ -23,7 +23,7 @@ import {
 } from '../styles'
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
-const InfoComponent = ({ handleDataForm, handleState, closeModal, actions }) => {
+const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) => {
 
   const { dataForm, setDataForm } = handleDataForm
   const { state, setState } = handleState
@@ -166,7 +166,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, actions }) => 
 
         <MainContainer>
           <TitleContainer id="titleContainer__">
-            <h1 className="titleContainer__h1 fuente">Verificación inicial</h1>
+            <h1 className="titleContainer__h1 fuente">{ props.isNewId ? 'Crea un documento de identidad' : 'Crea una identidad' }</h1>
           </TitleContainer>
           <StickyGroup background="white" id="stickyGroup__" >
             <LabelComponent 

@@ -1,18 +1,19 @@
 import { useEffect } from 'react'
 // import { Wrapper as Layout } from '../../layout/styles'
 import KycSkeleton from './skeleton'
-import { identityStates } from './identityUtils'
+import { identityInfo } from './identityUtils'
 
 
 
-export default function IdentityComponent ({ handleDataForm, handleState, closeModal, actions }) {
+export default function IdentityComponent ({ handleDataForm, isNewId}) {
 
     const { setDataForm } = handleDataForm
 
     const init = () => {
-        const { needDoInfoStage } = identityStates()
-        const wrapperComponent = needDoInfoStage ? 'kyc/identityComponent/info' : 'kyc/identityComponent/files'
-        // const wrapperComponent = 'kyc/identityComponent/files'
+        
+        const { pendingIdentityFile } = identityInfo()
+        const wrapperComponent = pendingIdentityFile ? 'kyc/identityComponent/files' : 'kyc/identityComponent/info'
+        
         return setDataForm(prevState => {
             return { 
               ...prevState,

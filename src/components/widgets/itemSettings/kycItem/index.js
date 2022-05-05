@@ -24,12 +24,13 @@ export default function KycItemComponent() {
 
     const user = useSelector(({ modelData:{ user } }) => user);
 
-    const openModalKyc = async() => {
-        const currentRequirement = requirements[0]
+    const openModalKyc = async(props = {}) => {
+        const currentRequirement = props?.componentRef || requirements[0]
+        if(!currentRequirement)return;
         const Element = await import(`../../../forms/widgets/kyc/${currentRequirement}Component/init`)
         // const Element = await import(`../../../forms/widgets/kyc/locationComponent/init`)
         // eslint-disable-next-line react/jsx-pascal-case
-        actions.renderModal(() => <Element.default/>)
+        actions.renderModal(() => <Element.default {...props} />)
     }
 
     const atributos = {
@@ -71,7 +72,7 @@ export default function KycItemComponent() {
                 </InfoContainer>
                 <ButtonContainer>
                 {
-                    (requirements?.length > 0 && mainService.getVerificationState() !== 'accepted') &&
+                    (requirements?.length > 0 && mainService.getVerificationState() !== 'accepted') ?
                         <ButtonForms
                             id="subItemSC"
                             type={"primary"}
@@ -80,6 +81,16 @@ export default function KycItemComponent() {
                             clases="callToAction"
                             >
                             Verificar
+                        </ButtonForms>
+                        :
+                    (mainService.getVerificationState() === 'accepted') &&
+                        <ButtonForms
+                            id="subItemSC"
+                            type={"secundary"}
+                            active={true}
+                            siguiente={() => openModalKyc({componentRef:'identity', isNewId:true})}
+                            >
+                            Crear identidad
                         </ButtonForms>
                 }
                 </ButtonContainer>
@@ -144,7 +155,9 @@ const StatusComponent = ({ levels, user, levelName }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [levels])
 
-    let errorMessage = user[currentStage]?.errors && user[currentStage]?.errors[0]
+    const userState = mainService.getVerificationState()
+    let errorMessage = (user[currentStage]?.errors && userState === 'rejected')  && user[currentStage]?.errors[0]
+
     if(!levels){return <StatusSkeleton/>}
 
     return(

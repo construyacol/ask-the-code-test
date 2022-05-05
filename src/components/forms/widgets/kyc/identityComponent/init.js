@@ -5,7 +5,7 @@ import { useActions } from '../../../../../hooks/useActions'
 import KycSkeleton from './skeleton.js'
 import Layout from '../../layout'
   
-const LocationKyc = () => {
+const IdentityForm = (props) => {
 
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
@@ -13,6 +13,7 @@ const LocationKyc = () => {
   const init = async() => {
     const _dataForm = await initStages({
       formName:'identity',
+      isNewId:props.isNewId
     })
     setDataForm(_dataForm)
   }
@@ -37,6 +38,7 @@ const LocationKyc = () => {
               closeModal={closeModal} 
               handleDataForm={{dataForm, setDataForm}}
               Fallback={KycSkeleton}  
+              {...props}
             />
             :
             <KycSkeleton/>
@@ -47,4 +49,4 @@ const LocationKyc = () => {
 }
 
 
-export default LocationKyc
+export default IdentityForm

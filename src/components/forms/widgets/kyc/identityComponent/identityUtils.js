@@ -3,13 +3,22 @@ import { createStage } from '../../../utils'
 import { mainService } from "../../../../../services/MainService";
 
 
-
-export const identityStates = () => {
+export const identityInfo = () => {
   const user = mainService.user
-  return {
-    needDoInfoStage:!user?.identity || (user?.identity && ["pending", "rejected"].includes(user?.identity?.info_state))
+  let pendingIdentityFile
+  const mainIdentity = user?.identity
+  const rejectedIdentity = ((["rejected"].includes(mainIdentity?.info_state) || ["rejected"].includes(mainIdentity?.file_state)) && mainIdentity?.file_state === mainIdentity?.info_state)
+
+  if(user?.identities?.length && !rejectedIdentity){
+    pendingIdentityFile = user?.identities.find(identity => ["pending", "rejected"].includes(identity?.file_state));
   }
+  
+  return {
+    pendingIdentityFile
+  }
+
 }
+ 
 
 export const createInfoStages = async({
     stageData,

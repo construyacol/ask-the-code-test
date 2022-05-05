@@ -154,16 +154,13 @@ const dataService = {
 export const initStages = async(config) => {
 
   const apiStages = await dataService[config.formName](config)
+
   if(!apiStages) return;
   const sourceStages = Object.keys(apiStages)
   
   let stages = {} 
 
-
   for (const stage of sourceStages) { 
-    // console.log('apiStages', apiStages, stage)
-    // console.log('formStructure', formStructure(config.formName))
-    // debugger
     stages = {
       ...stages,
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)

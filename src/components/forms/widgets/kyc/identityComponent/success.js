@@ -11,9 +11,9 @@ const IdentityKycSuccess = (props) => {
         <Layout background="white">
             <LayoutContainer className="show fuente">
                 <ConfettiComponent/>
-                <h1 style={{fontSize:"2em"}} >Verificación enviada {props?.state?.name?.toLowerCase()}</h1>
+                <h1 style={{fontSize:"2em"}} >Identidad creada {props?.state?.name?.toLowerCase()}</h1>
                 <Medal size={150} />
-                <p className="identitySuccess">Hemos recibido tus documentos. Una vez verificada la cuenta podrás empezar a operar.</p>
+                <p className="identitySuccess">El proceso de verificación de identidad puede tardar hasta 72 horas hábiles.</p>
                 <ControlContainer onClick={props.closeModal}>
                     <Button data-close_modal>Finalizar</Button>
                 </ControlContainer>

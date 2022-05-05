@@ -3,7 +3,7 @@ import {
   formatMaskDate, 
   parseDateToTimeStamp,
 } from '../utils'
-import { identityStates } from './identityUtils'
+import { identityInfo } from './identityUtils'
 
 export const INFO_DOCUMENT_NEEDED = {
   "name":{
@@ -184,13 +184,16 @@ const STAGES = {
 
 export const ApiGetIdentityStages = async(config) => {
 
-    const { needDoInfoStage } = identityStates()
-    if(needDoInfoStage) return INFO_NEEDED;
-    const { id_type, nationality } = mainService?.user?.identity
-    const document = await mainService.getOneDocument({ id_type, nationality })
-    if(!document)return FILES_NEEDED;
+  // const user = mainService?.user
+  const { pendingIdentityFile } = identityInfo()
+
+   if(pendingIdentityFile){
+    const { id_type, nationality } = pendingIdentityFile
+    const _document = await mainService.getOneDocument({ id_type, nationality })
+    if(!_document)return FILES_NEEDED;
+    
     let filesNeeded = {}
-    document?.file_needed.forEach(fileKey => {
+    _document?.file_needed.forEach(fileKey => {
       if(FILES_NEEDED[fileKey]){
         filesNeeded = {
           ...filesNeeded,
@@ -198,15 +201,41 @@ export const ApiGetIdentityStages = async(config) => {
         }
       }
     })
-
     return filesNeeded
+   }else{
+    return INFO_NEEDED;
+   }
+    
+
+
+
+
+
+    // if(needDoInfoStage || config?.isNewId) return INFO_NEEDED;
+    // const { id_type, nationality } = mainService?.user?.identity
+    // const document = await mainService.getOneDocument({ id_type, nationality })
+    // if(!document)return FILES_NEEDED;
+    // let filesNeeded = {}
+    // document?.file_needed.forEach(fileKey => {
+    //   if(FILES_NEEDED[fileKey]){
+    //     filesNeeded = {
+    //       ...filesNeeded,
+    //       [fileKey]:FILES_NEEDED[fileKey]
+    //     }
+    //   }
+    // })
+
+    // return filesNeeded
 }
 
 
 
 export const ApiPostIdentityInfo = async(payload) => {
+
   const config = structuredClone(payload);
   const user = mainService?.user
+  let res
+  const { pendingIdentityFile } = identityInfo()
 
   const isMaskBirthday = config.birthday.includes('/') 
   if(isMaskBirthday){
@@ -225,11 +254,11 @@ export const ApiPostIdentityInfo = async(payload) => {
     }
   })
 
-  let res
+
   if(["rejected"].includes(user?.identity?.info_state)){
     res = await mainService.updateInfoIdentity({
       ...config, 
-      identity_id:user?.identity?.id, 
+      identity_id:pendingIdentityFile ? pendingIdentityFile?.id : user?.identity?.id, 
       info_needed
     })
   }else{
@@ -252,7 +281,14 @@ export const ApiPostIdentityInfo = async(payload) => {
 
 export const ApiPostIdentityFiles = async(payload) => {
   const config = structuredClone(payload);
-  const { id_type, nationality, id } = mainService?.user?.identity
+  const user = mainService?.user
+
+  const { pendingIdentityFile } = identityInfo()
+  const mainIdentity = user?.user?.identity
+
+  const currentIdentity = pendingIdentityFile ? pendingIdentityFile : mainIdentity
+  const { id_type, nationality, id } = currentIdentity
+
   const _document = await mainService.getOneDocument({ id_type, nationality })
   if(!_document)return;
 
