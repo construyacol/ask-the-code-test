@@ -277,6 +277,7 @@ export class WithdrawService extends WebService {
                 "email":user.email || "default@coinsendaDepositApiUrl.com",
               },
               "country": user.country,
+              "identity_id":user?.identity?.id,
               provider_type
             } 
           };
@@ -284,8 +285,11 @@ export class WithdrawService extends WebService {
     if(payload.bank_name === 'efecty'){
       body.data.info_needed = payload.info_needed
     }
-    // console.log('||||||||  payload ===> ', payload)
-    // console.log('||||||||  body ===> ', body)
+
+    
+    console.log('||||||||  payload ===> ', payload)
+    console.log('||||||||  body ===> ', body)
+    debugger
 
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,
