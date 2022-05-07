@@ -445,10 +445,9 @@ export class IndetityService extends WebService {
     // let country = await objectToArray(country_object);
     const userLevels = profile?.countries?.international
 
-    let userDefault = this.user || userDefaultModel
-  
     let updatedUser = {
-      ...userDefault,
+      ...userDefaultModel,
+      ...this.user,
       // ...
       location,
       contact,
