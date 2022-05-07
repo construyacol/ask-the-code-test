@@ -103,7 +103,7 @@ export default function WithdrawConfirmation({
                     currentPriority={currentPriority}
                     setPriority={setPriority}
                 />
-
+ 
                 <DetailContainer>
                     <DetailTemplateComponent
                         items={orderDetail}

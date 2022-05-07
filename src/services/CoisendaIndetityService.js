@@ -406,6 +406,15 @@ export class IndetityService extends WebService {
   }
 
 
+  getMainIdentity(identities) {
+    if(identities?.length){
+      let mainIdentity = identities.find(identity => identity?.info_state === "accepted" && identity?.file_state === "accepted")
+      return mainIdentity || identities[0]       
+    }else return ;
+
+  }
+
+
   async fetchCompleteUserData() {
 
     await this.dispatch(appLoadLabelAction(loadLabels.CARGANDO_TU_INFORMACION));
@@ -422,7 +431,10 @@ export class IndetityService extends WebService {
     let contact = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/contact?country=international`)
     let location = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/location?country=international`)
     let identities = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/identities?country=international`)
-    let identity = identities && identities[0]
+    // Inicializamos identity buscando si hay por lo menos una identidad aceptada con eso la cuenta puede operar completamente, 
+    // si no tiene ninguna identidad aceptada entonces elejimos la identidad "rejectada" o "pendiente", si la tiene
+    // let identity = identities && identities[0]
+    let identity = this.getMainIdentity(identities)
     
     // const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
     // const secondResponse = await this.Get(finalUrlSecond);

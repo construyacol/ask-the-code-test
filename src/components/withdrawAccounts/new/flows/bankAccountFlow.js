@@ -20,6 +20,7 @@ import {
 // import MVList from "../../../widgets/itemSettings/modal_views/listView";
 import { createSelector } from "reselect";
 import withKeyActions from "../../../withKeyActions";
+import DialogWAccount from '../../dialog'
 
 // const dropDawnElements = [
 //   {name:'ahorro'},
@@ -83,7 +84,8 @@ class BankAccountFlow extends Component {
       res && res[0].info_needed.account_type
     );
     let account_type_list = await objectToArray(account_type_object);
-    console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| account_type_list |', account_type_list)
+    // console.log('|||||||||||||||||||||||||| °°°°°°°°°°°°°°°°°°°°°°°°°°°°°°| account_type_list |', account_type_list)
+    // debugger
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : BANK LIST', serve_bank_list)
     // console.log(' --- - - - - -- - - - - -  °°°°|||||°°°   : VIRGIN BANK', bank_list)
 
@@ -107,7 +109,7 @@ class BankAccountFlow extends Component {
         const info_needed = {...this.props.withdraw_providers_list && this.props.withdraw_providers_list[0].info_needed}
         const shortName = this.props.short_name
         const accountTypes = info_needed.bank_name[shortName] && info_needed.bank_name[shortName].compatible_account_types.map((accountId)=>{
-          return info_needed.account_type[accountId]
+          return {...info_needed.account_type[accountId], enabled:true}
         })
         console.log('===================================0 accountTypes ',  accountTypes, info_needed)
         if(accountTypes){
@@ -134,6 +136,17 @@ class BankAccountFlow extends Component {
 
     this.props.actualizarEstado(body);
   };
+
+  updateIdType = (e) => {
+    e.persist && e.persist();
+    this.props.actualizarEstado(e)
+    let _idType = e?.target?.value
+    const idTypeEnabled = this.props?.idTypes && this.props?.idTypes[_idType]
+    if(!idTypeEnabled?.enabled){
+      let idTypeDialog = document.querySelector("#idTypeDialog")
+      console.log(idTypeDialog.showModal())
+    }
+  }
  
   render() {
     const {
@@ -151,7 +164,7 @@ class BankAccountFlow extends Component {
       actualizarEstado,
       // city,
       final_step_create_account,
-      // id_type,
+      id_type,
       // id_number,
       // user,
       idAccept,
@@ -159,8 +172,8 @@ class BankAccountFlow extends Component {
     } = this.props;
 
     const { banks, loader } = this.state;
-
-    console.log('|||||| step::', bank_name)
+    const idTypeEnabled = this.props?.idTypes && this.props?.idTypes[id_type]
+    // console.log('|||||||||||||   idTypeEnabled', idTypeEnabled)
 
     return (
       <Fragment>
@@ -249,7 +262,8 @@ class BankAccountFlow extends Component {
                   await handleSubmit(e)
                   final_step_create_account(e)
                 }}>
-                  <div className="contForminputsAccount">
+                  <div className="contForminputsAccount accountSettings_">
+ 
                     <DropDownContainer
                       placeholder="Tipo de cuenta"
                       elements={this.state.account_types}
@@ -257,7 +271,7 @@ class BankAccountFlow extends Component {
                       actualizarEstado={actualizarEstado}
                       name="account_type"
                       selected={account_type}
-                      active={account_type && account_number}
+                      active={account_type && account_number && idTypeEnabled?.enabled}
                     />
 
                     <InputForm
@@ -267,19 +281,31 @@ class BankAccountFlow extends Component {
                       name="account_number"
                       autoFocus={true}
                       actualizarEstado={actualizarEstado}
-                      active={account_type && account_number}
+                      active={account_type && account_number && idTypeEnabled?.enabled}
                       value={account_number}
                       handleKeyPress={handleKeyPress}
                       status={statusInput}
                     />
+
+                    <DropDownContainer
+                      placeholder="Documento de identidad"
+                      elements={this.props.idTypesList}
+                      label="Elige el documento con el que abriste la cuenta:"
+                      actualizarEstado={this.updateIdType}
+                      name="id_type"
+                      selected={id_type}
+                      active={account_type && account_number && idTypeEnabled?.enabled}
+                    />
                   </div>
+
+                  
                   <div id="bankChooseButton" className={`contbuttonAccount ${osDevice}`}>
                     <InputButton
                       id={idAccept}
                       preventSubmit={true}
                       label="Continuar"
                       type="primary"
-                      active={account_type && account_number}
+                      active={account_type && account_number && idTypeEnabled?.enabled}
                     />
                   </div>
                 </form>
@@ -288,6 +314,7 @@ class BankAccountFlow extends Component {
             </div>
           </div>
         )}
+            <DialogWAccount idType={idTypeEnabled}/>
       </Fragment>
     );
   }
@@ -317,16 +344,27 @@ const selectWithdrawProviders = createSelector(
   }
 );
 
-function mapStateToProps(state) {
+function mapStateToProps(state, props) {
+
   const { user } = state.modelData;
   const { osDevice } = state.ui
+  let idTypesList = []
+  if(props?.idTypes){
+    idTypesList = Object.keys(props?.idTypes).map(idTypeKey => {
+      return props?.idTypes[idTypeKey]
+    })
+  console.log('idTypesList', idTypesList)
+  }
+
 
   return {
     withdraw_providers_list: selectWithdrawProviders(state),
     user: user,
     current: state.form.current,
-    osDevice
+    osDevice,
+    idTypesList
   };
+  
 }
 
 export default connect(

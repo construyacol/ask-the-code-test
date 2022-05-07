@@ -20,12 +20,13 @@ class WithdrawAccountForm extends Component {
     id_type: null,
     statusInput: "",
     withdraw_way: "bankaccount",
-    provider_type: "",
+    provider_type: "", 
     id_number: "",
     city: "medellin",
     // email: this.props.user.email,
     currency: null,
     ticket: null,
+    idTypes:null
   };
 
   update_control_form = (searchMatch) => {
@@ -168,8 +169,7 @@ class WithdrawAccountForm extends Component {
 
     const name = event.target.name;
     let value = event.target.value;
-    // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
-    console.log('|||||||||||||||||||||||||||||||||||||||||||  actualizarEstado  ===>', event.target, this.state)
+    
 
     window.requestAnimationFrame(() => {
       let truncateString = false;
@@ -263,7 +263,42 @@ class WithdrawAccountForm extends Component {
     document.removeEventListener("click", this.clearState);
 }
 
+  async getIdTypeList() {
+
+    const { coinsendaServices, user:{ location, identities } } = this.props
+    const countryLocation = location?.country
+    if(!countryLocation || !identities?.length)return ; 
+    let userIdentities = {}
+    identities.forEach(userIdentity => {
+      userIdentities = {
+        ...userIdentities,
+        [userIdentity?.id_type]:userIdentity
+      }
+    })
+
+    let idTypes = {} 
+    let documentList = this.state?.idTypes?.length ? this.state.idTypes : await coinsendaServices.getDocumentList(countryLocation)
+    if(documentList?.length){
+      documentList.forEach(idType => {
+        idTypes = {
+          ...idTypes,
+          [idType?.code]:{
+            ...idType,
+            value:idType?.code,
+            ui_name:idType?.name,
+            enabled:userIdentities[idType?.code] && true,
+            id:userIdentities[idType?.code]?.id || idType?.id
+          }
+        }
+      });
+    }
+
+   return this.setState({ idTypes });
+    
+  }
+
   componentDidMount() {
+    this.getIdTypeList()
     document.addEventListener('click', this.clearState)
 
     setTimeout(() => {
@@ -282,6 +317,11 @@ class WithdrawAccountForm extends Component {
   componentDidUpdate(prevProps) {
 
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+    
+    if(prevProps?.user?.identities !== this.props?.user?.identities){
+      this.getIdTypeList()
+    }
+
     if (prevProps.step === this.props.step) {
       return;
     }
@@ -320,6 +360,9 @@ class WithdrawAccountForm extends Component {
   }
 
   render() {
+
+    
+    // debugger
     // console.log('R E N D E R I Z A N D O',this.props.action)
     // console.log('ESTAMOS RENDERIZANDO EL S T A T E de BANK ::::::  ', this.state)
     const {

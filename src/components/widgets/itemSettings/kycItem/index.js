@@ -28,7 +28,6 @@ export default function KycItemComponent() {
         const currentRequirement = props?.componentRef || requirements[0]
         if(!currentRequirement)return;
         const Element = await import(`../../../forms/widgets/kyc/${currentRequirement}Component/init`)
-        // const Element = await import(`../../../forms/widgets/kyc/locationComponent/init`)
         // eslint-disable-next-line react/jsx-pascal-case
         actions.renderModal(() => <Element.default {...props} />)
     }
