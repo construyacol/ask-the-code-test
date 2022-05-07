@@ -21,7 +21,7 @@ class ScoresComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.security_center !== this.props.user.security_center) {
+    if (nextProps.user?.identities !== this.props.user?.identities) {
       this.calculate_width_bar(nextProps.user);
     }
   }
