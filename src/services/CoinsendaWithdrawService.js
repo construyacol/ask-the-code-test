@@ -249,7 +249,7 @@ export class WithdrawService extends WebService {
       id_type
     } = payload;
 
-    let identity_id = idTypes[id_type]?.enabled && idTypes[id_type]?.id
+    let identity_id = id_type && idTypes[id_type]?.enabled && idTypes[id_type]?.id
 
     let body =
       type === "cripto"
