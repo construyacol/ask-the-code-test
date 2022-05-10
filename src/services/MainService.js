@@ -7,9 +7,8 @@ import { IndetityService } from "./CoisendaIndetityService";
 import { DepositService } from "./CoinsendaDepositService";
 import { SwapService } from "./CoinsendaSwapService";
 import { AccountService } from "./CoinsendaAccountService";
-import { FreshChatService } from "./CoinsendaFreshChatService";
+// import { FreshChatService } from "./CoinsendaFreshChatService";
 import { PushNotificationService } from "./pushNotifications";
-import userSource from "../components/api";
 import normalizeUser from "../schemas";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import isAppLoading, {
@@ -63,7 +62,7 @@ const inheritances = aggregation(
   DepositService,
   SwapService,
   AccountService,
-  FreshChatService,
+  // FreshChatService,
   PushNotificationService
 );
 
@@ -104,10 +103,7 @@ export class MainService extends inheritances {
 
 
 
-  async loadFirstEschema() {
-    const dataNormalized = await normalizeUser(userSource);
-    this.dispatch(updateNormalizedDataAction(dataNormalized));
-  }
+
 
   // async countryValidator() {
   //     // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
@@ -147,14 +143,11 @@ export class MainService extends inheritances {
 
     const userWallets = await this.userHasWallets();
     const withOutWallets = userWallets?.length < 1
-    const verificationStatus = await this.getVerificationState();
-
+    const verificationStatus = this.getVerificationState();
     if (withOutWallets && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
     }
-
     await this.getWalletsByUser()
-
     this.postLoader(callback, false);
     return;
   }
@@ -179,7 +172,7 @@ export class MainService extends inheritances {
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
       this.checkAndUpdateUserStatus()
-      this.dispatch(
+      this.dispatch( 
         updateLoadersAction({
           mainList: false,
         })

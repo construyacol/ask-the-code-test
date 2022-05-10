@@ -246,13 +246,13 @@ export const InputButton = (props) => {
  
 export const ButtonForms = (props) => {
   // SimpleLoader
-
+ 
 
   // Propiedades componente:
   // active: true/false, define si el boton esta o no disponible(available)
   // type: primary / Secondary || estos valores definen los estilos del boton por jerarquía visual call to action primario y secundario
   // siguiente: evento a enlazar el boton
-
+ 
   const { clases, id, loader, _id } = props;
 
   return (

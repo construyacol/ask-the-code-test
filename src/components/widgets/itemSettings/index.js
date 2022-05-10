@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import ItemSettings from "./itemSettings";
-
+import KycItemComponent from './kycItem' 
+// import { mainService } from "../../../services/MainService"; 
 // const country = [
 //   "colombia",
 //   "chile",
@@ -12,6 +13,8 @@ import ItemSettings from "./itemSettings";
 //   "argentina"
 // ]
 
+
+
 class ItemSettingsInit extends Component {
   item_action = async (item) => {
     const { user } = this.props;
@@ -19,7 +22,6 @@ class ItemSettingsInit extends Component {
     const { phone } = user.settings;
     const { name, other_state } = item;
 
-    // debugger
 
     switch (name) {
       case "kyc_basic":
@@ -171,6 +173,7 @@ class ItemSettingsInit extends Component {
 
     // console.log('|||desde el componente ItemSettings', name, payload)
 
+    // debugger
     switch (name) {
       case "email":
         return {
@@ -181,7 +184,7 @@ class ItemSettingsInit extends Component {
       case "identity":
         return {
           available: true,
-          verify: true,
+          verify: this.props.verification_state === 'accepted' ? true : false,
           classic_view: movil_viewport,
         };
       case "kyc_financial":
@@ -283,13 +286,14 @@ class ItemSettingsInit extends Component {
 
     return (
       <section className="SecurityCenter">
+        <KycItemComponent/>
         {data &&
           data.map((item) => {
             return (
               <ItemSettings
                 name={item.name}
                 item={item}
-                key={item.id}
+                key={item.id} 
                 item_action={this.item_action}
                 update_state={this.update_state}
                 {...this.props}
@@ -303,10 +307,13 @@ class ItemSettingsInit extends Component {
 
 function mapStateToProps(state, props) {
   const { user } = state.modelData;
+  const { verification_state } = state.ui
+
   return {
     loader: state.isLoading.loader,
     advace_global_step: state.form.globalStep,
     user: user,
+    verification_state
   };
 }
 

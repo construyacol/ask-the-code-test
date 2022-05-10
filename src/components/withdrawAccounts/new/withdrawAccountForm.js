@@ -7,6 +7,7 @@ import actions from "../../../actions";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../../withCoinsendaServices";
 import { createSelector } from "reselect";
+import { UI_NAMES } from '../../../const/uiNames'
 
 class WithdrawAccountForm extends Component {
 
@@ -20,12 +21,13 @@ class WithdrawAccountForm extends Component {
     id_type: null,
     statusInput: "",
     withdraw_way: "bankaccount",
-    provider_type: "",
+    provider_type: "", 
     id_number: "",
     city: "medellin",
-    // email: this.props.user.email,
+    // email: this.props.user.email, 
     currency: null,
     ticket: null,
+    idTypes:null
   };
 
   update_control_form = (searchMatch) => {
@@ -168,8 +170,7 @@ class WithdrawAccountForm extends Component {
 
     const name = event.target.name;
     let value = event.target.value;
-    // console.log('|||||| ACTUALIZANDO ESTADO:::', name, value)
-    console.log('|||||||||||||||||||||||||||||||||||||||||||  actualizarEstado  ===>', event.target, this.state)
+    
 
     window.requestAnimationFrame(() => {
       let truncateString = false;
@@ -225,10 +226,10 @@ class WithdrawAccountForm extends Component {
     // this.props.action.UpdateFormControl('bank',false)
     // this.update_form(this.state)
     if(this.state.bank_name === 'efecty'){
-      this.props.action.IncreaseStep(this.props.current);
-      this.props.action.IncreaseStep(this.props.current);
-      this.props.action.IncreaseStep(this.props.current);
-      return this.crearCuenta();
+      // this.props.action.IncreaseStep(this.props.current);
+      // this.props.action.IncreaseStep(this.props.current);
+      // this.props.action.IncreaseStep(this.props.current);
+      // return this.crearCuenta();
     }
     if (this.props.step === 1) {
       await this.cleanSearch();
@@ -250,21 +251,56 @@ class WithdrawAccountForm extends Component {
     this.props.action.cleanSearch("bank");
   };
 
-  clearState = (e) => {
-    if(e?.target?.id === 'modal-backstep-button' && this.state.bank_name === 'efecty'){
-      // this.setState({bank_name:""})
-      // this.update_form()
-      this.props.action.CleanForm("bank");
-      this.props.action.CleanForm("withdraw");
-  }
-  }
+  // clearState = (e) => {
+  //   if(e?.target?.id === 'modal-backstep-button' && this.state.bank_name === 'efecty'){
+  //     alert()
+  //     // this.setState({bank_name:""})
+  //     // this.update_form()
+  //     this.props.action.CleanForm("bank");
+  //     this.props.action.CleanForm("withdraw");
+  // }
+  // }
 
-  componentWillUnmount() {
-    document.removeEventListener("click", this.clearState);
-}
+  // componentWillUnmount() {
+  //   document.removeEventListener("click", this.clearState);
+  // }
+
+  async getIdTypeList() {
+
+    const { user:{ identities } } = this.props
+
+    if(!identities?.length)return ; 
+
+    let userIdentities = {}
+
+    identities.forEach(userIdentity => {
+      userIdentities = {
+        ...userIdentities,
+        [userIdentity?.document_info?.id_number]:{
+          ...userIdentity,
+            ui_name:`${UI_NAMES?.documents[userIdentity?.id_type]} - ${userIdentity?.document_info?.id_number}`,
+            enabled:true,
+            value:userIdentity?.document_info?.id_number,
+        }
+      }
+    })
+
+    userIdentities = {
+      ...userIdentities,
+      newIdentity:{
+        ui_name:"Otro documento",
+        enabled:false,
+        value:"newIdentity"
+      }
+    }
+
+   return this.setState({ idTypes:userIdentities });
+    
+  }
 
   componentDidMount() {
-    document.addEventListener('click', this.clearState)
+    this.getIdTypeList()
+    // document.addEventListener('click', this.clearState)
 
     setTimeout(() => {
       this.props.history.push(`?form=wa_terms`);
@@ -282,6 +318,11 @@ class WithdrawAccountForm extends Component {
   componentDidUpdate(prevProps) {
 
     // inserto las siguientes rutas para poder hacer seguimiento al funnel desde hotjar
+    
+    if(prevProps?.user?.identities !== this.props?.user?.identities){
+      this.getIdTypeList()
+    }
+
     if (prevProps.step === this.props.step) {
       return;
     }
@@ -320,8 +361,7 @@ class WithdrawAccountForm extends Component {
   }
 
   render() {
-    // console.log('R E N D E R I Z A N D O',this.props.action)
-    // console.log('ESTAMOS RENDERIZANDO EL S T A T E de BANK ::::::  ', this.state)
+
     const {
       step,
       search,
@@ -330,7 +370,7 @@ class WithdrawAccountForm extends Component {
       eventName = "onkeyup",
     } = this.props;
 
-    // console.log('R E N D E R I Z A N D O', step)
+    // console.log('--- idTypes ==> ', this.state.idTypes)
 
     return (
       <WithdrawAccountFormLayout

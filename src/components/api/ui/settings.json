@@ -29,32 +29,8 @@
           "verify": true,
           "cta_primary": "Verificar",
           "cta_secondary": "Verificado",
-          "tree": true,
-          "available": true,
-          "type": "identity"
-        },
-        {
-          "id": 2,
-          "name": "kyc_basic",
-          "label": "Inicial",
-          "description": "Completa los datos basicos de tu perfil (nombres, apellidos, pais, ciudad etc...)",
-          "verify": false,
-          "cta_primary": "Verificar",
-          "cta_secondary": "Verificado",
           "tree": false,
           "available": true,
-          "type": "identity"
-        },
-        {
-          "id": 3,
-          "name": "kyc_advanced",
-          "label": "Intermedia",
-          "description": "Adjunta foto tipo selfie con documento y papel en mano donde se vea la fecha actual",
-          "verify": false,
-          "cta_primary": "Verificar",
-          "cta_secondary": "Verificado",
-          "tree": false,
-          "available": false,
           "type": "identity"
         }
       ]

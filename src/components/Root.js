@@ -17,7 +17,7 @@ import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
 import {
   // doLogout,
-  verifyTokensValidity,
+  // verifyTokensValidity,
   saveUserToken,
   getUserToken
 } from "./utils";
@@ -41,7 +41,7 @@ function RootContainer(props) {
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
   
-  const [ showOnBoarding, setShowOnBoarding ] = useState(true)
+  const [ showOnBoarding, setShowOnBoarding ] = useState(false)
 
   const initComponent = async () => {
 
@@ -68,10 +68,9 @@ function RootContainer(props) {
       });
     }
 
-    verifyTokensValidity()
+    // verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
-
     
     const parent = window.parent;
     if(parent){
@@ -101,13 +100,14 @@ function RootContainer(props) {
   useEffect(() => {
     if(showOnBoarding){ 
       const initOnBoarding = async() => {
-        // const Element = await import("./forms/widgets/onBoardingComponent/init");
-        const Element = await import("./forms/widgets/identityKycComponent/init");
-        // const Element = await import("./forms/widgets/personalKycComponent/init");
+        const Element = await import("./forms/widgets/onBoardingComponent/init");
+        // const Element = await import("./forms/widgets/identityKycComponent/init");
+      // const Element = await import("./forms/widgets/personalKycComponent/init");
+        // const Element = await import("./forms/widgets/kyc/locationComponent/init");
         const OnBoardingComponent = Element.default
         return props.actions.renderModal(() => <OnBoardingComponent/>); 
       }
-      initOnBoarding()
+        initOnBoarding()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOnBoarding])

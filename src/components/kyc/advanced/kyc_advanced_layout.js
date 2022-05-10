@@ -17,16 +17,16 @@ const KycAdvancedLayout = (props) => {
     loader,
     step,
     kyc_success,
-    finish,
+    // finish,
   } = props;
 
   const callKycSuccess = async() => {
-    const Element = await import("../../forms/widgets/identityKycComponent/success");
-    const IdentityKycSuccessComponent = Element.default
-    props.action.renderModal(() => <IdentityKycSuccessComponent  closeModal={() => {
-      props.action.renderModal(null)
-      finish()
-    }} />); 
+    // const Element = await import("../../forms/widgets/identityKycComponent/success");
+    // const IdentityKycSuccessComponent = Element.default
+    // props.action.renderModal(() => <IdentityKycSuccessComponent  closeModal={() => {
+    //   props.action.renderModal(null)
+    //   finish()
+    // }} />); 
   }
 
   useEffect(() => {

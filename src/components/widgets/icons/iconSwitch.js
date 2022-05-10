@@ -28,7 +28,7 @@ const Bancamia = loadable(() => import("./").then(getExportByName("Bancamia")));
 const International = loadable(() => import("./").then(getExportByName("International")));
 const Email = loadable(() => import("./").then(getExportByName("Email")));
 const IconDefault = loadable(() => import("./").then(getExportByName("IconDefault")));
-const Person = loadable(() => import("./").then(getExportByName("Person")));
+// const Person = loadable(() => import("./").then(getExportByName("Person")));
 const Verify1 = loadable(() => import("./").then(getExportByName("Verify1")));
 const Identification = loadable(() => import("./").then(getExportByName("Identification")));
 const PageNotFound = loadable(() => import("./").then(getExportByName("PageNotFound")));
@@ -167,13 +167,27 @@ const Bancolombia = loadable(() => import("./logos").then(getExportByName("Banco
 const Coinsenda = loadable(() => import("./logos/coinsenda"));
 const BancoBogota = loadable(() => import("./logos/bancoBogota"));
 const Bbva = loadable(() => import("./logos/bbva"));
+ 
+
+const Contact = loadable(() => import("./").then(getExportByName("Contact")));
+const FingerPrint = loadable(() => import("./").then(getExportByName("FingerPrint")));
+const Location = loadable(() => import("./").then(getExportByName("Location")));
+
+
 
 class IconSwitch extends Component {
   switcher = (props) => {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
-      
+      case "location":
+        return <Location {...props} />;
+      case "identity":
+        return <FingerPrint {...props} />;
+    // case "identity":
+    // return <Person {...props} />;
+      case "contact":
+        return <Contact {...props} />;
       case "withdrawConfirm":
         return <WithdrawConfirm {...props} />;
       case "banco_btg_pactual":
@@ -306,8 +320,7 @@ class IconSwitch extends Component {
       case "rejected":
       case "error":
         return <Errors {...props} />;
-      case "identity":
-        return <Person {...props} />;
+      
       case "kyc_basic":
         return <Verify1 {...props} />;
       case "kyc_advanced":

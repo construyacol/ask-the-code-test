@@ -1,11 +1,16 @@
 import { 
-  INFO_URL_API  
+  // COUNTRY_URL_API,
+  API_FETCH_SELECT_LIST,
+  INFO_URL_API
 } from './const'
 
+import { mainService } from '../../services/MainService'
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
-import { ApiGetIdentityStages } from './widgets/identityKycComponent/api'
+import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
+import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
+import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
@@ -59,25 +64,32 @@ export const onSubmit = async(callback, TimeOut = 100) => {
 
 
 
-const generateSelectList = (objectList) => {
+export const generateSelectList = (objectList) => {
   let selectList = {...objectList}
   delete selectList.ui_name
   delete selectList.ui_type
   // eslint-disable-next-line array-callback-return
-  Object.keys(selectList).map(key => {
+  Object.keys(selectList).forEach(key => {
     selectList[key].uiName = selectList[key]?.ui_name || selectList[key]?.name
     selectList[key].value = key
     delete selectList[key]?.ui_name
     delete selectList[key]?.name
-    delete selectList[key]?.id
+    // delete selectList[key]?.id
     delete selectList[key]?.code
   })
   return selectList
 }
 
-const createStage = (source, modelated, index) => {
-  
-  let _source = {...source}
+export const getSelectList = async(listKey, payload) => {
+  let list 
+  let res = await mainService[API_FETCH_SELECT_LIST[listKey]] && await mainService[API_FETCH_SELECT_LIST[listKey]](payload)
+  if(!res){return}
+  list = await createSelectList(res)
+  return generateSelectList(list)
+}
+
+export const createStage = async(source, modelated, index) => {
+  let _source = typeof source === 'object' ? structuredClone(source) : {...source};
   let stage = {}
 
   _source.uiName = _source.ui_name
@@ -85,67 +97,45 @@ const createStage = (source, modelated, index) => {
   delete _source.ui_name
   delete _source.ui_type
   
-  Object.keys(_source).map(async key => {
+  Object.keys(_source).forEach(key => {
     // TODO: refactor to for -- in
-    // if(key.match("uiName") || key.match("uiType")){
       stage = {
         key:index,
         ...stage,
         ...modelated,
         [key]:_source[key]
       }
-    // }
-    if(stage[key] === 'select'){
-      let selectSource = source
-      if(['nationality', 'country'].includes(stage.key)){
-        selectSource = await getNationalityList(selectSource)
-      }
-
-      stage.selectList = generateSelectList(selectSource)
-    }
   })
-  
+
+  if(_source?.uiType === 'select'){
+    stage.selectList = await getSelectList(stage?.key)
+  }
   return stage
 }
 
-
-const getNationalityList = async(selectList) => {
-  // TODO : fix compatibility of country lists 
-  const response = await fetch(`${INFO_URL_API}/api/countrys`);
-  const res  = await response.json()
-  if(!res){return}
-  
-  let countrySource = {}
-  let _selectList = JSON.parse(JSON.stringify(selectList))
-  delete _selectList?.ui_name
-  delete _selectList?.ui_type  
-
-  for (const country of res) {
-    country.code = country.code.split(" ").join("_")
-    country.currencySymbol = country.currency_symbol
-    delete country.currency_symbol
-   
-    let countryKey = _selectList[country?.code] && country?.code
-    let countryUiName = _selectList[country?.code]?.ui_name
-
-    // 16 country no match
-    //  if(!countryKey){
-    //    console.log('currenciesNotMatch :', country?.code)
-    //  }
-
-    if(countryKey){
-      countrySource = {
-        ...countrySource,
-        [countryKey]:{
-          ...country,
-          name:countryUiName,
-          flag:`${INFO_URL_API}${country.flag}` 
+ 
+export const createSelectList = async(list) => {
+  let selectList = {}
+  for (const item of list) {
+    // item.code = item.code.split(" ").join("_")
+    item.currencySymbol = item.currency_symbol
+    delete item.currency_symbol
+    let itemUiName = item?.name
+    if(item?.code){
+      selectList = {
+        ...selectList,
+        [item?.code]:{
+          ...item,
+          name:itemUiName
         }
       }
-      delete _selectList[country?.code]
+      if(item.flag){
+        selectList[item?.code].flag = `${INFO_URL_API?.replace("/api/", "")}${item.flag}` 
+      }
+      
     } 
   }
-  return {...countrySource, ..._selectList}
+  return {...selectList}
 }
 
  
@@ -155,13 +145,16 @@ const dataService = {
   personal:ApiGetPersonalStages,
   identity:ApiGetIdentityStages, 
   fiatDeposit:ApiGetOnFiatDepositStages,
-  newWallet:ApiGetNewWalletStages
+  newWallet:ApiGetNewWalletStages,
+  location:ApiGetLocationStages,
+  contact:ApiGetContactStages
 }
 
 
 export const initStages = async(config) => {
 
   const apiStages = await dataService[config.formName](config)
+
   if(!apiStages) return;
   const sourceStages = Object.keys(apiStages)
   
@@ -170,7 +163,7 @@ export const initStages = async(config) => {
   for (const stage of sourceStages) { 
     stages = {
       ...stages,
-      [stage]:createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
+      [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 // import useValidations from '../../hooks/useInputValidations'
 import validations from './validations'
-import Layout from '../layout'
 import useStage from '../../hooks/useStage'
 import loadable from '@loadable/component'
 import InputComponent from './input'
@@ -13,6 +12,7 @@ import { ApiPostPersonalKyc } from './api'
 import useToast from '../../../../hooks/useToastMessage'
 import SuccessComponent from './success'
 import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick';
+import { Wrapper as Layout } from '../layout/styles'
 
 import {
   MainContainer,
@@ -123,7 +123,7 @@ const PersonalKycComponent = ({ handleDataForm, handleState, closeModal, actions
 
 
   return(
-      <Layout background="white" >
+      <Layout style={{background:"white"}}>
         { 
           dataForm?.handleError?.errors &&
           <DynamicLoadComponent

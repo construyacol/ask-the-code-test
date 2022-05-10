@@ -58,12 +58,12 @@ export class SwapService extends WebService {
   } 
 
   async getPairsByCountry(country, currencies) {
+
     const localCurrency = await this.getLocalCurrency(country);
 
     if (!localCurrency) {
       return console.log("No se ha encontrado país en getPairsByCountry");
     }
-
     
     const pairs = await this.pairsRequest({"visible":true, "secondary_currency.currency": `${localCurrency.currency}`});
     if (!pairs) return;
@@ -72,8 +72,6 @@ export class SwapService extends WebService {
 
     if (currencies) {
       const localCurrencies = await this.addSymbolToLocalCollections(pairs?.data, localCurrency.currency, currencies);
-      // console.log(localCurrencies)
-      // debugger
       if (
         this.isCached("getPairsByCountry_", localCurrencies, false) &&
         this.globalState.modelData.pairs.currentPair

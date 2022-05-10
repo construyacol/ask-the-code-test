@@ -21,7 +21,7 @@ class ScoresComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.user.security_center !== this.props.user.security_center) {
+    if (nextProps.user?.identities !== this.props.user?.identities) {
       this.calculate_width_bar(nextProps.user);
     }
   }
@@ -36,9 +36,9 @@ class ScoresComponent extends Component {
 
     // console.log('||||| ScoresComponent_calculate_width_bar - ', `financial : ${financial}, basic:${basic}, advanced: ${advanced} `)
     let basic_percent =
-      basic === "confirmed" ? 12 : basic === "accepted" ? 24 : 0;
+      basic === "confirmed" ? 12 : basic === "accepted" ? 50 : 0;
     let advanced_percent =
-      advanced === "confirmed" ? 12 : advanced === "accepted" ? 24 : 0;
+      advanced === "confirmed" ? 12 : advanced === "accepted" ? 50 : 0;
     let financial_percent =
       financial === "confirmed" ? 12 : financial === "accepted" ? 24 : 0;
     let auth_percent = auth ? 12 : 0;
