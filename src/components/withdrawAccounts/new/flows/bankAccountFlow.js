@@ -173,7 +173,8 @@ class BankAccountFlow extends Component {
 
     const { banks, loader } = this.state;
     const idTypeEnabled = this.props?.idTypes && this.props?.idTypes[id_type]
-    // console.log('|||||||||||||   idTypeEnabled', idTypeEnabled)
+
+    let enabledValidation = bank_name === 'efecty' ? idTypeEnabled?.enabled : ((account_type && account_number) && idTypeEnabled?.enabled)
 
     return (
       <Fragment>
@@ -263,38 +264,43 @@ class BankAccountFlow extends Component {
                   final_step_create_account(e)
                 }}>
                   <div className="contForminputsAccount accountSettings_">
- 
-                    <DropDownContainer
-                      placeholder="Tipo de cuenta"
-                      elements={this.state.account_types}
-                      label="Elige el tipo de cuenta:"
-                      actualizarEstado={actualizarEstado}
-                      name="account_type"
-                      selected={account_type}
-                      active={account_type && account_number && idTypeEnabled?.enabled}
-                    />
+                  {
+                    bank_name !== 'efecty' &&
+                    <>
+                      <DropDownContainer
+                        placeholder="Tipo de cuenta"
+                        elements={this.state.account_types}
+                        label="Elige el tipo de cuenta:"
+                        actualizarEstado={actualizarEstado}
+                        name="account_type"
+                        selected={account_type}
+                        active={account_type && account_number && idTypeEnabled?.enabled}
+                      />
 
-                    <InputForm
-                      type="text"
-                      label="Escribe el número de tu cuenta"
-                      placeholder="Ej: 1123321..."
-                      name="account_number"
-                      autoFocus={true}
-                      actualizarEstado={actualizarEstado}
-                      active={account_type && account_number && idTypeEnabled?.enabled}
-                      value={account_number}
-                      handleKeyPress={handleKeyPress}
-                      status={statusInput}
-                    />
+                      <InputForm
+                        type="text"
+                        label="Escribe el número de tu cuenta"
+                        placeholder="Ej: 1123321..."
+                        name="account_number"
+                        autoFocus={true}
+                        actualizarEstado={actualizarEstado}
+                        active={account_type && account_number && idTypeEnabled?.enabled}
+                        value={account_number}
+                        handleKeyPress={handleKeyPress}
+                        status={statusInput}
+                      />
+                    </>
+                  }
+                    
 
                     <DropDownContainer
                       placeholder="Documento de identidad"
                       elements={this.props.idTypesList}
-                      label="Elige el documento con el que abriste la cuenta:"
+                      label="Elige el documento vinculado a tu cuenta de retiro:"
                       actualizarEstado={this.updateIdType}
                       name="id_type"
                       selected={id_type}
-                      active={account_type && account_number && idTypeEnabled?.enabled}
+                      active={enabledValidation}
                     />
                   </div>
 
@@ -305,7 +311,7 @@ class BankAccountFlow extends Component {
                       preventSubmit={true}
                       label="Continuar"
                       type="primary"
-                      active={account_type && account_number && idTypeEnabled?.enabled}
+                      active={enabledValidation}
                     />
                   </div>
                 </form>
@@ -353,7 +359,7 @@ function mapStateToProps(state, props) {
     idTypesList = Object.keys(props?.idTypes).map(idTypeKey => {
       return props?.idTypes[idTypeKey]
     })
-  console.log('idTypesList', idTypesList)
+    console.log('idTypesList', idTypesList)
   }
 
 

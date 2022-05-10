@@ -22,7 +22,7 @@ export default function DialogWAccount(props) {
       <Dialog id="idTypeDialog">
         <Container>
             <h2 className="fuente">¡ATENCIÓN!</h2>
-            <p className="fuente">Para crear cuentas de retiro abiertas con otro documento de identidad, debes agregar este documento a tus identidades.</p>
+            <p className="fuente">Para crear cuentas de retiro vinculadas con otro documento de identidad, debes agregar este documento a tus identidades.</p>
             <ButtonContainer>
                 <SecondaryButton
                     label={`Lo haré después`}

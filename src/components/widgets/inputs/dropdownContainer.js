@@ -9,6 +9,12 @@ class DropDownContainer extends Component {
     placeHolder: this.props.placeholder,
   };
 
+  componentDidUpdate(prevProps) {
+    if(prevProps?.elements !== this.props?.elements){
+      this.setState({elements:this.props.elements})
+    }
+  }
+
   componentDidMount() {
     if (this.props.selected && this.props.elements) {
       const indexOfSelectedElement = this.props.elements.findIndex(

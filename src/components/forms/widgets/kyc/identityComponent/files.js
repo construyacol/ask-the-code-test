@@ -141,7 +141,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   // if(loading){return <KycSkeleton/>}
   if(!loading && finalStage){
-    // Render success Stage
+    // Render success Stage 
       return <IdentityKycSuccess/>
   }
   // console.log('currentStage', currentStage)
@@ -150,8 +150,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   let currentIdentityUiName =   `${UI_NAMES?.documents[pendingIdentityFile?.id_type]} No. ${pendingIdentityFile?.document_info?.id_number}`
 
   console.log('|||||||||  IdentityKycComponent  ==> ', currentIdentityUiName)
-
-
 
   return( 
     <>

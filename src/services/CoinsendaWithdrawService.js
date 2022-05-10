@@ -288,7 +288,7 @@ export class WithdrawService extends WebService {
     
     if(payload.bank_name === 'efecty'){
       body.data.info_needed = payload.info_needed
-      body.data.identity_id = user?.identity.id
+      // body.data.identity_id = user?.identity.id
     }
 
     

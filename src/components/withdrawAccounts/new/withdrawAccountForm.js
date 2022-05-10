@@ -226,10 +226,10 @@ class WithdrawAccountForm extends Component {
     // this.props.action.UpdateFormControl('bank',false)
     // this.update_form(this.state)
     if(this.state.bank_name === 'efecty'){
-      this.props.action.IncreaseStep(this.props.current);
-      this.props.action.IncreaseStep(this.props.current);
-      this.props.action.IncreaseStep(this.props.current);
-      return this.crearCuenta();
+      // this.props.action.IncreaseStep(this.props.current);
+      // this.props.action.IncreaseStep(this.props.current);
+      // this.props.action.IncreaseStep(this.props.current);
+      // return this.crearCuenta();
     }
     if (this.props.step === 1) {
       await this.cleanSearch();
@@ -251,25 +251,28 @@ class WithdrawAccountForm extends Component {
     this.props.action.cleanSearch("bank");
   };
 
-  clearState = (e) => {
-    if(e?.target?.id === 'modal-backstep-button' && this.state.bank_name === 'efecty'){
-      // this.setState({bank_name:""})
-      // this.update_form()
-      this.props.action.CleanForm("bank");
-      this.props.action.CleanForm("withdraw");
-  }
-  }
+  // clearState = (e) => {
+  //   if(e?.target?.id === 'modal-backstep-button' && this.state.bank_name === 'efecty'){
+  //     alert()
+  //     // this.setState({bank_name:""})
+  //     // this.update_form()
+  //     this.props.action.CleanForm("bank");
+  //     this.props.action.CleanForm("withdraw");
+  // }
+  // }
 
-  componentWillUnmount() {
-    document.removeEventListener("click", this.clearState);
-}
+  // componentWillUnmount() {
+  //   document.removeEventListener("click", this.clearState);
+  // }
 
   async getIdTypeList() {
 
-    const { user:{ location, identities } } = this.props
-    const countryLocation = location?.country
-    if(!countryLocation || !identities?.length)return ; 
+    const { user:{ identities } } = this.props
+
+    if(!identities?.length)return ; 
+
     let userIdentities = {}
+
     identities.forEach(userIdentity => {
       userIdentities = {
         ...userIdentities,
@@ -291,33 +294,13 @@ class WithdrawAccountForm extends Component {
       }
     }
 
-    // let idTypes = {} 
-    // let documentList = this.state?.idTypes?.length ? this.state.idTypes : await coinsendaServices.getDocumentList(countryLocation)
-
-    // // TODO: Mostrar documentos + documentos existentes del usuario, un usuario puede tener 2 pasaportes de distinta nacionalidad
-    // if(documentList?.length){
-    //   documentList.forEach(idType => {
-    //     idTypes = {
-    //       ...idTypes,
-    //       [idType?.code]:{
-    //         ...idType,
-    //         value:idType?.code,
-    //         ui_name:idType?.name,
-    //         enabled:userIdentities[idType?.code] && true,
-    //         id:userIdentities[idType?.code]?.id || idType?.id
-    //       }
-    //     }
-    //   });
-    // }
-
-
    return this.setState({ idTypes:userIdentities });
     
   }
 
   componentDidMount() {
     this.getIdTypeList()
-    document.addEventListener('click', this.clearState)
+    // document.addEventListener('click', this.clearState)
 
     setTimeout(() => {
       this.props.history.push(`?form=wa_terms`);
@@ -379,10 +362,6 @@ class WithdrawAccountForm extends Component {
 
   render() {
 
-    
-    // debugger
-    // console.log('R E N D E R I Z A N D O',this.props.action)
-    // console.log('ESTAMOS RENDERIZANDO EL S T A T E de BANK ::::::  ', this.state)
     const {
       step,
       search,
@@ -391,7 +370,7 @@ class WithdrawAccountForm extends Component {
       eventName = "onkeyup",
     } = this.props;
 
-    // console.log('R E N D E R I Z A N D O', step)
+    // console.log('--- idTypes ==> ', this.state.idTypes)
 
     return (
       <WithdrawAccountFormLayout
