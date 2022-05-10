@@ -128,6 +128,7 @@ export const Header = styled.div`
   }
   .subtitle{
     margin-top:0;
+    font-size: 1.1rem;
   }
   h1{
     color:var(--title1);

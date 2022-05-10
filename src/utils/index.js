@@ -40,6 +40,18 @@ export const SentryCaptureException = (error, extra_data) => {
 };
 
 
+export const getIdentityState = ({ file_state, info_state }) => {
+  if(!file_state || !info_state)return ;
+  let state = 'pending'
+  if([info_state, file_state].includes("rejected")){
+      return "rejected"
+  }else if(info_state === file_state){
+      state = info_state
+  }
+  return state
+}
+
+
 export const setAnimation = (className, containerId, time) => {
   const element = document.getElementById(containerId);
   element.classList.add(className);

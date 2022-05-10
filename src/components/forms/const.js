@@ -11,7 +11,7 @@ export const API_FETCH_SELECT_LIST = {
   nationality:"getCountryList",
   province:"getProvinceList",
   city:"getCityList",
-  id_type:"getDocumentList"
+  id_type:"createAvailableIdentityList"
 }
 
 export const NEXT_SELECT_LIST = {

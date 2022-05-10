@@ -19,6 +19,9 @@ import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { CleanForm, ToStep } from "../actions/formActions";
 import userSource from "../components/api";
+import { UI_NAMES } from '../const/uiNames'
+import { getIdentityState } from '../utils'
+
 
 
 const {
@@ -86,7 +89,7 @@ export class IndetityService extends WebService {
         }
     }
   }
-
+ 
   async createContact({ phone }) {
     const body = {
       "data": {
@@ -114,6 +117,34 @@ export class IndetityService extends WebService {
       return await this.Get(url);
     }
 
+    async createAvailableIdentityList(nationality) {
+      let documentList = await this.getDocumentList(nationality)
+      let _documentList = []
+      if(documentList && this.user?.identities?.length){
+        let userIdentities =  {}
+        this.user?.identities.forEach(identity => {
+          userIdentities = {
+            ...userIdentities,
+            [identity?.id_type]:identity
+          }
+        })
+        documentList.forEach(_document => {
+          let currentIdentity = userIdentities[_document?.id_type] 
+          let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
+          if(
+            !currentIdentity || 
+            // si el usuario no tiene esta identidad creada Ó 
+            ((currentIdentity && currentIdentity?.nationality !== nationality) &&
+            // si la tiene pero de diferente nacionalidad y no está rechazada agregue la opción para crear el documento
+            currentIdentityState !== 'rejected')
+            ){
+            _documentList.push(_document)
+          }
+        })
+      }
+      return _documentList
+    }
+
     async getDocumentList(nationality) {
       if(!nationality)return ;
       let query = `?filter={"where":{"nationality":"${nationality}"}}`
@@ -125,7 +156,7 @@ export class IndetityService extends WebService {
           finalResponse.push({
             ...idItem,
             code:idItem.id_type,
-            name:idItem.id_type
+            name:UI_NAMES?.documents[idItem?.id_type]
           })
         })
       }

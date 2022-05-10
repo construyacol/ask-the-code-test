@@ -27,7 +27,8 @@ const STAGES = {
         errors:[
           { pattern:/[^0-9]/g, message:'Solo se permiten Números...'}
         ],
-        auxComponent:"kyc/contactComponent/countryPrefix", //targetId to render component
+        // auxComponent:"kyc/contactComponent/countryPrefix", //targetId to render component
+        auxComponent:null,
         mainComponent:null
       }
     }
@@ -35,7 +36,7 @@ const STAGES = {
 
 export const CONTACT_DEFAULT_STATE = {
   contact:{ 
-    meta_phone: "colombia",
+    // meta_phone: "colombia",
   }
 }
 

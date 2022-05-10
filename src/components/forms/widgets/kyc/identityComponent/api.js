@@ -5,6 +5,7 @@ import {
 } from '../utils'
 import { identityInfo } from './identityUtils'
 
+
 export const INFO_DOCUMENT_NEEDED = {
   "name":{
     ui_name:"Nombres completos",
@@ -23,6 +24,7 @@ export const INFO_DOCUMENT_NEEDED = {
     ui_type: "text"
   }
 }
+
 
 const INFO_NEEDED = {
   "nationality":{
@@ -72,7 +74,7 @@ const STAGES = {
         defaultMessage:"Selecciona la nacionalidad de tu documento de identidad",
         successPattern:/[a-zA-Z _]{1,40}/g,
         errors:[
-          { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
+          { pattern:/[^a-zA-Z _()]{1,30}/g, message:'Solo se permiten letras...'}
         ],
         // label:"Nacionalidad del documento:",
         placeholder:"Ej: pasaporte",
@@ -194,7 +196,7 @@ export const ApiGetIdentityStages = async(config) => {
     
     let filesNeeded = {}
     _document?.file_needed.forEach(fileKey => {
-      if(FILES_NEEDED[fileKey]){
+      if(FILES_NEEDED[fileKey]){ 
         filesNeeded = {
           ...filesNeeded,
           [fileKey]:FILES_NEEDED[fileKey]
@@ -284,7 +286,7 @@ export const ApiPostIdentityFiles = async(payload) => {
   const user = mainService?.user
 
   const { pendingIdentityFile } = identityInfo()
-  const mainIdentity = user?.user?.identity
+  const mainIdentity = user?.user?.identity 
 
   const currentIdentity = pendingIdentityFile ? pendingIdentityFile : mainIdentity
   const { id_type, nationality, id } = currentIdentity

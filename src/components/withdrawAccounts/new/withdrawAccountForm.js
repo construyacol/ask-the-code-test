@@ -7,6 +7,7 @@ import actions from "../../../actions";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../../withCoinsendaServices";
 import { createSelector } from "reselect";
+import { UI_NAMES } from '../../../const/uiNames'
 
 class WithdrawAccountForm extends Component {
 
@@ -23,7 +24,7 @@ class WithdrawAccountForm extends Component {
     provider_type: "", 
     id_number: "",
     city: "medellin",
-    // email: this.props.user.email,
+    // email: this.props.user.email, 
     currency: null,
     ticket: null,
     idTypes:null
@@ -265,35 +266,52 @@ class WithdrawAccountForm extends Component {
 
   async getIdTypeList() {
 
-    const { coinsendaServices, user:{ location, identities } } = this.props
+    const { user:{ location, identities } } = this.props
     const countryLocation = location?.country
     if(!countryLocation || !identities?.length)return ; 
     let userIdentities = {}
     identities.forEach(userIdentity => {
       userIdentities = {
         ...userIdentities,
-        [userIdentity?.id_type]:userIdentity
+        [userIdentity?.document_info?.id_number]:{
+          ...userIdentity,
+            ui_name:`${UI_NAMES?.documents[userIdentity?.id_type]} - ${userIdentity?.document_info?.id_number}`,
+            enabled:true,
+            value:userIdentity?.document_info?.id_number,
+        }
       }
     })
 
-    let idTypes = {} 
-    let documentList = this.state?.idTypes?.length ? this.state.idTypes : await coinsendaServices.getDocumentList(countryLocation)
-    if(documentList?.length){
-      documentList.forEach(idType => {
-        idTypes = {
-          ...idTypes,
-          [idType?.code]:{
-            ...idType,
-            value:idType?.code,
-            ui_name:idType?.name,
-            enabled:userIdentities[idType?.code] && true,
-            id:userIdentities[idType?.code]?.id || idType?.id
-          }
-        }
-      });
+    userIdentities = {
+      ...userIdentities,
+      newIdentity:{
+        ui_name:"Otro documento",
+        enabled:false,
+        value:"newIdentity"
+      }
     }
 
-   return this.setState({ idTypes });
+    // let idTypes = {} 
+    // let documentList = this.state?.idTypes?.length ? this.state.idTypes : await coinsendaServices.getDocumentList(countryLocation)
+
+    // // TODO: Mostrar documentos + documentos existentes del usuario, un usuario puede tener 2 pasaportes de distinta nacionalidad
+    // if(documentList?.length){
+    //   documentList.forEach(idType => {
+    //     idTypes = {
+    //       ...idTypes,
+    //       [idType?.code]:{
+    //         ...idType,
+    //         value:idType?.code,
+    //         ui_name:idType?.name,
+    //         enabled:userIdentities[idType?.code] && true,
+    //         id:userIdentities[idType?.code]?.id || idType?.id
+    //       }
+    //     }
+    //   });
+    // }
+
+
+   return this.setState({ idTypes:userIdentities });
     
   }
 

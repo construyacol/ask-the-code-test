@@ -4,7 +4,6 @@ import { useActions } from '../../hooks/useActions'
 
 export default function DialogWAccount(props) {
     
-    console.log('DialogWAccount', props.idType)
     const actions = useActions()
 
     const closeDialog = () => {
@@ -23,8 +22,7 @@ export default function DialogWAccount(props) {
       <Dialog id="idTypeDialog">
         <Container>
             <h2 className="fuente">¡ATENCIÓN!</h2>
-            <p className="fuente">Para agregar cuentas de retiro abiertas con <strong>{props.idType?.name}</strong> debes agregar este documento a tus identidades.</p>
-            
+            <p className="fuente">Para crear cuentas de retiro abiertas con otro documento de identidad, debes agregar este documento a tus identidades.</p>
             <ButtonContainer>
                 <SecondaryButton
                     label={`Lo haré después`}
@@ -32,7 +30,7 @@ export default function DialogWAccount(props) {
                 />
                 <ControlButton 
                     formValidate
-                    label={`Agregar ${props.idType?.name}`}
+                    label={`Agregar documento`}
                     handleAction={openCreateId}
                 />
             </ButtonContainer>

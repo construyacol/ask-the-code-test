@@ -31,10 +31,13 @@ import { img_compressor, readFile } from '../../../../../utils'
 import { ApiPostIdentityFiles } from './api'
 // import { useSelector } from "react-redux";
 import IdentityKycSuccess from './success'
+import { identityInfo } from './identityUtils'
+import { UI_NAMES } from '../../../../../const/uiNames'
+
 
 import {
     Layout
-  } from '../../sharedStyles'
+} from '../../sharedStyles'
 
 import { 
   FilesContainer,
@@ -43,11 +46,11 @@ import {
 
 
 // const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
-const IdentityKycComponent = ({ handleDataForm, handleState }) => {
+const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const { dataForm } = handleDataForm
   // const user = useSelector(({ modelData:{ user } }) => user);
-
+  const { pendingIdentityFile } = identityInfo()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -143,8 +146,11 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
   }
   // console.log('currentStage', currentStage)
   const { stages } = dataForm
+  // let currentIdentityUiName = UI_NAMES?.documents[pendingIdentityFile?.id_type]
+  let currentIdentityUiName =   `${UI_NAMES?.documents[pendingIdentityFile?.id_type]} No. ${pendingIdentityFile?.document_info?.id_number}`
 
-  console.log('|||||||||  IdentityKycComponent  ==> ', state)
+  console.log('|||||||||  IdentityKycComponent  ==> ', currentIdentityUiName)
+
 
 
   return( 
@@ -153,7 +159,10 @@ const IdentityKycComponent = ({ handleDataForm, handleState }) => {
         <FilesContainer>
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
-            <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> {stageData?.settings?.label || 'Sube tus documentos'}</h3>
+            <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
+            {/* {stageData?.settings?.label || `Sube los archivos de ${currentIdentityUiName ? currentIdentityUiName : ''}`} */}
+            Sube los archivos de {UI_NAMES?.documents[pendingIdentityFile?.id_type]} No. <span className="fuente2">{pendingIdentityFile?.document_info?.id_number}</span>
+            </h3>
           </Header>
 
           <Main className="item_" onDragOver={dragOver}>
