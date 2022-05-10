@@ -141,8 +141,10 @@ export class IndetityService extends WebService {
             _documentList.push(_document)
           }
         })
+        return _documentList
+      }else{
+        return documentList
       }
-      return _documentList
     }
 
     async getDocumentList(nationality) {
