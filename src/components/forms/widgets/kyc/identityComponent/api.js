@@ -187,13 +187,18 @@ const STAGES = {
 export const ApiGetIdentityStages = async(config) => {
 
   // const user = mainService?.user
-  const { pendingIdentityFile } = identityInfo()
+  const { 
+    pendingOrRejectedIdentity
+  } = identityInfo()
+  // const user = mainService?.user
+  // const userIdentity = user?.identity
 
-   if(pendingIdentityFile){
-    const { id_type, nationality } = pendingIdentityFile
+   if(!pendingOrRejectedIdentity || ["pending", "rejected"].includes(pendingOrRejectedIdentity?.info_state)){
+      return INFO_NEEDED;
+   }else{
+    const { id_type, nationality } = pendingOrRejectedIdentity
     const _document = await mainService.getOneDocument({ id_type, nationality })
     if(!_document)return FILES_NEEDED;
-    
     let filesNeeded = {}
     _document?.file_needed.forEach(fileKey => {
       if(FILES_NEEDED[fileKey]){ 
@@ -204,30 +209,29 @@ export const ApiGetIdentityStages = async(config) => {
       }
     })
     return filesNeeded
-   }else{
-    return INFO_NEEDED;
    }
+
+  //  if(pendingIdentityFile && ["accepted", "confirmed"].includes(userIdentity?.info_state)){
+  //   const { id_type, nationality } = pendingIdentityFile
+  //   const _document = await mainService.getOneDocument({ id_type, nationality })
+  //   if(!_document)return FILES_NEEDED;
+  //   let filesNeeded = {}
+  //   _document?.file_needed.forEach(fileKey => {
+  //     if(FILES_NEEDED[fileKey]){ 
+  //       filesNeeded = {
+  //         ...filesNeeded,
+  //         [fileKey]:FILES_NEEDED[fileKey]
+  //       }
+  //     }
+  //   })
+  //   return filesNeeded
+  //  }else{
+  //   return INFO_NEEDED;
+  //  }
     
 
 
 
-
-
-    // if(needDoInfoStage || config?.isNewId) return INFO_NEEDED;
-    // const { id_type, nationality } = mainService?.user?.identity
-    // const document = await mainService.getOneDocument({ id_type, nationality })
-    // if(!document)return FILES_NEEDED;
-    // let filesNeeded = {}
-    // document?.file_needed.forEach(fileKey => {
-    //   if(FILES_NEEDED[fileKey]){
-    //     filesNeeded = {
-    //       ...filesNeeded,
-    //       [fileKey]:FILES_NEEDED[fileKey]
-    //     }
-    //   }
-    // })
-
-    // return filesNeeded
 }
 
 
@@ -235,9 +239,8 @@ export const ApiGetIdentityStages = async(config) => {
 export const ApiPostIdentityInfo = async(payload) => {
 
   const config = structuredClone(payload);
-  const user = mainService?.user
+  const { pendingOrRejectedIdentity } = identityInfo()
   let res
-  const { pendingIdentityFile } = identityInfo()
 
   const isMaskBirthday = config.birthday.includes('/') 
   if(isMaskBirthday){
@@ -255,12 +258,12 @@ export const ApiPostIdentityInfo = async(payload) => {
       }
     }
   })
+  
 
-
-  if(["rejected"].includes(user?.identity?.info_state)){
+  if(pendingOrRejectedIdentity){
     res = await mainService.updateInfoIdentity({
       ...config, 
-      identity_id:pendingIdentityFile ? pendingIdentityFile?.id : user?.identity?.id, 
+      identity_id:pendingOrRejectedIdentity?.id, 
       info_needed
     })
   }else{

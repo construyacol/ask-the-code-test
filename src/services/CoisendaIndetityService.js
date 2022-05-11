@@ -134,9 +134,9 @@ export class IndetityService extends WebService {
           if(
             !currentIdentity || 
             // si el usuario no tiene esta identidad creada Ó 
-            ((currentIdentity && currentIdentity?.nationality !== nationality) &&
+            ((currentIdentity && currentIdentity?.nationality !== nationality) || 
             // si la tiene pero de diferente nacionalidad y no está rechazada agregue la opción para crear el documento
-            currentIdentityState !== 'rejected')
+            currentIdentityState === 'rejected')
             ){
             _documentList.push(_document)
           }

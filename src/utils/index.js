@@ -39,7 +39,7 @@ export const SentryCaptureException = (error, extra_data) => {
   Sentry.captureException(error);
 };
 
-
+ 
 export const getIdentityState = ({ file_state, info_state }) => {
   if(!file_state || !info_state)return ;
   let state = 'pending'

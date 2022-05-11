@@ -50,7 +50,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const { dataForm } = handleDataForm
   // const user = useSelector(({ modelData:{ user } }) => user);
-  const { pendingIdentityFile } = identityInfo()
+  const { pendingOrRejectedIdentity } = identityInfo()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -146,10 +146,8 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   }
   // console.log('currentStage', currentStage)
   const { stages } = dataForm
-  // let currentIdentityUiName = UI_NAMES?.documents[pendingIdentityFile?.id_type]
-  let currentIdentityUiName =   `${UI_NAMES?.documents[pendingIdentityFile?.id_type]} No. ${pendingIdentityFile?.document_info?.id_number}`
+  // let currentIdentityUiName = `${UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. ${pendingOrRejectedIdentity?.document_info?.id_number}`
 
-  console.log('|||||||||  IdentityKycComponent  ==> ', currentIdentityUiName)
 
   return( 
     <>
@@ -159,7 +157,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             <h1 className='fuente'>Verificación de identidad</h1>
             <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
             {/* {stageData?.settings?.label || `Sube los archivos de ${currentIdentityUiName ? currentIdentityUiName : ''}`} */}
-            Sube los archivos de {UI_NAMES?.documents[pendingIdentityFile?.id_type]} No. <span className="fuente2">{pendingIdentityFile?.document_info?.id_number}</span>
+            Sube los archivos de {UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. <span className="fuente2">{pendingOrRejectedIdentity?.document_info?.id_number}</span>
             </h3>
           </Header>
 
