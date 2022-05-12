@@ -7,6 +7,7 @@ import { initStages } from '../../utils'
 import FormComponent from '../../' 
 import { useSelector } from "react-redux";
 import { Layout } from '../sharedStyles'
+import './styles.css'
 
 const BiometricKyc = props => {
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React from "react"
 import ConfettiComponent from '../success/confetti'
 import { Medal } from '../success/icons'
 import { LayoutContainer, ControlContainer } from '../success/styles'
@@ -6,20 +6,20 @@ import { Button } from './styles'
 import Layout from '../layout'
 // import { useActions } from '../../../../hooks/useActions'
 
-const PersonalKycSuccess = ({ handleState:{ state }, ...props }) => {
+const BiometricSuccess = ({ handleState:{ state }, ...props }) => {
     
     // const actions = useActions();
 
-    const tryConfirmDeposit = () => {
-        if(!props.orderData) return;
-        const { orderData:{ order, paymentProof } , coinsendaServices } = props
-        coinsendaServices.confirmDepositOrder(order.id, paymentProof);
-    }
+    // const tryConfirmDeposit = () => {
+    //     if(!props.orderData) return;
+    //     const { orderData:{ order, paymentProof } , coinsendaServices } = props
+    //     coinsendaServices.confirmDepositOrder(order.id, paymentProof);
+    // }
 
-    useEffect(() => {
-      tryConfirmDeposit()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    // useEffect(() => {
+    //   tryConfirmDeposit()
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
 
 
     return(
@@ -37,5 +37,5 @@ const PersonalKycSuccess = ({ handleState:{ state }, ...props }) => {
     )
 }
 
-export default PersonalKycSuccess
+export default BiometricSuccess
 

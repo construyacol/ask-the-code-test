@@ -19,7 +19,6 @@ import {
   Layout,
   ContentContainer
 } from '../sharedStyles'
-import './styles.css'
 
 
 const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
@@ -35,7 +34,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
   const [ boardingAgreement, setBoardingAgreement ] = useState(false)
   const [ coinsendaServices ] = useCoinsendaServices();
   const validations = useValidations(pathName)
-  const STORAGE_KEY = "biometricData"
 
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
@@ -57,7 +55,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
     nextStage,
     finalStage,
     setStageData,
-    stageController
+    // stageController
   } = stageManager
 
   // const finalStage = true
@@ -117,12 +115,12 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
     setTimeout(()=> nextStage(), 1000)
   }
 
-  const tryToSolveChallenge = async() => {
-      const userBiometric = await coinsendaServices.getUserBiometric()
-      if(!userBiometric?.solved) return;
-      nextStage(stageController.length+1)
-      // await coinsendaServices.fetchCompleteUserData()
-  }
+  // const tryToSolveChallenge = async() => {
+  //     const userBiometric = await coinsendaServices.getUserBiometric()
+  //     if(!userBiometric?.solved) return;
+  //     nextStage(stageController.length+1)
+  //     // await coinsendaServices.fetchCompleteUserData()
+  // }
 
  
   const initDetections = (canvas, intervalTime) => {
@@ -163,10 +161,9 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
             challenge_name:stageData.key
           })
           console.log('addNewBiometricData', res)
-          // if(res?.data === false){
-          //   challengeIsSolved()
-          // }
-          // console.log('|||||||||||||||  addNewBiometricData res ==> ', res)
+          if(res?.data === false){
+            challengeIsSolved()
+          }
         }else{
           console.log('Detectando...', faceApiCanvas.current)
           if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');
@@ -193,7 +190,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
     // console.log('|||||||||||||  biometricData ==> ', cameraAvailable, biometricData)
     // debugger
     // if(biometricData?.state === 'accepted' && !cameraAvailable){
-    //   console.log('cameraAvailable', cameraAvailable)
     //   tryToSolveChallenge()
     // }
 
@@ -225,7 +221,12 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   useEffect(()=>{
     if(finalStage){
-      const disableTransactionSecutiry = async() => await coinsendaServices.disableTransactionSecutiry("biometric")
+      const disableTransactionSecutiry = async() => {
+        await coinsendaServices.disableTransactionSecutiry("biometric");
+        if(!props.orderData) return;
+        const { orderData:{ order, paymentProof } } = props
+        return coinsendaServices.confirmDepositOrder(order.id, paymentProof);
+      }
       disableTransactionSecutiry()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
