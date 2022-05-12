@@ -182,23 +182,26 @@ export class TransactionService extends WebService {
   async addSymbolToLocalCollections(pairs, localCurrency, currencies) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     // eslint-disable-next-line array-callback-return
-    return pairs.reduce((result, value) => {
+    let result = []
+    pairs.forEach(pair => {
       const secondaryShortName = matchItem(currencies, { primary: localCurrency }, "currency");
-      const primaryShortName = matchItem(currencies, { primary: value.primary_currency.currency }, "currency");
+      const primaryShortName = matchItem(currencies, { primary: pair.primary_currency.currency }, "currency");
       if (secondaryShortName && primaryShortName) {
         result.push({
-          ...value,
+          ...pair,
           secondaryShortName: secondaryShortName[0].symbol,
           primaryShortName: primaryShortName[0].symbol,
         });
-        return result;
       }
-    }, []);
+    })  
+
+    return result
+    
   }
 
   async getLocalCurrency(country) {
     // const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`);
-    const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "international"}}`);
+    const [countryCurrency ] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "international"}}`);
     if (this.isEmpty(countryCurrency)) return;
     const localCurrencyId = countryCurrency.currency_id;
     let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`);

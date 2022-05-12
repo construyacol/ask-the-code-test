@@ -58,7 +58,7 @@ export class SwapService extends WebService {
   } 
 
   async getPairsByCountry(country, currencies) {
-
+ 
     const localCurrency = await this.getLocalCurrency(country);
 
     if (!localCurrency) {
@@ -68,17 +68,14 @@ export class SwapService extends WebService {
     const pairs = await this.pairsRequest({"visible":true, "secondary_currency.currency": `${localCurrency.currency}`});
     if (!pairs) return;
 
-
-
     if (currencies) {
       const localCurrencies = await this.addSymbolToLocalCollections(pairs?.data, localCurrency.currency, currencies);
-      if (
-        this.isCached("getPairsByCountry_", localCurrencies, false) &&
-        this.globalState.modelData.pairs.currentPair
-      ) {
-        return;
-      }
-
+      // if (
+      //   this.isCached("getPairsByCountry_", localCurrencies, false) &&
+      //   this.globalState.modelData.pairs.currentPair
+      // ) {
+      //   return;
+      // }
       await this.dispatch(loadLocalPairsAction(localCurrencies));
 
       // TODO: Evaluate this
