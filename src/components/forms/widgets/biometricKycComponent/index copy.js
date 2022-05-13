@@ -5,7 +5,7 @@ import { getDisplaySize } from './utils'
 import loadable from '@loadable/component'
 import styled from 'styled-components'
 import StatusIndicator from './biometricStatus'
-import { Scanner } from './scanner'
+// import { Scanner } from './scanner'
 // import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
 import loadDynamicScript from '../../../../utils/loadDynamicScript'
@@ -13,16 +13,20 @@ import { useCoinsendaServices } from "../../../../services/useCoinsendaServices"
 import useSocket from '../../../hooks/useSocket'
 import { useSelector } from "react-redux";
 import { ENVIRONMENT_VAR, device } from '../../../../const/const'
-import { funcDebounces } from '../../../../utils'
 
 import { 
   Layout,
   ContentContainer
 } from '../sharedStyles'
+import './styles.css'
 
 
 const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
+
+
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
+
+ 
 const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const modelData = useSelector((state) => state.modelData);
@@ -38,8 +42,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
   const videoEl = useRef(null);
   let intervalDetection = useRef(null);
   const faceApi = useRef(window.faceapi)
-  let faceApiCanvas = useRef(null);
-  
   // const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
   const [ biometricData ] = useSocket(`/biometric_data/${modelData.authData.userId}`)
 
@@ -55,7 +57,7 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
     nextStage,
     finalStage,
     setStageData,
-    // stageController
+    stageController
   } = stageManager
 
   // const finalStage = true
@@ -94,7 +96,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
         canvas.style.display = 'none'
         canvas.id = "faceApiCanvas"
         document.querySelector('#videoContainer').append(canvas)
-        faceApiCanvas.current = canvas
         faceApi.current.matchDimensions(canvas, getDisplaySize())
         setLoading(false)
       })
@@ -110,26 +111,11 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
   //   faceApi.current.draw.drawFaceExpressions(canvas, resizedDetections)
   // }
 
-  const challengeIsSolved = () => {
-    setStageData(prevState => { return {...prevState, solved:true} })
-    setTimeout(()=> nextStage(), 1000)
-  }
 
-  // const tryToSolveChallenge = async() => {
-  //     const userBiometric = await coinsendaServices.getUserBiometric()
-  //     if(!userBiometric?.solved) return;
-  //     nextStage(stageController.length+1)
-  //     // await coinsendaServices.fetchCompleteUserData()
-  // }
-
- 
   const initDetections = (canvas, intervalTime) => {
     const scanner = document.querySelector('.FRecScanner')
-    // let counter = 1
-    sessionStorage.removeItem(stageData?.key);
-
+    let counter = 1
     intervalDetection.current = setInterval(async() =>{
-
       const detections = await faceApi.current.detectAllFaces(videoEl.current, 
         new faceApi.current.TinyFaceDetectorOptions())
         .withFaceLandmarks()
@@ -139,80 +125,73 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
         // if(developerMood) startDeveloperMood(canvas, detections);
         if(detections?.length){
 
+          console.log('validations', stageData?.key)
           if(scanner && !scanner?.classList?.value?.includes('scanning')) scanner.classList.add('scanning');
           if(!validations[stageData?.key]){return}
 
           const [ _value ] = validations[stageData.key](detections[0], {...stageData, state, dataForm});
-          console.log('ON detecions: ', _value)
-
-          if(!_value || sessionStorage.getItem(stageData?.key)){return}
-          // if(!_value || counter > 1){return}
+          if(!_value || counter > 1){return}
           canvas.style.display = 'none'
           setState(prevState => {
             return { ...prevState, [stageData?.key]: _value ? _value : prevState[stageData?.key] }
           })
           clearInterval(intervalDetection.current)
-          sessionStorage.setItem(stageData?.key, stageData?.biometricId);
-
-          // counter++
+          counter++
           const res = await coinsendaServices.addNewBiometricData({
             file:_value.split(',')[1],
             biometric_id:stageData.biometricId,
             challenge_name:stageData.key
           })
-          console.log('addNewBiometricData', res)
           if(res?.data === false){
             challengeIsSolved()
           }
+          console.log('|||||||||||||||  addNewBiometricData res ==> ', res)
         }else{
-          console.log('Detectando...', faceApiCanvas.current)
+          console.log('Detectando...')
           if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');
         }
+        
     }, intervalTime)
   }
 
-
   useEffect(() => {
-    // const canvas = document.querySelector('#faceApiCanvas')
-    if((boardingAgreement && faceApiCanvas.current) && (!stageData?.solved && !finalStage)){
-      initDetections(faceApiCanvas.current, 600)
+    const canvas = document.querySelector('#faceApiCanvas')
+    if((boardingAgreement && canvas) && (!stageData?.solved && !finalStage)){
+      initDetections(canvas, 600)
     }
-    console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
+    // console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
     return () => clearInterval(intervalDetection.current)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stageData, boardingAgreement, loading])
 
-  // const exectFuncDebounce = () => {
-    
-  // }
+  const challengeIsSolved = () => {
+    setStageData(prevState => { return {...prevState, solved:true} })
+    setTimeout(()=> nextStage(), 1500)
+  }
 
+  const tryToSolveChallenge = async() => {
+      const userBiometric = await coinsendaServices.getUserBiometric()
+      if(!userBiometric?.solved) return;
+      nextStage(stageController.length+1)
+      // await coinsendaServices.fetchCompleteUserData()
+  }
+
+ 
   useEffect( () => {
-    // console.log('|||||||||||||  biometricData ==> ', cameraAvailable, biometricData)
-    // debugger
-    // if(biometricData?.state === 'accepted' && !cameraAvailable){
-    //   tryToSolveChallenge()
-    // }
 
-    console.log('||||||||||||| SOCKET biometricData ===> ', cameraAvailable, biometricData)
+    console.log('|||||||||||||  biometricData ==> ', biometricData)
+    if(biometricData?.state === 'accepted' && !cameraAvailable){
+      console.log('cameraAvailable', cameraAvailable)
+      tryToSolveChallenge()
+    }
+
     if(biometricData?.challenge_name === stageData?.key){
       if(biometricData.state === 'accepted'){
-        funcDebounces({
-          keyId:{[biometricData.state]:biometricData.id}, 
-          storageType:"sessionStorage",
-          timeExect:1500,
-          callback:() => {
-            challengeIsSolved()
-          }
-        })
+        challengeIsSolved()
       }else if(biometricData.state === 'rejected'){
-        funcDebounces({
-          keyId:{[biometricData.state]:biometricData.id}, 
-          storageType:"sessionStorage",
-          timeExect:1500,
-          callback:() => {
-            initDetections(faceApiCanvas.current, 600)
-          }
-        })
+        setState(prevState => { return { ...prevState, [stageData?.key]: '' } })
+        const canvas = document.querySelector('#faceApiCanvas')
+        initDetections(canvas, 600)
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -221,18 +200,14 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   useEffect(()=>{
     if(finalStage){
-      const disableTransactionSecutiry = async() => {
-        await coinsendaServices.disableTransactionSecutiry("biometric");
-        if(!props.orderData) return;
-        const { orderData:{ order, paymentProof } } = props
-        return coinsendaServices.confirmDepositOrder(order.id, paymentProof);
-      }
+      const disableTransactionSecutiry = async() => await coinsendaServices.disableTransactionSecutiry("biometric")
       disableTransactionSecutiry()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [finalStage])
 
   useEffect(()=>{
+    // setupFaceApi()
     loadDynamicScript(setupFaceApi, `${getCdnPath('faceApi')}`, 'faceApi')
     return () => {
       videoEl.current?.pause();
@@ -284,7 +259,6 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
           <VideoContainer id="videoContainer">            
             { loading && <div className="biometricLoaderContainer"></div>}
             {/* { !developerMood && <Scanner className="FRecScanner"/>} */}
-            <Scanner className="FRecScanner"/>
             <video id="streamingVideo" autoPlay={true} ref={videoEl} width={'100%'} height={'100%'} />
           </VideoContainer>
           <IndicatorStage>

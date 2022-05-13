@@ -174,6 +174,7 @@ class SocketsComponent extends Component {
 
             socket.on(`/identity/${user.id}`, async (identity) => {
               if(identity.file_state){
+                console.log('identity_management', identity)
                 this.identity_management(identity)
               }
             });
@@ -789,7 +790,7 @@ class SocketsComponent extends Component {
 
     
     funcDebounce( 
-      {'storageidentity':`${identity.id}`}, 
+      {[`identity_${identity.id}`]:`${identity.id}`}, 
       async() => {
         await this.props.coinsendaServices.updateUserStatus(identity)
       },
@@ -799,7 +800,7 @@ class SocketsComponent extends Component {
 
     if(["accepted"].includes(identity.file_state)){
     funcDebounce( 
-      {storageIdentityState:`${identity.file_state}_${identity.id}`}, 
+      {[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 
       async() => {
         await this.props.coinsendaServices.updateUserStatus(identity)
         this.props.coinsendaServices.init()

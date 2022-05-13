@@ -24,7 +24,6 @@
 
 .biometricLoaderContainer::after{
     content: "Cargando...";
-    
 }
 
 .imgContainer button{

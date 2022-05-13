@@ -25,6 +25,23 @@ const LOCATION_INFO_NEEDED = {
 }
 
 const STAGES = {
+  "province":{
+    uiName:"Departamento:",
+    key:"province",
+    uiType:"select",
+    "settings":{
+      defaultMessage:"Selecciona el departamento de residencia actual",
+      successPattern:/[a-zA-Z _]{1,40}/g,
+      errors:[
+        { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
+      ],
+      // label:"Nacionalidad del documento:",
+      placeholder:"Ej: Antioquia",
+      queryParams:{
+        form:'province'
+      }
+    }
+  },
     "location_country":{
       uiName:"País de residencia:",
       key:"location_country",
@@ -38,7 +55,7 @@ const STAGES = {
         // label:"Nacionalidad del documento:",
         placeholder:"Ej: pasaporte",
         queryParams:{
-          form:'personal_country'
+          form:'location_country'
         }
       }
     },

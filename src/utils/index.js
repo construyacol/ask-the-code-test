@@ -818,6 +818,39 @@ export const funcDebounce = (
   return callback()
 }
 
+
+
+export const funcDebounces = ({
+  keyId, 
+  callback,  
+  waitRes = false, 
+  timeExect = 1000,
+  storageType = "localStorage"
+}) => { 
+  const storage = window[storageType]
+  if(!Object.entries(keyId).length)return ;
+  const [ dataKey, dataValue ] = Object.entries(keyId)[0]
+  let storageData = storage.getItem(dataKey);
+  if(storageData === dataValue)return ;
+  storage.setItem(dataKey, dataValue);
+
+  if(waitRes){
+    return new Promise(async (resolve) => {
+      setTimeout(async() => {
+        storage.removeItem(dataKey);
+      }, timeExect)
+      const res = await callback()
+      return resolve(res)
+    });
+  }
+
+  setTimeout(() => {
+    storage.removeItem(dataKey);
+  }, timeExect)
+  
+  return callback()
+}
+
 /**
  * Function para hacer debounce
  *
