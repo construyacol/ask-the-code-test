@@ -8,6 +8,7 @@ import { withRouter } from "react-router";
 import withCoinsendaServices from "../../withCoinsendaServices";
 import { createSelector } from "reselect";
 import { UI_NAMES } from '../../../const/uiNames'
+import { getIdentityState } from './../../../utils'
 
 class WithdrawAccountForm extends Component {
 
@@ -164,6 +165,14 @@ class WithdrawAccountForm extends Component {
   actualizarEstado = async (event) => {
     event.persist && event.persist();
     
+    if(event?.target?.name === 'id_type'){
+      let idType = event?.target?.value
+      let identity = idType && this.state?.idTypes[idType]
+      if(identity && (identity?.value !== 'newIdentity' && getIdentityState(identity) !== 'accepted')){
+        return alert('La identidad seleccionada está en proceso de verificación, este proceso puede tardar hasta 72 horas hábiles.')
+      }
+    }
+
     if (event.target && event.target.short_name) {
       this.setState({ short_name: event.target.short_name });
     }

@@ -137,7 +137,7 @@ export const ContainerLayout = styled.div`
   opacity: 0;
 
   &.ioSystem{
-    padding-bottom:55px;
+    padding-bottom:100px;
   }
 
   &.appear{
