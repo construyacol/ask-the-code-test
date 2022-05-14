@@ -126,6 +126,7 @@ export const Content = styled.div`
   position: relative;
 `;
 
+
 export const ContainerLayout = styled.div`
   width: 100%;
   max-width: 400px;
@@ -134,6 +135,10 @@ export const ContainerLayout = styled.div`
   grid-template-rows: 80px 1fr;
   transform-style: preserve-3d;
   opacity: 0;
+
+  &.ioSystem{
+    padding-bottom:55px;
+  }
 
   &.appear{
     -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
@@ -144,6 +149,11 @@ export const ContainerLayout = styled.div`
     opacity: 1;
   }
 
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
   }
-
 `;

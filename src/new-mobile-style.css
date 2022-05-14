@@ -285,6 +285,7 @@
   
   .containerSection.ioSystem{
     grid-template-rows: 60px 1fr !important;
+    padding-bottom: 60px;
   }
 
   .dashBoardLayout {
@@ -511,6 +512,14 @@
 
 @media only screen and (max-width: 768px) {
 
+  .containerFormWallet{
+    overflow: auto;
+  }
+
+  .TicketDetail.ioSystem {
+      padding-bottom: 60px !important;
+  }
+
   .DCcurrent_wallet #controlsContainer{
     align-self: end;
   }
@@ -532,6 +541,11 @@
     height: calc(100vh - 160px) !important;
     width: calc(100vw - 30px);
   }
+
+  .DCcurrent_wallet.wallets.swap.ioSystem{
+    padding-bottom: 60px !important;
+  }
+
 
   .withdrawView {
     height: calc(100% - 60px) !important;

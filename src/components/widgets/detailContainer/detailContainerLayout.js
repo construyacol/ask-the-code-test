@@ -1,9 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 import "./detailContainer.css";
 
-const detailContainerLayout = (props) => {
+const DetailContainerLayout = (props) => {
+
+  const { osDevice } = useSelector((state) => state?.ui);
+
   const {
     current_wallet,
     pathname,
@@ -15,9 +19,7 @@ const detailContainerLayout = (props) => {
   return (
     <div
       style={style ? style : {}}
-      className={`${customClass} contenido ${
-        primary_path && current_wallet ? "DCcurrent_wallet" : ""
-      } ${primary_path} ${pathname}`}
+      className={`${customClass} ${osDevice} contenido ${primary_path && current_wallet ? "DCcurrent_wallet" : ""} ${primary_path} ${pathname}`}
     >
       {props.children}
     </div>
@@ -41,4 +43,4 @@ function mapStateToProps(state, props) {
   };
 }
 
-export default connect(mapStateToProps)(detailContainerLayout);
+export default connect(mapStateToProps)(DetailContainerLayout);

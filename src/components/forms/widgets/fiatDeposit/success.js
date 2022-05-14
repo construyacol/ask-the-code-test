@@ -5,13 +5,14 @@ import { Success } from '../../../wallets/deposit/flows'
 import styled from 'styled-components'
 import { history } from '../../../../const/const'
 import loadable from "@loadable/component";
-
+import { useSelector } from "react-redux";
 
 
 const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_ticket }) => {
 
     const [ final, setFinal ] = useState(false)
     const [ finalButton, setFinalButton ] = useState(false)
+    const { osDevice } = useSelector((state) => state?.ui);
     // const depositProvider = useSelector((state) => state?.modelData?.wallets[params?.account_id]);
     
     const finalizar = async () => {
@@ -30,12 +31,12 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
 
 
     return(
-        <OtherModalLayout
+    <OtherModalLayout
       id="close-button-with-OtherModalLayout"
       onkeydown={false}
       on_click={closeModal}
     >
-      <SuccessModalCont>
+      <SuccessModalCont className={`${osDevice}`}>
         <Container>        
             <Success
             deposit_way="cash"

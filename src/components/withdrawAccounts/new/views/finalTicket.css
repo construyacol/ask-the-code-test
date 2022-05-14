@@ -8,11 +8,6 @@
   justify-self: center;
 }
 
-.nWcta2.ioSystem {
-  position: fixed;
-  bottom: 15px;
-}
-
 .finalTicket.ticketHeader {
   display: grid;
   grid-template-columns: 1fr;

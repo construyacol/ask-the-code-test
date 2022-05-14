@@ -128,11 +128,6 @@ const ControlsContainer = styled.div`
   justify-self: center;
   align-self: center;
 
-  &.ioSystem{
-    position: fixed;
-    bottom: 15px;
-  }
-
   &.loader::after {
     content: "";
     background: rgb(255, 255, 255, 0.8);
