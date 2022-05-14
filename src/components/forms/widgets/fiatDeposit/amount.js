@@ -38,9 +38,6 @@ const AmountComponent = ({ nextStage, stageData, handleState:{ state, setState }
     }
 
 
-
-    console.log('state', state)
-
     return(
         <AmountLayout className="amountLayout">
             <Title className="fuente">Escribe la cantidad a depositar</Title>

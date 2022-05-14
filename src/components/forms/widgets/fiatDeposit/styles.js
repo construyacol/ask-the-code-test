@@ -3,7 +3,8 @@ import {
     hideStage,
     showStage
 } from '../sharedStyles'
-
+import { Content } from '../../../widgets/modal/render/addressBook'
+import { Header } from '../../../widgets/modal/render/addressBook/header'
 
 const Layout = styled.div`
     grid-row-gap: 10px;
@@ -31,6 +32,7 @@ export const AmountLayout = styled(Layout)`
     &.show_{
         animation: ${showStage} .3s linear forwards;
     }
+
 `
 
 export const CostIdLayout = styled(Layout)`
@@ -55,10 +57,32 @@ export const CostIdLayout = styled(Layout)`
     }
 `
 
+export const DepositContent = styled(Content)`
+  @media (max-width: 768px) {
+    border-radius:0;     
+  }
+`
+
+export const DepositHeader = styled(Header)`
+@media (max-width: 768px) {
+    border-radius:0;      
+    width: 100%;
+  }
+`
+
 export const SuccessModalCont = styled.section`
     position: absolute;
     height: calc(100vh - 80px);
     width: 100vw;
     padding: 40px 0;
     background: linear-gradient(to bottom right,#129a8e,#37ed7d);
+
+    @media (max-width: 768px) {
+        &.ioSystem{
+            padding-bottom:60px;
+            height: calc(100vh - 100px);
+        }
+    }
+
+   
 `

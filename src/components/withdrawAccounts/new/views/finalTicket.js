@@ -56,7 +56,7 @@ function FinalTicket(props) {
   console.log('||||||||||||||||||||||||||||||_____________________________wAccount', wAccount)
   const isEFecty = wAccount?.provider_type === 'efecty_network'
   return (
-    <div id="_wAccount" className="finalTicket TicketDetail _wAccountSuccess">
+    <div id="_wAccount" className={`finalTicket TicketDetail _wAccountSuccess ${osDevice}`}>
       <>
         <div className="finalTicket ticketHeader wAccountSuccess">
           <IconSwitch {...atributos} />

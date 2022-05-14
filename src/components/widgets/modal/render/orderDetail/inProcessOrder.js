@@ -14,11 +14,11 @@ import IconSwitch from "../../../icons/iconSwitch";
 import { AiOutlineClockCircle } from "react-icons/ai";
 import ConfirmationCounter from "./confirmationCounter";
 import useViewport from "../../../../../hooks/useWindowSize";
+import { useSelector } from "react-redux";
 import {
    device, 
    BIOMETRIC_FIAT_LITMIT_AMOUNT 
 } from "../../../../../const/const";
-
 import { 
   IconClose, 
   UploadContainer,
@@ -64,7 +64,6 @@ export default InProcessOrder;
 const CryptoOrder = ({ order }) => {
   const { tx_path, currencies } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
-
 
   return (
     <InProcessOrderContainer>
@@ -123,6 +122,8 @@ const FiatOrder = ({ order }) => {
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
   const [ , , toBigNumber ] = useFormatCurrency()
+  const { osDevice } = useSelector((state) => state?.ui);
+
   // const [toastMessage] = useToastMessage();
 
   const dragOver = (event) => {
@@ -194,12 +195,11 @@ const FiatOrder = ({ order }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-
   return (
     <InProcessOrderContainer>
       <IconClose theme="dark" size={20} />
 
-      <OrderContainer onDragOver={dragOver}>
+      <OrderContainer onDragOver={dragOver} className={`${osDevice}`}>
         {onDrag && !imgSrc && order.state === "pending" && (
           <DropZoneComponent
             dragLeave={dragLeave}
@@ -558,9 +558,17 @@ const OrderContainer = styled.div`
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
 
+  @media (max-width: 768px) {
+        &.ioSystem{
+          padding-bottom: 60px !important; 
+        }
+    }
+
   @media ${device.tablet} {
     grid-template-rows: auto auto 1fr auto;
   }
+
+  
 `;
 
 const InProcessOrderContainer = styled.section`

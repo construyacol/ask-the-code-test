@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useActions } from '../../../../hooks/useActions'
-import { Content } from '../../../widgets/modal/render/addressBook'
-import { Header, WindowControl } from '../../../widgets/modal/render/addressBook/header'
+import { DepositContent, DepositHeader } from './styles'
+import { WindowControl } from '../../../widgets/modal/render/addressBook/header'
 import { IconClose, IconBackContainer } from "../../../widgets/shared-styles";
 import useStage from '../../hooks/useStage'
 import { getCdnPath } from '../../../../environment'
@@ -13,8 +13,6 @@ import { useParams  } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DepositSkeleton } from './amount'
 import { ContainerLayout } from '../../../widgets/modal/render/addressBook'
-
-
 // import IconSwitch from "../../../widgets/icons/iconSwitch";
 // import { AmountLayout } from './styles'
 // import { 
@@ -38,6 +36,7 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
   const account = useSelector((state) => state?.modelData?.wallets[params?.account_id]);
   const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[account?.dep_prov[0]]);
   const [ newOrder, setNewOrder ] = useState()
+  const { osDevice } = useSelector((state) => state?.ui);
 
   const stageManager = useStage(
     // create the form stages
@@ -82,7 +81,7 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
   }
 
   return(
-        <ContainerLayout className="appear">
+        <ContainerLayout className={`appear ${osDevice}`}>
           <IconClose
             theme="dark"
             size={20}
@@ -91,21 +90,21 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
             prevStage={prevStage}
             currentStage={currentStage}
           />
-          <Content id="mainContent">
-          {
-            stageData &&
-            <DynamicLoadComponent
-                component={`fiatDeposit/${stageData?.key}.js`}
-                nextStage={nextStage}
-                handleState={handleState}
-                stageData={stageData}
-                loader={loader}
-                setLoader={setLoader}
-                submitForm={submitForm}
-                Fallback={DepositSkeleton}
-            />
-          }
-          </Content>
+          <DepositContent id="mainContent">
+            {
+              stageData &&
+              <DynamicLoadComponent
+                  component={`fiatDeposit/${stageData?.key}.js`}
+                  nextStage={nextStage}
+                  handleState={handleState}
+                  stageData={stageData}
+                  loader={loader}
+                  setLoader={setLoader}
+                  submitForm={submitForm}
+                  Fallback={DepositSkeleton}
+              />
+            }
+          </DepositContent>
         </ContainerLayout>
   )
 }
@@ -113,10 +112,13 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
 export default FiatDepositComponent
 
 
+
+
+
 export const HeaderComponent = ({ prevStage, currentStage }) => {
 
   return(
-    <Header backgroundImage={`${getCdnPath('assets')}map.webp`}>
+    <DepositHeader backgroundImage={`${getCdnPath('assets')}map.webp`}>
       <section>
         <WindowControl
           // id={idForBack}
@@ -129,7 +131,7 @@ export const HeaderComponent = ({ prevStage, currentStage }) => {
         </WindowControl>
         <p className="fuente titleHead">Depósito COP</p>
       </section>
-    </Header>
+    </DepositHeader>
   )
 
 }
