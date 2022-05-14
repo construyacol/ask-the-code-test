@@ -560,7 +560,7 @@ const OrderContainer = styled.div`
 
   @media (max-width: 768px) {
         &.ioSystem{
-          padding-bottom: 60px !important; 
+          padding-bottom: 100px !important; 
         }
     }
 

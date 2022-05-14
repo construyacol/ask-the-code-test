@@ -285,7 +285,7 @@
   
   .containerSection.ioSystem{
     grid-template-rows: 60px 1fr !important;
-    padding-bottom: 60px;
+    padding-bottom: 100px;
   }
 
   .dashBoardLayout {
@@ -517,7 +517,7 @@
   }
 
   .TicketDetail.ioSystem {
-      padding-bottom: 60px !important;
+      padding-bottom: 100px !important;
   }
 
   .DCcurrent_wallet #controlsContainer{
@@ -543,7 +543,7 @@
   }
 
   .DCcurrent_wallet.wallets.swap.ioSystem{
-    padding-bottom: 60px !important;
+    padding-bottom: 100px !important;
   }
 
 
