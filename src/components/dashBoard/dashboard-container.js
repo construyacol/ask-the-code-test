@@ -121,7 +121,7 @@ function DashBoardContainer(props) {
 
   return (
     <>
-      <div
+      {/* <div
         id="scrollArea"
         style={{
           position: "absolute",
@@ -130,7 +130,7 @@ function DashBoardContainer(props) {
           right: 0,
           zIndex: 10,
         }}
-      ></div>
+      ></div> */}
 
 
       <Element id="containerElement" className="dashBoardLayout">

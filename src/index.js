@@ -21,13 +21,8 @@ import { _createStore } from "./store";
 // document.body.appendChild(script);
 import RootContainer from "./components/Root" 
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
-
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
 // import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
-
-
-
-
 
 
 export const store = _createStore();
