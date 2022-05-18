@@ -105,7 +105,7 @@ class ScoresComponent extends Component {
             style={{ width: `${level_progress_width}%` }}
           ></div>
           <div className="levelBar">
-            {verification_state && (
+            {/* {verification_state && (
               <IconSwitch
                 size={verification_state === "pending" ? 20 : 20}
                 color={verification_state === "rejected" ? "red" : "#00D2FF"}
@@ -119,27 +119,25 @@ class ScoresComponent extends Component {
                     : verification_state
                 }
               />
-            )}
+            )} */}
 
             <p
-              className={`score ${
-                verification_state === "rejected" && "rejected rejected_anim"
-              }`}
+              className={`score ${verification_state === "rejected" && "rejected rejected_anim"} fuente`}
               id="score"
             >
               {message}
             </p>
           </div>
-          <div className="level">
+          {/* <div className="level">
             Nivel:
             <span className="fuente2">{level}</span>
-          </div>
-          <div className="stars">
+          </div> */}
+          {/* <div className="stars">
             {stars &&
               stars.map((star) => {
                 return <i key={star.id} className="fas fa-star star_icon"></i>;
               })}
-          </div>
+          </div> */}
         </div>
       </div>
     );

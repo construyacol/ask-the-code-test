@@ -92,7 +92,7 @@ const MenuPrincipalLayout = (props) => {
         <ScoresComponent />
       </div>
 
-      <div className={`menuItems ${window.innerWidth < 768 ? 'movil' : ''}`}>
+      {/* <div className={`menuItems ${window.innerWidth < 768 ? 'movil' : ''}`}>
         {window.innerWidth > 768 ? (
           <section className="section1">
             {menuPrincipal.map((item) => {
@@ -130,7 +130,7 @@ const MenuPrincipalLayout = (props) => {
             </p>
           </div>
         </section>
-      </div>
+      </div> */}
     </section>
   );
 };

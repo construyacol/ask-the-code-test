@@ -4,13 +4,14 @@ import { connect } from "react-redux";
 import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import { HomeLayout } from "./homeLayout";
-// import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
-import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
+import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
+// import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
 import MainMenuComponent from '../menu/mainMenu'
 // import DashBoardContainer from "../dashBoard/dashboard-container";
 // import { doLogout } from "../utils";
 import withHandleError from "../withHandleError";
 import styled from 'styled-components'
+import SideMenuComponent from '../menu/sideMenu'
 
 // const BuildedHome = (props) => (
 //   <>
@@ -26,9 +27,9 @@ const HomeContainer = () => {
         path={["/:primary_path/:path", "/:primary_path"]}
         render={(renderProps) => (
           <HomeLayout>
-            <SideMenu></SideMenu>
+            <SideMenuComponent {...renderProps}/>
             <AppContainer className="appContainer">
-              <MainMenuComponent></MainMenuComponent>
+              <MainMenuComponent/>
               <Content>
                 <SubMenu>SubMenu</SubMenu>
               </Content>
@@ -50,7 +51,7 @@ const SubMenu = styled.div`
   height:60px;
   position:sticky;
   top:60px;
-  background: rgb(221 221 225);
+  background: rgb(233 233 233);
   display: grid;
   place-items: center;
   color: #666666;
@@ -67,24 +68,14 @@ const AppContainer = styled.div`
 `
 
 const Content = styled.div`
-  max-width: 1480px;
-  width: 100vw;
-  justify-self: center;
   height: 2500px;
   position:relative;
-  background: #eaeaed;
+  background: #efeff3;
+
+  width: 100%;
+  max-width: 1480px;
+  justify-self: center;
 `
-
-const SideMenu = styled.div`
-  grid-column-start: 1;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 3;
-  min-width: 250px;
-  background: linear-gradient(to bottom right,#2b3742,#101418);
-`
-
-
 
 HomeContainer.propTypes = {
   loader: PropTypes.bool,

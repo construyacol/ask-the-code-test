@@ -116,20 +116,19 @@ export const ButtonPrincipalMenu = ({
   icon,
   subfix,
   keyCode,
+  className,
+  device,
   ...props
 }) => {
 
-
   const { keyActions } = useSelector((state) => state.ui);
-
   // const elementId = useKeyActionAsClick(
   //   true,
   //   `${clave}-section-button`,
   //   keyCode
   // );
   const isDesktop = window.innerWidth > 900;
-// keyActions
-
+  // keyActions
   const activarItem = (event) => {
     event.currentTarget.blur();
     props.activarItem(clave, clave);
@@ -140,7 +139,7 @@ export const ButtonPrincipalMenu = ({
     <Link
       // id={elementId}
       to={`/${clave}`}
-      className={`itemMenu ${path === clave ? "activo" : ""}`}
+      className={`itemMenu ${path === clave ? "activo" : ""} ${className}`}
       onClick={activarItem}
     >
       <div className={`text ${path === clave ? "activate" : ""}`}>
