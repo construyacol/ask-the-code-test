@@ -304,7 +304,7 @@ class BankAccountFlow extends Component {
                     />
                   </div>
 
-                  
+                   
                   <div id="bankChooseButton" className={`contbuttonAccount ${osDevice}`}>
                     <InputButton
                       id={idAccept}
