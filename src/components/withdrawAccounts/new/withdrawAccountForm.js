@@ -283,16 +283,20 @@ class WithdrawAccountForm extends Component {
     let userIdentities = {}
 
     identities.forEach(userIdentity => {
-      userIdentities = {
-        ...userIdentities,
-        [userIdentity?.document_info?.id_number]:{
-          ...userIdentity,
-            ui_name:`${UI_NAMES?.documents[userIdentity?.id_type]} - ${userIdentity?.document_info?.id_number}`,
-            enabled:true,
-            value:userIdentity?.document_info?.id_number,
+      if(["accepted", "confirmed"].includes(getIdentityState(userIdentity))){
+        userIdentities = {
+          ...userIdentities,
+          [userIdentity?.document_info?.id_number]:{
+            ...userIdentity,
+              ui_name:`${UI_NAMES?.documents[userIdentity?.id_type]} - ${userIdentity?.document_info?.id_number}`,
+              enabled:true,
+              value:userIdentity?.document_info?.id_number,
+          }
         }
       }
     })
+
+    debugger
 
     userIdentities = {
       ...userIdentities,
