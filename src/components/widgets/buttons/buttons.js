@@ -127,7 +127,7 @@ export const ButtonPrincipalMenu = ({
   //   `${clave}-section-button`,
   //   keyCode
   // );
-  const isDesktop = window.innerWidth > 900;
+  const isDesktop = window.innerWidth > 1024;
   // keyActions
   const activarItem = (event) => {
     event.currentTarget.blur();

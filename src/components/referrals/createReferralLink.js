@@ -120,13 +120,12 @@ const ButtonContainer = styled.div`
 `
 
 const RefCodeForm = styled.form`
-  width: 100%;
-  height: 100%;
   display: grid;
-  justify-items:center;
   grid-template-rows: auto 1fr;
 
-
+  .iconSty{
+    justify-content:center;
+  }
 
   img{
     align-self: center;
@@ -139,8 +138,8 @@ const RefCodeForm = styled.form`
   @media ${device.laptopM} {
     grid-row-gap:10px;
     img{
-      height: 200px;
-      width: 200px;
+      height: 290px;
+      width: 290px;
     }
   }
 
@@ -168,8 +167,8 @@ const RefCodeForm = styled.form`
 
 
   .setRefCode{
-    width: 90%;
-    max-width: 550px;
+    width: 100%;
+    max-width: 650px;
     align-self: baseline;
   }
 

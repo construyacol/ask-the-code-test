@@ -17,6 +17,9 @@ import { useObserver } from "../hooks/useObserver";
 import ReferralActivity from './activity'
 import { Route } from "react-router-dom";
 import useViewport from '../../hooks/useWindowSize'
+import TitleSection from '../widgets/titleSectionComponent'
+import { ReferralLayout } from '../widgets/layoutStyles'
+import CopyContainer from "../widgets/copy/copyContainer";
 
 const {
   BASE_URL
@@ -24,10 +27,11 @@ const {
 
 
 const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=${refCode}`;
+const customLaptoDeviceWidth = "(max-width:1000px)"
 
 const ReferralComponent = (props) => {
 
-  const { isMovilViewport } = useViewport()
+  const { isMovilViewport, isTabletOrMovilViewport } = useViewport()
   const { user } = props;
   // const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   // const [haveReferraLink, setHaveReferralLink] = useState(false);
@@ -74,18 +78,22 @@ const ReferralComponent = (props) => {
 
   return (
     <Route path="/:primary_path" render={(routeProps) => (
-        <ContainerProof >
+        <ReferralLayout className="ReferralLayout">
+          <TitleSection/>
           {!referralLink && !loading ? (
             <CreateCode coinsendaServices={coinsendaServices}/>
           ) : (
-            <ReferralGrid id="referralGrid" className={`${isMovilViewport ? 'isMovil' : ''}`}>
+            <ReferralGrid id="referralGrid">
 
               <PanelLeft className={`fuente ${isMovilViewport ? 'isMovil' : ''}`}>
                 <FirstText className={`${loading === true ? "skeleton" : ""}`}>
                   <p>Recibe el <strong className="fuente2">0.5% </strong> de todas las operaciones de compra y venta que tus referidos realicen.</p>
                   <RefCode>
                     <p className="ref__code_title">Código de referido:</p>
-                    <p className="refCode__p fuente">{user?.referral?.ref_code}</p>
+                    <RefCodeContainer>
+                      <p className="fuente">{user?.referral?.ref_code}</p>
+                      <CopyContainer valueToCopy={user?.referral?.ref_code} color="gray" onlyIcon />
+                    </RefCodeContainer>
                   </RefCode>
                 </FirstText>
 
@@ -94,9 +102,13 @@ const ReferralComponent = (props) => {
                   <ShareSection loading={loading} referralLink={referralLink} />
                   <ShowShareSectionSticky ref={setElement} />
                 </ShareContainer>
+                  
                 {
-                  isMovilViewport &&
-                  <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
+                  isTabletOrMovilViewport &&
+                  <ReferralCounter 
+                    loading={loading ? loading.toString() : null} 
+                    referral={user && user.referral} 
+                  />
                 }
 
                 <ReferralActivity
@@ -104,8 +116,7 @@ const ReferralComponent = (props) => {
                 />
               </PanelLeft>
 
-              {
-                !isMovilViewport &&
+             
                 <PanelRight>
                   <PanelSticky>
                       <ShareSectionContainer className={`${show === false ? 'aparecer' : show === true && 'desaparecer'}`}>
@@ -114,46 +125,49 @@ const ReferralComponent = (props) => {
                     <ReferralCounter loading={loading ? loading.toString() : null} referral={user && user.referral} />
                   </PanelSticky>
                 </PanelRight>
-              }
 
             </ReferralGrid>
           )}
-      </ContainerProof>
+      </ReferralLayout>
     )}
    />
   );
 };
 
 
+const RefCodeContainer = styled.div`
+  display:flex;
+  background: #dbdbdb;
+  padding: 7px 25px;
+  align-items: center;
+  border-radius: 4px;
+  width: fit-content;
+  p{
+    margin:0;
+    font-size:25px;
+  }
+`
 
 const RefCode = styled.div`
   display:grid;
   grid-template-rows:auto auto;
   grid-template-columns:1fr;
+  row-gap:10px;
   
   .ref__code_title{
-    font-size:18px;
-    font-weight:bold;
+    font-size:17px;
+    font-weight:600;
     margin-bottom: 0px;
   }
   
-  .refCode__p{
-    margin:10px 0 0;
-    font-size:30px;
-  }
-
 `
 
 const ShareContainer = styled.div`
   position: relative;
+  max-width: 800px;
 `
 
-const ContainerProof = styled.div`
-  width: 100%;
-  height: auto;
-  min-height: calc(100vh - 14vh);
-  background: #f9f9fb;
-`
+
 
 const ShareSectionContainer = styled.div`
   width: 100%;
@@ -200,11 +214,15 @@ const PanelSticky = styled.div`
 `
 
 
-
 const PanelRight = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   position: relative;
+
+  @media  ${customLaptoDeviceWidth} {
+    display:none;
+  }
+
 `
 
 const PanelLeft = styled.section`
@@ -214,14 +232,14 @@ const PanelLeft = styled.section`
   grid-template-rows: auto auto 1fr;
   color: gray;
   row-gap: 20px;
-  padding: 0 90px;
-  width: calc(100% - 180px);
+  padding: 0;
+  width: 100%;
 
   section section{
     justify-items:center;
   }
 
-  &.isMovil{
+  @media ${device.mobile} {
     width: 100%;
     padding: 0;
   }
@@ -241,11 +259,8 @@ const FirstText = styled.div`
     }
   }
 
-  @media ${device.laptopL} {
+  @media ${device.laptop} {
     font-size: 17px;
-  }
-  @media ${device.tabletL} {
-    display: none;
   }
 `;
 
@@ -254,34 +269,30 @@ const ReferralGrid = styled.div`
   grid-template-columns: 1fr 400px;
   column-gap: 50px;
   color: ${FONT_COLOR};
-  padding: 100px 50px 50px;
-  height: calc(100% - 150px);
-  width: calc(100% - 100px);
+  transition: all 500ms ease;
 
 
-  ${'' /* font-family: 'Raleway', sans-serif; */}
-  transition; all 500ms ease;
-  @media ${device.laptopL} {
-    width: 90%;
-    padding: 0 5%;
-    ${'' /* padding: 50px 5%; */}
+
+  @media ${device.laptop} {
     height: calc(100% - 100px);
-    grid-template-columns: 1fr 340px;
-    column-gap: 35px;
+    grid-template-columns: minmax(600px, 1fr) minmax(230px,400px);
+    column-gap: 15px;
 
     ${PanelLeft}{
-      width: 100%;
-      padding: 50px 0 0;
       row-gap:0;
     }
-
   }
 
-  &.isMovil{
+  @media ${device.mobile} {
+    ${PanelLeft}{
+      row-gap:10px;
+    }
+  }
+
+  @media ${customLaptoDeviceWidth} {
     grid-template-columns: 1fr;
-    padding: 30px 0 0;
-    margin: auto;
   }
+
 `;
 
 function mapStateToProps(state, props) {

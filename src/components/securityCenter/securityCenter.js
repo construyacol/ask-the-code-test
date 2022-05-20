@@ -1,5 +1,5 @@
-import React, { useEffect, Fragment } from "react";
-import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
+import React, { useEffect } from "react";
+// import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
@@ -10,6 +10,9 @@ import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useActions } from "../../hooks/useActions";
 import { updateLocalForagePersistState } from '../hooks/sessionRestore'
+import { SecurityCenterLayout } from '../widgets/layoutStyles'
+import TitleSection from '../widgets/titleSectionComponent'
+
 
 const SecurityCenter = (props) => {
   // eslint-disable-next-line no-unused-vars
@@ -48,16 +51,17 @@ const SecurityCenter = (props) => {
 
  
   return (
-    <Fragment>
-      <DetailContainerLayout customClass="securityCenterDetail_" title="Centro de seguridad" {...props}>
+    <>
+      <SecurityCenterLayout customClass="securityCenterDetail_" title="Centro de seguridad" {...props}>
+        <TitleSection titleKey="security" />
         {props.loader ? (
           <SimpleLoader label="Obteniendo configuraciones" />
         ) : (
           security_center && <ItemSettingsInit user={props.user} data={security_center} />
         )}
 
-      </DetailContainerLayout>
-    </Fragment>
+      </SecurityCenterLayout>
+    </>
   );
 };
 

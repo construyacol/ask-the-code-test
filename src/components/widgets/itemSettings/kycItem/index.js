@@ -8,6 +8,7 @@ import { OnlySkeletonAnimation } from "../../loaders/skeleton";
 import { mainService } from '../../../../services/MainService'
 import { useActions } from '../../../../hooks/useActions'
 import useViewport from '../../../../hooks/useWindowSize'
+import { device } from '../../../../const/const'
 
 // import { LEVELS_INFO } from '../../../../const/levels'
 // import { funcDebounce } from "../../../../utils";
@@ -458,10 +459,20 @@ const InfoContainer = styled.div`
     align-items: center;
     grid-template-rows: 50px 30px 1fr;
     row-gap: 7px;
-    @media (max-width: 768px) {
-        row-gap: 15px;
+    @media ${device.laptop}{
+        row-gap: 10px;
+    }
+    @media ${device.mobile}{
+        row-gap: 0;
         text-align: center;
         grid-template-rows: 50px 1fr;
+        ${Title}{
+            text-align:left;
+        }
+        ${LabelMessage}{
+            justify-self: start;
+            text-align: left;
+        }
     }
 `
 
@@ -476,18 +487,28 @@ const IconContainer = styled.div`
     border: 2px solid var(--primary);
     z-index: 1;
     place-self: center;
-    @media (max-width: 768px) {
+    
+    @media ${device.mobile} {
         background: transparent;
         border: none;
+    }
+
+    @media ${device.laptop}{
+        justify-self: start;
     }
 `
 
 const Container = styled.div`
-    grid-template-columns: 12vw 1fr 250px;
+    grid-template-columns: minmax(auto,200px) minmax(350px,1fr) minmax(auto,200px);
     display:grid;
-    margin:15px 0;
+    margin: 0 0 15px 0;
     column-gap: 20px;
-    @media (max-width: 768px) {
+    
+    @media ${device.laptop}{
+        column-gap: 10px;
+        grid-template-columns: minmax(auto,130px) minmax(350px,1fr) minmax(auto,200px);
+    }
+    @media ${device.mobile} {
         grid-template-columns: 1fr;
         grid-template-rows:1fr auto;
         row-gap:3.5rem;
@@ -498,10 +519,9 @@ const Container = styled.div`
 const Layout = styled.div`
     height: auto;
     border: 1px solid transparent;
-    border-top-color: #d5d5d6;
     border-bottom-color: #d5d5d6;
-    min-height: calc(190px - 40px);
-    padding: 20px 0px;
+    min-height: calc(190px - 20px);
+    padding: 0 0 20px 0px;
     display:grid;
     @media (max-width: 768px) {
     padding: 0px 0px 20px;

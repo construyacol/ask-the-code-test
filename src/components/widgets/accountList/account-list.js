@@ -13,7 +13,8 @@ import useViewport from "../../../hooks/useWindowSize";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import { useSelector } from "react-redux";
 import "../../wallets/views/wallet_views.css";
-
+import TitleSection from '../../widgets/titleSectionComponent'
+import { AccountListWrapper } from '../layoutStyles'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 // const NewWalletComponent = loadable(() => import("../../wallets/newWallet"));
@@ -113,10 +114,11 @@ function AccountList(props) {
   mainButtonText = isDesktop ? `${mainButtonText} ${keyActions ? '[A]' : ''}` : mainButtonText;
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
-  
+  const path = props?.match?.params?.primary_path
 
   return (
-    <>
+    <AccountListWrapper className={`accountListWrapper ${path}`}>
+      <TitleSection/>
       {items && items.length > 0 ? (
         <AccountListContainer
           style={
@@ -154,15 +156,15 @@ function AccountList(props) {
         )
       )}
 
-      {!props.loader && (
+      {/* {!props.loader && (
         <AddNewItem
           id={idForClickableElement}
           label={mainButtonText}
           type={`${isBottonAvailable ? "primary" : "disabled"}`}
           handleClick={isBottonAvailable ? createNewWallet : null}
         />
-      )}
-    </>
+      )} */}
+    </AccountListWrapper>
   );
 }
 

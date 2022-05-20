@@ -58,21 +58,20 @@
 }
 
 .withdraw_accounts_screen {
-  padding: 40px;
-  width: calc(100% - 80px);
-  height: calc(100% - 80px);
   display: grid;
   grid-template-rows: 1fr;
   align-items: center;
-  justify-items: center;
 }
 
 .withdraw_accounts_screen_cont {
   display: grid;
   align-items: center;
-  justify-items: center;
   height: 100%;
   grid-template-rows: auto 1fr;
+}
+
+.withdraw_accounts_screen_cont .iconSty{
+  justify-self: center;
 }
 
 .WIitemDeleted {

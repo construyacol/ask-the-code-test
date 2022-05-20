@@ -1,25 +1,26 @@
-import React from "react";
+import React, { Suspense } from "react";
 // import loadable from "@loadable/component";
 import { connect } from "react-redux";
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { HomeLayout } from "./homeLayout";
-import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
+// import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
 // import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
 import MainMenuComponent from '../menu/mainMenu'
 // import DashBoardContainer from "../dashBoard/dashboard-container";
 // import { doLogout } from "../utils";
 import withHandleError from "../withHandleError";
-import styled from 'styled-components'
 import SideMenuComponent from '../menu/sideMenu'
+import { LazyLoaderPage } from "../dashBoard/dashboard-skeletons";
+import loadable from "@loadable/component";
+import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
+import MobileMenuComponent from '../menu/mobileMenu'
 
-// const BuildedHome = (props) => (
-//   <>
-//     <MenuPrincipalContainer {...props} />
-//     <MenuSuperiorContainer {...props} />
-//     <DashBoardContainer {...props} />
-//   </>
-// );
+
+const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<LazyLoaderPage path={"withdraw_accounts"} />})
+const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
+const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
+const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 
 const HomeContainer = () => {
   return (
@@ -28,54 +29,31 @@ const HomeContainer = () => {
         render={(renderProps) => (
           <HomeLayout>
             <SideMenuComponent {...renderProps}/>
-            <AppContainer className="appContainer">
-              <MainMenuComponent/>
-              <Content>
-                <SubMenu>SubMenu</SubMenu>
-              </Content>
-            </AppContainer>
-            {/* <MenuPrincipalContainer {...renderProps} logOut={doLogout}/>
-            <MenuSuperiorContainer {...renderProps} logOut={doLogout}/>
-            <DashBoardContainer {...renderProps} logOut={doLogout}/> */}
+            <AppContainerLayout className="appContainer">
+              <MainMenuComponent {...renderProps}/>
+              <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path}`}>
+                <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
+                  <Switch>
+                    <Route path="/wallets" component={WalletsContainerComponent} />
+                    <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
+                    <Route path="/referral" component={ReferralComponent} />
+                    <Route path="/security" component={SecurityCenter} />
+                    {/* <Route path="/security" render={() => (<LazyLoaderPage path={"security"} />)} /> */}
+                  </Switch>
+                </Suspense>
+              </MainContent>
+              <MobileMenuComponent/>
+            </AppContainerLayout>
           </HomeLayout>
         )}
       />
   );
 };
 
-// const BorderCont = styled.div`
-//   border:1px solid red;
-// `
 
-const SubMenu = styled.div`
-  height:60px;
-  position:sticky;
-  top:60px;
-  background: rgb(233 233 233);
-  display: grid;
-  place-items: center;
-  color: #666666;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-`
 
-const AppContainer = styled.div`
-  display: grid;
-  grid-template-rows: auto 1fr;
-  overflow-y: scroll;
-  position:relative;
-  padding-bottom:100px;
-`
 
-const Content = styled.div`
-  height: 2500px;
-  position:relative;
-  background: #efeff3;
 
-  width: 100%;
-  max-width: 1480px;
-  justify-self: center;
-`
 
 HomeContainer.propTypes = {
   loader: PropTypes.bool,

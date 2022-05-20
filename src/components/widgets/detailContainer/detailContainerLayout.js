@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { useSelector } from "react-redux";
 
-import "./detailContainer.css";
+// import "./detailContainer.css";
 
 const DetailContainerLayout = (props) => {
 

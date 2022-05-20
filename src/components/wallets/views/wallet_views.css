@@ -171,7 +171,6 @@
 
 #WalletList2 {
   max-width: 600px;
-  text-align: center;
   font-size: 18px;
   color: #484848;
 }
@@ -429,8 +428,8 @@ p#WalletList2{
 
 @media only screen and (max-width: 1400px) {
   .withdraw_accounts_screen_cont .iconSty img {
-    width: 260px;
-    height: 260px;
+    width: 280px;
+    height: 280px;
   }
 }
 

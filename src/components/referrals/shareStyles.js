@@ -112,11 +112,18 @@ export const Title = styled.p`
       width: fit-content;
       height: 16px;
     `}
+
   @media ${device.tabletL} {
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 1.8em;
   }
-`;
+
+  @media ${device.mobile} {
+    font-size:17px;
+  }
+`
+
+;
 
 export const Divider = styled.div`
   border: 1px solid lightgrey;

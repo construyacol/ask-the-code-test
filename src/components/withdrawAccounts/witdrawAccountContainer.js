@@ -26,52 +26,55 @@ function WitdrawAccountContainer(props) {
   const { items_menu } = navigation_components.wallets;
   const { withdraw_accounts, isAppLoaded, data, history } = props;
 
-  return (
-    <Router history={history}>
-      <Route
-        path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
-        render={(routeProps) => (
-          <DetailContainerLayout
-            items_menu={items_menu}
-            title={title}
-            {...props}
-            {...routeProps}
-          >
-            <Route
-              strict
-              path="/:primary_path/:path/:account_id/:tx_path"
-              render={(renderProps) => (
-                <WalletDetail wallets={data} {...renderProps} />
-              )}
-            />
-            <Route
-              exact
-              path="/:primary_path"
-              render={() => (
-                <>
-                  {!withdraw_accounts ? (
-                    <AccountListSkeletonLoader />
-                  ) : (
-                    isAppLoaded &&
-                    withdraw_accounts && (
-                      <AccountList {...routeProps} isWithdrawView />
-                    )
-                  )}
-                </>
-              )}
-            />
-            <Route
-              strict
-              path={["/:primary_path/:path/:account_id/:tx_path"]}
-              component={ActivityWrapperView}
-            />
-            {/* <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} render={(renderProps) => <ActivityWrapperView {...renderProps}/>} /> */}
-          </DetailContainerLayout>
-        )}
-      />
-    </Router>
-  );
+
+  return(
+    <>
+
+      <Router history={history}>
+        <Route
+          path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
+          render={(routeProps) => (
+            <>
+              {/* <Route
+                strict
+                path="/:primary_path/:path/:account_id/:tx_path"
+                render={(renderProps) => (
+                  <WalletDetail wallets={data} {...renderProps} />
+                )}
+              /> */}
+              <Route
+                exact
+                path="/:primary_path"
+                render={() => (
+                  <>
+                    {!withdraw_accounts ? (
+                      <AccountListSkeletonLoader />
+                    ) : (
+                      isAppLoaded &&
+                      withdraw_accounts && (
+                        <AccountList {...routeProps} isWithdrawView />
+                      )
+                    )}
+                  </>
+                )}
+              />
+              {/* <Route
+                strict
+                path={["/:primary_path/:path/:account_id/:tx_path"]}
+                component={ActivityWrapperView}
+              /> */}
+              {/* <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} render={(renderProps) => <ActivityWrapperView {...renderProps}/>} /> */}
+            </>
+          )}
+        />
+      </Router>
+    </>
+  )
+  
 }
+
+
+
 
 WitdrawAccountContainer.propTypes = {
   isAppLoaded: PropTypes.bool,

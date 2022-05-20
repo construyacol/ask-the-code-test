@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import loadable from "@loadable/component";
 import actions from "../../actions";
 import { bindActionCreators } from "redux";
-import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
+// import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { Route } from "react-router-dom";
 import ItemAccount from "../widgets/accountList/item_account";
-import SimpleLoader from "../widgets/loaders";
+// import SimpleLoader from "../widgets/loaders";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
 import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
@@ -14,6 +14,9 @@ import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
 import "./views/wallet_views.css";
+import { AccountDetailLayout } from '../widgets/layoutStyles'
+// import TitleSection from '../widgets/titleSectionComponent'
+import SubMenuComponent from '../menu/subMenu'
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
@@ -34,40 +37,74 @@ function WalletContainer(props) {
   }, []);
 
   return (
-    <Route
-      path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
-      render={(routeProps) => (
-        <DetailContainerLayout {...props} {...routeProps}>
-          <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
-            <WalletDetail wallets={props.wallets} match={match} />
-            )}
-          />
-          {!props.isAppLoaded ? (
-            <SimpleLoader />
-          ) : (
-            <>
-              <Route
-                exact
-                path="/:primary_path"
-                render={() => <LazyAccountList {...routeProps} isWalletsView />}
-              />
-              <Route
-                strict
-                path="/:primary_path/:path/:account_id/:tx_path"
-                component={ActivityView}
-              />
-              <Route
-                exact
-                path="/:primary_path/:path/:account_id"
-                render={() => <SwitchView {...routeProps} />}
-              />
-            </>
-          )}
-        </DetailContainerLayout>
-      )}
-    />
+    <>
+      <Route
+        exact
+        path="/:primary_path"
+        render={(routeProps) => <LazyAccountList {...routeProps} isWalletsView />}
+      />
+      <Route 
+        exact
+        path="/:primary_path/:path/:account_id"
+        render={(routeProps) => (
+          <AccountDetailLayout>
+            <SubMenuComponent
+              targetList="wallets"
+            />
+            {/* <TitleSection titleKey={routeProps?.match?.params?.path}/> */}
+            <SwitchView {...routeProps} />
+          </AccountDetailLayout>
+        )}
+      />
+      <Route
+        strict
+        path="/:primary_path/:path/:account_id/:tx_path"
+        // component={ActivityView}
+        render={(routeProps) => (
+          <AccountDetailLayout>
+            <SubMenuComponent
+              targetList="wallets"
+            />
+            <ActivityView {...routeProps} />
+          </AccountDetailLayout>
+        )}
+      />
+    </>
   );
 }
+
+// <Route
+//       path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
+//       render={(routeProps) => (
+//         <DetailContainerLayout {...props} {...routeProps}>
+//           <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
+//             <WalletDetail wallets={props.wallets} match={match} />
+//             )}
+//           />
+//           {!props.isAppLoaded ? (
+//             <SimpleLoader />
+//           ) : (
+//             <>
+//               <Route
+//                 exact
+//                 path="/:primary_path"
+//                 render={() => <LazyAccountList {...routeProps} isWalletsView />}
+//               />
+//               <Route
+//                 strict
+//                 path="/:primary_path/:path/:account_id/:tx_path"
+//                 component={ActivityView}
+//               />
+//               <Route
+//                 exact
+//                 path="/:primary_path/:path/:account_id"
+//                 render={() => <SwitchView {...routeProps} />}
+//               />
+//             </>
+//           )}
+//         </DetailContainerLayout>
+//       )}
+//     />
 
 export const WalletDetail = (props) => {
   const {

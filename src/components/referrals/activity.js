@@ -158,11 +158,11 @@ const EmptyStateCont = styled.div`
   display: grid;
   justify-items: center;
   padding: 50px 100px;
-
+  max-width:500px;
   &.isMovil{
     padding: 0;
     p{
-      padding: 0 20px;
+      padding: 0 ;
     }
   }
 

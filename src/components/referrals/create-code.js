@@ -1,7 +1,7 @@
 import React from "react";
 import CreateReferralLink from "./createReferralLink";
 import styled from "styled-components";
-import { device } from "../../const/const";
+// import { device } from "../../const/const";
 
 
 
@@ -21,35 +21,8 @@ function CreateCode(props) {
 
 
 const Container = styled.div`
-  margin:auto;
-  width: 100%;
-  max-width: 1000px;
   display: grid;
-  align-items: center;
-  justify-items: center;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 1fr;
-  grid-row-gap: 15px;
-  justify-self: center;
-  align-self: center;
-  padding: 50px;
-  height: calc(100% - 100px);
-  padding: 100px 0 0;
-  height: calc(100% - 100px);
-
-
-  @media ${device.tabletL} {
-    padding: 50px 25px;
-    width: calc(100% - 50px);
-  }
-
-  @media ${device.laptopM} {
-    padding: 50px;
-  }
-
-  @media ${device.tablet} {
-    padding: 50px 25px;
-  }
 
 `;
 
@@ -74,7 +47,6 @@ const Text = styled.div`
     font-size: 22px;
     color: var(--paragraph_color);
     font-weight: bold;
-    text-align: center;
     span{
       font-weight: bold;
       margin: 0 7px;
@@ -83,8 +55,6 @@ const Text = styled.div`
         font-size: 16px;
         color: var(--paragraph_color);
         font-weight: 100;
-        max-width: 1100px;
-        margin-top: 2em;
     }
 }
 `;

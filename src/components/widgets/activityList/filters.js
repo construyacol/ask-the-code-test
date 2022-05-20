@@ -24,9 +24,9 @@ const ActivityFilters = (props) => {
     props.history.push(`/${primary_path}/${path}/${account_id}/${value}`);
   };
 
-  useEffect(() => {
-    const subMenuHeight = document.querySelector('.subMenu').clientHeight
-    const supMenuHeight = document.querySelector('.MenuSuperiorLayout').clientHeight
+  useEffect(() => { 
+    const subMenuHeight = document.querySelector('.subMenu')?.clientHeight
+    const supMenuHeight = document.querySelector('.MenuSuperiorLayout')?.clientHeight
     const totalHeight = subMenuHeight + supMenuHeight + 10
     FilterElement.current.style.top = totalHeight
   }, [])

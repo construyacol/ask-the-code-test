@@ -225,31 +225,31 @@ export const currencyFormatByCoin = {
   }),
 };
 
-const size = {
-  mobileS: "320px",
-  mobileM: "375px",
-  mobileL: "425px",
-  mobile: "768px",
-  tablet: "768px",
-  tabletL: "900px",
-  laptop: "1366px",
-  laptopM: "1366px",
-  laptopL: "1440px",
-  desktop: "2500px"
+export const size = {
+  mobileS: 320,
+  mobileM: 375,
+  mobileL: 425,
+  mobile: 768,
+  tablet: 768,
+  tabletL: 900,
+  laptop: 1440,
+  laptopM: 1440,
+  laptopL: 1440,
+  desktop: 4000
 };
 
 export const device = {
-  mobileS: `(max-width: ${size.mobileS})`,
-  mobileM: `(max-width: ${size.mobileM})`,
-  mobileL: `(max-width: ${size.mobileL})`,
-  mobile: `(max-width: ${size.mobile})`,
-  tablet: `(max-width: ${size.tablet})`,
-  tabletL: `(max-width: ${size.tabletL})`,
-  laptop: `(max-width: ${size.laptop})`,
-  laptopM: `(max-width: ${size.laptopM})`,
-  laptopL: `(max-width: ${size.laptopL})`,
-  desktop: `(max-width: ${size.desktop})`,
-  desktopL: `(max-width: ${size.desktop})`,
+  mobileS: `(max-width: ${size.mobileS}px)`,
+  mobileM: `(max-width: ${size.mobileM}px)`,
+  mobileL: `(max-width: ${size.mobileL}px)`,
+  mobile: `(max-width: ${size.mobile}px)`,
+  tablet: `(max-width: ${size.tablet}px)`,
+  tabletL: `(max-width: ${size.tabletL}px)`,
+  laptop: `(max-width: ${size.laptop}px)`,
+  laptopM: `(max-width: ${size.laptopM}px)`,
+  laptopL: `(max-width: ${size.laptopL}px)`,
+  desktop: `(max-width: ${size.desktop}px)`,
+  desktopL: `(max-width: ${size.desktop}px)`,
 };
 
 export const currencyLabels = {

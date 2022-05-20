@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const ItemSecurity = styled.div`
   height: 150px;
   display: grid;
-  grid-template-columns: 12vw 1fr;
   margin: 15px 0;
   position: relative;
 
@@ -41,7 +40,7 @@ export const ItemSecurity = styled.div`
     display: grid;
     align-items: center;
     justify-items: center;
-    background: #cacaca;
+    background: var(--skeleton_color);
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -54,7 +53,7 @@ export const ItemSecurity = styled.div`
   }
 
   .contentSubText{
-    color: #cacaca;
+    color: var(--skeleton_color);
     display: grid;
     align-items: center;
     padding-left: 20px;
@@ -63,7 +62,7 @@ export const ItemSecurity = styled.div`
   }
 
   .contentSubText p{
-    background: #cacaca;
+    background: var(--skeleton_color);
     border-radius: 4px;
   }
 
@@ -89,7 +88,7 @@ export const ItemSecurity = styled.div`
     align-self: center;
     width: 100px;
     height: 35px;
-    background: #cacaca;
+    background: var(--skeleton_color);
     border-radius: 4px;
     justify-self: center;
   }
