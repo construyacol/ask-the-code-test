@@ -1,9 +1,9 @@
 import { SubMenu } from './styles'
-import { styled } from 'styled-components'
+// import { styled } from 'styled-components'
 import { navigation_components } from "../api/ui/api.json";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import loadable from "@loadable/component";
 import { isSafari } from '../../utils'
 
@@ -43,8 +43,8 @@ export default function SubMenuComponent({ targetList }) {
                                     <div className={`menuMovilIcon ${isSafari()} ${path === item.link ? "active" : ""}`}>
                                         <IconSwitch size={20} icon={item.link} color={`${(isSafari() && path === item.link) ? 'var(--primary)' : isSafari() ? 'gray' : 'var(--primary)'}`} />
                                     </div>
-                                    <p>{item.title}</p>
-                                </NavLink>
+                                    <p className="fuente">{item.title}</p>
+                            </NavLink>
                         )
                         
                     })

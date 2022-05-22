@@ -10,7 +10,7 @@ import { ButtonPrincipalMenu } from "../widgets/buttons/buttons";
 import { useActions } from '../../hooks/useActions'
 import useViewport from '../../hooks/useWindowSize'
 import { doLogout } from "../utils";
-import {
+import { 
     MenuItemsContainer,
     SideMenuContainer,
     UserInfo,
@@ -131,19 +131,6 @@ const MenuItemsComponent = props => {
                 }
                 <br />
           </section>
-          
-          {/* <section className={`section2 movil ${osDevice}`}>
-            <div
-                // id={idForLogoutButton}
-                className={`menuMovilItems close`}
-                onClick={props.logOut}
-            >
-                <p className="menuMovilItemTexts close fuente">
-                    {logoutButtonText}
-                <i className="fas fa-power-off"></i>
-                </p>
-            </div>
-          </section> */}
 
           <CloseButtonContainer 
             className={`fuente ${osDevice} ${isLaptopViewport ? 'laptopView' : ''}`}

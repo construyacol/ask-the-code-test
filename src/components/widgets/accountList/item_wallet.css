@@ -70,6 +70,10 @@
   grid-template-rows: auto 1fr;
 }
 
+.withdraw_accounts_screen_cont img{
+  filter: grayscale(.4);
+}
+
 .withdraw_accounts_screen_cont .iconSty{
   justify-self: center;
 }

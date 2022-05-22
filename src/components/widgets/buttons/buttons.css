@@ -12,6 +12,11 @@
   transition: 0.3s;
   border-left: 2px solid transparent;
   opacity: 1;
+  position: relative;
+}
+
+.laptopView.itemMenu:hover ._hoverTag{
+  display: flex;
 }
 
 .itemMenu.laptopView .indicatorCont, .itemMenu.laptopView p{
@@ -161,16 +166,32 @@
   background: linear-gradient(to bottom right, #2daaff, #007ed4);
 }
 
+.AddNewItem.primary,
+.AddNewItem.disabled {
+  transform: scale(0.9);
+}
 @media only screen and (max-width: 768px) {
+
   .CMControls {
     display: grid;
   }
+
+  .AddNewItem.primary,
+  .AddNewItem.disabled {
+    transform: scale(1);
+  }
+
+  .AddNewItemContainer{
+    height: auto;
+  }
+
+
 }
 
 .secundary {
-  background: white;
-  border: 2px solid #3a7bd5;
-  color: #3a7bd5 !important;
+  background: #f9f9fb;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
   font-weight: bold;
   /*width: calc(170px - 2px);*/
   /*height: calc(50px - 2px);*/
@@ -190,9 +211,14 @@
   animation-timing-function: ease-in-out;
 }
 
-.AddNewItemContainer p,
-.AddNewItemContainer i {
+.AddNewItem p,
+.AddNewItem i {
   color: white !important;
+}
+
+.AddNewItem.secundary p,
+.AddNewItem.secundary i {
+  color: var(--primary) !important;
 }
 
 @keyframes buttonConf {
@@ -478,12 +504,11 @@
 
 .AddNewItem {
   position: relative;
-  z-index: 3;
-  font-size: 20px;
-  min-width: 280px;
+  z-index: 1;
   width: auto;
+  min-width: 250px;
   height: 35px;
-  padding: 12px 20px;
+  padding: 10px 15px;
   display: flex;
   align-items: center;
   border-radius: 6px;
@@ -510,6 +535,8 @@
   background: #dedede;
 }
 
+
+
 .AddNewItemContainer {
   width: 100%;
   height: 80px;
@@ -518,9 +545,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  position: absolute;
-  bottom: 10px;
 }
 
 /*Payment Confirmation Button  - - - -- - -- - - - - -- - - - -*/

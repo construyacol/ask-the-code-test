@@ -30,10 +30,14 @@ export const SubMenu = styled.div`
   border-bottom-right-radius: 4px;
   backdrop-filter: blur(5px);
   z-index: 3;
-  background: rgb(243 243 243 / 85%);
+  background: rgb(239 239 239 / 85%);
   display:flex;
   padding: 0 25px;
-  justify-content: space-around;
+  justify-content: center;
+  column-gap:10px;
+
+  justify-self: center;
+  width: calc(100% - 50px);
 
   .menuItem{
     display: grid;
@@ -44,6 +48,7 @@ export const SubMenu = styled.div`
     grid-template-rows: auto 1fr;
     text-decoration: none;
     color: var(--paragraph_color);
+    max-width: 150px;
   }
 
 
@@ -66,8 +71,12 @@ export const SubMenu = styled.div`
 
     .menuItem.movil p,
     .menuItem.active p {
-    grid-template-rows: 1fr auto;
-    color: var(--primary);
+      grid-template-rows: 1fr auto;
+      color: var(--primary);
+    }
+
+    .menuItem.active{
+      background: #f9f9fb;
     }
 
     .menuItem:hover p {
@@ -122,6 +131,10 @@ export const SubMenu = styled.div`
   transform: scale(1);
 }
 
+@media ${device.mobile} {
+  padding:0;
+  width:100%;
+}
 
 
 `
@@ -131,7 +144,7 @@ export const MainMenuContainer = styled(Menu)`
     height:60px;
     position:sticky;
     top:0px;
-    z-index:1;
+    z-index:2;
     background: linear-gradient(90deg,#202830,#101418);
     background: linear-gradient(90deg,#202830fa,#101418ed);
     display:flex;

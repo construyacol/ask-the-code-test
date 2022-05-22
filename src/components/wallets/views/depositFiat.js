@@ -91,6 +91,8 @@ const DepositFiat = (props) => {
 };
 
 const DepositForm = styled(OperationForm)`
+
+  min-height: 350px;
   @media (max-width: 768px) {
     height: calc(100% - 40px) !important;
     max-height: none !important;

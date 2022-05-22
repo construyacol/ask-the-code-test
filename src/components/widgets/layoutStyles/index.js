@@ -9,8 +9,8 @@ export const BaseLayout = styled.div`
         width: calc(100% - 60px);
     }
     @media ${device.mobile} {
-        padding:0 15px;
-        width: calc(100% - 30px);
+        padding:0 20px;
+        width: calc(100% - 40px);
     }
 `
 
@@ -38,21 +38,34 @@ export const MainContent = styled.div`
     }
 
     @media ${device.mobile} {
-        width: calc(100% - 30px);
+        width: 100%;
         padding-bottom:50px;
     }
 `
 
 export const AccountDetailLayout = styled(BaseLayout)`
     display: grid;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
+`
+
+export const AccountDetailContainer = styled.div`
+    display: grid;
+    grid-template-rows: auto minmax(450px, 1fr);
+    row-gap: 30px;
+    width: 100%;
+    justify-self: center;
+    max-width: 1000px;
+    justify-items: center;
+    padding-bottom:50px;
+    @media ${device.mobile} {
+        padding-bottom:0;
+    }
 `
 
 export const SecurityCenterLayout = styled(BaseLayout)`
     display: grid;
     grid-template-rows: auto 1fr;
 `
-
 
 export const ReferralLayout = styled(BaseLayout)`
     display: grid;
@@ -64,6 +77,12 @@ export const AccountListWrapper = styled(BaseLayout)`
     height:auto;
     display: grid;
     grid-template-rows: auto 1fr;
+    @media ${device.mobile} {
+        grid-template-rows: auto auto 1fr;
+        &.isEmpty{
+          grid-template-rows: auto 1fr auto;
+        }
+    }
     
 
 `

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 // import { render } from 'react-dom';
 // import loadable from "@loadable/component";
 // import { hydrate, render } from "react-dom";
@@ -29,13 +29,11 @@ export const store = _createStore();
 const rootElement = document.getElementById("home-container");
 
 const App = () => {
-
   return(
     <Provider store={store}>
       <RootContainer/>
     </Provider>
   )
-
 };
 
 render(<App />, rootElement);

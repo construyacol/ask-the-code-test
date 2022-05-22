@@ -3,8 +3,6 @@ import CreateReferralLink from "./createReferralLink";
 import styled from "styled-components";
 // import { device } from "../../const/const";
 
-
-
 function CreateCode(props) {
   return (
     <Container id="container">
@@ -13,17 +11,15 @@ function CreateCode(props) {
           Recibe el<span className="fuente2">0.5% </span> de todas las operaciones de compra y venta que tus referidos realicen.
         </p>
       </Text>
-        <CreateReferralLink {...props} />
+      <CreateReferralLink {...props} />
 
     </Container>
   );
 }
 
-
 const Container = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-
 `;
 
 // const FormContainer = styled.div`
@@ -58,7 +54,6 @@ const Text = styled.div`
     }
 }
 `;
-
 
 
 export default CreateCode;

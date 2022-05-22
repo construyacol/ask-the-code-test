@@ -51,10 +51,6 @@ const HomeContainer = () => {
 };
 
 
-
-
-
-
 HomeContainer.propTypes = {
   loader: PropTypes.bool,
   isSomeModalRendered: PropTypes.bool,

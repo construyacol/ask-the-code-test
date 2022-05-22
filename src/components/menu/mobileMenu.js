@@ -78,13 +78,15 @@ const MobileMenu = styled.menu`
     display:none;
     place-content: center;
     justify-content: space-around;
+    z-index:2;
     
     @media ${device.mobile} {
-    display: flex;
+      display: flex;
       &.ioSystem{
          margin-bottom:80px;
          bottom:80px 
       }
+      margin-bottom:40px;
     }
 
 `

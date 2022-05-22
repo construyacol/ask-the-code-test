@@ -6,7 +6,7 @@ import { ItemSecurity, SecurityLayoutLoader } from "../securityCenter/styles";
 // import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import TitleSection from '../widgets/titleSectionComponent'
 import "./dashboard.css";
-import { AccountListWrapper } from '../widgets/layoutStyles'
+import { AccountListWrapper, SecurityCenterLayout } from '../widgets/layoutStyles'
 
 const ItemAccount = loadable(() =>
   import("../widgets/accountList/item_account")
@@ -36,21 +36,24 @@ export const AccountListSkeletonLoader = () => {
       <AccountListContainer className="AccountListContainer">
         <ItemAccount loader />
       </AccountListContainer>
-    </AccountListWrapper>
+    </AccountListWrapper> 
   );
 };
 
-const SecurityCenterSkeletonLoader = () => {
+export const SecurityCenterSkeletonLoader = ({ tittleOff }) => {
   const loaderList = new Array(2).fill({});
 
   return (
-    <>
-      <TitleSection skeleton/>
+    <SecurityCenterLayout>
+    {
+      !tittleOff &&
+        <TitleSection skeleton/>
+    }
       {loaderList.map((_, key) => {
         return (
           <SecurityLayoutLoader
             id="security_loader"
-            className="SecurityLayoutLoader"
+            className="SecurityLayoutLoader skeleton"
             key={key}
           >
             <ItemSecurity className="loader ItemSecurity">
@@ -69,6 +72,6 @@ const SecurityCenterSkeletonLoader = () => {
           </SecurityLayoutLoader>
         );
       })}
-    </>
+    </SecurityCenterLayout>
   );
 };

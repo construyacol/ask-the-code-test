@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
-import SimpleLoader from "../widgets/loaders";
+// import SimpleLoader from "../widgets/loaders";
 import { security_center } from "../api/ui/settings.json";
 import ItemSettingsInit from "../widgets/itemSettings/";
 import { scroller } from "react-scroll";
@@ -12,7 +12,7 @@ import { useActions } from "../../hooks/useActions";
 import { updateLocalForagePersistState } from '../hooks/sessionRestore'
 import { SecurityCenterLayout } from '../widgets/layoutStyles'
 import TitleSection from '../widgets/titleSectionComponent'
-
+import { SecurityCenterSkeletonLoader } from '../dashBoard/dashboard-skeletons'
 
 const SecurityCenter = (props) => {
   // eslint-disable-next-line no-unused-vars
@@ -55,7 +55,7 @@ const SecurityCenter = (props) => {
       <SecurityCenterLayout customClass="securityCenterDetail_" title="Centro de seguridad" {...props}>
         <TitleSection titleKey="security" />
         {props.loader ? (
-          <SimpleLoader label="Obteniendo configuraciones" />
+          <SecurityCenterSkeletonLoader tittleOff />
         ) : (
           security_center && <ItemSettingsInit user={props.user} data={security_center} />
         )}

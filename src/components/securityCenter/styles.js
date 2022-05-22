@@ -1,10 +1,19 @@
 import styled from "styled-components";
+import { device } from '../../const/const'
 
 export const ItemSecurity = styled.div`
   height: 150px;
   display: grid;
   margin: 15px 0;
   position: relative;
+  grid-template-columns: minmax(auto, 200px) minmax(350px, 1fr);
+  column-gap: 20px;
+  
+  @media ${device.desktop} {
+      column-gap: 10px;
+      grid-template-columns: minmax(auto, 130px) minmax(350px, 1fr);
+  }
+
 
   &.loader{
     animation-name: orderLoader;
@@ -102,7 +111,6 @@ export const SecurityLayoutLoader = styled.section`
   width: 100%;
   height: auto;
   border: 1px solid transparent;
-  border-top-color: #d5d5d6;
   border-bottom-color: #d5d5d6;
   padding: 20px 0px;
 `;

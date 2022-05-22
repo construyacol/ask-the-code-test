@@ -20,17 +20,13 @@ export const AccountListContainer = styled.section`
   column-gap: 20px;
   align-items: center;
 
+  &.contet-center{
+    justify-content:center;
+  }
+
   @media ${device.mobile} {
       justify-content:center;
   }
-  ${'' /* @media screen and (max-height: 830px) and (max-width: 900px) {
-    height: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  }
-
-  @media screen and (max-width: 768px) {
-    width: auto;
-  } */}
 `;
 
 export const ACta = styled.div`

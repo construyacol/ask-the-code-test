@@ -720,7 +720,7 @@
 .ALFilterSect.stickyPos{
   position: sticky;
   z-index: 3;
-  top: 140px;
+  /* top: 130px; */
 }
 
 .ALitemFill {
@@ -771,7 +771,7 @@
 .ALif2Item {
   display: flex;
   align-items: center;
-  width: 100px;
+  width: 110px;
   justify-items: center;
   justify-content: center;
   color: gray;

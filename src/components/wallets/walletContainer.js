@@ -14,9 +14,10 @@ import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
 import "./views/wallet_views.css";
-import { AccountDetailLayout } from '../widgets/layoutStyles'
-// import TitleSection from '../widgets/titleSectionComponent'
+import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
+import { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
+// import useViewport from '../../hooks/useWindowSize'
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
@@ -45,96 +46,71 @@ function WalletContainer(props) {
       />
       <Route 
         exact
-        path="/:primary_path/:path/:account_id"
+        path={"/:primary_path/:path/:account_id"}
         render={(routeProps) => (
-          <AccountDetailLayout>
-            <SubMenuComponent
-              targetList="wallets"
-            />
-            {/* <TitleSection titleKey={routeProps?.match?.params?.path}/> */}
-            <SwitchView {...routeProps} />
-          </AccountDetailLayout>
+          <AccountDetail {...props} {...routeProps} />
         )}
       />
       <Route
         strict
         path="/:primary_path/:path/:account_id/:tx_path"
-        // component={ActivityView}
         render={(routeProps) => (
-          <AccountDetailLayout>
-            <SubMenuComponent
-              targetList="wallets"
-            />
-            <ActivityView {...routeProps} />
-          </AccountDetailLayout>
+          <AccountDetail {...props} {...routeProps} />
         )}
       />
     </>
   );
 }
 
-// <Route
-//       path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
-//       render={(routeProps) => (
-//         <DetailContainerLayout {...props} {...routeProps}>
-//           <Route strict path="/:primary_path/:path/:account_id" render={({ match }) => (
-//             <WalletDetail wallets={props.wallets} match={match} />
-//             )}
-//           />
-//           {!props.isAppLoaded ? (
-//             <SimpleLoader />
-//           ) : (
-//             <>
-//               <Route
-//                 exact
-//                 path="/:primary_path"
-//                 render={() => <LazyAccountList {...routeProps} isWalletsView />}
-//               />
-//               <Route
-//                 strict
-//                 path="/:primary_path/:path/:account_id/:tx_path"
-//                 component={ActivityView}
-//               />
-//               <Route
-//                 exact
-//                 path="/:primary_path/:path/:account_id"
-//                 render={() => <SwitchView {...routeProps} />}
-//               />
-//             </>
-//           )}
-//         </DetailContainerLayout>
-//       )}
-//     />
 
-export const WalletDetail = (props) => {
-  const {
-    wallets,
-    match: { params },
-  } = props;
+
+
+export const AccountDetail = (props) => {
+  const { wallets, match: { params } } = props;
+  // const { isMovilViewport } = useViewport()
 
   return (
-    <section className="WalletContainer">
-      <ItemAccount
-        key={params.account_id}
-        account={wallets[params.account_id]}
-        account_type={params.primary_path}
-        isStatic={true}
-      />
-    </section>
+          <AccountDetailLayout className="_accountDetailLayout">
+            <SubTitleSection 
+              titleKey="Volver a billeteras"
+              iconClass="fas fa-arrow-left"
+              handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
+            />
+            <SubMenuComponent
+              targetList="wallets"
+            />
+            <AccountDetailContainer className="_accountDetailContainer">
+              {/* <AccountDetail wallets={props.wallets} props={routeProps?.match} /> */}
+              <section className="WalletContainer">
+                <ItemAccount
+                  key={params.account_id}
+                  account={wallets[params.account_id]}
+                  account_type={params.primary_path}
+                  isStatic={true}
+                />
+              </section>
+              <SwitchView {...props} />
+            </AccountDetailContainer>
+
+          </AccountDetailLayout>
   );
 };
 
 // TODO: review re-rendered on this component every time, no performance here
 const SwitchView = (props) => {
-  const { params } = props.match;
+  const { params:{ path, tx_path } } = props.match;
   const Views = {
     // deposit: <SkeletonDepositView {...props} />,
     deposit: <LazyDepositView {...props} />,
     withdraw: <LazyWithdrawView {...props} />,
     // withdraw: <SkeletonWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
+    activity:<ActivityView {...props} />
+
   };
-  return Views[params.path];
+
+  if(tx_path)return Views["activity"];
+  return Views[path];
 };
 
 WalletContainer.propTypes = {

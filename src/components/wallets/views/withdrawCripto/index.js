@@ -373,9 +373,7 @@ export const OperationForm = styled.form`
   display: grid;
   grid-row-gap: 5px;
   position: relative;
-
-
-
+  max-height: 450px;
 `;
 
 export const WithdrawForm = styled(OperationForm)`

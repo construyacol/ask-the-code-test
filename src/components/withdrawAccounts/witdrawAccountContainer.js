@@ -2,34 +2,35 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import actions from "../../actions";
 import { bindActionCreators } from "redux";
-import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
-import { navigation_components } from "../api/ui/api.json";
+// import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
+// import { navigation_components } from "../api/ui/api.json";
 import { Router, Route } from "react-router-dom";
 import AccountList from "../widgets/accountList/account-list";
 // import SimpleLoader from '../widgets/loaders'
 import PropTypes from "prop-types";
 import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
-import { WalletDetail } from "../wallets/walletContainer";
+// import { WalletDetail } from "../wallets/walletContainer";
 import ActivityView from "../wallets/views/activity";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useSelector } from "react-redux";
+import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
+import { SubTitleSection } from '../widgets/titleSectionComponent'
+import SubMenuComponent from '../menu/subMenu'
+import ItemAccount from "../widgets/accountList/item_account";
 
 function WitdrawAccountContainer(props) {
-  const title = "Mis Cuentas de retiro";
-
   useEffect(() => {
     props.action.cleanCurrentSection();
     props.action.CurrentForm("bank");
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const { items_menu } = navigation_components.wallets;
-  const { withdraw_accounts, isAppLoaded, data, history } = props;
+  // const { items_menu } = navigation_components.wallets;
+  const { withdraw_accounts, isAppLoaded, history } = props;
 
 
   return(
     <>
-
       <Router history={history}>
         <Route
           path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
@@ -58,12 +59,7 @@ function WitdrawAccountContainer(props) {
                   </>
                 )}
               />
-              {/* <Route
-                strict
-                path={["/:primary_path/:path/:account_id/:tx_path"]}
-                component={ActivityWrapperView}
-              /> */}
-              {/* <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} render={(renderProps) => <ActivityWrapperView {...renderProps}/>} /> */}
+              <Route strict path={["/:primary_path/:path/:account_id/:tx_path"]} render={(renderProps) => <ActivityWrapperView {...renderProps}/>} />
             </>
           )}
         />
@@ -112,9 +108,8 @@ export default connect(
 
 const ActivityWrapperView = (props) => {
   const { params } = props.match;
-  const activity = useSelector(
-    (state) => state.storage.activity_for_account[params.account_id]
-  );
+  const activity = useSelector((state) => state.storage.activity_for_account[params.account_id]);
+  const withdraw_account = useSelector((state) => state.modelData.withdraw_accounts[params.account_id]);
   const withdraws = useSelector((state) => state.modelData.withdraws);
   const [coinsendaServices] = useCoinsendaServices();
 
@@ -136,5 +131,30 @@ const ActivityWrapperView = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <ActivityView {...props} />;
+  return (
+    <AccountDetailLayout className="_accountDetailLayout">
+      <SubTitleSection 
+        titleKey="Volver a cuentas de retiro"
+        iconClass="fas fa-arrow-left"
+        handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
+      />
+      <SubMenuComponent
+        targetList="withdraw_accounts"
+      />
+      <AccountDetailContainer className="_accountDetailContainer">
+          <section className="WalletContainer">
+            <ItemAccount
+              key={params.account_id}
+              account={withdraw_account}
+              account_type={params.primary_path}
+              isStatic={true}
+            />
+          </section>
+        <ActivityView {...props} />;
+      </AccountDetailContainer>
+
+    </AccountDetailLayout>
+  )
+  
+  
 };
