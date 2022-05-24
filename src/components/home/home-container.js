@@ -23,14 +23,16 @@ const ReferralComponent = loadable(() => import("../referrals/referralsComponent
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 
 const HomeContainer = () => {
+
   return (
     <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={(renderProps) => (
           <HomeLayout>
             <SideMenuComponent {...renderProps}/>
-            <AppContainerLayout className="appContainer">
+            <AppContainerLayout className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}>
               <MainMenuComponent {...renderProps}/>
+              <MobileMenuComponent/>
               <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch>
@@ -42,7 +44,6 @@ const HomeContainer = () => {
                   </Switch>
                 </Suspense>
               </MainContent>
-              <MobileMenuComponent/>
             </AppContainerLayout>
           </HomeLayout>
         )}

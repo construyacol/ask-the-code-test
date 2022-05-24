@@ -19,6 +19,13 @@ export const AppContainerLayout = styled.div`
   grid-template-rows: auto 1fr;
   overflow-y: scroll;
   position:relative;
+
+    @media ${device.mobile} {
+        grid-template-rows: auto auto 1fr;
+        &.secondLayer{
+            grid-template-rows: auto 1fr;
+        }
+    }
 `
 
 export const MainContent = styled.div`
