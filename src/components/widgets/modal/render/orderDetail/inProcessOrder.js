@@ -559,6 +559,7 @@ const OrderContainer = styled.div`
   border-bottom-left-radius: 6px;
 
   @media (max-width: 768px) {
+          padding-bottom: 50px !important; 
         &.ioSystem{
           padding-bottom: 100px !important; 
         }

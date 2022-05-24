@@ -90,8 +90,8 @@ const MobileMenu = styled.menu`
     @media ${device.mobile} {
       display: flex;
       &.ioSystem{
-         margin-bottom:80px;
-         bottom:80px 
+         ${'' /* margin-bottom:80px; */}
+         ${'' /* bottom:80px  */}
       }
     }
 

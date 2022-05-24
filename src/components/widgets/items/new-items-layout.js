@@ -3,7 +3,7 @@ import loadable from "@loadable/component";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import { InputKeyActionHandler } from "../accountList/styles";
 import { getCdnPath } from '../../../environment'
-
+import './items.css'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 

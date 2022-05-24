@@ -72,10 +72,11 @@ const TitleContainer = styled(Container)`
 
 const SubContainer = styled(Container)`
     padding:0;
-    grid-row-start: 2;
+    ${'' /* grid-row-start: 2; */}
     @media ${device.mobile} {
-        grid-row-start: 1;
-        padding-top:20px;
+        ${'' /* grid-row-start: 1; */}
+        ${'' /* padding-top:20px; */}
+        display:none;
     }
 `
 

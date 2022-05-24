@@ -33,6 +33,8 @@ import { ApiPostIdentityFiles } from './api'
 import IdentityKycSuccess from './success'
 import { identityInfo } from './identityUtils'
 import { UI_NAMES } from '../../../../../const/uiNames'
+import { device } from '../../../../../const/const'
+
 
 
 import {
@@ -189,12 +191,12 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
           {
             isMovilViewport &&
-              <MobileContralContainer>
+              <MobileControlContainer className="_controlContainerFiles">
                 <CallToAction
                   goFileLoader={goFileLoader}
                   loading={loading}
                 />
-              </MobileContralContainer>
+              </MobileControlContainer>
           }
         </FilesContainer>
       </Layout>
@@ -315,12 +317,15 @@ const StageListComponent = ({ stages, stageData, state }) => {
 }
 
 
-const MobileContralContainer = styled.div`
+const MobileControlContainer = styled.div`
   display: flex;
   width: 100%;
   height: 80px;
   align-items: center;
   place-content: center;
+  @media ${device.mobile}{
+    padding-bottom: 30px;
+  }
 `
 
 const CurrentStageIndicator = styled.div`

@@ -71,13 +71,13 @@ export const AccountDetail = (props) => {
 
   return (
           <AccountDetailLayout className="_accountDetailLayout">
+            <SubMenuComponent
+              targetList="wallets"
+            />
             <SubTitleSection 
               titleKey="Volver a billeteras"
               iconClass="fas fa-arrow-left"
               handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
-            />
-            <SubMenuComponent
-              targetList="wallets"
             />
             <AccountDetailContainer className="_accountDetailContainer">
               {/* <AccountDetail wallets={props.wallets} props={routeProps?.match} /> */}

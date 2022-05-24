@@ -45,7 +45,7 @@ const NewWalletComponent = props => {
       > 
       <IconClose theme="dark" top={15} right={20} />
         <Layout>
-          <Content>
+          <Content className="_contentNewWallet">
               {
                 dataForm ?
                   <FormComponent

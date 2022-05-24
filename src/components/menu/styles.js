@@ -77,6 +77,7 @@ export const SubMenu = styled.div`
 
     .menuItem.active{
       background: #f9f9fb;
+      border-top: 2px solid var(--primary);
     }
 
     .menuItem:hover p {
@@ -291,6 +292,6 @@ export const MenuItemsContainer = styled.div`
     justify-content: space-between;
     font-size: 14px;
     ${'' /* font-weight: bold; */}
-    padding: 15px 0;
+    padding: 15px 0 50px;
     
 `
