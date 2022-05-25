@@ -19,7 +19,7 @@
   display: flex;
 }
 
-.itemMenu.laptopView .indicatorCont, .itemMenu.laptopView p{
+.itemMenu.laptopView .indicatorCont, .itemMenu.laptopView .itemText{
   display: none;
 }
 

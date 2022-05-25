@@ -116,7 +116,7 @@ export const ButtonPrincipalMenu = ({
   text,
   icon,
   subfix,
-  keyCode,
+  keyCode, 
   className,
   device,
   ...props

@@ -2,8 +2,10 @@ import React, { useEffect } from "react";
 import InputValidate from "../../hooks/inputValidate";
 import styled from "styled-components";
 import SkeletonAnimation from "../loaders/skeleton";
+import useViewport from '../../../hooks/useWindowSize'
 
 const InputForm = (props) => {
+
   const {
     type,
     placeholder,
@@ -27,6 +29,7 @@ const InputForm = (props) => {
   } = props;
 
   const [inputState, setInputState, changeState, customError] = InputValidate();
+  const { isMovilViewport } = useViewport()
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
   // console.log('|||||||||||||||||||| inputState:', inputState)
 
@@ -61,7 +64,6 @@ const InputForm = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
-  let movil = window.innerWidth < 768;
   const subfixId = "set-max-available";
 
   const setMaxWithActionKeyFn = (e) => {
@@ -85,14 +87,14 @@ const InputForm = (props) => {
   };
 
   const inputProps = {
-    className: `inputElement ${name} ${movil ? "movil" : ""}`,
+    className: `inputElement ${name} ${isMovilViewport ? "movil" : ""}`,
     type,
     readOnly,
     placeholder,
     onChange: (e) => validate(e),
     name,
     disabled,
-    autoFocus,
+    autoFocus:isMovilViewport ? false : autoFocus,
     onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
     autoComplete,
   };

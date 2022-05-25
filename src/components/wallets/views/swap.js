@@ -139,7 +139,7 @@ function SwapView(props) {
 
 
   const handleChangeSpendAmount = async (name, newValue) => {
-    setValue(newValue.toString().replace(/,/g, ""))
+    setValue(newValue.toString().replace(/,/g, "."))
   };
 
   const handleError = (msg) => {
@@ -254,9 +254,10 @@ function SwapView(props) {
       isMovilViewport={isMovilViewport}
       id="swapForm"
       className={`${isMovilViewport ? "movil" : ""}`}
-    >
+    > 
       <InputForm
         classes="fuente2" 
+        // type={isMovilViewport ? "number" : "text"}
         type="text"
         placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
         name="spend-amount"

@@ -66,9 +66,9 @@ const CryptoOrder = ({ order }) => {
   const { isTabletOrMovilViewport } = useViewport();
 
   return (
-    <InProcessOrderContainer>
+    <InProcessOrderContainer className="_inProcessOrderContainer">
       <IconClose theme="dark" size={20} />
-      <OrderContainer>
+      <OrderContainer className="_inProcessOrder">
         <TopSection>
           <IconSwitch
             className="TitleIconOrder"
@@ -602,6 +602,7 @@ const InProcessOrderContainer = styled.section`
 
   @media ${device.laptop} {
     width: 100%;
+    max-width:1000px;
   }
 
   @media ${device.tabletL} {

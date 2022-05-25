@@ -64,7 +64,9 @@ export default function MobileMenuComponent() {
 const MenuItem = styled.div`
     display:flex;
     place-items: center;
-    padding: 0 25px;
+    width: 100%;
+    display: flex;
+    place-content: center;
     
     &._active{
         border-top: 2px solid var(--primary);

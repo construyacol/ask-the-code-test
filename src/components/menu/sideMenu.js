@@ -62,7 +62,7 @@ function SideMenuComponent(props) {
     return(
         <>
             {
-                isLaptopViewport ?
+                isLaptopViewport ? 
                 <LaptopSideMenuContainer>
                     <LaptopLogoContainer>
                         <Coinsenda size={35} color="white"/>
@@ -137,7 +137,7 @@ const MenuItemsComponent = props => {
             onClick={props.logOut}
           >
             <i className="fas fa-power-off"></i>
-            <p className="fuente">
+            <p className="fuente itemText">
                 {logoutButtonText}
             </p>
           </CloseButtonContainer>
@@ -173,7 +173,7 @@ const CloseButtonContainer = styled.div`
             color: white;
             background: #ff3526bd;
         }
-        p{
+        .itemText{
             display:none;
         }
     }
