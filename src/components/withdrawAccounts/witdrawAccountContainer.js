@@ -133,14 +133,15 @@ const ActivityWrapperView = (props) => {
 
   return (
     <AccountDetailLayout className="_accountDetailLayout">
+      <SubMenuComponent
+          targetList="withdraw_accounts"
+      />
       <SubTitleSection 
         titleKey="Volver a cuentas de retiro"
         iconClass="fas fa-arrow-left"
         handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
       />
-      <SubMenuComponent
-        targetList="withdraw_accounts"
-      />
+      
       <AccountDetailContainer className="_accountDetailContainer">
           <section className="WalletContainer">
             <ItemAccount
