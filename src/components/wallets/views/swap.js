@@ -139,7 +139,7 @@ function SwapView(props) {
 
 
   const handleChangeSpendAmount = async (name, newValue) => {
-    setValue(newValue.toString().replace(/,/g, "."))
+    setValue(newValue.toString().replace(/,/g, ""))
   };
 
   const handleError = (msg) => {
