@@ -142,7 +142,7 @@ class BankAccountFlow extends Component {
     this.props.actualizarEstado(e)
     let _idType = e?.target?.value
     const idTypeEnabled = this.props?.idTypes && this.props?.idTypes[_idType]
-    if(!idTypeEnabled?.enabled){
+    if(["newIdentity"].includes(idTypeEnabled?.value)){
       let idTypeDialog = document.querySelector("#idTypeDialog")
       console.log(idTypeDialog.showModal())
     }
@@ -173,6 +173,7 @@ class BankAccountFlow extends Component {
 
     const { banks, loader } = this.state;
     const idTypeEnabled = this.props?.idTypes && this.props?.idTypes[id_type]
+    console.log('|||||||||||  enabledValidation  ==>  ',id_type, this.props?.idTypes )
 
     let enabledValidation = bank_name === 'efecty' ? idTypeEnabled?.enabled : ((account_type && account_number) && idTypeEnabled?.enabled)
 

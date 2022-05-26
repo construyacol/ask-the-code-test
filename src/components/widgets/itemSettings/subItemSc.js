@@ -90,7 +90,7 @@ class SubItemSC extends Component {
     return (
       <div
         className="subItemSecurityCenter"
-        style={{ gridTemplateColumns: classic_view ? "1fr" : "12vw 1fr" }}
+        // style={{ gridTemplateColumns: classic_view ? "1fr" : "12vw 1fr" }}
         onClick={
           !available || !movil_viewport
             ? null
@@ -147,7 +147,7 @@ class SubItemSC extends Component {
           <div
             className={`contentSubText ${available ? "available" : ""} fuente`}
             style={{
-              gridTemplateRows: tree ? "70px 1fr" : "60px 40px 1fr",
+              // gridTemplateRows: tree ? "70px 1fr" : "60px 40px 1fr",
               opacity:
                 (verify && available) ||
                 other_state === "confirmed" ||

@@ -31,64 +31,65 @@ class SocketsComponent extends Component {
   //   }
   // }
 
-//   async testSocket() {
+  // async testSocket() {
 
-//     let identityMock = {
-//       id:"6184c8f067e372004414b156",
-//       file_state:"accepted"
-//     }
+  //   // let identityMock = {
+  //   //   id:"6184c8f067e372004414b156",
+  //   //   file_state:"accepted"
+  //   // }
 
-//     // setTimeout(()=>{
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//       // this.identity_management(identityMock)
-//     // }, 4000)
-
-//     this.identity_management(identityMock)
+  //   // setTimeout(()=>{
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //     // this.identity_management(identityMock)
+  //   // }, 3800)
+  //   // this.identity_management(identityMock)
+  //   // this.identity_management(identityMock)
+  //   // this.identity_management(identityMock)
    
 
-//     // let orderMock = {
-//     //   id:"6184c8f067e372004414b156",
-//     //   state:"rejected"
-//     // }
+  //   // let orderMock = {
+  //   //   id:"6184c8f067e372004414b156",
+  //   //   state:"rejected"
+  //   // }
 
-//     // this.withdraw_mangagement(orderMock);
-//     // this.testSocketExecuted()
+  //   // this.withdraw_mangagement(orderMock);
+  //   // this.testSocketExecuted()
 
 
-//     // let confirmations = 1
-//     // setInterval(()=>{
-//     //   if(confirmations < 7){
-//     //     orderMock = {
-//     //       confirmations: confirmations,
-//     //       id: "617621370b0a1b0048ae9cae"
-//     //     }
-//     //     this.testSocketExecuted(orderMock)
-//     //     confirmations++
-//     //   }
-//     // }, 5000)
+  //   // let confirmations = 1
+  //   // setInterval(()=>{
+  //   //   if(confirmations < 7){
+  //   //     orderMock = {
+  //   //       confirmations: confirmations,
+  //   //       id: "617621370b0a1b0048ae9cae"
+  //   //     }
+  //   //     this.testSocketExecuted(orderMock)
+  //   //     confirmations++
+  //   //   }
+  //   // }, 5000)
 
-//     // let statusMock = {
-//     //   countries:{
-//     //     international: "level_1"
-//     //   },
-//     //   id: "620403008a485b0067ed919b",
-//     //   updated_at: "2022-02-09T18:09:28.614Z",
-//     //   userId: "620402efbe929e0042d9de6c"
-//     // }
+  //   // let statusMock = {
+  //   //   countries:{
+  //   //     international: "level_1"
+  //   //   },
+  //   //   id: "620403008a485b0067ed919b",
+  //   //   updated_at: "2022-02-09T18:09:28.614Z",
+  //   //   userId: "620402efbe929e0042d9de6c"
+  //   // }
 
-//     // for (let index = 0; index < 2; index++) {
-//       // this.status_management(statusMock);
-//     // }
+  //   // for (let index = 0; index < 2; index++) {
+  //     // this.status_management(statusMock);
+  //   // }
 
-//   }
+  // }
 
 //  componentDidMount(){
 //     this.testSocket()
@@ -174,7 +175,6 @@ class SocketsComponent extends Component {
 
             socket.on(`/identity/${user.id}`, async (identity) => {
               if(identity.file_state){
-                console.log('identity_management', identity)
                 this.identity_management(identity)
               }
             });
@@ -787,36 +787,33 @@ class SocketsComponent extends Component {
   
 
   identity_management = async(identity) => {
-
-    
-    funcDebounce( 
-      {[`identity_${identity.id}`]:`${identity.id}`}, 
-      async() => {
-        await this.props.coinsendaServices.updateUserStatus(identity)
-      },
-      false,
-      3000
-    );
-
     if(["accepted"].includes(identity.file_state)){
-    funcDebounce( 
-      {[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 
-      async() => {
-        await this.props.coinsendaServices.updateUserStatus(identity)
-        this.props.coinsendaServices.init()
-        this.props.history.push(`/wallets`);
-      },
-      false,
-      4000
-    );
+      funcDebounce(  
+        {[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 
+        async() => {
+          await this.props.coinsendaServices.updateUserStatus(identity)
+          this.props.coinsendaServices.init()
+          this.props.history.push(`/wallets`);
+        },
+        false,
+        5000
+      );
+    }else{
+      funcDebounce( 
+        {[`identity_${identity.id}`]:`${identity.id}`}, 
+        async() => {
+          await this.props.coinsendaServices.updateUserStatus(identity)
+        },
+        false,
+        3000
+      );
+    }
   }
-
-  }
-
 
   render() {
     return null;
   }
+
 }
 
 

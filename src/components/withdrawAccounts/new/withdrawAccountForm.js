@@ -169,7 +169,7 @@ class WithdrawAccountForm extends Component {
       let idType = event?.target?.value
       let identity = idType && this.state?.idTypes[idType]
       if(identity && (identity?.value !== 'newIdentity' && getIdentityState(identity) !== 'accepted')){
-        return alert('La identidad seleccionada está en proceso de verificación, este proceso puede tardar hasta 72 horas hábiles.')
+        alert('La identidad seleccionada está en proceso de verificación, este proceso puede tardar hasta 72 horas hábiles.')
       }
     }
 
@@ -281,29 +281,31 @@ class WithdrawAccountForm extends Component {
     if(!identities?.length)return ; 
 
     let userIdentities = {}
+    let inProgressIdentity = false
 
     identities.forEach(userIdentity => {
+      if(["pending", "confirmed"].includes(getIdentityState(userIdentity)))inProgressIdentity = true;
       if(["accepted", "confirmed"].includes(getIdentityState(userIdentity))){
         userIdentities = {
           ...userIdentities,
           [userIdentity?.document_info?.id_number]:{
             ...userIdentity,
               ui_name:`${UI_NAMES?.documents[userIdentity?.id_type]} - ${userIdentity?.document_info?.id_number}`,
-              enabled:true,
+              enabled:["accepted"].includes(getIdentityState(userIdentity)),
               value:userIdentity?.document_info?.id_number,
           }
         }
       }
     })
-
-    debugger
-
-    userIdentities = {
-      ...userIdentities,
-      newIdentity:{
-        ui_name:"Otro documento",
-        enabled:false,
-        value:"newIdentity"
+    
+    if(!inProgressIdentity){
+      userIdentities = {
+        ...userIdentities,
+        newIdentity:{
+          ui_name:"Otro documento",
+          enabled:false,
+          value:"newIdentity"
+        }
       }
     }
 

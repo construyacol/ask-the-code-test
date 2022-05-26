@@ -5,9 +5,8 @@
   --paragraph_color:#50667a; 
   --title2:#2e3a46; 
   --title1:#0065a8;
+  --skeleton_color:#cacaca;
 }
-
-
 
 
 @media screen and (max-height: 800px) and (max-width: 1366px) {
@@ -166,14 +165,6 @@
 
   /* WALLETS ===============>>>>>>>>> */
 
-  .AccountListContainer {
-    column-gap: 0 !important;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
-  }
-
-  .AccountListContainer > div:last-child {
-    /* padding-bottom: 80px; */
-  }
 
   .PairListItems .item {
     transform: scale(0.95) !important;
@@ -214,8 +205,7 @@
     font-size: 14px;
   }
 
-  .indicatorCont,
-  .AddNewItem.primary {
+  .indicatorCont{
     transform: scale(0.9);
   }
 
@@ -252,9 +242,7 @@
     grid-row-gap: 10px !important;
   }
 
-  .subMenu {
-    top: 7vh !important;
-  }
+
 
   .WithdrawView,
   .SwapView,
@@ -1079,9 +1067,7 @@
     height: 120px !important;
   }
 
-  .subMenu {
-    top: 60px !important;
-  }
+
 
   .MenuSuperiorLayout {
     height: 60px !important;
@@ -1161,17 +1147,11 @@
     height: 55px !important;
   }
 
-  .subMenu {
-    min-height: 60px !important;
-  }
 
   .InputStep {
     top: 20px !important;
   }
 
-  .AddNewItemContainer {
-    width: calc(100% - 30px) !important;
-  }
 
   #kycPrime.containerInputComponent2 {
     width: 95% !important;
@@ -1568,11 +1548,6 @@
 
   .capsuleMenu1 {
     padding-right: 15px !important;
-  }
-
-  .AddNewItemContainer {
-    position: fixed !important;
-    bottom: 0 !important;
   }
 
   .BbackgroundAddNew {

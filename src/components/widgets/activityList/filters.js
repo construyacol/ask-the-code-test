@@ -24,11 +24,11 @@ const ActivityFilters = (props) => {
     props.history.push(`/${primary_path}/${path}/${account_id}/${value}`);
   };
 
-  useEffect(() => {
-    const subMenuHeight = document.querySelector('.subMenu').clientHeight
-    const supMenuHeight = document.querySelector('.MenuSuperiorLayout').clientHeight
-    const totalHeight = subMenuHeight + supMenuHeight + 10
-    FilterElement.current.style.top = totalHeight
+  useEffect(() => { 
+    const subMenuHeight = document.querySelector('.subMenu')?.clientHeight
+    const mainMenuHeight = document.querySelector('.MenuSuperiorLayout')?.clientHeight
+    const totalHeight = subMenuHeight + mainMenuHeight + 10
+    FilterElement.current.style.top = `${totalHeight}px`
   }, [])
 
 
@@ -38,7 +38,7 @@ const ActivityFilters = (props) => {
   
 
   return (
-    <section ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'relativePos' : 'stickyPos'}`}>
+    <section ref={FilterElement} className={`ALFilterSect stickyPos`}>
       <div
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}

@@ -16,13 +16,7 @@ import { LazyLoaderPage } from "./dashboard-skeletons";
 import "./dashboard.css";
 import '../widgets/items/items.css'
 
-const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"),
-  {
-    fallback:<LazyLoaderPage path={"withdraw_accounts"} />
-  }
-)
-
-
+const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<LazyLoaderPage path={"withdraw_accounts"} />})
 const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
@@ -121,7 +115,7 @@ function DashBoardContainer(props) {
 
   return (
     <>
-      <div
+      {/* <div
         id="scrollArea"
         style={{
           position: "absolute",
@@ -130,7 +124,7 @@ function DashBoardContainer(props) {
           right: 0,
           zIndex: 10,
         }}
-      ></div>
+      ></div> */}
 
 
       <Element id="containerElement" className="dashBoardLayout">
@@ -142,9 +136,9 @@ function DashBoardContainer(props) {
           />
           <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
             <Switch>
-              <Route path="/wallets" component={WalletsContainerComponent} />
+              {/* <Route path="/wallets" component={WalletsContainerComponent} />
               <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-              <Route path="/security" component={SecurityCenter} />
+              <Route path="/security" component={SecurityCenter} /> */}
               <Route path="/referral" component={ReferralComponent} />
             </Switch>
           </Suspense>

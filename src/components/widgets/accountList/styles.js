@@ -1,31 +1,31 @@
 import styled, { css } from "styled-components";
+import { device } from '../../../const/const'
 
 export const InputKeyActionHandler = styled[
   `${window.innerWidth > 900 ? "input" : "div"}`
 ]`
   width: 0;
-  height: 0;
+  height: 0; 
   opacity: 0;
 `;
 
 export const AccountListContainer = styled.section`
   width: 100%;
-  height: 100%;
+  height: auto;
   display: grid;
   grid-template-columns: repeat(auto-fill, 280px);
   justify-items: center;
   grid-template-rows: repeat(auto-fill, 200px);
   row-gap: 20px;
   column-gap: 20px;
-  column-gap: 25px;
   align-items: center;
-  @media screen and (max-height: 830px) and (max-width: 900px) {
-    height: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+  &.contet-center{
+    justify-content:center;
   }
 
-  @media screen and (max-width: 768px) {
-    width: auto;
+  @media ${device.mobile} {
+      justify-content:center;
   }
 `;
 
@@ -158,7 +158,7 @@ export const AccountLayout = styled.div`
     }
   }
 
-  @media screen and (max-width:768px) {
+  ${'' /* @media screen and (max-width:768px) {
     width: 100% !important;
   }
 
@@ -168,7 +168,7 @@ export const AccountLayout = styled.div`
 
   @media screen and (max-height: 830px) and (max-width: 900px) {
     transform: none;
-  }
+  } */}
 `;
 
 const selected = css`

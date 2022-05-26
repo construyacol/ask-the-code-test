@@ -136,10 +136,6 @@ export const ContainerLayout = styled.div`
   transform-style: preserve-3d;
   opacity: 0;
 
-  &.ioSystem{
-    padding-bottom:100px;
-  }
-
   &.appear{
     -webkit-animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: ${swing_in_bottom_bck} 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
@@ -155,5 +151,9 @@ export const ContainerLayout = styled.div`
     left: 0;
     width: 100vw;
     height: 100vh;
+    padding-bottom:50px;
+    &.ioSystem{
+      padding-bottom:100px;
+    }
   }
 `;

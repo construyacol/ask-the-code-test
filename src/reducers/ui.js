@@ -48,7 +48,7 @@ const initialState = {
     view: "initial", //initial - detail
     params: {
       enabled_create_wallet_button: true,
-      show_menu_principal: true,
+      show_menu_principal: false,
       current_wallet: null,
       short_name: null,
       pairsForAccount: {},

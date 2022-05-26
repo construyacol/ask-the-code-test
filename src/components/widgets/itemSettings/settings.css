@@ -3,7 +3,6 @@
   width: 100%;
   height: auto;
   border: 1px solid transparent;
-  border-top-color: #d5d5d6;
   border-bottom-color: #d5d5d6;
 }
 
@@ -14,12 +13,14 @@
 
 .itemSecurityCenter[name=email], .itemSecurityCenter[name=identity]{
   display: none;
-}
+} 
 
 .subItemSecurityCenter {
-  height: 120px;
+  min-height: 120px;
+  height: auto;
   display: grid;
-  grid-template-columns: 12vw 1fr;
+  grid-template-columns: minmax(auto,200px) minmax(350px,1fr);
+  column-gap: 20px;
   margin: 15px 0;
   position: relative;
 }
@@ -32,11 +33,42 @@
 
 .contentSubItem {
   display: grid;
-  grid-template-columns: 1fr 250px;
+  grid-template-columns: minmax(350px,1fr) minmax(auto,200px);
   border: 1px solid transparent;
   border-bottom-color: #d5d5d6;
   /*border-top-color: #d5d5d6;*/
 }
+
+
+
+@media (max-width: 1440px) {
+  .subItemSecurityCenter{
+    grid-template-columns: minmax(auto,130px) minmax(350px,1fr);
+  }
+  .SCimgItemCont{
+    justify-self: start;
+  }
+  .contentSubItem{
+    /* grid-template-columns: minmax(350px,1fr) minmax(auto,200px); */
+  }
+  .contentSubText{
+    row-gap: 10px;
+  }
+}
+
+@media (max-width: 900px) {
+  .subItemSecurityCenter{
+    grid-template-columns: auto minmax(350px,1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .subItemSecurityCenter{
+    min-height: 75px;
+  }
+}
+
+
 
 .contCtaMovilSec {
   position: absolute;
@@ -213,7 +245,6 @@
   color: gray;
   display: grid;
   align-items: center;
-  padding-left: 20px;
 }
 
 .SCimgItem {

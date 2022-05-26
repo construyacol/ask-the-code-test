@@ -98,7 +98,7 @@ function ContentTab(props) {
             menuItems.map((item, index) => {
               if ((item.link === "activity" || item.link === "withdraw" || item.link === "swap") && primary_path === "wallets" && (wallets[current_wallet] && wallets[current_wallet].count < 1)) {
                 return null;
-              }
+              } 
               return (
                 <NavLink
                   key={index}

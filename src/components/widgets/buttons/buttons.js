@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
+import styled from 'styled-components'
 
 import "./buttons.css";
 
@@ -115,21 +116,20 @@ export const ButtonPrincipalMenu = ({
   text,
   icon,
   subfix,
-  keyCode,
+  keyCode, 
+  className,
+  device,
   ...props
 }) => {
 
-
   const { keyActions } = useSelector((state) => state.ui);
-
   // const elementId = useKeyActionAsClick(
   //   true,
   //   `${clave}-section-button`,
   //   keyCode
   // );
-  const isDesktop = window.innerWidth > 900;
-// keyActions
-
+  const isDesktop = window.innerWidth > 1024;
+  // keyActions
   const activarItem = (event) => {
     event.currentTarget.blur();
     props.activarItem(clave, clave);
@@ -140,9 +140,13 @@ export const ButtonPrincipalMenu = ({
     <Link
       // id={elementId}
       to={`/${clave}`}
-      className={`itemMenu ${path === clave ? "activo" : ""}`}
+      className={`itemMenu ${path === clave ? "activo" : ""} ${className}`}
       onClick={activarItem}
     >
+      <HoverTag className="_hoverTag fuente">
+        {buttonText}
+      </HoverTag>
+
       <div className={`text ${path === clave ? "activate" : ""}`}>
         <div className="iconButtCont">
           <IconSwitch
@@ -165,6 +169,28 @@ export const ButtonPrincipalMenu = ({
     </Link>
   );
 };
+
+
+const HoverTag = styled.div`
+  position: absolute;
+  width: max-content;
+  height: fit-content;
+  background: #192026cc;
+  top: 0;
+  z-index: 10;
+  left: 71px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  backdrop-filter: blur(3px);
+  margin: auto;
+  right: 0;
+  bottom: 0;
+  display:none;
+  pointer-events: none;
+`
+
 
 // export const ButtonPrincipalMenu = (props) => {
 //   return(

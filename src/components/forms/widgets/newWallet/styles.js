@@ -121,13 +121,13 @@ export const Content = styled.div`
         text-align:center;
     }
 
-    @media ${device.tablet} {
+    @media ${device.mobile} {
         h1{
            margin-bottom:0;
         }
-        height: calc(100% - 40px);
+        height: calc(100% - 70px);
         width: calc(100% - 40px);
-        padding: 20px;
+        padding: 20px 20px 50px;
     }
 
 `

@@ -13,13 +13,18 @@ import useViewport from "../../../hooks/useWindowSize";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import { useSelector } from "react-redux";
 import "../../wallets/views/wallet_views.css";
-
+import TitleSection from '../../widgets/titleSectionComponent'
+import { AccountListWrapper } from '../layoutStyles'
+import { isEmpty } from 'lodash'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 // const NewWalletComponent = loadable(() => import("../../wallets/newWallet"));
 const NewWalletComponent = loadable(() => import("../../forms/widgets/newWallet/init"));
 
 function AccountList(props) {
+
+
+
   const {
     isWalletsView,
     isWithdrawView,
@@ -39,7 +44,7 @@ function AccountList(props) {
     uniqueIdForElement: "accountItem",
     default: -1,
   });
-  const isDesktop = window.innerWidth > 900;
+  const { isMovilViewport } = useViewport();
   // 97 keyCode for A
   const idForClickableElement = useKeyActionAsClick(
     true,
@@ -107,24 +112,42 @@ function AccountList(props) {
     // marginBottom: '40px'
   };
 
-  let mainButtonText = isWithdrawView
-    ? "Crear nueva cuenta de retiro"
-    : "Crear nueva billetera";
-  mainButtonText = isDesktop ? `${mainButtonText} ${keyActions ? '[A]' : ''}` : mainButtonText;
+  
+  let mainButtonText = isWithdrawView ? "Crear nueva cuenta de retiro" : "Crear nueva billetera";
+  mainButtonText = !isMovilViewport ? `${mainButtonText} ${keyActions ? '[A]' : ''}` : mainButtonText;
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
-  
+  const path = props?.match?.params?.primary_path
+
 
   return (
-    <>
-      {items && items.length > 0 ? (
+    <AccountListWrapper className={`accountListWrapper ${path} ${isEmpty(items) ? 'isEmpty' : ''}`}>
+      <TitleSection>
+        {(!props.loader && !isMovilViewport) && (
+          <AddNewItem
+            id={idForClickableElement}
+            label={mainButtonText}
+            type={`${isBottonAvailable ? "primary" : "disabled"}`}
+            handleClick={isBottonAvailable ? createNewWallet : null}
+          />
+        )}
+      </TitleSection>
+      {((!props.loader && isMovilViewport) && !isEmpty(items)) && (
+          <AddNewItem
+            id={idForClickableElement}
+            label={mainButtonText}
+            type={`${isBottonAvailable ? "secundary" : "disabled"}`}
+            handleClick={isBottonAvailable ? createNewWallet : null}
+          />
+        )}
+      {items && items?.length > 0 ? (
         <AccountListContainer
           style={
             isHugeContainer
               ? { ...styleForHugeContainer, ...isWithdrawListStyle }
               : isWithdrawListStyle
           }
-          className="AccountListContainer"
+          className={`AccountListContainer ${items?.length > 3 ? 'contet-center' : ''}`}
         >
           {items.map((account, id) => {
             if (!account || !account.visible) {
@@ -140,29 +163,31 @@ function AccountList(props) {
                 account_type={isWalletsView ? "wallets" : "withdraw_accounts"}
                 loader={props.loader}
               />
-            );
+            ); 
           })}
         </AccountListContainer>
       ) : props.loader ? (
         <SimpleLoader color="blue" label={label} />
       ) : (
-        items.length < 1 &&
+        isEmpty(items) &&
         !props.loader && (
-          <AccountsNotFound
-            account_type={isWalletsView ? "wallets" : "withdraw_accounts"}
-          />
+          <>
+            <EmptyStateAccountList
+              account_type={isWalletsView ? "wallets" : "withdraw_accounts"}
+            />
+            {
+              isMovilViewport &&
+                <AddNewItem
+                  id={idForClickableElement}
+                  label={mainButtonText}
+                  type={`${isBottonAvailable ? "primary" : "disabled"}`}
+                  handleClick={isBottonAvailable ? createNewWallet : null}
+                />
+            }
+          </>
         )
       )}
-
-      {!props.loader && (
-        <AddNewItem
-          id={idForClickableElement}
-          label={mainButtonText}
-          type={`${isBottonAvailable ? "primary" : "disabled"}`}
-          handleClick={isBottonAvailable ? createNewWallet : null}
-        />
-      )}
-    </>
+    </AccountListWrapper>
   );
 }
 
@@ -175,9 +200,8 @@ AccountList.propTypes = {
   loader: PropTypes.bool,
 };
 
-const AccountsNotFound = ({ account_type }) => {
+const EmptyStateAccountList = ({ account_type, AuxComponent }) => {
   const { isMovilViewport } = useViewport();
-
   return (
     <div className="withdraw_accounts_screen">
       <div className="withdraw_accounts_screen_cont">
@@ -186,7 +210,10 @@ const AccountsNotFound = ({ account_type }) => {
             ? "Aún no tienes cuentas de retiro agregadas, crea multiples cuentas y gestiona retiros en tu moneda local."
             : "Aún no tienes billeteras agregadas, crea y gestiona Billeteras de BTC y COP para que puedas hacer depósitos, intercambios y retiros."}
         </p>
-        <IconSwitch size={isMovilViewport ? 230 : 330} icon="newAccount" />
+        {
+          AuxComponent && <AuxComponent/>
+        }
+        <IconSwitch size={isMovilViewport ? 220 : 330} icon="newAccount" />
       </div>
     </div>
   );

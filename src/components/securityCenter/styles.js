@@ -1,11 +1,19 @@
 import styled from "styled-components";
+import { device } from '../../const/const'
 
 export const ItemSecurity = styled.div`
   height: 150px;
   display: grid;
-  grid-template-columns: 12vw 1fr;
   margin: 15px 0;
   position: relative;
+  grid-template-columns: minmax(auto, 200px) minmax(350px, 1fr);
+  column-gap: 20px;
+  
+  @media ${device.desktop} {
+      column-gap: 10px;
+      grid-template-columns: minmax(auto, 130px) minmax(350px, 1fr);
+  }
+
 
   &.loader{
     animation-name: orderLoader;
@@ -41,7 +49,7 @@ export const ItemSecurity = styled.div`
     display: grid;
     align-items: center;
     justify-items: center;
-    background: #cacaca;
+    background: var(--skeleton_color);
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -54,7 +62,7 @@ export const ItemSecurity = styled.div`
   }
 
   .contentSubText{
-    color: #cacaca;
+    color: var(--skeleton_color);
     display: grid;
     align-items: center;
     padding-left: 20px;
@@ -63,7 +71,7 @@ export const ItemSecurity = styled.div`
   }
 
   .contentSubText p{
-    background: #cacaca;
+    background: var(--skeleton_color);
     border-radius: 4px;
   }
 
@@ -89,7 +97,7 @@ export const ItemSecurity = styled.div`
     align-self: center;
     width: 100px;
     height: 35px;
-    background: #cacaca;
+    background: var(--skeleton_color);
     border-radius: 4px;
     justify-self: center;
   }
@@ -103,7 +111,6 @@ export const SecurityLayoutLoader = styled.section`
   width: 100%;
   height: auto;
   border: 1px solid transparent;
-  border-top-color: #d5d5d6;
   border-bottom-color: #d5d5d6;
   padding: 20px 0px;
 `;

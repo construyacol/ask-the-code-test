@@ -6,6 +6,8 @@ import actions from "../../actions";
 import SimpleLoader from "../widgets/loaders";
 import ItemSettingsInit from "../widgets/itemSettings";
 import { global_settings } from "../api/ui/settings.json";
+import { SecurityCenterSkeletonLoader } from '../dashBoard/dashboard-skeletons'
+
 
 class SettingsContainer extends Component {
   componentDidMount() {
@@ -25,7 +27,7 @@ class SettingsContainer extends Component {
       <Fragment>
         <DetailContainerLayout title="Configuraciones">
           {this.props.loader ? (
-            <SimpleLoader label="Obteniendo configuraciones" />
+            <SecurityCenterSkeletonLoader tittleOff />
           ) : (
             global_settings && <ItemSettingsInit data={global_settings} />
           )}

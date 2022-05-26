@@ -171,7 +171,6 @@
 
 #WalletList2 {
   max-width: 600px;
-  text-align: center;
   font-size: 18px;
   color: #484848;
 }
@@ -188,7 +187,6 @@ p#WalletList2{
 }
 
 .WalletContainer {
-  border-bottom: 1px solid #8080808f;
   width: 100%;
   max-width: 800px;
   height: 100%;
@@ -261,6 +259,7 @@ p#WalletList2{
   grid-template-rows: 30px 1fr 1fr 1fr;
   grid-row-gap: 5px;
   position: relative;
+  max-height: 450px;
 }
 
 .WithdrawView {
@@ -429,13 +428,18 @@ p#WalletList2{
 
 @media only screen and (max-width: 1400px) {
   .withdraw_accounts_screen_cont .iconSty img {
-    width: 260px;
-    height: 260px;
+    width: 280px;
+    height: 280px;
   }
 }
 
 @media screen and (max-width:768px) {
   .WithdrawView, .SwapView, .DepositView, #swapForm{
     background-color: transparent;
+  }
+
+  .withdraw_accounts_screen_cont .iconSty img {
+    width: 220px;
+    height: 220px;
   }
 }

@@ -1,24 +1,28 @@
-import React from "react";
+// import React from "react";
+import styled from "styled-components";
 import "./home.css";
+import { device } from '../../const/const'
 
-// const selectIsSomeModalRendered = createSelector(
-//   state => state.ui,
-//   state => state.form,
-//   state => state.isLoading,
-//   (ui, form, isLoading) => {
-//     return form.isModalVisible || ui.modal_confirmation.visible || ui.otherModal || ui.modal.render
-//   }
-// )
+// const HomeLayout = (props) => {
 
-const HomeLayout = (props) => {
-  // const isSomeModalRendered = useSelector(state => selectIsSomeModalRendered(state))
+//   return (
+//     <div className={`HomeLayout`}>
+//       {props.children}
+//     </div>
+//   );
+// };
 
-  return (
-    <div className={`HomeLayout`}>
-      {/* <div className={`HomeLayout ${isSomeModalRendered ? 'conFirmationM' : ''}`}> */}
-      {props.children}
-    </div>
-  );
-};
+export const HomeLayout = styled.div`
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: auto 1fr;
+  height: 100vh;
+  background: rgb(249, 249, 251);
+
+  @media ${device.mobile} {
+    grid-template-columns: 1fr;
+  }
+  
+`
 
 export default HomeLayout;
