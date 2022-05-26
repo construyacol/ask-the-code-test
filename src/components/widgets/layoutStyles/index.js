@@ -53,6 +53,9 @@ export const MainContent = styled.div`
 export const AccountDetailLayout = styled(BaseLayout)`
     display: grid;
     grid-template-rows: auto auto 1fr;
+    @media ${device.mobile} {
+        row-gap: 15px;
+    }
 `
 
 export const AccountDetailContainer = styled.div`
@@ -66,6 +69,7 @@ export const AccountDetailContainer = styled.div`
     padding-bottom:50px;
     @media ${device.mobile} {
         padding-bottom:0;
+        row-gap: 10px;
     }
 `
 

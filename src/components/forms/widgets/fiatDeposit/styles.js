@@ -78,6 +78,9 @@ export const SuccessModalCont = styled.section`
     background: linear-gradient(to bottom right,#129a8e,#37ed7d);
 
     @media (max-width: 768px) {
+        padding-bottom:50px;
+        height: calc(100vh - 50px);
+        
         &.ioSystem{
             padding-bottom:100px;
             height: calc(100vh - 100px);

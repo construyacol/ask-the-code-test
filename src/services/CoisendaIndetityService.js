@@ -128,19 +128,23 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
+
+        let isThereOneRejectedIdentity = false
         documentList.forEach(_document => {
           let currentIdentity = userIdentities[_document?.id_type] 
           let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
-          if(
-            !currentIdentity || 
-            // si el usuario no tiene esta identidad creada Ó 
-            ((currentIdentity && currentIdentity?.nationality !== nationality) || 
-            // si la tiene pero de diferente nacionalidad y no está rechazada agregue la opción para crear el documento
-            currentIdentityState === 'rejected')
-            ){
+          console.log('currentIdentityState', currentIdentityState)
+          if(["rejected"].includes(currentIdentityState)){ 
+            isThereOneRejectedIdentity = true
+            return _documentList = [_document] 
+          }
+          if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
+            // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
             _documentList.push(_document)
           }
         })
+        // console.log('_documentList', _documentList)
+        // debugger
         return _documentList
       }else{
         return documentList

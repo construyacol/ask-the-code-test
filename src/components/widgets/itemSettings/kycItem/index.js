@@ -9,15 +9,16 @@ import { mainService } from '../../../../services/MainService'
 import { useActions } from '../../../../hooks/useActions'
 import useViewport from '../../../../hooks/useWindowSize'
 import { device } from '../../../../const/const'
-
+import { identityInfo } from '../../../forms/widgets/kyc/identityComponent/identityUtils'
+ 
 // import { LEVELS_INFO } from '../../../../const/levels'
 // import { funcDebounce } from "../../../../utils";
-
 
 export default function KycItemComponent() {
 
     const actions = useActions()
     // NECESITO TENER habilitado algo para consultar los requerimientos de cada uno de los niveles
+    const { pendingOrConfirmedIdentity } = identityInfo()
 
     const [ levels, setLevels ] = useState()
     const [ requirements, setRequeriments ] = useState([])
@@ -83,7 +84,7 @@ export default function KycItemComponent() {
                             Verificar
                         </ButtonForms>
                         :
-                    (mainService.getVerificationState() === 'accepted') &&
+                    (mainService.getVerificationState() === 'accepted' && !pendingOrConfirmedIdentity) &&
                         <ButtonForms
                             id="subItemSC"
                             type={"secundary"}

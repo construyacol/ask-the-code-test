@@ -372,6 +372,8 @@ export class InputDepositForm extends Component {
   render() {
     const { actualizar, handleKeyPress, value, name, autoFocus, classNames, minAmountLabel, skeleton } = this.props;
     const { finalValue } = this.state;
+    const isMovilViewport = window.innerWidth < 768
+
     const style = {
       fontSize:
         finalValue.length < 8 ? "50px"
@@ -395,7 +397,7 @@ export class InputDepositForm extends Component {
               placeholder={`$ ${this.state.placeHolder}`}
               onChange={actualizar}
               name={name}
-              autoFocus={autoFocus}
+              autoFocus={isMovilViewport ? false : autoFocus}
               value={value ? `$ ${finalValue}` : ""}
               onKeyPress={handleKeyPress}
             />

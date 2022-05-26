@@ -61,10 +61,7 @@ function WalletContainer(props) {
     </>
   );
 }
-
-
-
-
+ 
 export const AccountDetail = (props) => {
   const { wallets, match: { params } } = props;
   // const { isMovilViewport } = useViewport()
