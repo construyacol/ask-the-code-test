@@ -158,7 +158,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
             <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
-            {/* {stageData?.settings?.label || `Sube los archivos de ${currentIdentityUiName ? currentIdentityUiName : ''}`} */}
             Sube los archivos de {UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. <span className="fuente2">{pendingOrRejectedIdentity?.document_info?.id_number}</span>
             </h3>
           </Header>
@@ -182,11 +181,12 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             
           </Main>
 
-          <StageListComponent 
+          <StageListComponent  
             stages={stages}
             state={state}
             stageData={stageData}
             loading={loading}
+            idType={pendingOrRejectedIdentity?.id_type}
           />
 
           {
@@ -236,7 +236,7 @@ const UploadComponent = props => {
     <UploadContainer className={`${props.unButtom ? 'unButton' : ''}`}>
         <AiOutlineUpload size={45} color="var(--paragraph_color)" />
         <UploadText className="fuente">
-            {props.title || "Arrastra el comprobante que quieres subir"}
+            {props.title || "Arrastra el documento que quieres subir"}
         </UploadText>
         {
           !props.unButtom &&
@@ -281,7 +281,7 @@ const CallToAction = props => {
   )
 }
 
-const StageListComponent = ({ stages, stageData, state }) => {
+const StageListComponent = ({ stages, stageData, state, idType }) => {
 
   return(
     <StageList className="item_">
@@ -291,6 +291,7 @@ const StageListComponent = ({ stages, stageData, state }) => {
           const isCurrentEl = stageData?.key === stageKey
           const stageState = state[stageKey] ? 'complete' : 'incomplete'
           const isCurrentElColor = (stageData?.key === stageKey || stageState === 'complete')  ? "var(--primary)" : "var(--paragraph_color)"
+          const uiName = stageKey === 'selfie' ? `${stages[stageKey]?.uiName} sosteniendo ${UI_NAMES?.documents[idType]}` : stages[stageKey]?.uiName
 
           return(
             <StageListItemContainer key={index} className={`${isCurrentEl ? 'current' : ''} ${stageState}`}>
@@ -302,7 +303,7 @@ const StageListComponent = ({ stages, stageData, state }) => {
                 />
               </IconContainer>
               
-              <p className={`fuente _title ${stageState}`}>{stages[stageKey]?.uiName}</p>
+              <p className={`fuente _title ${stageState}`}>{uiName}</p>
               {state[stageKey] && <p className="fuente2 _size">{state[stageKey]?.size} KB</p>}
 
               <ControlContainer className="item__">
