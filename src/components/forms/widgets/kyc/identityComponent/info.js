@@ -7,12 +7,11 @@ import { getNextSelectList } from '../utils'
 import { BackButtom, NextButtom } from './buttons'
 import LabelComponent from './labelComponent'
 import KycSkeleton from './skeleton'
-import { ApiPostIdentityInfo } from './api'
+import { ApiPostIdentityInfo, createInfoStages } from './api'
 // import useToast from '../../../../hooks/useToastMessage'
 // import SuccessComponent from './success'
 import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
 import { Wrapper as Layout } from '../../layout/styles'
-import { createInfoStages } from './identityUtils'
 import { initStages } from '../../../utils'
 // import { useSelector } from "react-redux";
 

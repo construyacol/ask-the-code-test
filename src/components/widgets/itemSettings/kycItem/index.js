@@ -18,7 +18,7 @@ export default function KycItemComponent() {
 
     const actions = useActions()
     // NECESITO TENER habilitado algo para consultar los requerimientos de cada uno de los niveles
-    const { confirmedIdentity } = identityInfo()
+    const { confirmedIdentity } = identityInfo() 
 
     const [ levels, setLevels ] = useState()
     const [ requirements, setRequeriments ] = useState([])
