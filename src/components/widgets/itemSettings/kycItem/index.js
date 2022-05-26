@@ -18,7 +18,7 @@ export default function KycItemComponent() {
 
     const actions = useActions()
     // NECESITO TENER habilitado algo para consultar los requerimientos de cada uno de los niveles
-    const { pendingOrConfirmedIdentity } = identityInfo()
+    const { confirmedIdentity } = identityInfo() 
 
     const [ levels, setLevels ] = useState()
     const [ requirements, setRequeriments ] = useState([])
@@ -84,7 +84,7 @@ export default function KycItemComponent() {
                             Verificar
                         </ButtonForms>
                         :
-                    (mainService.getVerificationState() === 'accepted' && !pendingOrConfirmedIdentity) &&
+                    (mainService.getVerificationState() === 'accepted' && !confirmedIdentity) &&
                         <ButtonForms
                             id="subItemSC"
                             type={"secundary"}

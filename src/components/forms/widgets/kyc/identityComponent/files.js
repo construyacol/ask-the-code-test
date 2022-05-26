@@ -163,7 +163,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
           </Header>
 
           <Main className="item_" onDragOver={dragOver}>
-            
             {
               !isMovilViewport &&
                 <UploadComponent
@@ -180,15 +179,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             )} 
             
           </Main>
-
-          <StageListComponent  
-            stages={stages}
-            state={state}
-            stageData={stageData}
-            loading={loading}
-            idType={pendingOrRejectedIdentity?.id_type}
-          />
-
           {
             isMovilViewport &&
               <MobileControlContainer className="_controlContainerFiles">
@@ -198,6 +188,16 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
                 />
               </MobileControlContainer>
           }
+
+          <StageListComponent  
+            stages={stages}
+            state={state}
+            stageData={stageData}
+            loading={loading}
+            idType={pendingOrRejectedIdentity?.id_type}
+          />
+
+          
         </FilesContainer>
       </Layout>
     </>
@@ -325,7 +325,6 @@ const MobileControlContainer = styled.div`
   align-items: center;
   place-content: center;
   @media ${device.mobile}{
-    padding-bottom: 30px;
   }
 `
 
@@ -465,6 +464,10 @@ const Main = styled.div`
   border-radius: 5px;
   place-content:center;
   position:relative;
+
+  @media ${device.mobile}{
+    display:none !important;
+  }
 `
 
 
