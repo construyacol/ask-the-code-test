@@ -6,6 +6,7 @@ import { AiOutlineUpload } from "react-icons/ai";
 // import { MdOutlineAttachFile } from 'react-icons/md'
 import { IoFileTray } from 'react-icons/io5'
 // 
+import useToastMessage from "../../../../../hooks/useToastMessage";
 import { 
   UploadContainer,
   UploadText,
@@ -35,8 +36,6 @@ import { identityInfo } from './identityUtils'
 import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
 
-
-
 import {
     Layout
 } from '../../sharedStyles'
@@ -51,6 +50,7 @@ import {
 const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const { dataForm } = handleDataForm
+  const [ toastMessage ] = useToastMessage();
   // const user = useSelector(({ modelData:{ user } }) => user);
   const { pendingOrRejectedIdentity } = identityInfo()
   const stageManager = useStage(
@@ -94,8 +94,9 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const goFileLoader = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
-      setLoading(true)
       setOnDrag(false);
+      if(!e?.target?.files[0]?.type?.includes("image"))return toastMessage("Solo se permiten imagenes.");
+      setLoading(true)
       const data = e.target.files[0];
       const file = await img_compressor(data, 0.25);
       const dataBase64 = await readFile(file);
