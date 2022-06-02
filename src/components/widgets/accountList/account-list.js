@@ -43,8 +43,8 @@ function AccountList(props) {
     loader: mainListLoader,
     uniqueIdForElement: "accountItem",
     default: -1,
-  });
-  const { isMovilViewport } = useViewport();
+  }); 
+  const { isMovilViewport, isLaptopViewport } = useViewport();
   // 97 keyCode for A
   const idForClickableElement = useKeyActionAsClick(
     true,
@@ -147,7 +147,7 @@ function AccountList(props) {
               ? { ...styleForHugeContainer, ...isWithdrawListStyle }
               : isWithdrawListStyle
           }
-          className={`AccountListContainer ${items?.length > 3 ? 'contet-center' : ''}`}
+          className={`AccountListContainer ${(items?.length > 3 && isLaptopViewport) ? 'contet-center' : ''}`}
         >
           {items.map((account, id) => {
             if (!account || !account.visible) {
