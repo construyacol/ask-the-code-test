@@ -33,7 +33,6 @@ const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 const ItemAccount = (props) => {
 
-
   const [coinsendaServices] = useCoinsendaServices();
   const actions = useActions();
   const [toastMessage] = useToastMessage();

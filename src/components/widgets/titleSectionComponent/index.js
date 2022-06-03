@@ -7,10 +7,20 @@ const UI_NAME_TITLE = {
     wallets:"Billeteras",
     withdraw_accounts:"Cuentas de retiro",
     referral:"Referidos",
-    security:"Centro de seguridad"
+    security:"Centro de seguridad",
+    activity:"Actividad",
+    deposit:"Depositar",
+    withdraw:"Retirar",
+    swap:"Intercambiar"
+
 }
 
-export default function TitleSection({ titleKey, skeleton, children }) {
+export default function TitleSection({ 
+    titleKey, 
+    skeleton, 
+    children, 
+    className = "" 
+}) {
 
     const params = useParams()
     const key = titleKey || params.primary_path
@@ -18,7 +28,7 @@ export default function TitleSection({ titleKey, skeleton, children }) {
 
     return(
         <TitleContainer>
-            <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
+            <Title className={`fuente ${skeleton ? 'skeleton' : ''} ${className}`}>
                 {skeleton ? 'Loading module' : title}
             </Title>
             {children}
@@ -72,10 +82,7 @@ const TitleContainer = styled(Container)`
 
 const SubContainer = styled(Container)`
     padding:0;
-    ${'' /* grid-row-start: 2; */}
     @media ${device.mobile} {
-        ${'' /* grid-row-start: 1; */}
-        ${'' /* padding-top:20px; */}
         display:none;
     }
 `
@@ -103,7 +110,12 @@ const Title = styled.h1`
     color:var(--paragraph_color);
     font-size:28px;
     margin: 0;
-    padding: 30px 0 20px;
+    padding: 30px 0 22px;
+
+    &.accoun-detail{
+        padding: 12px 0 20px;
+        font-size:24px;
+    }
 
     &.skeleton{
       color:var(--skeleton_color);

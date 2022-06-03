@@ -7,7 +7,7 @@ import sleep from "../../../utils/sleep";
 
 import "./index.css";
 
-const BalanceComponent = ({ balance, currency, currency_type }) => {
+const BalanceComponent = ({ balance, currency, currency_type, textBalanceRef = null }) => {
   const [current_amount, set_current_amount] = useState("0");
   const [actionType, setActionType] = useState("");
   const [animation, setAnimation] = useState("");
@@ -62,7 +62,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
       <p className="fuente title balanceTitle">Balance </p>
 
       <div className={`displayCont itt ${animation}`}>
-        <p className={`textin fuente2 ${actionType}`}>
+        <p className={`textin fuente2 ${actionType}`} ref={textBalanceRef}>
           {actionType === "reduce" ? "-" : actionType === "add" ? "+" : ""}
           {currency_type === "fiat" ? `$${current_amount}` : current_amount}
         </p>

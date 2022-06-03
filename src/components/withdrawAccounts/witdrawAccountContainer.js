@@ -14,7 +14,7 @@ import ActivityView from "../wallets/views/activity";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useSelector } from "react-redux";
 import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
-import { SubTitleSection } from '../widgets/titleSectionComponent'
+import TitleSection, { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
 import ItemAccount from "../widgets/accountList/item_account";
 
@@ -133,14 +133,20 @@ const ActivityWrapperView = (props) => {
 
   return (
     <AccountDetailLayout className="_accountDetailLayout">
-      <SubMenuComponent
-          targetList="withdraw_accounts"
-      />
       <SubTitleSection 
         titleKey="Volver a cuentas de retiro"
         iconClass="fas fa-arrow-left"
         handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
       />
+
+      <SubMenuComponent
+          targetList="withdraw_accounts"
+      />
+
+      <TitleSection
+              className="accoun-detail"
+              titleKey={params?.path}
+            />
       
       <AccountDetailContainer className="_accountDetailContainer">
           <section className="WalletContainer">

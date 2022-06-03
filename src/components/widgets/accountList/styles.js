@@ -38,8 +38,7 @@ export const ACta = styled.div`
 
 export const BarIconCont = styled.div`
   position: relative;
-  display: ${(props) =>
-    props.account_type === "withdraw_accounts" ? "none" : "initial"};
+  display: ${(props) => props.account_type === "withdraw_accounts" ? "none" : "initial"};
 
   &.retweetCont {
     display: grid;

@@ -26,8 +26,8 @@ export const SubMenu = styled.div`
   display: grid;
   place-items: center;
   color: #666666;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   backdrop-filter: blur(5px);
   z-index: 3;
   background: rgb(239 239 239 / 85%);
