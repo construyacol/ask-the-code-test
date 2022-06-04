@@ -155,7 +155,7 @@ class ActivityList extends Component {
               className="ALtext fuente"
               style={{ display: pending ? "block" : "none" }}
             >
-              Pendiente{" "}
+              Operaciones en proceso{" "}
             </p>
             <div
               className="ALpendingCont"
@@ -211,11 +211,8 @@ class ActivityList extends Component {
             <p
               className="ALverTodo"
               onClick={this.expandir}
-              style={{
-                display: expandidoMax / 100 < 2 || expandido ? "none" : "block",
-              }}
+              style={{display: expandidoMax / 100 < 2 || expandido ? "none" : "block"}}
             >
-              {/* <p className="ALverTodo" onClick={this.expandir} style={{display:expandido ? 'none' : 'block'}}> */}
               Ver todo
               <span>+{expandidoMax / 100 - 1}</span>
               <i className="fas fa-angle-down"></i>
@@ -228,7 +225,7 @@ class ActivityList extends Component {
         )}
 
         <section className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
-          <p className="ALtext fuente">Actividad</p>
+          {/* <p className="ALtext fuente">Operaciones realizadas</p> */}
           <div className={`ALlistAll ${isSafari()}`}>
             {activity.map((item, index) => {
               if (

@@ -72,6 +72,16 @@ export const AccountDetailContainer = styled.div`
     justify-items: center;
     padding-bottom:50px;
 
+    &.activity{
+        padding-top:35px;
+        .ALtext{
+            margin-bottom:35px;
+        }
+        @media ${device.mobile} {
+            padding-top:0;
+        }
+    }
+
     @media ${device.mobile} {
         padding-bottom:0;
         row-gap: 10px;

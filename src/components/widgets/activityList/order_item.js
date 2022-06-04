@@ -953,7 +953,7 @@ export const OrderContainer = styled.div`
   ${"" /* transform: scale(1) translateY(-3px); */}
   opacity: 1;
   width: 100%;
-  max-width: 800px;
+  ${'' /* max-width: 800px; */}
 
   ${"" /* &.shower{
     transform: scale(1) translateY(0px);

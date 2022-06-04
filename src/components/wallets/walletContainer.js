@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import loadable from "@loadable/component";
 import actions from "../../actions";
@@ -17,12 +17,10 @@ import "./views/wallet_views.css";
 import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
 import TitleSection, { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
+import HeaderAccount from '../widgets/headerAccount'
+import ActivityFilters from "../widgets/activityList/filters";
 
-import { useWalletInfo } from "../../hooks/useWalletInfo";
-import styled from 'styled-components'
-import BalanceComponent from "../widgets/balance/balance";
-
-// import useViewport from '../../hooks/useWindowSize'
+import useViewport from '../../hooks/useWindowSize'
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
@@ -67,136 +65,15 @@ function WalletContainer(props) {
 }
 
 
-export const HeaderAccount = (props) => {
-  return(
-    <HeaderContainer>
-      {props.children}
-      <MainComponent/>
-    </HeaderContainer>
-  )
-}
-
-export const MainComponent = () => {
-
-  const { currentWallet } = useWalletInfo()
-  const balanceTextWidth = useRef({clientWidth:50})
-
-  return(
-    <HeaderMainContainer className="_accountHeaderMainContainer">
-        <IconAccount className={`_${currentWallet?.currency?.currency}`}/>
-        <LabelContainer className="_header__labelContainer">
-          <AccountLabel>{currentWallet?.name || 'Mi billetera'}</AccountLabel>
-          <CurrencyLabel>{currentWallet?.currency?.currency || '-'}</CurrencyLabel>
-        </LabelContainer>
-        <BalanceContainer 
-          className="_accountBalanceContainer"
-          balanceWidth={`${balanceTextWidth?.current?.clientWidth}px`}
-        >
-          <HR/>
-          <BalanceComponent 
-            account_id={currentWallet?.id} 
-            textBalanceRef={balanceTextWidth}
-          />
-        </BalanceContainer>
-    </HeaderMainContainer>
-  )
-}
-
-export const HR = styled.div`
-  height: 40px;
-  width: 1px;
-  background: #cdcdcd;
-  align-self: center;
-`
-
-export const BalanceContainer = styled.div`
-  min-width: 50px;
-  display:flex;
-  column-gap: 15px;
-  p{
-    color: var(--paragraph_color);
-  }
-
-  .balanceTitle{
-    margin:0;
-    color: #9d9d9d;
-    font-size: 13px !important;
-    text-transform: uppercase;
-  }
-
-  .BalanceComponent{
-    grid-template-rows: auto 1fr !important;
-    width:${props => props.balanceWidth};
-  }
-
-  .textin{
-    text-shadow: none;
-    font-size:23px;
-    width: max-content;
-  }
-`
-
-export const IconAccount = styled.div`
-  height:42px;
-  width:42px;
-  border-radius:4px;
-  border: 1px solid #d1d1d1;
-  background: linear-gradient(to right,#11998e,#38ef7d);
-  &._bitcoin{
-    background: linear-gradient(to right,#f9a847, #f98900);
-  }
-`
-
-export const P = styled.p`
-  font-family: "Raleway", sans-serif;
-  margin:0;
-`
-
-export const AccountLabel = styled(P)`
-  color: var(--paragraph_color);
-  font-size: 18px;
-  font-weight: 600;
-`
-
-export const CurrencyLabel = styled(P)`
-    text-transform: uppercase;
-    color: #9d9d9d;
-    font-size: 13px;
-`
 
 
-export const LabelContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  row-gap: 3px;
-  padding-right:10px;
-`
 
-export const HeaderMainContainer = styled.div`
-  height: 100%;
-  width: auto;
-  min-width:200px;
-  display: flex;
-  place-self: flex-end;
-  align-items: center;
-  column-gap: 15px;
-  ${'' /* background: #e3e3e3; */}
 
-  ${'' /* _accountHeaderMainContainer */}
-`
 
-export const HeaderContainer = styled.div`
-  heigth: auto;
-  min-heigth:80px;
-  display:grid;
-  grid-template-columns:auto 1fr;
-`
  
 export const AccountDetail = (props) => {
 
   const { match: { params } } = props;
-  // const { isMovilViewport } = useViewport()
 
   return ( 
           <AccountDetailLayout className="_accountDetailLayout">
@@ -213,15 +90,30 @@ export const AccountDetail = (props) => {
             <TitleSection
               className="accoun-detail"
               titleKey={params?.path}
-            />
+            >
+              <RenderAuxComponent {...props} />
+            </TitleSection>
             
-            <AccountDetailContainer className="_accountDetailContainer">
+            <AccountDetailContainer className={`_accountDetailContainer ${params?.path}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
 
           </AccountDetailLayout>
   );
 };
+
+        // <ActivityFilters view={params.primary_path} />
+
+const RenderAuxComponent = (props) => {
+  const { isMovilViewport } = useViewport()
+  const { params:{ path, primary_path } } = props.match;
+  const Views = {
+    activity:isMovilViewport ? null : <ActivityFilters view={primary_path} />
+  };
+
+  return Views[path] || null;
+};
+
 
 // TODO: review re-rendered on this component every time, no performance here
 const SwitchView = (props) => {
@@ -233,7 +125,6 @@ const SwitchView = (props) => {
     // withdraw: <SkeletonWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
     activity:<ActivityView {...props} />
-
   };
 
   if(tx_path)return Views["activity"];

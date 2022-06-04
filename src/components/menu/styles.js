@@ -78,6 +78,8 @@ export const SubMenu = styled.div`
     .menuItem.active{
       background: #f9f9fb;
       border-top: 2px solid var(--primary);
+      border-top-right-radius: 2px;
+      border-top-left-radius: 2px;
     }
 
     .menuItem:hover p {

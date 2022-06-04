@@ -27,8 +27,8 @@ export default function TitleSection({
     const title = UI_NAME_TITLE[key] || key
 
     return(
-        <TitleContainer>
-            <Title className={`fuente ${skeleton ? 'skeleton' : ''} ${className}`}>
+        <TitleContainer className={`accountDetailTitle ${className}`}>
+            <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
                 {skeleton ? 'Loading module' : title}
             </Title>
             {children}
@@ -78,6 +78,28 @@ const Container = styled.div`
 
 const TitleContainer = styled(Container)`
     border-bottom: 1px solid #d5d5d6;
+    position: sticky;
+    
+    
+    &.accoun-detail{
+        top: 120px;
+        z-index: 3;
+        background: rgb(249 249 251 / 94%);
+        backdrop-filter: blur(6px);
+
+        .ALFilterSect{
+            align-items:center;
+        }
+        .ALfiltros{
+            background:transparent;
+        }
+        
+        h1{
+            padding: 12px 0 20px;
+            font-size:24px;
+        }
+    }
+
 `
 
 const SubContainer = styled(Container)`
@@ -111,11 +133,6 @@ const Title = styled.h1`
     font-size:28px;
     margin: 0;
     padding: 30px 0 22px;
-
-    &.accoun-detail{
-        padding: 12px 0 20px;
-        font-size:24px;
-    }
 
     &.skeleton{
       color:var(--skeleton_color);
