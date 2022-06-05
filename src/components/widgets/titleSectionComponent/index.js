@@ -19,15 +19,27 @@ export default function TitleSection({
     titleKey, 
     skeleton, 
     children, 
-    className = "" 
+    className = "",
+    subMenuRef,
+    // ...props
 }) {
 
     const params = useParams()
     const key = titleKey || params.primary_path
     const title = UI_NAME_TITLE[key] || key
+        // console.log('|||||||||  TitleSection ==> ', props)
 
+    // const handleScroll = event => {
+    //     debugger
+    // }
+   
     return(
-        <TitleContainer className={`accountDetailTitle ${className}`}>
+        <TitleContainer 
+            className={`accountDetailTitle ${className}`}
+            // onScrollCapture={handleScroll}
+            // id="scrollElement"
+            ref={subMenuRef}
+        >
             <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
                 {skeleton ? 'Loading module' : title}
             </Title>
@@ -41,8 +53,7 @@ export const SubTitleSection = ({
     skeleton, 
     children, 
     handleAction, 
-    iconClass,
-    className
+    iconClass
 }) => {
 
     const params = useParams()

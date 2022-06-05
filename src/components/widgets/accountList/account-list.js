@@ -1,127 +1,51 @@
-import React, { useState, useEffect } from "react";
-import loadable from "@loadable/component";
-import SimpleLoader from "../loaders";
-import ItemAccount from "./item_account";
-import { AddNewItem } from "../buttons/buttons";
-import PropTypes from "prop-types";
-import { AccountListContainer } from "./styles";
+import React from "react";
 import withListCreator from "../../withListCreator";
-import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
-import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
-import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import useViewport from "../../../hooks/useWindowSize";
-import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+// import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
+// import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
-import "../../wallets/views/wallet_views.css";
+import useViewport from "../../../hooks/useWindowSize";
 import TitleSection from '../../widgets/titleSectionComponent'
 import { AccountListWrapper } from '../layoutStyles'
 import { isEmpty } from 'lodash'
+import { useParams  } from "react-router-dom";
+import { AddNewItem } from "../buttons/buttons";
+import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import loadable from "@loadable/component";
+import { AccountListSkeletonLoader } from "../../dashBoard/dashboard-skeletons";
+import { useCreateWallet } from './cardView'
 
-const IconSwitch = loadable(() => import("../icons/iconSwitch"));
-// const NewWalletComponent = loadable(() => import("../../wallets/newWallet"));
-const NewWalletComponent = loadable(() => import("../../forms/widgets/newWallet/init"));
-
+// TODO: Eliminar props.items
 function AccountList(props) {
 
-
+  const CardView = loadable(() => import("./cardView"), { fallback: <AccountListSkeletonLoader /> });
+  const ListViewComponent = loadable(() => import("./listView"), { fallback: <AccountListSkeletonLoader /> });
 
   const {
-    isWalletsView,
+    items = [],
     isWithdrawView,
-    actions,
-    mainListLoader,
-  } = props;
-  const items = props.items || [];
-  const label = `Obteniendo tus ${
-    isWalletsView ? "Billeteras" : "Cuentas de retiro"
-  }`;
-  const [coinsendaService] = useCoinsendaServices();
-  const [isVerified, setIsVerified] = useState(false);
-  const { keyActions } = useSelector((state) => state.ui);
-  const [setCurrentSelection] = useNavigationKeyActions({
-    items,
-    loader: mainListLoader,
-    uniqueIdForElement: "accountItem",
-    default: -1,
-  }); 
-  const { isMovilViewport, isLaptopViewport } = useViewport();
-  // 97 keyCode for A
+    isWalletsView
+  } = props
+
+  const { primary_path } = useParams()
+  const { isMovilViewport } = useViewport();
+  const [ availableCurrencies ] = useAvailableWalletCreator();
+  const { accountListView } = useSelector((state) => state.ui.views);
+  const [ createNewWallet ]  = useCreateWallet({...props})
   const idForClickableElement = useKeyActionAsClick(
     true,
     "main-accounts-add-button",
     97
   );
 
-  const [availableCurrencies] = useAvailableWalletCreator();
-
-  console.log('|||||||  availableCurrencies  => ', availableCurrencies)
-
-  useEffect(() => {
-    // actions.cleanCurrentSection()
-    const verified = coinsendaService.getUserVerificationStatus("level_1");
-    setIsVerified(verified);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const createNewWallet = () => {
-    if (props.verificationState === "confirmed") {
-      return showValidationPrompt();
-    }
-    if (!isVerified) {
-      return callToValidate();
-    }
-
-    if(isWalletsView){
-      return actions.renderModal(NewWalletComponent);
-    }
-    actions.toggleModal();
-  };
-
-  const showValidationPrompt = () => {
-    actions.confirmationModalToggle();
-    actions.confirmationModalPayload({
-      title: "Estamos trabajando en esto...",
-      description:
-        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
-      txtPrimary: "Entendido",
-      action: false,
-      svg: "verified",
-    });
-  };
-
-  const callToValidate = () => {
-    // const message = isWalletsView
-    //   ? "billeteras crypto/fiat."
-    //   : "cuentas de retiro fiat.";
-
-    actions.confirmationModalToggle();
-    actions.confirmationModalPayload({
-      title: "Estamos trabajando en esto...",
-      description:
-        "Hemos recibido satisfactoriamente tus datos de verificación, en breve podrás operar en coinsenda.",
-      txtPrimary: "Entendido",
-      action: false,
-      svg: "verified",
-    });
-  };
-  const isHugeContainer = items > 10;
-  const styleForHugeContainer = {
-    // height: 'auto',
-  };
-  const isWithdrawListStyle = {
-    // marginBottom: '40px'
-  };
-
-  
-  let mainButtonText = isWithdrawView ? "Crear nueva cuenta de retiro" : "Crear nueva billetera";
-  mainButtonText = !isMovilViewport ? `${mainButtonText} ${keyActions ? '[A]' : ''}` : mainButtonText;
-
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
-  const path = props?.match?.params?.primary_path
+  let mainButtonText = isWithdrawView ? "Crear nueva cuenta de retiro" : "Crear nueva billetera";
 
 
   return (
-    <AccountListWrapper className={`accountListWrapper ${path} ${isEmpty(items) ? 'isEmpty' : ''}`}>
+    <AccountListWrapper 
+      className={`accountListWrapper ${primary_path} ${isEmpty(items) ? 'isEmpty' : ''}`}
+      >
       <TitleSection>
         {(!props.loader && !isMovilViewport) && (
           <AddNewItem
@@ -139,84 +63,20 @@ function AccountList(props) {
             type={`${isBottonAvailable ? "secundary" : "disabled"}`}
             handleClick={isBottonAvailable ? createNewWallet : null}
           />
-        )}
-      {items && items?.length > 0 ? (
-        <AccountListContainer
-          style={
-            isHugeContainer
-              ? { ...styleForHugeContainer, ...isWithdrawListStyle }
-              : isWithdrawListStyle
-          }
-          className={`AccountListContainer ${(items?.length > 3 && isLaptopViewport) ? 'contet-center' : ''}`}
-        >
-          {items.map((account, id) => {
-            if (!account || !account.visible) {
-              return null;
-            }
-            return (
-              <ItemAccount
-                key={id}
-                setCurrentSelection={setCurrentSelection}
-                number={id}
-                focusedId={`accountItem${id}`}
-                account={account}
-                account_type={isWalletsView ? "wallets" : "withdraw_accounts"}
-                loader={props.loader}
-              />
-            ); 
-          })}
-        </AccountListContainer>
-      ) : props.loader ? (
-        <SimpleLoader color="blue" label={label} />
-      ) : (
-        isEmpty(items) &&
-        !props.loader && (
-          <>
-            <EmptyStateAccountList
-              account_type={isWalletsView ? "wallets" : "withdraw_accounts"}
-            />
-            {
-              isMovilViewport &&
-                <AddNewItem
-                  id={idForClickableElement}
-                  label={mainButtonText}
-                  type={`${isBottonAvailable ? "primary" : "disabled"}`}
-                  handleClick={isBottonAvailable ? createNewWallet : null}
-                />
-            }
-          </>
-        )
       )}
+      {
+        (!isWithdrawView && ["card"]?.includes(accountListView)) ?
+          <CardView {...props} />
+        :
+        (!isWithdrawView && ["list"]?.includes(accountListView)) ?
+          <ListViewComponent {...props}/>
+        :
+        <CardView {...props} />
+      }
     </AccountListWrapper>
   );
 }
 
-AccountList.propTypes = {
-  all_pairs: PropTypes.object,
-  isAppLoaded: PropTypes.bool,
-  currencies: PropTypes.array,
-  current_wallet: PropTypes.object,
-  items: PropTypes.array,
-  loader: PropTypes.bool,
-};
-
-const EmptyStateAccountList = ({ account_type, AuxComponent }) => {
-  const { isMovilViewport } = useViewport();
-  return (
-    <div className="withdraw_accounts_screen">
-      <div className="withdraw_accounts_screen_cont">
-        <p id="WalletList2" className="fuente">
-          {account_type === "withdraw_accounts"
-            ? "Aún no tienes cuentas de retiro agregadas, crea multiples cuentas y gestiona retiros en tu moneda local."
-            : "Aún no tienes billeteras agregadas, crea y gestiona Billeteras de BTC y COP para que puedas hacer depósitos, intercambios y retiros."}
-        </p>
-        {
-          AuxComponent && <AuxComponent/>
-        }
-        <IconSwitch size={isMovilViewport ? 220 : 330} icon="newAccount" />
-      </div>
-    </div>
-  );
-};
 
 export default withListCreator(AccountList);
+// export default withListCreator(AccountList);

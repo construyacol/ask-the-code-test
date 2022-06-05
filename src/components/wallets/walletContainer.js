@@ -19,9 +19,8 @@ import TitleSection, { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
 import HeaderAccount from '../widgets/headerAccount'
 import ActivityFilters from "../widgets/activityList/filters";
-
+// import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
-
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
@@ -29,6 +28,9 @@ const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <S
 
 function WalletContainer(props) {
   // const actionDispatch = useActions()
+
+  // const { accountList } = useSelector((state) => state?.ui?.views);
+
   useEffect(() => {
     const path = props.match.path.replace("/", "");
     props.action.CurrentForm(path);
@@ -90,6 +92,7 @@ export const AccountDetail = (props) => {
             <TitleSection
               className="accoun-detail"
               titleKey={params?.path}
+              {...props}
             >
               <RenderAuxComponent {...props} />
             </TitleSection>

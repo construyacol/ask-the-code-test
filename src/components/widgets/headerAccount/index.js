@@ -41,7 +41,7 @@ export default function HeaderAccount (props) {
           <IconAccount>
             <IconSwitch
                 icon={currentWallet?.currency?.currency}
-                size={isMovilViewport ? 20 : 40}
+                size={isMovilViewport ? 20 : 35}
             />
           </IconAccount>
           <LabelContainer className="_header__labelContainer">

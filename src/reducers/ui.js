@@ -102,7 +102,10 @@ const initialState = {
   },
   verification_state: null,
   keyActions:false,
-  osDevice:osDevice()
+  osDevice:osDevice(),
+  views:{
+    accountListView:"list"
+  }
 };
 
 const ui = (state = initialState, action) => {

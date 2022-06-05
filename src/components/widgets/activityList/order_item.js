@@ -776,7 +776,7 @@ export const LoaderView = (props) => {
 
   return (
     <ActivityLayout>
-      {!props.arrayLength && <p className="titleActivity"></p>}
+      {/* {!props.arrayLength && <p className="titleActivity"></p>} */}
       <LayoutList>
         {loaderItems.map((e, key) => {
           return <LoaderItem key={key} />;

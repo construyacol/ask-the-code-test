@@ -108,5 +108,6 @@ export const HeaderMainContainer = styled.div`
   align-items: center;
   column-gap: 15px;
   display: grid;
-  grid-template-columns: auto minmax(105px, auto) auto;
+  ${'' /* grid-template-columns: auto minmax(105px, auto) auto; */}
+  grid-template-columns: auto minmax(105px, 1fr) auto;
 `

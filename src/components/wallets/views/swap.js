@@ -258,7 +258,7 @@ function SwapView(props) {
       <InputForm
         classes="fuente2" 
         type="text"
-        inputmode="numeric"
+        inputMode="numeric"
         placeholder={isMovilViewport ? `Monto` : `Escribe la cantidad`}
         name="spend-amount"
         value={value}

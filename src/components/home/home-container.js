@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useRef } from "react";
 // import loadable from "@loadable/component";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
@@ -24,19 +24,24 @@ const SecurityCenter = loadable(() => import("../securityCenter/securityCenter")
 
 const HomeContainer = () => {
 
+  const subMenuRef = useRef()
+
   return (
     <Route
         path={["/:primary_path/:path", "/:primary_path"]}
         render={(renderProps) => (
           <HomeLayout>
             <SideMenuComponent {...renderProps}/>
-            <AppContainerLayout className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}>
+            <AppContainerLayout 
+              className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}
+              id="scrollElement"
+              >
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
               <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch>
-                    <Route path="/wallets" component={WalletsContainerComponent} />
+                    <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />
                     <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
                     <Route path="/referral" component={ReferralComponent} />
                     <Route path="/security" component={SecurityCenter} />

@@ -53,7 +53,7 @@ export const SubMenu = styled.div`
 
 
     .menuItem.is_safari{
-    grid-template-rows: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
     }
 
     .menuItem p {
@@ -66,8 +66,6 @@ export const SubMenu = styled.div`
     .menuItem.movil {
     grid-template-rows: 1fr auto;
     }
-
-
 
     .menuItem.movil p,
     .menuItem.active p {
@@ -137,6 +135,27 @@ export const SubMenu = styled.div`
 @media ${device.mobile} {
   padding:0;
   width:100%;
+
+  .menuMovilIcon{
+    height: 30px;
+    opacity: 1;
+    transform: scale(1);
+    align-items: center;
+    svg{
+      fill: gray;
+    }
+    &.active {
+      svg{
+        fill: var(--primary);
+      }
+    }
+  }
+  .menuItem{
+    grid-template-rows: 1fr !important;
+  }
+  p{
+    display:none;
+  }
 }
 
 
