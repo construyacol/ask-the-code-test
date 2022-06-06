@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+// import { useLayoutEffect, useRef } from 'react'
 import {
     HeaderContainer,
     HeaderMainContainer,
@@ -30,13 +30,9 @@ export default function HeaderAccount (props) {
 export const MainComponent = () => {
 
     const { currentWallet } = useWalletInfo()
+    const { available } = currentWallet
     const { isMovilViewport } = useViewport()
-    const balanceTextWidth = useRef(currentWallet?.available?.length > 1 ? '150px' : '50px')
-
-    useLayoutEffect(() => {
-      // const _balanceTextWidth = document.querySelector(".BalanceComponent .textin")?.clientWidth
-      // balanceTextWidth.current = `${(currentWallet?.available?.length + 1)*16}px`
-    })
+    // const balanceTextWidth = useRef(currentWallet?.available?.length > 1 ? '150px' : '60px')
 
     return(
       <HeaderMainContainer className="_accountHeaderMainContainer">
@@ -52,7 +48,8 @@ export const MainComponent = () => {
           </LabelContainer>
           <BalanceContainer  
             className="_accountBalanceContainer"
-            width={`${balanceTextWidth?.current}`}
+            // width={`${balanceTextWidth?.current}`}
+            width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
           >
             <HR/>
             <BalanceComponent 

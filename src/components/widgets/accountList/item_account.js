@@ -84,9 +84,7 @@ const ItemAccount = (props) => {
 
   const getAccountTransactions = async () => {
     set_loader(true);
-    const countAccount = await coinsendaServices.countOfAccountTransactions(
-      props.account.id
-    );
+    const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id);
     const { count } = countAccount;
     await actions.update_item_state(
       { [props.account.id]: { ...props.account, count } },
@@ -98,21 +96,15 @@ const ItemAccount = (props) => {
       );
       set_loader(false);
       if (areThereDeposits && areThereDeposits.length) {
-        // console.log('||||||||||||||| -------------- |||||||||||||||||||||||||||   ARE THERE DEPOSITS :: ', props, props.wallets)
         actions.update_item_state(
           { [props.account.id]: { ...props.specifiedWallet, count: 1 } },
           "wallets"
         ); //actualiza el movimiento operacional de la wallet
-        return props.history.push(
-          `/wallets/activity/${props.account.id}/deposits`
-        );
+        return props.history.push(`/wallets/activity/${props.account.id}/deposits`);
       }
       return props.history.push(`/wallets/deposit/${props.account.id}`);
     }
-    return props.history.push(
-      `/wallets/activity/${props.account.id}/${
-        props.currentFilter ? props.currentFilter : "deposits"
-      }`
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : "deposits"}`
     );
   };
 
@@ -135,10 +127,7 @@ const ItemAccount = (props) => {
     if (props.account.count < 1) {
       return props.history.push(`/wallets/deposit/${props.account.id}`);
     }
-    return props.history.push(
-      `/wallets/activity/${props.account.id}/${
-        props.currentFilter ? props.currentFilter : "deposits"
-      }`
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : "deposits"}`
     );
   };
 

@@ -60,7 +60,6 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
   return (
     <div className="BalanceComponent wallet">
       <p className="fuente title balanceTitle">Balance </p>
-
       <div className={`displayCont itt ${animation}`}>
         <p className={`textin fuente2 ${actionType}`}>
           {actionType === "reduce" ? <span>-</span> : actionType === "add" ? "+" : ""}
