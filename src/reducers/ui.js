@@ -104,7 +104,8 @@ const initialState = {
   keyActions:false,
   osDevice:osDevice(),
   views:{
-    accountListView:"list"
+    accountListView:"list",
+    otro:"no"
   }
 };
 
@@ -128,10 +129,13 @@ const ui = (state = initialState, action) => {
       };
       
     case UPDATE_UI_REDUCER:
-      if(typeof action.payload !== 'object') return state;
+      if(typeof action.payload !== 'object' && action?.payload?.key) return state;
       return {
         ...state,
-        ...action.payload
+        [action.payload.key]:{
+          ...state[action.payload.key],
+          ...action.payload[action.payload.key]
+        }
       };
     case SET_RENDER_MODAL:
       return {

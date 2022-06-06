@@ -27,7 +27,7 @@ export default function TitleSection({
     const params = useParams()
     const key = titleKey || params.primary_path
     const title = UI_NAME_TITLE[key] || key
-        // console.log('|||||||||  TitleSection ==> ', props)
+    // console.log('|||||||||  TitleSection ==> ', props)
 
     // const handleScroll = event => {
     //     debugger
@@ -35,7 +35,7 @@ export default function TitleSection({
    
     return(
         <TitleContainer 
-            className={`accountDetailTitle ${className}`}
+            className={`accountDetailTitle ${className} ${key}`}
             // onScrollCapture={handleScroll}
             // id="scrollElement"
             ref={subMenuRef}
@@ -90,6 +90,22 @@ const Container = styled.div`
 const TitleContainer = styled(Container)`
     border-bottom: 1px solid #d5d5d6;
     position: sticky;
+
+    &.accountDetailTitle.wallets{
+        grid-template-columns: auto auto 1fr;
+        align-items: center;
+        column-gap: 17px;
+        .AddNewItemContainer{
+            justify-content: end;
+        }
+    }
+
+    &.stickyWallets{
+        position: sticky;
+        top: 60px;
+        background: #f9f9fbdb;
+        backdrop-filter: blur(8px);
+    }
     
     
     &.accoun-detail{

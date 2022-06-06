@@ -23,6 +23,18 @@ const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 const NewWalletComponent = loadable(() => import("../../forms/widgets/newWallet/init"));
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 export const useCreateWallet = (props) => {
 
   const actions = useActions()
@@ -78,6 +90,18 @@ export const useCreateWallet = (props) => {
 
   return [ createNewWallet ]
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

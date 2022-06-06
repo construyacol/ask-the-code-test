@@ -23,9 +23,11 @@ export default function HeaderAccount (props) {
         <MainComponent/>
       </HeaderContainer>
     )
-  }
+}
 
-  export const MainComponent = () => {
+
+
+export const MainComponent = () => {
 
     const { currentWallet } = useWalletInfo()
     const { isMovilViewport } = useViewport()
@@ -59,4 +61,4 @@ export default function HeaderAccount (props) {
           </BalanceContainer>
       </HeaderMainContainer>
     )
-  }
+}

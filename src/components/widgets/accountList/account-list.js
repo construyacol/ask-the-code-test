@@ -1,5 +1,6 @@
 import React from "react";
 import withListCreator from "../../withListCreator";
+// import styled from 'styled-components'
 // import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
@@ -14,6 +15,7 @@ import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import loadable from "@loadable/component";
 import { AccountListSkeletonLoader } from "../../dashBoard/dashboard-skeletons";
 import { useCreateWallet } from './cardView'
+import FilterAccountList from '../filters/filterAccountList'
 
 // TODO: Eliminar props.items
 function AccountList(props) {
@@ -41,12 +43,19 @@ function AccountList(props) {
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
   let mainButtonText = isWithdrawView ? "Crear nueva cuenta de retiro" : "Crear nueva billetera";
 
-
   return (
     <AccountListWrapper 
       className={`accountListWrapper ${primary_path} ${isEmpty(items) ? 'isEmpty' : ''}`}
       >
-      <TitleSection>
+      <TitleSection
+        className="stickyWallets"
+      > 
+      {
+        isWalletsView &&
+          <FilterAccountList
+             currentFilterValue={accountListView}
+          />
+      }
         {(!props.loader && !isMovilViewport) && (
           <AddNewItem
             id={idForClickableElement}
@@ -80,3 +89,4 @@ function AccountList(props) {
 
 export default withListCreator(AccountList);
 // export default withListCreator(AccountList);
+
