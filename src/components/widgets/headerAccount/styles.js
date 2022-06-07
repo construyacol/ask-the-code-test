@@ -54,6 +54,20 @@ export const BalanceContainer = styled.div`
       align-self:center;
     }
   }
+
+  ${'' /* @media ${device.mobile} {
+    .BalanceComponent{
+      grid-template-areas: none !important;
+      grid-template-rows: 1fr !important; 
+      grid-template-columns: 1fr !important;
+    }
+    .textin{
+      font-size:18px !important;
+    }
+    .balanceTitle{
+        display:none;
+      }
+  } */}
 `
 
 export const IconAccount = styled.div`
@@ -110,4 +124,5 @@ export const HeaderMainContainer = styled.div`
   display: grid;
   ${'' /* grid-template-columns: auto minmax(105px, auto) auto; */}
   grid-template-columns: auto minmax(105px, 1fr) auto;
+
 `

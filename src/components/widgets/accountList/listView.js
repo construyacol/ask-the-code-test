@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { isEmpty } from 'lodash' 
 import useViewport from "../../../hooks/useWindowSize";
@@ -19,6 +19,7 @@ import {
     HR
 } from '../headerAccount/styles'
 import { useActions } from '../../../hooks/useActions'
+import { formatToCurrency } from "../../../utils/convert_currency";
 
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -60,12 +61,6 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     const { currentFilter } = useSelector((state) => state.ui.current_section.params);
     const [ currentAccount, setCurrentAccount ] = useState()
 
-    const { 
-        // available, 
-        id 
-    } = account
-
-
     const getAccountTransactions = async () => {
         setLoading(true)
         setCurrentAccount(true)
@@ -103,7 +98,8 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     }
 
     console.log('ITEM key', index)
-    
+    const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
+
     return(
         <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
             <IndicatorHover>
@@ -115,29 +111,94 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                 <IconAccount>
                 <IconSwitch
                     icon={account?.currency?.currency}
-                    size={isMovilViewport ? 20 : 35}
+                    size={isMovilViewport ? 25 : 35}
                 />
                 </IconAccount>
                 <LabelContainer className="_header__labelContainer">
-                <AccountLabel>{account?.name || 'Mi billetera'}</AccountLabel>
+                <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
                 <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
                 </LabelContainer>
             </HeaderMainContainer>
-            <BalanceContainer  
-                className="_accountBalanceContainer"
-                // width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
-                width={`133px`}
-            >
-                <HR/>
-                <BalanceComponent 
-                    account_id={id} 
-                />
-          </BalanceContainer>
+            <Balance
+                isMovilViewport={isMovilViewport}
+                account={account}
+                // account_id={id} 
+                // available={available}
+            />
         </ItemAccountContainer>
       )
 }
 
 
+export const Balance = ({ isMovilViewport, account:{ available, id, currency, currency_type } }) => {
+
+
+    const [ currentAmount, setCurrentAmount ] = useState(available)
+
+    useEffect(() => {
+        if(isMovilViewport){
+            let current_amount = formatToCurrency(available, currency);
+            setCurrentAmount(current_amount.toFormat());
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    return(
+        <>
+            {
+                isMovilViewport ?
+                    <MobileBalance>
+                        <HR/>
+                        <p className="fuente2">{currency_type === 'fiat' ? '$ ' : ''}{currentAmount}</p>
+                        <p className="fuente _balanceTextLab">Balance</p>
+                    </MobileBalance>
+                :
+                <BalanceContainer  
+                    className="_accountBalanceContainer"
+                    // width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
+                    width={`133px`}
+                >
+                    <HR/>
+                    <BalanceComponent 
+                        account_id={id} 
+                    />
+                </BalanceContainer>
+            }
+        </>
+        
+    )
+}
+
+export const MobileBalance = styled.div`
+    display:grid;
+    align-items: center;
+    column-gap: 12px;
+
+    grid-template-columns: 0 auto;
+    grid-template-rows: auto auto;
+    max-height: 60px;
+    align-self: center;
+    row-gap: 2px;
+
+
+    p{
+        margin:0;
+        color:var(--paragraph_color);
+    }
+    ${HR}{
+        align-self: center;
+        grid-row-start: 1;
+        grid-row-end: 3;
+    }
+    ._balanceTextLab{
+        grid-column-start: 2;
+        grid-column-end: 3;
+        font-size: 14px;
+        color: gray;
+    }
+    
+
+` 
 
 
 
@@ -166,6 +227,35 @@ export const ListViewContainer = styled.div`
         }
       } 
 
+`
+
+
+export const IndicatorHover = styled.div`
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  align-self: center;
+
+    .indicator {
+        background: #B3E1FF;
+        transform: scale(0);
+        transition: 0.3s;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .indicatorSon {
+        transition: 0.5s;
+        height: 10px;
+        width: 10px;
+        background: var(--primary);
+        border-radius: 50%;
+        transform: scale(0);
+    }
 `
 
 export const ItemAccountContainer = styled.div`
@@ -242,37 +332,20 @@ export const ItemAccountContainer = styled.div`
     }
 
 
-
     @media ${device.mobile} {
         padding: 0 17px;
+        grid-template-columns: auto 1fr;
+
+        ${IndicatorHover}{
+            display:none;
+        }
+
+        ._accountHeaderMainContainer{
+            grid-template-columns: auto auto;
+            min-width: auto;
+        }
     }
 `
 
 
-export const IndicatorHover = styled.div`
-  border-radius: 50%;
-  height: 20px;
-  width: 20px;
-  align-self: center;
 
-    .indicator {
-        background: #B3E1FF;
-        transform: scale(0);
-        transition: 0.3s;
-        height: 20px;
-        width: 20px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .indicatorSon {
-        transition: 0.5s;
-        height: 10px;
-        width: 10px;
-        background: var(--primary);
-        border-radius: 50%;
-        transform: scale(0);
-    }
-    `
