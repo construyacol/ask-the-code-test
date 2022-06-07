@@ -102,7 +102,7 @@ const getState = ({ state, currency_type }, tx_path) => {
     : state === "confirmed" && tx_path === "withdraws"
     ? "Procesando"
     : state === "confirmed" && currency_type === "fiat"
-    ? "Confirmado"
+    ? "En revisión"
     : state === "confirmed"
     ? "Confirmando"
     : state === "accepted"
@@ -461,10 +461,6 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
           type="primary"
           label="Confirmar"
         />
-      ) : state === "confirmed" && currency_type === "fiat" ? (
-        <p className="fuente" id="ALrevised">
-          En revisión<i className="far fa-clock"></i>
-        </p>
       ) : (
         <>
           <AmountText className={`fuente2 ${tx_path} ${order.state}`}>

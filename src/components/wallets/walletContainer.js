@@ -9,7 +9,7 @@ import { Route } from "react-router-dom";
 // import SimpleLoader from "../widgets/loaders";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
-import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
+import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
@@ -22,7 +22,7 @@ import ActivityFilters from "../widgets/activityList/filters";
 // import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
-const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
+const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
 const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
 

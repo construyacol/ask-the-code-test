@@ -20,7 +20,9 @@ import {
 } from '../headerAccount/styles'
 import { useActions } from '../../../hooks/useActions'
 import { formatToCurrency } from "../../../utils/convert_currency";
-
+import { OnlySkeletonAnimation } from '../loaders/skeleton'
+import TitleSection from '../titleSectionComponent'
+import { AccountListWrapper } from '../layoutStyles'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -49,6 +51,41 @@ export default function ListViewComponent(props) {
                 })
             }
         </ListViewContainer>
+    )
+}
+
+export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
+
+    const itemList = new Array(skeletonAmount).fill({}) 
+
+    return(
+        <AccountListWrapper>
+            <TitleSection skeleton />
+            <ListViewContainer>
+                {
+                    itemList.map((item, index) => {
+                        return(
+                            <ItemAccountContainer key={index} className="skeleton">
+                                <HeaderMainContainer>
+                                    <IconAccount className="_iconSkeleton">
+                                        
+                                    </IconAccount>
+                                        <LabelContainer className="_header__labelContainer">
+                                        <AccountLabel>Skeleton wallet</AccountLabel>
+                                        <CurrencyLabel>------</CurrencyLabel>
+                                    </LabelContainer>
+                                </HeaderMainContainer>
+                                <MobileBalance className="skeletonBalanceCont">
+                                    <HR/>
+                                    <p className="fuente2 _balanceValue">000000</p>
+                                    <p className="fuente _balanceTextLab">Balance</p>
+                                </MobileBalance>
+                            </ItemAccountContainer>
+                        )
+                    })
+                }
+            </ListViewContainer>
+        </AccountListWrapper>
     )
 }
 
@@ -329,6 +366,53 @@ export const ItemAccountContainer = styled.div`
         .indicator {
             transform: scale(0.85);
         }
+    }
+
+
+    &.skeleton{
+        grid-template-columns: auto 1fr;
+
+        ._header__labelContainer,
+        .skeletonBalanceCont{
+            row-gap:5px;
+        }
+
+        &:hover{
+            border-left:5px solid #E9E9E9;
+        }
+
+        ._iconSkeleton,
+        p{
+            ${OnlySkeletonAnimation}
+        }
+
+        ._iconSkeleton{
+            background:var(--skeleton_color);
+            border:none;
+        }
+
+        p{
+            background:var(--skeleton_color);
+            color:var(--skeleton_color);
+            width:fit-content;
+            border-radius:4px;
+            font-size:17px;
+        }
+
+        ${CurrencyLabel},
+        ._balanceTextLab{
+            font-size:12px;
+        }
+
+        ${MobileBalance}{
+            justify-self: end;
+        }
+
+        ${AccountLabel},
+        ._balanceValue{
+            font-size:17px;
+        }
+
     }
 
 

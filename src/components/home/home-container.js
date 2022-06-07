@@ -15,9 +15,11 @@ import { LazyLoaderPage } from "../dashBoard/dashboard-skeletons";
 import loadable from "@loadable/component";
 import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
 import MobileMenuComponent from '../menu/mobileMenu'
+import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 
 
-const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<LazyLoaderPage path={"withdraw_accounts"} />})
+
+const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
 const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
 const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
