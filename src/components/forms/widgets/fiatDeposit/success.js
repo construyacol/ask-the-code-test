@@ -28,7 +28,13 @@ import DetailTemplateComponent from '../../../widgets/detailTemplate'
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 
-const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_ticket }) => {
+const FiatDepositSuccess = ({ 
+    closeModal, 
+    // actions, 
+    // params, 
+    // depositProvData, 
+    new_ticket 
+}) => {
 
     // const [ final, setFinal ] = useState(false)
     // const [ finalButton, setFinalButton ] = useState(false)
@@ -37,7 +43,7 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
     // const [ depositDetail, setDepositDetail ] = useState(false)
 
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[new_ticket?.deposit_provider_id]);
-    
+    const depositAccount = depositProvider?.depositAccount
     // const finalizar = async () => {
     //         closeModal()
     //         history.push(`/wallets/activity/${params.account_id}/deposits`);
@@ -45,10 +51,10 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
     // }
 
     useEffect(() => {
-        console.log('depositProvData', depositProvData)
-        console.log('depositProvider', depositProvider)
+        // console.log('depositProvData', depositProvData)
+        console.log('depositProvider', depositAccount)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositProvider])
+    }, [depositAccount])
 
     // depositProvider?.depositAccount
 
@@ -81,20 +87,20 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
                     <Content>
                         <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
 
-                        <ItemAccountContainer className={`_itemAccountContainer ${!depositProvider ? 'skeleton' : ''}`}>
+                        <ItemAccountContainer className={`_itemAccountContainer ${!depositAccount ? 'skeleton' : ''}`}>
                             <HeaderMainContainer>
                                 <IconAccount className="_iconSkeleton">
                                     {
-                                        depositProvider &&
+                                        depositAccount &&
                                             <IconSwitch
-                                                icon="coinsenda"
+                                                icon={depositAccount?.name}
                                                 size={35}
                                             />
                                     }
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>Skeleton wallet</AccountLabel>
-                                    <CurrencyLabel>------</CurrencyLabel>
+                                    <AccountLabel>{depositAccount?.ui_name}</AccountLabel>
+                                    <CurrencyLabel>{depositAccount?.account?.type?.type}</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>
                             <MobileBalance>
@@ -105,10 +111,15 @@ const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_
                         </ItemAccountContainer>
 
                         <AccountMetaData>
-                                {/* <DetailGenerator order={new_ticket} theme="darkTheme" /> */}
+                            <ContentDetail>
+                                <DetailTemplateComponent
+                                    // items={data}
+                                />
+                            </ContentDetail>
                         </AccountMetaData>
+
                         <SubTitle className="fuente">Datos del depósito</SubTitle>
-                        <ContentDetail>
+                        <ContentDetail className="onBottom">
                             <DetailTemplateComponent
                                 items={data}
                             />
@@ -128,14 +139,15 @@ const ContentDetail = styled.div`
     display:flex;
     flex-direction: column;
     row-gap: 7px;
-    border-bottom: 1px solid #E9E9E9;
-    padding-bottom: 40px;
+    &.onBottom{
+        border-bottom: 1px solid #E9E9E9;
+        padding-bottom: 40px;
+    }
 `
 
-
 const AccountMetaData = styled.div`
-    height:110px;
-    width:100%;
+    min-height:80px;
+    height:auto;
     background:#F9F9F9;
     border-radius: 5px;
 `
@@ -187,6 +199,12 @@ const Content = styled.div`
     ${IconAccount}{
         height:50px;
         width:50px;
+    }
+
+    ${CurrencyLabel},
+    ._balanceTextLab{
+        text-transform: none;
+        font-size: 14px;
     }
 
 `
