@@ -9,6 +9,7 @@ import actions from "../../../actions";
 // import SimpleLoader from '../loaders'
 import InifiniteScrollComponent from "./infiniteScroll";
 import { isSafari } from '../../../utils'
+import { ORDER_TYPE_UI_NAME } from '../../../const/const'
 
 import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
@@ -144,6 +145,7 @@ class ActivityList extends Component {
     } = this.state;
 
 
+
     return (
       <Fragment>
         {tx_path !== "swaps" && (
@@ -155,7 +157,7 @@ class ActivityList extends Component {
               className="ALtext fuente"
               style={{ display: pending ? "block" : "none" }}
             >
-              Operaciones en proceso{" "}
+              {`${ORDER_TYPE_UI_NAME[tx_path]?.ui_name}s`|| 'Operaciones'} en proceso{" "}
             </p>
             <div
               className="ALpendingCont"

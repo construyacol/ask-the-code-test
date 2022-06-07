@@ -16,116 +16,18 @@ import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
-const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
-  const [orders, setOrders] = useState([]);
-  const { deposit_providers, tx_path, path } = UseTxState();
+
+export const useDetailParseData = (order, detailType) => { 
+
+  const [data, setData] = useState([]);
   const [, formatCurrency] = useFormatCurrency();
-  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+  const { deposit_providers, tx_path, path } = UseTxState();
   const { withdraw_accounts } = useSelector((state) => state.modelData)
+
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
 
 
-
-  // const params = useParams();
-  const orderType = tx_path || path || (window.location.pathname.includes("referral") && "deposits") || "withdraw"
-  // const orderType = tx_path || path || "withdraw"
-  
-
-  // const formatOrderText = async (itemText) => {
-  //   switch (itemText[0]) {
-  //     case "to_spend_currency":
-  //       return ["Moneda gastada:", itemText[1].currency];
-  //     case "to_buy_currency":
-  //       return ["Moneda adquirida:", itemText[1].currency];
-  //     case "currency":
-  //       return ["Divisa:", itemText[1].currency];
-  //     case "spent":
-  //       return [
-  //         "Cantidad gastada:",
-  //         await formatCurrency(order.spent, order.to_spend_currency),
-  //       ];
-  //     case "bought":
-  //       return [
-  //         "Cantidad adquirida:",
-  //         await formatCurrency(order.bought, order.to_buy_currency),
-  //       ];
-  //     case "state":
-  //       return ["Estado:", getState(itemText[1])];
-  //     case "price_percent":
-  //       return ["Comisión:", itemText[1]];
-  //     case "id":
-  //       return ["Número de orden:", itemText[1]];
-  //     case "created_at":
-  //       return ["Creado en:", moment(itemText[1]).format("LL")];
-  //     case "updated_at":
-  //       return ["Actualizado en:", moment(itemText[1]).format("LL")];
-  //     case "expiration_date":
-  //       return ["Expira en:", moment(itemText[1]).format("LL")];
-  //     case "amount":
-  //       return [
-  //         "Cantidad:",
-  //         await formatCurrency(order.amount, order.currency),
-  //       ];
-  //     // case "amount_neto":
-  //     //   return [
-  //     //     "Cantidad neta:",
-  //     //     await formatCurrency(order.amount_neto, order.currency),
-  //     //   ];
-  //     case "confirmations":
-  //       return ["Confirmations:", order.confirmations];
-  //     case "cost":
-  //       return [`Costo ${tx_path === 'withdraws' ? 'retiro' : 'depósito'}:`, order.cost];
-  //     case "sent":
-  //       return ["Operación:", itemText[1] ? "Debitado" : "-- Sin debitar --"];
-
-  //     case "referral":
-  //     case "amount_neto":
-  //     case "to_buy_symbol":
-  //     case "to_spend_symbol":
-  //     case "need_referral_process":
-  //     case "referrer_payment_info":
-  //     case "fee":
-  //     case "tax":
-  //     case "withdraw_provider":
-  //     case "withdraw_account":
-  //     case "metadata":
-  //     case "withdraw_account_id":
-  //     case "withdraw_provider_id":
-  //     case "account_to":
-  //     case "account_from":
-  //     case "type":
-  //     case "pair_id":
-  //     case "taged":
-  //     case "action_price":
-  //     case "country":
-  //     case "userId":
-  //     case "user":
-  //     case "cost_struct":
-  //     case "fee_struct":
-  //     case "info":
-  //     case "tax_struct":
-  //     case "account_id":
-  //     case "locked":
-  //     case "currency_type":
-  //     case "cost_id":
-  //     case "deposit_provider_id":
-  //     case "type_order":
-  //     case "activeTrade":
-  //     case "paymentProof":
-  //     case "withdraw_proof":
-  //     case "requestedFundsOrigin":
-  //     case "proof":
-  //     case "comment":
-  //     case "provider_type":
-  //     case "visible":
-  //     case "inscribed":
-  //     case "inscriptions":
-  //     case "used_counter":
-  //       return;
-  //     default:
-  //       return itemText;
-  //   }
-  // };
 
   const inProcesOrder = async (order) => {
     const isPending = order.state === 'pending'
@@ -176,13 +78,13 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         //   order.currency
         // );
 
-        setOrders([
+        setData([
           ...depositProviderInfo,
           ["Total a depositar:", `$${amountNeto}`],
         ]);
         break;
       case "crypto":
-        setOrders([
+        setData([
           ["ID:", order.id],
           ["Estado:", getState(order.state)],
           ["Divisa:", `${order.currency.currency}`],
@@ -204,7 +106,6 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
   };
 
 
-
   const formatDepositOrder = async(order) => {
     const isPending = order.state === 'pending'
     let parsedOrder = [
@@ -217,6 +118,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
     ]
     return parsedOrder 
   }
+
 
   const formatWithdrawOrder = async(order) => {
     let parsedOrder = [
@@ -235,6 +137,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
     return parsedOrder 
   }
 
+
   const formatSwapsOrder = async(order) => {
     let parsedOrder = [
       ["ID del intercambio:", order?.id],
@@ -245,6 +148,66 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
     ]
     return parsedOrder 
   }
+
+
+
+
+  useEffect(() => {
+    const init = async() => {
+        if(detailType && order){
+          console.log('formatDepositOrder', detailType, order)
+          setData(await formatDepositOrder(order))
+        }
+    }
+    init()
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [order])
+
+
+  return { 
+    data, 
+    inProcesOrder,
+    formatDepositOrder,
+    formatWithdrawOrder,
+    formatSwapsOrder
+  }
+
+}
+
+
+
+
+
+
+
+
+const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
+
+  const [orders, setOrders] = useState([]);
+  const { deposit_providers, tx_path, path } = UseTxState();
+  // const [, formatCurrency] = useFormatCurrency();
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+  // const { withdraw_accounts } = useSelector((state) => state.modelData)
+  // const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
+  
+  const { 
+    data, 
+    inProcesOrder,
+    formatDepositOrder,
+    formatWithdrawOrder,
+    formatSwapsOrder
+  } = useDetailParseData(order);
+
+  useEffect(() => {
+    if(data){
+      setOrders(data)
+    }
+  }, [data])
+
+
+  // const params = useParams();
+  const orderType = tx_path || path || (window.location.pathname.includes("referral") && "deposits") || "withdraw"
+  // const orderType = tx_path || path || "withdraw"
 
 
   const ORDER_DETAIL_BY_TYPE = {
@@ -262,7 +225,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
     return parsedOrder
   }
 
-
+ 
   useEffect(() => {
     // the order is converted to an array and formatted
     if (!order) {
@@ -282,6 +245,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
   const pendingDeposit = orderType === 'deposits' && ["pending"].includes(order.state)
 
+  console.log('DetailTemplateComponent', orders)
 
   return (
     <Container className={`${title ? "withTitle" : ""} ${pendingDeposit ? 'withPendingDeposit' : ''} ${theme}`}>
@@ -309,7 +273,6 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
         tx_path={tx_path}
         order={order}
       />
-
 
           { 
             (orderType === 'swaps' && order?.referral && ["accepted"].includes(order?.state)) &&
