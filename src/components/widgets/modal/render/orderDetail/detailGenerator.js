@@ -21,13 +21,11 @@ export const useDetailParseData = (order, detailType) => {
 
   const [data, setData] = useState([]);
   const [, formatCurrency] = useFormatCurrency();
-  const { deposit_providers, tx_path, path } = UseTxState();
+  const { deposit_providers } = UseTxState();
   const { withdraw_accounts } = useSelector((state) => state.modelData)
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
-
-
 
   const inProcesOrder = async (order) => {
     const isPending = order.state === 'pending'
@@ -105,7 +103,6 @@ export const useDetailParseData = (order, detailType) => {
     }
   };
 
-
   const formatDepositOrder = async(order) => {
     const isPending = order.state === 'pending'
     let parsedOrder = [
@@ -149,14 +146,36 @@ export const useDetailParseData = (order, detailType) => {
     return parsedOrder 
   }
 
+  
+  const formatShortDeposit = async(order) => {
+    let parsedOrder = [
+      [`Cantidad por acreditar:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+      ["Costo:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+    ]
+    return parsedOrder 
+  }
 
+  const formatDepositAccount = async(data) => {
+    console.log('formatDepositAccount', data)
+  let parsedOrder = [
+    [`${data?.account?.bussines_name?.ui_name}`, `${data?.account?.bussines_name?.bussines_name}`],
+    [`${data?.account?.nit?.ui_name}`, `${data?.account?.nit?.nit}`],
+    [`${data?.account?.dv?.ui_name}`, `${data?.account?.dv?.dv}`],
+  ]
+  return parsedOrder 
+  }
+
+
+  const ACTIONS = {
+    shortDeposit:formatShortDeposit
+  }
 
 
   useEffect(() => {
     const init = async() => {
         if(detailType && order){
           console.log('formatDepositOrder', detailType, order)
-          setData(await formatDepositOrder(order))
+          ACTIONS[detailType] && setData(await ACTIONS[detailType](order))
         }
     }
     init()
@@ -169,7 +188,10 @@ export const useDetailParseData = (order, detailType) => {
     inProcesOrder,
     formatDepositOrder,
     formatWithdrawOrder,
-    formatSwapsOrder
+    formatSwapsOrder,
+    formatDepositAccount,
+    formatCurrency,
+    currencySimbol
   }
 
 }

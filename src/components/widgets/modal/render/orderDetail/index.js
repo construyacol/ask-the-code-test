@@ -20,6 +20,7 @@ import {
   UploadTextMiddle
 } from "../../../shared-styles";
 import GetInfoComponentToRender from './infoComponent'
+import { TotalAmount } from '../../../shared-styles'
 // import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
 // import { UploadTextMiddle, UploadMiddle } from './inProcessOrder'
 
@@ -252,38 +253,6 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
     </BottomSectionContainer>
   );
 };
-
-const TotalAmount = styled.div`
-  width: auto;
-  height: 70px;
-  justify-self: end;
-  align-self: end;
-
-  &.rejected,
-  &.canceled {
-    .amount {
-      text-decoration: line-through;
-    }
-  }
-
-  p {
-    color: ${(props) => props.color ? props.color : 'var(--paragraph_color)'};
-    margin: 0;
-    text-align: right;
-  }
-  & > p {
-    margin-bottom: 10px;
-  }
-  .amount {
-    font-size: 30px;
-    span {
-      font-size: 18px;
-    }
-  }
-  .saldo {
-    font-size: 16px;
-  }
-`;
 
 const Container = styled.div`
   width: ${props => !props.consolidatedOrder ? '100%' : 'calc(100% - 60px)'};

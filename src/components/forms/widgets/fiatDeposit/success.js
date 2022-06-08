@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
-import  { SuccessModalCont } from './styles'
-import { Success } from '../../../wallets/deposit/flows'
+// import  { SuccessModalCont } from './styles'
+// import { Success } from '../../../wallets/deposit/flows'
 import styled from 'styled-components'
-import { history } from '../../../../const/const'
+import { history, device } from '../../../../const/const'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
 import { 
@@ -23,15 +23,19 @@ import {
 import { useDetailParseData } from '../../../widgets/modal/render/orderDetail/detailGenerator'
 // import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 import DetailTemplateComponent from '../../../widgets/detailTemplate'
-
+import { TotalAmount } from '../../../widgets/shared-styles'
+import {
+    ButtonContainer
+  } from '../newWallet/styles'
+  import ControlButton from "../../../widgets/buttons/controlButton";
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 
 const FiatDepositSuccess = ({ 
     closeModal, 
-    // actions, 
-    // params, 
+    actions, 
+    params, 
     // depositProvData, 
     new_ticket 
 }) => {
@@ -39,24 +43,36 @@ const FiatDepositSuccess = ({
     // const [ final, setFinal ] = useState(false)
     // const [ finalButton, setFinalButton ] = useState(false)
     // const { osDevice } = useSelector((state) => state?.ui);
-    const { data } = useDetailParseData(new_ticket, 'deposits')
+    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(new_ticket, 'shortDeposit')
     // const [ depositDetail, setDepositDetail ] = useState(false)
-
+    const [ depProvDetail, setDepProvDetail ] = useState([])
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[new_ticket?.deposit_provider_id]);
     const depositAccount = depositProvider?.depositAccount
-    // const finalizar = async () => {
-    //         closeModal()
-    //         history.push(`/wallets/activity/${params.account_id}/deposits`);
-    //         return actions.add_new_transaction_animation();
-    // }
+    const finish = async () => {
+            closeModal()
+            history.push(`/wallets/activity/${params.account_id}/deposits`);
+            return setTimeout(() => {
+                 actions.add_new_transaction_animation();
+            }, 20)
+    }
+    const [ amount, setAmount ] = useState([])
+
+    
+
+    const init = async() => {
+        setAmount(await formatCurrency(new_ticket?.amount_neto, new_ticket?.currency))
+        setDepProvDetail(await formatDepositAccount(depositAccount))
+    }
+
+    // [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+
 
     useEffect(() => {
-        // console.log('depositProvData', depositProvData)
-        console.log('depositProvider', depositAccount)
+        if(depositAccount){
+            init()
+        }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccount])
-
-    // depositProvider?.depositAccount
 
     return(
         <OtherModalLayout
@@ -66,6 +82,7 @@ const FiatDepositSuccess = ({
         >  
             <SuccessViewLayout>
                 <SuccessViewContent>
+
                     <Header>
                         <div className="icon icon--order-success svg iconSuccess">
                             <svg 
@@ -84,9 +101,20 @@ const FiatDepositSuccess = ({
                         </div>
                         <Title className="fuente">Depósito creado exitosamente</Title>
                     </Header>
-                    <Content>
-                        <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
 
+                    <Content>
+                        <ButtonContainer className="_sticky">
+                            <ControlButton
+                                // id={idSubmitButton}
+                                // loader={loader}
+                                formValidate
+                                label="Finalizar"
+                                handleAction={finish}
+                            />
+                        </ButtonContainer>
+
+
+                        <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
                         <ItemAccountContainer className={`_itemAccountContainer ${!depositAccount ? 'skeleton' : ''}`}>
                             <HeaderMainContainer>
                                 <IconAccount className="_iconSkeleton">
@@ -105,15 +133,16 @@ const FiatDepositSuccess = ({
                             </HeaderMainContainer>
                             <MobileBalance>
                                 <HR/>
-                                <p className="fuente2">SDD54554S</p>
-                                <p className="fuente _balanceTextLab">Número de cuenta</p>
+                                <p className="fuente2">{depositAccount?.account?.account_id?.account_id}</p>
+                                <p className="fuente _balanceTextLab">{depositAccount?.account?.account_id?.ui_name}</p>
                             </MobileBalance>
                         </ItemAccountContainer>
 
                         <AccountMetaData>
                             <ContentDetail>
                                 <DetailTemplateComponent
-                                    // items={data}
+                                    skeletonItems={3}
+                                    items={depProvDetail}
                                 />
                             </ContentDetail>
                         </AccountMetaData>
@@ -124,8 +153,29 @@ const FiatDepositSuccess = ({
                                 items={data}
                             />
                         </ContentDetail>
-                        <Footer></Footer> 
+                        <TotalAmount 
+                            color="var(--paragraph_color)" 
+                        >
+                            <p className="fuente saldo">Total a depositar</p>
+                            <p className="fuente2 amount">
+                                    $ {amount} 
+                                    <span className="fuente">{currencySimbol?.toUpperCase()}</span>
+                            </p>
+                        </TotalAmount>
                     </Content>
+
+
+                    <ButtonContainer>
+                        <ControlButton
+                            // id={idSubmitButton}
+                            // loader={loader}
+                            formValidate
+                            label="Finalizar"
+                            handleAction={finish}
+                        />
+                    </ButtonContainer>
+
+
                 </SuccessViewContent>
             </SuccessViewLayout>
         </OtherModalLayout>
@@ -138,7 +188,10 @@ export default FiatDepositSuccess
 const ContentDetail = styled.div`
     display:flex;
     flex-direction: column;
-    row-gap: 7px;
+    row-gap: 12px;
+    p{
+        font-weight: normal;
+    }
     &.onBottom{
         border-bottom: 1px solid #E9E9E9;
         padding-bottom: 40px;
@@ -150,6 +203,8 @@ const AccountMetaData = styled.div`
     height:auto;
     background:#F9F9F9;
     border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
 `
 
 
@@ -157,10 +212,6 @@ const SubTitle = styled.h3`
     color:var(--paragraph_color);
 `
 
-const Element = styled.div`
-    height:50px;
-    border:1px solid green;
-`
 
 const Title = styled.h2`
     text-align: center;
@@ -169,10 +220,8 @@ const Title = styled.h2`
     font-size: 22px;
 `
 
-const Footer = styled.div`
-    height:60px;
 
-`
+
 
 const Content = styled.div`
     background: white;
@@ -182,6 +231,19 @@ const Content = styled.div`
     display:flex;
     flex-direction: column;
     row-gap: 15px;
+    position:relative;
+
+    
+
+    ${TotalAmount}{
+        .amount{
+            font-size:26px;
+        }
+        display:grid;
+        row-gap: 3px;
+        display: grid;
+        margin-top: 24px;
+    }
     
     ._itemAccountContainer{
         grid-template-columns: auto 1fr;
@@ -196,6 +258,11 @@ const Content = styled.div`
         column-gap: 22px;
     }
 
+    ${LabelContainer},
+    ${MobileBalance}{
+        row-gap: 3px;
+    }
+
     ${IconAccount}{
         height:50px;
         width:50px;
@@ -204,10 +271,24 @@ const Content = styled.div`
     ${CurrencyLabel},
     ._balanceTextLab{
         text-transform: none;
-        font-size: 14px;
+        font-size: 13px;
+    }
+
+    ${ButtonContainer}._sticky{
+        display:none;
+    }
+
+    @media ${device.mobile} {
+       padding: 15px 10px;
+        ${ButtonContainer}._sticky{
+            display:flex;
+            position:sticky;
+            top:0;
+        }
     }
 
 `
+
 
 const Header = styled.div`
     height: 130px;
@@ -223,12 +304,13 @@ const SuccessViewContent = styled.div`
     height:auto;
     width:100%;
     display:grid;
-    max-width: 850px;
+    max-width: 760px;
     z-index: 2;
     position: relative;
-    grid-template-rows: auto 1fr;
     row-gap: 20px;
     padding: 20px 0 40px;
+    min-height: calc(100vh - 60px);
+    grid-template-rows: auto 1fr auto;
 
     .iconSuccess{
         display: grid;
@@ -406,30 +488,3 @@ export const IconContainer = styled.div`
 
 
 
-
-const Container = styled.div`
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    align-items: center;
-    justify-items: center;
-    position:relative;
-
-    .nWCabeza{
-        border-bottom:0px;
-    }
-
-    #DLstep2{
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        grid-template-rows: 200px 1fr 100px;
-        width: 100%;
-        max-height: calc(100vh - 80px);
-        height: calc(100vh - 80px);
-        max-width: 650px;
-        border: 1px solid transparent;
-    }
-`
