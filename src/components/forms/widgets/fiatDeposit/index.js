@@ -44,8 +44,6 @@ const FiatDepositComponent = ({ handleState, handleDataForm:{ dataForm }, ...pro
     dataForm.stages
   )
 
-
-
   const {
     finalStage,
     nextStage,

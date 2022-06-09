@@ -7,17 +7,39 @@ const UI_NAME_TITLE = {
     wallets:"Billeteras",
     withdraw_accounts:"Cuentas de retiro",
     referral:"Referidos",
-    security:"Centro de seguridad"
+    security:"Centro de seguridad",
+    activity:"Actividad",
+    deposit:"Depositar",
+    withdraw:"Retirar",
+    swap:"Intercambiar"
+
 }
 
-export default function TitleSection({ titleKey, skeleton, children }) {
+export default function TitleSection({ 
+    titleKey, 
+    skeleton, 
+    children, 
+    className = "",
+    subMenuRef,
+    // ...props
+}) {
 
     const params = useParams()
     const key = titleKey || params.primary_path
     const title = UI_NAME_TITLE[key] || key
+    // console.log('|||||||||  TitleSection ==> ', props)
 
+    // const handleScroll = event => {
+    //     debugger
+    // }
+   
     return(
-        <TitleContainer>
+        <TitleContainer 
+            className={`accountDetailTitle ${className} ${key}`}
+            // onScrollCapture={handleScroll}
+            // id="scrollElement"
+            ref={subMenuRef}
+        >
             <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
                 {skeleton ? 'Loading module' : title}
             </Title>
@@ -31,8 +53,7 @@ export const SubTitleSection = ({
     skeleton, 
     children, 
     handleAction, 
-    iconClass,
-    className
+    iconClass
 }) => {
 
     const params = useParams()
@@ -68,14 +89,49 @@ const Container = styled.div`
 
 const TitleContainer = styled(Container)`
     border-bottom: 1px solid #d5d5d6;
+    position: sticky;
+
+    &.accountDetailTitle.wallets{
+        grid-template-columns: auto auto 1fr;
+        align-items: center;
+        column-gap: 17px;
+        .AddNewItemContainer{
+            justify-content: end;
+        }
+    }
+
+    &.stickyWallets{
+        position: sticky;
+        top: 60px;
+        background: #f9f9fbdb;
+        backdrop-filter: blur(8px);
+    }
+    
+    
+    &.accoun-detail{
+        top: 120px;
+        z-index: 3;
+        background: rgb(249 249 251 / 94%);
+        backdrop-filter: blur(6px);
+
+        .ALFilterSect{
+            align-items:center;
+        }
+        .ALfiltros{
+            background:transparent;
+        }
+        
+        h1{
+            padding: 12px 0 20px;
+            font-size:24px;
+        }
+    }
+
 `
 
 const SubContainer = styled(Container)`
     padding:0;
-    ${'' /* grid-row-start: 2; */}
     @media ${device.mobile} {
-        ${'' /* grid-row-start: 1; */}
-        ${'' /* padding-top:20px; */}
         display:none;
     }
 `
@@ -103,7 +159,7 @@ const Title = styled.h1`
     color:var(--paragraph_color);
     font-size:28px;
     margin: 0;
-    padding: 30px 0 20px;
+    padding: 30px 0 22px;
 
     &.skeleton{
       color:var(--skeleton_color);

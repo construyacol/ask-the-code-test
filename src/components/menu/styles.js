@@ -26,8 +26,8 @@ export const SubMenu = styled.div`
   display: grid;
   place-items: center;
   color: #666666;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
   backdrop-filter: blur(5px);
   z-index: 3;
   background: rgb(239 239 239 / 85%);
@@ -53,7 +53,7 @@ export const SubMenu = styled.div`
 
 
     .menuItem.is_safari{
-    grid-template-rows: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
     }
 
     .menuItem p {
@@ -67,8 +67,6 @@ export const SubMenu = styled.div`
     grid-template-rows: 1fr auto;
     }
 
-
-
     .menuItem.movil p,
     .menuItem.active p {
       grid-template-rows: 1fr auto;
@@ -78,6 +76,8 @@ export const SubMenu = styled.div`
     .menuItem.active{
       background: #f9f9fb;
       border-top: 2px solid var(--primary);
+      border-top-right-radius: 2px;
+      border-top-left-radius: 2px;
     }
 
     .menuItem:hover p {
@@ -135,6 +135,27 @@ export const SubMenu = styled.div`
 @media ${device.mobile} {
   padding:0;
   width:100%;
+
+  .menuMovilIcon{
+    height: 30px;
+    opacity: 1;
+    transform: scale(1);
+    align-items: center;
+    svg{
+      fill: gray;
+    }
+    &.active {
+      svg{
+        fill: var(--primary);
+      }
+    }
+  }
+  .menuItem{
+    grid-template-rows: 1fr !important;
+  }
+  p{
+    display:none;
+  }
 }
 
 

@@ -9,6 +9,7 @@ import actions from "../../../actions";
 // import SimpleLoader from '../loaders'
 import InifiniteScrollComponent from "./infiniteScroll";
 import { isSafari } from '../../../utils'
+import { ORDER_TYPE_UI_NAME } from '../../../const/const'
 
 import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
@@ -144,6 +145,7 @@ class ActivityList extends Component {
     } = this.state;
 
 
+
     return (
       <Fragment>
         {tx_path !== "swaps" && (
@@ -155,7 +157,7 @@ class ActivityList extends Component {
               className="ALtext fuente"
               style={{ display: pending ? "block" : "none" }}
             >
-              Pendiente{" "}
+              {`${ORDER_TYPE_UI_NAME[tx_path]?.ui_name}s`|| 'Operaciones'} en proceso{" "}
             </p>
             <div
               className="ALpendingCont"
@@ -211,11 +213,8 @@ class ActivityList extends Component {
             <p
               className="ALverTodo"
               onClick={this.expandir}
-              style={{
-                display: expandidoMax / 100 < 2 || expandido ? "none" : "block",
-              }}
+              style={{display: expandidoMax / 100 < 2 || expandido ? "none" : "block"}}
             >
-              {/* <p className="ALverTodo" onClick={this.expandir} style={{display:expandido ? 'none' : 'block'}}> */}
               Ver todo
               <span>+{expandidoMax / 100 - 1}</span>
               <i className="fas fa-angle-down"></i>
@@ -228,7 +227,7 @@ class ActivityList extends Component {
         )}
 
         <section className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
-          <p className="ALtext fuente">Actividad</p>
+          {/* <p className="ALtext fuente">Operaciones realizadas</p> */}
           <div className={`ALlistAll ${isSafari()}`}>
             {activity.map((item, index) => {
               if (

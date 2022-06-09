@@ -31,7 +31,7 @@ export const AppContainerLayout = styled.div`
 export const MainContent = styled.div`
     height: auto;
     position:relative;
-    max-width: 1440px; 
+    max-width: 1280px; 
     justify-self: center;
     width: calc(100% - 40px);
     display:flex;
@@ -52,21 +52,36 @@ export const MainContent = styled.div`
 
 export const AccountDetailLayout = styled(BaseLayout)`
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    ${'' /* grid-template-rows: auto auto auto 1fr; */}
+    grid-template-rows: minmax(80px, 80px) auto auto 1fr;
+      row-gap: 15px;
     @media ${device.mobile} {
-        row-gap: 15px;
+      row-gap: 15px;
     }
 `
 
 export const AccountDetailContainer = styled.div`
     display: grid;
-    grid-template-rows: auto minmax(450px, 1fr);
+    ${'' /* grid-template-rows: auto minmax(450px, 1fr); */}
+    grid-template-rows: 1fr;
+    align-items: center;
     row-gap: 30px;
     width: 100%;
     justify-self: center;
     max-width: 1000px;
     justify-items: center;
     padding-bottom:50px;
+
+    &.activity{
+        padding-top:35px;
+        .ALtext{
+            margin-bottom:35px;
+        }
+        @media ${device.mobile} {
+            padding-top:0;
+        }
+    }
+
     @media ${device.mobile} {
         padding-bottom:0;
         row-gap: 10px;

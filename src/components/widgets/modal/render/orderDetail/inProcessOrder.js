@@ -366,7 +366,7 @@ const getState = ({ state, currency_type }) => {
       return state === "pending"
         ? "Pendiente"
         : state === "confirmed" && currency_type === "fiat"
-        ? "Procesando..."
+        ? "Estamos comprobando tu depósito"
         : "En proceso de aceptación...";
     case "crypto":
       return state === "pending" ? "Pendiente" : "Confirmando en blockchain...";

@@ -33,25 +33,17 @@ const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 const ItemAccount = (props) => {
 
-
   const [coinsendaServices] = useCoinsendaServices();
   const actions = useActions();
   const [toastMessage] = useToastMessage();
   const [account_state, set_account_state] = useState();
-  const [loader, set_loader] = useState();
+  const [loader, set_loader] = useState(false);
   const [shouldHaveDeleteClassName, setShouldHaveDeleteClassName] = useState(
     false
   );
   const [id_wallet_action, set_id_wallet_action] = useState("");
   const { account_type } = props;
   // 5d3dedf1bb245069d61021bb
-
-  useEffect(() => {
-    setShouldHaveDeleteClassName(
-      id_wallet_action === props?.account?.id && account_state
-    );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account_state, props?.account?.id]);
 
 
   const delete_account_confirmation = (cancelCallback) => {
@@ -79,15 +71,11 @@ const ItemAccount = (props) => {
 
 
 
-  if (props.loader || !props.account) {
-    return <LoaderAccount />;
-  }
+  
 
   const getAccountTransactions = async () => {
     set_loader(true);
-    const countAccount = await coinsendaServices.countOfAccountTransactions(
-      props.account.id
-    );
+    const countAccount = await coinsendaServices.countOfAccountTransactions(props.account.id);
     const { count } = countAccount;
     await actions.update_item_state(
       { [props.account.id]: { ...props.account, count } },
@@ -99,25 +87,20 @@ const ItemAccount = (props) => {
       );
       set_loader(false);
       if (areThereDeposits && areThereDeposits.length) {
-        // console.log('||||||||||||||| -------------- |||||||||||||||||||||||||||   ARE THERE DEPOSITS :: ', props, props.wallets)
         actions.update_item_state(
           { [props.account.id]: { ...props.specifiedWallet, count: 1 } },
           "wallets"
         ); //actualiza el movimiento operacional de la wallet
-        return props.history.push(
-          `/wallets/activity/${props.account.id}/deposits`
-        );
+        return props.history.push(`/wallets/activity/${props.account.id}/deposits`);
       }
       return props.history.push(`/wallets/deposit/${props.account.id}`);
     }
-    return props.history.push(
-      `/wallets/activity/${props.account.id}/${
-        props.currentFilter ? props.currentFilter : "deposits"
-      }`
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : "deposits"}`
     );
   };
 
   const account_detail = async (payload) => {
+
     if (payload !== "wallets") {
       if (props.account.used_counter > 0) {
         return props.history.push(
@@ -129,17 +112,14 @@ const ItemAccount = (props) => {
     if (account_state === "deleting" || account_state === "deleted") {
       return;
     }
-    actions.cleanNotificationItem(payload, "account_id");
     if (props.account.count === undefined) {
       return getAccountTransactions();
     }
+    actions.cleanNotificationItem(payload, "account_id");
     if (props.account.count < 1) {
       return props.history.push(`/wallets/deposit/${props.account.id}`);
     }
-    return props.history.push(
-      `/wallets/activity/${props.account.id}/${
-        props.currentFilter ? props.currentFilter : "deposits"
-      }`
+    return props.history.push(`/wallets/activity/${props.account.id}/${props.currentFilter ? props.currentFilter : "deposits"}`
     );
   };
 
@@ -204,7 +184,6 @@ const ItemAccount = (props) => {
 
 
   const toProps = {
-    loaderAccount: loader,
     handleAction: account_detail,
     set_account_state,
     shouldHaveDeleteClassName:
@@ -221,7 +200,23 @@ const ItemAccount = (props) => {
 
   const isWallet = account_type === "wallets";
 
- 
+
+  useEffect(() => {
+    setShouldHaveDeleteClassName(
+      id_wallet_action === props?.account?.id && account_state
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account_state, props?.account?.id]);
+
+
+  useEffect(() => {
+    console.log('loader', loader)
+  }, [loader])
+
+
+  if (props.loader || !props.account) {
+    return <LoaderAccount />;
+  }
 
   return (
     <AccountLayout
@@ -234,7 +229,10 @@ const ItemAccount = (props) => {
         id={props.focusedId}
       />
       {isWallet ? (
-        <Wallet isSelected={isSelected} {...toProps} />
+        <Wallet 
+          isSelected={isSelected} 
+          loaderAccount={loader}
+          {...toProps} />
       ) : (
         <WithdrawAccount
           isSelected={isSelected}
@@ -273,6 +271,7 @@ const Wallet = (props) => {
     actions,
     focusedId,
     isStatic,
+    loaderAccount
   } = props;
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
@@ -286,16 +285,15 @@ const Wallet = (props) => {
 
   const currencySymbol = currencies && currencies[currency?.currency]?.symbol
 
-
   return (
     <WalletLayout
       id={`hoverable${focusedId}`}
       isSelected={isSelected}
-      className={`walletLayout ${props.loaderAccount ? "loading" : ""} ${currency.currency} ${shouldHaveDeleteClassName && "deleted"}`}
+      className={`walletLayout ${loaderAccount ? "loading" : ""} ${currency.currency} ${shouldHaveDeleteClassName && "deleted"}`}
       wallet
       inscribed
     >
-      {props.loaderAccount && (
+      {loaderAccount && (
         <LoaderContainer>
           <SimpleLoader loader={2} />
         </LoaderContainer>

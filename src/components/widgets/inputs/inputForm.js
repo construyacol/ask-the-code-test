@@ -26,7 +26,7 @@ const InputForm = (props) => {
     setMaxWithActionKey,
     autoComplete = "off",
     AuxComponent,
-    inputmode
+    inputMode
   } = props;
 
   const [inputState, setInputState, changeState, customError] = InputValidate();
@@ -98,7 +98,7 @@ const InputForm = (props) => {
     autoFocus:isMovilViewport ? false : autoFocus,
     onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
     autoComplete,
-    inputmode:inputmode || "text"
+    inputMode:inputMode || "text"
   };
 
   if (skeleton) {

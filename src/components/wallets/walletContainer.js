@@ -5,28 +5,32 @@ import actions from "../../actions";
 import { bindActionCreators } from "redux";
 // import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
 import { Route } from "react-router-dom";
-import ItemAccount from "../widgets/accountList/item_account";
+// import ItemAccount from "../widgets/accountList/item_account";
 // import SimpleLoader from "../widgets/loaders";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
-import { AccountListSkeletonLoader } from "../dashBoard/dashboard-skeletons";
+import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
 import "./views/wallet_views.css";
 import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
-import { SubTitleSection } from '../widgets/titleSectionComponent'
+import TitleSection, { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
-// import useViewport from '../../hooks/useWindowSize'
-
+import HeaderAccount from '../widgets/headerAccount'
+import ActivityFilters from "../widgets/activityList/filters";
+// import { useSelector } from "react-redux";
+import useViewport from '../../hooks/useWindowSize'
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
-const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListSkeletonLoader /> });
+const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
 const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
 
-
 function WalletContainer(props) {
   // const actionDispatch = useActions()
+
+  // const { accountList } = useSelector((state) => state?.ui?.views);
+
   useEffect(() => {
     const path = props.match.path.replace("/", "");
     props.action.CurrentForm(path);
@@ -61,37 +65,58 @@ function WalletContainer(props) {
     </>
   );
 }
+
+
+
+
+
+
+
  
 export const AccountDetail = (props) => {
-  const { wallets, match: { params } } = props;
-  // const { isMovilViewport } = useViewport()
 
-  return (
+  const { match: { params } } = props;
+
+  return ( 
           <AccountDetailLayout className="_accountDetailLayout">
+            <HeaderAccount>
+              <SubTitleSection  
+                titleKey="Volver a billeteras"
+                iconClass="fas fa-arrow-left"
+                handleAction={() => props?.history?.push(`/${params?.primary_path}`)}
+              />
+            </HeaderAccount>
             <SubMenuComponent
               targetList="wallets"
             />
-            <SubTitleSection 
-              titleKey="Volver a billeteras"
-              iconClass="fas fa-arrow-left"
-              handleAction={() => props?.history?.push(`/${props?.match?.params?.primary_path}`)}
-            />
-            <AccountDetailContainer className="_accountDetailContainer">
-              {/* <AccountDetail wallets={props.wallets} props={routeProps?.match} /> */}
-              <section className="WalletContainer">
-                <ItemAccount
-                  key={params.account_id}
-                  account={wallets[params.account_id]}
-                  account_type={params.primary_path}
-                  isStatic={true}
-                />
-              </section>
+            <TitleSection
+              className="accoun-detail"
+              titleKey={params?.path}
+              {...props}
+            >
+              <RenderAuxComponent {...props} />
+            </TitleSection>
+            
+            <AccountDetailContainer className={`_accountDetailContainer ${params?.path}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
 
           </AccountDetailLayout>
   );
 };
+
+        // <ActivityFilters view={params.primary_path} />
+
+const RenderAuxComponent = (props) => {
+  const { isMovilViewport } = useViewport()
+  const { params:{ path, primary_path } } = props.match;
+  const Views = {
+    activity:isMovilViewport ? null : <ActivityFilters view={primary_path} />
+  };
+
+  return Views[path] || null;
+};
+
 
 // TODO: review re-rendered on this component every time, no performance here
 const SwitchView = (props) => {
@@ -103,7 +128,6 @@ const SwitchView = (props) => {
     // withdraw: <SkeletonWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
     activity:<ActivityView {...props} />
-
   };
 
   if(tx_path)return Views["activity"];

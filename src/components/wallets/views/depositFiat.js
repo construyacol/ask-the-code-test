@@ -50,7 +50,11 @@ const DepositFiat = (props) => {
   }, []);
 
   const fiat_deposit = async (e) => {
+
+    // FiatDepositSuccess
+
     setLoader(true)
+    // const Element = await import('../../forms/widgets/fiatDeposit/success')
     const Element = await import('../../forms/widgets/fiatDeposit/init')
     const FiatDepositComponent = Element.default
     actions.renderModal(() => <FiatDepositComponent/>)

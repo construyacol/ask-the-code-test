@@ -27,7 +27,8 @@ const ActivityFilters = (props) => {
   useEffect(() => { 
     const subMenuHeight = document.querySelector('.subMenu')?.clientHeight
     const mainMenuHeight = document.querySelector('.MenuSuperiorLayout')?.clientHeight
-    const totalHeight = subMenuHeight + mainMenuHeight + 10
+    const accountTitle = document.querySelector('.accountDetailTitle')?.clientHeight
+    const totalHeight = subMenuHeight + mainMenuHeight + accountTitle - 12
     FilterElement.current.style.top = `${totalHeight}px`
   }, [])
 
@@ -38,7 +39,7 @@ const ActivityFilters = (props) => {
   
 
   return (
-    <section ref={FilterElement} className={`ALFilterSect stickyPos`}>
+    <section ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'stickyPos' : ''}`}>
       <div
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}

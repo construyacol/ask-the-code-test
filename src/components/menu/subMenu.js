@@ -1,6 +1,6 @@
 import { SubMenu } from './styles'
 // import { styled } from 'styled-components'
-import { navigation_components } from "../api/ui/api.json";
+import { navigation_components } from "../api/ui/api.json"; 
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { NavLink } from "react-router-dom";
@@ -31,8 +31,7 @@ export default function SubMenuComponent({ targetList }) {
                         if (
                             (item.link === "activity" || item.link === "withdraw" || item.link === "swap") && 
                             primary_path === "wallets" && 
-                            (wallets[account_id] && wallets[account_id].count < 1))return null;
-
+                            (!wallets[account_id]?.count || wallets[account_id]?.count < 1))return null;
                         return(
                             <NavLink
                                 key={index}

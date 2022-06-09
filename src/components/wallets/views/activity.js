@@ -8,15 +8,18 @@ import ActivityList from "../../widgets/activityList/activity";
 import ActivityFilters from "../../widgets/activityList/filters";
 import { LoaderView } from "../../widgets/activityList/order_item";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
-
+import useViewport from '../../../hooks/useWindowSize'
 import "./wallet_views.css";
 import useToastMessage from "../../../hooks/useToastMessage";
 
+
 const ActivityView = (props) => {
+
   const { params } = props.match;
   const [loader, setLoader] = useState(false);
   const [coinsendaServices] = useCoinsendaServices();
   const [toastMessage] = useToastMessage();
+  const { isMovilViewport } = useViewport()
 
   const redirect = (activity_list) => {
     // console.log('|||||||||||||||||||||| ====== ActivityView ======> ', activity_list, activity_list && !activity_list.length)
@@ -148,7 +151,10 @@ const ActivityView = (props) => {
 
   return (
     <div className="ActivityView">
-      <ActivityFilters view={params.primary_path} />
+      {
+        isMovilViewport &&
+        <ActivityFilters view={params.primary_path} />
+      }
       {loader || !props.order_list ? (
         <LoaderView />
       ) : (

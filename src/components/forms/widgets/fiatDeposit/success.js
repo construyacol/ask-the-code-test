@@ -1,58 +1,361 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
-import  { SuccessModalCont } from './styles'
-import { Success } from '../../../wallets/deposit/flows'
+// import  { SuccessModalCont } from './styles'
+// import { Success } from '../../../wallets/deposit/flows'
 import styled from 'styled-components'
-import { history } from '../../../../const/const'
+import { history, device } from '../../../../const/const'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
+import { 
+    ItemAccountContainer,
+    MobileBalance
+} from '../../../widgets/accountList/listView'
+import {
+    // HeaderContainer,
+    HeaderMainContainer,
+    IconAccount,
+    LabelContainer,
+    AccountLabel,
+    CurrencyLabel,
+    // BalanceContainer,
+    HR
+} from '../../../widgets/headerAccount/styles'
+import { useDetailParseData } from '../../../widgets/modal/render/orderDetail/detailGenerator'
+// import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+import DetailTemplateComponent from '../../../widgets/detailTemplate'
+import { TotalAmount } from '../../../widgets/shared-styles'
+import {
+    ButtonContainer
+  } from '../newWallet/styles'
+  import ControlButton from "../../../widgets/buttons/controlButton";
+
+const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 
-const FiatDepositSuccess = ({ closeModal, actions, params, depositProvData, new_ticket }) => {
+const FiatDepositSuccess = ({ 
+    closeModal, 
+    actions, 
+    params, 
+    // depositProvData, 
+    new_ticket 
+}) => {
 
-    const [ final, setFinal ] = useState(false)
-    const [ finalButton, setFinalButton ] = useState(false)
-    const { osDevice } = useSelector((state) => state?.ui);
-    // const depositProvider = useSelector((state) => state?.modelData?.wallets[params?.account_id]);
-    
-    const finalizar = async () => {
-        if (final) {
+    // const [ final, setFinal ] = useState(false)
+    // const [ finalButton, setFinalButton ] = useState(false)
+    // const { osDevice } = useSelector((state) => state?.ui);
+    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(new_ticket, 'shortDeposit')
+    // const [ depositDetail, setDepositDetail ] = useState(false)
+    const [ depProvDetail, setDepProvDetail ] = useState([])
+    const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[new_ticket?.deposit_provider_id]);
+    const depositAccount = depositProvider?.depositAccount
+    const finish = async () => {
             closeModal()
             history.push(`/wallets/activity/${params.account_id}/deposits`);
-            return actions.add_new_transaction_animation();
-        }else{
-          setFinal(true)
-          setFinalButton(true)
-          setTimeout(() => {
-            setFinalButton(false)
-          }, 5000)
-        }
+            return setTimeout(() => {
+                 actions.add_new_transaction_animation();
+            }, 20)
+    }
+    const [ amount, setAmount ] = useState([])
+
+    
+
+    const init = async() => {
+        setAmount(await formatCurrency(new_ticket?.amount_neto, new_ticket?.currency))
+        setDepProvDetail(await formatDepositAccount(depositAccount))
     }
 
+    // [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+
+
+    useEffect(() => {
+        if(depositAccount){
+            init()
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [depositAccount])
 
     return(
-    <OtherModalLayout
-      id="close-button-with-OtherModalLayout"
-      onkeydown={false}
-      on_click={closeModal}
-    >
-      <SuccessModalCont className={`${osDevice}`}>
-        <Container>        
-            <Success
-            deposit_way="cash"
-            final={final}
-            finalizar={finalizar}
-            finalButton={finalButton}
-            depositProvData={depositProvData}
-            new_ticket={new_ticket}
-            />
-        </Container>
-      </SuccessModalCont>
-    </OtherModalLayout>
+        <OtherModalLayout
+        id="close-button-with-OtherModalLayout"
+        onkeydown={false}
+        on_click={closeModal}
+        >  
+            <SuccessViewLayout>
+                <SuccessViewContent>
+
+                    <Header>
+                        <div className="icon icon--order-success svg iconSuccess">
+                            <svg 
+                                width="72px"
+                                height="72px"
+                                alt=""
+                            >
+                            <g fill="none" stroke="white" strokeWidth="3">
+                                <circle cx="36" cy="36" r="35"></circle>
+                                <path
+                                    className="check"
+                                    d="M17.417,37.778l9.93,9.909l25.444-25.393"
+                                ></path>
+                            </g>
+                            </svg>
+                        </div>
+                        <Title className="fuente">Depósito creado exitosamente</Title>
+                    </Header>
+
+                    <Content>
+                        <ButtonContainer className="_sticky">
+                            <ControlButton
+                                // id={idSubmitButton}
+                                // loader={loader}
+                                formValidate
+                                label="Finalizar"
+                                handleAction={finish}
+                            />
+                        </ButtonContainer>
+
+
+                        <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
+                        <ItemAccountContainer className={`_itemAccountContainer ${!depositAccount ? 'skeleton' : ''}`}>
+                            <HeaderMainContainer>
+                                <IconAccount className="_iconSkeleton">
+                                    {
+                                        depositAccount &&
+                                            <IconSwitch
+                                                icon={depositAccount?.name}
+                                                size={35}
+                                            />
+                                    }
+                                </IconAccount>
+                                <LabelContainer className="_header__labelContainer">
+                                    <AccountLabel>{depositAccount?.ui_name}</AccountLabel>
+                                    <CurrencyLabel>{depositAccount?.account?.type?.type}</CurrencyLabel>
+                                </LabelContainer>
+                            </HeaderMainContainer>
+                            <MobileBalance>
+                                <HR/>
+                                <p className="fuente2">{depositAccount?.account?.account_id?.account_id}</p>
+                                <p className="fuente _balanceTextLab">{depositAccount?.account?.account_id?.ui_name}</p>
+                            </MobileBalance>
+                        </ItemAccountContainer>
+
+                        <AccountMetaData>
+                            <ContentDetail>
+                                <DetailTemplateComponent
+                                    skeletonItems={3}
+                                    items={depProvDetail}
+                                />
+                            </ContentDetail>
+                        </AccountMetaData>
+
+                        <SubTitle className="fuente">Datos del depósito</SubTitle>
+                        <ContentDetail className="onBottom">
+                            <DetailTemplateComponent
+                                items={data}
+                            />
+                        </ContentDetail>
+                        <TotalAmount 
+                            color="var(--paragraph_color)" 
+                        >
+                            <p className="fuente saldo">Total a depositar</p>
+                            <p className="fuente2 amount">
+                                    $ {amount} 
+                                    <span className="fuente">{currencySimbol?.toUpperCase()}</span>
+                            </p>
+                        </TotalAmount>
+                    </Content>
+
+
+                    <ButtonContainer>
+                        <ControlButton
+                            // id={idSubmitButton}
+                            // loader={loader}
+                            formValidate
+                            label="Finalizar"
+                            handleAction={finish}
+                        />
+                    </ButtonContainer>
+
+
+                </SuccessViewContent>
+            </SuccessViewLayout>
+        </OtherModalLayout>
     )
 } 
 
 export default FiatDepositSuccess
+ 
+
+const ContentDetail = styled.div`
+    display:flex;
+    flex-direction: column;
+    row-gap: 12px;
+    p{
+        font-weight: normal;
+    }
+    &.onBottom{
+        border-bottom: 1px solid #E9E9E9;
+        padding-bottom: 40px;
+    }
+`
+
+const AccountMetaData = styled.div`
+    min-height:80px;
+    height:auto;
+    background:#F9F9F9;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
+`
+
+
+const SubTitle = styled.h3`
+    color:var(--paragraph_color);
+`
+
+
+const Title = styled.h2`
+    text-align: center;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 22px;
+`
+
+
+
+
+const Content = styled.div`
+    background: white;
+    border-radius: 6px;
+    border:1px solid #E7E7E7;
+    padding: 15px 45px;
+    display:flex;
+    flex-direction: column;
+    row-gap: 15px;
+    position:relative;
+
+    
+
+    ${TotalAmount}{
+        .amount{
+            font-size:26px;
+        }
+        display:grid;
+        row-gap: 3px;
+        display: grid;
+        margin-top: 24px;
+    }
+    
+    ._itemAccountContainer{
+        grid-template-columns: auto 1fr;
+    }
+
+    ${ItemAccountContainer}{
+        border-left:5px solid var(--primary);
+    }
+
+    ${MobileBalance}{
+        justify-self: end;
+        column-gap: 22px;
+    }
+
+    ${LabelContainer},
+    ${MobileBalance}{
+        row-gap: 3px;
+    }
+
+    ${IconAccount}{
+        height:50px;
+        width:50px;
+    }
+
+    ${CurrencyLabel},
+    ._balanceTextLab{
+        text-transform: none;
+        font-size: 13px;
+    }
+
+    ${ButtonContainer}._sticky{
+        display:none;
+    }
+
+    @media ${device.mobile} {
+       padding: 15px 10px;
+        ${ButtonContainer}._sticky{
+            display:flex;
+            position:sticky;
+            top:0;
+        }
+    }
+
+`
+
+
+const Header = styled.div`
+    height: 130px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    ${Title}{
+        margin:0;
+    }
+`
+
+const SuccessViewContent = styled.div`
+    height:auto;
+    width:100%;
+    display:grid;
+    max-width: 760px;
+    z-index: 2;
+    position: relative;
+    row-gap: 20px;
+    padding: 20px 0 40px;
+    min-height: calc(100vh - 60px);
+    grid-template-rows: auto 1fr auto;
+
+    .iconSuccess{
+        display: grid;
+        justify-items: center;
+        transform: scale(0.75);
+    }
+
+`
+
+const SuccessViewLayout = styled.div`
+    width:100vw;
+    height:100vh;
+    background:#F9F9FB;
+    position:absolute;
+    top:0;
+    left:0;
+    display: grid;
+    justify-items: center;
+    overflow-y:scroll;
+
+    &::after{
+        content: "";
+        width: 100vw;
+        height: 25vh;
+        background: linear-gradient(to bottom right,#129a8e,#57cd85);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+    }
+`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export const BankDataContainer = ({accountData:{ 
@@ -185,30 +488,3 @@ export const IconContainer = styled.div`
 
 
 
-
-const Container = styled.div`
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    align-items: center;
-    justify-items: center;
-    position:relative;
-
-    .nWCabeza{
-        border-bottom:0px;
-    }
-
-    #DLstep2{
-        display: grid;
-        justify-items: center;
-        align-items: center;
-        grid-template-rows: 200px 1fr 100px;
-        width: 100%;
-        max-height: calc(100vh - 80px);
-        height: calc(100vh - 80px);
-        max-width: 650px;
-        border: 1px solid transparent;
-    }
-`

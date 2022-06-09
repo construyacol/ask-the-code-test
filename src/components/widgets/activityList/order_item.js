@@ -102,7 +102,7 @@ const getState = ({ state, currency_type }, tx_path) => {
     : state === "confirmed" && tx_path === "withdraws"
     ? "Procesando"
     : state === "confirmed" && currency_type === "fiat"
-    ? "Confirmado"
+    ? "En revisión"
     : state === "confirmed"
     ? "Confirmando"
     : state === "accepted"
@@ -461,10 +461,6 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
           type="primary"
           label="Confirmar"
         />
-      ) : state === "confirmed" && currency_type === "fiat" ? (
-        <p className="fuente" id="ALrevised">
-          En revisión<i className="far fa-clock"></i>
-        </p>
       ) : (
         <>
           <AmountText className={`fuente2 ${tx_path} ${order.state}`}>
@@ -776,7 +772,7 @@ export const LoaderView = (props) => {
 
   return (
     <ActivityLayout>
-      {!props.arrayLength && <p className="titleActivity"></p>}
+      {/* {!props.arrayLength && <p className="titleActivity"></p>} */}
       <LayoutList>
         {loaderItems.map((e, key) => {
           return <LoaderItem key={key} />;
@@ -953,7 +949,7 @@ export const OrderContainer = styled.div`
   ${"" /* transform: scale(1) translateY(-3px); */}
   opacity: 1;
   width: 100%;
-  max-width: 800px;
+  ${'' /* max-width: 800px; */}
 
   ${"" /* &.shower{
     transform: scale(1) translateY(0px);
