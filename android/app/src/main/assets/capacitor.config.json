@@ -1,0 +1,11 @@
+{
+	"appId": "app.coinsenda",
+	"appName": "Coinsenda",
+	"webDir": "build",
+	"cordova": {
+		"preferences": {
+			"OverrideUserAgent": "Mozilla/5.0 Google"
+		}
+	},
+	"bundledWebRuntime": false
+}

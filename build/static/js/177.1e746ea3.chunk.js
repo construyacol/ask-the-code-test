@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[177],{817:function(e,n,r){"use strict";r.r(n),r.d(n,"NativeSettingsWeb",(function(){return t}));var o=r(180);class t extends o.c{async open(){return new Promise(((e,n)=>{n(new Error("Not implemented for web."))}))}async openAndroid(){return new Promise(((e,n)=>{n(new Error("Not implemented for web."))}))}async openIOS(){return new Promise(((e,n)=>{n(new Error("Not implemented for web."))}))}}}}]);
+//# sourceMappingURL=177.1e746ea3.chunk.js.map
