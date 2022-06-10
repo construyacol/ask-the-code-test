@@ -1,1 +1,0 @@
-{"version":3,"sources":["components/forms/widgets/kyc/identityComponent/const.js"],"names":["LABEL_COLOR","default","error"],"mappings":"uHAAA,mDAAO,MAAMA,EAAc,CACvBC,QAAQ,OACRC,MAAM","file":"static/js/86.7fb71411.chunk.js","sourcesContent":["export const LABEL_COLOR = {\n    default:'gray',\n    error:'red'\n}"],"sourceRoot":""}

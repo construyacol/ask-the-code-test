@@ -65,7 +65,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     WithdrawApiUrl: "http://localhost:4005/api/",
     SwapApiUrl: "http://localhost:4008/api/",
     CountryUrl: "http://localhost:3010/",
-    BASE_URL:"http://localhost:2998/",
+    BASE_URL:"https://bitsenda.com/",
     Oauth: {
       url: "http://127.0.0.1:3000/"
     }

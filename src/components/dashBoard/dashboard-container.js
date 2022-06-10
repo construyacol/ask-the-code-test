@@ -134,14 +134,14 @@ function DashBoardContainer(props) {
             path={["/:primary_path/:path/:account_id/", "/:primary_path"]}
             render={(routeProps) => ( <ContentTab {...props} {...routeProps} title={TAB_TITLE[props.primary_path]} />)}
           />
-          
+          <Suspense fallback={<LazyLoaderPage path={props.primary_path} />}>
             <Switch>
-              <Route path="/wallets" component={WalletsContainerComponent} />
+              {/* <Route path="/wallets" component={WalletsContainerComponent} />
               <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
-              <Route path="/security" component={SecurityCenter} />
+              <Route path="/security" component={SecurityCenter} /> */}
               <Route path="/referral" component={ReferralComponent} />
             </Switch>
-          
+          </Suspense>
 
           {/* {props.primary_path === "security" && (
             <>
