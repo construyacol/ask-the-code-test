@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[179],{623:function(a,p,n){"use strict";n.r(p),p.default=n.p+"static/media/hand.e4b8a38a.png"}}]);
+//# sourceMappingURL=179.d9684bc8.chunk.js.map

@@ -1,0 +1,2 @@
+(this["webpackJsonpcoinsenda-app"]=this["webpackJsonpcoinsenda-app"]||[]).push([[83],{606:function(n,s,e){"use strict";e.r(s),e.d(s,"LABEL_COLOR",(function(){return p}));const p={default:"gray",error:"red"}}}]);
+//# sourceMappingURL=83.42137c03.chunk.js.map
