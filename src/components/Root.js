@@ -99,12 +99,12 @@ function RootContainer(props) {
 
   useEffect(() => {
     if(showOnBoarding){ 
-      // const initOnBoarding = async() => {
-      //   const Element = await import("./forms/widgets/onBoardingComponent/init");
-      //   const OnBoardingComponent = Element.default
-      //   return props.actions.renderModal(() => <OnBoardingComponent/>); 
-      // }
-      //   initOnBoarding()
+      const initOnBoarding = async() => {
+        const Element = await import("./forms/widgets/onBoardingComponent/init");
+        const OnBoardingComponent = Element.default
+        return props.actions.renderModal(() => <OnBoardingComponent/>); 
+      }
+        initOnBoarding()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOnBoarding])

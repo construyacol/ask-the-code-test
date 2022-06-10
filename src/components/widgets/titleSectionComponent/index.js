@@ -90,6 +90,7 @@ const Container = styled.div`
 const TitleContainer = styled(Container)`
     border-bottom: 1px solid #d5d5d6;
     position: sticky;
+    z-index:2;
 
     &.accountDetailTitle.wallets{
         grid-template-columns: auto auto 1fr;

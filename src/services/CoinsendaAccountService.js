@@ -31,9 +31,7 @@ export class AccountService extends WebService {
   }
 
   async getWalletsByUser(onlyBalances = false, lastActionDetail) {
-    this.dispatch(
-      appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES)
-    );
+    this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TUS_BILLETERAS_Y_BALANCES));
     const user = this.user;
     const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts`;
     const wallets = await this.Get(accountUrl);

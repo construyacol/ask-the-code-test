@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { SubMenu } from './styles'
 // import { styled } from 'styled-components'
 import { navigation_components } from "../api/ui/api.json"; 
@@ -7,21 +8,25 @@ import { NavLink } from "react-router-dom";
 import loadable from "@loadable/component";
 import { isSafari } from '../../utils'
 
+const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 export default function SubMenuComponent({ targetList }) {
 
-    const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
     const { currentFilter } = useSelector((state) => state?.ui?.current_section?.params);
     const { wallets } = useSelector((state) => state?.modelData);
+    const { activity_for_account } = useSelector((state) => state?.storage);
     const { account_id, primary_path, path } = useParams()
     const itemsMenu = navigation_components[targetList]?.items_menu
-    // console.log('SubMenuComponent', itemsMenu)
-    // console.log('wallets', wallets)
-    // console.log('account_id', account_id)
-
+    const [ accountHasTx, setAccountHasTx ] = useState(false)
+    
+    useEffect(() => {
+        if(wallets[account_id]?.count > 0 || activity_for_account[account_id]){
+            setAccountHasTx(true)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [wallets[account_id], activity_for_account])
 
     const getLink = (link) => `/${primary_path}/${link}/${account_id}${link === "activity" ? `/${currentFilter}` : ""}`;
-
     
     return(
         <SubMenu className="subMenu">
@@ -31,7 +36,7 @@ export default function SubMenuComponent({ targetList }) {
                         if (
                             (item.link === "activity" || item.link === "withdraw" || item.link === "swap") && 
                             primary_path === "wallets" && 
-                            (!wallets[account_id]?.count || wallets[account_id]?.count < 1))return null;
+                            (!accountHasTx))return null;
                         return(
                             <NavLink
                                 key={index}

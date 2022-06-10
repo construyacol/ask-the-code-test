@@ -92,7 +92,7 @@ const CryptoOrder = ({ order }) => {
         <MiddleSection state={order.state}>
           <DetailGenerator
             order={order}
-            title={`${getState(order)}`}
+            title={`${getState(order, tx_path)}`}
             TitleSuffix={() => <GetIcon order={order} />}
           />
         </MiddleSection>
@@ -237,7 +237,7 @@ const FiatOrder = ({ order }) => {
         <MiddleSection state={order.state}>
           <DetailGenerator
             order={order}
-            title={`${getState(order)}`}
+            title={`${getState(order, tx_path)}`}
             TitleSuffix={() => <GetIcon order={order} />}
           />
         </MiddleSection>
@@ -360,13 +360,15 @@ const GetIcon = ({ order }) => {
   );
 };
 
-const getState = ({ state, currency_type }) => {
+const getState = ({ state, currency_type }, txType) => {
   switch (currency_type) {
     case "fiat":
       return state === "pending"
         ? "Pendiente"
-        : state === "confirmed" && currency_type === "fiat"
+        : state === "confirmed" && currency_type === "fiat" && txType === 'deposits'
         ? "Estamos comprobando tu depósito"
+        : state === "confirmed" && currency_type === "fiat" && txType === 'withdraws'
+        ? "Estamos procesando tu retiro"
         : "En proceso de aceptación...";
     case "crypto":
       return state === "pending" ? "Pendiente" : "Confirmando en blockchain...";
