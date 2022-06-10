@@ -103,6 +103,7 @@ export const AccountListWrapper = styled(BaseLayout)`
     height:auto;
     display: grid;
     grid-template-rows: auto 1fr;
+    row-gap:27px;
     @media ${device.mobile} {
         grid-template-rows: auto auto 1fr;
         &.isEmpty{

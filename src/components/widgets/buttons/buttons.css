@@ -170,23 +170,7 @@
 .AddNewItem.disabled {
   transform: scale(0.9);
 }
-@media only screen and (max-width: 768px) {
 
-  .CMControls {
-    display: grid;
-  }
-
-  .AddNewItem.primary,
-  .AddNewItem.disabled {
-    transform: scale(1);
-  }
-
-  .AddNewItemContainer{
-    height: auto;
-  }
-
-
-}
 
 .secundary {
   background: #f9f9fb;
@@ -834,4 +818,29 @@
   color: white !important;
 }
 
-/**/
+
+
+
+@media only screen and (max-width: 768px) {
+
+  .CMControls {
+    display: grid;
+  }
+
+  .AddNewItem.primary,
+  .AddNewItem.disabled {
+    transform: scale(1);
+  }
+
+  .AddNewItemContainer{
+    height: auto;
+  }
+
+  .AddNewItem{
+    height: 35px;
+    width: 100%;
+  }
+  
+
+
+}
