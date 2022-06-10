@@ -79,9 +79,14 @@ export const IconAccount = styled.div`
   place-content: center;
   overflow: hidden;
   border: 3px solid #efefef;
+
   @media ${device.mobile} {
     height:25px;
     width:25px;
+    &.onAccountList{
+      height:30px;
+      width:30px;
+    }
   }
 `
 

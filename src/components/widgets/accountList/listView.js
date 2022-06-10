@@ -23,6 +23,7 @@ import { formatToCurrency } from "../../../utils/convert_currency";
 import { OnlySkeletonAnimation } from '../loaders/skeleton'
 import TitleSection from '../titleSectionComponent'
 import { AccountListWrapper } from '../layoutStyles'
+import { BiRightArrowAlt } from 'react-icons/bi';
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -54,6 +55,8 @@ export default function ListViewComponent(props) {
     )
 }
 
+
+
 export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
 
     const itemList = new Array(skeletonAmount).fill({}) 
@@ -67,9 +70,7 @@ export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
                         return(
                             <ItemAccountContainer key={index} className="skeleton">
                                 <HeaderMainContainer>
-                                    <IconAccount className="_iconSkeleton">
-                                        
-                                    </IconAccount>
+                                    <IconAccount className="_iconSkeleton"></IconAccount>
                                         <LabelContainer className="_header__labelContainer">
                                         <AccountLabel>Skeleton wallet</AccountLabel>
                                         <CurrencyLabel>------</CurrencyLabel>
@@ -103,20 +104,11 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
         setCurrentAccount(true)
         const countAccount = await coinsendaServices.countOfAccountTransactions(account.id);
         const { count } = countAccount;
-        
-
-        await actions.update_item_state(
-          { [account.id]: { ...account, count } },
-          "wallets"
-        );
-        if (count < 1) {
+        await actions.update_item_state({ [account.id]: { ...account, count } }, "wallets");
+        if(count < 1){
           let areThereDeposits = await coinsendaServices.getDepositByAccountId(account.id);
-        //   setLoading(false)
-          if (areThereDeposits && areThereDeposits.length) {
-            actions.update_item_state(
-              { [ account.id ]: { ...account, count: 1 } },
-              "wallets"
-            ); //actualiza el movimiento operacional de la wallet
+          if (areThereDeposits && areThereDeposits.length){
+            actions.update_item_state({ [ account.id ]:{ ...account, count: 1 } }, "wallets"); //actualiza el movimiento operacional de la wallet
             return history.push(`/wallets/activity/${account.id}/deposits`);
           }
           return history.push(`/wallets/deposit/${account.id}`);
@@ -125,17 +117,13 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     };
 
     const toDetail = () => {
-        if (account.count === undefined) {
-            return getAccountTransactions();
-        }
-        if (account.count < 1) {
-            return history.push(`/wallets/deposit/${account.id}`);
-        }
+        if (account.count === undefined) return getAccountTransactions();
+        if (account.count < 1) return history.push(`/wallets/deposit/${account.id}`);
         return history.push(`/wallets/activity/${account.id}/${currentFilter ? currentFilter : "deposits"}`);
     }
 
-    console.log('ITEM key', index)
-    const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
+    // const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
+    const accountName = account?.name
 
     return(
         <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
@@ -145,61 +133,87 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                 </div>
             </IndicatorHover>
             <HeaderMainContainer className="_accountHeaderMainContainer">
-                <IconAccount>
+                <IconAccount className="onAccountList">
                 <IconSwitch
                     icon={account?.currency?.currency}
-                    size={isMovilViewport ? 25 : 35}
+                    size={isMovilViewport ? 30 : 35}
                 />
                 </IconAccount>
                 <LabelContainer className="_header__labelContainer">
-                <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
-                <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
-                </LabelContainer>
+                    <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
+                    {
+                        isMovilViewport ?
+                            <MobileBalanceComponent
+                                account={account}
+                            />
+                        :
+                        <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
+                    }
+                </LabelContainer> 
             </HeaderMainContainer>
-            <Balance
+            <RightSection
                 isMovilViewport={isMovilViewport}
                 account={account}
-                // account_id={id} 
-                // available={available}
             />
         </ItemAccountContainer>
-      )
+    )
 }
 
 
-export const Balance = ({ isMovilViewport, account:{ available, id, currency, currency_type } }) => {
+const MobileBalanceComponent = ({ account }) => {
 
-
-    const [ currentAmount, setCurrentAmount ] = useState(available)
+    const { balances } = useSelector((state) => state.modelData);
+    const currentBalance = balances[account?.id]?.available
+    const [ currentAmount, setCurrentAmount ] = useState(currentBalance);
 
     useEffect(() => {
-        if(isMovilViewport){
-            let current_amount = formatToCurrency(available, currency);
-            setCurrentAmount(current_amount.toFormat());
-        }
+        console.log('||||||||  currentBalance  ===> ', currentBalance)
+        let current_amount = formatToCurrency(currentBalance, account?.currency);
+        setCurrentAmount(current_amount.toFormat());
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    return(
+        <MobileBalanceContainer className="fuente2">
+            {`${["fiat"].includes(account?.currency_type) ? '$ ' : ''} ${currentAmount}`}
+        </MobileBalanceContainer>
+    )
+}
+
+const MobileBalanceContainer = styled.p`
+    margin:0;
+    color:#afafaf;
+    display:none;
+    @media ${device.mobile} {
+       display:initial;
+    }
+`
+
+// BiRightArrowAlt
+
+export const RightSection = ({ isMovilViewport, account:{ id } }) => {
+
+    // <MobileBalance>
+    //     <HR/>
+    //     <p className="fuente2">{currency_type === 'fiat' ? '$ ' : ''}{currentAmount}</p>
+    //     <p className="fuente _balanceTextLab">Balance</p>
+    // </MobileBalance>
 
     return(
         <>
             {
                 isMovilViewport ?
-                    <MobileBalance>
-                        <HR/>
-                        <p className="fuente2">{currency_type === 'fiat' ? '$ ' : ''}{currentAmount}</p>
-                        <p className="fuente _balanceTextLab">Balance</p>
-                    </MobileBalance>
+                    <BiRightArrowAlt className="_enterToWalletIcon" size={35} />
                 :
-                <BalanceContainer  
-                    className="_accountBalanceContainer"
-                    // width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
-                    width={`133px`}
-                >
-                    <HR/>
-                    <BalanceComponent 
-                        account_id={id} 
-                    />
-                </BalanceContainer>
+                    <BalanceContainer  
+                        className="_accountBalanceContainer"
+                        width={`133px`}
+                    >
+                        <HR/>
+                        <BalanceComponent 
+                            account_id={id} 
+                        />
+                    </BalanceContainer>
             }
         </>
         
@@ -307,6 +321,13 @@ export const ItemAccountContainer = styled.div`
     padding: 0 35px 0 20px;
     border-left:5px solid #E9E9E9;
     transition:.15s;
+
+    ._enterToWalletIcon{
+        fill: var(--paragraph_color);
+        align-self: center;
+        justify-self: end;
+        opacity: 1;
+    }
 
     &::after{
         content: "";

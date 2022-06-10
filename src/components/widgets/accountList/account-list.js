@@ -16,12 +16,13 @@ import loadable from "@loadable/component";
 import { AccountListSkeletonLoader } from "../../dashBoard/dashboard-skeletons";
 import { useCreateWallet } from './cardView'
 import FilterAccountList from '../filters/filterAccountList'
+import { AccountListViewSkeleton } from "./listView";
 
 // TODO: Eliminar props.items
 function AccountList(props) {
 
   const CardView = loadable(() => import("./cardView"), { fallback: <AccountListSkeletonLoader /> });
-  const ListViewComponent = loadable(() => import("./listView"), { fallback: <AccountListSkeletonLoader /> });
+  const ListViewComponent = loadable(() => import("./listView"), { fallback: <AccountListViewSkeleton /> });
 
   const {
     items = [],
