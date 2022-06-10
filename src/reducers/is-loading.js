@@ -7,7 +7,6 @@ const initialState = {
 };
 
 const isLoading = (state = initialState, action) => {
-  console.log("ACTION", JSON.stringify(action))
   switch (action.type) {
     case LOADER:
       return {
@@ -17,7 +16,6 @@ const isLoading = (state = initialState, action) => {
     case IS_APP_LOADED:
       return {
         ...state,
-        type: IS_APP_LOADED,
         isAppLoaded: action.payload,
       };
     case APP_LOAD_LABEL:

@@ -5,7 +5,6 @@ import { useActions } from "../../../hooks/useActions";
 
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import { CAPACITOR_PLATFORM } from "components/utils";
 
 const ModalLayout = (props) => {
   const { modalView, loader, step, children, current, isAppLoaded } = props;
@@ -83,7 +82,7 @@ const ModalLayout = (props) => {
 
   return (
     <section
-      className={`Modal ${isAppLoaded ? "aparecer" : "show_loader_app"} ${CAPACITOR_PLATFORM === 'ios' && 'ios-notch-fix'}`}
+      className={`Modal ${isAppLoaded ? "aparecer" : "show_loader_app"}`}
     >
       <div className={`modalCont ${modalView}`}>
         {children}

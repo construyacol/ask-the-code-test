@@ -1,0 +1,1 @@
+{"version":3,"sources":["components/forms/widgets/onBoardingComponent/skeleton.js"],"names":["onBoardingComponent","props"],"mappings":"yIAMeA,UANaC,GAEpB","file":"static/js/26.01903f19.chunk.js","sourcesContent":["const onBoardingComponent = props => {\n    return(\n        <p>Cargando...</p>\n    )\n}\n\nexport default onBoardingComponent"],"sourceRoot":""}
