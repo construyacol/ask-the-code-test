@@ -42,7 +42,6 @@ export const useCreateWallet = (props) => {
   const [ coinsendaService ] = useCoinsendaServices();
 
   const createNewWallet = () => {
-
     if (props.verificationState === "confirmed") {
       return showValidationPrompt();
     }
@@ -120,7 +119,7 @@ function CardView(props) {
   const { keyActions } = useSelector((state) => state.ui);
   const { isMovilViewport, isLaptopViewport } = useViewport();
 
-  const { createNewWallet } = useCreateWallet({ 
+  const [ createNewWallet ]  = useCreateWallet({ 
     isWalletsView,
     ...props
   })
@@ -139,7 +138,6 @@ function CardView(props) {
   );
 
 
-  console.log('|||||||  availableCurrencies  => ', availableCurrencies)
 
   const isHugeContainer = items > 10;
   const styleForHugeContainer = {
@@ -155,6 +153,7 @@ function CardView(props) {
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
   // const path = props?.match?.params?.primary_path
 
+  console.log('||||||||||  isBottonAvailable  ===> ', isBottonAvailable, createNewWallet)
 
   return (
     <>
