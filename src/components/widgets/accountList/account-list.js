@@ -74,10 +74,11 @@ function AccountList(props) {
             handleClick={isBottonAvailable ? createNewWallet : null}
           />
       )}
+      
       {
         (!isWithdrawView && ["card"]?.includes(accountListView)) ?
           <CardView {...props} />
-        :
+        : 
         (!isWithdrawView && ["list"]?.includes(accountListView)) ?
           <ListViewComponent {...props}/>
         :
