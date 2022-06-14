@@ -62,7 +62,6 @@ export const AccountDetailLayout = styled(BaseLayout)`
 
 export const AccountDetailContainer = styled.div`
     display: grid;
-    ${'' /* grid-template-rows: auto minmax(450px, 1fr); */}
     grid-template-rows: 1fr;
     align-items: center;
     row-gap: 30px;
@@ -72,6 +71,8 @@ export const AccountDetailContainer = styled.div`
     justify-items: center;
     padding-bottom:50px;
 
+
+
     &.activity{
         padding-top:35px;
         .ALtext{
@@ -80,6 +81,10 @@ export const AccountDetailContainer = styled.div`
         @media ${device.mobile} {
             padding-top:0;
         }
+    }
+
+    &.withdraw{
+        max-width: initial;
     }
 
     @media ${device.mobile} {

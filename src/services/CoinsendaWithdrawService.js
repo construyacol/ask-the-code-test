@@ -9,15 +9,15 @@ import {
   NEW_WITHDRAW_ACCOUNT_URL,
   GET_WITHDRAWS_BY_ACCOUNT_ID,
   DELETE_WITHDRAW_ACCOUNT_URL,
+  PRIORITY_ENTITIES
 } from "../const/const";
 import {
   updateNormalizedDataAction,
   resetModelData,
 } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
-import { SentryCaptureException } from '../utils'
+import { SentryCaptureException, serveBankOrCityList, normalized_list } from '../utils'
 
-import { normalized_list } from "../utils";
 
 export class WithdrawService extends WebService {
 
@@ -229,6 +229,46 @@ export class WithdrawService extends WebService {
     }
     return response;
   }
+
+
+  createEfectyProv(_withdrawProviders) {
+    let efectyProviderKey = Object.keys(_withdrawProviders).find(wAKey => ["efecty_network"].includes(_withdrawProviders[wAKey]?.provider_type))
+    return {
+      ..._withdrawProviders[efectyProviderKey],
+      uiName:_withdrawProviders[efectyProviderKey]?.provider?.ui_name,
+      value:_withdrawProviders[efectyProviderKey]?.name
+    }
+  } 
+
+  async getBankList() {
+    const { withdrawProviders } = this.globalState.modelData;
+    let _withdrawProviders = typeof withdrawProviders === 'object' ? structuredClone(withdrawProviders) : {...withdrawProviders};
+
+    let wProviderBanKey = Object.keys(_withdrawProviders).find(wAKey => ["bank"].includes(_withdrawProviders[wAKey]?.provider_type))
+    let efectyProvider = this.createEfectyProv(_withdrawProviders)
+    let bankList = _withdrawProviders[wProviderBanKey]?.info_needed?.bank_name
+
+    Object.keys(bankList).forEach(bankKey => {
+      if(PRIORITY_ENTITIES.includes(bankKey)){
+        bankList = {
+          [bankKey]:bankList[bankKey],
+          ...bankList
+        }
+      }
+    })
+    if(efectyProvider){
+      bankList = {
+        [efectyProvider?.value]:efectyProvider,
+        ...bankList
+      }
+    }
+
+    return bankList
+  }
+
+
+  
+
 
   // async deleteWithdrawOrder(orderId) {
   //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);

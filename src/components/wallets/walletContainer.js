@@ -77,7 +77,7 @@ export const AccountDetail = (props) => {
 
   const { match: { params } } = props;
 
-  return ( 
+  return( 
           <AccountDetailLayout className="_accountDetailLayout">
             <HeaderAccount>
               <SubTitleSection  
@@ -96,11 +96,9 @@ export const AccountDetail = (props) => {
             >
               <RenderAuxComponent {...props} />
             </TitleSection>
-            
             <AccountDetailContainer className={`_accountDetailContainer ${params?.path}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
-
           </AccountDetailLayout>
   );
 };
@@ -122,10 +120,9 @@ const RenderAuxComponent = (props) => {
 const SwitchView = (props) => {
   const { params:{ path, tx_path } } = props.match;
   const Views = {
-    // deposit: <SkeletonDepositView {...props} />,
+    // withdraw: <SkeletonWithdrawView {...props} />,
     deposit: <LazyDepositView {...props} />,
     withdraw: <LazyWithdrawView {...props} />,
-    // withdraw: <SkeletonWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
     activity:<ActivityView {...props} />
   };

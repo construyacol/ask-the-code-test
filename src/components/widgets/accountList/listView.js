@@ -70,7 +70,7 @@ export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
                         return(
                             <ItemAccountContainer key={index} className="skeleton">
                                 <HeaderMainContainer>
-                                    <IconAccount className="_iconSkeleton"></IconAccount>
+                                        <IconAccount className="_iconSkeleton"></IconAccount>
                                         <LabelContainer className="_header__labelContainer">
                                         <AccountLabel>Skeleton wallet</AccountLabel>
                                         <CurrencyLabel>------</CurrencyLabel>
@@ -134,10 +134,10 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
             </IndicatorHover>
             <HeaderMainContainer className="_accountHeaderMainContainer">
                 <IconAccount className="onAccountList">
-                <IconSwitch
-                    icon={account?.currency?.currency}
-                    size={isMovilViewport ? 30 : 35}
-                />
+                    <IconSwitch
+                        icon={account?.currency?.currency}
+                        size={isMovilViewport ? 30 : 35}
+                    />
                 </IconAccount>
                 <LabelContainer className="_header__labelContainer">
                     <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>

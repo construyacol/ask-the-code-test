@@ -237,6 +237,8 @@ export const InputContainer = styled.form`
   padding: 1px;
   transition:.01s;
 
+  
+
   &._progress_bar{
     grid-template-rows:1fr auto;
   }
@@ -247,6 +249,10 @@ export const InputContainer = styled.form`
     padding: 0 10px;
     font-size: 19px;
     width:calc(97% - 20px);
+    &::-webkit-input-placeholder { 
+      color:var(--placeholder);
+      font-family: "Raleway", sans-serif !important;
+    }
     &.success{
       color: #005000;
     }

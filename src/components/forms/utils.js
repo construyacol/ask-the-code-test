@@ -3,7 +3,7 @@ import {
   API_FETCH_SELECT_LIST,
   INFO_URL_API
 } from './const'
-
+import { isArray } from 'lodash'
 import { mainService } from '../../services/MainService'
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
@@ -14,6 +14,7 @@ import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
+import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
 
 
 // import countryValidators from './apiRes'
@@ -89,11 +90,13 @@ export const getSelectList = async(listKey, payload) => {
 }
 
 export const createStage = async(source, modelated, index) => {
+
   let _source = typeof source === 'object' ? structuredClone(source) : {...source};
+  
   let stage = {}
 
-  _source.uiName = _source.ui_name
-  _source.uiType = _source.ui_type
+  _source.uiName = _source.ui_name || _source.uiName
+  _source.uiType = _source.ui_type || _source.uiType 
   delete _source.ui_name
   delete _source.ui_type
   
@@ -104,7 +107,7 @@ export const createStage = async(source, modelated, index) => {
         ...stage,
         ...modelated,
         [key]:_source[key]
-      }
+      } 
   })
 
   if(_source?.uiType === 'select'){
@@ -115,6 +118,7 @@ export const createStage = async(source, modelated, index) => {
 
  
 export const createSelectList = async(list) => {
+  if(!isArray(list))return list;
   let selectList = {}
   for (const item of list) {
     // item.code = item.code.split(" ").join("_")
@@ -147,7 +151,8 @@ const dataService = {
   fiatDeposit:ApiGetOnFiatDepositStages,
   newWallet:ApiGetNewWalletStages,
   location:ApiGetLocationStages,
-  contact:ApiGetContactStages
+  contact:ApiGetContactStages,
+  newWithdrawAccount:ApiGetNewWAccountStages
 }
 
 
@@ -173,3 +178,4 @@ export const initStages = async(config) => {
     stages
   }
 }
+ 

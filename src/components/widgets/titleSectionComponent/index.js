@@ -128,6 +128,20 @@ const TitleContainer = styled(Container)`
         }
     }
 
+    ._breadCrumbParent{
+        font-size:18px !important;
+        font-weight: normal;
+        cursor:pointer;
+        &:hover{
+          text-decoration: underline;
+        }
+    }
+
+    ._breadCrumbChild{
+        font-size:24px;
+        font-weight: bold;
+    }
+
 `
 
 const SubContainer = styled(Container)`

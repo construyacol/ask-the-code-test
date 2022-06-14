@@ -229,7 +229,7 @@ class IconSwitch extends Component {
         return <ErrorState {...props} />;
       case "pageNotFound":
         return <PageNotFound {...props} />;
-      case "referralEmptyState":
+      case "emptyState":
         return <ReferralEmptyState {...props} />;
       case "international":
         return <International {...props} />;

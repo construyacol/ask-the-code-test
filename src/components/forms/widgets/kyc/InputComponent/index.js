@@ -6,9 +6,8 @@ import MaskDateComponent from '../MaskDateComponent'
 import { isSafari } from '../../../../../utils'
 import {
     InputContainer,
-    LabelText,
-    // ButtonModule
-  } from '../styles'
+    LabelText
+} from '../styles'
 
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
@@ -24,10 +23,9 @@ const InputComponent = props => {
     message,
     type,
     progressBar,
-    // placeholder
-    // label
+    placeholder,
+    label
   } = props
-
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
   const inputName = name?.includes('meta') ? '' : name
@@ -57,7 +55,7 @@ const InputComponent = props => {
   const inputProps = {
     className: `${inputStatus ? inputStatus : ''} `,
     type,
-    // placeholder,
+    placeholder,
     onChange,
     defaultValue,
     name:inputName,
@@ -69,6 +67,11 @@ const InputComponent = props => {
   };
   
   return (
+    <InputWrapper className={`${label ? 'withLabel' : ''}`}>
+      {
+        label &&
+        <p className={`fuente ${label ? '_inputLabelP' : ''}`}>{label}</p>
+      }
       <InputContainer
         onSubmit={(e) => {e.preventDefault()}}
         inputStatus={inputStatus}
@@ -85,7 +88,6 @@ const InputComponent = props => {
           :
           <input {...inputProps} />
         }
-
         { 
           progressBar &&
           <ProgressBarComponent {...progressBar}/>
@@ -94,11 +96,26 @@ const InputComponent = props => {
           {message}
         </LabelText>
       </InputContainer>
+    </InputWrapper>
   )
 }
 
-
 export default InputComponent
+
+const InputWrapper = styled.div`
+  display:grid;
+  &.withLabel{
+    grid-template-rows:auto auto;
+    row-gap: 24px;
+    ._inputLabelP{
+      margin:0;
+      color:var(--paragraph_color);
+    }
+  }
+
+`
+
+
 
 const AuxComponentContainer = ({ AuxComponent, ...props }) => (
     typeof AuxComponent === "object" ?

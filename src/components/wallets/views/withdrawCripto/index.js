@@ -367,7 +367,7 @@ export const OperationForm = styled.form`
   max-width: calc(700px - 50px);
   height: calc(100% - 50px);
   /* border: 1px solid #c4c4c5; */
-  background: #f1f1f1;
+  ${'' /* background: #f1f1f1; */}
   border-radius: 4px;
   padding: 20px 25px 20px 25px;
   display: grid;

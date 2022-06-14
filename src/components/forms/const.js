@@ -11,7 +11,8 @@ export const API_FETCH_SELECT_LIST = {
   nationality:"getCountryList",
   province:"getProvinceList",
   city:"getCityList",
-  id_type:"createAvailableIdentityList"
+  id_type:"createAvailableIdentityList",
+  withdrawProviderBank:"getBankList"
 }
 
 export const NEXT_SELECT_LIST = {
