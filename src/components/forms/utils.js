@@ -20,6 +20,29 @@ import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
 // import countryValidators from './apiRes'
 
 
+export const filterElement = (list, query) => {
+  let result = {}
+  Object.keys(list).forEach(itemList => {
+    if(itemList.includes(query?.toLowerCase())){
+      return result = { ...result, [itemList]:list[itemList] }
+    }
+  })
+
+  Object.keys(result).forEach(itemList => {
+    if(itemList === query?.toLowerCase()){
+      result = { [itemList]:list[itemList] }
+    }
+    // if(itemList === query?.toLowerCase()){
+    //   result = { itemList }
+    // }
+  })
+
+  return Object.keys(result).length ? result : list
+
+
+}
+
+
 export const getQuery = (queryParams) => {
   let result = Object.entries(queryParams).map((param, index) => {
     let concat = `${index < 1 ? '?' : '&'}`
@@ -90,11 +113,8 @@ export const getSelectList = async(listKey, payload) => {
 }
 
 export const createStage = async(source, modelated, index) => {
-
   let _source = typeof source === 'object' ? structuredClone(source) : {...source};
-  
   let stage = {}
-
   _source.uiName = _source.ui_name || _source.uiName
   _source.uiType = _source.ui_type || _source.uiType 
   delete _source.ui_name
@@ -103,16 +123,15 @@ export const createStage = async(source, modelated, index) => {
   Object.keys(_source).forEach(key => {
     // TODO: refactor to for -- in
       stage = {
-        key:index,
+        key:index, 
         ...stage,
         ...modelated,
         [key]:_source[key]
       } 
   })
-
-  if(_source?.uiType === 'select'){
-    stage.selectList = await getSelectList(stage?.key)
-  }
+  // if(_source?.uiType === 'select'){
+  //   stage.selectList = await getSelectList(stage?.key)
+  // }
   return stage
 }
 
@@ -156,6 +175,25 @@ const dataService = {
 }
 
 
+export const recursiveAddList = async(mapObject, payload) => {
+  let apiStages = structuredClone(mapObject)
+  let stages = {} 
+  for(const stage of Object.keys(apiStages)){ 
+    stages = {
+      ...stages,
+      [stage]:apiStages[stage]
+    }
+    if(["select"].includes(stages[stage]?.uiType)){
+      stages[stage].selectList = await getSelectList(stage, payload)
+    }
+    if(["recursiveLevel"].includes(stages[stage]?.uiType)){
+      stages[stage] = await recursiveAddList(stages[stage], payload)
+    }
+  }
+  
+  return stages
+}
+
 export const initStages = async(config) => {
 
   const apiStages = await dataService[config.formName](config)
@@ -171,8 +209,7 @@ export const initStages = async(config) => {
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
-
-  
+  stages = await recursiveAddList(stages)
   return {
     ...formStructure(config.formName),
     stages

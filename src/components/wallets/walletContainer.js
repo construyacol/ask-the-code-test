@@ -21,6 +21,9 @@ import HeaderAccount from '../widgets/headerAccount'
 import ActivityFilters from "../widgets/activityList/filters";
 // import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
+import { parseQueryString } from '../../utils'
+
+
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
@@ -76,7 +79,8 @@ function WalletContainer(props) {
 export const AccountDetail = (props) => {
 
   const { match: { params } } = props;
-
+ 
+  
   return( 
           <AccountDetailLayout className="_accountDetailLayout">
             <HeaderAccount>
@@ -96,7 +100,7 @@ export const AccountDetail = (props) => {
             >
               <RenderAuxComponent {...props} />
             </TitleSection>
-            <AccountDetailContainer className={`_accountDetailContainer ${params?.path}`}>
+            <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${parseQueryString()}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
           </AccountDetailLayout>

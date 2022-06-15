@@ -71,7 +71,9 @@ export const AccountDetailContainer = styled.div`
     justify-items: center;
     padding-bottom:50px;
 
-
+    &.createWithdrawAccount{
+        padding-bottom:0px;
+    }
 
     &.activity{
         padding-top:35px;

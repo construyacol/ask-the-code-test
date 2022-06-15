@@ -86,7 +86,7 @@ const birthday = (value, data) => {
   }
 
 
-const selectListValidator = (value, data) => {
+export const selectListValidator = (value, data) => {
     if(!data?.selectList) return generalValidator(value, data);
     validateLabelMsg(value, data)
     //accepts only letters, spaces and underscore
@@ -107,6 +107,7 @@ const selectListValidator = (value, data) => {
   
     // If it meets the pattern and matches 1 result from the entire list, the search was successful
     let status = (_value.match(data?.settings?.successPattern) && result.length === 1) && 'success';
+
     if(result?.length === 1 && value){
       _value = result && result[0]
       addItemTag(data.key, data?.selectList[result[0]]?.uiName)

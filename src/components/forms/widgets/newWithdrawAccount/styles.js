@@ -3,6 +3,36 @@ import { device } from "../../../../const/const"
 import { OnlySkeletonAnimation } from '../../../widgets/loaders/skeleton'
 
 
+
+export const StageContainer = styled.div`
+  display:grid;
+  input{
+    font-size:15px;
+    color: var(--paragraph_color);
+    &::-webkit-input-placeholder { 
+        font-size:15px;
+    }
+  }
+
+
+  
+  &._withdrawProviderBank{
+    grid-template-rows:auto auto 1fr;
+    row-gap:20px;
+  }
+  .inputContainer__{
+    height: 45px;
+    max-width: 700px;
+    margin: 15px 0 35px;
+  }
+  .withLabel{
+    background: #f9f9fb;
+    position: sticky;
+    top: 143px;
+  }
+`
+
+
 export const Title = styled.h1`
     &.skeleton{
         position:relative;

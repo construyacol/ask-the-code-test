@@ -16,7 +16,13 @@ import {
   resetModelData,
 } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
-import { SentryCaptureException, serveBankOrCityList, normalized_list } from '../utils'
+import { 
+  SentryCaptureException, 
+  // serveBankOrCityList, 
+  normalized_list 
+} from '../utils'
+
+import { isArray } from "lodash"; 
 
 
 export class WithdrawService extends WebService {
@@ -267,7 +273,30 @@ export class WithdrawService extends WebService {
   }
 
 
+  async getAccountTypeList({
+    info_needed:{ 
+      bank_name,
+      account_type
+    },
+    withdrawProviderBank
+  }) {
+    if(!withdrawProviderBank || !bank_name)return ;
+    let list = bank_name[withdrawProviderBank]?.compatible_account_types
+    let accountList = {}
+    if(isArray(list)){
+      list.forEach(accountKey => {
+        accountList = {
+          ...accountList,
+          [accountKey]:account_type[accountKey]
+        }
+      })
+    }
+    return accountList
+  }
+
+
   
+
 
 
   // async deleteWithdrawOrder(orderId) {

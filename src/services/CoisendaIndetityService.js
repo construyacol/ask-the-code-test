@@ -89,6 +89,18 @@ export class IndetityService extends WebService {
         }
     }
   }
+
+  async getIdentityList() {
+    const { identities } = this.globalState?.modelData?.user;
+    let _identities = {}
+    Object.keys(identities).forEach(identity => {
+    _identities = {
+        ..._identities,
+        [identities[identity]?.id]:identities[identity]
+      }
+    })
+    return _identities
+  }
  
   async createContact({ phone }) {
     const body = {

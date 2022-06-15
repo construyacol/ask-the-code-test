@@ -12,7 +12,9 @@ export const API_FETCH_SELECT_LIST = {
   province:"getProvinceList",
   city:"getCityList",
   id_type:"createAvailableIdentityList",
-  withdrawProviderBank:"getBankList"
+  withdrawProviderBank:"getBankList",
+  identity:"getIdentityList",
+  accountType:"getAccountTypeList"
 }
 
 export const NEXT_SELECT_LIST = {
