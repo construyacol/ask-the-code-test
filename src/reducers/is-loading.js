@@ -16,6 +16,7 @@ const isLoading = (state = initialState, action) => {
     case IS_APP_LOADED:
       return {
         ...state,
+        type: IS_APP_LOADED,
         isAppLoaded: action.payload,
       };
     case APP_LOAD_LABEL:

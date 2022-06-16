@@ -1,6 +1,8 @@
+import { CAPACITOR_PLATFORM } from "components/utils";
 import styled from "styled-components";
 import { device } from '../../const/const'
 import { show } from '../widgets/animations'
+
 
 const Menu = styled.menu`
     margin:0;
@@ -206,7 +208,7 @@ export const SideMenuContainer = styled(Menu)`
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top:0;
+    top: ${CAPACITOR_PLATFORM === 'ios' ? '100px' : 0};
     z-index: 4;
     max-width:250px;
 

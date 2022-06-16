@@ -4,6 +4,13 @@ import jwt from "jsonwebtoken";
 import KeyEncoder from 'key-encoder'
 import { mainService } from '../services/MainService'
 import {STORAGE_KEYS} from "const/storageKeys";
+import { Capacitor } from '@capacitor/core';
+import { store } from '../'
+import Environment from '../environment'
+import isLoading from "reducers/is-loading";
+import { IS_APP_LOADED } from "actions/action_types";
+export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
+const { Oauth } = Environment
 
 let _keyEncoder = new KeyEncoder('secp256k1');
 export const saveUserToken = async(userToken, refreshToken) => {
@@ -44,6 +51,27 @@ export const getToken = async() => {
 export const verifyTokensValidity = () => {
   // setInterval(logs_, 20000)
 } 
+
+export function openLoginMobile(callback) {
+  const iab = window.cordova.InAppBrowser.open(`${Oauth.url}signin`, '_blank', 'location=no,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
+  iab.show();
+  iab.addEventListener('loadstop', ()=> iab.show());
+  iab.addEventListener('loaderror', () => {
+    iab.close()
+    setTimeout(() => {
+      openLoginMobile()
+    }, 1000)
+  });
+  iab.addEventListener('message', async ({ data }) => {
+    await localForage.setItem('user_token', data.jwt)
+    await localForage.setItem('refresh_token', data.refresh_token)
+    await localForage.setItem('created_at', new Date())
+    iab.close()
+    
+    // HACK: in order to reuse the browser logic
+    callback && callback(`?token=${data.jwt}&refresh_token=${data.refresh_token}`)
+  });
+}
 
 // const logs_ = async() => {
   //   const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
@@ -155,7 +183,15 @@ export const doLogout = async (queryString) => {
 
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
-  window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
+  if (CAPACITOR_PLATFORM === 'web') {
+    window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
+  } else {
+    // HACK: This to logout in mobile app, we should have either authData or isLoading, not both
+    store.dispatch(isLoading(null, {
+      type: IS_APP_LOADED,
+      payload: false
+    }))
+  }
 };
 
 export const handleError = async(err, callback) => {

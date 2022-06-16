@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Coinsenda</string>
+    <string name="title_activity_main">Coinsenda</string>
+    <string name="package_name">app.coinsenda</string>
+    <string name="custom_url_scheme">app.coinsenda</string>
+</resources>

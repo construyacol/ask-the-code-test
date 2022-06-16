@@ -305,4 +305,7 @@
   border: 1px solid #2fa08c;
 }
 
-/**/
+.ios-notch-fix {
+  top: constant(safe-area-inset-top);
+  top: env(safe-area-inset-top);
+}

@@ -1,1 +1,0 @@
-{"version":3,"sources":["components/forms/widgets/fiatDeposit/skeleton.js"],"names":["Skeleton","props"],"mappings":"yIAUeA,UAVEC,GAGT","file":"static/js/25.7640982b.chunk.js","sourcesContent":["const Skeleton = props => {\n\n    return(\n        <div>\n\n        </div>\n    )\n\n}\n\nexport default Skeleton"],"sourceRoot":""}
