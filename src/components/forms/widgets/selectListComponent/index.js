@@ -9,40 +9,41 @@ import {
     AccountLabel
 } from '../../../widgets/headerAccount/styles'
 import loadable from "@loadable/component";
-
+import useViewport from "../../../../hooks/useWindowSize"
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 
 const SelectListComponent = ({ 
     stageData, 
+    selectList = stageData?.selectList,
     state, 
-    isMovilViewport,
     onChange
   }) => {
   
     const [ searchList, setSearchList ] = useState()
+    const { isMovilViewport } = useViewport();
   
     useEffect(() => {
-      if(stageData?.selectList){
-        const itemList = filterElement(stageData?.selectList, state[stageData?.key])
+      if(selectList){
+        const itemList = filterElement(selectList, state[stageData?.key])
         setSearchList(itemList)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state[stageData?.key], stageData?.selectList])
+    }, [state[stageData?.key], selectList])
   
     const handleAction = (data) => {
       onChange({target:{value:data.value}});
-      // console.log('handleAction', data, stageData?.selectList[data.value])
+      // console.log('handleAction', data, selectList[data.value])
     }
   
     return(
       <SelectListContainer>
         {
-          searchList && Object.keys(searchList).map((providerKey, index) => {
-            return <ItemProviderBankComponent 
+          searchList && Object.keys(searchList).map((key, index) => {
+            return <ItemListComponent 
               key={index}
-              withdrawProv={stageData?.selectList[providerKey]}
+              itemList={selectList[key]}
               firstIndex={index === 0}
               lastIndex={(Object.keys(searchList)?.length - 1) === index}
               isSelectedItem={Object.keys(searchList)?.length === 1}
@@ -56,27 +57,20 @@ const SelectListComponent = ({
   
   }
   
-  const ItemProviderBankComponent = ({ 
-    withdrawProv,
+  export const ItemListComponent = ({ 
+    itemList,
     firstIndex,
     lastIndex,
     isMovilViewport,
     isSelectedItem,
     handleAction,
   }) => {
-  
-    // const [show, element] = useObserver();
-  
-    // useEffect(() => {
-    // console.log('ItemProviderBankComponent', show)
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [show]);
-  
-    const uiName = withdrawProv?.uiName?.toLowerCase()
-  
+
+    const uiName = itemList?.uiName?.toLowerCase()
+
     return(
       <ItemProviderBankContainer 
-        onClick={() => handleAction(withdrawProv)}
+        onClick={() => handleAction(itemList)}
         className={`${firstIndex ? 'firstItem' : ''} ${lastIndex ? 'lastItem' : ''} ${isSelectedItem ? 'isSelectedItem' : ''}`}
       >
         <IndicatorHover>
@@ -87,7 +81,7 @@ const SelectListComponent = ({
         <HeaderMainContainer>
           <IconAccount className="onAccountList">
                 <IconSwitch
-                    icon={withdrawProv?.value}
+                    icon={itemList?.icon || itemList?.value}
                     size={isMovilViewport ? 22 : 25}
                 />
           </IconAccount>

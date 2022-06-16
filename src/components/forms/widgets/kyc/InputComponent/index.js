@@ -24,6 +24,7 @@ const InputComponent = props => {
     type,
     progressBar,
     placeholder,
+    className,
     label
   } = props
 
@@ -53,7 +54,7 @@ const InputComponent = props => {
   }, [name])
   
   const inputProps = {
-    className: `${inputStatus ? inputStatus : ''} `,
+    className: `${inputStatus ? inputStatus : ''}`,
     type,
     placeholder,
     onChange,
@@ -67,7 +68,7 @@ const InputComponent = props => {
   };
   
   return (
-    <InputWrapper className={`${label ? 'withLabel' : ''}`}>
+    <InputWrapper className={`${label ? 'withLabel' : ''} ${className || ''}`}>
       {
         label &&
         <p className={`fuente ${label ? '_inputLabelP' : ''}`}>{label}</p>
@@ -106,7 +107,7 @@ const InputWrapper = styled.div`
   display:grid;
   &.withLabel{
     grid-template-rows:auto auto;
-    row-gap: 24px;
+    row-gap: 10px;
     ._inputLabelP{
       margin:0;
       color:var(--paragraph_color);

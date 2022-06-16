@@ -3,9 +3,24 @@ import { device } from "../../../../const/const"
 import { OnlySkeletonAnimation } from '../../../widgets/loaders/skeleton'
 
 
+export const OptionInputContainer = styled.div`
+  display:grid;
+  row-gap: 24px;
+  grid-template-rows:auto 1fr;
+`
+
+
+export const ButtonContainers = styled.div`
+  position: sticky;
+  bottom: 30px;  
+  display: grid;
+`
+
 
 export const StageContainer = styled.div`
   display:grid;
+  row-gap:20px;
+
   input{
     font-size:15px;
     color: var(--paragraph_color);
@@ -14,18 +29,34 @@ export const StageContainer = styled.div`
     }
   }
 
+  ._inputLabelP{
+    margin-top:10px !important;
+  }
+
+  ._pLabel{
+    margin: 0;
+    color: var(--paragraph_color);
+  }
 
   
+  &._identityComponent{
+    grid-template-rows:auto auto 1fr;
+  }
+
+  &._infoAccount{
+    grid-template-rows:auto auto 1fr;
+  }
+
   &._withdrawProviderBank{
     grid-template-rows:auto auto 1fr;
-    row-gap:20px;
   }
+
   .inputContainer__{
     height: 45px;
     max-width: 700px;
     margin: 15px 0 35px;
   }
-  .withLabel{
+  ._stickyPosition{
     background: #f9f9fb;
     position: sticky;
     top: 143px;

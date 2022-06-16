@@ -90,15 +90,35 @@ export class IndetityService extends WebService {
     }
   }
 
+  
+ 
   async getIdentityList() {
+
+    const createId = {
+      value:"createId",
+      icon:"add",
+      ui_name:"Agregar documento de identidad"
+    }
+
     const { identities } = this.globalState?.modelData?.user;
     let _identities = {}
     Object.keys(identities).forEach(identity => {
     _identities = {
         ..._identities,
-        [identities[identity]?.id]:identities[identity]
+        [identities[identity]?.id]:{
+          ...identities[identity],
+          ui_name:`${UI_NAMES?.documents[identities[identity]?.id_type]}`,
+          icon:"identity"
+        }
       }
     })
+
+    _identities = {
+      createId,
+      ..._identities
+    }
+    // console.log('_identities', _identities)
+    // debugger
     return _identities
   }
  
@@ -140,7 +160,6 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
-
         let isThereOneRejectedIdentity = false
         documentList.forEach(_document => {
           let currentIdentity = userIdentities[_document?.id_type] 

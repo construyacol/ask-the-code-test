@@ -8,6 +8,10 @@ const getExportByName = (componentName) => (exportObject) => ({
 });
 
 
+const CreditCard = loadable(() => import("./").then(getExportByName("CreditCard")));
+const DebitCard = loadable(() => import("./").then(getExportByName("DebitCard")));
+const DepositE = loadable(() => import("./").then(getExportByName("DepositE")));
+
 
 const Efecty = loadable(() => import("./").then(getExportByName("Efecty")));
 const RappiPay = loadable(() => import("./").then(getExportByName("RappiPay")));
@@ -173,6 +177,8 @@ const Contact = loadable(() => import("./").then(getExportByName("Contact")));
 const FingerPrint = loadable(() => import("./").then(getExportByName("FingerPrint")));
 const Location = loadable(() => import("./").then(getExportByName("Location")));
 
+const AddIcon = loadable(() => import("./").then(getExportByName("AddIcon")));
+
 
 
 class IconSwitch extends Component {
@@ -180,6 +186,14 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "add":
+        return <AddIcon {...props} />; 
+      case "deposito_electronico":
+        return <DepositE {...props} />; 
+      case "cuenta_ahorro":
+        return <DebitCard {...props} />;
+      case "cuenta_corriente":
+        return <CreditCard {...props} />;
       case "location":
         return <Location {...props} />;
       case "identity":

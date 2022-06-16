@@ -129,9 +129,6 @@ export const createStage = async(source, modelated, index) => {
         [key]:_source[key]
       } 
   })
-  // if(_source?.uiType === 'select'){
-  //   stage.selectList = await getSelectList(stage?.key)
-  // }
   return stage
 }
 

@@ -15,7 +15,8 @@ export const API_FETCH_SELECT_LIST = {
   withdrawProviderBank:"getBankList",
   identity:"getIdentityList",
   accountType:"getAccountTypeList"
-}
+} 
+
 
 export const NEXT_SELECT_LIST = {
   location_country:"province",

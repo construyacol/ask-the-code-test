@@ -2,10 +2,16 @@ import { mainService } from "../../../../services/MainService";
 import { recursiveAddList } from '../../utils'
 // import { get } from 'lodash'
 
+export const KEY_TYPE = {
+  IDENTITY:"identity",
+  PROV_SERVICE:"withdrawProviderBank",
+}
+
+
 const INFO_IDENTITY_NEEDED = {
-  "identity":{
+  [KEY_TYPE?.IDENTITY]:{
     uiName:"Elije el documento vinculado a tu cuenta de retiro",
-    key:"identity",
+    key:KEY_TYPE?.IDENTITY,
     uiType:"select",
     "settings":{
       defaultMessage:"",
@@ -16,7 +22,7 @@ const INFO_IDENTITY_NEEDED = {
       placeholder:"Escribe el nombre del servicio/entidad",
       queryParams:{
         form:'createWithdrawAccount',
-        stage:"identity"
+        stage:KEY_TYPE?.IDENTITY
       }
     }
   }
@@ -43,7 +49,7 @@ const INFO_NEEDED_STAGE = {
         }
       },
       "accountNumber":{
-        uiName:"Número de cuenta:",
+        uiName:"¿Cuál es el número de tu cuenta?",
         key:"accountNumber",
         uiType:"text",
         "settings":{
@@ -63,9 +69,9 @@ const INFO_NEEDED_STAGE = {
 }
 
 const STAGES = {
-  "withdrawProviderBank":{
+  [KEY_TYPE?.PROV_SERVICE]:{
     uiName:"¿Cuál es la entidad financiera vinculada a tu cuenta?",
-    key:"withdrawProviderBank",
+    key:KEY_TYPE?.PROV_SERVICE,
     uiType:"select",
     "settings":{
       defaultMessage:"",
@@ -81,24 +87,6 @@ const STAGES = {
     }
   }
 } 
-
-// const recursiveAddList = async(mapObject, payload) => {
-//   let apiStages = structuredClone(mapObject)
-//   let stages = {} 
-//   for(const stage of Object.keys(apiStages)){ 
-//     stages = {
-//       ...stages,
-//       [stage]:apiStages[stage]
-//     }
-//     if(["select"].includes(stages[stage]?.uiType)){
-//       stages[stage].selectList = await getSelectList(stage, payload)
-//     }
-//     if(stage?.toLowerCase()?.includes("level")){
-//       stages[stage] = await recursiveAddList(stages[stage], payload)
-//     }
-//   }
-//   return stages
-// }
 
 export const createInfoNeededStages = async({
   stageData,
@@ -116,7 +104,7 @@ export const createInfoNeededStages = async({
     } 
 
     stages = await recursiveAddList(stages, {...withdrawProviders[wProviderBanKey], ...state})
-    
+
     setDataForm(prevState => {
       return { 
         ...prevState,
