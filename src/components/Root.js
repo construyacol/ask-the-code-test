@@ -15,17 +15,22 @@ import FreshChat from '../services/FreshChat'
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
+
+
+
 import {
   // doLogout,
   // verifyTokensValidity,
   saveUserToken,
-  getUserToken
+  getUserToken,
+  CAPACITOR_PLATFORM,
+  openLoginMobile
 } from "./utils";
-
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
+
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -40,12 +45,11 @@ function RootContainer(props) {
   const authData = useSelector(({ modelData:{ authData } }) => authData);
   const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
-  
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
 
-  const initComponent = async () => {
+  const initComponent = async (mobileURL) => {
 
-    const params = new URLSearchParams(history.location.search);
+    const params = new URLSearchParams(history.location.search ?? mobileURL);
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
@@ -92,10 +96,25 @@ function RootContainer(props) {
   };
 
   useEffect(() => {
-    initComponent();
-    hotJar()
+    async function initRoot() {
+      if (CAPACITOR_PLATFORM !== 'web') {
+        const jwt = await localForage.getItem('user_token')
+        const refreshToken = await localForage.getItem('refresh_token')
+        if (jwt && refreshToken && !isAppLoaded) {
+          // HACK: in order to reuse the browser logic
+          initComponent(`?token=${jwt}&refresh_token=${refreshToken}`)
+        } else if (!isAppLoaded) {
+          openLoginMobile(initComponent)
+        }
+      } else if (!isAppLoaded){
+        initComponent();
+      }
+      hotJar()
+    }
+
+    initRoot()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAppLoaded]);
 
   useEffect(() => {
     if(showOnBoarding){ 

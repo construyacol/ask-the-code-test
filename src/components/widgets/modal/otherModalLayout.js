@@ -1,6 +1,7 @@
 import React from "react";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
+import { CAPACITOR_PLATFORM } from "components/utils";
 
 const OtherModalLayout = (props) => {
   const {
@@ -24,7 +25,7 @@ const OtherModalLayout = (props) => {
 
 
   return (
-    <section className={`${className || ''} Modal aparecer`}>
+    <section className={`${className || ''} Modal aparecer ${CAPACITOR_PLATFORM === 'ios' && 'ios-notch-fix'}`}>
       <div
         id={(on_click && !disable) ? idForCloseButton : ''}
         className={`modalCont3 ConfirmationModal socketNotifyPers`}

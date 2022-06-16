@@ -2,8 +2,19 @@
   "name": "coinsenda-app",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
+    "@awesome-cordova-plugins/barcode-scanner": "^5.43.0",
+    "@awesome-cordova-plugins/core": "^5.43.0",
+    "capacitor-native-settings": "^0.2.0",
+    "@capacitor/android": "^3.5.1",
+    "@capacitor/camera": "^1.3.1",
+    "@capacitor/cli": "^3.5.1",
+    "@capacitor/core": "^3.5.1",
+    "@capacitor/ios": "^3.5.1",
+    "cordova-plugin-inappbrowser": "^5.0.0",
     "@loadable/component": "^5.14.1",
+    "rxjs": "^7.5.5",
     "@sentry/react": "^6.18.2",
     "@sentry/tracing": "^6.18.2",
     "aws-sdk": "^2.605.0",
@@ -49,7 +60,7 @@
     "text-mask-addons": "^3.8.0",
     "wallet-address-validator": "^0.2.4"
   },
-  "scripts": {
+ "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "node ./scripts/copyFaceApiModelsOnLocal && PORT=2998 cross-env react-scripts start",
     "start:dev": "cross-env NODE_ENV='development' npm start",
@@ -58,13 +69,14 @@
     "start:build": "npm run build && serve ./build -s -l 5000",
     "build-sw": "node ./src/sw.js",
     "deploy": "node deploy.js",
-    "build": "node ./scripts/removeFaceApiModelsFromLocal && react-scripts build && npm run build-sw && react-snapshot",
+    "build": "node ./scripts/removeFaceApiModelsFromLocal && react-scripts build && npm run build-sw",
     "build:staging:serve": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build && serve ./build -s -l 5000",
     "build:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build",
     "build:pre_prod": "cross-env REACT_APP_BUILD_CONFIG='pre_prod' npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "node ./scripts/preloads.js && ./postbuild.sh"
+    "postbuild": "node ./scripts/preloads.js && ./postbuild.sh",
+    "mobile:build": "react-scripts build && npm run build-sw"
   },
   "reactSnapshot": {
     "include": [
