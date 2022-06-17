@@ -97,11 +97,11 @@ const InputComponent = props => {
       </InputContainer>
     </InputWrapper>
   )
-}
+} 
 
 export default InputComponent
 
-const InputWrapper = styled.div`
+export const InputWrapper = styled.div`
   display:grid;
   &.withLabel{
     grid-template-rows:auto auto;
@@ -109,6 +109,15 @@ const InputWrapper = styled.div`
     ._inputLabelP{
       margin:0;
       color:var(--paragraph_color);
+    }
+  }
+
+  &.skeleton{
+    p{
+      color: transparent;
+      border-radius: 4px;
+      background: var(--skeleton_color);
+      width: fit-content;
     }
   }
 

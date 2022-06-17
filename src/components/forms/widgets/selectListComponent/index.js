@@ -11,9 +11,12 @@ import {
 import loadable from "@loadable/component";
 import useViewport from "../../../../hooks/useWindowSize"
 import RenderAuxComponent from '../renderAuxComponent'
+// import { MdSignalWifiStatusbarNull } from 'react-icons/md'
+import { StageContainer, OptionInputContainer } from '../newWithdrawAccount/styles'
+import {  StageIndicator } from '../stageManager/styles'
+
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-
 
 const SelectListComponent = ({ 
     stageData, 
@@ -64,7 +67,7 @@ const SelectListComponent = ({
     lastIndex,
     isMovilViewport,
     isSelectedItem,
-    handleAction,
+    handleAction = () => null,
     auxUiName,
     className,
     ...props
@@ -109,12 +112,54 @@ const SelectListComponent = ({
   export default SelectListComponent
 
 
-
   export const SelectListContainer = styled.div`
     display:grid;
     grid-template-rows: repeat(auto-fill, minmax(auto, 105px));
     max-width: 700px;
+    &.skeleton{
+      width: 100vw;
+      align-self: flex-start;
+      justify-self: flex-start;
+    }
   `
+
+
+
+  export const SelectListSkeleton = props => {
+
+
+    const itemList = new Array(3).fill({
+      value:"createId",
+      icon:"add",
+      uiName:"Loading dataset..."
+    })
+
+    return(
+      <StageContainer className="_bankNameList skeleton">
+        <StageIndicator/>
+        <OptionInputContainer>
+          <p className="fuente _pLabel _inputLabelP">Loading skeleton awesome title for you my loba</p>
+          <SelectListContainer className="skeleton">
+            {
+              itemList.map((item, index) => {
+                  return <ItemListComponent 
+                    className="skeleton"
+                    key={index}
+                    itemList={item}
+                    firstIndex={index === 0}
+                    lastIndex={(Object.keys(itemList)?.length - 1) === index}
+                    isSelectedItem={Object.keys(itemList)?.length === 1}
+                    // isMovilViewport={isMovilViewport}
+                    // handleAction={() => null}
+                  />
+                })
+            }
+          </SelectListContainer>
+        </OptionInputContainer>
+      </StageContainer>
+    )
+
+  }
 
 
 
@@ -194,7 +239,8 @@ export const ItemProviderBankContainer = styled.div`
   }
 
 
-  &.disabled{
+  &.disabled,
+  &.skeleton{
     opacity:0.7;
     border-left: 5px solid #E9E9E9;
     img{

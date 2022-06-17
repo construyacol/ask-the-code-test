@@ -8,10 +8,7 @@ import StatusPanelComponent from '../statusPanel'
 import { createInfoNeededStages } from './api'
 import BankNameListComponent from './bankNameStage'
 import useViewport from '../../../../hooks/useWindowSize'
-
 // import SelectListComponent from '../selectListComponent'
-
-
 
 
 const IdentityComponent = loadable(() => import("./identityStage"));

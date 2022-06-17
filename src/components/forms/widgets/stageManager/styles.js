@@ -26,11 +26,22 @@ export const StageIndicator = styled.div`
       color: #979797;
       margin: 0;
     }
+    ._stageManagerTitle{
+      display:none;
+    }
     @media${device.mobile}{
       position: sticky;
       top: 118px;
       background: #f9f9fb;
       padding: 10px 0;
       z-index: 1;
+      grid-template-columns: 30px auto 1fr;
+
+      ._stageManagerTitle{
+        margin:0;
+        color:var(--paragraph_color);
+        display:initial;
+        font-size: 21px;
+      }
     }
 `

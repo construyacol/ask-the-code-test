@@ -4,7 +4,9 @@ import {
     StageIndicator
 } from './styles'
 import { MdArrowBackIosNew } from 'react-icons/md';
-
+import { StageContainer } from '../newWithdrawAccount/styles'
+import { InputWrapper } from '../kyc/InputComponent'
+import { InputContainer } from '../kyc/styles'
 
 const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
 
@@ -15,7 +17,7 @@ const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
     } = stageManager
   
     return(
-      <StageIndicator className={`fuente2`}>
+      <StageIndicator className={`fuente2 _stageIndicator`}>
         {
           (currentStage <= stageController?.length) &&
             <BackButtom onClick={currentStage < 1 ? backToWithdraw : () => prevStage()}>
@@ -25,9 +27,31 @@ const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
         <p>
           {currentStage+1}/{stageController?.length}
         </p>
+        <h3 className="fuente _stageManagerTitle">Creando cuenta de retiro</h3>
       </StageIndicator>
     )
   }
   
   export default StageManagerComponent
+
+
+  export const StageSkeleton = props => {
+    return(
+      <StageContainer className="_bankNameList skeleton">
+        <StageIndicator/>
+        <InputWrapper className={`skeleton`}>
+            <p className={`fuente _inputLabelP`}>is awesome tittle input</p>
+          <InputContainer className="inputContainer__ skeleton">
+              <input />
+          </InputContainer>
+        </InputWrapper>
+      </StageContainer>
+    )
+  }
+
+
+
+
+
+
   

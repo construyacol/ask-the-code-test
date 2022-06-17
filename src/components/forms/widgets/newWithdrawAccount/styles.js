@@ -32,6 +32,32 @@ export const StageContainer = styled.div`
   display:grid;
   row-gap:20px;
 
+  &.skeleton{
+    width: 100vw;
+    max-width: 700px;
+    justify-self: baseline;
+    align-self: baseline;
+
+    
+
+    p{
+      background:var(--skeleton_color);
+      border-radius:4px;
+      color:transparent;
+      width:fit-content;
+      ${OnlySkeletonAnimation};
+    }
+    .onAccountList{
+      background:var(--skeleton_color);
+      ${OnlySkeletonAnimation};
+    }
+
+    img{
+      display:none;
+    }
+
+  }
+
   input{
     font-size:15px;
     color: var(--paragraph_color);
@@ -77,11 +103,10 @@ export const StageContainer = styled.div`
       top: 175px;
     }
     &._infoAccount, 
-    &._bankNameList{
+    &._bankNameList,
     &._identityComponent{
       grid-template-rows:auto auto auto;
     }
-
   }
 `
 

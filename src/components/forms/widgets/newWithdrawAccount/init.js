@@ -13,6 +13,7 @@ import { device } from '../../../../const/const'
 //   Content
 // } from './styles'
 import styled from 'styled-components'
+import { StageSkeleton } from '../stageManager'
 
 
 const NewFiatWithdrawAccountComponent = props => {
@@ -40,17 +41,17 @@ const NewFiatWithdrawAccountComponent = props => {
               dataForm ?
                 <FormComponent
                   handleDataForm={{dataForm, setDataForm}}
-                  // Fallback={WalletSkeleton}
+                  Fallback={StageSkeleton}
                   {...props}
                 />
-              :
-              <p>cargando</p>
+              : 
+              <StageSkeleton/>
           }
       </WithdrawAccountContainer>
     )
 }
 
-//<WalletSkeleton/>
+
 
 
 export default NewFiatWithdrawAccountComponent
