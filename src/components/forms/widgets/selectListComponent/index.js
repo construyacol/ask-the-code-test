@@ -10,6 +10,7 @@ import {
 } from '../../../widgets/headerAccount/styles'
 import loadable from "@loadable/component";
 import useViewport from "../../../../hooks/useWindowSize"
+import RenderAuxComponent from '../renderAuxComponent'
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
@@ -64,6 +65,9 @@ const SelectListComponent = ({
     isMovilViewport,
     isSelectedItem,
     handleAction,
+    auxUiName,
+    className,
+    ...props
   }) => {
 
     const uiName = itemList?.uiName?.toLowerCase()
@@ -71,7 +75,7 @@ const SelectListComponent = ({
     return(
       <ItemProviderBankContainer 
         onClick={() => handleAction(itemList)}
-        className={`${firstIndex ? 'firstItem' : ''} ${lastIndex ? 'lastItem' : ''} ${isSelectedItem ? 'isSelectedItem' : ''}`}
+        className={`${className} ${props.AuxComponent ? 'withAuxComp' : ''} ${firstIndex ? 'firstItem' : ''} ${lastIndex ? 'lastItem' : ''} ${isSelectedItem ? 'isSelectedItem' : ''}`}
       >
         <IndicatorHover>
             <div className="indicator" >
@@ -80,15 +84,24 @@ const SelectListComponent = ({
         </IndicatorHover>
         <HeaderMainContainer>
           <IconAccount className="onAccountList">
-                <IconSwitch
-                    icon={itemList?.icon || itemList?.value}
-                    size={isMovilViewport ? 22 : 25}
-                />
+              <IconSwitch
+                  icon={itemList?.icon || itemList?.value}
+                  size={isMovilViewport ? 22 : 25}
+              /> 
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>{uiName}</AccountLabel>
+              {
+                auxUiName &&
+                <AccountLabel className="_aux">{auxUiName}</AccountLabel>
+              }
           </LabelContainer> 
         </HeaderMainContainer>
+
+        {
+          props.AuxComponent && 
+          <RenderAuxComponent {...props} />
+        }
       </ItemProviderBankContainer>
     )
   } 
@@ -98,10 +111,10 @@ const SelectListComponent = ({
 
 
   export const SelectListContainer = styled.div`
-  display:grid;
-  grid-template-rows: repeat(auto-fill, minmax(auto, 105px));
-  max-width: 700px;
-`
+    display:grid;
+    grid-template-rows: repeat(auto-fill, minmax(auto, 105px));
+    max-width: 700px;
+  `
 
 
 
@@ -128,6 +141,24 @@ export const ItemProviderBankContainer = styled.div`
   grid-template-columns: auto 1fr;
   padding: 0 35px 0 20px;
   
+  &.createButton{
+    ._header__labelContainer p{
+      font-size: 17px;
+      font-weight: normal;
+    }
+  }
+
+  &:hover{
+    &.createButton{
+      ._header__labelContainer p{
+        color:var(--primary);
+      }
+    }
+  }
+
+  &.withAuxComp{
+      grid-template-columns: auto 2fr 1fr;
+  }
 
   &.firstItem{
     border-top-left-radius: 4px;
@@ -145,6 +176,9 @@ export const ItemProviderBankContainer = styled.div`
     border:1px solid #E7E7E7;
     p{
       color:var(--primary);
+      &._aux{
+        color:var(--placeholder);
+      }
     }
   }
 
@@ -157,6 +191,24 @@ export const ItemProviderBankContainer = styled.div`
       .indicator {
           transform: scale(0.85);
       }
+  }
+
+
+  &.disabled{
+    opacity:0.7;
+    border-left: 5px solid #E9E9E9;
+    img{
+      filter: grayscale(1);
+    }
+    &:hover{
+      .indicatorSon {
+            transform: scale(0);
+      }
+      .indicator {
+          transform: scale(0);
+      }
+    }
+
   }
 
 `

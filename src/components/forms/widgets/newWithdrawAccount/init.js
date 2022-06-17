@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react'
 // import { useActions } from '../../hooks/useActions'
 import FormComponent from '../..' 
 import { initStages } from '../../utils'
+import { device } from '../../../../const/const'
 // import WalletSkeleton from './skeleton'
 // import { IconClose } from "../../../widgets/shared-styles";
 // import OtherModalLayout from '../../../widgets/modal/otherModalLayout'
-import { useActions } from '../../../../hooks/useActions'
+// import { useActions } from '../../../../hooks/useActions'
 // import {
 //   Layout,
 //   Content
@@ -40,6 +41,7 @@ const NewFiatWithdrawAccountComponent = props => {
                 <FormComponent
                   handleDataForm={{dataForm, setDataForm}}
                   // Fallback={WalletSkeleton}
+                  {...props}
                 />
               :
               <p>cargando</p>
@@ -58,4 +60,10 @@ const WithdrawAccountContainer = styled.div`
   height:100%;
   display:grid;
   grid-template-columns:1fr minmax(auto, 350px);
+
+  @media${device.mobile}{
+    grid-template-columns:1fr;
+    row-gap:25px;
+  }
+
 `

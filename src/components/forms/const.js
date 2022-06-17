@@ -9,11 +9,11 @@ export const API_FETCH_SELECT_LIST = {
   location_country:"getCountryList",
   country:"getCountryList",
   nationality:"getCountryList",
-  province:"getProvinceList",
+  province:"getProvinceList", 
   city:"getCityList",
   id_type:"createAvailableIdentityList",
-  withdrawProviderBank:"getBankList",
-  identity:"getIdentityList",
+  bankName:"getBankList",
+  // identity:"getIdentityList",
   accountType:"getAccountTypeList"
 } 
 

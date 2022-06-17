@@ -46,7 +46,11 @@ export const MainContent = styled.div`
 
     @media ${device.mobile} {
         width: 100%;
-        padding-bottom:50px;
+        padding-bottom:70px;
+
+        &.wallets.createWithdrawAccount{
+            padding-bottom:150px;
+        }
     }
 `
 

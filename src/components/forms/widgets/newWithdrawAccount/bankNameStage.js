@@ -1,20 +1,20 @@
 import { useEffect } from 'react'
-// import useViewport from "../../../../hooks/useWindowSize"
 import validations from './validations'
 import { StageContainer } from './styles'
 import InputComponent from '../kyc/InputComponent'
 import SelectListComponent from '../selectListComponent'
+import useViewport from '../../../../hooks/useWindowSize'
 
 
 
-const WithdrawProviderBank = ({ 
+const BankNameListComponent = ({ 
     stageManager, 
     children,
     handleState:{ state, setState },
     handleDataForm:{ dataForm }
   }) => {
-  
-    // const { isMovilViewport } = useViewport();
+    
+    const { isMovilViewport } = useViewport();
     const {
       stageData,
       setStageStatus,
@@ -46,7 +46,7 @@ const WithdrawProviderBank = ({
   
   
     return(
-      <StageContainer className="_withdrawProviderBank">
+      <StageContainer className="_bankNameList">
         {children}
         <InputComponent
           className="_stickyPosition"
@@ -61,7 +61,7 @@ const WithdrawProviderBank = ({
         <SelectListComponent
           stageData={stageData}
           state={state}
-          // isMovilViewport={isMovilViewport}
+          isMovilViewport={isMovilViewport}
           onChange={onChange}
         />
        
@@ -69,4 +69,4 @@ const WithdrawProviderBank = ({
     )
   }
 
-export default WithdrawProviderBank
+export default BankNameListComponent

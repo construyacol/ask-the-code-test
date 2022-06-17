@@ -41,7 +41,7 @@ export default function TitleSection({
             ref={subMenuRef}
         >
             <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
-                {skeleton ? 'Loading module' : title}
+                <span>{skeleton ? 'Loading module' : title}</span>
             </Title>
             {children}
         </TitleContainer>
@@ -125,6 +125,13 @@ const TitleContainer = styled(Container)`
         h1{
             padding: 12px 0 20px;
             font-size:24px;
+        }
+
+        @media ${device.mobile} {
+            &.createWithdrawAccount{
+                position: initial;
+                z-index: 1;
+            }
         }
     }
 

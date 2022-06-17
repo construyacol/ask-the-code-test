@@ -3,6 +3,7 @@ import { StageContainer, OptionInputContainer } from './styles'
 import validations from './validations'
 import InputComponent from '../kyc/InputComponent'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
+import useViewport from '../../../../hooks/useWindowSize'
 
 
 export default function InfoAccountComponent ({ 
@@ -17,6 +18,7 @@ export default function InfoAccountComponent ({
     children 
   }) {
   
+    const { isMovilViewport } = useViewport();
     const [ inputStatus, setInputStatus ] = useState()  
     const selectList = stageData?.accountType?.selectList
     const accountTypeOnChange = (accountType) => {
@@ -65,7 +67,7 @@ export default function InfoAccountComponent ({
       }, [state?.infoAccount])
   
   
-    return(
+    return( 
       <StageContainer className="_infoAccount">
         {children}
         <InputComponent
@@ -90,7 +92,7 @@ export default function InfoAccountComponent ({
                     firstIndex={index === 0}
                     lastIndex={(Object.keys(selectList)?.length - 1) === index}
                     isSelectedItem={isSelected}
-                    // isMovilViewport={isMovilViewport}
+                    isMovilViewport={isMovilViewport}
                     handleAction={accountTypeOnChange}
                   />
                 })

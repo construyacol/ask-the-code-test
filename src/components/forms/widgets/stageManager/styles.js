@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { device } from "../../../../const/const"
+
 
 
 export const BackButtom = styled.button`
@@ -23,5 +25,12 @@ export const StageIndicator = styled.div`
       font-size: 14px;
       color: #979797;
       margin: 0;
+    }
+    @media${device.mobile}{
+      position: sticky;
+      top: 118px;
+      background: #f9f9fb;
+      padding: 10px 0;
+      z-index: 1;
     }
 `

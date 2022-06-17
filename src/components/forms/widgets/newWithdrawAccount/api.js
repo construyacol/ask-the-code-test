@@ -4,7 +4,7 @@ import { recursiveAddList } from '../../utils'
 
 export const KEY_TYPE = {
   IDENTITY:"identity",
-  PROV_SERVICE:"withdrawProviderBank",
+  PROV_SERVICE:"bankName",
 }
 
 
@@ -95,9 +95,9 @@ export const createInfoNeededStages = async({
   state
 }) => {
     const { withdrawProviders } = mainService?.globalState?.modelData;
-    const providerType = ["efecty"].includes(state?.withdrawProviderBank) ? state?.withdrawProviderBank : 'bank'
+    const providerType = ["efecty"].includes(state[KEY_TYPE.PROV_SERVICE]) ? state[KEY_TYPE.PROV_SERVICE] : 'bank'
     let wProviderBanKey = Object.keys(withdrawProviders).find(wAKey => withdrawProviders[wAKey]?.provider_type?.includes(providerType))
-
+    
     let stages = {
       ...STAGES,
       ...INFO_NEEDED_STAGE[providerType]

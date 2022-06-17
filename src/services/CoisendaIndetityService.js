@@ -92,35 +92,26 @@ export class IndetityService extends WebService {
 
   
  
-  async getIdentityList() {
+  // async getIdentityList() {
 
-    const createId = {
-      value:"createId",
-      icon:"add",
-      ui_name:"Agregar documento de identidad"
-    }
-
-    const { identities } = this.globalState?.modelData?.user;
-    let _identities = {}
-    Object.keys(identities).forEach(identity => {
-    _identities = {
-        ..._identities,
-        [identities[identity]?.id]:{
-          ...identities[identity],
-          ui_name:`${UI_NAMES?.documents[identities[identity]?.id_type]}`,
-          icon:"identity"
-        }
-      }
-    })
-
-    _identities = {
-      createId,
-      ..._identities
-    }
-    // console.log('_identities', _identities)
-    // debugger
-    return _identities
-  }
+  //   const { identities } = this.globalState?.modelData?.user;
+  //   let _identities = {}
+  //   Object.keys(identities).forEach(identity => {
+  //   _identities = {
+  //       ..._identities,
+  //       [identities[identity]?.id]:{
+  //         ...identities[identity],
+  //         ui_name:`${UI_NAMES?.documents[identities[identity]?.id_type]}`,
+  //         icon:"identity"
+  //       }
+  //     }
+  //   })
+  //   // _identities = {
+  //   //   createId,
+  //   //   ..._identities
+  //   // }
+  //   return _identities
+  // }
  
   async createContact({ phone }) {
     const body = {

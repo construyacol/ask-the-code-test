@@ -273,18 +273,21 @@ export class WithdrawService extends WebService {
   }
 
 
-  async getAccountTypeList({
-    info_needed,
-    withdrawProviderBank
-  }) {
+  async getAccountTypeList(props) {
+
+    const {
+      info_needed,
+      bankName
+    } = props
+
     let infoNeeded = structuredClone(info_needed)
     const { 
       bank_name,
       account_type
     } = infoNeeded
 
-    if(!withdrawProviderBank || !bank_name)return ;
-    let list = bank_name[withdrawProviderBank]?.compatible_account_types
+    if(!bankName || !bank_name)return ;
+    let list = bank_name[bankName]?.compatible_account_types
     let accountList = {}
     if(isArray(list)){
       list.forEach(accountKey => {

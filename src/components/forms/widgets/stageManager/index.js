@@ -6,7 +6,7 @@ import {
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 
-const StageManagerComponent = ({ stageManager }) => {
+const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
 
     const {
       currentStage,
@@ -17,8 +17,8 @@ const StageManagerComponent = ({ stageManager }) => {
     return(
       <StageIndicator className={`fuente2`}>
         {
-          (currentStage > 0 && currentStage <= stageController?.length) &&
-            <BackButtom onClick={() => prevStage()}>
+          (currentStage <= stageController?.length) &&
+            <BackButtom onClick={currentStage < 1 ? backToWithdraw : () => prevStage()}>
               <MdArrowBackIosNew size={15} color="var(--paragraph_color)"/>
             </BackButtom>
         }

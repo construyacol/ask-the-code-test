@@ -94,7 +94,7 @@ export const AccountDetail = (props) => {
               targetList="wallets"
             />
             <TitleSection
-              className="accoun-detail"
+              className={`accoun-detail ${parseQueryString()}`}
               titleKey={params?.path}
               {...props}
             >

@@ -99,6 +99,11 @@ export const AccountLabel = styled(P)`
   color: var(--paragraph_color);
   font-size: 18px;
   font-weight: 600;
+  &._aux{
+    font-size: 13px;
+    color: var(--placeholder);
+    font-weight: normal;
+  }
 `
 
 export const CurrencyLabel = styled(P)`

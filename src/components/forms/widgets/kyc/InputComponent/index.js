@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import loadable from '@loadable/component'
 import { removeItemTag, debugItemTag } from '../utils'
 import styled from 'styled-components'
 import MaskDateComponent from '../MaskDateComponent'
@@ -8,9 +7,8 @@ import {
     InputContainer,
     LabelText
 } from '../styles'
+import RenderAuxComponent from '../../renderAuxComponent'
 
-
-const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
 
 const InputComponent = props => {
@@ -80,7 +78,7 @@ const InputComponent = props => {
         >
         {
           props.AuxComponent && 
-          <AuxComponentContainer {...props} />
+          <RenderAuxComponent {...props} />
         }
 
         {
@@ -118,17 +116,7 @@ const InputWrapper = styled.div`
 
 
 
-const AuxComponentContainer = ({ AuxComponent, ...props }) => (
-    typeof AuxComponent === "object" ?
-      AuxComponent.map((SingleAuxComponent, idItem) => {
-        if(!SingleAuxComponent){return null}
-        if(typeof SingleAuxComponent === 'string'){return <DynamicLoadComponent key={idItem} component={SingleAuxComponent} {...props}/>}
-        return <SingleAuxComponent key={idItem} />;
-      }) 
-    :
-    typeof AuxComponent === "string" &&
-      <DynamicLoadComponent component={AuxComponent} {...props}/>
-)
+
 
 
 const ProgressBarComponent = ({ start = 0, end = 0, showSteps }) => {

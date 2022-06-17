@@ -14,6 +14,17 @@ export const ButtonContainers = styled.div`
   position: sticky;
   bottom: 30px;  
   display: grid;
+  
+
+  @media ${device.mobile} {
+    background: #f9f9fb;
+    z-index: 1;
+    padding: 10px;
+    top: 165px;
+  }
+
+   
+
 `
 
 
@@ -24,8 +35,12 @@ export const StageContainer = styled.div`
   input{
     font-size:15px;
     color: var(--paragraph_color);
+    font-family: "Tomorrow", sans-serif;
     &::-webkit-input-placeholder { 
         font-size:15px;
+    }
+    &[type="button"]{
+      color:white;
     }
   }
 
@@ -38,18 +53,13 @@ export const StageContainer = styled.div`
     color: var(--paragraph_color);
   }
 
-  
+ 
+  &._infoAccount, 
+  &._bankNameList,
   &._identityComponent{
     grid-template-rows:auto auto 1fr;
   }
 
-  &._infoAccount{
-    grid-template-rows:auto auto 1fr;
-  }
-
-  &._withdrawProviderBank{
-    grid-template-rows:auto auto 1fr;
-  }
 
   .inputContainer__{
     height: 45px;
@@ -60,6 +70,18 @@ export const StageContainer = styled.div`
     background: #f9f9fb;
     position: sticky;
     top: 143px;
+  }
+
+  @media ${device.mobile} {
+    ._stickyPosition{
+      top: 175px;
+    }
+    &._infoAccount, 
+    &._bankNameList{
+    &._identityComponent{
+      grid-template-rows:auto auto auto;
+    }
+
   }
 `
 

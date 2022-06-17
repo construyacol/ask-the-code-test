@@ -307,6 +307,10 @@ export const IndicatorHover = styled.div`
         border-radius: 50%;
         transform: scale(0);
     }
+
+    @media ${device.mobile} {
+        display:none;
+    }
 `
 
 export const ItemAccountContainer = styled.div`
@@ -438,13 +442,8 @@ export const ItemAccountContainer = styled.div`
 
 
     @media ${device.mobile} {
-        padding: 0 17px;
+        padding: 0 17px; 
         grid-template-columns: auto 1fr;
-
-        ${IndicatorHover}{
-            display:none;
-        }
-
         ._accountHeaderMainContainer{
             grid-template-columns: auto auto;
             min-width: auto;

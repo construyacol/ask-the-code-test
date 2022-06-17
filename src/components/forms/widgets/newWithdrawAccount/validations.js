@@ -1,5 +1,5 @@
 import {
-    parseOnlyLetters,
+    // parseOnlyLetters,
     validateLabelMsg,
     parseOnlyNumbers,
     // addItemTag,
@@ -20,7 +20,7 @@ import { selectListValidator } from '../kyc/validations'
   }
 
   const wAccountValidations = {
-    withdrawProviderBank:selectListValidator,
+    bankName:selectListValidator,
     accountNumber:numberValidation,
   }
 
