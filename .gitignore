@@ -6,6 +6,8 @@
 /build
 /out-tsc
 
+android/app/release/
+
 # public
 /public/models
 
