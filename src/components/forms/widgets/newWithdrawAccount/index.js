@@ -15,6 +15,9 @@ import { createSelector } from "reselect";
 import { KEY_TYPE } from './api'
 import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage";
+// import WAccountCreatedSuccess from './success'
+import { useActions } from '../../../../hooks/useActions'
+
 
 
 const IdentityComponent = loadable(() => import("./identityStage"));
@@ -45,6 +48,7 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
   const [ loading, setLoading ] = useState(false)
   const [ withdrawProvider ] = useSelector((globalState) => selectWithdrawProvider(globalState, handleState?.state[KEY_TYPE?.PROV_SERVICE]));
   const [ toastMessage ] = useToastMessage();
+  const actions = useActions()
   
   const stageManager = useStage(
     // create the form stages
@@ -79,21 +83,30 @@ const {
     nextStage()
   }
 
+  const renderSuccessComponent = async(withdrawAccount) => {
+    const Element = await import(`./success`)
+    if(!Element) return;
+    const WAccountCreatedSuccess = Element.default
+    actions.renderModal(() => <WAccountCreatedSuccess withdrawAccount={withdrawAccount} />);
+  }
 
   const createWithdrawAccount = async() => {
-
     const { state } = handleState
     setLoading(true)
     const { error, data } = await ApiPostCreateWAccount({...state, withdrawProvider}) 
     setLoading(false)
     if(error){
-      return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
+    console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
+    return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
     }
-    console.log('||||||||||  ApiPostCreateWAccount ===> DATA', data)
-    debugger
+    await renderSuccessComponent(data)
+    return props.backToWithdraw()
+    // return toastMessage("Nueva cuenta creada");
   }
 
-
+  // useEffect(() => {
+  //   renderSuccessComponent()
+  // }, [])
 
   if(finalStage){
     return <p>finalStage</p>

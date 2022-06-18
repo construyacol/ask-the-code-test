@@ -32,7 +32,7 @@ const ButtonContaniner = styled.div`
 
 
 // osDevice
-const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
+const ControlButton = ({ loader, formValidate, label, handleAction, id, inputProps }) => {
 
   const { osDevice } = useSelector((state) => state?.ui);
 
@@ -55,6 +55,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id }) => {
           e.currentTarget.blur();
           handleAction && handleAction(e);
         }}
+        {...inputProps}
       />
     </ControlsContainer>
   );

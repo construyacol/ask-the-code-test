@@ -3,7 +3,7 @@ import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 // import  { SuccessModalCont } from './styles'
 // import { Success } from '../../../wallets/deposit/flows'
 import styled from 'styled-components'
-import { history, device } from '../../../../const/const'
+import { history } from '../../../../const/const'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
 import { 
@@ -27,7 +27,19 @@ import { TotalAmount } from '../../../widgets/shared-styles'
 import {
     ButtonContainer
   } from '../newWallet/styles'
-  import ControlButton from "../../../widgets/buttons/controlButton";
+import ControlButton from "../../../widgets/buttons/controlButton";
+import {
+    SuccessViewContent,
+    SuccessViewLayout,
+    Title,
+    Header,
+    ContentDetail,
+    AccountMetaData,
+    SubTitle,
+    Content
+} from '../success/styles'
+
+
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
@@ -185,163 +197,8 @@ const FiatDepositSuccess = ({
 export default FiatDepositSuccess
  
 
-const ContentDetail = styled.div`
-    display:flex;
-    flex-direction: column;
-    row-gap: 12px;
-    p{
-        font-weight: normal;
-    }
-    &.onBottom{
-        border-bottom: 1px solid #E9E9E9;
-        padding-bottom: 40px;
-    }
-`
-
-const AccountMetaData = styled.div`
-    min-height:80px;
-    height:auto;
-    background:#F9F9F9;
-    border-radius: 5px;
-    padding: 20px;
-    margin-bottom: 10px;
-`
 
 
-const SubTitle = styled.h3`
-    color:var(--paragraph_color);
-`
-
-
-const Title = styled.h2`
-    text-align: center;
-    color: white;
-    letter-spacing: 1px;
-    font-size: 22px;
-`
-
-
-
-
-const Content = styled.div`
-    background: white;
-    border-radius: 6px;
-    border:1px solid #E7E7E7;
-    padding: 15px 45px;
-    display:flex;
-    flex-direction: column;
-    row-gap: 15px;
-    position:relative;
-
-    
-
-    ${TotalAmount}{
-        .amount{
-            font-size:26px;
-        }
-        display:grid;
-        row-gap: 3px;
-        display: grid;
-        margin-top: 24px;
-    }
-    
-    ._itemAccountContainer{
-        grid-template-columns: auto 1fr;
-    }
-
-    ${ItemAccountContainer}{
-        border-left:5px solid var(--primary);
-    }
-
-    ${MobileBalance}{
-        justify-self: end;
-        column-gap: 22px;
-    }
-
-    ${LabelContainer},
-    ${MobileBalance}{
-        row-gap: 3px;
-    }
-
-    ${IconAccount}{
-        height:50px;
-        width:50px;
-    }
-
-    ${CurrencyLabel},
-    ._balanceTextLab{
-        text-transform: none;
-        font-size: 13px;
-    }
-
-    ${ButtonContainer}._sticky{
-        display:none;
-    }
-
-    @media ${device.mobile} {
-       padding: 15px 10px;
-        ${ButtonContainer}._sticky{
-            display:flex;
-            position:sticky;
-            top:0;
-        }
-    }
-
-`
-
-
-const Header = styled.div`
-    height: 130px;
-    display: flex;
-    flex-direction: column;
-    row-gap: 15px;
-    ${Title}{
-        margin:0;
-    }
-`
-
-const SuccessViewContent = styled.div`
-    height:auto;
-    width:100%;
-    display:grid;
-    max-width: 760px;
-    z-index: 2;
-    position: relative;
-    row-gap: 20px;
-    padding: 20px 0 40px;
-    min-height: calc(100vh - 60px);
-    grid-template-rows: auto 1fr auto;
-
-    .iconSuccess{
-        display: grid;
-        justify-items: center;
-        transform: scale(0.75);
-    }
-
-`
-
-const SuccessViewLayout = styled.div`
-    width:100vw;
-    height:100vh;
-    background:#F9F9FB;
-    position:absolute;
-    top:0;
-    left:0;
-    display: grid;
-    justify-items: center;
-    overflow-y:scroll;
-
-    &::after{
-        content: "";
-        width: 100vw;
-        height: 25vh;
-        background: linear-gradient(to bottom right,#129a8e,#57cd85);
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 0;
-    }
-`
 
 
 

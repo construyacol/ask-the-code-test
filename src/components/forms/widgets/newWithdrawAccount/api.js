@@ -1,6 +1,6 @@
 import { mainService } from "../../../../services/MainService";
 import { recursiveAddList } from '../../utils'
-// import { get } from 'lodash'
+import { isEmpty } from 'lodash'
 
 export const KEY_TYPE = {
   IDENTITY:"identity",
@@ -162,8 +162,21 @@ const getInfoNeeded = state => {
 
 export const ApiPostCreateWAccount = async(state, tools) => {
 
-  const { withdrawProvider } = state
+  const { withdraw_accounts } = mainService?.globalState?.modelData;
 
+  if(withdraw_accounts){
+    // validate if withdraw account already exist 
+    const result = Object.values(withdraw_accounts).filter(WAccount => WAccount.info.bank_name === state?.bankName && WAccount.info.account_number === state?.infoAccount?.accountNumber)
+    if(!isEmpty(result)){
+      return {
+        error:{
+          message:"La cuenta de retiro ya existe"
+        }
+      }
+    }
+  }
+
+  const { withdrawProvider } = state
   const body = {
     data:{
       country:"international",
@@ -173,7 +186,8 @@ export const ApiPostCreateWAccount = async(state, tools) => {
       info_needed:getInfoNeeded(state)
     }
   }
-
-  return await mainService.createWithdrawAccount(body);
+  const res = await mainService.createWithdrawAccount(body);
+  if(res.data) await mainService.fetchWithdrawAccounts();
+  return res
 }
 
