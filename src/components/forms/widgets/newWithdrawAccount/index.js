@@ -44,13 +44,13 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ withdrawProvider ] = useSelector((globalState) => selectWithdrawProvider(globalState, handleState?.state[KEY_TYPE?.PROV_SERVICE]));
-  const [toastMessage] = useToastMessage();
+  const [ toastMessage ] = useToastMessage();
   
   const stageManager = useStage(
-  // create the form stages
-  Object.keys(dataForm?.handleError?.errors || dataForm.stages),
-  dataForm.stages
-)
+    // create the form stages
+    Object.keys(dataForm?.handleError?.errors || dataForm.stages),
+    dataForm.stages
+  )
 
 const {
   nextStage,
@@ -80,20 +80,17 @@ const {
   }
 
 
-
   const createWithdrawAccount = async() => {
+
     const { state } = handleState
     setLoading(true)
     const { error, data } = await ApiPostCreateWAccount({...state, withdrawProvider}) 
-
+    setLoading(false)
     if(error){
-      setLoading(false)
       return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
     }
-
     console.log('||||||||||  ApiPostCreateWAccount ===> DATA', data)
     debugger
-    setLoading(false)
   }
 
 
