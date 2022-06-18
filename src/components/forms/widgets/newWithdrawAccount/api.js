@@ -134,15 +134,46 @@ export const NEW_WACCOUNT_DEFAULT_STATE = {
   // }
 }
 
-// export const ApiPostCreateDeposit = async(body, tools) => {
+const getInfoNeeded = state => {
+  const { user } = mainService?.globalState?.modelData;
+  const { withdrawProvider } = state
+  const infoNeeded = {
+    bank:{
+      account_number:state?.infoAccount?.accountNumber,
+      account_type:state?.infoAccount?.accountType,
+      bank_name:state?.bankName,
+      country:withdrawProvider?.country,
+      email:user?.email,
+      id_number:state?.identity?.document_info?.id_number,
+      label:state?.bankName,
+      name:state?.identity?.document_info?.name,
+      surname:state?.identity?.document_info?.surname,
+      id_type:state?.identity?.id_type
+    },
+    efecty_network:{
+      id_number:state?.identity?.document_info?.id_number,
+      id_type:state?.identity?.id_type,
+      name:state?.identity?.document_info?.name,
+      surname:state?.identity?.document_info?.surname
+    }
+  }
+  return infoNeeded[withdrawProvider?.provider_type]
+}
 
-//   const { setLoader, nextStage } = tools
-//   setLoader(true)
-//   let res = await mainService.createDeposit(body);
-//   setLoader(false)
-//   if(!res) return;
-//   nextStage()
-//   return res
+export const ApiPostCreateWAccount = async(state, tools) => {
 
-// }
+  const { withdrawProvider } = state
+
+  const body = {
+    data:{
+      country:"international",
+      currency:withdrawProvider?.currency,
+      identity_id:state?.identity?.id,
+      provider_type:withdrawProvider?.provider_type,
+      info_needed:getInfoNeeded(state)
+    }
+  }
+
+  return await mainService.createWithdrawAccount(body);
+}
 

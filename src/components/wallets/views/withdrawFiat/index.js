@@ -97,7 +97,16 @@ const FiatView = (props) => {
             setCreateAccount={setCreateAccount}
           />
         :
+        <>
           <p className="fuente">Lista de cuentas de retiro</p>
+          <ControlButton
+            // loader={loader}
+            // id={idForMainButton}
+            formValidate
+            label="Agregar cuenta de retiro"
+            handleAction={() => setCreateAccount(true)}
+          />
+        </>
       }
     </>
   )
@@ -107,15 +116,15 @@ const FiatView = (props) => {
 export default FiatView;
 
 
-const EmptyStateSkeleton = props => {
-  return(
-    <EmptyStateContainer className="skeleton">
-      <div className="_iconSkeleton"></div>
-      <p className="fuente _emptyCopy"><span>Para realizar retiros debes tener por</span> <br/> <span>lo menos una cuenta de retiro agregada</span> </p>
-      <ControlButton/>
-    </EmptyStateContainer>
-  )
-}
+// const EmptyStateSkeleton = props => {
+//   return(
+//     <EmptyStateContainer className="skeleton">
+//       <div className="_iconSkeleton"></div>
+//       <p className="fuente _emptyCopy"><span>Para realizar retiros debes tener por</span> <br/> <span>lo menos una cuenta de retiro agregada</span> </p>
+//       <ControlButton/>
+//     </EmptyStateContainer>
+//   )
+// }
 
 
 

@@ -154,6 +154,68 @@ export class WebService {
     return this.doFetch(url, params);
   }
 
+
+  async _Post(url, body, withAuth = true) {
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
+    const tokenData = await getToken() 
+    if(!tokenData){return}
+    const { userToken } = tokenData
+    let params = {
+      method: `POST`,
+      headers: withAuth
+        ? {
+            Accept: `*/*`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          }
+        : {
+          Accept: `*/*`,
+          "Content-Type": "application/json"
+        },
+      body: JSON.stringify(body),
+    };
+
+    return this._doFetch(url, params);
+  }
+
+
+
+  async _doFetch(url, params) {
+    const { jwtExpTime, currentTime, refreshTokenExpirationTime } = await getExpTimeData()
+    let finalResponse
+    try {
+      await verifyUserToken()
+      const response = await fetch(url, params);
+      finalResponse = await response.json(); 
+      if (!response.ok && response.status === 465) {
+        if (finalResponse.error.message.includes("Invalid signature")) {
+          SentryCaptureException(finalResponse?.error, {
+            currentTime,
+            jwtExpTime,
+            refreshTokenExpirationTime,
+            url
+          })
+          // TODO: add refresh_token flow to get a new jwt
+          // doLogout('?message=Invalid signature')
+        }
+        throw response.status;
+      }
+      return finalResponse;
+    } catch (err) {
+      handleError(err)
+      SentryCaptureException(err, {
+        url, 
+        params,
+        currentTime,
+        jwtExpTime
+      })
+      return finalResponse;
+    }
+  }
+
+
+
   Delete(url) {
     return this.doFetch(url, {
       method: "DELETE",

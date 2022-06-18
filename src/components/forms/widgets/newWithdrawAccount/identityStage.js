@@ -40,8 +40,6 @@ export default function IdentityComponent({
     
     const selectIdentity = (identity) => {
       if(!identity?.enabled)return alert("La identidad seleccionada está en proceso de verificación, este proceso puede tardar hasta 72 horas hábiles.");
-      console.log('selectIdentity, ', identity)
-      console.log('IdentityComponent, ', state, stageData)
       setState(prevState => {
         return { ...prevState, [stageData?.key]: identity }
       })

@@ -301,13 +301,20 @@ export class WithdrawService extends WebService {
   }
 
 
-  
+   
 
 
 
   // async deleteWithdrawOrder(orderId) {
   //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
   // }
+
+  async createWithdrawAccount(body, type) {
+    return await this._Post(
+      NEW_WITHDRAW_ACCOUNT_URL,
+      body 
+    );
+  } 
 
   async addNewWithdrawAccount(payload, type) {
     const user = this.user;
