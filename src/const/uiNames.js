@@ -8,5 +8,8 @@ export const UI_NAMES = {
     account_type:{
       cuenta_ahorro:"Cuenta de ahorros",
       cuenta_corriente:"Cuenta corriente"
+    },
+    provider:{
+      efecty_network:"Efecty"
     }
   }

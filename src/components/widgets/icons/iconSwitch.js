@@ -210,6 +210,7 @@ class IconSwitch extends Component {
         return <Uala {...props} height={"30px"} />;
       case "Efecty":
       case "efecty":
+      case "efecty_network":
         return <Efecty {...props} height={"30px"} />;
       case "rappipay":
         return <RappiPay {...props} height={"30px"} />;

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+// import { useEffect } from "react"
 import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 // import  { SuccessModalCont } from './styles'
 // import { Success } from '../../../wallets/deposit/flows'
@@ -84,17 +84,16 @@ const WAccountCreatedSuccess = ({
     // // [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
 
 
-    useEffect(() => {
-        if(withdrawAccount){
-            console.log('withdrawAccount', withdrawAccount?.info)
-            
-            debugger
-            // init()
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawAccount])
+    // useEffect(() => {
+    //     if(withdrawAccount){
+    //         console.log('withdrawAccount', withdrawAccount)
+    //         debugger
+    //     }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [withdrawAccount])
 
-
+    const accountName = withdrawAccount?.info?.bank_name || UI_NAMES.provider[withdrawAccount.provider_type]
+    console.log('accountName', accountName)
 
     return(
         <OtherModalLayout
@@ -148,21 +147,24 @@ const WAccountCreatedSuccess = ({
                                     {
                                         withdrawAccount &&
                                             <IconSwitch
-                                                icon={withdrawAccount?.info?.bank_name}
+                                                icon={withdrawAccount?.info?.bank_name || withdrawAccount?.provider_type}
                                                 size={35}
                                             />
                                     }
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>{withdrawAccount?.info?.bank_name || 'is awesome bank name'}</AccountLabel>
-                                    <CurrencyLabel>{UI_NAMES.account_type[withdrawAccount?.info?.account_type] || 'awsom account type'}</CurrencyLabel>
+                                    <AccountLabel>{accountName || 'is awesome bank name'}</AccountLabel>
+                                    <CurrencyLabel>{UI_NAMES.account_type[withdrawAccount?.info?.account_type] || accountName || 'awsom account type'}</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>
-                            <MobileBalance>
-                                <HR/>
-                                <p className="fuente2">{withdrawAccount?.info?.account_number || 'account number'}</p>
-                                <p className="fuente _balanceTextLab"># de cuenta</p>
-                            </MobileBalance>
+                            {
+                                withdrawAccount?.info?.account_number &&
+                                <MobileBalance>
+                                    <HR/>
+                                    <p className="fuente2">{withdrawAccount?.info?.account_number || 'account number'}</p>
+                                    <p className="fuente _balanceTextLab"># de cuenta</p>
+                                </MobileBalance>
+                            }
                         </ItemAccountContainer>
 
                         <AccountMetaData>
@@ -178,10 +180,6 @@ const WAccountCreatedSuccess = ({
                                         <p>{UI_NAMES?.documents[withdrawAccount?.info?.id_type]}</p>
                                     </NameContainer> 
                                     <IdTypeContainer>
-                                        {/* <IconSwitch
-                                            icon="colombia"
-                                            size={30}
-                                        /> */}
                                         <HR/>
                                         <NameContainer>
                                             <p className="fuente2">{withdrawAccount?.info?.id_number}</p>
@@ -278,139 +276,6 @@ const NameContainer = styled.div`
 
 
 
-
-
-
-
-
-
-// export const BankDataContainer = ({accountData:{ 
-//         title,
-//         bankUiName,
-//         accountType,
-//         accountIdUiName,
-//         accountId,
-//         bussinesNameUiName,
-//         bussinesName,
-//         nitUiName,
-//         nit,
-//         dvUiName,
-//         dv
-//     }}) => {
-
-    
-//     const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-
-
-//     return(
-//         <BankData>
-//             <TitleContainer >
-//                 <p className="fuente">{title}</p>
-//                 <div className="__line__"/>
-//             </TitleContainer>
-
-//             <CorpAccountContainer className="corpAccountContainer">
-//                 <IconContainer className="_corpAccIcon">
-//                     <IconSwitch size={45} icon={bankUiName} />
-//                 </IconContainer>
-//                 <DetailAccountProv>
-//                     <h3 className="fuente">{bankUiName}</h3>
-//                     <p className="fuente bold"> <strong>{accountType}</strong></p>
-//                     <p className="fuente bold"><strong>{accountIdUiName}:</strong> <span className="fuente2">{accountId}</span></p>
-//                     <p className="fuente"> <strong> {bussinesNameUiName}: </strong> {bussinesName}</p>
-//                     <p className="fuente"><strong> {nitUiName}:</strong> <span className="fuente2">{nit}</span></p>
-//                     <p className="fuente"><strong>{dvUiName}:</strong> <span className="fuente2">{dv}</span></p>
-//                 </DetailAccountProv>
-//             </CorpAccountContainer>
-
-//             <TitleContainer >
-//                 <p className="fuente">Datos del depósito</p>
-//                 <div className="__line__"/>
-//             </TitleContainer>
-//         </BankData>
-//     )
-// }
-
-
-// export const DetailAccountProv = styled.div`
-//     display:grid;
-//     grid-template-columns: 1fr;
-//     color:white;
-//     .bussines_name, .nit{
-//         font-size:14px;
-//     }
-//     h3{
-//         text-transform:capitalize;
-//         margin: 0 0 10px 0;
-//     }
-//     p{
-//         margin:5px 0;
-//     }
-
-// `
-
-
-// export const BankData = styled.div`
-//     width:100%;
-//     @media (max-width: 768px) {
-
-//         ${DetailAccountProv}{
-//             text-align:left;
-//         }
-
-//         ._corpAccIcon{
-//             width:70px;
-//             height:70px;
-//         }
-
-//         .corpAccountContainer{
-//             align-items: start;
-//         }
-
-//         .bussines_name_span{
-//             display:none;
-//         }
-//     }
-// `
-
-// export const TitleContainer = styled.div`
-//     display: grid;
-//     grid-template-columns: auto 1fr;
-//     column-gap: 20px;
-//     color:white;
-//     width: 100%;
-
-//     p{
-//         font-size: 18px;
-//         font-weight: bold;
-//     }
-
-//     .__line__{
-//         border-bottom: 1px solid white;
-//         height: 2px;
-//         align-self: center;
-//     }
-// `
-
-
-
-
-// export const CorpAccountContainer = styled.div`
-//     display:grid;
-//     grid-template-columns:auto 1fr;
-//     column-gap:20px;
-//     width:auto;
-//     align-items:center;
-// `
-// export const IconContainer = styled.div`
-//     width:110px;
-//     height:110px;
-//     background:#e6e6e6;
-//     border-radius:6px;
-//     display:grid;
-//     align-items: center;
-//     justify-items: center;
-// `
 
 
 
