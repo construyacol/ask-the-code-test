@@ -80,7 +80,6 @@ const InputComponent = props => {
           props.AuxComponent && 
           <RenderAuxComponent {...props} />
         }
-
         {
           type === 'date' && isSafari() !== 'is_safari' ?
           <MaskDateComponent {...inputProps}/>

@@ -100,6 +100,10 @@ export const parseOnlyNumbers = (value) => {
   return value.replace(/[^0-9]/g, '')
 }
 
+export const parseOnlyCurrencyAmount = (value) => {
+  return value.replace(/[^0-9.,]/g, '')
+}
+
 export const parseAlphanumeric = (value) => {
   return value.replace(/[^0-9a-zA-Z]/g, '') 
 }

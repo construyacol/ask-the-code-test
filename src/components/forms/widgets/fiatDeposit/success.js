@@ -69,8 +69,6 @@ const FiatDepositSuccess = ({
     }
     const [ amount, setAmount ] = useState([])
 
-    
-
     const init = async() => {
         setAmount(await formatCurrency(new_ticket?.amount_neto, new_ticket?.currency))
         setDepProvDetail(await formatDepositAccount(depositAccount))

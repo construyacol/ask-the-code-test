@@ -226,12 +226,11 @@ export class WithdrawService extends WebService {
     if(twoFaToken){
       body.data.twofa_token = twoFaToken;
     }
-    const response = await this.Post(NEW_WITHDRAW_URL, body);
-    if (!response || response === 465) {
-      if(!body.data.twofa_token){
-        SentryCaptureException({message:"Dont send twofa_token"}, body)
-      }
-      return false;
+    const response = await this._Post(NEW_WITHDRAW_URL, body);
+    
+    if (response?.error){
+      let errorMessage = !body.data.twofa_token ? "Dont send twofa_token" : response?.error?.message
+        SentryCaptureException({message:errorMessage}, body)
     }
     return response;
   }
@@ -493,8 +492,7 @@ export class WithdrawService extends WebService {
         country: this.user.country,
       },
     };
-    const response = await this.Post(UPDATE_WITHDRAW_URL, body);
-    return response;
+    return await this._Post(UPDATE_WITHDRAW_URL, body);
   }
 
   // async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {

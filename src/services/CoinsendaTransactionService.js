@@ -49,23 +49,20 @@ export class TransactionService extends WebService {
     return currencies;
   }
 
-  async userHasTransactionSecurity(userId) {
-
+  async userHasTransactionSecurity(user_id) {
+    const userId = user_id || this.user.id
     const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
-
     if (!response || response === 465 || (response && !response.length)) {
       return false;
     }
-
     for (const scope of response) {
       TRANSACTION_SECURITY[scope.type] = {
         enabled:scope.enabled,
         id:scope.id
-      }
+      } 
     }
     console.log(TRANSACTION_SECURITY, response)
-    
     return TRANSACTION_SECURITY
 
   }

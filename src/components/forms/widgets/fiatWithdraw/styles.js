@@ -3,6 +3,121 @@ import { device } from "../../../../const/const"
 import { OnlySkeletonAnimation } from '../../../widgets/loaders/skeleton'
 
 
+export const OptionInputContainer = styled.div`
+  display:grid;
+  row-gap: 24px;
+  grid-template-rows:auto 1fr;
+`
+
+
+export const ButtonContainers = styled.div`
+  position: sticky;
+  bottom: 30px;  
+  display: grid;
+  
+
+  @media ${device.mobile} {
+    background: #f9f9fb;
+    z-index: 1;
+    padding: 10px;
+    top: 165px;
+  }
+
+   
+
+`
+
+
+export const StageContainer = styled.div`
+  display:grid;
+  row-gap:20px;
+
+  &.skeleton{
+    width: 100vw;
+    max-width: 700px;
+    justify-self: baseline;
+    align-self: baseline;
+
+    
+
+    p{
+      background:var(--skeleton_color);
+      border-radius:4px;
+      color:transparent;
+      width:fit-content;
+      ${OnlySkeletonAnimation};
+    }
+    .onAccountList{
+      background:var(--skeleton_color);
+      ${OnlySkeletonAnimation};
+    }
+
+    img{
+      display:none;
+    }
+
+  }
+
+  input{
+    font-size:15px;
+    color: var(--paragraph_color);
+    font-family: "Tomorrow", sans-serif;
+    &::-webkit-input-placeholder { 
+        font-size:15px;
+    }
+    &[type="button"]{
+      color:white;
+    }
+  }
+
+  ._inputLabelP{
+    margin-top:10px !important;
+  }
+
+  ._pLabel{
+    margin: 0;
+    color: var(--paragraph_color);
+  }
+
+
+  &._withdrawAmount{
+    .label___message{
+      font-family: "Tomorrow", sans-serif !important;
+    }
+  }
+ 
+  &._infoAccount,
+  &._withdrawAmount, 
+  &._bankNameList,
+  &._identityComponent{
+    grid-template-rows:auto auto 1fr;
+  }
+
+
+  .inputContainer__{
+    height: 45px;
+    max-width: 700px;
+    margin: 15px 0 35px;
+  }
+  ._stickyPosition{
+    background: #f9f9fb;
+    position: sticky;
+    top: 143px;
+  }
+
+  @media ${device.mobile} {
+    ._stickyPosition{
+      top: 175px;
+    }
+    &._infoAccount, 
+    &._bankNameList,
+    &._identityComponent{
+      grid-template-rows:auto auto auto;
+    }
+  }
+`
+
+
 export const Title = styled.h1`
     &.skeleton{
         position:relative;
@@ -57,9 +172,6 @@ export const ButtonContainer = styled.div`
     height:80px;
     display: flex;
     place-content: center;
-    @media ${device.mobile} {
-        padding-bottom: 100px;
-    }
 `
 
 export const ListContainer = styled.div`

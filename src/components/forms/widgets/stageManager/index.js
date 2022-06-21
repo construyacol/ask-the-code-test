@@ -8,7 +8,7 @@ import { StageContainer } from '../newWithdrawAccount/styles'
 import { InputWrapper } from '../kyc/InputComponent'
 import { InputContainer } from '../kyc/styles'
 
-const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
+const StageManagerComponent = ({ stageManager, backToWithdraw, closeStage = false }) => {
 
     const {
       currentStage,
@@ -19,7 +19,7 @@ const StageManagerComponent = ({ stageManager, backToWithdraw }) => {
     return(
       <StageIndicator className={`fuente2 _stageIndicator`}>
         {
-          (currentStage <= stageController?.length) &&
+          (currentStage <= stageController?.length && (currentStage > 0 || closeStage) ) &&
             <BackButtom onClick={currentStage < 1 ? backToWithdraw : () => prevStage()}>
               <MdArrowBackIosNew size={15} color="var(--paragraph_color)"/>
             </BackButtom>

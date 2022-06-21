@@ -9,6 +9,7 @@ import { createSelector } from "reselect";
 import { isEmpty } from 'lodash'
 // import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 import NewFiatWithdrawAccountComponent from '../../../forms/widgets/newWithdrawAccount/init'
+import FiatWithdraw from '../../../forms/widgets/fiatWithdraw/init'
 import { history } from '../../../../const/const'
 import useViewport from '../../../../hooks/useWindowSize'
 // import { StageOptionSkeleton } from '../../../forms/widgets/stageManager'
@@ -97,16 +98,9 @@ const FiatView = (props) => {
             setCreateAccount={setCreateAccount}
           />
         :
-        <>
-          <p className="fuente">Lista de cuentas de retiro</p>
-          <ControlButton
-            // loader={loader}
-            // id={idForMainButton}
-            formValidate
-            label="Agregar cuenta de retiro"
-            handleAction={() => setCreateAccount(true)}
-          />
-        </>
+        <FiatWithdraw
+          setCreateAccount={setCreateAccount}
+        />
       }
     </>
   )
@@ -115,6 +109,15 @@ const FiatView = (props) => {
 
 export default FiatView;
 
+
+// <p className="fuente">Lista de cuentas de retiro</p>
+// <ControlButton
+//   // loader={loader}
+//   // id={idForMainButton}
+//   formValidate
+//   label="Agregar cuenta de retiro"
+//   handleAction={() => setCreateAccount(true)}
+// />
 
 // const EmptyStateSkeleton = props => {
 //   return(

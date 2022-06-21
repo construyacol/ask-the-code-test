@@ -106,10 +106,20 @@ export const SuccessViewContent = styled.div`
         grid-template-rows: auto auto 1fr;
     }
 
+    &.withdrawSuccess{
+        grid-template-rows: auto auto auto;
+        padding-bottom:70px;
+    }
+
     .iconSuccess{
         display: grid;
         justify-items: center;
         transform: scale(0.75);
+    }
+
+    ._fromTo{
+        margin-bottom:0;
+        color:var(--paragraph_color);
     }
 
 `

@@ -147,6 +147,14 @@ export const useDetailParseData = (order, detailType) => {
   }
 
   
+  const formatShortWithdraw = async(order) => {
+    let parsedOrder = [
+      [`Cantidad por debitar:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
+      ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
+    ]
+    return parsedOrder 
+  }
+
   const formatShortDeposit = async(order) => {
     let parsedOrder = [
       [`Cantidad por acreditar:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
@@ -167,14 +175,15 @@ export const useDetailParseData = (order, detailType) => {
 
 
   const ACTIONS = {
-    shortDeposit:formatShortDeposit
+    shortDeposit:formatShortDeposit,
+    shortWithdraw:formatShortWithdraw,
   }
 
 
   useEffect(() => {
     const init = async() => {
         if(detailType && order){
-          console.log('formatDepositOrder', detailType, order)
+          // console.log('formatDepositOrder', detailType, order)
           ACTIONS[detailType] && setData(await ACTIONS[detailType](order))
         }
     }

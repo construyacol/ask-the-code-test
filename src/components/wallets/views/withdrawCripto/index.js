@@ -18,6 +18,7 @@ import TagItem from "./tagItem";
 import { MAIN_COLOR, history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
+import AvailableBalance from '../../../widgets/availableBalance'
 
 
 export const CriptoSupervisor = (props) => {
@@ -326,25 +327,9 @@ export const CriptoView = () => {
       />
       {/* </form> */}
     </WithdrawForm>
-  );
+  ); 
 };
 
-export const AvailableBalance = ({ handleAction, amount, id }) => {
-  const { keyActions } = useSelector((state) => state.ui);
-  const isMovil = window.innerWidth < 768;
-
-  return (
-    <BalanceContainer>
-      <p
-        id={id}
-        className={`fuente2 ${isMovil ? "movil" : ""}`}
-        onClick={handleAction}
-      >
-        {isMovil ? "Disponible:" : `Disponible${keyActions ? '[M]' : ''}:`} {amount}
-      </p>
-    </BalanceContainer>
-  );
-};
 
 const IconsContainer = styled.div`
   display: flex;
@@ -387,27 +372,3 @@ export const WithdrawForm = styled(OperationForm)`
   }
 `;
 
-const BalanceContainer = styled.div`
-  cursor: pointer;
-  position: absolute;
-  display: flex;
-  right: 5px;
-  color: var(--paragraph_color);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  transition: 0.15s;
-  transform: scale(1);
-  max-height: 47px;
-  align-self: self-end;
-  width: max-content;
-
-  .movil {
-    font-size: 11px;
-  }
-
-  &:hover {
-    transform: scale(1.005);
-    color: #b48728;
-  }
-`;

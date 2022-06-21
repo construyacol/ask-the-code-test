@@ -189,7 +189,6 @@ export const ItemProviderBankContainer = styled.div`
   &.createButton{
     ._header__labelContainer p{
       font-size: 17px;
-      font-weight: normal;
     }
   }
 
@@ -255,6 +254,15 @@ export const ItemProviderBankContainer = styled.div`
       }
     }
 
+  }
+
+  &.auxNumber{
+    p{
+      &._aux{
+        font-family: "Tomorrow", sans-serif;
+        font-size: 12px;
+      }
+    }
   }
 
 `

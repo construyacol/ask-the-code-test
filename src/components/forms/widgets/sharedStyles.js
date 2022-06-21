@@ -1,6 +1,21 @@
 import styled, { keyframes } from "styled-components";
+import { device } from '../../../const/const'
 
 
+
+
+export const FormContainer = styled.div`
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns:1fr minmax(auto, 350px);
+
+  @media${device.mobile}{
+    grid-template-columns:1fr;
+    row-gap:25px;
+  }
+
+`
 
 export const showButton = keyframes`
     0% {

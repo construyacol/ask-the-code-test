@@ -15,6 +15,7 @@ import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
+import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWithdraw/api'
 
 
 // import countryValidators from './apiRes'
@@ -158,6 +159,7 @@ export const createSelectList = async(list) => {
   return {...selectList}
 }
 
+
  
 const dataService = {
   biometric:ApiGetBiometricStages,
@@ -168,7 +170,8 @@ const dataService = {
   newWallet:ApiGetNewWalletStages,
   location:ApiGetLocationStages,
   contact:ApiGetContactStages,
-  newWithdrawAccount:ApiGetNewWAccountStages
+  newWithdrawAccount:ApiGetNewWAccountStages,
+  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
 }
 
 
