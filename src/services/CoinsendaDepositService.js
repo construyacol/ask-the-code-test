@@ -117,7 +117,7 @@ export class DepositService extends WebService {
         state,
       },
     };
-    return this.Post(UPDATE_DEPOSIT_URL, body);
+    return this._Post(UPDATE_DEPOSIT_URL, body);
   }
 
 

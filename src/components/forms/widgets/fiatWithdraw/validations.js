@@ -2,7 +2,7 @@ import {
     // parseOnlyLetters,
     validateLabelMsg,
     writeOnLabel,
-    parseOnlyNumbers,
+    // parseOnlyNumbers,
     parseOnlyCurrencyAmount
     // addItemTag,
     // writeOnLabel,
@@ -20,11 +20,16 @@ import { FIAT_WITHDRAW_TYPES } from './api'
   // }
 
   // TODO: Falta calcular los precios de efecty con reduce method
-  const getMinAmount = (minAmount, { withdrawProvider, state:{ withdrawAccount } }) => {
+  export const getCost = ({ withdrawProvider, withdrawAccount }) => {
     const { provider:{ costs }, currency } = withdrawProvider
     const { bank_name } = withdrawAccount
     let costKey = [bank_name?.value].includes(withdrawProvider?.name) ? 'same_bank' : 'pp';
-    let costAmount = costs[costKey]?.fixed && formatToCurrency(costs[costKey]?.fixed.toString().replace(/,/g, ""), currency);
+    return costs[costKey]?.fixed && formatToCurrency(costs[costKey]?.fixed.toString().replace(/,/g, ""), currency);
+  }
+
+  const getMinAmount = (minAmount, { withdrawProvider, state:{ withdrawAccount } }) => {
+    const { currency } = withdrawProvider
+    const costAmount = getCost({withdrawProvider, withdrawAccount})
     let _minAmount = formatToCurrency(minAmount.toString().replace(/,/g, ""), currency);
     const withdrawAmount = _minAmount.plus(costAmount || 0)
     return withdrawAmount

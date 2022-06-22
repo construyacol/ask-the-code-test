@@ -221,7 +221,7 @@ export class WithdrawService extends WebService {
     this.withdrawProviders = withdrawProviders;
     return withdrawProviders;
   }
- 
+  
   async addWithdrawOrder(body, twoFaToken) {
     if(twoFaToken){
       body.data.twofa_token = twoFaToken;

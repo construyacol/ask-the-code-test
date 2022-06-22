@@ -5,6 +5,7 @@ import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { OptionInputContainer } from './styles'
 import { StageContainer } from './styles'
 import useViewport from '../../../../hooks/useWindowSize'
+import { BiRightArrowAlt } from 'react-icons/bi';
 
 
 export default function WithdrawAccountsComponent({ 
@@ -38,6 +39,7 @@ export default function WithdrawAccountsComponent({
 
     // console.log('WITHDRAW ACCOUNT => ', state.withdrawAccount)
 
+
     return(
       <StageContainer className="_identityComponent">
         {children}
@@ -51,14 +53,20 @@ export default function WithdrawAccountsComponent({
                     icon:"add",
                     uiName:"Agregar nueva cuenta de retiro"
                   }}
-                  
+                  AuxComponent={[
+                    () => <BiRightArrowAlt className="_birArrow" size={37} />
+                  ]}
                   firstIndex={true}
                   handleAction={() => props.setCreateAccount(true)}
                 />
             {
               withdrawAccounts && Object.keys(withdrawAccounts).map((key, index) => {
+
                 const withdrawAccount = withdrawAccounts[key]
-                const isSelected = [withdrawAccount?.account_number?.value].includes(state[stageData?.key]?.account_number?.value)
+                const isSameAccountNumber = [withdrawAccount?.account_number?.value].includes(state[stageData?.key]?.account_number?.value)
+                const isSameBankName = [withdrawAccount?.bank_name?.value].includes(state[stageData?.key]?.bank_name?.value)
+                const isSelected = isSameBankName && isSameAccountNumber;
+
                 return <ItemListComponent 
                   key={index} 
                   className={`auxNumber`}

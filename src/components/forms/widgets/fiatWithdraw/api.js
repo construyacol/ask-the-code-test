@@ -63,15 +63,14 @@ export const FIAT_WITHDRAW_DEFAULT_STATE = {
 export const ApiGetTwoFactorIsEnabled = async() => {
   const txSecurity = await mainService.userHasTransactionSecurity();
   return txSecurity["2fa"]?.enabled
-  // return twoFactorIsEnabled
 }
 
 export const ApiPostWithdrawConfirm = async(_withdrawData) => {
   let withdrawData = await mainService.getWithdrawById(_withdrawData.id)
-  if(['pending'].includes(withdrawData?.state))return { error:"El retiro no se puede confirmar porque no está pendiente" };
+  if(!['pending'].includes(withdrawData?.state))return { error:{ message: "El retiro no se puede confirmar porque no está pendiente" } };
   let { error, data } = await mainService.addUpdateWithdraw(withdrawData.id, "confirmed");
   if(error)return {error};
-  await mainService.manageBalance(data.account_id, "reduce", data.amount);
+  mainService.manageBalance(data.account_id, "reduce", data.amount);
   return { data }
 }
 
@@ -94,7 +93,7 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
       withdraw_account_id:withdrawAccount?.id,
       withdraw_provider_id:withdrawAccount?.withdraw_provider,
     }
-  }
+  } 
 
   const res = await mainService.addWithdrawOrder(body, twoFactorCode);
   return res

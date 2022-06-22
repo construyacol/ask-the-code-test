@@ -58,6 +58,13 @@ export const StageContainer = styled.div`
 
   }
 
+  ._birArrow{
+    fill: var(--paragraph_color);
+    align-self: center;
+    justify-self: end;
+    opacity: 1;
+  }
+
   input{
     font-size:15px;
     color: var(--paragraph_color);
@@ -114,6 +121,10 @@ export const StageContainer = styled.div`
     &._identityComponent{
       grid-template-rows:auto auto auto;
     }
+  }
+
+  input{
+    font-family: "Tomorrow", sans-serif !important;
   }
 `
 

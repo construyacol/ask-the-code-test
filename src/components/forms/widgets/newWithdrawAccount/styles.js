@@ -61,7 +61,7 @@ export const StageContainer = styled.div`
   input{
     font-size:15px;
     color: var(--paragraph_color);
-    font-family: "Tomorrow", sans-serif;
+    font-family: "Tomorrow", sans-serif !important;
     &::-webkit-input-placeholder { 
         font-size:15px;
     }

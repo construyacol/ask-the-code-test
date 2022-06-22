@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useStage from '../../hooks/useStage'
 import { StageContainer, ButtonContainers } from './styles'
 import loadable from "@loadable/component";
@@ -19,8 +19,15 @@ import styled from 'styled-components'
 import WithdrawAccountsComponent from './withdrawAccountStage'
 import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
-
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
+import { getCost } from './validations'
+import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
+// import { TotalAmount } from '../../../widgets/shared-styles'
+
+
+import { selectWithdrawProvider } from './amountComponent'
+import { useSelector } from "react-redux";
+import { formatToCurrency } from '../../../../utils/convert_currency'
 
 // import { 
 //   LabelContainer,
@@ -29,7 +36,6 @@ import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 // } from '../../../widgets/headerAccount/styles'
 
 
-// const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"));
 
@@ -39,7 +45,7 @@ const AmountComponent = loadable(() => import("./amountComponent"));
 const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
-  const { dataForm, setDataForm } = handleDataForm
+  const { dataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
@@ -60,7 +66,6 @@ const {
   currentStage,
   stageStatus,
   setStageStatus,
-  finalStage,
   stageController,
   lastStage
 } = stageManager
@@ -98,6 +103,7 @@ const {
     // console.log('twoFactorIsEnabled', twoFactorIsEnabled)
     // debugger
     if(twoFactorIsEnabled && !twoFactorCode){
+      setLoading(false);
       return actions.renderModal(() => (
           <Withdraw2FaModal
           cancelAction={() => actions.renderModal(null)}
@@ -108,9 +114,8 @@ const {
     }
 
     if(twoFactorCode) actions.renderModal(null);
-    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFactorCode}) 
-    
 
+    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFactorCode}) 
     if(error){
       console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
     setLoading(false)
@@ -124,7 +129,7 @@ const {
   // if(finalStage){
   //   return <p>finalStage</p>
   // }
-
+  
   const stageComponents = {
     [FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
     [FIAT_WITHDRAW_TYPES?.AMOUNT]:AmountComponent
@@ -137,7 +142,7 @@ const {
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        label={`${lastStage ? "Retirar" : "Siguiente"}`}
+        label={`${lastStage ? "Crear retiro" : "Siguiente"}`}
         handleAction={lastStage ? () => createFiatWithdraw() : nextStep}
       />
     </ButtonContainers>
@@ -167,7 +172,10 @@ const {
                   <TitleContainer>
                     <h1 className="fuente">Resumen del retiro</h1>
                   </TitleContainer>
-                  
+                  <StatusContent
+                    state={handleState?.state}
+                    stageManager={stageManager}
+                  />
                 </StatusHeaderContainer>
                 <ButtonComponent/>
               </StatusPanelComponent>
@@ -179,6 +187,103 @@ const {
 
 export default NewWAccountComponent
 
+
+const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
+
+const StatusContent = ({ state, stageManager }) => {
+
+  const { withdrawAccount, withdrawAmount } = state
+  const bankName = withdrawAccount?.bank_name
+  const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
+  const [ cost, setCost ] = useState()
+
+  useEffect(() => {
+    if(withdrawProvider && withdrawAccount){
+      let cost = getCost({withdrawProvider, withdrawAccount})
+      let parsed = formatToCurrency(cost, withdrawProvider?.currency)
+      setCost(parsed.toFormat())
+    }
+  }, [withdrawProvider, withdrawAccount])
+
+  // console.log('StatusContent stageManager', cost)
+  // getCost
+
+  return(
+    <StatusContainer>
+      <ItemContainer>
+          <LeftText className="fuente">Cuenta destino:</LeftText>
+          <MiddleSection />
+
+          <ContentRight>
+            <RightText className={`${bankName ? 'fuente' : 'skeleton'}`}>
+                {bankName?.ui_name?.toLowerCase() || 'skeleton --------'} 
+              </RightText>
+            {
+              bankName &&
+                <IconSwitch
+                    icon={bankName?.value}
+                    size={20}
+                  />
+            }
+          </ContentRight>
+      </ItemContainer>
+      {
+        stageManager?.currentStage === 1 &&
+        <>
+          <ItemContainer>
+              <LeftText className="fuente">Cantidad:</LeftText>
+              <MiddleSection />
+              <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
+                {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
+              </RightText>
+          </ItemContainer>
+          {
+            (bankName?.value !== 'efecty' && withdrawAmount) &&
+            <ItemContainer>
+                <LeftText className="fuente">Costo:</LeftText>
+                <MiddleSection />
+                <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${cost} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
+        </>
+      }
+      
+      {/* <TotalAmount color="var(--paragraph_color)">
+          <p className="fuente saldo">Cantidad a recibir</p>
+          <p className="fuente2 amount">
+                  $ {amount} <span className="fuente">{currencySimbol?.toUpperCase()}</span>
+          </p>
+      </TotalAmount> */}
+
+    </StatusContainer>
+  )
+}
+
+
+const ContentRight = styled.div`
+  display:flex;
+  align-items: center;
+  column-gap: 6px;
+  ${RightText}{
+    text-transform:capitalize;
+  }
+`
+
+
+const StatusContainer = styled.div`
+  width:100%;
+  height:auto;
+  padding-top:15px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 25px;
+
+  ${LeftText}{
+    font-weight: normal;
+  }
+`
 
 
 const TitleContainer = styled.div`

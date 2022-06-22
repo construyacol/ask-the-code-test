@@ -2,7 +2,6 @@ import { useState, useEffect } from "react"
 import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 // import  { SuccessModalCont } from './styles'
 // import { Success } from '../../../wallets/deposit/flows'
-import styled from 'styled-components'
 import { UI_NAMES } from '../../../../const/uiNames'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
@@ -28,7 +27,7 @@ import { TotalAmount } from '../../../widgets/shared-styles'
 import {
     ButtonContainer
   } from '../newWallet/styles'
-import ControlButton from "../../../widgets/buttons/controlButton";
+import ControlButton, { SecondaryButton } from "../../../widgets/buttons/controlButton";
 import {
     SuccessViewContent,
     SuccessViewLayout,
@@ -41,8 +40,8 @@ import {
 } from '../success/styles'
 import { useActions } from '../../../../hooks/useActions'
 import { ApiPostWithdrawConfirm } from './api'
-import useToastMessage from "../../../../hooks/useToastMessage"; 
 import { UI_ERRORS } from '../../../../const/uiErrors'
+import useToastMessage from "../../../../hooks/useToastMessage"; 
 
 
 
@@ -57,12 +56,10 @@ const WithdrawCreatedSuccess = ({
 }) => {
 
     const actions = useActions()
-    const closeModal = () => { actions.renderModal(null) };
     const { withdraw_accounts } = useSelector(({ modelData }) => modelData)
     const withdrawAccount = withdraw_accounts[withdrawData?.withdraw_account_id]
     const accountName = withdrawAccount?.info?.bank_name || UI_NAMES.provider[withdrawAccount.provider_type]
     const [ toastMessage ] = useToastMessage();
-
     console.log('|||||||||||||||||||||||| withdrawAccount', withdrawAccount)
 
     const { data, formatCurrency, currencySimbol } = useDetailParseData(withdrawData, 'shortWithdraw')
@@ -77,22 +74,19 @@ const WithdrawCreatedSuccess = ({
 
     const withdrawConfirm = async() => {
         setLoading(true)
-        const { error, data } = await ApiPostWithdrawConfirm(withdrawData)
-        console.log('|||||||||||  withdrawConfirm ==> ', error, data)
-        debugger
+        const { error } = await ApiPostWithdrawConfirm(withdrawData)
         if(error){
-            setLoading(false)
-            return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
-          }
+            toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
+            return setLoading(false)
+        }
         setLoading(false)
-        // return closeModal()
+        return actions.renderModal(null)
     }
 
     useEffect(() => {
         init()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
 
     return(
         <OtherModalLayout
@@ -119,14 +113,14 @@ const WithdrawCreatedSuccess = ({
                             </g>
                             </svg>
                         </div>
-                        <Title className="fuente">Retiro creado exitosamente</Title>
+                        <Title className="fuente">Estás a un paso de recibir tu dinero</Title>
                     </Header>
 
                     <Content>
 
-                        <SubTitle className="fuente">Resumen del retiro</SubTitle>
+                        <SubTitle style={{marginBottom:"0"}} className="fuente ">Resumen del retiro</SubTitle>
 
-                        <p className="fuente _fromTo">Desde</p>
+                        <li className="fuente _fromTo">Desde</li>
                         <ItemAccountContainer className={`_itemAccountContainer`}>
                             <HeaderMainContainer>
                                 <IconAccount className="_iconSkeleton">
@@ -137,7 +131,7 @@ const WithdrawCreatedSuccess = ({
                                     />
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>Coinsenda</AccountLabel>
+                                    <AccountLabel>Coinsenda</AccountLabel>  
                                     <CurrencyLabel>Cuenta corporativa</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>
@@ -146,7 +140,7 @@ const WithdrawCreatedSuccess = ({
 
 
 
-                        <p className="fuente _fromTo">Hacia</p>
+                        <li className="fuente _fromTo">Hacia</li>
                         <ItemAccountContainer className={`_itemAccountContainer ${!withdrawAccount ? 'skeleton' : ''}`}>
                             <HeaderMainContainer>
                                 <IconAccount className="_iconSkeleton">
@@ -188,18 +182,21 @@ const WithdrawCreatedSuccess = ({
                                     $ {amount} <span className="fuente">{currencySimbol?.toUpperCase()}</span>
                             </p>
                         </TotalAmount>
-
-                     
+             
                     </Content>
 
 
                     <ButtonContainer>
+                        <SecondaryButton
+                            label="Cancelar"
+                            handleAction={() => actions.renderModal(null)}                 
+                        />
                         <ControlButton
                             // id={idSubmitButton}
                             loader={loading}
                             inputProps={{"data-close_modal":true}}
                             formValidate
-                            label="Finalizar" 
+                            label="Confirmar retiro" 
                             handleAction={withdrawConfirm}
                         />
                     </ButtonContainer>

@@ -118,8 +118,19 @@ export const SuccessViewContent = styled.div`
     }
 
     ._fromTo{
-        margin-bottom:0;
+        margin:0;
+        padding-left:10px;
         color:var(--paragraph_color);
+        &::marker {
+          color: var(--primary);
+        }
+    }
+
+    ${ButtonContainer}{
+        position: sticky;
+        bottom: 10px;
+        background: #f9f9fbe8;
+        backdrop-filter: blur(2px);
     }
 
 `

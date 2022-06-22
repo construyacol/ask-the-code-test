@@ -76,7 +76,7 @@ export default function AmountComponent ({
 
 
 
-  const selectWithdrawProvider = createSelector(
+  export const selectWithdrawProvider = createSelector(
     (state) => state.modelData.withdrawProviders,
     (_, withdrawProvId) => withdrawProvId,
     (withdrawProviders, withdrawProvId) => {

@@ -20,7 +20,6 @@ import { SelectListSkeleton } from '../../../forms/widgets/selectListComponent'
 const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
 
   const { isMovilViewport } = useViewport();
-
   // let targetEl = isMovilViewport ? "._stageIndicator" : ".accountDetailTitle h1>span"
   const titleSectionEl = useRef(document.querySelector(`.accountDetailTitle h1>span`))
   const withdrawButton = useRef(document.querySelector('#withdraw-menu-button'))
@@ -47,7 +46,6 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
   }
 
   const initConfig = () => {
-    // console.log('titleSectionEl', titleSectionEl.current)
     titleSectionEl.current.classList.add("_breadCrumbParent");   
     if(isMovilViewport)return;
     titleSectionEl.current.innerHTML = "Retirar   >      ";
@@ -59,13 +57,12 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
     let targetEl = isMovilViewport ? "._stageIndicator" : ".accountDetailTitle h1"
     document.querySelector(targetEl).append(newSpan)
   }
-  
+
   return(
     <NewFiatWithdrawAccountComponent
       backToWithdraw={backToWithdraw}
     />
   )
-
 }
  
 
@@ -83,9 +80,6 @@ const FiatView = (props) => {
     )
   }
 
-  // return(
-  //   <SelectListSkeleton/>
-  // )
 
   return(
     <>

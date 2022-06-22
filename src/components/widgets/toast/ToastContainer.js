@@ -8,7 +8,6 @@ import "./toast.css";
 
 class ToastContainers extends Component {
   // Ejemplo aplicado con propiedades
-
   // talkToast = () =>{
   //   toast("¡Copiado Exitosamente!", {
   //     position: toast.POSITION.BOTTOM_LEFT,
@@ -21,7 +20,6 @@ class ToastContainers extends Component {
   //      autoClose: 2000
   //   });
   // }
-
   render() {
     return (
       <div className="toastContainer">
@@ -29,6 +27,7 @@ class ToastContainers extends Component {
       </div>
     );
   }
+
 }
 
 function mapDispatchToProps(dispatch) {
