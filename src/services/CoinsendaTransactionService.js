@@ -229,17 +229,10 @@ export class TransactionService extends WebService {
   async addNewProfile(country) {
     const body = {
       data: {
-        country: country,
-      },
+        country:country
+      }
     };
 
-    const response = await this.Post(ADD_PROFILE_URL, body);
-    if (!response) {
-      return false;
-    }
-
-    const { data } = response;
-
-    return data;
+    return await this._Post(ADD_PROFILE_URL, body);
   }
 }
