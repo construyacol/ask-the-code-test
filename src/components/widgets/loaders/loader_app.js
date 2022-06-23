@@ -14,7 +14,7 @@ import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
 // import isoType from '../../forms/widgets/onBoardingComponent/assets/isoType.png'
-
+// import useToastMessage from "../../../hooks/useToastMessage";
 import "./loader.css";
  
 // const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
@@ -53,6 +53,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const { authData } = reduxState.modelData;
   const { appLoadLabel } = reduxState.isLoading;
   const previousLoadLabel = usePrevious(appLoadLabel);
+  // const [toastMessage] = useToastMessage();
   const { 
     // isTabletOrMovilViewport, 
     isMovilViewport 
@@ -72,15 +73,18 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     if (!userToken) return;
    
     let profile = await coinsendaServices.fetchUserProfile();
+
     if (!profile) {
-      setShowOnBoarding(true)
-      profile = await coinsendaServices.addNewProfile(country);
+      setShowOnBoarding(true) 
+      const { error, data } = await coinsendaServices.addNewProfile(country);
+      if(error) return alert(error?.message, 'error');
+      profile = data
       document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
+
     // if (!profile || (!profile.countries[country])) return false;
     // if (!country) return false;
     // const userCountry = country;
-
     // coinsendaServices.proofEndpoints();
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
