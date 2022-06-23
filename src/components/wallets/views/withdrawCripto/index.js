@@ -18,6 +18,8 @@ import TagItem from "./tagItem";
 import { MAIN_COLOR, history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
+
+
 import AvailableBalance from '../../../widgets/availableBalance'
 
 
