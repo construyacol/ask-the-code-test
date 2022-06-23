@@ -36,7 +36,7 @@ const STAGES = {
         { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
       ],
       // label:"Nacionalidad del documento:",
-      placeholder:"Ej: Antioquia",
+      // placeholder:"Ej: Antioquia",
       queryParams:{
         form:'province'
       }
@@ -53,7 +53,7 @@ const STAGES = {
           { pattern:/[^a-zA-Z _]{1,30}/g, message:'Solo se permiten letras...'}
         ],
         // label:"Nacionalidad del documento:",
-        placeholder:"Ej: pasaporte",
+        // placeholder:"Ej: pasaporte",
         queryParams:{
           form:'location_country'
         }
@@ -67,7 +67,7 @@ const STAGES = {
         defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
         successPattern:/[a-zA-Z ]{3,40}/g,
         // label:"Dirección de residencia:",
-        placeholder:"Escribe la dirección",
+        // placeholder:"Escribe la dirección",
         queryParams:{
           form:'personal_address'
         },

@@ -9,6 +9,7 @@ import BigNumber from "bignumber.js";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
+
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
 
@@ -50,7 +51,6 @@ export default () => {
         e.target.value = e.target.value.toLowerCase()
         break;
 
-
       case "address":
       case "address-account":
         // case: `address` si encontramos @ al inicio de la linea: ^@
@@ -63,10 +63,7 @@ export default () => {
         let AddressValidator;
         AddressValidator = await import("wallet-address-validator");
 
-        let currency =
-          currentWallet.currency.currency === "bitcoin_testnet"
-            ? "bitcoin"
-            : currentWallet.currency.currency;
+        let currency = currentWallet.currency.currency === "bitcoin_testnet" ? "bitcoin" : currentWallet.currency.currency;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
 
         let addressVerify = await AddressValidator.validate(

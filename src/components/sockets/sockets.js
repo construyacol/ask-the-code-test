@@ -270,17 +270,9 @@ class SocketsComponent extends Component {
       funcDebounce(
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
         async() => {
-          let res = await this.props.coinsendaServices.addUpdateWithdraw(
-            withdraw.id,
-            "confirmed"
-          );
+          let { error } = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, "confirmed");
           this.props.action.isAppLoading(false);
-          if (!res) {
-            return this.props.toastMessage(
-              "Error al confirmar la orden",
-              "error"
-            );
-          }
+          if (error) return this.props.toastMessage(error?.message, "error");
         },
         false,
         8000

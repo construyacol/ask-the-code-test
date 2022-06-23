@@ -89,6 +89,29 @@ export class IndetityService extends WebService {
         }
     }
   }
+
+  
+ 
+  // async getIdentityList() {
+
+  //   const { identities } = this.globalState?.modelData?.user;
+  //   let _identities = {}
+  //   Object.keys(identities).forEach(identity => {
+  //   _identities = {
+  //       ..._identities,
+  //       [identities[identity]?.id]:{
+  //         ...identities[identity],
+  //         ui_name:`${UI_NAMES?.documents[identities[identity]?.id_type]}`,
+  //         icon:"identity"
+  //       }
+  //     }
+  //   })
+  //   // _identities = {
+  //   //   createId,
+  //   //   ..._identities
+  //   // }
+  //   return _identities
+  // }
  
   async createContact({ phone }) {
     const body = {
@@ -128,7 +151,6 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
-
         let isThereOneRejectedIdentity = false
         documentList.forEach(_document => {
           let currentIdentity = userIdentities[_document?.id_type] 

@@ -23,6 +23,9 @@ import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
 import { CAPACITOR_PLATFORM } from '../../../utils';
 
+import AvailableBalance from '../../../widgets/availableBalance'
+
+
 export const CriptoSupervisor = (props) => {
   const [{ current_wallet, withdrawProviders }] = WithdrawViewState();
   // const [ { current_wallet } ] = WithdrawViewState()
@@ -111,9 +114,9 @@ export const CriptoView = () => {
     }
 
     sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id );
-    const withdraw = await coinsendaServices.addWithdrawOrder(
+    const { error, data } = await coinsendaServices.addWithdrawOrder(
       {
-        data: {
+        data: { 
           amount,
           account_id: current_wallet.id,
           withdraw_provider_id:withdrawProviders[current_wallet.currency.currency].id,
@@ -131,10 +134,7 @@ export const CriptoView = () => {
       if(sessionStorage.getItem(`withdrawInProcessFrom${current_wallet?.id}`)){
         sessionStorage.removeItem(`withdrawInProcessFrom${current_wallet?.id}`)
         actions.isAppLoading(false);
-        await coinsendaServices.addUpdateWithdraw(
-          withdraw?.data?.id,
-          "confirmed"
-        );
+        await coinsendaServices.addUpdateWithdraw(data?.id, "confirmed");
         await coinsendaServices.get_withdraws(current_wallet?.id)
         await coinsendaServices.updateActivityState(current_wallet?.account_id, "withdraws");
         await coinsendaServices.getWalletsByUser(true);
@@ -143,14 +143,11 @@ export const CriptoView = () => {
     }, 5000)   
 
 
-    if (!withdraw) {
+    if (!error) {
       actions.isAppLoading(false);
-      if (twoFaToken) {
-        return toastMessage(
-          "El código 2Fa es incorrecto...",
-          "error"
-        );
-      }
+      return toastMessage(error?.message, "error");
+      // if (twoFaToken) {
+      // }
       // return toastMessage("No se ha podido crear la orden de retiro", "error");
     }
 
@@ -360,25 +357,9 @@ export const CriptoView = () => {
       />
       {/* </form> */}
     </WithdrawForm>
-  );
+  ); 
 };
 
-export const AvailableBalance = ({ handleAction, amount, id }) => {
-  const { keyActions } = useSelector((state) => state.ui);
-  const isMovil = window.innerWidth < 768;
-
-  return (
-    <BalanceContainer>
-      <p
-        id={id}
-        className={`fuente2 ${isMovil ? "movil" : ""}`}
-        onClick={handleAction}
-      >
-        {isMovil ? "Disponible:" : `Disponible${keyActions ? '[M]' : ''}:`} {amount}
-      </p>
-    </BalanceContainer>
-  );
-};
 
 const IconsContainer = styled.div`
   display: flex;
@@ -400,14 +381,17 @@ export const OperationForm = styled.form`
   width: calc(95% - 50px);
   max-width: calc(700px - 50px);
   height: calc(100% - 50px);
-  /* border: 1px solid #c4c4c5; */
-  background: #f1f1f1;
   border-radius: 4px;
   padding: 20px 25px 20px 25px;
   display: grid;
   grid-row-gap: 5px;
   position: relative;
   max-height: 450px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  padding: 30px;
+  width: calc(95% - 60px);
+  height: calc(100% - 60px);
 `;
 
 export const WithdrawForm = styled(OperationForm)`
@@ -421,27 +405,3 @@ export const WithdrawForm = styled(OperationForm)`
   }
 `;
 
-const BalanceContainer = styled.div`
-  cursor: pointer;
-  position: absolute;
-  display: flex;
-  right: 5px;
-  color: var(--paragraph_color);
-  height: 100%;
-  display: flex;
-  align-items: center;
-  transition: 0.15s;
-  transform: scale(1);
-  max-height: 47px;
-  align-self: self-end;
-  width: max-content;
-
-  .movil {
-    font-size: 11px;
-  }
-
-  &:hover {
-    transform: scale(1.005);
-    color: #b48728;
-  }
-`;

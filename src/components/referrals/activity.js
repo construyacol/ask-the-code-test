@@ -12,11 +12,11 @@ import { OrderContainer } from '../widgets/activityList/order_item'
 import { useActions } from "../../hooks/useActions";
 import OtherModalLayout from "../widgets/modal/otherModalLayout";
 
+
 const ReferralActivity = ({ coinsendaServices }) => {
 
   const [ loader, setLoader ] = useState(true)
   const { activityList, setActivityList } = UseActivity([])
-
 
   const LoadActivity = async() => {
     const res = await coinsendaServices.get_referral_deposits();
@@ -33,7 +33,6 @@ const ReferralActivity = ({ coinsendaServices }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activityList])
 
-
   return(
         <ActivityList
           activity={activityList}
@@ -45,7 +44,6 @@ const ReferralActivity = ({ coinsendaServices }) => {
           // ]}
         />
   )
-
 }
 
 
@@ -144,7 +142,7 @@ const EmptyStateList = ({ label, isMovilViewport }) => {
   return(
     <EmptyStateGrid>
       <EmptyStateCont className={`${isMovilViewport ? 'isMovil' : ''}`}>
-        <IconSwitch size={110} icon="referralEmptyState" />
+        <IconSwitch size={110} icon="emptyState" />
         <p className="fuente">{label}</p>
       </EmptyStateCont>
     </EmptyStateGrid>

@@ -10,7 +10,7 @@ import {
   ADD_PROFILE_URL,
   TWO_FACTOR_URL,
   TWO_FACTOR_BASE_URL,
-  TRANSACTION_SECURITY
+  // TRANSACTION_SECURITY
 } from "../const/const";
 import { matchItem } from "../utils";
 import { coins } from "../components/api/ui/api.json";
@@ -49,24 +49,31 @@ export class TransactionService extends WebService {
     return currencies;
   }
 
-  async userHasTransactionSecurity(userId) {
-
+  async userHasTransactionSecurity(user_id) {
+    
+    const userId = user_id || this.user.id
     const url = `${TWO_FACTOR_BASE_URL}users/${userId}/transactionSecurity`;
     const response = await this.Get(url);
-
+    
     if (!response || response === 465 || (response && !response.length)) {
       return false;
     }
 
+    let transactionSecurity = {
+      "2fa":null,
+      "biometric":null
+    }
+
     for (const scope of response) {
-      TRANSACTION_SECURITY[scope.type] = {
-        enabled:scope.enabled,
-        id:scope.id
+      transactionSecurity = {
+        ...transactionSecurity,
+        [scope.type]:{
+          enabled:scope.enabled,
+          id:scope.id
+        }
       }
     }
-    console.log(TRANSACTION_SECURITY, response)
-    
-    return TRANSACTION_SECURITY
+    return transactionSecurity
 
   }
 

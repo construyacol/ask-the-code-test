@@ -64,21 +64,23 @@ export const RightText = styled(Text)`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-const LeftText = styled(Text)`
+export const LeftText = styled(Text)`
   text-align: left;
   padding-right: 15px;
   font-weight: bold;
 `;
 
-const ItemContainer = styled.div`
+export const ItemContainer = styled.div`
   width: 100%;
   height: 20px;
   display: grid;
   grid-template-columns: auto 1fr auto;
 
-  &.skeleton {
+  &.skeleton,
+  .skeleton{
     ${OnlySkeletonAnimation}
-    ${RightText}, ${LeftText} {
+    ${RightText}, 
+    ${LeftText}{
       background: gray;
       color: gray;
       height: 16px;
@@ -86,6 +88,13 @@ const ItemContainer = styled.div`
       opacity: 0.5;
     }
   }
+  .skeleton {
+      background: gray;
+      color: gray;
+      height: 16px;
+      border-radius: 3px;
+      opacity: 0.5;
+    }
 
   &.pending,
   &.confirmed {

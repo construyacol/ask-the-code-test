@@ -12,6 +12,7 @@ import SimpleLoader from "../loaders";
 import useViewport from "../../../hooks/useWindowSize";
 import { RibbonContDeposit } from '../../referrals/shareStyles'
 import BigNumber from 'bignumber.js'
+import useToastMessage from "../../../hooks/useToastMessage"; 
 
 import {
   gotoTx,
@@ -476,12 +477,14 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
   );
 };
 
+
 const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
-  
+
   // @param
   // deleteAction - addUpdateWithdraw | addUpdateDeposit 
 
   const { actions, coinsendaServices } = UseTxState(id);
+  const [ toastMessage ] = useToastMessage();
 
   const deleteOrder = () => {
     actions.confirmationModalToggle();
@@ -493,8 +496,11 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
       payload: id,
       action: (async() => { 
         setOrderState("deleting");
-        let deleted = await coinsendaServices[deleteAction](id, 'canceled');
-        if (!deleted) {return false;}
+        let { data } = await coinsendaServices[deleteAction](id, 'canceled');
+        if (!data) {
+          setOrderState();
+          return toastMessage("No se ha podido cancelar el depósito", "error");
+        }
         setOrderState("deleted");
       }),
       img: "deleteticket",

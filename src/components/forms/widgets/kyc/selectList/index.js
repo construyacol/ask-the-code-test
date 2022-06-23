@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { filterElement } from '../../../utils'
 
 // import components
 import ItemList from './itemList'
@@ -26,7 +27,7 @@ const SelectList = ({ list, name, state, handleAction }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state, name])
 
-
+ 
   useEffect(() => {
     if(list){
       const itemList = filterElement(list, state[name])
@@ -68,21 +69,4 @@ const SelectList = ({ list, name, state, handleAction }) => {
 export default SelectList
 
 
-const filterElement = (list, query) => {
-    let result = {}
-    Object.keys(list).forEach(itemList => {
-      if(itemList.includes(query?.toLowerCase())){
-        return result = { ...result, [itemList]:list[itemList] }
-      }
-    })
-  
-    Object.keys(result).forEach(itemList => {
-      if(itemList === query?.toLowerCase()){
-        result = { itemList }
-      }
-    })
 
-    return Object.keys(result).length ? result : list
-
-
-}

@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react'
-import loadable from '@loadable/component'
 import { removeItemTag, debugItemTag } from '../utils'
 import styled from 'styled-components'
 import MaskDateComponent from '../MaskDateComponent'
 import { isSafari } from '../../../../../utils'
 import {
     InputContainer,
-    LabelText,
-    // ButtonModule
-  } from '../styles'
+    LabelText
+} from '../styles'
+import RenderAuxComponent from '../../renderAuxComponent'
 
-
-const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
 
 const InputComponent = props => {
@@ -24,10 +21,10 @@ const InputComponent = props => {
     message,
     type,
     progressBar,
-    // placeholder
-    // label
+    placeholder,
+    className,
+    label
   } = props
-
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
   const inputName = name?.includes('meta') ? '' : name
@@ -55,9 +52,9 @@ const InputComponent = props => {
   }, [name])
   
   const inputProps = {
-    className: `${inputStatus ? inputStatus : ''} `,
+    className: `${inputStatus ? inputStatus : ''}`,
     type,
-    // placeholder,
+    placeholder,
     onChange,
     defaultValue,
     name:inputName,
@@ -69,6 +66,11 @@ const InputComponent = props => {
   };
   
   return (
+    <InputWrapper className={`${label ? 'withLabel' : ''} ${className || ''}`}>
+      {
+        label &&
+        <p className={`fuente ${label ? '_inputLabelP' : ''}`}>{label}</p>
+      }
       <InputContainer
         onSubmit={(e) => {e.preventDefault()}}
         inputStatus={inputStatus}
@@ -76,16 +78,14 @@ const InputComponent = props => {
         >
         {
           props.AuxComponent && 
-          <AuxComponentContainer {...props} />
+          <RenderAuxComponent {...props} />
         }
-
         {
           type === 'date' && isSafari() !== 'is_safari' ?
           <MaskDateComponent {...inputProps}/>
           :
           <input {...inputProps} />
         }
-
         { 
           progressBar &&
           <ProgressBarComponent {...progressBar}/>
@@ -94,23 +94,37 @@ const InputComponent = props => {
           {message}
         </LabelText>
       </InputContainer>
+    </InputWrapper>
   )
-}
-
+} 
 
 export default InputComponent
 
-const AuxComponentContainer = ({ AuxComponent, ...props }) => (
-    typeof AuxComponent === "object" ?
-      AuxComponent.map((SingleAuxComponent, idItem) => {
-        if(!SingleAuxComponent){return null}
-        if(typeof SingleAuxComponent === 'string'){return <DynamicLoadComponent key={idItem} component={SingleAuxComponent} {...props}/>}
-        return <SingleAuxComponent key={idItem} />;
-      }) 
-    :
-    typeof AuxComponent === "string" &&
-      <DynamicLoadComponent component={AuxComponent} {...props}/>
-)
+export const InputWrapper = styled.div`
+  display:grid;
+  &.withLabel{
+    grid-template-rows:auto auto;
+    row-gap: 10px;
+    ._inputLabelP{
+      margin:0;
+      color:var(--paragraph_color);
+    }
+  }
+
+  &.skeleton{
+    p{
+      color: transparent;
+      border-radius: 4px;
+      background: var(--skeleton_color);
+      width: fit-content;
+    }
+  }
+
+`
+
+
+
+
 
 
 const ProgressBarComponent = ({ start = 0, end = 0, showSteps }) => {

@@ -78,7 +78,7 @@ const STAGES = {
           { pattern:/[^a-zA-Z _()]{1,30}/g, message:'Solo se permiten letras...'}
         ],
         // label:"Nacionalidad del documento:",
-        placeholder:"Ej: pasaporte",
+        // placeholder:"Colombia",
         queryParams:{
           form:'personal_country'
         }
@@ -92,7 +92,7 @@ const STAGES = {
         defaultMessage:"Elige el documento de identidad con el que verificarás tu cuenta.",
         successPattern:/[a-zA-Z ]{3,40}/g,
         // label:"Tipo de documento:",
-        placeholder:"Elije tu documento de identidad",
+        // placeholder:"Elije tu documento de identidad",
         selectList:{},
         queryParams:{
           form:'personal_id_type'
@@ -132,7 +132,7 @@ const STAGES = {
          others:/[0-9]{5,15}/g
         },
         // label:"Número de documento",
-        placeholder:"Dígita el número del documento que elegíste",
+        // placeholder:"Dígita el número del documento que elegíste",
         queryParams:{
           form:'personal_number_id'
         },
@@ -155,7 +155,7 @@ const STAGES = {
         defaultMessage:"Tus apellidos deben coincidir con los de tu documento de identidad.",
         successPattern:/[a-zA-Z\u00f1\u00d1 ]{3,40}/g,
         label:"Apellidos completos:",
-        placeholder:"Ej: Sanchez buitrago",
+        // placeholder:"Nakamoto",
         queryParams:{
           form:'personal_surnames'
         },
@@ -172,7 +172,7 @@ const STAGES = {
         defaultMessage:"Los nombres deben coincidir con los de tu documento de identidad",
         successPattern:/[a-zA-Z\u00f1\u00d1 ]{3,40}/g,
         label:"Nombres completos (Sin apellidos):",
-        placeholder:"Ej: Juan josé ",
+        // placeholder:"Satoshi",
         queryParams:{
           form:'personal_names'
         },

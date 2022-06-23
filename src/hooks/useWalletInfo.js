@@ -4,7 +4,6 @@ import { createSelector } from "reselect";
 import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
 
 
-
 const selectCurrentPair = createSelector(
   (state) => state.storage.pairsForAccount,
   (state) => state.modelData.all_pairs,

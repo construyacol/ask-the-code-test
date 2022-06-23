@@ -71,7 +71,7 @@ class BankAccountFlow extends Component {
     // let city_list = res && res[0].info_needed.city;
 
 
-    let serve_bank_list = await serveBankOrCityList(bank_list, "bank");
+    let serve_bank_list = await serveBankOrCityList(bank_list, "bank"); 
     // let serve_city_list = await serveBankOrCityList(city_list, "city");
     // console.log('============================================================== serve_bank_list', serve_bank_list)
 

@@ -93,12 +93,26 @@ export const IconAccount = styled.div`
 export const P = styled.p`
   font-family: "Raleway", sans-serif;
   margin:0;
+  &.numberFont{
+    font-family: "Tomorrow", sans-serif;
+  }
 `
 
 export const AccountLabel = styled(P)`
   color: var(--paragraph_color);
   font-size: 18px;
   font-weight: 600;
+  &._aux{
+    font-size: 13px;
+    color: var(--placeholder);
+    font-weight: normal;
+  }
+  &.skeleton{
+    background: var(--skeleton_color);
+    color: var(--skeleton_color);
+    width: fit-content;
+    border-radius: 4px;
+  }
 `
 
 export const CurrencyLabel = styled(P)`

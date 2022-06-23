@@ -16,6 +16,7 @@ import loadable from "@loadable/component";
 import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
 import MobileMenuComponent from '../menu/mobileMenu'
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
+import { parseQueryString } from '../../utils'
 
 
 
@@ -40,7 +41,7 @@ const HomeContainer = () => {
               >
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
-              <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path}`}>
+              <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path} ${parseQueryString()}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch>
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />

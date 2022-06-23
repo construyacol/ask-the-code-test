@@ -21,13 +21,17 @@ export const isSafari = () => {
   }
 }
 
+export const parseQueryString = () => {
+  const params = new URLSearchParams(window.location.search);
+  const values = (Array.from(params.values())); 
+  return values.join(' ')
+}
 
 export const osDevice = () => {
   var userAgent = window.navigator.userAgent;
   if((/iP(hone|od|ad)/.test(userAgent))){
      return 'ioSystem'
    }
-  
    return ''
 }
 

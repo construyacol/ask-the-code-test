@@ -36,6 +36,7 @@ const useStage = (stageController, stages, defaultStage = 0) => {
 
   return {
     currentStage,
+    lastStage:stageController?.length > 1 && ((currentStage + 1) === stageController?.length),
     nextStage,
     prevStage,
     stageController,

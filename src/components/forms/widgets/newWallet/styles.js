@@ -57,6 +57,12 @@ export const ButtonContainer = styled.div`
     height:80px;
     display: flex;
     place-content: center;
+    align-items: center;
+    column-gap: 22px;
+    
+    @media ${device.mobile} {
+        padding-bottom: 100px;
+    }
 `
 
 export const ListContainer = styled.div`

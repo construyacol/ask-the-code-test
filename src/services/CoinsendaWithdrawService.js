@@ -9,15 +9,21 @@ import {
   NEW_WITHDRAW_ACCOUNT_URL,
   GET_WITHDRAWS_BY_ACCOUNT_ID,
   DELETE_WITHDRAW_ACCOUNT_URL,
+  PRIORITY_ENTITIES
 } from "../const/const";
 import {
   updateNormalizedDataAction,
   resetModelData,
 } from "../actions/dataModelActions";
 import normalizeUser from "../schemas";
-import { SentryCaptureException } from '../utils'
+import { 
+  SentryCaptureException, 
+  // serveBankOrCityList, 
+  normalized_list 
+} from '../utils'
 
-import { normalized_list } from "../utils";
+import { isArray } from "lodash"; 
+
 
 export class WithdrawService extends WebService {
 
@@ -215,24 +221,99 @@ export class WithdrawService extends WebService {
     this.withdrawProviders = withdrawProviders;
     return withdrawProviders;
   }
- 
+  
   async addWithdrawOrder(body, twoFaToken) {
     if(twoFaToken){
       body.data.twofa_token = twoFaToken;
     }
-    const response = await this.Post(NEW_WITHDRAW_URL, body);
-    if (!response || response === 465) {
-      if(!body.data.twofa_token){
-        SentryCaptureException({message:"Dont send twofa_token"}, body)
-      }
-      return false;
+    const response = await this._Post(NEW_WITHDRAW_URL, body);
+    
+    if (response?.error){
+      let errorMessage = !body.data.twofa_token ? "Dont send twofa_token" : response?.error?.message
+        SentryCaptureException({message:errorMessage}, body)
     }
     return response;
   }
 
+
+  createEfectyProv(_withdrawProviders) {
+    let efectyProviderKey = Object.keys(_withdrawProviders).find(wAKey => ["efecty_network"].includes(_withdrawProviders[wAKey]?.provider_type))
+    return {
+      ..._withdrawProviders[efectyProviderKey],
+      uiName:_withdrawProviders[efectyProviderKey]?.provider?.ui_name,
+      value:_withdrawProviders[efectyProviderKey]?.name
+    }
+  } 
+
+  async getBankList() {
+    const { withdrawProviders } = this.globalState.modelData;
+    let _withdrawProviders = typeof withdrawProviders === 'object' ? structuredClone(withdrawProviders) : {...withdrawProviders};
+
+    let wProviderBanKey = Object.keys(_withdrawProviders).find(wAKey => ["bank"].includes(_withdrawProviders[wAKey]?.provider_type))
+    let efectyProvider = this.createEfectyProv(_withdrawProviders)
+    let bankList = _withdrawProviders[wProviderBanKey]?.info_needed?.bank_name
+
+    Object.keys(bankList).forEach(bankKey => {
+      if(PRIORITY_ENTITIES.includes(bankKey)){
+        bankList = {
+          [bankKey]:bankList[bankKey],
+          ...bankList
+        }
+      }
+    })
+    if(efectyProvider){
+      bankList = {
+        [efectyProvider?.value]:efectyProvider,
+        ...bankList
+      }
+    }
+
+    return bankList
+  }
+
+
+  async getAccountTypeList(props) {
+
+    const {
+      info_needed,
+      bankName
+    } = props
+
+    let infoNeeded = structuredClone(info_needed)
+    const { 
+      bank_name,
+      account_type
+    } = infoNeeded
+
+    if(!bankName || !bank_name)return ;
+    let list = bank_name[bankName]?.compatible_account_types
+    let accountList = {}
+    if(isArray(list)){
+      list.forEach(accountKey => {
+        accountList = {
+          ...accountList,
+          [accountKey]:account_type[accountKey]
+        }
+      })
+    }
+    return accountList
+  }
+
+
+   
+
+
+
   // async deleteWithdrawOrder(orderId) {
   //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
   // }
+
+  async createWithdrawAccount(body, type) {
+    return await this._Post(
+      NEW_WITHDRAW_ACCOUNT_URL,
+      body 
+    );
+  } 
 
   async addNewWithdrawAccount(payload, type) {
     const user = this.user;
@@ -411,8 +492,7 @@ export class WithdrawService extends WebService {
         country: this.user.country,
       },
     };
-    const response = await this.Post(UPDATE_WITHDRAW_URL, body);
-    return response;
+    return await this._Post(UPDATE_WITHDRAW_URL, body);
   }
 
   // async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {

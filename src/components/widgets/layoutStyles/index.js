@@ -46,7 +46,11 @@ export const MainContent = styled.div`
 
     @media ${device.mobile} {
         width: 100%;
-        padding-bottom:50px;
+        padding-bottom:70px;
+
+        &.wallets.createWithdrawAccount{
+            padding-bottom:150px;
+        }
     }
 `
 
@@ -62,7 +66,6 @@ export const AccountDetailLayout = styled(BaseLayout)`
 
 export const AccountDetailContainer = styled.div`
     display: grid;
-    ${'' /* grid-template-rows: auto minmax(450px, 1fr); */}
     grid-template-rows: 1fr;
     align-items: center;
     row-gap: 30px;
@@ -72,6 +75,10 @@ export const AccountDetailContainer = styled.div`
     justify-items: center;
     padding-bottom:50px;
 
+    &.createWithdrawAccount{
+        padding-bottom:0px;
+    }
+
     &.activity{
         padding-top:35px;
         .ALtext{
@@ -80,6 +87,10 @@ export const AccountDetailContainer = styled.div`
         @media ${device.mobile} {
             padding-top:0;
         }
+    }
+
+    &.withdraw{
+        max-width: initial;
     }
 
     @media ${device.mobile} {

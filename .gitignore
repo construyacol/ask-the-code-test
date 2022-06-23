@@ -20,7 +20,7 @@ android/app/release/
 # IDEs and editors
 /.idea
 .project
-.classpath
+.classpath 
 .c9/
 *.launch
 .settings/

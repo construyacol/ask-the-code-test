@@ -15,18 +15,13 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
   const actions = useActions();
 
   const cerrar = (e, forcedClose) => {
-    if (forcedClose || !e || (e.target.dataset && e.target.dataset.close_modal)) {
-      actions.renderModal(null);
-      if (cancelAction) {
-        cancelAction();
-      }
-    }
+    actions.renderModal(null);
   };
 
   return (
-    <OtherModalLayout on_click={cerrar}>
+    <OtherModalLayout>
       <Layout>
-        <IconClose theme="dark" size={20} />
+        <IconClose onClick={cerrar} theme="dark" size={20} />
         <TopSection>
           <Title className="fuente">Autenticación de retiro</Title>
           <CircleIconContainer>

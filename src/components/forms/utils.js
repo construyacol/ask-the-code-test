@@ -3,7 +3,7 @@ import {
   API_FETCH_SELECT_LIST,
   INFO_URL_API
 } from './const'
-
+import { isArray } from 'lodash'
 import { mainService } from '../../services/MainService'
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
@@ -14,9 +14,34 @@ import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
+import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
+import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWithdraw/api'
 
 
 // import countryValidators from './apiRes'
+
+
+export const filterElement = (list, query) => {
+  let result = {}
+  Object.keys(list).forEach(itemList => {
+    if(itemList.includes(query?.toLowerCase())){
+      return result = { ...result, [itemList]:list[itemList] }
+    }
+  })
+
+  Object.keys(result).forEach(itemList => {
+    if(itemList === query?.toLowerCase()){
+      result = { [itemList]:list[itemList] }
+    }
+    // if(itemList === query?.toLowerCase()){
+    //   result = { itemList }
+    // }
+  })
+
+  return Object.keys(result).length ? result : list
+
+
+}
 
 
 export const getQuery = (queryParams) => {
@@ -91,30 +116,26 @@ export const getSelectList = async(listKey, payload) => {
 export const createStage = async(source, modelated, index) => {
   let _source = typeof source === 'object' ? structuredClone(source) : {...source};
   let stage = {}
-
-  _source.uiName = _source.ui_name
-  _source.uiType = _source.ui_type
+  _source.uiName = _source.ui_name || _source.uiName
+  _source.uiType = _source.ui_type || _source.uiType 
   delete _source.ui_name
   delete _source.ui_type
   
   Object.keys(_source).forEach(key => {
     // TODO: refactor to for -- in
       stage = {
-        key:index,
+        key:index, 
         ...stage,
         ...modelated,
         [key]:_source[key]
-      }
+      } 
   })
-
-  if(_source?.uiType === 'select'){
-    stage.selectList = await getSelectList(stage?.key)
-  }
   return stage
 }
 
  
 export const createSelectList = async(list) => {
+  if(!isArray(list))return list;
   let selectList = {}
   for (const item of list) {
     // item.code = item.code.split(" ").join("_")
@@ -138,6 +159,7 @@ export const createSelectList = async(list) => {
   return {...selectList}
 }
 
+
  
 const dataService = {
   biometric:ApiGetBiometricStages,
@@ -147,9 +169,30 @@ const dataService = {
   fiatDeposit:ApiGetOnFiatDepositStages,
   newWallet:ApiGetNewWalletStages,
   location:ApiGetLocationStages,
-  contact:ApiGetContactStages
+  contact:ApiGetContactStages,
+  newWithdrawAccount:ApiGetNewWAccountStages,
+  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
 }
 
+
+export const recursiveAddList = async(mapObject, payload) => {
+  let apiStages = structuredClone(mapObject)
+  let stages = {} 
+  for(const stage of Object.keys(apiStages)){ 
+    stages = {
+      ...stages,
+      [stage]:apiStages[stage]
+    }
+    if(["select"].includes(stages[stage]?.uiType)){
+      stages[stage].selectList = await getSelectList(stage, payload)
+    }
+    if(["recursiveLevel"].includes(stages[stage]?.uiType)){
+      stages[stage] = await recursiveAddList(stages[stage], payload)
+    }
+  }
+  
+  return stages
+}
 
 export const initStages = async(config) => {
 
@@ -166,10 +209,10 @@ export const initStages = async(config) => {
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
-
-  
+  stages = await recursiveAddList(stages)
   return {
     ...formStructure(config.formName),
     stages
   }
 }
+ 
