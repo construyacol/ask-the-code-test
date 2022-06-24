@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import { PRIMARY_COLOR } from '../../const'
+// import { PRIMARY_COLOR } from '../../const'
 
 
 const IconButtonContainer = styled.div`
