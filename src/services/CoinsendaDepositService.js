@@ -92,7 +92,6 @@ export class DepositService extends WebService {
 
   async confirmDepositOrder(order_id, base64image) {
     const user = this.user;
-
     const body = {
       data: {
         country: user.country,

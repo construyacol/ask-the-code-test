@@ -4,13 +4,12 @@ import { createSelector } from "reselect";
 import { UI_NAMES } from '../../../../const/uiNames'
 import styled from 'styled-components'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
-import { OptionInputContainer } from './styles'
 import { 
   HR
 } from '../../../widgets/headerAccount/styles'
 import { useActions } from '../../../../hooks/useActions'
 import { getIdentityState } from '../../../../utils'
-import { StageContainer } from './styles'
+import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 
 

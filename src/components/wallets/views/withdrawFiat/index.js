@@ -16,13 +16,15 @@ import useViewport from '../../../../hooks/useWindowSize'
 import { SelectListSkeleton } from '../../../forms/widgets/selectListComponent'
 
 
-
+ 
 const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
 
   const { isMovilViewport } = useViewport();
   // let targetEl = isMovilViewport ? "._stageIndicator" : ".accountDetailTitle h1>span"
   const titleSectionEl = useRef(document.querySelector(`.accountDetailTitle h1>span`))
   const withdrawButton = useRef(document.querySelector('#withdraw-menu-button'))
+  // const mobileTitleRef = useRef()
+  const uiName = "Creando cuenta de retiro"
 
   useEffect(() => {
     initConfig()
@@ -46,26 +48,35 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
   }
 
   const initConfig = () => {
-    titleSectionEl.current.classList.add("_breadCrumbParent");   
     if(isMovilViewport)return;
+    titleSectionEl.current.classList.add("_breadCrumbParent");   
     titleSectionEl.current.innerHTML = "Retirar   >      ";
     titleSectionEl.current.onclick = backToWithdraw
     const newSpan = document.createElement("span");
     newSpan.classList.add("_breadCrumbChild");   
-    const newContent = document.createTextNode("Creando cuenta de retiro");
+    const newContent = document.createTextNode(uiName);
     newSpan.appendChild(newContent);
-    let targetEl = isMovilViewport ? "._stageIndicator" : ".accountDetailTitle h1"
+    let targetEl = ".accountDetailTitle h1"
     document.querySelector(targetEl).append(newSpan)
   }
 
+  // useEffect(() => {
+  //   console.log('mobileTitleRef', mobileTitleRef.current)
+  //   if(mobileTitleRef?.current && isMovilViewport){
+  //     mobileTitleRef.current.innerHTML = uiName;
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [mobileTitleRef?.current])
+
   return(
     <NewFiatWithdrawAccountComponent
+      mainTitle="Creando cuenta de retiro"
       backToWithdraw={backToWithdraw}
     />
   )
 }
  
-
+ 
 const FiatView = (props) => {
   
   const fiatWithdrawAccounts = useSelector((state) => selectFiatWithdrawAccounts(state));
@@ -75,7 +86,7 @@ const FiatView = (props) => {
   if(createAccount){
     return(
       <CreateNewWithdrawAccount
-            setCreateAccount={setCreateAccount}
+          setCreateAccount={setCreateAccount}
       />
     )
   }

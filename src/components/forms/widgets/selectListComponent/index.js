@@ -12,8 +12,12 @@ import loadable from "@loadable/component";
 import useViewport from "../../../../hooks/useWindowSize"
 import RenderAuxComponent from '../renderAuxComponent'
 // import { MdSignalWifiStatusbarNull } from 'react-icons/md'
-import { StageContainer, OptionInputContainer } from '../newWithdrawAccount/styles'
+import { 
+  StageContainer, 
+  OptionInputContainer 
+} from '../sharedStyles'
 import {  StageIndicator } from '../stageManager/styles'
+import { device } from "../../../../const/const"
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
@@ -120,6 +124,9 @@ const SelectListComponent = ({
       width: 100vw;
       align-self: flex-start;
       justify-self: flex-start;
+      @media ${device.mobile} {
+        width: 100%;
+      }
     }
   `
 
@@ -202,7 +209,12 @@ export const ItemProviderBankContainer = styled.div`
 
   &.withAuxComp{
       grid-template-columns: auto 2fr 1fr;
+      @media ${device.mobile} {
+        grid-template-columns: 1fr auto;
+      }
   }
+
+
 
   &.firstItem{
     border-top-left-radius: 4px;

@@ -62,6 +62,7 @@ export const ButtonContainer = styled.div`
     
     @media ${device.mobile} {
         padding-bottom: 100px;
+        flex-direction: column;
     }
 `
 

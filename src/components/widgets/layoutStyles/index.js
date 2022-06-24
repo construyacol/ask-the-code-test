@@ -51,6 +51,10 @@ export const MainContent = styled.div`
         &.wallets.createWithdrawAccount{
             padding-bottom:150px;
         }
+
+        &.is_safari{
+            padding-bottom:120px;
+        }
     }
 `
 
@@ -61,6 +65,7 @@ export const AccountDetailLayout = styled(BaseLayout)`
       row-gap: 15px;
     @media ${device.mobile} {
       row-gap: 15px;
+      min-height:100vh;
     }
 `
 

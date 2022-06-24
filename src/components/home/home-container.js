@@ -17,7 +17,7 @@ import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
 import MobileMenuComponent from '../menu/mobileMenu'
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { parseQueryString } from '../../utils'
-
+import { isSafari } from '../../utils'
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
@@ -28,7 +28,7 @@ const SecurityCenter = loadable(() => import("../securityCenter/securityCenter")
 const HomeContainer = () => {
 
   const subMenuRef = useRef()
-
+  
   return (
     <Route
         path={["/:primary_path/:path", "/:primary_path"]}
@@ -41,7 +41,7 @@ const HomeContainer = () => {
               >
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
-              <MainContent className={`_contentContainer ${renderProps?.match?.params?.primary_path} ${parseQueryString()}`}>
+              <MainContent className={`_contentContainer ${isSafari()} ${renderProps?.match?.params?.primary_path} ${parseQueryString()}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch>
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />

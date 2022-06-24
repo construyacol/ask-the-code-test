@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer, ButtonContainers } from './styles'
+import { ButtonContainers, StageContainer } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import StageManagerComponent from '../stageManager'
@@ -18,9 +18,14 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 // import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import StatusPanelContent from './statusPanel'
+// import { SelectListSkeleton } from '../selectListComponent'
+import { StageSkeleton } from '../stageManager'
 
-const IdentityComponent = loadable(() => import("./identityStage"));
-const InfoAccountComponent = loadable(() => import("./infoAccountStage"));
+
+
+
+const IdentityComponent = loadable(() => import("./identityStage"), {fallback:<StageSkeleton/>});
+const InfoAccountComponent = loadable(() => import("./infoAccountStage"), {fallback:<StageSkeleton/>});
 
 
 const selectWithdrawProvider = createSelector(
@@ -121,8 +126,6 @@ const {
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        // label={"Siguiente"}
-        // handleAction={nextStep}
         label={`${lastStage ? "Crear cuenta" : "Siguiente"}`}
         handleAction={lastStage ? createWithdrawAccount : nextStep}
       />
@@ -138,12 +141,18 @@ const {
           handleState={handleState}
           handleDataForm={handleDataForm}
         >
-          <StageManagerComponent stageManager={stageManager} closeStage {...props}/>
-          {
-            isMovilViewport &&
-              <ButtonComponent/>
-          }
+          <StageManagerComponent 
+            stageManager={stageManager} 
+            closeStage 
+            {...props}
+          />
+
         </RenderStageComponent>
+        
+        {
+          isMovilViewport &&
+            <ButtonComponent/>
+        }
         
           {
             !isMovilViewport &&

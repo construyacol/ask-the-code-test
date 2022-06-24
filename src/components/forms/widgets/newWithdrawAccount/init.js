@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 // import { useActions } from '../../hooks/useActions'
 import FormComponent from '../..' 
 import { initStages } from '../../utils'
-import { device } from '../../../../const/const'
 // import WalletSkeleton from './skeleton'
 // import { IconClose } from "../../../widgets/shared-styles";
 // import OtherModalLayout from '../../../widgets/modal/otherModalLayout'
@@ -12,8 +11,8 @@ import { device } from '../../../../const/const'
 //   Layout,
 //   Content
 // } from './styles'
-import styled from 'styled-components'
 import { StageSkeleton } from '../stageManager'
+import { FormContainer } from '../sharedStyles'
 
 
 const NewFiatWithdrawAccountComponent = props => {
@@ -36,7 +35,7 @@ const NewFiatWithdrawAccountComponent = props => {
     }, []) 
    
     return(
-      <WithdrawAccountContainer>
+      <FormContainer>
           {
               dataForm ?
                 <FormComponent
@@ -47,7 +46,7 @@ const NewFiatWithdrawAccountComponent = props => {
               : 
               <StageSkeleton/>
           }
-      </WithdrawAccountContainer>
+      </FormContainer>
     )
 }
 
@@ -55,16 +54,3 @@ const NewFiatWithdrawAccountComponent = props => {
 
 
 export default NewFiatWithdrawAccountComponent
-
-const WithdrawAccountContainer = styled.div`
-  width:100%;
-  height:100%;
-  display:grid;
-  grid-template-columns:1fr minmax(auto, 350px);
-
-  @media${device.mobile}{
-    grid-template-columns:1fr;
-    row-gap:25px;
-  }
-
-`

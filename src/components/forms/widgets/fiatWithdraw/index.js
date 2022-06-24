@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer, ButtonContainers } from './styles'
+import { StageContainer } from '../sharedStyles'
+import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import StageManagerComponent from '../stageManager'
@@ -16,14 +17,14 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 // import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
-import WithdrawAccountsComponent from './withdrawAccountStage'
+import WithdrawAccountsComponent from './withdrawAccountStage' 
 import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
-
+import { StageSkeleton } from '../stageManager'
 
 import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
@@ -37,8 +38,7 @@ import { formatToCurrency } from '../../../../utils/convert_currency'
 
 
 // const IdentityComponent = loadable(() => import("./identityStage"));
-const AmountComponent = loadable(() => import("./amountComponent"));
-
+const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
 
 
 
@@ -77,12 +77,6 @@ const {
     setStageStatus(null)
     if(currentStage<1){
       setLoading(true)
-      // await createInfoNeededStages({
-      //   stageData,
-      //   dataForm,
-      //   setDataForm,
-      //   state:handleState?.state
-      // })
       setLoading(false)
     }
     nextStage()
@@ -134,7 +128,7 @@ const {
     [FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
     [FIAT_WITHDRAW_TYPES?.AMOUNT]:AmountComponent
   }
-
+ 
   const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
   
   const ButtonComponent = () => (
@@ -159,11 +153,11 @@ const {
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
-          {
-            isMovilViewport &&
-              <ButtonComponent/>
-          }
         </RenderStageComponent>
+        {
+          isMovilViewport &&
+            <ButtonComponent/>
+        }
         
           {
             !isMovilViewport &&

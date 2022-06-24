@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { StageContainer } from './styles'
+import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 import { useSelector } from "react-redux";
 import validations from './validations'
