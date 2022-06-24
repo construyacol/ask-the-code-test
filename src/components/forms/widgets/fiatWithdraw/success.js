@@ -58,9 +58,8 @@ const WithdrawCreatedSuccess = ({
     const actions = useActions()
     const { withdraw_accounts } = useSelector(({ modelData }) => modelData)
     const withdrawAccount = withdraw_accounts[withdrawData?.withdraw_account_id]
-    const accountName = withdrawAccount?.info?.bank_name || UI_NAMES.provider[withdrawAccount.provider_type]
+    const accountName = withdrawAccount?.bank_name?.ui_name || UI_NAMES.provider[withdrawAccount.provider_type]
     const [ toastMessage ] = useToastMessage();
-    console.log('|||||||||||||||||||||||| withdrawAccount', withdrawAccount)
 
     const { data, formatCurrency, currencySimbol } = useDetailParseData(withdrawData, 'shortWithdraw')
 

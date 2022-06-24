@@ -2,13 +2,12 @@ import { useSelector } from "react-redux";
 import styled from 'styled-components'
 
 
-
 export default function AvailableBalance ({ handleAction, amount, id }) {
     const { keyActions } = useSelector((state) => state.ui);
     const isMovil = window.innerWidth < 768;
   
     return (
-      <BalanceContainer>
+      <BalanceContainer className="_balanceComponent">
         <p
           id={id}
           className={`fuente2 ${isMovil ? "movil" : ""}`}

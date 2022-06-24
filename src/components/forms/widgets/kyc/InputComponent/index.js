@@ -64,7 +64,8 @@ const InputComponent = props => {
     // autoComplete,
     ...props.dataForm?.stages[name]?.settings?.props
   };
-  
+
+
   return (
     <InputWrapper className={`${label ? 'withLabel' : ''} ${className || ''}`}>
       {

@@ -237,6 +237,9 @@ export const StageContainer = styled.div`
     .label___message{
       font-family: "Tomorrow", sans-serif !important;
     }
+    ._balanceComponent{
+      right:20px;
+    }
   }
  
   &._infoAccount,

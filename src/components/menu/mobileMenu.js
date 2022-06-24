@@ -6,7 +6,10 @@ import { menuPrincipal } from "../api/ui/api.json";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import loadable from "@loadable/component";
+import { useState } from 'react' 
 
+import { history } from '../../const/const'
+import { selectAvaliableFiatWallet, PopUpnotice } from './sideMenu'
 
 export default function MobileMenuComponent() {
 
@@ -15,8 +18,32 @@ export default function MobileMenuComponent() {
     const { osDevice, verification_state } = useSelector((state) => state?.ui);
     const params = useParams()
 
+
+
+    const [ showMessage, setShowMessage ] = useState(false)
+    const [ fiatWallet ] = useSelector((state) => selectAvaliableFiatWallet(state));
+    const goToFiatWallet = () => {
+        if(!fiatWallet)return;
+        history.push(`/wallets/withdraw/${fiatWallet?.id}`)
+        _showMessage()
+    }
+    const _showMessage = () => {
+        setShowMessage(true)
+    }
+
+    const closeMessage = e => {
+        setShowMessage(false)
+    }
+
     return(
-        <>
+        <>      {
+                    showMessage &&
+                        <PopUpnotice >
+                            <div onClick={closeMessage}>X</div>
+                            <p className="fuente">Ahora puedes gestionar tus cuentas de retiro en moneda local desde <strong>Billeteras > Mi billetera COP > Retirar</strong> </p>
+                        </PopUpnotice>
+                }
+
             {
                 !params.path &&
                     <MobileMenu className={`${osDevice}`}>
@@ -24,12 +51,17 @@ export default function MobileMenuComponent() {
                             menuPrincipal.map((item) => {
                                     if (item.clave !== "security" && verification_state !== "accepted") { return null }
                                     if (item.clave === "prices") { return null }
+
+                                    const Wrapper = ["withdraw_accounts"].includes(item.clave) ? "div" : Link
+                                    const toWithdrawAccounts = ["withdraw_accounts"].includes(item.clave) && goToFiatWallet
+
                                     return (
                                         <MenuItem
                                             key={item.id}
                                             className={`item_${item.clave} ${params?.primary_path === item?.clave ? "_active" : ""}`}
                                         >
-                                            <Link to={`/${item.clave}`}>
+                                        
+                                            <Wrapper to={`/${item.clave}`} onClick={toWithdrawAccounts}>
                                                 <div className={`text ${params?.primary_path === item?.clave ? "activate" : ""}`}>
                                                     <div className="iconButtCont">
                                                         <IconSwitch
@@ -40,7 +72,7 @@ export default function MobileMenuComponent() {
                                                         <PopNotification notifier={item?.clave} />
                                                     </div>
                                                 </div>
-                                            </Link>
+                                            </Wrapper>
                                         </MenuItem>
                                     );
                                 })

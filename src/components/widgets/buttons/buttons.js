@@ -6,8 +6,8 @@ import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
 import styled from 'styled-components'
-
 import "./buttons.css";
+ 
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 const SimpleLoader = loadable(() => import("../loaders"));
@@ -110,6 +110,9 @@ export const AddNewItem2 = (props) => {
   );
 };
 
+
+
+
 export const ButtonPrincipalMenu = ({
   clave,
   path,
@@ -119,8 +122,10 @@ export const ButtonPrincipalMenu = ({
   keyCode, 
   className,
   device,
+  handleAction,
   ...props
-}) => {
+}) => { 
+
 
   const { keyActions } = useSelector((state) => state.ui);
   // const elementId = useKeyActionAsClick(
@@ -136,37 +141,43 @@ export const ButtonPrincipalMenu = ({
   };
 
   const buttonText = isDesktop ? `${text} ${keyActions ? `[${subfix}]` : ''}` : text;
+
+
+  const Wrapper = ["withdraw_accounts"].includes(clave) ? "div" : Link
+  const toWithdrawAccounts = ["withdraw_accounts"].includes(clave) ? handleAction : activarItem
+
+
   return (
-    <Link
-      // id={elementId}
-      to={`/${clave}`}
-      className={`itemMenu ${path === clave ? "activo" : ""} ${className}`}
-      onClick={activarItem}
-    >
-      <HoverTag className="_hoverTag fuente">
-        {buttonText}
-      </HoverTag>
+        <Wrapper
+          // id={elementId}
+          to={`/${clave}`}
+          className={`itemMenu ${path === clave ? "activo" : ""} ${className}`}
+          onClick={toWithdrawAccounts}
+        >
+          <HoverTag className="_hoverTag fuente">
+            {buttonText}
+          </HoverTag>
 
-      <div className={`text ${path === clave ? "activate" : ""}`}>
-        <div className="iconButtCont">
-          <IconSwitch
-            icon={icon}
-            size={18}
-            color={`${path === clave ? "#14B3F0" : "#d6d6d6"}`}
-          />
-          <PopNotification notifier={clave} />
-        </div>
-        <p className="itemText fuente">{buttonText}</p>
-      </div>
+          <div className={`text ${path === clave ? "activate" : ""}`}>
+            <div className="iconButtCont">
+              <IconSwitch
+                icon={icon}
+                size={18}
+                color={`${path === clave ? "#14B3F0" : "#d6d6d6"}`}
+              />
+              <PopNotification notifier={clave} />
+            </div>
+            <p className="itemText fuente">{buttonText}</p>
+          </div>
 
-      <div className="indicatorCont">
-        <div className={`indicator ${path === clave ? "activate" : ""}`}>
-          <div
-            className={`indicatorSon ${path === clave ? "activate" : ""}`}
-          ></div>
-        </div>
-      </div>
-    </Link>
+          <div className="indicatorCont">
+            <div className={`indicator ${path === clave ? "activate" : ""}`}>
+              <div
+                className={`indicatorSon ${path === clave ? "activate" : ""}`}
+              ></div>
+            </div>
+          </div>
+        </Wrapper>
   );
 };
 
