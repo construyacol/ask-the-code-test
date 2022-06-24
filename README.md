@@ -1,44 +1,81 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Coinsenda PWA
+
+This app is built using React Js and Redux, it can be ran on web and mobile apps using [Capacitor](https://capacitorjs.com/)
+
 
 ## Available Scripts
 
-In the project directory, you can run:
-
-### `npm start`
-
+### `yarn start`
 Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:2998](http://localhost:2998) to view it in the browser.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+### `yarn build`
+Build the production bundle
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Mobile local setup using Capacitor
 
-### `npm run build`
+To start testing in mobile you'll need to sync first all the dependencies with 
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npx cap sync`
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Then you can run the app in a simulator/emulator or an android real device
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npx cap run ios`
+### `npx cap run android`
 
-### `npm run eject`
+If you want to do changes in the native project, you'll need to open the project in Android Studio or Xcode using:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### `npx cap open ios`
+### `npx cap open android`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Remember the instructions to prepare the environments for Android and iOS:
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Android:
 
-## Learn More
+	- Install Java
+	- Install Android Studio
+	- Set de ANDROID_STUDIO variable in the path
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### iOS:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+	- Install Xcode
+	- Install homebrew and xcode tools in case you need
+
+You'll find a detailed explanation here: https://capacitorjs.com/docs/getting-started/environment-setup
+
+## Local development
+
+For local development you'll need to run the dev server in the root of the repo, remember to install the dependencies first, then, you will need to update the `capacitor.config.json` in order to listen the server changes and the local app you're running.
+
+The IP used in the config is the local one set by the network.
+
+    "server":  {  "url":  "http://192.168.1.68:8100",  "cleartext":  true  },
+
+
+More details here: https://capacitorjs.com/docs/guides/live-reload#using-with-framework-clis
+
+
+## Production build
+
+Generate a production build is simple, just run `yarn mobile:build` and then sync the resources with `npx cap sync`.
+
+### Android
+For each new release version, the `versionCode` needs to be increased by 1, the `versionName` can be updated acordingly to the practices in ther team (`major.minor.patch`).
+
+The file that contains this config is `frontend/android/app/build.gradle`.
+
+The Android keystore is a unique private key, the passwords and credentials should be backed up properly.
+
+The build should be signed in a release mode in Android Studio
+
+### iOS
+For each new release version, the `Build` needs to be increased by 1, the `Version` can be updated acordingly to the practices in ther team (`major.minor.patch`).
+
+This is changed on Xcode under App -> General or in the `frontend/ios/App/App/Info.plist`
+
+The certificates are generated from developer.apple.com.
+
