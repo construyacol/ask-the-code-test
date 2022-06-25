@@ -108,6 +108,7 @@ const STAGES = {
       uiType:"date",
       "settings":{
         defaultMessage:"Ingresa tú fecha de nacimiento (Día / Mes / Año)",
+        placeholder:"31/10/2008",
         props:{
           min:"1930-01-01",
           max:"2003-12-31",

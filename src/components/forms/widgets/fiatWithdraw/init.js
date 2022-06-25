@@ -25,7 +25,7 @@ const NewFiatWithdrawAccountComponent = props => {
     }, []) 
    
     return(
-      <FormContainer>
+      <FormContainer className="fiatWithdrawContainer">
           {
               dataForm ?
                 <FormComponent

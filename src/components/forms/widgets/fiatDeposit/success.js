@@ -113,16 +113,6 @@ const FiatDepositSuccess = ({
                     </Header>
 
                     <Content>
-                        <ButtonContainer className="_sticky">
-                            <ControlButton
-                                // id={idSubmitButton}
-                                // loader={loader}
-                                formValidate
-                                label="Finalizar"
-                                handleAction={finish}
-                            />
-                        </ButtonContainer>
-
 
                         <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
                         <ItemAccountContainer className={`_itemAccountContainer ${!depositAccount ? 'skeleton' : ''}`}>

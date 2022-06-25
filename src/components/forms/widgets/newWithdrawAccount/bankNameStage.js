@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import validations from './validations'
-import { StageContainer } from './styles'
+import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 import SelectListComponent from '../selectListComponent'
 import useViewport from '../../../../hooks/useWindowSize'

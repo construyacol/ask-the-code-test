@@ -129,16 +129,6 @@ const WAccountCreatedSuccess = ({
                     </Content>
 
                     <Content>
-                        <ButtonContainer className="_sticky">
-                            <ControlButton
-                                // id={idSubmitButton}
-                                // loader={loader}
-                                formValidate
-                                label="Finalizar"
-                                // handleAction={finish}
-                            />
-                        </ButtonContainer>
-
 
                         <SubTitle className="fuente">Datos de tu cuenta de retiro</SubTitle>
                         <ItemAccountContainer className={`_itemAccountContainer ${!withdrawAccount ? 'skeleton' : ''}`}>

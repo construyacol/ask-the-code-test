@@ -387,7 +387,7 @@ export const OperationForm = styled.form`
   grid-row-gap: 5px;
   position: relative;
   max-height: 450px;
-  background: #f0f0f0;
+  background: #f3f3f3;
   border-radius: 8px;
   padding: 30px;
   width: calc(95% - 60px);

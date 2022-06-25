@@ -13,7 +13,6 @@ import { doLogout } from "../../utils";
 import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
-// import isoType from '../../forms/widgets/onBoardingComponent/assets/isoType.png'
 // import useToastMessage from "../../../hooks/useToastMessage";
 import "./loader.css";
  

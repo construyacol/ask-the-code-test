@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components'
-import { PRIMARY_COLOR } from '../../const'
+// import { PRIMARY_COLOR } from '../../const'
 
 
 const IconButtonContainer = styled.div`
@@ -229,7 +229,7 @@ export const InputContainer = styled.form`
   margin:15px 0 60px;
   width: 100%;
   height: 63px;
-  border: 1px solid ${props => props.inputStatus === 'success' ? PRIMARY_COLOR : 'rgba(80,102,122,.38)'};
+  border: 1px solid ${props => props.inputStatus === 'success' ? "#00d2ff" : 'rgba(80,102,122,.38)'};
   border-radius: 6px;
   display: grid;
   position: relative;
@@ -254,7 +254,7 @@ export const InputContainer = styled.form`
       font-family: "Raleway", sans-serif !important;
     }
     &.success{
-      color: #005000;
+      color: #3a7bd5;
     }
   }
 

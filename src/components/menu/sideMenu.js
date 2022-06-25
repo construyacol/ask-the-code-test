@@ -21,6 +21,14 @@ import {
     LaptopLogoContainer,
     // SideMenuWrapper
 } from './styles'
+import { useState } from 'react';
+
+import useToastMessage from "../../hooks/useToastMessage";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+import { history } from '../../const/const'
+import { createSelector } from "reselect";
+
+
 
 function SideMenuComponent(props) {
 
@@ -98,6 +106,57 @@ function SideMenuComponent(props) {
 export default withCoinsendaServices(SideMenuComponent)
 
 
+export const PopUpnotice = styled.div`
+    width: 300px;
+    height: 100px;
+    background: white;
+    position: absolute;
+    left: 30px;
+    bottom: 20px;
+    border-radius: 4px;
+    padding: 15px 20px;
+    border: 1px solid #ededed;
+    border-top: 4px solid var(--primary);
+    div{
+        width: 20px;
+        height: 20px;
+        background: #000000e3;
+        position: absolute;
+        top: -27px;
+        right: 0;
+        border-radius: 3px;
+        display: flex;
+        justify-items: center;
+        color: white;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 3;
+    }
+    p{
+        color:var(--paragraph_color);
+        font-size: 15px;
+        line-height: 22px;
+    }
+    @media (max-width: 768px) {
+        position: fixed;
+        z-index: 3;
+    }
+
+
+`
+
+export const selectAvaliableFiatWallet = createSelector(
+    (state) => state.modelData.wallets,
+    (wallets) => {
+      if(!wallets)return ; 
+      const fiatWalletId = Object.keys(wallets)?.find(walletId => {
+        return ["fiat"].includes(wallets[walletId]?.currency_type)
+      });
+      return [ wallets[fiatWalletId] ]
+    }
+  );
 
 
 const MenuItemsComponent = props => {
@@ -105,44 +164,93 @@ const MenuItemsComponent = props => {
   const { keyActions, osDevice, verification_state } = useSelector((state) => state.ui);
   const logoutButtonText = window.innerWidth > 900 ? `Cerrar sesión ${keyActions ? '[ESC]' : ''}` : "Cerrar sesión";
   const { isMovilViewport, isLaptopViewport } = useViewport()
+  const [ showMessage, setShowMessage ] = useState(false)
 
-    return(
-        <MenuItemsContainer>
-            <section className="section1">
-                {
-                    isMovilViewport ?
-                    <MovilMenuComponent 
-                        actions={props.actions}
-                        closeMenu={props.closeMenu}
-                    />
-                    :
-                    menuPrincipal.map((item) => {
-                        if (item.clave !== "security" && verification_state !== "accepted") { return false }
-                        return (
-                            <ButtonPrincipalMenu
-                                className={`${item.device} ${isLaptopViewport ? 'laptopView' : ''}`}
-                                activarItem={props.activarItem}
-                                path={props?.match?.params?.primary_path}
-                                {...item}
-                                key={item.id}
-                            />
-                        );
-                    })
-                }
-                <br />
-          </section>
 
-          <CloseButtonContainer 
-            className={`fuente ${osDevice} ${isLaptopViewport ? 'laptopView' : ''}`}
-            onClick={props.logOut}
-          >
-            <i className="fas fa-power-off"></i>
-            <p className="fuente itemText">
-                {logoutButtonText}
-            </p>
-          </CloseButtonContainer>
+  const [ coinsendaServices ] = useCoinsendaServices();
+  const [ fiatWallet ] = useSelector((state) => selectAvaliableFiatWallet(state));
+  const [toastMessage] = useToastMessage();
+  
+  const _showMessage = () => {
+    setShowMessage(true)
+  }
 
-        </MenuItemsContainer>
+  const closeMessage = e => {
+    setShowMessage(false)
+  }
+
+  const goToFiatWallet = async() => {
+    if(!fiatWallet)return;
+    let count = fiatWallet?.count
+    if(!fiatWallet?.count){
+      const countAccount = await coinsendaServices.countOfAccountTransactions(fiatWallet.id);
+      await props.actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count } }, "wallets");
+
+      count = countAccount?.count;
+      if(count < 1){
+        let areThereDeposits = await coinsendaServices.getDepositByAccountId(fiatWallet.id);
+        if (areThereDeposits?.length){
+            await props.actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count:1 } }, "wallets");
+            count++
+        }
+      }
+    }
+    
+    history.push(`/wallets/${count>0 ? 'withdraw' : 'deposit' }/${fiatWallet?.id}`)
+    if(count > 0){
+        _showMessage()
+    }else{
+        toastMessage("Primero crea un depósito")
+    }
+  }
+
+
+    return( 
+        <>
+            {
+                showMessage &&
+                <PopUpnotice >
+                    <div onClick={closeMessage}>X</div>
+                    <p className="fuente">Ahora puedes gestionar tus cuentas de retiro en moneda local desde <strong>Billeteras > Mi billetera COP > Retirar</strong> </p>
+                </PopUpnotice>
+            }
+            <MenuItemsContainer>
+                <section className="section1">
+                    {
+                        isMovilViewport ?
+                        <MovilMenuComponent 
+                            actions={props.actions}
+                            closeMenu={props.closeMenu}
+                        />
+                        :
+                        menuPrincipal.map((item) => {
+                            if (item.clave !== "security" && verification_state !== "accepted") { return false }
+                            return (
+                                <ButtonPrincipalMenu 
+                                    className={`${item.device} ${isLaptopViewport ? 'laptopView' : ''}`}
+                                    activarItem={props.activarItem}
+                                    path={props?.match?.params?.primary_path}
+                                    handleAction={goToFiatWallet}
+                                    {...item}
+                                    key={item.id}
+                                />
+                            );
+                        })
+                    }
+                    <br />
+            </section>
+
+            <CloseButtonContainer 
+                className={`fuente ${osDevice} ${isLaptopViewport ? 'laptopView' : ''}`}
+                onClick={props.logOut}
+            >
+                <i className="fas fa-power-off"></i>
+                <p className="fuente itemText">
+                    {logoutButtonText}
+                </p>
+            </CloseButtonContainer>
+            </MenuItemsContainer>
+        </>
     )
 }
 

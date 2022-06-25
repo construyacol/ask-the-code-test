@@ -2,8 +2,7 @@ import { useEffect } from 'react'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
-import { OptionInputContainer } from './styles'
-import { StageContainer } from './styles'
+import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { BiRightArrowAlt } from 'react-icons/bi';
 
@@ -42,7 +41,7 @@ export default function WithdrawAccountsComponent({
 
     return(
       <StageContainer className="_identityComponent">
-        {children}
+        {children} 
         <OptionInputContainer>
           <p className="fuente _pLabel _inputLabelP">¿En que cuenta quieres recibir tu dinero?  </p>
           <SelectListContainer>
@@ -51,7 +50,7 @@ export default function WithdrawAccountsComponent({
                   itemList={{
                     value:"createId",
                     icon:"add",
-                    uiName:"Agregar nueva cuenta de retiro"
+                    uiName:isMovilViewport ? "Crear cuenta" : "Agregar nueva cuenta de retiro"
                   }}
                   AuxComponent={[
                     () => <BiRightArrowAlt className="_birArrow" size={37} />

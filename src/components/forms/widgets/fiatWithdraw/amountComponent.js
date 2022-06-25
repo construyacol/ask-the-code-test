@@ -1,10 +1,12 @@
-import { useEffect } from 'react'
-import { StageContainer } from './styles'
+import { useEffect, useState } from 'react'
+import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 import { useSelector } from "react-redux";
 import validations from './validations'
 import { createSelector } from "reselect";
-// import AvailableBalance from '../../../widgets/availableBalance'
+import AvailableBalance from '../../../widgets/availableBalance'
+import { formatToCurrency } from "../../../../utils/convert_currency";
+
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -22,6 +24,7 @@ export default function AmountComponent ({
   
     const { withdrawAccount } = state
     const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
+    const [availableAmount, setAvailableAmount] = useState(availableBalance)
     // const { isMovilViewport } = useViewport();
 
   
@@ -31,7 +34,7 @@ export default function AmountComponent ({
 
       const [ _value, _status ] = await validations[stageData?.key](e?.target?.value, {
         ...stageData, 
-        state, 
+        state,  
         dataForm, 
         withdrawProvider, 
         availableBalance,
@@ -44,6 +47,16 @@ export default function AmountComponent ({
       })
       setStageStatus(_status)
     }
+
+    const handleMaxAvailable = () => {
+      withdrawAmountOnChange({target:{value:availableBalance}});
+    }
+
+    useEffect(() => {
+      setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency).toFormat())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
 
       // load state  by default
       useEffect(() => {
@@ -67,6 +80,11 @@ export default function AmountComponent ({
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
           setStageData={setStageData}
+          AuxComponent={[() => (<AvailableBalance
+            id={currentWallet?.id}
+            handleAction={handleMaxAvailable} 
+            amount={availableAmount}
+          />)]}
         />
       </StageContainer>
     )

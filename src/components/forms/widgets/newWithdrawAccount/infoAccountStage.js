@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { StageContainer, OptionInputContainer } from './styles'
+import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import validations from './validations'
 import InputComponent from '../kyc/InputComponent'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
