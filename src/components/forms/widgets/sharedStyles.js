@@ -512,9 +512,8 @@ export const Content = styled.section`
   
   [alt="isoType"]{
     position: absolute;
-    margin: auto;de
+    margin: auto;
     top: 30px;
-    left: 40px;
     left: 0px;
     right:0;
   }

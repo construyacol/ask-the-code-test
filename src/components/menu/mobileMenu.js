@@ -10,8 +10,11 @@ import { useState } from 'react'
 
 import { history } from '../../const/const'
 import { selectAvaliableFiatWallet, PopUpnotice } from './sideMenu'
+import useToastMessage from "../../hooks/useToastMessage";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
+import { useActions } from "../../hooks/useActions";
 
-export default function MobileMenuComponent() {
+export default function MobileMenuComponent(props) {
 
     const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
     const PopNotification = loadable(() => import("../widgets/notifications"));
@@ -19,14 +22,39 @@ export default function MobileMenuComponent() {
     const params = useParams()
 
 
-
+    const actions = useActions();
     const [ showMessage, setShowMessage ] = useState(false)
     const [ fiatWallet ] = useSelector((state) => selectAvaliableFiatWallet(state));
-    const goToFiatWallet = () => {
+    const [ coinsendaServices ] = useCoinsendaServices();
+    const [toastMessage] = useToastMessage();
+
+
+    const goToFiatWallet = async() => {
         if(!fiatWallet)return;
-        history.push(`/wallets/withdraw/${fiatWallet?.id}`)
-        _showMessage()
-    }
+        let count = fiatWallet?.count
+        if(!fiatWallet?.count){
+          const countAccount = await coinsendaServices.countOfAccountTransactions(fiatWallet.id);
+          await actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count } }, "wallets");
+    
+          count = countAccount?.count;
+          if(count < 1){
+            let areThereDeposits = await coinsendaServices.getDepositByAccountId(fiatWallet.id);
+            if (areThereDeposits?.length){
+                await actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count:1 } }, "wallets");
+                count++
+            }
+          }
+        }
+        
+        history.push(`/wallets/${count>0 ? 'withdraw' : 'deposit' }/${fiatWallet?.id}`)
+        if(count > 0){
+            _showMessage()
+        }else{
+            toastMessage("Primero crea un depósito")
+        }
+      }
+
+
     const _showMessage = () => {
         setShowMessage(true)
     }

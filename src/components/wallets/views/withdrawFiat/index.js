@@ -28,16 +28,16 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
 
   useEffect(() => {
     initConfig()
-    withdrawButton.current.addEventListener("click", backToWithdraw);
+    withdrawButton?.current?.addEventListener("click", backToWithdraw);
     return () => unMountAction()
   // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, [])
-
+  }, []) 
+ 
   const unMountAction = () => {
     titleSectionEl.current.classList.remove("_breadCrumbParent");   
     document.querySelector("._breadCrumbChild")?.remove()
     titleSectionEl.current.onclick = () => null;
-    withdrawButton.current.removeEventListener("click", backToWithdraw);
+    withdrawButton?.current?.removeEventListener("click", backToWithdraw);
     history.push(`${history.location.pathname}`)
   }
 

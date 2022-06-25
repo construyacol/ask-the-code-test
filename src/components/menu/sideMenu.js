@@ -23,8 +23,8 @@ import {
 } from './styles'
 import { useState } from 'react';
 
-
-
+import useToastMessage from "../../hooks/useToastMessage";
+import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { history } from '../../const/const'
 import { createSelector } from "reselect";
 
@@ -166,8 +166,11 @@ const MenuItemsComponent = props => {
   const { isMovilViewport, isLaptopViewport } = useViewport()
   const [ showMessage, setShowMessage ] = useState(false)
 
-  const [ fiatWallet ] = useSelector((state) => selectAvaliableFiatWallet(state));
 
+  const [ coinsendaServices ] = useCoinsendaServices();
+  const [ fiatWallet ] = useSelector((state) => selectAvaliableFiatWallet(state));
+  const [toastMessage] = useToastMessage();
+  
   const _showMessage = () => {
     setShowMessage(true)
   }
@@ -176,14 +179,33 @@ const MenuItemsComponent = props => {
     setShowMessage(false)
   }
 
-  const goToFiatWallet = () => {
+  const goToFiatWallet = async() => {
     if(!fiatWallet)return;
-    history.push(`/wallets/withdraw/${fiatWallet?.id}`)
-    _showMessage()
+    let count = fiatWallet?.count
+    if(!fiatWallet?.count){
+      const countAccount = await coinsendaServices.countOfAccountTransactions(fiatWallet.id);
+      await props.actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count } }, "wallets");
+
+      count = countAccount?.count;
+      if(count < 1){
+        let areThereDeposits = await coinsendaServices.getDepositByAccountId(fiatWallet.id);
+        if (areThereDeposits?.length){
+            await props.actions.update_item_state({ [fiatWallet.id]: { ...fiatWallet, count:1 } }, "wallets");
+            count++
+        }
+      }
+    }
+    
+    history.push(`/wallets/${count>0 ? 'withdraw' : 'deposit' }/${fiatWallet?.id}`)
+    if(count > 0){
+        _showMessage()
+    }else{
+        toastMessage("Primero crea un depósito")
+    }
   }
 
 
-    return(
+    return( 
         <>
             {
                 showMessage &&
