@@ -27,8 +27,8 @@
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=io.coinsenda.coinsenda",
-      "id": "io.coinsenda.coinsenda"
+      "url": "https://play.google.com/store/apps/details?id=app.coinsenda",
+      "id": "app.coinsenda"
     }
   ],
   "shortcuts": [
