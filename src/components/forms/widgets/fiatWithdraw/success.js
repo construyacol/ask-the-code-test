@@ -9,6 +9,7 @@ import {
     ItemAccountContainer,
     MobileBalance
 } from '../../../widgets/accountList/listView'
+import { capitalizeWord } from '../../../../utils'
 
 import {
     // HeaderContainer,
@@ -152,7 +153,7 @@ const WithdrawCreatedSuccess = ({
                                     }
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>{accountName || 'is awesome bank name'}</AccountLabel>
+                                    <AccountLabel>{capitalizeWord(accountName) || 'is awesome bank name'}</AccountLabel>
                                     <CurrencyLabel>{(UI_NAMES.account_type[withdrawAccount?.info?.account_type] || withdrawAccount?.info?.id_number) || 'awsom account type'}</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>

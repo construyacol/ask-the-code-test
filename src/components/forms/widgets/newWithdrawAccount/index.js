@@ -91,7 +91,8 @@ const {
     const Element = await import(`./success`)
     if(!Element) return;
     const WAccountCreatedSuccess = Element.default
-    actions.renderModal(() => <WAccountCreatedSuccess withdrawAccount={withdrawAccount} />);
+    actions.success_sound();
+    actions.renderModal(() => <WAccountCreatedSuccess withdrawAccountData={withdrawAccount} />);
   }
 
   const createWithdrawAccount = async() => {

@@ -86,6 +86,7 @@ const {
     const Element = await import(`./success`)
     if(!Element) return;
     const WithdrawCreatedSuccess = Element.default
+    actions.success_sound();
     actions.renderModal(() => <WithdrawCreatedSuccess withdrawData={withdrawData} />);
   }
 

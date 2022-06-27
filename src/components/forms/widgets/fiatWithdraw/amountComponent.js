@@ -75,6 +75,7 @@ export default function AmountComponent ({
           onChange={withdrawAmountOnChange} 
           inputStatus={stageStatus}
           // value={value}
+          inputMode="numeric"
           name={stageData?.key} 
           label={stageData?.uiName}
           placeholder={stageData?.settings?.placeholder}

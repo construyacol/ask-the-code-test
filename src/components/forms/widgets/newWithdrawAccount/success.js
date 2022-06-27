@@ -5,11 +5,12 @@ import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
 import styled from 'styled-components'
 import { UI_NAMES } from '../../../../const/uiNames'
 import loadable from "@loadable/component";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { 
     ItemAccountContainer,
     MobileBalance
 } from '../../../widgets/accountList/listView'
+import { capitalizeWord } from '../../../../utils'
 
 import {
     // HeaderContainer,
@@ -47,7 +48,7 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 
 const WAccountCreatedSuccess = ({ 
-    withdrawAccount = false,
+    withdrawAccountData = false,
     // closeModal, 
     // actions, 
     params, 
@@ -61,39 +62,10 @@ const WAccountCreatedSuccess = ({
         actions.renderModal(null);
     };
 
-    // const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(new_ticket, 'shortDeposit')
-    // const [ depProvDetail, setDepProvDetail ] = useState([])
-    // const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[new_ticket?.deposit_provider_id]);
-    // const depositAccount = depositProvider?.depositAccount
-    // const finish = async () => {
-    //         closeModal()
-    //         history.push(`/wallets/activity/${params.account_id}/deposits`);
-    //         return setTimeout(() => {
-    //              actions.add_new_transaction_animation();
-    //         }, 20)
-    // }
-    // const [ amount, setAmount ] = useState([])
+    const { withdraw_accounts } = useSelector(({ modelData }) => modelData)
+    const withdrawAccount = withdraw_accounts[withdrawAccountData?.id]
+    const accountName = withdrawAccount?.bank_name?.ui_name || UI_NAMES.provider[withdrawAccount?.provider_type]
 
-    
-
-    // const init = async() => {
-    //     setAmount(await formatCurrency(new_ticket?.amount_neto, new_ticket?.currency))
-    //     setDepProvDetail(await formatDepositAccount(depositAccount))
-    // }
-
-    // // [`Cantidad ${isPending ? 'por acreditar' : 'acreditada'}:`, `${await formatCurrency(order?.amount, order?.currency)} ${currencySimbol}`],
-
-
-    // useEffect(() => {
-    //     if(withdrawAccount){
-    //         console.log('withdrawAccount', withdrawAccount)
-    //         debugger
-    //     }
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawAccount])
-
-    const accountName = withdrawAccount?.info?.bank_name || UI_NAMES.provider[withdrawAccount.provider_type]
-    console.log('accountName', accountName)
 
     return(
         <OtherModalLayout
@@ -137,13 +109,13 @@ const WAccountCreatedSuccess = ({
                                     {
                                         withdrawAccount &&
                                             <IconSwitch
-                                                icon={withdrawAccount?.info?.bank_name || withdrawAccount?.provider_type}
+                                                icon={withdrawAccount?.bank_name?.value  || withdrawAccount?.provider_type}
                                                 size={35}
                                             />
                                     }
                                 </IconAccount>
                                 <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>{accountName || 'is awesome bank name'}</AccountLabel>
+                                    <AccountLabel>{capitalizeWord(accountName) || 'is awesome bank name'}</AccountLabel>
                                     <CurrencyLabel>{(UI_NAMES.account_type[withdrawAccount?.info?.account_type] || withdrawAccount?.info?.id_number) || 'awsom account type'}</CurrencyLabel>
                                 </LabelContainer>
                             </HeaderMainContainer>

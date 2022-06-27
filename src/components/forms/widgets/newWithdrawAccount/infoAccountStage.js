@@ -78,6 +78,7 @@ export default function InfoAccountComponent ({
             placeholder={stageData?.accountNumber?.settings?.placeholder}
             type={stageData?.accountNumber?.uiType}
             setStageData={setStageData}
+            inputMode="numeric"
           />
         <OptionInputContainer>
           <p className="fuente _pLabel">¿Cual es el tipo de cuenta?</p>
