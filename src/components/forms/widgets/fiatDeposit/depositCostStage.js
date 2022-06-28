@@ -1,11 +1,8 @@
 import { useEffect } from 'react'
-// import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
-import { AiFillBank } from "react-icons/ai";
-import { BsCash } from "react-icons/bs";
+
 import styled from 'styled-components'
 
 export default function DepositSourceComponent({ 
@@ -16,11 +13,12 @@ export default function DepositSourceComponent({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
-    ...props
+    costList,
+    // depositProvider
+    // ...props
   }){  
 
     const { isMovilViewport } = useViewport();
-    // const [ withdrawAccounts ] = useSelector((state) => selectWithdrawAccounts(state));
     // const actions = useActions()
 
     const selectWithdrawAccount = (withdrawAccount) => {
@@ -37,34 +35,8 @@ export default function DepositSourceComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
-    const depositSource = {
-      otros_medios:{
-        value:"otros_medios",
-        Icon:AiFillBank,
-        uiName:"Transferencia bancaria",
-        metaData:[
-          "Sucursal Virtual O APP",
-          "Cajero Automático",
-          "Sucursal Física"
-        ]
-      },
-      en_efectivo:{
-        value:"en_efectivo",
-        Icon:BsCash,
-        uiName:"En efectivo",
-        metaData:[
-          "Corresponsal Bancario",
-          "Cajero Multifuncional",
-          "Sucursal Física (Solo Efectivo)"
-        ]
-      } 
-    }
-
-    // console.log('WITHDRAW ACCOUNT => ', depositSource[state[stageData?.key]?.value])
-    const currentMetadata = depositSource[state[stageData?.key]?.value]?.metaData
-    console.log('WITHDRAW ACCOUNT => ', currentMetadata)
-
+    const currentMetadata = costList && costList[state[stageData?.key]?.value]?.metaData
+    
     return(
       <StageContainer className="_identityComponent">
         {children} 
@@ -72,16 +44,16 @@ export default function DepositSourceComponent({
           <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
           <SelectListContainer>
             {
-              depositSource && Object.keys(depositSource).map((key, index) => {
+              costList && Object.keys(costList).map((key, index) => {
 
-                const isSelected = [depositSource[key]?.value].includes(state[stageData?.key]?.value)
+                const isSelected = [costList[key]?.value].includes(state[stageData?.key]?.value)
                 return <ItemListComponent 
                   key={index} 
                   // className={`auxNumber`}
-                  itemList={depositSource[key]}
+                  itemList={costList[key]}
                   // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                   firstIndex={index === 0}
-                  lastIndex={(Object.keys(depositSource)?.length - 1) === index}
+                  lastIndex={(Object.keys(costList)?.length - 1) === index}
                   isSelectedItem={isSelected}
                   isMovilViewport={isMovilViewport}
                   handleAction={selectWithdrawAccount}
@@ -125,6 +97,9 @@ const MetaDataContainer = styled.div`
     }
   }
 `
+
+
+
 
   // auxUiName
 

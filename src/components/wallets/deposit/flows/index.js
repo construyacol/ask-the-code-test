@@ -190,22 +190,6 @@ export const Success = (props) => {
 
               <div className={`bodyTcket nWbody2 Fbody2 eya fuente ${final ? "desaparece1" : ""}`}>
 
-                {
-                  depositProvData && 
-                  <BankDataContainer accountData={{
-                      title:"Datos para hacer el depósito",
-                      bankUiName:depositProvData?.name,
-                      accountType:depositProvData?.account?.type?.type,
-                      accountIdUiName:depositProvData?.account?.account_id?.ui_name,
-                      accountId:depositProvData?.account?.account_id?.account_id,
-                      bussinesNameUiName:depositProvData?.account?.bussines_name?.ui_name,
-                      bussinesName:depositProvData?.account?.bussines_name?.bussines_name,
-                      nitUiName:depositProvData?.account?.nit?.ui_name,
-                      nit:depositProvData?.account?.nit?.nit,
-                      dvUiName:depositProvData?.account?.dv?.ui_name,
-                      dv:depositProvData?.account?.dv?.dv
-                  }} />
-                }
 
                 {new_ticket && (
                   <DetailGenerator order={new_ticket} theme="darkTheme" />

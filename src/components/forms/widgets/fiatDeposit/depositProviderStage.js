@@ -6,9 +6,6 @@ import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
 
-const DEFAULT_PROVIDER = {
-  value:"bancolombia"
-}
 
 export default function DepositProviderComponent({ 
     stageManager:{ 
@@ -18,7 +15,7 @@ export default function DepositProviderComponent({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
-    ...props
+    // ...props
   }){  
 
     const { isMovilViewport } = useViewport();
@@ -36,8 +33,6 @@ export default function DepositProviderComponent({
     }, [])
 
     // console.log('DEPOSIT_PROVIDER => ', state)
-    const otherBankIsSelected = ["other_bank"].includes(state[stageData?.key]?.value)
-
 
     return(
       <StageContainer className="_identityComponent">
@@ -68,13 +63,10 @@ export default function DepositProviderComponent({
                 icon:"bank",
                 uiName:"Otro banco/servicio",
                 Icon:AiFillBank,
-                defaultProv:depositProviders[DEFAULT_PROVIDER?.value]
+                defaultProv:depositProviders[Object.keys(depositProviders).at(0)]
               }}
-              // AuxComponent={[
-              //   () => <BiRightArrowAlt className="_birArrow" size={37} />
-              // ]}
-              isSelectedItem={otherBankIsSelected}
-              lastIndex={true}
+              isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
+              lastIndex
               handleAction={selectProvider}
             />
           </SelectListContainer>
@@ -82,53 +74,6 @@ export default function DepositProviderComponent({
       </StageContainer>
     )
   }
-
-
-  // auxUiName
-
-// const IdNumberPanel = ({ item }) => {
-//     return( 
-//       <PanelContainer>
-//         <HR/>
-//         <p className="fuente2">{item?.document_info?.id_number}</p>
-//         <p className="fuente2">{item?.enabled ? 'Número' : 'Verificando...'}</p>
-//       </PanelContainer>
-//     )
-// }
-
-
-
-
-// const PanelContainer = styled.div`
-//   width:auto;
-//   display: grid;
-//   align-items: center;
-//   grid-template-columns: auto 1fr;
-//   column-gap: 15px;
-//   grid-template-rows: auto auto;
-//   align-self: center;
-//   row-gap: 3px;
-
-//   ${HR}{
-//     grid-column-start: 1;
-//     grid-row-start: 1;
-//     grid-row-end: 3;
-//   }
-
-//   p{
-//     margin:0;
-//     color:var(--paragraph_color);
-//     font-size:18px;
-//   }
-
-//   p:nth-child(3) {
-//     font-size:13px;
-//     font-family: "Raleway",sans-serif;
-//     color: var(--placeholder);
-//   }
-// `
-
-
 
 
   const selectDepositProviders = createSelector(

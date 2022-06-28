@@ -65,7 +65,7 @@ function FinalTicket(props) {
 
         <div className="finalTicket contenidoTicket wAccountSuccess">
 
-        <BankData>
+        {/* <BankData>
 
           <TitleContainer className="__titleCont">
            <p className="fuente">{'Datos de tu cuenta de retiro'}</p>
@@ -97,7 +97,7 @@ function FinalTicket(props) {
               </>
             }
 
-        </BankData>
+        </BankData> */}
        
         </div>
 

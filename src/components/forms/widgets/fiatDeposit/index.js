@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useStage from '../../hooks/useStage'
 import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
@@ -12,35 +12,28 @@ import useViewport from '../../../../hooks/useWindowSize'
 // import { useSelector } from "react-redux";
 // import { createSelector } from "reselect";
 import { FIAT_DEPOSIT_TYPES } from './api'
-import { UI_ERRORS } from '../../../../const/uiErrors'
+// import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
 // import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
-import DepositSourceComponent from './depositSourceStage' 
 import DepositProviderComponent from './depositProviderStage' 
-
+import { useSelector } from "react-redux";
+import { createSelector } from "reselect";
 // import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 // import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
-import { getCost } from './validations'
+// import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
+// import { formatToCurrency } from '../../../../utils/convert_currency'
+import { ApiPostCreateDeposit, selectProviderData } from './api'
+import DepositCostComponent from './depositCostStage'
 
-import { selectWithdrawProvider } from './depositAmountStage'
-import { useSelector } from "react-redux";
-import { formatToCurrency } from '../../../../utils/convert_currency'
 
-// import { 
-//   LabelContainer,
-//   AccountLabel,
-//   IconAccount
-// } from '../../../widgets/headerAccount/styles'
 
-// const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
-
 
 
 const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
@@ -50,6 +43,10 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
   const [ loading, setLoading ] = useState(false)
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
+  // const params = useParams()
+
+  const [ costList, depositProvider ] = useSelector(() => selectProviderData(handleState?.state?.depositProvider));
+
 
   const walletInfo = useWalletInfo()
   
@@ -76,54 +73,39 @@ const {
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
     setStageStatus(null)
-    if(currentStage<1){
-      setLoading(true)
-      setLoading(false)
-    }
+    // if(currentStage<1){
+    //   setLoading(true)
+    //   setLoading(false)
+    // }
     nextStage()
   }
 
-  const renderSuccessComponent = async(withdrawData) => {
-    // const Element = await import(`./success`)
-    // if(!Element) return;
-    // const WithdrawCreatedSuccess = Element.default
-    // actions.success_sound();
-    // actions.renderModal(() => <WithdrawCreatedSuccess withdrawData={withdrawData} />);
+  const renderSuccessComponent = async(data) => {
+    const Element = await import(`./success`)
+    if(!Element) return;
+    const FiatDepositSuccess = Element.default
+    actions.success_sound();
+    actions.renderModal(() => 
+    <FiatDepositSuccess 
+      actions={actions}
+      depositOrder={data}
+    />);
   }
 
-  const createFiatWithdraw = async(twoFactorCode) => {
-    // const { state } = handleState
-    // setLoading(true)
-
-    // const twoFactorIsEnabled = await ApiGetTwoFactorIsEnabled()
-    // // console.log('twoFactorIsEnabled', twoFactorIsEnabled)
-    // // debugger
-    // if(twoFactorIsEnabled && !twoFactorCode){
-    //   setLoading(false);
-    //   return actions.renderModal(() => (
-    //       <Withdraw2FaModal
-    //       cancelAction={() => actions.renderModal(null)}
-    //       isWithdraw2fa
-    //       callback={(_twoFactorCode) => createFiatWithdraw(_twoFactorCode)}
-    //     />
-    //   ));
-    // }
-
-    // if(twoFactorCode) actions.renderModal(null);
-
-    // const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFactorCode}) 
-    // if(error){
-    //   console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
-    // setLoading(false)
-    // return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
-    // }
-
-    // await renderSuccessComponent(data)
-    // return setLoading(false)
+  const createFiatDeposit = async(twoFactorCode) => {
+    setLoading(true)
+    const { state } = handleState
+    const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider })
+    if(error){
+      setLoading(false)
+      return toastMessage(error?.message, "error");
+    }
+    await renderSuccessComponent(data)
+    setLoading(false)
   }
 
   const stageComponents = {
-    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositSourceComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
   }
@@ -135,8 +117,8 @@ const {
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        label={`${lastStage ? "Crear retiro" : "Siguiente"}`}
-        handleAction={lastStage ? () => createFiatWithdraw() : nextStep}
+        label={`${lastStage ? "Crear depósito" : "Siguiente"}`}
+        handleAction={lastStage ? () => createFiatDeposit() : nextStep}
       />
     </ButtonContainers>
   )
@@ -148,6 +130,8 @@ const {
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
+          costList={costList}
+          depositProvider={depositProvider}
           {...props}
           {...walletInfo}
         >
@@ -188,45 +172,54 @@ const StatusContent = ({ state, stageManager }) => {
   // const { withdrawAccount, withdrawAmount } = state
   // const bankName = withdrawAccount?.bank_name
   const bankName = "data"
-  const withdrawAmount = "data"
+  const { depositProvider, depositCost } = state
   // const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
   const [ cost, setCost ] = useState()
 
+  console.log('StatusContent', state)
+  // useEffect(() => {
+  //   if(withdrawProvider && withdrawAccount){
+  //     let cost = getCost({withdrawProvider, withdrawAccount})
+  //     let parsed = formatToCurrency(cost, withdrawProvider?.currency)
+  //     setCost(parsed.toFormat())
+  //   }
+  // }, [withdrawProvider, withdrawAccount])
 
-
-  // console.log('StatusContent stageManager', cost)
-  // getCost
 
   return(
     <StatusContainer>
-      {/* <ItemContainer>
-          <LeftText className="fuente">Cuenta destino:</LeftText>
+      <ItemContainer>
+          <LeftText className="fuente">Origen:</LeftText>
           <MiddleSection />
 
           <ContentRight>
-            <RightText className={`${bankName ? 'fuente' : 'skeleton'}`}>
-                {bankName?.ui_name?.toLowerCase() || 'skeleton --------'} 
+            <RightText className={`${depositProvider ? 'fuente' : 'skeleton'}`}>
+                {depositProvider?.uiName?.toLowerCase() || 'skeleton --------'} 
               </RightText>
             {
-              bankName &&
+              (depositProvider && !["other_bank"].includes(depositProvider?.value)) &&
                 <IconSwitch
-                    icon={bankName?.value}
+                    icon={depositProvider?.value}
                     size={20}
                   />
             }
           </ContentRight>
-      </ItemContainer> */}
-      {/* {
+      </ItemContainer>
+
+      {
         stageManager?.currentStage === 1 &&
         <>
+          <p className="fuente" style={{marginBottom:"5px"}}>
+            <strong>{depositCost?.uiName}</strong>
+          </p>
           <ItemContainer>
-              <LeftText className="fuente">Cantidad:</LeftText>
+              <LeftText className="fuente">Costo:</LeftText>
               <MiddleSection />
-              <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
+              <RightText className={`${depositCost ? 'fuente2' : 'skeleton'}`}>
+                {/* {`$ ${withdrawAmount} COP` || 'skeleton --------'}  */}
               </RightText>
           </ItemContainer>
-          {
+          {/* {
             (bankName?.value !== 'efecty' && withdrawAmount) &&
             <ItemContainer>
                 <LeftText className="fuente">Costo:</LeftText>
@@ -235,9 +228,9 @@ const StatusContent = ({ state, stageManager }) => {
                   {`$ ${cost} COP` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
-          }
+          } */}
         </>
-      } */}
+      }
       
       {/* <TotalAmount color="var(--paragraph_color)">
           <p className="fuente saldo">Cantidad a recibir</p>
@@ -268,6 +261,10 @@ const StatusContainer = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 25px;
+
+  p{
+    color:var(--paragraph_color);
+  }
 
   ${LeftText}{
     font-weight: normal;

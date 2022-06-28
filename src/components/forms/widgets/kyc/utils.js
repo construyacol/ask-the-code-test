@@ -118,7 +118,6 @@ export const writeOnLabel = (target, message, typeMessage = 'default') => {
 export const validateLabelMsg = (value, data) => {
   const targetElement = `.label_text__${data.key}`
   if(!data?.settings?.errors){return}
-  // console.log('validateLabelMsg', value)
   for (let error of data.settings.errors) {
     if(value.match(error.pattern)){
       writeOnLabel(targetElement, error.message, 'error')
