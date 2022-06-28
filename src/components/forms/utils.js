@@ -12,9 +12,9 @@ import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
 import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
-import { ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
+import { FIAT_DEPOSIT_TYPES, ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWithdraw/api'
 
 
@@ -166,11 +166,11 @@ const dataService = {
   onBoarding:ApiGetOnBoardingStages,
   personal:ApiGetPersonalStages,
   identity:ApiGetIdentityStages, 
-  fiatDeposit:ApiGetOnFiatDepositStages,
   newWallet:ApiGetNewWalletStages,
   location:ApiGetLocationStages,
   contact:ApiGetContactStages,
   newWithdrawAccount:ApiGetNewWAccountStages,
+  [FIAT_DEPOSIT_TYPES.FORM]:ApiGetOnFiatDepositStages,
   [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
 }
 

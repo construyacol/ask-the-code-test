@@ -36,7 +36,6 @@ import { formatToCurrency } from '../../../../utils/convert_currency'
 //   IconAccount
 // } from '../../../widgets/headerAccount/styles'
 
-
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
 

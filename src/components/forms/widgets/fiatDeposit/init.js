@@ -1,56 +1,42 @@
 import { useEffect, useState } from 'react'
-// import loadable from '@loadable/component'
-import { useActions } from '../../../../hooks/useActions'
-import OtherModalLayout from "../../../widgets/modal/otherModalLayout";
-// import { ContainerLayout } from '../../../widgets/modal/render/addressBook'
-import FormComponent from '../../' 
+import FormComponent from '../..' 
 import { initStages } from '../../utils'
-import { DepositSkeleton } from './amount'
+import { FIAT_DEPOSIT_TYPES } from './api'
+import { FormContainer } from '../sharedStyles'
+import { StageSkeleton } from '../stageManager'
+// import { SelectListSkeleton } from '../selectListComponent'
 
-
-const FiatDepositComponent = props => {
-
-    const actions = useActions();
+export default function NewFiatDepositComponent (props){
 
     const [ dataForm, setDataForm ] = useState()
-
-    const closeModal = (e) => {
-      if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
-        actions.renderModal(null);
-      }
-    };
+    // const actions = useActions();
     
     const init = async() => {
       const _dataForm = await initStages(
         {
-          formName: 'fiatDeposit'
+          formName: FIAT_DEPOSIT_TYPES.FORM
         }
       )
       setDataForm(_dataForm)
     }
-  
+    
     useEffect(()=> { 
       init()
     }, []) 
-
+   
     return(
-      <OtherModalLayout
-        id="close-button-with-OtherModalLayout"
-        onkeydown={false}
-        on_click={closeModal}
-      >
+      <FormContainer className="fiatWithdrawContainer">
           {
-            dataForm ?
-              <FormComponent
-                handleDataForm={{dataForm, setDataForm}}
-                closeModal={closeModal}
-              />
-            :
-            <DepositSkeleton showHeader />
+              dataForm ?
+                <FormComponent
+                  handleDataForm={{dataForm, setDataForm}}
+                  Fallback={StageSkeleton}
+                  {...props}
+                />
+              : 
+              <StageSkeleton/>
           }
-      </OtherModalLayout>
+      </FormContainer>
     )
-
 }
 
-export default FiatDepositComponent

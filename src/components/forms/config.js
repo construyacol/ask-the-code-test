@@ -3,7 +3,7 @@ import {
   FIAT_DEPOSIT_STAGES,
   FIAT_DEPOSIT_DEFAULT_STATE
 } from './widgets/fiatDeposit/api'
-
+ 
 import { 
   ONBOARDING_COMPONENTS,
   ONBOARDING_STAGES

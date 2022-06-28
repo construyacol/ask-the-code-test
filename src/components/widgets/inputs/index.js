@@ -7,7 +7,7 @@ import Environtment from "../../../environment";
 // import createAutoCorrectedDatePipe from "text-mask-addons/dist/createAutoCorrectedDatePipe";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { getCdnPath } from '../../../environment'
-import { InputAmountSkeleton } from '../../forms/widgets/fiatDeposit/amount'
+// import { InputAmountSkeleton } from '../../forms/widgets/fiatDeposit/amount'
 import "./inputStyles.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -369,6 +369,7 @@ export class InputDepositForm extends Component {
     }
   }
 
+
   render() {
     const { actualizar, handleKeyPress, value, name, autoFocus, classNames, minAmountLabel, skeleton } = this.props;
     const { finalValue } = this.state;
@@ -387,7 +388,7 @@ export class InputDepositForm extends Component {
       <div className={`containerInputComponent with-adapt ${classNames || ''} ${skeleton ? 'skeleton' : ''}`}>
       {
         skeleton ?
-          <InputAmountSkeleton/>
+        <div></div>
         :
           <>
             <input

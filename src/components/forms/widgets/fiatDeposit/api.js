@@ -1,28 +1,70 @@
 import { mainService } from "../../../../services/MainService";
+// import { recursiveAddList } from '../../utils'
+// import { isEmpty } from 'lodash'
+// import {
+//   parseOnlyNumbers,
+// } from '../kyc/utils'
 
+export const FIAT_DEPOSIT_TYPES = {
+  FORM:"fiatDeposit",
+  STAGES:{
+    SOURCE:"depositSource",
+    AMOUNT:"depositAmount",
+    PROVIDER:"depositProvider"
+  }
+}
 
 const STAGES = {
-  "amount":"",
-  "costId":""
+  [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
+    uiName:"¿Qué servicio utilizarás para hacer el depósito?",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+    }
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
+    uiName:"¿Cómo quieres depositar?",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+    }
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
+    uiName:"¿Cuanto quieres depositar?",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT,
+    uiType:"text",
+    "settings":{
+      defaultMessage:"",
+      successPattern:/[0-9]/g,
+      errors:[ 
+          { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+      ],
+      // label:"Nacionalidad del documento:",
+      placeholder:"Escribe la cantidad",
+    }
+  }
 } 
+
 
 export const FIAT_DEPOSIT_COMPONENTS = {
   wrapperComponent:{
-      fiatDeposit:'fiatDeposit'
+    [FIAT_DEPOSIT_TYPES.FORM]:FIAT_DEPOSIT_TYPES.FORM
   }
 }
 
 export const FIAT_DEPOSIT_STAGES = {
-  fiatDeposit:STAGES
+  [FIAT_DEPOSIT_TYPES.FORM]:STAGES
 }
 
 export const ApiGetOnFiatDepositStages = async() => {
-    return STAGES
+  return STAGES
 }
 
 export const FIAT_DEPOSIT_DEFAULT_STATE = {
-  // fiatDeposit:{
-  //   costId:"bankaccount"
+  // newWallet:{
+  //   currency:{}
   // }
 }
 
@@ -37,4 +79,5 @@ export const ApiPostCreateDeposit = async(body, tools) => {
   return res
 
 }
+
 

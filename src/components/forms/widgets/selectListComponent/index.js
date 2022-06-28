@@ -67,7 +67,7 @@ const SelectListComponent = ({
   }
   
   export const ItemListComponent = ({ 
-    itemList,
+    itemList:{ Icon, ...itemList},
     firstIndex,
     lastIndex,
     isMovilViewport,
@@ -80,7 +80,8 @@ const SelectListComponent = ({
 
     // const uiName = itemList?.uiName?.toLowerCase()
     const uiName = capitalizeWord(itemList?.uiName)
-    
+    // console.log(uiName, itemList)
+
     return(
       <ItemProviderBankContainer 
         onClick={() => handleAction(itemList)}
@@ -93,10 +94,18 @@ const SelectListComponent = ({
         </IndicatorHover>
         <HeaderMainContainer>
           <IconAccount className="onAccountList">
-              <IconSwitch
-                  icon={itemList?.icon || itemList?.value}
-                  size={isMovilViewport ? 22 : 25}
-              />  
+              {
+                Icon ? 
+                <Icon
+                  size={isMovilViewport ? 20 : 22}
+                  color={"var(--primary)"}
+                />
+                :
+                <IconSwitch
+                    icon={itemList?.icon || itemList?.value}
+                    size={isMovilViewport ? 22 : 25}
+                />  
+              }
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>{uiName}</AccountLabel>
@@ -188,7 +197,7 @@ export const ItemProviderBankContainer = styled.div`
   }
 
   ${AccountLabel}{
-    text-transform: capitalize;
+    ${'' /* text-transform: capitalize; */}
   }
 
   &.createButton{

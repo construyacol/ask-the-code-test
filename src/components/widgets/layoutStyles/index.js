@@ -84,6 +84,8 @@ export const AccountDetailContainer = styled.div`
         padding-bottom:0px;
     }
 
+    
+
     &.activity{
         padding-top:35px;
         .ALtext{
@@ -94,7 +96,8 @@ export const AccountDetailContainer = styled.div`
         }
     }
 
-    &.withdraw{
+    &.withdraw,
+    &.deposit{
         max-width: initial;
     }
 
