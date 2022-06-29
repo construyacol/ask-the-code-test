@@ -1,13 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 // import { useSelector } from "react-redux";
 import validations from './validations'
 import { createSelector } from "reselect";
-// import AvailableBalance from '../../../widgets/availableBalance'
+import AvailableBalance from '../../../widgets/availableBalance'
 // import { formatToCurrency } from "../../../../utils/convert_currency";
 // import { SelectListContainer, ItemListComponent } from '../selectListComponent'
-
+import { getMinAmount } from './validations'
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -21,11 +21,13 @@ export default function AmountComponent ({
     children,
     depositProvider
   }) {
-  
-    // const [availableAmount, setAvailableAmount] = useState(availableBalance)
+    
+    const { min_amount, currency, costs } = depositProvider?.provider
+    const { depositCost } = state
+    const [ minAmount, setMinAmount] = useState(min_amount)
     // const { isMovilViewport } = useViewport();
 
-    const withdrawAmountOnChange = async(e) => {
+    const depositAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData?.key]) return;
 
@@ -40,12 +42,25 @@ export default function AmountComponent ({
       setStageStatus(_status)
     }
 
+    const handleMinAmount = () => {
+      if(!depositProvider || !depositCost) return;
+      let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+      depositAmountOnChange({target:{value:minAmount.toFormat()}});
+    }
+
+    useEffect(() => {
+      if(depositProvider && depositCost){
+        let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+        setMinAmount(minAmount?.toFormat())
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     // load state  by default
     useEffect(() => {
       let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
       if(inputElement && state[stageData.key]){
-        withdrawAmountOnChange({target:{value:state[stageData.key]}});
+        depositAmountOnChange({target:{value:state[stageData.key]}});
         inputElement.value = state[stageData.key]
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +70,7 @@ export default function AmountComponent ({
       <StageContainer className="_withdrawAmount">
         {children}
         <InputComponent
-          onChange={withdrawAmountOnChange} 
+          onChange={depositAmountOnChange} 
           inputStatus={stageStatus}
           inputMode="numeric"
           name={stageData?.key} 
@@ -63,11 +78,13 @@ export default function AmountComponent ({
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
           setStageData={setStageData}
-          // AuxComponent={[() => (<AvailableBalance
-          //   id={currentWallet?.id}
-          //   handleAction={handleMaxAvailable} 
-          //   amount={availableAmount}
-          // />)]}
+          AuxComponent={[() => (<AvailableBalance
+            // id={currentWallet?.id}
+            handleAction={handleMinAmount} 
+            copyText="Mínimo:"
+            // amount={state[stageData?.key]}
+            amount={minAmount}
+          />)]}
         />
       </StageContainer>
     )

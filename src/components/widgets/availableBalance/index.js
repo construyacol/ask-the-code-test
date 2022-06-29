@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import styled from 'styled-components'
 
 
-export default function AvailableBalance ({ handleAction, amount, id }) {
+export default function AvailableBalance ({ handleAction, amount, id, copyText = "Disponible:" }) {
     const { keyActions } = useSelector((state) => state.ui);
     const isMovil = window.innerWidth < 768;
   
@@ -13,7 +13,7 @@ export default function AvailableBalance ({ handleAction, amount, id }) {
           className={`fuente2 ${isMovil ? "movil" : ""}`}
           onClick={handleAction}
         >
-          {isMovil ? "Disponible:" : `Disponible${keyActions ? '[M]' : ''}:`} {amount}
+          {isMovil ? copyText : `${copyText}${keyActions ? '[M]' : ''}`} {amount}
         </p>
       </BalanceContainer>
     );

@@ -97,7 +97,7 @@ const SelectListComponent = ({
               {
                 Icon ? 
                 <Icon
-                  size={isMovilViewport ? 20 : 22}
+                  size={isMovilViewport ? 22 : 24}
                   color={"var(--primary)"}
                 />
                 :

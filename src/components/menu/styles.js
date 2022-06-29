@@ -160,7 +160,6 @@ export const SubMenu = styled.div`
   }
 }
 
-
 `
 
 
@@ -168,14 +167,13 @@ export const MainMenuContainer = styled(Menu)`
     height:60px;
     position:sticky;
     top:0px;
-    z-index:2;
+    z-index:3;
     background: linear-gradient(90deg,#202830,#101418);
     background: linear-gradient(90deg,#202830fa,#101418ed);
     display:flex;
     justify-content: center;
     backdrop-filter: blur(6px);
 `
-
 
 
 export const LaptopSideMenuContainer = styled(Menu)`

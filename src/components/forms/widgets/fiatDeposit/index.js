@@ -92,7 +92,7 @@ const {
     />);
   }
 
-  const createFiatDeposit = async(twoFactorCode) => {
+  const createFiatDeposit = async() => {
     setLoading(true)
     const { state } = handleState
     const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider })
@@ -197,12 +197,12 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
 
           <ContentRight>
             <RightText className={`${depositProvider ? 'fuente' : 'skeleton'}`}>
-                {depositProvider?.uiName?.toLowerCase() || 'skeleton --------'} 
+                {state?.depositProvider?.uiName?.toLowerCase() || 'skeleton --------'} 
               </RightText>
             {
-              (depositProvider && !["other_bank"].includes(depositProvider?.value)) &&
+              (state?.depositProvider && !["other_bank"].includes(state?.depositProvider?.value)) &&
                 <IconSwitch
-                    icon={depositProvider?.value}
+                    icon={state?.depositProvider?.value}
                     size={20}
                   />
             }
@@ -238,7 +238,7 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
           {
             (depositCost && depositAmount) &&
             <ItemContainer>
-                <LeftText className="fuente">TOTAL:</LeftText>
+                <LeftText className="fuente">Total:</LeftText>
                 <MiddleSection />
                 <RightText className={`${total ? 'fuente2' : 'skeleton'}`}>
                   {`$ ${total} COP` || 'skeleton --------'} 
@@ -247,14 +247,6 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
           }
         </>
       }
-      
-    {/* <TotalAmount color="var(--paragraph_color)">
-        <p className="fuente saldo">Cantidad a recibir</p>
-        <p className="fuente2 amount">
-                $ 48,000 <span className="fuente">COP</span>
-        </p>
-    </TotalAmount> */}
-
     </StatusContainer>
   )
 }

@@ -17,9 +17,10 @@ import { FIAT_DEPOSIT_TYPES } from './api'
     return cost && formatToCurrency(cost.toString().replace(/,/g, ""), currency);
   }
 
-  const getMinAmount = (minAmount, data) => {
+  export const getMinAmount = (minAmount, data) => {
     const costAmount = getCost(data)
-    let _minAmount = formatToCurrency(minAmount.toString().replace(/,/g, ""), data?.currency);
+    console.log('||||||  getMinAmount ==> minAmount', minAmount)
+    let _minAmount = formatToCurrency(minAmount?.toString()?.replace(/,/g, ""), data?.currency);
     const depositAmount = _minAmount.plus(costAmount || 0)
     return depositAmount
   }
