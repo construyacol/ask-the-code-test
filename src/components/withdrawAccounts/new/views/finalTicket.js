@@ -2,21 +2,21 @@ import React from "react";
 import loadable from "@loadable/component";
 import { ButtonSuccess } from "../../../widgets/buttons/buttons";
 import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
-import { 
-  BankData,
-  TitleContainer,
-  CorpAccountContainer,
-  IconContainer,
-  DetailAccountProv
-} from '../../../forms/widgets/fiatDeposit/success'
-import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
+// import { 
+//   BankData,
+//   TitleContainer,
+//   CorpAccountContainer,
+//   IconContainer,
+//   DetailAccountProv
+// } from '../../../forms/widgets/fiatDeposit/success'
+// import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 import { useSelector } from "react-redux";
 
 
 import "./finalTicket.css";
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-const EfectyDisclaimer = loadable(() => import("../../../widgets/efectyDisclaimer"));
+// const EfectyDisclaimer = loadable(() => import("../../../widgets/efectyDisclaimer"));
 
 
 
@@ -35,7 +35,7 @@ function FinalTicket(props) {
     cta_secondary_label,
     cta_secondary_action,
     wAccount,
-    order,
+    // order,
     title
   } = props;
 
@@ -46,15 +46,15 @@ function FinalTicket(props) {
   };
 
   
-  const parseUiName = (text) => {
-    if(typeof text !== 'string') return text;
-    const finalText = text?.split("_")?.join(" ")
-    const capitalizeText = finalText?.replace(text?.charAt(0), text?.charAt(0)?.toUpperCase())
-    return capitalizeText
-  }
+  // const parseUiName = (text) => {
+  //   if(typeof text !== 'string') return text;
+  //   const finalText = text?.split("_")?.join(" ")
+  //   const capitalizeText = finalText?.replace(text?.charAt(0), text?.charAt(0)?.toUpperCase())
+  //   return capitalizeText
+  // }
 
   console.log('||||||||||||||||||||||||||||||_____________________________wAccount', wAccount)
-  const isEFecty = wAccount?.provider_type === 'efecty_network'
+  // const isEFecty = wAccount?.provider_type === 'efecty_network'
   return (
     <div id="_wAccount" className={`finalTicket TicketDetail _wAccountSuccess ${osDevice}`}>
       <>

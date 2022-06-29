@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useStage from '../../hooks/useStage'
 import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
@@ -19,15 +19,15 @@ import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
 import DepositProviderComponent from './depositProviderStage' 
 import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
+// import { createSelector } from "reselect";
 // import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 // import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
-// import { getCost } from './validations'
+import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-// import { formatToCurrency } from '../../../../utils/convert_currency'
+import { formatToCurrency } from '../../../../utils/convert_currency'
 import { ApiPostCreateDeposit, selectProviderData } from './api'
 import DepositCostComponent from './depositCostStage'
 
@@ -126,6 +126,7 @@ const {
 
   return(
     <>
+    
         <RenderStageComponent
           stageManager={stageManager}
           handleState={handleState}
@@ -137,26 +138,28 @@ const {
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
         </RenderStageComponent>
+        
+        <StatusPanelComponent>
+          <StatusHeaderContainer>
+            <TitleContainer>
+              <h1 className="fuente">Resumen del depósito</h1>
+            </TitleContainer>
+            <StatusContent
+              state={handleState?.state}
+              stageManager={stageManager}
+              depositProvider={depositProvider}
+            />
+          </StatusHeaderContainer>
+          {
+            !isMovilViewport &&
+                <ButtonComponent/>
+          }
+        </StatusPanelComponent>
+
         {
           isMovilViewport &&
             <ButtonComponent/>
         }
-        
-          {
-            !isMovilViewport &&
-              <StatusPanelComponent>
-                <StatusHeaderContainer>
-                  <TitleContainer>
-                    <h1 className="fuente">Resumen del depósito</h1>
-                  </TitleContainer>
-                  <StatusContent
-                    state={handleState?.state}
-                    stageManager={stageManager}
-                  />
-                </StatusHeaderContainer>
-                <ButtonComponent/>
-              </StatusPanelComponent>
-          }
     </>                 
   )
 }
@@ -167,23 +170,23 @@ export default NewWAccountComponent
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
-const StatusContent = ({ state, stageManager }) => {
+const StatusContent = ({ state, stageManager, depositProvider }) => {
 
-  // const { withdrawAccount, withdrawAmount } = state
-  // const bankName = withdrawAccount?.bank_name
-  const bankName = "data"
-  const { depositProvider, depositCost } = state
-  // const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
+  const { depositCost, depositAmount } = state
   const [ cost, setCost ] = useState()
+  const [ total, setTotal ] = useState()
 
-  console.log('StatusContent', state)
-  // useEffect(() => {
-  //   if(withdrawProvider && withdrawAccount){
-  //     let cost = getCost({withdrawProvider, withdrawAccount})
-  //     let parsed = formatToCurrency(cost, withdrawProvider?.currency)
-  //     setCost(parsed.toFormat())
-  //   }
-  // }, [withdrawProvider, withdrawAccount])
+  useEffect(() => {
+    if(depositProvider && depositCost){
+      let costs = depositProvider?.provider?.costs
+      let { currency } = depositProvider
+      let cost = getCost({ costs, currency, depositCost }) 
+      setCost(cost.toFormat())
+      let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
+      _depositAmount && setTotal(_depositAmount?.plus(cost)?.toFormat())
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositProvider, depositCost, depositAmount])
 
 
   return(
@@ -207,37 +210,50 @@ const StatusContent = ({ state, stageManager }) => {
       </ItemContainer>
 
       {
-        stageManager?.currentStage === 1 &&
+        stageManager?.currentStage > 0 &&
         <>
           <p className="fuente" style={{marginBottom:"5px"}}>
             <strong>{depositCost?.uiName}</strong>
           </p>
-          <ItemContainer>
-              <LeftText className="fuente">Costo:</LeftText>
-              <MiddleSection />
-              <RightText className={`${depositCost ? 'fuente2' : 'skeleton'}`}>
-                {/* {`$ ${withdrawAmount} COP` || 'skeleton --------'}  */}
-              </RightText>
-          </ItemContainer>
-          {/* {
-            (bankName?.value !== 'efecty' && withdrawAmount) &&
+          {
+            depositCost &&
             <ItemContainer>
                 <LeftText className="fuente">Costo:</LeftText>
                 <MiddleSection />
-                <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
+                <RightText className={`${depositCost ? 'fuente2' : 'skeleton'}`}>
                   {`$ ${cost} COP` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
-          } */}
+          }
+          {
+            depositAmount &&
+            <ItemContainer>
+                <LeftText className="fuente">Cantidad:</LeftText>
+                <MiddleSection />
+                <RightText className={`${depositAmount ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${depositAmount} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
+          {
+            (depositCost && depositAmount) &&
+            <ItemContainer>
+                <LeftText className="fuente">TOTAL:</LeftText>
+                <MiddleSection />
+                <RightText className={`${total ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${total} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
         </>
       }
       
-      {/* <TotalAmount color="var(--paragraph_color)">
-          <p className="fuente saldo">Cantidad a recibir</p>
-          <p className="fuente2 amount">
-                  $ {amount} <span className="fuente">{currencySimbol?.toUpperCase()}</span>
-          </p>
-      </TotalAmount> */}
+    {/* <TotalAmount color="var(--paragraph_color)">
+        <p className="fuente saldo">Cantidad a recibir</p>
+        <p className="fuente2 amount">
+                $ 48,000 <span className="fuente">COP</span>
+        </p>
+    </TotalAmount> */}
 
     </StatusContainer>
   )

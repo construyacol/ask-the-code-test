@@ -10,7 +10,7 @@ import ModalityView from "../views/modality";
 // import IconSwitch from "../../../widgets/icons/iconSwitch";
 import DetailGenerator from "../../../widgets/modal/render/orderDetail/detailGenerator";
 import { getCdnPath } from '../../../../environment'
-import { BankDataContainer } from '../../../forms/widgets/fiatDeposit/success'
+// import { BankDataContainer } from '../../../forms/widgets/fiatDeposit/success'
 
 
 import "./flows.css";
@@ -127,7 +127,7 @@ export const Success = (props) => {
     step,
     new_ticket,
     // idForAcceptButtonInDepositView,
-    depositProvData
+    // depositProvData
   } = props;
 
   // console.log('|||||||||||||| °°°°° depositProvData', depositProvData)

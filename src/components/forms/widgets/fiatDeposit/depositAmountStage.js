@@ -1,4 +1,4 @@
-// import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 // import { useSelector } from "react-redux";
@@ -39,6 +39,17 @@ export default function AmountComponent ({
       setState(prevState => ({ ...prevState, [stageData?.key]: _value }))
       setStageStatus(_status)
     }
+
+
+    // load state  by default
+    useEffect(() => {
+      let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
+      if(inputElement && state[stageData.key]){
+        withdrawAmountOnChange({target:{value:state[stageData.key]}});
+        inputElement.value = state[stageData.key]
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state[stageData?.key]])
   
     return( 
       <StageContainer className="_withdrawAmount">
@@ -46,7 +57,6 @@ export default function AmountComponent ({
         <InputComponent
           onChange={withdrawAmountOnChange} 
           inputStatus={stageStatus}
-          // value={value}
           inputMode="numeric"
           name={stageData?.key} 
           label={stageData?.uiName}
