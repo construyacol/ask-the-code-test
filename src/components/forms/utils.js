@@ -4,6 +4,7 @@ import {
   INFO_URL_API
 } from './const'
 import { isArray } from 'lodash'
+import ungapStructuredClone from '@ungap/structured-clone';
 import { mainService } from '../../services/MainService'
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
@@ -114,7 +115,7 @@ export const getSelectList = async(listKey, payload) => {
 }
 
 export const createStage = async(source, modelated, index) => {
-  let _source = typeof source === 'object' ? structuredClone(source) : {...source};
+  let _source = typeof source === 'object' ? ungapStructuredClone(source) : {...source};
   let stage = {}
   _source.uiName = _source.ui_name || _source.uiName
   _source.uiType = _source.ui_type || _source.uiType 
@@ -176,7 +177,7 @@ const dataService = {
 
 
 export const recursiveAddList = async(mapObject, payload) => {
-  let apiStages = structuredClone(mapObject)
+  let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
   for(const stage of Object.keys(apiStages)){ 
     stages = {

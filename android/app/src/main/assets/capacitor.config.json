@@ -1,6 +1,10 @@
 {
 	"appId": "app.coinsenda",
 	"appName": "Coinsenda",
+	"server": {
+		"url": "http://192.168.10.10:2998",
+		"cleartext": true
+	},
 	"webDir": "build",
 	"cordova": {
 		"preferences": {

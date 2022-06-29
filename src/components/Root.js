@@ -117,7 +117,7 @@ function RootContainer(props) {
   }, [isAppLoaded]);
 
   useEffect(() => {
-    if(showOnBoarding){ 
+    if(showOnBoarding && CAPACITOR_PLATFORM === 'web'){ 
       const initOnBoarding = async() => {
         const Element = await import("./forms/widgets/onBoardingComponent/init");
         const OnBoardingComponent = Element.default

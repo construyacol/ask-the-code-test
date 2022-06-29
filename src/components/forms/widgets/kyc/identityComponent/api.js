@@ -3,6 +3,7 @@ import {
   formatMaskDate, 
   parseDateToTimeStamp,
 } from '../utils'
+import ungapStructuredClone from '@ungap/structured-clone';
 import { identityInfo } from './identityUtils'
 import { createStage } from '../../../utils'
 
@@ -240,7 +241,7 @@ export const ApiGetIdentityStages = async(config) => {
 
 export const ApiPostIdentityInfo = async(payload) => {
 
-  const config = structuredClone(payload);
+  const config = ungapStructuredClone(payload);
   const { pendingOrRejectedIdentity } = identityInfo()
   let res
 
@@ -287,7 +288,7 @@ export const ApiPostIdentityInfo = async(payload) => {
 
 
 export const ApiPostIdentityFiles = async(payload) => {
-  const config = structuredClone(payload);
+  const config = ungapStructuredClone(payload);
   const user = mainService?.user
 
   const { pendingIdentityFile } = identityInfo()

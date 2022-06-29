@@ -1,5 +1,6 @@
 import { WebService } from "../actions/API/WebService";
 import { appLoadLabelAction } from "../actions/loader";
+import ungapStructuredClone from '@ungap/structured-clone';
 import {
   loadLabels,
   GET_WITHDRAW_BY_USER_URL,
@@ -247,7 +248,7 @@ export class WithdrawService extends WebService {
 
   async getBankList() {
     const { withdrawProviders } = this.globalState.modelData;
-    let _withdrawProviders = typeof withdrawProviders === 'object' ? structuredClone(withdrawProviders) : {...withdrawProviders};
+    let _withdrawProviders = typeof withdrawProviders === 'object' ? ungapStructuredClone(withdrawProviders) : {...withdrawProviders};
 
     let wProviderBanKey = Object.keys(_withdrawProviders).find(wAKey => ["bank"].includes(_withdrawProviders[wAKey]?.provider_type))
     let efectyProvider = this.createEfectyProv(_withdrawProviders)
@@ -279,7 +280,7 @@ export class WithdrawService extends WebService {
       bankName
     } = props
 
-    let infoNeeded = structuredClone(info_needed)
+    let infoNeeded = ungapStructuredClone(info_needed)
     const { 
       bank_name,
       account_type

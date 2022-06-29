@@ -3,7 +3,7 @@ import { setAuthData } from "../auth";
 import { SentryCaptureException } from '../../utils'
 import { getExpTimeData, validateExpTime } from '../../components/utils'
 import {
-  // doLogout,
+  doLogout,
   handleError,
   verifyUserToken,
   saveUserToken,
@@ -28,7 +28,7 @@ export class WebService {
             url
           })
           // TODO: add refresh_token flow to get a new jwt
-          // doLogout('?message=Invalid signature')
+          doLogout('?message=Invalid signature')
         }
         throw response.status;
       }
@@ -197,7 +197,7 @@ export class WebService {
             url
           })
           // TODO: add refresh_token flow to get a new jwt
-          // doLogout('?message=Invalid signature')
+          doLogout('?message=Invalid signature')
         }
         throw response.status;
       }
