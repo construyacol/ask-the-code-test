@@ -86,7 +86,7 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
   } = payload
 
   let body = {
-    data:{
+    data:{ 
       country:"international",
       account_id:currentWallet?.id,
       amount:parseOnlyNumbers(withdrawAmount), 

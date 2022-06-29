@@ -79,6 +79,7 @@ export const IconAccount = styled.div`
   place-content: center;
   overflow: hidden;
   border: 3px solid #efefef;
+  align-items: center;
 
   @media ${device.mobile} {
     height:25px;

@@ -8,6 +8,7 @@ import {
     LabelText
 } from '../styles'
 import RenderAuxComponent from '../../renderAuxComponent'
+import useViewport from '../../../../../hooks/useWindowSize'
 
 
 
@@ -23,11 +24,13 @@ const InputComponent = props => {
     progressBar,
     placeholder,
     className,
-    label
+    label,
+    inputMode = 'text'
   } = props
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
   const inputName = name?.includes('meta') ? '' : name
+  const { isMovilViewport } = useViewport()
 
   const removeItem = (e) => {
     return removeItemTag(e, name, onChange)
@@ -45,7 +48,7 @@ const InputComponent = props => {
   
   useEffect(() => {
     if(inputName){
-      document.querySelector(`[name="${inputName}"]`)?.focus()
+      if(!isMovilViewport) document.querySelector(`[name="${inputName}"]`)?.focus();
       debugItemTag(inputName)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,8 +62,9 @@ const InputComponent = props => {
     defaultValue,
     name:inputName,
     // disabled,
-    autoFocus:true,
+    autoFocus:isMovilViewport ? false : true,
     // onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
+    inputMode:inputMode, 
     // autoComplete,
     ...props.dataForm?.stages[name]?.settings?.props
   };

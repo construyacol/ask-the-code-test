@@ -175,7 +175,8 @@ export const capitalizarPalabras = (val) => {
 };
 
 export const capitalizeWord = (word) => {
-  const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+  if(!word?.charAt)return word;
+  const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1)?.toLowerCase();
   return capitalizedWord
 }
 

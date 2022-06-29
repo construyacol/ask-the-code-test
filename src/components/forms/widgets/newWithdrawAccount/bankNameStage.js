@@ -48,7 +48,7 @@ const BankNameListComponent = ({
     return(
       <StageContainer className="_bankNameList">
         {children}
-        <InputComponent
+        <InputComponent 
           className="_stickyPosition"
           onChange={onChange} 
           inputStatus={stageStatus}

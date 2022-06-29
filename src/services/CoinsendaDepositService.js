@@ -63,30 +63,33 @@ export class DepositService extends WebService {
 
 
 
-  async createDeposit(payload) {
+  async createDeposit(body) {
 
-    const user = this.user
-    const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
-    const body = {
-      data: {
-        currency,
-        amount,
-        cost_id,
-        deposit_provider_id,
-        comment: "",
-        account_id,
-        country: user.country,
-      },
-    };
+    return await this._Post(NEW_DEPOSIT_URL, body);
 
 
-    const result = await this.Post(NEW_DEPOSIT_URL, body);
-    if (result === 465 || !result) {
-      return false;
-    }
-    const { data } = result;
+    // const user = this.user
+    // const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
+    // const body = {
+    //   data: {
+    //     currency,
+    //     amount,
+    //     cost_id,
+    //     deposit_provider_id,
+    //     comment: "",
+    //     account_id,
+    //     country: user.country,
+    //   },
+    // };
 
-    return data;
+
+    // const result = await this.Post(NEW_DEPOSIT_URL, body);
+    // if (result === 465 || !result) {
+    //   return false;
+    // }
+    // const { data } = result;
+
+    // return data;
   }
 
 

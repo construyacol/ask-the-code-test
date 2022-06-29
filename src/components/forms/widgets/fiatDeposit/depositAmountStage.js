@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import validations from './validations'
 import { createSelector } from "reselect";
 import AvailableBalance from '../../../widgets/availableBalance'
-import { formatToCurrency } from "../../../../utils/convert_currency";
-
+// import { formatToCurrency } from "../../../../utils/convert_currency";
+// import { SelectListContainer, ItemListComponent } from '../selectListComponent'
+import { getMinAmount } from './validations'
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -18,17 +19,15 @@ export default function AmountComponent ({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
-    currentWallet,
-    availableBalance
+    depositProvider
   }) {
-  
-    const { withdrawAccount } = state
-    const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
-    const [availableAmount, setAvailableAmount] = useState(availableBalance)
+    
+    const { min_amount, currency, costs } = depositProvider?.provider
+    const { depositCost } = state
+    const [ minAmount, setMinAmount] = useState(min_amount)
     // const { isMovilViewport } = useViewport();
 
-  
-    const withdrawAmountOnChange = async(e) => {
+    const depositAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData?.key]) return;
 
@@ -36,45 +35,43 @@ export default function AmountComponent ({
         ...stageData, 
         state,  
         dataForm, 
-        withdrawProvider, 
-        availableBalance,
-        currentWallet
+        depositProvider
       });
-
       e.target.value = _value
-      setState(prevState => {
-        return { ...prevState, [stageData?.key]: _value }
-      })
+      setState(prevState => ({ ...prevState, [stageData?.key]: _value }))
       setStageStatus(_status)
     }
 
-    const handleMaxAvailable = () => {
-      withdrawAmountOnChange({target:{value:availableBalance}});
+    const handleMinAmount = () => {
+      if(!depositProvider || !depositCost) return;
+      let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+      depositAmountOnChange({target:{value:minAmount.toFormat()}});
     }
 
     useEffect(() => {
-      setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency).toFormat())
+      if(depositProvider && depositCost){
+        let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+        setMinAmount(minAmount?.toFormat())
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
-      // load state  by default
-      useEffect(() => {
-        let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
-        if(inputElement && state[stageData.key]){
-          withdrawAmountOnChange({target:{value:state[stageData.key]}});
-          inputElement.value = state[stageData.key]
-        }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [state[stageData?.key]])
+    // load state  by default
+    useEffect(() => {
+      let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
+      if(inputElement && state[stageData.key]){
+        depositAmountOnChange({target:{value:state[stageData.key]}});
+        inputElement.value = state[stageData.key]
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state[stageData?.key]])
   
     return( 
       <StageContainer className="_withdrawAmount">
         {children}
         <InputComponent
-          onChange={withdrawAmountOnChange} 
+          onChange={depositAmountOnChange} 
           inputStatus={stageStatus}
-          // value={value}
           inputMode="numeric"
           name={stageData?.key} 
           label={stageData?.uiName}
@@ -82,19 +79,17 @@ export default function AmountComponent ({
           type={stageData?.uiType}
           setStageData={setStageData}
           AuxComponent={[() => (<AvailableBalance
-            id={currentWallet?.id}
-            handleAction={handleMaxAvailable} 
-            amount={availableAmount}
+            // id={currentWallet?.id}
+            handleAction={handleMinAmount} 
+            copyText="Mínimo:"
+            // amount={state[stageData?.key]}
+            amount={minAmount}
           />)]}
         />
       </StageContainer>
     )
-  
   }
   
-
-
-
   export const selectWithdrawProvider = createSelector(
     (state) => state.modelData.withdrawProviders,
     (_, withdrawProvId) => withdrawProvId,
