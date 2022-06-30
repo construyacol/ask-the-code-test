@@ -10,7 +10,7 @@ import {
     // formatMaskDate
 } from '../kyc/utils'
 import { formatToCurrency } from "../../../../utils/convert_currency";
-
+import ungapStructuredClone from '@ungap/structured-clone';
 import { FIAT_WITHDRAW_TYPES } from './api' 
 // import { selectListValidator } from '../kyc/validations'
 
@@ -36,7 +36,7 @@ import { FIAT_WITHDRAW_TYPES } from './api'
   }
 
   const amountValidation = async(value, data) => {
-    let _data = structuredClone(data) //deep object copy    
+    let _data = ungapStructuredClone(data) //deep object copy    
     const { currency } = data?.withdrawProvider
     let _value = value
     _value = parseOnlyCurrencyAmount(_value)
