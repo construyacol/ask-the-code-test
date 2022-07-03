@@ -23,8 +23,8 @@ export default function AmountComponent ({
   }) {
     
     const { min_amount, currency, costs } = depositProvider?.provider
-    const { depositCost } = state
     const [ minAmount, setMinAmount] = useState(min_amount)
+    // const { depositCost } = state
     // const { isMovilViewport } = useViewport();
 
     const depositAmountOnChange = async(e) => {
@@ -43,14 +43,14 @@ export default function AmountComponent ({
     }
 
     const handleMinAmount = () => {
-      if(!depositProvider || !depositCost) return;
-      let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+      if(!depositProvider) return;
+      let minAmount = getMinAmount(min_amount, { currency, costs });
       depositAmountOnChange({target:{value:minAmount.toFormat()}});
     }
 
     useEffect(() => {
-      if(depositProvider && depositCost){
-        let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+      if(depositProvider){
+        let minAmount = getMinAmount(min_amount, { currency, costs });
         setMinAmount(minAmount?.toFormat())
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
