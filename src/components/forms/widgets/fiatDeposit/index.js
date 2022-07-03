@@ -47,7 +47,6 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
 
   const [ costList, depositProvider ] = useSelector(() => selectProviderData(handleState?.state?.depositProvider));
 
-
   const walletInfo = useWalletInfo()
   
   const { currentWallet } = walletInfo

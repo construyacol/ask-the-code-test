@@ -14,21 +14,26 @@ import { FIAT_DEPOSIT_TYPES } from './api'
 
   export const getCost = ({ costs, currency, depositCost }) => {
     let cost = costs[depositCost?.value]?.fixed;
-    return cost && formatToCurrency(cost.toString().replace(/,/g, ""), currency);
+    return cost ? formatToCurrency(cost.toString().replace(/,/g, ""), currency) : 0
   }
 
   export const getMinAmount = (minAmount, data) => {
-    const costAmount = getCost(data)
-    console.log('||||||  getMinAmount ==> minAmount', minAmount)
-    let _minAmount = formatToCurrency(minAmount?.toString()?.replace(/,/g, ""), data?.currency);
-    const depositAmount = _minAmount.plus(costAmount || 0)
-    return depositAmount
+    // const costAmount = getCost(data)
+    // console.log('||||||  getMinAmount ==> minAmount', minAmount)
+    // let _minAmount = formatToCurrency(minAmount?.toString()?.replace(/,/g, ""), data?.currency);
+    // const depositAmount = _minAmount.plus(costAmount || 0)
+    // return depositAmount
+    return formatToCurrency(minAmount?.toString()?.replace(/,/g, ""), data?.currency);
+    
   }
 
   const amountValidation = async(value, data) => {
     // let _data = JSON.parse(JSON.stringify(data))
     const _data = data
-    const { state:{ depositCost }, depositProvider } = _data
+    const { 
+      // state:{ depositCost }, 
+      depositProvider } = 
+    _data
     const { currency } = depositProvider
     let _value = value
     _value = parseOnlyCurrencyAmount(_value)
@@ -45,9 +50,9 @@ import { FIAT_DEPOSIT_TYPES } from './api'
       const { provider } = depositProvider
       const { min_amount } = provider
       const { max_amount } = provider
-      const { costs } = provider
+      // const { costs } = provider
 
-      let minAmount = getMinAmount(min_amount, { currency, costs, depositCost });
+      let minAmount = getMinAmount(min_amount, { currency });
       let maxAmount = formatToCurrency(max_amount.toString().replace(/,/g, ""), currency);
 
       let minAmountValidation = _value.isGreaterThanOrEqualTo(minAmount)
