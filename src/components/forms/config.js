@@ -27,11 +27,11 @@ import {
   NEW_WACCOUNT_DEFAULT_STATE
 } from './widgets/newWithdrawAccount/api'
 
-import { 
-  PERSONAL_COMPONENTS,
-  PERSONAL_STAGES,
-  PERSONAL_DEFAULT_STATE
-} from './widgets/personalKycComponent/api'
+// import { 
+//   PERSONAL_COMPONENTS,
+//   PERSONAL_STAGES,
+//   PERSONAL_DEFAULT_STATE
+// } from './widgets/personalKycComponent/oldApi'
 
 import { 
   LOCATION_DEFAULT_STATE,
@@ -63,7 +63,7 @@ import {
 
 let stages = {
   ...BIOMETRIC_STAGES,
-  ...PERSONAL_STAGES,
+// ...PERSONAL_STAGES,
   ...FIAT_WITHDRAW_STAGES,
   ...ONBOARDING_STAGES,
   ...FIAT_DEPOSIT_STAGES,
@@ -75,7 +75,7 @@ let stages = {
 } 
 
 const defaultState = {
-  ...PERSONAL_DEFAULT_STATE,
+  // ...PERSONAL_DEFAULT_STATE,
   ...NEW_WACCOUNT_DEFAULT_STATE,
   ...FIAT_WITHDRAW_DEFAULT_STATE,
   ...FIAT_DEPOSIT_DEFAULT_STATE,
@@ -95,7 +95,7 @@ const handleError = {
 
 const wrapperComponent = {
   ...BIOMETRIC_COMPONENTS['wrapperComponent'],
-  ...PERSONAL_COMPONENTS['wrapperComponent'],
+  // ...PERSONAL_COMPONENTS['wrapperComponent'],
   ...ONBOARDING_COMPONENTS['wrapperComponent'],
   ...FIAT_DEPOSIT_COMPONENTS['wrapperComponent'],
   ...NEW_WALLET_COMPONENTS['wrapperComponent'],

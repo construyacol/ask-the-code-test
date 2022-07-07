@@ -1,9 +1,9 @@
-import { mainService } from "../../../../services/MainService";
-import { 
-  formatMaskDate, 
-  parseDateToTimeStamp ,
-  // parseTimeStampToDate
-} from './utils'
+// import { mainService } from "../../../../services/MainService";
+// import { 
+//   formatMaskDate, 
+//   parseDateToTimeStamp ,
+//   // parseTimeStampToDate
+// } from './utils'
 
 
 
@@ -277,10 +277,10 @@ const STAGES = {
 console.log(testCountryValidators)
 
 export const ApiGetPersonalStages = async(config) => {
-    const { personType, level, formName } = config
-    let countryValidators = await mainService.countryValidators()
-    if(!countryValidators) return;
-    return countryValidators?.res?.levels[level][formName][personType]
+    // const { personType, level, formName } = config
+    // let countryValidators = await mainService.countryValidators()
+    // if(!countryValidators) return;
+    // return countryValidators?.res?.levels[level][formName][personType]
 }
 
 
@@ -288,56 +288,56 @@ export const ApiGetPersonalStages = async(config) => {
  
 export const ApiPostPersonalKyc = async(body, tools) => {
 
-  const { setLoading, prevStage, toastMessage } = tools
+  // const { setLoading, prevStage, toastMessage } = tools
 
-  let config = {
-    info: { ...body },
-    info_type: "personal",
-    verification_level: "level_1",
-  };
+  // let config = {
+  //   info: { ...body },
+  //   info_type: "personal",
+  //   verification_level: "level_1",
+  // };
 
-  const isMaskBirthday = config.info.birthday.includes('/') 
-  if(isMaskBirthday){
-    config.info.birthday = formatMaskDate(config.info.birthday) 
-  }
+  // const isMaskBirthday = config.info.birthday.includes('/') 
+  // if(isMaskBirthday){
+  //   config.info.birthday = formatMaskDate(config.info.birthday) 
+  // }
 
-  const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
-  console.log('timeStampDate', config.info.birthday)
-  console.log('timeStampDate', timeStampDate)
-  config.info.birthday = timeStampDate
-  // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
-  setLoading(true)
-  let res = await mainService.updateLevelProfile(config);
-  setLoading(false)
+  // const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
+  // console.log('timeStampDate', config.info.birthday)
+  // console.log('timeStampDate', timeStampDate)
+  // config.info.birthday = timeStampDate
+  // // https://es.stackoverflow.com/questions/219147/new-date-en-javascript-me-resta-un-dia/219165
+  // setLoading(true)
+  // let res = await mainService.updateLevelProfile(config);
+  // setLoading(false)
   
-  if(!res) {
-    toastMessage('No ha sido posible completar la verificación.', 'error')
-    return prevStage();
-  }
+  // if(!res) {
+  //   toastMessage('No ha sido posible completar la verificación.', 'error')
+  //   return prevStage();
+  // }
 
-  const { user } = mainService.globalState.modelData
-  const { data:{ personal } } = res;
+  // const { user } = mainService.globalState.modelData
+  // const { data:{ personal } } = res;
 
-  let user_update = {
-    ...user,
-    ...personal,
-    levels: {
-      ...user.levels,
-      personal: "confirmed",
-    },
-    security_center: {
-      ...user.security_center,
-      kyc: {
-        ...user.security_center.kyc,
-        basic: "confirmed",
-      },
-    },
-    country:user.country
-  };
+  // let user_update = {
+  //   ...user,
+  //   ...personal,
+  //   levels: {
+  //     ...user.levels,
+  //     personal: "confirmed",
+  //   },
+  //   security_center: {
+  //     ...user.security_center,
+  //     kyc: {
+  //       ...user.security_center.kyc,
+  //       basic: "confirmed",
+  //     },
+  //   },
+  //   country:user.country
+  // };
 
-  await mainService.updateUser(user_update);
+  // await mainService.updateUser(user_update);
   
-  return res
+  // return res
 }
 
 

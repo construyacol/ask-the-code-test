@@ -3,8 +3,24 @@ import loadable from "@loadable/component";
 import { ButtonForms } from "../buttons/buttons.js";
 import ConfettiComponent from "./confetti";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
+import styled from 'styled-components'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
+
+const KycLayoutWin = styled.div`
+  padding: 30px;
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  place-items: center;
+  .KycParra1{
+    font-size:20px;
+  }
+`
+
+const Title = styled.h1`
+  font-size:25px;
+  color: var(--title1);
+`
 
 const SuccessComponentScreen = (props) => {
   const {
@@ -36,8 +52,8 @@ const SuccessComponentScreen = (props) => {
   );
 
   return (
-    <div className="KycLayoutBasicWin" id="callese">
-      <h1 className="fuente KycTitles">Genial {user_name}</h1>
+    <KycLayoutWin>
+      <Title className="fuente">Genial {user_name}</Title>
       <IconSwitch
         withoutwrapper={true}
         icon="accepted"
@@ -69,7 +85,7 @@ const SuccessComponentScreen = (props) => {
         </div>
       </div>
       {confetti && <ConfettiComponent />}
-    </div>
+    </KycLayoutWin>
   );
 };
 
