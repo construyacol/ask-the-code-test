@@ -8,7 +8,7 @@ import ungapStructuredClone from '@ungap/structured-clone';
 import { mainService } from '../../services/MainService'
 import formStructure from './config.js'
 import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
-import { ApiGetPersonalStages } from './widgets/personalKycComponent/api'
+// import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
 import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
@@ -165,7 +165,7 @@ export const createSelectList = async(list) => {
 const dataService = {
   biometric:ApiGetBiometricStages,
   onBoarding:ApiGetOnBoardingStages,
-  personal:ApiGetPersonalStages,
+  // personal:ApiGetPersonalStages,
   identity:ApiGetIdentityStages, 
   newWallet:ApiGetNewWalletStages,
   location:ApiGetLocationStages,

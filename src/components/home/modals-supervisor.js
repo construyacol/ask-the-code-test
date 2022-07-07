@@ -9,7 +9,7 @@ import { Route } from "react-router-dom";
 import PropTypes from "prop-types";
 import withHandleError from "../withHandleError";
 import useToastMessage from "../../hooks/useToastMessage.js";
-import KycSkeleton from '../kyc/basic/skeleton'
+// import KycSkeleton from '../kycs/basic/skeleton'
 import DWFiatFlowSkeleton from "../wallets/views/skeleton/dWFiatFlowSkeleton"
 import WithdrawAccountFlowSkeleton from '../withdrawAccounts/skeleton'
 // import NewWalletSkeleton from '../wallets/newWallet/skeleton'
@@ -21,7 +21,7 @@ const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2f
 const WithdrawFlow = loadable(() => import("../wallets/withdraw/withdrawFlowContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_views"));
 const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
-const Kyc = loadable(() => import("../kyc/kyc_container"), { fallback:<KycSkeleton/> } );
+// const Kyc = loadable(() => import("../kycs/kyc_container"), { fallback:<KycSkeleton/> } );
 const DepositContainer = loadable(() => import("../wallets/deposit/depositContainer"), { fallback: <DWFiatFlowSkeleton/> });
 const WithdrawAccountForm = loadable(() => import("../withdrawAccounts/new/withdrawAccountForm"), { fallback: <WithdrawAccountFlowSkeleton/> });
 // const NewWallet = loadable(() => import("../wallets/newWallet/newWalletContainer"), { fallback: <NewWalletSkeleton/> });
@@ -32,7 +32,7 @@ function ModalsSupervisor(props) {
     otherModal,
     isModalVisible,
     modalConfirmation,
-    current,
+    // current,
     modalView,
     loader,
     isSocketNotification,
@@ -68,7 +68,7 @@ function ModalsSupervisor(props) {
           />
 
           <Route
-            exact path="/security" component={current === "2auth" ? TwoFactorActivate : Kyc}
+            exact path="/security" component={TwoFactorActivate}
           />
 
         </ModalLayout>
