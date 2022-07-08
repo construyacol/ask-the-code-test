@@ -28,7 +28,7 @@ import { isArray } from "lodash";
 
 export class WithdrawService extends WebService {
 
-  async fetchWithdrawAccounts(query = '{"where":{"visible":true}}') {
+  async fetchWithdrawAccounts(query = '{"where":{"visible":true, "state":{"inq":["in_progress", "complete", "pending"]} }}') {
 
     const { user } = this.globalState.modelData;
     await this.dispatch(
