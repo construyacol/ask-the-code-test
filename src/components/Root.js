@@ -49,7 +49,8 @@ function RootContainer(props) {
 
   const initComponent = async (mobileURL) => {
 
-    const params = new URLSearchParams(history.location.search ?? mobileURL);
+    const params = new URLSearchParams(mobileURL ?? history.location.search);
+
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
@@ -58,7 +59,6 @@ function RootContainer(props) {
     }
 
     const userData = await getUserToken();
-    
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('_testing')){
