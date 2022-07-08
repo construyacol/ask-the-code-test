@@ -63,11 +63,7 @@ export function openLoginMobile(callback) {
     }, 1000)
   });
   iab.addEventListener('message', async ({ data }) => {
-    await localForage.setItem('user_token', data.jwt)
-    await localForage.setItem('refresh_token', data.refresh_token)
-    await localForage.setItem('created_at', new Date())
     iab.close()
-    
     // HACK: in order to reuse the browser logic
     callback && callback(`?token=${data.jwt}&refresh_token=${data.refresh_token}`)
   });
