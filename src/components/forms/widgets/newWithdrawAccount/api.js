@@ -166,7 +166,10 @@ export const ApiPostCreateWAccount = async(state, tools) => {
 
   if(withdraw_accounts){
     // validate if withdraw account already exist 
-    const result = Object.values(withdraw_accounts).filter(WAccount => WAccount.info.bank_name === state?.bankName && WAccount.info.account_number === state?.infoAccount?.accountNumber)
+    const result = Object.values(withdraw_accounts).filter(WAccount => 
+      WAccount.info.bank_name === state?.bankName && 
+      WAccount.info.account_number === state?.infoAccount?.accountNumber
+    )
     if(!isEmpty(result)){
       return {
         error:{

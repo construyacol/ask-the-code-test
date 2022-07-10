@@ -68,15 +68,15 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     //   coinsendaServices.postLoader(doLogout);
     //   return redirectURL(isSessionRestored);
     // } 
- 
+    
     if (!userToken) return;
    
     let profile = await coinsendaServices.fetchUserProfile();
 
     if (!profile) {
-      setShowOnBoarding(true) 
       const { error, data } = await coinsendaServices.addNewProfile(country);
       if(error) return alert(error?.message, 'error');
+      setShowOnBoarding(true) 
       profile = data
       document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
@@ -114,7 +114,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
       actions.isAppLoading(false);
     } else {
       await history.push("/wallets");
-    }
+    } 
     // showKeyActionModal(verificationStatus);
     return actions.isAppLoaded(true);
   };
