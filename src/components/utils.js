@@ -6,9 +6,12 @@ import { mainService } from '../services/MainService'
 import {STORAGE_KEYS} from "const/storageKeys";
 import { Capacitor } from '@capacitor/core';
 import { store } from '../'
-import Environment from '../environment'
-import isLoading from "reducers/is-loading";
-import { IS_APP_LOADED } from "actions/action_types";
+import Environment from 'environment'
+// import isLoading from "reducers/is-loading";
+// import { isAppLoaded } from 'actions/loader'
+import actions from "actions";
+
+// import { IS_APP_LOADED } from "actions/action_types";
 export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
 const { Oauth } = Environment
 
@@ -176,17 +179,15 @@ export const doLogout = async (queryString) => {
   await localForage.removeItem(STORAGE_KEYS.refresh_token);
   await localForage.removeItem(STORAGE_KEYS.jwt_expiration_time);
   await localForage.removeItem(STORAGE_KEYS.refresh_token_expiration_time);
-
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
+
   if (CAPACITOR_PLATFORM === 'web') {
     window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;
   } else {
     // HACK: This to logout in mobile app, we should have either authData or isLoading, not both
-    store.dispatch(isLoading(null, {
-      type: IS_APP_LOADED,
-      payload: false
-    }))
+    store.dispatch(actions.setAuthData({}));
+    store.dispatch(actions.isAppLoaded(false));
   }
 };
 

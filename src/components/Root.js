@@ -15,12 +15,13 @@ import FreshChat from '../services/FreshChat'
 import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
-
+import { STORAGE_KEYS } from "../const/storageKeys";
 
 
 import {
   // doLogout,
   // verifyTokensValidity,
+  // validateExpTime,
   saveUserToken,
   getUserToken,
   CAPACITOR_PLATFORM,
@@ -47,6 +48,7 @@ function RootContainer(props) {
   const [toastMessage] = useToastMessage();
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
 
+
   const initComponent = async (mobileURL) => {
 
     const params = new URLSearchParams(mobileURL ?? history.location.search);
@@ -59,6 +61,7 @@ function RootContainer(props) {
     }
 
     const userData = await getUserToken();
+    
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('_testing')){
@@ -71,7 +74,7 @@ function RootContainer(props) {
         userId: decodedToken.usr
       });
     }
-
+ 
     // verifyTokensValidity()
     // En este punto el token es valido
     // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
@@ -90,26 +93,19 @@ function RootContainer(props) {
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
-
+ 
     history.push("/");
+
     
   };
 
   useEffect(() => {
     async function initRoot() {
       if (CAPACITOR_PLATFORM !== 'web') {
-        const jwt = await localForage.getItem('user_token')
-        const refreshToken = await localForage.getItem('refresh_token')
-        if (jwt && refreshToken && !isAppLoaded) {
-          // HACK: in order to reuse the browser logic
-          initComponent(`?token=${jwt}&refresh_token=${refreshToken}`)
-        } else if (!isAppLoaded) {
-          openLoginMobile(initComponent)
-        }
-      } else if (!isAppLoaded){
-        initComponent();
-      }
-      hotJar()
+        const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
+        if (!userToken && !isAppLoaded) openLoginMobile(initComponent);
+      } 
+      if(!isAppLoaded) return initComponent();
     }
 
     initRoot()
@@ -117,7 +113,11 @@ function RootContainer(props) {
   }, [isAppLoaded]);
 
   useEffect(() => {
-    if(showOnBoarding && CAPACITOR_PLATFORM === 'web'){ 
+    hotJar()
+  }, [])
+
+  useEffect(() => {
+    if(showOnBoarding){ 
       const initOnBoarding = async() => {
         const Element = await import("./forms/widgets/onBoardingComponent/init");
         const OnBoardingComponent = Element.default
