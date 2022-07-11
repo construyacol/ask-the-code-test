@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast as reactToastify } from "react-toastify";
 import { kyc } from "../components/api/ui/api.json";
 import Compressor from "compressorjs";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
@@ -116,32 +116,29 @@ const get_img_quality = (size) => {
   return quality;
 };
 
-export const mensaje = async (msg, type, position) => {
-  // console.log('mensaje', msg, type)
-  return toast(msg, {
-    position: toast.POSITION[!position ? "BOTTOM_RIGHT" : position],
+export const toast = async (msg, type, position) => {
+  return reactToastify(msg, {
+    position: reactToastify.POSITION[!position ? "BOTTOM_RIGHT" : position],
     pauseOnFocusLoss: false,
     draggablePercent: 60,
     className: `${
       type === "error"
-        ? "toastError"
+        ? "toast-error"
         : type === "success"
-        ? "DCfondo"
-        : "DCfondoDefault"
+        ? "dc-background"
+        : "dc-background-default"
     }`,
     bodyClassName: `${
       type === "error"
-        ? "toastErrorText"
+        ? "toast-error-text"
         : type === "success"
-        ? "DCTtext"
-        : "DCTtextDefault"
+        ? "dc-text"
+        : "dc-text-default"
     }`,
     progressClassName: `${
       type === "error"
-        ? "ErroProgressBar"
-        : type === "success"
-        ? "DCProgress"
-        : "DCProgress"
+        ? "error-progress-bar"
+        : "dc-progress"
     }`,
     autoClose: 4000,
   });
@@ -158,7 +155,7 @@ export const copy = (payload) => {
   aux.select();
   document.execCommand("copy");
   document.body.removeChild(aux);
-  return mensaje("¡Copiado Exitosamente!");
+  return toast("¡Copiado Exitosamente!");
 };
 
 export const capitalizarPalabras = (val) => {

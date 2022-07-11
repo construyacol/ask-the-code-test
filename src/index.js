@@ -3,6 +3,7 @@ import React from "react";
 // import loadable from "@loadable/component";
 // import { hydrate, render } from "react-dom";
 import { render } from 'react-snapshot';
+import "react-toastify/dist/ReactToastify.css";
 import "./basic-style.css";
 import "./index.css";
 import "./new-mobile-style.css";

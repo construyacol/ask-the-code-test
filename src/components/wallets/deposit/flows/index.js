@@ -148,11 +148,6 @@ export const Success = (props) => {
         ) : (
           // <section className={`stepFinish ${final ? 'cambiarGrid': ''}`}>
           <Fragment>
-            {/* <span className="DLsave" onClick={guardarMetodo}>
-              <i className="far fa-bookmark tooltip" >
-              <span className="tooltiptext tooltiptexts fuente">Guardar Medio de pago</span>
-              </i>
-            </span> */}
 
             <div className={`succ nWCabeza ${final ? "desaparece1" : ""}`}>
               <div className="icon icon--order-success svg">
