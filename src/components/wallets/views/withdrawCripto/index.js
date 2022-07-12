@@ -220,7 +220,7 @@ export const CriptoView = () => {
       }
       return result.camera === 'granted';
     } catch (e) {
-      toastMessage('Necesitas darle permisos a la app para usar la camara como scanner', 'error');
+      // toastMessage('Necesitas darle permisos a la app para usar la camara como scanner', 'error');
       return false;
     }
   };
@@ -228,7 +228,10 @@ export const CriptoView = () => {
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkPermission()) {
       const { text, cancelled } = await BarcodeScanner.scan();
-      if (!!!cancelled) setAddressValue(text?.split(':')[1]);
+      console.log('showQrScanner text', text)
+      console.log('showQrScanner cancelled', cancelled)
+      alert('showQrScanner')
+      if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
       const Element = await import("../../../qr-scanner");
