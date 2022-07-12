@@ -421,24 +421,3 @@
   /*transition: .25s;*/
   /*align-self: baseline;*/
 }
-
-.DCfondo {
-  /*background: linear-gradient(to bottom right, #2B3742, #101418) !important;*/
-  background: linear-gradient(to bottom right, #129a8e, #37ed7d);
-  border-radius: 6px !important;
-  height: 2px !important;
-}
-
-.DCTtext {
-  color: white !important;
-  /*color:#13b5f1 !important;*/
-  font-size: 17px !important;
-  text-align: center !important;
-}
-
-.DCProgress {
-  /*background: hsla(0,0%,100%,.7) !important;*/
-  /*background: linear-gradient(to right, #377fd7, #13b5f1) !important;*/
-  background: #00ff7d !important;
-  opacity: 0.85 !important;
-}

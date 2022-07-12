@@ -4,10 +4,8 @@ import { connect } from "react-redux";
 // import { banks, coins } from '../../api/ui/api.json'
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
-import { toast } from "react-toastify";
 import * as globalServices from "../../../utils";
 import "./deposit.css";
-import { SavePayment } from "../../widgets/toast/messages";
 import { withRouter } from "react-router";
 import BigNumber from "bignumber.js";
 import withCoinsendaServices from "../../withCoinsendaServices";
@@ -479,31 +477,6 @@ class DepositContainer extends Component {
   //   return this.setState({statusInput:message})
   // }
 
-  guardarMetodo = () => {
-    toast("", {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      pauseOnFocusLoss: false,
-      draggablePercent: 60,
-      className: "putito",
-      bodyClassName: "putitoText",
-      progressClassName: "putitoProgress",
-      toastId: 2,
-      autoClose: false,
-    });
-
-    toast.update(2, {
-      render: <SavePayment loader={true} label="Guardando Medio de pago" />,
-      autoClose: false,
-    });
-
-    setTimeout(() => {
-      toast.update(2, {
-        render: <SavePayment loader={false} label="Medio de pago Guardado" />,
-        autoClose: 1500,
-      });
-    }, 3000);
-  };
-
   // serve_deposit_provider_views = async dep_provs =>{
   //   // @param dep_prov
   //   // otros_medios
@@ -558,8 +531,6 @@ class DepositContainer extends Component {
         create_deposit_order={this.create_deposit_order}
         finalizar={this.finalizar}
         update_local_state={this.update_local_state}
-        // handleKeyPress={this.handleKeyPress}
-        guardarMetodo={this.guardarMetodo}
         deposit={this.to_deposit_crypto}
         coins={coins}
         {...this.state}

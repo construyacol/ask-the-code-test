@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import ActiveItem from "../items/active_item";
 import LimitTermometer from "../limitTermometer/limitTermometer";
-import { number_format, mensaje } from "../../../utils";
+import { number_format, toast } from "../../../utils";
 import { InputKeyActionHandler } from "../accountList/styles";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 
@@ -50,7 +50,7 @@ function AccountItemList(props) {
   };
 
   const showRequireActionMessage = (amountValidation) => {
-    return mensaje(`${amountValidation === 'amount_exceeds_limits' ? 'Límite de retiro superado' : 'Fondos insuficientes'}`, "error");
+    return toast(`${amountValidation === 'amount_exceeds_limits' ? 'Límite de retiro superado' : 'Fondos insuficientes'}`, "error");
   };
 
   const { account, addElement, action, amount } = props;
