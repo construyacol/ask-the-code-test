@@ -136,6 +136,7 @@ class SocketsComponent extends Component {
 
           socket.on("authenticated", () => {
             document.querySelector('#home-container')?.classList?.add('socket-authenticated')
+           
             socket.on(`/swap/${user.id}`, async (swap) => {
               if (swap.state === "pending") {
                 await this.setState({ currentSwap: swap });
@@ -665,6 +666,7 @@ class SocketsComponent extends Component {
       await this.props.history.push(`/wallets/activity/${new_swap.account_from}/swaps`);
       this.props.action.add_new_transaction_animation();
     }
+
 
 
     if(swap.state === 'rejected' || swap.state === 'canceled'){

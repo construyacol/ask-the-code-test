@@ -10,7 +10,7 @@ import actions from "../../../actions";
 import InifiniteScrollComponent from "./infiniteScroll";
 import { isSafari } from '../../../utils'
 import { ORDER_TYPE_UI_NAME } from '../../../const/const'
-
+ 
 // import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
 

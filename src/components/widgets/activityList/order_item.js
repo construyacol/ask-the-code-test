@@ -140,7 +140,7 @@ export const DepositOrder = ({ order }) => {
       className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
 
-      {
+      { 
         (order?.info?.is_referral) &&
             <RibbonContDeposit className="tooltip">
               <p>R</p>
@@ -203,6 +203,27 @@ const BarraSwap = styled.div`
   top: 1px;
   right: 0;
   opacity: 0.6;
+
+  .relleno {
+    height: 100%;
+    width: 0%;
+    transition: 1s;
+    background: orange;
+    &.swaPending{
+      background: #ff8660 !important;
+      animation-duration: 0.2s;
+      animation-fill-mode: forwards;
+      width: 0%;
+    }
+    &.swaProcessing{
+      width: 66% !important;
+      background: #67867a !important;
+    }
+    &.swapDone{
+      width: 100% !important;
+      background: #1cb179 !important;
+    }
+  }
 `;
 
 const SwapOrder = ({ order, setOrderState }) => {
@@ -263,9 +284,9 @@ const SwapOrder = ({ order, setOrderState }) => {
       <DataContainer className={`align_first ${state} ${currency_type || ""}`}>
         {currentOrder.activeTrade && state !== "accepted" ? (
           <>
-            <div className="loaderViewItem">
+            <LoaderViewItem className="loaderViewItem">
               <SimpleLoader loader={2} color={colorState} />
-            </div>
+            </LoaderViewItem>
             <SwapAnimation
               from={order.to_spend_currency.currency}
               to={order.to_buy_currency.currency}
@@ -277,11 +298,11 @@ const SwapOrder = ({ order, setOrderState }) => {
             {!isMovilViewport &&
             currentOrder.activeTrade &&
             state === "accepted" ? (
-              <div className="loaderViewItem">
-                <div className="successIcon">
+              <LoaderViewItem className="loaderViewItem">
+                <SuccessIcon className="successIcon">
                   <IconSwitch size={80} icon="success" color="#1cb179" />
-                </div>
-              </div>
+                </SuccessIcon>
+              </LoaderViewItem>
             ) : (
               <PanelLeft {...order} />
             )}
@@ -324,6 +345,21 @@ const SwapOrder = ({ order, setOrderState }) => {
     </Order>
   );
 };
+
+const SuccessIcon = styled.div`
+  transform: scale(0.4);
+  position: absolute;
+  margin-top: 10%;
+  margin-right: 40%;
+`
+
+const LoaderViewItem = styled.div`
+  width: 40px;
+  display: grid;
+  position: relative;
+  align-items: center;
+  justify-items: center;
+`
 
 const WithdrawOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
@@ -478,6 +514,8 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
 };
 
 
+
+
 const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
 
   // @param
@@ -509,23 +547,64 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
 
 
   return (
-        <div
+        <Tooltip
           className="tooltip deleteOrder"
           onClick={deleteOrder}
           data-is_deletion_action={true}
         >
-          <div id="Aldelete" data-is_deletion_action={true}>
+          <Aldelete id="Aldelete" data-is_deletion_action={true}>
             <i
               className="far fa-times-circle "
               data-is_deletion_action={true}
             ></i>
-          </div>
-          <span className="tooltipDelete fuente" data-is_deletion_action={true}>
+          </Aldelete>
+          <TooltipDelete className="tooltipDelete fuente" data-is_deletion_action={true}>
             Cancelar
-          </span>
-        </div>
+          </TooltipDelete>
+        </Tooltip>
   );
 };
+
+
+const Aldelete = styled.div`
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  padding: 2px 0;
+  transition: 0.3s;
+  width: 0;
+  i{
+    font-size: 22px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+`
+
+const TooltipDelete = styled.span`
+  left: 25% !important;
+  visibility: hidden;
+  width: 60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 12px !important;
+  position: absolute;
+  z-index: 1;
+  margin-left: -30px;
+
+`
+
+const Tooltip = styled.div`
+  &:hover ${TooltipDelete} {
+    visibility: visible;
+  }
+
+`
 
 const Confrimations = styled.div`
   grid-area: confirmations;
