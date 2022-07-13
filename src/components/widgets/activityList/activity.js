@@ -11,10 +11,112 @@ import InifiniteScrollComponent from "./infiniteScroll";
 import { isSafari } from '../../../utils'
 import { ORDER_TYPE_UI_NAME } from '../../../const/const'
 
-import "./activity_view.css";
+// import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
 
 import { createSelector } from "reselect";
+
+
+
+
+import { device } from 'const/const'
+import styled from 'styled-components'
+
+
+
+const ALlistAll = styled.div`
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 80px);
+  height: auto;
+  grid-auto-flow: row dense;
+  min-height: 100%;
+  grid-row-gap: 20px;
+  transform-style: preserve-3d;
+  justify-items: center;
+  &.is_safari{
+    min-height: -webkit-fit-content;
+  }
+`
+
+const ALactivity = styled.section`
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  &.ALactivityPending{
+    margin-top: 35px;
+  }
+`
+
+const ALpendingMom = styled.div`
+  position: relative;
+  display: block;
+  background: #f5f5f5;
+  padding: 15px 20px;
+  border-radius: 6px;
+  margin-bottom: 50px;
+
+  @media ${device.mobile} {
+    margin-bottom: 0;
+    padding: 0;
+    background:transparent;
+  }
+`
+
+const ALtext = styled.p`
+  color: var(--paragraph_color);
+`
+
+const ALpendingCont = styled.div`
+  overflow: hidden;
+  transition: 0.3s;
+  position: relative;
+  padding: 0 15px;
+
+  &:hover{
+    height: 800px;
+  }
+
+  @media ${device.mobile} {
+    padding: 0;
+  }
+`
+
+const ALlist = styled.div`
+  display: grid;
+  grid-template-rows: repeat(auto-fill, 80px);
+  height: auto;
+  grid-auto-flow: row dense;
+  min-height: 100%;
+  grid-row-gap: 20px;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  perspective-origin: center top;
+  transition: 0.3s;
+  display: grid;
+  justify-items: center;
+`
+
+const ALverTodo = styled.p`
+  position: absolute;
+  bottom: -30px;
+  margin: 0;
+  right: 0;
+  color: var(--paragraph_color);
+  cursor: pointer;
+  font-family: "Raleway", sans-serif;
+  font-size: 15px;
+  &:hover{
+    color: #b48728;
+  }
+  i{
+    margin-left: 7px;
+  }
+  span{
+    color: #ff8660;
+    font-family: "Tomorrow", sans-serif;
+  }
+`
 
 class ActivityList extends Component {
   state = {
@@ -45,7 +147,6 @@ class ActivityList extends Component {
 
   expandir = () => {
     const { expandidoMax } = this.props;
-
     this.setState({
       expandible: expandidoMax,
       expandido: true,
@@ -145,25 +246,25 @@ class ActivityList extends Component {
     } = this.state;
 
 
-
+ 
     return (
       <Fragment>
         {tx_path !== "swaps" && (
-          <section
+          <ALpendingMom
             className="ALpendingMom"
             style={{ display: pending ? "block" : "none" }}
           >
-            <p
+            <ALtext
               className="ALtext fuente"
               style={{ display: pending ? "block" : "none" }}
             >
               {`${ORDER_TYPE_UI_NAME[tx_path]?.ui_name}s`|| 'Operaciones'} en proceso{" "}
-            </p>
-            <div
+            </ALtext>
+            <ALpendingCont
               className="ALpendingCont"
               style={{ height: `${expandible}px` }}
             >
-              <div className="ALlist" style={{ height: `${expandidoMax}px` }}>
+              <ALlist className="ALlist" style={{ height: `${expandidoMax}px`}}>
                 {activity &&
                   activity.map((item, indx) => {
                     // Si la orden esta en accepted, canceled, rejected ó es un retiro pendiente
@@ -208,9 +309,9 @@ class ActivityList extends Component {
 
                     // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
                   })}
-              </div>
-            </div>
-            <p
+              </ALlist>
+            </ALpendingCont>
+            <ALverTodo
               className="ALverTodo"
               onClick={this.expandir}
               style={{display: expandidoMax / 100 < 2 || expandido ? "none" : "block"}}
@@ -218,17 +319,17 @@ class ActivityList extends Component {
               Ver todo
               <span>+{expandidoMax / 100 - 1}</span>
               <i className="fas fa-angle-down"></i>
-            </p>
-            <p className="ALverTodo" onClick={this.contraer} style={{display:expandidoMax / 100 < 2 || !expandido ? "none" : "block"}}>
+            </ALverTodo>
+            <ALverTodo className="ALverTodo" onClick={this.contraer} style={{display:expandidoMax / 100 < 2 || !expandido ? "none" : "block"}}>
               Reducir
               <i className="fas fa-angle-up"></i>
-            </p>
-          </section>
+            </ALverTodo>
+          </ALpendingMom>
         )}
 
-        <section className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
+        <ALactivity className={`ALactivity ${pending && tx_path !== "swaps" ? "ALactivityPending" : ""}`}>
           {/* <p className="ALtext fuente">Operaciones realizadas</p> */}
-          <div className={`ALlistAll ${isSafari()}`}>
+          <ALlistAll className={`ALlistAll ${isSafari()}`}>
             {activity.map((item, index) => {
               if (
                 item.state !== "accepted" &&
@@ -244,13 +345,13 @@ class ActivityList extends Component {
                       key={index}
                     />;
             })}
-          </div>
+          </ALlistAll>
 
           <InifiniteScrollComponent
             setLoader={this.setLoader}
             loader={this.state.scrollLoader}
           />
-        </section>
+        </ALactivity>
       </Fragment>
     );
   }
