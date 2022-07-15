@@ -6,6 +6,64 @@ import SelectList from '../selectList'
 import { WALLET_FILTER_LIST, WITHDRAW_ACCOUNT_FILTER_LIST } from '../../../const/const'
 
 
+import { device } from 'const/const'
+import styled from 'styled-components'
+
+
+const ALFilterSect = styled.section`
+  display: flex;
+  &.relativePos{
+    position: relative;
+    z-index: 1; 
+  }
+  &.stickyPos{
+    position: sticky;
+    z-index: 3;
+  }
+
+`
+
+const ALfiltros = styled.div`
+  width: calc(100%);
+  height: 45px;
+  /*background: #8080801a;*/
+  transition: 0.3s;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  /*padding: 0 12px;*/
+  background: linear-gradient(to right, #e7e7e7b0, #f1f1f1b0, white);
+  justify-content: flex-start;
+  backdrop-filter: blur(7px);
+
+  p{
+    color: var(--paragraph_color);
+  }
+
+  @media ${device.mobile} {
+    justify-content: space-between;
+  }
+
+`
+
+const ALif2Item = styled.div`
+  display: flex;
+  align-items: center;
+  width: 110px;
+  justify-items: center;
+  justify-content: center;
+  color: gray;
+  column-gap: 10px;
+  margin-right: 10px;
+  margin-left: 15px;
+  p{
+    margin: 0;
+  }
+
+`
+
+
+
 const ActivityFilters = (props) => {
   
   const { currentFilter } = props;
@@ -39,37 +97,22 @@ const ActivityFilters = (props) => {
   
 
   return (
-    <section ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'stickyPos' : ''}`}>
-      <div
+    <ALFilterSect ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'stickyPos' : ''}`}>
+      <ALfiltros
         className="ALfiltros fuente"
         style={{ height: filter ? "45px" : "0px" }}
       >
-        <div className="ALif2Item" style={{ fontSize: movil_viewport ? "12px" : "14px" }}>
+        <ALif2Item className="ALif2Item" style={{ fontSize: movil_viewport ? "12px" : "14px" }}>
             <i className="fas fa-filter"></i>
             <p className="fuente">Historial de:</p>
-        </div>
+        </ALif2Item>
         <SelectList
         actionHandle={filterChange}
         list={selectListData}
         selectedItem={currentFilter}
         />
-      </div>
-
-      {/* <div
-        className={` ALif2 ALitemFill ${filter ? "ALactive" : ""} ${
-          movil_viewport ? "movil" : ""
-        }`}
-      >
-        <div className="ALif2ItemAll" style={{ top: filter ? "-100%" : "0%" }}>
-          <div className="ALif2Item currentFill">
-            <i className="fas fa-filter"></i>
-            <p>{currentFilter && currentFilter.toUpperCase()}</p>
-          </div>
-
-          
-        </div>
-      </div> */}
-    </section>
+      </ALfiltros>
+    </ALFilterSect>
   );
 };
 

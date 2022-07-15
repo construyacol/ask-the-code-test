@@ -56,10 +56,10 @@ export const getIdentityState = ({ file_state, info_state }) => {
 }
 
 
-export const setAnimation = (className, containerId, time) => {
-  const element = document.getElementById(containerId);
-  element.classList.add(className);
+export const setAnimation = (className, containerId, time = 100) => {
   return new Promise((resolve, reject) => {
+    const element = document?.getElementById(containerId);
+    element?.classList?.add(className);
     setTimeout(() => {
       resolve();
       setTimeout(() => {

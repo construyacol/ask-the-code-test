@@ -12,6 +12,24 @@ import useViewport from '../../../hooks/useWindowSize'
 import "./wallet_views.css";
 import useToastMessage from "../../../hooks/useToastMessage";
 
+import { device } from 'const/const'
+import styled from 'styled-components'
+
+const ActivityViewCont = styled.div`
+  height: 100%;
+  max-height: auto;
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+
+  @media ${device.mobile} {
+    display: grid;
+    row-gap: 20px;
+    grid-template-rows:auto 1fr;
+  }
+`
+
+
 
 const ActivityView = (props) => {
 
@@ -150,7 +168,7 @@ const ActivityView = (props) => {
   // }, [])
 
   return (
-    <div className="ActivityView">
+    <ActivityViewCont className="ActivityView">
       {
         isMovilViewport &&
         <ActivityFilters view={params.primary_path} />
@@ -164,7 +182,7 @@ const ActivityView = (props) => {
           {...props}
         />
       )}
-    </div>
+    </ActivityViewCont>
   );
 };
 

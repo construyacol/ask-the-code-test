@@ -11,14 +11,18 @@ import AddressBookComponent from "./addressBookList";
 import HeaderComponent from "./header";
 import { swing_in_bottom_bck } from "../../../animations";
 import selectWithdrawAccountsByProviderType from "../../../../selectors";
-import { IconClose } from "../../../shared-styles";
+import { IconClose } from "../../../shared-styles"; 
+import useViewport from 'hooks/useWindowSize'
 
 const AddressBook = ({ addressToAdd, setAddressValue }) => {
+
+  // const mainContainerRef = useRef()
   const actions = useActions();
   const [{ current_wallet, path }] = WithdrawViewState();
   const provider_type = current_wallet && current_wallet.currency.currency;
   const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByProviderType(state, provider_type));
   const [view, setView] = useState("addressList");
+  const { isMovilViewport } = useViewport()
 
   const cerrar = (e) => {
     if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
@@ -27,15 +31,20 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
   };
 
   const switchView = async (payload) => {
-    await setAnimation("disappear", "mainContainerAB", 150);
-    setView(payload);
-    await setAnimation("appear", "mainContainerAB", 150);
+    if(!isMovilViewport){
+      await setAnimation("disappear", "mainContainerAB", 150);
+      setView(payload);
+      await setAnimation("appear", "mainContainerAB", 150);
+    }else{
+      setView(payload);
+    }
   };
 
   useEffect(() => {
     if (addressToAdd) {
       switchView("newAccount");
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressToAdd]);
 
 
