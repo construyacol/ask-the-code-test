@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import { device } from 'const/const'
 // import { PRIMARY_COLOR } from '../../const'
 
 
@@ -141,7 +142,7 @@ export const Header = styled.div`
     column-gap:10px;
   }
 `
-
+ 
 
 export const FilesContainer = styled.div`
     display:grid;
@@ -159,19 +160,24 @@ export const FilesContainer = styled.div`
         display:grid;
     }
 
-    @media screen and (max-width: 768px){
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto 1fr;
-        padding: 2.5rem 1rem 1rem;
-        height: calc(100vh - 3.5rem);
-        width: calc(100vw - 2rem);
+    @media ${device.mobile}{
 
-        ${Header}{
-            grid-column:auto;
-            h1{
-                font-size:26px;
-            }
-        }
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      padding: 2.5rem 1rem 3rem;
+      height: calc(100vh - 3.5rem);
+      width: calc(100vw - 2rem);
+
+      &.ioSystem{
+        padding-bottom:6rem;
+      }
+
+      ${Header}{
+          grid-column:auto;
+          h1{
+              font-size:26px;
+          }
+      }
     }   
 
 `

@@ -1,7 +1,7 @@
 import React from "react";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
-import { CAPACITOR_PLATFORM } from "components/utils";
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 const OtherModalLayout = (props) => {
   const {

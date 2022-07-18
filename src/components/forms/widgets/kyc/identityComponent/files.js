@@ -17,6 +17,7 @@ import {
 } from '../../../../widgets/shared-styles'
 import useViewport from '../../../../../hooks/useWindowSize'
 import SimpleLoader, { LoaderContainer } from "../../../../widgets/loaders";
+import { osDevice } from 'utils/index'
 // import { getAcronym } from '../../../../utils'
 // import useValidations from '../../hooks/useInputValidations'
 import useStage from '../../../hooks/useStage'
@@ -34,10 +35,13 @@ import IdentityKycSuccess from './success'
 import { identityInfo } from './identityUtils'
 import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 import {
     Layout
 } from '../../sharedStyles'
+
+import { checkCameraPermission } from 'utils'
 
 import { 
   FilesContainer,
@@ -111,9 +115,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
         })
         nextStage(true)
         setLoading(false)
-      }, 500)
-
-      
+      }, 500)     
       // const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
       // if(!isAnImage){
       // return alert('Solo se aceptan imagenes')
@@ -122,6 +124,38 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
       // actions.isAppLoading(true);
     }
   };
+
+
+  const getCameraPhoto = async() => {
+    // Runs only on native app
+    if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+      try {
+        const { Camera, CameraResultType } = await import("@capacitor/camera");
+        setLoading(true)
+        const image = await Camera.getPhoto({
+          quality: 70,
+          resultType: CameraResultType.Base64,
+          // source:CameraSource.Camera,
+          promptLabelHeader:"Tomar imagen desde...",
+          promptLabelPicture:"Cámara",
+          promptLabelPhoto:"Galería"
+        });
+        setTimeout(() => {
+          setState(prevState => {
+            return { ...prevState, [stageData?.key]: {
+              img:image?.base64String
+            }}
+          })
+          nextStage(true)
+          setLoading(false)
+        }, 500)  
+      } catch (error) {
+        console.log('getCameraPhoto err => ', error?.message)
+        setLoading(false)
+      }
+    }
+
+  }
 
 
   useEffect(() => {
@@ -154,7 +188,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   return( 
     <>
       <Layout className="_identityKycLayout">
-        <FilesContainer>
+        <FilesContainer className={`${osDevice()}`}>
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
             <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
@@ -179,15 +213,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             )} 
             
           </Main>
-          {
-            isMovilViewport &&
-              <MobileControlContainer className="_controlContainerFiles">
-                <CallToAction
-                  goFileLoader={goFileLoader}
-                  loading={loading}
-                />
-              </MobileControlContainer>
-          }
 
           <StageListComponent  
             stages={stages}
@@ -197,6 +222,16 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             idType={pendingOrRejectedIdentity?.id_type}
           />
 
+          {
+            isMovilViewport &&
+              <MobileControlContainer className="_controlContainerFiles">
+                <CallToAction
+                  getCameraPhoto={getCameraPhoto}
+                  goFileLoader={goFileLoader}
+                  loading={loading}
+                />
+              </MobileControlContainer>
+          }
           
         </FilesContainer>
       </Layout>
@@ -257,20 +292,33 @@ const UploadComponent = props => {
   )
 }
 
+
+
 const CallToAction = props => {
+
+  const INPUT_FILE_PROPS = {
+    type:"file",
+    accept:"image/png,image/jpeg",
+    onChange:props?.goFileLoader
+  }
+
+  const INPUT_BUTTON_PROPS = {
+    type:"button",
+    onClick:props?.getCameraPhoto
+  }
+
+  const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
+
   return(
       <Buttom className={`${props.loading ? 'loader' : ''}`}>
         {
           props.loading ?
-            <LoaderContainer>
+          <LoaderContainer>
             <SimpleLoader loader={2} />
           </LoaderContainer>
           :
           <input
-            // id={idForFileUpload}
-            type="file"
-            accept="image/png,image/jpeg"
-            onChange={props.goFileLoader}
+            {...inputProps}
           />
         }
         
@@ -324,8 +372,6 @@ const MobileControlContainer = styled.div`
   height: 80px;
   align-items: center;
   place-content: center;
-  @media ${device.mobile}{
-  }
 `
 
 const CurrentStageIndicator = styled.div`

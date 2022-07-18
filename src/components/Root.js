@@ -16,7 +16,7 @@ import { store } from '../'
 import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
 import { STORAGE_KEYS } from "../const/storageKeys";
-
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 import {
   // doLogout,
@@ -24,9 +24,11 @@ import {
   // validateExpTime,
   saveUserToken,
   getUserToken,
-  CAPACITOR_PLATFORM,
   openLoginMobile
 } from "./utils";
+
+
+
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));

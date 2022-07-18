@@ -486,8 +486,11 @@ export const Layout = styled.div`
     top: 0;
     left: 0;
     z-index:1000;
-  @media screen and (max-height: 900px){
-  }
+    &._identityKycLayout{
+      @media ${device.mobile} {
+        overflow:auto;
+      }
+    }
 `
 
 export const ContentContainer = styled.div`

@@ -5,7 +5,7 @@ import { useActions } from "../../../hooks/useActions";
 
 import "./modal.css";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import { CAPACITOR_PLATFORM } from "components/utils";
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 const ModalLayout = (props) => {
   const { modalView, loader, step, children, current, isAppLoaded } = props;
