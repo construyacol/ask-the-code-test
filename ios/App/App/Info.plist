@@ -50,10 +50,13 @@
 	<true/>
 
 	<key>NSCameraUsageDescription</key>
-	<string>To be able to scan bitcoin addresses</string>
+	<string>To be able to scan address and take photos</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To take photo galery file</string>
 
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>To be able to upload your verification photos</string>
-	
+
 </dict>
 </plist>
