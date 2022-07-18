@@ -1,6 +1,8 @@
 import { createBrowserHistory } from "history";
 import Enviroment from "../environment";
 import BigNumber from "bignumber.js";
+import { Capacitor } from '@capacitor/core';
+
 
 const {
   AccountApiUrl,
@@ -14,6 +16,8 @@ const {
   BASE_URL
 } = Enviroment;
 
+
+export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
 export const MAIN_COLOR = "#0e95f8";
 export const FONT_COLOR = "#50667a";
   

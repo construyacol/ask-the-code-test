@@ -128,7 +128,8 @@ export const Buttom = styled.div`
   cursor: pointer;
   position: relative;
 
-  input[type="file"]{
+  input[type="file"],
+  input[type="button"]{
     position: absolute;
     z-index: 4;
     width: 100%;

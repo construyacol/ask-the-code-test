@@ -12,8 +12,6 @@ import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 // import { AiOutlineClose } from "react-icons/ai"; 
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
-import { Camera } from '@capacitor/camera';
-import { NativeSettings,IOSSettings, AndroidSettings } from 'capacitor-native-settings';
 import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import AddressTagList from "./addressTagList";
@@ -21,7 +19,9 @@ import TagItem from "./tagItem";
 import { MAIN_COLOR, history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
-import { CAPACITOR_PLATFORM } from '../../../utils';
+import { CAPACITOR_PLATFORM } from 'const/const';
+import { checkCameraPermission } from 'utils'
+
 
 import AvailableBalance from '../../../widgets/availableBalance'
 
@@ -200,33 +200,10 @@ export const CriptoView = () => {
   };
 
 
-  const checkPermission = async () => {
-    try {
-      let result = await Camera.checkPermissions()
-      if (result.camera === 'granted') {
-        return true;
-      }
-      if (result.camera === 'denied') {
-        NativeSettings.open({
-          optionAndroid: AndroidSettings.ApplicationDetails, 
-          optionIOS: IOSSettings.App
-        })
-        result = await Camera.requestPermissions(['camera']);
-      } else {
-        result = await Camera.requestPermissions(['camera']);
-      }
-      if (result.camera === 'denied') {
-        throw new Error("Camera permissions no granted")
-      }
-      return result.camera === 'granted';
-    } catch (e) {
-      // toastMessage('Necesitas darle permisos a la app para usar la camara como scanner', 'error');
-      return false;
-    }
-  };
+
 
   const showQrScanner = async () => {
-    if (CAPACITOR_PLATFORM !== 'web' && await checkPermission()) {
+    if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
       const { text, cancelled } = await BarcodeScanner.scan();
       console.log('showQrScanner text', text)
       console.log('showQrScanner cancelled', cancelled)

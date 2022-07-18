@@ -1,7 +1,7 @@
-import { CAPACITOR_PLATFORM } from "components/utils";
 import styled from "styled-components";
 import { device } from '../../const/const'
 import { show } from '../widgets/animations'
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 
 const Menu = styled.menu`

@@ -9,8 +9,35 @@ import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
 import * as Sentry from "@sentry/react";
 
 
-
 const { normalizeUser } = normalizr_services;
+
+
+export const checkCameraPermission = async () => {
+  const { Camera } = await import("@capacitor/camera");
+  try {
+    let result = await Camera.checkPermissions()
+    if (result.camera === 'granted') {
+      return true;
+    }
+    if (result.camera === 'denied') {
+      const { NativeSettings, IOSSettings, AndroidSettings } = await import("capacitor-native-settings");
+      NativeSettings.open({
+        optionAndroid: AndroidSettings.ApplicationDetails, 
+        optionIOS: IOSSettings.App
+      })
+      result = await Camera.requestPermissions(['camera']);
+    } else {
+      result = await Camera.requestPermissions(['camera']);
+    }
+    if (result.camera === 'denied') {
+      throw new Error("Camera permissions no granted")
+    }
+    return result.camera === 'granted';
+  } catch (e) {
+    console.log('ERROR => ', JSON.stringify(e.message))
+    return false;
+  }
+};
 
 
 export const isSafari = () => {
@@ -672,6 +699,7 @@ export const readFile = (file) => {
     reader.readAsDataURL(file);
   });
 };
+
 
  
 export const serve_activity_list = async (

@@ -4,15 +4,16 @@ import jwt from "jsonwebtoken";
 import KeyEncoder from 'key-encoder'
 import { mainService } from '../services/MainService'
 import {STORAGE_KEYS} from "const/storageKeys";
-import { Capacitor } from '@capacitor/core';
 import { store } from '../'
 import Environment from 'environment'
 // import isLoading from "reducers/is-loading";
 // import { isAppLoaded } from 'actions/loader'
 import actions from "actions";
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 // import { IS_APP_LOADED } from "actions/action_types";
-export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
+
+
 const { Oauth } = Environment
 
 let _keyEncoder = new KeyEncoder('secp256k1');
