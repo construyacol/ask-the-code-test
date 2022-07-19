@@ -5,11 +5,38 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import * as normalizr_services from "../schemas";
 import { store } from "..";
 import imageType from 'image-type'
-import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES } from '../const/const'
+import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES, CAPACITOR_PLATFORM } from '../const/const'
 import * as Sentry from "@sentry/react";
 
-
 const { normalizeUser } = normalizr_services;
+
+
+
+export const postLocalNotification = async (payload) => {
+
+  if(!payload || ["web"].includes(CAPACITOR_PLATFORM)) return;
+
+  let {
+    title = "Notification Title",
+    body = "Notification body",
+    summaryText = "summaryText",
+    largeBody = "largeBody",
+    id = "1234"
+  } = payload
+
+  const { LocalNotifications } = await import("@capacitor/local-notifications");
+
+  let options = {
+    id,
+    title,
+    body,
+    summaryText,
+    largeBody
+  }
+
+  LocalNotifications.schedule({notifications:[options]})
+  
+};
 
 
 export const checkCameraPermission = async () => {
@@ -848,7 +875,7 @@ export const funcDebounce = (
   return callback()
 }
 
-
+ 
 
 export const funcDebounces = ({
   keyId, 
@@ -857,10 +884,13 @@ export const funcDebounces = ({
   timeExect = 1000,
   storageType = "localStorage"
 }) => { 
+
   const storage = window[storageType]
   if(!Object.entries(keyId).length)return ;
+
   const [ dataKey, dataValue ] = Object.entries(keyId)[0]
   let storageData = storage.getItem(dataKey);
+  
   if(storageData === dataValue)return ;
   storage.setItem(dataKey, dataValue);
 
