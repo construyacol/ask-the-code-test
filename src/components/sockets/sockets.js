@@ -7,9 +7,11 @@ import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
 import { getToken } from '../utils'
-import { funcDebounce } from '../../utils'
+import { funcDebounce, funcDebounces } from '../../utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
+
+import { postLocalNotification } from 'utils'
 
 const { SocketUrl } = Environtment;
 
@@ -99,9 +101,9 @@ class SocketsComponent extends Component {
 
 
     if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
-      this.setState({
-        isUpdated: true,
-      });
+
+      this.setState({ isUpdated: true });
+      
       if (this.props.loggedIn) {
         const socket = io(SocketUrl);
         const { user } = this.props;
@@ -230,6 +232,21 @@ class SocketsComponent extends Component {
       }
       // Teniendo la orden de retiro en el estado, agrégue la prueba de pago y actualice el estado a: "aceptado" en el modelo de la orden de retiro
       if (this.props.withdraws && this.props.withdraws[withdraw.id]) {
+
+
+        funcDebounces({
+          keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
+          storageType:"sessionStorage",
+          timeExect:1500,
+          callback:() => {
+            postLocalNotification({
+              title:"Coinsenda",
+              summaryText:"Enhorabuena",
+              largeBody:"¡Tu retiro ha sido debitado!",
+            })
+          }
+        })
+
         await this.props.action.update_item_state(
           {
             [withdraw.id]: {
@@ -382,6 +399,19 @@ class SocketsComponent extends Component {
       // this.props.action.exit_sound();
       let state = withdraw.state === "canceled" ? "cancelado" : "rechazado";
       this.props.toastMessage(`Retiro ${state}`, "error");
+
+      funcDebounces({
+        keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
+        storageType:"sessionStorage",
+        timeExect:1500,
+        callback:() => {
+          postLocalNotification({
+            title:"Coinsenda",
+            summaryText:"Algo ha salido mal :(",
+            largeBody:`¡Tu retiro No se ha podido realizar!`,
+          })
+        }
+      })
     }
 
     // if(withdraw.metadata && !withdraw.state){
@@ -507,6 +537,23 @@ class SocketsComponent extends Component {
 
 
     if (deposit.state === "accepted") {
+
+
+        funcDebounces({
+          keyId:{[`deposit_${deposit?.state}`]:deposit.id}, 
+          storageType:"sessionStorage",
+          timeExect:1500,
+          callback:() => {
+            postLocalNotification({
+              title:"Coinsenda",
+              summaryText:"Enhorabuena",
+              largeBody:"¡Tu depósito ha sido acreditado!",
+            })
+          }
+        })
+
+      
+
       let cDeposit = await this.props.coinsendaServices.getOrderById(
         deposit.id,
         "deposits"
@@ -582,6 +629,20 @@ class SocketsComponent extends Component {
       if (this.props.deposits[deposit.id].state === "canceled") {
         return false;
       }
+
+      funcDebounces({
+        keyId:{[`deposit_${deposit?.state}`]:deposit.id}, 
+        storageType:"sessionStorage",
+        timeExect:1500,
+        callback:() => {
+          postLocalNotification({
+            title:"Coinsenda",
+            summaryText:"",
+            largeBody:"Tu depósito NO ha sido aprobado",
+          })
+        }
+      })
+
       // setTimeout(async()=>{
       // Tiempo para que transcurra la animación del item
 
@@ -778,6 +839,20 @@ class SocketsComponent extends Component {
     }
   };
 
+
+
+  // funcDebounces({
+  //   keyId:{[`withdraw_${withdraw?.state}`]:withdraw.id}, 
+  //   storageType:"sessionStorage",
+  //   timeExect:1500,
+  //   callback:() => {
+  //     postLocalNotification({
+  //       title:"Coinsenda",
+  //       summaryText:"Algo ha salido mal :(",
+  //       largeBody:`¡Tu retiro No se ha podido realizar!`,
+  //     })
+  //   }
+  // })
   
 
   identity_management = async(identity) => {
@@ -788,6 +863,11 @@ class SocketsComponent extends Component {
           await this.props.coinsendaServices.updateUserStatus(identity)
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
+          postLocalNotification({
+            title:"Coinsenda",
+            summaryText:"Enhorabuena",
+            largeBody:`¡Felicidades, tu cuenta ha sido verificada!`,
+          })
         },
         false,
         5000

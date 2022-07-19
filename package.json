@@ -11,6 +11,7 @@
     "@capacitor/cli": "^3.5.1",
     "@capacitor/core": "^3.5.1",
     "@capacitor/ios": "^3.5.1",
+    "@capacitor/local-notifications": "^1.1.0",
     "@loadable/component": "^5.14.1",
     "@sentry/react": "^6.18.2",
     "@sentry/tracing": "^6.18.2",
