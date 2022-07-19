@@ -34,9 +34,7 @@ export default function SubMenuComponent({ targetList }) {
                 itemsMenu?.length &&
                     itemsMenu.map((item, index) => {
                         if (
-                            (item.link === "activity" || item.link === "withdraw" || item.link === "swap") && 
-                            primary_path === "wallets" && 
-                            (!accountHasTx))return null;
+                            (item.link === "activity") &&  primary_path === "wallets" && (!accountHasTx))return null;
                         return(
                             <NavLink
                                 key={index}
