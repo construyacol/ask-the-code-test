@@ -3,7 +3,7 @@
 	"appName": "Coinsenda",
 	"webDir": "build",
 	"server": {
-		"url": "http://192.168.10.14:2998",
+		"url": "http://192.168.10.12:2998",
 		"cleartext": true
 	},
 	"cordova": {
@@ -14,8 +14,7 @@
 	"plugins": {
 		"LocalNotifications": {
 			"smallIcon": "ic_launcher",
-			"iconColor": "#f7f7f7",
-			"sound": "beep.wav"
+			"iconColor": "#bde4ff"
 		}
 	}
 }

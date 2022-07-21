@@ -14,8 +14,7 @@
 	"plugins": {
 		"LocalNotifications": {
 			"smallIcon": "ic_launcher",
-			"iconColor": "#bde4ff",
-			"sound": "beep.wav"
+			"iconColor": "#bde4ff"
 		}
 	}
 }

@@ -31,6 +31,7 @@ import {
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
+// const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
 
@@ -142,6 +143,7 @@ function RootContainer(props) {
         <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} setShowOnBoarding={setShowOnBoarding} />
       ) : (
         <>
+          {/* <LazySocket toastMessage={toastMessage} /> */}
           <LazySocket toastMessage={toastMessage} />
           <FreshChat/>
           <LazyToast />

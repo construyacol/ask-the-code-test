@@ -2,26 +2,27 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
-import io from "socket.io-client";
-import Environtment from "../../environment";
+// import io from "socket.io-client";
+// import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
-import { getToken } from '../utils'
+import { getUserToken } from '../utils'
 import { funcDebounce, funcDebounces } from '../../utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 
 import { postLocalNotification } from 'utils'
+import socket from 'const/socket'
 
-const { SocketUrl } = Environtment;
-
+// const { SocketUrl } = Environtment;
+// const socket = io(SocketUrl);
 class SocketsComponent extends Component {
   
   state = {
     currentSwap: null,
     currentDeposit: null,
     currentWithdraw: null,
-    isUpdated: false
+    // isUpdated: false
   };
 
   // async testSocketExecuted(orderMock) {
@@ -93,100 +94,121 @@ class SocketsComponent extends Component {
 
   // }
 
-//  componentDidMount(){
-//     this.testSocket()
-//  }
+ async componentDidMount(){
+ 
+    let intervalID
 
- async componentDidUpdate(prevProps) {
+    let tryReconnect = () => {
+      if (socket.connected === false) {
+        socket.connect();
+      } 
+    };
+
+    // let intervalID = setInterval(tryReconnect, 30000);
+    socket.on("disconnect", async function (reason) {
+      console.log(' ============ SOCKET discconect interval ====> ', reason)
+      intervalID = setInterval(tryReconnect, 2000);
+    });
+    
+
+    socket.on("connect", async() => {
+      clearInterval(intervalID);
+      console.log(' ============ SOCKET CONNECTED ')
+      const { userToken } = await getUserToken()
+      const body = { body: { access_token: userToken } };
+      socket.emit("authentication", body);
+    });
+  
+  
+      socket.on("authenticated", () => document.querySelector('#home-container')?.classList?.add('socket-authenticated'));
+
+      const { user } = this.props;
+       
+      socket.on(`/swap/${user.id}`, async (swap) => {
+        if (swap.state === "pending") {
+          await this.setState({ currentSwap: swap });
+        }
+        this.swap_management(swap);
+      });
+
+      socket.on(`/deposit/${user.id}`, async (deposit) => {
+        if (deposit.state === "pending" && deposit.currency_type === "crypto") {
+          await this.setState({ currentDeposit: deposit });
+        } else {
+          this.deposit_mangagement(deposit);
+        }
+      });
+
+      socket.on(`/withdraw/${user.id}`, async (withdraw) => {
+        console.log(withdraw)
+        if (withdraw.state === "pending") {
+          await this.setState({ currentWithdraw: withdraw });
+        }
+        this.withdraw_mangagement(withdraw);
+      });
+
+      socket.on(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
+        if (withdrawAccount.state === "pending") {
+          await this.setState({currentWithdrawAccount: withdrawAccount });
+        }
+        this.withdraw_account_mangagement(withdrawAccount);
+      });
+
+      socket.on(`/identity/${user.id}`, async (identity) => {
+        if(identity.file_state){
+          this.identity_management(identity)
+        }
+      });
+ }
 
 
-    if (!this.state.isUpdated || this.props.loggedIn !== prevProps.loggedIn) {
-
-      this.setState({ isUpdated: true });
-      
-      if (this.props.loggedIn) {
-        const socket = io(SocketUrl);
-        const { user } = this.props;
-        const { userToken } = await getToken()
-
-        let tryReconnect = () => {
-          if (socket.connected === false) {
-            socket.connect();
-          } 
-        };
-
-        // setInterval(tryReconnect, 30000);
-        let intervalID = setInterval(tryReconnect, 30000);
-        socket.on("disconnect", async function (reason) {
-          console.log(' ============ SOCKET discconect', reason)
-          intervalID = setInterval(tryReconnect, 2000);
-        });
-
-        socket.on("connect_error", (reason) => {
-          console.log('|||||||||||||||||||||||||  connect_error ===>', reason)
-          setTimeout(() => {
-            socket.connect();
-          }, 1000);
-        });
-
-        socket.on("connect", () => {
-          clearInterval(intervalID);
-          const body = { body: { access_token: userToken } };
-          // console.log('authentication userToken', userToken)
-          // debugger
-          socket.emit("authentication", body);
-
-          socket.on("authenticated", () => {
-            document.querySelector('#home-container')?.classList?.add('socket-authenticated')
-           
-            socket.on(`/swap/${user.id}`, async (swap) => {
-              if (swap.state === "pending") {
-                await this.setState({ currentSwap: swap });
-              }
-              this.swap_management(swap);
-            });
-
-            // socket.on(`/biometric_data/${user.id}`, async (biometric) => {
-            //   console.log('biometric_data', biometric)
-            //   debugger
-            // });
 
 
-            socket.on(`/deposit/${user.id}`, async (deposit) => {
-              if (deposit.state === "pending" && deposit.currency_type === "crypto") {
-                await this.setState({ currentDeposit: deposit });
-              } else {
-                this.deposit_mangagement(deposit);
-              }
-            });
+//  async componentDidUpdate(prevProps, prevState) {
 
+//     // if (this.props.loggedIn !== prevProps.loggedIn) {
+//       if (this.props.loggedIn) {
+//         const { user } = this.props;
+       
+//         socket.once(`/swap/${user.id}`, async (swap) => {
+//           if (swap.state === "pending") {
+//             await this.setState({ currentSwap: swap });
+//           }
+//           this.swap_management(swap);
+//         });
 
-            socket.on(`/withdraw/${user.id}`, async (withdraw) => {
-              console.log(withdraw)
-              if (withdraw.state === "pending") {
-                await this.setState({ currentWithdraw: withdraw });
-              }
-              this.withdraw_mangagement(withdraw);
-            });
+//         socket.once(`/deposit/${user.id}`, async (deposit) => {
+//           if (deposit.state === "pending" && deposit.currency_type === "crypto") {
+//             await this.setState({ currentDeposit: deposit });
+//           } else {
+//             this.deposit_mangagement(deposit);
+//           }
+//         });
 
-            socket.on(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
-              if (withdrawAccount.state === "pending") {
-                await this.setState({currentWithdrawAccount: withdrawAccount });
-              }
-              this.withdraw_account_mangagement(withdrawAccount);
-            });
+//         socket.once(`/withdraw/${user.id}`, async (withdraw) => {
+//           console.log(withdraw)
+//           if (withdraw.state === "pending") {
+//             await this.setState({ currentWithdraw: withdraw });
+//           }
+//           this.withdraw_mangagement(withdraw);
+//         });
 
-            socket.on(`/identity/${user.id}`, async (identity) => {
-              if(identity.file_state){
-                this.identity_management(identity)
-              }
-            });
+//         socket.once(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
+//           if (withdrawAccount.state === "pending") {
+//             await this.setState({currentWithdrawAccount: withdrawAccount });
+//           }
+//           this.withdraw_account_mangagement(withdrawAccount);
+//         });
 
-          });
-        });
-      }
-    }
-  }
+//         socket.once(`/identity/${user.id}`, async (identity) => {
+//           if(identity.file_state){
+//             this.identity_management(identity)
+//           }
+//         });
+
+//       }
+//     // }
+//   }
 
 
 
