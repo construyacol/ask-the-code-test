@@ -6,7 +6,7 @@ import actions from "../../actions";
 // import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
-import { getToken } from '../utils'
+import { getUserToken } from '../utils'
 import { funcDebounce, funcDebounces } from '../../utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
@@ -95,8 +95,7 @@ class SocketsComponent extends Component {
   // }
 
  async componentDidMount(){
-
-    const { userToken } = await getToken()
+ 
     let intervalID
 
     let tryReconnect = () => {
@@ -104,22 +103,18 @@ class SocketsComponent extends Component {
         socket.connect();
       } 
     };
-    // setInterval(tryReconnect, 30000);
+
     // let intervalID = setInterval(tryReconnect, 30000);
     socket.on("disconnect", async function (reason) {
-      console.log(' ============ SOCKET discconect interval', reason)
-      // tryReconnect()
+      console.log(' ============ SOCKET discconect interval ====> ', reason)
       intervalID = setInterval(tryReconnect, 2000);
     });
-    // socket.on("connect_error", (reason) => {
-    //   console.log('|||||||||||||||||||||||||  connect_error ===>', reason)
-    //   setTimeout(() => {
-    //     socket.connect();
-    //   }, 1000);
-    // });
-    socket.on("connect", () => {
+    
+
+    socket.on("connect", async() => {
       clearInterval(intervalID);
       console.log(' ============ SOCKET CONNECTED ')
+      const { userToken } = await getUserToken()
       const body = { body: { access_token: userToken } };
       socket.emit("authentication", body);
     });
