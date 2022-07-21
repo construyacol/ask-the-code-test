@@ -120,18 +120,23 @@ class SocketsComponent extends Component {
     socket.on("connect", () => {
       clearInterval(intervalID);
       console.log(' ============ SOCKET CONNECTED ')
-
+      const body = { body: { access_token: userToken } };
+      socket.emit("authentication", body);
+    });
+  
+  
+      socket.on("authenticated", () => document.querySelector('#home-container')?.classList?.add('socket-authenticated'));
 
       const { user } = this.props;
        
-      socket.once(`/swap/${user.id}`, async (swap) => {
+      socket.on(`/swap/${user.id}`, async (swap) => {
         if (swap.state === "pending") {
           await this.setState({ currentSwap: swap });
         }
         this.swap_management(swap);
       });
 
-      socket.once(`/deposit/${user.id}`, async (deposit) => {
+      socket.on(`/deposit/${user.id}`, async (deposit) => {
         if (deposit.state === "pending" && deposit.currency_type === "crypto") {
           await this.setState({ currentDeposit: deposit });
         } else {
@@ -139,7 +144,7 @@ class SocketsComponent extends Component {
         }
       });
 
-      socket.once(`/withdraw/${user.id}`, async (withdraw) => {
+      socket.on(`/withdraw/${user.id}`, async (withdraw) => {
         console.log(withdraw)
         if (withdraw.state === "pending") {
           await this.setState({ currentWithdraw: withdraw });
@@ -147,29 +152,18 @@ class SocketsComponent extends Component {
         this.withdraw_mangagement(withdraw);
       });
 
-      socket.once(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
+      socket.on(`/withdrawAccount/${user.id}`, async (withdrawAccount) => {
         if (withdrawAccount.state === "pending") {
           await this.setState({currentWithdrawAccount: withdrawAccount });
         }
         this.withdraw_account_mangagement(withdrawAccount);
       });
 
-      socket.once(`/identity/${user.id}`, async (identity) => {
+      socket.on(`/identity/${user.id}`, async (identity) => {
         if(identity.file_state){
           this.identity_management(identity)
         }
       });
-
-
-
-
-    });
-
-    const body = { body: { access_token: userToken } };
-    socket.emit("authentication", body);
-    socket.on("authenticated", () => document.querySelector('#home-container')?.classList?.add('socket-authenticated'));
-
-      
  }
 
 
