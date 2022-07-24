@@ -61,7 +61,7 @@ export const ButtonContainer = styled.div`
     column-gap: 22px;
     
     @media ${device.mobile} {
-        padding-bottom: 100px;
+        
         flex-direction: column;
     }
 `

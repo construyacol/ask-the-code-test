@@ -101,6 +101,11 @@ export const SuccessViewContent = styled.div`
     padding: 20px 0 40px;
     min-height: calc(100vh - 60px);
     grid-template-rows: auto 1fr auto;
+    padding-bottom:100px;
+
+    &.fiatDepositSuccess{
+        padding-bottom:200px;
+    }
 
     &.withdrawAccountSuccess{
         grid-template-rows: auto auto 1fr;
@@ -108,7 +113,7 @@ export const SuccessViewContent = styled.div`
 
     &.withdrawSuccess{
         grid-template-rows: auto auto auto;
-        padding-bottom:70px;
+        padding-bottom: 250px;
     }
 
     .iconSuccess{
@@ -268,7 +273,6 @@ export const Content = styled.div`
 
     ${MobileBalance}{
         justify-self: end;
-        column-gap: 22px;
     }
 
     ${LabelContainer},
@@ -292,7 +296,9 @@ export const Content = styled.div`
     }
 
     @media ${device.mobile} {
-       padding: 15px 10px;
+       padding: 15px 15px;
+       width: calc(100vw - 33px);
+
         ${ButtonContainer}._sticky{
             display:flex;
             position:sticky;
