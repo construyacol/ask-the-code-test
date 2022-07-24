@@ -224,7 +224,6 @@ export const MobileBalance = styled.div`
     display:grid;
     align-items: center;
     column-gap: 12px;
-
     grid-template-columns: 0 auto;
     grid-template-rows: auto auto;
     max-height: 60px;

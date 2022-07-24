@@ -1,34 +1,17 @@
-
-import {
-    getFrame
-  } from './utils'
-  
-const smile = (detections, data) => {
-  let frame
-  console.log('|||||| detections smile' , detections?.expressions?.happy)
-  // if(detections?.expressions?.happy > 0.97 && !data.state[data.key]){
-  if(detections?.expressions?.happy > 0.97){
-    frame = getFrame()
-  }
-  return [ frame ]
-}
-  
-const surprised = (detections, data) => {
-  let frame
-  // if(detections?.expressions?.surprised > 0.7 && !data.state[data.key]){
-  if(detections?.expressions?.surprised > 0.5){
-    frame = getFrame()
-  }
-  return [ frame ]
+const smile = (detections, frame) => {
+  return detections?.expressions?.happy > 0.97 && frame;
 }
 
-const biometricValidations = {
+const surprised = (detections, frame) => {
+  return detections?.expressions?.surprised > 0.5 && frame;
+}
+
+const validations = {
   smile,
   surprised
-}
+};
 
-export default biometricValidations
-
+export default validations;
 
 // // Incline la cabeza hacia el hombro derecho
 // if(detections[0].angle.roll > 0.6 && !document.querySelector('.tiltHead.right').src){

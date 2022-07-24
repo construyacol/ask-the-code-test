@@ -46,6 +46,7 @@ const FiatDepositSuccess = ({
     const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit')
     const [ depProvDetail, setDepProvDetail ] = useState([])
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[depositOrder?.deposit_provider_id]);
+    const { osDevice } = useSelector((state) => state?.ui);
     const [ amount, setAmount ] = useState([])
 
     // const depositAccount = depositProvider?.depositAccount
@@ -77,7 +78,7 @@ const FiatDepositSuccess = ({
         // on_click={closeModal}
         >  
             <SuccessViewLayout>
-                <SuccessViewContent>
+                <SuccessViewContent className="fiatDepositSuccess">
 
                     <Header>
                         <div className="icon icon--order-success svg iconSuccess">
@@ -120,7 +121,7 @@ const FiatDepositSuccess = ({
                             <MobileBalance>
                                 <HR/>
                                 <p className="fuente2">{provider?.account?.account_id?.account_id}</p>
-                                <p className="fuente _balanceTextLab">{provider?.account?.account_id?.ui_name}</p>
+                                <p className="fuente _balanceTextLab"># de cuenta</p>
                             </MobileBalance>
                         </ItemAccountContainer>
 
@@ -151,7 +152,7 @@ const FiatDepositSuccess = ({
                     </Content>
 
 
-                    <ButtonContainer>
+                    <ButtonContainer className={`${osDevice} buttonContainer`}>
                         <ControlButton
                             // id={idSubmitButton}
                             // loader={loader}

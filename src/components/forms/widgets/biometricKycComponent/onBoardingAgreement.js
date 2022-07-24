@@ -1,6 +1,5 @@
 import { useState } from "react"
 import styled from "styled-components"
-// import FRecognition from '../../../../assets/recognition.gif'
 import { getCdnPath } from '../../../../environment'
 import UseWindowDimensions from '../../hooks/useWindowDimensions'
 import ContinueFromMobile from './continueFromMobile'

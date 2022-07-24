@@ -56,14 +56,14 @@ export default function IdentityComponent({
       <StageContainer className="_identityComponent">
         {children}
         <OptionInputContainer>
-          <p className="fuente _pLabel _inputLabelP">¿Cuál es el documento vinculado a tu cuenta de retiro?</p>
+          <p className="fuente _pLabel _inputLabelP">Elige el documento de identidad vinculado a tu cuenta de retiro</p>
           <SelectListContainer>
                 <ItemListComponent 
                   className="createButton"
                   itemList={{
                     value:"createId",
                     icon:"add",
-                    uiName:isMovilViewport ? "Otro documento" : "Agregar documento de identidad"
+                    uiName:isMovilViewport ? "Otro documento" : "Otro documento"
                   }}
                   firstIndex={true}
                   handleAction={createNewIdAction}

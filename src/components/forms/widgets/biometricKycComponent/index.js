@@ -1,47 +1,73 @@
-import { useEffect, useRef, useState } from 'react'
-import useStage from '../../hooks/useStage'
-import useValidations from '../../hooks/useInputValidations'
-import { getDisplaySize } from './utils'
+import React, { useEffect, useRef, useState } from 'react'
 import loadable from '@loadable/component'
 import styled from 'styled-components'
+import { CameraPreview } from '@awesome-cordova-plugins/camera-preview';
+import { useSelector } from "react-redux";
+import useStage from '../../hooks/useStage'
+import validations from './validations.js';
 import StatusIndicator from './biometricStatus'
 import { Scanner } from './scanner'
-// import Captures from './captures'
 import { getCdnPath } from '../../../../environment'
 import loadDynamicScript from '../../../../utils/loadDynamicScript'
-import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
-import useSocket from '../../../hooks/useSocket'
-import { useSelector } from "react-redux";
-import { ENVIRONMENT_VAR, device } from '../../../../const/const'
 import { funcDebounces } from '../../../../utils'
-
-import { 
+import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
+import { ENVIRONMENT_VAR, device } from '../../../../const/const'
+import useSocket from '../../../hooks/useSocket'
+import { CAPACITOR_PLATFORM } from 'const/const'
+import sleep from 'utils/sleep';
+import Captures from './captures'
+import {
   Layout,
   ContentContainer
 } from '../sharedStyles'
 
 
+// Interval to evaluate the snapshot taken from the canvas
+const DETECTION_INTERVAL_MS = 600;
+
+const ONE_SECOND_MS = 1000;
+
+// camera options (Size and location). In the following example, the preview uses the rear camera and display the preview in the back of the webview
+const cameraPreviewOpts = {
+  x: 0,
+  y: 0,
+  width: 260,
+  height: 260,
+  camera: 'front',
+  tapPhoto: false,
+  previewDrag: false,
+  toBack: false
+}
+
+const pictureOpts = {
+  width: 720,
+  height: 720,
+  quality: 85
+}
+
+
 const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
-const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
-  const modelData = useSelector((state) => state.modelData);
+// Evaluates userMedia for web, it is not needed inside the functions, this can be seen as a constant
+navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+
+function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
+ 
   const { dataForm } = handleDataForm
-  const pathName = dataForm?.wrapperComponent
-  const { state, setState } = handleState
-  const [ loading, setLoading ] = useState(false)
-  const [ cameraAvailable, setCameraAvailable ] = useState()
-  const [ boardingAgreement, setBoardingAgreement ] = useState(false)
-  const [ coinsendaServices ] = useCoinsendaServices();
-  const validations = useValidations(pathName)
+  const { setState, state } = handleState
+  const [isLoadingFaceApi, setIsLoadingFaceApi] = useState(false)
+  const [cameraAvailable, setCameraAvailable] = useState()
+  const [boardingAgreement, setBoardingAgreement] = useState(false)
+  const [coinsendaServices] = useCoinsendaServices();
+  const modelData = useSelector((state) => state.modelData);
+  const [biometricData] = useSocket(`/biometric_data/${modelData.authData.userId}`)
 
-  const videoEl = useRef(null);
-  let intervalDetection = useRef(null);
-  const faceApi = useRef(window.faceapi)
-  let faceApiCanvas = useRef(null);
-  
-  // const [ developerMood ] = useState(window?.location?.search?.includes('developer=true'))
-  const [ biometricData ] = useSocket(`/biometric_data/${modelData.authData.userId}`)
+
+  const mediaElementRef = useRef(null);
+  const scannerRef = useRef(null);
+  const videoContainerRef = useRef(null);
+  const faceApi = useRef(window.faceapi);
 
   const stageManager = useStage(
     // create the form stages
@@ -58,249 +84,281 @@ const BiometricKycComponent = ({ handleDataForm, handleState, ...props }) => {
     // stageController
   } = stageManager
 
-  // const finalStage = true
-
-  const setupFaceApi = async() => {
-    setLoading(true)
-    if(!window.faceapi) return alert('No están cargando las librerías FACE_API');
-    faceApi.current = window.faceapi
-    await faceApi.current.nets.tinyFaceDetector.loadFromUri(modelsPath)
-    await faceApi.current.nets.faceLandmark68Net.loadFromUri(modelsPath)
-    await faceApi.current.nets.faceRecognitionNet.loadFromUri(modelsPath)
-    await faceApi.current.nets.faceExpressionNet.loadFromUri(modelsPath)
-    startStreaming()
-  } 
+  const displaySize = React.useMemo(function () {
+    if (!mediaElementRef.current) {
+      return {
+        width: 120,
+        height: 120
+      }
+    }
+    return {
+      width: mediaElementRef.current.clientWidth || mediaElementRef.current.width,
+      height: mediaElementRef.current.clientHeight || mediaElementRef.current.height
+    };
+  }, [mediaElementRef]);
 
   const handleVideo = stream => {
-    setCameraAvailable(true)
-    if(!videoEl.current) return;
-    videoEl.current.srcObject = stream;
+    setCameraAvailable(true);
+    if (mediaElementRef.current) {
+      mediaElementRef.current.srcObject = stream;
+    }
   }
 
-  const videoError = err => {
-    console.log('No hay camara conectada o los permisos han sido denegados', err) 
-    setCameraAvailable(false)
-  } 
+  const videoError = () => setCameraAvailable(false)
 
+
+  const takeMobileSnapshot = React.useCallback(function (mediaElementRef) {
+    return new Promise(async resolve => {
+      try {
+        const base64ImageData = await CameraPreview.takeSnapshot(pictureOpts);
+        mediaElementRef.src = `data:image/jpg;base64,${base64ImageData}`;
+        mediaElementRef.onload = async () => {
+          faceApi.current.matchDimensions(faceApi.current.createCanvasFromMedia(mediaElementRef), displaySize)
+          resolve(`data:image/jpg;base64,${base64ImageData}`);
+        };
+      } catch {
+        resolve(``)
+      }
+    });
+  }, [displaySize])
+
+  const startMobileStreaming = async function () {
+    try {
+      const rect = videoContainerRef.current.getBoundingClientRect();
+      await CameraPreview.startCamera({
+        ...cameraPreviewOpts,
+        x: rect.left,
+        y: rect.top,
+      });
+      setCameraAvailable(true);
+    } catch (e) {
+      setCameraAvailable(false);
+    }
+  }
 
   const startStreaming = () => {
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
-    if (navigator.getUserMedia) {     
-      navigator.getUserMedia({video: true}, handleVideo, videoError);
-      if(!videoEl.current?.addEventListener) return;
-      videoEl.current.addEventListener('play', () => {
-        console.log('el streaming a comenzado', faceApi.current)
-        const canvas = faceApi.current.createCanvasFromMedia(videoEl.current)
-        canvas.style.display = 'none'
-        canvas.id = "faceApiCanvas"
-        document.querySelector('#videoContainer').append(canvas)
-        faceApiCanvas.current = canvas
-        faceApi.current.matchDimensions(canvas, getDisplaySize())
-        setLoading(false)
-      })
+    navigator.getUserMedia && navigator.getUserMedia({ video: true }, handleVideo, videoError);
+  }
+
+  const challengeIsSolved = React.useCallback(async () => {
+    setStageData(prevState => ({ ...prevState, solved: true }));
+    await sleep(ONE_SECOND_MS);
+    nextStage();
+  }, [setStageData, nextStage]);
+
+  const initDetections = React.useCallback(async () => {
+    const scanner = scannerRef.current;
+    let base64SnapShot = null;
+    // sessionStorage.removeItem(stageData?.key);
+    if (CAPACITOR_PLATFORM !== 'web') {
+      base64SnapShot = await takeMobileSnapshot(mediaElementRef.current);
+    } else {
+      base64SnapShot = getFrame(displaySize, mediaElementRef.current, faceApi);
     }
-  }
 
-  // const startDeveloperMood = (canvas, detections) => {
-  //   canvas.style.display = 'initial'
-  //   const resizedDetections = faceApi.current.resizeResults(detections, getDisplaySize())
-  //   canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-  //   faceApi.current.draw.drawFaceLandmarks(canvas, resizedDetections)
-  //   faceApi.current.draw.drawDetections(canvas, resizedDetections)
-  //   faceApi.current.draw.drawFaceExpressions(canvas, resizedDetections)
-  // }
 
-  const challengeIsSolved = () => {
-    setStageData(prevState => { return {...prevState, solved:true} })
-    setTimeout(()=> nextStage(), 1000)
-  }
+    const detections = await faceApi.current.detectAllFaces(mediaElementRef.current,
+      new faceApi.current.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceDescriptors()
+      .withFaceExpressions();
 
-  // const tryToSolveChallenge = async() => {
-  //     const userBiometric = await coinsendaServices.getUserBiometric()
-  //     if(!userBiometric?.solved) return;
-  //     nextStage(stageController.length+1)
-  //     // await coinsendaServices.fetchCompleteUserData()
-  // }
+      
+    if (detections?.length) {
 
- 
-  const initDetections = (canvas, intervalTime) => {
-    const scanner = document.querySelector('.FRecScanner')
-    // let counter = 1
-    sessionStorage.removeItem(stageData?.key);
+      scanner && !scanner?.classList?.value?.includes('scanning') && scanner.classList.add('scanning');
+      if (!validations[stageData?.key]) return alert('No existe validación para este stage, contácta con soporte');
 
-    intervalDetection.current = setInterval(async() =>{
+      const _value = validations[stageData.key](detections[0], base64SnapShot);
 
-      const detections = await faceApi.current.detectAllFaces(videoEl.current, 
-        new faceApi.current.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptors()
-        .withFaceExpressions(); 
+      // if (!_value || sessionStorage.getItem(stageData?.key)) {
+      if (!_value) {
+        console.log('BAD VALUE RES: ', stageData.key, _value)
+        await sleep(DETECTION_INTERVAL_MS);
+        return initDetections();
+      }
 
-        // if(developerMood) startDeveloperMood(canvas, detections);
-        if(detections?.length){
+      setState(prevState => ({ ...prevState, [stageData?.key]: _value }))
+      // sessionStorage.setItem(stageData?.key, stageData?.biometricId);
+      const res = await coinsendaServices.addNewBiometricData({
+        file: _value.split(',')[1],
+        biometric_id: stageData.biometricId,
+        challenge_name: stageData.key
+      })
 
-          if(scanner && !scanner?.classList?.value?.includes('scanning')) scanner.classList.add('scanning');
-          if(!validations[stageData?.key]){return}
+      res.data === false && challengeIsSolved();
 
-          const [ _value ] = validations[stageData.key](detections[0], {...stageData, state, dataForm});
-          console.log('ON detecions: ', _value)
-
-          if(!_value || sessionStorage.getItem(stageData?.key)){return}
-          // if(!_value || counter > 1){return}
-          canvas.style.display = 'none'
-          setState(prevState => {
-            return { ...prevState, [stageData?.key]: _value ? _value : prevState[stageData?.key] }
-          })
-          clearInterval(intervalDetection.current)
-          sessionStorage.setItem(stageData?.key, stageData?.biometricId);
-
-          // counter++
-          const res = await coinsendaServices.addNewBiometricData({
-            file:_value.split(',')[1],
-            biometric_id:stageData.biometricId,
-            challenge_name:stageData.key
-          })
-          console.log('addNewBiometricData', res)
-          if(res?.data === false){
-            challengeIsSolved()
-          }
-        }else{
-          console.log('Detectando...', faceApiCanvas.current)
-          if(scanner && scanner?.classList?.value.includes('scanning'))scanner.classList.remove('scanning');
-        }
-    }, intervalTime)
-  }
-
+    } else {
+      console.log('sin detección')
+      await sleep(DETECTION_INTERVAL_MS);
+      initDetections();
+    }
+    scanner && scanner?.classList?.value.includes('scanning') && scanner.classList.remove('scanning');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [challengeIsSolved, coinsendaServices, displaySize, setState, stageData?.key, stageData?.biometricId, takeMobileSnapshot])
 
   useEffect(() => {
-    // const canvas = document.querySelector('#faceApiCanvas')
-    if((boardingAgreement && faceApiCanvas.current) && (!stageData?.solved && !finalStage)){
-      initDetections(faceApiCanvas.current, 600)
-    }
-    console.log('|||||||||||||||||||||||||||||||||||||||||||||||||||||||||  stageData ==> ', stageData, state)
-    return () => clearInterval(intervalDetection.current)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stageData, boardingAgreement, loading])
+    boardingAgreement && cameraAvailable && initDetections();
+    // eslint-disable-next-line
+  }, [cameraAvailable, boardingAgreement, stageData?.key])
 
-  // const exectFuncDebounce = () => {
-    
-  // }
-
-  useEffect( () => {
-    // console.log('|||||||||||||  biometricData ==> ', cameraAvailable, biometricData)
-    // debugger
-    // if(biometricData?.state === 'accepted' && !cameraAvailable){
-    //   tryToSolveChallenge()
-    // }
-
-    console.log('||||||||||||| SOCKET biometricData ===> ', cameraAvailable, biometricData)
-    if(biometricData?.challenge_name === stageData?.key){
-      if(biometricData.state === 'accepted'){
-        funcDebounces({
-          keyId:{[biometricData.state]:biometricData.id}, 
-          storageType:"sessionStorage",
-          timeExect:1500,
-          callback:() => {
-            challengeIsSolved()
-          }
-        })
-      }else if(biometricData.state === 'rejected'){
-        funcDebounces({
-          keyId:{[biometricData.state]:biometricData.id}, 
-          storageType:"sessionStorage",
-          timeExect:1500,
-          callback:() => {
-            initDetections(faceApiCanvas.current, 600)
-          }
-        })
-      }
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [biometricData])
-
-
-  useEffect(()=>{
-    if(finalStage){
-      const disableTransactionSecutiry = async() => {
+  useEffect(() => {
+    if (finalStage) {
+      const disableTransactionSecutiry = async () => {
         await coinsendaServices.disableTransactionSecutiry("biometric");
-        if(!props.orderData) return;
-        const { orderData:{ order, paymentProof } } = props
+        if (!props.orderData) return;
+        const { orderData: { order, paymentProof } } = props
         return coinsendaServices.confirmDepositOrder(order.id, paymentProof);
       }
-      disableTransactionSecutiry()
+      disableTransactionSecutiry();
+      CAPACITOR_PLATFORM !== 'web' && CameraPreview.stopCamera();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [finalStage])
+  }, [finalStage, coinsendaServices, props])
 
-  useEffect(()=>{
-    loadDynamicScript(setupFaceApi, `${getCdnPath('faceApi')}`, 'faceApi')
+  useEffect(() => {
+    const mediaElementNode = mediaElementRef.current;
+    loadDynamicScript(async () => {
+      setIsLoadingFaceApi(true);
+      if (!window.faceapi) return alert('No están cargando las librerías FACE_API');
+      faceApi.current = window.faceapi
+      await faceApi.current.nets.tinyFaceDetector.loadFromUri(modelsPath)
+      await faceApi.current.nets.faceLandmark68Net.loadFromUri(modelsPath)
+      await faceApi.current.nets.faceRecognitionNet.loadFromUri(modelsPath)
+      await faceApi.current.nets.faceExpressionNet.loadFromUri(modelsPath)
+      setIsLoadingFaceApi(false);
+      if (CAPACITOR_PLATFORM === 'web') {
+        startStreaming();
+      } else {
+        startMobileStreaming();
+      }
+    }, `${getCdnPath('faceApi')}`, 'faceApi');
+
     return () => {
-      videoEl.current?.pause();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      videoEl.current?.srcObject?.getTracks()[0].stop()
+      if (CAPACITOR_PLATFORM === 'web' && mediaElementNode) {
+        mediaElementNode.pause();
+        mediaElementNode.srcObject?.getTracks()[0].stop()
+      } else {
+        return CameraPreview.stopCamera();
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    // eslint-disable-next-line
+  }, []);
 
-  // console.log('||||||||||||||||||||||||||||||||||||||||  BiometricKyc PROPS', props)
+  useEffect(() => {
+    if (typeof (stageData?.key) === 'string' && biometricData?.challenge_name === stageData?.key) {
+      funcDebounces({
+        keyId: { [biometricData.state]: biometricData.id },
+        storageType: "sessionStorage",
+        timeExect: 1500,
+        callback: () => {
+          biometricData.state === 'accepted' && challengeIsSolved()
+          biometricData.state === 'rejected' && initDetections()
+          console.log('biometricData', biometricData)
+        }
+      })
+    }
+    // !biometricData && stageData?.key === 'surprised' && initDetections();
+    // eslint-disable-next-line
+  }, [biometricData]);
 
-  
-   if(finalStage){
+
+
+  if (finalStage) {
     // Render success Stage
     return (
       <>
-        {/* { developerMood && <Captures state={state}/> } */}
         <DynamicLoadComponent
-              component={`${dataForm?.wrapperComponent}/success`}
-              handleDataForm={handleDataForm}
-              handleState={handleState}
-              coinsendaServices={coinsendaServices}
-              {...props}
+          component={`${dataForm?.wrapperComponent}/success`}
+          handleDataForm={handleDataForm}
+          handleState={handleState}
+          coinsendaServices={coinsendaServices}
+          {...props}
         />
       </>
     )
   }
 
-    return(
+  return (
+    <>
+      <Captures state={state}/>
       <Layout className="faceApiLayout__">
-        { 
+        {
           !boardingAgreement &&
-            <DynamicLoadComponent
-              component="biometricKycComponent/onBoardingAgreement"
-              cameraAvailable={cameraAvailable}
-              handleAction={() => {
-                setBoardingAgreement(true)
-              }}
-            /> 
+          <DynamicLoadComponent
+            component="biometricKycComponent/onBoardingAgreement"
+            cameraAvailable={cameraAvailable}
+            handleAction={() => {
+              setBoardingAgreement(true)
+            }}
+          />
         }
-
-        {/* { developerMood && <Captures state={state}/> } */}
-
-        <ContentContainers id="faceApiContainer">
-          <StatusIndicator 
+        <ContentContainers>
+          <StatusIndicator
             data={stageData?.solved}
           />
           <h3 className="FRecTitle fuente">Reconocimiento Facial</h3>
-          <VideoContainer id="videoContainer">            
-            { loading && <div className="biometricLoaderContainer"></div>}
-            {/* { !developerMood && <Scanner className="FRecScanner"/>} */}
-            <Scanner className="FRecScanner"/>
-            <video id="streamingVideo" autoPlay={true} ref={videoEl} width={'100%'} height={'100%'} />
+          <VideoContainer ref={videoContainerRef}>
+            {isLoadingFaceApi && <div className="biometricLoaderContainer" />}
+            <Scanner ref={scannerRef} className="FRecScanner" />
+            {CAPACITOR_PLATFORM === 'web' && <video ref={mediaElementRef} autoPlay={true} width={'100%'} height={'100%'} />}
+            {CAPACITOR_PLATFORM !== 'web' && <img style={{ display: 'none', objectFit: 'cover' }} ref={mediaElementRef} width={260} height={260} alt="streaming snapshot" />}
+            {CAPACITOR_PLATFORM !== 'web' && !isLoadingFaceApi && <BlinkText><em />SCANNING</BlinkText>}
           </VideoContainer>
           <IndicatorStage>
-            <Indicator className={`${currentStage === 0 ? 'active' : ''}`}/>
-            <Indicator className={`${currentStage === 1 ? 'active' : ''}`}/>
+            <Indicator className={`${currentStage === 0 ? 'active' : ''}`} />
+            <Indicator className={`${currentStage === 1 ? 'active' : ''}`} />
           </IndicatorStage>
           <h1 className="fuente">{stageData?.uiName}</h1>
           <p className="fuente">Mantén tu cabeza erguida y asegurate que tu rostro encaje dentro del circulo</p>
         </ContentContainers>
       </Layout>
-    )
-} 
+    </>
+  )
+};
 
+const getFrame = (displaySize, mediaElement, faceApi) => {
+  try {
+    const { width, height } = displaySize;
+    const canvas = faceApi.current.createCanvasFromMedia(mediaElement);
+    faceApi.current.matchDimensions(canvas, displaySize)
+    canvas.width = width
+    canvas.height = height
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(mediaElement, 0, 0, width, height)
+    return canvas.toDataURL('image/jpeg')
+  } catch {
+    return '';
+  }
+}
 
 export default BiometricKycComponent
 
+const BlinkText = styled.p`
+  position: absolute;
+  bottom: -10px;
+  width: 100%;
+  color: #18c89b !important;
+  font-weight: bold;
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  @keyframes blink-animation {
+    50% { opacity: 0; }
+  }
+  @-webkit-keyframes blink-animation {
+    50% { opacity: 0; }
+  }
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #18c89b;
+    position: relative;
+    right: 4px;
+  }
+`;
 
 const Indicator = styled.div`
   width:7px;
@@ -321,11 +379,11 @@ const IndicatorStage = styled.div`
   justify-content: center;
   align-items: center;
 `
- 
+
 const VideoContainer = styled.div`
   position: relative;
   clip-path: circle(37% at 50% 50%);
-
+  min-width: 260px;
   @media ${device.laptopM} {
     max-height: 300px;
     clip-path: none;

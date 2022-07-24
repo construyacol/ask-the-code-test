@@ -9,6 +9,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/camera-preview@^5.44.0":
+  version "5.44.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/camera-preview/-/camera-preview-5.44.0.tgz#0e6b1e5925477a75ec6a7dd1d8b3bfd06a4a29d2"
+  integrity sha512-JJ0vsUrq1qrcUq5A1ta8AQJteu/XpCMxBd9P/tHEzWCmo3/1OhaoS4LdnPGwmsYDaTYqBQpOYZFA/Mvz7PReNg==
+  dependencies:
+    "@types/cordova" latest
+
 "@awesome-cordova-plugins/core@^5.43.0":
   version "5.43.0"
   resolved "https://registry.npmjs.org/@awesome-cordova-plugins/core/-/core-5.43.0.tgz"
@@ -5953,6 +5960,11 @@ copy-to-clipboard@^3.2.0:
   integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
   dependencies:
     toggle-selection "^1.0.6"
+
+cordova-plugin-camera-preview@^0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-camera-preview/-/cordova-plugin-camera-preview-0.12.3.tgz#3db3c4bf44c9e46cdaf045b1a17c67a2a8cc05bc"
+  integrity sha512-AThly6r2/jR7NfxQuEutLVSHQj6tGPbqQYxnaON3PnkWlhYqDCceKh0bVtZMoZ1ZMPHQdqFjSvzlKv9iT8EBXA==
 
 cordova-plugin-inappbrowser@^5.0.0:
   version "5.0.0"

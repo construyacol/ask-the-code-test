@@ -25,7 +25,7 @@ const Container = styled.div`
     width: 150px;
     height: auto;
     min-height: 120px;
-    z-index: 2;
+    z-index: 9999999;
     background: #ededed;
     bottom: 10px;
     right: 10px;
