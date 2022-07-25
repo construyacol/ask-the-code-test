@@ -45,19 +45,6 @@ export default function WithdrawAccountsComponent({
         <OptionInputContainer>
           <p className="fuente _pLabel _inputLabelP">¿En que cuenta quieres recibir tu dinero?  </p>
           <SelectListContainer>
-                <ItemListComponent 
-                  className="createButton"
-                  itemList={{
-                    value:"createId",
-                    icon:"add",
-                    uiName:isMovilViewport ? "Crear cuenta" : "Agregar nueva cuenta de retiro"
-                  }}
-                  AuxComponent={[
-                    () => <BiRightArrowAlt className="_birArrow" size={37} />
-                  ]}
-                  firstIndex={true}
-                  handleAction={() => props.setCreateAccount(true)}
-                />
             {
               withdrawAccounts && Object.keys(withdrawAccounts).map((key, index) => {
 
@@ -79,6 +66,19 @@ export default function WithdrawAccountsComponent({
                 />
               })
             }
+            <ItemListComponent 
+                  className="createButton"
+                  itemList={{
+                    value:"createId",
+                    icon:"add",
+                    uiName:isMovilViewport ? "Crear cuenta" : "Agregar nueva cuenta de retiro"
+                  }}
+                  AuxComponent={[
+                    () => <BiRightArrowAlt className="_birArrow" size={37} />
+                  ]}
+                  firstIndex={true}
+                  handleAction={() => props.setCreateAccount(true)}
+                />
           </SelectListContainer>
         </OptionInputContainer>
       </StageContainer>
