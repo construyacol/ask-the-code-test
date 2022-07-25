@@ -58,16 +58,6 @@ export default function IdentityComponent({
         <OptionInputContainer>
           <p className="fuente _pLabel _inputLabelP">Elige el documento de identidad vinculado a tu cuenta de retiro</p>
           <SelectListContainer>
-                <ItemListComponent 
-                  className="createButton"
-                  itemList={{
-                    value:"createId",
-                    icon:"add",
-                    uiName:isMovilViewport ? "Otro documento" : "Otro documento"
-                  }}
-                  firstIndex={true}
-                  handleAction={createNewIdAction}
-                />
             {
               userIdentities && Object.keys(userIdentities).map((key, index) => {
                 const isSelected = [userIdentities[key]?.value].includes(state?.identity?.value)
@@ -91,6 +81,16 @@ export default function IdentityComponent({
                 />
               })
             }
+            <ItemListComponent 
+                  className="createButton"
+                  itemList={{
+                    value:"createId",
+                    icon:"add",
+                    uiName:isMovilViewport ? "Otro documento" : "Otro documento"
+                  }}
+                  firstIndex={true}
+                  handleAction={createNewIdAction}
+                />
           </SelectListContainer>
         </OptionInputContainer>
       </StageContainer>
