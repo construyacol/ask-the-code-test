@@ -15,7 +15,7 @@ import { ENVIRONMENT_VAR, device } from '../../../../const/const'
 import useSocket from '../../../hooks/useSocket'
 import { CAPACITOR_PLATFORM } from 'const/const'
 import sleep from 'utils/sleep';
-// import Captures from './captures'
+import Captures from './captures'
 import {
   Layout,
   ContentContainer
@@ -23,7 +23,7 @@ import {
 
 
 // Interval to evaluate the snapshot taken from the canvas
-const DETECTION_INTERVAL_MS = 600;
+const DETECTION_INTERVAL_MS = 500;
 
 const ONE_SECOND_MS = 1000;
 
@@ -55,7 +55,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
  
   const { dataForm } = handleDataForm
-  const { setState } = handleState
+  const { setState, state } = handleState
   const [isLoadingFaceApi, setIsLoadingFaceApi] = useState(false)
   const [cameraAvailable, setCameraAvailable] = useState()
   const [boardingAgreement, setBoardingAgreement] = useState(false)
@@ -157,7 +157,6 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
       base64SnapShot = getFrame(displaySize, mediaElementRef.current, faceApi);
     }
 
-
     const detections = await faceApi.current.detectAllFaces(mediaElementRef.current,
       new faceApi.current.TinyFaceDetectorOptions())
       .withFaceLandmarks()
@@ -166,14 +165,14 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
 
       
     if (detections?.length) {
-
       scanner && !scanner?.classList?.value?.includes('scanning') && scanner.classList.add('scanning');
       if (!validations[stageData?.key]) return alert('No existe validación para este stage, contácta con soporte');
 
       const _value = validations[stageData.key](detections[0], base64SnapShot);
 
       // if (!_value || sessionStorage.getItem(stageData?.key)) {
-      if (!_value) {
+        console.log('RES ==> : ', stageData.key, detections[0].expressions[stageData.key] || detections[0].expressions.happy)
+        if (!_value) {
         console.log('BAD VALUE RES: ', stageData.key, _value)
         await sleep(DETECTION_INTERVAL_MS);
         return initDetections();
@@ -186,11 +185,9 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
         biometric_id: stageData.biometricId,
         challenge_name: stageData.key
       })
-
       res.data === false && challengeIsSolved();
-
     } else {
-      console.log('sin detección')
+      console.log('sin detección', DETECTION_INTERVAL_MS)
       await sleep(DETECTION_INTERVAL_MS);
       initDetections();
     }
@@ -198,10 +195,18 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challengeIsSolved, coinsendaServices, displaySize, setState, stageData?.key, stageData?.biometricId, takeMobileSnapshot])
 
+
   useEffect(() => {
     boardingAgreement && cameraAvailable && initDetections();
     // eslint-disable-next-line
   }, [cameraAvailable, boardingAgreement, stageData?.key])
+
+
+  useEffect(() => {
+    (boardingAgreement && !isLoadingFaceApi) && CAPACITOR_PLATFORM !== 'web' && startMobileStreaming();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoadingFaceApi, boardingAgreement])
+
 
   useEffect(() => {
     if (finalStage) {
@@ -216,6 +221,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
     }
   }, [finalStage, coinsendaServices, props])
 
+
   useEffect(() => {
     const mediaElementNode = mediaElementRef.current;
     loadDynamicScript(async () => {
@@ -227,11 +233,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
       await faceApi.current.nets.faceRecognitionNet.loadFromUri(modelsPath)
       await faceApi.current.nets.faceExpressionNet.loadFromUri(modelsPath)
       setIsLoadingFaceApi(false);
-      if (CAPACITOR_PLATFORM === 'web') {
-        startStreaming();
-      } else {
-        startMobileStreaming();
-      }
+      CAPACITOR_PLATFORM === 'web' && startStreaming()
     }, `${getCdnPath('faceApi')}`, 'faceApi');
 
     return () => {
@@ -244,6 +246,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
     }
     // eslint-disable-next-line
   }, []);
+
 
   useEffect(() => {
     if (typeof (stageData?.key) === 'string' && biometricData?.challenge_name === stageData?.key) {
@@ -281,7 +284,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
 
   return (
     <>
-      {/* <Captures state={state}/> */}
+      { process.env.NODE_ENV === "development" && <Captures state={state}/> }
       <Layout className="faceApiLayout__">
         {
           !boardingAgreement &&

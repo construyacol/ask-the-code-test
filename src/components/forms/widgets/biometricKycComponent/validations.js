@@ -1,9 +1,13 @@
+import { CAPACITOR_PLATFORM } from 'const/const'
+
+
 const smile = (detections, frame) => {
   return detections?.expressions?.happy > 0.97 && frame;
 }
 
 const surprised = (detections, frame) => {
-  return detections?.expressions?.surprised > 0.5 && frame;
+  const score = CAPACITOR_PLATFORM !== "web" ? 0.05 : 0.4
+  return detections?.expressions?.surprised > score && frame;
 }
 
 const validations = {
