@@ -15,7 +15,7 @@ import { ENVIRONMENT_VAR, device } from '../../../../const/const'
 import useSocket from '../../../hooks/useSocket'
 import { CAPACITOR_PLATFORM } from 'const/const'
 import sleep from 'utils/sleep';
-import Captures from './captures'
+// import Captures from './captures'
 import {
   Layout,
   ContentContainer
@@ -55,7 +55,7 @@ navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia 
 function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
  
   const { dataForm } = handleDataForm
-  const { setState, state } = handleState
+  const { setState } = handleState
   const [isLoadingFaceApi, setIsLoadingFaceApi] = useState(false)
   const [cameraAvailable, setCameraAvailable] = useState()
   const [boardingAgreement, setBoardingAgreement] = useState(false)
@@ -281,7 +281,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
 
   return (
     <>
-      <Captures state={state}/>
+      {/* <Captures state={state}/> */}
       <Layout className="faceApiLayout__">
         {
           !boardingAgreement &&

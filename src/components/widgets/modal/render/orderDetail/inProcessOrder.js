@@ -19,6 +19,7 @@ import {
    device, 
    BIOMETRIC_FIAT_LITMIT_AMOUNT 
 } from "../../../../../const/const";
+import { isEmpty } from 'lodash'
 import { 
   IconClose, 
   UploadContainer,
@@ -31,9 +32,13 @@ import {
 // import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
 import { BottomSection } from './'
+import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import { CAPACITOR_PLATFORM } from 'const/const'
+import { checkCameraPermission } from 'utils'
+
 import moment from "moment";
 import "moment/locale/es";
-import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+
 moment.locale("es");
  
 // const orderModel = {
@@ -140,16 +145,36 @@ const FiatOrder = ({ order }) => {
     } 
   };
 
+
   const goFileLoader = async (e) => {
-    if (e.target.files && e.target.files.length > 0) {
+    
       setOnDrag(false);
-      const data = e.target.files[0];
-      const file = await img_compressor(data, 0.25);
-      const dataBase64 = await readFile(file);
-      const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
-      if(!isAnImage){
-        return alert('Solo se aceptan imagenes')
+      let dataBase64
+      
+      if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+        try {
+          const { Camera, CameraResultType } = await import("@capacitor/camera");
+          const image = await Camera.getPhoto({
+            quality: 70,
+            resultType: CameraResultType.Base64,
+            // source:CameraSource.Camera,
+            promptLabelHeader:"Tomar imagen desde...",
+            promptLabelPicture:"Cámara",
+            promptLabelPhoto:"Galería"
+          });
+          dataBase64 = `data:image/png;base64, ${image?.base64String}`
+        }catch (error) {
+          return console.log('getCameraPhoto err => ', error?.message)
+        }  
+      }else{
+        if (isEmpty(e.target.files)) return; 
+        const data = e.target.files[0];
+        const file = await img_compressor(data, 0.25);
+        dataBase64 = await readFile(file);
+        const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
+        if(!isAnImage) return alert('Solo se aceptan imagenes');
       }
+
       setImgSrc(dataBase64);
       actions.isAppLoading(true);
 
@@ -179,7 +204,6 @@ const FiatOrder = ({ order }) => {
       //   setImgSrc(null);
       //   toastMessage("El depósito No se ha confirmado", "error");
       // }
-    }
   };
 
   // console.log('|||||||||||||||| FiatOrderDespoit ::', tx_path)
@@ -206,13 +230,6 @@ const FiatOrder = ({ order }) => {
             goFileLoader={goFileLoader}
           />
         )} 
-        {/* {imgSrc && order.state === "pending" && (
-          <PaymentProofComponent
-            order_id={order.id} 
-            imgSrc={imgSrc}
-            setImgSrc={setImgSrc}
-          />
-        )} */}
 
         <TopSection>
           <IconSwitch
@@ -293,7 +310,21 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
     true
   );
 
-  return (
+  const INPUT_FILE_PROPS = {
+    type:"file",
+    accept:"image/png,image/jpeg",
+    onChange:goFileLoader,
+    id:idForFileUpload
+  }
+
+  const INPUT_BUTTON_PROPS = {
+    type:"button",
+    onClick:goFileLoader
+  }
+
+  const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
+
+  return ( 
     <UploadContainer
       className={`${imgSrc || currentOrder.state === "confirmed" ? "loaded" : "unload"}`}
     >
@@ -314,10 +345,7 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
 
               <Buttom>
                 <input
-                  id={idForFileUpload}
-                  type="file"
-                  accept="image/png,image/jpeg"
-                  onChange={goFileLoader}
+                  {...inputProps}
                 />
                 <Text style={{ color: "white" }} className="fuente">
                   Subir comprobante
