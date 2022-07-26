@@ -101,10 +101,15 @@ export const SuccessViewContent = styled.div`
     padding: 20px 0 40px;
     min-height: calc(100vh - 60px);
     grid-template-rows: auto 1fr auto;
-    padding-bottom:100px;
 
-    &.fiatDepositSuccess{
-        padding-bottom:200px;
+    @media ${device.mobile} {
+    padding-bottom:100px;
+        &.fiatDepositSuccess{
+            padding-bottom:200px;
+        }
+        &.withdrawSuccess{
+            padding-bottom: 250px;
+        }
     }
 
     &.withdrawAccountSuccess{
@@ -113,7 +118,6 @@ export const SuccessViewContent = styled.div`
 
     &.withdrawSuccess{
         grid-template-rows: auto auto auto;
-        padding-bottom: 250px;
     }
 
     .iconSuccess{

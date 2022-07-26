@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { OperationForm } from "./withdrawCripto";
 import QRCode from "qrcode";
 // import { SentryCaptureException } from "../../../utils";
@@ -30,6 +30,44 @@ const CriptoSupervisor = (props) => {
   );
 };
 
+const ContAddress = styled.section`
+  display: grid;
+  justify-items: center;
+  grid-template-rows: 30px 50px 1fr 40px 40px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  p{
+    margin: 0 !important;
+    color: var(--paragraph_color); 
+  }
+
+  .soloAd,
+  .soloAd2 {
+    max-width: 700px;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+  }
+  .soloAd{
+    color:--var(paragraph_color);
+    span{
+      text-transform: capitalize;
+    }
+  }
+  .soloAd2 {
+    font-size: 16px !important;
+    text-align: left;
+  }
+  .qrContainer {
+    height: 180px;
+    width: 180px;
+    position: relative;
+  }
+
+`
+
 export const SkeletonDepositView = () => {
 
   const { currentWallet } = useWalletInfo();
@@ -40,13 +78,13 @@ export const SkeletonDepositView = () => {
     {
       currentWallet.currency_type === 'crypto' ?
         <DepositForm className="skeleton">
-          <section className="contAddress">
+          <ContAddress className="contAddress">
             <p id="soloAd2" className="fuente title soloAd2"></p>
             <p className="fuente soloAd"></p>
             <div className="qrContainer">{/* <QrProtector visible/> */}</div>
             <p className="fuente title dirDep"></p>
             <p className="verifyAddress"></p>
-          </section>
+          </ContAddress>
         </DepositForm>
         :
         <DepositWithdrawFiatSkeleton/>
@@ -170,9 +208,9 @@ const CriptoView = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deposit_providers]);
 
-  return (
+  return ( 
     <DepositForm>
-      <section className={`contAddress ${osDevice}`}>
+      <ContAddress className={`contAddress ${osDevice}`}>
         <p id="soloAd2" className="fuente title soloAd2">
           Importante:
         </p>
@@ -201,22 +239,106 @@ const CriptoView = () => {
             color="black"
           />
         </div>
-      </section>
+      </ContAddress>
     </DepositForm>
   );
 };
 
 const QrProtector = ({ visible, invalid }) => (
-  <div
+  <QrProtectorCont
     className={`qrProtector ${visible === true ? "active" : ""} ${
       invalid ? "error" : ""
     }`}
   >
     <IconSwitch icon="qr" size={35} color="black" />
-  </div>
+  </QrProtectorCont>
 );
 
+
+
+const qrScan = keyframes`
+    0% {
+      transform: translateY(90px);
+    }
+    50% {
+      transform: translateY(-90px);
+    }
+    100% {
+      transform: translateY(90px);
+    }
+`;
+
+const qrScanOpacity = keyframes`
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+    100% {
+      opacity: 1;
+    }
+`;
+
+
+
+const QrProtectorCont = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    overflow: hidden;
+    opacity: 0;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    transition: 0.3s;
+    &.active{
+      opacity: 0.99;
+    }
+    &::after {
+    content: "";
+    width: 100%;
+    height: 5px;
+    background: #37ed7d;
+    position: absolute;
+    transition: 0.3s;
+    animation-name: ${qrScan}, ${qrScanOpacity};
+    animation-duration: 1.3s, 0.6s;
+    animation-iteration-count: infinite;
+  }
+  &.error::after {
+    background: red;
+    animation-duration: 0.3s, 0.1s;
+  }
+
+  
+`
+
 export const DepositForm = styled(OperationForm)`
+
+  &.DepositView{
+    grid-template-rows: 50% 25% 1fr;
+    grid-template-columns: 1fr !important;
+    p {
+      text-align: center;
+      margin: 0 !important;
+      max-width: 400px;
+      justify-self: center;
+      color: var(--paragraph_color); 
+    }
+    .contIcontSwitch {
+      display: grid;
+      align-items: center;
+      justify-items: center;
+    }
+    .contButtons {
+      align-self: center;
+      justify-items: center;
+      display:grid;
+    }   
+  }
+
   .qrContainer {
     transform: scale(0.9);
   }
@@ -225,14 +347,15 @@ export const DepositForm = styled(OperationForm)`
     padding-bottom: 150px;
   }
 
-
-
   @media (max-width: 768px) {
     width: 100%;
     height: calc(100% - 40px);
     padding: 20px 0;
     background: transparent;
 
+    .WithdrawView, .SwapView, .DepositView, #swapForm{
+      background-color: transparent;
+    }
 
     .qrContainer {
       transform: scale(0.8);

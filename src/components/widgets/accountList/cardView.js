@@ -12,7 +12,6 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../hooks/useWindowSize";
 import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
 import { useSelector } from "react-redux";
-import "../../wallets/views/wallet_views.css";
 // import TitleSection from '../../widgets/titleSectionComponent'
 // import { AccountListWrapper } from '../layoutStyles'
 import { isEmpty } from 'lodash'

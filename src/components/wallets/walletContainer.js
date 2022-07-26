@@ -13,7 +13,6 @@ import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { SkeletonDepositView } from './views/depositCripto'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
-import "./views/wallet_views.css";
 import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'
 import TitleSection, { SubTitleSection } from '../widgets/titleSectionComponent'
 import SubMenuComponent from '../menu/subMenu'
@@ -22,6 +21,8 @@ import ActivityFilters from "../widgets/activityList/filters";
 // import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
 import { parseQueryString } from '../../utils'
+// import 'components/wallets/views/wallet_views.css'
+
 
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
