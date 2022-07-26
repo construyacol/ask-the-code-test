@@ -3,6 +3,7 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
 import { IconClose } from "../shared-styles";
 import styled from 'styled-components'
+import { device } from 'const/const'
 
 const OtherModalLayoutPairs = (props) => {
   const { children, title, close_modal, classes } = props;
@@ -65,10 +66,8 @@ const PairList = styled.div`
   width: 90%;
   max-width: 700px;
   max-height: 700px;
-  /* height: 90%; */
   height: 75%;
   background: white;
-  position: absolute;
   z-index: 99;
   display: grid;
   grid-template-rows: 65px 60px 1fr;
@@ -88,4 +87,13 @@ const PairList = styled.div`
     grid-row-gap: 12px;
     grid-column-gap: 15px;
   }
+
+  @media ${device.mobile} {
+    position: absolute;
+    width: auto;
+    bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
 `

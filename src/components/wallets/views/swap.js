@@ -382,8 +382,10 @@ const SwapForm = styled(OperationForm)`
   }
 
   @media (max-width: 768px) {
+    background:transparent;
     padding: 20px 0px;
     width: 100%;
+
   }
 `;
 
