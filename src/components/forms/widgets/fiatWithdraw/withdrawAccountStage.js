@@ -71,7 +71,7 @@ export default function WithdrawAccountsComponent({
                   itemList={{
                     value:"createId",
                     icon:"add",
-                    uiName:isMovilViewport ? "Crear cuenta" : "Agregar nueva cuenta de retiro"
+                    uiName:isMovilViewport ? "Otra cuenta de retiro" : "Otra cuenta de retiro"
                   }}
                   AuxComponent={[
                     () => <BiRightArrowAlt className="_birArrow" size={37} />

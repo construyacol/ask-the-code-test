@@ -9,7 +9,6 @@ import ActivityFilters from "../../widgets/activityList/filters";
 import { LoaderView } from "../../widgets/activityList/order_item";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useViewport from '../../../hooks/useWindowSize'
-import "./wallet_views.css";
 import useToastMessage from "../../../hooks/useToastMessage";
 
 import { device } from 'const/const'

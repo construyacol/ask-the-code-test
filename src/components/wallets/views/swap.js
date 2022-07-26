@@ -277,7 +277,7 @@ function SwapView(props) {
             amount={isFiat ? formatNumber(availableBalance) : availableBalance}
           />
         )}
-      />
+      /> 
 
       {!isMovilViewport && (
         <div className="middleSection">
@@ -367,6 +367,20 @@ const CoinPrice = styled.p`
 
 const SwapForm = styled(OperationForm)`
   grid-template-rows: 1fr ${(props) => (!props.isMovilViewport ? "30px" : "")} 1fr 20px 1fr;
+
+  .middleSection{
+    font-size: 26px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: relative;
+    i{
+      position: absolute;
+      bottom: -15px;
+      color: var(--paragraph_color);
+    }
+  }
+
   @media (max-width: 768px) {
     padding: 20px 0px;
     width: 100%;
