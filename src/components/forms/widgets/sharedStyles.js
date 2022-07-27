@@ -1,7 +1,98 @@
 import styled, { keyframes } from "styled-components";
 import { device } from '../../../const/const'
 import { OnlySkeletonAnimation } from '../../widgets/loaders/skeleton'
+import { HR } from 'components/widgets/headerAccount/styles'
 
+
+
+export const MetaDataContainer = styled.div`
+  min-height:100px;
+  background:#f0f0f0;
+  display:grid;
+  align-self: end;
+  padding:15px 20px;
+  width:calc(100% - 40px);
+  max-width:calc(700px - 40px);
+  p{
+    color:var(--paragraph_color);
+  }
+  ul{
+    display: grid;
+    align-items: center;
+    row-gap: 10px;
+    li{
+      color:var(--paragraph_color);
+      font-size:15px;
+    }
+  }
+`
+
+
+export const MetaContainer = styled.div`
+  width:auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr;
+  column-gap: 15px;
+  grid-template-rows: auto auto;
+  align-self: center;
+  row-gap: 3px;
+
+  ${HR}{
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+
+  &.uniqueRow{
+    grid-template-rows: 1fr;
+    ${HR}{
+      grid-row-end: 2;
+    }
+  }
+
+  p{
+    margin:0;
+    color:var(--paragraph_color);
+    font-size:18px;
+  }
+
+  p:nth-child(3), 
+  .metaText {
+    font-size:13px;
+    font-family: "Raleway",sans-serif;
+    color: var(--placeholder);
+  }
+
+  .metaText{
+    font-size:14px;
+    span{
+      color: var(--placeholder);
+    }
+  }
+
+  &.__withdrawAccount{
+    grid-template-columns: auto auto 1fr;
+    column-gap: 5px;
+    ${HR}{
+      margin-right: 10px;
+    }
+    span{
+      .complete{
+        color:green;
+      }
+      .pending,
+      .in_progress{
+        color:orange;
+      }
+    }
+  }
+`
+
+// export const WAccountMetaContainer = styled(MetaContainer)`
+//   grid-template-columns: auto 1fr;
+
+// `
 
 export const OptionInputContainer = styled.div`
   display:grid;
@@ -521,3 +612,5 @@ export const Content = styled.section`
     right:0;
   }
 `
+
+

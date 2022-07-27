@@ -15,7 +15,7 @@ grid-template-columns:auto 1fr;
 
 
 export const HR = styled.div`
-  height: 40px;
+  height: ${props => props.height ? `${props.height}px` : `40px`};
   width: 1px;
   background: #cdcdcd;
   align-self: center;

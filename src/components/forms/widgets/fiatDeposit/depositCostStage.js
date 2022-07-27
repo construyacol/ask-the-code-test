@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
-
-import styled from 'styled-components'
+import { MetaDataContainer } from '../sharedStyles'
+// import styled from 'styled-components'
 
 export default function DepositSourceComponent({ 
     stageManager:{ 
@@ -79,24 +79,7 @@ export default function DepositSourceComponent({
     )
   }
 
-const MetaDataContainer = styled.div`
-  min-height:100px;
-  background:#f0f0f0;
-  display:grid;
-  align-self: end;
-  padding:15px 20px;
-  width:calc(100% - 40px);
-  max-width:calc(700px - 40px);
-  ul{
-    display: grid;
-    align-items: center;
-    row-gap: 10px;
-    li{
-      color:var(--paragraph_color);
-      font-size:15px;
-    }
-  }
-`
+
 
 
 

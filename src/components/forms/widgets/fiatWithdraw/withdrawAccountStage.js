@@ -5,6 +5,11 @@ import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { BiRightArrowAlt } from 'react-icons/bi';
+// import styled from 'styled-components'
+import { MetaContainer } from '../sharedStyles'
+import { HR } from '../../../widgets/headerAccount/styles'
+import { MetaDataContainer } from '../sharedStyles'
+import { AiOutlineClockCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 
 
 export default function WithdrawAccountsComponent({ 
@@ -16,7 +21,7 @@ export default function WithdrawAccountsComponent({
     handleDataForm:{ dataForm },
     children,
     ...props
-  }){  
+}){  
 
     const { isMovilViewport } = useViewport();
     const [ withdrawAccounts ] = useSelector((state) => selectWithdrawAccounts(state));
@@ -36,8 +41,9 @@ export default function WithdrawAccountsComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // console.log('WITHDRAW ACCOUNT => ', state.withdrawAccount)
-
+    console.log('WITHDRAW_ACCOUNT => ', state.withdrawAccount)
+    // pending
+    // in_progress
 
     return(
       <StageContainer className="_identityComponent">
@@ -63,11 +69,16 @@ export default function WithdrawAccountsComponent({
                   isSelectedItem={isSelected}
                   isMovilViewport={isMovilViewport}
                   handleAction={selectWithdrawAccount}
+                  AuxComponent={[
+                    (!isMovilViewport && isSelected) ? () => <StateComponent withdrawAccount={state?.withdrawAccount}/> : () => null
+                  ]}
                 />
               })
             }
             <ItemListComponent 
                   className="createButton"
+                  lastIndex
+                  handleAction={() => props.setCreateAccount(true)}
                   itemList={{
                     value:"createId",
                     icon:"add",
@@ -76,17 +87,48 @@ export default function WithdrawAccountsComponent({
                   AuxComponent={[
                     () => <BiRightArrowAlt className="_birArrow" size={37} />
                   ]}
-                  firstIndex={true}
-                  handleAction={() => props.setCreateAccount(true)}
                 />
           </SelectListContainer>
         </OptionInputContainer>
+
+        {/* {
+          ["pending", "in_progress"].includes(state?.withdrawAccount?.state) &&
+          <MetaDataContainer>
+            {isMovilViewport && <p className="fuente">Inscribiendo cuenta...</p>}
+            <p className="fuente">Recuerda que los retiros a cuentas de retiro en proceso de inscripción pueden tardar de 1 a 72 horas hábiles en ser procesados.</p>
+          </MetaDataContainer>
+        } */}
+
       </StageContainer>
     )
-  }
+}
 
 
-  // auxUiName
+
+const getIcon = state => {
+  return (
+    ["pending", "in_progress"].includes(state) ? <AiOutlineClockCircle color="orange"/> :
+    ["complete"].includes(state) ? <AiOutlineCheckCircle color="green"/> : <></>
+  )
+}
+
+const StateComponent = ({ withdrawAccount }) => {
+
+  const uiLabel = ["pending", "in_progress"].includes(withdrawAccount?.state) ? "Inscribiendo..." : ["rejected"].includes(withdrawAccount?.state) ? "Cuenta eliminada" : "Inscrita"
+
+  return(
+      <MetaContainer className="uniqueRow __withdrawAccount">
+        <HR height={30} />
+        { getIcon(withdrawAccount?.state) }
+        <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{uiLabel}</span></p>
+      </MetaContainer>
+  )
+}
+
+
+
+
+// auxUiName
 
 // const IdNumberPanel = ({ item }) => {
 //     return( 
