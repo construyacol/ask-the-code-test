@@ -90,10 +90,15 @@ const PairList = styled.div`
 
   @media ${device.mobile} {
     position: absolute;
-    width: auto;
+    width: 100vw;
     bottom: 0;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+
+    .PairListItems {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 
 `
