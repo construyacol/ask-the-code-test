@@ -62,11 +62,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .subItemSecurityCenter{
-    min-height: 75px;
-  }
-}
 
 
 
@@ -303,9 +298,6 @@
   display: none;
 }
 
-.SCUnverify {
-  /*color:red !important;*/
-}
 
 .SecurityCenter {
   width: 100%;
@@ -316,3 +308,52 @@
 .SCtitle.tittle__success{
   color: var(--primary) !important;
 }
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+
+  .subItemSecurityCenter{
+    min-height: 75px;
+    grid-template-columns: 1fr;
+    height: 55px;
+  }
+  
+  .contentSubItem p {
+    display: none;
+  }
+  
+  .contentSubItem {
+    grid-template-columns: 1fr;
+    border-bottom: none;
+  }
+  
+  .SCtitle {
+    font-size: 16px;
+  }
+  
+  .SCverification {
+    display: none;
+  }
+  
+  .SCcta {
+    display: none !important;
+  }
+  
+  
+  .contentSubItem p {
+    display: none;
+  }
+  
+  .contentSubItem {
+    grid-template-columns: 1fr !important;
+    border-bottom: none !important;
+  }
+
+}
+
+
