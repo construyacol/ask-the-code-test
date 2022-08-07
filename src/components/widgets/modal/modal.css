@@ -311,11 +311,11 @@
     width: calc(100% - 20px);
   }
 
-  .modalCont3 {
+  .modalCont3,
+  .modalCont {
     padding: 20px 10px;
     width: calc(100% - 20px);
     height: calc(100% - 40px);
   }
-
 
 }

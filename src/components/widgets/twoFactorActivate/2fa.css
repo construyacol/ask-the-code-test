@@ -142,9 +142,25 @@
   margin-top: 10px !important;
 }
 
+.secretCode.desaparecer {
+  display: none;
+}
+
 .footer2fa #authReq {
   position: relative !important;
   margin-top: 20px;
 }
+
+
+
+
+
+
+@media only screen and (max-width: 768px) {
+  .footer2faTextDes p {
+    width: 100%;
+  }
+}
+
 
 /**/
