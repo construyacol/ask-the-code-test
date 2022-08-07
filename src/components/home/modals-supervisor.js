@@ -23,7 +23,7 @@ function ModalsSupervisor(props) {
     isModalVisible,
     modalConfirmation,
     // current,
-    modalView,
+    // modalView,
     loader,
     isSocketNotification,
     RenderModal, 
@@ -33,7 +33,7 @@ function ModalsSupervisor(props) {
   return (
     <>
       <ModalContainer condition={isModalVisible}>
-        <ModalLayout modalView={modalView} loader={loader}>
+        <ModalLayout modalView={"modalView"} loader={loader}>
           <Route
             exact path="/security" component={TwoFactorActivate}
           />
@@ -86,14 +86,14 @@ ModalsSupervisor.propTypes = {
   current: PropTypes.string,
   loader: PropTypes.bool,
   modalConfirmation: PropTypes.bool,
-  modalView: PropTypes.string,
+  // modalView: PropTypes.string,
   isModalVisible: PropTypes.bool,
   otherModal: PropTypes.bool,
 };
 
 function mapStateToProps({ ui, form, isLoading }) {
   return {
-    modalView: form.modalView,
+    // modalView: form.modalView,
     isModalVisible: form.isModalVisible,
     loader: isLoading.loader,
     current: form.current,

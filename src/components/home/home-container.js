@@ -11,7 +11,7 @@ import MainMenuComponent from '../menu/mainMenu'
 // import { doLogout } from "../utils";
 import withHandleError from "../withHandleError";
 import SideMenuComponent from '../menu/sideMenu'
-import { LazyLoaderPage } from "../dashBoard/dashboard-skeletons";
+import { LazyLoaderPage } from "components/widgets/skeletons";
 import loadable from "@loadable/component";
 import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
 import MobileMenuComponent from '../menu/mobileMenu'

@@ -1,18 +1,16 @@
 import React from "react";
 import loadable from "@loadable/component";
-import { ReferralComponentAsSkeleton } from "../referrals/referralsComponent";
-import { AccountListContainer } from "../widgets/accountList/styles";
-import { ItemSecurity, SecurityLayoutLoader } from "../securityCenter/styles";
-// import DetailContainerLayout from "../widgets/detailContainer/detailContainerLayout";
-import TitleSection from '../widgets/titleSectionComponent'
-import "./dashboard.css";
-import { AccountListWrapper, SecurityCenterLayout } from '../widgets/layoutStyles'
+import { ReferralComponentAsSkeleton } from "components/referrals/referralsComponent";
 
-const ItemAccount = loadable(() =>
-  import("../widgets/accountList/item_account")
-);
-const SimpleLoader = loadable(() => import("../widgets/loaders"));
+import { AccountListContainer } from "../accountList/styles";
+import { ItemSecurity, SecurityLayoutLoader } from "components/securityCenter/styles";
+import TitleSection from '../titleSectionComponent'
+// import "./dashboard.css";
+import { AccountListWrapper, SecurityCenterLayout } from '../layoutStyles'
 
+const ItemAccount = loadable(() => import("../accountList/item_account"));
+const SimpleLoader = loadable(() => import("../loaders"));
+ 
 export const LazyLoaderPage = ({ path }) => {
   // const title = path === "withdraw_accounts" ? "Cuentas de retiro" : "Cargando...";
   const LoaderScreen =
