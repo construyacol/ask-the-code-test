@@ -152,7 +152,7 @@ function CardView(props) {
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
   // const path = props?.match?.params?.primary_path
 
-  console.log('||||||||||  isBottonAvailable  ===> ', isBottonAvailable, createNewWallet)
+  // console.log('||||||||||  isBottonAvailable  ===> ', isBottonAvailable, createNewWallet)
 
   return (
     <>

@@ -211,7 +211,7 @@ export const CriptoView = () => {
       if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
-      const Element = await import("../../../qr-scanner");
+      const Element = await import("../../../widgets/qr-scanner"); 
       const RenderComponent = Element.default
       actions.renderModal(() => <RenderComponent onScan={setAddressValue} />);
     }

@@ -27,7 +27,7 @@ import {
 import { withRouter } from "react-router";
 import useToastMessage from "../../../hooks/useToastMessage";
 import { useActions } from "../../../hooks/useActions";
-import "./item_wallet.css";
+// import "./item_wallet.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
