@@ -73,6 +73,11 @@ const PairList = styled.div`
   grid-template-rows: 65px 60px 1fr;
   position: relative;
 
+  &.auth{
+    max-width: 500px;
+    max-height: 550px;
+  }
+
   .PairListFind{
     background: #f3f3f3;
   }

@@ -8,10 +8,12 @@ import Environtment from "../../../environment";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { getCdnPath } from '../../../environment'
 // import { InputAmountSkeleton } from '../../forms/widgets/fiatDeposit/amount'
-import "./inputStyles.css";
+import "./inputStyles.css"; 
+import styled from 'styled-components'
+
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
-const NumberInput = loadable(() => import("./numberInput"));
+const NumberInput = loadable(() => import("./numberInput")); 
 
 // const autoCorrectedDatePipe = createAutoCorrectedDatePipe("dd/mm/yyyy");
 const { CountryUrl } = Environtment;
@@ -103,6 +105,52 @@ export const InputForm = (props) => {
   );
 };
 
+
+
+const InputFormContainer = styled.div`
+    align-self: center;
+    height: auto;
+    grid-template-rows: 30px 1fr 30px;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    row-gap:10px;
+`
+
+const InputAuthContainer = styled.div`
+    height: 50px;
+    max-width: 410px;
+    width: 100%;
+    border: 1px solid #50667a61;
+    border-radius: 6px;
+    overflow: hidden;
+    display: grid;
+    position: relative;
+    transition: 0.5s;
+    background: white;
+`
+
+const TwoFactorInput = styled.input`
+  padding: 0 20px;
+  width: calc(100% - 40px);
+  font-size: 25px;
+  text-align: center;
+  letter-spacing: 12px;
+  height: 100%;
+  background: 0 0;
+  border: 1px solid transparent;
+  outline: 0;
+  transition: 0.5s;
+  color: var(--paragraph_color);
+
+  &::placeholder {
+    color: #50667a4d;
+  }
+` 
+
 export const InputFormAuth = (props) => {
   const {
     clase,
@@ -126,16 +174,14 @@ export const InputFormAuth = (props) => {
   // <SimpleLoader/>
 
   return (
-    <div
-      className={`${!clase ? "containerInputComponent AuthInputComp" : clase}`}
-    >
+    <InputFormContainer>
       <p
         className="labelText fuente"
         style={{ display: !label ? "none" : "initial" }}
       >
         {label}
       </p>
-      <div
+      <InputAuthContainer
         // className={`inputContainer ${active ? 'inputActivado' : '' }`}
         className="inputContainer inputAuths"
         style={{
@@ -150,7 +196,7 @@ export const InputFormAuth = (props) => {
         }}
       >
         {!verifying ? (
-          <input
+          <TwoFactorInput
             className={`inputElement TwoFactorTypo fuente2`}
             style={{ color: active ? "#59b200" : "gray" }}
             type={type}
@@ -169,7 +215,7 @@ export const InputFormAuth = (props) => {
             <SimpleLoader />
           </div>
         )}
-      </div>
+      </InputAuthContainer>
       <p
         className="statusInput fuente"
         style={{
@@ -189,7 +235,7 @@ export const InputFormAuth = (props) => {
         ></i>
         {status}
       </p>
-    </div>
+    </InputFormContainer>
   );
 };
 

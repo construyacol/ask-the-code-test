@@ -129,7 +129,6 @@
   right: 5px;
   color: gray;
   height: 100%;
-  /*display: grid;*/
   display: flex;
   align-items: center;
   transition: 0.15s;

@@ -10,6 +10,7 @@ import { ButtonForms } from "../../buttons/buttons";
 import AuthReq from "./authreq";
 import OtherModalLayoutPairs from "../../modal/otherModalLayoutPairs";
 import MVList from "./listView";
+import styled from 'styled-components'
 
 import "./viewSettings.css";
 import withCoinsendaServices from "../../../withCoinsendaServices";
@@ -186,7 +187,7 @@ export class ModalSettingsView extends Component {
       <OtherModalLayoutPairs
         title={title}
         close_modal={this.close_modal}
-        classes={code}
+        classes={`${code}`}
       >
         {/* <p className="OtherModalFind"></p> */}
 
@@ -282,3 +283,5 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withCoinsendaServices(ModalSettingsView));
+
+

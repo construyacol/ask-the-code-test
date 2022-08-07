@@ -334,12 +334,12 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
 
 
   return(
-    <div
+    <PairSelectContainer
       id={id}
       className="coinBalance2 fuente2"
       onClick={() => selectPair(false)}
       >
-        <div className="coinB2">
+        <div>
           <i className="fas fa-angle-down"></i>
           <p>{boughtCurrencySymbol || '...'}</p>
           {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
@@ -351,10 +351,40 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
             />
           )}
         </div>
-      </div>
+      </PairSelectContainer>
   )
 }
-;
+
+const PairSelectContainer = styled.div`
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  right: 5px;
+  color: gray;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  transition: 0.15s;
+  transform: scale(1);
+  &:hover{
+    color: #b48728;
+  }
+
+  div:first-child{
+    display: flex;
+    align-items: center;
+    width: auto;
+    min-width: 70px;
+    position: relative;
+    height: 60%;
+    border-left: 1px solid gray;
+    padding-left: 14px;
+    justify-content: space-between;
+    column-gap: 5px;
+  }
+
+`
+
 
 const CoinPrice = styled.p`
   color: var(--paragraph_color);
