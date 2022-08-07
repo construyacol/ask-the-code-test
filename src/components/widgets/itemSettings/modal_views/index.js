@@ -10,7 +10,7 @@ import { ButtonForms } from "../../buttons/buttons";
 import AuthReq from "./authreq";
 import OtherModalLayoutPairs from "../../modal/otherModalLayoutPairs";
 import MVList from "./listView";
-import styled from 'styled-components'
+// import styled from 'styled-components'
 
 import "./viewSettings.css";
 import withCoinsendaServices from "../../../withCoinsendaServices";

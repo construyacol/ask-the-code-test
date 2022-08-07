@@ -8,7 +8,7 @@ import Environtment from "../../../environment";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { getCdnPath } from '../../../environment'
 // import { InputAmountSkeleton } from '../../forms/widgets/fiatDeposit/amount'
-import "./inputStyles.css"; 
+// import "./inputStyles.css"; 
 import styled from 'styled-components'
 
 
@@ -153,7 +153,7 @@ const TwoFactorInput = styled.input`
 
 export const InputFormAuth = (props) => {
   const {
-    clase,
+    // clase,
     label,
     active,
     type,
