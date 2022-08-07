@@ -13,7 +13,6 @@ import ConfirmationModal from '../widgets/modal/confirmation'
 
 const SocketNotify = loadable(() => import("../sockets/socket_notify/socketNotify"));
 const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2fa"));
-const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_views"));
 const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
 
 
@@ -50,11 +49,6 @@ function ModalsSupervisor(props) {
               strict
               path="/wallets/swap/:account_id"
               render={(renderProps) => <PairList {...renderProps} />}
-            />
-            <Route
-              exact
-              path={["/security", "/settings"]}
-              component={ModalSettingsView}
             />
           </>
         )}
