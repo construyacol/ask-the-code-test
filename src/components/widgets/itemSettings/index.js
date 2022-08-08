@@ -23,6 +23,10 @@ class ItemSettingsInit extends Component {
     const { name, other_state } = item;
 
 
+    console.log(other_state, name)
+    debugger
+
+
     switch (name) {
       case "kyc_basic":
         // await this.props.action.ToStep("globalStep", 0);

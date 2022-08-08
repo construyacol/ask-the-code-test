@@ -21,8 +21,6 @@ import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
 import { CAPACITOR_PLATFORM } from 'const/const';
 import { checkCameraPermission } from 'utils'
-
-
 import AvailableBalance from '../../../widgets/availableBalance'
 
 

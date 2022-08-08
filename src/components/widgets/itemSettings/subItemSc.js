@@ -7,6 +7,7 @@ import IconSwitch from "../icons/iconSwitch";
 // import SimpleLoader from "../loaders"; 
 
 class SubItemSC extends Component {
+  
   // state = {
   //   label:this.props.subItem.label,
   //   name:this.props.subItem.name,
@@ -85,7 +86,7 @@ class SubItemSC extends Component {
 
     // tree // define si es la raiz de una matriz de opciones, es decir representa el titular de una fuente de datos, ej: verificación de identidad
 
-    console.log('||||||||||||||||||||||||||||||||||   SubItemSC', label)
+    // console.log('||||||||||||||||||||||||||||||||||   other_state', other_state)
 
     return (
       <div
