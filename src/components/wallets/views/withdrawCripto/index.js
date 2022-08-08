@@ -205,9 +205,6 @@ export const CriptoView = () => {
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
       const { text, cancelled } = await BarcodeScanner.scan();
-      console.log('showQrScanner text', text)
-      console.log('showQrScanner cancelled', cancelled)
-      alert('showQrScanner')
       if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
