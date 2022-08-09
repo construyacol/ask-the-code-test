@@ -50,7 +50,6 @@ export const useCreateWallet = (props) => {
     if(props.isWalletsView){
       return actions.renderModal(NewWalletComponent);
     }
-    actions.toggleModal();
   };
 
   const showValidationPrompt = () => {

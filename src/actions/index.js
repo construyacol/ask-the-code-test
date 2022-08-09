@@ -1,4 +1,3 @@
-import * as formActions from "./formActions";
 import * as dataModelActions from "./dataModelActions";
 import * as APIactions from "./APIactions";
 import * as isAppLoading from "./loader";
@@ -9,7 +8,6 @@ import * as storage from "./storage";
 
 const actions = {
   ...isAppLoading,
-  ...formActions,
   ...APIactions,
   ...dataModelActions,
   ...ui_actions,

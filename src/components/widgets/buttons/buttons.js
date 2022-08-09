@@ -13,29 +13,16 @@ const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 const SimpleLoader = loadable(() => import("../loaders"));
 const PopNotification = loadable(() => import("../notifications"));
 
-export const ButtonSuccess = (props) => {
-  const { cta_secondary, id } = props;
 
-  return (
-    <div
-      id={id}
-      className={`botonForm suck fuente ${cta_secondary ? "secondary" : ""}`}
-      onClick={props.toggleModal}
-      title="finalizar"
-    >
-      {props.children}
-    </div>
-  );
-};
 
-export const ButtonSuccess2 = (props) => {
-  return (
-    <div className="botonForm sucky fuente" title="finalizar">
-      {props.children}
-      <div className="filtrear"></div>
-    </div>
-  );
-};
+// export const ButtonSuccess2 = (props) => {
+//   return (
+//     <div className="botonForm sucky fuente" title="finalizar">
+//       {props.children}
+//       <div className="filtrear"></div>
+//     </div>
+//   );
+// };
 
 export const SelectCountryButton = (props) => {
   const { bar, handleClick } = props;
@@ -216,21 +203,6 @@ const HoverTag = styled.div`
 //   )
 // }
 
-export const ButtonModalClose = (props) => {
-  const { toggleModal, color, id } = props;
-
-  return (
-    <div
-      id={id}
-      className="closeModalButtonCont"
-      onClick={toggleModal}
-      style={{ color: color ? color : "gray" }}
-    >
-      <i className="fas fa-times"></i>
-      {props.children}
-    </div>
-  );
-};
 
 export const ButtonModalBack = (props) => {
   const { volver, color, id = "modal-backstep-button" } = props;
