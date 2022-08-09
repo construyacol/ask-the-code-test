@@ -35,13 +35,13 @@ export default function useNavigationKeyActions(config) {
   const [currentSelection, setCurrentSelection] = useState(-1);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  let isModalVisible = modalRestriction && useSelector((state) => state.form.isModalVisible);
+  let _isModalVisible
   // eslint-disable-next-line react-hooks/rules-of-hooks
   let isModalRenderShowing = modalRestriction && useSelector((state) => state.ui.modal.render);
 
   useEffect(() => {
     if (items && items.length > 0 && !loader) {
-      if (isModalVisible) return;
+      if (_isModalVisible) return;
       const el = document.getElementById(
         `${uniqueIdForElement}${valuesAsProps.default}`
       );
@@ -51,11 +51,11 @@ export default function useNavigationKeyActions(config) {
   }, [items, loader]);
 
   useEffect(() => {
-    if (modalRestriction && (isModalRenderShowing || isModalVisible)) {
+    if (modalRestriction && (isModalRenderShowing || _isModalVisible)) {
       setCurrentSelection(-1);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalRenderShowing, isModalVisible]);
+  }, [isModalRenderShowing, _isModalVisible]);
 
   useEffect(() => {
     // this is for mobile
@@ -69,11 +69,11 @@ export default function useNavigationKeyActions(config) {
       window.onkeydown = (event) => {
         if (
           !isModalRenderShowing &&
-          !isModalVisible &&
+          !_isModalVisible &&
           items &&
           items.length > 0
         ) {
-          if (isModalVisible) return;
+          if (_isModalVisible) return;
           const length = valuesAsProps.originalLength
             ? items.length
             : items.length - 1;
@@ -112,11 +112,10 @@ export default function useNavigationKeyActions(config) {
     return () => {
       window.onkeydown = false;
     };
-    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     window.onkeydown,
-    isModalVisible,
+    _isModalVisible,
     items,
     loader,
     isModalRenderShowing,
@@ -160,7 +159,7 @@ export function useItemsInteractions(
   const { suprKeyAction, enterKeyAction } = keyActions;
   const [isSelected, setIsSelected] = useState(false);
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const isModalVisible = modalRestriction && useSelector((state) => state.form.isModalVisible);
+  let _isModalVisible
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const isModalRenderShowing = modalRestriction && useSelector((state) => state.ui.modal.render);
 
@@ -186,7 +185,7 @@ export function useItemsInteractions(
 
         element.onkeydown = (event) => {
           element.blur();
-          if (isModalVisible || isModalRenderShowing) return;
+          if (_isModalVisible || isModalRenderShowing) return;
           if (event.keyCode === 46) {
             event.stopPropagation();
             suprKeyAction(() => element.focus());
@@ -200,7 +199,7 @@ export function useItemsInteractions(
       }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalVisible, props.uniqid]);
+  }, [_isModalVisible, props.uniqid]);
 
   const setFocus = () => {
     const element = document.getElementById(props.focusedId);

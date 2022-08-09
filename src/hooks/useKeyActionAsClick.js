@@ -32,7 +32,6 @@ export default function useKeyActionAsClick(
   eventName = "onkeypress",
   activeOnOpenModal = false
 ) {
-  const isModalVisible = useSelector((state) => state.form.isModalVisible);
   const isModalRenderVisible = useSelector((state) => state.ui.modal.render);
   const isConfirmationModalVisible = useSelector(
     (state) => state.ui.modal_confirmation.visible
@@ -78,7 +77,6 @@ export default function useKeyActionAsClick(
   const onKeyEventFn = (event, _doBreak) => {
     // verifica que no este algun modal abierto
     const isNotModalOpened =
-      !isModalVisible &&
       !isModalRenderVisible &&
       !isConfirmationModalVisible &&
       !isOtherModalVisible;
@@ -162,7 +160,7 @@ export default function useKeyActionAsClick(
       // window[eventName] = false
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window[eventName], isModalVisible, isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction ]);
+  }, [window[eventName], isModalRenderVisible, isConfirmationModalVisible, isOtherModalVisible, shouldHandleAction ]);
 
   return elementId;
 }

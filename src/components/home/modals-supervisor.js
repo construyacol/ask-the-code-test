@@ -21,10 +21,8 @@ const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_v
 function ModalsSupervisor(props) {
   const {
     otherModal,
-    // isModalVisible,
     modalConfirmation,
     // current,
-    // modalView,
     isSocketNotification,
     RenderModal, 
   } = props;
@@ -80,17 +78,12 @@ ModalsSupervisor.propTypes = {
   current: PropTypes.string,
   loader: PropTypes.bool,
   modalConfirmation: PropTypes.bool,
-  // modalView: PropTypes.string,
-  // isModalVisible: PropTypes.bool,
   otherModal: PropTypes.bool,
 };
 
-function mapStateToProps({ ui, form, isLoading }) {
+function mapStateToProps({ ui, isLoading }) {
   return {
-    // modalView: form.modalView,
-    // isModalVisible: form.isModalVisible,
     loader: isLoading.loader,
-    current: form.current,
     modalConfirmation: ui.modal_confirmation.visible,
     otherModal: ui.otherModal,
     isSocketNotification: ui.notifications.socket_notify,
