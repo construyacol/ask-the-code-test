@@ -9,7 +9,7 @@ import {
   CLEAN_FORM,
   REDUCE_STEP,
   INCREASE_STEP,
-  TO_STEP,
+  // TO_STEP,
   FIAT_DEPOSIT,
   UPDATE_KYC_PICTURE,
   CLEAN_SEARCH,
@@ -165,11 +165,11 @@ const forms = (state = initialState, action) => {
             },
           };
       }
-    case TO_STEP:
-      return {
-        ...state,
-        [action.payload]: action.step,
-      };
+    // case TO_STEP:
+    //   return {
+    //     ...state,
+    //     [action.payload]: action.step,
+    //   };
 
     case INCREASE_STEP:
       switch (action.payload) {

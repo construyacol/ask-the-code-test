@@ -17,7 +17,6 @@ import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import { CleanForm, ToStep } from "../actions/formActions";
 import userSource from "../components/api";
 import { UI_NAMES } from '../const/uiNames'
 import { getIdentityState } from '../utils'
@@ -420,16 +419,7 @@ export class IndetityService extends WebService {
     if(!_user) return;
     this.setIsAppLoading(true);
     await this.updateUser(_user)
-    if(
-      _user.levels.identity === 'rejected' &&
-      _user.levels.personal === 'rejected'
-    ){
-      this.dispatch(CleanForm("kyc_basic"))
-      this.dispatch(CleanForm("kyc_advanced"))
-      this.dispatch(ToStep("globalStep", 0))
-    }
     setTimeout(() => this.setIsAppLoading(false), 100)
-    // this.setIsAppLoading(false)
   } 
   
   async addNewBiometricData(config) {

@@ -4,54 +4,25 @@ import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import ItemSettings from "./itemSettings";
 import KycItemComponent from './kycItem' 
-// import { mainService } from "../../../services/MainService"; 
-// const country = [
-//   "colombia",
-//   "chile",
-//   "peru",
-//   "republica dominicana",
-//   "argentina"
-// ]
+import loadable from "@loadable/component";
 
+
+
+const TwoFactorActivate = loadable(() => import("components/widgets/twoFactorActivate/2fa"));
 
 
 class ItemSettingsInit extends Component {
   item_action = async (item) => {
     const { user } = this.props;
     const { authenticator } = user.security_center;
-    const { phone } = user.settings;
+    // const { phone } = user.settings;
     const { name, other_state } = item;
 
-
-    console.log(other_state, name)
-    debugger
-
+    // console.log(other_state, name)
+    // debugger
 
     switch (name) {
-      case "kyc_basic":
-        // await this.props.action.ToStep("globalStep", 0);
-        // await this.props.action.CurrentForm("kyc_basic");
-        // return this.props.action.toggleModal();
-        // const Element = await import("../../forms/widgets/personalKycComponent/init");
-        // const PersonalKycComponent = Element.default
-      // return this.props.action.renderModal(() => <PersonalKycComponent/>); 
-      return
-      case "kyc_financial":
-        
-        // await this.props.action.CurrentForm("kyc_basic");
-        // await this.props.action.ToStep("globalStep", 3);
-        // const Element2 = await import("../../kycs/kyc_container");
-        // const IdentityKycComponent = Element2.default
-        // return this.props.action.renderModal(() => <IdentityKycComponent/>); 
-      // return this.props.action.toggleModal();
-      return
-
-      case "kyc_advanced": 
-        await this.props.action.CurrentForm("kyc_basic");
-        await this.props.action.ToStep("globalStep", 2);
-        return this.props.action.toggleModal();
       case "2auth":
-        // console.log('||||||| CLICK ITEM', item)
         if (other_state === "to_disable") {
           await this.props.action.current_section_params({
             settings: {
@@ -66,120 +37,21 @@ class ItemSettingsInit extends Component {
           });
           return this.props.action.toggleOtherModal();
         }
-        await this.props.action.CurrentForm("2auth");
-        return this.props.action.toggleModal();
-      case "phone":
-        await this.props.action.current_section_params({
-          settings: {
-            title: "Actualizar número de movil",
-            description: `${
-              phone
-                ? `Tu número actual es: ${phone}`
-                : "Aún no tienes número celular de respaldo"
-            }`,
-            txtPrimary: "Actualizar",
-            txtSecondary: "Cancelar",
-            // action:this.update_phone,
-            payload: phone,
-            code: name,
-            type: "number",
-            placeholder: "Escribe el nuevo número",
-            authenticator: authenticator,
-          },
-        });
-        return this.props.action.toggleOtherModal();
 
-      case "pass":
-        await this.props.action.current_section_params({
-          settings: {
-            title: "Cambia tu contraseña",
-            description: `Esta contraseña es la que utilizas para acceder a tu cuenta`,
-            txtPrimary: "Actualizar",
-            txtSecondary: "Cancelar",
-            code: name,
-            type: "number",
-            placeholder: "Escribe el nuevo número",
-            authenticator: authenticator,
-          },
-        });
-        return this.props.action.toggleOtherModal();
+        return this.props.action.renderModal(() => <TwoFactorActivate/>);
 
-      case "transactional":
-        await this.props.action.current_section_params({
-          settings: {
-            title: `${
-              other_state === "to_disable"
-                ? "Deshabilitando 2FA"
-                : "Agregando capa de seguridad"
-            }`,
-            description: `Activa el segundo factor para hacer operaciones de intercambio en coinsenda`,
-            txtPrimary: "Agregar",
-            txtSecondary: "Cancelar",
-            authenticator: authenticator,
-            code: name,
-            other_state,
-          },
-        });
-        return this.props.action.toggleOtherModal();
-      case "withdraw":
-        await this.props.action.current_section_params({
-          settings: {
-            title: `${
-              other_state === "to_disable"
-                ? "Deshabilitando 2FA"
-                : "Agregando capa de seguridad"
-            }`,
-            description: `Activa el segundo factor para hacer operaciones de Retiro en coinsenda`,
-            txtPrimary: "Agregar",
-            txtSecondary: "Cancelar",
-            authenticator: authenticator,
-            code: name,
-            other_state,
-          },
-        });
-        return this.props.action.toggleOtherModal();
-      case "country":
-        await this.props.action.current_section_params({
-          settings: {
-            title: "Elige el país de operación actual",
-            txtPrimary: "Agregar",
-            txtSecondary: "Cancelar",
-            authenticator: false,
-            code: name,
-          },
-        });
-        return this.props.action.toggleOtherModal();
-      case "currency":
-        await this.props.action.current_section_params({
-          settings: {
-            title: "Elige tu divisa de cotización",
-            txtPrimary: "Agregar",
-            txtSecondary: "Cancelar",
-            authenticator: false,
-            code: name,
-          },
-        });
-        return this.props.action.toggleOtherModal();
       default:
+        return alert('Ups...')
     }
   };
 
   update_state = async (payload) => {
     const { name, description } = payload;
-
     const { user } = this.props;
-
     const { security_center } = user;
-
     const { kyc } = security_center;
-
     const { auth, transactional, withdraw } = security_center.authenticator;
-
     let movil_viewport = window.innerWidth < 768;
-
-    // console.log('|||desde el componente ItemSettings', name, payload)
-
-    // debugger
     switch (name) {
       case "email":
         return {

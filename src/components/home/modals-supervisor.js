@@ -1,7 +1,7 @@
 import React from "react";
 import loadable from "@loadable/component";
 import ModalContainer from "../widgets/modal/modalContainer.js";
-import ModalLayout from "../widgets/modal/modallayout";
+// import ModalLayout from "../widgets/modal/__modallayout";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
@@ -11,8 +11,8 @@ import withHandleError from "../withHandleError";
 import ConfirmationModal from '../widgets/modal/confirmation'
 
 
+
 const SocketNotify = loadable(() => import("../sockets/socket_notify/socketNotify"));
-const TwoFactorActivate = loadable(() => import("../widgets/twoFactorActivate/2fa"));
 const PairList = loadable(() => import("../wallets/views/swap_pair_list"));
 const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_views"));
 
@@ -21,11 +21,10 @@ const ModalSettingsView = loadable(() => import("../widgets/itemSettings/modal_v
 function ModalsSupervisor(props) {
   const {
     otherModal,
-    isModalVisible,
+    // isModalVisible,
     modalConfirmation,
     // current,
     // modalView,
-    loader,
     isSocketNotification,
     RenderModal, 
   } = props;
@@ -33,14 +32,6 @@ function ModalsSupervisor(props) {
 
   return (
     <>
-      <ModalContainer condition={isModalVisible}>
-        <ModalLayout modalView={"modalView"} loader={loader}>
-          <Route
-            exact path="/security" component={TwoFactorActivate}
-          />
-        </ModalLayout>
-      </ModalContainer>
-
       <ModalContainer condition={otherModal}>
         {isSocketNotification ? (
           <Route path="/" component={SocketNotify} />
@@ -61,7 +52,7 @@ function ModalsSupervisor(props) {
 
           </>
         )}
-      </ModalContainer>
+      </ModalContainer> 
       <ModalContainer condition={modalConfirmation}>
         <Route exact component={ConfirmationModal} />
       </ModalContainer>
@@ -90,14 +81,14 @@ ModalsSupervisor.propTypes = {
   loader: PropTypes.bool,
   modalConfirmation: PropTypes.bool,
   // modalView: PropTypes.string,
-  isModalVisible: PropTypes.bool,
+  // isModalVisible: PropTypes.bool,
   otherModal: PropTypes.bool,
 };
 
 function mapStateToProps({ ui, form, isLoading }) {
   return {
     // modalView: form.modalView,
-    isModalVisible: form.isModalVisible,
+    // isModalVisible: form.isModalVisible,
     loader: isLoading.loader,
     current: form.current,
     modalConfirmation: ui.modal_confirmation.visible,
