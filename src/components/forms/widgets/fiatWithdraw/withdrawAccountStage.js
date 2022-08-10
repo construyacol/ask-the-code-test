@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
@@ -6,10 +6,13 @@ import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { BiRightArrowAlt } from 'react-icons/bi';
 // import styled from 'styled-components'
-import { MetaContainer } from '../sharedStyles'
+import { MetaContainer, TooltipContainer } from '../sharedStyles'
 import { HR } from '../../../widgets/headerAccount/styles'
-import { MetaDataContainer } from '../sharedStyles'
-import { AiOutlineClockCircle, AiOutlineCheckCircle } from 'react-icons/ai';
+// import { MetaDataContainer } from '../sharedStyles'
+import { useActions } from 'hooks/useActions'
+import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'react-icons/ai';
+import { useCoinsendaServices } from "services/useCoinsendaServices";
+import useToastMessage from "hooks/useToastMessage";
 
 
 export default function WithdrawAccountsComponent({ 
@@ -23,16 +26,41 @@ export default function WithdrawAccountsComponent({
     ...props
 }){  
 
+    const actions = useActions()
     const { isMovilViewport } = useViewport();
     const [ withdrawAccounts ] = useSelector((state) => selectWithdrawAccounts(state));
-    // const actions = useActions()
+    const [coinsendaServices] = useCoinsendaServices();
+    const [toastMessage] = useToastMessage();
 
     const selectWithdrawAccount = (withdrawAccount) => {
-      setState(prevState => {
-        return { ...prevState, [stageData?.key]: withdrawAccount }
-      })
+      setState(prevState => { return { ...prevState, [stageData?.key]: withdrawAccount } })
       setStageStatus('success')
     }
+ 
+    const deleteAccount = useCallback((wAccountId) => {
+      const el = document.querySelector(`.account_${wAccountId}`)
+      actions.confirmationModalToggle();
+      actions.confirmationModalPayload({
+        title: "Esto es importante, vas a...",
+        description: "Eliminar esta cuenta de retiro...",
+        txtPrimary: "Continuar",
+        txtSecondary: "Cancelar",
+        payload: "id",
+        action: (async() => { 
+          el?.classList?.add("deleting")
+          setStageStatus(null)
+          const { error } = await coinsendaServices.deleteAccount(wAccountId);
+          if(error){
+            el?.classList?.remove("deleting")
+            return toastMessage(error?.message, "error");
+          }
+          el?.classList?.add("deleted")
+          await coinsendaServices.fetchWithdrawAccounts();
+        }),
+        img: "deleteticket",
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
       if(state[stageData?.key]){
@@ -41,9 +69,7 @@ export default function WithdrawAccountsComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log('WITHDRAW_ACCOUNT => ', state.withdrawAccount)
-    // pending
-    // in_progress
+    console.log('WITHDRAW_ACCOUNT => ', state)
 
     return(
       <StageContainer className="_identityComponent">
@@ -61,7 +87,7 @@ export default function WithdrawAccountsComponent({
 
                 return <ItemListComponent 
                   key={index} 
-                  className={`auxNumber`}
+                  className={`auxNumber account_${withdrawAccount?.id}`}
                   itemList={withdrawAccount}
                   auxUiName={isSelected && withdrawAccount?.account_number?.value}
                   firstIndex={index === 0}
@@ -70,7 +96,11 @@ export default function WithdrawAccountsComponent({
                   isMovilViewport={isMovilViewport}
                   handleAction={selectWithdrawAccount}
                   AuxComponent={[
-                    (!isMovilViewport && isSelected) ? () => <StateComponent withdrawAccount={state?.withdrawAccount}/> : () => null
+                    (!isMovilViewport) ? () => 
+                      <StateComponent 
+                        withdrawAccount={withdrawAccount}
+                        handleAction={deleteAccount}                        
+                      /> : () => null
                   ]}
                 />
               })
@@ -104,7 +134,6 @@ export default function WithdrawAccountsComponent({
 }
 
 
-
 const getIcon = state => {
   return (
     ["pending", "in_progress"].includes(state) ? <AiOutlineClockCircle color="orange"/> :
@@ -112,19 +141,32 @@ const getIcon = state => {
   )
 }
 
-const StateComponent = ({ withdrawAccount }) => {
+
+const StateComponent = ({ withdrawAccount, handleAction }) => {
 
   const uiLabel = ["pending", "in_progress"].includes(withdrawAccount?.state) ? "Inscribiendo..." : ["rejected"].includes(withdrawAccount?.state) ? "Cuenta eliminada" : "Inscrita"
-
   return(
-      <MetaContainer className="uniqueRow __withdrawAccount">
+      <MetaContainer className={`uniqueRow __withdrawAccount`} >
         <HR height={30} />
         { getIcon(withdrawAccount?.state) }
         <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{uiLabel}</span></p>
+        <TooltipContainer className="" onClick={() => handleAction(withdrawAccount?.id)}>
+          <AiOutlineDelete className="_deleteAccount" color="var(--title2)" size={20}/>
+          <span className="tooltiptext fuente">Eliminar</span>
+        </TooltipContainer>
       </MetaContainer>
   )
 }
 
+
+// <i
+//           style={{ color: color }}
+//           className="copy far fa-clone tooltip"
+//           data-copy={valor}
+//           id={valor}
+//         > 
+//           <span className="tooltiptext fuente">Copiar</span>
+//         </i>
 
 
 

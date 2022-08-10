@@ -67,12 +67,12 @@ export const ItemList = (props) => {
       case "delete":
         const loaderDeleteItem = document.getElementById(`loader_${id}`);
         loaderDeleteItem.classList.add("deleting");
-        const deletedAccount = await coinsendaServices.deleteAccount(id);
-        if (!deletedAccount) {
+        const { error } = await coinsendaServices.deleteAccount("id");
+        if (error) { 
           loaderDeleteItem.classList.remove("deleting");
           blockerActive.classList.remove("deleting");
           return toastMessage(
-            ":( La cuenta no ha podido ser eliminada",
+            error?.message,
             "error"
           );
         }

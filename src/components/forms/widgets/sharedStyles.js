@@ -4,6 +4,34 @@ import { OnlySkeletonAnimation } from '../../widgets/loaders/skeleton'
 import { HR } from 'components/widgets/headerAccount/styles'
 
 
+export const TooltipContainer = styled.div`
+
+  position: relative;
+  display: inline-block;
+
+  &:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .tooltiptext {
+  visibility: hidden;
+  width: 60px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  font-size: 12px !important;
+
+  position: absolute;
+  z-index: 1;
+  top: 130%;
+  left: 50%;
+  margin-left: -30px;
+}
+
+ 
+`
 
 export const MetaDataContainer = styled.div`
   min-height:100px;
@@ -38,6 +66,12 @@ export const MetaContainer = styled.div`
   align-self: center;
   row-gap: 3px;
 
+  ._deleteAccount{
+    &:hover{
+      color:red !important;
+    }
+  }
+
   ${HR}{
     grid-column-start: 1;
     grid-row-start: 1;
@@ -69,10 +103,24 @@ export const MetaContainer = styled.div`
     span{
       color: var(--placeholder);
     }
+    &.pending,
+    &.in_progress{
+      span{
+        color: orange;
+      }
+    }
+
+    &.complete{
+      span{
+        color: green;
+      }
+    }
+
+    
   }
 
   &.__withdrawAccount{
-    grid-template-columns: auto auto 1fr;
+    grid-template-columns: auto auto 1fr auto;
     column-gap: 5px;
     ${HR}{
       margin-right: 10px;

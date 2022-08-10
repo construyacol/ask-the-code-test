@@ -530,7 +530,7 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
       title: "Esto es importante, vas a...",
       description: "Cancelar esta orden, ¿Estás seguro de hacer esto?",
       txtPrimary: "Sí, continuar",
-      txtSecondary: "Cancelar",
+      txtSecondary: "No",
       payload: id,
       action: (async() => { 
         setOrderState("deleting");

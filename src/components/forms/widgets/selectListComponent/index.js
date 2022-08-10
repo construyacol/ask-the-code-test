@@ -192,6 +192,8 @@ export const ItemProviderBankContainer = styled.div`
   cursor:pointer;
   column-gap: 14px;
 
+
+
   ${HeaderMainContainer}{
     place-self: flex-start;
   }
@@ -292,6 +294,18 @@ export const ItemProviderBankContainer = styled.div`
         font-size: 12px;
       }
     }
+  }
+
+  &.deleting{
+    opacity:.8;
+    transform:scale(.9);
+    transition:.3s;
+  }
+
+  &.deleted{
+    opacity:.1;
+    transform:scale(.1);
+    transition:.3s;
   }
 
 `

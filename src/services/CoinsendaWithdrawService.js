@@ -176,12 +176,13 @@ export class WithdrawService extends WebService {
       },
     };
 
-    const deleteAccount = await this.Post(
-      DELETE_WITHDRAW_ACCOUNT_URL,
-      body
-    );
-
-    return deleteAccount;
+    // const deleteAccount = await this.Post(
+    //   DELETE_WITHDRAW_ACCOUNT_URL,
+    //   body 
+    // );
+    // return deleteAccount;
+    
+    return this._Post(DELETE_WITHDRAW_ACCOUNT_URL, body);
   }
 
   get withdrawProvidersByType() {
