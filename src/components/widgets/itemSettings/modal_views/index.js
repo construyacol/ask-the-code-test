@@ -3,24 +3,51 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../../actions";
 import SimpleLoader from "../../loaders";
-// import PhoneView from "./phone";
-// import PassView from "./pass";
 import IconSwitch from "../../icons/iconSwitch";
 import { ButtonForms } from "../../buttons/buttons";
 import AuthReq from "./authreq";
 import OtherModalLayoutPairs from "../../modal/otherModalLayoutPairs";
-// import MVList from "./listView";
-
-
-
-
-import "./viewSettings.css";
 import withCoinsendaServices from "../../../withCoinsendaServices";
+import styled from "styled-components";
 
-// const MVList = props => {
-//     return(<div></div>)
-// }
-// import ItemLayout from '../../widgets/items/itemLayout'
+const Container = styled.section`
+  width: calc(100% - 40px);
+  height: calc(100% - 105px);
+  position: absolute;
+  top: 65px;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: 150px 1fr 80px;
+  padding: 20px;
+
+  .contenidoView{
+    display: grid;
+    justify-items: center;
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  #authReq{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffffffc4;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+  }
+
+  #successOperation {
+    justify-self: center;
+    margin: 0 !important;
+    font-size: 22px;
+    color: #59b200;
+    align-self: center;
+  }
+  
+`
 
 export class ModalSettingsView extends Component {
 
@@ -164,13 +191,7 @@ export class ModalSettingsView extends Component {
       >
         {/* <p className="OtherModalFind"></p> */}
 
-        <section
-          className={` ${
-            code === "country" || code === "currency" ? "MVList" : ""
-          }  ${
-            section === "pass" ? "PassView" : success ? "SuccessOtherView" : ""
-          } PhoneView`}
-        >
+        <Container >
           {code === "country" || code === "currency" ? (
             <this.view_switch {...params} />
           ) : (
@@ -183,7 +204,7 @@ export class ModalSettingsView extends Component {
                   </p>
                 </div>
               ) : (
-                <div className="contenidoView phoneView fuentePrin">
+                <div className="contenidoView fuentePrin">
                   {!loader ? (
                     auth ? (
                       <AuthReq
@@ -232,7 +253,7 @@ export class ModalSettingsView extends Component {
               </ButtonForms>
             )}
           </div>
-        </section>
+        </Container>
       </OtherModalLayoutPairs>
     );
   }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { InputFormAuth } from "../../inputs";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import { funcDebounce } from "../../../../utils";
-import "./viewSettings.css";
 
 const AuthReq = (props) => {
   const [buttonActive, setButtonActive] = useState();

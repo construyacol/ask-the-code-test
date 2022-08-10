@@ -149,6 +149,8 @@
 .footer2fa #authReq {
   position: relative !important;
   margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 
