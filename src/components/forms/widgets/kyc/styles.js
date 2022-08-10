@@ -67,13 +67,14 @@ export const StickyGroup = styled.div`
   }
 
 `
-
+ 
 export const TitleContainer = styled.div`
   width: 100%;
   max-height: 150px;
   display: grid;
   grid-template-columns:1fr;
   grid-template-rows: 1fr;
+
   .titleContainer__h1{
     margin: 50px 0 80px;
     text-align: center;
@@ -90,6 +91,16 @@ export const TitleContainer = styled.div`
     border-radius: 4px;
     justify-self: center;
   }
+
+  @media ${device.mobile}{
+    .titleContainer__h1{
+      font-size: 22px;
+      text-align: center;
+    }
+  }   
+
+
+
 `
 export const skeletonAnimation = keyframes`
   0% {
