@@ -60,12 +60,16 @@ const WAccountCreatedSuccess = ({
 
     const closeModal = (e) => {
         actions.renderModal(null);
+        const wAccountEl = document.querySelector(`.account_${withdrawAccountData?.id}`) 
+        wAccountEl && wAccountEl?.classList?.add("new__")
     };
 
     const { withdraw_accounts } = useSelector(({ modelData }) => modelData)
     const withdrawAccount = withdraw_accounts[withdrawAccountData?.id]
     const accountName = withdrawAccount?.bank_name?.ui_name || UI_NAMES.provider[withdrawAccount?.provider_type]
 
+
+    console.log('NEW_withdrawAccount', withdrawAccountData?.id)
 
     return(
         <OtherModalLayout

@@ -19,6 +19,7 @@ import {
 } from '../sharedStyles'
 import {  StageIndicator } from '../stageManager/styles'
 import { device } from "../../../../const/const"
+import { deletedOrderAnim, newOrderStyleAnim, selectorAnim } from "components/widgets/animations";
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
@@ -131,6 +132,9 @@ const SelectListComponent = ({
     display:grid;
     grid-template-rows: repeat(auto-fill, minmax(auto, 105px));
     max-width: 700px;
+    perspective: 2000px;
+    perspective-origin: center top;
+
     &.skeleton{
       width: 100vw;
       align-self: flex-start;
@@ -218,11 +222,26 @@ export const ItemProviderBankContainer = styled.div`
     }
   }
 
+  .deleteButton__{
+    opacity:0;
+    transform: translateX(5px);
+    @media ${device.mobile} {
+      opacity:1;
+      transform: translateX(0px);
+    }
+  }
+
   &:hover{
     &.createButton{
       ._header__labelContainer p{
         color:var(--primary);
       }
+    }
+
+    .deleteButton__{
+      transition:.2s;
+      opacity:1;
+      transform: translateX(0px);
     }
   }
 
@@ -298,14 +317,23 @@ export const ItemProviderBankContainer = styled.div`
 
   &.deleting{
     opacity:.8;
-    transform:scale(.9);
+    transform:scale(.95);
     transition:.3s;
+    pointer-events:none;
+  }
+  
+
+  &.deleted {
+    animation-name: ${deletedOrderAnim};
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(1, 1, 1, 1);
+    animation-fill-mode: forwards;
+    pointer-events:none;
   }
 
-  &.deleted{
-    opacity:.1;
-    transform:scale(.1);
-    transition:.3s;
+  &.new__ {
+    animation: ${newOrderStyleAnim} .4s, ${selectorAnim} 1.5s;
+    animation-timing-function: cubic-bezier(1, 1, 1, 1);
+    animation-fill-mode: forwards;
   }
-
 `

@@ -398,6 +398,7 @@ export const StageContainer = styled.div`
     background: #f9f9fb;
     position: sticky;
     top: 143px;
+    z-index:1;
   }
 
   @media ${device.mobile} {
