@@ -1,7 +1,6 @@
 import React, { Fragment, Component } from "react";
 // import ItemList from './viewItem'
 import OrderItem from "./order_item";
-// import { serve_orders, ticketModalView } from '../../../services'
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../../actions";
@@ -13,15 +12,9 @@ import { ORDER_TYPE_UI_NAME } from '../../../const/const'
  
 // import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
-
 import { createSelector } from "reselect";
-
-
-
-
 import { device } from 'const/const'
 import styled from 'styled-components'
-
 
 
 const ALlistAll = styled.div`
@@ -130,10 +123,6 @@ class ActivityList extends Component {
     scrollLoader: null,
   };
 
-  // componentDidMount(){
-  //   this.props.action.CurrentForm('ticket')
-  //   this.init_activity()
-  // }
 
   componentDidUpdate(prevProps) {
     if (this.props.tx_path !== prevProps.tx_path) {
@@ -158,77 +147,6 @@ class ActivityList extends Component {
       expandible: 90,
       expandido: false,
     });
-  };
-
-  delete_order_confirmation = (id) => {
-    this.props.action.confirmationModalToggle();
-    this.props.action.confirmationModalPayload({
-      title: "Esto es importante, estas a punto de...",
-      description: "Eliminar esta orden, ¿Estas seguro de hacer esto?",
-      txtPrimary: "Eliminar",
-      txtSecondary: "Cancelar",
-      payload: id,
-      action: this.delete_order,
-      img: "deleteticket",
-    });
-  };
-
-  delete_order = async (id) => {
-    const {
-      tx_path,
-      // user
-    } = this.props;
-
-    // this.props.action.isAppLoading(true)
-    await this.setState({
-      current_order_loader: id,
-      deleting: true,
-    });
-
-    let deleted =
-      tx_path === "deposits" &&
-      (await this.props.coinsendaServices.deleteDeposit(id));
-
-    if (!deleted) {
-      // await this.setState({deleting:false, current_order_loader:0})
-      return false;
-    }
-
-    // await this.setState({deleting:false,deleted:true})
-
-    // this.setState({
-    //   // expandidoMax:(this.props.expandidoMax - 100),
-    //   expandible:this.state.expandido ? (this.props.expandidoMax) : '90px'
-    // });
-
-    await this.setState({ deleting: false, current_order_loader: 0 });
-    this.props.action.isAppLoading(false);
-    // this.setState({deleted:true})
-    // this.props.action.mensaje('Orden eliminada con éxito', 'success')
-  };
-
-  confirmPayment = async (props) => {
-    const { ticket } = props;
-
-    const { primary_path, account_id, path, tx_path } = this.props.match.params;
-    this.props.history.push(
-      `/${primary_path}/${path}/${account_id}/${tx_path}/${ticket.id}`
-    );
-
-    this.props.action.toggleModal();
-    setTimeout(() => {
-      this.props.action.IncreaseStep("ticket");
-    }, 170);
-
-    setTimeout(() => {
-      let inputFile = document.getElementById("TFileUpload");
-      if (!inputFile) {
-        return false;
-      }
-      inputFile.click();
-    }, 740);
-
-    this.props.history.push("?form=upload_deposit_payment_proof");
   };
 
 
@@ -275,39 +193,12 @@ class ActivityList extends Component {
                     ) {
                       return null;
                     }
-                    // if ((item.state === 'accepted' || item.state === 'canceled' || item.state === 'rejected') || ((tx_path === 'withdraws' && item.state === 'pending') && item.currency_type !== 'crypto')) { return null }
-                    // if (item.state === 'pending' && item.currency_type === 'crypto') { return null }
                     return (
                       <OrderItem
                         order={{ ...item }}
                         key={indx}
                       />
                     );
-
-                    // if (this.props.tx_path === 'deposits' || this.props.tx_path === 'withdraws') {
-                    //   return <OrderItem
-                    //     order={{ ...item }}
-                    //     handleAction={this.verTicket}
-                    //     key={indx}
-                    //   />
-                    // } else {
-                    //   return <ItemList key={item.id}
-                    //     confirmPayment={this.confirmPayment}
-                    //     lastPendingId={lastPending}
-                    //     newDepositStyle={newDepositStyle}
-                    //     verTicket={this.verTicket}
-                    //     delete_order={this.delete_order_confirmation}
-                    //     ticket={item}
-                    //     loader={loader}
-                    //     current_order_loader={current_order_loader}
-                    //     deleting={deleting}
-                    //     deleted={deleted}
-                    //     currencies={currencies}
-                    //     {...this.props}
-                    //   />
-                    // }
-
-                    // console.log('ConFill AFTER', item, item.state, indx, ' - ', activity.length)
                   })}
               </ALlist>
             </ALpendingCont>

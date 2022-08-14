@@ -123,6 +123,7 @@ const Description = styled.div`
   justify-items: center;
   align-items: center;
   height: 111px;
+  row-gap:15px;
   span {
     margin: 0 7px;
   }

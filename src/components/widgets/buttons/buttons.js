@@ -13,29 +13,16 @@ const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 const SimpleLoader = loadable(() => import("../loaders"));
 const PopNotification = loadable(() => import("../notifications"));
 
-export const ButtonSuccess = (props) => {
-  const { cta_secondary, id } = props;
 
-  return (
-    <div
-      id={id}
-      className={`botonForm suck fuente ${cta_secondary ? "secondary" : ""}`}
-      onClick={props.toggleModal}
-      title="finalizar"
-    >
-      {props.children}
-    </div>
-  );
-};
 
-export const ButtonSuccess2 = (props) => {
-  return (
-    <div className="botonForm sucky fuente" title="finalizar">
-      {props.children}
-      <div className="filtrear"></div>
-    </div>
-  );
-};
+// export const ButtonSuccess2 = (props) => {
+//   return (
+//     <div className="botonForm sucky fuente" title="finalizar">
+//       {props.children}
+//       <div className="filtrear"></div>
+//     </div>
+//   );
+// };
 
 export const SelectCountryButton = (props) => {
   const { bar, handleClick } = props;
@@ -202,51 +189,21 @@ const HoverTag = styled.div`
   pointer-events: none;
 `
 
+// export const ButtonModalBack = (props) => {
+//   const { volver, color, id = "modal-backstep-button" } = props;
 
-// export const ButtonPrincipalMenu = (props) => {
-//   return(
-//     <Link to={props.link} className={`itemMenu ${props.itemStatus === props.clave ? 'activo' : ''}`} onClick={() => props.activarItem(props.clave)}>
-//       <div className={`text ${props.itemStatus === props.clave ? 'activate' : ''}`}><i className={props.icon}></i><p className="itemText">{props.text}</p></div>
-//       <div className="indicatorCont">
-//           <div className={`indicator ${props.itemStatus === props.clave ? 'activate' : ''}`}>
-//             <div className={`indicatorSon ${props.itemStatus === props.clave ? 'activate' : ''}`}></div>
-//           </div>
-//       </div>
-//     </Link>
-//   )
-// }
-
-export const ButtonModalClose = (props) => {
-  const { toggleModal, color, id } = props;
-
-  return (
-    <div
-      id={id}
-      className="closeModalButtonCont"
-      onClick={toggleModal}
-      style={{ color: color ? color : "gray" }}
-    >
-      <i className="fas fa-times"></i>
-      {props.children}
-    </div>
-  );
-};
-
-export const ButtonModalBack = (props) => {
-  const { volver, color, id = "modal-backstep-button" } = props;
-
-  return (
-    <div
-      id={id}
-      className="closeModalButtonBack"
-      onClick={volver}
-      style={{ color: color ? color : "gray" }}
-    >
-      <i className="fas fa-arrow-left"></i>
-      {props.children}
-    </div>
-  );
-};
+//   return (
+//     <div
+//       id={id}
+//       className="closeModalButtonBack"
+//       onClick={volver}
+//       style={{ color: color ? color : "gray" }}
+//     >
+//       <i className="fas fa-arrow-left"></i>
+//       {props.children}
+//     </div>
+//   );
+// };
 
 export const InputButton = (props) => {
   // Este es el cta por default

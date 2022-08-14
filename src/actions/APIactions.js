@@ -1,32 +1,7 @@
-import { IncreaseStep, ReduceStep } from "./formActions";
 import { show_sound } from "./soundActions";
-
 import { current_section_params } from "./uiActions";
 
-export const FlowAnimationLayoutAction = (
-  animation,
-  action,
-  current_section,
-  explicitStep
-) => {
-  return async (dispatch) => {
-    // dispatch(FlowAnimationUi(animation))
-    switch (action) {
-      case "next":
-        // setTimeout(()=>{
-        dispatch(IncreaseStep(current_section, explicitStep));
-        // }, 130)
-        break;
-      case "back":
-        // setTimeout(()=>{
-        dispatch(ReduceStep(current_section, explicitStep));
-        // }, 130)
-        break;
-      default:
-        return false;
-    }
-  };
-};
+
 
 export const add_new_transaction_animation = () => {
   return async (dispatch) => {

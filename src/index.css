@@ -9,6 +9,14 @@
     --placeholder:#96A3AF;
 }
 
+.aparecer {
+  transition: 0.2s;
+  opacity: 1;
+}
+
+.labelText{
+  color: var(--paragraph_color);
+}
 
 @media (max-width: 768px) {
 

@@ -928,7 +928,7 @@ const mapStateToProps = (state, props) => {
     swaps,
     currencies
   } = state.modelData;
-  const { ui, form } = state;
+  const { ui } = state;
 
   return {
     loggedIn,
@@ -941,7 +941,6 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     isModalActive: ui.otherModal,
     isRenderModalActive: ui.modal.render,
-    formModal:form.isModalVisible,
     currencies
   };
 };

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import QrReader from "react-qr-reader";
-import OtherModalLayout from "../widgets/modal/otherModalLayout";
-import { useActions } from "../../hooks/useActions";
-import useToastMessage from "../../hooks/useToastMessage";
+import OtherModalLayout from "../modal/otherModalLayout";
+import { useActions } from "../../../hooks/useActions";
+import useToastMessage from "../../../hooks/useToastMessage";
 import styled from "styled-components";
-import { device, MAIN_COLOR } from "../../const/const";
-import IconSwitch from "../widgets/icons/iconSwitch";
-import { CloseButton } from "../widgets/shared-styles";
+import { device, MAIN_COLOR } from "../../../const/const";
+import IconSwitch from "../icons/iconSwitch";
+import { CloseButton } from "../shared-styles";
 
 const QrScanner = (props) => {
   const [facingMode, setFacingMode] = useState(false);

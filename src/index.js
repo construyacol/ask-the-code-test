@@ -8,8 +8,8 @@ import "./basic-style.css";
 import "./index.css";
 import "./new-mobile-style.css";
 import "./components/sockets/socket_notify/socketNotify.css";
-import "./components/withdrawAccounts/new/views/ticket.css";
-import "./components/withdrawAccounts/new/views/views.css";
+// import "./components/withdrawAccounts/news/views/ticket.css";
+// import "./components/withdrawAccounts/news/views/views.css";
 // import "./components/wallets/newWallet/newWallet.css";
 import * as serviceWorker from "./serviceWorker"; 
 // import RootContainer from './root'

@@ -567,18 +567,24 @@ const DeleteButton = ({ state, id, setOrderState, deleteAction }) => {
 
 
 const Aldelete = styled.div`
+
   position: relative;
   overflow: hidden;
   z-index: 1;
   padding: 2px 0;
   transition: 0.3s;
   width: 0;
+
   i{
     font-size: 22px;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
+  }
+
+  @media ${device.mobile} {
+    width: 40px;
   }
 
 `
@@ -623,9 +629,6 @@ const Confrimations = styled.div`
       margin-right: 10px;
     }
 
-  @media ${device.tablet} {
-
-  }
 
 `;
 

@@ -36,8 +36,6 @@ function WalletContainer(props) {
   // const { accountList } = useSelector((state) => state?.ui?.views);
 
   useEffect(() => {
-    const path = props.match.path.replace("/", "");
-    props.action.CurrentForm(path);
     return () => {
       props.action.section_view_to("initial");
       // props.action.cleanCurrentSection()

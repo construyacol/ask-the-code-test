@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import DynamicLoadComponent from './dynamicLoadComponent'
 // import loadable from '@loadable/component'
 import { getInitialState } from './utils'
-import './mobile.css'
 import './global.css'
 
 const FormComponent = ({ handleDataForm, Fallback, ...props }) => {

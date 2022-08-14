@@ -9,7 +9,7 @@ import SuccessComponentScreen from "../success_screen/success_screen";
 import styled from "styled-components";
 import { skeleton } from "../loaders/skeleton";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
-
+import Layout from "components/forms/widgets/layout"
 import "./2fa.css";
 
 const OTP_TITLE = "Coinsenda";
@@ -42,9 +42,10 @@ const TwoFactorActivate = (props) => {
       setSwitch_to_success(true);
     }, 500);
   };
-
+ 
   const finish_process = async () => {
-    props.action.toggleModal();
+    props.action.isAppLoading(false);
+    props.action.renderModal(null);
   };
 
   useEffect(() => {
@@ -65,101 +66,103 @@ const TwoFactorActivate = (props) => {
   }, []);
 
   return (
-    <TwoFactorActivateCont
-      className={`TwoFactorActivate ${
-        !switch_to_success ? "TwoFactorActivateOn" : ""
-      } ${loader ? "skeleton" : ""}`}
-    >
-      {!switch_to_success ? (
-        <div
-          className={`TwoFactorActivate ${success_screen ? "desaparecer" : ""}`}
-        >
+    <Layout closeControls>
+      <TwoFactorActivateCont
+        className={`TwoFactorActivate ${
+          !switch_to_success ? "TwoFactorActivateOn" : ""
+        } ${loader ? "skeleton" : ""}`}
+      >
+        {!switch_to_success ? (
           <div
-            className="TLayout layer1"
-            style={{ opacity: inputFocus ? "0.03" : "1" }}
+            className={`TwoFactorActivate ${success_screen ? "desaparecer" : ""}`}
           >
-            <div className="header2fa"></div>
-            <div className="body2fa">
-              <div className="bodySon">
-                <p className="fuente" style={{maxWidth:"500px"}}>
-                  Abre Google Authenticator y escanea el código QR ó ingresa el código secreto manualmente.
-                </p>
-                {qr && !loader ? (
-                  <img src={qr} alt="" width="200px" />
-                ) : (
-                  <QrLoader className="skeleton"></QrLoader>
-                )}
+            <div
+              className="TLayout layer1"
+              style={{ opacity: inputFocus ? "0.03" : "1" }}
+            >
+              <div className="header2fa"></div>
+              <div className="body2fa">
+                <div className="bodySon">
+                  <p className="fuente" style={{maxWidth:"500px"}}>
+                    Abre Google Authenticator y escanea el código QR ó ingresa el código secreto manualmente.
+                  </p>
+                  {qr && !loader ? (
+                    <img src={qr} alt="" width="200px" />
+                  ) : (
+                    <QrLoader className="skeleton"></QrLoader>
+                  )}
+                </div>
+                <div className="footer2fa"></div>
               </div>
-              <div className="footer2fa"></div>
             </div>
-          </div>
 
-          <div className="TLayout layer2">
-            <div className="header2fa">
-              <h3 className="fuente">
-                Habilitar segundo factor de autenticación <span className="fuente2">2FA</span>
-              </h3>
-              <IconSwitch icon="twofa" size={75} color="var(--primary)" />
-            </div>
-            <div className="body2fa">
-              <div
-                className="bodySon"
-                style={{ height: inputFocus ? "10%" : "50%" }}
-              ></div>
-              <div className="footer2fa">
-                <div className="footer2faText">
-                  <div
-                    className={`footer2faTextDes ${
-                      inputFocus ? "desp" : "desaparecer"
-                    }`}
-                  >
-                    <p className="fuente">
-                      Recuerda que en caso de pérdida de tu dispositivo movil,
-                      solo podrás reactivar el 2FA con el código secreto{" "}
-                      <span className={`secretCode fuente2`}>
-                        {private_key}
-                      </span>{" "}
-                      escribelo en papel y guardalo, es tu responsabilidad
+            <div className="TLayout layer2">
+              <div className="header2fa">
+                <h3 className="fuente">
+                  Habilitar segundo factor de autenticación <span className="fuente2">2FA</span>
+                </h3>
+                <IconSwitch icon="twofa" size={75} color="var(--primary)" />
+              </div>
+              <div className="body2fa">
+                <div
+                  className="bodySon"
+                  style={{ height: inputFocus ? "10%" : "50%" }}
+                ></div>
+                <div className="footer2fa">
+                  <div className="footer2faText">
+                    <div
+                      className={`footer2faTextDes ${
+                        inputFocus ? "desp" : "desaparecer"
+                      }`}
+                    >
+                      <p className="fuente">
+                        Recuerda que en caso de pérdida de tu dispositivo movil,
+                        solo podrás reactivar el 2FA con el código secreto{" "}
+                        <span className={`secretCode fuente2`}>
+                          {private_key}
+                        </span>{" "}
+                        escribelo en papel y guardalo, es tu responsabilidad
+                      </p>
+                    </div>
+                    
+                    <p
+                      className={`fuente2 secretCode ${
+                        private_key ? "" : "skeleton text"
+                      } ${inputFocus ? "desaparecer" : "aparecer"}`}
+                    >
+                      {private_key}
                     </p>
                   </div>
-                  
-                  <p
-                    className={`fuente2 secretCode ${
-                      private_key ? "" : "skeleton text"
-                    } ${inputFocus ? "desaparecer" : "aparecer"}`}
-                  >
-                    {private_key}
-                  </p>
+                  <AuthReq
+                    handleFocus={handleFocus}
+                    handleBlur={handleBlur}
+                    authenticated={success_event}
+                    disabled={loader}
+                    {...props}
+                  />
                 </div>
-                <AuthReq
-                  handleFocus={handleFocus}
-                  handleBlur={handleBlur}
-                  authenticated={success_event}
-                  disabled={loader}
-                  {...props}
-                />
               </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <div
-          className={`TwoFactorActivate success ${
-            success_screen ? "aparecer" : ""
-          }`}
-        >
-          <SuccessComponentScreen
-            title="Segundo factor de autenticación activado"
-            cta_text="El proceso de activación se ha realizado satisfactoriamente."
-            confetti={true}
-            cta_secondary={false}
-            cta_primary_text="Finalizar"
-            user_name={props.user.name}
-            siguiente={finish_process}
-          />
-        </div>
-      )}
-    </TwoFactorActivateCont>
+        ) : (
+          <div
+            className={`TwoFactorActivate success ${
+              success_screen ? "aparecer" : ""
+            }`}
+          >
+            <SuccessComponentScreen
+              title="Segundo factor de autenticación activado"
+              cta_text="El proceso de activación se ha realizado satisfactoriamente."
+              confetti={true}
+              cta_secondary={false}
+              cta_primary_text="Finalizar"
+              user_name={props.user.name}
+              siguiente={finish_process}
+            />
+          </div>
+        )}
+      </TwoFactorActivateCont>
+    </Layout>
   );
 };
 
@@ -184,6 +187,7 @@ const TwoFactorActivateCont = styled.div`
   position: relative;
   display: grid;
   justify-items: center;
+  background:white;
 
   .skeleton {
     animation-name: ${skeleton};

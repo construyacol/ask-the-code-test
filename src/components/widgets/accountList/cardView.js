@@ -50,7 +50,6 @@ export const useCreateWallet = (props) => {
     if(props.isWalletsView){
       return actions.renderModal(NewWalletComponent);
     }
-    actions.toggleModal();
   };
 
   const showValidationPrompt = () => {
@@ -152,7 +151,7 @@ function CardView(props) {
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
   // const path = props?.match?.params?.primary_path
 
-  console.log('||||||||||  isBottonAvailable  ===> ', isBottonAvailable, createNewWallet)
+  // console.log('||||||||||  isBottonAvailable  ===> ', isBottonAvailable, createNewWallet)
 
   return (
     <>

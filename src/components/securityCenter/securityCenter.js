@@ -12,7 +12,8 @@ import { useActions } from "../../hooks/useActions";
 import { updateLocalForagePersistState } from '../hooks/sessionRestore'
 import { SecurityCenterLayout } from '../widgets/layoutStyles'
 import TitleSection from '../widgets/titleSectionComponent'
-import { SecurityCenterSkeletonLoader } from '../dashBoard/dashboard-skeletons'
+import { SecurityCenterSkeletonLoader } from 'components/widgets/skeletons'
+
 
 const SecurityCenter = (props) => {
   // eslint-disable-next-line no-unused-vars

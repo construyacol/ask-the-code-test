@@ -21,8 +21,6 @@ import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from '../../../hooks/useTxState'
 import { CAPACITOR_PLATFORM } from 'const/const';
 import { checkCameraPermission } from 'utils'
-
-
 import AvailableBalance from '../../../widgets/availableBalance'
 
 
@@ -205,13 +203,10 @@ export const CriptoView = () => {
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
       const { text, cancelled } = await BarcodeScanner.scan();
-      console.log('showQrScanner text', text)
-      console.log('showQrScanner cancelled', cancelled)
-      alert('showQrScanner')
       if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
-      const Element = await import("../../../qr-scanner");
+      const Element = await import("../../../widgets/qr-scanner"); 
       const RenderComponent = Element.default
       actions.renderModal(() => <RenderComponent onScan={setAddressValue} />);
     }

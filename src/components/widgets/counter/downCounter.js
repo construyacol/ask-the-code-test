@@ -95,6 +95,9 @@ const ContCanvasConfirmation = styled.section`
   display: grid;
   align-items: center;
   justify-items: center;
+  .confirmationCounterText{
+    position:absolute;
+  }
 `;
 
 const Canvas = styled.canvas`

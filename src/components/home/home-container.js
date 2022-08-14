@@ -11,19 +11,17 @@ import MainMenuComponent from '../menu/mainMenu'
 // import { doLogout } from "../utils";
 import withHandleError from "../withHandleError";
 import SideMenuComponent from '../menu/sideMenu'
-import { LazyLoaderPage } from "../dashBoard/dashboard-skeletons";
+import { LazyLoaderPage } from "components/widgets/skeletons";
 import loadable from "@loadable/component";
 import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
 import MobileMenuComponent from '../menu/mobileMenu'
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { parseQueryString } from '../../utils'
 import { isSafari } from '../../utils'
-// import { useEffect } from "react";
 // import { postLocalNotification } from 'utils'
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
-const WitdrawAccountContainer = loadable(() => import(/* webpackPrefetch: true */ "../withdrawAccounts/witdrawAccountContainer"), {fallback: <LazyLoaderPage path={"withdraw_accounts"} />});
 const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
 const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
 
@@ -47,7 +45,6 @@ const HomeContainer = () => {
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch>
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />
-                    <Route path="/withdraw_accounts" component={WitdrawAccountContainer} />
                     <Route path="/referral" component={ReferralComponent} />
                     <Route path="/security" component={SecurityCenter} />
                     {/* <Route path="/security" render={() => (<LazyLoaderPage path={"security"} />)} /> */}
