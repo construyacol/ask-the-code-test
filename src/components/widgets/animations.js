@@ -252,6 +252,25 @@ export const newOrderStyleAnim = keyframes`
   }
 `;
 
+export const selectorAnim = keyframes`
+  0%{
+    border: 1px solid #0198ff;
+    border-left: 5px solid #0198ff;
+  }
+  40%{
+    border: 1px solid #E7E7E7;
+    border-left: 5px solid #0198ff;
+  }
+  70%{
+    border: 1px solid #0198ff;
+    border-left: 5px solid #0198ff;
+  }
+  100%{
+    border: 1px solid #E7E7E7;
+    border-left: 5px solid #E9E9E9;
+  }
+`;
+
 export const containerDepositAnim = keyframes`
   0% {
     transform: scale(0.9) ;

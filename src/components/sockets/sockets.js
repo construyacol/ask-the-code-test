@@ -216,9 +216,8 @@ class SocketsComponent extends Component {
 
   withdraw_account_mangagement = async(withdrawAccount) => {
 
-
+      console.log('withdraw_account_mangagement', withdrawAccount)
       if(!this.props.withdraw_accounts[withdrawAccount.id]){return}
-
       if(withdrawAccount.state === 'in_progress' || withdrawAccount.state === 'complete' || withdrawAccount.state === 'rejected'){
         this.props.action.update_item_state({
           [withdrawAccount.id]: {

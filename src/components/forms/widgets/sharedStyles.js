@@ -1,7 +1,147 @@
 import styled, { keyframes } from "styled-components";
 import { device } from '../../../const/const'
 import { OnlySkeletonAnimation } from '../../widgets/loaders/skeleton'
+import { HR } from 'components/widgets/headerAccount/styles'
 
+
+export const TooltipContainer = styled.div`
+
+  position: relative;
+  display: inline-block;
+
+  &:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .tooltiptext {
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px !important;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    margin: auto;
+    left: -90%;
+  }
+ 
+`
+
+export const MetaDataContainer = styled.div`
+  min-height:100px;
+  background:#f0f0f0;
+  display:grid;
+  align-self: end;
+  padding:15px 20px;
+  width:calc(100% - 40px);
+  max-width:calc(700px - 40px);
+  p{
+    color:var(--paragraph_color);
+  }
+  ul{
+    display: grid;
+    align-items: center;
+    row-gap: 10px;
+    li{
+      color:var(--paragraph_color);
+      font-size:15px;
+    }
+  }
+`
+
+
+export const MetaContainer = styled.div`
+  width:auto;
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr;
+  column-gap: 15px;
+  grid-template-rows: auto auto;
+  align-self: center;
+  row-gap: 3px;
+
+  ._deleteAccount{
+    &:hover{
+      color:red !important;
+    }
+  }
+
+  ${HR}{
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-row-end: 3;
+  }
+
+  &.uniqueRow{
+    grid-template-rows: 1fr;
+    ${HR}{
+      grid-row-end: 2;
+    }
+  }
+
+  p{
+    margin:0;
+    color:var(--paragraph_color);
+    font-size:18px;
+  }
+
+  p:nth-child(3), 
+  .metaText {
+    font-size:13px;
+    font-family: "Raleway",sans-serif;
+    color: var(--placeholder);
+  }
+
+  .metaText{
+    font-size:14px;
+    span{
+      color: var(--placeholder);
+    }
+    &.pending,
+    &.in_progress{
+      span{
+        color: orange;
+      }
+    }
+    &.complete{
+      span{
+        color: green;
+      }
+    }
+    &.rejected,
+    &.canceled{
+      span{
+        color: red;
+      }
+    }
+  }
+
+  &.__withdrawAccount{
+    grid-template-columns: auto auto 1fr auto;
+    column-gap: 7px;
+    ${HR}{
+      margin-right: 5px;
+    }
+    span{
+      .complete{
+        color:green;
+      }
+      .pending,
+      .in_progress{
+        color:orange;
+      }
+    }
+  }
+`
+
+// export const WAccountMetaContainer = styled(MetaContainer)`
+//   grid-template-columns: auto 1fr;
+
+// `
 
 export const OptionInputContainer = styled.div`
   display:grid;
@@ -259,6 +399,7 @@ export const StageContainer = styled.div`
     background: #f9f9fb;
     position: sticky;
     top: 143px;
+    z-index:1;
   }
 
   @media ${device.mobile} {
@@ -521,3 +662,5 @@ export const Content = styled.section`
     right:0;
   }
 `
+
+
