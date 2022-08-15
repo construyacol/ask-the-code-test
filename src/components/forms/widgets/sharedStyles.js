@@ -14,20 +14,19 @@ export const TooltipContainer = styled.div`
   }
 
   .tooltiptext {
-  visibility: hidden;
-  width: 60px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-  font-size: 12px !important;
-
-  position: absolute;
-  z-index: 1;
-  top: 130%;
-  left: 50%;
-  margin-left: -30px;
+    visibility: hidden;
+    width: auto;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px !important;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    margin: auto;
+    left: -90%;
 }
 
  
@@ -109,21 +108,24 @@ export const MetaContainer = styled.div`
         color: orange;
       }
     }
-
     &.complete{
       span{
         color: green;
       }
     }
-
-    
+    &.rejected,
+    &.canceled{
+      span{
+        color: red;
+      }
+    }
   }
 
   &.__withdrawAccount{
     grid-template-columns: auto auto 1fr auto;
-    column-gap: 5px;
+    column-gap: 7px;
     ${HR}{
-      margin-right: 10px;
+      margin-right: 5px;
     }
     span{
       .complete{

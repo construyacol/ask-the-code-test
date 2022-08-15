@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useCallback } from 'react'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
@@ -10,10 +10,11 @@ import { MetaContainer, TooltipContainer } from '../sharedStyles'
 import { HR } from '../../../widgets/headerAccount/styles'
 // import { MetaDataContainer } from '../sharedStyles'
 import { useActions } from 'hooks/useActions'
-import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'react-icons/ai';
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import useToastMessage from "hooks/useToastMessage";
 
+import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'react-icons/ai';
+import { FcCancel } from 'react-icons/fc';
 
 
 export default function WithdrawAccountsComponent({ 
@@ -31,7 +32,6 @@ export default function WithdrawAccountsComponent({
     const { isMovilViewport } = useViewport();
     const [ withdrawAccounts ] = useSelector((state) => selectWithdrawAccounts(state));
     const [coinsendaServices] = useCoinsendaServices();
-    // const [ accountState, setAccountState ] = useState()
     const [toastMessage] = useToastMessage();
 
     const selectWithdrawAccount = (withdrawAccount) => {
@@ -89,7 +89,7 @@ export default function WithdrawAccountsComponent({
 
                 return <ItemListComponent 
                   key={index} 
-                  className={`auxNumber account_${withdrawAccount?.id}`}
+                  className={`auxNumber __withdrawAccount ${withdrawAccount?.state} account_${withdrawAccount?.id}`}
                   itemList={withdrawAccount}
                   auxUiName={isSelected && withdrawAccount?.account_number?.value}
                   firstIndex={index === 0}
@@ -124,35 +124,36 @@ export default function WithdrawAccountsComponent({
           </SelectListContainer>
         </OptionInputContainer>
 
-        {/* {
-          ["pending", "in_progress"].includes(state?.withdrawAccount?.state) &&
-          <MetaDataContainer>
-            {isMovilViewport && <p className="fuente">Inscribiendo cuenta...</p>}
-            <p className="fuente">Recuerda que los retiros a cuentas de retiro en proceso de inscripción pueden tardar de 1 a 72 horas hábiles en ser procesados.</p>
-          </MetaDataContainer>
-        } */}
-
       </StageContainer>
     )
 }
 
 
 const getIcon = state => {
+  const size = 20
   return (
-    ["pending", "in_progress"].includes(state) ? <AiOutlineClockCircle color="orange"/> :
-    ["complete"].includes(state) ? <AiOutlineCheckCircle color="green"/> : <></>
+    ["pending", "in_progress"].includes(state) ? <AiOutlineClockCircle size={size} color="orange"/> :
+    ["complete"].includes(state) ? <AiOutlineCheckCircle size={size} color="green"/> : <FcCancel size={size}></FcCancel>
   )
 }
 
 
 const StateComponent = ({ withdrawAccount, handleAction, isMovilViewport }) => {
 
-  const uiLabel = ["pending", "in_progress"].includes(withdrawAccount?.state) ? "Inscribiendo..." : ["rejected"].includes(withdrawAccount?.state) ? "Cuenta eliminada" : "Inscrita"
+  const uiLabel = ["pending", "in_progress"].includes(withdrawAccount?.state) ? "Inscribiendo..." : ["rejected"].includes(withdrawAccount?.state) ? "Cuenta Inhabilitada" : "Inscrita"
+
   return(
       <MetaContainer className={`uniqueRow __withdrawAccount`} >
         <HR height={30} />
-        { getIcon(withdrawAccount?.state) }
-        <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p>
+        
+        {/* { getIcon(withdrawAccount?.state) } */}
+        {/* <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p> */}
+        
+        <TooltipContainer>
+          { getIcon(withdrawAccount?.state) }
+          <span className="tooltiptext fuente">{uiLabel}</span>
+        </TooltipContainer>
+
         <TooltipContainer className="deleteButton__" onClick={() => handleAction(withdrawAccount?.id)}>
           <AiOutlineDelete className="_deleteAccount" color="var(--title2)" size={20}/>
           <span className="tooltiptext fuente">Eliminar</span>

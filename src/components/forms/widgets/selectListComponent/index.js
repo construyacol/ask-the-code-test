@@ -196,6 +196,14 @@ export const ItemProviderBankContainer = styled.div`
   cursor:pointer;
   column-gap: 14px;
 
+ 
+  &.rejected,
+  &.canceled{
+    pointer-events:none;
+    opacity: .5;
+    filter: grayscale(1);
+  }
+
 
 
   ${HeaderMainContainer}{
@@ -252,7 +260,9 @@ export const ItemProviderBankContainer = styled.div`
       }
   }
 
-
+  &.__withdrawAccount{
+    grid-template-columns: auto 1fr auto;
+  }
 
   &.firstItem{
     border-top-left-radius: 4px;
@@ -267,7 +277,6 @@ export const ItemProviderBankContainer = styled.div`
   
   &.isSelectedItem{
     border-radius:4px;
-    border:1px solid #E7E7E7;
     p{
       color:var(--primary);
       &._aux{

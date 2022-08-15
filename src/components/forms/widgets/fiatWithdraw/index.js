@@ -154,33 +154,91 @@ const {
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
         </RenderStageComponent>
+        
+        <StatusPanelComponent>
+          <StatusHeaderContainer>
+            <TitleContainer>
+              <h1 className="fuente">Resumen del retiro</h1>
+            </TitleContainer>
+            <StatusContent
+              state={handleState?.state}
+              stageManager={stageManager}
+            />
+          </StatusHeaderContainer>
+          <StatusDisclaimer
+              state={handleState?.state?.withdrawAccount?.state}
+          />
+          {
+            !isMovilViewport &&
+              <ButtonComponent/>
+          }
+        </StatusPanelComponent>
+
         {
           isMovilViewport &&
             <ButtonComponent/>
         }
-        
-          {
-            !isMovilViewport &&
-              <StatusPanelComponent>
-                <StatusHeaderContainer>
-                  <TitleContainer>
-                    <h1 className="fuente">Resumen del retiro</h1>
-                  </TitleContainer>
-                  <StatusContent
-                    state={handleState?.state}
-                    stageManager={stageManager}
-                  />
-                </StatusHeaderContainer>
-                <ButtonComponent/>
-              </StatusPanelComponent>
-          }
     </>                 
   )
 }
  
 
+
 export default NewWAccountComponent
 
+
+const Disclaimer = styled.div`
+
+  padding: 10px 20px;
+  height:auto;
+  min-height:80px;
+  border-radius:6px;
+  display:none;
+
+  p{
+    font-size: 13px;
+    color: green;
+    line-height:20px;
+  }
+
+  &.pending,
+  &.in_progress{
+    background:#ffa5002b;;
+    display:initial;
+    p{
+      color: var(--paragraph_color);
+    }
+  }
+
+  &.complete{
+    background:#0080000f;
+    display:initial;
+  }
+
+`
+
+const inProgress = "Los retiros hacia cuentas en proceso de inscripción pueden tardar hasta tantas horas"
+const complete = "Los retiros hacia cuentas inscritas pueden tardar hasta tantas horas"
+
+const MESSAGES = {
+  pending:inProgress,
+  complete
+}
+
+
+const StatusDisclaimer = ({ state }) => {
+
+  console.log('StatusDisclaimer', state)
+
+  return(
+    <Disclaimer className={`${state}`}>
+      {
+        MESSAGES[state] &&
+        <p className='fuente'>{MESSAGES[state]}</p>
+      }
+    </Disclaimer>
+  )
+}
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
