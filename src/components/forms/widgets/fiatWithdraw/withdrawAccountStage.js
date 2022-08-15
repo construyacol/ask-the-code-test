@@ -71,7 +71,7 @@ export default function WithdrawAccountsComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log('WITHDRAW_ACCOUNT => ', state)
+    // console.log('WITHDRAW_ACCOUNT => ', state)
 
     return(
       <StageContainer className="_identityComponent">

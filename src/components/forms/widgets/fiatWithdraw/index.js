@@ -25,7 +25,7 @@ import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-
+import StatusDisclaimer from './statusDisclaimer'
 import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
 import { formatToCurrency } from '../../../../utils/convert_currency'
@@ -166,7 +166,7 @@ const {
             />
           </StatusHeaderContainer>
           <StatusDisclaimer
-              state={handleState?.state?.withdrawAccount?.state}
+              withdrawAccount={handleState?.state?.withdrawAccount}
           />
           {
             !isMovilViewport &&
@@ -187,58 +187,6 @@ const {
 export default NewWAccountComponent
 
 
-const Disclaimer = styled.div`
-
-  padding: 10px 20px;
-  height:auto;
-  min-height:80px;
-  border-radius:6px;
-  display:none;
-
-  p{
-    font-size: 13px;
-    color: green;
-    line-height:20px;
-  }
-
-  &.pending,
-  &.in_progress{
-    background:#ffa5002b;;
-    display:initial;
-    p{
-      color: var(--paragraph_color);
-    }
-  }
-
-  &.complete{
-    background:#0080000f;
-    display:initial;
-  }
-
-`
-
-const inProgress = "Los retiros hacia cuentas en proceso de inscripción pueden tardar hasta tantas horas"
-const complete = "Los retiros hacia cuentas inscritas pueden tardar hasta tantas horas"
-
-const MESSAGES = {
-  pending:inProgress,
-  complete
-}
-
-
-const StatusDisclaimer = ({ state }) => {
-
-  console.log('StatusDisclaimer', state)
-
-  return(
-    <Disclaimer className={`${state}`}>
-      {
-        MESSAGES[state] &&
-        <p className='fuente'>{MESSAGES[state]}</p>
-      }
-    </Disclaimer>
-  )
-}
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 

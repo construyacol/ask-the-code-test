@@ -255,13 +255,17 @@ export const ItemProviderBankContainer = styled.div`
 
   &.withAuxComp{
       grid-template-columns: auto 2fr 1fr;
-      @media ${device.mobile} {
-        grid-template-columns: 1fr auto;
-      }
+      
   }
 
   &.__withdrawAccount{
     grid-template-columns: auto 1fr auto;
+  }
+
+  @media ${device.mobile} {
+    &.withAuxComp{
+          grid-template-columns: 1fr auto;
+    }
   }
 
   &.firstItem{

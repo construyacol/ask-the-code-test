@@ -27,8 +27,7 @@ export const TooltipContainer = styled.div`
     top: 100%;
     margin: auto;
     left: -90%;
-}
-
+  }
  
 `
 
