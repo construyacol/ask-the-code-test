@@ -67,7 +67,7 @@ export const ItemList = (props) => {
       case "delete":
         const loaderDeleteItem = document.getElementById(`loader_${id}`);
         loaderDeleteItem.classList.add("deleting");
-        const { error } = await coinsendaServices.deleteAccount("id");
+        const { error } = await coinsendaServices.deleteAccount(id);
         if (error) { 
           loaderDeleteItem.classList.remove("deleting");
           blockerActive.classList.remove("deleting");
