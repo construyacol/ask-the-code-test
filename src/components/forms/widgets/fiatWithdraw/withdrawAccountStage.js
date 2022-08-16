@@ -146,13 +146,13 @@ const StateComponent = ({ withdrawAccount, handleAction, isMovilViewport }) => {
       <MetaContainer className={`uniqueRow __withdrawAccount`} >
         <HR height={30} />
         
-        {/* { getIcon(withdrawAccount?.state) } */}
-        {/* <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p> */}
+        { getIcon(withdrawAccount?.state) }
+        <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p>
         
-        <TooltipContainer>
+        {/* <TooltipContainer>
           { getIcon(withdrawAccount?.state) }
           <span className="tooltiptext fuente">{uiLabel}</span>
-        </TooltipContainer>
+        </TooltipContainer> */}
 
         <TooltipContainer className="deleteButton__" onClick={() => handleAction(withdrawAccount?.id)}>
           <AiOutlineDelete className="_deleteAccount" color="var(--title2)" size={20}/>

@@ -259,7 +259,7 @@ export const ItemProviderBankContainer = styled.div`
   }
 
   &.__withdrawAccount{
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 3fr 1fr;
   }
 
   @media ${device.mobile} {

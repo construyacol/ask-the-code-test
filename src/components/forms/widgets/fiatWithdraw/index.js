@@ -25,7 +25,7 @@ import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-import StatusDisclaimer from './statusDisclaimer'
+// import StatusDisclaimer from './statusDisclaimer'
 import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
 import { formatToCurrency } from '../../../../utils/convert_currency'
@@ -165,9 +165,9 @@ const {
               stageManager={stageManager}
             />
           </StatusHeaderContainer>
-          <StatusDisclaimer
+          {/* <StatusDisclaimer
               withdrawAccount={handleState?.state?.withdrawAccount}
-          />
+          /> */}
           {
             !isMovilViewport &&
               <ButtonComponent/>
