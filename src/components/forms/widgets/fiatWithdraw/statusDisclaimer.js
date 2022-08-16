@@ -33,7 +33,7 @@ const StatusDisclaimer = ({ withdrawAccount }) => {
       <Disclaimer className={`${state}`}>
         {
           MESSAGES[state] &&
-          <p className={`fuente disclaimer--message_p ${state} ${viewMore ? 'disclaimer__open' : ''} ${(state !== 'complete' && !viewMore) ? 'disclaimer--showGradient' : ''} `}>{MESSAGES[state]}</p>
+          <p className={`fuente disclaimer--message_p ${state} ${viewMore ? 'disclaimer__open' : ''} ${(state !== 'complete' && !viewMore) ? 'disclaimer--showGradient' : 'disclaimer__open'} `}>{MESSAGES[state]}</p>
         }
         {
             state !== 'complete' &&
