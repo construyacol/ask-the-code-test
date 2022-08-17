@@ -616,8 +616,11 @@ export class IndetityService extends WebService {
     ) return state;
     
     const { file_state, info_state } = user?.identity
+
     if([info_state, file_state].includes("rejected")){
         return "rejected"
+    }else if([info_state, file_state].includes("confirmed")){
+      return "confirmed"
     }else if(info_state === file_state){
         state = info_state
     }
