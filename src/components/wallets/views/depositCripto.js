@@ -12,7 +12,7 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
 
-import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
+// import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 
 const CriptoSupervisor = (props) => {
 
@@ -165,7 +165,7 @@ const CriptoView = () => {
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
 
-  const { subscribeToNewDeposits } = useSubscribeDepositHook()
+  // const { subscribeToNewDeposits } = useSubscribeDepositHook()
 
  
   useEffect(() => {
@@ -173,7 +173,7 @@ const CriptoView = () => {
       const validateAddress = async () => {
         
         const provider = deposit_providers[current_wallet.dep_prov[0]];
-        subscribeToNewDeposits(provider.id);
+        // subscribeToNewDeposits(provider.id);
         const {
           account: {
             account_id: { account_id },

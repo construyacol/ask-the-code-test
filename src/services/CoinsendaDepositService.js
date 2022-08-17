@@ -13,10 +13,12 @@ import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { success_sound } from "../actions/soundActions";
 import actions from "../actions";
 import { normalized_list } from "../utils";
+import sleep from 'utils/sleep'
+
+
+
 
 const { update_item_state } = actions;
-
-
 
 export class DepositService extends WebService {
 
@@ -191,6 +193,18 @@ export class DepositService extends WebService {
     const deposit = await this.Get(finalUrl);
     // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
     return deposit;
+  }
+
+
+  async subscribeToAllNewDeposits() {
+    const { deposit_providers } = this.globalState?.modelData
+    if(!deposit_providers)return ;
+    for (const depProv in deposit_providers) {
+      if(["crypto"].includes(deposit_providers[depProv]?.currency_type)){
+        await sleep(2000)
+        await this.subscribeToNewDeposits(depProv)
+      }
+    }
   }
 
   async subscribeToNewDeposits(provider_id) {
