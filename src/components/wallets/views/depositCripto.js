@@ -13,7 +13,7 @@ import { useWalletInfo } from "../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
 import { StageSkeleton } from 'components/forms/widgets/stageManager'
 
-// import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
+
 
 const CriptoSupervisor = (props) => {
 
