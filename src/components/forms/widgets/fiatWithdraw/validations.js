@@ -1,13 +1,7 @@
 import {
-    // parseOnlyLetters,
     validateLabelMsg,
     writeOnLabel,
-    // parseOnlyNumbers,
     parseOnlyCurrencyAmount
-    // addItemTag,
-    // writeOnLabel,
-    // parseAlphanumeric,
-    // formatMaskDate
 } from '../kyc/utils'
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import ungapStructuredClone from '@ungap/structured-clone';

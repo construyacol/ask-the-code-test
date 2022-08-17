@@ -1,11 +1,6 @@
 import {
-    // parseOnlyLetters,
     validateLabelMsg,
     parseOnlyNumbers,
-    // addItemTag,
-    // writeOnLabel,
-    // parseAlphanumeric,
-    // formatMaskDate
 } from '../kyc/utils'
 import ungapStructuredClone from '@ungap/structured-clone';
 import { selectListValidator } from '../kyc/validations'

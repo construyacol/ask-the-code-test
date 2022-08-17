@@ -10,7 +10,8 @@ import { LoaderView } from "../../widgets/activityList/order_item";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useViewport from '../../../hooks/useWindowSize'
 import useToastMessage from "../../../hooks/useToastMessage";
-
+import { isEmpty } from 'lodash'
+import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 import { device } from 'const/const'
 import styled from 'styled-components'
 
@@ -32,6 +33,7 @@ const ActivityViewCont = styled.div`
 
 const ActivityView = (props) => {
 
+  const { subscribeToNewDeposits } = useSubscribeDepositHook()
   const { params } = props.match;
   const [loader, setLoader] = useState(false);
   const [coinsendaServices] = useCoinsendaServices();
@@ -154,6 +156,18 @@ const ActivityView = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.tx_path]);
+
+  useEffect(() => {
+
+    const currentWallet = props?.wallets[params?.account_id]
+
+    if(currentWallet?.currency_type === 'crypto' && !isEmpty(currentWallet?.dep_prov)){
+      console.log('currentWallet', currentWallet?.dep_prov[0])
+      // subscribeToNewDeposits(currentWallet?.dep_prov[0], 2, 3000)
+    }
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // useEffect(() => {
   //   window.requestAnimationFrame(() => {

@@ -201,10 +201,7 @@ export class DepositService extends WebService {
         deposit_provider_id: provider_id,
       },
     };
-    return await this.Post(
-      SUBSCRIBE_TO_DEPOSITS_URL,
-      body,
-    );
+    return await this._Post(SUBSCRIBE_TO_DEPOSITS_URL, body);
   }
 
   async get_deposits(account_id, limit = 20, skip = 0) {
