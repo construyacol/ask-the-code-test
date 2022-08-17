@@ -82,8 +82,8 @@ function SwapView(props) {
 
 
   async function getValueForOnePrimaryCurrency() {
-    const { sell_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(sell_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
+    const { buy_price, secondary_currency, primary_currency } = currentPair;
+    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
     setValueForOnePrimaryCurrency(finalString);
   }
 

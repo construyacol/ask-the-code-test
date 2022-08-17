@@ -87,7 +87,7 @@ export const AccountDetail = (props) => {
       funcDebounces({
         keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
         storageType:"sessionStorage",
-        timeExect:21100,
+        timeExect:22100,
         callback:() => { subscribeToNewDeposits(currentWallet?.dep_prov[0], 2, 10000) }
       })
     }
