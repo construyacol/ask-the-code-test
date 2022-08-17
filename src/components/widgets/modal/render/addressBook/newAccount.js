@@ -57,7 +57,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
         provider_type: provider_type,
         label,
         address,
-        country: current_wallet.country,
+        // country: current_wallet.country,
       },
       "cripto"
     );

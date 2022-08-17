@@ -223,8 +223,8 @@ export class TransactionService extends WebService {
   }
 
   async fetchUserProfile() {
-    return this.Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`);
-  }
+    return this._Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`);
+  } 
 
   async addNewProfile(country) {
     const body = {

@@ -155,6 +155,22 @@ export class WebService {
   }
 
 
+  async _Get(url) { 
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
+    let headers = {
+      Authorization: `Bearer ${userToken}`,
+    };
+    return this._doFetch(url, {
+      method: `GET`,
+      headers,
+    });
+  }
+
+
   async _Post(url, body, withAuth = true) {
     // La función getUserToken() integra los metodos validateExpTime, getToken
     await validateExpTime()
