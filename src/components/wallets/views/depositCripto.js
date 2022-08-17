@@ -10,7 +10,8 @@ import ControlButton from "../../widgets/buttons/controlButton";
 import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
-import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
+// import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
+import { StageSkeleton } from 'components/forms/widgets/stageManager'
 
 // import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 
@@ -75,22 +76,21 @@ export const SkeletonDepositView = () => {
 
   return (
     <>
-
-    {
-      currentWallet.currency_type === 'crypto' ?
-        <DepositForm className="skeleton">
-          <ContAddress className="contAddress">
-            <p id="soloAd2" className="fuente title soloAd2"></p>
-            <p className="fuente soloAd"></p>
-            <div className="qrContainer">{/* <QrProtector visible/> */}</div>
-            <p className="fuente title dirDep"></p>
-            <p className="verifyAddress"></p>
-          </ContAddress>
-        </DepositForm>
-        :
-        <DepositWithdrawFiatSkeleton/>
+      {
+        currentWallet.currency_type === 'crypto' ?
+          <DepositForm className="skeleton">
+            <ContAddress className="contAddress">
+              <p id="soloAd2" className="fuente title soloAd2"></p>
+              <p className="fuente soloAd"></p>
+              <div className="qrContainer">{/* <QrProtector visible/> */}</div>
+              <p className="fuente title dirDep"></p>
+              <p className="verifyAddress"></p>
+            </ContAddress>
+          </DepositForm>
+          :
+          <StageSkeleton/>
       }
-    </>
+    </> 
   );
 };
 
@@ -327,6 +327,9 @@ export const DepositForm = styled(OperationForm)`
       justify-items: center;
       display:grid;
     }   
+    &.skeleton{
+      justify-items:center;
+    }
   }
 
   .qrContainer {

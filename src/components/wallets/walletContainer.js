@@ -123,8 +123,7 @@ const RenderAuxComponent = (props) => {
 const SwitchView = (props) => {
   const { params:{ path, tx_path } } = props.match;
   const Views = {
-    // withdraw: <SkeletonWithdrawView {...props} />,
-    deposit: <LazyDepositView {...props} />,
+    deposit: <LazyDepositView {...props} />, 
     withdraw: <LazyWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
     activity:<ActivityView {...props} />
