@@ -78,7 +78,10 @@ export class WebService {
     if(!response)return ;
 
     const res = await response.json()
-    if(!res?.data || (res?.data && !res?.data?.jwt))throw new Error('No se pudo obtener el nuevo jwt')
+    if(!res?.data || (res?.data && !res?.data?.jwt)){ 
+      console.log('ERROR res ==> ', res, res?.error)
+      throw new Error('No se pudo obtener el nuevo jwt')
+    };
 
     const { data:{ jwt, refresh_token } } = res
     const decodedToken = await saveUserToken(jwt, refresh_token)

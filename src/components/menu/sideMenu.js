@@ -31,8 +31,7 @@ function SideMenuComponent(props) {
   const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
   const { isLaptopViewport } = useViewport()
   const { current_section:{params:{show_menu_principal}} } = useSelector((state) => state.ui);
-  const closeMenu = () => {
-    actions.current_section_params({ show_menu_principal: false });
+  const closeMenu = () => { actions.current_section_params({ show_menu_principal: false });
   }
 
   const logOut = () => {

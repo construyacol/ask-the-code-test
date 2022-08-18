@@ -1,17 +1,17 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useSelector } from "react-redux";
-import { selectWithdrawProvidersByName } from 'selectors'
+// import { useSelector } from "react-redux";
+// import { selectWithdrawProvidersByName } from 'selectors'
 import useViewport from "hooks/useWindowSize";
 
 
 
-const StatusDisclaimer = ({ withdrawAccount, className }) => {
+const StatusDisclaimer = ({ withdrawAccount, className, withdrawProviders }) => {
 
     const { state } = withdrawAccount
     const { isMovilViewport } = useViewport();
     const [ viewMore, setViewMore ] = useState(isMovilViewport ? false : true)
-    const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
+    // const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
     const isAvalaibleSameProvider = withdrawProviders[withdrawAccount?.bank_name?.value]
   
     const withdrawTimeMessage = isAvalaibleSameProvider ? 

@@ -4,7 +4,7 @@ import { WithdrawForm } from "./";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import { useWalletInfo } from "../../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from '../skeleton/depositWithdrawFiatSkeleton'
-import { StageSkeleton } from 'components/forms/widgets/stageManager'
+import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 
 
 const SkeletonWithdrawView = () => {
@@ -15,7 +15,7 @@ const SkeletonWithdrawView = () => {
     <>
     {
       currentWallet.currency_type === 'fiat' ?
-      <StageSkeleton/>
+      <SelectListSkeleton/>
       :
       <WithdrawForm>
         <InputForm skeleton />

@@ -51,10 +51,11 @@ export const AddNewItem = (props) => {
     <div
       id={id}
       className={`AddNewItemContainer ${clases}`}
-      onClick={handleClick}
     >
       {/* <div className="BbackgroundAddNew"></div> */}
-      <div className={`AddNewItem ${type}`}>
+      <div className={`AddNewItem ${type}`}
+      onClick={handleClick}
+      >
         <p className=" fuente">
           <i className="fas fa-plus"></i>
           {!label ? "AÑADIR NUEVO" : label}

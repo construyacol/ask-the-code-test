@@ -1,11 +1,12 @@
 
 import styled from 'styled-components'
-import { device } from '../../const/const'
+import { device } from 'const/const'
 import { useSelector } from "react-redux";
 import { menuPrincipal } from "../api/ui/api.json";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import loadable from "@loadable/component";
+import { useActions } from 'hooks/useActions'
 
 export default function MobileMenuComponent(props) {
 
@@ -13,6 +14,11 @@ export default function MobileMenuComponent(props) {
     const PopNotification = loadable(() => import("../widgets/notifications"));
     const { osDevice, verification_state } = useSelector((state) => state?.ui);
     const params = useParams()
+    const actions = useActions()
+
+    const selectItem = itemName => {
+        actions.CleanNotifications(itemName);
+    }
 
     return(
         <>      
@@ -29,6 +35,7 @@ export default function MobileMenuComponent(props) {
                                         <MenuItem
                                             key={item.id}
                                             className={`item_${item.clave} ${params?.primary_path === item?.clave ? "_active" : ""}`}
+                                            onClick={() => selectItem(item.clave)}
                                         >
                                             <Link to={`/${item.clave}`}>
                                                 <div className={`text ${params?.primary_path === item?.clave ? "activate" : ""}`}>

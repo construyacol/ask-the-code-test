@@ -195,6 +195,7 @@ export const ItemProviderBankContainer = styled.div`
   border-left: 5px solid #E9E9E9;
   cursor:pointer;
   column-gap: 14px;
+  position:relative;
 
  
   &.rejected,

@@ -11,7 +11,8 @@ import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
-import { StageSkeleton } from 'components/forms/widgets/stageManager'
+// import { StageSkeleton } from 'components/forms/widgets/stageManager'
+import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 
 
 
@@ -88,7 +89,7 @@ export const SkeletonDepositView = () => {
             </ContAddress>
           </DepositForm>
           :
-          <StageSkeleton/>
+          <SelectListSkeleton/>
       }
     </> 
   );

@@ -19,13 +19,13 @@ export default function AmountComponent ({
     handleDataForm:{ dataForm },
     children,
     currentWallet,
-    availableBalance
+    availableBalance,
+    withdrawProviders
   }) {
-  
+
     const { withdrawAccount } = state
     const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
     const [availableAmount, setAvailableAmount] = useState(availableBalance)
-
   
     const withdrawAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
@@ -89,6 +89,7 @@ export default function AmountComponent ({
         <StatusDisclaimer
               withdrawAccount={state?.withdrawAccount}
               className="fullDisclaimer"
+              withdrawProviders={withdrawProviders}
           />
       </StageContainer>
     )

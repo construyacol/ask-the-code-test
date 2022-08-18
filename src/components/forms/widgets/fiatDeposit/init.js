@@ -3,8 +3,8 @@ import FormComponent from '../..'
 import { initStages } from '../../utils'
 import { FIAT_DEPOSIT_TYPES } from './api'
 import { FormContainer } from '../sharedStyles'
-import { StageSkeleton } from '../stageManager'
-// import { SelectListSkeleton } from '../selectListComponent'
+// import { StageSkeleton } from '../stageManager'
+import { SelectListSkeleton } from '../selectListComponent'
 
 export default function NewFiatDepositComponent (props){
 
@@ -30,11 +30,11 @@ export default function NewFiatDepositComponent (props){
               dataForm ?
                 <FormComponent
                   handleDataForm={{dataForm, setDataForm}}
-                  Fallback={StageSkeleton}
+                  Fallback={SelectListSkeleton}
                   {...props}
                 />
               : 
-              <StageSkeleton/>
+              <SelectListSkeleton/>
           }
       </FormContainer>
     )
