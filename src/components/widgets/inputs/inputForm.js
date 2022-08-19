@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import InputValidate from "../../hooks/inputValidate";
+import InputValidate from "hooks/inputValidate";
 import styled from "styled-components";
 import SkeletonAnimation from "../loaders/skeleton";
 import useViewport from '../../../hooks/useWindowSize'

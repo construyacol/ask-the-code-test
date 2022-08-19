@@ -13,7 +13,7 @@ import { skeletonStyle } from "./shareStyles";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import Environment from '../../environment'
-import { useObserver } from "../hooks/useObserver";
+import { useObserver } from "hooks/useObserver";
 import ReferralActivity from './activity'
 import { Route } from "react-router-dom";
 import useViewport from '../../hooks/useWindowSize'

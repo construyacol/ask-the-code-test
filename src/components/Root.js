@@ -8,15 +8,14 @@ import actions from "../actions";
 import withHandleError from "./withHandleError";
 import HomeContainer from "./home/home-container";
 import { history } from "../const/const";
-import SessionRestore from "./hooks/sessionRestore";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
 import FreshChat from '../services/FreshChat' 
 import { store } from '../'
-import { updateLocalForagePersistState } from './hooks/sessionRestore'
 import hotJar from '../services/Hotjar'
 import { STORAGE_KEYS } from "../const/storageKeys";
 import { CAPACITOR_PLATFORM } from 'const/const'
+import SessionRestore, { updateLocalForagePersistState } from "hooks/sessionRestore";
 
 import {
   // doLogout,

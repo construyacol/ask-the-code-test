@@ -9,7 +9,7 @@ import ItemSettingsInit from "../widgets/itemSettings/";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useActions } from "../../hooks/useActions";
-import { updateLocalForagePersistState } from '../hooks/sessionRestore'
+import { updateLocalForagePersistState } from 'hooks/sessionRestore'
 import { SecurityCenterLayout } from '../widgets/layoutStyles'
 import TitleSection from '../widgets/titleSectionComponent'
 import { SecurityCenterSkeletonLoader } from 'components/widgets/skeletons'

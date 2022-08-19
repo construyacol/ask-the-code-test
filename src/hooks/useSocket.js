@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // import Environtment from "../../environment";
 // import { useSelector } from "react-redux";
 import socket from 'const/socket'
-import { getUserToken } from '../utils'
+import { getUserToken } from 'components/utils'
 
 
 export default function useSocket (channel, callback) {

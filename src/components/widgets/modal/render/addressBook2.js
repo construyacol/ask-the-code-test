@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 import ControlButton from "../../buttons/controlButton";
 import { setAnimation } from "../../../../utils";
 import IconSwitch from "../../icons/iconSwitch";
-import WithdrawViewState from "../../../hooks/withdrawStateHandle";
+import WithdrawViewState from "hooks/withdrawStateHandle";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import { useToastMesssage } from "../../../../hooks/useToastMessage";

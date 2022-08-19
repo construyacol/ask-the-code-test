@@ -1,8 +1,8 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useActions } from "../../hooks/useActions";
-import { useCoinsendaServices } from "../../services/useCoinsendaServices";
-import { convertToObjectWithCustomIndex } from "../../utils";
+import { useActions } from "./useActions";
+import { useCoinsendaServices } from "services/useCoinsendaServices";
+import { convertToObjectWithCustomIndex } from "utils";
 import { useHistory } from "react-router-dom";
 import { createSelector } from "reselect";
 
@@ -38,7 +38,7 @@ const selectLastPendingOrderId = createSelector(
 
     return lastPendingOrderId === current_order_id ? lastPendingOrderId : null;
   }
-);
+); 
 
 const UseTxState = (current_order_id) => {
   const [coinsendaServices] = useCoinsendaServices();

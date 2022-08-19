@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { LoaderView, DepositOrder } from "../widgets/activityList/order_item";
-import UseActivity from '../hooks/useActivity'
+import UseActivity from 'hooks/useActivity'
 import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
 // import OrderItem from "../widgets/activityList/order_item";
 // import { useParams } from "react-router-dom";

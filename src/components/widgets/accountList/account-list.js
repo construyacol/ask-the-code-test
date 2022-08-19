@@ -11,7 +11,7 @@ import { isEmpty } from 'lodash'
 import { useParams  } from "react-router-dom";
 import { AddNewItem } from "../buttons/buttons";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 import loadable from "@loadable/component";
 import { AccountListSkeletonLoader } from "../skeletons";
 import { useCreateWallet } from './cardView'

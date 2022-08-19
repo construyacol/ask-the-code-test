@@ -10,7 +10,7 @@ import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useViewport from "../../../hooks/useWindowSize";
-import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 import { useSelector } from "react-redux";
 // import TitleSection from '../../widgets/titleSectionComponent'
 // import { AccountListWrapper } from '../layoutStyles'

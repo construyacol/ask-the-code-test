@@ -11,8 +11,8 @@ import IconSwitch from "../../../icons/iconSwitch";
 // import { useActions } from "../../../../../hooks/useActions";
 import useViewport from "../../../../../hooks/useWindowSize";
 import DetailGenerator from "./detailGenerator";
-import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
-import UseTxState from "../../../../hooks/useTxState";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
+import UseTxState from "hooks/useTxState";
 import InProcessOrder from "./inProcessOrder";
 import { 
   IconClose,

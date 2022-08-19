@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useCoinsendaServices } from "../services/useCoinsendaServices";
 // import currencyLabels from "../components/Prices/currency-labels";
-import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
+import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 import { useSelector } from "react-redux";
 
 export default function useChartData() {

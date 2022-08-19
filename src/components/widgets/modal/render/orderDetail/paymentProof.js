@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import CropImg from "../../../cropimg";
-import UseTxState from "../../../../hooks/useTxState";
+import UseTxState from "hooks/useTxState";
 import QRCode from "qrcode";
 import SimpleLoader from "../../../loaders";
 import { MdContentCopy } from "react-icons/md";

@@ -2,7 +2,7 @@ import React from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { Link as ScrollTo } from "react-scroll";
-import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
 import styled from 'styled-components'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useObserver } from "../../hooks/useObserver";
+import { useObserver } from "hooks/useObserver";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { useParams } from "react-router-dom";
 import { LoaderItem } from "./order_item";

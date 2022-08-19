@@ -2,9 +2,9 @@ import { useState } from "react";
 // import AddressValidator from 'wallet-address-validator'
 // import useError from './errorHandle'
 // import { debounce } from "../../utils";
-import { formatToCurrency, _convertCurrencies } from "../../utils/convert_currency";
-import WithdrawViewState from "./withdrawStateHandle";
-import { useWalletInfo }  from "../../hooks/useWalletInfo";
+import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
+import WithdrawViewState from "./withdrawStateHandle"; 
+import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
 
 // eslint-disable-next-line import/no-anonymous-default-export

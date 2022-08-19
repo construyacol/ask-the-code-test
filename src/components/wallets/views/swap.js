@@ -16,9 +16,8 @@ import { OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
-// import UseTxState from "../../hooks/useTxState";
 import { getCdnPath } from '../../../environment'
-import { useFormatCurrency } from "../../hooks/useFormatCurrency";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 

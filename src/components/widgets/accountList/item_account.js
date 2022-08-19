@@ -9,7 +9,7 @@ import BalanceComponent from "../balance/balance";
 import PopNotification from "../notifications";
 import SimpleLoader from "../loaders";
 import { getCdnPath } from '../../../environment'
-import { selectWithConvertToObjectWithCustomIndex } from "../../hooks/useTxState.js"
+import { selectWithConvertToObjectWithCustomIndex } from "hooks/useTxState.js"
 import { useSelector } from "react-redux";
 
 

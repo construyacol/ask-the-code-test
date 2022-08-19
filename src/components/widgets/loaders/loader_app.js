@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import localForage from "localforage";
 import actions from "../../../actions";
 import { withRouter } from "react-router";
-import usePrevious from "../../hooks/usePreviousValue";
+import usePrevious from "hooks/usePreviousValue";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import withHandleError from "../../withHandleError";
 import { doLogout } from "../../utils";

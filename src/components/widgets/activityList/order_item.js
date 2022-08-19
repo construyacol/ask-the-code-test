@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import styled from "styled-components";
-import UseTxState from "../../hooks/useTxState";
+import UseTxState from "hooks/useTxState";
 import { PaymentConfirButton } from "../buttons/buttons";
-import { useFormatCurrency } from "../../hooks/useFormatCurrency";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
 import IconSwitch from "../icons/iconSwitch";
 // import { ObserverHook } from '../../hooks/observerCustomHook'
 import { device } from "../../../const/const";

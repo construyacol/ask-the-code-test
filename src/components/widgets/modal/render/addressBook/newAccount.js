@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useCoinsendaServices } from "../../../../../services/useCoinsendaServices";
-import WithdrawViewState from "../../../../hooks/withdrawStateHandle";
+import WithdrawViewState from "hooks/withdrawStateHandle";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import IconSwitch from "../../../icons/iconSwitch";
 import InputForm from "../../../inputs/inputForm";
