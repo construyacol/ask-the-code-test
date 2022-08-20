@@ -1,17 +1,14 @@
 import localForage from "localforage";
-import { COINSENDA_URL, GET_PUBLIC_KEY_URL, REFRESH_TOKEN_EXP_TIME } from "../const/const";
+import { COINSENDA_URL, GET_PUBLIC_KEY_URL, REFRESH_TOKEN_EXP_TIME } from "const/const";
 import jwt from "jsonwebtoken";
 import KeyEncoder from 'key-encoder'
-import { mainService } from '../services/MainService'
+import { mainService } from 'services/MainService'
 import {STORAGE_KEYS} from "const/storageKeys";
-import { store } from '../'
+import { store } from '../index'
 import Environment from 'environment'
-// import isLoading from "reducers/is-loading";
-// import { isAppLoaded } from 'actions/loader'
 import actions from "actions";
 import { CAPACITOR_PLATFORM } from 'const/const'
 
-// import { IS_APP_LOADED } from "actions/action_types";
 
 
 const { Oauth } = Environment

@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 import { SubMenu } from './styles'
 // import { styled } from 'styled-components'
-import { navigation_components } from "../api/ui/api.json"; 
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { NavLink } from "react-router-dom";
 import loadable from "@loadable/component";
 import { isSafari } from '../../utils'
+import menuItems from "api/ui/menuItems";
+
+
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 export default function SubMenuComponent({ targetList }) {
 
+    const { navigation_components } = menuItems
     const { currentFilter } = useSelector((state) => state?.ui?.current_section?.params);
     const { wallets } = useSelector((state) => state?.modelData);
     const { activity_for_account } = useSelector((state) => state?.storage);

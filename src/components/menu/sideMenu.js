@@ -4,12 +4,10 @@ import withCoinsendaServices from "../withCoinsendaServices";
 import { getCdnPath } from '../../environment'
 import { useSelector } from "react-redux";
 import { getAcronym } from '../../utils'
-// import ScoresComponent from "../widgets/scores";
-import { menuPrincipal } from "../api/ui/api.json";
 import { ButtonPrincipalMenu } from "../widgets/buttons/buttons";
 import { useActions } from '../../hooks/useActions'
 import useViewport from '../../hooks/useWindowSize'
-import { doLogout } from "../utils";
+import { doLogout } from "utils/handleSession";
 import { 
     MenuItemsContainer,
     SideMenuContainer,
@@ -21,7 +19,7 @@ import {
     LaptopLogoContainer,
     // SideMenuWrapper
 } from './styles'
-
+import menuItems from "api/ui/menuItems";
 
 
 
@@ -31,8 +29,8 @@ function SideMenuComponent(props) {
   const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
   const { isLaptopViewport } = useViewport()
   const { current_section:{params:{show_menu_principal}} } = useSelector((state) => state.ui);
-  const closeMenu = () => { actions.current_section_params({ show_menu_principal: false });
-  }
+  const closeMenu = () => { actions.current_section_params({ show_menu_principal: false })}
+
 
   const logOut = () => {
     actions.confirmationModalToggle();
@@ -145,6 +143,7 @@ const MenuItemsComponent = props => {
   const { keyActions, osDevice, verification_state } = useSelector((state) => state.ui);
   const logoutButtonText = window.innerWidth > 900 ? `Cerrar sesión ${keyActions ? '[ESC]' : ''}` : "Cerrar sesión";
   const { isMovilViewport, isLaptopViewport } = useViewport()
+  const { menuPrincipal } = menuItems
 
     return( 
         <>

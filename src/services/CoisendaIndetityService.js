@@ -11,15 +11,14 @@ import {
   // selfietest
 } from "../const/const";
 import { LEVELS_INFO } from '../const/levels'
-import userDefaultModel from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import userSource from "../components/api";
 import { UI_NAMES } from '../const/uiNames'
 import { getIdentityState } from '../utils'
+import userDefaultModel from "api/userDefault";
 
 
 
@@ -450,7 +449,7 @@ export class IndetityService extends WebService {
 
 
   async loadFirstEschema() {
-    const dataNormalized = await normalizeUser(userSource);
+    const dataNormalized = await normalizeUser(userDefaultModel);
     this.dispatch(updateNormalizedDataAction(dataNormalized));
   }
 

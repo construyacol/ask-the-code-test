@@ -1,4 +1,4 @@
-{
+const accountInitialEnvironment = {
   "accounts": [
     {
       "data": {
@@ -35,3 +35,5 @@
     }
   ]
 }
+
+export default accountInitialEnvironment

@@ -8,7 +8,7 @@ import { withRouter } from "react-router";
 import usePrevious from "hooks/usePreviousValue";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import withHandleError from "../../withHandleError";
-import { doLogout } from "../../utils";
+import { doLogout } from "utils/handleSession";
 // import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";

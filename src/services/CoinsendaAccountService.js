@@ -13,7 +13,7 @@ import {
   loadLabels,
 } from "../const/const";
 import { appLoadLabelAction } from "../actions/loader";
-import initialAccounts from "../components/api/accountInitialEnvironment.json";
+import accountInitialEnvironment from "api/accountInitialEnvironment";
 import { serve_orders, matchItem } from "../utils";
 import update_activity, { pending_activity } from "../actions/storage";
 import { current_section_params } from "../actions/uiActions";
@@ -105,7 +105,7 @@ export class AccountService extends WebService {
   }
 
   async createInitialEnvironmentAccount() {
-    const { accounts } = initialAccounts;
+    const { accounts } = accountInitialEnvironment;
     for (let body of accounts) {
       // TODO: assign currency by country
       await this.createAccountAndInsertDepositProvider(body)

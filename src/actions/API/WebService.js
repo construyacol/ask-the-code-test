@@ -1,14 +1,14 @@
 import { GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
 import { SentryCaptureException } from '../../utils'
-import { getExpTimeData, validateExpTime } from '../../components/utils'
+import { getExpTimeData, validateExpTime } from '../../utils/handleSession'
 import {
   doLogout,
   handleError,
   verifyUserToken,
   saveUserToken,
   getToken
-} from '../../components/utils'
+} from 'utils/handleSession'
 
 
 export class WebService { 

@@ -16,7 +16,7 @@ import hotJar from '../services/Hotjar'
 import { STORAGE_KEYS } from "../const/storageKeys";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import SessionRestore, { updateLocalForagePersistState } from "hooks/sessionRestore";
-
+import CookieMessage from 'components/widgets/cookieMessage'
 import {
   // doLogout,
   // verifyTokensValidity,
@@ -24,7 +24,7 @@ import {
   saveUserToken,
   getUserToken,
   openLoginMobile
-} from "./utils";
+} from "utils/handleSession";
 
 
 
@@ -142,7 +142,7 @@ function RootContainer(props) {
         <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} setShowOnBoarding={setShowOnBoarding} />
       ) : (
         <>
-          {/* <LazySocket toastMessage={toastMessage} /> */}
+          <CookieMessage/>
           <LazySocket toastMessage={toastMessage} />
           <FreshChat/>
           <LazyToast />

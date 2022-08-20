@@ -1,4 +1,4 @@
-import { store } from "..";
+import { store } from "../index";
 import { currencyFormatByCoin } from "../const/const";
 
 export const formatToCurrency = (n, short_currency, delete_surplus_decimals = true) => {

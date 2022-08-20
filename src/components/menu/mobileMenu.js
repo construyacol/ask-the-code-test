@@ -2,11 +2,13 @@
 import styled from 'styled-components'
 import { device } from 'const/const'
 import { useSelector } from "react-redux";
-import { menuPrincipal } from "../api/ui/api.json";
+import menuItems from "api/ui/menuItems";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
+
+
 
 export default function MobileMenuComponent(props) {
 
@@ -15,6 +17,7 @@ export default function MobileMenuComponent(props) {
     const { osDevice, verification_state } = useSelector((state) => state?.ui);
     const params = useParams()
     const actions = useActions()
+    const { menuPrincipal } = menuItems
 
     const selectItem = itemName => {
         actions.CleanNotifications(itemName);
