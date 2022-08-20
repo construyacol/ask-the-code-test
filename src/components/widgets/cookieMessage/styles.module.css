@@ -29,7 +29,7 @@
 
 .cookie-link:visited {
     text-decoration: none;
-    color: #21e47c;
+    color: #0060AC;
 }
 
 .cookie-button-container {
@@ -37,6 +37,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    justify-self: center;
 }
 
 .cookie-button-accept {

@@ -70,7 +70,6 @@ const Disclaimer = styled.div`
         &::after{
             content:"";
             position:absolute;
-            background:red;
             width:100%;
             height: 50px;
             bottom:0;
