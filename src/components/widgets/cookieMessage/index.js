@@ -1,8 +1,8 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import styled from 'styled-components'
-import { getCdnPath } from 'environment'
+import { getHostName } from 'environment'
 
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
@@ -55,7 +55,7 @@ export default function CookieMessage(props) {
             <a 
               className={styles["cookie-link"]} 
               rel="noreferrer" 
-              href="https://coinsenda.com/docs/terms"
+              href={`https://${getHostName()}.com/docs/terms`}
               target="_blank"
               >
                 nuestros terminos y condiciones

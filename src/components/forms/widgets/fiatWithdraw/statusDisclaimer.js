@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 // import { useSelector } from "react-redux";
 // import { selectWithdrawProvidersByName } from 'selectors'
 import useViewport from "hooks/useWindowSize";
-
+import { Disclaimer } from '../sharedStyles'
 
 
 const StatusDisclaimer = ({ withdrawAccount, className, withdrawProviders }) => {
@@ -50,90 +50,6 @@ const StatusDisclaimer = ({ withdrawAccount, className, withdrawProviders }) => 
 export default StatusDisclaimer
 
 
-const Disclaimer = styled.div`
-
-  padding: 7px 15px;
-  height:auto;
-  min-height:80px;
-  border-radius:6px;
-  display:none;
-
-  .disclaimer--message_p{
-    margin: 10px 0 0;
-    height: 50px;
-    overflow: hidden;
-    position:relative;
-    &.disclaimer__open{
-        height: auto;
-    }
-    &.disclaimer--showGradient{
-        &::after{
-            content:"";
-            position:absolute;
-            width:100%;
-            height: 50px;
-            bottom:0;
-            left: 0;
-            pointer-events:none;
-        }
-    }
-    &.pending,
-    &.in_progress{
-        &::after{
-            background: linear-gradient(0deg, #f5e6ca 0%, transparent 75%);
-        }
-    }
-    &.complete{
-        &::after{
-            background: linear-gradient(0deg, #e5ede5 0%, transparent 75%);
-        }
-    }
-  }
-
-  p{
-    font-size: 13px;
-    line-height:17px;
-  }
-
-  
-
-  &.pending,
-  &.in_progress{
-    background:#f5e6ca;
-    display:initial;
-    .disclaimer--message_p{
-      color: #8f5d00;
-    }
-  }
-
-  &.complete{
-    background:#e5ede5;
-    display:initial;
-    .disclaimer--message_p{
-        color: green;
-    }
-  }
-
-  .verMas__p{
-    margin: 12px 0 0;
-    line-height: 14px;
-    text-align: center;
-    cursor: pointer;
-    color: var(--title1);
-  }
-
-
-  &.fullDisclaimer{
-    padding:20px;
-    max-width:calc(700px - 40px);
-    align-self:end;
-    .disclaimer--message_p{
-      font-size: 14px;
-      line-height:22px;
-    }
-  }
-
-`
 
 
 

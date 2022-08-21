@@ -7,8 +7,8 @@ import imageType from 'image-type'
 import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES, CAPACITOR_PLATFORM } from '../const/const'
 import * as Sentry from "@sentry/react";
 // import { kyc } from "../components/api/ui/api.json";
-
 const { normalizeUser } = normalizr_services;
+
 
 
 
@@ -169,6 +169,9 @@ const get_img_quality = (size) => {
       : size > 2000000 && 0.7;
   return quality;
 };
+
+
+
 
 export const toast = async (msg, type, position) => {
   return reactToastify(msg, {

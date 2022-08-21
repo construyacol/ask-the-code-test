@@ -2,10 +2,11 @@ import React from 'react'
 import { ItemListGrid } from './styles'
 import { useObserver } from "hooks/useObserver";
 // import { useObserver } from 'hooks/intersectionObserver'
+import RenderAuxComponent from '../../renderAuxComponent'
 
  
 
-const ItemList = ({ item, onClick }) => {
+const ItemList = ({ item, onClick, ...props }) => {
 
   // const [ show, element ] = useObserver()
   const [show, setElement] = useObserver();
@@ -21,6 +22,10 @@ const ItemList = ({ item, onClick }) => {
       }
       </div>
       <p className="fuente itemListUiName" >{item?.uiName?.toLowerCase()}</p>
+      {
+          props.AuxComponent && 
+          <RenderAuxComponent {...props} />
+      }
     </ItemListGrid>
   )
 }
