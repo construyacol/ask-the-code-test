@@ -10,7 +10,10 @@ import ControlButton from "../../widgets/buttons/controlButton";
 import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
-import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
+// import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
+// import { StageSkeleton } from 'components/forms/widgets/stageManager'
+import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
+
 
 
 const CriptoSupervisor = (props) => {
@@ -74,22 +77,21 @@ export const SkeletonDepositView = () => {
 
   return (
     <>
-
-    {
-      currentWallet.currency_type === 'crypto' ?
-        <DepositForm className="skeleton">
-          <ContAddress className="contAddress">
-            <p id="soloAd2" className="fuente title soloAd2"></p>
-            <p className="fuente soloAd"></p>
-            <div className="qrContainer">{/* <QrProtector visible/> */}</div>
-            <p className="fuente title dirDep"></p>
-            <p className="verifyAddress"></p>
-          </ContAddress>
-        </DepositForm>
-        :
-        <DepositWithdrawFiatSkeleton/>
+      {
+        currentWallet.currency_type === 'crypto' ?
+          <DepositForm className="skeleton">
+            <ContAddress className="contAddress">
+              <p id="soloAd2" className="fuente title soloAd2"></p>
+              <p className="fuente soloAd"></p>
+              <div className="qrContainer">{/* <QrProtector visible/> */}</div>
+              <p className="fuente title dirDep"></p>
+              <p className="verifyAddress"></p>
+            </ContAddress>
+          </DepositForm>
+          :
+          <SelectListSkeleton/>
       }
-    </>
+    </> 
   );
 };
 
@@ -149,7 +151,7 @@ const AddDepositProviderCripto = () => {
   );
 };
 
-let INTERVAL;
+// let INTERVAL;
 
 const CriptoView = () => {
   const [
@@ -164,34 +166,23 @@ const CriptoView = () => {
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
 
-  const subscribeToNewDeposits = (provider_id) => {
-    clearInterval(INTERVAL);
-    let i = 0;
-    INTERVAL = setInterval(async () => {
-      if (i >= 5) {
-        return clearInterval(INTERVAL);
-      }
-      const res = await coinsendaServices.subscribeToNewDeposits(provider_id);
-      console.log("INTERVAL", i, res);
-      i++;
-    }, 30000);
-  };
+  // const { subscribeToNewDeposits } = useSubscribeDepositHook()
 
+ 
   useEffect(() => {
-    
     if (deposit_providers) {
       const validateAddress = async () => {
+        
         const provider = deposit_providers[current_wallet.dep_prov[0]];
-        subscribeToNewDeposits(provider.id);
+        // subscribeToNewDeposits(provider.id);
         const {
           account: {
             account_id: { account_id },
           },
         } = provider;
 
-        const validateAddress = await coinsendaServices.validateAddress(
-          account_id
-        );
+        const validateAddress = await coinsendaServices.validateAddress(account_id);
+
         if (!validateAddress) {
           // sentry call emit error
           const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`;
@@ -337,6 +328,9 @@ export const DepositForm = styled(OperationForm)`
       justify-items: center;
       display:grid;
     }   
+    &.skeleton{
+      justify-items:center;
+    }
   }
 
   .qrContainer {

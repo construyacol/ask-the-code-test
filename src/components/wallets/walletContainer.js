@@ -23,6 +23,10 @@ import useViewport from '../../hooks/useWindowSize'
 import { parseQueryString } from '../../utils'
 // import 'components/wallets/views/wallet_views.css'
 
+import { isEmpty } from 'lodash'
+import { funcDebounces } from 'utils'
+import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
+
 
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
@@ -71,14 +75,24 @@ function WalletContainer(props) {
 
 
 
-
-
-
- 
+  
 export const AccountDetail = (props) => {
 
   const { match: { params } } = props;
- 
+  const { subscribeToNewDeposits } = useSubscribeDepositHook()
+
+  useEffect(() => {
+    const currentWallet = props?.wallets[params?.account_id]
+    if(currentWallet?.currency_type === 'crypto' && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+      funcDebounces({
+        keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
+        storageType:"sessionStorage",
+        timeExect:22100,
+        callback:() => { subscribeToNewDeposits(currentWallet?.dep_prov[0], 2, 10000) }
+      })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [params?.path])
   
   return( 
           <AccountDetailLayout className="_accountDetailLayout">
@@ -123,8 +137,7 @@ const RenderAuxComponent = (props) => {
 const SwitchView = (props) => {
   const { params:{ path, tx_path } } = props.match;
   const Views = {
-    // withdraw: <SkeletonWithdrawView {...props} />,
-    deposit: <LazyDepositView {...props} />,
+    deposit: <LazyDepositView {...props} />, 
     withdraw: <LazyWithdrawView {...props} />,
     swap: <LazySwapView {...props} />,
     activity:<ActivityView {...props} />

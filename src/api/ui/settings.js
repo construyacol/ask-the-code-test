@@ -1,4 +1,4 @@
-{
+const settings = {
   "security_center": [
     {
       "id": 2,
@@ -200,3 +200,5 @@
     }
   ]
 }
+
+export default settings

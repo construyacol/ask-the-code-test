@@ -11,15 +11,14 @@ import {
   // selfietest
 } from "../const/const";
 import { LEVELS_INFO } from '../const/levels'
-import userDefaultModel from "../components/api";
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
-import userSource from "../components/api";
 import { UI_NAMES } from '../const/uiNames'
 import { getIdentityState } from '../utils'
+import userDefaultModel from "api/userDefault";
 
 
 
@@ -140,8 +139,10 @@ export class IndetityService extends WebService {
     }
 
     async createAvailableIdentityList(nationality) {
+
       let documentList = await this.getDocumentList(nationality)
       let _documentList = []
+
       if(documentList && this.user?.identities?.length){
         let userIdentities =  {}
         this.user?.identities.forEach(identity => {
@@ -150,26 +151,28 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
+
         let isThereOneRejectedIdentity = false
         documentList.forEach(_document => {
+          // console.log("userIdentities", userIdentities[_document?.id_type] , _document)
           let currentIdentity = userIdentities[_document?.id_type] 
           let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
-          console.log('currentIdentityState', currentIdentityState)
           if(["rejected"].includes(currentIdentityState)){ 
             isThereOneRejectedIdentity = true
-            return _documentList = [_document] 
-          }
-          if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
-            // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
+            return _documentList = [{..._document, state:"rejected"}] 
+          }else if(!isThereOneRejectedIdentity){
             _documentList.push(_document)
           }
+          // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
+          //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
+          //   _documentList.push(_document)
+          // }
         })
-        // console.log('_documentList', _documentList)
-        // debugger
         return _documentList
       }else{
         return documentList
       }
+
     }
 
     async getDocumentList(nationality) {
@@ -226,7 +229,7 @@ export class IndetityService extends WebService {
           info_needed
         }
       }
-      return await this.Post(`${IdentityApIUrl}identities/add-new-identity`, body);
+      return await this._Post(`${IdentityApIUrl}identities/add-new-identity`, body);
     }
 
     async updateInfoIdentity(payload) {
@@ -241,7 +244,7 @@ export class IndetityService extends WebService {
           info_needed
         }
       }
-      return await this.Post(`${IdentityApIUrl}identities/add-info-to-identity`, body);
+      return await this._Post(`${IdentityApIUrl}identities/add-info-to-identity`, body);
     }
 
 
@@ -450,7 +453,7 @@ export class IndetityService extends WebService {
 
 
   async loadFirstEschema() {
-    const dataNormalized = await normalizeUser(userSource);
+    const dataNormalized = await normalizeUser(userDefaultModel);
     this.dispatch(updateNormalizedDataAction(dataNormalized));
   }
 
@@ -616,8 +619,11 @@ export class IndetityService extends WebService {
     ) return state;
     
     const { file_state, info_state } = user?.identity
+
     if([info_state, file_state].includes("rejected")){
         return "rejected"
+    }else if([info_state, file_state].includes("confirmed")){
+      return "confirmed"
     }else if(info_state === file_state){
         state = info_state
     }

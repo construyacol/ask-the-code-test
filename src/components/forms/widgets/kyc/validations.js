@@ -5,8 +5,11 @@ import {
     addItemTag,
     writeOnLabel,
     parseAlphanumeric,
-    formatMaskDate
 } from './utils'
+
+import {
+  formatMaskDate
+} from 'utils/date'
 
 
 

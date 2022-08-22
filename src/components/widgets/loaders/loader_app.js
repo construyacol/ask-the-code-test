@@ -5,10 +5,10 @@ import { bindActionCreators } from "redux";
 import localForage from "localforage";
 import actions from "../../../actions";
 import { withRouter } from "react-router";
-import usePrevious from "../../hooks/usePreviousValue";
+import usePrevious from "hooks/usePreviousValue";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import withHandleError from "../../withHandleError";
-import { doLogout } from "../../utils";
+import { doLogout } from "utils/handleSession";
 // import KeyActionsInfo from "../modal/render/keyActionsInfo";
 import useViewport from "../../../hooks/useWindowSize";
 // import { hotjar } from "react-hotjar";
@@ -71,20 +71,14 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     
     if (!userToken) return;
    
-    let profile = await coinsendaServices.fetchUserProfile();
+    let { error } = await coinsendaServices.fetchUserProfile();
 
-    if (!profile) {
-      const { error, data } = await coinsendaServices.addNewProfile(country);
+    if (error && error?.message?.toLowerCase()?.split(" ")?.join("_")?.includes(`unknown_"profile"_id_"undefined"`)) {
+      const { error } = await coinsendaServices.addNewProfile(country);
       if(error) return alert(error?.message, 'error');
       setShowOnBoarding(true) 
-      profile = data
       document.querySelector('.LoaderAplication')?.classList?.add('withOnboarding')
     }
-
-    // if (!profile || (!profile.countries[country])) return false;
-    // if (!country) return false;
-    // const userCountry = country;
-    // coinsendaServices.proofEndpoints();
 
     document.querySelector('.LoaderAplication')?.classList?.add('withUser')
     await coinsendaServices.loadFirstEschema();

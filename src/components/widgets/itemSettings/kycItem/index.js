@@ -71,7 +71,7 @@ export default function KycItemComponent() {
                         user={user}
                     />   
                 </InfoContainer>
-                <ButtonContainer>
+                <ButtonContainer> 
                 {
                     (requirements?.length > 0 && mainService.getVerificationState() !== 'accepted') ?
                         <ButtonForms
@@ -114,7 +114,7 @@ const getColor = state => {
 }
 
 
-
+ 
 
 const StatusComponent = ({ levels, user, levelName }) => {
 
@@ -128,6 +128,8 @@ const StatusComponent = ({ levels, user, levelName }) => {
 
         if([info_state, file_state].includes("rejected")){
             return "rejected"
+        }else if([info_state, file_state].includes("confirmed")){
+            return "confirmed"
         }else if(info_state === file_state){
             state = info_state
         }

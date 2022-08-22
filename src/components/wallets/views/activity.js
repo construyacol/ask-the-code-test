@@ -10,9 +10,9 @@ import { LoaderView } from "../../widgets/activityList/order_item";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useViewport from '../../../hooks/useWindowSize'
 import useToastMessage from "../../../hooks/useToastMessage";
-
 import { device } from 'const/const'
 import styled from 'styled-components'
+
 
 const ActivityViewCont = styled.div`
   height: 100%;
@@ -32,6 +32,7 @@ const ActivityViewCont = styled.div`
 
 const ActivityView = (props) => {
 
+  // const { subscribeToNewDeposits } = useSubscribeDepositHook()
   const { params } = props.match;
   const [loader, setLoader] = useState(false);
   const [coinsendaServices] = useCoinsendaServices();

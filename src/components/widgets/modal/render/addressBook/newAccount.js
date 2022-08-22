@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useCoinsendaServices } from "../../../../../services/useCoinsendaServices";
-import WithdrawViewState from "../../../../hooks/withdrawStateHandle";
+import WithdrawViewState from "hooks/withdrawStateHandle";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import IconSwitch from "../../../icons/iconSwitch";
 import InputForm from "../../../inputs/inputForm";
@@ -57,7 +57,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
         provider_type: provider_type,
         label,
         address,
-        country: current_wallet.country,
+        // country: current_wallet.country,
       },
       "cripto"
     );

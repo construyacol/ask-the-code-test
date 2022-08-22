@@ -16,9 +16,8 @@ import { OperationForm } from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
-// import UseTxState from "../../hooks/useTxState";
 import { getCdnPath } from '../../../environment'
-import { useFormatCurrency } from "../../hooks/useFormatCurrency";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 
@@ -82,8 +81,8 @@ function SwapView(props) {
 
 
   async function getValueForOnePrimaryCurrency() {
-    const { sell_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(sell_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
+    const { buy_price, secondary_currency, primary_currency } = currentPair;
+    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
     setValueForOnePrimaryCurrency(finalString);
   }
 

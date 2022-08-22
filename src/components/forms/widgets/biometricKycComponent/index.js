@@ -12,7 +12,7 @@ import loadDynamicScript from '../../../../utils/loadDynamicScript'
 import { funcDebounces } from '../../../../utils'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import { ENVIRONMENT_VAR, device } from '../../../../const/const'
-import useSocket from '../../../hooks/useSocket'
+import useSocket from 'hooks/useSocket'
 import { CAPACITOR_PLATFORM } from 'const/const'
 import sleep from 'utils/sleep';
 import Captures from './captures'

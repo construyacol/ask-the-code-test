@@ -8,7 +8,7 @@ import OtherModalLayoutPairs from "../../widgets/modal/otherModalLayoutPairs";
 import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 import NewItemsLayout from "../../widgets/items/new-items-layout";
 import { useSelector } from "react-redux";
-import { selectWithConvertToObjectWithCustomIndex } from '../../hooks/useTxState.js'
+import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState.js'
 
 
 

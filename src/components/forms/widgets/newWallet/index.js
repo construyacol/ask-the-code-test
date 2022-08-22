@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useActions } from '../../../../hooks/useActions'
 import InputForm from "../../../widgets/inputs/inputForm";
 import ControlButton from "../../../widgets/buttons/controlButton";
-import useAvailableWalletCreator from "../../../hooks/useAvailableWalletCreator";
+import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 import ItemLayout from "../../../widgets/items/itemLayout";
 import useKeyActionAsClick from '../../../../hooks/useKeyActionAsClick';
 // import { useSelector } from "react-redux";

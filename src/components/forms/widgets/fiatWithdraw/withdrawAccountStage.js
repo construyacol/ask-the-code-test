@@ -15,6 +15,9 @@ import useToastMessage from "hooks/useToastMessage";
 
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'react-icons/ai';
 import { FcCancel } from 'react-icons/fc';
+import styled from 'styled-components';
+import { WiStars } from 'react-icons/wi';
+
 
 
 export default function WithdrawAccountsComponent({ 
@@ -25,9 +28,10 @@ export default function WithdrawAccountsComponent({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
+    withdrawProviders,
     ...props
-}){  
-
+}){
+  
     const actions = useActions()
     const { isMovilViewport } = useViewport();
     const [ withdrawAccounts ] = useSelector((state) => selectWithdrawAccounts(state));
@@ -79,13 +83,14 @@ export default function WithdrawAccountsComponent({
         <OptionInputContainer>
           <p className="fuente _pLabel _inputLabelP">¿En que cuenta quieres recibir tu dinero?</p>
           <SelectListContainer>
-            {
+            { 
               withdrawAccounts && Object.keys(withdrawAccounts).map((key, index) => {
 
                 const withdrawAccount = withdrawAccounts[key]
                 const isSameAccountNumber = [withdrawAccount?.account_number?.value].includes(state[stageData?.key]?.account_number?.value)
                 const isSameBankName = [withdrawAccount?.bank_name?.value].includes(state[stageData?.key]?.bank_name?.value)
                 const isSelected = isSameBankName && isSameAccountNumber;
+                const isAvalaibleSameProvider = withdrawProviders[withdrawAccount?.bank_name?.value]
 
                 return <ItemListComponent 
                   key={index} 
@@ -103,7 +108,8 @@ export default function WithdrawAccountsComponent({
                         withdrawAccount={withdrawAccount}
                         isMovilViewport={isMovilViewport}
                         handleAction={deleteAccount}                        
-                      /> 
+                      />,
+                      isAvalaibleSameProvider ? () => <IconStarContainerComponent/> : () => null
                   ]}
                 />
               })
@@ -128,6 +134,29 @@ export default function WithdrawAccountsComponent({
     )
 }
 
+// AiFillStar
+const IconStarContainerComponent = props => {
+  return (
+    <IconStarContainer>
+        <TooltipContainer>
+          <WiStars size={25} color="#ffc107" /> 
+          <span className="tooltiptext fuente">Tárifa y velocidad preferencial</span>
+        </TooltipContainer>
+    </IconStarContainer>
+  )
+}
+
+const IconStarContainer = styled.div`
+  position:absolute;
+  margin: auto;
+  top: 11px;
+  right: 12px;
+
+  position: absolute;
+  margin: auto;
+  top: 8px;
+    right: 10px;
+`
 
 const getIcon = state => {
   const size = 20
@@ -146,13 +175,13 @@ const StateComponent = ({ withdrawAccount, handleAction, isMovilViewport }) => {
       <MetaContainer className={`uniqueRow __withdrawAccount`} >
         <HR height={30} />
         
-        {/* { getIcon(withdrawAccount?.state) } */}
-        {/* <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p> */}
+        { getIcon(withdrawAccount?.state) }
+        <p className={`fuente2 metaText ${withdrawAccount?.state}`}><span>{!isMovilViewport && uiLabel}</span></p>
         
-        <TooltipContainer>
+        {/* <TooltipContainer>
           { getIcon(withdrawAccount?.state) }
           <span className="tooltiptext fuente">{uiLabel}</span>
-        </TooltipContainer>
+        </TooltipContainer> */}
 
         <TooltipContainer className="deleteButton__" onClick={() => handleAction(withdrawAccount?.id)}>
           <AiOutlineDelete className="_deleteAccount" color="var(--title2)" size={20}/>

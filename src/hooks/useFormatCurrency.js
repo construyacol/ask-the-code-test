@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { formatToCurrency } from "../../utils/convert_currency";
+import { formatToCurrency } from "utils/convert_currency";
 
 export const useFormatCurrency = (objetive_amount, currency) => {
   const [amount, setAmount] = useState(objetive_amount);

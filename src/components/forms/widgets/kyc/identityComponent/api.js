@@ -2,10 +2,13 @@ import { mainService } from "../../../../../services/MainService";
 import { 
   formatMaskDate, 
   parseDateToTimeStamp,
-} from '../utils'
+} from 'utils/date'
 import ungapStructuredClone from '@ungap/structured-clone';
 import { identityInfo } from './identityUtils'
 import { createStage } from '../../../utils'
+import { toast } from 'utils'
+import { getUiError } from 'const/uiErrors'
+
 
 
 export const INFO_DOCUMENT_NEEDED = {
@@ -268,7 +271,7 @@ export const ApiPostIdentityInfo = async(payload) => {
       ...config, 
       identity_id:pendingOrRejectedIdentity?.id, 
       info_needed
-    })
+    }) 
   }else{
     res = await mainService.createIdentity({
       ...config, 
@@ -276,8 +279,15 @@ export const ApiPostIdentityInfo = async(payload) => {
       info_needed
     })
   }
-  if(!res)return ;
+
+  const { error } = res
+
+  if(error){
+    return toast(getUiError(error?.message), "error");
+  }
+
   return await mainService.fetchCompleteUserData()
+
   // const reqData = await mainService.createRequirementLevel()
   // if(reqData){
   //   const { requirements } = reqData

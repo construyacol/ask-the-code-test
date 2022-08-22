@@ -11,7 +11,7 @@ import { ListContainer, SelectListMain } from './styles'
 import useHeight from '../../../hooks/useHeight'
  
 
-const SelectList = ({ list, name, state, handleAction }) => {
+const SelectList = ({ list, name, state, handleAction, ...props }) => {
   
   let [ height ] = useHeight(list)
   const [ searchList, setSearchList ] = useState(list || {})
@@ -52,10 +52,11 @@ const SelectList = ({ list, name, state, handleAction }) => {
         <ListContainer>
           {
             Object.keys(searchList).map((itemKey, id) => {
-              return <ItemList
+              return <ItemList 
                 key={id}
                 item={list[itemKey]}
                 onClick={() => handleAction({target:{value:itemKey}})}
+                {...props}
               />
             })
           }

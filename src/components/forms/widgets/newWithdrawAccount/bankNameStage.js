@@ -4,7 +4,7 @@ import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
 import SelectListComponent from '../selectListComponent'
 import useViewport from '../../../../hooks/useWindowSize'
-
+import { Disclaimer } from '../sharedStyles'
 
 
 const BankNameListComponent = ({ 
@@ -44,7 +44,7 @@ const BankNameListComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
   
-  
+
     return(
       <StageContainer className="_bankNameList">
         {children}
@@ -64,6 +64,15 @@ const BankNameListComponent = ({
           isMovilViewport={isMovilViewport}
           onChange={onChange}
         />
+        
+        {
+          state[stageData?.key] &&
+            <Disclaimer className="fullDisclaimer pending warning">
+              <h3 className='fuente'>¡Atención!</h3>
+              {/* <p className='fuente disclaimer--message_p disclaimer__open'>No es permitido procesar retiros a cuentas de terceros diferentes al titular de la cuenta de Coinsenda. Los retiros procesados a cuentas de terceros serán rechazados.</p> */}
+              <p className='fuente disclaimer--message_p disclaimer__open'>La cuenta de retiro debe estar vinculada a tu identidad, los retiros procesados hacia cuentas de terceros no podrán ser acréditados a la cuenta de destino.</p>
+            </Disclaimer>
+        }
        
       </StageContainer>
     )

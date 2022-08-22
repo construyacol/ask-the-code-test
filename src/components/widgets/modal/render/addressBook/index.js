@@ -4,7 +4,7 @@ import { useActions } from "../../../../../hooks/useActions";
 import OtherModalLayout from "../../otherModalLayout";
 import { useSelector } from "react-redux";
 import { setAnimation } from "../../../../../utils";
-import WithdrawViewState from "../../../../hooks/withdrawStateHandle";
+import WithdrawViewState from "hooks/withdrawStateHandle";
 import EmptyState from "./emptyState"; 
 import NewAccount from "./newAccount";
 import AddressBookComponent from "./addressBookList";

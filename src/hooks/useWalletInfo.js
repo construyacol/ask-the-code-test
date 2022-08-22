@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { createSelector } from "reselect";
-import { selectWithConvertToObjectWithCustomIndex } from '../components/hooks/useTxState'
+import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 
 
 const selectCurrentPair = createSelector(

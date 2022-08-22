@@ -4,21 +4,22 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../../actions";
 // import SimpleLoader from "../widgets/loaders";
-import { security_center } from "../api/ui/settings.json";
 import ItemSettingsInit from "../widgets/itemSettings/";
 import { scroller } from "react-scroll";
 import { useCoinsendaServices } from "../../services/useCoinsendaServices";
 import { useActions } from "../../hooks/useActions";
-import { updateLocalForagePersistState } from '../hooks/sessionRestore'
+import { updateLocalForagePersistState } from 'hooks/sessionRestore'
 import { SecurityCenterLayout } from '../widgets/layoutStyles'
 import TitleSection from '../widgets/titleSectionComponent'
 import { SecurityCenterSkeletonLoader } from 'components/widgets/skeletons'
+import settings from "api/ui/settings";
 
 
 const SecurityCenter = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [_, globalState] = useCoinsendaServices();
   const actions = useActions();
+  const { security_center } = settings
 
   const validate_state = () => {
     if (props.verification_state !== "accepted") {

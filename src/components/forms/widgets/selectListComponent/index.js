@@ -195,6 +195,7 @@ export const ItemProviderBankContainer = styled.div`
   border-left: 5px solid #E9E9E9;
   cursor:pointer;
   column-gap: 14px;
+  position:relative;
 
  
   &.rejected,
@@ -259,7 +260,7 @@ export const ItemProviderBankContainer = styled.div`
   }
 
   &.__withdrawAccount{
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 3fr 1fr;
   }
 
   @media ${device.mobile} {

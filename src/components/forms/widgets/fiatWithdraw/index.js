@@ -25,10 +25,11 @@ import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-import StatusDisclaimer from './statusDisclaimer'
+// import StatusDisclaimer from './statusDisclaimer'
 import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
 import { formatToCurrency } from '../../../../utils/convert_currency'
+import { selectWithdrawProvidersByName } from 'selectors'
 
 // import { 
 //   LabelContainer,
@@ -46,6 +47,7 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
   const { isMovilViewport } = useViewport();
   const { dataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
+  const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
 
@@ -149,6 +151,7 @@ const {
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
+          withdrawProviders={withdrawProviders}
           {...props}
           {...walletInfo}
         >
@@ -165,9 +168,7 @@ const {
               stageManager={stageManager}
             />
           </StatusHeaderContainer>
-          <StatusDisclaimer
-              withdrawAccount={handleState?.state?.withdrawAccount}
-          />
+          
           {
             !isMovilViewport &&
               <ButtonComponent/>

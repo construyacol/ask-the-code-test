@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { AiOutlineUpload } from "react-icons/ai";
 // import PaymentProofComponent, { PaymentProof } from "./paymentProof";
 import { PaymentProof } from "./paymentProof";
-import UseTxState from "../../../../hooks/useTxState";
+import UseTxState from "hooks/useTxState";
 import SimpleLoader from "../../../loaders";
 // import QRCode from "qrcode";
 import { readFile, img_compressor, includesAnyImageMime } from "../../../../../utils";
@@ -30,7 +30,7 @@ import {
   DropZoneContainer
 } from "../../../shared-styles";
 // import useToastMessage from "../../../../../hooks/useToastMessage";
-import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { BottomSection } from './'
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'

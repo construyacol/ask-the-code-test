@@ -13,7 +13,8 @@ import {
   // TRANSACTION_SECURITY
 } from "../const/const";
 import { matchItem } from "../utils";
-import { coins } from "../components/api/ui/api.json";
+import menuItems from "api/ui/menuItems";
+
 
 export class TransactionService extends WebService {
   async fetchAllCurrencies() {
@@ -26,7 +27,7 @@ export class TransactionService extends WebService {
     // en caso de que ocurra un error en esta petición cargaremos con datos harcodeados el modelo
     if (!response) {
       this.dispatch(updateAllCurrenciesAction(new_currencies));
-      return coins;
+      return menuItems?.coins;
     }
     const currencies = response.reduce((result, currency) => {
       const split = currency.node_url && currency.node_url.split("api");
@@ -223,8 +224,8 @@ export class TransactionService extends WebService {
   }
 
   async fetchUserProfile() {
-    return this.Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`);
-  }
+    return this._Get(`${GET_PROFILE_URL}/${this.authData.userId}/profile`);
+  } 
 
   async addNewProfile(country) {
     const body = {

@@ -341,7 +341,7 @@ export class WithdrawService extends WebService {
               currency,
               info_needed:{
                 ...payload,
-                country:"colombia"
+                // country:"colombia"
               },
               "country": user.country,
               provider_type
@@ -360,7 +360,7 @@ export class WithdrawService extends WebService {
                 bank_name:short_name,
                 account_number,
                 account_type,
-                "country":"colombia",
+                // "country":"colombia",
                 "email":user.email || "default@coinsendaDepositApiUrl.com",
               },
               "country": user.country,

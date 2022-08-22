@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UseTxState from "../../../../hooks/useTxState";
+import UseTxState from "hooks/useTxState";
 import api, { orderStatus } from "./rest.json";
 import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
 import styled from "styled-components";

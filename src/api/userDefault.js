@@ -1,4 +1,4 @@
-{
+const userDefaultModel = {
   "contact":null,
   "location":null,
   "identities":null,
@@ -8,7 +8,7 @@
   "name": null,
   "surname": null,
   "id_number": null,
-  "email": null,
+  "email": null, 
   "role": null,
   "country": null,
   "referral": {},
@@ -42,3 +42,5 @@
   "activity": [],
   "available_pairs": []
 }
+
+export default userDefaultModel

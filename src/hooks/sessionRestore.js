@@ -1,6 +1,6 @@
 import localForage from "localforage";
-import { useActions } from "../../hooks/useActions";
-import { getExpTimeData } from '../utils'
+import { useActions } from "./useActions";
+import { getExpTimeData } from 'utils/handleSession'
 
 
 export const updateLocalForagePersistState = (payload) => {

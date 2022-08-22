@@ -6,7 +6,7 @@ import validations from './validations'
 import { createSelector } from "reselect";
 import AvailableBalance from '../../../widgets/availableBalance'
 import { formatToCurrency } from "../../../../utils/convert_currency";
-
+import StatusDisclaimer from './statusDisclaimer'
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -19,14 +19,13 @@ export default function AmountComponent ({
     handleDataForm:{ dataForm },
     children,
     currentWallet,
-    availableBalance
+    availableBalance,
+    withdrawProviders
   }) {
-  
+
     const { withdrawAccount } = state
     const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
     const [availableAmount, setAvailableAmount] = useState(availableBalance)
-    // const { isMovilViewport } = useViewport();
-
   
     const withdrawAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
@@ -87,6 +86,11 @@ export default function AmountComponent ({
             amount={availableAmount}
           />)]}
         />
+        <StatusDisclaimer
+              withdrawAccount={state?.withdrawAccount}
+              className="fullDisclaimer"
+              withdrawProviders={withdrawProviders}
+          />
       </StageContainer>
     )
   

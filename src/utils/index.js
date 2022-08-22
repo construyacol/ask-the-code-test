@@ -1,5 +1,4 @@
 import { toast as reactToastify } from "react-toastify";
-import { kyc } from "../components/api/ui/api.json";
 import Compressor from "compressorjs";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import * as normalizr_services from "../schemas";
@@ -7,8 +6,9 @@ import { store } from "..";
 import imageType from 'image-type'
 import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES, CAPACITOR_PLATFORM } from '../const/const'
 import * as Sentry from "@sentry/react";
-
+// import { kyc } from "../components/api/ui/api.json";
 const { normalizeUser } = normalizr_services;
+
 
 
 
@@ -169,6 +169,9 @@ const get_img_quality = (size) => {
       : size > 2000000 && 0.7;
   return quality;
 };
+
+
+
 
 export const toast = async (msg, type, position) => {
   return reactToastify(msg, {
@@ -561,36 +564,36 @@ export const FormatCountryList = (original_list, to_model_convert_list) => {
   return new_list;
 };
 
-export const serveKycData = (list) => {
-  return new Promise(async (resolve, reject) => {
-    const { kyc_basic } = kyc;
-    const { user } = store.getState().modelData;
-    let kyc_model = kyc_basic[user.person_type];
+// export const serveKycData = (list) => {
+//   return new Promise(async (resolve, reject) => {
+//     const { kyc_basic } = kyc;
+//     const { user } = store.getState().modelData;
+//     let kyc_model = kyc_basic[user.person_type];
 
-    // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user.person_type])
-    // console.log('|||||| LISTA RECIBIDA BACKENND', list)
+//     // console.log('||||||||||||| LISTA ALMACENADA FRONTEND - - - ', kyc_basic[user.person_type])
+//     // console.log('|||||| LISTA RECIBIDA BACKENND', list)
 
-    let new_list = [];
-    let indices = 1;
-    await Object.keys(list).forEach((indice) => {
-      // console.log(`recorriendo objetito: - - FRONT ${indice} - -`, kyc_model[indice])
-      // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])
-      // if(indice === 'ui_name'){return false}
-      let new_item = {
-        label: list[indice].ui_name,
-        name: indice,
-        id: indices,
-        ui_type: list[indice].ui_type ? list[indice].ui_type : "text",
-        placeholder: list[indice].ui_name,
-        ...kyc_model[indice],
-      };
-      indices++;
-      new_list.push(new_item);
-    });
-    // console.log('RESULTADO CONVERSIÓN DATA:', new_list)
-    return resolve(new_list);
-  });
-};
+//     let new_list = [];
+//     let indices = 1;
+//     await Object.keys(list).forEach((indice) => {
+//       // console.log(`recorriendo objetito: - - FRONT ${indice} - -`, kyc_model[indice])
+//       // console.log(`recorriendo objetito: - - BACK ${indice} - -`, list[indice])
+//       // if(indice === 'ui_name'){return false}
+//       let new_item = {
+//         label: list[indice].ui_name,
+//         name: indice,
+//         id: indices,
+//         ui_type: list[indice].ui_type ? list[indice].ui_type : "text",
+//         placeholder: list[indice].ui_name,
+//         ...kyc_model[indice],
+//       };
+//       indices++;
+//       new_list.push(new_item);
+//     });
+//     // console.log('RESULTADO CONVERSIÓN DATA:', new_list)
+//     return resolve(new_list);
+//   });
+// };
 
 export const withdrawProvidersByType = (withdrawProviders) => {
   let providers_served;

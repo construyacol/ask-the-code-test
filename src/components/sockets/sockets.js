@@ -6,8 +6,8 @@ import actions from "../../actions";
 // import Environtment from "../../environment";
 import { withRouter } from "react-router";
 import withCoinsendaServices from "../withCoinsendaServices";
-import { getUserToken } from '../utils'
-import { funcDebounce, funcDebounces } from '../../utils'
+import { getUserToken } from 'utils/handleSession'
+import { funcDebounce, funcDebounces } from 'utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 

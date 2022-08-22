@@ -13,10 +13,9 @@ const FreshChat = (props) => {
   const user = useSelector(({ modelData:{ user } }) => user);
   const [ coinsendaServices ] = useCoinsendaServices();
 
-
-
   const init = async () => {
 
+    if(window?.fcWidget?.isLoaded() || window?.fcWidget?.isInitialized())return ;
     await window.fcWidget.init({
       token: '86e166f6-5421-4aaf-bdf6-746ac7a54525',
       host: 'https://wchat.freshchat.com',
@@ -54,12 +53,12 @@ const FreshChat = (props) => {
     
   }
 
-
+ 
   useEffect(() => {
     if(user?.email){
-      if(process.env.NODE_ENV !== 'development'){
+      // if(process.env.NODE_ENV !== 'development'){
         loadDynamicScript(init, 'https://wchat.freshchat.com/js/widget.js', 'freshchat')
-      }
+      // }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.email])

@@ -4,7 +4,7 @@ import styled from "styled-components"
 import QRCode from 'qrcode'
 import { Button } from './styles'
 import { getHostName } from '../../../../environment'
-import { getUserToken } from '../../../utils'
+import { getUserToken } from 'utils/handleSession'
 import { useCoinsendaServices } from "../../../../services/useCoinsendaServices";
 import { device } from '../../../../const/const'
 

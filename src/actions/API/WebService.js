@@ -1,14 +1,14 @@
 import { GET_JWT_URL, DESTROY_SESSION_URL } from "../../const/const";
 import { setAuthData } from "../auth";
 import { SentryCaptureException } from '../../utils'
-import { getExpTimeData, validateExpTime } from '../../components/utils'
+import { getExpTimeData, validateExpTime } from '../../utils/handleSession'
 import {
   doLogout,
   handleError,
   verifyUserToken,
   saveUserToken,
   getToken
-} from '../../components/utils'
+} from 'utils/handleSession'
 
 
 export class WebService { 
@@ -78,7 +78,10 @@ export class WebService {
     if(!response)return ;
 
     const res = await response.json()
-    if(!res?.data || (res?.data && !res?.data?.jwt))throw new Error('No se pudo obtener el nuevo jwt')
+    if(!res?.data || (res?.data && !res?.data?.jwt)){ 
+      console.log('ERROR res ==> ', res, res?.error)
+      throw new Error('No se pudo obtener el nuevo jwt')
+    };
 
     const { data:{ jwt, refresh_token } } = res
     const decodedToken = await saveUserToken(jwt, refresh_token)
@@ -152,6 +155,22 @@ export class WebService {
     };
 
     return this.doFetch(url, params);
+  }
+
+
+  async _Get(url) { 
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
+    let headers = {
+      Authorization: `Bearer ${userToken}`,
+    };
+    return this._doFetch(url, {
+      method: `GET`,
+      headers,
+    });
   }
 
 

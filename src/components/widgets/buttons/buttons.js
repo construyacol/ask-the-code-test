@@ -2,7 +2,7 @@ import React from "react";
 import loadable from "@loadable/component";
 import { Link } from "react-router-dom";
 // import { Link as ScrollTo } from "react-scroll";
-import useAvailableWalletCreator from "../../hooks/useAvailableWalletCreator";
+import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useSelector } from "react-redux";
 import styled from 'styled-components'
@@ -51,10 +51,11 @@ export const AddNewItem = (props) => {
     <div
       id={id}
       className={`AddNewItemContainer ${clases}`}
-      onClick={handleClick}
     >
       {/* <div className="BbackgroundAddNew"></div> */}
-      <div className={`AddNewItem ${type}`}>
+      <div className={`AddNewItem ${type}`}
+      onClick={handleClick}
+      >
         <p className=" fuente">
           <i className="fas fa-plus"></i>
           {!label ? "AÑADIR NUEVO" : label}

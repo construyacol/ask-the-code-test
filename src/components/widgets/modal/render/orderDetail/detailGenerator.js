@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 // import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
-import UseTxState from "../../../../hooks/useTxState";
-import { useFormatCurrency } from "../../../../hooks/useFormatCurrency";
+import UseTxState, { selectWithConvertToObjectWithCustomIndex } from "hooks/useTxState";
+import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { getState } from "./";
 import { device, ORDER_TYPE_UI_NAME } from "../../../../../const/const";
-import { selectWithConvertToObjectWithCustomIndex } from "../../../../hooks/useTxState.js"
 import { useSelector } from "react-redux";
 import { getHostName } from '../../../../../environment'
 import DetailTemplateComponent from '../../../detailTemplate'

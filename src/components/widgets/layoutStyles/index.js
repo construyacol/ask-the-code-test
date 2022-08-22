@@ -104,6 +104,7 @@ export const AccountDetailContainer = styled.div`
     @media ${device.mobile} {
         padding-bottom:0;
         row-gap: 10px;
+        align-items: baseline;
     }
 `
 
