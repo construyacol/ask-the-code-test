@@ -622,6 +622,8 @@ export class IndetityService extends WebService {
 
     if([info_state, file_state].includes("rejected")){
         return "rejected"
+    }else if([info_state, file_state].includes("pending")){
+      return "pending"
     }else if([info_state, file_state].includes("confirmed")){
       return "confirmed"
     }else if(info_state === file_state){
