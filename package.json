@@ -16,6 +16,10 @@
     "@loadable/component": "^5.14.1",
     "@sentry/react": "^6.18.2",
     "@sentry/tracing": "^6.18.2",
+    "@types/jest": "^28.1.8",
+    "@types/node": "^18.7.13",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
     "@ungap/structured-clone": "^1.0.1",
     "aws-sdk": "^2.605.0",
     "bignumber.js": "^8.1.1",
@@ -63,6 +67,7 @@
     "source-map-explorer": "^2.5.2",
     "styled-components": "^4.4.1",
     "text-mask-addons": "^3.8.0",
+    "typescript": "^4.8.2",
     "wallet-address-validator": "^0.2.4"
   },
   "scripts": {
