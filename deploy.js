@@ -29,6 +29,7 @@ const validateType = function (deployType) {
   }
 };
 
+
 // Check for arguments
 if (argType && argProfile) {
   // If argumented, try to run with supplied args

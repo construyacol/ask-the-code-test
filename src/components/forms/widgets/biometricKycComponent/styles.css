@@ -23,7 +23,7 @@
 }
 
 .biometricLoaderContainer::after{
-    content: "Cargando...";
+    content: "Cargando modelos biométricos...";
 }
 
 .imgContainer button{
