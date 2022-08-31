@@ -1,6 +1,7 @@
 import { CDN_PATH_ASSETS } from '../const/const'
 let Environment;
 
+console.log('=======================================================> BUILDING', process.env.REACT_APP_BUILD_CONFIG, process.env.NODE_ENV )
 
 export const getHostName = () => {
   const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
@@ -74,7 +75,7 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
 
 
 
-// console.log('Environment', Environment)
+console.log('Environment', Environment)
 
 
 

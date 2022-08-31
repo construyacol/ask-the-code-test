@@ -3,6 +3,7 @@ const pfs = new FileSystem();
 
 const copyModels = async() => {
     const access = await pfs.test('./public/models');
+
     if(!access){
         try {
             console.log('<============ FACE API tensor models copied from CDN to LOCAL environment ============>')

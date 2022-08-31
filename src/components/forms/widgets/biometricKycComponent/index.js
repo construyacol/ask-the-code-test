@@ -46,7 +46,10 @@ const pictureOpts = {
 }
 
 
-const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
+// const modelsPath = ENVIRONMENT_VAR === 'development' ? '/models' : `${getCdnPath('tensor')}/`
+const modelsPath = (ENVIRONMENT_VAR === 'development' || CAPACITOR_PLATFORM !== 'web') ? '/models' : `${getCdnPath('tensor')}/`
+
+
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
 // Evaluates userMedia for web, it is not needed inside the functions, this can be seen as a constant
@@ -303,7 +306,7 @@ function BiometricKycComponent({ handleDataForm, handleState, ...props }) {
           <h3 className="FRecTitle fuente">Reconocimiento Facial</h3>
           <VideoContainer ref={videoContainerRef}>
             {isLoadingFaceApi && <div className="biometricLoaderContainer" />}
-            <Scanner ref={scannerRef} className="FRecScanner" />
+            <Scanner ref={scannerRef} className="FRecScanner" /> 
             {CAPACITOR_PLATFORM === 'web' && <video ref={mediaElementRef} autoPlay={true} width={'100%'} height={'100%'} />}
             {CAPACITOR_PLATFORM !== 'web' && <img style={{ display: 'none', objectFit: 'cover' }} ref={mediaElementRef} width={260} height={260} alt="streaming snapshot" />}
             {CAPACITOR_PLATFORM !== 'web' && !isLoadingFaceApi && <BlinkText><em />SCANNING</BlinkText>}
