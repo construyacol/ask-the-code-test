@@ -157,7 +157,7 @@ const MenuItemsComponent = props => {
                         />
                         :
                         menuPrincipal.map((item) => {
-                            if (item.clave !== "security" && verification_state !== "accepted") { return false }
+                            if (item.clave !== "settings" && verification_state !== "accepted") { return false }
                             if (item.clave === "withdraw_accounts") { return false }
                             return (
                                 <ButtonPrincipalMenu 

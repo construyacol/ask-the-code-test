@@ -38,7 +38,7 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
     titleSectionEl.current.onclick = () => null;
     withdrawButton?.current?.removeEventListener("click", backToWithdraw);
     history.push(`${history.location.pathname}`)
-  }
+  } 
 
   const backToWithdraw = () => {
     titleSectionEl.current.innerHTML = "Retirar";

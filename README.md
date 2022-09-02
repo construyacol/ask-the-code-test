@@ -64,7 +64,7 @@ More details here: https://capacitorjs.com/docs/guides/live-reload#using-with-fr
 Generate a production build is simple, just run `yarn build:mobile` and then sync the resources with `npx cap sync`.
 
 ### Android
-For each new release version, the `versionCode` needs to be increased by 1, the `versionName` can be updated acordingly to the practices in ther team (`major.minor.patch`).
+For each new release version, the `versionCode` needs to be increased by 1, the `versionName` can be updated acordingly to the practices in ther team (`major.minor.patch`). 
 
 The file that contains this config is `frontend/android/app/build.gradle`.
 

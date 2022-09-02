@@ -10,7 +10,7 @@ import {
   // fileTest,
   // selfietest
 } from "../const/const";
-import { LEVELS_INFO } from '../const/levels'
+// import { LEVELS_DATA } from '../const/levels'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
@@ -35,9 +35,10 @@ export class IndetityService extends WebService {
         "country":"international", 
       }
     } 
-    const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
-    if(res){
-      const { data:{ requirements, name } } = res
+    const { data, error } = await this._Post(`${IdentityApIUrl}levels/get-next-level`, body);
+
+    if(error) return error;
+      const { requirements, name } = data
       let _requirements = []
       for (let i = 0; i < requirements?.length; i++) {
         if(requirements[i] !== 'regulation'){
@@ -45,48 +46,102 @@ export class IndetityService extends WebService {
         }
       }
       return {
-        levelName:name,
+        name,
         requirements:_requirements
       }
-    }
-    return
   }
  
 
-  async createRequirementLevel() {
-    // let res = await this.getNextLevel()
-    let res = {
-      levelName:"level_1",
-      requirements:[
-        "contact",
-        "location",
-        "identity"
-      ]
-    }
-    const user = this.user
-    if(res){
-        let requirements = []
-        let levels = {}
-        res.requirements.forEach(requeriment => {
-            if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
-              requirements.push(requeriment)
-            }
 
-            if(res?.levelName === 'level_1'){
-                levels = {
-                    ...levels, 
-                    [requeriment]:LEVELS_INFO[res?.levelName][requeriment]
-                }
-            }else{
-              levels = LEVELS_INFO?.level_1
-            }
-        });
-        return {
-          levels,
-          requirements
-        }
-    }
+  getLevel1Requirement() {
+    // let levelData = {
+    //   name:"level_1",
+    //   requirements:[
+    //     "contact",
+    //     "location",
+    //     "identity"
+    //   ]
+    // }
+
+      // const user = this.user
+
+
+      // let requirements = []
+      // let levels = {} 
+      // res.requirements.forEach(requeriment => {
+      //     if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+      //       requirements.push(requeriment)
+      //     }
+      // });
+      // return {
+      //   name:res.name,
+      //   levels,
+      //   requirements
+      // }
   }
+
+
+  async createRequirementLevel(level) {
+
+
+    let levelRequirement
+    levelRequirement = await this.getNextLevel()
+
+    // const refactorLevelRequirement = {
+    //   level_1:this.getLevel1Requirement
+    // }
+
+
+
+    console.log('createRequirementLevel', levelRequirement)
+    debugger
+ 
+
+
+  }
+
+
+  // let requirements = []
+  // let levels = {} 
+  // res.requirements.forEach(requeriment => {
+  //     if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+  //       requirements.push(requeriment)
+  //     }
+  //     if(res?.name === 'level_1'){
+  //         levels = {
+  //             ...levels, 
+  //             [requeriment]:LEVELS_INFO[res?.name][requeriment]
+  //         }
+  //     }else{
+  //       levels = LEVELS_INFO?.level_1
+  //     }
+  // });
+  // return {
+  //   name:res.name,
+  //   levels,
+  //   requirements
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
  
@@ -290,7 +345,7 @@ export class IndetityService extends WebService {
 
     // let url = `${IdentityApIUrl}users/${userId}/biometric`;
     // this.getNextLevel()
-    // let url = `${IdentityApIUrl}users/${userId}/userLevel`;
+    // let url = `${IdentityApIUrl}users/${userId}/userLevel?country="international"`;
 
     // FORM INPUTS LOCATION
     // let url = `${IdentityApIUrl}countries`;

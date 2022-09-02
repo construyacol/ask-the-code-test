@@ -32,14 +32,23 @@ const ButtonContaniner = styled.div`
 
 
 // osDevice
-const ControlButton = ({ loader, formValidate, label, handleAction, id, inputProps }) => {
+const ControlButton = ({ 
+  loader=undefined, 
+  formValidate, 
+  label, 
+  handleAction, 
+  id=undefined, 
+  inputProps=undefined ,
+  className="",
+  type="primary"
+}) => {
 
   const { osDevice } = useSelector((state) => state?.ui);
 
   return (
     <ControlsContainer
       id="controlsContainer"
-      className={`${loader ? "loader" : ""} ${osDevice}`}
+      className={`${loader ? "loader" : ""} ${osDevice} ${className}`}
     >
       {loader && (
         <LoaderContainer>
@@ -48,7 +57,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id, inputPro
       )}
       <InputButton
         label={label}
-        type="primary"
+        type={type}
         id={id}
         active={formValidate}
         handleAction={(e) => {
@@ -64,7 +73,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id, inputPro
 export const InputButton = (props) => {
   // Este es el cta por default
   //clase large => "width:200px !important"
-
+ 
   return (
     <InputButtonCont>
       <input
@@ -129,12 +138,21 @@ const ControlsContainer = styled.div`
   justify-self: center;
   align-self: center;
 
+
   &.loader::after {
     content: "";
     background: rgb(255, 255, 255, 0.8);
     width: 100%;
     height: 100%;
     position: absolute;
+  }
+
+  &.settingButton{
+    input{
+      font-size: 14px !important;
+      height: fit-content;
+      padding: 12px 18px;
+    }
   }
 
   @media screen and (max-width: 768px) {

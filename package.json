@@ -92,13 +92,17 @@
     "extends": "react-app"
   },
   "browserslist": [
-    ">0.2%", 
+    ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
   ],
   "devDependencies": {
     "@node-minify/clean-css": "^6.1.0",
+    "@types/loadable__component": "^5.13.4",
+    "@types/lodash": "^4.14.184",
+    "@types/react-redux": "^7.1.24",
+    "@types/react-router-dom": "^5.3.3",
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",

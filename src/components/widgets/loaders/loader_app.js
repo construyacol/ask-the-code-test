@@ -97,8 +97,8 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
 
     const verificationStatus = coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {
-      await actions.addNotification("security", null, 1);
-      await history.push("/security");
+      // await actions.addNotification("security", null, 1);
+      await history.push("/settings");
       return actions.isAppLoaded(true);
     }
 

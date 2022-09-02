@@ -7,12 +7,11 @@ const UI_NAME_TITLE = {
     wallets:"Billeteras",
     withdraw_accounts:"Cuentas de retiro",
     referral:"Referidos",
-    security:"Centro de seguridad",
+    settings:"Ajustes",
     activity:"Actividad",
     deposit:"Depositar",
     withdraw:"Retirar",
     swap:"Intercambiar"
-
 }
 
 export default function TitleSection({ 
@@ -21,17 +20,13 @@ export default function TitleSection({
     children, 
     className = "",
     subMenuRef,
+    subTitle
     // ...props
 }) {
 
     const params = useParams()
     const key = titleKey || params.primary_path
     const title = UI_NAME_TITLE[key] || key
-    // console.log('|||||||||  TitleSection ==> ', props)
-
-    // const handleScroll = event => {
-    //     debugger
-    // }
    
     return(
         <TitleContainer 
@@ -41,7 +36,10 @@ export default function TitleSection({
             ref={subMenuRef}
         >
             <Title className={`fuente ${skeleton ? 'skeleton' : ''}`}>
-                <span>{skeleton ? 'Loading module' : title}</span>
+                <span className={`${subTitle ? '_breadCrumbParent' : ''}`}>{skeleton ? 'Loading module' : title}</span>
+                {
+                    subTitle && <span className={`_mainBreadCrumb`}>{subTitle}</span>
+                }
             </Title>
             {children}
         </TitleContainer>
@@ -147,6 +145,10 @@ const TitleContainer = styled(Container)`
     ._breadCrumbChild{
         font-size:24px;
         font-weight: bold;
+    }
+
+    ._mainBreadCrumb{
+        margin-left: 7px; 
     }
 
 `
