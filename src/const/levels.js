@@ -1,11 +1,23 @@
 export const LEVELS_DATA = {
     level_1:{
         value:"level_1",
+        name:"level_1",
         uiName:"Nivel 1",
-        requeriments:[]
+        // requirements:["defaultRequirement"],
+        requirements:["contact", "location", "identity"],
+        itemsMenu:{
+            location:{
+                uiName:"Contacto y residencia"
+            },
+            identity:{
+                uiName:"Identidad personal"
+            }
+        }
     },
     level_2:{
-        uiName:"2"
+        uiName:"2",
+        value:"level_2",
+        name:"level_2"
     }
 }
 

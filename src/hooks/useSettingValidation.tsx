@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 import { useActions } from "hooks/useActions";
+// import { mainService } from 'services/MainService'
+
 
 
 export const useSettingValidation = () => {
@@ -16,7 +18,8 @@ export const useSettingValidation = () => {
     }
 
     const identity = ():boolean => {
-        // if(user?.security_center?.transactionSecurity["2fa"]?.enabled) return true;
+        const { file_state, info_state } = user?.identity
+        if(file_state === 'accepted' && info_state === 'accepted') return true;
         return false
     }
 

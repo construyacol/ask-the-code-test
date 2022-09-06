@@ -10,7 +10,7 @@ import {
   // fileTest,
   // selfietest
 } from "../const/const";
-// import { LEVELS_DATA } from '../const/levels'
+import { LEVELS_DATA } from '../const/levels'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
@@ -28,13 +28,13 @@ const {
 
 export class IndetityService extends WebService {
 
-
   async getNextLevel() {
     const body = {
       "data": {
         "country":"international", 
       }
-    } 
+    }
+
     const { data, error } = await this._Post(`${IdentityApIUrl}levels/get-next-level`, body);
 
     if(error) return error;
@@ -53,64 +53,61 @@ export class IndetityService extends WebService {
  
 
 
-  getLevel1Requirement() {
-    // let levelData = {
-    //   name:"level_1",
-    //   requirements:[
-    //     "contact",
-    //     "location",
-    //     "identity"
-    //   ]
-    // }
+  getLevelRequirement(level) {
+    
+    let levelData = {}
+    if(!level)throw new Error('No se pudo obtener el level requirement');
 
-      // const user = this.user
+    if(["string"].includes(typeof level) && LEVELS_DATA[level]){
+      // se provee la información por default ya que la solicitada(currentLevelView) no corresponde a la información provista por getNextLevel o el endpoint retorno algun error
+      levelData = {
+        ...LEVELS_DATA[level]
+      }
+    }else{
+      if(!LEVELS_DATA[level.name])return;
+      levelData = {
+        ...LEVELS_DATA[level.name],
+        ...level
+      }
+    }
 
+    const user = this.user
 
-      // let requirements = []
-      // let levels = {} 
-      // res.requirements.forEach(requeriment => {
-      //     if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
-      //       requirements.push(requeriment)
-      //     }
-      // });
-      // return {
-      //   name:res.name,
-      //   levels,
-      //   requirements
-      // }
+    let pendingRequirements = []
+    levelData.requirements.forEach(requirement => {
+        // getCondition by levelname => pending to refactor
+        if(!user[requirement] ||  (requirement === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+          // pending to refactor conditional laws 
+          pendingRequirements.push(requirement)
+        }
+    });
+
+    return {
+      ...levelData,
+      pendingRequirements
+    }
+
   }
 
 
-  async createRequirementLevel(level) {
-
-
-    let levelRequirement
-    levelRequirement = await this.getNextLevel()
-
-    // const refactorLevelRequirement = {
-    //   level_1:this.getLevel1Requirement
-    // }
-
-
-
-    console.log('createRequirementLevel', levelRequirement)
-    debugger
- 
-
-
+  async createRequirementLevel(levelName) {
+    let nextLevelData = await this.getNextLevel()
+    const { error } = nextLevelData
+    let levelRequirement = (error || ![nextLevelData.name].includes(levelName)) ? levelName : nextLevelData 
+    return this.getLevelRequirement(levelRequirement)
   }
 
 
   // let requirements = []
   // let levels = {} 
-  // res.requirements.forEach(requeriment => {
-  //     if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
-  //       requirements.push(requeriment)
+  // res.requirements.forEach(requirement => {
+  //     if(!user[requirement] ||  (requirement === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+  //       requirements.push(requirement)
   //     }
   //     if(res?.name === 'level_1'){
   //         levels = {
   //             ...levels, 
-  //             [requeriment]:LEVELS_INFO[res?.name][requeriment]
+  //             [requirement]:LEVELS_INFO[res?.name][requirement]
   //         }
   //     }else{
   //       levels = LEVELS_INFO?.level_1

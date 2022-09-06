@@ -19,7 +19,7 @@ import {
 import RenderAuxComponent from 'components/forms/widgets/renderAuxComponent'
 
 
-const getIcon = (iconValue:string) => {
+const getIcon = (iconValue:string | undefined) => {
     const icons = {
         email:IoMailUnreadOutline,
         twofa:BsShieldLock,
@@ -37,7 +37,7 @@ const SettingElement = (props:settingType) => {
 
     const IconVerified = isCompleted ? FiCheckCircle : FiAlertCircle;
     const uiState = isCompleted ? itemElement?.states?.uiEnabled : itemElement?.states?.uiDisabled;
-    const IconSetting = getIcon(itemElement?.value) || IconVerified
+    const IconSetting = getIcon(itemElement.value) || IconVerified
 
 
     return( 

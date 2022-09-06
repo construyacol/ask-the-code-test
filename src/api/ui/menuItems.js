@@ -186,9 +186,9 @@ export const settingsMenu = {
     uiName:"Seguridad",
     value:"security"
   },
-  identity:{
+  kyc:{
     uiName:"Verificación de cuenta",
-    value:"identity"
+    value:"kyc"
   },
   // security:{
   //   uiName:"Seguridad",

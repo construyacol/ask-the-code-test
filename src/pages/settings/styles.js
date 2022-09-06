@@ -2,6 +2,141 @@ import styled from 'styled-components'
 import { Link } from "react-router-dom";
 
 
+export const SettingsContent = styled.div`
+    height:auto;
+    position: sticky;
+    top: 50px;
+`
+
+export const ContactLocationContent = styled.div`
+    display:grid;
+    row-gap: 22px;
+`
+
+export const ContactLocationItem = styled.div`
+    row-gap: 4px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+
+     &.isEditable:hover{
+        ._editButton{
+            display:flex;
+        }
+     }
+
+    .contactLocationData,
+    .contactLocationKey{
+        grid-column: 1 / 2;
+        margin:0;
+        color:var(--paragraph_color);
+        &.contactLocationData{
+            font-size:15px;
+        }
+        &.contactLocationKey{
+            font-size:13px;
+        }
+    }
+
+    &.isEditable:hover{
+        cursor:pointer;
+        
+    }
+`
+
+
+export const EditButton = styled.div`
+    height:100%;
+    display: flex;
+    align-items: center;
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    column-gap:5px;
+    display:none;
+
+    .edit_p{
+        margin: 0;
+        font-size: 11px;
+    }
+    
+    &:hover{
+
+        & ~.contactLocationKey,
+        & ~.contactLocationData{
+            color:var(--primary);
+        }
+        svg{
+            fill: var(--primary);
+        }
+        .edit_p{
+            color:var(--primary);
+        }
+    }
+`
+
+
+
+
+export const KycContentLayout = styled.div`
+    h3{
+        color:var(--paragraph_color);
+        margin:0 0 35px;
+    }
+`
+
+export const ItemRequirementMenu = styled.div`
+
+    padding:0 15px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    position:relative;
+
+    p{
+        color:var(--paragraph_color);
+        font-size: 15px;
+    }
+
+    &.isActive{
+        border-bottom:2px solid var(--primary);
+        p{
+            color:var(--primary);
+        }
+    }
+
+    &.disabled{
+        cursor: auto;
+        p{
+            color:var(--skeleton_color);
+        }
+    }
+
+    &::after{
+      content:"";
+      position:absolute;
+      top:0;
+      right:0;
+      width:100%;
+      height:100%;
+      background:transparent;
+    }
+`
+
+export const RequirementMenu = styled.menu`
+    height:50px;
+    width:100%;
+    background:#f4f4f6;
+    margin: 0;
+    padding: 0;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    display: flex;
+    column-gap: 10px;
+    margin-top: 10px;
+
+    position: sticky;
+    top: 60px;
+`
+
+
 export const LevelDescriptionContent = styled.div`
     display: grid;
     row-gap: 3px;
@@ -68,19 +203,21 @@ export const LevelContent = styled.div`
 
 export const LevelsContainer = styled.div`
     display:grid;
-    column-gap:20px;
+    column-gap:25px;
     grid-template-columns: repeat(auto-fill, minmax(auto, 215px));
+    min-height:85px;
 `
 
 export const IdentityContent = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;
+    row-gap: 30px;
 `
 
 export const IdentityContainer = styled.div`
     display:grid;
-    grid-template-columns:1fr auto;
+    grid-template-columns: 1fr minmax(250px, 320px);
     column-gap:20px;
 `
 
@@ -89,8 +226,11 @@ export const BenefitsContainer = styled.div`
     padding: 20px 20px;
     height: fit-content;
     min-height: 200px;
-    max-width: 270px;
-    width: 90vw;
+    width: calc(100% - 40px);
+    border-radius:6px;
+
+    position: sticky;
+    top: 70px;
 
     ul{
         padding:0;
@@ -111,6 +251,7 @@ export const ItemBenefit = styled.li`
     column-gap: 10px;
     p{
         font-size:14px;
+        margin:10px 0;
     }
 `
 
@@ -192,7 +333,7 @@ export const SecurityLayout = styled(ContentSectionLayout)`
     row-gap:10px;
 `
 
-export const IdentityLayout = styled(ContentSectionLayout)`
+export const KycLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
     grid-template-rows:120px 1fr;
     row-gap:20px;

@@ -5,7 +5,8 @@ import { settingsMenu } from 'api/ui/menuItems'
 import { 
     ContentLayout, 
     SettingsMenuContainer, 
-    ItemMenu
+    ItemMenu,
+    SettingsContent
 } from './styles'
 import { IoMdFingerPrint } from 'react-icons/io';
 // import { VscVerified } from 'react-icons/vsc';
@@ -54,32 +55,32 @@ export default SettingsComponent
 
 const ContentSection = ({ currentSection }:{ currentSection?:string }) => {
     return(
-            <SwitchView
+            <RenderComponent
                 currentSection={currentSection}
             />
     )
 }
 
 
-const IdentityView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/identityView"), { fallback: <div>Cargando identity...</div> });
+const KycView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/kycView"), { fallback: <div>Cargando kyc...</div> });
 const SecurityView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/securityView"), { fallback: <div>Cargando Security...</div> });
 
 
-const SwitchView = (props:any) => {
+const RenderComponent = (props:any) => {
     const { currentSection } = props
     let View = currentSection as Element
     const Views = {
-      identity: <IdentityView {...props} />, 
+      kyc: <KycView {...props} />, 
       security: <SecurityView {...props} />
     };
-    return Views[View] || <div></div>;
+    return Views[View] || <div>No hay vista disponible</div>;
 };
 
 
 const getIcon = (iconValue:string) => {
     const icons = {
         security:BsShieldLock,
-        identity:IoMdFingerPrint
+        kyc:IoMdFingerPrint
     }
     return icons[iconValue as keyof typeof icons]
 }
@@ -89,30 +90,32 @@ const SettingsMenuComponent = (props:any) => {
     const { currentSection } = props
 
     return(
-        <SettingsMenuContainer>
-            {
-                Object.keys(settingsMenu).map((itemKey, index) => {
+        <SettingsMenuContainer> 
+            <SettingsContent>
+                {
+                    Object.keys(settingsMenu).map((itemKey, index) => {
 
-                    const itemMenu = settingsMenu[itemKey as keyof typeof settingsMenu]
-                    const Icon = getIcon(itemKey)
-                    const isSelected = currentSection === itemKey
-                    const iconSize = ["identity"].includes(itemKey) ? 20 : 18 
+                        const itemMenu = settingsMenu[itemKey as keyof typeof settingsMenu]
+                        const Icon = getIcon(itemKey)
+                        const isSelected = currentSection === itemKey
+                        const iconSize = ["kyc"].includes(itemKey) ? 20 : 18 
 
-                    return(
-                        <ItemMenu 
-                            key={index} 
-                            className={`${isSelected ? 'selected' : ''}`}
-                            to={`/settings/${itemKey}`}
-                        >
-                            <Icon 
-                                size={iconSize} 
-                                color={isSelected ? "var(--primary)" : "var(--paragraph_color)"} 
-                            />
-                            <p className='fuente'>{itemMenu?.uiName}</p>
-                        </ItemMenu>
-                    )
-                })
-            }
+                        return(
+                            <ItemMenu 
+                                key={index} 
+                                className={`${isSelected ? 'selected' : ''}`}
+                                to={`/settings/${itemKey}`}
+                            >
+                                <Icon 
+                                    size={iconSize} 
+                                    color={isSelected ? "var(--primary)" : "var(--paragraph_color)"} 
+                                />
+                                <p className='fuente'>{itemMenu?.uiName}</p>
+                            </ItemMenu>
+                        )
+                    })
+                }
+            </SettingsContent>
         </SettingsMenuContainer>
     )
 }

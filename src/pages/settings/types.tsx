@@ -22,7 +22,7 @@ export type settingType = {
 
 
 export type levelData = {
-    value?:string,
+    name?:string,
     uiName?:string,
     requeriments?:Object
 }
