@@ -134,7 +134,7 @@ const SelectListComponent = ({
     max-width: 700px;
     perspective: 2000px;
     perspective-origin: center top;
-
+    
     &.skeleton{
       width: 100vw;
       align-self: flex-start;

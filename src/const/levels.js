@@ -5,6 +5,9 @@ export const LEVELS_DATA = {
         uiName:"Nivel 1",
         // requirements:["defaultRequirement"],
         requirements:["contact", "location", "identity"],
+        // uiMessages:{
+
+        // },
         itemsMenu:{
             location:{
                 uiName:"Contacto y residencia"
@@ -27,7 +30,6 @@ export const LEVELS_DATA = {
 //     level_1:{
 //         identity:{
 //             uiName:"Identidad",
-//             pending:"Envía y verifica tus datos de identidad.",
 //             confirmed:"Estamos verificando tu identidad, este proceso puede tardar hasta 72 horas hábiles.",
 //             accepted:"Tu cuenta está verificada.",
 //             rejected:"Ocurrió un error, vuelve a enviar tus datos de identidad.",

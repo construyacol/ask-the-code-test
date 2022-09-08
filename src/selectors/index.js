@@ -1,5 +1,7 @@
 import { createSelector } from "reselect";
-import { getIdentityState } from 'utils'
+import { 
+  getIdentityState
+} from 'utils'
 import { UI_NAMES } from 'const/uiNames'
 
 
@@ -31,13 +33,16 @@ export const selectWithdrawProvidersByName = createSelector(
 
 
   export const selectAvailableIdentities = createSelector(
-    (state) => state.modelData.user.identities,
+    (state) => state?.modelData?.user?.identities,
     (identities) => {
-      if(!identities?.length)return ; 
+
+      if(!identities?.length)return [ undefined, false ]; 
       let createNewId = true
       let userIdentities = {}
       identities.forEach(userIdentity => { 
+        
         const identityState = getIdentityState(userIdentity)
+
         if(["pending", "confirmed"].includes(identityState))createNewId = false;
         if(["accepted", "confirmed"].includes(identityState)){
           userIdentities = { 

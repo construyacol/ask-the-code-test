@@ -17,7 +17,10 @@ import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { UI_NAMES } from '../const/uiNames'
-import { getIdentityState } from '../utils'
+import { 
+  // getAvailableIdentityState, 
+  getIdentityState 
+} from '../utils'
 import userDefaultModel from "api/userDefault";
 
 
@@ -53,7 +56,7 @@ export class IndetityService extends WebService {
  
 
 
-  getLevelRequirement(level) {
+  getLevelRequirement(level = "level_1") {
     
     let levelData = {}
     if(!level)throw new Error('No se pudo obtener el level requirement');
@@ -83,7 +86,7 @@ export class IndetityService extends WebService {
     });
 
     return {
-      ...levelData,
+      ...levelData, 
       pendingRequirements
     }
 
@@ -203,7 +206,7 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
-
+        
         let isThereOneRejectedIdentity = false
         documentList.forEach(_document => {
           // console.log("userIdentities", userIdentities[_document?.id_type] , _document)

@@ -82,10 +82,10 @@ export const ApiPostLocation = async(payload) => {
   const res = await mainService.createLocation({data:payload})
   if(!res)return ;
   await mainService.fetchCompleteUserData()
-  const reqData = await mainService.createRequirementLevel()
+  const reqData = await mainService.getLevelRequirement()
   if(reqData){
-    const { requirements } = reqData
-    return requirements[0]
+    const { pendingRequirements } = reqData
+    return pendingRequirements[0]
   }
   return res
 }

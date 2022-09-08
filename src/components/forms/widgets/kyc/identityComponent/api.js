@@ -285,15 +285,7 @@ export const ApiPostIdentityInfo = async(payload) => {
   if(error){
     return toast(getUiError(error?.message), "error");
   }
-
   return await mainService.fetchCompleteUserData()
-
-  // const reqData = await mainService.createRequirementLevel()
-  // if(reqData){
-  //   const { requirements } = reqData
-  //   return requirements[0]
-  // }
-  // return res
 }
 
 

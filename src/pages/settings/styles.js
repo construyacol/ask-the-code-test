@@ -1,5 +1,52 @@
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
+import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
+
+
+
+// export const InProcessRejectMessageCont = styled.div`
+//     position:absolute;
+//     display: grid;
+//     align-self: center;
+//     justify-items: center;
+//     p{
+//         text-align:center;
+//         color:var(--paragraph_color);
+//         max-width:500px;
+//     }
+// `
+
+
+export const FloatContainer = styled.div`
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background: #f9f9fbcf;
+    backdrop-filter: blur(5px);
+    height: 100%;
+    display: flex;
+    place-content: center;
+    height: 100%;
+    z-index:1;
+    .isActived{
+        transform:scale(1);
+    }
+`
+
+
+export const EmptyStateLayout = styled.div`
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 15px;
+
+    p{
+        text-align:center;
+        color:var(--paragraph_color);
+        max-width: 650px;
+    }
+`
 
 
 export const SettingsContent = styled.div`
@@ -11,6 +58,7 @@ export const SettingsContent = styled.div`
 export const ContactLocationContent = styled.div`
     display:grid;
     row-gap: 22px;
+    position:relative;
 `
 
 export const ContactLocationItem = styled.div`
@@ -39,7 +87,6 @@ export const ContactLocationItem = styled.div`
 
     &.isEditable:hover{
         cursor:pointer;
-        
     }
 `
 
@@ -81,6 +128,12 @@ export const KycContentLayout = styled.div`
         color:var(--paragraph_color);
         margin:0 0 35px;
     }
+
+    &.identity,
+    &.contact,
+    &.location{
+        position:relative;
+    }
 `
 
 export const ItemRequirementMenu = styled.div`
@@ -89,6 +142,15 @@ export const ItemRequirementMenu = styled.div`
     cursor:pointer;
     border-bottom:2px solid transparent;
     position:relative;
+
+    &.skeleton{
+        p{
+            background: var(--skeleton_color);
+            color: var(--skeleton_color);
+            border-radius: 3px;
+            ${OnlySkeletonAnimation};
+        }
+    }
 
     p{
         color:var(--paragraph_color);
@@ -150,6 +212,12 @@ export const LevelContent = styled.div`
     border-left: 4px solid var(--primary);
     transform: scale(1);
 
+    &.skeleton{
+        background:var(--skeleton_color);
+        border-left: 4px solid transparent;
+        ${OnlySkeletonAnimation};
+    }
+
     &.enabled{
         box-shadow: 3px 3px 6px 2px rgba(0,0,0,0.07);
         grid-template-columns: auto 1fr;
@@ -167,7 +235,6 @@ export const LevelContent = styled.div`
     }
 
     &.isActived{
-        transform: scale(1.05);
         transition: .3s;
         transform-origin: center;
     }
@@ -213,6 +280,7 @@ export const IdentityContent = styled.div`
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;
     row-gap: 30px;
+    position:relative;
 `
 
 export const IdentityContainer = styled.div`

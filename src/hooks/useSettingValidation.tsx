@@ -18,7 +18,8 @@ export const useSettingValidation = () => {
     }
 
     const identity = ():boolean => {
-        const { file_state, info_state } = user?.identity
+        const file_state = user?.identity?.file_state
+        const info_state = user?.identity?.info_state
         if(file_state === 'accepted' && info_state === 'accepted') return true;
         return false
     }

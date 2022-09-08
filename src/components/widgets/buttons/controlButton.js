@@ -149,9 +149,9 @@ const ControlsContainer = styled.div`
 
   &.settingButton{
     input{
-      font-size: 14px !important;
+      font-size: 15px !important;
       height: fit-content;
-      padding: 12px 18px;
+      padding: 14px 18px;
     }
   }
 

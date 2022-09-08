@@ -12,12 +12,21 @@ import {
     KycContentLayout,
     ContactLocationItem,
     ContactLocationContent,
-    EditButton
+    EditButton,
+    EmptyStateLayout,
+    FloatContainer,
+    // InProcessRejectMessageCont
 } from './styles'
 import SettingElement from './settingElement'
-import { itemElement, levelData } from './types'
-import { useSettingValidation, useSettingsActions } from 'hooks/useSettingValidation'
-import { isEmpty, merge } from 'lodash'
+import { 
+    itemElement, 
+    // levelData 
+} from './types'
+import { 
+    useSettingValidation, 
+    // useSettingsActions 
+} from 'hooks/useSettingValidation'
+import { isEmpty, merge, zipObject } from 'lodash'
 import { useSelector } from "react-redux";
 import { 
     FiCheckCircle, 
@@ -31,9 +40,11 @@ import { LEVELS_DATA } from 'const/levels'
 import { BiEdit } from "react-icons/bi";
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
 import { selectAvailableIdentities } from 'selectors'
+import { useActions } from "hooks/useActions";
+import ControlButton from "components/widgets/buttons/controlButton";
+import { getIdentityState } from 'utils'
+import { getCdnPath } from 'environment'
 
-
-// import ControlButton from "components/widgets/buttons/controlButton";
 
 
 const IDENTITY_ELEMENTS = {
@@ -74,7 +85,6 @@ type levelRequirements = {
 //     currentSection?:string
 // }
 
-
 const KycView = (props:any) => {
  
     const validations = useSettingValidation()
@@ -83,11 +93,9 @@ const KycView = (props:any) => {
         <KycLayout>
             {
                 Object.keys(IDENTITY_ELEMENTS).map((element, index) => {
-
                     const itemElement:itemElement = IDENTITY_ELEMENTS[element as keyof typeof IDENTITY_ELEMENTS]
                     const isCompleted = validations[element as keyof typeof validations] ? validations[element as keyof typeof validations]() : false
                     // const isCompleted = true
-
                     return <SettingElement
                         key={index}
                         itemElement={itemElement}
@@ -107,14 +115,14 @@ const KycView = (props:any) => {
                     />
                 })
             }
-
             <IdentityComponent/>
-            
         </KycLayout>
     )
 }
 
 export default KycView
+
+
 
  
 const IdentityComponent = () => {
@@ -122,13 +130,17 @@ const IdentityComponent = () => {
     const icons = {
         "level_1":GoLocation
     }
-
     const [ currentLevelView ] = useState("level_1")
     const [ currentSection, setCurrentSection ] = useState<string>()
     const [ levelRequirements, setLevelRequirements ] = useState<levelRequirements>()
     const [ coinsendaServices ] = useCoinsendaServices();
+    const { user  } = useSelector(({ modelData }:any) => modelData);
+    const identityState = getIdentityState(user?.identity)
+
+    // console.log('identityState', identityState)
+    // const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
+    
     // const [ loader, setLoader ] = useState(true)
- 
     // const settingActions = useSettingsActions()
 
     const initSections = async() => {
@@ -138,17 +150,6 @@ const IdentityComponent = () => {
         const requirementList = isEmpty(pendingRequirements) ? requirements : pendingRequirements
         const _currentSection = ["location", "contact"].includes(requirementList[0]) ? "location" : requirementList
         setCurrentSection(_currentSection)
-        //     setLoader(false)
-        //     await coinsendaServices.proofEndpoints()
-        //     debugger
-        //     // if(res){
-        //         // setLoading(true)
-        //         // const { requirements } = res
-        //         // const currentRequirement = requirements[0]
-        //         // const Element = await import(`../kyc/${currentRequirement}Component/init`)
-        //         // eslint-disable-next-line react/jsx-pascal-case
-        //         // actions.renderModal(() => <Element.default/>)
-        //     // }
     }
 
     useEffect(() => {
@@ -156,14 +157,23 @@ const IdentityComponent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // console.log('pendingRequirements', levelRequirements?.pendingRequirements[0])
     
     return(
         <IdentityContainer>
             <IdentityContent className="_identityContent">
+
                 <LevelsContainer>
                     {
                        !levelRequirements ?
-                        <p>Cargando...</p>
+                        ["1", "2"].map((levelSkeleton, index) => {
+                            return(
+                                <LevelContent
+                                    key={index}
+                                    className="skeleton"
+                                />
+                            )
+                        })
                        :
                        Object.entries(LEVELS_DATA).map((level, index) => {
 
@@ -174,7 +184,7 @@ const IdentityComponent = () => {
                             const LevelIcon = icons[levelKey as keyof typeof icons]
                             const isActive = currentLevelView === levelKey
 
-                            return(
+                            return( 
                                 <LevelContent 
                                 key={index}
                                 className={`${disabled ? 'disabled' : 'enabled'} ${isActive ? "isActived" : ""} `}
@@ -199,7 +209,18 @@ const IdentityComponent = () => {
 
                 {
                     !levelRequirements || !currentSection ?
-                    <p>Cargando...</p>
+                    <RequirementMenu>
+                        {
+                            ["1", "2"].map((item, index) => {
+                                return(
+                                    <ItemRequirementMenu className="skeleton">
+                                        <p>-----  Skeleton  -----</p>
+                                    </ItemRequirementMenu>
+                                )
+                            })
+
+                        }
+                    </RequirementMenu>
                    :
                     <RequirementMenuComponent
                         // currentLevelView={currentLevelView}
@@ -211,12 +232,21 @@ const IdentityComponent = () => {
 
                 <KycContentLayout className={`_layout ${currentSection || ''}`}>
                     {
-                        levelRequirements && currentSection &&
-                        <RenderComponent 
-                            component={currentSection}
-                            currentSection={currentSection}
-                            levelRequirements={levelRequirements}
-                        />
+                        (["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) &&
+                            <FloatContainer>
+                                <EmptyOrInProcessState 
+                                    levelRequirements={levelRequirements}
+                                    identityState={identityState}
+                                />
+                            </FloatContainer>
+                    }
+                    {
+                        (levelRequirements && currentSection) &&
+                            <RenderComponent 
+                                component={currentSection}
+                                currentSection={currentSection}
+                                levelRequirements={levelRequirements}
+                            />
                     }
                 </KycContentLayout>
 
@@ -229,19 +259,98 @@ const IdentityComponent = () => {
 }
 
 
+
+
+const getUiCopy = (copyKey:string) => {
+    let copys = {
+        contact:"contacto y residencia",
+        location:"contacto y residencia",
+        identity:"identidad",
+        rejected:"Tu cuenta NO fue aprobada, vuelve a enviar tus datos de identidad...",
+        confirmed:"Estamos verificando tu identidad, este proceso puede tardar hasta 72 horas hábiles.",
+        ctaInitial:"Verifica tu cuenta",
+        ctaContinue:"Continuar la verificación",
+        ctaTry:"Continuar la verificación",
+        ctaDefault:"Continuar la verificación"
+    }
+
+    return copys[copyKey as keyof typeof copys]
+}
+
+
+const EmptyOrInProcessState = (props:any) => {
+
+    const actions = useActions()
+    const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
+    const { identityState } = props
+
+    const ctaUiLabel = ["contact"].includes(currentPendingRequirement) ? "ctaInitial":
+    ["location"].includes(currentPendingRequirement) ? "ctaContinue" :
+    ["rejected"].includes(identityState) && ["identity"].includes(currentPendingRequirement) ? "ctaTry" : "ctaDefault"
+
+    const imgName =  identityState && (["confirmed"].includes(identityState) ? "fingerprint.gif" : "error.gif");
+
+    const handleAction = async() => {
+        const Element = await import(`components/forms/widgets/kyc/${currentPendingRequirement}Component/init`)
+        // eslint-disable-next-line react/jsx-pascal-case
+        actions.renderModal(() => <Element.default/>)
+    }
+
+
+    return(
+        <EmptyStateLayout>
+            {
+                (identityState && ["rejected", "confirmed"].includes(identityState)) ?
+                <>
+                    <img src={`${getCdnPath('assets')}${imgName}`}  alt="" width={75} height={75} />
+                    <p className="fuente">{getUiCopy(identityState)}</p>
+                </>
+                :
+                <>
+                    <p className="fuente emptyStateCopy_p">Completa tus datos de {`${currentPendingRequirement ? getUiCopy(currentPendingRequirement) : "__"}`}  para continuar con el proceso de verificación de tu cuenta</p>
+                    <ControlButton
+                        label={getUiCopy(ctaUiLabel)}
+                        handleAction={handleAction} 
+                        // type={isCompleted ? "secundary" : "primary"}
+                        // loader={undefined} 
+                        formValidate={true}
+                        className="settingButton"
+                    />
+                </>
+            }
+        </EmptyStateLayout>
+    )
+}
+
+
+
+
 const ContactLocationComponent = (props:any) => {
 
     // const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const contactLocationData = merge(user?.contact, user?.location)
 
+    // console.log('||||||||| ContactLocationComponent ==> ', props?.levelRequirements?.pendingRequirements[0])
+
+    // FloatContainer
+
     return(
         <>
             <h3 className="fuente">
                 Datos de contácto y residencia 
             </h3>
-            <ContactLocationContent>
-                {
+
+            <ContactLocationContent> 
+
+                {/* {
+                    currentPendingRequirement &&
+                        <FloatContainer>
+                            <EmptyState {...props}/>
+                        </FloatContainer>
+                } */}
+
+                {   
                     contactLocationData &&
                         Object.entries(contactLocationData).map((item, index) => {
                             const itemKey = item[0];
@@ -285,9 +394,7 @@ const IdentityListComponent = (props:any) => {
     // const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
     // const { user  } = useSelector(({ modelData }:any) => modelData);
     // const contactLocationData = merge(user?.contact, user?.location)
-
     const [ userIdentities, createNewId ] = useSelector((state) => selectAvailableIdentities(state));
-
     // console.log('||||||||||| userIdentities', userIdentities, createNewId)
 
     return(
@@ -295,6 +402,8 @@ const IdentityListComponent = (props:any) => {
             <h3 className="fuente">
                 Documentos de identidad
             </h3>
+
+            
             <SelectListContainer>
 
                 <ItemListComponent 
@@ -353,7 +462,7 @@ const RenderComponent = (props:any) => {
 
 
 
-
+ 
 const RequirementMenuComponent = (props:requirementMenuTypes) => {
 
     const {
@@ -378,14 +487,17 @@ const RequirementMenuComponent = (props:requirementMenuTypes) => {
                     let menuKey = itemMenu[1]
                     if(["contact"].includes(menuKey))return null
                     const isActive = currentSection?.includes(menuKey) && true
-                    const isDisabled = !isActive && !isEmpty(pendingRequirements)
+                    const isDisabled = pendingRequirements.length <= 1 ? false : (!isActive && zipObject(pendingRequirements)?.hasOwnProperty(menuKey))
+
+                    // console.log("---- pendingRequirements", menuKey, isActive, isDisabled)
+                    // console.log("---- pendingRequirements", pendingRequirements.length)
 
                     return(
                         <ItemRequirementMenu 
                             key={index} 
                             className={`${menuKey} ${isActive ? 'isActive' : ''} ${isDisabled ? 'disabled' : ''}`} 
                             data-id={menuKey}
-                            onClick={isEmpty(pendingRequirements) ? toogleSection : null}
+                            onClick={isDisabled ? null : toogleSection}
                         >
                             <p className="fuente">{itemsMenu[menuKey]?.uiName}</p>
                         </ItemRequirementMenu>

@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 // import { Wrapper as Layout } from '../../layout/styles'
 import KycSkeleton from './skeleton'
 import { identityInfo } from './identityUtils'
-// import { getIdentityState } from '../../../../../utils'
 // import { useSelector } from "react-redux";
 
 export default function IdentityComponent ({ handleDataForm, isNewId}) {
