@@ -39,16 +39,17 @@ const SettingElement = (props:settingType) => {
         itemElement, 
         isCompleted, 
         isLastElement,
-        AuxComponent
+        AuxComponent,
+        handleAction
     } = props
 
     const IconVerified = isCompleted ? FiCheckCircle : FiAlertCircle;
     const uiState = isCompleted ? itemElement?.states?.uiEnabled : itemElement?.states?.uiDisabled;
     const IconSetting = getIcon(itemElement.value) || IconVerified
 
-
+    
     return( 
-        <SettingElementLayout className={`${isLastElement ? '_lastElement' : ''}`}>
+        <SettingElementLayout className={`${isLastElement ? '_lastElement' : ''}`} onClick={handleAction || null}>
             <IconContainer className={`${isCompleted ? 'isActive' : ''}`}>
                 <IconSetting
                    color={isCompleted ? "var(--primary)" : "var(--paragraph_color)"} 

@@ -8,19 +8,18 @@ import { requirementMenuTypes } from './types'
 import { zipObject } from 'lodash'
 
 const RequirementMenuComponent = (props:requirementMenuTypes) => {
-
+  
     const {
         // currentLevelView,
         currentSection,
         levelRequirements,
-        setCurrentSection
+        setCurrentSection,
+        inProgressKyc
     } = props
     
-
     const toogleSection = (e:any) => {
         setCurrentSection(e?.target?.dataset?.id)
     }
-
 
     if(!levelRequirements || !currentSection){
         return(
@@ -41,9 +40,8 @@ const RequirementMenuComponent = (props:requirementMenuTypes) => {
                         
     let { itemsMenu, pendingRequirements, requirements } = levelRequirements
 
-
-    return(
-        <RequirementMenu>
+    return( 
+        <RequirementMenu className={`${inProgressKyc ? "inProgressKyc" : ""}`}>
             { 
                 requirements && Object.entries(requirements).map((itemMenu, index) => {
                     let menuKey = itemMenu[1]

@@ -58,7 +58,8 @@ const KycComponent = (props:any) => {
                         levelRequirements={levelRequirements}
                         currentSection={currentSection}
                         setCurrentSection={setCurrentSection}
-                    />
+                        inProgressKyc={(["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) ? true : false}
+                    /> 
 
                     {
                         (["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) &&

@@ -18,7 +18,8 @@ export type settingType = {
     isCompleted:boolean,
     isLastElement:boolean,
     AuxComponent?:any,
-    skeleton?:boolean
+    skeleton?:boolean,
+    handleAction?:any
 }
 
 
@@ -43,5 +44,6 @@ export type requirementMenuTypes = {
     // currentLevelView:string,
     levelRequirements?:levelRequirements,
     currentSection?:string,
-    setCurrentSection: React.Dispatch<React.SetStateAction<string | undefined>>
+    setCurrentSection: React.Dispatch<React.SetStateAction<string | undefined>>,
+    inProgressKyc?:boolean
 }

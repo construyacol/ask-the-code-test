@@ -199,9 +199,11 @@ export const RequirementMenu = styled.menu`
     display: flex;
     column-gap: 10px;
     margin-top: 10px;
-    z-index:2;
     position: sticky;
     top: 60px;
+    &.inProgressKyc{
+        z-index:2;
+    }
 `
 
 

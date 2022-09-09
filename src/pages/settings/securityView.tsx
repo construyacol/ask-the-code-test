@@ -56,6 +56,7 @@ const SecurityView = () => {
                     // const isCompleted = true
 
                     return <SettingElement
+                        handleAction={isMovilViewport ? settingActions[element as keyof typeof settingActions] : null}
                         key={index}
                         itemElement={itemElement}
                         isCompleted={isCompleted}

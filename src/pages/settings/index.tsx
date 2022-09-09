@@ -18,24 +18,33 @@ import { useSelector } from "react-redux";
 // Sub Dependences
 import loadable from "@loadable/component";
 import { getIdentityState } from 'utils'
+import useViewport from 'hooks/useWindowSize'
     
+
 type params = { settings_path?:string }
 // type Icons = { identity:any, security:any }
-
 
 
 const SettingsComponent = () => { 
 
     let history = useHistory();
     let { settings_path }:params = useParams();
+    const { isMovilViewport } = useViewport();
 
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const identityState = getIdentityState(user?.identity)
 
-    useEffect(() => {
-
+    const redirects = () => {
+        if(isMovilViewport)return;
         if(!settings_path && !["accepted"].includes(identityState)) history.push("/settings/kyc");
         else if(!settings_path) history.push("/settings/security");
+    }
+
+    useEffect(() => {
+
+        redirects()
+
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [settings_path])
 

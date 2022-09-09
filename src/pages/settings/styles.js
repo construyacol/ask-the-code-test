@@ -597,7 +597,5 @@ export const SettingsMenuContainer = styled.div`
         width: 100%;
         height: 100%;
         background: #f9f9fb;
-
-        display:none;
     }
 `
