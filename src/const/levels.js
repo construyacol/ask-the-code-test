@@ -5,9 +5,6 @@ export const LEVELS_DATA = {
         uiName:"Nivel 1",
         // requirements:["defaultRequirement"],
         requirements:["contact", "location", "identity"],
-        // uiMessages:{
-
-        // },
         itemsMenu:{
             location:{
                 uiName:"Contacto y residencia"

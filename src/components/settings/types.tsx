@@ -26,3 +26,21 @@ export type levelData = {
     uiName?:string,
     requeriments?:Object
 }
+
+
+export type levelRequirements = {
+    name:string,
+    uiName?:string,
+    value?:string,
+    requirements:string[],
+    pendingRequirements:string[],
+    itemsMenu?:any
+}
+
+
+export type requirementMenuTypes = {
+    // currentLevelView:string,
+    levelRequirements?:levelRequirements,
+    currentSection?:string,
+    setCurrentSection: React.Dispatch<React.SetStateAction<string | undefined>>
+}

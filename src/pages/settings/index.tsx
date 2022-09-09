@@ -9,26 +9,33 @@ import {
     SettingsContent
 } from './styles'
 import { IoMdFingerPrint } from 'react-icons/io';
-// import { VscVerified } from 'react-icons/vsc';
 
 import { BsShieldLock } from 'react-icons/bs';
 import { useEffect } from 'react';
 import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Sub Dependences
 import loadable from "@loadable/component";
-
+import { getIdentityState } from 'utils'
+    
 type params = { settings_path?:string }
 // type Icons = { identity:any, security:any }
 
 
-const SettingsComponent = () => {
+
+const SettingsComponent = () => { 
 
     let history = useHistory();
     let { settings_path }:params = useParams();
 
+    const { user  } = useSelector(({ modelData }:any) => modelData);
+    const identityState = getIdentityState(user?.identity)
+
     useEffect(() => {
-        if(!settings_path) history.push("/settings/security");
+
+        if(!settings_path && !["accepted"].includes(identityState)) history.push("/settings/kyc");
+        else if(!settings_path) history.push("/settings/security");
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [settings_path])
 
@@ -44,6 +51,8 @@ const SettingsComponent = () => {
                 />
                 <ContentSection 
                     currentSection={settings_path}
+                    // identityState={identityState}
+                    // user={user}
                 />
             </ContentLayout>
         </SettingsLayout>
@@ -53,7 +62,13 @@ const SettingsComponent = () => {
 export default SettingsComponent
 
 
-const ContentSection = ({ currentSection }:{ currentSection?:string }) => {
+type contentSection = { 
+    currentSection?:string,
+    // identityState?:string,
+    // user?:any
+}
+
+const ContentSection = ({ currentSection }:contentSection) => {
     return(
             <RenderComponent
                 currentSection={currentSection}

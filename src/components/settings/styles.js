@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
 
 
-
 // export const InProcessRejectMessageCont = styled.div`
 //     position:absolute;
 //     display: grid;
@@ -15,7 +14,6 @@ import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
 //         max-width:500px;
 //     }
 // `
-
 
 export const FloatContainer = styled.div`
     position: absolute;
@@ -32,7 +30,6 @@ export const FloatContainer = styled.div`
         transform:scale(1);
     }
 `
-
 
 export const EmptyStateLayout = styled.div`
     display:flex;
