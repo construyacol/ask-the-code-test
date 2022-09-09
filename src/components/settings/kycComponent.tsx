@@ -1,40 +1,30 @@
 import { useState, useEffect } from 'react'
-import { GoLocation } from "react-icons/go";
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { useSelector } from "react-redux";
 import { getIdentityState } from 'utils'
 import { isEmpty } from 'lodash'
-
 import { 
     IdentityContainer,
     IdentityContent,
-    LevelsContainer,
-    LevelContent,
-    LevelDescriptionContent,
     KycContentLayout,
     FloatContainer,
 } from './styles'
-
-import { LEVELS_DATA } from 'const/levels'
-import { levelData, levelRequirements } from './types'
+import { levelRequirements } from './types'
 import RequirementMenuComponent from "./requirementMenu"
 import EmptyOrInProcessState from 'components/settings/emptyOrInProcessState'
 import RenderComponent from './renderSwitch'
 import BenefitsComponent from './benefits'
+import LevelListComponent from './levelList'
 
 
 const KycComponent = (props:any) => {
 
-    const icons = {
-        "level_1":GoLocation
-    }
     const [ currentLevelView ] = useState("level_1")
     const [ currentSection, setCurrentSection ] = useState<string>()
     const [ levelRequirements, setLevelRequirements ] = useState<levelRequirements>()
     const [ coinsendaServices ] = useCoinsendaServices();
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const identityState = getIdentityState(user?.identity)
-
 
     const initSections = async() => {
         const _levelRequirements = await coinsendaServices.createRequirementLevel(currentLevelView)
@@ -53,61 +43,21 @@ const KycComponent = (props:any) => {
     
     return(
         <IdentityContainer>
+            
             <IdentityContent className="_identityContent">
 
-                <LevelsContainer>
-                    {
-                       !levelRequirements ?
-                        ["1", "2"].map((levelSkeleton, index) => {
-                            return(
-                                <LevelContent
-                                    key={index}
-                                    className="skeleton"
-                                />
-                            )
-                        })
-                       :
-                       Object.entries(LEVELS_DATA).map((level, index) => {
-
-                            const levelKey = level[0]
-                            const levelData:levelData = level[1]
-                            const requirements = [levelKey].includes(levelRequirements?.name) ? levelRequirements.requirements : levelData.requeriments
-                            const disabled = !requirements || isEmpty(requirements)
-                            const LevelIcon = icons[levelKey as keyof typeof icons]
-                            const isActive = currentLevelView === levelKey
-
-                            return( 
-                                <LevelContent 
-                                key={index}
-                                className={`${disabled ? 'disabled' : 'enabled'} ${isActive ? "isActived" : ""} `}
-                                >   
-                                    {
-                                        LevelIcon &&
-                                        <LevelIcon
-                                            className="_levelIcon"
-                                            size={27}
-                                            color="var(--primary)"
-                                        />
-                                    }
-                                    <LevelDescriptionContent>
-                                        <p className={`_title ${disabled ? "disabled" : ""} `}>{levelData.uiName}</p>
-                                        <p className={`_description ${disabled ? "disabled" : ""} `}>0% completado</p>
-                                    </LevelDescriptionContent>
-                                </LevelContent>
-                            )
-                        })
-                    }
-                </LevelsContainer>
+                <LevelListComponent
+                    levelRequirements={levelRequirements}
+                    currentLevelView={currentLevelView}
+                />
 
                 <KycContentLayout className={`_layout ${currentSection || ''}`}>
 
-                        <RequirementMenuComponent
-                            levelRequirements={levelRequirements}
-                            currentSection={currentSection}
-                            setCurrentSection={setCurrentSection}
-                        />
-
-
+                    <RequirementMenuComponent
+                        levelRequirements={levelRequirements}
+                        currentSection={currentSection}
+                        setCurrentSection={setCurrentSection}
+                    />
 
                     {
                         (["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) &&
@@ -118,6 +68,7 @@ const KycComponent = (props:any) => {
                                 />
                             </FloatContainer>
                     }
+
                     {
                         (levelRequirements && currentSection) &&
                             <RenderComponent 
@@ -126,6 +77,7 @@ const KycComponent = (props:any) => {
                                 levelRequirements={levelRequirements}
                             />
                     }
+
                 </KycContentLayout>
 
             </IdentityContent>

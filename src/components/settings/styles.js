@@ -11,7 +11,7 @@ import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
 //     p{
 //         text-align:center;
 //         color:var(--paragraph_color);
-//         max-width:500px;
+//         max-width:500px;zipObject
 //     }
 // `
 
@@ -42,6 +42,7 @@ export const EmptyStateLayout = styled.div`
         text-align:center;
         color:var(--paragraph_color);
         max-width: 650px;
+        font-size:15px;
     }
 `
 
@@ -56,6 +57,7 @@ export const ContactLocationContent = styled.div`
     display:grid;
     row-gap: 22px;
     position:relative;
+    grid-auto-rows: 39px;
 `
 
 export const ContactLocationItem = styled.div`

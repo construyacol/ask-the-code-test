@@ -12,12 +12,8 @@ import {
     UiStateCont
 } from './styles'
 
-import {
-    settingType
-} from './types'
-
+import { settingType } from 'components/settings/types'
 import RenderAuxComponent from 'components/forms/widgets/renderAuxComponent'
-
 
 const getIcon = (iconValue:string | undefined) => {
     const icons = {
@@ -27,6 +23,19 @@ const getIcon = (iconValue:string | undefined) => {
     }
     return icons[iconValue as keyof typeof icons]
 }
+
+export const SettingElementSkeleton = () => {
+    return(
+        <SettingElementLayout className="skeleton">
+            <IconContainer className="skeleton__iconContainer"/>
+            <SettingContent>
+                <h3 className="fuente skeleton__h3">--- this is a title &nbsp;</h3>
+                <p className="fuente skeleton__p">this is awesome description ------</p>
+            </SettingContent>
+        </SettingElementLayout>
+    )
+}
+
 const SettingElement = (props:settingType) => {
     const { 
         itemElement, 

@@ -51,8 +51,6 @@ const SettingsComponent = () => {
                 />
                 <ContentSection 
                     currentSection={settings_path}
-                    // identityState={identityState}
-                    // user={user}
                 />
             </ContentLayout>
         </SettingsLayout>
@@ -64,15 +62,13 @@ export default SettingsComponent
 
 type contentSection = { 
     currentSection?:string,
-    // identityState?:string,
-    // user?:any
 }
 
 const ContentSection = ({ currentSection }:contentSection) => {
     return(
-            <RenderComponent
-                currentSection={currentSection}
-            />
+        <RenderComponent
+            currentSection={currentSection}
+        />
     )
 }
 
@@ -100,13 +96,16 @@ const getIcon = (iconValue:string) => {
     return icons[iconValue as keyof typeof icons]
 }
 
-const SettingsMenuComponent = (props:any) => {
+export const SettingsMenuComponent = (props:any) => {
 
-    const { currentSection } = props
+    const { 
+        currentSection,
+        skeleton
+    } = props
 
     return(
         <SettingsMenuContainer> 
-            <SettingsContent>
+            <SettingsContent className={`${skeleton ? "skeleton" : ""}`}>
                 {
                     Object.keys(settingsMenu).map((itemKey, index) => {
 
@@ -121,10 +120,15 @@ const SettingsMenuComponent = (props:any) => {
                                 className={`${isSelected ? 'selected' : ''}`}
                                 to={`/settings/${itemKey}`}
                             >
-                                <Icon 
-                                    size={iconSize} 
-                                    color={isSelected ? "var(--primary)" : "var(--paragraph_color)"} 
-                                />
+                                {
+                                    skeleton ?
+                                        <div className="icon_skeleton"></div>
+                                    :
+                                        <Icon 
+                                            size={iconSize} 
+                                            color={isSelected ? "var(--primary)" : "var(--paragraph_color)"} 
+                                        />
+                                }
                                 <p className='fuente'>{itemMenu?.uiName}</p>
                             </ItemMenu>
                         )

@@ -5,7 +5,7 @@ import {
     ItemRequirementMenu,
 } from './styles'
 import { requirementMenuTypes } from './types'
-
+import { zipObject } from 'lodash'
 
 const RequirementMenuComponent = (props:requirementMenuTypes) => {
 

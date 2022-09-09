@@ -4,13 +4,11 @@ import {
 
 import {
     itemElement
-} from './types'
+} from 'components/settings/types'
 
 import ControlButton from "components/widgets/buttons/controlButton";
 import { useSettingValidation, useSettingsActions } from 'hooks/useSettingValidation'
 import SettingElement from './settingElement'
-
-
 
 
 // type securityElement = { itemElement:itemElement }

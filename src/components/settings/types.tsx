@@ -17,7 +17,8 @@ export type settingType = {
     itemElement:itemElement,
     isCompleted:boolean,
     isLastElement:boolean,
-    AuxComponent?:any
+    AuxComponent?:any,
+    skeleton?:boolean
 }
 
 

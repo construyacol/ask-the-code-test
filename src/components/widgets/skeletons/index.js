@@ -3,10 +3,14 @@ import loadable from "@loadable/component";
 import { ReferralComponentAsSkeleton } from "components/referrals/referralsComponent";
 
 import { AccountListContainer } from "../accountList/styles";
-import { ItemSecurity, SecurityLayoutLoader } from "components/securityCenter/styles";
+// import { ItemSecurity, SecurityLayoutLoader } from "components/securityCenter/styles";
 import TitleSection from '../titleSectionComponent'
 // import "./dashboard.css";
-import { AccountListWrapper, SecurityCenterLayout } from '../layoutStyles'
+import { 
+  AccountListWrapper, 
+  // SecurityCenterLayout 
+} from '../layoutStyles'
+import SettingSkeleton from 'pages/settings/skeleton'
 
 const ItemAccount = loadable(() => import("../accountList/item_account"));
 const SimpleLoader = loadable(() => import("../loaders"));
@@ -18,8 +22,8 @@ export const LazyLoaderPage = ({ path }) => {
       ? AccountListSkeletonLoader
       : path === "referral"
       ? ReferralComponentAsSkeleton
-      : path === "security"
-      ? SecurityCenterSkeletonLoader
+      : path === "settings"
+      ? SettingSkeleton
       : SimpleLoader;
 
   return (
@@ -38,38 +42,20 @@ export const AccountListSkeletonLoader = () => {
   );
 };
 
-export const SecurityCenterSkeletonLoader = ({ tittleOff }) => {
-  const loaderList = new Array(2).fill({});
+// export const SecurityCenterSkeletonLoader = ({ tittleOff }) => {
+//   const loaderList = new Array(2).fill({});
 
-  return (
-    <SecurityCenterLayout>
-    {
-      !tittleOff &&
-        <TitleSection skeleton/>
-    }
-      {loaderList.map((_, key) => {
-        return (
-          <SecurityLayoutLoader
-            id="security_loader"
-            className="SecurityLayoutLoader skeleton"
-            key={key}
-          >
-            <ItemSecurity className="loader ItemSecurity">
-              <div className="SCimgItem">
-                <div className="SCimgItemCont"></div>
-              </div>
-              <div className="contentSubItem last">
-                <div className="contentSubText">
-                  <p></p>
-                  <p></p>
-                  <p></p>
-                </div>
-                <div className="SCcta"></div>
-              </div>
-            </ItemSecurity>
-          </SecurityLayoutLoader>
-        );
-      })}
-    </SecurityCenterLayout>
-  );
-};
+//   return (
+//     <SecurityCenterLayout>
+//     {
+//       !tittleOff &&
+//         <TitleSection skeleton/>
+//     }
+//       {loaderList.map((_, key) => {
+//         return (
+          
+//         );
+//       })}
+//     </SecurityCenterLayout>
+//   );
+// };

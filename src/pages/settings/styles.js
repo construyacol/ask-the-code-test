@@ -4,18 +4,6 @@ import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
 
 
 
-// export const InProcessRejectMessageCont = styled.div`
-//     position:absolute;
-//     display: grid;
-//     align-self: center;
-//     justify-items: center;
-//     p{
-//         text-align:center;
-//         color:var(--paragraph_color);
-//         max-width:500px;
-//     }
-// `
-
 
 export const FloatContainer = styled.div`
     position: absolute;
@@ -48,11 +36,77 @@ export const EmptyStateLayout = styled.div`
     }
 `
 
+export const ItemMenu = styled(Link)`
+    display:grid;
+    grid-template-columns:auto 1fr;
+    background: #ececef70;
+    padding: 0 15px;
+    column-gap:10px;
+    border-left: 3px solid #ececef;
+    cursor:pointer;
+    align-items:center;
+    text-decoration: none;
+    height:60px;
+
+    &.selected{
+        border-left: 3px solid var(--primary);
+        background: #f9f9fb;
+        position:relative;
+        p{
+            color:var(--primary);
+        }
+        &::after{
+            content: "";
+            width: 3px;
+            heigth: 100%;
+            position: absolute;
+            right: -3px;
+            background: #f9f9fb;
+            height: 100%;
+        }
+    }
+
+    &:hover p{
+        color:var(--primary);
+    }
+
+    p{
+        color:var(--paragraph_color);
+        font-size:15px;
+    }
+`
 
 export const SettingsContent = styled.div`
     height:auto;
     position: sticky;
     top: 50px;
+
+    &.skeleton{
+
+        ${OnlySkeletonAnimation}
+
+        ${ItemMenu}{
+            &:hover p{
+                color:var(--skeleton_color);
+            }
+        }
+
+        p{
+            background: var(--skeleton_color);
+            color: var(--skeleton_color);
+            width: fit-content;
+            border-radius: 3px;
+            &:hover{
+                color: var(--skeleton_color);
+            }
+        }
+        .icon_skeleton{
+            width: 20px;
+            height: 20px;
+            background: var(--skeleton_color);
+            border-radius: 3px;
+        }
+    }
 `
 
 export const ContactLocationContent = styled.div`
@@ -393,9 +447,42 @@ export const SettingElementLayout = styled.div`
     grid-template-columns:auto 1fr auto;
     column-gap:20px;  
     border-bottom: 1px solid #cacaca9e;
+
     &._lastElement{
         border-bottom: 1px solid transparent;
     }
+
+    &.skeleton{
+        ${OnlySkeletonAnimation}
+
+        .skeleton__iconContainer{
+            position:relative;
+            display: flex;
+            place-items: center;
+            &::after{
+                content:"";
+                position:absolute;
+                width:30%;
+                height:30%;
+                border-radius:3px;
+                background:var(--skeleton_color);
+            }
+        }
+
+        .skeleton__h3,
+        .skeleton__p{
+            background: var(--skeleton_color);
+            width: fit-content;
+            color: var(--skeleton_color);
+            border-radius: 3px;
+        }
+        .skeleton__p{
+            height:15px;
+        }
+
+    }
+
+
 `
 
 export const ContentSectionLayout = styled.div`
@@ -423,44 +510,4 @@ export const ContentLayout = styled.div`
 
 export const SettingsMenuContainer = styled.div`
     border-right: 1px solid #cacaca9e;
-`
-
-export const ItemMenu = styled(Link)`
-    display:grid;
-    grid-template-columns:auto 1fr;
-    background: #ececef70;
-    padding: 0 15px;
-    column-gap:10px;
-    border-left: 3px solid #ececef;
-    cursor:pointer;
-    align-items:center;
-    text-decoration: none;
-    height:60px;
-
-    &.selected{
-        border-left: 3px solid var(--primary);
-        background: #f9f9fb;
-        position:relative;
-        p{
-            color:var(--primary);
-        }
-        &::after{
-            content: "";
-            width: 3px;
-            heigth: 100%;
-            position: absolute;
-            right: -3px;
-            background: #f9f9fb;
-            height: 100%;
-        }
-    }
-
-    &:hover p{
-        color:var(--primary);
-    }
-
-    p{
-        color:var(--paragraph_color);
-        font-size:15px;
-    }
 `
