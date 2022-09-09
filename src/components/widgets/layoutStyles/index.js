@@ -106,6 +106,9 @@ export const AccountDetailContainer = styled.div`
         row-gap: 10px;
         align-items: baseline;
     }
+
+    max-width: var(--maxwsections) !important;
+
 `
 
 export const SecurityCenterLayout = styled(BaseLayout)`
