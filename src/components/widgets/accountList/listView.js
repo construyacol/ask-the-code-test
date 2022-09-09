@@ -264,7 +264,7 @@ export const ListViewContainer = styled.div`
     transition:.7s;
     max-width: var(--maxwsections);
     justify-self: center;
-    width: 100vw;
+    width: 100%;
 
       &.loading{
         &::after{

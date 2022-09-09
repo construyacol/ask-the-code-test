@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Link } from "react-router-dom";
 import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
-
+import { device } from 'const/const'
 
 // export const InProcessRejectMessageCont = styled.div`
 //     position:absolute;
@@ -274,11 +274,20 @@ export const LevelContent = styled.div`
 
 `
 
+// export const LevelsWrapper = styled.div`
+//     overflow: hidden;
+//     &.close{
+//         height: 95px;
+//     }
+
+// `
+
 export const LevelsContainer = styled.div`
     display:grid;
     column-gap:25px;
     grid-template-columns: repeat(auto-fill, minmax(auto, 215px));
     min-height:85px;
+    row-gap:15px;
 `
 
 export const IdentityContent = styled.div`
@@ -293,6 +302,11 @@ export const IdentityContainer = styled.div`
     display:grid;
     grid-template-columns: 1fr minmax(250px, 320px);
     column-gap:20px;
+
+    @media ${device.laptop} {
+        grid-template-columns: 1fr;
+    }
+
 `
 
 export const BenefitsContainer = styled.div`

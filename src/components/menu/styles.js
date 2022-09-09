@@ -258,7 +258,7 @@ export const UserNameContainer = styled.div`
     row-gap: 7px;
 
     .user_name__p{
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 300;
     }
 
@@ -283,7 +283,7 @@ export const AcronymCont = styled.div`
     padding: 0 15px;
     grid-template-columns: auto 1fr;
     column-gap: 15px;
-    height: 100px;
+    height: 130px;
 
     .perfilPic{
         width: 50px;

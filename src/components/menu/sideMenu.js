@@ -300,10 +300,10 @@ const UserInfoComponent = props => {
                 <UserNameContainer>
                     <UserName className={`fuente ${user?.name ? '_capitalize' : ''}`}>
                         <strong>
-                            {user?.name || user?.email || 'Bienvenido'}
+                            {user?.name || 'Bienvenido'}
                         </strong>
                     </UserName>
-                    <p className="user_name__p fuente">construyacol@gmail.com</p>
+                    <p className="user_name__p">{user?.email}</p>
                 </UserNameContainer>
                 
             </AcronymCont>

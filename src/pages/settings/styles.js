@@ -1,9 +1,7 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Link } from "react-router-dom";
 import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
-
-
-
+import { device } from 'const/const'
 
 export const FloatContainer = styled.div`
     position: absolute;
@@ -391,6 +389,10 @@ export const UiStateCont = styled.span`
     padding: 3px 6px;
     border-radius: 3px;
 
+    @media ${device.mobile}{
+        display:none;
+    }
+
     &.verified{
         background: #2bc48a1f;
         color:#219D6E;
@@ -406,6 +408,10 @@ export const SettingTitleCont = styled.div`
     display:flex;
     column-gap:5px;
     align-items: center;
+    align-self: end;
+    @media ${device.mobile}{
+        align-self: center;
+    }
 `
 
 export const SettingContent = styled.div`
@@ -432,13 +438,25 @@ export const IconContainer = styled.div`
     border-radius:50%;
     width:3.5rem;
     height:3.5rem;
-    grid-column: 1 / 2;
     display:grid;
     place-content:center;
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
 
     &.isActive{
         border-color:var(--primary);
     }
+
+    @media ${device.mobile}{
+        grid-row: 1 / 2;
+        border-color:transparent;
+        &.isActive{
+            border-color:transparent;
+        }
+        width:auto;
+        height:auto;
+    }
+
 `
  
 export const SettingElementLayout = styled.div`
@@ -447,6 +465,39 @@ export const SettingElementLayout = styled.div`
     grid-template-columns:auto 1fr auto;
     column-gap:20px;  
     border-bottom: 1px solid #cacaca9e;
+    row-gap:10px;
+
+    .settingButton{
+        grid-row: 1 / 3;
+        grid-column: 3;
+    }
+
+    .title__h3,
+    .description__p{
+        color:var(--paragraph_color);
+        margin:0;
+    }
+
+    .title__h3{
+        font-size:18px;
+        grid-column: 2 / 3;
+    }
+    .description__p{
+        font-size:15px;
+        grid-column: 2 / 3;
+        margin: 0;
+        align-self: baseline;
+    }
+
+    @media ${device.mobile}{
+        .description__p{
+            grid-column: 1 / 3;
+        }
+        height: min-content;
+        padding-bottom: 20px;
+        column-gap: 10px;
+        row-gap: 15px;
+    }
 
     &._lastElement{
         border-bottom: 1px solid transparent;
@@ -489,10 +540,33 @@ export const ContentSectionLayout = styled.div`
     display:grid;
 `
 
+
+const movilCtaAnim = keyframes`
+0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 export const SecurityLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
     grid-auto-rows: 120px;
     row-gap:10px;
+
+    .anim-flow{
+        animation: ${movilCtaAnim} 1s infinite;
+    }
+
+    .movilcta__i{
+        grid-column: 3;
+        grid-row: 1 / 3;
+    }
+
 `
 
 export const KycLayout = styled(ContentSectionLayout)`
@@ -506,8 +580,24 @@ export const ContentLayout = styled.div`
     grid-template-columns: minmax(auto, 220px) 1fr;
     padding-bottom: 30px;
     column-gap:30px;
+    position:relative;
+
+    @media ${device.mobile}{
+        grid-template-columns: 1fr;
+    }
+
 `
 
 export const SettingsMenuContainer = styled.div`
     border-right: 1px solid #cacaca9e;
+
+    @media ${device.mobile}{
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
+        background: #f9f9fb;
+
+        display:none;
+    }
 `

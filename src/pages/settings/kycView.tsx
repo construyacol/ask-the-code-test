@@ -1,5 +1,5 @@
 import { 
-    KycLayout,
+    KycLayout
 } from './styles'
 import SettingElement from './settingElement'
 import { itemElement } from 'components/settings/types'
@@ -21,7 +21,7 @@ const IDENTITY_ELEMENTS = {
         }
     }
 }
-
+ 
 const KycView = (props:any) => {
  
     const validations = useSettingValidation()

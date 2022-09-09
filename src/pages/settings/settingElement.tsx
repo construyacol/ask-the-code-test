@@ -23,15 +23,13 @@ const getIcon = (iconValue:string | undefined) => {
     }
     return icons[iconValue as keyof typeof icons]
 }
-
+ 
 export const SettingElementSkeleton = () => {
     return(
         <SettingElementLayout className="skeleton">
             <IconContainer className="skeleton__iconContainer"/>
-            <SettingContent>
                 <h3 className="fuente skeleton__h3">--- this is a title &nbsp;</h3>
-                <p className="fuente skeleton__p">this is awesome description ------</p>
-            </SettingContent>
+                <p className="fuente description__p skeleton__p">this is awesome description ------</p>
         </SettingElementLayout>
     )
 }
@@ -57,21 +55,17 @@ const SettingElement = (props:settingType) => {
                    size={23}
                 />
             </IconContainer>
-            <SettingContent>
                 <SettingTitleCont>
-                    <h3 className="fuente">{itemElement.uiName} &nbsp;</h3>
+                    <h3 className="fuente title__h3">{itemElement.uiName} &nbsp;</h3>
                     <IconVerified
                         size={16}
                         color={`${isCompleted ? "#219D6E" : "red" }`}
                     />
-                    
                     <UiStateCont className={`fuente ${isCompleted ? "verified" : "unverified" }`}>
                         {uiState}
                     </UiStateCont>
-
                 </SettingTitleCont>
-                <p className="fuente">{itemElement.uiDescription}</p>
-            </SettingContent>
+                <p className="fuente description__p">{itemElement.uiDescription}</p>
             {
                 AuxComponent && 
                 <RenderAuxComponent AuxComponent={AuxComponent} {...props} />

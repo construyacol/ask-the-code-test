@@ -22,7 +22,7 @@ const SettingSkeleton = () => {
                 <SecurityLayout>
                     {
                         loaderList.map((_, key) => {
-                            return <SettingElementSkeleton/>
+                            return <SettingElementSkeleton key={key}/>
                         })
                     }
                 </SecurityLayout>

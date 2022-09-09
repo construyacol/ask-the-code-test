@@ -49,6 +49,7 @@ const KycComponent = (props:any) => {
                 <LevelListComponent
                     levelRequirements={levelRequirements}
                     currentLevelView={currentLevelView}
+                    user={user}
                 />
 
                 <KycContentLayout className={`_layout ${currentSection || ''}`}>
