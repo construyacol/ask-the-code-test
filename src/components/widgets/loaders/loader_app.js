@@ -98,7 +98,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     const verificationStatus = coinsendaServices.getVerificationState();
     if (verificationStatus !== "accepted") {
       // await actions.addNotification("security", null, 1);
-      await history.push("/settings");
+      await history.push("/settings/kyc");
       return actions.isAppLoaded(true);
     }
 

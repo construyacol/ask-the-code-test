@@ -3,11 +3,12 @@ import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import { BsShieldLock } from 'react-icons/bs';
 import { IoMdFingerPrint } from 'react-icons/io';
 // import { VscVerified } from 'react-icons/vsc';
+import P from 'components/widgets/paragraph'
 
 import { 
     SettingElementLayout,
     IconContainer,
-    SettingContent,
+    // SettingContent,
     SettingTitleCont,
     UiStateCont
 } from './styles'
@@ -28,8 +29,8 @@ export const SettingElementSkeleton = () => {
     return(
         <SettingElementLayout className="skeleton">
             <IconContainer className="skeleton__iconContainer"/>
-                <h3 className="fuente skeleton__h3">--- this is a title &nbsp;</h3>
-                <p className="fuente description__p skeleton__p">this is awesome description ------</p>
+            <h3 className="fuente skeleton__h3 title__h3">--- this is a title &nbsp;</h3>
+            <p className="fuente description__p skeleton__p">this is awesome description ------</p>
         </SettingElementLayout>
     )
 }
@@ -66,7 +67,11 @@ const SettingElement = (props:settingType) => {
                         {uiState}
                     </UiStateCont>
                 </SettingTitleCont>
-                <p className="fuente description__p">{itemElement.uiDescription}</p>
+                <P 
+                    text={itemElement.uiDescription} 
+                    className="description__p fuente"
+                />
+                {/* <p className="fuente description__p">{itemElement.uiDescription}</p> */}
             {
                 AuxComponent && 
                 <RenderAuxComponent AuxComponent={AuxComponent} {...props} />

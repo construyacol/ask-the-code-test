@@ -455,6 +455,9 @@ export const IconContainer = styled.div`
         }
         width:auto;
         height:auto;
+        &.skeleton__iconContainer{
+
+        }
     }
 
 `
@@ -510,11 +513,13 @@ export const SettingElementLayout = styled.div`
             position:relative;
             display: flex;
             place-items: center;
+            width:22px;
+            height:22px;
             &::after{
                 content:"";
                 position:absolute;
-                width:30%;
-                height:30%;
+                width:100%;
+                height:100%;
                 border-radius:3px;
                 background:var(--skeleton_color);
             }
@@ -529,6 +534,9 @@ export const SettingElementLayout = styled.div`
         }
         .skeleton__p{
             height:15px;
+        }
+        .skeleton__h3{
+            align-self:end;
         }
 
     }
@@ -597,5 +605,10 @@ export const SettingsMenuContainer = styled.div`
         width: 100%;
         height: 100%;
         background: #f9f9fb;
+        display:none;
+
+        &.isVisibleOnMovil{
+            display:initial;
+        }
     }
 `

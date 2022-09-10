@@ -28,7 +28,7 @@ const LevelListComponent = (props:any) => {
         if(user?.contact)percent += 25;
         if(user?.location)percent += 25;
         if(user?.identity){
-            if(["accepted"].includes(user?.identity?.info_state))percent += 25;
+            if(["accepted", "confirmed"].includes(user?.identity?.info_state))percent += 25;
             if(["accepted"].includes(user?.identity?.file_state))percent += 25;
         }
         return `${percent}%`

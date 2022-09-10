@@ -15,8 +15,9 @@ const ContactLocationComponent = (props:any) => {
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const contactLocationData = merge(user?.contact, user?.location)
 
-    // console.log('||||||||| ContactLocationComponent ==> ', props?.levelRequirements?.pendingRequirements[0])
-
+    console.log('||||||||| ContactLocationComponent ==> ', contactLocationData)
+    // debugger
+    // 
     // FloatContainer
 
     return(

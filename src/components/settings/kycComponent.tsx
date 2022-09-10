@@ -12,9 +12,21 @@ import {
 import { levelRequirements } from './types'
 import RequirementMenuComponent from "./requirementMenu"
 import EmptyOrInProcessState from 'components/settings/emptyOrInProcessState'
-import RenderComponent from './renderSwitch'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
 import BenefitsComponent from './benefits'
 import LevelListComponent from './levelList'
+import loadable from "@loadable/component";
+
+
+const ContactLocationComponent = loadable(() => import(/* webpackPrefetch: true */ './contactLocation'), { fallback: <div>Cargando kyc...</div> });
+const IdentityListComponent = loadable(() => import(/* webpackPrefetch: true */ './identityList'), { fallback: <div>Cargando Security...</div> });
+
+
+const STAGE_COMPONENTS = {
+  location:ContactLocationComponent,
+  identity:IdentityListComponent,
+  default:ContactLocationComponent
+}
 
 
 const KycComponent = (props:any) => {
@@ -22,7 +34,7 @@ const KycComponent = (props:any) => {
     const [ currentLevelView ] = useState("level_1")
     const [ currentSection, setCurrentSection ] = useState<string>()
     const [ levelRequirements, setLevelRequirements ] = useState<levelRequirements>()
-    const [ coinsendaServices ] = useCoinsendaServices();
+    const [ coinsendaServices ] = useCoinsendaServices(); 
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const identityState = getIdentityState(user?.identity)
 
@@ -40,7 +52,8 @@ const KycComponent = (props:any) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.location, user?.contact, user?.identity])
 
-    
+    const inProgressKyc = (["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) ? true : false
+
     return(
         <IdentityContainer>
             
@@ -52,17 +65,17 @@ const KycComponent = (props:any) => {
                     user={user}
                 />
 
-                <KycContentLayout className={`_layout ${currentSection || ''}`}>
+                <KycContentLayout className={`_layout ${currentSection || ''} ${inProgressKyc ? "loading" : ""}`}>
 
                     <RequirementMenuComponent
                         levelRequirements={levelRequirements}
                         currentSection={currentSection}
                         setCurrentSection={setCurrentSection}
-                        inProgressKyc={(["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) ? true : false}
+                        inProgressKyc={inProgressKyc}
                     /> 
 
                     {
-                        (["rejected", "confirmed"].includes(identityState) || levelRequirements?.pendingRequirements[0]) &&
+                        inProgressKyc &&
                             <FloatContainer>
                                 <EmptyOrInProcessState 
                                     levelRequirements={levelRequirements}
@@ -73,7 +86,8 @@ const KycComponent = (props:any) => {
 
                     {
                         (levelRequirements && currentSection) &&
-                            <RenderComponent 
+                            <RenderSwitchComponent 
+                                STAGE_COMPONENTS={STAGE_COMPONENTS}
                                 component={currentSection}
                                 currentSection={currentSection}
                                 levelRequirements={levelRequirements}
@@ -83,12 +97,20 @@ const KycComponent = (props:any) => {
                 </KycContentLayout>
 
             </IdentityContent>
-
-            <BenefitsComponent/>
+            
+            {
+                user?.identity &&
+                    <BenefitsComponent/>
+            }
 
         </IdentityContainer>
     )
 }
+
+
+
+  
+  
 
 export default KycComponent
 

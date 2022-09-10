@@ -27,12 +27,12 @@ export const SubMenu = styled.div`
   top:60px;
   display: grid;
   place-items: center;
-  color: #666666;
+  color:#666666;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   backdrop-filter: blur(5px);
   z-index: 3;
-  background: rgb(239 239 239 / 85%);
+  background: var(--secondary_background);
   display:flex;
   padding: 0 25px;
   justify-content: center;

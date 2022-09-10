@@ -19,10 +19,20 @@ import { useSelector } from "react-redux";
 import loadable from "@loadable/component";
 import { getIdentityState } from 'utils'
 import useViewport from 'hooks/useWindowSize'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
     
 
 type params = { settings_path?:string }
 // type Icons = { identity:any, security:any }
+
+const KycView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/kycView"), { fallback: <div>Cargando kyc...</div> });
+const SecurityView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/securityView"), { fallback: <div>Cargando Security...</div> });
+
+
+const STAGE_COMPONENTS = {
+    kyc:KycView,
+    security:SecurityView,
+}
 
 
 const SettingsComponent = () => { 
@@ -41,26 +51,28 @@ const SettingsComponent = () => {
     }
 
     useEffect(() => {
-
         redirects()
-
-        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [settings_path])
 
     return(
         <SettingsLayout>
             <TitleSection
-                titleKey="Ajustes  > "
+                titleKey={`${(isMovilViewport && !settings_path) ? "Ajustes" : (isMovilViewport && settings_path) ? "" : "Ajustes  > "}`}
                 subTitle={settingsMenu[settings_path as keyof typeof settingsMenu]?.uiName}
             />
             <ContentLayout>
                 <SettingsMenuComponent
                     currentSection={settings_path}
+                    isMovilViewport={isMovilViewport}
                 />
-                <ContentSection 
+
+                <RenderSwitchComponent 
+                    STAGE_COMPONENTS={STAGE_COMPONENTS}
+                    component={settings_path}
                     currentSection={settings_path}
                 />
+
             </ContentLayout>
         </SettingsLayout>
     )
@@ -68,33 +80,6 @@ const SettingsComponent = () => {
 
 export default SettingsComponent
 
-
-type contentSection = { 
-    currentSection?:string,
-}
-
-const ContentSection = ({ currentSection }:contentSection) => {
-    return(
-        <RenderComponent
-            currentSection={currentSection}
-        />
-    )
-}
-
-
-const KycView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/kycView"), { fallback: <div>Cargando kyc...</div> });
-const SecurityView = loadable(() => import(/* webpackPrefetch: true */ "pages/settings/securityView"), { fallback: <div>Cargando Security...</div> });
-
-
-const RenderComponent = (props:any) => {
-    const { currentSection } = props
-    let View = currentSection as Element
-    const Views = {
-      kyc: <KycView {...props} />, 
-      security: <SecurityView {...props} />
-    };
-    return Views[View] || <div>No hay vista disponible</div>;
-};
 
 
 const getIcon = (iconValue:string) => {
@@ -109,11 +94,14 @@ export const SettingsMenuComponent = (props:any) => {
 
     const { 
         currentSection,
-        skeleton
+        skeleton,
+        isMovilViewport
     } = props
 
+    const isVisibleOnMovil = isMovilViewport && !currentSection
+
     return(
-        <SettingsMenuContainer> 
+        <SettingsMenuContainer className={`${isVisibleOnMovil ? "isVisibleOnMovil" : ""}`}> 
             <SettingsContent className={`${skeleton ? "skeleton" : ""}`}>
                 {
                     Object.keys(settingsMenu).map((itemKey, index) => {

@@ -194,4 +194,8 @@ const Title = styled.h1`
       margin:30px 0 20px;
       ${OnlySkeletonAnimation};
     }
+
+    @media ${device.mobile} {
+        font-size:25px;
+    }
 `

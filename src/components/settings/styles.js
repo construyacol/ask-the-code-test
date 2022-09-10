@@ -123,8 +123,10 @@ export const EditButton = styled.div`
 
 
 export const KycContentLayout = styled.div`
+
     position:relative;
     display:grid;
+    
     &.location,
     &.identity{
         row-gap: 30px;
@@ -140,6 +142,18 @@ export const KycContentLayout = styled.div`
     &.location{
         position:relative;
     }
+
+    @media ${device.mobile} {
+        ${'' /* &.location,
+        &.identity,
+        &.loading{
+            grid-template-rows: auto minmax(350px, auto) 1fr;
+        } */}
+        &.loading{
+            grid-template-rows: auto minmax(350px, auto) 1fr;
+        }
+    }
+
 `
 
 export const ItemRequirementMenu = styled.div`
@@ -148,15 +162,6 @@ export const ItemRequirementMenu = styled.div`
     cursor:pointer;
     border-bottom:2px solid transparent;
     position:relative;
-
-    &.skeleton{
-        p{
-            background: var(--skeleton_color);
-            color: var(--skeleton_color);
-            border-radius: 3px;
-            ${OnlySkeletonAnimation};
-        }
-    }
 
     p{
         color:var(--paragraph_color);
@@ -189,6 +194,7 @@ export const ItemRequirementMenu = styled.div`
 `
 
 export const RequirementMenu = styled.menu`
+
     height:50px;
     width:100%;
     background:#f4f4f6;
@@ -201,8 +207,19 @@ export const RequirementMenu = styled.menu`
     margin-top: 10px;
     position: sticky;
     top: 60px;
+
     &.inProgressKyc{
         z-index:2;
+    }
+
+    &.skeleton{
+        p{
+            background: var(--skeleton_color);
+            color: var(--skeleton_color);
+            border-radius: 3px;
+            ${OnlySkeletonAnimation};
+        }
+        z-index: 2;
     }
 `
 
@@ -273,7 +290,6 @@ export const LevelContent = styled.div`
         font-family: "Tomorrow",sans-serif;
         opacity:50%;
     }
-
 `
 
 // export const LevelsWrapper = styled.div`
@@ -281,7 +297,6 @@ export const LevelContent = styled.div`
 //     &.close{
 //         height: 95px;
 //     }
-
 // `
 
 export const LevelsContainer = styled.div`
@@ -290,6 +305,11 @@ export const LevelsContainer = styled.div`
     grid-template-columns: repeat(auto-fill, minmax(auto, 215px));
     min-height:85px;
     row-gap:15px;
+
+    @media ${device.mobile} {
+        grid-template-columns: 1fr;
+        grid-template-columns: repeat(auto-fill, minmax(130px, auto));
+    }
 `
 
 export const IdentityContent = styled.div`
@@ -306,6 +326,7 @@ export const IdentityContainer = styled.div`
     column-gap:20px;
 
     @media ${device.laptop} {
+        row-gap:50px;
         grid-template-columns: 1fr;
     }
 

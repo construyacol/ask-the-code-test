@@ -40,7 +40,11 @@ const KycView = (props:any) => {
                     />
                 })
             }
+
+
             <KycComponent/>
+
+
         </KycLayout>
     )
 }

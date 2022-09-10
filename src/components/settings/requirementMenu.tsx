@@ -21,18 +21,18 @@ const RequirementMenuComponent = (props:requirementMenuTypes) => {
         setCurrentSection(e?.target?.dataset?.id)
     }
 
+
     if(!levelRequirements || !currentSection){
         return(
-            <RequirementMenu>
+            <RequirementMenu className="skeleton"> 
                 {
                     ["1", "2"].map((item, index) => {
                         return(
-                            <ItemRequirementMenu className="skeleton" key={index}>
+                            <ItemRequirementMenu key={index}>
                                 <p>-----  Skeleton  -----</p>
                             </ItemRequirementMenu>
                         )
                     })
-
                 }
             </RequirementMenu>
         )
