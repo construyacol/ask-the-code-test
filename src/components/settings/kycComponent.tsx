@@ -28,7 +28,7 @@ const STAGE_COMPONENTS = {
 }
 
 
-const KycComponent = (props:any) => {
+const KycComponent = () => {
 
     const [ currentLevelView ] = useState("level_1")
     const [ currentSection, setCurrentSection ] = useState<string>()
@@ -36,9 +36,9 @@ const KycComponent = (props:any) => {
     const [ coinsendaServices ] = useCoinsendaServices(); 
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const identityState = getIdentityState(user?.identity)
-
+ 
     const initSections = async() => {
-        const _levelRequirements = await coinsendaServices.createRequirementLevel(currentLevelView)
+        const _levelRequirements = await coinsendaServices.createRequirementLevel(currentLevelView, user?.level !== currentLevelView)
         setLevelRequirements(_levelRequirements)
         const { pendingRequirements, requirements } =_levelRequirements
         const requirementList = isEmpty(pendingRequirements) ? requirements : pendingRequirements

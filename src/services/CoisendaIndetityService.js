@@ -93,10 +93,13 @@ export class IndetityService extends WebService {
   }
 
 
-  async createRequirementLevel(levelName) {
+  async createRequirementLevel(levelName, getNextLevel = true) {
+
+    if(getNextLevel === false)return this.getLevelRequirement(levelName);
     let nextLevelData = await this.getNextLevel()
     const { error } = nextLevelData
     let levelRequirement = (error || ![nextLevelData.name].includes(levelName)) ? levelName : nextLevelData 
+
     return this.getLevelRequirement(levelRequirement)
   }
 
@@ -565,7 +568,7 @@ export class IndetityService extends WebService {
       email: this.authData.userEmail,
       restore_id: profile?.restore_id,
       id: this.authData.userId,
-      verification_level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
+      level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
       verification_error: identity?.errors?.length && identity?.errors[0],
       id_number:identity?.document_info?.id_number,
       name:identity?.document_info?.name,
@@ -599,7 +602,7 @@ export class IndetityService extends WebService {
     const identityAccepted = updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
     const identityRejected = updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
     
-    // if((updatedUser?.verification_level !== 'level_0') || identityConfirmed){
+    // if((updatedUser?.level !== 'level_0') || identityConfirmed){
     //   // let kyc_personal = country[0].levels && country[0].levels.personal;
     //   // let kyc_identity = country[0].levels && country[0].levels.identity;
     //   // let kyc_financial = country[0].levels && country[0].levels.financial;
@@ -613,7 +616,7 @@ export class IndetityService extends WebService {
     //   //   updatedUser.security_center.kyc.financial = kyc_financial;
     //   // }
     // }else 
-    if(updatedUser?.verification_level === 'level_0' && identityAccepted){
+    if(updatedUser?.level === 'level_0' && identityAccepted){
       updatedUser.security_center.kyc.basic = 'confirmed';
       updatedUser.security_center.kyc.advanced = 'confirmed';
     }else if(identityRejected){
@@ -722,7 +725,7 @@ export class IndetityService extends WebService {
         country: user.country,
         person_type: user.person_type,
         info_type: config.info_type,
-        verification_level: config.verification_level,
+        level: config.level,
         info: config.info,
       },
     };

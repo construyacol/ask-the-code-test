@@ -9,8 +9,8 @@ import KycComponent from 'components/settings/kycComponent'
 const IDENTITY_ELEMENTS = {
     "identity":{
         value:"identity",
-        uiName:"Verificación de cuenta",
-        uiDescription:"La verificación de cuenta es obligatoria para cumplir con las normativas vigentes.",
+        uiName:"Identidad",
+        uiDescription:"La verificación de identidad es obligatoria para cumplir con las normativas vigentes.",
         cta:{
             uiEnabled:"Verificado",
             uiDisabled:"Verificar mi cuenta"
@@ -21,6 +21,7 @@ const IDENTITY_ELEMENTS = {
         }
     }
 }
+
  
 const KycView = () => {
  
@@ -41,9 +42,7 @@ const KycView = () => {
                 })
             }
 
-
             <KycComponent/>
-
 
         </KycLayout>
     )

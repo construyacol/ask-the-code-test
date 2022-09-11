@@ -1,25 +1,27 @@
-
-
-
 import { useSelector } from "react-redux";
 import { selectAvailableIdentities } from 'selectors'
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
+import { useActions } from "hooks/useActions";
+    
 
-
-
-const IdentityListComponent = (props:any) => {
+const IdentityListComponent = () => {
 
     const [ userIdentities, createNewId ] = useSelector((state) => selectAvailableIdentities(state));
+    const actions = useActions()
+
+    const handleIdentity = async() => {
+        const Element = await import(`components/forms/widgets/kyc/identityComponent/init`)
+        // eslint-disable-next-line react/jsx-pascal-case
+        actions.renderModal(() => <Element.default/>)
+    }
 
     return(
         <>
             <h3 className="fuente">
                 Documentos de identidad
             </h3>
-
             
             <SelectListContainer>
-
                 <ItemListComponent 
                   className="createButton"
                   itemList={{
@@ -28,9 +30,8 @@ const IdentityListComponent = (props:any) => {
                     uiName:"Agregar nueva identidad"
                   }}
                   firstIndex={true}
-                //   handleAction={createNewIdAction}
+                  handleAction={handleIdentity}
                 />
-
                 {
                     userIdentities && Object.keys(userIdentities).map((key, index) => {
                         // const isSelected = [userIdentities[key]?.value].includes(state?.identity?.value)
@@ -43,7 +44,7 @@ const IdentityListComponent = (props:any) => {
                         lastIndex={(Object.keys(userIdentities)?.length - 1) === index}
                         // isSelectedItem={isSelected}
                         // isMovilViewport={isMovilViewport}
-                        // handleAction={selectIdentity}
+                        handleAction={() => null}
                         auxUiName={userIdentities[key]?.nationality}
                         // AuxComponent={[
                         //     isMovilViewport ? () => null :
@@ -54,9 +55,7 @@ const IdentityListComponent = (props:any) => {
                         />
                     })
                 }
-                
-                
-          </SelectListContainer>
+            </SelectListContainer>
         </>
     )
 }

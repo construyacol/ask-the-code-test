@@ -87,6 +87,10 @@ export const ItemMenu = styled(Link)`
     @media ${device.mobile}{
         height:90px;
         grid-template-columns:auto 1fr auto;
+        column-gap: 16px;
+        p{
+            font-weight:bold;
+        }
     }
 `
 
@@ -238,7 +242,8 @@ export const ItemRequirementMenu = styled.div`
     }
 
     &.isActive{
-        border-bottom:2px solid var(--primary);
+        border-top: 2px solid var(--primary);
+        background: var(--background);
         p{
             color:var(--primary);
         }
