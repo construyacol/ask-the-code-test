@@ -65,10 +65,7 @@ const KycComponent = (props:any) => {
                 />
 
                 <KycContentLayout  
-                    className={`
-                    _layout ${currentSection || ''} 
-                    ${!levelRequirements || !currentSection ? "loading" : ""}
-                    `}
+                    className={`_layout ${currentSection || ''}  ${!levelRequirements || !currentSection ? "loading" : ""}`}
                 >
 
                     <RequirementMenuComponent

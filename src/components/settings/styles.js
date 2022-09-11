@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Link } from "react-router-dom";
 import { OnlySkeletonAnimation } from 'components/widgets/loaders/skeleton'
 import { device } from 'const/const'
@@ -45,12 +45,84 @@ export const EmptyStateLayout = styled.div`
         font-size:15px;
     }
 `
+export const ItemMenu = styled(Link)`
+    display:grid;
+    grid-template-columns:auto 1fr;
+    background: #ececef70;
+    padding: 0 15px;
+    column-gap:10px;
+    border-left: 3px solid #ececef;
+    cursor:pointer;
+    align-items:center;
+    text-decoration: none;
+    height:60px;
+
+    &.selected{
+        border-left: 3px solid var(--primary);
+        background: #f9f9fb;
+        position:relative;
+        p{
+            color:var(--primary);
+        }
+        &::after{
+            content: "";
+            width: 3px;
+            heigth: 100%;
+            position: absolute;
+            right: -3px;
+            background: #f9f9fb;
+            height: 100%;
+        }
+    }
+
+    &:hover p{
+        color:var(--primary);
+    }
+
+    p{
+        color:var(--paragraph_color);
+        font-size:15px;
+    }
+
+    @media ${device.mobile}{
+        height:90px;
+        grid-template-columns:auto 1fr auto;
+    }
+`
+
 
 
 export const SettingsContent = styled.div`
     height:auto;
     position: sticky;
     top: 50px;
+
+    &.skeleton{
+
+        ${OnlySkeletonAnimation}
+
+        ${ItemMenu}{
+            &:hover p{
+                color:var(--skeleton_color);
+            }
+        }
+
+        p{
+            background: var(--skeleton_color);
+            color: var(--skeleton_color);
+            width: fit-content;
+            border-radius: 3px;
+            &:hover{
+                color: var(--skeleton_color);
+            }
+        }
+        .icon_skeleton{
+            width: 20px;
+            height: 20px;
+            background: var(--skeleton_color);
+            border-radius: 3px;
+        }
+    }
 `
 
 export const ContactLocationContent = styled.div`
@@ -147,10 +219,7 @@ export const KycContentLayout = styled.div`
         &.location,
         &.identity,
         &.loading{
-            grid-template-rows: auto auto minmax(30px, 1fr);
-        }
-        &.loading{
-            grid-template-rows: auto minmax(350px, auto) 1fr;
+            grid-template-rows: auto auto minmax(300px, 1fr);
         }
     }
 
@@ -373,6 +442,10 @@ export const UiStateCont = styled.span`
     padding: 3px 6px;
     border-radius: 3px;
 
+    @media ${device.mobile}{
+        display:none;
+    }
+
     &.verified{
         background: #2bc48a1f;
         color:#219D6E;
@@ -388,6 +461,10 @@ export const SettingTitleCont = styled.div`
     display:flex;
     column-gap:5px;
     align-items: center;
+    align-self: end;
+    @media ${device.mobile}{
+        align-self: center;
+    }
 `
 
 export const SettingContent = styled.div`
@@ -414,13 +491,28 @@ export const IconContainer = styled.div`
     border-radius:50%;
     width:3.5rem;
     height:3.5rem;
-    grid-column: 1 / 2;
     display:grid;
     place-content:center;
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
 
     &.isActive{
         border-color:var(--primary);
     }
+
+    @media ${device.mobile}{
+        grid-row: 1 / 2;
+        border-color:transparent;
+        &.isActive{
+            border-color:transparent;
+        }
+        width:auto;
+        height:auto;
+        &.skeleton__iconContainer{
+
+        }
+    }
+
 `
  
 export const SettingElementLayout = styled.div`
@@ -429,10 +521,93 @@ export const SettingElementLayout = styled.div`
     grid-template-columns:auto 1fr auto;
     column-gap:20px;  
     border-bottom: 1px solid #cacaca9e;
+    row-gap:10px;
+
+    .settingButton{
+        grid-row: 1 / 3;
+        grid-column: 3;
+    }
+
+    .title__h3,
+    .description__p{
+        color:var(--paragraph_color);
+        margin:0;
+    }
+
+    .title__h3{
+        font-size:18px;
+        grid-column: 2 / 3;
+    }
+    .description__p{
+        font-size:15px;
+        grid-column: 2 / 3;
+        margin: 0;
+        align-self: baseline;
+    }
+
+    @media ${device.mobile}{
+        .description__p{
+            grid-column: 1 / 3;
+        }
+        height: min-content;
+        padding-bottom: 20px;
+        column-gap: 10px;
+        row-gap: 15px;
+    }
+
     &._lastElement{
         border-bottom: 1px solid transparent;
     }
+
+    &.skeleton{
+
+        ${OnlySkeletonAnimation}
+
+        .skeleton__iconContainer{
+            position:relative;
+            display: flex;
+            place-items: center;
+            width:22px;
+            height:22px;
+            &::after{
+                content:"";
+                position:absolute;
+                width:100%;
+                height:100%;
+                border-radius:3px;
+                background:var(--skeleton_color);
+            }
+        }
+
+        .skeleton__h3,
+        .skeleton__p{
+            background: var(--skeleton_color);
+            width: fit-content;
+            color: var(--skeleton_color);
+            border-radius: 3px;
+        }
+        .skeleton__p{
+            height:15px;
+        }
+        .skeleton__h3{
+            align-self:end;
+        }
+
+    }
 `
+
+const movilCtaAnim = keyframes`
+0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 
 export const ContentSectionLayout = styled.div`
     display:grid;
@@ -442,7 +617,11 @@ export const SecurityLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
     grid-auto-rows: 120px;
     row-gap:10px;
-`
+    .movilcta__i{
+        grid-column: 3;
+        grid-row: 1 / 3;
+    }
+` 
 
 export const KycLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
@@ -452,51 +631,34 @@ export const KycLayout = styled(ContentSectionLayout)`
 
 export const ContentLayout = styled.div`
     display:grid;
-    grid-template-columns: minmax(auto, 220px) 1fr;
+    grid-template-columns: minmax(auto, 240px) 1fr;
     padding-bottom: 30px;
     column-gap:30px;
+    position:relative;
+
+    @media ${device.mobile}{
+        grid-template-columns: 1fr;
+    }
+
+    .anim-flow{
+        animation: ${movilCtaAnim} 1s infinite;
+    }
+
 `
 
 export const SettingsMenuContainer = styled.div`
     border-right: 1px solid #cacaca9e;
-`
 
-export const ItemMenu = styled(Link)`
-    display:grid;
-    grid-template-columns:auto 1fr;
-    background: #ececef70;
-    padding: 0 15px;
-    column-gap:10px;
-    border-left: 3px solid #ececef;
-    cursor:pointer;
-    align-items:center;
-    text-decoration: none;
-    height:60px;
-
-    &.selected{
-        border-left: 3px solid var(--primary);
+    @media ${device.mobile}{
+        position: absolute;
+        z-index: 3;
+        width: 100%;
+        height: 100%;
         background: #f9f9fb;
-        position:relative;
-        p{
-            color:var(--primary);
-        }
-        &::after{
-            content: "";
-            width: 3px;
-            heigth: 100%;
-            position: absolute;
-            right: -3px;
-            background: #f9f9fb;
-            height: 100%;
-        }
-    }
+        display:none;
 
-    &:hover p{
-        color:var(--primary);
-    }
-
-    p{
-        color:var(--paragraph_color);
-        font-size:15px;
+        &.isVisibleOnMovil{
+            display:initial;
+        }
     }
 `
