@@ -144,11 +144,11 @@ export const KycContentLayout = styled.div`
     }
 
     @media ${device.mobile} {
-        ${'' /* &.location,
+        &.location,
         &.identity,
         &.loading{
-            grid-template-rows: auto minmax(350px, auto) 1fr;
-        } */}
+            grid-template-rows: auto auto minmax(30px, 1fr);
+        }
         &.loading{
             grid-template-rows: auto minmax(350px, auto) 1fr;
         }

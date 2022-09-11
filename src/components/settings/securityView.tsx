@@ -10,8 +10,8 @@ import ControlButton from "components/widgets/buttons/controlButton";
 import { useSettingValidation, useSettingsActions } from 'hooks/useSettingValidation'
 import SettingElement from './settingElement'
 import useViewport from 'hooks/useWindowSize'
-
-
+import { BiRightArrowAlt } from 'react-icons/bi';
+                                        
 // type securityElement = { itemElement:itemElement }
 
 const SECURITY_ELEMENTS = {
@@ -63,16 +63,16 @@ const SecurityView = () => {
                         isLastElement={(Object.keys(SECURITY_ELEMENTS)?.length - 1) === index}
                         AuxComponent={itemElement.cta && [
                             isMovilViewport ?  
-                            () => <i
-                                className="fas fa-chevron-right anim-flow movilcta__i"
-                                style={{ color: "var(--paragraph_color)", fontSize: "20px" }}
+                            () => <BiRightArrowAlt 
+                                size={30} 
+                                color="var(--paragraph_color)" 
+                                className={'anim-flow movilcta__i'} 
                             />
                             :
                             () => <ControlButton
                                 label={`${isCompleted ? itemElement.cta?.uiEnabled : itemElement.cta?.uiDisabled}`}
                                 handleAction={settingActions[element as keyof typeof settingActions]} 
                                 type={isCompleted ? "secundary" : "primary"}
-                                // loader={undefined} 
                                 formValidate={true}
                                 className="settingButton"
                             />
@@ -85,6 +85,7 @@ const SecurityView = () => {
 }
 
 export default SecurityView
+
 
 
 

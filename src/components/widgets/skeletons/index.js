@@ -10,7 +10,7 @@ import {
   AccountListWrapper, 
   // SecurityCenterLayout 
 } from '../layoutStyles'
-import SettingSkeleton from 'pages/settings/skeleton'
+import SettingSkeleton from 'components/settings/skeleton'
 
 const ItemAccount = loadable(() => import("../accountList/item_account"));
 const SimpleLoader = loadable(() => import("../loaders"));

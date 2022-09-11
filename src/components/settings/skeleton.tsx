@@ -3,9 +3,9 @@ import TitleSection from 'components/widgets/titleSectionComponent'
 import { 
     ContentLayout, 
     SecurityLayout
-} from './styles'
-import { SettingsMenuComponent } from './'
-import { SettingElementSkeleton } from './settingElement' 
+} from 'components/settings/styles'
+import SideMenuComponent from 'components/settings/SideMenu'
+import { SettingElementSkeleton } from 'components/settings/settingElement' 
 
 
 const SettingSkeleton = () => {
@@ -16,7 +16,7 @@ const SettingSkeleton = () => {
         <SettingsLayout>
             <TitleSection skeleton/>
             <ContentLayout>
-                <SettingsMenuComponent
+                <SideMenuComponent
                     skeleton
                 />
                 <SecurityLayout>

@@ -575,7 +575,7 @@ export const SecurityLayout = styled(ContentSectionLayout)`
         grid-row: 1 / 3;
     }
 
-`
+` 
 
 export const KycLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;

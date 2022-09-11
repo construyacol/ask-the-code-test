@@ -120,6 +120,7 @@ export const SettingsLayout = styled(BaseLayout)`
     display: grid;
     grid-template-rows: auto 1fr;
     row-gap: 30px;
+    
 `
 
 

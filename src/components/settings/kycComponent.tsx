@@ -25,7 +25,6 @@ const IdentityListComponent = loadable(() => import(/* webpackPrefetch: true */ 
 const STAGE_COMPONENTS = {
   location:ContactLocationComponent,
   identity:IdentityListComponent,
-  default:ContactLocationComponent
 }
 
 
@@ -65,7 +64,12 @@ const KycComponent = (props:any) => {
                     user={user}
                 />
 
-                <KycContentLayout className={`_layout ${currentSection || ''} ${inProgressKyc ? "loading" : ""}`}>
+                <KycContentLayout  
+                    className={`
+                    _layout ${currentSection || ''} 
+                    ${!levelRequirements || !currentSection ? "loading" : ""}
+                    `}
+                >
 
                     <RequirementMenuComponent
                         levelRequirements={levelRequirements}

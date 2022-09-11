@@ -203,7 +203,7 @@ export const RightSection = ({ isMovilViewport, account:{ id } }) => {
         <>
             {
                 isMovilViewport ?
-                    <BiRightArrowAlt className="_enterToWalletIcon" size={35} />
+                    <BiRightArrowAlt className="_enterToWalletIcon" size={34} />
                 :
                     <BalanceContainer  
                         className="_accountBalanceContainer"
