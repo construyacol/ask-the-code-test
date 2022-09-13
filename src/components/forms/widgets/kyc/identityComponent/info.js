@@ -3,7 +3,7 @@ import validations from '../validations'
 import useStage from '../../../hooks/useStage'
 import loadable from '@loadable/component'
 import InputComponent from '../InputComponent'
-import { getNextSelectList } from '../utils'
+import { getNextSelectList } from '../utils' 
 import { BackButtom, NextButtom } from './buttons'
 import LabelComponent from './labelComponent'
 import KycSkeleton from './skeleton'
@@ -75,7 +75,8 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
     await getNextSelectList({
       state,
       stageData,
-      setDataForm
+      setDataForm,
+      dataForm
     })
     setLoading(false)
   }

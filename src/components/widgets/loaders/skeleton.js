@@ -24,4 +24,5 @@ const SkeletonAnimation = styled.div`
     ${OnlySkeletonAnimation}
   }
 `;
+
 export default SkeletonAnimation;

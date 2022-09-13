@@ -98,7 +98,7 @@ export const createInfoNeededStages = async({
     const providerType = ["efecty"].includes(state[KEY_TYPE.PROV_SERVICE]) ? state[KEY_TYPE.PROV_SERVICE] : 'bank'
     let wProviderBanKey = Object.keys(withdrawProviders).find(wAKey => withdrawProviders[wAKey]?.provider_type?.includes(providerType))
     
-    let stages = {
+    let stages = { 
       ...STAGES,
       ...INFO_NEEDED_STAGE[providerType]
     } 

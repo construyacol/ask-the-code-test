@@ -12,8 +12,7 @@ const IdentityForm = (props) => {
 
   const init = async() => {
     const _dataForm = await initStages({
-      formName:'identity',
-      isNewId:props.isNewId
+      formName:'identity'
     })
     setDataForm(_dataForm)
   }

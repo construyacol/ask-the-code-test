@@ -1,19 +1,33 @@
 import { useSelector } from "react-redux";
-import { selectAvailableIdentities } from 'selectors'
+import { selectAllIdentities } from 'selectors'
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
 import { useActions } from "hooks/useActions";
-    
+import { HR } from 'components/widgets/headerAccount/styles'
+import { MetaContainer } from 'components/forms/widgets/sharedStyles'
+import useViewport from 'hooks/useWindowSize'
+import { getIdentityState } from 'utils'
+
+type handleIdentity = {
+    isNewId?:boolean
+    currentIdentity?:object,
+    identityState?:string
+}
+
 
 const IdentityListComponent = () => {
 
-    const [ userIdentities, createNewId ] = useSelector((state) => selectAvailableIdentities(state));
+    const [ userIdentities ] = useSelector((state) => selectAllIdentities(state));
     const actions = useActions()
+    const { isMovilViewport } = useViewport();
 
-    const handleIdentity = async() => {
+    const handleIdentity = async(payload:handleIdentity) => {
+        if(payload?.identityState && ["accepted"].includes(payload?.identityState))return alert('esta identidad ya fué aceptada');
         const Element = await import(`components/forms/widgets/kyc/identityComponent/init`)
         // eslint-disable-next-line react/jsx-pascal-case
-        actions.renderModal(() => <Element.default/>)
+        actions.renderModal(() => <Element.default {...payload}/>)
     }
+
+    console.log('userIdentities', userIdentities)
 
     return(
         <>
@@ -30,33 +44,47 @@ const IdentityListComponent = () => {
                     uiName:"Agregar nueva identidad"
                   }}
                   firstIndex={true}
-                  handleAction={handleIdentity}
+                  handleAction={() => handleIdentity({isNewId:true})}
                 />
                 {
                     userIdentities && Object.keys(userIdentities).map((key, index) => {
                         // const isSelected = [userIdentities[key]?.value].includes(state?.identity?.value)
                         const isDisabled = !userIdentities[key]?.enabled
+                        const identityState = getIdentityState(userIdentities[key])
+
                         return <ItemListComponent 
                         key={index} 
                         className={`${isDisabled ? 'disabled' : ''}`}
                         itemList={userIdentities[key]}
-                        firstIndex={index === 0 && !createNewId}
+                        firstIndex={index === 0}
                         lastIndex={(Object.keys(userIdentities)?.length - 1) === index}
                         // isSelectedItem={isSelected}
-                        // isMovilViewport={isMovilViewport}
-                        handleAction={() => null}
-                        auxUiName={userIdentities[key]?.nationality}
-                        // AuxComponent={[
-                        //     isMovilViewport ? () => null :
-                        //     () => <IdNumberPanel
-                        //     item={userIdentities[key]}
-                        //     />
-                        // ]}
+                        handleAction={() => handleIdentity({ currentIdentity:userIdentities[key], identityState })}
+                        auxUiName={userIdentities[key]?.value}
+                        AuxComponent={[
+                            isMovilViewport ? () => null :
+                            () => <DataState
+                            title={identityState}
+                            />
+                        ]}
                         />
                     })
                 }
             </SelectListContainer>
         </>
+    )
+}
+
+
+
+const DataState = ({ title }:any) => {
+
+    return( 
+      <MetaContainer className="uniqueRow">
+        <HR/>
+        <p className="fuente2">{title}</p>
+        <p className="fuente2">{title}</p>
+      </MetaContainer>
     )
 }
 

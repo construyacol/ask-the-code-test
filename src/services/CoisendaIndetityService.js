@@ -22,6 +22,7 @@ import {
   getIdentityState 
 } from '../utils'
 import userDefaultModel from "api/userDefault";
+import { find, zipObject, keyBy } from 'lodash'
 
 
 
@@ -184,22 +185,27 @@ export class IndetityService extends WebService {
       return await this.Get(url);
     }
 
-    async getProvinceList(country) {
-      let query = `?filter={"where":{"country":"${country}"}}`
+    async getProvinceList(props) {
+      const payload = props?.payload
+      let query = `?filter={"where":{"country":"${payload}"}}`
       let url = `${IdentityApIUrl}provinces${query}`;
       return await this.Get(url);
     }
 
-    async getCityList(province) {
-      let query = `{"where":{"province":"${province}"}}`
+    async getCityList(props) {
+      const payload = props?.payload
+      let query = `{"where":{"province":"${payload}"}}`
       let url = `${IdentityApIUrl}citys?filter=${query}`;
       return await this.Get(url);
     }
 
-    async createAvailableIdentityList(nationality) {
+    async createAvailableIdentityList(props) {
 
-      let documentList = await this.getDocumentList(nationality)
-      let _documentList = []
+      const payload = props?.payload
+      let currentIdentity = props?.config?.currentIdentity
+      
+      let documentList = await this.getDocumentList(payload)
+
 
       if(documentList && this.user?.identities?.length){
         let userIdentities =  {}
@@ -209,28 +215,34 @@ export class IndetityService extends WebService {
             [identity?.id_type]:identity
           }
         })
-        
-        let isThereOneRejectedIdentity = false
-        documentList.forEach(_document => {
-          // console.log("userIdentities", userIdentities[_document?.id_type] , _document)
-          let currentIdentity = userIdentities[_document?.id_type] 
-          let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
-          if(["rejected"].includes(currentIdentityState)){ 
-            isThereOneRejectedIdentity = true
-            return _documentList = [{..._document, state:"rejected"}] 
-          }else if(!isThereOneRejectedIdentity){
-            _documentList.push(_document)
-          }
-          // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
-          //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
-          //   _documentList.push(_document)
-          // }
-        })
-        return _documentList
-      }else{
-        return documentList
-      }
 
+        if(currentIdentity && ["rejected"].includes(getIdentityState(currentIdentity))){
+          let documentListByKey = keyBy(documentList, "id_type")
+          return [{...documentListByKey[currentIdentity?.id_type], state:"rejected"}] 
+        }else{
+          return documentList
+        }
+          // let _documentList = []
+          //   let isThereOneRejectedIdentity = false
+          //   documentList.forEach(_document => {
+          //     let currentIdentity = userIdentities[_document?.id_type] 
+          //     let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
+          //     if(["rejected"].includes(currentIdentityState)){ 
+          //       isThereOneRejectedIdentity = true
+          //       return _documentList = [{..._document, state:"rejected"}] 
+          //     }else if(!isThereOneRejectedIdentity){
+          //       _documentList.push(_document)
+          //     }
+          //     // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
+          //     //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
+          //     //   _documentList.push(_document)
+          //     // }
+          //   })
+          //   return _documentList
+          // }else{
+          //   return documentList
+          // }
+      }
     }
 
     async getDocumentList(nationality) {

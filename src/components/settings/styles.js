@@ -55,7 +55,7 @@ export const ItemMenu = styled(Link)`
     cursor:pointer;
     align-items:center;
     text-decoration: none;
-    height:60px;
+    height:65px;
 
     &.selected{
         border-left: 3px solid var(--primary);
@@ -632,6 +632,9 @@ export const KycLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
     grid-template-rows:120px 1fr;
     row-gap:20px;
+    ._aux{
+        font-family: "Tomorrow", sans-serif;
+    }
 `
 
 export const ContentLayout = styled.div`
