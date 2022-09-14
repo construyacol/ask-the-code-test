@@ -37,7 +37,7 @@ const SettingsComponent = () => {
     const redirects = () => {
         if(isMovilViewport)return;
         if(!settings_path && !["accepted"].includes(identityState)) history.push("/settings/kyc");
-        else if(!settings_path) history.push("/settings/security");
+        else if(!settings_path) history.push("/settings/kyc");
     }
 
     useEffect(() => {

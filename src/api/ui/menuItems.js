@@ -182,14 +182,14 @@ const menuItems = {
 }
 
 export const settingsMenu = {
-  security:{
-    uiName:"Seguridad",
-    value:"security"
-  },
   kyc:{
     uiName:"Verificación de cuenta",
     value:"kyc"
   },
+  security:{
+    uiName:"Seguridad",
+    value:"security"
+  }  
 }
 
 

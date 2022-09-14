@@ -4,7 +4,6 @@ import {
   parseDateToTimeStamp,
 } from 'utils/date'
 import ungapStructuredClone from '@ungap/structured-clone';
-import { identityInfo } from './identityUtils'
 import { createStage } from '../../../utils'
 import { toast } from 'utils'
 import { getUiError } from 'const/uiErrors'
@@ -37,18 +36,18 @@ const INFO_NEEDED = {
     ui_type:"select",
   },
   "id_type":{
-    "ui_name": "Tipo de documento",
-    "ui_type": "select",
-    "cedula_ciudadania":{
+    ui_name: "Tipo de documento",
+    ui_type: "select",
+    cedula_ciudadania:{
         "ui_name": "Cedula de ciudadanía"
     },
-    "cedula_extranjeria":{
+    cedula_extranjeria:{
         "ui_name": "Cedula de extranjería"
     },
-    "pasaporte":{
+    pasaporte:{
         "ui_name": "Pasaporte"
     },
-    "pep":{
+    pep:{
         "ui_name": "Permiso especial de permanencia"
     }
   }
@@ -190,19 +189,16 @@ const STAGES = {
     }
 }
 
+
 export const ApiGetIdentityStages = async(config) => {
+ 
+  if(config.isNewId)return INFO_NEEDED;
+  const currentIdentity = config.currentIdentity
 
-  // const user = mainService?.user
-  const { 
-    pendingOrRejectedIdentity
-  } = identityInfo()
-  // const user = mainService?.user
-  // const userIdentity = user?.identity
-
-   if(!pendingOrRejectedIdentity || ["pending", "rejected"].includes(pendingOrRejectedIdentity?.info_state)){
+  if(!currentIdentity || ["pending", "rejected"].includes(currentIdentity?.info_state)){
       return INFO_NEEDED;
    }else{
-    const { id_type, nationality } = pendingOrRejectedIdentity
+    const { id_type, nationality } = currentIdentity
     const _document = await mainService.getOneDocument({ id_type, nationality })
     if(!_document)return FILES_NEEDED;
     let filesNeeded = {}
@@ -216,28 +212,6 @@ export const ApiGetIdentityStages = async(config) => {
     })
     return filesNeeded
    }
-
-  //  if(pendingIdentityFile && ["accepted", "confirmed"].includes(userIdentity?.info_state)){
-  //   const { id_type, nationality } = pendingIdentityFile
-  //   const _document = await mainService.getOneDocument({ id_type, nationality })
-  //   if(!_document)return FILES_NEEDED;
-  //   let filesNeeded = {}
-  //   _document?.file_needed.forEach(fileKey => {
-  //     if(FILES_NEEDED[fileKey]){ 
-  //       filesNeeded = {
-  //         ...filesNeeded,
-  //         [fileKey]:FILES_NEEDED[fileKey]
-  //       }
-  //     }
-  //   })
-  //   return filesNeeded
-  //  }else{
-  //   return INFO_NEEDED;
-  //  }
-    
-
-
-
 }
 
 
@@ -245,7 +219,8 @@ export const ApiGetIdentityStages = async(config) => {
 export const ApiPostIdentityInfo = async(payload) => {
 
   const config = ungapStructuredClone(payload);
-  const { pendingOrRejectedIdentity } = identityInfo()
+  const currentIdentity = config?.dataForm?.config?.currentIdentity
+  
   let res
 
   const isMaskBirthday = config.birthday.includes('/') 
@@ -264,12 +239,11 @@ export const ApiPostIdentityInfo = async(payload) => {
       }
     }
   })
-  
 
-  if(pendingOrRejectedIdentity){
+  if(currentIdentity){
     res = await mainService.updateInfoIdentity({
       ...config, 
-      identity_id:pendingOrRejectedIdentity?.id, 
+      identity_id:currentIdentity?.id, 
       info_needed
     }) 
   }else{
@@ -285,18 +259,21 @@ export const ApiPostIdentityInfo = async(payload) => {
   if(error){
     return toast(getUiError(error?.message), "error");
   }
-  return await mainService.fetchCompleteUserData()
+
+  await mainService.fetchCompleteUserData()
+
+  return res
 }
 
 
 export const ApiPostIdentityFiles = async(payload) => {
+  
   const config = ungapStructuredClone(payload);
   const user = mainService?.user
 
-  const { pendingIdentityFile } = identityInfo()
   const mainIdentity = user?.user?.identity 
 
-  const currentIdentity = pendingIdentityFile ? pendingIdentityFile : mainIdentity
+  const currentIdentity = config.dataForm?.config?.currentIdentity ? config.dataForm?.config?.currentIdentity : mainIdentity
   const { id_type, nationality, id } = currentIdentity
 
   const _document = await mainService.getOneDocument({ id_type, nationality })

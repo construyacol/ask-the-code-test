@@ -123,13 +123,20 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
         const document = (documents && idDocument) && documents[idDocument]
         if(!document)return prevStage();
         setLoading(true)
-        let res = await ApiPostIdentityInfo({document, ...state}, {setDataForm})
+        let res = await ApiPostIdentityInfo({document, dataForm, ...state})
         setLoading(false)
         if(!res)return prevStage();
+        const currentIdentity = res.data
         const _dataForm = await initStages({
-          formName:'identity',
+          formName:'identity', 
+          currentIdentity
         })
-        return setDataForm(_dataForm)
+        return setDataForm({
+          ..._dataForm,
+          config:{
+            currentIdentity
+          }
+        })
       }
       execPost()
     }

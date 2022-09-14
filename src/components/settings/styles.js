@@ -129,14 +129,14 @@ export const SettingsContent = styled.div`
     }
 `
 
-export const ContactLocationContent = styled.div`
+export const ItemDetailContainer = styled.div`
     display:grid;
     row-gap: 22px;
     position:relative;
     grid-auto-rows: 39px;
 `
 
-export const ContactLocationItem = styled.div`
+export const DetailItem = styled.div`
     row-gap: 4px;
     display: grid;
     grid-template-columns: 1fr auto;
@@ -147,15 +147,15 @@ export const ContactLocationItem = styled.div`
         }
      }
 
-    .contactLocationData,
-    .contactLocationKey{
+    .itemData,
+    .itemKey{
         grid-column: 1 / 2;
         margin:0;
         color:var(--paragraph_color);
-        &.contactLocationData{
+        &.itemData{
             font-size:15px;
         }
-        &.contactLocationKey{
+        &.itemKey{
             font-size:13px;
         }
     }
@@ -441,19 +441,41 @@ export const ItemBenefit = styled.li`
 `
 
 export const UiStateCont = styled.span`
-    font-size: 12px;
+    font-size: 11px;
     height:14px;
     width:auto;
     padding: 3px 6px;
     border-radius: 3px;
+    font-weight:normal;
 
     @media ${device.mobile}{
         display:none;
+        ${'' /* &.accepted,
+        &.pending,
+        &.confirmed,
+        &.rejected{
+            display:initial;
+        } */}
     }
 
-    &.verified{
+    &.verified,
+    &.accepted{
         background: #2bc48a1f;
         color:#219D6E;
+    }
+
+    &.rejected{
+        background: #FFE0E0;
+        color:#FF0000;
+    }
+
+    &.confirmed{
+        background:#f7f7f7;
+        color:#FF8C00;
+    }
+    &.pending{
+        background: #FFF1E0;
+        color:#FF8C00;
     }
 
     &.unverified{

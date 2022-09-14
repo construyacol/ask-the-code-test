@@ -1,9 +1,10 @@
 import { useSelector } from "react-redux";
 import { merge } from 'lodash'
 import { BiEdit } from "react-icons/bi";
+import { UI_DETAIL_NAME } from 'const/uiNames'
 import { 
-    ContactLocationItem,
-    ContactLocationContent,
+    DetailItem,
+    ItemDetailContainer,
     EditButton,
 } from './styles'
 
@@ -20,13 +21,13 @@ const ContactLocationComponent = (props:any) => {
     // 
     // FloatContainer
 
-    return(
+    return( 
         <>
             <h3 className="fuente">
                 Datos de contácto y residencia 
             </h3>
 
-            <ContactLocationContent> 
+            <ItemDetailContainer> 
 
                 {   
                     contactLocationData &&
@@ -46,7 +47,7 @@ const ContactLocationComponent = (props:any) => {
                             const isEditable = ["phone", "email"].includes(itemKey)
 
                             return(
-                                <ContactLocationItem key={index} className={`${isEditable ? 'isEditable' : ''}`}>
+                                <DetailItem key={index} className={`${isEditable ? 'isEditable' : ''}`}>
                                     <EditButton className="_editButton">
                                         <p className="fuente edit_p">Editar</p>
                                         <BiEdit 
@@ -54,13 +55,13 @@ const ContactLocationComponent = (props:any) => {
                                             color="var(--paragraph_color)"
                                         />
                                     </EditButton>
-                                    <p className="fuente contactLocationKey">{itemKey}</p>
-                                    <p className="fuente2 contactLocationData">{itemData}</p>
-                                </ContactLocationItem>
+                                    <p className="fuente itemKey">{UI_DETAIL_NAME[itemKey as keyof typeof UI_DETAIL_NAME] || itemKey}</p>
+                                    <p className="fuente2 itemData">{itemData}</p>
+                                </DetailItem>
                             )
                         })
                 }
-            </ContactLocationContent>
+            </ItemDetailContainer>
         </>
     )
 }

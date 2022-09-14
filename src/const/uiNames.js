@@ -13,3 +13,24 @@ export const UI_NAMES = {
       efecty_network:"Efecty"
     }
   }
+
+export const UI_STATE_NAME = {
+  pending:"Pendiente",
+  accepted:"Aceptado",
+  rejected:"Rechazado",
+  confirmed:"En revisión"
+}
+
+export const UI_STATE_ACTION = {
+  pending:"Completar",
+  rejected:"Corregir",
+  confirmed:"En revisión..."
+}
+
+export const UI_DETAIL_NAME = {
+  phone:"Teléfono",
+  country:"País",
+  province:"Departamento",
+  city:"Ciudad",
+  address:"Dirección"
+}

@@ -42,7 +42,7 @@ const KycComponent = () => {
         setLevelRequirements(_levelRequirements)
         const { pendingRequirements, requirements } =_levelRequirements
         const requirementList = isEmpty(pendingRequirements) ? requirements : pendingRequirements
-        const _currentSection = ["location", "contact"].includes(requirementList[0]) ? "location" : requirementList
+        const _currentSection = ["accepted"].includes(identityState) ? "identity" : ["location", "contact"].includes(requirementList[0]) ? "location" : requirementList
         setCurrentSection(_currentSection)
     }
 
