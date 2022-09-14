@@ -13,7 +13,7 @@ import { device, MAIN_COLOR } from "../../const/const";
 
 const NumberBox = (props) => {
   return (
-    <StyledShareSection {...props} radius="10px" height="125px">
+    <StyledShareSection {...props} radius="10px" height="115px">
       <Icon>
         <props.Icon color={MAIN_COLOR} />
       </Icon>

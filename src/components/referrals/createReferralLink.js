@@ -18,7 +18,7 @@ import useViewport from "../../hooks/useWindowSize";
 const CreateReferralLink = (props) => {
 
   const [ toastMessage ] = useToastMessage();
-  const [ loader, setLoader ] = useState(false)
+  const [ loader, setLoader ] = useState(false);
   const { isMovilViewport } = useViewport();
   // const [coinsendaServices] = useCoinsendaServices();
   const [ isValidCode, setIsValidCode ] = useState('bad')
@@ -36,14 +36,14 @@ const CreateReferralLink = (props) => {
     setLoader(false)
   };
 
-
   //   <div className="referralImg">
   //   <img id="btcAward" src={btcoin} alt="" height="200px" />
   //   <img id="person1" src={person1} alt="" height="200px" />
   //   <img id="person2" src={person2} alt="" height="200px" />
   //   <img id="gift" className="jello-horizontal" src={gift} alt="" height="200px"/>
-  // </div>
-  const iconSize = isMovilViewport ? 220 : 375
+  //  </div>
+
+  const iconSize = isMovilViewport ? 220 : 330
 
     return (
       <RefCodeForm
@@ -82,6 +82,7 @@ const CreateReferralLink = (props) => {
                 loader={loader}
                 formValidate={isValidCode === 'good'}
                 label="Crear código de referido"
+                className="settingButton"
               />
             </ButtonContainer>
         </InputContainer>
@@ -169,10 +170,10 @@ const RefCodeForm = styled.form`
   }
 
   @media only screen and (min-width: 1550px) {
-    img{
+    ${'' /* img{
       height: 370px;
       width: 370px;
-    }
+    } */}
   }
 
   ${'' /* @media ${device.laptopL} {

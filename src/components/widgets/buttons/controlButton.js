@@ -59,6 +59,7 @@ const ControlButton = ({
         label={label}
         type={type}
         id={id}
+        className={className}
         active={formValidate}
         handleAction={(e) => {
           e.currentTarget.blur();
@@ -84,14 +85,14 @@ export const InputButton = (props) => {
       {props.active ? (
         <input
           id={props.id}
-          className={`botonForm ${props.type} fuente `}
+          className={`botonForm ${props.type}  fuente `}
           type="button"
           value={props.label}
           onClick={props.handleAction}
         />
       ) : (
         // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
-        <DisabledButton className="disabledButton fuente" >{props.label}</DisabledButton>
+        <DisabledButton className={`fuente ${props.className}`} >{props.label}</DisabledButton>
       )}
     </InputButtonCont>
   );
@@ -126,6 +127,15 @@ const DisabledButton = styled(BotonForm)`
   background: #8080807d;
   color: white;
   opacity: 0.4;
+
+
+  &.settingButton{
+      height: fit-content;
+      padding: 14px 18px;
+      width: calc(100% - 36px);
+  }
+
+
 `;
 
 const ControlsContainer = styled.div`
@@ -149,7 +159,6 @@ const ControlsContainer = styled.div`
 
   &.settingButton{
     input{
-      ${'' /* font-size: 15px !important; */}
       height: fit-content;
       padding: 14px 18px;
     }

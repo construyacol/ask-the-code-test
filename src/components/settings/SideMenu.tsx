@@ -6,18 +6,10 @@ import {
 } from 'components/settings/styles'
 
 import { settingsMenu } from 'api/ui/menuItems'
-import { IoMdFingerPrint } from 'react-icons/io';
-import { BsShieldLock } from 'react-icons/bs';
+import getIcon from './icons'
+
 import { BiRightArrowAlt } from 'react-icons/bi';
 
-
-const getIcon = (iconValue:string) => {
-    const icons = {
-        security:BsShieldLock,
-        kyc:IoMdFingerPrint
-    }
-    return icons[iconValue as keyof typeof icons]
-}
 
 const SideMenuComponent = (props:any) => {
 
@@ -29,6 +21,7 @@ const SideMenuComponent = (props:any) => {
     } = props
 
     const isVisibleOnMovil = isMovilViewport && !currentSection
+
 
     return(
         <SettingsMenuContainer className={`${isVisibleOnMovil ? "isVisibleOnMovil" : ""}`}> 

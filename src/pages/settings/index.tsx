@@ -20,10 +20,12 @@ type params = { settings_path?:string }
 
 const KycView = loadable(() => import(/* webpackPrefetch: true */ "components/settings/kycView"), { fallback: <div>Cargando kyc...</div> });
 const SecurityView = loadable(() => import(/* webpackPrefetch: true */ "components/settings/securityView"), { fallback: <div>Cargando Security...</div> });
+const ReferralView = loadable(() => import(/* webpackPrefetch: true */ "components/referrals"), { fallback: <div>Cargando Security...</div> });
 
 const STAGE_COMPONENTS = {
     kyc:KycView,
     security:SecurityView,
+    referral:ReferralView
 }
 
 const SettingsComponent = () => { 

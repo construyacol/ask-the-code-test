@@ -272,10 +272,10 @@ const MovilItemMenu = styled.div`
 
 `
 
+const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 const UserInfoComponent = props => {
 
-  const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
   const { verification_state } = useSelector((state) => state.ui);
   const { user  } = useSelector((state) => state.modelData);
 

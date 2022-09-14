@@ -1,7 +1,5 @@
-import { IoMailUnreadOutline } from 'react-icons/io5';
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
-import { BsShieldLock } from 'react-icons/bs';
-import { IoMdFingerPrint } from 'react-icons/io';
+import getIcon from './icons'
 // import { VscVerified } from 'react-icons/vsc';
 import P from 'components/widgets/paragraph'
 
@@ -16,14 +14,7 @@ import {
 import { settingType } from 'components/settings/types'
 import RenderAuxComponent from 'components/forms/widgets/renderAuxComponent'
 
-const getIcon = (iconValue:string | undefined) => {
-    const icons = {
-        email:IoMailUnreadOutline,
-        twofa:BsShieldLock,
-        identity:IoMdFingerPrint
-    }
-    return icons[iconValue as keyof typeof icons]
-}
+
  
 export const SettingElementSkeleton = () => {
     return(

@@ -1,11 +1,11 @@
 import { useSelector } from "react-redux";
 import { merge } from 'lodash'
-import { BiEdit } from "react-icons/bi";
+// import { BiEdit } from "react-icons/bi";
 import { UI_DETAIL_NAME } from 'const/uiNames'
 import { 
     DetailItem,
     ItemDetailContainer,
-    EditButton,
+    // EditButton,
 } from './styles'
 
 

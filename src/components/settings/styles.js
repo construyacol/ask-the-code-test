@@ -695,6 +695,16 @@ export const ContentSectionLayout = styled.div`
     display:grid;
 `
 
+export const ReferralLayout = styled(ContentSectionLayout)`
+    grid-template-columns:1fr;
+    grid-template-rows:120px 1fr;
+    row-gap:20px;
+    @media ${device.mobile}{
+        grid-template-rows:auto 1fr;
+    }
+
+`
+
 export const SecurityLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
     grid-auto-rows: 120px;

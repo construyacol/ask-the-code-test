@@ -22,7 +22,7 @@ import { isSafari } from '../../utils'
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
-const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
+const ReferralComponent = loadable(() => import("../referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {

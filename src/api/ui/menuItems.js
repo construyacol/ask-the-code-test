@@ -186,10 +186,15 @@ export const settingsMenu = {
     uiName:"Verificación de cuenta",
     value:"kyc"
   },
+  referral:{
+    uiName:"Referidos",
+    value:"referral"
+  },
   security:{
     uiName:"Seguridad",
     value:"security"
-  }  
+  }
+   
 }
 
 

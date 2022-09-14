@@ -1,6 +1,6 @@
 import React from "react";
 import loadable from "@loadable/component";
-import { ReferralComponentAsSkeleton } from "components/referrals/referralsComponent";
+import { ReferralComponentAsSkeleton } from "components/referrals";
 
 import { AccountListContainer } from "../accountList/styles";
 // import { ItemSecurity, SecurityLayoutLoader } from "components/securityCenter/styles";

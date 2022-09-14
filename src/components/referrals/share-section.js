@@ -23,7 +23,7 @@ const TWITTER_TEXT = "Amigos, este es mi link de referidos de Coinsenda:";
 //   })(document, "script", "facebook-jssdk");
 // };
 
-const ShareSection = ({ referralLink, loading }) => {
+const ShareSection = ({ referralLink, loading, referral, panelSticky }) => {
   const shareOnTwitter = () => {
     window.open(
       `https://twitter.com/intent/tweet?text=${TWITTER_TEXT}&url=${encodeURI(
@@ -45,19 +45,34 @@ const ShareSection = ({ referralLink, loading }) => {
   };
 
   useEffect(() => {
+    // console.log('referral', referral?.ref_code)
     // FACEBOOK_INIT()
   }, []);
 
   return (
     <StyledShareSection className="fuente">
+
       <Title loading={loading ? "true" : ""}>{SECTION_TITLE}</Title>
 
       <MidSection className={`${loading ? "skeleton" : ""}`} loading={loading ? "true" : ""}>
         <LinkIcon>
           <i className="fas fa-link" />
         </LinkIcon>
-        <p>{referralLink}</p>
-        <CopyContainer valueToCopy={referralLink} color="#0e95f8" onlyIcon />
+
+        <ReferralLinkContainer className={`${panelSticky ? 'onSticky' : ''}`}>
+          <p>
+            {referralLink}
+          </p>
+          <div className="referralCodeCont">
+              <p className="referralCode">
+                {referral?.ref_code}
+              </p>
+            <CopyContainer valueToCopy={referral?.ref_code} color="#0e95f8" onlyIcon />
+          </div>
+        </ReferralLinkContainer>
+
+        <CopyContainer valueToCopy={`${referralLink}${referral?.ref_code}`} color="#0e95f8" onlyIcon />
+
       </MidSection>
 
       {!loading && (
@@ -77,6 +92,45 @@ const ShareSection = ({ referralLink, loading }) => {
     </StyledShareSection>
   );
 };
+
+
+
+const ReferralLinkContainer = styled.div`
+  height:90%;
+  
+  .referralCodeCont{
+    background: #F0F9FF;
+    height: 100%;
+    padding: 0 10px;
+    border-radius: 3px;
+    border: 1px solid var(--primary);
+    max-height: 30px;
+    
+  }
+
+  > p, .referralCode {
+    max-width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin:0;
+    @media ${device.mobile} {
+      max-width: 140px;
+      &.referralCode{ 
+        max-width: 80px;
+      }
+    }
+  }
+
+  &.onSticky{
+    .referralCode {
+      max-width: 70px;
+    }
+    > p{
+      max-width:80px;
+    }
+  }
+`
 
 const LinkIcon = styled.div`
   border-radius: 50%;
@@ -153,12 +207,7 @@ const MidSection = styled(ReferralBox)`
   align-items: center;
   color: ${MAIN_COLOR};
   background: white;
-  > p {
-    width: 80%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+
 
   &.skeleton {
     .nWaddress {

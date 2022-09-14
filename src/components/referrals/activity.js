@@ -7,31 +7,35 @@ import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
 // import { useParams } from "react-router-dom";
 import useViewport from '../../hooks/useWindowSize'
 import { device } from "../../const/const";
-import IconSwitch from '../widgets/icons/iconSwitch'
+// import IconSwitch from '../widgets/icons/iconSwitch'
 import { OrderContainer } from '../widgets/activityList/order_item'
 import { useActions } from "../../hooks/useActions";
 import OtherModalLayout from "../widgets/modal/otherModalLayout";
-
+// import emptyIcon from './assets/referral.gif'
+import { getCdnPath } from 'environment'
+import { isEmpty } from 'lodash'
 
 const ReferralActivity = ({ coinsendaServices }) => {
 
   const [ loader, setLoader ] = useState(true)
-  const { activityList, setActivityList } = UseActivity([])
+  const { 
+    activityList, 
+    // setActivityList 
+  } = UseActivity([])
 
   const LoadActivity = async() => {
-    const res = await coinsendaServices.get_referral_deposits();
-    console.log('||||||||||  LoadActivity ', res)
-    if(!res) setActivityList(false);
+    await coinsendaServices.get_referral_deposits();
+    setLoader(false)
   }
 
   useEffect(() => {
-    if(activityList && !activityList.length){
+    if(isEmpty(activityList)){
       LoadActivity()
-    }else{
-      setLoader(false)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activityList])
+  // }, [activityList])
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [])
 
   return(
         <ActivityList
@@ -80,13 +84,13 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
   return(
     <>
         {
-          !activity ? 
+          isEmpty(activity) ? 
           <EmptyStateList
             isMovilViewport={isMovilViewport}
             label="Aún no tienes comisiones acreditadas, compárte tu link de referido y empieza a recibir incentivos."
           />
           :
-          (activity && activity.length < 1) ?
+          loader ?
           <LoaderView/>
           :
           <ComponentsContainer>
@@ -116,6 +120,7 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
                 setLoader={setLoader}
                 loader={loader}
                 activityLength={activity && activity.length}
+                listKey="referral"
               />
             </ActivityGrid>
         </ComponentsContainer>
@@ -138,11 +143,11 @@ const AuxComponentContainer = ({ AuxComponent }) =>
 
 const EmptyStateList = ({ label, isMovilViewport }) => {
 
-
   return(
     <EmptyStateGrid>
       <EmptyStateCont className={`${isMovilViewport ? 'isMovil' : ''}`}>
-        <IconSwitch size={110} icon="emptyState" />
+        {/* <IconSwitch size={110} icon="emptyState" /> */}
+        <img src={`${getCdnPath('assets')}empty_referral.gif`} width={"80px"} alt=""/>
         <p className="fuente">{label}</p>
       </EmptyStateCont>
     </EmptyStateGrid>
@@ -155,7 +160,6 @@ const EmptyStateList = ({ label, isMovilViewport }) => {
 const EmptyStateCont = styled.div`
   display: grid;
   justify-items: center;
-  padding: 50px 100px;
   max-width:500px;
   &.isMovil{
     padding: 0;
