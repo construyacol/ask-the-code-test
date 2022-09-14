@@ -15,6 +15,49 @@ import { device } from 'const/const'
 //     }
 // `
 
+
+const ItemInfo = styled.div`
+    height:0;
+    width:calc(100% - 40px);
+    padding: 0 20px;
+    transition:.3s;
+`
+
+export const IdentityInfo = styled(ItemInfo)`
+    overflow:hidden;
+    background:var(--secondary_background);
+    display: grid;
+    row-gap: 20px;
+    position: relative;
+    grid-auto-rows: 39px;
+
+    &.open{
+        height:170px;
+        padding: 30px 20px 20px;
+    }
+`
+
+
+
+export const StateInfo = styled.div`
+    height:auto;
+    width:calc(100% - 40px);
+    padding:0 20px;
+    font-size:14px;
+    &.rejected{
+        background:var(--red_background);      
+        color:var(--red_color);
+    }
+    &.pending{
+        background:var(--orange_background);      
+        color:var(--orange_color);
+    }
+    &.confirmed{
+        background:var(--secondary_background);      
+        color:var(--paragraph_color);
+    }
+`
+
 export const FloatContainer = styled.div`
     position: absolute;
     top: 0;
@@ -99,7 +142,7 @@ export const ItemMenu = styled(Link)`
 export const SettingsContent = styled.div`
     height:auto;
     position: sticky;
-    top: 50px;
+    top: 146px;
 
     &.skeleton{
 
@@ -280,7 +323,8 @@ export const RequirementMenu = styled.menu`
     column-gap: 10px;
     margin-top: 10px;
     position: sticky;
-    top: 60px;
+    top: 145px;
+    z-index:1;
 
     &.inProgressKyc{
         z-index:2;
@@ -406,6 +450,7 @@ export const IdentityContainer = styled.div`
 
 `
 
+
 export const BenefitsContainer = styled.div`
     background: #F4F4F6;
     padding: 20px 20px;
@@ -415,7 +460,17 @@ export const BenefitsContainer = styled.div`
     border-radius:6px;
 
     position: sticky;
-    top: 70px;
+    top: 170px;
+
+    h4{
+        display: flex;
+        column-gap: 7px;
+        align-items: center;
+        span{
+            font-size:13px;
+            font-weight:normal;
+        }
+    }
 
     ul{
         padding:0;

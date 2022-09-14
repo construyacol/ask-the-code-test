@@ -206,7 +206,6 @@ export class IndetityService extends WebService {
       
       let documentList = await this.getDocumentList(payload)
 
-
       if(documentList && this.user?.identities?.length){
         let userIdentities =  {}
         this.user?.identities.forEach(identity => {
@@ -242,6 +241,8 @@ export class IndetityService extends WebService {
           // }else{
           //   return documentList
           // }
+      }else{
+        return documentList
       }
     }
 

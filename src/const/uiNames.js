@@ -21,16 +21,26 @@ export const UI_STATE_NAME = {
   confirmed:"En revisión"
 }
 
+export const UI_STATE_DESCRIPTION = {
+  pending:"Tienes una identidad en pendiente, completala para pasarla a la fase de revisión",
+  rejected:"Tienes una identidad rechazada, vuelve a enviar los datos de identidad",
+  confirmed:"Tienes una identidad en revisión, este proceso podría tomar hasta 72 horas hábiles.",
+}
+
 export const UI_STATE_ACTION = {
-  pending:"Completar",
-  rejected:"Corregir",
+  pending:"Por completar",
+  rejected:"Por corregir",
   confirmed:"En revisión..."
 }
 
 export const UI_DETAIL_NAME = {
   phone:"Teléfono",
   country:"País",
+  email:"Correo electrónico",
   province:"Departamento",
   city:"Ciudad",
-  address:"Dirección"
+  address:"Dirección",
+  name:"Nombres",
+  surname:"Apellidos",
+  nationality:"Nacionalidad"
 }

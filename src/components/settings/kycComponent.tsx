@@ -76,11 +76,12 @@ const KycComponent = () => {
                     /> 
 
                     {
-                        inProgressKyc &&
+                        (inProgressKyc && levelRequirements) &&
                             <FloatContainer>
                                 <EmptyOrInProcessState 
                                     levelRequirements={levelRequirements}
                                     identityState={identityState}
+                                    user={user}
                                 />
                             </FloatContainer>
                     }
@@ -100,8 +101,8 @@ const KycComponent = () => {
             </IdentityContent>
             
             {
-                user?.identity &&
-                    <BenefitsComponent/>
+                ["accepted"].includes(identityState) &&
+                    <BenefitsComponent user={user}/>
             }
 
         </IdentityContainer>

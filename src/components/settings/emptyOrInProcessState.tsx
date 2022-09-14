@@ -4,27 +4,37 @@ import {
 } from './styles'
 import { getCdnPath } from 'environment'
 import ControlButton from "components/widgets/buttons/controlButton";
+import { levelRequirements } from './types'
+import { isEmpty } from 'lodash'
+
+type props = {
+    levelRequirements:levelRequirements,
+    identityState:string,
+    user?:any
+}
 
 
-
-const EmptyOrInProcessState = (props:any) => {
+const EmptyOrInProcessState = (props:props) => {
 
     const actions = useActions()
     const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
-    const { identityState } = props
+    const { identityState, user } = props
 
     const ctaUiLabel = ["contact"].includes(currentPendingRequirement) ? "ctaInitial":
     ["location"].includes(currentPendingRequirement) ? "ctaContinue" :
     ["rejected"].includes(identityState) && ["identity"].includes(currentPendingRequirement) ? "ctaTry" : "ctaDefault"
 
     const imgName =  identityState && (["confirmed"].includes(identityState) ? "fingerprint.gif" : "error_animation.gif");
-
+ 
     const handleAction = async() => {
+        const currentIdentity = !isEmpty(user.identities) && user.identities[0]
         const Element = await import(`components/forms/widgets/kyc/${currentPendingRequirement}Component/init`)
         // eslint-disable-next-line react/jsx-pascal-case
-        actions.renderModal(() => <Element.default/>)
+        actions.renderModal(() => <Element.default 
+            currentIdentity={currentIdentity}
+            // isNewId={true}
+        />)
     }
-
 
     return(
         <EmptyStateLayout>

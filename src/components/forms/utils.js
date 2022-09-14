@@ -179,6 +179,7 @@ const dataService = {
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
+    
   for(const stage of Object.keys(apiStages)){ 
     stages = {
       ...stages,

@@ -127,7 +127,7 @@ export const getNextSelectList = async ({
   const selectList = await getSelectList(nextStageName, {
     payload:state[stageData?.key],
     ...dataForm
-  })
+  }) 
 
   if(!selectList || (selectList && !Object.keys(selectList)?.length)){
     return setDataForm(prevState => {

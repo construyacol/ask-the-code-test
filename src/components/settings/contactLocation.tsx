@@ -48,13 +48,13 @@ const ContactLocationComponent = (props:any) => {
 
                             return(
                                 <DetailItem key={index} className={`${isEditable ? 'isEditable' : ''}`}>
-                                    <EditButton className="_editButton">
+                                    {/* <EditButton className="_editButton">
                                         <p className="fuente edit_p">Editar</p>
                                         <BiEdit 
                                             size={20}
                                             color="var(--paragraph_color)"
                                         />
-                                    </EditButton>
+                                    </EditButton> */}
                                     <p className="fuente itemKey">{UI_DETAIL_NAME[itemKey as keyof typeof UI_DETAIL_NAME] || itemKey}</p>
                                     <p className="fuente2 itemData">{itemData}</p>
                                 </DetailItem>

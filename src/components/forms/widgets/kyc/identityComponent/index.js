@@ -20,7 +20,6 @@ export default function IdentityComponent ({ handleDataForm }) {
         const wrapperComponent = ["rejected", "pending"].includes(currentIdentity?.info_state) ? 'kyc/identityComponent/info' :
         ["rejected", "pending"].includes(currentIdentity?.file_state) ? 'kyc/identityComponent/files' : 'kyc/identityComponent/info'
         
-
         return setDataForm(prevState => {
             return { 
               ...prevState,

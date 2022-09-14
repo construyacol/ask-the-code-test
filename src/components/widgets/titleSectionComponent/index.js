@@ -99,7 +99,7 @@ const TitleContainer = styled(Container)`
         }
     }
 
-    &.stickyWallets{
+    &.sticky{
         position: sticky;
         top: 60px;
         background: #f9f9fbdb;

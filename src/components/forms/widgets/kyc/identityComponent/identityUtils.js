@@ -9,11 +9,13 @@ export const identityInfo = () => {
   pendingIdentityFile = user?.identities?.find(identity => ["pending", "rejected"].includes(identity?.file_state));
   let pendingOrRejectedIdentity = user?.identities.find(identity => ["pending", "rejected"].includes(identity?.file_state) || ["pending", "rejected"].includes(identity?.info_state));
   let confirmedIdentity = user?.identities?.find(identity => ["confirmed"].includes(identity?.file_state) && ["confirmed"].includes(identity?.info_state));
+  let pendingIdentity = user?.identities?.find(identity => ["pending"].includes(identity?.file_state) || ["pending"].includes(identity?.info_state));
   // }
   return {
     pendingIdentityFile,
     pendingOrRejectedIdentity,
-    confirmedIdentity
+    confirmedIdentity,
+    pendingIdentity
   }
 }
  
