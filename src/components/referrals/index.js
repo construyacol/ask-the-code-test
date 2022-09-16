@@ -28,8 +28,18 @@ const {
 } = Environment
 
 
-// const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=${refCode}`;
+const REFERRAL_LINK = (refCode) => `${BASE_URL}?ref_code=`;
 const customLaptoDeviceWidth = "(max-width:1000px)"
+const REFERRAL_DATA = {
+  value:"referral",
+  uiName:"Referidos",
+  uiDescription:"Recibe el 0.5% de todas las operaciones de compra y venta que tus referidos realicen.",
+  states:{
+      uiEnabled:"Habilitado",
+      uiDisabled:"Deshabilitado"
+  }
+}
+
 
 const ReferralComponent = (props) => {
 
@@ -37,9 +47,7 @@ const ReferralComponent = (props) => {
   const { user } = props;
   // const [wasReferralCodeCreated, setWasReferralCodeCreated] = useState(false);
   // const [haveReferraLink, setHaveReferralLink] = useState(false);
-  const [referralLink, 
-    // setReferralLink
-  ] = useState(`${BASE_URL}?ref_code=`);
+  const [referralLink, setReferralLink  ] = useState("");
   const [ loading, setLoading ] = useState(true);
   // const [ loading ] = useState(props.setSkeleton ? true : false);
   // const [loading, setLoading] = useState(true)
@@ -55,9 +63,6 @@ const ReferralComponent = (props) => {
         containerId: "containerElement",
       });
     });
-
-    // The code below is for test purpose on view skeleton UI
-    // setTimeout(() => setLoading(false), 3000)
   }, []);
 
   const getRef = async() => {
@@ -66,9 +71,9 @@ const ReferralComponent = (props) => {
   }
 
   useEffect(() => {
-    // if (user && user.referral && user.referral.ref_code) {
-    //   setReferralLink(REFERRAL_LINK(user.referral.ref_code));
-    // }
+    if (user && user.referral && user.referral.ref_code) {
+      setReferralLink(REFERRAL_LINK(user.referral.ref_code));
+    }
     setLoading(false)
   }, [user]);
 
@@ -80,20 +85,6 @@ const ReferralComponent = (props) => {
   }, [])
 
 
-  const REFERRAL_DATA = {
-      value:"referral",
-      uiName:"Referidos",
-      uiDescription:"Recibe el 0.5% de todas las operaciones de compra y venta que tus referidos realicen.",
-      states:{
-          uiEnabled:"Habilitado",
-          uiDisabled:"Deshabilitado"
-      }
-  }
-
-  const itemElement = REFERRAL_DATA
-  const isCompleted = true
-
-
   return (
     <Route path="/:primary_path" render={(routeProps) => (
         <ReferralLayout className="ReferralLayout">
@@ -101,8 +92,8 @@ const ReferralComponent = (props) => {
           {/* <TitleSection/> */}
 
           <SettingElement
-              itemElement={itemElement}
-              isCompleted={isCompleted}
+              itemElement={REFERRAL_DATA}
+              isCompleted={user?.referral?.ref_code}
               isLastElement={true}
           />
 

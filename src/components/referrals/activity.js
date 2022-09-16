@@ -5,7 +5,7 @@ import UseActivity from 'hooks/useActivity'
 import InifiniteScrollComponent from "../widgets/activityList/infiniteScroll";
 // import OrderItem from "../widgets/activityList/order_item";
 // import { useParams } from "react-router-dom";
-import useViewport from '../../hooks/useWindowSize'
+import useViewport from '../../hooks/useWindowSize' 
 import { device } from "../../const/const";
 // import IconSwitch from '../widgets/icons/iconSwitch'
 import { OrderContainer } from '../widgets/activityList/order_item'
@@ -18,10 +18,7 @@ import { isEmpty } from 'lodash'
 const ReferralActivity = ({ coinsendaServices }) => {
 
   const [ loader, setLoader ] = useState(true)
-  const { 
-    activityList, 
-    // setActivityList 
-  } = UseActivity([])
+  const { activityList } = UseActivity()
 
   const LoadActivity = async() => {
     await coinsendaServices.get_referral_deposits();
@@ -32,8 +29,6 @@ const ReferralActivity = ({ coinsendaServices }) => {
     if(isEmpty(activityList)){
       LoadActivity()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [activityList])
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [])
 
@@ -59,7 +54,7 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
 
   const { isMovilViewport } = useViewport()
   const actions = useActions();
-
+  console.log('referral Activity ====> ', activity)
   const closeModal = (e, forceClose) => {
     if (e && (e.target.dataset.close_modal || forceClose)) {
       actions.isAppLoading(false);
@@ -84,14 +79,14 @@ const ActivityList = ({ loader, setLoader, activity, AuxComponent }) => {
   return(
     <>
         {
+          (isEmpty(activity) && loader) ?
+          <LoaderView/>
+          :
           isEmpty(activity) ? 
           <EmptyStateList
             isMovilViewport={isMovilViewport}
             label="Aún no tienes comisiones acreditadas, compárte tu link de referido y empieza a recibir incentivos."
           />
-          :
-          loader ?
-          <LoaderView/>
           :
           <ComponentsContainer>
             {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}

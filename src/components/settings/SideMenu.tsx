@@ -7,7 +7,6 @@ import {
 
 import { settingsMenu } from 'api/ui/menuItems'
 import getIcon from './icons'
-
 import { BiRightArrowAlt } from 'react-icons/bi';
 
 
@@ -17,11 +16,11 @@ const SideMenuComponent = (props:any) => {
         currentSection,
         skeleton,
         isMovilViewport,
-        identityState
+        identityState,
+        BASE_URL = "settings"
     } = props
 
     const isVisibleOnMovil = isMovilViewport && !currentSection
-
 
     return(
         <SettingsMenuContainer className={`${isVisibleOnMovil ? "isVisibleOnMovil" : ""}`}> 
@@ -38,7 +37,7 @@ const SideMenuComponent = (props:any) => {
                             <ItemMenu  
                                 key={index} 
                                 className={`${isSelected ? 'selected' : ''}`}
-                                to={`/settings/${itemKey}`}
+                                to={`/${BASE_URL}/${itemKey}`}
                             >
                                 {
                                     skeleton ?

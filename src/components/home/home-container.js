@@ -22,7 +22,7 @@ import { isSafari } from '../../utils'
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
-const ReferralComponent = loadable(() => import("../referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
+const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {
@@ -45,7 +45,7 @@ const HomeContainer = () => {
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch> 
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />
-                    <Route path="/referral" component={ReferralComponent} />
+                    <Route path={["/referral"]} component={ReferralComponent} />
                     <Route path={["/settings/:settings_path", "/settings"]} component={SettingsComponent} />
                     {/* <Route path={["/settings/:settings_path", "/settings"]} render={() => (<LazyLoaderPage path={"settings"} />)} /> */}
                   </Switch>

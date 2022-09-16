@@ -160,7 +160,7 @@ const MenuItemsComponent = props => {
                         menuPrincipal.map((item) => {
                             if (item.clave !== "settings" && verification_state !== "accepted") { return false }
                             if (item.clave === "withdraw_accounts") { return null }
-                            if (item.clave === "referral") { return null }
+                            //if (item.clave === "referral") { return null }
                             return (
                                 <ButtonPrincipalMenu 
                                     className={`${item.device} ${isLaptopViewport ? 'laptopView' : ''}`}

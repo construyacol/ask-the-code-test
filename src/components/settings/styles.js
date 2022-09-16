@@ -697,7 +697,7 @@ export const ContentSectionLayout = styled.div`
 
 export const ReferralLayout = styled(ContentSectionLayout)`
     grid-template-columns:1fr;
-    grid-template-rows:120px 1fr;
+    grid-template-rows:100px 1fr;
     row-gap:20px;
     @media ${device.mobile}{
         grid-template-rows:auto 1fr;
@@ -731,13 +731,29 @@ export const ContentLayout = styled.div`
     column-gap:30px;
     position:relative;
 
-    @media ${device.mobile}{
-        grid-template-columns: 1fr;
-    }
 
     .anim-flow{
         animation: ${movilCtaAnim} 1s infinite;
     }
+
+    &.one-column{
+        grid-template-columns: 1fr;
+        #referralGrid{
+          grid-template-columns: minmax(650px, 1fr) minmax(200px,420px);
+          @media ${device.mobile}, ${device.tabletL}{
+            grid-template-columns: 1fr;
+          }
+        }
+        .panelLeft{
+            max-width:800px;
+        }
+    }
+
+    @media ${device.mobile}{
+            grid-template-columns: 1fr;
+    }
+
+    
 
 `
 
