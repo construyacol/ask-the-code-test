@@ -308,6 +308,16 @@ export const ItemRequirementMenu = styled.div`
       height:100%;
       background:transparent;
     }
+
+    @media ${device.mobile}{
+        p{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+    }
+
 `
 
 export const RequirementMenu = styled.menu`

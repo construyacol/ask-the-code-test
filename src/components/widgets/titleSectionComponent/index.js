@@ -104,6 +104,12 @@ const TitleContainer = styled(Container)`
         top: 60px;
         background: #f9f9fbdb;
         backdrop-filter: blur(8px);
+        @media ${device.mobile} {
+            &.main{
+                top: 100px;
+            }
+        }
+
     }
     
     

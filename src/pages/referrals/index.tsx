@@ -51,7 +51,7 @@ const SettingsComponent = () => {
     return( 
         <SettingsLayout> 
             <TitleSection
-                className='sticky'
+                className='sticky main'
                 titleKey={`Referidos`}
                 // titleKey={`${(isMovilViewport && !SECONDARY_PATH) ? "Ajustes" : (isMovilViewport && SECONDARY_PATH) ? "" : "Ajustes  > "}`}
                 // subTitle={settingsMenu[SECONDARY_PATH as keyof typeof settingsMenu]?.uiName}
