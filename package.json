@@ -103,6 +103,7 @@
     "@types/lodash": "^4.14.184",
     "@types/react-redux": "^7.1.24",
     "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",

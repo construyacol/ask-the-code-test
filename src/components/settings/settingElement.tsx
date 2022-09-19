@@ -1,12 +1,10 @@
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import getIcon from './icons'
-// import { VscVerified } from 'react-icons/vsc';
-import P from 'components/widgets/paragraph'
+import P from 'components/widgets/text/paragraph'
 
 import { 
     SettingElementLayout,
     IconContainer,
-    // SettingContent,
     SettingTitleCont,
     UiStateCont
 } from './styles'
@@ -42,31 +40,34 @@ const SettingElement = (props:settingType) => {
     
     return( 
         <SettingElementLayout className={`${isLastElement ? '_lastElement' : ''}`} onClick={handleAction || null}>
+
             <IconContainer className={`${isCompleted ? 'isActive' : ''}`}>
                 <IconSetting
                    color={isCompleted ? "var(--primary)" : "var(--paragraph_color)"} 
                    size={23}
                 />
             </IconContainer>
-                <SettingTitleCont>
-                    <h3 className="fuente title__h3">{itemElement.uiName} &nbsp;</h3>
-                    <IconVerified
-                        size={16}
-                        color={`${isCompleted ? "#219D6E" : "red" }`}
-                    />
-                    <UiStateCont className={`fuente ${isCompleted ? "verified" : "unverified" }`}>
-                        {uiState}
-                    </UiStateCont>
-                </SettingTitleCont>
-                <P 
-                    text={itemElement.uiDescription} 
-                    className="description__p fuente"
+
+            <SettingTitleCont>
+                <h3 className="fuente title__h3">{itemElement.uiName} &nbsp;</h3>
+                <IconVerified
+                    size={16}
+                    color={`${isCompleted ? "#219D6E" : "red" }`}
                 />
-                {/* <p className="fuente description__p">{itemElement.uiDescription}</p> */}
+                <UiStateCont className={`fuente ${isCompleted ? "verified" : "unverified" }`}>
+                    {uiState}
+                </UiStateCont>
+            </SettingTitleCont>
+
+            <P className="description__p fuente">
+                {itemElement.uiDescription}
+            </P>
+
             {
                 AuxComponent && 
                 <RenderAuxComponent AuxComponent={AuxComponent} {...props} />
             }
+
         </SettingElementLayout>
     )
 }

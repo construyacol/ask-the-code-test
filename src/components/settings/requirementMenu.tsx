@@ -4,13 +4,12 @@ import {
     RequirementMenu,
     ItemRequirementMenu,
 } from './styles'
-import { requirementMenuTypes } from './types'
+import { requirementMenuTypes } from 'interfaces/settings/kyc'
 import { zipObject } from 'lodash'
 
 const RequirementMenuComponent = (props:requirementMenuTypes) => {
   
     const {
-        // currentLevelView,
         currentSection,
         levelRequirements,
         setCurrentSection,
@@ -20,7 +19,6 @@ const RequirementMenuComponent = (props:requirementMenuTypes) => {
     const toogleSection = (e:any) => {
         setCurrentSection(e?.target?.dataset?.id)
     }
-
 
     if(!levelRequirements || !currentSection){
         return(
@@ -54,7 +52,7 @@ const RequirementMenuComponent = (props:requirementMenuTypes) => {
                             key={index} 
                             className={`${menuKey} ${isActive ? 'isActive' : ''} ${isDisabled ? 'disabled' : ''}`} 
                             data-id={menuKey}
-                            onClick={isDisabled ? null : toogleSection}
+                            onClick={isDisabled ? () => null : toogleSection}
                         >
                             <p className="fuente">{itemsMenu[menuKey]?.uiName}</p>
                         </ItemRequirementMenu>

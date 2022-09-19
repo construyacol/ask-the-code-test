@@ -1,3 +1,15 @@
+
+export const UI_NAME_TITLE = {
+  wallets:"Billeteras",
+  withdraw_accounts:"Cuentas de retiro",
+  referral:"Referidos",
+  settings:"Ajustes",
+  activity:"Actividad",
+  deposit:"Depositar",
+  withdraw:"Retirar",
+  swap:"Intercambiar"
+}
+
 export const UI_NAMES = {
     documents:{
       pasaporte:"Pasaporte",

@@ -2,16 +2,16 @@
 
 const DefaultComponent = () => ( <p>No hay vista asignada</p> )
 
-const RenderSwitchComponent = (props:any) => {
+function RenderSwitchComponent(props: any): JSX.Element {
 
-  const { STAGE_COMPONENTS, component } = props
-  const RenderComponent:any = STAGE_COMPONENTS[component as keyof typeof STAGE_COMPONENTS] || STAGE_COMPONENTS.default || DefaultComponent
+  const { STAGE_COMPONENTS, component } = props;
+  const RenderComponent: any = STAGE_COMPONENTS[component as keyof typeof STAGE_COMPONENTS] || STAGE_COMPONENTS.default || DefaultComponent;
 
   return (
-    <RenderComponent {...props}/>
-  )
+    <RenderComponent {...props} />
+  );
 
-};
+}
 
 
 export default RenderSwitchComponent

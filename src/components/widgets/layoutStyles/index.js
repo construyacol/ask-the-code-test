@@ -107,7 +107,6 @@ export const AccountDetailContainer = styled.div`
         align-items: baseline;
     }
 
-    max-width: var(--maxwsections) !important;
 
 `
 

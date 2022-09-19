@@ -2,7 +2,7 @@ import {
     KycLayout
 } from './styles'
 import SettingElement from 'components/settings/settingElement'
-import { itemElement } from 'components/settings/types'
+import { itemElement } from 'interfaces/settings/'
 import { useSettingValidation } from 'hooks/useSettingValidation'
 import KycComponent from 'components/settings/kycComponent'
 

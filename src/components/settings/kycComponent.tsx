@@ -7,9 +7,9 @@ import {
     IdentityContainer,
     IdentityContent,
     KycContentLayout,
-    FloatContainer,
+    FloatContainer, 
 } from './styles'
-import { levelRequirements } from './types'
+import { levelRequirements } from 'interfaces/settings/kyc'
 import RequirementMenuComponent from "./requirementMenu"
 import EmptyOrInProcessState from 'components/settings/emptyOrInProcessState'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
@@ -17,16 +17,13 @@ import BenefitsComponent from './benefits'
 import LevelListComponent from './levelList'
 import loadable from "@loadable/component";
 
-
 const ContactLocationComponent = loadable(() => import(/* webpackPrefetch: true */ './contactLocation'), { fallback: <div>Cargando kyc...</div> });
 const IdentityListComponent = loadable(() => import(/* webpackPrefetch: true */ './identityList'), { fallback: <div>Cargando Security...</div> });
-
 
 const STAGE_COMPONENTS = {
   location:ContactLocationComponent,
   identity:IdentityListComponent,
 }
-
 
 const KycComponent = () => {
 
@@ -55,7 +52,7 @@ const KycComponent = () => {
 
     return(
         <IdentityContainer>
-            
+             
             <IdentityContent className="_identityContent">
 
                 <LevelListComponent

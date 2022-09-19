@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
 import { merge } from 'lodash'
-// import { BiEdit } from "react-icons/bi";
 import { UI_DETAIL_NAME } from 'const/uiNames'
 import { 
     DetailItem,
@@ -8,18 +7,10 @@ import {
     // EditButton,
 } from './styles'
 
+const ContactLocationComponent = () => {
 
-
-
-const ContactLocationComponent = (props:any) => {
-    // const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]
     const { user  } = useSelector(({ modelData }:any) => modelData);
     const contactLocationData = merge(user?.contact, user?.location)
-
-    console.log('||||||||| ContactLocationComponent ==> ', contactLocationData)
-    // debugger
-    // 
-    // FloatContainer
 
     return( 
         <>

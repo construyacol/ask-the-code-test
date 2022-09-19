@@ -4,17 +4,11 @@ import {
 } from './styles'
 import { getCdnPath } from 'environment'
 import ControlButton from "components/widgets/buttons/controlButton";
-import { levelRequirements } from './types'
 import { isEmpty } from 'lodash'
-
-type props = {
-    levelRequirements:levelRequirements,
-    identityState:string,
-    user?:any
-}
+import { emptyStatePropTypes } from 'interfaces/settings/kyc'
 
 
-const EmptyOrInProcessState = (props:props) => {
+const EmptyOrInProcessState = (props:emptyStatePropTypes) => {
 
     const actions = useActions()
     const currentPendingRequirement = props?.levelRequirements?.pendingRequirements[0]

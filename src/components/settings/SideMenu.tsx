@@ -25,7 +25,8 @@ const SideMenuComponent = (props:any) => {
     return(
         <SettingsMenuContainer className={`${isVisibleOnMovil ? "isVisibleOnMovil" : ""}`}> 
             <SettingsContent className={`${skeleton ? "skeleton" : ""}`}>
-                {
+                {   
+                    settingsMenu &&
                     Object.keys(settingsMenu).map((itemKey, index) => {
 
                         const itemMenu = settingsMenu[itemKey as keyof typeof settingsMenu]

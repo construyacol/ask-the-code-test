@@ -13,16 +13,8 @@ import { identityInfo } from 'components/forms/widgets/kyc/identityComponent/ide
 import useToastMessage from 'hooks/useToastMessage'
 import { useCallback, useState } from 'react' 
 import { merge } from 'lodash'
+import { handleIdentity, stateInterface } from 'interfaces/settings/kyc'
 
-type handleIdentity = {
-    isNewId?:boolean
-    currentIdentity?:any,
-    identityState?:string
-}
-
-interface stateInterface {
-    [id: string]: boolean;
-}
 
 const IdentityListComponent = () => {
 

@@ -2,9 +2,7 @@ import {
     SecurityLayout,
 } from './styles'
 
-import {
-    itemElement
-} from 'components/settings/types'
+import { itemElement } from 'interfaces/settings/'
 
 import ControlButton from "components/widgets/buttons/controlButton";
 import { useSettingValidation, useSettingsActions } from 'hooks/useSettingValidation'

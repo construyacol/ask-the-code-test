@@ -6,24 +6,13 @@ import {
 } from './styles'
 
 import { isEmpty } from 'lodash'
-import { levelData } from './types'
-import { GoLocation } from "react-icons/go";
+import { levelData, levelListProps } from '../../interfaces/settings/kyc'
 import { LEVELS_DATA } from 'const/levels'
+import getIcon from './icons'
 
+const LevelListComponent = ({ levelRequirements, currentLevelView, user }:levelListProps) => {
 
-const icons = {
-    "level_1":GoLocation
-}
-
-const LevelListComponent = (props:any) => {
-
-    const {
-        levelRequirements,
-        currentLevelView,
-        user
-    } = props
-
-    const getSuccessPercent = (level:string) => {
+    const getSuccessPercent = () => {
         let percent = 0
         if(user?.contact)percent += 25;
         if(user?.location)percent += 25;
@@ -38,7 +27,7 @@ const LevelListComponent = (props:any) => {
             <LevelsContainer>
                 {
                     !levelRequirements ?
-                    ["1", "2"].map((levelSkeleton, index) => {
+                    ["1", "2"].map((_, index) => {
                         return(
                             <LevelContent
                                 key={index}
@@ -51,9 +40,9 @@ const LevelListComponent = (props:any) => {
 
                         const levelKey = level[0]
                         const levelData:levelData = level[1]
-                        const requirements = [levelKey].includes(levelRequirements?.name) ? levelRequirements.requirements : levelData.requeriments
+                        const requirements = [levelKey].includes(levelRequirements?.name) ? levelRequirements.requirements : levelData.requirements
                         const disabled = !requirements || isEmpty(requirements)
-                        const LevelIcon = icons[levelKey as keyof typeof icons]
+                        const LevelIcon = levelData.requirements && getIcon(levelKey)
                         const isActive = currentLevelView === levelKey
 
                         return( 
@@ -71,7 +60,7 @@ const LevelListComponent = (props:any) => {
                                 }
                                 <LevelDescriptionContent>
                                     <p className={`_title ${disabled ? "disabled" : ""} `}>{levelData.uiName}</p>
-                                    <p className={`_description ${disabled ? "disabled" : ""} `}> {getSuccessPercent("level_1")} completado</p>
+                                    <p className={`_description ${disabled ? "disabled" : ""} `}> {getSuccessPercent()} completado</p>
                                 </LevelDescriptionContent>
                             </LevelContent>
                         )
