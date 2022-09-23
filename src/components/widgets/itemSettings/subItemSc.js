@@ -116,7 +116,7 @@ class SubItemSC extends Component {
                 <i
                   className="fas fa-chevron-right anim-flow"
                   style={{ color: "var(--paragraph_color)", fontSize: "20px" }}
-                ></i>
+                />
               )
             )}
           </div>

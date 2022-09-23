@@ -117,12 +117,18 @@ const generateItemTag = (itemKey, uiTagName) => {
 export const getNextSelectList = async ({
   state,
   stageData,
-  setDataForm
+  setDataForm,
+  dataForm
 }) => {
   const currentList = stageData?.key
   if(!NEXT_SELECT_LIST[currentList])return;
   const nextStageName = NEXT_SELECT_LIST[currentList]
-  const selectList = await getSelectList(nextStageName, state[stageData?.key])
+
+  const selectList = await getSelectList(nextStageName, {
+    payload:state[stageData?.key],
+    ...dataForm
+  }) 
+
   if(!selectList || (selectList && !Object.keys(selectList)?.length)){
     return setDataForm(prevState => {
       return { 

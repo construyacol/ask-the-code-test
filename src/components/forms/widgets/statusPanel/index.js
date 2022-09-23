@@ -13,7 +13,7 @@ export default function StatusPanelComponent ({ children }) {
   const PanelContainerComponent = styled.div`
     width:auto;
     max-width:calc(350px - 20px);
-    background:#f3f3f3;
+    background:var(--secondary_background);
     display:grid;
     grid-template-rows:1fr auto;
     padding:20px;

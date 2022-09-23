@@ -172,14 +172,7 @@
 }
 
 
-.secundary {
-  background: #f9f9fb;
-  border: 1px solid var(--primary) !important;
-  color: var(--primary) !important;
-  font-weight: bold;
-  /*width: calc(170px - 2px);*/
-  /*height: calc(50px - 2px);*/
-}
+
 
 .desactivado {
   background: #8080807d;
@@ -843,4 +836,14 @@
   
 
 
+}
+
+
+.secundary{
+  background: #f9f9fb;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+  font-weight: bold;
+  /*width: calc(170px - 2px);*/
+  /*height: calc(50px - 2px);*/
 }

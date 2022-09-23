@@ -44,7 +44,7 @@ const ALactivity = styled.section`
 const ALpendingMom = styled.div`
   position: relative;
   display: block;
-  background: #f5f5f5;
+  background: var(--secondary_background);
   padding: 15px 20px;
   border-radius: 6px;
   margin-bottom: 50px;

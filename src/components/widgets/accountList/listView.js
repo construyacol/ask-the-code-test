@@ -203,7 +203,7 @@ export const RightSection = ({ isMovilViewport, account:{ id } }) => {
         <>
             {
                 isMovilViewport ?
-                    <BiRightArrowAlt className="_enterToWalletIcon" size={35} />
+                    <BiRightArrowAlt className="_enterToWalletIcon" size={34} />
                 :
                     <BalanceContainer  
                         className="_accountBalanceContainer"
@@ -262,6 +262,9 @@ export const ListViewContainer = styled.div`
     row-gap:17px;
     height:auto;
     transition:.7s;
+    max-width: var(--maxwsections);
+    justify-self: center;
+    width: 100%;
 
       &.loading{
         &::after{

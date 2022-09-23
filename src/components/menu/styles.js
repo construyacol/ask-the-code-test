@@ -27,12 +27,12 @@ export const SubMenu = styled.div`
   top:60px;
   display: grid;
   place-items: center;
-  color: #666666;
+  color:#666666;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   backdrop-filter: blur(5px);
   z-index: 3;
-  background: rgb(239 239 239 / 85%);
+  background: var(--secondary_background);
   display:flex;
   padding: 0 25px;
   justify-content: center;
@@ -250,21 +250,53 @@ export const UserName = styled.p`
     }
 `
 
+
+
+export const UserNameContainer = styled.div`
+
+    display: grid;
+    row-gap: 7px;
+
+    .user_name__p{
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    .acronym__p{
+      font-size: 15px;
+    }
+
+    p{
+      margin:0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+`
+
 export const AcronymCont = styled.div`
     position:relative;
-    padding-top: 15px;
+    display: grid;
+    align-items: center;
+    width: calc(100% - 30px);
+    padding: 0 15px;
+    grid-template-columns: auto 1fr;
+    column-gap: 15px;
+    height: 130px;
+
     .perfilPic{
-        width: 62px;
-        height: 62px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         overflow: hidden;
-        margin-bottom: 10px;
         background: #0198ff;
         display: grid;
         align-items: center;
         justify-content: center;
         box-shadow: 0 1px 14px -2px rgb(0 0 0 / 30%);
     }
+    
 `
 
 export const LogoCont = styled.div`

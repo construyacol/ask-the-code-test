@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { LoaderItem } from "./order_item";
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default ({ loader, setLoader, activityLength }) => {
+export default ({ loader, setLoader, activityLength, listKey }) => {
+
   const [show, setElement] = useObserver();
   const [ coinsendaServices, {storage: { activity_for_account }} ] = useCoinsendaServices();
   const { tx_path, account_id, primary_path } = useParams();
@@ -19,7 +20,7 @@ export default ({ loader, setLoader, activityLength }) => {
     const method =
       primary_path === "withdraw_accounts"
       ? "get_withdraws_by_withdraw_account"
-      : primary_path === 'referral'
+      : listKey === 'referral'
       ? "get_referral_deposits"
       : `get_${tx_path}`;
 

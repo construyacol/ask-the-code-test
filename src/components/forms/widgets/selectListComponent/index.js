@@ -18,8 +18,10 @@ import {
   OptionInputContainer 
 } from '../sharedStyles'
 import {  StageIndicator } from '../stageManager/styles'
-import { device } from "../../../../const/const"
+import { device } from "const/const"
+import { UI_STATE_NAME } from 'const/uiNames'
 import { deletedOrderAnim, newOrderStyleAnim, selectorAnim } from "components/widgets/animations";
+import { UiStateCont } from 'components/settings/styles'
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
@@ -76,6 +78,7 @@ const SelectListComponent = ({
     handleAction = () => null,
     auxUiName,
     className,
+    auxUiState,
     ...props
   }) => {
 
@@ -109,7 +112,17 @@ const SelectListComponent = ({
               }
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
-              <AccountLabel>{uiName}</AccountLabel>
+              <AccountLabel>
+
+                {uiName} 
+
+                {
+                  auxUiState &&
+                    <UiStateCont className={`${auxUiState}`}>{UI_STATE_NAME[auxUiState] || auxUiState}</UiStateCont>
+                }
+
+              </AccountLabel> 
+
               {
                 auxUiName &&
                 <AccountLabel className="_aux">{auxUiName}</AccountLabel>
@@ -134,7 +147,7 @@ const SelectListComponent = ({
     max-width: 700px;
     perspective: 2000px;
     perspective-origin: center top;
-
+    
     &.skeleton{
       width: 100vw;
       align-self: flex-start;
@@ -256,7 +269,11 @@ export const ItemProviderBankContainer = styled.div`
 
   &.withAuxComp{
       grid-template-columns: auto 2fr 1fr;
-      
+  }
+
+  &.withControls{
+    grid-template-columns: auto 1fr auto;
+    align-items:center;
   }
 
   &.__withdrawAccount{
@@ -265,7 +282,15 @@ export const ItemProviderBankContainer = styled.div`
 
   @media ${device.mobile} {
     &.withAuxComp{
-          grid-template-columns: 1fr auto;
+      grid-template-columns: 1fr auto;
+    }
+    &.withControls{
+      grid-template-columns: auto 1fr auto;
+      column-gap:0;
+      padding:0 15px;
+      .arrowControl{
+        justify-self: flex-end;
+      }
     }
   }
 

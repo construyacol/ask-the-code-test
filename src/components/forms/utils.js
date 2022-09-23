@@ -105,7 +105,7 @@ export const generateSelectList = (objectList) => {
   })
   return selectList
 }
-
+ 
 export const getSelectList = async(listKey, payload) => {
   let list 
   let res = await mainService[API_FETCH_SELECT_LIST[listKey]] && await mainService[API_FETCH_SELECT_LIST[listKey]](payload)
@@ -142,7 +142,7 @@ export const createSelectList = async(list) => {
     // item.code = item.code.split(" ").join("_")
     item.currencySymbol = item.currency_symbol
     delete item.currency_symbol
-    let itemUiName = item?.name
+    let itemUiName = item?.name || item?.uiName
     if(item?.code){
       selectList = {
         ...selectList,
@@ -179,6 +179,7 @@ const dataService = {
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
+    
   for(const stage of Object.keys(apiStages)){ 
     stages = {
       ...stages,
@@ -196,7 +197,7 @@ export const recursiveAddList = async(mapObject, payload) => {
 }
 
 export const initStages = async(config) => {
-
+  
   const apiStages = await dataService[config.formName](config)
 
   if(!apiStages) return;
@@ -211,6 +212,7 @@ export const initStages = async(config) => {
     }
   } 
   stages = await recursiveAddList(stages)
+
   return {
     ...formStructure(config.formName),
     stages

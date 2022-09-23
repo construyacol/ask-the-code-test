@@ -30,7 +30,7 @@ export default function MobileMenuComponent(props) {
                     <MobileMenu className={`${osDevice}`}>
                         {
                             menuPrincipal.map((item) => {
-                                    if (item.clave !== "security" && verification_state !== "accepted") { return null }
+                                    if (item.clave !== "settings" && verification_state !== "accepted") { return null }
                                     if (item.clave === "prices") { return null }
                                     if (item.clave === "withdraw_accounts") { return null }
 

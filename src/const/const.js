@@ -253,8 +253,37 @@ export const device = {
   laptopM: `(max-width: ${size.laptopM}px)`,
   laptopL: `(max-width: ${size.laptopL}px)`,
   desktop: `(max-width: ${size.desktop}px)`,
-  desktopL: `(max-width: ${size.desktop}px)`,
+  desktopL: `(max-width: ${size.desktop}px)`
 };
+
+export const fontSize = {
+  p:{
+    mobile:"0.0875 rem",
+    tablet:"0.9375 rem",
+    laptop:"0.9375 rem",
+    desktop:"0.9375 rem"
+  }
+}
+
+// Para poder convertir una medida de pixeles a rem solo tienes que multiplicar el tamaño que quieres obtener por el número 0.0625
+
+
+// export const size = {
+//   mobile: 768,
+//   laptop: 1025,
+//   desktop: 1281
+// };
+
+// export const device = {
+//   mobile: `(max-width: ${size.mobile}px)`,
+//   tablet: `(min-width: ${size.mobile}px) and (max-width:${size.laptop}`,
+//   laptop: `(min-width: ${size.laptop}px) and (max-width:${size.desktop}`,
+//   desktop: `(min-width: ${size.desktop}px)`,
+// };
+
+// https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
+
+
 
 export const currencyLabels = {
   usd: {symbol:"USD"},

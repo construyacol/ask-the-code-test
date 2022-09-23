@@ -44,7 +44,7 @@ function ModalsSupervisor(props) {
 
             <Route
               exact
-              path={["/security", "/settings"]}
+              path={["/security", "/settings/:settings_path", "/settings"]}
               component={ModalSettingsView}
             />
 

@@ -1,3 +1,15 @@
+
+export const UI_NAME_TITLE = {
+  wallets:"Billeteras",
+  withdraw_accounts:"Cuentas de retiro",
+  referral:"Referidos",
+  settings:"Ajustes",
+  activity:"Actividad",
+  deposit:"Depositar",
+  withdraw:"Retirar",
+  swap:"Intercambiar"
+}
+
 export const UI_NAMES = {
     documents:{
       pasaporte:"Pasaporte",
@@ -13,3 +25,34 @@ export const UI_NAMES = {
       efecty_network:"Efecty"
     }
   }
+
+export const UI_STATE_NAME = {
+  pending:"Pendiente",
+  accepted:"Aceptado",
+  rejected:"Rechazado",
+  confirmed:"En revisión"
+}
+
+export const UI_STATE_DESCRIPTION = {
+  pending:"Tienes una identidad en pendiente, completala para pasarla a la fase de revisión",
+  rejected:"Tienes una identidad rechazada, vuelve a enviar los datos de identidad",
+  confirmed:"Tienes una identidad en revisión, este proceso podría tomar hasta 72 horas hábiles.",
+}
+
+export const UI_STATE_ACTION = {
+  pending:"Por completar",
+  rejected:"Por corregir",
+  confirmed:"En revisión..."
+}
+
+export const UI_DETAIL_NAME = {
+  phone:"Teléfono",
+  country:"País",
+  email:"Correo electrónico",
+  province:"Departamento",
+  city:"Ciudad",
+  address:"Dirección",
+  name:"Nombres",
+  surname:"Apellidos",
+  nationality:"Nacionalidad"
+}

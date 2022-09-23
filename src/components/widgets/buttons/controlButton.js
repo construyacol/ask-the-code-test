@@ -32,14 +32,23 @@ const ButtonContaniner = styled.div`
 
 
 // osDevice
-const ControlButton = ({ loader, formValidate, label, handleAction, id, inputProps }) => {
+const ControlButton = ({ 
+  loader=undefined, 
+  formValidate, 
+  label, 
+  handleAction, 
+  id=undefined, 
+  inputProps=undefined ,
+  className="",
+  type="primary"
+}) => {
 
   const { osDevice } = useSelector((state) => state?.ui);
 
   return (
     <ControlsContainer
       id="controlsContainer"
-      className={`${loader ? "loader" : ""} ${osDevice}`}
+      className={`${loader ? "loader" : ""} ${osDevice} ${className}`}
     >
       {loader && (
         <LoaderContainer>
@@ -48,8 +57,9 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id, inputPro
       )}
       <InputButton
         label={label}
-        type="primary"
+        type={type}
         id={id}
+        className={className}
         active={formValidate}
         handleAction={(e) => {
           e.currentTarget.blur();
@@ -64,7 +74,7 @@ const ControlButton = ({ loader, formValidate, label, handleAction, id, inputPro
 export const InputButton = (props) => {
   // Este es el cta por default
   //clase large => "width:200px !important"
-
+ 
   return (
     <InputButtonCont>
       <input
@@ -75,14 +85,14 @@ export const InputButton = (props) => {
       {props.active ? (
         <input
           id={props.id}
-          className={`botonForm ${props.type} fuente `}
+          className={`botonForm ${props.type}  fuente `}
           type="button"
           value={props.label}
           onClick={props.handleAction}
         />
       ) : (
         // <div className="botonForm desactivado fuente" style={{width:props.ancho}}  >
-        <DisabledButton className="disabledButton fuente" >{props.label}</DisabledButton>
+        <DisabledButton className={`fuente ${props.className}`} >{props.label}</DisabledButton>
       )}
     </InputButtonCont>
   );
@@ -117,6 +127,15 @@ const DisabledButton = styled(BotonForm)`
   background: #8080807d;
   color: white;
   opacity: 0.4;
+
+
+  &.settingButton{
+      height: fit-content;
+      padding: 14px 18px;
+      width: calc(100% - 36px);
+  }
+
+
 `;
 
 const ControlsContainer = styled.div`
@@ -129,12 +148,20 @@ const ControlsContainer = styled.div`
   justify-self: center;
   align-self: center;
 
+
   &.loader::after {
     content: "";
     background: rgb(255, 255, 255, 0.8);
     width: 100%;
     height: 100%;
     position: absolute;
+  }
+
+  &.settingButton{
+    input{
+      height: fit-content;
+      padding: 14px 18px;
+    }
   }
 
   @media screen and (max-width: 768px) {

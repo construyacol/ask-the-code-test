@@ -79,9 +79,9 @@ const menuItems = {
       "device": "desktop"
     },
     {
-      "text": "Centro de seguridad",
-      "icon": "security",
-      "clave": "security",
+      "text": "Ajustes",
+      "icon": "settings",
+      "clave": "settings",
       "active": true,
       "visible": true,
       "subfix": "S",
@@ -179,6 +179,22 @@ const menuItems = {
       "selection": false
     }
   ]
+}
+
+export const settingsMenu = {
+  kyc:{
+    uiName:"Verificación de cuenta",
+    value:"kyc"
+  },
+  // referral:{
+  //   uiName:"Referidos",
+  //   value:"referral"
+  // },
+  security:{
+    uiName:"Seguridad",
+    value:"security"
+  }
+   
 }
 
 

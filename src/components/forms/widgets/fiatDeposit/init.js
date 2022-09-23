@@ -24,8 +24,8 @@ export default function NewFiatDepositComponent (props){
       init()
     }, []) 
    
-    return(
-      <FormContainer className="fiatWithdrawContainer">
+    return( 
+      <FormContainer>
           {
               dataForm ?
                 <FormComponent

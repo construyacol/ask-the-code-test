@@ -17,6 +17,7 @@ import {
     UserName,
     LaptopSideMenuContainer,
     LaptopLogoContainer,
+    UserNameContainer
     // SideMenuWrapper
 } from './styles'
 import menuItems from "api/ui/menuItems";
@@ -157,8 +158,9 @@ const MenuItemsComponent = props => {
                         />
                         :
                         menuPrincipal.map((item) => {
-                            if (item.clave !== "security" && verification_state !== "accepted") { return false }
-                            if (item.clave === "withdraw_accounts") { return false }
+                            if (item.clave !== "settings" && verification_state !== "accepted") { return false }
+                            if (item.clave === "withdraw_accounts") { return null }
+                            //if (item.clave === "referral") { return null }
                             return (
                                 <ButtonPrincipalMenu 
                                     className={`${item.device} ${isLaptopViewport ? 'laptopView' : ''}`}
@@ -270,10 +272,10 @@ const MovilItemMenu = styled.div`
 
 `
 
+const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
 
 const UserInfoComponent = props => {
 
-  const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
   const { verification_state } = useSelector((state) => state.ui);
   const { user  } = useSelector((state) => state.modelData);
 
@@ -283,25 +285,36 @@ const UserInfoComponent = props => {
                 <img src={`${getCdnPath('assets')}logo.svg`} width={146} height={41} alt="logo" loading="lazy"/>
                 <i className="fas fa-arrow-left" onClick={props.closeMenu}></i>
             </LogoCont>
+
             <AcronymCont>
                 <div className={`perfilPic ${verification_state}`}>
                     <div className="fuente">
                     {!user?.name ? (
                         <IconSwitch icon="coinsenda" size={40} color="white" />
                     ) : (
-                        <p className="fuente">{getAcronym(user?.name)}</p>
+                        <p className="fuente acronym__p">{getAcronym(user?.name)}</p>
                     )}
                     </div>
                 </div>
+
+                <UserNameContainer>
+                    <UserName className={`fuente ${user?.name ? '_capitalize' : ''}`}>
+                        <strong>
+                            {user?.name || 'Bienvenido'}
+                        </strong>
+                    </UserName>
+                    <p className="user_name__p">{user?.email}</p>
+                </UserNameContainer>
+                
             </AcronymCont>
-            <UserName className={`fuente ${user?.name ? '_capitalize' : ''}`}>
-                <strong>
-                    {user?.name || user?.email || 'Bienvenido'}
-                </strong>
-            </UserName>
+
+            
+
             {/* <ScoresComponent/> */}
+
         </UserInfo>
     )
 }
 
 
+ 

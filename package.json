@@ -86,19 +86,24 @@
     "build:mobile:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build:mobile",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "postbuild": "node ./scripts/preloads.js"
+    "postbuild": "node ./scripts/preloads.js && node ./scripts/copyCdnAssets"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "browserslist": [
-    ">0.2%", 
+    ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
   ],
   "devDependencies": {
     "@node-minify/clean-css": "^6.1.0",
+    "@types/loadable__component": "^5.13.4",
+    "@types/lodash": "^4.14.184",
+    "@types/react-redux": "^7.1.24",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/styled-components": "^5.1.26",
     "cross-env": "^5.2.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "node-minify": "^3.6.0",

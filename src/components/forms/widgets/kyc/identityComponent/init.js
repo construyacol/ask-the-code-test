@@ -13,9 +13,16 @@ const IdentityForm = (props) => {
   const init = async() => {
     const _dataForm = await initStages({
       formName:'identity',
-      isNewId:props.isNewId
+      ...props
     })
-    setDataForm(_dataForm)
+    
+    setDataForm({
+      ..._dataForm,
+      config:{
+        isNewId:props.isNewId,
+        currentIdentity:props.currentIdentity
+      }
+    })
   }
 
   const closeModal = (e, forceClose) => {

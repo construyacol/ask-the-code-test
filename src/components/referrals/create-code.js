@@ -6,13 +6,7 @@ import styled from "styled-components";
 function CreateCode(props) {
   return (
     <Container id="container">
-      <Text>
-        <p>
-          Recibe el<span className="fuente2">0.5% </span> de todas las operaciones de compra y venta que tus referidos realicen.
-        </p>
-      </Text>
       <CreateReferralLink {...props} />
-
     </Container>
   );
 }
@@ -38,22 +32,22 @@ const Container = styled.div`
 //     `}
 // `;
 
-const Text = styled.div`
-    font-family: 'Raleway', sans-serif !important;
-    font-size: 22px;
-    color: var(--paragraph_color);
-    font-weight: bold;
-    span{
-      font-weight: bold;
-      margin: 0 7px;
-    }
-    p {
-        font-size: 16px;
-        color: var(--paragraph_color);
-        font-weight: 100;
-    }
-}
-`;
+// const Text = styled.div`
+//     font-family: 'Raleway', sans-serif !important;
+//     font-size: 22px;
+//     color: var(--paragraph_color);
+//     font-weight: bold;
+//     span{
+//       font-weight: bold;
+//       margin: 0 7px;
+//     }
+//     p {
+//         font-size: 16px;
+//         color: var(--paragraph_color);
+//         font-weight: 100;
+//     }
+// }
+// `;
 
 
 export default CreateCode;

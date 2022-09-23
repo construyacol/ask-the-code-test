@@ -3,6 +3,7 @@ const userDefaultModel = {
   "location":null,
   "identities":null,
   "levels": null,
+  "level": null,
   "id": null,
   "username": null,
   "name": null,

@@ -3,7 +3,7 @@ import loadable from "@loadable/component";
 import { getCdnPath } from '../../../environment'
 import "./icons.css";
  
-const getExportByName = (componentName) => (exportObject) => ({
+export const getExportByName = (componentName) => (exportObject) => ({
   default: exportObject[componentName],
 });
 
@@ -107,11 +107,9 @@ const Confirming = loadable(() =>
 );
 const Accepeted = loadable(() =>
   import("./").then(getExportByName("Accepeted"))
-);
+); 
 const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera")));
-const Handshake = loadable(() =>
-  import("./").then(getExportByName("Handshake"))
-);
+const Handshake = loadable(() => import("./").then(getExportByName("Handshake")));
 const Search = loadable(() => import("./").then(getExportByName("Search")));
 const Ethereum = loadable(() => import("./").then(getExportByName("Ethereum")));
 const HoursAtention = loadable(() =>
@@ -173,6 +171,7 @@ const BancoBogota = loadable(() => import("./logos/bancoBogota"));
 const Bbva = loadable(() => import("./logos/bbva"));
  
 
+const Settings = loadable(() => import("./").then(getExportByName("Settings")));
 const Contact = loadable(() => import("./").then(getExportByName("Contact")));
 const FingerPrint = loadable(() => import("./").then(getExportByName("FingerPrint")));
 const Location = loadable(() => import("./").then(getExportByName("Location")));
@@ -186,6 +185,8 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "settings":
+        return <Settings {...props} />; 
       case "add":
         return <AddIcon {...props} />; 
       case "deposito_electronico":

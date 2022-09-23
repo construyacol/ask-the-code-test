@@ -31,7 +31,7 @@ export const AppContainerLayout = styled.div`
 export const MainContent = styled.div`
     height: auto;
     position:relative;
-    max-width: 1280px; 
+    max-width: 1380px; 
     justify-self: center;
     width: calc(100% - 40px);
     display:flex;
@@ -106,12 +106,22 @@ export const AccountDetailContainer = styled.div`
         row-gap: 10px;
         align-items: baseline;
     }
+
+
 `
 
 export const SecurityCenterLayout = styled(BaseLayout)`
     display: grid;
     grid-template-rows: auto 1fr;
 `
+
+export const SettingsLayout = styled(BaseLayout)`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: 30px;
+    
+`
+
 
 export const ReferralLayout = styled(BaseLayout)`
     display: grid;

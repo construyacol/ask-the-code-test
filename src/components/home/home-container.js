@@ -22,11 +22,11 @@ import { isSafari } from '../../utils'
 
 
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
-const ReferralComponent = loadable(() => import("../referrals/referralsComponent"), {fallback: <LazyLoaderPage path={"referral"} />});
-const SecurityCenter = loadable(() => import("../securityCenter/securityCenter"), {fallback: <LazyLoaderPage path={"security"} />});
+const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
+const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
 
 const HomeContainer = () => {
-
+ 
   const subMenuRef = useRef()
 
   return (
@@ -43,11 +43,11 @@ const HomeContainer = () => {
               <MobileMenuComponent/>
               <MainContent className={`_contentContainer ${isSafari()} ${renderProps?.match?.params?.primary_path} ${parseQueryString()}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
-                  <Switch>
+                  <Switch> 
                     <Route path="/wallets" render={renderProps => <WalletsContainerComponent {...renderProps} subMenuRef={subMenuRef}/>} />
-                    <Route path="/referral" component={ReferralComponent} />
-                    <Route path="/security" component={SecurityCenter} />
-                    {/* <Route path="/security" render={() => (<LazyLoaderPage path={"security"} />)} /> */}
+                    <Route path={["/referral"]} component={ReferralComponent} />
+                    <Route path={["/settings/:settings_path", "/settings"]} component={SettingsComponent} />
+                    {/* <Route path={["/settings/:settings_path", "/settings"]} render={() => (<LazyLoaderPage path={"settings"} />)} /> */}
                   </Switch>
                 </Suspense>
               </MainContent>

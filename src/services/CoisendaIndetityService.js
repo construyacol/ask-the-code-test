@@ -10,15 +10,19 @@ import {
   // fileTest,
   // selfietest
 } from "../const/const";
-import { LEVELS_INFO } from '../const/levels'
+import { LEVELS_DATA } from '../const/levels'
 import { objectToArray, addIndexToRootObject } from "../utils";
 import normalizeUser from "../schemas";
 import { verificationStateAction } from "../actions/uiActions";
 import Environment from "../environment";
 import { updateNormalizedDataAction } from "../actions/dataModelActions";
 import { UI_NAMES } from '../const/uiNames'
-import { getIdentityState } from '../utils'
+import { 
+  // getAvailableIdentityState, 
+  getIdentityState 
+} from '../utils'
 import userDefaultModel from "api/userDefault";
+import { keyBy } from 'lodash'
 
 
 
@@ -28,16 +32,17 @@ const {
 
 export class IndetityService extends WebService {
 
-
   async getNextLevel() {
     const body = {
       "data": {
         "country":"international", 
       }
-    } 
-    const res = await this.Post(`${IdentityApIUrl}levels/get-next-level`, body);
-    if(res){
-      const { data:{ requirements, name } } = res
+    }
+
+    const { data, error } = await this._Post(`${IdentityApIUrl}levels/get-next-level`, body);
+
+    if(error) return error;
+      const { requirements, name } = data
       let _requirements = []
       for (let i = 0; i < requirements?.length; i++) {
         if(requirements[i] !== 'regulation'){
@@ -45,48 +50,102 @@ export class IndetityService extends WebService {
         }
       }
       return {
-        levelName:name,
+        name,
         requirements:_requirements
       }
-    }
-    return
   }
  
 
-  async createRequirementLevel() {
-    // let res = await this.getNextLevel()
-    let res = {
-      levelName:"level_1",
-      requirements:[
-        "contact",
-        "location",
-        "identity"
-      ]
-    }
-    const user = this.user
-    if(res){
-        let requirements = []
-        let levels = {}
-        res.requirements.forEach(requeriment => {
-            if(!user[requeriment] ||  (requeriment === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
-              requirements.push(requeriment)
-            }
 
-            if(res?.levelName === 'level_1'){
-                levels = {
-                    ...levels, 
-                    [requeriment]:LEVELS_INFO[res?.levelName][requeriment]
-                }
-            }else{
-              levels = LEVELS_INFO?.level_1
-            }
-        });
-        return {
-          levels,
-          requirements
-        }
+  getLevelRequirement(level = "level_1") {
+    
+    let levelData = {}
+    if(!level)throw new Error('No se pudo obtener el level requirement');
+
+    if(["string"].includes(typeof level) && LEVELS_DATA[level]){
+      // se provee la información por default ya que la solicitada(currentLevelView) no corresponde a la información provista por getNextLevel o el endpoint retorno algun error
+      levelData = {
+        ...LEVELS_DATA[level]
+      }
+    }else{
+      if(!LEVELS_DATA[level.name])return;
+      levelData = {
+        ...LEVELS_DATA[level.name],
+        ...level
+      }
     }
+
+    const user = this.user
+
+    let pendingRequirements = []
+    levelData.requirements.forEach(requirement => {
+        // getCondition by levelname => pending to refactor
+        if(!user[requirement] ||  (requirement === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+          // pending to refactor conditional laws 
+          pendingRequirements.push(requirement)
+        }
+    });
+
+    return {
+      ...levelData, 
+      pendingRequirements
+    }
+
   }
+
+
+  async createRequirementLevel(levelName, getNextLevel = true) {
+
+    if(getNextLevel === false)return this.getLevelRequirement(levelName);
+    let nextLevelData = await this.getNextLevel()
+    const { error } = nextLevelData
+    let levelRequirement = (error || ![nextLevelData.name].includes(levelName)) ? levelName : nextLevelData 
+
+    return this.getLevelRequirement(levelRequirement)
+  }
+
+
+  // let requirements = []
+  // let levels = {} 
+  // res.requirements.forEach(requirement => {
+  //     if(!user[requirement] ||  (requirement === 'identity' && ["pending", "rejected"].includes(this.getVerificationState()))){
+  //       requirements.push(requirement)
+  //     }
+  //     if(res?.name === 'level_1'){
+  //         levels = {
+  //             ...levels, 
+  //             [requirement]:LEVELS_INFO[res?.name][requirement]
+  //         }
+  //     }else{
+  //       levels = LEVELS_INFO?.level_1
+  //     }
+  // });
+  // return {
+  //   name:res.name,
+  //   levels,
+  //   requirements
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
  
@@ -126,22 +185,26 @@ export class IndetityService extends WebService {
       return await this.Get(url);
     }
 
-    async getProvinceList(country) {
-      let query = `?filter={"where":{"country":"${country}"}}`
+    async getProvinceList(props) {
+      const payload = props?.payload
+      let query = `?filter={"where":{"country":"${payload}"}}`
       let url = `${IdentityApIUrl}provinces${query}`;
       return await this.Get(url);
     }
 
-    async getCityList(province) {
-      let query = `{"where":{"province":"${province}"}}`
+    async getCityList(props) {
+      const payload = props?.payload
+      let query = `{"where":{"province":"${payload}"}}`
       let url = `${IdentityApIUrl}citys?filter=${query}`;
       return await this.Get(url);
     }
 
-    async createAvailableIdentityList(nationality) {
+    async createAvailableIdentityList(props) {
 
-      let documentList = await this.getDocumentList(nationality)
-      let _documentList = []
+      const payload = props?.payload
+      let currentIdentity = props?.config?.currentIdentity
+      
+      let documentList = await this.getDocumentList(payload)
 
       if(documentList && this.user?.identities?.length){
         let userIdentities =  {}
@@ -152,27 +215,35 @@ export class IndetityService extends WebService {
           }
         })
 
-        let isThereOneRejectedIdentity = false
-        documentList.forEach(_document => {
-          // console.log("userIdentities", userIdentities[_document?.id_type] , _document)
-          let currentIdentity = userIdentities[_document?.id_type] 
-          let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
-          if(["rejected"].includes(currentIdentityState)){ 
-            isThereOneRejectedIdentity = true
-            return _documentList = [{..._document, state:"rejected"}] 
-          }else if(!isThereOneRejectedIdentity){
-            _documentList.push(_document)
-          }
-          // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
-          //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
-          //   _documentList.push(_document)
+        if(currentIdentity && ["rejected"].includes(getIdentityState(currentIdentity))){
+          let documentListByKey = keyBy(documentList, "id_type")
+          return [{...documentListByKey[currentIdentity?.id_type], state:"rejected"}] 
+        }else{
+          return documentList
+        }
+          // let _documentList = []
+          //   let isThereOneRejectedIdentity = false
+          //   documentList.forEach(_document => {
+          //     let currentIdentity = userIdentities[_document?.id_type] 
+          //     let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
+          //     if(["rejected"].includes(currentIdentityState)){ 
+          //       isThereOneRejectedIdentity = true
+          //       return _documentList = [{..._document, state:"rejected"}] 
+          //     }else if(!isThereOneRejectedIdentity){
+          //       _documentList.push(_document)
+          //     }
+          //     // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
+          //     //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
+          //     //   _documentList.push(_document)
+          //     // }
+          //   })
+          //   return _documentList
+          // }else{
+          //   return documentList
           // }
-        })
-        return _documentList
       }else{
         return documentList
       }
-
     }
 
     async getDocumentList(nationality) {
@@ -290,7 +361,7 @@ export class IndetityService extends WebService {
 
     // let url = `${IdentityApIUrl}users/${userId}/biometric`;
     // this.getNextLevel()
-    // let url = `${IdentityApIUrl}users/${userId}/userLevel`;
+    // let url = `${IdentityApIUrl}users/${userId}/userLevel?country="international"`;
 
     // FORM INPUTS LOCATION
     // let url = `${IdentityApIUrl}countries`;
@@ -510,7 +581,7 @@ export class IndetityService extends WebService {
       email: this.authData.userEmail,
       restore_id: profile?.restore_id,
       id: this.authData.userId,
-      verification_level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
+      level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
       verification_error: identity?.errors?.length && identity?.errors[0],
       id_number:identity?.document_info?.id_number,
       name:identity?.document_info?.name,
@@ -544,7 +615,7 @@ export class IndetityService extends WebService {
     const identityAccepted = updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
     const identityRejected = updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
     
-    // if((updatedUser?.verification_level !== 'level_0') || identityConfirmed){
+    // if((updatedUser?.level !== 'level_0') || identityConfirmed){
     //   // let kyc_personal = country[0].levels && country[0].levels.personal;
     //   // let kyc_identity = country[0].levels && country[0].levels.identity;
     //   // let kyc_financial = country[0].levels && country[0].levels.financial;
@@ -558,7 +629,7 @@ export class IndetityService extends WebService {
     //   //   updatedUser.security_center.kyc.financial = kyc_financial;
     //   // }
     // }else 
-    if(updatedUser?.verification_level === 'level_0' && identityAccepted){
+    if(updatedUser?.level === 'level_0' && identityAccepted){
       updatedUser.security_center.kyc.basic = 'confirmed';
       updatedUser.security_center.kyc.advanced = 'confirmed';
     }else if(identityRejected){
@@ -667,7 +738,7 @@ export class IndetityService extends WebService {
         country: user.country,
         person_type: user.person_type,
         info_type: config.info_type,
-        verification_level: config.verification_level,
+        level: config.level,
         info: config.info,
       },
     };

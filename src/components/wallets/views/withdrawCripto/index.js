@@ -362,7 +362,7 @@ export const OperationForm = styled.form`
   grid-row-gap: 5px;
   position: relative;
   max-height: 450px;
-  background: #f3f3f3;
+  background: var(--secondary_background);
   border-radius: 8px;
   padding: 30px;
   width: calc(95% - 60px);

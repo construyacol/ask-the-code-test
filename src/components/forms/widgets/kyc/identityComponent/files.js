@@ -32,7 +32,7 @@ import { img_compressor, readFile } from '../../../../../utils'
 import { ApiPostIdentityFiles } from './api'
 // import { useSelector } from "react-redux";
 import IdentityKycSuccess from './success'
-import { identityInfo } from './identityUtils'
+// import { identityInfo } from './identityUtils'
 import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
 import { CAPACITOR_PLATFORM } from 'const/const'
@@ -55,7 +55,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   const { dataForm } = handleDataForm
   const [ toastMessage ] = useToastMessage();
   // const user = useSelector(({ modelData:{ user } }) => user);
-  const { pendingOrRejectedIdentity } = identityInfo()
+  // const { pendingOrRejectedIdentity } = identityInfo()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -162,7 +162,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
         setLoading(true)
-        let res = await ApiPostIdentityFiles({state})
+        let res = await ApiPostIdentityFiles({state, dataForm})
         setLoading(false) 
         if(!res)return prevStage();
         nextStage()
@@ -180,9 +180,11 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
     // Render success Stage 
       return <IdentityKycSuccess/>
   }
+  
   // console.log('currentStage', currentStage)
   const { stages } = dataForm
   // let currentIdentityUiName = `${UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. ${pendingOrRejectedIdentity?.document_info?.id_number}`
+  const currentIdentity = dataForm?.config?.currentIdentity
 
 
   return( 
@@ -192,7 +194,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
             <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
-            Sube los archivos de {UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. <span className="fuente2">{pendingOrRejectedIdentity?.document_info?.id_number}</span>
+            Sube los archivos de {UI_NAMES?.documents[currentIdentity?.id_type]} No. <span className="fuente2">{currentIdentity?.document_info?.id_number}</span>
             </h3>
           </Header>
 
@@ -219,7 +221,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             state={state}
             stageData={stageData}
             loading={loading}
-            idType={pendingOrRejectedIdentity?.id_type}
+            idType={currentIdentity?.id_type}
           />
 
           {

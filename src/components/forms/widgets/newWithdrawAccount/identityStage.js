@@ -1,15 +1,13 @@
 import { useEffect } from 'react'
 import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
-import { UI_NAMES } from '../../../../const/uiNames'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { HR } from '../../../widgets/headerAccount/styles'
 import { useActions } from '../../../../hooks/useActions'
-import { getIdentityState } from '../../../../utils'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { MetaContainer } from '../sharedStyles'
-
+import { selectAvailableIdentities } from 'selectors'
+ 
 export default function IdentityComponent({ 
     stageManager:{ 
       stageData,
@@ -109,28 +107,4 @@ const IdNumberPanel = ({ item }) => {
 
 
  
-  const selectAvailableIdentities = createSelector(
-    (state) => state.modelData.user.identities,
-    (identities) => {
-      if(!identities?.length)return ; 
-      let createNewId = true
-      let userIdentities = {}
-      identities.forEach(userIdentity => { 
-        const identityState = getIdentityState(userIdentity)
-        if(["pending", "confirmed"].includes(identityState))createNewId = false;
-        if(["accepted", "confirmed"].includes(identityState)){
-          userIdentities = { 
-            ...userIdentities,
-            [userIdentity?.document_info?.id_number]:{
-              ...userIdentity,
-              uiName:`${UI_NAMES?.documents[userIdentity?.id_type]}`,
-              icon:"identity",
-              enabled:["accepted"].includes(identityState),
-              value:userIdentity?.document_info?.id_number,
-            }
-          }
-        }
-      })
-      return [ userIdentities, createNewId ];
-    }
-  );
+ 
