@@ -13,7 +13,6 @@ export default function CookieMessage(props) {
   const mainRef = useRef()
   const [ viewMore, setViewMore ] = useState(false)
 
-
   const clickHandler = () => { 
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
     setShouldRender(false)
@@ -28,13 +27,10 @@ export default function CookieMessage(props) {
   }, [mainRef.current])
 
 
-  const closeHandle = () => {
-    setShouldRender(false)
-  }
  
   return shouldRender ? (
     <CoockieContainer ref={mainRef} id="cookieContainer" className={`${viewMore ? 'disclaimer__open' : 'disclaimer--showGradient'}`}>
-      <Close onClick={closeHandle}>X</Close>
+      <Close onClick={clickHandler}>X</Close>
       <Content>
         <h3 className='fuente'>¡Advertencia!</h3>
         <br/>
@@ -96,6 +92,7 @@ export default function CookieMessage(props) {
 const Content = styled.div`
   display: grid;
   grid-template-columns: 1fr;
+  overflow: hidden;
   
   p{
     font-size: 14px;
