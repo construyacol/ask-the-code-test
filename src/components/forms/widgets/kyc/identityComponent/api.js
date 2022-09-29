@@ -218,7 +218,7 @@ export const ApiGetIdentityStages = async(config) => {
 
 export const ApiPostIdentityInfo = async(payload) => {
 
-  const config = ungapStructuredClone(payload);
+  let config = ungapStructuredClone(payload);
   const currentIdentity = config?.dataForm?.config?.currentIdentity
   
   let res
@@ -229,6 +229,9 @@ export const ApiPostIdentityInfo = async(payload) => {
   }
   const timeStampDate = parseDateToTimeStamp(config.birthday) 
   config.birthday = timeStampDate
+
+  config.name = config.name.trim()
+  config.surname = config.surname.trim()
 
   let info_needed = {}
   config?.document?.info_needed?.forEach(documentId => {

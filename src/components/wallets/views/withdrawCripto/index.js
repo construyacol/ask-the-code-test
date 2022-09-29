@@ -99,11 +99,11 @@ export const CriptoView = () => {
     let withdraw_account = withdraw_accounts[addressValue];
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
-      withdraw_account = await coinsendaServices.addNewWithdrawAccount({
+      withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
           currency: current_wallet.currency,
           provider_type: current_wallet.currency.currency,
           label: current_wallet.currency.currency,
-          address: addressValue,
+          address: addressValue.trim(),
           country: current_wallet.country,
         },
         "cripto"

@@ -301,11 +301,6 @@ export class WithdrawService extends WebService {
     return accountList
   }
 
-
-   
-
-
-
   // async deleteWithdrawOrder(orderId) {
   //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
   // }
@@ -373,6 +368,9 @@ export class WithdrawService extends WebService {
       body.data.info_needed = payload.info_needed
       // body.data.identity_id = user?.identity.id
     }
+
+    console.log(body)
+    debugger
 
     
     const response = await this.Post(
