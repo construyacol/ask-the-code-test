@@ -306,9 +306,9 @@ class SocketsComponent extends Component {
     if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
       sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
-      funcDebounce(
+      funcDebounce( 
         {'storageCryptoWithdraw':`${withdraw.id}_${withdraw.state}`}, 
-        async() => {
+        async() => { 
           let { error } = await this.props.coinsendaServices.addUpdateWithdraw(withdraw.id, "confirmed");
           this.props.action.isAppLoading(false);
           if (error) return this.props.toastMessage(error?.message, "error");

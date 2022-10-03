@@ -1,6 +1,6 @@
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import getIcon from './icons'
-import P from 'components/widgets/text/paragraph'
+import P from 'components/widgets/typography/paragraph'
 
 import { 
     SettingElementLayout,
@@ -8,8 +8,8 @@ import {
     SettingTitleCont,
     UiStateCont
 } from './styles'
-
-import { settingType } from 'components/settings/types'
+ 
+import { settingType } from 'interfaces/settings'
 import RenderAuxComponent from 'components/forms/widgets/renderAuxComponent'
 
 
