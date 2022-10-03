@@ -65,6 +65,10 @@ export function openLoginMobile(callback) {
   });
   iab.addEventListener('message', async ({ data }) => {
     iab.close()
+    if(["signinApple"].includes(data?.message)){
+      //Do something...
+      return alert(data?.message)
+    }
     // HACK: in order to reuse the browser logic
     callback && callback(`?token=${data.jwt}&refresh_token=${data.refresh_token}`)
   });
