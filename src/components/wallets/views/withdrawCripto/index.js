@@ -138,7 +138,7 @@ export const CriptoView = () => {
         await coinsendaServices.getWalletsByUser(true);
         history.push(`/wallets/activity/${current_wallet.id}/withdraws`);
       }
-    }, 5000)   
+    }, 8000)   
 
 
     if (!error) {
