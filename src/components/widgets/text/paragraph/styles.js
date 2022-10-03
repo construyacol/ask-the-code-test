@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { device, fontSize } from 'const/const'
 
 export const Paragraph = styled.p`
+
     @media ${device.mobile} {
         font-size:${fontSize.p.mobile}
     }

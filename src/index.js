@@ -21,6 +21,7 @@ import { _createStore } from "./store";
 // script.async = true;
 // document.body.appendChild(script);
 import RootContainer from "./components/Root" 
+import AppThemeProvider from 'components/layout/themeProvider'
 // const LazyRoot = loadable(() => import(/* webpackPrefetch: true */ "./components/Root"), { fallback: <LoaderAplicationTiny /> });
 // import OnBoardingComponent from './components/forms/widgets/onBoardingComponent/init'
 // import PersonalKyc from './components/forms/widgets/personalKycComponent/init'
@@ -32,7 +33,9 @@ const rootElement = document.getElementById("home-container");
 const App = () => {
   return(
     <Provider store={store}>
-      <RootContainer/>
+      <AppThemeProvider>
+        <RootContainer/>
+      </AppThemeProvider>
     </Provider>
   )
 };
