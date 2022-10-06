@@ -3,14 +3,14 @@ import { mainService } from "../../../../../services/MainService";
 
 const CONTACT_INFO_NEEDED = {
   "phone":{
-    ui_name:"Númer de celular",
-    ui_type:"text",
+    ui_name:"Número de celular",
+    uiType:"text",
   }
 }
 
 const STAGES = {
     "phone":{
-      uiName:"Número de teléfono",
+      uiName:"Numero de teléfono",
       key:"phone",
       uiType:"text",
       "settings":{

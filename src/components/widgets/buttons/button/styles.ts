@@ -1,8 +1,8 @@
 import { device } from "const/const"
 import styled, {css} from 'styled-components'
 
-type buttonStyleProps = {
-    color?: string | String
+interface buttonStyleProps {
+    color?: string | String;
 }
 
 const LargeStyles = css`

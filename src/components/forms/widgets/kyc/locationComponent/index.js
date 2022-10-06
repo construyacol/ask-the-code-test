@@ -36,6 +36,7 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
     dataForm.stages
   )
 
+
   const idNextStageKyc = useKeyActionAsClick(
     true,
     "next-stage-kyc",
@@ -107,9 +108,7 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state[stageData?.key]])
 
-
-
-
+  
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
@@ -127,16 +126,6 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
-
-
-
-
-
-
-
-
-
-
   if(loading){return <KycSkeleton/>}
 
   if(!loading && finalStage){
@@ -149,8 +138,9 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   }
 
   return(
-      <Layout style={{background:"white"}}>
-        { 
+      <Layout className="infoPanel" style={{background:"white"}}>
+
+        {/* { 
           dataForm?.handleError?.errors &&
           <DynamicLoadComponent
             component="infoPanel"
@@ -159,7 +149,15 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
             stageData={stageData}
             dataForm={dataForm}
           />
-        }
+        } */}
+
+        <DynamicLoadComponent
+            component="infoPanel"
+            title="Verificación de cuenta"
+            state={state}
+            stageData={stageData}
+            dataForm={dataForm}
+        />
 
         <MainContainer>
           <TitleContainer id="titleContainer__">

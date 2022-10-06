@@ -128,9 +128,8 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
 
 
   return(
-      <Layout style={{background:"white"}}>
-        { 
-          dataForm?.handleError?.errors &&
+      <Layout className='infoPanel' style={{background:"white"}}>
+      
           <DynamicLoadComponent
             component="infoPanel"
             title="Campos completados"
@@ -138,7 +137,7 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
             stageData={stageData}
             dataForm={dataForm}
           />
-        }
+        
 
         <MainContainer>
           <TitleContainer id="titleContainer__">

@@ -310,6 +310,13 @@ export const IndicatorHover = styled.div`
         transform: scale(0);
     }
 
+    &.isActive{
+        .indicator,
+        .indicatorSon {
+            transform: scale(.8);
+        }
+    }
+
     @media ${device.mobile} {
         display:none;
     }

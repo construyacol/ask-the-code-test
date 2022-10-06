@@ -196,15 +196,14 @@ export const recursiveAddList = async(mapObject, payload) => {
   return stages
 }
 
-export const initStages = async(config) => {
+export const initStages = async(config, API_STAGES) => {
   
-  const apiStages = await dataService[config.formName](config)
-
+  const apiStages = API_STAGES || await dataService[config.formName](config)
   if(!apiStages) return;
+
   const sourceStages = Object.keys(apiStages)
   
   let stages = {} 
-
   for (const stage of sourceStages) { 
     stages = {
       ...stages,

@@ -147,7 +147,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   
   // console.log('||||||||||||||||||||||||||||||||| state ==> ', state)
 
-  if(loading){return <KycSkeleton/>}
+  // if(loading){return <KycSkeleton/>}
 
   if(!loading && finalStage){
     // Render success Stage
@@ -159,17 +159,16 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   }
 
   return(
-      <Layout style={{background:"white"}}>
-        { 
-          dataForm?.handleError?.errors &&
-          <DynamicLoadComponent
+      <Layout className='infoPanel' style={{background:"white"}}>
+
+        <DynamicLoadComponent
             component="infoPanel"
-            title="Campos completados"
+            title="Completa tu identidad"
             state={state}
             stageData={stageData}
             dataForm={dataForm}
+            stageStatus={stageStatus}
           />
-        }
 
         <MainContainer>
           <TitleContainer id="titleContainer__">

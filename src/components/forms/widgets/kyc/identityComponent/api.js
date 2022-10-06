@@ -4,7 +4,10 @@ import {
   parseDateToTimeStamp,
 } from 'utils/date'
 import ungapStructuredClone from '@ungap/structured-clone';
-import { createStage } from '../../../utils'
+import { 
+  createStage, 
+  // initStages 
+} from '../../../utils'
 import { toast } from 'utils'
 import { getUiError } from 'const/uiErrors'
 
@@ -12,11 +15,11 @@ import { getUiError } from 'const/uiErrors'
 
 export const INFO_DOCUMENT_NEEDED = {
   "name":{
-    ui_name:"Nombres completos",
+    ui_name:"Nombres",
     ui_type:"text",
   },
   "surname":{
-    ui_name:"Apellidos completos",
+    ui_name:"Apellidos",
     ui_type:"text",
   }, 
   "birthday":{
@@ -152,7 +155,7 @@ const STAGES = {
       }
     },
     "surname":{
-      // uiName:"Apellidos completos",
+      uiName:"Apellidos completos",
       key:"surname",
       uiType:"text",
       "settings":{
@@ -169,7 +172,7 @@ const STAGES = {
       }
     },
     "name":{
-      // uiName:"Nombres completos",
+      uiName:"Nombres completos",
       key:"name",
       uiType:"text",
       "settings":{
@@ -187,6 +190,13 @@ const STAGES = {
         MainComponent:null
       }
     }
+}
+
+
+export const getAllIdentityStages = async() => {
+  // let data = await initStages({ formName:'identity' }, { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED })
+  // return data.stages
+  return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED }
 }
 
 

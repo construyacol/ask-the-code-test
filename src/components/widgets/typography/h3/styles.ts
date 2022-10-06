@@ -1,9 +1,14 @@
 import styled from 'styled-components'
 import { device, fontSize } from 'const/const'
+import {typoGraphyProps, textBaseStyles } from '../styles'
 
-export const Paragraph = styled.p`
 
-    @media ${device.mobile} {
+export const H3Style = styled.h3<typoGraphyProps>`
+
+    ${textBaseStyles}
+    font-family: "Raleway", sans-serif !important;
+
+    /* @media ${device.mobile} {
         font-size:${fontSize.p.mobile}
     }
     @media ${device.laptop} {
@@ -11,7 +16,7 @@ export const Paragraph = styled.p`
     }
     @media ${device.desktop} {
         font-size:${fontSize.p.desktop}
-    }
+    } */
 `
 
-export default Paragraph
+export default H3Style
