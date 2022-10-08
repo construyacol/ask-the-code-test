@@ -201,16 +201,49 @@ const DOCUMENTS = {
   }
 }
 
-export const getAllIdentityStages = async() => {
+export const ApiGetIdentityErrors = ({ currentIdentity, identityState }) => {
+  // console.log('getIdentityErrors', identityState, currentIdentity)
+  // debugger
+  return {
+      defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
+      errors:{
+        surname:"Los apellidos trin",
+        name:"Solo ingresa nombres sin apellidos..."
+      }
+  }
+}
+
+
+export const getAllIdentityStages = () => {
   // let data = await initStages({ formName:'identity' }, { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED })
   // return data.stages
   return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED, ...DOCUMENTS }
+}
+
+const createErrorStages = (config) => {
+  const stages = getAllIdentityStages()
+  const { handleError } = config
+  if(!handleError?.errors) return stages;
+
+  let errStages = {}
+  Object.keys(handleError?.errors).forEach(errKey => {
+    if(stages[errKey]){
+      errStages = {
+        ...errStages,
+        [errKey]:stages[errKey]
+      }
+    }
+  })
+
+  return errStages
 }
 
 
 export const ApiGetIdentityStages = async(config) => {
  
   if(config.isNewId)return INFO_NEEDED;
+  if(config.handleError) return createErrorStages(config)
+
   const currentIdentity = config.currentIdentity
 
   if(!currentIdentity || ["pending", "rejected"].includes(currentIdentity?.info_state)){
@@ -231,6 +264,10 @@ export const ApiGetIdentityStages = async(config) => {
     return filesNeeded
    }
 }
+
+
+
+
 
 
 
@@ -318,6 +355,7 @@ export const ApiPostIdentityFiles = async(payload) => {
   })
   if(!res)return ;
   return await mainService.fetchCompleteUserData()
+
 }
 
 
@@ -363,26 +401,19 @@ export const createInfoStages = async({
 
 }
 
-
-
-
-
-
 // typeof date.getMonth === 'function'
 
 export const IDENTITY_DEFAULT_STATE = {
   identity:{}
 }
 
-// const handleError = {
-//   identity:{},
-//   financial:{},
-//   personal:{
+// export const IDENTITY_ERRORS = {
+//   identity:{
 //     defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
-//     // errors:{
-//     //   country:"Ingresa un país de operación válido...",
-//     //   name:"Solo ingresa nombres sin apellidos..."
-//     // }
+//     errors:{
+//       country:"Ingresa un país de operación válido...",
+//       name:"Solo ingresa nombres sin apellidos..."
+//     }
 //   }
 // }
   

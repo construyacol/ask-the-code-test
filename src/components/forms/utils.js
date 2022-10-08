@@ -11,7 +11,7 @@ import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 // import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
-import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
+import { ApiGetIdentityStages, ApiGetIdentityErrors } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
@@ -196,9 +196,23 @@ export const recursiveAddList = async(mapObject, payload) => {
   return stages
 }
 
-export const initStages = async(config, API_STAGES) => {
+const getErrors = (config) => {
+  const ERRORS = {
+    identity:ApiGetIdentityErrors
+  }
+  return ERRORS[config.formName] && ERRORS[config.formName](config)
+}
+
+
+
+
+
+export const initStages = async(_config, API_STAGES) => {
   
+  let config = {..._config}
+  config.handleError = getErrors(config)
   const apiStages = API_STAGES || await dataService[config.formName](config)
+
   if(!apiStages) return;
 
   const sourceStages = Object.keys(apiStages)
@@ -206,15 +220,17 @@ export const initStages = async(config, API_STAGES) => {
   let stages = {} 
   for (const stage of sourceStages) { 
     stages = {
-      ...stages,
+      ...stages, 
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
+
   stages = await recursiveAddList(stages)
 
   return {
     ...formStructure(config.formName),
+    handleError:config.handleError,
     stages
   }
 }
- 
+  

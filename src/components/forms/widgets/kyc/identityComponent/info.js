@@ -3,7 +3,7 @@ import validations from '../validations'
 import useStage from '../../../hooks/useStage'
 import { getNextSelectList } from '../utils' 
 import { ApiPostIdentityInfo, createInfoStages } from './api'
-import KycFormComponent from '../../kycForm'
+import KycFormComponent from '../../kycForm' 
 // import useToast from '../../../../hooks/useToastMessage'
 // import SuccessComponent from './success'
 import { initStages } from '../../../utils'
@@ -18,13 +18,16 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   // const user = useSelector(({ modelData:{ user } }) => user);
 
   // const [ toastMessage ] = useToast()
+
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
 
-
+  // console.log(stageManager)
+  // console.log('dataform stages ', dataForm.stages, dataForm?.handleError?.errors)
+  // debugger
   
   const {
     prevStage,
@@ -122,6 +125,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
+  // return <div></div>
   return(
     <KycFormComponent
       state={state}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import DynamicLoadComponent from './dynamicLoadComponent'
 // import loadable from '@loadable/component'
 import { getInitialState } from './utils'
-import './global.css'
+import './global.css' 
 
 const FormComponent = ({ handleDataForm, Fallback, ...props }) => {
   
@@ -11,6 +11,7 @@ const FormComponent = ({ handleDataForm, Fallback, ...props }) => {
 
   useEffect(()=>{
     setState(getInitialState(handleDataForm.dataForm))
+    // console.log('getInitialState', getInitialState(handleDataForm.dataForm))
     // eslint-disable-next-line 
   }, [handleDataForm?.dataForm?.wrapperComponent])
   

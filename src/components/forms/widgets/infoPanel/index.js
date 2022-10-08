@@ -93,10 +93,6 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                   const isSuccessfull = ["accepted"].includes(user[menuKey]?.state) && menuKey !== 'identity';
                   const currentPendingRequirement = ["location", "contact"].includes(pendingRequirements[0]) ? "location" : pendingRequirements[0]
                   
-                  if(menuKey === 'identity'){
-                    console.log('onlyidentity', isEmpty(pendingRequirements) && menuKey === 'identity')
-                  }
-
                   const isActive = menuKey?.includes(currentPendingRequirement) || (isEmpty(pendingRequirements) && menuKey === 'identity')
                   const sectionState = isSuccessfull ? 'complete' : isActive ? 'inProgress' : 'pending'
                   const AuxComponentIcon = isActive ? IsActiveIndicator : ["complete", "pending"].includes(sectionState) ? ArrowIconSwitch: () => null
