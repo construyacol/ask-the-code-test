@@ -1,90 +1,78 @@
 import { useEffect, useState } from 'react'
-// import styled from 'styled-components'
-// import { setMessageError } from '../../utils'
-import { H2, P } from 'components/widgets/typography'
 import {
-  // ErrorMessage,
   InfoPanelContainer,
   InfoContent,
   IconCont,
   ItemRequirement,
-  ItemRequirementContainer
+  ItemRequirementContainer,
+  Ul
 } from './styles'
-import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
-
-
+import { 
+  IconContainer 
+} from 'styles/global'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import getIcon from './icons'
 import { IndicatorHover } from 'components/widgets/accountList/listView'
-import { ApiGetContactStages } from '../kyc/contactComponent/api'
-import { ApiGetLocationStages } from '../kyc/locationComponent/api'
-import { getAllIdentityStages } from '../kyc/identityComponent/api'
 import { useSelector } from "react-redux";
-import ungapStructuredClone from '@ungap/structured-clone';
 import { BiCheck } from "react-icons/bi";
+import addPanelStagesToReqs from 'api/components/infoPanel'
+
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { P } from 'components/widgets/typography'
+import { findLastKey, isEmpty } from 'lodash'
 
 
 
-const createContactLocationStage = async() => {
-    let contactStages = await ApiGetContactStages()
-    let locationStages = await ApiGetLocationStages()
-    return {...contactStages, ...locationStages}
-}
+const IsActiveIndicator = () => (
+  <IndicatorHover className='isActive'>
+      <div className="indicator" >
+          <div className="indicatorSon" ></div>
+      </div>
+  </IndicatorHover>
+)
 
-const createIdentityStage = async() => {
-  let identityStages = await getAllIdentityStages()
-  return identityStages
-}
+const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
 
-const createPanelStage = {
-  location:createContactLocationStage,
-  identity:createIdentityStage
-}
+  if(!isSuccessfull) return null;
+  let size = 24
 
-const addPanelStagesToReqs = async({reqs, user}) => {
-
-  let levelReqs = ungapStructuredClone(reqs)
-  if(user?.identity) delete levelReqs.itemsMenu.location 
-  
-  for(let levelKey in levelReqs?.itemsMenu) {
-    const stages = await createPanelStage[levelKey]()
-    levelReqs.itemsMenu[levelKey].stages = stages
-  }
-  return levelReqs
+  return(
+    <IconContainer>
+      {
+        isOpen ?
+          <BiChevronUp size={size}/>
+        :
+          <BiChevronDown size={size}/>
+      }
+    </IconContainer>
+  )
 }
 
 
 const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
 
   const [ levelRequirements, setLevelRequirements ] = useState()
+  const [ toggleId, setToggleId ] = useState({key:false})
   const [ coinsendaServices ] = useCoinsendaServices(); 
-  const { user  } = useSelector((state) => state.modelData);
-  // const identityState = getIdentityState(user?.identity)
+  const { user } = useSelector((state) => state.modelData);
+  const currentIdentity = dataForm?.config?.currentIdentity
 
+  const toogleSection = e => {
+    if(!e?.target?.dataset?.id)return;
+    const key = e?.target?.dataset?.id
+    setToggleId(prevState => {return {[key]:!prevState[key]}})
+  }
 
   const getLevelRequirements = async() => {
-
     const reqs = await coinsendaServices.createRequirementLevel("level_1", false)
     const levelRequirements = await addPanelStagesToReqs({reqs, user})
-    // const identityStages = await ApiGetIdentityStages()
-    // levelReqs.itemsMenu.identity.stages = identityStages
     setLevelRequirements(levelRequirements)
   }
 
   useEffect(() => {
-    // if(document.body.clientWidth > 768){
-    //   document.querySelector('#mainLayout')?.classList.add("infoPanel");
-    // }
     getLevelRequirements()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // useEffect(()=>{
-  //   if(handleError?.errors[stageData?.key]){
-  //     setMessageError(`.label_text__${stageData.key}`, handleError.errors[stageData.key])
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [stageData])
 
   if(!levelRequirements){
     return <p>SKELETON</p>
@@ -92,50 +80,56 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
   
   let { itemsMenu, pendingRequirements } = levelRequirements
 
-  console.log('stageData', stageData?.key)
-
   return (
       <InfoPanelContainer id="infoPanel">
-          {/* <H2 className="title">
-            {title || 'Título'} 
-          </H2> */}
         <InfoContent>
               { 
                 Object.entries(itemsMenu).map((itemMenu, index) => {
+
                   let menuKey = itemMenu[0]
                   const isDisabled = false
                   const Icon = getIcon(menuKey)
-                  const isSuccessfull = ["accepted"].includes(user[menuKey]?.state)
-                  const isActive = menuKey?.includes(pendingRequirements[0])
-                  // eslint-disable-next-line no-lone-blocks
-                  {/* const isDisabled = pendingRequirements.length <= 1 ? false : (!isActive && zipObject(pendingRequirements)?.hasOwnProperty(menuKey)) */}
+                  const isSuccessfull = ["accepted"].includes(user[menuKey]?.state) && menuKey !== 'identity';
+                  const currentPendingRequirement = ["location", "contact"].includes(pendingRequirements[0]) ? "location" : pendingRequirements[0]
+                  
+                  if(menuKey === 'identity'){
+                    console.log('onlyidentity', isEmpty(pendingRequirements) && menuKey === 'identity')
+                  }
+
+                  const isActive = menuKey?.includes(currentPendingRequirement) || (isEmpty(pendingRequirements) && menuKey === 'identity')
+                  const sectionState = isSuccessfull ? 'complete' : isActive ? 'inProgress' : 'pending'
+                  const AuxComponentIcon = isActive ? IsActiveIndicator : ["complete", "pending"].includes(sectionState) ? ArrowIconSwitch: () => null
+
                   return(
-                    <ItemRequirementContainer>
+                    <ItemRequirementContainer key={index} className={`${sectionState}`}>
+
                       <ItemRequirement
-                          key={index} 
-                          className={`${menuKey} ${isActive ? 'isActive' : ''} ${isDisabled ? 'disabled' : ''}`} 
-                          data-id={menuKey}
-                          // onClick={isDisabled ? () => null : toogleSection}
+                          className={`${menuKey} ${isActive ? 'isActive' : ''} ${isSuccessfull ? 'isSuccessfull' : ''} ${isDisabled ? 'disabled' : ''}`} 
+                          data-id={`${menuKey}`}
+                          onClick={ ["complete", "pending"].includes(sectionState) ? toogleSection : () => null }
                       >   
                           <IconCont color={isActive || isSuccessfull ? 'primary' : ''}>
                             <Icon size={20}/>
                           </IconCont>
-                          <P className="fuente bold">{itemsMenu[menuKey]?.uiName}</P>
-                          <IndicatorHover className={isActive ? 'isActive' : ''}>
-                              <div className="indicator" >
-                                  <div className="indicatorSon" ></div>
-                              </div>
-                          </IndicatorHover>
+                          <P className="titleSection fuente bold">{itemsMenu[menuKey]?.uiName}</P>
+                          <AuxComponentIcon
+                            isSuccessfull={true}
+                            isOpen={toggleId[menuKey]}
+                          />
                       </ItemRequirement> 
+
                       {
                         itemsMenu[menuKey]?.stages &&
-                          <ul className={isSuccessfull ? 'isSuccessfull' : ''}>
+                          <Ul 
+                            style={{ height:["complete", "pending"].includes(sectionState) && !toggleId[menuKey] ? 0 :`calc(${Object.keys(itemsMenu[menuKey]?.stages).length} * 40px)` }}
+                            >
                             {
                               Object.keys(itemsMenu[menuKey]?.stages).map((key, id) => {
                                 if(key.includes('meta'))return null;
 
                                 const inProgress = key === stageData?.key || ["phone"].includes(key);
-                                const isCompleted = (state[key] && key !== stageData?.key) || (state[key] && ["success"].includes(stageStatus))
+                                const isCompleted = (state[key] && key !== stageData?.key) || (state[key] && ["success"].includes(stageStatus)) || (key !== stageData?.key && ["phone"].includes(key)) ||   (["rejected", "confirmed"].includes(currentIdentity?.info_state) && key !== 'documents') || (["rejected", "confirmed"].includes(currentIdentity?.info_state) && key === 'documents' && !findLastKey(state, (lastItem) => lastItem === undefined));
+                                
 
                                 return (
                                   <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} fuente`} key={id}>
@@ -143,13 +137,8 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                                       (isSuccessfull || isCompleted) &&
                                       <BiCheck color="green" size={16} />
                                     }
-                                    <P 
-                                      style={{
-                                        margin:"0", 
-                                        padding:"11px 0 10px 0px",
-                                        fontSize:"14px"
-                                      }} 
-                                      className="fuente"
+                                    <P  
+                                      className="fuente ulItem"
                                       color={(isCompleted || isSuccessfull) ? 'primary' : ''}
                                       >
                                         {itemsMenu[menuKey]?.stages[key].ui_name}
@@ -158,8 +147,9 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                                 )
                               })
                             }
-                          </ul>
+                          </Ul>
                       }
+
                     </ItemRequirementContainer>
                   )
                 })
@@ -171,6 +161,7 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
           handleError?.defaultErrorMessage &&
           <ErrorMessage>{handleError.defaultErrorMessage}</ErrorMessage>
         } */}
+
       </InfoPanelContainer>
   )
 }

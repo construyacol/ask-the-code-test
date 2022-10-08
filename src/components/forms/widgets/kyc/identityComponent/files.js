@@ -21,7 +21,7 @@ import { osDevice } from 'utils/index'
 // import { getAcronym } from '../../../../utils'
 // import useValidations from '../../hooks/useInputValidations'
 import useStage from '../../../hooks/useStage'
-// import loadable from '@loadable/component'
+import loadable from '@loadable/component'
 // import InputComponent from './input'
 // import { getBody } from '../../utils'
 // import { BackButtom, NextButtom } from './buttons'
@@ -37,9 +37,9 @@ import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
 import { CAPACITOR_PLATFORM } from 'const/const'
 
-import {
-    Layout
-} from '../../sharedStyles'
+// import { Layout } from '../../sharedStyles'
+import { Wrapper as Layout } from '../../layout/styles'
+
 
 import { checkCameraPermission } from 'utils'
 
@@ -48,8 +48,8 @@ import {
   Header
 } from '../styles'
 
+const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
-// const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const { dataForm } = handleDataForm
@@ -186,10 +186,19 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   // let currentIdentityUiName = `${UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. ${pendingOrRejectedIdentity?.document_info?.id_number}`
   const currentIdentity = dataForm?.config?.currentIdentity
 
-
   return( 
     <>
-      <Layout className="_identityKycLayout">
+      <Layout  className="_identityKycLayout infoPanel" style={{background:"white"}}>
+
+        <DynamicLoadComponent
+          component="infoPanel"
+          title="Completa tu identidad"
+          state={state}
+          stageData={stageData}
+          dataForm={dataForm}
+          // stageStatus={stageStatus}
+        />
+
         <FilesContainer className={`${osDevice()}`}>
           <Header className="item_">
             <h1 className='fuente'>Verificación de identidad</h1>
@@ -234,7 +243,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
                 />
               </MobileControlContainer>
           }
-          
         </FilesContainer>
       </Layout>
     </>

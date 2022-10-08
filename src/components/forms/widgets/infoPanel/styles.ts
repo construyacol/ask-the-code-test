@@ -1,8 +1,7 @@
 import styled from 'styled-components'
+import { IconContainer } from 'styles/global'
 
-
-export const IconCont = styled.div`
-
+export const IconCont = styled(IconContainer)`
   width: 2.7rem;
   height: 2.7rem;
   border-radius: 50%;
@@ -12,22 +11,50 @@ export const IconCont = styled.div`
   place-content: center;
   box-shadow: 3px 3px 7px -3px rgb(0 0 0 / 5%);
   border: 1px solid ${props => (props.color && props.theme.palette[props.color]) ? props.theme.palette[props.color] : props.color ? props.color : "#ededf3"};;
-  svg{
-    fill:${props => (props.color && props.theme.palette[props.color]) ? props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.text_color};
-  }
-
 `
 
 export const ItemRequirement = styled.div`
+
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr auto;
     column-gap: 10px;
     cursor: pointer;
+    position: relative;
+    padding-right: 15px;
+
+    &::after{
+      content:"";
+      width: 100%;
+      height:100%;
+      position: absolute;
+      z-index: 1;
+    }
+
+    &.isSuccessfull{
+
+      ::before{
+        content: "Completado";
+        width: fit-content;
+        height: fit-content;
+        position: absolute;
+        left: 55px;
+        top: -2px;
+        font-family: "Raleway",sans-serif !important;
+        background: #2bc48a1f;
+        color: #219D6E;
+        font-size: 11px;
+        padding: 2px 7px;
+        border-radius: 3px;
+      }
+
+      .titleSection{
+        margin-bottom: 0;
+      }
+
+    }
 
     &.isActive{
-      position: relative;
-      padding-right: 15px;
       ::after{
           content:"";
           width: 3px;
@@ -43,6 +70,9 @@ export const ItemRequirement = styled.div`
 export const ItemRequirementContainer = styled.div`
   display: grid;
   row-gap: 10px;
+  &.pending{
+    opacity:0.4;
+  }
 `
 
 export const InfoContent = styled.div`
@@ -75,24 +105,31 @@ export const InfoPanelContainer = styled.section`
     font-weight: "bold";
   }
 
-  ul{
+  .ulItem{
+    margin:10px 0;
+    font-size:15px;
+  }
+
+
+@media (max-width: 768px) {
+ display:none;
+}
+`
+
+
+export const Ul = styled.ul`
     padding-left: 20px;
     margin: 1rem 0;
     overflow: hidden;
+    transition: .3s;
+    margin:0;
     
-    &.isSuccessfull{
-      transition: .3s;
-      height: 0;
-      margin: 0;
-    }
-
     li{
       padding: 0;
       color: #50667a;
       list-style-type: "";
       list-style-position: inside;
       border-left: 2px solid #e9e9eb;
-      
       display: grid;
       grid-template-columns: auto 1fr;
       align-items: center;
@@ -113,11 +150,5 @@ export const InfoPanelContainer = styled.section`
           position: absolute;
         }
       }
-    
     }
-  }
-
-@media (max-width: 768px) {
- display:none;
-}
 `

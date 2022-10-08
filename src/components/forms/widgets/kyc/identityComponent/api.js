@@ -33,6 +33,8 @@ export const INFO_DOCUMENT_NEEDED = {
 }
 
 
+
+
 const INFO_NEEDED = {
   "nationality":{
     ui_name:"País",
@@ -192,11 +194,17 @@ const STAGES = {
     }
 }
 
+const DOCUMENTS = {
+  "documents":{
+    ui_name:"Documentos",
+    ui_type:"text",
+  }
+}
 
 export const getAllIdentityStages = async() => {
   // let data = await initStages({ formName:'identity' }, { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED })
   // return data.stages
-  return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED }
+  return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED, ...DOCUMENTS }
 }
 
 
