@@ -80,6 +80,7 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
   
   let { itemsMenu, pendingRequirements } = levelRequirements
 
+     
   return (
       <InfoPanelContainer id="infoPanel">
         <InfoContent>
@@ -128,7 +129,7 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                                 if(key.includes('meta'))return null;
 
                                 const inProgress = key === stageData?.key || ["phone"].includes(key);
-                                const isCompleted = (state[key] && key !== stageData?.key) || (state[key] && ["success"].includes(stageStatus)) || (key !== stageData?.key && ["phone"].includes(key)) ||   (["rejected", "confirmed"].includes(currentIdentity?.info_state) && key !== 'documents') || (["rejected", "confirmed"].includes(currentIdentity?.info_state) && key === 'documents' && !findLastKey(state, (lastItem) => lastItem === undefined));
+                                const isCompleted = (state[key] && key !== stageData?.key) || (state[key] && ["success"].includes(stageStatus)) || (key !== stageData?.key && ["phone"].includes(key)) ||   (["confirmed"].includes(currentIdentity?.info_state) && key !== 'documents') || (["confirmed"].includes(currentIdentity?.info_state) && key === 'documents' && !findLastKey(state, (lastItem) => lastItem === undefined));
                                 
 
                                 return (
