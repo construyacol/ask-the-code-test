@@ -26,6 +26,7 @@ export const parseTimeStampToDate = (timeStamp) => {
   }
 
 export const parseDateToTimeStamp = date => {
+    if(!date?.match(isIsoDate))return date
     const { year, month, day } = formatJsonUTFDate(date)
     const timeStamp = new Date(year, month, day).getTime()
     return BigNumber(timeStamp).div(1000).toString()

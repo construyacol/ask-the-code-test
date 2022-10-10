@@ -7,6 +7,7 @@ import KycFormComponent from '../../kycForm'
 // import useToast from '../../../../hooks/useToastMessage'
 // import SuccessComponent from './success'
 import { initStages } from '../../../utils'
+import { merge, omitBy, isUndefined } from 'lodash'
 // import { useSelector } from "react-redux";
 
 
@@ -26,7 +27,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   )
 
   // console.log(stageManager)
-  // console.log('dataform stages ', dataForm.stages, dataForm?.handleError?.errors)
+  // console.log('dataForm', dataForm)
   // debugger
   
   const {
@@ -64,9 +65,11 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   }
 
   const prevStep = () => {
-    setState(prevState => {
-      return { ...prevState, [stageData?.key]: "" }
-    })
+    if(!dataForm?.handleError){
+      setState(prevState => {
+        return { ...prevState, [stageData?.key]: "" }
+      })
+    }
     return prevStage()
   }
 
@@ -100,23 +103,28 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
-        const documents = dataForm?.stages?.id_type?.selectList
-        const idDocument = state?.id_type
-        const document = (documents && idDocument) && documents[idDocument]
-        if(!document)return prevStage();
+        const currentIdentity = dataForm?.config?.currentIdentity
+        let documentData
+        if(!currentIdentity){
+          const documents = dataForm?.stages?.id_type?.selectList
+          const idDocument = state?.id_type
+          documentData = (documents && idDocument) && documents[idDocument]
+          if(!documentData)return prevStage();
+        }
         setLoading(true)
-        let res = await ApiPostIdentityInfo({document, dataForm, ...state})
+        const info = currentIdentity ? omitBy(merge(currentIdentity?.document_info, state), isUndefined) : state;
+        let res = await ApiPostIdentityInfo({ documentData, dataForm, info })
         setLoading(false)
         if(!res)return prevStage();
-        const currentIdentity = res.data
+        const identity = res.data
         const _dataForm = await initStages({
           formName:'identity', 
-          currentIdentity
+          currentIdentity:identity
         })
         return setDataForm({
           ..._dataForm,
           config:{
-            currentIdentity
+            currentIdentity:identity
           }
         })
       }
@@ -125,7 +133,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
-  // return <div></div>
+
   return(
     <KycFormComponent
       state={state}

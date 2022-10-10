@@ -14,7 +14,7 @@ import { useCoinsendaServices } from "services/useCoinsendaServices";
 import getIcon from './icons'
 import { IndicatorHover } from 'components/widgets/accountList/listView'
 import { useSelector } from "react-redux";
-import { BiCheck } from "react-icons/bi";
+import { BiCheck, BiErrorAlt } from "react-icons/bi";
 import addPanelStagesToReqs from 'api/components/infoPanel'
 
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
@@ -79,8 +79,15 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
   }
   
   let { itemsMenu, pendingRequirements } = levelRequirements
+  let errors = dataForm?.handleError?.errors
 
+  console.log('InfoPanel itemsMenu', itemsMenu)
+  console.log('dataForm', dataForm)
+  
+
+  // const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
      
+
   return (
       <InfoPanelContainer id="infoPanel">
         <InfoContent>
@@ -125,18 +132,28 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                                 if(key.includes('meta'))return null;
 
                                 const inProgress = key === stageData?.key || ["phone"].includes(key);
-                                const isCompleted = (state[key] && key !== stageData?.key) || (state[key] && ["success"].includes(stageStatus)) || (key !== stageData?.key && ["phone"].includes(key)) ||   (["confirmed"].includes(currentIdentity?.info_state) && key !== 'documents') || (["confirmed"].includes(currentIdentity?.info_state) && key === 'documents' && !findLastKey(state, (lastItem) => lastItem === undefined));
-                                
+                                const itemRejected = (errors && errors[key]) && true
+
+                                const isCompleted = (state[key] && key !== stageData?.key) || 
+                                (state[key] && ["success"].includes(stageStatus)) || 
+                                (key !== stageData?.key && ["phone"].includes(key)) ||   
+                                (["confirmed"].includes(currentIdentity?.info_state) && key !== 'files') || 
+                                (["confirmed"].includes(currentIdentity?.info_state) && key === 'files' && !findLastKey(state, (lastItem) => lastItem === undefined)) ||
+                                ((errors && !errors[key]) && key !== 'files');
 
                                 return (
-                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} fuente`} key={id}>
+                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
                                     { 
                                       (isSuccessfull || isCompleted) &&
                                       <BiCheck color="green" size={16} />
                                     }
+                                    {
+                                      !isCompleted && itemRejected &&
+                                      <BiErrorAlt color="red" size={16} />
+                                    }
                                     <P  
                                       className="fuente ulItem"
-                                      color={(isCompleted || isSuccessfull) ? 'primary' : ''}
+                                      color={(isCompleted || isSuccessfull) ? 'primary' : itemRejected ? 'red' : ''}
                                       >
                                         {itemsMenu[menuKey]?.stages[key].ui_name}
                                     </P>

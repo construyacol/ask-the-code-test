@@ -73,7 +73,7 @@ const InputComponent = props => {
   return (
     <InputWrapper className={`${label ? 'withLabel' : ''} ${className || ''}`}>
       {
-        label &&
+        label && 
         <p className={`fuente ${label ? '_inputLabelP' : ''}`}>{label}</p>
       }
       <InputContainer
@@ -125,9 +125,13 @@ export const InputWrapper = styled.div`
     }
   }
 
+  &.rejected{
+    ${LabelText}{
+      color:red;
+    }
+  }
+
 `
-
-
 
 
 

@@ -40,6 +40,11 @@ const KycFormComponent = ({
       "onkeypress",
       true
     );
+
+    const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
+    const errorMessage = dataForm?.handleError?.errors[stageData?.key]
+    const inputMessage = (typeof errorMessage === 'string' && errorMessage) || stageData?.settings?.defaultMessage
+
     return(
       <Layout className='infoPanel' style={{background:"white"}}>
         <DynamicLoadComponent
@@ -68,7 +73,7 @@ const KycFormComponent = ({
                   stageController={stageController}
                   stages={dataForm?.stages}
                   currentStage={currentStage}
-                  >
+                  > 
                   <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
                 </LabelComponent>
                 {
@@ -76,11 +81,12 @@ const KycFormComponent = ({
                   <InputSkeleton/>
                   :
                   <InputComponent
+                    className={`${stageErrorState}`}
                     onChange={onChange} 
                     inputStatus={stageStatus}
                     defaultValue={state[stageData?.key]}
                     name={stageData?.key} 
-                    message={stageData?.settings?.defaultMessage}
+                    message={inputMessage}
                     placeholder={stageData?.settings?.placeholder}
                     type={stageData?.uiType}
                     setStageData={setStageData}
@@ -94,7 +100,6 @@ const KycFormComponent = ({
                   />
                 }
               </StickyGroup>
-  
               <DynamicLoadComponent
                 component="kyc/selectList"
                 list={stageData?.selectList}

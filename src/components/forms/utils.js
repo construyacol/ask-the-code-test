@@ -79,8 +79,6 @@ export const setMessageError = (selector, message) => {
 // manage tags system events
 
 
-
-
 export const onSubmit = async(callback, TimeOut = 100) => {
   callback(true)
   setTimeout(() => { 
@@ -161,21 +159,6 @@ export const createSelectList = async(list) => {
 }
 
 
- 
-const dataService = {
-  biometric:ApiGetBiometricStages,
-  onBoarding:ApiGetOnBoardingStages,
-  // personal:ApiGetPersonalStages,
-  identity:ApiGetIdentityStages, 
-  newWallet:ApiGetNewWalletStages,
-  location:ApiGetLocationStages,
-  contact:ApiGetContactStages,
-  newWithdrawAccount:ApiGetNewWAccountStages,
-  [FIAT_DEPOSIT_TYPES.FORM]:ApiGetOnFiatDepositStages,
-  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
-}
-
-
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
@@ -196,6 +179,21 @@ export const recursiveAddList = async(mapObject, payload) => {
   return stages
 }
 
+
+ 
+const dataService = {
+  biometric:ApiGetBiometricStages,
+  onBoarding:ApiGetOnBoardingStages,
+  // personal:ApiGetPersonalStages,
+  identity:ApiGetIdentityStages, 
+  newWallet:ApiGetNewWalletStages,
+  location:ApiGetLocationStages,
+  contact:ApiGetContactStages,
+  newWithdrawAccount:ApiGetNewWAccountStages,
+  [FIAT_DEPOSIT_TYPES.FORM]:ApiGetOnFiatDepositStages,
+  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
+}
+
 const getErrors = (config) => {
   const ERRORS = {
     identity:ApiGetIdentityErrors
@@ -203,20 +201,14 @@ const getErrors = (config) => {
   return ERRORS[config.formName] && ERRORS[config.formName](config)
 }
 
-
-
-
-
 export const initStages = async(_config, API_STAGES) => {
   
   let config = {..._config}
   config.handleError = getErrors(config)
   const apiStages = API_STAGES || await dataService[config.formName](config)
-
   if(!apiStages) return;
 
   const sourceStages = Object.keys(apiStages)
-  
   let stages = {} 
   for (const stage of sourceStages) { 
     stages = {

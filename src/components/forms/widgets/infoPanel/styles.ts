@@ -136,9 +136,8 @@ export const Ul = styled.ul`
       column-gap: 7px;
       padding-left: 15px;
 
-      &.checked{
-        /* list-style-type: "✓"; */
-        color: ${props => props.theme.palette.primary};
+      &.checked,
+      &.rejected{
         position:relative;
         ::after{
           content: "";
@@ -148,6 +147,12 @@ export const Ul = styled.ul`
           top: 0;
           left: -2px;
           position: absolute;
+        }
+      }
+
+      &.rejected{
+        ::after{
+          background: red;
         }
       }
     }

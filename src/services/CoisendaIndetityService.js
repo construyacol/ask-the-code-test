@@ -304,10 +304,12 @@ export class IndetityService extends WebService {
     }
 
     async updateInfoIdentity(payload) {
+
       const {
         identity_id,
         info_needed
       } = payload
+
       const body = {
         data: {
           country:this.user.country,

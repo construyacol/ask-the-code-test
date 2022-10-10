@@ -46,7 +46,7 @@ import { checkCameraPermission } from 'utils'
 import { 
   FilesContainer,
   Header
-} from '../styles'
+} from '../styles' 
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
@@ -58,7 +58,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   // const { pendingOrRejectedIdentity } = identityInfo()
   const stageManager = useStage(
     // create the form stages
-    Object.keys(dataForm?.handleError?.errors || dataForm.stages),
+    Object.keys(dataForm.stages),
     dataForm.stages
   )
 
@@ -161,7 +161,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
-        setLoading(true)
+        setLoading(true) 
         let res = await ApiPostIdentityFiles({state, dataForm})
         setLoading(false) 
         if(!res)return prevStage();
@@ -173,7 +173,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   }, [currentStage])
 
  
-//   // const validations = useValidations()
+  console.log('files ==>> ', state, dataForm)
 
   // if(loading){return <KycSkeleton/>}
   if(!loading && finalStage){

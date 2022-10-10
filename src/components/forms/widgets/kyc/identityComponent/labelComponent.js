@@ -14,7 +14,7 @@ const LabelComponent = ({ children, currentStage, stages, stageController }) => 
         <Titles height={stageController.length} position={currentStage}>
             {
               stageController.map((stageId, keyId) => {
-                return <p key={keyId} >{stages[stageId]?.settings?.label || stages[stageId].uiName}</p>
+                return <p key={keyId} >{stages[stageId]?.settings?.label || stages[stageId]?.uiName}</p>
               })
             }
         </Titles>

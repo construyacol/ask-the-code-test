@@ -195,22 +195,36 @@ const STAGES = {
 }
 
 const DOCUMENTS = {
-  "documents":{
+  "files":{
     ui_name:"Documentos",
     ui_type:"text",
   }
 }
 
-export const ApiGetIdentityErrors = ({ currentIdentity, identityState }) => {
-  // console.log('getIdentityErrors', identityState, currentIdentity)
-  // debugger
-  return {
-      defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
+const IDENTITY_ERRORS = {
+  document_info:{
+      defaultErrorMessage:"Los datos de trin, están mal escritos.",
       errors:{
-        surname:"Los apellidos trin",
-        name:"Solo ingresa nombres sin apellidos..."
+        surname:"Vuelve a escribir de forma correcta tu apellido",
+        birthday:true
+    }
+  },
+  files:{
+      defaultErrorMessage:"Algunas de las imagenes son borrosas.",
+      errors:{
+        files:true
       }
   }
+}
+
+export const ApiGetIdentityErrors = ({ currentIdentity }) => {
+  if(["rejected"].includes(currentIdentity?.info_state)){
+    return IDENTITY_ERRORS.document_info
+  }else if(["rejected"].includes(currentIdentity?.file_state)){
+    return undefined
+  // return IDENTITY_ERRORS.files
+  }
+  return undefined
 }
 
 
@@ -220,34 +234,14 @@ export const getAllIdentityStages = () => {
   return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED, ...DOCUMENTS }
 }
 
-const createErrorStages = (config) => {
-  const stages = getAllIdentityStages()
-  const { handleError } = config
-  if(!handleError?.errors) return stages;
-
-  let errStages = {}
-  Object.keys(handleError?.errors).forEach(errKey => {
-    if(stages[errKey]){
-      errStages = {
-        ...errStages,
-        [errKey]:stages[errKey]
-      }
-    }
-  })
-
-  return errStages
-}
-
 
 export const ApiGetIdentityStages = async(config) => {
  
   if(config.isNewId)return INFO_NEEDED;
-  if(config.handleError) return createErrorStages(config)
-
+  
   const currentIdentity = config.currentIdentity
-
   if(!currentIdentity || ["pending", "rejected"].includes(currentIdentity?.info_state)){
-      return INFO_NEEDED;
+      return config.handleError ? getAllIdentityStages() : INFO_NEEDED;
    }else{
     const { id_type, nationality } = currentIdentity
     const _document = await mainService.getOneDocument({ id_type, nationality })
@@ -275,25 +269,25 @@ export const ApiPostIdentityInfo = async(payload) => {
 
   let config = ungapStructuredClone(payload);
   const currentIdentity = config?.dataForm?.config?.currentIdentity
-  
+
   let res
-
-  const isMaskBirthday = config.birthday.includes('/') 
+  const isMaskBirthday = config.info.birthday.includes('/') 
   if(isMaskBirthday){
-    config.birthday = formatMaskDate(config.birthday) 
+    config.info.birthday = formatMaskDate(config.info.birthday) 
   }
-  const timeStampDate = parseDateToTimeStamp(config.birthday) 
-  config.birthday = timeStampDate
+  const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
+  config.info.birthday = timeStampDate
 
-  config.name = config.name.trim()
-  config.surname = config.surname.trim()
+  config.info.name = config.info.name.trim()
+  config.info.surname = config.info.surname.trim()
 
   let info_needed = {}
-  config?.document?.info_needed?.forEach(documentId => {
-    if(config[documentId]){
+  let infoNeededReqs = (currentIdentity && Object.keys(currentIdentity?.document_info)) || config?.documentData?.info_needed
+  infoNeededReqs?.forEach(documentId => {
+    if(config.info[documentId]){
       info_needed = {
         ...info_needed,
-        [documentId]:config[documentId]
+        [documentId]:config.info[documentId]
       }
     }
   })
@@ -307,7 +301,7 @@ export const ApiPostIdentityInfo = async(payload) => {
   }else{
     res = await mainService.createIdentity({
       ...config, 
-      document_id:config?.document?.id, 
+      document_id:config?.documentData?.id, 
       info_needed
     })
   }
@@ -347,7 +341,6 @@ export const ApiPostIdentityFiles = async(payload) => {
     }
   })
 
-  // console.log('document', _document)
   const res = await mainService.addFilesToIdentity({
     ...config, 
     identity_id:id, 
@@ -407,16 +400,6 @@ export const IDENTITY_DEFAULT_STATE = {
   identity:{}
 }
 
-// export const IDENTITY_ERRORS = {
-//   identity:{
-//     defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
-//     errors:{
-//       country:"Ingresa un país de operación válido...",
-//       name:"Solo ingresa nombres sin apellidos..."
-//     }
-//   }
-// }
-  
 export const IDENTITY_COMPONENTS = {
     wrapperComponent:{
         identity:'kyc/identityComponent'
