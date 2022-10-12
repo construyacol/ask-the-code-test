@@ -66,6 +66,12 @@ export const StickyGroup = styled.div`
     top: 0;
   }
 
+  @media ${device.mobile}{
+    padding: 0;
+  }
+
+  
+
 `
  
 export const TitleContainer = styled.div`
@@ -74,13 +80,13 @@ export const TitleContainer = styled.div`
   display: grid;
   grid-template-columns:1fr;
   grid-template-rows: 1fr;
+  padding-bottom:50px;
 
-  .titleContainer__h1{
-    margin: 50px 0 80px;
-    text-align: center;
-    font-size: 35px;
-    color: var(--title1);
-    font-weight: 400;
+  .kycTitle{
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: left;
   }
 
   &.skeleton h1{
@@ -93,8 +99,14 @@ export const TitleContainer = styled.div`
   }
 
   @media ${device.mobile}{
-    .titleContainer__h1{
-      font-size: 22px;
+    &.skeleton{
+      justify-items: center;
+    }
+
+    .kycTitle{
+      margin: 0;
+      font-size: 25px;
+      font-weight: bold;
       text-align: center;
     }
   }   
@@ -121,7 +133,6 @@ export const MainContainer = styled.div`
   display: grid;
   max-width: 650px;
   width: 100%;
-  justify-self:center;
   align-self: center;
   grid-template-rows: auto 1fr auto;
   height: 100%;
@@ -129,6 +140,11 @@ export const MainContainer = styled.div`
   .skeleton{
     animation: ${skeletonAnimation} .7s linear infinite;
   }
+
+  @media ${device.mobile}{
+    padding:0 25px;
+    width: calc(100% - 50px);
+  }   
 
 `
 
@@ -148,7 +164,7 @@ export const Header = styled.div`
   }
   h3{
     color:var(--paragraph_color);
-    display:flex;
+    display:block;
     align-items:center;
     column-gap:10px;
   }
@@ -156,16 +172,13 @@ export const Header = styled.div`
  
 
 export const FilesContainer = styled.div`
-    display:grid;
+
+    display: grid;
     grid-template-rows: auto 1fr;
-    grid-template-columns: minmax(400px, 1fr) minmax(250px, 400px);
-    padding: 2.5rem 1.5rem;
-    max-width: 1480px;
-    justify-self: center;
-    width: calc(100vw - 3rem);
-    row-gap:10px;
-    column-gap:25px;
-    height: calc(100vh - 5rem);
+    grid-template-columns: 1fr auto;
+    row-gap: 10px;
+    column-gap: 25px;
+    height: 100%;
 
     .item_{
         display:grid;
@@ -175,8 +188,8 @@ export const FilesContainer = styled.div`
 
       grid-template-columns: 1fr;
       grid-template-rows: auto 1fr auto;
-      padding: 2.5rem 1rem 3rem;
-      height: calc(100vh - 3.5rem);
+      padding: 0 1rem 3rem;
+      height: calc(100vh - 3rem);
       width: calc(100vw - 2rem);
 
       &.ioSystem{
@@ -214,8 +227,6 @@ export const Layout = styled.div`
 `
 
 export const LabelText = styled.p`
-  position: absolute;
-  bottom: -30px;
   margin: 0;
   font-size: 14px;
   color: var(--paragraph_color);
@@ -243,7 +254,7 @@ export const PrefixContainer = styled.div`
 `
 
 export const InputContainer = styled.form`
-  margin:15px 0 60px;
+  margin:15px 0;
   width: 100%;
   height: 63px;
   border: 1px solid ${props => props.inputStatus === 'success' ? "#00d2ff" : 'rgba(80,102,122,.38)'};

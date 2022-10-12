@@ -6,8 +6,9 @@ import {
 } from '../styles'
 
 
-const LabelComponent = ({ children, currentStage, stages, stageController }) => (
-  
+const LabelComponent = ({ children, currentStage, stages, stageController }) => {
+
+  return (
     <LabelContainer className="fuente">
       {children}
       <TitleLabelContainer>
@@ -18,8 +19,8 @@ const LabelComponent = ({ children, currentStage, stages, stageController }) => 
               })
             }
         </Titles>
-      </TitleLabelContainer>
+      </TitleLabelContainer> 
     </LabelContainer>
-)
+)}
 
 export default React.memo(LabelComponent)

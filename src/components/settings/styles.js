@@ -326,6 +326,7 @@ export const ItemRequirementMenu = styled.div`
 export const RequirementMenu = styled.menu`
 
     height:50px;
+    overflow: hidden;
     width:100%;
     background:#f4f4f6;
     margin: 0;

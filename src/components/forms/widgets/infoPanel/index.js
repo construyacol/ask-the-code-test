@@ -20,6 +20,7 @@ import addPanelStagesToReqs from 'api/components/infoPanel'
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { P } from 'components/widgets/typography'
 import { findLastKey, isEmpty } from 'lodash'
+import ungapStructuredClone from '@ungap/structured-clone';
 
 
 
@@ -48,8 +49,7 @@ const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
   )
 }
 
-
-const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
+const InfoPanel = ({ title, stageData, state, dataForm, stageStatus, setInfoStages }) => {
 
   const [ levelRequirements, setLevelRequirements ] = useState()
   const [ toggleId, setToggleId ] = useState({key:false})
@@ -65,8 +65,20 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
 
   const getLevelRequirements = async() => {
     const reqs = await coinsendaServices.createRequirementLevel("level_1", false)
-    const levelRequirements = await addPanelStagesToReqs({reqs, user})
-    setLevelRequirements(levelRequirements)
+    if(!reqs)return;
+    const _levelRequirements = await addPanelStagesToReqs({reqs, user})
+    setLevelRequirements(_levelRequirements)
+    // const { pendingRequirements, itemsMenu } = _levelRequirements
+    // const currentRequirement = pendingRequirements[0] || 'identity'
+    // let stages = ungapStructuredClone(itemsMenu[currentRequirement]?.stages)
+    // if(stages?.files)delete stages.files;
+    
+    // setInfoStages({
+    //   allStages:stages && Object.keys(stages),
+    //   stages,
+    //   currentRequirement,
+    //   levelRequirements:_levelRequirements
+    // })
   }
 
   useEffect(() => {
@@ -75,18 +87,11 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
   }, [])
 
   if(!levelRequirements){
-    return <p>SKELETON</p>
+    return<InfoPanelSkeleton/>
   }
   
   let { itemsMenu, pendingRequirements } = levelRequirements
   let errors = dataForm?.handleError?.errors
-
-  console.log('InfoPanel itemsMenu', itemsMenu)
-  console.log('dataForm', dataForm)
-  
-
-  // const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
-     
 
   return (
       <InfoPanelContainer id="infoPanel">
@@ -99,7 +104,6 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                   const Icon = getIcon(menuKey)
                   const isSuccessfull = ["accepted"].includes(user[menuKey]?.state) && menuKey !== 'identity';
                   const currentPendingRequirement = ["location", "contact"].includes(pendingRequirements[0]) ? "location" : pendingRequirements[0]
-                  
                   const isActive = menuKey?.includes(currentPendingRequirement) || (isEmpty(pendingRequirements) && menuKey === 'identity')
                   const sectionState = isSuccessfull ? 'complete' : isActive ? 'inProgress' : 'pending'
                   const AuxComponentIcon = isActive ? IsActiveIndicator : ["complete", "pending"].includes(sectionState) ? ArrowIconSwitch: () => null
@@ -169,13 +173,6 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
                 })
               }
         </InfoContent>
-
-        
-        {/* {
-          handleError?.defaultErrorMessage &&
-          <ErrorMessage>{handleError.defaultErrorMessage}</ErrorMessage>
-        } */}
-
       </InfoPanelContainer>
   )
 }
@@ -183,3 +180,29 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus}) => {
  
 export default InfoPanel
  
+
+
+
+export const InfoPanelSkeleton = ({ items = [1,2,3] }) => (
+  <InfoPanelContainer>
+    <InfoContent>
+      <ItemRequirementContainer>
+        <ItemRequirement>
+          <IconCont skeleton/>
+          <P skeleton>---- SKELETON ----</P>
+        </ItemRequirement>
+        <Ul>
+          {
+            items.map((item, index) => {
+              return(
+                <li key={index}>
+                  <P  className="fuente ulItem" skeleton>---- SKELETON ----</P>
+                </li>
+              )
+            })
+          }
+        </Ul>
+      </ItemRequirementContainer>
+    </InfoContent>
+  </InfoPanelContainer>
+)

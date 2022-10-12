@@ -1,7 +1,7 @@
-import { H2 as StyleTag } from './styles'
+import { H3 as StyleTag } from './styles'
 import { textTypes } from "interfaces/shared"
 
-export default function H2({ 
+export default function H3({ 
     children, 
     className,
     ...props
@@ -15,3 +15,4 @@ export default function H2({
         </StyleTag>
     )
 }
+

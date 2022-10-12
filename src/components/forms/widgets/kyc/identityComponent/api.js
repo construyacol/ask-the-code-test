@@ -10,6 +10,7 @@ import {
 } from '../../../utils'
 import { toast } from 'utils'
 import { getUiError } from 'const/uiErrors'
+import { isEmpty } from 'lodash'
 
 
 
@@ -203,26 +204,24 @@ const DOCUMENTS = {
 
 const IDENTITY_ERRORS = {
   document_info:{
-      defaultErrorMessage:"Los datos de trin, están mal escritos.",
-      errors:{
-        surname:"Vuelve a escribir de forma correcta tu apellido",
-        birthday:true
+    errors:{
+      surname:"Mensaje personalizado",
     }
   },
   files:{
-      defaultErrorMessage:"Algunas de las imagenes son borrosas.",
-      errors:{
-        files:true
-      }
-  }
+    errors:{
+      files:true
+    }
+  },
+  errorMessage:"Algunas de las imagenes son borrosas.",
 }
 
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
-  if(["rejected"].includes(currentIdentity?.info_state)){
-    return IDENTITY_ERRORS.document_info
-  }else if(["rejected"].includes(currentIdentity?.file_state)){
-    return undefined
-  // return IDENTITY_ERRORS.files
+  if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors)){
+    return currentIdentity?.errors[0]?.document_info
+    // return IDENTITY_ERRORS?.document_info
+  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors)){
+    return IDENTITY_ERRORS.files
   }
   return undefined
 }

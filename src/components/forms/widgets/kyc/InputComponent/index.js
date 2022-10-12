@@ -9,6 +9,8 @@ import {
 } from '../styles'
 import RenderAuxComponent from '../../renderAuxComponent'
 import useViewport from '../../../../../hooks/useWindowSize'
+import { device } from 'const/const'
+
 
 
 
@@ -95,10 +97,11 @@ const InputComponent = props => {
           progressBar &&
           <ProgressBarComponent {...progressBar}/>
         }
-        <LabelText className={`fuente label_text__${name} label___message`}>
-          {message}
-        </LabelText>
+        
       </InputContainer>
+      <LabelText className={`fuente label_text__${name} label___message`}>
+        {message}
+      </LabelText>
     </InputWrapper>
   )
 } 
@@ -107,6 +110,7 @@ export default InputComponent
 
 export const InputWrapper = styled.div`
   display:grid;
+  grid-template-rows:auto 40px;
   &.withLabel{
     grid-template-rows:auto auto;
     row-gap: 10px;
@@ -143,7 +147,7 @@ const ProgressBarComponent = ({ start = 0, end = 0, showSteps }) => {
     <ProgressBarContainer width={(start*100)/end} count={count}>
     {
       showSteps &&
-      <Steps>{count}</Steps>
+        <Steps>{count}</Steps>
     }
     </ProgressBarContainer>
   )
@@ -155,6 +159,9 @@ const Steps = styled.p`
   right:0;
   bottom:-30px;
   font-weight: 500;
+  @media ${device.mobile}{
+    display: none;
+  }
 `
 
 const ProgressBarContainer = styled.div`

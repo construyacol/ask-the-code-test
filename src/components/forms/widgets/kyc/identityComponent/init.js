@@ -41,7 +41,7 @@ const IdentityForm = (props) => {
   }, [])
 
   return(
-    <Layout
+    <Layout 
       closeControls
     >
         {
@@ -52,7 +52,7 @@ const IdentityForm = (props) => {
               handleDataForm={{dataForm, setDataForm}}
               Fallback={KycSkeleton}  
               {...props}
-            />
+            /> 
             :
             <KycSkeleton/>
         }

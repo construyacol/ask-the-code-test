@@ -5,6 +5,7 @@ import { FcOpenedFolder } from 'react-icons/fc'
 import { AiOutlineUpload } from "react-icons/ai";
 // import { MdOutlineAttachFile } from 'react-icons/md'
 import { IoFileTray } from 'react-icons/io5'
+
 // 
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { 
@@ -18,29 +19,17 @@ import {
 import useViewport from '../../../../../hooks/useWindowSize'
 import SimpleLoader, { LoaderContainer } from "../../../../widgets/loaders";
 import { osDevice } from 'utils/index'
-// import { getAcronym } from '../../../../utils'
-// import useValidations from '../../hooks/useInputValidations'
 import useStage from '../../../hooks/useStage'
 import loadable from '@loadable/component'
-// import InputComponent from './input'
-// import { getBody } from '../../utils'
-// import { BackButtom, NextButtom } from './buttons'
-// import LabelComponent from './labelComponent'
-// import KycSkeleton from './skeleton'
-// import PersonalKyc from '../personalKycComponent/init'
 import { img_compressor, readFile } from '../../../../../utils'
 import { ApiPostIdentityFiles } from './api'
-// import { useSelector } from "react-redux";
 import IdentityKycSuccess from './success'
-// import { identityInfo } from './identityUtils'
 import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
 import { CAPACITOR_PLATFORM } from 'const/const'
+import { H2, P } from 'components/widgets/typography'
 
-// import { Layout } from '../../sharedStyles'
 import { Wrapper as Layout } from '../../layout/styles'
-
-
 import { checkCameraPermission } from 'utils'
 
 import { 
@@ -54,8 +43,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   const { dataForm } = handleDataForm
   const [ toastMessage ] = useToastMessage();
-  // const user = useSelector(({ modelData:{ user } }) => user);
-  // const { pendingOrRejectedIdentity } = identityInfo()
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm.stages),
@@ -173,77 +160,74 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   }, [currentStage])
 
  
-  console.log('files ==>> ', state, dataForm)
-
-  // if(loading){return <KycSkeleton/>}
   if(!loading && finalStage){
-    // Render success Stage 
       return <IdentityKycSuccess/>
   }
   
-  // console.log('currentStage', currentStage)
   const { stages } = dataForm
-  // let currentIdentityUiName = `${UI_NAMES?.documents[pendingOrRejectedIdentity?.id_type]} No. ${pendingOrRejectedIdentity?.document_info?.id_number}`
   const currentIdentity = dataForm?.config?.currentIdentity
 
   return( 
     <>
-      <Layout  className="_identityKycLayout infoPanel" style={{background:"white"}}>
-
-        <DynamicLoadComponent
-          component="infoPanel"
-          title="Completa tu identidad"
-          state={state}
-          stageData={stageData}
-          dataForm={dataForm}
-          // stageStatus={stageStatus}
-        />
-
-        <FilesContainer className={`${osDevice()}`}>
-          <Header className="item_">
-            <h1 className='fuente'>Verificación de identidad</h1>
-            <h3 className='fuente subtitle'><FcOpenedFolder size={25} /> 
-            Sube los archivos de {UI_NAMES?.documents[currentIdentity?.id_type]} No. <span className="fuente2">{currentIdentity?.document_info?.id_number}</span>
-            </h3>
-          </Header>
-
-          <Main className="item_" onDragOver={dragOver}>
-            {
-              !isMovilViewport &&
-                <UploadComponent
-                  goFileLoader={goFileLoader}
-                  loading={loading}
-                />
-            }
-
-            {onDrag && !imgSrc && (
-              <DropZoneComponent
-                dragLeave={dragLeave}
-                goFileLoader={goFileLoader}
-              />
-            )} 
-            
-          </Main>
-
-          <StageListComponent  
-            stages={stages}
+      <Layout style={{background:"white"}} className='scroll'> 
+        <Layout className='infoPanel' style={{background:"transparent", left:"auto"}}>
+        
+          <DynamicLoadComponent
+            component="infoPanel"
+            title="Completa tu identidad"
             state={state}
             stageData={stageData}
-            loading={loading}
-            idType={currentIdentity?.id_type}
+            dataForm={dataForm}
+            // stageStatus={stageStatus}
           />
 
-          {
-            isMovilViewport &&
-              <MobileControlContainer className="_controlContainerFiles">
-                <CallToAction
-                  getCameraPhoto={getCameraPhoto}
+          <FilesContainer className={`${osDevice()}`}>
+            <Header className="item_">
+                <H2 size={30} color="title_color" style={{margin:0}} className="align-left">Verificación de identidad</H2>
+                <h3 className='fuente subtitle'>
+                {/* <FcOpenedFolder size={25} />  */}
+                  Sube los archivos de {UI_NAMES?.documents[currentIdentity?.id_type]} No. <span className="fuente2">{currentIdentity?.document_info?.id_number}</span>
+                </h3>
+            </Header>
+
+            <Main className="item_" onDragOver={dragOver}>
+              {
+                !isMovilViewport &&
+                  <UploadComponent
+                    goFileLoader={goFileLoader}
+                    loading={loading}
+                  />
+              }
+
+              {onDrag && !imgSrc && (
+                <DropZoneComponent
+                  dragLeave={dragLeave}
                   goFileLoader={goFileLoader}
-                  loading={loading}
                 />
-              </MobileControlContainer>
-          }
-        </FilesContainer>
+              )} 
+              
+            </Main>
+
+            <StageListComponent  
+              stages={stages}
+              state={state}
+              stageData={stageData}
+              loading={loading}
+              idType={currentIdentity?.id_type}
+            />
+
+            {
+              isMovilViewport &&
+                <MobileControlContainer className="_controlContainerFiles">
+                  <CallToAction
+                    getCameraPhoto={getCameraPhoto}
+                    goFileLoader={goFileLoader}
+                    loading={loading}
+                  />
+                </MobileControlContainer>
+            }
+          </FilesContainer>
+        </Layout>
       </Layout>
     </>
   )
@@ -258,7 +242,7 @@ const DropZoneComponent = ({ dragLeave, goFileLoader }) => {
   return (
     <DropZoneContainer className="dottedBorder">
       <input
-        id="TFileUpload"
+        id="TFileUpload" 
         type="file"
         // accept="image/png,image/jpeg"
         onChange={goFileLoader}
@@ -361,8 +345,9 @@ const StageListComponent = ({ stages, stageData, state, idType }) => {
                 />
               </IconContainer>
               
-              <p className={`fuente _title ${stageState}`}>{uiName}</p>
-              {state[stageKey] && <p className="fuente2 _size">{state[stageKey]?.size} KB</p>}
+              <P className={`_title ${stageState}`} size={15} >{uiName}</P>
+
+              {state[stageKey] && <P className="number _size">{state[stageKey]?.size} KB</P>}
 
               <ControlContainer className="item__">
                 { isCurrentEl && <CurrentStageIndicator/>}
@@ -431,6 +416,7 @@ const StageListItemContainer = styled.div`
   border-radius: 6px;
   transition:.2s;
   opacity:.2;
+  max-width: 300px;
   
   &.current{
     background:#f1f1f1;
@@ -492,6 +478,10 @@ const StageListItemContainer = styled.div`
   .item__{
     ${'' /* border:1px solid green; */}
   }
+
+  @media ${device.mobile}{
+    max-width: none;
+  }
 `
 
 
@@ -513,7 +503,7 @@ const StageList = styled.div`
 
 
 
-
+ 
 
 const Main = styled.div`
   background: #F9F9F9;

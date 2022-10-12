@@ -1,5 +1,16 @@
 import styled from 'styled-components'
 import { IconContainer } from 'styles/global'
+import { device } from 'const/const'
+
+export const InfoWrapper = styled.div`
+  height: 50px;
+  padding-bottom:35px;
+  display:none;
+  @media ${device.mobile} {
+    display:grid;
+  }
+
+`
 
 export const IconCont = styled(IconContainer)`
   width: 2.7rem;
@@ -82,6 +93,7 @@ export const InfoContent = styled.div`
   border-right: 3px solid #e9e9eb;
   position: relative;
   left: 2px;
+  height: fit-content;
 `
 
 export const ErrorMessage = styled.p`
@@ -94,15 +106,17 @@ export const InfoPanelContainer = styled.section`
 
   width: auto;
   min-width: 300px;
-  padding: 0 0 0 50px;
-  margin: 50px 0;
+  padding: 0;
+  margin: 0 0 50px;
   height: auto;
   border-right: 1px solid ${props => props.theme.palette.secondary_background};
+
+  display:grid;
   
   .title{
-    margin:"0 0 3em";
-    font-size:"1.35rem";
-    font-weight: "bold";
+    margin:0 0 1em;
+    font-size:1.35rem;
+    font-weight:bold;
   }
 
   .ulItem{
@@ -111,9 +125,10 @@ export const InfoPanelContainer = styled.section`
   }
 
 
-@media (max-width: 768px) {
- display:none;
-}
+  @media ${device.mobile} {
+    display:none;
+  }
+
 `
 
 

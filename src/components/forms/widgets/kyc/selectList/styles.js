@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components'
+import { device } from 'const/const'
 
 export const SelectListMain = styled.div`
   width: calc(100% - 20px);
@@ -23,6 +24,14 @@ export const SelectListMain = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background: #e2e2e2;
   }
+
+  
+
+  @media ${device.mobile} {
+    width: 100%;
+    margin:20px 0;
+  }
+
 `
 
 export const ItemListGrid = styled.div`
@@ -60,6 +69,10 @@ export const ItemListGrid = styled.div`
       color: #353535;
     }
   }
+
+  /* @media ${device.mobile} {
+    padding:0;
+  } */
 
 `
 

@@ -1,7 +1,7 @@
-import { H2 as StyleTag } from './styles'
+import { Paragraph as StyleTag } from './styles'
 import { textTypes } from "interfaces/shared"
 
-export default function H2({ 
+export default function P({ 
     children, 
     className,
     ...props
