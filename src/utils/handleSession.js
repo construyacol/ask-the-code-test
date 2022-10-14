@@ -8,10 +8,10 @@ import { store } from '../index'
 import Environment from 'environment'
 import actions from "actions";
 import { CAPACITOR_PLATFORM } from 'const/const'
-
-
-
-const { Oauth } = Environment
+import { SignInWithApple } from '@capacitor-community/apple-sign-in';
+const { Oauth, APPLE_CLIENT_ID, APPLE_CALLBACK_URL, APPLE_SCOPES, COINSENDA_CLIENT_ID } = Environment
+const SIGNIN_EVENT_MESSAGE = 'signinApple';
+const APPLE_STATE_PARAM = JSON.stringify({ "clientId": COINSENDA_CLIENT_ID , "third_party": true });
 
 let _keyEncoder = new KeyEncoder('secp256k1');
 export const saveUserToken = async(userToken, refreshToken) => {
@@ -51,29 +51,54 @@ export const getToken = async() => {
 
 export const verifyTokensValidity = () => {
   // setInterval(logs_, 20000)
-} 
+}
 
-export function openLoginMobile(callback) {
-  const iab = window.cordova.InAppBrowser.open(`${Oauth.url}signin`, '_blank', 'location=no,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
+function messageCallback(iab, { message, jwt, refresh_token }, callback){
+    iab.close();
+    // If click appleId in auth hub, it will start the native flow for the app
+    SIGNIN_EVENT_MESSAGE === message && appleIdLogin(iab, callback);
+    // HACK: in order to reuse the browser logic
+    callback && callback(`?token=${jwt}&refresh_token=${refresh_token}`)
+}
+
+function openIab(url, callback) {
+  const iab = window.cordova.InAppBrowser.open(url, '_blank', 'location=yes,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
   iab.show();
-  iab.addEventListener('loadstop', ()=> iab.show());
-  iab.addEventListener('loaderror', () => {
+  iab.addEventListener('loadstart', e => console.log("EVENT_LOADING_IAB", e));
+  iab.addEventListener('loadstop', e => console.log("EVENT_LOADING_IAB", e));
+  iab.addEventListener('loaderror', (err) => {
+    console.log("EVENT_LOADING_IAB", err)
     iab.close()
     setTimeout(() => {
       openLoginMobile()
-    }, 1000)
+    }, 1000);
   });
-  iab.addEventListener('message', async ({ data }) => {
-    iab.close()
-    if(["signinApple"].includes(data?.message)){
-      //Do something...
-      return alert(data?.message)
-    }
-    // HACK: in order to reuse the browser logic
-    callback && callback(`?token=${data.jwt}&refresh_token=${data.refresh_token}`)
-  });
+  iab.addEventListener('message',({ data }) => messageCallback(iab, data, callback));
 }
 
+export function openLoginMobile(callback) {
+  openIab(`${Oauth.url}signin`, callback);
+}
+
+async function appleIdLogin(iab, callback) {
+  const randonNumber = new Date().getTime();
+  const options = {
+    clientId: APPLE_CLIENT_ID,
+    redirectURI: APPLE_CALLBACK_URL,
+    scopes: APPLE_SCOPES,
+    state: randonNumber,
+    nonce: randonNumber,
+  };
+  try {
+   const result = await SignInWithApple.authorize(options);
+   const callbackUrl = `${APPLE_CALLBACK_URL}?state=${APPLE_STATE_PARAM}&id_token=${result.response.identityToken}&code=${result.response.authorizationCode}`;
+   openIab(encodeURI(callbackUrl), callback);
+   console.log(callbackUrl);
+  } catch {
+    alert("Hubo un error, por favor comunicate con soporte si el error persiste");
+    openLoginMobile();
+  }
+}
 // const logs_ = async() => {
   //   const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
   //   console.log('Tiempo transcurrido en sesión:', new Date(currentTime*1000))
