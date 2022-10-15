@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import FormComponent from '../../../' 
 import { initStages } from '../../../utils'
 import { useActions } from '../../../../../hooks/useActions'
-import KycSkeleton from './skeleton.js'
+import KycSkeleton from '../identityComponent/skeleton'
 import Layout from '../../layout'
   
 const KycComponent = () => {

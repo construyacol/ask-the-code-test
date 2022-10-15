@@ -9,6 +9,7 @@ import KycFormComponent from '../../kycForm'
 import { initStages } from '../../../utils'
 import { merge, omitBy, isUndefined } from 'lodash'
 // import { useSelector } from "react-redux";
+import IdentityKycSuccess from './success'
 
 
 const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) => {
@@ -37,7 +38,8 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
     stageController,
     stageData,
     stageStatus,
-    setStageStatus
+    setStageStatus,
+    finalStage
   } = stageManager
 
   const nextStep = async() => {
@@ -114,25 +116,33 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
         setLoading(true)
         const info = currentIdentity ? omitBy(merge(currentIdentity?.document_info, state), isUndefined) : state;
         let res = await ApiPostIdentityInfo({ documentData, dataForm, info })
-        setLoading(false)
         if(!res)return prevStage();
         const identity = res.data
+        if(!["rejected", "pending"].includes(identity?.file_state)){
+          return setLoading(false)
+        }
+
         const _dataForm = await initStages({
           formName:'identity', 
           currentIdentity:identity
         })
-        return setDataForm({
+        setDataForm({
           ..._dataForm,
           config:{
             currentIdentity:identity
           }
         })
+        setLoading(false)
       }
       execPost()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
+
+  if(!loading && finalStage){
+    return <IdentityKycSuccess/>
+  }
 
   return(
     <KycFormComponent

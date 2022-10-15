@@ -155,7 +155,7 @@ class SocketsComponent extends Component {
       });
 
       socket.on(`/identity/${user.id}`, async (identity) => {
-        if(identity.file_state){
+        if(identity.file_state || identity.info_state){
           this.identity_management(identity)
         }
       });
@@ -873,35 +873,36 @@ class SocketsComponent extends Component {
   //       largeBody:`¡Tu retiro No se ha podido realizar!`,
   //     })
   //   }
-  // })
+  // }) 
   
 
   identity_management = async(identity) => {
+    console.log('identitysocket =====================================> ', identity)
     if(["accepted"].includes(identity.file_state)){
-      funcDebounce(  
-        {[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 
-        async() => {
+      funcDebounces({
+        keyId:{[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 
+        storageType:"sessionStorage",
+        timeExect:5000,
+        callback:async() => {
           await this.props.coinsendaServices.updateUserStatus(identity)
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
-          postLocalNotification({
+          postLocalNotification({ 
             title:"Coinsenda",
             summaryText:"Enhorabuena",
             largeBody:`¡Felicidades, tu cuenta ha sido verificada!`,
           })
-        },
-        false,
-        5000
-      );
+        }
+      })
     }else{
-      funcDebounce( 
-        {[`identity_${identity.id}`]:`${identity.id}`}, 
-        async() => {
+      funcDebounces({
+        keyId:{[`identity_${identity.id}`]:`${identity.id}`}, 
+        storageType:"sessionStorage",
+        timeExect:3000,
+        callback: async() => {
           await this.props.coinsendaServices.updateUserStatus(identity)
-        },
-        false,
-        3000
-      );
+        }
+      })
     }
   }
 

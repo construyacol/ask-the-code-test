@@ -476,8 +476,6 @@ export class IndetityService extends WebService {
     // debugger
   }
 
-
-
   // async getStatus(status) {
   //   // if(status){return status} 
   //   try {
@@ -491,7 +489,10 @@ export class IndetityService extends WebService {
   // }
 
   async updateUserStatus(status) {
+    console.log('updateUserStatus identity =======> ', status)
     const _user = await this.fetchCompleteUserData()
+    console.log('_user =======> ', _user)
+    // debugger
     if(!_user) return;
     this.setIsAppLoading(true);
     await this.updateUser(_user)

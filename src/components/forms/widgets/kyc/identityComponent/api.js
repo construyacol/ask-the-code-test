@@ -204,8 +204,8 @@ const DOCUMENTS = {
 
 const IDENTITY_ERRORS = {
   document_info:{
-    errors:{
-      surname:"Mensaje personalizado",
+    errors:{ 
+      surname:"Example message",
     }
   },
   files:{
@@ -213,14 +213,14 @@ const IDENTITY_ERRORS = {
       files:true
     }
   },
-  errorMessage:"Algunas de las imagenes son borrosas.",
+  errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas.",
+  // "Algunas de las imágenes no son legibles o están demasiado borrosas"
 }
 
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
-  if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors)){
-    return currentIdentity?.errors[0]?.document_info
-    // return IDENTITY_ERRORS?.document_info
-  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors)){
+  if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors) && !isEmpty(currentIdentity.errors[0]?.document_info)){
+    return { errors:currentIdentity?.errors[0]?.document_info }
+  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors) && (currentIdentity.errors[0]?.files || currentIdentity?.errors[0].includes("Algunas de las im"))){
     return IDENTITY_ERRORS.files
   }
   return undefined
