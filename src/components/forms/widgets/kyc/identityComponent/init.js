@@ -9,7 +9,6 @@ const IdentityForm = (props) => {
 
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
-  
 
 
   const init = async() => {
@@ -18,9 +17,6 @@ const IdentityForm = (props) => {
       ...props
     })
 
-    // console.log('_dataForm',_dataForm)
-    // debugger
-    
     setDataForm({
       ..._dataForm,
       config:{
@@ -63,3 +59,4 @@ const IdentityForm = (props) => {
 
 
 export default IdentityForm
+ 

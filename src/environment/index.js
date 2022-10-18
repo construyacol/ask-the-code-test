@@ -74,9 +74,5 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
 
 
 
-console.log('Environment', Environment)
-
-
-
 
 export default Environment;

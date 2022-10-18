@@ -204,9 +204,7 @@ const DOCUMENTS = {
 
 const IDENTITY_ERRORS = {
   document_info:{
-    errors:{ 
-      surname:"Example message",
-    }
+    errors:{} //Al no tener errores por defecto, el sistema reenvía la info del stage
   },
   files:{
     errors:{
@@ -218,10 +216,18 @@ const IDENTITY_ERRORS = {
 }
 
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
+
+  console.log('currentIdentity', currentIdentity)
+
+  // AI handle reject
+  if(["rejected"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
+    return { ...IDENTITY_ERRORS.document_info, errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas." }
+  }
+
   if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors) && !isEmpty(currentIdentity.errors[0]?.document_info)){
-    return { errors:currentIdentity?.errors[0]?.document_info }
-  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors) && (currentIdentity.errors[0]?.files || currentIdentity?.errors[0].includes("Algunas de las im"))){
-    return IDENTITY_ERRORS.files
+    return { errors:currentIdentity?.errors[0]?.document_info, errorMessage:currentIdentity?.errors[0]?.errorMessage }
+  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors)){
+    return { ...IDENTITY_ERRORS.files, errorMessage:currentIdentity?.errors[0]?.errorMessage }
   }
   return undefined
 }
@@ -289,7 +295,7 @@ export const ApiPostIdentityInfo = async(payload) => {
         [documentId]:config.info[documentId]
       }
     }
-  })
+  }) 
 
   if(currentIdentity){
     res = await mainService.updateInfoIdentity({
@@ -308,7 +314,8 @@ export const ApiPostIdentityInfo = async(payload) => {
   const { error } = res
 
   if(error){
-    return toast(getUiError(error?.message), "error");
+     toast(getUiError(error?.message), "error");
+     return false
   }
 
   await mainService.fetchCompleteUserData()

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   InfoPanelContainer,
   InfoContent,
@@ -10,81 +10,37 @@ import {
 import { 
   IconContainer 
 } from 'styles/global'
-import { useCoinsendaServices } from "services/useCoinsendaServices";
 import getIcon from './icons'
 import { IndicatorHover } from 'components/widgets/accountList/listView'
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { BiCheck, BiErrorAlt } from "react-icons/bi";
-import addPanelStagesToReqs from 'api/components/infoPanel'
 
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { P } from 'components/widgets/typography'
 import { findLastKey, isEmpty } from 'lodash'
-import ungapStructuredClone from '@ungap/structured-clone';
+import styled from 'styled-components'
+// import ungapStructuredClone from '@ungap/structured-clone';
+// const ErrorMessage
 
+const InfoPanel = ({ 
+  title, 
+  stageData, 
+  state, 
+  dataForm, 
+  stageStatus, 
+  user, 
+  levelRequirements //source data from identity HOC
+}) => {
 
-
-const IsActiveIndicator = () => (
-  <IndicatorHover className='isActive'>
-      <div className="indicator" >
-          <div className="indicatorSon" ></div>
-      </div>
-  </IndicatorHover>
-)
-
-const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
-
-  if(!isSuccessfull) return null;
-  let size = 24
-
-  return(
-    <IconContainer>
-      {
-        isOpen ?
-          <BiChevronUp size={size}/>
-        :
-          <BiChevronDown size={size}/>
-      }
-    </IconContainer>
-  )
-}
-
-const InfoPanel = ({ title, stageData, state, dataForm, stageStatus, setInfoStages }) => {
-
-  const [ levelRequirements, setLevelRequirements ] = useState()
   const [ toggleId, setToggleId ] = useState({key:false})
-  const [ coinsendaServices ] = useCoinsendaServices(); 
-  const { user } = useSelector((state) => state.modelData);
   const currentIdentity = dataForm?.config?.currentIdentity
+  const errorMessage = dataForm?.handleError?.errorMessage
 
   const toogleSection = e => {
     if(!e?.target?.dataset?.id)return;
     const key = e?.target?.dataset?.id
     setToggleId(prevState => {return {[key]:!prevState[key]}})
   }
-
-  const getLevelRequirements = async() => {
-    const reqs = await coinsendaServices.createRequirementLevel("level_1", false)
-    if(!reqs)return;
-    const _levelRequirements = await addPanelStagesToReqs({reqs, user})
-    setLevelRequirements(_levelRequirements)
-    // const { pendingRequirements, itemsMenu } = _levelRequirements
-    // const currentRequirement = pendingRequirements[0] || 'identity'
-    // let stages = ungapStructuredClone(itemsMenu[currentRequirement]?.stages)
-    // if(stages?.files)delete stages.files;
-    
-    // setInfoStages({
-    //   allStages:stages && Object.keys(stages),
-    //   stages,
-    //   currentRequirement,
-    //   levelRequirements:_levelRequirements
-    // })
-  }
-
-  useEffect(() => {
-    getLevelRequirements()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   if(!levelRequirements){
     return<InfoPanelSkeleton/>
@@ -145,8 +101,8 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus, setInfoStag
                                 (["confirmed"].includes(currentIdentity?.info_state) && key === 'files' && !findLastKey(state, (lastItem) => lastItem === undefined)) ||
                                 ((errors && !errors[key]) && key !== 'files');
 
-                                return (
-                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
+                                return ( 
+                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${(inProgress || key === 'files') && itemRejected ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
                                     { 
                                       (isSuccessfull || isCompleted) &&
                                       <BiCheck color="green" size={16} />
@@ -173,13 +129,60 @@ const InfoPanel = ({ title, stageData, state, dataForm, stageStatus, setInfoStag
                 })
               }
         </InfoContent>
+
+        {
+          errorMessage &&
+          <ErrorMessage>
+              <P color="red">{errorMessage}</P>
+          </ErrorMessage>
+        }
+
       </InfoPanelContainer>
   )
 }
 
  
 export default InfoPanel
- 
+
+
+
+const IsActiveIndicator = () => (
+  <IndicatorHover className='isActive'>
+      <div className="indicator" >
+          <div className="indicatorSon"></div>
+      </div>
+  </IndicatorHover>
+)
+
+const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
+
+  if(!isSuccessfull) return null;
+  let size = 24
+
+  return(
+    <IconContainer>
+      {
+        isOpen ?
+          <BiChevronUp size={size}/>
+        :
+          <BiChevronDown size={size}/>
+      }
+    </IconContainer>
+  )
+} 
+
+
+
+const ErrorMessage = styled.div`
+  font-size: 14px;
+  background: #ffedee;
+  padding: 5px 15px;
+  border-radius: 3px;
+  max-width: 250px;
+  p{
+    word-break: break-all;
+  }
+`
 
 
 

@@ -202,7 +202,7 @@ const getErrors = (config) => {
 }
 
 export const initStages = async(_config, API_STAGES) => {
-  
+   
   let config = {..._config}
   config.handleError = getErrors(config)
   const apiStages = API_STAGES || await dataService[config.formName](config)
@@ -222,7 +222,8 @@ export const initStages = async(_config, API_STAGES) => {
   return {
     ...formStructure(config.formName),
     handleError:config.handleError,
-    stages
+    stages,
+    formName:config?.formName
   }
 }
   

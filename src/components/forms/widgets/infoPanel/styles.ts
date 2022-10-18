@@ -110,7 +110,7 @@ export const InfoPanelContainer = styled.section`
   margin: 0 0 50px;
   height: auto;
   border-right: 1px solid ${props => props.theme.palette.secondary_background};
-
+  grid-template-rows: 1fr auto;
   display:grid;
   
   .title{
@@ -168,6 +168,18 @@ export const Ul = styled.ul`
       &.rejected{
         ::after{
           background: red;
+        }
+      }
+
+      &.inProgress{
+        ::before{
+          content: "";
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-left: 5px solid red;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
         }
       }
     }

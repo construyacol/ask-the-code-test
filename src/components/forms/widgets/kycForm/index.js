@@ -7,13 +7,16 @@ import useKeyActionAsClick from 'hooks/useKeyActionAsClick';
 import loadable from '@loadable/component'
 import { Wrapper as Layout } from 'components/forms/widgets/layout/styles'
 // import TitleSection from 'components/widgets/titleSectionComponent'
+import useViewport from 'hooks/useViewport'
 import {
   MainContainer,
   StickyGroup,
   TitleContainer,
 } from 'components/forms/widgets/kyc/styles'
-// import InfoStateComponent from 'components/forms/widgets/infoPanel/mobile'
+import InfoStateComponent from 'components/forms/widgets/infoPanel/mobile'
 import { H2 } from 'components/widgets/typography'
+import kycHoc from 'components/hoc/kycHoc'
+
   
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
@@ -34,10 +37,10 @@ const KycFormComponent = ({
       stageData,
       setStageData,
       stageStatus
-    }
+    },
+    ...props
   }) => {
 
-    // const [ infoStages, setInfoStages ] = useState()
     const idNextStageKyc = useKeyActionAsClick(
       true,
       "next-stage-kyc",
@@ -46,11 +49,12 @@ const KycFormComponent = ({
       "onkeypress",
       true
     );
-
+ 
     const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
     const errorMessage = dataForm?.handleError?.errors[stageData?.key]
     const inputMessage = (typeof errorMessage === 'string' && errorMessage) || stageData?.settings?.defaultMessage
-    // const allStages = infoStages?.allStages || stageController
+    const { isMobile } = useViewport()
+      
 
     return(
       <Layout style={{background:"white"}} > 
@@ -63,6 +67,7 @@ const KycFormComponent = ({
               stageData={stageData}
               dataForm={dataForm}
               stageStatus={stageStatus}
+              {...props}
               // setInfoStages={setInfoStages}
             />
     
@@ -78,15 +83,17 @@ const KycFormComponent = ({
                       { (isNewId && 'Agregando nueva identidad') || (title || 'Verificación de cuenta') }
                   </H2>
                 </TitleContainer>
-
-                {/* {
-                  ["identity"].includes(infoStages?.currentRequirement) &&
-                    <InfoStateComponent 
-                      infoStages={infoStages} 
-                      id="infoStatemobile__"
-                      currentStage={currentStage}
-                    />
-                } */}
+                
+                  {
+                    isMobile &&
+                      <InfoStateComponent 
+                        id="infoStatemobile__"
+                        currentStage={currentStage}
+                        stageController={stageController}
+                        dataForm={dataForm}
+                        {...props}
+                      />
+                  }
 
                 <StickyGroup background="white" id="stickyGroup__" >
                   <LabelComponent 
@@ -135,6 +142,6 @@ const KycFormComponent = ({
         </Layout>
       </Layout>
     )
-  }
+  } 
 
-  export default KycFormComponent
+  export default kycHoc(KycFormComponent)

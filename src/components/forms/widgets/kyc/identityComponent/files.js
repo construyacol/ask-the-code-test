@@ -36,6 +36,7 @@ import {
   FilesContainer,
   Header
 } from '../styles' 
+import kycHoc from 'components/hoc/kycHoc'
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
@@ -233,7 +234,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
   )
 }
 
-export default IdentityKycComponent
+export default kycHoc(IdentityKycComponent)
 
 
 

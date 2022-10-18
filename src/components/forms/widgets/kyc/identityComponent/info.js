@@ -26,10 +26,6 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
-
-  // console.log(stageManager)
-  // console.log('dataForm', dataForm)
-  // debugger
   
   const {
     prevStage,
@@ -116,7 +112,10 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
         setLoading(true)
         const info = currentIdentity ? omitBy(merge(currentIdentity?.document_info, state), isUndefined) : state;
         let res = await ApiPostIdentityInfo({ documentData, dataForm, info })
-        if(!res)return prevStage();
+        if(!res){
+          setLoading(false)  
+          return prevStage();
+        } 
         const identity = res.data
         if(!["rejected", "pending"].includes(identity?.file_state)){
           return setLoading(false)
@@ -155,6 +154,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
       onChange={onChange}
       stageManager={stageManager}
       nextStep={nextStep}
+      {...props}
     />
   )
 }

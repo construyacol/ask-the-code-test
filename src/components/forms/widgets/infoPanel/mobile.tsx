@@ -7,15 +7,29 @@ interface infoProps {
     [key:string]:any;
 }
 
-const InfoStateComponent = ({infoStages, currentStage, ...props}:infoProps) => { 
+const InfoStateComponent = ({currentStage, ...props}:infoProps) => { 
 
+    // console.log('InfoStateComponent stages', props.levelRequirements)
+    // debugger
+
+    if(!props.levelRequirements)return <p>Cargando...</p>
+
+    const { dataForm:{ formName }, levelRequirements:{ itemsMenu } } = props
+    const stages = itemsMenu[formName]?.stages
     const Icon = getIcon('identity')
-    if(!infoStages?.levelRequirements || !infoStages?.allStages || !infoStages?.levelRequirements?.itemsMenu || !infoStages?.currentRequirement)return <p>Cargando...</p>;
-    
-    const { levelRequirements:{ itemsMenu }, currentRequirement, allStages, stages } = infoStages
-    
-    const progress = Math.ceil((currentStage)*100 / allStages.length);
-    const nextStage = allStages[(currentStage+1)]
+
+    // if(!levelRequirements)return <p>Cargando...</p>
+    // console.log('InfoStateComponent', currentStage, props)
+    // debugger
+    // if(!infoStages?.levelRequirements || !infoStages?.allStages || !infoStages?.levelRequirements?.itemsMenu || !infoStages?.currentRequirement)return <p>Cargando...</p>;
+    // const { levelRequirements:{ itemsMenu }, currentRequirement, allStages, stages } = infoStages
+    // const progress = Math.ceil((currentStage)*100 / allStages.length);
+    const progress = 50;
+    // const nextStage = allStages[(currentStage+1)]
+
+    console.log('InfoStateComponent stages', stages, props)
+debugger
+
 
     return(
         <InfoWrapper {...props} >
@@ -25,17 +39,19 @@ const InfoStateComponent = ({infoStages, currentStage, ...props}:infoProps) => {
                 </IconCont>
                 <TextCont>
                     <P className="titleSection fuente bold">
-                        {itemsMenu && itemsMenu[currentRequirement]?.uiName} 
+                        Contácto y residencia
+                        {/* {itemsMenu && itemsMenu[currentRequirement]?.uiName}  */}
                         <span className={`fuente2 ${progress < 50 ? 'orange' : 'green'}`}>
                             {progress}%
                         </span> 
                     </P>
-                    {
+                    <P className="description"><span>Siguiente:</span>Apellidos</P>
+                    {/* {
                         stages[nextStage]?.ui_name ?
                             <P className="description"><span>Siguiente:</span>{stages[nextStage]?.ui_name}</P>
                         :
                             <P className="description success">A punto de completar</P>
-                    }
+                    } */}
                 </TextCont>
 
             </InfoContainer>
