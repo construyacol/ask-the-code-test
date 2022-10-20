@@ -31,10 +31,7 @@ import { formatToCurrency } from '../../../../utils/convert_currency'
 import { ApiPostCreateDeposit, selectProviderData } from './api'
 import DepositCostComponent from './depositCostStage'
 
-
-
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
-
 
 const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
 

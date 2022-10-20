@@ -4,7 +4,6 @@ import { initStages } from '../../../utils'
 import { useActions } from '../../../../../hooks/useActions'
 import KycSkeleton from '../identityComponent/skeleton'
 import Layout from '../../layout'
-import kycHoc from 'components/hoc/kycHoc'
   
 const KycComponent = () => {
 

@@ -168,6 +168,13 @@ export const Header = styled.div`
     align-items:center;
     column-gap:10px;
   }
+
+  @media ${device.mobile}{
+    .subtitle{
+      font-weight: normal;
+    }
+  }   
+
 `
  
 
@@ -176,7 +183,7 @@ export const FilesContainer = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: 1fr auto;
-    row-gap: 10px;
+    row-gap: 30px;
     column-gap: 25px;
     height: 100%;
 

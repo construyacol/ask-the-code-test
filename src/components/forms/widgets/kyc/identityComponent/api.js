@@ -217,8 +217,6 @@ const IDENTITY_ERRORS = {
 
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
 
-  console.log('currentIdentity', currentIdentity)
-
   // AI handle reject
   if(["rejected"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
     return { ...IDENTITY_ERRORS.document_info, errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas." }

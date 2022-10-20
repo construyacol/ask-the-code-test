@@ -1,12 +1,8 @@
 
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { FcOpenedFolder } from 'react-icons/fc'
 import { AiOutlineUpload } from "react-icons/ai";
-// import { MdOutlineAttachFile } from 'react-icons/md'
 import { IoFileTray } from 'react-icons/io5'
-
-// 
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import { 
   UploadContainer,
@@ -16,7 +12,7 @@ import {
   Buttom,
   DropZoneContainer
 } from '../../../../widgets/shared-styles'
-import useViewport from '../../../../../hooks/useWindowSize'
+import useViewport from 'hooks/useViewport'
 import SimpleLoader, { LoaderContainer } from "../../../../widgets/loaders";
 import { osDevice } from 'utils/index'
 import useStage from '../../../hooks/useStage'
@@ -28,6 +24,7 @@ import { UI_NAMES } from '../../../../../const/uiNames'
 import { device } from '../../../../../const/const'
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { H2, P } from 'components/widgets/typography'
+import InfoStateComponent from 'components/forms/widgets/infoPanel/mobile'
 
 import { Wrapper as Layout } from '../../layout/styles'
 import { checkCameraPermission } from 'utils'
@@ -59,7 +56,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
     currentStage
   } = stageManager
 
-  const { isMovilViewport } = useViewport()
+  const { isMobile } = useViewport()
   const [ onDrag, setOnDrag ] = useState()
   const [ imgSrc ] = useState()
   const [ loading, setLoading ] = useState(false)
@@ -170,7 +167,10 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 
   return( 
     <>
-      <Layout style={{background:"white"}} className='scroll'> 
+      <Layout 
+        style={{background:"white"}} 
+        // className='scroll'
+      > 
         <Layout className='infoPanel' style={{background:"transparent", left:"auto"}}>
         
           <DynamicLoadComponent
@@ -179,21 +179,34 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             state={state}
             stageData={stageData}
             dataForm={dataForm}
+            {...props}
             // stageStatus={stageStatus}
           />
 
           <FilesContainer className={`${osDevice()}`}>
             <Header className="item_">
-                <H2 size={30} color="title_color" style={{margin:0}} className="align-left">Verificación de identidad</H2>
+                <H2 size={30} id="titleContainer__" color="title_color" style={{margin:0}} className="align-left ">Verificación de identidad</H2>
+                {
+                  isMobile &&
+                    <InfoStateComponent 
+                      id="infoStatemobile__"
+                      currentStage={currentStage}
+                      stageController={stageController}
+                      dataForm={dataForm}
+                      customStage={6}
+                      currentIdentity={currentIdentity}
+                      {...props}
+                    />
+                }
                 <h3 className='fuente subtitle'>
-                {/* <FcOpenedFolder size={25} />  */}
-                  Sube los archivos de {UI_NAMES?.documents[currentIdentity?.id_type]} No. <span className="fuente2">{currentIdentity?.document_info?.id_number}</span>
+                  Sube los archivos de {UI_NAMES?.documents[currentIdentity?.id_type]} 
+                  {!isMobile && <span className="fuente2">No. {currentIdentity?.document_info?.id_number}</span>}
                 </h3>
             </Header>
-
+            
             <Main className="item_" onDragOver={dragOver}>
               {
-                !isMovilViewport &&
+                !isMobile &&
                   <UploadComponent
                     goFileLoader={goFileLoader}
                     loading={loading}
@@ -217,8 +230,8 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
               idType={currentIdentity?.id_type}
             />
 
-            {
-              isMovilViewport &&
+            { 
+              isMobile &&
                 <MobileControlContainer className="_controlContainerFiles">
                   <CallToAction
                     getCameraPhoto={getCameraPhoto}
@@ -227,6 +240,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
                   />
                 </MobileControlContainer>
             }
+
           </FilesContainer>
         </Layout>
       </Layout>

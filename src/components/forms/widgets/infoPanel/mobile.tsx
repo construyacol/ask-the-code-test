@@ -2,35 +2,38 @@ import styled from 'styled-components'
 import { InfoWrapper, IconCont } from './styles'
 import getIcon from './icons'
 import { P } from 'components/widgets/typography'
+// import { FiArrowRight } from 'react-icons/fi'
+import { MdMoreVert, MdClose } from 'react-icons/md'
+
+
 interface infoProps {
     id?:string;
     [key:string]:any;
 }
 
-const InfoStateComponent = ({currentStage, ...props}:infoProps) => { 
-
-    // console.log('InfoStateComponent stages', props.levelRequirements)
-    // debugger
-
+const InfoStateComponent = (props:infoProps) => { 
     if(!props.levelRequirements)return <p>Cargando...</p>
 
-    const { dataForm:{ formName }, levelRequirements:{ itemsMenu } } = props
-    const stages = itemsMenu[formName]?.stages
+    const { 
+        dataForm:{ formName }, 
+        levelRequirements:{ itemsMenu }, 
+        dataForm, 
+        customStage,
+        isOpenPanelInfo,
+        setIsOpenPanelInfo,
+        // viewportSizes:{ isMobile }
+    } = props
+
+    const currentStage = customStage || props.currentStage
+    const errors = dataForm?.handleError?.errors
+    const formKey = ["contact"].includes(formName) ? "location" : formName
+    const stages = errors || itemsMenu[formKey]?.stages
     const Icon = getIcon('identity')
-
-    // if(!levelRequirements)return <p>Cargando...</p>
-    // console.log('InfoStateComponent', currentStage, props)
-    // debugger
-    // if(!infoStages?.levelRequirements || !infoStages?.allStages || !infoStages?.levelRequirements?.itemsMenu || !infoStages?.currentRequirement)return <p>Cargando...</p>;
-    // const { levelRequirements:{ itemsMenu }, currentRequirement, allStages, stages } = infoStages
-    // const progress = Math.ceil((currentStage)*100 / allStages.length);
-    const progress = 50;
-    // const nextStage = allStages[(currentStage+1)]
-
-    console.log('InfoStateComponent stages', stages, props)
-debugger
-
-
+    const progress = Math.ceil((currentStage)*100 / Object.keys(stages).length);
+    const sumStage = ["location"].includes(formName) ? 2 : 1;
+    const nextStage = currentStage < Object.keys(stages).length ? (currentStage + sumStage) : 1;
+    // console.log('InfoStateComponent', currentStage < Object.keys(stages).length, stages, dataForm)
+    const OpenCloseIcon = isOpenPanelInfo ? MdClose : MdMoreVert
     return(
         <InfoWrapper {...props} >
             <InfoContainer>
@@ -39,27 +42,55 @@ debugger
                 </IconCont>
                 <TextCont>
                     <P className="titleSection fuente bold">
-                        Contácto y residencia
-                        {/* {itemsMenu && itemsMenu[currentRequirement]?.uiName}  */}
+                        {itemsMenu[formKey]?.uiName}
                         <span className={`fuente2 ${progress < 50 ? 'orange' : 'green'}`}>
                             {progress}%
                         </span> 
                     </P>
-                    <P className="description"><span>Siguiente:</span>Apellidos</P>
-                    {/* {
-                        stages[nextStage]?.ui_name ?
-                            <P className="description"><span>Siguiente:</span>{stages[nextStage]?.ui_name}</P>
-                        :
-                            <P className="description success">A punto de completar</P>
-                    } */}
+                    <TextContainer>
+                        <P className="description description__title">Sig:</P>
+                        <DescriptionContainer>
+                            <DescriptionCarousel style={{transform:`translateY(-${nextStage*16}px)`}}>
+                                {
+                                    Object.keys(stages).map((stageKey, key) => {
+                                        let stageData = dataForm?.stages[stageKey] || stages[stageKey]
+                                        return <P key={key} className="description">{stageData?.ui_name || stageData?.uiName}</P>
+                                    })
+                                }
+                                 <P className="description success">A punto de completar</P>
+                            </DescriptionCarousel>
+                        </DescriptionContainer>
+                    </TextContainer>
                 </TextCont>
 
+                <OpenCloseIcon size={25} color="#06a" onClick={() => setIsOpenPanelInfo(!isOpenPanelInfo)}/>
+                
             </InfoContainer>
         </InfoWrapper>
     )
 }
 
 export default InfoStateComponent
+
+const DescriptionCarousel = styled.div`
+    display: grid;
+    grid-auto-rows: 16px;
+    transition: .3s;
+    transform: translateY(0px);
+    transform: translateY(-16px);
+`
+
+const DescriptionContainer = styled.div`
+    overflow: scroll;
+    max-height:15px;
+`
+
+const TextContainer = styled.div`
+    border-left: 1px solid #b6bfc7;
+    display:flex;
+    padding-left: 10px;
+    column-gap: 7px;
+`
 
 const TextCont = styled.div`
     display:grid;
@@ -101,10 +132,8 @@ const InfoContainer = styled.div`
         display: flex;
         margin: 0;
         font-size:14px;
-        border-left: 1px solid gray;
-        padding-left: 10px;
         column-gap: 7px;
-        span{
+        &.description__title{
             opacity:.5;
         }
     }

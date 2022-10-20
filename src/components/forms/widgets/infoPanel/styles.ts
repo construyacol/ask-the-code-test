@@ -2,14 +2,37 @@ import styled from 'styled-components'
 import { IconContainer } from 'styles/global'
 import { device } from 'const/const'
 
+
+
+
+
+export const ErrorMessage = styled.div`
+  font-size: 14px;
+  background: #ffedee;
+  padding: 5px 15px;
+  border-radius: 3px;
+  max-width: 250px;
+  p{
+    word-break: break-all;
+  }
+
+  @media ${device.mobile} {
+    position: sticky;
+    bottom: 10px;
+  }
+`
+
+
 export const InfoWrapper = styled.div`
   height: 50px;
   padding-bottom:35px;
   display:none;
   @media ${device.mobile} {
+    &#infoStatemobile__{
+      /* padding: 0; */
+    }
     display:grid;
   }
-
 `
 
 export const IconCont = styled(IconContainer)`
@@ -25,7 +48,6 @@ export const IconCont = styled(IconContainer)`
 `
 
 export const ItemRequirement = styled.div`
-
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr auto;
@@ -75,6 +97,11 @@ export const ItemRequirement = styled.div`
           right: -3px;
       }
     }
+
+  @media ${device.mobile} {
+    display: none;
+  }
+
 `
 
 
@@ -96,14 +123,8 @@ export const InfoContent = styled.div`
   height: fit-content;
 `
 
-export const ErrorMessage = styled.p`
-font-size: 14px;
-color: gray;
-max-width: 250px;
-`
 
 export const InfoPanelContainer = styled.section`
-
   width: auto;
   min-width: 300px;
   padding: 0;
@@ -124,9 +145,24 @@ export const InfoPanelContainer = styled.section`
     font-size:15px;
   }
 
-
   @media ${device.mobile} {
-    display:none;
+    z-index: 5;
+    position: absolute;
+    width: calc(100vw - 32px);
+    margin: 0;
+    height: calc(100vh - 50px);
+    background: white;
+    transform: translateX(0);
+    transition: .3s;
+    padding: 0px 0 0 30px;
+    transform: translateX(-100vw);
+    backdrop-filter: blur(6px);
+    background: linear-gradient(to bottom, #ffffff, #ffffffe3, #ffffff75);
+    opacity:0;
+    &.isOpen{
+      opacity:1;
+      transform: translateX(0vw);
+    }
   }
 
 `
@@ -177,9 +213,14 @@ export const Ul = styled.ul`
           position: absolute;
           width: 0;
           height: 0;
-          border-left: 5px solid red;
-          border-top: 5px solid transparent;
-          border-bottom: 5px solid transparent;
+          border-left: 4px solid ${props => props.theme.palette.primary};
+          border-top: 4px solid transparent;
+          border-bottom: 4px solid transparent;
+        }
+        &.reject{
+          ::before{
+            border-left: 5px solid red;
+          }
         }
       }
     }

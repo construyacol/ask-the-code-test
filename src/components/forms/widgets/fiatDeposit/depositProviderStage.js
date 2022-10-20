@@ -5,9 +5,13 @@ import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
+import { isEmpty } from 'lodash'
+import { P } from 'components/widgets/typography';
+import withCoinsendaServices from 'components/withCoinsendaServices'
 
 
-export default function DepositProviderComponent({ 
+
+function DepositProviderComponent({ 
     stageManager:{ 
       stageData,
       setStageStatus
@@ -15,7 +19,8 @@ export default function DepositProviderComponent({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
-    // ...props
+    currentWallet,
+    ...props
   }){  
 
     const { isMovilViewport } = useViewport();
@@ -27,53 +32,75 @@ export default function DepositProviderComponent({
       setStageStatus('success')
     }
 
+    const createDepositProvider = async(wallet) => {
+      await props.coinsendaServices.createAndInsertDepositProvider(wallet)
+    }
+
     useEffect(() => {
       if(state[stageData?.key]) selectProvider(state[stageData?.key]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // console.log('DEPOSIT_PROVIDER => ', state)
+    useEffect(() => {
+      if(currentWallet && isEmpty(currentWallet?.dep_prov)){
+        // alert('creando proveedor de depósito')
+        createDepositProvider(currentWallet)
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentWallet])
+
+    console.log('DEPOSIT_PROVIDER => ', props)
+
 
     return(
-      <StageContainer className="_identityComponent">
-        {children} 
-        <OptionInputContainer>
-          <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
-          <SelectListContainer>
-            {
-              depositProviders && Object.keys(depositProviders).map((key, index) => {
-                const isSelected = [depositProviders[key]?.value].includes(state[stageData?.key]?.value)
-                return <ItemListComponent 
-                  key={index} 
-                  // className={`auxNumber`}
-                  itemList={depositProviders[key]}
-                  // auxUiName={isSelected && withdrawAccount?.account_number?.value}
-                  firstIndex={index === 0}
-                  lastIndex={(Object.keys(depositProviders)?.length - 1) === index}
-                  isSelectedItem={isSelected}
-                  isMovilViewport={isMovilViewport}
+      <>
+        {
+          isEmpty(currentWallet?.dep_prov) ? 
+            <P>Creando proveedor de depósito...</P>
+          :
+          <StageContainer className="_identityComponent">
+            {children} 
+            <OptionInputContainer>
+              <p className="fuente _pLabel _inputLabelP">{stageData?.uiName} sadsd</p>
+              <SelectListContainer>
+                {
+                  depositProviders && Object.keys(depositProviders).map((key, index) => {
+                    const isSelected = [depositProviders[key]?.value].includes(state[stageData?.key]?.value)
+                    return <ItemListComponent 
+                      key={index} 
+                      // className={`auxNumber`}
+                      itemList={depositProviders[key]}
+                      // auxUiName={isSelected && withdrawAccount?.account_number?.value}
+                      firstIndex={index === 0}
+                      lastIndex={(Object.keys(depositProviders)?.length - 1) === index}
+                      isSelectedItem={isSelected}
+                      isMovilViewport={isMovilViewport}
+                      handleAction={selectProvider}
+                    />
+                  })
+                }
+                <ItemListComponent 
+                  className="createButton"
+                  itemList={{
+                    value:"other_bank",
+                    icon:"bank",
+                    uiName:"Otro banco/servicio",
+                    Icon:AiFillBank,
+                    defaultProv:depositProviders[Object.keys(depositProviders).at(0)]
+                  }}
+                  isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
+                  lastIndex
                   handleAction={selectProvider}
                 />
-              })
-            }
-            <ItemListComponent 
-              className="createButton"
-              itemList={{
-                value:"other_bank",
-                icon:"bank",
-                uiName:"Otro banco/servicio",
-                Icon:AiFillBank,
-                defaultProv:depositProviders[Object.keys(depositProviders).at(0)]
-              }}
-              isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
-              lastIndex
-              handleAction={selectProvider}
-            />
-          </SelectListContainer>
-        </OptionInputContainer>
-      </StageContainer>
+              </SelectListContainer>
+            </OptionInputContainer>
+          </StageContainer>
+        }
+      </>
     )
   }
+
+  export default withCoinsendaServices(DepositProviderComponent)
 
 
   const selectDepositProviders = createSelector(

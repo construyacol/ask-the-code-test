@@ -18,20 +18,21 @@ import { BiCheck, BiErrorAlt } from "react-icons/bi";
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { P } from 'components/widgets/typography'
 import { findLastKey, isEmpty } from 'lodash'
-import styled from 'styled-components'
+import { ErrorMessage } from './styles'
 // import ungapStructuredClone from '@ungap/structured-clone';
-// const ErrorMessage
 
 const InfoPanel = ({ 
   title, 
   stageData, 
-  state, 
+  state,
   dataForm, 
   stageStatus, 
   user, 
-  levelRequirements //source data from identity HOC
+  levelRequirements, //source data from identity HOC
+  isOpenPanelInfo,
+  viewportSizes:{ isMobile }
 }) => {
-
+ 
   const [ toggleId, setToggleId ] = useState({key:false})
   const currentIdentity = dataForm?.config?.currentIdentity
   const errorMessage = dataForm?.handleError?.errorMessage
@@ -42,15 +43,28 @@ const InfoPanel = ({
     setToggleId(prevState => {return {[key]:!prevState[key]}})
   }
 
+  const getTopPanel = () => {
+    const defaultTop = "0px"
+    if(!isMobile && !levelRequirements)return defaultTop;
+    const infoStateHeight = document.querySelector("#infoStatemobile__")?.clientHeight ?? 80;
+    const titleHeight = document.querySelector("#titleContainer__")?.clientHeight ?? 0;
+    const height = `${infoStateHeight + titleHeight + 50}px` ?? defaultTop;
+    return height
+  }
+
   if(!levelRequirements){
     return<InfoPanelSkeleton/>
   }
-  
+
   let { itemsMenu, pendingRequirements } = levelRequirements
   let errors = dataForm?.handleError?.errors
 
   return (
-      <InfoPanelContainer id="infoPanel">
+      <InfoPanelContainer 
+        id="infoPanel" 
+        className={`${isMobile && isOpenPanelInfo ? 'isOpen' : ''}`}
+        style={{top:getTopPanel()}}
+      > 
         <InfoContent>
               { 
                 Object.entries(itemsMenu).map((itemMenu, index) => {
@@ -102,7 +116,7 @@ const InfoPanel = ({
                                 ((errors && !errors[key]) && key !== 'files');
 
                                 return ( 
-                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${(inProgress || key === 'files') && itemRejected ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
+                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : inProgress ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
                                     { 
                                       (isSuccessfull || isCompleted) &&
                                       <BiCheck color="green" size={16} />
@@ -129,14 +143,12 @@ const InfoPanel = ({
                 })
               }
         </InfoContent>
-
         {
           errorMessage &&
-          <ErrorMessage>
-              <P color="red">{errorMessage}</P>
-          </ErrorMessage>
+            <ErrorMessage>
+                <P color="red">{errorMessage}</P>
+            </ErrorMessage>
         }
-
       </InfoPanelContainer>
   )
 }
@@ -173,16 +185,6 @@ const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
 
 
 
-const ErrorMessage = styled.div`
-  font-size: 14px;
-  background: #ffedee;
-  padding: 5px 15px;
-  border-radius: 3px;
-  max-width: 250px;
-  p{
-    word-break: break-all;
-  }
-`
 
 
 
