@@ -182,7 +182,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             {...props}
             // stageStatus={stageStatus}
           />
-
+ 
           <FilesContainer className={`${osDevice()}`}>
             <Header className="item_">
                 <H2 size={30} id="titleContainer__" color="title_color" style={{margin:0}} className="align-left ">Verificación de identidad</H2>
@@ -193,7 +193,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
                       currentStage={currentStage}
                       stageController={stageController}
                       dataForm={dataForm}
-                      customStage={6}
+                      customStage={dataForm?.handleError?.errors ? 0.99 : 6}
                       currentIdentity={currentIdentity}
                       {...props}
                     />

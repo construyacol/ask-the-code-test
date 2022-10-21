@@ -33,7 +33,7 @@ const InfoPanel = ({
   viewportSizes:{ isMobile }
 }) => {
  
-  const [ toggleId, setToggleId ] = useState({key:false})
+  const [ toggleId, setToggleId ] = useState({ key:false })
   const currentIdentity = dataForm?.config?.currentIdentity
   const errorMessage = dataForm?.handleError?.errorMessage
 
@@ -116,7 +116,7 @@ const InfoPanel = ({
                                 ((errors && !errors[key]) && key !== 'files');
 
                                 return ( 
-                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : inProgress ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
+                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : key === stageData?.key ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
                                     { 
                                       (isSuccessfull || isCompleted) &&
                                       <BiCheck color="green" size={16} />
