@@ -62,7 +62,7 @@ function messageCallback(iab, { message, jwt, refresh_token }, callback){
 }
 
 function openIab(url, callback) {
-  const iab = window.cordova.InAppBrowser.open(url, '_blank', 'location=yes,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
+  const iab = window.cordova.InAppBrowser.open(url, '_blank', 'location=no,zoom=no,footer=no,toolbar=no,hidenavigationbuttons=no')
   iab.show();
   iab.addEventListener('loadstart', e => console.log("EVENT_LOADING_IAB", e));
   iab.addEventListener('loadstop', e => console.log("EVENT_LOADING_IAB", e));
