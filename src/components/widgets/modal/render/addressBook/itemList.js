@@ -167,13 +167,13 @@ const DeleteComponent = ({ handleAction, itemId }) => {
   );
 
   return (
-    <DeleteContainer>
+    <DeleteContainer className="deleteContainer">
       <LoaderDeleteItem id={`loader_${itemId}`}>
         <SimpleLoader loader={2} color="var(--primary)" justify="center" />
       </LoaderDeleteItem>
       <p className="fuente confirmText">
         ¿Estás seguro que deseas eliminar esta cuenta de retiro?
-      </p>
+      </p> 
       <DeleteControls>
         {/* <p className="fuente cancel"  onClick={()=>handleAction('unrotate')}>Cancelar</p> */}
         <p className="fuente cancel" data-action="close" onClick={handleAction}>
@@ -244,9 +244,10 @@ const DeleteContainer = styled.div`
   justify-items: center;
   grid-template-columns: 1fr;
   position: relative;
+  row-gap:0px;
 
   p{
-    max-width: 70%
+    max-width: 70%;
     font-size: 13px;
     color: black;
     margin: 0;
