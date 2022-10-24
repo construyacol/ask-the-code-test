@@ -43,7 +43,6 @@ function DepositProviderComponent({
 
     useEffect(() => {
       if(currentWallet && isEmpty(currentWallet?.dep_prov)){
-        // alert('creando proveedor de depósito')
         createDepositProvider(currentWallet)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,7 +60,7 @@ function DepositProviderComponent({
           <StageContainer className="_identityComponent">
             {children} 
             <OptionInputContainer>
-              <p className="fuente _pLabel _inputLabelP">{stageData?.uiName} sadsd</p>
+              <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
               <SelectListContainer>
                 {
                   depositProviders && Object.keys(depositProviders).map((key, index) => {

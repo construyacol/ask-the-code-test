@@ -25,7 +25,7 @@ import { device } from '../../../../../const/const'
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { H2, P } from 'components/widgets/typography'
 import InfoStateComponent from 'components/forms/widgets/infoPanel/mobile'
-
+// import DocumentViewer from './documentViewer'
 import { Wrapper as Layout } from '../../layout/styles'
 import { checkCameraPermission } from 'utils'
 
@@ -37,7 +37,7 @@ import kycHoc from 'components/hoc/kycHoc'
 
 const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 
-const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
+const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) => {
 
   const { dataForm } = handleDataForm
   const [ toastMessage ] = useToastMessage();
@@ -139,9 +139,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
         setLoading(false)
       }
     }
-
   }
-
 
   useEffect(() => {
     if(currentStage >= stageController.length){
@@ -156,7 +154,6 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
-
  
   if(!loading && finalStage){
       return <IdentityKycSuccess/>
@@ -185,7 +182,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
  
           <FilesContainer className={`${osDevice()}`}>
             <Header className="item_">
-                <H2 size={30} id="titleContainer__" color="title_color" style={{margin:0}} className="align-left ">Verificación de identidad</H2>
+                <H2 size={30} id="titleContainer__" color="title_color" style={{margin:0}} className="align-left ">{title || "Verificación de identidad"}</H2>
                 {
                   isMobile &&
                     <InfoStateComponent 
@@ -205,6 +202,12 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
             </Header>
             
             <Main className="item_" onDragOver={dragOver}>
+
+              {/* <DocumentViewer
+                currentIdentity={currentIdentity}
+                state={state}
+              /> */}
+
               {
                 !isMobile &&
                   <UploadComponent
@@ -249,6 +252,8 @@ const IdentityKycComponent = ({ handleDataForm, handleState, ...props }) => {
 }
 
 export default kycHoc(IdentityKycComponent)
+
+
 
 
 
@@ -525,6 +530,10 @@ const Main = styled.div`
   border-radius: 5px;
   place-content:center;
   position:relative;
+
+  /* grid-template-rows: 1fr auto; */
+  /* row-gap: 20px; */
+  /* padding: 70px 40px; */
 
   @media ${device.mobile}{
     display:none !important;
