@@ -4,7 +4,7 @@
 	"webDir": "build",
 	"server": {
 		"clearText": true,
-		"url": "http://192.168.10.13:2998"
+		"url": "http://192.168.0.6:2998"
 	},
 	"cordova": {
 		"preferences": {
