@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Coinsenda</string>
+	<string>Bitsenda</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,6 +27,12 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>To be able to scan address and take photos</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To take photo galery file</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To be able to upload your verification photos</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -48,15 +54,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-
-	<key>NSCameraUsageDescription</key>
-	<string>To be able to scan address and take photos</string>
-
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>To take photo galery file</string>
-
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>To be able to upload your verification photos</string>
-
 </dict>
 </plist>
