@@ -4,19 +4,23 @@ import {
   parseDateToTimeStamp,
 } from 'utils/date'
 import ungapStructuredClone from '@ungap/structured-clone';
-import { createStage } from '../../../utils'
+import { 
+  createStage, 
+  // initStages 
+} from '../../../utils'
 import { toast } from 'utils'
 import { getUiError } from 'const/uiErrors'
+import { isEmpty } from 'lodash'
 
 
 
 export const INFO_DOCUMENT_NEEDED = {
   "name":{
-    ui_name:"Nombres completos",
+    ui_name:"Nombres",
     ui_type:"text",
   },
   "surname":{
-    ui_name:"Apellidos completos",
+    ui_name:"Apellidos",
     ui_type:"text",
   }, 
   "birthday":{
@@ -28,6 +32,8 @@ export const INFO_DOCUMENT_NEEDED = {
     ui_type: "text"
   }
 }
+
+
 
 
 const INFO_NEEDED = {
@@ -152,7 +158,7 @@ const STAGES = {
       }
     },
     "surname":{
-      // uiName:"Apellidos completos",
+      uiName:"Apellidos completos",
       key:"surname",
       uiType:"text",
       "settings":{
@@ -169,7 +175,7 @@ const STAGES = {
       }
     },
     "name":{
-      // uiName:"Nombres completos",
+      uiName:"Nombres completos",
       key:"name",
       uiType:"text",
       "settings":{
@@ -189,14 +195,56 @@ const STAGES = {
     }
 }
 
+const DOCUMENTS = {
+  "files":{
+    ui_name:"Documentos",
+    ui_type:"text",
+  }
+}
+
+const IDENTITY_ERRORS = {
+  document_info:{
+    errors:{} //Al no tener errores por defecto, el sistema reenvía la info del stage
+  },
+  files:{
+    errors:{
+      files:true
+    }
+  },
+  errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas.",
+  // "Algunas de las imágenes no son legibles o están demasiado borrosas"
+}
+
+export const ApiGetIdentityErrors = ({ currentIdentity }) => {
+
+  // AI handle reject
+  if(["rejected"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
+    return { ...IDENTITY_ERRORS.document_info, errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas." }
+  }
+
+  if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors) && !isEmpty(currentIdentity.errors[0]?.document_info)){
+    return { errors:currentIdentity?.errors[0]?.document_info, errorMessage:currentIdentity?.errors[0]?.errorMessage }
+  }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors)){
+    return { ...IDENTITY_ERRORS.files, errorMessage:currentIdentity?.errors[0]?.errorMessage }
+  }
+  return undefined
+}
+
+
+export const getAllIdentityStages = () => {
+  // let data = await initStages({ formName:'identity' }, { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED })
+  // return data.stages
+  return { ...INFO_NEEDED, ...INFO_DOCUMENT_NEEDED, ...DOCUMENTS }
+}
+
 
 export const ApiGetIdentityStages = async(config) => {
  
   if(config.isNewId)return INFO_NEEDED;
+  
   const currentIdentity = config.currentIdentity
-
   if(!currentIdentity || ["pending", "rejected"].includes(currentIdentity?.info_state)){
-      return INFO_NEEDED;
+      return config.handleError ? getAllIdentityStages() : INFO_NEEDED;
    }else{
     const { id_type, nationality } = currentIdentity
     const _document = await mainService.getOneDocument({ id_type, nationality })
@@ -216,32 +264,36 @@ export const ApiGetIdentityStages = async(config) => {
 
 
 
+
+
+
+
 export const ApiPostIdentityInfo = async(payload) => {
 
   let config = ungapStructuredClone(payload);
   const currentIdentity = config?.dataForm?.config?.currentIdentity
-  
+
   let res
-
-  const isMaskBirthday = config.birthday.includes('/') 
+  const isMaskBirthday = config.info.birthday.includes('/') 
   if(isMaskBirthday){
-    config.birthday = formatMaskDate(config.birthday) 
+    config.info.birthday = formatMaskDate(config.info.birthday) 
   }
-  const timeStampDate = parseDateToTimeStamp(config.birthday) 
-  config.birthday = timeStampDate
+  const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
+  config.info.birthday = timeStampDate
 
-  config.name = config.name.trim()
-  config.surname = config.surname.trim()
+  config.info.name = config.info.name.trim()
+  config.info.surname = config.info.surname.trim()
 
   let info_needed = {}
-  config?.document?.info_needed?.forEach(documentId => {
-    if(config[documentId]){
+  let infoNeededReqs = (currentIdentity && Object.keys(currentIdentity?.document_info)) || config?.documentData?.info_needed
+  infoNeededReqs?.forEach(documentId => {
+    if(config.info[documentId]){
       info_needed = {
         ...info_needed,
-        [documentId]:config[documentId]
+        [documentId]:config.info[documentId]
       }
     }
-  })
+  }) 
 
   if(currentIdentity){
     res = await mainService.updateInfoIdentity({
@@ -252,7 +304,7 @@ export const ApiPostIdentityInfo = async(payload) => {
   }else{
     res = await mainService.createIdentity({
       ...config, 
-      document_id:config?.document?.id, 
+      document_id:config?.documentData?.id, 
       info_needed
     })
   }
@@ -260,7 +312,8 @@ export const ApiPostIdentityInfo = async(payload) => {
   const { error } = res
 
   if(error){
-    return toast(getUiError(error?.message), "error");
+     toast(getUiError(error?.message), "error");
+     return false
   }
 
   await mainService.fetchCompleteUserData()
@@ -292,7 +345,6 @@ export const ApiPostIdentityFiles = async(payload) => {
     }
   })
 
-  // console.log('document', _document)
   const res = await mainService.addFilesToIdentity({
     ...config, 
     identity_id:id, 
@@ -300,6 +352,7 @@ export const ApiPostIdentityFiles = async(payload) => {
   })
   if(!res)return ;
   return await mainService.fetchCompleteUserData()
+
 }
 
 
@@ -345,29 +398,12 @@ export const createInfoStages = async({
 
 }
 
-
-
-
-
-
 // typeof date.getMonth === 'function'
 
 export const IDENTITY_DEFAULT_STATE = {
   identity:{}
 }
 
-// const handleError = {
-//   identity:{},
-//   financial:{},
-//   personal:{
-//     defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
-//     // errors:{
-//     //   country:"Ingresa un país de operación válido...",
-//     //   name:"Solo ingresa nombres sin apellidos..."
-//     // }
-//   }
-// }
-  
 export const IDENTITY_COMPONENTS = {
     wrapperComponent:{
         identity:'kyc/identityComponent'

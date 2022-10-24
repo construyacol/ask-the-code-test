@@ -10,12 +10,13 @@ const IdentityForm = (props) => {
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
 
+
   const init = async() => {
     const _dataForm = await initStages({
       formName:'identity',
       ...props
     })
-    
+
     setDataForm({
       ..._dataForm,
       config:{
@@ -36,7 +37,7 @@ const IdentityForm = (props) => {
   }, [])
 
   return(
-    <Layout
+    <Layout 
       closeControls
     >
         {
@@ -47,7 +48,7 @@ const IdentityForm = (props) => {
               handleDataForm={{dataForm, setDataForm}}
               Fallback={KycSkeleton}  
               {...props}
-            />
+            /> 
             :
             <KycSkeleton/>
         }
@@ -58,3 +59,4 @@ const IdentityForm = (props) => {
 
 
 export default IdentityForm
+ 

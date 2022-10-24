@@ -28,8 +28,8 @@ export default function IdentityComponent({
       if(!createNewId)return alert('No puedes crear una nueva identidad si tienes identidades en proceso de verificación.');
       const Element = await import(`../kyc/identityComponent/init`)
       if(!Element) return;
-      const BiometricKyc = Element.default
-      actions.renderModal(() => <BiometricKyc/>);
+      const CreateNewIdentity = Element.default
+      actions.renderModal(() => <CreateNewIdentity title="Vinculando nueva identidad"/>);
     }
     
     const selectIdentity = (identity) => {

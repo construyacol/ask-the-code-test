@@ -152,10 +152,11 @@ const SelectListComponent = ({
       width: 100vw;
       align-self: flex-start;
       justify-self: flex-start;
-      @media ${device.mobile} {
+    }
+
+    @media ${device.mobile} {
         width: 100%;
       }
-    }
   `
 
 

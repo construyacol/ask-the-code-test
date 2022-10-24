@@ -125,6 +125,7 @@ export const selectProviderData = createSelector(
   (depositProvider) => {
     if(!depositProvider)return [ null, null ];
     const _depositProvider = ["other_bank"].includes(depositProvider?.value) ? depositProvider?.defaultProv : depositProvider;
+    if(!_depositProvider)return [ null, null ];
     const costs =  _depositProvider?.provider?.costs
     let costList = {}
     Object.keys(costs).forEach(cost => {

@@ -1,8 +1,8 @@
 import { device } from "const/const"
 import styled, {css} from 'styled-components'
 
-type buttonStyleProps = {
-    color?: string | String
+interface buttonStyleProps {
+    color?: string | String;
 }
 
 const LargeStyles = css`
@@ -18,14 +18,15 @@ const MediumStyles = css`
 `
 
 const SmallStyles = css`
-    padding: 0.5rem 4.844rem;
+    padding: 1rem 4.844rem;
     border-radius: 3px;
     font-size:0.938rem;
 `
 
 
 export const ButtonStyle = styled.button<buttonStyleProps>`
-   font-family: 'Roboto', sans-serif;
+    justify-content: center;
+    font-family: 'Roboto', sans-serif;
     border: none;
     font-weight: 700;
     cursor: pointer;
@@ -79,7 +80,7 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
 
         &.disabled{
             opacity: 1;
-            background:${props => props.theme.palette.gray};
+            background:${props => props.theme.palette.skeleton_color};
             cursor: no-drop;
         }
     }

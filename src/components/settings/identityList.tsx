@@ -7,7 +7,7 @@ import { useActions } from "hooks/useActions";
 import useViewport from 'hooks/useWindowSize'
 import { getIdentityState } from 'utils'
 import { StateInfo, IdentityInfo, DetailItem } from './styles'
-import { BiRightArrowAlt,BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { BiRightArrowAlt, BiChevronDown, BiChevronUp } from 'react-icons/bi';
 import { UI_STATE_ACTION, UI_STATE_DESCRIPTION, UI_DETAIL_NAME } from 'const/uiNames'
 import { identityInfo } from 'components/forms/widgets/kyc/identityComponent/identityUtils'
 import useToastMessage from 'hooks/useToastMessage'

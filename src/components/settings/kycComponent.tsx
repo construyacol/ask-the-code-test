@@ -8,7 +8,7 @@ import {
     IdentityContent,
     KycContentLayout,
     FloatContainer, 
-} from './styles'
+} from './styles' 
 import { levelRequirements } from 'interfaces/settings/kyc'
 import RequirementMenuComponent from "./requirementMenu"
 import EmptyOrInProcessState from 'components/settings/emptyOrInProcessState'
@@ -64,7 +64,7 @@ const KycComponent = () => {
                 <KycContentLayout  
                     className={`_layout ${currentSection || ''}  ${!levelRequirements || !currentSection ? "loading" : ""}`}
                 >
-
+  
                     <RequirementMenuComponent
                         levelRequirements={levelRequirements}
                         currentSection={currentSection}

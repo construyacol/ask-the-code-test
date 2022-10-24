@@ -353,12 +353,10 @@ export const PERSONAL_DEFAULT_STATE = {
   }
 }
 
-
 // const handleError = {
 //   identity:{},
 //   financial:{},
 //   personal:{
-//     defaultErrorMessage:"Tu verificación ha sido rechazada, corríge los campos indicados.",
 //     // errors:{
 //     //   country:"Ingresa un país de operación válido...",
 //     //   name:"Solo ingresa nombres sin apellidos..."

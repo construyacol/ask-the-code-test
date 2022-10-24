@@ -23,10 +23,11 @@ const EmptyOrInProcessState = (props:emptyStatePropTypes) => {
     const handleAction = async() => {
         const currentIdentity = !isEmpty(user.identities) && user.identities[0]
         const Element = await import(`components/forms/widgets/kyc/${currentPendingRequirement}Component/init`)
+        
         // eslint-disable-next-line react/jsx-pascal-case
         actions.renderModal(() => <Element.default 
             currentIdentity={currentIdentity}
-            // isNewId={true}
+            // levelRequirements={props?.levelRequirements}
         />)
     }
 

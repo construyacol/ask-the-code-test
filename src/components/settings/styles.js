@@ -44,6 +44,9 @@ export const StateInfo = styled.div`
     width:calc(100% - 40px);
     padding:0 20px;
     font-size:14px;
+    position:sticky;
+    bottom:0;
+
     &.rejected{
         background:var(--red_background);      
         color:var(--red_color);
@@ -323,6 +326,7 @@ export const ItemRequirementMenu = styled.div`
 export const RequirementMenu = styled.menu`
 
     height:50px;
+    overflow: hidden;
     width:100%;
     background:#f4f4f6;
     margin: 0;

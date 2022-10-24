@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import FormComponent from '../../../' 
 import { initStages } from '../../../utils'
 import { useActions } from '../../../../../hooks/useActions'
-import KycSkeleton from './skeleton.js'
+import KycSkeleton from '../identityComponent/skeleton'
 import Layout from '../../layout'
   
-const LocationKyc = () => {
+const LocationKyc = (props) => {
 
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
@@ -14,6 +14,7 @@ const LocationKyc = () => {
     const _dataForm = await initStages({
       formName:'location',
     })
+    // console.log('_dataForm', _dataForm)
     setDataForm(_dataForm)
   }
 
@@ -37,6 +38,7 @@ const LocationKyc = () => {
               closeModal={closeModal} 
               handleDataForm={{dataForm, setDataForm}}
               Fallback={KycSkeleton}  
+              {...props}
             />
             :
             <KycSkeleton/>

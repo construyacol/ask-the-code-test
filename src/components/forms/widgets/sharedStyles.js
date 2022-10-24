@@ -498,7 +498,7 @@ export const StageContainer = styled.div`
   .inputContainer__{
     height: 45px;
     max-width: 700px;
-    margin: 15px 0 35px;
+    margin: 15px 0 10px;
   }
   ._stickyPosition{
     background: #f9f9fb;

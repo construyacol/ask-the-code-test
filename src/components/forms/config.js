@@ -20,7 +20,6 @@ import {
   FIAT_WITHDRAW_DEFAULT_STATE
 } from './widgets/fiatWithdraw/api'
 
-
 import { 
   NEW_WACCOUNT_COMPONENTS,
   NEW_WACCOUNT_STAGES,
@@ -84,14 +83,6 @@ const defaultState = {
   ...CONTACT_DEFAULT_STATE
 }
 
-const handleError = {
-  // personal:{
-  //   defaultErrorMessage:"Hubo un error en la toma de datos...",
-  //   errors:{
-  //     name:""
-  //   }
-  // }
-}
 
 const wrapperComponent = {
   ...BIOMETRIC_COMPONENTS['wrapperComponent'],
@@ -106,14 +97,12 @@ const wrapperComponent = {
   ...CONTACT_COMPONENTS['wrapperComponent']
 }
 
-const formStructure = formName => {
-  return {
+const formStructure = formName => ({
     wrapperComponent:wrapperComponent[formName],
-    handleError:handleError[formName],
+    // handleError:getErrors(formName),
     successStage:null,
     defaultState:defaultState[formName],
     stages:stages[formName]
-  }
-}
+})
 
 export default formStructure

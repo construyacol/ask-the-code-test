@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 import { AiOutlineClose } from "react-icons/ai";
 
@@ -38,6 +38,17 @@ export const TotalAmount = styled.div`
   }
 `;
 
+export const inputDropStyle = css`
+  input[type="file"],
+  input[type="button"]{
+    position: absolute;
+    z-index: 4;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+`
 
 export const DropZoneContainer = styled.section`
   position: absolute;
@@ -48,7 +59,8 @@ export const DropZoneContainer = styled.section`
   display: grid;
   align-items: center;
   justify-items: center;
-  ${"" /* border: 5px solid #0198FF; */}
+
+  ${inputDropStyle}
 
   &.dottedBorder{
     border: 5px dotted var(--primary);
@@ -116,6 +128,7 @@ export const UploadTextMiddle = styled.p`
 `;
 
 
+
 export const Buttom = styled.div`
   width: 320px;
   height: 45px;
@@ -128,15 +141,7 @@ export const Buttom = styled.div`
   cursor: pointer;
   position: relative;
 
-  input[type="file"],
-  input[type="button"]{
-    position: absolute;
-    z-index: 4;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-  }
+  ${inputDropStyle}
 
   &.loader{
     ::after{

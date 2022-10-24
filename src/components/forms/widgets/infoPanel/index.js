@@ -1,36 +1,153 @@
-import { useEffect } from 'react'
-import styled from 'styled-components'
-import { setMessageError } from '../../utils'
+import { useState } from 'react'
+import {
+  InfoPanelContainer,
+  InfoContent,
+  IconCont,
+  ItemRequirement,
+  ItemRequirementContainer,
+  Ul
+} from './styles'
+import { 
+  IconContainer 
+} from 'styles/global'
+import getIcon from './icons'
+import { IndicatorHover } from 'components/widgets/accountList/listView'
+// import { useSelector } from "react-redux";
+import { BiCheck, BiErrorAlt } from "react-icons/bi";
 
-const InfoPanel = ({ title, stageData, state, dataForm:{ stages, handleError} }) => {
+import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
+import { P } from 'components/widgets/typography'
+import { findLastKey, isEmpty } from 'lodash'
+import { ErrorMessage } from './styles'
+// import ungapStructuredClone from '@ungap/structured-clone';
 
-  useEffect(() => {
-    if(document.body.clientWidth > 768){
-      document.querySelector('#mainLayout')?.classList.add("infoPanel");
-    }
-  }, [])
+const InfoPanel = ({ 
+  title, 
+  stageData, 
+  state,
+  dataForm, 
+  stageStatus, 
+  user, 
+  levelRequirements, //source data from identity HOC
+  isOpenPanelInfo,
+  viewportSizes:{ isMobile }
+}) => {
+ 
+  const [ toggleId, setToggleId ] = useState({ key:false })
+  const currentIdentity = dataForm?.config?.currentIdentity
+  const errorMessage = dataForm?.handleError?.errorMessage
 
-  useEffect(()=>{
-    if(handleError?.errors[stageData?.key]){
-      setMessageError(`.label_text__${stageData.key}`, handleError.errors[stageData.key])
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stageData])
+  const toogleSection = e => {
+    if(!e?.target?.dataset?.id)return;
+    const key = e?.target?.dataset?.id
+    setToggleId(prevState => {return {[key]:!prevState[key]}})
+  }
+
+  const getTopPanel = () => {
+    const defaultTop = "0px"
+    if(!isMobile && !levelRequirements)return defaultTop;
+    const infoStateHeight = document.querySelector("#infoStatemobile__")?.clientHeight ?? 80;
+    const titleHeight = document.querySelector("#titleContainer__")?.clientHeight ?? 0;
+    const height = `${infoStateHeight + titleHeight + 50}px` ?? defaultTop;
+    return height
+  }
+
+  if(!levelRequirements){
+    return<InfoPanelSkeleton/>
+  }
+
+  let { itemsMenu, pendingRequirements } = levelRequirements
+  let errors = dataForm?.handleError?.errors
 
   return (
-      <InfoPanelContainer id="infoPanel">
-        <h3>{title || 'Título'}</h3>
-        <ul>
-          {
-            Object.keys(state).map((key, id) => {
-              if(key.includes('meta')){return null}
-              return <li className={`${state[key] ? 'checked' : ''}`} key={id}>{stages[key].uiName}</li>
-            })
-          }
-        </ul>
+      <InfoPanelContainer 
+        id="infoPanel" 
+        className={`${isMobile && isOpenPanelInfo ? 'isOpen' : ''}`}
+        style={{top:getTopPanel()}}
+      > 
+        <InfoContent>
+              { 
+                Object.entries(itemsMenu).map((itemMenu, index) => {
+
+                  let menuKey = itemMenu[0]
+                  const isDisabled = false
+                  const Icon = getIcon(menuKey)
+                  const isSuccessfull = ["accepted"].includes(user[menuKey]?.state) && menuKey !== 'identity';
+                  const currentPendingRequirement = ["location", "contact"].includes(pendingRequirements[0]) ? "location" : pendingRequirements[0]
+                  const isActive = menuKey?.includes(currentPendingRequirement) || (isEmpty(pendingRequirements) && menuKey === 'identity')
+                  const sectionState = isSuccessfull ? 'complete' : isActive ? 'inProgress' : 'pending'
+                  const AuxComponentIcon = isActive ? IsActiveIndicator : ["complete", "pending"].includes(sectionState) ? ArrowIconSwitch: () => null
+
+                  return(
+                    <ItemRequirementContainer key={index} className={`${sectionState}`}>
+
+                      <ItemRequirement
+                          className={`${menuKey} ${isActive ? 'isActive' : ''} ${isSuccessfull ? 'isSuccessfull' : ''} ${isDisabled ? 'disabled' : ''}`} 
+                          data-id={`${menuKey}`}
+                          onClick={ ["complete", "pending"].includes(sectionState) ? toogleSection : () => null }
+                      >   
+                          <IconCont color={isActive || isSuccessfull ? 'primary' : ''}>
+                            <Icon size={20}/>
+                          </IconCont>
+                          <P className="titleSection fuente bold">{itemsMenu[menuKey]?.uiName}</P>
+                          <AuxComponentIcon
+                            isSuccessfull={true}
+                            isOpen={toggleId[menuKey]}
+                          />
+                      </ItemRequirement> 
+
+                      {
+                        itemsMenu[menuKey]?.stages &&
+                          <Ul 
+                            style={{ height:["complete", "pending"].includes(sectionState) && !toggleId[menuKey] ? 0 :`calc(${Object.keys(itemsMenu[menuKey]?.stages).length} * 40px)` }}
+                            >
+                            {
+                              Object.keys(itemsMenu[menuKey]?.stages).map((key, id) => {
+                                if(key.includes('meta'))return null;
+
+                                const inProgress = key === stageData?.key || ["phone"].includes(key);
+                                const itemRejected = (errors && errors[key]) && true
+
+                                const isCompleted = (state[key] && key !== stageData?.key) || 
+                                (state[key] && ["success"].includes(stageStatus)) || 
+                                (key !== stageData?.key && ["phone"].includes(key)) ||   
+                                (["confirmed"].includes(currentIdentity?.info_state) && key !== 'files') || 
+                                (["confirmed"].includes(currentIdentity?.info_state) && key === 'files' && !findLastKey(state, (lastItem) => lastItem === undefined)) ||
+                                ((errors && !errors[key]) && key !== 'files');
+
+                                return ( 
+                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : key === stageData?.key ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
+                                    { 
+                                      (isSuccessfull || isCompleted) &&
+                                      <BiCheck color="green" size={16} />
+                                    }
+                                    {
+                                      !isCompleted && itemRejected &&
+                                      <BiErrorAlt color="red" size={16} />
+                                    }
+                                    <P  
+                                      className="fuente ulItem"
+                                      color={(isCompleted || isSuccessfull) ? 'primary' : itemRejected ? 'red' : ''}
+                                      >
+                                        {itemsMenu[menuKey]?.stages[key].ui_name}
+                                    </P>
+                                  </li>
+                                )
+                              })
+                            }
+                          </Ul>
+                      }
+
+                    </ItemRequirementContainer>
+                  )
+                })
+              }
+        </InfoContent>
         {
-          handleError.defaultErrorMessage &&
-          <ErrorMessage>{handleError.defaultErrorMessage}</ErrorMessage>
+          errorMessage &&
+            <ErrorMessage>
+                <P color="red">{errorMessage}</P>
+            </ErrorMessage>
         }
       </InfoPanelContainer>
   )
@@ -39,43 +156,58 @@ const InfoPanel = ({ title, stageData, state, dataForm:{ stages, handleError} })
  
 export default InfoPanel
 
-const ErrorMessage = styled.p`
-  font-size: 14px;
-  color: gray;
-  max-width: 250px;
-`
 
-const InfoPanelContainer = styled.section`
-  display: grid;
-  width: auto;
-  min-width: 200px;
-  padding: 50px;
-  margin: 50px 0;
-  height: calc(100% - 200px);
-  border-right: 1px solid #bdbdbd;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr auto;
 
-  h3{
-    color: green;
-  }
+const IsActiveIndicator = () => (
+  <IndicatorHover className='isActive'>
+      <div className="indicator" >
+          <div className="indicatorSon"></div>
+      </div>
+  </IndicatorHover>
+)
 
-  ul{
-    padding-left: 20px;
-    li{
-      margin: 15px 0;
-      color:red;
-      padding-left: 5px;
-      list-style-type: "☒";
-      list-style-type: "-";
-      &.checked{
-        list-style-type: "✓";
-        color: green;
+const ArrowIconSwitch = ({ isSuccessfull, isOpen }) => {
+
+  if(!isSuccessfull) return null;
+  let size = 24
+
+  return(
+    <IconContainer>
+      {
+        isOpen ?
+          <BiChevronUp size={size}/>
+        :
+          <BiChevronDown size={size}/>
       }
-    }
-  }
+    </IconContainer>
+  )
+} 
 
-  @media (max-width: 768px) {
-   display:none;
-  }
-`
+
+
+
+
+
+export const InfoPanelSkeleton = ({ items = [1,2,3] }) => (
+  <InfoPanelContainer>
+    <InfoContent>
+      <ItemRequirementContainer>
+        <ItemRequirement>
+          <IconCont skeleton/>
+          <P skeleton>---- SKELETON ----</P>
+        </ItemRequirement>
+        <Ul>
+          {
+            items.map((item, index) => {
+              return(
+                <li key={index}>
+                  <P  className="fuente ulItem" skeleton>---- SKELETON ----</P>
+                </li>
+              )
+            })
+          }
+        </Ul>
+      </ItemRequirementContainer>
+    </InfoContent>
+  </InfoPanelContainer>
+)

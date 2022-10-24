@@ -261,7 +261,7 @@ export const fontSize = {
     mobile:"0.0875 rem",
     tablet:"0.9375 rem",
     laptop:"0.9375 rem",
-    desktop:"0.9375 rem"
+    desktop:"0.9 rem"
   }
 }
 

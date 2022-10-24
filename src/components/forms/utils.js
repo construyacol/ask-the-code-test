@@ -11,7 +11,7 @@ import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 // import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
-import { ApiGetIdentityStages } from './widgets/kyc/identityComponent/api'
+import { ApiGetIdentityStages, ApiGetIdentityErrors } from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
@@ -77,8 +77,6 @@ export const setMessageError = (selector, message) => {
 }
 
 // manage tags system events
-
-
 
 
 export const onSubmit = async(callback, TimeOut = 100) => {
@@ -161,21 +159,6 @@ export const createSelectList = async(list) => {
 }
 
 
- 
-const dataService = {
-  biometric:ApiGetBiometricStages,
-  onBoarding:ApiGetOnBoardingStages,
-  // personal:ApiGetPersonalStages,
-  identity:ApiGetIdentityStages, 
-  newWallet:ApiGetNewWalletStages,
-  location:ApiGetLocationStages,
-  contact:ApiGetContactStages,
-  newWithdrawAccount:ApiGetNewWAccountStages,
-  [FIAT_DEPOSIT_TYPES.FORM]:ApiGetOnFiatDepositStages,
-  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
-}
-
-
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
@@ -196,26 +179,51 @@ export const recursiveAddList = async(mapObject, payload) => {
   return stages
 }
 
-export const initStages = async(config) => {
-  
-  const apiStages = await dataService[config.formName](config)
 
+ 
+const dataService = {
+  biometric:ApiGetBiometricStages,
+  onBoarding:ApiGetOnBoardingStages,
+  // personal:ApiGetPersonalStages,
+  identity:ApiGetIdentityStages, 
+  newWallet:ApiGetNewWalletStages,
+  location:ApiGetLocationStages,
+  contact:ApiGetContactStages,
+  newWithdrawAccount:ApiGetNewWAccountStages,
+  [FIAT_DEPOSIT_TYPES.FORM]:ApiGetOnFiatDepositStages,
+  [FIAT_WITHDRAW_TYPES.FORM]:ApiGetFiatWithdrawStages
+}
+
+const getErrors = (config) => {
+  const ERRORS = {
+    identity:ApiGetIdentityErrors
+  }
+  return ERRORS[config.formName] && ERRORS[config.formName](config)
+}
+
+export const initStages = async(_config, API_STAGES) => {
+   
+  let config = {..._config}
+  config.handleError = getErrors(config)
+  const apiStages = API_STAGES || await dataService[config.formName](config)
   if(!apiStages) return;
-  const sourceStages = Object.keys(apiStages)
-  
-  let stages = {} 
 
+  const sourceStages = Object.keys(apiStages)
+  let stages = {} 
   for (const stage of sourceStages) { 
     stages = {
-      ...stages,
+      ...stages, 
       [stage]:await createStage(apiStages[stage], formStructure(config.formName)?.stages[stage], stage)
     }
   } 
+
   stages = await recursiveAddList(stages)
 
   return {
     ...formStructure(config.formName),
-    stages
+    handleError:config.handleError,
+    stages,
+    formName:config?.formName
   }
 }
- 
+  

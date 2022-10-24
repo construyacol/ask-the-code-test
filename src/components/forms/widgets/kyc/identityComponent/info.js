@@ -1,27 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import validations from '../validations'
 import useStage from '../../../hooks/useStage'
-import loadable from '@loadable/component'
-import InputComponent from '../InputComponent'
 import { getNextSelectList } from '../utils' 
-import { BackButtom, NextButtom } from './buttons'
-import LabelComponent from './labelComponent'
-import KycSkeleton from './skeleton'
 import { ApiPostIdentityInfo, createInfoStages } from './api'
+import KycFormComponent from '../../kycForm' 
 // import useToast from '../../../../hooks/useToastMessage'
 // import SuccessComponent from './success'
-import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick';
-import { Wrapper as Layout } from '../../layout/styles'
 import { initStages } from '../../../utils'
+import { merge, omitBy, isUndefined } from 'lodash'
 // import { useSelector } from "react-redux";
+import IdentityKycSuccess from './success'
 
-import {
-  MainContainer,
-  StickyGroup,
-  TitleContainer,
-} from '../styles'
 
-const DynamicLoadComponent = loadable(() => import('../../../dynamicLoadComponent'))
 const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) => {
 
   const { dataForm, setDataForm } = handleDataForm
@@ -30,31 +20,22 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   // const user = useSelector(({ modelData:{ user } }) => user);
 
   // const [ toastMessage ] = useToast()
+
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
     dataForm.stages
   )
-
-  const idNextStageKyc = useKeyActionAsClick(
-    true,
-    "next-stage-kyc",
-    13,
-    false,
-    "onkeypress",
-    true
-  );
   
   const {
     prevStage,
     nextStage,
     currentStage,
     stageController,
-    finalStage,
     stageData,
-    setStageData,
     stageStatus,
-    setStageStatus
+    setStageStatus,
+    finalStage
   } = stageManager
 
   const nextStep = async() => {
@@ -82,9 +63,11 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   }
 
   const prevStep = () => {
-    setState(prevState => {
-      return { ...prevState, [stageData?.key]: "" }
-    })
+    if(!dataForm?.handleError){
+      setState(prevState => {
+        return { ...prevState, [stageData?.key]: "" }
+      })
+    }
     return prevStage()
   }
 
@@ -118,104 +101,63 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
   useEffect(() => {
     if(currentStage >= stageController.length){
       const execPost = async() => {
-        const documents = dataForm?.stages?.id_type?.selectList
-        const idDocument = state?.id_type
-        const document = (documents && idDocument) && documents[idDocument]
-        if(!document)return prevStage();
+        const currentIdentity = dataForm?.config?.currentIdentity
+        let documentData
+        if(!currentIdentity){
+          const documents = dataForm?.stages?.id_type?.selectList
+          const idDocument = state?.id_type
+          documentData = (documents && idDocument) && documents[idDocument]
+          if(!documentData)return prevStage();
+        }
         setLoading(true)
-        let res = await ApiPostIdentityInfo({document, dataForm, ...state})
-        setLoading(false)
-        if(!res)return prevStage();
-        const currentIdentity = res.data
+        const info = currentIdentity ? omitBy(merge(currentIdentity?.document_info, state), isUndefined) : state;
+        let res = await ApiPostIdentityInfo({ documentData, dataForm, info })
+        if(!res){
+          setLoading(false)  
+          return prevStage();
+        } 
+        const identity = res.data
+        if(!["rejected", "pending"].includes(identity?.file_state)){
+          return setLoading(false)
+        }
+
         const _dataForm = await initStages({
           formName:'identity', 
-          currentIdentity
+          currentIdentity:identity
         })
-        return setDataForm({
+        setDataForm({
           ..._dataForm,
           config:{
-            currentIdentity
+            currentIdentity:identity
           }
         })
+        setLoading(false)
       }
       execPost()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
-  // console.log('||||||||||||||||||||||||||||||||| dataForm ==> ', dataForm)
-  
-  // console.log('||||||||||||||||||||||||||||||||| state ==> ', state)
-
-  if(loading){return <KycSkeleton/>}
 
   if(!loading && finalStage){
-    // Render success Stage
-    return (
-      <KycSkeleton
-        closeModal={closeModal}
-      />
-    )
+    return <IdentityKycSuccess/>
   }
 
   return(
-      <Layout style={{background:"white"}}>
-        { 
-          dataForm?.handleError?.errors &&
-          <DynamicLoadComponent
-            component="infoPanel"
-            title="Campos completados"
-            state={state}
-            stageData={stageData}
-            dataForm={dataForm}
-          />
-        }
-
-        <MainContainer>
-          <TitleContainer id="titleContainer__">
-            <h1 className="titleContainer__h1 fuente">{ props.isNewId ? 'Crea un documento de identidad' : 'Crea una identidad' }</h1>
-          </TitleContainer>
-          <StickyGroup background="white" id="stickyGroup__" >
-            <LabelComponent 
-              stageController={stageController}
-              stages={dataForm?.stages}
-              currentStage={currentStage}
-              >
-              <BackButtom onClick={prevStep} disabled={currentStage <= 0}/>
-            </LabelComponent>
-            <InputComponent
-              onChange={onChange} 
-              inputStatus={stageStatus}
-              defaultValue={state[stageData?.key]}
-              name={stageData?.key} 
-              message={stageData?.settings?.defaultMessage}
-              placeholder={stageData?.settings?.placeholder}
-              type={stageData?.uiType}
-              setStageData={setStageData}
-              dataForm={dataForm}
-              state={state}
-              progressBar={{start:currentStage+1, end:stageController.length, showSteps:true}}
-              AuxComponent={[
-                stageData?.settings?.auxComponent, 
-                () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController.length) || stageStatus !== 'success'} />
-              ]}
-            />
-          </StickyGroup>
-
-          <DynamicLoadComponent
-            component="kyc/selectList"
-            list={stageData?.selectList}
-            name={stageData?.key}
-            state={state}
-            handleAction={onChange}
-            // pass useCallBack to inherited functions to this component
-          />
-
-        </MainContainer>
-      </Layout>
+    <KycFormComponent
+      state={state}
+      dataForm={dataForm}
+      closeModal={closeModal}
+      isNewId={props?.isNewId}
+      prevStep={prevStep}
+      loading={loading}
+      onChange={onChange}
+      stageManager={stageManager}
+      nextStep={nextStep}
+      {...props}
+    />
   )
 }
 
 export default InfoComponent
-
 

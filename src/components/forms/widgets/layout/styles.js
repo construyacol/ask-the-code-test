@@ -1,7 +1,12 @@
 import styled from 'styled-components'
 import { show } from '../../../widgets/animations'
+import { device } from 'const/const'
 
 export const Wrapper = styled.div`
+
+  &.scroll{
+    overflow-y: scroll;
+  }
   grid-template-columns: 1fr;
   display: grid;
   height: auto;
@@ -19,7 +24,32 @@ export const Wrapper = styled.div`
   }
 
   &.infoPanel{
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(650px, 1fr);
+    column-gap: 70px;
+    max-width: 1480px;
+    justify-self: center;
+    padding: 50px 0;
+    min-height: calc(100vh - 100px);
+
+    .title{
+      color: var(--title1);
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+    @media ${device.mobile} {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &.titleSection{
+    grid-template-rows: auto 1fr;
+    row-gap: 20px;
+
+    .kycTitle{
+      grid-column: 1/3;
+      background:transparent;
+    }
   }
 
   &._show{

@@ -6,20 +6,21 @@ import {
 } from '../styles'
 
 
-const LabelComponent = ({ children, currentStage, stages, stageController }) => (
-  
+const LabelComponent = ({ children, currentStage, stages, stageController }) => {
+
+  return (
     <LabelContainer className="fuente">
       {children}
       <TitleLabelContainer>
         <Titles height={stageController.length} position={currentStage}>
             {
               stageController.map((stageId, keyId) => {
-                return <p key={keyId} >{stages[stageId]?.settings?.label || stages[stageId].uiName}</p>
+                return <p key={keyId} >{stages[stageId]?.settings?.label || stages[stageId]?.uiName}</p>
               })
             }
         </Titles>
-      </TitleLabelContainer>
+      </TitleLabelContainer> 
     </LabelContainer>
-)
+)}
 
 export default React.memo(LabelComponent)

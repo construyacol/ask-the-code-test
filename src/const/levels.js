@@ -10,7 +10,7 @@ export const LEVELS_DATA = {
                 uiName:"Contacto y residencia"
             },
             identity:{
-                uiName:"Identidad personal"
+                uiName:"Información personal"
             }
         }
     },

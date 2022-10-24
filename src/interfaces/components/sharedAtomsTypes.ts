@@ -6,8 +6,8 @@ export interface buttonTypes extends ChildrenReactNode {
   variant?: 'text' | 'contained' | 'outlined';
   color?: string | String;
   onClick?: () => void;
-  disabled?: boolean | Boolean;
-  href?:string | String | LocationDescriptor;
+  disabled?: boolean;
+  href?:string | String | LocationDescriptor<unknown>;
 }
 
 export interface textTypes extends ChildrenReactNode {
