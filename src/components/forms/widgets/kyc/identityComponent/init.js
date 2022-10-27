@@ -36,8 +36,11 @@ const IdentityForm = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  console.log(' ===========================================> dataform', )
+
   return(
     <Layout 
+      className={`${dataForm?.wrapperComponent?.includes('files') ? 'scroll' : ''}`}
       closeControls
     >
         {

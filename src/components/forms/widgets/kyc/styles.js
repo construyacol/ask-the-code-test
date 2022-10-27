@@ -194,9 +194,10 @@ export const FilesContainer = styled.div`
     @media ${device.mobile}{
 
       grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr auto;
+      grid-template-rows: auto 1fr 1fr auto;
       padding: 0 1rem 3rem;
       height: calc(100vh - 3rem);
+      height: auto;
       width: calc(100vw - 2rem);
 
       &.ioSystem{
@@ -247,11 +248,11 @@ export const LabelText = styled.p`
   }
 
   @media (max-width: 400px) {
-    &.label___message{
+    /* &.label___message{
       bottom: -45px !important;
       display:grid;
       Padding-right: 30px;
-    }
+    } */
   }
 `
 
@@ -333,6 +334,10 @@ export const Titles = styled.div`
     display:flex;
     align-items:center;
     width: max-content;
+    @media (max-width: 400px) {
+      font-size:18px;
+    }
+
   }
 
 `

@@ -63,9 +63,11 @@ export const DropZoneContainer = styled.section`
   ${inputDropStyle}
 
   &.dottedBorder{
-    border: 5px dotted var(--primary);
+    border: 3px dotted var(--primary);
     border-radius: 10px;
     background: rgba(255, 255, 255, 1);
+    width: calc(100% - 6px);
+    height: calc(100% - 6px);
   }
 
   svg {

@@ -216,12 +216,10 @@ const IDENTITY_ERRORS = {
 }
 
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
-
   // AI handle reject
-  if(["rejected"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
+  if(["rejected", "confirmed"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
     return { ...IDENTITY_ERRORS.document_info, errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas." }
   }
-
   if(["rejected"].includes(currentIdentity?.info_state) && !isEmpty(currentIdentity.errors) && !isEmpty(currentIdentity.errors[0]?.document_info)){
     return { errors:currentIdentity?.errors[0]?.document_info, errorMessage:currentIdentity?.errors[0]?.errorMessage }
   }else if(["rejected"].includes(currentIdentity?.file_state) && !isEmpty(currentIdentity.errors)){
