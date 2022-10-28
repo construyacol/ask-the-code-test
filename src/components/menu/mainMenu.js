@@ -63,7 +63,7 @@ export default function MainMenuComponent(props) {
                 !isMovilViewport ? 
                     <DesktopPriceComponent state={state}/>
                 :
-                    <MovilPriceComponent state={state}/>
+                    <MovilPriceComponent state={state} actions={actions}/>
             }
 
             {!isMovilViewport ? (
@@ -144,15 +144,23 @@ const ControlContainer = styled.div`
     overflow:hidden;
 `
 
-const MovilPriceComponent = ({ state }) => {
+const MovilPriceComponent = ({ state, actions }) => {
 
-    const [ showBuyPrice, sethowPrice ] = useState(true)
-    const toggleShowPrice = () => {
-        sethowPrice(prevState => !prevState)
-    }
+    const [ showBuyPrice ] = useState(false)
+    // const toggleShowPrice = () => {
+    //     sethowPrice(prevState => !prevState)
+    // }
+
+    const showPrices = async () => {
+        const module = await import("../widgets/prices");
+        if(!module)return;
+        const PricesModal = module.default
+        actions.renderModal(PricesModal);
+        // setTimeout(() => props.closeMenu(), 500) 
+      };
 
     return(
-        <PriceContainer className="mobile" onClick={toggleShowPrice}>
+        <PriceContainer className="mobile" onClick={showPrices}>
             {
                 showBuyPrice ? 
                 <LabelPrice className={`${!state.buy_price ? 'skeleton' : ''}`}>

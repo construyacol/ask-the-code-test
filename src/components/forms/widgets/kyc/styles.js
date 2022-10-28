@@ -300,7 +300,6 @@ export const InputContainer = styled.form`
     transition: .15s;
   }
 
-
   &.skeleton {
     align-items: center;
     input{
@@ -313,10 +312,7 @@ export const InputContainer = styled.form`
       margin-left:20px;
     }
   }
-  
 `
-
-
 
 
 export const Titles = styled.div`
@@ -334,10 +330,9 @@ export const Titles = styled.div`
     display:flex;
     align-items:center;
     width: max-content;
-    @media (max-width: 400px) {
+    @media ${device.mobile}{
       font-size:18px;
     }
-
   }
 
 `

@@ -49,8 +49,8 @@ function AccountList(props) {
       className={`accountListWrapper ${primary_path} ${isEmpty(items) ? 'isEmpty' : ''}`}
       >
       <TitleSection
-        className="sticky"
-      > 
+        className='sticky main'
+      >  
       {
         isWalletsView &&
           <FilterAccountList

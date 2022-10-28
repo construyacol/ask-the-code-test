@@ -123,7 +123,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
         // }, 500)  
 
         setTimeout(() => {
-          setDataStageInfo({ img:image?.base64String })
+          setDataStageInfo({ img:`data:image/png;base64, ${image?.base64String}` })
           // setState(prevState => {
           //   const newState = { 
           //     ...prevState, 
@@ -162,6 +162,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
   }
 
   useEffect(() => {
+    console.log('|||||||||||||||||||||||||||||||||||||||||||||||   useEffect ===============>>> ', state)
     if(!Object.keys(state).find(element => !state[element])){
       const execPost = async() => {
         setLoading(true) 

@@ -10,6 +10,8 @@ import {
     CtaCont
 } from './styles'
 import { P } from 'components/widgets/typography'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 
 type props = {
@@ -57,7 +59,10 @@ export const DocumentManager = ({ stageData, state, setState, handleStage }:prop
 
     return(
         <DocumentManagerContainer>
-            <img src={state[stageData?.key]?.img} alt="ss" />
+            <Zoom>
+                <img src={state[stageData?.key]?.img} width="100%" alt="" />
+                {/* <img src={state[stageData?.key]?.img} alt="ss" /> */}
+            </Zoom>
             <CtaCont className="kycDeleteButton">
                 <Button
                     variant='contained'
