@@ -236,7 +236,7 @@ export const Layout = styled.div`
 
 export const LabelText = styled.p`
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   color: var(--paragraph_color);
 
   &.skeleton{
