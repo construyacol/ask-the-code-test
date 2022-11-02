@@ -10,7 +10,6 @@ const IdentityForm = (props) => {
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
 
-
   const init = async() => {
     const _dataForm = await initStages({
       formName:'identity',

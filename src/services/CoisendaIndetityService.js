@@ -22,8 +22,7 @@ import {
   getIdentityState 
 } from '../utils'
 import userDefaultModel from "api/userDefault";
-import { keyBy } from 'lodash'
-
+import { keyBy, isEmpty } from 'lodash'
 
 
 const {
@@ -489,7 +488,6 @@ export class IndetityService extends WebService {
   // }
 
   async updateUserStatus(status) {
-    console.log('updateUserStatus identity =======> ', status)
     const _user = await this.fetchCompleteUserData()
     console.log('_user =======> ', _user)
     // debugger
@@ -532,12 +530,10 @@ export class IndetityService extends WebService {
   }
 
 
-  getMainIdentity(identities) {
-    if(identities?.length){
-      let mainIdentity = identities.find(identity => identity?.info_state === "accepted" && identity?.file_state === "accepted")
-      return mainIdentity || identities[0]       
-    }else return ;
-
+  async getMainIdentity(identities) {
+    if(isEmpty(identities))return;
+    let mainIdentity = identities.find(identity => identity?.info_state === "accepted" && identity?.file_state === "accepted")
+    return mainIdentity || identities[0]       
   }
 
 
@@ -551,8 +547,6 @@ export class IndetityService extends WebService {
     // Residencia
     // Identidad
 
-
-
     let profile = await this.fetchUserProfile();
     let contact = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/contact?country=international`)
     let location = await this.Get(`${IdentityApIUrl}users/${this.authData.userId}/location?country=international`)
@@ -560,15 +554,16 @@ export class IndetityService extends WebService {
     // Inicializamos identity buscando si hay por lo menos una identidad aceptada con eso la cuenta puede operar completamente, 
     // si no tiene ninguna identidad aceptada entonces elejimos la identidad "rejectada" o "pendiente", si la tiene
     // let identity = identities && identities[0]
-    let identity = this.getMainIdentity(identities)
+    let identity = await this.getMainIdentity(identities)
+    let appleIdentity
+    if(!identity){
+      let { getToken } = await import('utils/handleSession');
+      let tokenData = await getToken()
+      appleIdentity = tokenData?.user_identity
+      console.log('appleIdentity', appleIdentity)
+      debugger
+    }
     
-    // const finalUrlSecond = `${INDENTITY_USERS_URL}/${this.authData.userId}/status`;
-    // const secondResponse = await this.Get(finalUrlSecond);
-    // if(await this.isCached('fetchCompleteUserData_', secondResponse)) {
-    //     return true
-    // }
-    // let country_object = await addIndexToRootObject(secondResponse.countries);
-    // let country = await objectToArray(country_object);
     const userLevels = profile?.countries?.international
 
     let updatedUser = {
@@ -587,8 +582,8 @@ export class IndetityService extends WebService {
       level: typeof userLevels === 'string' ? userLevels : (userLevels?.length && userLevels[userLevels?.length - 1]),
       verification_error: identity?.errors?.length && identity?.errors[0],
       id_number:identity?.document_info?.id_number,
-      name:identity?.document_info?.name,
-      surname:identity?.document_info?.surname,
+      name:identity?.document_info?.name || appleIdentity?.name,
+      surname:identity?.document_info?.surname || appleIdentity?.surname,
       levels: {
         personal:identity?.info_state,
         identity:identity?.file_state
@@ -618,20 +613,6 @@ export class IndetityService extends WebService {
     const identityAccepted = updatedUser.levels.identity === 'accepted' && updatedUser.levels.personal === 'accepted'
     const identityRejected = updatedUser.levels.identity === 'rejected' && updatedUser.levels.personal === 'rejected'
     
-    // if((updatedUser?.level !== 'level_0') || identityConfirmed){
-    //   // let kyc_personal = country[0].levels && country[0].levels.personal;
-    //   // let kyc_identity = country[0].levels && country[0].levels.identity;
-    //   // let kyc_financial = country[0].levels && country[0].levels.financial;
-    //   // if (kyc_personal) {
-    //   //   updatedUser.security_center.kyc.basic = kyc_personal;
-    //   // }
-    //   // if (kyc_identity) {
-    //   //   updatedUser.security_center.kyc.advanced = kyc_identity;
-    //   // }
-    //   // if (kyc_financial) {
-    //   //   updatedUser.security_center.kyc.financial = kyc_financial;
-    //   // }
-    // }else 
     if(updatedUser?.level === 'level_0' && identityAccepted){
       updatedUser.security_center.kyc.basic = 'confirmed';
       updatedUser.security_center.kyc.advanced = 'confirmed';
@@ -639,26 +620,6 @@ export class IndetityService extends WebService {
       updatedUser.security_center.kyc.basic = 'rejected';
       updatedUser.security_center.kyc.advanced = 'rejected';
     }
-
-    console.log('location', location)
-    console.log('userIdentity', identity)
-    console.log('tx profile', profile)
-    console.log('updatedUser', updatedUser)
-    // debugger
-
-    // const finalUrlThird = `${INDENTITY_USERS_URL}/${this.authData.userId}/profiles`;
-    // let thirdResponse = await this.Get(finalUrlThird);
-
-    // if (thirdResponse && thirdResponse.length > 0) {
-    //   // Agregamos la información al modelo usuario (updatedUser)
-    //   updatedUser = {
-    //     ...updatedUser,
-    //     ...thirdResponse[0].personal,
-    //     operation_country:thirdResponse[0].personal && thirdResponse[0].personal.country,
-    //     country: userCountry,
-    //     person_type: thirdResponse[0].person_type
-    //   };
-    // }
 
     let normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));

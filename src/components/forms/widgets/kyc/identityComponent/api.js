@@ -201,7 +201,7 @@ const DOCUMENTS = {
     ui_type:"text",
   }
 }
-
+  
 const IDENTITY_ERRORS = {
   document_info:{
     errors:{} //Al no tener errores por defecto, el sistema reenvía la info del stage
@@ -215,23 +215,52 @@ const IDENTITY_ERRORS = {
   // "Algunas de las imágenes no son legibles o están demasiado borrosas"
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const ApiGetIdentityErrors = ({ currentIdentity }) => {
   // AI handle reject
   if(["rejected", "confirmed"].includes(currentIdentity?.info_state) && (currentIdentity?.errors && typeof currentIdentity?.errors[0] === 'string') && currentIdentity?.errors[0]?.includes("Algunas de las im")){
     return { ...IDENTITY_ERRORS.document_info, errorMessage:"Algunas de las imágenes no son legibles o están demasiado borrosas." }
   }
-  
   if(["rejected"].includes(currentIdentity?.info_state)){
     // if(["rejected"].includes(currentIdentity?.info_state) || (!isEmpty(currentIdentity.errors) && !isEmpty(currentIdentity.errors[0]?.document_info))){
     return { errors:currentIdentity?.errors[0]?.document_info, errorMessage:currentIdentity?.errors[0]?.errorMessage }
   }
-
   if(["rejected"].includes(currentIdentity?.file_state)){
     return { ...IDENTITY_ERRORS.files, errorMessage:currentIdentity?.errors[0]?.errorMessage }
   }
-  
-  
   return undefined
+}
+
+export const ApiGetIdentityState = () => {
+  const user = mainService?.user
+  const { name, surname } = user
+  let identity = {
+    name,
+    surname
+  }
+  return identity
 }
 
 
@@ -265,11 +294,6 @@ export const ApiGetIdentityStages = async(config) => {
     return filesNeeded
    }
 }
-
-
-
-
-
 
 
 export const ApiPostIdentityInfo = async(payload) => {
@@ -330,9 +354,7 @@ export const ApiPostIdentityFiles = async(payload) => {
   
   const config = ungapStructuredClone(payload);
   const user = mainService?.user
-
   const mainIdentity = user?.user?.identity 
-
   const currentIdentity = config.dataForm?.config?.currentIdentity ? config.dataForm?.config?.currentIdentity : mainIdentity
   const { id_type, nationality, id } = currentIdentity
 

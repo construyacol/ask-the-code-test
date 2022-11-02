@@ -18,7 +18,7 @@ import "./loader.css";
  
 // const IconSwitch = loadable(() => import("../icons/iconSwitch"), {
 //   fallback: (
-//     <div
+//     <div 
 //       style={{
 //         height: 77,
 //         width: 200,
@@ -43,7 +43,7 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
 // const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
 function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoarding }) {
-
+ 
   const [country] = useState("international");
   // const [ countryImg, setCountryImg ] = useState("international")
   const [progressBarWidth, setProgressBarWidth] = useState(0);
@@ -62,6 +62,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const initComponent = async () => {
 
     const { userToken } = authData;
+    // debugger
     // const isSessionRestored = await tryRestoreSession(userToken);
     // if (isSessionRestored) {
     //   await actions.isLoggedInAction(true);
