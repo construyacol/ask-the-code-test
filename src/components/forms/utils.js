@@ -22,9 +22,7 @@ import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
 import { FIAT_DEPOSIT_TYPES, ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWithdraw/api'
 
-
 // import countryValidators from './apiRes'
-
 
 export const filterElement = (list, query) => {
   let result = {}

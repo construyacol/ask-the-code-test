@@ -203,6 +203,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
           <DynamicLoadComponent
             component="infoPanel"
             title="Completa tu identidad"
+            stageController={stageController}
             state={state}
             stageData={stageData}
             dataForm={dataForm}
@@ -219,7 +220,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
                       currentStage={currentStage}
                       stageController={stageController}
                       dataForm={dataForm}
-                      customStage={dataForm?.handleError?.errors ? 0.99 : 6}
+                      customStage={dataForm?.handleError?.errors ? 1 : 6}
                       currentIdentity={currentIdentity}
                       {...props}
                     />

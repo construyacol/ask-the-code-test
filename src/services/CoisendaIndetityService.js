@@ -560,8 +560,6 @@ export class IndetityService extends WebService {
       let { getToken } = await import('utils/handleSession');
       let tokenData = await getToken()
       appleIdentity = tokenData?.user_identity
-      console.log('appleIdentity', appleIdentity)
-      debugger
     }
     
     const userLevels = profile?.countries?.international

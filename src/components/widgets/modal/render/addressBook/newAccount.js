@@ -76,6 +76,10 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
     setAddressValue();
   };
 
+  const handleChange = (_, value) => {
+    setAddressValue(value.replace(/[^a-zA-Z0-9]/g, ""));
+  }
+
   return (
     <NewAccountContainer>
       <ProviderTypeIcon>
@@ -101,7 +105,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           handleStatus={setAddressState}
           autoComplete="off"
           isControlled
-          handleChange={(_, value) => setAddressValue(value)}
+          handleChange={handleChange}
           value={addressValue}
           SuffixComponent={() => (
             <IconSwitch
