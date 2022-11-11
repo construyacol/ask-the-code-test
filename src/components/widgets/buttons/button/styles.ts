@@ -28,7 +28,7 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
     justify-content: center;
     font-family: 'Roboto', sans-serif;
     border: none;
-    font-weight: 700;
+    font-weight: normal;
     cursor: pointer;
     position: relative;
     background: transparent;
@@ -36,6 +36,10 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
     display: flex;
     align-items: center;
     column-gap: 7px;
+
+    &.bold{
+        font-weight: bold;
+    }
 
     &.text{
         color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
@@ -75,7 +79,6 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
         background:${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
         color: white; 
         &:hover{   
-            opacity: .6;
         }
 
         &.disabled{

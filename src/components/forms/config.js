@@ -1,7 +1,7 @@
 import { 
   FIAT_DEPOSIT_COMPONENTS,
   FIAT_DEPOSIT_STAGES,
-  FIAT_DEPOSIT_DEFAULT_STATE
+  // FIAT_DEPOSIT_DEFAULT_STATE
 } from './widgets/fiatDeposit/api'
  
 import { 
@@ -17,13 +17,13 @@ import {
 import { 
   FIAT_WITHDRAW_COMPONENTS,
   FIAT_WITHDRAW_STAGES,
-  FIAT_WITHDRAW_DEFAULT_STATE
+  // FIAT_WITHDRAW_DEFAULT_STATE
 } from './widgets/fiatWithdraw/api'
 
 import { 
   NEW_WACCOUNT_COMPONENTS,
   NEW_WACCOUNT_STAGES,
-  NEW_WACCOUNT_DEFAULT_STATE
+  // NEW_WACCOUNT_DEFAULT_STATE
 } from './widgets/newWithdrawAccount/api'
 
 // import { 
@@ -33,13 +33,13 @@ import {
 // } from './widgets/personalKycComponent/oldApi'
 
 import { 
-  LOCATION_DEFAULT_STATE,
+  // LOCATION_DEFAULT_STATE,
   LOCATION_COMPONENTS,
   LOCATION_STAGES
 } from './widgets/kyc/locationComponent/api'
 
 import { 
-  IDENTITY_DEFAULT_STATE,
+  // IDENTITY_DEFAULT_STATE,
   IDENTITY_COMPONENTS,
   IDENTITY_STAGES
 } from './widgets/kyc/identityComponent/api'
@@ -50,7 +50,7 @@ import {
 // } from './widgets/identityKycComponent/api'
 
 import { 
-  CONTACT_DEFAULT_STATE,
+  // CONTACT_DEFAULT_STATE,
   CONTACT_COMPONENTS,
   CONTACT_STAGES
 } from './widgets/kyc/contactComponent/api'
@@ -73,16 +73,15 @@ let stages = {
   ...CONTACT_STAGES
 } 
 
-const defaultState = {
-  // ...PERSONAL_DEFAULT_STATE,
-  ...NEW_WACCOUNT_DEFAULT_STATE,
-  ...FIAT_WITHDRAW_DEFAULT_STATE,
-  ...FIAT_DEPOSIT_DEFAULT_STATE,
-  ...IDENTITY_DEFAULT_STATE,
-  ...LOCATION_DEFAULT_STATE,
-  ...CONTACT_DEFAULT_STATE
-}
-
+// const defaultState = {
+//   // ...PERSONAL_DEFAULT_STATE,
+//   ...NEW_WACCOUNT_DEFAULT_STATE,
+//   ...FIAT_WITHDRAW_DEFAULT_STATE,
+//   ...FIAT_DEPOSIT_DEFAULT_STATE,
+//   ...IDENTITY_DEFAULT_STATE,
+//   ...LOCATION_DEFAULT_STATE,
+//   ...CONTACT_DEFAULT_STATE
+// }
 
 const wrapperComponent = {
   ...BIOMETRIC_COMPONENTS['wrapperComponent'],
@@ -99,9 +98,7 @@ const wrapperComponent = {
 
 const formStructure = formName => ({
     wrapperComponent:wrapperComponent[formName],
-    // handleError:getErrors(formName),
     successStage:null,
-    defaultState:defaultState[formName],
     stages:stages[formName]
 })
 

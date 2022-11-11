@@ -49,7 +49,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
     ) {
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
-    }
+    } 
 
     const newWithdrawAccount = await coinsendaServices.addNewWithdrawAccount(
       {
@@ -72,9 +72,13 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
     await dispatch(actions.success_sound());
     await switchView("addressList");
     let idNewAccount = document.getElementById(newWithdrawAccount.id);
-    idNewAccount.classList.add("shower");
+    idNewAccount && idNewAccount?.classList?.add("shower");
     setAddressValue();
   };
+
+  const handleChange = (_, value) => {
+    setAddressValue(value.replace(/[^a-zA-Z0-9]/g, ""));
+  }
 
   return (
     <NewAccountContainer>
@@ -101,7 +105,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
           handleStatus={setAddressState}
           autoComplete="off"
           isControlled
-          handleChange={(_, value) => setAddressValue(value)}
+          handleChange={handleChange}
           value={addressValue}
           SuffixComponent={() => (
             <IconSwitch

@@ -58,17 +58,15 @@ function RootContainer(props) {
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
-      if(!decodeJwt){return}
+      if(!decodeJwt){return} 
       history.push("/");
     }
 
     const userData = await getUserToken();
-    
+
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
-    // if(decodedToken.email.includes('_testing')){
-    //   return console.log('userToken ==> ', userToken)
-    // }
+    // if(decodedToken.email.includes('bitsendaTest')) return console.log('decodedToken ==> ', decodedToken);
     if(!Object.keys(authData).length){
       props.actions.setAuthData({
         userToken,

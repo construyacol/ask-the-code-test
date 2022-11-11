@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
 
   &.scroll{
     overflow-y: scroll;
+    overflow-x: hidden;
   }
   grid-template-columns: 1fr;
   display: grid;

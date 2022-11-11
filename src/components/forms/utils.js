@@ -11,16 +11,18 @@ import { ApiGetOnBoardingStages } from './widgets/onBoardingComponent/api'
 // import { ApiGetPersonalStages } from './widgets/personalKycComponent/oldApi'
 import { ApiGetLocationStages } from './widgets/kyc/locationComponent/api'
 import { ApiGetContactStages } from './widgets/kyc/contactComponent/api'
-import { ApiGetIdentityStages, ApiGetIdentityErrors } from './widgets/kyc/identityComponent/api'
+import { 
+  ApiGetIdentityStages, 
+  ApiGetIdentityErrors,
+  ApiGetIdentityState
+} from './widgets/kyc/identityComponent/api'
 import { ApiGetBiometricStages } from './widgets/biometricKycComponent/api'
 import { ApiGetNewWalletStages } from './widgets/newWallet/api'
 import { ApiGetNewWAccountStages } from './widgets/newWithdrawAccount/api'
 import { FIAT_DEPOSIT_TYPES, ApiGetOnFiatDepositStages } from './widgets/fiatDeposit/api'
 import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages } from './widgets/fiatWithdraw/api'
 
-
 // import countryValidators from './apiRes'
-
 
 export const filterElement = (list, query) => {
   let result = {}
@@ -38,10 +40,7 @@ export const filterElement = (list, query) => {
     //   result = { itemList }
     // }
   })
-
   return Object.keys(result).length ? result : list
-
-
 }
 
 
@@ -53,7 +52,6 @@ export const getQuery = (queryParams) => {
   })
   return result.join('')
 }
-
 
 export const getInitialState = (payload) => {
   let initialState = {}
@@ -152,7 +150,6 @@ export const createSelectList = async(list) => {
       if(item.flag){
         selectList[item?.code].flag = `${INFO_URL_API?.replace("/api/", "")}${item.flag}` 
       }
-      
     } 
   }
   return {...selectList}
@@ -200,11 +197,20 @@ const getErrors = (config) => {
   }
   return ERRORS[config.formName] && ERRORS[config.formName](config)
 }
+ 
+
+const getDefaultState = (config) => {
+  const STATES = {
+    identity:ApiGetIdentityState
+  }
+  return STATES[config.formName] && STATES[config.formName](config)
+}
 
 export const initStages = async(_config, API_STAGES) => {
-   
+
   let config = {..._config}
   config.handleError = getErrors(config)
+  config.defaultState = getDefaultState(config)
   const apiStages = API_STAGES || await dataService[config.formName](config)
   if(!apiStages) return;
 
@@ -222,6 +228,7 @@ export const initStages = async(_config, API_STAGES) => {
   return {
     ...formStructure(config.formName),
     handleError:config.handleError,
+    defaultState:config.defaultState,
     stages,
     formName:config?.formName
   }

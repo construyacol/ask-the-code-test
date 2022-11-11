@@ -19,6 +19,11 @@ const useStage = (stageController, stages, defaultStage = 0) => {
     setCurrentStage(prevState => prevState-1)
   }
 
+  const goToStage = (step = 1) => {
+      if(step >= stageController.length || step < 0){return}
+      setCurrentStage(step)
+  }
+
 // Set url query params
   useEffect(()=>{
     if(stageData?.settings?.queryParams){
@@ -39,6 +44,7 @@ const useStage = (stageController, stages, defaultStage = 0) => {
     lastStage:stageController?.length > 1 && ((currentStage + 1) === stageController?.length),
     nextStage,
     prevStage,
+    goToStage,
     stageController,
     stageData,
     setStageData,

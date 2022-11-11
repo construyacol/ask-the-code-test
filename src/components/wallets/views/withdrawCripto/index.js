@@ -223,7 +223,7 @@ export const CriptoView = () => {
   }, [active_trade_operation, amountState, addressState]);
 
   const handleChangeAddress = (_, value) => {
-    setAddressValue(value);
+    setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
   };
 
 
@@ -255,7 +255,6 @@ export const CriptoView = () => {
   }, [addressState, withdraw_accounts, addressValue]);
 
   // console.log('|||||||||||||||||||||||||||  addressState ===> ', addressState)
-
   const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
 
   return (
@@ -270,7 +269,7 @@ export const CriptoView = () => {
         placeholder={"Escribe @ para ver tu lista de direcciones..."}
         name="address"
         handleStatus={setAddressState}
-        isControlled
+        isControlled 
         handleChange={handleChangeAddress}
         value={addressValue}
         label={`Ingresa la dirección ${currencySymbol}`}

@@ -56,7 +56,6 @@ export default () => {
         // case: `address` si encontramos @ al inicio de la linea: ^@
         if (inputName === "address" && e.target.value.match(/^@/g)) {
           setInputState(null)
-          // console.log('activando sistema de tags')
           return;
         }
 
@@ -65,7 +64,9 @@ export default () => {
 
         let currency = currentWallet.currency.currency === "bitcoin_testnet" ? "bitcoin" : currentWallet.currency.currency;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
-
+        // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
+        // console.log('address value', finalValue)
+        // debugger
         let addressVerify = await AddressValidator.validate(
           finalValue,
           currency

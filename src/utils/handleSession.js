@@ -12,8 +12,8 @@ import { SignInWithApple } from '@capacitor-community/apple-sign-in';
 const { Oauth, APPLE_CLIENT_ID, APPLE_CALLBACK_URL, APPLE_SCOPES, COINSENDA_CLIENT_ID } = Environment
 const SIGNIN_EVENT_MESSAGE = 'signinApple';
 const APPLE_STATE_PARAM = JSON.stringify({ "clientId": COINSENDA_CLIENT_ID , "third_party": true });
-
 let _keyEncoder = new KeyEncoder('secp256k1');
+
 export const saveUserToken = async(userToken, refreshToken) => {
   try {
     let decodeJwt = await verifyUserToken(userToken)

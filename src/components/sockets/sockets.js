@@ -40,22 +40,6 @@ class SocketsComponent extends Component {
   //   //   id:"6184c8f067e372004414b156",
   //   //   file_state:"accepted"
   //   // }
-
-  //   // setTimeout(()=>{
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //     // this.identity_management(identityMock)
-  //   // }, 3800)
-  //   // this.identity_management(identityMock)
-  //   // this.identity_management(identityMock)
-  //   // this.identity_management(identityMock)
    
 
   //   // let orderMock = {
@@ -119,7 +103,6 @@ class SocketsComponent extends Component {
       socket.emit("authentication", body);
     });
   
-  
       socket.on("authenticated", () => document.querySelector('#home-container')?.classList?.add('socket-authenticated'));
 
       const { user } = this.props;
@@ -158,6 +141,10 @@ class SocketsComponent extends Component {
         if(identity.file_state || identity.info_state){
           this.identity_management(identity)
         }
+      });
+
+      socket.on(`/identity_delete/${user.id}`, async (identity) => {
+        this.props.coinsendaServices.updateUserStatus()
       });
  }
 
@@ -264,6 +251,7 @@ class SocketsComponent extends Component {
               title:"Coinsenda",
               summaryText:"Enhorabuena",
               largeBody:"¡Tu retiro ha sido debitado!",
+              body:"¡Tu retiro ha sido debitado!"
             })
           }
         })
@@ -430,6 +418,7 @@ class SocketsComponent extends Component {
             title:"Coinsenda",
             summaryText:"Algo ha salido mal :(",
             largeBody:`¡Tu retiro No se ha podido realizar!`,
+            body:`¡Tu retiro No se ha podido realizar!`
           })
         }
       })
@@ -569,6 +558,7 @@ class SocketsComponent extends Component {
               title:"Coinsenda",
               summaryText:"Enhorabuena",
               largeBody:"¡Tu depósito ha sido acreditado!",
+              body:"¡Tu depósito ha sido acreditado!"
             })
           }
         })
@@ -660,6 +650,7 @@ class SocketsComponent extends Component {
             title:"Coinsenda",
             summaryText:"",
             largeBody:"Tu depósito NO ha sido aprobado",
+            body:"Tu depósito NO ha sido aprobado"
           })
         }
       })
@@ -887,7 +878,7 @@ class SocketsComponent extends Component {
           await this.props.coinsendaServices.updateUserStatus(identity)
           this.props.coinsendaServices.init()
           this.props.history.push(`/wallets`);
-          postLocalNotification({ 
+          postLocalNotification({  
             title:"Coinsenda",
             summaryText:"Enhorabuena",
             largeBody:`¡Felicidades, tu cuenta ha sido verificada!`,

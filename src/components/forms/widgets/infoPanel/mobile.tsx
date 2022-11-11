@@ -29,11 +29,13 @@ const InfoStateComponent = (props:infoProps) => {
     const formKey = ["contact"].includes(formName) ? "location" : formName
     const stages = errors || itemsMenu[formKey]?.stages
     const Icon = getIcon('identity')
-    const progress = Math.ceil((currentStage)*100 / Object.keys(stages).length);
+    const progress = Math.ceil((currentStage)*99 / Object.keys(stages).length);
     const sumStage = ["location"].includes(formName) ? 2 : 1;
     const nextStage = currentStage < Object.keys(stages).length ? (currentStage + sumStage) : 1;
     // console.log('InfoStateComponent', currentStage < Object.keys(stages).length, stages, dataForm)
     const OpenCloseIcon = isOpenPanelInfo ? MdClose : MdMoreVert
+
+
     return(
         <InfoWrapper {...props} >
             <InfoContainer>
@@ -48,7 +50,7 @@ const InfoStateComponent = (props:infoProps) => {
                         </span> 
                     </P>
                     <TextContainer>
-                        <P className="description description__title">Sig:</P>
+                        <P className="description description__title">Prox:</P>
                         <DescriptionContainer>
                             <DescriptionCarousel style={{transform:`translateY(-${nextStage*16}px)`}}>
                                 {

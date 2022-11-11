@@ -68,6 +68,7 @@ const KycFormComponent = ({
               stageData={stageData}
               dataForm={dataForm}
               stageStatus={stageStatus}
+              stageController={stageController}
               {...props}
               // setInfoStages={setInfoStages}
             />

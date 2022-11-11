@@ -30,6 +30,7 @@ const InfoPanel = ({
   user, 
   levelRequirements, //source data from identity HOC
   isOpenPanelInfo,
+  stageController,
   viewportSizes:{ isMobile }
 }) => {
  
@@ -59,6 +60,7 @@ const InfoPanel = ({
   let { itemsMenu, pendingRequirements } = levelRequirements
   let errors = dataForm?.handleError?.errors
 
+
   return (
       <InfoPanelContainer 
         id="infoPanel" 
@@ -77,7 +79,7 @@ const InfoPanel = ({
                   const isActive = menuKey?.includes(currentPendingRequirement) || (isEmpty(pendingRequirements) && menuKey === 'identity')
                   const sectionState = isSuccessfull ? 'complete' : isActive ? 'inProgress' : 'pending'
                   const AuxComponentIcon = isActive ? IsActiveIndicator : ["complete", "pending"].includes(sectionState) ? ArrowIconSwitch: () => null
-
+              
                   return(
                     <ItemRequirementContainer key={index} className={`${sectionState}`}>
 
@@ -115,10 +117,18 @@ const InfoPanel = ({
                                 (["confirmed"].includes(currentIdentity?.info_state) && key === 'files' && !findLastKey(state, (lastItem) => lastItem === undefined)) ||
                                 ((errors && !errors[key]) && key !== 'files');
 
+                                const isFirstStage = id === 0
+                                const stageIndex = stageController?.indexOf(key)
+                                const prevStageKey = stageController && stageController[(stageIndex-1)]
+                                const prevState = state[prevStageKey]
+                                const isAvailable = (prevState || isFirstStage || errors || ["location"].includes(menuKey) || dataForm?.wrapperComponent?.includes('files')) ? true : false;
+
+                                console.log('isAvailable', menuKey)
+
                                 return ( 
-                                  <li className={`${(inProgress || isCompleted || isSuccessfull) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : key === stageData?.key ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
+                                  <li className={`${((inProgress || isCompleted || isSuccessfull) && isAvailable) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : key === stageData?.key ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
                                     { 
-                                      (isSuccessfull || isCompleted) &&
+                                      ((isSuccessfull || isCompleted) && isAvailable) &&
                                       <BiCheck color="green" size={16} />
                                     }
                                     {

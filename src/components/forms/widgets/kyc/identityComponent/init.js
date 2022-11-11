@@ -10,7 +10,6 @@ const IdentityForm = (props) => {
   const [ dataForm, setDataForm ] = useState()
   const actions = useActions();
 
-
   const init = async() => {
     const _dataForm = await initStages({
       formName:'identity',
@@ -36,8 +35,11 @@ const IdentityForm = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  console.log(' ===========================================> dataform', )
+
   return(
     <Layout 
+      className={`${dataForm?.wrapperComponent?.includes('files') ? 'scroll' : ''}`}
       closeControls
     >
         {

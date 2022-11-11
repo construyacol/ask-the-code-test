@@ -67,7 +67,7 @@ const InfoComponent = ({ handleDataForm, handleState, closeModal, ...props }) =>
       setState(prevState => {
         return { ...prevState, [stageData?.key]: "" }
       })
-    }
+    } 
     return prevStage()
   }
 
