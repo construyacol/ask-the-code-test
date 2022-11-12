@@ -15,7 +15,8 @@ export const UI_NAMES = {
       pasaporte:"Pasaporte",
       cedula_ciudadania:"Cédula de ciudadanía",
       cedula_extranjeria:"Cédula de extranjería",
-      pep:"Permiso especial de permanencia"
+      pep:"Permiso especial de permanencia",
+      ppt:"Permiso por protección temporal"
     },
     account_type:{
       cuenta_ahorro:"Cuenta de ahorros",

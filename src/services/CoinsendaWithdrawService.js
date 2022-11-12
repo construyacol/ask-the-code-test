@@ -207,7 +207,6 @@ export class WithdrawService extends WebService {
     const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`;
 
     const withdrawProviders = await this.Get(finalUrl);
-
     if (!withdrawProviders) return;
 
     if (await this.isCached("withdrawProviders", withdrawProviders)) {

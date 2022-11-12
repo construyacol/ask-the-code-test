@@ -198,6 +198,21 @@ export class IndetityService extends WebService {
       return await this.Get(url);
     }
 
+    async getBankDocumentList(provider_type) {
+      const { withdrawProviders } = this.globalState?.modelData;
+      let docList = {}
+      Object.keys(withdrawProviders).forEach(wProv => {
+        if(withdrawProviders[wProv]?.provider_type === provider_type){
+          docList = { ...withdrawProviders[wProv]?.info_needed?.id_type }
+          delete docList.ui_name
+          delete docList.ui_type
+          return docList
+        }
+      })
+      return docList
+    }
+
+
     async createAvailableIdentityList(props) {
 
       const payload = props?.payload
@@ -206,14 +221,13 @@ export class IndetityService extends WebService {
       let documentList = await this.getDocumentList(payload)
 
       if(documentList && this.user?.identities?.length){
-        let userIdentities =  {}
-        this.user?.identities.forEach(identity => {
-          userIdentities = {
-            ...userIdentities,
-            [identity?.id_type]:identity
-          }
-        })
-
+        // let userIdentities =  {}
+        // this.user?.identities.forEach(identity => {
+        //   userIdentities = {
+        //     ...userIdentities,
+        //     [identity?.id_type]:identity
+        //   }
+        // })
         if(currentIdentity && ["rejected"].includes(getIdentityState(currentIdentity))){
           let documentListByKey = keyBy(documentList, "id_type")
           return [{...documentListByKey[currentIdentity?.id_type], state:"rejected"}] 

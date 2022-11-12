@@ -13,7 +13,7 @@ export default function IdentityComponent({
       stageData,
       setStageData,
       setStageStatus,
-      stageStatus
+      stageStatus 
     },
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
@@ -29,7 +29,7 @@ export default function IdentityComponent({
       const Element = await import(`../kyc/identityComponent/init`)
       if(!Element) return;
       const CreateNewIdentity = Element.default
-      actions.renderModal(() => <CreateNewIdentity title="Vinculando nueva identidad"/>);
+      actions.renderModal(() => <CreateNewIdentity title="Vinculando nueva identidad" />);
     }
     
     const selectIdentity = (identity) => {
