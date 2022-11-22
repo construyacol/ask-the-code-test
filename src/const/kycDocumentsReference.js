@@ -15,5 +15,10 @@ export const DOCUMENT_IMAGE_CDN_PATH = {
     pep:{
         id_front:"kyc_identity/colombia/cedula_ciudadania/id_front.png",
         selfie:"kyc_identity/colombia/cedula_ciudadania/selfie.png"
+    },
+    ppt:{
+        id_front:"kyc_identity/colombia/cedula_ciudadania/id_front.png",
+        selfie:"kyc_identity/colombia/cedula_ciudadania/selfie.png"
     }
+
 }
