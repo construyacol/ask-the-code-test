@@ -1,39 +1,26 @@
-const accountInitialEnvironment = {
-  "accounts": [
-    {
-      "data": {
-        "country": null,
-        "enabled": true,
-        "currency":"COP",
+import { CURRENCIES, DEFAULT_CURRENCIES } from 'core/config/currencies'
+
+const getInitialBodyAccounts = (environment = 'test') => {
+  const initialAccounts = DEFAULT_CURRENCIES.map(currency => {
+    return {
+      data:{
+        country: null,
+        enabled: true,
+        currency:CURRENCIES[currency][`${environment}Name`],
         "short_currency": {
-          "currency": "cop",
-          "is_token": false
-        }
-      }
-    },
-    {
-      "data": {
-        "country": null,
-        "enabled": true,
-        "currency":"Bitcoin",
-        "short_currency": {
-          "currency": "bitcoin",
-          "is_token": false
-        }
-      }
-    },
-    {
-      "data": {
-        "country": null,
-        "enabled": true,
-        "currency":"Litecoin",
-        "short_currency": {
-          "currency": "litecoin",
+          "currency": CURRENCIES[currency][environment],
           "is_token": false
         }
       }
     }
-  ]
+  })
+  return initialAccounts
+}
+
+const environment = process.env.NODE_ENV !== 'development' ? 'prod' : 'test'
+
+const accountInitialEnvironment = {
+  "accounts": getInitialBodyAccounts(environment)
 }
 
 export default accountInitialEnvironment

@@ -13,6 +13,8 @@ import useViewport from "../../../hooks/useWindowSize";
 import { RibbonContDeposit } from '../../referrals/shareStyles'
 import BigNumber from 'bignumber.js'
 import useToastMessage from "../../../hooks/useToastMessage"; 
+import { selectDepositProvsByCurrency } from 'selectors'
+import { useSelector } from "react-redux";
 
 import {
   gotoTx,
@@ -132,7 +134,6 @@ export const DepositOrder = ({ order }) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
 
 
   return (
@@ -419,15 +420,20 @@ const WithdrawOrder = ({ order }) => {
   );
 };
 
+
+
+
+
 const PanelLeft = (order) => {
 
-  const { currencies, tx_path } = UseTxState(order.id);
+  const { tx_path } = UseTxState(order.id);
+  const depositProviders = useSelector((state) => selectDepositProvsByCurrency(state));
 
   let totalConfirmations
   let confirmations
 
-  if((order?.currency && currencies) && Object.keys(currencies).length) {
-    totalConfirmations = currencies[order.currency.currency].confirmations && Number(currencies[order.currency.currency].confirmations)
+  if((order?.currency && depositProviders) && Object.keys(depositProviders).length) {
+    totalConfirmations = depositProviders[order.currency.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency.currency]?.depositAccount?.confirmations)
     confirmations = Number(order.confirmations)
   }
 

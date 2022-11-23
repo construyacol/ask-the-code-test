@@ -163,7 +163,7 @@ export class MainService extends inheritances {
       let pairs = await this.fetchAllPairs();
       if (!pairs) {
         // return callback();
-      }
+      } 
       const currencies = await this.fetchAllCurrencies();
       if (!currencies) throw currencies;
       await this.getPairsByCountry(this.user.country, currencies);

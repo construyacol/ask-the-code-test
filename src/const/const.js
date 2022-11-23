@@ -1,6 +1,5 @@
 import { createBrowserHistory } from "history";
 import Enviroment from "../environment";
-import BigNumber from "bignumber.js";
 import { Capacitor } from '@capacitor/core';
 
 
@@ -181,53 +180,6 @@ export const GET_URLS = {
 
 export const history = createBrowserHistory();
 export const COINSENDA_URL = BASE_URL
-
-export const currencyFormatByCoin = {
-  bitcoin: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  litecoin: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  bitcoin_testnet: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  usd: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 3,
-  }),
-  ethereum: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  cop: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 0,
-  }),
-  bitcoin_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  bitcoin_testnet_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  usd_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 2,
-  }),
-  ethereum_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  cop_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 0,
-  }),
-};
 
 export const size = {
   mobileS: 320,

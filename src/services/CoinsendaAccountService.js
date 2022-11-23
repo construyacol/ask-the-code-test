@@ -290,6 +290,7 @@ export class AccountService extends WebService {
   }
 
   async updateActivityState(accountId, type, activities) {
+
     if (!activities) {
       activities = await serve_orders(accountId, type);
     }

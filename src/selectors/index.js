@@ -2,7 +2,14 @@ import { createSelector } from "reselect";
 import { isEmpty } from 'lodash'
 import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
+import { convertToObjectWithCustomIndex } from "utils";
 
+
+
+export const selectDepositProvsByCurrency = createSelector(
+  ({ modelData }) => modelData.deposit_providers,
+  (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.name")
+);
 
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,

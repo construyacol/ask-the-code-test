@@ -53,9 +53,7 @@ const UseTxState = (current_order_id) => {
     (state) => state.modelData.deposit_providers
   );
   const loader = useSelector((state) => state.isLoading.loader);
-  const currencies = useSelector((state) =>
-    selectWithConvertToObjectWithCustomIndex(state)
-  );
+  const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state));
   const currentOrder = useSelector((state) =>
     selectCurrentOrder(state, current_order_id, params)
   );

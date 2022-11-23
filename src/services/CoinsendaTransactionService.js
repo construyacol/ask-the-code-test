@@ -18,12 +18,9 @@ import menuItems from "api/ui/menuItems";
 
 export class TransactionService extends WebService {
   async fetchAllCurrencies() {
-    await this.dispatch(
-      appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS)
-    );
-    const response = await this.Get(`${CURRENCIES_URL}{"where": {"enabled": true}}`);
+    await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS));
+    const response = await this.Get(`${CURRENCIES_URL}{"where": {"enabled": true, "visible": true}}`);
     let new_currencies = [];
-
     // en caso de que ocurra un error en esta petición cargaremos con datos harcodeados el modelo
     if (!response) {
       this.dispatch(updateAllCurrenciesAction(new_currencies));
@@ -208,8 +205,7 @@ export class TransactionService extends WebService {
   }
 
   async getLocalCurrency(country) {
-    // const [countryCurrency] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "${country}"}}`);
-    const [countryCurrency ] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "international"}}`);
+    const [ countryCurrency ] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "international"}}`);
     if (this.isEmpty(countryCurrency)) return;
     const localCurrencyId = countryCurrency.currency_id;
     let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`);
