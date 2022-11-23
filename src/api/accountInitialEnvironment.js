@@ -17,7 +17,8 @@ const getInitialBodyAccounts = (environment = 'test') => {
   return initialAccounts
 }
 
-const environment = process.env.NODE_ENV !== 'development' ? 'prod' : 'test'
+const ENV = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+const environment = ["development", "staging"].includes(ENV) ? 'test' : 'prod'
 
 const accountInitialEnvironment = {
   "accounts": getInitialBodyAccounts(environment)
