@@ -424,7 +424,7 @@ const WithdrawOrder = ({ order }) => {
 
 
 
-const PanelLeft = (order) => {
+const PanelLeft = (order) => { 
 
   const { tx_path } = UseTxState(order.id);
   const depositProviders = useSelector((state) => selectDepositProvsByCurrency(state));

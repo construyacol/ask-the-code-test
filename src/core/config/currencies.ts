@@ -2,11 +2,11 @@ import BigNumber from "bignumber.js";
 
 
 export const DEFAULT_CURRENCIES = [
+    "cop",
     "bitcoin",
-    "ethereum",
     "litecoin",
-    "usdt",
-    "cop"
+    "ethereum",
+    "usdt"
 ]
 
 export const CURRENCIES = {

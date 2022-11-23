@@ -17,6 +17,21 @@ const selectWithdrawProviderByType = createSelector(
   }
 );
 
+const selectWithdrawProviderByName = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (withdrawProviders) => {
+    let result = {};
+    for (let provider_id in withdrawProviders) {
+      result = {
+        ...result,
+        [withdrawProviders[provider_id].name]:withdrawProviders[provider_id]
+      };
+    }
+    return result;
+  }
+);
+
+
 const selectWithdrawAccountsByAddress = createSelector(
   (state) => state.modelData.withdraw_accounts,
   (_, current_wallet) => current_wallet,
@@ -40,6 +55,7 @@ const WithdrawViewState = () => {
   const dispatch = useDispatch();
   const { modelData, ui, isLoading, storage } = useSelector((state) => state);
   const withdrawProviders = useSelector((state) => selectWithdrawProviderByType(state));
+  const withdrawProvidersByName = useSelector((state) => selectWithdrawProviderByName(state));
   const { account_id, path } = useParams();
   const { active_trade_operation } = ui.current_section.params;
   const { wallets, balances, user } = modelData;
@@ -55,6 +71,7 @@ const WithdrawViewState = () => {
       current_wallet,
       balance: current_wallet && balances[current_wallet.id],
       withdrawProviders,
+      withdrawProvidersByName,
       withdraw_accounts,
       active_trade_operation,
       loader,

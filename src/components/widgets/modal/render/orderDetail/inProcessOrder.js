@@ -35,6 +35,7 @@ import { BottomSection } from './'
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
+import { selectDepositProvsByCurrency } from 'selectors'
 
 import moment from "moment";
 import "moment/locale/es";
@@ -67,7 +68,18 @@ const InProcessOrder = ({ onErrorCatch }) => {
 export default InProcessOrder;
 
 const CryptoOrder = ({ order }) => {
-  const { tx_path, currencies } = UseTxState();
+
+  const { tx_path } = UseTxState();
+  const depositProviders = useSelector((state) => selectDepositProvsByCurrency(state));
+
+  let totalConfirmations
+  let confirmations
+
+  if((order?.currency && depositProviders) && Object.keys(depositProviders).length) {
+    totalConfirmations = depositProviders[order.currency.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency.currency]?.depositAccount?.confirmations)
+    confirmations = Number(order.confirmations)
+  }
+
   const { isTabletOrMovilViewport } = useViewport();
 
   return (
@@ -101,14 +113,14 @@ const CryptoOrder = ({ order }) => {
             TitleSuffix={() => <GetIcon order={order} />}
           />
         </MiddleSection>
-
+ 
         {
           tx_path === "deposits" ? (
             <BottomSectionContainer className={`crypto`}>
               <UploadComponent title="TX ID - Confirmaciones" />
               <ConfirmationCounter
-                confirmations={order.confirmations}
-                total_confirmations={currencies[order.currency.currency].confirmations}
+                confirmations={confirmations}
+                total_confirmations={totalConfirmations}
               />
             </BottomSectionContainer>)
           :

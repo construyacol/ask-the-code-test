@@ -321,6 +321,7 @@ export const ItemAccountL = styled.div`
 `;
 
 export const WalletLayout = styled(ItemAccountL)`
+  background: linear-gradient(to right, #bfbfbf, #a0a0a0);
   .iconWallet {
     position: absolute;
     align-self: center;
@@ -329,6 +330,8 @@ export const WalletLayout = styled(ItemAccountL)`
   }
 
   &.cop,
+  &.usdt,
+  &.usdt_testnet,
   &.usd {
     background: linear-gradient(to right, #11998e, #38ef7d);
   }
@@ -338,15 +341,17 @@ export const WalletLayout = styled(ItemAccountL)`
     background: linear-gradient(to right, #f9a847, #cf7507);
   }
 
-  &.ethereum {
-    background: linear-gradient(to right, #8c8c8c, #141414);
+  &.ethereum,
+  &.ethereum_testnet {
+    background: linear-gradient(to right, #444444, #8c8c8c);
   }
 
   &.dash {
     background: linear-gradient(to right, #2c8fe0, #155a93);
   }
 
-  &.litecoin {
+  &.litecoin,
+  &.litecoin_testnet {
     background: linear-gradient(to right, #bfbfbf, #a0a0a0);
   }
 

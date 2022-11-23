@@ -22,18 +22,18 @@ import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 import { CAPACITOR_PLATFORM } from 'const/const';
 import { checkCameraPermission } from 'utils'
 import AvailableBalance from '../../../widgets/availableBalance'
+import { isEmpty } from 'lodash'
 
 
-export const CriptoSupervisor = (props) => {
-  const [{ current_wallet, withdrawProviders }] = WithdrawViewState();
-  // const [ { current_wallet } ] = WithdrawViewState()
-  // const withdrawProviders = {}
+export const CriptoSupervisor = () => {
+  
+  const [{ current_wallet, withdrawProvidersByName }] = WithdrawViewState();
 
   return (
     <>
-      {Object.keys(withdrawProviders).length === 0 ? (
+      {isEmpty(withdrawProvidersByName) ? (
         <SkeletonWithdrawView />
-      ) : !withdrawProviders[current_wallet.currency.currency] ? (
+      ) : !withdrawProvidersByName[current_wallet.currency.currency] ? (
         <WithOutProvider current_wallet={current_wallet} />
       ) : (
         <CriptoView />
@@ -50,7 +50,7 @@ export const CriptoView = () => {
   const [
     {
       current_wallet,
-      withdrawProviders,
+      withdrawProvidersByName,
       withdraw_accounts,
       active_trade_operation,
       loader,
@@ -117,7 +117,7 @@ export const CriptoView = () => {
         data: { 
           amount,
           account_id: current_wallet.id,
-          withdraw_provider_id:withdrawProviders[current_wallet.currency.currency].id,
+          withdraw_provider_id:withdrawProvidersByName[current_wallet.currency.currency].id,
           withdraw_account_id: withdraw_account.id,
           country: user.country,
         },
@@ -170,7 +170,7 @@ export const CriptoView = () => {
         addressValue={addressValue}
         tagWithdrawAccount={tagWithdrawAccount}
         current_wallet={current_wallet}
-        withdrawProvider={withdrawProviders[current_wallet?.currency?.currency]}
+        withdrawProvider={withdrawProvidersByName[current_wallet?.currency?.currency]}
         handleAction={finish_withdraw}
       />);
 
@@ -263,7 +263,7 @@ export const CriptoView = () => {
       className={`${movil_viewport ? "movil" : ""}`}
       onSubmit={(e) => e.preventDefault()}
     >
-      {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProviders[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
+      {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProvidersByName[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
         type="text"
         placeholder={"Escribe @ para ver tu lista de direcciones..."}
@@ -300,7 +300,7 @@ export const CriptoView = () => {
 
       <InputForm 
         type="number" 
-        placeholder={`${withdrawProviders[current_wallet.currency.currency].provider.min_amount}`}
+        placeholder={`${withdrawProvidersByName[current_wallet.currency.currency].provider.min_amount}`}
         name="amount"
         handleStatus={setAmountState}
         handleChange={handleChangeAmount}
