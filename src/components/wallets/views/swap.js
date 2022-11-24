@@ -67,6 +67,7 @@ function SwapView(props) {
 
   const setDefaultValue = () => {
     let spendInput = document.querySelector('[name="spend-amount"]');
+    setExchangeEnabled()
     if(spendInput && value){
       spendInput.value = null
       setValue("0");
@@ -134,7 +135,6 @@ function SwapView(props) {
   //     setExchangeEnabled(state)
   //   }
   // }
-
 
   const handleChangeSpendAmount = async (name, newValue) => {
     setValue(newValue.toString().replace(/,/g, ""))
@@ -245,6 +245,7 @@ function SwapView(props) {
 
   const spentCurrencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
 
+// console.log('exchangeEnabled', exchangeEnabled)
 
   return (
     <SwapForm

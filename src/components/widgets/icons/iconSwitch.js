@@ -271,6 +271,7 @@ class IconSwitch extends Component {
       case "logout":
         return <LogOut {...props} />;
       case "usdt":
+      case "usdtt":
       case "usdt_testnet":
           return <Usdt {...props} />;
       case "ethereum":

@@ -92,9 +92,8 @@ export default () => {
 
          min_amount = await getMinAmount(inputName)
          available = formatToCurrency(availableBalance, currentWallet.currency);
-        
-         minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
 
+         minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
          availableAmountValidation = value.isLessThanOrEqualTo(available)
         //  debugger
 
@@ -193,7 +192,6 @@ export default () => {
           const { want_to_spend } = converted
           minAmount = want_to_spend
         }
-        
       return minAmount
       default:
         return

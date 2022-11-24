@@ -43,6 +43,8 @@ const InputForm = (props) => {
 
   useEffect(() => {
     // setIcon(GetIcon(name, inputState))
+    console.log('handleChange', inputState)
+    
     if (handleStatus) {
       handleStatus(inputState);
     }
