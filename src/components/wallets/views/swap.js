@@ -67,7 +67,6 @@ function SwapView(props) {
 
   const setDefaultValue = () => {
     let spendInput = document.querySelector('[name="spend-amount"]');
-    setExchangeEnabled()
     if(spendInput && value){
       spendInput.value = null
       setValue("0");
