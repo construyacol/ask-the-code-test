@@ -5,6 +5,42 @@ import { UI_NAMES } from 'const/uiNames'
 import { convertToObjectWithCustomIndex } from "utils";
 
 
+export const selectWithdrawAccountsByAddress = createSelector(
+  (state) => state.modelData.withdraw_accounts,
+  (_, current_wallet) => current_wallet,
+  (withdraw_accounts, current_wallet) => {
+
+    
+
+    let result = {};
+    for (let w_account_id in withdraw_accounts) {
+      let address = withdraw_accounts[w_account_id].info && withdraw_accounts[w_account_id].info.address
+      if (current_wallet?.currency?.currency === withdraw_accounts[w_account_id]?.currency?.currency && address) {
+        result = {
+          ...result,
+          [address]: withdraw_accounts[w_account_id]
+        };
+      }
+    }
+    return result;
+  }
+);
+
+
+export const selectWithdrawProviderByName = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (withdrawProviders) => {
+    let result = {};
+    for (let provider_id in withdrawProviders) {
+      result = {
+        ...result,
+        [withdrawProviders[provider_id].name]:withdrawProviders[provider_id]
+      };
+    }
+    return result;
+  }
+);
+
 
 export const selectDepositProvsByCurrency = createSelector(
   ({ modelData }) => modelData.deposit_providers,

@@ -1,7 +1,4 @@
 import { useState } from "react";
-// import AddressValidator from 'wallet-address-validator'
-// import useError from './errorHandle'
-// import { debounce } from "../../utils";
 import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle"; 
 import { useWalletInfo }  from "hooks/useWalletInfo";
@@ -12,20 +9,14 @@ export default () => {
 
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
-
-  // const [ setHandleError ] = useError()
-  // const globalState = useSelector(state => state)
-  // const params = useParams()
-  // const { account_id } = params
-  // const { wallets, withdrawProviders } = globalState.modelData
-  const [{ withdrawProviders }] = WithdrawViewState();
+  const [{ withdrawProvidersByName }] = WithdrawViewState();
   const { currentPair, currentWallet, availableBalance } = useWalletInfo();
+
   let value
   let min_amount
   let available
   let minAmountValidation
   let availableAmountValidation
-
 
   const validateState = async (inputName, e) => {
     if (!e.target.value || e.target.value.length === 0) {
@@ -58,18 +49,19 @@ export default () => {
           setInputState(null)
           return;
         }
-
+ 
         let AddressValidator;
-        AddressValidator = await import("wallet-address-validator");
+        AddressValidator = await import("multicoin-address-validator");
 
-        let currency = currentWallet.currency.currency === "bitcoin_testnet" ? "bitcoin" : currentWallet.currency.currency;
+        const { currency } = currentWallet.currency;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-        // console.log('address value', finalValue)
-        // debugger
+        if(!withdrawProvidersByName[currency])return;
+        const { address_validator_config:{ name, network } } = withdrawProvidersByName[currency]
         let addressVerify = await AddressValidator.validate(
           finalValue,
-          currency
+          name,
+          network
         );
 
         if (addressVerify) {
@@ -186,8 +178,8 @@ export default () => {
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
-        const providerMinAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
-        const costAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider?.costs?.medium_priority?.fixed, currentWallet.currency)
+        const providerMinAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.min_amount, currentWallet.currency)
+        const costAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.costs?.medium_priority?.fixed, currentWallet.currency)
         const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
         return withdrawMinAmount
       case 'spend-amount':

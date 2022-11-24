@@ -1,14 +1,5 @@
 import BigNumber from "bignumber.js";
 
-
-export const DEFAULT_CURRENCIES = [
-    "cop",
-    "bitcoin",
-    "litecoin",
-    "ethereum",
-    "usdt"
-]
-
 export const CURRENCIES = {
     bitcoin:{
         prod:'bitcoin',
@@ -147,3 +138,35 @@ const CURRENCY_CONFIG = {
 };
 
 export default CURRENCY_CONFIG
+
+
+
+
+export const DEFAULT_CURRENCIES = [
+    "cop",
+    "bitcoin",
+    "litecoin",
+    "ethereum",
+    "usdt"
+]
+
+
+export const CURRENCY_INDEX_IMG = {
+    usdt_testnet:"usdt",
+    usdtt:"usdt",
+    usdtt2:"usdt",
+    usdt:"usdt",
+    usdt2:"usdt",
+    litecoin_testnet:"litecoin",
+    ltct:"ltc",
+    ltct2:"ltc2",
+    litecoin:"litecoin",
+    ltc:"ltc",
+    ltc2:"ltc2",
+    ethereum_testnet:"ethereum",
+    etht:"eth",
+    etht2:"eth2",
+    ethereum:"ethereum",
+    eth:"eth",
+    eth2:"eth2"
+  }

@@ -24,8 +24,7 @@ import { pairsForAccount } from "../actions/uiActions";
 export class SwapService extends WebService {
   async fetchAllPairs() {
     this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES));
-    const pairs = await this.pairsRequest({"visible":true});
-    // const pairs = await this.Get(`${SWAP_URL}pairs?filter={"where": {"visible": true}}`);
+    const pairs = await this.pairsRequest();
     if (!pairs) { 
       return;
     }
@@ -42,14 +41,14 @@ export class SwapService extends WebService {
     return dataNormalized;
   }
 
-  pairsRequest(query) {
-    // const requestCompleteUrl = `${PAIRS_URL}${query}`;
-    // return this.Get(requestCompleteUrl);
-
+  pairsRequest(query = {}) {
     const body = {
       data:{
         filter:{
-          where:query
+          where:{
+            ...query,
+            visible:true
+          }
         }
       }
     }
@@ -63,7 +62,7 @@ export class SwapService extends WebService {
     if (!localCurrency) {
       return console.log("No se ha encontrado país en getPairsByCountry");
     }
-    const pairs = await this.pairsRequest({"visible":true, "secondary_currency.currency": `${localCurrency.currency}`});
+    const pairs = await this.pairsRequest({"secondary_currency.currency": `${localCurrency.currency}`});
     if (!pairs) return;
 
     if (currencies) {
@@ -124,6 +123,7 @@ export class SwapService extends WebService {
       }
       return response?.data[0];
     }
+     
     const query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
     const response = await this.pairsRequest(query);
     if (this.isEmpty(response)) return;

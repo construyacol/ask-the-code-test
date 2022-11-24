@@ -9,7 +9,7 @@ import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 
-const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
+const NewAccount = ({ currency, provider_type, providerName, switchView, addressToAdd }) => {
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState(addressToAdd);
   const [nameState, setNameState] = useState();
@@ -34,6 +34,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
     const label = form.get("name-account");
     const address = form.get("address-account");
     const thisAccountExist = withdraw_accounts[address];
+
     if (thisAccountExist && thisAccountExist.info.label === provider_type) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
       const hideAccount = await coinsendaServices.deleteAccount(
@@ -50,7 +51,7 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
     } 
-
+ 
     const newWithdrawAccount = await coinsendaServices.addNewWithdrawAccount(
       {
         currency: current_wallet.currency,
@@ -83,8 +84,8 @@ const NewAccount = ({ provider_type, switchView, addressToAdd }) => {
   return (
     <NewAccountContainer>
       <ProviderTypeIcon>
-        <IconSwitch icon={provider_type} size={45} />
-        <p className="fuente">{provider_type}</p>
+        <IconSwitch icon={currency} size={45} />
+        <p className="fuente">{providerName}</p>
       </ProviderTypeIcon>
       <Form id="newAccount" onSubmit={handleSubmit}>
         <InputForm

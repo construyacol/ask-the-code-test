@@ -323,7 +323,9 @@ export class WithdrawService extends WebService {
       account_type,
       currency,
       idTypes,
-      id_type
+      id_type,
+      label,
+      address
     } = payload;
 
     let identity_id = id_type && idTypes[id_type]?.enabled && idTypes[id_type]?.id
@@ -334,8 +336,8 @@ export class WithdrawService extends WebService {
             data: {
               currency,
               info_needed:{
-                ...payload,
-                // country:"colombia"
+                label,
+                address
               },
               "country": user.country,
               provider_type
@@ -354,7 +356,6 @@ export class WithdrawService extends WebService {
                 bank_name:short_name,
                 account_number,
                 account_type,
-                // "country":"colombia",
                 "email":user.email || "default@coinsendaDepositApiUrl.com",
               },
               "country": user.country,

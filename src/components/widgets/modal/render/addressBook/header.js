@@ -6,7 +6,7 @@ import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { IconBackContainer } from "../../../shared-styles";
 import { getCdnPath } from '../../../../../environment'
 
-const HeaderComponent = ({ provider_type, view, switchView }) => {
+const HeaderComponent = ({ uiName, view, switchView }) => {
   const idForBack = useKeyActionAsClick(
     true,
     "back-step-ca",
@@ -21,7 +21,7 @@ const HeaderComponent = ({ provider_type, view, switchView }) => {
       case "newAccount":
         return `Creando nueva cuenta`;
       default:
-        return `Agenda ${provider_type}`;
+        return `Agenda ${uiName}`;
     }
   };
 

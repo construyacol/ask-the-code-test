@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+// import BigNumber from "bignumber.js";
+// import usePrevious from "../../hooks/usePreviousValue";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-// import BigNumber from "bignumber.js";
 import InputForm from "../../widgets/inputs/inputForm";
 import { formatToCurrency} from "../../../utils/convert_currency";
 import { formatNumber } from "../../../utils";
-// import usePrevious from "../../hooks/usePreviousValue";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import styled from "styled-components";
@@ -20,8 +20,7 @@ import { getCdnPath } from '../../../environment'
 import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
-
-
+import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
 
 function SwapView(props) {
 
@@ -45,10 +44,10 @@ function SwapView(props) {
     currentPair,
     currencies
   } = useWalletInfo();
+
   const { isMovilViewport } = useWindowSize();
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   const isFiat = currentWallet.currency_type === "fiat";
-
 
   useEffect(() => {
     selectPair(true);
@@ -63,7 +62,6 @@ function SwapView(props) {
     callToSetReceiveValue()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
-
 
   const currentPairId = currentPair?.id
 
@@ -321,16 +319,17 @@ function SwapView(props) {
     </SwapForm>
   );
 }
+ 
 
-const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
+
+
+const PairSelect = ({ selectPair = () => null, secondaryCoin, id, currencies }) => {
 
   const showSubfix = window.innerWidth > 900;
   const { keyActions } = useSelector((state) => state.ui);
 
-
   const boughtCurrencySymbol = currencies ? currencies[secondaryCoin]?.symbol : secondaryCoin
-
-
+  const imgCoin = CURRENCY_INDEX_IMG[secondaryCoin] || secondaryCoin
 
   return(
     <PairSelectContainer
@@ -344,7 +343,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
           {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
           { boughtCurrencySymbol  && (
             <img
-              src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${secondaryCoin}.png`}`}
+              src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${imgCoin}.png`}`}
               alt=""
               width="30"
             />

@@ -46,7 +46,7 @@ export const CriptoView = () => {
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
 
-  const [coinsendaServices] = useCoinsendaServices();
+  const [ coinsendaServices ] = useCoinsendaServices();
   const [
     {
       current_wallet,
@@ -97,11 +97,12 @@ export const CriptoView = () => {
 
     actions.isAppLoading(true);
     let withdraw_account = withdraw_accounts[addressValue];
+    console.log('finish_withdraw', addressValue, withdraw_accounts)
     if (!withdraw_account) {
       // si la cuenta no existe, se crea una nueva y se consultan
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
           currency: current_wallet.currency,
-          provider_type: current_wallet.currency.currency,
+          provider_type: withdrawProvidersByName[current_wallet.currency.currency]?.provider_type,
           label: current_wallet.currency.currency,
           address: addressValue.trim(),
           country: current_wallet.country,
@@ -237,7 +238,8 @@ export const CriptoView = () => {
     // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd();
     const provider_type = current_wallet.currency.currency;
-
+    // console.log('addressValue', addressValue, withdraw_accounts)
+    // debugger
     if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
       setTagWithdrawAccount(withdraw_accounts[addressValue]);
@@ -265,7 +267,7 @@ export const CriptoView = () => {
     >
       {/* <form id="withdrawForm" className={`WithdrawView ${!withdrawProvidersByName[current_wallet.currency.currency] ? 'maintance' : ''} itemWalletView ${movil_viewport ? 'movil' : ''}`} onSubmit={handleSubmit}> */}
       <InputForm
-        type="text"
+        type="text" 
         placeholder={"Escribe @ para ver tu lista de direcciones..."}
         name="address"
         handleStatus={setAddressState}
@@ -295,7 +297,7 @@ export const CriptoView = () => {
           () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
           () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
           () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
-        ]}
+        ]} 
       />
 
       <InputForm 

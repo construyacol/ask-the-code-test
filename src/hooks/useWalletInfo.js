@@ -46,8 +46,8 @@ const selectWalletCurrencyShortName = createSelector(
 );
 
 
-
 export function useWalletInfo() {
+
   const { modelData, storage } = useSelector((state) => state);
   const { pairsForAccount } = storage;
   const { balances, wallets } = modelData

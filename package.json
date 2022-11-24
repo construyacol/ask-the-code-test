@@ -32,6 +32,7 @@
     "localforage": "^1.7.3",
     "lodash": "^4.17.21",
     "moment": "^2.24.0",
+    "multicoin-address-validator": "^0.5.11",
     "normalizr": "^3.4.0",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "prompt-input": "^3.0.0",
