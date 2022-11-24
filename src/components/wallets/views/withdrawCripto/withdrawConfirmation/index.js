@@ -31,6 +31,8 @@ export default function WithdrawConfirmation({
     const actions = useActions();
     const accountName = tagWithdrawAccount?.account_name?.value
 
+    console.log('withdrawProvider', withdrawProvider)
+    debugger
 
     const handleSubmit = async() => {
         setLoader(true)

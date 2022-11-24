@@ -13,16 +13,16 @@ const SkeletonWithdrawView = () => {
 
   return (
     <>
-    {
-      currentWallet.currency_type === 'fiat' ?
-      <SelectListSkeleton/>
-      :
-      <WithdrawForm>
-        <InputForm skeleton />
-        <InputForm skeleton />
-        <ControlButton formValidate={false} label="Enviar" />
-      </WithdrawForm>
-    }
+      {
+        currentWallet.currency_type === 'fiat' ?
+        <SelectListSkeleton/>
+        :
+        <WithdrawForm>
+          <InputForm skeleton />
+          <InputForm skeleton />
+          <ControlButton formValidate={false} label="Enviar" />
+        </WithdrawForm>
+      }
     </>
   );
 };

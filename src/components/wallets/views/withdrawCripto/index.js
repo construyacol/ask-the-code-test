@@ -45,7 +45,6 @@ export const CriptoSupervisor = () => {
 export const CriptoView = () => {
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
-
   const [ coinsendaServices ] = useCoinsendaServices();
   const [
     {
@@ -86,10 +85,9 @@ export const CriptoView = () => {
   const finish_withdraw = async (twoFaToken = null) => {
     const form = new FormData(document.getElementById("withdrawForm"));
     const amount = form.get("amount");
-
     const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
-    // if (user.security_center.authenticator.withdraw && !twoFaToken) {
+      // if (user.security_center.authenticator.withdraw && !twoFaToken) {
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} />
       ));
@@ -113,18 +111,20 @@ export const CriptoView = () => {
     }
 
     sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id );
-    const { error, data } = await coinsendaServices.addWithdrawOrder(
-      {
-        data: { 
-          amount,
-          account_id: current_wallet.id,
-          withdraw_provider_id:withdrawProvidersByName[current_wallet.currency.currency].id,
-          withdraw_account_id: withdraw_account.id,
-          country: user.country,
-        },
-      },
-      twoFaToken
-    );
+
+    const bodyRequest = {
+      data: { 
+        amount,
+        account_id: current_wallet.id,
+        withdraw_provider_id:withdrawProvidersByName[current_wallet.currency.currency].id,
+        withdraw_account_id: withdraw_account.id,
+        country: user.country,
+      }
+    }
+
+    debugger
+
+    const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
 
     await actions.renderModal(null)
 
@@ -227,8 +227,6 @@ export const CriptoView = () => {
     setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
   };
 
-
-
   const deleteTag = () => {
     setTagWithdrawAccount(null);
     setAddressValue("");
@@ -238,8 +236,8 @@ export const CriptoView = () => {
     // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd();
     const provider_type = current_wallet.currency.currency;
-    // console.log('addressValue', addressValue, withdraw_accounts)
-    // debugger
+    console.log('addressValue', addressValue, withdraw_accounts)
+    
     if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
       setTagWithdrawAccount(withdraw_accounts[addressValue]);

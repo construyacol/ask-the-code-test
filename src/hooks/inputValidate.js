@@ -61,7 +61,7 @@ export default () => {
         let addressVerify = await AddressValidator.validate(
           finalValue,
           name,
-          network
+          network || 'testnet'
         );
 
         if (addressVerify) {

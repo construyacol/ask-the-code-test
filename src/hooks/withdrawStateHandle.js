@@ -14,7 +14,7 @@ const WithdrawViewState = () => {
   const { wallets, balances, user } = modelData;
   const withdraw_accounts = useSelector((state) => selectWithdrawAccountsByAddress(state, wallets[account_id]));
   const { loader } = isLoading;
-  const { activity_for_account } = storage;
+  const { activity_for_account } = storage; 
   const current_wallet = account_id && wallets[account_id];
 
   return [
