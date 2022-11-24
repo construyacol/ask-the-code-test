@@ -1,5 +1,13 @@
 import BigNumber from "bignumber.js";
 
+const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+
+export const DEFAULT_CURRENCY = {
+    currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
+    symbol:env !== 'production' ? 'btct' : 'btc',
+}
+
+
 export const CURRENCIES = {
     bitcoin:{
         prod:'bitcoin',
@@ -139,17 +147,13 @@ const CURRENCY_CONFIG = {
 
 export default CURRENCY_CONFIG
 
-
-
-
 export const DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",
     "litecoin",
     "ethereum",
     "usdt"
-]
-
+] 
 
 export const CURRENCY_INDEX_IMG = {
     usdt_testnet:"usdt",
@@ -169,4 +173,4 @@ export const CURRENCY_INDEX_IMG = {
     ethereum:"ethereum",
     eth:"eth",
     eth2:"eth2"
-  }
+}

@@ -5,11 +5,13 @@ import ChartComponent from "./chart";
 import useWindowDimensions from "../../hooks/useWindowDimensions";
 import useCurrencyPrices from "../../hooks/useCurrencyPrices";
 import { getCdnPath } from '../../environment'
+import { DEFAULT_CURRENCY, CURRENCY_INDEX_IMG } from 'core/config/currencies'
+
 // import { useSelector } from "react-redux";
 // import { selectWithConvertToObjectWithCustomIndex } from '../hooks/useTxState'
 
-
-const FIRST_CRITERIA = ["BTC/COP", "BTC/USD", "BTC/"];
+const defautlSymbol = DEFAULT_CURRENCY?.symbol?.toUpperCase()
+const FIRST_CRITERIA = [`${defautlSymbol}/COP`, `${defautlSymbol}/USD`, `${defautlSymbol}/`];
 
 export default function PricesModalContent(props) {
 
@@ -69,7 +71,7 @@ export default function PricesModalContent(props) {
                 )}
               </div>
               <PairPrices currentPair={currentPair} />
-            </div>
+            </div> 
 
             <div className="fill" />
             <ChartComponent
@@ -128,9 +130,12 @@ const PairsSelect = ({
   selectRef,
   setShowSelect,
 }) => {
+
   return (
     <div ref={selectRef} className="pair-list">
       {pairs.sort(compare).map((pair, key) => {
+
+        const currencyImg = pair.primary_currency.currency
         const rule = currentPair.id === pair.id;
         const itemClasses = `
           base-horizontal-container base-item-content
@@ -147,8 +152,8 @@ const PairsSelect = ({
           >
             <img
               className={`${!rule ? "img-disable" : "img-enable"}`}
-              src={`${getCdnPath('assets')}prices-modal/coin_assets/${pair.primary_currency.currency}.svg`}
-              alt=""
+              src={`${getCdnPath('assets')}coins/${CURRENCY_INDEX_IMG[currencyImg] || currencyImg}.png`}
+              alt="aa"
             />
             <div className="base-item-text-cont">
               <h2 className="fuente">{pair.primary_currency.currency}</h2>
