@@ -12,6 +12,8 @@ import BigNumber from "bignumber.js"
 import FeeComponent from './IndicatorFee'
 import { AddressContainer, Address } from '../tagItem'
 import useViewport from '../../../../../hooks/useWindowSize' 
+import EthFee from './ethFee'
+
 
 export default function WithdrawConfirmation({ 
     addressValue, 
@@ -22,7 +24,7 @@ export default function WithdrawConfirmation({
     currencySymbol,
     handleAction
 }){
-
+    
     const [ currentPriority, setPriority ] = useState('medium_priority')
     const [ priorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ loader, setLoader ] = useState(null)
@@ -31,8 +33,7 @@ export default function WithdrawConfirmation({
     const actions = useActions();
     const accountName = tagWithdrawAccount?.account_name?.value
 
-    console.log('withdrawProvider', withdrawProvider)
-    debugger
+
 
     const handleSubmit = async() => {
         setLoader(true)
@@ -46,19 +47,16 @@ export default function WithdrawConfirmation({
     }
 
     const getOrderDetail = () => {
-
         const feeAmount = priorityList[currentPriority]?.fixed || 0
         const _amount = new BigNumber(amount)
         const _fee = new BigNumber(feeAmount)
         const _total = _amount.minus(_fee)
-
         setOrderDetail([
             ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
             ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${_fee.toString()} ${currencySymbol}`}/>}],
             ["Total a recibir", `${_total.toString()}   ${currencySymbol}`]
         ])
-
-    }
+    } 
 
     useEffect(() => {
         getOrderDetail()
@@ -88,7 +86,7 @@ export default function WithdrawConfirmation({
                     </From>
 
                     <To>
-                        <Img>
+                        <Img> 
                             <IconSwitch icon="qr" color="var(--primary)" size={20}/>
                         </Img>
                         <Title className="fuente">A ~ <span className={`${!accountName ? '_unregistered' : '_registered'}`}>{accountName || 'Wallet desconocida'}</span></Title>
@@ -100,11 +98,16 @@ export default function WithdrawConfirmation({
                     </To>
                 </FromToCont>
 
-                <PriorityComponent
-                    availableCosts={withdrawProvider?.provider?.costs}
-                    currentPriority={currentPriority}
-                    setPriority={setPriority}
-                />
+                {
+                    ["litecoin_testnet"].includes(withdrawProvider?.provider_type) ?
+                        <EthFee/>
+                    :
+                        <PriorityComponent
+                        availableCosts={withdrawProvider?.provider?.costs}
+                        currentPriority={currentPriority}
+                        setPriority={setPriority}
+                        />
+                }
  
                 <DetailContainer>
                     <DetailTemplateComponent

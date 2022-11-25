@@ -197,13 +197,32 @@ export class WithdrawService extends WebService {
     );
   }
 
+
+
+
+  async fetchWithdrawProviderNetData() {
+    const user = this.user;
+    const body = {
+      data:{
+        withdraw_provider_id:"637ec47ee802b90048b49964",
+        country:"international"
+      }
+    }
+    const url = `${WITHDRAW_PROVIDERS_URL}/get-network-data?country=${user.country}`;
+    return await this._Post(url, body);
+  }
+
+
+
+
+
   async fetchWithdrawProviders() {
     await this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_RETIRO)
     );
     const user = this.user;
     if(user.level === 'level_0') return ;
-
+ 
     const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`;
 
     const withdrawProviders = await this.Get(finalUrl);
@@ -228,7 +247,6 @@ export class WithdrawService extends WebService {
       body.data.twofa_token = twoFaToken;
     }
     const response = await this._Post(NEW_WITHDRAW_URL, body);
-    
     if (response?.error){
       let errorMessage = !body.data.twofa_token ? "Dont send twofa_token" : response?.error?.message
         SentryCaptureException({message:errorMessage}, body)

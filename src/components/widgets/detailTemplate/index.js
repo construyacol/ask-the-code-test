@@ -8,7 +8,6 @@ export default function DetailTemplateComponent ({ items, skeletonItems = 4, ...
             {
                 items && items.length
                 ? items.map((item, indx) => {
-                    console.log('item[1]', item[1])
                     const RenderComponent = item[1]?.Component
                     return (
                     <ItemContainer
