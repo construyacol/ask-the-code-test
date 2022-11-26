@@ -38,7 +38,7 @@ export default () => {
           setInputState('good')
         }else{
           setInputState('bad')
-        }
+        } 
         e.target.value = e.target.value.toLowerCase()
         break;
 
@@ -177,8 +177,9 @@ export default () => {
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
+        console.log('getMinAmount', inputName, withdrawProvidersByName[currentWallet.currency.currency].provider)
         const providerMinAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.min_amount, currentWallet.currency)
-        const costAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.costs?.medium_priority?.fixed, currentWallet.currency)
+        const costAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.costs?.medium?.fixed, currentWallet.currency)
         const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
         return withdrawMinAmount
       case 'spend-amount':

@@ -198,13 +198,13 @@ export class WithdrawService extends WebService {
   }
 
 
-
+ 
 
   async fetchWithdrawProviderNetData() {
     const user = this.user;
     const body = {
       data:{
-        withdraw_provider_id:"637ec47ee802b90048b49964",
+        withdraw_provider_id:"6380eb1f8f3862004973d452",
         country:"international"
       }
     }

@@ -4,6 +4,7 @@ import sleep from 'utils/sleep'
 
 
 const EthFee = () => {
+    // const EthFee = ({ withdrawProvider }) => {
 
     const [ coinsendaServices ] = useCoinsendaServices();
     const [ dataFee, setDataFee ] = useState({ timeLeft:'0', baseFee:'0' })
@@ -24,7 +25,7 @@ const EthFee = () => {
         const expiredTime = new Date(exp);
         const currentTime = new Date().getTime()/1000;        
         const currentDate = new Date(currentTime)
-        const timeLeft = expiredTime.getTime() - currentDate.getTime()
+        const timeLeft = (expiredTime.getTime() - currentDate.getTime()) - 5
         setDataFee(prevState => ({...prevState, timeLeft}))
         await sleep(1000)
         if(currentTime <= exp && componentIsMount?.current){
@@ -38,9 +39,6 @@ const EthFee = () => {
         getNetData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    // console.log('dataFee', dataFee)
-
 
     return(
         <div ref={componentIsMount} style={{textAlign:'center'}}>

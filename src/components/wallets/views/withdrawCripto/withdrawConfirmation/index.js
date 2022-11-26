@@ -100,12 +100,14 @@ export default function WithdrawConfirmation({
 
                 {
                     ["litecoin_testnet"].includes(withdrawProvider?.provider_type) ?
-                        <EthFee/>
+                        <EthFee
+                            withdrawProvider={withdrawProvider}
+                        />
                     :
                         <PriorityComponent
-                        availableCosts={withdrawProvider?.provider?.costs}
-                        currentPriority={currentPriority}
-                        setPriority={setPriority}
+                            availableCosts={withdrawProvider?.provider?.costs}
+                            currentPriority={currentPriority}
+                            setPriority={setPriority}
                         />
                 }
  

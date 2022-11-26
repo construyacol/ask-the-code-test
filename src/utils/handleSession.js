@@ -160,7 +160,7 @@ export const validateExpTime = async() => {
   const pemPublicKey = _keyEncoder.encodePublic(publicKey, 'raw', 'pem')
 
   // console.log('Tiempo transcurrido en sesión:', new Date(currentTime*1000))
-  // console.log('Vigencia user token:', new Date(jwtExpTime*1000))
+  console.log('Vigencia user token:', new Date(jwtExpTime*1000))
   // console.log('refreshTokenExpirationTime:', new Date(refreshTokenExpirationTime*1000))
 
   return new Promise((resolve, reject) => {
