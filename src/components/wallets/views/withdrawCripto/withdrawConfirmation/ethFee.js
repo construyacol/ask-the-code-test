@@ -10,7 +10,7 @@ const EthFee = () => {
     const [ dataFee, setDataFee ] = useState({ timeLeft:'0', baseFee:'0' })
     const componentIsMount = useRef()
 
-
+ 
     const getNetData = async() => {
         const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData()   
         if(error)return alert(error?.message);

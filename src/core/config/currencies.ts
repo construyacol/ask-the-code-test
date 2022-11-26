@@ -57,17 +57,14 @@ export const CURRENCIES = {
             DECIMAL_PLACES: 6,
         })
     },
-    usdt:{
-        prod:'usdt',
-        test:'usdt_testnet',
-        prodName:'Usdt',
-        testName:'Usdt Test',
+    fau_testnet:{
+        test:'fau_testnet',
+        testName:'Fau Test',
         currencyConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-            DECIMAL_PLACES: 6,
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP, 
+            DECIMAL_PLACES: 18
         }),
-        prod_fee:'usdt_fee',
-        test_fee:'usdt_testnet_fee',
+        test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_UP,
             DECIMAL_PLACES: 6,
@@ -131,10 +128,8 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.ethereum.prod_fee]: CURRENCIES.ethereum.currencyFeeConfig,
     [CURRENCIES.ethereum.test_fee]: CURRENCIES.ethereum.currencyFeeConfig,
 
-    [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
-    [CURRENCIES.usdt.test]: CURRENCIES.usdt.currencyConfig,
-    [CURRENCIES.usdt.prod_fee]: CURRENCIES.usdt.currencyFeeConfig,
-    [CURRENCIES.usdt.test_fee]: CURRENCIES.usdt.currencyFeeConfig,
+    [CURRENCIES.fau_testnet.test]: CURRENCIES.fau_testnet.currencyConfig,
+    [CURRENCIES.fau_testnet.test_fee]: CURRENCIES.fau_testnet.currencyFeeConfig,
 
     [CURRENCIES.usd.prod]: CURRENCIES.usd.currencyConfig,
     [CURRENCIES.usd.prod_fee]: CURRENCIES.usd.currencyFeeConfig,
@@ -151,8 +146,7 @@ export const DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",
     "litecoin",
-    "ethereum",
-    "usdt"
+    "ethereum"
 ] 
 
 export const CURRENCY_INDEX_IMG = {
