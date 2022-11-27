@@ -319,32 +319,34 @@ export const CDN_PATH_ASSETS = {
 
 
 export const COLOR_FEES = {
-  low_priority:{
+  low:{
       color:"#FF4A4A"
   },
-  medium_priority:{
+  medium:{
       color:"#FF9900"
   },
-  high_priority:{
+  high:{
       color:"#05EC00"
   }
 }
 
 export const WITHDRAW_PRIORITY_FEE = {
-  low_priority:{
+  low:{
       ui_name:"Baja",
-      ui_color:COLOR_FEES?.low_priority?.color,
-      value:"low_priority"
+      ui_color:COLOR_FEES?.low?.color,
+      value:"low"
   },
-  medium_priority:{
+  medium:{
       ui_name:"Media",
-      ui_color:COLOR_FEES?.medium_priority?.color,
-      value:"medium_priority"
+      ui_color:COLOR_FEES?.medium?.color,
+      value:"medium"
   },
-  high_priority:{
+  high:{
       ui_name:"Alta",
-      ui_color:COLOR_FEES?.high_priority?.color,
-      value:"high_priority"
+      ui_color:COLOR_FEES?.high?.color,
+      value:"high"
   }
 }
+
+export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.high.value
 

@@ -1,5 +1,4 @@
-
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Layout from '../../../../forms/widgets/layout'
 import styled from 'styled-components'
 import IconSwitch from '../../../../widgets/icons/iconSwitch'
@@ -12,7 +11,13 @@ import BigNumber from "bignumber.js"
 import FeeComponent from './IndicatorFee'
 import { AddressContainer, Address } from '../tagItem'
 import useViewport from '../../../../../hooks/useWindowSize' 
-import EthFee from './ethFee'
+import { useSelector } from "react-redux";
+import { DEFAULT_COST_ID } from 'const/const'
+// import EthFee from './ethFee'
+
+
+import { useCoinsendaServices } from "services/useCoinsendaServices";
+import sleep from 'utils/sleep'
 
 
 export default function WithdrawConfirmation({ 
@@ -24,22 +29,25 @@ export default function WithdrawConfirmation({
     currencySymbol,
     handleAction
 }){
-    
-    const [ currentPriority, setPriority ] = useState('medium_priority')
+
+    // const { balances } = useSelector((state) => state.modelData);
+    const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ loader, setLoader ] = useState(null)
     const [ orderDetail, setOrderDetail ] = useState([])
     const { isMovilViewport } = useViewport()
     const actions = useActions();
     const accountName = tagWithdrawAccount?.account_name?.value
+    const componentIsMount = useRef()
 
-
+    const [ coinsendaServices ] = useCoinsendaServices();
+    const [ withdrawData, setWithdrawData ] = useState({ timeLeft:0, baseFee:null, fixedCost:null, total:null, network_data:null, gas_limit:null })
 
     const handleSubmit = async() => {
         setLoader(true)
-        await handleAction()
+        const { network_data, gas_limit } = withdrawData
+        await handleAction({cost_information:{cost_id:currentPriority}, network_data, gas_limit:priorityList[currentPriority]?.gas_limit})
         setLoader(false)
-        // actions.renderModal(null)
     }
 
     const closeModal = () => {
@@ -49,19 +57,67 @@ export default function WithdrawConfirmation({
     const getOrderDetail = () => {
         const feeAmount = priorityList[currentPriority]?.fixed || 0
         const _amount = new BigNumber(amount)
-        const _fee = new BigNumber(feeAmount)
-        const _total = _amount.minus(_fee)
+        const _fixedCost = withdrawData.fixedCost || new BigNumber(feeAmount)
+        const total = _amount.minus(_fixedCost)
+        setWithdrawData(prevState => ({...prevState, total}))
         setOrderDetail([
             ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
-            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${_fee.toString()} ${currencySymbol}`}/>}],
-            ["Total a recibir", `${_total.toString()}   ${currencySymbol}`]
+            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${_fixedCost.toString()} ${withdrawData.timeLeft ? `(${withdrawData.timeLeft})`:''} ${currencySymbol}`}/>}],
+            ["Total a recibir", `${total.toString()}   ${currencySymbol}`]
         ])
     } 
+
+
+    const getFixedCost = useCallback(async(baseFee) => {
+        const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
+        const gas_limit = new BigNumber(withdrawData?.gas_limit || priorityList[currentPriority]?.gas_limit)
+        const fixedCost = gas_limit.times(maxFee)
+        setWithdrawData(prevState => ({...prevState, fixedCost}))
+    }, [currentPriority, priorityList, withdrawData.gas_limit])
+
+    
+    const getBaseFee = async() => {
+        const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData(withdrawProvider?.id)   
+        if(error)return alert(error?.message);
+        const jwt = await import('jsonwebtoken')
+        const dataNetDecoded = await jwt.decode(data);
+        const { exp, base_fee } = dataNetDecoded;
+        const baseFee = new BigNumber(base_fee)
+        setWithdrawData(prevState => ({...prevState, baseFee, network_data:data}))
+        validateExpTime(exp)
+    }
+
+    const validateExpTime = async(exp) => {
+        const expiredTime = new Date(exp);
+        const currentTime = new Date().getTime()/1000;        
+        const currentDate = new Date(currentTime)
+        const timeLeft = (expiredTime.getTime() - currentDate.getTime());
+        setWithdrawData(prevState => ({...prevState, timeLeft}))
+        // console.log('validating base fee expiration')
+        await sleep(1000)
+        if(currentTime <= exp && componentIsMount?.current){
+            return validateExpTime(exp)
+        }else if(componentIsMount?.current){
+            return getBaseFee()
+        }
+    }
+
+    useEffect(() => {
+        withdrawData.baseFee && getFixedCost(withdrawData.baseFee)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawData.baseFee, currentPriority])
+
+    useEffect(() => {
+        if(!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth') getBaseFee();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     useEffect(() => {
         getOrderDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPriority])
+    }, [currentPriority, withdrawData.fixedCost, withdrawData.timeLeft])
+    
+    // console.log('withdrawData total', withdrawData?.total, withdrawData?.total?.isPositive(), withdrawData?.total?.toFormat())
 
     return(
         <Layout 
@@ -69,48 +125,24 @@ export default function WithdrawConfirmation({
             className="_show"
         >
             <LayoutContainer className="swing-in-bottom-bck">
+                <div ref={componentIsMount} style={{display:"none"}} />
                 <HeaderContainer>
                     <IconSwitch icon={"withdraw"} color="white" size={24}/>
-                    {/* <IconSwitch icon={current_wallet?.currency?.currency} size={30}/> */}
                     <h3 className="fuente">Confirmación de retiro</h3>
                     <WithdrawIcon currency={current_wallet?.currency?.currency} />
                 </HeaderContainer>
 
-                <FromToCont>
-                    <From>
-                        <Img className="_firstStage">
-                            <IconSwitch icon="coinsenda" color="var(--primary)" size={25}/>
-                        </Img>
-                        <Title className="fuente">De</Title>
-                        <CoinsendaLabel className="fuente">Coinsenda</CoinsendaLabel>
-                    </From>
+                <FromTo
+                    addressValue={addressValue}
+                    accountName={accountName}
+                />
 
-                    <To>
-                        <Img> 
-                            <IconSwitch icon="qr" color="var(--primary)" size={20}/>
-                        </Img>
-                        <Title className="fuente">A ~ <span className={`${!accountName ? '_unregistered' : '_registered'}`}>{accountName || 'Wallet desconocida'}</span></Title>
-                        <AddressContainer
-                            data-final-address={addressValue?.match(/..........$/g).toString()}
-                        >
-                            <Address className="fuente2 address_">{addressValue}</Address>
-                        </AddressContainer>
-                    </To>
-                </FromToCont>
+                <PriorityComponent
+                    availableCosts={withdrawProvider?.provider?.costs}
+                    currentPriority={currentPriority}
+                    setPriority={setPriority}
+                />
 
-                {
-                    ["litecoin_testnet"].includes(withdrawProvider?.provider_type) ?
-                        <EthFee
-                            withdrawProvider={withdrawProvider}
-                        />
-                    :
-                        <PriorityComponent
-                            availableCosts={withdrawProvider?.provider?.costs}
-                            currentPriority={currentPriority}
-                            setPriority={setPriority}
-                        />
-                }
- 
                 <DetailContainer>
                     <DetailTemplateComponent
                         items={orderDetail}
@@ -126,16 +158,40 @@ export default function WithdrawConfirmation({
                     <ControlButton
                         loader={loader}
                         handleAction={handleSubmit}
-                        formValidate
+                        formValidate={withdrawData?.total?.isPositive()}
                         label="Confirmar retiro"
                     />
                 </ControlsContainer>
-
             </LayoutContainer>
         </Layout>
     )
 }
 
+
+const FromTo = ({ addressValue, accountName }) => {
+    return(
+        <FromToCont>
+            <From>
+                <Img className="_firstStage">
+                    <IconSwitch icon="coinsenda" color="var(--primary)" size={25}/>
+                </Img>
+                <Title className="fuente">De</Title>
+                <CoinsendaLabel className="fuente">Coinsenda</CoinsendaLabel>
+            </From>
+            <To>
+                <Img> 
+                    <IconSwitch icon="qr" color="var(--primary)" size={20}/>
+                </Img>
+                <Title className="fuente">A ~ <span className={`${!accountName ? '_unregistered' : '_registered'}`}>{accountName || 'Wallet desconocida'}</span></Title>
+                <AddressContainer
+                    data-final-address={addressValue?.match(/..........$/g).toString()}
+                >
+                    <Address className="fuente2 address_">{addressValue}</Address>
+                </AddressContainer>
+            </To>
+        </FromToCont>
+    )
+}
 
 
 

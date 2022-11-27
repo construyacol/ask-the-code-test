@@ -34,7 +34,7 @@ const ButtonContaniner = styled.div`
 // osDevice
 const ControlButton = ({ 
   loader=undefined, 
-  formValidate, 
+  formValidate = null, 
   label, 
   handleAction, 
   id=undefined, 

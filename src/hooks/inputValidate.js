@@ -90,7 +90,7 @@ export default () => {
           return (e.target.value = null);
         }
 
-         min_amount = await getMinAmount(inputName)
+         min_amount = await _getMinAmount(inputName)
          available = formatToCurrency(availableBalance, currentWallet.currency);
 
          minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
@@ -167,9 +167,10 @@ export default () => {
   }
 
 
-  const getMinAmount = async(inputName) => {
+  const _getMinAmount = async(inputName) => {
 
     switch (inputName) { 
+
       // case 'spend-amount':
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
@@ -177,10 +178,8 @@ export default () => {
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
-        console.log('getMinAmount', inputName, withdrawProvidersByName[currentWallet.currency.currency].provider)
-        const providerMinAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.min_amount, currentWallet.currency)
-        const costAmount = formatToCurrency(withdrawProvidersByName[currentWallet.currency.currency].provider?.costs?.medium?.fixed, currentWallet.currency)
-        const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
+        const { getMinAmount} = await import('utils/withdrawProvider')
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 

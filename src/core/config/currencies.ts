@@ -48,7 +48,7 @@ export const CURRENCIES = {
         testName:'Ethereum Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-            DECIMAL_PLACES: 18,
+            DECIMAL_PLACES: 8,
         }),
         prod_fee:'ethereum_fee',
         test_fee:'ethereum_testnet_fee',

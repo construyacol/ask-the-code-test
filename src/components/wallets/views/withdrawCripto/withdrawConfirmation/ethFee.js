@@ -9,10 +9,9 @@ const EthFee = () => {
     const [ coinsendaServices ] = useCoinsendaServices();
     const [ dataFee, setDataFee ] = useState({ timeLeft:'0', baseFee:'0' })
     const componentIsMount = useRef()
-
  
     const getNetData = async() => {
-        const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData()   
+        const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData('withdrawProviderId')   
         if(error)return alert(error?.message);
         const jwt = await import('jsonwebtoken')
         const dataNetDecoded = await jwt.decode(data);
@@ -25,7 +24,7 @@ const EthFee = () => {
         const expiredTime = new Date(exp);
         const currentTime = new Date().getTime()/1000;        
         const currentDate = new Date(currentTime)
-        const timeLeft = (expiredTime.getTime() - currentDate.getTime()) - 5
+        const timeLeft = (expiredTime.getTime() - currentDate.getTime());
         setDataFee(prevState => ({...prevState, timeLeft}))
         await sleep(1000)
         if(currentTime <= exp && componentIsMount?.current){
