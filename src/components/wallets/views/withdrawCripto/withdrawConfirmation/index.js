@@ -13,6 +13,7 @@ import { AddressContainer, Address } from '../tagItem'
 import useViewport from '../../../../../hooks/useWindowSize' 
 import { useSelector } from "react-redux";
 import { DEFAULT_COST_ID } from 'const/const'
+import P from 'components/widgets/typography/p'
 // import EthFee from './ethFee'
 
 
@@ -41,12 +42,20 @@ export default function WithdrawConfirmation({
     const componentIsMount = useRef()
 
     const [ coinsendaServices ] = useCoinsendaServices();
-    const [ withdrawData, setWithdrawData ] = useState({ timeLeft:0, baseFee:null, fixedCost:null, total:null, network_data:null, gas_limit:null })
+    const [ withdrawData, setWithdrawData ] = useState({ 
+        timeLeft:undefined, 
+        baseFee:null, 
+        fixedCost:null, 
+        total:null, 
+        network_data:null, 
+        gas_limit:priorityList[currentPriority]?.gas_limit, 
+        isEthereum:withdrawProvider?.provider?.costs[DEFAULT_COST_ID] && withdrawProvider?.address_validator_config?.name === 'eth' 
+    })
 
     const handleSubmit = async() => {
         setLoader(true)
         const { network_data, gas_limit } = withdrawData
-        await handleAction({cost_information:{cost_id:currentPriority}, network_data, gas_limit:priorityList[currentPriority]?.gas_limit})
+        await handleAction({cost_information:{cost_id:currentPriority}, network_data, gas_limit})
         setLoader(false)
     }
 
@@ -60,18 +69,21 @@ export default function WithdrawConfirmation({
         const _fixedCost = withdrawData.fixedCost || new BigNumber(feeAmount)
         const total = _amount.minus(_fixedCost)
         setWithdrawData(prevState => ({...prevState, total}))
-        setOrderDetail([
+        let orderDetailData = [
             ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
-            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${_fixedCost.toString()} ${withdrawData.timeLeft ? `(${withdrawData.timeLeft})`:''} ${currencySymbol}`}/>}],
+            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${withdrawData.timeLeft >= 0 ? `(${withdrawData.timeLeft})`:''} ${_fixedCost.toString()} ${currencySymbol}`}/>}],
             ["Total a recibir", `${total.toString()}   ${currencySymbol}`]
-        ])
+        ]
+        setOrderDetail(orderDetailData)
     } 
+
 
 
     const getFixedCost = useCallback(async(baseFee) => {
         const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
-        const gas_limit = new BigNumber(withdrawData?.gas_limit || priorityList[currentPriority]?.gas_limit)
+        const gas_limit = new BigNumber(withdrawData?.gas_limit)
         const fixedCost = gas_limit.times(maxFee)
+        console.log('maxFee', fixedCost.toFormat())
         setWithdrawData(prevState => ({...prevState, fixedCost}))
     }, [currentPriority, priorityList, withdrawData.gas_limit])
 
@@ -83,17 +95,15 @@ export default function WithdrawConfirmation({
         const dataNetDecoded = await jwt.decode(data);
         const { exp, base_fee } = dataNetDecoded;
         const baseFee = new BigNumber(base_fee)
+        const expired = exp - 5
         setWithdrawData(prevState => ({...prevState, baseFee, network_data:data}))
-        validateExpTime(exp)
+        validateExpTime(expired)
     }
 
     const validateExpTime = async(exp) => {
-        const expiredTime = new Date(exp);
         const currentTime = new Date().getTime()/1000;        
-        const currentDate = new Date(currentTime)
-        const timeLeft = (expiredTime.getTime() - currentDate.getTime());
+        const timeLeft = (exp - parseInt(currentTime));
         setWithdrawData(prevState => ({...prevState, timeLeft}))
-        // console.log('validating base fee expiration')
         await sleep(1000)
         if(currentTime <= exp && componentIsMount?.current){
             return validateExpTime(exp)
@@ -105,10 +115,10 @@ export default function WithdrawConfirmation({
     useEffect(() => {
         withdrawData.baseFee && getFixedCost(withdrawData.baseFee)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawData.baseFee, currentPriority])
+    }, [withdrawData.baseFee, withdrawData.gas_limit, currentPriority])
 
     useEffect(() => {
-        if(!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth') getBaseFee();
+        if(withdrawData?.isEthereum) getBaseFee();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -143,6 +153,10 @@ export default function WithdrawConfirmation({
                     setPriority={setPriority}
                 />
 
+                {
+                    withdrawData?.isEthereum ? <HandleGas withdrawData={withdrawData} setWithdrawData={setWithdrawData}/> : <></>
+                }
+
                 <DetailContainer>
                     <DetailTemplateComponent
                         items={orderDetail}
@@ -167,6 +181,37 @@ export default function WithdrawConfirmation({
     )
 }
 
+
+const HandleGas = ({withdrawData, setWithdrawData}) => {
+    return(
+        <GasLayout>
+            <Pcontainer>
+                <P variant="bold" size={15}>Gas</P>
+                <P size={15} variant="number">{withdrawData?.gas_limit}</P>
+            </Pcontainer>
+            <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={"25000"} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
+            <Pcontainer>
+                <P size={12}>Lento</P>
+                <P size={12}>Rápido</P>
+            </Pcontainer>
+        </GasLayout>
+    )
+}
+
+const Pcontainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+`
+
+const GasLayout = styled.div`
+    padding: 0 20px;
+    position: relative;
+    height: 80px;
+    display: grid;
+    p{
+        margin:0;
+    }
+`
 
 const FromTo = ({ addressValue, accountName }) => {
     return(
@@ -363,7 +408,7 @@ const LayoutContainer = styled.section`
     justify-self: center;
     align-self: center;
     max-width:425px;
-    max-height:600px;
+    max-height:700px;
     position:relative;
     border-radius:6px;
     display: flex;

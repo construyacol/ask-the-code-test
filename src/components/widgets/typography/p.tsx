@@ -3,12 +3,13 @@ import { textTypes } from "interfaces/shared"
 
 export default function P({ 
     children, 
-    className,
+    className = '',
+    variant = 'normal',
     ...props
 }:textTypes) {
     return(
         <StyleTag 
-            className={`${className || ''}`}
+            className={`${className} ${variant}`}
             {...props}
         >
             {children}
