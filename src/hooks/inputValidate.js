@@ -5,7 +5,7 @@ import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default () => {
+export default (props) => {
 
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
@@ -90,7 +90,7 @@ export default () => {
           return (e.target.value = null);
         }
 
-         min_amount = await _getMinAmount(inputName)
+         min_amount = props?.minAmount || await _getMinAmount(inputName)
          available = formatToCurrency(availableBalance, currentWallet.currency);
 
          minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)

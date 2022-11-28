@@ -29,7 +29,7 @@ const InputForm = (props) => {
     inputMode
   } = props;
 
-  const [inputState, setInputState, changeState, customError] = InputValidate();
+  const [inputState, setInputState, changeState, customError] = InputValidate(props);
   const { isMovilViewport } = useViewport()
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
   // console.log('|||||||||||||||||||| inputState:', inputState)

@@ -1,5 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
-import Layout from '../../../../forms/widgets/layout'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import IconSwitch from '../../../../widgets/icons/iconSwitch'
 import PriorityComponent from './priorityComponent'
@@ -11,14 +10,8 @@ import BigNumber from "bignumber.js"
 import FeeComponent from './IndicatorFee'
 import { AddressContainer, Address } from '../tagItem'
 import useViewport from '../../../../../hooks/useWindowSize' 
-import { useSelector } from "react-redux";
-import { DEFAULT_COST_ID } from 'const/const'
 import P from 'components/widgets/typography/p'
-// import EthFee from './ethFee'
 
-
-import { useCoinsendaServices } from "services/useCoinsendaServices";
-import sleep from 'utils/sleep'
 
 
 export default function WithdrawConfirmation({ 
@@ -28,29 +21,17 @@ export default function WithdrawConfirmation({
     withdrawProvider, 
     amount,
     currencySymbol,
-    handleAction
+    handleAction,
+    callback,
+    provider:{ withdrawData, setWithdrawData },
+    priority:{ currentPriority, setPriority, priorityList }
 }){
 
-    // const { balances } = useSelector((state) => state.modelData);
-    const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
-    const [ priorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ loader, setLoader ] = useState(null)
     const [ orderDetail, setOrderDetail ] = useState([])
     const { isMovilViewport } = useViewport()
     const actions = useActions();
     const accountName = tagWithdrawAccount?.account_name?.value
-    const componentIsMount = useRef()
-
-    const [ coinsendaServices ] = useCoinsendaServices();
-    const [ withdrawData, setWithdrawData ] = useState({ 
-        timeLeft:undefined, 
-        baseFee:null, 
-        fixedCost:null, 
-        total:null, 
-        network_data:null, 
-        gas_limit:priorityList[currentPriority]?.gas_limit, 
-        isEthereum:withdrawProvider?.provider?.costs[DEFAULT_COST_ID] && withdrawProvider?.address_validator_config?.name === 'eth' 
-    })
 
     const handleSubmit = async() => {
         setLoader(true)
@@ -61,6 +42,7 @@ export default function WithdrawConfirmation({
 
     const closeModal = () => {
         actions.renderModal(null)
+        callback && callback()
     }
 
     const getOrderDetail = () => {
@@ -69,73 +51,22 @@ export default function WithdrawConfirmation({
         const _fixedCost = withdrawData.fixedCost || new BigNumber(feeAmount)
         const total = _amount.minus(_fixedCost)
         setWithdrawData(prevState => ({...prevState, total}))
-        let orderDetailData = [
+        setOrderDetail([
             ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
             ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${withdrawData.timeLeft >= 0 ? `(${withdrawData.timeLeft})`:''} ${_fixedCost.toString()} ${currencySymbol}`}/>}],
             ["Total a recibir", `${total.toString()}   ${currencySymbol}`]
-        ]
-        setOrderDetail(orderDetailData)
+        ])
     } 
-
-
-
-    const getFixedCost = useCallback(async(baseFee) => {
-        const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
-        const gas_limit = new BigNumber(withdrawData?.gas_limit)
-        const fixedCost = gas_limit.times(maxFee)
-        console.log('maxFee', fixedCost.toFormat())
-        setWithdrawData(prevState => ({...prevState, fixedCost}))
-    }, [currentPriority, priorityList, withdrawData.gas_limit])
-
-    
-    const getBaseFee = async() => {
-        const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData(withdrawProvider?.id)   
-        if(error)return alert(error?.message);
-        const jwt = await import('jsonwebtoken')
-        const dataNetDecoded = await jwt.decode(data);
-        const { exp, base_fee } = dataNetDecoded;
-        const baseFee = new BigNumber(base_fee)
-        const expired = exp - 5
-        setWithdrawData(prevState => ({...prevState, baseFee, network_data:data}))
-        validateExpTime(expired)
-    }
-
-    const validateExpTime = async(exp) => {
-        const currentTime = new Date().getTime()/1000;        
-        const timeLeft = (exp - parseInt(currentTime));
-        setWithdrawData(prevState => ({...prevState, timeLeft}))
-        await sleep(1000)
-        if(currentTime <= exp && componentIsMount?.current){
-            return validateExpTime(exp)
-        }else if(componentIsMount?.current){
-            return getBaseFee()
-        }
-    }
-
-    useEffect(() => {
-        withdrawData.baseFee && getFixedCost(withdrawData.baseFee)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawData.baseFee, withdrawData.gas_limit, currentPriority])
-
-    useEffect(() => {
-        if(withdrawData?.isEthereum) getBaseFee();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     useEffect(() => {
         getOrderDetail()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPriority, withdrawData.fixedCost, withdrawData.timeLeft])
     
-    // console.log('withdrawData total', withdrawData?.total, withdrawData?.total?.isPositive(), withdrawData?.total?.toFormat())
 
     return(
-        <Layout 
-            closeControls={isMovilViewport}
-            className="_show"
-        >
-            <LayoutContainer className="swing-in-bottom-bck">
-                <div ref={componentIsMount} style={{display:"none"}} />
+        
+            <LayoutContainer className={`swing-in-bottom-bck ${withdrawData?.isEthereum ? 'isEthereum' : ''}`}>
                 <HeaderContainer>
                     <IconSwitch icon={"withdraw"} color="white" size={24}/>
                     <h3 className="fuente">Confirmación de retiro</h3>
@@ -177,7 +108,7 @@ export default function WithdrawConfirmation({
                     />
                 </ControlsContainer>
             </LayoutContainer>
-        </Layout>
+            
     )
 }
 
@@ -408,12 +339,24 @@ const LayoutContainer = styled.section`
     justify-self: center;
     align-self: center;
     max-width:425px;
-    max-height:700px;
+    max-height:600px;
     position:relative;
     border-radius:6px;
     display: flex;
     flex-direction: column;
     row-gap: 25px;
+
+    position:absolute;
+    z-index: 9999999;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+
+    &.isEthereum{
+        max-height:700px;
+    }
 
     ${DetailContainer}{
         padding:0 20px;
