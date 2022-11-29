@@ -47,13 +47,13 @@ export const CURRENCIES = {
         prodName:'Ethereum',
         testName:'Ethereum Test',
         currencyConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
             DECIMAL_PLACES: 8,
         }),
         prod_fee:'ethereum_fee',
         test_fee:'ethereum_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_UP,
+            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
             DECIMAL_PLACES: 6,
         })
     },
@@ -62,7 +62,7 @@ export const CURRENCIES = {
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP, 
-            DECIMAL_PLACES: 18
+            DECIMAL_PLACES: 8
         }),
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
@@ -139,6 +139,8 @@ const CURRENCY_CONFIG = {
 
     [CURRENCIES.referred.prod]: CURRENCIES.referred.currencyConfig,
 };
+
+
 
 export default CURRENCY_CONFIG
 

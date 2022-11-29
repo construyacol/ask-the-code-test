@@ -15,12 +15,11 @@ import { getMinAmount } from 'utils/withdrawProvider'
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
 import WithdrawFormComponent from './withdrawForm'
+import { formatToCurrency } from "utils/convert_currency";
 
 
-const CriptoSupervisor = (props) => {
-  
+const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
-  
   return (
     <>
       {isEmpty(withdrawProvidersByName) ? (
@@ -61,6 +60,7 @@ export const CriptoView = (props) => {
   const isValidForm = useRef(false);
   const [ showModal, setShowModal ] = useState(false)
   const { provider:{ withdrawData:{ fixedCost, timeLeft, amount }, setWithdrawData, getNetworkData }} = props
+
 
   const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
   const setTowFaTokenMethod = async (payload) => {
@@ -154,8 +154,9 @@ export const CriptoView = (props) => {
   const handleMaxAvailable = (e) => {
     // TODO: refactor amountEl to reference DOM with useRef
     let amountEl = document.getElementsByName("amount")[0];
-    amountEl.value = balance.available
-    setWithdrawData(prevState => ({...prevState, amount:balance.available}))
+    const finalAmount = current_wallet ? formatToCurrency(balance.available, current_wallet?.currency)?.toFormat() : balance.available
+    amountEl.value = finalAmount
+    setWithdrawData(prevState => ({...prevState, amount:finalAmount}))
     if (amountEl.value > 0) {
       setAmountState("good");
     }
@@ -197,8 +198,7 @@ export const CriptoView = (props) => {
     // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd();
     const provider_type = current_wallet.currency.currency;
-    console.log('addressValue', addressValue, withdraw_accounts)
-    
+    // console.log('addressValue', addressValue, withdraw_accounts)
     if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
       setTagWithdrawAccount(withdraw_accounts[addressValue]);
@@ -249,7 +249,8 @@ export const CriptoView = (props) => {
     balance,
     amountValue:amount,
     handleSubmit,
-    active_trade_operation
+    active_trade_operation,
+    current_wallet
   }
 
   return (

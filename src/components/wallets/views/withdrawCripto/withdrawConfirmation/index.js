@@ -9,6 +9,7 @@ import BigNumber from "bignumber.js"
 import FeeComponent from './IndicatorFee'
 import { AddressContainer, Address } from '../tagItem'
 import P from 'components/widgets/typography/p'
+import { formatToCurrency } from "utils/convert_currency";
 import {
     LayoutContainer,
     HeaderContainer,
@@ -66,10 +67,12 @@ export default function WithdrawConfirmation({
     const calculateTotal = () => setWithdrawData(prevState => ({...prevState, total: new BigNumber(amount).minus(fixedCost)})) 
     
     const renderOrderDetail = () => {
-        let totaToReceive = controlValidation ? `${total.toString()}   ${currencySymbol}` : {Component:() => <p style={{color:"red", fontSize:"12px", margin:"0"}}>La cantidad no supera el mínimo permitido.</p>}
+        let _total = current_wallet ? formatToCurrency(total, current_wallet?.currency) : total
+        let _fixedCost = current_wallet ? formatToCurrency(fixedCost, current_wallet?.currency) : fixedCost
+        let totaToReceive = controlValidation ? `${_total?.toFormat()} ${currencySymbol}` : {Component:() => <p style={{color:"red", fontSize:"12px", margin:"0"}}>La cantidad no supera el mínimo permitido.</p>}
         setOrderDetail([
             ["Cantidad", `${new BigNumber(amount).toString()}  ${currencySymbol}`],
-            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${fixedCost.toFormat()} ${currencySymbol}`}/>}],
+            ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
             ["Total a recibir", totaToReceive]
         ])
     }

@@ -159,7 +159,6 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     )
 }
 
-
 const MobileBalanceComponent = ({ account }) => {
 
     const { balances } = useSelector((state) => state.modelData);

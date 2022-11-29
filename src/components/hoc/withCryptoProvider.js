@@ -4,6 +4,7 @@ import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { DEFAULT_COST_ID } from 'const/const'
 import BigNumber from "bignumber.js"
 import sleep from 'utils/sleep'
+    // CURRENCY_CONFIG
 
 
 export default function withCryptoProvider(AsComponent) {
@@ -27,7 +28,6 @@ export default function withCryptoProvider(AsComponent) {
       isEthereum:!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
     })
     const componentIsMount = useRef()
-    
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)

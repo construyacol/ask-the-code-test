@@ -38,7 +38,8 @@ const WithdrawFormComponent = ({
     balance,
     amountValue,
     handleSubmit,
-    active_trade_operation
+    active_trade_operation,
+    current_wallet
 }) => {
 
     const { isMobile } = useViewport()
@@ -101,6 +102,7 @@ const WithdrawFormComponent = ({
                 id={id}
                 handleAction={handleMaxAvailable}
                 amount={balance.available}
+                wallet={current_wallet}
             />
             )}
             // PrefixComponent

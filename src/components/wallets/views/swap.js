@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import InputForm from "../../widgets/inputs/inputForm";
 import { formatToCurrency} from "../../../utils/convert_currency";
-import { formatNumber } from "../../../utils";
+// import { formatNumber } from "../../../utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import styled from "styled-components";
@@ -47,7 +47,7 @@ function SwapView(props) {
 
   const { isMovilViewport } = useWindowSize();
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
-  const isFiat = currentWallet.currency_type === "fiat";
+  // const isFiat = currentWallet.currency_type === "fiat";
 
   useEffect(() => {
     selectPair(true);
@@ -195,7 +195,7 @@ function SwapView(props) {
 
   const swap = async () => {
 
-    const { secondary_currency, id } = currentPair;
+    const { id } = currentPair;
     const spent_currency_amount = await formatToCurrency( value, currentWallet.currency);
     // let query = `{"where":{"id":"${id}"}}`;
     // await coinsendaServices.updateCurrentPair(query);
@@ -204,7 +204,8 @@ function SwapView(props) {
     const secureTotalValue = await getReceiveValue(value);
     const from = currencies ? currencies[currentWallet.currency.currency]?.symbol.toUpperCase() : currentWallet.currency.currency.toUpperCase()
     const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
-    const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
+    // const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
+    const isFiat = currentWallet.currency_type === 'fiat'
 
     actions.confirmationModalPayload({
       title: "Confirmación de intercambio",
@@ -271,7 +272,8 @@ function SwapView(props) {
           <AvailableBalance
             id={id}
             handleAction={handleMaxAvailable}
-            amount={isFiat ? formatNumber(availableBalance) : availableBalance}
+            amount={availableBalance}
+            wallet={currentWallet}
           />
         )}
       /> 
