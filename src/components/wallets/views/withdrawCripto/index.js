@@ -12,20 +12,20 @@ import { CAPACITOR_PLATFORM } from 'const/const';
 import { checkCameraPermission } from 'utils'
 import { isEmpty } from 'lodash'
 import { getMinAmount } from 'utils/withdrawProvider'
-import withEthProvider from 'components/hoc/withEthProvider'
+import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
 import WithdrawFormComponent from './withdrawForm'
 
 
 const CriptoSupervisor = (props) => {
   
-  const { current_wallet, withdrawProvidersByName } = props;
+  const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
   
   return (
     <>
       {isEmpty(withdrawProvidersByName) ? (
         <SkeletonWithdrawView />
-      ) : !withdrawProvidersByName[current_wallet.currency.currency] ? (
+      ) : !withdrawProvider ? (
         <WithOutProvider current_wallet={current_wallet} />
       ) : (
         <CriptoView {...props}/>
@@ -34,7 +34,7 @@ const CriptoSupervisor = (props) => {
   );
 };
 
-export default withEthProvider(CriptoSupervisor)
+export default withCryptoProvider(CriptoSupervisor)
 
 
 export const CriptoView = (props) => {
@@ -42,41 +42,38 @@ export const CriptoView = (props) => {
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const {
     current_wallet,
-    withdrawProvidersByName,
+    withdrawProvider,
     withdraw_accounts,
     balance,
     user,
     coinsendaServices,
     active_trade_operation
-  } = props;
+  } = props
 
   const actions = useActions();
   const [toastMessage] = useToastMessage();
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState();
   const [amountState, setAmountState] = useState();
-  const [amountValue, setAmountValue] = useState();
   const [addressToAdd, setAddressToAdd] = useState();
   const [minAmount, setMinAmount] = useState(0)
   const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
   const isValidForm = useRef(false);
   const [ showModal, setShowModal ] = useState(false)
-  const { provider:{ withdrawData:{ fixedCost, timeLeft } }} = props
+  const { provider:{ withdrawData:{ fixedCost, timeLeft, amount, network_data }, setWithdrawData }} = props
 
-  const handleChangeAmount = (name, newValue) => {
-    setAmountValue(newValue)
-  }
-
+  const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
   const setTowFaTokenMethod = async (payload) => {
     finish_withdraw(payload);
     actions.renderModal(null);
   };
  
   const finish_withdraw = async (fnProps) => {
-      const { twoFaToken = null, cost_information, network_data, gas_limit } = fnProps
+      const { twoFaToken = null, cost_information, gas_limit } = fnProps
       const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
       if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
-        return actions.renderModal(() => (
+      setShowModal(false)
+      return actions.renderModal(() => (
           <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
         ));
       } 
@@ -86,7 +83,7 @@ export const CriptoView = (props) => {
         // si la cuenta no existe, se crea una nueva y se consultan
         withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
             currency: current_wallet.currency,
-            provider_type: withdrawProvidersByName[current_wallet.currency.currency]?.provider_type,
+            provider_type: withdrawProvider?.provider_type,
             label: current_wallet.currency.currency,
             address: addressValue.trim(),
             country: current_wallet.country,
@@ -98,9 +95,9 @@ export const CriptoView = (props) => {
       sessionStorage.setItem(`withdrawInProcessFrom${current_wallet?.id}`, current_wallet.id );
       let bodyRequest = {
         data: { 
-          amount:amountValue,
+          amount,
           account_id: current_wallet.id,
-          withdraw_provider_id:withdrawProvidersByName[current_wallet.currency.currency].id,
+          withdraw_provider_id:withdrawProvider.id,
           withdraw_account_id: withdraw_account.id,
           cost_information,
           country: user.country,
@@ -111,9 +108,14 @@ export const CriptoView = (props) => {
         bodyRequest.data.cost_information.gas_limit = gas_limit
       }
       const { error, data } = await coinsendaServices.addWithdrawOrder(bodyRequest, twoFaToken);
+      // console.log('||||| ===> addWithdrawOrder', error, data)
+      // debugger
       await actions.renderModal(null)
       setShowModal(false)
-
+      if (error) {
+        actions.isAppLoading(false);
+        return toastMessage(error?.message, "error");
+      }
       setTimeout(async() => {
         if(sessionStorage.getItem(`withdrawInProcessFrom${current_wallet?.id}`)){
           sessionStorage.removeItem(`withdrawInProcessFrom${current_wallet?.id}`)
@@ -125,11 +127,6 @@ export const CriptoView = (props) => {
           history.push(`/wallets/activity/${current_wallet.id}/withdraws`);
         }
       }, 8000)   
-
-      if (!error) {
-        actions.isAppLoading(false);
-        return toastMessage(error?.message, "error");
-      }
   }
 
   const handleSubmit = async(e) => {
@@ -154,11 +151,11 @@ export const CriptoView = (props) => {
   const closeModal = () => setShowModal(false)
 
   const handleMaxAvailable = (e) => {
-    // TODO: no se debe manejar valores directo del DOM
-    let amount = document.getElementsByName("amount")[0];
-    amount.value = balance.available
-    setAmountValue(balance.available)
-    if (amount.value > 0) {
+    // TODO: refactor amountEl to reference DOM with useRef
+    let amountEl = document.getElementsByName("amount")[0];
+    amountEl.value = balance.available
+    setWithdrawData(prevState => ({...prevState, amount:balance.available}))
+    if (amountEl.value > 0) {
       setAmountState("good");
     }
   };
@@ -218,7 +215,6 @@ export const CriptoView = (props) => {
   }, [addressState, withdraw_accounts, addressValue]);
 
   useEffect(() => {
-    const withdrawProvider = withdrawProvidersByName[current_wallet.currency.currency]
     if(withdrawProvider){
       (async() => {
         let minAmount = await getMinAmount(withdrawProvider)
@@ -227,7 +223,7 @@ export const CriptoView = (props) => {
       })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withdrawProvidersByName, current_wallet, fixedCost])
+  }, [withdrawProvider, current_wallet, fixedCost])
 
   const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
 
@@ -250,7 +246,7 @@ export const CriptoView = (props) => {
     amountState,
     handleMaxAvailable,
     balance,
-    amountValue,
+    amountValue:amount,
     handleSubmit,
     active_trade_operation
   }
@@ -263,12 +259,11 @@ export const CriptoView = (props) => {
       {
         showModal ?
           <WithdrawConfirmation 
-            amount={amountValue}
+            amount={amount}
             currencySymbol={currencySymbol}
             addressValue={addressValue}
             tagWithdrawAccount={tagWithdrawAccount}
             current_wallet={current_wallet}
-            withdrawProvider={withdrawProvidersByName[current_wallet?.currency?.currency]}
             handleAction={finish_withdraw}
             callback={closeModal}
             {...props}

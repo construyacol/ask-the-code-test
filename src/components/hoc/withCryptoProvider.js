@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js"
 import sleep from 'utils/sleep'
 
 
-export default function withEthProvider(AsComponent) {
+export default function withCryptoProvider(AsComponent) {
   return function (props) {
 
     const [ wProps ] = WithdrawViewState();
@@ -15,35 +15,35 @@ export default function withEthProvider(AsComponent) {
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices();
-    const componentIsMount = useRef()
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
-      baseFee:null, 
-      fixedCost:priorityList[currentPriority]?.fixed, 
-      total:null, 
+      baseFee:0, 
+      amount:0,
+      fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
+      total:new BigNumber(0), 
       network_data:null, 
       gas_limit:priorityList[currentPriority]?.gas_limit, 
-      isEthereum:!withdrawProvider?.provider?.costs[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
+      isEthereum:!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
     })
-
+    const componentIsMount = useRef()
+    
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
       const gas_limit = new BigNumber(withdrawData?.gas_limit)
       const fixedCost = gas_limit.times(maxFee)
-      // console.log('fixedCost', fixedCost.toFormat())
       setWithdrawData(prevState => ({...prevState, fixedCost}))
   }, [currentPriority, priorityList, withdrawData.gas_limit])
 
   
-  const getBaseFee = async() => {
+  const initEthWithdraw = async() => {
       const { data, error } = await coinsendaServices.fetchWithdrawProviderNetData(withdrawProvider?.id)   
       if(error)return alert(error?.message);
       const jwt = await import('jsonwebtoken')
       const dataNetDecoded = await jwt.decode(data);
       const { exp, base_fee } = dataNetDecoded;
       const baseFee = new BigNumber(base_fee)
-      const expired = exp - 5
+      const expired = exp - 6
       setWithdrawData(prevState => ({...prevState, baseFee, network_data:data}))
       validateExpTime(expired)
   }
@@ -51,38 +51,35 @@ export default function withEthProvider(AsComponent) {
   const validateExpTime = async(exp) => {
       const currentTime = new Date().getTime()/1000;        
       const timeLeft = (exp - parseInt(currentTime));
-      console.log('timeLeft', timeLeft)
       setWithdrawData(prevState => ({...prevState, timeLeft}))
       await sleep(1000)
       if(currentTime <= exp && componentIsMount?.current){
           return validateExpTime(exp)
       }else if(componentIsMount?.current){
-          return getBaseFee()
+          return initEthWithdraw()
       }
   }
  
   useEffect(() => {
     if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed)  
-    setWithdrawData(prevState => ({...prevState, fixedCost:priorityList[currentPriority]?.fixed}));
+    setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
     else getEthFixedCost(withdrawData?.baseFee);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withdrawData.baseFee, withdrawData.gas_limit, currentPriority])
 
   useEffect(() => {
-      if(withdrawData?.isEthereum) getBaseFee();
+      if(withdrawData?.isEthereum) initEthWithdraw();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  console.log('fixedCost', withdrawData?.fixedCost)
-
   
   return (
       <>
         <div ref={componentIsMount} style={{display:"none"}} />
         <AsComponent
           provider={{ withdrawData, setWithdrawData }}
-          priority={{ currentPriority, setPriority, priorityList }}
+          priority={{ currentPriority, setPriority }}
           coinsendaServices={coinsendaServices}
+          withdrawProvider={withdrawProvider}
           {...wProps} 
           {...props}
         />

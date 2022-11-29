@@ -12,8 +12,8 @@ import { useActions } from "../../../../hooks/useActions";
 import { IconClose } from "../../shared-styles";
 
 const Withdraw2FaModal = ({ callback, isWithdraw2fa, ...props }) => {
-  const actions = useActions();
 
+  const actions = useActions();
   const cerrar = (e, forcedClose) => {
     actions.renderModal(null);
   };
