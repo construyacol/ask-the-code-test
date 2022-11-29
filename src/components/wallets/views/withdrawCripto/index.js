@@ -1,29 +1,20 @@
-import styled from "styled-components";
-import { useState, useEffect, useRef, useContext } from "react";
-// import WithdrawViewState from "hooks/withdrawStateHandle";
-import IconSwitch from "../../../widgets/icons/iconSwitch";
-import InputForm from "../../../widgets/inputs/inputForm";
-import ControlButton from "../../../widgets/buttons/controlButton";
+import { useState, useEffect, useRef } from "react";
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
-import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
-import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
 import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
-import AddressTagList from "./addressTagList";
-import TagItem from "./tagItem";
-import { MAIN_COLOR, history } from "../../../../const/const";
+import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 import { CAPACITOR_PLATFORM } from 'const/const';
 import { checkCameraPermission } from 'utils'
-import AvailableBalance from '../../../widgets/availableBalance'
 import { isEmpty } from 'lodash'
 import { getMinAmount } from 'utils/withdrawProvider'
 import withEthProvider from 'components/hoc/withEthProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
+import WithdrawFormComponent from './withdrawForm'
 
 
 const CriptoSupervisor = (props) => {
@@ -53,16 +44,14 @@ export const CriptoView = (props) => {
     current_wallet,
     withdrawProvidersByName,
     withdraw_accounts,
-    active_trade_operation,
-    loader,
     balance,
     user,
-    coinsendaServices
+    coinsendaServices,
+    active_trade_operation
   } = props;
 
   const actions = useActions();
   const [toastMessage] = useToastMessage();
-
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState();
   const [amountState, setAmountState] = useState();
@@ -73,10 +62,6 @@ export const CriptoView = (props) => {
   const isValidForm = useRef(false);
   const [ showModal, setShowModal ] = useState(false)
   const { provider:{ withdrawData:{ fixedCost, timeLeft } }} = props
-
-
-  let movil_viewport = window.innerWidth < 768;
-  const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
 
   const handleChangeAmount = (name, newValue) => {
     setAmountValue(newValue)
@@ -190,7 +175,6 @@ export const CriptoView = (props) => {
     }
   };
 
-
   const handleChangeAddress = (_, value) => {
     setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
   };
@@ -199,7 +183,6 @@ export const CriptoView = (props) => {
     setTagWithdrawAccount(null);
     setAddressValue("");
   };
-
 
   useEffect(() => {
     const condition = !active_trade_operation && amountState === "good" && addressState === "good";
@@ -234,7 +217,6 @@ export const CriptoView = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
-
   useEffect(() => {
     const withdrawProvider = withdrawProvidersByName[current_wallet.currency.currency]
     if(withdrawProvider){
@@ -245,147 +227,58 @@ export const CriptoView = (props) => {
       })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [withdrawProvidersByName, current_wallet, props?.provider?.withdrawData?.fixedCost])
+  }, [withdrawProvidersByName, current_wallet, fixedCost])
 
   const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
 
-  // console.log('Withdraw cripto', props)
+  const formProps = {
+    setAddressState,
+    handleChangeAddress,
+    addressValue,
+    currencySymbol,
+    loader:props.loader,
+    tagWithdrawAccount,
+    addressState,
+    showQrScanner,
+    setAddressValue,
+    addressToAdd,
+    deleteTag,
+    minAmount,
+    timeLeft,
+    setAmountState,
+    handleChangeAmount,
+    amountState,
+    handleMaxAvailable,
+    balance,
+    amountValue,
+    handleSubmit,
+    active_trade_operation
+  }
 
   return (
     <>
+      <WithdrawFormComponent
+        {...formProps}
+      />
       {
         showModal ?
-        <WithdrawConfirmation 
-          amount={amountValue}
-          currencySymbol={currencySymbol}
-          addressValue={addressValue}
-          tagWithdrawAccount={tagWithdrawAccount}
-          current_wallet={current_wallet}
-          withdrawProvider={withdrawProvidersByName[current_wallet?.currency?.currency]}
-          handleAction={finish_withdraw}
-          callback={closeModal}
-          {...props}
-        /> : <></>
+          <WithdrawConfirmation 
+            amount={amountValue}
+            currencySymbol={currencySymbol}
+            addressValue={addressValue}
+            tagWithdrawAccount={tagWithdrawAccount}
+            current_wallet={current_wallet}
+            withdrawProvider={withdrawProvidersByName[current_wallet?.currency?.currency]}
+            handleAction={finish_withdraw}
+            callback={closeModal}
+            {...props}
+          /> : <></>
       }
-    <WithdrawForm
-      id="withdrawForm"
-      className={`${movil_viewport ? "movil" : ""}`}
-      onSubmit={(e) => e.preventDefault()}
-    >
-      <InputForm
-        type="text" 
-        placeholder={"Escribe @ para ver tu lista de direcciones..."}
-        name="address"
-        handleStatus={setAddressState}
-        isControlled 
-        handleChange={handleChangeAddress}
-        value={addressValue}
-        label={`Ingresa la dirección ${currencySymbol}`}
-        disabled={loader || tagWithdrawAccount}
-        autoFocus={true}
-        SuffixComponent={() => (
-          <IconsContainer>
-            <IconSwitch
-              className="superImposed"
-              icon={`${addressState === "good" ? "verify" : "wallet"}`}
-              color={`${addressState === "good" ? "green" : "gray"}`}
-              size={`${addressState === "good" ? 22 : 25}`}
-            />
-            <IconSwitch
-              onClick={showQrScanner}
-              icon="qr"
-              color="gray"
-              size={25}
-            />
-          </IconsContainer>
-        )}
-        AuxComponent={[
-          () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
-          () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
-          () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
-        ]} 
-      />
-
-      <InputForm 
-        type="number" 
-        minAmount={minAmount}
-        placeholder={`${minAmount ? minAmount?.toFormat(8) : ''} ${timeLeft >= 0 ? ` (${timeLeft})` : ''}`}
-        name="amount"
-        handleStatus={setAmountState}
-        handleChange={handleChangeAmount}
-        label={`Ingresa la cantidad del retiro`}
-        disabled={loader}
-        state={amountState}
-        setMaxWithActionKey={true}
-        value={amountValue}
-        SuffixComponent={({ id }) => (
-          <AvailableBalance 
-            id={id}
-            handleAction={handleMaxAvailable}
-            amount={balance.available}
-          />
-        )}
-        // PrefixComponent
-      />
-      <ControlButton
-        id={idForClickeableElement}
-        loader={loader}
-        handleAction={handleSubmit}
-        formValidate={
-          !active_trade_operation &&
-          amountState === "good" &&
-          addressState === "good"
-        }
-        label="Enviar"
-      />
-      {/* </form> */}
-    </WithdrawForm>
     </>
   ); 
 };
 
 
-const IconsContainer = styled.div`
-  display: flex;
-  > div:first-child {
-    margin: 0 12px;
-  }
-  > div:last-child {
-    cursor: pointer;
-    transition: all 300ms ease;
-    &:hover {
-      > svg {
-        fill: ${MAIN_COLOR} !important;
-      }
-    }
-  }
-`;
 
-export const OperationForm = styled.form`
-  width: calc(95% - 50px);
-  max-width: calc(700px - 50px);
-  height: calc(100% - 50px);
-  border-radius: 4px;
-  padding: 20px 25px 20px 25px;
-  display: grid;
-  grid-row-gap: 5px;
-  position: relative;
-  max-height: 450px;
-  background: var(--secondary_background);
-  border-radius: 8px;
-  padding: 30px;
-  width: calc(95% - 60px);
-  height: calc(100% - 60px);
-`;
 
-export const WithdrawForm = styled(OperationForm)`
-  grid-template-rows: 40% 1fr 1fr;
-  @media (max-width: 768px) {
-    height: calc(100% - 40px);
-    width: 100%;
-    padding: 20px 0;
-    background: transparent;
-    grid-template-rows: 1fr 1fr 1fr;
-  }
-`;
 

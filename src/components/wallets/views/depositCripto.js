@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { OperationForm } from "./withdrawCripto";
+// import { OperationForm } from "./withdrawCripto";
+import { OperationForm } from '../styles'
 import QRCode from "qrcode";
 // import { SentryCaptureException } from "../../../utils";
 import IconSwitch from "../../widgets/icons/iconSwitch";

@@ -19,18 +19,19 @@ export default function withEthProvider(AsComponent) {
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
       baseFee:null, 
-      fixedCost:null, 
+      fixedCost:priorityList[currentPriority]?.fixed, 
       total:null, 
       network_data:null, 
       gas_limit:priorityList[currentPriority]?.gas_limit, 
-      isEthereum:!withdrawProvider?.provider?.costs[DEFAULT_COST_ID]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
+      isEthereum:!withdrawProvider?.provider?.costs[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
     })
 
-    const getFixedCost = useCallback(async(baseFee) => {
+    const getEthFixedCost = useCallback(async(baseFee) => {
+      if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
       const gas_limit = new BigNumber(withdrawData?.gas_limit)
       const fixedCost = gas_limit.times(maxFee)
-      console.log('fixedCost', fixedCost.toFormat())
+      // console.log('fixedCost', fixedCost.toFormat())
       setWithdrawData(prevState => ({...prevState, fixedCost}))
   }, [currentPriority, priorityList, withdrawData.gas_limit])
 
@@ -59,9 +60,11 @@ export default function withEthProvider(AsComponent) {
           return getBaseFee()
       }
   }
-
+ 
   useEffect(() => {
-      withdrawData.baseFee && getFixedCost(withdrawData.baseFee)
+    if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed)  
+    setWithdrawData(prevState => ({...prevState, fixedCost:priorityList[currentPriority]?.fixed}));
+    else getEthFixedCost(withdrawData?.baseFee);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [withdrawData.baseFee, withdrawData.gas_limit, currentPriority])
 
@@ -69,6 +72,9 @@ export default function withEthProvider(AsComponent) {
       if(withdrawData?.isEthereum) getBaseFee();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  console.log('fixedCost', withdrawData?.fixedCost)
+
   
   return (
       <>

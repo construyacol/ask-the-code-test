@@ -12,7 +12,7 @@ import styled from "styled-components";
 import ControlButton from "../../widgets/buttons/controlButton";
 import { usePairSelector } from "../../../hooks/usePairSelector";
 import { useActions } from "../../../hooks/useActions";
-import { OperationForm } from "./withdrawCripto";
+import { OperationForm } from '../styles'
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
