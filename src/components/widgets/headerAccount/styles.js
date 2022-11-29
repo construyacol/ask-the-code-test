@@ -38,7 +38,7 @@ export const BalanceContainer = styled.div`
 
   .BalanceComponent{
     grid-template-rows: auto 1fr !important;
-    width:${props => props.width}
+    width:${props => props.width || 'auto'}
   }
 
   .textin{

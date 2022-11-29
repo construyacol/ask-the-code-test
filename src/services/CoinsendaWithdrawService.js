@@ -200,7 +200,7 @@ export class WithdrawService extends WebService {
 
  
 
-  async fetchWithdrawProviderNetData(withdraw_provider_id) {
+  async fetchNetworkData(withdraw_provider_id) {
     const { country } = this.user;
     const body = {
       data:{

@@ -60,7 +60,7 @@ export const CriptoView = (props) => {
   const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
   const isValidForm = useRef(false);
   const [ showModal, setShowModal ] = useState(false)
-  const { provider:{ withdrawData:{ fixedCost, timeLeft, amount, network_data }, setWithdrawData }} = props
+  const { provider:{ withdrawData:{ fixedCost, timeLeft, amount }, setWithdrawData, getNetworkData }} = props
 
   const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
   const setTowFaTokenMethod = async (payload) => {
@@ -104,6 +104,7 @@ export const CriptoView = (props) => {
         }
       }
       if(current_wallet?.currency?.currency?.includes('eth')) {
+        const network_data = await getNetworkData()
         bodyRequest.data.network_data = network_data
         bodyRequest.data.cost_information.gas_limit = gas_limit
       }
