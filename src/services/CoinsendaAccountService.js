@@ -57,26 +57,23 @@ export class AccountService extends WebService {
       await this.dispatch(resetModelData({ wallets: [] }));
       return;
     }
- 
     
     const balanceList = availableWallets.map((wallet) => {
-      let availableBalance = Number(wallet.available).toFixed(BigNumber(wallet.available).dp())
       let newWallet = {
         id: wallet.id,
         currency: wallet.currency.currency,
         reserved: wallet.reserved,
-        available:availableBalance,
-        total: parseFloat(wallet.reserved) + parseFloat(availableBalance),
+        available:wallet.available,
+        total: new BigNumber(wallet.reserved).plus(wallet.available).toString(),
         lastAction: null,
         actionAmount: 0,
       };
-
       if (lastActionDetail && wallet.id === lastActionDetail.id) {
         newWallet = { ...newWallet, ...lastActionDetail };
       }
-
       return newWallet;
     });
+
 
     let updatedUser = {
       id: user.id,
