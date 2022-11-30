@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
-import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
 import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import { history } from "../../../../const/const";
@@ -164,7 +163,9 @@ export const CriptoView = (props) => {
 
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
+      const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
       const { text, cancelled } = await BarcodeScanner.scan();
+      console.log('BarcodeScanner', text, cancelled )
       if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);

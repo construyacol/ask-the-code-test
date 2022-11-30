@@ -52,13 +52,13 @@ export const CURRENCIES = {
         prodName:'Ethereum',
         testName:'Ethereum Test',
         currencyConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 8,
         }),
         prod_fee:'ethereum_fee',
         test_fee:'ethereum_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 6,
         })
     },
