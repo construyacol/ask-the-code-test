@@ -140,8 +140,8 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                     />
                 </IconAccount>
                 <LabelContainer className="_header__labelContainer">
-                    <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
-                    {
+                    <AccountLabel className="wallet">{accountName || 'Mi billetera'}</AccountLabel>
+                    { 
                         isMovilViewport ?
                             <MobileBalanceComponent
                                 account={account}
@@ -185,6 +185,8 @@ const MobileBalanceContainer = styled.p`
     display:none;
     @media ${device.mobile} {
        display:initial;
+       color: var(--paragraph_color);
+       font-size: 21px;
     }
 `
 

@@ -19,7 +19,7 @@ const OtherModalLayoutPairs = (props) => {
   return (
     <section className={`Modal aparecer`}>
       <div id={idForCloseModal} className={`modalCont2 ConfirmationModal`} data-close_modal={true} onClick={closeModal ? closeModal : null}>
-        <PairList className={`${classes === "2auth" ? "auth" : classes}`}>
+        <PairList className={`_pairList ${classes === "2auth" ? "auth" : classes}`}>
           <IconClose theme="dark" size={20} />
           <PairListtitle>
             <h1 className="fuente">{title}</h1>
@@ -66,7 +66,7 @@ const PairList = styled.div`
   width: 90%;
   max-width: 700px;
   max-height: 700px;
-  height: 75%;
+  height: 100vh;
   background: white;
   z-index: 99;
   display: grid;
@@ -96,11 +96,14 @@ const PairList = styled.div`
   @media ${device.mobile} {
     position: absolute;
     width: 100vw;
-    bottom: 0;
+    max-height: initial;
+    bottom: 0px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
 
     .PairListItems {
+      width: calc(100vw - 30px);
+      padding: 20px 15px;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(auto-fill, minmax(150px, 1fr));
     }

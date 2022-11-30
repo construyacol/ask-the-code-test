@@ -14,6 +14,7 @@ import { useWalletInfo } from "../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
 // import { StageSkeleton } from 'components/forms/widgets/stageManager'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
+// import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
 
 
 
@@ -219,18 +220,29 @@ const CriptoView = () => {
           )}
         </div>
         <p className="fuente title dirDep">Dirección de depósito:</p>
+
         <div className="fuente address">
+
           <CopyContainer
-            valueToCopy={
-              qrError
-                ? "Dirección invalida, contacta con soporte"
-                : qrState === true
-                ? "XXXXXX- Verificando dirección -XXXXXX"
-                : address
-            }
-            color="black"
-          />
+              valueToCopy={
+                qrError
+                  ? "Dirección invalida, contacta con soporte"
+                  : qrState === true
+                  ? "XXXXXX- Verificando dirección -XXXXXX"
+                  : address
+              }
+              color="black"
+            />
+
+          {/* <AddressContainer
+            data-final-address={address.match(/..........$/g).toString()}
+          > 
+            <Address className="fuente2 withdrawAddress">
+            
+            </Address>
+          </AddressContainer> */}
         </div>
+
       </ContAddress>
     </DepositForm>
   );

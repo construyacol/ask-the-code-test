@@ -4,7 +4,6 @@ import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { DEFAULT_COST_ID } from 'const/const'
 import BigNumber from "bignumber.js"
 import sleep from 'utils/sleep'
-    // CURRENCY_CONFIG
 
 
 export default function withCryptoProvider(AsComponent) {

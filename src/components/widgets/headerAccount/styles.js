@@ -119,6 +119,13 @@ export const AccountLabel = styled(P)`
     width: fit-content;
     border-radius: 4px;
   }
+
+  @media ${device.mobile} {
+    &.wallet{
+      font-size: 14px;
+      color: #afafaf;
+    }
+  }
 `
 
 export const CurrencyLabel = styled(P)`
