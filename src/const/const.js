@@ -348,5 +348,5 @@ export const WITHDRAW_PRIORITY_FEE = {
   }
 }
 
-export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.high.value
+export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.medium.value
 
