@@ -168,7 +168,8 @@ function SwapView(props) {
         enabled: true,
         short_currency:{
           currency:currencies[boughtCurrency].currency,
-          is_token:currencies[boughtCurrency].is_token
+          // is_token:currencies[boughtCurrency].is_token
+          is_token:false
         },
       }
     });

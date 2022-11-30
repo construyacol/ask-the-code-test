@@ -7,6 +7,11 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+// export const DEFAULT_CURRENCY = {
+//     currency:'bitcoin',
+//     symbol:'btc',
+// }
+
 
 export const CURRENCIES = {
     bitcoin:{
@@ -57,6 +62,19 @@ export const CURRENCIES = {
             DECIMAL_PLACES: 6,
         })
     },
+    usdt:{
+        prod:'usdt',
+        prodName:'Usdt',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            DECIMAL_PLACES: 6,
+        }),
+        prod_fee:'usdt_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            DECIMAL_PLACES: 6,
+        })
+    },
     fau_testnet:{
         test:'fau_testnet',
         testName:'Fau Test',
@@ -73,8 +91,8 @@ export const CURRENCIES = {
     usd:{
         prod:'usd',
         test:'usd',
-        prodName:'Usdt',
-        testName:'Usdt Test',
+        prodName:'Usd',
+        testName:'Usd Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
             DECIMAL_PLACES: 2,
@@ -122,6 +140,8 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.litecoin.test]: CURRENCIES.litecoin.currencyConfig,
     [CURRENCIES.litecoin.prod_fee]: CURRENCIES.litecoin.currencyFeeConfig,
     [CURRENCIES.litecoin.test_fee]: CURRENCIES.litecoin.currencyFeeConfig,
+
+    [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
 
     [CURRENCIES.ethereum.prod]: CURRENCIES.ethereum.currencyConfig,
     [CURRENCIES.ethereum.test]: CURRENCIES.ethereum.currencyConfig,

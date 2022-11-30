@@ -3,10 +3,10 @@ import CURRENCY_CONFIG from 'core/config/currencies'
  
 export const formatToCurrency = (n, short_currency, delete_surplus_decimals = true) => {
   const amount = String(n).slice();
-  const currency = short_currency?.is_token
-    ? short_currency.contract_data.token_name
-    : short_currency.currency;
-
+  // const currency = short_currency?.is_token
+  //   ? short_currency?.contract_data?.token_name
+  //   : short_currency?.currency;
+  const currency = short_currency?.currency
   if (delete_surplus_decimals) {
     return CURRENCY_CONFIG[currency](amount).div("1");
   } else {

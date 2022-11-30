@@ -480,7 +480,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
     if(tx_path === "swaps"){
       (async()=>{
         const { formatToCurrency } = await import("utils/convert_currency");
-        setToBuyAmount(formatToCurrency(order.bought || 0, order.to_buy_currency)?.toFormat())
+        setToBuyAmount(order.bought ? formatToCurrency(order.bought, order.to_buy_currency)?.toFormat() : '--')
         setToSpendAmount(formatToCurrency(order.spent, order.to_spend_currency)?.toFormat())
       })()
     }
@@ -492,7 +492,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
         <>
           <AmountText className={`fuente2 amount swaps`}>
             {/* + {order.bought ? Number(order.bought).toFixed(BigNumber(order.bought).dp()) : "--"} */}
-            + {toBuyAmount > 0 ? toBuyAmount :  "--"}
+            + {toBuyAmount  ? toBuyAmount :  "--"}
           </AmountText>
           <IconSwitch
             className={`currency_bought`}
