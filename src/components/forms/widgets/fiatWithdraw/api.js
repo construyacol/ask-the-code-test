@@ -82,7 +82,7 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
     currentWallet,
     withdrawAccount,
     withdrawAmount,
-    twoFactorCode
+    twoFaToken
   } = payload
 
   let body = {
@@ -93,9 +93,9 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
       withdraw_account_id:withdrawAccount?.id,
       withdraw_provider_id:withdrawAccount?.withdraw_provider,
     }
-  } 
+  }  
 
-  const res = await mainService.addWithdrawOrder(body, twoFactorCode);
+  const res = await mainService.addWithdrawOrder(body, twoFaToken);
   return res
   // if(res.data) await mainService.fetchWithdrawAccounts();
   // return res

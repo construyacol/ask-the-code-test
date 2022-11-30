@@ -91,27 +91,27 @@ const {
     actions.renderModal(() => <WithdrawCreatedSuccess withdrawData={withdrawData} />);
   }
 
-  const createFiatWithdraw = async(twoFactorCode) => {
+  const createFiatWithdraw = async({ twoFaToken }) => {
     const { state } = handleState
     setLoading(true)
 
     const twoFactorIsEnabled = await ApiGetTwoFactorIsEnabled()
     // console.log('twoFactorIsEnabled', twoFactorIsEnabled)
     // debugger
-    if(twoFactorIsEnabled && !twoFactorCode){
+    if(twoFactorIsEnabled && !twoFaToken){
       setLoading(false);
       return actions.renderModal(() => (
           <Withdraw2FaModal
           cancelAction={() => actions.renderModal(null)}
           isWithdraw2fa
-          callback={(_twoFactorCode) => createFiatWithdraw(_twoFactorCode)}
+          callback={createFiatWithdraw}
         />
       ));
     }
 
-    if(twoFactorCode) actions.renderModal(null);
+    if(twoFaToken) actions.renderModal(null);
 
-    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFactorCode}) 
+    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken}) 
     if(error){
       console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
     setLoading(false)
@@ -139,11 +139,10 @@ const {
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
         label={`${lastStage ? "Crear retiro" : "Siguiente"}`}
-        handleAction={lastStage ? () => createFiatWithdraw() : nextStep}
+        handleAction={lastStage ? createFiatWithdraw : nextStep}
       />
     </ButtonContainers>
   )
-
 
   return(
     <>
