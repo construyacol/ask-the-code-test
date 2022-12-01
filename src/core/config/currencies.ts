@@ -64,12 +64,15 @@ export const CURRENCIES = {
     },
     usdt:{
         prod:'usdt',
+        test:'fau_testnet',
         prodName:'Usdt',
+        testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
             DECIMAL_PLACES: 6,
         }),
         prod_fee:'usdt_fee',
+        test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
             DECIMAL_PLACES: 6,
@@ -90,9 +93,9 @@ export const CURRENCIES = {
     },
     usd:{
         prod:'usd',
-        test:'usd',
+        test:'fau_testnet',
         prodName:'Usd',
-        testName:'Usd Test',
+        testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
             DECIMAL_PLACES: 2,
@@ -160,16 +163,19 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.referred.prod]: CURRENCIES.referred.currencyConfig,
 };
 
-
-
 export default CURRENCY_CONFIG
 
-export const DEFAULT_CURRENCIES = [
+export const NEW_CURRENCIES = [
+    "ethereum",
+    "usdt"
+] 
+
+export let DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",
     "litecoin",
-    "ethereum"
-] 
+    // ...NEW_CURRENCIES
+]
 
 export const CURRENCY_INDEX_IMG = {
     usdt_testnet:"usdt",
