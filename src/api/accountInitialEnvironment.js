@@ -1,8 +1,12 @@
 import { CURRENCIES, DEFAULT_CURRENCIES } from 'core/config/currencies'
 
-const getInitialBodyAccounts = (environment = 'test') => {
-  const initialAccounts = DEFAULT_CURRENCIES.map(currency => {
-    return {
+
+
+export const createAccounts = (currencies = DEFAULT_CURRENCIES) => {
+  const ENV = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+  let environment = ["development", "staging"].includes(ENV) ? 'test' : 'prod';
+  const initialAccounts = currencies.map(currency => {
+    return{
       data:{
         country: null,
         enabled: true,
@@ -17,11 +21,10 @@ const getInitialBodyAccounts = (environment = 'test') => {
   return initialAccounts
 }
 
-const ENV = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
-const environment = ["development", "staging"].includes(ENV) ? 'test' : 'prod'
 
 const accountInitialEnvironment = {
-  "accounts": getInitialBodyAccounts(environment)
+  "accounts": createAccounts(DEFAULT_CURRENCIES)
 }
+
 
 export default accountInitialEnvironment

@@ -18,6 +18,7 @@ import { serve_orders, matchItem } from "../utils";
 import update_activity, { pending_activity } from "../actions/storage";
 import { current_section_params } from "../actions/uiActions";
 import BigNumber from 'bignumber.js'
+import { isEmpty } from 'lodash'
 
 
 export class AccountService extends WebService {
@@ -97,7 +98,6 @@ export class AccountService extends WebService {
     }
 
     await this.dispatch(updateNormalizedDataAction(userWallets));
-
     return userWallets;
   }
 
@@ -106,6 +106,33 @@ export class AccountService extends WebService {
     for (let body of accounts) {
       // TODO: assign currency by country
       await this.createAccountAndInsertDepositProvider(body)
+    }
+  }
+
+
+  async addNewWallets(userWallets) {
+    
+    let newCurrencies = {
+      usdt:true,
+      ethereum:true
+    } 
+
+    userWallets.forEach(wallet => {
+      const { currency } = wallet?.currency
+      if(currency.includes('ethereum')){
+        delete newCurrencies.ethereum
+      }
+      if(currency.includes('usdt') || currency.includes('fau')){
+        delete newCurrencies.usdt
+      }
+    });
+
+    if(!isEmpty(Object.keys(newCurrencies))){
+      const { createAccounts } = await import("api/accountInitialEnvironment");
+      const currenciesToAdd = createAccounts(Object.keys(newCurrencies))
+      for (let body of currenciesToAdd) {
+        await this.createAccountAndInsertDepositProvider(body)
+      }
     }
   }
 

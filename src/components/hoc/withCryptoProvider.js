@@ -47,7 +47,7 @@ export default function withCryptoProvider(AsComponent) {
     }
 
     const initEthWithdraw = async() => {
-      const { data, error } = await coinsendaServices.fetchNetworkData(withdrawProvider?.id)     
+      const { data, error } = await fetchNetworkData()    
       if(error)return alert(error?.message)
       const jwt = await import('jsonwebtoken')
       const dataNetDecoded = await jwt.decode(data)
