@@ -7,12 +7,6 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
-// export const DEFAULT_CURRENCY = {
-//     currency:'bitcoin',
-//     symbol:'btc',
-// }
-
-
 export const CURRENCIES = {
     bitcoin:{
         prod:'bitcoin',

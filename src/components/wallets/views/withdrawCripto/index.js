@@ -15,7 +15,10 @@ import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
 import WithdrawFormComponent from './withdrawForm'
 import { formatToCurrency } from "utils/convert_currency";
+// TfiDashboard
 
+// thirdparty
+import styled, { keyframes } from 'styled-components'
 
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
@@ -133,7 +136,7 @@ export const CriptoView = (props) => {
     e && e.preventDefault();
     e && e.stopPropagation();
     actions.isAppLoading(true);
-    const Element = await import("../../../forms/widgets/layout");
+    const Element = await import("components/forms/widgets/layout");
     actions.isAppLoading(false);
     if(!Element) return; 
     const Layout = Element.default
@@ -145,7 +148,7 @@ export const CriptoView = (props) => {
       >
       </Layout>
     );
-    setShowModal(true)
+    setShowModal('withdrawConfirmation')
   };
 
   const closeModal = () => setShowModal(false)
@@ -221,7 +224,8 @@ export const CriptoView = (props) => {
       (async() => {
         let minAmount = await getMinAmount(withdrawProvider)
         let amountWithCost = fixedCost ? minAmount.plus(fixedCost) : minAmount
-        setMinAmount(amountWithCost)
+        const finalValue = current_wallet ? formatToCurrency(amountWithCost, current_wallet?.currency) : amountWithCost
+        setMinAmount(finalValue)
       })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -251,16 +255,51 @@ export const CriptoView = (props) => {
     amountValue:amount,
     handleSubmit,
     active_trade_operation,
-    current_wallet
+    current_wallet,
+    priority:props.priority,
+    setShowModal
   }
 
+  const closePriorModal = (e, forceClose) => {
+    if ((e && e.target?.dataset?.close_modal) || forceClose) {
+      setShowModal(false)
+    }
+  };
+ 
   return (
     <>
       <WithdrawFormComponent
         {...formProps}
       />
+
       {
-        showModal ?
+        showModal === 'speedPriority' ?
+        <ModalSpeedContainer data-close_modal={true} onClick={closePriorModal}>
+          <ModalSpeedPriority className={`${showModal === 'speedPriority' ? 'show' : ''} `}>
+
+            <PriorityContainer>
+              <p className="fuente">Velocidad de retiro</p>
+              <PriorityItems>
+                <PriorityItem>
+
+                </PriorityItem>
+                <PriorityItem>
+
+                </PriorityItem>
+                <PriorityItem>
+
+                </PriorityItem>
+              </PriorityItems>
+              <p className="fuente">Descripción .... .. .....</p>
+            </PriorityContainer>
+
+          </ModalSpeedPriority>
+        </ModalSpeedContainer>
+        : <></>
+      }
+
+      {
+        showModal === 'withdrawConfirmation' ?
           <WithdrawConfirmation 
             amount={amount}
             currencySymbol={currencySymbol}
@@ -277,6 +316,76 @@ export const CriptoView = (props) => {
 };
 
 
+const PriorityItems = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`
+
+const PriorityContainer = styled.div`
+  display:grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap:15px;
+  p{
+    margin:0;
+    color:var(--paragraph_color);
+  }
+`
+
+const PriorityItem = styled.div`
+    border: 1px solid #d5d5d5;
+    height: 100%;
+    max-width: 125px;
+    background: white;
+    border-radius: 4px;
+`
+
+
+const ModalSpeedContainer = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  z-index: 5;
+  /* backdrop-filter: blur(1px); */
+`
+
+const approve = keyframes`
+0% {
+    opacity: 0;
+    transform: translateY(0vh);
+}
+100%{
+    opacity: 1;
+    transform: translateY(-10vh);
+}
+`;
+
+
+const ModalSpeedPriority = styled.div`
+  width: 100%;
+  max-width: 450px;
+  height: 170px;
+  background:white;
+  position:absolute;
+  bottom:0px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display:grid;
+  padding:20px;
+  border-radius: 6px;
+  backdrop-filter: blur(10px);
+  background: #ffffff61;
+
+  &.show{
+    animation: ${approve} .2s linear forwards;
+  }
+
+  -webkit-box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);
+  -moz-box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);
+  box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);
+`
 
 
 

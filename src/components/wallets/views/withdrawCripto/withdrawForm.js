@@ -16,6 +16,11 @@ import AvailableBalance from '../../../widgets/availableBalance'
 import { IconsContainer, WithdrawForm } from './styles'
 
 
+// third party 
+import styled from 'styled-components'
+import { MdSpeed } from 'react-icons/md';
+
+
 
 const WithdrawFormComponent = ({
     setAddressState,
@@ -39,11 +44,20 @@ const WithdrawFormComponent = ({
     amountValue,
     handleSubmit,
     active_trade_operation,
-    current_wallet
+    current_wallet,
+    setShowModal,
+    priority:{ currentPriority, setPriority }
 }) => {
 
     const { isMobile } = useViewport()
     const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
+    const priorityColor = {
+        high:"#04c100",
+        medium:"orange",
+        low:"red"
+    }
+
+    console.log('currentPriority', currentPriority)
 
     return(
         <WithdrawForm
@@ -86,9 +100,10 @@ const WithdrawFormComponent = ({
         />
 
         <InputForm 
-            type="number" 
+            type="text"
+            inputMode="number"
             minAmount={minAmount}
-            placeholder={`${minAmount ? minAmount?.toFormat(8) : ''} ${timeLeft >= 0 ? ` (${timeLeft})` : ''}`}
+            placeholder={`${minAmount} ${timeLeft >= 0 ? ` (${timeLeft})` : ''}`}
             name="amount"
             handleStatus={setAmountState}
             handleChange={handleChangeAmount}
@@ -98,12 +113,21 @@ const WithdrawFormComponent = ({
             setMaxWithActionKey={true}
             value={amountValue}
             SuffixComponent={({ id }) => (
-            <AvailableBalance 
-                id={id}
-                handleAction={handleMaxAvailable}
-                amount={balance.available}
-                wallet={current_wallet}
-            />
+                <SuffixContainer className="suffix_container">
+                    <AvailableBalance 
+                        id={id}
+                        handleAction={handleMaxAvailable}
+                        amount={balance.available}
+                        wallet={current_wallet}
+                    />
+                    <SpeedPriorityContainer className={currentPriority} onClick={() => setShowModal('speedPriority')}>
+                        <MdSpeed
+                          size={25}
+                          color={priorityColor[currentPriority]}
+                        />
+                        <BarSpeed/>
+                    </SpeedPriorityContainer>
+                </SuffixContainer>
             )}
             // PrefixComponent
         />
@@ -120,3 +144,87 @@ const WithdrawFormComponent = ({
 
 
 export default WithdrawFormComponent
+
+
+export const BarSpeed = styled.div`
+    width: 100%;
+    height: 3px;
+    background: #c3c3c3;
+    position: relative;
+    border-radius: 3px;
+    overflow:hidden;
+
+    &::after{
+        content: "";
+        position: absolute;
+        left: 0;
+        height: 100%;
+    }
+`
+
+export const SpeedPriorityContainer = styled.div`
+    display: flex;
+    padding: 0 5px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+    position:relative;
+
+    &.high ${BarSpeed}{
+        &::after{
+            background:#04c100;
+            width: 100%;
+        }
+    }
+
+    &.medium ${BarSpeed}{
+        &::after{
+            background:orange;
+            width: 60%;
+        }
+    }
+
+    &.low ${BarSpeed}{
+        &::after{
+            background:red;
+            width: 20%;
+        }
+    }
+    
+    &:hover{
+        background: #f5f5f5;
+        border-radius: 3px;
+    }
+
+    &::before{
+        content: '';
+        position:absolute;
+        height: 70%;
+        width: 3px;
+        left:0;
+        border-left: 1px solid var(--paragraph_color);
+        top:0;
+        bottom:0;
+        margin: auto;
+        left: -10px;
+    }
+`
+
+
+export const BalanceContainer = styled.div`
+    position: relative;
+    background:red;
+`
+
+export const SuffixContainer = styled.div`
+    display:flex;
+    width:auto;
+    height: 80%;
+    column-gap:14px;
+    cursor:pointer;
+    ._balanceComponent{
+        position:relative;
+    }
+
+` 
+

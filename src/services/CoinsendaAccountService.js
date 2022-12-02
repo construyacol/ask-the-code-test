@@ -126,7 +126,6 @@ export class AccountService extends WebService {
         delete newCurrencies.usdt
       }
     });
-
     if(!isEmpty(Object.keys(newCurrencies))){
       const { createAccounts } = await import("api/accountInitialEnvironment");
       const currenciesToAdd = createAccounts(Object.keys(newCurrencies))
