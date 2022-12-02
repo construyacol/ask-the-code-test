@@ -111,12 +111,10 @@ export class AccountService extends WebService {
 
 
   async addNewWallets(userWallets) {
-    
     let newCurrencies = {
       ethereum:true,
       usdt:true
     } 
-
     userWallets.forEach(wallet => {
       const { currency } = wallet?.currency
       if(currency.includes('ethereum')){
@@ -126,7 +124,6 @@ export class AccountService extends WebService {
         delete newCurrencies.usdt
       }
     });
-
     if(!isEmpty(Object.keys(newCurrencies))){
       const { createAccounts } = await import("api/accountInitialEnvironment");
       const currenciesToAdd = createAccounts(Object.keys(newCurrencies))

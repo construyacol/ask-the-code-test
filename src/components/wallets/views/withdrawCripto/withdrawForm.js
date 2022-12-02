@@ -14,6 +14,7 @@ import AvailableBalance from '../../../widgets/availableBalance'
 
 // Styled components
 import { IconsContainer, WithdrawForm } from './styles'
+import styled from 'styled-components'
 
 
 
@@ -98,12 +99,14 @@ const WithdrawFormComponent = ({
             setMaxWithActionKey={true}
             value={amountValue}
             SuffixComponent={({ id }) => (
-            <AvailableBalance 
-                id={id}
-                handleAction={handleMaxAvailable}
-                amount={balance.available}
-                wallet={current_wallet}
-            />
+                <SuffixContainer>
+                    <AvailableBalance 
+                        id={id}
+                        handleAction={handleMaxAvailable}
+                        amount={balance.available}
+                        wallet={current_wallet}
+                    />
+                </SuffixContainer>
             )}
             // PrefixComponent
         />
@@ -120,3 +123,12 @@ const WithdrawFormComponent = ({
 
 
 export default WithdrawFormComponent
+
+
+export const SuffixContainer = styled.div`
+    display:flex;
+` 
+
+export const SpeedPriorityContainer = styled.div`
+
+`

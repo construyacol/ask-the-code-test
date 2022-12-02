@@ -15,7 +15,7 @@ import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
 import WithdrawFormComponent from './withdrawForm'
 import { formatToCurrency } from "utils/convert_currency";
-
+// TfiDashboard
 
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
@@ -253,7 +253,7 @@ export const CriptoView = (props) => {
     active_trade_operation,
     current_wallet
   }
-
+ 
   return (
     <>
       <WithdrawFormComponent

@@ -7,12 +7,6 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
-// export const DEFAULT_CURRENCY = {
-//     currency:'bitcoin',
-//     symbol:'btc',
-// }
-
-
 export const CURRENCIES = {
     bitcoin:{
         prod:'bitcoin',
@@ -174,7 +168,7 @@ export let DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",
     "litecoin",
-    // ...NEW_CURRENCIES
+    ...NEW_CURRENCIES
 ]
 
 export const CURRENCY_INDEX_IMG = {

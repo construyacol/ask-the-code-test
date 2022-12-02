@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import styled from 'styled-components'
 import { formatToCurrency } from "utils/convert_currency";
 
 
-export default function AvailableBalance ({ handleAction, amount, id, copyText = "Disponible:", wallet }) {
+export default function AvailableBalance ({ handleAction, amount, id, copyText = "MAX", wallet }) {
 
-    const { keyActions } = useSelector((state) => state.ui);
+    // const { keyActions } = useSelector((state) => state.ui);
     const isMovil = window.innerWidth < 768;
     const finalAmount = wallet ? formatToCurrency(amount, wallet?.currency)?.toFormat() : amount
 
@@ -16,7 +16,7 @@ export default function AvailableBalance ({ handleAction, amount, id, copyText =
           className={`fuente2 ${isMovil ? "movil" : ""}`}
           onClick={handleAction}
         >
-          {isMovil ? copyText : `${copyText}${keyActions ? '[M]' : ''}`} {finalAmount}
+          {isMovil ?  copyText : `${copyText}: ${finalAmount}`}
         </p>
       </BalanceContainer>
     );
@@ -36,10 +36,6 @@ export default function AvailableBalance ({ handleAction, amount, id, copyText =
   max-height: 47px;
   align-self: self-end;
   width: max-content;
-
-  .movil {
-    font-size: 11px;
-  }
 
   &:hover {
     transform: scale(1.005);
