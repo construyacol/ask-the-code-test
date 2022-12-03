@@ -43,6 +43,10 @@ const ContAddress = styled.section`
   width: 100%;
   height: 100%;
 
+  strong{
+    text-transform: uppercase;
+  }
+
   p{
     margin: 0 !important;
     color: var(--paragraph_color); 
@@ -54,6 +58,7 @@ const ContAddress = styled.section`
     width: 100%;
     text-align: left;
     font-size: 14px;
+    line-height: 20px;
   }
   .soloAd{
     color:--var(paragraph_color);
@@ -208,7 +213,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <span>{current_wallet.currency.currency}</span> a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency.currency} &nbsp;{current_wallet.currency.currency === 'usdt' && "(ERC20)"}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>

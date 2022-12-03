@@ -132,6 +132,9 @@ export const CurrencyLabel = styled(P)`
     text-transform: uppercase;
     color: #9d9d9d;
     font-size: 13px;
+    span{
+      font-size:12px;
+    }
     @media ${device.mobile} {
       display:none;
     }
