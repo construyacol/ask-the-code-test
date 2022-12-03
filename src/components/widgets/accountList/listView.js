@@ -147,7 +147,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                                 account={account}
                             />
                         :
-                        <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
+                        <CurrencyLabel>{currency?.symbol || '-'} {currency?.symbol === 'USDT' && <span className="fuente2">ERC-20</span>} </CurrencyLabel>
                     }
                 </LabelContainer> 
             </HeaderMainContainer>
