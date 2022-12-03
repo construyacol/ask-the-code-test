@@ -1,24 +1,10 @@
-import styled from 'styled-components'
+import { PanelContainerComponent } from './styles'
 
-
-export default function StatusPanelComponent ({ children }) {
+export default function StatusPanelComponent ({ className = "", children }) {
     return(
-      <PanelContainerComponent>
+      <PanelContainerComponent className={`${className}`}>
         {children}
       </PanelContainerComponent>
     )
 }
 
-  
-  const PanelContainerComponent = styled.div`
-    width:auto;
-    max-width:calc(350px - 20px);
-    background:var(--secondary_background);
-    display:grid;
-    grid-template-rows:1fr auto;
-    padding:20px;
-    row-gap:20px;
-    position: sticky;
-    top: 195px;
-    ${'' /* max-height: 580px; */}
-  `

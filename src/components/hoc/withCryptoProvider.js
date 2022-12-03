@@ -82,13 +82,31 @@ export default function withCryptoProvider(AsComponent) {
       if(withdrawData?.isEthereum) initEthWithdraw();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    const priorityConfig = {
+      high:{
+        uiName:"Alta",
+        color:"#04c100",
+        description:"Este retiro se procesará de inmediato"
+      },
+      medium:{
+        uiName:"Media",
+        color:"orange",
+        description:"Este retiro podrá tomar hasta 15 minutos en procesarse"
+      },
+      low:{
+        uiName:"Baja",
+        color:"red",
+        description:"Este retiro podrá tomar hasta 30 minutos en procesarse"
+      }
+    }
   
     return (
       <>
         <div ref={componentIsMount} style={{display:"none"}} />
         <AsComponent
           provider={{ withdrawData, setWithdrawData, getNetworkData }}
-          priority={{ currentPriority, setPriority }}
+          priority={{ currentPriority, setPriority, priorityList, priorityConfig }}
           coinsendaServices={coinsendaServices}
           withdrawProvider={withdrawProvider}
           {...wProps} 

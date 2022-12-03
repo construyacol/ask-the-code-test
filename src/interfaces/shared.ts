@@ -9,4 +9,5 @@ export interface textTypes extends ChildrenReactNode {
     skeleton?:boolean; 
     size?:number;
     variant:'bold' | 'normal' | 'number';
+    onClick?:Function
 }

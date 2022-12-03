@@ -1,10 +1,10 @@
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
-import ControlButton from "../../../widgets/buttons/controlButton";
+// import ControlButton from "../../../widgets/buttons/controlButton";
 
 // hooks
 import useViewport from 'hooks/useViewport'
-import useKeyActionAsClick from "hooks/useKeyActionAsClick";
+// import useKeyActionAsClick from "hooks/useKeyActionAsClick";
 
 // loadable components
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
@@ -18,7 +18,7 @@ import { IconsContainer, WithdrawForm } from './styles'
 
 // third party 
 import styled from 'styled-components'
-import { MdSpeed } from 'react-icons/md';
+// import { MdSpeed } from 'react-icons/md';
 
 
 
@@ -35,29 +35,23 @@ const WithdrawFormComponent = ({
     addressToAdd,
     deleteTag,
     minAmount,
-    timeLeft,
+    // timeLeft,
     setAmountState,
     handleChangeAmount,
     amountState,
     handleMaxAvailable,
     balance,
     amountValue,
-    handleSubmit,
-    active_trade_operation,
+    // handleSubmit,
+    // active_trade_operation,
     current_wallet,
-    setShowModal,
-    priority:{ currentPriority, setPriority }
+    // setShowModal,
+    // priority:{ currentPriority, priorityConfig }
 }) => {
 
     const { isMobile } = useViewport()
-    const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
-    const priorityColor = {
-        high:"#04c100",
-        medium:"orange",
-        low:"red"
-    }
-
-    console.log('currentPriority', currentPriority)
+    // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
+    
 
     return(
         <WithdrawForm
@@ -103,7 +97,7 @@ const WithdrawFormComponent = ({
             type="text"
             inputMode="number"
             minAmount={minAmount}
-            placeholder={`${minAmount} ${timeLeft >= 0 ? ` (${timeLeft})` : ''}`}
+            placeholder={`${minAmount}`}
             name="amount"
             handleStatus={setAmountState}
             handleChange={handleChangeAmount}
@@ -113,31 +107,22 @@ const WithdrawFormComponent = ({
             setMaxWithActionKey={true}
             value={amountValue}
             SuffixComponent={({ id }) => (
-                <SuffixContainer className="suffix_container">
-                    <AvailableBalance 
-                        id={id}
-                        handleAction={handleMaxAvailable}
-                        amount={balance.available}
-                        wallet={current_wallet}
-                    />
-                    <SpeedPriorityContainer className={currentPriority} onClick={() => setShowModal('speedPriority')}>
-                        <MdSpeed
-                          size={25}
-                          color={priorityColor[currentPriority]}
-                        />
-                        <BarSpeed/>
-                    </SpeedPriorityContainer>
-                </SuffixContainer>
+                <AvailableBalance 
+                    id={id}
+                    handleAction={handleMaxAvailable}
+                    amount={balance.available}
+                    wallet={current_wallet}
+                />
             )}
             // PrefixComponent
         />
-        <ControlButton
+        {/* <ControlButton
             id={idForClickeableElement}
             loader={loader}
             handleAction={handleSubmit}
             formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
             label="Enviar"
-        />
+        /> */}
         </WithdrawForm>
     )
 }
@@ -159,6 +144,8 @@ export const BarSpeed = styled.div`
         position: absolute;
         left: 0;
         height: 100%;
+        transition:.3s;
+        width: 0%;
     }
 `
 

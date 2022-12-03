@@ -15,10 +15,23 @@ import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawConfirmation from './withdrawConfirmation'
 import WithdrawFormComponent from './withdrawForm'
 import { formatToCurrency } from "utils/convert_currency";
-// TfiDashboard
+import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
+import StatusPanelComponent from 'components/forms/widgets/statusPanel'
+import { StatusHeaderContainer, TitleContainer, StatusContainer, ContentRight } from 'components/forms/widgets/statusPanel/styles'
+import { DetailContainer } from './withdrawConfirmation/styles'
+import { HandleGas } from './withdrawConfirmation/ethGas'
+import DetailTemplateComponent, { ItemContainer, LeftText, MiddleSection, RightText } from 'components/widgets/detailTemplate'
+import ControlButton from "components/widgets/buttons/controlButton";
+import BigNumber from "bignumber.js"
+
+
 
 // thirdparty
+import FeeComponent from './withdrawConfirmation/IndicatorFee'
 import styled, { keyframes } from 'styled-components'
+import { MdSpeed } from 'react-icons/md';
+import { AiOutlineThunderbolt } from 'react-icons/ai';
+
 
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
@@ -48,7 +61,7 @@ export const CriptoView = (props) => {
     balance,
     user,
     coinsendaServices,
-    active_trade_operation
+    active_trade_operation,
   } = props
 
   const actions = useActions();
@@ -61,8 +74,32 @@ export const CriptoView = (props) => {
   const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
   const isValidForm = useRef(false);
   const [ showModal, setShowModal ] = useState(false)
-  const { provider:{ withdrawData:{ fixedCost, timeLeft, amount }, setWithdrawData, getNetworkData }} = props
 
+  const [ orderDetail, setOrderDetail] = useState([["Cantidad", ""], ["Costo", ""], ["Total", ""]])
+
+  const { 
+    provider:{ 
+      withdrawData, 
+      setWithdrawData, 
+      getNetworkData 
+    }
+  } = props
+
+  const { 
+    fixedCost, 
+    timeLeft, 
+    amount,
+    isEthereum,
+    gas_limit,
+    total
+  } = withdrawData
+
+
+
+
+  const createWithdraw = () => {
+    finish_withdraw({ cost_information:{ cost_id:currentPriority }, gas_limit })
+  }
 
   const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
   const setTowFaTokenMethod = async (payload) => {
@@ -132,24 +169,24 @@ export const CriptoView = (props) => {
       }, 8000)   
   }
 
-  const handleSubmit = async(e) => {
-    e && e.preventDefault();
-    e && e.stopPropagation();
-    actions.isAppLoading(true);
-    const Element = await import("components/forms/widgets/layout");
-    actions.isAppLoading(false);
-    if(!Element) return; 
-    const Layout = Element.default
-    actions.renderModal(() => 
-      <Layout 
-          // closeControls={isMovilViewport}
-          callback={closeModal}
-          className="_show"
-      >
-      </Layout>
-    );
-    setShowModal('withdrawConfirmation')
-  };
+  // const handleSubmit = async(e) => {
+  //   e && e.preventDefault();
+  //   e && e.stopPropagation();
+  //   actions.isAppLoading(true);
+  //   const Element = await import("components/forms/widgets/layout");
+  //   actions.isAppLoading(false);
+  //   if(!Element) return; 
+  //   const Layout = Element.default
+  //   actions.renderModal(() => 
+  //     <Layout 
+  //         // closeControls={isMovilViewport}
+  //         callback={closeModal}
+  //         className="_show"
+  //     >
+  //     </Layout>
+  //   );
+  //   setShowModal('withdrawConfirmation')
+  // };
 
   const closeModal = () => setShowModal(false)
 
@@ -163,12 +200,13 @@ export const CriptoView = (props) => {
       setAmountState("good");
     }
   };
+  
 
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
       const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
       const { text, cancelled } = await BarcodeScanner.scan();
-      console.log('BarcodeScanner', text, cancelled )
+      // console.log('BarcodeScanner', text, cancelled )
       if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
@@ -223,8 +261,9 @@ export const CriptoView = (props) => {
     if(withdrawProvider){
       (async() => {
         let minAmount = await getMinAmount(withdrawProvider)
-        let amountWithCost = fixedCost ? minAmount.plus(fixedCost) : minAmount
-        const finalValue = current_wallet ? formatToCurrency(amountWithCost, current_wallet?.currency) : amountWithCost
+        // let minAmountWithCost = fixedCost ? minAmount.plus(fixedCost) : minAmount
+        // const finalValue = current_wallet ? formatToCurrency(minAmountWithCost, current_wallet?.currency) : minAmountWithCost
+        const finalValue = current_wallet ? formatToCurrency(minAmount, current_wallet?.currency) : minAmount
         setMinAmount(finalValue)
       })()
     }
@@ -253,78 +292,204 @@ export const CriptoView = (props) => {
     handleMaxAvailable,
     balance,
     amountValue:amount,
-    handleSubmit,
+    // handleSubmit,
     active_trade_operation,
     current_wallet,
     priority:props.priority,
     setShowModal
   }
 
+  const { priorityList, currentPriority, priorityConfig, setPriority } = props.priority
+
   const closePriorModal = (e, forceClose) => {
     if ((e && e.target?.dataset?.close_modal) || forceClose) {
       setShowModal(false)
     }
   };
+
+  const calculateTotal = () => {
+    let totalBalance = BigNumber(balance?.total)
+    let _amount = BigNumber(amount)
+    let totalAmount = _amount.plus(fixedCost)
+    let total = totalAmount.isLessThanOrEqualTo(totalBalance) ? totalAmount : _amount.minus(fixedCost)
+    setWithdrawData(prevState => ({...prevState, total })) 
+  }
+
+  useEffect(() => {
+    calculateTotal()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPriority, fixedCost, amount, timeLeft])
+
+  // let controlValidation = total?.isPositive() && total?.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount)
+
+  const renderOrderDetail = () => {
+    
+    let _total = current_wallet ? formatToCurrency(total, current_wallet?.currency) : total
+    let totalBalance = BigNumber(balance?.total)
+    let _amount = BigNumber(amount || 0)
+
+    let finalCopy = _total.isGreaterThan(_amount) ? 'Total retirado' : 'Total Recibido'
+
+    let _fixedCost = current_wallet ? formatToCurrency(fixedCost, current_wallet?.currency) : fixedCost
+    console.log('renderOrderDetail total', total)
+
+    setOrderDetail([
+      ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
+      ["Costo de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
+      // ["Total a retirar", totaToReceive]
+      [finalCopy, `${_total?.toFormat()} ${currencySymbol}`]
+    ])
+  }
+
+  useEffect(() => {
+      renderOrderDetail()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [total])
+  // console.log('fixedCost', fixedCost)
  
   return (
-    <>
+    <CriptoWithdrawForm>
       <WithdrawFormComponent
         {...formProps}
       />
-
-      {
-        showModal === 'speedPriority' ?
-        <ModalSpeedContainer data-close_modal={true} onClick={closePriorModal}>
-          <ModalSpeedPriority className={`${showModal === 'speedPriority' ? 'show' : ''} `}>
-
+      <StatusPanelComponent className="criptoWithdraw">
+        <StatusHeaderContainer className="criptoWithdrawCont">
+            <TitleContainer>
+              <h1 className="fuente">Velocidad de retiro</h1>
+            </TitleContainer>
+            
             <PriorityContainer>
-              <p className="fuente">Velocidad de retiro</p>
               <PriorityItems>
-                <PriorityItem>
-
-                </PriorityItem>
-                <PriorityItem>
-
-                </PriorityItem>
-                <PriorityItem>
-
-                </PriorityItem>
+                {
+                  Object.keys(props.priority.priorityList).map((priority, index) => {
+                    let Icon = priority === 'high' ? AiOutlineThunderbolt : MdSpeed
+                    return(
+                      <PriorityItem 
+                        onClick={() => setPriority(priority)}
+                        key={index} 
+                        color={priorityConfig[priority].color} 
+                        className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
+                      >
+                        <Icon
+                          size={35}
+                          color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
+                        />
+                        <p className="fuente">{priorityConfig[priority].uiName}</p>
+                        <div className="speedBar" />
+                      </PriorityItem>
+                    )
+                  })
+                }
               </PriorityItems>
-              <p className="fuente">Descripción .... .. .....</p>
+              <p className="fuente" style={{fontSize:"13px"}}>{priorityConfig[currentPriority].description}</p>
             </PriorityContainer>
 
-          </ModalSpeedPriority>
-        </ModalSpeedContainer>
-        : <></>
-      }
+            {
+              isEthereum ? <HandleGas withdrawData={withdrawData} setWithdrawData={setWithdrawData}/> : <></>
+            }
 
-      {
-        showModal === 'withdrawConfirmation' ?
-          <WithdrawConfirmation 
-            amount={amount}
-            currencySymbol={currencySymbol}
-            addressValue={addressValue}
-            tagWithdrawAccount={tagWithdrawAccount}
-            current_wallet={current_wallet}
-            handleAction={finish_withdraw}
-            callback={closeModal}
-            {...props}
-          /> : <></>
-      }
-    </>
+            <StatusContainer>
+              <DetailContainer>
+                <DetailTemplateComponent
+                    items={orderDetail}
+                    skeletonItems={3}
+                />
+              </DetailContainer>
+            </StatusContainer>
+          </StatusHeaderContainer>
+
+          <ControlButton
+            loader={false}
+            handleAction={createWithdraw}
+            formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
+            label="Confirmar retiro"
+            // formValidate={(amountState === 'good' && addressState === 'good') && true}
+          />
+
+      </StatusPanelComponent>
+    </CriptoWithdrawForm>
   ); 
 };
+
+
+
+  
+
+
+
+  // <>
+  //   <WithdrawFormComponent
+  //     {...formProps}
+  //   />
+
+  //   {
+  //     showModal === 'speedPriority' ?
+  //     <ModalSpeedContainer data-close_modal={true} onClick={closePriorModal}>
+  //       <ModalSpeedPriority className={`${showModal === 'speedPriority' ? 'show' : ''} `}>
+
+  //         <PriorityContainer>
+  //           <p className="fuente bold">Velocidad de retiro</p>
+  //           <PriorityItems>
+  //             {
+  //               Object.keys(props.priority.priorityList).map((priority, index) => {
+  //                 return(
+  //                   <PriorityItem 
+  //                     onClick={() => setPriority(priority)}
+  //                     key={index} 
+  //                     color={priorityConfig[priority].color} 
+  //                     className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
+  //                   >
+  //                     <MdSpeed
+  //                       size={35}
+  //                       color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
+  //                     />
+  //                     <p className="fuente">{priorityConfig[priority].uiName}</p>
+  //                     <div className="speedBar" />
+  //                   </PriorityItem>
+  //                 )
+  //               })
+  //             }
+  //           </PriorityItems>
+  //           <p className="fuente" style={{fontSize:"13px"}}>{priorityConfig[currentPriority].description}</p>
+  //         </PriorityContainer>
+
+  //       </ModalSpeedPriority>
+  //     </ModalSpeedContainer>
+  //     : <></>
+  //   }
+
+  //   {
+  //     showModal === 'withdrawConfirmation' ?
+  //       <WithdrawConfirmation 
+  //         amount={amount}
+  //         currencySymbol={currencySymbol}
+  //         addressValue={addressValue}
+  //         tagWithdrawAccount={tagWithdrawAccount}
+  //         current_wallet={current_wallet}
+  //         handleAction={finish_withdraw}
+  //         callback={closeModal}
+  //         {...props}
+  //       /> : <></>
+  //   }
+  // </>
 
 
 const PriorityItems = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  column-gap: 15px;
 `
 
 const PriorityContainer = styled.div`
   display:grid;
-  grid-template-rows: auto 1fr auto;
-  row-gap:15px;
+  grid-template-rows: 100px 20px;
+  row-gap:30px;
+  
+  .bold{
+    font-weight: bold;
+  }
+
   p{
     margin:0;
     color:var(--paragraph_color);
@@ -332,11 +497,69 @@ const PriorityContainer = styled.div`
 `
 
 const PriorityItem = styled.div`
+    transition:.3s;
     border: 1px solid #d5d5d5;
-    height: 100%;
     max-width: 125px;
-    background: white;
+    background: #ffffffd6;
     border-radius: 4px;
+    display:grid;
+    grid-template-rows:1fr auto auto;
+    row-gap:10px;
+    place-items: center;
+    padding: 15px 0;
+    height: calc(100% - 30px);
+    border: 1px solid transparent;
+    transform:scale(.9);
+    width: 100%;
+    cursor:pointer;
+    
+    
+    &:hover{
+      border: 1px solid ${props => props.color ? props.color : ''};
+    }
+
+    &.isActive{
+      transform:scale(1);
+      border: 1px solid ${props => props.color ? props.color : ''};
+      .speedBar::after{
+        background: ${props => props.color};
+      }
+    }
+    
+    &>div{
+      height: 45px;
+      width: 45px;
+      border-radius: 4px;
+    }
+
+    p{
+      margin:0;
+      font-size: 14px;
+    }
+
+    &.low .speedBar::after{
+      width: 20%;
+    }
+    &.medium .speedBar::after{
+      width: 50%;
+    }
+    &.high .speedBar::after{
+      width: 100%;
+    }
+
+    .speedBar{
+      height: 5px;
+      width: 80%;
+      background:#d1d1d1;
+      position: relative;
+      &::after{
+        content:"";
+        position: absolute;
+        height: 100%;
+        width: 20%;
+      }
+    }
+
 `
 
 
@@ -365,7 +588,7 @@ const approve = keyframes`
 const ModalSpeedPriority = styled.div`
   width: 100%;
   max-width: 450px;
-  height: 170px;
+  height: auto;
   background:white;
   position:absolute;
   bottom:0px;
@@ -378,10 +601,7 @@ const ModalSpeedPriority = styled.div`
   backdrop-filter: blur(10px);
   background: #ffffff61;
 
-  &.show{
-    animation: ${approve} .2s linear forwards;
-  }
-
+ 
   -webkit-box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);
   -moz-box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);
   box-shadow: 10px 10px 23px -21px rgba(0,0,0,0.25);

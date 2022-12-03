@@ -20,11 +20,12 @@ display: flex;
 
 export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 40% 1fr 1fr;
+  background: transparent;
+  padding:0;
   @media (max-width: 768px) {
     height: calc(100% - 40px);
     width: 100%;
     padding: 20px 0;
-    background: transparent;
     grid-template-rows: 1fr 1fr 1fr;
   }
 `;

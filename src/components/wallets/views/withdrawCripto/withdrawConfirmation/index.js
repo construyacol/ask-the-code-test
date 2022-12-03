@@ -135,7 +135,7 @@ export default function WithdrawConfirmation({
 }
 
 
-const HandleGas = ({withdrawData, setWithdrawData}) => {
+export const HandleGas = ({withdrawData, setWithdrawData}) => {
     return(
         <GasLayout>
             <Pcontainer>
@@ -143,10 +143,6 @@ const HandleGas = ({withdrawData, setWithdrawData}) => {
                 <P size={15} variant="number">{withdrawData?.gas_limit}</P>
             </Pcontainer>
             <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={"25000"} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
-            <Pcontainer>
-                <P size={12}>Lento</P>
-                <P size={12}>Rápido</P>
-            </Pcontainer>
         </GasLayout>
     )
 }

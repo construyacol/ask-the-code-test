@@ -12,19 +12,18 @@ export const PriorityContainer = styled.div`
     padding:15px 20px 0;
 `
 
-
-
-
 export const Pcontainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `
 
 export const GasLayout = styled.div`
-    padding: 0 20px;
+    padding: 0;
     position: relative;
-    height: 80px;
+    height: auto;
     display: grid;
+    row-gap:10px;
     p{
         margin:0;
     }
