@@ -2,9 +2,6 @@ import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
 // import ControlButton from "../../../widgets/buttons/controlButton";
 
-// hooks
-// import useKeyActionAsClick from "hooks/useKeyActionAsClick";
-
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
@@ -14,11 +11,9 @@ import ControlButton from "components/widgets/buttons/controlButton";
 // Styled components
 import { IconsContainer, WithdrawForm } from './styles'
 
-
 // third party 
 import styled from 'styled-components'
 // import { MdSpeed } from 'react-icons/md';
-
 
 
 const WithdrawFormComponent = ({
@@ -71,25 +66,25 @@ const WithdrawFormComponent = ({
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             SuffixComponent={() => (
-            <IconsContainer>
-                <IconSwitch
-                className="superImposed"
-                icon={`${addressState === "good" ? "verify" : "wallet"}`}
-                color={`${addressState === "good" ? "green" : "gray"}`}
-                size={`${addressState === "good" ? 22 : 25}`}
-                />
-                <IconSwitch
-                onClick={showQrScanner}
-                icon="qr"
-                color="gray"
-                size={25}
-                />
-            </IconsContainer>
+                <IconsContainer>
+                    <IconSwitch
+                    className="superImposed"
+                    icon={`${addressState === "good" ? "verify" : "wallet"}`}
+                    color={`${addressState === "good" ? "green" : "gray"}`}
+                    size={`${addressState === "good" ? 22 : 25}`}
+                    />
+                    <IconSwitch
+                    onClick={showQrScanner}
+                    icon="qr"
+                    color="gray"
+                    size={25}
+                    />
+                </IconsContainer>
             )}
             AuxComponent={[
-            () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
-            () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
-            () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
+                () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
+                () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
+                () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
 

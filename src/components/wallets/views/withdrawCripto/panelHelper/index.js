@@ -75,7 +75,7 @@ const PanelHelper = props => {
             ["Cantidad", `${_amount.toString()}  ${currencySymbol}`],
             ["Costo de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}]
         ]
-        if(_total.isLessThanOrEqualTo(totalBalance) && !_amount.isGreaterThan(totalBalance) && controlValidation){
+        if(_total.isLessThanOrEqualTo(totalBalance) && !_amount.isGreaterThan(totalBalance) && controlValidation && _amount.isGreaterThan(0)){
             _orderDetail.push([finalCopy, `${_total?.toFormat()} ${currencySymbol}`])
         }
         setOrderDetail(_orderDetail)
