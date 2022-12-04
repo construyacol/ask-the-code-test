@@ -43,6 +43,7 @@ const ContAddress = styled.section`
   width: 100%;
   height: 100%;
 
+
   strong{
     text-transform: uppercase;
   }
@@ -208,12 +209,18 @@ const CriptoView = () => {
 
   return ( 
     <DepositForm>
+      {
+        current_wallet.currency.currency.includes("eth") &&
+          <EtherDisclaimer className="fuente">
+            No enviar con menos de 70 mil gas
+          </EtherDisclaimer>
+      }
       <ContAddress className={`contAddress ${osDevice}`}>
         <p id="soloAd2" className="fuente title soloAd2">
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency.currency} &nbsp;{current_wallet.currency.currency === 'usdt' && "(ERC20)"}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency.currency} {current_wallet.currency.currency === 'usdt' && "(ERC20)"}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>
@@ -263,6 +270,18 @@ const QrProtector = ({ visible, invalid }) => (
   </QrProtectorCont>
 );
 
+
+
+const EtherDisclaimer = styled.div`
+  right: 10px;
+  top: 10px;
+  padding: 5px 10px;
+  background: #ebebeb;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--paragraph_color);
+  position:absolute;
+`
 
 
 const qrScan = keyframes`

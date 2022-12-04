@@ -551,6 +551,11 @@ export const FormContainer = styled.div`
 
 export const CriptoWithdrawForm = styled(FormContainer)`
   grid-template-columns:1fr minmax(auto, 380px);
+
+  @media ${device.mobile}{
+    grid-template-columns:1fr;
+  }
+
 `
 
 

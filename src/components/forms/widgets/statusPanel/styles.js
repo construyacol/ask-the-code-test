@@ -30,10 +30,13 @@ export const ContentRight = styled.div`
 export const StatusContainer = styled.div`
   width:100%;
   height:auto;
-  padding-top:15px;
   display: flex;
   flex-direction: column;
   row-gap: 25px;
+
+  .criptoHelper{
+    row-gap:20px;
+  }
 
   &.borderBottom{
     border-bottom: 1px solid var(--skeleton_color);
@@ -61,8 +64,9 @@ export const StatusHeaderContainer = styled.div`
 
     &.criptoWithdrawCont{
         display: flex;
-        row-gap: 15px;
+        row-gap: 20px;
         flex-direction: column;
+        max-height:none;
     }
 `
 

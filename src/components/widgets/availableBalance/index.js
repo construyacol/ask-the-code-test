@@ -16,7 +16,7 @@ export default function AvailableBalance ({ handleAction, amount, id, copyText =
           className={`fuente2 ${isMovil ? "movil" : ""}`}
           onClick={handleAction}
         >
-          {isMovil ?  copyText : `${copyText}: ${finalAmount}`}
+          {isMovil ?  copyText : `Disponible: ${finalAmount}`}
         </p>
       </BalanceContainer>
     );

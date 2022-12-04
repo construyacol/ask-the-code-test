@@ -17,7 +17,7 @@ export const HandleGas = ({ withdrawData, setWithdrawData }) => {
     const [ onEdit, setOnEdit ] = useState()
 
     return(
-        <GasLayout>
+        <GasLayout className={`${onEdit ? 'open' : ''}`}>
             <Pcontainer>
                 <P variant="bold" size={15}>Gas estimado:</P>
                 <GasEdit>
@@ -29,7 +29,7 @@ export const HandleGas = ({ withdrawData, setWithdrawData }) => {
                     </button>
                 </GasEdit>
             </Pcontainer>
-            <RangeContainer className={`${onEdit ? 'open' : ''}`}>
+            <RangeContainer className="rangeCont">
                 <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={"25000"} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
             </RangeContainer>
         </GasLayout>
@@ -48,9 +48,7 @@ const RangeContainer = styled.div`
     input{
         width: 100%;
     }
-    &.open{
-        height: 50px;
-    }
+   
 `
 
 const GasEdit = styled.div`
