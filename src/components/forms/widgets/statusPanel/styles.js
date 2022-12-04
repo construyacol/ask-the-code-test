@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { LeftText, RightText } from 'components/widgets/detailTemplate'
-  
+import { device } from 'const/const'
+
 export const PanelContainerComponent = styled.div`
     width:auto;
     max-width:calc(350px - 20px);
@@ -11,9 +12,27 @@ export const PanelContainerComponent = styled.div`
     row-gap:20px;
     position: sticky;
     top: 195px;
-
     &.criptoWithdraw{
-        max-width:calc(440px - 20px);
+      max-width:calc(440px - 20px);
+      @media ${device.mobile}{
+        #controlsContainer.ioSystem{
+          padding-bottom: 100px;
+        }
+        &.isOpen{
+          transform: translateX(0px);
+        }
+        transform: translateX(100%);
+        transition: .3s;
+        position: fixed;
+        top: 0;
+        z-index: 99;
+        left: 0;
+        width: calc(100vw - 40px);
+        height: calc(100vh - 40px);
+        .criptoWithdrawCont{
+          top:50px;
+        }
+      }
     }
 `
 

@@ -1,6 +1,23 @@
 import styled, { keyframes } from 'styled-components'
+import { device } from 'const/const'
 
 
+export const Button = styled.button`
+  display: none;
+  border-style: none;
+  background: none;
+
+  @media ${device.mobile}{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    align-items: center;
+    display: flex;
+    column-gap: 5px;
+    font-size: 15px;
+    color: var(--paragraph_color);
+  }
+`
 
 export const DetailContainer = styled.div`
     display: grid;
@@ -51,6 +68,8 @@ p{
   color:var(--paragraph_color);
 }
 `
+
+
 
 export const PriorityItem = styled.div`
   transition:.3s;

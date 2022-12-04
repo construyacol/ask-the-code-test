@@ -3,14 +3,13 @@ import InputForm from "../../../widgets/inputs/inputForm";
 // import ControlButton from "../../../widgets/buttons/controlButton";
 
 // hooks
-import useViewport from 'hooks/useViewport'
 // import useKeyActionAsClick from "hooks/useKeyActionAsClick";
 
-// loadable components
 import AddressBookCTA from "../../../widgets/modal/render/addressBook/ctas";
 import AddressTagList from "./addressTagList";
 import TagItem from "./tagItem";
 import AvailableBalance from '../../../widgets/availableBalance'
+import ControlButton from "components/widgets/buttons/controlButton";
 
 // Styled components
 import { IconsContainer, WithdrawForm } from './styles'
@@ -42,14 +41,15 @@ const WithdrawFormComponent = ({
     handleMaxAvailable,
     balance,
     amountValue,
+    setIsOpenPanel,
     // handleSubmit,
-    // active_trade_operation,
+    active_trade_operation,
     current_wallet,
+    isMobile
     // setShowModal,
     // priority:{ currentPriority, priorityConfig }
 }) => {
 
-    const { isMobile } = useViewport()
     // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
     
 
@@ -116,13 +116,16 @@ const WithdrawFormComponent = ({
             )}
             // PrefixComponent
         />
-        {/* <ControlButton
-            id={idForClickeableElement}
-            loader={loader}
-            handleAction={handleSubmit}
-            formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
-            label="Enviar"
-        /> */}
+        {
+            isMobile ?
+            <ControlButton
+                // id={idForClickeableElement}
+                loader={loader}
+                handleAction={() => setIsOpenPanel(prevState => !prevState)}
+                formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
+                label="Enviar"
+            />:<></>
+        }
         </WithdrawForm>
     )
 }

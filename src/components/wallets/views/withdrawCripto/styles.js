@@ -19,13 +19,15 @@ display: flex;
 `;
 
 export const WithdrawForm = styled(OperationForm)`
-  grid-template-rows: 40% 1fr 1fr;
+  grid-template-rows: 180px 180px auto;
   background: transparent;
   padding:0;
+  
   @media (max-width: 768px) {
     height: calc(100% - 40px);
     width: 100%;
     padding: 20px 0;
-    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 20px;
+    grid-template-rows: 140px auto auto;
   }
 `;

@@ -16,6 +16,8 @@ import WithdrawFormComponent from './withdrawForm'
 import { formatToCurrency } from "utils/convert_currency";
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
+import useViewport from 'hooks/useViewport'
+
 
 
 const CriptoSupervisor = (props) => { 
@@ -50,6 +52,7 @@ export const CriptoView = (props) => {
   } = props
 
   const actions = useActions();
+  const { isMobile } = useViewport()
   const [toastMessage] = useToastMessage();
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState();
@@ -58,7 +61,8 @@ export const CriptoView = (props) => {
   const [minAmount, setMinAmount] = useState(0)
   const [tagWithdrawAccount, setTagWithdrawAccount] = useState();
   const isValidForm = useRef(false);
-  // const [ loader, setLoader ] = useState(null)
+  const [ isOpenPanel, setIsOpenPanel ] = useState(isMobile ? false : true)
+
 
   const { 
     provider:{ 
@@ -71,7 +75,6 @@ export const CriptoView = (props) => {
 
   const { 
     fixedCost, 
-    timeLeft, 
     amount,
     gas_limit
   } = withdrawData
@@ -90,14 +93,15 @@ export const CriptoView = (props) => {
  
   const finish_withdraw = async (fnProps) => {
     const { twoFaToken = null, cost_information, gas_limit } = fnProps
+    actions.isAppLoading(true);
     const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
       // setShowModal(false)
+      actions.isAppLoading(false);
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
       ));
     } 
-    actions.isAppLoading(true);
     let withdraw_account = withdraw_accounts[addressValue];
     if (!withdraw_account) { 
       // si la cuenta no existe, se crea una nueva y se consultan
@@ -242,7 +246,6 @@ export const CriptoView = (props) => {
     addressToAdd,
     deleteTag,
     minAmount,
-    timeLeft,
     setAmountState,
     handleChangeAmount,
     amountState,
@@ -252,15 +255,19 @@ export const CriptoView = (props) => {
     active_trade_operation,
     current_wallet,
     priority:props.priority,
+    setIsOpenPanel,
+    isMobile
   }
 
   const panelHProps = {
     currencySymbol,
-    // loader,
     createWithdraw,
     amountState,
-    addressState
+    addressState,
+    isOpenPanel,
+    setIsOpenPanel
   }
+
  
   return (
     <CriptoWithdrawForm>
