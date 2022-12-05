@@ -8,8 +8,7 @@ import {
 import { HR } from 'components/widgets/headerAccount/styles'
 import { RiGasStationFill } from 'react-icons/ri';
 import { number_format, funcDebounces } from 'utils' 
-// import estimatingSrc from './estimating.gif' 
-import estimatingSrc from './estimating2.gif' 
+import { getCdnPath } from 'environment'
 import BigNumber from "bignumber.js"
 
 
@@ -62,7 +61,7 @@ export const HandleGas = ({
                     <P size={15} variant="number" color='var(--primary)'>{number_format(withdrawData?.gas_limit || 0)}</P>
                     {
                         loader ?
-                        <img src={estimatingSrc} alt="" width={18} />
+                        <img src={`${getCdnPath('assets')}wallet/withdraw/estimating.gif`} alt="" width={18} />
                         :
                         <RiGasStationFill size={18} color='var(--primary)'/>
                     }
