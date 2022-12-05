@@ -1,20 +1,58 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import P from 'components/widgets/typography/p'
-
 import {
     GasLayout,
     Pcontainer,
 } from './styles'
-
 import { HR } from 'components/widgets/headerAccount/styles'
 import { RiGasStationFill } from 'react-icons/ri';
+import { number_format, funcDebounces } from 'utils' 
+// import estimatingSrc from './estimating.gif' 
+import estimatingSrc from './estimating2.gif' 
+import BigNumber from "bignumber.js"
 
-import { number_format } from 'utils' 
 
-export const HandleGas = ({ withdrawData, setWithdrawData }) => {
+export const HandleGas = ({ 
+    addressState, 
+    current_wallet, 
+    toAddress, 
+    withdrawData, 
+    setWithdrawData, 
+    withdrawProvider,
+    priorityList,
+    currentPriority
+}) => {
 
     const [ onEdit, setOnEdit ] = useState()
+    const [ loader, setLoader ] = useState(false)
+
+    const setEstimatedGas = async() => {
+        const { withdrawAmount, ethersProvider, utils } = withdrawData
+        if(addressState !== 'good')return ;
+        funcDebounces({
+            keyId:{[`estimating_gas`]:current_wallet?.currency?.currency}, 
+            storageType:"sessionStorage",
+            timeExect:300,
+            callback:async() => {
+                setLoader(true)
+                const txParams = {
+                    to: toAddress,
+                    data: "0xd0e30db0",
+                    value: utils.parseEther(withdrawAmount.toString())
+                }
+                const gasLimit = await ethersProvider.estimateGas(txParams);
+                setLoader(false)
+                if(!BigNumber(gasLimit.toString()).isGreaterThanOrEqualTo(priorityList[currentPriority]?.gas_limit))return;
+                setWithdrawData(prevState => ({...prevState, gas_limit:gasLimit.toString()}))
+            }
+        })
+    }
+
+    useEffect(() => {
+        if(withdrawData.ethersProvider && withdrawData.baseFee && withdrawData.withdrawAmount) setEstimatedGas()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawData.ethersProvider, withdrawData.baseFee, withdrawData.withdrawAmount, addressState])
 
     return(
         <GasLayout className={`${onEdit ? 'open' : ''}`}>
@@ -22,7 +60,12 @@ export const HandleGas = ({ withdrawData, setWithdrawData }) => {
                 <P variant="bold" size={15}>Gas estimado:</P>
                 <GasEdit>
                     <P size={15} variant="number" color='var(--primary)'>{number_format(withdrawData?.gas_limit || 0)}</P>
-                    <RiGasStationFill color='var(--primary)'/>
+                    {
+                        loader ?
+                        <img src={estimatingSrc} alt="" width={18} />
+                        :
+                        <RiGasStationFill size={18} color='var(--primary)'/>
+                    }
                     <HR height={20}/>   
                     <button className={`${onEdit ? 'onEdit' : ''}`} onClick={() => setOnEdit(!onEdit)}>
                         <P  size={12} variant="number" color={`${onEdit ? 'white' : 'var(--primary)'}`} >EDITAR</P>

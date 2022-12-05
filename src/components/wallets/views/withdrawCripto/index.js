@@ -265,7 +265,8 @@ export const CriptoView = (props) => {
     amountState,
     addressState,
     isOpenPanel,
-    setIsOpenPanel
+    setIsOpenPanel,
+    addressValue
   }
 
  

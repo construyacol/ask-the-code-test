@@ -41,6 +41,7 @@ const PanelHelper = props => {
         isMobile,
         isOpenPanel,
         setIsOpenPanel,
+        addressValue,
         priority:{ priorityList, currentPriority, priorityConfig, setPriority },
         provider:{ withdrawData, setWithdrawData }
     } = props
@@ -50,7 +51,8 @@ const PanelHelper = props => {
         timeLeft, 
         amount,
         isEthereum,
-        total
+        total,
+        baseFee
     } = withdrawData
 
     let controlValidation = total?.isPositive() && total?.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount)
@@ -61,7 +63,7 @@ const PanelHelper = props => {
       let _amount = BigNumber(amount)
       let totalAmount = _amount.plus(fixedCost)
       let total = totalAmount.isLessThanOrEqualTo(totalBalance) ? totalAmount : _amount.minus(fixedCost)
-      let withdrawAmount = total.isGreaterThanOrEqualTo(totalAmount) ? total : _amount
+      let withdrawAmount = _amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && (total.isGreaterThanOrEqualTo(totalAmount) ? total : _amount)
       setWithdrawData(prevState => ({...prevState, total, withdrawAmount })) 
     }
 
@@ -83,14 +85,14 @@ const PanelHelper = props => {
 
     useEffect(() => {
         renderOrderDetail()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [total])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [total, timeLeft])
 
   
     useEffect(() => {
       calculateTotal()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPriority, fixedCost, amount, timeLeft])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPriority, fixedCost, amount, baseFee])
 
     let title = isMobile ? 'Confirmación de retiro' : 'Velocidad de retiro'
 
@@ -132,9 +134,18 @@ const PanelHelper = props => {
               </PriorityItems>
               <p className="fuente" style={{fontSize:"13px", paddingTop:"10px"}}>{priorityConfig[currentPriority].description}</p>
             </PriorityContainer>
-
+            
             {
-              isEthereum ? <HandleGas withdrawData={withdrawData} setWithdrawData={setWithdrawData}/> : <></>
+              isEthereum ? <HandleGas 
+                priorityList={priorityList} 
+                currentPriority={currentPriority} 
+                withdrawProvider={withdrawProvider} 
+                addressState={addressState} 
+                current_wallet={current_wallet} 
+                toAddress={addressValue} 
+                withdrawData={withdrawData} 
+                setWithdrawData={setWithdrawData}
+              /> : <></>
             }
 
             <StatusContainer>

@@ -2,13 +2,12 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import WithdrawViewState from "hooks/withdrawStateHandle";
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { DEFAULT_COST_ID } from 'const/const'
+import { INFURA_URI, PRIORITY_CONFIG } from 'const/eth'
 import BigNumber from "bignumber.js"
 import sleep from 'utils/sleep'
 
-
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
-
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName } = wProps
     const withdrawProvider = withdrawProvidersByName[current_wallet?.currency?.currency]
@@ -19,7 +18,9 @@ export default function withCryptoProvider(AsComponent) {
       timeLeft:undefined, 
       baseFee:0, 
       amount:0,
+      ethersProvider:undefined,
       networkDataExp:undefined, 
+      withdrawAmount:undefined,
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
       network_data:null, 
@@ -27,6 +28,7 @@ export default function withCryptoProvider(AsComponent) {
       isEthereum:!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
     })
     const componentIsMount = useRef()
+   
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
@@ -44,6 +46,15 @@ export default function withCryptoProvider(AsComponent) {
         const { data } = await fetchNetworkData()   
         return data
       }
+    }
+
+    const createEthersProvider = async() => {
+      const { ethers } = await import('ethers');
+      setWithdrawData(prevState => ({
+        ...prevState, 
+        ethersProvider:new ethers.providers.JsonRpcProvider(INFURA_URI),
+        utils:ethers.utils
+      }))
     }
 
     const initEthWithdraw = async() => {
@@ -80,33 +91,16 @@ export default function withCryptoProvider(AsComponent) {
 
     useEffect(() => {
       if(withdrawData?.isEthereum) initEthWithdraw();
+      if(withdrawData?.isEthereum) createEthersProvider();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    const priorityConfig = {
-      high:{
-        uiName:"Alta",
-        color:"#04c100",
-        description:"Este retiro se procesará de inmediato"
-      },
-      medium:{
-        uiName:"Media",
-        color:"orange",
-        description:"Este retiro podrá tomar hasta 15 minutos en procesarse"
-      },
-      low:{
-        uiName:"Baja",
-        color:"red",
-        description:"Este retiro podrá tomar hasta 30 minutos en procesarse"
-      }
-    }
   
     return (
       <>
         <div ref={componentIsMount} style={{display:"none"}} />
         <AsComponent
           provider={{ withdrawData, setWithdrawData, getNetworkData }}
-          priority={{ currentPriority, setPriority, priorityList, priorityConfig }}
+          priority={{ currentPriority, setPriority, priorityList, priorityConfig:PRIORITY_CONFIG }}
           coinsendaServices={coinsendaServices}
           withdrawProvider={withdrawProvider}
           {...wProps} 

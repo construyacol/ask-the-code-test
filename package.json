@@ -24,6 +24,7 @@
     "compressorjs": "^1.0.5",
     "cordova-plugin-camera-preview": "^0.12.3",
     "cordova-plugin-inappbrowser": "^5.0.0",
+    "ethers": "^5.7.2",
     "headroom.js": "0.9.4",
     "image-type": "^4.1.0",
     "intersection-observer": "^0.7.0",
