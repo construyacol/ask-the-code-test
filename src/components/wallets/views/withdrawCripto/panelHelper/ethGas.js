@@ -18,16 +18,13 @@ export const HandleGas = ({
     toAddress, 
     withdrawData, 
     setWithdrawData, 
-    withdrawProvider,
-    priorityList,
-    currentPriority
 }) => {
 
     const [ onEdit, setOnEdit ] = useState()
     const [ loader, setLoader ] = useState(false)
 
     const setEstimatedGas = async() => {
-        const { withdrawAmount, ethersProvider, utils } = withdrawData
+        const { withdrawAmount, ethersProvider, utils, gas_limit } = withdrawData
         if(addressState !== 'good')return ;
         funcDebounces({
             keyId:{[`estimating_gas`]:current_wallet?.currency?.currency}, 
@@ -42,7 +39,7 @@ export const HandleGas = ({
                 }
                 const gasLimit = await ethersProvider.estimateGas(txParams);
                 setLoader(false)
-                if(!BigNumber(gasLimit.toString()).isGreaterThanOrEqualTo(priorityList[currentPriority]?.gas_limit))return;
+                if(!BigNumber(gasLimit.toString()).isGreaterThanOrEqualTo(gas_limit))return;
                 setWithdrawData(prevState => ({...prevState, gas_limit:gasLimit.toString()}))
             }
         })

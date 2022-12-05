@@ -137,9 +137,6 @@ const PanelHelper = props => {
             
             {
               isEthereum ? <HandleGas 
-                priorityList={priorityList} 
-                currentPriority={currentPriority} 
-                withdrawProvider={withdrawProvider} 
                 addressState={addressState} 
                 current_wallet={current_wallet} 
                 toAddress={addressValue} 
