@@ -25,7 +25,7 @@ export const PanelContainerComponent = styled.div`
         transition: .3s;
         position: fixed;
         top: 0;
-        z-index: 99;
+        z-index: 4;
         left: 0;
         width: calc(100vw - 40px);
         height: calc(100vh - 40px);

@@ -15,9 +15,10 @@ import { useWalletInfo } from "../../../hooks/useWalletInfo";
 // import { StageSkeleton } from 'components/forms/widgets/stageManager'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 // import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
+import useTruncatedAddress from 'hooks/useTruncatedAddress'
+import useViewport from 'hooks/useViewport'
 
-
-
+ 
 const CriptoSupervisor = (props) => {
 
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
@@ -42,7 +43,12 @@ const ContAddress = styled.section`
   align-items: center;
   width: 100%;
   height: 100%;
+  row-gap: 15px;
 
+  .address{
+    display: flex;
+    column-gap:7px;
+  }
 
   strong{
     text-transform: uppercase;
@@ -170,9 +176,11 @@ const CriptoView = () => {
       ui:{ osDevice } 
     },
   ] = useCoinsendaServices();
+  const { isMobile } = useViewport()
   const [qrState, setQrState] = useState(true);
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
+
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
  
@@ -204,6 +212,9 @@ const CriptoView = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deposit_providers]);
+  
+  const truncatedAddres = useTruncatedAddress(address || '')
+  const addressValue = isMobile ? truncatedAddres : address
 
   return ( 
     <DepositForm>
@@ -232,15 +243,18 @@ const CriptoView = () => {
         <p className="fuente title dirDep">Dirección de depósito:</p>
 
         <div className="fuente address">
-
+        <p className="fuente2">
+          {
+            qrError
+              ? "Dirección invalida, contacta con soporte"
+              : qrState === true
+              ? "XXXXXX- Verificando dirección -XXXXXX"
+              : addressValue
+          }
+        </p>
           <CopyContainer
-              valueToCopy={
-                qrError
-                  ? "Dirección invalida, contacta con soporte"
-                  : qrState === true
-                  ? "XXXXXX- Verificando dirección -XXXXXX"
-                  : address
-              }
+              valueToCopy={address}
+              onlyIcon={true}
               color="black"
             />
 
