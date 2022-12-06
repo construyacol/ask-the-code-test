@@ -167,10 +167,9 @@ export const CriptoView = (props) => {
 
   const showQrScanner = async () => {
     if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
-      // const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
-      // const { text, cancelled } = await BarcodeScanner.scan();
-      // // console.log('BarcodeScanner', text, cancelled )
-      // if (!!!cancelled) setAddressValue(text);
+      const { BarcodeScanner } = await import('@awesome-cordova-plugins/barcode-scanner');
+      const { text, cancelled } = await BarcodeScanner.scan();
+      if (!!!cancelled) setAddressValue(text);
     } else if (CAPACITOR_PLATFORM === 'web') {
       actions.renderModal(null);
       const Element = await import("../../../widgets/qr-scanner"); 

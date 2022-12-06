@@ -79,3 +79,9 @@ This is changed on Xcode under App -> General or in the `frontend/ios/App/App/In
 
 The certificates are generated from developer.apple.com.
 
+
+<!-- Disclaimer -->
+the current versión of barcode-scanner-plugin uses the old method of including native Android libraries by using compile() on version before API-ANDROID 32, for build compilation. You can change manually (in Project Structure > Dependencies tab) the field “configuration” of the the dependency barcodescanner to switch from “compile” to “implementation”.
+
+config(icono esquina superior derecha en Android estudio) > Project structure...
+

@@ -11,6 +11,10 @@
     <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser"/>
   </feature>
 
+  <feature name="BarcodeScanner">
+    <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner"/>
+  </feature>
+
   
   <preference name="overrideUserAgent" value="Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Mobile/15E148 Safari/604.1" />
 </widget>
