@@ -7,6 +7,16 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+export const BLOCKCHAIN_EXPLORER_URL = {
+    bitcoin:"https://blockstream.info/tx/",
+    bitcoin_testnet:"https://blockstream.info/tx/",
+    litecoin:"https://blockchair.com/es/litecoin/transaction/",
+    litecoin_testnet:"https://blockexplorer.one/litecoin/testnet/tx/",
+    ethereum:"https://etherscan.io/tx/",
+    ethereum_testnet:"https://goerli.etherscan.io/tx/",
+    usdt:"https://blockchair.com/es/tether/transaction/"
+}
+
 export const CURRENCIES = {
     bitcoin:{
         prod:'bitcoin',
@@ -22,7 +32,8 @@ export const CURRENCIES = {
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_UP,
             DECIMAL_PLACES: 6,
-        })
+        }),
+        blockchainExplorer:"https://blockstream.info/tx/"
     },
     litecoin:{
         prod:'litecoin',
@@ -125,7 +136,6 @@ export const CURRENCIES = {
         })
     }
 }
-
 
 const CURRENCY_CONFIG = {
     [CURRENCIES.bitcoin.prod]: CURRENCIES.bitcoin.currencyConfig,

@@ -234,7 +234,7 @@ export const fontSize = {
 // };
 
 // https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
-
+ 
 
 
 export const currencyLabels = {
@@ -244,11 +244,7 @@ export const currencyLabels = {
   bitcoin_testnet: {bitcoin_testnet:"USD"}
 };
 
-export const BLOCKCHAIN_EXPLORER_URL = {
-  bitcoin:"https://blockstream.info/tx/",
-  bitcoin_testnet:"https://blockstream.info/tx/",
-  litecoin:"https://blockchair.com/es/litecoin/transaction/"
-}
+
 
 
 export const orderStateColors = {
