@@ -1,7 +1,5 @@
 import { CURRENCIES, DEFAULT_CURRENCIES } from 'core/config/currencies'
 
-
-
 export const createAccounts = (currencies = DEFAULT_CURRENCIES) => {
   const ENV = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   let environment = ["development", "staging"].includes(ENV) ? 'test' : 'prod';

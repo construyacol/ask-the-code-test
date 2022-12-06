@@ -28,7 +28,7 @@ export const CURRENCIES = {
         prod:'litecoin',
         test:'litecoin_testnet',
         prodName:'Litecoin',
-        testName:'litecoin Test',
+        testName:'Litecoin Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
             DECIMAL_PLACES: 8,
@@ -59,7 +59,7 @@ export const CURRENCIES = {
     usdt:{
         prod:'usdt',
         test:'fau_testnet',
-        prodName:'Usdt',
+        prodName:'USDT',
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
