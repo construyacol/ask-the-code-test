@@ -2,7 +2,6 @@ import { createBrowserHistory } from "history";
 import Enviroment from "../environment";
 import { Capacitor } from '@capacitor/core';
 
-
 const {
   AccountApiUrl,
   ApiUrl,

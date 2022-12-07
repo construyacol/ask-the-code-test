@@ -2,13 +2,31 @@ import styled, { keyframes } from 'styled-components'
 import { device } from 'const/const'
 
 
+export const TotalContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: var(--paragraph_color);
+    padding-top: 20px;
+    row-gap:7px;
+  h1, p{
+    margin:0;
+  }
+  h1{
+    span{
+      font-size: 20px;
+    }
+    font-size:30px;
+    font-weight: 500;
+  }
+`
+
 export const Button = styled.button`
   display: none;
   border-style: none;
   background: none;
 
   @media ${device.mobile}{
-    position: absolute;
     top: 20px;
     left: 20px;
     align-items: center;
@@ -59,6 +77,14 @@ display:grid;
 grid-template-rows: 90px auto;
 row-gap:20px;
 
+p.description{
+  font-size: 13px;
+  padding-top: 10px;
+  background: var(--secondary_deg);
+  padding: 10px 7px;
+  color: var(--paragraph_color);
+}
+
 .bold{
   font-weight: bold;
 }
@@ -103,6 +129,8 @@ export const PriorityItem = styled.div`
       opacity: 1;
       &::after{
         background: ${props => props.color};
+        border-top-left-radius: 2px;
+        border-bottom-left-radius: 2px;
       }
     }
   }

@@ -11,6 +11,7 @@ const InputForm = (props) => {
     placeholder,
     name,
     handleStatus,
+    className,
     // errorState,
     // resetErrorState,
     disabled,
@@ -117,7 +118,7 @@ const InputForm = (props) => {
   }
 
   return (
-    <InputLayout className={`${props.className || ''}`}>
+    <InputLayout className={`${className || ''}`}>
       <ContainerInputComponent>
         <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
           {props.label}
@@ -130,9 +131,7 @@ const InputForm = (props) => {
             <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
         )}
-
       {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
-      {/* <ErrorText className="fuente2">esto que puej</ErrorText> */}
       {customError && <ErrorTexts className="fuente2">{customError}</ErrorTexts>}
       </ContainerInputComponent>
     </InputLayout>
@@ -164,6 +163,12 @@ const InputLayout = styled(SkeletonAnimation)`
     position: relative;
     z-index: 2;
   }
+
+  &.hide{
+    opacity: 0;
+    pointer-events: none;
+  }
+
 `;
 
 const SuffixComponentContainer = styled.div`
@@ -208,7 +213,7 @@ export const InputContainer = styled.div`
   .movil {
     display: block;
     margin-left: 10px;
-    max-width: 210px;
+    max-width: 250px;
     overflow: hidden;
     padding-left: 0;
     text-overflow: ellipsis;
@@ -231,7 +236,7 @@ export const InputContainer = styled.div`
 
   &.skeleton::before {
     content: "";
-    background: #bfbfbf;
+    background: var(--skeleton_color); ;
     width: 100%;
     border-radius: 3px;
     height: 15px;
@@ -251,7 +256,7 @@ export const ContainerInputComponent = styled.div`
   align-items: center;
 
   p.skeleton {
-    background: #bfbfbf; 
+    background: var(--skeleton_color); 
     width: 100%;
     height: 15px;
     max-width: 400px;

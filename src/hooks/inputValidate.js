@@ -91,7 +91,7 @@ export default (props) => {
         }
 
          min_amount = props?.minAmount || await _getMinAmount(inputName)
-         available = formatToCurrency(availableBalance, currentWallet.currency);
+         available = formatToCurrency(props.availableBalance || availableBalance, currentWallet.currency);
 
          minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
          availableAmountValidation = value.isLessThanOrEqualTo(available)

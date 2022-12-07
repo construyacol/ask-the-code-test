@@ -11,7 +11,6 @@ import { number_format, funcDebounces } from 'utils'
 import { getCdnPath } from 'environment'
 import BigNumber from "bignumber.js"
 
-
 export const HandleGas = ({ 
     addressState, 
     current_wallet, 
@@ -22,10 +21,12 @@ export const HandleGas = ({
 
     const [ onEdit, setOnEdit ] = useState()
     const [ loader, setLoader ] = useState(false)
+    const { withdrawAmount, ethersProvider, utils, gas_limit } = withdrawData
+
+    // console.log('gas_limit', gas_limit)
 
     const setEstimatedGas = async() => {
-        const { withdrawAmount, ethersProvider, utils, gas_limit } = withdrawData
-        if(addressState !== 'good')return ;
+        if(addressState !== 'good' || withdrawAmount.isNaN())return;
         funcDebounces({
             keyId:{[`estimating_gas`]:current_wallet?.currency?.currency}, 
             storageType:"sessionStorage",
@@ -34,7 +35,7 @@ export const HandleGas = ({
                 setLoader(true)
                 const txParams = {
                     to: toAddress,
-                    data: "0xd0e30db0",
+                    // data: "0xd0e30db0",
                     value: utils.parseEther(withdrawAmount.toString())
                 }
                 const gasLimit = await ethersProvider.estimateGas(txParams);
@@ -69,7 +70,7 @@ export const HandleGas = ({
                 </GasEdit>
             </Pcontainer>
             <RangeContainer className="rangeCont">
-                <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={"25000"} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
+                <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={gas_limit} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
             </RangeContainer>
         </GasLayout>
     )

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import IconSwitch from "../../../widgets/icons/iconSwitch";
 import InputForm from "../../../widgets/inputs/inputForm";
 // import ControlButton from "../../../widgets/buttons/controlButton";
@@ -9,11 +10,19 @@ import AvailableBalance from '../../../widgets/availableBalance'
 import ControlButton from "components/widgets/buttons/controlButton";
 
 // Styled components
-import { IconsContainer, WithdrawForm } from './styles'
+import { 
+    IconsContainer, 
+    WithdrawForm,
+    HandlePriorityCont
+} from './styles'
 
 // third party 
 import styled from 'styled-components'
-// import { MdSpeed } from 'react-icons/md';
+
+import { OptionInput } from 'components/molecules'
+import { formatToCurrency } from "utils/convert_currency";
+import BigNumber from "bignumber.js";
+import { MdSpeed } from 'react-icons/md';
 
 
 const WithdrawFormComponent = ({
@@ -28,26 +37,46 @@ const WithdrawFormComponent = ({
     setAddressValue,
     addressToAdd,
     deleteTag,
-    minAmount,
-    // timeLeft,
     setAmountState,
     handleChangeAmount,
     amountState,
     handleMaxAvailable,
-    balance,
     amountValue,
     setIsOpenPanel,
-    // handleSubmit,
     active_trade_operation,
     current_wallet,
-    isMobile
-    // setShowModal,
-    // priority:{ currentPriority, priorityConfig }
+    isMobile,
+    provider:{ withdrawData:{ takeFeeFromAmount, availableBalance, fixedCost, amount, minAmount }, setWithdrawData },
+    priority:{ currentPriority, priorityConfig },
 }) => {
 
     // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
-    
+    const switchFixedCost = () => {
+        let inputEl = document.querySelector('[name="amount"]')
+        if(inputEl?.value) inputEl.value = '';
+        setWithdrawData(prevState => ({...prevState, total:BigNumber(0), amount:'0', takeFeeFromAmount:!takeFeeFromAmount}))
+    }
 
+    const togglePanel = () => setIsOpenPanel(prevState => !prevState)
+
+    useEffect(() => {
+        // Handle amount state
+        let avBalance = takeFeeFromAmount ? availableBalance?.toFormat() : availableBalance?.minus(fixedCost)?.toFormat()
+        let _amount = formatToCurrency(amount, current_wallet.currency)
+        if(_amount.isGreaterThan(avBalance)) setAmountState('bad')
+        if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+        if(takeFeeFromAmount && _amount.isLessThan(minAmount)) setAmountState('bad')
+        if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fixedCost, minAmount])
+
+    let _availableBalance = availableBalance?.toFormat() 
+    if(!takeFeeFromAmount && availableBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
+        _availableBalance = availableBalance?.minus(fixedCost)?.toFormat()
+    }
+
+
+    
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -62,23 +91,27 @@ const WithdrawFormComponent = ({
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={`Ingresa la dirección ${currencySymbol}`}
+            label={`Ingresa la dirección de destino ${currencySymbol}`}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             SuffixComponent={() => (
                 <IconsContainer>
-                    <IconSwitch
-                    className="superImposed"
-                    icon={`${addressState === "good" ? "verify" : "wallet"}`}
-                    color={`${addressState === "good" ? "green" : "gray"}`}
-                    size={`${addressState === "good" ? 22 : 25}`}
-                    />
-                    <IconSwitch
-                    onClick={showQrScanner}
-                    icon="qr"
-                    color="gray"
-                    size={25}
-                    />
+                    {
+                        addressState === "good" ?
+                        <IconSwitch
+                            className="superImposed"
+                            icon={`verify`}
+                            color={`green`}
+                            size={22}
+                        />
+                        :
+                        <IconSwitch
+                        onClick={showQrScanner}
+                        icon="qr"
+                        color="gray"
+                        size={25}
+                        />
+                    }
                 </IconsContainer>
             )}
             AuxComponent={[
@@ -87,47 +120,84 @@ const WithdrawFormComponent = ({
                 () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
-
-        <InputForm 
-            type="text"
-            inputMode="number"
-            minAmount={minAmount}
-            placeholder={`${minAmount}`}
-            name="amount"
-            handleStatus={setAmountState}
-            handleChange={handleChangeAmount}
-            label={`Ingresa la cantidad del retiro`}
-            disabled={loader}
-            state={amountState}
-            setMaxWithActionKey={true}
-            value={amountValue}
-            SuffixComponent={({ id }) => (
-                <AvailableBalance 
-                    id={id}
-                    handleAction={handleMaxAvailable}
-                    amount={balance.available}
-                    wallet={current_wallet}
+                <InputForm  
+                    className={addressState !== "good" ? 'hide' : ''}
+                    type="text"
+                    inputMode="number"
+                    minAmount={minAmount}
+                    placeholder={`Min: ${minAmount}`}
+                    name="amount"
+                    handleStatus={setAmountState}
+                    handleChange={handleChangeAmount}
+                    label={`Ingresa la cantidad del retiro`}
+                    disabled={loader}
+                    state={amountState}
+                    setMaxWithActionKey={true}
+                    value={amountValue}
+                    availableBalance={_availableBalance}
+                    SuffixComponent={
+                        ({ id }) => (
+                            <IconsContainer>
+                                <AvailableBalance 
+                                    id={id}
+                                    handleAction={handleMaxAvailable}
+                                    amount={_availableBalance}
+                                    wallet={current_wallet}
+                                />
+                                {
+                                    isMobile &&
+                                    <HandlePriorityCont onClick={togglePanel}>
+                                        <MdSpeed
+                                            size={25}
+                                            color={priorityConfig[currentPriority].color} 
+                                        />
+                                    </HandlePriorityCont>
+                                }
+                            </IconsContainer>
+                        )
+                    }
+                    AuxComponent={[
+                        () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>)
+                    ]} 
                 />
-            )}
-            // PrefixComponent
-        />
-        {
-            isMobile ?
-            <ControlButton
-                // id={idForClickeableElement}
-                loader={loader}
-                handleAction={() => setIsOpenPanel(prevState => !prevState)}
-                formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
-                label="Enviar"
-            />:<></>
-        }
+                {
+                    (isMobile && addressState === "good") ?
+                    <ControlButton
+                        // id={idForClickeableElement}
+                        loader={loader}
+                        handleAction={togglePanel}
+                        formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
+                        label="Enviar"
+                    />:<></>
+                }
         </WithdrawForm>
     )
 }
 
 
+
 export default WithdrawFormComponent
 
+
+export const TakeCostFromWithdrawAmount = (props) => {
+    return(
+        <CheckWrapper>
+            <OptionInput
+                {...props}
+                type={"checkbox"}
+                size={"medium"}
+                color={"text_color"}
+                uiName={"Cobrar tarifa de la cantidad a retirar"}
+            />
+        </CheckWrapper>
+    )
+}
+
+export const CheckWrapper = styled.div`
+    position:absolute;
+    bottom: -60px;
+    left: 0;
+`
 
 export const BarSpeed = styled.div`
     width: 100%;

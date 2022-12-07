@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { LeftText, RightText } from 'components/widgets/detailTemplate'
 import { device } from 'const/const'
 
@@ -30,7 +30,7 @@ export const PanelContainerComponent = styled.div`
         width: calc(100vw - 40px);
         height: calc(100vh - 40px);
         .criptoWithdrawCont{
-          top:50px;
+          top:30px;
         }
       }
     }
@@ -92,10 +92,21 @@ export const StatusHeaderContainer = styled.div`
 
 
 export const TitleContainer = styled.div`
+    height: fit-content;
   h1{
     font-size: 22px;
     font-size: 20px;
     color: var(--paragraph_color);
+    ${props => props.skeleton && css`
+      width: fit-content;
+      background: var(--skeleton_color);
+      color: var(--skeleton_color);
+      border-radius: 3px;
+    `}
   }
   border-bottom: 1px solid var(--skeleton_color);
+  @media ${device.mobile}{
+    display:flex;
+  }
+
 `

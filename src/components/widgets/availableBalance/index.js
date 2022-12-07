@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { formatToCurrency } from "utils/convert_currency";
 
 
-export default function AvailableBalance ({ handleAction, amount, id, copyText = "MAX", wallet }) {
+export default function AvailableBalance ({ handleAction, amount, id, uiCopy, wallet }) {
 
     // const { keyActions } = useSelector((state) => state.ui);
     const isMovil = window.innerWidth < 768;
@@ -14,9 +14,9 @@ export default function AvailableBalance ({ handleAction, amount, id, copyText =
         <p
           id={id}
           className={`fuente2 ${isMovil ? "movil" : ""}`}
-          onClick={handleAction}
+          onClick={() => handleAction(finalAmount)}
         >
-          {isMovil ?  copyText : `Disponible: ${finalAmount}`}
+          {isMovil ?  'MAX' : uiCopy ? uiCopy : `Disponible: ${finalAmount}`}
         </p>
       </BalanceContainer>
     );
