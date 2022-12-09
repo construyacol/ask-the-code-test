@@ -58,17 +58,16 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     isMovilViewport 
   } = useViewport();
 
-
   const initComponent = async () => {
 
     const { userToken } = authData;
-    // debugger
-    // const isSessionRestored = await tryRestoreSession(userToken);
-    // if (isSessionRestored) {
-    //   await actions.isLoggedInAction(true);
-    //   coinsendaServices.postLoader(doLogout);
-    //   return redirectURL(isSessionRestored);
-    // } 
+    const isSessionRestored = await tryRestoreSession();
+    console.log('isSessionRestored', isSessionRestored)
+    if (isSessionRestored) {
+      await actions.isLoggedInAction(true);
+      coinsendaServices.postLoader(doLogout);
+      return redirectURL(isSessionRestored);
+    } 
     
     if (!userToken) return;
    

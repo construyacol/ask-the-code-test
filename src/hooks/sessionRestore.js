@@ -2,36 +2,34 @@ import localForage from "localforage";
 import { useActions } from "./useActions";
 import { getExpTimeData } from 'utils/handleSession'
 
-
 export const updateLocalForagePersistState = (payload) => {
   let modelData = JSON.parse(JSON.stringify(payload))
   const { user, wallets, balances } = modelData;
   if (user && wallets && balances) {
-  // alert('updateLocalForagePersistState')
-  delete modelData.withdraws
-  delete modelData.deposits
-  delete modelData.swaps
-  modelData.user.withdraws = []
-  modelData.user.swaps = []
-  modelData.user.deposits = []
-  return localForage.setItem("sessionState", JSON.stringify(modelData));
+    delete modelData.withdraws
+    delete modelData.deposits
+    delete modelData.swaps
+    modelData.user.withdraws = []
+    modelData.user.swaps = []
+    modelData.user.deposits = []
+    return localForage.setItem("sessionState", JSON.stringify(modelData));
   } 
 };
 
 const SessionRestore = () => {
   const actions = useActions();
 
-  const tryRestoreSession = async (userToken) => {
+  const tryRestoreSession = async () => {
     
     const {
       currentTime,
-      REFRESH_TOKEN_EXP_TIME
+      refreshTokenExpirationTime,
     } = await getExpTimeData()
 
     const SESSION = await localForage.getItem("sessionState");
     const SESSION_STATE = SESSION && Object.keys(SESSION).length && JSON.parse(SESSION);
     // if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.authData.userToken !== userToken)) {
-    if (!SESSION_STATE || currentTime > REFRESH_TOKEN_EXP_TIME) {
+    if (!SESSION_STATE || currentTime > refreshTokenExpirationTime) {
       await localForage.setItem("CACHED_DATA", {});
       await localForage.setItem("sessionState", {});
       return false;
