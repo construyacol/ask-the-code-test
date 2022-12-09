@@ -121,7 +121,7 @@ const WithdrawFormComponent = ({
             ]} 
         />
                 <InputForm  
-                    className={addressState !== "good" ? 'hide' : ''}
+                    className={addressState !== "good" ? 'hide' : 'isReady'}
                     type="text"
                     inputMode="number"
                     minAmount={minAmount}

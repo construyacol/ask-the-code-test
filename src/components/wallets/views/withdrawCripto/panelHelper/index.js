@@ -64,7 +64,7 @@ const PanelHelper = props => {
         setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
       }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(availableBalance)){
         totalAmount = _amount.plus(fixedCost)
-        setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
+        setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
       }
     }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import InputValidate from "hooks/inputValidate";
-import styled from "styled-components";
-import SkeletonAnimation from "../loaders/skeleton";
+import styled, { keyframes } from "styled-components";
+import SkeletonAnimation from "../loaders/skeleton"; 
 import useViewport from '../../../hooks/useWindowSize'
 
 const InputForm = (props) => {
@@ -123,7 +123,7 @@ const InputForm = (props) => {
         <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
           {props.label}
         </p>
-        <InputContainer className={`${inputState}`}>
+        <InputContainer className={`${inputState} input__withdraw--amount`}>
           <input {...inputProps} />
         </InputContainer>
         {SuffixComponent && (
@@ -158,6 +158,26 @@ const ErrorTexts = styled.div`
   bottom: -25px;
 `;
 
+
+export const isReadyAnim = keyframes`
+    0%{
+      border: 1px solid rgb(0, 210, 255);
+    }
+    40%{
+      border: 1px solid #50667a61;
+    }
+    70%{
+      border: 1px solid rgb(0, 210, 255);
+    }
+    90%{
+      border: 1px solid #50667a61;
+    }
+    100%{
+    }
+`;
+
+
+
 const InputLayout = styled(SkeletonAnimation)`
   .superImposed {
     position: relative;
@@ -167,6 +187,12 @@ const InputLayout = styled(SkeletonAnimation)`
   &.hide{
     opacity: 0;
     pointer-events: none;
+  }
+
+  &.isReady .input__withdraw--amount{
+    animation-name: ${isReadyAnim};
+    animation-duration: 1.5s;
+    animation-iteration-count: forwards;
   }
 
 `;
