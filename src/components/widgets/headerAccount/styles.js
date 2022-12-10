@@ -38,7 +38,7 @@ export const BalanceContainer = styled.div`
 
   .BalanceComponent{
     grid-template-rows: auto 1fr !important;
-    width:${props => props.width}
+    width:${props => props.width || 'auto'}
   }
 
   .textin{
@@ -119,12 +119,22 @@ export const AccountLabel = styled(P)`
     width: fit-content;
     border-radius: 4px;
   }
+
+  @media ${device.mobile} {
+    &.wallet{
+      font-size: 14px;
+      color: #afafaf;
+    }
+  }
 `
 
 export const CurrencyLabel = styled(P)`
     text-transform: uppercase;
     color: #9d9d9d;
     font-size: 13px;
+    span{
+      font-size:12px;
+    }
     @media ${device.mobile} {
       display:none;
     }

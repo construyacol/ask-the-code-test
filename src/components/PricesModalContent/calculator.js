@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import loadable from "@loadable/component";
 import convertCurrencies from "../../utils/convert_currency";
 import { getCdnPath } from '../../environment'
+import { CURRENCY_INDEX_IMG } from 'core/config/currencies'
 
 const NumberInput = loadable(() => import("../widgets/inputs/numberInput"));
 
@@ -40,6 +41,9 @@ export default (props) => {
     fontSize: "16px",
   };
 
+  const currencyImg = currentPair.primary_currency.currency
+  
+
   return (
     <div className="root-content-items-calc">
       <CalculatorInput
@@ -65,7 +69,7 @@ export default (props) => {
         />
       </div>
       <CalculatorInput
-        iconPath={`${getCdnPath('assets')}prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`}
+        iconPath={`${getCdnPath('assets')}coins/${CURRENCY_INDEX_IMG[currencyImg] || currencyImg}.png`}
         type="text"
         defaultValue={convertedCurrency && convertedCurrency.want_to_spend}
         readOnly

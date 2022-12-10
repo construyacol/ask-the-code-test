@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import WithdrawViewState from "hooks/withdrawStateHandle";
-import { CriptoSupervisor } from "./withdrawCripto";
+import CriptoSupervisor from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import FiatView from "./withdrawFiat";
 

@@ -57,6 +57,9 @@ const SwapVIewConfirm = (props) => {
     }
   };
 
+
+  console.log('toSwap', to?.toLowerCase())
+
   return (
     <OtherModalLayout
       id="close-button-with-OtherModalLayout"
@@ -91,7 +94,7 @@ const SwapVIewConfirm = (props) => {
               </article>
 
               <article className="depositAmount swap">
-                <IconSwitch icon={to} size={35} />
+                <IconSwitch icon={to?.toLowerCase()} size={35} />
                 <article id="order_amount" className="fuente2 swap">
                   {/* {formatCurrency}  */}
                   {/* {description} */} {bought}

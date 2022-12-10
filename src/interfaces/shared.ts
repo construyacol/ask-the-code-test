@@ -8,4 +8,6 @@ export interface textTypes extends ChildrenReactNode {
     color?:string;   
     skeleton?:boolean; 
     size?:number;
+    variant:'bold' | 'normal' | 'number';
+    onClick?:Function
 }

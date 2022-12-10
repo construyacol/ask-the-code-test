@@ -3,7 +3,7 @@ import { Text, PriorityContainer } from './styles'
 import { WITHDRAW_PRIORITY_FEE } from '../../../../../const/const'
 
 
-export default function PriorityComponent ({ availableCosts = [], currentPriority = "medium_priority", setPriority }) {
+export default function PriorityComponent ({ availableCosts = [], currentPriority , setPriority }) {
     
     const handleClick = value => {
         setPriority(value)

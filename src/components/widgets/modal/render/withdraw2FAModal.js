@@ -11,12 +11,16 @@ import IconSwitch from "../../icons/iconSwitch";
 import { useActions } from "../../../../hooks/useActions";
 import { IconClose } from "../../shared-styles";
 
-const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
-  const actions = useActions();
+const Withdraw2FaModal = ({ callback, isWithdraw2fa, ...props }) => {
 
+  const actions = useActions();
   const cerrar = (e, forcedClose) => {
     actions.renderModal(null);
   };
+
+  const handleAction = (twoFaToken) => {
+    return callback({twoFaToken, ...props})
+  }
 
   return (
     <OtherModalLayout>
@@ -39,7 +43,7 @@ const Withdraw2FaModal = ({ callback, isWithdraw2fa, cancelAction }) => {
               continuar.
             </p>
             <AutContainer>
-              <AuthReq isWithdraw2fa={isWithdraw2fa} authenticated={callback} />
+              <AuthReq isWithdraw2fa={isWithdraw2fa} authenticated={handleAction} />
             </AutContainer>
           </Description>
           <ButtonCont onClick={() => cerrar(false, true)}>Cancelar</ButtonCont>

@@ -1,31 +1,22 @@
 import { useState } from "react";
-// import AddressValidator from 'wallet-address-validator'
-// import useError from './errorHandle'
-// import { debounce } from "../../utils";
 import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle"; 
 import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default () => {
+export default (props) => {
 
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
-
-  // const [ setHandleError ] = useError()
-  // const globalState = useSelector(state => state)
-  // const params = useParams()
-  // const { account_id } = params
-  // const { wallets, withdrawProviders } = globalState.modelData
-  const [{ withdrawProviders }] = WithdrawViewState();
+  const [{ withdrawProvidersByName }] = WithdrawViewState();
   const { currentPair, currentWallet, availableBalance } = useWalletInfo();
+
   let value
   let min_amount
   let available
   let minAmountValidation
   let availableAmountValidation
-
 
   const validateState = async (inputName, e) => {
     if (!e.target.value || e.target.value.length === 0) {
@@ -47,7 +38,7 @@ export default () => {
           setInputState('good')
         }else{
           setInputState('bad')
-        }
+        } 
         e.target.value = e.target.value.toLowerCase()
         break;
 
@@ -58,18 +49,19 @@ export default () => {
           setInputState(null)
           return;
         }
-
+ 
         let AddressValidator;
-        AddressValidator = await import("wallet-address-validator");
+        AddressValidator = await import("multicoin-address-validator");
 
-        let currency = currentWallet.currency.currency === "bitcoin_testnet" ? "bitcoin" : currentWallet.currency.currency;
+        const { currency } = currentWallet.currency;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-        // console.log('address value', finalValue)
-        // debugger
+        if(!withdrawProvidersByName[currency])return;
+        const { address_validator_config:{ name, network } } = withdrawProvidersByName[currency]
         let addressVerify = await AddressValidator.validate(
           finalValue,
-          currency
+          name,
+          network || 'testnet'
         );
 
         if (addressVerify) {
@@ -98,11 +90,10 @@ export default () => {
           return (e.target.value = null);
         }
 
-         min_amount = await getMinAmount(inputName)
-         available = formatToCurrency(availableBalance, currentWallet.currency);
-        
-         minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
+         min_amount = props?.minAmount || await _getMinAmount(inputName)
+         available = formatToCurrency(props.availableBalance || availableBalance, currentWallet.currency);
 
+         minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
          availableAmountValidation = value.isLessThanOrEqualTo(available)
         //  debugger
 
@@ -176,9 +167,10 @@ export default () => {
   }
 
 
-  const getMinAmount = async(inputName) => {
+  const _getMinAmount = async(inputName) => {
 
     switch (inputName) { 
+
       // case 'spend-amount':
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
@@ -186,9 +178,8 @@ export default () => {
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
-        const providerMinAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider.min_amount, currentWallet.currency)
-        const costAmount = formatToCurrency(withdrawProviders[currentWallet.currency.currency].provider?.costs?.medium_priority?.fixed, currentWallet.currency)
-        const withdrawMinAmount = providerMinAmount.plus(costAmount || 0)
+        const { getMinAmount} = await import('utils/withdrawProvider')
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 
@@ -201,7 +192,6 @@ export default () => {
           const { want_to_spend } = converted
           minAmount = want_to_spend
         }
-        
       return minAmount
       default:
         return

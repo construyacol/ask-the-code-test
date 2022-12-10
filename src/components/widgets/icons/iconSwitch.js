@@ -112,6 +112,8 @@ const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera"
 const Handshake = loadable(() => import("./").then(getExportByName("Handshake")));
 const Search = loadable(() => import("./").then(getExportByName("Search")));
 const Ethereum = loadable(() => import("./").then(getExportByName("Ethereum")));
+const Usdt = loadable(() => import("./").then(getExportByName("Usdt")));
+
 const HoursAtention = loadable(() =>
   import("./").then(getExportByName("HoursAtention"))
 );
@@ -268,7 +270,16 @@ class IconSwitch extends Component {
         );
       case "logout":
         return <LogOut {...props} />;
+      case "usdt":
+      case "FAUT":
+      case "fau_testnet":
+      case "usdtt":
+      case "usdt_testnet":
+          return <Usdt {...props} />;
       case "ethereum":
+      case "ethereum_testnet":
+      case "eth":
+      case "etht":
         return <Ethereum {...props} />;
       case "cardano":
         return <Cardano {...props} />;
@@ -289,6 +300,7 @@ class IconSwitch extends Component {
       case "twitter":
         return <Twitter {...props} />;
       case "litecoin":
+      case "litecoin_testnet":
       case "LTC":
       case "ltc":
         return <Litecoin {...props} />;

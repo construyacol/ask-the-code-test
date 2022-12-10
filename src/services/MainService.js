@@ -18,6 +18,7 @@ import isAppLoading, {
 import sleep from "../utils/sleep";
 import { GET_URLS, GET_CHART_DATA_URL, history } from "../const/const";
 import { updateLoadersAction } from "../actions/uiActions";
+import { isEmpty } from 'lodash' 
 // import { observable, decorate, computed, action } from "mobx"
 
 
@@ -99,12 +100,6 @@ export class MainService extends inheritances {
     return (this.globalState = newValue);
   }
 
-
-
-
-
-
-
   // async countryValidator() {
   //     // Debemos agregar el lastCountryInit al modelo profile (para saber con que país se logeo la ultima vez)
   //     const URL = `${Environment.IdentityApIUrl}countryvalidators/findOne?country=colombia`
@@ -132,21 +127,23 @@ export class MainService extends inheritances {
       }
     }
   }
-
   
 
   async init(callback) {
 
     while (!this.user) {
       await sleep(2000);
-    }
+    } 
 
     const userWallets = await this.userHasWallets();
-    const withOutWallets = userWallets?.length < 1
     const verificationStatus = this.getVerificationState();
-    if (withOutWallets && verificationStatus === "accepted") {
+
+    if((userWallets && isEmpty(userWallets)) && verificationStatus === "accepted") {
       await this.createInitialEnvironmentAccount();
+    }else if((userWallets && !isEmpty(userWallets))){
+      await this.addNewWallets(userWallets);
     }
+
     await this.getWalletsByUser()
     this.postLoader(callback, false);
     return;
@@ -163,7 +160,7 @@ export class MainService extends inheritances {
       let pairs = await this.fetchAllPairs();
       if (!pairs) {
         // return callback();
-      }
+      } 
       const currencies = await this.fetchAllCurrencies();
       if (!currencies) throw currencies;
       await this.getPairsByCountry(this.user.country, currencies);

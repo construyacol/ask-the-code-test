@@ -494,7 +494,6 @@ export const StageContainer = styled.div`
     grid-template-rows:auto auto 1fr;
   }
 
-
   .inputContainer__{
     height: 45px;
     max-width: 700px;
@@ -523,9 +522,6 @@ export const StageContainer = styled.div`
   }
 `
 
-
-
-
 export const ButtonContainers = styled.div`
   position: sticky;
   bottom: 30px;  
@@ -539,22 +535,31 @@ export const ButtonContainers = styled.div`
   }
 `
 
-
 export const FormContainer = styled.div`
   width:100%;
   height:100%;
   display:grid;
   grid-template-columns:1fr minmax(auto, 350px);
   column-gap:20px;
-
-  @media${device.mobile}{
+  @media ${device.mobile}{
     grid-template-rows: 1fr auto;
     grid-template-columns:1fr;
     row-gap:25px;
     column-gap:0px;
   }
+`
+
+export const CriptoWithdrawForm = styled(FormContainer)`
+  grid-template-columns:1fr minmax(auto, 380px);
+  grid-template-rows: 1fr;
+
+
+  @media ${device.mobile}{
+    grid-template-columns:1fr;
+  }
 
 `
+
 
 export const showButton = keyframes`
     0% {

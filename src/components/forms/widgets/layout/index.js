@@ -2,13 +2,14 @@ import { Wrapper } from './styles'
 import { IconClose } from "../../../widgets/shared-styles";
 import { useActions } from '../../../../hooks/useActions'
 
-const Layout = ({ children, background, closeControls, className }) => {
+const Layout = ({ children, background, closeControls, className, callback }) => {
   
   const actions = useActions();
   const closeModal = (e, forceClose) => {
     if ((e && e.target?.dataset?.close_modal) || forceClose) {
       actions.isAppLoading(false);
       actions.renderModal(null);
+      callback && callback()
     }
   };
 

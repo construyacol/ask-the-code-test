@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import InputValidate from "hooks/inputValidate";
-import styled from "styled-components";
-import SkeletonAnimation from "../loaders/skeleton";
+import styled, { keyframes } from "styled-components";
+import SkeletonAnimation from "../loaders/skeleton"; 
 import useViewport from '../../../hooks/useWindowSize'
 
 const InputForm = (props) => {
@@ -11,6 +11,7 @@ const InputForm = (props) => {
     placeholder,
     name,
     handleStatus,
+    className,
     // errorState,
     // resetErrorState,
     disabled,
@@ -29,7 +30,7 @@ const InputForm = (props) => {
     inputMode
   } = props;
 
-  const [inputState, setInputState, changeState, customError] = InputValidate();
+  const [inputState, setInputState, changeState, customError] = InputValidate(props);
   const { isMovilViewport } = useViewport()
   // const [ Icon, setIcon ] = useState(GetIcon(name, inputState))
   // console.log('|||||||||||||||||||| inputState:', inputState)
@@ -117,12 +118,12 @@ const InputForm = (props) => {
   }
 
   return (
-    <InputLayout className={`${props.className || ''}`}>
+    <InputLayout className={`${className || ''}`}>
       <ContainerInputComponent>
         <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
           {props.label}
         </p>
-        <InputContainer className={`${inputState}`}>
+        <InputContainer className={`${inputState} input__withdraw--amount`}>
           <input {...inputProps} />
         </InputContainer>
         {SuffixComponent && (
@@ -130,9 +131,7 @@ const InputForm = (props) => {
             <SuffixComponent id={subfixId} />
           </SuffixComponentContainer>
         )}
-
       {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
-      {/* <ErrorText className="fuente2">esto que puej</ErrorText> */}
       {customError && <ErrorTexts className="fuente2">{customError}</ErrorTexts>}
       </ContainerInputComponent>
     </InputLayout>
@@ -159,11 +158,43 @@ const ErrorTexts = styled.div`
   bottom: -25px;
 `;
 
+
+export const isReadyAnim = keyframes`
+    0%{
+      border: 1px solid rgb(0, 210, 255);
+    }
+    40%{
+      border: 1px solid #50667a61;
+    }
+    70%{
+      border: 1px solid rgb(0, 210, 255);
+    }
+    90%{
+      border: 1px solid #50667a61;
+    }
+    100%{
+    }
+`;
+
+
+
 const InputLayout = styled(SkeletonAnimation)`
   .superImposed {
     position: relative;
     z-index: 2;
   }
+
+  &.hide{
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &.isReady .input__withdraw--amount{
+    animation-name: ${isReadyAnim};
+    animation-duration: 1.5s;
+    animation-iteration-count: forwards;
+  }
+
 `;
 
 const SuffixComponentContainer = styled.div`
@@ -208,7 +239,7 @@ export const InputContainer = styled.div`
   .movil {
     display: block;
     margin-left: 10px;
-    max-width: 210px;
+    max-width: 250px;
     overflow: hidden;
     padding-left: 0;
     text-overflow: ellipsis;
@@ -231,7 +262,7 @@ export const InputContainer = styled.div`
 
   &.skeleton::before {
     content: "";
-    background: #bfbfbf;
+    background: var(--skeleton_color); ;
     width: 100%;
     border-radius: 3px;
     height: 15px;
@@ -251,7 +282,7 @@ export const ContainerInputComponent = styled.div`
   align-items: center;
 
   p.skeleton {
-    background: #bfbfbf; 
+    background: var(--skeleton_color); 
     width: 100%;
     height: 15px;
     max-width: 400px;

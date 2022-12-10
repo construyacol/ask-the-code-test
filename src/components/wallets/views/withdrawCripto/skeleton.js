@@ -1,6 +1,6 @@
 import React from "react";
 import InputForm from "../../../widgets/inputs/inputForm";
-import { WithdrawForm } from "./";
+import { WithdrawForm } from "./styles";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import { useWalletInfo } from "../../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from '../skeleton/depositWithdrawFiatSkeleton'
@@ -13,16 +13,16 @@ const SkeletonWithdrawView = () => {
 
   return (
     <>
-    {
-      currentWallet.currency_type === 'fiat' ?
-      <SelectListSkeleton/>
-      :
-      <WithdrawForm>
-        <InputForm skeleton />
-        <InputForm skeleton />
-        <ControlButton formValidate={false} label="Enviar" />
-      </WithdrawForm>
-    }
+      {
+        currentWallet.currency_type === 'fiat' ?
+        <SelectListSkeleton/>
+        :
+        <WithdrawForm>
+          <InputForm skeleton />
+          <InputForm skeleton />
+          <ControlButton formValidate={false} label="Enviar" />
+        </WithdrawForm>
+      }
     </>
   );
 };

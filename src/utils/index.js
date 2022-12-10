@@ -6,10 +6,9 @@ import { store } from "..";
 import imageType from 'image-type'
 import { IMAGE_MIME_TYPES, PRIORITY_ENTITIES, CAPACITOR_PLATFORM } from '../const/const'
 import * as Sentry from "@sentry/react";
+import { isUndefined } from 'lodash'
 // import { kyc } from "../components/api/ui/api.json";
 const { normalizeUser } = normalizr_services;
-
-
 
 
 export const postLocalNotification = async (payload) => {
@@ -400,7 +399,7 @@ export const convertToObjectWithCustomIndex = (matriz, customIndex) => {
   // @param matriz: arrray | object
   // array to object
   // let arrayToObject = await array.reduce((a, v) => ({ ...a, [v?.code]: v}), {}) 
-
+  if(!matriz)return;
   let MATRIZ = matriz;
   let OBJECT_RESULT = {};
   let INDEX;
@@ -413,13 +412,14 @@ export const convertToObjectWithCustomIndex = (matriz, customIndex) => {
   if (Array.isArray(MATRIZ)) {
     for (let item of MATRIZ) {
       INDEX = getProps(item, customIndex);
-      OBJECT_RESULT = {
-        ...OBJECT_RESULT,
-        [INDEX]: item,
-      };
+      if(!isUndefined(INDEX)){
+        OBJECT_RESULT = {
+          ...OBJECT_RESULT,
+          [INDEX]: item,
+        };
+      }
     }
   }
-
   return OBJECT_RESULT;
 };
 

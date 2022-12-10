@@ -2,7 +2,65 @@ import { createSelector } from "reselect";
 import { isEmpty } from 'lodash'
 import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
+import { convertToObjectWithCustomIndex } from "utils";
 
+
+export const selectWithdrawAccountsByCurrency = createSelector(
+  ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  (_, currency) => currency,
+  (withdraw_accounts, currency) => {
+    let res = [];
+    if(!withdraw_accounts) return res;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
+      withdraw_account.currency?.currency === currency && res.push(withdraw_account);
+    }
+    return res;
+  }
+);
+
+
+export const selectWithdrawAccountsByAddress = createSelector(
+  (state) => state.modelData.withdraw_accounts,
+  (_, current_wallet) => current_wallet,
+  (withdraw_accounts, current_wallet) => {
+    let result = {};
+    for (let w_account_id in withdraw_accounts) {
+      let address = withdraw_accounts[w_account_id]?.info?.address
+      const byCurrency = withdraw_accounts[w_account_id]?.currency?.currency
+      // const byProviderType = withdraw_accounts[w_account_id]?.provider_type
+      if ([byCurrency].includes(current_wallet?.currency?.currency) && address) {
+        result = {
+          ...result,
+          [address]: withdraw_accounts[w_account_id]
+        };
+      }
+    }
+    return result;
+  }
+);
+
+
+export const selectWithdrawProviderByName = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (withdrawProviders) => {
+    let result = {};
+    for (let provider_id in withdrawProviders) {
+      result = {
+        ...result,
+        [withdrawProviders[provider_id].name]:withdrawProviders[provider_id]
+      };
+    }
+    return result;
+  }
+);
+
+
+export const selectDepositProvsByCurrency = createSelector(
+  ({ modelData }) => modelData.deposit_providers,
+  (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.name")
+);
 
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,

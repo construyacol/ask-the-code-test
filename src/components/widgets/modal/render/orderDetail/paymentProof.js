@@ -9,7 +9,7 @@ import { BsUpload } from "react-icons/bs";
 import { copy } from "../../../../../utils";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import Zoom from "react-medium-image-zoom";
-import { BLOCKCHAIN_EXPLORER_URL } from '../../../../../const/const'
+import { BLOCKCHAIN_EXPLORER_URL } from 'core/config/currencies'
 import "react-medium-image-zoom/dist/styles.css";
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
@@ -153,18 +153,15 @@ export const PaymentProof = ({ payload }) => {
 
 
   const getPaymentProof = async (currentOrder) => {
-    // alert('getpayment')
     if (currentOrder.paymentProof) {
-      // alert('tiene pp')
       const { proof_of_payment } = currentOrder.paymentProof;
-      // console.log(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}tx/${proof_of_payment.proof}`)
       setImgProof(
         currentOrder.currency_type === "fiat"
           ? `data:image/png;base64, ${proof_of_payment.raw}`
           : await QRCode.toDataURL(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${proof_of_payment.proof}`)
       );
       if (currentOrder.currency_type === "crypto") {
-        setTxId(proof_of_payment.proof);
+        setTxId(proof_of_payment.proof); 
         setUrlExplorer(`${BLOCKCHAIN_EXPLORER_URL[currentOrder.currency.currency]}${proof_of_payment.proof}`);
       }
     } else if (currentOrder.proof) {

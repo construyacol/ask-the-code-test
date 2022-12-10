@@ -1,8 +1,6 @@
 import { createBrowserHistory } from "history";
 import Enviroment from "../environment";
-import BigNumber from "bignumber.js";
 import { Capacitor } from '@capacitor/core';
-
 
 const {
   AccountApiUrl,
@@ -182,53 +180,6 @@ export const GET_URLS = {
 export const history = createBrowserHistory();
 export const COINSENDA_URL = BASE_URL
 
-export const currencyFormatByCoin = {
-  bitcoin: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  litecoin: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  bitcoin_testnet: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  usd: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 3,
-  }),
-  ethereum: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 8,
-  }),
-  cop: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-    DECIMAL_PLACES: 0,
-  }),
-  bitcoin_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  bitcoin_testnet_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  usd_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 2,
-  }),
-  ethereum_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 6,
-  }),
-  cop_fee: BigNumber.clone({
-    ROUNDING_MODE: BigNumber.ROUND_UP,
-    DECIMAL_PLACES: 0,
-  }),
-};
-
 export const size = {
   mobileS: 320,
   mobileM: 375,
@@ -282,7 +233,7 @@ export const fontSize = {
 // };
 
 // https://gist.github.com/gokulkrishh/242e68d1ee94ad05f488
-
+ 
 
 
 export const currencyLabels = {
@@ -292,11 +243,7 @@ export const currencyLabels = {
   bitcoin_testnet: {bitcoin_testnet:"USD"}
 };
 
-export const BLOCKCHAIN_EXPLORER_URL = {
-  bitcoin:"https://blockstream.info/tx/",
-  bitcoin_testnet:"https://blockstream.info/tx/",
-  litecoin:"https://blockchair.com/es/litecoin/transaction/"
-}
+
 
 
 export const orderStateColors = {
@@ -367,32 +314,34 @@ export const CDN_PATH_ASSETS = {
 
 
 export const COLOR_FEES = {
-  low_priority:{
+  low:{
       color:"#FF4A4A"
   },
-  medium_priority:{
+  medium:{
       color:"#FF9900"
   },
-  high_priority:{
+  high:{
       color:"#05EC00"
   }
 }
 
 export const WITHDRAW_PRIORITY_FEE = {
-  low_priority:{
+  low:{
       ui_name:"Baja",
-      ui_color:COLOR_FEES?.low_priority?.color,
-      value:"low_priority"
+      ui_color:COLOR_FEES?.low?.color,
+      value:"low"
   },
-  medium_priority:{
+  medium:{
       ui_name:"Media",
-      ui_color:COLOR_FEES?.medium_priority?.color,
-      value:"medium_priority"
+      ui_color:COLOR_FEES?.medium?.color,
+      value:"medium"
   },
-  high_priority:{
+  high:{
       ui_name:"Alta",
-      ui_color:COLOR_FEES?.high_priority?.color,
-      value:"high_priority"
+      ui_color:COLOR_FEES?.high?.color,
+      value:"high"
   }
 }
+
+export const DEFAULT_COST_ID = WITHDRAW_PRIORITY_FEE.medium.value
 

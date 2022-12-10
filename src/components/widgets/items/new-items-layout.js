@@ -3,6 +3,7 @@ import loadable from "@loadable/component";
 import { useItemsInteractions } from "../../../hooks/useNavigationKeyActions";
 import { InputKeyActionHandler } from "../accountList/styles";
 import { getCdnPath } from '../../../environment'
+import { CURRENCY_INDEX_IMG } from 'core/config/currencies'
 import './items.css'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -80,16 +81,17 @@ function NewItemsLayout(props) {
               <div title={name} id={code}>
                 <img
                   className="itemSobre activaos"
-                  src={`${getCdnPath('assets')}${type}/${code}2.png`}
+                  src={`${getCdnPath('assets')}${type}/${CURRENCY_INDEX_IMG[code] || code}2.png`}
                   alt=""
                   width="60"
                 />
               </div>
             ) : (
               <div title={name} id={code}>
+              
                 <img
                   className="itemFuera"
-                  src={`${getCdnPath('assets')}${type}/${code}.png`}
+                  src={`${getCdnPath('assets')}${type}/${CURRENCY_INDEX_IMG[code] || code}.png`}
                   width="60"
                   alt=""
                   id={code}
@@ -97,7 +99,7 @@ function NewItemsLayout(props) {
                 />
                 <img
                   className="itemSobre"
-                  src={`${getCdnPath('assets')}${type}/${code}2.png`}
+                  src={`${getCdnPath('assets')}${type}/${CURRENCY_INDEX_IMG[code] || code}2.png`}
                   width="60"
                   alt=""
                   id={code}
@@ -108,7 +110,7 @@ function NewItemsLayout(props) {
           ) : (
             <img
               className={`banquis ${_activated ? "itemVisible" : ""}`}
-              src={`${getCdnPath('assets')}${type}/${code}.png`}
+              src={`${getCdnPath('assets')}${type}/${CURRENCY_INDEX_IMG[code] || code}.png`}
               alt=""
               id={code}
               title={name}

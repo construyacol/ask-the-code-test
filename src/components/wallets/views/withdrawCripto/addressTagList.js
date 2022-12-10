@@ -1,21 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import WithdrawViewState from "hooks/withdrawStateHandle";
-import { useSelector } from "react-redux";
-import selectWithdrawAccountsByProviderType from "../../../selectors";
 import styled from "styled-components";
 import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
-// import useNavigationKeyActions from "../../../../hooks/useNavigationKeyActions";
+import { selectWithdrawAccountsByCurrency } from "selectors";
+import { useSelector } from "react-redux";
+
 
 const AddressTagList = ({ show, addressValue, setAddressValue, addressState }) => {
 
-
-
   const [{ current_wallet }] = WithdrawViewState();
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const provider_type = current_wallet && current_wallet.currency.currency;
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByProviderType(state, provider_type));
-
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency?.currency));
   const [searchList, setSearchList] = useState([]);
 
   // const [setCurrentSelection] = useNavigationKeyActions({

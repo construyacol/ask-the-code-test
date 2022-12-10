@@ -20,12 +20,12 @@ import loadLocalPairsAction, {
 import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies, { _convertCurrencies } from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
+import { DEFAULT_CURRENCY } from 'core/config/currencies'
 
 export class SwapService extends WebService {
   async fetchAllPairs() {
     this.dispatch(appLoadLabelAction(loadLabels.IMPORTANDO_PARES));
-    const pairs = await this.pairsRequest({"visible":true});
-    // const pairs = await this.Get(`${SWAP_URL}pairs?filter={"where": {"visible": true}}`);
+    const pairs = await this.pairsRequest();
     if (!pairs) { 
       return;
     }
@@ -42,14 +42,14 @@ export class SwapService extends WebService {
     return dataNormalized;
   }
 
-  pairsRequest(query) {
-    // const requestCompleteUrl = `${PAIRS_URL}${query}`;
-    // return this.Get(requestCompleteUrl);
-
+  pairsRequest(query = {}) {
     const body = {
       data:{
         filter:{
-          where:query
+          where:{
+            ...query,
+            visible:true
+          }
         }
       }
     }
@@ -57,18 +57,16 @@ export class SwapService extends WebService {
 
   } 
 
-  async getPairsByCountry(country, currencies) {
+  async getPairsByCountry(country, currencies) { 
  
     const localCurrency = await this.getLocalCurrency(country);
-
     if (!localCurrency) {
       return console.log("No se ha encontrado país en getPairsByCountry");
     }
-    
-    const pairs = await this.pairsRequest({"visible":true, "secondary_currency.currency": `${localCurrency.currency}`});
+    const pairs = await this.pairsRequest({"secondary_currency.currency": `${localCurrency.currency}`});
     if (!pairs) return;
 
-    if (currencies) {
+    if (currencies) { 
       const localCurrencies = await this.addSymbolToLocalCollections(pairs?.data, localCurrency.currency, currencies);
       // if (
       //   this.isCached("getPairsByCountry_", localCurrencies, false) &&
@@ -83,7 +81,7 @@ export class SwapService extends WebService {
 
       this.dispatch(
         searchCurrentPairAction(
-          `BTC/${localCurrency.currency.toUpperCase()}`,
+          `${DEFAULT_CURRENCY?.symbol?.toUpperCase()}/${localCurrency.currency.toUpperCase()}`,
           "pair"
         )
       );
@@ -126,6 +124,7 @@ export class SwapService extends WebService {
       }
       return response?.data[0];
     }
+     
     const query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
     const response = await this.pairsRequest(query);
     if (this.isEmpty(response)) return;
@@ -164,7 +163,7 @@ export class SwapService extends WebService {
     }
     const currency = currentWallet.currency.currency;
     let pair = await this._getPairs(currency, localCurrency);
-    !pair && (pair = await this._getPairs("bitcoin", currency));
+    !pair && (pair = await this._getPairs(DEFAULT_CURRENCY.currency, currency));
     !pair && (pair = await this._getPairs(currency));
     !pair && (pair = await this._getPairs(null, currency));
 

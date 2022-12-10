@@ -13,37 +13,7 @@ import {
 
 export class WebService { 
 
-  async doFetch(url, params) {
-    const { jwtExpTime, currentTime, refreshTokenExpirationTime } = await getExpTimeData()
-    try {
-      await verifyUserToken()
-      const response = await fetch(url, params);
-      const finalResponse = await response.json(); 
-      if (!response.ok && response.status === 465) {
-        if (finalResponse.error.message.includes("Invalid signature")) {
-          SentryCaptureException(finalResponse?.error, {
-            currentTime,
-            jwtExpTime,
-            refreshTokenExpirationTime,
-            url
-          })
-          // TODO: add refresh_token flow to get a new jwt
-          doLogout('?message=Invalid signature')
-        }
-        throw response.status;
-      }
-      return await finalResponse;
-    } catch (err) {
-      handleError(err)
-      SentryCaptureException(err, {
-        url, 
-        params,
-        currentTime,
-        jwtExpTime
-      })
-      return false;
-    }
-  }
+
 
 
   async GetWithOutHeaders(url) {
@@ -95,20 +65,7 @@ export class WebService {
     return {...userData, decodedToken }
   }
 
-  async Get(url) { 
-    // La función getUserToken() integra los metodos validateExpTime, getToken
-    await validateExpTime()
-    const tokenData = await getToken()
-    if(!tokenData){return}
-    const { userToken } = tokenData
-    let headers = {
-      Authorization: `Bearer ${userToken}`,
-    };
-    return this.doFetch(url, {
-      method: `GET`,
-      headers,
-    });
-  }
+
 
 
   isEmpty(data) {
@@ -158,6 +115,22 @@ export class WebService {
   }
 
 
+
+  async Get(url) { 
+    // La función getUserToken() integra los metodos validateExpTime, getToken
+    await validateExpTime()
+    const tokenData = await getToken()
+    if(!tokenData){return}
+    const { userToken } = tokenData
+    let headers = {
+      Authorization: `Bearer ${userToken}`,
+    };
+    return this.doFetch(url, {
+      method: `GET`,
+      headers,
+    });
+  }
+
   async _Get(url) { 
     // La función getUserToken() integra los metodos validateExpTime, getToken
     await validateExpTime()
@@ -198,6 +171,39 @@ export class WebService {
     return this._doFetch(url, params);
   }
 
+
+
+  async doFetch(url, params) {
+    const { jwtExpTime, currentTime, refreshTokenExpirationTime } = await getExpTimeData()
+    try {
+      await verifyUserToken()
+      const response = await fetch(url, params);
+      const finalResponse = await response.json(); 
+      if (!response.ok && response.status === 465) {
+        if (finalResponse.error.message.includes("Invalid signature")) {
+          SentryCaptureException(finalResponse?.error, {
+            currentTime,
+            jwtExpTime,
+            refreshTokenExpirationTime,
+            url
+          })
+          // TODO: add refresh_token flow to get a new jwt
+          doLogout('?message=Invalid signature')
+        }
+        throw response.status;
+      }
+      return await finalResponse;
+    } catch (err) {
+      handleError(err)
+      SentryCaptureException(err, {
+        url, 
+        params,
+        currentTime,
+        jwtExpTime
+      })
+      return false;
+    }
+  }
 
 
   async _doFetch(url, params) {

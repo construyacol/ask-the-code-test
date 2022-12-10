@@ -30,7 +30,7 @@ export default function HeaderAccount (props) {
 export const MainComponent = () => {
 
     const { currentWallet } = useWalletInfo()
-    const { available } = currentWallet
+    // const { available } = currentWallet
     const { isMovilViewport } = useViewport()
     // const balanceTextWidth = useRef(currentWallet?.available?.length > 1 ? '150px' : '60px')
 
@@ -48,8 +48,7 @@ export const MainComponent = () => {
           </LabelContainer>
           <BalanceContainer  
             className="_accountBalanceContainer"
-            // width={`${balanceTextWidth?.current}`}
-            width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
+            // width={`${available?.length > 1 ? available?.length * 16 : '60' }px`}
           >
             <HR/>
             <BalanceComponent 

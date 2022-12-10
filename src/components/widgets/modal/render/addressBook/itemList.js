@@ -123,7 +123,7 @@ export const ItemList = (props) => {
             </div>
             <AddressContainer
               data-final-address={address.match(/..........$/g).toString()}
-            >
+            > 
               <Address className="fuente2 withdrawAddress">{address}</Address>
             </AddressContainer>
           </ItemTextContainer>
@@ -393,16 +393,17 @@ const NewElement = styled.p`
 
 export const AddressContainer = styled.div`
   position: relative;
-  width: 150px;
+  width: 135px;
   cursor: pointer;
 
   &::after {
     content: attr(data-final-address);
     position: absolute;
     left: 100%;
-    top: 0;
     font-size: 12px;
     color: var(--paragraph_color);
+    bottom: 0;
+    font-family: "Tomorrow", sans-serif;
   }
   &:hover {
     width: auto;

@@ -524,15 +524,19 @@ class SocketsComponent extends Component {
       if (this.props.deposits && this.props.deposits[deposit.id]) {
 
         const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
-        const currency = await this.props.currencies?.find(currency => currency?.currency === walletAccount?.currency?.currency)
-        console.log('Finding  ==> ', currency, deposit.confirmations > (currency?.confirmations || 6))
+        const provKeys = Object.keys(this.props.deposit_providers)
+        const depositProviders = this.props.deposit_providers
+        const provKey = await provKeys.find(depProvKey => [walletAccount?.currency?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
+        const currencyDepositProvider = provKey && depositProviders[provKey]?.depositAccount
+
+        // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)
 
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
               ...this.props.deposits[deposit.id],
               confirmations: deposit.confirmations,
-              state:deposit.confirmations > (currency?.confirmations || 6) ? 'accepted' : 'confirmed'
+              state:deposit.confirmations > (currencyDepositProvider?.confirmations || 6) ? 'accepted' : 'confirmed'
             },
           },
           "deposits"
@@ -917,7 +921,8 @@ const mapStateToProps = (state, props) => {
     wallets,
     withdraw_accounts,
     swaps,
-    currencies
+    currencies,
+    deposit_providers
   } = state.modelData;
   const { ui } = state;
 
@@ -932,7 +937,8 @@ const mapStateToProps = (state, props) => {
     withdraw_accounts,
     isModalActive: ui.otherModal,
     isRenderModalActive: ui.modal.render,
-    currencies
+    currencies,
+    deposit_providers
   };
 };
 

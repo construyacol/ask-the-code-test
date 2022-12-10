@@ -1,9 +1,10 @@
 import { WebService } from "./WebService";
 import Environment from "../../environment";
+import { DEFAULT_CURRENCY } from 'core/config/currencies'
 
 const DEFUALT_HISTORICAL_PRICE_CONFIG = {
   data: {
-    currency_from: "BTC",
+    currency_from: DEFAULT_CURRENCY.currency,
     currency_to: "USD",
     amount_days: 45,
   },

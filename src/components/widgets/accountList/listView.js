@@ -140,14 +140,14 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                     />
                 </IconAccount>
                 <LabelContainer className="_header__labelContainer">
-                    <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
-                    {
+                    <AccountLabel className="wallet">{accountName || 'Mi billetera'}</AccountLabel>
+                    { 
                         isMovilViewport ?
                             <MobileBalanceComponent
                                 account={account}
                             />
                         :
-                        <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
+                        <CurrencyLabel>{currency?.symbol || '-'} {currency?.symbol === 'USDT' && <span className="fuente2">ERC-20</span>} </CurrencyLabel>
                     }
                 </LabelContainer> 
             </HeaderMainContainer>
@@ -158,7 +158,6 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
         </ItemAccountContainer>
     )
 }
-
 
 const MobileBalanceComponent = ({ account }) => {
 
@@ -186,6 +185,8 @@ const MobileBalanceContainer = styled.p`
     display:none;
     @media ${device.mobile} {
        display:initial;
+       color: var(--paragraph_color);
+       font-size: 21px;
     }
 `
 

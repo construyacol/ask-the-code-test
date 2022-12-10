@@ -1,46 +1,43 @@
 import { OnlySkeletonAnimation } from "../loaders/skeleton";
 import styled from 'styled-components'
 
-export default function DetailTemplateComponent ({ items, skeletonItems = 4, ...props }){
-
-    return(
-        <>
-            {
-                items && items.length
-                ? items.map((item, indx) => {
-                    console.log('item[1]', item[1])
-                    const RenderComponent = item[1]?.Component
-                    return (
-                    <ItemContainer
-                        key={indx}
-                        className={`${items.length === indx + 1 &&  props?.order?.state && props?.tx_path === "deposits" && props?.order?.state}`}
-                    >
-                        <LeftText className="fuente">{item[0]}</LeftText>
-                        <MiddleSection />
-                        {
-                            RenderComponent ?
-                                <RenderComponent/>
-                                :
-                                <RightText className="fuente2">
-                                    {item[1]}
-                                </RightText>
-                        }
-                    </ItemContainer>
-                    );
-                })
-                : new Array(skeletonItems).fill("1").map((item, indx) => {
-                    return (
-                    <ItemContainer className="skeleton" key={indx}>
-                        <LeftText>skeleton --</LeftText>
-                        <MiddleSection />
-                        <RightText>skeleton -------- </RightText>
-                    </ItemContainer>
-                    );
-                })
-            }
-        </>
-    )
-
+export default function DetailTemplateComponent ({ items, skeletonItems = 4, className = "", ...props }){
+  return(
+    <>
+      {
+        items && items.length
+        ? items.map((item, indx) => {
+            const RenderComponent = item[1]?.Component
+            return (
+            <ItemContainer
+                key={indx}
+                className={`${items.length === indx + 1 &&  props?.order?.state && props?.tx_path === "deposits" && props?.order?.state} ${className}`}
+            >
+                <LeftText className="fuente">{item[0]}</LeftText>
+                <MiddleSection />
+                {
+                    RenderComponent ?
+                        <RenderComponent/>
+                        :
+                        <RightText className="fuente2">
+                            {item[1]}
+                        </RightText>
+                }
+            </ItemContainer>
+            );
+        })
+        : new Array(skeletonItems).fill("1").map((item, indx) => {
+            return (
+            <ItemContainer className="skeleton" key={indx}>
+                <LeftText>skeleton --</LeftText>
+                <MiddleSection />
+                <RightText>skeleton -------- </RightText>
+            </ItemContainer>
+            );
+        })
+      }
+    </>
+  )
 }
 
 const Text = styled.p`

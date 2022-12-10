@@ -1,18 +1,18 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+// import BigNumber from "bignumber.js";
+// import usePrevious from "../../hooks/usePreviousValue";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-// import BigNumber from "bignumber.js";
 import InputForm from "../../widgets/inputs/inputForm";
 import { formatToCurrency} from "../../../utils/convert_currency";
-import { formatNumber } from "../../../utils";
-// import usePrevious from "../../hooks/usePreviousValue";
+// import { formatNumber } from "../../../utils";
 import useWindowSize from "../../../hooks/useWindowSize";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import styled from "styled-components";
 import ControlButton from "../../widgets/buttons/controlButton";
 import { usePairSelector } from "../../../hooks/usePairSelector";
 import { useActions } from "../../../hooks/useActions";
-import { OperationForm } from "./withdrawCripto";
+import { OperationForm } from '../styles'
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useToastMessage from '../../../hooks/useToastMessage'
@@ -20,8 +20,7 @@ import { getCdnPath } from '../../../environment'
 import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
-
-
+import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
 
 function SwapView(props) {
 
@@ -45,10 +44,10 @@ function SwapView(props) {
     currentPair,
     currencies
   } = useWalletInfo();
+
   const { isMovilViewport } = useWindowSize();
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
-  const isFiat = currentWallet.currency_type === "fiat";
-
+  // const isFiat = currentWallet.currency_type === "fiat";
 
   useEffect(() => {
     selectPair(true);
@@ -63,7 +62,6 @@ function SwapView(props) {
     callToSetReceiveValue()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value, currentPair])
-
 
   const currentPairId = currentPair?.id
 
@@ -137,7 +135,6 @@ function SwapView(props) {
   //   }
   // }
 
-
   const handleChangeSpendAmount = async (name, newValue) => {
     setValue(newValue.toString().replace(/,/g, ""))
   };
@@ -171,7 +168,8 @@ function SwapView(props) {
         enabled: true,
         short_currency:{
           currency:currencies[boughtCurrency].currency,
-          is_token:currencies[boughtCurrency].is_token
+          // is_token:currencies[boughtCurrency].is_token
+          is_token:false
         },
       }
     });
@@ -198,7 +196,7 @@ function SwapView(props) {
 
   const swap = async () => {
 
-    const { secondary_currency, id } = currentPair;
+    const { id } = currentPair;
     const spent_currency_amount = await formatToCurrency( value, currentWallet.currency);
     // let query = `{"where":{"id":"${id}"}}`;
     // await coinsendaServices.updateCurrentPair(query);
@@ -207,7 +205,8 @@ function SwapView(props) {
     const secureTotalValue = await getReceiveValue(value);
     const from = currencies ? currencies[currentWallet.currency.currency]?.symbol.toUpperCase() : currentWallet.currency.currency.toUpperCase()
     const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
-    const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
+    // const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
+    const isFiat = currentWallet.currency_type === 'fiat'
 
     actions.confirmationModalPayload({
       title: "Confirmación de intercambio",
@@ -247,6 +246,7 @@ function SwapView(props) {
 
   const spentCurrencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
 
+// console.log('exchangeEnabled', exchangeEnabled)
 
   return (
     <SwapForm
@@ -273,7 +273,8 @@ function SwapView(props) {
           <AvailableBalance
             id={id}
             handleAction={handleMaxAvailable}
-            amount={isFiat ? formatNumber(availableBalance) : availableBalance}
+            amount={availableBalance}
+            wallet={currentWallet}
           />
         )}
       /> 
@@ -321,16 +322,17 @@ function SwapView(props) {
     </SwapForm>
   );
 }
+ 
 
-const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
+
+
+const PairSelect = ({ selectPair = () => null, secondaryCoin, id, currencies }) => {
 
   const showSubfix = window.innerWidth > 900;
   const { keyActions } = useSelector((state) => state.ui);
 
-
   const boughtCurrencySymbol = currencies ? currencies[secondaryCoin]?.symbol : secondaryCoin
-
-
+  const imgCoin = CURRENCY_INDEX_IMG[secondaryCoin] || secondaryCoin
 
   return(
     <PairSelectContainer
@@ -344,7 +346,7 @@ const PairSelect = ({ selectPair, secondaryCoin, id, currencies }) => {
           {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
           { boughtCurrencySymbol  && (
             <img
-              src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${secondaryCoin}.png`}`}
+              src={`${getCdnPath('assets')}coins/${secondaryCoin === 'cop' ? 'cop.svg' : `${imgCoin}.png`}`}
               alt=""
               width="30"
             />

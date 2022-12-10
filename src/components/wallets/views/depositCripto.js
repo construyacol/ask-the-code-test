@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { OperationForm } from "./withdrawCripto";
+// import { OperationForm } from "./withdrawCripto";
+import { OperationForm } from '../styles'
 import QRCode from "qrcode";
 // import { SentryCaptureException } from "../../../utils";
 import IconSwitch from "../../widgets/icons/iconSwitch";
@@ -13,9 +14,11 @@ import { useWalletInfo } from "../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
 // import { StageSkeleton } from 'components/forms/widgets/stageManager'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
+// import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
+import useTruncatedAddress from 'hooks/useTruncatedAddress'
+import useViewport from 'hooks/useViewport'
 
-
-
+ 
 const CriptoSupervisor = (props) => {
 
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
@@ -40,6 +43,16 @@ const ContAddress = styled.section`
   align-items: center;
   width: 100%;
   height: 100%;
+  row-gap: 15px;
+
+  .address{
+    display: flex;
+    column-gap:7px;
+  }
+
+  strong{
+    text-transform: uppercase;
+  }
 
   p{
     margin: 0 !important;
@@ -52,6 +65,7 @@ const ContAddress = styled.section`
     width: 100%;
     text-align: left;
     font-size: 14px;
+    line-height: 20px;
   }
   .soloAd{
     color:--var(paragraph_color);
@@ -162,17 +176,17 @@ const CriptoView = () => {
       ui:{ osDevice } 
     },
   ] = useCoinsendaServices();
+  const { isMobile } = useViewport()
   const [qrState, setQrState] = useState(true);
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
 
-  // const { subscribeToNewDeposits } = useSubscribeDepositHook()
 
+  // const { subscribeToNewDeposits } = useSubscribeDepositHook()
  
   useEffect(() => {
     if (deposit_providers) {
       const validateAddress = async () => {
-        
         const provider = deposit_providers[current_wallet.dep_prov[0]];
         // subscribeToNewDeposits(provider.id);
         const {
@@ -198,15 +212,24 @@ const CriptoView = () => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deposit_providers]);
+  
+  const truncatedAddres = useTruncatedAddress(address || '')
+  const addressValue = isMobile ? truncatedAddres : address
 
   return ( 
     <DepositForm>
+      {
+        current_wallet.currency.currency.includes("eth") &&
+          <EtherDisclaimer className="fuente">
+            No enviar con menos de 70 mil gas
+          </EtherDisclaimer>
+      }
       <ContAddress className={`contAddress ${osDevice}`}>
         <p id="soloAd2" className="fuente title soloAd2">
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <span>{current_wallet.currency.currency}</span> a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency.currency} {current_wallet.currency.currency === 'usdt' && "(ERC-20)"}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>
@@ -218,18 +241,32 @@ const CriptoView = () => {
           )}
         </div>
         <p className="fuente title dirDep">Dirección de depósito:</p>
+
         <div className="fuente address">
+        <p className="fuente2">
+          {
+            qrError
+              ? "Dirección invalida, contacta con soporte"
+              : qrState === true
+              ? "XXXXXX- Verificando dirección -XXXXXX"
+              : addressValue
+          }
+        </p>
           <CopyContainer
-            valueToCopy={
-              qrError
-                ? "Dirección invalida, contacta con soporte"
-                : qrState === true
-                ? "XXXXXX- Verificando dirección -XXXXXX"
-                : address
-            }
-            color="black"
-          />
+              valueToCopy={address}
+              onlyIcon={true}
+              color="black"
+            />
+
+          {/* <AddressContainer
+            data-final-address={address.match(/..........$/g).toString()}
+          > 
+            <Address className="fuente2 withdrawAddress">
+            
+            </Address>
+          </AddressContainer> */}
         </div>
+
       </ContAddress>
     </DepositForm>
   );
@@ -245,6 +282,18 @@ const QrProtector = ({ visible, invalid }) => (
   </QrProtectorCont>
 );
 
+
+
+const EtherDisclaimer = styled.div`
+  right: 0px;
+  top: 0px;
+  padding: 5px 10px;
+  background: #ebebeb;
+  border-radius: 4px;
+  font-size: 13px;
+  color: var(--paragraph_color);
+  position:absolute;
+`
 
 
 const qrScan = keyframes`
