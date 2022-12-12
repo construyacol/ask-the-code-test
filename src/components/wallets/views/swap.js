@@ -80,7 +80,7 @@ function SwapView(props) {
 
   async function getValueForOnePrimaryCurrency() {
     const { buy_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency?.currency]?.symbol || primary_currency.currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.currency.toUpperCase()}`;
+    const finalString = `1 ${currencies[primary_currency]?.symbol || primary_currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.toUpperCase()}`;
     setValueForOnePrimaryCurrency(finalString);
   }
 
@@ -119,21 +119,6 @@ function SwapView(props) {
     setExchangeEnabled(state)
   }
 
-  // const handleStateSpendInput = (state) => {
-  //   // listener de estado del input de la moneda gastada: "Pago con:" solo se valida si la moneda gastada es la moneda secundaria del par,
-  //   // ya que ya viene validada con el monto mínimo expresado en la misma dentro del modelo pair.exchange...min_amount
-  //   const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
-  //   if(isSecondaryCurrency){
-  //     setExchangeEnabled(state)
-  //   }
-  // }
-
-  // const handleStateBoughtInput = (state) => {
-  //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
-  //   if(isSecondaryCurrency){
-  //     setExchangeEnabled(state)
-  //   }
-  // }
 
   const handleChangeSpendAmount = async (name, newValue) => {
     setValue(newValue.toString().replace(/,/g, ""))
@@ -178,7 +163,7 @@ function SwapView(props) {
 
   const getAccountToExist = async(boughtCurrency) => {
     for (var [ , wallet] of Object.entries(props.wallets)) {
-      if(wallet.currency.currency === boughtCurrency){
+      if(wallet.currency === boughtCurrency){
         return wallet
       }
     }
@@ -203,9 +188,8 @@ function SwapView(props) {
     await coinsendaServices.updateCurrentPair({id});
 
     const secureTotalValue = await getReceiveValue(value);
-    const from = currencies ? currencies[currentWallet.currency.currency]?.symbol.toUpperCase() : currentWallet.currency.currency.toUpperCase()
+    const from = currencies ? currencies[currentWallet.currency]?.symbol.toUpperCase() : currentWallet.currency.toUpperCase()
     const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
-    // const isFiat = currencies && currencies[secondary_currency.currency].currency_type === 'fiat'
     const isFiat = currentWallet.currency_type === 'fiat'
 
     actions.confirmationModalPayload({
@@ -244,7 +228,7 @@ function SwapView(props) {
   const { boughtCurrency } = currentPair;
 
 
-  const spentCurrencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
+  const spentCurrencySymbol = currencies ? currencies[currentWallet?.currency]?.symbol : currentWallet?.currency?.toUpperCase()
 
 // console.log('exchangeEnabled', exchangeEnabled)
 

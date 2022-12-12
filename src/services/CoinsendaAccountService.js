@@ -118,7 +118,7 @@ export class AccountService extends WebService {
     } 
 
     userWallets.forEach(wallet => {
-      const { currency } = wallet?.currency
+      const { currency } = wallet
       if(currency.includes('ethereum')){
         delete newCurrencies.ethereum
       }
@@ -136,8 +136,8 @@ export class AccountService extends WebService {
   }
 
   async createAccountAndInsertDepositProvider(body) {
-    body.data.country = this.user.country;
-    const newAccount = await this.createWallet(body?.data);
+    // body.data.country = this.user.country;
+    const newAccount = await this.createWallet(body);
     if (!newAccount) {return}
     await this.getWalletsByUser();
     const { account } = newAccount;
@@ -171,16 +171,18 @@ export class AccountService extends WebService {
 
     return result;
   }
-
-  async createWallet(walletInfo) {
+ 
+  async createWallet({ currency, name }) {
+ 
+    const { capitalizeWord } = await import('utils')
 
     const body = {
         data: {
-            name: `Mi Billetera ${walletInfo?.currency}`,
-            description: "description",
+            name: name || `Mi Billetera ${capitalizeWord(currency)}`,
+            // description: "description",
             country: this?.user?.country,
             enabled: true,
-            currency: walletInfo.short_currency
+            currency
         }
     };
 

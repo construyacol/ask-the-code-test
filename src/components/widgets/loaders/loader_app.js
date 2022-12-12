@@ -61,13 +61,12 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const initComponent = async () => {
 
     const { userToken } = authData;
-    const isSessionRestored = await tryRestoreSession();
-    console.log('isSessionRestored', isSessionRestored)
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true);
-      coinsendaServices.postLoader(doLogout);
-      return redirectURL(isSessionRestored);
-    } 
+    // const isSessionRestored = await tryRestoreSession();
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true);
+    //   coinsendaServices.postLoader(doLogout);
+    //   return redirectURL(isSessionRestored);
+    // } 
     
     if (!userToken) return;
    
@@ -85,7 +84,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     const user = await coinsendaServices.fetchCompleteUserData();
     if (!user) {
       return false;
-    }
+    } 
     await actions.isLoggedInAction(true);
     await coinsendaServices.init(doLogout);
     return redirectURL();

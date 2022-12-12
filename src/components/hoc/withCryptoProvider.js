@@ -15,7 +15,7 @@ export default function withCryptoProvider(AsComponent) {
   return function (props) {
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName, balance } = wProps
-    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency?.currency])
+    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency])
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices();
@@ -39,7 +39,8 @@ export default function withCryptoProvider(AsComponent) {
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
-      const gas_limit = new BigNumber(withdrawData?.gas_limit)
+      const gasPlus = new BigNumber(withdrawData?.gas_limit).multipliedBy(0.1) 
+      const gas_limit = new BigNumber(withdrawData?.gas_limit).plus(gasPlus) 
       const fixedCost = gas_limit.times(maxFee)
       setWithdrawData(prevState => ({...prevState, fixedCost}))
     }, [currentPriority, priorityList, withdrawData.gas_limit])
@@ -103,7 +104,7 @@ export default function withCryptoProvider(AsComponent) {
     }, [])
 
     useEffect(() => {
-      let withdrawProvGlobalState = withdrawProvidersByName[current_wallet?.currency?.currency]
+      let withdrawProvGlobalState = withdrawProvidersByName[current_wallet?.currency]
       if(!withdrawProvider && withdrawProvGlobalState){
         setWithdrawProvider(withdrawProvGlobalState)
         let _priorityList = withdrawProvGlobalState?.provider?.costs

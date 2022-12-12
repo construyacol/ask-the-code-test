@@ -53,7 +53,7 @@ export default (props) => {
         let AddressValidator;
         AddressValidator = await import("multicoin-address-validator");
 
-        const { currency } = currentWallet.currency;
+        const { currency } = currentWallet;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
         if(!withdrawProvidersByName[currency])return;
@@ -157,7 +157,7 @@ export default (props) => {
           return setCustomError(errMsg)
         case 'bought-amount':
           errMsg =
-          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency.currency}`
+          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency}`
           return setCustomError(errMsg)
         default:
       }
@@ -179,16 +179,16 @@ export default (props) => {
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
         const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency.currency])
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 
         let minAmount = new BigNumber(0)
-        const minOperationCurrency = currentPair.exchange.min_operation.currency.currency
-        if([minOperationCurrency].includes(currentWallet.currency.currency)){
-          minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
+        const minOperationCurrency = currentPair.exchange.min_operation.currency
+        if([minOperationCurrency].includes(currentWallet.currency)){
+          minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation);
         }else{ 
-          const converted = await _convertCurrencies(currentPair.exchange.min_operation.currency, currentPair.exchange.min_operation.min_amount, currentPair.id);
+          const converted = await _convertCurrencies(currentPair.exchange.min_operation, currentPair.exchange.min_operation.min_amount, currentPair.id);
           const { want_to_spend } = converted
           minAmount = want_to_spend
         }

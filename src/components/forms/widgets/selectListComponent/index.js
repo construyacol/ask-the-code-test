@@ -149,7 +149,7 @@ const SelectListComponent = ({
     perspective-origin: center top;
     
     &.skeleton{
-      width: 100vw;
+      width: 100%;
       align-self: flex-start;
       justify-self: flex-start;
     }

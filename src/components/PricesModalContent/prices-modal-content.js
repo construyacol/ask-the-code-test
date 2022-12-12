@@ -57,7 +57,7 @@ export default function PricesModalContent(props) {
                 onClick={isDesktop ? () => null : () => setShowSelect(true)}
               >
                 <img
-                  src={`${getCdnPath('assets')}prices-modal/coin_assets/${currentPair.primary_currency.currency}.svg`}
+                  src={`${getCdnPath('assets')}prices-modal/coin_assets/${currentPair.primary_currency}.svg`}
                   alt=""
                 />
                 <label className="exchange-label">{currentPair.buy_pair}</label>
@@ -135,7 +135,7 @@ const PairsSelect = ({
     <div ref={selectRef} className="pair-list">
       {pairs.sort(compare).map((pair, key) => {
 
-        const currencyImg = pair.primary_currency.currency
+        const currencyImg = pair.primary_currency
         const rule = currentPair.id === pair.id;
         const itemClasses = `
           base-horizontal-container base-item-content
@@ -156,7 +156,7 @@ const PairsSelect = ({
               alt="aa"
             />
             <div className="base-item-text-cont">
-              <h2 className="fuente">{pair.primary_currency.currency}</h2>
+              <h2 className="fuente">{pair.primary_currency}</h2>
               <p className="numberFont">{pair.buy_pair}</p>
             </div>
             <img

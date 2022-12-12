@@ -289,8 +289,8 @@ const SwapOrder = ({ order, setOrderState }) => {
               <SimpleLoader loader={2} color={colorState} />
             </LoaderViewItem>
             <SwapAnimation
-              from={order.to_spend_currency.currency}
-              to={order.to_buy_currency.currency}
+              from={order.to_spend_currency}
+              to={order.to_buy_currency}
               colorIcon={colorState}
             />
           </>
@@ -433,7 +433,7 @@ const PanelLeft = (order) => {
   let confirmations
 
   if((order?.currency && depositProviders) && Object.keys(depositProviders).length) {
-    totalConfirmations = depositProviders[order.currency.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency.currency]?.depositAccount?.confirmations)
+    totalConfirmations = depositProviders[order.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency]?.depositAccount?.confirmations)
     confirmations = Number(order.confirmations)
   }
 
@@ -496,7 +496,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
           </AmountText>
           <IconSwitch
             className={`currency_bought`}
-            icon={order.to_buy_currency.currency}
+            icon={order.to_buy_currency}
             size={16}
           />
           <AmountText className={`fuente2 amount_spent`}>
@@ -505,7 +505,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
           </AmountText>
           <IconSwitch
             className={`currency_spent`}
-            icon={order.to_spend_currency.currency}
+            icon={order.to_spend_currency}
             size={16}
           />
           <AmountIcon className={`fas fa-angle-right arrow_right`} />
@@ -526,7 +526,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
             {currency_type === "fiat" && "$"}
             {amountC}
           </AmountText>
-          <IconSwitch icon={currency.currency} size={16} />
+          <IconSwitch icon={currency} size={16} />
           <AmountIcon className="fas fa-angle-right" />
         </>
       )}

@@ -11,7 +11,7 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 import TagItem from './tagItem'
 import WalletSkeleton from './skeleton'
 import { history } from '../../../../const/const'
-import { capitalizeWord } from '../../../../utils'
+// import { capitalizeWord } from '../../../../utils'
 
 
 import {
@@ -60,7 +60,7 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
 
   const selectItem = (query) => {
       // applys uniqueMatch when there are 2 or more currencies with the same nomenclature for example: bitcoin - bitcoin_testnet, matched over the currency clicked
-      const uniqueMatch = availableCurrencies.filter(currency => currency.currency.toLowerCase() === query);
+      const uniqueMatch = availableCurrencies.filter(currency => currency.toLowerCase() === query);
       searchMatch(query?.toLowerCase(), uniqueMatch)
   }
 
@@ -78,16 +78,15 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   const searchMatch = (query, uniqueMatch) => {
       if(!searchList?.length) return;
       setValue(query)
-      const matches = uniqueMatch || (query && availableCurrencies.filter(currency => currency.currency.toLowerCase().includes(query)));
+      const matches = uniqueMatch || (query && availableCurrencies.filter(currency => currency.toLowerCase().includes(query)));
       matches?.length === 1 ? setMatchItem(matches[0]) : setMatchItem(null);
       if(!matches?.length)return setSearchList(availableCurrencies);
       setSearchList(matches)
   }
 
   const createWallet = async () => {
-
       setLoader(true)
-      const newWallet = await coinsendaServices.createWallet({...matchItem, currency:capitalizeWord(matchItem?.currency)});
+      const newWallet = await coinsendaServices.createWallet({ currency:matchItem?.currency });
       if (!newWallet) {
         setLoader(false)
         return toastMessage("Error al crear la billetera...", "error");
@@ -95,14 +94,11 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
       await coinsendaServices.getWalletsByUser();
       const { account } = newWallet;
       const dep_prov = await coinsendaServices.createAndInsertDepositProvider(account);
-
-
-
       if (!dep_prov) {
         setLoader(false)
         return toastMessage("Error al crear el proveedor de deposito de la billetera...", "error");
       }
-      let msg = `Nueva wallet ${account?.currency?.currency} creada!`;
+      let msg = `Nueva wallet ${account?.currency} creada!`;
       toastMessage(msg, "success");
       actions.success_sound();
       actions.renderModal(null);

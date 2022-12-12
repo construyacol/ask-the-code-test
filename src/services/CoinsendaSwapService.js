@@ -21,6 +21,7 @@ import { appLoadLabelAction } from "../actions/loader";
 import convertCurrencies, { _convertCurrencies } from "../utils/convert_currency";
 import { pairsForAccount } from "../actions/uiActions";
 import { DEFAULT_CURRENCY } from 'core/config/currencies'
+import { isEmpty } from 'lodash'
 
 export class SwapService extends WebService {
   async fetchAllPairs() {
@@ -54,19 +55,18 @@ export class SwapService extends WebService {
       }
     }
     return this.Post(POST_PAIRS_URL, body, false);
-
   } 
 
   async getPairsByCountry(country, currencies) { 
  
     const localCurrency = await this.getLocalCurrency(country);
+    
     if (!localCurrency) {
       return console.log("No se ha encontrado país en getPairsByCountry");
     }
-    const pairs = await this.pairsRequest({"secondary_currency.currency": `${localCurrency.currency}`});
+    const pairs = await this.pairsRequest({"secondary_currency": `${localCurrency.currency}`});
     if (!pairs) return;
-
-    if (currencies) { 
+    if (!isEmpty(currencies)) {  
       const localCurrencies = await this.addSymbolToLocalCollections(pairs?.data, localCurrency.currency, currencies);
       // if (
       //   this.isCached("getPairsByCountry_", localCurrencies, false) &&
@@ -75,17 +75,14 @@ export class SwapService extends WebService {
       //   return;
       // }
       await this.dispatch(loadLocalPairsAction(localCurrencies));
-
       // TODO: Evaluate this
       // if(userCollection){ await get_user_pairs(userCollection, dispatch, pairs)}
-
       this.dispatch(
         searchCurrentPairAction(
           `${DEFAULT_CURRENCY?.symbol?.toUpperCase()}/${localCurrency.currency.toUpperCase()}`,
           "pair"
         )
       );
-
       this.dispatch(loadLocalCurrencyAction(localCurrency));
     }
   }

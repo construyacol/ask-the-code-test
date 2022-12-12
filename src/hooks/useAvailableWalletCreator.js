@@ -5,7 +5,7 @@ import { convertToObjectWithCustomIndex } from "utils";
 
 function useAvailableWalletCreator() {
   const [availableCurrencies, setAvailableCurrencies] = useState();
-  const { currencies, wallets } = useSelector((state) => state.modelData);
+  const { currencies, wallets } = useSelector((state) => state.modelData); 
 
   const getAvailableCurrencies = async () => {
     if (!currencies || !wallets) {
@@ -17,7 +17,7 @@ function useAvailableWalletCreator() {
     );
     let availableWallets = await convertToObjectWithCustomIndex(
       wallets,
-      "currency.currency"
+      "currency"
     );
     let resultCurrencies = [];
 

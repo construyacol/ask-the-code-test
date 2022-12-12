@@ -83,7 +83,7 @@ const WithdrawFormComponent = ({
         className={`${isMobile ? "movil" : ""}`}
         onSubmit={(e) => e.preventDefault()}
         >
-        <InputForm
+        <InputForm 
             type="text" 
             placeholder={"Escribe @ para ver tu lista de direcciones..."}
             name="address"

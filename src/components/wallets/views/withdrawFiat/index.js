@@ -90,6 +90,8 @@ const FiatView = (props) => {
     )
   }
 
+  // return <SelectListSkeleton/>
+   
 
   return(
     <>

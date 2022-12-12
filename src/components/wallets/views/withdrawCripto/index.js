@@ -18,8 +18,7 @@ import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 
-
-
+ 
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
   return (
@@ -104,7 +103,7 @@ export const CriptoView = (props) => {
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
           currency: current_wallet.currency,
           provider_type: withdrawProvider?.provider_type,
-          label: current_wallet.currency.currency,
+          label: current_wallet.currency,
           address: addressValue.trim(),
           country: current_wallet.country,
         },
@@ -125,7 +124,7 @@ export const CriptoView = (props) => {
         country: user.country,
       }
     }
-    if(current_wallet?.currency?.currency?.includes('eth')) {
+    if(current_wallet?.currency?.includes('eth')) {
       const network_data = await getNetworkData()
       bodyRequest.data.network_data = network_data
       bodyRequest.data.cost_information.gas_limit = gas_limit
@@ -195,7 +194,7 @@ export const CriptoView = (props) => {
   useEffect(() => {
     // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd();
-    const provider_type = current_wallet.currency.currency;
+    const provider_type = current_wallet.currency;
     // console.log('addressValue', addressValue, withdraw_accounts)
     if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
@@ -215,7 +214,7 @@ export const CriptoView = (props) => {
 
 
 
-  const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
+  const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
   const formProps = {
     setAddressState,

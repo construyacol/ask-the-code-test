@@ -6,7 +6,7 @@ export const formatToCurrency = (n, short_currency, delete_surplus_decimals = tr
   // const currency = short_currency?.is_token
   //   ? short_currency?.contract_data?.token_name
   //   : short_currency?.currency;
-  const currency = short_currency?.currency
+  const currency = short_currency
   if (delete_surplus_decimals) {
     return CURRENCY_CONFIG[currency](amount).div("1");
   } else {
@@ -42,9 +42,7 @@ const convertCurrencies = async (currency, amount_spend, pair_id) => {
   if(!objetive_pair_instance){return}
 
   let to_spend_currency = extractCurrencies([data.to_spend_currency]);
-  let primary_objetive_currency = extractCurrencies([
-    objetive_pair_instance.primary_currency,
-  ]);
+  let primary_objetive_currency = extractCurrencies([ objetive_pair_instance.primary_currency ]);
   let objetive_data = Object.assign({}, data);
 
   objetive_data.pair_id = objetive_pair_instance.id;

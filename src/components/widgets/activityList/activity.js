@@ -12,7 +12,7 @@ import { ORDER_TYPE_UI_NAME } from '../../../const/const'
  
 // import "./activity_view.css";
 import withCoinsendaServices from "../../withCoinsendaServices";
-import { createSelector } from "reselect";
+// import { createSelector } from "reselect";
 import { device } from 'const/const'
 import styled from 'styled-components'
 
@@ -163,8 +163,6 @@ class ActivityList extends Component {
       expandido,
     } = this.state;
 
-
- 
     return (
       <Fragment>
         {tx_path !== "swaps" && (
@@ -248,30 +246,30 @@ class ActivityList extends Component {
   }
 }
 
-const isCriptoWallet = (state, { params }) => {
-  return state.modelData.wallets[params.account_id] === "crypto";
-};
+// const isCriptoWallet = (state, { params }) => {
+//   return state.modelData.wallets[params.account_id] === "crypto";
+// };
 
-const selectCurrentList = createSelector(
-  (state) => state.currencies,
-  isCriptoWallet,
-  (_, props) => props.isWithdraws,
-  (currencies, isCryptoWallet, isWithdraws) => {
-    let currency_list;
-    if (!isWithdraws && currencies && isCryptoWallet) {
-      currencies.map((currency) => {
-        return (currency_list = {
-          ...currency_list,
-          [currency.currency]: {
-            ...currency,
-          },
-        });
-      });
-    }
+// const selectCurrentList = createSelector(
+//   (state) => state.currencies,
+//   isCriptoWallet,
+//   (_, props) => props.isWithdraws,
+//   (currencies, isCryptoWallet, isWithdraws) => {
+//     let currency_list;
+//     if (!isWithdraws && currencies && isCryptoWallet) {
+//       currencies.map((currency) => {
+//         return (currency_list = {
+//           ...currency_list,
+//           [currency.currency]: {
+//             ...currency,
+//           },
+//         });
+//       });
+//     }
 
-    return currency_list;
-  }
-);
+//     return currency_list;
+//   }
+// );
 
 function mapStateToProps(state, props) {
   const { user } = state.modelData;
@@ -300,7 +298,7 @@ function mapStateToProps(state, props) {
     user: user,
     // current_activity_account:activity_for_account[current_wallet.id],
     // activity:activity_for_account[current_wallet.id] && activity_for_account[current_wallet.id][params.tx_path],
-    currencies: selectCurrentList(state, { params, isWithdraws }),
+    // currencies: selectCurrentList(state, { params, isWithdraws }),
     ...pending_activity,
   };
 }

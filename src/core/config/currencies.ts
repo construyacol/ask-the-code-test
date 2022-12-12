@@ -173,7 +173,7 @@ export const NEW_CURRENCIES = [
     "usdt",
     "ethereum"
 ] 
-
+ 
 export let DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",
