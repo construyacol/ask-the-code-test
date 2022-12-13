@@ -155,7 +155,7 @@ export const OrderDetail = ({ currentOrder, tx_path }) => {
             className="TitleIconOrder"
             size={28}
             icon={
-              (currentOrder?.currency?.currency || currentOrder?.to_buy_currency?.currency) || "cop"
+              (currentOrder?.currency || currentOrder?.to_buy_currency) || "cop"
             }
           />
           <Title className="fuente">{TitleText}</Title>
@@ -221,11 +221,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
 
   const amountTitle = getAmountTitle(tx_path, currentOrder)
 
-  const currency = 
-    tx_path === "swaps"
-      ? currencies[currentOrder.to_buy_currency.currency]
-      : currencies[currentOrder.currency.currency];
-      
+  const currency = tx_path === "swaps" ? currencies[currentOrder.to_buy_currency] : currencies[currentOrder.currency];
   const InfoComponent = GetInfoComponentToRender({...currentOrder, tx_path})
   const ConsolidatedOrder = ["accepted", "rejected", "canceled"].includes(currentOrder.state)
 // var(--paragraph_color)

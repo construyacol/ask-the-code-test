@@ -131,7 +131,6 @@ export default (props) => {
     }
   };
 
-
   // const availableSpendAmountValidation = async() => {
   //   const spend_amount = new FormData(document.getElementById("swapForm")).get("spend-amount");
   //   const spend_amount_value = await formatToCurrency(spend_amount.toString().replace(/,/g, ""), currentWallet.currency);
@@ -157,7 +156,7 @@ export default (props) => {
           return setCustomError(errMsg)
         case 'bought-amount':
           errMsg =
-          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency}`
+          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency.currency}`
           return setCustomError(errMsg)
         default:
       }
@@ -168,9 +167,7 @@ export default (props) => {
 
 
   const _getMinAmount = async(inputName) => {
-
     switch (inputName) { 
-
       // case 'spend-amount':
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
@@ -186,9 +183,9 @@ export default (props) => {
         let minAmount = new BigNumber(0)
         const minOperationCurrency = currentPair.exchange.min_operation.currency
         if([minOperationCurrency].includes(currentWallet.currency)){
-          minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation);
+          minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
         }else{ 
-          const converted = await _convertCurrencies(currentPair.exchange.min_operation, currentPair.exchange.min_operation.min_amount, currentPair.id);
+          const converted = await _convertCurrencies(currentPair.exchange.min_operation.currency, currentPair.exchange.min_operation.min_amount, currentPair.id);
           const { want_to_spend } = converted
           minAmount = want_to_spend
         }
@@ -216,4 +213,3 @@ export default (props) => {
   return [inputState, validateState, setInputState, customError];
 };
 
-//

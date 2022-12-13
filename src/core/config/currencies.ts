@@ -74,7 +74,7 @@ export const CURRENCIES = {
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
-            DECIMAL_PLACES: 6,
+            DECIMAL_PLACES: 5,
         }),
         prod_fee:'usdt_fee',
         test_fee:'fau_testnet_fee',

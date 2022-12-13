@@ -7,28 +7,25 @@ export const formatToCurrency = (n, short_currency, delete_surplus_decimals = tr
   //   ? short_currency?.contract_data?.token_name
   //   : short_currency?.currency;
   const currency = short_currency
+
   if (delete_surplus_decimals) {
     return CURRENCY_CONFIG[currency](amount).div("1");
   } else {
     return CURRENCY_CONFIG[currency](amount);
   }
 };
+ 
 
-const extractCurrencies = (currencies_instances) => {
+const extractCurrencies = (currencies_instances) =>{
   let arr = [];
   currencies_instances.forEach((currency_instance) => {
-    let token_name = currency_instance.contract_data
-      ? currency_instance.contract_data.token_name
-      : null;
-    let currency_data = [
-      currency_instance.currency,
-      currency_instance.is_token,
-      token_name,
-    ];
+    // let token_name = currency_instance.contract_data ? currency_instance.contract_data.token_name : null;
+    // let currency_data = [currency_instance, currency_instance.is_token, token_name];
+    let currency_data = [currency_instance];
     arr.push(JSON.stringify(currency_data));
   });
   return arr;
-};
+}
 
 const convertCurrencies = async (currency, amount_spend, pair_id) => {
   let data = {

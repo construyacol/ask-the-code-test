@@ -36,7 +36,6 @@ export const PairList = (props) => {
     const { currentWallet } = props;
     props.action.isAppLoading(true);
     const data = await convertCurrencies(currentWallet.currency, "1", pair_id);
-
     props.action.isAppLoading(false);
     props.action.toggleOtherModal();
 
@@ -45,7 +44,7 @@ export const PairList = (props) => {
       await props.action.pairsForAccount(currentWallet.id, {
         current_pair: { 
           pair_id: pair_id,
-          currency: to_spend_currency.currency,
+          currency: to_spend_currency,
           currency_value: data.want_to_spend,
         },
       });
@@ -54,9 +53,9 @@ export const PairList = (props) => {
 
   const { currentWallet, currentPair, loader } = props;
 
-  console.log('|||||||||||||||  allPairs  ==> ', allPairs)
+  // console.log('|||||||||||||||  allPairs  ==> ', allPairs)
 
-  const currencySymbol = currencies ? currencies[currentWallet?.currency?.currency]?.symbol : currentWallet?.currency?.currency?.toUpperCase()
+  const currencySymbol = currencies ? currencies[currentWallet?.currency]?.symbol : currentWallet?.currency?.toUpperCase()
 
   return (
     <OtherModalLayoutPairs
@@ -113,8 +112,8 @@ function mapStateToProps(state, props) {
     state.storage.pairsForAccount[id] &&
     state.storage.pairsForAccount[id].current_pair;
   const allPairs =
-    state.storage.pairsForAccount[currency.currency] &&
-    state.storage.pairsForAccount[currency.currency].all_pairs;
+    state.storage.pairsForAccount[currency] &&
+    state.storage.pairsForAccount[currency].all_pairs;
   return {
     currentWallet,
     allPairs,

@@ -76,7 +76,7 @@ const CryptoOrder = ({ order }) => {
   let confirmations
 
   if((order?.currency && depositProviders) && Object.keys(depositProviders).length) {
-    totalConfirmations = depositProviders[order.currency.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency.currency]?.depositAccount?.confirmations)
+    totalConfirmations = depositProviders[order.currency]?.depositAccount?.confirmations && Number(depositProviders[order.currency]?.depositAccount?.confirmations)
     confirmations = Number(order.confirmations)
   }
 
@@ -90,11 +90,11 @@ const CryptoOrder = ({ order }) => {
           <IconSwitch
             className="TitleIconOrder"
             size={35}
-            icon={order.currency.currency || "cop"}
+            icon={order.currency || "cop"}
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency.currency}</Currency>
+            <Currency className="fuente">{order.currency}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>
@@ -247,11 +247,11 @@ const FiatOrder = ({ order }) => {
           <IconSwitch
             className="TitleIconOrder"
             size={35}
-            icon={order.currency.currency || "cop"}
+            icon={order.currency || "cop"}
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency.currency}</Currency>
+            <Currency className="fuente">{order.currency}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>

@@ -113,7 +113,7 @@ export class SwapService extends WebService {
     if (!primary && !secondary) return;
 
     if (primary || secondary) {
-      const query = !secondary ? {"primary_currency.currency": `${primary}`} : {"secondary_currency.currency": `${secondary}`};
+      const query = !secondary ? {"primary_currency": `${primary}`} : {"secondary_currency": `${secondary}`};
       const response = await this.pairsRequest(query);
       if (this.isEmpty(response)) return;
       if (all) {
@@ -122,7 +122,7 @@ export class SwapService extends WebService {
       return response?.data[0];
     }
      
-    const query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
+    const query = {"primary_currency": `${primary}`, "secondary_currency": `${secondary}`};
     const response = await this.pairsRequest(query);
     if (this.isEmpty(response)) return;
     return response?.data[0];
@@ -134,10 +134,10 @@ export class SwapService extends WebService {
     }
     let res, query;
     if (primary && !secondary) {
-      query = {"primary_currency.currency": `${primary}`};
+      query = {"primary_currency": `${primary}`};
     }
     if (!primary && secondary) {
-      query = {"secondary_currency.currency": `${secondary}`};
+      query = {"secondary_currency": `${secondary}`};
     }
     query && (res = await this.pairsRequest(query));
     if (res) {
@@ -147,18 +147,18 @@ export class SwapService extends WebService {
       return res?.data[0];
     }
 
-    query = {"primary_currency.currency": `${primary}`, "secondary_currency.currency": `${secondary}`};
+    query = {"primary_currency": `${primary}`, "secondary_currency": `${secondary}`};
     res = await this.pairsRequest(query);
     if (this.isEmpty(res)) return;
     return res?.data[0];
   }
-
+ 
   // TODO: review this fn:getDefaultPair
   async getDefaultPair(currentWallet, localCurrency, currentPair) {
     if ((currentPair && currentPair.pair_id) || !currentWallet) {
       return false;
     }
-    const currency = currentWallet.currency.currency;
+    const currency = currentWallet.currency;
     let pair = await this._getPairs(currency, localCurrency);
     !pair && (pair = await this._getPairs(DEFAULT_CURRENCY.currency, currency));
     !pair && (pair = await this._getPairs(currency));
@@ -174,7 +174,7 @@ export class SwapService extends WebService {
         pairsForAccount(currentWallet.id, {
           current_pair: {
             pair_id,
-            currency: to_spend_currency.currency
+            currency: to_spend_currency
           },
         })
       );
