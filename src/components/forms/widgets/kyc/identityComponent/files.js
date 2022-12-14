@@ -196,7 +196,7 @@ const IdentityKycComponent = ({ handleDataForm, handleState, title, ...props }) 
   return( 
     <>
       <Layout 
-        style={{background:"white"}} 
+        style={{background:"white", overflowY:"scroll"}} 
       > 
         <Layout className='infoPanel' style={{background:"white", left:"auto"}}>
         

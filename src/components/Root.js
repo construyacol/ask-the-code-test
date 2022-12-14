@@ -25,6 +25,7 @@ import {
   getUserToken,
   openLoginMobile
 } from "utils/handleSession";
+// import { useCoinsendaServices } from "services/useCoinsendaServices";
 
 
 
@@ -46,24 +47,21 @@ function RootContainer(props) {
   // TODO: rename isLoading from state
   const isAppLoaded = useSelector(({ isLoading }) => isLoading.isAppLoaded);
   const authData = useSelector(({ modelData:{ authData } }) => authData);
-  const [tryRestoreSession] = SessionRestore();
   const [toastMessage] = useToastMessage();
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
+  const [ tryRestoreSession ] = SessionRestore();
+  // const [ coinsendaServices, globalState ] = useCoinsendaServices();
 
 
   const initComponent = async (mobileURL) => {
-
     const params = new URLSearchParams(mobileURL ?? history.location.search);
-
     if (params.has("token") && params.has("refresh_token")) {
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
       if(!decodeJwt){return} 
       history.push("/");
     }
-
     const userData = await getUserToken();
-
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
     // if(decodedToken.email.includes('bitsendaTest')) return console.log('decodedToken ==> ', decodedToken);
@@ -74,11 +72,6 @@ function RootContainer(props) {
         userId: decodedToken.usr
       });
     }
- 
-    // verifyTokensValidity()
-    // En este punto el token es valido
-    // Emitimos un mensaje de usuario logeado, escuchamos el mensaje desde la landing page para recuperar la sesión
-    
     const parent = window.parent;
     if(parent){
       parent.postMessage("loadedAndLogged", "*");
@@ -86,17 +79,13 @@ function RootContainer(props) {
         return console.log('<========   Recuperando sesión   =======>')
       }
     }
- 
     if(params.has('face_recognition')){
       const Element = await import("./forms/widgets/biometricKycComponent/init");
       if (!Element) return;
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
- 
     history.push("/");
-
-    
   };
 
   useEffect(() => {
@@ -107,7 +96,6 @@ function RootContainer(props) {
       } 
       if(!isAppLoaded) return initComponent();
     }
-
     initRoot()
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppLoaded]);
@@ -128,6 +116,21 @@ function RootContainer(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOnBoarding])
 
+  // useEffect(() => {
+  //   if(isSessionRestored){
+  //     (async()=>{
+  //       const { doLogout } = await import("utils/handleSession")
+  //       await props.actions.isLoggedInAction(true);
+  //       coinsendaServices.postLoader(doLogout)
+  //       const PREVIOUS_ROUTE = await localForage.getItem("previousRoute");
+  //       history.push(PREVIOUS_ROUTE ? PREVIOUS_ROUTE : "/wallets");
+  //       actions.isAppLoading(false);
+  //       return actions.isAppLoaded(true);
+  //     })()
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isSessionRestored])
+
   return (
     // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
@@ -136,8 +139,13 @@ function RootContainer(props) {
         <ModalsSupervisor/>
       </Route>
 
-      {!isAppLoaded ? (
-        <LoaderAplication tryRestoreSession={tryRestoreSession} history={history} setShowOnBoarding={setShowOnBoarding} />
+      {(!isAppLoaded) ? (
+        <LoaderAplication 
+          history={history} 
+          tryRestoreSession={tryRestoreSession}
+          // globalState={globalState}
+          // coinsendaServices={coinsendaServices}
+          setShowOnBoarding={setShowOnBoarding} />
       ) : (
         <>
           <CookieMessage/>

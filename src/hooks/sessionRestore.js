@@ -1,3 +1,4 @@
+// import { useState, useEffect } from 'react'
 import localForage from "localforage";
 import { useActions } from "./useActions";
 import { getExpTimeData } from 'utils/handleSession'
@@ -18,17 +19,14 @@ export const updateLocalForagePersistState = (payload) => {
 
 const SessionRestore = () => {
   const actions = useActions();
-
+  // const [ isSessionRestored, setIsSessionRestored ] = useState(false)
   const tryRestoreSession = async () => {
-    
     const {
       currentTime,
       refreshTokenExpirationTime,
     } = await getExpTimeData()
-
     const SESSION = await localForage.getItem("sessionState");
     const SESSION_STATE = SESSION && Object.keys(SESSION).length && JSON.parse(SESSION);
-    // if (!SESSION_STATE || (SESSION_STATE.user && SESSION_STATE.authData.userToken !== userToken)) {
     if (!SESSION_STATE || currentTime > refreshTokenExpirationTime) {
       await localForage.setItem("CACHED_DATA", {});
       await localForage.setItem("sessionState", {});
@@ -39,7 +37,12 @@ const SessionRestore = () => {
     return true;
   };
 
-  return [tryRestoreSession];
+  // useEffect(() => {
+  //     tryRestoreSession()
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
+  return [ tryRestoreSession ];
 };
 
 export default SessionRestore;
