@@ -28,7 +28,7 @@ export const HandleGas = ({
     const setEstimatedGas = async() => {
         if(addressState !== 'good' || withdrawAmount.isNaN())return;
         funcDebounces({
-            keyId:{[`estimating_gas`]:current_wallet?.currency?.currency}, 
+            keyId:{[`estimating_gas`]:current_wallet?.currency}, 
             storageType:"sessionStorage",
             timeExect:300,
             callback:async() => {

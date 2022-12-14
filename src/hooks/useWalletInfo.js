@@ -38,7 +38,7 @@ const selectWalletCurrencyShortName = createSelector(
     if(!currentWallet) return;
     if(!currencies) return;
     for (let currency of currencies) {
-      if(currency.currency.includes(currentWallet.currency.currency)){
+      if(currency.currency.includes(currentWallet.currency)){
         return currency.symbol
       }
     }

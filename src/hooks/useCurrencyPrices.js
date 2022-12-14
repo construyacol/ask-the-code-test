@@ -37,7 +37,7 @@ function useCurrencyPrices(currentPair) {
     if (currentPair) {
       setBuyPrice(currentPair.buy_price, currentPair.secondary_currency);
       setSellPrice(currentPair.sell_price, currentPair.secondary_currency);
-      setCurrencyLabel(currencies[currentPair.primary_currency.currency]?.symbol);
+      setCurrencyLabel(currencies[currentPair.primary_currency]?.symbol);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPair]);

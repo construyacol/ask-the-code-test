@@ -92,7 +92,7 @@ export default function WithdrawConfirmation({
                 <HeaderContainer>
                     <IconSwitch icon={"withdraw"} color="white" size={24}/>
                     <h3 className="fuente">Confirmación de retiro</h3>
-                    <WithdrawIcon currency={current_wallet?.currency?.currency} />
+                    <WithdrawIcon currency={current_wallet?.currency} />
                 </HeaderContainer>
 
                 <FromTo

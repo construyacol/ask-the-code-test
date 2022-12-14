@@ -54,9 +54,9 @@ import { FIAT_WITHDRAW_TYPES } from './api'
       let maxAmountValidation = _value.isGreaterThanOrEqualTo(maxAmount)
   
       if(!minAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${currency?.currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
       }else if(maxAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${currency?.currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
       }else if(!availableAmountValidation){
         writeOnLabel(`.label_text__${data.key}`, `El monto supera el valor disponible en la cuenta`, 'error')
       }else if(minAmountValidation && availableAmountValidation){

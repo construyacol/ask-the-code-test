@@ -277,19 +277,19 @@ const Wallet = (props) => {
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const { name, id, currency } = account;
   const icon =
-    account.currency.currency === "cop"
+    account.currency === "cop"
       ? "bank"
-      : account.currency.currency === "ethereum"
+      : account.currency === "ethereum"
       ? "ethereum_account"
-      : account.currency.currency;
+      : account.currency;
 
-  const currencySymbol = currencies && currencies[currency?.currency]?.symbol
+  const currencySymbol = currencies && currencies[currency]?.symbol
 
   return (
     <WalletLayout
       id={`hoverable${focusedId}`}
       isSelected={isSelected}
-      className={`walletLayout ${loaderAccount ? "loading" : ""} ${currency.currency} ${shouldHaveDeleteClassName && "deleted"}`}
+      className={`walletLayout ${loaderAccount ? "loading" : ""} ${currency} ${shouldHaveDeleteClassName && "deleted"}`}
       wallet
       inscribed
     >
@@ -304,7 +304,7 @@ const Wallet = (props) => {
           <AccountCta
             handleAction={props.handleAction}
             payload={props.account_type}
-            className={`clickeable ${currency?.currency}`}
+            className={`clickeable ${currency}`}
           />
           <OptionsAccount
             account_detail={props.handleAction}

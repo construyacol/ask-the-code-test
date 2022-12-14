@@ -359,7 +359,7 @@ export const matchNormalizeWallet = (list, itemReview) => {
   return new Promise(async (resolve, reject) => {
     let result = [];
     await Object.keys(list).forEach((wallet_id) => {
-      if (list[wallet_id].currency.currency === itemReview) {
+      if (list[wallet_id].currency === itemReview) {
         result.push(list[wallet_id]);
       }
     });
@@ -640,7 +640,7 @@ export const matchItem = (list, itemReview, type, all_results) => {
       case "quote":
         // BUSCAMOS COINCIDENCIA DENTRO DEL MODELO DE LAS LISTAS DE PARES/COTIZACIONES QUE NOS RETORNA EL SERVER
         return (
-          item.primary_currency.currency.includes(query) && result.push(item)
+          item.primary_currency.includes(query) && result.push(item)
         );
       case "primary":
         // BUSCAMOS COINCIDENCIA DENTRO DEL USER COLLECTION PROVEIDO EN LA LISTA {primary: element}
