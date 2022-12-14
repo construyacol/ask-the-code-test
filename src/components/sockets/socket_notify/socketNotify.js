@@ -107,8 +107,6 @@ const OrderNotifyView = (props) => {
     props.history.push(`/wallets/activity/${wallet_id}/${item_type}`);
   };
 
-  // console.log('item_type', item_type)
-
   return (
     <LayoutSocketNotify>
       <IconClose theme="dark" size={20} />
@@ -130,10 +128,10 @@ const OrderNotifyView = (props) => {
       <div className="bottomSection">
         <h3 className="fuente">{title}</h3>
         <div className="depositAmount">
-          <IconSwitch icon={currency.currency} size={35} />
+          <IconSwitch icon={currency} size={35} />
           <p id="order_amount" className="fuente2">
             {formatCurrency}{" "}
-            <span>{currencies[socket_notify.currency.currency].symbol}</span>
+            <span>{currencies[socket_notify.currency].symbol}</span>
           </p>
         </div>
         <ButtonNofity
@@ -181,7 +179,7 @@ const mapStateToProps = (state) => {
   return {
     socket_notify: socket_notify && socket_notify[0],
     currencies: selectCurrencies(state),
-  };
+  }; 
 };
 
 const mapDispatchToProps = (dispatch) => {
