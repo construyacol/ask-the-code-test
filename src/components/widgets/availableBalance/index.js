@@ -16,7 +16,7 @@ export default function AvailableBalance ({ handleAction, amount, id, uiCopy, wa
           className={`fuente2 ${isMovil ? "movil" : ""}`}
           onClick={() => handleAction(finalAmount)}
         >
-          {isMovil ?  'MAX' : uiCopy ? uiCopy : `Disponible: ${finalAmount}`}
+          {isMovil ?  'MAX' : uiCopy ? `${uiCopy} ${finalAmount}` : `Disponible: ${finalAmount}`}
         </p>
       </BalanceContainer>
     );

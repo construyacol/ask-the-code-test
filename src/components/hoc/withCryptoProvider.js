@@ -21,35 +21,49 @@ export default function withCryptoProvider(AsComponent) {
     const [ coinsendaServices ] = useCoinsendaServices();
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
-      baseFee:0, 
       amount:0,
       takeFeeFromAmount:DEFAULT_TAKE_FEE_FROM_AMOUNT,
       availableBalance: current_wallet ? formatToCurrency(balance.available, current_wallet?.currency) : new BigNumber(balance.available), 
-      ethersProvider:undefined,
-      networkDataExp:undefined, 
       withdrawAmount:undefined,
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
-      network_data:null, 
       minAmount:getMinAmount(withdrawProvider), 
-      gas_limit:priorityList[currentPriority]?.gas_limit, 
       isEthereum:!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
     })
+
+    const [ ethers, setEthers ] = useState({
+      ethersProvider:undefined,
+      utils:undefined,
+      network_data:null, 
+      baseFee:0, 
+      networkDataExp:undefined, 
+      gas_limit:"0", 
+      calculateGasLimit:() => null,
+      getNetworkData:() => null
+    })
+
     const componentIsMount = useRef()   
+ 
+    const calculateGasLimit = useCallback((gasLimit) => {
+      let gas_limit = BigNumber.isBigNumber(gasLimit) ? gasLimit : BigNumber(gasLimit)
+      const additionalGas = gas_limit.times(0.1) 
+      return gas_limit.plus(additionalGas) 
+    }, [])
+
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
       const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
-      const gasPlus = new BigNumber(withdrawData?.gas_limit).multipliedBy(0.1) 
-      const gas_limit = new BigNumber(withdrawData?.gas_limit).plus(gasPlus) 
+      const gas_limit = calculateGasLimit(ethers?.gas_limit)
       const fixedCost = gas_limit.times(maxFee)
       setWithdrawData(prevState => ({...prevState, fixedCost}))
-    }, [currentPriority, priorityList, withdrawData.gas_limit])
+    }, [calculateGasLimit, currentPriority, priorityList, ethers.gas_limit])
 
     const fetchNetworkData = async() => coinsendaServices.fetchNetworkData(withdrawProvider?.id)  
+
     const getNetworkData = async() => {
       const currentTime = new Date().getTime()/1000    
-      if(currentTime <= withdrawData?.networkDataExp){
-        return withdrawData.network_data
+      if(currentTime <= ethers?.networkDataExp){
+        return ethers.network_data
       }else{
         const { data } = await fetchNetworkData()   
         return data
@@ -58,10 +72,13 @@ export default function withCryptoProvider(AsComponent) {
 
     const createEthersProvider = async() => {
       const { ethers } = await import('ethers');
-      setWithdrawData(prevState => ({
-        ...prevState, 
+      setEthers(prevState => ({
+        ...prevState,
         ethersProvider:new ethers.providers.JsonRpcProvider(INFURA_URI),
-        utils:ethers.utils
+        utils:ethers.utils,
+        gas_limit:calculateGasLimit(priorityList[currentPriority]?.gas_limit).toFixed(0), 
+        calculateGasLimit,
+        getNetworkData
       }))
     }
 
@@ -73,7 +90,7 @@ export default function withCryptoProvider(AsComponent) {
       const { exp, base_fee } = dataNetDecoded
       const baseFee = new BigNumber(base_fee)
       const expired = exp - 10
-      setWithdrawData(prevState => ({...prevState, baseFee, network_data:data, networkDataExp:expired}))
+      setEthers(prevState => ({...prevState, baseFee, network_data:data, networkDataExp:expired}))
       validateExpTime(expired)
       return data
     }
@@ -93,15 +110,17 @@ export default function withCryptoProvider(AsComponent) {
     useEffect(() => {
       if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed)  
       setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
-      else getEthFixedCost(withdrawData?.baseFee);
+      else getEthFixedCost(ethers?.baseFee);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawData.baseFee, withdrawData.gas_limit, currentPriority])
+    }, [ethers.baseFee, ethers.gas_limit, currentPriority])
 
     useEffect(() => {
-      if(withdrawData?.isEthereum) initEthWithdraw();
-      if(withdrawData?.isEthereum) createEthersProvider();
+      if(withdrawProvider && withdrawData?.isEthereum){
+        initEthWithdraw()
+        createEthersProvider()
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [withdrawProvider])
 
     useEffect(() => {
       let withdrawProvGlobalState = withdrawProvidersByName[current_wallet?.currency]
@@ -134,7 +153,7 @@ export default function withCryptoProvider(AsComponent) {
       <>
         <div ref={componentIsMount} style={{display:"none"}} />
         <AsComponent
-          provider={{ withdrawData, setWithdrawData, getNetworkData }}
+          provider={{ withdrawData, setWithdrawData, ethers, setEthers }}
           priority={{ currentPriority, setPriority, priorityList, priorityConfig:PRIORITY_CONFIG }}
           coinsendaServices={coinsendaServices}
           withdrawProvider={withdrawProvider}

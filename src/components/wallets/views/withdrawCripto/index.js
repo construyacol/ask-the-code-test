@@ -47,6 +47,13 @@ export const CriptoView = (props) => {
     user,
     coinsendaServices,
     active_trade_operation,
+    provider,
+    provider:{ 
+      withdrawData, 
+      setWithdrawData, 
+      ethers:{ getNetworkData, gas_limit } 
+    },
+    priority:{ currentPriority }
   } = props
 
   const actions = useActions();
@@ -60,18 +67,9 @@ export const CriptoView = (props) => {
   const isValidForm = useRef(false);
   const [ isOpenPanel, setIsOpenPanel ] = useState(isMobile ? false : true)
 
-  const { 
-    provider:{ 
-      withdrawData, 
-      setWithdrawData, 
-      getNetworkData 
-    },
-    priority:{ currentPriority },
-  } = props
 
   const { 
     amount,
-    gas_limit
   } = withdrawData
 
   const createWithdraw = async() => {
@@ -237,7 +235,7 @@ export const CriptoView = (props) => {
     priority:props.priority,
     setIsOpenPanel,
     isMobile,
-    provider:props.provider
+    provider
   }
 
   const panelHProps = {

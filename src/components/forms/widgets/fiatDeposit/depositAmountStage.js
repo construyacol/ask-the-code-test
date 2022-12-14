@@ -69,7 +69,7 @@ export default function AmountComponent ({
     return( 
       <StageContainer className="_withdrawAmount">
         {children}
-        <InputComponent
+        <InputComponent 
           onChange={depositAmountOnChange} 
           inputStatus={stageStatus}
           inputMode="numeric"
@@ -81,7 +81,7 @@ export default function AmountComponent ({
           AuxComponent={[() => (<AvailableBalance
             // id={currentWallet?.id}
             handleAction={handleMinAmount} 
-            copyText="Mínimo:"
+            uiCopy="Mínimo:"
             // amount={state[stageData?.key]}
             amount={minAmount}
           />)]}

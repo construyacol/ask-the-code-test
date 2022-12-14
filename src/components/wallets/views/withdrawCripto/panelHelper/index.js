@@ -39,7 +39,7 @@ const PanelHelper = props => {
         setIsOpenPanel,
         addressValue,
         priority:{ priorityList, currentPriority, priorityConfig, setPriority },
-        provider:{ withdrawData, setWithdrawData }
+        provider:{ withdrawData, setWithdrawData, ethers:{ baseFee } }
     } = props
 
     const { 
@@ -48,7 +48,6 @@ const PanelHelper = props => {
         amount,
         isEthereum,
         total,
-        baseFee,
         takeFeeFromAmount,
         availableBalance,
         minAmount
@@ -147,6 +146,7 @@ const PanelHelper = props => {
                     toAddress={addressValue} 
                     withdrawData={withdrawData} 
                     setWithdrawData={setWithdrawData}
+                    provider={props.provider}
                   /> : <></>
                 }
                 <StatusContainer>
