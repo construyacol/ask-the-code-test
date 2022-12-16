@@ -9,7 +9,7 @@ import { formatToCurrency } from "utils/convert_currency";
 import { getMinAmount } from 'utils/withdrawProvider'
 
 
-const DEFAULT_TAKE_FEE_FROM_AMOUNT = true
+const DEFAULT_TAKE_FEE_FROM_AMOUNT = false
 
 export default function withCryptoProvider(AsComponent) {
   return function (props) {

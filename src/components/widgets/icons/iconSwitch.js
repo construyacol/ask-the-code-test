@@ -272,6 +272,7 @@ class IconSwitch extends Component {
         return <LogOut {...props} />;
       case "usdt":
       case "FAUT":
+      case "faut":
       case "fau_testnet":
       case "usdtt":
       case "usdt_testnet":
@@ -303,6 +304,7 @@ class IconSwitch extends Component {
       case "litecoin_testnet":
       case "LTC":
       case "ltc":
+      case "ltct":
         return <Litecoin {...props} />;
       case "youtube":
         return <Youtube {...props} />;
@@ -381,6 +383,7 @@ class IconSwitch extends Component {
       case "bitcoin":
       case "btc":
       case "BTCT":
+      case "btct":
       case "BTC":
       case "bitcoin_testnet":
         return <Bitcoin2 {...props} />;

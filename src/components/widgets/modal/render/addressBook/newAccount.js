@@ -33,9 +33,11 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
     const form = new FormData(document.getElementById("newAccount"));
     const label = form.get("name-account");
     const address = form.get("address-account");
-    const thisAccountExist = withdraw_accounts[address];
 
-    if (thisAccountExist && thisAccountExist.info.label === provider_type) {
+    const thisAccountExist = withdraw_accounts[address];
+    const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
+
+    if (unlabeledAccount) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
       const hideAccount = await coinsendaServices.deleteAccount(
         thisAccountExist.id
@@ -60,7 +62,7 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
         address:address.trim(),
         // country: current_wallet.country,
       },
-      "cripto"
+      "cripto" 
     );
 
     if (!newWithdrawAccount) {

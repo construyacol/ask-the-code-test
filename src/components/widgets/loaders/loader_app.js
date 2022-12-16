@@ -61,18 +61,18 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const initComponent = async () => {
 
     const { userToken } = authData;
-    const isSessionRestored = await tryRestoreSession();
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true);
-      const { funcDebounces } = await import('utils') 
-      funcDebounces({
-        keyId:{[`tryRestoreSession`]:'isSessionRestored'}, 
-        storageType:"sessionStorage",
-        timeExect:1000,
-        callback:() => coinsendaServices.postLoader(doLogout)
-    })
-      return redirectURL(isSessionRestored);
-    } 
+    // const isSessionRestored = await tryRestoreSession();
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true);
+    //   const { funcDebounces } = await import('utils') 
+    //   funcDebounces({
+    //     keyId:{[`tryRestoreSession`]:'isSessionRestored'}, 
+    //     storageType:"sessionStorage",
+    //     timeExect:1000,
+    //     callback:() => coinsendaServices.postLoader(doLogout)
+    // })
+    //   return redirectURL(isSessionRestored);
+    // } 
      
     if (!userToken) return;
    

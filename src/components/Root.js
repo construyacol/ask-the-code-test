@@ -116,21 +116,6 @@ function RootContainer(props) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showOnBoarding])
 
-  // useEffect(() => {
-  //   if(isSessionRestored){
-  //     (async()=>{
-  //       const { doLogout } = await import("utils/handleSession")
-  //       await props.actions.isLoggedInAction(true);
-  //       coinsendaServices.postLoader(doLogout)
-  //       const PREVIOUS_ROUTE = await localForage.getItem("previousRoute");
-  //       history.push(PREVIOUS_ROUTE ? PREVIOUS_ROUTE : "/wallets");
-  //       actions.isAppLoading(false);
-  //       return actions.isAppLoaded(true);
-  //     })()
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isSessionRestored])
-
   return (
     // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
