@@ -170,6 +170,8 @@ export const CriptoView = (props) => {
   };
 
   const handleChangeAddress = (_, value) => {
+    // console.log('handleChangeAddress', value)
+    // debugger
     setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
   };
 
@@ -248,8 +250,8 @@ export const CriptoView = (props) => {
     addressValue
   }
 
- 
-  return (
+  
+  return ( 
     <CriptoWithdrawForm>
       <WithdrawFormComponent
         {...formProps}

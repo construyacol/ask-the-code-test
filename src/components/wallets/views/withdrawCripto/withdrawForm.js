@@ -71,12 +71,15 @@ const WithdrawFormComponent = ({
     }, [fixedCost, minAmount])
 
     let _availableBalance = availableBalance?.toFormat() 
-    if(!takeFeeFromAmount && availableBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
-        _availableBalance = availableBalance?.minus(fixedCost)?.toFormat()
+
+    if(!takeFeeFromAmount){
+        if(availableBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
+            _availableBalance = availableBalance?.minus(fixedCost)?.toFormat()
+        }else{
+            _availableBalance = 0
+        }
     }
 
-
-    
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -154,7 +157,7 @@ const WithdrawFormComponent = ({
                                     </HandlePriorityCont>
                                 }
                             </IconsContainer>
-                        )
+                        ) 
                     }
                     AuxComponent={[
                         () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>)

@@ -7,6 +7,11 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+// export const DEFAULT_CURRENCY = {
+//     currency: 'bitcoin',
+//     symbol:'btc'
+// }
+
 export const BLOCKCHAIN_EXPLORER_URL = {
     bitcoin:"https://blockstream.info/tx/",
     bitcoin_testnet:"https://blockstream.info/tx/",

@@ -31,9 +31,10 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
     e && e.preventDefault();
     setLoader(true);
     const form = new FormData(document.getElementById("newAccount"));
-    const label = form.get("name-account");
+    const accountName = form.get("name-account");
     const address = form.get("address-account");
 
+    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
     const thisAccountExist = withdraw_accounts[address];
     const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
 
@@ -46,9 +47,7 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
         toastMessage("No se pudo ocultar la cuenta anónima", "error");
         return setLoader(false);
       }
-    } else if (
-      thisAccountExist &&
-      thisAccountExist.info.label !== provider_type
+    } else if (thisAccountExist && thisAccountExist.info.label !== currency
     ) {
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
