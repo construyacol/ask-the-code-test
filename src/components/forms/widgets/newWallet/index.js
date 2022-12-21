@@ -59,8 +59,11 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
 
 
   const selectItem = (query) => {
+
       // applys uniqueMatch when there are 2 or more currencies with the same nomenclature for example: bitcoin - bitcoin_testnet, matched over the currency clicked
-      const uniqueMatch = availableCurrencies.filter(currency => currency.toLowerCase() === query);
+      const uniqueMatch = availableCurrencies.filter(({ currency }) => currency.toLowerCase() === query);
+    //   console.log('uniqueMatch', uniqueMatch)
+    //   debugger
       searchMatch(query?.toLowerCase(), uniqueMatch)
   }
 
@@ -78,7 +81,7 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   const searchMatch = (query, uniqueMatch) => {
       if(!searchList?.length) return;
       setValue(query)
-      const matches = uniqueMatch || (query && availableCurrencies.filter(currency => currency.toLowerCase().includes(query)));
+      const matches = uniqueMatch || (query && availableCurrencies.filter(({ currency }) => currency.toLowerCase().includes(query)));
       matches?.length === 1 ? setMatchItem(matches[0]) : setMatchItem(null);
       if(!matches?.length)return setSearchList(availableCurrencies);
       setSearchList(matches)
