@@ -38,7 +38,10 @@ export default function MainMenuComponent(props) {
     const formatCurrency = async () => {
         let buyPrice = await formatToCurrency( currentPair.buy_price, currentPair.secondary_currency);
         let sellPrice = await formatToCurrency( currentPair.sell_price, currentPair.secondary_currency);
-        let currencySymbol = currencies[currentPair?.primary_currency?.currency]?.symbol;
+        let currencySymbol = currencies[currentPair?.primary_currency]?.symbol;
+
+        console.log('buyPrice', buyPrice)
+        console.log('sellPrice', sellPrice)
 
         setState(prevState => { 
             return {

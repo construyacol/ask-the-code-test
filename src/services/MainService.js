@@ -132,7 +132,7 @@ export class MainService extends inheritances {
   async init(callback) {
 
     while (!this.user) {
-      await sleep(2000);
+      await sleep(2000); 
     } 
 
     const userWallets = await this.userHasWallets();
@@ -168,8 +168,9 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-      this.checkAndUpdateUserStatus()
       await this.subscribeToAllNewDeposits()
+      // await this.fetchCompleteUserData();
+      this.checkAndUpdateUserStatus()
       this.dispatch( 
         updateLoadersAction({
           mainList: false,

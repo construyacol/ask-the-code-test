@@ -52,7 +52,7 @@ export default function AmountComponent ({
     }
 
     useEffect(() => {
-      setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency).toFormat())
+      setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 

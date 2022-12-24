@@ -24,7 +24,7 @@ export const useDetailParseData = (order, detailType) => {
   const { withdraw_accounts } = useSelector((state) => state.modelData)
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
-  const currencySimbol = currencies ? currencies[order?.currency?.currency]?.symbol : order?.currency?.currency?.toUpperCase()
+  const currencySimbol = currencies ? currencies[order?.currency]?.symbol : order?.currency?.toUpperCase()
 
   const inProcesOrder = async (order) => {
     const isPending = order.state === 'pending'
@@ -60,11 +60,11 @@ export const useDetailParseData = (order, detailType) => {
             ],
             [
               `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
-              `${await formatCurrency(order.amount, order.currency)} ${order.currency?.currency?.toUpperCase()}`,
+              `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
             ],
             [
               `Costo del depósito`,
-              `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${order.currency?.currency?.toUpperCase()}`,
+              `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${order.currency?.toUpperCase()}`,
             ],
           ];
         }
@@ -84,7 +84,7 @@ export const useDetailParseData = (order, detailType) => {
         setData([
           ["ID:", order.id],
           ["Estado:", getState(order.state)],
-          ["Divisa:", `${order.currency.currency}`],
+          ["Divisa:", `${order.currency}`],
           ["Orden creada en:", moment(order.created_at).format("LL")],
           ["Confirmaciones:", order.confirmations],
           [
@@ -139,7 +139,7 @@ export const useDetailParseData = (order, detailType) => {
       ["ID del intercambio:", order?.id],
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Estado:", getState(order?.state)],
-      ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.currency?.toUpperCase()}`],
+      ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.toUpperCase()}`],
       ["Cantidad adquirida:", `${order?.bought ? await formatCurrency(order?.bought, order?.to_buy_currency) : '0'} ${order?.to_buy_symbol?.toUpperCase()}`],
     ]
     return parsedOrder 
@@ -322,7 +322,7 @@ const ReferralSwapCopy = ({ order, currencies }) => {
         Quién te refirió obtuvo el &nbsp;  
         <span className="fuente2"> 
           {order?.referral?.total_percentage}%&nbsp;
-          ({order?.referral?.compra_de_referidos?.amount} {currencies && currencies[order?.referral?.compra_de_referidos?.short_currency?.currency]?.symbol})
+          ({order?.referral?.compra_de_referidos?.amount} {currencies && currencies[order?.referral?.compra_de_referidos?.short_currency]?.symbol})
           </span> de este intercambio. <a href={`https://${getHostName()}.com/docs/incentives`} target="_blank"  rel="noreferrer" alt="">Aprende cómo hacerlo</a>
       </p>
   )

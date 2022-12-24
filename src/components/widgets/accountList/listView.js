@@ -41,7 +41,7 @@ export default function ListViewComponent(props) {
                 !isEmpty(accounts) && accounts.map((account, index) => {
                     return(
                         <ItemAccount 
-                            currency={currencies[account?.currency?.currency]}
+                            currency={currencies[account?.currency]}
                             account={account} 
                             key={index} 
                             index={index}
@@ -135,7 +135,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
             <HeaderMainContainer className="_accountHeaderMainContainer">
                 <IconAccount className="onAccountList">
                     <IconSwitch
-                        icon={account?.currency?.currency}
+                        icon={account?.currency}
                         size={isMovilViewport ? 30 : 35}
                     />
                 </IconAccount>

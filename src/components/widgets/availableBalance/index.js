@@ -1,22 +1,22 @@
 // import { useSelector } from "react-redux";
 import styled from 'styled-components'
+import BigNumber from "bignumber.js"
 import { formatToCurrency } from "utils/convert_currency";
 
 
 export default function AvailableBalance ({ handleAction, amount, id, uiCopy, wallet }) {
 
-    // const { keyActions } = useSelector((state) => state.ui);
     const isMovil = window.innerWidth < 768;
-    const finalAmount = wallet ? formatToCurrency(amount, wallet?.currency)?.toFormat() : amount
+    let availableBalance = wallet ? formatToCurrency(amount, wallet?.currency) : BigNumber(amount)
 
     return (
       <BalanceContainer className="_balanceComponent">
         <p
           id={id}
           className={`fuente2 ${isMovil ? "movil" : ""}`}
-          onClick={() => handleAction(finalAmount)}
+          onClick={() => handleAction(availableBalance?.toString() || amount)}
         >
-          {isMovil ?  'MAX' : uiCopy ? uiCopy : `Disponible: ${finalAmount}`}
+          {isMovil ?  'MÁX' : uiCopy ? `${uiCopy} ${availableBalance?.toFormat()}` : `Disponible: ${availableBalance?.toFormat()}`}
         </p>
       </BalanceContainer>
     );

@@ -43,7 +43,7 @@ export class AccountService extends WebService {
     }
 
     const availableWallets = wallets.filter((wallet) => {
-      return wallet.visible && wallet.currency.currency !== "usd"
+      return wallet.visible && wallet.currency !== "usd"
         ? wallet
         : false;
     });
@@ -62,7 +62,7 @@ export class AccountService extends WebService {
     const balanceList = availableWallets.map((wallet) => {
       let newWallet = {
         id: wallet.id,
-        currency: wallet.currency.currency,
+        currency: wallet.currency,
         reserved: wallet.reserved,
         available:wallet.available,
         total: new BigNumber(wallet.reserved).plus(wallet.available).toString(),
@@ -118,7 +118,7 @@ export class AccountService extends WebService {
     } 
 
     userWallets.forEach(wallet => {
-      const { currency } = wallet?.currency
+      const { currency } = wallet
       if(currency.includes('ethereum')){
         delete newCurrencies.ethereum
       }
@@ -136,8 +136,8 @@ export class AccountService extends WebService {
   }
 
   async createAccountAndInsertDepositProvider(body) {
-    body.data.country = this.user.country;
-    const newAccount = await this.createWallet(body?.data);
+    // body.data.country = this.user.country;
+    const newAccount = await this.createWallet(body);
     if (!newAccount) {return}
     await this.getWalletsByUser();
     const { account } = newAccount;
@@ -171,16 +171,18 @@ export class AccountService extends WebService {
 
     return result;
   }
-
-  async createWallet(walletInfo) {
+ 
+  async createWallet({ currency, name }) {
+ 
+    const { capitalizeWord } = await import('utils')
 
     const body = {
         data: {
-            name: `Mi Billetera ${walletInfo?.currency}`,
-            description: "description",
+            name: name || `Mi Billetera ${capitalizeWord(currency)}`,
+            // description: "description",
             country: this?.user?.country,
             enabled: true,
-            currency: walletInfo.short_currency
+            currency
         }
     };
 
@@ -229,7 +231,7 @@ export class AccountService extends WebService {
 
   //     const balanceList = balances.map(balanceItem => ({
   //         id: balanceItem.id,
-  //         currency: balanceItem.currency.currency,
+  //         currency: balanceItem.currency,
   //         reserved: balanceItem.reserved,
   //         available: balanceItem.available,
   //         total: parseFloat(balanceItem.reserved) + parseFloat(balanceItem.available),

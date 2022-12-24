@@ -41,7 +41,7 @@ export default (props) => {
     fontSize: "16px",
   };
 
-  const currencyImg = currentPair.primary_currency.currency
+  const currencyImg = currentPair.primary_currency
   
 
   return (

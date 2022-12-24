@@ -53,7 +53,7 @@ export default (props) => {
         let AddressValidator;
         AddressValidator = await import("multicoin-address-validator");
 
-        const { currency } = currentWallet.currency;
+        const { currency } = currentWallet;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
         if(!withdrawProvidersByName[currency])return;
@@ -109,7 +109,7 @@ export default (props) => {
         // return e.target.value;
 
         // case 'bought-amount':
-        //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency.currency
+        //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency
         //   if(!isSecondaryCurrency){return value}
         //   // Validamos que la cantidad gastada spend-amount no supere el monto disponible en la cuenta
         //   availableAmountValidation = await availableSpendAmountValidation()
@@ -131,7 +131,6 @@ export default (props) => {
     }
   };
 
-
   // const availableSpendAmountValidation = async() => {
   //   const spend_amount = new FormData(document.getElementById("swapForm")).get("spend-amount");
   //   const spend_amount_value = await formatToCurrency(spend_amount.toString().replace(/,/g, ""), currentWallet.currency);
@@ -145,7 +144,7 @@ export default (props) => {
       let errMsg = ""
       switch (inputName) {
         case 'spend-amount': //Swap input
-          // const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
+          // const isSecondaryCurrency = currentWallet.currency === currentPair.secondary_currency
           errMsg =
           (!minAmountValidation) ? `El monto mínimo es: ${min_amount}` :
            !availableAmountValidation && `El monto supera el valor disponible en la cuenta`;
@@ -157,7 +156,7 @@ export default (props) => {
           return setCustomError(errMsg)
         case 'bought-amount':
           errMsg =
-          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency.currency}`
+          !minAmountValidation && `El monto mínimo a recibir es: ${min_amount} ${currentPair.secondary_currency}`
           return setCustomError(errMsg)
         default:
       }
@@ -168,24 +167,22 @@ export default (props) => {
 
 
   const _getMinAmount = async(inputName) => {
-
     switch (inputName) { 
-
       // case 'spend-amount':
       // El min_amount está expresado en la secondary currency, por lo tanto solo validamos el min amount en el input "spend-amount" si la moneda que se gasta (currentWallet) es la secondary_currency
       // Ej, con el par BTC/COP, el min amount está expresado en cop (20.000 cop), solo validaríamos este campo si estamos dentro de la cuenta de cop y vamos a gastar cop para adquirir btc
-      // const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
+      // const isSecondaryCurrency = currentWallet.currency === currentPair.secondary_currency
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
         const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency.currency])
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 
         let minAmount = new BigNumber(0)
-        const minOperationCurrency = currentPair.exchange.min_operation.currency.currency
-        if([minOperationCurrency].includes(currentWallet.currency.currency)){
+        const minOperationCurrency = currentPair.exchange.min_operation.currency
+        if([minOperationCurrency].includes(currentWallet.currency)){
           minAmount = formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
         }else{ 
           const converted = await _convertCurrencies(currentPair.exchange.min_operation.currency, currentPair.exchange.min_operation.min_amount, currentPair.id);
@@ -201,7 +198,7 @@ export default (props) => {
   // const getMinAmountValidation = (inputName, value, min_amount) => {
   //   switch (inputName) {
   //     // case 'spend-amount':
-  //     //   const isSecondaryCurrency = currentWallet.currency.currency === currentPair.secondary_currency.currency
+  //     //   const isSecondaryCurrency = currentWallet.currency === currentPair.secondary_currency
   //     //   return isSecondaryCurrency ? value.isGreaterThanOrEqualTo(min_amount) : value.isGreaterThan(min_amount);
   //     case 'spend-amount':
   //     case 'amount':
@@ -216,4 +213,3 @@ export default (props) => {
   return [inputState, validateState, setInputState, customError];
 };
 
-//

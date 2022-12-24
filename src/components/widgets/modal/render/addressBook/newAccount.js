@@ -31,11 +31,14 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
     e && e.preventDefault();
     setLoader(true);
     const form = new FormData(document.getElementById("newAccount"));
-    const label = form.get("name-account");
+    const accountName = form.get("name-account");
     const address = form.get("address-account");
-    const thisAccountExist = withdraw_accounts[address];
 
-    if (thisAccountExist && thisAccountExist.info.label === provider_type) {
+    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
+    const thisAccountExist = withdraw_accounts[address];
+    const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
+
+    if (unlabeledAccount) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
       const hideAccount = await coinsendaServices.deleteAccount(
         thisAccountExist.id
@@ -44,9 +47,7 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
         toastMessage("No se pudo ocultar la cuenta anónima", "error");
         return setLoader(false);
       }
-    } else if (
-      thisAccountExist &&
-      thisAccountExist.info.label !== provider_type
+    } else if (thisAccountExist && thisAccountExist.info.label !== currency
     ) {
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
@@ -60,7 +61,7 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
         address:address.trim(),
         // country: current_wallet.country,
       },
-      "cripto"
+      "cripto" 
     );
 
     if (!newWithdrawAccount) {

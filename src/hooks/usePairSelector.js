@@ -16,13 +16,13 @@ export function usePairSelector(props) {
 
   const selectPair = async (initial) => {
     setIsReady(false);
-    let currency = currentWallet && currentWallet.currency.currency;
+    let currency = currentWallet && currentWallet.currency;
     let all_pairs = [];
 
     !initial && props.actions.toggleOtherModal();
     if (currencyPairs) {
       return false;
-    }
+    } 
 
     let pairs = await coinsendaServices.getPairs(currency, null, true);
     if (pairs) {
@@ -39,7 +39,7 @@ export function usePairSelector(props) {
     let pairs_result = await createListPairs(all_pairs, currency);
     setIsReady(true);
     return props.actions.pairsForAccount(
-      currentWallet.currency.currency,
+      currentWallet.currency,
       { all_pairs: pairs_result },
       "currency"
     );
@@ -53,12 +53,12 @@ export function usePairSelector(props) {
     let result = []
 
     await allPairs.forEach(async(pair) => {
-      if (pair.primary_currency.currency === currency) {
-        name = pair.secondary_currency.currency;
+      if (pair.primary_currency === currency) {
+        name = pair.secondary_currency;
       }
 
-      if (pair.secondary_currency.currency === currency) {
-        name = pair.primary_currency.currency;
+      if (pair.secondary_currency === currency) {
+        name = pair.primary_currency;
       }
 
       if (!name) return false;

@@ -526,7 +526,7 @@ class SocketsComponent extends Component {
         const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
         const provKeys = Object.keys(this.props.deposit_providers)
         const depositProviders = this.props.deposit_providers
-        const provKey = await provKeys.find(depProvKey => [walletAccount?.currency?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
+        const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
         const currencyDepositProvider = provKey && depositProviders[provKey]?.depositAccount
 
         // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)

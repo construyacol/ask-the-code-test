@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 const AddressTagList = ({ show, addressValue, setAddressValue, addressState }) => {
 
   const [{ current_wallet }] = WithdrawViewState();
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency?.currency));
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency));
   const [searchList, setSearchList] = useState([]);
 
   // const [setCurrentSelection] = useNavigationKeyActions({

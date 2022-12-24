@@ -190,7 +190,7 @@ export class TransactionService extends WebService {
     let result = []
     pairs.forEach(pair => {
       const secondaryShortName = matchItem(currencies, { primary: localCurrency }, "currency");
-      const primaryShortName = matchItem(currencies, { primary: pair.primary_currency.currency }, "currency");
+      const primaryShortName = matchItem(currencies, { primary: pair.primary_currency }, "currency");
       if (secondaryShortName && primaryShortName) {
         result.push({
           ...pair,

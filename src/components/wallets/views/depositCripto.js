@@ -219,7 +219,7 @@ const CriptoView = () => {
   return ( 
     <DepositForm>
       {
-        current_wallet.currency.currency.includes("eth") &&
+        current_wallet.currency.includes("eth") &&
           <EtherDisclaimer className="fuente">
             No enviar con menos de 70 mil gas
           </EtherDisclaimer>
@@ -229,7 +229,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency.currency} {current_wallet.currency.currency === 'usdt' && "(ERC-20)"}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency} {current_wallet.currency === 'usdt' && "(ERC-20)"}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>
@@ -408,7 +408,7 @@ export const DepositForm = styled(OperationForm)`
   &.skeleton .soloAd,
   &.skeleton .dirDep,
   &.skeleton .verifyAddress {
-    background: #bfbfbf;
+    background: var(--skeleton_color);
     width: 100%;
     border-radius: 3px;
     height: 15px;
@@ -435,7 +435,7 @@ export const DepositForm = styled(OperationForm)`
   }
 
   &.skeleton .qrContainer {
-    background: #bfbfbf;
+    background: var(--skeleton_color);
     border-radius: 6px;
   }
 

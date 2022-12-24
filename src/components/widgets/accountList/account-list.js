@@ -3,7 +3,7 @@ import withListCreator from "../../withListCreator";
 // import styled from 'styled-components'
 // import useNavigationKeyActions from "../../../hooks/useNavigationKeyActions";
 // import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import useViewport from "../../../hooks/useWindowSize";
 import TitleSection from '../../widgets/titleSectionComponent'
 import { AccountListWrapper } from '../layoutStyles'
@@ -13,27 +13,27 @@ import { AddNewItem } from "../buttons/buttons";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import useAvailableWalletCreator from "hooks/useAvailableWalletCreator";
 import loadable from "@loadable/component";
-import { AccountListSkeletonLoader } from "../skeletons";
+// import { AccountListSkeletonLoader } from "../skeletons";
 import { useCreateWallet } from './cardView'
-import FilterAccountList from '../filters/filterAccountList'
+// import FilterAccountList from '../filters/filterAccountList'
 import { AccountListViewSkeleton } from "./listView";
 
 // TODO: Eliminar props.items
 function AccountList(props) {
 
-  const CardView = loadable(() => import("./cardView"), { fallback: <AccountListSkeletonLoader /> });
+  // const CardView = loadable(() => import("./cardView"), { fallback: <AccountListSkeletonLoader /> });
   const ListViewComponent = loadable(() => import("./listView"), { fallback: <AccountListViewSkeleton /> });
 
   const {
     items = [],
-    isWithdrawView,
+    // isWithdrawView,
     isWalletsView
   } = props
 
   const { primary_path } = useParams()
-  const { isMovilViewport } = useViewport();
+  const { isMovilViewport } = useViewport(); 
   const [ availableCurrencies ] = useAvailableWalletCreator();
-  const { accountListView } = useSelector((state) => state.ui.views);
+  // const { accountListView } = useSelector((state) => state.ui.views);
   const [ createNewWallet ]  = useCreateWallet({...props})
   const idForClickableElement = useKeyActionAsClick(
     true,
@@ -42,7 +42,7 @@ function AccountList(props) {
   );
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
-  let mainButtonText = isWithdrawView ? "Crear nueva cuenta de retiro" : "Crear nueva billetera";
+  let mainButtonText = "Crear nueva billeteras";
 
   return (
     <AccountListWrapper 
@@ -51,12 +51,12 @@ function AccountList(props) {
       <TitleSection
         className='sticky main'
       >  
-      {
+      {/* {
         isWalletsView &&
           <FilterAccountList
              currentFilterValue={accountListView}
           />
-      }
+      } */}
         {(!props.loader && !isMovilViewport) && (
           <AddNewItem
             id={idForClickableElement}
@@ -66,7 +66,7 @@ function AccountList(props) {
           />
         )}
       </TitleSection>
-      {((!props.loader && isMovilViewport) && !isEmpty(items)) && (
+      {((!props.loader && isMovilViewport) && isBottonAvailable && !isEmpty(items)) && (
           <AddNewItem
             id={idForClickableElement}
             label={mainButtonText}
@@ -74,16 +74,19 @@ function AccountList(props) {
             handleClick={isBottonAvailable ? createNewWallet : null}
           />
       )}
+
+      <ListViewComponent {...props}/>
+
       
-      {
-        (!isWithdrawView && ["card"]?.includes(accountListView)) ?
+      {/* {
+        (["card"]?.includes(accountListView)) ?
           <CardView {...props} />
         : 
-        (!isWithdrawView && ["list"]?.includes(accountListView)) ?
+        (["list"]?.includes(accountListView)) ?
           <ListViewComponent {...props}/>
         :
         <CardView {...props} />
-      }
+      } */}
     </AccountListWrapper>
   );
 }

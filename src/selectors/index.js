@@ -14,7 +14,7 @@ export const selectWithdrawAccountsByCurrency = createSelector(
     if(!withdraw_accounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
-      withdraw_account.currency?.currency === currency && res.push(withdraw_account);
+      withdraw_account.currency === currency && res.push(withdraw_account);
     }
     return res;
   }
@@ -28,9 +28,9 @@ export const selectWithdrawAccountsByAddress = createSelector(
     let result = {};
     for (let w_account_id in withdraw_accounts) {
       let address = withdraw_accounts[w_account_id]?.info?.address
-      const byCurrency = withdraw_accounts[w_account_id]?.currency?.currency
+      const byCurrency = withdraw_accounts[w_account_id]?.currency
       // const byProviderType = withdraw_accounts[w_account_id]?.provider_type
-      if ([byCurrency].includes(current_wallet?.currency?.currency) && address) {
+      if ([byCurrency].includes(current_wallet?.currency) && address) {
         result = {
           ...result,
           [address]: withdraw_accounts[w_account_id]

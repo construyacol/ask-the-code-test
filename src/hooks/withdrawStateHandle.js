@@ -5,7 +5,7 @@ import { selectWithdrawProviderByName, selectWithdrawAccountsByAddress } from 's
 
 const WithdrawViewState = () => {
   
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
   const { modelData, ui, isLoading, storage } = useSelector((state) => state);
   // const withdrawProviders = useSelector((state) => selectWithdrawProviderByType(state));
   const withdrawProvidersByName = useSelector((state) => selectWithdrawProviderByName(state));

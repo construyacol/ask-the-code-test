@@ -7,6 +7,11 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+// export const DEFAULT_CURRENCY = {
+//     currency: 'bitcoin',
+//     symbol:'btc'
+// }
+
 export const BLOCKCHAIN_EXPLORER_URL = {
     bitcoin:"https://blockstream.info/tx/",
     bitcoin_testnet:"https://blockstream.info/tx/",
@@ -74,7 +79,7 @@ export const CURRENCIES = {
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
-            DECIMAL_PLACES: 6,
+            DECIMAL_PLACES: 4,
         }),
         prod_fee:'usdt_fee',
         test_fee:'fau_testnet_fee',
@@ -173,7 +178,7 @@ export const NEW_CURRENCIES = [
     "usdt",
     "ethereum"
 ] 
-
+ 
 export let DEFAULT_CURRENCIES = [
     "cop",
     "bitcoin",

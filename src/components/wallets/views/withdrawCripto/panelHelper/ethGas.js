@@ -17,46 +17,56 @@ export const HandleGas = ({
     toAddress, 
     withdrawData, 
     setWithdrawData, 
+    provider:{ ethers: { ethersProvider, utils, baseFee, gas_limit, calculateGasLimit }, setEthers }
 }) => {
 
     const [ onEdit, setOnEdit ] = useState()
     const [ loader, setLoader ] = useState(false)
-    const { withdrawAmount, ethersProvider, utils, gas_limit } = withdrawData
+    const { withdrawAmount } = withdrawData
 
-    // console.log('gas_limit', gas_limit)
 
     const setEstimatedGas = async() => {
-        if(addressState !== 'good' || withdrawAmount.isNaN())return;
+        if(!ethersProvider || addressState !== 'good' || withdrawAmount.isNaN() || !withdrawAmount.isGreaterThan(0))return;
         funcDebounces({
-            keyId:{[`estimating_gas`]:current_wallet?.currency?.currency}, 
+            keyId:{[`estimating_gas`]:current_wallet?.currency}, 
             storageType:"sessionStorage",
             timeExect:300,
             callback:async() => {
-                setLoader(true)
-                const txParams = {
-                    to: toAddress,
-                    // data: "0xd0e30db0",
-                    value: utils.parseEther(withdrawAmount.toString())
+                try {
+                    setLoader(true)
+                    const txParams = {
+                        to: toAddress,
+                        // data: "0xd0e30db0",
+                        value: utils.parseEther(withdrawAmount.toString())
+                    }
+                    const gasLimit = await ethersProvider.estimateGas(txParams);
+                    setLoader(false)
+                    if(!BigNumber(gasLimit.toString()).isGreaterThanOrEqualTo(gas_limit))return;
+                    setEthers(prevState => ({...prevState, gas_limit:calculateGasLimit(gasLimit.toString()).toFixed(0)}))
+                } catch (error) {
+                    setLoader(false)
                 }
-                const gasLimit = await ethersProvider.estimateGas(txParams);
-                setLoader(false)
-                if(!BigNumber(gasLimit.toString()).isGreaterThanOrEqualTo(gas_limit))return;
-                setWithdrawData(prevState => ({...prevState, gas_limit:gasLimit.toString()}))
             }
         })
     }
 
+    const onChangeGasLimit = ({ target:{ value } }) => {
+        console.log('calculateGasLimit', calculateGasLimit(value).toString())
+        setEthers(prevState => ({...prevState, gas_limit:calculateGasLimit(value).toFixed(0)}))
+    }
+
     useEffect(() => {
-        if(withdrawData.ethersProvider && withdrawData.baseFee && withdrawData.withdrawAmount) setEstimatedGas()
+        if(baseFee && withdrawData.withdrawAmount) setEstimatedGas()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawData.ethersProvider, withdrawData.baseFee, withdrawData.withdrawAmount, addressState])
+    }, [baseFee, withdrawData.withdrawAmount, addressState, gas_limit])
 
     return(
         <GasLayout className={`${onEdit ? 'open' : ''}`}>
             <Pcontainer>
                 <P variant="bold" size={15}>Gas estimado:</P>
                 <GasEdit>
-                    <P size={15} variant="number" color='var(--primary)'>{number_format(withdrawData?.gas_limit || 0)}</P>
+                    <P size={15} variant="number" color='var(--primary)'>{number_format(gas_limit || 0)}</P>
+                    {/* <P size={15} variant="number" color='var(--primary)'>{gas_limit}</P> */}
                     {
                         loader ?
                         <img src={`${getCdnPath('assets')}wallet/withdraw/estimating.gif`} alt="" width={18} />
@@ -70,7 +80,7 @@ export const HandleGas = ({
                 </GasEdit>
             </Pcontainer>
             <RangeContainer className="rangeCont">
-                <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={gas_limit} onChange={({target:{value}}) => setWithdrawData(prevState => ({...prevState, gas_limit:value}))} />
+                <input type="range" placeholder='gas' min="21000" max="80000" step="2" defaultValue={gas_limit} onChange={onChangeGasLimit} />
             </RangeContainer>
         </GasLayout>
     )

@@ -19,8 +19,8 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
   // const mainContainerRef = useRef()
   const actions = useActions();
   const [{ current_wallet, path, withdrawProvidersByName }] = WithdrawViewState();
-  const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency.currency]?.provider_type;
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency?.currency));
+  const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency]?.provider_type;
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency));
   
   const [view, setView] = useState("addressList");
   const { isMovilViewport } = useViewport()
@@ -81,7 +81,7 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
           size={20}
         />
         <HeaderComponent
-          uiName={withdrawProvidersByName[current_wallet.currency.currency]?.provider?.ui_name}
+          uiName={withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
           view={view}
           switchView={switchView}
         />
@@ -96,8 +96,8 @@ const AddressBook = ({ addressToAdd, setAddressValue }) => {
             ) : view === "newAccount" ? (
               <NewAccount
                 provider_type={provider_type}
-                currency={current_wallet.currency.currency}
-                providerName={withdrawProvidersByName[current_wallet.currency.currency]?.provider?.ui_name}
+                currency={current_wallet.currency}
+                providerName={withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
                 switchView={switchView}
                 addressToAdd={addressToAdd}
               />

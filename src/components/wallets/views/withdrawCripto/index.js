@@ -18,8 +18,7 @@ import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 
-
-
+ 
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
   return (
@@ -48,6 +47,13 @@ export const CriptoView = (props) => {
     user,
     coinsendaServices,
     active_trade_operation,
+    provider,
+    provider:{ 
+      withdrawData, 
+      setWithdrawData, 
+      ethers:{ getNetworkData, gas_limit } 
+    },
+    priority:{ currentPriority }
   } = props
 
   const actions = useActions();
@@ -61,18 +67,9 @@ export const CriptoView = (props) => {
   const isValidForm = useRef(false);
   const [ isOpenPanel, setIsOpenPanel ] = useState(isMobile ? false : true)
 
-  const { 
-    provider:{ 
-      withdrawData, 
-      setWithdrawData, 
-      getNetworkData 
-    },
-    priority:{ currentPriority },
-  } = props
 
   const { 
     amount,
-    gas_limit
   } = withdrawData
 
   const createWithdraw = async() => {
@@ -104,7 +101,7 @@ export const CriptoView = (props) => {
       withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
           currency: current_wallet.currency,
           provider_type: withdrawProvider?.provider_type,
-          label: current_wallet.currency.currency,
+          label: current_wallet.currency,
           address: addressValue.trim(),
           country: current_wallet.country,
         },
@@ -125,7 +122,7 @@ export const CriptoView = (props) => {
         country: user.country,
       }
     }
-    if(current_wallet?.currency?.currency?.includes('eth')) {
+    if(current_wallet?.currency?.includes('eth')) {
       const network_data = await getNetworkData()
       bodyRequest.data.network_data = network_data
       bodyRequest.data.cost_information.gas_limit = gas_limit
@@ -152,6 +149,9 @@ export const CriptoView = (props) => {
   const handleMaxAvailable = (available) => {
     let amountEl = document.getElementsByName("amount")[0];
     amountEl.value = available
+
+    console.log('handleMaxAvailable', available, )
+
     setWithdrawData(prevState => ({...prevState, amount:available}))
     if (amountEl.value > 0) {
       setAmountState("good");
@@ -173,6 +173,8 @@ export const CriptoView = (props) => {
   };
 
   const handleChangeAddress = (_, value) => {
+    // console.log('handleChangeAddress', value)
+    // debugger
     setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
   };
 
@@ -195,7 +197,7 @@ export const CriptoView = (props) => {
   useEffect(() => {
     // Las cuentas anónimas son aquellas que su label es igual al provider_type de la red monetaria a la que pertenece la cuenta
     setAddressToAdd();
-    const provider_type = current_wallet.currency.currency;
+    const provider_type = current_wallet.currency;
     // console.log('addressValue', addressValue, withdraw_accounts)
     if (withdraw_accounts[addressValue] && withdraw_accounts[addressValue] && withdraw_accounts[addressValue].info.label !== provider_type) {
       // Si la cuenta existe y nó es una cuenta anónima muestre el tag en el input
@@ -213,9 +215,7 @@ export const CriptoView = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
-
-
-  const currencySymbol = currencies ? currencies[current_wallet.currency.currency]?.symbol : current_wallet.currency.currency
+  const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
   const formProps = {
     setAddressState,
@@ -238,7 +238,7 @@ export const CriptoView = (props) => {
     priority:props.priority,
     setIsOpenPanel,
     isMobile,
-    provider:props.provider
+    provider
   }
 
   const panelHProps = {
@@ -251,8 +251,8 @@ export const CriptoView = (props) => {
     addressValue
   }
 
- 
-  return (
+  
+  return ( 
     <CriptoWithdrawForm>
       <WithdrawFormComponent
         {...formProps}

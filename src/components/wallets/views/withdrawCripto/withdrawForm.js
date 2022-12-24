@@ -24,7 +24,6 @@ import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 
-
 const WithdrawFormComponent = ({
     setAddressState,
     handleChangeAddress,
@@ -46,7 +45,7 @@ const WithdrawFormComponent = ({
     active_trade_operation,
     current_wallet,
     isMobile,
-    provider:{ withdrawData:{ takeFeeFromAmount, availableBalance, fixedCost, amount, minAmount }, setWithdrawData },
+    provider:{ withdrawData:{ takeFeeFromAmount, totalBalance, availableBalance, fixedCost, amount, minAmount }, setWithdrawData },
     priority:{ currentPriority, priorityConfig },
 }) => {
 
@@ -61,7 +60,7 @@ const WithdrawFormComponent = ({
 
     useEffect(() => {
         // Handle amount state
-        let avBalance = takeFeeFromAmount ? availableBalance?.toFormat() : availableBalance?.minus(fixedCost)?.toFormat()
+        let avBalance = takeFeeFromAmount ? totalBalance : totalBalance?.minus(fixedCost)
         let _amount = formatToCurrency(amount, current_wallet.currency)
         if(_amount.isGreaterThan(avBalance)) setAmountState('bad')
         if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
@@ -70,20 +69,16 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-    let _availableBalance = availableBalance?.toFormat() 
-    if(!takeFeeFromAmount && availableBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
-        _availableBalance = availableBalance?.minus(fixedCost)?.toFormat()
-    }
 
 
-    
+
     return(
         <WithdrawForm
         id="withdrawForm"
         className={`${isMobile ? "movil" : ""}`}
         onSubmit={(e) => e.preventDefault()}
         >
-        <InputForm
+        <InputForm 
             type="text" 
             placeholder={"Escribe @ para ver tu lista de direcciones..."}
             name="address"
@@ -134,14 +129,14 @@ const WithdrawFormComponent = ({
                     state={amountState}
                     setMaxWithActionKey={true}
                     value={amountValue}
-                    availableBalance={_availableBalance}
+                    availableBalance={availableBalance}
                     SuffixComponent={
                         ({ id }) => (
                             <IconsContainer>
                                 <AvailableBalance 
                                     id={id}
                                     handleAction={handleMaxAvailable}
-                                    amount={_availableBalance}
+                                    amount={availableBalance}
                                     wallet={current_wallet}
                                 />
                                 {
@@ -154,7 +149,7 @@ const WithdrawFormComponent = ({
                                     </HandlePriorityCont>
                                 }
                             </IconsContainer>
-                        )
+                        ) 
                     }
                     AuxComponent={[
                         () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>)

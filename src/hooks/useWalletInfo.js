@@ -7,7 +7,7 @@ import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 const selectCurrentPair = createSelector(
   (state) => state.storage.pairsForAccount,
   (state) => state.modelData.all_pairs,
-  (_, account_id) => account_id,
+  (_, account_id) => account_id, 
   (pairsForAccount, all_pairs, account_id) => {
     const currentPair = (account_id && pairsForAccount) && (pairsForAccount[account_id] && pairsForAccount[account_id].current_pair)
     if(currentPair && currentPair.pair_id){
@@ -38,7 +38,7 @@ const selectWalletCurrencyShortName = createSelector(
     if(!currentWallet) return;
     if(!currencies) return;
     for (let currency of currencies) {
-      if(currency.currency.includes(currentWallet.currency.currency)){
+      if(currency.currency.includes(currentWallet.currency)){
         return currency.symbol
       }
     }
@@ -73,9 +73,7 @@ export function useWalletInfo() {
   // let _currentPair = null
   let currencyPairs = null;
   if (pairsForAccount && pairsForAccount[currentWallet.id]) {
-    currencyPairs =
-      pairsForAccount[currentWallet.currency.currency] &&
-      pairsForAccount[currentWallet.currency.currency].all_pairs;
+    currencyPairs = pairsForAccount[currentWallet.currency] && pairsForAccount[currentWallet.currency].all_pairs;
   }
 
   return {

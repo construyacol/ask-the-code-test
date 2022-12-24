@@ -38,7 +38,7 @@ const Coinsenda = loadable(() => import("../icons/logos/coinsenda"), {
     />
   ),
 });
-
+ 
 // const OnBoardingComponent = loadable(() => import("../../forms/widgets/onBoardingComponent/init"));
 // const SelectCountry = loadable(() => import("../maps/select_country/select_country"));
 
@@ -61,14 +61,19 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   const initComponent = async () => {
 
     const { userToken } = authData;
-    const isSessionRestored = await tryRestoreSession();
-    console.log('isSessionRestored', isSessionRestored)
-    if (isSessionRestored) {
-      await actions.isLoggedInAction(true);
-      coinsendaServices.postLoader(doLogout);
-      return redirectURL(isSessionRestored);
-    } 
-    
+    // const isSessionRestored = await tryRestoreSession();
+    // if (isSessionRestored) {
+    //   await actions.isLoggedInAction(true);
+    //   const { funcDebounces } = await import('utils') 
+    //   funcDebounces({
+    //     keyId:{[`tryRestoreSession`]:'isSessionRestored'}, 
+    //     storageType:"sessionStorage",
+    //     timeExect:1000,
+    //     callback:() => coinsendaServices.postLoader(doLogout)
+    // })
+    //   return redirectURL(isSessionRestored);
+    // } 
+     
     if (!userToken) return;
    
     let { error } = await coinsendaServices.fetchUserProfile();
@@ -85,7 +90,7 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     const user = await coinsendaServices.fetchCompleteUserData();
     if (!user) {
       return false;
-    }
+    } 
     await actions.isLoggedInAction(true);
     await coinsendaServices.init(doLogout);
     return redirectURL();
@@ -128,8 +133,6 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
   //     }
   //   }
   // };
-
-
 
   useEffect(() => {
     if (authData.userToken) {

@@ -176,7 +176,7 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
     if(depositProvider && depositCost){
       let costs = depositProvider?.provider?.costs
       let { currency } = depositProvider
-      let cost = getCost({ costs, currency, depositCost }) 
+      let cost = getCost({ costs, currency, depositCost })  
       setCost(cost.toFormat())
       let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
       _depositAmount && setTotal(_depositAmount?.plus(cost)?.toFormat())

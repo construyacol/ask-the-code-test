@@ -14,7 +14,7 @@ export const TitleContainer = styled(Container)`
     z-index:2;
 
     &.accountDetailTitle.wallets{
-        grid-template-columns: auto auto 1fr;
+        grid-template-columns: auto 1fr;
         align-items: center;
         column-gap: 17px;
         .AddNewItemContainer{

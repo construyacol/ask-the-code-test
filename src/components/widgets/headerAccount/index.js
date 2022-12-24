@@ -38,13 +38,13 @@ export const MainComponent = () => {
       <HeaderMainContainer className="_accountHeaderMainContainer">
           <IconAccount>
             <IconSwitch
-                icon={currentWallet?.currency?.currency}
+                icon={currentWallet?.currency}
                 size={isMovilViewport ? 20 : 35}
             />
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
             <AccountLabel>{currentWallet?.name || 'Mi billetera'}</AccountLabel>
-            <CurrencyLabel>{currentWallet?.currency?.currency || '-'}</CurrencyLabel>
+            <CurrencyLabel>{currentWallet?.currency || '-'}</CurrencyLabel>
           </LabelContainer>
           <BalanceContainer  
             className="_accountBalanceContainer"

@@ -167,7 +167,7 @@ const data = (state = initialState, action) => {
             return item.buy_pair.includes(query) && result.push(item);
           case "currency":
             return (
-              item.primary_currency.currency.includes(query.toLowerCase()) &&
+              item.primary_currency.includes(query.toLowerCase()) &&
               result.push(item)
             );
           default:

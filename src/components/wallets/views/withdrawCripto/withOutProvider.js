@@ -7,7 +7,7 @@ const WithOutProvider = ({ current_wallet }) => {
     <Section>
       <IconSwitch icon="maintence" size={90} color="var(--paragraph_color)" />
       <p className="fuente">
-        Los retiros de {current_wallet.currency.currency} estan fuera de
+        Los retiros de {current_wallet.currency} estan fuera de
         servicio temporalmente, ten paciencia...
       </p>
     </Section>

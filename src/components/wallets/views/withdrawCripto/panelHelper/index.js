@@ -18,7 +18,8 @@ import {
     PriorityContainer,
     PriorityItems,
     PriorityItem,
-    Button
+    Button,
+    SpeedBar
 } from './styles'
 
 const PanelHelper = props => {
@@ -39,7 +40,7 @@ const PanelHelper = props => {
         setIsOpenPanel,
         addressValue,
         priority:{ priorityList, currentPriority, priorityConfig, setPriority },
-        provider:{ withdrawData, setWithdrawData }
+        provider:{ withdrawData, setWithdrawData, ethers:{ baseFee } }
     } = props
 
     const { 
@@ -48,9 +49,9 @@ const PanelHelper = props => {
         amount,
         isEthereum,
         total,
-        baseFee,
         takeFeeFromAmount,
-        availableBalance,
+        // availableBalance,
+        totalBalance,
         minAmount
     } = withdrawData
 
@@ -62,7 +63,7 @@ const PanelHelper = props => {
       if(takeFeeFromAmount){
         totalAmount = _amount.minus(fixedCost)
         setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
-      }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(availableBalance)){
+      }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(totalBalance)){
         totalAmount = _amount.plus(fixedCost)
         setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
       }
@@ -76,18 +77,21 @@ const PanelHelper = props => {
       _orderDetail = [
         ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
       ] 
-      if(availableBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
+      if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
       if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toString()}  ${currencySymbol}`])
+
+      console.log('|||||||  renderOrderDetail ===> ', total.toString(), totalBalance.toString())
+
       if(takeFeeFromAmount){
         if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} ${currencySymbol}`] )
       }else{
-        if(controlValidation && total.isLessThanOrEqualTo(availableBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} ${currencySymbol}`] )
+        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} ${currencySymbol}`] )
       }
       setOrderDetail(_orderDetail)
     }
 
     useEffect(() => {
-        renderOrderDetail()
+      renderOrderDetail()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total, timeLeft, fixedCost])
 
@@ -116,30 +120,32 @@ const PanelHelper = props => {
                   isReady &&
                   <>
                   <PriorityContainer>
-                  <PriorityItems>
-                    {
-                      Object.keys(priorityList).map((priority, index) => {
-                        let Icon = priority === 'high' ? AiOutlineThunderbolt : MdSpeed
-                        return(
-                          <PriorityItem 
-                            onClick={() => setPriority(priority)}
-                            key={index} 
-                            color={priorityConfig[priority].color} 
-                            className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
-                          >
-                            <Icon
-                              size={30}
-                              color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
-                            />
-                            <p className="fuente">{priorityConfig[priority].uiName}</p>
-                            <div className="speedBar" />
-                          </PriorityItem>
-                        )
-                      })
-                    }
-                  </PriorityItems>
-                  <p className="fuente description" style={{fontSize:"13px", paddingTop:"10px"}}>{priorityConfig[currentPriority].description}</p>
-                </PriorityContainer>
+                    <PriorityItems>
+                      {
+                        Object.keys(priorityList).map((priority, index) => {
+                          let Icon = priority === 'high' ? AiOutlineThunderbolt : MdSpeed
+                          return(
+                            <PriorityItem 
+                              onClick={() => setPriority(priority)}
+                              key={index} 
+                              color={priorityConfig[priority].color} 
+                              className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
+                            >
+                              <Icon
+                                size={30}
+                                color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
+                              />
+                              <p className="fuente">{priorityConfig[priority].uiName}</p>
+                              {/* <div className="speedBar" /> */}
+                            </PriorityItem>
+                          )
+                        })
+                      }
+                    </PriorityItems>
+                    <SpeedBar priority={currentPriority} color={priorityConfig[currentPriority].color} >
+                      <p className="fuente description" style={{fontSize:"13px"}}>{priorityConfig[currentPriority].description}</p>
+                    </SpeedBar>
+                  </PriorityContainer>
                 {
                   isEthereum ? <HandleGas 
                     addressState={addressState} 
@@ -147,6 +153,7 @@ const PanelHelper = props => {
                     toAddress={addressValue} 
                     withdrawData={withdrawData} 
                     setWithdrawData={setWithdrawData}
+                    provider={props.provider}
                   /> : <></>
                 }
                 <StatusContainer>
