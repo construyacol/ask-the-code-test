@@ -149,13 +149,12 @@ export default function withCryptoProvider(AsComponent) {
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawProvider, current_wallet, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
-      
 
 
     useEffect(() => {
-      const { totalBalance, takeFeeFromAmount, fixedCost, minAmount } = withdrawData
+      const { totalBalance, fixedCost, minAmount } = withdrawData
       let finalBalance = formatToCurrency(balance.available, balance?.currency)
-      if(!takeFeeFromAmount){
+      if(!withdrawData.takeFeeFromAmount){
           if(totalBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
             finalBalance = finalBalance?.minus(fixedCost)
           }else{
@@ -164,7 +163,12 @@ export default function withCryptoProvider(AsComponent) {
       }
       setWithdrawData(prevState => ({...prevState, availableBalance:finalBalance}))
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawData.takeFeeFromAmount, withdrawData.fixedCost])
+    }, [withdrawData.minAmount, withdrawData.fixedCost])
+
+    // useEffect(() => {
+    //   setWithdrawData(prevState => ({...prevState, totalBalance:formatToCurrency(balance.available, balance?.currency)}))
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [balance.available])
 
 
     return ( 

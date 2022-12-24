@@ -12,11 +12,11 @@ export const PRIORITY_CONFIG = {
   medium:{
     uiName:"Media",
     color:"orange",
-    description:"El retiro podrá tomar hasta 15 minutos en procesarse"
+    description:"El retiro tomará hasta 15 minutos en procesarse"
   },
   low:{
     uiName:"Baja",
     color:"red",
-    description:"El retiro podrá tomar hasta 30 minutos en procesarse"
+    description:"El retiro tomará hasta 30 minutos en procesarse"
   }
 }
