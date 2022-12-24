@@ -51,7 +51,7 @@ export default function AmountComponent ({
     useEffect(() => {
       if(depositProvider){
         let minAmount = getMinAmount(min_amount, { currency, costs });
-        setMinAmount(minAmount?.toFormat())
+        setMinAmount(minAmount)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

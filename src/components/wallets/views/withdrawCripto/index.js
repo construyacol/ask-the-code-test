@@ -149,6 +149,9 @@ export const CriptoView = (props) => {
   const handleMaxAvailable = (available) => {
     let amountEl = document.getElementsByName("amount")[0];
     amountEl.value = available
+
+    console.log('handleMaxAvailable', available, )
+
     setWithdrawData(prevState => ({...prevState, amount:available}))
     if (amountEl.value > 0) {
       setAmountState("good");
@@ -211,8 +214,6 @@ export const CriptoView = (props) => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
-
-
 
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 

@@ -8,8 +8,8 @@ import sleep from 'utils/sleep'
 import { formatToCurrency } from "utils/convert_currency";
 import { getMinAmount } from 'utils/withdrawProvider'
 
-
 const DEFAULT_TAKE_FEE_FROM_AMOUNT = false
+
 
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
@@ -23,7 +23,8 @@ export default function withCryptoProvider(AsComponent) {
       timeLeft:undefined, 
       amount:0,
       takeFeeFromAmount:DEFAULT_TAKE_FEE_FROM_AMOUNT,
-      availableBalance: current_wallet ? formatToCurrency(balance.available, current_wallet?.currency) : new BigNumber(balance.available), 
+      availableBalance: formatToCurrency(balance.available, balance?.currency), 
+      totalBalance: formatToCurrency(balance.available, balance?.currency), 
       withdrawAmount:undefined,
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
@@ -149,6 +150,23 @@ export default function withCryptoProvider(AsComponent) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawProvider, current_wallet, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
       
+
+
+    useEffect(() => {
+      const { totalBalance, takeFeeFromAmount, fixedCost, minAmount } = withdrawData
+      let finalBalance = formatToCurrency(balance.available, balance?.currency)
+      if(!takeFeeFromAmount){
+          if(totalBalance?.minus(fixedCost).isGreaterThanOrEqualTo(minAmount)){
+            finalBalance = finalBalance?.minus(fixedCost)
+          }else{
+            finalBalance = BigNumber(0)
+          }
+      }
+      setWithdrawData(prevState => ({...prevState, availableBalance:finalBalance}))
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawData.takeFeeFromAmount, withdrawData.fixedCost])
+
+
     return ( 
       <>
         <div ref={componentIsMount} style={{display:"none"}} />

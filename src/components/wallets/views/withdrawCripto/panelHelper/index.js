@@ -49,7 +49,8 @@ const PanelHelper = props => {
         isEthereum,
         total,
         takeFeeFromAmount,
-        availableBalance,
+        // availableBalance,
+        totalBalance,
         minAmount
     } = withdrawData
 
@@ -61,7 +62,7 @@ const PanelHelper = props => {
       if(takeFeeFromAmount){
         totalAmount = _amount.minus(fixedCost)
         setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
-      }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(availableBalance)){
+      }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(totalBalance)){
         totalAmount = _amount.plus(fixedCost)
         setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
       }
@@ -75,18 +76,21 @@ const PanelHelper = props => {
       _orderDetail = [
         ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
       ] 
-      if(availableBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
+      if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
       if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toString()}  ${currencySymbol}`])
+
+      console.log('|||||||  renderOrderDetail ===> ', total.toString(), totalBalance.toString())
+
       if(takeFeeFromAmount){
         if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} ${currencySymbol}`] )
       }else{
-        if(controlValidation && total.isLessThanOrEqualTo(availableBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} ${currencySymbol}`] )
+        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} ${currencySymbol}`] )
       }
       setOrderDetail(_orderDetail)
     }
 
     useEffect(() => {
-        renderOrderDetail()
+      renderOrderDetail()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total, timeLeft, fixedCost])
 
