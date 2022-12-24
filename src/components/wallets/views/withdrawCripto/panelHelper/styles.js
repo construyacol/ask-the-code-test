@@ -73,15 +73,13 @@ column-gap: 15px;
 `
 
 export const PriorityContainer = styled.div`
-display:grid;
-grid-template-rows: 90px auto;
-row-gap:20px;
+  display:grid;
+  grid-template-rows: 80px auto;
+  row-gap:20px;
 
 p.description{
   font-size: 13px;
-  padding-top: 10px;
-  background: var(--secondary_deg);
-  padding: 10px 7px;
+  padding: 7px;
   color: var(--paragraph_color);
 }
 
@@ -95,7 +93,39 @@ p{
 }
 `
 
+const largePriority = {
+  high:"100%",
+  medium:"60%",
+  low:"25%",
+}
 
+export const SpeedBar = styled.div`
+  background: var(--secondary_deg);
+  position: relative;
+  padding-left: 4px;
+  overflow: hidden;
+  border-radius: 4px;
+
+  &::after,
+  &::before{
+    content: "";
+    position:absolute;
+    top: 0;
+    left:0;
+    height: 100%;
+  }
+
+  &::before{
+    border-left: 3px solid ${props => props.color};
+  }
+
+  &::after{
+    transition: 0.3s;
+    opacity: .07;
+    background: ${props => props.color};
+    width: ${props => props.priority ? largePriority[props.priority] : '0%'};
+  }
+`
 
 export const PriorityItem = styled.div`
   transition:.3s;
@@ -104,17 +134,16 @@ export const PriorityItem = styled.div`
   border-radius: 4px;
   display:grid;
   grid-template-rows:1fr auto auto;
-  row-gap:10px;
+  row-gap:5px;
   place-items: center;
   padding: 10px 0;
-  height: calc(95% - 15px);
+  /* height: calc(95% - 15px); */
   border: 1px solid transparent;
   transform:scale(.9);
   width: 100%;
   cursor:pointer;
 
   .speedBar{ opacity: 0 }
-  
   
   &:hover{
     border: 1px solid ${props => props.color ? props.color : ''};

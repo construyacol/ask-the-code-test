@@ -18,7 +18,8 @@ import {
     PriorityContainer,
     PriorityItems,
     PriorityItem,
-    Button
+    Button,
+    SpeedBar
 } from './styles'
 
 const PanelHelper = props => {
@@ -119,30 +120,32 @@ const PanelHelper = props => {
                   isReady &&
                   <>
                   <PriorityContainer>
-                  <PriorityItems>
-                    {
-                      Object.keys(priorityList).map((priority, index) => {
-                        let Icon = priority === 'high' ? AiOutlineThunderbolt : MdSpeed
-                        return(
-                          <PriorityItem 
-                            onClick={() => setPriority(priority)}
-                            key={index} 
-                            color={priorityConfig[priority].color} 
-                            className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
-                          >
-                            <Icon
-                              size={30}
-                              color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
-                            />
-                            <p className="fuente">{priorityConfig[priority].uiName}</p>
-                            <div className="speedBar" />
-                          </PriorityItem>
-                        )
-                      })
-                    }
-                  </PriorityItems>
-                  <p className="fuente description" style={{fontSize:"13px", paddingTop:"10px"}}>{priorityConfig[currentPriority].description}</p>
-                </PriorityContainer>
+                    <PriorityItems>
+                      {
+                        Object.keys(priorityList).map((priority, index) => {
+                          let Icon = priority === 'high' ? AiOutlineThunderbolt : MdSpeed
+                          return(
+                            <PriorityItem 
+                              onClick={() => setPriority(priority)}
+                              key={index} 
+                              color={priorityConfig[priority].color} 
+                              className={`${priority === currentPriority ? 'isActive' : ''} ${priority}`}
+                            >
+                              <Icon
+                                size={30}
+                                color={priority === currentPriority ? priorityConfig[priority].color : 'gray'}
+                              />
+                              <p className="fuente">{priorityConfig[priority].uiName}</p>
+                              {/* <div className="speedBar" /> */}
+                            </PriorityItem>
+                          )
+                        })
+                      }
+                    </PriorityItems>
+                    <SpeedBar priority={currentPriority} color={priorityConfig[currentPriority].color} >
+                      <p className="fuente description" style={{fontSize:"13px"}}>{priorityConfig[currentPriority].description}</p>
+                    </SpeedBar>
+                  </PriorityContainer>
                 {
                   isEthereum ? <HandleGas 
                     addressState={addressState} 
