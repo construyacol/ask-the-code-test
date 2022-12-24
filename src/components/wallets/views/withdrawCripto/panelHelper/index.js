@@ -80,8 +80,6 @@ const PanelHelper = props => {
       if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
       if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toString()}  ${currencySymbol}`])
 
-      console.log('|||||||  renderOrderDetail ===> ', total.toString(), totalBalance.toString())
-
       if(takeFeeFromAmount){
         if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} ${currencySymbol}`] )
       }else{

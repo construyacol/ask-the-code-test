@@ -78,13 +78,13 @@ export const CURRENCIES = {
         prodName:'USDT',
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 4,
         }),
         prod_fee:'usdt_fee',
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_DOWN,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 6,
         })
     },
@@ -92,8 +92,8 @@ export const CURRENCIES = {
         test:'fau_testnet',
         testName:'Fau Test',
         currencyConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_HALF_UP, 
-            DECIMAL_PLACES: 8
+            ROUNDING_MODE: BigNumber.ROUND_DOWN, 
+            DECIMAL_PLACES: 4
         }),
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
