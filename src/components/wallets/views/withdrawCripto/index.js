@@ -17,6 +17,7 @@ import WithdrawFormComponent from './withdrawForm'
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
+import SupportChain from 'components/widgets/supportChain'
 
  
 const CriptoSupervisor = (props) => { 
@@ -253,7 +254,8 @@ export const CriptoView = (props) => {
 
   
   return ( 
-    <CriptoWithdrawForm>
+    <CriptoWithdrawForm> 
+    <SupportChain/>
       <WithdrawFormComponent
         {...formProps}
       />
