@@ -13,7 +13,7 @@ export const Container  = styled.div`
     position: absolute;
     z-index: 3;
     color: var(--paragraph_color);
-    font-size: 14px;
+    font-size: 15px;
     
     h4{
         width: fit-content;

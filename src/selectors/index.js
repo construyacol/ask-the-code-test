@@ -49,7 +49,7 @@ export const selectWithdrawProviderByName = createSelector(
     for (let provider_id in withdrawProviders) {
       result = {
         ...result,
-        [withdrawProviders[provider_id].name]:withdrawProviders[provider_id]
+        [withdrawProviders[provider_id].currency]:withdrawProviders[provider_id]
       };
     }
     return result;
