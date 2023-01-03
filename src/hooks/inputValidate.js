@@ -55,9 +55,11 @@ export default (props) => {
 
         const { currency } = currentWallet;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
+        // currentNetwork
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-        if(!withdrawProvidersByName[currency])return;
-        const { address_validator_config:{ name, network } } = withdrawProvidersByName[currency]
+
+        if(!withdrawProvidersByName[props?.currentNetwork?.currency || currency])return;
+        const { address_validator_config:{ name, network } } = withdrawProvidersByName[props?.currentNetwork?.currency || currency]
         let addressVerify = await AddressValidator.validate(
           finalValue,
           name,
@@ -176,7 +178,7 @@ export default (props) => {
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
         const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency])
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[props?.currentNetwork?.currency || currentWallet.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 

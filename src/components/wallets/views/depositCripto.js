@@ -17,6 +17,8 @@ import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent
 // import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
 import useTruncatedAddress from 'hooks/useTruncatedAddress'
 import useViewport from 'hooks/useViewport'
+import { SupportDepositChains } from 'components/widgets/supportChain'
+import { isEmpty } from 'lodash'
 
  
 const CriptoSupervisor = (props) => {
@@ -30,7 +32,7 @@ const CriptoSupervisor = (props) => {
       ) : current_wallet.dep_prov.length < 1 ? (
         <AddDepositProviderCripto />
       ) : (
-        <CriptoView />
+        <CriptoView/>
       )}
     </>
   );
@@ -172,7 +174,7 @@ const CriptoView = () => {
     coinsendaServices,
     {
       current_wallet,
-      modelData: { deposit_providers },
+      // modelData: { deposit_providers },
       ui:{ osDevice } 
     },
   ] = useCoinsendaServices();
@@ -180,43 +182,40 @@ const CriptoView = () => {
   const [qrState, setQrState] = useState(true);
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
-
+  const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
  
   useEffect(() => {
-    if (deposit_providers) {
-      const validateAddress = async () => {
-        const provider = deposit_providers[current_wallet.dep_prov[0]];
-        // subscribeToNewDeposits(provider.id);
+    if (!isEmpty(depositProviders.current)) {
+      (async () => {
+        setQrState(true)
+        setAddress('')
+        const provider = depositProviders.current;
         const {
           account: {
             account_id: { account_id },
-          },
+          }
         } = provider;
-
         const validateAddress = await coinsendaServices.validateAddress(account_id);
-
         if (!validateAddress) {
-          // sentry call emit error
-          const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`;
-          // SentryCaptureException(errorMsg);
+          const errorMsg = `Dirección invalida`;
           setQrError(true);
           return console.log(errorMsg);
         }
-
         setQrState(await QRCode.toDataURL(account_id)); //WALLET ADDRESS
         setAddress(account_id);
-      };
-      validateAddress();
+      })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deposit_providers]);
+  }, [depositProviders.current]);
   
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
 
   return ( 
+    <>
+    <SupportDepositChains callback={setProvider}/>
     <DepositForm>
       {
         current_wallet.currency.includes("eth") &&
@@ -269,6 +268,7 @@ const CriptoView = () => {
 
       </ContAddress>
     </DepositForm>
+    </>
   );
 };
 
@@ -351,12 +351,10 @@ const QrProtectorCont = styled.div`
     background: red;
     animation-duration: 0.3s, 0.1s;
   }
-
-  
 `
 
 export const DepositForm = styled(OperationForm)`
-
+  background: transparent;
   &.DepositView{
     grid-template-rows: 50% 25% 1fr;
     grid-template-columns: 1fr !important;

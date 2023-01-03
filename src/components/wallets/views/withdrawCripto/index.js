@@ -17,7 +17,7 @@ import WithdrawFormComponent from './withdrawForm'
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
-import SupportChain from 'components/widgets/supportChain'
+import { SupportWithdrawChains } from 'components/widgets/supportChain'
 
  
 const CriptoSupervisor = (props) => { 
@@ -40,7 +40,9 @@ export default withCryptoProvider(CriptoSupervisor)
 
 
 export const CriptoView = (props) => {
+
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
+
   const {
     current_wallet,
     withdrawProvider,
@@ -49,9 +51,11 @@ export const CriptoView = (props) => {
     coinsendaServices,
     active_trade_operation,
     provider,
+    withdrawProviders,
     provider:{ 
       withdrawData, 
       setWithdrawData, 
+      setNetworkProvider,
       ethers:{ getNetworkData, gas_limit } 
     },
     priority:{ currentPriority }
@@ -68,10 +72,7 @@ export const CriptoView = (props) => {
   const isValidForm = useRef(false);
   const [ isOpenPanel, setIsOpenPanel ] = useState(isMobile ? false : true)
 
-
-  const { 
-    amount,
-  } = withdrawData
+  const { amount } = withdrawData
 
   const createWithdraw = async() => {
     // setLoader(true)
@@ -216,6 +217,14 @@ export const CriptoView = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addressState, withdraw_accounts, addressValue]);
 
+  useEffect(() => {
+    if(!isEmpty(withdrawProviders)){
+      setAddressState()
+      setAddressValue()
+    }
+  }, [withdrawProviders])
+
+
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
   const formProps = {
@@ -239,7 +248,8 @@ export const CriptoView = (props) => {
     priority:props.priority,
     setIsOpenPanel,
     isMobile,
-    provider
+    provider,
+    withdrawProviders
   }
 
   const panelHProps = {
@@ -250,20 +260,21 @@ export const CriptoView = (props) => {
     isOpenPanel,
     setIsOpenPanel,
     addressValue
+    // withdraw_accounts
   }
 
   
   return ( 
     <CriptoWithdrawForm> 
-    <SupportChain/>
+      <SupportWithdrawChains callback={setNetworkProvider}/>
       <WithdrawFormComponent
         {...formProps}
       />
-        <PanelHelper
-          {...panelHProps}
-          {...props}
-        />
-        :<></>
+      <PanelHelper
+        {...props}
+        {...panelHProps}
+      />
+      :<></>
     </CriptoWithdrawForm>
   ); 
 };

@@ -62,7 +62,8 @@ export function useWalletInfo() {
     availableBalance: null,
     currentPair: null,
     currencyPairs: null,
-    currencies:null
+    currencies:null,
+    modelData:{}
   };
 
   if (!balances || !wallets || !account_id) {
@@ -83,6 +84,7 @@ export function useWalletInfo() {
     currencyPairs,
     currentPair,
     WalletCurrencyShortName,
-    currencies:currenciesByCurrencyIndex
+    currencies:currenciesByCurrencyIndex,
+    modelData
    };
 }

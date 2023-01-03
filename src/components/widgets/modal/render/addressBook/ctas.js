@@ -8,7 +8,7 @@ import useViewport from "../../../../../hooks/useWindowSize";
 import { useSelector } from "react-redux";
 
 
-const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
+const AddressBookCTA = ({ addressToAdd, setAddressValue, currentNetwork }) => {
   const idForCreateNewAccount = useKeyActionAsClick(
     true,
     "open-address-book",
@@ -23,6 +23,7 @@ const AddressBookCTA = ({ addressToAdd, setAddressValue }) => {
   const openAddressBook = async () => {
     actions.renderModal(() => (
       <AddressBook
+        currentNetwork={currentNetwork}
         setAddressValue={setAddressValue}
         addressToAdd={addressToAdd}
       />

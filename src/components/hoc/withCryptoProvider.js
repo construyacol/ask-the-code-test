@@ -7,6 +7,9 @@ import BigNumber from "bignumber.js"
 import sleep from 'utils/sleep'
 import { formatToCurrency } from "utils/convert_currency";
 import { getMinAmount } from 'utils/withdrawProvider'
+import { useSelector } from "react-redux";
+import { selectWithdrawAccountsByAddress } from 'selectors'
+import { isEmpty } from 'lodash' 
 
 const DEFAULT_TAKE_FEE_FROM_AMOUNT = false
 
@@ -15,10 +18,13 @@ export default function withCryptoProvider(AsComponent) {
   return function (props) {
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName, balance } = wProps
-    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency])
+    const [ withdrawProviders, setNetworkProvider ] = useState({ current:withdrawProvidersByName[current_wallet?.currency], providers:{} })
+    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProviders.current)
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices();
+    const withdraw_accounts = useSelector((state) => selectWithdrawAccountsByAddress(state, withdrawProviders?.current || current_wallet));
+
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
       amount:0,
@@ -107,13 +113,21 @@ export default function withCryptoProvider(AsComponent) {
           return initEthWithdraw()
       }
     }
+
+    useEffect(() => {
+      if(!isEmpty(withdrawProviders.current)){
+        setWithdrawProvider(withdrawProviders.current)
+        setPriorityList(withdrawProviders?.current?.provider?.costs)
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawProviders])
  
     useEffect(() => {
       if(!withdrawData?.isEthereum && priorityList[currentPriority]?.fixed)  
       setWithdrawData(prevState => ({ ...prevState, fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0) }));
       else getEthFixedCost(ethers?.baseFee);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ethers.baseFee, ethers.gas_limit, currentPriority])
+    }, [ethers.baseFee, ethers.gas_limit, currentPriority, priorityList])
 
     useEffect(() => {
       if(withdrawProvider && withdrawData?.isEthereum){
@@ -165,22 +179,21 @@ export default function withCryptoProvider(AsComponent) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
 
-    // useEffect(() => {
-    //   setWithdrawData(prevState => ({...prevState, totalBalance:formatToCurrency(balance.available, balance?.currency)}))
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [balance.available])
+    // withdrawProviders
 
 
     return ( 
       <>
         <div ref={componentIsMount} style={{display:"none"}} />
         <AsComponent
-          provider={{ withdrawData, setWithdrawData, ethers, setEthers }}
+          provider={{ withdrawData, setWithdrawData, ethers, setEthers, setNetworkProvider }}
           priority={{ currentPriority, setPriority, priorityList, priorityConfig:PRIORITY_CONFIG }}
           coinsendaServices={coinsendaServices}
-          withdrawProvider={withdrawProvider}
           {...wProps} 
           {...props}
+          withdrawProviders={withdrawProviders}
+          withdraw_accounts={withdraw_accounts}
+          withdrawProvider={withdrawProvider}
         />
       </>
     )

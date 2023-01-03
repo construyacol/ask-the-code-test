@@ -14,13 +14,13 @@ import { selectWithdrawAccountsByCurrency } from "selectors";
 import { IconClose } from "../../../shared-styles"; 
 import useViewport from 'hooks/useWindowSize'
 
-const AddressBook = ({ addressToAdd, setAddressValue }) => {
+const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
 
   // const mainContainerRef = useRef()
   const actions = useActions();
   const [{ current_wallet, path, withdrawProvidersByName }] = WithdrawViewState();
   const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency]?.provider_type;
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, current_wallet?.currency));
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, currentNetwork?.currency || current_wallet?.currency));
   
   const [view, setView] = useState("addressList");
   const { isMovilViewport } = useViewport()

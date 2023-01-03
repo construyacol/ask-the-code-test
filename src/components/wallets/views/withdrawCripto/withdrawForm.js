@@ -47,6 +47,7 @@ const WithdrawFormComponent = ({
     isMobile,
     provider:{ withdrawData:{ takeFeeFromAmount, totalBalance, availableBalance, fixedCost, amount, minAmount }, setWithdrawData },
     priority:{ currentPriority, priorityConfig },
+    withdrawProviders
 }) => {
 
     // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
@@ -69,7 +70,7 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-
+//   console.log('withdrawProviders', withdrawProviders)
 
 
     return(
@@ -89,6 +90,7 @@ const WithdrawFormComponent = ({
             label={`Ingresa la dirección de destino ${currencySymbol}`}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
+            currentNetwork={withdrawProviders?.current}
             SuffixComponent={() => (
                 <IconsContainer>
                     {
@@ -110,8 +112,8 @@ const WithdrawFormComponent = ({
                 </IconsContainer>
             )}
             AuxComponent={[
-                () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
-                () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
+                () => (<AddressBookCTA currentNetwork={withdrawProviders?.current} setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
+                () => (<AddressTagList currentNetwork={withdrawProviders?.current} addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
                 () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
