@@ -1,7 +1,6 @@
 import { CDN_PATH_ASSETS } from '../const/const'
 let Environment;
 
-
 export const getHostName = () => {
   const hostId = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   const nodeList = {
@@ -14,7 +13,6 @@ export const getHostName = () => {
   // return nodeList[hostId]
   return "coinsenda"
 }
-
 
 export const getCdnPath = (target) => {
 
@@ -33,7 +31,6 @@ export const getCdnPath = (target) => {
 //   console.log('|||||| BASE_URL', BASE_URL)
 //   return BASE_URL
 // }
-
 
 Environment = {
   ApiUrl: `https://tx.${getHostName()}.com/api/`,
@@ -55,9 +52,6 @@ Environment = {
   }
 };
 
-
-
-
 if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
   Environment = {
     ApiUrl: "http://localhost:3001/api/",
@@ -75,8 +69,5 @@ if (process.env.REACT_APP_LOCAL_CONFIG === "local") {
     }
   };
 } 
-
-
-
 
 export default Environment;

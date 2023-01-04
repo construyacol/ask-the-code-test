@@ -17,8 +17,6 @@ const WithdrawViewState = () => {
   const { activity_for_account } = storage; 
   const current_wallet = account_id && wallets[account_id];
 
-  console.log('withdrawProvidersByName', withdrawProvidersByName)
-
   return [
     {
       user,

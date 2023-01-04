@@ -57,9 +57,9 @@ export default (props) => {
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
         // currentNetwork
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-
-        if(!withdrawProvidersByName[props?.currentNetwork?.currency || currency])return;
-        const { address_validator_config:{ name, network } } = withdrawProvidersByName[props?.currentNetwork?.currency || currency]
+        const withdrawProvider = props?.currentNetwork || withdrawProvidersByName[currency]
+        if(!withdrawProvider)return;
+        const { address_validator_config:{ name, network } } = withdrawProvider
         let addressVerify = await AddressValidator.validate(
           finalValue,
           name,

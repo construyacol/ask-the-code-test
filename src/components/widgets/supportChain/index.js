@@ -7,8 +7,8 @@ import withdrawNetworksHoc from 'components/hoc/withdrawNetworksHoc'
 const SupportChains = ({ networks, currentNetwork, toggleNetwork }) => {
 
     if(isEmpty(networks)) return null;
-
-    return(
+    console.log('SupportChains', networks)
+      return(
         <Container>
             <Chains>
                 <h4 className="fuente">Red :</h4>

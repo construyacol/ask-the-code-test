@@ -10,17 +10,20 @@ import NewAccount from "./newAccount";
 import AddressBookComponent from "./addressBookList";
 import HeaderComponent from "./header";
 import { swing_in_bottom_bck } from "../../../animations";
-import { selectWithdrawAccountsByCurrency } from "selectors";
+import { selectWithdrawAccounts } from "selectors";
 import { IconClose } from "../../../shared-styles"; 
 import useViewport from 'hooks/useWindowSize'
+// import { selectWithdrawAccountsByNetWork } from "selectors";
+
 
 const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
 
   // const mainContainerRef = useRef()
-  const actions = useActions();
+  const actions = useActions(); 
   const [{ current_wallet, path, withdrawProvidersByName }] = WithdrawViewState();
-  const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency]?.provider_type;
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, currentNetwork?.currency || current_wallet?.currency));
+  // const provider_type = current_wallet && withdrawProvidersByName[current_wallet.currency]?.provider_type;
+  const provider_type = currentNetwork?.provider_type
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccounts(state, { provider_type, currency:current_wallet.currency }));
   
   const [view, setView] = useState("addressList");
   const { isMovilViewport } = useViewport()
@@ -81,7 +84,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
           size={20}
         />
         <HeaderComponent
-          uiName={withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
+          uiName={currentNetwork?.provider?.ui_name || withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
           view={view}
           switchView={switchView}
         />
@@ -96,8 +99,9 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
             ) : view === "newAccount" ? (
               <NewAccount
                 provider_type={provider_type}
+                currentNetwork={currentNetwork}
                 currency={current_wallet.currency}
-                providerName={withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
+                providerName={currentNetwork?.provider?.ui_name || withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
                 switchView={switchView}
                 addressToAdd={addressToAdd}
               />

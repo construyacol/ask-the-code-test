@@ -261,7 +261,7 @@ export const CriptoView = (props) => {
     setIsOpenPanel,
     addressValue
     // withdraw_accounts
-  }
+  } 
 
   
   return ( 

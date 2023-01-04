@@ -70,9 +70,6 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-//   console.log('withdrawProviders', withdrawProviders)
-
-
     return(
         <WithdrawForm
         id="withdrawForm"

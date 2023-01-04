@@ -3,14 +3,16 @@ import React, { useState, useEffect } from "react";
 import WithdrawViewState from "hooks/withdrawStateHandle";
 import styled from "styled-components";
 import { ItemList } from "../../../widgets/modal/render/addressBook/itemList";
-import { selectWithdrawAccountsByCurrency } from "selectors";
+import { selectWithdrawAccounts } from "selectors";
 import { useSelector } from "react-redux";
 
-
+ 
 const AddressTagList = ({ show, addressValue, setAddressValue, addressState, currentNetwork }) => {
 
-  const [{ current_wallet }] = WithdrawViewState();
-  const withdrawAccounts = useSelector((state) => selectWithdrawAccountsByCurrency(state, currentNetwork?.currency || current_wallet?.currency));
+  const [{ current_wallet }] = WithdrawViewState()
+  const withdrawAccounts = useSelector((state) => selectWithdrawAccounts(state, { provider_type:currentNetwork?.provider_type, currency:current_wallet.currency } ));
+  // console.log('withdrawAccounts', withdrawAccounts)
+  // console.log('currentNetwork', currentNetwork)
   const [searchList, setSearchList] = useState([]);
 
   // const [setCurrentSelection] = useNavigationKeyActions({

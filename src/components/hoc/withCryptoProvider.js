@@ -8,12 +8,11 @@ import sleep from 'utils/sleep'
 import { formatToCurrency } from "utils/convert_currency";
 import { getMinAmount } from 'utils/withdrawProvider'
 import { useSelector } from "react-redux";
-import { selectWithdrawAccountsByAddress } from 'selectors'
+import { selectWAccountsByAddressProvType } from 'selectors'
 import { isEmpty } from 'lodash' 
 
-const DEFAULT_TAKE_FEE_FROM_AMOUNT = false
-
-
+const DEFAULT_TAKE_FEE_FROM_AMOUNT = false 
+ 
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
     const [ wProps ] = WithdrawViewState();
@@ -22,8 +21,10 @@ export default function withCryptoProvider(AsComponent) {
     const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProviders.current)
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
-    const [ coinsendaServices ] = useCoinsendaServices();
-    const withdraw_accounts = useSelector((state) => selectWithdrawAccountsByAddress(state, withdrawProviders?.current || current_wallet));
+    const [ coinsendaServices ] = useCoinsendaServices(); 
+    const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
+
+    console.log('withdraw_accounts', withdraw_accounts)
 
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
@@ -179,9 +180,9 @@ export default function withCryptoProvider(AsComponent) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
 
-    // withdrawProviders
+    // console.log('withdrawProvider', withdrawProvider)
 
-
+ 
     return ( 
       <>
         <div ref={componentIsMount} style={{display:"none"}} />

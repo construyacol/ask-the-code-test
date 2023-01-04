@@ -185,13 +185,16 @@ const CriptoView = () => {
   const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
+  // console.log('depositProviders', depositProviders?.current?.user_friendly?.token_protocol)
  
   useEffect(() => {
     if (!isEmpty(depositProviders.current)) {
       (async () => {
         setQrState(true)
         setAddress('')
-        const provider = depositProviders.current;
+        setQrError(false);
+          const provider = depositProviders.current;
+        if(!provider?.account?.account_id)return
         const {
           account: {
             account_id: { account_id },
@@ -228,7 +231,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency} {current_wallet.currency === 'usdt' && "(ERC-20)"}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency} {`( ${depositProviders?.current?.user_friendly?.token_protocol} )`}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>

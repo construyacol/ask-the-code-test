@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
-import { selectWithdrawProviderByName } from 'selectors'
+import { wProvsByCurrencyNetwork } from 'selectors'
 
 
 export default function withdrawNetworksHoc(AsComponent) {
   return function (props) {
 
-    const { currentWallet, modelData:{ withdrawProviders }} = useWalletInfo()
+    const { currentWallet } = useWalletInfo()
     const [ networks, setNetworks ] = useState({})
     const [ currentNetwork, setCurrentNetwork ] = useState({ provider_type:"" })
-    const withdrawProvidersByName = useSelector((state) => selectWithdrawProviderByName(state));
+    const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
 
     const toggleNetwork = (network) => {
       const { callback } = props
@@ -21,21 +21,19 @@ export default function withdrawNetworksHoc(AsComponent) {
 
     useEffect(() => {
       (async() => {
-        const currentProvider = withdrawProvidersByName[currentWallet.currency]
-        // let networksProviders = [ currentProvider.id, "63815598fd21970048f07f07" ]
-        let networksProviders = [ currentProvider.id ]
+        let networksProviders = Object.keys(wProvsByNetwork)
         let _networks = {}
         for (let providerId of networksProviders) {
-            const networkProvider = withdrawProviders[providerId]
+            const networkProvider = wProvsByNetwork[providerId]
             _networks = {
                 ..._networks,
                 [networkProvider.provider_type]:networkProvider
             }
         }
-        setNetworks({..._networks})
+      setNetworks({..._networks})
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawProviders])
+    }, [wProvsByNetwork])
 
     useEffect(() => {
         if(!isEmpty(networks)){
