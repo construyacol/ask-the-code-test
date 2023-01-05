@@ -117,11 +117,18 @@ const InputForm = (props) => {
     inputProps.value = value;
   }
 
+  const Label = props.label
+
   return (
     <InputLayout className={`${className || ''}`}>
       <ContainerInputComponent>
         <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
-          {props.label}
+          {
+            typeof props.label === 'function' ?
+            <Label/>
+            :
+            Label
+          }
         </p>
         <InputContainer className={`${inputState} input__withdraw--amount`}>
           <input {...inputProps} />

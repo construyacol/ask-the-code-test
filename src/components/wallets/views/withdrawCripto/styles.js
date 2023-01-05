@@ -35,6 +35,11 @@ export const WithdrawForm = styled(OperationForm)`
   background: transparent;
   padding: 70px 0 0;
 
+  .protocolName{
+    font-size: 15px;
+    font-weight: bold;
+  }
+
   
   @media (max-width: 768px) {
     height: calc(100% - 40px);

@@ -215,7 +215,7 @@ const CriptoView = () => {
   
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
-
+  const user_friendly = depositProviders?.current?.user_friendly
   return ( 
     <>
     <SupportDepositChains callback={setProvider}/>
@@ -231,7 +231,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency} {`( ${depositProviders?.current?.user_friendly?.token_protocol} )`}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2">{current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>
@@ -394,7 +394,7 @@ export const DepositForm = styled(OperationForm)`
   @media (max-width: 768px) {
     width: 100%;
     height: calc(100% - 40px);
-    padding: 20px 0;
+    padding: 60px 0 20px;
     background: transparent;
 
     .WithdrawView, .SwapView, .DepositView, #swapForm{
@@ -402,7 +402,7 @@ export const DepositForm = styled(OperationForm)`
     }
 
     .qrContainer {
-      transform: scale(0.8);
+      transform: scale(1);
     }
   }
   &.skeleton .soloAd2,

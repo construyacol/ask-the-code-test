@@ -106,6 +106,11 @@ export const AccountDetailContainer = styled.div`
         padding-bottom:0;
         row-gap: 10px;
         align-items: baseline;
+
+        &.deposit.crypto,
+        &.withdraw.crypto{
+            grid-template-rows: 0 1fr;
+        }
     }
 
 

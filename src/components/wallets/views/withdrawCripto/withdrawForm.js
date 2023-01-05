@@ -69,7 +69,8 @@ const WithdrawFormComponent = ({
         if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
-
+    const user_friendly = withdrawProviders?.current?.user_friendly
+    console.log('user_friendly', user_friendly)
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -84,7 +85,7 @@ const WithdrawFormComponent = ({
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={`Ingresa la dirección de destino ${currencySymbol}`}
+            label={() => <p className="fuente">{`Ingresa la dirección de destino ${currencySymbol}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             currentNetwork={withdrawProviders?.current}

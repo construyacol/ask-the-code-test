@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
-import { wProvsByCurrencyNetwork } from 'selectors'
+import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
 
 
 export default function withdrawNetworksHoc(AsComponent) {
@@ -12,6 +12,7 @@ export default function withdrawNetworksHoc(AsComponent) {
     const [ networks, setNetworks ] = useState({})
     const [ currentNetwork, setCurrentNetwork ] = useState({ provider_type:"" })
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
+    const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
 
     const toggleNetwork = (network) => {
       const { callback } = props
@@ -27,7 +28,10 @@ export default function withdrawNetworksHoc(AsComponent) {
             const networkProvider = wProvsByNetwork[providerId]
             _networks = {
                 ..._networks,
-                [networkProvider.provider_type]:networkProvider
+                [networkProvider.provider_type]:{
+                  ...networkProvider,
+                  user_friendly:availableDepositAccounts[providerId]?.user_friendly
+                }
             }
         }
       setNetworks({..._networks})

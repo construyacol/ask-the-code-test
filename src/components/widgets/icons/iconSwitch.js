@@ -11,8 +11,9 @@ export const getExportByName = (componentName) => (exportObject) => ({
 const CreditCard = loadable(() => import("./").then(getExportByName("CreditCard")));
 const DebitCard = loadable(() => import("./").then(getExportByName("DebitCard")));
 const DepositE = loadable(() => import("./").then(getExportByName("DepositE")));
+const Tron = loadable(() => import("./").then(getExportByName("Tron")));
 
-
+ 
 const Efecty = loadable(() => import("./").then(getExportByName("Efecty")));
 const RappiPay = loadable(() => import("./").then(getExportByName("RappiPay")));
 const Movii = loadable(() => import("./").then(getExportByName("Movii")));
@@ -187,6 +188,10 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "tron":
+      case "trx":
+      case "tron_testnet":
+        return <Tron {...props} />; 
       case "settings":
         return <Settings {...props} />; 
       case "add":

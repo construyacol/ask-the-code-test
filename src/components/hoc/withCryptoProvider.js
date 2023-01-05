@@ -24,7 +24,6 @@ export default function withCryptoProvider(AsComponent) {
     const [ coinsendaServices ] = useCoinsendaServices(); 
     const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
 
-    console.log('withdraw_accounts', withdraw_accounts)
 
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
