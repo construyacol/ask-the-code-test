@@ -84,7 +84,7 @@ const SelectListComponent = ({
 
     // const uiName = itemList?.uiName?.toLowerCase()
     const uiName = capitalizeWord(itemList?.uiName)
-    // console.log(uiName, itemList)
+    console.log(uiName, itemList)
 
     return(
       <ItemProviderBankContainer 
@@ -104,7 +104,7 @@ const SelectListComponent = ({
                   size={isMovilViewport ? 22 : 24}
                   color={"var(--primary)"}
                 />
-                :
+                : 
                 <IconSwitch
                     icon={itemList?.icon || itemList?.value}
                     size={isMovilViewport ? 22 : 25}

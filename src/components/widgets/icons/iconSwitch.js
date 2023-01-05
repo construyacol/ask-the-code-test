@@ -414,6 +414,7 @@ class IconSwitch extends Component {
       case "banco_davivienda_sa":
         return <Davivienda {...props} />;
       case "bancolombia":
+      case "Cop Bancolombia":
       case "banco_bancolombia":
         return <Bancolombia {...props} />;
       case "banco_de_bogota":
