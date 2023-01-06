@@ -260,7 +260,7 @@ export class WithdrawService extends WebService {
     return {
       ..._withdrawProviders[efectyProviderKey],
       uiName:_withdrawProviders[efectyProviderKey]?.provider?.ui_name,
-      value:_withdrawProviders[efectyProviderKey]?.name
+      value:_withdrawProviders[efectyProviderKey]?.provider?.name
     }
   } 
 
@@ -271,7 +271,6 @@ export class WithdrawService extends WebService {
     let wProviderBanKey = Object.keys(_withdrawProviders).find(wAKey => ["bank"].includes(_withdrawProviders[wAKey]?.provider_type))
     let efectyProvider = this.createEfectyProv(_withdrawProviders)
     let bankList = _withdrawProviders[wProviderBanKey]?.info_needed?.bank_name
-
     Object.keys(bankList).forEach(bankKey => {
       if(PRIORITY_ENTITIES.includes(bankKey)){
         bankList = {

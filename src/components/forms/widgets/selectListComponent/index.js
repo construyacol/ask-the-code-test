@@ -84,7 +84,7 @@ const SelectListComponent = ({
 
     // const uiName = itemList?.uiName?.toLowerCase()
     const uiName = capitalizeWord(itemList?.uiName)
-    console.log(uiName, itemList)
+    // console.log(uiName, itemList)
 
     return(
       <ItemProviderBankContainer 

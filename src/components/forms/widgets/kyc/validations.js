@@ -93,7 +93,7 @@ export const selectListValidator = (value, data) => {
     if(!data?.selectList) return generalValidator(value, data);
     validateLabelMsg(value, data)
     //accepts only letters, spaces and underscore
-    let _value = value.replace(/[^a-zA-Z _]/g, '')
+    let _value = value.replace(/[^a-zA-Z _' ']/g, '')
   
     let result = []
     Object.keys(data?.selectList).forEach(itemList => {

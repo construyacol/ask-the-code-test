@@ -141,7 +141,7 @@ export const selectWithdrawProviderByName = createSelector(
 
 export const selectDepositProvsByCurrency = createSelector(
   ({ modelData }) => modelData.deposit_providers,
-  (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.name")
+  (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.currency")
 );
 
 export const selectWithdrawProvidersByName = createSelector(

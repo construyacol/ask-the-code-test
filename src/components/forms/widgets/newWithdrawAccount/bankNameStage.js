@@ -24,8 +24,9 @@ const BankNameListComponent = ({
   
     const onChange = (e) => {
       e.target.preventDefault && e.target.preventDefault();
-      if(!validations[stageData.key]) return;
+      if(!validations[stageData.key]) return; 
       const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
+      console.log('stageData', _value, _status)
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }
@@ -43,6 +44,7 @@ const BankNameListComponent = ({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
+
   
 
     return(
@@ -63,7 +65,7 @@ const BankNameListComponent = ({
           state={state}
           isMovilViewport={isMovilViewport}
           onChange={onChange}
-        />
+        /> 
         
         {
           state[stageData?.key] &&
