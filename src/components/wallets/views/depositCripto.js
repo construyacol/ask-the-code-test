@@ -53,7 +53,7 @@ const ContAddress = styled.section`
   }
 
   strong{
-    text-transform: uppercase;
+    text-transform: capitalize
   }
 
   p{
@@ -231,7 +231,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2 protocol">{current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>

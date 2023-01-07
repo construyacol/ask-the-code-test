@@ -38,6 +38,7 @@ export const WithdrawForm = styled(OperationForm)`
   .protocolName{
     font-size: 15px;
     font-weight: bold;
+    text-transform: capitalize;
   }
 
   
