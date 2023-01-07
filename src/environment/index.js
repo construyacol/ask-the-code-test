@@ -10,10 +10,10 @@ export const getHostName = () => {
     production:'coinsenda'
   }
   
-  return nodeList[hostId]
-  // return "coinsenda"
+  // return nodeList[hostId]
+  return "coinsenda"
 }
-
+ 
 export const getCdnPath = (target) => {
 
   const nodeList = {

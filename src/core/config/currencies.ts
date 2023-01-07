@@ -14,13 +14,35 @@ export const DEFAULT_CURRENCY = {
 // }
 
 export const BLOCKCHAIN_EXPLORER_URL = {
-    bitcoin:"https://blockstream.info/tx/",
-    bitcoin_testnet:"https://blockstream.info/tx/",
-    litecoin:"https://blockchair.com/es/litecoin/transaction/",
-    litecoin_testnet:"https://blockexplorer.one/litecoin/testnet/tx/",
-    ethereum:"https://etherscan.io/tx/",
-    ethereum_testnet:"https://goerli.etherscan.io/tx/",
-    usdt:"https://blockchair.com/es/ethereum/transaction/"
+    bitcoin:{
+        bitcoin:"https://blockstream.info/tx/"
+    },
+    bitcoin_testnet:{
+        bitcoin_testnet:"https://blockstream.info/tx/"
+    },
+    litecoin:{
+        litecoin:"https://blockchair.com/es/litecoin/transaction/"
+    },
+    litecoin_testnet:{
+        litecoin_testnet:"https://blockexplorer.one/litecoin/testnet/tx/"
+    },
+    ethereum:{
+        ethereum:"https://etherscan.io/tx/"
+    },
+    ethereum_testnet:{
+        ethereum_testnet:"https://goerli.etherscan.io/tx/"
+    },
+    usdt:{
+        ethereum:"https://blockchair.com/es/ethereum/transaction/",
+        tron:"https://tronscan.org/#/transaction/",
+    },
+    usdt_testnet:{
+        ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/",
+        tron_testnet:"https://tronscan.org/#/transaction/",
+    },
+    fau_testnet:{
+        ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/"
+    }
 }
 
 export const CURRENCIES = {

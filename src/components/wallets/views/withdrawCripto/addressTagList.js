@@ -102,7 +102,7 @@ const SearchComponentWrapper = styled.section`
   max-height: 310px
   overflow-x: hidden;
   position: absolute;
-  top: 105px;
+  top: 135px;
   left: 0;
   z-index: 2;
   background: white;
