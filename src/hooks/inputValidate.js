@@ -94,7 +94,7 @@ export default (props) => {
 
          min_amount = props?.minAmount || await _getMinAmount(inputName)
          available = formatToCurrency(props.availableBalance || availableBalance, currentWallet.currency);
-
+        //  console.log('available', availableBalance, currentWallet.currency, available.toString(), value.toString())
          minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
          availableAmountValidation = value.isLessThanOrEqualTo(available)
         //  debugger
@@ -108,7 +108,7 @@ export default (props) => {
           ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
         }
         return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
-        // return e.target.value;
+        // return e.target.value
 
         // case 'bought-amount':
         //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency

@@ -225,6 +225,8 @@ export const CriptoView = (props) => {
   }, [withdrawProviders])
 
 
+  console.log('WithdrawCripto', props)
+
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
   const formProps = {
@@ -265,17 +267,19 @@ export const CriptoView = (props) => {
 
   
   return ( 
-    <CriptoWithdrawForm> 
+    <>
       <SupportWithdrawChains callback={setNetworkProvider}/>
-      <WithdrawFormComponent
-        {...formProps}
-      />
-      <PanelHelper
-        {...props}
-        {...panelHProps}
-      />
-      :<></>
-    </CriptoWithdrawForm>
+      <CriptoWithdrawForm> 
+        <WithdrawFormComponent
+          {...formProps}
+        />
+        <PanelHelper
+          {...props}
+          {...panelHProps}
+        />
+        :<></>
+      </CriptoWithdrawForm>
+    </>
   ); 
 };
 

@@ -19,6 +19,8 @@ import useTruncatedAddress from 'hooks/useTruncatedAddress'
 import useViewport from 'hooks/useViewport'
 import { SupportDepositChains } from 'components/widgets/supportChain'
 import { isEmpty } from 'lodash'
+import { copy } from "utils";
+import { device } from 'const/const'
 
  
 const CriptoSupervisor = (props) => {
@@ -245,7 +247,7 @@ const CriptoView = () => {
         <p className="fuente title dirDep">Dirección de depósito:</p>
 
         <div className="fuente address">
-        <p className="fuente2">
+        <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
           {
             qrError
               ? "Dirección invalida, contacta con soporte"
@@ -253,20 +255,12 @@ const CriptoView = () => {
               ? "XXXXXX- Verificando dirección -XXXXXX"
               : addressValue
           }
-        </p>
+        </p> 
           <CopyContainer
               valueToCopy={address}
               onlyIcon={true}
               color="black"
             />
-
-          {/* <AddressContainer
-            data-final-address={address.match(/..........$/g).toString()}
-          > 
-            <Address className="fuente2 withdrawAddress">
-            
-            </Address>
-          </AddressContainer> */}
         </div>
 
       </ContAddress>
@@ -296,6 +290,14 @@ const EtherDisclaimer = styled.div`
   font-size: 13px;
   color: var(--paragraph_color);
   position:absolute;
+
+  @media ${device.mobile}{
+    top: auto;
+    bottom: -20px;
+    right: auto;
+    width: -webkit-fill-available;
+  }
+
 `
 
 

@@ -9,7 +9,7 @@ const InputForm = (props) => {
   const {
     type,
     placeholder,
-    name,
+    name, 
     handleStatus,
     className,
     // errorState,
@@ -139,7 +139,7 @@ const InputForm = (props) => {
           </SuffixComponentContainer>
         )}
       {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
-      {customError && <ErrorTexts className="fuente2">{customError}</ErrorTexts>}
+      {(customError || props.customError) && <ErrorTexts className="fuente2">{customError || props.customError}</ErrorTexts>}
       </ContainerInputComponent>
     </InputLayout>
   );

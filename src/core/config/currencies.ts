@@ -29,6 +29,9 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     ethereum:{
         ethereum:"https://etherscan.io/tx/"
     },
+    tron:{
+        tron:"https://tronscan.org/#/transaction/",
+    },
     ethereum_testnet:{
         ethereum_testnet:"https://goerli.etherscan.io/tx/"
     },
@@ -38,6 +41,9 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     },
     usdt_testnet:{
         ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/",
+        tron_testnet:"https://tronscan.org/#/transaction/",
+    },
+    tron_testnet:{
         tron_testnet:"https://tronscan.org/#/transaction/",
     },
     fau_testnet:{
@@ -124,7 +130,7 @@ export const CURRENCIES = {
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
-            DECIMAL_PLACES: 6,
+            DECIMAL_PLACES: 4,
         })
     },
     fau_testnet:{
@@ -136,8 +142,8 @@ export const CURRENCIES = {
         }),
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_UP,
-            DECIMAL_PLACES: 6,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 4,
         })
     },
     usd:{

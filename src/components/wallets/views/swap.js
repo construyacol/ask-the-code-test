@@ -136,8 +136,9 @@ function SwapView(props) {
   // }
 
   const handleChangeSpendAmount = async (name, newValue) => {
+    console.log('handleChangeSpendAmount', newValue)
     setValue(newValue.toString().replace(/,/g, ""))
-  };
+  }; 
 
   const handleError = (msg) => {
     toastMessage(msg, "error");
@@ -153,8 +154,8 @@ function SwapView(props) {
     const thisAccountToExist = await getAccountToExist(boughtCurrency) //verificamos que haya una cuenta para la moneda comprada existente
     if(!thisAccountToExist){
       await createAccount(boughtCurrency);
-    }
-    const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, value);
+    } 
+    const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, formatToCurrency(value, currentWallet.currency));
     if (!newSwap) {
       actions.isAppLoading(false);
       return handleError("No se ha podio hacer el cambio");
@@ -177,7 +178,7 @@ function SwapView(props) {
   }
 
   const getAccountToExist = async(boughtCurrency) => {
-    for (var [ , wallet] of Object.entries(props.wallets)) {
+    for (let [ , wallet] of Object.entries(props.wallets)) {
       if(wallet.currency === boughtCurrency){
         return wallet
       }
@@ -197,7 +198,7 @@ function SwapView(props) {
   const swap = async () => {
 
     const { id } = currentPair;
-    const spent_currency_amount = await formatToCurrency( value, currentWallet.currency);
+    const spent_currency_amount = formatToCurrency(value, currentWallet.currency);
     // let query = `{"where":{"id":"${id}"}}`;
     // await coinsendaServices.updateCurrentPair(query);
     await coinsendaServices.updateCurrentPair({id});
@@ -231,7 +232,7 @@ function SwapView(props) {
       const amount = document.getElementsByName("spend-amount")[0];
       let amountValue = formatToCurrency(availableBalance, currentWallet.currency);
       amount.value = amountValue.toFormat();
-      setValue(availableBalance);
+      setValue(amountValue.toString());
     });
   };
 

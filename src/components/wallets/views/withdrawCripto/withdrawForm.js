@@ -24,6 +24,11 @@ import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 
+
+const warningMessage = {
+    usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
+  }
+
 const WithdrawFormComponent = ({
     setAddressState,
     handleChangeAddress,
@@ -125,8 +130,9 @@ const WithdrawFormComponent = ({
                     handleStatus={setAmountState}
                     handleChange={handleChangeAmount}
                     label={`Ingresa la cantidad del retiro`}
-                    disabled={loader}
+                    disabled={loader} 
                     state={amountState}
+                    customError={withdrawProviders?.current?.provider?.name && warningMessage[withdrawProviders?.current?.provider?.name]}
                     setMaxWithActionKey={true}
                     value={amountValue}
                     availableBalance={availableBalance}

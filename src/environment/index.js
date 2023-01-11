@@ -9,7 +9,6 @@ export const getHostName = () => {
     pre_prod:'cryptosenda',
     production:'coinsenda'
   }
-  
   return nodeList[hostId]
   // return "coinsenda"
 }
