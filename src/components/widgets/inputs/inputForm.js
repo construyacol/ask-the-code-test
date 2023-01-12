@@ -9,7 +9,7 @@ const InputForm = (props) => {
   const {
     type,
     placeholder,
-    name,
+    name, 
     handleStatus,
     className,
     // errorState,
@@ -117,11 +117,18 @@ const InputForm = (props) => {
     inputProps.value = value;
   }
 
+  const Label = props.label
+
   return (
     <InputLayout className={`${className || ''}`}>
       <ContainerInputComponent>
         <p className="labelText fuente" style={{ display: !props.label ? "none" : "initial" }} >
-          {props.label}
+          {
+            typeof props.label === 'function' ?
+            <Label/>
+            :
+            Label
+          }
         </p>
         <InputContainer className={`${inputState} input__withdraw--amount`}>
           <input {...inputProps} />
@@ -132,7 +139,7 @@ const InputForm = (props) => {
           </SuffixComponentContainer>
         )}
       {AuxComponent && <AuxComponentContainer AuxComponent={AuxComponent} />}
-      {customError && <ErrorTexts className="fuente2">{customError}</ErrorTexts>}
+      {(customError || props.customError) && <ErrorTexts className="fuente2">{customError || props.customError}</ErrorTexts>}
       </ContainerInputComponent>
     </InputLayout>
   );

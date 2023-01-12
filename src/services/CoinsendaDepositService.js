@@ -14,6 +14,7 @@ import { success_sound } from "../actions/soundActions";
 import actions from "../actions";
 import { normalized_list } from "../utils";
 import sleep from 'utils/sleep'
+import { isEmpty } from 'lodash'
 
 
 
@@ -129,14 +130,26 @@ export class DepositService extends WebService {
     const user = this.user;
 
     const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${user.id}/depositProviders?country=${user.country}&filter={"where":{"account.account_id.account_id":"${address}" }}`;
-    const Raddress = await this.Get(finalUrl);
-
-    if (!Raddress) return;
-
-    if (address === Raddress[0].account.account_id.account_id) {
+    const res = await this.Get(finalUrl);
+    if (isEmpty(res)) return;
+    let Raddress = res[0] && res[0]?.account?.account_id?.account_id
+    if (address === Raddress) {
       return true;
     }
     return false;
+  }
+  
+  async getDepositAccounts() {
+    const finalUrl = `${DEPOSITS_URL}depositAccounts?country=${this.user.country}&filter={"where": {"visible": true}}`;
+    // const finalUrl = `${DEPOSITS_URL}depositAccounts?country=${this.user.country}`;
+    const depositAccounts = await this.Get(finalUrl);
+    if(isEmpty(depositAccounts))return;
+    const normalizedData = await normalizeUser({
+      id: this.user.id,
+      depositAccounts: [...depositAccounts],
+    });
+    this.dispatch(updateNormalizedDataAction(normalizedData))
+    return depositAccounts;
   }
 
   async getDepositById(id) {
@@ -144,46 +157,49 @@ export class DepositService extends WebService {
     const deposit = await this.Get(finalUrl);
     return deposit[0];
   }
-
-  async createDepositProvider(account_id, country) {
+ 
+  async createDepositProvider(account_id, country, depositAccountId ) {
     let body = {
       data: {
         account_id,
         country,
       },
     };
-
+    if(depositAccountId){
+      body.data.deposit_account_id = depositAccountId
+    }
+    // body.data.deposit_account_id = "6386fe2ce9131f002aff297e"
     const finalUrl = `${DEPOSITS_URL}depositProviders/create-deposit-provider-by-account-id`;
     const deposit_prov = await this.Post(finalUrl, body);
     if (deposit_prov === 465 || !deposit_prov) {
       return;
     }
-
     const { data } = deposit_prov;
     this.dispatch(success_sound());
-    return data[0] && data[0].id;
+    return data[0];
   }
-
-  async createAndInsertDepositProvider(account) {
+ 
+  async createAndInsertDepositProvider(account, depositAccountId) {
     if (!account) return;
-    const dep_prov_id = await this.createDepositProvider(
+    const dep_prov = await this.createDepositProvider(
       account.id,
-      account.country
+      account.country,
+      depositAccountId
     );
     const deposit_providers = await this.fetchDepositProviders();
-    if (!dep_prov_id) {
+    if (!dep_prov) {
       return;
     }
 
     const update_wallet = {
       [account.id]: {
         ...account,
-        dep_prov: [dep_prov_id],
-        deposit_provider: deposit_providers[dep_prov_id],
+        dep_prov: [...account.dep_prov, dep_prov?.id],
+        deposit_provider: deposit_providers[dep_prov?.id],
       },
     };
     await this.dispatch(update_item_state(update_wallet, "wallets"));
-    return true;
+    return dep_prov;
   }
 
   async getDepositByAccountId(accountId, filter) {

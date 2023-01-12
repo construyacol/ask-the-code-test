@@ -24,6 +24,11 @@ import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 
+
+const warningMessage = {
+    usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
+  }
+
 const WithdrawFormComponent = ({
     setAddressState,
     handleChangeAddress,
@@ -47,6 +52,7 @@ const WithdrawFormComponent = ({
     isMobile,
     provider:{ withdrawData:{ takeFeeFromAmount, totalBalance, availableBalance, fixedCost, amount, minAmount }, setWithdrawData },
     priority:{ currentPriority, priorityConfig },
+    withdrawProviders
 }) => {
 
     // const idForClickeableElement = useKeyActionAsClick(true, "main-deposit-crypto-button", 13, false, "onkeyup");
@@ -68,10 +74,8 @@ const WithdrawFormComponent = ({
         if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
-
-
-
-
+    const user_friendly = withdrawProviders?.current?.user_friendly
+    console.log('user_friendly', user_friendly)
     return(
         <WithdrawForm
         id="withdrawForm"
@@ -86,9 +90,10 @@ const WithdrawFormComponent = ({
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={`Ingresa la dirección de destino ${currencySymbol}`}
+            label={() => <p className="fuente">{`Ingresa la dirección de destino ${currencySymbol}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
+            currentNetwork={withdrawProviders?.current}
             SuffixComponent={() => (
                 <IconsContainer>
                     {
@@ -110,8 +115,8 @@ const WithdrawFormComponent = ({
                 </IconsContainer>
             )}
             AuxComponent={[
-                () => (<AddressBookCTA setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
-                () => (<AddressTagList addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
+                () => (<AddressBookCTA currentNetwork={withdrawProviders?.current} setAddressValue={setAddressValue} addressToAdd={addressToAdd} />),
+                () => (<AddressTagList currentNetwork={withdrawProviders?.current} addressState={addressState} show={addressValue && addressValue.match(/^@/g)} addressValue={addressValue} setAddressValue={setAddressValue}/>),
                 () => (<TagItem withdrawAccount={tagWithdrawAccount} deleteTag={deleteTag}/>)
             ]} 
         />
@@ -125,8 +130,9 @@ const WithdrawFormComponent = ({
                     handleStatus={setAmountState}
                     handleChange={handleChangeAmount}
                     label={`Ingresa la cantidad del retiro`}
-                    disabled={loader}
+                    disabled={loader} 
                     state={amountState}
+                    customError={withdrawProviders?.current?.provider?.name && warningMessage[withdrawProviders?.current?.provider?.name]}
                     setMaxWithActionKey={true}
                     value={amountValue}
                     availableBalance={availableBalance}

@@ -55,9 +55,11 @@ export default (props) => {
 
         const { currency } = currentWallet;
         let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
+        // currentNetwork
         // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
-        if(!withdrawProvidersByName[currency])return;
-        const { address_validator_config:{ name, network } } = withdrawProvidersByName[currency]
+        const withdrawProvider = props?.currentNetwork || withdrawProvidersByName[currency]
+        if(!withdrawProvider)return;
+        const { address_validator_config:{ name, network } } = withdrawProvider
         let addressVerify = await AddressValidator.validate(
           finalValue,
           name,
@@ -92,7 +94,7 @@ export default (props) => {
 
          min_amount = props?.minAmount || await _getMinAmount(inputName)
          available = formatToCurrency(props.availableBalance || availableBalance, currentWallet.currency);
-
+        //  console.log('available', availableBalance, currentWallet.currency, available.toString(), value.toString())
          minAmountValidation = value.isGreaterThanOrEqualTo(min_amount)
          availableAmountValidation = value.isLessThanOrEqualTo(available)
         //  debugger
@@ -106,7 +108,7 @@ export default (props) => {
           ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
         }
         return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
-        // return e.target.value;
+        // return e.target.value
 
         // case 'bought-amount':
         //   const isSecondaryCurrency = currentPair.boughtCurrency === currentPair.secondary_currency
@@ -176,7 +178,7 @@ export default (props) => {
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
       case 'amount':
         const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[currentWallet.currency])
+        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[props?.currentNetwork?.currency || currentWallet.currency])
         return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 

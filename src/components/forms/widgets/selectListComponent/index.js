@@ -104,7 +104,7 @@ const SelectListComponent = ({
                   size={isMovilViewport ? 22 : 24}
                   color={"var(--primary)"}
                 />
-                :
+                : 
                 <IconSwitch
                     icon={itemList?.icon || itemList?.value}
                     size={isMovilViewport ? 22 : 25}

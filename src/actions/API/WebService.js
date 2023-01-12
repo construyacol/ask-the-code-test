@@ -7,13 +7,13 @@ import {
   handleError,
   verifyUserToken,
   saveUserToken,
-  getToken
+  getToken,
+  openLoginMobile
 } from 'utils/handleSession'
+import { CAPACITOR_PLATFORM } from 'const/const'
 
 
 export class WebService { 
-
-
 
 
   async GetWithOutHeaders(url) {
@@ -49,7 +49,7 @@ export class WebService {
 
     const res = await response.json()
     if(!res?.data || (res?.data && !res?.data?.jwt)){ 
-      console.log('ERROR res ==> ', res, res?.error)
+      if (CAPACITOR_PLATFORM !== 'web') openLoginMobile();
       throw new Error('No se pudo obtener el nuevo jwt')
     };
 

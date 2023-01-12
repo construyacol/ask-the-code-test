@@ -182,8 +182,6 @@ export class SwapService extends WebService {
   }
 
 
-
-
   async addNewSwap(accountId, pairId, value) {
     const user = this.user;
 
@@ -193,7 +191,7 @@ export class SwapService extends WebService {
         pair_id: pairId,
         account_from: accountId,
         country: user.country,
-      },
+      }
     };
 
     const result = await this.Post(ADD_NEW_SWAP, body);

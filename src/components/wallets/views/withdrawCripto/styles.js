@@ -33,13 +33,19 @@ export const IconsContainer = styled.div`
 export const WithdrawForm = styled(OperationForm)`
   grid-template-rows: 180px 180px auto;
   background: transparent;
-  padding:30px 0 0 ;
+  padding: 70px 0 0;
+
+  .protocolName{
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
 
   
   @media (max-width: 768px) {
     height: calc(100% - 40px);
     width: 100%;
-    padding: 20px 0;
+    padding: 40px 0;
     row-gap: 20px;
     grid-template-rows: 140px 170px auto;
   }

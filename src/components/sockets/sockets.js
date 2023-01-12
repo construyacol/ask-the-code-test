@@ -90,14 +90,14 @@ class SocketsComponent extends Component {
 
     // let intervalID = setInterval(tryReconnect, 30000);
     socket.on("disconnect", async function (reason) {
-      console.log(' ============ SOCKET discconect interval ====> ', reason)
+      // console.log(' ============ SOCKET discconect interval ====> ', reason)
       intervalID = setInterval(tryReconnect, 2000);
     });
     
 
     socket.on("connect", async() => {
       clearInterval(intervalID);
-      console.log(' ============ SOCKET CONNECTED ')
+      // console.log(' ============ SOCKET CONNECTED ')
       const { userToken } = await getUserToken()
       const body = { body: { access_token: userToken } };
       socket.emit("authentication", body);
@@ -123,7 +123,7 @@ class SocketsComponent extends Component {
       });
 
       socket.on(`/withdraw/${user.id}`, async (withdraw) => {
-        console.log(withdraw)
+        // console.log(withdraw)
         if (withdraw.state === "pending") {
           await this.setState({ currentWithdraw: withdraw });
         }
@@ -203,7 +203,7 @@ class SocketsComponent extends Component {
 
   withdraw_account_mangagement = async(withdrawAccount) => {
 
-      console.log('withdraw_account_mangagement', withdrawAccount)
+      // console.log('withdraw_account_mangagement', withdrawAccount)
       if(!this.props.withdraw_accounts[withdrawAccount.id]){return}
       if(withdrawAccount.state === 'in_progress' || withdrawAccount.state === 'complete' || withdrawAccount.state === 'rejected'){
         this.props.action.update_item_state({
@@ -304,10 +304,10 @@ class SocketsComponent extends Component {
         false,
         8000
       );
-    }
+    } 
 
     const { currentWithdraw } = this.state;
-    console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
+    // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
     // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
     if (
@@ -523,11 +523,13 @@ class SocketsComponent extends Component {
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
 
-        const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
-        const provKeys = Object.keys(this.props.deposit_providers)
+        // const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
+        // const provKeys = Object.keys(this.props.deposit_providers)
         const depositProviders = this.props.deposit_providers
-        const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
-        const currencyDepositProvider = provKey && depositProviders[provKey]?.depositAccount
+        // const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
+        const currencyDepositProvider = depositProviders[this.props.deposits[deposit.id]?.deposit_provider_id]?.depositAccount
+        console.log('currencyDepositProvider', currencyDepositProvider)
+        console.log('deposit', deposit)
 
         // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)
 
@@ -872,7 +874,7 @@ class SocketsComponent extends Component {
   
 
   identity_management = async(identity) => {
-    console.log('identitysocket =====================================> ', identity)
+    // console.log('identitysocket =====================================> ', identity)
     if(["accepted"].includes(identity.file_state)){
       funcDebounces({
         keyId:{[`identity_${identity.id}`]:`${identity.file_state}_${identity.id}`}, 

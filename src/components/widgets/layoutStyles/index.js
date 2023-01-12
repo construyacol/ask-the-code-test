@@ -68,7 +68,7 @@ export const AccountDetailLayout = styled(BaseLayout)`
       min-height:100vh;
     }
 `
-
+ 
 export const AccountDetailContainer = styled.div`
     display: grid;
     grid-template-rows: 1fr;
@@ -99,12 +99,18 @@ export const AccountDetailContainer = styled.div`
     &.withdraw,
     &.deposit{
         max-width: initial;
+        position: relative;
     }
 
     @media ${device.mobile} {
         padding-bottom:0;
         row-gap: 10px;
         align-items: baseline;
+
+        &.deposit.crypto,
+        &.withdraw.crypto{
+            grid-template-rows: 0 1fr;
+        }
     }
 
 

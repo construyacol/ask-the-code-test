@@ -9,7 +9,7 @@ import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 
-const NewAccount = ({ currency, provider_type, providerName, switchView, addressToAdd }) => {
+const NewAccount = ({ currency, provider_type, providerName, switchView, addressToAdd, currentNetwork }) => {
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState(addressToAdd);
   const [nameState, setNameState] = useState();
@@ -108,7 +108,8 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
           autoComplete="off"
           isControlled
           handleChange={handleChange}
-          value={addressValue}
+          currentNetwork={currentNetwork}
+          value={addressValue} 
           SuffixComponent={() => (
             <IconSwitch
               icon={`${addressState === "good" ? "verify" : "wallet"}`}

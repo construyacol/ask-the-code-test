@@ -17,6 +17,10 @@ import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent
 // import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
 import useTruncatedAddress from 'hooks/useTruncatedAddress'
 import useViewport from 'hooks/useViewport'
+import { SupportDepositChains } from 'components/widgets/supportChain'
+import { isEmpty } from 'lodash'
+import { copy } from "utils";
+import { device } from 'const/const'
 
  
 const CriptoSupervisor = (props) => {
@@ -30,7 +34,7 @@ const CriptoSupervisor = (props) => {
       ) : current_wallet.dep_prov.length < 1 ? (
         <AddDepositProviderCripto />
       ) : (
-        <CriptoView />
+        <CriptoView/>
       )}
     </>
   );
@@ -51,7 +55,7 @@ const ContAddress = styled.section`
   }
 
   strong{
-    text-transform: uppercase;
+    text-transform: capitalize
   }
 
   p{
@@ -172,7 +176,7 @@ const CriptoView = () => {
     coinsendaServices,
     {
       current_wallet,
-      modelData: { deposit_providers },
+      // modelData: { deposit_providers },
       ui:{ osDevice } 
     },
   ] = useCoinsendaServices();
@@ -180,43 +184,43 @@ const CriptoView = () => {
   const [qrState, setQrState] = useState(true);
   const [qrError, setQrError] = useState();
   const [address, setAddress] = useState();
-
+  const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
+  // console.log('depositProviders', depositProviders?.current?.user_friendly?.token_protocol)
  
   useEffect(() => {
-    if (deposit_providers) {
-      const validateAddress = async () => {
-        const provider = deposit_providers[current_wallet.dep_prov[0]];
-        // subscribeToNewDeposits(provider.id);
+    if (!isEmpty(depositProviders.current)) {
+      (async () => {
+        setQrState(true)
+        setAddress('')
+        setQrError(false);
+          const provider = depositProviders.current;
+        if(!provider?.account?.account_id)return
         const {
           account: {
             account_id: { account_id },
-          },
+          }
         } = provider;
-
         const validateAddress = await coinsendaServices.validateAddress(account_id);
-
         if (!validateAddress) {
-          // sentry call emit error
-          const errorMsg = `ADDRESS posiblemente vulnerada, review /wallets/views/deposit | dep_provider: ${provider.id}`;
-          // SentryCaptureException(errorMsg);
+          const errorMsg = `Dirección invalida`;
           setQrError(true);
           return console.log(errorMsg);
         }
-
         setQrState(await QRCode.toDataURL(account_id)); //WALLET ADDRESS
         setAddress(account_id);
-      };
-      validateAddress();
+      })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deposit_providers]);
+  }, [depositProviders.current]);
   
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
-
+  const user_friendly = depositProviders?.current?.user_friendly
   return ( 
+    <>
+    <SupportDepositChains callback={setProvider}/>
     <DepositForm>
       {
         current_wallet.currency.includes("eth") &&
@@ -229,7 +233,7 @@ const CriptoView = () => {
           Importante:
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2">{current_wallet.currency} {current_wallet.currency === 'usdt' && "(ERC-20)"}</strong>  a esta Billetera. El
+          Envía solo <strong className="fuente2 protocol">{current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong>  a esta Billetera. El
           envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
           pérdida de tu depósito.{" "}
         </p>
@@ -243,7 +247,7 @@ const CriptoView = () => {
         <p className="fuente title dirDep">Dirección de depósito:</p>
 
         <div className="fuente address">
-        <p className="fuente2">
+        <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
           {
             qrError
               ? "Dirección invalida, contacta con soporte"
@@ -251,24 +255,17 @@ const CriptoView = () => {
               ? "XXXXXX- Verificando dirección -XXXXXX"
               : addressValue
           }
-        </p>
+        </p> 
           <CopyContainer
               valueToCopy={address}
               onlyIcon={true}
               color="black"
             />
-
-          {/* <AddressContainer
-            data-final-address={address.match(/..........$/g).toString()}
-          > 
-            <Address className="fuente2 withdrawAddress">
-            
-            </Address>
-          </AddressContainer> */}
         </div>
 
       </ContAddress>
     </DepositForm>
+    </>
   );
 };
 
@@ -293,6 +290,14 @@ const EtherDisclaimer = styled.div`
   font-size: 13px;
   color: var(--paragraph_color);
   position:absolute;
+
+  @media ${device.mobile}{
+    top: auto;
+    bottom: -20px;
+    right: auto;
+    width: -webkit-fill-available;
+  }
+
 `
 
 
@@ -351,12 +356,10 @@ const QrProtectorCont = styled.div`
     background: red;
     animation-duration: 0.3s, 0.1s;
   }
-
-  
 `
 
 export const DepositForm = styled(OperationForm)`
-
+  background: transparent;
   &.DepositView{
     grid-template-rows: 50% 25% 1fr;
     grid-template-columns: 1fr !important;
@@ -393,7 +396,7 @@ export const DepositForm = styled(OperationForm)`
   @media (max-width: 768px) {
     width: 100%;
     height: calc(100% - 40px);
-    padding: 20px 0;
+    padding: 60px 0 20px;
     background: transparent;
 
     .WithdrawView, .SwapView, .DepositView, #swapForm{
@@ -401,7 +404,7 @@ export const DepositForm = styled(OperationForm)`
     }
 
     .qrContainer {
-      transform: scale(0.8);
+      transform: scale(1);
     }
   }
   &.skeleton .soloAd2,

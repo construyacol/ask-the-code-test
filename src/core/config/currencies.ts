@@ -7,19 +7,48 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+
 // export const DEFAULT_CURRENCY = {
 //     currency: 'bitcoin',
 //     symbol:'btc'
 // }
 
 export const BLOCKCHAIN_EXPLORER_URL = {
-    bitcoin:"https://blockstream.info/tx/",
-    bitcoin_testnet:"https://blockstream.info/tx/",
-    litecoin:"https://blockchair.com/es/litecoin/transaction/",
-    litecoin_testnet:"https://blockexplorer.one/litecoin/testnet/tx/",
-    ethereum:"https://etherscan.io/tx/",
-    ethereum_testnet:"https://goerli.etherscan.io/tx/",
-    usdt:"https://blockchair.com/es/tether/transaction/"
+    bitcoin:{
+        bitcoin:"https://blockstream.info/tx/"
+    },
+    bitcoin_testnet:{
+        bitcoin_testnet:"https://blockstream.info/tx/"
+    },
+    litecoin:{
+        litecoin:"https://blockchair.com/es/litecoin/transaction/"
+    },
+    litecoin_testnet:{
+        litecoin_testnet:"https://blockexplorer.one/litecoin/testnet/tx/"
+    },
+    ethereum:{
+        ethereum:"https://etherscan.io/tx/"
+    },
+    tron:{
+        tron:"https://tronscan.org/#/transaction/",
+    },
+    ethereum_testnet:{
+        ethereum_testnet:"https://goerli.etherscan.io/tx/"
+    },
+    usdt:{
+        ethereum:"https://blockchair.com/es/ethereum/transaction/",
+        tron:"https://tronscan.org/#/transaction/",
+    },
+    usdt_testnet:{
+        ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/",
+        tron_testnet:"https://tronscan.org/#/transaction/",
+    },
+    tron_testnet:{
+        tron_testnet:"https://tronscan.org/#/transaction/",
+    },
+    fau_testnet:{
+        ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/"
+    }
 }
 
 export const CURRENCIES = {
@@ -72,11 +101,27 @@ export const CURRENCIES = {
             DECIMAL_PLACES: 6,
         })
     },
+    tron:{
+        prod:'tron',
+        test:'tron_testnet',
+        prodName:'Tron',
+        testName:'Tron Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 6,
+        }),
+        prod_fee:'tron_fee',
+        test_fee:'tron_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 6,
+        })
+    },
     usdt:{
         prod:'usdt',
-        test:'fau_testnet',
-        prodName:'USDT',
-        testName:'Fau Test',
+        test:'usdt_testnet',
+        prodName:'Usdt',
+        testName:'Usdt Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 4,
@@ -85,7 +130,7 @@ export const CURRENCIES = {
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
-            DECIMAL_PLACES: 6,
+            DECIMAL_PLACES: 4,
         })
     },
     fau_testnet:{
@@ -97,8 +142,8 @@ export const CURRENCIES = {
         }),
         test_fee:'fau_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
-            ROUNDING_MODE: BigNumber.ROUND_UP,
-            DECIMAL_PLACES: 6,
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 4,
         })
     },
     usd:{
@@ -154,6 +199,11 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.litecoin.test_fee]: CURRENCIES.litecoin.currencyFeeConfig,
 
     [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
+    [CURRENCIES.usdt.test]: CURRENCIES.usdt.currencyConfig,
+
+    
+    [CURRENCIES.tron.prod]: CURRENCIES.tron.currencyConfig,
+    [CURRENCIES.tron.test]: CURRENCIES.tron.currencyConfig,
 
     [CURRENCIES.ethereum.prod]: CURRENCIES.ethereum.currencyConfig,
     [CURRENCIES.ethereum.test]: CURRENCIES.ethereum.currencyConfig,

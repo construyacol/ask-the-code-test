@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import CopyLayout from "./copyLayout";
-import { copy } from "../../../utils";
-
+import { copy } from "utils";
+ 
 import "./copyStyle.css";
 
 class CopyContainer extends Component {

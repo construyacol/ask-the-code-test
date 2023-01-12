@@ -103,7 +103,7 @@ export const generateSelectList = (objectList) => {
 }
  
 export const getSelectList = async(listKey, payload) => {
-  let list 
+  let list  
   let res = await mainService[API_FETCH_SELECT_LIST[listKey]] && await mainService[API_FETCH_SELECT_LIST[listKey]](payload)
   if(!res){return}
   list = await createSelectList(res)
@@ -224,6 +224,8 @@ export const initStages = async(_config, API_STAGES) => {
   } 
 
   stages = await recursiveAddList(stages)
+  // console.log('initStages', stages)
+  // debugger
 
   return {
     ...formStructure(config.formName),

@@ -308,7 +308,6 @@ export const normalized_list = (activity_list, activity_type) => {
         ...list,
       },
     };
-
     let normalizedUser = await normalizeUser(user_update);
     await dispatch(updateNormalizedDataAction(normalizedUser));
   };

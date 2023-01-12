@@ -43,6 +43,7 @@ const PanelHelper = props => {
         provider:{ withdrawData, setWithdrawData, ethers:{ baseFee } }
     } = props
 
+
     const { 
         fixedCost, 
         timeLeft, 
