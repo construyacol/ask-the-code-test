@@ -25,9 +25,9 @@ import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 
 
-const warningMessage = {
-    usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
-  }
+// const warningMessage = {
+//     usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
+//   }
 
 const WithdrawFormComponent = ({
     setAddressState,
@@ -132,7 +132,7 @@ const WithdrawFormComponent = ({
                     label={`Ingresa la cantidad del retiro`}
                     disabled={loader} 
                     state={amountState}
-                    customError={withdrawProviders?.current?.provider?.name && warningMessage[withdrawProviders?.current?.provider?.name]}
+                    // customError={withdrawProviders?.current?.provider?.name && warningMessage[withdrawProviders?.current?.provider?.name]}
                     setMaxWithActionKey={true}
                     value={amountValue}
                     availableBalance={availableBalance}
@@ -162,14 +162,14 @@ const WithdrawFormComponent = ({
                     ]} 
                 />
                 {
-                    (isMobile && addressState === "good") ?
+                    (isMobile && addressState === "good") &&
                     <ControlButton
                         // id={idForClickeableElement}
                         loader={loader}
                         handleAction={togglePanel}
                         formValidate={!active_trade_operation && amountState === "good" && addressState === "good"}
                         label="Enviar"
-                    />:<></>
+                    />
                 }
         </WithdrawForm>
     )

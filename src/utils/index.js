@@ -38,6 +38,20 @@ export const postLocalNotification = async (payload) => {
 };
 
 
+
+export const reOrderedList = (list, criterialOrdered) => {
+  let reOrderedLit = Object.keys(list).sort((a, b) => a === criterialOrdered ? -1 : b === criterialOrdered ? 1 : 0);
+  let orderedRes = {}
+  for (let itemList of reOrderedLit) {
+    orderedRes = {
+      ...orderedRes,
+      [itemList]:list[itemList]
+    }
+  }
+  return orderedRes
+}
+
+
 export const checkCameraPermission = async () => {
   const { Camera } = await import("@capacitor/camera");
   try {

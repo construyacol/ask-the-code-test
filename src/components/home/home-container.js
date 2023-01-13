@@ -18,6 +18,8 @@ import MobileMenuComponent from '../menu/mobileMenu'
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { parseQueryString } from '../../utils'
 import { isSafari } from '../../utils'
+import useFreshChat from 'services/FreshChat' 
+
 // import { postLocalNotification } from 'utils'
 
 
@@ -28,6 +30,8 @@ const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <L
 const HomeContainer = () => {
  
   const subMenuRef = useRef()
+  useFreshChat()
+
 
   return (
     <Route
