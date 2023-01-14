@@ -10,7 +10,6 @@ import HomeContainer from "./home/home-container";
 import { history } from "../const/const";
 import useToastMessage from "../hooks/useToastMessage";
 import LoaderAplication from './widgets/loaders/loader_app'
-import FreshChat from '../services/FreshChat' 
 import { store } from '../'
 import hotJar from '../services/Hotjar'
 import { STORAGE_KEYS } from "../const/storageKeys";
@@ -27,14 +26,11 @@ import {
 } from "utils/handleSession";
 // import { useCoinsendaServices } from "services/useCoinsendaServices";
 
-
-
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
-const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 // const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets"));
+const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
-
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -50,8 +46,8 @@ function RootContainer(props) {
   const [toastMessage] = useToastMessage();
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
   const [ tryRestoreSession ] = SessionRestore();
-  // const [ coinsendaServices, globalState ] = useCoinsendaServices();
 
+  // const [ coinsendaServices, globalState ] = useCoinsendaServices();
 
   const initComponent = async (mobileURL) => {
     const params = new URLSearchParams(mobileURL ?? history.location.search);
@@ -135,7 +131,6 @@ function RootContainer(props) {
         <>
           <CookieMessage/>
           <LazySocket toastMessage={toastMessage} />
-          <FreshChat/>
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>

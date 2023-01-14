@@ -8,13 +8,12 @@ import loadDynamicScript from '../utils/loadDynamicScript'
 
 const isString = value => typeof value === 'string'
 
-const FreshChat = (props) => {
+const useFreshChat = () => {
 
   const user = useSelector(({ modelData:{ user } }) => user);
   const [ coinsendaServices ] = useCoinsendaServices();
 
   const init = async () => {
-
     if(window?.fcWidget?.isLoaded() || window?.fcWidget?.isInitialized())return ;
     await window.fcWidget.init({
       token: '86e166f6-5421-4aaf-bdf6-746ac7a54525',
@@ -23,11 +22,9 @@ const FreshChat = (props) => {
       externalId:user?.id,
       restoreId: user?.restore_id
     })
-
     window.fcWidget.user.get(resp => {
       const status = resp && resp.status
       const email = resp?.data?.email
-
       if(!isString(email)){
         window.fcWidget.user.setProperties({
           firstName: user?.name,
@@ -35,7 +32,6 @@ const FreshChat = (props) => {
           email: user.email
         })
       }
-      
       if (status !== 200) {
         // Creamos el usuario y guardamos el storeId en el profile del tx
         window.fcWidget.on('user:created', res => {
@@ -50,20 +46,17 @@ const FreshChat = (props) => {
         })
       }
     })
-    
   }
-
  
   useEffect(() => {
     if(user?.email){
-      // if(process.env.NODE_ENV !== 'development'){
+      if(process.env.NODE_ENV !== 'development'){
         loadDynamicScript(init, 'https://wchat.freshchat.com/js/widget.js', 'freshchat')
-      // }
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.email])
 
-  return null
 }
 
-export default FreshChat
+export default useFreshChat

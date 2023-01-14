@@ -2,9 +2,8 @@ import { createSelector } from "reselect";
 import { isEmpty } from 'lodash'
 import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
-import { convertToObjectWithCustomIndex } from "utils";
-
-
+import { convertToObjectWithCustomIndex, reOrderedList } from "utils";
+import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
 
 
 export const selectDepositAccountsByNetwork = createSelector(
@@ -14,19 +13,45 @@ export const selectDepositAccountsByNetwork = createSelector(
     let res = {};
     if(!depositAccounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-
+    
     for (const [, depositAccount] of Object.entries(depositAccounts)) {
       if(depositAccount.currency === currency){
         res = {
-          ...res, 
+          ...res,
           [depositAccount.provider_type]:depositAccount
         }
       }
     }
+
+    if(res[DEFAULT_FISRT_CRITERIAL]) return reOrderedList(res, DEFAULT_FISRT_CRITERIAL);
+
     return res;
   }
 );
 
+
+export const wProvsByCurrencyNetwork = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (_, currency) => currency,
+  (withdrawProviders, currency) => {
+    let result = {};
+    for (let provider_id in withdrawProviders) {
+      if(withdrawProviders[provider_id].currency === currency){
+        result = {
+          ...result,
+          [withdrawProviders[provider_id].provider_type]:withdrawProviders[provider_id]
+        };
+      }
+    }
+
+    if(result[DEFAULT_FISRT_CRITERIAL]) return reOrderedList(result, DEFAULT_FISRT_CRITERIAL);
+    
+    return result;
+  }
+);
+
+
+ 
 
 export const selectDepositProvsByNetwork = createSelector(
   ({ modelData: { deposit_providers } }) => deposit_providers,
@@ -106,22 +131,7 @@ export const selectWithdrawAccountsByAddress = createSelector(
 
 
 
-export const wProvsByCurrencyNetwork = createSelector(
-  (state) => state.modelData.withdrawProviders,
-  (_, currency) => currency,
-  (withdrawProviders, currency) => {
-    let result = {};
-    for (let provider_id in withdrawProviders) {
-      if(withdrawProviders[provider_id].currency === currency){
-        result = {
-          ...result,
-          [withdrawProviders[provider_id].provider_type]:withdrawProviders[provider_id]
-        };
-      }
-    }
-    return result;
-  }
-);
+
 
 
 export const selectWithdrawProviderByName = createSelector(

@@ -28,7 +28,7 @@ export const Container  = styled.div`
         font-size: 15px;
     }
     
-    h4{
+    h3{
         width: fit-content;
         margin:0;
         height: 100%;
@@ -36,12 +36,11 @@ export const Container  = styled.div`
         align-items: center;
         /* background: var(--secondary_background); */
         padding: 0 10px;
-        font-weight: normal;
+        /* font-weight: normal; */
     }
 
     p{
         margin: 0;
-        padding: 12px 17px;
         width: auto;
         min-width: 70px;
         text-align: center;
@@ -52,6 +51,9 @@ export const Chain = styled.div`
     background: var(--secondary_background);
     cursor: pointer;
     display: flex;
+    padding: 12px 17px;
+    column-gap: 7px;
+
     span{
         font-size: 12px;
         opacity: .5;
@@ -60,17 +62,13 @@ export const Chain = styled.div`
     }
     &.isActive{
         background: transparent;
-        border-top: 1px solid var(--primary);
+        border-top: 2px solid var(--primary);
         color: var(--primary);
         transform: translateY(-1px);
-        column-gap: 7px;
-        padding-left: 12px;
     }
     p{
         text-transform: capitalize;
         font-weight: bold;
-        &.active{
-            padding-left: 0;
-        }
+        font-size: 15px;
     }
 `

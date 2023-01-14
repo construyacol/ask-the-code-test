@@ -58,6 +58,11 @@ const ContAddress = styled.section`
     text-transform: capitalize
   }
 
+  .usdt,
+  .uppercase{
+    text-transform: uppercase;
+  }
+
   p{
     margin: 0 !important;
     color: var(--paragraph_color); 
@@ -68,7 +73,7 @@ const ContAddress = styled.section`
     max-width: 700px;
     width: 100%;
     text-align: left;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 20px;
   }
   .soloAd{
@@ -187,7 +192,7 @@ const CriptoView = () => {
   const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
-  // console.log('depositProviders', depositProviders?.current?.user_friendly?.token_protocol)
+  console.log('depositProviders', depositProviders.current.provider_type)
  
   useEffect(() => {
     if (!isEmpty(depositProviders.current)) {
@@ -208,7 +213,15 @@ const CriptoView = () => {
           setQrError(true);
           return console.log(errorMsg);
         }
-        setQrState(await QRCode.toDataURL(account_id)); //WALLET ADDRESS
+        setQrState(await QRCode.toDataURL(account_id, {
+          errorCorrectionLevel: 'H',
+          type: 'image/jpeg',
+          quality: 0.3,
+          margin: 3.5,
+          color: {
+            dark:"#455868",
+          }
+        })); //WALLET ADDRESS
         setAddress(account_id);
       })()
     }
@@ -218,7 +231,7 @@ const CriptoView = () => {
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
   const user_friendly = depositProviders?.current?.user_friendly
-  return ( 
+  return (  
     <>
     <SupportDepositChains callback={setProvider}/>
     <DepositForm>
@@ -230,16 +243,18 @@ const CriptoView = () => {
       }
       <ContAddress className={`contAddress ${osDevice}`}>
         <p id="soloAd2" className="fuente title soloAd2">
-          Importante:
+          Advertencia
         </p>
         <p className="fuente soloAd">
-          Envía solo <strong className="fuente2 protocol">{current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong>  a esta Billetera. El
-          envío de cualquier otra Criptomoneda a esta dirección puede resultar en la
-          pérdida de tu depósito.{" "}
+          Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
+          Cualquier otra criptomoneda o envío desde otra red podría resultar en la pérdida de tu depósito.{" "}
         </p>
 
         <div className="qrContainer">
           <QrProtector visible={qrState} invalid={qrError} />
+          <IconProviderTypeCont>
+            <IconSwitch icon={depositProviders?.current?.provider_type} size={20}/>
+          </IconProviderTypeCont>
           {typeof qrState === "string" && (
             <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
           )}
@@ -275,10 +290,18 @@ const QrProtector = ({ visible, invalid }) => (
       invalid ? "error" : ""
     }`}
   >
-    <IconSwitch icon="qr" size={35} color="black" />
+    <IconSwitch icon="qr" size={30} color="black" />
   </QrProtectorCont>
 );
 
+
+const IconProviderTypeCont = styled.div`
+  position: absolute;
+  background: #f9f9fb;
+  padding: 6px;
+  border-radius: 50%;
+
+`
 
 
 const EtherDisclaimer = styled.div`
@@ -360,6 +383,7 @@ const QrProtectorCont = styled.div`
 
 export const DepositForm = styled(OperationForm)`
   background: transparent;
+
   &.DepositView{
     grid-template-rows: 50% 25% 1fr;
     grid-template-columns: 1fr !important;
@@ -386,7 +410,10 @@ export const DepositForm = styled(OperationForm)`
   }
 
   .qrContainer {
-    transform: scale(0.9);
+    transform: scale(0.95);
+    position:relative;
+    display: grid;
+    place-items: center;
   }
 
   .ioSystem{
