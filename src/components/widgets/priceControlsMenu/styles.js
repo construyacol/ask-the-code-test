@@ -60,12 +60,18 @@ export const HoverControl = styled.div`
         background: #242b31ad;
         backdrop-filter: blur(1px);
         border: 1px solid transparent;
+        &:hover{
+            background: #303c46;
+        }
     }
 
     .button__prices--switch-price{
         color: rgb(31,228,123);
         background: #242b31;
         padding: 1px 4px;
+        &:hover{
+            background: #303c46;
+        }
         &.disabled{
             color: gray;
             opacity:.3;

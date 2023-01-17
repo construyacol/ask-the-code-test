@@ -2,15 +2,42 @@ import styled from 'styled-components'
 import Popup from 'reactjs-popup';
 
 export const PopUpLayout = styled(Popup)`
+
+@keyframes anvil {
+    0% {
+      transform: scale(1) translateY(0px);
+      opacity: 0;
+      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+    }
+    1% {
+      transform: scale(0.99) translateY(-7px);
+      opacity: 0;
+      box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+    }
+    100% {
+      transform: scale(1) translateY(0px);
+      opacity: 1;
+      box-shadow: 0 0 500px rgba(241, 241, 241, 0);
+    }
+  }
+
+
   &-content {
     background-color: #303c45;
     color: white;
     backdrop-filter: blur(8px);
+    width: 260px !important;
+    -webkit-animation: anvil 0.2s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+
   }
 
   &-arrow {
     color: #303c45;
+    display: none;
   }
+
+
+
 `
 
 export const ContainerPopUp = styled.div`

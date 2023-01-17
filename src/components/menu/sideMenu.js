@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import loadable from "@loadable/component";
 import withCoinsendaServices from "../withCoinsendaServices";
@@ -11,27 +12,60 @@ import { doLogout } from "utils/handleSession";
 import { 
     MenuItemsContainer,
     SideMenuContainer,
+    ControlExpand,
     UserInfo,
     LogoCont,
     AcronymCont,
     UserName,
-    LaptopSideMenuContainer,
     LaptopLogoContainer,
     UserNameContainer
+    // LaptopSideMenuContainer,
     // SideMenuWrapper
 } from './styles'
 import menuItems from "api/ui/menuItems";
+
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
+
+
+function SideMobileMenu({ actions, logOut }) {
+
+    const { current_section:{ params:{ show_menu_principal } } } = useSelector((state) => state.ui);
+    const closeMenu = () => { actions.current_section_params({ show_menu_principal: false })}
+    const { osDevice } = useSelector((state) => state.ui);
+
+    return(
+        <SideMenuContainer className={`${show_menu_principal ? '_show' : '_hide'}`}>
+            <UserInfoComponent 
+                closeMenu={closeMenu}
+                actions={actions}
+            />
+            <MenuItemsContainer>
+                <MovilMenuComponent 
+                    actions={actions}
+                    closeMenu={closeMenu}
+                />
+            </MenuItemsContainer>
+            <CloseButtonContainer 
+                className={`fuente ${osDevice}`}
+                onClick={logOut}
+            >
+                <i className="fas fa-power-off"></i>
+                <p className="fuente itemText">
+                    Salir de Coinsenda
+                </p>
+            </CloseButtonContainer>
+        </SideMenuContainer>
+    )
+}
 
 
 
 function SideMenuComponent(props) {
 
   const actions = useActions()
+  const [ isExpanded, setIsExpanded ] = useState(true)
   const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
-  const { isLaptopViewport } = useViewport()
-  const { current_section:{params:{show_menu_principal}} } = useSelector((state) => state.ui);
-  const closeMenu = () => { actions.current_section_params({ show_menu_principal: false })}
-
+  const { isLaptopViewport, isMovilViewport } = useViewport()
 
   const logOut = () => {
     actions.confirmationModalToggle();
@@ -49,48 +83,43 @@ function SideMenuComponent(props) {
   const activarItem = async (name, link) => {
     actions.section_view_to("initial");
     actions.CleanNotifications(name);
-    // window.requestAnimationFrame(() => {
-    //   scroller.scrollTo("firstInsideContainer", {
-    //     duration: this.props.path === link ? 500 : 0,
-    //     smooth: true,
-    //     containerId: "containerElement",
-    //     offset: -50
-    //   });
-    // });
   };
 
+  const SideIcon = isExpanded ? IoIosArrowBack : IoIosArrowForward 
+  console.log('isExpanded', isExpanded)
  
     return(
         <>
             {
-                isLaptopViewport ? 
-                <LaptopSideMenuContainer>
-                    <LaptopLogoContainer>
-                        <Coinsenda size={35} color="white"/>
-                    </LaptopLogoContainer>
-                    <MenuItemsComponent 
-                        closeMenu={closeMenu}
-                        actions={actions}
-                        logOut={logOut}
-                        activarItem={activarItem}
-                        {...props} 
-                    />
-                </LaptopSideMenuContainer>
+                isMovilViewport ?
+                <SideMobileMenu logOut={logOut} actions={actions}/>
                 :
-                <SideMenuContainer className={`${show_menu_principal ? '_show' : '_hide'}`}>
-                    <UserInfoComponent 
-                        closeMenu={closeMenu}
-                        actions={actions}
-                        {...props} 
-                    />
+                <SideMenuContainer className={`${(isLaptopViewport || !isExpanded) ? 'laptopView'  : 'largeLayout'}`}>
+                    {
+                        !isLaptopViewport &&
+                        <ControlExpand onClick={() => setIsExpanded(e => !e)}>
+                            <SideIcon
+                                size={15}
+                            />
+                        </ControlExpand>
+                    }
+                    {
+                        (isLaptopViewport || !isExpanded) ?
+                        <LaptopLogoContainer>
+                            <Coinsenda size={35} color="white"/>
+                        </LaptopLogoContainer>
+                        :
+                        <img src={`${getCdnPath('assets')}logo.svg`} height={35} alt="logo" loading="lazy"/>
+                    }
                     <MenuItemsComponent 
-                        closeMenu={closeMenu}
                         actions={actions}
                         logOut={logOut}
                         activarItem={activarItem}
+                        isExpanded={isExpanded}
                         {...props} 
                     />
                 </SideMenuContainer>
+
             }
         </>
     )
@@ -141,29 +170,20 @@ export const PopUpnotice = styled.div`
 
 const MenuItemsComponent = props => {
 
-  const { keyActions, osDevice, verification_state } = useSelector((state) => state.ui);
-  const logoutButtonText = window.innerWidth > 900 ? `Cerrar sesión ${keyActions ? '[ESC]' : ''}` : "Cerrar sesión";
-  const { isMovilViewport, isLaptopViewport } = useViewport()
+  const { isLaptopViewport } = useViewport()
   const { menuPrincipal } = menuItems
+  const { verification_state } = useSelector((state) => state.ui);
 
     return( 
-        <>
-            <MenuItemsContainer>
-                <section className="section1">
+        <> 
+            <MenuItemsContainer className={`${(!props.isExpanded || isLaptopViewport) ? '' : 'largeLayout'}`}>
                     {
-                        isMovilViewport ?
-                        <MovilMenuComponent 
-                            actions={props.actions}
-                            closeMenu={props.closeMenu}
-                        />
-                        :
                         menuPrincipal.map((item) => {
-                            if (item.clave !== "settings" && verification_state !== "accepted") { return false }
+                             if (item.clave !== "settings" && verification_state !== "accepted") { return false }
                             if (item.clave === "withdraw_accounts") { return null }
-                            //if (item.clave === "referral") { return null }
                             return (
                                 <ButtonPrincipalMenu 
-                                    className={`${item.device} ${isLaptopViewport ? 'laptopView' : ''}`}
+                                    className={`${item.device} ${item.clave} ${(isLaptopViewport || !props.isExpanded) ? 'laptopView' : ''}`}
                                     activarItem={props.activarItem}
                                     path={props?.match?.params?.primary_path}
                                     // handleAction={goToFiatWallet}
@@ -173,18 +193,6 @@ const MenuItemsComponent = props => {
                             );
                         })
                     }
-                    <br />
-            </section>
-
-            <CloseButtonContainer 
-                className={`fuente ${osDevice} ${isLaptopViewport ? 'laptopView' : ''}`}
-                onClick={props.logOut}
-            >
-                <i className="fas fa-power-off"></i>
-                <p className="fuente itemText">
-                    {logoutButtonText}
-                </p>
-            </CloseButtonContainer>
             </MenuItemsContainer>
         </>
     )
@@ -269,7 +277,6 @@ const MovilItemMenu = styled.div`
     padding: 0 20px;
     column-gap: 10px;
     color: white;
-
 `
 
 const IconSwitch = loadable(() => import("../widgets/icons/iconSwitch"));
