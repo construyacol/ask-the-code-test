@@ -175,8 +175,8 @@ const MenuItemsComponent = props => {
   const { verification_state } = useSelector((state) => state.ui);
 
     return( 
-        <> 
-            <MenuItemsContainer className={`${(!props.isExpanded || isLaptopViewport) ? '' : 'largeLayout'}`}>
+        <>  
+            <MenuItemsContainer className={`${(!props.isExpanded || isLaptopViewport) ? '' : 'largeLayout'} ${verification_state !== "accepted" ? 'inverified' : ''}`}>
                     {
                         menuPrincipal.map((item) => {
                              if (item.clave !== "settings" && verification_state !== "accepted") { return false }

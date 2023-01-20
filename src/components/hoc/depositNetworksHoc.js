@@ -11,14 +11,15 @@ export default function depositNetworksHoc(AsComponent) {
  
     const { currentWallet } = useWalletInfo()
     const [ networks, setNetworks ] = useState({})
-    const [ currentNetwork, setCurrentNetwork ] = useState({ provider_type:"" })
+    const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
     const depositProviders = useSelector((state) => selectDepositProvsByNetwork(state, currentWallet?.currency));
     const [ coinsendaServices ] = useCoinsendaServices();
 
-    const toggleNetwork = async(network) => {
+    const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
+      sessionStorage.setItem(`depositNetworkDefault_${currentWallet?.id}`, network);
       callback && callback({providers:networks, current:networks[network]})
     }   
 
@@ -41,12 +42,17 @@ export default function depositNetworksHoc(AsComponent) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [availableDepositAccounts, depositProviders])
 
-  useEffect(() => {
-    if(!isEmpty(networks)){
-        toggleNetwork(Object.keys(networks)[0])
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [networks])
+    useEffect(() => {
+      if(!isEmpty(networks)){
+          (() => {
+            const depositNetworkDefault = sessionStorage.getItem(`depositNetworkDefault_${currentWallet?.id}`)
+            if(depositNetworkDefault) return toggleNetwork(depositNetworkDefault);
+            // Si solo hay una red, se selecciona por defecto
+            Object.keys(networks).length === 1 && toggleNetwork(Object.keys(networks)[0]);
+          })()
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [networks])
 
     return (
       <AsComponent
@@ -58,4 +64,3 @@ export default function depositNetworksHoc(AsComponent) {
     );
   };
 }
- 

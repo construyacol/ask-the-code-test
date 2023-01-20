@@ -17,8 +17,10 @@ export default function withCryptoProvider(AsComponent) {
   return function (props) {
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName, balance } = wProps
-    const [ withdrawProviders, setNetworkProvider ] = useState({ current:withdrawProvidersByName[current_wallet?.currency], providers:{} })
-    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProviders.current)
+    const [ withdrawProviders, setNetworkProvider ] = useState({ current:{}, providers:{} })
+    // const [ withdrawProviders, setNetworkProvider ] = useState({ current:withdrawProvidersByName[current_wallet?.currency], providers:{} })
+    // const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProviders.current)
+    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency])
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices(); 

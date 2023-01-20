@@ -7,7 +7,6 @@ import {
 } from './styles'
 
 
-
 export const DesktopPriceComponent = ({ state, actions, local_collections = [] }) => {
 
     return(

@@ -21,6 +21,12 @@ import { SupportDepositChains } from 'components/widgets/supportChain'
 import { isEmpty } from 'lodash'
 import { copy } from "utils";
 import { device } from 'const/const'
+import loadable from "@loadable/component";
+import { getExportByName } from 'utils'
+
+const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
+// const SelectNetwork = loadable(() => import("components/wallets/views/depositCripto/selectNetwork"));
+
 
  
 const CriptoSupervisor = (props) => {
@@ -192,7 +198,6 @@ const CriptoView = () => {
   const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
-  console.log('depositProviders', depositProviders.current.provider_type)
  
   useEffect(() => {
     if (!isEmpty(depositProviders.current)) {
@@ -231,9 +236,15 @@ const CriptoView = () => {
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
   const user_friendly = depositProviders?.current?.user_friendly
+
+
+  if(isEmpty(depositProviders.current)){
+    return<SelectDepositNetwork uiName="Selecciona la red en la que deseas realizar tu depósito" callback={setProvider}/>
+  }
+
   return (  
-    <>
-    <SupportDepositChains callback={setProvider}/>
+    <> 
+    <SupportDepositChains currentNetwork={depositProviders.current} callback={setProvider}/>
     <DepositForm>
       {
         current_wallet.currency.includes("eth") &&
@@ -264,7 +275,7 @@ const CriptoView = () => {
         <div className="fuente address">
         <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
           {
-            qrError
+            qrError 
               ? "Dirección invalida, contacta con soporte"
               : qrState === true
               ? "XXXXXX- Verificando dirección -XXXXXX"

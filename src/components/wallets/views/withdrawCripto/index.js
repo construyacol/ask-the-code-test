@@ -8,17 +8,18 @@ import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
 import { selectWithConvertToObjectWithCustomIndex } from 'hooks/useTxState'
 import { CAPACITOR_PLATFORM } from 'const/const';
-import { checkCameraPermission } from 'utils'
+import { checkCameraPermission, getExportByName } from 'utils'
 import { isEmpty } from 'lodash'
-// import { getMinAmount } from 'utils/withdrawProvider'
 import withCryptoProvider from 'components/hoc/withCryptoProvider'
 import WithdrawFormComponent from './withdrawForm'
-// import { formatToCurrency } from "utils/convert_currency";
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 import { SupportWithdrawChains } from 'components/widgets/supportChain'
+import loadable from "@loadable/component";
 
+
+const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")));
  
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
@@ -52,7 +53,7 @@ export const CriptoView = (props) => {
     active_trade_operation,
     provider,
     withdrawProviders,
-    provider:{ 
+    provider:{  
       withdrawData, 
       setWithdrawData, 
       setNetworkProvider,
@@ -265,11 +266,16 @@ export const CriptoView = (props) => {
     // withdraw_accounts
   } 
 
+
+  if(isEmpty(withdrawProviders.current)){
+    return<SelectWithdrawNetwork uiName="Selecciona la red en la que deseas realizar tu retiro" callback={setNetworkProvider}/>
+  }
+
   
   return ( 
     <>
-      <SupportWithdrawChains callback={setNetworkProvider}/>
-      <CriptoWithdrawForm> 
+        <SupportWithdrawChains currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
+        <CriptoWithdrawForm> 
         <WithdrawFormComponent
           {...formProps}
         />
@@ -277,7 +283,6 @@ export const CriptoView = (props) => {
           {...props}
           {...panelHProps}
         />
-        :<></>
       </CriptoWithdrawForm>
     </>
   ); 

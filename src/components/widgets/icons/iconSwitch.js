@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import loadable from "@loadable/component";
 import { getCdnPath } from '../../../environment'
+import { getExportByName } from 'utils'
 import "./icons.css";
  
-export const getExportByName = (componentName) => (exportObject) => ({
-  default: exportObject[componentName],
-});
+
 
 
 const CreditCard = loadable(() => import("./").then(getExportByName("CreditCard")));

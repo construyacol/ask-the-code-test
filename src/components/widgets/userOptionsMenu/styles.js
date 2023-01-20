@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 export const PopUpLayout = styled(Popup)`
 

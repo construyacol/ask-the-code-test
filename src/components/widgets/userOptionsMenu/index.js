@@ -8,14 +8,13 @@ import {
     PopUpLayout
 } from './styles'
 import { getAcronym } from 'utils'
-import 'reactjs-popup/dist/index.css';
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md"
 import { P } from 'components/widgets/typography'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
 import { IoMailOutline } from "react-icons/io5";
 import { copy } from 'utils'
-import { MdOutlineContentCopy } from "react-icons/md";
+import { MdOutlineContentCopy, MdOutlineShowChart } from "react-icons/md";
 import { IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { history } from 'const/const'
@@ -96,6 +95,14 @@ const UserMenuPopUp = ({ user, actions, onClose }) => {
         history.push('/settings/')
     }
 
+    const showPrices = async () => {
+        onClose()
+        const module = await import("../prices");
+        if(!module)return;
+        const PricesModal = module.default
+        actions.renderModal(PricesModal);
+    };
+
     const logOut = () => {
         onClose()
         actions.confirmationModalToggle();
@@ -118,6 +125,11 @@ const UserMenuPopUp = ({ user, actions, onClose }) => {
                 <MdOutlineContentCopy/>
             </ItemUserPopUp>
             <Line/>
+            <ItemUserPopUp className='actionable' onClick={showPrices}>
+                <MdOutlineShowChart color="white" size={16} />
+                <P>Ver precios</P>
+                <AiOutlineArrowRight/>
+            </ItemUserPopUp>
             <ItemUserPopUp className='actionable' onClick={goToSettings}>
                 <IoSettingsOutline color="white" size={16} />
                 <P>Ajustes</P>
@@ -162,7 +174,7 @@ const ItemUserPopUp = styled.div`
 
     &.item_popup--copy:hover {
         p, svg {
-            color: rgb(31,228,123);
+            /* color: rgb(31,228,123); */
         }
     }
 

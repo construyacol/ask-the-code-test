@@ -10,10 +10,7 @@ import { MainMenuContainer } from './styles'
 import styled from 'styled-components'
 import { DesktopPriceComponent, MovilPriceComponent } from 'components/widgets/priceDisplayMenu'
 import UserOptionsMenu from 'components/widgets/userOptionsMenu'
-
-
-
-
+ 
 
 export default function MainMenuComponent(props) {
 

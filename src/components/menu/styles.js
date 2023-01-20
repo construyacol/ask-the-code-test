@@ -405,13 +405,13 @@ export const MenuItemsContainer = styled.div`
       padding: 45px 0 25px;
       .itemMenu.settings{
         &::before{
-        content: "Otras opciones";
-        position: absolute;
-        top: -30px;
-        font-family: "Raleway",sans-serif;
-        color: #ffffff87;
-        font-size: 14px;
-      }
+          content: "Otras opciones";
+          position: absolute;
+          top: -30px;
+          font-family: "Raleway",sans-serif;
+          color: #ffffff87;
+          font-size: 14px;
+        }
       }
     }
 
@@ -420,6 +420,18 @@ export const MenuItemsContainer = styled.div`
       position:relative;
       &.activo{
         background:transparent;
+      }
+    }
+
+    &.inverified{
+      &.largeLayout{
+        padding: 25px 0;
+      }
+      ::before{
+        display: none;
+      }
+      .itemMenu.settings::before{
+        display: none;
       }
     }
     

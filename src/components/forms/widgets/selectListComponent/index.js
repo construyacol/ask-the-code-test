@@ -83,8 +83,7 @@ const SelectListComponent = ({
   }) => {
 
     // const uiName = itemList?.uiName?.toLowerCase()
-    const uiName = capitalizeWord(itemList?.uiName)
-    // console.log(uiName, itemList)
+    let UiName = itemList?.uiName
 
     return(
       <ItemProviderBankContainer 
@@ -114,7 +113,14 @@ const SelectListComponent = ({
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>
 
-                {uiName} 
+                {
+                  typeof UiName === "function" ?
+                    <UiName/>
+                    :
+                    capitalizeWord(UiName)
+                }
+
+                
 
                 {
                   auxUiState &&
@@ -133,7 +139,7 @@ const SelectListComponent = ({
         {
           props.AuxComponent && 
           <RenderAuxComponent {...props} />
-        }
+        } 
       </ItemProviderBankContainer>
     )
   } 
@@ -210,6 +216,13 @@ export const ItemProviderBankContainer = styled.div`
   cursor:pointer;
   column-gap: 14px;
   position:relative;
+
+  .button_item--nextCta{
+    fill: var(--paragraph_color);
+    align-self: center;
+    justify-self: end;
+    opacity: 1;
+  }
 
  
   &.rejected,
