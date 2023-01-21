@@ -17,6 +17,8 @@ import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 import { SupportWithdrawChains } from 'components/widgets/supportChain'
 import loadable from "@loadable/component";
+import OtherModalLayout from "components/widgets/modal/otherModalLayout";
+
 
 
 const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")));
@@ -63,7 +65,8 @@ export const CriptoView = (props) => {
   } = props
 
   const actions = useActions();
-  const { isMobile } = useViewport()
+  const { isMobile, isDesktop } = useViewport()
+  const [ withdrawConfirmed, setWithdrawConfirmed ] = useState(false)
   const [toastMessage] = useToastMessage();
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState();
@@ -75,10 +78,24 @@ export const CriptoView = (props) => {
 
   const { amount } = withdrawData
 
+  const closeWithdrawConfirmed = (e) => {
+    if (!e || (e.target.dataset && e.target.dataset.close_modal)) {
+      setWithdrawConfirmed(false)
+      actions.renderModal(null);
+    }
+  };
+
+
   const createWithdraw = async() => {
-    // setLoader(true)
+
+    if(isDesktop && !withdrawConfirmed){
+      setWithdrawConfirmed(true)
+      return actions.renderModal(() => (
+        <OtherModalLayout on_click={closeWithdrawConfirmed}>
+        </OtherModalLayout>
+      ));
+    }
     await finish_withdraw({ cost_information:{ cost_id:currentPriority }, gas_limit })
-    // setLoader(false)
   }
 
   const handleChangeAmount = (name, newValue) => setWithdrawData(prevState => ({...prevState, amount:newValue}))
@@ -152,9 +169,6 @@ export const CriptoView = (props) => {
   const handleMaxAvailable = (available) => {
     let amountEl = document.getElementsByName("amount")[0];
     amountEl.value = available
-
-    console.log('handleMaxAvailable', available, )
-
     setWithdrawData(prevState => ({...prevState, amount:available}))
     if (amountEl.value > 0) {
       setAmountState("good");
@@ -226,7 +240,7 @@ export const CriptoView = (props) => {
   }, [withdrawProviders])
 
 
-  console.log('WithdrawCripto', props)
+  // console.log('WithdrawCripto', props)
 
   const currencySymbol = currencies ? currencies[current_wallet.currency]?.symbol : current_wallet.currency
 
@@ -262,7 +276,9 @@ export const CriptoView = (props) => {
     addressState,
     isOpenPanel,
     setIsOpenPanel,
-    addressValue
+    addressValue,
+    isDesktop,
+    withdrawConfirmed
     // withdraw_accounts
   } 
 
@@ -275,7 +291,7 @@ export const CriptoView = (props) => {
   return ( 
     <>
         <SupportWithdrawChains currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
-        <CriptoWithdrawForm> 
+        <CriptoWithdrawForm>  
         <WithdrawFormComponent
           {...formProps}
         />

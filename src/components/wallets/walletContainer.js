@@ -116,7 +116,7 @@ export const AccountDetail = (props) => {
             <TitleSection
               className={`accoun-detail ${parseQueryString()}`}
               titleKey={params?.path}
-              {...props}
+              {...props} 
             >
               <RenderAuxComponent {...props} />
             </TitleSection> 
@@ -134,7 +134,8 @@ const RenderAuxComponent = (props) => {
   const { isMovilViewport } = useViewport()
   const { params:{ path, primary_path } } = props.match;
   const Views = {
-    activity:isMovilViewport ? null : <ActivityFilters view={primary_path} />
+    activity:isMovilViewport ? null : <ActivityFilters view={primary_path}/>,
+    // deposit:<ActivityFilters view={primary_path}/>
   };
 
   return Views[path] || null;

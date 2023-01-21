@@ -31,8 +31,6 @@ export default function useViewport(customSize: Number | number = 0): useViewpor
 
   const [ viewportSizes, setViewportSizes ] = useState<useViewportType>(getViewportSizes())
 
-
-
   useEffect(() => {
     const handleWindowResize = () => setViewportSizes(getViewportSizes());
     window?.addEventListener('resize', handleWindowResize);

@@ -12,6 +12,12 @@ export const PanelContainerComponent = styled.div`
     row-gap:20px;
     position: sticky;
     top: 195px;
+
+    &.processConfirmation{
+      z-index: 5;
+      border-radius: 6px;
+    }
+
     &.criptoWithdraw{
       max-width:calc(440px - 20px);
       @media ${device.mobile}{

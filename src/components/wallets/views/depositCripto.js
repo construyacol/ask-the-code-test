@@ -29,7 +29,7 @@ const SelectDepositNetwork = loadable(() => import("components/wallets/views/sel
 
 
  
-const CriptoSupervisor = (props) => {
+const CriptoSupervisor = () => {
 
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
 

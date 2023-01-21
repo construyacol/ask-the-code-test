@@ -9,7 +9,7 @@ const DepositView = () => {
   return (
     <>
       {current_wallet.currency_type === "crypto" ? (
-        <CriptoSupervisor />
+        <CriptoSupervisor/>
       ) : (
         <DepositFiat />
       )}
