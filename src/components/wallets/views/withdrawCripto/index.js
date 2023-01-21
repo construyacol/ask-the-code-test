@@ -65,7 +65,7 @@ export const CriptoView = (props) => {
   } = props
 
   const actions = useActions();
-  const { isMobile, isDesktop } = useViewport()
+  const { isMobile } = useViewport()
   const [ withdrawConfirmed, setWithdrawConfirmed ] = useState(false)
   const [toastMessage] = useToastMessage();
   const [addressState, setAddressState] = useState();
@@ -88,7 +88,7 @@ export const CriptoView = (props) => {
 
   const createWithdraw = async() => {
 
-    if(isDesktop && !withdrawConfirmed){
+    if(!isMobile && !withdrawConfirmed){
       setWithdrawConfirmed(true)
       return actions.renderModal(() => (
         <OtherModalLayout on_click={closeWithdrawConfirmed}>
@@ -277,8 +277,8 @@ export const CriptoView = (props) => {
     isOpenPanel,
     setIsOpenPanel,
     addressValue,
-    isDesktop,
-    withdrawConfirmed
+    withdrawConfirmed,
+    isMobile
     // withdraw_accounts
   } 
 
