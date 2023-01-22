@@ -7,7 +7,7 @@ const SelectList = ({ actionHandle, list, selectedItem }) => {
   // @param {Object} list {[key]:{name:ui_name, value:value}} ej: { deposits:{ name:"Depósitos", value:"deposits" } }
   // @param {String} selectedItem ej: selectedItem = deposits
   return(
-    <Container>
+    <Container className='seleclist'>
       { 
         (list) ?
           <DropDownComponent

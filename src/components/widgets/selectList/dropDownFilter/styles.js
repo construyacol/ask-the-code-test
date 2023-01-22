@@ -1,13 +1,17 @@
 import styled from 'styled-components'
+import { device } from 'const/const'
 
 
 
 export const Container = styled.div`
-  width:100vw;
-  max-width:200px;
-  @media (max-width:768px) {
-    max-width:150px;
+  width: 100vw;
+  max-width: 200px;
+
+  @media ${device.mobile} {
+    width: 100%;
+    max-width: inherit;
   }
+
 `
 
 export const DropDownList = styled.ul`
@@ -30,9 +34,23 @@ export const DropDownList = styled.ul`
     font-size: 14px;
     color: var(--paragraph_color);
     cursor: pointer;
+    display: flex;
+    column-gap: 8px;
+    position: relative;
+    
+    &::after{
+      content:"";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
   }
   .itemFilter:hover{
     color: #1ea4ff;
+    p,
+    span{
+      color: #1ea4ff;
+    }
   }
 `
 
@@ -51,10 +69,27 @@ export const DropDown = styled.div`
     grid-template-columns: 1fr 25px;
     align-items: flex-end;
     grid-column-gap: 10px;
-    margin-left: 15px;
     cursor: pointer;
     height: 100%;
     align-items: center;
+    position:relative;
+    margin-left: 15px;
+
+    &::after{
+      content:"";
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+    
+    &.withIcon{
+      margin-left: 0;
+      grid-template-columns:25px 1fr 25px;
+    }
+    p{
+      margin: 0;
+    }
+    
   }
 
   &:hover{

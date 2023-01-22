@@ -1,6 +1,22 @@
 import styled from 'styled-components'
 import { device } from 'const/const'
 
+export const NetworkItemCont = styled.div`
+    display: flex;
+    column-gap: 10px;
+    p{
+        text-transform: capitalize;
+        margin: 0;
+    }
+    span{
+        margin-left: 5px;
+        font-weight: normal;
+        opacity: .5;
+    }
+`
+
+
+
 export const Chains = styled.div`
     width: auto;
     height: auto;

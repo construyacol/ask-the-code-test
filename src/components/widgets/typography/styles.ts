@@ -38,6 +38,11 @@ export const H3 = styled.h3<typoGraphyProps>`
     ${textBaseStyles}
 `
 
+export const SPAN = styled.span<typoGraphyProps>`
+    ${textBaseStyles}
+`
+
+
 export const Paragraph = styled.p<typoGraphyProps>`
     ${textBaseStyles}
     @media ${device.mobile} {
