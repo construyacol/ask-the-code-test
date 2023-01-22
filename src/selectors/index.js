@@ -85,9 +85,6 @@ export const selectWithdrawAccounts = createSelector(
     for (const [, withdraw_account] of Object.entries(withdraw_accounts)) {
         (withdraw_account.provider_type === provider_type && withdraw_account.currency === currency && withdraw_account?.info?.label !== currency) && res.push(withdraw_account);
     }
-
-    console.log('selectWithdrawAccounts', provider_type, currency, res)
-
     return res;
   }
 );

@@ -85,7 +85,6 @@ export const CriptoView = (props) => {
 
 
   const createWithdraw = async() => {
-
     if(!isMobile && !withdrawConfirmed){
       setWithdrawConfirmed(true)
       return actions.renderModal(() => (
@@ -108,6 +107,7 @@ export const CriptoView = (props) => {
     const transactionSecurity = await coinsendaServices.userHasTransactionSecurity(user.id);
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
       // setShowModal(false)
+      setWithdrawConfirmed(false)
       actions.isAppLoading(false);
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
