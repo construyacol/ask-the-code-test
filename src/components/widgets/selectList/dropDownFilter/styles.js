@@ -5,7 +5,7 @@ import { device } from 'const/const'
 
 export const Container = styled.div`
   width: 100vw;
-  max-width: 200px;
+  max-width: 250px;
 
   @media ${device.mobile} {
     width: 100%;

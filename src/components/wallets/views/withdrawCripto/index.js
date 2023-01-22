@@ -15,10 +15,8 @@ import WithdrawFormComponent from './withdrawForm'
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
 import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
-// import { SupportWithdrawChains } from 'components/widgets/supportChain'
 import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
-
 
 const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")));
 const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")));
@@ -289,9 +287,8 @@ export const CriptoView = (props) => {
   
   return ( 
     <>
-        <AvailableWithdrawNetwork currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
-        {/* <SupportWithdrawChains currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/> */}
-        <CriptoWithdrawForm>  
+      <AvailableWithdrawNetwork currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
+      <CriptoWithdrawForm>  
         <WithdrawFormComponent
           {...formProps}
         />

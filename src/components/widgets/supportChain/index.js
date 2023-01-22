@@ -41,7 +41,6 @@ const SelectNetwork = ({ className, ...props }) => {
         const mainMenuHeight = document.querySelector('.MenuSuperiorLayout')?.clientHeight
         const accountTitle = document.querySelector('.accountDetailTitle')?.clientHeight
         let totalHeight = subMenuHeight + mainMenuHeight + accountTitle
-        // if(!isMobile) totalHeight += 20;
         FilterElement.current.style.top = `${totalHeight}px`
     }, [])
 
