@@ -42,7 +42,7 @@ Environment = {
   SwapApiUrl: `https://swap.${getHostName()}.com/api/`,
   CountryUrl: `https://info.${getHostName()}.com/`,
   BASE_URL:`https://${getHostName()}.com/`,
-  APPLE_CLIENT_ID:`app.${getHostName()}`,
+  APPLE_CLIENT_ID:`com.${getHostName()}`,
   APPLE_CALLBACK_URL:`https://auth.${getHostName()}.com/auth/apple/callback`,
   APPLE_SCOPES:`email name`,
   COINSENDA_CLIENT_ID: getHostName() === "coinsenda" ? "5a0a4435fc221f362f9e3e7f" : "613ffd54c8d76c00a9f626dc",
