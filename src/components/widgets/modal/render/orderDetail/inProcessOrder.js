@@ -1,11 +1,9 @@
-import React, { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useEffect } from "react";
 import styled from "styled-components";
 import { AiOutlineUpload } from "react-icons/ai";
-// import PaymentProofComponent, { PaymentProof } from "./paymentProof";
 import { PaymentProof } from "./paymentProof";
 import UseTxState from "hooks/useTxState";
 import SimpleLoader from "../../../loaders";
-// import QRCode from "qrcode";
 import { readFile, img_compressor, includesAnyImageMime } from "../../../../../utils";
 import OrderStatus from "./orderStatus";
 import DetailGenerator from "./detailGenerator";
@@ -29,19 +27,17 @@ import {
   Buttom,
   DropZoneContainer
 } from "../../../shared-styles";
-// import useToastMessage from "../../../../../hooks/useToastMessage";
 import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { BottomSection } from './'
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
 import { selectDepositProvsByCurrency } from 'selectors'
-
 import moment from "moment";
 import "moment/locale/es";
-
 moment.locale("es");
- 
+
+
 // const orderModel = {
 //   created_at: new Date(),
 //   updated_at: new Date(),
@@ -49,11 +45,10 @@ moment.locale("es");
 //   currency_type: "fiat",
 // };
 
+
 const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState();
-  
   if (!currentOrder || !currentOrder.currency) return onErrorCatch();
-
   return (
     <>
       {currentOrder.currency_type === "fiat" ? (

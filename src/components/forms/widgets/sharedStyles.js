@@ -5,12 +5,32 @@ import { HR } from 'components/widgets/headerAccount/styles'
 
 
 export const Disclaimer = styled.div`
-
   padding: 7px 15px;
   height:auto;
   min-height:80px;
   border-radius:6px;
   display:none;
+
+  &.disclaimer__deposit--usdt{
+    position: absolute;
+    top: 0;
+    left: 0;
+    p{
+      margin: 0;
+    }
+
+    @media ${device.mobile} {
+      bottom: 0;
+      top: auto;
+      position: relative;
+    }
+  }
+
+  &.contolled{
+    height:auto;
+    min-height: auto;
+    display: flex;
+  }
 
   .disclaimer--message_p{
     margin: 10px 0 0;
@@ -26,7 +46,7 @@ export const Disclaimer = styled.div`
             position:absolute;
             width:100%;
             height: 50px;
-            bottom:0;
+            bottom:0; 
             left: 0;
             pointer-events:none;
         }

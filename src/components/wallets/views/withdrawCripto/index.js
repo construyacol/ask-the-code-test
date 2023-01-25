@@ -281,7 +281,7 @@ export const CriptoView = (props) => {
 
 
   if(isEmpty(withdrawProviders.current)){
-    return<SelectWithdrawNetwork uiName="Selecciona la red en la que deseas realizar tu retiro" callback={setNetworkProvider}/>
+    return<SelectWithdrawNetwork uiName={`Selecciona la red en la que deseas realizar tu retiro ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
   }
 
   

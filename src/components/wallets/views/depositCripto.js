@@ -17,7 +17,9 @@ import { copy } from "utils";
 import { device } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
- 
+import { P } from 'components/widgets/typography'
+
+const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")));
  
@@ -41,15 +43,26 @@ const CriptoSupervisor = () => {
 const ContAddress = styled.section`
   display: grid;
   justify-items: center;
-  grid-template-rows: 30px 50px 1fr 40px 40px;
   align-items: center;
   width: 100%;
   height: 100%;
-  row-gap: 15px;
+  row-gap: 20px;
+
+  .div_deposit--address{
+    display: flex;
+    row-gap: 20px;
+    flex-direction: column;
+    > p {
+      text-align: center;
+    }
+  }
 
   .address{
     display: flex;
     column-gap:7px;
+    p{
+      font-size: 18px;
+    }
   }
 
   strong{
@@ -231,23 +244,22 @@ const CriptoView = () => {
 
 
   if(isEmpty(depositProviders.current)){
-    return<SelectDepositNetwork uiName="Selecciona la red en la que deseas realizar tu depósito" callback={setProvider}/>
+    return<SelectDepositNetwork uiName={`Selecciona la red en la que deseas realizar tu depósito ${current_wallet?.currency?.toUpperCase()}`} callback={setProvider}/>
   }
 
   return (  
     <> 
     <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
     <DepositForm>
-      {
+        { 
         current_wallet.currency.includes("eth") &&
           <EtherDisclaimer className="fuente">
             No enviar con menos de 70 mil gas
           </EtherDisclaimer>
-      }
+        }
+     
       <ContAddress className={`contAddress ${osDevice}`}>
-        <p id="soloAd2" className="fuente title soloAd2">
-          Advertencia
-        </p>
+
         <p className="fuente soloAd">
           Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
           Cualquier otra criptomoneda o envío desde otra red podría resultar en la pérdida de tu depósito.{" "}
@@ -262,27 +274,39 @@ const CriptoView = () => {
             <img id="qrDesposit" className="itemFuera" src={qrState} alt="" />
           )}
         </div>
-        <p className="fuente title dirDep">Dirección de depósito:</p>
-
-        <div className="fuente address">
-        <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
-          {
-            qrError 
-              ? "Dirección invalida, contacta con soporte"
-              : qrState === true
-              ? "XXXXXX- Verificando dirección -XXXXXX"
-              : addressValue
-          }
-        </p> 
-          <CopyContainer
-              valueToCopy={address}
-              onlyIcon={true}
-              color="black"
-            />
+        
+        <div className="div_deposit--address">
+          <p className="fuente dirDep">Dirección de depósito:</p>
+          <div className="fuente address">
+            <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
+              {
+                qrError 
+                  ? "Dirección invalida, contacta con soporte"
+                  : qrState === true
+                  ? "XXXXXX- Verificando dirección -XXXXXX"
+                  : addressValue
+              }
+            </p> 
+            <CopyContainer
+                valueToCopy={address}
+                onlyIcon={true}
+                color="black"
+              />
+          </div> 
         </div>
+        
+        
 
       </ContAddress>
+      
     </DepositForm>
+        {
+          current_wallet?.currency === 'usdt' &&
+          <Disclaimer className={`pending contolled disclaimer__deposit--usdt`}>
+            {/* <P className="number">Los depósitos inferiores a 90 USDT tienen un costo de 2 USDT. Si desea evitar este costo transaccional, puede optar por realizar depósitos con un valor mayor.</P> */}
+            <P className="number">Los depósitos inferiores a 90 USDT tienen un costo de 2 USDT. Los superiores a 90 USDT no tienen ningún costo</P>
+          </Disclaimer>
+        }
     </>
   );
 };
@@ -425,8 +449,8 @@ export const DepositForm = styled(OperationForm)`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: calc(100% - 40px);
-    padding: 60px 0 20px;
+    height: auto;
+    padding: 80px 0 20px;
     background: transparent;
 
     .WithdrawView, .SwapView, .DepositView, #swapForm{
