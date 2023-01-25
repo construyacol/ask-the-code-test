@@ -75,7 +75,7 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
     const user_friendly = withdrawProviders?.current?.user_friendly
-    console.log('user_friendly', user_friendly)
+
     return(
         <WithdrawForm
         id="withdrawForm"

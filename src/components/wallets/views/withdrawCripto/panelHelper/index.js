@@ -34,7 +34,7 @@ const PanelHelper = props => {
         createWithdraw,
         active_trade_operation,
         amountState,
-        addressState,
+        addressState, 
         isMobile,
         isOpenPanel,
         setIsOpenPanel,
@@ -42,7 +42,6 @@ const PanelHelper = props => {
         priority:{ priorityList, currentPriority, priorityConfig, setPriority },
         provider:{ withdrawData, setWithdrawData, ethers:{ baseFee } }
     } = props
-
 
     const { 
         fixedCost, 
@@ -93,19 +92,18 @@ const PanelHelper = props => {
       renderOrderDetail()
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [total, timeLeft, fixedCost])
-
   
     useEffect(() => {
       calculateTotal()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPriority, fixedCost, amount, baseFee])
 
-    let title = isMobile ? 'Confirmación de retiro' : 'Velocidad de retiro'
+    let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de retiro' : 'Velocidad de retiro'
     let isReady = addressState === 'good'
 
     // let Icon = priority === 'high' ? AiOutlineThunderbolt : priority === 'low' ? GiTurtle : MdSpeed 
     return(
-        <StatusPanelComponent className={`criptoWithdraw ${isOpenPanel ? 'isOpen' : ''}`}>
+        <StatusPanelComponent className={`criptoWithdraw ${!isMobile && props.withdrawConfirmed ? 'processConfirmation' : ''} ${isOpenPanel ? 'isOpen' : ''}`}>
               <StatusHeaderContainer className="criptoWithdrawCont">
                 <TitleContainer skeleton={!isReady}>
                   <Button onClick={() => setIsOpenPanel(prevState => !prevState)}>
@@ -178,7 +176,7 @@ const PanelHelper = props => {
                   loader={loader}
                   handleAction={createWithdraw}
                   formValidate={!active_trade_operation && amountState === "good" && addressState === "good" && controlValidation}
-                  label="Retirar ahora"
+                  label={loader ? 'Enviando...' : (!isMobile && !props.withdrawConfirmed) ? "Continuar" : "Retirar ahora"}
                 />
               }
       </StatusPanelComponent>

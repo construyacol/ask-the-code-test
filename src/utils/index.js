@@ -11,6 +11,11 @@ import { isUndefined } from 'lodash'
 const { normalizeUser } = normalizr_services;
 
 
+export const getExportByName = (componentName) => (exportObject) => ({
+  default: exportObject[componentName],
+});
+
+
 export const postLocalNotification = async (payload) => {
 
   if(!payload || ["web"].includes(CAPACITOR_PLATFORM)) return;

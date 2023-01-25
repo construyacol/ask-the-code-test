@@ -49,7 +49,7 @@ function SwapView(props) {
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
   // const isFiat = currentWallet.currency_type === "fiat";
 
-  useEffect(() => {
+  useEffect(() => { 
     selectPair(true);
     const { local_currency } = props;
     if(!currentPair){

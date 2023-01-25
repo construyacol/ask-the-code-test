@@ -2,7 +2,7 @@ import { IoMdFingerPrint } from 'react-icons/io';
 import { BsShieldLock } from 'react-icons/bs';
 import { IoMailUnreadOutline } from 'react-icons/io5';
 import loadable from "@loadable/component";
-import { getExportByName } from 'components/widgets/icons/iconSwitch'
+import { getExportByName } from 'utils'
 import { GoLocation } from "react-icons/go";
 
 const Handshake = loadable(() => import("components/widgets/icons").then(getExportByName("Handshake")));

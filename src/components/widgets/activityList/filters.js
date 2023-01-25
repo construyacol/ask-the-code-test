@@ -4,64 +4,11 @@ import { withRouter } from "react-router";
 import { current_section_params } from "../../../actions/uiActions";
 import SelectList from '../selectList'
 import { WALLET_FILTER_LIST, WITHDRAW_ACCOUNT_FILTER_LIST } from '../../../const/const'
-
-
-import { device } from 'const/const'
-import styled from 'styled-components'
-
-
-const ALFilterSect = styled.section`
-  display: flex;
-  &.relativePos{
-    position: relative;
-    z-index: 1; 
-  }
-  &.stickyPos{
-    position: sticky;
-    z-index: 3;
-  }
-
-`
-
-const ALfiltros = styled.div`
-  width: calc(100%);
-  height: 45px;
-  /*background: #8080801a;*/
-  transition: 0.3s;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  /*padding: 0 12px;*/
-  background: linear-gradient(to right, #e7e7e7b0, #f1f1f1b0, white);
-  justify-content: flex-start;
-  backdrop-filter: blur(7px);
-
-  p{
-    color: var(--paragraph_color);
-  }
-
-  @media ${device.mobile} {
-    justify-content: space-between;
-  }
-
-`
-
-const ALif2Item = styled.div`
-  display: flex;
-  align-items: center;
-  width: 110px;
-  justify-items: center;
-  justify-content: center;
-  color: gray;
-  column-gap: 10px;
-  margin-right: 10px;
-  margin-left: 15px;
-  p{
-    margin: 0;
-  }
-
-`
-
+import {
+  ALFilterSect,
+  ALfiltros,
+  ALif2Item
+} from 'components/widgets/dropDown/styles'
 
 
 const ActivityFilters = (props) => {
@@ -94,7 +41,6 @@ const ActivityFilters = (props) => {
   let movil_viewport = window.innerWidth < 768;
 
   const selectListData = props.view !== "withdraw_accounts" ? WALLET_FILTER_LIST : WITHDRAW_ACCOUNT_FILTER_LIST
-  
 
   return (
     <ALFilterSect ref={FilterElement} className={`ALFilterSect ${movil_viewport ? 'stickyPos' : ''}`}>

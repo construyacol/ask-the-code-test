@@ -24,7 +24,7 @@ const menuItems = {
           "id": 3
         },
         {
-          "title": "Cambiar",
+          "title": "Intercambiar",
           "func": "goTo",
           "link": "swap",
           "available": true,

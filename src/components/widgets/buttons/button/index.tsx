@@ -43,5 +43,3 @@ function ButtonChild({
   
 }
  
-
-// href="/about" replace

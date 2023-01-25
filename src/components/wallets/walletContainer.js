@@ -29,7 +29,6 @@ import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 import sleep from "utils/sleep";
 
 
-
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
 const LazySwapView = loadable(() => import("./views/swap"), { fallback: <SkeletonSwapView/> });
@@ -40,7 +39,7 @@ function WalletContainer(props) {
 
   // const { accountList } = useSelector((state) => state?.ui?.views);
 
-  useEffect(() => {
+  useEffect(() => { 
     return () => {
       props.action.section_view_to("initial");
       // props.action.cleanCurrentSection()
@@ -72,6 +71,7 @@ function WalletContainer(props) {
     </>
   );
 }
+
 
 
 
@@ -116,7 +116,7 @@ export const AccountDetail = (props) => {
             <TitleSection
               className={`accoun-detail ${parseQueryString()}`}
               titleKey={params?.path}
-              {...props}
+              {...props} 
             >
               <RenderAuxComponent {...props} />
             </TitleSection> 
@@ -127,13 +127,15 @@ export const AccountDetail = (props) => {
   );
 };
 
+
         // <ActivityFilters view={params.primary_path} />
 
 const RenderAuxComponent = (props) => {
   const { isMovilViewport } = useViewport()
   const { params:{ path, primary_path } } = props.match;
   const Views = {
-    activity:isMovilViewport ? null : <ActivityFilters view={primary_path} />
+    activity:isMovilViewport ? null : <ActivityFilters view={primary_path}/>,
+    // deposit:<ActivityFilters view={primary_path}/>
   };
 
   return Views[path] || null;

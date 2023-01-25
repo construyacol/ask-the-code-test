@@ -175,19 +175,6 @@ export const MainMenuContainer = styled(Menu)`
     backdrop-filter: blur(6px);
 `
 
-
-export const LaptopSideMenuContainer = styled(Menu)`
-    width:70px;
-    background: linear-gradient(to bottom right,#2b3742,#101418);
-    display:grid;
-    grid-template-rows:auto 1fr;
-    position:relative;
-    @media ${device.mobile} {
-        position: absolute;
-        left: -100px;
-    }
-`
-
 export const LaptopLogoContainer = styled.div`
     display: flex;
     place-content: center;
@@ -195,13 +182,73 @@ export const LaptopLogoContainer = styled.div`
     height:60px;
 `
 
+export const LaptopSideMenuContainer = styled(Menu)`
+    width:70px;
+    background: linear-gradient(to bottom right,#2b3742,#101418);
+    display:grid;
+    grid-template-rows: 60px 1fr;
+    position:relative;
+    @media ${device.mobile} {
+        position: absolute;
+        left: -100px;
+    }
+`
+
+export const ControlExpand = styled.div`
+  position: absolute;
+  top: 15px;
+  right: -20px;
+  z-index: 4;
+  width: 27px;
+  height: 27px;
+  background-color: #303c45;
+  transition: .3s;
+  opacity: 0;
+  border-radius: 3px;
+  display: grid;
+  place-content: center;
+  cursor:pointer;
+  color:white;
+
+  &:hover{
+    svg{
+      color:var(--primary);
+    }
+  }
+
+`
+
 export const SideMenuContainer = styled(Menu)`
-  min-width: 280px;
+  min-width: 250px;
   background: linear-gradient(to bottom right,#2b3742,#101418);
   display:grid;
-  grid-template-rows:auto 1fr;
+  grid-template-rows: 60px 1fr;
+  position: relative;
+  overflow: visible;
+
+  &.laptopView{
+    min-width: 70px;
+  }
+
+  &:hover{
+    ${ControlExpand}{
+      right: -32px;
+      opacity: 1;
+    }
+  }
+  
+  &.largeLayout{
+    row-gap: 10px;
+    img{
+      align-self: center;
+      left: 20px;
+      position: relative;
+    }
+  }
+
 
   @media ${device.mobile} {
+    grid-template-rows: auto 1fr;
     transition:.3s;
     position: absolute;
     height: 100vh;
@@ -220,7 +267,6 @@ export const SideMenuContainer = styled(Menu)`
             animation-fill-mode: forwards;
             backdrop-filter: blur(4px);
         }
-    }
 
     &._show{
         left: 0;
@@ -336,15 +382,57 @@ export const UserInfo = styled.div`
     }
 `
 
-
-
 export const MenuItemsContainer = styled.div`
     background: linear-gradient(to bottom right,#2b3742,#101418);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     font-size: 14px;
-    ${'' /* font-weight: bold; */}
-    padding: 15px 0 50px;
+    padding: 0;
+    display: grid;
+    grid-template-rows: 50px 50px 1fr;
+    padding: 25px 0;
+    position:relative;
+
+    &.largeLayout::before{
+        content: "Mi cuenta";
+        position: absolute;
+        top: 15px;
+        font-family: "Raleway",sans-serif;
+        color: #ffffff87;
+        font-size: 14px;
+        padding-left: 15px;
+      }
+
+    &.largeLayout{
+      padding: 45px 0 25px;
+      .itemMenu.settings{
+        &::before{
+          content: "Otras opciones";
+          position: absolute;
+          top: -30px;
+          font-family: "Raleway",sans-serif;
+          color: #ffffff87;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .itemMenu.settings{
+      align-self: flex-end;
+      position:relative;
+      &.activo{
+        background:transparent;
+      }
+    }
+
+    &.inverified{
+      &.largeLayout{
+        padding: 25px 0;
+      }
+      ::before{
+        display: none;
+      }
+      .itemMenu.settings::before{
+        display: none;
+      }
+    }
     
 `

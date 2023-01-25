@@ -84,8 +84,6 @@ export const AccountDetailContainer = styled.div`
         padding-bottom:0px;
     }
 
-    
-
     &.activity{
         padding-top:35px;
         .ALtext{
@@ -100,7 +98,15 @@ export const AccountDetailContainer = styled.div`
     &.deposit{
         max-width: initial;
         position: relative;
+        row-gap: 5px;
     }
+
+    &.deposit.crypto,
+    &.withdraw.crypto{
+        grid-template-rows: 0 1fr;
+    }
+
+
 
     @media ${device.mobile} {
         padding-bottom:0;

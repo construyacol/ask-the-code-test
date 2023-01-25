@@ -10,13 +10,14 @@ export default function withdrawNetworksHoc(AsComponent) {
 
     const { currentWallet } = useWalletInfo()
     const [ networks, setNetworks ] = useState({})
-    const [ currentNetwork, setCurrentNetwork ] = useState({ provider_type:"" })
+    const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
 
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
+      sessionStorage.setItem(`withdrawNetworkDefault_${currentWallet?.id}`, network);
       callback && callback({providers:networks, current:networks[network]})
     }
 
@@ -40,11 +41,19 @@ export default function withdrawNetworksHoc(AsComponent) {
     }, [wProvsByNetwork])
 
     useEffect(() => {
-        if(!isEmpty(networks)){
-            toggleNetwork(Object.keys(networks)[0])
-        }
+      if(!isEmpty(networks)){
+          (() => {
+            const withdrawNetworkDefault = sessionStorage.getItem(`withdrawNetworkDefault_${currentWallet?.id}`)
+            if(withdrawNetworkDefault) return toggleNetwork(withdrawNetworkDefault);
+            // Si solo hay una red, se selecciona por defecto
+            Object.keys(networks).length === 1 && toggleNetwork(Object.keys(networks)[0]);
+          })()
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [networks])
+
+
+
 
     return (
       <AsComponent

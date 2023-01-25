@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled, { keyframes } from "styled-components";
-// import { OperationForm } from "./withdrawCripto";
 import { OperationForm } from '../styles'
 import QRCode from "qrcode";
-// import { SentryCaptureException } from "../../../utils";
 import IconSwitch from "../../widgets/icons/iconSwitch";
 import CopyContainer from "../../widgets/copy/copyContainer";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
@@ -11,19 +9,19 @@ import ControlButton from "../../widgets/buttons/controlButton";
 import { skeleton } from "../../widgets/loaders/skeleton";
 import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
-// import DepositWithdrawFiatSkeleton from './skeleton/depositWithdrawFiatSkeleton'
-// import { StageSkeleton } from 'components/forms/widgets/stageManager'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
-// import { AddressContainer, Address } from 'components/widgets/modal/render/addressBook/itemList'
 import useTruncatedAddress from 'hooks/useTruncatedAddress'
 import useViewport from 'hooks/useViewport'
-import { SupportDepositChains } from 'components/widgets/supportChain'
 import { isEmpty } from 'lodash'
 import { copy } from "utils";
 import { device } from 'const/const'
-
+import loadable from "@loadable/component";
+import { getExportByName } from 'utils'
  
-const CriptoSupervisor = (props) => {
+const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
+const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")));
+ 
+const CriptoSupervisor = () => {
 
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
 
@@ -192,7 +190,6 @@ const CriptoView = () => {
   const [ depositProviders, setProvider ] = useState({ current:{}, providers:{} })
 
   // const { subscribeToNewDeposits } = useSubscribeDepositHook()
-  console.log('depositProviders', depositProviders.current.provider_type)
  
   useEffect(() => {
     if (!isEmpty(depositProviders.current)) {
@@ -231,9 +228,15 @@ const CriptoView = () => {
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
   const user_friendly = depositProviders?.current?.user_friendly
+
+
+  if(isEmpty(depositProviders.current)){
+    return<SelectDepositNetwork uiName="Selecciona la red en la que deseas realizar tu depósito" callback={setProvider}/>
+  }
+
   return (  
-    <>
-    <SupportDepositChains callback={setProvider}/>
+    <> 
+    <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
     <DepositForm>
       {
         current_wallet.currency.includes("eth") &&
@@ -264,7 +267,7 @@ const CriptoView = () => {
         <div className="fuente address">
         <p className="fuente2" onClick={copy} data-copy={address} style={{cursor:"pointer"}}>
           {
-            qrError
+            qrError 
               ? "Dirección invalida, contacta con soporte"
               : qrState === true
               ? "XXXXXX- Verificando dirección -XXXXXX"
