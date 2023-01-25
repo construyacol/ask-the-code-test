@@ -17,9 +17,9 @@ import { copy } from "utils";
 import { device } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
-import { P } from 'components/widgets/typography'
+// import { P } from 'components/widgets/typography'
 
-const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
+// const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")));
  
@@ -300,13 +300,12 @@ const CriptoView = () => {
       </ContAddress>
       
     </DepositForm>
-        {
+        {/* {
           current_wallet?.currency === 'usdt' &&
           <Disclaimer className={`pending contolled disclaimer__deposit--usdt`}>
-            {/* <P className="number">Los depósitos inferiores a 90 USDT tienen un costo de 2 USDT. Si desea evitar este costo transaccional, puede optar por realizar depósitos con un valor mayor.</P> */}
             <P className="number">Los depósitos inferiores a 90 USDT tienen un costo de 2 USDT. Los superiores a 90 USDT no tienen ningún costo</P>
           </Disclaimer>
-        }
+        } */}
     </>
   );
 };
