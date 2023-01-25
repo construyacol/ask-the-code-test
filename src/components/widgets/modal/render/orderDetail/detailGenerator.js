@@ -299,7 +299,6 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
       <DetailTemplateComponent
         items={orders}
-        // items={[]}
         tx_path={tx_path}
         order={order}
       />

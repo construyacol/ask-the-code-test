@@ -6,14 +6,14 @@ export const useFormatCurrency = (objetive_amount, currency) => {
   const amountCurrency = currency;
 
   const formating = async (objetive_amount, currency) => {
-    // console.log('||||||||| FORMATING CURRENCY', objetive_amount, currency)
-    let amount_converted = await formatToCurrency(objetive_amount, currency);
-    setAmount(amount_converted.toFormat());
-    return amount_converted.toFormat();
+    let amount_converted = formatToCurrency(objetive_amount, currency);
+    let finalAmount = amount_converted?.isNegative() ? amount_converted?.multipliedBy(-1) : amount_converted
+    setAmount(finalAmount.toFormat());
+    return finalAmount.toFormat();
   };
 
   const toBigNumber = async(objetive_amount, currency) => {
-    let amount = await formatToCurrency(objetive_amount, currency);
+    let amount = formatToCurrency(objetive_amount, currency);
     return amount
   }
 

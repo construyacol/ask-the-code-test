@@ -40,7 +40,7 @@ const SelectNetwork = ({ networks, toggleNetwork, uiName }) => {
                                     itemList={{
                                         icon:networkName,
                                         uiName: () => <>
-                                            {capitalizeWord(networkName)}
+                                            Red {capitalizeWord(networkName)}
                                             <span className='fuente2 span__protocol'>{user_friendly ? `(${user_friendly?.token_protocol?.toUpperCase() || user_friendly?.network?.toUpperCase()})` : ''}</span>
                                         </> 
                                     }}
