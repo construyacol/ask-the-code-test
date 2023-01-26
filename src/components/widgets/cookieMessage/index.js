@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 // import { Link } from 'react-router-dom';
 import styles from './styles.module.css';
 import styled from 'styled-components'
-import { getHostName } from 'environment'
+// import { getHostName } from 'environment'
 
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
@@ -11,7 +11,7 @@ export default function CookieMessage(props) {
 
   const [shouldRender, setShouldRender] = useState(false);
   const mainRef = useRef()
-  const [ viewMore, setViewMore ] = useState(false)
+  // const [ viewMore, setViewMore ] = useState(false)
 
   const clickHandler = () => { 
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
@@ -29,65 +29,65 @@ export default function CookieMessage(props) {
 
  
   return shouldRender ? (
-    <CoockieContainer ref={mainRef} id="cookieContainer" className={`${viewMore ? 'disclaimer__open' : 'disclaimer--showGradient'}`}>
+
+    // <CoockieContainer ref={mainRef} id="cookieContainer" className={`${viewMore ? 'disclaimer__open' : 'disclaimer--showGradient'}`}>
+    //   <Close onClick={clickHandler}>X</Close>
+    //   <Content>
+    //     <h3 className='fuente'>¡Advertencia!</h3>
+    //     <br/>
+    //     <p className="fuente">
+    //       Antes de efectuar tus transacciones, presta atención a lo siguiente: 
+    //       <br/>
+    //       <br/>
+    //       ✓ <b>PHI COLOMBIA S.A.S.</b> no ha establecido ningún tipo de relación o convenio con otras empresas, agencias y/o personas para la obtención de bienes, servicios o beneficios a través de transacciones realizadas por medio de <b>COINSENDA</b>.
+    //     </p>
+    //       <br/>
+    //     <p className="fuente">
+    //       ✓ Ante la duda, abstente de realizar cualquier operación y contáctanos a través del correo electrónico: <b>soporte@coinsenda.com</b> o por nuestro chat.
+    //     </p>
+    //       <br/>
+    //     <p className="fuente">
+    //       <span>
+    //         Para conocer más consulta&nbsp;
+    //         <a 
+    //           className={styles["cookie-link"]} 
+    //           rel="noreferrer" 
+    //           href={`https://${getHostName()}.com/docs/terms`}
+    //           target="_blank"
+    //           >
+    //             nuestros terminos y condiciones
+    //         </a>
+    //       </span>
+    //     </p>
+    //     <br/>
+    //     <br/>
+    //     <div className={styles["cookie-button-container"]}>
+    //       <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
+    //     </div>
+    //   </Content>
+    //   {
+    //     !viewMore && 
+    //       <p className='fuente2 verMas__p' onClick={() => setViewMore(prevState => !prevState)}>{viewMore ? '' : 'Ver más...'} </p>
+    //   }
+    // </CoockieContainer>
+
+    <CoockieContainer ref={mainRef} id="cookieContainer">
       <Close onClick={clickHandler}>X</Close>
       <Content>
-        <h3 className='fuente'>¡Advertencia!</h3>
+        <h3 className='fuente'>Actualización</h3>
         <br/>
         <p className="fuente">
-          Antes de efectuar tus transacciones, presta atención a lo siguiente: 
-          <br/>
-          <br/>
-          ✓ <b>PHI COLOMBIA S.A.S.</b> no ha establecido ningún tipo de relación o convenio con otras empresas, agencias y/o personas para la obtención de bienes, servicios o beneficios a través de transacciones realizadas por medio de <b>COINSENDA</b>.
-        </p>
-          <br/>
-        <p className="fuente">
-          ✓ Ante la duda, abstente de realizar cualquier operación y contáctanos a través del correo electrónico: <b>soporte@coinsenda.com</b> o por nuestro chat.
-        </p>
-          <br/>
-        <p className="fuente">
-          <span>
-            Para conocer más consulta&nbsp;
-            <a 
-              className={styles["cookie-link"]} 
-              rel="noreferrer" 
-              href={`https://${getHostName()}.com/docs/terms`}
-              target="_blank"
-              >
-                nuestros terminos y condiciones
-            </a>
-          </span>
+          Agregamos <strong>USDT</strong> en la red <span className="fuente2"><strong>TRC20</strong></span> y <span className="fuente2"><strong>ERC20</strong></span> en tu Billetera Digital para que puedas realizar depósitos, retiros e intercambios. 🇨🇴🌎
         </p>
         <br/>
-        <br/>
-
         <div className={styles["cookie-button-container"]}>
           <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
         </div>
-
       </Content>
-
-      {
-        !viewMore && 
-          <p className='fuente2 verMas__p' onClick={() => setViewMore(prevState => !prevState)}>{viewMore ? '' : 'Ver más...'} </p>
-      }
-
-      {/* <Content2>
-        <img src={`${getCdnPath('assetsRoot')}cookie.png`} width="40px" height="40px" alt="" loading="lazy"/>
-        <div className={styles["cookie-button-container"]}>
-          <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Aceptar</span>
-        </div>
-      </Content2> */}
     </CoockieContainer>
+
   ) : <></>
 }
-
-// const Content2 = styled.div`
-//   display: grid;
-//   grid-template-columns: 1fr;
-//   grid-template-rows: 1fr 40px;
-//   justify-items:center;
-// `
 
 const Content = styled.div`
   display: grid;
