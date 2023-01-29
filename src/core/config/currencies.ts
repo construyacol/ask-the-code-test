@@ -69,6 +69,23 @@ export const CURRENCIES = {
         }),
         blockchainExplorer:"https://blockstream.info/tx/"
     },
+    bnb:{
+        prod:'bnb',
+        test:'bnb_testnet',
+        prodName:'BNB',
+        testName:'BNB Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            DECIMAL_PLACES: 8,
+        }),
+        prod_fee:'bnb_fee',
+        test_fee:'bnb_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_UP,
+            DECIMAL_PLACES: 6,
+        }),
+        blockchainExplorer:"https://blockstream.info/tx/"
+    },
     litecoin:{
         prod:'litecoin',
         test:'litecoin_testnet',
@@ -96,6 +113,22 @@ export const CURRENCIES = {
         }),
         prod_fee:'ethereum_fee',
         test_fee:'ethereum_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 6,
+        })
+    },
+    busd:{
+        prod:'busd',
+        test:'busd_testnet',
+        prodName:'BUSD',
+        testName:'BUSD Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 8,
+        }),
+        prod_fee:'busd_fee',
+        test_fee:'busd_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 6,
