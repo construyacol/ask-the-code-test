@@ -242,6 +242,8 @@ const CriptoView = () => {
   const addressValue = isMobile ? truncatedAddres : address
   const user_friendly = depositProviders?.current?.user_friendly
 
+  console.log('Currency', depositProviders?.current?.provider_type)
+
 
   if(isEmpty(depositProviders.current)){
     return<SelectDepositNetwork uiName={`Selecciona la red en la que deseas realizar tu depósito ${current_wallet?.currency?.toUpperCase()}`} callback={setProvider}/>

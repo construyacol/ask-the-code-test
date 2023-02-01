@@ -234,6 +234,11 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
     [CURRENCIES.usdt.test]: CURRENCIES.usdt.currencyConfig,
 
+    [CURRENCIES.bnb.prod]: CURRENCIES.bnb.currencyConfig,
+    [CURRENCIES.bnb.test]: CURRENCIES.bnb.currencyConfig,
+
+    [CURRENCIES.busd.prod]: CURRENCIES.busd.currencyConfig,
+    [CURRENCIES.busd.test]: CURRENCIES.busd.currencyConfig,
     
     [CURRENCIES.tron.prod]: CURRENCIES.tron.currencyConfig,
     [CURRENCIES.tron.test]: CURRENCIES.tron.currencyConfig,
