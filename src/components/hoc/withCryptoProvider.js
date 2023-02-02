@@ -12,20 +12,21 @@ import { selectWAccountsByAddressProvType } from 'selectors'
 import { isEmpty } from 'lodash' 
 
 const DEFAULT_TAKE_FEE_FROM_AMOUNT = false 
- 
+
+const isEthValidator = name => {
+  return (name === 'eth' || name === 'bnb') ? true : false;
+}
+
 export default function withCryptoProvider(AsComponent) {
   return function (props) {
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName, balance } = wProps
     const [ withdrawProviders, setNetworkProvider ] = useState({ current:{}, providers:{} })
-    // const [ withdrawProviders, setNetworkProvider ] = useState({ current:withdrawProvidersByName[current_wallet?.currency], providers:{} })
-    // const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProviders.current)
     const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency])
     const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
     const [ coinsendaServices ] = useCoinsendaServices(); 
     const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
-
 
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
@@ -37,7 +38,7 @@ export default function withCryptoProvider(AsComponent) {
       fixedCost:new BigNumber(priorityList[currentPriority]?.fixed || 0), 
       total:new BigNumber(0), 
       minAmount:getMinAmount(withdrawProvider), 
-      isEthereum:!priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
+      isEthereum:!priorityList[currentPriority]?.fixed && isEthValidator(withdrawProvider?.address_validator_config?.name)
     })
 
     const [ ethers, setEthers ] = useState({
@@ -59,12 +60,23 @@ export default function withCryptoProvider(AsComponent) {
       return gas_limit.plus(additionalGas) 
     }, [])
 
+    const getFixedCost = (networkName, amountFee) => {
+      let fixedCost
+      const gas_limit = calculateGasLimit(ethers?.gas_limit)
+      if(networkName === 'eth'){
+        const maxFee = amountFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
+        fixedCost = gas_limit.times(maxFee)
+      }else{
+        fixedCost = gas_limit.times(amountFee)
+      }
+      return fixedCost
+    }
+
     const getEthFixedCost = useCallback(async(baseFee) => {
       if(!baseFee)return;
-      const maxFee = baseFee.times(2).plus(priorityList[currentPriority]?.fee_priority)
-      const gas_limit = calculateGasLimit(ethers?.gas_limit)
-      const fixedCost = gas_limit.times(maxFee)
+      const fixedCost = getFixedCost(withdrawProvider?.address_validator_config?.name, baseFee)
       setWithdrawData(prevState => ({...prevState, fixedCost}))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [calculateGasLimit, currentPriority, priorityList, ethers.gas_limit])
 
     const fetchNetworkData = async() => coinsendaServices.fetchNetworkData(withdrawProvider?.id)  
@@ -96,8 +108,8 @@ export default function withCryptoProvider(AsComponent) {
       if(error)return alert(error?.message)
       const jwt = await import('jsonwebtoken')
       const dataNetDecoded = await jwt.decode(data)
-      const { exp, base_fee } = dataNetDecoded
-      const baseFee = new BigNumber(base_fee)
+      const { exp, base_fee, gas_price } = dataNetDecoded
+      const baseFee = new BigNumber(base_fee || gas_price)
       const expired = exp - 10
       setEthers(prevState => ({...prevState, baseFee, network_data:data, networkDataExp:expired}))
       validateExpTime(expired)
@@ -148,7 +160,7 @@ export default function withCryptoProvider(AsComponent) {
         setWithdrawData(prevState => ({
           ...prevState, 
           minAmount:getMinAmount(withdrawProvider), 
-          isEthereum:!_priorityList[currentPriority]?.fixed && withdrawProvider?.address_validator_config?.name === 'eth' 
+          isEthereum:!_priorityList[currentPriority]?.fixed && isEthValidator(withdrawProvider?.address_validator_config?.name)
         }))
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -181,7 +193,7 @@ export default function withCryptoProvider(AsComponent) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawData.minAmount, withdrawData.fixedCost])
 
-    // console.log('withdrawProvider', withdrawProvider)
+    // console.log('withdrawData', withdrawData)
 
  
     return ( 

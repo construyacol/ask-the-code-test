@@ -156,7 +156,7 @@ export const PaymentProof = ({ payload }) => {
   const getPaymentProof = async (currentOrder) => {
 
     let depositProvider = deposit_providers[currentOrder.deposit_provider_id]
-    console.log('currentOrder.currency', currentOrder.currency)
+    console.log('currentOrder', currentOrder.currency, depositProvider.provider_type)
     let blockchainUri = (depositProvider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][depositProvider.provider_type]
     
     if (currentOrder.paymentProof) {

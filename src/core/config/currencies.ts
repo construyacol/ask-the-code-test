@@ -38,16 +38,20 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     usdt:{
         ethereum:"https://blockchair.com/es/ethereum/transaction/",
         tron:"https://tronscan.org/#/transaction/",
+        bsc:"https://bscscan.com/tx/"
     },
     usdt_testnet:{
         ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/",
-        tron_testnet:"https://tronscan.org/#/transaction/",
+        tron_testnet:"https://tronscan.org/#/transaction/"
     },
     tron_testnet:{
         tron_testnet:"https://tronscan.org/#/transaction/",
     },
     fau_testnet:{
         ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/"
+    },
+    bnb:{
+        bsc:"https://bscscan.com/tx/"
     }
 }
 
