@@ -111,6 +111,7 @@ export default function withCryptoProvider(AsComponent) {
       const { exp, base_fee, gas_price } = dataNetDecoded
       const baseFee = new BigNumber(base_fee || gas_price)
       const expired = exp - 10
+      console.log('expired', expired)
       setEthers(prevState => ({...prevState, baseFee, network_data:data, networkDataExp:expired}))
       validateExpTime(expired)
       return data
@@ -143,13 +144,20 @@ export default function withCryptoProvider(AsComponent) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ethers.baseFee, ethers.gas_limit, currentPriority, priorityList])
 
-    useEffect(() => {
+    const initETH = async() => {
       if(withdrawProvider && withdrawData?.isEthereum){
         initEthWithdraw()
         createEthersProvider()
+      }else{
+      await sleep(500)
+      initETH()
       }
+    }
+
+    useEffect(() => {
+      initETH()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawProvider])
+    }, [])
 
     useEffect(() => {
       let withdrawProvGlobalState = withdrawProvidersByName[current_wallet?.currency]
