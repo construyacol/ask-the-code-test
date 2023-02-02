@@ -23,6 +23,7 @@ const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/se
  
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
+
   return (
     <>
       {isEmpty(withdrawProvidersByName) ? (

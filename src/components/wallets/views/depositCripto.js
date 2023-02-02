@@ -113,6 +113,8 @@ export const SkeletonDepositView = () => {
     <>
       {
         currentWallet.currency_type === 'crypto' ?
+        <>
+          <div/>
           <DepositForm className="skeleton">
             <ContAddress className="contAddress">
               <p id="soloAd2" className="fuente title soloAd2"></p>
@@ -122,6 +124,7 @@ export const SkeletonDepositView = () => {
               <p className="verifyAddress"></p>
             </ContAddress>
           </DepositForm>
+        </>
           :
           <SelectListSkeleton/>
       }
@@ -241,8 +244,6 @@ const CriptoView = () => {
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
   const user_friendly = depositProviders?.current?.user_friendly
-
-  console.log('Currency', depositProviders?.current?.provider_type)
 
 
   if(isEmpty(depositProviders.current)){
