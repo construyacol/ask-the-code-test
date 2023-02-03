@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
+import { P } from 'components/widgets/typography'
 
 
 
@@ -23,6 +24,8 @@ export default function MobileMenuComponent(props) {
         actions.CleanNotifications(itemName);
     }
 
+    console.log('menuPrincipal', menuPrincipal)
+
     return(
         <>      
             {
@@ -30,31 +33,32 @@ export default function MobileMenuComponent(props) {
                     <MobileMenu className={`${osDevice}`}>
                         {
                             menuPrincipal.map((item) => {
-                                    if (item.clave !== "settings" && verification_state !== "accepted") { return null }
-                                    if (item.clave === "prices") { return null }
-                                    if (item.clave === "withdraw_accounts") { return null }
+                                if (item.clave !== "settings" && verification_state !== "accepted") { return null }
+                                if (item.clave === "prices") { return null }
+                                if (item.clave === "withdraw_accounts") { return null }
 
-                                    return (
-                                        <MenuItem
-                                            key={item.id}
-                                            className={`item_${item.clave} ${params?.primary_path === item?.clave ? "_active" : ""}`}
-                                            onClick={() => selectItem(item.clave)}
-                                        >
-                                            <Link to={`/${item.clave}`}>
-                                                <div className={`text ${params?.primary_path === item?.clave ? "activate" : ""}`}>
-                                                    <div className="iconButtCont">
-                                                        <IconSwitch
-                                                            icon={item?.icon}
-                                                            size={25}
-                                                            color={`${params?.primary_path === item?.clave ? "var(--primary)" : "gray"}`}
-                                                        />
-                                                        <PopNotification notifier={item?.clave} />
-                                                    </div>
+                                return (
+                                    <MenuItem
+                                        key={item.id}
+                                        className={`item_${item.clave} ${params?.primary_path === item?.clave ? "_active" : ""}`}
+                                        onClick={() => selectItem(item.clave)}
+                                    >
+                                        <Link to={`/${item.clave}`}>
+                                            <div className={`text ${params?.primary_path === item?.clave ? "activate" : ""}`}>
+                                                <div className="iconButtCont">
+                                                    <IconSwitch
+                                                        icon={item?.icon}
+                                                        size={25}
+                                                        color={`${params?.primary_path === item?.clave ? "var(--primary)" : "gray"}`}
+                                                    /> 
+                                                    <P className="no-margin">{item.text}</P>
+                                                    <PopNotification notifier={item?.clave} />
                                                 </div>
-                                            </Link>
-                                        </MenuItem>
-                                    );
-                                })
+                                            </div>
+                                        </Link>
+                                    </MenuItem>
+                                );
+                            })
                         }
                     </MobileMenu>
             }
@@ -82,7 +86,24 @@ const MenuItem = styled.div`
     &._active{
         border-top: 2px solid var(--primary);
         background: #f9f9fb;
+        p{
+            display:none;
+        }
     }
+
+    .iconButtCont{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap:4px;
+        p{
+            font-size: 10px;
+        }
+    }
+    a{
+        text-decoration: none;
+    }
+    
 `
 
 const MobileMenu = styled.menu`

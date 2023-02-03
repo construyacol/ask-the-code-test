@@ -20,6 +20,9 @@ export const textBaseStyles = css<typoGraphyProps>`
     font-family: "Raleway", sans-serif;
     font-size: ${props => props.size && `${props.size}px !important`};
 
+    &.no-margin{
+        margin:0;
+    }
     &.number{
         font-family: "Tomorrow", sans-serif;
     }
