@@ -10,7 +10,7 @@ import { copy } from "../../../../../utils";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import Zoom from "react-medium-image-zoom";
 import { BLOCKCHAIN_EXPLORER_URL } from 'core/config/currencies'
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
 
 
