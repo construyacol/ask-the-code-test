@@ -49,9 +49,8 @@ const UseTxState = (current_order_id) => {
   const isModalOpen = useSelector(
     (state) => state.ui.modal_confirmation.visible
   );
-  const deposit_providers = useSelector(
-    (state) => state.modelData.deposit_providers
-  );
+  const deposit_providers = useSelector((state) => state.modelData.deposit_providers);
+  const withdraw_providers = useSelector((state) => state.modelData.withdrawProviders);
   const loader = useSelector((state) => state.isLoading.loader);
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state));
   const currentOrder = useSelector((state) =>
@@ -82,6 +81,7 @@ const UseTxState = (current_order_id) => {
     currentOrder,
     loader,
     deposit_providers,
+    withdraw_providers,
     isModalOpen,
   };
 

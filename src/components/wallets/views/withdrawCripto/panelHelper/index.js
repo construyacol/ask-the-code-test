@@ -20,7 +20,7 @@ import {
     PriorityItem,
     Button,
     SpeedBar
-} from './styles'
+} from './styles' 
 
 const PanelHelper = props => {
 
@@ -50,7 +50,7 @@ const PanelHelper = props => {
         isEthereum,
         total,
         takeFeeFromAmount,
-        // availableBalance,
+        availableBalance,
         totalBalance,
         minAmount
     } = withdrawData
@@ -59,17 +59,21 @@ const PanelHelper = props => {
 
     const calculateTotal = () => {
       let _amount = BigNumber(amount)
+      // if(_amount.isNaN()) setWithdrawData(prevState => ({ ...prevState, total:BigNumber(0), withdrawAmount:BigNumber(0) })) ;
+      // console.log('|||||| calculateTotal ==> ', _amount.isGreaterThan(availableBalance), _amount.toString(), availableBalance.toString(), withdrawProvider)
       let totalAmount = BigNumber(0)
       if(takeFeeFromAmount){
         totalAmount = _amount.minus(fixedCost)
-        setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
+        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:_amount })) 
       }else if(_amount.isGreaterThanOrEqualTo(withdrawProvider?.provider?.min_amount) && _amount.isLessThanOrEqualTo(totalBalance)){
         totalAmount = _amount.plus(fixedCost)
-        setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
+        return setWithdrawData(prevState => ({ ...prevState, total:totalAmount, withdrawAmount:totalAmount })) 
       }
+      setWithdrawData(prevState => ({ ...prevState, total:BigNumber(0), withdrawAmount:BigNumber(0) }))
     }
 
     const renderOrderDetail = () => {
+
       let _orderDetail = []
       let _amount = BigNumber(amount || 0)
       let _total = current_wallet ? formatToCurrency(total, current_wallet?.currency) : total
@@ -77,7 +81,10 @@ const PanelHelper = props => {
       _orderDetail = [
         ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
       ] 
-      if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount))return setOrderDetail(_orderDetail);
+      console.log('|||||| calculateTotal ==> ', _amount.isGreaterThan(availableBalance), _amount.toString(), availableBalance.toString(), withdrawProvider)
+
+      if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount) || _amount.isGreaterThan(availableBalance))return setOrderDetail(_orderDetail);
+
       if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toString()}  ${currencySymbol}`])
 
       if(takeFeeFromAmount){

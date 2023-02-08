@@ -10,7 +10,9 @@ import { copy } from "../../../../../utils";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import Zoom from "react-medium-image-zoom";
 import { BLOCKCHAIN_EXPLORER_URL } from 'core/config/currencies'
+// import { useParams } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
+
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
   const [activeSection, setActiveSection] = useState(true);
@@ -143,8 +145,19 @@ export const PaymentProof = ({ payload }) => {
     currentOrder,
     loader,
     tx_path,
-    deposit_providers
+    deposit_providers,
+    withdraw_providers
   } = UseTxState(); 
+
+  const providers = {
+    withdraws:withdraw_providers,
+    deposits:deposit_providers
+  }
+
+  const providerKeyId = {
+    withdraws:"withdraw_provider_id",
+    deposits:"deposit_provider_id"
+  }
 
   const [imgProof, setImgProof] = useState(payload);
   const [txId, setTxId] = useState();
@@ -154,10 +167,11 @@ export const PaymentProof = ({ payload }) => {
   let showPaymentProof = currentOrder.currency_type === "crypto" || (orderDate > showFromDate && currentOrder.currency_type === "fiat")
 
   const getPaymentProof = async (currentOrder) => {
-
-    let depositProvider = deposit_providers[currentOrder.deposit_provider_id]
-    console.log('currentOrder.currency', currentOrder.currency)
-    let blockchainUri = (depositProvider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][depositProvider.provider_type]
+    let providerId = providerKeyId[tx_path]
+    let provider = providers[tx_path][currentOrder[providerId]]
+    console.log('currentOrder', BLOCKCHAIN_EXPLORER_URL[currentOrder?.currency][provider?.provider_type])
+    // debugger
+    let blockchainUri = (provider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
     
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;

@@ -38,16 +38,20 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     usdt:{
         ethereum:"https://blockchair.com/es/ethereum/transaction/",
         tron:"https://tronscan.org/#/transaction/",
+        bsc:"https://bscscan.com/tx/"
     },
     usdt_testnet:{
         ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/",
-        tron_testnet:"https://tronscan.org/#/transaction/",
+        tron_testnet:"https://tronscan.org/#/transaction/"
     },
     tron_testnet:{
         tron_testnet:"https://tronscan.org/#/transaction/",
     },
     fau_testnet:{
         ethereum_testnet:"https://blockchair.com/es/ethereum/transaction/"
+    },
+    bnb:{
+        bsc:"https://bscscan.com/tx/"
     }
 }
 
@@ -63,6 +67,23 @@ export const CURRENCIES = {
         }),
         prod_fee:'bitcoin_fee',
         test_fee:'bitcoin_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_UP,
+            DECIMAL_PLACES: 6,
+        }),
+        blockchainExplorer:"https://blockstream.info/tx/"
+    },
+    bnb:{
+        prod:'bnb',
+        test:'bnb_testnet',
+        prodName:'BNB',
+        testName:'BNB Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            DECIMAL_PLACES: 8,
+        }),
+        prod_fee:'bnb_fee',
+        test_fee:'bnb_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_UP,
             DECIMAL_PLACES: 6,
@@ -96,6 +117,22 @@ export const CURRENCIES = {
         }),
         prod_fee:'ethereum_fee',
         test_fee:'ethereum_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 6,
+        })
+    },
+    busd:{
+        prod:'busd',
+        test:'busd_testnet',
+        prodName:'BUSD',
+        testName:'BUSD Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 8,
+        }),
+        prod_fee:'busd_fee',
+        test_fee:'busd_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 6,
@@ -201,6 +238,11 @@ const CURRENCY_CONFIG = {
     [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
     [CURRENCIES.usdt.test]: CURRENCIES.usdt.currencyConfig,
 
+    [CURRENCIES.bnb.prod]: CURRENCIES.bnb.currencyConfig,
+    [CURRENCIES.bnb.test]: CURRENCIES.bnb.currencyConfig,
+
+    [CURRENCIES.busd.prod]: CURRENCIES.busd.currencyConfig,
+    [CURRENCIES.busd.test]: CURRENCIES.busd.currencyConfig,
     
     [CURRENCIES.tron.prod]: CURRENCIES.tron.currencyConfig,
     [CURRENCIES.tron.test]: CURRENCIES.tron.currencyConfig,

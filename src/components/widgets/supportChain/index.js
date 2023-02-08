@@ -37,6 +37,7 @@ const SelectNetwork = ({ className, ...props }) => {
     }, [props.networks])
 
     useEffect(() => { 
+        FilterElement.current.style.top = `180px`
         const subMenuHeight = document.querySelector('.subMenu')?.clientHeight
         const mainMenuHeight = document.querySelector('.MenuSuperiorLayout')?.clientHeight
         const accountTitle = document.querySelector('.accountDetailTitle')?.clientHeight
@@ -53,7 +54,7 @@ const SelectNetwork = ({ className, ...props }) => {
     return(
         <DropDownList
             refEl={FilterElement}
-            className={`${isMobile ? 'isMobile stickyPos' : `stickyPos withOutBackground ${classNamesPos[positionNets]}`}`}
+            className={`${isMobile ? 'isMobile stickyPos' : `stickyPos withOutBackground ${classNamesPos[positionNets]}`} `}
             defaultOption={props?.currentNetwork?.provider_type}
             title="Red"
             MainIcon={GrNetwork}

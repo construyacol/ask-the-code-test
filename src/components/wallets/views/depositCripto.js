@@ -113,6 +113,8 @@ export const SkeletonDepositView = () => {
     <>
       {
         currentWallet.currency_type === 'crypto' ?
+        <>
+          <div/>
           <DepositForm className="skeleton">
             <ContAddress className="contAddress">
               <p id="soloAd2" className="fuente title soloAd2"></p>
@@ -122,6 +124,7 @@ export const SkeletonDepositView = () => {
               <p className="verifyAddress"></p>
             </ContAddress>
           </DepositForm>
+        </>
           :
           <SelectListSkeleton/>
       }

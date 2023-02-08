@@ -104,7 +104,7 @@ const InputForm = (props) => {
 
   if (skeleton) {
     return (
-      <InputLayout className="skeleton">
+      <InputLayout className={`skeleton ${className || ''}`}>
         <ContainerInputComponent>
           <p className="skeleton"></p>
           <InputContainer className="skeleton" />
@@ -200,6 +200,11 @@ const InputLayout = styled(SkeletonAnimation)`
     animation-name: ${isReadyAnim};
     animation-duration: 1.5s;
     animation-iteration-count: forwards;
+  }
+
+  &.withdrawCripto.skeleton{
+    max-width: calc(680px);
+    width: 100%;
   }
 
 `;

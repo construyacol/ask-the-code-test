@@ -23,6 +23,7 @@ const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/se
  
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
+
   return (
     <>
       {isEmpty(withdrawProvidersByName) ? (
@@ -140,7 +141,8 @@ export const CriptoView = (props) => {
         country: user.country,
       }
     }
-    if(current_wallet?.currency?.includes('eth')) {
+
+    if(withdrawData?.isEthereum) {
       const network_data = await getNetworkData()
       bodyRequest.data.network_data = network_data
       bodyRequest.data.cost_information.gas_limit = gas_limit

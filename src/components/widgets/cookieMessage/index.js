@@ -77,7 +77,7 @@ export default function CookieMessage(props) {
         <h3 className='fuente'>Actualización</h3>
         <br/>
         <p className="fuente">
-          Agregamos <strong>USDT</strong> en la red <span className="fuente2"><strong>TRC20</strong></span> y <span className="fuente2"><strong>ERC20</strong></span> en tu Billetera Digital para que puedas realizar depósitos, retiros e intercambios. 🇨🇴🌎
+          Agregamos <strong>USDT</strong> en la red <strong>TRON</strong> <span className="fuente2">(TRC20)</span> y <strong>ETHEREUM</strong> <span className="fuente2">(ERC20)</span> en tu Billetera Digital para que puedas realizar depósitos, retiros e intercambios. 🇨🇴🌎
         </p>
         <br/>
         <div className={styles["cookie-button-container"]}>
