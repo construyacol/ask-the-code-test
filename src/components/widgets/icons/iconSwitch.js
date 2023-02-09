@@ -133,6 +133,8 @@ const NewAccount = loadable(() => import("./").then(getExportByName("NewAccount"
 const CreateRefCode = loadable(() => import("./").then(getExportByName("CreateRefCode")));
 
 const QRCode = loadable(() => import("./").then(getExportByName("QRCode")));
+const Usdc = loadable(() => import("./").then(getExportByName("Usdc")));
+
 const AuthFactor = loadable(() => import("./").then(getExportByName("AuthFactor")));
 const Ecuador = loadable(() =>
   import("./flags").then(getExportByName("Ecuador"))
@@ -281,6 +283,9 @@ class IconSwitch extends Component {
         );
       case "logout":
         return <LogOut {...props} />;
+      case "usdc":
+      case "USDC":
+        return <Usdc {...props} />;
       case "usdt":
       case "FAUT":
       case "faut":
