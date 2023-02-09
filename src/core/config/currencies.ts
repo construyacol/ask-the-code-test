@@ -157,14 +157,30 @@ export const CURRENCIES = {
     usdt:{
         prod:'usdt',
         test:'usdt_testnet',
-        prodName:'Usdt',
-        testName:'Usdt Test',
+        prodName:'USDT',
+        testName:'USDT Test',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 4,
         }),
         prod_fee:'usdt_fee',
         test_fee:'fau_testnet_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 4,
+        })
+    },
+    usdc:{
+        prod:'usdc',
+        test:'usdc_testnet',
+        prodName:'USDC',
+        testName:'USDC Test',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_DOWN,
+            DECIMAL_PLACES: 4,
+        }),
+        prod_fee:'usdc_fee',
+        test_fee:'usdc_testnet_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_DOWN,
             DECIMAL_PLACES: 4,
@@ -237,6 +253,10 @@ const CURRENCY_CONFIG = {
 
     [CURRENCIES.usdt.prod]: CURRENCIES.usdt.currencyConfig,
     [CURRENCIES.usdt.test]: CURRENCIES.usdt.currencyConfig,
+
+    [CURRENCIES.usdc.prod]: CURRENCIES.usdc.currencyConfig,
+    [CURRENCIES.usdc.test]: CURRENCIES.usdc.currencyConfig,
+
 
     [CURRENCIES.bnb.prod]: CURRENCIES.bnb.currencyConfig,
     [CURRENCIES.bnb.test]: CURRENCIES.bnb.currencyConfig,
