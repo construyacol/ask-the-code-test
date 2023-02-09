@@ -30,6 +30,8 @@ import { StageSkeleton } from '../stageManager'
 import { formatToCurrency } from '../../../../utils/convert_currency'
 import { ApiPostCreateDeposit, selectProviderData } from './api'
 import DepositCostComponent from './depositCostStage'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
+
 
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 
@@ -65,7 +67,7 @@ const {
 } = stageManager
 
 // setCreateAccount
-
+ 
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
     setStageStatus(null)
@@ -100,13 +102,13 @@ const {
     setLoading(false)
   }
 
-  const stageComponents = {
-    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
-  }
- 
-  const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
+  // const stageComponents = {
+  //   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
+  //   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
+  //   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
+  // }
+  
+  // const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
   
   const ButtonComponent = () => (
     <ButtonContainers>
@@ -119,11 +121,18 @@ const {
     </ButtonContainers>
   )
 
+  const STAGE_COMPONENTS = {
+    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
+  }
+
 
   return(
-    <>
-    
-        <RenderStageComponent
+    <>  
+        <RenderSwitchComponent
+          STAGE_COMPONENTS={STAGE_COMPONENTS}
+          component={stageData?.key}
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
@@ -133,7 +142,7 @@ const {
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
-        </RenderStageComponent>
+        </RenderSwitchComponent>
         
         <StatusPanelComponent>
           <StatusHeaderContainer>

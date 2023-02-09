@@ -110,6 +110,8 @@ const Accepeted = loadable(() =>
   import("./").then(getExportByName("Accepeted"))
 ); 
 const SwapCamera = loadable(() => import("./").then(getExportByName("SwapCamera")));
+const Pse = loadable(() => import("./").then(getExportByName("PSE")));
+
 const Handshake = loadable(() => import("./").then(getExportByName("Handshake")));
 const Search = loadable(() => import("./").then(getExportByName("Search")));
 const Ethereum = loadable(() => import("./").then(getExportByName("Ethereum")));
@@ -188,6 +190,9 @@ class IconSwitch extends Component {
     const { icon } = props;
     // console.log('||||||||||||||| props ICON SWICH::', props)
     switch (icon) {
+      case "pse":
+      case "PSE":
+        return <Pse {...props} />; 
       case "tron":
       case "trx":
       case "tron_testnet":

@@ -11,9 +11,9 @@ import {
 export const FIAT_DEPOSIT_TYPES = {
   FORM:"fiatDeposit",
   STAGES:{
-    SOURCE:"depositCost",
-    AMOUNT:"depositAmount",
-    PROVIDER:"depositProvider"
+    // SOURCE:"depositCost",
+    // AMOUNT:"depositAmount", 
+    PROVIDER:"depositAccount"
   }
 }
 
@@ -26,28 +26,27 @@ const STAGES = {
       defaultMessage:"",
     }
   },
-  [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
-    uiName:"¿Cómo quieres depositar?",
-    key:FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE,
-    uiType:"select",
-    "settings":{
-      defaultMessage:"",
-    }
-  },
-  [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
-    uiName:"¿Cuanto quieres depositar?",
-    key:FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT,
-    uiType:"text",
-    "settings":{
-      defaultMessage:"",
-      successPattern:/[0-9]/g,
-      errors:[ 
-          { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
-      ],
-      // label:"Nacionalidad del documento:",
-      placeholder:"Escribe la cantidad",
-    }
-  }
+  // [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
+  //   uiName:"¿Cómo quieres depositar?",
+  //   key:FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE,
+  //   uiType:"select",
+  //   "settings":{
+  //     defaultMessage:"",
+  //   }
+  // },
+  // [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
+  //   uiName:"¿Cuanto quieres depositar?",
+  //   key:FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT,
+  //   uiType:"text",
+  //   "settings":{
+  //     defaultMessage:"",
+  //     successPattern:/[0-9]/g,
+  //     errors:[ 
+  //         { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+  //     ],
+  //     placeholder:"Escribe la cantidad",
+  //   }
+  // }
 } 
 
 
@@ -121,19 +120,20 @@ export const DEPOSIT_COSTS = {
 
 
 export const selectProviderData = createSelector(
-  (depositProvider) => depositProvider,
-  (depositProvider) => {
-    if(!depositProvider)return [ null, null ];
-    const _depositProvider = ["other_bank"].includes(depositProvider?.value) ? depositProvider?.defaultProv : depositProvider;
-    if(!_depositProvider)return [ null, null ];
-    const costs =  _depositProvider?.provider?.costs
+  (depositAccount) => depositAccount,
+  (depositAccount) => {
+    if(!depositAccount)return [ null, null ];
+    const _depositAccount = ["other_bank"].includes(depositAccount?.value) ? depositAccount?.defaultProv : depositAccount;
+    if(!_depositAccount)return [ null, null ];
+    const costs =  _depositAccount?.costs
     let costList = {}
     Object.keys(costs).forEach(cost => {
       costList = {
         ...costList,
-        [cost]:DEPOSIT_COSTS[cost]
+        [cost]:DEPOSIT_COSTS[cost] || costs[cost]
       }
     })
-    return [ costList, _depositProvider ];
+    return [ costList, _depositAccount ];
   }
 );
+ 

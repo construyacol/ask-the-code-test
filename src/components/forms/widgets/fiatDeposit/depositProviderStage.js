@@ -24,7 +24,7 @@ function DepositProviderComponent({
   }){  
 
     const { isMovilViewport } = useViewport();
-    const [ depositProviders ] = useSelector((state) => selectDepositProviders(state));
+    const [ depositAccounts ] = useSelector((state) => selectDepositProviders(state));
     // const actions = useActions()
 
     const selectProvider = (provider) => {
@@ -48,7 +48,7 @@ function DepositProviderComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentWallet])
 
-    console.log('DEPOSIT_PROVIDER => ', props)
+    console.log('DEPOSIT_PROVIDER => ', depositAccounts)
 
 
     return(
@@ -63,15 +63,15 @@ function DepositProviderComponent({
               <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
               <SelectListContainer>
                 {
-                  depositProviders && Object.keys(depositProviders).map((key, index) => {
-                    const isSelected = [depositProviders[key]?.value].includes(state[stageData?.key]?.value)
+                  depositAccounts && Object.keys(depositAccounts).map((key, index) => {
+                    const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
                     return <ItemListComponent 
                       key={index} 
                       // className={`auxNumber`}
-                      itemList={depositProviders[key]}
+                      itemList={depositAccounts[key]}
                       // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                       firstIndex={index === 0}
-                      lastIndex={(Object.keys(depositProviders)?.length - 1) === index}
+                      lastIndex={(Object.keys(depositAccounts)?.length - 1) === index}
                       isSelectedItem={isSelected}
                       isMovilViewport={isMovilViewport}
                       handleAction={selectProvider}
@@ -85,7 +85,7 @@ function DepositProviderComponent({
                     icon:"bank",
                     uiName:"Otro banco/servicio",
                     Icon:AiFillBank,
-                    defaultProv:depositProviders[Object.keys(depositProviders).at(0)]
+                    defaultProv:depositAccounts && depositAccounts[Object.keys(depositAccounts).at(0)]
                   }}
                   isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
                   lastIndex
@@ -103,25 +103,24 @@ function DepositProviderComponent({
 
 
   const selectDepositProviders = createSelector(
-    (state) => state.modelData.deposit_providers,
-    (deposit_providers) => {
-      if(!deposit_providers)return ; 
-      
-      let depositProviders = {}
-      Object.keys(deposit_providers).forEach(depProvKey => {
-        const depositProvider = deposit_providers[depProvKey];
-        if(["fiat"].includes(depositProvider?.currency_type)){
-          depositProviders = {
-            ...depositProviders,
-            [depositProvider?.provider?.name]:{
-              ...depositProvider,
-              uiName:depositProvider?.provider?.ui_name,
-              value:depositProvider?.provider?.name
+    (state) => state.modelData.depositAccounts,
+    (depositAccounts) => {
+      if(!depositAccounts)return [undefined]; 
+      let _depositAccounts = {}
+      Object.keys(depositAccounts).forEach(depAccountKey => {
+        const depositAccount = depositAccounts[depAccountKey];
+        if(["fiat"].includes(depositAccount?.currency_type)){
+          _depositAccounts = {
+            ..._depositAccounts,
+            [depositAccount?.name]:{
+              ...depositAccount,
+              uiName:depositAccount?.ui_name,
+              value:depositAccount?.name
             }
           }
         }
       })
 
-      return [ depositProviders ];
+      return [ _depositAccounts ];
     }
   );
