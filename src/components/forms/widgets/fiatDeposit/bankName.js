@@ -24,10 +24,8 @@ const BankNameListComponent = ({
   
     const onChange = (e) => {
       e.target.preventDefault && e.target.preventDefault();
-      console.log('onChange', e.target.value, validations[stageData.key])
       if(!validations[stageData.key]) return; 
       const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm});
-      console.log('stageData', _value, _status)
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }

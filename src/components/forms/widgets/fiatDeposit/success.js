@@ -32,6 +32,7 @@ import {
     SubTitle,
     Content
 } from '../success/styles'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
 
 
 
@@ -40,7 +41,8 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 const FiatDepositSuccess = ({ 
     actions, 
-    depositOrder 
+    depositOrder,
+    depositAccount
 }) => {
     
     const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit')
@@ -48,8 +50,6 @@ const FiatDepositSuccess = ({
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[depositOrder?.deposit_provider_id]);
     const { osDevice } = useSelector((state) => state?.ui);
     const [ amount, setAmount ] = useState([])
-
-    // const depositAccount = depositProvider?.depositAccount
 
     const closeModal = () => actions.renderModal(null)
     const finish = async () => {
@@ -70,6 +70,11 @@ const FiatDepositSuccess = ({
     }, [depositProvider])
 
     const provider = depositProvider?.provider
+
+    const STAGE_COMPONENTS = {
+        bank:BankSuccessDetail,
+        pse:PseSuccessDetail
+    }
 
     return(
         <OtherModalLayout
@@ -96,43 +101,18 @@ const FiatDepositSuccess = ({
                             </g>
                             </svg>
                         </div>
-                        <Title className="fuente">Depósito creado exitosamente</Title>
+                        <Title className="fuente">{`${depositAccount?.provider_type === 'pse' ? "Transfiere a tráves de PSE para completar tu depósito" : "Depósito creado exitosamente" }`}</Title>
                     </Header>
 
                     <Content>
 
-                        <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
-                        <ItemAccountContainer className={`_itemAccountContainer ${!provider ? 'skeleton' : ''}`}>
-                            <HeaderMainContainer>
-                                <IconAccount className="_iconSkeleton">
-                                    {
-                                        provider &&
-                                            <IconSwitch
-                                                icon={provider?.name}
-                                                size={35}
-                                            />
-                                    }
-                                </IconAccount>
-                                <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>{provider?.ui_name}</AccountLabel>
-                                    <CurrencyLabel>{provider?.account?.type?.type}</CurrencyLabel>
-                                </LabelContainer>
-                            </HeaderMainContainer>
-                            <MobileBalance>
-                                <HR/>
-                                <p className="fuente2">{provider?.account?.account_id?.account_id}</p>
-                                <p className="fuente _balanceTextLab"># de cuenta</p>
-                            </MobileBalance>
-                        </ItemAccountContainer>
+                    <RenderSwitchComponent
+                        STAGE_COMPONENTS={STAGE_COMPONENTS}
+                        component={depositAccount?.provider_type}
+                        depProvDetail={depProvDetail}
+                        provider={provider}
 
-                        <AccountMetaData>
-                            <ContentDetail>
-                                <DetailTemplateComponent
-                                    skeletonItems={3}
-                                    items={depProvDetail}
-                                />
-                            </ContentDetail>
-                        </AccountMetaData>
+                    />
 
                         <SubTitle className="fuente">Datos del depósito</SubTitle>
                         <ContentDetail className="onBottom">
@@ -150,19 +130,15 @@ const FiatDepositSuccess = ({
                             </p>
                         </TotalAmount>
                     </Content>
-
-
                     <ButtonContainer className={`${osDevice} buttonContainer`}>
                         <ControlButton
                             // id={idSubmitButton}
                             // loader={loader}
                             formValidate
-                            label="Finalizar"
+                            label={`${depositAccount?.provider_type === 'pse' ? 'Ir a PSE' : 'Finalizar'}`}
                             handleAction={finish}
                         />
                     </ButtonContainer>
-
-
                 </SuccessViewContent>
             </SuccessViewLayout>
         </OtherModalLayout>
@@ -172,4 +148,69 @@ const FiatDepositSuccess = ({
 export default FiatDepositSuccess
  
 
+const PseSuccessDetail = () => {
 
+    return(
+        <>
+            <SubTitle className="fuente">Tienes 20 minutos para completar el proceso</SubTitle>
+            <ItemAccountContainer className={`_itemAccountContainer `}>
+                <HeaderMainContainer>
+                    <IconAccount className="_iconSkeleton">
+                        <IconSwitch
+                            icon={"pse"}
+                            size={40}
+                        />
+                    </IconAccount>
+                    <LabelContainer className="_header__labelContainer">
+                        <AccountLabel>PSE</AccountLabel>
+                    </LabelContainer>
+                </HeaderMainContainer>
+            </ItemAccountContainer>
+        </>
+    )
+}
+
+
+
+const BankSuccessDetail = ({
+    provider,
+    depProvDetail
+}) => {
+
+    return(
+        <>
+            <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
+            <ItemAccountContainer className={`_itemAccountContainer ${!provider ? 'skeleton' : ''}`}>
+                <HeaderMainContainer>
+                    <IconAccount className="_iconSkeleton">
+                        {
+                            provider &&
+                                <IconSwitch
+                                    icon={provider?.name}
+                                    size={35}
+                                />
+                        }
+                    </IconAccount>
+                    <LabelContainer className="_header__labelContainer">
+                        <AccountLabel>{provider?.ui_name}</AccountLabel>
+                        <CurrencyLabel>{provider?.account?.type?.type}</CurrencyLabel>
+                    </LabelContainer>
+                </HeaderMainContainer>
+                <MobileBalance>
+                    <HR/>
+                    <p className="fuente2">{provider?.account?.account_id?.account_id}</p>
+                    <p className="fuente _balanceTextLab"># de cuenta</p>
+                </MobileBalance>
+            </ItemAccountContainer>
+
+            <AccountMetaData>
+                <ContentDetail>
+                    <DetailTemplateComponent
+                        skeletonItems={3}
+                        items={depProvDetail}
+                    />
+                </ContentDetail>
+            </AccountMetaData>
+        </>
+    )
+}

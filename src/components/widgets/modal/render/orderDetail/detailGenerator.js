@@ -30,6 +30,8 @@ export const useDetailParseData = (order, detailType) => {
     const isPending = order.state === 'pending'
     switch (order.currency_type) {
       case "fiat":
+        console.log('order', order)
+        debugger
         let depositProviderInfo = [];
         if (deposit_providers && deposit_providers[order.deposit_provider_id]) {
           const depositProvider = deposit_providers[order.deposit_provider_id];

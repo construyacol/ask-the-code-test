@@ -8,8 +8,7 @@ import { AiFillBank } from "react-icons/ai";
 import { isEmpty } from 'lodash'
 import { P } from 'components/widgets/typography';
 import withCoinsendaServices from 'components/withCoinsendaServices'
-
-
+import { serveModelsByCustomProps } from 'selectors'
 
 function ProviderComponent({ 
     stageManager:{ 
@@ -25,15 +24,13 @@ function ProviderComponent({
 
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
-    // const actions = useActions()
+    const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
+    
+    // const actions = useActions() 
 
     const selectProvider = (provider) => {
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
-    }
-
-    const createDepositProvider = async(wallet) => {
-      await props.coinsendaServices.createAndInsertDepositProvider(wallet)
     }
 
     useEffect(() => {
@@ -42,11 +39,16 @@ function ProviderComponent({
     }, [])
 
     useEffect(() => {
-      if(currentWallet && isEmpty(currentWallet?.dep_prov)){
-        createDepositProvider(currentWallet)
-      }
+      (async() => {
+        if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
+        for (const depositAccountName in depositAccounts) {
+          if(!depositProvidersByName[depositAccountName]){
+            await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          }
+        }
+      })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentWallet])
+    }, [depositAccounts, depositProvidersByName])
 
     return(
       <>

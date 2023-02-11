@@ -134,9 +134,7 @@ export const createNextStages = async({
       } 
     }
   })
-
 }
-
 
 export const FIAT_DEPOSIT_COMPONENTS = {
   wrapperComponent:{
@@ -152,23 +150,20 @@ export const ApiGetOnFiatDepositStages = async() => {
   return STAGES
 }
 
-
-
 export const FIAT_DEPOSIT_DEFAULT_STATE = {
   // [FIAT_DEPOSIT_TYPES.FORM]:{
   //   currency:{}
   // }
 }
 
-export const ApiPostCreateDeposit = async({ 
+export const ApiPostCreateBankDeposit = async({ 
   state:{
     depositAmount,
     depositCost
   }, 
   currentWallet, 
   depositProvider 
-}) => {
-
+}) => { 
   let body = {
     data:{
       account_id:currentWallet?.id,
@@ -180,8 +175,32 @@ export const ApiPostCreateDeposit = async({
       deposit_provider_id:depositProvider?.id
     }
   }
+  return await mainService.createDeposit(body);
+}
 
-  console.log('|||||||||||||  ApiPostCreateDeposit ===> ', body)
+
+export const ApiPostCreatePseDeposit = async({ 
+  state:{
+    depositAmount,
+    person_type,
+    bank_name
+  }, 
+  currentWallet,
+  depositProvider
+}) => { 
+  let body = {
+    data:{
+      account_id:currentWallet?.id,
+      amount:parseOnlyNumbers(depositAmount),
+      comment:"",
+      person_type:person_type?.value,
+      bank_name,
+      // cost_id:depositCost?.value,
+      country:currentWallet?.country,
+      currency:currentWallet?.currency,
+      deposit_provider_id:depositProvider?.id
+    }
+  }
   return await mainService.createDeposit(body);
 }
 

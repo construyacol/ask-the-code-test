@@ -28,7 +28,7 @@ import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widg
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
 import { formatToCurrency } from '../../../../utils/convert_currency'
-import { ApiPostCreateDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
+import { ApiPostCreateBankDeposit, ApiPostCreatePseDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
 import DepositCostComponent from './depositCostStage'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
 import { selectDepositProvsByNetwork } from 'selectors'
@@ -79,10 +79,6 @@ const {
     if(currentStage <= (Object.keys(initialStages).length - 1)){
       await createNextStages({stageData, state, setDataForm})
     }
-    // if(currentStage<1){
-    //   setLoading(true)
-    //   setLoading(false)
-    // } 
     nextStage()
   }
 
@@ -91,23 +87,35 @@ const {
     if(!Element) return;
     const FiatDepositSuccess = Element.default
     actions.success_sound();
+    // console.log('data', data)
+    // debugger
     actions.renderModal(() => 
     <FiatDepositSuccess 
       actions={actions}
       depositOrder={data}
+      depositAccount={depositAccount}
     />);
   }
 
+
   const createFiatDeposit = async() => {
+
+    const depositMethods = {
+      pse:ApiPostCreatePseDeposit,
+      bank:ApiPostCreateBankDeposit
+    }
+
     setLoading(true) 
     const depositProvider = depositProviders[depositAccount?.provider_type]
-    const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider  })
+    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider })
     if(error){
       setLoading(false)
       return toastMessage(error?.message, "error");
     }
     await renderSuccessComponent(data)
     setLoading(false)
+
+    return 
   }
 
   const ButtonComponent = () => (
@@ -127,12 +135,9 @@ const {
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent
-    
   }
   
   
-  // console.log('dataForm', dataForm, stageData?.key)
-
   return(
     <>  
         <RenderSwitchComponent
@@ -157,7 +162,8 @@ const {
             <StatusContent
               state={state}
               stageManager={stageManager}
-              depositProvider={depositAccount}
+              depositAccount={depositAccount}
+              dataForm={dataForm}
             />
           </StatusHeaderContainer>
           {
@@ -180,34 +186,20 @@ export default NewFiatDepositComponent
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
-const StatusContent = ({ state, stageManager, depositProvider }) => {
+const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
 
-  const { depositCost, depositAmount } = state
-  const [ cost, setCost ] = useState()
-  const [ total, setTotal ] = useState()
-
-  useEffect(() => {
-    if(depositProvider && depositCost){
-      let costs = depositProvider?.costs
-      let { currency } = depositProvider
-      let cost = getCost({ costs, currency, depositCost })  
-      if(!cost)return;
-      setCost(cost.toFormat())
-      let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
-      _depositAmount && setTotal(_depositAmount?.plus(cost)?.toFormat())
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositProvider, depositCost, depositAmount])
-
+  const STAGE_COMPONENTS = {
+    pse:PseResumeComponent,
+    bank:BankResumeComponent
+  }
 
   return(
     <StatusContainer>
       <ItemContainer>
           <LeftText className="fuente">Origen:</LeftText>
           <MiddleSection />
-
           <ContentRight>
-            <RightText className={`${depositProvider ? 'fuente' : 'skeleton'}`}>
+            <RightText className={`${depositAccount ? 'fuente' : 'skeleton'}`}>
                 {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
               </RightText>
             {
@@ -219,8 +211,105 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
             }
           </ContentRight>
       </ItemContainer>
-
+      
       {
+        depositAccount &&
+        <RenderSwitchComponent
+            STAGE_COMPONENTS={STAGE_COMPONENTS}
+            component={depositAccount?.provider_type}
+            stageManager={stageManager}
+            state={state}
+            depositAccount={depositAccount}
+            dataForm={dataForm}
+        />
+        
+      }
+
+    </StatusContainer>
+  )
+}
+
+
+const PseResumeComponent = ({
+  stageManager,
+  state,
+  depositAccount,
+  dataForm
+}) =>{
+
+
+  // console.log('PseResumeComponent', state)
+
+  return(
+    <>
+       {
+        stageManager?.currentStage > 0 &&
+        <>
+          <p className="fuente" style={{marginBottom:"5px"}}>
+            <strong>{state?.person_type?.uiName}</strong>
+          </p>
+          {
+            state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] &&
+            <ItemContainer>
+              <LeftText className="fuente">Banco:</LeftText>
+              <MiddleSection />
+              <ContentRight>
+                <RightText className={`fiatDeposit ${state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] ? 'fuente' : 'skeleton'}`}>
+                    {dataForm?.stages[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]?.selectList[state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]]?.uiName || 'skeleton --------'} 
+                </RightText>
+                  {
+                    state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] &&
+                    <IconSwitch
+                        icon={state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]}
+                        size={20}
+                      />
+                  }
+              </ContentRight>
+            </ItemContainer>
+          }
+          {
+            state?.depositAmount &&
+            <ItemContainer>
+                <LeftText className="fuente">Cantidad:</LeftText>
+                <MiddleSection />
+                <RightText className={`${state?.depositAmount ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${state?.depositAmount} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
+        </>
+      }
+    </>
+  )
+}
+
+
+const BankResumeComponent = ({ 
+  stageManager,
+  state,
+  depositAccount
+}) => {
+
+  const { depositCost, depositAmount } = state
+  const [ cost, setCost ] = useState()
+  const [ total, setTotal ] = useState()
+
+  useEffect(() => {
+    if(depositAccount && depositCost){
+      let costs = depositAccount?.costs
+      let { currency } = depositAccount
+      let _cost = getCost({ costs, currency, depositCost })  
+      if(!_cost)return;
+      setCost(_cost.toFormat())
+      let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
+      _depositAmount && setTotal(_depositAmount?.plus(_cost)?.toFormat())
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositAccount, depositCost, depositAmount])
+
+  return(
+    <>
+       {
         stageManager?.currentStage > 0 &&
         <>
           <p className="fuente" style={{marginBottom:"5px"}}>
@@ -258,8 +347,9 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
           }
         </>
       }
-    </StatusContainer>
+    </>
   )
+
 }
 
 
