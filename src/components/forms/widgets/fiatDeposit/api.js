@@ -8,46 +8,134 @@ import {
   parseOnlyNumbers,
 } from '../kyc/utils'
 
+
+import { 
+  createStage, 
+  recursiveAddList
+} from 'components/forms/utils'
+
 export const FIAT_DEPOSIT_TYPES = {
   FORM:"fiatDeposit",
   STAGES:{
-    // SOURCE:"depositCost",
-    // AMOUNT:"depositAmount", 
-    PROVIDER:"depositAccount"
+    SOURCE:"depositCost",
+    BANK_NAME:"bank_name",
+    AMOUNT:"depositAmount", 
+    PROVIDER:"depositAccount",
+    PERSON_TYPE:"person_type"
   }
 }
 
-const STAGES = {
-  [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
-    uiName:"¿Qué servicio utilizarás para depositar?",
-    key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
+const DEFAULT_DEPOSIT_AMOUNT = {
+  uiName:"¿Cuanto quieres depositar?",
+  key:FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT,
+  uiType:"text",
+  "settings":{
+    defaultMessage:"",
+    successPattern:/[0-9]/g,
+    errors:[ 
+        { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+    ],
+    placeholder:"Escribe la cantidad",
+  }
+}
+
+
+const PSE_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:{
+    uiName:"Elije tu banko papee",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME,
     uiType:"select",
     "settings":{
       defaultMessage:"",
     }
   },
-  // [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
-  //   uiName:"¿Cómo quieres depositar?",
-  //   key:FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE,
-  //   uiType:"select",
-  //   "settings":{
-  //     defaultMessage:"",
-  //   }
-  // },
-  // [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
-  //   uiName:"¿Cuanto quieres depositar?",
-  //   key:FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT,
-  //   uiType:"text",
-  //   "settings":{
-  //     defaultMessage:"",
-  //     successPattern:/[0-9]/g,
-  //     errors:[ 
-  //         { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
-  //     ],
-  //     placeholder:"Escribe la cantidad",
-  //   }
-  // }
+  [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
+
+}
+
+const BANK_DEFAULT_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
+    ui_type:"select"
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
+    ui_type:"text"
+  }
+}
+
+
+const BANK_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
+    uiName:"¿Cómo quieres depositar?",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+    }
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
+}
+
+const DEPOSIT_TYPE_STAGES = {
+  pse:PSE_STAGES,
+  bank:BANK_STAGES
+}
+
+const STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
+    uiName:"¿Qué banco ó servicio utilizarás para depositar?",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+    }
+  }  
 } 
+
+const despositAccountInfoNeeded = (depositAccount) => {
+  const providerTypes = {
+    pse:{
+      ...depositAccount.info_needed,
+      [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
+        ui_type:"text"
+      }
+    },
+    bank:BANK_DEFAULT_STAGES
+  }
+  return providerTypes[depositAccount.provider_type]
+}
+
+export const createNextStages = async({ 
+  stageData, 
+  state,
+  setDataForm 
+}) => {
+ 
+  if(!state[stageData?.key])return;
+  const providerType = state[stageData?.key]?.provider_type || 'bank'
+  const apiStages = despositAccountInfoNeeded(state[stageData?.key])
+  let stages = {} 
+  console.log('apiStages', apiStages)
+  debugger
+  for (const stage of Object.keys(apiStages)) { 
+    stages = {
+      ...stages,
+      [stage]:await createStage(apiStages[stage], DEPOSIT_TYPE_STAGES[providerType][stage], stage)
+    }
+  } 
+ 
+  stages = await recursiveAddList(stages, apiStages)
+  
+  setDataForm(prevState => {
+    return { 
+      ...prevState,
+      stages:{
+        ...STAGES,
+        ...stages
+      } 
+    }
+  })
+
+}
 
 
 export const FIAT_DEPOSIT_COMPONENTS = {
@@ -64,6 +152,8 @@ export const ApiGetOnFiatDepositStages = async() => {
   return STAGES
 }
 
+
+
 export const FIAT_DEPOSIT_DEFAULT_STATE = {
   // [FIAT_DEPOSIT_TYPES.FORM]:{
   //   currency:{}
@@ -76,7 +166,8 @@ export const ApiPostCreateDeposit = async({
     depositCost
   }, 
   currentWallet, 
-  depositProvider }) => {
+  depositProvider 
+}) => {
 
   let body = {
     data:{
@@ -90,7 +181,7 @@ export const ApiPostCreateDeposit = async({
     }
   }
 
-  // console.log('|||||||||||||  ApiPostCreateDeposit ===> ', body)
+  console.log('|||||||||||||  ApiPostCreateDeposit ===> ', body)
   return await mainService.createDeposit(body);
 }
 
@@ -122,6 +213,8 @@ export const DEPOSIT_COSTS = {
 export const selectProviderData = createSelector(
   (depositAccount) => depositAccount,
   (depositAccount) => {
+    // console.log('selectProviderData', depositAccount)
+    // debugger
     if(!depositAccount)return [ null, null ];
     const _depositAccount = ["other_bank"].includes(depositAccount?.value) ? depositAccount?.defaultProv : depositAccount;
     if(!_depositAccount)return [ null, null ];

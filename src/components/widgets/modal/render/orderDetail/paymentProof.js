@@ -169,10 +169,8 @@ export const PaymentProof = ({ payload }) => {
   const getPaymentProof = async (currentOrder) => {
     let providerId = providerKeyId[tx_path]
     let provider = providers[tx_path][currentOrder[providerId]]
-    console.log('currentOrder', BLOCKCHAIN_EXPLORER_URL[currentOrder?.currency][provider?.provider_type])
-    // debugger
+    console.log('currentOrder', currentOrder?.currency_type === "crypto" && BLOCKCHAIN_EXPLORER_URL[currentOrder?.currency][provider?.provider_type])
     let blockchainUri = (provider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
-    
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;
       setImgProof(

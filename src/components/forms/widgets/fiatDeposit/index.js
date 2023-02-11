@@ -17,7 +17,7 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 // import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
-import DepositProviderComponent from './depositProviderStage' 
+import ProviderComponent from './depositProviderStage' 
 import { useSelector } from "react-redux";
 // import { createSelector } from "reselect";
 // import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
@@ -28,27 +28,30 @@ import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widg
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
 import { formatToCurrency } from '../../../../utils/convert_currency'
-import { ApiPostCreateDeposit, selectProviderData } from './api'
+import { ApiPostCreateDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
 import DepositCostComponent from './depositCostStage'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
+import { selectDepositProvsByNetwork } from 'selectors'
+import PersonTypeComponent from './personType'
 
 
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 
-const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
+const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
-  // const params = useParams()
-
-  const [ costList, depositProvider ] = useSelector(() => selectProviderData(handleState?.state?.depositProvider));
-
-  const walletInfo = useWalletInfo()
+  const { state } = handleState
   
+  const walletInfo = useWalletInfo()
   const { currentWallet } = walletInfo
+  const [ costList, depositAccount ] = useSelector(() => selectProviderData(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]));
+  const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.currency));
+
+  
   
   const stageManager = useStage(
     // create the form stages
@@ -69,12 +72,16 @@ const {
 // setCreateAccount
  
   const nextStep = async() => {
-    if(stageStatus !== 'success'){return}
+    if(stageStatus !== 'success'){return} 
     setStageStatus(null)
+    const initialStages = await ApiGetOnFiatDepositStages()
+    if(currentStage <= (Object.keys(initialStages).length - 1)){
+      await createNextStages({stageData, state, setDataForm})
+    }
     // if(currentStage<1){
     //   setLoading(true)
     //   setLoading(false)
-    // }
+    // } 
     nextStage()
   }
 
@@ -91,9 +98,9 @@ const {
   }
 
   const createFiatDeposit = async() => {
-    setLoading(true)
-    const { state } = handleState
-    const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider })
+    setLoading(true) 
+    const depositProvider = depositProviders[depositAccount?.provider_type]
+    const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider  })
     if(error){
       setLoading(false)
       return toastMessage(error?.message, "error");
@@ -102,14 +109,6 @@ const {
     setLoading(false)
   }
 
-  // const stageComponents = {
-  //   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-  //   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
-  //   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
-  // }
-  
-  // const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
-  
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
@@ -123,10 +122,12 @@ const {
 
   const STAGE_COMPONENTS = {
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent
   }
-
+  
+  // console.log('dataForm', dataForm, stageData?.key)
 
   return(
     <>  
@@ -137,7 +138,7 @@ const {
           handleState={handleState}
           handleDataForm={handleDataForm}
           costList={costList}
-          depositProvider={depositProvider}
+          depositAccount={depositAccount}
           {...props}
           {...walletInfo}
         >
@@ -150,9 +151,9 @@ const {
               <h1 className="fuente">Resumen del depósito</h1>
             </TitleContainer>
             <StatusContent
-              state={handleState?.state}
+              state={state}
               stageManager={stageManager}
-              depositProvider={depositProvider}
+              depositProvider={depositAccount}
             />
           </StatusHeaderContainer>
           {
@@ -170,7 +171,7 @@ const {
 }
  
 
-export default NewWAccountComponent
+export default NewFiatDepositComponent
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
@@ -183,9 +184,10 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
 
   useEffect(() => {
     if(depositProvider && depositCost){
-      let costs = depositProvider?.provider?.costs
+      let costs = depositProvider?.costs
       let { currency } = depositProvider
       let cost = getCost({ costs, currency, depositCost })  
+      if(!cost)return;
       setCost(cost.toFormat())
       let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
       _depositAmount && setTotal(_depositAmount?.plus(cost)?.toFormat())
@@ -202,12 +204,12 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
 
           <ContentRight>
             <RightText className={`${depositProvider ? 'fuente' : 'skeleton'}`}>
-                {state?.depositProvider?.uiName?.toLowerCase() || 'skeleton --------'} 
+                {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
               </RightText>
             {
-              (state?.depositProvider && !["other_bank"].includes(state?.depositProvider?.value)) &&
+              (state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER] && !["other_bank"].includes(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER].value)) &&
                 <IconSwitch
-                    icon={state?.depositProvider?.value}
+                    icon={state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.value}
                     size={20}
                   />
             }

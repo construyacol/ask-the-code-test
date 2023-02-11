@@ -19,10 +19,10 @@ export default function AmountComponent ({
     handleState:{ state, setState },
     handleDataForm:{ dataForm },
     children,
-    depositProvider
+    depositAccount
   }) {
     
-    const { min_amount, currency, costs } = depositProvider?.provider
+    const { min_amount, currency, costs } = depositAccount
     const [ minAmount, setMinAmount] = useState(min_amount)
     // const { depositCost } = state
     // const { isMovilViewport } = useViewport();
@@ -35,7 +35,7 @@ export default function AmountComponent ({
         ...stageData, 
         state,  
         dataForm, 
-        depositProvider
+        depositAccount
       });
       e.target.value = _value
       setState(prevState => ({ ...prevState, [stageData?.key]: _value }))
@@ -43,13 +43,13 @@ export default function AmountComponent ({
     }
 
     const handleMinAmount = () => {
-      if(!depositProvider) return;
+      if(!depositAccount) return;
       let minAmount = getMinAmount(min_amount, { currency, costs });
       depositAmountOnChange({target:{value:minAmount.toFormat()}});
     }
 
     useEffect(() => {
-      if(depositProvider){
+      if(depositAccount){
         let minAmount = getMinAmount(min_amount, { currency, costs });
         setMinAmount(minAmount)
       }

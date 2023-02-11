@@ -11,7 +11,7 @@ import withCoinsendaServices from 'components/withCoinsendaServices'
 
 
 
-function DepositProviderComponent({ 
+function ProviderComponent({ 
     stageManager:{ 
       stageData,
       setStageStatus
@@ -24,7 +24,7 @@ function DepositProviderComponent({
   }){  
 
     const { isMovilViewport } = useViewport();
-    const [ depositAccounts ] = useSelector((state) => selectDepositProviders(state));
+    const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     // const actions = useActions()
 
     const selectProvider = (provider) => {
@@ -47,9 +47,6 @@ function DepositProviderComponent({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentWallet])
-
-    console.log('DEPOSIT_PROVIDER => ', depositAccounts)
-
 
     return(
       <>
@@ -99,10 +96,9 @@ function DepositProviderComponent({
     )
   }
 
-  export default withCoinsendaServices(DepositProviderComponent)
+  export default withCoinsendaServices(ProviderComponent)
 
-
-  const selectDepositProviders = createSelector(
+  const selectDepositAccounts = createSelector(
     (state) => state.modelData.depositAccounts,
     (depositAccounts) => {
       if(!depositAccounts)return [undefined]; 
@@ -120,7 +116,6 @@ function DepositProviderComponent({
           }
         }
       })
-
       return [ _depositAccounts ];
     }
   );
