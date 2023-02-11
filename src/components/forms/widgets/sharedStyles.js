@@ -272,6 +272,9 @@ export const OptionInputContainer = styled.div`
   display:grid;
   row-gap: 24px;
   grid-template-rows:auto 1fr;
+  .pse p{
+    text-transform: uppercase;
+  }
 `
 
 export const Title = styled.h1`

@@ -33,6 +33,7 @@ import DepositCostComponent from './depositCostStage'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
 import { selectDepositProvsByNetwork } from 'selectors'
 import PersonTypeComponent from './personType'
+import BankNameListComponent from './bankName'
 
 
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
@@ -124,8 +125,11 @@ const {
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent
+    
   }
+  
   
   // console.log('dataForm', dataForm, stageData?.key)
 

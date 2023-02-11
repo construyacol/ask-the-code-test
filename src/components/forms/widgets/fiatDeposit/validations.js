@@ -5,6 +5,7 @@ import {
 } from '../kyc/utils'
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import { FIAT_DEPOSIT_TYPES } from './api' 
+import { selectListValidator } from '../kyc/validations'
 
   export const getCost = ({ costs, currency, depositCost }) => {
     let cost = costs[depositCost?.value]?.fixed;
@@ -58,8 +59,10 @@ import { FIAT_DEPOSIT_TYPES } from './api'
     return [ _value.toFormat(), status ]
   }
 
-  const fiatWithdrawValidations = {
+  const fiatDepositValidations = {
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:amountValidation,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:selectListValidator,
   }
 
-export default fiatWithdrawValidations
+export default fiatDepositValidations
+

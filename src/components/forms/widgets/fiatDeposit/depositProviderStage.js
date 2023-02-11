@@ -64,7 +64,7 @@ function ProviderComponent({
                     const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
                     return <ItemListComponent 
                       key={index} 
-                      // className={`auxNumber`}
+                      className={`${depositAccounts[key]?.value}`}
                       itemList={depositAccounts[key]}
                       // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                       firstIndex={index === 0}

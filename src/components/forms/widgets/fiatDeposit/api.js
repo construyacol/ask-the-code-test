@@ -7,7 +7,7 @@ import { createSelector } from "reselect";
 import {
   parseOnlyNumbers,
 } from '../kyc/utils'
-
+import ungapStructuredClone from '@ungap/structured-clone';
 
 import { 
   createStage, 
@@ -42,12 +42,13 @@ const DEFAULT_DEPOSIT_AMOUNT = {
 
 const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:{
-    uiName:"Elije tu banko papee",
+    uiName:"Elije el banco por el cual harás el pago",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME,
     uiType:"select",
     "settings":{
       defaultMessage:"",
-    }
+      placeholder:"Escribe el nombre de tu banco"
+  }
   },
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 
@@ -92,16 +93,17 @@ const STAGES = {
 } 
 
 const despositAccountInfoNeeded = (depositAccount) => {
+  const infoNeeded = ungapStructuredClone(depositAccount?.info_needed)
   const providerTypes = {
     pse:{
-      ...depositAccount.info_needed,
+      ...infoNeeded,
       [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
         ui_type:"text"
       }
     },
     bank:BANK_DEFAULT_STAGES
   }
-  return providerTypes[depositAccount.provider_type]
+  return providerTypes[depositAccount.provider_type] || BANK_DEFAULT_STAGES
 }
 
 export const createNextStages = async({ 
@@ -114,8 +116,6 @@ export const createNextStages = async({
   const providerType = state[stageData?.key]?.provider_type || 'bank'
   const apiStages = despositAccountInfoNeeded(state[stageData?.key])
   let stages = {} 
-  console.log('apiStages', apiStages)
-  debugger
   for (const stage of Object.keys(apiStages)) { 
     stages = {
       ...stages,
