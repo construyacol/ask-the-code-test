@@ -53,9 +53,7 @@ const UseTxState = (current_order_id) => {
   const withdraw_providers = useSelector((state) => state.modelData.withdrawProviders);
   const loader = useSelector((state) => state.isLoading.loader);
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state));
-  const currentOrder = useSelector((state) =>
-    selectCurrentOrder(state, current_order_id, params)
-  );
+  const currentOrder = useSelector((state) => selectCurrentOrder(state, current_order_id, params));
   const lastPendingOrderId = useSelector((state) =>
     selectLastPendingOrderId(state, current_order_id, params)
   );

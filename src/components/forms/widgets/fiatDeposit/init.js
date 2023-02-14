@@ -13,7 +13,7 @@ export default function NewFiatDepositComponent (props){
     
     const init = async() => {
       const _dataForm = await initStages(
-        {
+        { 
           formName: FIAT_DEPOSIT_TYPES.FORM
         }
       )

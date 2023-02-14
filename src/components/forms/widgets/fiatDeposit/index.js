@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer } from '../sharedStyles'
+// import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
@@ -17,7 +17,7 @@ import useToastMessage from "../../../../hooks/useToastMessage";
 // import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
-import DepositProviderComponent from './depositProviderStage' 
+import ProviderComponent from './depositProviderStage' 
 import { useSelector } from "react-redux";
 // import { createSelector } from "reselect";
 // import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
@@ -28,25 +28,31 @@ import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widg
 // import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
 import { formatToCurrency } from '../../../../utils/convert_currency'
-import { ApiPostCreateDeposit, selectProviderData } from './api'
+import { ApiPostCreateBankDeposit, ApiPostCreatePseDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
 import DepositCostComponent from './depositCostStage'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
+import { selectDepositProvsByNetwork } from 'selectors'
+import PersonTypeComponent from './personType'
+import BankNameListComponent from './bankName'
+
 
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 
-const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
+const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
-  // const params = useParams()
-
-  const [ costList, depositProvider ] = useSelector(() => selectProviderData(handleState?.state?.depositProvider));
-
-  const walletInfo = useWalletInfo()
+  const { state } = handleState
   
+  const walletInfo = useWalletInfo()
   const { currentWallet } = walletInfo
+  const [ costList, depositAccount ] = useSelector(() => selectProviderData(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]));
+  const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.currency));
+
+  
   
   const stageManager = useStage(
     // create the form stages
@@ -65,14 +71,14 @@ const {
 } = stageManager
 
 // setCreateAccount
-
+ 
   const nextStep = async() => {
-    if(stageStatus !== 'success'){return}
+    if(stageStatus !== 'success'){return} 
     setStageStatus(null)
-    // if(currentStage<1){
-    //   setLoading(true)
-    //   setLoading(false)
-    // }
+    const initialStages = await ApiGetOnFiatDepositStages()
+    if(currentStage <= (Object.keys(initialStages).length - 1)){
+      await createNextStages({stageData, state, setDataForm})
+    }
     nextStage()
   }
 
@@ -81,33 +87,33 @@ const {
     if(!Element) return;
     const FiatDepositSuccess = Element.default
     actions.success_sound();
+    // console.log('renderSuccessComponent', data)
+    // debugger
     actions.renderModal(() => 
     <FiatDepositSuccess 
       actions={actions}
-      depositOrder={data}
+      orderData={data}
+      depositAccount={depositAccount}
     />);
   }
 
   const createFiatDeposit = async() => {
-    setLoading(true)
-    const { state } = handleState
-    const { error, data } = await ApiPostCreateDeposit({ state, currentWallet, depositProvider })
+    const depositMethods = {
+      pse:ApiPostCreatePseDeposit,
+      bank:ApiPostCreateBankDeposit
+    }
+    setLoading(true) 
+    const depositProvider = depositProviders[depositAccount?.provider_type]
+    const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider })
     if(error){
       setLoading(false)
       return toastMessage(error?.message, "error");
     }
     await renderSuccessComponent(data)
     setLoading(false)
+    return 
   }
 
-  const stageComponents = {
-    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:DepositProviderComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent
-  }
- 
-  const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
-  
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
@@ -119,21 +125,30 @@ const {
     </ButtonContainers>
   )
 
-
+  const STAGE_COMPONENTS = {
+    [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent
+  }
+  
+  
   return(
-    <>
-    
-        <RenderStageComponent
+    <>  
+        <RenderSwitchComponent
+          STAGE_COMPONENTS={STAGE_COMPONENTS}
+          component={stageData?.key}
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
           costList={costList}
-          depositProvider={depositProvider}
+          depositAccount={depositAccount}
           {...props}
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
-        </RenderStageComponent>
+        </RenderSwitchComponent>
         
         <StatusPanelComponent>
           <StatusHeaderContainer>
@@ -141,9 +156,10 @@ const {
               <h1 className="fuente">Resumen del depósito</h1>
             </TitleContainer>
             <StatusContent
-              state={handleState?.state}
+              state={state}
               stageManager={stageManager}
-              depositProvider={depositProvider}
+              depositAccount={depositAccount}
+              dataForm={dataForm}
             />
           </StatusHeaderContainer>
           {
@@ -161,51 +177,135 @@ const {
 }
  
 
-export default NewWAccountComponent
+export default NewFiatDepositComponent
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
-const StatusContent = ({ state, stageManager, depositProvider }) => {
+const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
 
-  const { depositCost, depositAmount } = state
-  const [ cost, setCost ] = useState()
-  const [ total, setTotal ] = useState()
-
-  useEffect(() => {
-    if(depositProvider && depositCost){
-      let costs = depositProvider?.provider?.costs
-      let { currency } = depositProvider
-      let cost = getCost({ costs, currency, depositCost })  
-      setCost(cost.toFormat())
-      let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
-      _depositAmount && setTotal(_depositAmount?.plus(cost)?.toFormat())
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositProvider, depositCost, depositAmount])
-
+  const STAGE_COMPONENTS = {
+    pse:PseResumeComponent,
+    bank:BankResumeComponent
+  }
 
   return(
     <StatusContainer>
       <ItemContainer>
           <LeftText className="fuente">Origen:</LeftText>
           <MiddleSection />
-
           <ContentRight>
-            <RightText className={`${depositProvider ? 'fuente' : 'skeleton'}`}>
-                {state?.depositProvider?.uiName?.toLowerCase() || 'skeleton --------'} 
+            <RightText className={`${depositAccount ? 'fuente' : 'skeleton'}`}>
+                {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
               </RightText>
             {
-              (state?.depositProvider && !["other_bank"].includes(state?.depositProvider?.value)) &&
+              (state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER] && !["other_bank"].includes(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER].value)) &&
                 <IconSwitch
-                    icon={state?.depositProvider?.value}
+                    icon={state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.value}
                     size={20}
                   />
             }
           </ContentRight>
       </ItemContainer>
-
+      
       {
+        depositAccount &&
+        <RenderSwitchComponent
+            STAGE_COMPONENTS={STAGE_COMPONENTS}
+            component={depositAccount?.provider_type}
+            stageManager={stageManager}
+            state={state}
+            depositAccount={depositAccount}
+            dataForm={dataForm}
+        />
+        
+      }
+
+    </StatusContainer>
+  )
+}
+
+
+const PseResumeComponent = ({
+  stageManager,
+  state,
+  depositAccount,
+  dataForm
+}) =>{
+
+
+  // console.log('PseResumeComponent', state)
+
+  return(
+    <>
+       {
+        stageManager?.currentStage > 0 &&
+        <>
+          <p className="fuente" style={{marginBottom:"5px"}}>
+            <strong>{state?.person_type?.uiName}</strong>
+          </p>
+          {
+            state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] &&
+            <ItemContainer>
+              <LeftText className="fuente">Banco:</LeftText>
+              <MiddleSection />
+              <ContentRight>
+                <RightText className={`fiatDeposit ${state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] ? 'fuente' : 'skeleton'}`}>
+                    {dataForm?.stages[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]?.selectList[state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]]?.uiName || 'skeleton --------'} 
+                </RightText>
+                  {
+                    state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME] &&
+                    <IconSwitch
+                        icon={state[FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]}
+                        size={20}
+                      />
+                  }
+              </ContentRight>
+            </ItemContainer>
+          }
+          {
+            state?.depositAmount &&
+            <ItemContainer>
+                <LeftText className="fuente">Cantidad:</LeftText>
+                <MiddleSection />
+                <RightText className={`${state?.depositAmount ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${state?.depositAmount} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
+        </>
+      }
+    </>
+  )
+}
+
+
+const BankResumeComponent = ({ 
+  stageManager,
+  state,
+  depositAccount
+}) => {
+
+  const { depositCost, depositAmount } = state
+  const [ cost, setCost ] = useState()
+  const [ total, setTotal ] = useState()
+
+  useEffect(() => {
+    if(depositAccount && depositCost){
+      let costs = depositAccount?.costs
+      let { currency } = depositAccount
+      let _cost = getCost({ costs, currency, depositCost })  
+      if(!_cost)return;
+      setCost(_cost.toFormat())
+      let _depositAmount = depositAmount && formatToCurrency(depositAmount.toString().replace(/,/g, ""), currency);
+      _depositAmount && setTotal(_depositAmount?.plus(_cost)?.toFormat())
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [depositAccount, depositCost, depositAmount])
+
+  return(
+    <>
+       {
         stageManager?.currentStage > 0 &&
         <>
           <p className="fuente" style={{marginBottom:"5px"}}>
@@ -243,8 +343,9 @@ const StatusContent = ({ state, stageManager, depositProvider }) => {
           }
         </>
       }
-    </StatusContainer>
+    </>
   )
+
 }
 
 
@@ -275,7 +376,6 @@ const StatusContainer = styled.div`
   }
 `
 
-
 const TitleContainer = styled.div`
   h1{
     font-size: 22px;
@@ -297,13 +397,13 @@ const StatusHeaderContainer = styled.div`
 `
 
 
-const ProofComponent = ({ children, nextStage }) => {
-  return(
-    <StageContainer>
-      {children}
-    </StageContainer>
-  )
-}
+// const ProofComponent = ({ children, nextStage }) => {
+//   return(
+//     <StageContainer>
+//       {children}
+//     </StageContainer>
+//   )
+// }
 
 
 

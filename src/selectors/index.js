@@ -1,9 +1,10 @@
 import { createSelector } from "reselect";
-import { isEmpty } from 'lodash'
+import { isEmpty, get } from 'lodash'
 import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
 import { convertToObjectWithCustomIndex, reOrderedList } from "utils";
 import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
+
 
 
 export const selectDepositAccountsByNetwork = createSelector(
@@ -153,6 +154,23 @@ export const selectDepositProvsByCurrency = createSelector(
   ({ modelData }) => modelData.deposit_providers,
   (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.currency")
 );
+
+export const serveModelsByCustomProps = createSelector(
+  (objectData) => objectData,
+  (_, customPropKey) => customPropKey,
+  (objectData, customPropKey) => {
+    let newModels = {}
+    for (const objectKey in objectData) {
+      let providerKey = get(objectData[objectKey], customPropKey)?.replace(" ", "_")?.toLowerCase()
+      newModels={
+        ...newModels,
+        [providerKey]:objectData[objectKey]
+      }
+    }
+    return newModels
+  }
+);
+
 
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,

@@ -33,9 +33,15 @@ import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
 import { selectDepositProvsByCurrency } from 'selectors'
+import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
 import "moment/locale/es";
+
+
+
 moment.locale("es");
+
+
 
 
 // const orderModel = {
@@ -135,6 +141,7 @@ const FiatOrder = ({ order }) => {
   const { isTabletOrMovilViewport } = useViewport();
   const [ , , toBigNumber ] = useFormatCurrency()
   const { osDevice } = useSelector((state) => state?.ui);
+  
 
   // const [toastMessage] = useToastMessage();
 
@@ -154,10 +161,8 @@ const FiatOrder = ({ order }) => {
 
 
   const goFileLoader = async (e) => {
-    
       setOnDrag(false);
       let dataBase64
-      
       if (CAPACITOR_PLATFORM !== 'web' && await checkCameraPermission()) {
         try {
           const { Camera, CameraResultType } = await import("@capacitor/camera");
@@ -181,14 +186,11 @@ const FiatOrder = ({ order }) => {
         const isAnImage = includesAnyImageMime(dataBase64.split(",")[1])
         if(!isAnImage) return alert('Solo se aceptan imagenes');
       }
-
       setImgSrc(dataBase64);
       actions.isAppLoading(true);
-
       const { user } = coinsendaServices.globalState.modelData
       const orderAmount = await toBigNumber(order.amount, order.currency) 
       const limitAmount = await toBigNumber(BIOMETRIC_FIAT_LITMIT_AMOUNT, order.currency)
-
       if(user.security_center?.transactionSecurity?.biometric?.enabled && orderAmount.isGreaterThanOrEqualTo(limitAmount)){
         const Element = await import("../../../../forms/widgets/biometricKycComponent/init");
         if(!Element) return;
@@ -206,15 +208,7 @@ const FiatOrder = ({ order }) => {
           actions.isAppLoading(false);
         }
       }, 5000)   
-      // if (!confirmation || !confirmation?.data) {
-      //   actions.isAppLoading(false);
-      //   setImgSrc(null);
-      //   toastMessage("El depósito No se ha confirmado", "error");
-      // }
   };
-
-  // console.log('|||||||||||||||| FiatOrderDespoit ::', tx_path)
-  // debugger
 
   useEffect(() => {
     let thisIsAnOrderInProcess = JSON.parse(sessionStorage.getItem(`depositOrder_${order?.id}`))
@@ -317,6 +311,10 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
     true
   );
 
+
+  const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
+  const isPseDeposit = depositProviders[currentOrder?.deposit_provider_id]?.depositAccount?.name === 'pse'
+
   const INPUT_FILE_PROPS = {
     type:"file",
     accept:"image/png,image/jpeg",
@@ -331,11 +329,14 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
 
   const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
 
+  console.log('currentOrder', imgSrc, currentOrder)
+
   return ( 
     <UploadContainer
       className={`${imgSrc || currentOrder.state === "confirmed" ? "loaded" : "unload"}`}
     >
-      {!imgSrc && currentOrder.state !== "confirmed" ? (
+      {
+        !imgSrc && currentOrder.state !== "confirmed" ? (
         <Fragment>
           <AiOutlineUpload size={45} color="var(--paragraph_color)" />
           <UploadText className="fuente">
@@ -365,11 +366,21 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
         <Fragment>
           <UploadMiddle className="titleSection payment fuente">
             <UploadTextMiddle className="titleSection">
-               {title || 'Comprobante de pago'}
+               {title || isPseDeposit ? 'Depósito realizado por PSE' :'Comprobante de pago'}
             </UploadTextMiddle>
             <hr />
           </UploadMiddle>
-          <PaymentProof payload={imgSrc} />
+          {
+            isPseDeposit ?
+            <PseCTA 
+              depositAccount={{provider_type:"pse"}}
+              depositOrder={currentOrder}
+            >
+              <PaymentProof/>
+            </PseCTA>
+            :
+            <PaymentProof payload={imgSrc} />
+          }
         </Fragment>
       )}
     </UploadContainer>

@@ -60,6 +60,9 @@ export const RightText = styled(Text)`
   max-width: 350px;
   overflow: hidden;
   text-overflow: ellipsis;
+  &.fiatDeposit{
+    max-width: 200px;
+  }
 `;
 export const LeftText = styled(Text)`
   text-align: left;

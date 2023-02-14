@@ -5,6 +5,7 @@ import {
 } from '../kyc/utils'
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import { FIAT_DEPOSIT_TYPES } from './api' 
+import { selectListValidator } from '../kyc/validations'
 
   export const getCost = ({ costs, currency, depositCost }) => {
     let cost = costs[depositCost?.value]?.fixed;
@@ -25,9 +26,9 @@ import { FIAT_DEPOSIT_TYPES } from './api'
     const _data = data
     const { 
       // state:{ depositCost }, 
-      depositProvider } = 
+      depositAccount } = 
     _data
-    const { currency } = depositProvider
+    const { currency } = depositAccount
     let _value = value
     _value = parseOnlyCurrencyAmount(_value)
     _value = currency ? formatToCurrency(_value.toString().replace(/,/g, ""), currency) : _value;
@@ -36,10 +37,10 @@ import { FIAT_DEPOSIT_TYPES } from './api'
       return [ null, null ]
     }
     let status
-    if(depositProvider){
-      const { provider } = depositProvider
-      const { min_amount } = provider
-      const { max_amount } = provider
+    if(depositAccount){
+      const { min_amount, max_amount } = depositAccount
+      // const { min_amount } = provider
+      // const { max_amount } = provider
       // const { costs } = provider
       let minAmount = getMinAmount(min_amount, { currency });
       let maxAmount = formatToCurrency(max_amount.toString().replace(/,/g, ""), currency);
@@ -58,8 +59,10 @@ import { FIAT_DEPOSIT_TYPES } from './api'
     return [ _value.toFormat(), status ]
   }
 
-  const fiatWithdrawValidations = {
+  const fiatDepositValidations = {
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:amountValidation,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:selectListValidator,
   }
 
-export default fiatWithdrawValidations
+export default fiatDepositValidations
+

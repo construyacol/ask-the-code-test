@@ -32,6 +32,10 @@ import {
     SubTitle,
     Content
 } from '../success/styles'
+import RenderSwitchComponent from 'components/renderSwitchComponent'
+import Button from 'components/widgets/buttons/button'
+import { P } from "components/widgets/typography";
+import styled from "styled-components";
 
 
 
@@ -40,16 +44,16 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 const FiatDepositSuccess = ({ 
     actions, 
-    depositOrder 
+    orderData,
+    depositAccount
 }) => {
     
-    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit')
+    const depositOrder = useSelector((state) => state?.modelData?.deposits[orderData?.id]);
+    // console.log('depositData', depositOrder)
+    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit') 
     const [ depProvDetail, setDepProvDetail ] = useState([])
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[depositOrder?.deposit_provider_id]);
-    const { osDevice } = useSelector((state) => state?.ui);
     const [ amount, setAmount ] = useState([])
-
-    // const depositAccount = depositProvider?.depositAccount
 
     const closeModal = () => actions.renderModal(null)
     const finish = async () => {
@@ -70,6 +74,11 @@ const FiatDepositSuccess = ({
     }, [depositProvider])
 
     const provider = depositProvider?.provider
+
+    const STAGE_COMPONENTS = {
+        bank:BankSuccessDetail,
+        pse:PseSuccessDetail
+    }
 
     return(
         <OtherModalLayout
@@ -96,43 +105,17 @@ const FiatDepositSuccess = ({
                             </g>
                             </svg>
                         </div>
-                        <Title className="fuente">Depósito creado exitosamente</Title>
+                        <Title className="fuente">{`${depositAccount?.provider_type === 'pse' ? "Transfiere a tráves de PSE para completar tu depósito" : "Depósito creado exitosamente" }`}</Title>
                     </Header>
 
                     <Content>
 
-                        <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
-                        <ItemAccountContainer className={`_itemAccountContainer ${!provider ? 'skeleton' : ''}`}>
-                            <HeaderMainContainer>
-                                <IconAccount className="_iconSkeleton">
-                                    {
-                                        provider &&
-                                            <IconSwitch
-                                                icon={provider?.name}
-                                                size={35}
-                                            />
-                                    }
-                                </IconAccount>
-                                <LabelContainer className="_header__labelContainer">
-                                    <AccountLabel>{provider?.ui_name}</AccountLabel>
-                                    <CurrencyLabel>{provider?.account?.type?.type}</CurrencyLabel>
-                                </LabelContainer>
-                            </HeaderMainContainer>
-                            <MobileBalance>
-                                <HR/>
-                                <p className="fuente2">{provider?.account?.account_id?.account_id}</p>
-                                <p className="fuente _balanceTextLab"># de cuenta</p>
-                            </MobileBalance>
-                        </ItemAccountContainer>
-
-                        <AccountMetaData>
-                            <ContentDetail>
-                                <DetailTemplateComponent
-                                    skeletonItems={3}
-                                    items={depProvDetail}
-                                />
-                            </ContentDetail>
-                        </AccountMetaData>
+                    <RenderSwitchComponent
+                        STAGE_COMPONENTS={STAGE_COMPONENTS}
+                        component={depositAccount?.provider_type}
+                        depProvDetail={depProvDetail}
+                        provider={provider}
+                    />
 
                         <SubTitle className="fuente">Datos del depósito</SubTitle>
                         <ContentDetail className="onBottom">
@@ -151,16 +134,16 @@ const FiatDepositSuccess = ({
                         </TotalAmount>
                     </Content>
 
-
-                    <ButtonContainer className={`${osDevice} buttonContainer`}>
-                        <ControlButton
-                            // id={idSubmitButton}
-                            // loader={loader}
-                            formValidate
-                            label="Finalizar"
-                            handleAction={finish}
-                        />
-                    </ButtonContainer>
+                    <RenderSwitchComponent
+                        STAGE_COMPONENTS={{
+                            bank:BankCTA,
+                            pse:PseCTA
+                        }}
+                        component={depositAccount?.provider_type}
+                        depositAccount={depositAccount}
+                        finish={finish}
+                        depositOrder={depositOrder}
+                    />
 
 
                 </SuccessViewContent>
@@ -170,6 +153,181 @@ const FiatDepositSuccess = ({
 } 
 
 export default FiatDepositSuccess
- 
 
 
+
+const BankCTA = ({
+    finish
+}) => {
+    const { osDevice } = useSelector((state) => state?.ui);
+    return(
+        <ButtonContainer className={`${osDevice} buttonContainer`}>
+            <ControlButton
+                formValidate
+                label={'Finalizar'}
+                handleAction={finish}
+            />
+        </ButtonContainer>
+    )
+}
+
+
+function minutesDifference(date) {
+    var now = new Date();
+    var diff = now - date;
+    return parseInt(diff / 1000 / 60);
+}
+
+const PSE_DEFAULT_AVAILABLE_PAY_TIME = 15
+
+export const PseCTA = ({
+    depositAccount,
+    finish,
+    depositOrder,
+    children
+}) => {
+
+    const { osDevice } = useSelector((state) => state?.ui);
+    const [ isAvailableToPay, setIsAvailableToPay ] = useState(false)
+    const [ leftMinutes, setLeftMinutes ] = useState(0)
+
+    useEffect(() => {
+        (() => {
+            let registerDate = localStorage.getItem(`pse_${depositOrder?.id}`)
+            setIsAvailableToPay(true);
+            if(!registerDate)return;
+            let minutesElapsed = minutesDifference(new Date(JSON.parse(registerDate)))
+            let _leftTime = PSE_DEFAULT_AVAILABLE_PAY_TIME - minutesElapsed
+            console.log('minutesElapsed', minutesElapsed)
+            if(minutesElapsed < PSE_DEFAULT_AVAILABLE_PAY_TIME && minutesElapsed >= 0){
+                setLeftMinutes(_leftTime)
+                setIsAvailableToPay(false);
+            };
+        })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    // 
+    return(
+        <PseContainer className={`${children ? 'withFlexDisplay' : ''} ${!isAvailableToPay ? 'inProcess' : ''}`}>
+            {children}
+            {
+                isAvailableToPay ?
+                <>
+                    <ButtonContainer className={`${osDevice} buttonContainer pseButton`}>
+                        <Button
+                            className={`${finish ? '' : 'displayNone'}`}
+                            onClick={finish}
+                        >
+                            Salir
+                        </Button>
+                        <ControlButton
+                            formValidate
+                            loader={depositOrder?.metadata?.bank_url ? false : true}
+                            label={`${depositAccount?.provider_type === 'pse' ? 'Ir a PSE' : 'Finalizar'}`}
+                            handleAction={() => {
+                                localStorage.setItem(`pse_${depositOrder?.id}`, JSON.stringify(new Date()));
+                                setIsAvailableToPay(false);
+                                setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
+                                window.open(depositOrder?.metadata?.bank_url, '_blank');
+                                finish && finish()
+                            }}
+                        />
+                    </ButtonContainer>
+                </>
+                :
+                <P size={14}>Hay un pago en proceso, si no pudo concluír dicho pago, el botón se habilitará nuevamente en {leftMinutes} minutos</P>
+            }
+
+        </PseContainer>
+    )
+}
+
+const PseContainer = styled.div`
+    &.withFlexDisplay{
+        display: flex;
+    }
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    column-gap: 50px;
+    .paymentProofCont{
+        width: 200px;
+    }
+    p{
+       text-align: center;
+    }
+    &.inProcess{
+        flex-direction: column;
+    }
+`
+
+
+const PseSuccessDetail = ({ children }) => {
+
+    return(
+        <>
+            <SubTitle className="fuente">Tienes 20 minutos para completar el proceso</SubTitle>
+            <ItemAccountContainer className={`_itemAccountContainer `}>
+                <HeaderMainContainer>
+                    <IconAccount className="_iconSkeleton">
+                        <IconSwitch
+                            icon={"pse"}
+                            size={40}
+                        />
+                    </IconAccount>
+                    <LabelContainer className="_header__labelContainer">
+                        <AccountLabel>PSE</AccountLabel>
+                    </LabelContainer>
+                </HeaderMainContainer>
+            </ItemAccountContainer>
+
+            {children}
+        </>
+    )
+}
+
+
+
+const BankSuccessDetail = ({
+    provider,
+    depProvDetail
+}) => {
+
+    return(
+        <>
+            <SubTitle className="fuente">Deposita a la siguiente cuenta</SubTitle>
+            <ItemAccountContainer className={`_itemAccountContainer ${!provider ? 'skeleton' : ''}`}>
+                <HeaderMainContainer>
+                    <IconAccount className="_iconSkeleton">
+                        {
+                            provider &&
+                                <IconSwitch
+                                    icon={provider?.name}
+                                    size={35}
+                                />
+                        }
+                    </IconAccount>
+                    <LabelContainer className="_header__labelContainer">
+                        <AccountLabel>{provider?.ui_name}</AccountLabel>
+                        <CurrencyLabel>{provider?.account?.type?.type}</CurrencyLabel>
+                    </LabelContainer>
+                </HeaderMainContainer>
+                <MobileBalance>
+                    <HR/>
+                    <p className="fuente2">{provider?.account?.account_id?.account_id}</p>
+                    <p className="fuente _balanceTextLab"># de cuenta</p>
+                </MobileBalance>
+            </ItemAccountContainer>
+
+            <AccountMetaData>
+                <ContentDetail>
+                    <DetailTemplateComponent
+                        skeletonItems={3}
+                        items={depProvDetail}
+                    />
+                </ContentDetail>
+            </AccountMetaData>
+        </>
+    )
+}
