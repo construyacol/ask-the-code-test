@@ -30,7 +30,6 @@ export default function CookieMessage(props) {
 
   const walletsByCurrencyType = useSelector(({ modelData:{ wallets } }) => serveModelsByCustomProps(wallets, 'currency_type'));
 
-
   useEffect(() => {
     const value = sessionStorage.getItem(COINSENDA_DISCLAIMER_IS_ACCEPTED)
     if(!value) {
@@ -40,9 +39,6 @@ export default function CookieMessage(props) {
   }, [mainRef.current])
 
 
-  console.log('walletsByCurrencyType', walletsByCurrencyType?.fiat?.id)
-
- 
   return shouldRender ? (
     <CoockieContainer ref={mainRef} id="cookieContainer" className='withOutHeight'>
     <Close onClick={clickHandler}>X</Close>

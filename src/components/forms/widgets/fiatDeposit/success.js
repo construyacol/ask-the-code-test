@@ -236,7 +236,9 @@ export const PseCTA = ({
                     </ButtonContainer>
                 </>
                 :
-                <P size={14}>Hay un pago en proceso, si no pudo concluír dicho pago, el botón se habilitará nuevamente en {leftMinutes} minutos</P>
+                <P size={14}>  
+                Se ha iniciado el proceso de pago, si no puedes concluirlo el botón se habilitará nuevamente en {leftMinutes} minutos
+                </P>
             }
 
         </PseContainer>

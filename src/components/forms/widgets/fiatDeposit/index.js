@@ -1,41 +1,33 @@
 import { useState, useEffect } from 'react'
 import useStage from '../../hooks/useStage'
-// import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import StageManagerComponent from '../stageManager'
 import StatusPanelComponent from '../statusPanel'
-// import { createInfoNeededStages } from './api'
-// import BankNameListComponent from './bankNameStage'
 import useViewport from '../../../../hooks/useWindowSize'
-// import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
 import { FIAT_DEPOSIT_TYPES } from './api'
-// import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
-// import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import styled from 'styled-components'
-import ProviderComponent from './depositProviderStage' 
 import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
-// import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
-// import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { getCost } from './validations'
 import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
-// import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
 import { formatToCurrency } from '../../../../utils/convert_currency'
 import { ApiPostCreateBankDeposit, ApiPostCreatePseDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
-import DepositCostComponent from './depositCostStage'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
 import { selectDepositProvsByNetwork } from 'selectors'
-import PersonTypeComponent from './personType'
-import BankNameListComponent from './bankName'
+// import DepositCostComponent from './depositCostStage'
+// import PersonTypeComponent from './personType'
+// import BankNameListComponent from './bankName'
+// import ProviderComponent from './depositProviderStage' 
 
-
+const ProviderComponent = loadable(() => import("./depositProviderStage"), {fallback:<StageSkeleton/>});
+const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallback:<StageSkeleton/>});
+const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<StageSkeleton/>});
+const BankNameListComponent = loadable(() => import("./bankName"), {fallback:<StageSkeleton/>});
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
 
 const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
