@@ -208,6 +208,7 @@ export const doLogout = async (queryString) => {
   await localForage.removeItem(STORAGE_KEYS.refresh_token_expiration_time);
   await localForage.removeItem("public_key");
   await localForage.removeItem("sessionState");
+  localStorage.clear();
 
   if (CAPACITOR_PLATFORM === 'web') {
     window.location.href = queryString ? `${COINSENDA_URL}${queryString}` : COINSENDA_URL;

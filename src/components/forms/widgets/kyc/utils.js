@@ -123,7 +123,7 @@ export const getNextSelectList = async ({
   const currentList = stageData?.key
   if(!NEXT_SELECT_LIST[currentList])return;
   const nextStageName = NEXT_SELECT_LIST[currentList]
-
+  console.log('NEXT_SELECT_LIST', NEXT_SELECT_LIST)
   const selectList = await getSelectList(nextStageName, {
     payload:state[stageData?.key],
     ...dataForm

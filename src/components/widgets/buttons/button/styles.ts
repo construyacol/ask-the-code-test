@@ -41,6 +41,10 @@ export const ButtonStyle = styled.button<buttonStyleProps>`
         font-weight: bold;
     }
 
+    &.displayNone{
+        display: none;
+    }
+
     &.text{
         color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
         

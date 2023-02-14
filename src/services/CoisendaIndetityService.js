@@ -217,43 +217,16 @@ export class IndetityService extends WebService {
 
       const payload = props?.payload
       let currentIdentity = props?.config?.currentIdentity
-      
       let documentList = await this.getDocumentList(payload)
-
       if(documentList && this.user?.identities?.length){
-        // let userIdentities =  {}
-        // this.user?.identities.forEach(identity => {
-        //   userIdentities = {
-        //     ...userIdentities,
-        //     [identity?.id_type]:identity
-        //   }
-        // })
+
         if(currentIdentity && ["rejected"].includes(getIdentityState(currentIdentity))){
           let documentListByKey = keyBy(documentList, "id_type")
           return [{...documentListByKey[currentIdentity?.id_type], state:"rejected"}] 
         }else{
           return documentList
         }
-          // let _documentList = []
-          //   let isThereOneRejectedIdentity = false
-          //   documentList.forEach(_document => {
-          //     let currentIdentity = userIdentities[_document?.id_type] 
-          //     let currentIdentityState = currentIdentity && getIdentityState(currentIdentity)
-          //     if(["rejected"].includes(currentIdentityState)){ 
-          //       isThereOneRejectedIdentity = true
-          //       return _documentList = [{..._document, state:"rejected"}] 
-          //     }else if(!isThereOneRejectedIdentity){
-          //       _documentList.push(_document)
-          //     }
-          //     // if(!isThereOneRejectedIdentity && (!currentIdentity || (currentIdentity && currentIdentity?.nationality !== nationality))){
-          //     //   // Si no hay identidades rejectadas y si el usuario no tiene esta identidad creada Ó si la tiene pero de diferente nacionalidad agregue la opción para crear el documento
-          //     //   _documentList.push(_document)
-          //     // }
-          //   })
-          //   return _documentList
-          // }else{
-          //   return documentList
-          // }
+        
       }else{
         return documentList
       }

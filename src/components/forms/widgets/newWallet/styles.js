@@ -59,6 +59,10 @@ export const ButtonContainer = styled.div`
     place-content: center;
     align-items: center;
     column-gap: 22px;
+
+    &.pseButton{
+        align-self: center;
+    }
     
     @media ${device.mobile} {
         

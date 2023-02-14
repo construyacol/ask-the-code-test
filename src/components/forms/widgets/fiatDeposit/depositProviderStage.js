@@ -8,10 +8,9 @@ import { AiFillBank } from "react-icons/ai";
 import { isEmpty } from 'lodash'
 import { P } from 'components/widgets/typography';
 import withCoinsendaServices from 'components/withCoinsendaServices'
+import { serveModelsByCustomProps } from 'selectors'
 
-
-
-function DepositProviderComponent({ 
+function ProviderComponent({ 
     stageManager:{ 
       stageData,
       setStageStatus
@@ -24,16 +23,14 @@ function DepositProviderComponent({
   }){  
 
     const { isMovilViewport } = useViewport();
-    const [ depositProviders ] = useSelector((state) => selectDepositProviders(state));
-    // const actions = useActions()
+    const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
+    const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
+    
+    // const actions = useActions() 
 
     const selectProvider = (provider) => {
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
-    }
-
-    const createDepositProvider = async(wallet) => {
-      await props.coinsendaServices.createAndInsertDepositProvider(wallet)
     }
 
     useEffect(() => {
@@ -42,14 +39,16 @@ function DepositProviderComponent({
     }, [])
 
     useEffect(() => {
-      if(currentWallet && isEmpty(currentWallet?.dep_prov)){
-        createDepositProvider(currentWallet)
-      }
+      (async() => {
+        if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
+        for (const depositAccountName in depositAccounts) {
+          if(!depositProvidersByName[depositAccountName]){
+            await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          }
+        }
+      })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentWallet])
-
-    console.log('DEPOSIT_PROVIDER => ', props)
-
+    }, [depositAccounts, depositProvidersByName])
 
     return(
       <>
@@ -63,15 +62,15 @@ function DepositProviderComponent({
               <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
               <SelectListContainer>
                 {
-                  depositProviders && Object.keys(depositProviders).map((key, index) => {
-                    const isSelected = [depositProviders[key]?.value].includes(state[stageData?.key]?.value)
+                  depositAccounts && Object.keys(depositAccounts).map((key, index) => {
+                    const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
                     return <ItemListComponent 
                       key={index} 
-                      // className={`auxNumber`}
-                      itemList={depositProviders[key]}
+                      className={`${depositAccounts[key]?.value}`}
+                      itemList={depositAccounts[key]}
                       // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                       firstIndex={index === 0}
-                      lastIndex={(Object.keys(depositProviders)?.length - 1) === index}
+                      lastIndex={(Object.keys(depositAccounts)?.length - 1) === index}
                       isSelectedItem={isSelected}
                       isMovilViewport={isMovilViewport}
                       handleAction={selectProvider}
@@ -85,7 +84,7 @@ function DepositProviderComponent({
                     icon:"bank",
                     uiName:"Otro banco/servicio",
                     Icon:AiFillBank,
-                    defaultProv:depositProviders[Object.keys(depositProviders).at(0)]
+                    defaultProv:depositAccounts && depositAccounts[Object.keys(depositAccounts).at(0)]
                   }}
                   isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
                   lastIndex
@@ -99,29 +98,26 @@ function DepositProviderComponent({
     )
   }
 
-  export default withCoinsendaServices(DepositProviderComponent)
+  export default withCoinsendaServices(ProviderComponent)
 
-
-  const selectDepositProviders = createSelector(
-    (state) => state.modelData.deposit_providers,
-    (deposit_providers) => {
-      if(!deposit_providers)return ; 
-      
-      let depositProviders = {}
-      Object.keys(deposit_providers).forEach(depProvKey => {
-        const depositProvider = deposit_providers[depProvKey];
-        if(["fiat"].includes(depositProvider?.currency_type)){
-          depositProviders = {
-            ...depositProviders,
-            [depositProvider?.provider?.name]:{
-              ...depositProvider,
-              uiName:depositProvider?.provider?.ui_name,
-              value:depositProvider?.provider?.name
+  const selectDepositAccounts = createSelector(
+    (state) => state.modelData.depositAccounts,
+    (depositAccounts) => {
+      if(!depositAccounts)return [undefined]; 
+      let _depositAccounts = {}
+      Object.keys(depositAccounts).forEach(depAccountKey => {
+        const depositAccount = depositAccounts[depAccountKey];
+        if(["fiat"].includes(depositAccount?.currency_type)){
+          _depositAccounts = {
+            ..._depositAccounts,
+            [depositAccount?.name]:{
+              ...depositAccount,
+              uiName:depositAccount?.ui_name,
+              value:depositAccount?.name
             }
           }
         }
       })
-
-      return [ depositProviders ];
+      return [ _depositAccounts ];
     }
   );

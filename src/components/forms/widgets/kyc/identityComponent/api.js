@@ -44,18 +44,18 @@ const INFO_NEEDED = {
   "id_type":{
     ui_name: "Tipo de documento",
     ui_type: "select",
-    cedula_ciudadania:{
-        "ui_name": "Cedula de ciudadanía"
-    },
-    cedula_extranjeria:{
-        "ui_name": "Cedula de extranjería"
-    },
-    pasaporte:{
-        "ui_name": "Pasaporte"
-    },
-    pep:{
-        "ui_name": "Permiso especial de permanencia"
-    }
+    // cedula_ciudadania:{
+    //     "ui_name": "Cedula de ciudadanía"
+    // },
+    // cedula_extranjeria:{
+    //     "ui_name": "Cedula de extranjería"
+    // },
+    // pasaporte:{
+    //     "ui_name": "Pasaporte"
+    // },
+    // pep:{
+    //     "ui_name": "Permiso especial de permanencia"
+    // }
   }
 }
 
@@ -272,9 +272,8 @@ export const getAllIdentityStages = () => {
 
 
 export const ApiGetIdentityStages = async(config) => {
- 
+
   if(config.isNewId)return INFO_NEEDED;
-  
   const currentIdentity = config.currentIdentity
   if(!currentIdentity || ["pending", "rejected"].includes(currentIdentity?.info_state)){
       return config.handleError ? getAllIdentityStages() : INFO_NEEDED;
@@ -402,7 +401,6 @@ export const createInfoStages = async({
         }
       }
     });
-
     let stages = {} 
 
     for (const stage of Object.keys(apiStages)) { 

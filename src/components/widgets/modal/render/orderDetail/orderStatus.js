@@ -4,34 +4,40 @@ import api, { orderStatus } from "./rest.json";
 import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
 import styled from "styled-components";
 import { device } from "../../../../../const/const";
+import { useSelector } from "react-redux";
 
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
 const OrderStatus = ({ order, movil }) => {
+
   const [orderState, setOrderState] = useState();
   const { currentOrder, tx_path } = UseTxState();
-
   const skeletons = new Array(4).fill(["created"]);
+  const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
+
 
   useEffect(() => {
-    let orders = {};
+    let statusCopys = {};
+    const providerType = depositProviders[order.deposit_provider_id]?.provider_type
+    console.log('statusCopys ::', providerType, api[tx_path])
+
     for (let prop in api[tx_path]) {
-      orders = {
-        ...orders,
+      statusCopys = {
+        ...statusCopys,
         [prop]: {
           ...api[tx_path][prop],
           completed: currentOrder.state === prop,
         },
       };
     }
-    // console.log(orders, api[tx_path])
-    setOrderState(Object.entries(orders));
+    // console.log(statusCopys, api[tx_path])
+    setOrderState(Object.entries(statusCopys));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder.state]);
 
-  // console.log('|||||||||||||||| OrderSupervisor ::', order)
+  // console.log('|||||||||||||||| OrderSupervisor ::', orderState)
 
   return (
     <OrderStatusContainer>
@@ -45,39 +51,35 @@ const OrderStatus = ({ order, movil }) => {
       </TopSectionStatus>
       {!movil && (
         <StatusContainer>
-          {orderState
-            ? orderState.map((state, index) => {
-                return (
-                  <StatusItem
-                    state={state}
-                    order={currentOrder}
-                    key={index}
-                    active={state[1].completed}
-                    className={`
-                  ${
-                    orderState.length === index + 1
+          {
+            orderState ? 
+            orderState.map((state, index) => {
+              return (
+                <StatusItem
+                  state={state}
+                  order={currentOrder}
+                  key={index}
+                  active={state[1].completed}
+                  className={`${orderState.length === index + 1 ? "statusStep finalStep" : "statusStep"} ${state[1].completed ? "activeStep" : ""}`}
+                />
+              );
+            })
+            : 
+            skeletons.map((state, index) => {
+              return (
+                <StatusItem
+                  state={state}
+                  key={index}
+                  className={`${
+                    skeletons.length === index + 1
                       ? "statusStep finalStep"
                       : "statusStep"
-                  }
-                  ${state[1].completed ? "activeStep" : ""}
-                  `}
-                  />
-                );
-              })
-            : skeletons.map((state, index) => {
-                return (
-                  <StatusItem
-                    state={state}
-                    key={index}
-                    className={`${
-                      skeletons.length === index + 1
-                        ? "statusStep finalStep"
-                        : "statusStep"
-                    } skeleton`}
-                    skeleton
-                  />
-                );
-              })}
+                  } skeleton`}
+                  skeleton
+                />
+              );
+            })
+          }
         </StatusContainer>
       )}
     </OrderStatusContainer>

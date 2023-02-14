@@ -66,7 +66,6 @@ export const getInitialState = (payload) => {
   return initialState
 }
 
-
 export const setMessageError = (selector, message) => {
   const labelElement = document.querySelector(selector)
   if(!labelElement){return false}
@@ -76,7 +75,6 @@ export const setMessageError = (selector, message) => {
 
 // manage tags system events
 
-
 export const onSubmit = async(callback, TimeOut = 100) => {
   callback(true)
   setTimeout(() => { 
@@ -84,10 +82,8 @@ export const onSubmit = async(callback, TimeOut = 100) => {
   }, TimeOut);
 }
 
-
-
-export const generateSelectList = (objectList) => {
-  let selectList = {...objectList}
+export const depurateSelectList = (objectList) => {
+  let selectList = {...objectList} 
   delete selectList.ui_name
   delete selectList.ui_type
   // eslint-disable-next-line array-callback-return
@@ -100,38 +96,52 @@ export const generateSelectList = (objectList) => {
     delete selectList[key]?.code
   })
   return selectList
-}
+} 
  
 export const getSelectList = async(listKey, payload) => {
   let list  
-  let res = await mainService[API_FETCH_SELECT_LIST[listKey]] && await mainService[API_FETCH_SELECT_LIST[listKey]](payload)
+  let res = await mainService[API_FETCH_SELECT_LIST[listKey]] ? await mainService[API_FETCH_SELECT_LIST[listKey]](payload) : (payload && payload[listKey])
   if(!res){return}
-  list = await createSelectList(res)
-  return generateSelectList(list)
+  list = await convertArrayToObjectList(res) //convert array list to object list
+  return depurateSelectList(list)
+}
+
+const clearSourceData = async(data) => {
+  let clearSource = {}
+  for(const key in data){ 
+    if(["ui_name", "ui_type"].includes(key)){
+      clearSource = {
+        ...clearSource,
+        [key]:data[key]
+      }
+    }
+  }
+  return clearSource
 }
 
 export const createStage = async(source, modelated, index) => {
   let _source = typeof source === 'object' ? ungapStructuredClone(source) : {...source};
+  if(_source?.ui_type === 'select')_source = await clearSourceData(_source)
   let stage = {}
   _source.uiName = _source.ui_name || _source.uiName
   _source.uiType = _source.ui_type || _source.uiType 
   delete _source.ui_name
   delete _source.ui_type
-  
-  Object.keys(_source).forEach(key => {
-    // TODO: refactor to for -- in
-      stage = {
-        key:index, 
-        ...stage,
-        ...modelated,
-        [key]:_source[key]
-      } 
-  })
+
+  for(const key of Object.keys(_source)){ 
+    stage = {
+      key:index, 
+      ...stage,
+      ...modelated,
+      [key]:_source[key]
+    } 
+  }
+
   return stage
 }
 
  
-export const createSelectList = async(list) => {
+export const convertArrayToObjectList = async(list) => {
   if(!isArray(list))return list;
   let selectList = {}
   for (const item of list) {
@@ -147,9 +157,7 @@ export const createSelectList = async(list) => {
           name:itemUiName
         }
       }
-      if(item.flag){
-        selectList[item?.code].flag = `${INFO_URL_API?.replace("/api/", "")}${item.flag}` 
-      }
+      if(item.flag) selectList[item?.code].flag = `${INFO_URL_API?.replace("/api/", "")}${item.flag}`;
     } 
   }
   return {...selectList}
@@ -159,7 +167,7 @@ export const createSelectList = async(list) => {
 export const recursiveAddList = async(mapObject, payload) => {
   let apiStages = ungapStructuredClone(mapObject)
   let stages = {} 
-    
+  
   for(const stage of Object.keys(apiStages)){ 
     stages = {
       ...stages,
@@ -167,7 +175,7 @@ export const recursiveAddList = async(mapObject, payload) => {
     }
     if(["select"].includes(stages[stage]?.uiType)){
       stages[stage].selectList = await getSelectList(stage, payload)
-    }
+    } 
     if(["recursiveLevel"].includes(stages[stage]?.uiType)){
       stages[stage] = await recursiveAddList(stages[stage], payload)
     }
@@ -224,8 +232,6 @@ export const initStages = async(_config, API_STAGES) => {
   } 
 
   stages = await recursiveAddList(stages)
-  // console.log('initStages', stages)
-  // debugger
 
   return {
     ...formStructure(config.formName),

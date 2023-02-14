@@ -95,6 +95,8 @@ export class DepositService extends WebService {
     // return data;
   }
 
+  
+
 
   async confirmDepositOrder(order_id, base64image) {
     const user = this.user;

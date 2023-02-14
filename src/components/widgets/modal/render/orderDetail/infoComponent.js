@@ -5,7 +5,7 @@ import { Icon, IconContainer } from '../../../../referrals/shareStyles'
 import { MAIN_COLOR } from '../../../../../const/const'
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { get } from 'lodash'
 import styled from 'styled-components'
 
 
@@ -40,7 +40,6 @@ const ReferralInfo = () => {
             <p className="fuente">{!withdrawAccount ? 'Cuenta no disponible' : withdrawAccount?.bank_name?.ui_name?.toLowerCase()}</p>
             <p className="fuente accountType">{!withdrawAccount ? '' : withdrawAccount?.account_type?.ui_name}</p>
             <p className="fuente2">{!withdrawAccount ? '' : `No. ${withdrawAccount?.account_number?.value}`}</p>
-            
           </DataContainer>
         </WithdrawAccountCont>
     )
@@ -108,6 +107,13 @@ const ReferralInfo = () => {
       },
       "crypto":{
         "title":"TX ID Información"
+      },
+      "fiat":{
+        "type":{
+          "following_code":{
+            "title":"Código de pago PSE"
+          }
+        }
       }        
     },
     "withdraws":{
@@ -125,25 +131,23 @@ const ReferralInfo = () => {
     }
   }
 
-  
+   
   
   const GetInfoComponentToRender = (order) => {
   
     const { tx_path, info } = order
-    const targetKey = info?.is_referral ? 'is_referral' : order?.currency_type
+    const targetKey = info?.is_referral ? 'is_referral' : (order?.currency_type === 'fiat' && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : order?.currency_type
     
     useEffect(()=> {
-       const title = tx_path === 'swaps' ? '' : toRender[tx_path][targetKey]?.title || 'Comprobante de pago'
+       const title = tx_path === 'swaps' ? '' : get(toRender, `${tx_path}.${targetKey}`)?.title || 'Comprobante de pago'
        const targetElement = document.querySelector('#titleInfoComponent')
-       if(targetElement){
-         targetElement.innerHTML = title
-       }
+       if(targetElement) targetElement.innerHTML = title;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [order])
 
     if(tx_path === 'swaps'){
       return toRender[tx_path]?.component
-    }
+    } 
   
     return toRender[tx_path][targetKey]?.component ||  PaymentProof
   }
