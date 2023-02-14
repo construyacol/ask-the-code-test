@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer } from '../sharedStyles'
+// import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
@@ -87,24 +87,21 @@ const {
     if(!Element) return;
     const FiatDepositSuccess = Element.default
     actions.success_sound();
-    // console.log('data', data)
+    // console.log('renderSuccessComponent', data)
     // debugger
     actions.renderModal(() => 
     <FiatDepositSuccess 
       actions={actions}
-      depositOrder={data}
+      orderData={data}
       depositAccount={depositAccount}
     />);
   }
 
-
   const createFiatDeposit = async() => {
-
     const depositMethods = {
       pse:ApiPostCreatePseDeposit,
       bank:ApiPostCreateBankDeposit
     }
-
     setLoading(true) 
     const depositProvider = depositProviders[depositAccount?.provider_type]
     const { error, data } = await depositMethods[depositAccount?.provider_type]({ state, currentWallet, depositProvider })
@@ -114,7 +111,6 @@ const {
     }
     await renderSuccessComponent(data)
     setLoading(false)
-
     return 
   }
 
@@ -380,7 +376,6 @@ const StatusContainer = styled.div`
   }
 `
 
-
 const TitleContainer = styled.div`
   h1{
     font-size: 22px;
@@ -402,13 +397,13 @@ const StatusHeaderContainer = styled.div`
 `
 
 
-const ProofComponent = ({ children, nextStage }) => {
-  return(
-    <StageContainer>
-      {children}
-    </StageContainer>
-  )
-}
+// const ProofComponent = ({ children, nextStage }) => {
+//   return(
+//     <StageContainer>
+//       {children}
+//     </StageContainer>
+//   )
+// }
 
 
 

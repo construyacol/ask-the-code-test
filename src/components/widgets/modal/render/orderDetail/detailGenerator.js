@@ -30,45 +30,68 @@ export const useDetailParseData = (order, detailType) => {
     const isPending = order.state === 'pending'
     switch (order.currency_type) {
       case "fiat":
-        console.log('order', order)
-        debugger
+        
         let depositProviderInfo = [];
         if (deposit_providers && deposit_providers[order.deposit_provider_id]) {
           const depositProvider = deposit_providers[order.deposit_provider_id];
-          depositProviderInfo = [
-            [
-              "Entidad del depósito:",
-              `${depositProvider.depositAccount.ui_name}`,
-            ],
-            [
-              `${depositProvider.depositAccount.account.type.ui_name}`,
-              `${depositProvider.depositAccount.account.type.type}`,
-            ],
-            [
-              `${depositProvider.depositAccount.account.account_id.ui_name}`,
-              `${depositProvider.depositAccount.account.account_id.account_id}`,
-            ],
-            [
-              `${depositProvider.depositAccount.account.bussines_name.ui_name}`,
-              `${depositProvider.depositAccount.account.bussines_name.bussines_name}`,
-            ],
-            [
-              `${depositProvider.depositAccount.account.nit.ui_name}`,
-              `${depositProvider.depositAccount.account.nit.nit}`,
-            ],
-            [
-              `${depositProvider.depositAccount.account.dv.ui_name}`,
-              `${depositProvider.depositAccount.account.dv.dv}`,
-            ],
-            [
-              `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
-              `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
-            ],
-            [
-              `Costo del depósito`,
-              `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${order.currency?.toUpperCase()}`,
-            ],
-          ];
+          // console.log('order', order)
+          // console.log('depositProvider', depositProvider)
+          // debugger
+          if(depositProvider?.depositAccount?.name === 'pse'){
+            depositProviderInfo = [
+              [
+                "Entidad del depósito:",
+                `${depositProvider.depositAccount.ui_name}`,
+              ],
+              [
+                `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
+                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+              ],
+              [
+                `Costo del depósito`,
+                `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
+              ]
+            ];
+
+          }else{
+
+            depositProviderInfo = [
+              [
+                "Entidad del depósito:",
+                `${depositProvider.depositAccount.ui_name}`,
+              ],
+              [
+                `${depositProvider.depositAccount?.account?.type?.ui_name}`,
+                `${depositProvider.depositAccount?.account?.type.type}`,
+              ],
+              [
+                `${depositProvider.depositAccount.account.account_id.ui_name}`,
+                `${depositProvider.depositAccount.account.account_id.account_id}`,
+              ],
+              [
+                `${depositProvider.depositAccount.account.bussines_name.ui_name}`,
+                `${depositProvider.depositAccount.account.bussines_name.bussines_name}`,
+              ],
+              [
+                `${depositProvider.depositAccount.account.nit.ui_name}`,
+                `${depositProvider.depositAccount.account.nit.nit}`,
+              ],
+              [
+                `${depositProvider.depositAccount.account.dv.ui_name}`,
+                `${depositProvider.depositAccount.account.dv.dv}`,
+              ],
+              [
+                `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
+                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+              ],
+              [
+                `Costo del depósito`,
+                `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${order.currency?.toUpperCase()}`,
+              ]
+            ];
+          }
+
+          
         }
         // console.log('deposit_providers', order)
         const amountNeto = await formatCurrency(order.amount_neto, order.currency);
@@ -277,7 +300,7 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
   const pendingDeposit = orderType === 'deposits' && ["pending"].includes(order.state)
 
-  console.log('DetailTemplateComponent', orders)
+  // console.log('DetailTemplateComponent', orders)
 
   return (
     <Container className={`${title ? "withTitle" : ""} ${pendingDeposit ? 'withPendingDeposit' : ''} ${theme}`}>

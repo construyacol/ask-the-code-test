@@ -33,6 +33,9 @@ import {
     Content
 } from '../success/styles'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
+import Button from 'components/widgets/buttons/button'
+import { P } from "components/widgets/typography";
+import styled from "styled-components";
 
 
 
@@ -41,14 +44,15 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 const FiatDepositSuccess = ({ 
     actions, 
-    depositOrder,
+    orderData,
     depositAccount
 }) => {
     
-    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit')
+    const depositOrder = useSelector((state) => state?.modelData?.deposits[orderData?.id]);
+    // console.log('depositData', depositOrder)
+    const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit') 
     const [ depProvDetail, setDepProvDetail ] = useState([])
     const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[depositOrder?.deposit_provider_id]);
-    const { osDevice } = useSelector((state) => state?.ui);
     const [ amount, setAmount ] = useState([])
 
     const closeModal = () => actions.renderModal(null)
@@ -111,7 +115,6 @@ const FiatDepositSuccess = ({
                         component={depositAccount?.provider_type}
                         depProvDetail={depProvDetail}
                         provider={provider}
-
                     />
 
                         <SubTitle className="fuente">Datos del depósito</SubTitle>
@@ -130,15 +133,19 @@ const FiatDepositSuccess = ({
                             </p>
                         </TotalAmount>
                     </Content>
-                    <ButtonContainer className={`${osDevice} buttonContainer`}>
-                        <ControlButton
-                            // id={idSubmitButton}
-                            // loader={loader}
-                            formValidate
-                            label={`${depositAccount?.provider_type === 'pse' ? 'Ir a PSE' : 'Finalizar'}`}
-                            handleAction={finish}
-                        />
-                    </ButtonContainer>
+
+                    <RenderSwitchComponent
+                        STAGE_COMPONENTS={{
+                            bank:BankCTA,
+                            pse:PseCTA
+                        }}
+                        component={depositAccount?.provider_type}
+                        depositAccount={depositAccount}
+                        finish={finish}
+                        depositOrder={depositOrder}
+                    />
+
+
                 </SuccessViewContent>
             </SuccessViewLayout>
         </OtherModalLayout>
@@ -146,9 +153,117 @@ const FiatDepositSuccess = ({
 } 
 
 export default FiatDepositSuccess
- 
 
-const PseSuccessDetail = () => {
+
+
+const BankCTA = ({
+    finish
+}) => {
+    const { osDevice } = useSelector((state) => state?.ui);
+    return(
+        <ButtonContainer className={`${osDevice} buttonContainer`}>
+            <ControlButton
+                formValidate
+                label={'Finalizar'}
+                handleAction={finish}
+            />
+        </ButtonContainer>
+    )
+}
+
+
+function minutesDifference(date) {
+    var now = new Date();
+    var diff = now - date;
+    return parseInt(diff / 1000 / 60);
+}
+
+const PSE_DEFAULT_AVAILABLE_PAY_TIME = 15
+
+export const PseCTA = ({
+    depositAccount,
+    finish,
+    depositOrder,
+    children
+}) => {
+
+    const { osDevice } = useSelector((state) => state?.ui);
+    const [ isAvailableToPay, setIsAvailableToPay ] = useState(false)
+    const [ leftMinutes, setLeftMinutes ] = useState(0)
+
+    useEffect(() => {
+        (() => {
+            let registerDate = localStorage.getItem(`pse_${depositOrder?.id}`)
+            setIsAvailableToPay(true);
+            if(!registerDate)return;
+            let minutesElapsed = minutesDifference(new Date(JSON.parse(registerDate)))
+            let _leftTime = PSE_DEFAULT_AVAILABLE_PAY_TIME - minutesElapsed
+            console.log('minutesElapsed', minutesElapsed)
+            if(minutesElapsed < PSE_DEFAULT_AVAILABLE_PAY_TIME && minutesElapsed >= 0){
+                setLeftMinutes(_leftTime)
+                setIsAvailableToPay(false);
+            };
+        })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    // 
+    return(
+        <PseContainer className={`${children ? 'withFlexDisplay' : ''} ${!isAvailableToPay ? 'inProcess' : ''}`}>
+            {children}
+            {
+                isAvailableToPay ?
+                <>
+                    <ButtonContainer className={`${osDevice} buttonContainer pseButton`}>
+                        <Button
+                            className={`${finish ? '' : 'displayNone'}`}
+                            onClick={finish}
+                        >
+                            Salir
+                        </Button>
+                        <ControlButton
+                            formValidate
+                            loader={depositOrder?.metadata?.bank_url ? false : true}
+                            label={`${depositAccount?.provider_type === 'pse' ? 'Ir a PSE' : 'Finalizar'}`}
+                            handleAction={() => {
+                                localStorage.setItem(`pse_${depositOrder?.id}`, JSON.stringify(new Date()));
+                                setIsAvailableToPay(false);
+                                setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
+                                window.open(depositOrder?.metadata?.bank_url, '_blank');
+                                finish && finish()
+                            }}
+                        />
+                    </ButtonContainer>
+                </>
+                :
+                <P size={14}>Hay un pago en proceso, si no pudo concluír dicho pago, el botón se habilitará nuevamente en {leftMinutes} minutos</P>
+            }
+
+        </PseContainer>
+    )
+}
+
+const PseContainer = styled.div`
+    &.withFlexDisplay{
+        display: flex;
+    }
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    column-gap: 50px;
+    .paymentProofCont{
+        width: 200px;
+    }
+    p{
+       text-align: center;
+    }
+    &.inProcess{
+        flex-direction: column;
+    }
+`
+
+
+const PseSuccessDetail = ({ children }) => {
 
     return(
         <>
@@ -166,6 +281,8 @@ const PseSuccessDetail = () => {
                     </LabelContainer>
                 </HeaderMainContainer>
             </ItemAccountContainer>
+
+            {children}
         </>
     )
 }

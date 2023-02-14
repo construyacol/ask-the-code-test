@@ -45,7 +45,7 @@
     "accepted": {
       "completed": false,
       "ui_text": "Retiro aceptado"
-    }
+    } 
   },
   "orderStatus": {
     "deposits": {

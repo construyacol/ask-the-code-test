@@ -136,7 +136,6 @@ const Container = styled.div`
 export default PaymentProofComponent;
 
 export const PaymentProof = ({ payload }) => {
-  // console.log('PaymentProof', payload)
   const {
     // primary_path,
     coinsendaServices,
@@ -159,31 +158,36 @@ export const PaymentProof = ({ payload }) => {
     deposits:"deposit_provider_id"
   }
 
-  const [imgProof, setImgProof] = useState(payload);
+  let providerId = providerKeyId[tx_path]
+
+
+  const [imgProof, setImgProof] = useState(payload); 
   const [txId, setTxId] = useState();
   const [urlExplorer, setUrlExplorer] = useState();
-  let orderDate = new Date(currentOrder?.created_at)
-  let showFromDate = new Date('2022-03-12T00:00:00')
-  let showPaymentProof = currentOrder.currency_type === "crypto" || (orderDate > showFromDate && currentOrder.currency_type === "fiat")
+  const [ provider ] = useState(providers[tx_path][currentOrder[providerId]])
 
+  
   const getPaymentProof = async (currentOrder) => {
-    let providerId = providerKeyId[tx_path]
-    let provider = providers[tx_path][currentOrder[providerId]]
-    console.log('currentOrder', currentOrder?.currency_type === "crypto" && BLOCKCHAIN_EXPLORER_URL[currentOrder?.currency][provider?.provider_type])
     let blockchainUri = (provider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;
+      let altImg
+      
+      if(provider?.provider_type === 'pse'){
+        const { PSEbase64 } = await import('components/widgets/icons')
+        altImg =  `data:image/png;base64, ${PSEbase64}`
+        setTxId(proof_of_payment.proof); 
+      }
+      let imgFiat = proof_of_payment?.raw ? `data:image/png;base64, ${proof_of_payment.raw}` : altImg
       setImgProof(
         currentOrder.currency_type === "fiat"
-          ? `data:image/png;base64, ${proof_of_payment.raw}`
+          ? imgFiat
           : await QRCode.toDataURL(`${blockchainUri}${proof_of_payment.proof}`)
       );
-
       if (currentOrder.currency_type === "crypto") { 
         setTxId(proof_of_payment.proof); 
         setUrlExplorer(`${blockchainUri}${proof_of_payment.proof}`);
       }
-
     } else if (currentOrder.proof) {
       setImgProof(await QRCode.toDataURL(`${blockchainUri}${currentOrder.proof}`));
       setTxId(currentOrder.proof);
@@ -194,16 +198,16 @@ export const PaymentProof = ({ payload }) => {
   useEffect(() => {
     if (!currentOrder.paymentProof && currentOrder.state !== "pending" && tx_path === "deposits") {
       const getData = async () => {
-        const PP = showPaymentProof && await coinsendaServices.getDepositById(currentOrder.id);
-        if (!PP) {
+        const orderWithPaymentProof = await coinsendaServices.getDepositById(currentOrder.id);
+        if (!orderWithPaymentProof) {
           return;
         }
-        // const { proof_of_payment } = PP.paymentProof;
         let updateOrder = {
-          [PP.id]: { ...PP },
+          [orderWithPaymentProof.id]: { ...orderWithPaymentProof },
         };
+
         actions.update_item_state(updateOrder, "deposits");
-        getPaymentProof(PP);
+        getPaymentProof(orderWithPaymentProof);
       };
       getData();
 
@@ -214,7 +218,7 @@ export const PaymentProof = ({ payload }) => {
   }, []);
 
   useEffect(() => {
-    if (imgProof !== payload) {
+    if (imgProof !== payload && payload) {
       setImgProof(payload);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,29 +227,27 @@ export const PaymentProof = ({ payload }) => {
   const openBlockchain = () => {
     window.open(urlExplorer, "_blank");
   };
+
  
   return (
     <>
       <PaymentProofContainer
-        className={`paymentProofCont ${currentOrder.currency_type} ${currentOrder.state}`}
+        className={`paymentProofCont ${currentOrder.currency_type} ${currentOrder.state} ${provider?.provider_type}`}
       > 
         {
-          !showPaymentProof && <p className="orderLimitDate" >No disponible</p>
-        }
-
-        {
-          (showPaymentProof && (!imgProof || loader)) && (
+          ((!imgProof || loader)) && (
           <LoaderContainer>
             <SimpleLoader loader={2} justify="center" color="#206f65" />
           </LoaderContainer>
         )}
         
-        {(showPaymentProof && imgProof) && (
+        {(imgProof) && (
           <ProofContainer>
             <Zoom>
-              <img src={imgProof} width="100%" height="90px" alt="" />
+              {imgProof && <img src={imgProof} width="100%" height="90px" alt="" />}
             </Zoom>
-            {currentOrder.currency_type === "crypto" && (
+
+            {provider?.provider_type !== 'bank' && (
               <HoverProof>
                 <IconContainer
                   className="tooltip"
@@ -255,11 +257,13 @@ export const PaymentProof = ({ payload }) => {
                   <MdContentCopy size={16} />
                   <span className="tooltiptext fuente">Copiar</span>
                 </IconContainer>
-
-                <IconContainer className="tooltip" onClick={openBlockchain}>
-                  <BsUpload size={20} />
-                  <span className="tooltiptext fuente">Ver en Blockchain</span>
-                </IconContainer>
+                {
+                  currentOrder.currency_type === "crypto" &&
+                  <IconContainer className="tooltip" onClick={openBlockchain}>
+                    <BsUpload size={20} />
+                    <span className="tooltiptext fuente">Ver en Blockchain</span>
+                  </IconContainer>
+                }
               </HoverProof>
             )}
           </ProofContainer>
@@ -345,6 +349,10 @@ const PaymentProofContainer = styled.div`
 
   &.fiat {
     cursor: pointer;
+  }
+
+  &.pse{
+    background: transparent;
   }
 `;
 
