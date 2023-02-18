@@ -9,6 +9,29 @@ import { isEmpty } from 'lodash'
 import { P } from 'components/widgets/typography';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
+import styled from 'styled-components'
+
+const TagCont = styled.div`
+  padding: 5px 10px;
+  background-color: red;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 3px;
+  align-self: center;
+  justify-self: end;
+  p{
+    margin: 0;
+    color: white !important;
+  }
+`
+
+const TagNewComponent = () => {
+  return(
+    <TagCont>
+      <P className="bold" color="white" size={12}>Nuevo</P>
+    </TagCont>
+  )
+}
 
 function ProviderComponent({ 
     stageManager:{ 
@@ -64,16 +87,17 @@ function ProviderComponent({
                 {
                   depositAccounts && Object.keys(depositAccounts).map((key, index) => {
                     const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
+                    if(!depositAccounts[key]?.visible) return null;
                     return <ItemListComponent 
                       key={index} 
                       className={`${depositAccounts[key]?.value}`}
                       itemList={depositAccounts[key]}
-                      // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                       firstIndex={index === 0}
                       lastIndex={(Object.keys(depositAccounts)?.length - 1) === index}
                       isSelectedItem={isSelected}
                       isMovilViewport={isMovilViewport}
                       handleAction={selectProvider}
+                      AuxComponent={[ depositAccounts[key]?.provider_type === 'pse' ? () => <TagNewComponent/> : () => null]}
                     />
                   })
                 }

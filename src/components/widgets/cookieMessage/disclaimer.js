@@ -3,11 +3,6 @@ import React, { useRef, useEffect, useState } from 'react'
 import styles from './styles.module.css';
 import styled from 'styled-components'
 // import { getHostName } from 'environment'
-import IconSwitch from '../icons/iconSwitch';
-import Button from '../buttons/button';
-import { device, history } from 'const/const';
-import { serveModelsByCustomProps } from 'selectors'
-import { useSelector } from "react-redux";
 
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
@@ -16,19 +11,12 @@ export default function CookieMessage(props) {
 
   const [shouldRender, setShouldRender] = useState(false);
   const mainRef = useRef()
-  // const [ viewMore, setViewMore ] = useState(false)
+  const [ viewMore, setViewMore ] = useState(false)
 
   const clickHandler = () => { 
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
     setShouldRender(false)
   }
-
-  const goToNew = () => {
-    history.push(`/wallets/deposit/${walletsByCurrencyType?.fiat?.id}`)
-    clickHandler()
-  }
-
-  const walletsByCurrencyType = useSelector(({ modelData:{ wallets } }) => serveModelsByCustomProps(wallets, 'currency_type'));
 
   useEffect(() => {
     const value = sessionStorage.getItem(COINSENDA_DISCLAIMER_IS_ACCEPTED)
@@ -39,42 +27,55 @@ export default function CookieMessage(props) {
   }, [mainRef.current])
 
 
+ 
   return shouldRender ? (
-    <CoockieContainer ref={mainRef} id="cookieContainer" className='withOutHeight'>
-    <Close onClick={clickHandler}>X</Close>
-    <Content>
-      <IconSwitch 
-        size={50}
-        icon="pse"
-      />
-      <br/>
-      <h4 className='fuente' style={{textAlign:"center"}}>¡No más preocupaciones por los horarios bancarios!</h4>
-      <p className="fuente">
-      Ahora puedes realizar tus depósitos de manera fácil y segura a través de <strong>PSE</strong>. Aprovecha esta nueva forma de pago y disfruta de una experiencia bancaria sin complicaciones!
-      </p>
-      <br/>
-      <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>
-        <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
-        <Button
-          disabled={!walletsByCurrencyType?.fiat?.id}
-          onClick={goToNew}
-        >
-          Muestrame
-        </Button>
-      </div>
-    </Content>
-  </CoockieContainer>
+    <CoockieContainer ref={mainRef} id="cookieContainer" className={`${viewMore ? 'disclaimer__open' : 'disclaimer--showGradient'}`}>
+      <Close onClick={clickHandler}>X</Close>
+      <Content>
+        <h3 className='fuente'>¡Advertencia!</h3>
+        <br/>
+        <p className="fuente">
+          Antes de efectuar tus transacciones, presta atención a lo siguiente: 
+          <br/>
+          <br/>
+          ✓ <b>PHI COLOMBIA S.A.S.</b> no ha establecido ningún tipo de relación o convenio con otras empresas, agencias y/o personas para la obtención de bienes, servicios o beneficios a través de transacciones realizadas por medio de <b>COINSENDA</b>.
+        </p>
+          <br/>
+        <p className="fuente">
+          ✓ Ante la duda, abstente de realizar cualquier operación y contáctanos a través del correo electrónico: <b>soporte@coinsenda.com</b> o por nuestro chat.
+        </p>
+          <br/>
+        <p className="fuente">
+          <span>
+            Para conocer más consulta&nbsp;
+            <a 
+              className={styles["cookie-link"]} 
+              rel="noreferrer" 
+              href={`https://${getHostName()}.com/docs/terms`}
+              target="_blank"
+              >
+                nuestros terminos y condiciones
+            </a>
+          </span>
+        </p>
+        <br/>
+        <br/>
+        <div className={styles["cookie-button-container"]}>
+          <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
+        </div>
+      </Content>
+      {
+        !viewMore && 
+          <p className='fuente2 verMas__p' onClick={() => setViewMore(prevState => !prevState)}>{viewMore ? '' : 'Ver más...'} </p>
+      }
+    </CoockieContainer>
   ) : <></>
 }
 
 const Content = styled.div`
-
   display: grid;
   grid-template-columns: 1fr;
   overflow: hidden;
-  .iconSty{
-    justify-self: center;
-  }
   
   p{
     font-size: 14px;
@@ -85,13 +86,6 @@ const Content = styled.div`
     font-weight: bold;
     margin: 0;
     text-align:center;
-  }
-
-  @media ${device.mobile} {
-    .cookie-button-container{
-      display: flex;
-      flex-direction: column;
-    }
   }
 
 
@@ -126,6 +120,13 @@ const Close = styled.div`
 
 const CoockieContainer = styled.section`
   position:relative;
+
+  &:hover{
+    ${Close}{
+      opacity: 1;
+    }
+  }
+
   z-index: 9999999999;
   background: white;
   width: 95vw;
@@ -143,15 +144,6 @@ const CoockieContainer = styled.section`
   -webkit-box-shadow: -1px 0px 5px 0px rgba(50, 50, 50, 0.6);
   -moz-box-shadow:    -1px 0px 5px 0px rgba(50, 50, 50, 0.6);
   box-shadow:         -1px 0px 5px 0px rgba(50, 50, 50, 0.6);
-
-  &:hover{
-    ${Close}{
-      opacity: 1;
-    }
-  }
-  &.withOutHeight{
-    height: auto;
-  }
 
   img{
     align-self: center;

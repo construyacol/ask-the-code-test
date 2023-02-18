@@ -188,7 +188,7 @@ export const ApiPostCreateWAccount = async(state, tools) => {
       identity_id:state?.identity?.id,
       provider_type:withdrawProvider?.provider_type,
       info_needed:getInfoNeeded(state)
-    }
+    } 
   }
   const res = await mainService.createWithdrawAccount(body);
   if(res.data) await mainService.fetchWithdrawAccounts();

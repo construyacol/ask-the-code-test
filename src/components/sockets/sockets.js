@@ -446,8 +446,7 @@ class SocketsComponent extends Component {
 
   deposit_mangagement = async (deposit) => {
 
-    console.log('|||||||||||||||||||||||||||| |  DEPOSIT_MANAGEMENT   ==> ', deposit)
-    // debugger
+
 
     if (deposit.state === "pending" && deposit.currency_type === "fiat") {
       await this.props.coinsendaServices.addItemToState("deposits", {
@@ -477,7 +476,7 @@ class SocketsComponent extends Component {
       if (!this.props.deposits || (this.props.deposits && !this.props.deposits[deposit.id])) {
         // si el deposito no está en el estado, es porque es de tipo cripto...
         let cDeposit = await this.props.coinsendaServices.getDepositById(deposit.id);
-        console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
+        // console.log('|||||||| _______________________________________DEPOSIT cDeposit', cDeposit)
         if(cDeposit?.info?.is_referral) return;
 
         if (this.props.activity_for_account[cDeposit.account_id] && this.props.activity_for_account[cDeposit.account_id].deposits) {
@@ -528,8 +527,8 @@ class SocketsComponent extends Component {
         const depositProviders = this.props.deposit_providers
         // const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
         const currencyDepositProvider = depositProviders[this.props.deposits[deposit.id]?.deposit_provider_id]?.depositAccount
-        console.log('currencyDepositProvider', currencyDepositProvider)
-        console.log('deposit', deposit)
+        // console.log('currencyDepositProvider', currencyDepositProvider)
+        // console.log('deposit', deposit)
 
         // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)
 
@@ -607,6 +606,8 @@ class SocketsComponent extends Component {
           },
           1
         );
+
+        
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
@@ -690,6 +691,9 @@ class SocketsComponent extends Component {
     if (deposit.state === "confirmed") {
       // console.log('deposito confirmado fiat')
       // this.props.coinsendaServices.showNotification('Deposito fiat', 'Su deposito ha sido confirmado con éxito')
+      // alert('confirmed')
+    // console.log('SOCKET_DEPOSIT_MANAGEMENT ==> ', deposit)
+
       if (
         this.props.deposits &&
         this.props.deposits[deposit.id] &&
@@ -698,6 +702,7 @@ class SocketsComponent extends Component {
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
+              ...deposit,
               ...this.props.deposits[deposit.id],
               state: deposit.state,
             },

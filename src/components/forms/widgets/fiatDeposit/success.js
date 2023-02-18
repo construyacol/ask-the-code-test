@@ -172,13 +172,13 @@ const BankCTA = ({
 }
 
 
-function minutesDifference(date) {
-    var now = new Date();
-    var diff = now - date;
-    return parseInt(diff / 1000 / 60);
-}
+// function minutesDifference(date) {
+//     var now = new Date();
+//     var diff = now - date;
+//     return parseInt(diff / 1000 / 60);
+// }
 
-const PSE_DEFAULT_AVAILABLE_PAY_TIME = 15
+// const PSE_DEFAULT_AVAILABLE_PAY_TIME = 15
 
 export const PseCTA = ({
     depositAccount,
@@ -189,21 +189,26 @@ export const PseCTA = ({
 
     const { osDevice } = useSelector((state) => state?.ui);
     const [ isAvailableToPay, setIsAvailableToPay ] = useState(false)
-    const [ leftMinutes, setLeftMinutes ] = useState(0)
+    // const [ leftMinutes, setLeftMinutes ] = useState(0)
+
 
     useEffect(() => {
         (() => {
-            let registerDate = localStorage.getItem(`pse_${depositOrder?.id}`)
-            setIsAvailableToPay(true);
-            if(!registerDate)return;
-            let minutesElapsed = minutesDifference(new Date(JSON.parse(registerDate)))
-            let _leftTime = PSE_DEFAULT_AVAILABLE_PAY_TIME - minutesElapsed
-            console.log('minutesElapsed', minutesElapsed)
-            if(minutesElapsed < PSE_DEFAULT_AVAILABLE_PAY_TIME && minutesElapsed >= 0){
-                setLeftMinutes(_leftTime)
-                setIsAvailableToPay(false);
-            };
+            const isCtaClicked = localStorage.getItem(`pse_${depositOrder?.id}`)
+            isCtaClicked ? setIsAvailableToPay(false) : setIsAvailableToPay(true)
         })()
+        // (() => {
+        //     let registerDate = localStorage.getItem(`pse_${depositOrder?.id}`)
+        //     setIsAvailableToPay(true);
+        //     if(!registerDate)return;
+        //     let minutesElapsed = minutesDifference(new Date(JSON.parse(registerDate)))
+        //     let _leftTime = PSE_DEFAULT_AVAILABLE_PAY_TIME - minutesElapsed
+        //     console.log('minutesElapsed', minutesElapsed)
+        //     if(minutesElapsed < PSE_DEFAULT_AVAILABLE_PAY_TIME && minutesElapsed >= 0){
+        //         setLeftMinutes(_leftTime)
+        //         setIsAvailableToPay(false);
+        //     };
+        // })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -226,9 +231,10 @@ export const PseCTA = ({
                             loader={depositOrder?.metadata?.bank_url ? false : true}
                             label={`${depositAccount?.provider_type === 'pse' ? 'Ir a PSE' : 'Finalizar'}`}
                             handleAction={() => {
-                                localStorage.setItem(`pse_${depositOrder?.id}`, JSON.stringify(new Date()));
-                                setIsAvailableToPay(false);
-                                setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
+                                // localStorage.setItem(`pse_${depositOrder?.id}`, JSON.stringify(new Date()));
+                                localStorage.setItem(`pse_${depositOrder?.id}`, true);
+                                // setIsAvailableToPay(false);
+                                // setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
                                 window.open(depositOrder?.metadata?.bank_url, '_blank');
                                 finish && finish()
                             }}
@@ -236,7 +242,10 @@ export const PseCTA = ({
                     </ButtonContainer>
                 </>
                 :
-                <P size={14}>Hay un pago en proceso, si no pudo concluír dicho pago, el botón se habilitará nuevamente en {leftMinutes} minutos</P>
+                <P size={14}>  
+                    Ya se ha iniciado un proceso de pago para esta orden, en un momento te nofiticaremos sobre su estado
+                    {/* Se ha iniciado el proceso de pago, si no puedes concluirlo el botón se habilitará nuevamente en {leftMinutes} minutos */}
+                </P>
             }
 
         </PseContainer>
