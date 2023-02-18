@@ -87,12 +87,11 @@ function ProviderComponent({
                 {
                   depositAccounts && Object.keys(depositAccounts).map((key, index) => {
                     const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
-                    console.log('depositAccountsPSE', depositAccounts[key]?.provider_type === 'pse', depositAccounts[key])
+                    if(!depositAccounts[key]?.visible) return null;
                     return <ItemListComponent 
                       key={index} 
                       className={`${depositAccounts[key]?.value}`}
                       itemList={depositAccounts[key]}
-                      // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                       firstIndex={index === 0}
                       lastIndex={(Object.keys(depositAccounts)?.length - 1) === index}
                       isSelectedItem={isSelected}
