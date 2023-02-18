@@ -9,7 +9,7 @@ import {
 } from './styles'
 import { getAcronym } from 'utils'
 import { MdKeyboardArrowUp, MdKeyboardArrowDown } from "react-icons/md"
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 import loadable from "@loadable/component";
 import { useSelector } from "react-redux";
 import { IoMailOutline } from "react-icons/io5";

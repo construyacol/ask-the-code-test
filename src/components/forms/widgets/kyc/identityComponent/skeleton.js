@@ -10,7 +10,8 @@ import {
 } from '../styles'
 import { InputWrapper } from '../InputComponent'
 import { InfoPanelSkeleton } from '../../infoPanel'
-import { H2 } from 'components/widgets/typography'
+import { H2 } from 'core/components/atoms'
+
 
 
 const KycSkeleton = () => (

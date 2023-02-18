@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
 import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
-import { P } from 'components/widgets/typography';
+import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { AiFillBank } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";

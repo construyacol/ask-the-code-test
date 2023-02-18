@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useState, useEffect } from 'react'
-import P from 'components/widgets/typography/p'
+import { P } from 'core/components/atoms'
 import {
     GasLayout,
     Pcontainer,

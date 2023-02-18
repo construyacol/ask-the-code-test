@@ -1,6 +1,6 @@
 import { BsCheck2Circle } from 'react-icons/bs'
 import { IoFileTray } from 'react-icons/io5'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 import { UI_NAMES } from '../../../../../const/uiNames'
 import {
     StageListItemContainer,

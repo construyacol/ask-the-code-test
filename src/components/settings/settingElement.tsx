@@ -1,6 +1,6 @@
 import { FiCheckCircle, FiAlertCircle } from "react-icons/fi";
 import getIcon from './icons'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 
 import { 
     SettingElementLayout,

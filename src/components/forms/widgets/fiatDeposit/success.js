@@ -34,7 +34,7 @@ import {
 } from '../success/styles'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
 import Button from 'components/widgets/buttons/button'
-import { P } from "components/widgets/typography";
+import { P } from "core/components/atoms";
 import styled from "styled-components";
 
 
