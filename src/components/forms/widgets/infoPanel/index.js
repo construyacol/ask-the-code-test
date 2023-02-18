@@ -16,7 +16,7 @@ import { IndicatorHover } from 'components/widgets/accountList/listView'
 import { BiCheck, BiErrorAlt } from "react-icons/bi";
 
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 import { findLastKey, isEmpty } from 'lodash'
 import { ErrorMessage } from './styles'
 // import ungapStructuredClone from '@ungap/structured-clone';

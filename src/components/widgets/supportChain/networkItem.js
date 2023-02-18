@@ -1,6 +1,6 @@
 import { NetworkItemCont } from './styles'  
 import IconSwitch from 'components/widgets/icons/iconSwitch'
-import { P, SPAN } from 'components/widgets/typography'
+import { P, SPAN } from 'core/components/atoms'
 
 
 const NetworkItem = ({ networkData }) => {

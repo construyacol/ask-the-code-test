@@ -9,7 +9,7 @@ import {
     DocumentManagerContainer,
     CtaCont
 } from './styles'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
 

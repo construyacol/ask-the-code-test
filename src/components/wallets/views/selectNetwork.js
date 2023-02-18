@@ -5,7 +5,7 @@ import { BiRightArrowAlt } from 'react-icons/bi';
 import { OptionInputContainer } from 'components/forms/widgets/sharedStyles'
 import styled from 'styled-components'
 import { capitalizeWord } from 'utils'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 
 
 const Layout = styled.section`

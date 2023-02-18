@@ -4,7 +4,7 @@ import {
     ALif2Item
 } from './styles'
 import SelectList from '../selectList' 
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 import loadable from "@loadable/component";
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));

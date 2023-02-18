@@ -8,6 +8,8 @@ import {
 import { settingsMenu } from 'api/ui/menuItems'
 import getIcon from './icons'
 import { BiRightArrowAlt } from 'react-icons/bi';
+import { DeleteAccount } from 'core/components/molecules'
+
 
 
 const SideMenuComponent = (props:any) => {
@@ -65,6 +67,8 @@ const SideMenuComponent = (props:any) => {
                         )
                     })
                 }
+
+                <DeleteAccount/>
             </SettingsContent>
         </SettingsMenuContainer>
     )

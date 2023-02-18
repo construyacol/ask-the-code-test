@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 
 
 

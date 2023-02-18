@@ -11,7 +11,8 @@ import {
   TitleContainer,
 } from 'components/forms/widgets/kyc/styles'
 import InfoStateComponent from 'components/forms/widgets/infoPanel/mobile'
-import { H2 } from 'components/widgets/typography'
+import { H2 } from 'core/components/atoms'
+
 import kycHoc from 'components/hoc/kycHoc'
 import Button from 'components/widgets/buttons/button'
   

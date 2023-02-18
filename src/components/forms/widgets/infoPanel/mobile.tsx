@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { InfoWrapper, IconCont } from './styles'
 import getIcon from './icons'
-import { P } from 'components/widgets/typography'
+import { P } from 'core/components/atoms'
 // import { FiArrowRight } from 'react-icons/fi'
 import { MdMoreVert, MdClose } from 'react-icons/md'
 

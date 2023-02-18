@@ -6,7 +6,7 @@ import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
 import { isEmpty } from 'lodash'
-import { P } from 'components/widgets/typography';
+import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
 import styled from 'styled-components'
