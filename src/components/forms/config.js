@@ -4,7 +4,7 @@ import {
   // FIAT_DEPOSIT_DEFAULT_STATE
 } from './widgets/fiatDeposit/api'
  
-import { 
+import {  
   ONBOARDING_COMPONENTS,
   ONBOARDING_STAGES
 } from './widgets/onBoardingComponent/api'

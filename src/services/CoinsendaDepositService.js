@@ -15,8 +15,7 @@ import actions from "../actions";
 import { normalized_list } from "../utils";
 import sleep from 'utils/sleep'
 import { isEmpty } from 'lodash'
-
-
+import { checkIfFiat } from 'core/config/currencies';
 
 
 const { update_item_state } = actions;
@@ -67,9 +66,7 @@ export class DepositService extends WebService {
 
 
   async createDeposit(body) {
-
     return await this._Post(NEW_DEPOSIT_URL, body);
-
 
     // const user = this.user
     // const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
@@ -216,7 +213,7 @@ export class DepositService extends WebService {
     const { deposit_providers } = this.globalState?.modelData
     if(!deposit_providers)return ;
     for (const depProv in deposit_providers) {
-      if(["crypto"].includes(deposit_providers[depProv]?.currency_type)){
+      if(!checkIfFiat(deposit_providers[depProv]?.currency)){
         await sleep(2000)
         await this.subscribeToNewDeposits(depProv)
       }

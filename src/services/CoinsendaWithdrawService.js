@@ -19,25 +19,18 @@ import {
 import normalizeUser from "../schemas";
 import { 
   SentryCaptureException, 
-  // serveBankOrCityList, 
-  normalized_list 
+  normalized_list  
 } from '../utils'
-
 import { isArray } from "lodash"; 
-
+import { checkIfFiat } from 'core/config/currencies';
 
 export class WithdrawService extends WebService {
 
   async fetchWithdrawAccounts(query = '{"where":{"visible":true, "state":{"inq":["in_progress", "complete", "pending"]} }}') {
-
     const { user } = this.globalState.modelData;
-    await this.dispatch(
-      appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO)
-    );
+    await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_CUENTAS_DE_RETIRO));
     const finalUrl = `${GET_WITHDRAW_BY_USER_URL}/${user.id}/withdrawAccounts?country=${user.country}&filter=${query}`;
-      
     const result = await this.Get(finalUrl);
-
     if (!result.length) {
       let userWithOutWA = {
         id: user.id,
@@ -49,22 +42,15 @@ export class WithdrawService extends WebService {
       document.querySelector('#home-container')?.classList?.add('wA')
       return this.dispatch(resetModelData({ withdraw_accounts: [] }));
     }
-
     if (!result || result === 465 || !this.withdrawProviders) {
       return false;
     }
-
-
     const providersServed = await this.withdrawProvidersByType;
-    
-  
-
     const withdrawAccounts = await result.map((account) => {
     const aux = providersServed[account.provider_type];
     let providerData = {}
-
-      if (aux.currency_type === "fiat") {
-
+    const currencyType = checkIfFiat(aux?.currency) ? 'fiat' : 'crypto'
+      if (checkIfFiat(aux?.currency)) {
         if(aux.provider_type === 'bank'){
           providerData = {
             account_number:{
@@ -97,13 +83,6 @@ export class WithdrawService extends WebService {
             }
           }
         }
-
-        // if(['efecty_network'].includes(aux.provider_type)){
-        //   console.log('aux', aux)
-        //   console.log('providerData', providerData)
-        // }
-
-
         return {
           id: account.id,
           provider_name: account.info.bank_name || aux?.name,
@@ -117,7 +96,7 @@ export class WithdrawService extends WebService {
           provider_type: account.provider_type,
           provider_max_amount: aux.provider.max_amount,
           provider_min_amount: aux.provider.min_amount,
-          currency_type: aux && aux.currency_type,
+          currency_type: aux && currencyType,
           withdraw_provider: aux.id,
           ...providerData,
           ...account,
@@ -140,25 +119,20 @@ export class WithdrawService extends WebService {
           provider_type: account.provider_type,
           provider_max_amount: aux.provider.max_amount,
           provider_min_amount: aux.provider.min_amount,
-          currency_type: aux && aux.currency_type,
+          currency_type: aux && currencyType,
           withdraw_provider: aux.id,
           ...account,
         };
       }
     });
-
     withdrawAccounts.reverse();
-
-
     const updatedUser = {
       id: user.id,
       withdraw_accounts: [...withdrawAccounts],
     };
-
     // if (await this.isCached("withdraw_accounts", result)) {
     //   return withdrawAccounts;
     // }
-
     const normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
     document.querySelector('#home-container')?.classList?.add('wA')
@@ -383,12 +357,7 @@ export class WithdrawService extends WebService {
     
     if(payload.bank_name === 'efecty'){
       body.data.info_needed = payload.info_needed
-      // body.data.identity_id = user?.identity.id
     }
-
-    // console.log(body)
-    // debugger
-
     
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,
@@ -451,7 +420,8 @@ export class WithdrawService extends WebService {
     let withdraws_remodeled = [];
     for (let withdraw of withdraws) {
       let state;
-      if (withdraw.currency_type === "fiat") {
+      
+      if (checkIfFiat(withdraw?.currency)) {
         state =
           withdraw.state === "accepted" && !withdraw.sent
             ? "confirmed"
@@ -511,54 +481,5 @@ export class WithdrawService extends WebService {
     };
     return await this._Post(UPDATE_WITHDRAW_URL, body);
   }
-
-  // async fetchActivityByAccount(accountId, page = 0, type = "withdraws") {
-  //     const skip = page * 10
-  //
-  //     const _withdrawsQuery = `{"where":{"withdraw_account_id":"${accountId}"}, "limit": 10, "order":"id DESC", "skip": ${skip}}`
-  //
-  //     const query = _withdrawsQuery
-  //
-  //     const url = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${this.user.id}/${type}?country=${this.user.country}&filter=${query}`
-  //
-  //     let res = await this.Get(url)
-  //
-  //     let finalResult
-  //     res = res ? res : []
-  //
-  //     finalResult = res.filter(item => item.state === 'accepted').map(withdraw => {
-  //         // let state
-  //         // if (withdraw.currency_type === 'fiat') {
-  //         //     state = !withdraw.sent ? 'confirmed' : withdraw.state
-  //         // }
-  //         // if (withdraw.currency_type === 'crypto') {
-  //         //     state = !withdraw.proof ? 'confirmed' : withdraw.state
-  //         // }
-  //
-  //         return {
-  //             ...withdraw,
-  //             // state
-  //             // comment: "",
-  //             // deposit_provider_id: "",
-  //             // expiration_date: new Date(),
-  //             // // state,
-  //             // unique_id: withdraw.id,
-  //             // withdraw_account: withdraw.withdraw_account_id,
-  //             // withdraw_provider: withdraw.withdraw_provider_id,
-  //             // type_order: "withdraw",
-  //             // withdraw_proof: withdraw.proof,
-  //         }
-  //     })
-  //
-  //     if(await this.isCached(type, res)) {
-  //         return finalResult
-  //     }
-  //
-  //     if (finalResult.length > 0) {
-  //         await this.dispatch(normalized_list(finalResult, type))
-  //     }
-  //
-  //     return finalResult
-  // }
 }
  

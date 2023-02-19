@@ -20,23 +20,7 @@ import {
 } from './styles'
 
 
-// import loadable from '@loadable/component'
-
-// const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
-
 const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props }) => {
-
- 
-  // const {
-  //   finalStage,
-  //   nextStage,
-  //   prevStage,
-  //   stageData,
-  //   currentStage
-  //   // stageStatus,
-  //   // setStageStatus
-  // } = stageManager
-
 
   const actions = useActions();
   const [ availableCurrencies ] = useAvailableWalletCreator();
@@ -55,15 +39,9 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
       "onkeypress",
       true
     );
-  
-
 
   const selectItem = (query) => {
-
-      // applys uniqueMatch when there are 2 or more currencies with the same nomenclature for example: bitcoin - bitcoin_testnet, matched over the currency clicked
       const uniqueMatch = availableCurrencies.filter(({ currency }) => currency.toLowerCase() === query);
-    //   console.log('uniqueMatch', uniqueMatch)
-    //   debugger
       searchMatch(query?.toLowerCase(), uniqueMatch)
   }
 

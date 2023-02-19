@@ -3,6 +3,7 @@ import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
 import WithdrawViewState from "./withdrawStateHandle"; 
 import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
+import { checkIfFiat } from 'core/config/currencies';
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (props) => {
@@ -107,7 +108,8 @@ export default (props) => {
           setInputState("bad");
           ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
         }
-        return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
+        
+        return e.target.value = checkIfFiat(currentWallet?.currency) ? value.toFormat() : e.target.value;
         // return e.target.value
 
         // case 'bought-amount':
@@ -127,7 +129,7 @@ export default (props) => {
         //     setInputState("bad");
         //     ErrorMsgValidate(inputName, e.target.value, min_amount.toFormat(), minAmountValidation, availableAmountValidation)
         //   }
-        //   return e.target.value = currentWallet.currency_type === 'fiat' ? value.toFormat() : e.target.value;
+        //   return e.target.value = checkIfFiat(currentWallet?.currency) ? value.toFormat() : e.target.value;
         // return
       default:
     }

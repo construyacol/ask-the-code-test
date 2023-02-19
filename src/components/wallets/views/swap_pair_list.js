@@ -32,7 +32,7 @@ export const PairList = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.allPairs]);
 
-  const selectQuote = async (name, code, type_currency, pair_id) => {
+  const selectQuote = async (pair_id) => {
     const { currentWallet } = props;
     props.action.isAppLoading(true);
     const data = await convertCurrencies(currentWallet.currency, "1", pair_id);
@@ -52,9 +52,6 @@ export const PairList = (props) => {
   };
 
   const { currentWallet, currentPair, loader } = props;
-
-  // console.log('|||||||||||||||  allPairs  ==> ', allPairs)
-
   const currencySymbol = currencies ? currencies[currentWallet?.currency]?.symbol : currentWallet?.currency?.toUpperCase()
 
   return (

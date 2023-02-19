@@ -10,6 +10,7 @@ import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
 import styled from 'styled-components'
+import { checkIfFiat } from 'core/config/currencies';
 
 const TagCont = styled.div`
   padding: 5px 10px;
@@ -49,9 +50,11 @@ function ProviderComponent({
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
     
+    // console.log('depositProvidersByName', depositProvidersByName)
     // const actions = useActions() 
 
     const selectProvider = (provider) => {
+      console.log({[stageData?.key]: provider })
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
     }
@@ -131,7 +134,7 @@ function ProviderComponent({
       let _depositAccounts = {}
       Object.keys(depositAccounts).forEach(depAccountKey => {
         const depositAccount = depositAccounts[depAccountKey];
-        if(["fiat"].includes(depositAccount?.currency_type)){
+          if(checkIfFiat(depositAccount?.currency)){
           _depositAccounts = {
             ..._depositAccounts,
             [depositAccount?.name]:{

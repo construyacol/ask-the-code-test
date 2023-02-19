@@ -6,6 +6,7 @@ import { useWalletInfo } from "../../../../hooks/useWalletInfo";
 // import DepositWithdrawFiatSkeleton from '../skeleton/depositWithdrawFiatSkeleton'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 import { CriptoWithdrawForm } from 'components/forms/widgets/sharedStyles'
+import { checkIfFiat } from 'core/config/currencies';
 
 
 const SkeletonWithdrawView = () => {
@@ -15,7 +16,7 @@ const SkeletonWithdrawView = () => {
   return (
     <>
       {
-        currentWallet.currency_type === 'fiat' ?
+        checkIfFiat(currentWallet.currency) ?
         <SelectListSkeleton/>
         :
         <>

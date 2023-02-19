@@ -2,13 +2,14 @@ import React from "react";
 import CriptoSupervisor from "./depositCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import DepositFiat from "./depositFiat";
+import { checkIfFiat } from 'core/config/currencies';
 
 const DepositView = () => {
   const [, { current_wallet }] = useCoinsendaServices();
 
   return (
     <>
-      {current_wallet.currency_type === "crypto" ? (
+      {!checkIfFiat(current_wallet?.currency) ? (
         <CriptoSupervisor/>
       ) : (
         <DepositFiat />

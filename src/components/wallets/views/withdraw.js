@@ -3,6 +3,7 @@ import WithdrawViewState from "hooks/withdrawStateHandle";
 import CriptoSupervisor from "./withdrawCripto";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import FiatView from "./withdrawFiat";
+import { checkIfFiat } from 'core/config/currencies';
 
 const WithdrawView = () => {
   const [{ withdraws, current_wallet }] = WithdrawViewState();
@@ -17,7 +18,8 @@ const WithdrawView = () => {
 
   return (
     <>
-      {current_wallet.currency_type === "crypto" ? (
+
+      { !checkIfFiat(current_wallet.currency) ? (
         <CriptoSupervisor />
       ) : (
         <FiatView />

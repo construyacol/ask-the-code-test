@@ -13,7 +13,7 @@ import { history } from '../../../../const/const'
 import useViewport from '../../../../hooks/useWindowSize'
 // import { StageOptionSkeleton } from '../../../forms/widgets/stageManager'
 import { SelectListSkeleton } from '../../../forms/widgets/selectListComponent'
-
+import { checkIfFiat } from 'core/config/currencies';
 
  
 const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
@@ -170,7 +170,7 @@ const selectFiatWithdrawAccounts = createSelector(
     if(!withdraw_accounts)return;
     let fiatWithdrawAccounts = []
     Object.keys(withdraw_accounts).forEach(wAKey => {
-      if(withdraw_accounts[wAKey]?.currency_type.includes("fiat")){
+      if(checkIfFiat(withdraw_accounts[wAKey]?.currency)){
         fiatWithdrawAccounts.push(withdraw_accounts[wAKey])
       }
     });

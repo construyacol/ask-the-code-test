@@ -6,17 +6,19 @@ import styled from 'styled-components'
 import IconSwitch from '../icons/iconSwitch';
 import Button from '../buttons/button';
 import { device, history } from 'const/const';
-import { serveModelsByCustomProps } from 'selectors'
+// import { serveModelsByCustomProps } from 'selectors'
 import { useSelector } from "react-redux";
-
+import { checkIfFiat } from 'core/config/currencies';
 
 const COINSENDA_DISCLAIMER_IS_ACCEPTED = 'coinsensa-disclaimer-is-accepted';
 
 export default function CookieMessage(props) {
 
+  const { wallets } = useSelector((state) => state.modelData);
+  const [ fiatWallet, setFiatWallet ] = useState()
+
   const [shouldRender, setShouldRender] = useState(false);
   const mainRef = useRef()
-  // const [ viewMore, setViewMore ] = useState(false)
 
   const clickHandler = () => { 
     sessionStorage.setItem(COINSENDA_DISCLAIMER_IS_ACCEPTED, true)
@@ -24,17 +26,23 @@ export default function CookieMessage(props) {
   }
 
   const goToNew = () => {
-    history.push(`/wallets/deposit/${walletsByCurrencyType?.fiat?.id}`)
+    history.push(`/wallets/deposit/${fiatWallet?.id}`)
     clickHandler()
   }
 
-  const walletsByCurrencyType = useSelector(({ modelData:{ wallets } }) => serveModelsByCustomProps(wallets, 'currency_type'));
+  useEffect(() => {
+    (() => {
+      for (const walletId in wallets) {
+        const wallet = wallets[walletId]
+        if(checkIfFiat(wallet?.currency)) setFiatWallet(wallet)
+      }
+    })()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     const value = sessionStorage.getItem(COINSENDA_DISCLAIMER_IS_ACCEPTED)
-    if(!value) {
-      setShouldRender(true)
-    }
+    if(!value) setShouldRender(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainRef.current])
 
@@ -56,7 +64,7 @@ export default function CookieMessage(props) {
       <div className={` cookie-button-container ${styles["cookie-button-container"]}`}>
         <span onClick={clickHandler} className={styles["cookie-button-accept"]}>Entendido</span>
         <Button
-          disabled={!walletsByCurrencyType?.fiat?.id}
+          disabled={!fiatWallet?.id}
           onClick={goToNew}
         >
           Muestrame

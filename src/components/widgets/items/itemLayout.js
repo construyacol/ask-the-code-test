@@ -6,10 +6,10 @@ import "./items.css";
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
 function ItemLayout(props) {
-  const doSelectionForItem = () => {
-    const { name, code, currency_type, pair_id, actualizarEstado } = props;
 
-    actualizarEstado && actualizarEstado(name, code, currency_type, pair_id);
+  const doSelectionForItem = () => {
+    const { name, actualizarEstado } = props;
+    actualizarEstado && actualizarEstado(name);
   };
 
   useEffect(() => {
@@ -27,8 +27,6 @@ function ItemLayout(props) {
     format,
     itemType,
   } = props;
-
-  // console.log('|||||||||||||||  ItemLayout ==> ', type)
 
   return (
     <div

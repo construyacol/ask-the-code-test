@@ -3,12 +3,10 @@ import OtherModalLayout from "../../otherModalLayout";
 import styled from "styled-components";
 import {
   swing_in_bottom_bck,
-  // socketIconContainerIntro,
   backTopSection,
 } from "../../../animations";
 import { orderStateColors, device, ORDER_TYPE_UI_NAME, TOTAL_ORDER_AMOUNT_COPYS } from "../../../../../const/const";
 import IconSwitch from "../../../icons/iconSwitch";
-// import { useActions } from "../../../../../hooks/useActions";
 import useViewport from "../../../../../hooks/useWindowSize";
 import DetailGenerator from "./detailGenerator";
 import { useFormatCurrency } from "hooks/useFormatCurrency";
@@ -21,26 +19,19 @@ import {
 } from "../../../shared-styles";
 import GetInfoComponentToRender from './infoComponent'
 import { TotalAmount } from '../../../shared-styles'
-// import useKeyActionAsClick from '../../../../../hooks/useKeyActionAsClick'
-// import { UploadTextMiddle, UploadMiddle } from './inProcessOrder'
-
-
-
+import { checkIfFiat } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
+
 const OrderSupervisor = () => {
 
   const { actions, currentOrder, tx_path } = UseTxState();
-
-  // const { isMovilViewport } = useViewport();
-
   const cerrar = (e, forceClose) => {
     if (e && (e.target.dataset.close_modal || forceClose)) {
       actions.isAppLoading(false);
       actions.renderModal(null);
-      // history.goBack()
     }
   };
 
@@ -240,7 +231,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
         <TotalAmount color={colorState} className={`${currentOrder.state}`}>
           <p className="fuente saldo">{amountTitle}</p>
           <p className="fuente2 amount">
-            {currentOrder.currency_type === "fiat" && "$ "}
+            {checkIfFiat(currentOrder?.currency) && "$ "}
             {amount}{" "}
             {currency && <span className="fuente">{currency?.code?.toUpperCase()}</span>}
           </p>

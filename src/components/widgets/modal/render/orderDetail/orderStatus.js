@@ -5,8 +5,8 @@ import { OnlySkeletonAnimation } from "../../../loaders/skeleton";
 import styled from "styled-components";
 import { device } from "../../../../../const/const";
 import { useSelector } from "react-redux";
-
 import moment from "moment";
+import { checkIfFiat } from 'core/config/currencies';
 import "moment/locale/es";
 moment.locale("es");
 
@@ -38,15 +38,16 @@ const OrderStatus = ({ order, movil }) => {
   }, [currentOrder.state]);
 
   // console.log('|||||||||||||||| OrderSupervisor ::', orderState)
+  const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
 
   return (
     <OrderStatusContainer>
       <TopSectionStatus>
         <Text className="fuente">
-          {orderStatus[tx_path][order.state][order.currency_type].title}
+          {orderStatus[tx_path][order.state][currencyType].title}
         </Text>
         <SubTitle className="fuente">
-          {orderStatus[tx_path][order.state][order.currency_type].description}
+          {orderStatus[tx_path][order.state][currencyType].description}
         </SubTitle>
       </TopSectionStatus>
       {!movil && (
@@ -87,8 +88,9 @@ const OrderStatus = ({ order, movil }) => {
 };
 
 const StatusItem = ({ className, state, order, active, skeleton }) => {
+  
   const activated = active && active.toString();
-  // console.log((state[0] === "confirmed" && (order.state === 'pending' || order.state === 'confirmed')), state )
+  const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
 
   return (
     <Status className={`status ${className}`}>
@@ -99,7 +101,7 @@ const StatusItem = ({ className, state, order, active, skeleton }) => {
         ) : (
           <>
             <StatusTitle className="fuente" active={activated}>
-              {state[1].ui_text[order.currency_type] || state[1].ui_text}
+              {state[1].ui_text[currencyType] || state[1].ui_text}
             </StatusTitle>
             <DateStatusText className="fuente2" active={activated}>
               {active && order.state === "pending"

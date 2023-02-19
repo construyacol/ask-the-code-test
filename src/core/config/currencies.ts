@@ -7,6 +7,11 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+const FIAT_CURRENCIES = {
+    cop:true
+}
+
+export const checkIfFiat = (currency:string) => FIAT_CURRENCIES[currency?.toLocaleLowerCase() as keyof typeof FIAT_CURRENCIES];
 
 // export const DEFAULT_CURRENCY = {
 //     currency: 'bitcoin',

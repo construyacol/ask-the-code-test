@@ -18,6 +18,7 @@ import { device } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
 // import { P } from 'components/widgets/typography'
+import { checkIfFiat } from 'core/config/currencies';
 
 // const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
@@ -112,7 +113,7 @@ export const SkeletonDepositView = () => {
   return (
     <>
       {
-        currentWallet.currency_type === 'crypto' ?
+        !checkIfFiat(currentWallet?.currency) ?
         <>
           <div/>
           <DepositForm className="skeleton">

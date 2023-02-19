@@ -15,6 +15,7 @@ import { RibbonContDeposit } from '../../referrals/shareStyles'
 import useToastMessage from "../../../hooks/useToastMessage"; 
 // import { selectDepositProvsByCurrency } from 'selectors'
 // import { useSelector } from "react-redux";
+import { checkIfFiat } from 'core/config/currencies';
 
 import {
   gotoTx,
@@ -97,14 +98,14 @@ const getIcon = (state) => {
   // swap = 'fas fa-arrow-down'
 };
 
-const getState = ({ state, currency_type }, tx_path) => {
+const getState = ({ state, currency }, tx_path) => {
   return tx_path === "swaps" && (state === "pending" || state === "confirmed")
     ? "Procesando"
     : state === "pending"
     ? "Pendiente"
     : state === "confirmed" && tx_path === "withdraws"
     ? "Procesando"
-    : state === "confirmed" && currency_type === "fiat"
+    : state === "confirmed" && checkIfFiat(currency)
     ? "En revisión"
     : state === "confirmed"
     ? "Confirmando"
@@ -125,11 +126,13 @@ export const DepositOrder = ({ order }) => {
     id,
     setOrderState, 
     orderState,
-    currency_type,
+    currency,
   } = order;
 
+  
+
   useLayoutEffect(()=>{
-    if(currency_type === 'crypto' && state === 'pending' && document.getElementById(id)){
+    if(!checkIfFiat(currency) && state === 'pending' && document.getElementById(id)){
       document.getElementById(id).style.display = "none"
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,7 +141,7 @@ export const DepositOrder = ({ order }) => {
 
   return (
     <Order
-      className={`${state} ${currency_type} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
+      className={`${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${new_order_style ? "newOrderStyle" : ""} ${orderState || ''}`}
     >
 
       { 
@@ -149,7 +152,7 @@ export const DepositOrder = ({ order }) => {
             </RibbonContDeposit>
       }
 
-      <DataContainer className={`align_first ${state} ${currency_type} ${tx_path}`}>
+      <DataContainer className={`align_first ${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${tx_path}`}>
         {
           state === 'pending' &&
             <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateDeposit" />
@@ -248,7 +251,7 @@ const SwapOrder = ({ order, setOrderState }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder]);
 
-  const { created_at, id, currency_type } = order;
+  const { created_at, id, currency } = order;
 
   const { state } = currentOrder;
 
@@ -262,7 +265,7 @@ const SwapOrder = ({ order, setOrderState }) => {
 
   return (
     <Order
-      className={`${state} ${currency_type || ""} ${
+      className={`${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${
         new_order_style ? "newOrderStyle" : ""
       } ${tx_path} ${currentOrder.activeTrade ? "inProcess" : ""}`}
     >
@@ -282,7 +285,7 @@ const SwapOrder = ({ order, setOrderState }) => {
         </BarraSwap>
       )}
 
-      <DataContainer className={`align_first ${state} ${currency_type || ""}`}>
+      <DataContainer className={`align_first ${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'}`}>
         {currentOrder.activeTrade && state !== "accepted" ? (
           <>
             <LoaderViewItem className="loaderViewItem">
@@ -365,20 +368,15 @@ const LoaderViewItem = styled.div`
 const WithdrawOrder = ({ order }) => {
   const { new_order_style, tx_path, lastPendingOrderId } = UseTxState(order.id);
 
-  // const { state, created_at, id, currency_type, sent, setOrderState } = order;
-  const { state, created_at, id, currency_type } = order;
+  const { state, created_at, id, currency } = order;
 
   return (
     <Order
-      className={`${state} ${currency_type} ${
+      className={`${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'} ${
         new_order_style ? "newOrderStyle" : ""
       }`}
     >
-      <DataContainer className={`align_first ${state} ${currency_type}`}>
-        {/* {
-          ((currency_type === 'fiat' && state === 'confirmed') && !sent) &&
-            <DeleteButton {...order} setOrderState={setOrderState} deleteAction="addUpdateWithdraw" />
-        } */}
+      <DataContainer className={`align_first ${state} ${checkIfFiat(currency) ? 'fiat' : 'crypto'}`}>
         <PanelLeft {...order} />
         <OrderIcon className="fas fa-arrow-up" />
         <TypeOrderText className="fuente">
@@ -437,7 +435,7 @@ const PanelLeft = (order) => {
 
   return (
     <>
-      {order.currency_type === "crypto" &&
+      {!checkIfFiat(order?.currency) &&
       order.state === "confirmed" &&
       tx_path === "deposits" ? (
         <Confrimations className="fuente2">
@@ -468,7 +466,7 @@ const getTypeOrder = (tx_path) => {
 
 const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
 
-  const { state, currency_type, amount, currency } = order;
+  const { state, amount, currency } = order;
   const [amountC] = useFormatCurrency(amount, currency);
   const [ toBuyAmount, setToBuyAmount ] = useState(order.bought)
   const [ toSpendAmount, setToSpendAmount ] = useState(order.spent)
@@ -520,7 +518,7 @@ const PanelRight = ({ order, tx_path, lastPendingOrderId }) => {
         <>
           <AmountText className={`fuente2 ${tx_path} ${order.state}`}>
             {tx_path === "deposits" ? "+" : tx_path === "withdraws" ? "- " : ""}
-            {currency_type === "fiat" && "$"}
+            {checkIfFiat(currency) === "fiat" && "$"}
             {amountC}
           </AmountText>
           <IconSwitch icon={currency} size={16} />

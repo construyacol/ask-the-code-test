@@ -43,8 +43,7 @@ const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
   const { currentWallet } = walletInfo
   const [ costList, depositAccount ] = useSelector(() => selectProviderData(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]));
   const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.currency));
-
-  
+  console.log('depositProviders', depositProviders)
   
   const stageManager = useStage(
     // create the form stages
@@ -62,7 +61,6 @@ const {
   lastStage
 } = stageManager
 
-// setCreateAccount
  
   const nextStep = async() => {
     if(stageStatus !== 'success'){return} 

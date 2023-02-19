@@ -8,6 +8,7 @@ import useCurrencies from '../../../hooks/useCurrencies'
 import BalanceComponent from "../balance/balance";
 import { useCoinsendaServices } from "../../../services/useCoinsendaServices";
 import { useSelector } from "react-redux";
+import { checkIfFiat } from 'core/config/currencies';
 import {
     // HeaderContainer,
     HeaderMainContainer,
@@ -171,10 +172,10 @@ const MobileBalanceComponent = ({ account }) => {
         setCurrentAmount(current_amount.toFormat());
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
+    
     return(
         <MobileBalanceContainer className="fuente2">
-            {`${["fiat"].includes(account?.currency_type) ? '$ ' : ''} ${currentAmount}`}
+            {`${checkIfFiat(account?.currency) ? '$ ' : ''} ${currentAmount}`}
         </MobileBalanceContainer>
     )
 }
@@ -196,7 +197,6 @@ export const RightSection = ({ isMovilViewport, account:{ id } }) => {
 
     // <MobileBalance>
     //     <HR/>
-    //     <p className="fuente2">{currency_type === 'fiat' ? '$ ' : ''}{currentAmount}</p>
     //     <p className="fuente _balanceTextLab">Balance</p>
     // </MobileBalance>
 

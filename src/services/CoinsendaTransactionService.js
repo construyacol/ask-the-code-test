@@ -14,6 +14,7 @@ import {
 } from "../const/const";
 import { matchItem } from "../utils";
 import menuItems from "api/ui/menuItems";
+import { checkIfFiat } from 'core/config/currencies';
 
 
 export class TransactionService extends WebService {
@@ -29,7 +30,6 @@ export class TransactionService extends WebService {
     const currencies = response.reduce((result, currency) => {
       const split = currency.node_url && currency.node_url.split("api");
       result.push({
-        currency_type: currency.currency_type,
         id: currency.id,
         type: "coins",
         name: currency.currency,
@@ -204,6 +204,7 @@ export class TransactionService extends WebService {
     
   }
 
+
   async getLocalCurrency(country) {
     const [ countryCurrency ] = await this.Get(`${LOCAL_CURRENCIES_URL}{"where": {"name": "international"}}`);
     if (this.isEmpty(countryCurrency)) return;
@@ -211,11 +212,12 @@ export class TransactionService extends WebService {
     let localCurrencyData = await this.Get(`${CURRENCIES_URL}{"where": {"id": "${localCurrencyId}"}}`);
     if (this.isEmpty(localCurrencyData)) return;
     localCurrencyData = localCurrencyData[0];
+    const currencyType = checkIfFiat(localCurrencyData.currency) ? 'fiat' : 'crypto'
     return {
       currency: localCurrencyData.currency,
-      currency_type: localCurrencyData.currency_type,
+      currency_type: currencyType,
       localCurrency: localCurrencyData.symbol.toLowerCase(),
-      country,
+      country
     };
   }
 

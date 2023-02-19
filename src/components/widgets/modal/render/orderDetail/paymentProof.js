@@ -10,8 +10,8 @@ import { copy } from "../../../../../utils";
 import useToastMessage from "../../../../../hooks/useToastMessage";
 import Zoom from "react-medium-image-zoom";
 import { BLOCKCHAIN_EXPLORER_URL } from 'core/config/currencies'
-// import { useParams } from "react-router-dom";
 import "react-medium-image-zoom/dist/styles.css";
+import { checkIfFiat } from 'core/config/currencies';
 
 
 const PaymentProofComponent = ({ imgSrc, setImgSrc, order_id }) => {
@@ -168,7 +168,7 @@ export const PaymentProof = ({ payload }) => {
 
   
   const getPaymentProof = async (currentOrder) => {
-    let blockchainUri = (provider && currentOrder?.currency_type === "crypto") && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
+    let blockchainUri = (provider && !checkIfFiat(currentOrder?.currency)) && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;
       let altImg
@@ -180,11 +180,11 @@ export const PaymentProof = ({ payload }) => {
       }
       let imgFiat = proof_of_payment?.raw ? `data:image/png;base64, ${proof_of_payment.raw}` : altImg
       setImgProof(
-        currentOrder.currency_type === "fiat"
+        checkIfFiat(currentOrder?.currency)
           ? imgFiat
           : await QRCode.toDataURL(`${blockchainUri}${proof_of_payment.proof}`)
       );
-      if (currentOrder.currency_type === "crypto") { 
+      if(!checkIfFiat(currentOrder?.currency)){ 
         setTxId(proof_of_payment.proof); 
         setUrlExplorer(`${blockchainUri}${proof_of_payment.proof}`);
       }
@@ -229,10 +229,12 @@ export const PaymentProof = ({ payload }) => {
   };
 
  
+  const currencyType = checkIfFiat(currentOrder?.currency) ? 'fiat' : 'crypto'
+
   return (
     <>
       <PaymentProofContainer
-        className={`paymentProofCont ${currentOrder.currency_type} ${currentOrder.state} ${provider?.provider_type}`}
+        className={`paymentProofCont ${currencyType} ${currentOrder.state} ${provider?.provider_type}`}
       > 
         {
           ((!imgProof || loader)) && (
@@ -258,7 +260,7 @@ export const PaymentProof = ({ payload }) => {
                   <span className="tooltiptext fuente">Copiar</span>
                 </IconContainer>
                 {
-                  currentOrder.currency_type === "crypto" &&
+                  !checkIfFiat(currentOrder?.currency) &&
                   <IconContainer className="tooltip" onClick={openBlockchain}>
                     <BsUpload size={20} />
                     <span className="tooltiptext fuente">Ver en Blockchain</span>
