@@ -181,15 +181,18 @@ export const ApiPostCreateWAccount = async(state, tools) => {
  
 
   const { withdrawProvider } = state
+
   const body = {
     data:{
       country:"international",
       currency:withdrawProvider?.currency,
       identity_id:state?.identity?.id,
       provider_type:withdrawProvider?.provider_type,
-      info_needed:getInfoNeeded(state)
+      info_needed:getInfoNeeded(state),
+      internal:withdrawProvider?.internal
     } 
   }
+
   const res = await mainService.createWithdrawAccount(body);
   if(res.data) await mainService.fetchWithdrawAccounts();
   return res
