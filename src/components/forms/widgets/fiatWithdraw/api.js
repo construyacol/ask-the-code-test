@@ -97,8 +97,6 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
 
   const res = await mainService.addWithdrawOrder(body, twoFaToken);
   return res
-  // if(res.data) await mainService.fetchWithdrawAccounts();
-  // return res
 }
 
 

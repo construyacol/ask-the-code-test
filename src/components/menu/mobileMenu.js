@@ -24,7 +24,7 @@ export default function MobileMenuComponent(props) {
         actions.CleanNotifications(itemName);
     }
 
-    console.log('menuPrincipal', menuPrincipal)
+    // console.log('menuPrincipal', menuPrincipal)
 
     return(
         <>      

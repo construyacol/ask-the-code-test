@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useSelector } from "react-redux";
 import { selectAllIdentities } from 'selectors'
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'

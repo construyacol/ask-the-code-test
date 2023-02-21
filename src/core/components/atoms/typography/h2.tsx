@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { H2 as StyleTag } from './styles'
 import { textTypes } from "interfaces/shared"
 

@@ -8,9 +8,8 @@ import { device, ORDER_TYPE_UI_NAME } from "../../../../../const/const";
 import { useSelector } from "react-redux";
 import { getHostName } from '../../../../../environment'
 import DetailTemplateComponent from '../../../detailTemplate'
-// import { useParams } from "react-router-dom";
 import { MiddleSection } from '../../../detailTemplate'
-
+import { checkIfFiat } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -28,15 +27,12 @@ export const useDetailParseData = (order, detailType) => {
 
   const inProcesOrder = async (order) => {
     const isPending = order.state === 'pending'
-    switch (order.currency_type) {
+    const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
+    switch (currencyType) {
       case "fiat":
-        
         let depositProviderInfo = [];
         if (deposit_providers && deposit_providers[order.deposit_provider_id]) {
           const depositProvider = deposit_providers[order.deposit_provider_id];
-          // console.log('order', order)
-          // console.log('depositProvider', depositProvider)
-          // debugger
           if(depositProvider?.depositAccount?.name === 'pse'){
             depositProviderInfo = [
               [
@@ -93,12 +89,7 @@ export const useDetailParseData = (order, detailType) => {
 
           
         }
-        // console.log('deposit_providers', order)
         const amountNeto = await formatCurrency(order.amount_neto, order.currency);
-        // const amount_neto = await formatCurrency(
-        //   order.amount_neto,
-        //   order.currency
-        // );
 
         setData([
           ...depositProviderInfo,
@@ -150,7 +141,7 @@ export const useDetailParseData = (order, detailType) => {
       ["Costo del retiro:",  `${order?.cost && await formatCurrency(order?.cost, order?.currency)} ${currencySimbol}`],
       ["Cantidad recibida:", `${await formatCurrency(order?.amount_neto, order?.currency)} ${currencySimbol}`],
     ]
-    if(order?.currency_type === 'crypto' && withdraw_accounts[order?.withdraw_account_id]){
+    if(!checkIfFiat(order?.currency) && withdraw_accounts[order?.withdraw_account_id]){
       parsedOrder.push(
         ["Destino:", withdraw_accounts[order?.withdraw_account_id]?.account_address?.value],
       )

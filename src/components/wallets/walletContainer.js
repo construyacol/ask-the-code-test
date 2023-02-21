@@ -27,6 +27,7 @@ import { isEmpty } from 'lodash'
 import { funcDebounces } from 'utils'
 import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 import sleep from "utils/sleep";
+import { checkIfFiat } from 'core/config/currencies';
 
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
@@ -83,9 +84,10 @@ export const AccountDetail = (props) => {
   const { subscribeToNewDeposits } = useSubscribeDepositHook()
   const currentWallet = props?.wallets[params?.account_id]
 
+  
 
   useEffect(() => {
-    if(currentWallet?.currency_type === 'crypto' && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+    if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
       funcDebounces({
         keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
         storageType:"sessionStorage",
@@ -120,7 +122,7 @@ export const AccountDetail = (props) => {
             >
               <RenderAuxComponent {...props} />
             </TitleSection> 
-            <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${currentWallet?.currency_type} ${parseQueryString()}`}>
+            <AccountDetailContainer className={`_accountDetailContainer ${params?.path} ${checkIfFiat(currentWallet?.currency) ? 'fiat' : 'crypto'} ${parseQueryString()}`}>
               <SwitchView {...props} />
             </AccountDetailContainer>
           </AccountDetailLayout>

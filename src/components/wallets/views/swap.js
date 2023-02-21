@@ -21,6 +21,7 @@ import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
+import { checkIfFiat } from 'core/config/currencies';
 
 function SwapView(props) {
 
@@ -47,7 +48,6 @@ function SwapView(props) {
 
   const { isMovilViewport } = useWindowSize();
   const { selectPair } = usePairSelector({ ...props, actions, currentWallet, currencyPairs });
-  // const isFiat = currentWallet.currency_type === "fiat";
 
   useEffect(() => { 
     selectPair(true);
@@ -206,9 +206,8 @@ function SwapView(props) {
     const secureTotalValue = await getReceiveValue(value);
     const from = currencies ? currencies[currentWallet.currency]?.symbol.toUpperCase() : currentWallet.currency.toUpperCase()
     const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
-    // const isFiat = currencies && currencies[secondary_currency].currency_type === 'fiat'
-    const isFiat = currentWallet.currency_type === 'fiat'
-
+    const isFiat = checkIfFiat(currentWallet?.currency)
+    
     actions.confirmationModalPayload({
       title: "Confirmación de intercambio",
       txtPrimary: "Confirmar cambio",

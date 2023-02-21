@@ -4,7 +4,7 @@ import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
 import { convertToObjectWithCustomIndex, reOrderedList } from "utils";
 import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
-
+import { checkIfFiat } from 'core/config/currencies';
 
 
 export const selectDepositAccountsByNetwork = createSelector(
@@ -30,7 +30,6 @@ export const selectDepositAccountsByNetwork = createSelector(
   }
 );
 
-
 export const wProvsByCurrencyNetwork = createSelector(
   (state) => state.modelData.withdrawProviders,
   (_, currency) => currency,
@@ -50,9 +49,6 @@ export const wProvsByCurrencyNetwork = createSelector(
     return result;
   }
 );
-
-
- 
 
 export const selectDepositProvsByNetwork = createSelector(
   ({ modelData: { deposit_providers } }) => deposit_providers,
@@ -74,7 +70,6 @@ export const selectDepositProvsByNetwork = createSelector(
   }
 ); 
 
-
 export const selectWithdrawAccounts = createSelector(
   ({ modelData: { withdraw_accounts } }) => withdraw_accounts,
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,7 +84,6 @@ export const selectWithdrawAccounts = createSelector(
     return res;
   }
 );
-
 
 export const selectWAccountsByAddressProvType = createSelector(
   (state) => state.modelData.withdraw_accounts,
@@ -110,7 +104,6 @@ export const selectWAccountsByAddressProvType = createSelector(
   }
 );
 
-
 export const selectWithdrawAccountsByAddress = createSelector(
   (state) => state.modelData.withdraw_accounts,
   (_, accountProvider) => accountProvider,
@@ -130,11 +123,6 @@ export const selectWithdrawAccountsByAddress = createSelector(
   }
 );
 
-
-
-
-
-
 export const selectWithdrawProviderByName = createSelector(
   (state) => state.modelData.withdrawProviders,
   (withdrawProviders) => {
@@ -146,9 +134,8 @@ export const selectWithdrawProviderByName = createSelector(
       };
     }
     return result;
-  }
+  } 
 );
-
 
 export const selectDepositProvsByCurrency = createSelector(
   ({ modelData }) => modelData.deposit_providers,
@@ -171,17 +158,14 @@ export const serveModelsByCustomProps = createSelector(
   }
 );
 
-
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,
     (withdrawProviders) => {
       if(!withdrawProviders)return []; 
-      
       let _withdrawProviders = {}
-
       Object.keys(withdrawProviders).forEach(withProvKey => {
         const withdrawProvider = withdrawProviders[withProvKey];
-        if(["fiat"].includes(withdrawProvider?.currency_type) && ["bank"].includes(withdrawProvider?.provider_type)){
+        if(checkIfFiat(withdrawProvider?.currency) && ["bank"].includes(withdrawProvider?.provider_type)){
           _withdrawProviders = {
             ..._withdrawProviders,
             [withdrawProvider?.provider?.name]:{
@@ -192,12 +176,9 @@ export const selectWithdrawProvidersByName = createSelector(
           }
         }
       })
-
       return [ _withdrawProviders ];
     }
   );
-
-
 
   export const selectAvailableIdentities = createSelector(
     (state) => state?.modelData?.user?.identities,

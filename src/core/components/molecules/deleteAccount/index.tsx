@@ -13,8 +13,8 @@ export type modelDataProps = {
 function DeleteAccount(){
     const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
     function sendEmail() {
-        const subject = `Eliminar cuenta de usuario de ${user?.name}: ${user?.email}`;
-        const receiver = SUPPORT_EMAIL
+        const subject = `Eliminar cuenta de usuario de ${user?.name ? user?.name : ''}: ${user?.email}`;
+        const receiver = SUPPORT_EMAIL 
         const body = `Nombre: ${user?.name}\nCorreo: ${user?.name}`;
         window.location.href = `mailto:${receiver}?subject=${subject}&body=${body}`;
     }

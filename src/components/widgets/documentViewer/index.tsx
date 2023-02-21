@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { getCdnPath } from 'environment'
 import { DOCUMENT_IMAGE_CDN_PATH } from 'const/kycDocumentsReference'
 import Button from 'components/widgets/buttons/button'
@@ -36,11 +37,11 @@ const ViewerComponent = ({ stageManager, currentIdentity }:props) => {
     return(
         <DoubleSidedElement className={`${idType} ${stageData?.key}`}>
             <FrontElement>
-                    <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType]?.id_front}`} alt="id_front"/>
-                    <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType]?.selfie}`} alt="selfie"/>
+                    <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType as keyof typeof DOCUMENT_IMAGE_CDN_PATH]?.id_front}`} alt="id_front"/>
+                    <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType as keyof typeof DOCUMENT_IMAGE_CDN_PATH]?.selfie}`} alt="selfie"/>
             </FrontElement>
             <BackElement>
-                <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType]?.id_back}`} alt="id_back"/>
+                <img src={`${getCdnPath('assets')}${DOCUMENT_IMAGE_CDN_PATH[idType as keyof typeof DOCUMENT_IMAGE_CDN_PATH]?.id_back}`} alt="id_back"/>
             </BackElement>
         </DoubleSidedElement>
     )

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ChildrenReactNode } from 'interfaces/utils';
 
 export interface buttonTypes extends ChildrenReactNode {

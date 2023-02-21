@@ -4,10 +4,11 @@ import { bindActionCreators } from "redux";
 import actions from "../../../actions";
 import { formatToCurrency } from "../../../utils/convert_currency";
 import sleep from "../../../utils/sleep";
+import { checkIfFiat } from 'core/config/currencies';
 
 import "./index.css";
 
-const BalanceComponent = ({ balance, currency, currency_type }) => {
+const BalanceComponent = ({ balance, currency }) => {
   const [current_amount, set_current_amount] = useState("0");
   const [actionType, setActionType] = useState("");
   const [animation, setAnimation] = useState("");
@@ -63,7 +64,7 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
       <div className={`displayCont itt ${animation}`}>
         <p className={`textin fuente2 ${actionType}`}>
           {actionType === "reduce" ? <span>-</span> : actionType === "add" ? "+" : ""}
-          {currency_type === "fiat" ? `$${current_amount}` : current_amount}
+          {checkIfFiat(currency) ? `$${current_amount}` : current_amount}
         </p>
       </div>
     </div>
@@ -72,13 +73,10 @@ const BalanceComponent = ({ balance, currency, currency_type }) => {
 
 function mapStateToProps(state, props) {
   const { balances, user } = state.modelData;
-
   const { account_id } = props;
-
   return {
     balance: balances && balances[account_id],
     user: user,
-    currency_type: state.modelData.wallets[account_id].currency_type,
     currency: state.modelData.wallets[account_id].currency,
   };
 }

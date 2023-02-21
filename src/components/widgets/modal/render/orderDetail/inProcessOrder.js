@@ -36,28 +36,15 @@ import { selectDepositProvsByCurrency } from 'selectors'
 import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
 import "moment/locale/es";
-
-
-
+import { checkIfFiat } from 'core/config/currencies';
 moment.locale("es");
-
-
-
-
-// const orderModel = {
-//   created_at: new Date(),
-//   updated_at: new Date(),
-//   state: "pending",
-//   currency_type: "fiat",
-// };
-
 
 const InProcessOrder = ({ onErrorCatch }) => {
   const { currentOrder } = UseTxState();
   if (!currentOrder || !currentOrder.currency) return onErrorCatch();
   return (
     <>
-      {currentOrder.currency_type === "fiat" ? (
+      {checkIfFiat(currentOrder?.currency) ? (
         <FiatOrder order={currentOrder} />
       ) : (
         <CryptoOrder order={currentOrder} />
@@ -212,7 +199,8 @@ const FiatOrder = ({ order }) => {
 
   useEffect(() => {
     let thisIsAnOrderInProcess = JSON.parse(sessionStorage.getItem(`depositOrder_${order?.id}`))
-    if(thisIsAnOrderInProcess){
+      console.log('thisIsAnOrderInProcess', thisIsAnOrderInProcess)
+      if(thisIsAnOrderInProcess){
       const { paymentProof } = thisIsAnOrderInProcess
       setImgSrc(paymentProof);
       actions.isAppLoading(true);
@@ -329,7 +317,6 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
 
   const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
 
-  console.log('currentOrder', imgSrc, currentOrder)
 
   return ( 
     <UploadContainer
@@ -406,14 +393,15 @@ const GetIcon = ({ order }) => {
   );
 };
 
-const getState = ({ state, currency_type }, txType) => {
-  switch (currency_type) {
+const getState = ({ state, currency }, txType) => {
+  const currencyType = checkIfFiat(currency) ? 'fiat' : 'crypto'
+  switch (currencyType) {
     case "fiat":
       return state === "pending"
         ? "Pendiente"
-        : state === "confirmed" && currency_type === "fiat" && txType === 'deposits'
+        : state === "confirmed" && checkIfFiat(currency) && txType === 'deposits'
         ? "Estamos comprobando tu depósito"
-        : state === "confirmed" && currency_type === "fiat" && txType === 'withdraws'
+        : state === "confirmed" && checkIfFiat(currency) && txType === 'withdraws'
         ? "Estamos procesando tu retiro"
         : "En proceso de aceptación...";
     case "crypto":

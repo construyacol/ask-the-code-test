@@ -2,6 +2,7 @@ import React from "react";
 import { useActions } from "../hooks/useActions";
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
+import { checkIfFiat } from 'core/config/currencies';
 
 const specialListCreatorSelector = createSelector(
   (state) => state.withdraw_accounts,
@@ -9,11 +10,12 @@ const specialListCreatorSelector = createSelector(
   (_, isWithdrawView) => isWithdrawView,
   (withdrawAccounts, wallets, isWithdrawView) => {
     const data = isWithdrawView ? withdrawAccounts : wallets;
+
     return (
       data &&
       Object.keys(data)
         .filter((key) => {
-          return !(isWithdrawView && data[key].currency_type === "crypto");
+          return !(isWithdrawView && !checkIfFiat(data[key]?.currency));
         })
         .map((key) => {
           return data[key];

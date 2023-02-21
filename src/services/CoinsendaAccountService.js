@@ -19,10 +19,9 @@ import update_activity, { pending_activity } from "../actions/storage";
 import { current_section_params } from "../actions/uiActions";
 import BigNumber from 'bignumber.js'
 import { isEmpty } from 'lodash'
-
+import { checkIfFiat } from 'core/config/currencies';
 
 export class AccountService extends WebService {
-
 
   async userHasWallets(){
     const user = this.user;
@@ -283,7 +282,7 @@ export class AccountService extends WebService {
     const confirmed = await filterActivitiesByStatus("confirmed");
     // const rejected = await filterActivitiesByStatus('rejected')
     
-    if(currentAccount.currency_type === 'crypto' && type !== 'swaps'){
+    if(!checkIfFiat(currentAccount?.currency) && type !== 'swaps'){
       pending = 0
     }
 
@@ -323,18 +322,5 @@ export class AccountService extends WebService {
     await this.dispatch(current_section_params({ currentFilter: type }));
     await this.dispatch(update_activity(accountId, type, activities));
     await this.updatePendingActivity(accountId, type, activities);
-  }
-
-  async getFiatAccountByUserId() {
-    const user = this.user;
-    const filter = `filter={"where": {"currency_type": "fiat"}}`;
-    const URL = `${ACCOUNT_URL}/${user.id}/accounts?country=${user.country}&${filter}`;
-
-    const response = await this.Get(URL);
-
-    if (!response || response.length < 1) {
-      return false;
-    }
-    return response;
   }
 }

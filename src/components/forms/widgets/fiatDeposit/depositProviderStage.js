@@ -10,6 +10,7 @@ import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
 import styled from 'styled-components'
+import { checkIfFiat } from 'core/config/currencies';
 
 const TagCont = styled.div`
   padding: 5px 10px;
@@ -48,10 +49,10 @@ function ProviderComponent({
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
-    
     // const actions = useActions() 
 
     const selectProvider = (provider) => {
+      console.log({[stageData?.key]: provider })
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
     }
@@ -60,6 +61,8 @@ function ProviderComponent({
       if(state[stageData?.key]) selectProvider(state[stageData?.key]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    
 
     useEffect(() => {
       (async() => {
@@ -130,14 +133,17 @@ function ProviderComponent({
       if(!depositAccounts)return [undefined]; 
       let _depositAccounts = {}
       Object.keys(depositAccounts).forEach(depAccountKey => {
+
         const depositAccount = depositAccounts[depAccountKey];
-        if(["fiat"].includes(depositAccount?.currency_type)){
+
+          if(checkIfFiat(depositAccount?.currency)){
+            let keyProp = depositAccount?.name?.replace(" ", "_")?.toLowerCase()
           _depositAccounts = {
             ..._depositAccounts,
-            [depositAccount?.name]:{
+            [keyProp]:{
               ...depositAccount,
               uiName:depositAccount?.ui_name,
-              value:depositAccount?.name
+              value:keyProp
             }
           }
         }

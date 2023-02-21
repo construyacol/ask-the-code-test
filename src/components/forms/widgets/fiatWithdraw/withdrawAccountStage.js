@@ -12,6 +12,7 @@ import { HR } from '../../../widgets/headerAccount/styles'
 import { useActions } from 'hooks/useActions'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import useToastMessage from "hooks/useToastMessage";
+import { checkIfFiat } from 'core/config/currencies';
 
 import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'react-icons/ai';
 import { FcCancel } from 'react-icons/fc';
@@ -43,7 +44,7 @@ export default function WithdrawAccountsComponent({
       setStageStatus('success')
     }
  
-    const deleteAccount = useCallback((wAccountId) => {
+    const deleteAccount = useCallback(async(wAccountId) => {
       const el = document.querySelector(`.account_${wAccountId}`)
       actions.confirmationModalToggle();
       actions.confirmationModalPayload({
@@ -257,7 +258,7 @@ const StateComponent = ({ withdrawAccount, handleAction, isMovilViewport }) => {
       let fiatWithdrawAccounts = {}
       Object.keys(withdraw_accounts).forEach(wAccountKey => {
         const withdrawAccount = withdraw_accounts[wAccountKey];
-        if(["fiat"].includes(withdrawAccount?.currency_type)){
+        if(checkIfFiat(withdrawAccount?.currency)){
           fiatWithdrawAccounts = {
             ...fiatWithdrawAccounts,
             [wAccountKey]:{

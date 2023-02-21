@@ -10,6 +10,8 @@ import { getUserToken } from 'utils/handleSession'
 import { funcDebounce, funcDebounces } from 'utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
+import { checkIfFiat } from 'core/config/currencies';
+
 
 import { postLocalNotification } from 'utils'
 import socket from 'const/socket'
@@ -27,7 +29,6 @@ class SocketsComponent extends Component {
 
   // async testSocketExecuted(orderMock) {
   //   console.log('======================================== ______ testSocketExecuted: ', orderMock)
-  //   if (orderMock.state === "pending" && orderMock.currency_type === "crypto") {
   //     await this.setState({ currentDeposit: orderMock });
   //   } else {
   //     this.deposit_mangagement(orderMock);
@@ -115,7 +116,7 @@ class SocketsComponent extends Component {
       });
 
       socket.on(`/deposit/${user.id}`, async (deposit) => {
-        if (deposit.state === "pending" && deposit.currency_type === "crypto") {
+        if (deposit.state === "pending" && !checkIfFiat(deposit.currency)) {
           await this.setState({ currentDeposit: deposit });
         } else {
           this.deposit_mangagement(deposit);
@@ -165,7 +166,6 @@ class SocketsComponent extends Component {
 //         });
 
 //         socket.once(`/deposit/${user.id}`, async (deposit) => {
-//           if (deposit.state === "pending" && deposit.currency_type === "crypto") {
 //             await this.setState({ currentDeposit: deposit });
 //           } else {
 //             this.deposit_mangagement(deposit);
@@ -291,7 +291,7 @@ class SocketsComponent extends Component {
       }
     }
 
-    if (withdraw.state === "pending" && withdraw.currency_type === "crypto") {
+    if (withdraw.state === "pending" && !checkIfFiat(withdraw.currency)) {
       // Las ordenes de retiro cripto en estado pendiente se deben de confirmar vía api
       sessionStorage.removeItem(`withdrawInProcessFrom${withdraw?.account_id}`)
       funcDebounce( 
@@ -310,10 +310,7 @@ class SocketsComponent extends Component {
     // console.log('||||||||||||||||||||||| withdraw socket console ::', withdraw, currentWithdraw)
     // debugger
     // console.log('|||||||||||||||||||||||||||||||||||  Withdraw SOCKET ==>', withdraw.state, ' == ', withdraw.id, ' ==> ', currentWithdraw)
-    if (
-      withdraw.state === "confirmed" &&
-      currentWithdraw.currency_type === "crypto"
-    ) {
+    if (withdraw.state === "confirmed" && !checkIfFiat(currentWithdraw.currency)) {
       // Añade esta orden de retiro crypto confirmado al estado
       // actualiza la actividad de la cuenta a la que corresponde este retiro y actualiza el balance
       let new_withdraw_model = {
@@ -343,10 +340,7 @@ class SocketsComponent extends Component {
       );
     }
 
-    if (
-      withdraw.state === "accepted" &&
-      currentWithdraw.currency_type === "fiat"
-    ) {
+    if (withdraw.state === "accepted" && checkIfFiat(currentWithdraw.currency)) {
   
       let new_withdraw = {...this.state.currentWithdraw};
       await this.props.coinsendaServices.addItemToState("withdraws", {
@@ -423,32 +417,14 @@ class SocketsComponent extends Component {
         }
       })
     }
-
-    // if(withdraw.metadata && !withdraw.state){
-    //   // alert('withdraw socket')
-    //
-    //     const { userId } = withdraw
-    //     let fiat_accounts = await this.props.coinsendaServices.getFiatAccountByUserId()
-    //     if(!fiat_accounts){return false}
-    //
-    //     for (let i = 0; i < fiat_accounts.length; i++) {
-    //       if(fiat_accounts[i].currency.currency !== 'usd'){
-    //         const { activity_for_account } = this.props
-    //         if(activity_for_account[fiat_accounts[i].id] && activity_for_account[fiat_accounts[i].id].withdraws){return false}
-    //         await this.props.coisendaServices.get_withdraws(fiat_accounts[i].id)
-    //       }
-    //     }
-    //     this.props.toastMessage('Retiro(s) ha(n) sido enviado(s) a tu cuenta bancaria.', 'success')
-    //     this.props.action.success_sound()
-    //
-    // }
   };
 
   deposit_mangagement = async (deposit) => {
 
+    console.log('deposit_mangagement', deposit)
+    // debugger
 
-
-    if (deposit.state === "pending" && deposit.currency_type === "fiat") {
+    if (deposit.state === "pending" && checkIfFiat(deposit.currency)) {
       await this.props.coinsendaServices.addItemToState("deposits", {
         ...deposit,
         type_order: "deposit",
@@ -469,7 +445,6 @@ class SocketsComponent extends Component {
       );
     }
 
-    // if(deposit.state === 'confirmed' && && this.state.currentDeposit.currency_type === 'crypto')){
     if (deposit.state === "confirmed") {
       // console.log('||||||| SOCKET RESPONSE  ===>', deposit)
       sessionStorage.removeItem(`depositOrder_${deposit?.id}`)
@@ -697,7 +672,7 @@ class SocketsComponent extends Component {
       if (
         this.props.deposits &&
         this.props.deposits[deposit.id] &&
-        this.props.deposits[deposit.id].currency_type === "fiat"
+        checkIfFiat(this.props.deposits[deposit.id].currency)
       ) {
         await this.props.action.update_item_state(
           {

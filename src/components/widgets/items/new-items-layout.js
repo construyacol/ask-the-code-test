@@ -19,21 +19,17 @@ function NewItemsLayout(props) {
     primarySelect,
     format,
     itemType,
-    currency_type,
     pair_id,
     actualizarEstado,
     handleClick,
     specialMode = false,
     classNames,
-    cost_id
   } = props;
 
   const doSelectionForItem = () => {
-    if (timerId) {
-      clearTimeout(timerId);
-    }
+    if(timerId) clearTimeout(timerId);
     timerId = setTimeout(() => {
-      actualizarEstado && actualizarEstado(name, code, currency_type, pair_id, cost_id);
+      actualizarEstado && actualizarEstado(pair_id);
     }, 100);
   };
   const _handleClick = specialMode ? doSelectionForItem : handleClick;

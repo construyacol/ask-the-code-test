@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Paragraph as StyleTag } from './styles'
 import { textTypes } from "interfaces/shared"
 

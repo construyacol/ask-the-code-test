@@ -45,7 +45,7 @@ const EmptyOrInProcessState = (props:emptyStatePropTypes) => {
 
             {
                 (!["confirmed"].includes(identityState)) &&
-                    <ControlButton
+                    <ControlButton 
                     label={getUiCopy(ctaUiLabel)}
                     handleAction={handleAction} 
                     // type={isCompleted ? "secundary" : "primary"}

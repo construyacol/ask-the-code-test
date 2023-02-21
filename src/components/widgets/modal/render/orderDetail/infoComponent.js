@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { get } from 'lodash'
 import styled from 'styled-components'
+import { checkIfFiat } from 'core/config/currencies';
 
 
 const ReferralInfo = () => {
@@ -136,7 +137,8 @@ const ReferralInfo = () => {
   const GetInfoComponentToRender = (order) => {
   
     const { tx_path, info } = order
-    const targetKey = info?.is_referral ? 'is_referral' : (order?.currency_type === 'fiat' && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : order?.currency_type
+    const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
+    const targetKey = info?.is_referral ? 'is_referral' : (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : currencyType
     
     useEffect(()=> {
        const title = tx_path === 'swaps' ? '' : get(toRender, `${tx_path}.${targetKey}`)?.title || 'Comprobante de pago'
