@@ -24,6 +24,7 @@ import {
   getUserToken,
   openLoginMobile
 } from "utils/handleSession";
+// import checkVersion from 'react-native-store-version';
 // import { useCoinsendaServices } from "services/useCoinsendaServices";
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
@@ -48,6 +49,7 @@ function RootContainer(props) {
   const [ tryRestoreSession ] = SessionRestore();
 
   // const [ coinsendaServices, globalState ] = useCoinsendaServices();
+
 
   const initComponent = async (mobileURL) => {
     const params = new URLSearchParams(mobileURL ?? history.location.search);
@@ -88,7 +90,9 @@ function RootContainer(props) {
     async function initRoot() {
       if (CAPACITOR_PLATFORM !== 'web') {
         const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
-        if (!userToken && !isAppLoaded) openLoginMobile(initComponent);
+        if (!userToken && !isAppLoaded) {
+          openLoginMobile(initComponent);
+        }
       } 
       if(!isAppLoaded) return initComponent();
     }
@@ -115,7 +119,6 @@ function RootContainer(props) {
   return (
     // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
-
       <Route>
         <ModalsSupervisor/>
       </Route>

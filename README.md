@@ -54,6 +54,14 @@ For local development you'll need to run the dev server in the root of the repo,
 The IP used in the config is the local one set by the network.
 
     "server":  {  "url":  "http://192.168.1.68:8100",  "cleartext":  true  },
+	
+	* new schema:
+
+	"server": {
+    	"hostname": "bitsenda.com",
+    	"androidScheme": "https",
+    	"url": "http://192.168.10.14:2998"
+	}, 
 
 
 More details here: https://capacitorjs.com/docs/guides/live-reload#using-with-framework-clis

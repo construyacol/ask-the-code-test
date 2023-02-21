@@ -16,6 +16,11 @@ const {
 
 
 export const CAPACITOR_PLATFORM = Capacitor.getPlatform();
+export const CAPACITOR_PLATFORMS = {
+  WEB: 'web',
+  IOS: 'ios',
+  ANDROID: 'android',
+}
 export const MAIN_COLOR = "#0e95f8";
 export const FONT_COLOR = "#50667a";
 
@@ -311,7 +316,8 @@ export const CDN_PATH_ASSETS = {
   d3:'cdn/libs/d3.js',
   faceApi:"cdn/libs/faceApi.js",
   assets:'cdn/assets/',
-  tensor:'cdn/tensor/models'
+  tensor:'cdn/tensor/models',
+  appVersion:'version.js'
 }
 
 

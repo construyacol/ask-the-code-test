@@ -9,6 +9,7 @@
     "@awesome-cordova-plugins/core": "^5.43.0",
     "@capacitor-community/apple-sign-in": "^4.0.0",
     "@capacitor/android": "^4.0.0",
+    "@capacitor/app": "^4.1.1",
     "@capacitor/camera": "^4.0.0",
     "@capacitor/cli": "^4.0.0",
     "@capacitor/core": "^4.0.0",
@@ -20,6 +21,7 @@
     "@ungap/structured-clone": "^1.0.1",
     "aws-sdk": "^2.605.0",
     "bignumber.js": "^8.1.1",
+    "build-gradle-reader": "^1.0.0",
     "capacitor-native-settings": "^0.2.0",
     "compressorjs": "^1.0.5",
     "cordova-plugin-camera-preview": "^0.12.3",
@@ -67,7 +69,8 @@
     "source-map-explorer": "^2.5.2",
     "styled-components": "^5.3.6",
     "text-mask-addons": "^3.8.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "xml-js": "^1.6.11"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -81,6 +84,7 @@
     "build": "node ./scripts/removeFaceApiModelsFromLocal && react-scripts build && npm run build-sw",
     "build:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build",
     "build:pre_prod": "cross-env REACT_APP_BUILD_CONFIG='pre_prod' npm run build",
+    "prebuild:mobile": "node scripts/generateAppVersionJson.js",
     "build:mobile": "node ./scripts/copyFaceApiModelsOnLocal && react-scripts build && npm run build-sw",
     "build:mobile:staging": "cross-env REACT_APP_BUILD_CONFIG='staging' npm run build:mobile",
     "test": "react-scripts test",
