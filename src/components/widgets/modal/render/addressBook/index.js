@@ -105,6 +105,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
                 providerName={currentNetwork?.provider?.ui_name || withdrawProvidersByName[current_wallet.currency]?.provider?.ui_name}
                 switchView={switchView}
                 addressToAdd={addressToAdd}
+                provider={currentNetwork}
               />
             ) : (
               <EmptyState switchView={switchView}></EmptyState>
@@ -113,7 +114,7 @@ const AddressBook = ({ addressToAdd, setAddressValue, currentNetwork }) => {
         </Content>
       </ContainerLayout>
     </OtherModalLayout>
-  );
+  ); 
 };
 
 export default AddressBook;

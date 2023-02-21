@@ -102,7 +102,7 @@ const {
     setLoading(false)
     if(error){
     console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
-    return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
+    return toastMessage(error?.message || UI_ERRORS[error?.code],  "error");
     }
     await renderSuccessComponent(data)
     return props.backToWithdraw()

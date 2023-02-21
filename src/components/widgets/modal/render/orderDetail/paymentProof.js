@@ -171,6 +171,7 @@ export const PaymentProof = ({ payload }) => {
     let blockchainUri = (provider && !checkIfFiat(currentOrder?.currency)) && BLOCKCHAIN_EXPLORER_URL[currentOrder.currency][provider?.provider_type]
     if (currentOrder.paymentProof) {
       const { proof_of_payment } = currentOrder.paymentProof;
+
       let altImg
       
       if(provider?.provider_type === 'pse'){
@@ -178,7 +179,10 @@ export const PaymentProof = ({ payload }) => {
         altImg =  `data:image/png;base64, ${PSEbase64}`
         setTxId(proof_of_payment.proof); 
       }
-      let imgFiat = proof_of_payment?.raw ? `data:image/png;base64, ${proof_of_payment.raw}` : altImg
+
+      // let fiatProof = proof_of_payment?.raw || proof_of_payment?.proof 
+      let imgFiat = proof_of_payment?.proof ||  altImg
+
       setImgProof(
         checkIfFiat(currentOrder?.currency)
           ? imgFiat

@@ -9,7 +9,7 @@ import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 
-const NewAccount = ({ currency, provider_type, providerName, switchView, addressToAdd, currentNetwork }) => {
+const NewAccount = ({ currency, provider_type, provider, providerName, switchView, addressToAdd, currentNetwork }) => {
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState(addressToAdd);
   const [nameState, setNameState] = useState();
@@ -43,7 +43,7 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
       const hideAccount = await coinsendaServices.deleteAccount(
         thisAccountExist.id
       );
-      if (!hideAccount) {
+      if (!hideAccount) { 
         toastMessage("No se pudo ocultar la cuenta anónima", "error");
         return setLoader(false);
       }
@@ -52,28 +52,31 @@ const NewAccount = ({ currency, provider_type, providerName, switchView, address
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
     } 
- 
-    const newWithdrawAccount = await coinsendaServices.addNewWithdrawAccount(
-      {
+
+    const body = {
+      data:{
+        country:current_wallet?.country,
         currency: current_wallet.currency,
         provider_type: provider_type,
-        label,
-        address:address.trim(),
-        // country: current_wallet.country,
-      },
-      "cripto" 
-    );
+        internal:provider?.internal,
+        info_needed:{
+          label,
+          address:address.trim(),
+        }
+      }
+    }
 
-    if (!newWithdrawAccount) {
-      toastMessage("No se pudo crear la cuenta", "error");
+    const { data, error } = await coinsendaServices.createWithdrawAccount(body);
+
+    if (error) {
+      toastMessage(error?.message || "No se pudo crear la cuenta", "error");
       return setLoader(false);
     }
-    // idNewAccount
     await toastMessage("¡La cuenta ha sido creada con éxito!", "success");
     await coinsendaServices.fetchWithdrawAccounts();
     await dispatch(actions.success_sound());
     await switchView("addressList");
-    let idNewAccount = document.getElementById(newWithdrawAccount.id);
+    let idNewAccount = document.getElementById(data.id);
     idNewAccount && idNewAccount?.classList?.add("shower");
     setAddressValue();
   };

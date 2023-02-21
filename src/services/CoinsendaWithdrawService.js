@@ -294,14 +294,14 @@ export class WithdrawService extends WebService {
   // async deleteWithdrawOrder(orderId) {
   //   return this.Delete(`${DELETE_WITHDRAW_URL}/${orderId}`);
   // }
-
-  async createWithdrawAccount(body, type) {
+ 
+  async createWithdrawAccount(body) {
     return await this._Post(
       NEW_WITHDRAW_ACCOUNT_URL,
       body 
     );
   } 
-
+ 
   async addNewWithdrawAccount(payload, type) {
     const user = this.user;
     const {
@@ -358,6 +358,7 @@ export class WithdrawService extends WebService {
     if(payload.bank_name === 'efecty'){
       body.data.info_needed = payload.info_needed
     }
+    alert('create efecty bank account')
     
     const response = await this.Post(
       NEW_WITHDRAW_ACCOUNT_URL,

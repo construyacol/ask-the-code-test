@@ -134,7 +134,7 @@ export const selectWithdrawProviderByName = createSelector(
       };
     }
     return result;
-  }
+  } 
 );
 
 export const selectDepositProvsByCurrency = createSelector(

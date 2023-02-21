@@ -109,23 +109,38 @@ export const CriptoView = (props) => {
     if((transactionSecurity && transactionSecurity["2fa"]?.enabled) && !twoFaToken){
       // setShowModal(false)
       setWithdrawConfirmed(false)
-      actions.isAppLoading(false);
+      actions.isAppLoading(false); 
       return actions.renderModal(() => (
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
       ));
     } 
     let withdraw_account = withdraw_accounts[addressValue];
-    if (!withdraw_account) { 
-      // si la cuenta no existe, se crea una nueva y se consultan
-      withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
+    if (!withdraw_account) {  
+      const body = {
+        data:{
+          country:current_wallet?.country,
           currency: current_wallet.currency,
           provider_type: withdrawProvider?.provider_type,
-          label: current_wallet.currency,
-          address: addressValue.trim(),
-          country: current_wallet.country,
-        },
-        "cripto"
-      );
+          internal:withdrawProvider?.internal,
+          info_needed:{
+            label:current_wallet.currency,
+            address:addressValue.trim(),
+          }
+        }
+      }
+      const { data } = await coinsendaServices.createWithdrawAccount(body);
+      withdraw_account = data
+
+      // // si la cuenta no existe, se crea una nueva y se consultan
+      // withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
+      //     currency: current_wallet.currency,
+      //     provider_type: withdrawProvider?.provider_type,
+      //     label: current_wallet.currency,
+      //     address: addressValue.trim(),
+      //     country: current_wallet.country,
+      //   },
+      //   "cripto"
+      // );
       await coinsendaServices.fetchWithdrawAccounts();
     }
 

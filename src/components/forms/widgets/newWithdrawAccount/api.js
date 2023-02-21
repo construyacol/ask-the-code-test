@@ -178,13 +178,12 @@ export const ApiPostCreateWAccount = async(state, tools) => {
       }
     }
   }
- 
 
   const { withdrawProvider } = state
 
   const body = {
     data:{
-      country:"international",
+      country:mainService?.globalState?.modelData?.user?.country,
       currency:withdrawProvider?.currency,
       identity_id:state?.identity?.id,
       provider_type:withdrawProvider?.provider_type,

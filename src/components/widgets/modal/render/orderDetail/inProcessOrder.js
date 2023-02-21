@@ -199,7 +199,8 @@ const FiatOrder = ({ order }) => {
 
   useEffect(() => {
     let thisIsAnOrderInProcess = JSON.parse(sessionStorage.getItem(`depositOrder_${order?.id}`))
-    if(thisIsAnOrderInProcess){
+      console.log('thisIsAnOrderInProcess', thisIsAnOrderInProcess)
+      if(thisIsAnOrderInProcess){
       const { paymentProof } = thisIsAnOrderInProcess
       setImgSrc(paymentProof);
       actions.isAppLoading(true);
@@ -316,7 +317,6 @@ const UploadComponent = ({ unButtom, title, goFileLoader, imgSrc, ...props}) => 
 
   const inputProps = CAPACITOR_PLATFORM !== 'web' ? INPUT_BUTTON_PROPS : INPUT_FILE_PROPS
 
-  console.log('currentOrder', imgSrc, currentOrder)
 
   return ( 
     <UploadContainer
