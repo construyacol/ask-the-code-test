@@ -130,17 +130,6 @@ export const CriptoView = (props) => {
       }
       const { data } = await coinsendaServices.createWithdrawAccount(body);
       withdraw_account = data
-
-      // // si la cuenta no existe, se crea una nueva y se consultan
-      // withdraw_account = await coinsendaServices.addNewWithdrawAccount({ 
-      //     currency: current_wallet.currency,
-      //     provider_type: withdrawProvider?.provider_type,
-      //     label: current_wallet.currency,
-      //     address: addressValue.trim(),
-      //     country: current_wallet.country,
-      //   },
-      //   "cripto"
-      // );
       await coinsendaServices.fetchWithdrawAccounts();
     }
 
