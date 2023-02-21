@@ -1,28 +1,21 @@
-import React, { Suspense, useRef } from "react";
-// import loadable from "@loadable/component";
+import { Suspense, useRef } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import { HomeLayout } from "./homeLayout";
-// import MenuPrincipalContainer from "../menuPrincipal/menu-principal-container";
-// import MenuSuperiorContainer from "../menuSuperior/menuSuperiorContainer";
-import MainMenuComponent from '../menu/mainMenu'
-// import DashBoardContainer from "../dashBoard/dashboard-container";
-// import { doLogout } from "../utils";
+import MainMenuComponent from "components/menu/mainMenu";
 import withHandleError from "../withHandleError";
 import SideMenuComponent from '../menu/sideMenu'
 import { LazyLoaderPage } from "components/widgets/skeletons";
 import loadable from "@loadable/component";
 import { MainContent,  AppContainerLayout} from '../widgets/layoutStyles'
-import MobileMenuComponent from '../menu/mobileMenu'
+import MobileMenuComponent from "components/menu/mobileMenu";
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
 import { parseQueryString } from '../../utils'
 import { isSafari } from '../../utils'
 import useFreshChat from 'services/FreshChat' 
-
-// import { postLocalNotification } from 'utils'
-
-
+import { TopNotification } from "components/atoms";
+import { useAppVersion } from "hooks/useAppVersion";
 const WalletsContainerComponent = loadable(()=> import("../wallets/walletContainer"), {fallback:<AccountListViewSkeleton/>})
 const ReferralComponent = loadable(() => import("pages/referrals"), {fallback: <LazyLoaderPage path={"referral"} />});
 const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <LazyLoaderPage path={"settings"} />});
@@ -30,8 +23,8 @@ const SettingsComponent = loadable(() => import("pages/settings"), {fallback: <L
 const HomeContainer = () => {
  
   const subMenuRef = useRef()
-  useFreshChat()
-
+  useFreshChat();
+  const isAppOutdated = useAppVersion();
 
   return (
     <Route
@@ -43,8 +36,10 @@ const HomeContainer = () => {
               className={`appContainer ${renderProps?.match?.params?.path ? 'secondLayer' : ''}`}
               id="scrollElement"
               >
+              {isAppOutdated && <TopNotification />}
               <MainMenuComponent {...renderProps}/>
               <MobileMenuComponent/>
+              
               <MainContent className={`_contentContainer ${isSafari()} ${renderProps?.match?.params?.primary_path} ${parseQueryString()}`}>
                 <Suspense fallback={<LazyLoaderPage path={renderProps?.match?.params?.primary_path} />}>
                   <Switch> 

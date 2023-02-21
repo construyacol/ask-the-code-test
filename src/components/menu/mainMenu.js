@@ -16,7 +16,6 @@ export default function MainMenuComponent(props) {
 
     const Coinsenda = loadable(() => import("../widgets/icons/logos/coinsenda"));
     const { currentPair, local_collections } = useSelector((state) => state.modelData.pairs);
-    // const { user  } = useSelector((state) => state.modelData);
     const [ state, setState ] = useState({ buy_price:null, sell_price:null, currencyLabel:"---" })
     const actions = useActions()
     const { isMovilViewport } = useViewport()
@@ -42,7 +41,7 @@ export default function MainMenuComponent(props) {
       };
 
     useEffect(() => {
-        if(currentPair){
+        if (currentPair) {
             formatCurrency();
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,19 +145,3 @@ const BurguerMenu = styled.div`
     position: absolute;
     right: 25px;
 `
-
-// const CtaViewPrice = styled.div`
-//     width: auto;
-//     height: 100%;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     transition: .3s;
-//     cursor: pointer;
-//     color: #fff;
-//     font-size: 16px;
-//     column-gap:10px;
-//     right: 25px;
-//     position: absolute;
-// `
-
