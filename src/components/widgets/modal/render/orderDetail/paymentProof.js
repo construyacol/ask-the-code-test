@@ -180,8 +180,7 @@ export const PaymentProof = ({ payload }) => {
         setTxId(proof_of_payment.proof); 
       }
 
-      // let fiatProof = proof_of_payment?.raw || proof_of_payment?.proof 
-      let imgFiat = proof_of_payment?.proof ||  altImg
+      let imgFiat = proof_of_payment?.raw ? `data:image/png;base64, ${proof_of_payment.raw}` : altImg
 
       setImgProof(
         checkIfFiat(currentOrder?.currency)

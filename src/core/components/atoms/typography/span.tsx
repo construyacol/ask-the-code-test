@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SPAN as StyleTag } from './styles'
 import { textTypes } from "interfaces/shared"
 
