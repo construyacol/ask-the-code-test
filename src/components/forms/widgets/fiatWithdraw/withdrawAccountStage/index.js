@@ -1,12 +1,9 @@
 import { useEffect } from 'react'
-import { useSelector } from "react-redux";
-import { createSelector } from "reselect";
 import { StageContainer, OptionInputContainer } from '../../sharedStyles'
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import useToastMessage from "hooks/useToastMessage";
-import { checkIfFiat } from 'core/config/currencies';
 import useViewport from 'hooks/useViewport'
 import { isEmpty } from 'lodash'
 
@@ -19,11 +16,11 @@ export default function WithdrawAccountsComponent({
 }){
   const { 
     handleState:{ setState, state },
-    stageManager:{ setStageStatus, stageData }
+    stageManager:{ setStageStatus, stageData },
+    withdrawAccounts
   } = props
   const actions = useActions()
   const { isMobile } = useViewport();
-  const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
   const [ coinsendaServices ] = useCoinsendaServices();
   const [toastMessage] = useToastMessage();
 
@@ -67,24 +64,3 @@ export default function WithdrawAccountsComponent({
 }
 
 
-  const selectFiatWithdrawAccounts = createSelector(
-    (state) => state.modelData.withdraw_accounts,
-    (withdraw_accounts) => {
-      let fiatWithdrawAccounts = {}
-      if(!withdraw_accounts)return [ fiatWithdrawAccounts]; 
-      Object.keys(withdraw_accounts).forEach(wAccountKey => {
-        const withdrawAccount = withdraw_accounts[wAccountKey];
-        if(checkIfFiat(withdrawAccount?.currency)){
-          fiatWithdrawAccounts = {
-            ...fiatWithdrawAccounts,
-            [wAccountKey]:{
-              ...withdrawAccount,
-              uiName:withdrawAccount?.bank_name?.ui_name,
-              value:withdrawAccount?.bank_name?.value
-            }
-          }
-        }
-      })
-      return [ fiatWithdrawAccounts ];
-    }
-  );

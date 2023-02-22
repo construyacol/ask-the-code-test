@@ -5,7 +5,8 @@ import { skeletonBase } from 'styles/global'
 export interface typoGraphyProps {
     color?:string,
     skeleton?:boolean,
-    size?:number
+    size?:number,
+    lineHeight?:number
 }
 
 const skeletonStyles = css`
@@ -19,6 +20,8 @@ export const textBaseStyles = css<typoGraphyProps>`
     color: ${props => (props.color && props.theme.palette[props.color]) ?  props.theme.palette[props.color] : props.color ? props.color : props.theme.palette.black};
     font-family: "Raleway", sans-serif;
     font-size: ${props => props.size && `${props.size}px !important`};
+
+    line-height: ${props => props.lineHeight && `${props.lineHeight}px`};
 
     &.no-margin{
         margin:0;

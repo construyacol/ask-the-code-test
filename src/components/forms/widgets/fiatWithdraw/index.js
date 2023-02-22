@@ -1,36 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useStage from '../../hooks/useStage'
-// import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import StageManagerComponent from '../stageManager'
-import StatusPanelComponent from '../statusPanel'
-// import { createInfoNeededStages } from './api'
-// import BankNameListComponent from './bankNameStage'
 import useViewport from '../../../../hooks/useWindowSize'
-// import { useSelector } from "react-redux";
-// import { createSelector } from "reselect";
 import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages, createNextStages } from './api'
 import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
-// import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
-import styled from 'styled-components'
 import WithdrawAccountsComponent from './withdrawAccountStage' 
 import { ApiPostCreateFiatWithdraw, ApiGetTwoFactorIsEnabled } from './api'
 import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
-import { getCost } from './validations'
-import { ItemContainer, LeftText, MiddleSection, RightText } from '../../../widgets/detailTemplate'
-// import { TotalAmount } from '../../../widgets/shared-styles'
 import { StageSkeleton } from '../stageManager'
-// import StatusDisclaimer from './statusDisclaimer'
-import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
-import { formatToCurrency } from '../../../../utils/convert_currency'
 import { selectWithdrawProvidersByName } from 'selectors'
 import RenderSwitchComponent from 'components/renderSwitchComponent' 
+import StatusPanelStates from './statusPanelStates'
+import { selectFiatWithdrawAccounts } from 'selectors'
 
 // import { 
 //   LabelContainer,
@@ -41,14 +29,21 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
 const TargetPersonStage = loadable(() => import("./internals/targetPersonStage"), {fallback:<StageSkeleton/>});
-
 // setCreateAccount
+
+
+
+
+
 const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
+
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const [ toastMessage ] = useToastMessage();
+  const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
+
   const actions = useActions()
 
   const walletInfo = useWalletInfo()
@@ -122,6 +117,8 @@ const {
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,
   }
 
+
+
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
@@ -133,8 +130,7 @@ const {
     </ButtonContainers>
   )
 
-  console.log('nextStep', stageData?.key, handleDataForm)
-
+  // console.log('stageData', state[stageData?.key])
 
   return(
     <>
@@ -145,29 +141,28 @@ const {
           handleState={handleState}
           handleDataForm={handleDataForm}
           withdrawProviders={withdrawProviders}
+          withdrawAccounts={withdrawAccounts}
           {...props}
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
         </RenderSwitchComponent>
 
-        <StatusPanelComponent>
-          <StatusHeaderContainer>
-            <TitleContainer>
-              <h1 className="fuente">Resumen del retiro</h1>
-            </TitleContainer>
-            <StatusContent
-              state={handleState?.state}
-              stageManager={stageManager}
-            />
-          </StatusHeaderContainer>
-          
-          {
-            !isMovilViewport &&
-              <ButtonComponent/>
-          }
-        </StatusPanelComponent>
+        
+        <StatusPanelStates
+          handleState={handleState}
+          stageManager={stageManager}
+          withdrawAccounts={withdrawAccounts}
+        >
+          <>
+            {
+              !isMovilViewport &&
+                <ButtonComponent/>
+            }
+          </>
+        </StatusPanelStates>
 
+ 
         {
           isMovilViewport &&
             <ButtonComponent/>
@@ -182,122 +177,9 @@ export default NewWAccountComponent
 
 
 
-const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-
-const StatusContent = ({ state, stageManager }) => {
-
-  const { withdrawAccount, withdrawAmount } = state
-  const bankName = withdrawAccount?.bank_name
-  const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
-  const [ cost, setCost ] = useState()
-
-  useEffect(() => {
-    if(withdrawProvider && withdrawAccount){
-      let cost = getCost({withdrawProvider, withdrawAccount})
-      let parsed = formatToCurrency(cost, withdrawProvider?.currency)
-      setCost(parsed.toFormat())
-    }
-  }, [withdrawProvider, withdrawAccount])
-
-  // console.log('StatusContent stageManager', cost)
-  // getCost
-  return(
-    <StatusContainer>
-      <ItemContainer>
-          <LeftText className="fuente">Cuenta destino:</LeftText>
-          <MiddleSection />
-
-          <ContentRight>
-            <RightText className={`${bankName ? 'fuente' : 'skeleton'}`}>
-                {bankName?.ui_name?.toLowerCase() || 'skeleton --------'} 
-              </RightText>
-            {
-              bankName &&
-                <IconSwitch
-                    icon={bankName?.value}
-                    size={20}
-                  />
-            }
-          </ContentRight>
-      </ItemContainer>
-      {
-        stageManager?.currentStage === 1 &&
-        <>
-          <ItemContainer>
-              <LeftText className="fuente">Cantidad:</LeftText>
-              <MiddleSection />
-              <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
-              </RightText>
-          </ItemContainer>
-          {
-            (bankName?.value !== 'efecty' && withdrawAmount) &&
-            <ItemContainer>
-                <LeftText className="fuente">Costo:</LeftText>
-                <MiddleSection />
-                <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} COP` || 'skeleton --------'} 
-                </RightText>
-            </ItemContainer>
-          }
-        </>
-      }
-      
-      {/* <TotalAmount color="var(--paragraph_color)">
-          <p className="fuente saldo">Cantidad a recibir</p>
-          <p className="fuente2 amount">
-                  $ {amount} <span className="fuente">{currencySimbol?.toUpperCase()}</span>
-          </p>
-      </TotalAmount> */}
-
-    </StatusContainer>
-  )
-}
 
 
-const ContentRight = styled.div`
-  display:flex;
-  align-items: center;
-  column-gap: 6px;
-  ${RightText}{
-    text-transform:capitalize;
-  }
-`
 
-
-const StatusContainer = styled.div`
-  width:100%;
-  height:auto;
-  padding-top:15px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 25px;
-
-  ${LeftText}{
-    font-weight: normal;
-  }
-`
-
-
-const TitleContainer = styled.div`
-  h1{
-    font-size: 22px;
-    font-size: 20px;
-    color: var(--paragraph_color);
-  }
-  border-bottom: 1px solid var(--skeleton_color);
-`
-
-const StatusHeaderContainer = styled.div`
-    position: sticky;
-    top: 190px;
-    display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 15px;
-    grid-template-rows: auto 1fr;
-    height: auto;
-    max-height: 300px;
-`
 
 
 // const ProofComponent = ({ children, nextStage }) => {

@@ -4,6 +4,8 @@ import { selectFiatWithdrawProviders } from "selectors"
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
 import { TagNewComponent } from 'core/components/molecules'
 import { P, SPAN } from 'core/components/atoms';
+import { BiRightArrowAlt } from 'react-icons/bi';
+
 
 const EmptyStateAccountList = (props) => {
   return(
@@ -24,7 +26,8 @@ export const WithdrawServiceList = ({
   stageManager:{ stageData },
   handleState:{ state },
   handleAction,
-  uiName
+  uiName,
+  ...props
 }) => {
   const fiatWithdrawProviders = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
   return(
@@ -36,23 +39,22 @@ export const WithdrawServiceList = ({
               const itemList = fiatWithdrawProviders[provKey]
               const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
               const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
+              let _value = withdrawServiceList[provKey]?.value
+              console.log('fiatWithdrawProviders', withdrawServiceList, )
               if(!fiatWithdrawProviders[provKey])return null;
               return <ItemListComponent 
                 key={index} 
                 className={`auxNumber account_${itemList?.id}`}
-                // itemList={withdrawAccount}
                 itemList={{
-                  value:withdrawServiceList[provKey]?.value || provKey,
+                  value:_value || provKey,
                   icon:withdrawServiceList[provKey]?.icon || provKey,
                   uiName:withdrawServiceList[provKey]?.uiName
                 }}
                 // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                 firstIndex={index === 0}
-                lastIndex={(Object.keys(withdrawServiceList)?.length - 1) === index}
+                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(fiatWithdrawProviders)?.length - 1) === index}
                 isSelectedItem={isSelected}
-                // isMovilViewport={isMobile}
-                handleAction={handleAction}
-                // handleAction={() => setCreateAccount(true)}
+                handleAction={_value === 'newBankAccount' ? () => props.setCreateAccount(true) : handleAction} 
                 AuxComponent={[
                     AuxComponent ? () => <AuxComponent/> : () => null
                 ]}
@@ -82,13 +84,18 @@ export const INTERNAL_NETWORK = {
   }
 }
 
+export const BANK = {
+  bank:{
+    uiName:"A mi cuenta bancaria personal",
+    icon:"bankAccount",
+    value:'newBankAccount',
+    AuxComponent:() => <BiRightArrowAlt className="_birArrow" size={37} />
+  }
+}
+
 const WITHDRAW_ACCOUNT_LABELS = {
   ...INTERNAL_NETWORK,
-  bank:{
-      uiName:"A mi cuenta bancaria personal",
-      icon:"bankAccount",
-      value:'newBankAccount'
-  },
+  ...BANK,
   ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
   ethereum:CRYPTO_ACCOUNT_LABEL,
 }

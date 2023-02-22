@@ -159,6 +159,40 @@ export const serveModelsByCustomProps = createSelector(
 );
 
 
+export const selectFiatWithdrawAccounts = createSelector(
+  (state) => state.modelData.withdraw_accounts,
+  (withdraw_accounts) => {
+    let fiatWithdrawAccounts = {}
+    if(!withdraw_accounts)return [ fiatWithdrawAccounts]; 
+    Object.keys(withdraw_accounts).forEach(wAccountKey => {
+      const withdrawAccount = withdraw_accounts[wAccountKey];
+      if(checkIfFiat(withdrawAccount?.currency)){
+        fiatWithdrawAccounts = {
+          ...fiatWithdrawAccounts,
+          [wAccountKey]:{
+            ...withdrawAccount,
+            uiName:withdrawAccount?.bank_name?.ui_name,
+            value:withdrawAccount?.bank_name?.value
+          }
+        }
+      }
+    })
+    return [ fiatWithdrawAccounts ];
+  }
+);
+
+
+
+export const selectWithdrawProvider = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (_, withdrawProvId) => withdrawProvId,
+  (withdrawProviders, withdrawProvId) => {
+    if(!withdrawProviders)return ; 
+    const withdrawProvider = withdrawProviders[withdrawProvId]
+    return [ withdrawProvider ];
+  }
+);
+
 export const selectFiatWithdrawProviders = createSelector(
   (withdrawProviders) => withdrawProviders,
   (_, keyProp) => keyProp,
