@@ -63,7 +63,7 @@ const {
 
  
   const nextStep = async() => {
-    if(stageStatus !== 'success'){return} 
+    if(stageStatus !== 'success'){return}  
     setStageStatus(null)
     const initialStages = await ApiGetOnFiatDepositStages()
     if(currentStage <= (Object.keys(initialStages).length - 1)){

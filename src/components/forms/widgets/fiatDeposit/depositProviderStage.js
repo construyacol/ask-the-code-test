@@ -9,30 +9,11 @@ import { isEmpty } from 'lodash'
 import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
-import styled from 'styled-components'
 import { checkIfFiat } from 'core/config/currencies';
+import { TagNewComponent } from 'core/components/molecules'
 
-const TagCont = styled.div`
-  padding: 5px 10px;
-  background-color: red;
-  width: fit-content;
-  height: fit-content;
-  border-radius: 3px;
-  align-self: center;
-  justify-self: end;
-  p{
-    margin: 0;
-    color: white !important;
-  }
-`
 
-const TagNewComponent = () => {
-  return(
-    <TagCont>
-      <P className="bold" color="white" size={12}>Nuevo</P>
-    </TagCont>
-  )
-}
+
 
 function ProviderComponent({ 
     stageManager:{ 

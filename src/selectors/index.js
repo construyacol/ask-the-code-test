@@ -158,6 +158,25 @@ export const serveModelsByCustomProps = createSelector(
   }
 );
 
+
+export const selectFiatWithdrawProviders = createSelector(
+  (withdrawProviders) => withdrawProviders,
+  (_, keyProp) => keyProp,
+  (withdrawProviders, keyProp) => {
+    let res = {}
+    let providers = serveModelsByCustomProps(withdrawProviders, keyProp)
+    for (const provKey in providers) {
+      if(checkIfFiat(providers[provKey]?.currency) && !['efecty_network', 'ethereum_testnet', 'ethereum']?.includes(providers[provKey]?.provider_type)){
+        res = {
+          ...res,
+          [provKey]:providers[provKey]
+        }
+      }
+    }
+    return res
+  }
+);
+
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,
     (withdrawProviders) => {

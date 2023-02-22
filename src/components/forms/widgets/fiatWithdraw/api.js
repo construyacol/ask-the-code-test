@@ -4,28 +4,40 @@ import { mainService } from "../../../../services/MainService";
 import {
   parseOnlyNumbers,
 } from '../kyc/utils'
+// import { initStages } from '../../utils'
+import { 
+  createStage, 
+  // recursiveAddList
+} from 'components/forms/utils'
 
 
+ 
 export const FIAT_WITHDRAW_TYPES = {
   FORM:"fiatWithdraw",
-  WITHDRAW_ACCOUNT:"withdrawAccount",
-  AMOUNT:"withdrawAmount",
+  STAGES:{
+    WITHDRAW_ACCOUNT:"withdrawAccount",
+    AMOUNT:"withdrawAmount",
+    TARGET_PERSON:"targetPerson"
+  }
 }
 
 
 
 const STAGES = {
-  [FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT]:{
+  [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:{
       uiName:"¿En que cuenta quieres recibir tu retiro?",
-      key:FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT,
+      key:FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT,
       uiType:"select",
       "settings":{
         defaultMessage:"",
       }
-  },
-  [FIAT_WITHDRAW_TYPES.AMOUNT]:{
+  }
+} 
+
+const BANK_WITHDRAW = {
+  [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:{
     uiName:"¿Cuanto quieres retirar?",
-    key:FIAT_WITHDRAW_TYPES.AMOUNT,
+    key:FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT,
     uiType:"text",
     "settings":{
       defaultMessage:"",
@@ -37,7 +49,28 @@ const STAGES = {
       placeholder:"Escribe la cantidad",
     }
   }  
-} 
+}
+
+const INTERNAL_NETWORK = {
+  [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:{
+    uiName:"Escribe el correo electrónico de la persona que le enviarás DCOP",
+    key:FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON,
+    uiType:"text",
+    "settings":{
+      defaultMessage:"",
+      successPattern:/[0-9]/g,
+      errors:[ 
+          { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+      ],
+      // label:"Nacionalidad del documento:",
+      placeholder:"satoshi_nakamoto@bitcoin.com",
+    }
+  },
+  ...BANK_WITHDRAW
+}
+
+
+
 
 
 export const FIAT_WITHDRAW_COMPONENTS = {
@@ -53,6 +86,46 @@ export const FIAT_WITHDRAW_STAGES = {
 export const ApiGetFiatWithdrawStages = async() => {
     return STAGES
 }
+
+
+const getNextStages= (targetStage) => {
+  const nextStages = {
+    internal_network:INTERNAL_NETWORK
+  } 
+  return nextStages[targetStage] || BANK_WITHDRAW
+}
+
+
+export const createNextStages = async({ 
+  stageData, 
+  state,
+  setDataForm,
+  ...props
+}) => {
+  if(!state[stageData?.key])return;
+  if(state[stageData?.key]?.value === "newBankAccount") return props?.setCreateAccount(true);
+  const apiStages = getNextStages(state[stageData?.key]?.value)
+  let stages = {} 
+  for(const stage of Object.keys(apiStages)) { 
+    stages = {
+      ...stages,
+      [stage]:await createStage(apiStages[stage], {}, stage)
+    }
+  } 
+  // stages = await recursiveAddList(stages, apiStages)
+  setDataForm(prevState => {
+    return { 
+      ...prevState,
+      stages:{
+        ...STAGES,
+        ...stages
+      } 
+    }
+  })
+
+}
+
+
 
 export const FIAT_WITHDRAW_DEFAULT_STATE = {
   // newWallet:{

@@ -70,7 +70,7 @@ import { FIAT_WITHDRAW_TYPES } from './api'
   }
 
   const fiatWithdrawValidations = {
-    [FIAT_WITHDRAW_TYPES.AMOUNT]:amountValidation,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:amountValidation,
   }
 
 export default fiatWithdrawValidations

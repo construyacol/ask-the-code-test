@@ -1,3 +1,9 @@
+
+export const MENU_LABELS = {
+  withdraw:"Enviar"
+}
+
+
 const menuItems = {
   "navigation_components": {
     "wallets": {
@@ -17,7 +23,7 @@ const menuItems = {
           "id": 2
         },
         {
-          "title": "Retirar",
+          "title": MENU_LABELS?.withdraw,
           "func": "goTo",
           "link": "withdraw",
           "available": true,

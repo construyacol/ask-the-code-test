@@ -6,7 +6,7 @@ export const UI_NAME_TITLE = {
   settings:"Ajustes",
   activity:"Actividad",
   deposit:"Depositar",
-  withdraw:"Retirar",
+  withdraw:"Enviar",
   swap:"Intercambiar"
 }
 

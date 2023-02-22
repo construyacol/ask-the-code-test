@@ -48,10 +48,9 @@ const PSE_STAGES = {
     "settings":{
       defaultMessage:"",
       placeholder:"Escribe el nombre de tu banco"
-  }
+    }
   },
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
-
 }
 
 const BANK_DEFAULT_STAGES = {
@@ -122,9 +121,7 @@ export const createNextStages = async({
       [stage]:await createStage(apiStages[stage], DEPOSIT_TYPE_STAGES[providerType][stage], stage)
     }
   } 
- 
   stages = await recursiveAddList(stages, apiStages)
-  
   setDataForm(prevState => {
     return { 
       ...prevState,

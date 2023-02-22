@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import useStage from '../../hooks/useStage'
-import { StageContainer } from '../sharedStyles'
+// import { StageContainer } from '../sharedStyles'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
@@ -11,7 +11,7 @@ import StatusPanelComponent from '../statusPanel'
 import useViewport from '../../../../hooks/useWindowSize'
 // import { useSelector } from "react-redux";
 // import { createSelector } from "reselect";
-import { FIAT_WITHDRAW_TYPES } from './api'
+import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages, createNextStages } from './api'
 import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
 // import WAccountCreatedSuccess from './success'
@@ -30,6 +30,7 @@ import { selectWithdrawProvider } from './amountComponent'
 import { useSelector } from "react-redux";
 import { formatToCurrency } from '../../../../utils/convert_currency'
 import { selectWithdrawProvidersByName } from 'selectors'
+import RenderSwitchComponent from 'components/renderSwitchComponent' 
 
 // import { 
 //   LabelContainer,
@@ -39,20 +40,19 @@ import { selectWithdrawProvidersByName } from 'selectors'
 
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
+const TargetPersonStage = loadable(() => import("./internals/targetPersonStage"), {fallback:<StageSkeleton/>});
 
-
-
+// setCreateAccount
 const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
-
   const { isMovilViewport } = useViewport();
-  const { dataForm } = handleDataForm
+  const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
   const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const [ toastMessage ] = useToastMessage();
   const actions = useActions()
 
   const walletInfo = useWalletInfo()
-  
+  const { state } = handleState
   const { currentWallet } = walletInfo
   
   const stageManager = useStage(
@@ -63,7 +63,7 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
 
 const {
   nextStage,
-  stageData,
+  stageData, 
   currentStage,
   stageStatus,
   setStageStatus,
@@ -71,14 +71,16 @@ const {
   lastStage
 } = stageManager
 
-// setCreateAccount
-
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
     setStageStatus(null)
     if(currentStage<1){
       setLoading(true)
       setLoading(false)
+    }
+    const initialStages = await ApiGetFiatWithdrawStages()
+    if(currentStage <= (Object.keys(initialStages).length - 1)){
+      await createNextStages({stageData, state, setDataForm, ...props})
     }
     nextStage()
   }
@@ -92,12 +94,8 @@ const {
   }
 
   const createFiatWithdraw = async({ twoFaToken }) => {
-    const { state } = handleState
     setLoading(true)
-
     const twoFactorIsEnabled = await ApiGetTwoFactorIsEnabled()
-    // console.log('twoFactorIsEnabled', twoFactorIsEnabled)
-    // debugger
     if(twoFactorIsEnabled && !twoFaToken){
       setLoading(false);
       return actions.renderModal(() => (
@@ -108,31 +106,22 @@ const {
         />
       ));
     }
-
     if(twoFaToken) actions.renderModal(null);
-
     const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken}) 
     if(error){
-      console.log('||||||||||  ApiPostCreateWAccount ===> ERROR', error)
-    setLoading(false)
-    return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
+      setLoading(false)
+      return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
     }
-
     await renderSuccessComponent(data)
     return setLoading(false)
   }
 
-  // if(finalStage){
-  //   return <p>finalStage</p>
-  // }
-  
-  const stageComponents = {
-    [FIAT_WITHDRAW_TYPES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
-    [FIAT_WITHDRAW_TYPES?.AMOUNT]:AmountComponent
+  const STAGE_COMPONENTS = {
+    [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:AmountComponent,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,
   }
- 
-  const RenderStageComponent = stageComponents[stageData?.key] || ProofComponent 
-  
+
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
@@ -144,9 +133,14 @@ const {
     </ButtonContainers>
   )
 
+  console.log('nextStep', stageData?.key, handleDataForm)
+
+
   return(
     <>
-        <RenderStageComponent
+        <RenderSwitchComponent
+          STAGE_COMPONENTS={STAGE_COMPONENTS}
+          component={stageData?.key}
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
@@ -155,8 +149,8 @@ const {
           {...walletInfo}
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
-        </RenderStageComponent>
-        
+        </RenderSwitchComponent>
+
         <StatusPanelComponent>
           <StatusHeaderContainer>
             <TitleContainer>
@@ -207,7 +201,6 @@ const StatusContent = ({ state, stageManager }) => {
 
   // console.log('StatusContent stageManager', cost)
   // getCost
-
   return(
     <StatusContainer>
       <ItemContainer>
@@ -307,13 +300,13 @@ const StatusHeaderContainer = styled.div`
 `
 
 
-const ProofComponent = ({ children, nextStage }) => {
-  return(
-    <StageContainer>
-      {children}
-    </StageContainer>
-  )
-}
+// const ProofComponent = ({ children, nextStage }) => {
+//   return(
+//     <StageContainer>
+//       {children}
+//     </StageContainer>
+//   )
+// }
 
 
 

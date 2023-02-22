@@ -5,15 +5,16 @@ import IconSwitch from "../../../widgets/icons/iconSwitch";
 import styled from 'styled-components'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
-import { isEmpty } from 'lodash'
+// import { isEmpty } from 'lodash'
 // import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 import NewFiatWithdrawAccountComponent from '../../../forms/widgets/newWithdrawAccount/init'
 import FiatWithdraw from '../../../forms/widgets/fiatWithdraw/init'
 import { history } from '../../../../const/const'
 import useViewport from '../../../../hooks/useWindowSize'
 // import { StageOptionSkeleton } from '../../../forms/widgets/stageManager'
-import { SelectListSkeleton } from '../../../forms/widgets/selectListComponent'
+import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 import { checkIfFiat } from 'core/config/currencies';
+import { MENU_LABELS } from 'api/ui/menuItems' 
 
  
 const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
@@ -41,7 +42,7 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
   } 
 
   const backToWithdraw = () => {
-    titleSectionEl.current.innerHTML = "Retirar";
+    titleSectionEl.current.innerHTML = MENU_LABELS?.withdraw;
     setCreateAccount(false)
     unMountAction() 
   }
@@ -49,7 +50,7 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
   const initConfig = () => {
     if(isMovilViewport)return;
     titleSectionEl.current.classList.add("_breadCrumbParent");   
-    titleSectionEl.current.innerHTML = "Retirar   >      ";
+    titleSectionEl.current.innerHTML = `${MENU_LABELS?.withdraw}   >      `;
     titleSectionEl.current.onclick = backToWithdraw
     const newSpan = document.createElement("span");
     newSpan.classList.add("_breadCrumbChild");   
@@ -59,14 +60,6 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
     document.querySelector(targetEl).append(newSpan)
   }
 
-  // useEffect(() => {
-  //   console.log('mobileTitleRef', mobileTitleRef.current)
-  //   if(mobileTitleRef?.current && isMovilViewport){
-  //     mobileTitleRef.current.innerHTML = uiName;
-  //   }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [mobileTitleRef?.current])
-
   return(
     <NewFiatWithdrawAccountComponent
       mainTitle="Creando cuenta de retiro"
@@ -75,12 +68,12 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
   )
 }
  
+
  
-const FiatView = (props) => {
-  
+const FiatView = () => {
+
   const fiatWithdrawAccounts = useSelector((state) => selectFiatWithdrawAccounts(state));
   const [ createAccount, setCreateAccount ] = useState(false)
-  // console.log('|||||||||||||||||||||  fiatWithdrawAccounts  ====> ', fiatWithdrawAccounts)
   
   if(createAccount){
     return(
@@ -90,51 +83,21 @@ const FiatView = (props) => {
     )
   }
 
-  // return <SelectListSkeleton/>
-   
-
   return(
     <>
       {
         !fiatWithdrawAccounts ?
           <SelectListSkeleton/>
         : 
-        isEmpty(fiatWithdrawAccounts) ?
-          <EmptyStateWithdrawAccount
-            setCreateAccount={setCreateAccount}
-          />
-        :
         <FiatWithdraw
           setCreateAccount={setCreateAccount}
         />
       }
     </>
   )
-
 };
 
 export default FiatView;
-
-
-// <p className="fuente">Lista de cuentas de retiro</p>
-// <ControlButton
-//   // loader={loader}
-//   // id={idForMainButton}
-//   formValidate
-//   label="Agregar cuenta de retiro"
-//   handleAction={() => setCreateAccount(true)}
-// />
-
-// const EmptyStateSkeleton = props => {
-//   return(
-//     <EmptyStateContainer className="skeleton">
-//       <div className="_iconSkeleton"></div>
-//       <p className="fuente _emptyCopy"><span>Para realizar retiros debes tener por</span> <br/> <span>lo menos una cuenta de retiro agregada</span> </p>
-//       <ControlButton/>
-//     </EmptyStateContainer>
-//   )
-// }
-
 
 
 export const EmptyStateWithdrawAccount = ({ setCreateAccount }) => {
