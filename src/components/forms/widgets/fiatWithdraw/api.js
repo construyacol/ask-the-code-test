@@ -55,12 +55,12 @@ const INTERNAL_NETWORK = {
   [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:{
     uiName:"Escribe el correo electrónico de la persona que le enviarás DCOP",
     key:FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON,
-    uiType:"text",
+    uiType:"select",
     "settings":{
       defaultMessage:"",
-      successPattern:/[0-9]/g,
-      errors:[ 
-          { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+      successPattern:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      errors:[  
+          // { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
       ],
       // label:"Nacionalidad del documento:",
       placeholder:"satoshi_nakamoto@bitcoin.com",
@@ -151,7 +151,7 @@ export const ApiPostWithdrawConfirm = async(_withdrawData) => {
 export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
   // const { withdraw_accounts } = mainService?.globalState?.modelData;
   const { 
-    // withdrawProvider,
+    // withdrawProviders,
     currentWallet,
     withdrawAccount,
     withdrawAmount,
@@ -167,6 +167,10 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
       withdraw_provider_id:withdrawAccount?.withdraw_provider,
     }
   }  
+
+  if(withdrawAccount?.provider_type === 'internal_network'){
+    body.data.cost_information = { cost_id:"none" }
+  }
 
   const res = await mainService.addWithdrawOrder(body, twoFaToken);
   return res

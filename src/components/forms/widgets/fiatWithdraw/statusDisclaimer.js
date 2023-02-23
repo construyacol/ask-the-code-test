@@ -28,7 +28,7 @@ const StatusDisclaimer = ({ withdrawAccount, className, withdrawProviders }) => 
         complete
     }
 
-    console.log('withdrawAccount', withdrawAccount)
+    // console.log('withdrawAccount', withdrawAccount)
     // disclaimer--message_p element => scrollHeigth
 
     return(

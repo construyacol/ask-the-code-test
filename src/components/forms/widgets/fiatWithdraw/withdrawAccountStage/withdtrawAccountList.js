@@ -67,7 +67,7 @@ const WithdtrawAccountList = ({
                 const isSameBankName = [withdrawAccount?.bank_name?.value].includes(state[stageData?.key]?.bank_name?.value)
                 const isSelected = isSameBankName && isSameAccountNumber;
                 const isAvalaibleSameProvider = withdrawProviders[withdrawAccount?.bank_name?.value]
-  
+                if(withdrawAccount?.provider_type === 'internal_network') return null
                 return <ItemListComponent 
                   key={index} 
                   className={`auxNumber __withdrawAccount ${withdrawAccount?.state} account_${withdrawAccount?.id}`}

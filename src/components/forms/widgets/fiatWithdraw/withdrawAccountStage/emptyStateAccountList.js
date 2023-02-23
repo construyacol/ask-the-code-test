@@ -1,6 +1,4 @@
 import styled from 'styled-components'
-import { useSelector } from "react-redux";
-import { selectFiatWithdrawProviders } from "selectors"
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
 import { TagNewComponent } from 'core/components/molecules'
 import { P, SPAN } from 'core/components/atoms';
@@ -27,9 +25,10 @@ export const WithdrawServiceList = ({
   handleState:{ state },
   handleAction,
   uiName,
+  fiatWithdrawProviders,
   ...props
 }) => {
-  const fiatWithdrawProviders = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
+
   return(
     <>
       {uiName && <p className="fuente _pLabel _inputLabelP">{uiName}</p>}
@@ -40,7 +39,6 @@ export const WithdrawServiceList = ({
               const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
               const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
               let _value = withdrawServiceList[provKey]?.value
-              console.log('fiatWithdrawProviders', withdrawServiceList, )
               if(!fiatWithdrawProviders[provKey])return null;
               return <ItemListComponent 
                 key={index} 
@@ -54,7 +52,7 @@ export const WithdrawServiceList = ({
                 firstIndex={index === 0}
                 lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(fiatWithdrawProviders)?.length - 1) === index}
                 isSelectedItem={isSelected}
-                handleAction={_value === 'newBankAccount' ? () => props.setCreateAccount(true) : handleAction} 
+                handleAction={_value === 'newBankAccount' ? () => props.setCreateAccount(true) : (item) => handleAction({value:item?.value})} 
                 AuxComponent={[
                     AuxComponent ? () => <AuxComponent/> : () => null
                 ]}

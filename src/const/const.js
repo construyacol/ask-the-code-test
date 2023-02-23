@@ -142,6 +142,7 @@ export const GET_PROFILE_URL = `${ApiUrl}users`;
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`;
 export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`;
 export const TWO_FACTOR_BASE_URL = `${ApiUrl}`;
+export const USER_DNS_URL = `${ApiUrl}userDns/resolve-identifier`;
 
 
 export const DELETE_WITHDRAW_ACCOUNT_URL = `${WithdrawApiUrl}withdrawAccounts/update-visibility`;

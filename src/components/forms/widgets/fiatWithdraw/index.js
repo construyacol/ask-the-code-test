@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 import { selectWithdrawProvidersByName } from 'selectors'
 import RenderSwitchComponent from 'components/renderSwitchComponent' 
 import StatusPanelStates from './statusPanelStates'
-import { selectFiatWithdrawAccounts } from 'selectors'
+import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selectors'
 
 // import { 
 //   LabelContainer,
@@ -32,10 +32,7 @@ const TargetPersonStage = loadable(() => import("./internals/targetPersonStage")
 // setCreateAccount
 
 
-
-
-
-const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
+const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
@@ -43,9 +40,8 @@ const NewWAccountComponent = ({ handleState, handleDataForm, ...props }) => {
   const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const [ toastMessage ] = useToastMessage();
   const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
-
+  const fiatWithdrawProviders = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
   const actions = useActions()
-
   const walletInfo = useWalletInfo()
   const { state } = handleState
   const { currentWallet } = walletInfo
@@ -102,7 +98,7 @@ const {
       ));
     }
     if(twoFaToken) actions.renderModal(null);
-    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken}) 
+    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken }) 
     if(error){
       setLoading(false)
       return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
@@ -117,8 +113,6 @@ const {
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,
   }
 
-
-
   const ButtonComponent = () => (
     <ButtonContainers>
       <ControlButton
@@ -129,9 +123,7 @@ const {
       />
     </ButtonContainers>
   )
-
   // console.log('stageData', state[stageData?.key])
-
   return(
     <>
         <RenderSwitchComponent
@@ -142,6 +134,7 @@ const {
           handleDataForm={handleDataForm}
           withdrawProviders={withdrawProviders}
           withdrawAccounts={withdrawAccounts}
+          fiatWithdrawProviders={fiatWithdrawProviders}
           {...props}
           {...walletInfo}
         >
@@ -162,7 +155,7 @@ const {
           </>
         </StatusPanelStates>
 
- 
+          
         {
           isMovilViewport &&
             <ButtonComponent/>
@@ -170,10 +163,8 @@ const {
     </>                 
   )
 }
- 
 
-
-export default NewWAccountComponent
+export default FiatWithdraw
 
 
 

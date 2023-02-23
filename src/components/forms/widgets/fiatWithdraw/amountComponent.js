@@ -30,7 +30,6 @@ export default function AmountComponent ({
     const withdrawAmountOnChange = async(e) => {
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData?.key]) return;
-
       const [ _value, _status ] = await validations[stageData?.key](e?.target?.value, {
         ...stageData, 
         state,  
@@ -39,7 +38,6 @@ export default function AmountComponent ({
         availableBalance,
         currentWallet
       });
-
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }
@@ -55,8 +53,7 @@ export default function AmountComponent ({
       setAvailableAmount(formatToCurrency(availableAmount, currentWallet?.currency))
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
+ 
       // load state  by default
       useEffect(() => {
         let inputElement = document.querySelector(`[name="${stageData?.key}"]`)
