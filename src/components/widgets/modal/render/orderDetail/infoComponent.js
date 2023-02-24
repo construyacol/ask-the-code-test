@@ -135,7 +135,9 @@ const ReferralInfo = () => {
    
   
   const GetInfoComponentToRender = (order) => {
-  
+    
+    console.log('GetInfoComponentToRender', order)
+    debugger
     const { tx_path, info } = order
     const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
     const targetKey = info?.is_referral ? 'is_referral' : (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : currencyType

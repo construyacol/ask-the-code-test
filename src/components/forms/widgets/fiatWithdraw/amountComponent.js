@@ -7,6 +7,7 @@ import { createSelector } from "reselect";
 import AvailableBalance from '../../../widgets/availableBalance'
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import StatusDisclaimer from './statusDisclaimer'
+import { FIAT_WITHDRAW_TYPES } from './api'
 
 export default function AmountComponent ({ 
     stageManager:{ 
@@ -63,6 +64,7 @@ export default function AmountComponent ({
         }
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [state[stageData?.key]])
+
   
     return( 
       <StageContainer className="_withdrawAmount">
@@ -83,11 +85,14 @@ export default function AmountComponent ({
             amount={availableAmount}
           />)]}
         />
-        <StatusDisclaimer
-              withdrawAccount={state?.withdrawAccount}
-              className="fullDisclaimer"
-              withdrawProviders={withdrawProviders}
-          />
+        {
+          withdrawProvider?.provider_type !== FIAT_WITHDRAW_TYPES.TYPES.INTERNAL &&
+          <StatusDisclaimer 
+                withdrawAccount={state?.withdrawAccount}
+                className="fullDisclaimer"
+                withdrawProviders={withdrawProviders}
+            />
+        }
       </StageContainer>
     )
   

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { StageContainer, OptionInputContainer } from '../../sharedStyles'
 import loadable from "@loadable/component";
 import { useActions } from 'hooks/useActions'
@@ -23,6 +23,8 @@ export default function WithdrawAccountsComponent({
   const { isMobile } = useViewport();
   const [ coinsendaServices ] = useCoinsendaServices();
   const [toastMessage] = useToastMessage();
+  const [ bankAccountList, setBankAccountList ] = useState(true)
+
 
   const selectWithdrawAccount = (withdrawAccount) => {
     setState(prevState => { return { ...prevState, [stageData?.key]: withdrawAccount } })
@@ -36,13 +38,30 @@ export default function WithdrawAccountsComponent({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    (async() => {
+      // let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type !== 'internal_network')
+      let _bankAccountList = {}
+      for (const wAccountId in withdrawAccounts) {
+        if(withdrawAccounts[wAccountId]?.provider_type !== 'internal_network'){
+          _bankAccountList = {
+            ..._bankAccountList,
+            [wAccountId]:withdrawAccounts[wAccountId]
+          }
+        }
+      }
+      setBankAccountList(_bankAccountList)
+    })()
+  }, [withdrawAccounts])
+
+
 
   return(
     <StageContainer className="_identityComponent">
       {children} 
       <OptionInputContainer>
         {
-          isEmpty(withdrawAccounts) ?
+          isEmpty(bankAccountList) ?
             <EmptyStateAccountList 
               handleAction={selectWithdrawAccount}
               {...props}

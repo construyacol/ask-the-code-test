@@ -8,6 +8,7 @@ import { FcCancel } from 'react-icons/fc';
 import styled from 'styled-components';
 import { WiStars } from 'react-icons/wi';
 import { WithdrawServiceList, INTERNAL_NETWORK } from './emptyStateAccountList'
+import { FIAT_WITHDRAW_TYPES } from '../api'
 
 
 
@@ -67,7 +68,7 @@ const WithdtrawAccountList = ({
                 const isSameBankName = [withdrawAccount?.bank_name?.value].includes(state[stageData?.key]?.bank_name?.value)
                 const isSelected = isSameBankName && isSameAccountNumber;
                 const isAvalaibleSameProvider = withdrawProviders[withdrawAccount?.bank_name?.value]
-                if(withdrawAccount?.provider_type === 'internal_network') return null
+                if(withdrawAccount?.provider_type === FIAT_WITHDRAW_TYPES.TYPES.INTERNAL) return null
                 return <ItemListComponent 
                   key={index} 
                   className={`auxNumber __withdrawAccount ${withdrawAccount?.state} account_${withdrawAccount?.id}`}

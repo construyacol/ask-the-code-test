@@ -3,6 +3,7 @@ import { SelectListContainer, ItemListComponent } from 'components/forms/widgets
 import { TagNewComponent } from 'core/components/molecules'
 import { P, SPAN } from 'core/components/atoms';
 import { BiRightArrowAlt } from 'react-icons/bi';
+import { FIAT_WITHDRAW_TYPES } from '../api'
 
 
 const EmptyStateAccountList = (props) => {
@@ -76,7 +77,7 @@ const CRYPTO_ACCOUNT_LABEL ={
 }
 
 export const INTERNAL_NETWORK = {
-  internal_network:{
+  [FIAT_WITHDRAW_TYPES?.TYPES?.INTERNAL]:{
     uiName:() => <P>A otra persona</P>,
     AuxComponent:TagNewComponent
   }

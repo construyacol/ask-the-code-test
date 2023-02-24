@@ -113,12 +113,12 @@ const WithdrawCreatedSuccess = ({
                             </g>
                             </svg>
                         </div>
-                        <Title className="fuente">Estás a un paso de recibir tu dinero</Title>
+                        <Title className="fuente">Estás a un paso de enviar tu dinero</Title>
                     </Header>
 
                     <Content>
 
-                        <SubTitle style={{marginBottom:"0"}} className="fuente ">Resumen del retiro</SubTitle>
+                        <SubTitle style={{marginBottom:"0"}} className="fuente ">Resumen del envío</SubTitle>
 
                         <li className="fuente _fromTo">Desde</li>
                         <ItemAccountContainer className={`_itemAccountContainer`}>
@@ -167,7 +167,7 @@ const WithdrawCreatedSuccess = ({
                             }
                         </ItemAccountContainer>
 
-                        <SubTitle className="fuente">Datos de tu retiro</SubTitle>
+                        <SubTitle className="fuente">Datos del envío</SubTitle>
                         <ContentDetail className="onBottom">
                             <DetailTemplateComponent
                                 items={data}

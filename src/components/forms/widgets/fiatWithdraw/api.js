@@ -9,19 +9,18 @@ import {
   createStage, 
   // recursiveAddList
 } from 'components/forms/utils'
-
-
  
 export const FIAT_WITHDRAW_TYPES = {
   FORM:"fiatWithdraw",
+  TYPES:{
+    INTERNAL:"internal_network"
+  },
   STAGES:{
     WITHDRAW_ACCOUNT:"withdrawAccount",
     AMOUNT:"withdrawAmount",
     TARGET_PERSON:"targetPerson"
   }
 }
-
-
 
 const STAGES = {
   [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:{
@@ -69,10 +68,6 @@ const INTERNAL_NETWORK = {
   ...BANK_WITHDRAW
 }
 
-
-
-
-
 export const FIAT_WITHDRAW_COMPONENTS = {
   wrapperComponent:{
     [FIAT_WITHDRAW_TYPES.FORM]:FIAT_WITHDRAW_TYPES.FORM
@@ -90,7 +85,7 @@ export const ApiGetFiatWithdrawStages = async() => {
 
 const getNextStages= (targetStage) => {
   const nextStages = {
-    internal_network:INTERNAL_NETWORK
+    [FIAT_WITHDRAW_TYPES.TYPES.INTERNAL]:INTERNAL_NETWORK
   } 
   return nextStages[targetStage] || BANK_WITHDRAW
 }
@@ -168,7 +163,7 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
     }
   }  
 
-  if(withdrawAccount?.provider_type === 'internal_network'){
+  if(withdrawAccount?.provider_type === FIAT_WITHDRAW_TYPES.TYPES.INTERNAL){
     body.data.cost_information = { cost_id:"none" }
   }
 

@@ -5,24 +5,8 @@ import InputComponent from '../../kyc/InputComponent'
 import SelectListComponent from '../../selectListComponent'
 import useViewport from 'hooks/useWindowSize'
 import withCoinsendaServices from 'components/withCoinsendaServices'
-import { FIAT_WITHDRAW_TYPES, ApiGetFiatWithdrawStages, createNextStages } from '../api'
-// import { Disclaimer } from '../../sharedStyles'
+import { FIAT_WITHDRAW_TYPES } from '../api'
 
-
-
-// const selectList = {
-//   "jermu@gmail.com":{
-//     value:"jermu@gmail.com",
-//     uiName:"Jermu@gmail.com"
-
-//   },
-//   "constru@gmail.com":{
-//     uiName:"Constru@gmail.com",
-//     value:"constru@gmail.com"
-//   }
-// }
-
-// const selectList = {}
 
 const TargetPersonStage = ({ 
     stageManager, 
@@ -35,7 +19,9 @@ const TargetPersonStage = ({
   }) => {
     
     const { isMovilViewport } = useViewport();
-    const [ selectList, setSelectList ] = useState({})
+    const [ selectList, 
+      // setSelectList 
+    ] = useState({})
     const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value
     const {
       stageData,
@@ -44,17 +30,21 @@ const TargetPersonStage = ({
       // setStageData
     } = stageManager
   
-    const onChange = (e) => {
+    const onChange = (e) => { 
       e.target.preventDefault && e.target.preventDefault();
       if(!validations[stageData.key]) return; 
-      const [ _value, _status ] = validations[stageData.key](e?.target?.value, {...stageData, state, dataForm, selectList});
+      const [ _value, _status ] = validations[stageData.key](e?.target?.value, {
+        ...stageData, 
+        state, 
+        dataForm, 
+        // selectList
+      });
       e.target.value = _value
       setState(prevState => {
         return { ...prevState, [stageData?.key]: _value }
       })
       setStageStatus(_status)
     }
-
     
     // load state  by default
     useEffect(() => {
@@ -65,47 +55,68 @@ const TargetPersonStage = ({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
-
     
     // verify if user is registered on coinsenda
     useEffect(() => {
       if(stageStatus === "success")(async () => {
         // coinsendaServices.resolveIdentifier(state[stageData?.key])
-        let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type === providerType)
-        if(!wAccountId) return;
-        const withdrawAccount = withdrawAccounts[wAccountId]
-        const stageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
-        setState(prevState => {
-          return { ...prevState, [stageKey]: {
-              ...withdrawAccount,
-              ...prevState[stageKey],
-            } 
-          }
-        })
-        // console.log('withdrawAccounts', withdrawAccount)
+        // let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type === providerType)
+        // if(!wAccountId) return;
+        // const { data, error } = await createWithdrawAccount()
+        // if(error)return alert('la cuenta de retiro no pudo ser creada')
+        // let wAccountId = data
+        // console.log('wAccountId', wAccountId)
+        // const withdrawAccount = withdrawAccounts[wAccountId]
+        // const stageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
+        // setState(prevState => {
+        //   return { ...prevState, [stageKey]: {
+        //       ...withdrawAccount,
+        //       ...prevState[stageKey],
+        //     } 
+        //   }
+        // })
       })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [stageStatus])
 
-
-        // console.log('withdrawAccountsState', state)
-
-
     useEffect(() => {
-
-      let _selectList = {}
-      for (const keyId in withdrawAccounts) {
-        if(withdrawAccounts[keyId]?.provider_type === providerType){
-          _selectList = {
-            ..._selectList,
-            [keyId]:withdrawAccounts[keyId]
-          }
+      (async() => {
+        if(stageStatus === "success"){
+          let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type === providerType)
+          console.log('wAccountId', wAccountId)
+          if(!wAccountId) return await createWithdrawAccount();
+          const withdrawAccount = withdrawAccounts[wAccountId]
+          const stageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
+          setState(prevState => {
+            return { ...prevState, [stageKey]: {
+                ...withdrawAccount,
+                ...prevState[stageKey],
+              } 
+            }
+          })
         }
-      }
-      // setSelectList(_selectList)
-
+      })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawAccounts])
+    }, [withdrawAccounts, stageStatus])
+
+    // construyacol+currency_type@gmail.com
+    // console.log('withdrawAccountsState', state)
+
+
+    // // create select list withdraw accounts
+    // useEffect(() => {
+    //   let _selectList = {}
+    //   for (const keyId in withdrawAccounts) {
+    //     if(withdrawAccounts[keyId]?.provider_type === providerType){
+    //       _selectList = {
+    //         ..._selectList,
+    //         [keyId]:withdrawAccounts[keyId]
+    //       }
+    //     }
+    //   }
+    //   // setSelectList(_selectList)
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [withdrawAccounts])
 
     const createWithdrawAccount = async() => {
       const provider = props?.fiatWithdrawProviders[providerType]
@@ -121,8 +132,9 @@ const TargetPersonStage = ({
             }
           }
         }
-        const { data, error } = await coinsendaServices.createWithdrawAccount(body);
-        console.log('createWithdrawAccount', data, error)
+        let res = await coinsendaServices.createWithdrawAccount(body);
+        await coinsendaServices.fetchWithdrawAccounts();
+        return res
     }
 
     return(

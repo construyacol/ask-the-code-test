@@ -2,7 +2,7 @@
 // import loadable from "@loadable/component";
 import RenderSwitchComponent from 'components/renderSwitchComponent' 
 import ResumeComponent from './resume'
-import { isEmpty } from 'lodash'
+// import { isEmpty } from 'lodash'
 import { 
   FIAT_WITHDRAW_TYPES, 
   // ApiGetFiatWithdrawStages, 
@@ -11,14 +11,13 @@ import {
 
 import StatusPanelComponent from 'components/forms/widgets/statusPanel'
 import { InternalOnBoarding } from './onBoardings'
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 
 
 
 const StatusPanelStates = (props) => {
   
-  const { stageManager:{stageData }, handleState:{ state }, withdrawAccounts} = props
-
+  const { stageManager:{stageData }, handleState:{ state }} = props
 
   const getWithdrawAccountComponent = () => {
   // const DefaultComponent = !state[stageData?.key] && (() => <></>)
@@ -26,7 +25,7 @@ const StatusPanelStates = (props) => {
   const _value = state[stageData?.key] && state[stageData?.key]?.value?.replace(" ", "_")?.toLowerCase()
   const toRender = {
       [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:{
-        internal_network:InternalOnBoarding
+        [FIAT_WITHDRAW_TYPES?.TYPES?.INTERNAL]:InternalOnBoarding
       }
     }
     const RenderComponent = (toRender[stageData?.key] && _value) && toRender[stageData?.key][_value]
@@ -39,12 +38,11 @@ const StatusPanelStates = (props) => {
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:InternalOnBoarding,
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getWithdrawAccountComponent()
+  // }, [state])
 
-    getWithdrawAccountComponent()
-  }, [state])
-
-  // console.log('StatusPanelStates', state[stageData?.key]?.value === 'internal_network', stageData?.key, state[stageData?.key]?.value)
+  // console.log('StatusPanelStates', state[stageData?.key]?.value === 'FIAT_WITHDRAW_TYPES.types.internal', stageData?.key, state[stageData?.key]?.value)
   // console.log()
 
     return(
