@@ -27,7 +27,8 @@ const InputComponent = props => {
     placeholder,
     className,
     label,
-    inputMode = 'text'
+    inputMode = 'text',
+    refEl
   } = props
 
   //For metadata omit on main component and assign the property: "name", to the aux component.
@@ -63,6 +64,7 @@ const InputComponent = props => {
     onChange,
     defaultValue,
     name:inputName,
+    ref:refEl,
     // disabled,
     autoFocus:isMovilViewport ? false : true,
     // onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,

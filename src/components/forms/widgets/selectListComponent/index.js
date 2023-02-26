@@ -30,7 +30,8 @@ const SelectListComponent = ({
     stageData, 
     selectList = stageData?.selectList,
     state, 
-    onChange
+    onChange,
+    callback
   }) => {
   
     const [ searchList, setSearchList ] = useState()
@@ -40,6 +41,7 @@ const SelectListComponent = ({
       if(selectList){
         const itemList = filterElement(selectList, state[stageData?.key])
         setSearchList(itemList)
+        callback && callback(itemList)
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key], selectList])
@@ -58,7 +60,7 @@ const SelectListComponent = ({
               itemList={selectList[key]}
               firstIndex={index === 0}
               lastIndex={(Object.keys(searchList)?.length - 1) === index}
-              isSelectedItem={Object.keys(searchList)?.length === 1}
+              isSelectedItem={Object.keys(searchList)?.length === 1 && searchList[state[stageData?.key]]}
               isMovilViewport={isMovilViewport}
               handleAction={handleAction}
             />
@@ -84,6 +86,7 @@ const SelectListComponent = ({
 
     // const uiName = itemList?.uiName?.toLowerCase()
     let UiName = itemList?.uiName
+    let _auxUiName = itemList?.auxUiName || auxUiName
 
     return(
       <ItemProviderBankContainer 
@@ -131,8 +134,8 @@ const SelectListComponent = ({
               </AccountLabel> 
 
               {
-                auxUiName &&
-                <AccountLabel className="_aux">{auxUiName}</AccountLabel>
+                _auxUiName &&
+                <AccountLabel className="_aux">{_auxUiName}</AccountLabel>
               }
           </LabelContainer> 
         </HeaderMainContainer>

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { StageContainer } from '../sharedStyles'
 import InputComponent from '../kyc/InputComponent'
-import { useSelector } from "react-redux";
 import validations from './validations'
 import { createSelector } from "reselect";
 import AvailableBalance from '../../../widgets/availableBalance'
@@ -21,11 +20,10 @@ export default function AmountComponent ({
     children,
     currentWallet,
     availableBalance,
-    withdrawProviders
+    withdrawProviders,
+    withdrawProvider
   }) {
 
-    const { withdrawAccount } = state
-    const [ withdrawProvider ] = useSelector((state) => selectWithdrawProvider(state, withdrawAccount?.withdraw_provider));
     const [availableAmount, setAvailableAmount] = useState(availableBalance)
   
     const withdrawAmountOnChange = async(e) => {

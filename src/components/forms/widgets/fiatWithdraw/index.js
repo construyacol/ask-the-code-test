@@ -15,16 +15,18 @@ import { useWalletInfo } from '../../../../hooks/useWalletInfo'
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { StageSkeleton } from '../stageManager'
 import { useSelector } from "react-redux";
-import { selectWithdrawProvidersByName } from 'selectors'
 import RenderSwitchComponent from 'components/renderSwitchComponent' 
 import StatusPanelStates from './statusPanelStates'
 import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selectors'
+import { selectWithdrawProvidersByName } from 'selectors'
 
 // import { 
 //   LabelContainer,
 //   AccountLabel,
 //   IconAccount
 // } from '../../../widgets/headerAccount/styles'
+
+const DEFAULT_PROVIDER_TYPE = 'bank'
 
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
@@ -37,14 +39,20 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
-  const [ withdrawProviders ] = useSelector((state) => selectWithdrawProvidersByName(state));
   const [ toastMessage ] = useToastMessage();
   const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
-  const fiatWithdrawProviders = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
+  const wProvidersByProvType = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
+  const [ withdrawProvidersByName ] = useSelector((state) => selectWithdrawProvidersByName(state));
+
+
+
   const actions = useActions()
   const walletInfo = useWalletInfo()
   const { state } = handleState
   const { currentWallet } = walletInfo
+  const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
+  const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
+
   
   const stageManager = useStage(
     // create the form stages
@@ -84,6 +92,10 @@ const {
     actions.renderModal(() => <WithdrawCreatedSuccess withdrawData={withdrawData} />);
   }
 
+
+
+
+
   const createFiatWithdraw = async({ twoFaToken }) => {
     setLoading(true)
     const twoFactorIsEnabled = await ApiGetTwoFactorIsEnabled()
@@ -97,8 +109,13 @@ const {
         />
       ));
     }
-    if(twoFaToken) actions.renderModal(null);
-    const { error, data } = await ApiPostCreateFiatWithdraw({...state, currentWallet, twoFaToken }) 
+    if(twoFaToken) actions.renderModal(null); 
+    const { error, data } = await ApiPostCreateFiatWithdraw({
+      ...state, 
+      currentWallet, 
+      withdrawProvider,
+      twoFaToken 
+    }) 
     if(error){
       setLoading(false)
       return toastMessage(UI_ERRORS[error?.code] || error?.message, "error");
@@ -123,7 +140,7 @@ const {
       />
     </ButtonContainers>
   )
-  // console.log('stageData', state[stageData?.key])
+  console.log('state', state)
   return(
     <>
         <RenderSwitchComponent
@@ -132,9 +149,13 @@ const {
           stageManager={stageManager}
           handleState={handleState}
           handleDataForm={handleDataForm}
-          withdrawProviders={withdrawProviders}
+          withdrawProviders={withdrawProvidersByName}
           withdrawAccounts={withdrawAccounts}
-          fiatWithdrawProviders={fiatWithdrawProviders}
+          wProvidersByProvType={wProvidersByProvType}
+          providerType={providerType}
+          withdrawProvider={withdrawProvider}
+          currentWallet={currentWallet}
+          actions={actions}
           {...props}
           {...walletInfo}
         >

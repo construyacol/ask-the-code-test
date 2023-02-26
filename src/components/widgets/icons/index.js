@@ -81,7 +81,8 @@ export function PSE(props) {
     <img
       width={props.size}
       height={props.size}
-      src={`data:image/png;base64, ${PSEbase64}`}
+      // src={`data:image/png;base64, ${PSEbase64}`}
+      src={`https://s3.amazonaws.com/coinsenda.cdn/assets/userPanel/pse.png`}
       alt=""
     />
   );

@@ -197,6 +197,7 @@ class IconSwitch extends Component {
       case "bankAccount":
         return <BankAccount {...props} />; 
       case "internal_network":
+      case "person":
         return <Internals {...props} />; 
       case "pse":
       case "PSE":

@@ -9,7 +9,11 @@ import {
   createStage, 
   // recursiveAddList
 } from 'components/forms/utils'
- 
+import ungapStructuredClone from '@ungap/structured-clone';
+
+export const DEFAULT_IDENTIFIER_TYPE = "email"
+
+
 export const FIAT_WITHDRAW_TYPES = {
   FORM:"fiatWithdraw",
   TYPES:{
@@ -142,16 +146,43 @@ export const ApiPostWithdrawConfirm = async(_withdrawData) => {
   return { data }
 }
 
+
+export const createWithdrawAccount = async({ withdrawAccount, currentWallet, withdrawProvider, labelAccount }) => {
+  const body = {
+    data:{
+      country:currentWallet?.country,
+      currency: currentWallet?.currency,
+      provider_type:withdrawProvider?.provider_type,
+      internal:withdrawProvider?.internal,
+      info_needed:{
+        identifier:withdrawAccount?.identifier,
+        type:withdrawAccount?.id_type,
+        label:labelAccount || withdrawAccount?.uiName
+      }
+    }
+  }
+  // coinsendaServices.resolveIdentifier(state[stageData?.key])
+  const { data, error } = await mainService.createWithdrawAccount(body);
+  if(error){
+    alert('No ha sido posible crear la cuenta') 
+    return { error }
+  }
+  await mainService.fetchWithdrawAccounts();
+  return data
+}
+
  
 export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
   // const { withdraw_accounts } = mainService?.globalState?.modelData;
   const { 
-    // withdrawProviders,
+    withdrawProvider,
     currentWallet,
-    withdrawAccount,
     withdrawAmount,
     twoFaToken
   } = payload
+
+  let withdrawAccount = ungapStructuredClone(payload?.withdrawAccount)
+  if(!withdrawAccount?.id) withdrawAccount = await createWithdrawAccount(payload)
 
   let body = {
     data:{ 
@@ -159,7 +190,7 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
       account_id:currentWallet?.id,
       amount:parseOnlyNumbers(withdrawAmount), 
       withdraw_account_id:withdrawAccount?.id,
-      withdraw_provider_id:withdrawAccount?.withdraw_provider,
+      withdraw_provider_id:withdrawProvider?.id,
     }
   }  
 

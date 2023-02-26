@@ -26,7 +26,7 @@ export const WithdrawServiceList = ({
   handleState:{ state },
   handleAction,
   uiName,
-  fiatWithdrawProviders,
+  wProvidersByProvType,
   ...props
 }) => {
 
@@ -35,12 +35,12 @@ export const WithdrawServiceList = ({
       {uiName && <p className="fuente _pLabel _inputLabelP">{uiName}</p>}
       <SelectListContainer>
         { 
-          fiatWithdrawProviders && Object.keys(withdrawServiceList).map((provKey, index) => {
-              const itemList = fiatWithdrawProviders[provKey]
+          wProvidersByProvType && Object.keys(withdrawServiceList).map((provKey, index) => {
+              const itemList = wProvidersByProvType[provKey]
               const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
               const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
               let _value = withdrawServiceList[provKey]?.value
-              if(!fiatWithdrawProviders[provKey])return null;
+              if(!wProvidersByProvType[provKey])return null;
               return <ItemListComponent 
                 key={index} 
                 className={`auxNumber account_${itemList?.id}`}
@@ -51,7 +51,7 @@ export const WithdrawServiceList = ({
                 }}
                 // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                 firstIndex={index === 0}
-                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(fiatWithdrawProviders)?.length - 1) === index}
+                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 1) === index}
                 isSelectedItem={isSelected}
                 handleAction={_value === 'newBankAccount' ? () => props.setCreateAccount(true) : (item) => handleAction({value:item?.value})} 
                 AuxComponent={[

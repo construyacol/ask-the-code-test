@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import validations from '../validations'
 import { StageContainer } from '../../sharedStyles'
 import InputComponent from '../../kyc/InputComponent'
 import SelectListComponent from '../../selectListComponent'
-import useViewport from 'hooks/useWindowSize'
-import withCoinsendaServices from 'components/withCoinsendaServices'
-import { FIAT_WITHDRAW_TYPES } from '../api'
-
+// import useViewport from 'hooks/useWindowSize'
+import { FIAT_WITHDRAW_TYPES, DEFAULT_IDENTIFIER_TYPE } from '../api'
+import { ItemListComponent, SelectListContainer } from 'components/forms/widgets/selectListComponent'
+import Buttom from 'components/widgets/buttons/button'
+import { IoPersonAddOutline } from 'react-icons/io5';
+import useViewport from 'hooks/useViewport'
 
 const TargetPersonStage = ({ 
     stageManager, 
@@ -15,14 +17,18 @@ const TargetPersonStage = ({
     handleDataForm:{ dataForm },
     coinsendaServices,
     withdrawAccounts,
+    providerType,
+    withdrawProvider,
+    currentWallet,
     ...props
   }) => {
     
-    const { isMovilViewport } = useViewport();
-    const [ selectList, 
-      // setSelectList 
-    ] = useState({})
-    const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value
+    const { isMobile } = useViewport();
+    const [ selectList, setSelectList ] = useState({})
+    const [ idType ] = useState(DEFAULT_IDENTIFIER_TYPE)
+    const [ newAccount, setNewAccount ] = useState(false)
+    const inputEl = useRef()
+
     const {
       stageData,
       setStageStatus,
@@ -55,92 +61,75 @@ const TargetPersonStage = ({
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state[stageData?.key]])
-    
-    // verify if user is registered on coinsenda
-    useEffect(() => {
-      if(stageStatus === "success")(async () => {
-        // coinsendaServices.resolveIdentifier(state[stageData?.key])
-        // let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type === providerType)
-        // if(!wAccountId) return;
-        // const { data, error } = await createWithdrawAccount()
-        // if(error)return alert('la cuenta de retiro no pudo ser creada')
-        // let wAccountId = data
-        // console.log('wAccountId', wAccountId)
-        // const withdrawAccount = withdrawAccounts[wAccountId]
-        // const stageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
-        // setState(prevState => {
-        //   return { ...prevState, [stageKey]: {
-        //       ...withdrawAccount,
-        //       ...prevState[stageKey],
-        //     } 
-        //   }
-        // })
-      })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [stageStatus])
 
+    const createWithdrawAccountMock = () => ({
+      icon:idType,
+      id_type:idType,
+      identifier:state[stageData?.key],
+      uiName:state[stageData?.key],
+      auxUiName:state[stageData?.key],
+    })
+
+    
+    // verify if user is registered on withdraw accounts
     useEffect(() => {
       (async() => {
         if(stageStatus === "success"){
-          let wAccountId = await Object.keys(withdrawAccounts).find(wAccountId => withdrawAccounts[wAccountId]?.provider_type === providerType)
-          console.log('wAccountId', wAccountId)
-          if(!wAccountId) return await createWithdrawAccount();
-          const withdrawAccount = withdrawAccounts[wAccountId]
-          const stageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
+          let wAccountId = await Object.keys(selectList).find(wAccountId => selectList[wAccountId]?.info?.identifier === state[stageData?.key])
+          let withdrawAccount = {}
+          const prevStageKey = FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT
+          setNewAccount(false)
+          if(!selectList[wAccountId]){
+            setNewAccount(true)
+            withdrawAccount = createWithdrawAccountMock()
+          }else{
+            withdrawAccount = selectList[wAccountId]
+          }
           setState(prevState => {
-            return { ...prevState, [stageKey]: {
+            return { 
+              ...prevState, 
+              [prevStageKey]:{
                 ...withdrawAccount,
-                ...prevState[stageKey],
+                value:prevState[prevStageKey]?.value
               } 
             }
           })
+        }else{
+          setNewAccount(false)
         }
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [withdrawAccounts, stageStatus])
-
-    // construyacol+currency_type@gmail.com
-    // console.log('withdrawAccountsState', state)
+    }, [selectList, stageStatus, inputEl?.current?.value])
 
 
-    // // create select list withdraw accounts
-    // useEffect(() => {
-    //   let _selectList = {}
-    //   for (const keyId in withdrawAccounts) {
-    //     if(withdrawAccounts[keyId]?.provider_type === providerType){
-    //       _selectList = {
-    //         ..._selectList,
-    //         [keyId]:withdrawAccounts[keyId]
-    //       }
-    //     }
-    //   }
-    //   // setSelectList(_selectList)
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [withdrawAccounts])
-
-    const createWithdrawAccount = async() => {
-      const provider = props?.fiatWithdrawProviders[providerType]
-        const body = {
-          data:{
-            country:props?.currentWallet?.country,
-            currency: props?.currentWallet?.currency,
-            provider_type: providerType,
-            internal:provider?.internal,
-            info_needed:{
-              identifier:state[stageData?.key],
-              type:"email",
+    // se crea la lista de cuentas internas guardadas por el usuario (contiene custom label)
+    useEffect(() => {
+      let _selectList = {}
+      for (const keyId in withdrawAccounts) {
+        if(withdrawAccounts[keyId]?.provider_type === providerType && withdrawAccounts[keyId]?.info?.type === idType && (withdrawAccounts[keyId]?.info?.label !== withdrawAccounts[keyId]?.info?.identifier)){
+          _selectList = {
+            ..._selectList,
+            [withdrawAccounts[keyId]?.info?.identifier?.toLowerCase()]:{
+              ...withdrawAccounts[keyId],
+              value:withdrawAccounts[keyId]?.info?.identifier,
+              // icon:idType,
+              icon:"person",
+              uiName:withdrawAccounts[keyId]?.info?.label,
+              auxUiName:withdrawAccounts[keyId]?.info?.identifier
             }
           }
         }
-        let res = await coinsendaServices.createWithdrawAccount(body);
-        await coinsendaServices.fetchWithdrawAccounts();
-        return res
-    }
+      }
+      setSelectList(_selectList)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [withdrawAccounts])
+
 
     return(
       <StageContainer className="_bankNameList">
         {children}
         <InputComponent 
+          refEl={inputEl}
           className="_stickyPosition"
           onChange={onChange} 
           inputStatus={stageStatus}
@@ -149,26 +138,62 @@ const TargetPersonStage = ({
           placeholder={stageData?.settings?.placeholder}
           type={stageData?.uiType}
         />
-        {/* {
-          stageStatus === "success" &&
-          <p onClick={createWithdrawAccount}>Guardar</p>
-        } */}
-        <SelectListComponent
-          stageData={stageData}
-          state={state}
-          selectList={selectList}
-          isMovilViewport={isMovilViewport}
-          onChange={onChange}
-        /> 
-        {/* {
-          state[stageData?.key] &&
-            <Disclaimer className="fullDisclaimer pending warning">
-              <h3 className='fuente'>¡Atención!</h3>
-              <p className='fuente disclaimer--message_p disclaimer__open'>La cuenta de retiro debe estar vinculada a tu identidad, los retiros procesados hacia cuentas de terceros no podrán ser acréditados a la cuenta de destino.</p>
-            </Disclaimer>
-        } */}
+        {
+          newAccount ?
+          <NewAccountComponent
+            itemList={state?.withdrawAccount}
+            actions={props?.actions}
+            stageManager={stageManager}
+            withdrawProvider={withdrawProvider}
+            currentWallet={currentWallet}
+            withdrawAccount={state?.withdrawAccount}
+            isMobile={isMobile}
+          />
+          :
+          <SelectListComponent
+            stageData={stageData}
+            state={state}
+            selectList={selectList}
+            isMovilViewport={isMobile}
+            onChange={onChange}
+          /> 
+        }
       </StageContainer>
     )
   } 
 
-export default withCoinsendaServices(TargetPersonStage)
+export default TargetPersonStage
+
+// Buttom
+const NewAccountComponent = (props) => {
+
+    const { itemList, actions, isMobile } = props
+
+    const showModalToCreateWAccount = async() => {
+      const element = await import(`./newInternalAccount`)
+      const CreateInternalAccount = element.default
+      actions.renderModal(() => <CreateInternalAccount item={itemList} {...props}/>);
+    }
+
+    return(
+      <SelectListContainer>
+        <ItemListComponent 
+          itemList={itemList}
+          lastIndex
+          isSelectedItem
+          AuxComponent={[
+            () => <Buttom
+              size='medium'
+              variant='outlined'
+              className="hoverFilled fit align-center justify-end"
+              color={"primary"}
+              onClick={showModalToCreateWAccount}
+            >
+              {!isMobile && 'Guardar'}
+              <IoPersonAddOutline size={18} color="primary" />
+            </Buttom>
+          ]}
+        />
+      </SelectListContainer>
+    )
+}

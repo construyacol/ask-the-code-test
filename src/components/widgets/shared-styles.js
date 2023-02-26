@@ -200,7 +200,8 @@ export const UploadMiddle = styled.div`
 
 
 
-export const IconClose = ({ theme, opacity, size, id, ...props }) => {
+export const IconClose = (props) => {
+  const { theme, opacity, size, id } = props
   // @params
   // theme => dark/ligth
 
@@ -209,9 +210,9 @@ export const IconClose = ({ theme, opacity, size, id, ...props }) => {
       id={id || "IconCloseModal"}
       color={`${theme === "dark" && "dark"}`}
       opacity={opacity}
-      size={size + 10}
       data-close_modal
       {...props}
+      size={size + 10}
     >
       <AiOutlineClose
         color={`${theme === "dark" ? "white" : "gray"}`}

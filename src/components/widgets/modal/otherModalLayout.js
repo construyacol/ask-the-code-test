@@ -3,6 +3,13 @@ import useKeyActionAsClick from "../../../hooks/useKeyActionAsClick";
 import "./modal.css";
 import { CAPACITOR_PLATFORM } from 'const/const'
 
+  // types on_click event
+  //const on_click = (e:React.MouseEvent<HTMLDivElement, MouseEvent>):void => {
+  //     if (!e || (e.target instanceof HTMLDivElement && e?.target?.dataset?.close_modal)){
+  //     //   actions.renderModal(null);
+  //     }
+  // };
+
 const OtherModalLayout = (props) => {
   const {
     children,
@@ -21,8 +28,7 @@ const OtherModalLayout = (props) => {
       false,
       onkeydown ? "onkeydown" : "onkeyup",
       true
-    );
-
+  );
 
   return (
     <section className={`${className || ''} Modal aparecer ${CAPACITOR_PLATFORM === 'ios' && 'ios-notch-fix'}`}>
