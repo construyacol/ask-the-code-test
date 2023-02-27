@@ -264,7 +264,7 @@ export const PrefixContainer = styled.div`
 export const InputContainer = styled.form`
   margin:15px 0;
   width: 100%;
-  /* height: 63px; */
+  height: 63px;
   border: 1px solid ${props => props.inputStatus === 'success' ? "#00d2ff" : 'rgba(80,102,122,.38)'};
   border-radius: 6px;
   display: grid;
@@ -272,12 +272,7 @@ export const InputContainer = styled.form`
   background: white;
   padding: 1px;
   transition:.01s;
-
-    height: 45px;
-    max-width: 700px;
-
   
-
   &._progress_bar{
     grid-template-rows:1fr auto;
   }

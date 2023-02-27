@@ -16,8 +16,13 @@ import { selectListValidator } from 'components/forms/widgets/kyc/validations'
   // TODO: Falta calcular los precios de efecty con reduce method
   export const getCost = ({ withdrawProvider, withdrawAccount }) => {
     const { provider:{ costs }, currency } = withdrawProvider
-    const { bank_name } = withdrawAccount
-    let costKey = [bank_name?.value].includes(withdrawProvider?.name) ? 'same_bank' : 'pp';
+    const { bank_name, provider_type } = withdrawAccount
+    let costKey = ''
+    if(provider_type === 'internal_network'){
+      costKey = 'none'
+    }else{
+      costKey = [bank_name?.value].includes(withdrawProvider?.name) ? 'same_bank' : 'pp';
+    }
     return costs[costKey]?.fixed && formatToCurrency(costs[costKey]?.fixed.toString().replace(/,/g, ""), currency);
   }
 

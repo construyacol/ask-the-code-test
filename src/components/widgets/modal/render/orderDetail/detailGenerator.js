@@ -49,8 +49,22 @@ export const useDetailParseData = (order, detailType) => {
               ]
             ];
 
+          }else if(depositProvider?.depositAccount?.provider_type === 'internal_network'){
+            depositProviderInfo = [
+              [
+                "Tipo de depósito:",
+                `Transferencia interna`,
+              ],
+              [
+                `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
+                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+              ],
+              [
+                `Costo del depósito`,
+                `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
+              ]
+            ];
           }else{
-
             depositProviderInfo = [
               [
                 "Entidad del depósito:",
@@ -58,7 +72,7 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `${depositProvider.depositAccount?.account?.type?.ui_name}`,
-                `${depositProvider.depositAccount?.account?.type.type}`,
+                `${depositProvider.depositAccount?.account?.type?.type}`,
               ],
               [
                 `${depositProvider.depositAccount.account.account_id.ui_name}`,
@@ -179,7 +193,6 @@ export const useDetailParseData = (order, detailType) => {
   }
 
   const formatDepositAccount = async(data) => {
-    console.log('formatDepositAccount', data)
   let parsedOrder = [
     [`${data?.account?.bussines_name?.ui_name}`, `${data?.account?.bussines_name?.bussines_name}`],
     [`${data?.account?.nit?.ui_name}`, `${data?.account?.nit?.nit}`],
@@ -198,7 +211,6 @@ export const useDetailParseData = (order, detailType) => {
   useEffect(() => {
     const init = async() => {
         if(detailType && order){
-          // console.log('formatDepositOrder', detailType, order)
           ACTIONS[detailType] && setData(await ACTIONS[detailType](order))
         }
     }
@@ -291,7 +303,6 @@ const DetailGenerator = ({ order, title, TitleSuffix, theme }) => {
 
   const pendingDeposit = orderType === 'deposits' && ["pending"].includes(order.state)
 
-  // console.log('DetailTemplateComponent', orders)
 
   return (
     <Container className={`${title ? "withTitle" : ""} ${pendingDeposit ? 'withPendingDeposit' : ''} ${theme}`}>

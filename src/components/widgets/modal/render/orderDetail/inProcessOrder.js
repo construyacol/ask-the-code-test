@@ -129,6 +129,7 @@ const FiatOrder = ({ order }) => {
   const [ , , toBigNumber ] = useFormatCurrency()
   const { osDevice } = useSelector((state) => state?.ui);
   
+  console.log('|||||||||||||||  FiatOrder', order)
 
   // const [toastMessage] = useToastMessage();
 
@@ -257,7 +258,7 @@ const FiatOrder = ({ order }) => {
               setImgSrc={setImgSrc}
             />
           </BottomSectionContainer>)
-          :
+          : 
           <BottomSection colorState={"var(--paragraph_color)"} currentOrder={order} tx_path={tx_path} />
         }
 

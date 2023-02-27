@@ -33,6 +33,10 @@ export const textBaseStyles = css<typoGraphyProps>`
         font-weight: bold;
     }
 
+    &.capitalize{
+        text-transform: capitalize !important;
+    }
+
     ${props => props.skeleton && skeletonStyles}
 `
 

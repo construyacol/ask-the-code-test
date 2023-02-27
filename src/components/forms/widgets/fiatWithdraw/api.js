@@ -67,6 +67,10 @@ const INTERNAL_NETWORK = {
       ],
       // label:"Nacionalidad del documento:",
       placeholder:"satoshi_nakamoto@bitcoin.com",
+      breadCumbConfig:{
+        childLabel:"A otra persona",
+        active:true,
+      }
     }
   },
   ...BANK_WITHDRAW

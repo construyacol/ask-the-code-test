@@ -113,6 +113,12 @@ export default InputComponent
 export const InputWrapper = styled.div`
   display:grid;
   grid-template-rows:auto 40px;
+
+  &.input__fit .inputContainer__{
+    height: 45px;
+    max-width: 700px;
+  }
+
   &.withLabel{
     grid-template-rows:auto auto;
     row-gap: 10px;

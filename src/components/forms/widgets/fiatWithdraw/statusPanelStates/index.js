@@ -38,13 +38,6 @@ const StatusPanelStates = (props) => {
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:InternalOnBoarding,
   }
 
-  // useEffect(() => {
-  //   getWithdrawAccountComponent()
-  // }, [state])
-
-  // console.log('StatusPanelStates', state[stageData?.key]?.value === 'FIAT_WITHDRAW_TYPES.types.internal', stageData?.key, state[stageData?.key]?.value)
-  // console.log()
-
     return(
       <StatusPanelComponent>
         <RenderSwitchComponent 

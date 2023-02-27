@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useStage from '../../hooks/useStage'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
@@ -19,6 +19,7 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 import StatusPanelStates from './statusPanelStates'
 import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selectors'
 import { selectWithdrawProvidersByName } from 'selectors'
+import useBreadCumb from 'hooks/useBreadCumb'
 
 // import { 
 //   LabelContainer,
@@ -34,6 +35,10 @@ const TargetPersonStage = loadable(() => import("./internals/targetPersonStage")
 // setCreateAccount
 
 
+
+
+
+
 const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
 
   const { isMovilViewport } = useViewport();
@@ -44,14 +49,14 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const wProvidersByProvType = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
   const [ withdrawProvidersByName ] = useSelector((state) => selectWithdrawProvidersByName(state));
 
-
-
   const actions = useActions()
   const walletInfo = useWalletInfo()
   const { state } = handleState
   const { currentWallet } = walletInfo
   const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
   const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
+
+
 
   
   const stageManager = useStage(
@@ -60,15 +65,33 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
     dataForm.stages
   )
 
-const {
-  nextStage,
-  stageData, 
-  currentStage,
-  stageStatus,
-  setStageStatus,
-  stageController,
-  lastStage
-} = stageManager
+  const {
+    nextStage,
+    stageData, 
+    currentStage,
+    stageStatus,
+    setStageStatus,
+    stageController,
+    lastStage,
+    goToStage
+  } = stageManager
+
+
+  const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
+    parentLabel:'Enviar',
+    childLabel:stageData?.settings?.breadCumbConfig?.childLabel,
+    titleSelector:".accountDetailTitle h1>span",
+    ctaBackSelector:"#withdraw-menu-button",
+    unMountCondition:currentStage === 0,
+    callback:() => goToStage(0)
+  })
+
+  useEffect(() => {
+    if(stageData?.settings?.breadCumbConfig?.active){
+      !isActiveBreadCumb && insertBreadCumb()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stageData])
 
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
@@ -91,10 +114,6 @@ const {
     actions.success_sound();
     actions.renderModal(() => <WithdrawCreatedSuccess withdrawData={withdrawData} />);
   }
-
-
-
-
 
   const createFiatWithdraw = async({ twoFaToken }) => {
     setLoading(true)
@@ -140,7 +159,7 @@ const {
       />
     </ButtonContainers>
   )
-  console.log('state', state)
+
   return(
     <>
         <RenderSwitchComponent
@@ -167,6 +186,7 @@ const {
           handleState={handleState}
           stageManager={stageManager}
           withdrawAccounts={withdrawAccounts}
+          withdrawProvider={withdrawProvider}
         >
           <>
             {
@@ -186,23 +206,3 @@ const {
 }
 
 export default FiatWithdraw
-
-
-
-
-
-
-
-
-// const ProofComponent = ({ children, nextStage }) => {
-//   return(
-//     <StageContainer>
-//       {children}
-//     </StageContainer>
-//   )
-// }
-
-
-
-
-

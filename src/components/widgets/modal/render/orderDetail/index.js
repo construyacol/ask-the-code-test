@@ -94,6 +94,9 @@ const orderTypeUiName = (orderType) => {
 }
 
 export const OrderDetail = ({ currentOrder, tx_path }) => {
+
+  console.log('|||||||||||||||  currentOrder', currentOrder)
+
   // const actions = useActions();
   // const {
     // tx_path,

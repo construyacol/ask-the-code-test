@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 // import useKeyActionAsClick from "../../../../hooks/useKeyActionAsClick";
 import ControlButton from "../../../widgets/buttons/controlButton";
 import IconSwitch from "../../../widgets/icons/iconSwitch";
@@ -9,57 +9,32 @@ import { createSelector } from "reselect";
 // import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 import NewFiatWithdrawAccountComponent from '../../../forms/widgets/newWithdrawAccount/init'
 import FiatWithdraw from '../../../forms/widgets/fiatWithdraw/init'
-import { history } from '../../../../const/const'
-import useViewport from '../../../../hooks/useWindowSize'
+// import useViewport from '../../../../hooks/useWindowSize'
 // import { StageOptionSkeleton } from '../../../forms/widgets/stageManager'
 import { SelectListSkeleton } from 'components/forms/widgets/selectListComponent'
 import { checkIfFiat } from 'core/config/currencies';
 import { MENU_LABELS } from 'api/ui/menuItems' 
+import useBreadCumb from 'hooks/useBreadCumb'
 
- 
 const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
 
-  const { isMovilViewport } = useViewport();
-  // let targetEl = isMovilViewport ? "._stageIndicator" : ".accountDetailTitle h1>span"
-  const titleSectionEl = useRef(document.querySelector(`.accountDetailTitle h1>span`))
-  const withdrawButton = useRef(document.querySelector('#withdraw-menu-button'))
-  // const mobileTitleRef = useRef()
-  const uiName = "Creando cuenta de retiro"
+  const backToWithdraw = () => {
+    setCreateAccount(false)
+  }
+
+  const { insertBreadCumb } = useBreadCumb({
+    parentLabel:MENU_LABELS?.withdraw,
+    childLabel:"Creando cuenta de retiro",
+    titleSelector:".accountDetailTitle h1>span",
+    ctaBackSelector:"#withdraw-menu-button",
+    callback:backToWithdraw
+  })
 
   useEffect(() => {
-    initConfig()
-    withdrawButton?.current?.addEventListener("click", backToWithdraw);
-    return () => unMountAction()
-  // eslint-disable-next-line react-hooks/exhaustive-deps 
-  }, []) 
+    insertBreadCumb()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
  
-  const unMountAction = () => {
-    titleSectionEl.current.classList.remove("_breadCrumbParent");   
-    document.querySelector("._breadCrumbChild")?.remove()
-    titleSectionEl.current.onclick = () => null;
-    withdrawButton?.current?.removeEventListener("click", backToWithdraw);
-    history.push(`${history.location.pathname}`)
-  } 
-
-  const backToWithdraw = () => {
-    titleSectionEl.current.innerHTML = MENU_LABELS?.withdraw;
-    setCreateAccount(false)
-    unMountAction() 
-  }
-
-  const initConfig = () => {
-    if(isMovilViewport)return;
-    titleSectionEl.current.classList.add("_breadCrumbParent");   
-    titleSectionEl.current.innerHTML = `${MENU_LABELS?.withdraw}   >      `;
-    titleSectionEl.current.onclick = backToWithdraw
-    const newSpan = document.createElement("span");
-    newSpan.classList.add("_breadCrumbChild");   
-    const newContent = document.createTextNode(uiName);
-    newSpan.appendChild(newContent);
-    let targetEl = ".accountDetailTitle h1"
-    document.querySelector(targetEl).append(newSpan)
-  }
-
   return(
     <NewFiatWithdrawAccountComponent
       mainTitle="Creando cuenta de retiro"
@@ -67,6 +42,7 @@ const CreateNewWithdrawAccount = ({ setCreateAccount }) => {
     />
   )
 }
+
  
 
  

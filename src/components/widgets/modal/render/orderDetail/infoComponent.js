@@ -10,12 +10,12 @@ import styled from 'styled-components'
 import { checkIfFiat } from 'core/config/currencies';
 
 
-const ReferralInfo = () => {
+const InfoCard = ({ icon }) => {
     const IconSwitch = loadable(() => import("../../../icons/iconSwitch"));
     return(
       <IconContainer>
         <Icon>
-          <IconSwitch color={MAIN_COLOR}  size={40} icon="referral" />
+          <IconSwitch color={MAIN_COLOR}  size={40} icon={icon}/>
         </Icon>
       </IconContainer>
     )
@@ -104,8 +104,12 @@ const ReferralInfo = () => {
     "deposits":{
       "is_referral":{
           "title":"Depósito por referido",
-          "component":ReferralInfo
+        "component":() => <InfoCard icon="referral" />
       },
+      "is_internal":{
+        "title":"Transferencia interna",
+        "component":() => <InfoCard icon="coinsenda" />
+     },
       "crypto":{
         "title":"TX ID Información"
       },
@@ -135,12 +139,12 @@ const ReferralInfo = () => {
    
   
   const GetInfoComponentToRender = (order) => {
-    
-    console.log('GetInfoComponentToRender', order)
-    debugger
     const { tx_path, info } = order
     const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
-    const targetKey = info?.is_referral ? 'is_referral' : (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : currencyType
+    const targetKey = info?.is_referral ? 'is_referral' : 
+    info?.is_internal ? 'is_internal' : 
+    (checkIfFiat(order?.currency) && tx_path === 'deposits') ? `fiat.type.${order?.paymentProof?.proof_of_payment?.type}` : 
+    currencyType
     
     useEffect(()=> {
        const title = tx_path === 'swaps' ? '' : get(toRender, `${tx_path}.${targetKey}`)?.title || 'Comprobante de pago'

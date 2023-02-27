@@ -50,7 +50,8 @@ function CreateInternalAccount(props:any){
                     />
                     <P className="no-margin" color="primary">{item?.identifier}</P>
                 </IdentifierCont>
-                <InputComponent 
+                <InputComponent  
+                    className="input__fit"
                     onChange={onChange} 
                     inputStatus={inputStatus === 'success' ? inputStatus : null}
                     label="Asignale un nombre"
