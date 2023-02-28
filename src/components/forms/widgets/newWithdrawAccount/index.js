@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useStage from '../../hooks/useStage'
 import { ButtonContainers, StageContainer } from '../sharedStyles'
 import loadable from "@loadable/component";
@@ -8,25 +8,20 @@ import StatusPanelComponent from '../statusPanel'
 import { createInfoNeededStages } from './api'
 import BankNameListComponent from './bankNameStage'
 import useViewport from '../../../../hooks/useWindowSize'
-// import SelectListComponent from '../selectListComponent'
 import { ApiPostCreateWAccount } from './api'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { KEY_TYPE } from './api'
 import { UI_ERRORS } from '../../../../const/uiErrors'
 import useToastMessage from "../../../../hooks/useToastMessage";
-// import WAccountCreatedSuccess from './success'
 import { useActions } from '../../../../hooks/useActions'
 import StatusPanelContent from './statusPanel'
-// import { SelectListSkeleton } from '../selectListComponent'
 import { StageSkeleton } from '../stageManager'
-
-
-
+import useBreadCumb from 'hooks/useBreadCumb'
+import { MENU_LABELS } from 'api/ui/menuItems' 
 
 const IdentityComponent = loadable(() => import("./identityStage"), {fallback:<StageSkeleton/>});
 const InfoAccountComponent = loadable(() => import("./infoAccountStage"), {fallback:<StageSkeleton/>});
-
 
 const selectWithdrawProvider = createSelector(
   (state) => state.modelData.withdrawProviders,
@@ -71,6 +66,20 @@ const {
   lastStage
 } = stageManager
 
+const backToWithdraw = () =>  props?.setView('defaultWithdraw')
+const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
+  parentLabel:MENU_LABELS?.withdraw,
+  childLabel:"Creando cuenta de retiro",
+  titleSelector:".accountDetailTitle h1>span",
+  ctaBackSelector:"#withdraw-menu-button",
+  callback:backToWithdraw
+})
+
+useEffect(() => {
+    !isActiveBreadCumb && insertBreadCumb()
+// eslint-disable-next-line react-hooks/exhaustive-deps
+})
+
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}
     setStageStatus(null)
@@ -105,10 +114,8 @@ const {
     return toastMessage(error?.message || UI_ERRORS[error?.code],  "error");
     }
     await renderSuccessComponent(data)
-    return props.backToWithdraw()
+    return backToWithdraw()
   }
-
-
 
   if(finalStage){
     return <p>finalStage</p>
@@ -144,6 +151,7 @@ const {
         >
           <StageManagerComponent 
             stageManager={stageManager} 
+            callback={backToWithdraw}
             closeStage 
             {...props}
           />

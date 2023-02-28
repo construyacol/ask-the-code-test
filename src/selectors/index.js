@@ -200,7 +200,7 @@ export const selectFiatWithdrawProviders = createSelector(
     let res = {}
     let providers = serveModelsByCustomProps(withdrawProviders, keyProp)
     for (const provKey in providers) {
-      if(checkIfFiat(providers[provKey]?.currency) && !['ethereum_testnet', 'ethereum']?.includes(providers[provKey]?.provider_type)){
+      if(checkIfFiat(providers[provKey]?.currency)){
         res = {
           ...res,
           [provKey]:providers[provKey]

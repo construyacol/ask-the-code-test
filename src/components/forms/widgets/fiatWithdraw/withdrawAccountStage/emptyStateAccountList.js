@@ -30,6 +30,7 @@ export const WithdrawServiceList = ({
   ...props
 }) => {
 
+
   return(
     <>
       {uiName && <p className="fuente _pLabel _inputLabelP">{uiName}</p>}
@@ -51,12 +52,11 @@ export const WithdrawServiceList = ({
                 }}
                 // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                 firstIndex={index === 0}
-                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 1) === index}
+                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 3) === index}
                 isSelectedItem={isSelected}
-                handleAction={_value === 'newBankAccount' ? () => props.setCreateAccount(true) : (item) => handleAction({value:item?.value})} 
-                AuxComponent={[
-                    AuxComponent ? () => <AuxComponent/> : () => null
-                ]}
+                // handleAction={[ 'newBankAccount', 'withdrawCrypto' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
+                handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
+                AuxComponent={[AuxComponent]}
               />
             })
         }
@@ -73,7 +73,13 @@ const Sub = styled(SPAN)`
 
 const CRYPTO_ACCOUNT_LABEL ={ 
   uiName:() => <P>A billetera DCOP <Sub className={"number"}> (ERC20)</Sub></P>,
-  AuxComponent:TagNewComponent
+  // AuxComponent:() => <div style={{
+  //   display:"flex",
+  //   justifyContent:"flex-end",
+  //   columnGap: "15px"
+  //   }}><TagNewComponent/> <BiRightArrowAlt className="_birArrow" size={37} /></div> ,
+  AuxComponent:TagNewComponent,
+  value:'withdrawCrypto'
 }
 
 export const INTERNAL_NETWORK = {
@@ -94,7 +100,13 @@ export const BANK = {
 
 const WITHDRAW_ACCOUNT_LABELS = {
   ...INTERNAL_NETWORK,
+  ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+  ethereum:CRYPTO_ACCOUNT_LABEL,
   ...BANK,
+}
+
+export const WITHDRAW_ACCOUNT_LIST = {
+  ...INTERNAL_NETWORK,
   ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
   ethereum:CRYPTO_ACCOUNT_LABEL,
 }

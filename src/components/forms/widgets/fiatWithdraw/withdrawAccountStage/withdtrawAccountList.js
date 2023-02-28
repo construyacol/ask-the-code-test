@@ -7,8 +7,10 @@ import { AiOutlineClockCircle, AiOutlineCheckCircle, AiOutlineDelete } from 'rea
 import { FcCancel } from 'react-icons/fc';
 import styled from 'styled-components';
 import { WiStars } from 'react-icons/wi';
-import { WithdrawServiceList, INTERNAL_NETWORK } from './emptyStateAccountList'
-import { FIAT_WITHDRAW_TYPES } from '../api'
+import { WithdrawServiceList, 
+  // INTERNAL_NETWORK, 
+  WITHDRAW_ACCOUNT_LIST
+} from './emptyStateAccountList'
 
 
 
@@ -49,12 +51,10 @@ const WithdtrawAccountList = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
   
-    
-  
       return(
         <>
           <WithdrawServiceList
-            withdrawServiceList={INTERNAL_NETWORK}
+            withdrawServiceList={WITHDRAW_ACCOUNT_LIST}
             handleAction={selectWithdrawAccount}
             uiName="Envía de forma instantanea y gratuita"
             {...props}
@@ -68,7 +68,6 @@ const WithdtrawAccountList = ({
                 const isSameBankName = [withdrawAccount?.bank_name?.value].includes(state[stageData?.key]?.bank_name?.value)
                 const isSelected = isSameBankName && isSameAccountNumber;
                 const isAvalaibleSameProvider = withdrawProviders[withdrawAccount?.bank_name?.value]
-                if(withdrawAccount?.provider_type === FIAT_WITHDRAW_TYPES.TYPES.INTERNAL) return null
                 return <ItemListComponent 
                   key={index} 
                   className={`auxNumber __withdrawAccount ${withdrawAccount?.state} account_${withdrawAccount?.id}`}
@@ -94,7 +93,7 @@ const WithdtrawAccountList = ({
             <ItemListComponent 
               className="createButton"
               lastIndex
-              handleAction={() => props.setCreateAccount(true)}
+              handleAction={() => props.setView("newBankAccount")}
               itemList={{
                 value:"createId",
                 icon:"add",

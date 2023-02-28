@@ -20,7 +20,7 @@ import HeaderAccount from '../widgets/headerAccount'
 import ActivityFilters from "../widgets/activityList/filters";
 // import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
-import { parseQueryString } from '../../utils'
+import { parseQueryString } from '../../utils' 
 // import 'components/wallets/views/wallet_views.css'
 
 import { isEmpty } from 'lodash'

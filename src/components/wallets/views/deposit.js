@@ -7,6 +7,7 @@ import { checkIfFiat } from 'core/config/currencies';
 const DepositView = () => {
   const [, { current_wallet }] = useCoinsendaServices();
 
+  // return <CriptoSupervisor/>
   return (
     <>
       {!checkIfFiat(current_wallet?.currency) ? (

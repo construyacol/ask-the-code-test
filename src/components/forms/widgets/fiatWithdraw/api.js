@@ -17,12 +17,15 @@ export const DEFAULT_IDENTIFIER_TYPE = "email"
 export const FIAT_WITHDRAW_TYPES = {
   FORM:"fiatWithdraw",
   TYPES:{
-    INTERNAL:"internal_network"
+    INTERNAL:"internal_network",
+    ETHEREUM_TESTNET:'ethereum_testnet',
+    ETHEREUM:'ethereum',
   },
   STAGES:{
     WITHDRAW_ACCOUNT:"withdrawAccount",
     AMOUNT:"withdrawAmount",
-    TARGET_PERSON:"targetPerson"
+    TARGET_PERSON:"targetPerson",
+    CRYPTO:"withdrawCrypto"
   }
 }
 
@@ -69,11 +72,39 @@ const INTERNAL_NETWORK = {
       placeholder:"satoshi_nakamoto@bitcoin.com",
       breadCumbConfig:{
         childLabel:"A otra persona",
-        active:true,
+        active:true
       }
     }
   },
   ...BANK_WITHDRAW
+}
+
+
+const WITHDRAW_CRYPTO = {
+  [FIAT_WITHDRAW_TYPES?.STAGES?.CRYPTO]:{
+    uiName:"",
+    key:FIAT_WITHDRAW_TYPES?.STAGES?.CRYPTO,
+    uiType:"text",
+    "settings":{
+      defaultMessage:"",
+      // successPattern:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      // errors:[  
+          // { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+      // ],
+      // label:"Nacionalidad del documento:",
+      // placeholder:"satoshi_nakamoto@bitcoin.com",
+      breadCumbConfig:{
+        childLabel:"A una billetera DCOP",
+        active:true
+      },
+      config:{
+        hideStatusPanel:true
+      },
+      queryParams:{
+        form:'withdraw_crypto'
+      }
+    }
+  }
 }
 
 export const FIAT_WITHDRAW_COMPONENTS = {
@@ -93,7 +124,8 @@ export const ApiGetFiatWithdrawStages = async() => {
 
 const getNextStages= (targetStage) => {
   const nextStages = {
-    [FIAT_WITHDRAW_TYPES.TYPES.INTERNAL]:INTERNAL_NETWORK
+    [FIAT_WITHDRAW_TYPES.TYPES.INTERNAL]:INTERNAL_NETWORK,
+    [FIAT_WITHDRAW_TYPES.STAGES.CRYPTO]:WITHDRAW_CRYPTO
   } 
   return nextStages[targetStage] || BANK_WITHDRAW
 }
@@ -105,8 +137,10 @@ export const createNextStages = async({
   setDataForm,
   ...props
 }) => {
+
+
   if(!state[stageData?.key])return;
-  if(state[stageData?.key]?.value === "newBankAccount") return props?.setCreateAccount(true);
+  // if(state[stageData?.key]?.value === "newBankAccount") return props?.setCreateAccount(true);
   const apiStages = getNextStages(state[stageData?.key]?.value)
   let stages = {} 
   for(const stage of Object.keys(apiStages)) { 

@@ -88,6 +88,7 @@ const SelectListComponent = ({
     let UiName = itemList?.uiName
     let _auxUiName = itemList?.auxUiName || auxUiName
 
+
     return(
       <ItemProviderBankContainer 
         onClick={() => handleAction(itemList)}

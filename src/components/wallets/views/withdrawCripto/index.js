@@ -293,6 +293,7 @@ export const CriptoView = (props) => {
   
   return ( 
     <>
+      {props?.children}
       <AvailableWithdrawNetwork currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
       <CriptoWithdrawForm>  
         <WithdrawFormComponent

@@ -235,6 +235,21 @@ export const CURRENCIES = {
             DECIMAL_PLACES: 2,
         })
     },
+    dcop:{
+        prod:'dcop',
+        test:'dcop',
+        prodName:'DCOP',
+        testName:'DCOP',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            DECIMAL_PLACES: 2,
+        }),
+        prod_fee:'cop_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_UP,
+            DECIMAL_PLACES: 2,
+        })
+    },
     referred:{
         prod:'referred',
         prodName:'Referido',

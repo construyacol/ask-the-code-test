@@ -559,11 +559,22 @@ export const ButtonContainers = styled.div`
 `
 
 export const FormContainer = styled.div`
+
   width:100%;
   height:100%;
   display:grid;
   grid-template-columns:1fr minmax(auto, 350px);
   column-gap:20px;
+
+  &.fiatWithdrawContainer.withdraw_crypto{
+    grid-template-columns:1fr;
+    grid-template-rows: 0 33px 1fr;
+    .titleOverPos{
+      top: 195px !important;
+      transform: translateY(-70px);
+    }
+  }
+
   @media ${device.mobile}{
     grid-template-rows: 1fr auto;
     grid-template-columns:1fr;

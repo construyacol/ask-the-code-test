@@ -16,9 +16,10 @@ const WithdrawView = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  
+  // return <CriptoSupervisor />
   return (
     <>
-
       { !checkIfFiat(current_wallet.currency) ? (
         <CriptoSupervisor />
       ) : (
