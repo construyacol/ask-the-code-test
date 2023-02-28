@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import { createSelector } from "reselect";
 import { SelectListContainer, ItemListComponent } from '../selectListComponent'
@@ -6,11 +6,12 @@ import { StageContainer, OptionInputContainer } from '../sharedStyles'
 import useViewport from '../../../../hooks/useWindowSize'
 import { AiFillBank } from "react-icons/ai";
 import { isEmpty } from 'lodash'
-import { P } from 'core/components/atoms';
 import withCoinsendaServices from 'components/withCoinsendaServices'
 import { serveModelsByCustomProps } from 'selectors'
 import { checkIfFiat } from 'core/config/currencies';
 import { TagNewComponent } from 'core/components/molecules'
+import styled from 'styled-components'
+import { P, SPAN } from 'core/components/atoms';
 
 
 
@@ -31,7 +32,8 @@ function ProviderComponent({
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
     // const actions = useActions() 
-
+    const [ depositServiceList, setDepositServiceList ] = useState({})
+  
     const selectProvider = (provider) => {
       console.log({[stageData?.key]: provider })
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
@@ -43,19 +45,33 @@ function ProviderComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    
 
     useEffect(() => {
       (async() => {
         if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
+        let servicesList = {}
         for (const depositAccountName in depositAccounts) {
-          if(!depositProvidersByName[depositAccountName]){
-            await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          
+          // DEPOSIT_ACCOUNT_LABELS
+          let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
+
+          servicesList = {
+            ...servicesList,
+            [depositAccountName]:{
+              ...depositAccounts[depositAccountName],
+              ...complementaryModel
+            }
           }
+          setDepositServiceList(servicesList)
         }
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccounts, depositProvidersByName])
+
+    console.log('depositServiceList', depositServiceList)
+
+
 
     return(
       <>
@@ -69,19 +85,21 @@ function ProviderComponent({
               <p className="fuente _pLabel _inputLabelP">{stageData?.uiName}</p>
               <SelectListContainer>
                 {
-                  depositAccounts && Object.keys(depositAccounts).map((key, index) => {
-                    const isSelected = [depositAccounts[key]?.value].includes(state[stageData?.key]?.value)
-                    if(!depositAccounts[key]?.visible) return null;
+                  depositServiceList && Object.keys(depositServiceList).map((key, index) => {
+                    const isSelected = [depositServiceList[key]?.value].includes(state[stageData?.key]?.value)
+                    if(!depositServiceList[key]?.visible) return null;
+                    const AuxComponent = depositServiceList[key]?.AuxComponent
+
                     return <ItemListComponent 
                       key={index} 
-                      className={`${depositAccounts[key]?.value}`}
-                      itemList={depositAccounts[key]}
+                      className={`${depositServiceList[key]?.value}`}
+                      itemList={depositServiceList[key]}
                       firstIndex={index === 0}
-                      lastIndex={(Object.keys(depositAccounts)?.length - 1) === index}
+                      lastIndex={(Object.keys(depositServiceList)?.length - 1) === index}
                       isSelectedItem={isSelected}
                       isMovilViewport={isMovilViewport}
                       handleAction={selectProvider}
-                      AuxComponent={[ depositAccounts[key]?.provider_type === 'pse' ? () => <TagNewComponent/> : () => null]}
+                      AuxComponent={[AuxComponent]}
                     />
                   })
                 }
@@ -132,3 +150,31 @@ function ProviderComponent({
       return [ _depositAccounts ];
     }
   );
+
+
+  const Sub = styled(SPAN)`
+  opacity: .5;
+  font-size: 14px;
+  font-weight: 200;
+`
+
+  const CRYPTO_ACCOUNT_LABEL ={ 
+    uiName:() => <P>Billetera DCOP <Sub className={"number"}> (ERC20)</Sub></P>,
+    AuxComponent:TagNewComponent,
+    icon:'eth'
+  }
+
+
+  const PSE_ACCOUNT ={ 
+    uiName:"PSE",
+    AuxComponent:TagNewComponent,
+    // icon:'eth'
+  }
+
+
+
+  const DEPOSIT_ACCOUNT_LABELS = {
+    pse:PSE_ACCOUNT,
+    ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+    ethereum:CRYPTO_ACCOUNT_LABEL,
+  }

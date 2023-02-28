@@ -87,7 +87,8 @@ export const AccountDetail = (props) => {
   
 
   useEffect(() => {
-    if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+    // if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+      if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
       funcDebounces({
         keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
         storageType:"sessionStorage",

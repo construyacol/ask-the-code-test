@@ -88,6 +88,8 @@ const SelectListComponent = ({
     let UiName = itemList?.uiName
     let _auxUiName = itemList?.auxUiName || auxUiName
 
+    // console.log('UiName', UiName, itemList)
+
 
     return(
       <ItemProviderBankContainer 

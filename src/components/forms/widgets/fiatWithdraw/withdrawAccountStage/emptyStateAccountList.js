@@ -48,7 +48,8 @@ export const WithdrawServiceList = ({
                 itemList={{
                   value:_value || provKey,
                   icon:withdrawServiceList[provKey]?.icon || provKey,
-                  uiName:withdrawServiceList[provKey]?.uiName
+                  uiName:withdrawServiceList[provKey]?.uiName,
+                  auxUiName:withdrawServiceList[provKey]?.auxUiName
                 }}
                 // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                 firstIndex={index === 0}
@@ -84,8 +85,9 @@ const CRYPTO_ACCOUNT_LABEL ={
 
 export const INTERNAL_NETWORK = {
   [FIAT_WITHDRAW_TYPES?.TYPES?.INTERNAL]:{
-    uiName:() => <P>A otra persona</P>,
-    AuxComponent:TagNewComponent
+    uiName:"A otra persona",
+    AuxComponent:TagNewComponent,
+    auxUiName:"De forma instantanea y gratuita"
   }
 }
 

@@ -56,7 +56,7 @@ const WithdtrawAccountList = ({
           <WithdrawServiceList
             withdrawServiceList={WITHDRAW_ACCOUNT_LIST}
             handleAction={selectWithdrawAccount}
-            uiName="Envía de forma instantanea y gratuita"
+            // uiName="Envía de forma instantanea y gratuita"
             {...props}
           />
           <p className="fuente _pLabel _inputLabelP">Envía DCOP a una cuenta bancaria personal</p>

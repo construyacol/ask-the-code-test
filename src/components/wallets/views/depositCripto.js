@@ -24,10 +24,8 @@ import { checkIfFiat } from 'core/config/currencies';
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")));
  
-const CriptoSupervisor = () => {
-
+const CriptoSupervisor = (props) => {
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
-
   return (
     <>
       {!deposit_providers || Object.keys(deposit_providers).length === 0 ? (
@@ -35,7 +33,7 @@ const CriptoSupervisor = () => {
       ) : current_wallet.dep_prov.length < 1 ? (
         <AddDepositProviderCripto />
       ) : (
-        <CriptoView/>
+        <CriptoView {...props}/>
       )}
     </>
   );
@@ -166,7 +164,7 @@ const AddDepositProviderCripto = () => {
   };
 
   return (
-    <DepositForm className="DepositView">
+    <DepositForm className="depositView">
       <div className="contIcontSwitch">
         <IconSwitch {...atributos} />
       </div>
@@ -191,7 +189,7 @@ const AddDepositProviderCripto = () => {
 
 // let INTERVAL;
 
-const CriptoView = () => {
+const CriptoView = (props) => {
   const [
     coinsendaServices,
     {
@@ -253,8 +251,9 @@ const CriptoView = () => {
 
   return (  
     <> 
+    {props?.children}
     <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
-    <DepositForm>
+    <DepositForm className="depositForm">
         { 
         current_wallet.currency.includes("eth") &&
           <EtherDisclaimer className="fuente">

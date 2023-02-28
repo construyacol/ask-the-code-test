@@ -94,7 +94,7 @@ const WITHDRAW_CRYPTO = {
       // label:"Nacionalidad del documento:",
       // placeholder:"satoshi_nakamoto@bitcoin.com",
       breadCumbConfig:{
-        childLabel:"A una billetera DCOP",
+        childLabel:"A billetera DCOP",
         active:true
       },
       config:{

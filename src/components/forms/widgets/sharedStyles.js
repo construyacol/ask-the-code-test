@@ -566,7 +566,13 @@ export const FormContainer = styled.div`
   grid-template-columns:1fr minmax(auto, 350px);
   column-gap:20px;
 
-  &.fiatWithdrawContainer.withdraw_crypto{
+  .depositForm{
+    justify-self: center;
+    align-self: center;
+  }
+
+  &.fiatWithdrawContainer.withdraw_crypto,
+  &.fiatDepositContainer.deposit_crypto{
     grid-template-columns:1fr;
     grid-template-rows: 0 33px 1fr;
     .titleOverPos{

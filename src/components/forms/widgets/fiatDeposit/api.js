@@ -21,7 +21,8 @@ export const FIAT_DEPOSIT_TYPES = {
     BANK_NAME:"bank_name",
     AMOUNT:"depositAmount", 
     PROVIDER:"depositAccount",
-    PERSON_TYPE:"person_type"
+    PERSON_TYPE:"person_type",
+    CRYPTO:"depositCripto"
   }
 }
 
@@ -53,6 +54,7 @@ const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
+
 const BANK_DEFAULT_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
     ui_type:"select"
@@ -75,10 +77,7 @@ const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
 }
 
-const DEPOSIT_TYPE_STAGES = {
-  pse:PSE_STAGES,
-  bank:BANK_STAGES
-}
+
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
@@ -91,18 +90,56 @@ const STAGES = {
   }  
 } 
 
-const despositAccountInfoNeeded = (depositAccount) => {
-  const infoNeeded = ungapStructuredClone(depositAccount?.info_needed)
+const CRYPTO_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
+    // uiName:"",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
+    uiType:"text",
+    "settings":{
+      defaultMessage:"",
+      breadCumbConfig:{
+        childLabel:"A billetera DCOP",
+        active:true
+      },
+      config:{
+        hideStatusPanel:true
+      },
+      queryParams:{
+        form:'deposit_crypto'
+      }
+    }
+  }
+}
+
+
+const DEPOSIT_TYPE_STAGES = {
+  pse:PSE_STAGES,
+  bank:BANK_STAGES,
+  ethereum_testnet:CRYPTO_STAGES,
+  ethereum:CRYPTO_STAGES
+}
+
+const CRYPTO_API_STAGE = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
+    ui_type:"text"
+  }
+}
+
+const depositApiStages = (_depositAccount) => {  
+  const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
   const providerTypes = {
     pse:{
-      ...infoNeeded,
+      ...depositAccount,
       [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:{
         ui_type:"text"
       }
     },
+    ethereum_testnet:CRYPTO_API_STAGE,
+    ethereum:CRYPTO_API_STAGE,
     bank:BANK_DEFAULT_STAGES
   }
-  return providerTypes[depositAccount.provider_type] || BANK_DEFAULT_STAGES
+
+  return providerTypes[_depositAccount?.provider_type] || BANK_DEFAULT_STAGES
 }
 
 export const createNextStages = async({ 
@@ -113,7 +150,7 @@ export const createNextStages = async({
  
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
-  const apiStages = despositAccountInfoNeeded(state[stageData?.key])
+  const apiStages = depositApiStages(state[stageData?.key])
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 
     stages = {
@@ -122,6 +159,7 @@ export const createNextStages = async({
     }
   } 
   stages = await recursiveAddList(stages, apiStages)
+
   setDataForm(prevState => {
     return { 
       ...prevState,

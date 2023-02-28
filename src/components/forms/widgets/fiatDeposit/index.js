@@ -19,6 +19,7 @@ import { formatToCurrency } from '../../../../utils/convert_currency'
 import { ApiPostCreateBankDeposit, ApiPostCreatePseDeposit, selectProviderData, createNextStages, ApiGetOnFiatDepositStages } from './api'
 import RenderSwitchComponent from 'components/renderSwitchComponent'
 import { selectDepositProvsByNetwork } from 'selectors'
+import useBreadCumb from 'hooks/useBreadCumb'
 // import DepositCostComponent from './depositCostStage'
 // import PersonTypeComponent from './personType'
 // import BankNameListComponent from './bankName'
@@ -29,9 +30,10 @@ const DepositCostComponent = loadable(() => import("./depositCostStage"), {fallb
 const PersonTypeComponent = loadable(() => import("./personType"), {fallback:<StageSkeleton/>});
 const BankNameListComponent = loadable(() => import("./bankName"), {fallback:<StageSkeleton/>});
 const AmountComponent = loadable(() => import("./depositAmountStage"), {fallback:<StageSkeleton/>});
+const CriptoSupervisor = loadable(() => import("components/wallets/views/depositCripto"), {fallback:<StageSkeleton/>});
+
 
 const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
-
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
@@ -58,8 +60,26 @@ const {
   stageStatus,
   setStageStatus,
   stageController,
-  lastStage
+  lastStage,
+  goToStage
 } = stageManager
+
+
+const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
+  parentLabel:'Depositar',
+  childLabel:stageData?.settings?.breadCumbConfig?.childLabel,
+  titleSelector:".accountDetailTitle h1>span",
+  ctaBackSelector:"#withdraw-menu-button",
+  unMountCondition:currentStage === 0,
+  callback:() => goToStage(0)
+}) 
+
+useEffect(() => {
+  if(stageData?.settings?.breadCumbConfig?.active){
+    !isActiveBreadCumb && insertBreadCumb()
+  }
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [stageData])
 
  
   const nextStep = async() => {
@@ -114,16 +134,16 @@ const {
       />
     </ButtonContainers>
   )
-
+ 
   const STAGE_COMPONENTS = {
     [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:DepositCostComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:ProviderComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:PersonTypeComponent,
-    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent
+    [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor
   }
-  
-  
+
   return(
     <>  
         <RenderSwitchComponent
@@ -139,29 +159,37 @@ const {
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
         </RenderSwitchComponent>
-        
-        <StatusPanelComponent>
-          <StatusHeaderContainer>
-            <TitleContainer>
-              <h1 className="fuente">Resumen del depósito</h1>
-            </TitleContainer>
-            <StatusContent
-              state={state}
-              stageManager={stageManager}
-              depositAccount={depositAccount}
-              dataForm={dataForm}
-            />
-          </StatusHeaderContainer>
-          {
-            !isMovilViewport &&
-                <ButtonComponent/>
-          }
-        </StatusPanelComponent>
+
 
         {
-          isMovilViewport &&
-            <ButtonComponent/>
+          !stageData?.settings?.config?.hideStatusPanel &&
+          <>
+            <StatusPanelComponent>
+              <StatusHeaderContainer>
+                <TitleContainer>
+                  <h1 className="fuente">Resumen del depósito</h1>
+                </TitleContainer>
+                <StatusContent
+                  state={state}
+                  stageManager={stageManager}
+                  depositAccount={depositAccount}
+                  dataForm={dataForm}
+                />
+              </StatusHeaderContainer>
+              {
+                !isMovilViewport &&
+                    <ButtonComponent/>
+              }
+            </StatusPanelComponent>
+
+            {
+              isMovilViewport &&
+                <ButtonComponent/>
+            }
+          </>
         }
+
+        
     </>                 
   )
 }
@@ -174,45 +202,47 @@ const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
 
 const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
 
-  const STAGE_COMPONENTS = {
-    pse:PseResumeComponent,
-    bank:BankResumeComponent
-  }
+  // const STAGE_COMPONENTS = {
+  //   pse:PseResumeComponent,
+  //   bank:BankResumeComponent
+  // }
 
-  return(
-    <StatusContainer>
-      <ItemContainer>
-          <LeftText className="fuente">Origen:</LeftText>
-          <MiddleSection />
-          <ContentRight>
-            <RightText className={`${depositAccount ? 'fuente' : 'skeleton'}`}>
-                {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
-              </RightText>
-            {
-              (state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER] && !["other_bank"].includes(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER].value)) &&
-                <IconSwitch
-                    icon={state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.value}
-                    size={20}
-                  />
-            }
-          </ContentRight>
-      </ItemContainer>
+  return null
+
+  // return(
+  //   <StatusContainer>
+  //     <ItemContainer>
+  //         <LeftText className="fuente">Origen:</LeftText>
+  //         <MiddleSection />
+  //         <ContentRight>
+  //           <RightText className={`${depositAccount ? 'fuente' : 'skeleton'}`}>
+  //               {state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.uiName?.toLowerCase() || 'skeleton --------'} 
+  //             </RightText>
+  //           {
+  //             (state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER] && !["other_bank"].includes(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER].value)) &&
+  //               <IconSwitch
+  //                   icon={state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]?.value}
+  //                   size={20}
+  //                 />
+  //           }
+  //         </ContentRight>
+  //     </ItemContainer>
       
-      {
-        depositAccount &&
-        <RenderSwitchComponent
-            STAGE_COMPONENTS={STAGE_COMPONENTS}
-            component={depositAccount?.provider_type}
-            stageManager={stageManager}
-            state={state}
-            depositAccount={depositAccount}
-            dataForm={dataForm}
-        />
+  //     {
+  //       depositAccount &&
+  //       <RenderSwitchComponent
+  //           STAGE_COMPONENTS={STAGE_COMPONENTS}
+  //           component={depositAccount?.provider_type}
+  //           stageManager={stageManager}
+  //           state={state}
+  //           depositAccount={depositAccount}
+  //           dataForm={dataForm}
+  //       />
         
-      }
+  //     }
 
-    </StatusContainer>
-  )
+  //   </StatusContainer>
+  // )
 }
 
 
@@ -349,22 +379,22 @@ const ContentRight = styled.div`
 `
 
 
-const StatusContainer = styled.div`
-  width:100%;
-  height:auto;
-  padding-top:15px;
-  display: flex;
-  flex-direction: column;
-  row-gap: 25px;
+// const StatusContainer = styled.div`
+//   width:100%;
+//   height:auto;
+//   padding-top:15px;
+//   display: flex;
+//   flex-direction: column;
+//   row-gap: 25px;
 
-  p{
-    color:var(--paragraph_color);
-  }
+//   p{
+//     color:var(--paragraph_color);
+//   }
 
-  ${LeftText}{
-    font-weight: normal;
-  }
-`
+//   ${LeftText}{
+//     font-weight: normal;
+//   }
+// `
 
 const TitleContainer = styled.div`
   h1{

@@ -4,11 +4,12 @@ import { initStages } from '../../utils'
 import { FIAT_DEPOSIT_TYPES } from './api'
 import { FormContainer } from '../sharedStyles'
 import { SelectListSkeleton } from '../selectListComponent'
+import { parseQueryString } from 'utils' 
+
 
 export default function NewFiatDepositComponent (props){
 
     const [ dataForm, setDataForm ] = useState()
-    
     const init = async() => {
       const _dataForm = await initStages(
         { 
@@ -17,13 +18,12 @@ export default function NewFiatDepositComponent (props){
       )
       setDataForm(_dataForm)
     }
-    
     useEffect(()=> { 
       init()
     }, []) 
    
     return( 
-      <FormContainer>
+      <FormContainer className={`fiatDepositContainer ${parseQueryString()}`}>
           {
               dataForm ?
                 <FormComponent

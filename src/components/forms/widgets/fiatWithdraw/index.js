@@ -20,15 +20,13 @@ import StatusPanelStates from './statusPanelStates'
 import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selectors'
 import { selectWithdrawProvidersByName } from 'selectors'
 import useBreadCumb from 'hooks/useBreadCumb'
-import CriptoSupervisor from "components/wallets/views/withdrawCripto";
-
-
 
 
 const DEFAULT_PROVIDER_TYPE = 'bank'
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
 const TargetPersonStage = loadable(() => import("./internals/targetPersonStage"), {fallback:<StageSkeleton/>});
+const CriptoSupervisor = loadable(() => import("components/wallets/views/withdrawCripto"), {fallback:<StageSkeleton/>});
 
 
 const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
