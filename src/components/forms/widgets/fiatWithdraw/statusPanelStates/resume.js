@@ -10,7 +10,7 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 import {
     TitleContainer,
     StatusHeaderContainer
-} from './styles'
+} from '../../onBoarding/styles'
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 

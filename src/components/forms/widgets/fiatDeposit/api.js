@@ -95,6 +95,7 @@ const CRYPTO_STAGES = {
     // uiName:"",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
     uiType:"text",
+    value:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
     "settings":{
       defaultMessage:"",
       breadCumbConfig:{

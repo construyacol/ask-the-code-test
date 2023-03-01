@@ -7,8 +7,8 @@ import { P } from 'core/components/atoms'
 
 
 export const InternalOnBoarding = ({
-    handleState,
-    stageManager,
+    // handleState,
+    // stageManager,
     children
   }) => {
     return(

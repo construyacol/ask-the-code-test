@@ -12,6 +12,7 @@ import { checkIfFiat } from 'core/config/currencies';
 import { TagNewComponent } from 'core/components/molecules'
 import styled from 'styled-components'
 import { P, SPAN } from 'core/components/atoms';
+import { FIAT_DEPOSIT_TYPES } from './api'
 
 
 
@@ -35,7 +36,7 @@ function ProviderComponent({
     const [ depositServiceList, setDepositServiceList ] = useState({})
   
     const selectProvider = (provider) => {
-      console.log({[stageData?.key]: provider })
+      // console.log({[stageData?.key]: provider })
       setState(prevState => ({ ...prevState, [stageData?.key]: provider }))
       setStageStatus('success')
     }
@@ -53,12 +54,12 @@ function ProviderComponent({
         for (const depositAccountName in depositAccounts) {
           if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
           
-          // DEPOSIT_ACCOUNT_LABELS
+          // DEPOSIT_ACCOUNT_LABELS 
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
 
           servicesList = {
             ...servicesList,
-            [depositAccountName]:{
+            [depositAccounts[depositAccountName]?.provider_type]:{
               ...depositAccounts[depositAccountName],
               ...complementaryModel
             }
@@ -69,7 +70,9 @@ function ProviderComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccounts, depositProvidersByName])
 
-    console.log('depositServiceList', depositServiceList)
+    // console.log('depositServiceList', depositServiceList)
+    // console.log('depositAccounts', depositAccounts)
+    
 
 
 
@@ -134,7 +137,6 @@ function ProviderComponent({
       Object.keys(depositAccounts).forEach(depAccountKey => {
 
         const depositAccount = depositAccounts[depAccountKey];
-
           if(checkIfFiat(depositAccount?.currency)){
             let keyProp = depositAccount?.name?.replace(" ", "_")?.toLowerCase()
           _depositAccounts = {
@@ -161,7 +163,8 @@ function ProviderComponent({
   const CRYPTO_ACCOUNT_LABEL ={ 
     uiName:() => <P>Billetera DCOP <Sub className={"number"}> (ERC20)</Sub></P>,
     AuxComponent:TagNewComponent,
-    icon:'eth'
+    icon:'eth',
+    value:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO
   }
 
 

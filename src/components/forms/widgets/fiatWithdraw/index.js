@@ -147,6 +147,8 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
     </ButtonContainers>
   )
 
+  console.log('|||||||||||||| Fiat Withdraw =====> ', state[stageData?.key]?.value)
+
   return(
     <>
         <RenderSwitchComponent
