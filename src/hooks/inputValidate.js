@@ -79,7 +79,6 @@ export default (props) => {
       case "amount": // Retiro cripto
       case "spend-amount": // Swap input spend
 
-      // console.log('||||||| inputName ', e.target.value.replace(/[^0-9.,]/g, ""))
         if(e.target.value.match(/[^0-9.,]/g)){return e.target.value = e.target.value.replace(/[^0-9.,]/g, "")}
         value = await formatToCurrency(e.target.value.toString().replace(/,/g, ""), currentWallet.currency);
         if (isNaN(value.toNumber()) || value.toNumber() === "NaN") {

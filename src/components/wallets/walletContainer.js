@@ -95,7 +95,7 @@ export const AccountDetail = (props) => {
         timeExect:22100,
         callback:async() => {  
           for (const provider_id of currentWallet.dep_prov) {
-            subscribeToNewDeposits(provider_id, 2, 10000) 
+            props?.deposit_providers[provider_id]?.currency_type === 'crypto' && subscribeToNewDeposits(provider_id, 2, 10000) 
             await sleep(2000)
           }
         }
@@ -166,7 +166,7 @@ WalletContainer.propTypes = {
 };
 
 function mapStateToProps({ modelData, isLoading }) {
-  const { user, wallets } = modelData;
+  const { user, wallets, deposit_providers } = modelData;
 
   const { isAppLoaded } = isLoading;
 
@@ -174,6 +174,7 @@ function mapStateToProps({ modelData, isLoading }) {
     user,
     wallets,
     isAppLoaded,
+    deposit_providers
   };
 }
 
