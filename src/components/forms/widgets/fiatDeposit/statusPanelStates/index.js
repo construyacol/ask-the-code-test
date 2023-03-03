@@ -13,7 +13,7 @@ const StatusPanelStates = (props) => {
 
   const { stageManager:{stageData }, handleState:{ state }} = props
   const getDepositComponent = () => {
-    const DefaultComponent = !state[stageData?.key] && CryptoOnBoarding
+    const DefaultComponent = !state[stageData?.key] && ResumeComponent
     const _value = state[stageData?.key] && state[stageData?.key]?.value?.replace(" ", "_")
     const toRender = {
         [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{

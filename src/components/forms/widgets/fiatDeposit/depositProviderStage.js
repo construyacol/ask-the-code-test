@@ -14,9 +14,6 @@ import styled from 'styled-components'
 import { P, SPAN } from 'core/components/atoms';
 import { FIAT_DEPOSIT_TYPES } from './api'
 
-
-
-
 function ProviderComponent({ 
     stageManager:{ 
       stageData,
@@ -46,17 +43,25 @@ function ProviderComponent({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const DEFAULT_SERVICE = {
+      other_bank:{
+        value:"other_bank",
+        icon:"bank",
+        uiName:"Otro banco/servicio",
+        Icon:AiFillBank,
+        defaultProv:depositAccounts && depositAccounts[Object.keys(depositAccounts).at(0)],
+        visible:true
+      }
+    }
 
+    
     useEffect(() => {
       (async() => {
         if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
-        let servicesList = {}
+        let servicesList = {...DEFAULT_SERVICE}
         for (const depositAccountName in depositAccounts) {
           if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
-          
-          // DEPOSIT_ACCOUNT_LABELS 
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
-
           servicesList = {
             ...servicesList,
             [depositAccounts[depositAccountName]?.provider_type]:{
@@ -64,8 +69,8 @@ function ProviderComponent({
               ...complementaryModel
             }
           }
-          setDepositServiceList(servicesList)
         }
+        setDepositServiceList(getServiceListOrdered(servicesList))
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [depositAccounts, depositProvidersByName])
@@ -106,7 +111,8 @@ function ProviderComponent({
                     />
                   })
                 }
-                <ItemListComponent 
+
+                {/* <ItemListComponent 
                   className="createButton"
                   itemList={{
                     value:"other_bank",
@@ -118,7 +124,7 @@ function ProviderComponent({
                   isSelectedItem={["other_bank"].includes(state[stageData?.key]?.value)}
                   lastIndex
                   handleAction={selectProvider}
-                />
+                /> */}
               </SelectListContainer>
             </OptionInputContainer>
           </StageContainer>
@@ -180,4 +186,20 @@ function ProviderComponent({
     pse:PSE_ACCOUNT,
     ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
     ethereum:CRYPTO_ACCOUNT_LABEL,
+  }
+
+
+  const getServiceListOrdered = (serviceList) => {
+    const order = ['bank', 'other_bank', 'pse', 'ethereum'];
+    let newObjects = {};
+    for (const prop of order) {
+      if (serviceList.hasOwnProperty(prop)) {
+        newObjects[prop] = serviceList[prop];
+      }
+    }
+    newObjects = {
+      ...newObjects,
+      ...serviceList
+    }
+    return newObjects
   }

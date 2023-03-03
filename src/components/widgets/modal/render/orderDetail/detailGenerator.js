@@ -48,7 +48,6 @@ export const useDetailParseData = (order, detailType) => {
                 `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
               ]
             ];
-
           }else if(depositProvider?.depositAccount?.provider_type === 'internal_network'){
             depositProviderInfo = [
               [
@@ -63,6 +62,24 @@ export const useDetailParseData = (order, detailType) => {
                 `Costo del depósito`,
                 `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
               ]
+            ];
+          }else if(depositProvider?.currency_type === 'crypto'){
+            console.log('depositProvider', depositProvider)
+            depositProviderInfo = [
+              ["ID:", order.id],
+              ["Estado:", getState(order.state)],
+              ["Divisa:", `${order.currency}`],
+              ["Orden creada en:", moment(order.created_at).format("LL")],
+              ["Confirmaciones:", order.confirmations],
+              [
+                "Cantidad acreditada:",
+                await formatCurrency(order.amount, order.currency),
+              ],
+              ["Costo de operación:", order.cost],
+              [
+                "Total depósito:",
+                await formatCurrency(order.amount_neto, order.currency),
+              ],
             ];
           }else{
             depositProviderInfo = [
@@ -100,11 +117,9 @@ export const useDetailParseData = (order, detailType) => {
               ]
             ];
           }
-
-          
         }
-        const amountNeto = await formatCurrency(order.amount_neto, order.currency);
 
+        const amountNeto = await formatCurrency(order.amount_neto, order.currency);
         setData([
           ...depositProviderInfo,
           ["Total a depositar:", `$${amountNeto}`],

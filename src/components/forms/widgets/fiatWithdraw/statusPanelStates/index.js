@@ -16,7 +16,7 @@ const StatusPanelStates = (props) => {
   const { stageManager:{stageData }, handleState:{ state }} = props
 
   const getWithdrawAccountComponent = () => {
-  const DefaultComponent = !state[stageData?.key] && InternalOnBoarding
+  const DefaultComponent = !state[stageData?.key] && ResumeComponent
   const _value = state[stageData?.key] && state[stageData?.key]?.value?.replace(" ", "_")
   const toRender = {
       [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:{
