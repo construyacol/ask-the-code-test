@@ -30,7 +30,7 @@ const ResumeComponent = ({
       bank:BankStatus,
       efecty_network:BankStatus,
       internal_network:InternalStatus
-    }
+    } 
 
     return(
         <>
@@ -56,17 +56,20 @@ export default ResumeComponent
 
 const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
   const { withdrawAccount, withdrawAmount } = state
-  const wAccountIdentifier = withdrawAccount?.info
+  const wAccountIdentifier = withdrawAccount?.info || withdrawAccount
   const [ cost, setCost ] = useState()
 
 
   useEffect(() => {
     if(withdrawProvider && withdrawAccount){
-      let cost = getCost({withdrawProvider, withdrawAccount})
+      let cost = getCost({withdrawProvider, withdrawAccount:{ provider_type:"internal_network", ...withdrawAccount }})
       let parsed = formatToCurrency(cost, withdrawProvider?.currency)
       setCost(parsed.toFormat())
     }
   }, [withdrawProvider, withdrawAccount])
+
+  console.log('InternalStatus', withdrawProvider)
+
   return(
     <StatusContainer>
       <ItemContainer>
@@ -75,8 +78,8 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
 
           <ContentRight>
             <RightText className={`${wAccountIdentifier ? 'fuente' : 'skeleton'}`}>
-                {wAccountIdentifier?.label || 'skeleton --------'} 
-              </RightText>
+                {wAccountIdentifier?.label || wAccountIdentifier?.identifier || 'skeleton --------'} 
+            </RightText>
             {
               wAccountIdentifier &&
                 <IconSwitch
@@ -100,7 +103,7 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
             <LeftText className="fuente">Costo:</LeftText>
             <MiddleSection />
             <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-              {`$ ${cost} COP` || 'skeleton --------'} 
+              {`$ ${cost || 0} COP` || 'skeleton --------'} 
             </RightText>
         </ItemContainer>
       }
