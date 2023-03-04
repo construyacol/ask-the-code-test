@@ -22,13 +22,11 @@ export default function TitleSection({
 
     const params:params = useParams()
     const key = titleKey || params.primary_path
-    // const title = UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key
     const [ title, setTitle ] = useState(UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key)
 
     useEffect(() => {
         setTitle(UI_NAME_TITLE[key as keyof typeof UI_NAME_TITLE] || key)
     }, [key])
-    console.log('title', title)
    
     return(
         <TitleContainer 

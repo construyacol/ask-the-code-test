@@ -28,11 +28,10 @@ export default function HeaderAccount (props) {
 
 
 export const MainComponent = () => {
-
+  
     const { currentWallet } = useWalletInfo()
-    // const { available } = currentWallet
     const { isMovilViewport } = useViewport()
-    // const balanceTextWidth = useRef(currentWallet?.available?.length > 1 ? '150px' : '60px')
+    const accountName = currentWallet?.name?.replace(/\bCOP\b/gi, "DCOP")
 
     return(
       <HeaderMainContainer className="_accountHeaderMainContainer">
@@ -43,7 +42,7 @@ export const MainComponent = () => {
             />
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
-            <AccountLabel>{currentWallet?.name || 'Mi billetera'}</AccountLabel>
+            <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
             <CurrencyLabel>{currentWallet?.currency || '-'}</CurrencyLabel>
           </LabelContainer>
           <BalanceContainer  

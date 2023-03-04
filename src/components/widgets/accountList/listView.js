@@ -124,7 +124,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     }
 
     // const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
-    const accountName = account?.name
+    const accountName = account?.name?.replace(/\bCOP\b/gi, "DCOP")
 
     return(
         <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
