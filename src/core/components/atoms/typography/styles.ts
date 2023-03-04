@@ -24,17 +24,25 @@ export const textBaseStyles = css<typoGraphyProps>`
     line-height: ${props => props.lineHeight && `${props.lineHeight}px`};
 
     &.no-margin{
-        margin:0;
+      margin:0;
     }
     &.number{
-        font-family: "Tomorrow", sans-serif;
+      font-family: "Tomorrow", sans-serif;
     }
     &.bold{
-        font-weight: bold;
+      font-weight: bold;
     }
 
     &.capitalize{
-        text-transform: capitalize !important;
+      text-transform: capitalize !important;
+    }
+
+    &.ellipsis{
+      width: auto;
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     ${props => props.skeleton && skeletonStyles}

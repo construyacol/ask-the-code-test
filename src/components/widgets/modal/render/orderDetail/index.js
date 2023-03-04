@@ -230,7 +230,7 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
 
 
       <Container consolidatedOrder={ConsolidatedOrder || ''} isMovilViewport={isMovilViewport || ''}>
-        <InfoComponent/>
+        <InfoComponent order={currentOrder}/>
         <TotalAmount color={colorState} className={`${currentOrder.state}`}>
           <p className="fuente saldo">{amountTitle}</p>
           <p className="fuente2 amount">
@@ -305,16 +305,12 @@ const OrderIcon = styled(Icon)`
     &.swaps:before{
        content: "\f079";
       }
-    }
     &.withdraws:before{
        content: "\f062";
       }
-    }
     &.deposits:before{
        content: "\f063";
       }
-    }
-
   `;
 
 const BackTopSection = styled.div`
