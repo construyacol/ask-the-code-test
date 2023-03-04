@@ -6,6 +6,25 @@ import {
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import { FIAT_DEPOSIT_TYPES } from './api' 
 import { selectListValidator } from '../kyc/validations'
+import BigNumber from "bignumber.js"
+
+
+export function calculateCost(value, costs) {
+  let range = 0;
+  if(!value)return 0;
+  for (let cost in costs) {
+    if (parseInt(value?.replace(/,/g, "")) >= parseInt(cost)) {
+      range = cost;
+    } else {
+      break;
+    }
+  }
+  const currentValue = BigNumber(value.replace(/,/g, ""));
+  const fixedCost = BigNumber(costs[range]?.fixed)
+  const percent = BigNumber(costs[range]?.percent)
+  return fixedCost.plus(currentValue.multipliedBy(percent.dividedBy(100))).toString();
+}
+
 
   export const getCost = ({ costs, currency, depositCost }) => {
     let cost = costs[depositCost?.value]?.fixed;

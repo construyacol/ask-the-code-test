@@ -234,7 +234,8 @@ export const ApiPostCreatePseDeposit = async({
       // cost_id:depositCost?.value,
       country:currentWallet?.country,
       currency:currentWallet?.currency,
-      deposit_provider_id:depositProvider?.id
+      deposit_provider_id:depositProvider?.id,
+      callback_url:"https://app.coinsenda.com/wallets"
     }
   }
   return await mainService.createDeposit(body);

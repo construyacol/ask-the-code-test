@@ -12,9 +12,10 @@ import {
     StatusHeaderContainer
 } from '../../onBoarding/styles'
 import { FIAT_DEPOSIT_TYPES } from '../api'
+import { calculateCost } from '../validations'
+
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
-
 
 const ResumeComponent = ({
     handleState:{state},
@@ -93,13 +94,40 @@ const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
 
 
 
+// function calculateCost(value, costs) {
+//   let range = 0;
+//   if(!value)return 0;
+//   for (let cost in costs) {
+//     if (parseInt(value?.replace(/,/g, "")) >= parseInt(cost)) {
+//       range = cost;
+//     } else {
+//       break;
+//     }
+//   }
+//   const currentValue = BigNumber(value.replace(/,/g, ""));
+//   const fixedCost = BigNumber(costs[range]?.fixed)
+//   const percent = BigNumber(costs[range]?.percent)
+//   return fixedCost.plus(currentValue.multipliedBy(percent.dividedBy(100))).toString();
+// }
+
 
 const PseResumeComponent = ({
   stageManager,
   state,
   depositAccount,
-  dataForm
+  dataForm,
+  ...props
 }) =>{
+
+  const [ cost, setCost ] = useState()
+
+  useEffect(() => {
+    if(state?.depositAmount) setCost(calculateCost(state?.depositAmount, depositAccount?.costs));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
+
+  console.log('cost', cost)
+
   return(
     <>
        {
@@ -134,6 +162,17 @@ const PseResumeComponent = ({
                 <MiddleSection />
                 <RightText className={`${state?.depositAmount ? 'fuente2' : 'skeleton'}`}>
                   {`$ ${state?.depositAmount} COP` || 'skeleton --------'} 
+                </RightText>
+            </ItemContainer>
+          }
+
+          {
+            (cost && state?.depositAmount) &&
+            <ItemContainer>
+                <LeftText className="fuente">Costo:</LeftText>
+                <MiddleSection />
+                <RightText className={`${cost ? 'fuente2' : 'skeleton'}`}>
+                  {`$ ${cost} COP` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
