@@ -68,7 +68,6 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
     }
   }, [withdrawProvider, withdrawAccount])
 
-  console.log('InternalStatus', withdrawProvider)
 
   return(
     <StatusContainer>
@@ -121,16 +120,19 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
 
 
 const BankStatus = ({ state, stageManager, withdrawProvider }) => {
+
   const { withdrawAccount, withdrawAmount } = state
   const bankName = withdrawAccount?.bank_name
   const [ cost, setCost ] = useState()
-  useEffect(() => {
-    if(withdrawProvider && withdrawAccount){
-      let cost = getCost({withdrawProvider, withdrawAccount})
+
+  useEffect(() => { 
+    if(withdrawProvider && withdrawAccount && withdrawAmount){
+      let cost = getCost({withdrawProvider, withdrawAccount, amount:withdrawAmount})
       let parsed = formatToCurrency(cost, withdrawProvider?.currency)
       setCost(parsed.toFormat())
     }
-  }, [withdrawProvider, withdrawAccount])
+  }, [withdrawProvider, withdrawAccount, withdrawAmount])
+
   return(
     <StatusContainer>
       <ItemContainer>

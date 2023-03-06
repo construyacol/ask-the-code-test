@@ -12,7 +12,7 @@ import {
     StatusHeaderContainer
 } from '../../onBoarding/styles'
 import { FIAT_DEPOSIT_TYPES } from '../api'
-import { calculateCost } from '../validations'
+import { calculateCost } from '../../sharedValidations'
 
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
@@ -94,23 +94,6 @@ const StatusContent = ({ state, stageManager, depositAccount, dataForm }) => {
 
 
 
-// function calculateCost(value, costs) {
-//   let range = 0;
-//   if(!value)return 0;
-//   for (let cost in costs) {
-//     if (parseInt(value?.replace(/,/g, "")) >= parseInt(cost)) {
-//       range = cost;
-//     } else {
-//       break;
-//     }
-//   }
-//   const currentValue = BigNumber(value.replace(/,/g, ""));
-//   const fixedCost = BigNumber(costs[range]?.fixed)
-//   const percent = BigNumber(costs[range]?.percent)
-//   return fixedCost.plus(currentValue.multipliedBy(percent.dividedBy(100))).toString();
-// }
-
-
 const PseResumeComponent = ({
   stageManager,
   state,
@@ -122,7 +105,10 @@ const PseResumeComponent = ({
   const [ cost, setCost ] = useState()
 
   useEffect(() => {
-    if(state?.depositAmount) setCost(calculateCost(state?.depositAmount, depositAccount?.costs));
+    if(state?.depositAmount) {
+      const _cost = calculateCost(state?.depositAmount, depositAccount?.costs)
+      setCost(formatToCurrency(_cost, depositAccount?.currency).toFormat())
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
