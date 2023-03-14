@@ -123,7 +123,6 @@ const InfoPanel = ({
                                 const prevState = state[prevStageKey]
                                 const isAvailable = (prevState || isFirstStage || errors || ["location"].includes(menuKey) || dataForm?.wrapperComponent?.includes('files')) ? true : false;
 
-                                console.log('isAvailable', menuKey)
 
                                 return ( 
                                   <li className={`${((inProgress || isCompleted || isSuccessfull) && isAvailable) ? 'checked' : ''} ${((inProgress || key === 'files') && itemRejected) ? 'inProgress reject' : key === stageData?.key ? 'inProgress' : ''} fuente ${itemRejected ? 'rejected' : ''}`} key={id}>
