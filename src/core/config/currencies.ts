@@ -2,16 +2,31 @@ import BigNumber from "bignumber.js";
 
 const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 
+const SYMBOL_CURRENCIES = {
+    cop:{
+        regex:/\bCOP\b|\bcop\b/,
+        replaceFor:"DCOP"
+    }
+}
+
+export const parseSymbolCurrency = (symbolCurrency:string):string => {
+   const symbolCurrencyData = SYMBOL_CURRENCIES[symbolCurrency?.toLowerCase() as keyof typeof SYMBOL_CURRENCIES]
+   if(!symbolCurrencyData)return symbolCurrency
+   const { regex, replaceFor } = symbolCurrencyData;
+   return symbolCurrency.replace(regex, replaceFor);
+}
+
 export const DEFAULT_CURRENCY = {
     currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
-const FIAT_CURRENCIES = {
-    cop:true
+const FIAT_CRITERIALS = {
+    cop:true,
+    fiat:true
 }
 
-export const checkIfFiat = (currency:string) => FIAT_CURRENCIES[currency?.toLocaleLowerCase() as keyof typeof FIAT_CURRENCIES];
+export const checkIfFiat = (currency:string) => FIAT_CRITERIALS[currency?.toLocaleLowerCase() as keyof typeof FIAT_CRITERIALS];
 
 // export const DEFAULT_CURRENCY = {
 //     currency: 'bitcoin',
@@ -36,6 +51,10 @@ export const BLOCKCHAIN_EXPLORER_URL = {
     },
     tron:{
         tron:"https://tronscan.org/#/transaction/",
+    },
+    cop:{
+        ethereum_testnet:"https://goerli.etherscan.io/tx/",
+        ethereum:"https://etherscan.io/tx/"
     },
     ethereum_testnet:{
         ethereum_testnet:"https://goerli.etherscan.io/tx/"
@@ -225,6 +244,21 @@ export const CURRENCIES = {
         test:'cop',
         prodName:'COP',
         testName:'COP',
+        currencyConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
+            DECIMAL_PLACES: 2,
+        }),
+        prod_fee:'cop_fee',
+        currencyFeeConfig:BigNumber.clone({
+            ROUNDING_MODE: BigNumber.ROUND_UP,
+            DECIMAL_PLACES: 2,
+        })
+    },
+    dcop:{
+        prod:'dcop',
+        test:'dcop',
+        prodName:'DCOP',
+        testName:'DCOP',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
             DECIMAL_PLACES: 2,

@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { getHostName } from '../../../../../environment'
 import DetailTemplateComponent from '../../../detailTemplate'
 import { MiddleSection } from '../../../detailTemplate'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -23,8 +23,8 @@ export const useDetailParseData = (order, detailType) => {
   const { withdraw_accounts } = useSelector((state) => state.modelData)
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
-  const currencySimbol = currencies ? currencies[order?.currency]?.symbol : order?.currency?.toUpperCase()
-
+  const currencySimbol = currencies ? parseSymbolCurrency(currencies[order?.currency]?.symbol) : parseSymbolCurrency(order?.currency)?.toUpperCase()
+  
   const inProcesOrder = async (order) => {
     const isPending = order.state === 'pending'
     const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
@@ -38,17 +38,16 @@ export const useDetailParseData = (order, detailType) => {
               [
                 "Entidad del depósito:",
                 `${depositProvider.depositAccount.ui_name}`,
-              ],
+              ], 
               [
                 `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
-                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(order.amount, order.currency)} ${currencySimbol}`,
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(order?.cost, order.currency)} ${currencySimbol}`,
               ]
             ];
-
           }else if(depositProvider?.depositAccount?.provider_type === 'internal_network'){
             depositProviderInfo = [
               [
@@ -57,12 +56,30 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
-                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(order.amount, order.currency)} ${currencySimbol}`,
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(order?.cost, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(order?.cost, order.currency)} ${currencySimbol}`,
               ]
+            ];
+          }else if(depositProvider?.currency_type === 'crypto'){
+            console.log('depositProvider', depositProvider)
+            depositProviderInfo = [
+              ["ID:", order.id],
+              ["Estado:", getState(order.state)],
+              ["Divisa:", `${parseSymbolCurrency(order.currency)}`],
+              ["Orden creada en:", moment(order.created_at).format("LL")],
+              ["Confirmaciones:", order.confirmations],
+              [
+                "Cantidad acreditada:",
+                await formatCurrency(order.amount, order.currency),
+              ],
+              ["Costo de operación:", order.cost],
+              [
+                "Total depósito:",
+                await formatCurrency(order.amount_neto, order.currency),
+              ],
             ];
           }else{
             depositProviderInfo = [
@@ -92,19 +109,17 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
-                `${await formatCurrency(order.amount, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(order.amount, order.currency)} ${currencySimbol}`,
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${order.currency?.toUpperCase()}`,
+                `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${currencySimbol}`,
               ]
             ];
           }
-
-          
         }
-        const amountNeto = await formatCurrency(order.amount_neto, order.currency);
 
+        const amountNeto = await formatCurrency(order.amount_neto, order.currency);
         setData([
           ...depositProviderInfo,
           ["Total a depositar:", `$${amountNeto}`],
@@ -114,7 +129,7 @@ export const useDetailParseData = (order, detailType) => {
         setData([
           ["ID:", order.id],
           ["Estado:", getState(order.state)],
-          ["Divisa:", `${order.currency}`],
+          ["Divisa:", `${parseSymbolCurrency(order.currency)}`],
           ["Orden creada en:", moment(order.created_at).format("LL")],
           ["Confirmaciones:", order.confirmations],
           [
@@ -169,8 +184,8 @@ export const useDetailParseData = (order, detailType) => {
       ["ID del intercambio:", order?.id],
       ["Fecha de creación:", moment(order?.created_at).format("LL")],
       ["Estado:", getState(order?.state)],
-      ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${order?.to_spend_currency?.toUpperCase()}`],
-      ["Cantidad adquirida:", `${order?.bought ? await formatCurrency(order?.bought, order?.to_buy_currency) : '0'} ${order?.to_buy_symbol?.toUpperCase()}`],
+      ["Cantidad gastada:", `${await formatCurrency(order?.spent, order?.to_spend_currency)} ${parseSymbolCurrency(order?.to_spend_currency)?.toUpperCase()}`],
+      ["Cantidad adquirida:", `${order?.bought ? await formatCurrency(order?.bought, order?.to_buy_currency) : '0'} ${parseSymbolCurrency(order?.to_buy_symbol)?.toUpperCase()}`],
     ]
     return parsedOrder 
   }

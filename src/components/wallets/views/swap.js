@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
 import { checkIfFiat } from 'core/config/currencies';
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 function SwapView(props) {
 
@@ -199,13 +200,11 @@ function SwapView(props) {
 
     const { id } = currentPair;
     const spent_currency_amount = formatToCurrency(value, currentWallet.currency);
-    // let query = `{"where":{"id":"${id}"}}`;
-    // await coinsendaServices.updateCurrentPair(query);
     await coinsendaServices.updateCurrentPair({id});
 
     const secureTotalValue = await getReceiveValue(value);
-    const from = currencies ? currencies[currentWallet.currency]?.symbol.toUpperCase() : currentWallet.currency.toUpperCase()
-    const to = currencies ? currencies[boughtCurrency]?.symbol.toUpperCase() : boughtCurrency.toUpperCase()
+    const from = currencies ? parseSymbolCurrency(currencies[currentWallet.currency]?.symbol).toUpperCase() : parseSymbolCurrency(currentWallet.currency)?.toUpperCase()
+    const to = currencies ? parseSymbolCurrency(currencies[boughtCurrency]?.symbol).toUpperCase() : parseSymbolCurrency(boughtCurrency)?.toUpperCase()
     const isFiat = checkIfFiat(currentWallet?.currency)
     
     actions.confirmationModalPayload({
@@ -342,7 +341,7 @@ const PairSelect = ({ selectPair = () => null, secondaryCoin, id, currencies }) 
       >
         <div>
           <i className="fas fa-angle-down"></i>
-          <p>{boughtCurrencySymbol || '...'}</p>
+          <p>{parseSymbolCurrency(boughtCurrencySymbol) || '...'}</p>
           {(showSubfix && keyActions) && <span className="subfix-pairs-button">[P]</span>}
           { boughtCurrencySymbol  && (
             <img

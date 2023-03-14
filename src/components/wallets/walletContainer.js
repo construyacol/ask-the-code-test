@@ -20,7 +20,7 @@ import HeaderAccount from '../widgets/headerAccount'
 import ActivityFilters from "../widgets/activityList/filters";
 // import { useSelector } from "react-redux";
 import useViewport from '../../hooks/useWindowSize'
-import { parseQueryString } from '../../utils'
+import { parseQueryString } from '../../utils' 
 // import 'components/wallets/views/wallet_views.css'
 
 import { isEmpty } from 'lodash'
@@ -87,14 +87,15 @@ export const AccountDetail = (props) => {
   
 
   useEffect(() => {
-    if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+    // if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
+      if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
       funcDebounces({
         keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
         storageType:"sessionStorage",
         timeExect:22100,
         callback:async() => {  
           for (const provider_id of currentWallet.dep_prov) {
-            subscribeToNewDeposits(provider_id, 2, 10000) 
+            props?.deposit_providers[provider_id]?.currency_type === 'crypto' && subscribeToNewDeposits(provider_id, 2, 10000) 
             await sleep(2000)
           }
         }
@@ -165,7 +166,7 @@ WalletContainer.propTypes = {
 };
 
 function mapStateToProps({ modelData, isLoading }) {
-  const { user, wallets } = modelData;
+  const { user, wallets, deposit_providers } = modelData;
 
   const { isAppLoaded } = isLoading;
 
@@ -173,6 +174,7 @@ function mapStateToProps({ modelData, isLoading }) {
     user,
     wallets,
     isAppLoaded,
+    deposit_providers
   };
 }
 

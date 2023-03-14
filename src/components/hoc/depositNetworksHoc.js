@@ -14,7 +14,7 @@ export default function depositNetworksHoc(AsComponent) {
     const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
     const depositProviders = useSelector((state) => selectDepositProvsByNetwork(state, currentWallet?.currency));
-    const [ coinsendaServices ] = useCoinsendaServices();
+    const [ coinsendaServices ] = useCoinsendaServices(); 
 
     const toggleNetwork = (network) => {
       const { callback } = props
@@ -29,6 +29,7 @@ export default function depositNetworksHoc(AsComponent) {
             let _networks = {}
             for (const depositAccountNetwork in availableDepositAccounts) {
               let network = depositProviders[depositAccountNetwork]
+              if(availableDepositAccounts[depositAccountNetwork]?.currency_type !== 'crypto') continue;
               if(!network) network = await coinsendaServices.createAndInsertDepositProvider(currentWallet, availableDepositAccounts[depositAccountNetwork]?.id)
               _networks = {
                 ..._networks,

@@ -25,6 +25,8 @@ import { OnlySkeletonAnimation } from '../loaders/skeleton'
 import TitleSection from '../titleSectionComponent'
 import { AccountListWrapper } from '../layoutStyles'
 import { BiRightArrowAlt } from 'react-icons/bi';
+import { parseSymbolCurrency } from 'core/config/currencies'
+
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -123,8 +125,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
         return history.push(`/wallets/activity/${account.id}/${currentFilter ? currentFilter : "deposits"}`);
     }
 
-    // const accountName = isMovilViewport ? `Billetera ${currency?.symbol || "-"}` : account?.name
-    const accountName = account?.name
+    const accountName = account?.name?.replace(/\bCOP\b/gi, "DCOP")
 
     return(
         <ItemAccountContainer onClick={loading ? null : toDetail} className={`${(loading && currentAccount) ? 'loading' : ''}`}>
@@ -148,7 +149,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
                                 account={account}
                             />
                         :
-                        <CurrencyLabel>{currency?.symbol || '-'}</CurrencyLabel>
+                        <CurrencyLabel>{parseSymbolCurrency(currency?.symbol) || '-'}</CurrencyLabel>
                     }
                 </LabelContainer> 
             </HeaderMainContainer>

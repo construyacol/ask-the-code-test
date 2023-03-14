@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-pascal-case */
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const DynamicLoadComponent = ({ component, Fallback, ...props }) => {
 

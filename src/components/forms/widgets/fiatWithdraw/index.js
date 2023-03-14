@@ -21,22 +21,12 @@ import { selectFiatWithdrawAccounts, selectFiatWithdrawProviders } from 'selecto
 import { selectWithdrawProvidersByName } from 'selectors'
 import useBreadCumb from 'hooks/useBreadCumb'
 
-// import { 
-//   LabelContainer,
-//   AccountLabel,
-//   IconAccount
-// } from '../../../widgets/headerAccount/styles'
 
 const DEFAULT_PROVIDER_TYPE = 'bank'
-
 // const IdentityComponent = loadable(() => import("./identityStage"));
 const AmountComponent = loadable(() => import("./amountComponent"), {fallback:<StageSkeleton/>});
 const TargetPersonStage = loadable(() => import("./internals/targetPersonStage"), {fallback:<StageSkeleton/>});
-// setCreateAccount
-
-
-
-
+const CriptoSupervisor = loadable(() => import("components/wallets/views/withdrawCripto"), {fallback:<StageSkeleton/>});
 
 
 const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
@@ -44,18 +34,16 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
-  const [ toastMessage ] = useToastMessage();
+  const [ toastMessage ] = useToastMessage(); 
   const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
   const wProvidersByProvType = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
   const [ withdrawProvidersByName ] = useSelector((state) => selectWithdrawProvidersByName(state));
-
   const actions = useActions()
   const walletInfo = useWalletInfo()
   const { state } = handleState
   const { currentWallet } = walletInfo
   const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
   const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
-
 
 
   
@@ -84,7 +72,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
     ctaBackSelector:"#withdraw-menu-button",
     unMountCondition:currentStage === 0,
     callback:() => goToStage(0)
-  })
+  }) 
 
   useEffect(() => {
     if(stageData?.settings?.breadCumbConfig?.active){
@@ -101,9 +89,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
       setLoading(false)
     }
     const initialStages = await ApiGetFiatWithdrawStages()
-    if(currentStage <= (Object.keys(initialStages).length - 1)){
-      await createNextStages({stageData, state, setDataForm, ...props})
-    }
+    if(currentStage <= (Object.keys(initialStages).length - 1)) await createNextStages({stageData, state, setDataForm, ...props});
     nextStage()
   }
 
@@ -147,6 +133,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
     [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
     [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,
+    [FIAT_WITHDRAW_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor,
   }
 
   const ButtonComponent = () => (
@@ -159,6 +146,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
       />
     </ButtonContainers>
   )
+
 
   return(
     <>
@@ -180,26 +168,27 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
         >
           <StageManagerComponent stageManager={stageManager} {...props}/>
         </RenderSwitchComponent>
-
-        
-        <StatusPanelStates
-          handleState={handleState}
-          stageManager={stageManager}
-          withdrawAccounts={withdrawAccounts}
-          withdrawProvider={withdrawProvider}
-        >
+        {
+          !stageData?.settings?.config?.hideStatusPanel &&
           <>
+            <StatusPanelStates
+              handleState={handleState}
+              stageManager={stageManager}
+              withdrawAccounts={withdrawAccounts}
+              withdrawProvider={withdrawProvider}
+            >
+              <>
+                {
+                  !isMovilViewport &&
+                    <ButtonComponent/>
+                }
+              </>
+            </StatusPanelStates>
             {
-              !isMovilViewport &&
+              isMovilViewport &&
                 <ButtonComponent/>
             }
           </>
-        </StatusPanelStates>
-
-          
-        {
-          isMovilViewport &&
-            <ButtonComponent/>
         }
     </>                 
   )

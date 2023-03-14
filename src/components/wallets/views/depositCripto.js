@@ -18,16 +18,14 @@ import { device } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
 // import { P } from 'components/widgets/typography'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 
 // const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")));
  
-const CriptoSupervisor = () => {
-
+const CriptoSupervisor = (props) => {
   const [ , { current_wallet, modelData: { deposit_providers } } ] = useCoinsendaServices();
-
   return (
     <>
       {!deposit_providers || Object.keys(deposit_providers).length === 0 ? (
@@ -35,7 +33,7 @@ const CriptoSupervisor = () => {
       ) : current_wallet.dep_prov.length < 1 ? (
         <AddDepositProviderCripto />
       ) : (
-        <CriptoView/>
+        <CriptoView {...props}/>
       )}
     </>
   );
@@ -166,7 +164,7 @@ const AddDepositProviderCripto = () => {
   };
 
   return (
-    <DepositForm className="DepositView">
+    <DepositForm className="depositView">
       <div className="contIcontSwitch">
         <IconSwitch {...atributos} />
       </div>
@@ -191,7 +189,7 @@ const AddDepositProviderCripto = () => {
 
 // let INTERVAL;
 
-const CriptoView = () => {
+const CriptoView = (props) => {
   const [
     coinsendaServices,
     {
@@ -253,8 +251,9 @@ const CriptoView = () => {
 
   return (  
     <> 
+    {props?.children}
     <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
-    <DepositForm>
+    <DepositForm className="depositForm">
         { 
         current_wallet.currency.includes("eth") &&
           <EtherDisclaimer className="fuente">
@@ -265,7 +264,7 @@ const CriptoView = () => {
       <ContAddress className={`contAddress ${osDevice}`}>
 
         <p className="fuente soloAd">
-          Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
+          Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {parseSymbolCurrency(current_wallet?.currency)} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
           Cualquier otra criptomoneda o envío desde otra red podría resultar en la pérdida de tu depósito.{" "}
         </p>
 

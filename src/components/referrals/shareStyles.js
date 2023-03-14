@@ -3,11 +3,23 @@ import { device, MAIN_COLOR } from "../../const/const";
 import { OnlySkeletonAnimation } from "../widgets/loaders/skeleton";
 
 
+export const Data = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+      column-gap: 10px;
+    align-items: center;
+`
+
 export const IconContainer = styled.div`
     display: grid;
     align-items: center;
     justify-items: center;
     height: 100%;
+
+    &.internal{
+      display: flex;
+      column-gap: 10px;
+    }
 `
 
 export const Icon = styled.div`

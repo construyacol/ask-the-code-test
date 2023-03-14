@@ -26,7 +26,8 @@ export default function withdrawNetworksHoc(AsComponent) {
         let networksProviders = Object.keys(wProvsByNetwork)
         let _networks = {}
         for (let providerId of networksProviders) {
-            const networkProvider = wProvsByNetwork[providerId]
+          const networkProvider = wProvsByNetwork[providerId]
+            if(networkProvider?.currency_type !== 'crypto') continue;
             _networks = {
                 ..._networks,
                 [networkProvider.provider_type]:{

@@ -57,7 +57,7 @@ export const RightText = styled(Text)`
   padding-left: 15px;
   text-transform: capitalize;
   white-space: nowrap;
-  max-width: 350px;
+  max-width: 150px; 
   overflow: hidden;
   text-overflow: ellipsis;
   &.fiatDeposit{

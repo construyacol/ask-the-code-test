@@ -7,19 +7,18 @@ import { formatToCurrency } from "../../../../utils/convert_currency";
 import ungapStructuredClone from '@ungap/structured-clone';
 import { FIAT_WITHDRAW_TYPES } from './api' 
 import { selectListValidator } from 'components/forms/widgets/kyc/validations'
+import { calculateCost } from '../sharedValidations'
 
-  // let currency = {
-  //   currency: "cop",
-  //   is_token: false
-  // }
 
   // TODO: Falta calcular los precios de efecty con reduce method
-  export const getCost = ({ withdrawProvider, withdrawAccount }) => {
+  export const getCost = ({ withdrawProvider, withdrawAccount, amount }) => {
     const { provider:{ costs }, currency } = withdrawProvider
     const { bank_name, provider_type } = withdrawAccount
     let costKey = ''
     if(provider_type === 'internal_network'){
       costKey = 'none'
+    }else if(provider_type === 'efecty_network'){
+      return calculateCost(amount, costs)
     }else{
       costKey = [bank_name?.value].includes(withdrawProvider?.name) ? 'same_bank' : 'pp';
     }
@@ -28,7 +27,8 @@ import { selectListValidator } from 'components/forms/widgets/kyc/validations'
 
   const getMinAmount = (minAmount, { withdrawProvider, state:{ withdrawAccount } }) => {
     const { currency } = withdrawProvider
-    const costAmount = getCost({withdrawProvider, withdrawAccount})
+    // const costAmount = getCost({withdrawProvider, withdrawAccount, amount:minAmount.toString()})
+    const costAmount = 0
     let _minAmount = formatToCurrency(minAmount.toString().replace(/,/g, ""), currency);
     const withdrawAmount = _minAmount.plus(costAmount || 0)
     return withdrawAmount

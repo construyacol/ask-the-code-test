@@ -19,7 +19,7 @@ import {
 } from "../../../shared-styles";
 import GetInfoComponentToRender from './infoComponent'
 import { TotalAmount } from '../../../shared-styles'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -230,13 +230,13 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
 
 
       <Container consolidatedOrder={ConsolidatedOrder || ''} isMovilViewport={isMovilViewport || ''}>
-        <InfoComponent/>
+        <InfoComponent order={currentOrder}/>
         <TotalAmount color={colorState} className={`${currentOrder.state}`}>
           <p className="fuente saldo">{amountTitle}</p>
           <p className="fuente2 amount">
             {checkIfFiat(currentOrder?.currency) && "$ "}
-            {amount}{" "}
-            {currency && <span className="fuente">{currency?.code?.toUpperCase()}</span>}
+            {amount}{" "} 
+            {currency && <span className="fuente">{parseSymbolCurrency(currency?.symbol)?.toUpperCase()}</span>}
           </p>
         </TotalAmount>
       </Container>
@@ -305,16 +305,12 @@ const OrderIcon = styled(Icon)`
     &.swaps:before{
        content: "\f079";
       }
-    }
     &.withdraws:before{
        content: "\f062";
       }
-    }
     &.deposits:before{
        content: "\f063";
       }
-    }
-
   `;
 
 const BackTopSection = styled.div`
