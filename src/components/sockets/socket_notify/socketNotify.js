@@ -6,7 +6,7 @@ import { createSelector } from "reselect";
 import actions from "../../../actions";
 import { ButtonNofity } from "../../widgets/buttons/buttons";
 import { formatToCurrency } from "../../../utils/convert_currency";
-
+import { useSelector } from "react-redux";
 import { IconClose } from "../../widgets/shared-styles";
 import OtherModalLayout from "../../widgets/modal/otherModalLayout";
 import { getCdnPath } from '../../../environment'
@@ -17,7 +17,10 @@ import "./socketNotify.css";
 const IconSwitch = loadable(() => import("../../widgets/icons/iconSwitch"));
 
 const SocketNotify = (props) => {
+
   const [formatCurrency, setFormatCurrency] = useState(null);
+  const { user } = useSelector((state) => state.modelData);
+
   const { item_type, title } = props.socket_notify;
   let txType = `${item_type === "deposits" ? "depósito" : "retiro"}`;
   let fallBackTitle = `${
@@ -50,33 +53,13 @@ const SocketNotify = (props) => {
 
   return (
     <OtherModalLayout on_click={closeModal}>
-      {/* {
-        item_type === 'deposits' ?
-          <OrderNotifyView
-            title={`${title ? title : `Nuevo ${ui_text} aprobado.`}`}
-            button_tittle={`Ver ${ui_text}`}
-            item_type={item_type}
-            formatCurrency={formatCurrency}
-            {...props} />
-
-          :
-
-          item_type === 'withdraws' &&
-          <OrderNotifyView
-            title={`${title ? title : `Nuevo ${ui_text} enviado`}`}
-            button_tittle={`Ver ${ui_text}.`}
-            item_type={item_type}
-            formatCurrency={formatCurrency}
-            {...props} />
-
-      } */}
-
       {["deposits", "withdraws"].includes(item_type) && (
         <OrderNotifyView
           title={title || fallBackTitle}
           button_tittle={`Ver ${txType}.`}
           item_type={item_type}
           formatCurrency={formatCurrency}
+          user={user}
           {...props}
         />
       )}
@@ -91,6 +74,7 @@ const OrderNotifyView = (props) => {
     currencies,
     title,
     button_tittle,
+    user
   } = props;
 
   const {
@@ -99,12 +83,10 @@ const OrderNotifyView = (props) => {
     // state
   } = props.socket_notify;
 
-  // console.log('||||||||||||||_____________________________________________socket_notify', props)
   const buttonAction = async (wallet_id) => {
-    // console.log('||||||||||||||_____________________________________________buttonAction', wallet_id)
     props.action.socket_notify(null);
     await props.action.toggleOtherModal();
-    // await props.action.current_section_params({currentFilter:item_type})
+    if(user.level === 'level_0')return alert('Primero verifica tu cuenta')
     props.history.push(`/wallets/activity/${wallet_id}/${item_type}`);
   };
 
@@ -134,7 +116,7 @@ const OrderNotifyView = (props) => {
             {formatCurrency}{" "}
             <span>{parseSymbolCurrency(currencies[socket_notify.currency].symbol)}</span>
           </p>
-        </div>
+        </div> 
         <ButtonNofity
           buttonAction={buttonAction}
           item_id={socket_notify.account_id}
