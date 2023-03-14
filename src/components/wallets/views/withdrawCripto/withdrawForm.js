@@ -23,6 +23,7 @@ import { OptionInput } from 'components/molecules'
 import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 
 // const warningMessage = {
@@ -90,7 +91,7 @@ const WithdrawFormComponent = ({
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={() => <p className="fuente">{`Ingresa la dirección de destino ${currencySymbol}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
+            label={() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             currentNetwork={withdrawProviders?.current}

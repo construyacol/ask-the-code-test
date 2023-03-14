@@ -47,7 +47,7 @@ function ProviderComponent({
       other_bank:{
         value:"other_bank",
         icon:"bank",
-        uiName:"Otro banco/servicio",
+        uiName:"Otro banco",
         Icon:AiFillBank,
         defaultProv:depositAccounts && depositAccounts[Object.keys(depositAccounts).at(0)],
         visible:true

@@ -12,6 +12,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 import BigNumber from "bignumber.js"
 import { formatToCurrency } from "utils/convert_currency";
 import FeeComponent from './IndicatorFee'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 // styles
 import { 
@@ -83,18 +84,18 @@ const PanelHelper = props => {
       let _fixedCost = current_wallet ? formatToCurrency(fixedCost, current_wallet?.currency) : fixedCost
 
       _orderDetail = [
-        ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} ${currencySymbol}`}/>}],
+        ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`}/>}],
       ] 
       // console.log('|||||| calculateTotal ==> ', _amount.isGreaterThan(availableBalance), _amount.toString(), availableBalance.toString(), withdrawProvider)
 
       if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount) || _amount.isGreaterThan(availableBalance))return setOrderDetail(_orderDetail);
 
-      if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toFormat()}  ${currencySymbol}`])
+      if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toFormat()}  - ${parseSymbolCurrency(currencySymbol)}`])
 
       if(takeFeeFromAmount){
-        if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} ${currencySymbol}`] )
+        if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }else{
-        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} ${currencySymbol}`] )
+        if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }
       setOrderDetail(_orderDetail)
     }

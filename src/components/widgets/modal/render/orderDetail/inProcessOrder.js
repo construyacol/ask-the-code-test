@@ -36,8 +36,8 @@ import { checkCameraPermission } from 'utils'
 import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
 import "moment/locale/es";
-import { checkIfFiat } from 'core/config/currencies';
-moment.locale("es");
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
+moment.locale("es"); 
 
 const InProcessOrder = ({ onErrorCatch }) => {
 
@@ -80,7 +80,7 @@ const CryptoOrder = ({ order, depositProviders }) => {
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency}</Currency>
+            <Currency className="fuente">{parseSymbolCurrency(order.currency)}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>
@@ -231,7 +231,7 @@ const FiatOrder = ({ order, depositProviders }) => {
           />
           <TitleContainer>
             <Text className="fuente">{getTitle(tx_path)}</Text>
-            <Currency className="fuente">{order.currency}</Currency>
+            <Currency className="fuente">{parseSymbolCurrency(order.currency)}</Currency>
           </TitleContainer>
           <DateIdContainter>
             <Text className="fuente2">#{order.id}</Text>

@@ -14,6 +14,7 @@ import BalanceComponent from "../balance/balance";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import IconSwitch from '../icons/iconSwitch'
 import useViewport from '../../../hooks/useWindowSize'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 
 export default function HeaderAccount (props) {
@@ -42,8 +43,8 @@ export const MainComponent = () => {
             />
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
-            <AccountLabel>{accountName || 'Mi billetera'}</AccountLabel>
-            <CurrencyLabel>{currentWallet?.currency || '-'}</CurrencyLabel>
+            <AccountLabel>{accountName || 'Mi Billetera'}</AccountLabel>
+            <CurrencyLabel>{parseSymbolCurrency(currentWallet?.currency) || '-'}</CurrencyLabel>
           </LabelContainer>
           <BalanceContainer  
             className="_accountBalanceContainer"

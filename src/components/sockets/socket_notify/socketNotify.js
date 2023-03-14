@@ -10,6 +10,7 @@ import { formatToCurrency } from "../../../utils/convert_currency";
 import { IconClose } from "../../widgets/shared-styles";
 import OtherModalLayout from "../../widgets/modal/otherModalLayout";
 import { getCdnPath } from '../../../environment'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 import "./socketNotify.css";
 
@@ -131,7 +132,7 @@ const OrderNotifyView = (props) => {
           <IconSwitch icon={currency} size={35} />
           <p id="order_amount" className="fuente2">
             {formatCurrency}{" "}
-            <span>{currencies[socket_notify.currency].symbol}</span>
+            <span>{parseSymbolCurrency(currencies[socket_notify.currency].symbol)}</span>
           </p>
         </div>
         <ButtonNofity

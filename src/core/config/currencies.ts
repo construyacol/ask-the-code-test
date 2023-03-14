@@ -2,6 +2,20 @@ import BigNumber from "bignumber.js";
 
 const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
 
+const SYMBOL_CURRENCIES = {
+    cop:{
+        regex:/\bCOP\b|\bcop\b/,
+        replaceFor:"DCOP"
+    }
+}
+
+export const parseSymbolCurrency = (symbolCurrency:string):string => {
+   const symbolCurrencyData = SYMBOL_CURRENCIES[symbolCurrency?.toLowerCase() as keyof typeof SYMBOL_CURRENCIES]
+   if(!symbolCurrencyData)return symbolCurrency
+   const { regex, replaceFor } = symbolCurrencyData;
+   return symbolCurrency.replace(regex, replaceFor);
+}
+
 export const DEFAULT_CURRENCY = {
     currency: env !== 'production' ? 'bitcoin_testnet' : 'bitcoin',
     symbol:env !== 'production' ? 'btct' : 'btc',

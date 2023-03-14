@@ -19,7 +19,7 @@ import {
 } from "../../../shared-styles";
 import GetInfoComponentToRender from './infoComponent'
 import { TotalAmount } from '../../../shared-styles'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
@@ -235,8 +235,8 @@ export const BottomSection = ({ currentOrder, tx_path, colorState }) => {
           <p className="fuente saldo">{amountTitle}</p>
           <p className="fuente2 amount">
             {checkIfFiat(currentOrder?.currency) && "$ "}
-            {amount}{" "}
-            {currency && <span className="fuente">{currency?.code?.toUpperCase()}</span>}
+            {amount}{" "} 
+            {currency && <span className="fuente">{parseSymbolCurrency(currency?.symbol)?.toUpperCase()}</span>}
           </p>
         </TotalAmount>
       </Container>

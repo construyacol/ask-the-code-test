@@ -11,6 +11,7 @@ import {
     TitleContainer,
     StatusHeaderContainer
 } from '../../onBoarding/styles'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 
@@ -36,7 +37,7 @@ const ResumeComponent = ({
         <>
           <StatusHeaderContainer>
             <TitleContainer>
-              <h1 className="fuente">Resumen del retiro</h1>
+              <h1 className="fuente">Resumen del envío</h1>
             </TitleContainer>
             <RenderSwitchComponent 
               STAGE_COMPONENTS={STAGE_COMPONENTS}
@@ -68,7 +69,6 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
     }
   }, [withdrawProvider, withdrawAccount])
 
-
   return(
     <StatusContainer>
       <ItemContainer>
@@ -93,7 +93,7 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
           <LeftText className="fuente">Cantidad:</LeftText>
           <MiddleSection />
           <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-            {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
+            {`$ ${withdrawAmount} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
           </RightText>
       </ItemContainer>
       {
@@ -102,7 +102,7 @@ const InternalStatus = ({ state, stageManager, withdrawProvider }) => {
             <LeftText className="fuente">Costo:</LeftText>
             <MiddleSection />
             <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-              {`$ ${cost || 0} COP` || 'skeleton --------'} 
+              {`$ ${cost || 0} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
             </RightText>
         </ItemContainer>
       }
@@ -159,7 +159,7 @@ const BankStatus = ({ state, stageManager, withdrawProvider }) => {
               <LeftText className="fuente">Cantidad:</LeftText>
               <MiddleSection />
               <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                {`$ ${withdrawAmount} COP` || 'skeleton --------'} 
+                {`$ ${withdrawAmount} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
               </RightText>
           </ItemContainer>
           {
@@ -168,7 +168,7 @@ const BankStatus = ({ state, stageManager, withdrawProvider }) => {
                 <LeftText className="fuente">Costo:</LeftText>
                 <MiddleSection />
                 <RightText className={`${withdrawAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} COP` || 'skeleton --------'} 
+                  {`$ ${cost} - ${parseSymbolCurrency(withdrawProvider?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }

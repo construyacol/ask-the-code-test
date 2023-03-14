@@ -18,7 +18,7 @@ import { device } from 'const/const'
 import loadable from "@loadable/component";
 import { getExportByName } from 'utils'
 // import { P } from 'components/widgets/typography'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 
 // const Disclaimer = loadable(() => import("components/forms/widgets/sharedStyles").then(getExportByName("Disclaimer")));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")));
@@ -264,7 +264,7 @@ const CriptoView = (props) => {
       <ContAddress className={`contAddress ${osDevice}`}>
 
         <p className="fuente soloAd">
-          Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {current_wallet.currency} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
+          Envía solo <strong className={`fuente2 protocol ${current_wallet.currency}`}> {parseSymbolCurrency(current_wallet?.currency)} {`( ${user_friendly?.token_protocol || user_friendly?.network} )`}</strong> de la red <strong className="uppercase fuente2">{depositProviders?.current?.provider_type}</strong> a esta dirección.  
           Cualquier otra criptomoneda o envío desde otra red podría resultar en la pérdida de tu depósito.{" "}
         </p>
 

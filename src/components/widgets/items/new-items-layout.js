@@ -5,6 +5,7 @@ import { InputKeyActionHandler } from "../accountList/styles";
 import { getCdnPath } from '../../../environment'
 import { CURRENCY_INDEX_IMG } from 'core/config/currencies'
 import './items.css'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
 
@@ -23,7 +24,7 @@ function NewItemsLayout(props) {
     actualizarEstado,
     handleClick,
     specialMode = false,
-    classNames,
+    classNames
   } = props;
 
   const doSelectionForItem = () => {
@@ -129,7 +130,7 @@ function NewItemsLayout(props) {
               })}
           </div>
         ) : (
-          <p title={name}>{(code && code?.toUpperCase()) || name}</p>
+          <p title={name}>{(code && parseSymbolCurrency(code)?.toUpperCase()) || name}</p>
         )}
       </div>
       {placeholder && !primarySelect && (

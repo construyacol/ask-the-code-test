@@ -13,6 +13,7 @@ import {
 } from '../../onBoarding/styles'
 import { FIAT_DEPOSIT_TYPES } from '../api'
 import { calculateCost } from '../../sharedValidations'
+import { parseSymbolCurrency } from 'core/config/currencies'
 
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
@@ -147,7 +148,7 @@ const PseResumeComponent = ({
                 <LeftText className="fuente">Cantidad:</LeftText>
                 <MiddleSection />
                 <RightText className={`${state?.depositAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${state?.depositAmount} COP` || 'skeleton --------'} 
+                  {`$ ${state?.depositAmount} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
@@ -158,7 +159,7 @@ const PseResumeComponent = ({
                 <LeftText className="fuente">Costo:</LeftText>
                 <MiddleSection />
                 <RightText className={`${cost ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} COP` || 'skeleton --------'} 
+                  {`$ ${cost} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
@@ -174,11 +175,13 @@ const BankResumeComponent = ({
   stageManager,
   state,
   depositAccount
-}) => {
+}) => { 
 
   const { depositCost, depositAmount } = state
   const [ cost, setCost ] = useState()
   const [ total, setTotal ] = useState()
+
+  console.log('depositAccount', )
 
   useEffect(() => {
     if(depositAccount && depositCost){
@@ -207,7 +210,7 @@ const BankResumeComponent = ({
                 <LeftText className="fuente">Costo:</LeftText>
                 <MiddleSection />
                 <RightText className={`${depositCost ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${cost} COP` || 'skeleton --------'} 
+                  {`$ ${cost} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
@@ -217,7 +220,7 @@ const BankResumeComponent = ({
                 <LeftText className="fuente">Cantidad:</LeftText>
                 <MiddleSection />
                 <RightText className={`${depositAmount ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${depositAmount} COP` || 'skeleton --------'} 
+                  {`$ ${depositAmount} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
@@ -227,7 +230,7 @@ const BankResumeComponent = ({
                 <LeftText className="fuente">Total:</LeftText>
                 <MiddleSection />
                 <RightText className={`${total ? 'fuente2' : 'skeleton'}`}>
-                  {`$ ${total} COP` || 'skeleton --------'} 
+                  {`$ ${total} - ${parseSymbolCurrency(depositAccount?.currency)}` || 'skeleton --------'} 
                 </RightText>
             </ItemContainer>
           }
