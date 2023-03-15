@@ -35,7 +35,7 @@ export const WithdrawServiceList = ({
 
   useEffect(() => {
     for (const item in withdrawServiceList) {
-      if(wProvidersByProvType[item]) setAvailableWProv(true);
+      if(wProvidersByProvType[item]?.enabled) setAvailableWProv(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -50,10 +50,10 @@ export const WithdrawServiceList = ({
             { 
               wProvidersByProvType && Object.keys(withdrawServiceList).map((provKey, index) => {
                   const itemList = wProvidersByProvType[provKey]
-                  const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
+                  const AuxComponent = withdrawServiceList[provKey]?.AuxComponent 
                   const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
                   let _value = withdrawServiceList[provKey]?.value
-                  if(!wProvidersByProvType[provKey])return null;
+                  if(!wProvidersByProvType[provKey] || !wProvidersByProvType[provKey]?.enabled)return null;
                   return <ItemListComponent 
                     key={index} 
                     className={`auxNumber account_${itemList?.id}`}

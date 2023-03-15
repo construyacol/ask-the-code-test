@@ -52,7 +52,7 @@ const WithdtrawAccountList = ({
     }, [])
   
       return(
-        <>
+        <> 
           <WithdrawServiceList
             withdrawServiceList={WITHDRAW_ACCOUNT_LIST}
             handleAction={selectWithdrawAccount}

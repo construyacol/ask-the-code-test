@@ -170,8 +170,6 @@ export class WithdrawService extends WebService {
       }, {})
     );
   }
-
-
  
 
   async fetchNetworkData(withdraw_provider_id) {
@@ -187,8 +185,8 @@ export class WithdrawService extends WebService {
   }
 
 
-
-
+  // let filter = `{"where":{"withdraw_account_id":"${account_id}", "state":{"inq":["confirmed", "accepted", "rejected"]}}, "limit":${limit}, "skip":${skip}, "order":"id DESC", "include":{"relation":"user"}}`;
+  // const url_withdraw = `${GET_WITHDRAWS_BY_ACCOUNT_ID}/${user.id}/withdraws?country=${user.country}&filter=${filter}`;
 
   async fetchWithdrawProviders() {
     await this.dispatch(
@@ -196,8 +194,9 @@ export class WithdrawService extends WebService {
     );
     const user = this.user;
     if(user.level === 'level_0') return ;
- 
+    
     const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}`;
+    // const finalUrl = `${WITHDRAW_PROVIDERS_URL}?country=${user.country}&filter={"where": {"enabled": true}`;
 
     const withdrawProviders = await this.Get(finalUrl);
     if (!withdrawProviders) return;

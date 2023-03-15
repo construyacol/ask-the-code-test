@@ -21,8 +21,7 @@ import { useFormatCurrency } from "hooks/useFormatCurrency";
 import { useSelector } from "react-redux";
 import AvailableBalance from '../../widgets/availableBalance'
 import { CURRENCY_INDEX_IMG } from 'core/config/currencies' 
-import { checkIfFiat } from 'core/config/currencies';
-import { parseSymbolCurrency } from 'core/config/currencies'
+import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
 
 function SwapView(props) {
 
@@ -81,7 +80,7 @@ function SwapView(props) {
 
   async function getValueForOnePrimaryCurrency() {
     const { buy_price, secondary_currency, primary_currency } = currentPair;
-    const finalString = `1 ${currencies[primary_currency]?.symbol || primary_currency} = ${await formatCurrency(buy_price, secondary_currency)} ${secondary_currency.toUpperCase()}`;
+    const finalString = `1 ${currencies[primary_currency]?.symbol || primary_currency} = ${await formatCurrency(buy_price, secondary_currency)} ${parseSymbolCurrency(secondary_currency)?.toUpperCase()}`;
     setValueForOnePrimaryCurrency(finalString);
   }
 
@@ -252,8 +251,8 @@ function SwapView(props) {
         value={value}
         handleChange={handleChangeSpendAmount}
         handleStatus={handleStatus}
-        setMaxWithActionKey={true}
-        label={`Pago con ${spentCurrencySymbol}`}
+        setMaxWithActionKey={true} 
+        label={`Pago con ${parseSymbolCurrency(spentCurrencySymbol)}`}
         disabled={loader}
         autoFocus={true}
         autoComplete="off"

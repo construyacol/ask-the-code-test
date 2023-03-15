@@ -36,7 +36,7 @@ export class TransactionService extends WebService {
     return await this._Post(USER_DNS_URL, body);
   }
 
-  async fetchAllCurrencies() {
+  async fetchAllCurrencies() { 
     await this.dispatch(appLoadLabelAction(loadLabels.OBTENIENDO_TODAS_LAS_DIVISAS));
     const response = await this.Get(`${CURRENCIES_URL}{"where": {"enabled": true, "visible": true}}`);
     let new_currencies = [];
