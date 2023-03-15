@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { SelectListContainer, ItemListComponent } from 'components/forms/widgets/selectListComponent'
 import { TagNewComponent } from 'core/components/molecules'
@@ -30,38 +31,51 @@ export const WithdrawServiceList = ({
   ...props
 }) => {
 
+  const [ availableWProv, setAvailableWProv ] = useState(false)
+
+  useEffect(() => {
+    for (const item in withdrawServiceList) {
+      if(wProvidersByProvType[item]) setAvailableWProv(true);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return(
     <>
-      {uiName && <p className="fuente _pLabel _inputLabelP">{uiName}</p>}
-      <SelectListContainer>
-        { 
-          wProvidersByProvType && Object.keys(withdrawServiceList).map((provKey, index) => {
-              const itemList = wProvidersByProvType[provKey]
-              const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
-              const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
-              let _value = withdrawServiceList[provKey]?.value
-              if(!wProvidersByProvType[provKey])return null;
-              return <ItemListComponent 
-                key={index} 
-                className={`auxNumber account_${itemList?.id}`}
-                itemList={{
-                  value:_value || provKey,
-                  icon:withdrawServiceList[provKey]?.icon || provKey,
-                  uiName:withdrawServiceList[provKey]?.uiName,
-                  auxUiName:withdrawServiceList[provKey]?.auxUiName
-                }}
-                // auxUiName={isSelected && withdrawAccount?.account_number?.value}
-                firstIndex={index === 0}
-                lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 3) === index}
-                isSelectedItem={isSelected}
-                // handleAction={[ 'newBankAccount', 'withdrawCrypto' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
-                handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
-                AuxComponent={[AuxComponent]}
-              />
-            })
-        }
-      </SelectListContainer>
+      {
+        availableWProv &&
+        <>
+          {uiName && <p className="fuente _pLabel _inputLabelP">{uiName}</p>}
+          <SelectListContainer>
+            { 
+              wProvidersByProvType && Object.keys(withdrawServiceList).map((provKey, index) => {
+                  const itemList = wProvidersByProvType[provKey]
+                  const AuxComponent = withdrawServiceList[provKey]?.AuxComponent
+                  const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
+                  let _value = withdrawServiceList[provKey]?.value
+                  if(!wProvidersByProvType[provKey])return null;
+                  return <ItemListComponent 
+                    key={index} 
+                    className={`auxNumber account_${itemList?.id}`}
+                    itemList={{
+                      value:_value || provKey,
+                      icon:withdrawServiceList[provKey]?.icon || provKey,
+                      uiName:withdrawServiceList[provKey]?.uiName,
+                      auxUiName:withdrawServiceList[provKey]?.auxUiName
+                    }}
+                    // auxUiName={isSelected && withdrawAccount?.account_number?.value}
+                    firstIndex={index === 0}
+                    lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 3) === index}
+                    isSelectedItem={isSelected}
+                    // handleAction={[ 'newBankAccount', 'withdrawCrypto' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
+                    handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
+                    AuxComponent={[AuxComponent]}
+                  />
+                })
+            }
+          </SelectListContainer>
+        </>
+      }
     </>
   )
 }

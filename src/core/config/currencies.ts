@@ -21,6 +21,12 @@ export const DEFAULT_CURRENCY = {
     symbol:env !== 'production' ? 'btct' : 'btc',
 }
 
+// export const DEFAULT_CURRENCY = {
+//     currency: 'bitcoin',
+//     symbol:'btc'
+// }
+
+
 const FIAT_CRITERIALS = {
     cop:true,
     fiat:true

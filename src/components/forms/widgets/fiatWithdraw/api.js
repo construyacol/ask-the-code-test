@@ -199,6 +199,8 @@ export const createWithdrawAccount = async({ withdrawAccount, currentWallet, wit
       }
     }
   }
+  // console.log('createWithdrawAccount', body)
+  // debugger
   // coinsendaServices.resolveIdentifier(state[stageData?.key])
   const { data, error } = await mainService.createWithdrawAccount(body);
   if(error){

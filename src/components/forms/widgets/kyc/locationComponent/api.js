@@ -82,10 +82,9 @@ export const ApiPostLocation = async(payload) => {
 
   const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
   let body = {data:{}}
-  
-  if(env === 'production'){
-    body.data = payload
-  }else{
+  body.data = payload
+
+  if(env !== 'production'){
     body.data = {
       type:"residence",
       aditional_info:"", //optional

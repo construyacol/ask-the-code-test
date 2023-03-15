@@ -58,7 +58,7 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
         country:current_wallet?.country,
         currency: current_wallet.currency,
         provider_type: provider_type,
-        internal:provider?.internal,
+        internal:provider?.internal || false,
         info_needed:{
           label,
           address:address.trim(),

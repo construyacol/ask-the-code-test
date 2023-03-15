@@ -153,9 +153,9 @@ function SwapView(props) {
     const { id } = currentPair;
     const boughtCurrency = props.pairsForAccount[currentWallet.id] && props.pairsForAccount[currentWallet.id].current_pair.currency //Localizamos la moneda comprada
     const thisAccountToExist = await getAccountToExist(boughtCurrency) //verificamos que haya una cuenta para la moneda comprada existente
-    if(!thisAccountToExist){
+    if(!thisAccountToExist){ 
       await createAccount(boughtCurrency);
-    } 
+    }  
     const newSwap = await coinsendaServices.addNewSwap(currentWallet.id, id, formatToCurrency(value, currentWallet.currency));
     if (!newSwap) {
       actions.isAppLoading(false);
@@ -164,25 +164,14 @@ function SwapView(props) {
   };
 
   const createAccount = async(boughtCurrency) => {
-    const res = await coinsendaServices.createAccountAndInsertDepositProvider({
-      data: {
-        currency:currencies[boughtCurrency].currency,
-        enabled: true,
-        short_currency:{
-          currency:currencies[boughtCurrency].currency,
-          // is_token:currencies[boughtCurrency].is_token
-          is_token:false
-        },
-      }
-    });
+    const res = await coinsendaServices.createAccountAndInsertDepositProvider({ currency:boughtCurrency });
     return res
   }
 
   const getAccountToExist = async(boughtCurrency) => {
     for (let [ , wallet] of Object.entries(props.wallets)) {
-      if(wallet.currency === boughtCurrency){
-        return wallet
-      }
+      console.log('walletxist', boughtCurrency, wallet.currency)
+      if(wallet.currency === boughtCurrency)return wallet;
     }
   }
 
