@@ -1,4 +1,6 @@
 import { mainService } from "../../../../../services/MainService";
+import { ONLY_TEXT, IS_NOT_TEXT, ONLY_NUMBERS, IS_NOT_NUMBER } from 'core/const/regex'
+
 
 const LOCATION_INFO_NEEDED = {
   "location_country":{
@@ -14,10 +16,14 @@ const LOCATION_INFO_NEEDED = {
     ui_type:"text",
   },
   "address":{
-    ui_name:"Dirección",
+    ui_name:"Dirección de residencia",
     ui_type:"text",
   }
 }
+
+
+const TestAddressComponent = props => <p>Left</p>
+
 
 const STAGES = {
   "province":{
@@ -54,24 +60,83 @@ const STAGES = {
         }
       }
     },
+    // "address":{
+    //   // uiName:"Dirección de residencia:",
+    //   key:"address",
+    //   uiType:"text",
+    //   "settings":{
+    //     defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
+    //     successPattern:/[a-zA-Z ]{3,40}/g,
+    //     // label:"Dirección de residencia:",
+    //     // placeholder:"Escribe la dirección",
+    //     queryParams:{
+    //       form:'residence_address'
+    //     },
+    //     errors:[
+    //       { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
+    //     ],
+    //   }
+    // },
     "address":{
-      // uiName:"Dirección de residencia:",
       key:"address",
-      uiType:"text",
-      "settings":{
-        defaultMessage:"Escribe de forma completa tu dirección actual de residencia",
-        successPattern:/[a-zA-Z ]{3,40}/g,
-        // label:"Dirección de residencia:",
-        // placeholder:"Escribe la dirección",
+      uiType:"recursiveLevel",
+      renderComponent:TestAddressComponent,
+      settings:{
         queryParams:{
-          form:'personal_address'
-        },
-        errors:[
-          { pattern:/[^a-zA-Z ]{1,30}/g, message:'Solo se permiten letras...'}
-        ],
+          form:'createWithdrawAccount',
+          stage:"address"
+        }
+      },
+      "streetName":{
+        key:"streetName",
+        uiType:"text",
+        "settings":{
+          successPattern:ONLY_TEXT,
+          errors:[ 
+            { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
+          ],
+          defaultMessage:"",
+          placeholder:"Calle, carrera...",
+        }
+      },
+      "streetNumber":{
+        key:"streetNumber",
+        uiType:"text",
+        "settings":{
+          successPattern:ONLY_NUMBERS(),
+          errors:[ 
+            { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
+          ],
+          placeholder:"Código postal",
+        }
+      },
+      "district":{
+        key:"district",
+        uiType:"text",
+        "settings":{
+          successPattern:ONLY_TEXT,
+          errors:[ 
+            { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
+          ],
+          placeholder:"Barrio",
+        }
+      },
+      "zipCode":{
+        key:"zipCode",
+        uiType:"text",
+        "settings":{
+          successPattern:ONLY_NUMBERS(),
+          errors:[ 
+            { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
+          ],
+          placeholder:"Código postal",
+        }
       }
-    },
+    }
 }
+
+
+
 
 export const ApiGetLocationStages = async(config) => {
     return LOCATION_INFO_NEEDED
