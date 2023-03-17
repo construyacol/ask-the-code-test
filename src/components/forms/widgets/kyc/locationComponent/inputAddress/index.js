@@ -6,14 +6,27 @@ import {
     InputContainer,
     LabelText
 } from '../../styles'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import validations from '../../validations'
+import { ProgressBarComponent } from '../../InputComponent'
 
 
 export default function InputAddress(props){
 
-   const { stageData } = props
-   const [ currentInput, setCurrentInput ] = useState('')
+   const { stageData, progressBar, handleState:{ state, setState } } = props
+   const [ currentInput, setCurrentInput ] = useState(LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME)
    const [ addressState, setAddressState ] = useState(getInitialState(LOCATION_TYPES?.STAGES?.ADDRESS))
+
+   // console.log('InputAddress', stageData?.key, state,  props)
+   // console.log('addressState', addressState)
+
+// selectlist
+// validaciones inputs
+// status input
+// next cta input
+// suggested zip code
+// enable next button
+// mobile support
 
    const components = {
       streetName:StreetName(InputText),
@@ -22,16 +35,28 @@ export default function InputAddress(props){
       zipCode:InputText
    }
 
-   // console.log('|||||  InputAddress ==> ', props)
-
    const inputOnChange = ({ target }) => {
-      console.log('inputOnChange', target?.name, target?.value)
-      console.log('addressState', addressState)
+      if(!validations.address[target?.name])return;
+      const [ _value, _status ] = validations.address[target?.name](target?.value, {...stageData[target?.name]});
+      target.value = _value
+      setAddressState(prevState => ({
+         ...prevState,
+         [target?.name]:target?.value
+      }))
    }
 
    const onFocus = ({ target }) => {
       setCurrentInput(target?.name)
    }
+
+   useEffect(() => {
+      if(addressState[LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME]){
+         setState(prevState => ({
+            ...prevState,
+            [stageData?.key]:addressState
+         }))
+      }
+   }, [addressState])
 
    return(
       <InputWrapper>
@@ -51,7 +76,7 @@ export default function InputAddress(props){
                      name:itemData?.key,
                      //ref:refEl,
                      // disabled,
-                     //autoFocus:isMovilViewport ? false : true,
+                     autoFocus: currentInput === itemData?.key
                      // onKeyDown: setMaxWithActionKey ? setMaxWithActionKeyFn : uxForInput,
                      //inputMode:inputMode, 
                      // autoComplete,
@@ -66,12 +91,83 @@ export default function InputAddress(props){
                      />
                })
             }
+
+            { 
+               progressBar &&
+               <ProgressBarComponent {...progressBar}/>
+            }
          </InputContainer>
          <LabelText className='fuente'>
             {stageData[currentInput]?.settings?.defaultMessage}
          </LabelText>
       </InputWrapper>
    )
+}
+
+const STREET_NUMBER_TYPES = {
+      NUMBER_ONE:"numberOne",
+      NUMBER_TWO:"numberTwo"
+}
+
+const StreetNumber = props => {
+   const { data, inputProps } = props
+   const placeHolder = "_ _"
+   const [ streetNumberState, setStreetNumberState ] = useState(getInitialState(STREET_NUMBER_TYPES))
+
+   const onFocus = ({target}) => {
+      inputProps?.onFocus && inputProps?.onFocus({target:{name:"streetNumber"}})
+   }
+
+   const onChange = ({target}) => {
+      setStreetNumberState(prevState => ({
+         ...prevState,
+         [target?.name]:target?.value
+      }))
+      // console.log('StreetNumberOnChange', target?.name, target?.value)
+   }
+
+   useEffect(() => {
+      if(streetNumberState[STREET_NUMBER_TYPES?.NUMBER_ONE] && streetNumberState[STREET_NUMBER_TYPES?.NUMBER_TWO]){
+         let value =`${streetNumberState[STREET_NUMBER_TYPES.NUMBER_ONE]} - ${streetNumberState[STREET_NUMBER_TYPES.NUMBER_TWO]}`
+         inputProps?.onChange({target:{name:LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NUMBER, value}})
+      }
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [streetNumberState])
+
+   // console.log('streetNumberState', streetNumberState[STREET_NUMBER_TYPES?.NUMBER_TWO])
+   return(
+      <StreetNumberContainer>
+         <SPAN size={18}>#</SPAN>
+         <input {...inputProps} onFocus={onFocus} onChange={onChange} name={STREET_NUMBER_TYPES?.NUMBER_ONE} placeholder={placeHolder}></input>
+         <SPAN size={18}>-</SPAN>
+         <input {...inputProps} onFocus={onFocus} onChange={onChange} name={STREET_NUMBER_TYPES?.NUMBER_TWO} placeholder={placeHolder}></input>
+      </StreetNumberContainer>
+   )
+}
+
+
+function StreetName(AsComponent){
+   return function (props) {
+      const { state, setState} = props.handleState
+
+   console.log('StreetName', state)
+
+
+      return <AsComponent {...props}/>
+   };
+}
+
+
+const InputText = props => {
+   const { data, inputProps } = props
+   return(
+      <input {...inputProps}></input>
+   )
+}
+
+const DefaultRender = props => {
+   const { data } = props
+   return <p>{data?.settings?.placeholder} -  </p>
 }
 
 
@@ -99,40 +195,3 @@ const StreetNumberContainer = styled.div`
       font-family: "Tomorrow", sans-serif !important;
     }
 `
-
-const StreetNumber = props => {
-   const { data, inputProps } = props
-   const placeHolder = "_ _"
-   const onFocus = ({target}) => {
-      inputProps?.onFocus({target:{name:"streetNumber"}})
-   }
-   return(
-      <StreetNumberContainer>
-         <SPAN size={18}>#</SPAN>
-         <input {...inputProps} onFocus={onFocus} name="numberOne" placeholder={placeHolder}></input>
-         <SPAN size={18}>-</SPAN>
-         <input {...inputProps} onFocus={onFocus} name="numberTwo" placeholder={placeHolder}></input>
-      </StreetNumberContainer>
-   )
-}
-
-
- function StreetName(AsComponent){
-   return function (props) {
-      return <AsComponent {...props}/>
-   };
-}
-
-
-const InputText = props => {
-   const { data, inputProps } = props
-   return(
-      <input {...inputProps}></input>
-   )
-}
-
-const DefaultRender = props => {
-   const { data } = props
-   return <p>{data?.settings?.placeholder} -  </p>
-}
-

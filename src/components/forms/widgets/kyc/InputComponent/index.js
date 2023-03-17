@@ -148,7 +148,7 @@ export const InputWrapper = styled.div`
 
 
 
-const ProgressBarComponent = ({ start = 0, end = 0, showSteps }) => {
+export const ProgressBarComponent = ({ start = 0, end = 0, showSteps }) => {
   
   const count = `${start}/${end}`
   return(

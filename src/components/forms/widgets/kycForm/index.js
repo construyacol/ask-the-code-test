@@ -19,7 +19,6 @@ import Button from 'components/widgets/buttons/button'
 const DynamicLoadComponent = loadable(() => import('../../dynamicLoadComponent'))
 
 const KycFormComponent = ({ 
-    state, 
     dataForm, 
     closeModal,
     isNewId,
@@ -48,7 +47,8 @@ const KycFormComponent = ({
       true
     );
     
-    const { viewportSizes:{ isMobile } } = props
+    const { viewportSizes:{ isMobile }, handleState } = props;
+    const { state } = handleState
     const stageErrorState = (dataForm?.handleError?.errors[stageData?.key] && !state[stageData?.key]) && 'rejected'
     const errorMessage = dataForm?.handleError?.errors[stageData?.key]
     const inputMessage = (typeof errorMessage === 'string' && errorMessage) || stageData?.settings?.defaultMessage
@@ -125,14 +125,14 @@ const KycFormComponent = ({
                       stageData={stageData}
                       // setStageData={setStageData}
                       dataForm={dataForm}
-                      state={state}
-                      // progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
+                      handleState={handleState}
+                      progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
                       // AuxComponent={[
                       //   stageData?.settings?.auxComponent, 
                       //   isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
                       // ]}
                     />
-                    :
+                    : 
                     <InputComponent
                       className={`${stageErrorState}`}
                       onChange={onChange} 

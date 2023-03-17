@@ -11,7 +11,7 @@ import {
   formatMaskDate
 } from 'utils/date'
 
-
+import { LOCATION_TYPES } from './locationComponent/api'
 
 const birthday = (value, data) => {
 
@@ -123,10 +123,23 @@ export const selectListValidator = (value, data) => {
   }
 
 
-  const locationValidation = {
+  const textNumberInputValidator = (value, data) => {
+    validateLabelMsg(value, data)
+    // let _value = value.replace(/[^a-zA-Z0-9 _]/g, '')
+    let _value = value
+    let status = _value.match(data.settings.successPattern) && 'success'
+    return [ _value, status ]
+  }
+
+  const locationValidation = { 
     location_country:selectListValidator,
     province:selectListValidator,
-    address:generalValidator,
+    address:{
+      [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME]:textNumberInputValidator,
+      [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NUMBER]:textNumberInputValidator,
+      [LOCATION_TYPES?.STAGES?.ADDRESS?.DISTRICT]:textInputValidator,
+      [LOCATION_TYPES?.STAGES?.ADDRESS?.ZIP_CODE]:phone,
+    },
     city:selectListValidator
   }
 

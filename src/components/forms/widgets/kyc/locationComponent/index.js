@@ -96,10 +96,11 @@ const LocationComponent = ({ handleDataForm, handleState, closeModal, actions })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStage])
 
+  // console.log('handleState', handleState)
  
   return(
     <KycFormComponent
-      state={state}
+      handleState={handleState}
       dataForm={dataForm}
       closeModal={closeModal}
       prevStep={prevStep} 
