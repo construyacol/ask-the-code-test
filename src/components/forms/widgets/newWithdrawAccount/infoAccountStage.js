@@ -66,6 +66,8 @@ export default function InfoAccountComponent ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [state?.infoAccount])
   
+      console.log('InfoAccountComponent', state)
+
   
     return( 
       <StageContainer className="_infoAccount">

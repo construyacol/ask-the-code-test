@@ -298,6 +298,20 @@ export const InputContainer = styled.form`
     transition: .15s;
   }
 
+  &.kyc__input--address{
+    grid-template-columns: 150px auto 1fr 140px;
+    column-gap: 10px;
+    align-items: center;
+    input{
+      font-size: 16px;
+      font-family: "Raleway",sans-serif;
+      color: var(--paragraph_color);
+      &.zipCode{
+        font-family: "Tomorrow", sans-serif;
+      }
+    }
+  }
+
   &.skeleton {
     align-items: center;
     input{
@@ -306,7 +320,6 @@ export const InputContainer = styled.form`
       height: 17px;
       color: transparent;
       border-radius: 4px;
-      justify-align:center;
       margin-left:20px;
     }
   }

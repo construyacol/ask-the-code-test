@@ -2,6 +2,20 @@ import { mainService } from "../../../../../services/MainService";
 import { ONLY_TEXT, IS_NOT_TEXT, ONLY_NUMBERS, IS_NOT_NUMBER } from 'core/const/regex'
 
 
+
+export const LOCATION_TYPES = {
+  FORM:"location",
+  STAGES:{
+    ADDRESS:{
+      STREET_NAME:"streetName",
+      STREET_NUMBER:"streetNumber",
+      DISTRICT:"district",
+      ZIP_CODE:"zipCode",
+    },
+  }
+}
+
+
 const LOCATION_INFO_NEEDED = {
   "location_country":{
     ui_name:"País",
@@ -17,12 +31,8 @@ const LOCATION_INFO_NEEDED = {
   },
   "address":{
     ui_name:"Dirección de residencia",
-    ui_type:"text",
   }
 }
-
-
-const TestAddressComponent = props => <p>Left</p>
 
 
 const STAGES = {
@@ -80,7 +90,7 @@ const STAGES = {
     "address":{
       key:"address",
       uiType:"recursiveLevel",
-      renderComponent:TestAddressComponent,
+      renderComponent:"kyc/locationComponent/inputAddress",
       settings:{
         queryParams:{
           form:'createWithdrawAccount',
@@ -89,52 +99,71 @@ const STAGES = {
       },
       "streetName":{
         key:"streetName",
-        uiType:"text",
+        uiType:"select",
+        uiName:"",
+        autopista:{value:"autopista", ui_name:"Autopista"},
+        // avenida:{value:"avenida", ui_name:"Avenida"},
+        // calle:{value:"calle", ui_name:"Calle"},
+        // carrera:{value:"carrera", ui_name:"Carrera"},
+        // transversal:{value:"transversal", ui_name:"Transversal"},
+        // bulevar:{value:"bulevar", ui_name:"Bulevar"},
+        // carretera:{value:"carretera", ui_name:"Carretera"},
+        // circunvalar:{value:"circunvalar", ui_name:"Circunvalar"},
+        // diagonal:{value:"diagonal", ui_name:"Diagonal"},
+        // glorieta:{value:"glorieta", ui_name:"Glorieta"},
+        // kilometro:{value:"kilometro", ui_name:"Kilometro"},
+        // variante:{value:"variante", ui_name:"Variante"},
+        // via:{value:"via", ui_name:"Vía"},
         "settings":{
           successPattern:ONLY_TEXT,
           errors:[ 
             { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
           ],
-          defaultMessage:"",
+          defaultMessage:"Elige el tipo de calle",
           placeholder:"Calle, carrera...",
         }
       },
       "streetNumber":{
         key:"streetNumber",
         uiType:"text",
+        uiName:"",
         "settings":{
-          successPattern:ONLY_NUMBERS(),
+          successPattern:ONLY_NUMBERS,
           errors:[ 
             { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
           ],
-          placeholder:"Código postal",
+          defaultMessage:"Escribe el número de tu calle",
+          placeholder:"Número de calle",
         }
       },
       "district":{
         key:"district",
         uiType:"text",
+        uiName:"",
         "settings":{
           successPattern:ONLY_TEXT,
           errors:[ 
             { pattern:IS_NOT_TEXT, message:'Solo se permiten letras...'}
           ],
+          defaultMessage:"Escribe el nombre del barrio donde resides",
           placeholder:"Barrio",
         }
       },
       "zipCode":{
         key:"zipCode",
         uiType:"text",
-        "settings":{
-          successPattern:ONLY_NUMBERS(),
+        uiName:"",
+        "settings":{ 
+          successPattern:ONLY_NUMBERS,
           errors:[ 
             { pattern:IS_NOT_NUMBER, message:'Solo se permiten Números...'}
           ],
+          defaultMessage:"Escribe el código postal de tu ubicación",
           placeholder:"Código postal",
         }
       }
     }
 }
-
 
 
 

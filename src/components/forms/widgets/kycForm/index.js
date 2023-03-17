@@ -54,6 +54,7 @@ const KycFormComponent = ({
     const inputMessage = (typeof errorMessage === 'string' && errorMessage) || stageData?.settings?.defaultMessage
       
 
+
     return(
      
       <Layout 
@@ -110,6 +111,28 @@ const KycFormComponent = ({
                     loading ?
                     <InputSkeleton/>
                     :
+                    stageData?.renderComponent ?
+                    <DynamicLoadComponent
+                      component={stageData?.renderComponent}
+                      // className={`${stageErrorState}`}
+                      onChange={onChange} 
+                      // inputStatus={stageStatus}
+                      // defaultValue={state[stageData?.key]}
+                      // name={stageData?.key} 
+                      // message={inputMessage}
+                      placeholder={stageData?.settings?.placeholder}
+                      type={stageData?.uiType}
+                      stageData={stageData}
+                      // setStageData={setStageData}
+                      dataForm={dataForm}
+                      state={state}
+                      // progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
+                      // AuxComponent={[
+                      //   stageData?.settings?.auxComponent, 
+                      //   isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
+                      // ]}
+                    />
+                    :
                     <InputComponent
                       className={`${stageErrorState}`}
                       onChange={onChange} 
@@ -141,7 +164,7 @@ const KycFormComponent = ({
                 />
 
                 {
-                  isMobile &&
+                  isMobile && 
                   <Button 
                     color="primary"
                     variant="contained"
