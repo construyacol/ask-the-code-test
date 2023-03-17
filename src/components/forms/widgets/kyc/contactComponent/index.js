@@ -78,7 +78,7 @@ const ContactKycComponent = ({ handleDataForm, handleState, closeModal, actions 
 
   return(
     <KycFormComponent
-      state={state}
+      handleState={handleState}
       dataForm={dataForm}
       closeModal={closeModal}
       loading={loading}

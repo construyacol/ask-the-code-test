@@ -19,7 +19,7 @@ export default function InputAddress(props){
 
    // console.log('InputAddress', stageData?.key, state,  props)
    // console.log('addressState', addressState)
-
+ 
 // selectlist
 // validaciones inputs
 // status input
@@ -85,6 +85,7 @@ export default function InputAddress(props){
                   let RenderComponent = components[stageData[itemKey]?.key] || DefaultRender
                   return <RenderComponent 
                      key={index} 
+                     currentKey={stageData[itemKey]?.key}
                      inputProps={inputProps}
                      data={itemData} 
                      {...props}
@@ -148,11 +149,10 @@ const StreetNumber = props => {
 
 function StreetName(AsComponent){
    return function (props) {
-      const { state, setState} = props.handleState
+      const { handleState:{ state, setState }, stageData, currentKey } = props
 
-   console.log('StreetName', state)
-
-
+      console.log('StreetName', stageData[currentKey]?.selectList, props)
+      
       return <AsComponent {...props}/>
    };
 }
