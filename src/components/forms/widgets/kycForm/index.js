@@ -33,7 +33,8 @@ const KycFormComponent = ({
       finalStage,
       stageData,
       setStageData,
-      stageStatus
+      stageStatus,
+      setStageStatus
     },
     ...props
   }) => {
@@ -100,9 +101,9 @@ const KycFormComponent = ({
                   stageData?.renderComponent ?
                     <DynamicLoadComponent
                       component={stageData?.renderComponent}
-                      // className={`${stageErrorState}`}
                       onChange={onChange} 
-                      // inputStatus={stageStatus}
+                      stageStatus={stageStatus}
+                      // setStageStatus={setStageStatus}
                       // defaultValue={state[stageData?.key]}
                       // name={stageData?.key} 
                       // message={inputMessage}
@@ -115,10 +116,10 @@ const KycFormComponent = ({
                       progressBar={{start:currentStage+1, end:stageController?.length, showSteps:true}}
                       stageController={stageController}
                       currentStage={currentStage}
-                      // AuxComponent={[
-                      //   stageData?.settings?.auxComponent, 
-                      //   isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
-                      // ]}
+                      AuxComponent={[
+                        stageData?.settings?.auxComponent, 
+                        isMobile ? () => null : () => <NextButtom id={idNextStageKyc} onClick={nextStep} disabled={(currentStage >= stageController?.length) || stageStatus !== 'success'} />
+                      ]}
                     >
                       <Label
                         stageController={stageController}

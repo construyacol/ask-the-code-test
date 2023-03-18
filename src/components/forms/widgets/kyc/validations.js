@@ -158,10 +158,22 @@ export const selectListValidator = (value, data) => {
     return [ _value, status ]
   }
 
+  const addressValidator = (value, data) => {
+    let status = 'success'
+    for (const keyValue in value) {
+      if(!value[keyValue]?.trim()){
+        status = null
+        break
+      }
+    }
+    return [ value, status ]
+  }
+
   const locationValidation = { 
     location_country:selectListValidator,
     province:selectListValidator,
     address:{
+      method:addressValidator,
       [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME]:matchListValidator,
       [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NUMBER]:textNumberInputValidator,
       [LOCATION_TYPES?.STAGES?.ADDRESS?.DISTRICT]:textInputValidator,
