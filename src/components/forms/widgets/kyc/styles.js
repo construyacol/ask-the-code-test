@@ -299,7 +299,7 @@ export const InputContainer = styled.form`
   }
 
   &.kyc__input--address{
-    grid-template-columns: 150px auto 1fr 140px;
+    grid-template-columns: 1fr auto 1fr;
     column-gap: 10px;
     align-items: center;
     input{

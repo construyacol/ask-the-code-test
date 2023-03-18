@@ -88,11 +88,14 @@ const birthday = (value, data) => {
   }
 
 
+
+
+
 export const selectListValidator = (value, data) => {
     if(!data?.selectList) return generalValidator(value, data);
     validateLabelMsg(value, data)
     //accepts only letters, spaces and underscore by default
-    let _value = !data.regex ? value.replace(/[^a-zA-Z _' ']/g, '') : value
+    let _value = !data.regex ? value.replace(/[^a-zA-Z _' ']/g, '') : value?.slice()
   
     let result = []
     Object.keys(data?.selectList).forEach(itemList => {
@@ -131,14 +134,38 @@ export const selectListValidator = (value, data) => {
     return [ _value, status ]
   }
 
+
+  const matchListValidator = (value, data) => {
+    let _value = value?.slice()
+    // let _value = !data.regex ? value.replace(/[^a-zA-Z _' ']/g, '') : value
+    let result = []
+    Object.keys(data).forEach(itemList => {
+      if(itemList.includes(value.toLowerCase())){
+        result = [...result, itemList ]
+      }
+    })
+    result.forEach(itemList => {
+      if(itemList === value.toLowerCase()){
+        result = [ itemList ]
+      }
+    })
+    if(result?.length === 1 && value){
+      _value = result && result[0]
+      // addItemTag(data.key, data?.selectList[result[0]]?.uiName)
+    }
+    // console.log('matchListValidator', _value, result)
+    let status = ""
+    return [ _value, status ]
+  }
+
   const locationValidation = { 
     location_country:selectListValidator,
     province:selectListValidator,
     address:{
-      [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME]:textNumberInputValidator,
+      [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME]:matchListValidator,
       [LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NUMBER]:textNumberInputValidator,
       [LOCATION_TYPES?.STAGES?.ADDRESS?.DISTRICT]:textInputValidator,
-      [LOCATION_TYPES?.STAGES?.ADDRESS?.ZIP_CODE]:phone,
+      // [LOCATION_TYPES?.STAGES?.ADDRESS?.ZIP_CODE]:phone,
     },
     city:selectListValidator
   }

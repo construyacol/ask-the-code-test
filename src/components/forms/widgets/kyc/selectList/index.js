@@ -11,7 +11,7 @@ import { ListContainer, SelectListMain } from './styles'
 import useHeight from '../../../hooks/useHeight'
  
 
-const SelectList = ({ list, name, state, handleAction, ...props }) => {
+const SelectList = ({ list, name, state, handleAction, exactResult = true, ...props }) => {
   
   let [ height ] = useHeight(list)
   const [ searchList, setSearchList ] = useState(list || {})
@@ -24,13 +24,14 @@ const SelectList = ({ list, name, state, handleAction, ...props }) => {
     }else{
       setCurrentItemTagExist(null)
     }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state, name])
+  }, [state, name, searchList])
 
  
   useEffect(() => {
     if(list){
-      const itemList = filterElement(list, state[name])
+      const itemList = filterElement(list, state[name], exactResult)
       setSearchList(itemList)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,6 +53,8 @@ const SelectList = ({ list, name, state, handleAction, ...props }) => {
         <ListContainer>
           {
             Object.keys(searchList).map((itemKey, id) => {
+              if(["key", "uiType", "uiName"].includes(itemKey))return null;
+              //console.log('searchList', itemKey)
               return <ItemList 
                 key={id}
                 item={list[itemKey]}
