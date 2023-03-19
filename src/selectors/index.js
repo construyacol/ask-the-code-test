@@ -4,7 +4,7 @@ import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
 import { convertToObjectWithCustomIndex, reOrderedList } from "utils";
 import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
-import { checkIfFiat } from 'core/config/currencies';
+import { checkIfFiat, FIAT_PROVIDER_TYPES } from 'core/config/currencies';
 
 
 export const selectDepositAccountsByNetwork = createSelector(
@@ -158,7 +158,7 @@ export const serveModelsByCustomProps = createSelector(
   }
 );
 
-
+ 
 export const selectFiatWithdrawAccounts = createSelector(
   (state) => state.modelData.withdraw_accounts,
   (withdraw_accounts) => {
@@ -166,7 +166,7 @@ export const selectFiatWithdrawAccounts = createSelector(
     if(!withdraw_accounts)return [ fiatWithdrawAccounts]; 
     Object.keys(withdraw_accounts).forEach(wAccountKey => {
       const withdrawAccount = withdraw_accounts[wAccountKey];
-      if(checkIfFiat(withdrawAccount?.currency)){
+      if(checkIfFiat(withdrawAccount?.currency) && FIAT_PROVIDER_TYPES[withdrawAccount?.provider_type]){
         fiatWithdrawAccounts = {
           ...fiatWithdrawAccounts,
           [wAccountKey]:{

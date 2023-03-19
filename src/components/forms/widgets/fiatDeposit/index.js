@@ -81,7 +81,7 @@ useEffect(() => {
  
   const nextStep = async() => {
     if(stageStatus !== 'success'){return}  
-    setStageStatus(null)
+    setStageStatus(null) 
     const initialStages = await ApiGetOnFiatDepositStages()
     if(currentStage <= (Object.keys(initialStages).length - 1)){
       await createNextStages({stageData, state, setDataForm})
@@ -94,8 +94,6 @@ useEffect(() => {
     if(!Element) return;
     const FiatDepositSuccess = Element.default
     actions.success_sound();
-    // console.log('renderSuccessComponent', data)
-    // debugger
     actions.renderModal(() => 
     <FiatDepositSuccess 
       actions={actions}
@@ -140,7 +138,7 @@ useEffect(() => {
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:BankNameListComponent,
     [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:CriptoSupervisor
   }
-
+ 
   return(
     <>  
         <RenderSwitchComponent

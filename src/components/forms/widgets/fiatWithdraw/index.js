@@ -148,6 +148,8 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   )
 
 
+  // console.log('handleState', handleState)
+
   return(
     <>
         <RenderSwitchComponent

@@ -28,6 +28,7 @@ export default function WithdrawAccountsComponent({
 
 
   const selectWithdrawAccount = (withdrawAccount) => {
+    console.log('selectWithdrawAccount', withdrawAccount)
     setState(prevState => { return { ...prevState, [stageData?.key]: withdrawAccount } })
     setStageStatus('success')
   }

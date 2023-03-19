@@ -40,6 +40,8 @@ export const WithdrawServiceList = ({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // console.log('wProvidersByProvType', wProvidersByProvType)
+
   return(
     <>
       {
@@ -54,6 +56,7 @@ export const WithdrawServiceList = ({
                   const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
                   let _value = withdrawServiceList[provKey]?.value
                   if(!wProvidersByProvType[provKey] || !wProvidersByProvType[provKey]?.enabled)return null;
+                  
                   return <ItemListComponent 
                     key={index} 
                     className={`auxNumber account_${itemList?.id}`}
@@ -68,7 +71,8 @@ export const WithdrawServiceList = ({
                     lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 3) === index}
                     isSelectedItem={isSelected}
                     // handleAction={[ 'newBankAccount', 'withdrawCrypto' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
-                    handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
+                    handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction(item)} 
+                    // handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
                     AuxComponent={[AuxComponent]}
                   />
                 })
@@ -87,7 +91,7 @@ const Sub = styled(SPAN)`
 `
 
 const CRYPTO_ACCOUNT_LABEL ={ 
-  uiName:() => <P>A billetera DCOP <Sub className={"number"}> (ERC20)</Sub></P>,
+  uiName:() => <P>A billetera DCOP <Sub className={"number"}></Sub></P>,
   // AuxComponent:() => <div style={{
   //   display:"flex",
   //   justifyContent:"flex-end",
@@ -116,14 +120,16 @@ export const BANK = {
 
 const WITHDRAW_ACCOUNT_LABELS = {
   ...INTERNAL_NETWORK,
-  // ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
-  // ethereum:CRYPTO_ACCOUNT_LABEL,
+  ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+  ethereum:CRYPTO_ACCOUNT_LABEL,
+  bsc:CRYPTO_ACCOUNT_LABEL,
   ...BANK,
 }
 
 export const WITHDRAW_ACCOUNT_LIST = {
   ...INTERNAL_NETWORK,
-  // ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
-  // ethereum:CRYPTO_ACCOUNT_LABEL,
+  ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+  ethereum:CRYPTO_ACCOUNT_LABEL,
+  bsc:CRYPTO_ACCOUNT_LABEL,
 }
   

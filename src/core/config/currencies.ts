@@ -27,6 +27,11 @@ export const DEFAULT_CURRENCY = {
 // }
 
 
+export const FIAT_PROVIDER_TYPES = {
+    bank:true,
+    efecty_network:true,
+}
+
 const FIAT_CRITERIALS = {
     cop:true,
     fiat:true

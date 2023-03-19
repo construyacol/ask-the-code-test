@@ -90,7 +90,7 @@ const STAGES = {
   }  
 } 
 
-const CRYPTO_STAGES = {
+const CRYPTO_STAGE = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
     // uiName:"",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO,
@@ -112,19 +112,31 @@ const CRYPTO_STAGES = {
   }
 }
 
-
-const DEPOSIT_TYPE_STAGES = {
-  pse:PSE_STAGES,
-  bank:BANK_STAGES,
-  ethereum_testnet:CRYPTO_STAGES,
-  ethereum:CRYPTO_STAGES
-}
-
 const CRYPTO_API_STAGE = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.CRYPTO]:{
     ui_type:"text"
   }
 }
+
+const CRYPTO_API_STAGES = {
+  ethereum_testnet:CRYPTO_API_STAGE,
+  ethereum:CRYPTO_API_STAGE,
+  bsc:CRYPTO_API_STAGE,
+}
+
+const CRYPTO_STAGES = {
+  ethereum_testnet:CRYPTO_STAGE,
+  ethereum:CRYPTO_STAGE,
+  bsc:CRYPTO_STAGE,
+}
+
+
+const DEPOSIT_TYPE_STAGES = {
+  pse:PSE_STAGES,
+  bank:BANK_STAGES,
+  ...CRYPTO_STAGES
+}
+
 
 const depositApiStages = (_depositAccount) => {  
   const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
@@ -135,9 +147,8 @@ const depositApiStages = (_depositAccount) => {
         ui_type:"text"
       }
     },
-    ethereum_testnet:CRYPTO_API_STAGE,
-    ethereum:CRYPTO_API_STAGE,
-    bank:BANK_DEFAULT_STAGES
+    bank:BANK_DEFAULT_STAGES,
+    ...CRYPTO_API_STAGES
   }
 
   return providerTypes[_depositAccount?.provider_type] || BANK_DEFAULT_STAGES
@@ -152,6 +163,7 @@ export const createNextStages = async({
   if(!state[stageData?.key])return;
   const providerType = state[stageData?.key]?.provider_type || 'bank'
   const apiStages = depositApiStages(state[stageData?.key])
+
   let stages = {} 
   for (const stage of Object.keys(apiStages)) { 
     stages = {

@@ -181,7 +181,7 @@ const BankResumeComponent = ({
   const [ cost, setCost ] = useState()
   const [ total, setTotal ] = useState()
 
-  console.log('depositAccount', )
+  // console.log('depositAccount', )
 
   useEffect(() => {
     if(depositAccount && depositCost){
