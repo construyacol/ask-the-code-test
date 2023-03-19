@@ -25,7 +25,7 @@ function ProviderComponent({
     currentWallet,
     ...props
   }){  
-
+ 
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
     const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
@@ -60,8 +60,10 @@ function ProviderComponent({
         if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
         let servicesList = {...DEFAULT_SERVICE}
         for (const depositAccountName in depositAccounts) {
-          if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          // if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
+          // if(isEmpty(complementaryModel))continue;
+          if(depositAccounts[depositAccountName]?.currency_type === 'crypto')continue;
           servicesList = {
             ...servicesList,
             [depositAccounts[depositAccountName]?.provider_type]:{
@@ -145,7 +147,7 @@ function ProviderComponent({
         const depositAccount = depositAccounts[depAccountKey];
           if(checkIfFiat(depositAccount?.currency)){
             let keyProp = depositAccount?.name?.replace(" ", "_")?.toLowerCase()
-          _depositAccounts = {
+          _depositAccounts = { 
             ..._depositAccounts,
             [keyProp]:{
               ...depositAccount,
@@ -184,8 +186,8 @@ function ProviderComponent({
 
   const DEPOSIT_ACCOUNT_LABELS = {
     pse:PSE_ACCOUNT,
-    ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
-    ethereum:CRYPTO_ACCOUNT_LABEL,
+    // ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+    // ethereum:CRYPTO_ACCOUNT_LABEL,
   }
 
 

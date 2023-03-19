@@ -252,12 +252,12 @@ export const CURRENCIES = {
         testName:'COP',
         currencyConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_HALF_UP,
-            DECIMAL_PLACES: 2,
+            DECIMAL_PLACES: 0,
         }),
         prod_fee:'cop_fee',
         currencyFeeConfig:BigNumber.clone({
             ROUNDING_MODE: BigNumber.ROUND_UP,
-            DECIMAL_PLACES: 2,
+            DECIMAL_PLACES: 0,
         })
     },
     dcop:{
