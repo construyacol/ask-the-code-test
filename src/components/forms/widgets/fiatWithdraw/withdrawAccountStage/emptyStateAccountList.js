@@ -56,7 +56,7 @@ export const WithdrawServiceList = ({
                   const isSelected = state[stageData?.key]?.value === (withdrawServiceList[provKey]?.value || provKey)
                   let _value = withdrawServiceList[provKey]?.value
                   if(!wProvidersByProvType[provKey] || !wProvidersByProvType[provKey]?.enabled)return null;
-                  
+
                   return <ItemListComponent 
                     key={index} 
                     className={`auxNumber account_${itemList?.id}`}
@@ -68,7 +68,6 @@ export const WithdrawServiceList = ({
                     }}
                     // auxUiName={isSelected && withdrawAccount?.account_number?.value}
                     firstIndex={index === 0}
-                    lastIndex={Object.keys(withdrawServiceList)?.length === 1 ? true : (Object.keys(wProvidersByProvType)?.length - 3) === index}
                     isSelectedItem={isSelected}
                     // handleAction={[ 'newBankAccount', 'withdrawCrypto' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction({value:item?.value})} 
                     handleAction={[ 'newBankAccount' ]?.includes(_value) ? () => props.setView(_value) : (item) => handleAction(item)} 

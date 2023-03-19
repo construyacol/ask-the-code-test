@@ -36,7 +36,7 @@ const PanelHelper = props => {
         active_trade_operation,
         amountState,
         addressState, 
-        isMobile,
+        isMobile, 
         isOpenPanel,
         setIsOpenPanel,
         addressValue,

@@ -76,7 +76,7 @@ const WithdtrawAccountList = ({
                   itemList={withdrawAccount}
                   auxUiName={isSelected && withdrawAccount?.account_number?.value}
                   firstIndex={index === 0}
-                  lastIndex={(Object.keys(withdrawAccounts)?.length - 1) === index}
+                  // lastIndex={(Object.keys(withdrawAccounts)?.length - 1) === index}
                   isSelectedItem={isSelected}
                   isMovilViewport={isMobile}
                   handleAction={selectWithdrawAccount}

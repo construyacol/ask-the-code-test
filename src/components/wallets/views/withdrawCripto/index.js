@@ -44,7 +44,7 @@ export default withCryptoProvider(CriptoSupervisor)
 export const CriptoView = (props) => {
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
-
+ 
   const {
     current_wallet,
     withdrawProvider,
@@ -285,14 +285,12 @@ export const CriptoView = (props) => {
     isMobile
   } 
 
-
   if(isEmpty(withdrawProviders.current)){
-    return<SelectWithdrawNetwork uiName={`Selecciona la red en la que deseas realizar tu retiro ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
+    return<SelectWithdrawNetwork uiName={`Selecciona la red en la que deseas enviar ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
   }
 
-  
   return ( 
-    <>
+    <> 
       {props?.children}
       <AvailableWithdrawNetwork currentNetwork={withdrawProviders.current} callback={setNetworkProvider}/>
       <CriptoWithdrawForm>  

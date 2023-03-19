@@ -28,7 +28,7 @@ export default function StatusPanelContent ({
      <>
        <StatusHeaderContainer>
          <TitleContainer>
-           <h1 className="fuente">Cuenta de retiro</h1>
+           <h1 className="fuente">Cuenta bancaria</h1>
          </TitleContainer>
          <CardInfo className={`${uiBankName?.toLowerCase()}`}>
  

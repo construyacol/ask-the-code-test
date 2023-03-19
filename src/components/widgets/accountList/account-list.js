@@ -42,7 +42,7 @@ function AccountList(props) {
   );
 
   const isBottonAvailable = !isWalletsView ? true : (isWalletsView && availableCurrencies?.length) ? true : false
-  let mainButtonText = "Crear nueva billeteras";
+  let mainButtonText = "Crear nueva billetera";
 
   return (
     <AccountListWrapper 

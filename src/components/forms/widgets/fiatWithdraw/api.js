@@ -87,12 +87,6 @@ const WITHDRAW_CRYPTO = {
     uiType:"text",
     "settings":{
       defaultMessage:"",
-      // successPattern:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      // errors:[  
-          // { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
-      // ],
-      // label:"Nacionalidad del documento:",
-      // placeholder:"satoshi_nakamoto@bitcoin.com",
       breadCumbConfig:{
         childLabel:"A Billetera DCOP",
         active:true

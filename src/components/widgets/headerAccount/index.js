@@ -1,4 +1,4 @@
-// import { useLayoutEffect, useRef } from 'react'
+import { memo } from 'react'
 import {
     HeaderContainer,
     HeaderMainContainer,
@@ -14,10 +14,10 @@ import BalanceComponent from "../balance/balance";
 import { useWalletInfo } from "../../../hooks/useWalletInfo";
 import IconSwitch from '../icons/iconSwitch'
 import useViewport from '../../../hooks/useWindowSize'
-import { parseSymbolCurrency } from 'core/config/currencies'
+import { parseSymbolCurrency, replaceTo, REPLACE_TO_CURRENCY_CONFIG } from 'core/config/currencies'
 
 
-export default function HeaderAccount (props) {
+function HeaderAccount (props) {
     return(
       <HeaderContainer>
         {props.children}
@@ -26,14 +26,13 @@ export default function HeaderAccount (props) {
     )
 }
 
-
+export default memo(HeaderAccount);
 
 export const MainComponent = () => {
-  
     const { currentWallet } = useWalletInfo()
     const { isMovilViewport } = useViewport()
-    const accountName = currentWallet?.name?.replace(/\bCOP\b/gi, "DCOP")
 
+    const accountName = REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency] ? replaceTo(currentWallet?.name, REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency]) : currentWallet?.name
     return(
       <HeaderMainContainer className="_accountHeaderMainContainer">
           <IconAccount>

@@ -34,7 +34,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const { isMovilViewport } = useViewport();
   const { dataForm, setDataForm } = handleDataForm
   const [ loading, setLoading ] = useState(false)
-  const [ toastMessage ] = useToastMessage(); 
+  const [ toastMessage ] = useToastMessage();   
   const [ withdrawAccounts ] = useSelector((state) => selectFiatWithdrawAccounts(state));
   const wProvidersByProvType = useSelector(({ modelData:{ withdrawProviders } }) => selectFiatWithdrawProviders(withdrawProviders, 'provider_type'));
   const [ withdrawProvidersByName ] = useSelector((state) => selectWithdrawProvidersByName(state));
@@ -45,6 +45,8 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
   const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
 
+
+  // console.log('FiatWithdrawWithdrawAccounts', withdrawAccounts)
 
   
   const stageManager = useStage(

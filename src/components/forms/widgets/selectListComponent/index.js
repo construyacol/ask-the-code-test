@@ -59,7 +59,7 @@ const SelectListComponent = ({
               key={index}
               itemList={selectList[key]}
               firstIndex={index === 0}
-              lastIndex={(Object.keys(searchList)?.length - 1) === index}
+              // lastIndex={(Object.keys(searchList)?.length - 1) === index}
               isSelectedItem={Object.keys(searchList)?.length === 1 && searchList[state[stageData?.key]]}
               isMovilViewport={isMovilViewport}
               handleAction={handleAction}
@@ -119,16 +119,12 @@ const SelectListComponent = ({
           </IconAccount>
           <LabelContainer className="_header__labelContainer">
               <AccountLabel>
-
                 {
                   typeof UiName === "function" ?
                     <UiName/>
                     :
                     capitalizeWord(UiName)
                 }
-
-                
-
                 {
                   auxUiState &&
                     <UiStateCont className={`${auxUiState}`}>{UI_STATE_NAME[auxUiState] || auxUiState}</UiStateCont>
@@ -160,6 +156,12 @@ const SelectListComponent = ({
     max-width: 700px;
     perspective: 2000px;
     perspective-origin: center top;
+ 
+    :last-child{
+      border-bottom: 1px solid #E7E7E7;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
     
     &.skeleton{
       width: 100%;
@@ -223,6 +225,13 @@ export const ItemProviderBankContainer = styled.div`
   cursor:pointer;
   column-gap: 14px;
   position:relative;
+
+  &:last-child{
+    border-bottom: 1px solid #E7E7E7;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
 
   .button_item--nextCta{
     fill: var(--paragraph_color);

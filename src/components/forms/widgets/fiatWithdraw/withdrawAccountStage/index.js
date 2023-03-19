@@ -28,7 +28,7 @@ export default function WithdrawAccountsComponent({
 
 
   const selectWithdrawAccount = (withdrawAccount) => {
-    console.log('selectWithdrawAccount', withdrawAccount)
+    // console.log('selectWithdrawAccount', withdrawAccount)
     setState(prevState => { return { ...prevState, [stageData?.key]: withdrawAccount } })
     setStageStatus('success')
   }
@@ -70,7 +70,7 @@ export default function WithdrawAccountsComponent({
               handleAction={selectWithdrawAccount}
               {...props}
             />
-          :
+          : 
             <WithdtrawAccountList
               {...props}
               withdrawAccounts={bankAccountList}

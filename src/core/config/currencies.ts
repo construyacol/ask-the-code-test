@@ -1,6 +1,41 @@
 import BigNumber from "bignumber.js";
+import { isEmpty } from 'lodash'
 
 const env = process.env.REACT_APP_BUILD_CONFIG || process.env.NODE_ENV 
+
+type replaceToProps = {
+    match?:string,
+    replaceTo?:string,
+    explicitReplace?:boolean
+}
+
+export const replaceTo = (text:string, config:replaceToProps):string => {
+    if(!config || !text)return text
+    if(typeof config === 'object' && !Array.isArray(config)){
+        // if ([text, match, replaceTo].some(param => typeof param !== 'string')) return text;
+        const match = config?.match || "cop"
+        const replaceTo = config?.replaceTo ||"dcop"
+        const explicitReplace = config?.explicitReplace || false
+        const regex = new RegExp(`\\b${match}\\b`, 'gi');
+        const sourceWord:any = text.match(regex)
+        let finalReplaceTo:string = replaceTo
+        if(!isEmpty(sourceWord) && !explicitReplace) finalReplaceTo = sourceWord[0] === sourceWord[0]?.toUpperCase() ? replaceTo?.toUpperCase() : replaceTo;
+        return text.replace(regex, finalReplaceTo)
+    }else if(Array.isArray(config)){
+        return text
+    }
+    return text
+}
+
+
+export const REPLACE_TO_CURRENCY_CONFIG = {
+    cop:{ match:'cop', replaceTo:"DCOP", explicitReplace:true},
+    usdt:{ match:'usdt', replaceTo:"USDT", explicitReplace:true},
+    usdc:{ match:'usdc', replaceTo:"USDC", explicitReplace:true},
+    bnb:{ match:'bnb', replaceTo:"BNB", explicitReplace:true}
+}
+
+export const CURRENCY_LIST_DEFAULT_ORDER = ['cop', 'bitcoin', 'usdt', 'usdc', 'litecoin', 'ethereum' ];
 
 const SYMBOL_CURRENCIES = {
     cop:{
@@ -30,6 +65,7 @@ export const DEFAULT_CURRENCY = {
 export const FIAT_PROVIDER_TYPES = {
     bank:true,
     efecty_network:true,
+    internal_network:true
 }
 
 const FIAT_CRITERIALS = {

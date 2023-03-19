@@ -73,8 +73,10 @@ const WithdrawFormComponent = ({
         if(!takeFeeFromAmount && _amount.isLessThanOrEqualTo(avBalance) && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
         if(takeFeeFromAmount && _amount.isLessThan(minAmount)) setAmountState('bad')
         if(takeFeeFromAmount && _amount.isGreaterThanOrEqualTo(minAmount)) setAmountState('good')
+        if(minAmount.isLessThanOrEqualTo(0)) setAmountState('bad')
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
+
     const user_friendly = withdrawProviders?.current?.user_friendly
 
     return(

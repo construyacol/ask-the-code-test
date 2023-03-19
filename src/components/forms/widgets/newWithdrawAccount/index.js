@@ -69,7 +69,7 @@ const {
 const backToWithdraw = () =>  props?.setView('defaultWithdraw')
 const { insertBreadCumb, isActiveBreadCumb } = useBreadCumb({
   parentLabel:MENU_LABELS?.withdraw,
-  childLabel:"Creando cuenta de retiro",
+  childLabel:"Agregando cuenta bancaria",
   titleSelector:".accountDetailTitle h1>span",
   ctaBackSelector:"#withdraw-menu-button",
   callback:backToWithdraw
