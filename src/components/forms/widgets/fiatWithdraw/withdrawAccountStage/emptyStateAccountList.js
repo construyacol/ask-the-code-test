@@ -123,7 +123,7 @@ const WITHDRAW_ACCOUNT_LABELS = {
 
 export const WITHDRAW_ACCOUNT_LIST = {
   ...INTERNAL_NETWORK,
-  ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
-  ethereum:CRYPTO_ACCOUNT_LABEL,
+  // ethereum_testnet:CRYPTO_ACCOUNT_LABEL,
+  // ethereum:CRYPTO_ACCOUNT_LABEL,
 }
   
