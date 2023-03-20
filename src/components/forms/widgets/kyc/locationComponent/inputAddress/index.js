@@ -5,25 +5,20 @@ import { SPAN } from 'core/components/atoms'
 import {
     InputContainer,
     LabelText,
-    StickyGroup
+   //  StickyGroup
 } from '../../styles'
 import { useEffect, useState } from 'react'
 import validations from '../../validations'
 import { ProgressBarComponent } from '../../InputComponent'
-import SelectList from '../../selectList'
 import RenderAuxComponent from '../../../renderAuxComponent'
-
+import { device } from 'const/const'
 
 
 export default function InputAddress(props){
 
-   const { stageData, progressBar, handleState:{ setState }, children } = props
+   const { stageData, progressBar, handleState:{ setState }, setSelectListConfig } = props
    const [ currentInput, setCurrentInput ] = useState(LOCATION_TYPES?.STAGES?.ADDRESS?.STREET_NAME)
    const [ addressState, setAddressState ] = useState(getInitialState(LOCATION_TYPES?.STAGES?.ADDRESS))
-
-   // validaciones inputs
-   // api post request location with new address
-   // mobile support
 
    const inputOnChange = ({ target }) => {
       if(!validations.address[currentInput])return;
@@ -51,69 +46,61 @@ export default function InputAddress(props){
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [addressState])
 
+   useEffect(() => {
+      setSelectListConfig({
+         list:stageData[currentInput]?.selectList,
+         name:currentInput,
+         state:addressState,
+         handleAction:inputOnChange,
+         exactResult:false
+      })
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [currentInput, addressState])
 
-   return(
-      <>
-         <StickyGroup background="white" id="stickyGroup__" >
-            {children}
-            <InputWrapper>
-               <InputContainer inputStatus={props.stageStatus || ''} className="kyc__input--address">
-                  {
-                     props.AuxComponent && 
-                     <RenderAuxComponent {...props} />
-                  }
-                  {
-                     Object.keys(LOCATION_TYPES?.STAGES?.ADDRESS).map((ITEM_KEY, index) => {
-                        const itemKey = LOCATION_TYPES?.STAGES?.ADDRESS[ITEM_KEY]
-                        let itemData = stageData[itemKey]
-                        if(!itemData)return null;
-                        const isControlled = (itemData?.isControlled || itemData?.selectList) ? true : false
-                        const inputProps = {
-                           className: `${itemKey}`,
-                           type:itemData?.uiType,
-                           placeholder:itemData?.settings?.placeholder,
-                           onChange:inputOnChange,
-                           onFocus,
-                           defaultValue:addressState[itemData?.key],
-                           name:itemData?.key,
-                           autoFocus: currentInput === itemData?.key
-                           //inputMode:inputMode, 
-                           // autoComplete,
-                           //...props.dataForm?.stages[name]?.settings?.props
-                        };
-                        let RenderComponent = RENDER_COMPONENTS[stageData[itemKey]?.key] || DefaultRender
-                        return <RenderComponent 
-                           key={index} 
-                           currentKey={stageData[itemKey]?.key}
-                           inputProps={inputProps}
-                           isControlled={isControlled}
-                           data={itemData} 
-                           localState={addressState}
-                           {...props}
-                           />
-                     })
-                  }
-                  { 
-                     progressBar &&
-                     <ProgressBarComponent {...progressBar}/>
-                  }
-               </InputContainer>
-               <LabelText className='fuente'>
-                  {stageData[currentInput]?.settings?.defaultMessage}
-               </LabelText>
-            </InputWrapper>
-         </StickyGroup>
-         
-         <SelectList
-            // list={{autopista:{value: 'autopista', uiName: 'Autopista'}}}
-            list={stageData[currentInput]?.selectList}
-            name={currentInput}
-            state={addressState}
-            handleAction={inputOnChange}
-            exactResult={false}
-            // pass useCallBack to inherited functions to this component
-         />
-      </>
+   return( 
+      <InputWrapper>
+         <InputContainer inputStatus={props.stageStatus || ''} className="kyc__input--address">
+            {
+               props.AuxComponent && 
+               <RenderAuxComponent {...props} />
+            }
+            {
+               Object.keys(LOCATION_TYPES?.STAGES?.ADDRESS).map((ITEM_KEY, index) => {
+                  const itemKey = LOCATION_TYPES?.STAGES?.ADDRESS[ITEM_KEY]
+                  let itemData = stageData[itemKey]
+                  if(!itemData)return null;
+                  const isControlled = (itemData?.isControlled || itemData?.selectList) ? true : false
+                  const inputProps = {
+                     className: `${itemKey}`,
+                     type:itemData?.uiType,
+                     placeholder:itemData?.settings?.placeholder,
+                     onChange:inputOnChange,
+                     onFocus,
+                     defaultValue:addressState[itemData?.key],
+                     name:itemData?.key,
+                     autoFocus: currentInput === itemData?.key
+                  };
+                  let RenderComponent = RENDER_COMPONENTS[stageData[itemKey]?.key] || DefaultRender
+                  return <RenderComponent 
+                     key={index} 
+                     currentKey={stageData[itemKey]?.key}
+                     inputProps={inputProps}
+                     isControlled={isControlled}
+                     data={itemData} 
+                     localState={addressState}
+                     {...props}
+                     />
+               })
+            }
+            { 
+               progressBar &&
+               <ProgressBarComponent {...progressBar}/>
+            }
+         </InputContainer>
+         <LabelText className='fuente'>
+            {stageData[currentInput]?.settings?.defaultMessage}
+         </LabelText>
+      </InputWrapper>
    )
 }
 
@@ -225,5 +212,13 @@ const StreetNumberContainer = styled.div`
       height: 100%;
       width: calc(100% - 20px);
       font-family: "Tomorrow", sans-serif !important;
+    }
+
+    @media ${device.mobile} {
+      grid-template-columns: auto 45px auto 45px;
+      column-gap: 3px;
+      input{
+         font-size: 13px;
+      }
     }
 `

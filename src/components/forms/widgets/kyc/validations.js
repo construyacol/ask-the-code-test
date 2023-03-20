@@ -161,7 +161,7 @@ export const selectListValidator = (value, data) => {
   const addressValidator = (value, data) => {
     let status = 'success'
     for (const keyValue in value) {
-      if(!value[keyValue]?.trim()){
+      if(!value[keyValue]?.trim() && keyValue !== 'disctrict'){
         status = null
         break
       }
