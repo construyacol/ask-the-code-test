@@ -24,9 +24,9 @@ import { parseQueryString } from '../../utils'
 // import 'components/wallets/views/wallet_views.css'
 
 import { isEmpty } from 'lodash'
-import { funcDebounces } from 'utils'
+// import { funcDebounces } from 'utils'
+// import sleep from "utils/sleep";
 import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
-import sleep from "utils/sleep";
 import { checkIfFiat } from 'core/config/currencies';
 
 
@@ -76,31 +76,15 @@ function WalletContainer(props) {
 
 
 
-
   
 export const AccountDetail = (props) => {
 
   const { match: { params } } = props;
-  const { subscribeToNewDeposits } = useSubscribeDepositHook()
+  const { handleSubscribeToNewDeposits } = useSubscribeDepositHook()
   const currentWallet = props?.wallets[params?.account_id]
 
-  
-
   useEffect(() => {
-    // if(!checkIfFiat(currentWallet?.currency) && !isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
-      if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)){
-      funcDebounces({
-        keyId:{[`${currentWallet?.id}_provider`]:currentWallet?.dep_prov[0]}, 
-        storageType:"sessionStorage",
-        timeExect:22100,
-        callback:async() => {  
-          for (const provider_id of currentWallet.dep_prov) {
-            props?.deposit_providers[provider_id]?.currency_type === 'crypto' && subscribeToNewDeposits(provider_id, 2, 10000) 
-            await sleep(2000)
-          }
-        }
-      })
-    }
+      if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)) handleSubscribeToNewDeposits(currentWallet)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params?.path])
   

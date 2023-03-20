@@ -12,7 +12,6 @@ import {
 } from 'utils/date'
 
 
-
 const birthday = (value, data) => {
 
     const isMaskInput = data.state?.birthday?.includes('/') 

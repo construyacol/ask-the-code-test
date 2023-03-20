@@ -3,6 +3,17 @@ import BigNumber from "bignumber.js";
 const isIsoDate = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
 const isMaskDate = /[0-9]{2}[/][0-9]{2}[/][0-9]{4}/g
 
+const TIME_UNITS = {
+  seconds:(difference) => parseInt(difference / 1000),
+  minutes:(difference) => parseInt(difference / 1000 / 60),
+}
+
+export const timeDifference = (date, timeUnitType = "seconds") => {
+    var now = new Date();
+    var diff = now - date;
+    return TIME_UNITS[timeUnitType](diff)
+}
+
 
 const checkMaskDate = date => {
   if(!date)return;

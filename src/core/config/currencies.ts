@@ -28,6 +28,17 @@ export const replaceTo = (text:string, config:replaceToProps):string => {
 }
 
 
+export const INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST = {
+    bitcoin:true,
+    usdt:true,
+    // litecoin:true,
+}
+
+export const EXCLUDED_NETWORK_COLLECTION = {
+    referral_network:true,
+    bsc:true
+}
+
 export const REPLACE_TO_CURRENCY_CONFIG = {
     cop:{ match:'cop', replaceTo:"DCOP", explicitReplace:true},
     usdt:{ match:'usdt', replaceTo:"USDT", explicitReplace:true},

@@ -15,7 +15,7 @@ import actions from "../actions";
 import { normalized_list } from "../utils";
 import sleep from 'utils/sleep'
 import { isEmpty } from 'lodash'
-import { checkIfFiat } from 'core/config/currencies';
+// import { checkIfFiat } from 'core/config/currencies';
 
 
 const { update_item_state } = actions;
@@ -204,18 +204,19 @@ export class DepositService extends WebService {
   async getDepositByAccountId(accountId, filter) {
     const finalUrl = `${GET_DEPOSIT_BY_USERS_URL}/${this.user.id}/deposits?country=${this.user.country}&filter={"where":{"account_id":"${accountId}"${filter ? `, ${filter}` : ""}}}`;
     const deposit = await this.Get(finalUrl);
-    // console.log('|||||||||||||||||||||||||||||||||||||||||||| FINAL URL ::', finalUrl, deposit)
     return deposit;
   }
 
 
+  
   async subscribeToAllNewDeposits() {
     const { deposit_providers } = this.globalState?.modelData
+    const { INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST, EXCLUDED_NETWORK_COLLECTION } = await import('core/config/currencies')
     if(!deposit_providers)return ;
     for (const depProv in deposit_providers) {
-      if(!checkIfFiat(deposit_providers[depProv]?.currency)){
-        await sleep(2000)
+      if(INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST[deposit_providers[depProv]?.currency] && !EXCLUDED_NETWORK_COLLECTION[deposit_providers[depProv]?.provider_type]){
         await this.subscribeToNewDeposits(depProv)
+        await sleep(2000)
       }
     }
   }
