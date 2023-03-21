@@ -93,7 +93,7 @@ export const checkIfFiat = (currency:string) => FIAT_CRITERIALS[currency?.toLoca
 
 export const BLOCKCHAIN_EXPLORER_URL = {
     bitcoin:{
-        bitcoin:"https://blockstream.info/tx/"
+        bitcoin:"https://mempool.space/es/tx/"
     },
     bitcoin_testnet:{
         bitcoin_testnet:"https://blockstream.info/tx/"

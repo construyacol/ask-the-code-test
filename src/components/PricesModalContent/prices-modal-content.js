@@ -85,6 +85,7 @@ export default function PricesModalContent(props) {
             {isDesktop && <PairsSelect {...props} />}
             <CalculatorComponent currentPair={currentPair} />
           </div>
+
         </div> 
       </div>
       {!isDesktop && (

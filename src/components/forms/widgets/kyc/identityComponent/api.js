@@ -69,7 +69,7 @@ const FILES_NEEDED = {
     ui_type:"attach"
   },
   "id_back":{
-    ui_name:"reverso del documento",
+    ui_name:"Reverso del documento",
     ui_type:"attach"
   }
 }

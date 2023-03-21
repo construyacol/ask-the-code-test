@@ -28,7 +28,8 @@ import { isEmpty } from 'lodash'
 // import sleep from "utils/sleep";
 import useSubscribeDepositHook from 'hooks/useSubscribeToNewDeposits'
 import { checkIfFiat } from 'core/config/currencies';
-
+import { useSelector } from "react-redux";
+import { serveModelsByCustomProps } from 'selectors'
 
 const LazyWithdrawView = loadable(() => import("./views/withdraw"), { fallback: <SkeletonWithdrawView/> });
 const LazyAccountList = loadable(() => import("../widgets/accountList/account-list"), { fallback: <AccountListViewSkeleton /> });
@@ -36,14 +37,11 @@ const LazySwapView = loadable(() => import("./views/swap"), { fallback: <Skeleto
 const LazyDepositView = loadable(() => import("./views/deposit"), { fallback: <SkeletonDepositView/> });
 
 function WalletContainer(props) {
-  // const actionDispatch = useActions()
 
-  // const { accountList } = useSelector((state) => state?.ui?.views);
-
+  const pairCollectionByCurrency = useSelector(({ modelData:{ pairs:{ local_collections } } }) => serveModelsByCustomProps(local_collections, 'primary_currency'));
   useEffect(() => { 
     return () => {
       props.action.section_view_to("initial");
-      // props.action.cleanCurrentSection()
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -59,14 +57,14 @@ function WalletContainer(props) {
         exact
         path={"/:primary_path/:path/:account_id"}
         render={(routeProps) => (
-          <AccountDetail {...props} {...routeProps} />
+          <AccountDetail {...props} {...routeProps} pairCollectionByCurrency={pairCollectionByCurrency} />
         )}
       />
       <Route
         strict
         path="/:primary_path/:path/:account_id/:tx_path"
         render={(routeProps) => (
-          <AccountDetail {...props} {...routeProps} />
+          <AccountDetail {...props} {...routeProps} pairCollectionByCurrency={pairCollectionByCurrency} />
         )}
       />
     </>
@@ -79,14 +77,21 @@ function WalletContainer(props) {
   
 export const AccountDetail = (props) => {
 
-  const { match: { params } } = props;
+  const { match: { params }, pairCollectionByCurrency, action } = props;
   const { handleSubscribeToNewDeposits } = useSubscribeDepositHook()
   const currentWallet = props?.wallets[params?.account_id]
+
+  const { currentPair } = useSelector(({ modelData:{ pairs } }) => pairs)
 
   useEffect(() => {
       if(!isEmpty(currentWallet?.dep_prov) && ["deposit", "activity"].includes(params?.path)) handleSubscribeToNewDeposits(currentWallet)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params?.path])
+
+  useEffect(() => {
+    if(currentPair?.primary_currency !== currentWallet?.currency) action.searchCurrentPairAction(pairCollectionByCurrency[currentWallet?.currency]?.buy_pair, "pair");
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   
   return( 
           <AccountDetailLayout className="_accountDetailLayout">
