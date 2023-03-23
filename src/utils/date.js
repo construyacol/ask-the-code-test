@@ -1,4 +1,8 @@
 import BigNumber from "bignumber.js";
+import moment from 'moment'
+import 'moment/locale/es'
+
+moment.locale('es')
 
 const isIsoDate = /[0-9]{4}-[0-9]{2}-[0-9]{2}/g
 const isMaskDate = /[0-9]{2}[/][0-9]{2}[/][0-9]{4}/g
@@ -30,18 +34,21 @@ export const formatMaskDate = date => {
 }
 
 export const parseTimeStampToDate = (timeStamp) => {
-    if(timeStamp.includes("-")) return timeStamp;
-    let date = new Date(new BigNumber(timeStamp).multipliedBy(1000).toNumber()).toISOString()
-    const isoDate = date.match(isIsoDate)
-    return isoDate && isoDate[0]
-  }
+  if(timeStamp.includes("-")) return timeStamp;
+  let date = new Date(new BigNumber(timeStamp).multipliedBy(1000).toNumber()).toISOString()
+  const isoDate = date.match(isIsoDate)
+  return isoDate && isoDate[0]
+}
 
 export const parseDateToTimeStamp = date => {
-    if(!date?.match(isIsoDate))return date
-    const { year, month, day } = formatJsonUTFDate(date)
-    const timeStamp = new Date(year, month, day).getTime()
-    return BigNumber(timeStamp).div(1000).toString()
-  }
+  if(!date?.match(isIsoDate))return date
+  // const { year, month, day } = formatJsonUTFDate(date)
+  // const _timeStamp = new Date(year, month, day).getTime()
+  // return BigNumber(_timeStamp).div(1000).toString()
+  const utcDate = moment(date).utc() 
+  const timeStamp = utcDate.valueOf()
+  return BigNumber(timeStamp).div(1000).toString()
+}
     
   export const formatJsonUTFDate = date => {
     if(!date?.match(isIsoDate))return date

@@ -292,7 +292,7 @@ export const ApiGetIdentityStages = async(config) => {
     })
     return filesNeeded
    }
-}
+} 
 
 
 export const ApiPostIdentityInfo = async(payload) => {
@@ -301,13 +301,13 @@ export const ApiPostIdentityInfo = async(payload) => {
   const currentIdentity = config?.dataForm?.config?.currentIdentity
 
   let res
+
   const isMaskBirthday = config.info.birthday.includes('/') 
   if(isMaskBirthday){
     config.info.birthday = formatMaskDate(config.info.birthday) 
-  }
+  } 
   const timeStampDate = parseDateToTimeStamp(config.info.birthday) 
   config.info.birthday = timeStampDate
-
   config.info.name = config.info.name.trim()
   config.info.surname = config.info.surname.trim()
 
