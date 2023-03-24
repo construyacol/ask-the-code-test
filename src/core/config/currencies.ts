@@ -52,6 +52,10 @@ const SYMBOL_CURRENCIES = {
     cop:{
         regex:/\bCOP\b|\bcop\b/,
         replaceFor:"DCOP"
+    },
+    bsc:{
+        regex:/\bBSC\b|\bbsc\b/,
+        replaceFor:"BSC"
     }
 }
 

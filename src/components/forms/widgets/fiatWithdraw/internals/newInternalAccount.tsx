@@ -40,7 +40,7 @@ function CreateInternalAccount(props:any){
     return(
         <ModalCrud loading={loading}>
             <IconClose theme="dark" size={20} />
-            <H2 className="no-margin">Guarda este contácto</H2>
+            <H2 className="no-margin">Guarda este contacto</H2>
             <Content>
                 <IdentifierCont>
                     <IconSwitch
@@ -54,8 +54,8 @@ function CreateInternalAccount(props:any){
                     className="input__fit"
                     onChange={onChange} 
                     inputStatus={inputStatus === 'success' ? inputStatus : null}
-                    label="Asignale un nombre"
-                    placeholder="Ej: Johan Bonilla"
+                    label="Asígnale un nombre"
+                    placeholder="Ej: Juan Camelo"
                 />
             </Content>
             <ButtonCont>

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import loadable from "@loadable/component";
 import { getCdnPath } from '../../../environment'
+// import { replaceTo, REPLACE_TO_CURRENCY_CONFIG } from 'core/config/currencies'
 import "./items.css";
 
 const IconSwitch = loadable(() => import("../icons/iconSwitch"));
@@ -11,7 +12,7 @@ function ItemLayout(props) {
     const { name, actualizarEstado } = props;
     actualizarEstado && actualizarEstado(name);
   };
-
+  
   useEffect(() => {
     props.actives && doSelectionForItem();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -27,6 +28,8 @@ function ItemLayout(props) {
     format,
     itemType,
   } = props;
+
+  // const accountName = REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency] ? replaceTo(currentWallet?.name, REPLACE_TO_CURRENCY_CONFIG[currentWallet?.currency]) : currentWallet?.name
 
   return (
     <div
@@ -98,8 +101,8 @@ function ItemLayout(props) {
               placeholder.map((item) => {
                 return (
                   <p id="ILplaceholder2" className="fuente" key={item.id}>
-                    {item.name}
-                  </p>
+                    {item.name} 
+                  </p> 
                 );
               })}
           </div>

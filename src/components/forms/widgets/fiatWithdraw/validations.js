@@ -8,6 +8,7 @@ import ungapStructuredClone from '@ungap/structured-clone';
 import { FIAT_WITHDRAW_TYPES } from './api' 
 import { selectListValidator } from 'components/forms/widgets/kyc/validations'
 import { calculateCost } from '../sharedValidations'
+import { parseSymbolCurrency } from 'core/config/currencies';
 
 
   // TODO: Falta calcular los precios de efecty con reduce method
@@ -54,9 +55,9 @@ import { calculateCost } from '../sharedValidations'
       let availableAmountValidation = _value.isLessThanOrEqualTo(availableBalance)
       let maxAmountValidation = _value.isGreaterThanOrEqualTo(maxAmount)
       if(!minAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${parseSymbolCurrency(currency)?.toUpperCase()}`, 'error')
       }else if(maxAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${parseSymbolCurrency(currency)?.toUpperCase()}`, 'error')
       }else if(!availableAmountValidation){
         writeOnLabel(`.label_text__${data.key}`, `El monto supera el valor disponible en la cuenta`, 'error')
       }else if(minAmountValidation && availableAmountValidation){

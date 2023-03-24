@@ -6,7 +6,8 @@ import {
 import { formatToCurrency } from "../../../../utils/convert_currency";
 import { FIAT_DEPOSIT_TYPES } from './api' 
 import { selectListValidator } from '../kyc/validations'
-
+import { parseSymbolCurrency } from 'core/config/currencies';
+ 
   export const getCost = ({ costs, currency, depositCost }) => {
     let cost = costs[depositCost?.value]?.fixed;
     return cost ? formatToCurrency(cost.toString().replace(/,/g, ""), currency) : 0
@@ -47,9 +48,9 @@ import { selectListValidator } from '../kyc/validations'
       let minAmountValidation = _value.isGreaterThanOrEqualTo(minAmount)
       let maxAmountValidation = _value.isGreaterThanOrEqualTo(maxAmount)
       if(!minAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto mínimo es $ ${minAmount.toFormat()} ${parseSymbolCurrency(currency)?.toUpperCase()}`, 'error')
       }else if(maxAmountValidation){
-        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${currency?.toUpperCase()}`, 'error')
+        writeOnLabel(`.label_text__${data.key}`, `El monto máximo es $ ${maxAmount.toFormat()} ${parseSymbolCurrency(currency)?.toUpperCase()}`, 'error')
       }else if(minAmountValidation && !maxAmountValidation){
         status = "success"
       }else{
