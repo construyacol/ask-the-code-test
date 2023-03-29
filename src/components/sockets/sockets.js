@@ -11,6 +11,8 @@ import { funcDebounce, funcDebounces } from 'utils'
 // import { objectToArray } from '../../services'
 // let statusCounter = 0
 import { checkIfFiat } from 'core/config/currencies';
+import { serveModelsByCustomProps } from 'selectors'
+
 
 
 import { postLocalNotification } from 'utils'
@@ -496,23 +498,16 @@ class SocketsComponent extends Component {
       }
 
       if (this.props.deposits && this.props.deposits[deposit.id]) {
-
-        // const walletAccount = this.props.wallets[this?.props?.deposits[deposit.id]?.account_id];
-        // const provKeys = Object.keys(this.props.deposit_providers)
-        const depositProviders = this.props.deposit_providers
-        // const provKey = await provKeys.find(depProvKey => [walletAccount?.currency].includes(depositProviders[depProvKey]?.depositAccount?.name))
-        const currencyDepositProvider = depositProviders[this.props.deposits[deposit.id]?.deposit_provider_id]?.depositAccount
-        // console.log('currencyDepositProvider', currencyDepositProvider)
-        // console.log('deposit', deposit)
-
-        // console.log('confirmations ==> ', currencyDepositProvider?.confirmations, typeof currencyDepositProvider?.confirmations)
+        const depositProvider = this.props.deposit_providers[this.props.deposits[deposit.id]?.deposit_provider_id]
+        const depositAccountsByProvType = serveModelsByCustomProps(this.props.depositAccounts, 'provider_type')
+        const depositAccount = depositAccountsByProvType[depositProvider?.provider_type];
 
         await this.props.action.update_item_state(
           {
             [deposit.id]: {
               ...this.props.deposits[deposit.id],
               confirmations: deposit.confirmations,
-              state:deposit.confirmations > (currencyDepositProvider?.confirmations || 6) ? 'accepted' : 'confirmed'
+              state:deposit.confirmations > (depositAccount?.confirmations || 6) ? 'accepted' : 'confirmed'
             },
           },
           "deposits"
@@ -898,6 +893,7 @@ const mapStateToProps = (state, props) => {
   const { loggedIn } = state.auth;
   const {
     user,
+    depositAccounts,
     deposits,
     withdraws,
     wallets,
@@ -912,6 +908,7 @@ const mapStateToProps = (state, props) => {
     loggedIn,
     user: user,
     deposits,
+    depositAccounts,
     withdraws,
     activity_for_account: state.storage.activity_for_account,
     wallets,

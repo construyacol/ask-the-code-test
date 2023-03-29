@@ -10,19 +10,15 @@ import { checkIfFiat } from 'core/config/currencies';
 import "moment/locale/es";
 moment.locale("es"); 
 
-const OrderStatus = ({ order, movil, depositProviders }) => {
+const OrderStatus = ({ order, movil, depositProvider }) => {
 
   const [orderState, setOrderState] = useState();
   const { currentOrder, tx_path } = UseTxState();
   const skeletons = new Array(4).fill(["created"]);
-  // const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
 
 
   useEffect(() => {
     let statusCopys = {};
-    const providerType = depositProviders[order.deposit_provider_id]?.provider_type
-    console.log('statusCopys ::', providerType, depositProviders[order.deposit_provider_id])
-
     for (let prop in api[tx_path]) {
       statusCopys = {
         ...statusCopys,
@@ -32,13 +28,11 @@ const OrderStatus = ({ order, movil, depositProviders }) => {
         },
       };
     }
-    // console.log(statusCopys, api[tx_path])
     setOrderState(Object.entries(statusCopys));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder.state]);
 
-  const currencyType = (checkIfFiat(order?.currency) && depositProviders[order.deposit_provider_id]?.currency_type === 'fiat') ? 'fiat' : 'crypto'
-  console.log('|||||||||||||||| OrderSupervisor ::', orderStatus[tx_path][order.state])
+  const currencyType = (checkIfFiat(order?.currency) && depositProvider?.currency_type === 'fiat') ? 'fiat' : 'crypto'
 
   return (
     <OrderStatusContainer>
@@ -59,7 +53,7 @@ const OrderStatus = ({ order, movil, depositProviders }) => {
                 <StatusItem
                   state={state}
                   order={currentOrder}
-                  depositProviders={depositProviders}
+                  currencyType={currencyType}
                   key={index}
                   active={state[1].completed}
                   className={`${orderState.length === index + 1 ? "statusStep finalStep" : "statusStep"} ${state[1].completed ? "activeStep" : ""}`}
@@ -88,10 +82,9 @@ const OrderStatus = ({ order, movil, depositProviders }) => {
   );
 };
 
-const StatusItem = ({ className, state, order, active, skeleton, depositProviders }) => {
+const StatusItem = ({ className, state, order, active, skeleton, currencyType }) => {
   
   const activated = active && active.toString();
-  const currencyType = (checkIfFiat(order?.currency) && depositProviders[order.deposit_provider_id]?.currency_type === 'fiat') ? 'fiat' : 'crypto'
 
   return (
     <Status className={`status ${className}`}>

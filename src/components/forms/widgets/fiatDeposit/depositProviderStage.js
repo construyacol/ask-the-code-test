@@ -28,7 +28,7 @@ function ProviderComponent({
  
     const { isMovilViewport } = useViewport();
     const [ depositAccounts ] = useSelector((state) => selectDepositAccounts(state));
-    const depositProvidersByName = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider.name'));
+    const depositProvidersByType = useSelector(({ modelData:{ deposit_providers } }) => serveModelsByCustomProps(deposit_providers, 'provider_type'));
     // const actions = useActions() 
     const [ depositServiceList, setDepositServiceList ] = useState({})
   
@@ -57,12 +57,10 @@ function ProviderComponent({
     
     useEffect(() => {
       (async() => {
-        if(isEmpty(depositAccounts) || isEmpty(depositProvidersByName))return;
+        if(isEmpty(depositAccounts) || isEmpty(depositProvidersByType))return;
         let servicesList = {...DEFAULT_SERVICE}
-        // console.log('depositAccounts', depositAccounts)
-        // debugger
         for (const depositAccountName in depositAccounts) {
-          // if(!depositProvidersByName[depositAccountName]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
           // if(depositAccounts[depositAccountName]?.currency_type === 'crypto')continue;
           servicesList = {
@@ -76,7 +74,7 @@ function ProviderComponent({
         setDepositServiceList(getServiceListOrdered(servicesList))
       })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositAccounts, depositProvidersByName])
+    }, [depositAccounts, depositProvidersByType])
 
     // console.log('depositServiceList', depositServiceList)
     // console.log('state', state)
