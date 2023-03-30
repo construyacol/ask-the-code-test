@@ -20,46 +20,25 @@ import { isEmpty } from 'lodash'
 
 const { update_item_state } = actions;
 
-export class DepositService extends WebService {
+export class DepositService extends WebService { 
 
   async fetchDepositProviders() {
 
     this.dispatch(
       appLoadLabelAction(loadLabels.OBTENIENDO_PROVEEDORES_DE_DEPOSITO)
     );
-    const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}&filter[include]=depositAccount`;
+    const finalUrl = `${DEPOSITS_URL}users/${this.user.id}/depositProviders?country=${this.user.country}`;
     const response = await this.Get(finalUrl);
     if (!response) return;
-
     let updateState = true;
-    // if (await this.isCached("deposit_providers", response)) {
-    //   updateState = false;
-    // }
-
-    const result = response.reduce((result, item) => {
-      // TODO:// Reportar por sentry cuando un deposit provider no tenga deposit account
-      result.push({
-        ...item,
-        provider: {
-          ...item?.depositAccount,
-          account: {
-            ...item?.depositAccount?.account,
-          },
-        },
-      });
-      return result;
-    }
-    , []);
-
+    const result = response
     const finalData = {
       id: this.user.id,
       deposit_providers: [...result],
     };
-
     const normalizedData = await normalizeUser(finalData);
     updateState && this.dispatch(updateNormalizedDataAction(normalizedData));
     document.querySelector('#home-container')?.classList?.add('dP')
-
     return normalizedData.entities.deposit_providers;
   }
 
@@ -67,29 +46,6 @@ export class DepositService extends WebService {
 
   async createDeposit(body) {
     return await this._Post(NEW_DEPOSIT_URL, body);
-
-    // const user = this.user
-    // const { currency, amount, cost_id, deposit_provider_id, account_id } = payload
-    // const body = {
-    //   data: {
-    //     currency,
-    //     amount,
-    //     cost_id,
-    //     deposit_provider_id,
-    //     comment: "",
-    //     account_id,
-    //     country: user.country,
-    //   },
-    // };
-
-
-    // const result = await this.Post(NEW_DEPOSIT_URL, body);
-    // if (result === 465 || !result) {
-    //   return false;
-    // }
-    // const { data } = result;
-
-    // return data;
   }
 
   

@@ -1,5 +1,5 @@
 import { createSelector } from "reselect";
-import { isEmpty, get } from 'lodash'
+import { isEmpty, get, keyBy } from 'lodash'
 import { getIdentityState } from 'utils'
 import { UI_NAMES } from 'const/uiNames'
 import { convertToObjectWithCustomIndex, reOrderedList } from "utils";
@@ -14,7 +14,6 @@ export const selectDepositAccountsByNetwork = createSelector(
     let res = {};
     if(!depositAccounts) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    
     for (const [, depositAccount] of Object.entries(depositAccounts)) {
       if(depositAccount.currency === currency){
         res = {
@@ -23,9 +22,7 @@ export const selectDepositAccountsByNetwork = createSelector(
         }
       }
     }
-
     if(res[DEFAULT_FISRT_CRITERIAL]) return reOrderedList(res, DEFAULT_FISRT_CRITERIAL);
-
     return res;
   }
 );
@@ -53,18 +50,18 @@ export const wProvsByCurrencyNetwork = createSelector(
 export const selectDepositProvsByNetwork = createSelector(
   ({ modelData: { deposit_providers } }) => deposit_providers,
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  (_, config) => config,
+  (_, currency) => currency,
   (deposit_providers, currency) => {
     let res = {};
     if(!deposit_providers) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, deposit_provider] of Object.entries(deposit_providers)) {
-        if(deposit_provider.currency === currency){
+        // if(deposit_provider.currency === currency){
           res = {
             ...res,
             [deposit_provider.provider_type]:deposit_provider
           }
-        }
+        // }
     }
     return res;
   }
@@ -158,12 +155,12 @@ export const serveModelsByCustomProps = createSelector(
   }
 );
 
- 
+  
 export const selectFiatWithdrawAccounts = createSelector(
   (state) => state.modelData.withdraw_accounts,
   (withdraw_accounts) => {
     let fiatWithdrawAccounts = {}
-    if(!withdraw_accounts)return [ fiatWithdrawAccounts]; 
+    if(!withdraw_accounts)return [ fiatWithdrawAccounts ]; 
     Object.keys(withdraw_accounts).forEach(wAccountKey => {
       const withdrawAccount = withdraw_accounts[wAccountKey];
       if(checkIfFiat(withdrawAccount?.currency) && FIAT_PROVIDER_TYPES[withdrawAccount?.provider_type]){
@@ -193,23 +190,20 @@ export const selectWithdrawProvider = createSelector(
   }
 );
 
+
 export const selectFiatWithdrawProviders = createSelector(
   (withdrawProviders) => withdrawProviders,
-  (_, keyProp) => keyProp,
-  (withdrawProviders, keyProp) => {
-    let res = {}
-    let providers = serveModelsByCustomProps(withdrawProviders, keyProp)
-    for (const provKey in providers) {
-      if(checkIfFiat(providers[provKey]?.currency)){
-        res = {
-          ...res,
-          [provKey]:providers[provKey]
-        }
-      }
+  (_, customProp) => customProp,
+  (withdrawProviders, customProp) => {
+    let providers = []
+    for (const [, withdrawProvider] of Object.entries(withdrawProviders)) {
+      if(checkIfFiat(withdrawProvider?.currency))providers.push(withdrawProvider)
     }
-    return res
+    return keyBy(providers, customProp)
   }
 );
+
+
 
 export const selectWithdrawProvidersByName = createSelector(
     (state) => state.modelData.withdrawProviders,

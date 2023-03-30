@@ -10,17 +10,20 @@ import { getHostName } from '../../../../../environment'
 import DetailTemplateComponent from '../../../detailTemplate'
 import { MiddleSection } from '../../../detailTemplate'
 import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
+import { serveModelsByCustomProps } from 'selectors'
+
 import moment from "moment";
 import "moment/locale/es";
 moment.locale("es");
 
 
 export const useDetailParseData = (order, detailType) => { 
-
+ 
   const [data, setData] = useState([]);
   const [, formatCurrency] = useFormatCurrency();
   const { deposit_providers } = UseTxState();
   const { withdraw_accounts } = useSelector((state) => state.modelData)
+  const depositAccountsByProvType = useSelector(({ modelData:{ depositAccounts } }) => serveModelsByCustomProps(depositAccounts, 'provider_type'));
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const currencySimbol = currencies ? parseSymbolCurrency(currencies[order?.currency]?.symbol) : parseSymbolCurrency(order?.currency)?.toUpperCase()
@@ -33,11 +36,12 @@ export const useDetailParseData = (order, detailType) => {
         let depositProviderInfo = [];
         if (deposit_providers && deposit_providers[order.deposit_provider_id]) {
           const depositProvider = deposit_providers[order.deposit_provider_id];
-          if(depositProvider?.depositAccount?.name === 'pse'){
+          const depositAccount = depositAccountsByProvType[depositProvider?.provider_type];
+          if(depositProvider?.provider_type === 'pse'){
             depositProviderInfo = [
               [
                 "Entidad del depósito:",
-                `${depositProvider.depositAccount.ui_name}`,
+                `${depositAccount.ui_name}`,
               ], 
               [
                 `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
@@ -48,7 +52,7 @@ export const useDetailParseData = (order, detailType) => {
                 `${await formatCurrency(order?.cost, order.currency)} ${currencySimbol}`,
               ]
             ];
-          }else if(depositProvider?.depositAccount?.provider_type === 'internal_network'){
+          }else if(depositProvider?.provider_type === 'internal_network'){
             depositProviderInfo = [
               [
                 "Tipo de depósito:",
@@ -64,7 +68,6 @@ export const useDetailParseData = (order, detailType) => {
               ]
             ];
           }else if(depositProvider?.currency_type === 'crypto'){
-            console.log('depositProvider', depositProvider)
             depositProviderInfo = [
               ["ID:", order.id],
               ["Estado:", getState(order.state)],
@@ -85,27 +88,27 @@ export const useDetailParseData = (order, detailType) => {
             depositProviderInfo = [
               [
                 "Entidad del depósito:",
-                `${depositProvider.depositAccount.ui_name}`,
+                `${depositAccount.ui_name}`,
               ],
               [
-                `${depositProvider.depositAccount?.account?.type?.ui_name}`,
-                `${depositProvider.depositAccount?.account?.type?.type}`,
+                `${depositAccount?.account?.type?.ui_name}`,
+                `${depositAccount?.account?.type?.type}`,
               ],
               [
-                `${depositProvider.depositAccount.account.account_id.ui_name}`,
-                `${depositProvider.depositAccount.account.account_id.account_id}`,
+                `${depositAccount.account.account_id.ui_name}`,
+                `${depositAccount.account.account_id.account_id}`,
               ],
               [
-                `${depositProvider.depositAccount.account.bussines_name.ui_name}`,
-                `${depositProvider.depositAccount.account.bussines_name.bussines_name}`,
+                `${depositAccount.account.bussines_name.ui_name}`,
+                `${depositAccount.account.bussines_name.bussines_name}`,
               ],
               [
-                `${depositProvider.depositAccount.account.nit.ui_name}`,
-                `${depositProvider.depositAccount.account.nit.nit}`,
+                `${depositAccount.account.nit.ui_name}`,
+                `${depositAccount.account.nit.nit}`,
               ],
               [
-                `${depositProvider.depositAccount.account.dv.ui_name}`,
-                `${depositProvider.depositAccount.account.dv.dv}`,
+                `${depositAccount.account.dv.ui_name}`,
+                `${depositAccount.account.dv.dv}`,
               ],
               [
                 `Cantidad ${isPending ? 'por acreditar' : 'acreditada'}`,
@@ -113,7 +116,7 @@ export const useDetailParseData = (order, detailType) => {
               ],
               [
                 `Costo del depósito`,
-                `${await formatCurrency(depositProvider?.depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${currencySimbol}`,
+                `${await formatCurrency(depositAccount?.costs[order?.cost_id]?.fixed, order.currency)} ${currencySimbol}`,
               ]
             ];
           }

@@ -33,40 +33,55 @@ import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
 // import { selectDepositProvsByCurrency } from 'selectors'
+import { serveModelsByCustomProps } from 'selectors'
 import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
-import "moment/locale/es";
 import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
+
+
+
+import "moment/locale/es";
 moment.locale("es"); 
 
 const InProcessOrder = ({ onErrorCatch }) => {
 
   const { currentOrder } = UseTxState();
   const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
+  const depositAccountsByProvType = useSelector(({ modelData:{ depositAccounts } }) => serveModelsByCustomProps(depositAccounts, 'provider_type'));
+
+  const depositProvider = depositProviders[currentOrder?.deposit_provider_id]
+  const depositAccount = depositProvider ? depositAccountsByProvType[depositProvider?.provider_type] : {};
+
   if (!currentOrder || !currentOrder.currency) return onErrorCatch();
+
+  let props = {
+    depositAccountsByProvType,
+    order:currentOrder,
+    depositAccount,
+    depositProvider
+    // depositProviders,
+  }
 
   return (
     <>
       {depositProviders[currentOrder?.deposit_provider_id]?.currency_type === 'fiat' ? (
-        <FiatOrder order={currentOrder} depositProviders={depositProviders} />
+        <FiatOrder {...props} />
       ) : (
-        <CryptoOrder order={currentOrder} depositProviders={depositProviders}/>
+        <CryptoOrder {...props} />
       )}
-    </>
+    </> 
   );
 };
 
 export default InProcessOrder;
 
-const CryptoOrder = ({ order, depositProviders }) => {
+const CryptoOrder = ({ order, depositProvider, depositAccount }) => {
 
   const { tx_path } = UseTxState();
-  
+  const { isTabletOrMovilViewport } = useViewport();
   let confirmations = Number(order?.confirmations || 0)
   let totalConfirmations = 0
-  if(order?.deposit_provider_id && depositProviders[order?.deposit_provider_id]) totalConfirmations = Number(depositProviders[order?.deposit_provider_id]?.depositAccount?.confirmations)
-
-  const { isTabletOrMovilViewport } = useViewport();
+  if(depositAccount) totalConfirmations = Number(depositAccount?.confirmations)
 
   return (
     <InProcessOrderContainer className="_inProcessOrderContainer">
@@ -90,7 +105,7 @@ const CryptoOrder = ({ order, depositProviders }) => {
           </DateIdContainter>
         </TopSection>
  
-        {isTabletOrMovilViewport && <OrderStatus order={order} depositProviders={depositProviders} movil />}
+        {isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} movil />}
 
         <MiddleSection state={order.state}>
           <DetailGenerator
@@ -105,7 +120,7 @@ const CryptoOrder = ({ order, depositProviders }) => {
             <BottomSectionContainer className={`crypto`}>
               <UploadComponent 
                 title="TX ID - Confirmaciones" 
-                depositProviders={depositProviders}
+                depositAccount={depositAccount}
                 order={order}
               />
               <ConfirmationCounter
@@ -118,20 +133,21 @@ const CryptoOrder = ({ order, depositProviders }) => {
         }
       </OrderContainer>
 
-      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProviders={depositProviders} />}
+      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} />}
     </InProcessOrderContainer>
   );
 };
 
-const FiatOrder = ({ order, depositProviders }) => {
+const FiatOrder = (props) => {
 
+  const { order, depositProvider, depositAccount } = props
+  
   const [onDrag, setOnDrag] = useState(false);
   const [imgSrc, setImgSrc] = useState(false);
   const { actions, tx_path, coinsendaServices } = UseTxState();
   const { isTabletOrMovilViewport } = useViewport();
   const [ , , toBigNumber ] = useFormatCurrency()
   const { osDevice } = useSelector((state) => state?.ui);
-
 
   const dragOver = (event) => {
     event.preventDefault();
@@ -212,17 +228,15 @@ const FiatOrder = ({ order, depositProviders }) => {
   return (
     <InProcessOrderContainer>
       <IconClose theme="dark" size={20} />
-
       <OrderContainer onDragOver={dragOver} className={`${osDevice}`}>
         {onDrag && !imgSrc && order.state === "pending" && (
           <DropZoneComponent
             dragLeave={dragLeave}
             goFileLoader={goFileLoader}
-            depositProviders={depositProviders}
+            depositAccount={depositAccount}
             order={order}
-          />
+          /> 
         )} 
-
         <TopSection>
           <IconSwitch
             className="TitleIconOrder"
@@ -241,7 +255,7 @@ const FiatOrder = ({ order, depositProviders }) => {
           </DateIdContainter>
         </TopSection>
 
-        {isTabletOrMovilViewport && <OrderStatus order={order} depositProviders={depositProviders} movil />}
+        {isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} movil />}
 
         <MiddleSection state={order.state}>
           <DetailGenerator
@@ -258,7 +272,7 @@ const FiatOrder = ({ order, depositProviders }) => {
               imgSrc={imgSrc}
               goFileLoader={goFileLoader}
               setImgSrc={setImgSrc}
-              depositProviders={depositProviders}
+              depositAccount={depositAccount}
               order={order}
             />
           </BottomSectionContainer>)
@@ -268,12 +282,12 @@ const FiatOrder = ({ order, depositProviders }) => {
 
       </OrderContainer>
 
-      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProviders={depositProviders} />}
+      {!isTabletOrMovilViewport && <OrderStatus order={order} depositProvider={depositProvider} />}
     </InProcessOrderContainer>
   );
 };
 
-const DropZoneComponent = ({ dragLeave, order, goFileLoader, depositProviders }) => {
+const DropZoneComponent = ({ dragLeave, order, goFileLoader, depositAccount }) => {
   return (
     <DropZoneContainer>
       <input
@@ -288,14 +302,14 @@ const DropZoneComponent = ({ dragLeave, order, goFileLoader, depositProviders })
       <UploadComponent
         unButtom
         title="Suelta aquí el archivo que quieres subir..."
-        depositProviders={depositProviders}
+        depositAccount={depositAccount}
         order={order}
       />
     </DropZoneContainer>
   );
 };
 
-const UploadComponent = ({ order, unButtom, title, goFileLoader, imgSrc, depositProviders, ...props}) => {
+const UploadComponent = ({ order, unButtom, title, goFileLoader, imgSrc, depositAccount, ...props}) => {
   // const { currentOrder } = UseTxState();
   const idForFileUpload = useKeyActionAsClick(
     true,
@@ -306,7 +320,7 @@ const UploadComponent = ({ order, unButtom, title, goFileLoader, imgSrc, deposit
     true
   );
 
-  const isPseDeposit = depositProviders[order?.deposit_provider_id]?.depositAccount?.name === 'pse'
+  const isPseDeposit = depositAccount?.name === 'pse'
   
   const INPUT_FILE_PROPS = {
     type:"file",

@@ -20,7 +20,6 @@ const Layout = styled.section`
 `
 
 const SelectNetwork = ({ networks, toggleNetwork, uiName }) => {
-
         return(
             <Layout>
                 <OptionInputContainer>
@@ -30,7 +29,6 @@ const SelectNetwork = ({ networks, toggleNetwork, uiName }) => {
                         Object.keys(networks).map((networkName, index) => {
                             const network = networks[networkName]
                             const { user_friendly } =  network
-
                             return(
                                 <ItemListComponent 
                                     key={index}
@@ -55,7 +53,6 @@ const SelectNetwork = ({ networks, toggleNetwork, uiName }) => {
                 </OptionInputContainer>
             </Layout>
         )
-
 }
 
 

@@ -36,6 +36,7 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 import Button from 'components/widgets/buttons/button'
 import { P } from "core/components/atoms";
 import styled from "styled-components";
+// import { serveModelsByCustomProps } from 'selectors'
 
 
 
@@ -49,12 +50,9 @@ const FiatDepositSuccess = ({
 }) => {
     
     const depositOrder = useSelector((state) => state?.modelData?.deposits[orderData?.id]);
-    // console.log('depositData', depositOrder)
     const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit') 
     const [ depProvDetail, setDepProvDetail ] = useState([])
-    const depositProvider = useSelector((state) => state?.modelData?.deposit_providers[depositOrder?.deposit_provider_id]);
     const [ amount, setAmount ] = useState([])
-
     const closeModal = () => actions.renderModal(null)
     const finish = async () => {
             closeModal()
@@ -67,18 +65,19 @@ const FiatDepositSuccess = ({
     }
 
     useEffect(() => {
-        if(depositProvider){
-            init(depositProvider?.provider)
+        if(depositAccount){
+            init(depositAccount)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [depositProvider])
+    }, [depositAccount])
 
-    const provider = depositProvider?.provider
+    const provider = depositAccount
 
     const STAGE_COMPONENTS = {
         bank:BankSuccessDetail,
         pse:PseSuccessDetail
     }
+
 
     return(
         <OtherModalLayout
@@ -138,7 +137,7 @@ const FiatDepositSuccess = ({
                         STAGE_COMPONENTS={{
                             bank:BankCTA,
                             pse:PseCTA
-                        }}
+                        }} 
                         component={depositAccount?.provider_type}
                         depositAccount={depositAccount}
                         finish={finish}
@@ -225,7 +224,7 @@ export const PseCTA = ({
                             onClick={finish}
                         >
                             Salir
-                        </Button>
+                        </Button> 
                         <ControlButton
                             formValidate
                             loader={depositOrder?.metadata?.bank_url ? false : true}
@@ -233,7 +232,7 @@ export const PseCTA = ({
                             handleAction={() => {
                                 // localStorage.setItem(`pse_${depositOrder?.id}`, JSON.stringify(new Date()));
                                 localStorage.setItem(`pse_${depositOrder?.id}`, true);
-                                // setIsAvailableToPay(false);
+                                setIsAvailableToPay(false);
                                 // setLeftMinutes(PSE_DEFAULT_AVAILABLE_PAY_TIME)
                                 window.open(depositOrder?.metadata?.bank_url, '_blank');
                                 finish && finish()
@@ -302,6 +301,7 @@ const BankSuccessDetail = ({
     provider,
     depProvDetail
 }) => {
+
 
     return(
         <>

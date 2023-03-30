@@ -219,6 +219,7 @@ const CriptoView = (props) => {
             account_id: { account_id },
           }
         } = provider;
+        // if(typeof qrState === "string")return;
         const validateAddress = await coinsendaServices.validateAddress(account_id);
         if (!validateAddress) {
           const errorMsg = `Dirección invalida`;
@@ -238,7 +239,7 @@ const CriptoView = (props) => {
       })()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [depositProviders.current]);
+  }, [depositProviders?.current?.id]);
   
   const truncatedAddres = useTruncatedAddress(address || '')
   const addressValue = isMobile ? truncatedAddres : address
@@ -253,7 +254,12 @@ const CriptoView = (props) => {
   return (  
     <> 
     {props?.children}
-    <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
+    {
+      depositProviders.current ?
+        <AvailableDepositNetwork currentNetwork={depositProviders.current} callback={setProvider}/>
+      :
+      <div></div>
+    }
     <DepositForm className="depositForm">
         { 
         current_wallet.currency.includes("eth") &&

@@ -208,9 +208,9 @@ export const ApiPostCreateBankDeposit = async({
   state:{
     depositAmount,
     depositCost
-  }, 
+  },  
   currentWallet, 
-  depositProvider 
+  depositProvider  
 }) => { 
   let body = {
     data:{
@@ -219,7 +219,7 @@ export const ApiPostCreateBankDeposit = async({
       comment:"",
       cost_id:depositCost?.value,
       country:currentWallet?.country,
-      currency:depositProvider?.currency,
+      currency:currentWallet?.currency,
       deposit_provider_id:depositProvider?.id
     }
   }
@@ -281,8 +281,6 @@ export const DEPOSIT_COSTS = {
 export const selectProviderData = createSelector(
   (depositAccount) => depositAccount,
   (depositAccount) => {
-    // console.log('selectProviderData', depositAccount)
-    // debugger
     if(!depositAccount)return [ null, null ];
     const _depositAccount = ["other_bank"].includes(depositAccount?.value) ? depositAccount?.defaultProv : depositAccount;
     if(!_depositAccount)return [ null, null ];

@@ -14,7 +14,7 @@ const EmptyStateAccountList = (props) => {
           uiName="¿A donde deseas enviar DCOP?"
           {...props}
         />
-    </>
+    </> 
   )
 }
 
