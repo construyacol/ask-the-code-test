@@ -8,7 +8,8 @@ export interface buttonTypes extends ChildrenReactNode {
   color?: string | String;
   onClick?: () => void;
   disabled?: boolean;
-  href?:string | String | LocationDescriptor<unknown>;
+  loading?: boolean;
+  href?: string | String | LocationDescriptor<unknown>;
 }
 
 export interface textTypes extends ChildrenReactNode {

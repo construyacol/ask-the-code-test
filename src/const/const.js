@@ -140,6 +140,7 @@ export const ADD_RESTORE_ID_URL = `${ApiUrl}profiles/add-restoreid`;
 export const CURRENCIES_URL_ALT = `${ApiUrl}currencies`;
 export const GET_PROFILE_URL = `${ApiUrl}users`;
 export const ADD_PROFILE_URL = `${ApiUrl}profiles/add-new-profile`;
+export const ADD_NEW_DELETE_REQUEST_URL = `${ApiUrl}deleteRequests/add-new-delete-request`;
 export const TWO_FACTOR_URL = `${ApiUrl}transactionSecuritys`;
 export const TWO_FACTOR_BASE_URL = `${ApiUrl}`;
 export const USER_DNS_URL = `${ApiUrl}userDns/resolve-identifier`;

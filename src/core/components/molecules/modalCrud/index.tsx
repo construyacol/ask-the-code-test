@@ -9,9 +9,7 @@ function ModalCrud(props:any){
 
     const closeModal = (e?:React.MouseEvent<HTMLDivElement, MouseEvent>):void => {
         if(props?.loading)return;
-        if (!e || (e.target instanceof HTMLDivElement && e?.target?.dataset?.close_modal)){
-          actions.renderModal(null);
-        }
+        if (!e || (e.target instanceof HTMLDivElement && e?.target?.dataset?.close_modal)) actions.renderModal(null);
     };
     
     return(

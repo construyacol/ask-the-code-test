@@ -1,23 +1,22 @@
 import { P } from 'core/components/atoms'
-import { SUPPORT_EMAIL } from 'const/const'
-import { useSelector } from "react-redux";
+// import { SUPPORT_EMAIL } from 'const/const'
+// import { useSelector } from "react-redux";
 import { ButtonContainer } from './styles'
-
-export interface modelDataProp {
-    [id: string]: any;
-}
-export type modelDataProps = {
-    modelData: modelDataProp;
-};
-
+import { useActions } from 'hooks/useActions'
+  
 function DeleteAccount(){
-    const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
-    function sendEmail() {
-        const subject = `Eliminar cuenta de usuario de ${user?.name ? user?.name : ''}: ${user?.email}`;
-        const receiver = SUPPORT_EMAIL 
-        const body = `Nombre: ${user?.name}\nCorreo: ${user?.name}`;
-        window.location.href = `mailto:${receiver}?subject=${subject}&body=${body}`;
+
+    const actions = useActions()
+    const sendEmail = async() => {
+        const ModalDisclaimer = await import('./modalDisclaimer')
+        // eslint-disable-next-line react/jsx-pascal-case
+        actions.renderModal(() => <ModalDisclaimer.default/>); 
+        // const subject = `Eliminar cuenta de usuario de ${user?.name ? user?.name : ''}: ${user?.email}`;
+        // const receiver = SUPPORT_EMAIL 
+        // const body = `Nombre: ${user?.name}\nCorreo: ${user?.name}`;
+        // window.location.href = `mailto:${receiver}?subject=${subject}&body=${body}`;
     }
+
     return(
         <ButtonContainer onClick={sendEmail}>
             <P className="deleteAccount__p--paragraph">
@@ -28,4 +27,5 @@ function DeleteAccount(){
 }
 
 export default DeleteAccount
+
 
