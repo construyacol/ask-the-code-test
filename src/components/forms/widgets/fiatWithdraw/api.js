@@ -2,7 +2,7 @@ import { mainService } from "../../../../services/MainService";
 // import { recursiveAddList } from '../../utils'
 // import { isEmpty } from 'lodash'
 import {
-  parseOnlyNumbers,
+  // parseOnlyNumbers,
 } from '../kyc/utils'
 // import { initStages } from '../../utils'
 import { 
@@ -132,7 +132,6 @@ export const createNextStages = async({
   ...props
 }) => {
 
-
   if(!state[stageData?.key])return;
   // if(state[stageData?.key]?.value === "newBankAccount") return props?.setCreateAccount(true);
   const apiStages = getNextStages(state[stageData?.key]?.value)
@@ -217,12 +216,11 @@ export const ApiPostCreateFiatWithdraw = async(payload, tools) => {
 
   let withdrawAccount = ungapStructuredClone(payload?.withdrawAccount)
   if(!withdrawAccount?.id) withdrawAccount = await createWithdrawAccount(payload)
-
   let body = {
     data:{ 
       country:"international",
       account_id:currentWallet?.id,
-      amount:parseOnlyNumbers(withdrawAmount), 
+      amount:withdrawAmount.replace(/[^0-9.]/g, ''), 
       withdraw_account_id:withdrawAccount?.id,
       withdraw_provider_id:withdrawProvider?.id,
     }
