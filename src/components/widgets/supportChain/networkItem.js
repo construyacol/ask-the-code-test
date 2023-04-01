@@ -5,16 +5,17 @@ import { parseSymbolCurrency } from 'core/config/currencies';
 
 
 const NetworkItem = ({ networkData }) => {
-    const { user_friendly, provider_type } =  networkData
+    const { user_friendly, provider_type, uiName, icon } =  networkData
     const providerType = parseSymbolCurrency(provider_type)
     return(
         <NetworkItemCont>
             <IconSwitch
-                icon={provider_type}
-                size={16}
+                icon={icon || provider_type}
+                size={17}
+                color="var(--primary)"
             />
             <P>
-                {providerType}
+                {uiName || providerType}
                 <SPAN className="number">
                     ({user_friendly?.token_protocol || user_friendly?.network})
                 </SPAN>
@@ -24,3 +25,4 @@ const NetworkItem = ({ networkData }) => {
 }
 
 export default NetworkItem
+

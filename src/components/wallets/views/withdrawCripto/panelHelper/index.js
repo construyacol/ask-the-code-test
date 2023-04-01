@@ -75,30 +75,24 @@ const PanelHelper = props => {
     }
 
     const renderOrderDetail = () => {
-
       let _orderDetail = []
       let parsedAmount =  typeof amount === 'string' && amount?.slice()?.replace(/[,]/g, "")
       let _amount = BigNumber(parsedAmount || 0)
-
       let _total = current_wallet ? formatToCurrency(total, current_wallet?.currency) : total
       let _fixedCost = current_wallet ? formatToCurrency(fixedCost, current_wallet?.currency) : fixedCost
-
       _orderDetail = [
         ["Tarifa de red", {Component:() => <FeeComponent currentPriority={currentPriority} value={`${timeLeft >= 0 ? `(${timeLeft})`:''} ${_fixedCost.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`}/>}],
       ] 
       // console.log('|||||| calculateTotal ==> ', _amount.isGreaterThan(availableBalance), _amount.toString(), availableBalance.toString(), withdrawProvider)
-
       if(totalBalance?.isLessThanOrEqualTo(withdrawProvider?.provider?.min_amount) || _amount.isGreaterThan(availableBalance))return setOrderDetail(_orderDetail);
-
       if(_amount.isGreaterThanOrEqualTo(minAmount)) _orderDetail.push(["Cantidad", `${_amount.toFormat()}  - ${parseSymbolCurrency(currencySymbol)}`])
-
       if(takeFeeFromAmount){
         if(controlValidation) _orderDetail.push(["Total a recibir", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }else{
         if(controlValidation && total.isLessThanOrEqualTo(totalBalance)) _orderDetail.push(["Total a retirar", `${_total?.toFormat()} - ${parseSymbolCurrency(currencySymbol)}`] )
       }
       setOrderDetail(_orderDetail)
-    }
+    } 
 
     useEffect(() => {
       renderOrderDetail()
@@ -112,6 +106,8 @@ const PanelHelper = props => {
 
     let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de retiro' : 'Velocidad de retiro'
     let isReady = addressState === 'good'
+    console.log('currentPriority', currentPriority)
+
 
     // let Icon = priority === 'high' ? AiOutlineThunderbolt : priority === 'low' ? GiTurtle : MdSpeed 
     return(

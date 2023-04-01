@@ -18,8 +18,8 @@ import useViewport from 'hooks/useViewport'
 import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
 
-const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")));
-const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")));
+const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")), {fallback:<div></div>});
+const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")), {fallback:<div></div>});
  
 const CriptoSupervisor = (props) => { 
   const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
@@ -102,6 +102,9 @@ export const CriptoView = (props) => {
     actions.renderModal(null);
   };
  
+
+
+
   const finish_withdraw = async (fnProps) => {
     const { twoFaToken = null, cost_information, gas_limit } = fnProps
     actions.isAppLoading(true);
@@ -114,7 +117,11 @@ export const CriptoView = (props) => {
         <Withdraw2FaModal isWithdraw2fa callback={setTowFaTokenMethod} {...fnProps} />
       ));
     } 
+
     let withdraw_account = withdraw_accounts[addressValue];
+    console.log("withdraw_accounts", withdraw_accounts)
+    console.log("addressValue", addressValue)
+    debugger
     if (!withdraw_account) {  
       const body = {
         data:{
@@ -194,24 +201,28 @@ export const CriptoView = (props) => {
   };
 
   const handleChangeAddress = (_, value) => {
-    // console.log('handleChangeAddress', value)
+    // console.log('handleChangeAddress', value, value.replace(/[^@a-zA-Z0-9.]/g, ""))
     // debugger
-    setAddressValue(value.replace(/[^@a-zA-Z0-9]/g, ""));
+    // setAddressValue(value.replace(/[^@a-zA-Z0-9.]/g, ""));
+    setAddressValue(value);
   };
+
+
 
   const deleteTag = () => {
     setTagWithdrawAccount(null);
     setAddressValue("");
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     const condition = !active_trade_operation && amountState === "good" && addressState === "good";
     if (isValidForm.current !== condition) {
       isValidForm.current = condition;
     }
-    if (addressState === "good") {
+    if (addressState === "good" && withdrawProviders?.current?.provider_type !== 'internal_network') {
       document.getElementsByName("amount")[0].focus();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active_trade_operation, amountState, addressState]);
 
 
@@ -286,7 +297,7 @@ export const CriptoView = (props) => {
   } 
 
   if(isEmpty(withdrawProviders.current)){
-    return<SelectWithdrawNetwork uiName={`Selecciona la red en la que deseas enviar ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
+    return<SelectWithdrawNetwork uiName={`Selecciona la red por la que deseas enviar ${current_wallet?.currency?.toUpperCase()}`} callback={setNetworkProvider}/>
   }
 
   return ( 
@@ -297,10 +308,11 @@ export const CriptoView = (props) => {
         <WithdrawFormComponent
           {...formProps}
         />
-        <PanelHelper
-          {...props}
-          {...panelHProps}
-        />
+          <PanelHelper
+            {...props}
+            {...panelHProps}
+          />
+          : <></>
       </CriptoWithdrawForm>
     </>
   ); 

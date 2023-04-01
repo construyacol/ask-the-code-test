@@ -69,14 +69,11 @@ import { parseSymbolCurrency } from 'core/config/currencies';
     return [ _value.toFormat(), status ]
   }
 
-  const emailValidation = (value, data) => {
-    // const patron = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const emailValidation = (value, data = {}) => {
     const patron = data?.settings?.successPattern
     let status = patron.test(value) ? 'success' : false
     const [ _value ] = selectListValidator(value, {...data, regex:patron})
-    // console.log('res', _value, status)
-    // if(status === 'success'){    }
-    // let _value = value
     return [ _value, status ]
   }
 

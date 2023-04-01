@@ -4,6 +4,8 @@ import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
 import { selectDepositAccountsByNetwork, selectDepositProvsByNetwork } from 'selectors'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
+import { NETWORK_LABELS } from 'const/const'
+
 
 
 export default function depositNetworksHoc(AsComponent) {
@@ -22,20 +24,26 @@ export default function depositNetworksHoc(AsComponent) {
       sessionStorage.setItem(`depositNetworkDefault_${currentWallet?.id}`, network);
       callback && callback({providers:networks, current:networks[network]})
     }   
-
+    // provider_type
     useEffect(() => {
         (async() => {
             if(isEmpty(availableDepositAccounts))return;
             let _networks = {}
+            
             for (const depositAccountNetwork in availableDepositAccounts) {
               let network = depositProviders[depositAccountNetwork]
               if(availableDepositAccounts[depositAccountNetwork]?.currency_type !== 'crypto') continue;
               if(!network) network = await coinsendaServices.createAndInsertDepositProvider(currentWallet, availableDepositAccounts[depositAccountNetwork]?.id)
+              const provider_type = availableDepositAccounts[depositAccountNetwork]?.provider_type
               _networks = {
                 ..._networks,
-                [availableDepositAccounts[depositAccountNetwork]?.provider_type]:{
-                  ...network, 
-                  user_friendly:availableDepositAccounts[depositAccountNetwork]?.user_friendly}
+                [provider_type]:{  
+                  ...network,
+                  uiName:NETWORK_LABELS[provider_type]?.uiName, 
+                  auxUiName:NETWORK_LABELS[provider_type]?.auxUiName, 
+                  icon:NETWORK_LABELS[provider_type]?.icon, 
+                  user_friendly:NETWORK_LABELS[provider_type]?.user_friendly || availableDepositAccounts[depositAccountNetwork]?.user_friendly
+                }
               }
             }
             setNetworks({..._networks})

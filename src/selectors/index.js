@@ -88,7 +88,7 @@ export const selectWAccountsByAddressProvType = createSelector(
   (withdraw_accounts, accountProvider) => {
     let result = {};
     for (let w_account_id in withdraw_accounts) {
-      let address = withdraw_accounts[w_account_id]?.info?.address
+      let address = withdraw_accounts[w_account_id]?.info?.address || withdraw_accounts[w_account_id]?.info?.identifier
       const byCurrency = withdraw_accounts[w_account_id]?.currency
       if ([byCurrency].includes(accountProvider?.currency) && address && withdraw_accounts[w_account_id]?.provider_type === accountProvider.provider_type) {
         result = {
@@ -172,7 +172,7 @@ export const selectFiatWithdrawAccounts = createSelector(
             value:withdrawAccount?.bank_name?.value
           }
         }
-      }
+      } 
     })
     return [ fiatWithdrawAccounts ];
   }
@@ -191,11 +191,28 @@ export const selectWithdrawProvider = createSelector(
 );
 
 
+// get withdrawProvidersByType() {
+//   let res = {}
+//   for (const [, withdrawProvider] of Object.entries(this.withdrawProviders)) {
+//     let itemsByCurrency = res[withdrawProvider?.currency] || {};
+//     res = {
+//       ...res,
+//       [withdrawProvider?.currency]:{
+//         ...itemsByCurrency,
+//         [withdrawProvider?.provider_type]:withdrawProvider
+//       }
+//     }
+//   }
+//   return res
+// }
+
+
 export const selectFiatWithdrawProviders = createSelector(
   (withdrawProviders) => withdrawProviders,
   (_, customProp) => customProp,
   (withdrawProviders, customProp) => {
     let providers = []
+    if(!withdrawProviders)return withdrawProviders; 
     for (const [, withdrawProvider] of Object.entries(withdrawProviders)) {
       if(checkIfFiat(withdrawProvider?.currency))providers.push(withdrawProvider)
     }

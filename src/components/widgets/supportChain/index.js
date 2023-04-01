@@ -6,6 +6,7 @@ import useViewport from 'hooks/useViewport'
 import { GrNetwork } from 'react-icons/gr';
 import NetworkItem from './networkItem'
 import DropDownList from 'components/widgets/dropDown'
+import { isEmpty } from 'lodash'
 
 
 const SelectNetwork = ({ className, ...props }) => {
@@ -17,7 +18,9 @@ const SelectNetwork = ({ className, ...props }) => {
     const networkChange = async ({ value }) => props.toggleNetwork(value);
 
     useEffect(() => {
-        if(props.networks){
+        if(!isEmpty(props.networks)){
+            // console.log('SelectNetwork', props.networks)
+            // debugger
             (() => {
                 let netWorks = {}
                 for (let network in props.networks) {
@@ -26,7 +29,6 @@ const SelectNetwork = ({ className, ...props }) => {
                         [network]:{
                             ...props.networks[network],
                             value:network,
-                            name:network,
                             component:() => <NetworkItem networkData={props.networks[network]} />,
                         }
                     }
@@ -54,7 +56,7 @@ const SelectNetwork = ({ className, ...props }) => {
     return(
         <DropDownList
             refEl={FilterElement}
-            className={`${isMobile ? 'isMobile stickyPos' : `stickyPos withOutBackground ${classNamesPos[positionNets]}`} `}
+            className={`${isMobile ? 'isMobile stickyPos' : `stickyPos withOutBackground ${classNamesPos[positionNets]}`} withIconDisable`}
             defaultOption={props?.currentNetwork?.provider_type}
             title="Red"
             MainIcon={GrNetwork}

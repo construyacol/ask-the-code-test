@@ -1,5 +1,5 @@
 import React from 'react'
-import { DepositForm } from '../depositCripto'
+import { DepositForm } from '../depositCripto/styles'
 import ControlButton from "../../../widgets/buttons/controlButton";
 
 const DepositWithdrawFiatSkeleton = props => {

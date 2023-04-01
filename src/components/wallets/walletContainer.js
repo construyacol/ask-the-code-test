@@ -10,7 +10,7 @@ import { Route } from "react-router-dom";
 import ActivityView from "./views/activity";
 import PropTypes from "prop-types";
 import { AccountListViewSkeleton } from "../widgets/accountList/listView";
-import { SkeletonDepositView } from './views/depositCripto'
+import SkeletonDepositView from './views/depositCripto/skeleton'
 import { SkeletonSwapView } from './views/swap'
 import SkeletonWithdrawView from "./views/withdrawCripto/skeleton";
 import { AccountDetailLayout, AccountDetailContainer } from '../widgets/layoutStyles'

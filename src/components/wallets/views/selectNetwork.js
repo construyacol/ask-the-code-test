@@ -6,7 +6,7 @@ import { OptionInputContainer } from 'components/forms/widgets/sharedStyles'
 import styled from 'styled-components'
 import { capitalizeWord } from 'utils'
 import { P } from 'core/components/atoms'
-
+ 
 
 const Layout = styled.section`
     width: 100%;
@@ -29,16 +29,17 @@ const SelectNetwork = ({ networks, toggleNetwork, uiName }) => {
                         Object.keys(networks).map((networkName, index) => {
                             const network = networks[networkName]
                             const { user_friendly } =  network
-                            return(
+                            return(  
                                 <ItemListComponent 
                                     key={index}
                                     className="createButton"
                                     lastIndex
                                     handleAction={() => toggleNetwork(networkName)}
                                     itemList={{
-                                        icon:networkName,
+                                        icon:network?.icon || networkName,
+                                        auxUiName:network?.auxUiName,
                                         uiName: () => <>
-                                            Red {capitalizeWord(networkName)}
+                                            Red {capitalizeWord(network?.uiName || networkName)}
                                             <span className='fuente2 span__protocol'>{user_friendly ? `(${user_friendly?.token_protocol?.toUpperCase() || user_friendly?.network?.toUpperCase()})` : ''}</span>
                                         </> 
                                     }}

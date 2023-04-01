@@ -26,18 +26,12 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     "onkeyup",
     true
   );
+ 
 
-  const handleSubmit = async (e) => {
-    e && e.preventDefault();
-    setLoader(true);
-    const form = new FormData(document.getElementById("newAccount"));
-    const accountName = form.get("name-account");
-    const address = form.get("address-account");
-
+  const createCriptoWithdrawAccount = async({ accountName, address }) => {
     let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
     const thisAccountExist = withdraw_accounts[address];
     const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
-
     if (unlabeledAccount) {
       // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
       const hideAccount = await coinsendaServices.deleteAccount(
@@ -52,7 +46,6 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
       toastMessage("Esta cuenta de retiro ya existe", "error");
       return setLoader(false);
     } 
-
     const body = {
       data:{
         country:current_wallet?.country,
@@ -65,9 +58,40 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
         }
       }
     }
+    return await coinsendaServices.createWithdrawAccount(body);
+  }
 
-    const { data, error } = await coinsendaServices.createWithdrawAccount(body);
 
+  const createInternalWithdrawAccount = async({ accountName, address }) => {
+    const body = {
+      data:{
+        country:current_wallet?.country,
+        currency: current_wallet?.currency,
+        provider_type:provider?.provider_type,
+        internal:provider?.internal,
+        info_needed:{
+          identifier:address,
+          type:"email",
+          label:accountName
+        }
+      }
+    }
+    return await coinsendaServices.createWithdrawAccount(body);
+  }
+
+
+  const handleSubmit = async (e) => {
+    e && e.preventDefault();
+    setLoader(true);
+    const form = new FormData(document.getElementById("newAccount"));
+    const accountName = form.get("name-account");
+    const address = form.get("address-account");
+    const METHODS = {
+      internal_network:createInternalWithdrawAccount,
+      default:createCriptoWithdrawAccount
+    }
+    const apiServiceMethod = METHODS[provider?.provider_type] || METHODS.default
+    const { data, error } = await apiServiceMethod({ accountName, address });
     if (error) {
       toastMessage(error?.message || "No se pudo crear la cuenta", "error");
       return setLoader(false);
@@ -79,10 +103,12 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     let idNewAccount = document.getElementById(data.id);
     idNewAccount && idNewAccount?.classList?.add("shower");
     setAddressValue();
+    
   };
 
   const handleChange = (_, value) => {
-    setAddressValue(value.replace(/[^a-zA-Z0-9]/g, ""));
+    let pattern = provider_type === 'internal_network' ? /[^@a-zA-Z0-9.]/g : /[^a-zA-Z0-9]/g
+    setAddressValue(value.replace(pattern, ""));
   }
 
   return (
@@ -101,7 +127,7 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
           autoComplete="off"
           handleStatus={setNameState}
         />
- 
+  
         <InputForm
           classes="fuente2"
           type="text"

@@ -45,9 +45,10 @@ export class WithdrawService extends WebService {
     if (!result || result === 465 || !this.withdrawProviders) {
       return false;
     }
+
     const providersServed = await this.withdrawProvidersByType;
     const withdrawAccounts = await result.map((account) => {
-    const aux = providersServed[account.provider_type];
+    const aux = providersServed[account?.currency][account?.provider_type];
     let providerData = {}
     const currencyType = checkIfFiat(aux?.currency) ? 'fiat' : 'crypto'
       if (checkIfFiat(aux?.currency)) {
@@ -133,6 +134,8 @@ export class WithdrawService extends WebService {
     // if (await this.isCached("withdraw_accounts", result)) {
     //   return withdrawAccounts;
     // }
+
+    // console.log('selectFiatWithdrawAccounts', withdrawAccounts)
     const normalizedUser = await normalizeUser(updatedUser);
     await this.dispatch(updateNormalizedDataAction(normalizedUser));
     document.querySelector('#home-container')?.classList?.add('wA')
@@ -160,15 +163,18 @@ export class WithdrawService extends WebService {
   }
 
   get withdrawProvidersByType() {
-    return (
-      this.withdrawProviders &&
-      this.withdrawProviders.reduce((result, provider) => {
-        return {
-          ...result,
-          [provider.provider_type]: provider,
-        };
-      }, {})
-    );
+    let res = {}
+    for (const [, withdrawProvider] of Object.entries(this.withdrawProviders)) {
+      let itemsByCurrency = res[withdrawProvider?.currency] || {};
+      res = {
+        ...res,
+        [withdrawProvider?.currency]:{
+          ...itemsByCurrency,
+          [withdrawProvider?.provider_type]:withdrawProvider
+        }
+      }
+    }
+    return res
   }
  
 

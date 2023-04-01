@@ -15,7 +15,7 @@ export default (props) => {
 
   let value
   let min_amount
-  let available
+  let available 
   let minAmountValidation
   let availableAmountValidation
 
@@ -51,21 +51,26 @@ export default (props) => {
           return;
         }
  
-        let AddressValidator;
-        AddressValidator = await import("multicoin-address-validator");
-
         const { currency } = currentWallet;
-        let finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
-        // currentNetwork
-        // let alphanumeric = /^[a-z0-9]+$/i.test(e.target.value);
         const withdrawProvider = props?.currentNetwork || withdrawProvidersByName[currency]
         if(!withdrawProvider)return;
-        const { address_validator_config:{ name, network } } = withdrawProvider
-        let addressVerify = await AddressValidator.validate(
-          finalValue,
-          name,
-          network || 'testnet'
-        );
+        const providerType = withdrawProvider?.provider_type
+        let finalValue = e.target.value;
+        let addressVerify
+        if(providerType === 'internal_network'){
+          const validations = await import("utils/validations");
+          addressVerify = validations?.emailValidation(finalValue)
+          // console.log('emailValidation', validations?.emailValidation(e.target.value))
+        }else{
+          let AddressValidator = await import("multicoin-address-validator");
+          // finalValue = e.target.value.replace(/[^a-zA-Z0-9]/g, "");
+          const { address_validator_config:{ name, network } } = withdrawProvider
+          addressVerify = await AddressValidator.validate(
+            finalValue,
+            name,
+            network || 'testnet'
+          );
+        }
 
         if (addressVerify) {
           setInputState("good");

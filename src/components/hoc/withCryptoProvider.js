@@ -22,12 +22,13 @@ export default function withCryptoProvider(AsComponent) {
     const [ wProps ] = WithdrawViewState();
     const { current_wallet, withdrawProvidersByName, balance } = wProps
     const [ withdrawProviders, setNetworkProvider ] = useState({ current:{}, providers:{} })
-    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency])
-    const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID)
+    const [ withdrawProvider, setWithdrawProvider ] = useState(withdrawProvidersByName[current_wallet?.currency]) 
+    const [ currentPriority, setPriority ] = useState(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
     const [ priorityList, setPriorityList ] = useState(withdrawProvider?.provider?.costs || [])
-    const [ coinsendaServices ] = useCoinsendaServices(); 
-    const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
+    const [ coinsendaServices ] = useCoinsendaServices();   
 
+    const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
+    
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
       amount:0,
@@ -177,6 +178,7 @@ export default function withCryptoProvider(AsComponent) {
 
     useEffect(() => {
       if(withdrawProvider){
+        setPriority(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
           const { takeFeeFromAmount, fixedCost } = withdrawData
           let minAmountProv = getMinAmount(withdrawProvider)
           let _minAmount = current_wallet ? formatToCurrency(minAmountProv, current_wallet?.currency) : minAmountProv
@@ -185,6 +187,7 @@ export default function withCryptoProvider(AsComponent) {
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawProvider, current_wallet, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
+
 
 
     useEffect(() => {

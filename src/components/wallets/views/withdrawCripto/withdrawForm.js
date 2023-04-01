@@ -18,13 +18,11 @@ import {
 
 // third party 
 import styled from 'styled-components'
-
 import { OptionInput } from 'components/molecules'
 import { formatToCurrency } from "utils/convert_currency";
 import BigNumber from "bignumber.js";
 import { MdSpeed } from 'react-icons/md';
 import { parseSymbolCurrency } from 'core/config/currencies'
-
 
 // const warningMessage = {
 //     usdt_trc20:'Los retiros > a 5K TRC20 pueden tardar hasta 48 horas'
@@ -85,7 +83,7 @@ const WithdrawFormComponent = ({
         className={`${isMobile ? "movil" : ""}`}
         onSubmit={(e) => e.preventDefault()}
         >
-        <InputForm 
+        <InputForm  
             type="text" 
             placeholder={"Escribe @ para ver tu lista de direcciones..."}
             name="address"
@@ -161,7 +159,7 @@ const WithdrawFormComponent = ({
                         ) 
                     }
                     AuxComponent={[
-                        () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>)
+                        withdrawProviders?.current?.provider_type !== 'internal_network' ?  () => (<TakeCostFromWithdrawAmount checked={takeFeeFromAmount} onChange={switchFixedCost}/>) : () => null
                     ]} 
                 />
                 {

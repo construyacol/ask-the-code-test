@@ -3,6 +3,7 @@ import { useWalletInfo } from 'hooks/useWalletInfo'
 import { isEmpty } from 'lodash'
 import { useSelector } from "react-redux";
 import { wProvsByCurrencyNetwork, selectDepositAccountsByNetwork } from 'selectors'
+import { NETWORK_LABELS } from 'const/const'
 
 
 export default function withdrawNetworksHoc(AsComponent) {
@@ -32,7 +33,10 @@ export default function withdrawNetworksHoc(AsComponent) {
                 ..._networks,
                 [networkProvider.provider_type]:{
                   ...networkProvider,
-                  user_friendly:availableDepositAccounts[providerId]?.user_friendly
+                  uiName:NETWORK_LABELS[networkProvider?.provider_type]?.uiName, 
+                  auxUiName:NETWORK_LABELS[networkProvider?.provider_type]?.auxUiName, 
+                  icon:NETWORK_LABELS[networkProvider?.provider_type]?.icon, 
+                  user_friendly:NETWORK_LABELS[networkProvider?.provider_type]?.user_friendly || availableDepositAccounts[providerId]?.user_friendly
                 }
             }
         }

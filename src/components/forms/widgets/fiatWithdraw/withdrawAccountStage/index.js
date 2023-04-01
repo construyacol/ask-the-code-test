@@ -18,7 +18,8 @@ export default function WithdrawAccountsComponent({
   const { 
     handleState:{ setState, state },
     stageManager:{ setStageStatus, stageData },
-    withdrawAccounts
+    withdrawAccounts,
+    wProvidersByProvType
   } = props
   const actions = useActions()
   const { isMobile } = useViewport();
@@ -57,7 +58,7 @@ export default function WithdrawAccountsComponent({
       }
       setBankAccountList(_bankAccountList)
     })()
-  }, [withdrawAccounts])
+  }, [withdrawAccounts, wProvidersByProvType])
 
 
   return(
