@@ -8,6 +8,7 @@ import {
   ADD_RESTORE_ID_URL,
   GET_PROFILE_URL,
   ADD_PROFILE_URL,
+  ADD_NEW_DELETE_REQUEST_URL,
   TWO_FACTOR_URL,
   USER_DNS_URL,
   TWO_FACTOR_BASE_URL,
@@ -252,5 +253,16 @@ export class TransactionService extends WebService {
     };
 
     return await this._Post(ADD_PROFILE_URL, body);
+  }
+
+  async addNewDeleteRequet(type) {
+    // @params type:deactivate | delete
+    const body = {
+      data: {
+        type,
+        country:this?.user?.country
+      }
+    };
+    return await this._Post(ADD_NEW_DELETE_REQUEST_URL, body);
   }
 }

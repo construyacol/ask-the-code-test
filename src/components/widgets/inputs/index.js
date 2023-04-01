@@ -1,5 +1,5 @@
 import React from "react";
-import { SimpleLoader } from "../loaders";
+import SimpleLoader from "../loaders";
 import styled from 'styled-components'
 
 

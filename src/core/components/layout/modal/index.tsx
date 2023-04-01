@@ -1,13 +1,14 @@
 import { useActions } from "hooks/useActions";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
+import { ChangeEvent } from 'react'
 
 
 export default function ModalLayout(props:any){
 
     const actions = useActions()
-    const closeModal = (e?:React.MouseEvent<HTMLDivElement, MouseEvent>):void => {
+    const closeModal = (e?:ChangeEvent<HTMLInputElement>):void => {
         if(props?.loading)return;
-        if (!e || (e.target instanceof HTMLDivElement && e?.target?.dataset?.close_modal)){
+        if (!e || (e?.target?.dataset?.close_modal)){
           actions.renderModal(null);
         }
     };
