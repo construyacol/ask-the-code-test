@@ -8,13 +8,15 @@ import InputForm from "../../../inputs/inputForm";
 import { ControlButtonContainer } from "../../../shared-styles";
 import ControlButton from "../../../buttons/controlButton";
 import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
+import { createProviderInfoNeeded } from 'utils/withdrawProvider'
+
 
 const NewAccount = ({ currency, provider_type, provider, providerName, switchView, addressToAdd, currentNetwork }) => {
+
   const [addressState, setAddressState] = useState();
   const [addressValue, setAddressValue] = useState(addressToAdd);
   const [nameState, setNameState] = useState();
   const [loader, setLoader] = useState();
-
   const [coinsendaServices, , actions, dispatch] = useCoinsendaServices();
   const [{ withdraw_accounts, current_wallet }] = WithdrawViewState();
   const [toastMessage] = useToastMessage();
@@ -26,59 +28,38 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     "onkeyup",
     true
   );
- 
 
-  const createCriptoWithdrawAccount = async({ accountName, address }) => {
-    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
-    const thisAccountExist = withdraw_accounts[address];
-    const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
-    if (unlabeledAccount) {
-      // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
-      const hideAccount = await coinsendaServices.deleteAccount(
-        thisAccountExist.id
-      );
-      if (!hideAccount) { 
-        toastMessage("No se pudo ocultar la cuenta anónima", "error");
-        return setLoader(false);
-      }
-    } else if (thisAccountExist && thisAccountExist.info.label !== currency
-    ) {
-      toastMessage("Esta cuenta de retiro ya existe", "error");
-      return setLoader(false);
-    } 
-    const body = {
-      data:{
-        country:current_wallet?.country,
-        currency: current_wallet.currency,
-        provider_type: provider_type,
-        internal:provider?.internal || false,
-        info_needed:{
-          label,
-          address:address.trim(),
-        }
-      }
-    }
-    return await coinsendaServices.createWithdrawAccount(body);
-  }
-
-
-  const createInternalWithdrawAccount = async({ accountName, address }) => {
-    const body = {
-      data:{
-        country:current_wallet?.country,
-        currency: current_wallet?.currency,
-        provider_type:provider?.provider_type,
-        internal:provider?.internal,
-        info_needed:{
-          identifier:address,
-          type:"email",
-          label:accountName
-        }
-      }
-    }
-    return await coinsendaServices.createWithdrawAccount(body);
-  }
-
+  // const createCriptoWithdrawAccount = async({ accountName, address }) => {
+  //   const body = {
+  //     data:{
+  //       country:current_wallet?.country,
+  //       currency: current_wallet.currency,
+  //       provider_type: provider_type,
+  //       internal:provider?.internal || false,
+  //       info_needed:{
+  //         label,
+  //         address:address.trim(),
+  //       }
+  //     }
+  //   }
+  //   return await coinsendaServices.createWithdrawAccount(body);
+  // }
+  // const createInternalWithdrawAccount = async({ accountName, address }) => {
+  //   const body = {
+  //     data:{
+  //       country:current_wallet?.country,
+  //       currency: current_wallet?.currency,
+  //       provider_type:provider?.provider_type,
+  //       internal:provider?.internal,
+  //       info_needed:{
+  //         identifier:address,
+  //         type:"email",
+  //         label:accountName
+  //       }
+  //     }
+  //   }
+  //   return await coinsendaServices.createWithdrawAccount(body);
+  // }
 
   const handleSubmit = async (e) => {
     e && e.preventDefault();
@@ -86,12 +67,35 @@ const NewAccount = ({ currency, provider_type, provider, providerName, switchVie
     const form = new FormData(document.getElementById("newAccount"));
     const accountName = form.get("name-account");
     const address = form.get("address-account");
-    const METHODS = {
-      internal_network:createInternalWithdrawAccount,
-      default:createCriptoWithdrawAccount
+
+
+
+    const thisAccountExist = withdraw_accounts[address];
+    const unlabeledAccount = thisAccountExist && thisAccountExist.info.label === currency
+    if (unlabeledAccount) {
+      // Si la cuenta existe y su label es igual al provider_type, es una cuenta anónima, por lo tanto se oculta la misma para crear una cuenta asociada al nuevo label
+      const hideAccount = await coinsendaServices.deleteAccount(thisAccountExist.id);
+      if (!hideAccount) { 
+        toastMessage("No se pudo ocultar la cuenta anónima", "error");
+        return setLoader(false);
+      }
+    } else if (thisAccountExist && address !== currency) {
+      toastMessage("Esta cuenta de retiro ya existe", "error");
+      return setLoader(false);
+    } 
+
+    let label = accountName === currency ? `${accountName}${Math.floor(Math.random() * 100)}` : accountName
+    const body = {
+      data:{
+        country:current_wallet?.country,
+        currency: current_wallet.currency,
+        provider_type: provider_type,
+        internal:provider?.internal || false,
+        info_needed:createProviderInfoNeeded({ accountLabel:label, accountAddress:address, provider_type })
+      }
     }
-    const apiServiceMethod = METHODS[provider?.provider_type] || METHODS.default
-    const { data, error } = await apiServiceMethod({ accountName, address });
+    const { data, error } = await coinsendaServices.createWithdrawAccount(body);
+
     if (error) {
       toastMessage(error?.message || "No se pudo crear la cuenta", "error");
       return setLoader(false);

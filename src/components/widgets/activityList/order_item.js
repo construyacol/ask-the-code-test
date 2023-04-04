@@ -17,7 +17,7 @@ import useToastMessage from "../../../hooks/useToastMessage";
 // import { useSelector } from "react-redux";
 import { checkIfFiat } from 'core/config/currencies';
 import { useSelector } from "react-redux";
-import { serveModelsByCustomProps } from 'selectors'
+import { selectDepositAccountsByNetwork } from 'selectors'
 
 import {
   gotoTx,
@@ -121,8 +121,7 @@ export const DepositOrder = ({ order }) => {
 
   const { new_order_style, tx_path = 'deposits', lastPendingOrderId } = UseTxState(order.id);
   const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
-  const depositAccountsByProvType = useSelector(({ modelData:{ depositAccounts } }) => serveModelsByCustomProps(depositAccounts, 'provider_type'));
-
+  const depositAccountsByProvType = useSelector((state) => selectDepositAccountsByNetwork(state, order?.currency));
   const depositProvider = depositProviders[order?.deposit_provider_id]
   const depositAccount = depositProvider ? depositAccountsByProvType[depositProvider?.provider_type] : {};
   
@@ -134,8 +133,6 @@ export const DepositOrder = ({ order }) => {
     orderState,
     currency,
   } = order;
-
-  
 
   useLayoutEffect(()=>{
     if(!checkIfFiat(currency) && state === 'pending' && document.getElementById(id)){
@@ -431,11 +428,12 @@ const WithdrawOrder = ({ order }) => {
 const PanelLeft = (order) => {  
 
   const { tx_path } = UseTxState(order.id);
-
   let totalConfirmations
   let confirmations
-  
-  if(order?.depositAccount) {
+
+  // console.log('depositAccount', order)
+
+  if(order?.depositAccount && order?.confirmations){
     totalConfirmations = Number(order?.depositAccount?.confirmations)
     confirmations = Number(order.confirmations)
   }
@@ -443,7 +441,8 @@ const PanelLeft = (order) => {
   return (
     <>
       {!checkIfFiat(order?.currency) &&
-      order.state === "confirmed" &&
+      order?.state === "confirmed" &&
+      order?.confirmations &&
       tx_path === "deposits" ? (
         <Confrimations className="fuente2">
           <p className="withConfirmations">

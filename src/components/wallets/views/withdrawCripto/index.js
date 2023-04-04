@@ -17,6 +17,8 @@ import PanelHelper from './panelHelper'
 import useViewport from 'hooks/useViewport'
 import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
+import { createProviderInfoNeeded } from 'utils/withdrawProvider'
+
 
 const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")), {fallback:<div></div>});
 const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")), {fallback:<div></div>});
@@ -119,20 +121,15 @@ export const CriptoView = (props) => {
     } 
 
     let withdraw_account = withdraw_accounts[addressValue];
-    console.log("withdraw_accounts", withdraw_accounts)
-    console.log("addressValue", addressValue)
-    debugger
-    if (!withdraw_account) {  
+
+    if (!withdraw_account) { 
       const body = {
         data:{
           country:current_wallet?.country,
           currency: current_wallet.currency,
           provider_type: withdrawProvider?.provider_type,
-          internal:withdrawProvider?.internal,
-          info_needed:{
-            label:current_wallet.currency,
-            address:addressValue.trim(),
-          }
+          internal:withdrawProvider?.internal || false,
+          info_needed:createProviderInfoNeeded({ accountLabel:current_wallet.currency, accountAddress:addressValue, provider_type:withdrawProvider?.provider_type })
         }
       }
       const { data } = await coinsendaServices.createWithdrawAccount(body);
@@ -309,7 +306,7 @@ export const CriptoView = (props) => {
           {...formProps}
         />
           <PanelHelper
-            {...props}
+            {...props} 
             {...panelHProps}
           />
           : <></>

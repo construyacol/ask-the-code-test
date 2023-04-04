@@ -26,7 +26,7 @@ export const selectDepositAccountsByNetwork = createSelector(
     return res;
   }
 );
-
+   
 export const wProvsByCurrencyNetwork = createSelector(
   (state) => state.modelData.withdrawProviders,
   (_, currency) => currency,
@@ -46,7 +46,7 @@ export const wProvsByCurrencyNetwork = createSelector(
     return result;
   }
 );
-
+ 
 export const selectDepositProvsByNetwork = createSelector(
   ({ modelData: { deposit_providers } }) => deposit_providers,
   // eslint-disable-next-line react-hooks/exhaustive-deps

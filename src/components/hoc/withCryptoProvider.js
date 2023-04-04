@@ -29,6 +29,8 @@ export default function withCryptoProvider(AsComponent) {
 
     const withdraw_accounts = useSelector((state) => selectWAccountsByAddressProvType(state, withdrawProviders?.current));
     
+    // console.log('withdraw_accounts', withdraw_accounts)
+
     const [ withdrawData, setWithdrawData ] = useState({ 
       timeLeft:undefined, 
       amount:0,
@@ -178,15 +180,20 @@ export default function withCryptoProvider(AsComponent) {
 
     useEffect(() => {
       if(withdrawProvider){
-        setPriority(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
-          const { takeFeeFromAmount, fixedCost } = withdrawData
-          let minAmountProv = getMinAmount(withdrawProvider)
-          let _minAmount = current_wallet ? formatToCurrency(minAmountProv, current_wallet?.currency) : minAmountProv
-          let minAmountWithCost = fixedCost ? _minAmount.plus(fixedCost) : _minAmount
-          setWithdrawData(prevState => ({...prevState, minAmount:takeFeeFromAmount === true ? minAmountWithCost : _minAmount}))
+        const { takeFeeFromAmount, fixedCost } = withdrawData
+        let minAmountProv = getMinAmount(withdrawProvider)
+        let _minAmount = current_wallet ? formatToCurrency(minAmountProv, current_wallet?.currency) : minAmountProv
+        let minAmountWithCost = fixedCost ? _minAmount.plus(fixedCost) : _minAmount
+        setWithdrawData(prevState => ({...prevState, minAmount:takeFeeFromAmount === true ? minAmountWithCost : _minAmount}))
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [withdrawProvider, current_wallet, withdrawData.fixedCost, withdrawData.takeFeeFromAmount])
+
+    useEffect(() => {
+      if(withdrawProvider){
+        setPriority(DEFAULT_COST_ID[withdrawProvider?.provider_type] || DEFAULT_COST_ID?.default)
+      }
+    }, [withdrawProvider])
 
 
 

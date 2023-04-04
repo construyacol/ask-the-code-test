@@ -10,7 +10,7 @@ import { getHostName } from '../../../../../environment'
 import DetailTemplateComponent from '../../../detailTemplate'
 import { MiddleSection } from '../../../detailTemplate'
 import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
-import { serveModelsByCustomProps } from 'selectors'
+import { selectDepositAccountsByNetwork } from 'selectors'
 
 import moment from "moment";
 import "moment/locale/es";
@@ -23,7 +23,7 @@ export const useDetailParseData = (order, detailType) => {
   const [, formatCurrency] = useFormatCurrency();
   const { deposit_providers } = UseTxState();
   const { withdraw_accounts } = useSelector((state) => state.modelData)
-  const depositAccountsByProvType = useSelector(({ modelData:{ depositAccounts } }) => serveModelsByCustomProps(depositAccounts, 'provider_type'));
+  const depositAccountsByProvType = useSelector((state) => selectDepositAccountsByNetwork(state, order?.currency));
 
   const currencies = useSelector((state) => selectWithConvertToObjectWithCustomIndex(state))
   const currencySimbol = currencies ? parseSymbolCurrency(currencies[order?.currency]?.symbol) : parseSymbolCurrency(order?.currency)?.toUpperCase()

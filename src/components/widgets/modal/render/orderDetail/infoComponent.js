@@ -177,7 +177,8 @@ const InfoCard = ({ icon, className, children }) => {
   
   const GetInfoComponentToRender = (order) => {
     const { tx_path, info, metadata } = order
-    // debugger
+    // console.log('order', order)
+    // debugger 
     const currencyType = checkIfFiat(order?.currency) ? 'fiat' : 'crypto'
     const targetKey = info?.is_referral ? 'is_referral' : 
     (info?.is_internal || metadata?.is_internal) ? 'is_internal' : 

@@ -11,20 +11,21 @@ const TagItem = ({ withdrawAccount, deleteTag }) => {
   if (!withdrawAccount) {
     return null;
   }
-
-  const address = withdrawAccount.info && withdrawAccount.info.address;
-
+  const address = withdrawAccount.info && (withdrawAccount?.info?.address || withdrawAccount?.info?.identifier);
   return (
     <>
       <TagBlocker className={`${isSafari()}`}/>
       <TagContainer id="tagAddress">
         <LabelTextCont>
           <p className="fuente label_">{withdrawAccount.info && withdrawAccount.info.label}</p>
-          <AddressContainer
-            data-final-address={address.match(/..........$/g).toString()}
-          >
-            <Address className="fuente2 address_">{address}</Address>
-          </AddressContainer>
+          {
+            withdrawAccount?.info?.address ?
+            <AddressContainer data-final-address={address.match(/..........$/g)?.toString()}>
+              <Address className="fuente2 address_">{address}</Address>
+            </AddressContainer>
+            :
+            <p className="fuente">{address}</p>
+          }
         </LabelTextCont>
         <DeleteButton onClick={deleteTag}>
           <AiOutlineClose size={16} color="white" />

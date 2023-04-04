@@ -16,7 +16,6 @@ const OrderStatus = ({ order, movil, depositProvider }) => {
   const { currentOrder, tx_path } = UseTxState();
   const skeletons = new Array(4).fill(["created"]);
 
-
   useEffect(() => {
     let statusCopys = {};
     for (let prop in api[tx_path]) {
@@ -32,7 +31,8 @@ const OrderStatus = ({ order, movil, depositProvider }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentOrder.state]);
 
-  const currencyType = (checkIfFiat(order?.currency) && depositProvider?.currency_type === 'fiat') ? 'fiat' : 'crypto'
+  const currencyType = (depositProvider?.currency_type === 'fiat' || (checkIfFiat(order?.currency) && order?.info?.is_internal)) ? 'fiat' : 'crypto'
+  // const currencyType = (checkIfFiat(order?.currency) && depositProvider?.currency_type === 'fiat') ? 'fiat' : 'crypto'
 
   return (
     <OrderStatusContainer>

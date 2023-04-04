@@ -60,10 +60,9 @@ const ModalDisclaimer = (props:any) => {
                <ul>
                   <li>Historial de transacciones</li>
                   <li>Verificación KYC existente</li>
-                  <li>Potencial de crecimiento de tus inversiones</li>
-                  <li>Incentivos y comisiones de tus referidos</li>
+                  {/* <li>Incentivos y comisiones de tus referidos</li> */}
                </ul>
-               <P variant="bold">Para confirmar escribe el siguiente texto:</P>
+               <P variant="bold">Para confirmar escribe tu correo electrónico:</P>
                <ConfirmationWord>
                   <P>{passPhrase}</P>
                </ConfirmationWord>

@@ -36,12 +36,9 @@ import RenderSwitchComponent from 'components/renderSwitchComponent'
 import Button from 'components/widgets/buttons/button'
 import { P } from "core/components/atoms";
 import styled from "styled-components";
-// import { serveModelsByCustomProps } from 'selectors'
-
 
 
 const IconSwitch = loadable(() => import("../../../widgets/icons/iconSwitch"));
-
 
 const FiatDepositSuccess = ({ 
     actions, 

@@ -106,7 +106,6 @@ const PanelHelper = props => {
 
     let title = isMobile || (!isMobile && props.withdrawConfirmed) ? 'Confirmación de retiro' : 'Velocidad de retiro'
     let isReady = addressState === 'good'
-    console.log('currentPriority', currentPriority)
 
 
     // let Icon = priority === 'high' ? AiOutlineThunderbolt : priority === 'low' ? GiTurtle : MdSpeed 

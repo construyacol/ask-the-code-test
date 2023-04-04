@@ -14,11 +14,12 @@ export default function withdrawNetworksHoc(AsComponent) {
     const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const wProvsByNetwork = useSelector((state) => wProvsByCurrencyNetwork(state, currentWallet?.currency));
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
+    console.log('wProvsByCurrencyNetwork', wProvsByNetwork)
 
     const toggleNetwork = (network) => {
       const { callback } = props
       setCurrentNetwork(networks[network])
-      sessionStorage.setItem(`withdrawNetworkDefault_${currentWallet?.id}`, network);
+      // sessionStorage.setItem(`withdrawNetworkDefault_${currentWallet?.id}`, JSON.stringify({suscriptionDate:new Date(), network}));
       callback && callback({providers:networks, current:networks[network]})
     }
 
@@ -26,6 +27,7 @@ export default function withdrawNetworksHoc(AsComponent) {
       (async() => {
         let networksProviders = Object.keys(wProvsByNetwork)
         let _networks = {}
+        console.log('wProvsByNetwork',wProvsByNetwork)
         for (let providerId of networksProviders) {
           const networkProvider = wProvsByNetwork[providerId]
             if(networkProvider?.currency_type !== 'crypto') continue;
@@ -47,9 +49,14 @@ export default function withdrawNetworksHoc(AsComponent) {
 
     useEffect(() => {
       if(!isEmpty(networks)){
-          (() => {
-            const withdrawNetworkDefault = sessionStorage.getItem(`withdrawNetworkDefault_${currentWallet?.id}`)
-            if(withdrawNetworkDefault) return toggleNetwork(withdrawNetworkDefault);
+          (async() => {
+            // const withdrawNetworkDefault = sessionStorage.getItem(`withdrawNetworkDefault_${currentWallet?.id}`)
+            // if(!withdrawNetworkDefault)return;
+            // const { suscriptionDate, network } = JSON.parse(withdrawNetworkDefault)
+            // const { timeDifference } = await import('utils/date')
+            // let secondsElapsed = timeDifference(new Date(suscriptionDate))
+            // console.log('secondsElapsed', secondsElapsed)
+            // if(secondsElapsed < 60) return toggleNetwork(network);
             // Si solo hay una red, se selecciona por defecto
             Object.keys(networks).length === 1 && toggleNetwork(Object.keys(networks)[0]);
           })()

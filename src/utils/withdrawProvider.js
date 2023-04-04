@@ -13,3 +13,18 @@ export const getMinAmount = (withdrawProvider) => {
 //     const cost_id = costId || DEFAULT_COST_ID;
 //     if(costs[cost_id]?.fixed)return costs[cost_id]?.fixed;
 // }
+
+export const createProviderInfoNeeded = ({ accountLabel, accountAddress, provider_type }) => {
+    const INFO_NEEDED = {
+      internal_network:{
+        identifier:accountAddress?.trim(),
+        type:'email',
+        label:accountLabel
+      },
+      default:{
+        label:accountLabel,
+        address:accountAddress?.trim()
+      }
+    }
+    return INFO_NEEDED[provider_type] || INFO_NEEDED?.default
+}

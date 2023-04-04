@@ -48,6 +48,7 @@ export class WithdrawService extends WebService {
 
     const providersServed = await this.withdrawProvidersByType;
     const withdrawAccounts = await result.map((account) => {
+    
     const aux = providersServed[account?.currency][account?.provider_type];
     let providerData = {}
     const currencyType = checkIfFiat(aux?.currency) ? 'fiat' : 'crypto'
@@ -84,6 +85,8 @@ export class WithdrawService extends WebService {
             }
           }
         }
+
+
         return {
           id: account.id,
           provider_name: account.info.bank_name || aux?.name,
@@ -103,16 +106,20 @@ export class WithdrawService extends WebService {
           ...account,
         };
       } else {
+
+        // console.log('providersServed', providersServed)
+        // console.log('data', account)
+        // debugger
+        //crypto case
         return {
-          //crypto case
           id: account.id,
           account_name: {
-            ui_name: aux.info_needed.label.ui_name,
-            value: account.info.label,
+            ui_name: aux?.info_needed?.label?.ui_name,
+            value: account?.info?.label,
           },
           account_address: {
-            ui_name: aux.info_needed.address.ui_name,
-            value: account.info.address,
+            ui_name: aux?.info_needed?.address?.ui_name || aux?.info_needed?.identifier?.ui_name,
+            value: account?.info?.address || account?.info?.identifier,
           },
           used_counter: account.used_counter,
           inscribed: account.used_counter > 0 ? true : false,
@@ -339,14 +346,12 @@ export class WithdrawService extends WebService {
       let state;
       
       if (checkIfFiat(withdraw?.currency)) {
-        state =
-          withdraw.state === "accepted" && !withdraw.sent
+        state = withdraw.state === "accepted" && !withdraw.sent
             ? "confirmed"
             : withdraw.state;
       }
       if (withdraw.currency_type === "crypto") {
-        state =
-          withdraw.state === "accepted" && !withdraw.proof
+        state = withdraw.state === "accepted" && (!withdraw.proof && !withdraw?.metadata?.is_internal)
             ? "confirmed"
             : withdraw.state;
       }

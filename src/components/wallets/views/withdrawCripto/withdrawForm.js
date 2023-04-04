@@ -75,7 +75,6 @@ const WithdrawFormComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fixedCost, minAmount])
 
-    const user_friendly = withdrawProviders?.current?.user_friendly
 
     return(
         <WithdrawForm
@@ -86,12 +85,12 @@ const WithdrawFormComponent = ({
         <InputForm  
             type="text" 
             placeholder={"Escribe @ para ver tu lista de direcciones..."}
-            name="address"
+            name="address" 
             handleStatus={setAddressState}
             isControlled 
             handleChange={handleChangeAddress}
             value={addressValue}
-            label={() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>}
+            label={() => <LabelAddress currencySymbol={currencySymbol} withdrawProvider={withdrawProviders?.current}   />}
             disabled={loader || tagWithdrawAccount}
             autoFocus={true}
             currentNetwork={withdrawProviders?.current}
@@ -180,6 +179,15 @@ const WithdrawFormComponent = ({
 
 export default WithdrawFormComponent
 
+const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
+    const user_friendly = withdrawProvider?.user_friendly
+    const LABELS = {
+        default:() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>,
+        internal_network:() => <p className="fuente">Ingresa la dirección <strong>(correo electónico)</strong> de destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>            
+    }
+    const RenderComponent = LABELS[withdrawProvider?.provider_type] || LABELS.default
+    return <RenderComponent/>
+}
 
 export const TakeCostFromWithdrawAmount = (props) => {
     return(
@@ -194,13 +202,11 @@ export const TakeCostFromWithdrawAmount = (props) => {
         </CheckWrapper>
     )
 }
-
 export const CheckWrapper = styled.div`
     position:absolute;
     bottom: -60px;
     left: 0;
 `
-
 export const BarSpeed = styled.div`
     width: 100%;
     height: 3px;
@@ -218,7 +224,6 @@ export const BarSpeed = styled.div`
         width: 0%;
     }
 `
-
 export const SpeedPriorityContainer = styled.div`
     display: flex;
     padding: 0 5px;
@@ -266,13 +271,10 @@ export const SpeedPriorityContainer = styled.div`
         left: -10px;
     }
 `
-
-
 export const BalanceContainer = styled.div`
     position: relative;
     background:red;
 `
-
 export const SuffixContainer = styled.div`
     display:flex;
     width:auto;

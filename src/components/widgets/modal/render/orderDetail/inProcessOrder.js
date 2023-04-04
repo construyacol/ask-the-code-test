@@ -33,12 +33,10 @@ import useKeyActionAsClick from "../../../../../hooks/useKeyActionAsClick";
 import { CAPACITOR_PLATFORM } from 'const/const'
 import { checkCameraPermission } from 'utils'
 // import { selectDepositProvsByCurrency } from 'selectors'
-import { serveModelsByCustomProps } from 'selectors'
+import { selectDepositAccountsByNetwork } from 'selectors'
 import { PseCTA } from 'components/forms/widgets/fiatDeposit/success'
 import moment from "moment";
 import { checkIfFiat, parseSymbolCurrency } from 'core/config/currencies';
-
-
 
 import "moment/locale/es";
 moment.locale("es"); 
@@ -47,7 +45,7 @@ const InProcessOrder = ({ onErrorCatch }) => {
 
   const { currentOrder } = UseTxState();
   const depositProviders = useSelector(({modelData:{ deposit_providers }}) => deposit_providers);
-  const depositAccountsByProvType = useSelector(({ modelData:{ depositAccounts } }) => serveModelsByCustomProps(depositAccounts, 'provider_type'));
+  const depositAccountsByProvType = useSelector((state) => selectDepositAccountsByNetwork(state, currentOrder?.currency));
 
   const depositProvider = depositProviders[currentOrder?.deposit_provider_id]
   const depositAccount = depositProvider ? depositAccountsByProvType[depositProvider?.provider_type] : {};
@@ -61,10 +59,11 @@ const InProcessOrder = ({ onErrorCatch }) => {
     depositProvider
     // depositProviders,
   }
+  console.log('currentOrder', currentOrder)
 
   return (
     <>
-      {depositProviders[currentOrder?.deposit_provider_id]?.currency_type === 'fiat' ? (
+      {depositProviders[currentOrder?.deposit_provider_id]?.currency_type === 'fiat' || (checkIfFiat(currentOrder.currency) && currentOrder?.info?.is_internal) ? (
         <FiatOrder {...props} />
       ) : (
         <CryptoOrder {...props} />
@@ -116,7 +115,7 @@ const CryptoOrder = ({ order, depositProvider, depositAccount }) => {
         </MiddleSection>
   
         {
-          tx_path === "deposits" ? (
+          (tx_path === "deposits" && !order?.info?.is_internal) ? (
             <BottomSectionContainer className={`crypto`}>
               <UploadComponent 
                 title="TX ID - Confirmaciones" 
@@ -225,6 +224,9 @@ const FiatOrder = (props) => {
   }, [])
 
  
+  console.log('||||||||||||||||| order', order)
+  // const currencyType = (depositProvider?.currency_type === 'fiat' || (checkIfFiat(order?.currency) && order?.info?.is_internal)) ? 'fiat' : 'crypto'
+
   return (
     <InProcessOrderContainer>
       <IconClose theme="dark" size={20} />
@@ -266,7 +268,7 @@ const FiatOrder = (props) => {
         </MiddleSection>
 
         {
-          tx_path === "deposits" ? (
+          (tx_path === "deposits" && !order?.info?.is_internal) ? (
           <BottomSectionContainer>
             <UploadComponent
               imgSrc={imgSrc}
@@ -276,7 +278,7 @@ const FiatOrder = (props) => {
               order={order}
             />
           </BottomSectionContainer>)
-          : 
+          :  
           <BottomSection colorState={"var(--paragraph_color)"} currentOrder={order} tx_path={tx_path} />
         }
 
