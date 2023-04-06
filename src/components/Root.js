@@ -6,6 +6,7 @@ import { connect, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import actions from "../actions";
 import withHandleError from "./withHandleError";
+import withCoinsendaServices from "./withCoinsendaServices";
 import HomeContainer from "./home/home-container";
 import { history } from "../const/const";
 import useToastMessage from "../hooks/useToastMessage";
@@ -24,8 +25,9 @@ import {
   getUserToken,
   openLoginMobile
 } from "utils/handleSession";
+// import { getAllUrlParams } from "utils/urlUtils";
+import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 // import checkVersion from 'react-native-store-version';
-// import { useCoinsendaServices } from "services/useCoinsendaServices";
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
 // const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets"));
@@ -48,15 +50,18 @@ function RootContainer(props) {
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
   const [ tryRestoreSession ] = SessionRestore();
 
-  // const [ coinsendaServices, globalState ] = useCoinsendaServices();
-
 
   const initComponent = async (mobileURL) => {
+
     const params = new URLSearchParams(mobileURL ?? history.location.search);
-    if (params.has("token") && params.has("refresh_token")) {
+    // if(params.has(DEFAULT_PARAMS.main)){
+    //   console.log('getAllUrlParams', getAllUrlParams(history.location.search))
+    //   return history.push("/paymentRequest");
+    // }
+    if(params.has("token") && params.has("refresh_token")){
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
-      if(!decodeJwt){return} 
+      if(!decodeJwt)return;
       history.push("/");
     }
     const userData = await getUserToken();
@@ -83,6 +88,7 @@ function RootContainer(props) {
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
+
     history.push("/");
   };
 
@@ -117,17 +123,20 @@ function RootContainer(props) {
   }, [showOnBoarding])
 
   return (
-    // TODO: <TokenValidator></TokenValidator>
     <Router history={history}>
       <Route>
         <ModalsSupervisor/>
       </Route>
 
+      <Route exact strict path="/paymentRequest" render={() => <div style={{width:"100vw", height:"100vh", background:"red"}}><p>Solicitud de pago</p></div>} />
+
       {(!isAppLoaded) ? (
         <LoaderAplication 
           history={history} 
           tryRestoreSession={tryRestoreSession}
-          setShowOnBoarding={setShowOnBoarding} />
+          setShowOnBoarding={setShowOnBoarding} 
+          {...props}
+        />
       ) : (
         <>
           <CookieMessage/>
@@ -147,3 +156,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
+// export default withCoinsendaServices(withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer)));

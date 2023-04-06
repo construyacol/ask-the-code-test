@@ -178,7 +178,6 @@ const SelectListComponent = ({
 
   export const SelectListSkeleton = props => {
 
-
     const itemList = new Array(3).fill({
       value:"createId",
       icon:"add",

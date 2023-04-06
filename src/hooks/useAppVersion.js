@@ -16,7 +16,7 @@ export function useAppVersion() {
     } catch (e) {
       console.error("CHECKING_APP_VERSION", e);
     }
-  }
+  } 
 
   React.useEffect(function () {
     CAPACITOR_PLATFORM !== CAPACITOR_PLATFORMS.WEB && checkAppVersion();

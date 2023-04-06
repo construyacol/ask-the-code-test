@@ -63,6 +63,7 @@ import { parseSymbolCurrency } from 'core/config/currencies';
   const fiatDepositValidations = {
     [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:amountValidation,
     [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:selectListValidator,
+    [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:amountValidation,
   }
 
 export default fiatDepositValidations

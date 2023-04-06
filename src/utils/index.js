@@ -206,9 +206,6 @@ const get_img_quality = (size) => {
   return quality;
 };
 
-
-
-
 export const toast = async (msg, type, position) => {
   return reactToastify(msg, {
     position: reactToastify.POSITION[!position ? "BOTTOM_RIGHT" : position],
@@ -237,18 +234,20 @@ export const toast = async (msg, type, position) => {
   });
 };
 
-export const copy = (payload) => {
-  if (!document || !payload) return;
+
+export const copyClipboard = value => {
   let aux = document.createElement("input");
-  aux.setAttribute(
-    "value",
-    payload.target.dataset && payload.target.dataset.copy
-  );
+  aux.setAttribute("value", value);
   document.body.appendChild(aux);
   aux.select();
   document.execCommand("copy");
   document.body.removeChild(aux);
   return toast("¡Copiado Exitosamente!");
+}
+
+export const copy = (payload) => {
+  if (!document || !payload) return;
+  return copyClipboard(payload.target.dataset && payload.target.dataset.copy)
 };
 
 export const capitalizarPalabras = (val) => {

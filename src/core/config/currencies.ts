@@ -59,6 +59,8 @@ const SYMBOL_CURRENCIES = {
     }
 }
 
+export const COP_MIN_AMOUNT = "20000";
+
 export const parseSymbolCurrency = (symbolCurrency:string):string => {
    const symbolCurrencyData = SYMBOL_CURRENCIES[symbolCurrency?.toLowerCase() as keyof typeof SYMBOL_CURRENCIES]
    if(!symbolCurrencyData)return symbolCurrency

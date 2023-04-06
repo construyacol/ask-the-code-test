@@ -183,7 +183,7 @@ const LabelAddress = ({ currencySymbol, withdrawProvider  }) => {
     const user_friendly = withdrawProvider?.user_friendly
     const LABELS = {
         default:() => <p className="fuente">{`Ingresa la dirección de destino ${parseSymbolCurrency(currencySymbol)}`} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>,
-        internal_network:() => <p className="fuente">Ingresa la dirección <strong>(correo electónico)</strong> de destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(${user_friendly?.token_protocol || user_friendly?.network})`}</span> </p>            
+        internal_network:() => <p className="fuente">Ingresa la dirección de <strong>correo electónico</strong> destino {parseSymbolCurrency(currencySymbol)} <span className='fuente2 protocolName'>{`(Coinsenda)`}</span> </p>            
     }
     const RenderComponent = LABELS[withdrawProvider?.provider_type] || LABELS.default
     return <RenderComponent/>

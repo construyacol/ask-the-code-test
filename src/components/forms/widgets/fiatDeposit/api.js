@@ -1,4 +1,4 @@
-import { mainService } from "../../../../services/MainService";
+import { mainService } from "services/MainService";
 // import { recursiveAddList } from '../../utils'
 // import { isEmpty } from 'lodash'
 import { AiFillBank } from "react-icons/ai";
@@ -22,8 +22,15 @@ export const FIAT_DEPOSIT_TYPES = {
     AMOUNT:"depositAmount", 
     PROVIDER:"depositAccount",
     PERSON_TYPE:"person_type",
-    CRYPTO:"depositCripto"
+    CRYPTO:"depositCripto",
+    COP_INTERNAL:"cop_internal",
+    COP_INTERNAL_AMOUNT:"internalAmount"
   }
+}
+
+export const CTA_UI_NAME = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]: "Compartir enlace de pago",
+  default: "Crear depósito"
 }
 
 const DEFAULT_DEPOSIT_AMOUNT = {
@@ -40,6 +47,24 @@ const DEFAULT_DEPOSIT_AMOUNT = {
   }
 }
 
+const DEFAULT_INTERNAL_AMOUNT = {
+  uiName:"Añade la cantidad a recibir",
+  key:FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT,
+  uiType:"text",
+  "settings":{
+    defaultMessage:"",
+    successPattern:/[0-9]/g,
+    errors:[ 
+        { pattern:/[^0-9.,]/g, message:'Solo se permiten valores númericos...' }
+    ],
+    placeholder:"Escribe la cantidad (opcional)",
+    breadCumbConfig:{
+      childLabel:"Con QR de pago",
+      active:true
+    }
+  }
+}
+
 
 const PSE_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.BANK_NAME]:{
@@ -48,7 +73,20 @@ const PSE_STAGES = {
     uiType:"select",
     "settings":{
       defaultMessage:"",
-      placeholder:"Escribe el nombre de tu banco"
+      placeholder:"Escribe el nombre de tu banco"      
+    }
+  },
+  [FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE]:{
+    uiName:"Elije el banco por el cual harás el pago",
+    key:FIAT_DEPOSIT_TYPES?.STAGES?.PERSON_TYPE,
+    uiType:"select",
+    "settings":{
+      defaultMessage:"",
+      placeholder:"Escribe el nombre de tu banco",
+      breadCumbConfig:{
+        childLabel:"Con PSE",
+        active:true
+      }
     }
   },
   [FIAT_DEPOSIT_TYPES?.STAGES?.AMOUNT]:DEFAULT_DEPOSIT_AMOUNT
@@ -64,7 +102,6 @@ const BANK_DEFAULT_STAGES = {
   }
 }
 
-
 const BANK_STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.SOURCE]:{
     uiName:"¿Cómo quieres depositar?",
@@ -78,10 +115,22 @@ const BANK_STAGES = {
 }
 
 
+const INTERNAL_DEFAULT_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:{
+    ui_type:"text"
+  }
+}
+
+
+const INTERNAL_NETWORK_STAGES = {
+  [FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT]:DEFAULT_INTERNAL_AMOUNT
+}
+
+
 
 const STAGES = {
   [FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER]:{
-    uiName:"¿Qué banco ó servicio utilizarás para depositar?",
+    uiName:"¿Qué banco ó servicio utilizarás para recibir o depositar?",
     key:FIAT_DEPOSIT_TYPES?.STAGES?.PROVIDER,
     uiType:"select",
     "settings":{
@@ -134,12 +183,14 @@ const CRYPTO_STAGES = {
 const DEPOSIT_TYPE_STAGES = {
   pse:PSE_STAGES,
   bank:BANK_STAGES,
+  internal_network:INTERNAL_NETWORK_STAGES,
   ...CRYPTO_STAGES
 }
 
 
 const depositApiStages = (_depositAccount) => {  
   const depositAccount = _depositAccount?.info_needed ? ungapStructuredClone(_depositAccount?.info_needed) : _depositAccount
+
   const providerTypes = {
     pse:{
       ...depositAccount,
@@ -148,6 +199,7 @@ const depositApiStages = (_depositAccount) => {
       }
     },
     bank:BANK_DEFAULT_STAGES,
+    internal_network:INTERNAL_DEFAULT_STAGES,
     ...CRYPTO_API_STAGES
   }
 
@@ -224,6 +276,15 @@ export const ApiPostCreateBankDeposit = async({
     }
   }
   return await mainService.createDeposit(body);
+}
+
+
+
+
+export const ApiPostCreateInternalDeposit = async({ state }) => {
+  //  const paymentRequest = await createNewPaymentRequest()
+  //  console.log(paymentRequest)
+   return { error:true }
 }
 
 

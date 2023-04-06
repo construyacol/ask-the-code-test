@@ -16,21 +16,13 @@ import {
     DepositForm
 } from './styles'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
+import { QR_CONFIG } from 'const/qr'
+
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
 const SelectDepositNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectDepositNetwork")), {fallback:<div></div>});
 const AvailableDepositNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableDepositNetwork")), {fallback:<div></div>});
 
-
-const QR_CONFIG = {
-    errorCorrectionLevel: 'H',
-    type: 'image/jpeg',
-    quality: 0.3,
-    margin: 3.5,
-    color: {
-      dark:"#455868",
-    }
-}
 
 const CriptoView = (props) => {
     const [

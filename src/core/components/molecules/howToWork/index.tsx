@@ -3,7 +3,7 @@ import { AiOutlinePlayCircle } from 'react-icons/ai';
 import { P } from 'core/components/atoms'
 
 type Props = {
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export default function HowToWorkCta({ onClick }:Props): JSX.Element{

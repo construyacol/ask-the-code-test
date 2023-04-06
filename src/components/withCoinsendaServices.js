@@ -4,12 +4,13 @@ import useToastMessage from "../hooks/useToastMessage";
 
 export default function withCoinsendaServices(AsComponent) {
   return function (props) {
-    const [coinsendaServices] = useCoinsendaServices();
+    const [ coinsendaServices, globalState ] = useCoinsendaServices();
     const [toastMessage] = useToastMessage();
     return (
       <AsComponent
         toastMessage={toastMessage}
         coinsendaServices={coinsendaServices}
+        globalState={globalState}
         {...props}
       />
     );

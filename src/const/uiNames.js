@@ -5,7 +5,7 @@ export const UI_NAME_TITLE = {
   referral:"Referidos",
   settings:"Ajustes",
   activity:"Actividad",
-  deposit:"Depositar",
+  deposit:"Recibir",
   withdraw:"Enviar",
   swap:"Intercambiar"
 }
