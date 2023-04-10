@@ -140,7 +140,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
       <ControlButton
         loader={loading}
         formValidate={(currentStage <= stageController.length) && stageStatus === 'success'}
-        label={`${lastStage ? "Crear retiro" : "Siguiente"}`}
+        label={`${lastStage ? "Envíar" : "Siguiente"}`}
         handleAction={lastStage ? createFiatWithdraw : nextStep}
       />
     </ButtonContainers>
