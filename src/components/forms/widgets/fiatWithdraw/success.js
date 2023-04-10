@@ -199,7 +199,7 @@ const WithdrawCreatedSuccess = ({
                             loader={loading}
                             inputProps={{"data-close_modal":true}}
                             formValidate
-                            label="Confirmar retiro" 
+                            label="Confirmar envío" 
                             handleAction={withdrawConfirm}
                         />
                     </ButtonContainer>
