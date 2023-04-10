@@ -26,7 +26,7 @@ import {
   openLoginMobile
 } from "utils/handleSession";
 // import { getAllUrlParams } from "utils/urlUtils";
-import { DEFAULT_PARAMS } from 'utils/paymentRequest'
+// import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 // import checkVersion from 'react-native-store-version';
 
 // const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
@@ -155,5 +155,5 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
-// export default withCoinsendaServices(withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer)));
+// export default withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer));
+export default withCoinsendaServices(withHandleError(connect(() => ({}), mapDispatchToProps)(RootContainer)));

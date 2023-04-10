@@ -60,7 +60,7 @@ function ProviderComponent({
         if(isEmpty(depositAccounts) || isEmpty(depositProvidersByType))return;
         let servicesList = {...DEFAULT_SERVICE}
         for (const depositAccountName in depositAccounts) {
-          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type]) await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id)
+          if(!depositProvidersByType[depositAccounts[depositAccountName]?.provider_type] && depositAccounts[depositAccountName]?.provider_type !== 'internal_network') await props.coinsendaServices.createAndInsertDepositProvider(currentWallet, depositAccounts[depositAccountName]?.id);
           let complementaryModel = DEPOSIT_ACCOUNT_LABELS[depositAccounts[depositAccountName]?.provider_type] || {}
           // if(depositAccounts[depositAccountName]?.currency_type === 'crypto')continue;
           servicesList = {
