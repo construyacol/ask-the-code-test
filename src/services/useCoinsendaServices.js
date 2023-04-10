@@ -12,7 +12,7 @@ export const useCoinsendaServices = () => {
 
   mainService.initialize(
     dispatch,
-    reduxState,
+    reduxState, 
     reduxState.modelData.authData.userToken
   );
 

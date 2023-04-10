@@ -17,6 +17,7 @@ import {
 } from './styles'
 import { useCoinsendaServices } from "services/useCoinsendaServices";
 import { QR_CONFIG } from 'const/qr'
+import { useWalletInfo } from 'hooks/useWalletInfo'
 
 
 const IconSwitch = loadable(() => import("components/widgets/icons/iconSwitch"));
@@ -25,10 +26,12 @@ const AvailableDepositNetwork = loadable(() => import("components/widgets/suppor
 
 
 const CriptoView = (props) => {
+
+  const { currentWallet } = useWalletInfo();
+
     const [
       coinsendaServices,
       {
-        current_wallet,
         modelData: { user },
         ui:{ osDevice } 
       },
@@ -77,11 +80,9 @@ const CriptoView = (props) => {
     
     const truncatedAddres = useTruncatedAddress(address || '')
     const addressValue = isMobile ? truncatedAddres : address
-
-
   
     if(isEmpty(depositProviders.current)){
-      return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${current_wallet?.currency?.toUpperCase()}`} callback={setProvider}/>
+      return<SelectDepositNetwork uiName={`Selecciona la red por la que deseas depositar ${currentWallet?.currency?.toUpperCase()}`} callback={setProvider}/>
     }
    
     return (  
@@ -95,7 +96,7 @@ const CriptoView = (props) => {
       }
       <DepositForm className="depositForm">
             { 
-            current_wallet.currency.includes("eth") &&
+              currentWallet.currency.includes("eth") &&
                 <EtherDisclaimer className="fuente">
                 No enviar con menos de 70 mil gas
                 </EtherDisclaimer>
@@ -103,7 +104,7 @@ const CriptoView = (props) => {
         <ContAddress className={`contAddress ${osDevice}`}>
 
           <DisclaimerMessage
-            current_wallet={current_wallet}
+            current_wallet={currentWallet}
             depositProviders={depositProviders}
           />
 
@@ -140,11 +141,7 @@ const CriptoView = (props) => {
                 />
             </div> 
           </div>
-          
-          
-  
         </ContAddress>
-        
       </DepositForm>
       </>
     );

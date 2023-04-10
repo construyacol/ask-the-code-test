@@ -7,6 +7,18 @@ import { DEFAULT_FISRT_CRITERIAL } from 'const/const'
 import { checkIfFiat, FIAT_PROVIDER_TYPES } from 'core/config/currencies';
 
 
+
+export const selectCurrentWallet = createSelector(
+  (state) => state.modelData.wallets,
+  (_, account_id) => account_id,
+  (wallets, account_id) => {
+    if((account_id && wallets) && wallets[account_id]){
+      return wallets[account_id]
+    }
+    return false
+  }
+);
+
 export const selectDepositAccountsByNetwork = createSelector(
   ({ modelData: { depositAccounts } }) => depositAccounts,
   (_, currency) => currency,

@@ -34,6 +34,9 @@ export const textBaseStyles = css<typoGraphyProps>`
     &.capitalize{
       text-transform: capitalize !important;
     }
+    &.fit{
+      width:fit-content;
+    }
     &.ellipsis{
       width: auto;
       max-width: ${props => props.maxWidth ? `${props.maxWidth}px` : '250px'};

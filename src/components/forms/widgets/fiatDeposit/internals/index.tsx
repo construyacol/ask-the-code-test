@@ -22,6 +22,14 @@ type modelDataProps = {
     modelData: modelDataProp;
 }
 
+
+// const createUri = async() => {
+//    const { refreshToken } = await getUserToken()
+//    const { userToken } = await coinsendaServices.getJWToken(refreshToken)
+//    const uri = `https://app.${getHostName()}.com?token=${userToken}&refresh_token=${refreshToken}&face_recognition`
+//    generateQR(uri)
+// }
+
 const ModalSharePaymentRequest = (props:any) => {
 
    const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
@@ -47,6 +55,12 @@ const ModalSharePaymentRequest = (props:any) => {
       const url = `https://mail.google.com/mail/?view=cm&body=${encodeURIComponent(body)}&su=${encodeURIComponent(subject)}`;
       window.open(url, '_blank');
     }
+    const openWhatsApp = () => {
+      const { subject, body } = createPaymentRequestPayload();
+      let message = `${encodeURIComponent(subject)}, \n\n${encodeURIComponent(body)}`;
+      const url = `https://web.whatsapp.com/send?text=${message}`;
+      window.open(url, '_blank');
+    }
 
    const copyLink = async() => {
       const { copyClipboard } = await import('utils')
@@ -68,7 +82,7 @@ const ModalSharePaymentRequest = (props:any) => {
                      size={35}
                      color={'var(--primary)'}
                   />
-                  <H3 >Compartir enlace de pago</H3>
+                  <H3 >Comparte tu enlace de pago</H3>
             </HeaderContainer>
 
             <ContentContainer>
@@ -78,27 +92,37 @@ const ModalSharePaymentRequest = (props:any) => {
                   amount={props?.internalAmount}
                /> */}
                <P className={"no-margin"}>Se ha creado un enlace con una solicitud de pago <span className="fuente2">{props?.internalAmount ? `por ${props?.internalAmount} ${uiCurrencyName}` : ''}</span></P>
-               <P className={"no-margin"}>Comparte tu enlace de pago por <strong>Gmail</strong> o <strong>copialo</strong> y compartelo manualmente.</P>
-               <HowToWorkCta />
-
+               
+               <LinkContainer>
+                  <P size={14} maxWidth={350} className={"no-margin ellipsis number"} color="primary">{paymentRequestLink}</P>
+               </LinkContainer>
+               
+               <CtasContainer>
+                  <Button className="fit" size="medium" variant="contained" color={"primary"} onClick={copyLink}> 
+                     Copiar enlace
+                  </Button>
+                  <HowToWorkCta />
+               </CtasContainer>
+               <P className={"no-margin"}>Comparte tu enlace de pago por <strong>Gmail</strong>, <strong>WhatsApp</strong> o <strong>copialo</strong> y compartelo manualmente.</P>
             </ContentContainer>
 
-            <P className={"no-margin bold"}>Comparte</P>
+            <P className={"no-margin bold"}>Compartir por:</P>
+
             <SocialMediaContainer>
-                  <Button size="small" onClick={openGmail}>
+                  <Button className="button--share__icon" size="small" onClick={openGmail}>
                      <IconSwitch
                         icon={"gmail"}
-                        size={40}
-                        // color={'var(--primary)'}
+                        size={30}
                      />
+                     <P className={"no-margin"}>Gmail</P>
                   </Button>
-                  <Button size="small" variant="contained" color={"primary"} onClick={copyLink}> 
-                  Copiar enlace de pago 
-                  <i
-                     style={{ color: "white" }}
-                     className="copy far fa-clone tooltip"
-                  />
-               </Button>
+                  <Button className="button--share__icon" size="small" onClick={openWhatsApp}>
+                     <IconSwitch
+                        icon={"whatsapp"}
+                        size={30}
+                     />
+                     <P className={"no-margin"}>Whatsapp</P>
+                  </Button>
             </SocialMediaContainer>
 
             
@@ -109,13 +133,34 @@ const ModalSharePaymentRequest = (props:any) => {
 
  export default withCoinsendaServices(ModalSharePaymentRequest)
 
+const LinkContainer = styled.div`
+   background-color: #0198ff24;
+   padding: 15px 20px;
+   border-radius: 5px;
+   border-left: 2px solid var(--primary);
+   border-top-left-radius: 1px;
+   border-bottom-left-radius: 1px;
+`
+
+
+const CtasContainer = styled.div`
+   display: flex;
+   column-gap: 20px;
+   flex-wrap: wrap;
+`
+
 const SocialMediaContainer = styled.div`
    border-top: 1px solid ${props => props.theme.palette.skeleton_color};
    min-height: 70px;
    width: 100%;
    display: flex;
    align-items: center;
-   justify-content: space-between;
+   column-gap: 10px;
+   .button--share__icon{
+      flex-direction: column;
+      row-gap: 12px;
+      font-size: 13px;
+   }
 `
 
  const HeaderContainer = styled.div`
