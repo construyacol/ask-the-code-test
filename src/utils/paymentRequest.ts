@@ -9,7 +9,7 @@ export const DEFAULT_PARAMS = {
    amount:"",
    main:"paymentRequest"
 }
-
+ 
 const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currency, amount = DEFAULT_PARAMS.amount }:paymentRequestParams) => {
    const { PaymentRequestInstance } = await import('core/models/paymentRequest')
    const { mainService } = await import('services/MainService')
@@ -17,6 +17,9 @@ const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currency, amou
       amount,
       currency,
       recipient:mainService?.user?.email,
+      metaData:{
+         userName:mainService?.user?.name
+      }
    })
 }
 

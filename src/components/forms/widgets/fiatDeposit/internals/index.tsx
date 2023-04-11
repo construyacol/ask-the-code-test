@@ -14,14 +14,8 @@ import { createPaymentRequestLink } from 'utils/paymentRequest'
 import { HowToWorkCta } from 'core/components/molecules'
 import { REPLACE_TO_CURRENCY_CONFIG, replaceTo } from 'core/config/currencies'
 import { IconClose } from "components/widgets/shared-styles";
-
-interface modelDataProp {
-    [id: string]: any;
-}
-type modelDataProps = {
-    modelData: modelDataProp;
-}
-
+import { HeaderContainer, ContentContainer } from 'pages/paymentRequest/styles'
+import { modelDataProps } from 'interfaces/state'
 
 // const createUri = async() => {
 //    const { refreshToken } = await getUserToken()
@@ -74,7 +68,7 @@ const ModalSharePaymentRequest = (props:any) => {
    return(
       <ModalLayout loading={loading}>
          <CrudContainer rowGap="10px" className={`medium flex`}>
-         <IconClose theme="dark" size={20} />
+            <IconClose theme="dark" size={20} />
             <HeaderContainer>
                   {/* <img src={`${getCdnPath('assets')}error_animation.gif`}  alt="" width={75} height={75} /> */}
                   <IconSwitch
@@ -124,8 +118,6 @@ const ModalSharePaymentRequest = (props:any) => {
                      <P className={"no-margin"}>Whatsapp</P>
                   </Button>
             </SocialMediaContainer>
-
-            
          </CrudContainer>
       </ModalLayout>
    )
@@ -162,26 +154,4 @@ const SocialMediaContainer = styled.div`
       font-size: 13px;
    }
 `
-
- const HeaderContainer = styled.div`
-    display: flex;
-    place-content: center;
-    flex-direction: column;
-    align-items: center;
-    border-bottom: 1px solid ${props => props.theme.palette.skeleton_color};
- `
- 
-
- const ContentContainer = styled.div`
-   p, input{
-      font-size:15px;
-      /* color: ${props => props.theme.palette.text_color}; */
-      width: 100%;
-   }
-   display: flex;
-   flex-direction: column;
-   row-gap: 30px;
-   margin: 20px 0;
-`
-
  

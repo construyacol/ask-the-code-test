@@ -25,15 +25,13 @@ import {
   getUserToken,
   openLoginMobile
 } from "utils/handleSession";
-// import { getAllUrlParams } from "utils/urlUtils";
-// import { DEFAULT_PARAMS } from 'utils/paymentRequest'
-// import checkVersion from 'react-native-store-version';
+import { DEFAULT_PARAMS } from 'utils/paymentRequest'
+import { getAllUrlParams } from "utils/urlUtils";
 
-// const LazyLoader = loadable(() => import(/* webpackPrefetch: true */ "./widgets/loaders/loader_app"));
-// const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets"));
 const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
 const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
+const PaymentRequestView = loadable(() => import('pages/paymentRequest'));
 
 history.listen((location) => {
   if (location && location.pathname !== "/") {
@@ -41,6 +39,7 @@ history.listen((location) => {
     return localForage.setItem("previousRoute", location.pathname);
   }
 });
+
 
 function RootContainer(props) { 
   // TODO: rename isLoading from state
@@ -50,14 +49,15 @@ function RootContainer(props) {
   const [ showOnBoarding, setShowOnBoarding ] = useState(false)
   const [ tryRestoreSession ] = SessionRestore();
 
-
   const initComponent = async (mobileURL) => {
 
     const params = new URLSearchParams(mobileURL ?? history.location.search);
-    // if(params.has(DEFAULT_PARAMS.main)){
-    //   console.log('getAllUrlParams', getAllUrlParams(history.location.search))
-    //   return history.push("/paymentRequest");
-    // }
+    if(params.has(DEFAULT_PARAMS.main)){
+      return history.push({
+        pathname: '/paymentRequest',
+        state:getAllUrlParams(mobileURL ?? history.location.search)
+      });
+    }
     if(params.has("token") && params.has("refresh_token")){
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
@@ -88,17 +88,14 @@ function RootContainer(props) {
       const BiometricKyc = Element.default
       props.actions.renderModal(() => <BiometricKyc/>);
     }
-
     history.push("/");
   };
 
   useEffect(() => {
     async function initRoot() {
-      if (CAPACITOR_PLATFORM !== 'web') {
+      if(CAPACITOR_PLATFORM !== 'web'){
         const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
-        if (!userToken && !isAppLoaded) {
-          openLoginMobile(initComponent);
-        }
+        if(!userToken && !isAppLoaded) openLoginMobile(initComponent);
       } 
       if(!isAppLoaded) return initComponent();
     }
@@ -128,7 +125,7 @@ function RootContainer(props) {
         <ModalsSupervisor/>
       </Route>
 
-      <Route exact strict path="/paymentRequest" render={() => <div style={{width:"100vw", height:"100vh", background:"red"}}><p>Solicitud de pago</p></div>} />
+      <Route path="/paymentRequest" component={PaymentRequestView} />
 
       {(!isAppLoaded) ? (
         <LoaderAplication 

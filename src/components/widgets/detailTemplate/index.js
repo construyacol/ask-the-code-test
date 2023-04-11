@@ -1,7 +1,7 @@
 import { OnlySkeletonAnimation } from "../loaders/skeleton";
 import styled from 'styled-components'
 
-export default function DetailTemplateComponent ({ items, skeletonItems = 4, className = "", ...props }){
+export default function DetailTemplateComponent ({ items, skeletonItems = 3, className = "", ...props }){
   return(
     <>
       {

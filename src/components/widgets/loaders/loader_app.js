@@ -73,7 +73,6 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     // })
     //   return redirectURL(isSessionRestored);
     // } 
-     
     if (!userToken) return;
    
     let { error } = await coinsendaServices.fetchUserProfile();
@@ -152,8 +151,8 @@ function LoaderAplication({ actions, history, tryRestoreSession, setShowOnBoardi
     <div className={`LoaderAplication`}>
         <div className={`LoaderContainer loaderLayout`}>
           <div className="logotypes">
-            <Coinsenda size={45} color="white" />
-            <h1 className="fuente">Coinsenda</h1>
+            <Coinsenda size={55} color="white" />
+            <h1 className="fuente loader--h1__title">Coinsenda</h1>
           </div>
           <p className="fuente">{appLoadLabel}</p>
         </div>
