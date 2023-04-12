@@ -12,9 +12,9 @@ const useSubscribeDepositHook = () => {
 
   const subscribeToNewDeposits = async(wallet) => {
     sessionStorage.setItem(`wallet_${wallet?.id}`, JSON.stringify(new Date()));
-    for (const provider_id of wallet?.dep_prov) {
+    for (const provider_id of wallet?.dep_prov) {  
       // console.log('CONSULTANDO_DEPOSITOS_DE', deposit_providers[provider_id]?.currency, deposit_providers[provider_id]?.provider_type)
-      if(deposit_providers[provider_id]?.currency_type === 'crypto') await coinsendaServices.subscribeToNewDeposits(provider_id);
+      if(deposit_providers[provider_id]?.currency_type === 'crypto') await coinsendaServices.subscribeToNewDeposits(provider_id, wallet?.id);
       await sleep(1500) 
     }
   };
@@ -37,3 +37,4 @@ const useSubscribeDepositHook = () => {
 export default useSubscribeDepositHook
 
 
+ 

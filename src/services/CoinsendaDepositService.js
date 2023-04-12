@@ -164,7 +164,7 @@ export class DepositService extends WebService {
   }
 
 
-  
+   
   async subscribeToAllNewDeposits() {
     const { deposit_providers } = this.globalState?.modelData
     const { INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST, EXCLUDED_NETWORK_COLLECTION } = await import('core/config/currencies')
@@ -177,12 +177,13 @@ export class DepositService extends WebService {
     }
   }
 
-  async subscribeToNewDeposits(provider_id) {
+  async subscribeToNewDeposits(provider_id, account_id) {
     const user = this.user;
     const body = {
       data: {
         country: user.country,
         deposit_provider_id: provider_id,
+        account_id
       },
     };
     return await this._Post(SUBSCRIBE_TO_DEPOSITS_URL, body);

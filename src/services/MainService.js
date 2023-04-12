@@ -169,8 +169,7 @@ export class MainService extends inheritances {
       await this.fetchWithdrawProviders();
       await this.fetchWithdrawAccounts();
       await this.getReferralCode()
-      await this.subscribeToAllNewDeposits()
-      // await this.fetchCompleteUserData();
+      // await this.subscribeToAllNewDeposits()
       this.checkAndUpdateUserStatus()
       this.dispatch( 
         updateLoadersAction({
