@@ -9,14 +9,14 @@ import {
    UserRecipientProps,
    paymentDetailProps
 } from 'interfaces/paymentRequest';
-import { SESSION_ERROR } from 'const/session'
+// import { SESSION_ERROR } from 'const/session'
 import { REPLACE_TO_CURRENCY_CONFIG, replaceTo } from 'core/config/currencies'
 import DetailTemplateComponent from 'components/widgets/detailTemplate'
 import { formatToCurrency } from "utils/convert_currency";
-import { useSelector } from "react-redux";
-import { modelDataProps } from 'interfaces/state'
-import { serveModelsByCustomProps } from 'selectors'
-import { validateExpTime } from 'utils/handleSession'
+
+// import { validateExpTime, getUserToken } from 'utils/handleSession'
+// import { useActions } from "hooks/useActions";
+// import IsLoggedView from './loggedView'
 
 //styles
 import { 
@@ -37,37 +37,37 @@ import {
 } from 'components/forms/widgets/success/styles'
 
 
-
- 
-
 const PaymentRequestView = (props:any) => {
-   
    const [ isLogged, setIsLogged ] = useState(false)
    const [ paymentRequest ] = useState<PaymentRequestParams>(props?.location?.state?.paymentRequest)
    const { amount, currency, metaData } = paymentRequest
    const paymentCurrency = currency || "cop"
    const availableCurrencyName = REPLACE_TO_CURRENCY_CONFIG[paymentCurrency as keyof typeof REPLACE_TO_CURRENCY_CONFIG]
    const uiCurrencyName = availableCurrencyName ? replaceTo(paymentCurrency, availableCurrencyName) : paymentCurrency
-   
-   const handleSession = (props:errProps) => SESSION_ERROR.REFRESH_TOKEN_EXPIRED !== props?.error && setIsLogged(true);
+   // const actions = useActions()
+   // const handleSession = (props:errProps) => SESSION_ERROR.REFRESH_TOKEN_EXPIRED !== props?.error && setIsLogged(true);
+   // useEffect(() => { validateExpTime(handleSession) }, [])
+   // useEffect(() => {
+   //    (async() => {
+   //       if(!isLogged)return;
+   //       const userData = await getUserToken();
+   //       if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
+   //       const { userToken, decodedToken } = userData
+   //       actions.setAuthData({
+   //          userToken,
+   //          userEmail: decodedToken.email,
+   //          userId: decodedToken.usr
+   //       });
+   //       const { mainService } = await import('services/MainService')
+   //       await mainService.loadFirstEschema();
+   //       await mainService.fetchCompleteUserData();
+   //       await mainService.init();
+   //    })()
+   // // eslint-disable-next-line react-hooks/exhaustive-deps
+   // }, [isLogged])
 
-   useEffect(() => { validateExpTime(handleSession) }, [])
-   useEffect(() => {
-      (() => {
-         if(isLogged){
-            alert('isLogged')
-            // dispatch(getWallets())
-         }
-      })()
-   }, [isLogged])
 
-   console.log('isLogged', isLogged)
-
-   // //@ts-ignore
-   // const walletsByCurrencies = useSelector(({ modelData:{ wallets }}:modelDataProps) => serveModelsByCustomProps(wallets, 'currency'));
-   // console.log('paymentRequest', paymentRequest, walletsByCurrencies)
-
-   const RenderContentComponent = isLogged ? IsLoggedView : UnLoggedView
+   // const RenderContentComponent = isLogged ? IsLoggedView : UnLoggedView
 
    return(
       <PaymentRequestLayout>
@@ -86,10 +86,12 @@ const PaymentRequestView = (props:any) => {
                </HeaderContainer>
                <ContentContainer>
                   <P>
-                     {metaData?.userName} te ha enviado una solicitud de pago<AmountUiView amount={amount} currency={uiCurrencyName}/>. 
-                     {isLogged ? <> Para realizar el pago, puedes usar tu billetera<strong>{uiCurrencyName}</strong> </> : ''}
+                     {metaData?.userName} te ha enviado una solicitud de pago<AmountUiView amount={amount} uiCurrencyName={uiCurrencyName}/>. 
+                     {isLogged ? <> Para realizar el pago, puedes usar tu billetera <strong>{uiCurrencyName}</strong> </> : ''}
                   </P>
-                  <RenderContentComponent />
+                  {/* <RenderContentComponent 
+                     currency={currency}
+                  /> */}
                   <PaymentDetail 
                      paymentRequest={paymentRequest}
                      uiCurrencyName={uiCurrencyName}
@@ -109,16 +111,12 @@ const UnLoggedView = () => {
       <P className={'no-margin'}>UnLoggedView</P>
    )
 }
-const IsLoggedView = () => {
-   return(
-      <P className={'no-margin'}>IsLoggedView</P>
-   )
-}
+
 
 
 
 const UserRecipient = ({ metaData }:UserRecipientProps) => <SPAN>&nbsp;de {metaData?.userName}</SPAN>
-const AmountUiView = ({amount, currency}:AmountProps) => {
+const AmountUiView = ({amount, uiCurrencyName}:AmountProps) => {
    return(
       <>
          {
@@ -128,7 +126,7 @@ const AmountUiView = ({amount, currency}:AmountProps) => {
                <SPAN className="number">
                   &nbsp;{amount}&nbsp;
                </SPAN>
-               <strong>{currency}</strong>
+               <strong>{uiCurrencyName}</strong>
             </SPAN>) : ''
          }
       </>

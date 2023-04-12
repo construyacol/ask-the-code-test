@@ -117,7 +117,7 @@ export class MainService extends inheritances {
   async init(callback) {
     while (!this.user) {
       await sleep(2000); 
-    } 
+    }  
     const userWallets = await this.userHasWallets();
     const verificationStatus = this.getVerificationState();
     if((userWallets && isEmpty(userWallets)) && verificationStatus === "accepted") {
@@ -126,6 +126,7 @@ export class MainService extends inheritances {
       await this.addNewWallets(userWallets);
     }
     await this.getWalletsByUser()
+
     this.postLoader(callback, false);
     return;
   }

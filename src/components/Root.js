@@ -63,7 +63,7 @@ function RootContainer(props) {
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
       if(!decodeJwt)return;
       history.push("/");
-    }
+    } 
     const userData = await getUserToken();
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
@@ -124,15 +124,17 @@ function RootContainer(props) {
       <Route>
         <ModalsSupervisor/>
       </Route>
-
-      <Route path="/paymentRequest" component={PaymentRequestView} />
-
+      <Route exact path="/paymentRequest" component={PaymentRequestView} />
+      {/* path={/^\/(?!paymentRequest)/} */}
       {(!isAppLoaded) ? (
-        <LoaderAplication 
-          history={history} 
-          tryRestoreSession={tryRestoreSession}
-          setShowOnBoarding={setShowOnBoarding} 
-          {...props}
+        <Route path={/^\/(?!paymentRequest)/} render={
+          () => <LoaderAplication 
+              history={history} 
+              tryRestoreSession={tryRestoreSession}
+              setShowOnBoarding={setShowOnBoarding} 
+              {...props}
+            />
+          } 
         />
       ) : (
         <>

@@ -1,6 +1,11 @@
+export interface loggedViewProps {
+    currency: string;
+}
+
+
 export interface AmountProps { 
     amount: number | string; 
-    currency: string;
+    uiCurrencyName: string;
  }
  
  export interface UserRecipientProps {
