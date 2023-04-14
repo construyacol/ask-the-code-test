@@ -872,7 +872,7 @@ withdraw_mangagement = async (withdraw) => {
   }
 
   render() {
-    return null;
+    return <></>;
   }
 
 }

@@ -1,3 +1,13 @@
+const LEVEL_TYPES = {
+    level_1:"level_1",
+    level_2:"level_2",
+}
+
+export const OPERATIONAL_LEVELS = [
+    LEVEL_TYPES.level_1,
+    LEVEL_TYPES.level_2,
+]
+
 export const LEVELS_DATA = {
     level_1:{
         value:"level_1",

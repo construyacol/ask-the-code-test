@@ -48,7 +48,7 @@ const DEFAULT_DEPOSIT_AMOUNT = {
 }
 
 const DEFAULT_INTERNAL_AMOUNT = {
-  uiName:"Añade la cantidad a recibir",
+  uiName:"Ingresa la cantidad a cobrar (opcional)",
   key:FIAT_DEPOSIT_TYPES?.STAGES?.COP_INTERNAL_AMOUNT,
   uiType:"text",
   "settings":{

@@ -28,8 +28,8 @@ import {
 import { DEFAULT_PARAMS } from 'utils/paymentRequest'
 import { getAllUrlParams } from "utils/urlUtils";
 
-const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "./sockets/sockets"));
-const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "./widgets/toast/ToastContainer"));
+const LazySocket = loadable(() => import(/* webpackPrefetch: true */ "components/sockets/sockets"));
+const LazyToast = loadable(() => import(/* webpackPrefetch: true */ "components/widgets/toast/ToastContainer"));
 const ModalsSupervisor = loadable(() => import("./home/modals-supervisor.js"));
 const PaymentRequestView = loadable(() => import('pages/paymentRequest'));
 
@@ -52,18 +52,19 @@ function RootContainer(props) {
   const initComponent = async (mobileURL) => {
 
     const params = new URLSearchParams(mobileURL ?? history.location.search);
-    if(params.has(DEFAULT_PARAMS.main)){
-      return history.push({
-        pathname: '/paymentRequest', 
-        state:getAllUrlParams(mobileURL ?? history.location.search)
-      });
-    }
     if(params.has("token") && params.has("refresh_token")){
       await localForage.setItem("sessionState", {});
       const decodeJwt = await saveUserToken(params.get("token"), params.get("refresh_token"))
       if(!decodeJwt)return;
       history.push("/");
     } 
+    const paymentRequest = JSON.parse(localStorage.getItem('paymentRequest'))
+    if(params.has(DEFAULT_PARAMS.main) || paymentRequest){
+      return history.push({
+        pathname: '/paymentRequest', 
+        state:params.has(DEFAULT_PARAMS.main) ? getAllUrlParams(mobileURL ?? history.location.search) : { paymentRequest }
+      });
+    }
     const userData = await getUserToken();
     if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
     const { userToken, decodedToken } = userData
@@ -134,8 +135,8 @@ function RootContainer(props) {
         />
       ) : isAppLoaded ? (
         <>
-          <CookieMessage/>
           <LazySocket toastMessage={toastMessage} />
+          <CookieMessage/>
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>

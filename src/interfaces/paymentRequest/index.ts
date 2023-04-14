@@ -1,23 +1,27 @@
 import BigNumber from 'bignumber.js';
 import { ChildrenReactNode } from '../utils'
 
+export interface doPaymentProps {
+    twoFaToken?: string;
+}
 
 interface AmountState {
     amount?: BigNumber
     setAmount: React.Dispatch<React.SetStateAction<BigNumber>>;
 }
-
-export interface unLoggedViewProps extends ChildrenReactNode, AmountState {
-    currency: string;
-}
-
 export type paymentAmount = {
     amount: number | string;
 }
- 
+
 export interface loggedViewProps extends ChildrenReactNode, AmountState {
     currency: string;
-    paymentRequest?: PaymentRequestParams;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+    paymentRequest: PaymentRequestParams;
+    actions?:any;
+    isLogged: boolean;
+    rejectRequest: () => void;
+    user: UserRecipientProps;
+    isLoading: boolean;
 }
 
 export interface AmountProps { 
@@ -47,8 +51,7 @@ export interface PaymentRequestParams {
  }
 
 //  remitter
-
-export type errProps = {
-    error?:string;
-    message?:any;
-}
+// export type errProps = {
+//     error?:string;
+//     message?:any;
+// }

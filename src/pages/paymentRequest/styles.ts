@@ -2,6 +2,19 @@ import styled from 'styled-components';
 import { DisclaimerContainer } from 'components/widgets/shared-styles'
 
 
+
+export const ViewerContainer = styled.span`
+    position: absolute;
+    filter: invert(1);
+    color: gray;
+    left: 18px;
+    top: 15px;
+    font-family: "Raleway",sans-serif;
+    color: #50667a;
+    font-size: 12px;
+    z-index: 1;
+`
+
 export const UnloggedDisclaimer = styled(DisclaimerContainer)`
    background-color: #ff8c0024;
    border-left: 2px solid var(--orange_color);
@@ -20,11 +33,14 @@ export const ButtonsContainer = styled.div`
       font-size: 16px !important;
    }
    &.insufficient{
-      max-height: 50px;
+      max-height: 45px;
       height: auto;
       align-self: center;
       justify-self: end;
       display: flex;
+      button{
+         font-size: 15px !important;
+      }
    }
 `
 
@@ -46,7 +62,9 @@ export const IsLoggedLayout = styled.div`
    p.insufficient{
       color: red;
    }
-
+   ._balanceComponent{
+      right: 15px;
+   }
    .itemAccountContainer.insufficient{
       border-left: 5px solid var(--red_color);
    }

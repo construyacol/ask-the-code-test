@@ -1,65 +1,69 @@
 import { useEffect, useState } from 'react'
 import { CrudContainer } from 'core/components/molecules/modalCrud/styles'
 import IconSwitch from "components/widgets/icons/iconSwitch";
-import { SPAN, H3, P, Button } from 'core/components/atoms'
+import { SPAN, H3, P } from 'core/components/atoms'
 import { 
    PaymentRequestParams,
-   errProps,
    AmountProps,
    UserRecipientProps,
 } from 'interfaces/paymentRequest';
-import { SESSION_ERROR } from 'const/session'
-import { REPLACE_TO_CURRENCY_CONFIG, replaceTo } from 'core/config/currencies'
 import { formatToCurrency } from "utils/convert_currency";
-
-import { validateExpTime, getUserToken } from 'utils/handleSession'
+import { useSelector } from "react-redux"
+import { getUserToken, getExpTimeData } from 'utils/handleSession'
 import { useActions } from "hooks/useActions";
-
 import IsLoggedView from './loggedView'
 import UnLoggedView from './unLoggedView'
 import PaymentDetail from './paymentDetail'
 import SkeletonView from './skeletonView'
 import { replaceToCurrency } from 'core/config/currencies'
-
-
-
+import { modelDataProps } from 'interfaces/state'
 import BigNumber from 'bignumber.js';
+import { OPERATIONAL_LEVELS } from 'const/levels'
 
 //styles
 import { 
    PaymentRequestLayout, 
    HeaderContainer, 
-   ContentContainer
+   ContentContainer,
+   ViewerContainer
 } from './styles'
 
 import { Content } from 'components/forms/widgets/success/styles'
 
-
 const PaymentRequestView = (props:any) => {
-
    //TODO: Crear selector para no tener que cargar todo el modelo de usuario en el store desde el inicio
    const [ isLogged, setIsLogged ] = useState(false)
+   const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
    const [ isLoading, setIsLoading ] = useState(true)
    const [ paymentRequest ] = useState<PaymentRequestParams>(props?.location?.state?.paymentRequest)
    const { currency, metaData } = paymentRequest
    const [ amount, setAmount ] = useState<BigNumber>(formatToCurrency(paymentRequest?.amount ? `${paymentRequest?.amount}`.replace(/,/g, "") : 0, currency))
    const uiCurrencyName = replaceToCurrency({ currency })
    const actions = useActions()
-   const handleSession = (props:errProps) => SESSION_ERROR.REFRESH_TOKEN_EXPIRED !== props?.error && setIsLogged(true);
-   //TODO: Crear selector con authdata para colocar como dependencia y actualizar el tiempo de validación 
-   useEffect(() => { 
+
+   const rejectRequest = async() => {
+      const { getHostName } = await import("environment")
+      const { history } = await import("const/const")
+      const { ROUTES } = await import("const/routes")
+      localStorage.removeItem('paymentRequest')
+      if(!isLogged) return window.location.href = `https://${getHostName()}.com`
+      history.push(OPERATIONAL_LEVELS.includes(user?.level) ? ROUTES.default : ROUTES.unverified)
+      actions.isAppLoaded(true);
+  }
+
+   useEffect(() => {
       (async() => {
          setIsLoading(true)
-         try {
-            await validateExpTime(handleSession) 
-         } finally {
-            setIsLoading(false)
-         }
+         const { refreshTokenExpirationTime, currentTime } = await getExpTimeData()
+         setIsLoading(false)
+         if(currentTime <= refreshTokenExpirationTime) return setIsLogged(true)
       })()
    }, [])
+
    useEffect(() => {
       (async() => {
          if(!isLogged)return;
+         setIsLoading(true)
          const userData = await getUserToken();
          if(!userData){return console.log('Error obteniendo el token::48 Root.js')}
          const { userToken, decodedToken } = userData
@@ -72,16 +76,19 @@ const PaymentRequestView = (props:any) => {
          await mainService.loadFirstEschema();
          await mainService.fetchCompleteUserData();
          await mainService.init();
+         setIsLoading(false)
       })()
    // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [isLogged])
 
    const RenderContentComponent = (isLoading && !isLogged) ? SkeletonView : isLogged ? IsLoggedView : UnLoggedView
-   // console.log('PaymentRequestViewamount', amount, isLogged)
-
+   console.log('RenderContentComponent', paymentRequest.recipient, user?.email)
    return(
       <PaymentRequestLayout>
          <CrudContainer rowGap="10px" className={`large flex no-padding`}>
+         {
+            paymentRequest.recipient === user?.email && <ViewerContainer>Vista de pagador</ViewerContainer>
+         }
             <Content className="payment--content">
                <HeaderContainer>
                   <IconSwitch
@@ -100,12 +107,17 @@ const PaymentRequestView = (props:any) => {
                      {paymentRequest.amount ? <AmountUiView amount={amount.toFormat()} uiCurrencyName={uiCurrencyName}/> : ''}
                      {isLogged ? <>. Para realizar el pago, puedes utilizar los fondos de tu billetera <strong>{uiCurrencyName}</strong> </> : ''}
                   </P>
-                  
                   <RenderContentComponent  
                      currency={currency}
                      amount={amount}
                      setAmount={setAmount}
+                     setIsLoading={setIsLoading}
                      paymentRequest={paymentRequest}
+                     isLogged={isLogged}
+                     rejectRequest={rejectRequest}
+                     actions={actions}
+                     user={user}
+                     isLoading={isLoading}
                   >
                      <PaymentDetail 
                         amount={amount}

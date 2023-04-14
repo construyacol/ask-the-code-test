@@ -11,7 +11,7 @@ const PaymentDetail = ({ uiCurrencyName, amount }:paymentDetailProps) => {
           let _paymentDetail = []
           // _paymentDetail.push(["Moneda", uiCurrencyName])
           _paymentDetail.push(["Cantidad a pagar", `${amount?.toFormat() || 0} ${uiCurrencyName}`])
-          _paymentDetail.push(["Costo", "0"])
+          _paymentDetail.push(["Costo", `0 ${uiCurrencyName}`])
           setPaymentDetail(_paymentDetail)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [amount])

@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import KeyEncoder from 'key-encoder'
 import { mainService } from 'services/MainService'
 import { STORAGE_KEYS } from "const/storageKeys";
-import { SESSION_ERROR } from 'const/session'
+// import { SESSION_ERROR } from 'const/session'
 import { store } from '../index'
 import Environment from 'environment'
 import actions from "actions";
@@ -151,7 +151,7 @@ export const getExpTimeData = async() => {
 
 
  
-export const validateExpTime = async(callback) => { 
+export const validateExpTime = async() => { 
 
   const { refreshTokenExpirationTime, currentTime, jwtExpTime } = await getExpTimeData()
   const userToken = await localForage.getItem(STORAGE_KEYS.user_token);
@@ -175,13 +175,12 @@ export const validateExpTime = async(callback) => {
         } else {
           console.log('--------  TOKEN INVALIDO  --------')
           reject(false)
-          return callback ? callback({error:SESSION_ERROR.REFRESH_TOKEN_EXPIRED, message:err}) : handleError(err, () => {
+          return handleError(err, () => {
             doLogout()
-            reject(false)
+            // reject(false)
           })
         }
       }
-      callback && callback()
       console.log('--------  TOKEN VALIDO  --------')
       resolve(true)
     });

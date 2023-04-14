@@ -10,7 +10,7 @@ export const DEFAULT_PARAMS = {
    main:"paymentRequest"
 }
  
-const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currency, amount = DEFAULT_PARAMS.amount }:paymentRequestParams) => {
+export const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currency, amount = DEFAULT_PARAMS.amount }:paymentRequestParams) => {
    const { PaymentRequestInstance } = await import('core/models/paymentRequest')
    const { mainService } = await import('services/MainService')
    return new PaymentRequestInstance({
@@ -26,8 +26,6 @@ const createNewPaymentRequest = async({ currency = DEFAULT_PARAMS.currency, amou
 export const createPaymentRequestLink = async({ currency = DEFAULT_PARAMS.currency, amount = DEFAULT_PARAMS.amount }:paymentRequestParams) => {
    const { getHostName } = await import('environment')
    const paymentRequest = await createNewPaymentRequest({ currency, amount })
-   // return `https://app.${getHostName()}.com?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
-   return `http://localhost:2998/?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
+   return `https://app.${getHostName()}.com?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
+   // return `http://localhost:2998/?${DEFAULT_PARAMS?.main}=${encodeURIComponent(JSON.stringify(paymentRequest))}` 
 }
-
-export default createNewPaymentRequest
