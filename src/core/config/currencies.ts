@@ -27,6 +27,13 @@ export const replaceTo = (text:string, config:replaceToProps):string => {
     return text
 }
 
+export const replaceToCurrency = ({ currency, sourceName = "" }:{currency:string, sourceName?:string}):string => {
+    const _sourceName = sourceName || currency
+    const currencyKey = currency as keyof typeof REPLACE_TO_CURRENCY_CONFIG
+    const currencyName = REPLACE_TO_CURRENCY_CONFIG[currencyKey]
+    return currencyName ? replaceTo(_sourceName, currencyName) : _sourceName
+}
+
 
 export const INITIAL_DEPOSIT_SUBSCRIBE_CURRENCY_LIST = {
     bitcoin:true,

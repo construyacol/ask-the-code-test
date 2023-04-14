@@ -1,7 +1,5 @@
-
-
 type resultParams = {
-  [key: string]: string | number | boolean | object;
+  [key: string]: any;
 }
 
 export const getAllUrlParams = (url = window.location.search):resultParams => {

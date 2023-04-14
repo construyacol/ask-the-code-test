@@ -54,7 +54,7 @@ function RootContainer(props) {
     const params = new URLSearchParams(mobileURL ?? history.location.search);
     if(params.has(DEFAULT_PARAMS.main)){
       return history.push({
-        pathname: '/paymentRequest',
+        pathname: '/paymentRequest', 
         state:getAllUrlParams(mobileURL ?? history.location.search)
       });
     }
@@ -125,25 +125,22 @@ function RootContainer(props) {
         <ModalsSupervisor/>
       </Route>
       <Route exact path="/paymentRequest" component={PaymentRequestView} />
-      {/* path={/^\/(?!paymentRequest)/} */}
-      {(!isAppLoaded) ? (
-        <Route path={/^\/(?!paymentRequest)/} render={
-          () => <LoaderAplication 
-              history={history} 
-              tryRestoreSession={tryRestoreSession}
-              setShowOnBoarding={setShowOnBoarding} 
-              {...props}
-            />
-          } 
+      {(!isAppLoaded && !history.location.pathname.includes("paymentRequest")) ? (
+        <LoaderAplication 
+          history={history} 
+          tryRestoreSession={tryRestoreSession}
+          setShowOnBoarding={setShowOnBoarding} 
+          {...props}
         />
-      ) : (
+      ) : isAppLoaded ? (
         <>
           <CookieMessage/>
           <LazySocket toastMessage={toastMessage} />
           <LazyToast />
           <Route path="/" render={() => <HomeContainer />} />
         </>
-      )}
+      ):<></>
+      }
     </Router>
   );
 }

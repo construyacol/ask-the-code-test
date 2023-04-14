@@ -16,6 +16,7 @@ import { REPLACE_TO_CURRENCY_CONFIG, replaceTo } from 'core/config/currencies'
 import { IconClose } from "components/widgets/shared-styles";
 import { HeaderContainer, ContentContainer } from 'pages/paymentRequest/styles'
 import { modelDataProps } from 'interfaces/state'
+import { DisclaimerContainer } from 'components/widgets/shared-styles'
 
 // const createUri = async() => {
 //    const { refreshToken } = await getUserToken()
@@ -24,7 +25,7 @@ import { modelDataProps } from 'interfaces/state'
 //    generateQR(uri)
 // }
 
-const ModalSharePaymentRequest = (props:any) => {
+const ModalSharePaymentRequest = (props:any): JSX.Element => {
 
    const user = useSelector(({ modelData:{ user } }:modelDataProps) => user);
    const [ paymentRequestLink, setPaymentRequestLink ] = useState("")
@@ -86,7 +87,7 @@ const ModalSharePaymentRequest = (props:any) => {
                   amount={props?.internalAmount}
                /> */}
                <P className={"no-margin"}>Se ha creado un enlace con una solicitud de pago <span className="fuente2">{props?.internalAmount ? `por ${props?.internalAmount} ${uiCurrencyName}` : ''}</span></P>
-               
+                
                <LinkContainer>
                   <P size={14} maxWidth={350} className={"no-margin ellipsis number"} color="primary">{paymentRequestLink}</P>
                </LinkContainer>
@@ -94,7 +95,7 @@ const ModalSharePaymentRequest = (props:any) => {
                <CtasContainer>
                   <Button className="fit" size="medium" variant="contained" color={"primary"} onClick={copyLink}> 
                      Copiar enlace
-                  </Button>
+                  </Button> 
                   <HowToWorkCta />
                </CtasContainer>
                <P className={"no-margin"}>Comparte tu enlace de pago por <strong>Gmail</strong>, <strong>WhatsApp</strong> o <strong>copialo</strong> y compartelo manualmente.</P>
@@ -125,13 +126,9 @@ const ModalSharePaymentRequest = (props:any) => {
 
  export default withCoinsendaServices(ModalSharePaymentRequest)
 
-const LinkContainer = styled.div`
+const LinkContainer = styled(DisclaimerContainer)`
    background-color: #0198ff24;
-   padding: 15px 20px;
-   border-radius: 5px;
    border-left: 2px solid var(--primary);
-   border-top-left-radius: 1px;
-   border-bottom-left-radius: 1px;
 `
 
 

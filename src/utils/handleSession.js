@@ -174,6 +174,7 @@ export const validateExpTime = async(callback) => {
           return;
         } else {
           console.log('--------  TOKEN INVALIDO  --------')
+          reject(false)
           return callback ? callback({error:SESSION_ERROR.REFRESH_TOKEN_EXPIRED, message:err}) : handleError(err, () => {
             doLogout()
             reject(false)

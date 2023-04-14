@@ -128,7 +128,7 @@ const FiatDepositSuccess = ({
                             </p>
                         </TotalAmount>
                     </Content>
-
+ 
                     <RenderSwitchComponent
                         STAGE_COMPONENTS={{
                             bank:BankCTA,

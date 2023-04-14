@@ -4,11 +4,17 @@ import { rotate90HorizontalBck, rotate0HorizontalBck } from "./animations";
 import { AiOutlineClose } from "react-icons/ai";
 
 
-
+export const DisclaimerContainer = styled.div`
+   padding: 15px 20px;
+   border-radius: 5px;
+   border-left: 2px solid var(--primary);
+   border-top-left-radius: 1px;
+   border-bottom-left-radius: 1px;
+`
 
 export const TotalAmount = styled.div`
   width: auto;
-  height: 70px;
+  height: 70px; 
   justify-self: end;
   align-self: end;
 

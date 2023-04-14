@@ -39,7 +39,9 @@ export default function ListViewComponent(props) {
 
     const currencies = useCurrencies()
     const [ loading, setLoading ] = useState(false)
-    const [ accounts, setAccounts ] = useState([])    
+    const [ accounts, setAccounts ] = useState([])
+    const [ coinsendaServices ] = useCoinsendaServices();
+
 
     useEffect(() => { 
         if(items)setAccounts(orderedList(items, CURRENCY_LIST_DEFAULT_ORDER, 'currency'))
@@ -51,6 +53,7 @@ export default function ListViewComponent(props) {
                 !isEmpty(accounts) && accounts.map((account, index) => {
                     return(
                         <ItemAccount 
+                            coinsendaServices={coinsendaServices}
                             currency={currencies[account?.currency]}
                             account={account} 
                             key={index} 
@@ -67,6 +70,23 @@ export default function ListViewComponent(props) {
 
 
 
+export const AccountItemSkeleton = ({ className = "" }) => (
+    <ItemAccountContainer className={`skeleton ${className}`}>
+        <HeaderMainContainer>
+                <IconAccount className="_iconSkeleton"></IconAccount>
+                <LabelContainer className="_header__labelContainer">
+                <AccountLabel className="accountLabel--skeleton__p">Skeleton wallet</AccountLabel>
+                <CurrencyLabel>------</CurrencyLabel>
+            </LabelContainer>
+        </HeaderMainContainer>
+        <MobileBalance className="skeletonBalanceCont">
+            <HR/>
+            <p className="fuente2 _balanceValue accountBalance--skeleton__p">000000</p>
+            <p className="fuente _balanceTextLab">Balance</p>
+        </MobileBalance>
+    </ItemAccountContainer>
+);
+
 export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
 
     const itemList = new Array(skeletonAmount).fill({}) 
@@ -76,24 +96,7 @@ export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
             <TitleSection skeleton />
             <ListViewContainer>
                 {
-                    itemList.map((item, index) => {
-                        return(
-                            <ItemAccountContainer key={index} className="skeleton">
-                                <HeaderMainContainer>
-                                        <IconAccount className="_iconSkeleton"></IconAccount>
-                                        <LabelContainer className="_header__labelContainer">
-                                        <AccountLabel>Skeleton wallet</AccountLabel>
-                                        <CurrencyLabel>------</CurrencyLabel>
-                                    </LabelContainer>
-                                </HeaderMainContainer>
-                                <MobileBalance className="skeletonBalanceCont">
-                                    <HR/>
-                                    <p className="fuente2 _balanceValue">000000</p>
-                                    <p className="fuente _balanceTextLab">Balance</p>
-                                </MobileBalance>
-                            </ItemAccountContainer>
-                        )
-                    })
+                    itemList.map((item, index) => <AccountItemSkeleton key={index}/>)
                 }
             </ListViewContainer>
         </AccountListWrapper>
@@ -101,11 +104,10 @@ export const AccountListViewSkeleton = ({ skeletonAmount = 3 }) => {
 }
 
 
-const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
+const ItemAccount = ({ account, currency, index, loading, setLoading, coinsendaServices }) => {
 
     const { isMovilViewport } = useViewport();
     const actions = useActions()
-    const [ coinsendaServices ] = useCoinsendaServices();
     const { currentFilter } = useSelector((state) => state.ui.current_section.params);
     const [ currentAccount, setCurrentAccount ] = useState()
 
@@ -168,7 +170,7 @@ const ItemAccount = ({ account, currency, index, loading, setLoading }) => {
     )
 }
 
-const MobileBalanceComponent = ({ account }) => {
+export const MobileBalanceComponent = ({ account }) => {
 
     const { balances } = useSelector((state) => state.modelData);
     const currentBalance = balances[account?.id]?.available
@@ -208,7 +210,7 @@ export const RightSection = ({ isMovilViewport, account:{ id } }) => {
     //     <p className="fuente _balanceTextLab">Balance</p>
     // </MobileBalance>
 
-    return(
+    return( 
         <>
             {
                 isMovilViewport ?
