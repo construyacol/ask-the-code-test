@@ -3,7 +3,7 @@ import useStage from '../../hooks/useStage'
 import { ButtonContainers } from '../sharedStyles'
 import loadable from "@loadable/component";
 import ControlButton from "../../../widgets/buttons/controlButton";
-import StageManagerComponent from '../stageManager'
+import StageManagerComponent from '../stageManager' 
 // import StatusPanelComponent from '../statusPanel'
 import useViewport from 'hooks/useViewport'
 import useToastMessage from "../../../../hooks/useToastMessage"; 
@@ -41,7 +41,7 @@ const NewFiatDepositComponent = ({ handleState, handleDataForm, ...props }) => {
   const walletInfo = useWalletInfo()
   const { currentWallet } = walletInfo
   const [ costList, depositAccount ] = useSelector(() => selectProviderData(state[FIAT_DEPOSIT_TYPES.STAGES.PROVIDER]));
-  const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.currency));
+  const depositProviders = useSelector((_state) => selectDepositProvsByNetwork(_state, currentWallet?.id));
   
   const stageManager = useStage(
     // create the form stages

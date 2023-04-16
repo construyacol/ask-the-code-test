@@ -40,28 +40,26 @@ export const wProvsByCurrencyNetwork = createSelector(
         };
       }
     }
-
     if(result[DEFAULT_FISRT_CRITERIAL]) return reOrderedList(result, DEFAULT_FISRT_CRITERIAL);
-    
     return result;
   }
-);
+); 
  
 export const selectDepositProvsByNetwork = createSelector(
   ({ modelData: { deposit_providers } }) => deposit_providers,
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  (_, currency) => currency,
-  (deposit_providers, currency) => {
+  (_, account_id) => account_id,
+  (deposit_providers, account_id) => {
     let res = {};
     if(!deposit_providers) return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
     for (const [, deposit_provider] of Object.entries(deposit_providers)) {
-        // if(deposit_provider.currency === currency){
-          res = {
-            ...res,
-            [deposit_provider.provider_type]:deposit_provider
-          }
-        // }
+      if(deposit_provider?.account_id?.find(accountId => accountId === account_id)){
+        res = {
+          ...res,
+          [deposit_provider.provider_type]:deposit_provider
+        }
+      }
     }
     return res;
   }
