@@ -15,9 +15,8 @@ export default function depositNetworksHoc(AsComponent) {
     const [ networks, setNetworks ] = useState({})
     const [ currentNetwork, setCurrentNetwork ] = useState(props.currentNetwork || { provider_type:"" })
     const availableDepositAccounts = useSelector((state) => selectDepositAccountsByNetwork(state, currentWallet?.currency));
-    const depositProviders = useSelector((state) => selectDepositProvsByNetwork(state, currentWallet?.currency));
+    const depositProviders = useSelector((state) => selectDepositProvsByNetwork(state, currentWallet?.id)); 
     const [ coinsendaServices ] = useCoinsendaServices(); 
- 
 
     const toggleNetwork = (network) => {
       const { callback } = props
