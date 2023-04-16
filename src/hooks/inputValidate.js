@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { formatToCurrency, _convertCurrencies } from "utils/convert_currency";
-import WithdrawViewState from "./withdrawStateHandle"; 
 import { useWalletInfo }  from "hooks/useWalletInfo";
 import BigNumber from "bignumber.js";
 import { checkIfFiat } from 'core/config/currencies';
@@ -10,7 +9,6 @@ export default (props) => {
 
   const [ inputState, setInputState ] = useState();
   const [ customError, setCustomError ] = useState();
-  const [{ withdrawProvidersByName }] = WithdrawViewState();
   const { currentPair, currentWallet, availableBalance } = useWalletInfo();
 
   let value
@@ -51,8 +49,8 @@ export default (props) => {
           return;
         }
  
-        const { currency } = currentWallet;
-        const withdrawProvider = props?.currentNetwork || withdrawProvidersByName[currency]
+        // const { currency } = currentWallet;
+        const withdrawProvider = props?.currentNetwork
         if(!withdrawProvider)return;
         const providerType = withdrawProvider?.provider_type
         let finalValue = e.target.value;
@@ -182,12 +180,15 @@ export default (props) => {
       // const isSecondaryCurrency = currentWallet.currency === currentPair.secondary_currency
         // return formatToCurrency(isSecondaryCurrency ? currentPair.exchange.min_operation.min_amount : '0', currentWallet.currency);
         // return formatToCurrency(currentPair.exchange.min_operation.min_amount, currentPair.exchange.min_operation.currency);
-      case 'amount':
-        const { getMinAmount} = await import('utils/withdrawProvider')
-        const withdrawMinAmount = await getMinAmount(withdrawProvidersByName[props?.currentNetwork?.currency || currentWallet.currency])
-        return withdrawMinAmount
+      
+        // case 'amount':
+        // const { getMinAmount} = await import('utils/withdrawProvider')
+        // const withdrawMinAmount = await getMinAmount(currentWallet.currency])
+        // return withdrawMinAmount
       case 'spend-amount':
       // case 'bought-amount': 
+      console.log('spend-amount')
+
         let minAmount = new BigNumber(0)
         const minOperationCurrency = currentPair.exchange.min_operation.currency
         if([minOperationCurrency].includes(currentWallet.currency)){

@@ -19,8 +19,6 @@ const SelectNetwork = ({ className, ...props }) => {
 
     useEffect(() => {
         if(!isEmpty(props.networks)){
-            // console.log('SelectNetwork', props.networks)
-            // debugger
             (() => {
                 let netWorks = {}
                 for (let network in props.networks) {

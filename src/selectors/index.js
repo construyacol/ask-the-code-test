@@ -120,20 +120,6 @@ export const selectWithdrawAccountsByAddress = createSelector(
   }
 );
 
-export const selectWithdrawProviderByName = createSelector(
-  (state) => state.modelData.withdrawProviders,
-  (withdrawProviders) => {
-    let result = {};
-    for (let provider_id in withdrawProviders) {
-      result = {
-        ...result,
-        [withdrawProviders[provider_id].currency]:withdrawProviders[provider_id]
-      };
-    }
-    return result;
-  } 
-);
-
 export const selectDepositProvsByCurrency = createSelector(
   ({ modelData }) => modelData.deposit_providers,
   (depositProviders) => depositProviders && convertToObjectWithCustomIndex(depositProviders, "depositAccount.currency")
@@ -188,6 +174,25 @@ export const selectWithdrawProvider = createSelector(
     const withdrawProvider = withdrawProviders[withdrawProvId]
     return [ withdrawProvider ];
   }
+);
+
+// LAST REFERENCE: selectWithdrawProviderByName
+export const selectWithdrawProviderByCurrency = createSelector(
+  (state) => state.modelData.withdrawProviders,
+  (withdrawProviders) => {
+    let res = {}
+    for (const [, withdrawProvider] of Object.entries(withdrawProviders)) {
+      let itemsByCurrency = res[withdrawProvider?.currency] || {};
+      res = {
+        ...res,
+        [withdrawProvider?.currency]:{
+          ...itemsByCurrency,
+          [withdrawProvider?.provider_type]:withdrawProvider
+        }
+      }
+    }
+    return res
+  } 
 );
 
 

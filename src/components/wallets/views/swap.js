@@ -136,7 +136,7 @@ function SwapView(props) {
   // }
 
   const handleChangeSpendAmount = async (name, newValue) => {
-    console.log('handleChangeSpendAmount', newValue)
+    // console.log('handleChangeSpendAmount', newValue)
     setValue(newValue.toString().replace(/,/g, ""))
   }; 
 

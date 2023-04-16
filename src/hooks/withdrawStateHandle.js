@@ -1,14 +1,14 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import actions from "actions";
-import { selectWithdrawProviderByName, selectWithdrawAccountsByAddress } from 'selectors'
+import { selectWithdrawProviderByCurrency, selectWithdrawAccountsByAddress } from 'selectors'
 
 const WithdrawViewState = () => {
-  
+   
   const dispatch = useDispatch(); 
   const { modelData, ui, isLoading, storage } = useSelector((state) => state);
   // const withdrawProviders = useSelector((state) => selectWithdrawProviderByType(state));
-  const withdrawProvidersByName = useSelector((state) => selectWithdrawProviderByName(state));
+  const withdrawProvidersByName = useSelector((state) => selectWithdrawProviderByCurrency(state));
   const { account_id, path } = useParams();
   const { active_trade_operation } = ui.current_section.params;
   const { wallets, balances, user } = modelData;

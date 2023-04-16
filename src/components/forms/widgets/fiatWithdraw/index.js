@@ -45,7 +45,6 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
   const providerType = state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.provider_type || state[FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]?.value 
   const withdrawProvider = wProvidersByProvType[providerType] || wProvidersByProvType[DEFAULT_PROVIDER_TYPE]
   
-  // console.log('FiatWithdrawWithdrawAccounts', withdrawAccounts)
   const stageManager = useStage(
     // create the form stages
     Object.keys(dataForm?.handleError?.errors || dataForm.stages),
@@ -128,7 +127,7 @@ const FiatWithdraw = ({ handleState, handleDataForm, ...props }) => {
     return setLoading(false)
   }
 
-  const STAGE_COMPONENTS = {
+  const STAGE_COMPONENTS = { 
     [FIAT_WITHDRAW_TYPES?.STAGES?.WITHDRAW_ACCOUNT]:WithdrawAccountsComponent,
     [FIAT_WITHDRAW_TYPES?.STAGES?.AMOUNT]:AmountComponent,
     [FIAT_WITHDRAW_TYPES?.STAGES?.TARGET_PERSON]:TargetPersonStage,

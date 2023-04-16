@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Withdraw2FaModal from "../../../widgets/modal/render/withdraw2FAModal";
 import { useActions } from "../../../../hooks/useActions";
 import useToastMessage from "../../../../hooks/useToastMessage";
-import WithOutProvider from "./withOutProvider";
+// import WithOutProvider from "./withOutProvider";
 import SkeletonWithdrawView from "./skeleton";
 import { history } from "../../../../const/const";
 import { useSelector } from "react-redux";
@@ -19,22 +19,23 @@ import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
 
-
+ 
 const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")), {fallback:<div></div>});
 const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")), {fallback:<div></div>});
- 
-const CriptoSupervisor = (props) => { 
-  const { current_wallet, withdrawProvidersByName, withdrawProvider } = props;
 
+
+const CriptoSupervisor = (props) => { 
+  const { withdrawProvidersByName } = props;
   return (
     <>
-      {isEmpty(withdrawProvidersByName) ? (
+      {
+       isEmpty(withdrawProvidersByName) ? 
         <SkeletonWithdrawView />
-      ) : !withdrawProvider ? (
-        <WithOutProvider current_wallet={current_wallet} />
-      ) : (
-        <CriptoView {...props}/>
-      )}
+       : 
+       <>
+          <CriptoView {...props}/>
+       </>
+      }
     </>
   );
 };
@@ -278,7 +279,8 @@ export const CriptoView = (props) => {
     setIsOpenPanel,
     isMobile,
     provider,
-    withdrawProviders
+    withdrawProviders,
+    // withdrawProvider:withdrawProviders.current
   }
 
   const panelHProps = {
@@ -290,7 +292,8 @@ export const CriptoView = (props) => {
     setIsOpenPanel,
     addressValue,
     withdrawConfirmed,
-    isMobile
+    isMobile,
+    // withdrawProvider:withdrawProviders.current
   } 
 
   if(isEmpty(withdrawProviders.current)){
@@ -309,7 +312,6 @@ export const CriptoView = (props) => {
             {...props} 
             {...panelHProps}
           />
-          : <></>
       </CriptoWithdrawForm>
     </>
   ); 

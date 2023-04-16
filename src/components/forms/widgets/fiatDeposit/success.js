@@ -47,6 +47,7 @@ const FiatDepositSuccess = ({
 }) => {
     
     const depositOrder = useSelector((state) => state?.modelData?.deposits[orderData?.id]);
+    console.log("depositOrder", depositOrder)
     const { data, formatDepositAccount, formatCurrency, currencySimbol } = useDetailParseData(depositOrder, 'shortDeposit') 
     const [ depProvDetail, setDepProvDetail ] = useState([])
     const [ amount, setAmount ] = useState([])
