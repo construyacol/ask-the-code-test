@@ -86,6 +86,15 @@ const menuItems = {
       "device": "desktop"
     },
     {
+      "text": "Tienda",
+      "icon": "store",
+      "clave": "store",
+      "active": true,
+      "visible": true,
+      "id": "7",
+      "device": "desktop"
+    },
+    {
       "text": "Ajustes",
       "icon": "settings",
       "clave": "settings",

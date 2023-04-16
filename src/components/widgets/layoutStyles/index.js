@@ -36,6 +36,11 @@ export const MainContent = styled.div`
     width: calc(100% - 40px);
     display:flex;
 
+    &.store{
+        width: 100%;
+        max-width: none;
+    }
+
     &.security{
         flex-direction: column;
     }
