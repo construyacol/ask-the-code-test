@@ -7,4 +7,4 @@ const StorePageView = () => {
     )
 } 
 
-export default StorePageView
+export default StorePageView 
