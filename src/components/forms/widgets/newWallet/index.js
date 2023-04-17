@@ -57,34 +57,34 @@ const NewWalletComponent = ({ handleState, handleDataForm:{ dataForm }, ...props
   }
 
   const searchMatch = (query, uniqueMatch) => {
-      if(!searchList?.length) return;
-      setValue(query)
-      const matches = uniqueMatch || (query && availableCurrencies.filter(({ currency }) => currency.toLowerCase().includes(query)));
-      matches?.length === 1 ? setMatchItem(matches[0]) : setMatchItem(null);
-      if(!matches?.length)return setSearchList(availableCurrencies);
-      setSearchList(matches)
+    if(!searchList?.length) return;
+    setValue(query)
+    const matches = uniqueMatch || (query && availableCurrencies.filter(({ currency }) => currency.toLowerCase().includes(query)));
+    matches?.length === 1 ? setMatchItem(matches[0]) : setMatchItem(null);
+    if(!matches?.length)return setSearchList(availableCurrencies);
+    setSearchList(matches)
   }
 
   const createWallet = async () => {
-      setLoader(true)
-      const newWallet = await coinsendaServices.createWallet({ currency:matchItem?.currency });
-      if (!newWallet) {
+    setLoader(true)
+    const newWallet = await coinsendaServices.createWallet({ currency:matchItem?.currency });
+    if (!newWallet) {
         setLoader(false)
         return toastMessage("Error al crear la billetera...", "error");
-      }
-      await coinsendaServices.getWalletsByUser();
-      const { account } = newWallet;
-      const dep_prov = await coinsendaServices.createAndInsertDepositProvider(account);
-      if (!dep_prov) {
+    }
+    await coinsendaServices.getWalletsByUser();
+    const { account } = newWallet; 
+    const depProvider = await coinsendaServices.createAndInsertDepositProvider(account);
+    if(!depProvider){
         setLoader(false)
         return toastMessage("Error al crear el proveedor de deposito de la billetera...", "error");
-      }
-      let msg = `Nueva wallet ${account?.currency} creada!`;
-      toastMessage(msg, "success");
-      actions.success_sound();
-      actions.renderModal(null);
-      setLoader(false)
-      return history.push(`/wallets/deposit/${account.id}`);
+    }
+    let msg = `Nueva wallet ${account?.currency} creada!`;
+    toastMessage(msg, "success");
+    actions.success_sound();
+    actions.renderModal(null);
+    setLoader(false)
+    return history.push(`/wallets/deposit/${account.id}`);
   };
 
 

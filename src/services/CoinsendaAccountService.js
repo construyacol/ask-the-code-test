@@ -140,36 +140,30 @@ export class AccountService extends WebService {
     if (!newAccount) {return}
     await this.getWalletsByUser();
     const { account } = newAccount;
-    const dep_prov = await this.createAndInsertDepositProvider(account);
-    if (!dep_prov) {return}
+    const depProvider = await this.createAndInsertDepositProvider(account);
+    if (!depProvider) {return}
     return newAccount
   }
 
-  async getWalletById(walletId) {
-    const user = this.user;
-    const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`;
-
-    const [wallets] = await this.Get(accountUrl);
-    if (this.isEmpty(wallets)) return;
-
-    const depositProvders = wallets.dep_prov;
-    let depositProviderDetails = [{}];
-
-    if (depositProvders.length > 0) {
-      let providerId = await depositProvders.slice(-1)[0];
-
-      const depositProviderUrl = `${DEPOSITS_URL}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${providerId}"}}`;
-
-      depositProviderDetails = await this.Get(depositProviderUrl);
-    }
-
-    const result = {
-      ...wallets,
-      depositProvider: { ...depositProviderDetails[0] },
-    };
-
-    return result;
-  }
+  // Array.from(new Set([...account.dep_prov, depProvider?.id]))
+  // async getWalletById(walletId) {
+  //   const user = this.user;
+  //   const accountUrl = `${ACCOUNT_URL}/${user.id}/accounts?filter={"where": {"id": "${walletId}"}}`;
+  //   const [wallets] = await this.Get(accountUrl);
+  //   if (this.isEmpty(wallets)) return;
+  //   const depositProvders = wallets.dep_prov;
+  //   let depositProviderDetails = [{}];
+  //   if (depositProvders.length > 0) {
+  //     let providerId = await depositProvders.slice(-1)[0];
+  //     const depositProviderUrl = `${DEPOSITS_URL}users/${user.id}/depositProviders?country=${user.country}&filter={"where": {"id":"${providerId}"}}`;
+  //     depositProviderDetails = await this.Get(depositProviderUrl);
+  //   }
+  //   const result = {
+  //     ...wallets,
+  //     depositProvider: { ...depositProviderDetails[0] },
+  //   };
+  //   return result;
+  // }
  
   async createWallet({ currency, name }) {
  

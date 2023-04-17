@@ -19,21 +19,22 @@ import loadable from "@loadable/component";
 import OtherModalLayout from "components/widgets/modal/otherModalLayout";
 import { createProviderInfoNeeded } from 'utils/withdrawProvider'
 
- 
+  
 const AvailableWithdrawNetwork = loadable(() => import("components/widgets/supportChain").then(getExportByName("AvailableWithdrawNetwork")), {fallback:<div></div>});
 const SelectWithdrawNetwork = loadable(() => import("components/wallets/views/selectNetwork").then(getExportByName("SelectWithdrawNetwork")), {fallback:<div></div>});
-
-
+ 
+ 
 const CriptoSupervisor = (props) => { 
   const { withdrawProvidersByName } = props;
   return (
     <>
       {
        isEmpty(withdrawProvidersByName) ? 
-        <SkeletonWithdrawView />
+        //<SkeletonWithdrawView />
+        <p>putmadre</p>
        : 
        <>
-          <CriptoView {...props}/>
+          {/* <CriptoView {...props}/> */}
        </>
       }
     </>
